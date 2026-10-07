@@ -1,4 +1,4 @@
-// i18n keys for the Profile screen (src/app/profile/ProfileView.tsx).
+// i18n keys for the Profile screen (src/app/(app)/profile/ProfileView.tsx).
 // Flat map: same keys referenced via t('profile.*'), Vietnamese original + English.
 export const vi: Record<string, string> = {
   'profile.conversationCount': '{n} cuộc trò chuyện',
@@ -24,14 +24,24 @@ export const vi: Record<string, string> = {
   'profile.myReviews.desc': 'Xem và quản lý các đánh giá đã đăng',
   'profile.groupDining': 'Đi nhóm',
   'profile.groupDining.desc': 'Cả team đi ăn gì? Để Tappy gợi ý',
-  'profile.upgradePro': 'Nâng cấp Pro',
-  'profile.upgradePro.desc': 'Không giới hạn tin nhắn & tính năng',
+  'profile.upgradePro': 'Nâng cấp gói',
+  'profile.upgradePro.desc': '30 câu hỏi AI mỗi ngày với gói trả phí',
 
   'profile.settingsSection': 'Cài đặt',
   'profile.settings': 'Cài đặt',
   'profile.settings.desc': 'Ngôn ngữ, thông báo, giao diện',
 
-  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  // "Tài khoản & Cài đặt" hub (owner reference 2026-09-22) — ProfileRows.AccountSettingsHub
+  'profile.hub.title': 'Tài khoản & Cài đặt',
+  'profile.hub.subtitle': 'Quản lý thông tin cá nhân, sở thích và tùy chỉnh trải nghiệm TappyAI theo cách của bạn.',
+  'profile.hub.accountSubtitle': 'Quản lý thông tin và trải nghiệm của bạn',
+  'profile.account.compactDesc': 'Hồ sơ, lịch sử chat, đặt chỗ, đã lưu, sở thích…',
+  'profile.account.moreTitle': 'Của tôi',
+  'profile.hub.settingsSubtitle': 'Tùy chỉnh ứng dụng theo sở thích của bạn',
+  'profile.hub.tagline': 'Your Life More Amazing with TappyAI!',
+  'profile.hub.settingsTagline': 'Small Settings, Big Journeys',
+
+  // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': 'Bạn đang dùng thử',
   'profile.guest.subtitle': 'Trang chủ, Chat, Khám phá và Ưu đãi dùng thoải mái, không cần đăng nhập.',
   'profile.guest.signIn': 'Đăng nhập để lưu lại',
@@ -62,14 +72,23 @@ export const en: Record<string, string> = {
   'profile.myReviews.desc': 'View and manage the reviews you posted',
   'profile.groupDining': 'Group dining',
   'profile.groupDining.desc': 'Where should the team eat? Let Tappy suggest',
-  'profile.upgradePro': 'Upgrade to Pro',
-  'profile.upgradePro.desc': 'Unlimited messages & features',
+  'profile.upgradePro': 'Upgrade your plan',
+  'profile.upgradePro.desc': '30 AI questions a day on a paid plan',
 
   'profile.settingsSection': 'Settings',
   'profile.settings': 'Settings',
   'profile.settings.desc': 'Language, notifications, appearance',
 
-  // Guest (signed-out) Profile screen — src/app/profile/GuestProfileView.tsx
+  'profile.hub.title': 'Account & Settings',
+  'profile.hub.subtitle': 'Manage your personal info and preferences, and tailor TappyAI to the way you like it.',
+  'profile.hub.accountSubtitle': 'Manage your info and experience',
+  'profile.account.compactDesc': 'Profile, chat history, bookings, saved, preferences…',
+  'profile.account.moreTitle': 'Mine',
+  'profile.hub.settingsSubtitle': 'Tailor the app to your taste',
+  'profile.hub.tagline': 'Your Life More Amazing with TappyAI!',
+  'profile.hub.settingsTagline': 'Small Settings, Big Journeys',
+
+  // Guest (signed-out) Profile screen — src/app/(app)/profile/GuestProfileView.tsx
   'profile.guest.title': "You're exploring as a guest",
   'profile.guest.subtitle': 'Home, Chat, Explore and Deals are open — no account needed.',
   'profile.guest.signIn': 'Sign in to save your stuff',

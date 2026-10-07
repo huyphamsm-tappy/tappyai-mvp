@@ -1,12 +1,16 @@
 // @vitest-environment jsdom
-import { describe, it, expect, afterEach } from 'vitest'
+import { describe, it, expect, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup, fireEvent } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { AuthKpiCards } from './AuthKpiCards'
 import { AuthFilters } from './AuthFilters'
 import { AuthBreakdownTable, type Column } from './AuthBreakdownTable'
 import { AuthTrendChart } from './AuthTrendChart'
 import type { AuthSummary } from '@/lib/admin/analytics/authAnalyticsService'
 
+// English assertions, so the locale is stated rather than inherited — the product default is
+// Vietnamese, and the English these tests used to get was jsdom's `navigator.language`.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const summary: AuthSummary = {

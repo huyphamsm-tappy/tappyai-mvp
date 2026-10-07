@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke iCool 90 Mạc Đĩnh Chi\" OR \"Kingdom Karaoke\" OR \"Karaoke Avatar\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:05:16.395Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke iCool 90 Mạc Đĩnh Chi\" OR \"Kingdom Karaoke\" OR \"Karaoke Avatar\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30 ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7423246235756203272",
+    "snippet": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30% Giờ Hát. ### Avatar Karaoke: Trải Nghiệm Hát Karaoke Đột Phá Tại Quận 1 Nếu bạn đang ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá AVATAR KARAOKE: Địa Điểm Tiệc Tùng Đỉnh ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7536174017997180178",
+    "snippet": "Karaoke Avatar · Avatar Kataang Kiss · Kai Avatar · Tuki Avatar · Aang ... Kingdom Karaoke Solo. 326 · recommend-cover. Ký Ức 8x9x10x. 131.4K.",
+    "position": 2
+   },
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 3
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ #KaraokeAVATAR # ...",
+    "link": "https://www.tiktok.com/@nguyenhuuphuoc87/video/7686689985394691349",
+    "snippet": "1832 Lượt thích,86 Bình luận.Video TikTok từ Nguyễn Hữu Phước (@nguyenhuuphuoc87): \"Karaoke AVATAR Cần Thơ #KaraokeAVATAR ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Avatar: Đón Tết Với Tiệc Hát Tưng Bừng",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7607411551993171218",
+    "snippet": "___ ▪️ 63 - 65 Phạm Viết Chánh, phường Nguyễn Cư Trinh, Quận 1, HCM. #karaokesaigon #karaoke #avatarkaraoke #KTV #nightlife. Karaoke Avatar: ...",
+    "position": 5
+   },
+   {
+    "title": "Phòng karaoke Avatar - Giá hấp dẫn tại quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7270370684478557446",
+    "snippet": "Phòng karaoke Avatar - Giá hấp dẫn tại quận 1 Sài Gòn. Khám phá không gian karaoke Avatar độc đáo tại Q1 Saigon, với giá cả phải chăng. Đừng ...",
+    "position": 6
+   },
+   {
+    "title": "Phòng hát chất lượng cao tại AVATAR KARAOKE",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7408774361601051921",
+    "snippet": "Karaoke Avatar - Phòng hát chất lượng cao tại AVATAR KARAOKE. Khám phá AVATAR KARAOKE, nơi biến giấc mơ ca sĩ thành hiện thực. Ăn uống đa dạng, ...",
+    "position": 7
+   },
+   {
+    "title": "Karaoke Avatar",
+    "link": "https://www.tiktok.com/discover/karaoke-avatar",
+    "snippet": "✨ Karaoke AVATAR Không chỉ là địa điểm giải trí sau những giờ làm việc căng thẳng, Karaoke AVATAR còn là địa điểm cho tín đồ âm nhạc, bởi nơi ...",
+    "date": "8 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,174 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 9525,
+  "evidenceId": "8ecb9c10-a3db-4b38-8af0-f6ffc9044b90",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu vui chơi thiếu nhi",
+      "rating": 4.2,
+      "count": 32,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 9.9,
+      "address": "244 Chiến Lược, Bình Trị Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em SKY ZONE Cầu Suối Độn",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 25.5,
+      "address": "VWC7+4MH, D. Diên Nghệ, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em-cafe-bida-Minh Thiều",
+      "rating": 4.9,
+      "count": 10,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 27.8,
+      "address": "VWFP+W2Q, Tam Phước, Đồng Nai 810000, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Giải Trí Chip Game",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 6.9,
+      "address": "Tân Bình, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI GIẢI TRÍ",
+      "distance_km": 8.2,
+      "address": "55-57-59 Đường 47, Khu đô Thị Vạn Phúc, Hiệp Bình, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Coffee - Tea - Khu vui chơi trẻ em",
+      "rating": 4.7,
+      "count": 10,
+      "hours": "07:00–22:00",
+      "distance_km": 25.5,
+      "address": "Tổ 9 khu phố Hương Phước, phường, Phước Tân, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi PHƯỚC THIỀN",
+      "rating": 4.4,
+      "count": 27,
+      "hours": "17:00–22:00",
+      "distance_km": 25.2,
+      "address": "Bến Sắn, Nhơn Trạch, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Giải Trí 986",
+      "rating": 5,
+      "count": 1,
+      "distance_km": 8,
+      "address": "Bình Tiên, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi gần vị trí hiện tại (Quận 1) vào cuối tuần này, tụ tập với 1-2 người. Dựa trên kết quả tìm kiếm, **mình gợi ý Vietopia** — công viên giải trí lớn nhất gần bạn, cách chỉ 4km, có 4.2⭐ từ 3.283 đánh giá Google Maps.\n\n[FOLLOWUPS]Vietopia có gì chơi|Công viên Gia Định cách bao xa|Muốn chơi gì cụ thể[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Vietopia trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16351191221892170681\",\"primary\":true},{\"label\":\"🌐 Website Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi gần vị trí hiện tại (Quận 1) vào cuối tuần này, tụ tập với 1-2 người. Dựa trên kết quả tìm kiếm, **mình gợi ý Vietopia** — công viên giải trí lớn nhất gần bạn, cách chỉ 4km, có 4.2⭐ từ 3.283 đánh giá Google Maps.\n\n[FOLLOWUPS]Vietopia có gì chơi|Công viên Gia Định cách bao xa|Muốn chơi gì cụ thể[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Vietopia trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16351191221892170681\",\"primary\":true},{\"label\":\"🌐 Website Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

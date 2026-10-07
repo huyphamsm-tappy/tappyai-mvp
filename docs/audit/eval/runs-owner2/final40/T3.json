@@ -1,0 +1,35 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 3833,
+  "evidenceId": "75f49675-1b14-4a16-8507-9125564538a6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về các gói phòng và dịch vụ kèm theo (ăn sáng hay không) từ kết quả tìm kiếm hiện tại. Để biết khách sạn nào bao gồm ăn sáng, bạn cần kiểm tra trực tiếp trên **Booking.com** hoặc **Agoda** — khi chọn phòng, sẽ có ghi rõ \"Bao gồm bữa sáng\" hay \"Không bao gồm\".\n\nBạn muốn ở ngày nào để mình tìm giá và chi tiết gói phòng cụ thể?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy kết quả tìm kiếm chưa có giá cụ thể để so sánh với ngân sách dưới 1 triệu của bạn. Tuy nhiên, từ danh sách khách sạn gần biển ở Đà Nẵng, **M Hotel Da Nang** nổi bật nhất với **4.9⭐ (2.821 đánh giá Google Maps)** — đây là khách sạn được đánh giá cao nhất khu vực. Nằm tại 286 Võ Nguyên Giáp, An Hải, gần biển Mỹ Khê.\n\nĐể xem giá chính xác theo ngày bạn muốn ở, bạn có thể kiểm tra trực tiếp trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-19&checkout=2026-09-20) hoặc Agoda\n\nBạn định ở bao nhiêu đêm và muốn check-in ngày nào?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - M Hotel Da Nang\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=M+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - M Hotel Da Nang\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7069989189938949055\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về các gói phòng và dịch vụ kèm theo (ăn sáng hay không) từ kết quả tìm kiếm hiện tại. Để biết khách sạn nào bao gồm ăn sáng, bạn cần kiểm tra trực tiếp trên **Booking.com** hoặc **Agoda** — khi chọn phòng, sẽ có ghi rõ \"Bao gồm bữa sáng\" hay \"Không bao gồm\".\n\nBạn muốn ở ngày nào để mình tìm giá và chi tiết gói phòng cụ thể?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

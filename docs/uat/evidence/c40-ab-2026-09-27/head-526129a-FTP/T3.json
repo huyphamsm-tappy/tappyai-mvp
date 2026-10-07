@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4646,
+  "evidenceId": "ba3da288-6b33-4bfe-9284-9a1becced75a",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể từ kết quả tìm kiếm — bao gồm có ăn sáng hay không. Để kiểm tra điều này, bạn cần vào trực tiếp trang **Booking.com** hoặc **Agoda** và xem mô tả phòng của từng khách sạn.\n\nKhi bạn chọn phòng, sẽ có dòng \"Bao gồm\" hoặc \"Tiện nghi\" — nó sẽ ghi rõ \"Bữa sáng miễn phí\" hay không.\n\nBạn muốn mình tìm lại với tiêu chí **có ăn sáng** không? Nếu vậy, bạn cho mình biết:\n\nMình sẽ tìm lại để gợi ý khách sạn phù hợp hơn.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần tìm ngay.\n\nMình thấy kết quả chưa có giá cụ thể để so sánh với ngân sách 1 triệu của bạn.\n\nMình thấy cả 10 khách sạn gần biển Đà Nẵng trong kết quả đều chưa xác nhận được giá cụ thể.Agoda** để lọc theo giá và xem các phòng khả dụng cho ngày 3-4/10.\n\n\n[FOLLOWUPS]Khách sạn nào có view biển đẹp?|Có chỗ nào có bể bơi?|Gần biển bao xa là tốt?[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về các khách sạn cụ thể từ kết quả tìm kiếm — bao gồm có ăn sáng hay không. Để kiểm tra điều này, bạn cần vào trực tiếp trang **Booking.com** hoặc **Agoda** và xem mô tả phòng của từng khách sạn.\n\nKhi bạn chọn phòng, sẽ có dòng \"Bao gồm\" hoặc \"Tiện nghi\" — nó sẽ ghi rõ \"Bữa sáng miễn phí\" hay không.\n\nBạn muốn mình tìm lại với tiêu chí **có ăn sáng** không? Nếu vậy, bạn cho mình biết:\n\nMình sẽ tìm lại để gợi ý khách sạn phù hợp hơn."
+    }
+  ]
+}

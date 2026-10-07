@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "CAT TIEN FARMER LODGE",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:05.064Z",
+ "body": {
+  "searchParameters": {
+   "q": "CAT TIEN FARMER LODGE",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Ngọc Tiên Farmer Eco Lodge, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/450235698.jpg?k=8e46236a8b56a89bae9136e0c0715685839314ac1a6dc88387350b75c793ca5f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBQu5Hpx8rISMzZFZCNgwLBv59lqek5yuaaB6pj79ZCQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nam-cat-tien-long-house.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F450235698.jpg%3Fk%3D8e46236a8b56a89bae9136e0c0715685839314ac1a6dc88387350b75c793ca5f%26o%3D&tbnid=UU2jw7pyR1IOrM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnam-cat-tien-long-house.vi.html&docid=Ib4lyPWBzE08uM&w=1024&h=768",
+    "position": 1
+   },
+   {
+    "title": "Cat Tien Farmer Lodge, Quan Tom (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/170626900.jpg?k=c78ad264790508030ec38e9f06d6ec8055807c1dfe96b963728980b06ab19b2b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 514,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPer70uC-Jwnds2VOVd-aeJbSu971PRfZ7L9Oe3k9ocw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 369,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/park-farm.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F170626900.jpg%3Fk%3Dc78ad264790508030ec38e9f06d6ec8055807c1dfe96b963728980b06ab19b2b%26o%3D&tbnid=1P7b9w_yCFMJqM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fpark-farm.vi.html&docid=1wnD-CGquwWPXM&w=1024&h=514",
+    "position": 2
+   },
+   {
+    "title": "Cat Tien Farmer Lodge, Quan Tom (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/336760077.jpg?k=8094994cacf64f3f059a8e6653e461fd3a26fe9f6188eac34ca6cdc4635611b8&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb7vjaVorpWFOG0YD3dHEuOQeS-D-mhN-SxSPm7qEVHQ&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/park-farm.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F336760077.jpg%3Fk%3D8094994cacf64f3f059a8e6653e461fd3a26fe9f6188eac34ca6cdc4635611b8%26o%3D&tbnid=XeX4rSDnRefBSM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fpark-farm.vi.html&docid=1wnD-CGquwWPXM&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "Nhận xét về Cat Tien Farmer Lodge, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/42000000/41900000/41899400/41899325/a407f429.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpgbOrzsQwMIetpQCvTzubJaOOVbvHYbH9wAidNBAPOA&s=10",
+    "thumbnailWidth": 386,
+    "thumbnailHeight": 518,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Tan-Phu-Khach-San-Cat-Tien-Farmer-Lodge.h41899325.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F42000000%2F41900000%2F41899400%2F41899325%2Fa407f429.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=A-rxlE-SkjUu2M&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FTan-Phu-Khach-San-Cat-Tien-Farmer-Lodge.h41899325.Thong-tin-khach-san&docid=9wl2F98sqN337M&w=575&h=767",
+    "position": 4
+   },
+   {
+    "title": "Ngọc Tiên Farmer Eco Lodge, Cát Tiên (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/453183971.jpg?k=ea8a2cb4735a0a2f212322ec9f017a055edffdb1f0eedd0dc399033977db18a1&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcTvRlsbMzbzn02fsTDj8pzzoL3MfoKpUk1S4N-qkqhg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nam-cat-tien-long-house.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F453183971.jpg%3Fk%3Dea8a2cb4735a0a2f212322ec9f017a055edffdb1f0eedd0dc399033977db18a1%26o%3D&tbnid=AzYsNsAtm8F17M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnam-cat-tien-long-house.vi.html&docid=Ib4lyPWBzE08uM&w=1024&h=768",
+    "position": 5
+   },
+   {
+    "title": "Cat Tien Farmer Lodge (@CatTienFarmerLodge) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1195813814092068",
+    "imageWidth": 1280,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNsuGGk7JWXTvTnT4_Oxd6F1QwCyMRM_d8XaQLk2Omag&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/CatTienFarmerLodge/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1195813814092068&tbnid=eGZbD2D3csAwXM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FCatTienFarmerLodge%2F&docid=BC6p0yNc2_FUUM&w=1280&h=960",
+    "position": 6
+   },
+   {
+    "title": "Nhận xét về Cat Tien Farmer Lodge, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/42000000/41900000/41899400/41899325/c97d66a2.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVgXO2eWjt-RsDfadl3RIXC4msiuWl9RKeUpoaosnCgw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Tan-Phu-Khach-San-Cat-Tien-Farmer-Lodge.h41899325.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F42000000%2F41900000%2F41899400%2F41899325%2Fc97d66a2.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=9qxCKr7FgS6KbM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FTan-Phu-Khach-San-Cat-Tien-Farmer-Lodge.h41899325.Thong-tin-khach-san&docid=9wl2F98sqN337M&w=767&h=575",
+    "position": 7
+   },
+   {
+    "title": "Cat Tien Farmer Lodge, Quan Tom (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/336760075.jpg?k=fc53a374f13db4ec733256b1ff7af1aaf89323203d5f2222b9f3ef6e9a4090d9&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGOGx3JBh6wA2DbTCr5zbI8bFBBU5xu-tqkCA0qouGPw&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/park-farm.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F336760075.jpg%3Fk%3Dfc53a374f13db4ec733256b1ff7af1aaf89323203d5f2222b9f3ef6e9a4090d9%26o%3D&tbnid=3Z9kZMKQw1G5OM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fpark-farm.vi.html&docid=1wnD-CGquwWPXM&w=576&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

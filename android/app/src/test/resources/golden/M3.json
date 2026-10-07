@@ -1,0 +1,22 @@
+{
+ "id": "M3",
+ "group": "switch-fold-collisions",
+ "turns": [
+  {
+   "user": "ăn lẩu ở đâu ngon quận 1",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+  },
+  {
+   "user": "bao lâu thì tới đó",
+   "text": "Mình giả sử bạn muốn ăn lẩu tối nay ở Quận 1 — mình tìm thấy **Vạn Quán - Lẩu Gà Lá É** là lựa chọn phù hợp nhất cho bạn 🔥\n\n**4.5⭐ (172 đánh giá Google Maps)**\n📍 45 Cô Giang, Cầu Ông Lãnh, Quận 1\n⏰ Mở cửa 10:00–02:30 (đang mở)\n\nCó 172 đánh giá tích cực trên Google Maps, giá phổ thông, phù hợp ăn tối.\n\nNếu muốn lẩu khác, **Hàng Dương Quán** (4.5⭐, 723 đánh giá) cũng ngon, nhưng quán đóng cửa lúc này — mở lại từ 09:00 sáng mai.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Google Maps - Vạn Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17047997337439684277\",\"primary\":false}]}[/CTA_BUTTONS]"
+  },
+  {
+   "user": "trời mưa tối nay đi đâu chơi quận 1",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+  },
+  {
+   "user": "mùa này đi Đà Lạt có đẹp không",
+   "text": "**Tối nay ở Quận 1:** Trời mưa, mình gợi ý **rêu.coffee** — quán cà phê trong nhà, đang mở cửa, có 4.5⭐ (491 đánh giá). Ở 46 Trịnh Văn Cấn, Quận 1, cách bạn khoảng 1.5km. Quán mở đến 01:00 nên có thể ngồi lâu, có wifi để làm việc hay chỉ thư giãn ☕\n\n[VnExpress](https://hoadalattravel.vn/kinh-nghiem-du-lich/du-lich-da-lat-thang-9/), tháng 9-10 là mùa mưa ở Đà Lạt — có nhiều cơn mưa rả rích, nhưng cũng là lúc thành phố mù sương, xanh mát, có mùa hồng bắt đầu. Nhiệt độ ban ngày khoảng 25-27°C, lạnh vào buổi tối. Nếu bạn thích cảnh sương mù và không sợ mưa thì đẹp lắm, nhưng nếu muốn trời nắng quang đãng thì nên đợi tháng 11-12 sẽ tốt hơn 🌧️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem rêu.coffee trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1707661457535419961\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán cà phê khác ở Quận 1|Đặt phòng Đà Lạt tháng 10|Lẩu ở Quận 1[/FOLLOWUPS]"
+  }
+ ]
+}

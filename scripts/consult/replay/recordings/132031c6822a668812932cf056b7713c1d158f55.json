@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:03:42.153Z",
+ "body": {
+  "searchParameters": {
+   "q": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/news/bt7zY1q6D73SwnKnehSda0a6vKb99okYvoFDmXRs.png",
+    "imageWidth": 1360,
+    "imageHeight": 906,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSA1zKuYh4zXmk2EQZzwFNZVNi0Qr_n9glOizzoHtCbw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Fnews%2Fbt7zY1q6D73SwnKnehSda0a6vKb99okYvoFDmXRs.png&tbnid=BVah2_sj_gKgrM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=1360&h=906",
+    "position": 1
+   },
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/f0uNiz4EpAX4GrEb9bIU23TupY1jaGcUe6W8HgwI.png",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvihugeONc258G3yK4L-cmpb-0q85huetIuaLimh71XA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2Ff0uNiz4EpAX4GrEb9bIU23TupY1jaGcUe6W8HgwI.png&tbnid=SW-D81yvGhmNKM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=2048&h=2048",
+    "position": 2
+   },
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/ZUjmVpNrBMFCaIdfCWTr2VSlSKS5PxV1uHT4JN8c.png",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQS5gVP2eCVJYcLDT56pJ0OskOpPeeiZWd2cqHoC7SfA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FZUjmVpNrBMFCaIdfCWTr2VSlSKS5PxV1uHT4JN8c.png&tbnid=4n1pOHVYQHq_ZM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=2048&h=1536",
+    "position": 3
+   },
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/BLRHVR80S5Fs0UVul7vmMbqLSQittKOR8IqnRnQR.png",
+    "imageWidth": 1280,
+    "imageHeight": 1182,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfp_ah-YyHYvlqjDnWCtNkWMHmOxOhPLvQwYTcjOJobA&s",
+    "thumbnailWidth": 234,
+    "thumbnailHeight": 216,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FBLRHVR80S5Fs0UVul7vmMbqLSQittKOR8IqnRnQR.png&tbnid=vRP7rlzcGBIDcM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=1280&h=1182",
+    "position": 4
+   },
+   {
+    "title": "Quà Tặng Sinh Nhật Sếp Dưới 1 Triệu Vừa Sang Trọng Vừa Ý Nghĩa Năm 2026",
+    "imageUrl": "https://media.loveitopcdn.com/4502/qua-tang-sinh-nhat-sep-duoi-1-trieu.png",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT93Zpy6W2HsMcJXVVQqGvu4Ut66Zxi2eAChWCrDk2xLA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Lan Hồ Điệp Orchids World",
+    "domain": "banlanhodiep.com",
+    "link": "https://banlanhodiep.com/tin-tuc-lan-ho-diep/qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia.loveitopcdn.com%2F4502%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu.png&tbnid=aJPVse6Kd4glIM&imgrefurl=https%3A%2F%2Fbanlanhodiep.com%2Ftin-tuc-lan-ho-diep%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=uTioG3nYKCJB2M&w=1200&h=900",
+    "position": 5
+   },
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/eJXj1exlQkltM6n53b40Qxcz1MIPJvcqbil01uyT.png",
+    "imageWidth": 1900,
+    "imageHeight": 1275,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5yzsJrHbc9PYTdJKqRX0nZ1nVsHuH7bn2eqfXCwitdA&s",
+    "thumbnailWidth": 274,
+    "thumbnailHeight": 184,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FeJXj1exlQkltM6n53b40Qxcz1MIPJvcqbil01uyT.png&tbnid=Q5S9IGnHFyqBWM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=1900&h=1275",
+    "position": 6
+   },
+   {
+    "title": "Top 30+ quà tặng sinh nhật sếp dưới 1 triệu tinh tế & ý nghĩa | AEON MALL  Tân Phú Celadon - Điểm vui chơi và mua sắm tuyệt vời cho gia đình bạn",
+    "imageUrl": "https://aeonmall-review-rikkei.cdn.vccloud.vn/public/wp/16/editors/fXHEYUMbF3McNqVqI1jUPfQNH7jMsSwshIvUWKJN.png",
+    "imageWidth": 1377,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvs4-SXI-UUKJWNKgSdotjIkIqsLQpuc6htJLm-ErJEA&s",
+    "thumbnailWidth": 301,
+    "thumbnailHeight": 168,
+    "source": "AEON MALL Tân Phú Celadon",
+    "domain": "aeonmall-tanphuceladon.com.vn",
+    "link": "https://aeonmall-tanphuceladon.com.vn/tin-tuc/top-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Faeonmall-review-rikkei.cdn.vccloud.vn%2Fpublic%2Fwp%2F16%2Feditors%2FfXHEYUMbF3McNqVqI1jUPfQNH7jMsSwshIvUWKJN.png&tbnid=SI1nTEbw8_KbwM&imgrefurl=https%3A%2F%2Faeonmall-tanphuceladon.com.vn%2Ftin-tuc%2Ftop-30-qua-tang-sinh-nhat-sep-duoi-1-trieu.html&docid=Uora0-I4uF7TPM&w=1377&h=768",
+    "position": 7
+   },
+   {
+    "title": "30 Quà sinh nhật Sếp dưới 1 triệu Sang trọng, Dễ ghi điểm",
+    "imageUrl": "https://muaquatet.vn/wp-content/uploads/2025/09/1-set-qua-sang-trong.jpg",
+    "imageWidth": 800,
+    "imageHeight": 704,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlT7-7ORoIiBT5cKxp5-eksbZBGuUD2iB8ULpG8k3whQ&s=10",
+    "thumbnailWidth": 590,
+    "thumbnailHeight": 518,
+    "source": "Mua Quà Tết",
+    "domain": "muaquatet.vn",
+    "link": "https://muaquatet.vn/qua-tang-sinh-nhat-sep-duoi-1-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmuaquatet.vn%2Fwp-content%2Fuploads%2F2025%2F09%2F1-set-qua-sang-trong.jpg&tbnid=VcFbLA3rkOmS7M&imgrefurl=https%3A%2F%2Fmuaquatet.vn%2Fqua-tang-sinh-nhat-sep-duoi-1-trieu&docid=3Tyvtq207HoyRM&w=800&h=704",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

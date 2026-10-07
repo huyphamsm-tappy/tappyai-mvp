@@ -13,6 +13,17 @@ export const vi: Record<string, string> = {
   'currency.fallbackNotice': 'Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)',
   'currency.ratesUpdated': 'Tỷ giá cập nhật {date} · Nguồn: open.er-api.com',
   'currency.disclaimer': 'Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính.',
+  // 2026-09-12 V3 reskin. `/api/rates` revalidates HOURLY (revalidate = 3600) — so the hero says
+  // hourly, not "real time". The chips name the code's facts: 12 currencies, one public source.
+  'currency.heroSubtitle': 'Tỷ giá cập nhật hàng giờ từ nguồn công khai',
+  'currency.chipFast': 'Tính tức thì',
+  'currency.chipCurrencies': '{n} loại tiền tệ',
+  'currency.chipSource': 'Nguồn: open.er-api.com',
+  'currency.quickAmounts': 'Số tiền nhanh',
+  'currency.resultLabel': 'Kết quả',
+  'currency.rateStatusLive': 'Tỷ giá cập nhật hàng giờ',
+  'currency.rateStatusFallback': 'Tỷ giá ước tính',
+  'currency.rateLine': '1 {from} = {rate} {to}',
 
   // Currency names, keyed by ISO code (B07 — these were Vietnamese-only in the page itself).
   'currency.VND': 'Việt Nam Đồng',
@@ -42,6 +53,15 @@ export const en: Record<string, string> = {
   'currency.fallbackNotice': 'Using estimated rates (could not reach the data source)',
   'currency.ratesUpdated': 'Rates updated {date} · Source: open.er-api.com',
   'currency.disclaimer': 'Rates are for reference only, not for financial transactions.',
+  'currency.heroSubtitle': 'Rates refreshed hourly from a public source',
+  'currency.chipFast': 'Instant calculation',
+  'currency.chipCurrencies': '{n} currencies',
+  'currency.chipSource': 'Source: open.er-api.com',
+  'currency.quickAmounts': 'Quick amounts',
+  'currency.resultLabel': 'Result',
+  'currency.rateStatusLive': 'Rates refreshed hourly',
+  'currency.rateStatusFallback': 'Estimated rates',
+  'currency.rateLine': '1 {from} = {rate} {to}',
 
   'currency.VND': 'Vietnamese Dong',
   'currency.USD': 'US Dollar',

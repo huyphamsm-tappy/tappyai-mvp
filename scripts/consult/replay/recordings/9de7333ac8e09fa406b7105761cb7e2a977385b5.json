@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Huỳnh Tấn Phát (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:51:48.464Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Huỳnh Tấn Phát (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bánh Kem Hoàng Phúc - Huỳnh Tấn Phát",
+    "link": "https://shopeefood.vn/ho-chi-minh/banh-kem-hoang-phuc-huynh-tan-phat.rdk2w0",
+    "snippet": "878 Huỳnh Tấn Phát, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 1
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,55 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8495,
+  "evidenceId": "3dfa82a3-150e-4a72-94da-72efef91449f",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Hà Nội",
+        "departDate": "2026-09-25"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm giúp bạn vé máy bay Sài Gòn - Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa lấy được dữ liệu giá vé trực tiếp, nhưng đây là các nền tảng đáng tin cậy để bạn so sánh giá rẻ nhất cho chuyến bay **Sài Gòn - Hà Nội ngày 25/9/2026**:\n\n• [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-25&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — thường có giá cạnh tranh, dễ so sánh nhiều hãng\n\n• [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=25-09-2026.null&ps=1.0.0&sc=ECONOMY) — lọc theo giá từ thấp đến cao\n\n• [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-25) — xem xu hướng giá qua các ngày\n\nMẹo: Vé thường rẻ hơn vào **chiều thứ 3-4** và **sáng sớm**. Bạn muốn bay ngày cụ thể nào trong tuần sau để mình tìm giá tốt hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm trên Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-25&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm trên Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=25-09-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm giúp bạn vé máy bay Sài Gòn - Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa lấy được dữ liệu giá vé trực tiếp, nhưng đây là các nền tảng đáng tin cậy để bạn so sánh giá rẻ nhất cho chuyến bay **Sài Gòn - Hà Nội ngày 25/9/2026**:\n\n• [Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-25&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) — thường có giá cạnh tranh, dễ so sánh nhiều hãng\n\n• [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=25-09-2026.null&ps=1.0.0&sc=ECONOMY) — lọc theo giá từ thấp đến cao\n\n• [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-25) — xem xu hướng giá qua các ngày\n\nMẹo: Vé thường rẻ hơn vào **chiều thứ 3-4** và **sáng sớm**. Bạn muốn bay ngày cụ thể nào trong tuần sau để mình tìm giá tốt hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm trên Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-25&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm trên Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=25-09-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "error": "Chua cau hinh API gia ve may bay",
+      "booking_links": [
+        {
+          "name": "Trip.com",
+          "url": "https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-25&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND"
+        },
+        {
+          "name": "Traveloka",
+          "url": "https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=25-09-2026.null&ps=1.0.0&sc=ECONOMY"
+        },
+        {
+          "name": "Google Flights",
+          "url": "https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-25"
+        }
+      ],
+      "note": "Tim chuyen bay tren cac nen tang tren"
+    }
+  ],
+  "frames8Raw": []
+}

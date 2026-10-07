@@ -1,0 +1,240 @@
+{
+  "id": "S8",
+  "text": "Nồi chiên không dầu 5L loại nào tốt",
+  "parent": null,
+  "status": 200,
+  "ms": 14365,
+  "evidenceId": "e91cebf0-c7e7-49a2-a35b-fea85d9b7fe3",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "nồi chiên không dầu 5L tốt"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Nồi chiên không dầu Fujihome A5",
+      "rating": 4.9,
+      "count": 830,
+      "price": 869000
+    },
+    {
+      "name": "Nồi chiên không dầu 5L Sunhouse SHD4021",
+      "rating": 4.9,
+      "count": 964,
+      "price": 1000000
+    },
+    {
+      "name": "KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title",
+      "rating": 4.9,
+      "count": 830,
+      "price": 980000
+    },
+    {
+      "name": "Nồi chiên không dầu Fujihome A5 5 Lít",
+      "rating": 4.9,
+      "count": 830,
+      "price": 1002000
+    },
+    {
+      "name": "Nồi chiên không dầu Gaabor 5 lít GA-E5D01",
+      "rating": 4.9,
+      "count": 129,
+      "price": 749000
+    },
+    {
+      "name": "Nồi chiên không dầu Fujihome A5GG 5.5 Lít",
+      "rating": 4.9,
+      "count": 202,
+      "price": 949000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Nồi chiên không dầu Fujihome A5\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":869000,\"priceHigh\":869000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTpTGOKR9QVD-qAq51ul2RHVC6y6aRryMhl603A2C6t53osalMaXTy6ythEcUcJNe6JCkuth5oB7HvCTHR_PMBrzlRQy-6e_cdfMUPCbq5I9lchqzJZFUO_\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:10949402942101655485,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":869000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu 5L Sunhouse SHD4021\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1000000,\"priceHigh\":1000000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT3B9OAtNYdjijrT64Z9BnzuA6kAXIXGXcb4UjI8Oljvd_Z8qCw87OqAdA21W9yTtBL2AqiwkU6FyaGxcwIhkRTZ7X6NlL7kh6nuf_EydFHm-2_nv2d9yP7Gg\",\"offers\":[{\"seller\":\"hibo.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7699430611054845026,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":964}]},{\"key\":\"uncertain:2\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRknvOQpQYQTOfhX1BFu4OXi9opIxKrFxb69_7UptxXT1vsqGb7QXu3iLdTslsuGDCcPwH2UBtL1JDwybMopkay3TM5sXvnAhcYrj0HGvPfa63YUBpa3Wzu\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu Fujihome A5 5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1002000,\"priceHigh\":1002000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSXVA7_jej-E4ERrSkpuCRksc-lzQIF2DKHY-rgVCQC6dkU387JPqlZl_c0tihzVjy98G2Sm3Nqo1fr6bWcXWHuGHLtj1v_hzx4ZJ_b8-gI9AL7Xpn5V3xb\",\"offers\":[{\"seller\":\"Kết Nối Tiêu Dùng\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:4237307210783368701,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1002000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Gaabor 5 lít GA-E5D01\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQKIiFI4m0zuVRsvxAzYlYHiQxEa3jFpgSSMQyygV5ZYW9Zquy3JFRwCOcpOhUikZ2_fQ-m-0yJSxuhQ89X373jg5g4n7H2n4TFQ8TutIbltW8s9UsdWToNEg\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16933002538702304154,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":129}]},{\"key\":\"uncertain:5\",\"name\":\"Nồi chiên không dầu Fujihome A5GG 5.5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":949000,\"priceHigh\":949000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSUP5pA5uZMZFzOZSzgAZsP6hLgHC2MaUHo3xyC_ecXnVMJVgVe4qGObghvSBApmlZkbniS-9HCMql40b7bHcwllJPL6C31\",\"offers\":[{\"seller\":\"Điện Máy HC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:13842460092311134210,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":949000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":202}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm giúp bạn các nồi chiên không dầu 5L tốt nhất hiện có trên thị trường.\n\n Nồi này được yêu thích vì chất lượng ổn định, dễ sử dụng và bền lâu.\n\nNếu bạn muốn lựa chọn khác, **Sunhouse SHD4021** cũng rất tốt với **4.9⭐ (964 đánh giá)** — nhiều người dùng nhất — giá khoảng **1 triệu đồng**.\n\nBạn ưu tiên chất lượng hay giá tốt hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Fujihome A5 vs Sunhouse|Nồi chiên 3L rẻ hơn|Cách dùng nồi chiên không dầu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Nồi chiên không dầu 5L loại nào tốt"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Nồi chiên không dầu Fujihome A5\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":869000,\"priceHigh\":869000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTpTGOKR9QVD-qAq51ul2RHVC6y6aRryMhl603A2C6t53osalMaXTy6ythEcUcJNe6JCkuth5oB7HvCTHR_PMBrzlRQy-6e_cdfMUPCbq5I9lchqzJZFUO_\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:10949402942101655485,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":869000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu 5L Sunhouse SHD4021\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1000000,\"priceHigh\":1000000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT3B9OAtNYdjijrT64Z9BnzuA6kAXIXGXcb4UjI8Oljvd_Z8qCw87OqAdA21W9yTtBL2AqiwkU6FyaGxcwIhkRTZ7X6NlL7kh6nuf_EydFHm-2_nv2d9yP7Gg\",\"offers\":[{\"seller\":\"hibo.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7699430611054845026,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1000000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":964}]},{\"key\":\"uncertain:2\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRknvOQpQYQTOfhX1BFu4OXi9opIxKrFxb69_7UptxXT1vsqGb7QXu3iLdTslsuGDCcPwH2UBtL1JDwybMopkay3TM5sXvnAhcYrj0HGvPfa63YUBpa3Wzu\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu Fujihome A5 5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1002000,\"priceHigh\":1002000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSXVA7_jej-E4ERrSkpuCRksc-lzQIF2DKHY-rgVCQC6dkU387JPqlZl_c0tihzVjy98G2Sm3Nqo1fr6bWcXWHuGHLtj1v_hzx4ZJ_b8-gI9AL7Xpn5V3xb\",\"offers\":[{\"seller\":\"Kết Nối Tiêu Dùng\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:4237307210783368701,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1002000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":830}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Gaabor 5 lít GA-E5D01\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQKIiFI4m0zuVRsvxAzYlYHiQxEa3jFpgSSMQyygV5ZYW9Zquy3JFRwCOcpOhUikZ2_fQ-m-0yJSxuhQ89X373jg5g4n7H2n4TFQ8TutIbltW8s9UsdWToNEg\",\"offers\":[{\"seller\":\"Fptshop.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16933002538702304154,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":129}]},{\"key\":\"uncertain:5\",\"name\":\"Nồi chiên không dầu Fujihome A5GG 5.5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":949000,\"priceHigh\":949000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSUP5pA5uZMZFzOZSzgAZsP6hLgHC2MaUHo3xyC_ecXnVMJVgVe4qGObghvSBApmlZkbniS-9HCMql40b7bHcwllJPL6C31\",\"offers\":[{\"seller\":\"Điện Máy HC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:13842460092311134210,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":949000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":202}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm giúp bạn các nồi chiên không dầu 5L tốt nhất hiện có trên thị trường.\n\n Nồi này được yêu thích vì chất lượng ổn định, dễ sử dụng và bền lâu.\n\nNếu bạn muốn lựa chọn khác, **Sunhouse SHD4021** cũng rất tốt với **4.9⭐ (964 đánh giá)** — nhiều người dùng nhất — giá khoảng **1 triệu đồng**.\n\nBạn ưu tiên chất lượng hay giá tốt hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Fujihome A5 vs Sunhouse|Nồi chiên 3L rẻ hơn|Cách dùng nồi chiên không dầu[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "query": "nồi chiên không dầu 5L tốt",
+      "source": "Google Shopping (Serper)",
+      "search_results": [
+        {
+          "title": "Nồi chiên không dầu Fujihome A5",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:10949402942101655485,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 869000,
+          "price_vnd": 869000,
+          "source": "KingShop.vn",
+          "rating": 4.9,
+          "rating_count": 830,
+          "product_id": "10949402942101655485",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Nồi chiên không dầu 5L Sunhouse SHD4021",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:7699430611054845026,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 1000000,
+          "price_vnd": 1000000,
+          "source": "hibo.vn",
+          "rating": 4.9,
+          "rating_count": 964,
+          "product_id": "7699430611054845026",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 980000,
+          "price_vnd": 980000,
+          "source": "Khánh Vy Home",
+          "rating": 4.9,
+          "rating_count": 830,
+          "product_id": "16670702389821122040",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Nồi chiên không dầu Fujihome A5 5 Lít",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:4237307210783368701,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 1002000,
+          "price_vnd": 1002000,
+          "source": "Kết Nối Tiêu Dùng",
+          "rating": 4.9,
+          "rating_count": 830,
+          "product_id": "4237307210783368701",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Nồi chiên không dầu Gaabor 5 lít GA-E5D01",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16933002538702304154,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 749000,
+          "price_vnd": 749000,
+          "source": "Fptshop.com.vn",
+          "rating": 4.9,
+          "rating_count": 129,
+          "product_id": "16933002538702304154",
+          "has_purchase": true,
+          "has_photo": true
+        },
+        {
+          "title": "Nồi chiên không dầu Fujihome A5GG 5.5 Lít",
+          "link": "https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:13842460092311134210,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+          "price": 949000,
+          "price_vnd": 949000,
+          "source": "Điện Máy HC",
+          "rating": 4.9,
+          "rating_count": 202,
+          "product_id": "13842460092311134210",
+          "has_purchase": true,
+          "has_photo": true
+        }
+      ],
+      "links": [
+        {
+          "name": "Shopee",
+          "url": "https://shopee.vn/search?keyword=n%E1%BB%93i%20chi%C3%AAn%20kh%C3%B4ng%20d%E1%BA%A7u%205L%20t%E1%BB%91t"
+        },
+        {
+          "name": "Lazada",
+          "url": "https://www.lazada.vn/catalog/?q=n%E1%BB%93i%20chi%C3%AAn%20kh%C3%B4ng%20d%E1%BA%A7u%205L%20t%E1%BB%91t"
+        }
+      ],
+      "note": "Gia tham khao tu ket qua tim kiem hien tai, co the da thay doi theo thoi gian va phien ban san pham - bam link de xem gia chinh xac va mua hang.",
+      "_tappy_total_found": 40,
+      "_tappy_synthesis": {
+        "ban_hoi": null,
+        "nhom_san_pham": [
+          {
+            "name": "Nồi chiên không dầu Fujihome A5",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 869000,
+            "priceHigh": 869000,
+            "sellers": [
+              "KingShop.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Nồi chiên không dầu 5L Sunhouse SHD4021",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 1000000,
+            "priceHigh": 1000000,
+            "sellers": [
+              "hibo.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 980000,
+            "priceHigh": 980000,
+            "sellers": [
+              "Khánh Vy Home"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Nồi chiên không dầu Fujihome A5 5 Lít",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 1002000,
+            "priceHigh": 1002000,
+            "sellers": [
+              "Kết Nối Tiêu Dùng"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Nồi chiên không dầu Gaabor 5 lít GA-E5D01",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 749000,
+            "priceHigh": 749000,
+            "sellers": [
+              "Fptshop.com.vn"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          },
+          {
+            "name": "Nồi chiên không dầu Fujihome A5GG 5.5 Lít",
+            "config": "",
+            "offerCount": 1,
+            "priceLow": 949000,
+            "priceHigh": 949000,
+            "sellers": [
+              "Điện Máy HC"
+            ],
+            "recommended": false,
+            "matchesRequest": "chua_ro"
+          }
+        ],
+        "de_xuat": null
+      }
+    }
+  ],
+  "frames8Raw": []
+}

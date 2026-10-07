@@ -1,0 +1,28 @@
+{
+ "aFollowsB": 200,
+ "bFollowsA": 200,
+ "thread": {
+  "status": 200,
+  "id": "c88b2a61-d092-491f-b824-2951e8f15c63"
+ },
+ "text": 200,
+ "sharePost": 200,
+ "comments": {
+  "status": 200,
+  "mine": true
+ },
+ "receiverThreads": {
+  "n": 1,
+  "last": "{\"id\":\"c88b2a61-d092-491f-b824-2951e8f15c63\",\"kind\":\"direct\",\"title\":null,\"lastMessageAt\":\"2026-09-27T11:28:29.706105+00:00\",\"lastMessage\":{\"body\":\"Xem bài này: http://localhost:3007/reviews/6821a7aa-a939-499f-accf-a6b4a1878806\",\"senderId\":\"9c324904-ac0e-4ad8-9a3b-24a0c1f00bf4\",\"createdAt\":\"2026-09-"
+ },
+ "receiverMsgs": {
+  "status": 200,
+  "bodies": [
+   "Chào bạn, tin nhắn thử UAT4 🙌",
+   "Xem bài này: http://localhost:3007/reviews/6821a7aa-a939-499f-accf-a6b4a1878806"
+  ]
+ },
+ "receiverPage": false,
+ "http": [],
+ "errors": []
+}

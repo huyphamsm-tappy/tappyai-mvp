@@ -1,0 +1,35 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 3886,
+  "evidenceId": "ae47c664-295d-4c12-9c62-8b03c94162ed",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa. Để chắc chắn, bạn nên:\n\n• **Gọi trực tiếp**: Tìm số điện thoại trên Google Maps hoặc gọi qua fanpage Facebook của spa\n• **Ghé trực tiếp**: Vì spa ở gần bạn (0.9km), có thể ghé hỏi và đặt ngay\n\nHyan Spa đang mở cửa, nên bạn có thể liên hệ ngay để xác nhận giá, dịch vụ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hyan+Spa+Q1+TPHCM\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **Hyan Spa** cho bạn — cách vị trí hiện tại chỉ 0.9km, đạt 5⭐ từ 100 đánh giá Google Maps, và đang mở cửa. Spa này chuyên massage chân, body massage, và gội đầu, hoàn toàn phù hợp nhu cầu của bạn.\n\nNếu muốn thêm lựa chọn, **CHẠM SPA** (1.3km, 4.9⭐, 189 đánh giá) cũng rất tốt và có thêm dịch vụ spa mặt.\n\nLưu ý: Cả hai spa này chưa hiển thị giá cụ thể online, bạn nên gọi hoặc ghé trực tiếp để hỏi giá massage chân (thường dưới 300k).\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hyan Spa có dịch vụ gì khác|Giá massage chân bao nhiêu|Spa nào rẻ hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa. Để chắc chắn, bạn nên:\n\n• **Gọi trực tiếp**: Tìm số điện thoại trên Google Maps hoặc gọi qua fanpage Facebook của spa\n• **Ghé trực tiếp**: Vì spa ở gần bạn (0.9km), có thể ghé hỏi và đặt ngay\n\nHyan Spa đang mở cửa, nên bạn có thể liên hệ ngay để xác nhận giá, dịch vụ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Hyan+Spa+Q1+TPHCM\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

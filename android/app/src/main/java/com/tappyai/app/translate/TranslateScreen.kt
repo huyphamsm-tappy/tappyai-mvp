@@ -4,33 +4,35 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.VolumeOff
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,25 +40,41 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tappyai.app.R
-import com.tappyai.core.designsystem.component.TappyButton
-import com.tappyai.core.designsystem.component.TappyCard
-import com.tappyai.core.designsystem.component.TappyTextField
-import com.tappyai.core.designsystem.theme.TappyContainers
-import com.tappyai.core.designsystem.theme.TappyShapes
+import com.tappyai.app.home.HomeV3
+import com.tappyai.app.tools.ToolBubble
+import com.tappyai.app.tools.ToolButton
+import com.tappyai.app.tools.ToolCard
+import com.tappyai.app.tools.ToolCta
+import com.tappyai.app.tools.ToolError
+import com.tappyai.app.tools.ToolGlobe
+import com.tappyai.app.tools.ToolHero
+import com.tappyai.app.tools.ToolHue
+import com.tappyai.app.tools.ToolNote
+import com.tappyai.app.tools.ToolOrbit
+import com.tappyai.app.tools.ToolShimmer
+import com.tappyai.app.tools.ToolTextField
+import com.tappyai.app.tools.ToolV3Page
 import com.tappyai.core.designsystem.theme.TappySpacing
 import kotlinx.coroutines.delay
 
 /**
- * Translate — mirrors the web `/translate` page: a bounded text input, a 30-language target
- * picker, a translate call to the existing `POST /api/translate` (server-side AI, no client
- * business logic), then read-aloud (device TTS) + copy on the result. No sign-in required, same
- * as the web (the endpoint rate-limits by IP, not by user). Reached from Home's "Translate" quick
- * action, replacing its former coming-soon sheet.
+ * Translate — the web `/translate` page (design/v3-phase4 `src/app/translate/page.tsx`), native:
+ * the indigo hero ("Kết nối thế giới bằng ngôn ngữ", globe + orbit + greeting bubbles, the
+ * welcome pose), the SOURCE card (textarea, counter, clear), the TARGET card (language selector),
+ * the big gradient CTA, the note, then the shimmer while translating and the accent RESULT card
+ * with read-aloud and copy.
+ *
+ * Behaviour is exactly what it was: a bounded text input, the 30-language target picker, one
+ * call to the existing `POST /api/translate` (server-side AI, no client business logic), then
+ * device TTS + copy on the result. No sign-in required (IP rate-limited), as on the web.
  */
 @Composable
 fun TranslateScreen(
@@ -66,66 +84,87 @@ fun TranslateScreen(
     val context = LocalContext.current
     var showLanguagePicker by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Column(
-            modifier = Modifier
-                .widthIn(max = TappyContainers.content)
-                .fillMaxWidth()
-                .padding(TappySpacing.xl),
-            verticalArrangement = Arrangement.spacedBy(TappySpacing.lg),
-        ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
-                }
-                Text(text = stringResource(R.string.translate_title), style = MaterialTheme.typography.titleLarge)
-            }
+    ToolV3Page(onBack = onBack) {
+        ToolHero(
+            hue = ToolHue.Indigo,
+            eyebrow = stringResource(R.string.tool_translate_eyebrow),
+            title1 = stringResource(R.string.tool_translate_title1),
+            title2 = stringResource(R.string.tool_translate_title2),
+            body = stringResource(R.string.tool_translate_body, LANGUAGES.size),
+            subtitle = stringResource(R.string.tool_translate_subtitle),
+            mascotRes = R.drawable.tappy_welcome,
+            scene = { TranslateScene(viLabel = LANGUAGES.first().displayName()) },
+        )
 
-            HeroBanner()
-
-            InputCard(
-                text = viewModel.inputText,
-                onTextChange = viewModel::onInputTextChange,
-                onClear = viewModel::clear,
+        ToolCard(title = stringResource(R.string.translate_input_label), icon = Icons.Outlined.Edit) {
+            ToolTextField(
+                value = viewModel.inputText,
+                onValueChange = viewModel::onInputTextChange,
+                placeholder = stringResource(R.string.translate_input_placeholder),
+                singleLine = false,
+                minLines = 5,
+                maxLines = 8,
             )
-
-            TargetLanguagePicker(
-                selected = viewModel.targetLanguage,
-                onOpenPicker = { showLanguagePicker = true },
-            )
-
-            TappyButton(
-                text = if (viewModel.isTranslating) stringResource(R.string.translate_action_translating) else stringResource(R.string.translate_action_translate),
-                onClick = viewModel::translate,
-                enabled = viewModel.inputText.isNotBlank(),
-                loading = viewModel.isTranslating,
+            Row(
                 modifier = Modifier.fillMaxWidth(),
-            )
-
-            viewModel.errorMessage?.let { ErrorBanner(it) }
-
-            viewModel.translation?.let { translation ->
-                ResultCard(
-                    translation = translation,
-                    languageName = viewModel.targetLanguage.displayName(),
-                    isSpeaking = viewModel.isSpeaking,
-                    ttsAvailable = viewModel.ttsAvailable,
-                    onReadAloud = { viewModel.speak(translation, viewModel.targetLanguage.ttsTag) },
-                    onCopy = { copyToClipboard(context, translation) },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.translate_char_counter, viewModel.inputText.length),
+                    color = HomeV3.OnSurfaceVariant,
+                    fontSize = 13.sp,
                 )
+                if (viewModel.inputText.isNotBlank()) {
+                    ToolButton(text = stringResource(R.string.translate_clear), onClick = viewModel::clear)
+                }
             }
+        }
 
-            Text(
-                text = stringResource(R.string.translate_footer_note),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        ToolCard(title = stringResource(R.string.translate_target_label), icon = Icons.Outlined.Language) {
+            val shape = RoundedCornerShape(16.dp)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 56.dp)
+                    .clip(shape)
+                    .background(HomeV3.SurfaceVariant)
+                    .border(1.dp, HomeV3.Outline, shape)
+                    .clickable(onClick = { showLanguagePicker = true })
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(text = viewModel.targetLanguage.displayName(), color = HomeV3.OnSurface, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
+                Icon(imageVector = Icons.Filled.ExpandMore, contentDescription = null, tint = HomeV3.OnSurfaceVariant)
+            }
+        }
+
+        ToolCta(
+            text = if (viewModel.isTranslating) stringResource(R.string.translate_action_translating) else stringResource(R.string.translate_action_translate),
+            hue = ToolHue.Indigo,
+            icon = Icons.Filled.Translate,
+            onClick = viewModel::translate,
+            enabled = viewModel.inputText.isNotBlank(),
+            loading = viewModel.isTranslating,
+        )
+
+        ToolNote(text = stringResource(R.string.translate_footer_note), icon = Icons.Outlined.Lightbulb)
+
+        viewModel.errorMessage?.let { ToolError(it) }
+
+        if (viewModel.isTranslating && viewModel.translation == null) {
+            ToolCard(accent = true) { ToolShimmer() }
+        }
+
+        viewModel.translation?.let { translation ->
+            TranslateResultCard(
+                translation = translation,
+                languageName = viewModel.targetLanguage.displayName(),
+                isSpeaking = viewModel.isSpeaking,
+                ttsAvailable = viewModel.ttsAvailable,
+                onReadAloud = { viewModel.speak(translation, viewModel.targetLanguage.ttsTag) },
+                onCopy = { copyToClipboard(context, translation) },
             )
         }
     }
@@ -142,93 +181,15 @@ fun TranslateScreen(
     }
 }
 
+/** The hero scene: a soft globe, an orbit ring and four greeting bubbles, as on the web. */
 @Composable
-private fun HeroBanner() {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(TappyShapes.card)
-            .background(MaterialTheme.colorScheme.primaryContainer)
-            .padding(TappySpacing.xl),
-        verticalArrangement = Arrangement.spacedBy(TappySpacing.xs),
-    ) {
-        Text(text = "🌐", style = MaterialTheme.typography.headlineMedium)
-        Text(
-            text = stringResource(R.string.translate_hero_title),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-        Text(
-            text = stringResource(R.string.translate_hero_subtitle),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-        )
-    }
-}
-
-@Composable
-private fun InputCard(text: String, onTextChange: (String) -> Unit, onClear: () -> Unit) {
-    TappyCard {
-        Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-            Text(
-                text = stringResource(R.string.translate_input_label),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            TappyTextField(
-                value = text,
-                onValueChange = onTextChange,
-                placeholder = stringResource(R.string.translate_input_placeholder),
-                singleLine = false,
-                minLines = 5,
-                maxLines = 5,
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(R.string.translate_char_counter, text.length),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                if (text.isNotBlank()) {
-                    Text(
-                        text = stringResource(R.string.translate_clear),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.clickable(onClick = onClear),
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun TargetLanguagePicker(selected: Language, onOpenPicker: () -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-        Text(
-            text = stringResource(R.string.translate_target_label),
-            style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        TappyCard(modifier = Modifier.fillMaxWidth().clickable(onClick = onOpenPicker)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(text = selected.displayName(), style = MaterialTheme.typography.bodyLarge)
-                Icon(
-                    imageVector = Icons.Filled.ExpandMore,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-    }
+private fun BoxScope.TranslateScene(viLabel: String) {
+    ToolGlobe(size = 190.dp, alignment = Alignment.TopEnd, color = Color(0x662563EB), modifier = Modifier.offset(x = 24.dp, y = (-10).dp))
+    ToolOrbit(size = 230.dp, alignment = Alignment.Center, modifier = Modifier.offset(y = 8.dp))
+    ToolBubble(text = "Hello", a = Color(0xFF2563EB), b = Color(0xFF3B82F6), alignment = Alignment.TopStart, modifier = Modifier.offset(x = 4.dp, y = 4.dp))
+    ToolBubble(text = viLabel, a = Color(0xFF7C3AED), b = Color(0xFFA78BFA), alignment = Alignment.TopEnd, modifier = Modifier.offset(x = (-4).dp, y = 16.dp))
+    ToolBubble(text = "こんにちは", a = Color(0xFF1E293B), b = Color(0xFF334155), alignment = Alignment.CenterStart, modifier = Modifier.offset(y = 18.dp))
+    ToolBubble(text = "안녕하세요", a = Color(0xFF1E293B), b = Color(0xFF334155), alignment = Alignment.CenterEnd, modifier = Modifier.offset(y = 30.dp))
 }
 
 @OptIn(androidx.compose.material3.ExperimentalMaterial3Api::class)
@@ -254,11 +215,7 @@ private fun LanguagePickerSheet(
                     Text(
                         text = language.displayName(),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = if (isSelected) {
-                            MaterialTheme.colorScheme.primary
-                        } else {
-                            MaterialTheme.colorScheme.onSurface
-                        },
+                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface,
                     )
                     if (isSelected) {
                         Icon(
@@ -275,24 +232,7 @@ private fun LanguagePickerSheet(
 }
 
 @Composable
-private fun ErrorBanner(message: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(TappyShapes.card)
-            .background(MaterialTheme.colorScheme.errorContainer)
-            .padding(TappySpacing.lg),
-    ) {
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onErrorContainer,
-        )
-    }
-}
-
-@Composable
-private fun ResultCard(
+private fun TranslateResultCard(
     translation: String,
     languageName: String,
     isSpeaking: Boolean,
@@ -301,66 +241,31 @@ private fun ResultCard(
     onCopy: () -> Unit,
 ) {
     var copied by remember { mutableStateOf(false) }
-    androidx.compose.runtime.LaunchedEffect(copied) {
+    LaunchedEffect(copied) {
         if (copied) {
             delay(2000)
             copied = false
         }
     }
-    TappyCard {
-        Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
-            Text(
-                text = stringResource(R.string.translate_result_header, languageName),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
-            )
-            Text(text = translation, style = MaterialTheme.typography.bodyLarge)
-            Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
-                if (ttsAvailable) {
-                    AssistChip(
-                        label = if (isSpeaking) stringResource(R.string.translate_action_stop) else stringResource(R.string.translate_action_read_aloud),
-                        icon = if (isSpeaking) Icons.Filled.VolumeOff else Icons.Filled.VolumeUp,
-                        onClick = onReadAloud,
-                    )
-                }
-                AssistChip(
-                    label = if (copied) stringResource(R.string.translate_action_copied) else stringResource(R.string.translate_action_copy),
-                    icon = if (copied) Icons.Filled.Check else Icons.Filled.ContentCopy,
-                    onClick = {
-                        onCopy()
-                        copied = true
-                    },
+    ToolCard(title = stringResource(R.string.translate_result_header, languageName), icon = Icons.Filled.Translate, accent = true) {
+        Text(text = translation, color = HomeV3.OnSurface, fontSize = 16.sp, lineHeight = 24.sp)
+        Row(horizontalArrangement = Arrangement.spacedBy(TappySpacing.md)) {
+            if (ttsAvailable) {
+                ToolButton(
+                    text = if (isSpeaking) stringResource(R.string.translate_action_stop) else stringResource(R.string.translate_action_read_aloud),
+                    icon = if (isSpeaking) Icons.Filled.VolumeOff else Icons.Filled.VolumeUp,
+                    onClick = onReadAloud,
                 )
             }
+            ToolButton(
+                text = if (copied) stringResource(R.string.translate_action_copied) else stringResource(R.string.translate_action_copy),
+                icon = if (copied) Icons.Filled.Check else Icons.Filled.ContentCopy,
+                onClick = {
+                    onCopy()
+                    copied = true
+                },
+            )
         }
-    }
-}
-
-@Composable
-private fun AssistChip(
-    label: String,
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    onClick: () -> Unit,
-) {
-    Row(
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .background(MaterialTheme.colorScheme.surfaceVariant, TappyShapes.input)
-            .padding(horizontal = TappySpacing.md, vertical = TappySpacing.sm),
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.xs),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(2.dp),
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
     }
 }
 

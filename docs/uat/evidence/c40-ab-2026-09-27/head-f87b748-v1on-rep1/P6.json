@@ -1,0 +1,149 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 18983,
+  "evidenceId": "4b28ec01-3182-4cd4-8042-bcc30da4da94",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage couple tối nay Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3549,
+      "hours": "09:30–22:30",
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm 90 phút tại Sense Spa ở Thành phố Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Trải nghiệm Temple Leaf Spa Land với vé Jjimjilbang ở Hồ ...",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi nhánh Bến Thành",
+      "rating": 4.6,
+      "count": 50,
+      "hours": "10:00–02:00",
+      "address": "19D Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3176,
+      "hours": "09:00–22:30",
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "rating": 4.9,
+      "count": 421,
+      "hours": "10:00–02:00",
+      "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+      "rating": 4.5,
+      "count": 20,
+      "hours": "10:00–00:00",
+      "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Rose Spa",
+      "rating": 4.8,
+      "count": 591,
+      "hours": "09:00–21:00",
+      "address": "36 Trần Quang Khải, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Ria SPA",
+      "rating": 4.9,
+      "count": 2616,
+      "hours": "10:00–00:00",
+      "address": "279/1 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm spa massage thư giãn cho cặp đôi tối nay gần Quận 1. Để gợi ý đúng ý, mình sẽ tìm ngay các spa chất lượng cao trong khu vực này.\n\nMình chọn **Ria SPA** cho bạn — spa này đang mở cửa tối nay (10:00–00:00), có **4.9⭐ từ 2.616 đánh giá Google Maps**, và nằm ngay tại Quận 1 (279/1 Phạm Ngũ Lão, Bến Thành).\n\nNếu muốn lựa chọn khác, **Passion Spa Quận 1 - Chi nhánh Bến Thành** cũng đang mở (10:00–02:00) với dịch vụ massage chất lượng, hoặc **Trạm Relax Spa** nổi tiếng với gội đầu dưỡng sinh kết hợp massage (4.9⭐, mở đến 02:00).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Ria SPA\",\"type\":\"website\",\"url\":\"https://riaspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Ria SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17647378026608792658\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ Ria SPA|Xem spa khác gần đây|Massage loại nào tốt cho cặp đôi[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm spa massage thư giãn cho cặp đôi tối nay gần Quận 1. Để gợi ý đúng ý, mình sẽ tìm ngay các spa chất lượng cao trong khu vực này.\n\nMình chọn **Ria SPA** cho bạn — spa này đang mở cửa tối nay (10:00–00:00), có **4.9⭐ từ 2.616 đánh giá Google Maps**, và nằm ngay tại Quận 1 (279/1 Phạm Ngũ Lão, Bến Thành).\n\nNếu muốn lựa chọn khác, **Passion Spa Quận 1 - Chi nhánh Bến Thành** cũng đang mở (10:00–02:00) với dịch vụ massage chất lượng, hoặc **Trạm Relax Spa** nổi tiếng với gội đầu dưỡng sinh kết hợp massage (4.9⭐, mở đến 02:00).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Ria SPA\",\"type\":\"website\",\"url\":\"https://riaspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Ria SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17647378026608792658\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi đặt chỗ Ria SPA|Xem spa khác gần đây|Massage loại nào tốt cho cặp đôi[/FOLLOWUPS]"
+    }
+  ]
+}

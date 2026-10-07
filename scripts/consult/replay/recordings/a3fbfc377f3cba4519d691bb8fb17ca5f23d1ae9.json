@@ -1,0 +1,509 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "phố đi bộ chợ đêm",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:14.741Z",
+ "body": {
+  "searchParameters": {
+   "q": "phố đi bộ chợ đêm",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Chợ đêm",
+    "address": "20 Nguyễn Lâm, Diên Hồng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7644811,
+    "longitude": 106.6631159,
+    "rating": 5,
+    "ratingCount": 3,
+    "type": "Khu vực đi bộ",
+    "types": [
+     "Khu vực đi bộ"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnUTjZx6hU2ZZ8Zq4rIP58IB29qF-wJLAcitU_Tw_NvR5ORYtxdgWYCUOJWzw7Msf2TU3A3kT5KGy63R4cWSrlat-UKm8uySrPUDVrDsmusXfVsqDG78viAXFwg9UiqmKgJ3GM_KQ",
+    "cid": "2444351009706450975",
+    "fid": "0x31752f30d1df85f3:0x21ec144ae7eba01f",
+    "placeId": "ChIJ84Xf0TAvdTERH6Dr50oU7CE"
+   },
+   {
+    "position": 2,
+    "title": "Quang Trung Night Market",
+    "address": "68 Nguyễn Lâm, Diên Hồng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7644998,
+    "longitude": 106.6631706,
+    "rating": 4.2,
+    "ratingCount": 83,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/phodibodem.nguyentriphuong?mibextid=LQQJ4d",
+    "openingHours": {
+     "Thứ Ba": "17:00–22:00",
+     "Thứ Tư": "17:00–22:00",
+     "Thứ Năm": "17:00–22:00",
+     "Thứ Sáu": "17:00–22:00",
+     "Thứ Bảy": "17:00–22:00",
+     "Chủ Nhật": "17:00–22:00",
+     "Thứ Hai": "17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkxylxXcXKAoKRWxGamhUX5UVIZtsPLBub_o4WJr20yYWyfNwa3Do9TQeSKUYmXICpzEg_J2c_geVYyNB_Ny5TXTyd4GUxJ4BUpUawDNtfkOKf6Zz9qNffbZ_za5ZjcCl3OIQbYkw",
+    "cid": "2698035790496902523",
+    "fid": "0x31752f3983c6daad:0x25715941b3dbad7b",
+    "placeId": "ChIJrdrGgzkvdTERe63bs0FZcSU"
+   },
+   {
+    "position": 3,
+    "title": "Phố đi bộ Nguyễn Tri Phương",
+    "address": "68 Nguyễn Lâm, Diên Hồng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.764464799999999,
+    "longitude": 106.6633734,
+    "rating": 4,
+    "ratingCount": 45,
+    "type": "Sân khấu",
+    "types": [
+     "Sân khấu"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkmiGZ8j2oX1fZnZJgu-KjSDBRWv2KxHOHb7NAPwTGO7lgf81-bT7nRYd9zGHlMakRuoXMPhy2rzIdhPdcE8jvVkpVf555g8C-61f3x0zA-U4-xI_p0Xm8WI3ye5oNL0SAxc0u-",
+    "cid": "15712875940894270432",
+    "fid": "0x31752faafa51abf1:0xda0f596af8c8e3e0",
+    "placeId": "ChIJ8atR-qovdTER4OPI-GpZD9o"
+   },
+   {
+    "position": 4,
+    "title": "Chợ Đêm Bắc Ninh",
+    "address": "72 Nguyễn Bá Luật, Thủ Đức, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.850342099999999,
+    "longitude": 106.76630689999999,
+    "rating": 4.1,
+    "ratingCount": 3038,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "phoneNumber": "+84 28 3611 9119",
+    "openingHours": {
+     "Thứ Ba": "15:00–23:00",
+     "Thứ Tư": "15:00–23:00",
+     "Thứ Năm": "15:00–23:00",
+     "Thứ Sáu": "15:00–23:00",
+     "Thứ Bảy": "15:00–23:00",
+     "Chủ Nhật": "15:00–23:00",
+     "Thứ Hai": "15:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmbomqj11e87tOSu5fjofdwcW_li6S-uJbdt8fai711Bec2OXo9f3XUpALY9BvucmyxNIYC2NdCx-OVADWqINaeucHkVlymhypB9UKfTDnrOwYrmAGbU2GkawbEzmWx7oR51e2U",
+    "cid": "14082688310867855966",
+    "fid": "0x317527a1dd974473:0xc36fc267cbd30a5e",
+    "placeId": "ChIJc0SX3aEndTERXgrTy2fCb8M"
+   },
+   {
+    "position": 5,
+    "title": "Chợ đêm Vinhomes Grand Park",
+    "address": "RRQV+WX, Long Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8403993,
+    "longitude": 106.8436414,
+    "rating": 4.3,
+    "ratingCount": 140,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "website": "https://m.facebook.com/groups/1448496695744353/?ref=share&mibextid=NSMWBT",
+    "openingHours": {
+     "Thứ Ba": "16:00–23:30",
+     "Thứ Tư": "16:00–23:30",
+     "Thứ Năm": "16:00–23:30",
+     "Thứ Sáu": "16:00–23:30",
+     "Thứ Bảy": "16:00–23:30",
+     "Chủ Nhật": "16:00–23:30",
+     "Thứ Hai": "16:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlGnuuhgYgfpRTTzoO42_I3U40ED3hIJ6JYMA0gNEw-m3Mo60TlcVJpbMx39PHtM574dswAX7QtW-mj-xZHm5BQFVgzzVs0-gEZInRQGrb4BnZB-vfti5qeA93UcEpRRGt1wr4",
+    "cid": "900885315939457279",
+    "fid": "0x3175210db0c02e97:0xc80966bf7efd8ff",
+    "placeId": "ChIJly7AsA0hdTER_9jv92uWgAw"
+   },
+   {
+    "position": 6,
+    "title": "Chợ Đêm Sài Gòn Grand Park",
+    "address": "RRRV+V3H Công Viên Ánh Sáng, Đường D8, Vinhomes Grand Park, Long Bình, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.842193,
+    "longitude": 106.8427234,
+    "rating": 4.3,
+    "ratingCount": 34,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "website": "http://vintagetastedeli.cafe/",
+    "phoneNumber": "+84 905 270 668",
+    "openingHours": {
+     "Thứ Hai": "16:00–02:00",
+     "Thứ Ba": "16:00–02:00",
+     "Thứ Tư": "16:00–02:00",
+     "Thứ Năm": "16:00–02:00",
+     "Thứ Sáu": "16:00–02:00",
+     "Thứ Bảy": "16:00–02:00",
+     "Chủ Nhật": "16:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkEJZc3soIU91Y2BLWoi-LkXcPJp3NzB4jAGDnBb46v2fqdT-uzFxn1ll0Cktzu5rcBtzpIA9r2drDfMQ0GhQe49QPBJFJ8ciedHuGbT8HuLcsqFfBAbQd3-cFWE11ZflJvin_iYw",
+    "cid": "7736711604219494499",
+    "fid": "0x317521099dbaf73b:0x6b5e523693254063",
+    "placeId": "ChIJO_e6nQkhdTERY0AlkzZSXms"
+   },
+   {
+    "position": 7,
+    "title": "Phố Ẩm Thực Nguyễn Thượng Hiền",
+    "address": "424/96A Nguyễn Thượng Hiền, khu phố 6, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7731028,
+    "longitude": 106.6846513,
+    "rating": 3.3,
+    "ratingCount": 12,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWntnnRvsS_HryxvFS9INCxlgZcTFZpBB91XnB-D6EkMrh--1hO1gD20ecqbAFxnbMAuRWFvWrfLKrkM0rK3WMuF1BvOZudHfzNcAdXAtvuou6iBLMhBvmku3NXCjEfOhAurJbq_zg",
+    "cid": "6494086756277394277",
+    "fid": "0x31752fc407e1545f:0x5a1fa17f687b9b65",
+    "placeId": "ChIJX1ThB8QvdTERZZt7aH-hH1o"
+   },
+   {
+    "position": 8,
+    "title": "Chợ đêm Hồ Thị Kỷ",
+    "address": "1/3d bis Tổ 61 Khu phố 4, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.766536799999999,
+    "longitude": 106.6760247,
+    "rating": 4.5,
+    "ratingCount": 162,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "openingHours": {
+     "Thứ Ba": "18:00–00:00",
+     "Thứ Tư": "18:00–00:00",
+     "Thứ Năm": "18:00–00:00",
+     "Thứ Sáu": "18:00–00:00",
+     "Thứ Bảy": "18:00–00:00",
+     "Chủ Nhật": "18:00–00:00",
+     "Thứ Hai": "18:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnZ9QoC_fGa4uUvJ0WZF5Up6eAhKNX4aeJiJmvLXXR03WuN2mT14XgwW9rLlLi3XvhZragkSajfOLFeV8KV8DXMufVu1URIYFrgFoXKYGzzo13YJTk5hgR-eyTUx7uRLyGGtozSYPeLbanl",
+    "cid": "11806143628691871688",
+    "fid": "0x31752fe1fbffef31:0xa3d7d914236b97c8",
+    "placeId": "ChIJMe__--EvdTERyJdrIxTZ16M"
+   },
+   {
+    "position": 9,
+    "title": "Chợ Đầu mối Bình Điền",
+    "address": "Khu Phố 29, Bình Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.702232799999999,
+    "longitude": 106.60865899999999,
+    "rating": 4.3,
+    "ratingCount": 3093,
+    "type": "Chợ bán buôn",
+    "types": [
+     "Chợ bán buôn",
+     "Chợ"
+    ],
+    "website": "http://www.binhdienmarket.com.vn/",
+    "phoneNumber": "+84 28 3759 0001",
+    "description": "Khu chợ kiểu kho hàng này nổi tiếng là địa điểm bán cá và bán nhiều mặt hàng thực phẩm đầu mối khác.",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk1NIDO6z6eJY_jz97x5KZwzhImYOzQ5S9FpBhtOmAWwWYoe6O76qH6GkDt_3bELqHgKCzl3snrD_e0sg2At2E1LWnYhcujw7v0zeBYj7k9nAL5IwJ-SzyiHAYaWdxSKzXQXF2zIA",
+    "cid": "7564006223935684127",
+    "fid": "0x3175320bc6fca353:0x68f8bf95b887be1f",
+    "placeId": "ChIJU6P8xgsydTERH76HuJW_-Gg"
+   },
+   {
+    "position": 10,
+    "title": "Chợ Hóc Môn",
+    "address": "Lý Nam Đế, Khu Phố 6, Hóc Môn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.888904499999999,
+    "longitude": 106.5966826,
+    "rating": 4.2,
+    "ratingCount": 5777,
+    "type": "Chợ",
+    "types": [
+     "Chợ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmppy3NZ7U-MTu3zXmyb9TeBaIGTquH52Yp8ZYysPxrxsA6PNgX-QPzcZRLWEj3eQfnsi5DB7zHErl1eC6iyeIuRy9OHHi4O9vzBNxG4-sCxH0cIZMqFSR6t0_eZgS4DuSIyF8RKg",
+    "cid": "6778554735625734142",
+    "fid": "0x3174d58f3d99ccbd:0x5e12439e238387fe",
+    "placeId": "ChIJvcyZPY_VdDER_oeDI55DEl4"
+   },
+   {
+    "position": 11,
+    "title": "Chợ đêm Man Thiện",
+    "address": "228 Man Thiện, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8496741,
+    "longitude": 106.79596199999999,
+    "rating": 4.2,
+    "ratingCount": 3186,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "openingHours": {
+     "Thứ Ba": "14:00–22:00",
+     "Thứ Tư": "14:00–22:00",
+     "Thứ Năm": "14:00–22:00",
+     "Thứ Sáu": "14:00–22:00",
+     "Thứ Bảy": "14:00–22:00",
+     "Chủ Nhật": "14:00–22:00",
+     "Thứ Hai": "14:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlYvfdZEQQeXli7ASsK4irvDm-z9gPS1QP4nLMLJMrnSQZ0XEFmjPNW5xX6Z7MhRQ_CRJU0OeIOkMM5nbj65X0O6YHopfawPukmMGewnukmixDP7jQs_mQzCbhq6IJrDl5f_WME",
+    "cid": "13403196342323226245",
+    "fid": "0x3175276b88d0a1d1:0xba01b80f66fda685",
+    "placeId": "ChIJ0aHQiGsndTERhab9Zg-4Abo"
+   },
+   {
+    "position": 12,
+    "title": "Chợ Đêm Bà Hom",
+    "address": "45 Đ. Số 5, Tân Tạo, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7500539,
+    "longitude": 106.59058999999999,
+    "rating": 4.2,
+    "ratingCount": 228,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm",
+     "Chợ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "05:00–22:30",
+     "Thứ Tư": "05:00–22:30",
+     "Thứ Năm": "05:00–22:30",
+     "Thứ Sáu": "05:00–22:30",
+     "Thứ Bảy": "05:00–22:30",
+     "Chủ Nhật": "05:00–22:30",
+     "Thứ Hai": "05:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnLNe1ZzrdWxywErgbuTDRjbnHGWWWrAlkDf7pMbjjqxdmF-oFuQi7PZ6GSzeAbMEtV1xF1TseS1Edrg2i8McakcPKPfzEYK73MORKe2SX8m2h9FqqgzjMaMNKcf9CD7LBoxVM",
+    "cid": "7873749381113641797",
+    "fid": "0x31752d3f7078762f:0x6d452d585fbafb45",
+    "placeId": "ChIJL3Z4cD8tdTERRfu6X1gtRW0"
+   },
+   {
+    "position": 13,
+    "title": "Phố đi bộ Bùi Viện",
+    "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.767351,
+    "longitude": 106.69388359999999,
+    "rating": 4.3,
+    "ratingCount": 27476,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmeagR2lVYOUnybOXstfvVin0P0EzXFLxPiDmEZEJLVzf15amaRSr9yF_hQUvvm1Lkb8l5bLpsQofyaib6NS3HaGXWxA3eYeqcAuDjPmyWbT67k5u4mTSMJXFTdi0AgPXcU6iwkcw",
+    "cid": "17419937820716483494",
+    "fid": "0x31752f1605cbdc09:0xf1c00d273532c3a6",
+    "placeId": "ChIJCdzLBRYvdTERpsMyNScNwPE"
+   },
+   {
+    "position": 14,
+    "title": "Chợ Đầu Mối Nông Sản Thực Phẩm Hóc Môn",
+    "address": "14/7A Nguyễn Thị Sóc, Xuân Thới Sơn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.860085399999999,
+    "longitude": 106.60131469999999,
+    "rating": 4.2,
+    "ratingCount": 2155,
+    "type": "Chợ bán buôn",
+    "types": [
+     "Chợ bán buôn",
+     "Chợ nông sản"
+    ],
+    "phoneNumber": "+84 932 476 246",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_W3D15w_djtD6Bf-9yS7Crftt4zAteQsrVXbtFEBFsXqg9ThcVAu4-kM9PLLMzkgH2gG4hPU_eu5_0UKKabDe7DaBgERjHYl5qHJOfjDlFyWSiHQtGXi_fVOEJTfnxub9xMyD",
+    "cid": "6898828462806915496",
+    "fid": "0x31752a41e4e3baeb:0x5fbd8fef73f5d9a8",
+    "placeId": "ChIJ67rj5EEqdTERqNn1c--PvV8"
+   },
+   {
+    "position": 15,
+    "title": "Chợ Đêm Việt Lập",
+    "address": "Đường số 9, Bình Đường 2, Dĩ An, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8724715,
+    "longitude": 106.75878259999999,
+    "rating": 4.1,
+    "ratingCount": 1596,
+    "type": "Chợ",
+    "types": [
+     "Chợ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "09:00–22:30",
+     "Thứ Tư": "09:00–22:30",
+     "Thứ Năm": "09:00–22:30",
+     "Thứ Sáu": "09:00–22:30",
+     "Thứ Bảy": "09:00–22:30",
+     "Chủ Nhật": "09:00–22:30",
+     "Thứ Hai": "09:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkfk1CY1ntNz0Vmf67j9Hq7p9FHpk3o3DDZMCAODXK9mk7ZOhGQLs-c-7PNKRZAcGGReeIsQCYNLjWJqD-xVQKFc3cSWdc3ivb970dGg1ZI9-055OQAzV5yVNDLOETdf94B8w8",
+    "cid": "1375794414046629338",
+    "fid": "0x317527886d2009bd:0x1317cdbaf5374dda",
+    "placeId": "ChIJvQkgbYgndTER2k039brNFxM"
+   },
+   {
+    "position": 16,
+    "title": "Phố Đêm Khu B",
+    "address": "VQMP+38W, Tô Vĩnh Diện, Đông Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8826275,
+    "longitude": 106.7858133,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Khu ăn uống",
+    "types": [
+     "Khu ăn uống"
+    ],
+    "phoneNumber": "+84 938 076 788",
+    "openingHours": {
+     "Thứ Ba": "15:00–22:30",
+     "Thứ Tư": "15:00–22:30",
+     "Thứ Năm": "15:00–22:30",
+     "Thứ Sáu": "15:00–22:30",
+     "Thứ Bảy": "15:00–22:30",
+     "Chủ Nhật": "15:00–23:00",
+     "Thứ Hai": "15:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1soGaLFafrfusLFXHM0h2bypyegF2kX_vk9nbNKZGriy1xNlDGp5Z9GDjRQUHsV2cVkX9yhsXwSZaNkZoPZ725nXOOMlu_O1FdMz1JIlmnLN_yKHggGzK9cNmWq_FUPw6HFeqJ8iIiRqm",
+    "cid": "535271934223753787",
+    "fid": "0x3174d99f65c66a79:0x76daafcf9a4a23b",
+    "placeId": "ChIJeWrGZZ_ZdDERO6Kk-fyqbQc"
+   },
+   {
+    "position": 17,
+    "title": "Đầm Sen Square",
+    "address": "QJ8P+MG5, đường Đ. Kênh Tân Hóa, Bình Thới, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7666752,
+    "longitude": 106.6361678,
+    "rating": 4.4,
+    "ratingCount": 352,
+    "type": "Chợ",
+    "types": [
+     "Chợ",
+     "Khu hội chợ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "16:00–00:00",
+     "Thứ Tư": "16:00–00:00",
+     "Thứ Năm": "16:00–00:00",
+     "Thứ Sáu": "16:00–00:00",
+     "Thứ Bảy": "16:00–00:00",
+     "Chủ Nhật": "16:00–00:00",
+     "Thứ Hai": "16:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWng2-0FHWBnjGRDrhfwwVUiwntWJfUqMF6EzS81CT_OyLyHpA4cICmTAhUuO9H9I48BK5iOnVOKrGj5RhSWFJomC7-DgiW03szEVTtIj14En688Cbrka38wDF3DSo1bgeDjOA-0",
+    "cid": "6442970956891419124",
+    "fid": "0x31752ff6be18bf1f:0x596a07f2efabf1f4",
+    "placeId": "ChIJH78YvvYvdTER9PGr7_IHalk"
+   },
+   {
+    "position": 18,
+    "title": "Đường Ẩm Thực Hồ Thị Kỷ",
+    "address": "Hồ Thị Kỷ, Vườn Lài, Hồ Chí Minh 70350, Việt Nam",
+    "latitude": 10.7663259,
+    "longitude": 106.6759953,
+    "rating": 4.4,
+    "ratingCount": 3845,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "openingHours": {
+     "Thứ Ba": "17:00–22:00",
+     "Thứ Tư": "17:00–22:00",
+     "Thứ Năm": "17:00–22:00",
+     "Thứ Sáu": "17:00–22:00",
+     "Thứ Bảy": "17:00–22:00",
+     "Chủ Nhật": "17:00–22:00",
+     "Thứ Hai": "17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsbpTM0TfecuyaqpHUSDDs-CpLs1bmxgUnVEbJ1v0-ljJYmxnfRzWxGKq8973zrL80kS4Bp1X3Qd_1Cg7lBJhhvjb2RojVc0MNx1UiuK8JAcQDm3OG33vkDrkZrWLhwZzDe8mk-NM03O31",
+    "cid": "12662087525625938570",
+    "fid": "0x31752f0875cfd707:0xafb8c58497d6c28a",
+    "placeId": "ChIJB9fPdQgvdTERisLWl4TFuK8"
+   },
+   {
+    "position": 19,
+    "title": "Chợ Đêm Linh Trung",
+    "address": "1225 TL43, Tam Bình, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8891644,
+    "longitude": 106.7274228,
+    "rating": 4.2,
+    "ratingCount": 2186,
+    "type": "Chợ đêm",
+    "types": [
+     "Chợ đêm"
+    ],
+    "openingHours": {
+     "Thứ Ba": "15:00–22:00",
+     "Thứ Tư": "15:00–22:00",
+     "Thứ Năm": "15:00–22:00",
+     "Thứ Sáu": "15:00–22:00",
+     "Thứ Bảy": "15:00–22:00",
+     "Chủ Nhật": "15:00–22:00",
+     "Thứ Hai": "15:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlq7MkaFTrVMKl102gVI_vom13fMJfOs5JD2M35-8rghFK2Tg8h5mFB24a_1B7dQaOXEOIvTyby-fh9cH1jMoJCwK_7kMs2ZsYUEnuIyLKyxUqSBqT0MlZLeQylmc2SAPloITjA",
+    "cid": "8919219959491493355",
+    "fid": "0x3174d7f49245f493:0x7bc76f4c0f107deb",
+    "placeId": "ChIJk_RFkvTXdDER630QD0xvx3s"
+   }
+  ],
+  "credits": 3
+ }
+}

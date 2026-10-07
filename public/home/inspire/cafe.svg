@@ -1,0 +1,116 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 220" width="440" height="220" role="img" aria-hidden="true">
+  <defs>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" seed="17" result="n"/>
+      <feColorMatrix in="n" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.05"/></feComponentTransfer>
+    </filter>
+    <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7"/>
+    </filter>
+    <filter id="softer" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <filter id="haze" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3"/>
+    </filter>
+    <filter id="bokeh" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5.5"/>
+    </filter>
+
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2A1D14"/><stop offset="100%" stop-color="#54392A"/>
+    </linearGradient>
+    <linearGradient id="pane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FBEBD2"/><stop offset="55%" stop-color="#D9C39E"/>
+      <stop offset="100%" stop-color="#A08B6D"/>
+    </linearGradient>
+    <linearGradient id="counter" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8A5A34"/><stop offset="100%" stop-color="#3A2113"/>
+    </linearGradient>
+    <linearGradient id="shaft" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE8BE" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#FFE8BE" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="bulb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFDCA4" stop-opacity=".95"/>
+      <stop offset="100%" stop-color="#FFB05A" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vig" cx="50%" cy="45%" r="72%">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".42"/>
+    </radialGradient>
+    <clipPath id="frame"><rect width="440" height="220"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+
+    <rect width="440" height="220" fill="url(#wall)"/>
+    <!-- the window: the brightest thing, and the reason the scene reads as an interior -->
+    <g>
+      <rect x="250" y="0" width="190" height="150" fill="url(#pane)" opacity=".92"/>
+      <g filter="url(#bokeh)" opacity=".5">
+        <circle cx="300" cy="46" r="20" fill="#8FA86A"/>
+        <circle cx="356" cy="30" r="26" fill="#7C9A5E"/>
+        <circle cx="408" cy="58" r="18" fill="#A8B87E"/>
+        <rect x="268" y="86" width="170" height="30" fill="#9E8A6A" opacity=".7"/>
+      </g>
+      <g fill="#2A1D14">
+        <rect x="246" y="0" width="9" height="150"/>
+        <rect x="330" y="0" width="7" height="150"/>
+        <rect x="246" y="70" width="194" height="6"/>
+        <rect x="246" y="144" width="194" height="9"/>
+      </g>
+    </g>
+    <!-- light entering, falling to the left across the table -->
+    <path d="M250 8 L440 8 L286 220 L96 220 Z" fill="url(#shaft)" filter="url(#soft)"/>
+
+    <!-- pendant lamp, warm, top-left -->
+    <g>
+      <rect x="73" y="0" width="2" height="26" fill="#1C130C"/>
+      <path d="M52 26 h44 l-10 22 h-24 Z" fill="#20150E"/>
+      <ellipse cx="74" cy="52" rx="30" ry="24" fill="#FFD79E" opacity=".22" filter="url(#soft)"/>
+      <circle cx="74" cy="50" r="4" fill="#FFE6BE"/>
+    </g>
+    <!-- a plant, breaking the left edge -->
+    <g fill="#2E4A28" opacity=".95">
+      <path d="M0 128 q26 -34 16 -66 q18 30 4 66 Z"/>
+      <path d="M6 130 q-14 -32 -34 -42 q34 4 44 42 Z"/>
+      <path d="M18 132 q22 -22 50 -20 q-24 12 -34 24 Z" opacity=".8"/>
+    </g>
+
+    <!-- table -->
+    <path d="M0 152 L440 140 L440 220 L0 220 Z" fill="url(#counter)"/>
+    <path d="M0 152 L440 140 L440 149 L0 161 Z" fill="#A97142" opacity=".5"/>
+
+    <!-- notebook and pen, slightly behind the cup -->
+    <g transform="rotate(-6 300 176)">
+      <rect x="268" y="162" width="76" height="46" rx="4" fill="#E4D6C0"/>
+      <rect x="268" y="162" width="10" height="46" rx="3" fill="#B24A38"/>
+      <g stroke="#B9A88F" stroke-width="1.4">
+        <path d="M286 176 h44"/><path d="M286 186 h50"/><path d="M286 196 h34"/>
+      </g>
+    </g>
+    <rect x="352" y="188" width="52" height="4" rx="2" fill="#22303A" transform="rotate(-9 352 188)"/>
+
+    <!-- the cup: saucer, body, handle, latte art -->
+    <ellipse cx="150" cy="196" rx="66" ry="19" fill="#0E0803" opacity=".45" filter="url(#soft)"/>
+    <ellipse cx="150" cy="192" rx="62" ry="17" fill="#EFE3D2"/>
+    <ellipse cx="150" cy="189" rx="50" ry="13" fill="#CDBBA4"/>
+    <path d="M108 176 q42 26 84 0 q-6 22 -42 22 q-36 0 -42 -22 Z" fill="#FAF3E8"/>
+    <ellipse cx="150" cy="176" rx="42" ry="14" fill="#FFFDF8"/>
+    <ellipse cx="150" cy="176" rx="35" ry="11" fill="#6B4326"/>
+    <path d="M150 168 q-16 4 -14 10 q2 6 14 6 q12 0 14 -6 q2 -6 -14 -10 Z" fill="#E9D6BC" opacity=".92"/>
+    <path d="M150 170 q-9 3 -8 6 q1 4 8 4 q7 0 8 -4 q1 -3 -8 -6 Z" fill="#F7ECDC"/>
+    <path d="M192 176 q22 2 20 14 q-2 11 -20 10" stroke="#F5EADA" stroke-width="6" fill="none"/>
+
+    <!-- steam -->
+    <g filter="url(#soft)" opacity=".42" stroke="#FFF6E8" fill="none" stroke-linecap="round">
+      <path d="M132 158 q-10 -26 6 -42 q14 -14 2 -30" stroke-width="6"/>
+      <path d="M166 156 q10 -24 -2 -40" stroke-width="5"/>
+    </g>
+
+    <rect width="440" height="220" fill="url(#vig)"/>
+    <rect width="440" height="220" filter="url(#grain)" opacity=".5"/>
+  </g>
+</svg>

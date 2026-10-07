@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Santori\" OR \"Karaoke SAFARI\" OR \"KARAOKE MONACO KTV\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:52:31.106Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Santori\" OR \"Karaoke SAFARI\" OR \"KARAOKE MONACO KTV\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Santori",
+    "link": "https://www.tiktok.com/discover/karaoke-santori",
+    "snippet": "Khám phá karaoke Santori Gò Vấp, nơi tổ chức những buổi tiệc âm nhạc sôi động cùng bạn bè và tìm kiếm tình yêu dưới ánh đèn sân khấu!",
+    "date": "31 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "2 Karaoke Santori Gò Vấp",
+    "link": "https://www.tiktok.com/discover/2-karaoke-santori-g%C3%B2-v%E1%BA%A5p",
+    "snippet": "Karaoke Santori: Nơi Hẹn Hò Tìm Kiếm Tình Yêu. Khám phá Karaoke Santori, địa điểm lý tưởng để tìm người yêu xinh đẹp! Đặt chỗ ngay hôm nay!",
+    "date": "3 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Khách quen bên em Karaoke Santori đã đặt bảng tên lần thứ 5 ...",
+    "link": "https://www.tiktok.com/@bangtendeoao/video/7641998107932183828",
+    "snippet": "Khách quen bên em Karaoke Santori đã đặt bảng tên lần thứ 5 rồi ạ. Qua đó cho thấy sự uy tín, chất lượng luôn nâng cao và đảm bảo trong từng đơn hàng ...",
+    "position": 3
+   },
+   {
+    "title": "QUẨY HẾT MÌNH TẠI KARAOKE SANTORI KTV 🎤🔥 Cuối ...",
+    "link": "https://www.tiktok.com/@karaoke.santori63/video/7658302126900219154",
+    "snippet": "Có nhạc hay - Có bạn thân - Có Karaoke SANTORI KTV 176 lê văn thọ,p thông tây hội,gò vấp LH đặt phòng:0345683755 Inbox hoặc gọi ngay ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Đẳng Cấp tại Monaco & Bossvila KTV Sài Gòn",
+    "link": "https://www.tiktok.com/@hu.ktv.monaco.bos/video/7601105936341667092",
+    "snippet": "... karaoke chất lượng 5⭐ tại Monaco & Bossvila. Không gian sang trọng. @KTV Monaco & Bossvila · EDM Trap Music(858841) · Karaoke Monaco-KTV.",
+    "position": 5
+   },
+   {
+    "title": "#santori karaoke ☎️☎️ 09 tám sáu 3 hai sáu 5 sáu bốn",
+    "link": "https://www.tiktok.com/@typham3687/video/7657549923403025665",
+    "snippet": "Karaoke Santori Gò Vấp - Hát Hay Nhất · author. 1010 · 8 ... 1 buổi học và quay Thời gian: 10/4 từ 12:00-14:30 Tại Quận 10 Học phí: 300 Các ...",
+    "position": 6
+   },
+   {
+    "title": "“Đi karaoke mà sợ bị 'chặt chém'? Ở đây chơi bao nhiêu ...",
+    "link": "https://www.tiktok.com/@karaokemonacoktv/video/7635292703676189953",
+    "snippet": "2241 Lượt thích,Video TikTok từ Karaoke Monaco-KTV (@karaokemonacoktv): \"“Đi karaoke mà sợ bị 'chặt chém'? Ở đây chơi bao nhiêu tính bấy ...",
+    "position": 7
+   },
+   {
+    "title": "“Đừng để cuối tuần trôi qua vô nghĩa… Một đêm ở Monaco ...",
+    "link": "https://www.tiktok.com/@karaokemonacoktv/video/7635293565085601044",
+    "snippet": "50 Lượt thích,Video TikTok từ Karaoke Monaco-KTV (@karaokemonacoktv): \"“Đừng để cuối tuần trôi qua vô nghĩa… Một đêm ở Monaco là đủ nhớ lâu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

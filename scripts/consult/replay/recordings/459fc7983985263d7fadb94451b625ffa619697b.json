@@ -1,0 +1,198 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Cát Tiên",
+  "gl": "vn",
+  "hl": "vi"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:35:53.452Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Cát Tiên",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "engine": "google"
+  },
+  "ll": "@11.087427,107.0256821,10z",
+  "places": [
+   {
+    "position": 1,
+    "title": "CAT TIEN FARMER LODGE",
+    "address": "CAT Tien Farmer lodge, Nam Cát Tiên, Đồng Nai 02513, Việt Nam",
+    "latitude": 11.4238527,
+    "longitude": 107.43201499999999,
+    "rating": 4.3,
+    "ratingCount": 5234,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 938 610 745",
+    "description": "Công viên rộng 71.920 ha này có nhiều động vật hoang dã & chim quý cùng vườn bách thảo & đường đi bộ.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl4HMUdwxnbLlytJsuIBXKBs7L81rRkmTgculQMjdx2pmyd6KQ--S1qTp5CwqZL0H3WxllOrEwNm-6rAcHu3Wcd6dI9mNMlUlOeAWo2pYjiEFxzGgiuUIuE88FAJB3c-kOgUkgm1Q",
+    "cid": "6362133050519837093",
+    "fid": "0x317480969be96391:0x584ad64d2a01d9a5",
+    "placeId": "ChIJkWPpm5aAdDERpdkBKk3WSlg"
+   },
+   {
+    "position": 2,
+    "title": "Cát Tiên Hotel",
+    "address": "CCGP+324, Nam Cát Tiên, Đồng Nai, Việt Nam",
+    "latitude": 11.425246999999999,
+    "longitude": 107.435569,
+    "rating": 4.9,
+    "ratingCount": 136,
+    "type": "Lưu trú nhà dân",
+    "types": [
+     "Lưu trú nhà dân"
+    ],
+    "phoneNumber": "+84 923 863 221",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmnfYYdWiCpX0smu5GXPB0ORDuJm9gqfn7gA1MCVgywGq0niRJ7pVUVSwLTFB08I2VXCg5oMkMy-FnrVm9lNGy299phb1DvvcCvO2G9P0kmbTe7QO9oyAXX3E6tflDryVDprGWr",
+    "cid": "5943444290359886947",
+    "fid": "0x31747b00180eba31:0x527b5b17a5398463",
+    "placeId": "ChIJMboOGAB7dDERY4Q5pRdbe1I"
+   },
+   {
+    "position": 3,
+    "title": "Cát Tiên Motel",
+    "address": "Nguyễn Ái Quốc/1096/2/1 Hẻm 1096 Nguyễn Ái Quốc, Kp 8, Tân Triều, Đồng Nai, Việt Nam",
+    "latitude": 10.966856499999999,
+    "longitude": 106.8527228,
+    "rating": 4.5,
+    "ratingCount": 117,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Đại lý cho thuê nhà chung cư",
+     "Đại lý cho thuê phòng nghỉ cao cấp",
+     "Nhà nghỉ dưỡng",
+     "Khách sạn tình yêu"
+    ],
+    "website": "http://www.cattienmotel.com/",
+    "phoneNumber": "+84 922 299 777",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlFCSuw_2Z1dl2OOpiEmGrXzdUAOK7aDoQmtv7wy5jISp5b5njaVdHqC9C7QldLyDf-1fWWC1qujzOAqQZYyNXcw2nNq15YT7yqOzKVy9b86P0xFR-nAQ4p1hjvKLu5HxQcmMUIVg",
+    "cid": "16150557742547214907",
+    "fid": "0x3174dc3aa2050a33:0xe0224eb290f6223b",
+    "placeId": "ChIJMwoFojrcdDEROyL2kLJOIuA"
+   },
+   {
+    "position": 4,
+    "title": "Khách Sạn Cát Tiên Sa",
+    "address": "175 Đường số 16, An Lạc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.749607,
+    "longitude": 106.6157952,
+    "rating": 4.5,
+    "ratingCount": 85,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 28 6260 2211",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnSEPWoK4OezzY2iXCoIr-XYMbiiROWabAGU-aXDTXdMETvQd4V_B4mpz_8a65-1GBtRb3NcQxTFh_X26F_xYWfFSNT5eHd0QT0Lph6fSZHmtXsfM3jEko4pIFB6KGKGvII492Twg",
+    "cid": "7080032021832457444",
+    "fid": "0x31752dcd37e108f7:0x6241539cbbb6dce4",
+    "placeId": "ChIJ9wjhN80tdTER5Ny2u5xTQWI"
+   },
+   {
+    "position": 5,
+    "title": "Cat Tien Backpackers Hostel",
+    "address": "875 Ấp 1, Nam Cát Tiên, Đồng Nai 76813, Việt Nam",
+    "latitude": 11.4242189,
+    "longitude": 107.432743,
+    "rating": 4.7,
+    "ratingCount": 102,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà trọ",
+     "Lưu trú nhà dân"
+    ],
+    "phoneNumber": "+84 858 022 902",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlOAC5IAvuMwvuVr4v0sgab-r9AH9eg1pX5j1t9yIBzHPfwGqKkDQgxByxDYuUxbvWwMVF0E1riyI8ugORvnRziLOtzOWQKa_fE6IH9mkIC4wGVJRnnud0YHW57Yi3yqbyP2ek",
+    "cid": "12517435534138207368",
+    "fid": "0x31747a3549c549a3:0xadb6dd4c4f28ec88",
+    "placeId": "ChIJo0nFSTV6dDERiOwoT0zdtq0"
+   },
+   {
+    "position": 6,
+    "title": "CÁT TIÊN RIVERSIDE hotel",
+    "address": "Nam Cát Tiên, Đồng Nai 76813, Việt Nam",
+    "latitude": 11.4231137,
+    "longitude": 107.430309,
+    "rating": 4.8,
+    "ratingCount": 103,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Đại lý du lịch bằng Ca nô & Kayak"
+    ],
+    "phoneNumber": "+84 918 300 502",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkdnFkNSOLEFc0GyHXg7d9EVFy2LAIT1mjf_TJDipgoxZYJ3RxRQQdoJvq9X2cc75YnO5PZdVXjjAzDCWTxMvpj0e1WpbkhA7hfAslFdNKTjz3wClbd5cy51xMbV31IaTAsuZVG",
+    "cid": "16166947874189223375",
+    "fid": "0x31747b4f6cca6769:0xe05c896f774e25cf",
+    "placeId": "ChIJaWfKbE97dDERzyVOd2-JXOA"
+   },
+   {
+    "position": 7,
+    "title": "Cat Tien Jungle Lodge",
+    "address": "Số 854 ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam",
+    "latitude": 11.4238017,
+    "longitude": 107.4310806,
+    "rating": 3.8,
+    "ratingCount": 306,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://cattienjunglelodge.com/",
+    "phoneNumber": "+84 251 3664 888",
+    "description": "Khu nghỉ dưỡng thoải mái nằm ven sông, có phòng ở ấm cúng, nhà hàng, bể bơi ngoài trời và quầy bar.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-proxy/ALd4DhFN3CYo2QEzMKHmcb4rQ_2oWEee8BrpfE3O_Ls4ABbI-yUaw4CsiidHvYs98LyRDW61rxwKNJFkfaaTskzf4gZqcD2yNCA2_Mvkx42J9qx3_JUk-5htLJYg0egpSOpJfTT6O58crfd7Yt29PEoTCrqsTD-hvn6kT9TAoUgwyEVFX5PHsKw8AqnR",
+    "cid": "24487334976753826",
+    "fid": "0x31747a35245705d1:0x56ff19f6c910a2",
+    "placeId": "ChIJ0QVXJDV6dDERohDJ9hn_VgA"
+   },
+   {
+    "position": 8,
+    "title": "Cat Tien Garden Lodge",
+    "address": "Ấp 1, Nam Cát Tiên, Đồng Nai 02513, Việt Nam",
+    "latitude": 11.4215299,
+    "longitude": 107.4304695,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 824 203 368",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKEpPUtKf-tAyx6dSHDXHQQqIj1yVoZSY5leqi57o5vN0_Bkf20s1g2qZqp58EwtgUPF5y6rUN0ytjn9EnDLlCfS9PfP_YT8LpF03Vqcgk9YUHov4BeVA8F63SZYCiVx7Ze-lNthzXkuAo",
+    "cid": "8236799449525473801",
+    "fid": "0x31747b6348d857ff:0x724efd757b195209",
+    "placeId": "ChIJ_1fYSGN7dDERCVIZe3X9TnI"
+   },
+   {
+    "position": 9,
+    "title": "Phòng vé VQG Cát Tiên",
+    "address": "CCFJ+989, Unnamed, Road, Nam Cát Tiên, Đồng Nai, Việt Nam",
+    "latitude": 11.4234096,
+    "longitude": 107.43086129999999,
+    "rating": 4.8,
+    "ratingCount": 25,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmwRIGkBb3DWpsNiZ-2rAmwPn2GA5H0CXEisdl_D-AzwUwm1MEPiaM2hm5X9pQVtqo6GjIY7O0KfzqTsLiy9YVKBrx1mebuWTePro88yCdsMUZgzLrMFazdvfv_vp-KaBL29FCqKw",
+    "cid": "11850500806596685420",
+    "fid": "0x31747b4a40fc247b:0xa4756fb26bacee6c",
+    "placeId": "ChIJeyT8QEp7dDERbO6sa7JvdaQ"
+   }
+  ],
+  "credits": 3
+ }
+}

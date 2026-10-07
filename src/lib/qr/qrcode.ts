@@ -212,9 +212,12 @@ function applyMaskAndFormat(baseGrid: Grid, reserved: boolean[][], size: number,
   for (let i = 0; i <= 5; i++) g[i][8] = bit(i)
   g[7][8] = bit(6); g[8][8] = bit(7); g[8][7] = bit(8)
   for (let i = 9; i <= 14; i++) g[8][14 - i] = bit(i)
-  // copy 2 — split across the other two corners; dark module at [size-8][8] preserved
-  for (let i = 0; i <= 6; i++) g[size - 1 - i][8] = bit(i)         // vertical, bits 0-6
-  for (let i = 7; i <= 14; i++) g[8][size - 8 + (i - 7)] = bit(i)  // horizontal, bits 7-14
+  // copy 2 — split across the other two corners; dark module at [size-8][8] preserved.
+  // 🚨 UAT3 (2026-09-27): this copy was transposed (bits 0-6 vertical, 7-14 horizontal), so the
+  // two copies disagreed. ISO/IEC 18004: bits 0-7 run along row 8 from the right edge, bits 8-14
+  // down column 8 to the bottom edge.
+  for (let i = 0; i <= 7; i++) g[8][size - 1 - i] = bit(i)         // horizontal, bits 0-7
+  for (let i = 8; i <= 14; i++) g[size - 15 + i][8] = bit(i)       // vertical, bits 8-14
   g[size - 8][8] = 1 // dark module
   return g
 }

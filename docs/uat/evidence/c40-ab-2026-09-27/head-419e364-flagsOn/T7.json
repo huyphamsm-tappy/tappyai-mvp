@@ -1,0 +1,25 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 6171,
+  "evidenceId": "daa424d9-97b6-4bb9-96e6-eb339788d7f4",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn bay tuần sau (khoảng 2-6 tháng 10) và tìm vé rẻ nhất từ TP.HCM đến Hà Nội. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn bay?** (vd: 2/10, 3/10, hay bất kỳ ngày nào trong tuần?) — Vé máy bay thay đổi giá theo ngày, nên ngày càng cụ thể thì mình tìm được vé rẻ nhất cho bạn.\n\nCòn nếu bạn muốn mình tìm ngay với một ngày dự kiến (ví dụ thứ 5 tuần sau là 3/10), mình sẽ gọi tool ngay để xem vé nào rẻ nhất nhé! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn bay tuần sau (khoảng 2-6 tháng 10) và tìm vé rẻ nhất từ TP.HCM đến Hà Nội. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào bạn muốn bay?** (vd: 2/10, 3/10, hay bất kỳ ngày nào trong tuần?) — Vé máy bay thay đổi giá theo ngày, nên ngày càng cụ thể thì mình tìm được vé rẻ nhất cho bạn.\n\nCòn nếu bạn muốn mình tìm ngay với một ngày dự kiến (ví dụ thứ 5 tuần sau là 3/10), mình sẽ gọi tool ngay để xem vé nào rẻ nhất nhé! 😊"
+    }
+  ]
+}

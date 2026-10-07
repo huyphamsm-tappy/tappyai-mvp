@@ -1,0 +1,50 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" OR \"MASSAGE DUBAI LUXURY\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:39:17.726Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" OR \"MASSAGE DUBAI LUXURY\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review Massage Dubai Luxury Trung Quốc",
+    "link": "https://www.tiktok.com/discover/review-massage-dubai-luxury-trung-qu%E1%BB%91c",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Khám phá các video liên quan đến Review Massage Dubai Luxury Trung Quốc trên TikTok.",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "check var cushion nhà Meiking có ưu và khuyết điểm gì? ...",
+    "link": "https://www.tiktok.com/@ngophuonglinhneee/video/7579235487366384904",
+    "snippet": "Vinne Cushion · Review Massage Dubai Luxury Trung Quốc · Review Cám Khuyên Trung Quốc · Merythod Cushion · Review Cushion Clio Hà Linh.",
+    "position": 2
+   },
+   {
+    "title": "Dubai Nha Trang",
+    "link": "https://www.tiktok.com/discover/dubai-nha-trang",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Massafer Dubai Nha Trang. 967Thích. 93Bình luận. 332Lượt chia sẻ. Massage Dubai trải nghiệm tại Nha ...",
+    "date": "7 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hoa Đà Massage Nha Trang",
+    "link": "https://www.tiktok.com/discover/hoa-%C4%91%C3%A0-massage-nha-trang",
+    "snippet": "Review Massage Dubai Luxury Trung Quốc · Massage Dubai Discovery Garden · Massage Therapist Dubai Sri Lanka. 967Thích. 93Bình luận. 332Lượt chia sẻ. Massage ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

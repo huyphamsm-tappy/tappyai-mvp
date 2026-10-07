@@ -40,4 +40,17 @@ class RealAccountRepository @Inject constructor(
             val part = MultipartBody.Part.createFormData("avatar", "avatar", body)
             api.uploadAvatar(part).avatarUrl
         }
+
+    override suspend fun uploadCover(bytes: ByteArray, mimeType: String): NetworkResult<String> =
+        safeApiCall {
+            val body = bytes.toRequestBody(mimeType.toMediaType())
+            val part = MultipartBody.Part.createFormData("cover", "cover", body)
+            api.uploadCover(part).coverUrl
+        }
+
+    override suspend fun clearCover(): NetworkResult<Unit> =
+        safeApiCall {
+            api.clearCover(ClearCoverRequestDto())
+            Unit
+        }
 }

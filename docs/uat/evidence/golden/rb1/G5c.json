@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 13115,
+      "textFrames": 388,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, giấy đăng ký xe. Đảm bảo tên chủ xe khớp với người bán, không có tranh chấp hay nợ nần.\n- **Tình trạng xe**: Xe có bị khoá từ xa, nợ trả góp, hay bị cấm sang tên không? Hỏi rõ lý do bán.\n- **Gặp trực tiếp**: Luôn gặp người bán tại chỗ, kiểm tra xe trước khi chuyển tiền. Không chuyển tiền trước qua link lạ hay QR code.\n- **Giá bất thường**: Nếu giá rẻ hơn 30% so với mặt bằng thị trường → dấu hiệu cần nghi ngờ (xe bị tai nạn, số km giả, hay lừa đảo).\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Số km**: Kiểm tra đồng hồ km, so sánh với tuổi xe và tình trạng ngoài/trong.\n- **Động cơ & hộp số**: Nổ máy nghe có bất thường không, chạy thử để cảm nhận độ mượt.\n- **Ngoại thất**: Kiểm tra vết va đập, sơn, gỉ sét, kính, gương.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, điều hòa, âm thanh có hoạt động bình thường không.\n- **Khung gầm**: Nếu có dấu hiệu va chạm nặng → có thể ảnh hưởng an toàn.\n- **Bảo hành**: Xe còn bảo hành không? Bao lâu?\n\n**💰 TRƯỚC KHI CHUYỂN TIỀN:**\n- Dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n- Nên mua bảo hiểm hoặc kiểm tra lịch sử bảo dưỡng nếu có.\n- Chỉ chuyển tiền khi đã xem xe trực tiếp, kiểm tra giấy tờ xong, và hoàn toàn yên tâm.\n\nBạn đang tìm mua ô tô cũ ở đâu (Facebook, Chợ Tốt, hay từ đại lý)? Hay cần tìm kiếm xe cụ thể nào?\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, giấy đăng ký xe. Đảm bảo tên chủ xe khớp với người bán, không có tranh chấp hay nợ nần.\n- **Tình trạng xe**: Xe có bị khoá từ xa, nợ trả góp, hay bị cấm sang tên không? Hỏi rõ lý do bán.\n- **Gặp trực tiếp**: Luôn gặp người bán tại chỗ, kiểm tra xe trước khi chuyển tiền. Không chuyển tiền trước qua link lạ hay QR code.\n- **Giá bất thường**: Nếu giá rẻ hơn 30% so với mặt bằng thị trường → dấu hiệu cần nghi ngờ (xe bị tai nạn, số km giả, hay lừa đảo).\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Số km**: Kiểm tra đồng hồ km, so sánh với tuổi xe và tình trạng ngoài/trong.\n- **Động cơ & hộp số**: Nổ máy nghe có bất thường không, chạy thử để cảm nhận độ mượt.\n- **Ngoại thất**: Kiểm tra vết va đập, sơn, gỉ sét, kính, gương.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, điều hòa, âm thanh có hoạt động bình thường không.\n- **Khung gầm**: Nếu có dấu hiệu va chạm nặng → có thể ảnh hưởng an toàn.\n- **Bảo hành**: Xe còn bảo hành không? Bao lâu?\n\n**💰 TRƯỚC KHI CHUYỂN TIỀN:**\n- Dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n- Nên mua bảo hiểm hoặc kiểm tra lịch sử bảo dưỡng nếu có.\n- Chỉ chuyển tiền khi đã xem xe trực tiếp, kiểm tra giấy tờ xong, và hoàn toàn yên tâm.\n\nBạn đang tìm mua ô tô cũ ở đâu (Facebook, Chợ Tốt, hay từ đại lý)? Hay cần tìm kiếm xe cụ thể nào?\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

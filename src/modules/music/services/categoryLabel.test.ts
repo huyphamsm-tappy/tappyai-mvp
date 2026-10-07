@@ -58,7 +58,9 @@ describe('the call site cannot forget the locale again', () => {
     // default turns that omission into a compile error, which is a stronger guard than any
     // assertion here — this test pins the signature so nobody restores the default as a
     // "convenience".
-    const src = readFileSync('src/modules/music/services/musicService.ts', 'utf8')
+    // The function lives in `musicHelpers.ts` (the pure, browser-safe half of the service —
+    // Phase 7 split it out so the client barrel never imports the service-role repository).
+    const src = readFileSync('src/modules/music/services/musicHelpers.ts', 'utf8')
     expect(src).toMatch(/getCategoryLabel\(category: MusicCategory, locale: string\)/)
     expect(src).not.toMatch(/locale: string = DEFAULT_LOCALE/)
   })

@@ -1,6 +1,7 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { isAnonymousUser } from '@/lib/auth/socialWriteAccess'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
@@ -116,9 +117,23 @@ export default function LoginPage() {
   }, [])
 
   useEffect(() => {
+    /**
+     * Send an ALREADY SIGNED-IN person where they were going.
+     *
+     * 🚨 AN ANONYMOUS SESSION IS NOT A SIGNED-IN PERSON, AND TREATING IT AS ONE
+     * MADE THIS PAGE UNREACHABLE. Every browser gets one: `ensureAnonymousSession`
+     * mints a real `auth.users` row so the free questions can be scoped to
+     * somebody, and `getUser()` duly returns it. So this redirect fired for every
+     * visitor who had never logged in — they were bounced straight back to `/`,
+     * and the only route that can create an account could not be opened.
+     *
+     * Measured on localhost: the sidebar's Logout row links here, the visitor
+     * landed on Home, and the session survived untouched. Both halves of that bug
+     * are this one line.
+     */
     const checkAndRedirect = async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return
+      if (!user || isAnonymousUser(user)) return
       const dest = readReturnTo(window.location.search)
       router.replace(dest)
     }
@@ -796,7 +811,7 @@ export default function LoginPage() {
                       </form>
                     )}
 
-                    {/* Guest — browse anonymously (5 AI questions/day, read-only social) */}
+                    {/* Guest — browse anonymously (ANON_LIFETIME_LIMIT AI questions for the lifetime of the identity, read-only social; chat itself requires an account — main #251) */}
                     <button
                       onClick={handleGuest}
                       disabled={anyLoading}

@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa Rừng CT Bee - Quà tặng khách hàng, đối tác cao cấp site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:03.694Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa Rừng CT Bee - Quà tặng khách hàng, đối tác cao cấp site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-k%C3%A8m-Phin-H%E1%BA%A1t-%C4%90i%E1%BB%81u-M%E1%BA%ADt-Hoa-R%E1%BB%ABng-CT-Bee-Qu%C3%A0-t%E1%BA%B7ng-kh%C3%A1ch-h%C3%A0ng-%C4%91%E1%BB%91i-t%C3%A1c-cao-c%E1%BA%A5p-i.394342126.28176539380",
+    "snippet": "Mua Hộp Quà Tặng Cà Phê kèm Phin + Hạt Điều, Mật Hoa Rừng CT Bee - Quà tặng khách hàng, đối tác cao cấp giá tốt. Mua hàng qua mạng uy tín, tiện … 388.000₫-709. ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Set hạt dinh dưỡng quà tặng - Giá Tốt, Sale Tháng 09, ...",
+    "link": "https://shopee.vn/list/set%20h%E1%BA%A1t%20dinh%20d%C6%B0%E1%BB%A1ng/qu%C3%A0%20t%E1%BA%B7ng",
+    "snippet": "Mua online set hạt dinh dưỡng quà tặng chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

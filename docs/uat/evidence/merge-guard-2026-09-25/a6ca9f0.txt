@@ -1,0 +1,56 @@
+merge-guard — a merge may not silently drop what one side brought in (docs/uat/MERGE-LOSS-AUDIT.md §4)
+• a6ca9f0 Merge wip/tappyai-v3-canonical-2026-09-17 (uncommitted canonical work): ✖ 15 finding(s)
+    R3 [protected]  src/lib/ai/quota/__tests__/aiQuestionQuota.test.ts — 13 line(s) of one side's change lost in a protected-path conflict
+        − import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product'
+        − // Anonymous: 5 per VN day, keyed by the verified identity. Registered: 15 per VN day. One pool for every
+        − describe('anonymous — five per VN day, keyed by the verified identity (canonical convention)', () => {
+    R3 [protected]  src/lib/ai/quota/aiQuestionQuota.ts — 16 line(s) of one side's change lost in a protected-path conflict
+        − import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT, vnToday } from '@/lib/config/product'
+        − // THE CONTRACT (canonical, 2026-09-17)
+        − //   ANONYMOUS   ANON_DAILY_LIMIT (5) questions per VN calendar day — the same allowance and the
+    R3 [protected]  src/lib/auth/anonymousWriteBoundary.test.ts — 6 line(s) of one side's change lost in a protected-path conflict
+        − // Analyze Message. Anonymous use is a product feature: metered per verified identity (or per IP
+        − // for an identity-less guest) through the shared AI question quota — ANON_DAILY_LIMIT per VN
+        − // day on this branch, the same allowance chat gives a visitor — plus a per-IP burst cap; the
+    R1  android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt — 13 line(s) git merged cleanly were dropped
+        − message.plan?.let { plan -> TripPlanCard(plan, planJson = message.planJson) }
+        − placesView = message.placesView,
+        − plan = message.plan,
+    R1  android/app/src/main/java/com/tappyai/app/chat/PlaceCard.kt — 8 line(s) git merged cleanly were dropped
+        − import android.content.Context
+        − /** Web parity: the map button leads, ordering follows, anything else is a secondary button. */
+        − val orders = usable.filter { it !== maps && (it.kind == "order" || it.kind == "delivery") }
+    R1  android/app/src/main/java/com/tappyai/app/chat/PlacesLiveView.kt — 3 line(s) git merged cleanly were dropped
+        − * The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, …), decided by the
+        − * server's one label resolver. This client renders it from its own dictionary
+        − * ([placeActionLabel]) and never re-derives the decision.
+    R1  android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionCard.kt — 144 line(s) git merged cleanly were dropped
+        − import androidx.compose.material.icons.Icons
+        − import androidx.compose.material.icons.filled.Star
+        − import androidx.compose.material3.Icon
+    R1  android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionView.kt — 41 line(s) git merged cleanly were dropped
+        − import kotlinx.serialization.json.JsonElement
+        − import kotlinx.serialization.json.JsonNull
+        − import kotlinx.serialization.json.JsonPrimitive
+    R1  android/app/src/test/java/com/tappyai/app/chat/PlaceDecisionSectionTest.kt — 2 line(s) git merged cleanly were dropped
+        − // The card draws from the facts and only from the facts.
+        − assertTrue(src.contains("private fun PlaceCard(facts: PlaceCardFacts)"))
+    R1  android/app/src/test/java/com/tappyai/app/chat/ShoppingDecisionParseTest.kt — 14 line(s) git merged cleanly were dropped
+        − // Web `formatVndShort`: one ROUNDED decimal of a million, comma for Vietnamese.
+        − val vi = java.util.Locale("vi", "VN")
+        − assertEquals("19 triệu – 20,5 triệu", priceRangeText(18_990_000.0, 20_490_000.0, "chưa rõ", vi))
+    R2  android/app/src/test/java/com/tappyai/app/chat/ShoppingParityTest.kt — file added by parent 2 is deleted in the result
+    R1  src/components/share/ShareMenu.tsx — 5 line(s) git merged cleanly were dropped
+        − * Fires once per share that actually COMPLETED, with the target that completed it — the
+        − * clipboard write resolved, `navigator.share()` resolved (not rejected/cancelled), or the
+        − * hand-off window really opened. Never on open, never on a blocked popup or a failed copy.
+    R1  src/lib/ai/tools/serperCallBudget.test.ts — 1 line(s) git merged cleanly were dropped
+        − expect(r.links).toHaveLength(3)
+    R1  src/lib/recommendation/crossPlatformCommerceContract.test.ts — 1 line(s) git merged cleanly were dropped
+        − expect(card).toContain('openPlaceAction(context, action, commerce)')
+    R1  src/lib/structuredContent/crossPlatformParity.test.ts — 2 line(s) git merged cleanly were dropped
+        − expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn')
+        − .toMatch(/message\.shopping == null[\s\S]{0,700}PlaceCards\(/)
+
+✖ 15 unwaived finding(s). Restore the dropped change, or state it in the merge message: "Merge-Drop: <path> — <reason>".
+exit=1

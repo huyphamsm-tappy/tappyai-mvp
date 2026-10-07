@@ -1,0 +1,69 @@
+{
+  "id": "S8",
+  "text": "Nồi chiên không dầu 5L loại nào tốt",
+  "parent": null,
+  "status": 200,
+  "ms": 11476,
+  "evidenceId": "f8647686-e183-45ed-954e-3bca0b8526fe",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "nồi chiên không dầu 5L tốt"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title",
+      "rating": 4.9,
+      "count": 832,
+      "price": 980000
+    },
+    {
+      "name": "Nồi chiên không dầu Fujihome A5 5 Lít",
+      "rating": 4.9,
+      "count": 832,
+      "price": 1002000
+    },
+    {
+      "name": "Nồi Chiên Không Dầu Fujihome A5",
+      "rating": 4.9,
+      "count": 832,
+      "price": 1050000
+    },
+    {
+      "name": "Nồi chiên không dầu Rapido 5 lít raf5.0m",
+      "rating": 5,
+      "count": 26,
+      "price": 899000
+    },
+    {
+      "name": "Nồi chiên không dầu Rapido 5.0 lít raf5.0m3",
+      "rating": 4.9,
+      "count": 23,
+      "price": 889000
+    },
+    {
+      "name": "KhánhVyHome - Nồi chiên không dầu Fujihome A4 5 Lít -Default Title",
+      "rating": 5,
+      "count": 5,
+      "price": 1040000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQP08YEtxGtfdYaIKh5hR9YV4vSQfBbBsPR42kdoGUZ0IFwBxKnXcRmTmY6CefB0rhuHgs_ui7_CBjtTp_-0_pdIUip5YSa1FOusoMIunEurwoePKCt4wFI\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu Fujihome A5 5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1002000,\"priceHigh\":1002000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRiz3lNO7kCo6Qs83PYn8QVfeYM3jgAIvG_Y8XLTc0n1nq5L2tXM0SVBHlaV65rqK2EYMKv0Sj3RjPoQCEcyT0sNIAir19cG0kzboVVKsrEilN_nfgqCSq_\",\"offers\":[{\"seller\":\"Kết Nối Tiêu Dùng\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:4237307210783368701,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1002000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:2\",\"name\":\"Nồi Chiên Không Dầu Fujihome A5\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1050000,\"priceHigh\":1050000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS-yMH6CrnMWUYKo9joYd8Ca5-lHlsJoVtaOuoVc9SxeOSQ4Xr62iwojJn4FN9uJKNPF4tAvXV5UjMMoYdcIbpkd-WsGv0SkyujoSP0sJGFNMv8hKZnQpd4Sg\",\"offers\":[{\"seller\":\"Điện Máy Danabuy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:8277102718077042468,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1050000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu Rapido 5 lít raf5.0m\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":899000,\"priceHigh\":899000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTS-wi-jgym1bMUlWK5Sy4Os_yN9xixUGZOXJ67IwUuNAlyiuT1GLrVdHXMJFL8niU5u85cgRQ8D5FzeCqpZhgMZ2u0nwu3CE1b8jmkAjslFyfVkwBgApkjoQ\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15912103101641178285,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":899000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":26}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Rapido 5.0 lít raf5.0m3\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":889000,\"priceHigh\":889000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR2aRHPMeumFgd7EfTDyC6mi7aTswcQ4EIeunCVgtpnrG_iBp4N7FkN6PTxt1KeCl5xZP8Z888_qrknnZGDzw94XH5atcIy0IAo0oy52HVlssVYob7oaSwH\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:2578263057198391064,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":889000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":23}]},{\"key\":\"uncertain:5\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A4 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1040000,\"priceHigh\":1040000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfpHN_lsad4dfQlvEcP1ld5RtB49-rfHV5-SUgMtgIAbC7emtagHggaM5fSrJKubebWCqXzM7fxYq9D3cbrec9hOjtZaEw8wZQb34ljt1uoXzxj-t1ICrJhYw\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:15704386602595159040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1040000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":5}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình sẽ tìm các nồi chiên không dầu 5L tốt nhất cho bạn.\n\nMình tìm được 2 dòng nồi chiên không dầu 5L được đánh giá cao nhất:\n\n Đây là lựa chọn phổ biến nhất, được nhiều người tin dùng. Nồi có công suất tốt, nấu đều, dễ vệ sinh. Bạn có thể tìm trên các shop như Khánh Vy Home, Kết Nối Tiêu Dùng hay Điện Máy Danabuy.\n\n Nếu ưu tiên giá thì Rapido là lựa chọn hợp lý.\n\nMình nghiêng về **Fujihome A5** vì có số lượng đánh giá lớn hơn (832 vs 26), cho thấy độ tin cậy cao hơn. Tuy nhiên nếu bạn muốn tiết kiệm, Rapido cũng là lựa chọn tốt với giá rẻ hơn.\n\nBạn ưu tiên chất lượng hay giá cả hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Fujihome A5 có tính năng gì nổi bật|Rapido so với Fujihome khác gì|Nồi chiên không dầu 3L có tốt không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Nồi chiên không dầu 5L loại nào tốt"
+    },
+    {
+      "role": "assistant",
+      "content": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A5 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":980000,\"priceHigh\":980000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQP08YEtxGtfdYaIKh5hR9YV4vSQfBbBsPR42kdoGUZ0IFwBxKnXcRmTmY6CefB0rhuHgs_ui7_CBjtTp_-0_pdIUip5YSa1FOusoMIunEurwoePKCt4wFI\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:16670702389821122040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":980000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:1\",\"name\":\"Nồi chiên không dầu Fujihome A5 5 Lít\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1002000,\"priceHigh\":1002000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRiz3lNO7kCo6Qs83PYn8QVfeYM3jgAIvG_Y8XLTc0n1nq5L2tXM0SVBHlaV65rqK2EYMKv0Sj3RjPoQCEcyT0sNIAir19cG0kzboVVKsrEilN_nfgqCSq_\",\"offers\":[{\"seller\":\"Kết Nối Tiêu Dùng\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:4237307210783368701,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1002000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:2\",\"name\":\"Nồi Chiên Không Dầu Fujihome A5\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1050000,\"priceHigh\":1050000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS-yMH6CrnMWUYKo9joYd8Ca5-lHlsJoVtaOuoVc9SxeOSQ4Xr62iwojJn4FN9uJKNPF4tAvXV5UjMMoYdcIbpkd-WsGv0SkyujoSP0sJGFNMv8hKZnQpd4Sg\",\"offers\":[{\"seller\":\"Điện Máy Danabuy\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:8277102718077042468,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1050000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":832}]},{\"key\":\"uncertain:3\",\"name\":\"Nồi chiên không dầu Rapido 5 lít raf5.0m\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":899000,\"priceHigh\":899000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTS-wi-jgym1bMUlWK5Sy4Os_yN9xixUGZOXJ67IwUuNAlyiuT1GLrVdHXMJFL8niU5u85cgRQ8D5FzeCqpZhgMZ2u0nwu3CE1b8jmkAjslFyfVkwBgApkjoQ\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:15912103101641178285,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":899000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":26}]},{\"key\":\"uncertain:4\",\"name\":\"Nồi chiên không dầu Rapido 5.0 lít raf5.0m3\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":889000,\"priceHigh\":889000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR2aRHPMeumFgd7EfTDyC6mi7aTswcQ4EIeunCVgtpnrG_iBp4N7FkN6PTxt1KeCl5xZP8Z888_qrknnZGDzw94XH5atcIy0IAo0oy52HVlssVYob7oaSwH\",\"offers\":[{\"seller\":\"KingShop.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,catalogid:2578263057198391064,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":889000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":23}]},{\"key\":\"uncertain:5\",\"name\":\"KhánhVyHome - Nồi chiên không dầu Fujihome A4 5 Lít -Default Title\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1040000,\"priceHigh\":1040000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRfpHN_lsad4dfQlvEcP1ld5RtB49-rfHV5-SUgMtgIAbC7emtagHggaM5fSrJKubebWCqXzM7fxYq9D3cbrec9hOjtZaEw8wZQb34ljt1uoXzxj-t1ICrJhYw\",\"offers\":[{\"seller\":\"Khánh Vy Home\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L+t%E1%BB%91t&prds=localAnnotatedOfferId:1,productid:15704386602595159040,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1040000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":5}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình sẽ tìm các nồi chiên không dầu 5L tốt nhất cho bạn.\n\nMình tìm được 2 dòng nồi chiên không dầu 5L được đánh giá cao nhất:\n\n Đây là lựa chọn phổ biến nhất, được nhiều người tin dùng. Nồi có công suất tốt, nấu đều, dễ vệ sinh. Bạn có thể tìm trên các shop như Khánh Vy Home, Kết Nối Tiêu Dùng hay Điện Máy Danabuy.\n\n Nếu ưu tiên giá thì Rapido là lựa chọn hợp lý.\n\nMình nghiêng về **Fujihome A5** vì có số lượng đánh giá lớn hơn (832 vs 26), cho thấy độ tin cậy cao hơn. Tuy nhiên nếu bạn muốn tiết kiệm, Rapido cũng là lựa chọn tốt với giá rẻ hơn.\n\nBạn ưu tiên chất lượng hay giá cả hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=n%E1%BB%93i+chi%C3%AAn+kh%C3%B4ng+d%E1%BA%A7u+5L\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Fujihome A5 có tính năng gì nổi bật|Rapido so với Fujihome khác gì|Nồi chiên không dầu 3L có tốt không[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "id": "S6",
+  "text": "mua gì bây giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 402,
+  "evidenceId": "161f672e-10bf-46a8-8a86-518337e517d1",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    }
+  ]
+}

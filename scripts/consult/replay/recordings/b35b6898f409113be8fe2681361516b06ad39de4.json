@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phê La\" OR \"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Sài Gòn Đậm Đắng\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:16:21.207Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phê La\" OR \"Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3\" OR \"Sài Gòn Đậm Đắng\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 1
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Phê La: Quán Cà Phê Đẹp Ở Quận 3. Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. Tìm hiểu view đẹp và những trải nghiệm ...",
+    "position": 2
+   },
+   {
+    "title": "Phê La Quận 3",
+    "link": "https://www.tiktok.com/discover/ph%C3%AA-la-qu%E1%BA%ADn-3",
+    "snippet": "Quán cà phê Phê La đẹp nhất Sài Gòn. Khám phá quán cà phê Phê La tại quận 3, không gian thoáng đãng, góc sống ảo tuyệt đẹp. Thích hợp cho hẹn hò ...",
+    "date": "10 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7215572400639905050",
+    "snippet": "1581 Lượt thích,Video TikTok từ Sài Gòn Béo ☕️ (@saigonbeoreview): \"Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "position": 4
+   },
+   {
+    "title": "Phê La Có Hỷ Địa Chỉ Quận 3",
+    "link": "https://www.tiktok.com/discover/ph%C3%AA-la-c%C3%B3-h%E1%BB%B7-%C4%91%E1%BB%8Ba-ch%E1%BB%89-qu%E1%BA%ADn-3",
+    "snippet": "Phê La Có Hỷ: Trải Nghiệm Cà Phê Đậm Chất Cưới. Khám phá concept mới Phê La với không gian cà phê như đám cưới. Quán nằm tại 115 Trương Định Q3.",
+    "date": "6 thg 10, 2025",
+    "position": 5
+   },
+   {
+    "title": "PHÊ LA: The Hot New Chill Café in Saigon",
+    "link": "https://www.tiktok.com/@vivucungdung/video/7644528934310153480",
+    "snippet": "SIÊU HOTT‼️ PHÊ LA đã đổ bộ tại Vincom đường 3/2 dành cho các \"đồng chill\". Tới ngay thuii #phela #cafe #dongchill #saigon #xuhuong · Quán ...",
+    "position": 6
+   },
+   {
+    "title": "Phê La Nguyễn Thị Thập đón Đồng Chill trở lại",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7487247661918063927",
+    "snippet": "Phê La Nguyễn Thị Thập đã trở lại đón Đồng Chill rồi đây #PheLa Cà Phê Nhà Chòi Quận 7Cà Phê Cà Pháo Quận 3Phê La Nguyễn Thị Thập Quận 7Phê La ...",
+    "position": 7
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Phê La Hồ Tùng Mậu là quán cafe mộc mạc nằm ở số 125 Hồ Tùng Mậu, phường Bến Nghé, Quận 1, TP.HCM. Quán được nhiều người tìm đến vì không gian ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

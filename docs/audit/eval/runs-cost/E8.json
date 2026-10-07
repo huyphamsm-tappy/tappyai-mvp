@@ -1,0 +1,149 @@
+{
+  "id": "E8",
+  "text": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+  "parent": null,
+  "status": 200,
+  "ms": 15766,
+  "evidenceId": "775830fe-04e6-463c-94c4-6659ef5d5cf5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "chỗ chơi trẻ em 5 tuổi Sài Gòn",
+        "location": "Sài Gòn",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "tiNiWorld Thiso Mall Sala",
+      "rating": 4.7,
+      "count": 804,
+      "hours": "10:00–21:30",
+      "distance_km": 2.3,
+      "address": "TTTM Thiso Sala, 10 Mai Chí Thọ, An Khánh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36802,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 167,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "tiNiWorld",
+      "rating": 4.7,
+      "count": 893,
+      "hours": "09:30–21:30",
+      "distance_km": 6,
+      "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Jump Arena Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 609,
+      "hours": "14:00–22:00",
+      "distance_km": 4,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "tiNiWorld Thiso Mall Sala",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 804,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36802,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "07:00–18:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Tinker Box",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 167,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "08:30–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "tiNiWorld",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 893,
+        "distance_km": 6,
+        "open_now": true,
+        "opening_hours": "09:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Jump Arena Lê Thị Riêng",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 609,
+        "distance_km": 4,
+        "open_now": false,
+        "opening_hours": "14:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những chỗ chơi phù hợp cho bé 5 tuổi cuối tuần ở Sài Gòn nhé.\n\nMình chọn **tiNiWorld Thiso Mall Sala** cho bữa chơi cuối tuần của bé — **4.7⭐ (804 đánh giá Google Maps)**, cách bạn chỉ 2.3km, mở từ 10:00–21:30 nên rất phù hợp cuối tuần.\n\nNgoài ra, **Thảo Cầm Viên Sài Gòn** cũng là lựa chọn tuyệt vời — **4.3⭐ (36.802 đánh giá)**, gần nhất chỉ 1.2km, mở 07:00–18:30. Bé sẽ thích xem các loài động vật, vừa chơi vừa học kiến thức tự nhiên. Hoặc **Tinker Box** — **4.4⭐ (167 đánh giá)**, sân chơi trong nhà với các hoạt động sáng tạo, cách bạn 1.3km, mở đến 21:00.\n\nBạn muốn chọn chỗ vui chơi trong nhà (tiNiWorld, Tinker Box) hay ngoài trời (Thảo Cầm Viên)?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 tiNiWorld Thiso Mall Sala\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=504450242877836657\",\"primary\":true},{\"label\":\"🌐 Website tiNiWorld\",\"type\":\"website\",\"url\":\"https://tiniworld.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên Sài Gòn|Tinker Box sân chơi|Jump Arena trampoline[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những chỗ chơi phù hợp cho bé 5 tuổi cuối tuần ở Sài Gòn nhé.\n\nMình chọn **tiNiWorld Thiso Mall Sala** cho bữa chơi cuối tuần của bé — **4.7⭐ (804 đánh giá Google Maps)**, cách bạn chỉ 2.3km, mở từ 10:00–21:30 nên rất phù hợp cuối tuần.\n\nNgoài ra, **Thảo Cầm Viên Sài Gòn** cũng là lựa chọn tuyệt vời — **4.3⭐ (36.802 đánh giá)**, gần nhất chỉ 1.2km, mở 07:00–18:30. Bé sẽ thích xem các loài động vật, vừa chơi vừa học kiến thức tự nhiên. Hoặc **Tinker Box** — **4.4⭐ (167 đánh giá)**, sân chơi trong nhà với các hoạt động sáng tạo, cách bạn 1.3km, mở đến 21:00.\n\nBạn muốn chọn chỗ vui chơi trong nhà (tiNiWorld, Tinker Box) hay ngoài trời (Thảo Cầm Viên)?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 tiNiWorld Thiso Mall Sala\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=504450242877836657\",\"primary\":true},{\"label\":\"🌐 Website tiNiWorld\",\"type\":\"website\",\"url\":\"https://tiniworld.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên Sài Gòn|Tinker Box sân chơi|Jump Arena trampoline[/FOLLOWUPS]"
+    }
+  ]
+}

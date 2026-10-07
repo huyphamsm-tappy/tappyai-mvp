@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "30 Quà sinh nhật Sếp dưới 1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:55:32.195Z",
+ "body": {
+  "searchParameters": {
+   "q": "30 Quà sinh nhật Sếp dưới 1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tượng Phong Thủy Hồ Lô Màu Ngọc Ngũ Phúc, Hoa Mẫu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tuong-phong-thuy-ho-lo-may-man-trang-tri-nha/1729895246142408756",
+    "snippet": "·Số lượng: Mỗi gói sản phẩm bao gồm 1 chiếc tượng.·Chất liệu:Sản phẩm được sản xuất từ acrylic cao cấp giúp sản phẩm bền chắc và dễ dàng lau chùi khi có bụi bẩn ...",
+    "rating": 4.9,
+    "ratingCount": 25,
+    "position": 1
+   },
+   {
+    "title": "Sách - Trốn Lên Mái Nhà Để Khóc",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-tron-len-mai-nha-de-khoc-cau-chuyen-gia-dinh-ky-uc/1729733350016649374",
+    "snippet": "“Trốn lên mái nhà để khóc” là cuốn nhật ký nhỏ ghi lại những hoài niệm đẹp đẽ cất giữ vào góc nhỏ nơi sâu thẳm của trái tim của mỗi người, đồng thời cũng là ...",
+    "rating": 4.9,
+    "ratingCount": 233,
+    "position": 2
+   },
+   {
+    "title": "45 phương pháp giúp bạn thoát khỏi tình trạng nỗ lực ảo ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-loi-tu-duy-45-phuong-phap-thoat-no-luc-ao-bizbooks/1730220743517833270",
+    "snippet": "Trong thế giới ngày nay, chúng ta dễ dàng rơi vào cái bẫy tư duy rằng chỉ cần “nỗ lực nhiều hơn” là có thể giải quyết mọi vấn đề.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

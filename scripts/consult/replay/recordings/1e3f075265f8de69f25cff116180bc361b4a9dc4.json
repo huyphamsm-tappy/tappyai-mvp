@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Son Lụa Diễm Quận 10 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:27:08.940Z",
+ "body": {
+  "searchParameters": {
+   "q": "Son Lụa Diễm Quận 10 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "cushion cubremi natural",
+    "link": "https://shop.tiktok.com/vn/k/cushion-cubremi-natural",
+    "snippet": "[SET QUÀ TẶNG 20/10] Combo Trang Điểm Tự Nhiên Son Lụa Diễm Mềm Mịn Và Cushion Phấn Nước Thuỷ ...",
+    "position": 1
+   },
+   {
+    "title": "Son đỏ nâu trầm cỏ mềm",
+    "link": "https://shop.tiktok.com/vn/k/son-do-nau-tram-co-mem",
+    "snippet": "Kết quả cho \"Son đỏ nâu trầm cỏ mềm\" · [ Tặng túi hộp cao cấp ] Son kem BEANA Sapphire màu Đỏ đất trầm siêu mềm môi, màu chuẩn sonmôi · [ Tặng túi hộp cao cấp ] ...",
+    "position": 2
+   },
+   {
+    "title": "cubremi x sally cushion natural",
+    "link": "https://shop.tiktok.com/vn/k/cubremi-x-sally-cushion-natural",
+    "snippet": "[SET QUÀ TẶNG 20/10] Combo Trang Điểm Tự Nhiên Son Lụa Diễm Mềm Mịn Và Cushion Phấn Nước Thuỷ ...",
+    "position": 3
+   },
+   {
+    "title": "3kg bánh tráng nhúng mè đen vuông mềm dẻo dai FOOD",
+    "link": "https://shop.tiktok.com/vn/pdp/1730614511359592822",
+    "snippet": "Sau đó, bánh được cuốn với thịt, rau, cá hoặc chả ram, chả giò chiên giòn rụm, béo béo và thơm của mè. Bánh tráng có thể được sử dụng để làm món ăn cuốn thịt, ...",
+    "rating": 4.9,
+    "ratingCount": 29,
+    "position": 4
+   },
+   {
+    "title": "Sáp Em Bé Giúp Dưỡng Ẩm Mềm Da Và Giữ Ấm Bé ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sap-giu-am-cho-be-tu-tinh-dau-tu-nhien-chong-khuan-diu-nhe/1729623775144610527?source=anchor",
+    "snippet": "Son Môi Lụa Diễm Mềm Mịn Mướt Môi Cỏ Mềm 4g Cosmetic Nữ Mỹ Phẩm Trang Điểm. 4.7. 60927 ...",
+    "rating": 4.8,
+    "ratingCount": 698,
+    "position": 5
+   },
+   {
+    "title": "Dầu Gội Thảo Dược Tóc Mây Cỏ Mềm 300gr",
+    "link": "https://shop.tiktok.com/vn/pdp/dau-goi-thao-duoc-toc-may-300ml-lam-muot-giu-am/1729623253257849567",
+    "snippet": "Mô tả sản phẩm · DẦU GỘI TÓC MÂY · Chứa chiết xuất từ Bồ kết và thảo dược truyền thống cùng các hoạt chất thiên nhiên, Dầu gội Tóc Mây giúp làm sạch tóc và da đầu ...",
+    "rating": 4.5,
+    "ratingCount": 71,
+    "position": 6
+   },
+   {
+    "title": "Gói 30-50 chiếc Ghim băng, kim tây 4.2cm, 5.5cm kim băng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/goi-30-50-chiec-ghim-bang-cai-quan-ao-mau-tien-dungmisu/1732235221825849456",
+    "snippet": "Sản phẩm này được thiết kế để giúp cho việc may vá trở nên nhanh chóng và hiệu quả hơn.Kim băng may vá có thể sử dụng cho nhiều loại vải khác nhau, bao gồm cả ...",
+    "rating": 4.2,
+    "ratingCount": 5,
+    "position": 7
+   },
+   {
+    "title": "CÀ PHÊ BỘT PHA PHIN CUP A - TÚI 500g",
+    "link": "https://shop.tiktok.com/vn/pdp/1736490998949119043?source=anchor",
+    "snippet": "Mô tả sản phẩm ... Sản phẩm cà phê xay sẵn, thuận tiện cho việc pha chế tại nhà hoặc văn phòng. Đóng gói cẩn thận, dễ bảo quản. ... Bảo quản nơi khô ráo, thoáng mát ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

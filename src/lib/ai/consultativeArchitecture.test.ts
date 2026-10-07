@@ -57,7 +57,12 @@ describe('the chat route still DERIVES conversational context, it does not store
   it('re-derives the need profile from the message history every turn', () => {
     // Unchanged by ADR-024. The need is a function of what the user said, so it
     // has nothing to gain from a store and everything to lose from a stale one.
-    expect(route()).toMatch(/deriveNeedProfile\(\s*messages/)
+    // Item 1 (2026-09-19): the history it reads is `framingMessages` — the same messages, with a
+    // clarify answer folded into its request (mergeClarifyAnswer); still derived from the thread
+    // every turn, never stored. PRELAUNCH golden B4 (2026-09-25): scoped to the current subject
+    // (currentSubjectMessages), still re-derived from the thread every turn.
+    expect(route()).toMatch(/deriveNeedProfile\(\s*currentSubjectMessages\(\s*(?:withoutQuotedNames\(\s*)?framingMessages/)
+    expect(route()).toMatch(/const framingMessages = mergeClarifyAnswer\(messages\)/)
   })
 
   it('re-derives the decision stage and trip context the same way', () => {
@@ -143,15 +148,18 @@ describe('ADR-024 — decision evidence state, and only that', () => {
   })
 })
 
-describe('the mobile clients stayed stateless', () => {
-  it('Android sends no chat-state id and reads no state header', () => {
-    // ADR-024 is web-only by design. Android and iOS simply do not send a key, so
-    // their follow-ups get the fail-safe block — honest, if less useful — and no
-    // release is blocked on a mobile change.
+describe('the mobile clients carry no state — only the chat session id (R14)', () => {
+  it('Android may send chatSessionId, and nothing else that carries or names state', () => {
+    // R14 / Q7 (owner 29/09): the consultation state lives on the SERVER under (owner, chatSessionId) —
+    // one mechanism for web and Android. So Android MAY send `chatSessionId` (a UUID it makes per chat);
+    // it still never sends the web's evidence key, the history row id as a state key, or reads a state
+    // header. The server ignores a malformed id and scopes a valid one by owner (chatSessionState.ts).
     const request = readFileSync(
       'android/app/src/main/java/com/tappyai/app/chat/data/ChatRequest.kt', 'utf8')
     expect(request).not.toContain('conversationId')
     expect(request).not.toContain('decisionEvidenceId')
+    // When present, it is exactly this field name — the contract in ANDROID-REQUESTS §2 (R14).
+    if (/session/i.test(request)) expect(request).toMatch(/\bchatSessionId\b/)
     const repo = readFileSync(
       'android/app/src/main/java/com/tappyai/app/chat/data/RealChatRepository.kt', 'utf8')
     expect(repo).not.toContain('X-Conversation-Id')
@@ -187,8 +195,11 @@ describe('exactly one model request per chat turn, still', () => {
     // second, forced-tool call site — which is why `toolChoice` was added during integration and
     // then reverted: its only consumer is not here, and it breaks
     // consultative/architectureLock.test.ts, which is a tested RC contract.
-    const calls = route().match(/AI\.stream\(\{/g) ?? []
+    // TAPPY_AGENT (04/10): the options moved into `streamOpts` so the same call site can hand the turn to the bounded agent (flag ON);
+    // there is still exactly ONE AI.stream call, and the agent's own steps (AI.step) live only in src/lib/ai/agent, never in the route.
+    const calls = route().match(/AI\.stream\(streamOpts\)/g) ?? []
     expect(calls).toHaveLength(1)
+    expect(route()).not.toMatch(/AI\.step\(/)
   })
 
   it('the AI layer offers no tool forcing', () => {

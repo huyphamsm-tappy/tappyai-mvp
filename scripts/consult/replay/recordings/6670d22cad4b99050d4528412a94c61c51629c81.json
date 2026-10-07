@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp lưng UAG cho iPhone 17 Pro Max 17 pro max Monarch hoặc Pathfinder có MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:34:12.820Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp lưng UAG cho iPhone 17 Pro Max 17 pro max Monarch hoặc Pathfinder có MagSafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Ốp lưng UAG iPhone 17 Series ; Tính năng. Hỗ trợ sạc không dây/MagSafe; Mỏng nhẹ ; Dòng iPhone. iPhone 17 Pro Max; iPhone 17 Pro ; Chất liệu. PC; TPU",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder with Magsafe được thiết kế theo cấu trúc Featherlight Composite nhẹ với khả năng chống sốc đạt chuẩn quân sự.",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Monarch Pro Exclusive Cap Carbon Fiber được thiết kế với cấu trúc 5 lớp bền bỉ, kết hợp khung Armor phủ sợi carbon cao cấp. Sản ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Pathfinder-Civilian-Monarch-Pro-cho-iPhone-17-Pro-17-Pro-Max-%E2%80%93-b%E1%BA%A3n-cam-ch%E1%BB%91ng-s%E1%BB%91c-chu%E1%BA%A9n-qu%C3%A2n-%C4%91%E1%BB%99i-i.65304483.53902423205",
+    "snippet": "Ốp lưng UAG Pathfinder / Civilian / Monarch Pro cho iPhone 17 Pro / 17 Pro Max … 1.349.000₫ final price indicator",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "bao da uag giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bao%20da%20uag&urlold=bao-da-uag-iphone-xsmax/1873995943246618333/877968015750663345/%20",
+    "snippet": "UAG explorer thế hệ thứ hai phù hợp cho iPhone 16 pro max iPhone 15 14 Pro MAX iPhone 16 15 12 và giá đỡ Samsung s25ultra S24 S23, có vỏ bảo vệ chống rơi mạnh.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder Clear with MagSafe là sự kết hợp giữa khả năng bảo vệ bền bỉ và ngoại hình độc đáo, mạnh mẽ. Đây là lựa chọn đáng tin ...",
+    "position": 6
+   },
+   {
+    "title": "Các mẫu ốp lưng điện thoại mới nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/mau-op-lung-dien-thoai-moi-nhat",
+    "snippet": "... Ốp lưng iPhone 14 Pro Max UAG Monarch hỗ trợ sạc Magsafe ... Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Plasma Xte 360 Cap With Magsafe.",
+    "date": "9 thg 6, 2024",
+    "position": 7
+   },
+   {
+    "title": "Các hãng ốp lưng nổi tiếng được yêu thích hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-hang-op-lung-noi-tieng",
+    "snippet": "Max/17 Pro Max UAG Plasma Xte 360 Cap With Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Plasma Xte 360 Cap With Magsafe 2.200.000đ",
+    "date": "20 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

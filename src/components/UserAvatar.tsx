@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { useEffect, useState } from 'react'
 
 // ── One avatar, one fallback ────────────────────────────────────────────────

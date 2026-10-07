@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:58:31.233Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá\" Núi Ba Vì, Hà Nội site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Vườn Quốc gia Ba Vì, Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-ba-vi-national-park/hotels-c286m6744818/",
+    "snippet": "Meliá Ba Vi Mountain Retreat có xe đạp miễn phí, hồ bơi ngoài trời, trung tâm thể dục và khu vườn ở Ba Vì. Ngoài phòng chờ chung, resort 4 sao này còn có ...",
+    "position": 1
+   },
+   {
+    "title": "Melia Ba Vi Mountain Retreat Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/hanoi-hotel-detail-15906062/melia-ba-vi-mountain-retreat/review.html",
+    "snippet": "Các đánh giá Melia Ba Vi Mountain Retreat. Cốt 600m, Vườn quốc gia Ba Vì, Ba Vì, Hà Nội ... Meliá Ba Vì Mountain Retreat. Chúng tôi hy vọng sẽ có cơ hội được chào ...",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Khu vui chơi Khoang Xanh Suối Tiên ...",
+    "link": "https://vn.trip.com/hotels/landmark/vn/khoang-xanh-suoi-tien-tourist-area.html",
+    "snippet": "Chỗ nghỉ có sân hiên. Đi xe đạp là hoạt động được ưa chuộng trong khu vực. Ngoài ra, Meliá Ba Vi Mountain Retreat có dịch vụ thuê ô tô. Thành thạo tiếng Anh và ...",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại Hà Nội",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/hanoi.html",
+    "snippet": "Meliá Ba Vi Mountain Retreat có xe đạp miễn phí, hồ bơi ngoài trời, trung tâm thể dục và khu vườn ở Ba Vì. Ngoài phòng chờ chung, resort 4 sao này còn có các ...",
+    "position": 4
+   },
+   {
+    "title": "Vinpearl Cua Sot Resort, Affiliated by Meliá - Giá cả và Ưu ...",
+    "link": "https://vn.trip.com/hotels/loc-ha-hotel-detail-7362593/vinpearl-cua-sot-resort-affiliated-by-meli/",
+    "snippet": "Vinpearl Cua Sot Resort, Affiliated by Meliá · Biệt Thự 2 Phòng Ngủ Với Hồ Bơi Riêng · Biệt Thự Ba Phòng Ngủ có Bể Bơi Riêng · Biệt Thự 4 Phòng Ngủ Có Hồ Bơi Riêng ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Nhà thờ Núi, Nha Trang",
+    "link": "https://vn.trip.com/hotels/nha-trang-nha-trang-cathedral/hotels-c1777m6787369/",
+    "snippet": "Khách sạn sang trọng nào ở gần Nhà thờ Núi? ... Havana Nha Trang Hotel (từ 1.108.376₫),Vinpearl Empire Nha Trang, Affiliated by Meliá (từ 1.236.266₫)vàAnnova Nha ...",
+    "position": 6
+   },
+   {
+    "title": "Melia Aurea Nha Trang - Giá cả và Ưu đãi 2026, Nha Trang",
+    "link": "https://vn.trip.com/hotels/nha-trang-hotel-detail-133851709/meli-aurea-nha-trang/",
+    "snippet": "Meliá Aurea, một khu nghỉ dưỡng năm sao thuộc tập đoàn Meliá của Tây Ban Nha, nằm ở phía bắc Nha Trang. Khu nghỉ dưỡng được chia thành hai khu vực: Meliá Coral ...",
+    "position": 7
+   },
+   {
+    "title": "Vinpearl Empire Nha Trang, Affiliated by Meliá",
+    "link": "https://vn.trip.com/hotels/nha-trang-hotel-detail-15965564/vinpearl-empire-nha-trang-affiliated-by-meli/",
+    "snippet": "Giờ nhận phòng tại Vinpearl Empire Nha Trang, Affiliated by Meliá bắt đầu từ 15:00, và giờ trả phòng là 12:00. Vinpearl Empire Nha Trang, Affiliated by Meliá có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,437 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop dell mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:25:28.234Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop dell mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Dell Pro 14 Essential PV14250 - PV14250-120U-16512W-BL (Core 5 120U, 16GB, 512GB, Full HD+, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:2398077882628320334,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTBRBAMMzzKgK2qB1J62HfIMGUguf36kskwUZWCWAS_QQjlP_3yYhWLTA_opIHFa8VOAtWfdyniA1qJbaTB4dtrHbl-JpAtAm6oDWgwJcqxvfZCRhNbwEZpzQ",
+    "productId": "2398077882628320334",
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 15 DC15250",
+    "source": "Hưng Phát Laptop",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:4020503543926242249,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "23.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQDQy_yR8opYeDH8OzYVV0kjTnLRbM2MmAbNp860b_5viPUm7Etw1M6DspxsesbodPtV-0iYAqE8LQJoE50cW4A2MtbDtEy4KrUxdupwLopPJrMNWO8KcVc-A",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "4020503543926242249",
+    "position": 2
+   },
+   {
+    "title": "Laptop Máy tính bàn & Netbooks Dell 15,6\" 2K Cảm Ứng Intel Core I5-1334U 8Gb 512Gb Ldc15250-5315Blk-Pus",
+    "source": "laptopgame.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:11724521818352351472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "16.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSWo0w0cTiEEw8GL4_qnX1m_t9XOZAVl83Nf7-exoqIAaCHjjLsPl6GSXggMyIUE-GQH9BotlP6V5-DGTEOYaPPLG47WpAxsFiHVkhqqtsPA8aIhmJQMw-a",
+    "rating": 4.4,
+    "ratingCount": 22,
+    "productId": "11724521818352351472",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - CPH991 (i7 1355U, 16GB, 1TB, Full HD 120Hz, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:16275923979598149567,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTbZoOAgmHDNfGC7MngD17j4EVXpXjkgDtn3TzioFB80Yo9JICe9DIIP-WYLeog2v-7rtdYDLbRdfsUI_UWlZSYYmixHl42Ym2tufW1zbmKGOX7fJzR22nvFg",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "productId": "16275923979598149567",
+    "position": 4
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 C3U085W11SLU",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:12320048264732048896,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQmzhOoqb727Doz7_nb9Xn8fD397oiQGABPGDHkvHhOR9z1UO5HnkB_qG2dbo0VETm2dWuA6HNoNa7mSNqtRqm5Al5to0l0fsU0AOGMU1x1DJOaYc2n5faS5w",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "12320048264732048896",
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell 15 DC15255 DC5R5802W1 /R5-7530U/16GB/512GB/15.6FHD120Hz/OffH24+365 1Y/Win11",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:4686647128597193967,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQeFPzV2wmGgqgbowwQx6TMIuyqFCmwOv-F9jPR7X5KmdGqnxsLlwD9xi_YTJlWrNVcT1IXMvPM5KeI9fb5T5dkhKNdcDgEbia0gT9wRalCEJHIQjwNF7w_Ng",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "4686647128597193967",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - 71092479 (i5 1334U, 16GB, 512GB, Full HD 120Hz, OfficeHS24+365B, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:13385723483178814347,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ79fU9y8-3RtQ7IHK6qBwY0TRblE3tKp-4ZSniLafgxHBAoRYCTFfDhwh0rX32zR1pcQ22Uo7OdiRncKH-vE-lVy-p9HQZt5mbaNknidc31CsddUzqoHqlCQ",
+    "productId": "13385723483178814347",
+    "position": 7
+   },
+   {
+    "title": "Laptop Dell Pro 15 Essential PV15250 (P112F013) Intel Core i5-1334U | 15.6\" FHD | 8GB RAM | 512GB SSD | Ubuntu | Màu Đen Black",
+    "source": "ictsaigon.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:6133607736515607861,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "14.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcScihujxVqlJNpsimOpov7TPxvlvLWTsi5uwcgg1PDMeB9jHsk09AqI9FJni_yfR4_A98rxa8aai5YyhRt_0hxo7nl-nkVv0yZDcGf5k8MNM5-mW3qGE3cD",
+    "rating": 4.3,
+    "ratingCount": 139,
+    "productId": "6133607736515607861",
+    "position": 8
+   },
+   {
+    "title": "Laptop Dell Pro 15 Essential PV 15250 | i5-1334U, 8GB DDR5, SSD 512GB NVMe, 15.6\" FHD IPS 120Hz",
+    "source": "Tinhocngoisao.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:13031513737866774174,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT6JI9abX5helCg_4lSTFc9SyB_Kz6CnN_pfxwTh3lDguCicPdTRtXwo8hMMB8Z331pA1eo0zOkyUgGlbrU_Biv96tOfkKvEXj4XWnZ3UV7FvddX_NO4GwZ",
+    "rating": 4.3,
+    "ratingCount": 139,
+    "productId": "13031513737866774174",
+    "position": 9
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 - DC4C5375W1-2Y (Core 5 120U, 16GB, 512GB, Full HD, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:10217685703969990811,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "28.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSMjNNv7VPraJgVxae1pQSLNO3PQjE3eW25i0E3ZKXbDkEnDgqGXaYbtp0F7u_e5wxwgZ167Hqpvm_egO4CqMH1RaOLBO1bTAjHkcce02x2vqryC8pALBMg",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "10217685703969990811",
+    "position": 10
+   },
+   {
+    "title": "Laptop Dell 15 DC15255 G8MK9 - Nhập khẩu chính hãng",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:7522150680874507093,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQVPxqDwEOHhGSCzlBf4FalgFsan2v4FF-f03ZRxJ3GkPsnYC-Uflm1OHry6s2qyKX4ko9q9LELhBkR5imqx2BJLONdVJpGRTjpjO8tok7d-OEKNLEP51VFBw",
+    "productId": "7522150680874507093",
+    "position": 11
+   },
+   {
+    "title": "Laptop Dell 15 DC15255 DC5R5973W1 /R5 7530U/16GB(1x16GB)/512GB/15.6FHD/3C41W/W11H /OffH2024+Off365 1y/2Y",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:6876184820844102483,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQveiZowDqEJij6L1gnbAuZ_t7S85nODJbG4Y0-_o8Wsn1iyiMxrLBqgAyYobtqcW9XseAoI5lfXUzKuosVW9eaJf-bMoa0l-LwiRKPmJQlIHb5J5iZMRVt",
+    "rating": 4.9,
+    "ratingCount": 123,
+    "productId": "6876184820844102483",
+    "position": 12
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - DC15250-i7U161W11SLU (i7 1355U, 16GB, 1TB, Full HD 120Hz, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:17842885813421336693,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT0Qm_S3iCRbwpQG3aipcGSWgFC8aeFrNyhi6N-RhbhsXZJJRn_UGH-AcBwmmyFvLsXCKUcG5aV8Y2Kdo-K4UPFaX0Q9B_94w4DFppnKsO_e_2FgfLsimwg",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "productId": "17842885813421336693",
+    "position": 13
+   },
+   {
+    "title": "Dell Pro Max 14 MC14250 Core Ultra 7 255H RAM 16GB SSD 512GB 14 inch FHD+ Windows 11",
+    "source": "LaptopVIP.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:18386161643665444581,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "29.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcShrP4b0ccdEIrvh9cw-7ZbGqQVe5-fj7uDW50W8DCYfJcOBSPqbE2yvyt4v6obAmexPmrADbbXI0aJNaZFtMSFtzeyT1BfEHWmJVXVXxUCLIbPsnxhXsZ-",
+    "rating": 4.1,
+    "ratingCount": 51,
+    "productId": "18386161643665444581",
+    "position": 14
+   },
+   {
+    "title": "MTXT Dell 16 DC16250 (Core 7-150U, 16GB, 1TB SSD,16.0 inch FHD+Touch, UMA, Win11, Office Home 2024,Đen, P131F001) (DC16250-C7U161W11BLU)",
+    "source": "Viettel Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:9059829556994348687,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ1lizVsqpnuPT3-hXkP5AlttAPyE7REjegCBvHNBstxrSg-cx2p7XFZge-B-ZOAcCPQfW7t_aT7RWCEkSisoNkJggMDvHnuagCocPVVOG7ic7tlZw54g6LtQ",
+    "rating": 4.4,
+    "ratingCount": 770,
+    "productId": "9059829556994348687",
+    "position": 15
+   },
+   {
+    "title": "Laptop Dell Pro 15 Essential PV15250 VKVKD - Nhập khẩu chính hãn",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:1923699873065799372,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTg8PwxVwrptbhWFNU4Pzyb5EQ4z9Dh3zAA4hoN6ruXKI5qbltQR8-sXS8qQvAr_GtykwtWjylB6d_KlswfXpv5THKiPrHeq4Lvm3lRzg4Gs4gOE6tNPP8o",
+    "productId": "1923699873065799372",
+    "position": 16
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3530 - 71053721 (i7 1355U, 16GB, 512GB, Full HD 120Hz, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:9188579772558784529,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "24.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSj81w8psvOnMyLmFg9bXP5vUaId2-sRle5uAhUNj0IaAk_a8-rxe9hFwQ6udJ737AdXLHr5i4FF8EMcfq8CIv0gvJxfvC0WI5p-QOvIfRJT6Ek3sF8CZltCw",
+    "productId": "9188579772558784529",
+    "position": 17
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 DC15250-i7U161W11SLU-27 /i7-1355U/16GB DDR5/1TB/15.6FHD/W11/OffH24",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:16329071750985921646,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT1b5LE7RdL_Gd9IN0lKqppI8Twp4jkDwKQqBfYK8rqq1ObwqQ0nhjNuhwpK_L8nnbYmFBishVJ4MK4EDzbmqv-DCDPX9EYkj3yTjdhon8ZKLzTloc2KLUB",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "productId": "16329071750985921646",
+    "position": 18
+   },
+   {
+    "title": "Laptop Dell 15 Pro Essential PV 15250 (VKVKD) | Intel Core 3-100U, 8GB DDR5, SSD 512GB NVMe, 15.6\"",
+    "source": "Tinhocngoisao.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:2626577051031025136,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSUYdd-HWq9UtwASbAADtgp4dBfvqahBzaWlZdLkq3f6cT_cv4HOmnFCox99RaCC4_NArTIU45BUQvZ_WUPCH5z3T7L5zRGIBktPfdOQCw-U_D8SzeTJlCo",
+    "productId": "2626577051031025136",
+    "position": 19
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3530 - N5I7421W1 (i7 1355U, 16GB, 512GB, Full HD 120Hz, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:17296220841535969173,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "24.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTnu3nSnmcx6nPIUUe-1Bcj7hRpyCejVsBRXNxeezjhIEHJaANIGtIO4v6YfY2RUgIGA_KvHJoAFyCRb2_9h7JtCKDKpqYtGVWz9SvwNLrZ2ZEZsoDcjddf5g",
+    "productId": "17296220841535969173",
+    "position": 20
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 1XVHG V2 - Nhập khẩu chính hãng",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:15995354984431339596,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSuV0h-e7rUuN7LDI96TfxtwYboJDHDxpxhG_BTErbMCh5Ud9t8IvHM7R_5ZRt0keUMmnZEwoCfAl7fpkoHH-bohg6x0sM8Om2HoKQ55ban3ZcZXgc1TO-a",
+    "rating": 4.8,
+    "ratingCount": 48,
+    "productId": "15995354984431339596",
+    "position": 21
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 i5-1334U/8GB/512GB/15.6\" FHD Touch/Win 11_NK (884116430315)",
+    "source": "Eco-Mart Siêu Thị Điện Máy",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:4664942622589374506,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "16.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTe0G5FXSCeCJcJwX7eGrpgCyv6-x1ay-h3w3192n7pnxTv11pIX1zbU7tSC242-4h7C5000tDm9U0RedhZDxYrrXlwZpt9kqL0Z_-uRIItIXDjmG8HFBScxg",
+    "productId": "4664942622589374506",
+    "position": 22
+   },
+   {
+    "title": "Laptop Dell 15 DC15250-i5U165W11SLU /i5-1334U/16GB/512GBSSD/15.6FHD/W11+OffH24+Off365/Bạc",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:6358620032281019719,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "19.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTuK_2YhELLRFuJH16n6pkHq-uoolt4RwJ7Arw62SUVnalhCtqsv9SFBVbK9UcBAJfZDqHchv-wb-QiT1dO6qnwmte03inJdqzw8q33Or-iAYUnEu-g3apmCA",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "6358620032281019719",
+    "position": 23
+   },
+   {
+    "title": "Laptop Dell 16 DC16251 - DC6C7557W1 (Core 7 150U, 16GB, 1TB, Full HD+, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:17595446557522133162,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "33.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTA-sKEA2yLpemWOCj-Q7b2rtiJcgfqtQE568g1YkcsrZboRG8y7v09DxJJkt80RcypqG95UexUn5vh5zjoJrc0H_ucJKrwRQnHslXLyQ8NXxuE0fgGRyGYDA",
+    "rating": 1,
+    "ratingCount": 1,
+    "productId": "17595446557522133162",
+    "position": 24
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 CPH992 (Intel Core i5-1334U/RAM 16GB/SSD 512GB/15.6 inch FHD 120Hz/Win11 + Office/BH 12T)",
+    "source": "An Khang Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:13961062820722705391,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "23.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSaQhqKueKLcmZlTuvxSo-tPOXtgBRDnLQx9sOkod2M_cC8mGoaujJtFIscoT4DhjXmMKerZYMlutVlcDroCvTvbLjQgZXy5bZnW0JgjkgPG_SeeBUcviGp",
+    "productId": "13961062820722705391",
+    "position": 25
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 MCW52",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,catalogid:18223076252425367046,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "28.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR32g0_vVHIDShkCVFEAQzhlszPXufEzUrvBmSjBhn4IAEbijjxzDmUIlV4AGdtFZAOQdntIlr8U2KakmKGQfDHp5yMBnLbg2Wb49JP21uYmFzyj5X-j0l2",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "18223076252425367046",
+    "position": 26
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - CPH992 (i5 1334U, 16GB, 512GB, Full HD 120Hz, OfficeHS24+365B, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:7809915839256922910,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTLc0p7eXSICK-xymuKact8nw27oS1zixD_rl1ZSqeIkmwNrDblobc3aupzKJIGagkH8fG4P3Gw9fxSVACoF6uoXtp669bwGfEIIKXXk9UkJcbGXgCjlOqo",
+    "rating": 4.3,
+    "ratingCount": 12,
+    "productId": "7809915839256922910",
+    "position": 27
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 DC4C5386W /Core 5 120U/16GB/512GB/14300nitsIPS/54Whr/W11/OffH2024 + Microsof",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:4768796378868727479,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "25.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQLlU-mTDlYeAhlUzfGcf-4GIETBAmm0MtH0DXysaMD3-2SIzDCVYklwpMWFh9b5tvWO-IXn9jWzBfTXdLbtN4lL-m7gw01QgndWbxeltdrkB7ofiAuFX70nQ",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "4768796378868727479",
+    "position": 28
+   },
+   {
+    "title": "Dell Pro 13 Premium PA13250 Core Ultra 5 236V RAM 16GB SSD 256GB 13.3 inch FHD+ Windows 11",
+    "source": "LaptopVIP.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:6658021405688366197,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "47.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS9hx4GUZ4tOsqEU8cFa1wI5yjrFWVpSvnMm7vYO8CAeNwAH_jEF1fZ97AHp4i59zhwJIXVkKpGinPWSTalIN1ReQI-_4u_pbEx_fUfX8Mw8YUzqNnMrEDf",
+    "rating": 4.4,
+    "ratingCount": 115,
+    "productId": "6658021405688366197",
+    "position": 29
+   },
+   {
+    "title": "Laptop Dell Inspiron 14 5441 71092476",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:13057043493296771676,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "26.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRizSgcnqXYfFZcjOserAjTd45iO5x1C-HHXjs__qzItxGGyExYrFM4i4G2oYRTj_VsC6mVg6-v86CYrTgQqqT06MBQ8PIIMG0-B33CYnHod9PH_3aEnOWM",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "13057043493296771676",
+    "position": 30
+   },
+   {
+    "title": "Laptop Dell 16 DC16250 - 71092481 (Core 5 120U, 16GB, 1TB, Full HD+, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:12804343835934132820,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSV3zucTkbrHpRJHhTjTkSqbxp_qoCuBcwfHwHQXciqQHq7nN-xd8xVjtMzPq-4NLxL21B5XKCFJmlw1cDEm42u2I9S8TNvrdQfPO8dgq_V26Ig8X52PAEkgA",
+    "rating": 4.4,
+    "ratingCount": 770,
+    "productId": "12804343835934132820",
+    "position": 31
+   },
+   {
+    "title": "Laptop Dell DC15250 71092479 | i5-1334U, 16GB DDR5, SSD 512GB NVMe, 15.6\" FHD 120Hz, Bạc",
+    "source": "Tinhocngoisao.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:4328506419325646114,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTondZonWuZDT2DAarHLkWYBMjPUR0UHl_jLETtBsBRdJs95UalhoOkADpGom5RbNlgM4qnceKQU2xPN3SO0iNV7iwFb8rY1cxmgtbAEQvq0JhOmbGLeH0E",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "4328506419325646114",
+    "position": 32
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 15 DC15250 - CPH991 (i7-1355U) (Bạc)",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:4185348533567892912,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "25.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ9rn5SCREMNcMt1ksUokvyMToKC2EKf1PoKxXiP5UFrVJ-2rttU-BDFBcISmG05a9KMiOMdTgQxTmU_FbGlIwTNedQtXmlfSRNj4GBx_8cMdG_ewr9bZZQRg",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "4185348533567892912",
+    "position": 33
+   },
+   {
+    "title": "Laptop Dell 16 DC16250 C7U161W11BLU",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:3371261899598644931,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTZ__Hn6b6SSV8IzVWwUzWDQVPr8xiymUT26P8RuaxBuAA5JnqCcJxmdRxIBJ6-0akFHafBX_tg_b6HyILrISfaSe541FHe0AWjHeJBp90mdBN0edYClqyN",
+    "rating": 4.4,
+    "ratingCount": 770,
+    "productId": "3371261899598644931",
+    "position": 34
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - DC5C3259W1-2Y (Core 3 100U, 8GB, 512GB, Full HD 120Hz, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:15754999099014318652,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTvpS_q_LdizaZ9_iIkUsKpqBU5ccWxlIMQrNo91_jqoT2LUGMnWft4tuQtvwcfFjeyprSvI_73YWLpT_ymAkHmQmf_PQmWTw9OiuckwD2I5N0bbq-lOszf",
+    "productId": "15754999099014318652",
+    "position": 35
+   },
+   {
+    "title": "Dell Inspiron 7445 2-in-1 14 inch - 2024 AMD Ryzen 5 8640HS 16GB 512GB FHD+",
+    "source": "Mac18",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:7286537902028299692,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "14.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTEWCGsS3cS98Q1twxCrM6BgMU_5PS0ApFK8zogMS2YDFfQpLhPQ8Op9okqmFhMI-kmbI2BXEVa7Ekt_9U1Ya1O8B6HGEa3kr5BIkamtk5cmiO-CDfvDR83",
+    "productId": "7286537902028299692",
+    "position": 36
+   },
+   {
+    "title": "Dell XPS 13 9315",
+    "source": "OnlyLap",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:5096959876854071517,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRHoGptlyl9a0808G1dlWC3I6q-RSZDqMLTvR2WUlVAJ0nqL7oS_dp8b0MD5RZR2-wf1JV_2PPeRkwWl5XUG3iaAsXUelVWm-salWRjR55K7tgsRPhntWUg",
+    "productId": "5096959876854071517",
+    "position": 37
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 DC5C3851W1 /Core 3 100U/8GBR5/512GB/15.6FHD120Hz/3C 41Whr/W11 + OfficeH2024 + Ofice 365 1y /2Y",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:1439967815685118292,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTGDxbQ-eW_VcbbzQ312RNOnfwAisOSB2wYy5rGrOpF0Z2NQoURR_z47oBpwGe8OBPPnsO-wxmLhojWOwvooLOjfVmTwyWnWJ-OHGGS4_dRjrxD-xOtscCv",
+    "productId": "1439967815685118292",
+    "position": 38
+   },
+   {
+    "title": "Laptop Dell 16 DC16250 71076092",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:5876278535889415293,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQhij4hOItoQtaJ4kH1c7Bh50Bs49QrlQvZEFWxRbCdHNC3bQc_fpYbg0x2vLDbw6YeCwWEsHmD4zHbyN1Rqtr-CawsUoG5hnZt0V-DYuTDfcOHOCbayam5",
+    "productId": "5876278535889415293",
+    "position": 39
+   },
+   {
+    "title": "Laptop Dell 14 DC14250 - F0FTK5 (Core 5 120U, 16GB, 1TB, Full HD+, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+m%E1%BB%9Bi&prds=localAnnotatedOfferId:1,productid:13933477398819183118,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQcTxIdD3FVQtDtBKVHdS7cnC4GY2Is27LPxd9cnZs0-xFiJP7hyXebYaZ5_4V8NX8kLYAHO_c6PdS0tsG-s9GevnydG-_hWCWgvBy4DeqDY6ql5t4S_Cnu",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "productId": "13933477398819183118",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

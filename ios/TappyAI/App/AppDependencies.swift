@@ -72,6 +72,9 @@ final class AppDependencies: AppObservableObject {
     private func registerServices() {
         let c = DIContainer.shared
         c.register(APIClient.self, instance: api)
+        // Commerce handoff beacon (CCP event 6): opaque ids to /api/commerce/handoff, events to the logger.
+        c.register(CommerceHandoffTransport.self, instance: APICommerceHandoffTransport(api: api))
+        c.register(CommerceEventSink.self, instance: LoggingCommerceEventSink())
         c.register(StreamingClient.self, instance: streaming)
         c.register(EntitlementService.self, instance: entitlements)
         c.register(SupabaseClient.self, instance: supabase)

@@ -1,0 +1,165 @@
+{
+  "id": "F2",
+  "text": "tim quan bun bo ngon o q1 duoi 80k",
+  "parent": null,
+  "status": 200,
+  "ms": 17222,
+  "evidenceId": "1e120546-e36b-48c5-b11a-6743f0686fd3",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán bún bò ngon",
+        "type": "restaurant",
+        "location": "Quận 1"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "rating": 4.8,
+      "count": 1011,
+      "hours": "06:30–22:00",
+      "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "rating": 4.8,
+      "count": 63,
+      "hours": "06:00–13:00",
+      "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bún Bò Huế Cống Quỳnh",
+      "rating": 3.8,
+      "count": 124,
+      "hours": "06:00–12:30, 16:00–20:30",
+      "address": "262 Đ. Cống Quỳnh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Huế O Xuân",
+      "rating": 3.9,
+      "count": 692,
+      "hours": "06:00–21:30",
+      "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế Nam Giao - Since 1991",
+      "rating": 4.3,
+      "count": 555,
+      "hours": "06:00–23:00",
+      "address": "242 Đề Thám, Bến Thành, Hồ Chí Minh 10000, Việt Nam"
+    },
+    {
+      "name": "Bún Riêu Gánh Chợ Bến Thành",
+      "rating": 4.1,
+      "count": 1362,
+      "hours": "07:00–19:00",
+      "address": "163 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 31",
+      "rating": 4,
+      "count": 249,
+      "hours": "06:00–14:00",
+      "address": "31 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ma Oi - Bun Bo Hue - Hue-style Beef Noodle Soup",
+      "rating": 4.5,
+      "count": 214,
+      "hours": "07:00–20:30",
+      "address": "59 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Đông Ba - Bún Bò Huế (Hue Beef Noodle)",
+      "rating": 3.9,
+      "count": 1398,
+      "hours": "06:00–21:30",
+      "address": "207B Nguyễn Văn Thủ, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 24H",
+      "rating": 4.1,
+      "count": 420,
+      "hours": "Mở cửa cả ngày",
+      "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn bún bò ngay hôm nay ở Quận 1. Mình tìm được 10 quán, nhưng chưa xác nhận được giá cụ thể của chúng — tất cả đều chưa rõ có nằm trong ngân sách 80k không.\n\n**Bếp Ông Cậu | Bún Bò Thố Đá** là lựa chọn mình nghiêng về nhất — **4.8⭐ (1.011 đánh giá Google Maps)**, đang mở cửa. Quán nổi tiếng với bún bò thố đá đặc biệt, giá thường hợp lý cho chất lượng.\n\nBạn có thể gọi trước hoặc vào Google Maps xem chi tiết gia, nhé! 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế hay bún bò Thố Đá?|Quán nào gần nhất từ vị trí bạn?|Muốn ăn sáng hay trưa?[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "tim quan bun bo ngon o q1 duoi 80k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn bún bò ngay hôm nay ở Quận 1. Mình tìm được 10 quán, nhưng chưa xác nhận được giá cụ thể của chúng — tất cả đều chưa rõ có nằm trong ngân sách 80k không.\n\n**Bếp Ông Cậu | Bún Bò Thố Đá** là lựa chọn mình nghiêng về nhất — **4.8⭐ (1.011 đánh giá Google Maps)**, đang mở cửa. Quán nổi tiếng với bún bò thố đá đặc biệt, giá thường hợp lý cho chất lượng.\n\nBạn có thể gọi trước hoặc vào Google Maps xem chi tiết gia, nhé! 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bếp Ông Cậu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=9652206292157517277\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế hay bún bò Thố Đá?|Quán nào gần nhất từ vị trí bạn?|Muốn ăn sáng hay trưa?[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?"
+    }
+  ]
+}

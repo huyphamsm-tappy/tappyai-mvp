@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán nhậu Vũ Thương Binh\" OR \"Tiệm Đỡ Buồn\" OR \"Cửu Vân Quán\" Bình Thạnh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:11:11.142Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán nhậu Vũ Thương Binh\" OR \"Tiệm Đỡ Buồn\" OR \"Cửu Vân Quán\" Bình Thạnh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trà đá lúa mạch cùng Ghi, ghé lại quán chú Vũ Thương ...",
+    "link": "https://www.tiktok.com/@ghithichnhau/video/7649587781823614228",
+    "snippet": "Quán nhậu Vũ Thương Binh · author. 6588 · 155 ... A còn thiếu quán Bình Hoàng Hoa Thám gò vấp bình thạnh. 6-14Trả lời. Đã thích bởi nhà sáng tạo.",
+    "position": 1
+   },
+   {
+    "title": "Bồ dzô chưa? Chưa! Vậy qua Dzô-Bồ liền # ...",
+    "link": "https://www.tiktok.com/@dzoboquan6/video/7682982077129608469",
+    "snippet": "... Quán Nhậu Vũ Thương Binh\" Con cảm ơn và chúc chú nhiều sức khỏe ... Bún Riêu Ngon Quận Bình Thạnh · Cháo Thịt Bằm Quận 6.",
+    "position": 2
+   },
+   {
+    "title": "Cà phê một mình tại 135 Nguyễn Cửu Vân, P17, Q.Bình ...",
+    "link": "https://www.tiktok.com/@bichlan.99999/video/7664225659899628820",
+    "snippet": "cà phê một mình Nguyễn Cửu Vân, 135 Nguyễn Cửu Vân quán cà phê, cà phê Bình Thạnh, quán cafe P17 Bình Thạnh, home alone coffee Bình Thạnh ...",
+    "position": 3
+   },
+   {
+    "title": "Dưới cờ đỏ sao vàng, ta sống trong tự do nhờ máu xương ...",
+    "link": "https://www.tiktok.com/@ibone.vn/video/7498003506641653008",
+    "snippet": "... Quán Nhậu Vũ Thương Binh\" Con cảm ơn và chúc chú nhiều sức khỏe. #ancungtiktok #DiaDiemAnUong #ghithichnhau #quannhauvuthuongbinh ...",
+    "position": 4
+   },
+   {
+    "title": "Đỡ Buồn (@dobuonnews)",
+    "link": "https://www.tiktok.com/@dobuonnews",
+    "snippet": "TIỆM ĐỠ BUỒN. tiemdobuon.cn1. Follow. Follow. Tận hưởng trải nghiệm đầy đủ trong ứng dụng. Mở TikTok. Tài khoản được đề xuất. Tận hưởng trải nghiệm đầy đủ trong ...",
+    "position": 5
+   },
+   {
+    "title": "Cười tươi nhưng sao nay nó tốt: mua đồ giữa trưa trả tiền thế nào?",
+    "link": "https://www.tiktok.com/@taphoadinh/video/7664196196109536520",
+    "snippet": "... Quán Nhậu Vũ Thương Binh\" Con cảm ơn và chúc chú nhiều sức khỏe. #ancungtiktok #DiaDiemAnUong #ghithichnhau #quannhauvuthuongbinh #tradaluamach. Trà đá lúa ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

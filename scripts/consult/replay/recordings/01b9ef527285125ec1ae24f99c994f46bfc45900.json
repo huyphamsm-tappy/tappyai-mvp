@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Massage Nguyệt Lâu Quận 10\" OR \"Zena Spa\" OR \"Queen Spa quận 10\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:40:23.981Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Massage Nguyệt Lâu Quận 10\" OR \"Zena Spa\" OR \"Queen Spa quận 10\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Nguyệt Lâu quận 10 – Trải nghiệm ...",
+    "link": "https://www.tiktok.com/@massage.nguyetlau/video/7670571048991247636",
+    "snippet": "Massage Nguyệt Lâu quận 10 – Trải nghiệm massage truyền thống nhẹ nhàng ... Massage Nguyệt Lâu (275 Cách Mạng Tháng Tám, phường 12, quận 10, TP.",
+    "position": 1
+   },
+   {
+    "title": "Massage Nguyệt Lâu Quận 10: Gội Đầu Dưỡng Sinh & Spa",
+    "link": "https://www.tiktok.com/@thuongdlsg/video/7619928464841362709",
+    "snippet": "Tại Sài Gòn, nếu muốn tìm một nơi thư giãn sau những ngày bộn bề, massage Nguyệt Lâu Quận 10 là một tọa độ được nhiều người nhắc đến.",
+    "position": 2
+   },
+   {
+    "title": "Zena Spa Review Q10",
+    "link": "https://www.tiktok.com/discover/zena-spa-review-q10",
+    "snippet": "6.6M postingan. Temukan video terkait Zena Spa Review Q10 di TikTok. Lihat video lainnya tentang Zena Boutique Reviews, Miyabi Spa Q10 ...",
+    "date": "17 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Queen Spa Quận 10",
+    "link": "https://www.tiktok.com/discover/queen-spa-qu%E1%BA%ADn-10",
+    "snippet": "Khám phá dịch vụ tại Queen Spa Quận 10, nơi mang đến trải nghiệm làm đẹp và thư giãn tuyệt vời cho làn da và sức khỏe của bạn. queen spa quận 10 ...",
+    "date": "8 thg 11, 2025",
+    "position": 4
+   },
+   {
+    "title": "Nguyet Lau Quan 10 Review",
+    "link": "https://www.tiktok.com/discover/nguyet-lau-quan-10-review",
+    "snippet": "Khám Phá Massage Nguyệt Lâu Quận 10. Khám phá dịch vụ massage và gội đầu dưỡng sinh tuyệt vời tại Nguyệt Lâu, Quận 10. Trải nghiệm thư giãn và chữa lành ...",
+    "position": 5
+   },
+   {
+    "title": "Một ngày xả stress thư giản tại Nguyệt Lâu. Massage gội ...",
+    "link": "https://www.tiktok.com/@duocroidithoi.sg/video/7386253034478734600",
+    "snippet": "Các dịch vụ phổ biến tại Massage Nguyệt Lâu Quận 10 bao gồm gội đầu massage dưỡng sinh, massage cổ vai gáy, massage thư giãn và các liệu pháp ...",
+    "position": 6
+   },
+   {
+    "title": "Đi ms chữa lành với kim nhen #learnontiktok #massage ...",
+    "link": "https://www.tiktok.com/@duckim90/video/7382195877391191304",
+    "snippet": "Massage cổ truyền giúp ngủ ngon — Massage Nguyệt Lâu Quận 10. Sự thư thái bắt nguồn từ những lựa chọn chăm sóc nhỏ nhưng tinh tế. Khi bạn quan ...",
+    "position": 7
+   },
+   {
+    "title": "Nguyệt Lâu Mát Xa",
+    "link": "https://www.tiktok.com/discover/nguy%E1%BB%87t-l%C3%A2u-m%C3%A1t-xa",
+    "snippet": "Trải nghiệm dịch vụ massage cổ truyền tại Nguyệt Lâu, quận 10, thư giãn và làm đẹp với gội đầu dưỡng sinh. ... Khám Phá Massage Nguyệt Lâu Quận 10 ...",
+    "date": "17 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

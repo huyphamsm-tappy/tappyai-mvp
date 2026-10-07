@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "NEW CITY HOTEL",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:55:06.134Z",
+ "body": {
+  "searchParameters": {
+   "q": "NEW CITY HOTEL",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "NEW CITY HOTEL, Trung tâm thành phố Tây Ninh, Tây Ninh",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/509165837.jpg?k=7452978dca67d2a7bd49100f52a7b31abfe10318d00ea666f5bf7bf3c956e815&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnWdire2XfcW8InCBmGpVvPdvDOw2QmwkgXs4RhCEbxA&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/new-city-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F509165837.jpg%3Fk%3D7452978dca67d2a7bd49100f52a7b31abfe10318d00ea666f5bf7bf3c956e815%26o%3D&tbnid=0Jxys4zsvCST5M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnew-city-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=3TxpUFIpnUJ6BM&w=500&h=375",
+    "position": 1
+   },
+   {
+    "title": "NEW CITY HOTEL, Trung tâm thành phố Tây Ninh, Tây Ninh",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/413494241.jpg?k=9058a89c1010abf8638eea9ff27255c68ef5caa35b11c43a3bf876d5510e2598&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS8saKAklvvw7tnE7EJrda19hvt1KFLCFUSqS4mK1gDQ&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/new-city-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F413494241.jpg%3Fk%3D9058a89c1010abf8638eea9ff27255c68ef5caa35b11c43a3bf876d5510e2598%26o%3D&tbnid=tDZ6cICGrdTiFM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnew-city-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=3TxpUFIpnUJ6BM&w=375&h=500",
+    "position": 2
+   },
+   {
+    "title": "Home - Becamex Hotel New City",
+    "imageUrl": "https://newcity.becamexhotels.com/storage/sites/2/2020/01/banner1.jpg",
+    "imageWidth": 1440,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX0XrWBN-mi2HvZsGA1t527FTMXcHpadK0j7L3y9aDAQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "newcity.becamexhotels.com",
+    "domain": "newcity.becamexhotels.com",
+    "link": "https://newcity.becamexhotels.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnewcity.becamexhotels.com%2Fstorage%2Fsites%2F2%2F2020%2F01%2Fbanner1.jpg&tbnid=O1ulJ7RNeHhTSM&imgrefurl=https%3A%2F%2Fnewcity.becamexhotels.com%2F&docid=lZQk3bhyZHZsTM&w=1440&h=960",
+    "position": 3
+   },
+   {
+    "title": "Becamex Hotel New City, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/28000000/27190000/27184600/27184524/fff5a19d.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 957,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZrJoXlsF3vuwrIC4hEx5IdVKZyXhAviNFtbpUVpAB1Q&s=10",
+    "thumbnailWidth": 576,
+    "thumbnailHeight": 347,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho870904768/becamex-hotel-new-city-thu-dau-mot-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F28000000%2F27190000%2F27184600%2F27184524%2Ffff5a19d.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=TS2vLGdVH9GbhM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho870904768%2Fbecamex-hotel-new-city-thu-dau-mot-viet-nam%2F&docid=UWaL56RhvgLB4M&w=957&h=575",
+    "position": 4
+   },
+   {
+    "title": "NEW CITY HOTEL, Trung tâm thành phố Tây Ninh, Tây Ninh",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/641317302.jpg?k=a72ddac061805233401c14376c6f8b32de4dc34b312b32964c33f28f4e8a43b7&o=",
+    "imageWidth": 372,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk_CbsEVpaKoFSVwdsqgnPg4SPXm161ORhnHRfoXHuYQ&s=10",
+    "thumbnailWidth": 372,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/new-city-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F641317302.jpg%3Fk%3Da72ddac061805233401c14376c6f8b32de4dc34b312b32964c33f28f4e8a43b7%26o%3D&tbnid=vfK0r392tBjDMM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnew-city-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=3TxpUFIpnUJ6BM&w=372&h=500",
+    "position": 5
+   },
+   {
+    "title": "New City Hotel | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100063472722211",
+    "imageWidth": 960,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvCH1CCEacHS-rjZcLTC6ZC9ZDQjKTmnCuIqXxXlol7A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khachsantayninh/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100063472722211&tbnid=K_iHHqve0XTXTM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhachsantayninh%2F%3Flocale%3Dvi_VN&docid=cH781xv9Y5b1wM&w=960&h=960",
+    "position": 6
+   },
+   {
+    "title": "Becamex Hotel New City, Thủ Dầu Một (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max500/745137240.jpg?k=6346982a65c17e0371eef1a301be49d4d2266bfa95f6bee6003f68cbaf103dba&o=&hp=1",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRr8oWqUohfSiVmgGZr_6vZv3aN79-wTfDbcXhAdmNw_g&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/becamex-new-city.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F745137240.jpg%3Fk%3D6346982a65c17e0371eef1a301be49d4d2266bfa95f6bee6003f68cbaf103dba%26o%3D%26hp%3D1&tbnid=iz0_r43gxRr9aM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbecamex-new-city.vi.html&docid=5bS31q97VlWqTM&w=500&h=333",
+    "position": 7
+   },
+   {
+    "title": "Home - Becamex Hotel New City",
+    "imageUrl": "https://newcity.becamexhotels.com/storage/sites/2/2020/07/newcity-about-us.jpg",
+    "imageWidth": 800,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8OJayG--J_oFZLtvzAmPbLIMnf3nNR2OfW_pkphJ4pA&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "newcity.becamexhotels.com",
+    "domain": "newcity.becamexhotels.com",
+    "link": "https://newcity.becamexhotels.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnewcity.becamexhotels.com%2Fstorage%2Fsites%2F2%2F2020%2F07%2Fnewcity-about-us.jpg&tbnid=YFyRqpMGEGxznM&imgrefurl=https%3A%2F%2Fnewcity.becamexhotels.com%2F&docid=lZQk3bhyZHZsTM&w=800&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

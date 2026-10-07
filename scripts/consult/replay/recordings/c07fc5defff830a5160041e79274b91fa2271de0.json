@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:55:09.488Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Laptop Acer Aspire 3 A315-59-381E",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_7_47.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT03S0tml3S5_R2F4ZT0MYTLB4j0OGAMVU3Ih_RHUuvzA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_7_47.png&tbnid=3vaE2tp6ZEblEM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-59-381e.html&docid=ydAzIOT1Vx5IGM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/Acer/Aspire/laptop-acer-aspire-3-a315-59-381e-1.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS58gaI9T57702wcrihuBQeFCsGKxu42E8Kl1aw7UlrNw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2FAcer%2FAspire%2Flaptop-acer-aspire-3-a315-59-381e-1.jpg&tbnid=f1kj5hBByW6EkM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-59-381e.html&docid=ydAzIOT1Vx5IGM&w=810&h=456",
+    "position": 2
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/Acer/Aspire/laptop-acer-aspire-3-a315-59-381e-5.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSc1OGil-scC74F8weToS1r1n8osebNceh09VhpNXRLYA&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2FAcer%2FAspire%2Flaptop-acer-aspire-3-a315-59-381e-5.jpg&tbnid=VXnH5njhcHCbDM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-59-381e.html&docid=ydAzIOT1Vx5IGM&w=810&h=456",
+    "position": 3
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 i3 | Giá rẻ, hỗ trợ trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/l/a/laptop-acer-aspire-3-a315-i3_1_.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq-kOow9jqUC_TZWGwHyW8fFpUvpT0pcQKvjh3c5HuKg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-i3.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fl%2Fa%2Flaptop-acer-aspire-3-a315-i3_1_.jpg&tbnid=rifzJq6gljVklM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-i3.html&docid=hzU76XumMMv2sM&w=500&h=500",
+    "position": 4
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/Acer/Aspire/Acer-Aspire-3-A315-1.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQylNKTQHDwisij9cXqjIIUVLJuyEzEe8J85g-fMGLElQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2FAcer%2FAspire%2FAcer-Aspire-3-A315-1.jpg&tbnid=cCKjOuwY26vlqM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-59-381e.html&docid=ydAzIOT1Vx5IGM&w=810&h=456",
+    "position": 5
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 | i5 1235U | Ram 8GB | SSD 256G | 15.6 inch FHD  IPS",
+    "imageUrl": "https://product.hstatic.net/200000680839/product/gs.010088_feature_117683_8b26b9b6062f4bc7a48df58f9a784480.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOHAeU0NPPjlQW7SMbSLlLlW36luPdNVInUgmOr1AjIQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "THẾ GIỚI MÁY TÍNH",
+    "domain": "thegioimaytinh.net.vn",
+    "link": "https://thegioimaytinh.net.vn/products/laptop-acer-aspire-3-a315-i5-1235u-ram-8gb-ssd-256g-15-6-inch-fhd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000680839%2Fproduct%2Fgs.010088_feature_117683_8b26b9b6062f4bc7a48df58f9a784480.jpg&tbnid=CwwdlWRhlXfmjM&imgrefurl=https%3A%2F%2Fthegioimaytinh.net.vn%2Fproducts%2Flaptop-acer-aspire-3-a315-i5-1235u-ram-8gb-ssd-256g-15-6-inch-fhd&docid=HyKEX-aIP9RDIM&w=1020&h=680",
+    "position": 6
+   },
+   {
+    "title": "Laptop Acer Aspire A315-57G 524Z, Gaming mỏng nhẹ",
+    "imageUrl": "https://onlylap.vn/wp-content/uploads/2024/04/Acer-Aspire-A315-57G.webp",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOoUaDLSBv4dVC56U5tWl_OOZiUA_jyVHwoaXGPvNsuw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "OnlyLap",
+    "domain": "onlylap.vn",
+    "link": "https://onlylap.vn/acer-aspire-a315-57g-524z/?srsltid=AU7gw4VO9k_J1cENhuOi3Oqd6UbQCC9GM0AMEiCgNCodmUgr8sFOWpXV",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fonlylap.vn%2Fwp-content%2Fuploads%2F2024%2F04%2FAcer-Aspire-A315-57G.webp&tbnid=BaVzS27VdYZsvM&imgrefurl=https%3A%2F%2Fonlylap.vn%2Facer-aspire-a315-57g-524z%2F%3Fsrsltid%3DAU7gw4VO9k_J1cENhuOi3Oqd6UbQCC9GM0AMEiCgNCodmUgr8sFOWpXV&docid=dvaOPQf6kp1srM&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "Laptop Acer Aspire 3 A315 | Sang trọng, giảm đến 2 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/Acer/Aspire/laptop-acer-aspire-3-a315-59-381e-6.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSftpuLv6010AewIN0RN9quhPdyKZpVQLQU4SQ7WP-hiA&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/laptop-acer-aspire-3-a315-59-381e.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2FAcer%2FAspire%2Flaptop-acer-aspire-3-a315-59-381e-6.jpg&tbnid=c1M42b4bDzH7oM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Flaptop-acer-aspire-3-a315-59-381e.html&docid=ydAzIOT1Vx5IGM&w=810&h=456",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

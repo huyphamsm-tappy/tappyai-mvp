@@ -1,0 +1,421 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop dell nhẹ thiết kế",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:25:35.523Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop dell nhẹ thiết kế",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Dell 15 DC15250 - DC5I5357W1 (i5 1334U, 16GB, 512GB, Full HD 120Hz, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:6969187235135870129,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmaoBSNapu-fwUqoyd-Bl4vNGsF-9OANAgwXSMytFJ98o151xT3G80_HUBvRJ9W5PJWNzp1QmSHuCj9s0DKakw0miB1U0nqRLSpuU6IYm10ErcP3FtilWU1A",
+    "productId": "6969187235135870129",
+    "position": 1
+   },
+   {
+    "title": "Dell Xps 13 9340 Core Ultra 7 155H RAM SSD 13.4 inch Windows 11",
+    "source": "Hưng Phát Laptop",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,catalogid:5629936979973054665,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "25.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTr2riiSdfFI6jampZCaRypZh6E5HoHZRsHSQXqd77-ORjkrEBXCzkDZzv5iNpk28HI85i98x-7h1Mvdgchjxc3ClSvTZfyy_lYZzr6nTz7OrkZlNfJCkoz6Q",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "productId": "5629936979973054665",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell Inspiron 15 3520",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,catalogid:15071752663639208529,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSFcgNFsgrj2PlPp-4k803sUvp3JZLFSUwEDjJ4D-pr2llsVC7RLpLKXH5JJNPELqfr27rLmsYVX4FTwQiPPhpN7aF2NdAIynZw01HJfC_4ElsECU74495L",
+    "rating": 4,
+    "ratingCount": 57,
+    "productId": "15071752663639208529",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - 71092479 (i5 1334U, 16GB, 512GB, Full HD 120Hz, OfficeHS24+365B, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:13385723483178814347,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSjQD9UK3qodqkrGivYedS_lMgDEyniHW2gUkVqnfvtzj7uuuonKO4616TqzQtToqHDJV7bZJyH0JOLcx25rwxvoEycuJWPgCp4Q9oiG_c5VwLlcmH65J1rqQ",
+    "productId": "13385723483178814347",
+    "position": 4
+   },
+   {
+    "title": "Laptop Dell XPS 15 9510 – Core i7, Màn 4K Cảm Ứng, Thiết Kế Sang Trọng",
+    "source": "Laptop Now",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:14462243976851524889,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "19.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRwjp74ICnuZgx2hKWVx-Il4jLZJ7lNnbzzkcwv72i1ajIAIk8kl5UzG30sIjEQMCDT8HlpAhkqLAI3-TjnQjgl8ydH0LEHfyXvWWVAYg0",
+    "rating": 4,
+    "ratingCount": 3,
+    "productId": "14462243976851524889",
+    "position": 5
+   },
+   {
+    "title": "Dell Latitude 7430 (2022) Gen 12 -【Gọn nhẹ】",
+    "source": "Laptop Nhật Linh",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:14285123893583846116,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTgJWRLFbAotcmIClV6MYDLGApZEHHdcA9oNDA92q_PCAMmlU29IW8ZTkze90EscPHE492hgdcpzuYLnjwwUKe_5knZwfRKuIWEIMXT3SNc",
+    "productId": "14285123893583846116",
+    "position": 6
+   },
+   {
+    "title": "Dell Latitude 7410 (i7 Gen 10) - Sức Mạnh Doanh Nhân Gọn Nhẹ, Màn Hình Cảm Ứng Tuyệt Vời - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:3313674053980375953,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "9.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS-Bw5EhV3NYllEnWggfYYoKWUwoaCsOK5t4HW816JuN4LU6A_VY5NUpOT7C8wj6yhoLHN51qXCO4VtSqXA-gwH7JkmjLTxug",
+    "productId": "3313674053980375953",
+    "position": 7
+   },
+   {
+    "title": "Dell Precision 5560 (2021) - Core i9-11950H, Ram 16GB, SSD 1TB, 15.6\" 4K Touch",
+    "source": "lapvip.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:18021440177204436723,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "24.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTHycrUZFL-SRGVbA88JEB2-2OeYB9VkZek_uiOt0cR3ugHNepSc7SWInvrw0w8KQ65td2JzUDYqEq7MUQTeAPXNcWD7cbtJFf_YCbczzlJv00uDxicdxJ2",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "18021440177204436723",
+    "position": 8
+   },
+   {
+    "title": "Laptop Dell Pro 14 Essential PV14250 - PV14250-120U-16512W-BL (Core 5 120U, 16GB, 512GB, Full HD+, OfficeH24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:2398077882628320334,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTARTKyFQf8CVGVQ9Jk47IGOFCuRli6OlxOBMBuypfrwGcOhpRWD_aQbCb6c69X1sSP5HGMWNrM-xLjWEMxwRJ0Aogokhpx7eXjZkjWaCoD2jxZAEOpgkYfhg",
+    "productId": "2398077882628320334",
+    "position": 9
+   },
+   {
+    "title": "Dell Precision 15 5550 (2020) Core i7-10750H, RAM 16GB, SSD 512GB, T1000, FHD",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:16690659606970382260,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSnc40qiayJm_KgA02_uVNpbb-xGFVlt1qMow7D7_oBaautAejQ0N-CtLdnpQ8ehNuPOPg8QJTcaX-VllZwKk_Wlox2jOUPNU3LKLqzeZoadsJs9_9vKTzd",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "16690659606970382260",
+    "position": 10
+   },
+   {
+    "title": "Dell XPS 9500 Core i7 | Thiết Kế Sang, Hiệu Năng Mạnh",
+    "source": "Laptop Now",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:10547477325020700758,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "15.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSELZtY6cD1VmE0egpqYB_xMy4679byPGXLNpU8PpVRbQbNh82d6R8Rvc5zKHTsS5xc5DCyfRs_67WEP_FRJJXitWESnaXA8S6KXlahcbI",
+    "productId": "10547477325020700758",
+    "position": 11
+   },
+   {
+    "title": "Dell Precision 5530",
+    "source": "OnlyLap",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:16559642854351821169,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcThOXPpm25rwPk3P0rE0dqNmLN3-ykqwFJ5PYUT3l0fE_JpcsFv4JWO0EWXLwuSjIVE0q0s3M6nLROQtJVVq_EO1cWT4_CpvEcQfl_hvo10ipx4A04veySe",
+    "productId": "16559642854351821169",
+    "position": 12
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - CPH991 (i7 1355U, 16GB, 1TB, Full HD 120Hz, OfficeHS24+365, Win11)",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:16275923979598149567,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQab6L1J-BsVgs3gRG4jO3nrqpe2P99SMgOpu8VR1W2PUPpvcE6etrA0xs_X6ujE4Z8dWzmwZcjIefmXLF2g6Hu4os5-ZaDeim7QMgkBU3l5ptW9hyAyqJmNA",
+    "rating": 4.8,
+    "ratingCount": 53,
+    "productId": "16275923979598149567",
+    "position": 13
+   },
+   {
+    "title": "Dell Latitude 7390 (i5 Gen 8) - Mỏng Nhẹ, Cảm Ứng, Hiệu Năng Vượt Trội Cho Công Việc Di Động - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:8673177889770725646,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "6.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSFjq6ERqBrmm2_tPmbsiQNwMCrKGup8Ga5vEzbQPySIxa4Dy9kCNS1in0PYS0ggOi5mgBJHF36EAetxtEB8UNPjcRlQYHm",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "productId": "8673177889770725646",
+    "position": 14
+   },
+   {
+    "title": "Dell Latitude 7420 Core i7 1185G7 RAM 16GB SSD 512GB 14 inch FHD Windows 11 Pro",
+    "source": "LaptopVIP.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:7649257120546927240,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "11.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSSdj8AQkEyXXPnBDdxECJnm1Q0KklgqVqKdl1LmIo544M7zH-nmZUYT0F5ydvK91ZUIaxDxATe0TuwubrrzatbYJDr-Ctu-CrY5I1KmCc112OpLMWYdpiC",
+    "rating": 5,
+    "ratingCount": 19,
+    "productId": "7649257120546927240",
+    "position": 15
+   },
+   {
+    "title": "Dell Precision 5570 (2022) Core i7-12700H, RAM 32GB, SSD 512GB, RTX A1000, FHD - Like New",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:1226921325498993987,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTsHmBTNW9UPKfeCh3lnUMTAw2sG-V7oBzNohwTUVuKTGTyl1vnwj_QMvgvZIs1nIkvMsi9myOAsBuIaNdF5A55wMCvnl9PKvz60xe3L8wGHAKyqRztYWmfHg",
+    "productId": "1226921325498993987",
+    "position": 16
+   },
+   {
+    "title": "Dell Precision 3590 (2024)",
+    "source": "Laptops.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:4251541805712541085,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "30.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTCNgEOv4s6wVG2dGEGNidVApCni21CGkv1VGwqecnRDVBfx8OLgQsylvpQAKqS3I4n0PWvCNh2INhIer0Hfv5xEpfX95mJaQ_37jA50v5Jntm22ZE3MV_g3Q",
+    "rating": 3.4,
+    "ratingCount": 11,
+    "productId": "4251541805712541085",
+    "position": 17
+   },
+   {
+    "title": "Dell Precision 14 5490 (2024) - Ultra 9 185H, Ram 32GB, SSD 1TB, RTX 1000 Ada, 14” QHD Touch New",
+    "source": "lapvip.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:3432990219563915117,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "43.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ21keAWpOAmEIJCQOc7p64BWeiN-Jo8Kr5cl7zBA5ddwkHMNbKtnDaPCLwgDXgbY-tk_h78NHH7hRZSNe6GOo3uEu3M36DVCPDYxfK1I5UEXfY-lGkkirNqA",
+    "productId": "3432990219563915117",
+    "position": 18
+   },
+   {
+    "title": "Dell XPS 13 9350 Cũ: Thiết Kế Cao Cấp, Màn Hình FHD Sắc Nét, Siêu Di Động - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:15866435429962600774,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "5.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT6CNvdTR49d2joPGzkNu4KKxyxocBd-4KxdL51z0orenHa7SlFi0UWnTM-vhdFRZxKH9sKyumIJHnjIEGqj1Nsu6aousj8Lpv0hZU4MQQ5surOXvAbIFQBSQ",
+    "productId": "15866435429962600774",
+    "position": 19
+   },
+   {
+    "title": "[Like New] Dell XPS 13 9315 (Core i7-1250U, 16GB, 512GB, 13.4 FHD+ Touch)",
+    "source": "Thế Giới Số 365",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:17745877914132880373,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR2pQXXotYZRDR8dJTBvWdQ3pnijBA3lOTyoXt6sYcdOQB0kKITC3ggjQM8fOd8JCLF8qpKgzsGi1HVKMLX4b54zGFK19LOU8nRUosnN0451BRLtIqMGFyr",
+    "productId": "17745877914132880373",
+    "position": 20
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 14 DC14250 DC4C5386W-Silver (Core 5-120U) (Bạc)",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:13575131172305482297,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "24.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTHty7cEwi85IWF36xiWnKmNxQ53nwbJiQe5z3zJutXXbgDH-iiepEodkI_ojOOnuML7jbuZzX5z-9bSXMkmGc2k0OVMGYOm105ib6HpSTJNuvKoyBmCC52",
+    "productId": "13575131172305482297",
+    "position": 21
+   },
+   {
+    "title": "Dell XPS 13 9350 Laptop Mỏng Nhẹ Cao Cấp 13 inch, Core Ultra 7 256V, 16GB RAM, 512GB SSD, FHD+ 120Hz",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:2813058976470165477,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "35.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRROE5Peslr4ZM3c86XyNUznA3JK3Bey75lUAVXKx1M4jE99q-rBZnfi5ZLRRQ4kul8JNv5fPE6W98bvWwhOKVj2pwipWbn0peI8w_tQaXoZM9yyoYLS5Tn",
+    "rating": 4,
+    "ratingCount": 614,
+    "productId": "2813058976470165477",
+    "position": 22
+   },
+   {
+    "title": "Dell XPS 13 9350 Core Ultra 7 256V RAM 16GB SSD 512GB 13.4 inch FHD+ Windows 11 Silver New",
+    "source": "LaptopVIP.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,catalogid:17548358321580178518,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "34.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT6vcm-_3gjVqbv4Jz8UYZm8vr6v9fmdaM630f1wJV7x67_qBG5yIWsmNEXi3Bdm4fMsfAOwrgly_HALgLBLoUnaw0aeZJL1E6wx9vdu6T7-U7uF1A3xc6pGw",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "17548358321580178518",
+    "position": 23
+   },
+   {
+    "title": "Dell Precision 5750 i7-10750H Ram 32Gb 1Tb Nvidia RTX 3000 17′′3 FHD+",
+    "source": "Laptop Hưng Phát",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:1605856253909726737,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "18.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTv-2WHCw4eY1M8VWPRJlVJtlVOwj2o7mlXcgcegpnCYcL94IWuQdv7hF2SEbXnYkGWKJYGuCdvGo73nW2JGl7VsGfiw8IqXSc_7YerLWRGPr9idXi_rcVQSw",
+    "productId": "1605856253909726737",
+    "position": 24
+   },
+   {
+    "title": "Máy tính xách tay Dell 15 DC15250 C316G512BLNK (Core 3.100U/16GB/SSD 512GB/Intel UHD Graphics/15.6 inch FHD/Ubuntu/Đen,NK)",
+    "source": "Eco-Mart Siêu Thị Điện Máy",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:17282131104195785156,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "12.630.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR3w9NkrPKbj_xuBFiQhH5KuWYhI0damxkN_sdcSjURxQEbWZZ9YSW1AbpxQ5dQHPKlaXryZUOpRyt6K---qqZbQJkDtJ49dwlFbOCeCtQ",
+    "rating": 4.3,
+    "ratingCount": 12,
+    "productId": "17282131104195785156",
+    "position": 25
+   },
+   {
+    "title": "Dell Precision 16 5690 (2024) - Core Ultra 9 185H, RAM 32GB, SSD 1TB, RTX 5000 Ada, 4K OKED",
+    "source": "lapvip.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:5883816195398005978,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "76.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR8yqPgBXsbb1vmYQvg5LyTq9-q2Dw7etBj3gc1L4fjYyG2ER7yX7dmArNlL5QiF4FpivmnAyHZ7hgcxOt889DZLDuIKneU3CQHRFHPt1aBKfVgLSu0QNEf",
+    "productId": "5883816195398005978",
+    "position": 26
+   },
+   {
+    "title": "Laptop DELL PRECISION 7670 CPU i7-12850HX RAM 32GB DDR5 SSD 512GB PCIe VGA RTX A2000 8GB 16.0 WUXGA IPS, 100% sRGB Win11. Part: I73251GA20",
+    "source": "Laptopnew",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:4145166667298352890,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "24.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQnfcebTtE1aCyuglaHO73t-XZRSqM5TI_q2DH2lp9lh9zUiNayah7zs5gb2z4c34Fqga03iftr52QhdxenVMge6O-YI6-EZF6dygcrhaDAmwCZRk_def6uvg",
+    "productId": "4145166667298352890",
+    "position": 27
+   },
+   {
+    "title": "Dell Precision 5550 - Core i9",
+    "source": "OnlyLap",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:12057804441564010027,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "17.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQgsX93d91SB9GDKnR0RtkGHI_RmVce3QgbFapH11sQ-E8MhVqbhx97zYCZRZPDp-IiHcH8phz2pS9AUIaZWSYwKIzWSBel3xkoKi8O2uSB1uq-7vdfI5Vpug",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "12057804441564010027",
+    "position": 28
+   },
+   {
+    "title": "Laptop Dell 16 DC16250 71076092",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:5876278535889415293,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQjCdwBnw40Z-9rO4WTLEXHCNUk9nObxCHxhJHKStIaXdYgCfrbwV7gPbNhQ7lHRJq6XgaRP1tlQfprIuheFFwhU0N769ou9E_VYgAWSTeVkahoakx48-Vl",
+    "productId": "5876278535889415293",
+    "position": 29
+   },
+   {
+    "title": "Dell XPS 13 9345",
+    "source": "Laptops.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:14631203907507672753,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "28.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTuvVqxPYzkMSgYRLDUQIlCgWKM5syXFFkH4B6FPrkeWkK4ZsXzGP8qqit5XnlrVIrHXvZTmNWgK41f278ExkfwTFoF2wu-nq0bPjDivVZXRZgNzZro4gIx",
+    "rating": 3.2,
+    "ratingCount": 4,
+    "productId": "14631203907507672753",
+    "position": 30
+   },
+   {
+    "title": "Máy tính xách tay/ Laptop Dell 16 DC16250 - 71092481 ( Core 5-120U) ( Đen)",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:13455559509041025735,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrT-2SDnvrT3Y-Ctz-OHNSHZ-kbHDt4YQf-KuYn4kZ8nTQHKeElLBhC7fHe7mEeaSs2U3BRh2Si7gg18IV3iDz4heOsrqP0yy2-5yd2TnKGnpsycNJiKHEzA",
+    "productId": "13455559509041025735",
+    "position": 31
+   },
+   {
+    "title": "Dell Precision 5680 (2023) - Core i9-13900H, RAM 32GB, SSD 1TB, RTX A2000, FHD",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:13590316094723410976,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "38.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTyTeS7pM6s5WqszB7IAeWCbiyRZ8RQvFTjTwiADW3N-Ay-2JY9wszdoSHbFajBF9Lt_VVGrEHJ6CQnAf_88nk-lQm8-gt1Vh1HZ6P1ms6ZU7_Z8XNquJPJ",
+    "productId": "13590316094723410976",
+    "position": 32
+   },
+   {
+    "title": "Dell Latitude 3410 Cũ: Hiệu Năng Đa Nhiệm Với Card Đồ Họa Rời MX230, Lựa Chọn Hoàn Hảo Cho Công Việc và Giải Trí - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:9502554610537381170,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "7.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTYnpubMN6cIqJpQKi6pMK5EwrmjBrbRKz69CUsDWYfIreoz3SQZixC1c2y4J7kzaMHSa-tWqIPGxKlz2UDFnHZU8ghk96hOQBpUuKESDuc",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "9502554610537381170",
+    "position": 33
+   },
+   {
+    "title": "[Like New] Dell XPS 9310 2in1 Core i7-1165G7 | 16GB | 256GB | 13 inch FHD+ Cảm ứng",
+    "source": "Laptop Thịnh Vượng",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:13480893619651300449,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "17.980.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTVr281UZRBK5WAYaHhstkjFDLKN9zGITruI4eO-LQsH4syOa0-PChFgkPrTQag9hk2-E9xmw2FY_gevHw--puFRnx58reVzNQBxNCMLEfffC4yp7s9cmXK",
+    "productId": "13480893619651300449",
+    "position": 34
+   },
+   {
+    "title": "Dell Precision 5560 i9 11950H 32Gb 512 Gb Quadro RTX A2000 4K Touch",
+    "source": "Laptop Hưng Phát",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:5261456489089753793,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "21.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQeH2I25hBsOsYER6R-87DGfRY3k5vCfbNrHBtPI8AL3XvIIOvMgMB9EzwLMAoJFF26t7_XGK2OaGr3_S05g1wCqcND3G_DlRbalDNUvqD_9II_-BCQBiJ7",
+    "rating": 4.5,
+    "ratingCount": 10,
+    "productId": "5261456489089753793",
+    "position": 35
+   },
+   {
+    "title": "Laptop Dell Precision 5560 i7-11850H 32Gb 512Gb T1200 FullHD -i7-11850H 16G 512G FHD T1200 / 06 Tháng",
+    "source": "Laptop One",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:17171668369589033206,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTITEF0PR1aFQl0b3qKEoER6s0WJJFsQai4sQrpi1HuYye0XojxgspDvie5u-uZaNE0pgTiKeoRm6T2XN6ecHPQ_NgZfBSXdc1XQkrsoOiCmZM6LDP7RjOuDQ",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "17171668369589033206",
+    "position": 36
+   },
+   {
+    "title": "Dell XPS 13 9315 Core i7 -1250U Ram 32gb Ssd 1000gb Màn 13.4'' FHD+ (Outlet)",
+    "source": "Delllatitude.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:8380776072260132512,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "27.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ5r82qZqQCi6JI3ynJR6QFRKBuutvJ1yluckAsFtFOS5gok2gqYf1Rt9e22Ql8i6_ATlTqiJqNWaxfnhDdKfxqjijO5xY9TLMjH5CV-0hNHJfSgbLDwtZV6w",
+    "productId": "8380776072260132512",
+    "position": 37
+   },
+   {
+    "title": "Dell XPS 13 9350 (2025)",
+    "source": "Laptops.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:12788694782217053898,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "35.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRuJ9KhPbdbKRqRBzkY-WUDCKTwGvkO_msELirHgrlQ3rLpFC7-1tCL_Z9oYDCUw5expuD_8qo7DIIOg3qOMe1-L-57vfm1GHRX2KhB-nV_ByUfcKWDrpxG",
+    "rating": 4,
+    "ratingCount": 614,
+    "productId": "12788694782217053898",
+    "position": 38
+   },
+   {
+    "title": "Dell Xps 13 9315 (2022) - Core i7-1250U, RAM 16GB, SSD 512GB, FHD - Outlet",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:11279317010293402111,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSCggzYhXHKfLyoxK5-AcO0nMQpU2Pp4xQhrRIJw4oMfI8VrSalECJHSON8ECtpOUVzEi5lQNa7qWcS8SAlwZV0HgKdoCcqvQVuqQ2n032W43-9B89Wsbo9xw",
+    "productId": "11279317010293402111",
+    "position": 39
+   },
+   {
+    "title": "Dell Precision 14 5490 (2024) - Core Ultra 7 165H, RAM 16GB, SSD 512GB, RTX A1000, 14′′ FHD+",
+    "source": "Lap rẻ nhất",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+dell+nh%E1%BA%B9+thi%E1%BA%BFt+k%E1%BA%BF&prds=localAnnotatedOfferId:1,productid:12084863302218241237,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "33.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSWstSkSRlW-r5q1O-W9W8jhwCyjOD0s9scOe0I6vSam8mRXg1iiU7eNFVJrZD6eg47ng3lzaMhFmZQpPUcx--Noym5CPEIHWDsdBxdlXRuA-NptN0mHpt-HQ",
+    "productId": "12084863302218241237",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

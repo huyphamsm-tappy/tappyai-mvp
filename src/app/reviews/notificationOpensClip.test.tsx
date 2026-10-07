@@ -54,7 +54,6 @@ vi.mock('@/lib/supabase/client', () => ({
     },
   }),
 }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./LikeListSheet', () => ({ default: () => null }))
 vi.mock('@/components/LinkPoster', () => ({ default: () => null }))
 vi.mock('./feedShared', () => ({

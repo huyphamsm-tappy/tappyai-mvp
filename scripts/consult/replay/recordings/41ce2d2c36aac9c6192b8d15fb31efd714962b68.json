@@ -1,0 +1,62 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "TOUS les JOURS Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:51:48.176Z",
+ "body": {
+  "searchParameters": {
+   "q": "TOUS les JOURS Nguyễn Thị Thập (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "TOUS les JOURS - Nguyễn Thị Thập",
+    "link": "https://shopeefood.vn/ho-chi-minh/tous-les-jours-nguyen-thi-thap",
+    "snippet": "441 Nguyễn Thị Thập, P. Tân Phong, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội ...",
+    "position": 1
+   },
+   {
+    "title": "TOUS les JOURS | Mua online tại ShopeeFood.vn",
+    "link": "https://shopeefood.vn/thuong-hieu/tous-les-jours",
+    "snippet": "TOUS les JOURS - Nguyễn Thị Thập. 441 Nguyễn Thị Thập, P. Tân Phong, Quận 7, TP. HCM. Tối thiểu 20k Giá 0. Giảm món. Mã giảm 11%. TOUS les JOURS - Lotte Mart ...",
+    "position": 2
+   },
+   {
+    "title": "TOUS les JOURS - Nguyễn Thị Thập ⭐ 4.8",
+    "link": "https://food.grab.com/vn/vi/restaurant/tous-les-jours-nguy%E1%BB%85n-th%E1%BB%8B-th%E1%BA%ADp-delivery/5-C3KWTYTCGGBBJE",
+    "snippet": "Món Pháp,Bánh Ngọt.",
+    "rating": 4.8,
+    "ratingCount": 394,
+    "position": 3
+   },
+   {
+    "title": "TOUS les JOURS - Lotte Mart Nam Sài Gòn",
+    "link": "https://shopeefood.vn/ho-chi-minh/tous-les-jours-lotte-mart-nam-sai-gon",
+    "snippet": "Lotte Mart Nam Sài Gòn, 469 Nguyễn Hữu Thọ, P. Tân Hưng, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất ...",
+    "position": 4
+   },
+   {
+    "title": "TOUS les JOURS - Mandarin Hoàng Minh Giám",
+    "link": "https://shopeefood.vn/ha-noi/tous-les-jours-mandarin-hoang-minh-giam",
+    "snippet": "TOUS les JOURS - Mandarin Hoàng Minh Giám. Tầng 1, Tầng 1, Khu D6, Lô N03 KĐT Madarin, Hoàng Minh Giám, P. Trung Hòa, Cầu Giấy, Hà Nội.",
+    "position": 5
+   },
+   {
+    "title": "Vô vàn ưu đãi, hàng vạn món ngon | GrabFood VN",
+    "link": "https://food.grab.com/vn/vi/",
+    "snippet": "GrabFood - Dịch vụ giao đồ ăn trực tuyến giúp bạn thỏa mãn cơn thèm ăn với hàng vạn quán ăn.",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

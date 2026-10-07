@@ -1,10 +1,12 @@
 package com.tappyai.app.notifications
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tappyai.app.notifications.data.NotificationSubscriptionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,21 +16,32 @@ import javax.inject.Inject
 /**
  * State for the Notifications preferences screen.
  *
- * Turning push ON is what registers this device with the backend — deliberately not app start.
- * A device address collected from someone who never asked for notifications is data taken without
- * a reason, so the token is fetched at the moment of consent and not before.
+ * [pushEnabled] is the "Tappy notifications" preference ([NotificationPreferenceStore]): ON by
+ * default, OFF only after the person switched it off, persisted on the device — the same contract
+ * as the web's `lib/notifications/preference.ts`. It is NOT the OS permission: the screen reads
+ * that separately and never lets one stand in for the other.
+ *
+ * Turning push ON (explicitly, by the person's own tap) is also when this device is registered
+ * with the backend. The default-ON preference registers nothing by itself: FCM's own
+ * `onNewToken` already reports the device address at install and rotation, so an explicit tap
+ * only re-sends it — nothing is collected here that the transport did not already collect.
  *
  * The Tappy identity SOUND is a different setting entirely and lives in
  * [TappyNotificationPreferences]; nothing here reads or writes it.
  */
 @HiltViewModel
 class NotificationsViewModel @Inject constructor(
+    @ApplicationContext appContext: Context,
     private val subscriptions: NotificationSubscriptionRepository,
 ) : ViewModel() {
-    private val _pushEnabled = MutableStateFlow(false)
+    private val preference = NotificationPreferenceStore(appContext)
+
+    private val _pushEnabled = MutableStateFlow(preference.enabled)
     val pushEnabled: StateFlow<Boolean> = _pushEnabled.asStateFlow()
 
+    /** The person's explicit choice: written as-is, ON or OFF, and kept until they change it. */
     fun setPushEnabled(enabled: Boolean) {
+        preference.write(enabled)
         _pushEnabled.value = enabled
         if (enabled) registerDevice()
     }

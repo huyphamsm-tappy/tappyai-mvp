@@ -100,9 +100,12 @@ struct ReviewsFeedView: View {
         )
     }
 
+    /// The sound page. Refused while Music is hidden (`ProductFlags.showMusic`): the disc that
+    /// sets `soundPageTrackId` is already gone from the action rail, and the sheet is refused here
+    /// too so no restored state can present it.
     private var soundPageBinding: Binding<StringIdentifiable?> {
         Binding<StringIdentifiable?>(
-            get: { soundPageTrackId.map { StringIdentifiable(id: $0) } },
+            get: { ProductFlags.showMusic ? soundPageTrackId.map { StringIdentifiable(id: $0) } : nil },
             set: { soundPageTrackId = $0?.id }
         )
     }

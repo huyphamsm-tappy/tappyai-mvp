@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Alagon Ecolodge\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:23:34.161Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Alagon Ecolodge\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Alagon Ecolodge Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-133901801/alagon-ecolodge-nam-cat-tien/",
+    "snippet": "Giờ nhận phòng tại Alagon Ecolodge Nam Cát Tiên bắt đầu từ 14:00-20:00, và giờ trả phòng là 12:00. Alagon Ecolodge Nam Cát Tiên có hồ bơi không? Có, Alagon ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Thuyền Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/landmark/vn/nam-cat-tien-boat.html",
+    "snippet": "Alagon Ecolodge Nam Cat Tien có hồ bơi ngoài trời, khu vườn, nhà hàng và quầy bar ở Tân Phú. Resort 5 sao này cung cấp dịch vụ phòng, quầy lễ tân 24 giờ và Wi- ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn ở gần Sông Đồng Nai, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-dong-nai-river/hotels-c77085m51032925/",
+    "snippet": "Alagon Ecolodge Nam Cat Tien có hồ bơi ngoài trời, khu vườn, nhà hàng và quầy bar ở Tân Phú. Resort 5 sao này cung cấp dịch vụ phòng, quầy lễ tân 24 giờ và Wi- ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn ở Tuyên Quang, Việt Nam",
+    "link": "https://vn.trip.com/hotels/province/vn-tuyen-quang-province.html",
+    "snippet": "Lâm Đồng. 1,160 khách sạn. Top 3. Lào Cai. 350 khách sạn. Show more ... Alagon Ecolodge Nam Cát TiênPhi Nga Hotel. Chuyến Bay Từ Các Thành Phố Phổ ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

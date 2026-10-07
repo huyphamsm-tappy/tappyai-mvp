@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hapaku Set 2 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:09:31.944Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hapaku Set 2 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HAPAKU - Quà Tặng Sức Khỏe, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/hapakuquatang",
+    "snippet": "Quà Tặng Sức Khỏe Từ Muối Ngâm Chân Thảo Dược Hapaku, Giảm Tê Bì Chân Tay, Lưu Thông Khí Huyết, Thư Giãn Ngủ Ngon. 141.000₫. -6%. rating-star 5.0.",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Tết Sức Khỏe Hapaku, Quà Tặng Sức Khỏe ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%BFt-S%E1%BB%A9c-Kh%E1%BB%8Fe-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-S%E1%BB%A9c-Kh%E1%BB%8Fe-Ng%C6%B0%E1%BB%9Di-Th%C3%A2n-%C3%94ng-B%C3%A0-B%E1%BB%91-M%E1%BA%B9-i.50231551.19856559308",
+    "snippet": "Mua Set Quà Tết Sức Khỏe Hapaku, Quà Tặng Sức Khỏe Người Thân, Ông Bà Bố Mẹ giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 2
+   },
+   {
+    "title": "HAPAKU VIỆT NAM - Shopee Mall Online",
+    "link": "https://shopee.vn/hapaku_officialstore",
+    "snippet": "Mua đai chườm nóng thảo dược, bóng mát xa, túi thơm thảo dược, gối ngải cứu, tinh dầu tự nhiên HAPAKU VIỆT NAM chính hãng tại Shopee ưu đãi tháng 09/2026.",
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng Sức Khỏe Cho Nhân Viên Nữ 20/10",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-S%E1%BB%A9c-Kh%E1%BB%8Fe-Cho-Nh%C3%A2n-Vi%C3%AAn-N%E1%BB%AF-20-10-T%E1%BB%AB-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-T%E1%BB%B1-Nhi%C3%AAn-Hapaku-i.577334350.25631993569",
+    "snippet": "Mua Set Quà Tặng Sức Khỏe Cho Nhân Viên Nữ 20/10 - Từ Thảo Dược Tự Nhiên Hapaku giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 4
+   },
+   {
+    "title": "Set Quà Tặng Sức Khỏe Hapaku, Quà 20/10 Tặng Cho Mẹ, ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-S%E1%BB%A9c-Kh%E1%BB%8Fe-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-%C3%94ng-B%C3%A0-B%E1%BB%91-M%E1%BA%B9-D%E1%BB%8Bp-L%E1%BB%85-T%E1%BA%BFt-i.50231551.18657940846?extraParams=%7B%22display_model_id%22%3A225820994922%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Set Quà Tặng Sức Khỏe Hapaku, Quà 20/10 Tặng Cho Mẹ, Đai Chườm Giảm Đau Mỏi Lưng Từ Thảo Dược Tự Nhiên giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Set Quà Tặng Mẹ 20/10 Từ Túi Chườm Thảo Dược ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-M%E1%BA%B9-20-10-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Qu%C3%A0-T%E1%BA%B7ng-Sinh-Nh%E1%BA%ADt-M%E1%BA%B9-%C3%9D-Ngh%C4%A9a-H%E1%BB%97-Tr%E1%BB%A3-Gi%E1%BA%A3m-%C4%90au-Vai-G%C3%A1y-i.1234610844.25526324386?extraParams=%7B%22display_model_id%22%3A255843862890%2C%22model_selection_logic%22%3A2%7D",
+    "snippet": "Mua Set Quà Tặng Mẹ 20/10 Từ Túi Chườm Thảo Dược Hapaku, Quà Tặng Sinh Nhật Mẹ Ý Nghĩa, Hỗ Trợ Giảm Đau Vai Gáy giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 25,
+    "position": 6
+   },
+   {
+    "title": "Set Quà Tặng Bạn Trai, Quà Tặng Chồng Từ Túi Chườm ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-B%E1%BA%A1n-Trai-Qu%C3%A0-T%E1%BA%B7ng-Ch%E1%BB%93ng-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Qu%C3%A0-Sinh-Nh%E1%BA%ADt-Cho-Nam-%C3%9D-Ngh%C4%A9a-i.1234610844.29900014945",
+    "snippet": "Mua Set Quà Tặng Bạn Trai, Quà Tặng Chồng Từ Túi Chườm Thảo Dược Hapaku, Quà Sinh Nhật Cho Nam Ý Nghĩa giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 18,
+    "position": 7
+   },
+   {
+    "title": "Set Quà Tặng Sức Khỏe Từ Túi Chườm Mắt Thảo Dược ...",
+    "link": "https://shopee.vn/Set-Qu%C3%A0-T%E1%BA%B7ng-S%E1%BB%A9c-Kh%E1%BB%8Fe-T%E1%BB%AB-T%C3%BAi-Ch%C6%B0%E1%BB%9Dm-M%E1%BA%AFt-Th%E1%BA%A3o-D%C6%B0%E1%BB%A3c-Hapaku-Gi%E1%BA%A3m-Nh%E1%BB%A9c-M%E1%BB%8Fi-M%E1%BA%AFt-Gi%E1%BA%A3m-%C4%90au-%C4%90%E1%BA%A7u-Th%C6%B0-Gi%C3%A3n-Ng%E1%BB%A7-Ngon-i.1234610844.25926435735",
+    "snippet": "Mua Set Quà Tặng Sức Khỏe Từ Túi Chườm Mắt Thảo Dược Hapaku - Giảm Nhức Mỏi Mắt, Giảm Đau Đầu, Thư Giãn Ngủ Ngon giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,108 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 18677,
+  "evidenceId": "e9458511-c40a-4e74-99f1-e94e0864c17a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "SIZ SPA massage",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+      "address": "Quận 1, TP.HCM"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm lại thông tin đặt trước của **SIZ SPA** cho bạn.\n\nCó được! **SIZ SPA** có hỗ trợ đặt trước qua:\nhttps://sizspa.com/dat-cho/\n\nSpa mở đến 22:15 hôm nay nên bạn còn thời gian 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 WhatsApp - SIZ SPA\",\"type\":\"website\",\"url\":\"https://wa.me/+84775271878\",\"primary\":true},{\"label\":\"🌐 Đặt trước - SIZ SPA\",\"type\":\"website\",\"url\":\"https://sizspa.com/dat-cho/\",\"primary\":true},{\"label\":\"📍 Google Maps - SIZ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=672160052658345250\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage chân/body gần đây hôm nay. Tìm được 7 spa ở Quận 1, nhưng chưa xác nhận được giá cụ thể của chúng — nên mình không thể khẳng định nằm trong 300k.\n\n**SIZ SPA** là lựa chọn mình nghiêng về nhất: **4.9⭐ (1.072 đánh giá)**, mở đến 22:15, chuyên massage chân & body. Địa chỉ 154 Cống Quỳnh, gần vị trí bạn. Bạn có thể gọi **0775 271 878** hoặc vào website để hỏi giá gói massage chân trước khi đặt.\n\nBạn nên liên hệ trực tiếp để kiểm tra giá gói chân/body có phù hợp ngân sách không nhé.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website SIZ SPA\",\"type\":\"website\",\"url\":\"https://sizspa.com/dat-cho/\",\"primary\":false},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=672160052658345250\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá gói massage chân|Xem review SIZ SPA|Tìm spa khác ở Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm lại thông tin đặt trước của **SIZ SPA** cho bạn.\n\nCó được! **SIZ SPA** có hỗ trợ đặt trước qua:\nhttps://sizspa.com/dat-cho/\n\nSpa mở đến 22:15 hôm nay nên bạn còn thời gian 👍\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 WhatsApp - SIZ SPA\",\"type\":\"website\",\"url\":\"https://wa.me/+84775271878\",\"primary\":true},{\"label\":\"🌐 Đặt trước - SIZ SPA\",\"type\":\"website\",\"url\":\"https://sizspa.com/dat-cho/\",\"primary\":true},{\"label\":\"📍 Google Maps - SIZ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=672160052658345250\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

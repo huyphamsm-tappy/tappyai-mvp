@@ -1,0 +1,205 @@
+{
+ "id": "e923323a-4dda-4f99-8547-3e72be30fad6",
+ "rows": [
+  {
+   "user": "Hôm nay tự thưởng một cái gì đó đi, xứng đáng mà 🎁",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Tự thưởng bản thân là ý tưởng tuyệt vời! 🎉 Mình cần biết bạn muốn thưởng mình bằng cách nào để gợi ý đúng ý: **Bạn đang nghĩ đến:** - 🍽️ **Ăn uống** — một bữa"
+  },
+  {
+   "user": "quan an ngon gan day",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình cần xác nhận một chút để gợi ý đúng ý bạn nhé: **Bạn đang ở khu vực nào hiện tại?** (ví dụ: Quận 1, Quận 3, Bình Thạnh, Tân Bình...) Hay bạn muốn tìm quán "
+  },
+  {
+   "user": "spa gan day",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình hiểu bạn muốn tìm spa gần đây để thư giãn và tự thưởng bản thân! 😌 **Bạn đang ở khu vực nào hiện tại?** Hay bạn muốn spa ở Quận 1 (nơi bạn hay quan tâm)? "
+  },
+  {
+   "user": "Gợi ý quán ăn và địa điểm vui chơi gần mình nhé",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình cần biết bạn đang ở khu vực nào để tìm quán ăn và địa điểm vui chơi gần nhất cho bạn. Theo thông tin trước đó, bạn hay ở **Sài Gòn** và quan tâm đến **Quận"
+  },
+  {
+   "user": "quan an ngon quan 1",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình chọn **A Xỉu - Quán Ăn Ngon** cho bạn! 🍜 **4.7⭐ (246 đánh giá Google Maps)** Ngoài ra, nếu bạn muốn thử thêm, **Trần Ký Mì Gia** (4.6⭐, 145 đánh giá) cũng"
+  },
+  {
+   "user": "quan nao mo khuya",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình chọn **Ghiền Mồi bén & Bia** cho bạn! 🍖 **4.8⭐ (2.502 đánh giá Google Maps)** · Mở đến **01:00 sáng** Quán này có 2.502 đánh giá — đó là bằng chứng mạnh m"
+  },
+  {
+   "user": "quan dau tien mo toi may gio",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "**Ghiền Mồi bén & Bia** mở đến **01:00 sáng** (1 giờ sáng) nhé! 🌙 (1 giờ sáng) nhé! 🌙 Nếu bạn muốn ăn thật khuya hơn! 🍖 Giờ mở cửa mình chưa xác nhận được từ"
+  },
+  {
+   "user": "mua tai nghe khong day duoi 1 trieu",
+   "plan": false,
+   "places": false,
+   "shop": true,
+   "dup": null,
+   "head": "Mình tìm tai nghe không dây dưới 1 triệu cho bạn nhé! 🎧 Mình chọn **Tai nghe nhét Tai có dây HIFI 6D Surround Bass 3.5mm Type C thể thao chống nước** cho bạn! "
+  },
+  {
+   "user": "loai nao pin lau nhat",
+   "plan": false,
+   "places": false,
+   "shop": true,
+   "dup": null,
+   "head": "Mình tìm tai nghe pin lâu nhất dưới 1 triệu cho bạn! 🔋 Mình chọn **Tai Nghe Bluetooth B-01 AKA STORE V5.4** cho bạn! 🔋 Nếu bạn muốn **pin siêu trâu hơn**, 4.9"
+  },
+  {
+   "user": "cuoi tuan di vung tau 2 nguoi o khach san nao",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình gọi tool tìm khách sạn phù hợp ở Vũng Tàu cho bạn nhé! 🏨 Mình chọn **Fusion Suites Vũng Tàu** cho bạn! 🏨 **4.8⭐ (4.819 đánh giá Google Maps)** — khách sạ"
+  },
+  {
+   "user": "len ke hoach 2 ngay 1 dem",
+   "plan": true,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình lập kế hoạch 2 ngày 1 đêm cho bạn và bạn ở Vũng Tàu nhé! 🏖️ **Tại sao chọn các điểm này:** - **BBQ ÔNG MẬP** mở đến 01:00 sáng — hoàn hảo cho bạn ăn khuya"
+  },
+  {
+   "user": "them quan hai san vao ke hoach",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm quán hải sản ở Vũng Tàu cho kế hoạch 2 ngày 1 đêm của bạn nhé! 🦞 Mình chọn **QUÁN ỐC HẢI SẢN SƯƠNG** cho bạn! 🦪 **4.7⭐ (1.180 đánh giá Google Maps)**"
+  },
+  {
+   "user": "spa quan 3",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm spa ở Quận 3 cho bạn nhé! 💆 Mình chọn **Mela Spa - Massage gội đầu dưỡng sinh Quận 3** cho bạn! 💆 **5⭐ (255 đánh giá Google Maps)** — gội đầu & massa"
+  },
+  {
+   "user": "spa gia duoi 400k",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm spa ở Quận 3 dưới 400k cho bạn nhé! 💆 Hiện tại mình chưa xác nhận được giá cụ thể của các spa ở Quận 3 dưới 400k. Tuy nhiên, theo kết quả tìm kiếm, có"
+  },
+  {
+   "user": "rap phim gan quan 1",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm rạp phim gần Quận 1 cho bạn nhé! 🎬 Mình chọn **Galaxy Cinema Nguyễn Du** cho bạn! 🎬 Rạp này có **4.3⭐ (9.379 đánh giá)** — số lượng đánh giá lớn nhất"
+  },
+  {
+   "user": "quan hat cho 8 nguoi",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm quán hát karaoke ở Quận 1 cho 8 người nhé! 🎤 Mình chọn **Karaoke Avatar** cho bạn! 🎤 Quán này có **4.9⭐ (6.411 đánh giá)** — số lượng đánh giá khổng "
+  },
+  {
+   "user": "cong vien nuoc cho tre em",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình cần hỏi thêm một chút nhé! 🎢 Bạn muốn tìm công viên nước ở **Sài Gòn** (nơi bạn thường ở) hay ở **Vũng Tàu** (điểm đến đang kế hoạch)?"
+  },
+  {
+   "user": "quay lai tai nghe loai nao chong on tot",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình cần hỏi thêm để gợi ý đúng ý bạn nhé! 🎧 Bạn muốn tai nghe **chống ồn chủ động (ANC)** hay **chống ồn cách âm (passive)**? Và bạn có ưu tiên về: - **Giá**:"
+  },
+  {
+   "user": "an sang bun bo o dau ngon",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm quán bún bò ở Sài Gòn cho bạn nhé! 🍲 Mình chọn **Bún Bò Huế O Xưa** cho bạn! 🍲 Quán này có **4.8⭐ (451 đánh giá)** — rating cao nhất với số lượng đán"
+  },
+  {
+   "user": "ve may bay di da nang thang sau",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm vé máy bay từ Sài Gòn đi Đà Nẵng tháng sau cho bạn nhé! ✈️ Tháng 10 có nhiều chuyến bay với giá khá hợp lý. Bạn có thể xem các chuyến bay ✈️ Booking.co"
+  },
+  {
+   "user": "spa cho cap doi quan 1",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm spa cho cặp đôi ở Quận 1 cho bạn nhé! 💆 Mình chọn **MASSAGE HẠ SPA QUẬN 1** cho bạn! 💆 Quán này có **4.9⭐ (3.550 đánh giá)** — số lượng đánh giá khổn"
+  },
+  {
+   "user": "thuy cung sai gon",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm thủy cung ở Sài Gòn cho bạn nhé! 🐠 Mình chọn **Công Viên Nước Đầm Sen** cho bạn! 🎢 Đây là lựa chọn tuyệt vời nhất với **4.3⭐ (36.029 đánh giá)** — số"
+  },
+  {
+   "user": "quan oc ngon quan 4",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Mình tìm quán ốc ở Quận 4 cho bạn nhé! 🐚 Mình chọn **Quán Ốc cô Nở Chảnh** cho bạn! Nếu muốn chọn khác, **Ốc Bình Quán** cũng tuyệt với **4.8⭐ (12 đánh giá)** "
+  },
+  {
+   "user": "mua noi chien khong dau 5 lit",
+   "plan": false,
+   "places": false,
+   "shop": true,
+   "dup": null,
+   "head": "Mình tìm nồi chiên không dầu 5 lít cho bạn nhé! 🍳 Mình chọn **Nồi chiên không dầu Fujihome A5 5 Lít** từ **Khánh Vy Home** với giá **980.000đ** — rẻ nhất trong"
+  },
+  {
+   "user": "cam on nhe",
+   "plan": false,
+   "places": false,
+   "shop": false,
+   "dup": null,
+   "head": "Không có gì! Cần gì cứ hỏi mình nhé 😊"
+  }
+ ]
+}

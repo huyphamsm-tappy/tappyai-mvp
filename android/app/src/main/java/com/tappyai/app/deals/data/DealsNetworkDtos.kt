@@ -14,8 +14,9 @@ import kotlinx.serialization.Serializable
  * of which the feed sends any more, so every deal decoded with a blank url and Compose crashed on
  * duplicate keys. `DealsWireContractTest` pins these names against a real captured response.
  *
- * Every field the card renders is declared. `partnerSlug`, `partnerType`, `bannerImage` and
- * `isFeatured` are deliberately ignored — the card has no place for them.
+ * Every field the card renders is declared. `partnerType` is deliberately ignored — the card has
+ * no place for it. `partnerSlug`, `isFeatured` and `bannerImage` are read for the V3 screen
+ * (platform grouping, the featured lead card, its banner artwork).
  */
 @Serializable
 data class DealsResponseDto(val deals: List<DealDto> = emptyList())
@@ -48,6 +49,12 @@ data class DealDto(
     val voucherCode: String? = null,
     /** ISO-8601 expiry that drives the countdown. Absent on every current row. */
     val endAt: String? = null,
+    /** Stable partner identifier (`partner_slug`), e.g. "shopee". */
+    val partnerSlug: String = "",
+    /** Editorial "featured" flag (`is_featured`). */
+    val isFeatured: Boolean = false,
+    /** Wide banner artwork (`banner_image`); null on rows without one. */
+    val bannerImage: String? = null,
 )
 
 fun DealDto.toDomain(): Deal = Deal(
@@ -65,4 +72,7 @@ fun DealDto.toDomain(): Deal = Deal(
     discountLabel = discountLabel?.takeIf { it.isNotBlank() },
     voucherCode = voucherCode?.takeIf { it.isNotBlank() },
     endAt = endAt?.takeIf { it.isNotBlank() },
+    partnerSlug = partnerSlug,
+    isFeatured = isFeatured,
+    bannerImage = bannerImage?.takeIf { it.isNotBlank() },
 )

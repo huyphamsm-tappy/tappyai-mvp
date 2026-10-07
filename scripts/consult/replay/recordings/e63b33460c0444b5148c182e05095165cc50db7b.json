@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"𝗠𝗜𝗡𝗧 𝗡𝗔𝗜𝗟 𝗥𝗢𝗢𝗠 | Nail xinh Sài Gòn Quận 10\" quan 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:44.190Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"𝗠𝗜𝗡𝗧 𝗡𝗔𝗜𝗟 𝗥𝗢𝗢𝗠 | Nail xinh Sài Gòn Quận 10\" quan 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

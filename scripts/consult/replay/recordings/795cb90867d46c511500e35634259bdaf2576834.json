@@ -1,0 +1,117 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Karaoke Santori Quận 1 Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:51:16.918Z",
+ "body": {
+  "searchParameters": {
+   "q": "Karaoke Santori Quận 1 Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7683062,106.6860223,17.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Karaoke SAFARI",
+    "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7678102,
+    "longitude": 106.6885021,
+    "rating": 4.3,
+    "ratingCount": 453,
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.facebook.com/Safari-Karaoke-109490391822168",
+    "phoneNumber": "+84 899 202 568",
+    "openingHours": {
+     "Thứ Ba": "11:00–04:00",
+     "Thứ Tư": "11:00–04:00",
+     "Thứ Năm": "11:00–04:00",
+     "Thứ Sáu": "11:00–04:00",
+     "Thứ Bảy": "11:00–04:00",
+     "Chủ Nhật": "11:00–04:00",
+     "Thứ Hai": "11:00–04:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm67ukcLaKXdGQBA-zMm-o1OVTjJxUKU2mE5LgPuo_3K-hNYokiVAsEYawQF0uaYfEaqh1JWR2Y2kg_xUtK_iRqg-sAZKB_r_Farq_gwjhVyX1ZRb3ISWil4C4cyxzLKmIKUDgIEw",
+    "cid": "13874040439977271757",
+    "fid": "0x31752f944bd5b8af:0xc08a7e45b83fe1cd",
+    "placeId": "ChIJr7jVS5QvdTERzeE_uEV-isA"
+   },
+   {
+    "position": 2,
+    "title": "Karaoke Avatar",
+    "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7658948,
+    "longitude": 106.68258469999999,
+    "rating": 4.9,
+    "ratingCount": 6412,
+    "priceLevel": "100-500 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://karaokeavatar.com/",
+    "phoneNumber": "+84 915 031 111",
+    "description": "Quán bar karaoke thành phố từ năm 2010 có phục vụ đêm khuya, các phòng theo chủ đề, giờ ưu đãi, tiệc và sự kiện.",
+    "openingHours": {
+     "Thứ Ba": "12:00–05:00",
+     "Thứ Tư": "12:00–05:00",
+     "Thứ Năm": "12:00–05:00",
+     "Thứ Sáu": "12:00–05:00",
+     "Thứ Bảy": "12:00–05:00",
+     "Chủ Nhật": "12:00–05:00",
+     "Thứ Hai": "12:00–05:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/Avatar.Karaoke"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmrc8pRtHkv7uPTXjUioiRPSPo8UfD7d8kjaetBU_WgzJbSuhiBEpgZy6IQMJ1B904OtFs9fYU7heVCWQUAX2ka5zr8j65jLeEo5anLTpm0hkh0QlFFOXxilyDZT11V31NtiFZmBUPjQ_M",
+    "cid": "15540783769004242466",
+    "fid": "0x31752f18d78c84f5:0xd7abf47fd2a77622",
+    "placeId": "ChIJ9YSM1xgvdTERInan0n_0q9c"
+   },
+   {
+    "position": 3,
+    "title": "Karaoke MEI",
+    "address": "159-161-163 Hàm Nghi, Quận 1, Hồ Chí Minh 710000, Việt Nam",
+    "latitude": 10.7707176,
+    "longitude": 106.6997596,
+    "rating": 4.9,
+    "ratingCount": 1519,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán bar karaoke",
+    "types": [
+     "Quán bar karaoke"
+    ],
+    "website": "https://www.facebook.com/KaraokeMei/",
+    "phoneNumber": "+84 364 180 486",
+    "openingHours": {
+     "Thứ Ba": "09:00–03:00",
+     "Thứ Tư": "09:00–03:00",
+     "Thứ Năm": "09:00–03:00",
+     "Thứ Sáu": "09:00–03:00",
+     "Thứ Bảy": "09:00–03:00",
+     "Chủ Nhật": "09:00–03:00",
+     "Thứ Hai": "09:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBbB-q3rgVLNiUA03-xwjtl7lm0QiHerW_BjGsfHhb0eDegoDxvq68VTcF-8oQwq3ZKhlw5TxbFJrdX0QhLbWFWvCn5QN0LgAKaxO_v4-_u4H0sZdqKVMyWdqZpBvyq8f3DU1r4wH5E8sF",
+    "cid": "1743439115304590801",
+    "fid": "0x31752f4f316fd245:0x1831f0a363405dd1",
+    "placeId": "ChIJRdJvMU8vdTER0V1AY6PwMRg"
+   }
+  ],
+  "credits": 3
+ }
+}

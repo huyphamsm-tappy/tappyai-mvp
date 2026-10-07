@@ -1,0 +1,28 @@
+{
+  "id": "FP1",
+  "text": "mua bánh trung thu Kinh Đô online, hộp 4 bánh",
+  "vertical": "food",
+  "unit": "PRODUCT",
+  "parent": null,
+  "surface": "web",
+  "status": 200,
+  "ttfb": 409,
+  "ms": 409,
+  "evidenceId": "669bff71-ff26-4a19-8f53-51e571b2e2a5",
+  "toolCalls": [],
+  "toolResults": [],
+  "frames8": [],
+  "prose": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua bánh trung thu Kinh Đô online, hộp 4 bánh"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ."
+    }
+  ],
+  "at": "2026-09-20T06:25:32.763Z"
+}

@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Izakaya Taka Hue\" OR \"Nhà Hàng Ta.ke\" OR \"ONES CASUAL BAR Japanese Restaurant\" hue site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:24:05.703Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Izakaya Taka Hue\" OR \"Nhà Hàng Ta.ke\" OR \"ONES CASUAL BAR Japanese Restaurant\" hue site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Anna Queenni",
+    "link": "https://www.tiktok.com/@annaqueenni/video/7640861539439873288",
+    "snippet": "... #sushi #ຟີດດດດດດດດ #ລາວ #ฟีดดดシ #laos · Fairy Tale Dreamland · Izakaya Taka Hue - Quán nhậu kiểu Nhật tại Huế · author · 69 · 0.",
+    "position": 1
+   },
+   {
+    "title": "Về Huế thử omakase phiên bản ngon - vui - rẻ nào mọi ...",
+    "link": "https://www.tiktok.com/@luy.hue2803/video/7662768794707725576",
+    "snippet": "Về Huế thử omakase phiên bản ngon - vui - rẻ nào mọi người ơi Izakaya Taka Hue - 41 Chu Văn An, Huế #luyhue #omakase #dulichhue ...",
+    "position": 2
+   },
+   {
+    "title": "Izakaya Takehue: Amazing Japanese Food and Vibes",
+    "link": "https://www.tiktok.com/@amyhoang2/photo/7669124833799703826",
+    "snippet": "Izakaya Taka Hue - Quán nhậu kiểu Nhật tại Huế · author. 10 · 1 ... hue #vangviahe #tamtrang · âm thanh gốc - Amy Hoang. 12Likes. 3Comments. 0 ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Nhật Bản Ngon Miệng",
+    "link": "https://www.tiktok.com/@_ziziii2718_/photo/7649038264703126792",
+    "snippet": "mosi mosi? Izakaya Taka Hue - Quán nhậu kiểu Nhật tại Huế · author.",
+    "position": 4
+   },
+   {
+    "title": "Omakase Tại Huế",
+    "link": "https://www.tiktok.com/discover/omakase-t%E1%BA%A1i-hu%E1%BA%BF",
+    "snippet": "Luỵ Huế. Về Huế thử omakase phiên bản ngon - vui - rẻ nào mọi người ơi Izakaya Taka Hue - 41 Chu Văn An, Huế #luyhue #omakase #dulichhue #xuhuong ...",
+    "position": 5
+   },
+   {
+    "title": "Đi Huế sẽ rất rẻ nếu bạn biết những quán này. ...",
+    "link": "https://www.tiktok.com/@codohue.75/photo/7666350264076766482",
+    "snippet": "... Izakaya Taka Hue - 41 Chu Văn An 13. Bánh ướt O Lan - 32 Hoàng Quốc Việt 14. ĐỀ PÔ Cafe - Chợ Đông Ba 15. Thành - 328A Phan Bội Châu 16 ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,79 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 11344,
+  "evidenceId": "de392e73-685e-444d-850e-c008fa2727e4",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Đà Nẵng"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình thấy danh sách khách sạn gần biển Đà Nẵng Các khách sạn này đều có rating cao (4.6-4.8⭐), nhưng mình cần kiểm tra giá realtime. Bạn có ngày check-in/check-out cụ thể không để mình tìm giá chính xác?\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày nào check-in|Bạn muốn ở bao lâu|Có yêu cầu gì khác không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình thấy danh sách khách sạn gần biển Đà Nẵng Các khách sạn này đều có rating cao (4.6-4.8⭐), nhưng mình cần kiểm tra giá realtime. Bạn có ngày check-in/check-out cụ thể không để mình tìm giá chính xác?\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]Ngày nào check-in|Bạn muốn ở bao lâu|Có yêu cầu gì khác không[/FOLLOWUPS]"
+    }
+  ]
+}

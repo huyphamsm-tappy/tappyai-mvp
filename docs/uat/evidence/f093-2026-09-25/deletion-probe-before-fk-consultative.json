@@ -1,0 +1,28 @@
+{
+ "label": "before-fk-consultative",
+ "email": "<redacted — see label>",
+ "at": "2026-09-25T05:21:18.682Z",
+ "columnsScanned": 493,
+ "before": {
+  "public.contact_sync_state.user_id": 1,
+  "public.decision_evidence.owner_id": 3,
+  "public.governed_events.user_id": 7,
+  "public.profiles.id": 1,
+  "public.subscriptions.user_id": 1,
+  "public.user_demographics.user_id": 1,
+  "public.user_events.user_id": 35,
+  "public.user_follows.follower_id": 1,
+  "public.user_follows.following_id": 1,
+  "public.user_memory.user_id": 1
+ },
+ "deleteError": null,
+ "after": {
+  "public.decision_evidence.owner_id": 3,
+  "public.user_memory.user_id": 1
+ },
+ "survivors": {
+  "public.decision_evidence.owner_id": 3,
+  "public.user_memory.user_id": 1
+ },
+ "rolledBack": true
+}

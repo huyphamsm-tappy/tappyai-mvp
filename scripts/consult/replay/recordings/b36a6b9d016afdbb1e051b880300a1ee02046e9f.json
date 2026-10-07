@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" OR \"M Hotel Da Nang\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:00:12.405Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" OR \"M Hotel Da Nang\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach ...",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "Khám phá một rooftop mới tuyệt đẹp với view toàn cảnh Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành ...",
+    "position": 1
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "position": 2
+   },
+   {
+    "title": "M Hotel Da Nang: A Nighttime Paradise",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7491982726556388615",
+    "snippet": "M Hotel Da Nang: A Nighttime Paradise. Explore the enchanting atmosphere of M Hotel Da Nang by night. Experience stunning views and vibrant ...",
+    "position": 3
+   },
+   {
+    "title": "Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Da Nang Vietnam Junior Suite",
+    "link": "https://www.tiktok.com/discover/m-hotel-da-nang-vietnam-junior-suite",
+    "snippet": "M Hotel Đà Nẵng: Khu Vườn Xanh Ngát Bên Biển Mỹ Khê. Khám phá M Hotel Đà Nẵng - khách sạn 5 sao với thiết kế ấn tượng và view biển tuyệt đẹp. Đặt phòng ngay hôm ...",
+    "position": 5
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 6
+   },
+   {
+    "title": "M Hotel Danang",
+    "link": "https://www.tiktok.com/discover/m-hotel-danang",
+    "snippet": "M Hotel Đà Nẵng mang phong cách phủ xanh độc đáo, kết hợp hồ bơi vô cực hướng thẳng bán đảo Sơn Trà – điểm check-in không thể bỏ lỡ tại Đà ...",
+    "date": "8 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "🏝️🏝️ M Hotel Da Nang - Một khu vườn xanh ngát nằm ...",
+    "link": "https://www.tiktok.com/@thaolamdulich/video/7482233261758958866",
+    "snippet": "M Hotel Da Nang - Một khu vườn xanh ngát nằm ngay mặt biển Mỹ Khê - Đà Nẵng với thiết kế ấn tượng🏖️🏖️ GÍA ƯU ĐÃI CHỈ: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

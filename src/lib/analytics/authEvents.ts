@@ -4,6 +4,7 @@
 // §4 and the approved spec §3. Reusable emitters (SR-4), browser-only.
 
 import { track } from '@/lib/tracking/tracker'
+import { emitSignup } from './g1Events'
 
 const PENDING_KEY = 'tappy_auth_pending'
 const EMITTED_KEY = 'tappy_auth_emitted'
@@ -56,7 +57,11 @@ export function emitAuthLoginFromSession(user: { id: string; created_at?: string
     if (sessionStorage.getItem(EMITTED_KEY) === stamp) return // already emitted for this login
 
     const isFirst = !!user.created_at && (Date.now() - new Date(user.created_at).getTime() < 2 * 60 * 1000)
-    if (isFirst) track('auth_signup_completed', { method: pending.method })
+    if (isFirst) {
+      track('auth_signup_completed', { method: pending.method })
+      // G1 canonical `signup` — same moment, same once-only guard, plus first-touch attribution.
+      emitSignup(pending.method)
+    }
     track('auth_login_completed', { method: pending.method, is_first_login: isFirst })
 
     sessionStorage.setItem(EMITTED_KEY, stamp)

@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng Thịt Nướng Nhật NIKUTARO\" Quận 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:19:34.281Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng Thịt Nướng Nhật NIKUTARO\" Quận 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng bò Nhật NIKUTARO Quận 1 mở cửa đến 2h sáng",
+    "link": "https://www.tiktok.com/@hoaoididau/video/7662971135402724628",
+    "snippet": "NIKUTARO Quận 1, nhà hàng bò Nhật mở khuya, yakiniku Quận 1, Nikutaro menu, nhà hàng ... Nhà hàng Thịt Nướng Nhật NIKUTARO · author. 973 · 28.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng Nhật mở tới 2h sáng mà tui thích tại Quận 1 ...",
+    "link": "https://www.tiktok.com/@daitiengnoianuong/video/7675411327220714772",
+    "snippet": "... Quận 1 #reviewanngon #ancungtiktok #yakiniku #thitnuong #nikutaro. Nhà hàng Nhật mở tới ... Nhà hàng Thịt Nướng Nhật NIKUTARO · author. 582 · 7.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

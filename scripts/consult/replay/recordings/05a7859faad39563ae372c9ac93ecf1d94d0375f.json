@@ -1,0 +1,387 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop đồ họa dưới 20",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:02.632Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop đồ họa dưới 20",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Laptop Lenovo LOQ 15IAX9E 83LK0079VN",
+    "source": "lapvip.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:14798020123836506537,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "20.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR6lP0g8qzGt7dXY7HJjDJISfAHNDOLyczN6NUcoC9Yos35-lHE5zcODtEFAWNHka6GUopv26c4BrNjRhXrOVirY363x9R42UIALMQuLcpGozob0zKlVaF31Q",
+    "rating": 4.8,
+    "ratingCount": 15,
+    "productId": "14798020123836506537",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Cyborg 15 A13UC-2082VN",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:11944045363819866895,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTxSUPVNLorS4Ev7vWRdCfsQ5YXim1jBayPdBlVff9KJ9t8HtxkW2RnJvXtUryT0IkPXTQTW6RGEFWGYd5OqM-FMgRg0qfbYcVPDw5DX2cLpRqhbggLGP1F",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "11944045363819866895",
+    "position": 2
+   },
+   {
+    "title": "Acer Aspire S 13 S5-371-3164 i3-6100U Notebook 33,8 cm (13.3\") Full HD Intel Core i3 4 GB LPDDR3-SDRAM 128 GB SSD Wi-Fi 5 (802.11ac) Windows 10 ...",
+    "source": "Bảo Hành One",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:13258087526583820152,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTjtoxoMHXOPDMDccfpKFY3mSiiDQ9c_mj0yy9rTFpFmDdzczStRWWVJ3NS9lTL_FKNpMGFGT7NsrQKPjf_mYD-MSl-xyEiNv2qlCPM_-hnH6XZBK3i6G7Udg",
+    "productId": "13258087526583820152",
+    "position": 3
+   },
+   {
+    "title": "Laptop Sony VAIO VPC-W121AX - Laptop giá rẻ hơn điện thoại",
+    "source": "truonggiang.vn",
+    "price": "1.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSxUGPjT3JhHdOZS6JOyLgA_EfaxZIf4ElWgkKGXslO0PG2zr-fmrRzz4ZAhUv3AaSIoOHP09hMH1CHYA73zGN7W27f30nGWluBVBtvT8OHC_DeTvhYhqHy4g",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "14675508259886677244",
+    "position": 4
+   },
+   {
+    "title": "Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới",
+    "source": "Fogo Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:3951663215321281162,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "20.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR6weGpNDF_3zzHN6oeY8zu6hbmEfPtIFjthu7xQop90j-bgc2gUW6ZwlekIQ_y91QDWfZvkZ8UduGd6CHsJa3wXDWhjkI06o5BofZ4OEONvK-tlVjfXQlv",
+    "productId": "3951663215321281162",
+    "position": 5
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 MCW52",
+    "source": "TK Computer",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:18223076252425367046,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "21.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT5wmHXMi7Yls3Gi_g794ExZxEXVRLnkOa1td6s2f6qAbQZQU8Mx7-OIgCMbyn2W3b-j5NNI4SHAdONSNBjkduTBgtsp71BzmZD_k25aF2miVs9ehKTMsb4",
+    "rating": 2,
+    "ratingCount": 1,
+    "productId": "18223076252425367046",
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Air 13 inch",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:10697054500960307846,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "35.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTBalvMG-QNubBANyCVy5W4JS2NZO9ee0XPhOSISZxinSgrNenGjDTyIZdtbsmx6Qh-SS3ean1mhrzJPOAjItMAgzPwQ4NdRoBAtvQgDi9QYIIWl0-Yljo",
+    "productId": "10697054500960307846",
+    "position": 7
+   },
+   {
+    "title": "Lenovo IdeaPad Gaming 3-15ARH7",
+    "source": "OnlyLap",
+    "price": "15.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTfT2iJTGpoJtfwcLbrTiNMmjrjM8_ppKCVEZYoid6m1fB0kr_1a0uAMykASISNXL61LLvFeffeTws_JsyWjdTOS6ydeB2y8C8RTDS-ZLBBFSaaYjRxmMauJQ",
+    "productId": "2834318803568492806",
+    "position": 8
+   },
+   {
+    "title": "Laptop cũ Asus ROG Zephyrus G14 Ryzen 7-5800HS | 16GB | 512GB | RTX 3050 | 15.6 inch FHD 144Hz",
+    "source": "Laptop Thịnh Vượng",
+    "price": "27.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQgvArNxRn90NHLNQX4n0We-FXvWhf_f6sAMvnsVLrw-QmzoXLRX3lhze6ZlOo5BJgpu_3jQUF2LOZeCc_7y3IVMg0CjhF-7ZRejEJ4dMRsP3HSWoD-wDtnxA",
+    "productId": "18278472337667143780",
+    "position": 9
+   },
+   {
+    "title": "Laptop Acer Gaming Aspire 5 A515-58GM-53PZ",
+    "source": "LaptopK1",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:12671758686656269581,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "14.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSZ_nMZzqkCw4ZjHGaPkRgaAVgQVA-x20GZOwllRFej6q94ebYtyZVJ-dyuU7kCHoMe5bCUVk80QH0Vtm_v0ouz82ardZaVOy1u92NzThchFGoZGkcPJTDlRg",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "12671758686656269581",
+    "position": 10
+   },
+   {
+    "title": "TGMT - Laptop Dell Inspiron 5537 | i5 4200U | 4GB | 120GB | HD 8670M | 15.6 inch HD -Cũ",
+    "source": "thegioimaytinh.net.vn",
+    "price": "2.980.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ1WTTPV3EfF6jPZejsZj1ju_mfeBkEvJDGiJLNL1FKzvCKSZRQsEh3e2d2pX3qt0Zj79qKMxemAmkyT5TWa3_OlipEbryRR4bsDuHsXG6VOrkrBX8AFkAR",
+    "productId": "13231578918118328353",
+    "position": 11
+   },
+   {
+    "title": "Surface Laptop 3 I7-1065G7 | 16Gb | 256GB | TOUCH",
+    "source": "laptophssv.com",
+    "price": "11.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRmqY5ewvCs3LBSc59YpcYY0cQeqeRi5fGlIlL29_MOyUtBdAmGnI2th-shQzo88a9N260AFV7ypVvZihuohryKGEmzDT9HuynyZl5B1JjBxtewxuIHvQWR",
+    "rating": 4.8,
+    "ratingCount": 52,
+    "productId": "2108905979773679840",
+    "position": 12
+   },
+   {
+    "title": "Thu Mua Laptop HP Pavilion 2016 Core i3",
+    "source": "Bảo Hành One",
+    "price": "3.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQRGYQG8Hp0L4SKfIK5tYlcBMfJfI3tY7C6Hi1Nz-qIW4n9NbnyMoKnJ6yAKJu0-CQkQRRvdF8Se9Mmrc7UsRE0SbCanDY2mfcLZN-s4nldkQAd1M0PbqLlw",
+    "productId": "6848751375524472761",
+    "position": 13
+   },
+   {
+    "title": "Laptop Lenovo 20296 Pentium 3556U- Giá Rẻ, Chính Hãng",
+    "source": "truonggiang.vn",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQW0EZQHkEF5tae8ArwQmfRCN4JssTgKjvyh_BYDL5k7ke15rjR2cxLOTC54DAf0G5W8hRAP5jENbO3EgccvQWJMraGbTSL-rotu0MIz6ns9dZPel-w6XH2",
+    "productId": "15354511222894356024",
+    "position": 14
+   },
+   {
+    "title": "Laptop MacBook Neo 13 inch A18 Pro 8GB/256GB Vàng nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTkMG1C52Koe3Hqn-fuSOVVINC-FzwmXdydWal-R60DZU6cNY2-I1gWBCeBfkMnuK6Co3vYxqKICVehSV7RC_9aBK-d85VAO3BcslwYq8t3BMpNcPVYPTBn",
+    "productId": "16224968875884014014",
+    "position": 15
+   },
+   {
+    "title": "Laptop GIGABYTE G5 KD i5-11400H 16Gb 512Gb SSD RTX 3060 6Gb 15.6 Inch FHD 144HZ -i5-11400H 16G 512G RTX 3060 / 12 Tháng",
+    "source": "Laptop One",
+    "price": "18.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQw58sR18vWASWpbjt995-7pOC7OOh6L9JWt3OhNUf_qVM0UZMcgLowSYqyHTCkuhhAYz4g6y5bCKomJ45h5j7gGyLrYJYEMZETZH-HlAdz5QElHGHkKSxmxw",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "15042206053207948013",
+    "position": 16
+   },
+   {
+    "title": "Laptop Gaming Cũ Overpowered OP-LP2: Sức Mạnh Đáng Gờm Cho Game Thủ - Laptop Viễn Chinh",
+    "source": "Laptop Viễn Chinh",
+    "price": "8.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR8UJkCUK_kwXvGRL8Jl_66R0s-sdTU0oWCkMe9GizLSg35fSYYv_k_Qhj58RYfI1IpKXM3WzHnrm8yJekLMvtoIhId5VW7F7tvTCMyp3rmvVBfVt0yWVGm",
+    "productId": "3396123137735838686",
+    "position": 17
+   },
+   {
+    "title": "Surface Pro 5 Core i5 / 8GB / 256GB (Like New)",
+    "source": "Surface Center",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRIEqP-2DYhmBl1b3DrIE4Z-2rSTw3vX4J8rXEVrPFa4vU5QaNQbPt3z6h7Fl-0Fb3N4Dj5suiLtXp_CTKxAdoIzjfb4nZA4F7vaFB1QbL1NCXGSLdN2RADKg",
+    "rating": 4.7,
+    "ratingCount": 49,
+    "productId": "10206935615937341200",
+    "position": 18
+   },
+   {
+    "title": "[Like new] Lenovo ThinkPad X1 Extreme Gen 4 - Core i7 11800H RTX 3060 16 inch 4K 100 Adobe RGB",
+    "source": "LaptopK1",
+    "price": "21.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSa5kqca94dLoXKkFUpUF0aL-luk9PL-1N5g4p3OtLiRAMv7xVKoVepd2OQrDxt9ysK2josAHWk3v0fKwyQdtkgVm6n2yjD_qvFfGr2-M2P_a5xHdCGEnDZ",
+    "rating": 4.2,
+    "ratingCount": 4,
+    "productId": "17909048399757973280",
+    "position": 19
+   },
+   {
+    "title": "[Like New] Acer Predator Helios 300 (Core i7-12700H, 16GB, 512GB, RTX 3060 6GB, 15.6 FHD 165Hz)",
+    "source": "Thế Giới Số 365",
+    "price": "21.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQf4_KZrVPqYLyXn-kBErrBF4TLuByJIiEENPZlu-lsAKIUb5FDI-sZaHQffqxXvD5TTr7pTNus5TtBEsBxeGsy0-zsFb-IHfw31JMlakZDeBtfaSmjtbk6lQ",
+    "productId": "12037580198169491336",
+    "position": 20
+   },
+   {
+    "title": "Laptop cũ HP Elitebook 1030 X360 Core i5-7200U | 16GB 256GB | 13 icnh FHD Cảm ứng",
+    "source": "Laptop Thịnh Vượng",
+    "price": "9.880.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTmgivdz5pDrl22cBZUaoEczPbCE64m1JkHknJb92kmyKwqUJ9cAqsjrhVwBd2IczxySogADLOB2cqjG8Psv7hZDkK6hY2mjpvlmI1yclQ0KP1IU0aXrgzidw",
+    "productId": "15458581205534940644",
+    "position": 21
+   },
+   {
+    "title": "Thu Mua Laptop Acer 2014 Core i5",
+    "source": "Bảo Hành One",
+    "price": "2.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQK9Q-i3DXgfpfiklafJsg8m8LFqOjJAZEmTId3sYNwWLkxxVdib7jQCA6JMpM33HWAOFRDN2bHJDdK_yNSu8MOSPyGMGxRlODbyBFchGJdB_gkrqF3_3cItw",
+    "productId": "3387485718244456420",
+    "position": 22
+   },
+   {
+    "title": "Laptop DELL LATITUDE 5430 i5825 CPU i5-1235U RAM 8GB DDR4 SSD 256GB PCIe VGA Onboard 14.0 FHD IPS Win11",
+    "source": "Laptopnew",
+    "price": "8.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTorC9AwHhBMWykCRZEco2WUWRCAVL4OmHmxMF4QekYNbXtAZxj8ohqw0QyPdgkflr3zu_sbmwS2GTZJwUcMbcXx2qjEmHpZaykmkiTwHy6tvGSVDTN0Een",
+    "rating": 4.7,
+    "ratingCount": 30,
+    "productId": "17139191226538634871",
+    "position": 23
+   },
+   {
+    "title": "Laptop Asus Gaming VivoBook K3605ZC-RP564W",
+    "source": "Manosa VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:14026818868860739415,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSFf_oWw03Nu8_louegWRCXV7AQVB6xQPfHZaV_nouJRRbNF7x4b2T34m21QPafb43wgQv39jKIOWzhti5hrtPJ0nveDcbfIwOVvui6fyrmburgXQbaYG8yFQ",
+    "rating": 4.3,
+    "ratingCount": 11,
+    "productId": "14026818868860739415",
+    "position": 24
+   },
+   {
+    "title": "Lenovo Legion 5 Pro i7-11800H Notebook 40,6 cm (16\") WQXGA Intel Core i7 16 GB DDR4-SDRAM 512 GB SSD NVIDIA GeForce RTX 3060 Wi-Fi 6 (802.11ax) ...",
+    "source": "thinkpro.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:15029004410375367496,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "46.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR_VDvEMZdRXBjLP7XQzr1VF_sutevmQflSkmG-F8QSU36kqyWBu3I9LYIP7yx_8A48f50td5wChMM4AeGUqzoDvWpPxX8fFp9dMcO6IGNRQPvRHXKkwcro",
+    "productId": "15029004410375367496",
+    "position": 25
+   },
+   {
+    "title": "[Like new] Laptop Asus Vivobook Pro 14X OLED M7400 - R9 5900HX RAM 16GB RTX3050Ti 2.8K OLED",
+    "source": "LaptopK1",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRKVjDJ0Squxrl008gM03-UKo4K7aYv8uiy62b0zUaQ_tlzV0xM3KWrorGDcJru03yW9ldbySwyE3buSVM0CEWbL9gkbyaxmw4Qm8pCuo0phqIYRuY600YOEg",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "9648092220660608733",
+    "position": 26
+   },
+   {
+    "title": "Thu Mua Laptop Acer 2014 Core i3",
+    "source": "Bảo Hành One",
+    "price": "1.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQPEPvTEHqqd7Lr-lCnaJwm_VfnV0-9UMXMJGdSfdwZZwZlTV68KheRrosfXCHA2nocfnWo2guJnnB8aStFSq5NcUDhPClsunUdYM54_qAeFspeZT139uM5tg",
+    "productId": "8137766557310900425",
+    "position": 27
+   },
+   {
+    "title": "Laptop Lenovo Thinkpad P1 Gen 5 i9-12900H, 64GB RAM, 8TB SSD, RTX A5500 16GB, 16 inch 4K+",
+    "source": "cohotech.vn",
+    "price": "30.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS7nOkxuNQ4jTVXW3lVvDw393ydV2Y6d8EwIJZ8j1yLce8UFiAL5AVOru8osBgVJCJTEBtlqWCyBiulizSySn6btPnR3HY4KRCSKyWxoBXyH-GXNW_Q7_pi9g",
+    "productId": "400562724170414325",
+    "position": 28
+   },
+   {
+    "title": "Laptop MacBook Neo 13 inch A18 Pro 8GB/512GB Vàng nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR0he9ovnwQVz8sWbg1stidy-tEt6HWZk_DLUp8NEhrDu3hS3n1FBj5nCWUSwYO5NrosfApGTAZ3qBU7kHXGb3_7igxow2yqZazyK6DwpdgWyH-mFSwvzeM",
+    "productId": "11149499833261346580",
+    "position": 29
+   },
+   {
+    "title": "Dell Latitude 5440 - Core i7",
+    "source": "OnlyLap",
+    "price": "12.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRd1X8rAdW6mo_k5ydEmLMntExu9eD_x2x4NhHo3PaLGe7kxR_pbN08Hbxfz-ra5EBYlgr3VWgKY1teoamY_51isnOwhZXLcMp5FwM_oSVttyYwtlnUSRgI",
+    "productId": "2710985259963353894",
+    "position": 30
+   },
+   {
+    "title": "[New100%] HP 14-EP0777TU Core i7-1260P | 16GB | 512GB | 14 inch FHD",
+    "source": "Laptop Thịnh Vượng",
+    "price": "15.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRRc1P4IiHn5jTgSrS1vIpwOU9uTsMtz6sS14XVh_OeSLedgPBHCCmhj57VBG7kUwjUYIwDqMCCw8lG6rHwQLBwqTJ4D3bWf4Pu5de_eBs4O-WVZ9iRMPxc",
+    "productId": "10803313948823365238",
+    "position": 31
+   },
+   {
+    "title": "MacBook Neo A18 Pro 13 inch 2026 6CPU 5GPU 8GB 256GB",
+    "source": "minhtuanmobile.com",
+    "price": "18.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRidILkLey3tj-HAhT9qaGri7_SOVaAsDD55oSXxpLMsMiyeNvyxx33cL3Zouxe4pAoGGxnnKkVQydrhUK7u5_5Kx_MAVXP2aVGCGfoM8FASIzOCuvCnl-sEQ",
+    "productId": "14558810150846922863",
+    "position": 32
+   },
+   {
+    "title": "Thu Mua Laptop Acer 2013 Core i5",
+    "source": "Bảo Hành One",
+    "price": "1.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTQD9A3gPfSAqZOw_OHPDsDwbbisPIiTv4MuBiGoBazwDyfH7booQwJ7ZhBCN_R4SBJoIovtvK8kSo2FS6p1Rz8ltIszX3A1Qv8JIwUJu4oRt-FnnaleR6UBA",
+    "productId": "2624753809640704319",
+    "position": 33
+   },
+   {
+    "title": "Asus ROG Zephyrus G16 GU603 2023 Core i9-13900H 16GB 1TB SSD RTX 4070 8GB 16 inch QHD Anime Matrix",
+    "source": "Mac24h",
+    "price": "49.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ1jkx7cE2QEJIScBEGrzvQaB0vCXkdciA-Huvf-w5iKLvRGIUBODNs-4DvtrAKpw0EGBf3wEXgA78ewJm0bb7owFR5AQhlNnoz4k4vaaZexucQM3QQzpCr",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "1619469878692599073",
+    "position": 34
+   },
+   {
+    "title": "Laptop Dell Latitude 3420 i3-1115G4/ 4GB/ 256GB/ 14\" HD/ FREE DOS - 42LT342001",
+    "source": "itsystems.vn",
+    "price": "10.820.500 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT9iF75r0d9mvly20MFuKKhSbkysmbwEU2AQo99hNdzfs_gYq7NC1yp7g4NeMJgG5RsAl4iMUDVhnb12CdQnYnzRNlcY9IbWXV015WBY2_hXHcVYMDpXNejww",
+    "productId": "13362865914326546330",
+    "position": 35
+   },
+   {
+    "title": "Laptop Samsung Galaxy Book 4 360 2 in 1 - Core 7 15.6inch FHD Amoled Touch",
+    "source": "LaptopK1",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS7NdAkSSUG6RiDUujbxhOObsxcAmcvsk41tMOHOpWDUCgZtLSzIXo_z0fRp2-sbro2xKNgBwhAuZ50ZNAxOaHqDoImLeLm_Knr9whaHzahbwmoKPlF4DgOqg",
+    "rating": 4.7,
+    "ratingCount": 17,
+    "productId": "318559453240112628",
+    "position": 36
+   },
+   {
+    "title": "Laptop asus Gaming Vivobook 16X K3605VC-RP431W",
+    "source": "Dinhvangcomputer.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+%C4%91%E1%BB%93+h%E1%BB%8Da+d%C6%B0%E1%BB%9Bi+20&prds=localAnnotatedOfferId:1,catalogid:14815073807381256573,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.950.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQCUHKD8e0cEtSV1JWMwKJh3HHgSSr4knchOxpEyHe2DkxtrQEZnC6kzQz26cWjPaKLkCr_cPfmlajtlJb7giABoqppL1WA5FFZ978Rumf5x7j_TKsUA6JA",
+    "rating": 4.5,
+    "ratingCount": 13,
+    "productId": "14815073807381256573",
+    "position": 37
+   },
+   {
+    "title": "DELL Latitude 7410 (2020)",
+    "source": "Hưng Phát Laptop",
+    "price": "8.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTrH84xXdyEEG5wxRaYMC5LDrCa94wowLaD8iP2FazMu6ObX5JPNjS0MuYd8Nvrmd3hVnH6AzphiDyCXWHWI2Kr45giYKvRGxUB-REhgnXwd_Efbp0A5R98",
+    "productId": "4138931137461544826",
+    "position": 38
+   },
+   {
+    "title": "Thu Mua Laptop MSI GT Series",
+    "source": "Bảo Hành One",
+    "price": "4.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSLvV4ebgcxz-6Ne2PQAXLAZTHKlE8mWuyry5oCexNfES_mK-pMT30fSp4hRD4cJ6L4fxp0oiHLJUPRs42o7wjmRmd0VgCDZZwS_HTlhnj-WYF5aD813t59AA",
+    "rating": 4.3,
+    "ratingCount": 6,
+    "productId": "15988340114429905833",
+    "position": 39
+   },
+   {
+    "title": "Lenovo V15 G4 AMN 82YU016SVN",
+    "source": "Laptops.vn",
+    "price": "14.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTdH9o8iJLkqV3Z2OiiXGIO3439P0IBMFomFAtmutZrR9o0eErk-DRbj5XNCoaWYujM6spIgN3ITGjtllkRmoOtU74Uzl6mDt1ZjzrHQvx73B9SkSqZI52dDw",
+    "productId": "968115906372866236",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

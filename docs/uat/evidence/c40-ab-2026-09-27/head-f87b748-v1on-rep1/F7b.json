@@ -1,0 +1,171 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 10526,
+  "evidenceId": "ddc3dc1b-73fb-4842-9a7d-9475a69f5fb9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn khuya",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "A Xỉu - Quán Ăn Ngon",
+      "rating": 4.7,
+      "count": 246,
+      "price": "1-100.000 ₫",
+      "hours": "17:00–22:30",
+      "distance_km": 1.6,
+      "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Đêm",
+      "rating": 4.8,
+      "count": 15,
+      "price": "1-100.000 ₫",
+      "hours": "10:00–23:30",
+      "distance_km": 4.5,
+      "address": "75A Phạm Văn Hai, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Thái A Tùng - Tô Hiến Thành",
+      "rating": 4.9,
+      "count": 1918,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 3.5,
+      "address": "130 Tô Hiến Thành, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "PHỞ HÀ",
+      "rating": 4,
+      "count": 1050,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.7,
+      "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mì hủ tiếu đêm khuya",
+      "rating": 4.3,
+      "count": 8,
+      "price": "1-100.000 ₫",
+      "hours": "18:00–21:00",
+      "distance_km": 5.9,
+      "address": "QJHW+8JG, Hẻm 374 Âu Cơ, Bảy Hiền, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "3 XỊ - QUÁN NHẬU ĐÊM Q4",
+      "rating": 4.7,
+      "count": 22,
+      "price": "100-200 N ₫",
+      "hours": "18:00–03:00",
+      "distance_km": 1.8,
+      "address": "K44 Hoàng Diệu, Quận 4, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cơm tấm đêm Út Nam",
+      "rating": 4.7,
+      "count": 9,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 7.3,
+      "address": "251 Đồng Văn Cống, Cát Lái, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Ăn Uống",
+      "rating": 4.1,
+      "count": 11,
+      "distance_km": 6.2,
+      "address": "19 Lạc Long Quân, Hòa Bình, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn ăn gì đó ngon, gần vị trí hiện tại. Mình chọn **Bún Thái A Tùng** cho bạn — **4.9⭐ (1.918 đánh giá Google Maps)**, cách bạn khoảng 3.5km, đang mở cửa lúc này, và giá vừa phải. Bún Thái là lựa chọn ngon, đông khách, rất phù hợp để ăn khuya 🍜\n\nNếu muốn gần hơn, **Phở Hà** chỉ cách 0.7km (4⭐, 1.050 đánh giá), cũng đang mở, nhưng danh giá thấp hơn một chút.\n\nHoặc nếu thích cơm tấm, **Cơm Tấm Đêm** có rating cao nhất (4.8⭐) nhưng xa hơn (4.5km).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bún Thái A Tùng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13271158026897087723\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn gì đó ngon, gần vị trí hiện tại. Mình chọn **Bún Thái A Tùng** cho bạn — **4.9⭐ (1.918 đánh giá Google Maps)**, cách bạn khoảng 3.5km, đang mở cửa lúc này, và giá vừa phải. Bún Thái là lựa chọn ngon, đông khách, rất phù hợp để ăn khuya 🍜\n\nNếu muốn gần hơn, **Phở Hà** chỉ cách 0.7km (4⭐, 1.050 đánh giá), cũng đang mở, nhưng danh giá thấp hơn một chút.\n\nHoặc nếu thích cơm tấm, **Cơm Tấm Đêm** có rating cao nhất (4.8⭐) nhưng xa hơn (4.5km).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Bún Thái A Tùng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13271158026897087723\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

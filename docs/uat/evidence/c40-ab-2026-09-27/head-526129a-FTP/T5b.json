@@ -1,0 +1,178 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 12652,
+  "evidenceId": "eb4f7173-5fbe-42a9-8c8f-331e205e0324",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Khu vui chơi thiếu nhi",
+      "rating": 4.2,
+      "count": 32,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 9.9,
+      "address": "244 Chiến Lược, Bình Trị Đông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em SKY ZONE Cầu Suối Độn",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 25.5,
+      "address": "VWC7+4MH, D. Diên Nghệ, Tam Phước, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em-cafe-bida-Minh Thiều",
+      "rating": 4.9,
+      "count": 10,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 27.8,
+      "address": "VWFP+W2Q, Tam Phước, Đồng Nai 810000, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi Giải Trí Chip Game",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 6.9,
+      "address": "Tân Bình, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3284,
+      "hours": "Đóng cửa",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em - iD Junction",
+      "rating": 5,
+      "count": 1,
+      "hours": "06:00–22:00",
+      "distance_km": 27.1,
+      "address": "QW8X+9CP, Đ. Số 1, Long Thành, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em Rainbow",
+      "rating": 4.7,
+      "count": 27,
+      "hours": "17:00–21:30",
+      "distance_km": 27.5,
+      "address": "16 Đường 28/4, K Phước Hải, Long Thành, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Khu Vui Chơi PHƯỚC THIỀN",
+      "rating": 4.4,
+      "count": 27,
+      "hours": "17:00–22:00",
+      "distance_km": 25.2,
+      "address": "Bến Sắn, Nhơn Trạch, Đồng Nai, Việt Nam"
+    },
+    {
+      "name": "Coffee - Tea - Khu vui chơi trẻ em",
+      "rating": 4.7,
+      "count": 10,
+      "hours": "07:00–22:00",
+      "distance_km": 25.5,
+      "address": "Tổ 9 khu phố Hương Phước, phường, Phước Tân, Đồng Nai, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi hôm nay ở gần vị trí hiện tại, với nhóm 3–5 người và tầm giá phổ thông. Dựa trên kết quả tìm kiếm, mình gợi ý **Khu Vui chơi Trẻ em - Công viên Gia Định** — nó có **4.3⭐ từ 461 đánh giá**, cách bạn chỉ ~5km, mở cửa cả ngày nên rất linh hoạt. Đây là công viên giải trí với sân chơi, phù hợp để nhóm bạn tụ tập và vui chơi.\n\nNếu muốn trải nghiệm khác, **Vietopia** cũng là lựa chọn tốt — công viên giải trí lớn với 4.2⭐ từ 3.284 đánh giá, gần hơn (4km), nhưng hiện đang đóng cửa. Bạn có thể lên kế hoạch cho lần sau hoặc kiểm tra lại giờ mở cửa trên website của họ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Công viên Gia Định\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1055760044812414598\",\"primary\":true},{\"label\":\"🌐 Website - Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Gia Định có gì chơi|Vietopia mở cửa lúc mấy giờ|Quanh đó có quán ăn gì|Đi bao lâu từ đây\n[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi hôm nay ở gần vị trí hiện tại, với nhóm 3–5 người và tầm giá phổ thông. Dựa trên kết quả tìm kiếm, mình gợi ý **Khu Vui chơi Trẻ em - Công viên Gia Định** — nó có **4.3⭐ từ 461 đánh giá**, cách bạn chỉ ~5km, mở cửa cả ngày nên rất linh hoạt. Đây là công viên giải trí với sân chơi, phù hợp để nhóm bạn tụ tập và vui chơi.\n\nNếu muốn trải nghiệm khác, **Vietopia** cũng là lựa chọn tốt — công viên giải trí lớn với 4.2⭐ từ 3.284 đánh giá, gần hơn (4km), nhưng hiện đang đóng cửa. Bạn có thể lên kế hoạch cho lần sau hoặc kiểm tra lại giờ mở cửa trên website của họ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Công viên Gia Định\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1055760044812414598\",\"primary\":true},{\"label\":\"🌐 Website - Vietopia\",\"type\":\"website\",\"url\":\"https://vietopia.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Gia Định có gì chơi|Vietopia mở cửa lúc mấy giờ|Quanh đó có quán ăn gì|Đi bao lâu từ đây\n[/FOLLOWUPS]"
+    }
+  ]
+}

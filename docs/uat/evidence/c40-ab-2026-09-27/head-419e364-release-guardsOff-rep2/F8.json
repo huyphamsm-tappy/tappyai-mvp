@@ -1,0 +1,144 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15265,
+  "evidenceId": "85241484-acba-455e-9334-46f52ee0ad4d",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng tiệc sinh nhật Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Veteran restaurant HCM Quan 1",
+      "rating": 4.9,
+      "count": 1721,
+      "hours": "11:30–14:00, 17:00–02:00",
+      "address": "206B Đ Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nori - Modern Izakaya",
+      "rating": 4.8,
+      "count": 2321,
+      "price": "100-600 N ₫",
+      "hours": "18:00–01:00",
+      "address": "114 - 114A Lý Tự Trọng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Aniki Nhà Hàng Nhật Quận 1",
+      "rating": 4.9,
+      "count": 445,
+      "price": "100-300 N ₫",
+      "hours": "10:00–14:00, 17:00–22:00",
+      "address": "112 Trần Khắc Chân, Quận 1, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "price": "100-300 N ₫",
+      "hours": "15:00–02:00",
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 619,
+      "hours": "14:00–22:00",
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm nhà hàng có phòng riêng ở Quận 1 cho tiệc sinh nhật sếp với 8 người, tầm 500k/người nhé.Mình tìm được vài nhà hàng ở Quận 1 có phòng riêng, nhưng cần xác nhận thêm giá cụ thể cho tiệc 8 người. Dựa trên đánh giá, **Veteran restaurant HCM Quan 1** (4.9⭐, 1.721 đánh giá) là lựa chọn hàng đầu — chuyên nướng Hàn Quốc cao cấp, phù hợp tiệc sinh nhật sếp. Ngoài ra còn **Nori - Modern Izakaya** (4.8⭐, 2.321 đánh giá) với ẩm thực Nhật hiện đại.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể cho gói tiệc 8 người ở các quán này. **Bạn có thể gọi trực tiếp để hỏi gói tiệc sinh nhật và xác nhận phòng riêng:**\n\n📞 **Nori - Modern Izakaya**: 0798 777 779\n\nHoặc bạn muốn mình tìm thêm nhà hàng khác có giá rõ ràng hơn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Veteran restaurant trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16591986835358053186\",\"primary\":true},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi gói tiệc sinh nhật|Tìm nhà hàng khác có giá rõ|Cần phòng karaoke kèm ăn uống[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm nhà hàng có phòng riêng ở Quận 1 cho tiệc sinh nhật sếp với 8 người, tầm 500k/người nhé.Mình tìm được vài nhà hàng ở Quận 1 có phòng riêng, nhưng cần xác nhận thêm giá cụ thể cho tiệc 8 người. Dựa trên đánh giá, **Veteran restaurant HCM Quan 1** (4.9⭐, 1.721 đánh giá) là lựa chọn hàng đầu — chuyên nướng Hàn Quốc cao cấp, phù hợp tiệc sinh nhật sếp. Ngoài ra còn **Nori - Modern Izakaya** (4.8⭐, 2.321 đánh giá) với ẩm thực Nhật hiện đại.\n\nTuy nhiên, mình chưa xác nhận được giá cụ thể cho gói tiệc 8 người ở các quán này. **Bạn có thể gọi trực tiếp để hỏi gói tiệc sinh nhật và xác nhận phòng riêng:**\n\n📞 **Nori - Modern Izakaya**: 0798 777 779\n\nHoặc bạn muốn mình tìm thêm nhà hàng khác có giá rõ ràng hơn không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Veteran restaurant trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16591986835358053186\",\"primary\":true},{\"label\":\"📍 Xem Nori - Modern Izakaya trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3421613120693832923\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi gói tiệc sinh nhật|Tìm nhà hàng khác có giá rõ|Cần phòng karaoke kèm ăn uống[/FOLLOWUPS]"
+    }
+  ]
+}

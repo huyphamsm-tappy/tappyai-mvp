@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Image from 'next/image'
+import Image from '@/components/media/SafeImage'
 import { Loader2, MessageCircle, X, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 

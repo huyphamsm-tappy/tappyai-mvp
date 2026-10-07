@@ -1,0 +1,38 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 25480,
+      "textFrames": 22,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "iPhone 13 cũ giá"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình giúp bạn tìm iPhone 13 cũ trước, rồi mình sẽ gợi ý những điều cần kiểm tra khi mua nhé.[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"iPhone 13 128GB Cũ (LikeNew) giá rẻ | Bảo hành 6 tháng, trả góp 0%!\",\"config\":\"Like new\",\"specs\":[],\"condition\":{\"key\":\"likeNew\",\"label\":\"Like new\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":7499000,\"priceHigh\":7499000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcToArixhiI0skcysCIPDFxdLzH72mjGPnFxiqZCS9G6dtsW9OZjVjH2AH_rW8a5jdj5NafvzF6T7cUnZurbmC8zoGN9ybPP\",\"offers\":[{\"seller\":\"XTmobile\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:14435247006095682412,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":7499000,\"currency\":\"VND\",\"condition\":\"Like new\",\"rating\":4.9,\"ratingCount\":274}]},{\"key\":\"uncertain:1\",\"name\":\"iPhone 13 128GB cũ đẹp 99%\",\"config\":\"99%\",\"specs\":[],\"condition\":{\"key\":\"gradeHigh\",\"label\":\"99%\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":6990000,\"priceHigh\":6990000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvZifK1ekLOxnxMBJpfjl5lveGc5-HbXfo8NvnBl9RYlMsR7qjhnADHmFgO3wpZh4pdtnPcfRxaPR3bxtM-UiRz2ORZidGZ-AWoU-aG--bB89jp1Ph0tg5\",\"offers\":[{\"seller\":\"Didongmoi.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:300354034661127346,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":6990000,\"currency\":\"VND\",\"condition\":\"99%\",\"rating\":4.8,\"ratingCount\":669}]},{\"key\":\"uncertain:2\",\"name\":\"iPhone 13 cũ 128GB 99%\",\"config\":\"99%\",\"specs\":[],\"condition\":{\"key\":\"gradeHigh\",\"label\":\"99%\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8990000,\"priceHigh\":8990000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQIVVZCvh2-B9LWlcqKMoLKHUbG1x1XyCe85EIuSmN0nKNGdzv9Q2EtIe884SkCBmj5bbAqc1IMqO7E-01YU6D5z7C7CzTjxQVDIERDEpHLTPN1Xu4M0O2bOQ\",\"offers\":[{\"seller\":\"Hà Đăng Mobile\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:2986524948478659392,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8990000,\"currency\":\"VND\",\"condition\":\"99%\",\"rating\":4.7,\"ratingCount\":355}]},{\"key\":\"uncertain:3\",\"name\":\"iPhone 13 128GB Cũ 99% -Dung Lượng Pin 8X / Hồng\",\"config\":\"99%\",\"specs\":[],\"condition\":{\"key\":\"gradeHigh\",\"label\":\"99%\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":8690000,\"priceHigh\":8690000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRQi4kg9gMJxxIde_OSNJ1_JJL0tSVuA-gvqtTBnK2aSQMHwd5k1R6Q4TNfUvY_lQSmV3h77lN-2qlne-DZX1p2Lm4FomZCskx9I5o-itv6RZQx6l8VKMkoFzY\",\"offers\":[{\"seller\":\"Tinh Tế Mobile\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:456115878728479226,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":8690000,\"currency\":\"VND\",\"condition\":\"99%\",\"rating\":4.9,\"ratingCount\":12}]},{\"key\":\"uncertain:4\",\"name\":\"iPhone 13 256Gb Cũ\",\"config\":\"Cũ\",\"specs\":[],\"condition\":{\"key\":\"used\",\"label\":\"Cũ\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":9300000,\"priceHigh\":9300000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcReH747eDOrmp_yTy5lYHKwTunXs2ectzpBrDFScH4J4DE_R-ni3YZnBrnhF6goh0Ksl-CMHik9M2H79rg5IG6BE3OqAlmyPy-sgat0QKpfTPx7NBrAwmGF\",\"offers\":[{\"seller\":\"Tuấn Nguyễn Mobile\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:3655321525132292921,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":9300000,\"currency\":\"VND\",\"condition\":\"Cũ\",\"rating\":5,\"ratingCount\":2}]},{\"key\":\"uncertain:5\",\"name\":\"iPhone 13 Pro Max 128GB Cũ\",\"config\":\"Cũ\",\"specs\":[],\"condition\":{\"key\":\"used\",\"label\":\"Cũ\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":12390000,\"priceHigh\":12390000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT12CnRi17fKXuxRqYzXX1gwtJNM34GMRnrCX3BhH7bexgihQ9STIeBax4RlYnEYX4CT3dsD-X465UUITGbV9fa9dZM0hm4QhVLkSpKMYCx\",\"offers\":[{\"seller\":\"Di Động Việt\",\"url\":\"https://www.google.com/search?ibp=oshop&q=iPhone+13+c%C5%A9+gi%C3%A1&prds=localAnnotatedOfferId:1,productid:977926476876351048,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":12390000,\"currency\":\"VND\",\"condition\":\"Cũ\",\"rating\":4.7,\"ratingCount\":734}]}],\"requested\":null,\"recommendation\":null}[/TAPPY_SHOPPING]\n\nMình tìm thấy iPhone 13 cũ với giá từ **6.99 triệu đến 9.3 triệu VND** (128GB) tùy tình trạng và nơi bán. Dưới đây là những điều **cần check kỹ** khi mua iPhone 13 cũ: **Tình trạng vật lý:**\n- Kiểm tra vết xước, vết va đập trên màn hình, viền, lưng máy\n- Kiểm tra camera trước/sau có bị trầy hay mờ không\n- Nút bấm (âm lượng, dưới 70% nên cân nhắc\n- Máy có bị nóng, chậm hay lag không\n- Kiểm tra loa, mic, loa ngoài có hoạt động bình thường **Nguồn gốc & bảo hành:**\n- Hỏi rõ máy từ đâu (quốc tế hay Việt Nam), có phải máy đã qua sử dụng hay không\n- Kiểm tra IMEI trên Apple hoặc trang kiểm tra IMEI để xác nhận máy không bị khóa, không phải máy đánh cắp\n- Bảo hành bao lâu, bảo hành những gì (nên chọn nơi bán có bảo hành ít nhất 3-6 tháng) **Phần mềm:**\n- Kiểm tra iOS có phải phiên bản mới nhất không\n- Máy có bị iCloud lock không (đăng nhập iCloud để test) Mình gợi ý chọn nơi bán có **danh giá cao** (4.8⭐ trở lên) và **bảo hành rõ ràng** như XTmobile (4.9⭐, bảo hành 6 tháng) hoặc Didongmoi.vn.\n\nBạn có muốn mình tìm thêm thông tin về cách kiểm tra IMEI hoặc các shop uy tín khác không?",
+      "visible": "Mình giúp bạn tìm iPhone 13 cũ trước, rồi mình sẽ gợi ý những điều cần kiểm tra khi mua nhé."
+    }
+  ]
+}

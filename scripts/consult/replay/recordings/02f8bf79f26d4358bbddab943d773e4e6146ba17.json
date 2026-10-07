@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanoian Central Hotel & Spa\" Hà Nội site:www.traveloka.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:59:57.284Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanoian Central Hotel & Spa\" Hà Nội site:www.traveloka.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hanoian Central Hotel & Spa Hoan Kiem",
+    "link": "https://www.traveloka.com/en-au/hotel/vietnam/hanoian-central-hotel--spa-1000000413924",
+    "snippet": "Guests can easily access Masjid Al Noor Hanoi, Dong Xuan Market, Bach Ma Temple, King Pirates Pub, Hanoi Train Street from Hanoian Central Hotel & Spa.",
+    "position": 1
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/hanoian-central-hotel--spa-1000000413924",
+    "snippet": "Hanoian Central Hotel & Spa ; Hanoi Taco Bar. 568 m ; Tiện ích phổ biến. Máy lạnh, Nhà hàng, Lễ tân 24h, Chỗ đậu xe, Thang máy, WiFi ; Thời gian nhận/trả phòng. Từ ...",
+    "position": 2
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa, Hoan Kiem",
+    "link": "https://www.traveloka.com/ms-my/hotel/vietnam/hanoian-central-hotel--spa-1000000413924",
+    "snippet": "Terletak di Hoan Kiem, tempah Hanoian Central Hotel & Spa secara online di Traveloka. Ulasan sebenar, jaminan harga terbaik & tiada caj tersembunyi!",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn gần MAI House, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/mai-house-91757692600707/3",
+    "snippet": "... Hanoian Central Hotel & Spa, Sheraton Hanoi Hotel, Luxe Paradise Suites Tay ... Tôi đã ở một số căn hộ ở Hà Nội, nơi này là tốt nhất cho đến nay. Giá ...",
+    "position": 4
+   },
+   {
+    "title": "Phố Hàng Mã - Tọa độ check-in không thể bỏ lỡ mỗi dịp lễ ...",
+    "link": "https://www.traveloka.com/vi-vn/explore/destination/pho-hang-ma/441102",
+    "snippet": "Hanoian Central Hotel & Spa. Địa chỉ: Số 42 Hàng Cót, Hàng Mã, Hoàn Kiếm, Hà Nội. Giá tham khảo: Từ 1.200.000 VND/ đêm. Hanoian Central Hotel & Spa mang đến ...",
+    "position": 5
+   },
+   {
+    "title": "Hanoian Central Hotel & Spa, Hoan Kiem | ส่วนลดสูงสุด 30%",
+    "link": "https://www.traveloka.com/th-th/hotel/vietnam/hanoian-central-hotel--spa-1000000413924",
+    "snippet": "โรงแรม Hanoian Central Hotel & Spa มีห้องพักทั้งหมด 30 ห้อง. โรงแรม Hanoian Central Hotel & Spa มีที่จอดรถไหม.",
+    "position": 6
+   },
+   {
+    "title": "Best Hotels Near & Closest To Old Quarter, Hoan Kiem from ₱ ...",
+    "link": "https://www.traveloka.com/en-ph/hotel/vietnam/landmark/old-quarter-91576143695731/29",
+    "snippet": "... Hanoi Morning Hotel, Holiday Emerald Hotel, Hanoian Central Hotel & Spa, Hanoi Anise Hotel & Spa, Blue Hanoi Inn church, La Lisa Hotel, La Palm Hotel ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn gần Masjid Al Noor Hanoi, Discount tới 30%",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/landmark/masjid-al-noor-hanoi-91569920333457/17",
+    "snippet": "Hanoian Central Hotel & Spa. Chúng tôi rất hài lòng. Nhân viên thân thiện và nhiệt tình giúp đỡ, đặc biệt là Elsa và Stephanie. Thức ăn rất ngon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

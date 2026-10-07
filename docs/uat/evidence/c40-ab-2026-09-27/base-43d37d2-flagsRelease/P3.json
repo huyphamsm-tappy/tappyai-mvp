@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 5365,
+  "evidenceId": "aeb756f4-3086-422d-ba91-6676edd12349",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa từ dữ liệu hiện tại. Cách tốt nhất là bạn:\n\n• **Gọi trực tiếp** — số điện thoại sẽ hiển thị trên thẻ thông tin spa\n• **Nhắn Facebook/Zalo** — nếu spa có trang fanpage (thẻ sẽ có link)\n• **Ghé trực tiếp** — vì spa mở đến 21:00 hôm nay, bạn còn khoảng 30 phút để đến và hỏi\n\nHyan Spa ở Quận 1 nên khá dễ tiếp cận. Bạn muốn mình tìm thêm spa khác gần đó có thông tin đặt trước rõ ràng hơn không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 với giá dưới 300k cho bạn nhé.\n\nMình chọn **Hyan Spa** cho bạn — cách vị trí bạn chỉ 0.9km, đánh giá 5⭐ từ 103 khách hàng, và mở đến 21:00 hôm nay. Spa này chuyên massage chân, body massage, gội đầu dưỡng sinh nên hoàn toàn phù hợp nhu cầu của bạn.\n\nCần mình tìm thêm thông tin về giá cụ thể không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu|Có dịch vụ khác không|Spa nào rẻ hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa từ dữ liệu hiện tại. Cách tốt nhất là bạn:\n\n• **Gọi trực tiếp** — số điện thoại sẽ hiển thị trên thẻ thông tin spa\n• **Nhắn Facebook/Zalo** — nếu spa có trang fanpage (thẻ sẽ có link)\n• **Ghé trực tiếp** — vì spa mở đến 21:00 hôm nay, bạn còn khoảng 30 phút để đến và hỏi\n\nHyan Spa ở Quận 1 nên khá dễ tiếp cận. Bạn muốn mình tìm thêm spa khác gần đó có thông tin đặt trước rõ ràng hơn không?"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 'use client'
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import { Play } from 'lucide-react'
 import { extractYouTubeId, placeholderFor } from '@/lib/links/platforms'
 import { DefaultPlaybackSession } from '@/lib/playback/PlaybackSession'
@@ -342,22 +342,68 @@ const VideoPlayer = forwardRef<VideoPlayerHandle, VideoPlayerProps>(function Vid
   legacyHandleRef.current = { togglePlay, getVideo: () => videoRef.current }
 
   const sessionRef = useRef<DefaultPlaybackSession | null>(null)
-  if (sessionRef.current === null) {
-    sessionRef.current = new DefaultPlaybackSession(
-      url,
-      createController({
-        sourceType,
-        getFrame: () => ytFrameRef.current,
-        getLegacyUploadHandle: () => legacyHandleRef.current,
-      }),
-    )
-  }
+
+  /**
+   * 🚨 THE SESSION IS FETCHED THROUGH HERE, NEVER READ OFF THE REF DIRECTLY.
+   *
+   * React 18 StrictMode mounts, unmounts and remounts every component in dev.
+   * The unmount runs the cleanup below, which calls `dispose()`; the remount
+   * re-runs the effects but does NOT re-run the render body, so a session
+   * created there stayed in the ref — disposed — for the rest of the page's
+   * life. `DefaultPlaybackSession` ignores every input once disposed, so
+   * `onUserPauseToggle()` became a silent no-op and NO CLIP COULD BE PAUSED IN
+   * DEV, on the feed as well as on Explore. Production was unaffected, which is
+   * exactly why it survived: the bug was invisible in the build that ships and
+   * present in the one people develop against.
+   *
+   * Recreating on demand fixes it at the lifecycle rather than around it:
+   * dispose still tears the old session down, and the next caller — the effect
+   * below, or the feed through the handle — gets a live one. StrictMode is not
+   * disabled, autoplay is not touched, and a real unmount still disposes.
+   */
+  const getSession = useCallback((): DefaultPlaybackSession => {
+    if (sessionRef.current === null || sessionRef.current.isDisposed()) {
+      sessionRef.current = new DefaultPlaybackSession(
+        url,
+        createController({
+          sourceType,
+          getFrame: () => ytFrameRef.current,
+          getLegacyUploadHandle: () => legacyHandleRef.current,
+        }),
+      )
+    }
+    return sessionRef.current
+  }, [url, sourceType])
 
   // `active` is the single playback authority (architecture v3 §3).
-  useEffect(() => { sessionRef.current?.setActive(active) }, [active])
+  useEffect(() => { getSession().setActive(active) }, [active, getSession])
   useEffect(() => () => { sessionRef.current?.dispose() }, [])
 
-  useImperativeHandle(ref, () => sessionRef.current!, [])
+  /**
+   * 🔑 A STABLE FACADE, not the instance.
+   *
+   * `useImperativeHandle(ref, () => sessionRef.current!, [])` handed the feed
+   * the object that existed at mount — the very one StrictMode was about to
+   * dispose. Every method here resolves the CURRENT session at call time, so
+   * the feed's handle can never go stale, and the sticky user-pause intent still
+   * lives in the session rather than in this component.
+   */
+  useImperativeHandle(ref, (): PlaybackSession => ({
+    get slideId() { return getSession().slideId },
+    getPlaybackState: () => getSession().getPlaybackState(),
+    isUserPaused: () => getSession().isUserPaused(),
+    isAutoplayEligible: () => getSession().isAutoplayEligible(),
+    isAudioUnlocked: () => getSession().isAudioUnlocked(),
+    isDocumentVisible: () => getSession().isDocumentVisible(),
+    isDisposed: () => sessionRef.current?.isDisposed() ?? true,
+    setActive: (a: boolean) => getSession().setActive(a),
+    setInRenderWindow: (w: boolean) => getSession().setInRenderWindow(w),
+    onUserPauseToggle: () => getSession().onUserPauseToggle(),
+    onAudioUnlocked: () => getSession().onAudioUnlocked(),
+    onVisibilityChange: (v: boolean) => getSession().onVisibilityChange(v),
+    onPageHide: () => getSession().onPageHide(),
+    dispose: () => sessionRef.current?.dispose(),
+  }), [getSession])
 
   // If the browser paused the active clip without the user asking (most often
   // iOS rejecting an unmute), assume sound was the culprit and drop back to

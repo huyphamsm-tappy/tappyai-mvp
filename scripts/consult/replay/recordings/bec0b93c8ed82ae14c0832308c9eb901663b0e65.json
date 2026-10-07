@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Level Saigon Hotel\" TP.HCM site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:33.423Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Level Saigon Hotel\" TP.HCM site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Level Saigon Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-122177701/level-saigon-hotel/review.html",
+    "snippet": "... Level Saigon Hotel. We hope to have the opportunity to welcome you back in ... Khách sạn tốt nhất ở TP.HCM mà tôi từng ở, rất đáng tiền. Dear Valued ...",
+    "position": 1
+   },
+   {
+    "title": "Level Saigon - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-122177701/level-saigon-hotel/",
+    "snippet": "Level Saigon(Level SaiGon Hotel). Level Saigon. Level SaiGon Hotel.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

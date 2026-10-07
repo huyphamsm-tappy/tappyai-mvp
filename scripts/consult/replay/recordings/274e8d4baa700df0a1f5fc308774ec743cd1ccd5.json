@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hộp quà tặng cao cấp cà phê hòa tan premium (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:23.520Z",
+ "body": {
+  "searchParameters": {
+   "q": "hộp quà tặng cao cấp cà phê hòa tan premium (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-H%E1%BA%A1t-A-Cafe-Premium-Gift-Box-Coffee-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.312500391.7074996441",
+    "snippet": "Mua Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 stick giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 131,
+    "position": 1
+   },
+   {
+    "title": "[SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, ...",
+    "link": "https://shopee.vn/product-i.1122792718.29103327133?from_source=h5_video_page",
+    "snippet": "Mua [SALE 8.8] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng Sang Trọng, Làm Quà Biếu giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 281,
+    "position": 2
+   },
+   {
+    "title": "[HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan ...",
+    "link": "https://shopee.vn/-HOT-H%E1%BB%99p-C%C3%A0-Ph%C3%AA-Cao-C%E1%BA%A5p-Mix-6-V%E1%BB%8B-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-Xu%E1%BA%A5t-Kh%E1%BA%A9u-Qu%C3%A0-T%E1%BA%B7ng-Sang-Tr%E1%BB%8Dng-L%C3%A0m-Qu%C3%A0-Bi%E1%BA%BFu-i.1122792718.29103327133",
+    "snippet": "Mua [HOT] Hộp Cà Phê Cao Cấp Mix 6 Vị, Cà Phê Hòa Tan Xuất Khẩu, Quà Tặng Sang Trọng, Làm Quà Biếu giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 281,
+    "position": 3
+   },
+   {
+    "title": "set quà tặng cà phê - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA",
+    "snippet": "Hộp Mix 3 Vị 18 Gói Cà phê Hòa Tan Cộng Cà Phê Vị Bạc Xỉu,Cốt Dừa, Cà Phê Sữa Đậm Vị Hỗ Trợ Tỉnh Táo. 100.940₫. 113.000₫. -11%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 4
+   },
+   {
+    "title": "Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê ...",
+    "link": "https://www.lazada.vn/products/hop-qua-tang-cao-cap-premium-gift-box-coffee-288g-16-goi-gom-3-loai-ca-phe-hoa-tan-thom-ngon-vi-tu-nhien-i1069432070.html?srsltid=AU7gw4XbyOvRdAYjOgi57nPKPyjiZYrKWMY3s8B2rm6udE94dQBqC1Kz",
+    "snippet": "1/8. 172.000 ₫. LazMall Hộp quà tặng cao cấp - Premium Gift Box Coffee-288g (16 gói gồm 3 loại cà phê hòa tan thơm ngon, vị tự nhiên). 4.9(31).",
+    "date": "23 thg 2, 2022",
+    "rating": 4.9,
+    "ratingCount": 31,
+    "position": 5
+   },
+   {
+    "title": "Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-H%E1%BA%A1t-A-Cafe-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.1476155731.27226615016",
+    "snippet": "Mua Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại cà phê hòa tan 288g - 16 stick giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 6
+   },
+   {
+    "title": "Hapii Coffee, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/hapiicoffee",
+    "snippet": "Combo 2 Hộp Cà Phê Hòa Tan 3in1 Elys Vị Dưa Lưới - 30 Gói Cafe x 17g Kết Hợp Robusta Và Arabica. 149.000₫. -49%. rating-star 5.0. 5 đã bán · Cà Phê Hoà Tan ...",
+    "position": 7
+   },
+   {
+    "title": "Hương mai cafe - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/h%C6%B0%C6%A1ng%20mai%20cafe",
+    "snippet": "Cà phê hòa tan Cappuccino Hạt A Cafe 4in1 vị sữa dừa tự nhiên 216gr/ · Snack Que Nhân Kem Akiko Oishi Đủ Vị Gói 140g · [GÓI LẺ] Cà phê hòa tan Hạt A Cafe các vị ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

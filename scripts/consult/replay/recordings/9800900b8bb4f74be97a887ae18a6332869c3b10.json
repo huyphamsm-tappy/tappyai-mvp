@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội đầu dưỡng sinh Hai Ơi\" OR \"Gội Đầu Dưỡng Sinh\" OR \"Làng Spa\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:27.102Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội đầu dưỡng sinh Hai Ơi\" OR \"Gội Đầu Dưỡng Sinh\" OR \"Làng Spa\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Gội Đầu Dưỡng Sinh Thư Giãn Quận 10",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7607097818246843666",
+    "snippet": "Khám phá tiệm gội đầu dưỡng sinh thư giãn tại quận 10 mở xuyên Tết với giá chỉ từ 99K! Trải nghiệm massage thư giãn tuyệt vời! #spathugian # ...",
+    "position": 1
+   },
+   {
+    "title": "Gội đầu dưỡng sinh, Massage cổ truyền Trung Hoa ngay ...",
+    "link": "https://www.tiktok.com/@emxuan.anhnghi/video/7386231395602926856",
+    "snippet": "Khám phá vẻ đẹp truyền thống của gội đầu dưỡng sinh và massage cổ truyền Trung Hoa tại Quận 10. Đẳng cấp năm SAO, dịch vụ tận hưởng mát xa ...",
+    "position": 2
+   },
+   {
+    "title": "Gội Đầu Dưỡng Sinh Chỉ 49K Tại Mỹ Nhân Beauty Salon",
+    "link": "https://www.tiktok.com/@goidaugiarequan10mynhan/video/7554035028829719816",
+    "snippet": "Gội Đầu Dưỡng Sinh Quận 5 · Gội Đầu Dưỡng Sinh Phú Quốc · Gội Đầu Dưỡng Sinh Ở An Giang · Gội Đầu Dưỡng Sinh Sa Đéc · Gội Đầu Dưỡng Sinh Hòn Sơn.",
+    "position": 3
+   },
+   {
+    "title": "Gội đầu dưỡng sinh 59k tại Quận 10 nè mấy ní ơiii !!! ✨🥰 ...",
+    "link": "https://www.tiktok.com/@meimei_reivew/video/7391095767093562644",
+    "snippet": "Gội đầu dưỡng sinh 59k tại Quận 10 nè mấy ní ơiii !!! ✨ #giangtokyospa #goidauduongsinhquan10 · Tokyo Spa Illinois · Tokyo Spa Pasig · Tokyo ...",
+    "position": 4
+   },
+   {
+    "title": "gộiddaafuduwowxngsinhgov",
+    "link": "https://www.tiktok.com/tag/g%E1%BB%99iddaafuduwowxngsinhgov",
+    "snippet": "#gộiddaafuduwowxngsinhgov. 1 post. Trending. Gội đầu dưỡng sinh núp hẻm ở Gò Vấp giá siu mềm nè mấy bà ơi · Mấy chị Gò Vấp của em ơiii ta nói gội đã lắm mấy ...",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm massage cổ truyền và gội đầu dưỡng sinh ...",
+    "link": "https://www.tiktok.com/@dundunvivu/video/7386978691206728978",
+    "snippet": "Gội Đầu Massage Thư Giãn Cần Thơ · Gaigu Sinh Viên Tp Hcm. Trải nghiệm massage cổ truyền và gội đầu dưỡng sinh siêu độc lạ tại quận 10.",
+    "position": 6
+   },
+   {
+    "title": "Trải Nghiệm Gội Đầu Dưỡng Sinh Cặp Đôi Tại Thiền Spa",
+    "link": "https://www.tiktok.com/@thienspa.1510/video/7613752764652408072",
+    "snippet": "Trải Nghiệm Gội Đầu Dưỡng Sinh Cặp Đôi Tại Thiền Spa ... Thư giãn và kết nối bên nhau trong không gian ấm cúng tại Thiền Spa Quận. @ ...",
+    "position": 7
+   },
+   {
+    "title": "Khóa đào tạo gội đầu dưỡng sinh Quận 10",
+    "link": "https://www.tiktok.com/@user0903070877_tuyentran/video/7679649183967579399",
+    "snippet": "- Kỹ thuật gội đầu dưỡng sinh: quy trình gội, massage đầu, bấm huyệt thư giãn, điều chỉnh lực tay và tư thế khách. - Sử dụng sản phẩm: chọn dầu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

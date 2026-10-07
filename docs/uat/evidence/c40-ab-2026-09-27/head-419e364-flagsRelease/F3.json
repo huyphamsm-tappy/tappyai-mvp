@@ -1,0 +1,194 @@
+{
+  "id": "F3",
+  "text": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+  "parent": null,
+  "status": 200,
+  "ms": 15698,
+  "evidenceId": "03cbcb84-b867-4559-84ca-0c89c5f32761",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán cà phê lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "cafe"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP.HCM"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Every Half Coffee Roasters Võ Thị Sáu",
+        "location": "Quận 3, TP.HCM",
+        "type": "cafe"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Every Half Coffee Roasters - Võ Thị Sáu",
+      "rating": 4.8,
+      "count": 1119,
+      "hours": "07:00–21:30",
+      "address": "232/23 Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trên Tầng Thượng",
+      "rating": 4.7,
+      "count": 3234,
+      "hours": "07:30–23:30",
+      "address": "540/19 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Y Coffee Roastery",
+      "rating": 4.8,
+      "count": 177,
+      "hours": "07:00–22:00",
+      "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+      "rating": 4.7,
+      "count": 67,
+      "hours": "07:00–22:00",
+      "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Coffee House - Cao Thắng",
+      "rating": 4.3,
+      "count": 3090,
+      "hours": "07:00–22:00",
+      "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Caramew cafe",
+      "rating": 4.4,
+      "count": 444,
+      "hours": "08:00–22:30",
+      "address": "108/26A Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cooku’s nest café",
+      "rating": 4.3,
+      "count": 783,
+      "hours": "08:30–22:00",
+      "address": "17bis Tú Xương, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phê La - Trương Định",
+      "rating": 4,
+      "count": 2148,
+      "hours": "07:00–22:00",
+      "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Đậm Đắng",
+      "rating": 4,
+      "count": 353,
+      "hours": "07:00–02:00",
+      "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Barista Collective",
+      "rating": 4.6,
+      "count": 942,
+      "hours": "08:00–17:00",
+      "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Every Half Coffee Roasters - Võ Thị Sáu",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1119,
+        "open_now": true,
+        "opening_hours": "07:00–21:30"
+      }
+    },
+    {
+      "name": "Trên Tầng Thượng",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 3234,
+        "open_now": true,
+        "opening_hours": "07:30–23:30"
+      }
+    },
+    {
+      "name": "Y Coffee Roastery",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 177,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm cho bạn những chỗ lãng mạn yên tĩnh ở Quận 3 nhé! 🌙\n\nMình chọn **Every Half Coffee Roasters - Võ Thị Sáu** cho bạn! 🎯 **4.8⭐ (1.119 đánh giá Google Maps)** — quán này nổi tiếng với không gian yên tĩnh, cà phê chất lượng cao, mở đến 21:30 nên hoàn hảo cho buổi tối. Vị trí trên Võ Thị Sáu, Quận 3, khá dễ tìm.\n\nNgoài ra, **Trên Tầng Thượng** (4.7⭐, 3.234 đánh giá) cũng là lựa chọn tuyệt vời — có không gian tầng thượng lãng mạn, mở đến 23:30, vừa có cà phê vừa có đồ ăn nhẹ.\n\nThời tiết hôm nay có mưa nhẹ, nên chọn quán trong nhà sẽ thoải mái hơn. Mang theo ô nếu đi bộ nhé! 💕\n\n[FOLLOWUPS]Quán ăn lãng mạn Quận 3|Quán bar/lounge Quận 3|Quán ăn tối lãng mạn[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem trên Maps - Every Half\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4177453590773664397\",\"primary\":true},{\"label\":\"☕ Xem trên Maps - Trên Tầng Thượng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1776305989750340494\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm cho bạn những chỗ lãng mạn yên tĩnh ở Quận 3 nhé! 🌙\n\nMình chọn **Every Half Coffee Roasters - Võ Thị Sáu** cho bạn! 🎯 **4.8⭐ (1.119 đánh giá Google Maps)** — quán này nổi tiếng với không gian yên tĩnh, cà phê chất lượng cao, mở đến 21:30 nên hoàn hảo cho buổi tối. Vị trí trên Võ Thị Sáu, Quận 3, khá dễ tìm.\n\nNgoài ra, **Trên Tầng Thượng** (4.7⭐, 3.234 đánh giá) cũng là lựa chọn tuyệt vời — có không gian tầng thượng lãng mạn, mở đến 23:30, vừa có cà phê vừa có đồ ăn nhẹ.\n\nThời tiết hôm nay có mưa nhẹ, nên chọn quán trong nhà sẽ thoải mái hơn. Mang theo ô nếu đi bộ nhé! 💕\n\n[FOLLOWUPS]Quán ăn lãng mạn Quận 3|Quán bar/lounge Quận 3|Quán ăn tối lãng mạn[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem trên Maps - Every Half\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4177453590773664397\",\"primary\":true},{\"label\":\"☕ Xem trên Maps - Trên Tầng Thượng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1776305989750340494\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

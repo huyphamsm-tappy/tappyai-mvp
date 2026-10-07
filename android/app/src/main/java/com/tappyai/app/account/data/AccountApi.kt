@@ -32,4 +32,13 @@ interface AccountApi {
     @Multipart
     @POST("api/profile")
     suspend fun uploadAvatar(@Part avatar: MultipartBody.Part): AvatarUploadResponseDto
+
+    /** Same route, a `cover` part: the web's /profile/edit "Thay ảnh bìa" (≤5MB, bytes sniffed server-side). */
+    @Multipart
+    @POST("api/profile")
+    suspend fun uploadCover(@Part cover: MultipartBody.Part): CoverUploadResponseDto
+
+    /** The web's "Gỡ ảnh bìa". */
+    @PATCH("api/profile")
+    suspend fun clearCover(@Body body: ClearCoverRequestDto): OkResponseDto
 }

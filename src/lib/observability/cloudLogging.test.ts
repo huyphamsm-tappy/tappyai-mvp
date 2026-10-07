@@ -6,10 +6,14 @@ import {
   LOGGING_SCOPE,
   DEFAULT_MAX_BATCH,
 } from './cloudLogging'
-import { severityOf, EVENT_TYPES, type ObservabilityEvent } from './events'
+import { severityOf, EVENT_TYPES, type ObservabilityEvent, type UsageEvent } from './events'
 import { getLogSink } from './index'
 
-const usage: ObservabilityEvent = {
+// Typed as the CONCRETE event, not the union. Several cases below build variants with
+// `{ ...usage, elapsedMs: n }`, and spreading a union-typed value into an object literal makes TS
+// check the literal against every member — so `elapsedMs` reads as an excess property on
+// TtsMetricsEvent. UsageEvent is also simply the more accurate type for this constant.
+const usage: UsageEvent = {
   type: 'tappyai_usage',
   intent: 'tool',
   finishReason: 'stop',
@@ -22,6 +26,16 @@ const usage: ObservabilityEvent = {
   memoryExtract: 0,
   toolCalls: 1,
   elapsedMs: 12666,
+  // P1-3 cost-attribution fields. Real values from a tool turn, not zeros: the sink batches and
+  // truncates on SIZE, so a sample smaller than a production record would under-test those paths.
+  providerId: 'claude',
+  modelRole: 'smart',
+  preModelMs: 640,
+  ttftMs: 1811,
+  modelFinishMs: 11120,
+  ttuaMs: 12480,
+  postModelMs: 1546,
+  toolMs: 2934,
 }
 
 function okFetch() {

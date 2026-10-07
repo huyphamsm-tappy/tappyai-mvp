@@ -1,0 +1,392 @@
+[
+ {
+  "r": "/",
+  "st": 200,
+  "final": "/",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Trang chủ Hỏi Tappy bất cứ điều gì TRỢ LÝ AI CÁ NHÂN CỦA BẠN Hi 1! 👋 Đêm xuống rồi — ăn gì, làm gì, đi đâu? 🌙 Nói cho Tappy biết"
+ },
+ {
+  "r": "/chat",
+  "st": 200,
+  "final": "/chat",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại TappyAI TappyAI Tôi có thể giúp bạn tìm thông tin chính xác Hôm nay bạn cảm thấy thế nào? 😊 Vui 😔 Buồn 😤 Stress 😴 Mệt"
+ },
+ {
+  "r": "/reviews",
+  "st": 200,
+  "final": "/reviews",
+  "ovf": false,
+  "errs": [
+   "Failed to load resource: the server responded with a status of 406 ()"
+  ],
+  "fails": [
+   "406 https://zdaprdfgpbpnxyofagmc.supabase.co/rest/v1/user_preferences?select=user_id%2Cbudget_"
+  ],
+  "txt": "Đăng bài Đang follow Đề xuất Mới nhất E 0 0 Lưu Chia sẻ @e2engườikhác [E2E] clip công khai 📍 Clip Người Khác (E2E) ★★★★★ Hỏi Tapp"
+ },
+ {
+  "r": "/deals",
+  "st": 200,
+  "final": "/deals",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Deal hôm nay Khám phá ưu đãi từ các sàn thương mại điện tử Hỏi Tappy trước khi mua Chưa chắc nên chọn gì? Hỏi Tappy để được tư vấn"
+ },
+ {
+  "r": "/profile",
+  "st": 200,
+  "final": "/profile",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Profile (Me) UAT P0 1 HỒ SƠ / TÔI U UAT P0 1 0 Đang theo dõi 0 Người theo dõi 0 Lượt thích Chỉnh sửa hồ sơ QR Profile Đã đăng Đã c"
+ },
+ {
+  "r": "/profile/account",
+  "st": 200,
+  "final": "/profile/account",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Tài khoản uat.p0.1791205364568.1@example.test U UAT P0 1 uat.p0.1791205364568.1@example.test THÔNG TIN Họ và tên UAT P0 1 Email ua"
+ },
+ {
+  "r": "/profile/settings",
+  "st": 200,
+  "final": "/profile/settings",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Cài đặt TÙY CHỌN Thông báo Nhắc nhở và cập nhật Trí nhớ Quản lý thông tin AI ghi nhớ Ngôn ngữ 🇻🇳 VI 🇬🇧 EN Micrô Cho phép nói đ"
+ },
+ {
+  "r": "/profile/preferences",
+  "st": 200,
+  "final": "/profile/preferences",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Sở thích của tôi ✨ TappyAI dùng thông tin này để gợi ý phù hợp hơn với bạn. 🧠 Tappy nhớ bạn Thêm bất cứ thông tin nào để"
+ },
+ {
+  "r": "/profile/history",
+  "st": 200,
+  "final": "/profile/history",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "History Xem lại những gì bạn đã khám phá trên TappyAI. Lịch sử hoạt động Xem lại những gì bạn đã khám phá trên TappyAI. Chưa có lị"
+ },
+ {
+  "r": "/profile/favorites",
+  "st": 200,
+  "final": "/profile/favorites",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Đã lưu 0 mục Đã lưu Những điều bạn yêu thích 💙 Tất cả những địa điểm, bài viết và gợi ý bạn đã lưu đều ở đây. Dễ dàng tìm lại bất"
+ },
+ {
+  "r": "/profile/bookings",
+  "st": 200,
+  "final": "/profile/bookings",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Lịch đặt chỗ U 📅 Chưa có lịch đặt chỗ nào Dùng chat để tìm nhà hàng, spa, khách sạn và đặt chỗ ngay! Khám phá ngay Trang"
+ },
+ {
+  "r": "/profile/price-watches",
+  "st": 200,
+  "final": "/profile/price-watches",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "← 🎯 Theo dõi giá Tappy báo bạn khi giá xuống mức mong muốn 💬 Cách thêm sản phẩm Nhắn Tappy: “Tappy theo dõi AirPods Pro, báo mìn"
+ },
+ {
+  "r": "/profile/notifications",
+  "st": 200,
+  "final": "/profile/notifications",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Hộp thư Thông báo và hoạt động của bạn Tin nhắn Thông báo Tin nhắn mới Chưa có cuộc trò chuyện nào Kết nối với bạn bè và bắt đầu t"
+ },
+ {
+  "r": "/profile/tappy-knows",
+  "st": 200,
+  "final": "/profile/tappy-knows",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "← 🧠 Tappy biết gì về bạn Tappy học từ mỗi cuộc trò chuyện để phục vụ bạn tốt hơn PHONG CÁCH TRẢ LỜI CỦA TAPPY Giọng điệu Thân mật"
+ },
+ {
+  "r": "/profile/integrations",
+  "st": 200,
+  "final": "/profile/integrations",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Kết nối ứng dụng Tappy học thêm về bạn qua các app bạn dùng 🔒 Tappy chỉ đọc dữ liệu bạn cho phép, không đọc tin nhắn cá nhân, khô"
+ },
+ {
+  "r": "/subscription",
+  "st": 200,
+  "final": "/subscription",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Nâng cấp Tappy U Nâng cấp Tappy Khám phá nhiều hơn cùng Tappy Mở khóa sức mạnh của AI để khám phá ẩm thực, mua sắm, du lị"
+ },
+ {
+  "r": "/planner",
+  "st": 200,
+  "final": "/planner",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "AI Planner Những kế hoạch Tappy đã lập cùng bạn AI PLANNER Kế hoạch của bạn, hành trình tuyệt vời hơn Hỏi Tappy trong cuộc trò chu"
+ },
+ {
+  "r": "/tools",
+  "st": 200,
+  "final": "/tools",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Smart Tools Smart Tools Những công cụ hữu ích, được thiết kế để hỗ trợ bạn mỗi ngày Làm nhiều hơn cùng TappyAI HẰNG NGÀY Cảnh báo "
+ },
+ {
+  "r": "/currency",
+  "st": 200,
+  "final": "/currency",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Đổi tiền tệ Đổi tiền tệ Tỷ giá cập nhật hàng giờ từ nguồn công khai Tính tức thì 12 loại tiền tệ Nguồn: open.er-api.com $ € ¥ Số t"
+ },
+ {
+  "r": "/split-bill",
+  "st": 200,
+  "final": "/split-bill",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Chia tiền TÍNH TIỀN TIP Chia tiền Chia sẻ dễ dàng, thanh toán công bằng 2–20 người Tip tùy chỉnh Chia đều hoặc theo món $ $ $ Chia"
+ },
+ {
+  "r": "/translate",
+  "st": 200,
+  "final": "/translate",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Dịch ngôn ngữ Dịch ngôn ngữ tức thì Kết nối thế giới bằng ngôn ngữ Dịch nhanh và mượt mà sang 30 ngôn ngữ. 30 ngôn ngữ · Không cần"
+ },
+ {
+  "r": "/viet-content",
+  "st": 200,
+  "final": "/viet-content",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Viết content U AI viết content Caption hấp dẫn trong vài giây ✦ Facebook, TikTok, Instagram — chọn tone, độ dài và để AI "
+ },
+ {
+  "r": "/scan",
+  "st": 200,
+  "final": "/scan",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Quét tài liệu TappyAI OCR Biến hình ảnh thành văn bản Chụp hoặc tải ảnh tài liệu rồi bấm quét — TappyAI đọc và trích xuất"
+ },
+ {
+  "r": "/boi",
+  "st": 200,
+  "final": "/boi",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Xem bói U Xem bói online 🔮 Tò mò vận may hôm nay của bạn? Tarot, tử vi 12 con giáp và cung hoàng đạo — chỉ mang tính giả"
+ },
+ {
+  "r": "/boi/tarot",
+  "st": 200,
+  "final": "/boi/tarot",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Tarot U 🔮 Rút bài Tarot Tĩnh tâm một chút, nghĩ về câu hỏi của bạn rồi chọn số lá muốn rút. 1 lá · Thông điệp hôm nay 3 "
+ },
+ {
+  "r": "/boi/tu-vi",
+  "st": 200,
+  "final": "/boi/tu-vi",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Tử vi 12 con giáp U 🧧 Xem tử vi 12 con giáp Nhập ngày sinh (dương lịch) để xem con giáp, tử vi trọn đời và vận hạn từng "
+ },
+ {
+  "r": "/boi/cung-hoang-dao",
+  "st": 200,
+  "final": "/boi/cung-hoang-dao",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Cung hoàng đạo U ✨ Tra cứu cung hoàng đạo Nhập ngày sinh (dương lịch) để xem cung hoàng đạo và vận may của bạn. Xem cung "
+ },
+ {
+  "r": "/scam-shield",
+  "st": 200,
+  "final": "/scam-shield",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Cảnh báo lừa đảo Bảo vệ bạn khỏi các liên kết và website đáng ngờ Cảnh báo lừa đảo Bảo vệ bạn khỏi các liên kết và website đáng ng"
+ },
+ {
+  "r": "/scam-shield/kich-ban",
+  "st": 200,
+  "final": "/scam-shield/kich-ban",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "TappyAI Scam Shield Giới thiệu Scam Shield 25 kịch bản lừa đảo trên không gian mạng năm 2026 Bộ Công an đã cảnh báo 25 kịch bản lừ"
+ },
+ {
+  "r": "/group/new",
+  "st": 200,
+  "final": "/group/new",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Tạo nhóm mới Tạo nhóm với TappyAI Đi đâu ăn gì cả team? Tạo nhóm, chia sẻ link để mỗi người tự điền sở thích, rồi để Tapp"
+ },
+ {
+  "r": "/recommendations",
+  "st": 200,
+  "final": "/recommendations",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Gợi ý cho bạn Khám phá những địa điểm nổi bật gần bạn Kết nối với các quán ăn, địa điểm thú vị và cộng đồng xung quanh. K"
+ },
+ {
+  "r": "/music",
+  "st": 404,
+  "final": "/music",
+  "ovf": false,
+  "errs": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "fails": [
+   "404 /music"
+  ],
+  "txt": "🔍 Không tìm thấy trang Trang bạn tìm không tồn tại hoặc đã bị di chuyển. Về trang chủ"
+ },
+ {
+  "r": "/onboarding",
+  "st": 200,
+  "final": "/",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Trang chủ Hỏi Tappy bất cứ điều gì TRỢ LÝ AI CÁ NHÂN CỦA BẠN Hi 1! 👋 Đêm xuống rồi — ăn gì, làm gì, đi đâu? 🌙 Nói cho Tappy biết"
+ },
+ {
+  "r": "/about",
+  "st": 200,
+  "final": "/about",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "TappyAI 🍜 Ăn uống 🛍️ Mua sắm 🎭 Giải trí ✈️ Du lịch 💆 Spa & Làm đẹp TappyAI là gì? TappyAI (gọi tắt là Tappy) là trợ lý AI cá n"
+ },
+ {
+  "r": "/how-to-use",
+  "st": 200,
+  "final": "/how-to-use",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Hướng dẫn sử dụng TappyAI TappyAI trả lời bằng ngôn ngữ đời thường, và khi cần thì tự tra cứu giúp bạn — chỗ ăn uống, chu"
+ },
+ {
+  "r": "/privacy",
+  "st": 200,
+  "final": "/privacy",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Chính sách bảo mật Ngày hiệu lực: Tháng 10 năm 2026 1. Thông tin chúng tôi thu thập TappyAI có thể thu thập: Thông tin tà"
+ },
+ {
+  "r": "/terms",
+  "st": 200,
+  "final": "/terms",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Điều khoản dịch vụ Ngày hiệu lực: Tháng 8 năm 2026 1. Giới thiệu TappyAI là trợ lý AI giúp bạn tìm kiếm địa điểm ăn uống,"
+ },
+ {
+  "r": "/community-guidelines",
+  "st": 200,
+  "final": "/community-guidelines",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Quy tắc cộng đồng Bản đề xuất tháng 10 năm 2026 — đang chờ chủ sản phẩm duyệt chữ. 1. Vì sao có quy tắc TappyAI là nơi mọ"
+ },
+ {
+  "r": "/delete-account",
+  "st": 200,
+  "final": "/delete-account",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Quay lại Xóa tài khoản TappyAI Cập nhật lần cuối: 2 tháng 10 năm 2026 1. Cách xóa tài khoản Bạn có thể tự xóa tài khoản TappyAI ng"
+ },
+ {
+  "r": "/login",
+  "st": 200,
+  "final": "/",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Trang chủ Hỏi Tappy bất cứ điều gì TRỢ LÝ AI CÁ NHÂN CỦA BẠN Hi 1! 👋 Đêm xuống rồi — ăn gì, làm gì, đi đâu? 🌙 Nói cho Tappy biết"
+ },
+ {
+  "r": "/register",
+  "st": 200,
+  "final": "/register",
+  "ovf": false,
+  "errs": [],
+  "fails": [],
+  "txt": "Tạo tài khoản mới Họ và tên Email Mật khẩu Tạo tài khoản Bằng cách tạo tài khoản, bạn đồng ý với Điều khoản dịch vụ và Chính sách "
+ },
+ {
+  "r": "/does-not-exist-uat",
+  "st": 404,
+  "final": "/does-not-exist-uat",
+  "ovf": false,
+  "errs": [
+   "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "fails": [
+   "404 /does-not-exist-uat"
+  ],
+  "txt": "🔍 Không tìm thấy trang Trang bạn tìm không tồn tại hoặc đã bị di chuyển. Về trang chủ"
+ }
+]

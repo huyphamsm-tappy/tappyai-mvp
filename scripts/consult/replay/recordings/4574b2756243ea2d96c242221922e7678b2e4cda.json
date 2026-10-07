@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:39:51.187Z",
+ "body": {
+  "searchParameters": {
+   "q": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/tgnbimzc4utq1hrmdy86/KOKORO%20Spa%20%26%20Aesthetic%20t%E1%BA%A1i%20Qu%E1%BA%ADn%203%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd8rz6zyXy1EaHWftN2Mheuz543KIfWQrIFByGh658tg&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftgnbimzc4utq1hrmdy86%2FKOKORO%2520Spa%2520%2526%2520Aesthetic%2520t%25E1%25BA%25A1i%2520Qu%25E1%25BA%25ADn%25203%252C%2520H%25E1%25BB%2593%2520Ch%25C3%25AD%2520Minh.jpg&tbnid=YEuRv4t_IgNZiM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh%2F&docid=oGNXcvSDYjNgoM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/nvrn9a32omjshuydq71w.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6LXKvQ1jfJZnacZSl4sOTvsGjtUr3HmJrN49jzv60qA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fnvrn9a32omjshuydq71w.jpg&tbnid=pZoW4dfpV9cyRM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh%2F&docid=oGNXcvSDYjNgoM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "🎉 𝐕𝐎̀𝐍𝐆 𝐗𝐎𝐀𝐘 𝐌𝐀𝐘 𝐌𝐀̆́𝐍 𝟏𝟏/𝟏𝟏 – 𝐐𝐔𝐀𝐘 𝐋𝐀̀  𝐓𝐑𝐔́𝐍𝐆!🎉, Ngày **11/11 – Ngày Độc Thân** nhưng *đến Kokoro Spa là có  quà liền tay!* 💝, 💆‍♀️ Với hóa đơn từ 𝟑𝟎𝟎.𝟎𝟎𝟎đ, bạn sẽ nhận ngay 1  lượt quay may mắn, 🎁 Cơ ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=814635481489825&get_thumbnail=1",
+    "imageWidth": 1152,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi3XThmzSotZ0V0X4QvwYwrG6YsLnY-Groog8qr56xWg&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/kokorospavn/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D814635481489825%26get_thumbnail%3D1&tbnid=V33N2lC0Mr75rM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkokorospavn%2F%3Flocale%3Dvi_VN&docid=waEYB968_qv4sM&w=1152&h=2048",
+    "position": 3
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xg0igjo0ei5pdgx2tah3.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxI0zJDcM9peCvUysMJgVZ-yjHLeWJBFDS0qiNmfO0KA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxg0igjo0ei5pdgx2tah3.jpg&tbnid=cE8Jr2s1d1FkhM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh%2F&docid=oGNXcvSDYjNgoM&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Kokoro Spa & Aesthetic | Ho Chi Minh City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100094216441625",
+    "imageWidth": 1528,
+    "imageHeight": 1527,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8AS58gzk_q-xtFoCf0bpKCCmqqopcEmI2MwL0jYsHnA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/kokorospavn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100094216441625&tbnid=gfGqntP5NS_MuM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkokorospavn%2F&docid=kDhNPpHtgmzPhM&w=1528&h=1527",
+    "position": 5
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/cdmp2bnjb1znrwzikewd.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvC2iI_uYIpi8YFaHzxNyN8Inq1YSI2-i4tJ_yoeBXAA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fcdmp2bnjb1znrwzikewd.jpg&tbnid=-SicGhYHNiNEFM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh%2F&docid=oGNXcvSDYjNgoM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/u1rsjutc1pow9utbcod7.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnZufDKPWCMc2puCVvHbKgnB4v0ZG9VQtGA6Ix_XncGA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fu1rsjutc1pow9utbcod7.jpg&tbnid=51OZRSZx3ZuE_M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh%2F&docid=oGNXcvSDYjNgoM&w=750&h=469",
+    "position": 7
+   },
+   {
+    "title": "Kokoro Spa - Gội Đầu Dưỡng Sinh 60', Chạm Đến Sự Thư Giãn",
+    "imageUrl": "https://oms.hotdeal.vn/images/editors/sources/000370396473/370396-370395-body-chung(1).jpg",
+    "imageWidth": 710,
+    "imageHeight": 1641,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdGl6-PVjxWz-QndwQCz3tc-6DYezXTlV6O1a2tOeJ9w&s=10",
+    "thumbnailWidth": 294,
+    "thumbnailHeight": 680,
+    "source": "Hot Deal",
+    "domain": "www.hotdeal.vn",
+    "link": "https://www.hotdeal.vn/tinh-thanh-khac/massage-cap-doi/kokoro-spa-goi-dau-duong-sinh-60-cham-den-su-thu-gian-370396.html?srsltid=AU7gw4Uvzs_cBUUUwZs7fK84B9LJ1gXA75_Ysy07kYndY9m-4MGn-UAB",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Foms.hotdeal.vn%2Fimages%2Feditors%2Fsources%2F000370396473%2F370396-370395-body-chung(1).jpg&tbnid=2bOV9DPRu6LFNM&imgrefurl=https%3A%2F%2Fwww.hotdeal.vn%2Ftinh-thanh-khac%2Fmassage-cap-doi%2Fkokoro-spa-goi-dau-duong-sinh-60-cham-den-su-thu-gian-370396.html%3Fsrsltid%3DAU7gw4Uvzs_cBUUUwZs7fK84B9LJ1gXA75_Ysy07kYndY9m-4MGn-UAB&docid=gcf0Ufndb-DiqM&w=710&h=1641",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

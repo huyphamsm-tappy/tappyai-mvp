@@ -1,0 +1,415 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Núi Ba Vì, Hà Nội",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@21.0285,105.8542,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:41.476Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Núi Ba Vì, Hà Nội",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@21.0285,105.8542,14z",
+   "engine": "google"
+  },
+  "ll": "@21.0284893,105.8541997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Minasi HanoiOI LakeSide Hotel",
+    "address": "30c Bà Triệu, St, Cửa Nam, Hà Nội 100000, Việt Nam",
+    "latitude": 21.0243364,
+    "longitude": 105.85101639999999,
+    "rating": 4.8,
+    "ratingCount": 903,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Nhà trọ",
+     "Chỗ ở được phục vụ"
+    ],
+    "website": "https://minasihotels.com/hotel/hanoioi-hotel-in-hanoi/",
+    "phoneNumber": "+84 24 3398 9989",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMRUN_VzzKkbI0nHgN2CtfmAzVmh-9KSpIo_ydO3cMn0Dsy-SU8VG_niB6TgJc8NYltwQqJ7KTFq0YqqxMRD3iVdjjwVeWSMlRqEhxKAj0h-mzzv7EItHHObq5dJmeCFrti3uKGrwazG9mE",
+    "cid": "1030451616687075552",
+    "fid": "0x3135ab52518ca733:0xe4ce6492adc30e0",
+    "placeId": "ChIJM6eMUVKrNTER4DDcKknmTA4"
+   },
+   {
+    "position": 2,
+    "title": "Lakeside House Hanoi - Nhà Bên Hồ",
+    "address": "99 Ng. 135 P. Đội Cấn, Ba Đình, Hà Nội 10000, Việt Nam",
+    "latitude": 21.0352917,
+    "longitude": 105.82915679999999,
+    "rating": 4.7,
+    "ratingCount": 222,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://lakesidehousehanoi.com/",
+    "phoneNumber": "+84 927 420 555",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNCNG7ahL-L1JR0-AJidGQtdKnKPtoCYwUu28lC9-igJJQc1D3F9crUMsoKN6Vsp3O-N6_K77X_WU5gkJEmawaKlvcrIL4uAnHeDJMxc5WHI2tYbaoAIhsUHTo-wN68YG45uG8gK1NeLEZ8",
+    "cid": "14241132368669916173",
+    "fid": "0x3135ab4e75daf2bb:0xc5a2aa6fc1e33c0d",
+    "placeId": "ChIJu_LadU6rNTERDTzjwW-qosU"
+   },
+   {
+    "position": 3,
+    "title": "FLESTA Núi Trúc Serviced Apartment & Hotel",
+    "address": "75 Núi Trúc Hà Nội, 75 P. Núi Trúc, Giảng Võ, Hà Nội 11116, Việt Nam",
+    "latitude": 21.029943199999998,
+    "longitude": 105.82306709999999,
+    "rating": 4.8,
+    "ratingCount": 17,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 359 396 788",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMcRtddlJwZwT8GtzK1hJoBq9bJo8se_2ghQ681QXO7Axvi4w99Gs79k2tOki3Gxad0ZDK_IxJ3S979cuaELzILu3y-jZuFAIEVlfyFv0NWfA3LiY-unx45p5_4nqzvR3X4SVBtEQ",
+    "cid": "10033517692050918129",
+    "fid": "0x3135ab5f2277f767:0x8b3e372e5a4acaf1",
+    "placeId": "ChIJZ_d3Il-rNTER8cpKWi43Pos"
+   },
+   {
+    "position": 4,
+    "title": "Grand Mercure Hanoi",
+    "address": "9 Cát Linh, Ô Chợ Dừa, Hà Nội 100000, Việt Nam",
+    "latitude": 21.0276589,
+    "longitude": 105.8334725,
+    "rating": 4.8,
+    "ratingCount": 1820,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=6936&merchantid=seo-maps-VN-6936&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+    "phoneNumber": "+84 24 3211 5757",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMp7uWMSgrNcGrhlR00doONrV1ZUt7LUTcGl74Otdsv2Jq3CEDV182h36pgpoLBiZOpstlFyYSmRPtVc23SbII84lP5UMxYklHKdkatt7zEd-hT6518Jd4Bw4pjrzbXVTfm2Dc",
+    "cid": "11382024734173783382",
+    "fid": "0x3135ab30b503f8d7:0x9df51330f1236556",
+    "placeId": "ChIJ1_gDtTCrNTERVmUj8TAT9Z0"
+   },
+   {
+    "position": 5,
+    "title": "Reiwa Inn-Apartment",
+    "address": "53 P. Kim Mã Thượng, Ngọc Hà, Hà Nội 100000, Việt Nam",
+    "latitude": 21.0360083,
+    "longitude": 105.8113601,
+    "rating": 4.5,
+    "ratingCount": 93,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.reiwainn.com.vn/",
+    "phoneNumber": "+84 24 3747 5916",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNfm2hYgtyswY9GtSghyHv9MogMkw1T44A3aZrLyx0voByWgxcI97l9_TdkdSvJNCPSkvIbo1Pp_eTghDZOglWTvqwOqalC_0P_f3eToHwlGzhxQEsdfPVI02gN7kgHktoGL3Efwg",
+    "cid": "12226967764921641817",
+    "fid": "0x3135ab52826c784f:0xa9aeea66a44e6b59",
+    "placeId": "ChIJT3hsglKrNTERWWtOpGbqrqk"
+   },
+   {
+    "position": 6,
+    "title": "Dolce By Wyndham Hanoi Golden Lake",
+    "address": "Giảng Võ, Hà Nội 100000, Việt Nam",
+    "latitude": 21.0294804,
+    "longitude": 105.8212561,
+    "rating": 4.4,
+    "ratingCount": 1576,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://dolcehanoigoldenlake.com/",
+    "description": "Khách sạn sang trọng nhìn ra hồ, có bể bơi vô cực trên sân thượng, khu spa và 3 nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMWHSdqazz3jTCNBOntpU84PcQx4oizsjcj6hajWcOMY5tzDY8P0hBUgzIQEJoo54HKQlNzX2lQUK0t40HMZwuhOnwHBIz0CK8UyRDHGXzlC3FtlMo7avX6FVyVfLuu-iRg-Cw78Q",
+    "cid": "5470222175594357219",
+    "fid": "0x3135abe9d6693fbd:0x4bea221612c421e3",
+    "placeId": "ChIJvT9p1umrNTER4yHEEhYi6ks"
+   },
+   {
+    "position": 7,
+    "title": "Grand Vista Hotel",
+    "address": "146 P. Giảng Võ, Khu tập thể Giảng Võ, Giảng Võ, Hà Nội, Việt Nam",
+    "latitude": 21.025447399999997,
+    "longitude": 105.8216403,
+    "rating": 4.3,
+    "ratingCount": 870,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://grandvistahanoi.com/",
+    "phoneNumber": "+84 24 3728 2999",
+    "description": "Khách sạn tinh tế có phòng ở sang trọng, 2 nhà hàng, quán bar, sòng bạc và spa.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOqhn4kIaJReipvyhDpX1ZbYREiT1Bydz1WhuVFM5ciB4FHHjF9Ohwm845EW3_F_zw9QO6CyeJggk0BUFLiagJMdPg3_Zb9BTOjuWX0y2gBc17YLwTVzjq5wPgnVDzAZBGSB1ymXYfnDUKk",
+    "cid": "18310336789093732545",
+    "fid": "0x3135abed9a215859:0xfe1b624c1fb2d0c1",
+    "placeId": "ChIJWVghmu2rNTERwdCyH0xiG_4"
+   },
+   {
+    "position": 8,
+    "title": "Khách Sạn La Thành",
+    "address": "Khách sạn La Thành, Toà D, D, Tầng 1,Tòa, 226 P. Vạn Phúc, Ngọc Hà, Hà Nội 11100, Việt Nam",
+    "latitude": 21.0334866,
+    "longitude": 105.8191444,
+    "rating": 4.2,
+    "ratingCount": 562,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP43BYfZFx-BPVhyNjeK7T0-OdfkIWws_O5xdRZaCXcmNpiiK2mcA2ozYid8DLMYU7KkWgmmh2GSk4m8dHDbHj09GIK9MlluD4ZYJoXzMUHOxmUJUHctxd57ijdW7dZNdKHgaXUXqtne1uv",
+    "cid": "11734316228052917090",
+    "fid": "0x3135ab4d16010459:0xa2d8aa7037321b62",
+    "placeId": "ChIJWQQBFk2rNTERYhsyN3Cq2KI"
+   },
+   {
+    "position": 9,
+    "title": "La Sinfonía Citadel Hotel and Spa",
+    "address": "12-14 P. Đình Ngang, Cửa Nam, Hà Nội, Việt Nam",
+    "latitude": 21.0283818,
+    "longitude": 105.84225939999999,
+    "rating": 4.9,
+    "ratingCount": 309,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lasinfoniavietnam.com/citadel/",
+    "phoneNumber": "+84 24 3253 5111",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP0Qi-MGs4B_7XRp_LgaH59S07G1S-_00_ogY5uUWEfGSDHoi-Gs9Pexb67HqT2FS4CBrH1Ag8Vj7cpiyX5KESP-XKbSuHZvXKKPMzjU5Qiw-8oJdYxUQhctZPmCOV-rXawV7yvJA",
+    "cid": "10299710647489824738",
+    "fid": "0x3135ab87ed5f2f9d:0x8eefec4380f087e2",
+    "placeId": "ChIJnS9f7YerNTER4ofwgEPs744"
+   },
+   {
+    "position": 10,
+    "title": "Grandiose Hotel&Spa",
+    "address": "11 P. Liễu Giai, Ngọc Hà, Hà Nội 100000, Việt Nam",
+    "latitude": 21.035186,
+    "longitude": 105.81474259999999,
+    "rating": 4.1,
+    "ratingCount": 344,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://grandiosehotels.com/",
+    "phoneNumber": "+84 24 7303 4555",
+    "description": "Khách sạn ấm cúng, phòng ở sang trọng, spa, nhà hàng và bữa sáng tự chọn miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW3vmSXIyje7scAOu0DTBOTZaR2yx7X6mRduHz7EF1fvdXjrTmeieJrLvVQ-g3UnH5mILXJhtvMHZuPSIKZ_kFT8QqPFwCAqoECAs6zSdZR-LUl-W7OU8Qo9FAkx3R-6b1M-4NJoB3MSctE4CzQQ97GFGzeTbUbM8eOxeT9Z2ic5GovN4K5QCS1n_Q",
+    "cid": "525951995466230086",
+    "fid": "0x3135ab12d874396d:0x74c8e8da2ac2946",
+    "placeId": "ChIJbTl02BKrNTERRimsoo2OTAc"
+   },
+   {
+    "position": 11,
+    "title": "Khách Sạn Danly",
+    "address": "22 - 24 P. Đào Tấn, Giảng Võ, Hà Nội 10000, Việt Nam",
+    "latitude": 21.0327274,
+    "longitude": 105.8089181,
+    "rating": 3.8,
+    "ratingCount": 183,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.danlyhotel.com/",
+    "phoneNumber": "+84 24 6273 0564",
+    "description": "Khách sạn bình dân có nhà hàng, phòng xông hơi & quán bar tầng thượng tổ chức chương trình giải trí trực tiếp.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW0ORYHkDhUJXC8i0mC1edVGwr6VRQ5Cz5p2a-_NdWlMnxwNayS3JhlXFzi8V_PlgN8Rvf3R_S4PloXsa9B-Rnv8potRbAojbeXLZNkoFBdNBuway9CtQXOOltARBkReGmjkZKA3NeSJ1DB5T-nQEoz3FuLFxnDBfoUCIb3VVk_0YIeGDn7HcxWWPA",
+    "cid": "6456128724428846775",
+    "fid": "0x3135ab6ae7c2d743:0x5998c6de6bc6f6b7",
+    "placeId": "ChIJQ9fC52qrNTERt_bGa97GmFk"
+   },
+   {
+    "position": 12,
+    "title": "Khách sạn La Batisse Kim Mã",
+    "address": "143 P. Kim Mã, Giảng Võ, Hà Nội, Việt Nam",
+    "latitude": 21.0313774,
+    "longitude": 105.82458589999999,
+    "rating": 3.9,
+    "ratingCount": 145,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://labatissehotel.com/",
+    "phoneNumber": "+84 912 489 002",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP2HBm_o7rT6V5fRqAcG14Zr_C_Kny0INh40E5uArrjLQqRnaFL_-eeVrLOlTc4EFaSbTFcuQVP0FjwrGlNL-fHJI1hJ_AgMhtjz06pOXIQHZ16grw3A0_k2zGdosyKpT-hQHrY",
+    "cid": "3677604973582255571",
+    "fid": "0x3135ab05bdf045ef:0x33097a3d1a9485d3",
+    "placeId": "ChIJ70XwvQWrNTER04WUGj16CTM"
+   },
+   {
+    "position": 13,
+    "title": "Hanoi City Backpackers Hostel",
+    "address": "55 P. Bát Sứ, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội, Việt Nam",
+    "latitude": 21.0341718,
+    "longitude": 105.8473719,
+    "rating": 4.2,
+    "ratingCount": 581,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://hagiangmajestictours.com/",
+    "phoneNumber": "+84 24 3824 8778",
+    "description": "Nhà nghỉ thoải mái có sự kiện xã giao buổi tối, quán cà phê, bar và phòng sáng sủa, một số phòng có ban công.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP1W5L7QTEJ0qkX1uVbp2iJMb7bkq8nMgy_Vg6U-FenO-ZCRTFrV1xXvJOj57BMiReMlgZARpnE_DIEdP_KNEhvMLDKsi5AmsGPQBR7k4hSbzVy6JPEHv31QzabxPK0YqaS5EcT",
+    "cid": "5620352936874376964",
+    "fid": "0x3135abbe8f55731d:0x4dff8137dab87f04",
+    "placeId": "ChIJHXNVj76rNTERBH-42jeB_00"
+   },
+   {
+    "position": 14,
+    "title": "Meliá Hanoi",
+    "address": "44 Lý Thường Kiệt, Cửa Nam, Hà Nội 10000, Việt Nam",
+    "latitude": 21.024388,
+    "longitude": 105.8483808,
+    "rating": 4.6,
+    "ratingCount": 8020,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.melia.com/en/hotels/vietnam/hanoi/melia-hanoi?utm_campaign=google&utm_content=5751&utm_medium=organic&utm_source=directories",
+    "phoneNumber": "+84 24 3934 3343",
+    "description": "Khách sạn sang trọng có trung tâm hội nghị, nhà hàng cao cấp, quán bar, cùng bể bơi và phòng tắm hơi.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMK2iYekDdGnxclqHbCUYpgW0ExaYB5Oq6IfKVIqUQ37TuNeb0TbdMG1t0BXIBNom-RUW9nMD9LvvB3y6-mHiCdsKB5mK6PKzp2aLhImrCWjVgfFL1VO76PlVUU1YYUO302dwW0",
+    "cid": "17551982537697770956",
+    "fid": "0x3135ab939165e8d9:0xf3952b1fa755bdcc",
+    "placeId": "ChIJ2ehlkZOrNTERzL1Vpx8rlfM"
+   },
+   {
+    "position": 15,
+    "title": "Hanoi Larosa Hotel",
+    "address": "36 P. Nguyễn Khuyến, Văn Miếu - Quốc Tử Giám, Hà Nội, Việt Nam",
+    "latitude": 21.027940599999997,
+    "longitude": 105.84035659999999,
+    "rating": 4.1,
+    "ratingCount": 616,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://hanoilarosahotel.com/vn",
+    "phoneNumber": "+84 24 3747 1155",
+    "description": "Phòng ốc sang trọng, một số phòng có ban công, khu spa yên tĩnh và nhà hàng nhìn ra thành phố.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOH6ieuMArekBpnHbuFlb8slNqy28BELAa_Fi4ShM0tUkHobhKtkinevHgmphpde94wYIwbgjxkbLQKHbOFZWR2ImQ6x_rg3asN7mZJHqmD5f-IGifVDsrx1A223mFpR5TwzjH6AlVpUXzn",
+    "cid": "1153538952096999611",
+    "fid": "0x3135ab99d9a195d5:0x10023190b25168bb",
+    "placeId": "ChIJ1ZWh2ZmrNTERu2hRspAxAhA"
+   },
+   {
+    "position": 16,
+    "title": "Khách Sạn Movenpick Hotel Hanoi Centre",
+    "address": "83A Lý Thường Kiệt, Cửa Nam, Hà Nội 100000, Việt Nam",
+    "latitude": 21.024698,
+    "longitude": 105.8440815,
+    "rating": 4.5,
+    "ratingCount": 2760,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://movenpick.accor.com/en/asia/vietnam/hanoi/hotel-hanoi.html?merchantid=seo-maps-VN-B4G6&sourceid=aw-cen&utm_medium=seo+maps&utm_source=google+Maps&utm_campaign=seo+maps&utm_content=Hanoi",
+    "phoneNumber": "+84 24 3822 2800",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPhlYG_UmbVEdHzcgG1Cip9xLtv7q7gdvsNRGb7g_C43YmGCLiRGmxpqqjXmIiC3RQxsvHfQqkjz0p-vZLOUVH5aBgdtWlcP6mU0USmtgxHjWl5MHlPuujhKwBg4GoepO6-7cWU",
+    "cid": "10851151326083447938",
+    "fid": "0x3135ab974c6aef7f:0x969708a3a3367c82",
+    "placeId": "ChIJf-9qTJerNTERgnw2o6MIl5Y"
+   },
+   {
+    "position": 17,
+    "title": "Khách Sạn Khăn Quàng Đỏ",
+    "address": "94 Ng. 189 Đ. Hoàng Hoa Thám, Ngọc Hà, Hà Nội, Việt Nam",
+    "latitude": 21.039728,
+    "longitude": 105.819599,
+    "rating": 3.7,
+    "ratingCount": 1271,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 24 3723 6727",
+    "description": "Khách sạn bình dân có phòng ốc bài trí đơn giản, sân quần vợt và bể bơi trong nhà/ngoài trời.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1s5Q2HKB1SRpATC72_nDvovjKseyetlT_GiSg3xhGNU8D_KulKUbfBRO3GzwDsPe3ur_FoIfQl1GMEUCdIbYdZNuA6iV7Mxrg8eSLMuPuDPS_6-0oLb9FmpB7DLLUfXFcNRW3DcgzI5RC1rqvFnBoKBUEOllf04GbTijUfNyZV4OKdr9-3YK4JyA",
+    "cid": "5390951778053656411",
+    "fid": "0x3135ab6c58af5ba7:0x4ad0821464260f5b",
+    "placeId": "ChIJp1uvWGyrNTERWw8mZBSC0Eo"
+   },
+   {
+    "position": 18,
+    "title": "Hanoi Sky Hotel",
+    "address": "27 P. Tống Duy Tân, Hoàn Kiếm, Hà Nội 10000, Việt Nam",
+    "latitude": 21.028938,
+    "longitude": 105.84320699999999,
+    "rating": 4.1,
+    "ratingCount": 366,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://hanoiskyhotel.com/",
+    "phoneNumber": "+84 24 3938 2236",
+    "description": "Khách sạn bình dân có phòng ở và phòng suite ấm cúng, nhà hàng kiểu Tây và phục vụ bữa sáng miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPlEHZr7AwnxIBkw0BqFrpQJUxohsO0373yOP9rVkcyp8yFG6Epy1OyMiBaXrMFLCchYeoCAjF5EBAct5sYWCA0h8DNqFagCn0qxFwcWdEtXRWy3ZqZVxrOf3Ki3AN5rKKw180",
+    "cid": "4125455816624662558",
+    "fid": "0x3135ab97ae82be7d:0x39409035267b681e",
+    "placeId": "ChIJfb6CrperNTERHmh7JjWQQDk"
+   },
+   {
+    "position": 19,
+    "title": "Khách sạn 1A Tăng Bạt Hổ",
+    "address": "1A P. Tăng Bạt Hổ, Hai Bà Trưng, Hà Nội, Việt Nam",
+    "latitude": 21.018277899999998,
+    "longitude": 105.8587901,
+    "rating": 3.8,
+    "ratingCount": 147,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://kinhdoltd.com/khach-san.html",
+    "phoneNumber": "+84 865 253 669",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMyMY3Iyk43obu1g2duF0gk1S4v8gjMpXL40deafD3bZaCQ_sHxlsHmGlNbGUbieX9NXwFMhJXT2U45gRC2Vw4GKqA41gzlvdI4fqAz6YCAgI5kQqqI9Tro89qF5qszWzMjvjA9",
+    "cid": "8024822315484085476",
+    "fid": "0x3135abee03c180d7:0x6f5de560ec0e7ce4",
+    "placeId": "ChIJ14DBA-6rNTER5HwO7GDlXW8"
+   },
+   {
+    "position": 20,
+    "title": "HANOI BETTER HOTEL & SPA",
+    "address": "P. Bát Sứ P. Hàng Bồ, Phố cổ Hà Nội, Hoàn Kiếm, Hà Nội 10000, Việt Nam",
+    "latitude": 21.034668,
+    "longitude": 105.84757189999999,
+    "rating": 4.1,
+    "ratingCount": 145,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Spa",
+     "Đại lý du lịch"
+    ],
+    "website": "https://www.booking.com/Share-8AW1uip",
+    "phoneNumber": "+84 818 456 707",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW3n7QSWGLubnotz6mpZsHdLBjub6S8E64qTXVbu5xwU40Rn8nxIF5EUlAkVyaJ_EzEpuooaTr0s21VZe0kb8xdhnXiwLTDX9Vm5Ef72FXG4bsn74GLCC_SuwOEeNhhirzIqNp9fkbCNMgY4FBVAmiGN4goB7W0TUgf3EMebn8KKsfNsGMT8_Rim",
+    "cid": "13474013721163934572",
+    "fid": "0x3135abbe161a1775:0xbafd50174cb72b6c",
+    "placeId": "ChIJdRcaFr6rNTERbCu3TBdQ_bo"
+   }
+  ],
+  "credits": 3
+ }
+}

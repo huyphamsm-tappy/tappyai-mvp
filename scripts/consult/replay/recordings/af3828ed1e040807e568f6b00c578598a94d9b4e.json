@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Tấm Ngon Sài Gòn\" OR \"Quán Cơm Tấm Hùng\" OR \"Cơm Tấm Trần Quý Cáp\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:55:37.593Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Tấm Ngon Sài Gòn\" OR \"Quán Cơm Tấm Hùng\" OR \"Cơm Tấm Trần Quý Cáp\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 100 Quán Cơm Tấm Ở Sài Gòn - Tập 4: Trần Quý Cáp",
+    "link": "https://www.tiktok.com/@ansaonoizay_/video/7393316822172421394",
+    "snippet": "Top 100 Quán Cơm Tấm Ở Sài Gòn - Tập 4: Trần Quý Cáp. Khám phá quán cơm tấm Trần Quý Cáp trong top 100 quán ngon Sài Gòn. Tận hưởng ẩm thực ...",
+    "position": 1
+   },
+   {
+    "title": "Review Quán Cơm Tấm Ngon Sài Gòn Đêm",
+    "link": "https://www.tiktok.com/@muoidian/video/7381753982080912656",
+    "snippet": "Review Quán Cơm Tấm Ngon Sài Gòn Đêm. Khám phá review cơm tấm ngon tại quán đêm Sài Gòn với sườn cay và topping đa dạng, không gian che chắn ...",
+    "position": 2
+   },
+   {
+    "title": "Cơm tấm ngon Sài Gòn mà tui mê ở Đà Nẵng đây mọi ...",
+    "link": "https://www.tiktok.com/@namvivu112200/video/7287536855677930754",
+    "snippet": "đây là quán cơm tấm Sài Gòn lộc phát tại 01 mè nhú. Đà Nẵng. mở từ 9 giờ 30 sáng đến 9 giờ tối luôn nha mọi người. Cơm tấm ngon Sài Gòn mà ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Tấm Hùng Q3: Ngon và Đậm Đà",
+    "link": "https://www.tiktok.com/@minhmoonha/video/7554788958417341714",
+    "snippet": "Cơm Tấm Hùng Q3: Ngon và Đậm Đà. Khám phá quán cơm tấm Hùng quận 3, nổi bật với sườn đậm đà và món ăn sáng ngon miệng! #haminhmoon #lgbt🏳️‍ ...",
+    "position": 4
+   },
+   {
+    "title": "quán cơm tấm hùng local ở hoà lân #creatorsearchinsights ...",
+    "link": "https://www.tiktok.com/@tam_le1989/video/7684574944134548756",
+    "snippet": "186 Lượt thích,30 Bình luận.Video TikTok từ Tâm Lê # (@tam_le1989): \"Phần 63 | quán cơm tấm hùng local ở hoà lân #creatorsearchinsights ...",
+    "position": 5
+   },
+   {
+    "title": "Cơm Tấm Ngon Sài Gòn Quận 13",
+    "link": "https://www.tiktok.com/discover/c%C6%A1m-t%E1%BA%A5m-ngon-s%C3%A0i-g%C3%B2n-qu%E1%BA%ADn-13",
+    "snippet": "15.5M bài đăng. Hãy khám phá video liên quan đến Cơm Tấm Ngon Sài Gòn Quận 13 trên TikTok. Xem thêm video về Cơm Tấm Ngon Ở Quận 10, Cơm Tấm Sài Gòn ...",
+    "position": 6
+   },
+   {
+    "title": "Cơm Tấm Ngon Sài Gòn Quận 2 Thủ Đức",
+    "link": "https://www.tiktok.com/discover/c%C6%A1m-t%E1%BA%A5m-ngon-s%C3%A0i-g%C3%B2n-qu%E1%BA%ADn-2-th%E1%BB%A7-%C4%91%E1%BB%A9c",
+    "snippet": "Cơm Tấm Ngon Sài Gòn Quận 2 Thủ Đức. Khám phá cơm tấm ngon ở Thủ Đức ... 3. Bì và đồ chua: bì vừa dai, thơm; đồ chua cân bằng vị mặn ...",
+    "date": "22 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Cơm Tấm Đêm Sài Gòn: Nơi Thưởng Thức Hương Vị Đêm",
+    "link": "https://www.tiktok.com/@kieu_van_thai/video/6926856387741895937",
+    "snippet": "Địa chỉ 373 Nguyễn Trãi - P7 - Quận 5. #abeo. Keywords: quán cơm tấm ngon Sài Gòn, ăn đêm Sài Gòn, review món ăn tại quán cơm tấm, cơm tấm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

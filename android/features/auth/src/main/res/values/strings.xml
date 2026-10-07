@@ -3,11 +3,12 @@
     <string name="auth_subtitle">Sign in to continue</string>
     <string name="auth_continue_with_google">Continue with Google</string>
     <string name="auth_continue_with_zalo">Continue with Zalo</string>
+    <string name="auth_debug_guest">Try as guest (debug build)</string>
     <!-- Facebook retained for future use; hidden from the V1 login UI (Google + Zalo + Email only). -->
     <string name="auth_continue_with_facebook">Continue with Facebook</string>
     <string name="auth_or_divider">or</string>
     <string name="auth_email_label">Email</string>
-    <string name="auth_email_placeholder">you@example.com</string>
+    <string name="auth_email_placeholder">you@email.com</string>
     <string name="auth_send_code">Send code</string>
 
     <string name="auth_otp_title">Check your email</string>
@@ -37,7 +38,7 @@
     <string name="auth_feature_1_title">All-in-One AI Assistant</string>
     <string name="auth_feature_1_desc">Chat, search, plan, and get things done in one place.</string>
     <string name="auth_feature_2_title">Explore Everything</string>
-    <string name="auth_feature_2_desc">Travel, food, reviews, music and more — all connected.</string>
+    <string name="auth_feature_2_desc">Travel, food, reviews, shopping and more — all connected.</string>
     <string name="auth_feature_3_title">Secure &amp; Private</string>
     <string name="auth_feature_3_desc">Your data belongs to you. We protect your privacy.</string>
     <string name="auth_feature_4_title">Always with You</string>
@@ -50,4 +51,10 @@
     <string name="auth_and">and</string>
     <string name="auth_privacy">Privacy Policy</string>
     <string name="auth_footer_rights">© 2026 TappyAI. All rights reserved.</string>
+    <string name="auth_password_label">Password</string>
+    <string name="auth_password_placeholder">At least 6 characters</string>
+    <string name="auth_password_submit">Sign in</string>
+    <string name="auth_create_account">Create account</string>
+    <string name="auth_continue_guest">Continue as Guest</string>
+    <string name="auth_signin_failed">That email or password is not correct.</string>
 </resources>

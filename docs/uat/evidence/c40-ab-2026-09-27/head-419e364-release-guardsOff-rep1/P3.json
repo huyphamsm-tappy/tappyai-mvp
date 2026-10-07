@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 5388,
+  "evidenceId": "98a1d80b-6fec-44f2-b5e3-bee81c039932",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về chính sách đặt trước của từng spa. Để biết chắc chỗ bạn chọn có đặt trước được không, bạn nên:\n\n1. **Gọi trực tiếp** - Số điện thoại thường có trên Google Maps hoặc website của spa\n2. **Nhắn Facebook** - Hầu hết spa đều có fanpage, bạn có thể inbox hỏi\n3. **Xem trên Google Maps** - Phần bình luận thường có khách hỏi về đặt trước\n\nBạn muốn mình tìm thêm thông tin liên hệ (số điện thoại, Facebook) của spa nào cụ thể không? 📞",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này. Đây là lựa chọn được tin cậy nhất với lượng review rất lớn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":true},{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá massage chân|Xem các spa khác ở Quận 1|Tìm spa gần vị trí hiện tại[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về chính sách đặt trước của từng spa. Để biết chắc chỗ bạn chọn có đặt trước được không, bạn nên:\n\n1. **Gọi trực tiếp** - Số điện thoại thường có trên Google Maps hoặc website của spa\n2. **Nhắn Facebook** - Hầu hết spa đều có fanpage, bạn có thể inbox hỏi\n3. **Xem trên Google Maps** - Phần bình luận thường có khách hỏi về đặt trước\n\nBạn muốn mình tìm thêm thông tin liên hệ (số điện thoại, Facebook) của spa nào cụ thể không? 📞"
+    }
+  ]
+}

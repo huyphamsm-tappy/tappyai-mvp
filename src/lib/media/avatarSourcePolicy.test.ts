@@ -53,7 +53,7 @@ describe('PRIORITY — an uploaded TappyAI avatar outranks the Zalo one', () => 
   // reaches `user_metadata.avatar_url` (set once, at account creation). Every read must therefore
   // prefer the profiles row, or an upload would appear to "not save" for Zalo users.
   const readers = [
-    'src/app/profile/account/page.tsx',
+    'src/app/(app)/profile/account/page.tsx',
     'src/app/api/profile/route.ts',
   ]
   for (const f of readers) {
@@ -66,8 +66,10 @@ describe('PRIORITY — an uploaded TappyAI avatar outranks the Zalo one', () => 
 })
 
 describe('PERSISTENCE — signing in with Zalo must never overwrite a chosen avatar', () => {
-  it('the Zalo completion route only ever creates a user, never updates one', () => {
-    const src = readFileSync('src/app/api/auth/zalo/complete/route.ts', 'utf8')
+  it('the Zalo session helper only ever creates a user, never updates one', () => {
+    // Moved 2026-09-26 from src/app/api/auth/zalo/complete/route.ts, which was deleted when the
+    // OAuth callback stopped handing the access token to the browser. Same rule, new home.
+    const src = readFileSync('src/lib/zalo/session.ts', 'utf8')
     // It writes user_metadata exactly once, inside createUser — which Supabase rejects for an
     // existing account (the "already registered" error is deliberately swallowed). If an update
     // path is ever added here, a returning user's uploaded avatar would be replaced by their

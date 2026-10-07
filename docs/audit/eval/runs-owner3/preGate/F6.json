@@ -1,0 +1,320 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 9965,
+  "evidenceId": "3bdac35a-aa10-4841-9ae8-c2aeec44e3a9",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Izakaya Choioinoodle",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "hours": "11:00–22:00",
+      "distance_km": 0.9,
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tiệm mì Choi oi",
+      "rating": 4.4,
+      "count": 657,
+      "hours": "11:00–03:30",
+      "distance_km": 0.6,
+      "address": "Lê Thánh Tôn, Quận 1 Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin chi tiết về **Izakaya Choioinoodle** để xem tình trạng đông khách.\n\nMình không có dữ liệu cụ thể về tình trạng đông khách lúc này của **Izakaya Choioinoodle**. Tuy nhiên, quán có **4.8⭐ từ 201 đánh giá** và mở tới 22:00, nên khả năng cao là sẽ có khách vào giờ tối.\n\nBạn muốn mình tìm thêm quán khác hay sẽ chọn một trong hai quán này? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Choioinoodle\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+Choioinoodle+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1, tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **NHÀ HÀNG NGON** cho bạn — cách vị trí bạn chỉ 0.1km, rất gần, và có **4⭐ từ 11.407 đánh giá Google Maps** là bằng chứng mạnh về chất lượng. Quán chuyên ẩm thực Việt Nam, mở tới 22:30 nên hoàn hảo cho bữa tối hôm nay với 2 người 👍\n\nNếu muốn thử **Izakaya Choioinoodle** (mì ramen Nhật) cũng là lựa chọn tuyệt vời — **4.8⭐ (201 đánh giá)**, gần hơn một chút (0.9km), nhưng nếu bạn muốn ăn Việt thì Nhà Hàng Ngon sẽ phù hợp hơn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Nhahangngon\",\"type\":\"search\",\"url\":\"https://nhahangngon.com.vn/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần Quận 1|Ăn hải sản tối nay|Quán ăn tối lâu đêm[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin chi tiết về **Izakaya Choioinoodle** để xem tình trạng đông khách.\n\nMình không có dữ liệu cụ thể về tình trạng đông khách lúc này của **Izakaya Choioinoodle**. Tuy nhiên, quán có **4.8⭐ từ 201 đánh giá** và mở tới 22:00, nên khả năng cao là sẽ có khách vào giờ tối.\n\nBạn muốn mình tìm thêm quán khác hay sẽ chọn một trong hai quán này? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":true},{\"label\":\"🛵 GrabFood - Izakaya Choioinoodle\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Izakaya+Choioinoodle+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 2,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+          "place_id": "ChIJpylJYwAvdTERjuu1BjPtkFo",
+          "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 906 633 656",
+          "google_rating": "4.8⭐ (201 đánh giá Google Maps)",
+          "rating_value": 4.8,
+          "rating_count": 201,
+          "distance_km": 0.9,
+          "open_now": true,
+          "opening_hours": "11:00–22:00",
+          "place_types": [
+            "Nhà hàng Nhật Bản"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=6525976663471549326",
+          "website_uri": "https://choioinoodle.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6525976663471549326",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Tiệm mì Choi oi",
+          "place_id": "ChIJQed6WLgvdTERUrESgbM1mFo",
+          "address": "Lê Thánh Tôn, Quận 1 Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 906 633 656",
+          "google_rating": "4.4⭐ (657 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 657,
+          "distance_km": 0.6,
+          "open_now": true,
+          "opening_hours": "11:00–03:30",
+          "place_types": [
+            "Nhà hàng mì Nhật Bản"
+          ],
+          "has_delivery": true,
+          "has_order": true,
+          "maps_link": "https://maps.google.com/?cid=6528026704954437970",
+          "website_uri": "https://www.facebook.com/people/Choioinoodle/100091759976915/?mibextid=qWsEUC",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6528026704954437970",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 2,
+        "total": 2,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 2 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.76964,106.69719",
+            "domain": "food",
+            "kind": "place",
+            "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPiOEOESBwxjqHdHbJfYEBDWl0MNUHFDHuCD0TREEmIhFooacPlt-3hh6bZ4QlMjgRqMjzflCb6m-Ad_d5PaH8smrqwSLNNdUV8BZmZ4EQVDQ6xH00xS2fV_qw0kUrSZfrFztDR",
+            "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 201,
+            "openingHours": "11:00–22:00",
+            "openNow": true,
+            "phone": "+84 906 633 656",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–22:00",
+              "Chủ Nhật": "11:00–22:00",
+              "Thứ Hai": "11:00–22:00",
+              "Thứ Ba": "11:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "11:00–22:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Nhà hàng Nhật Bản"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.8"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.9km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "201 reviews"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "distance",
+              "evidence": "0.6km away"
+            },
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6525976663471549326",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Izakaya%20Choioinoodle%20%7C%20Nh%C3%A0%20H%C3%A0ng%20Nh%E1%BA%ADt%20Qu%E1%BA%ADn%201%20%7C%20M%C3%AC%20Ramen%20Ngon%20Tr%E1%BA%A7n%20H%C6%B0ng%20%C4%90%E1%BA%A1o%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://choioinoodle.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906633656",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78021,106.70484",
+            "domain": "food",
+            "kind": "place",
+            "name": "Tiệm mì Choi oi",
+            "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOdXxioU0CnNXahG3799FsFirxkeKBYKo2iVS25Fv1R31ojOnv01fIvdMpIYMWNz7XpZ_TlcX_PIsZP5vE4pKbdFSmFoHH3zKXAseyph7tSpb4DcKzSZq_uKlX6CPrSLxfevX-TwQ",
+            "address": "Lê Thánh Tôn, Quận 1 Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 657,
+            "openingHours": "11:00–03:30",
+            "openNow": true,
+            "phone": "+84 906 633 656",
+            "openingHoursWeek": {
+              "Thứ Bảy": "11:00–03:30",
+              "Chủ Nhật": "11:00–03:00",
+              "Thứ Hai": "11:00–03:00",
+              "Thứ Ba": "11:00–03:00",
+              "Thứ Tư": "11:00–03:00",
+              "Thứ Năm": "11:00–03:00",
+              "Thứ Sáu": "11:00–03:30"
+            },
+            "distanceKm": 0.6,
+            "categories": [
+              "Nhà hàng mì Nhật Bản"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@ph05199244161204/video/7655762213378067732",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Ti%E1%BB%87m%20m%C3%AC%20Choi%20oi%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6528026704954437970",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/people/Choioinoodle/100091759976915/?mibextid=qWsEUC",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84906633656",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20m%C3%AC%20Choi%20oi%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Izakaya%20Choioinoodle%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.76964,106.69719"
+        ],
+        "shown": 2
+      }
+    ]
+  ]
+}

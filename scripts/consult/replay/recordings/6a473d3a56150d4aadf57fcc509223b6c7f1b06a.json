@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Núi Thành\" OR \"Khách Sạn Song Nhật\" OR \"Khách Sạn Minh Châu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:56:09.844Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Núi Thành\" OR \"Khách Sạn Song Nhật\" OR \"Khách Sạn Minh Châu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách Sạn Minh Châu Luxury - Đối Tác Đáng Tin Cậy",
+    "link": "https://www.tiktok.com/@quanlanecotrip14/video/7521331602790567186",
+    "snippet": "Khách Sạn Minh Châu Luxury - Đối Tác Đáng Tin Cậy. Khám phá Khách Sạn Minh Châu Luxury với dịch vụ chuyên nghiệp, gần phố đi bộ. Đặt phòng ...",
+    "position": 1
+   },
+   {
+    "title": "Khách Sạn Minh Châu: Địa Chỉ Nghỉ Dưỡng Tuyệt Vời",
+    "link": "https://www.tiktok.com/@combo_dulich86/photo/7636452330421898514",
+    "snippet": "TikTok video from Ngọc Anh thích vivu (@combo_dulich86): “Khám phá Khách Sạn Minh Châu - lựa chọn hoàn hảo cho kỳ nghỉ của bạn!",
+    "position": 2
+   },
+   {
+    "title": "CỬA LÒ KHÁCH SẠN MINH CHÂU HOTEL 3 SAO MẶT ...",
+    "link": "https://www.tiktok.com/@huongnhantravel/video/7638988077880315143",
+    "snippet": "Video TikTok từ Hương Nhãn Travel (@huongnhantravel): \"CỬA LÒ KHÁCH SẠN MINH CHÂU HOTEL 3 SAO MẶT BIỂN #huongnhantravel #xedulichminhduc ...",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn Minh Châu Ở Sầm Sơn Ở Bãi Nào",
+    "link": "https://www.tiktok.com/discover/kh%C3%A1ch-s%E1%BA%A1n-minh-ch%C3%A2u-%E1%BB%9F-s%E1%BA%A7m-s%C6%A1n-%E1%BB%9F-b%C3%A3i-n%C3%A0o?lang=lv",
+    "snippet": "Khách sạn Minh Châu tại Sầm Sơn mang đến trải nghiệm nghỉ dưỡng tuyệt vời, phòng view biển, dịch vụ chuyên nghiệp. Đặt phòng ngay hôm nay!",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Minh Châu ngay Quảng trường Cửa Lò, tọa lạc ...",
+    "link": "https://www.tiktok.com/@danghuongque/video/7512866342803049735",
+    "snippet": "Khách sạn Minh Châu ngay Quảng trường Cửa Lò, tọa lạc vị trí đắc địa, view toàn cảnh biển. Liên hệ mình đặt phòng nhé #dulich #dulichnghean # ...",
+    "position": 5
+   },
+   {
+    "title": "Đồng Phục Khách Sạn Minh Châu - Đơn giản là đẹp ! ...",
+    "link": "https://www.tiktok.com/@xuongmaythienttang/video/7389457453001215248",
+    "snippet": "88 Lượt thích,Video TikTok từ Xưởng May Thiên Trang (@xuongmaythienttang): \"Đồng Phục Khách Sạn Minh Châu - Đơn giản là đẹp !",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Minh Châu Sầm Sơn: Ưu Đãi Phòng View Biển ...",
+    "link": "https://www.tiktok.com/@review.sm.sn/photo/7651648326005460244",
+    "snippet": "Đặt phòng khách sạn Minh Châu Sầm Sơn view biển với ưu đãi giá lớn, trang bị đầy đủ tiện nghi, dọn dẹp miễn phí hàng ngày. Vị trí thuận lợi tại ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Thành Trung Minh Châu: Trải nghiệm hè",
+    "link": "https://www.tiktok.com/@hanhtrinhcualinh/video/7630843171404107015",
+    "snippet": "... khách sạn Minh Châu, khách sạn gần bãi biển Minh Châu, dịch vụ khách ... khách sạn Minh Châu, khách sạn có thang máy Quan Lạn. Đây là ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

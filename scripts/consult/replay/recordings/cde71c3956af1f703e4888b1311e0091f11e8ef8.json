@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "La Siesta Premium Saigon Central",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:02:14.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "La Siesta Premium Saigon Central",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "LA SIESTA PREMIUM SAIGON CENTRAL (Thành phố Hồ Chí Minh) - Đánh giá Khách  sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/2e/09/ac/22/hotel-facade.jpg",
+    "imageWidth": 550,
+    "imageHeight": 357,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwNwnDAArOes_DQDOXt6Zr4N_KVuW8QvOgaq0SX17z5A&s=10",
+    "thumbnailWidth": 549,
+    "thumbnailHeight": 357,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d28236340-Reviews-La_Siesta_Premium_Saigon_Central-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F2e%2F09%2Fac%2F22%2Fhotel-facade.jpg&tbnid=KMixeu7ngX33KM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d28236340-Reviews-La_Siesta_Premium_Saigon_Central-Ho_Chi_Minh_City.html&docid=5t7p3Bl3PCErVM&w=550&h=357",
+    "position": 1
+   },
+   {
+    "title": "Wine & Dine - La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon,  Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/Flycam_7_Opt_1_R2-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1497,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQagdGx8XDNK2vfik3kSpuyoEoBc0qdMi0QdkJH1wLCBw&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/wine-dine",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FFlycam_7_Opt_1_R2-2000.jpg&tbnid=EmjjIsBC0_3j9M&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwine-dine&docid=5O5lp9MpTmcdBM&w=2000&h=1497",
+    "position": 2
+   },
+   {
+    "title": "La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon, Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/08/Facade_1-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtN-dq1ywNiAjwwKI0TohTK8QC2xw288wuFCjMVda6QQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F08%2FFacade_1-2000.jpg&tbnid=W0bmBmMo5ig5QM&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2F&docid=2exubnyTrSRnNM&w=2000&h=1333",
+    "position": 3
+   },
+   {
+    "title": "La Siesta Premium Saigon Central, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/604547590.jpg?k=585a235422c4b25bc0cc7979669c1203c89b9dfad9aadd47c960087cb45fe367&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMjhn5p0ot3zliOMddj4kWDTY1zx0kdE0g5yYABVGOjw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/la-siesta-premium-saigon-central.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F604547590.jpg%3Fk%3D585a235422c4b25bc0cc7979669c1203c89b9dfad9aadd47c960087cb45fe367%26o%3D&tbnid=gyh3swKGRIazmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fla-siesta-premium-saigon-central.vi.html&docid=ZiD96erC94GHiM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "La Siesta Premium Saigon | Luxury Boutique Hotel in Saigon, Vietnam",
+    "imageUrl": "https://lasiestahotels.com/saigon/wp-content/uploads/2022/09/Flycam_8_R2-2000.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 1333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqXYWjzsEWHKYGrcSSM97CEnhyiI1s44gmx8A8c9kFYQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "La Siesta Hotels",
+    "domain": "lasiestahotels.com",
+    "link": "https://lasiestahotels.com/saigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2Fwp-content%2Fuploads%2F2022%2F09%2FFlycam_8_R2-2000.jpg&tbnid=yLg7y8UqUBRnTM&imgrefurl=https%3A%2F%2Flasiestahotels.com%2Fsaigon%2F&docid=2exubnyTrSRnNM&w=2000&h=1333",
+    "position": 5
+   },
+   {
+    "title": "LA SIESTA PREMIUM SAIGON (Thành phố Hồ Chí Minh) - Đánh giá Khách sạn & So  sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2e/31/7c/44/caption.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtCSnKvom_a9YsQmaDVDMQEyexp6_FXNjM7zo9vNMCIw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2e%2F31%2F7c%2F44%2Fcaption.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=sQ6wV-ceHj35eM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293925-d25442757-Reviews-La_Siesta_Premium_Saigon-Ho_Chi_Minh_City.html&docid=Tg2SwEFctqYqNM&w=900&h=500",
+    "position": 6
+   },
+   {
+    "title": "La Siesta Premium Saigon Central, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/604547698.jpg?k=f422a878578764e0e6f5efcacfc127ce4a4e6eb46c336bfa777137f8ae52bb4b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIBw6HZGSDAUglVizA66o2L5xhYx48E9l1O4rTGFAYVg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/la-siesta-premium-saigon-central.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F604547698.jpg%3Fk%3Df422a878578764e0e6f5efcacfc127ce4a4e6eb46c336bfa777137f8ae52bb4b%26o%3D&tbnid=FXFLZ0XVQyJZ4M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fla-siesta-premium-saigon-central.vi.html&docid=ZiD96erC94GHiM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn La Siesta Premium Saigon Central - Giá cả và Ưu đãi 2026, TP. Hồ  Chí Minh",
+    "imageUrl": "https://ak-d.tripcdn.com/images/1mc0u12000g4l8tt3F576_R_960_660_R5_D.webp",
+    "imageWidth": 523,
+    "imageHeight": 360,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSx7PJf88W3-__gO_m3CCMmi4cNso51-WUwvDODTF3d5g&s=10",
+    "thumbnailWidth": 523,
+    "thumbnailHeight": 359,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-120437423/la-siesta-premium-saigon-central/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F1mc0u12000g4l8tt3F576_R_960_660_R5_D.webp&tbnid=XMCpCBUbLIfNVM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-120437423%2Fla-siesta-premium-saigon-central%2F&docid=SIMbbtPJxmFHRM&w=523&h=360",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

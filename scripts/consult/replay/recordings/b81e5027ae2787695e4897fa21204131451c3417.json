@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl Tây Ninh\" OR \"SUNRISE HOTEL TÂY NINH\" OR \"Lê Phan Hotel Tây Ninh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:28:03.581Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl Tây Ninh\" OR \"SUNRISE HOTEL TÂY NINH\" OR \"Lê Phan Hotel Tây Ninh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn xinh xịn tại Tây Ninh @Meliá Vinpearl ...",
+    "link": "https://www.tiktok.com/@haichi121/video/7676080867906702599",
+    "snippet": "824 Lượt thích,68 Bình luận.Video TikTok từ Hana's House (@haichi121): \"Khách sạn xinh xịn tại Tây Ninh @Meliá Vinpearl Tây Ninh #nhahana ...",
+    "position": 1
+   },
+   {
+    "title": "Review Meliá Vinpearl Tây Ninh: Giá phòng, view núi Bà Đen",
+    "link": "https://www.tiktok.com/@nhandian/video/7552193592375119111",
+    "snippet": "Meliá Vinpearl Tây Ninh là khách sạn 5 sao nằm ngay trung tâm thành phố Tây Ninh, tại số 90 đường Lê Dũng. Từ đây chỉ khoảng 10 km và đi xe ...",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm 5🌟 ở Tây Ninh @Meliá Vinpearl ...",
+    "link": "https://www.tiktok.com/@toiyeutayninh.ttn/video/7667194774918679828",
+    "snippet": "44 Lượt thích,Video TikTok từ TÔI YÊU TÂY NINH (@toiyeutayninh.ttn): \"Trải nghiệm 5 ở Tây Ninh @Meliá Vinpearl Tây Ninh #xuhuong #hoteltayninh #tayninh ...",
+    "position": 3
+   },
+   {
+    "title": "Sự kiện cưới 19.09 tại Meliá Vinpearl Tây Ninh",
+    "link": "https://www.tiktok.com/@mhi.meliavinpearltayninh/video/7686895002181438740",
+    "snippet": "Sự kiện cưới 19.09 tại Meliá Vinpearl Tây Ninh cung cấp cơ hội cho các cặp đôi tìm hiểu và lên kế hoạch tổ chức tiệc cưới với tư vấn trực ...",
+    "position": 4
+   },
+   {
+    "title": "âm thanh gốc - Meliá Vinpearl Tây Ninh",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Meli%C3%A1-Vinpearl-T%C3%A2y-Ninh-7613426738890132225",
+    "snippet": "Bài hát âm thanh gốc - Meliá Vinpearl Tây Ninh do Meliá Vinpearl Tây Ninh sáng tác. Xem video mới nhất về âm thanh gốc - Meliá Vinpearl Tây Ninh trên TikTok.",
+    "position": 5
+   },
+   {
+    "title": "Buffet hàng tháng 22/8 tại Meliá Vinpearl Tây Ninh",
+    "link": "https://www.tiktok.com/@thuyduong991162/video/7677056240933031175",
+    "snippet": "Không gian và dịch vụ Meliá Vinpearl Tây Ninh tổ chức sự kiện buffet định kỳ, mang đến không gian rộng rãi, bố trí bàn ghế thoáng và phục vụ ...",
+    "position": 6
+   },
+   {
+    "title": "18/9] Comment “.” đăng ký tham gia triển lãm cưới, tặng vou...",
+    "link": "https://www.tiktok.com/@mhi.meliavinpearltayninh/video/7685436090542525716",
+    "snippet": "79 Lượt thích,Video TikTok từ Meliá Vinpearl Tây Ninh (@mhi.meliavinpearltayninh): \"[HẠN CUỐI: 18/9] Comment “.” đăng ký tham gia triển lãm ...",
+    "position": 7
+   },
+   {
+    "title": "Melia Vinpearl Tây Ninh: uống trà chiều và check-in cưới",
+    "link": "https://www.tiktok.com/@followbe1999/video/7685262664888536328",
+    "snippet": "Uống trà chiều chekin công cưới khách sạn Meliá vinpearl Tây Ninh #followbe #tâyninh #reviewtayninh #reviewcafetayninh #chupanhtayninh. Video ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

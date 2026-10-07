@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gạo Spa\" OR \"May Xưa Spa Quận 1\" OR \"CHARM SPA Garden\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:11.215Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gạo Spa\" OR \"May Xưa Spa Quận 1\" OR \"CHARM SPA Garden\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thư Giãn Tại Charm Spa Garden Quận 1",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7636350570244197640",
+    "snippet": "Với không gian riêng tư, sạch sẽ và tinh tế, Charm Spa Garden là lựa chọn lý tưởng cho những ai muốn tìm đến sự thư giãn giữa lòng thành phố.",
+    "position": 1
+   },
+   {
+    "title": "Charm Spa Garden Quận 1 (@charmspagardenquan1)",
+    "link": "https://www.tiktok.com/@charmspagardenquan1",
+    "snippet": "Charm Spa Garden Quận 1 · @charmspagardenquan1 · A 13 Years haven of relaxation and wellness at 6 Branches in Ho Chi Minh, Da Nang, Nha Trang, Da Lat. -Since 2013 ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi ...",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7685264046618201362",
+    "snippet": "Video TikTok từ Charm Spa Garden Quận 1 (@charmspagardenquan1): \"Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi thật chill ✨ Massage ...",
+    "position": 3
+   },
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen #longxuyenangiang. @Bao Anh ăn hàng · nhạc ...",
+    "position": 4
+   },
+   {
+    "title": "Gạo Spa Wellness",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-wellness",
+    "snippet": "Gạo Spa Wellness · Khám phá Gạo Spa & Wellness, nơi thư giãn và chăm sóc sắc đẹp tuyệt vời. Ưu đãi triệt lông cho học sinh sinh viên, trải nghiệm ngay hôm nay!",
+    "position": 5
+   },
+   {
+    "title": "Mầm Gạo Spa (@mamgaospa)",
+    "link": "https://www.tiktok.com/@mamgaospa",
+    "snippet": "69 Hoa Lan, P. Cầu Kiệu 33/24 Quốc Hương, P. An Khánh No TIP Spa · Experience a rejuvenating head wash at Mầm Gạo Spa, where relaxation meets natural care!",
+    "position": 6
+   },
+   {
+    "title": "Tắm trắng thiên nhiên Bạch Quý Phi 😚 lâu lâu Mầm sale 1 ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7676316350926589204",
+    "snippet": "226 Lượt thích,Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Tắm trắng thiên nhiên Bạch Quý Phi lâu lâu Mầm sale 1 lần chỉ còn 589k/lần (khi ...",
+    "position": 7
+   },
+   {
+    "title": "charmspagrand",
+    "link": "https://www.tiktok.com/tag/charmspagrand",
+    "snippet": "spa Garden giữa Quận 1 ✨ Charm Spa Garden Quận 1 — nơi bạn có · nếu bạn là ... quan thiên nhiên hùng vĩ mà còn bởi những trải nghiệm thư giãn tuyệt ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

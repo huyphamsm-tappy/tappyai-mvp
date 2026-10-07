@@ -1,0 +1,149 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 21824,
+  "evidenceId": "dc320936-a75c-44ac-bb50-e2742088c8ea",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage couple tối nay Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3548,
+      "hours": "09:30–22:30",
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm 90 phút tại Sense Spa ở Thành phố Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Trải nghiệm Temple Leaf Spa Land với vé Jjimjilbang ở Hồ ...",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3174,
+      "hours": "09:00–22:30",
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Rose Spa",
+      "rating": 4.8,
+      "count": 591,
+      "hours": "09:00–21:00",
+      "address": "36 Trần Quang Khải, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi Nhánh Đặng Thị Nhu",
+      "rating": 4.5,
+      "count": 20,
+      "hours": "10:00–00:00",
+      "address": "20 Đặng Thị Nhu, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "MAY XƯA Spa",
+      "rating": 4.7,
+      "count": 524,
+      "hours": "Mở cửa cả ngày",
+      "address": "254 Đề Thám, Bến Thành, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Passion Spa Quận 1 - Chi nhánh Bến Thành",
+      "rating": 4.6,
+      "count": 50,
+      "hours": "10:00–02:00",
+      "address": "19D Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage tận nơi Sài Gòn",
+      "rating": 5,
+      "count": 1,
+      "hours": "Mở cửa cả ngày",
+      "address": "212B/D72 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage/spa thư giãn cho cặp đôi tối nay gần Quận 1.\n\nMình chọn **Hạ Spa Quận 1** cho bạn — **4.9⭐ (3.548 đánh giá Google Maps)**, mở đến 22:30 tối nay, nên bạn còn thời gian. Spa này mình chưa xác nhận được có massage couple, có dịch vụ đa dạng từ massage truyền thống đến spa mặt, đá nóng.\n\nNếu muốn thử khác, **Massage Cổ Phong Q1** cũng **4.9⭐ (3.174 đánh giá)**, chuyên massage kiểu Trung Quốc, mở đến 22:30. Hoặc **MAY XƯA Spa** — **4.7⭐ (524 đánh giá)**, đang mở cửa bây giờ, nếu bạn muốn đi ngay.\n\nMình khuyên nên đặt trước qua website hoặc gọi để chắc chắn có chỗ cho 2 người tối nay nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Massage trị liệu hay thư giãn?|Có muốn gói combo tiết kiệm?|Spa nào gần nhất từ vị trí bạn?[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage/spa thư giãn cho cặp đôi tối nay gần Quận 1.\n\nMình chọn **Hạ Spa Quận 1** cho bạn — **4.9⭐ (3.548 đánh giá Google Maps)**, mở đến 22:30 tối nay, nên bạn còn thời gian. Spa này mình chưa xác nhận được có massage couple, có dịch vụ đa dạng từ massage truyền thống đến spa mặt, đá nóng.\n\nNếu muốn thử khác, **Massage Cổ Phong Q1** cũng **4.9⭐ (3.174 đánh giá)**, chuyên massage kiểu Trung Quốc, mở đến 22:30. Hoặc **MAY XƯA Spa** — **4.7⭐ (524 đánh giá)**, đang mở cửa bây giờ, nếu bạn muốn đi ngay.\n\nMình khuyên nên đặt trước qua website hoặc gọi để chắc chắn có chỗ cho 2 người tối nay nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hạ Spa\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hạ Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Massage trị liệu hay thư giãn?|Có muốn gói combo tiết kiệm?|Spa nào gần nhất từ vị trí bạn?[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?"
+    }
+  ]
+}

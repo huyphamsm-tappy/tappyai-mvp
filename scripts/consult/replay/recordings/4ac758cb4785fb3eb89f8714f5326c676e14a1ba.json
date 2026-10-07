@@ -1,0 +1,592 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán hải sản giao tận nơi đồ chiên quan 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:59:32.579Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán hải sản giao tận nơi đồ chiên quan 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7",
+    "address": "Đ. Phạm Văn Nghị/46-48 Đ. Nội Khu Hưng Gia 4, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7324942,
+    "longitude": 106.70679539999999,
+    "rating": 4.9,
+    "ratingCount": 946,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/cTwt4"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN-uTdSoVUMNyHXx5A4c-kJ-JHW9FtFmTa-v7h_L9dsBRrA-JG9UA6RGx6t6laSMCB4KIL02cWZOkEzuvvXXpNND8NmYCNzl0HohOeebS3G5Pr9PstTWYDLhwOaoHXmAfwhPZfC52YTdAo",
+    "cid": "4086585474365273932",
+    "fid": "0x31752f4c083ae5c7:0x38b677d657d0374c",
+    "placeId": "ChIJx-U6CEwvdTERTDfQV9Z3tjg"
+   },
+   {
+    "position": 2,
+    "title": "ĐẢO HẢI SẢN - Tân Mỹ Q7",
+    "address": "2 Đ. Tân Mỹ, Tân Mỹ, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7378895,
+    "longitude": 106.71804549999999,
+    "rating": 4.6,
+    "ratingCount": 364,
+    "type": "Chợ hải sản",
+    "types": [
+     "Chợ hải sản",
+     "Sushi mang đi"
+    ],
+    "website": "https://daohaisan.vn/",
+    "phoneNumber": "+84 1900 0098",
+    "openingHours": {
+     "Thứ Ba": "07:00–20:30",
+     "Thứ Tư": "07:00–20:30",
+     "Thứ Năm": "07:00–20:30",
+     "Thứ Sáu": "07:00–20:30",
+     "Thứ Bảy": "07:00–20:30",
+     "Chủ Nhật": "07:00–20:30",
+     "Thứ Hai": "07:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMufcS6x2k6gpB10KGaa-TJ2LJ4UOsaXCgJo0Jm4-jaA09dWl9GL-jpAAn7eRQY-ekYTLRl0xDrxmPdtJ2dYqvGuAphrcwPeR0efBG1DIWZr7mipiZGzgnfwlBIhEKDF1YoRNFliDpLCmrD",
+    "cid": "4057207105942222419",
+    "fid": "0x31752f010426e225:0x384e185de9e07653",
+    "placeId": "ChIJJeImBAEvdTERU3bg6V0YTjg"
+   },
+   {
+    "position": 3,
+    "title": "Hải Sản Hoàng Gia CN Nguyễn Văn Linh Quận 7",
+    "address": "954 Đường Nguyễn Văn Linh, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7293237,
+    "longitude": 106.70834579999999,
+    "rating": 4.7,
+    "ratingCount": 803,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://haisanhoanggia.com/",
+    "phoneNumber": "+84 1900 0303",
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00"
+    },
+    "bookingLinks": [
+     "https://s.ldplink.me/JHF9M"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO5xKNSBL9K-E9HDuwIAjpAJXM7BJTr1oicUcqC-xUfwEuJ3Lu11VfYS2JyDeiPqmJJLnKnc6a7oo1NpgsegujxACGHEXnsSMeImpY3hpcsUNY2qUVOO45rGwJjn5DvKuiCgRTQcppEETA",
+    "cid": "17008500752888389563",
+    "fid": "0x31752fa2a9ff5cad:0xec0a5551e1e05fbb",
+    "placeId": "ChIJrVz_qaIvdTERu1_g4VFVCuw"
+   },
+   {
+    "position": 4,
+    "title": "Hải Sản Biển Nhớ",
+    "address": "Phan Khiêm Ích/36 Hưng Gia 1, KP, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7330746,
+    "longitude": 106.7092855,
+    "rating": 4.1,
+    "ratingCount": 355,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "phoneNumber": "+84 939 846 210",
+    "openingHours": {
+     "Thứ Ba": "10:00–02:00",
+     "Thứ Tư": "10:00–02:00",
+     "Thứ Năm": "10:00–02:00",
+     "Thứ Sáu": "10:00–02:00",
+     "Thứ Bảy": "10:00–02:00",
+     "Chủ Nhật": "10:00–02:00",
+     "Thứ Hai": "10:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPIE7Iyfinx5YbX0nHEBanhhzdjzfVW2cFPs3V5uZbjLeF9G85h5vVPVWUgLd0MW9NdgA9DAb8Ed28-YL5vjURkERcJac8nkwhMVy5zljlC7TmM_f6rnE7X3zmEsZS163Emiqk",
+    "cid": "18212061969052461033",
+    "fid": "0x31752f2f5dd7db37:0xfcbe3dde84c5e7e9",
+    "placeId": "ChIJN9vXXS8vdTER6efFhN49vvw"
+   },
+   {
+    "position": 5,
+    "title": "Hàng Dương Quán",
+    "address": "132 Đ. Số 65, Khu định cư Tân Quy Đông, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.735612099999999,
+    "longitude": 106.7059747,
+    "rating": 4.2,
+    "ratingCount": 2931,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://hangduongquan.vn/",
+    "phoneNumber": "+84 1800 9478",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:00",
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMZQThNIh__GkBYcNVe483sQ7VISUN8MqRKZ9cG4iUpUc2dbSE2ViiS2DhcJVpZ_BzfFS26nAisyBzbU1nPnIHn415zvVFVmnRqRecXZV6PrvrWGa5GQWCDNq9KO7AlbaTn9YOD8bMuKhEi",
+    "cid": "8918336038410376823",
+    "fid": "0x31752f9c083bf5f9:0x7bc44b602503d677",
+    "placeId": "ChIJ-fU7CJwvdTERd9YDJWBLxHs"
+   },
+   {
+    "position": 6,
+    "title": "Hải Sản Nhung Nhi q7",
+    "address": "685 Huỳnh Tấn Phát, Phú Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7368033,
+    "longitude": 106.73055719999999,
+    "rating": 3,
+    "ratingCount": 2,
+    "type": "Người cung cấp thực phẩm",
+    "types": [
+     "Người cung cấp thực phẩm",
+     "Chợ hải sản"
+    ],
+    "phoneNumber": "+84 376 343 119",
+    "openingHours": {
+     "Thứ Ba": "08:00–20:00",
+     "Thứ Tư": "08:00–20:00",
+     "Thứ Năm": "08:00–20:00",
+     "Thứ Sáu": "08:00–20:00",
+     "Thứ Bảy": "08:00–20:00",
+     "Chủ Nhật": "08:00–20:00",
+     "Thứ Hai": "08:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf3CA3u7o396oi5hp_FZ1lG08Xc4CDX_gMfO7pqQ3pLjdeVzkIdq8mTFPESIc-KeKFZqzRpnDjhAHmzJFYUkj3y807ujW6TP6vqR7LyJnmF_k_j0-UCvLc2niNIydf225se8SJxAdeNZ7A",
+    "cid": "12924113016878624677",
+    "fid": "0x3175250055e85c43:0xb35bac50600d6fa5",
+    "placeId": "ChIJQ1zoVQAldTERpW8NYFCsW7M"
+   },
+   {
+    "position": 7,
+    "title": "Làng Hải Sản Mix",
+    "address": "482-484 Lê Văn Lương, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7354939,
+    "longitude": 106.7025524,
+    "rating": 4.5,
+    "ratingCount": 255,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://langhaisanmix.com/",
+    "phoneNumber": "+84 774 555 504",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "bookingLinks": [
+     "https://m.me/101323082544347"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPTd6ffW_9TDQNl9rd1pRWikGrdP7j3udc0xKIbmNBsQII16RC4U2JpRXgK9oxhSBQmIzm9bFs8wLrWfNV2LGFx2Q3y2y8pTEeILXLGu6m6cQrEUX4PKAZNFrD3P40Cz1HOWTmTzlt6H5s",
+    "cid": "3668238475227298683",
+    "fid": "0x31752f8272c2b50f:0x32e833754357fb7b",
+    "placeId": "ChIJD7XCcoIvdTERe_tXQ3Uz6DI"
+   },
+   {
+    "position": 8,
+    "title": "Nhà Hàng 39 | Nhà Hàng Đặc Sản Quận 7",
+    "address": "2 Đường số 39, Tân Thuận, Hồ Chí Minh 72914, Việt Nam",
+    "latitude": 10.7439337,
+    "longitude": 106.71757799999999,
+    "rating": 4.4,
+    "ratingCount": 119,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://nhahang39.vn/",
+    "phoneNumber": "+84 909 982 075",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:30",
+     "Thứ Tư": "09:00–23:30",
+     "Thứ Năm": "09:00–23:30",
+     "Thứ Sáu": "09:00–23:30",
+     "Thứ Bảy": "09:00–23:30",
+     "Chủ Nhật": "09:00–23:30",
+     "Thứ Hai": "09:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcMZM7XFTTxr1VBPp6hSOa203xzPDBzJAs0AabQMbcOjZvLbsRaxvrZSRQUOZKIvvDkYmAGOa38-dYZcTRnje58dqYh24dEXK3O323wLxuRdz5eQcgXAqGihjb-AUg-EI81D07b",
+    "cid": "10809232005551792812",
+    "fid": "0x31752f8de8e1c19b:0x96021b3d41b2a2ac",
+    "placeId": "ChIJm8Hh6I0vdTERrKKyQT0bApY"
+   },
+   {
+    "position": 9,
+    "title": "Ẩm thực sân vườn Mái Lá Quận 7",
+    "address": "1D Số 36, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7413095,
+    "longitude": 106.7089206,
+    "rating": 4.3,
+    "ratingCount": 492,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 903 393 030",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:00",
+     "Thứ Tư": "09:00–23:00",
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf-1_gzpyDvlX_gvTSMmdhjDEMXqcaLjp_QnbrfgHupUczqesc97Cz6X_MbvsJbkb3Cl9jj6O3hQlrlrMh33lp-0SqJn6hBqMXMjU-k9nanvdYl7JRHmRAu2mell7jZQbcAwlEb",
+    "cid": "11342909691261233299",
+    "fid": "0x31752f7445b09cef:0x9d6a1c4452f62893",
+    "placeId": "ChIJ75ywRXQvdTERkyj2UkQcap0"
+   },
+   {
+    "position": 10,
+    "title": "Bến thuyền đón khách Cù Lao Xanh",
+    "address": "88 Nguyễn Đức Cảnh, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.720507999999999,
+    "longitude": 106.71526399999999,
+    "rating": 4.2,
+    "ratingCount": 402,
+    "type": "Bến du thuyền",
+    "types": [
+     "Bến du thuyền",
+     "Nhà hàng châu Á",
+     "Nhà hàng gia đình",
+     "Nhà hàng hải sản",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/langamthucculaoxanh",
+    "phoneNumber": "+84 889 898 000",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcmQIlbRDlZaDDEOVBtCBCIUNm5JaLcXZCh5dPsI8TNZ2qjOP0jxNW1IpHTdJFOcN4IGe3eiOiJtyie5UYsWgKxlo5KwDVGRkXEmy5hYqceQ6qTKEG0kcshrLdzklyEQpFHScDYAA",
+    "cid": "4826180267103820726",
+    "fid": "0x31752f2a9e441ced:0x42fa0961fab91bb6",
+    "placeId": "ChIJ7RxEniovdTERthu5-mEJ-kI"
+   },
+   {
+    "position": 11,
+    "title": "vựa hải sản tèo ghẹ 2",
+    "address": "458/3 Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7431383,
+    "longitude": 106.7015414,
+    "rating": 4.6,
+    "ratingCount": 116,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 976 222 434",
+    "openingHours": {
+     "Thứ Ba": "07:30–23:00",
+     "Thứ Tư": "07:30–23:00",
+     "Thứ Năm": "07:30–23:00",
+     "Thứ Sáu": "07:30–23:00",
+     "Thứ Bảy": "07:30–23:00",
+     "Chủ Nhật": "07:30–23:00",
+     "Thứ Hai": "07:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMmWBlw-u-pVRSeKGtp2tJv4TYaP7Fp04Fb2tGVeB27P0dVFP5h5W_V2Q5qdbYV2Th2A4N6oPmupjZKslhagy7iVS5uySSlEHzvkXR3gKsi_hQ2rZKF0uGfa2M5F4XaEnyiNtDKSWYyu7SI",
+    "cid": "1066522575762878009",
+    "fid": "0x31752f831e4fff57:0xecd0ca1c947ee39",
+    "placeId": "ChIJV_9PHoMvdTEROe5HyaEMzQ4"
+   },
+   {
+    "position": 12,
+    "title": "Kim Quán",
+    "address": "PPCG+WGC, Căn Hộ Green View, Nguyễn Lương Bằng (góc, Đường 16 và Nguyễn Lương Bằng, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7223154,
+    "longitude": 106.7262635,
+    "rating": 4.1,
+    "ratingCount": 425,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/kimthuquan/",
+    "phoneNumber": "+84 902 419 999",
+    "openingHours": {
+     "Thứ Ba": "11:00–21:00",
+     "Thứ Tư": "11:00–21:00",
+     "Thứ Năm": "11:00–21:00",
+     "Thứ Sáu": "11:00–21:00",
+     "Thứ Bảy": "11:00–21:00",
+     "Chủ Nhật": "11:00–21:00",
+     "Thứ Hai": "11:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMEyZ2QbN5JAx5M_SLlfU6P4vf_Iw-FoqEyGYte24sAwortovs6ZJ0OV9FBysc5ZE82CAgdBTL-j9t-6DkFcpz4vhGMrMFGwTdGiyuCl-Y0v7JXKY03J7apOJIXsUDZPQNurGuY",
+    "cid": "2787071917854387916",
+    "fid": "0x3175255fd2403787:0x26adab248b2d6ecc",
+    "placeId": "ChIJhzdA0l8ldTERzG4tiySrrSY"
+   },
+   {
+    "position": 13,
+    "title": "Tràng An Quán - Nhà hàng Ẩm Thực Đồng Quê Ngon Quận 7",
+    "address": "131 Số 47, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.741821999999999,
+    "longitude": 106.7123838,
+    "rating": 4.6,
+    "ratingCount": 842,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng gia đình",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://tranganquan.com/",
+    "phoneNumber": "+84 969 273 254",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOz7iA8TGUlJqWbz--sl8JuDOsoU5F6Xvt23l1xbb4F7MEx3WgVrK_E8WLMT1QT9ylTVL7j0rW2RUvmMGBgNIxQhlZRjW-uvZ1Rcl6YAWWcQ-FCZhSU1hGERgI4X0GfZJYgU1Tn",
+    "cid": "1003303381397085479",
+    "fid": "0x31752f3380b18f65:0xdec731c121f1d27",
+    "placeId": "ChIJZY-xgDMvdTERJx0fEhxz7A0"
+   },
+   {
+    "position": 14,
+    "title": "Nhà hàng Las Vegas",
+    "address": "Đường Nguyễn Văn Linh, Quận 7, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.751576199999999,
+    "longitude": 106.72333719999999,
+    "rating": 4.4,
+    "ratingCount": 398,
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61559090384035",
+    "phoneNumber": "+84 931 956 868",
+    "openingHours": {
+     "Thứ Ba": "14:00–23:00",
+     "Thứ Tư": "14:00–23:00",
+     "Thứ Năm": "14:00–23:00",
+     "Thứ Sáu": "14:00–23:00",
+     "Thứ Bảy": "14:00–23:00",
+     "Chủ Nhật": "14:00–23:00",
+     "Thứ Hai": "14:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMTPBNlU-yBku87qHxI-M1yixhydXXu3IlvHkG663wsGV2PyY4qtHvg27UfGOBElYkkvxZvCii_LAIdjWqA3apMH1U5a1oZY_8R_LdCty3j-4L73Sioy8qNoUBEgYt44tHFrU4v",
+    "cid": "17512376868790525899",
+    "fid": "0x31752595830a2917:0xf30875fa4506dfcb",
+    "placeId": "ChIJFykKg5UldTERy98GRfp1CPM"
+   },
+   {
+    "position": 15,
+    "title": "Wok of love Quận 7",
+    "address": "48 Khu Phố Hưng Phước 2, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7315098,
+    "longitude": 106.7067903,
+    "rating": 4.8,
+    "ratingCount": 824,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 815 528 166",
+    "openingHours": {
+     "Thứ Ba": "10:30–00:00",
+     "Thứ Tư": "10:30–00:00",
+     "Thứ Năm": "10:30–00:00",
+     "Thứ Sáu": "10:30–00:00",
+     "Thứ Bảy": "10:30–00:00",
+     "Chủ Nhật": "10:30–00:00",
+     "Thứ Hai": "10:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMhrBwBN974pGIvTwuJv9YMP3c5mgaWj7CBpG9Olikt-fZ1qcZOMgwjGvd6VpgrGABaFYqtlfehCVJl_mDJGjtuziSATiFOT03mQ9EW3Tc0c5LeM6l0DlczgVZJp3yzaVm5AvQe7jhqJPZI",
+    "cid": "6238120914973773119",
+    "fid": "0x31752f72e1ae4369:0x569241ebd2f24d3f",
+    "placeId": "ChIJaUOu4XIvdTERP03y0utBklY"
+   },
+   {
+    "position": 16,
+    "title": "Dìn Ký Cù Lao Xanh",
+    "address": "88 Nguyễn Đức Cảnh, Quận 7, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7199653,
+    "longitude": 106.7116179,
+    "rating": 4.5,
+    "ratingCount": 1301,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://culaoxanh.dinkynguyentrai.com.vn/",
+    "phoneNumber": "+84 889 898 000",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPtHIUBMM_Hww5ti2fIXMGhvhFm-VShAuEY6pGys3EHw4cUTE7NJUoV0emAxRHOiFpJ90EVBmao_liRWFs5wSAu87m89DpSaF3bQcoTvM9d1jbBwkM0AKB9nu0xL7IeDalxRciPHTcE9n9l",
+    "cid": "4267771120964845243",
+    "fid": "0x31752f18dc594143:0x3b3a2b390fc7bebb",
+    "placeId": "ChIJQ0FZ3BgvdTERu77HDzkrOjs"
+   },
+   {
+    "position": 17,
+    "title": "CHỢ HẢI SẢN G20",
+    "address": "135 Đ. Số 1, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7369615,
+    "longitude": 106.71714039999999,
+    "rating": 3.9,
+    "ratingCount": 12,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPYnPP2PussnSoCerfcL1hYUETD8GCuq0fV8l7wOdxswxVeRKaexUF261_l-pjwNcw7xwnITwQl_NycH67McKTMV56PPYy7Hcg2FofEVPFa0mE-L1aLKOYe9N5L2ZVjnlF7Jf4A8AYH1Oh",
+    "cid": "10101365937911342405",
+    "fid": "0x31752f4b7e27399f:0x8c2f42cd1b6fa545",
+    "placeId": "ChIJnzknfksvdTERRaVvG81CL4w"
+   },
+   {
+    "position": 18,
+    "title": "Buffet Poseidon SC ViVo Quận 7",
+    "address": "TTTM SC Vivo, 1058 Đường Nguyễn Văn Linh, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7298577,
+    "longitude": 106.7032856,
+    "rating": 4.4,
+    "ratingCount": 830,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://buffetposeidon.com/",
+    "phoneNumber": "+84 866 932 066",
+    "openingHours": {
+     "Thứ Ba": "11:00–14:00, 17:30–22:00",
+     "Thứ Tư": "11:00–14:00, 17:30–22:00",
+     "Thứ Năm": "11:00–14:00, 17:30–22:00",
+     "Thứ Sáu": "11:00–14:00, 17:30–22:00",
+     "Thứ Bảy": "11:00–14:00, 17:30–22:00",
+     "Chủ Nhật": "11:00–14:00, 17:30–22:00",
+     "Thứ Hai": "11:00–14:00, 17:30–22:00"
+    },
+    "bookingLinks": [
+     "https://buffetposeidon.com/dat-ban"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOxbZHKOpIzjvhfOWd_JE2EFdtZYM6YBajflEXLr5L4GEy8VrMUNDoDMUIl2AqYKfkj-_a0eL8CLO8Gji2TPv9d7SQf4FIMBjrnQShPp_G9PGfz8cQ3DmyOsSs965k92cynwV4q",
+    "cid": "10768046112884542231",
+    "fid": "0x31752f16819d1cd5:0x956fc8e35b824b17",
+    "placeId": "ChIJ1RydgRYvdTERF0uCW-PIb5U"
+   },
+   {
+    "position": 19,
+    "title": "Thuận Ký - Cơm Phủ Trứng - Q7",
+    "address": "52 Đường Số 81, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7404212,
+    "longitude": 106.7054623,
+    "rating": 4.1,
+    "ratingCount": 413,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 399 435 281",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMtjA-R0BlTDGxcNN1OhNskdHcZpbr2Adw7UIx5a2yswOBVW7RlaPlSI5DRdTGhWKireeyTK2nSWsFHju22ZJQqlINsH4wx5kPnwrwHaMELFzhnnL2JPKkmPC63OPA7YC2fAqKrsdDWOHKK",
+    "cid": "15745145476258933468",
+    "fid": "0x31752f006b6029a5:0xda81fe63a9432adc",
+    "placeId": "ChIJpSlgawAvdTER3CpDqWP-gdo"
+   },
+   {
+    "position": 20,
+    "title": "GÀ HOÀNG HIẾU Q7",
+    "address": "222 Đ. Lâm Văn Bền, P, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7398895,
+    "longitude": 106.7158056,
+    "rating": 4.2,
+    "ratingCount": 578,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 938 880 384",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO25Hbr4ZEuMGnLOuxQAATet0-GBKFllGzgzeXJI_vJBiLFVlcjUlJbjSmPxou-ORy6-g8XPkGq1tMYPudQ03WyXpnOxHsfReu3pRZfK4oAV2poyRtTriu4H_cpWMtYkGiacNOC",
+    "cid": "12411757005514426313",
+    "fid": "0x31752f838df3ea21:0xac3f6b3c782747c9",
+    "placeId": "ChIJIerzjYMvdTERyUcneDxrP6w"
+   }
+  ],
+  "credits": 3
+ }
+}

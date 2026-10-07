@@ -1,0 +1,3547 @@
+{
+  "id": "T1",
+  "group": "travel-multiturn",
+  "criteria": [
+    "Turn 2: understands 'mai đi mốt về' = 2 days / 1 night and explicitly corrects the earlier 3-day plan",
+    "Hotel and places appear as structured cards (annotation items) with names — never a bare image",
+    "At most ONE clarifying question before a first useful plan is given",
+    "No delivery apps (GrabFood/BeFood) for a trip in another city",
+    "Budget split consistent with 2 people, 1 night, 20 triệu",
+    "Reply text appears exactly once (T5)"
+  ],
+  "turns": [
+    {
+      "user": "Mình muốn đi Đà Nẵng 3 ngày, 2 người, thích tham quan và ăn hải sản",
+      "status": 200,
+      "elapsedMs": 45803,
+      "usage": {
+        "promptTokens": 11468,
+        "completionTokens": 3638
+      },
+      "textFrames": 4,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Đà Nẵng thắng cảnh",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Nẵng ngon",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Nẵng"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Đà Nẵng"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cầu Vàng",
+              "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 14871,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "08:00–19:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đỉnh Bàn Cờ",
+              "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 4474,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cầu Rồng",
+              "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 9549,
+              "price": null,
+              "categories": [
+                "Cầu",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ba Na Hills",
+              "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 98906,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ngũ Hành Sơn",
+              "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 42928,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:00–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ghềnh Bàng",
+              "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1161,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Vọng Cảnh",
+              "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1130,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+              "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4820,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Onsen ban ngày",
+                "Điểm tắm suối khoáng nóng kiểu Nhật",
+                "Công viên nước"
+              ],
+              "hours": "08:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:15.99494,107.99656",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Vàng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO02ghX6c8lByIeV7TBPjgO_l_cl4Y6AQRimT_w0WXA9lcvFXNWoJp7V8-j1dpKOQ5-qDYXZXvHoW27q26ZIeXUlS_Rdowfd8VA9IWa3X1oC-MtgxD9rA2KRY1MPGNao4O5DnX0",
+                "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 14871,
+                "openingHours": "08:00–19:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:00–19:00",
+                  "Thứ Hai": "08:00–19:00",
+                  "Thứ Ba": "08:00–19:00",
+                  "Thứ Tư": "08:00–19:00",
+                  "Thứ Năm": "08:00–19:00",
+                  "Thứ Sáu": "08:00–19:00",
+                  "Thứ Bảy": "08:00–19:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7167034678468850957",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20V%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11894,108.27198",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đỉnh Bàn Cờ",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMel3vvl2jVfVwxNp6sRyK_5qwK7hTImML-BNK6La5Zz_0SVxx7c-kwOW3rquAZ6KmY7egR_-amoDsGTVVz1I8Z2Stnrbtmjw0ZgvwlhlKX7nBx86uXDK9N0qJ5fAcrTUO1DrPb_g",
+                "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 4474,
+                "openingHours": "07:30–17:30",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7629724912977954540",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BB%89nh%20B%C3%A0n%20C%E1%BB%9D%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06110,108.22769",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Rồng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOkTlroznlo93OCYthB31zr1jvw8jfKmOeaRbiarJkZ2GZP7rJTtEX-VPATim-MiyLnyIxcTMW-3WH710xDwcyZk9HyEjiYVJyduDZobSnr3QFY4kbXWeZjsvqlbh69Oyen6TrLHecg9zfY",
+                "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 9549,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cầu",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=329807663884316974",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20R%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99514,107.99614",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ba Na Hills",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMGrsKM1WYoZVytOiZWbc3H_T2pKLpagSqSmCJJT11tgVhnOoh4s90IyNUCU3ZlwVbteyC11Sq7B0-FM71uif5ssNlijVdTJmPPESGN9R83oDiZTZXso8zEdHmLSz1y6QX8woqeDg",
+                "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 98906,
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9546412119288544930",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ba%20Na%20Hills%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.00371,108.26316",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ngũ Hành Sơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOHVQZnI_uBB3-atXNfE6hyAD6GFaXb5p9W9kdzh7BoA3EEXCDEOnv7z0tBSnOpImiddQyoZ_OXDqq8pn7CXWkYy4_Oh5_ZUx1-uJ0qvgQU5h7t3qOmzzdy9WluAc_BU7fQoqfr7g",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 42928,
+                "openingHours": "07:00–17:30",
+                "openNow": true,
+                "phone": "+84 236 3961 114",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–17:30",
+                  "Thứ Hai": "07:00–17:30",
+                  "Thứ Ba": "07:00–17:30",
+                  "Thứ Tư": "07:00–17:30",
+                  "Thứ Năm": "07:00–17:30",
+                  "Thứ Sáu": "07:00–17:30",
+                  "Thứ Bảy": "07:00–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13577824764986909893",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nguhanhson.org/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ng%C5%A9%20H%C3%A0nh%20S%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363961114",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11243,108.31163",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ghềnh Bàng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_bQcn9TDrjIU65pktssFzUwwMZMmr09Wcbmwbs5jBQslb9jpssoCGZwIsosKIihaI3sQXNCQNqKKRL0GVn9S5yW59FaHQnnDuQ8XDwev9XDAjkcrbvqu0Uhfcnq0Y4L-v_X8X",
+                "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1161,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18071023613830469926",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Gh%E1%BB%81nh%20B%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.13511,108.24538",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Vọng Cảnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPe0CRQs8M79wDREfOBZS5Qg7iFf_edjWQ8NiyapU8tNKe4AjsdXL_h98OIGC_y6wc8zAN2DhzkC0osJTpmBMntO4QmX-zWaGdvpIzeURwlLgCF_38Iz0cGwGoNnFf1Vy1Snhm9xQ",
+                "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1130,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12683501688321103842",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20V%E1%BB%8Dng%20C%E1%BA%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.96785,108.01981",
+                "domain": "food",
+                "kind": "place",
+                "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOt3oBskVXSQN-a-0G2-VklxgV9oHGvWgp_sank0ywitlwK4lTHBjylmoCazbN7WgcWbybSGvOlcDY7pmZQqI-EuoQBfZ0zMAXLLuQekQAaMxV5JITHM8Ziask0SeqpNycy-cQw",
+                "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4820,
+                "openingHours": "08:30–17:30",
+                "openNow": true,
+                "phone": "+84 898 181 777",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:30–17:30",
+                  "Thứ Hai": "08:30–17:30",
+                  "Thứ Ba": "08:30–17:30",
+                  "Thứ Tư": "08:30–17:30",
+                  "Thứ Năm": "08:30–17:30",
+                  "Thứ Sáu": "08:30–17:30",
+                  "Thứ Bảy": "08:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Onsen ban ngày",
+                  "Điểm tắm suối khoáng nóng kiểu Nhật",
+                  "Công viên nước"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17322092107953916815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Su%E1%BB%91i%20kho%C3%A1ng%20n%C3%B3ng%20N%C3%BAi%20Th%E1%BA%A7n%20T%C3%A0i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898181777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20%C4%90%C3%A0%20N%E1%BA%B5ng%20th%E1%BA%AFng%20c%E1%BA%A3nh%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ngũ Hành Sơn",
+              "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 42928,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:00–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.4",
+                "42928 reviews"
+              ]
+            },
+            {
+              "name": "Cầu Vàng",
+              "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 14871,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "08:00–19:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đỉnh Bàn Cờ",
+              "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 4474,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cầu Rồng",
+              "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 9549,
+              "price": null,
+              "categories": [
+                "Cầu",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ba Na Hills",
+              "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 98906,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ghềnh Bàng",
+              "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1161,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Vọng Cảnh",
+              "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1130,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+              "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4820,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Onsen ban ngày",
+                "Điểm tắm suối khoáng nóng kiểu Nhật",
+                "Công viên nước"
+              ],
+              "hours": "08:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:16.00371,108.26316",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ngũ Hành Sơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOHVQZnI_uBB3-atXNfE6hyAD6GFaXb5p9W9kdzh7BoA3EEXCDEOnv7z0tBSnOpImiddQyoZ_OXDqq8pn7CXWkYy4_Oh5_ZUx1-uJ0qvgQU5h7t3qOmzzdy9WluAc_BU7fQoqfr7g",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 42928,
+                "openingHours": "07:00–17:30",
+                "openNow": true,
+                "phone": "+84 236 3961 114",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–17:30",
+                  "Thứ Hai": "07:00–17:30",
+                  "Thứ Ba": "07:00–17:30",
+                  "Thứ Tư": "07:00–17:30",
+                  "Thứ Năm": "07:00–17:30",
+                  "Thứ Sáu": "07:00–17:30",
+                  "Thứ Bảy": "07:00–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 4,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.4",
+                    "params": {
+                      "value": 4.4
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "42928 reviews",
+                    "params": {
+                      "count": 42928
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13577824764986909893",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nguhanhson.org/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363961114",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ng%C5%A9%20H%C3%A0nh%20S%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99494,107.99656",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Vàng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO02ghX6c8lByIeV7TBPjgO_l_cl4Y6AQRimT_w0WXA9lcvFXNWoJp7V8-j1dpKOQ5-qDYXZXvHoW27q26ZIeXUlS_Rdowfd8VA9IWa3X1oC-MtgxD9rA2KRY1MPGNao4O5DnX0",
+                "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 14871,
+                "openingHours": "08:00–19:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:00–19:00",
+                  "Thứ Hai": "08:00–19:00",
+                  "Thứ Ba": "08:00–19:00",
+                  "Thứ Tư": "08:00–19:00",
+                  "Thứ Năm": "08:00–19:00",
+                  "Thứ Sáu": "08:00–19:00",
+                  "Thứ Bảy": "08:00–19:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7167034678468850957",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20V%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11894,108.27198",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đỉnh Bàn Cờ",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMel3vvl2jVfVwxNp6sRyK_5qwK7hTImML-BNK6La5Zz_0SVxx7c-kwOW3rquAZ6KmY7egR_-amoDsGTVVz1I8Z2Stnrbtmjw0ZgvwlhlKX7nBx86uXDK9N0qJ5fAcrTUO1DrPb_g",
+                "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 4474,
+                "openingHours": "07:30–17:30",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7629724912977954540",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@pinniedigitaldiary/video/7487565906831248646",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BB%89nh%20B%C3%A0n%20C%E1%BB%9D%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06110,108.22769",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Rồng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOkTlroznlo93OCYthB31zr1jvw8jfKmOeaRbiarJkZ2GZP7rJTtEX-VPATim-MiyLnyIxcTMW-3WH710xDwcyZk9HyEjiYVJyduDZobSnr3QFY4kbXWeZjsvqlbh69Oyen6TrLHecg9zfY",
+                "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 9549,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cầu",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=329807663884316974",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20R%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99514,107.99614",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ba Na Hills",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMGrsKM1WYoZVytOiZWbc3H_T2pKLpagSqSmCJJT11tgVhnOoh4s90IyNUCU3ZlwVbteyC11Sq7B0-FM71uif5ssNlijVdTJmPPESGN9R83oDiZTZXso8zEdHmLSz1y6QX8woqeDg",
+                "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 98906,
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9546412119288544930",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ba%20Na%20Hills%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11243,108.31163",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ghềnh Bàng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_bQcn9TDrjIU65pktssFzUwwMZMmr09Wcbmwbs5jBQslb9jpssoCGZwIsosKIihaI3sQXNCQNqKKRL0GVn9S5yW59FaHQnnDuQ8XDwev9XDAjkcrbvqu0Uhfcnq0Y4L-v_X8X",
+                "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1161,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=18071023613830469926",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Gh%E1%BB%81nh%20B%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.13511,108.24538",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Vọng Cảnh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPe0CRQs8M79wDREfOBZS5Qg7iFf_edjWQ8NiyapU8tNKe4AjsdXL_h98OIGC_y6wc8zAN2DhzkC0osJTpmBMntO4QmX-zWaGdvpIzeURwlLgCF_38Iz0cGwGoNnFf1Vy1Snhm9xQ",
+                "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1130,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12683501688321103842",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20V%E1%BB%8Dng%20C%E1%BA%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.96785,108.01981",
+                "domain": "food",
+                "kind": "place",
+                "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOt3oBskVXSQN-a-0G2-VklxgV9oHGvWgp_sank0ywitlwK4lTHBjylmoCazbN7WgcWbybSGvOlcDY7pmZQqI-EuoQBfZ0zMAXLLuQekQAaMxV5JITHM8Ziask0SeqpNycy-cQw",
+                "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4820,
+                "openingHours": "08:30–17:30",
+                "openNow": true,
+                "phone": "+84 898 181 777",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:30–17:30",
+                  "Thứ Hai": "08:30–17:30",
+                  "Thứ Ba": "08:30–17:30",
+                  "Thứ Tư": "08:30–17:30",
+                  "Thứ Năm": "08:30–17:30",
+                  "Thứ Sáu": "08:30–17:30",
+                  "Thứ Bảy": "08:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Onsen ban ngày",
+                  "Điểm tắm suối khoáng nóng kiểu Nhật",
+                  "Công viên nước"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17322092107953916815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Su%E1%BB%91i%20kho%C3%A1ng%20n%C3%B3ng%20N%C3%BAi%20Th%E1%BA%A7n%20T%C3%A0i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898181777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20%C4%90%C3%A0%20N%E1%BA%B5ng%20th%E1%BA%AFng%20c%E1%BA%A3nh%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "picked": [
+              "place:osm:16.00371,108.26316",
+              "place:osm:16.11894,108.27198",
+              "place:osm:15.99494,107.99656"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:16.00371,108.26316",
+            "place:osm:16.11894,108.27198",
+            "place:osm:15.99494,107.99656"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Cầu Vàng",
+          "Đỉnh Bàn Cờ",
+          "Cầu Rồng",
+          "Ba Na Hills",
+          "Ngũ Hành Sơn",
+          "Ghềnh Bàng",
+          "Nhà Vọng Cảnh",
+          "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+        ],
+        [
+          "Ngũ Hành Sơn",
+          "Cầu Vàng",
+          "Đỉnh Bàn Cờ",
+          "Cầu Rồng",
+          "Ba Na Hills",
+          "Ghềnh Bàng",
+          "Nhà Vọng Cảnh",
+          "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người với focus tham quan và ăn hải sản. Mình tính đi máy bay từ TP.HCM, bạn có thể điều chỉnh nếu cần nhé.\n\nĐể lập kế hoạch hoàn chỉnh, mình cần gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, và kiểm tra thời tiết:\n\nTuyệt vời! Mình đã tìm được các điểm tham quan và nhà hàng hải sản tuyệt vời ở Đà Nẵng. Bây giờ mình sẽ lập kế hoạch 3 ngày 2 đêm cho 2 người với focus tham quan và ăn hải sản.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 3 ngày 2 đêm - Tham quan & Ăn hải sản\",\"people\":2,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Chuyến bay khởi hành từ TP.HCM, bay khoảng 1 giờ đến Đà Nẵng\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\"},{\"time\":\"16:30\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Check-in khách sạn\",\"description\":\"Nhận phòng tại khách sạn ở khu An Hải hoặc Ngũ Hành Sơn (gần các nhà hàng hải sản)\",\"price\":\"chưa có giá\",\"address\":\"Khu An Hải, Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"\"},{\"time\":\"18:30\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Nhà hàng hải sản cao cấp, mở từ 10:00–02:00. Tươi ngon, phục vụ tốt, giá hợp lý\",\"price\":\"chưa có giá\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299\"}]},{\"label\":\"Ngày 2 - Sáng & Chiều\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🥾\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Mở 07:30–17:30. Trekking nhẹ, view biển tuyệt đẹp, không khí sạch mát\",\"price\":\"chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\"},{\"time\":\"12:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Mở 10:30–22:30. Hải sản tươi, không gian thoáng, được yêu thích nhất\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE\"},{\"time\":\"15:00\",\"emoji\":\"🏯\",\"category\":\"entertainment\",\"name\":\"Cầu Vàng\",\"description\":\"**4.6⭐ (14.871 đánh giá Google Maps)** - Mở 08:00–19:00. Kiến trúc độc đáo, view núi đẹp, check-in ảnh đẹp\",\"price\":\"chưa có giá\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\"},{\"time\":\"19:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Thèm Hải Sản\",\"description\":\"**4.8⭐ (11.175 đánh giá Google Maps)** - Mở 11:00–00:00. Hải sản nướng, tươi ngon, không gian ấm cúng\",\"price\":\"chưa có giá\",\"address\":\"39 Trần Bạch Đằng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14378541914985934539\",\"booking_link\":\"\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🌉\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Mở cả ngày. Biểu tượng Đà Nẵng, view sông Hàn tuyệt đẹp, đi bộ thư giãn\",\"price\":\"chưa có giá\",\"address\":\"An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hải Sân My Hanh Seafood\",\"description\":\"**4.7⭐ (7.333 đánh giá Google Maps)** - Mở 09:00–23:00. Hải sản tươi, giá phải chăng, phục vụ nhanh\",\"price\":\"chưa có giá\",\"address\":\"03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=15356935463653978732\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Check-out khách sạn, bay về TP.HCM\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY\"}]}],\"cost_breakdown\":{\"Vé máy bay (khứ hồi)\":\"chưa có giá\",\"Lưu trú (2 đêm)\":\"chưa có giá\",\"Ăn hải sản (3 bữa)\":\"chưa có giá\",\"Tham quan (Đỉnh Bàn Cờ, Cầu Vàng)\":\"chưa có giá\"},\"share_text\":\"3 ngày 2 đêm ở Đà Nẵng - Tham quan Cầu Vàng, Cầu Rồng, ăn hải sản tươi ngon 🍤 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì:\n- **Hải Sản Ku Tom** (4.9⭐) là nhà hàng hải sản cao cấp nhất với 3.521 đánh giá, hoàn hảo cho bữa tối đầu tiên\n- **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) là lựa chọn phổ biến nhất, lý tưởng cho bữa trưa\n- Thời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) - nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối 🌧️\n\nPhương án thay thế: Nếu muốn thêm hoạt động, bạn có thể thay **Cầu Vàng** bằng **Ba Na Hills** (4.4⭐, 98.906 đánh giá) - công viên giải trí lớn với cáp treo, nhưng sẽ tốn thêm thời gian.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm vé máy bay - Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false},{\"label\":\"🍤 Hải Sản Ku Tom - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11082184094803346066\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn ở Đà Nẵng|Thêm hoạt động vui chơi|Điều chỉnh ngân sách[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người với focus tham quan và ăn hải sản. Mình tính đi máy bay từ TP.HCM, bạn có thể điều chỉnh nếu cần nhé.\n\nĐể lập kế hoạch hoàn chỉnh, mình cần gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, và kiểm tra thời tiết:\n\nTuyệt vời! Mình đã tìm được các điểm tham quan và nhà hàng hải sản tuyệt vời ở Đà Nẵng. Bây giờ mình sẽ lập kế hoạch 3 ngày 2 đêm cho 2 người với focus tham quan và ăn hải sản.\n\nMình chọn kế hoạch này vì:\n- **Hải Sản Ku Tom** (4.9⭐) là nhà hàng hải sản cao cấp nhất với 3.521 đánh giá, hoàn hảo cho bữa tối đầu tiên\n- **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) là lựa chọn phổ biến nhất, lý tưởng cho bữa trưa\n- Thời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) - nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối 🌧️\n\nPhương án thay thế: Nếu muốn thêm hoạt động, bạn có thể thay **Cầu Vàng** bằng **Ba Na Hills** (4.4⭐, 98.906 đánh giá) - công viên giải trí lớn với cáp treo, nhưng sẽ tốn thêm thời gian.",
+      "preGuard": "Mình sẽ lập kế hoạch 3 ngày 2 đêm ở Đà Nẵng cho 2 người với focus tham quan và ăn hải sản. Mình tính đi máy bay từ TP.HCM, bạn có thể điều chỉnh nếu cần nhé.\n\nĐể lập kế hoạch hoàn chỉnh, mình cần gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, và kiểm tra thời tiết:Tuyệt vời! Mình đã tìm được các điểm tham quan và nhà hàng hải sản tuyệt vời ở Đà Nẵng. Bây giờ mình sẽ lập kế hoạch 3 ngày 2 đêm cho 2 người với focus tham quan và ăn hải sản. Mình giả định ngân sách khoảng 8-10 triệu VND cho 2 người (bao gồm ăn, tham quan, và lưu trú), bạn có thể điều chỉnh nếu cần.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 3 ngày 2 đêm - Tham quan & Ăn hải sản\",\"people\":2,\"budget_total\":\"8.500.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Chuyến bay khởi hành từ TP.HCM, bay khoảng 1 giờ đến Đà Nẵng\",\"price\":\"2.000.000 VND (ước tính 2 vé)\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\"},{\"time\":\"16:30\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Check-in khách sạn\",\"description\":\"Nhận phòng tại khách sạn ở khu An Hải hoặc Ngũ Hành Sơn (gần các nhà hàng hải sản)\",\"price\":\"1.500.000 VND (ước tính 2 đêm)\",\"address\":\"Khu An Hải, Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"\"},{\"time\":\"18:30\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Nhà hàng hải sản cao cấp, mở từ 10:00–02:00. Tươi ngon, phục vụ tốt, giá hợp lý\",\"price\":\"800.000 VND (ước tính 2 người)\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://www.google.com/maps/reserve/v/dine/c/R7d9uO8ZbxM?source=pa&opi=79508299\"}]},{\"label\":\"Ngày 2 - Sáng & Chiều\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🥾\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Mở 07:30–17:30. Trekking nhẹ, view biển tuyệt đẹp, không khí sạch mát\",\"price\":\"200.000 VND (vé vào cổng 2 người)\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\"},{\"time\":\"12:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Mở 10:30–22:30. Hải sản tươi, không gian thoáng, được yêu thích nhất\",\"price\":\"900.000 VND (ước tính 2 người)\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://business.facebook.com/latest/inbox/messenger?asset_id=332627847363931&mailbox_id=332627847363931&selected_item_id=100002245787074&thread_type=FB_MESSAGE\"},{\"time\":\"15:00\",\"emoji\":\"🏯\",\"category\":\"entertainment\",\"name\":\"Cầu Vàng\",\"description\":\"**4.6⭐ (14.871 đánh giá Google Maps)** - Mở 08:00–19:00. Kiến trúc độc đáo, view núi đẹp, check-in ảnh đẹp\",\"price\":\"250.000 VND (vé vào cổng 2 người)\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\"},{\"time\":\"19:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Thèm Hải Sản\",\"description\":\"**4.8⭐ (11.175 đánh giá Google Maps)** - Mở 11:00–00:00. Hải sản nướng, tươi ngon, không gian ấm cúng\",\"price\":\"850.000 VND (ước tính 2 người)\",\"address\":\"39 Trần Bạch Đằng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14378541914985934539\",\"booking_link\":\"\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🌉\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Mở cả ngày. Biểu tượng Đà Nẵng, view sông Hàn tuyệt đẹp, đi bộ thư giãn\",\"price\":\"0 VND (miễn phí)\",\"address\":\"An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hải Sân My Hanh Seafood\",\"description\":\"**4.7⭐ (7.333 đánh giá Google Maps)** - Mở 09:00–23:00. Hải sản tươi, giá phải chăng, phục vụ nhanh\",\"price\":\"750.000 VND (ước tính 2 người)\",\"address\":\"03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=15356935463653978732\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Check-out khách sạn, bay về TP.HCM\",\"price\":\"2.000.000 VND (ước tính 2 vé)\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY\"}]}],\"cost_breakdown\":{\"Vé máy bay (khứ hồi)\":\"4.000.000 VND\",\"Lưu trú (2 đêm)\":\"1.500.000 VND\",\"Ăn hải sản (3 bữa)\":\"2.550.000 VND\",\"Tham quan (Đỉnh Bàn Cờ, Cầu Vàng)\":\"450.000 VND\"},\"share_text\":\"3 ngày 2 đêm ở Đà Nẵng - Tham quan Cầu Vàng, Cầu Rồng, ăn hải sản tươi ngon 🍤 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì:\n- **Hải Sản Ku Tom** (4.9⭐) là nhà hàng hải sản cao cấp nhất với 3.521 đánh giá, hoàn hảo cho bữa tối đầu tiên\n- **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) là lựa chọn phổ biến nhất, lý tưởng cho bữa trưa\n- **Cầu Vàng** (4.6⭐, 14.871 đánh giá) và **Cầu Rồng** (4.5⭐, 9.549 đánh giá) là 2 điểm tham quan nổi tiếng nhất Đà Nẵng\n- Thời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) - nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối 🌧️\n\n**Tổng ước tính: 8.500.000 VND cho 2 người** (bao gồm vé máy bay, lưu trú, ăn uống, tham quan). Nếu muốn tiết kiệm, bạn có thể chọn nhà hàng hải sản khác như **Hải Sân My Hanh** (4.7⭐, giá phải chăng hơn).\n\nPhương án thay thế: Nếu muốn thêm hoạt động, bạn có thể thay **Cầu Vàng** bằng **Ba Na Hills** (4.4⭐, 98.906 đánh giá) - công viên giải trí lớn với cáp treo, nhưng sẽ tốn thêm thời gian.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-10-04&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm vé máy bay - Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=04-10-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false},{\"label\":\"🍤 Hải Sản Ku Tom - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11082184094803346066\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Khách sạn ở Đà Nẵng|Thêm hoạt động vui chơi|Điều chỉnh ngân sách[/FOLLOWUPS]"
+    },
+    {
+      "user": "mai đi mốt về, budget 20 triệu",
+      "status": 200,
+      "elapsedMs": 40448,
+      "usage": {
+        "promptTokens": 15752,
+        "completionTokens": 3359
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Da Nang",
+            "departDate": "2026-09-28",
+            "returnDate": "2026-09-29",
+            "passengers": 2
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "tham quan Đà Nẵng",
+            "location": "Da Nang",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Nẵng",
+            "location": "Da Nang",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Da Nang",
+            "checkIn": "2026-09-28",
+            "checkOut": "2026-09-29"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Da Nang"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3521,
+              "price": "100-300 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3001,
+              "price": "300-400 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30429,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11175,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3189,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản My Hanh Seafood",
+              "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 7333,
+              "price": "Trên 1 Tr ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5365,
+              "price": "200-800 N ₫",
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3857,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkL8DahB-sfnV4EuMgVZw_YyPlpbxhMEQGZWyj0_77-QYhyXN8X-072GKkYZhz6pHOBHCv9S1rtTk69JXE4sAR7KnM8Bj_kjN0dh3JnbMrrCENzZT18VSIh1FmSS6OMGV7YqLKOdThfvt79",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3521,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "priceRangeText": "100-300 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00",
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmvOF06wpLxy3TFSq3vb1nQPblp6Fpd2a7mSBDTFhlmbRxpqDeXXYkyODz6Orqw5XFMzPICH2Urd2ENYdi84-BSAJVLtQikIGUWlX4dI6IuvUFu_hqUzRFqa_8R5rdzZEnXh8Dca7EcIDfs",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3001,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 905 993 874",
+                "priceRangeText": "300-400 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVVt7w5zC3crzNfKBgF1X53FdqpNYK4YMACMMa5uMVCux3_XqLJeWHTMkv5lZt8ZRfSLaeFxo3oEwxUInxqaW-h0DXICmS6iPHPOrnvm1-DH3PQH934osJKxSiFw6Sl8eN_0s",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30429,
+                "openingHours": "10:30–22:30",
+                "openNow": true,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30",
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniwhwnTWL5RcBMnCs0-BwOeg_wA1n0CtQZ6BZhg-MeThJN1wwlkNSyOwKW7IuP5ByctOhWKpN9E9FbjMDKl7k1W2ylV1qlmpeTLzUeiEYIrxT86-ZdoRLWw6v0hjHmOdC_DU9c8UOa3Jtd",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11175,
+                "openingHours": "11:00–00:00",
+                "openNow": true,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00",
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKCExFlA0GSVYjKfuf8K1f6jJqnZAct2ac3ArnBw6Dq9VleVYiLakYRT3muju4cU9ytPPxT7WlkDAZMQ1eFsqKiHyQE01-2LKkdon9Y3lpd1rBfTIVUvqZbtNTNB8CFRl1ipSA1cdEXd7g",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3189,
+                "openingHours": "06:00–23:00",
+                "openNow": true,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00",
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06540,108.24617",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản My Hanh Seafood",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlj_XrncL_cKGlMUemFB-dQTtlz2uMUWzk5JdI_VR7LZPqyHBWh2uhnPKW2hqoMzBBxFvxvA8yigLkXpJDXMFmGeN2_4kOSEvqkN_7IYfgb8d7oXC99LNP4UuYQU440aY3oyJRqYQ",
+                "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 7333,
+                "openingHours": "09:00–23:00",
+                "openNow": true,
+                "phone": "+84 967 748 668",
+                "priceRangeText": "Trên 1 Tr ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:00",
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15356935463653978732",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20My%20Hanh%20Seafood%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84967748668",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWleEfzHq35JPPtNKODCX6JAUpMKPcwoL7ulMjr3vlUo2W1S81_WS-sKyB5LpdnnszDsr2psIBYNnIbepms2BvJDtMwCFKvBVjo6Ln3z6OpCZpZJY2fU_22WGPlPurbOL58vdFlmNQ",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5365,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "priceRangeText": "200-800 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00",
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkDyFdvGnWoSn-6V79KszIElRdEselzduABRL8VM9zmhIS5Kgq7VvbnEJL90Vy5e8lxjX9VxCvoNW0azbR48C1U0cyea7szmvCq_-XH4HaKfhg9c9y7HrYk4Do5DmtehU1K-cLcW2oulmH_",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3857,
+                "openingHours": "10:00–23:00",
+                "openNow": true,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00",
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Da%20Nang",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+              "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 3189,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "3189 reviews"
+              ]
+            },
+            {
+              "name": "Hải Sản Ku Tom Đà Nẵng",
+              "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3521,
+              "price": "100-300 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 3001,
+              "price": "300-400 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mộc quán Seafood Đà Nẵng",
+              "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30429,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng"
+              ],
+              "hours": "10:30–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Thèm Hải Sản",
+              "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 11175,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "11:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản My Hanh Seafood",
+              "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 7333,
+              "price": "Trên 1 Tr ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Đà Nẵng Bé Biển",
+              "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 5365,
+              "price": "200-800 N ₫",
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                "Nơi tổ chức sự kiện"
+              ],
+              "hours": "07:30–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+              "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3857,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản",
+                "Nhà hàng",
+                "Chợ hải sản",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–23:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:16.08011,108.22310",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản - Ơ Kìa",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnKCExFlA0GSVYjKfuf8K1f6jJqnZAct2ac3ArnBw6Dq9VleVYiLakYRT3muju4cU9ytPPxT7WlkDAZMQ1eFsqKiHyQE01-2LKkdon9Y3lpd1rBfTIVUvqZbtNTNB8CFRl1ipSA1cdEXd7g",
+                "address": "7 Trần Phú, Hải Châu, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 3189,
+                "openingHours": "06:00–23:00",
+                "openNow": true,
+                "phone": "+84 906 430 707",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "06:00–23:00",
+                  "Thứ Hai": "06:00–23:00",
+                  "Thứ Ba": "06:00–23:00",
+                  "Thứ Tư": "06:00–23:00",
+                  "Thứ Năm": "06:00–23:00",
+                  "Thứ Sáu": "06:00–23:00",
+                  "Thứ Bảy": "06:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3189 reviews",
+                    "params": {
+                      "count": 3189
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8430235641332136898",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C6%A0%20K%C3%ACa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nhahangokia.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906430707",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06572,108.24337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Ku Tom Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkL8DahB-sfnV4EuMgVZw_YyPlpbxhMEQGZWyj0_77-QYhyXN8X-072GKkYZhz6pHOBHCv9S1rtTk69JXE4sAR7KnM8Bj_kjN0dh3JnbMrrCENzZT18VSIh1FmSS6OMGV7YqLKOdThfvt79",
+                "address": "283 Hồ Nghinh, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3521,
+                "openingHours": "10:00–02:00",
+                "openNow": true,
+                "phone": "+84 389 828 888",
+                "priceRangeText": "100-300 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–02:00",
+                  "Thứ Hai": "10:00–02:00",
+                  "Thứ Ba": "10:00–02:00",
+                  "Thứ Tư": "10:00–02:00",
+                  "Thứ Năm": "10:00–02:00",
+                  "Thứ Sáu": "10:00–02:00",
+                  "Thứ Bảy": "10:00–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@haisankutomdanang/video/7643467017814576391",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11082184094803346066",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisankutomdanang.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84389828888",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Ku%20Tom%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.08235,108.24742",
+                "domain": "food",
+                "kind": "place",
+                "name": "Buffet Hải Sản Đà Nẵng Mr Mộc",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmvOF06wpLxy3TFSq3vb1nQPblp6Fpd2a7mSBDTFhlmbRxpqDeXXYkyODz6Orqw5XFMzPICH2Urd2ENYdi84-BSAJVLtQikIGUWlX4dI6IuvUFu_hqUzRFqa_8R5rdzZEnXh8Dca7EcIDfs",
+                "address": "78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 3001,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 905 993 874",
+                "priceRangeText": "300-400 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16318222310272472768",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Buffet%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Mr%20M%E1%BB%99c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905993874",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06403,108.24156",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mộc quán Seafood Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVVt7w5zC3crzNfKBgF1X53FdqpNYK4YMACMMa5uMVCux3_XqLJeWHTMkv5lZt8ZRfSLaeFxo3oEwxUInxqaW-h0DXICmS6iPHPOrnvm1-DH3PQH934osJKxSiFw6Sl8eN_0s",
+                "address": "26 Tô Hiến Thành, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30429,
+                "openingHours": "10:30–22:30",
+                "openNow": true,
+                "phone": "+84 905 665 058",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30",
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30",
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2059427300039139311",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20qu%C3%A1n%20Seafood%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://mocseafood.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905665058",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.05708,108.24546",
+                "domain": "food",
+                "kind": "place",
+                "name": "Thèm Hải Sản",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniwhwnTWL5RcBMnCs0-BwOeg_wA1n0CtQZ6BZhg-MeThJN1wwlkNSyOwKW7IuP5ByctOhWKpN9E9FbjMDKl7k1W2ylV1qlmpeTLzUeiEYIrxT86-ZdoRLWw6v0hjHmOdC_DU9c8UOa3Jtd",
+                "address": "39 Trần Bạch Đằng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 11175,
+                "openingHours": "11:00–00:00",
+                "openNow": true,
+                "phone": "+84 946 495 571",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–00:00",
+                  "Thứ Hai": "11:00–00:00",
+                  "Thứ Ba": "11:00–00:00",
+                  "Thứ Tư": "11:00–00:00",
+                  "Thứ Năm": "11:00–00:00",
+                  "Thứ Sáu": "11:00–00:00",
+                  "Thứ Bảy": "11:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14378541914985934539",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Th%C3%A8m%20H%E1%BA%A3i%20S%E1%BA%A3n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://themhaisandn.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84946495571",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06540,108.24617",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản My Hanh Seafood",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlj_XrncL_cKGlMUemFB-dQTtlz2uMUWzk5JdI_VR7LZPqyHBWh2uhnPKW2hqoMzBBxFvxvA8yigLkXpJDXMFmGeN2_4kOSEvqkN_7IYfgb8d7oXC99LNP4UuYQU440aY3oyJRqYQ",
+                "address": "03-05 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 7333,
+                "openingHours": "09:00–23:00",
+                "openNow": true,
+                "phone": "+84 967 748 668",
+                "priceRangeText": "Trên 1 Tr ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:00",
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15356935463653978732",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20My%20Hanh%20Seafood%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84967748668",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06853,108.24498",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Đà Nẵng Bé Biển",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWleEfzHq35JPPtNKODCX6JAUpMKPcwoL7ulMjr3vlUo2W1S81_WS-sKyB5LpdnnszDsr2psIBYNnIbepms2BvJDtMwCFKvBVjo6Ln3z6OpCZpZJY2fU_22WGPlPurbOL58vdFlmNQ",
+                "address": "202 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 5365,
+                "openingHours": "07:30–02:00",
+                "openNow": true,
+                "phone": "+84 905 775 142",
+                "priceRangeText": "200-800 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–02:00",
+                  "Thứ Hai": "07:30–02:00",
+                  "Thứ Ba": "07:30–02:00",
+                  "Thứ Tư": "07:30–02:00",
+                  "Thứ Năm": "07:30–02:00",
+                  "Thứ Sáu": "07:30–02:00",
+                  "Thứ Bảy": "07:30–02:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+                  "Nơi tổ chức sự kiện"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13916594470133077361",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20B%C3%A9%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://haisanbebien.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905775142",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.04386,108.24731",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkDyFdvGnWoSn-6V79KszIElRdEselzduABRL8VM9zmhIS5Kgq7VvbnEJL90Vy5e8lxjX9VxCvoNW0azbR48C1U0cyea7szmvCq_-XH4HaKfhg9c9y7HrYk4Do5DmtehU1K-cLcW2oulmH_",
+                "address": "354/1 Võ Nguyên Giáp, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3857,
+                "openingHours": "10:00–23:00",
+                "openNow": true,
+                "phone": "+84 905 749 079",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00",
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Nhà hàng",
+                  "Chợ hải sản",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4416459426147437129",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20H%E1%BA%A3i%20S%E1%BA%A3n%20Th%E1%BB%9Di%20C%E1%BB%95%20%C4%90%C3%A0%20N%E1%BA%B5ng%20-%20Seafood%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/haisanthoico?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905749079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20Da%20Nang",
+            "picked": [
+              "place:osm:16.08011,108.22310",
+              "place:osm:16.06572,108.24337",
+              "place:osm:16.04386,108.24731"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:16.08011,108.22310",
+            "place:osm:16.06572,108.24337",
+            "place:osm:16.04386,108.24731"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "Hải sản My Hanh Seafood",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ],
+        [
+          "Nhà Hàng Hải Sản - Ơ Kìa",
+          "Hải Sản Ku Tom Đà Nẵng",
+          "Buffet Hải Sản Đà Nẵng Mr Mộc",
+          "Mộc quán Seafood Đà Nẵng",
+          "Thèm Hải Sản",
+          "Hải sản My Hanh Seafood",
+          "Hải Sản Đà Nẵng Bé Biển",
+          "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+        ]
+      ],
+      "duplicate": null,
+      "text": "OK, mình điều chỉnh thành 2 ngày 1 đêm, budget 20 triệu cho 2 người. Mình gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, khách sạn và vé máy bay ngay:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan & Hải sản\",\"people\":2,\"budget_total\":\"20.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (28/9)\",\"items\":[{\"time\":\"06:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm, hạ cánh khoảng 8h sáng\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"place_id\":\"\"},{\"time\":\"09:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Check-in khách sạn\",\"description\":\"Lưu trú tại khách sạn 3-4 sao gần trung tâm\",\"price\":\"chưa có giá\",\"address\":\"Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Tuyệt cảnh bán đảo Sơn Trà, mở cửa 07:30–17:30\",\"price\":\"chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\",\"place_id\":\"ChIJBQHuNG49QjER7Mb_Y2I64mk\"},{\"time\":\"14:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Nhà hàng hải sản cao cấp, 100-300k/người, mở 10:00–02:00\",\"price\":\"chưa có giá\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://haisankutomdanang.com/\",\"place_id\":\"ChIJy0rCqNkXQjERksI84rfTy5k\"},{\"time\":\"17:00\",\"emoji\":\"🌉\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Biểu tượng Đà Nẵng, mở cửa cả ngày, lý tưởng chiều tối\",\"price\":\"chưa có giá\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"}]},{\"label\":\"Ngày 2 (29/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Quán hải sản phổ biến nhất, mở 10:30–22:30\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\",\"place_id\":\"ChIJx6-KGnIXQjER7x-T0zeOlBw\"},{\"time\":\"10:00\",\"emoji\":\"⛩️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"**4.4⭐ (42.928 đánh giá Google Maps)** - Thắng cảnh nổi tiếng, mở 07:00–17:30, có chùa và hang động\",\"price\":\"chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"\",\"place_id\":\"ChIJ2y5L4dQNQjERxeSLc68fbrw\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng (bữa trưa)\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Bữa trưa cuối cùng trước khi về\",\"price\":\"chưa có giá\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://haisankutomdanang.com/\",\"place_id\":\"ChIJy0rCqNkXQjERksI84rfTy5k\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chiều về, hạ cánh khoảng 18h\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VND&curr=VND\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi (2 người)\":\"chưa có giá\",\"Khách sạn 1 đêm\":\"chưa có giá\",\"Ăn hải sản (2 bữa)\":\"chưa có giá\",\"Tham quan (Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn)\":\"chưa có giá\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: tham quan Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn + ăn hải sản tươi ngon 🦐🌊 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình lập kế hoạch 2 ngày 1 đêm cho 2 người với budget 20 triệu. Kế hoạch này tập trung vào tham quan các điểm nổi tiếng (Đỉnh Bàn Cờ 4.6⭐, Cầu Rồng 4.5⭐, Ngũ Hành Sơn 4.4⭐) và ăn hải sản tại **Hải Sản Ku Tom** (4.9⭐ với 3.521 đánh giá) - nhà hàng cao cấp nhất mình tìm được.\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá cụ thể (bạn xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (phụ thuộc loại phòng)\n- **Tham quan**: Chưa xác nhận giá vé\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối để thoải mái hơn 🌧️\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) thay vì Ku Tom, hoặc thêm **Bảo tàng 3D Art In Paradise** (4.4⭐) nếu muốn hoạt động trong nhà.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"🍽️ Hải Sản Ku Tom\",\"type\":\"website\",\"url\":\"https://haisankutomdanang.com/\",\"primary\":false},{\"label\":\"📍 Xem bản đồ Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Da+Nang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đổi khách sạn khác|Thêm hoạt động gì|Muốn ở khu vực nào[/FOLLOWUPS]",
+      "visible": "OK, mình điều chỉnh thành 2 ngày 1 đêm, budget 20 triệu cho 2 người. Mình gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, khách sạn và vé máy bay ngay:\n\nMình lập kế hoạch 2 ngày 1 đêm cho 2 người với budget 20 triệu. Kế hoạch này tập trung vào tham quan các điểm nổi tiếng (Đỉnh Bàn Cờ 4.6⭐, Cầu Rồng 4.5⭐, Ngũ Hành Sơn 4.4⭐) và ăn hải sản tại **Hải Sản Ku Tom** (4.9⭐ với 3.521 đánh giá) - nhà hàng cao cấp nhất mình tìm được.\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá cụ thể (bạn xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (phụ thuộc loại phòng)\n- **Tham quan**: Chưa xác nhận giá vé\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối để thoải mái hơn 🌧️\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) thay vì Ku Tom, hoặc thêm **Bảo tàng 3D Art In Paradise** (4.4⭐) nếu muốn hoạt động trong nhà.",
+      "preGuard": "OK, mình điều chỉnh thành 2 ngày 1 đêm, budget 20 triệu cho 2 người. Mình gọi tool tìm kiếm các điểm tham quan, nhà hàng hải sản, khách sạn và vé máy bay ngay:[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan & Hải sản\",\"people\":2,\"budget_total\":\"20.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (28/9)\",\"items\":[{\"time\":\"06:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm, hạ cánh khoảng 8h sáng\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"place_id\":\"\"},{\"time\":\"09:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Check-in khách sạn\",\"description\":\"Lưu trú tại khách sạn 3-4 sao gần trung tâm\",\"price\":\"chưa có giá\",\"address\":\"Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏔️\",\"category\":\"entertainment\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Tuyệt cảnh bán đảo Sơn Trà, mở cửa 07:30–17:30\",\"price\":\"chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\",\"place_id\":\"ChIJBQHuNG49QjER7Mb_Y2I64mk\"},{\"time\":\"14:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Nhà hàng hải sản cao cấp, 100-300k/người, mở 10:00–02:00\",\"price\":\"200.000-600.000 VND (2 người)\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://haisankutomdanang.com/\",\"place_id\":\"ChIJy0rCqNkXQjERksI84rfTy5k\"},{\"time\":\"17:00\",\"emoji\":\"🌉\",\"category\":\"entertainment\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Biểu tượng Đà Nẵng, mở cửa cả ngày, lý tưởng chiều tối\",\"price\":\"chưa có giá\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\",\"place_id\":\"ChIJL1GKWJYZQjERLrEGqlK2kwQ\"}]},{\"label\":\"Ngày 2 (29/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Quán hải sản phổ biến nhất, mở 10:30–22:30\",\"price\":\"chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\",\"place_id\":\"ChIJx6-KGnIXQjER7x-T0zeOlBw\"},{\"time\":\"10:00\",\"emoji\":\"⛩️\",\"category\":\"entertainment\",\"name\":\"Ngũ Hành Sơn\",\"description\":\"**4.4⭐ (42.928 đánh giá Google Maps)** - Thắng cảnh nổi tiếng, mở 07:00–17:30, có chùa và hang động\",\"price\":\"chưa có giá\",\"address\":\"81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=13577824764986909893\",\"booking_link\":\"\",\"place_id\":\"ChIJ2y5L4dQNQjERxeSLc68fbrw\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Ku Tom Đà Nẵng (bữa trưa)\",\"description\":\"**4.9⭐ (3.521 đánh giá Google Maps)** - Bữa trưa cuối cùng trước khi về\",\"price\":\"200.000-600.000 VND (2 người)\",\"address\":\"283 Hồ Nghinh, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=11082184094803346066\",\"booking_link\":\"https://haisankutomdanang.com/\",\"place_id\":\"ChIJy0rCqNkXQjERksI84rfTy5k\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chiều về, hạ cánh khoảng 18h\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VND&curr=VND\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay khứ hồi (2 người)\":\"chưa có giá\",\"Khách sạn 1 đêm\":\"chưa có giá\",\"Ăn hải sản (2 bữa)\":\"~400.000-1.200.000 VND\",\"Tham quan (Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn)\":\"chưa có giá\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: tham quan Đỉnh Bàn Cờ, Cầu Rồng, Ngũ Hành Sơn + ăn hải sản tươi ngon 🦐🌊 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình lập kế hoạch 2 ngày 1 đêm cho 2 người với budget 20 triệu. Kế hoạch này tập trung vào tham quan các điểm nổi tiếng (Đỉnh Bàn Cờ 4.6⭐, Cầu Rồng 4.5⭐, Ngũ Hành Sơn 4.4⭐) và ăn hải sản tại **Hải Sản Ku Tom** (4.9⭐ với 3.521 đánh giá) - nhà hàng cao cấp nhất mình tìm được.\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá cụ thể (bạn xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (phụ thuộc loại phòng)\n- **Ăn hải sản**: ~400k-1.2 triệu VND cho 2 bữa\n- **Tham quan**: Chưa xác nhận giá vé\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan vào chiều, ăn hải sản vào tối để thoải mái hơn 🌧️\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất) thay vì Ku Tom, hoặc thêm **Bảo tàng 3D Art In Paradise** (4.4⭐) nếu muốn hoạt động trong nhà.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"🏨 Booking.com - Khách sạn Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Da+Nang&checkin=2026-09-28&checkout=2026-09-29\",\"primary\":true},{\"label\":\"🍽️ Hải Sản Ku Tom\",\"type\":\"website\",\"url\":\"https://haisankutomdanang.com/\",\"primary\":false},{\"label\":\"📍 Xem bản đồ Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Da+Nang\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đổi khách sạn khác|Thêm hoạt động gì|Muốn ở khu vực nào[/FOLLOWUPS]"
+    },
+    {
+      "user": "gần biển",
+      "status": 200,
+      "elapsedMs": 37803,
+      "usage": {
+        "promptTokens": 15972,
+        "completionTokens": 3432
+      },
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan gần biển Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản gần biển Đà Nẵng",
+            "location": "Đà Nẵng",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Nẵng",
+            "checkIn": "2026-09-28",
+            "checkOut": "2026-09-29"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Đà Nẵng",
+            "departDate": "2026-09-28",
+            "returnDate": "2026-09-29",
+            "passengers": 2
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Nẵng"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cầu Vàng",
+              "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 14871,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "08:00–19:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bãi biển Sơn Trà",
+              "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 437,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đỉnh Bàn Cờ",
+              "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 4474,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cầu Rồng",
+              "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 9549,
+              "price": null,
+              "categories": [
+                "Cầu",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ba Na Hills",
+              "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 98906,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ngũ Hành Sơn",
+              "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 42928,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:00–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Vọng Cảnh",
+              "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1130,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+              "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4820,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Onsen ban ngày",
+                "Điểm tắm suối khoáng nóng kiểu Nhật",
+                "Công viên nước"
+              ],
+              "hours": "08:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:15.99494,107.99656",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Vàng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QPS57meMVgPblligCoWDzao7UL6F1p59UCG5ZTEoXhsMAkkJ5QS-QIRYA2NaKyU7nOv_ayI2fVZKsrsOHHjslDwfE0m1rb-GF88s56dy6PubomJJ1Lu_XZXBCTExxgl6BgSKHU",
+                "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 14871,
+                "openingHours": "08:00–19:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:00–19:00",
+                  "Thứ Hai": "08:00–19:00",
+                  "Thứ Ba": "08:00–19:00",
+                  "Thứ Tư": "08:00–19:00",
+                  "Thứ Năm": "08:00–19:00",
+                  "Thứ Sáu": "08:00–19:00",
+                  "Thứ Bảy": "08:00–19:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7167034678468850957",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20V%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.09913,108.25506",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bãi biển Sơn Trà",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QPGqRESxSIy8L7x9xdys10jYs4-JUqDhJ2wh4HYhPNPk_gM__AFTDMtosGAzbqBeM4RdCAvgCGfUWDfh0oSXjDVCDK9B5f7e-ToD8Uxmb7DSeGrXak44FzEDsgfYBwGkJzKMl2",
+                "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 437,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 936 790 798",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4955672832474344518",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://sontraseahotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A3i%20bi%E1%BB%83n%20S%C6%A1n%20Tr%C3%A0%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84936790798",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11894,108.27198",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đỉnh Bàn Cờ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SEdP5srxUGQJE0Gcap8sTc-dOd57rYShBe2c3I9IQIC_3_PV0Ck5CJkmwAD83otV43SBYhlfsE_CJf0ySiDGesk72MhLvVGiON1wiNIbxClTXiNvBZogFyqpKoQMDmx7HkJfA",
+                "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 4474,
+                "openingHours": "07:30–17:30",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7629724912977954540",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BB%89nh%20B%C3%A0n%20C%E1%BB%9D%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06110,108.22769",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Rồng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ts1H3FGU7-ZUw-eI3xK4cF8WD7OWXkga6wgFkGeuXZmAbxOZxLDLDW_BId4QeyhV8K9KBlIl4_nvn6ywqopEPf8-_1USiC8qSbVAOVmSYCn4jjes961Un9U0bsmGVgoSC1NnPq",
+                "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 9549,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cầu",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=329807663884316974",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20R%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99514,107.99614",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ba Na Hills",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Qt7Q4i9IwNnht0NExKWzxUrf8NKt92eEvycKTYq8Qb56IGnIC9RvlL7fdaYpgHz5nstL6NxFAD4bGjB-O1japsms4j46NF5hRH1_k3FpsXolRxfADL74QwrQrMEm9CoGsz9gA0kg",
+                "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 98906,
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9546412119288544930",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ba%20Na%20Hills%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.00371,108.26316",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ngũ Hành Sơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QZetvJ2E10Ukwh9NhPby4DsJmDyssoSeJEu7PMCc4dxXx5j8VaQtr1Us2ItEJmDPmqQ1GBVwb6G3ymIGrU91jV-J0-v1AJdRHaURsfHAF9gh2YYk9nfNMes-ZDCHBPB2S4dr_D",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 42928,
+                "openingHours": "07:00–17:30",
+                "openNow": true,
+                "phone": "+84 236 3961 114",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–17:30",
+                  "Thứ Hai": "07:00–17:30",
+                  "Thứ Ba": "07:00–17:30",
+                  "Thứ Tư": "07:00–17:30",
+                  "Thứ Năm": "07:00–17:30",
+                  "Thứ Sáu": "07:00–17:30",
+                  "Thứ Bảy": "07:00–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13577824764986909893",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nguhanhson.org/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ng%C5%A9%20H%C3%A0nh%20S%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363961114",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.13511,108.24538",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Vọng Cảnh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QWbwB0IXj9rZ3TgNGb5fFElqE7IMIeGlCB056pD643-nMnRH3-nqGRXa7yAKUNWZ9ehBGyQCtj0TGTlRKZoiHJbMkFdBlebZC6ySLxBEwpntqRxRTQ1Zh4mVDzqFcIEIVwN3BZ_Q",
+                "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1130,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12683501688321103842",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20V%E1%BB%8Dng%20C%E1%BA%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.96785,108.01981",
+                "domain": "food",
+                "kind": "place",
+                "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RNqkGWRt2p24xDK95MyMH3ggcjPgOk-YoWVcMJ20UPjerPszPYRLAUttjIlfn7UVSILwcQpeyVNqwuTttcuRUJDg_9QMB5y4YrsqWJE6ABZ7JOzbv_hs3iRKcWkZUhxq2fjcg6oA",
+                "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4820,
+                "openingHours": "08:30–17:30",
+                "openNow": true,
+                "phone": "+84 898 181 777",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:30–17:30",
+                  "Thứ Hai": "08:30–17:30",
+                  "Thứ Ba": "08:30–17:30",
+                  "Thứ Tư": "08:30–17:30",
+                  "Thứ Năm": "08:30–17:30",
+                  "Thứ Sáu": "08:30–17:30",
+                  "Thứ Bảy": "08:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Onsen ban ngày",
+                  "Điểm tắm suối khoáng nóng kiểu Nhật",
+                  "Công viên nước"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17322092107953916815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Su%E1%BB%91i%20kho%C3%A1ng%20n%C3%B3ng%20N%C3%BAi%20Th%E1%BA%A7n%20T%C3%A0i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898181777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20g%E1%BA%A7n%20bi%E1%BB%83n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ngũ Hành Sơn",
+              "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 42928,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": "07:00–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.4",
+                "42928 reviews"
+              ]
+            },
+            {
+              "name": "Cầu Vàng",
+              "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 14871,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "08:00–19:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bãi biển Sơn Trà",
+              "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 437,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Đỉnh Bàn Cờ",
+              "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 4474,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "07:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cầu Rồng",
+              "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 9549,
+              "price": null,
+              "categories": [
+                "Cầu",
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ba Na Hills",
+              "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 98906,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Thắng cảnh"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Vọng Cảnh",
+              "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 1130,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+              "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4820,
+              "price": null,
+              "categories": [
+                "Điểm thu hút khách du lịch",
+                "Onsen ban ngày",
+                "Điểm tắm suối khoáng nóng kiểu Nhật",
+                "Công viên nước"
+              ],
+              "hours": "08:30–17:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:16.00371,108.26316",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ngũ Hành Sơn",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QZetvJ2E10Ukwh9NhPby4DsJmDyssoSeJEu7PMCc4dxXx5j8VaQtr1Us2ItEJmDPmqQ1GBVwb6G3ymIGrU91jV-J0-v1AJdRHaURsfHAF9gh2YYk9nfNMes-ZDCHBPB2S4dr_D",
+                "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 42928,
+                "openingHours": "07:00–17:30",
+                "openNow": true,
+                "phone": "+84 236 3961 114",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–17:30",
+                  "Thứ Hai": "07:00–17:30",
+                  "Thứ Ba": "07:00–17:30",
+                  "Thứ Tư": "07:00–17:30",
+                  "Thứ Năm": "07:00–17:30",
+                  "Thứ Sáu": "07:00–17:30",
+                  "Thứ Bảy": "07:00–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 5,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.4",
+                    "params": {
+                      "value": 4.4
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "42928 reviews",
+                    "params": {
+                      "count": 42928
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13577824764986909893",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://nguhanhson.org/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842363961114",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ng%C5%A9%20H%C3%A0nh%20S%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99494,107.99656",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Vàng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QPS57meMVgPblligCoWDzao7UL6F1p59UCG5ZTEoXhsMAkkJ5QS-QIRYA2NaKyU7nOv_ayI2fVZKsrsOHHjslDwfE0m1rb-GF88s56dy6PubomJJ1Lu_XZXBCTExxgl6BgSKHU",
+                "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 14871,
+                "openingHours": "08:00–19:00",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:00–19:00",
+                  "Thứ Hai": "08:00–19:00",
+                  "Thứ Ba": "08:00–19:00",
+                  "Thứ Tư": "08:00–19:00",
+                  "Thứ Năm": "08:00–19:00",
+                  "Thứ Sáu": "08:00–19:00",
+                  "Thứ Bảy": "08:00–19:00"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7167034678468850957",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20V%C3%A0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.09913,108.25506",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bãi biển Sơn Trà",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QPGqRESxSIy8L7x9xdys10jYs4-JUqDhJ2wh4HYhPNPk_gM__AFTDMtosGAzbqBeM4RdCAvgCGfUWDfh0oSXjDVCDK9B5f7e-ToD8Uxmb7DSeGrXak44FzEDsgfYBwGkJzKMl2",
+                "address": "Bến Xe Bus, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 437,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 936 790 798",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4955672832474344518",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://sontraseahotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A3i%20bi%E1%BB%83n%20S%C6%A1n%20Tr%C3%A0%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84936790798",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.11894,108.27198",
+                "domain": "food",
+                "kind": "place",
+                "name": "Đỉnh Bàn Cờ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SEdP5srxUGQJE0Gcap8sTc-dOd57rYShBe2c3I9IQIC_3_PV0Ck5CJkmwAD83otV43SBYhlfsE_CJf0ySiDGesk72MhLvVGiON1wiNIbxClTXiNvBZogFyqpKoQMDmx7HkJfA",
+                "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 4474,
+                "openingHours": "07:30–17:30",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30",
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7629724912977954540",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@pinniedigitaldiary/video/7487565906831248646",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90%E1%BB%89nh%20B%C3%A0n%20C%E1%BB%9D%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.06110,108.22769",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cầu Rồng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ts1H3FGU7-ZUw-eI3xK4cF8WD7OWXkga6wgFkGeuXZmAbxOZxLDLDW_BId4QeyhV8K9KBlIl4_nvn6ywqopEPf8-_1USiC8qSbVAOVmSYCn4jjes961Un9U0bsmGVgoSC1NnPq",
+                "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 9549,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cầu",
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=329807663884316974",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%E1%BA%A7u%20R%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.99514,107.99614",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ba Na Hills",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Qt7Q4i9IwNnht0NExKWzxUrf8NKt92eEvycKTYq8Qb56IGnIC9RvlL7fdaYpgHz5nstL6NxFAD4bGjB-O1japsms4j46NF5hRH1_k3FpsXolRxfADL74QwrQrMEm9CoGsz9gA0kg",
+                "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 98906,
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Thắng cảnh"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9546412119288544930",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ba%20Na%20Hills%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:16.13511,108.24538",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Vọng Cảnh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QWbwB0IXj9rZ3TgNGb5fFElqE7IMIeGlCB056pD643-nMnRH3-nqGRXa7yAKUNWZ9ehBGyQCtj0TGTlRKZoiHJbMkFdBlebZC6ySLxBEwpntqRxRTQ1Zh4mVDzqFcIEIVwN3BZ_Q",
+                "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 1130,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12683501688321103842",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20V%E1%BB%8Dng%20C%E1%BA%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:15.96785,108.01981",
+                "domain": "food",
+                "kind": "place",
+                "name": "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RNqkGWRt2p24xDK95MyMH3ggcjPgOk-YoWVcMJ20UPjerPszPYRLAUttjIlfn7UVSILwcQpeyVNqwuTttcuRUJDg_9QMB5y4YrsqWJE6ABZ7JOzbv_hs3iRKcWkZUhxq2fjcg6oA",
+                "address": "Thôn Phú Túc, Hòa Vang, Đà Nẵng 550000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4820,
+                "openingHours": "08:30–17:30",
+                "openNow": true,
+                "phone": "+84 898 181 777",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "08:30–17:30",
+                  "Thứ Hai": "08:30–17:30",
+                  "Thứ Ba": "08:30–17:30",
+                  "Thứ Tư": "08:30–17:30",
+                  "Thứ Năm": "08:30–17:30",
+                  "Thứ Sáu": "08:30–17:30",
+                  "Thứ Bảy": "08:30–17:30"
+                },
+                "categories": [
+                  "Điểm thu hút khách du lịch",
+                  "Onsen ban ngày",
+                  "Điểm tắm suối khoáng nóng kiểu Nhật",
+                  "Công viên nước"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17322092107953916815",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20Su%E1%BB%91i%20kho%C3%A1ng%20n%C3%B3ng%20N%C3%BAi%20Th%E1%BA%A7n%20T%C3%A0i%20%C4%90%C3%A0%20N%E1%BA%B5ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898181777",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91i%E1%BB%83m%20tham%20quan%20g%E1%BA%A7n%20bi%E1%BB%83n%20%C4%90%C3%A0%20N%E1%BA%B5ng%20%C4%90%C3%A0%20N%E1%BA%B5ng",
+            "picked": [
+              "place:osm:16.00371,108.26316",
+              "place:osm:16.11894,108.27198",
+              "place:osm:15.99494,107.99656"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:16.00371,108.26316",
+            "place:osm:16.11894,108.27198",
+            "place:osm:15.99494,107.99656"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Cầu Vàng",
+          "Bãi biển Sơn Trà",
+          "Đỉnh Bàn Cờ",
+          "Cầu Rồng",
+          "Ba Na Hills",
+          "Ngũ Hành Sơn",
+          "Nhà Vọng Cảnh",
+          "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+        ],
+        [
+          "Ngũ Hành Sơn",
+          "Cầu Vàng",
+          "Bãi biển Sơn Trà",
+          "Đỉnh Bàn Cờ",
+          "Cầu Rồng",
+          "Ba Na Hills",
+          "Nhà Vọng Cảnh",
+          "Công viên Suối khoáng nóng Núi Thần Tài Đà Nẵng"
+        ]
+      ],
+      "duplicate": null,
+      "text": "OK, mình điều chỉnh kế hoạch - ưu tiên các điểm tham quan và nhà hàng gần biển. Mình gọi tool tìm kiếm lại:\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan biển & ăn hải sản\",\"people\":2,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 (28/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm, khoảng 1h30 bay. Hạ cánh ~10:00, nhận phòng khách sạn.\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\"},{\"time\":\"11:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Santa Luxury Hotel\",\"description\":\"**4.9⭐ (3.656 đánh giá Google Maps)** - Khách sạn 4 sao gần biển, check-in sớm nếu có phòng.\",\"price\":\"Chưa có giá\",\"address\":\"09 Đỗ Bá, Bắc Mỹ Phú, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2415285166759503852\",\"booking_link\":\"https://santaluxuryhotel.com/\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Buffet Hải Sản Đà Nẵng Mr Mộc\",\"description\":\"**4.9⭐ (3.001 đánh giá Google Maps)** - Buffet hải sản cao cấp, tươi ngon, mở 09:00-22:00.\",\"price\":\"Chưa có giá\",\"address\":\"78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16318222310272472768\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Bãi biển Sơn Trà\",\"description\":\"**4.8⭐ (437 đánh giá Google Maps)** - Bãi biển yên tĩnh, cát trắng, nước xanh. Mở cửa cả ngày, gần khách sạn.\",\"price\":\"Miễn phí\",\"address\":\"Bến Xe Bus, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=4955672832474344518\",\"booking_link\":\"\"},{\"time\":\"18:00\",\"emoji\":\"🌅\",\"category\":\"attraction\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Biểu tượng Đà Nẵng, đẹp nhất lúc chiều tối. Mở cửa cả ngày.\",\"price\":\"Miễn phí\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\"},{\"time\":\"20:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Nhà hàng hải sản nổi tiếng, tươi ngon, mở 10:30-22:30.\",\"price\":\"Chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\"}]},{\"label\":\"Ngày 2 (29/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🥾\",\"category\":\"attraction\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Điểm tham quan gần biển, view đẹp, mở 07:30-17:30.\",\"price\":\"Chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\"},{\"time\":\"10:30\",\"emoji\":\"🏛️\",\"category\":\"attraction\",\"name\":\"Cầu Vàng\",\"description\":\"**4.6⭐ (14.871 đánh giá Google Maps)** - Cây cầu vàng nổi tiếng, view núi đẹp, mở 08:00-19:00.\",\"price\":\"Chưa có giá\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\"},{\"time\":\"13:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Thèm Hải Sản\",\"description\":\"**4.8⭐ (11.175 đánh giá Google Maps)** - Nhà hàng hải sản tươi, mở 11:00-00:00, gần biển.\",\"price\":\"Chưa có giá\",\"address\":\"39 Trần Bạch Đằng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14378541914985934539\",\"booking_link\":\"https://themhaisandn.com/\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều, khoảng 1h30 bay. Check-out khách sạn trước 12:00.\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người)\":\"Chưa có giá\",\"Khách sạn (1 đêm)\":\"Chưa có giá\",\"Ăn hải sản (2 bữa)\":\"Chưa có giá\",\"Tham quan\":\"Miễn phí\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: biển xanh, hải sản tươi, Cầu Rồng lấp lánh 🌅 #TappyAI\"}\n[/TAPPY_PLAN]\n\n Kế hoạch tập trung vào **Bãi biển Sơn Trà** (4.8⭐) và **Cầu Rồng** (4.5⭐) - hai điểm tham quan biển nổi tiếng nhất, cộng với 3 nhà hàng hải sản cao cấp: **Buffet Hải Sản Mr Mộc** (4.9⭐), **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất), và **Thèm Hải Sản** (4.8⭐).\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan biển vào chiều và tối để tránh nắng gắt 🌤️\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá (xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (Santa Luxury Hotel 4.9⭐ gần biển)\n- **Ăn hải sản**: Chưa có giá (3 nhà hàng cao cấp)\n- **Tham quan**: Miễn phí\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **M Hotel Da Nang** (4.8⭐) hoặc **Sala Danang Beach Hotel** (4.7⭐) thay vì Santa Luxury, hoặc thêm **Nhà Vọng Cảnh** (4.5⭐) nếu muốn tham quan thêm điểm gần biển.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm vé máy bay - Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=28-09-2026.null&ps=2.0.0&sc=ECONOMY\",\"primary\":false},{\"label\":\"📍 Google Maps - Bãi biển Sơn Trà\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4955672832474344518\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thêm Hội An vào chuyến đi|Đổi sang xe khách thay máy bay|Tìm tour du lịch có hướng dẫn[/FOLLOWUPS]",
+      "visible": "OK, mình điều chỉnh kế hoạch - ưu tiên các điểm tham quan và nhà hàng gần biển. Mình gọi tool tìm kiếm lại:\n\n Kế hoạch tập trung vào **Bãi biển Sơn Trà** (4.8⭐) và **Cầu Rồng** (4.5⭐) - hai điểm tham quan biển nổi tiếng nhất, cộng với 3 nhà hàng hải sản cao cấp: **Buffet Hải Sản Mr Mộc** (4.9⭐), **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất), và **Thèm Hải Sản** (4.8⭐).\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan biển vào chiều và tối để tránh nắng gắt 🌤️\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá (xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (Santa Luxury Hotel 4.9⭐ gần biển)\n- **Ăn hải sản**: Chưa có giá (3 nhà hàng cao cấp)\n- **Tham quan**: Miễn phí\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **M Hotel Da Nang** (4.8⭐) hoặc **Sala Danang Beach Hotel** (4.7⭐) thay vì Santa Luxury, hoặc thêm **Nhà Vọng Cảnh** (4.5⭐) nếu muốn tham quan thêm điểm gần biển.",
+      "preGuard": "OK, mình điều chỉnh kế hoạch - ưu tiên các điểm tham quan và nhà hàng gần biển. Mình gọi tool tìm kiếm lại:[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Đà Nẵng 2 ngày 1 đêm - Tham quan biển & ăn hải sản\",\"people\":2,\"budget_total\":\"20.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 (28/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Đà Nẵng\",\"description\":\"Máy bay sáng sớm, khoảng 1h30 bay. Hạ cánh ~10:00, nhận phòng khách sạn.\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Tân Sơn Nhất → Sân bay Đà Nẵng\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\"},{\"time\":\"11:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Santa Luxury Hotel\",\"description\":\"**4.9⭐ (3.656 đánh giá Google Maps)** - Khách sạn 4 sao gần biển, check-in sớm nếu có phòng.\",\"price\":\"Chưa có giá\",\"address\":\"09 Đỗ Bá, Bắc Mỹ Phú, Ngũ Hành Sơn, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2415285166759503852\",\"booking_link\":\"https://santaluxuryhotel.com/\"},{\"time\":\"13:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Buffet Hải Sản Đà Nẵng Mr Mộc\",\"description\":\"**4.9⭐ (3.001 đánh giá Google Maps)** - Buffet hải sản cao cấp, tươi ngon, mở 09:00-22:00.\",\"price\":\"Chưa có giá\",\"address\":\"78 Võ Nguyên Giáp, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=16318222310272472768\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Bãi biển Sơn Trà\",\"description\":\"**4.8⭐ (437 đánh giá Google Maps)** - Bãi biển yên tĩnh, cát trắng, nước xanh. Mở cửa cả ngày, gần khách sạn.\",\"price\":\"Miễn phí\",\"address\":\"Bến Xe Bus, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=4955672832474344518\",\"booking_link\":\"\"},{\"time\":\"18:00\",\"emoji\":\"🌅\",\"category\":\"attraction\",\"name\":\"Cầu Rồng\",\"description\":\"**4.5⭐ (9.549 đánh giá Google Maps)** - Biểu tượng Đà Nẵng, đẹp nhất lúc chiều tối. Mở cửa cả ngày.\",\"price\":\"Miễn phí\",\"address\":\"Cầu Rồng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=329807663884316974\",\"booking_link\":\"\"},{\"time\":\"20:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Mộc quán Seafood Đà Nẵng\",\"description\":\"**4.8⭐ (30.429 đánh giá Google Maps)** - Nhà hàng hải sản nổi tiếng, tươi ngon, mở 10:30-22:30.\",\"price\":\"Chưa có giá\",\"address\":\"26 Tô Hiến Thành, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=2059427300039139311\",\"booking_link\":\"https://mocseafood.com/\"}]},{\"label\":\"Ngày 2 (29/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🥾\",\"category\":\"attraction\",\"name\":\"Đỉnh Bàn Cờ\",\"description\":\"**4.6⭐ (4.474 đánh giá Google Maps)** - Điểm tham quan gần biển, view đẹp, mở 07:30-17:30.\",\"price\":\"Chưa có giá\",\"address\":\"Bàn cờ, Sơn Trà, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7629724912977954540\",\"booking_link\":\"\"},{\"time\":\"10:30\",\"emoji\":\"🏛️\",\"category\":\"attraction\",\"name\":\"Cầu Vàng\",\"description\":\"**4.6⭐ (14.871 đánh giá Google Maps)** - Cây cầu vàng nổi tiếng, view núi đẹp, mở 08:00-19:00.\",\"price\":\"Chưa có giá\",\"address\":\"Hòa Vang, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=7167034678468850957\",\"booking_link\":\"\"},{\"time\":\"13:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Thèm Hải Sản\",\"description\":\"**4.8⭐ (11.175 đánh giá Google Maps)** - Nhà hàng hải sản tươi, mở 11:00-00:00, gần biển.\",\"price\":\"Chưa có giá\",\"address\":\"39 Trần Bạch Đằng, An Hải, Đà Nẵng\",\"maps_link\":\"https://maps.google.com/?cid=14378541914985934539\",\"booking_link\":\"https://themhaisandn.com/\"},{\"time\":\"16:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Đà Nẵng → TP.HCM\",\"description\":\"Chuyến bay chiều, khoảng 1h30 bay. Check-out khách sạn trước 12:00.\",\"price\":\"Chưa có giá\",\"address\":\"Sân bay Đà Nẵng → Sân bay Tân Sơn Nhất\",\"maps_link\":\"\",\"booking_link\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người)\":\"Chưa có giá\",\"Khách sạn (1 đêm)\":\"Chưa có giá\",\"Ăn hải sản (2 bữa)\":\"Chưa có giá\",\"Tham quan\":\"Miễn phí\"},\"share_text\":\"2 ngày 1 đêm Đà Nẵng: biển xanh, hải sản tươi, Cầu Rồng lấp lánh 🌅 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình lập kế hoạch 2 ngày 1 đêm gần biển cho 2 người với budget 20 triệu. Kế hoạch tập trung vào **Bãi biển Sơn Trà** (4.8⭐) và **Cầu Rồng** (4.5⭐) - hai điểm tham quan biển nổi tiếng nhất, cộng với 3 nhà hàng hải sản cao cấp: **Buffet Hải Sản Mr Mộc** (4.9⭐), **Mộc quán Seafood** (4.8⭐ với 30.429 đánh giá - nhiều nhất), và **Thèm Hải Sản** (4.8⭐).\n\nThời tiết Đà Nẵng hôm nay 28°C, có mưa nhẹ (22% xác suất) nên mình sắp xếp tham quan biển vào chiều và tối để tránh nắng gắt 🌤️\n\nTổng ước tính hiện tại:\n- **Vé máy bay**: Chưa có giá (xem trên Trip.com hoặc Traveloka)\n- **Khách sạn**: Chưa có giá (Santa Luxury Hotel 4.9⭐ gần biển)\n- **Ăn hải sản**: Chưa có giá (3 nhà hàng cao cấp)\n- **Tham quan**: Miễn phí\n\nPhương án thay thế: Nếu muốn tiết kiệm, bạn có thể chọn **M Hotel Da Nang** (4.8⭐) hoặc **Sala Danang Beach Hotel** (4.7⭐) thay vì Santa Luxury, hoặc thêm **Nhà Vọng Cảnh** (4.5⭐) nếu muốn tham quan thêm điểm gần biển.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=dad&ddate=2026-09-28&rdate=2026-09-29&flighttype=rt&class=y&quantity=2&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm vé máy bay - Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.DAD&dt=28-09-2026.null&ps=2.0.0&sc=ECONOMY\",\"primary\":false},{\"label\":\"🏨 Booking.com - Santa Luxury Hotel\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Santa+Luxury+Hotel+Da+Nang\",\"primary\":true},{\"label\":\"📍 Google Maps - Bãi biển Sơn Trà\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4955672832474344518\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thêm Hội An vào chuyến đi|Đổi sang xe khách thay máy bay|Tìm tour du lịch có hướng dẫn[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15195,
+  "evidenceId": "cd9076a1-1298-471f-b9eb-f3bdbdf5db68",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí Quận 1 tối nay",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên dạ cầu Sài Gòn 1",
+      "rating": 4.3,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "QPXJ+CHH, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên Văn hoá Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 384,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.1,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hát Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 17993,
+      "distance_km": 0.3,
+      "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12809,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8983,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm địa điểm vui chơi giải trí gần đây, tối nay. Để gợi ý đúng ý, mình cần tìm các quán/địa điểm đang mở cửa lúc này ở Quận 1 nhé.\n\nMình chọn **Phố đi bộ Bùi Viện** cho bạn — nơi này cách bạn chỉ 1.3km, đang mở cửa, và là điểm tụ tập vui chơi sôi động nhất Quận 1 vào tối. Với 5 người, bạn có thể dạo phố, ăn uống, uống bia tại các quán xung quanh, không khí náo nhiệt và dễ hoà đồng 👍\n\nNếu muốn chọn khác, **Công viên Tao Đàn** (cách 1km) cũng hay — không gian xanh mát, mở đến 22:00, phù hợp nếu muốn đi bộ thư giãn trước khi tìm chỗ ăn tối.\n\nBạn có muốn mình gợi ý quán ăn/uống cụ thể ở Bùi Viện không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Phố đi bộ Bùi Viện\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17419937820716483494\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán ăn tối ở Bùi Viện|Karaoke gần Quận 1|Quán bar vui nhộn|Quán cà phê đêm|Hoạt động ngoài trời|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm địa điểm vui chơi giải trí gần đây, tối nay. Để gợi ý đúng ý, mình cần tìm các quán/địa điểm đang mở cửa lúc này ở Quận 1 nhé.\n\nMình chọn **Phố đi bộ Bùi Viện** cho bạn — nơi này cách bạn chỉ 1.3km, đang mở cửa, và là điểm tụ tập vui chơi sôi động nhất Quận 1 vào tối. Với 5 người, bạn có thể dạo phố, ăn uống, uống bia tại các quán xung quanh, không khí náo nhiệt và dễ hoà đồng 👍\n\nNếu muốn chọn khác, **Công viên Tao Đàn** (cách 1km) cũng hay — không gian xanh mát, mở đến 22:00, phù hợp nếu muốn đi bộ thư giãn trước khi tìm chỗ ăn tối.\n\nBạn có muốn mình gợi ý quán ăn/uống cụ thể ở Bùi Viện không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Phố đi bộ Bùi Viện\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17419937820716483494\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán ăn tối ở Bùi Viện|Karaoke gần Quận 1|Quán bar vui nhộn|Quán cà phê đêm|Hoạt động ngoài trời|[/FOLLOWUPS]"
+    }
+  ]
+}

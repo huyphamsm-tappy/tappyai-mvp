@@ -1,0 +1,2492 @@
+{
+  "id": "M4",
+  "group": "switch-spa-shopping-spa",
+  "criteria": [
+    "Turn 1: spa venues in Phú Nhuận within 300k",
+    "Turn 2: product cards for a Philips hair dryer under 1 triệu — no spa venues; the 300k spa budget is NOT the product budget",
+    "Turn 3: spa venues again (late opening) — no hair-dryer products; the 1 triệu product budget is NOT applied"
+  ],
+  "turns": [
+    {
+      "user": "spa massage chân ở Phú Nhuận dưới 300k",
+      "status": 200,
+      "elapsedMs": 16871,
+      "usage": {
+        "promptTokens": 3763,
+        "completionTokens": 629
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "spa massage chân Phú Nhuận",
+            "location": "Phú Nhuận, TP HCM",
+            "type": "spa"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "address": "330/1 Nguyễn Trọng Tuyển, Quận Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 833,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Paradise spa",
+              "address": "39 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 629,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mini Spa | Massage Phú Nhuận",
+              "address": "12 Hoa Cau, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 62,
+              "price": null,
+              "categories": [
+                "Spa",
+                "Spa mát xa"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "address": "284F Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 72100, Việt Nam",
+              "rating": 5,
+              "ratingCount": 364,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "address": "79/1 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 494,
+              "price": null,
+              "categories": [
+                "Spa mát xa",
+                "Phòng mát-xa chân",
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "address": "106 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 660,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 741,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "09:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 294,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79806,106.67294",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLcuHlo5nFli5iKKfgeXS_tf67954cDFHGOlWEYkaUsuNcjGlR3kTsMQiM1Wm7atp9WfJdQYxwQ0UfBDJSTTPxNYuiAR8_z4kjyMHjePIv0rwewD1tPI8Wa2gEqoKAu-8_9pSbyQp3jXUUqD",
+                "address": "330/1 Nguyễn Trọng Tuyển, Quận Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 833,
+                "phone": "+84 902 319 260",
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15071367749842575181",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902319260",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Body%20Tr%E1%BB%8B%20Li%E1%BB%87u%20-%20R%C3%8AU%20Spa%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79147,106.67793",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Paradise spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdT6NO_tl9335JYfDaJtB2h3LxhesIljR0CCn8oYy8xDl1bv_gJfvUx-kH2ovzchYhtEdDjC2IzCP0GDhzGOBZdySVUhQxPDrqHzlIOs9_Xc9aSTNnuGdzU9F67-e3ApUiaolqFMlxcvh1-",
+                "address": "39 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 629,
+                "openingHours": "09:00–20:00",
+                "openNow": false,
+                "phone": "+84 949 794 536",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:00",
+                  "Thứ Hai": "09:00–20:00",
+                  "Thứ Ba": "09:00–20:00",
+                  "Thứ Tư": "09:00–20:00",
+                  "Thứ Năm": "09:00–20:00",
+                  "Thứ Sáu": "09:00–20:00",
+                  "Thứ Bảy": "09:00–20:00"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3464077391380467820",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84949794536",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Paradise%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79930,106.68834",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Mini Spa | Massage Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvId8fMnG_lTvhtLSBQBB55LCcViPuKwxnkqxBieLWVnUAt0vNoweNI9QzAMxDl-bpiAsj5MsvxiYrBWxUM4koM1Wlyt98ertL0WrDTKwZJJYc_j8V9nP96ORrzwLmfHyhy0zLAALM2D8",
+                "address": "12 Hoa Cau, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 62,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 938 703 290",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00"
+                },
+                "categories": [
+                  "Spa",
+                  "Spa mát xa"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F47028-mam-gao-spa-experience-ho-chi-minh%2F&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "5cace63a0ca59b9e9eaa7d13",
+                      "requestId": "89af3455-bda6-41ef-93df-ceb4b959cf39",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/minispaphunhuan",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13253586580799672545",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938703290",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mini%20Spa%20%7C%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79826,106.66912",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Foot Body Phú Nhuận – Quý Phi spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXdlZ9Mo7WK8AopNPnJXBBpIqbvCMXGyjWV7kBfhN4WuX_NQ-aAxlFrtmC7ZGuo0bKZGn8WfFscdqX6lA--W7s3D7RGV9NvULkvPhozn0C3wdrv__TiuMFPMrucbEwLud6j6qESJ6A8p-G",
+                "address": "284F Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 72100, Việt Nam",
+                "rating": 5,
+                "ratingCount": 364,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 977 425 550",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00",
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1CVHgWJDzU/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17420677561396975355",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977425550",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Foot%20Body%20Ph%C3%BA%20Nhu%E1%BA%ADn%20%E2%80%93%20Qu%C3%BD%20Phi%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79272,106.67789",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNzsemFgZr89CvSlC7fD__PWPRhZl_zqh1NSdPzPCImzF-qzyUNzsrzAS366xQoOWfDl5nAi39LqqJ5JcbyhDPhLdT1fMh1JYszNeq4D01aMc7GrUq-JwxmeQjE-Ah_0_eV-uHRA",
+                "address": "79/1 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 494,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 908 379 558",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00"
+                },
+                "categories": [
+                  "Spa mát xa",
+                  "Phòng mát-xa chân",
+                  "Spa sức khỏe"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://spaviet.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13645714215807590790",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908379558",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20Vi%E1%BB%87t%20-%20Massage%20C%E1%BB%95%20Vai%20G%C3%A1y%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79733,106.68946",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNMM8x16m7t_dpjhhNIAR7i3629XqnpaU9rcpeHOSolWg7p-B40iRN8klJuo8tUwDoZpwqcMXJTjYqgd1enamPADVyvTNLZu7NFgLdRrPHreCJhujGDKV7S6c4T7poU66wREk-mqQ",
+                "address": "106 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 660,
+                "openingHours": "09:00–19:00",
+                "openNow": false,
+                "phone": "+84 989 715 356",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–19:00",
+                  "Thứ Hai": "09:00–19:00",
+                  "Thứ Ba": "09:00–19:00",
+                  "Thứ Tư": "09:00–19:00",
+                  "Thứ Năm": "09:00–19:00",
+                  "Thứ Sáu": "09:00–19:00",
+                  "Thứ Bảy": "09:00–19:00"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=920749834543890441",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84989715356",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L%E1%BB%A5a%20Spa%20Hoa%20Lan%20Ph%C3%BA%20Nhu%E1%BA%ADn%20%E2%80%93%20C%E1%BB%95%20Vai%20G%C3%A1y%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79307,106.67648",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOJRYXLBiUoOtgnNnXMMgPFlRSTof4fEdCUhBshNDJKPEZJVKVR6_YxLGVsz5KfYqZ2q59eOWKjYdaI_ceN5coQonttthzYN0BxqW3e4_E2I3evCEZ6CRh4CmB9LOkv50LWUFC0e8EVDXDh",
+                "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 741,
+                "openingHours": "09:00–20:30",
+                "openNow": false,
+                "phone": "+84 983 016 901",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:30",
+                  "Thứ Hai": "09:00–20:30",
+                  "Thứ Ba": "09:00–20:30",
+                  "Thứ Tư": "09:00–20:30",
+                  "Thứ Năm": "09:00–20:30",
+                  "Thứ Sáu": "09:00–20:30",
+                  "Thứ Bảy": "09:00–20:30"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/saigonspa.com.vn",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14720671300927082433",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983016901",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Saigon%20Spa%20-%20Massage%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79926,106.67301",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdcA9TtMq5B50cWrK8iZT2RR0KvWP45cuRszf_zWkBQXl7UAsvnq4QnAHEAgAnllmKr0UZhhAUTOh9F3PuDChFLF-ypZ459DQHGVtxCTmq9_xpzQjqNqvkMlhyGtdzaVNXe_pCAkLEDYW-X",
+                "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 294,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 336 258 268",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Spa sức khỏe"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://anmienspa.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9201784351679415812",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84336258268",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%20v%C3%A0%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20-%20An%20Mi%C3%AAn%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20massage%20ch%C3%A2n%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "spa"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "address": "284F Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 72100, Việt Nam",
+              "rating": 5,
+              "ratingCount": 364,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "10:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 5",
+                "364 reviews"
+              ]
+            },
+            {
+              "name": "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "address": "330/1 Nguyễn Trọng Tuyển, Quận Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 833,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Paradise spa",
+              "address": "39 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 629,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mini Spa | Massage Phú Nhuận",
+              "address": "12 Hoa Cau, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 62,
+              "price": null,
+              "categories": [
+                "Spa",
+                "Spa mát xa"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "address": "79/1 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 494,
+              "price": null,
+              "categories": [
+                "Spa mát xa",
+                "Phòng mát-xa chân",
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "address": "106 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 660,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 741,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "09:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 294,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.79826,106.66912",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Foot Body Phú Nhuận – Quý Phi spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXdlZ9Mo7WK8AopNPnJXBBpIqbvCMXGyjWV7kBfhN4WuX_NQ-aAxlFrtmC7ZGuo0bKZGn8WfFscdqX6lA--W7s3D7RGV9NvULkvPhozn0C3wdrv__TiuMFPMrucbEwLud6j6qESJ6A8p-G",
+                "address": "284F Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 72100, Việt Nam",
+                "rating": 5,
+                "ratingCount": 364,
+                "openingHours": "10:00–23:00",
+                "openNow": false,
+                "phone": "+84 977 425 550",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:00",
+                  "Thứ Hai": "10:00–23:00",
+                  "Thứ Ba": "10:00–23:00",
+                  "Thứ Tư": "10:00–23:00",
+                  "Thứ Năm": "10:00–23:00",
+                  "Thứ Sáu": "10:00–23:00",
+                  "Thứ Bảy": "10:00–23:00"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 3,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 5",
+                    "params": {
+                      "value": 5
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "364 reviews",
+                    "params": {
+                      "count": 364
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "833 reviews",
+                  "params": {
+                    "count": 833
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1CVHgWJDzU/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17420677561396975355",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977425550",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Foot%20Body%20Ph%C3%BA%20Nhu%E1%BA%ADn%20%E2%80%93%20Qu%C3%BD%20Phi%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79806,106.67294",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLcuHlo5nFli5iKKfgeXS_tf67954cDFHGOlWEYkaUsuNcjGlR3kTsMQiM1Wm7atp9WfJdQYxwQ0UfBDJSTTPxNYuiAR8_z4kjyMHjePIv0rwewD1tPI8Wa2gEqoKAu-8_9pSbyQp3jXUUqD",
+                "address": "330/1 Nguyễn Trọng Tuyển, Quận Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 833,
+                "phone": "+84 902 319 260",
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15071367749842575181",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902319260",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Body%20Tr%E1%BB%8B%20Li%E1%BB%87u%20-%20R%C3%8AU%20Spa%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79147,106.67793",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Paradise spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdT6NO_tl9335JYfDaJtB2h3LxhesIljR0CCn8oYy8xDl1bv_gJfvUx-kH2ovzchYhtEdDjC2IzCP0GDhzGOBZdySVUhQxPDrqHzlIOs9_Xc9aSTNnuGdzU9F67-e3ApUiaolqFMlxcvh1-",
+                "address": "39 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 629,
+                "openingHours": "09:00–20:00",
+                "openNow": false,
+                "phone": "+84 949 794 536",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:00",
+                  "Thứ Hai": "09:00–20:00",
+                  "Thứ Ba": "09:00–20:00",
+                  "Thứ Tư": "09:00–20:00",
+                  "Thứ Năm": "09:00–20:00",
+                  "Thứ Sáu": "09:00–20:00",
+                  "Thứ Bảy": "09:00–20:00"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3464077391380467820",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84949794536",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Paradise%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79930,106.68834",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Mini Spa | Massage Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvId8fMnG_lTvhtLSBQBB55LCcViPuKwxnkqxBieLWVnUAt0vNoweNI9QzAMxDl-bpiAsj5MsvxiYrBWxUM4koM1Wlyt98ertL0WrDTKwZJJYc_j8V9nP96ORrzwLmfHyhy0zLAALM2D8",
+                "address": "12 Hoa Cau, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 62,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 938 703 290",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00"
+                },
+                "categories": [
+                  "Spa",
+                  "Spa mát xa"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F47028-mam-gao-spa-experience-ho-chi-minh%2F&utm_source=tappyai&utm_medium=ccp&sub1=e4c3c6ca523f0d889bef09e3",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "5cace63a0ca59b9e9eaa7d13",
+                      "requestId": "89af3455-bda6-41ef-93df-ceb4b959cf39",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/minispaphunhuan",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13253586580799672545",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938703290",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mini%20Spa%20%7C%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79272,106.67789",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNzsemFgZr89CvSlC7fD__PWPRhZl_zqh1NSdPzPCImzF-qzyUNzsrzAS366xQoOWfDl5nAi39LqqJ5JcbyhDPhLdT1fMh1JYszNeq4D01aMc7GrUq-JwxmeQjE-Ah_0_eV-uHRA",
+                "address": "79/1 Đ. Trần Huy Liệu, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 494,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 908 379 558",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00"
+                },
+                "categories": [
+                  "Spa mát xa",
+                  "Phòng mát-xa chân",
+                  "Spa sức khỏe"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://spaviet.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13645714215807590790",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908379558",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20Vi%E1%BB%87t%20-%20Massage%20C%E1%BB%95%20Vai%20G%C3%A1y%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79733,106.68946",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNMM8x16m7t_dpjhhNIAR7i3629XqnpaU9rcpeHOSolWg7p-B40iRN8klJuo8tUwDoZpwqcMXJTjYqgd1enamPADVyvTNLZu7NFgLdRrPHreCJhujGDKV7S6c4T7poU66wREk-mqQ",
+                "address": "106 Hoa Lan, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 660,
+                "openingHours": "09:00–19:00",
+                "openNow": false,
+                "phone": "+84 989 715 356",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–19:00",
+                  "Thứ Hai": "09:00–19:00",
+                  "Thứ Ba": "09:00–19:00",
+                  "Thứ Tư": "09:00–19:00",
+                  "Thứ Năm": "09:00–19:00",
+                  "Thứ Sáu": "09:00–19:00",
+                  "Thứ Bảy": "09:00–19:00"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=920749834543890441",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84989715356",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L%E1%BB%A5a%20Spa%20Hoa%20Lan%20Ph%C3%BA%20Nhu%E1%BA%ADn%20%E2%80%93%20C%E1%BB%95%20Vai%20G%C3%A1y%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79307,106.67648",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOJRYXLBiUoOtgnNnXMMgPFlRSTof4fEdCUhBshNDJKPEZJVKVR6_YxLGVsz5KfYqZ2q59eOWKjYdaI_ceN5coQonttthzYN0BxqW3e4_E2I3evCEZ6CRh4CmB9LOkv50LWUFC0e8EVDXDh",
+                "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 741,
+                "openingHours": "09:00–20:30",
+                "openNow": false,
+                "phone": "+84 983 016 901",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:30",
+                  "Thứ Hai": "09:00–20:30",
+                  "Thứ Ba": "09:00–20:30",
+                  "Thứ Tư": "09:00–20:30",
+                  "Thứ Năm": "09:00–20:30",
+                  "Thứ Sáu": "09:00–20:30",
+                  "Thứ Bảy": "09:00–20:30"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/saigonspa.com.vn",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14720671300927082433",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983016901",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Saigon%20Spa%20-%20Massage%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79926,106.67301",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdcA9TtMq5B50cWrK8iZT2RR0KvWP45cuRszf_zWkBQXl7UAsvnq4QnAHEAgAnllmKr0UZhhAUTOh9F3PuDChFLF-ypZ459DQHGVtxCTmq9_xpzQjqNqvkMlhyGtdzaVNXe_pCAkLEDYW-X",
+                "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 294,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 336 258 268",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Spa sức khỏe"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://anmienspa.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9201784351679415812",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84336258268",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%20v%C3%A0%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20-%20An%20Mi%C3%AAn%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20massage%20ch%C3%A2n%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.79826,106.66912",
+              "place:osm:10.79272,106.67789",
+              "place:osm:10.79806,106.67294"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.79826,106.66912",
+            "place:osm:10.79272,106.67789",
+            "place:osm:10.79806,106.67294"
+          ],
+          "domain": "spa"
+        }
+      ],
+      "cardItems": [
+        [
+          "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+          "Paradise spa",
+          "Mini Spa | Massage Phú Nhuận",
+          "Massage Foot Body Phú Nhuận – Quý Phi spa",
+          "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+          "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+          "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+          "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa"
+        ],
+        [
+          "Massage Foot Body Phú Nhuận – Quý Phi spa",
+          "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+          "Paradise spa",
+          "Mini Spa | Massage Phú Nhuận",
+          "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+          "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+          "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+          "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm được 10 spa massage chân ở Phú Nhuận, nhưng chưa xác nhận được giá cụ thể của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, dựa trên đánh giá Google Maps, mình gợi ý **Quý Phi Spa** (284F Nguyễn Trọng Tuyển) — nơi này có **5⭐ (364 đánh giá)** và mở đến 23:00, rất phù hợp nếu bạn muốn đi tối. Các chỗ khác như **Spa Việt** (4.9⭐, 494 đánh giá) hay **RÊU Spa** (4.9⭐, 833 đánh giá) cũng được đánh giá rất cao.\n\nBạn nên gọi trực tiếp hoặc vào Google Maps để hỏi giá massage chân cụ thể, vì giá có thể khác tùy dịch vụ và thời gian.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Quý Phi Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17420677561396975355\",\"primary\":true},{\"label\":\"📍 Xem Spa Việt trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13645714215807590790\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]gọi hỏi giá massage chân|spa nào gần nhất từ vị trí bạn|spa massage body ở Phú Nhuận[/FOLLOWUPS]",
+      "visible": "Mình tìm được 10 spa massage chân ở Phú Nhuận, nhưng chưa xác nhận được giá cụ thể của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, dựa trên đánh giá Google Maps, mình gợi ý **Quý Phi Spa** (284F Nguyễn Trọng Tuyển) — nơi này có **5⭐ (364 đánh giá)** và mở đến 23:00, rất phù hợp nếu bạn muốn đi tối. Các chỗ khác như **Spa Việt** (4.9⭐, 494 đánh giá) hay **RÊU Spa** (4.9⭐, 833 đánh giá) cũng được đánh giá rất cao.\n\nBạn nên gọi trực tiếp hoặc vào Google Maps để hỏi giá massage chân cụ thể, vì giá có thể khác tùy dịch vụ và thời gian.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.",
+      "preGuard": "Mình tìm spa massage chân ở Phú Nhuận trong tầm giá dưới 300k cho bạn ngay.Mình tìm được 10 spa massage chân ở Phú Nhuận, nhưng chưa xác nhận được giá cụ thể của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, dựa trên đánh giá Google Maps, mình gợi ý **Quý Phi Spa** (284F Nguyễn Trọng Tuyển) — nơi này có **5⭐ (364 đánh giá)** và mở đến 23:00, rất phù hợp nếu bạn muốn đi tối. Các chỗ khác như **Spa Việt** (4.9⭐, 494 đánh giá) hay **RÊU Spa** (4.9⭐, 833 đánh giá) cũng được đánh giá rất cao.\n\nBạn nên gọi trực tiếp hoặc vào Google Maps để hỏi giá massage chân cụ thể, vì giá có thể khác tùy dịch vụ và thời gian.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Quý Phi Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17420677561396975355\",\"primary\":true},{\"label\":\"📍 Xem Spa Việt trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13645714215807590790\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]gọi hỏi giá massage chân|spa nào gần nhất từ vị trí bạn|spa massage body ở Phú Nhuận[/FOLLOWUPS]"
+    },
+    {
+      "user": "tiện mua máy sấy tóc Philips dưới 1 triệu",
+      "status": 200,
+      "elapsedMs": 571,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "visible": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    },
+    {
+      "user": "gội đầu dưỡng sinh nào mở khuya ở Phú Nhuận",
+      "status": 200,
+      "elapsedMs": 14910,
+      "usage": {
+        "promptTokens": 4022,
+        "completionTokens": 306
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "gội đầu dưỡng sinh mở khuya Phú Nhuận",
+            "location": "Phú Nhuận, TP HCM",
+            "type": "spa"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "address": "225 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 24,
+              "price": null,
+              "categories": [
+                "Cửa hàng chăm sóc sức khỏe và làm đẹp"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "address": "46 Đ. Cô Giang, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 529,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe",
+                "Trung tâm chăm sóc ban ngày dành cho người lớn",
+                "Spa ban ngày",
+                "Spa mặt"
+              ],
+              "hours": "09:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "address": "159/11 Đ. Hoàng Văn Thụ, Phú Nhuận, Hồ Chí Minh 72200, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 959,
+              "price": null,
+              "categories": [
+                "Spa mát xa",
+                "Spa sức khỏe"
+              ],
+              "hours": "09:30–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+              "address": "417 Huỳnh Văn Bánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 96,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 741,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "09:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+              "address": "153 Đ. Đặng Văn Ngữ, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 226,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "10:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mèo Mây Gội đầu dưỡng sinh",
+              "address": "137/33 Đ. Lê Văn Sỹ, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 63,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 294,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79755,106.67454",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQrPrUPvYkhmmx8AkQMhGIqvIHoVI8zMrGXmLIGDHrjA9ogf_Evd6GzlWJO9bUnCz4bNLJ4F6OCDk3BUiwWk-ZMs5gIPqTSoVMFaR1l2O-MJHI1Pw2LAjslgvsaNvTLz_EXT4llOqOj7Nw",
+                "address": "225 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 24,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 365 080 980",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cửa hàng chăm sóc sức khỏe và làm đẹp"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11514011074109082893",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84365080980",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20-%20SPA%20C%C3%94%20%C3%9AT%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79587,106.68334",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVavv-0PJRZ6B29DE7sbWrCbM9sh9pcZpa-Kv01JZ6k9MaoVGUjW__TBIjDsdlNCaT9bDDXPQSz6RC2bLkoYY44x7TgKOCtOoSC17fB3mF7wSPH9zs_Vbva9G3kZWj9jV-KvJ-4g",
+                "address": "46 Đ. Cô Giang, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 529,
+                "openingHours": "09:00–20:00",
+                "openNow": false,
+                "phone": "+84 825 230 999",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:00",
+                  "Thứ Hai": "09:00–20:00",
+                  "Thứ Ba": "09:00–20:00",
+                  "Thứ Tư": "09:00–20:00",
+                  "Thứ Năm": "09:00–20:00",
+                  "Thứ Sáu": "09:00–20:00",
+                  "Thứ Bảy": "09:00–20:00"
+                },
+                "categories": [
+                  "Spa sức khỏe",
+                  "Trung tâm chăm sóc ban ngày dành cho người lớn",
+                  "Spa ban ngày",
+                  "Spa mặt"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3413275541485061156",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84825230999",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Mudra%20House%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79877,106.67516",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkrTYjD0mrtCNqT6AA0XuAed_zfnySkSUaAmRGmweWbvALm4Kj8be4JH3o5NKu25NZ6jLS-Kul3GhGLtZdGU4NhYHUqIMQIfMG_7_A_cZ98i68O97ed_bNYCg8NH_nLM7UqfOjt0NUjvk",
+                "address": "159/11 Đ. Hoàng Văn Thụ, Phú Nhuận, Hồ Chí Minh 72200, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 959,
+                "openingHours": "09:30–23:00",
+                "openNow": false,
+                "phone": "+84 878 222 244",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:30–23:00",
+                  "Thứ Hai": "09:30–23:00",
+                  "Thứ Ba": "09:30–23:00",
+                  "Thứ Tư": "09:30–23:00",
+                  "Thứ Năm": "09:30–23:00",
+                  "Thứ Sáu": "09:30–23:00",
+                  "Thứ Bảy": "09:30–23:00"
+                },
+                "categories": [
+                  "Spa mát xa",
+                  "Spa sức khỏe"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://massagehoangtu.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15752558902134963779",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84878222244",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Ho%C3%A0ng%20T%E1%BB%AD%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79180,106.67232",
+                "domain": "spa",
+                "kind": "place",
+                "name": "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWndOF4pNazCDoi93AvYxnQElS27Rd-mFWNaB4eo3et21WNRIYbbPj6EbyQU_wwZIDzjGAZxcT7p4x8wmO9K5emh8BXyg3y-LIVa7HnVF1YG47_RBHohkKU6zJ6wxMR0dQme5s0",
+                "address": "417 Huỳnh Văn Bánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 96,
+                "openingHours": "09:00–21:30",
+                "openNow": false,
+                "phone": "+84 888 464 846",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:30",
+                  "Thứ Hai": "09:00–21:30",
+                  "Thứ Ba": "09:00–21:30",
+                  "Thứ Tư": "09:00–21:30",
+                  "Thứ Năm": "09:00–21:30",
+                  "Thứ Sáu": "09:00–21:30",
+                  "Thứ Bảy": "09:00–21:30"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4500207561294440032",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84888464846",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=MIA%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20%7C%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20PH%C3%9A%20NHU%E1%BA%ACN%20%7C%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79307,106.67648",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnok3FLUp5nd139-xMzdr_TQ93rdB3jOXs_Er4Ujx2n_iZm-J5IAgzTCooWznzQtJrs1hQdoE-gE84003nszZZvvQCG4Fth74X7uGkS5Blc3QAMYvsgLB7r1fTDt-ZCWkEIAkj9MjAiisWv",
+                "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 741,
+                "openingHours": "09:00–20:30",
+                "openNow": false,
+                "phone": "+84 983 016 901",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:30",
+                  "Thứ Hai": "09:00–20:30",
+                  "Thứ Ba": "09:00–20:30",
+                  "Thứ Tư": "09:00–20:30",
+                  "Thứ Năm": "09:00–20:30",
+                  "Thứ Sáu": "09:00–20:30",
+                  "Thứ Bảy": "09:00–20:30"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/saigonspa.com.vn",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14720671300927082433",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983016901",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Saigon%20Spa%20-%20Massage%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79146,106.66733",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlaAYlfO8n7qem_cUhqyqE5gpnYKHQyA7XY9-AZRU51LzKxOc2RYdFDHn_QcX-nwTZ31BgBnQ9c9nT3-QKATTPVcsLFv6NcwFCA2SSpHDhDMjBJF44M_wUEhRD8q7ItBqxvMQBVAJauj6Er",
+                "address": "153 Đ. Đặng Văn Ngữ, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 226,
+                "openingHours": "10:00–00:00",
+                "openNow": true,
+                "phone": "+84 888 002 543",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–00:00",
+                  "Thứ Hai": "10:00–00:00",
+                  "Thứ Ba": "10:00–00:00",
+                  "Thứ Tư": "10:00–00:00",
+                  "Thứ Năm": "10:00–00:00",
+                  "Thứ Sáu": "10:00–00:00",
+                  "Thứ Bảy": "10:00–00:00"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://healinghouse.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11788486179160526037",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84888002543",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Healing%20House%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79109,106.67126",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Mèo Mây Gội đầu dưỡng sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmleeui2bz_oJxh-hVowMA9nsJpLzP7FnL8xcN4bSYB3_6Llk73203kZoDZAz9mrAHxoF2KWLjESyYJ6Fwlx-jvZ9TX6osn6fh39BOerZSlbWDCsp15LReG2v76bFxTjTS91ydrrMUX-6_L",
+                "address": "137/33 Đ. Lê Văn Sỹ, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 63,
+                "openingHours": "10:00–23:30",
+                "openNow": false,
+                "phone": "+84 936 999 009",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:30",
+                  "Thứ Hai": "10:00–23:30",
+                  "Thứ Ba": "10:00–23:30",
+                  "Thứ Tư": "10:00–23:30",
+                  "Thứ Năm": "10:00–23:30",
+                  "Thứ Sáu": "10:00–23:30",
+                  "Thứ Bảy": "10:00–23:30"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/19DZ98UhFR/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17347186184326994252",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84936999009",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%C3%A8o%20M%C3%A2y%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79926,106.67301",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnFgIKye4iIott2dHu4noBLWJ6wGU0Wh7YbNHAnlr6IuibicO2H3BEwHjAIvacBlJrQhpPCvezWCH1bFL8ugl65EinOj7Tx9k364Bp6JmxoxS1XSThaKY816LKDa4tdtgd-JzIPcZqeMMp-",
+                "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 294,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 336 258 268",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Spa sức khỏe"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://anmienspa.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9201784351679415812",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84336258268",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%20v%C3%A0%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20-%20An%20Mi%C3%AAn%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20m%E1%BB%9F%20khuya%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "spa"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "address": "225 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 24,
+              "price": null,
+              "categories": [
+                "Cửa hàng chăm sóc sức khỏe và làm đẹp"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "address": "46 Đ. Cô Giang, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 529,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe",
+                "Trung tâm chăm sóc ban ngày dành cho người lớn",
+                "Spa ban ngày",
+                "Spa mặt"
+              ],
+              "hours": "09:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "address": "159/11 Đ. Hoàng Văn Thụ, Phú Nhuận, Hồ Chí Minh 72200, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 959,
+              "price": null,
+              "categories": [
+                "Spa mát xa",
+                "Spa sức khỏe"
+              ],
+              "hours": "09:30–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+              "address": "417 Huỳnh Văn Bánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 96,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 741,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "09:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+              "address": "153 Đ. Đặng Văn Ngữ, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 226,
+              "price": null,
+              "categories": [
+                "Spa mát xa"
+              ],
+              "hours": "10:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mèo Mây Gội đầu dưỡng sinh",
+              "address": "137/33 Đ. Lê Văn Sỹ, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 63,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 294,
+              "price": null,
+              "categories": [
+                "Spa sức khỏe"
+              ],
+              "hours": "09:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79755,106.67454",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQrPrUPvYkhmmx8AkQMhGIqvIHoVI8zMrGXmLIGDHrjA9ogf_Evd6GzlWJO9bUnCz4bNLJ4F6OCDk3BUiwWk-ZMs5gIPqTSoVMFaR1l2O-MJHI1Pw2LAjslgvsaNvTLz_EXT4llOqOj7Nw",
+                "address": "225 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 24,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 365 080 980",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Cửa hàng chăm sóc sức khỏe và làm đẹp"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11514011074109082893",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84365080980",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20-%20SPA%20C%C3%94%20%C3%9AT%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79587,106.68334",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkVavv-0PJRZ6B29DE7sbWrCbM9sh9pcZpa-Kv01JZ6k9MaoVGUjW__TBIjDsdlNCaT9bDDXPQSz6RC2bLkoYY44x7TgKOCtOoSC17fB3mF7wSPH9zs_Vbva9G3kZWj9jV-KvJ-4g",
+                "address": "46 Đ. Cô Giang, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 529,
+                "openingHours": "09:00–20:00",
+                "openNow": false,
+                "phone": "+84 825 230 999",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:00",
+                  "Thứ Hai": "09:00–20:00",
+                  "Thứ Ba": "09:00–20:00",
+                  "Thứ Tư": "09:00–20:00",
+                  "Thứ Năm": "09:00–20:00",
+                  "Thứ Sáu": "09:00–20:00",
+                  "Thứ Bảy": "09:00–20:00"
+                },
+                "categories": [
+                  "Spa sức khỏe",
+                  "Trung tâm chăm sóc ban ngày dành cho người lớn",
+                  "Spa ban ngày",
+                  "Spa mặt"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3413275541485061156",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84825230999",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Mudra%20House%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79877,106.67516",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkrTYjD0mrtCNqT6AA0XuAed_zfnySkSUaAmRGmweWbvALm4Kj8be4JH3o5NKu25NZ6jLS-Kul3GhGLtZdGU4NhYHUqIMQIfMG_7_A_cZ98i68O97ed_bNYCg8NH_nLM7UqfOjt0NUjvk",
+                "address": "159/11 Đ. Hoàng Văn Thụ, Phú Nhuận, Hồ Chí Minh 72200, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 959,
+                "openingHours": "09:30–23:00",
+                "openNow": false,
+                "phone": "+84 878 222 244",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:30–23:00",
+                  "Thứ Hai": "09:30–23:00",
+                  "Thứ Ba": "09:30–23:00",
+                  "Thứ Tư": "09:30–23:00",
+                  "Thứ Năm": "09:30–23:00",
+                  "Thứ Sáu": "09:30–23:00",
+                  "Thứ Bảy": "09:30–23:00"
+                },
+                "categories": [
+                  "Spa mát xa",
+                  "Spa sức khỏe"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://massagehoangtu.com/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15752558902134963779",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84878222244",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Massage%20Ho%C3%A0ng%20T%E1%BB%AD%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79180,106.67232",
+                "domain": "spa",
+                "kind": "place",
+                "name": "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWndOF4pNazCDoi93AvYxnQElS27Rd-mFWNaB4eo3et21WNRIYbbPj6EbyQU_wwZIDzjGAZxcT7p4x8wmO9K5emh8BXyg3y-LIVa7HnVF1YG47_RBHohkKU6zJ6wxMR0dQme5s0",
+                "address": "417 Huỳnh Văn Bánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 96,
+                "openingHours": "09:00–21:30",
+                "openNow": false,
+                "phone": "+84 888 464 846",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–21:30",
+                  "Thứ Hai": "09:00–21:30",
+                  "Thứ Ba": "09:00–21:30",
+                  "Thứ Tư": "09:00–21:30",
+                  "Thứ Năm": "09:00–21:30",
+                  "Thứ Sáu": "09:00–21:30",
+                  "Thứ Bảy": "09:00–21:30"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4500207561294440032",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84888464846",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=MIA%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20%7C%20G%E1%BB%98I%20%C4%90%E1%BA%A6U%20D%C6%AF%E1%BB%A0NG%20SINH%20PH%C3%9A%20NHU%E1%BA%ACN%20%7C%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79307,106.67648",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnok3FLUp5nd139-xMzdr_TQ93rdB3jOXs_Er4Ujx2n_iZm-J5IAgzTCooWznzQtJrs1hQdoE-gE84003nszZZvvQCG4Fth74X7uGkS5Blc3QAMYvsgLB7r1fTDt-ZCWkEIAkj9MjAiisWv",
+                "address": "32A Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 741,
+                "openingHours": "09:00–20:30",
+                "openNow": false,
+                "phone": "+84 983 016 901",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–20:30",
+                  "Thứ Hai": "09:00–20:30",
+                  "Thứ Ba": "09:00–20:30",
+                  "Thứ Tư": "09:00–20:30",
+                  "Thứ Năm": "09:00–20:30",
+                  "Thứ Sáu": "09:00–20:30",
+                  "Thứ Bảy": "09:00–20:30"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/saigonspa.com.vn",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14720671300927082433",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983016901",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Saigon%20Spa%20-%20Massage%20%26%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79146,106.66733",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlaAYlfO8n7qem_cUhqyqE5gpnYKHQyA7XY9-AZRU51LzKxOc2RYdFDHn_QcX-nwTZ31BgBnQ9c9nT3-QKATTPVcsLFv6NcwFCA2SSpHDhDMjBJF44M_wUEhRD8q7ItBqxvMQBVAJauj6Er",
+                "address": "153 Đ. Đặng Văn Ngữ, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 226,
+                "openingHours": "10:00–00:00",
+                "openNow": true,
+                "phone": "+84 888 002 543",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–00:00",
+                  "Thứ Hai": "10:00–00:00",
+                  "Thứ Ba": "10:00–00:00",
+                  "Thứ Tư": "10:00–00:00",
+                  "Thứ Năm": "10:00–00:00",
+                  "Thứ Sáu": "10:00–00:00",
+                  "Thứ Bảy": "10:00–00:00"
+                },
+                "categories": [
+                  "Spa mát xa"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://healinghouse.com.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11788486179160526037",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84888002543",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Healing%20House%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79109,106.67126",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Mèo Mây Gội đầu dưỡng sinh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmleeui2bz_oJxh-hVowMA9nsJpLzP7FnL8xcN4bSYB3_6Llk73203kZoDZAz9mrAHxoF2KWLjESyYJ6Fwlx-jvZ9TX6osn6fh39BOerZSlbWDCsp15LReG2v76bFxTjTS91ydrrMUX-6_L",
+                "address": "137/33 Đ. Lê Văn Sỹ, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 63,
+                "openingHours": "10:00–23:30",
+                "openNow": false,
+                "phone": "+84 936 999 009",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–23:30",
+                  "Thứ Hai": "10:00–23:30",
+                  "Thứ Ba": "10:00–23:30",
+                  "Thứ Tư": "10:00–23:30",
+                  "Thứ Năm": "10:00–23:30",
+                  "Thứ Sáu": "10:00–23:30",
+                  "Thứ Bảy": "10:00–23:30"
+                },
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/19DZ98UhFR/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17347186184326994252",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84936999009",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%C3%A8o%20M%C3%A2y%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79926,106.67301",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnFgIKye4iIott2dHu4noBLWJ6wGU0Wh7YbNHAnlr6IuibicO2H3BEwHjAIvacBlJrQhpPCvezWCH1bFL8ugl65EinOj7Tx9k364Bp6JmxoxS1XSThaKY816LKDa4tdtgd-JzIPcZqeMMp-",
+                "address": "1e Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 294,
+                "openingHours": "09:00–22:00",
+                "openNow": false,
+                "phone": "+84 336 258 268",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00",
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00"
+                },
+                "categories": [
+                  "Spa sức khỏe"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://anmienspa.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9201784351679415812",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84336258268",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%20v%C3%A0%20Massage%20Ph%C3%BA%20Nhu%E1%BA%ADn%20-%20An%20Mi%C3%AAn%20spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20m%E1%BB%9F%20khuya%20Ph%C3%BA%20Nhu%E1%BA%ADn%20Ph%C3%BA%20Nhu%E1%BA%ADn%2C%20TP%20HCM",
+            "shown": 3
+          },
+          "domain": "spa"
+        }
+      ],
+      "cardItems": [
+        [
+          "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+          "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+          "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+          "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+          "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+          "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+          "Mèo Mây Gội đầu dưỡng sinh",
+          "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa"
+        ],
+        [
+          "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+          "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+          "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+          "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+          "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+          "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận",
+          "Mèo Mây Gội đầu dưỡng sinh",
+          "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình chọn **Massage Hoàng Tử - Gội đầu dưỡng sinh** — 4.9⭐ (959 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:30–23:00.\n\nMình tìm ngay cho bạn cả hai nhu cầu này.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.",
+      "visible": "Mình chọn **Massage Hoàng Tử - Gội đầu dưỡng sinh** — 4.9⭐ (959 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:30–23:00.\n\nMình tìm ngay cho bạn cả hai nhu cầu này.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.",
+      "preGuard": "Mình tìm ngay cho bạn cả hai nhu cầu này.Giờ mình tìm máy sấy tóc Philips dưới 1 triệu cho bạn."
+    }
+  ]
+}

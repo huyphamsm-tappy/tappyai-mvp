@@ -1,11 +1,11 @@
 -- ============================================================================
 -- Controller V2 - Module 04 User Analytics, RETENTION: `cohort_metrics`
 --
--- GATE: NOT YET AUTHORIZED FOR PRODUCTION. Module 01's `daily_snapshots`
---       authorization (2026-08-20) covered that table and nothing else. This
---       is a SEPARATE production mutation and needs its own explicit Owner
---       authorization, its own preflight and its own rollback window
---       (ADR-017 pattern).
+-- ✅ STATUS: LIVE. `cohort_metrics` is present in the 2026-09-17 prod schema
+--    snapshot (confirmed 2026-09-21) — this migration IS applied; do not re-run.
+--    (Historical: it was a separate production mutation needing its own Owner
+--    authorization/preflight/rollback under the ADR-017 pattern; that has since
+--    happened — the original "NOT YET AUTHORIZED" banner is stale.)
 --
 -- CONTRACT
 --   04_Database_Architecture.md §3.3  the authoritative DDL, reproduced below

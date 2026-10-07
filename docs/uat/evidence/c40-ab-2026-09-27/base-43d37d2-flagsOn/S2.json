@@ -1,0 +1,25 @@
+{
+  "id": "S2",
+  "text": "mua laptop van phong duoi 15tr",
+  "parent": null,
+  "status": 200,
+  "ms": 3690,
+  "evidenceId": "c697ac46-0a16-4695-a72b-e5a33b1339c6",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm laptop văn phòng dưới 15 triệu cho bạn nhé. Để gợi ý đúng ý, mình cần biết thêm một chút: **bạn dùng laptop chủ yếu để làm gì** — soạn thảo tài liệu, lướt web, họp video, hay có cần xử lý ảnh/video không? 💻\n\n(Hoặc nếu bạn chỉ cần máy chạy mượt các công việc văn phòng cơ bản thì mình tìm ngay cho bạn!)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua laptop van phong duoi 15tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm laptop văn phòng dưới 15 triệu cho bạn nhé. Để gợi ý đúng ý, mình cần biết thêm một chút: **bạn dùng laptop chủ yếu để làm gì** — soạn thảo tài liệu, lướt web, họp video, hay có cần xử lý ảnh/video không? 💻\n\n(Hoặc nếu bạn chỉ cần máy chạy mượt các công việc văn phòng cơ bản thì mình tìm ngay cho bạn!)"
+    }
+  ]
+}

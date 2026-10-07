@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Chính Hãng site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:35:14.960Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Chính Hãng site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro ...",
+    "link": "https://h5.lazada.vn/products/op-lung-dan-su-uag-chinh-hang-co-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-12-13-pro-max-op-bao-ve-bac-quan-su-chong-soc-chong-truot-mong-gon-tinh-te-i13403113173-s117075178115.html",
+    "snippet": "Đáp ứng các tiêu chuẩn kiểm tra thả quân sự 3X (MIL STD 810G 516.6). Mô tả sản phẩm. Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro Max / iPhone ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder SE chính hãng với Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-chinh-hang-voi-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-14-13-12-pro-max-vo-dien-thoai-cap-bac-quan-su-go-ghe-chong-roi-dap-bao-ve-trong-suot-i13404795989.html?srsltid=AU7gw4XbMMqNmuPKjzZNK_-AAx_zegEU0r7VVm2vdZYqh2yVJwsgKjB4",
+    "snippet": "Ốp sợi Carbon chính hãng UAG Monarch Pro với Magsafe cho Iphone 17 Pro Max /. 355.000 ₫ · Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro Max / ...",
+    "position": 2
+   },
+   {
+    "title": "Balo chính hãng UAG đựng Laptop 14 inch STD ISSUE 18 Lít",
+    "link": "https://www.lazada.vn/products/pdp-i1656701110.html?srsltid=AU7gw4UZl8HPJ1kodRhdnCQUJkZ-tZ0Fn3pzSfE_-EaBkXs3JlDY8KFx",
+    "snippet": "Balo Laptop/Macbook 14 inch STD Issue 18 Lít · Thương hiệu UAG nổi tiếng toàn cầu · Dung tích 18L, nhiều ngăn khác nhau vô cùng tiện lợi · Chất liệu Nylon 840D bền ...",
+    "position": 3
+   },
+   {
+    "title": "Nón lưỡi trai lưới thời trang UAG - Chính hãng",
+    "link": "https://www.lazada.vn/products/non-luoi-trai-luoi-thoi-trang-uag-chinh-hang-i1673470213.html?srsltid=AU7gw4WgYfauOs7VSPpPlBAz7yojf0p_m86u5Yu_M6y_WqALBd3v8p1P",
+    "snippet": "LazMall Nón lưỡi trai lưới thời trang UAG - Chính hãng · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng [CHỐNG SỐC] chính hãng UAG MONARCH cao ...",
+    "link": "https://www.lazada.vn/products/op-lung-chong-soc-chinh-hang-uag-monarch-cao-cap-cho-ihone-13-13pro-13promax-i1822051141.html?srsltid=AU7gw4XCKAQc3MoXPiOYT_aMdspWJivSWfhSO1pM6636pwL2irR0LRof",
+    "snippet": "Ốp lưng chống sốc chính hãng UAG MONARCH cao cấp cho iPhone 13/13 Pro/13 Promax, bảo vệ tối ưu với chất liệu cao cấp Mallard, Carbon Fiber, Kevlar Black, ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng UAG CIVILIAN Dành Cho Samsung Galaxy S24 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-civilian-danh-cho-samsung-galaxy-s24-ultra-hang-chinh-hang-i2624335881.html?srsltid=AU7gw4XoYJALOwvONuKqAb609KDanKc72bRTyT-iNCG1y9K1nA7F-j8w",
+    "snippet": "Thương hiệu: UAG - CHÍNH HÃNG. Dòng sản phẩm: UAG CIVILIAN SERIES. Tương thích: Samsung Galaxy S24 Series. Màu sắc: Black | Olive Drab.",
+    "position": 6
+   },
+   {
+    "title": "[CHÍNH HÃNG UAG] ỐP LƯNG IPHONE 13/13PRO/ ...",
+    "link": "https://www.lazada.vn/products/chinh-hang-uag-op-lung-iphone-1313pro13promax-chong-va-dap-khang-nuoc-outback-i1529735543.html?srsltid=AU7gw4UgQGDJg08s88yji0IRAbdp1NrMOBHv1mAetE3EOQPMEbUkNfP4",
+    "snippet": "Ốp lưng iPhone 13 chống va đập và chống nước UAG Outback, làm từ silicone chất lượng cao. Thiết kế phù hợp cho iPhone 13, 13 Pro và 13 Promax, ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-dan-su-uag-chinh-hang-co-magsafe-cho-iphone-17-pro-max-iphone-17-air-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-12-13-pro-max-op-bao-ve-bac-quan-su-chong-soc-chong-truot-mong-gon-tinh-te-i13403113173.html?srsltid=AU7gw4VJu7wSGKTgSk_ZJtbChVJKvS7eqbAGa1rFM10vi_nCQvnHWbPO",
+    "snippet": "Đáp ứng các tiêu chuẩn kiểm tra thả quân sự 3X (MIL STD 810G 516.6). Mô tả sản phẩm. Ốp lưng dân sự UAG chính hãng có Magsafe cho iPhone 17 Pro Max / iPhone ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

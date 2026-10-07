@@ -56,8 +56,27 @@ data class EvidenceItem(
 
 data class RecommendedAction(
     val isPrimary: Boolean,
+    /** The backend's glyph key (`stop`, `link`, `phone`, `flag`, `warning`, `search`, `check`); blank → a generic alert. */
+    val icon: String,
     /** Already localized by the caller: the backend ships both `label_vi` and `label_en`. */
     val label: String,
+)
+
+/**
+ * One row of "recent checks, on this device" (web `lib/scam-shield/history.ts`).
+ *
+ * 🚨 NOT A SECURITY RECORD. It is written only AFTER the engine returned a real verdict, stores
+ * the three fields the list renders and nothing else (no score, no evidence, no actions, no
+ * official match), and a row is never presented as a current verdict — tapping one re-runs the
+ * check. Per device, never synced.
+ */
+data class ScamCheckHistoryEntry(
+    /** The URL as the engine normalised it. */
+    val url: String,
+    /** The level the engine assigned AT THE TIME. */
+    val level: RiskLevel,
+    /** Epoch ms of the check. */
+    val checkedAt: Long,
 )
 
 data class OfficialEntity(
@@ -92,3 +111,55 @@ sealed interface ScamCheckFailure {
     data object Timeout : ScamCheckFailure
     data object Unknown : ScamCheckFailure
 }
+
+// ── Analyze Message (web `lib/scam-shield/message/types.ts` → `MessageAnalysisResult` + `quota`) ──
+
+data class MessageSignal(
+    val type: String,
+    /** `low | medium | high`. */
+    val severity: String,
+    val explanation: String,
+)
+
+/** One link the message carried, as the engine saw it; `checked = false` renders "Chưa kiểm tra được". */
+data class MessageUrlCheck(val url: String, val checked: Boolean, val level: RiskLevel?)
+
+/** Already localized by the caller: the backend ships both `label_vi` and `label_en`. */
+data class AdviceItem(val code: String, val label: String)
+
+/** The route's `quota` block — the ONE shared Tappy AI question pool, never a Scam Shield allowance. */
+data class MessageQuota(
+    val kind: String,
+    val limit: Int,
+    /** `day | lifetime`. */
+    val period: String,
+    val used: Int?,
+    val remaining: Int?,
+    val exhausted: Boolean,
+    val pro: Boolean,
+)
+
+/**
+ * A message verdict. The same six-level vocabulary as [ScamCheckResult]; the body is about what
+ * the sender is trying to make the reader DO. NOT written to the device history — that list is a
+ * list of links, and a message is not a link.
+ */
+data class MessageAnalysis(
+    val level: RiskLevel,
+    val score: Int,
+    val confidence: Int,
+    /** A `SCAM_TYPES` key (`bank_phishing`, …) or null. */
+    val scamType: String?,
+    /** An `ATTACK_GOALS` key (`payment_fraud`, …) or null. */
+    val attackGoal: String?,
+    val signals: List<MessageSignal>,
+    val requestedActions: List<String>,
+    val urlChecks: List<MessageUrlCheck>,
+    val doNot: List<AdviceItem>,
+    val doNow: List<AdviceItem>,
+    val reasoningSummary: String,
+    /** `used | not_needed | quota_exhausted | unavailable | failed`. */
+    val aiStatus: String,
+    val extractedText: String?,
+    val quota: MessageQuota?,
+)

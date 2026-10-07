@@ -1,0 +1,212 @@
+{
+  "id": "F2",
+  "text": "tim quan bun bo ngon o q1 duoi 80k",
+  "parent": null,
+  "status": 200,
+  "ms": 14221,
+  "evidenceId": "84f6070d-3fa2-4609-81fd-4bc220595bdd",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bún bò ngon Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+      "rating": 5,
+      "count": 8,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–12:30",
+      "distance_km": 1.4,
+      "address": "84/32 Bùi Viện, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún bò Huế O Tâm",
+      "rating": 4.9,
+      "count": 105,
+      "price": "1-100.000 ₫",
+      "hours": "11:30–02:00",
+      "distance_km": 1.8,
+      "address": "12B Nguyễn Huy Tự, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "rating": 4.8,
+      "count": 1011,
+      "price": "1-100.000 ₫",
+      "hours": "06:30–22:00",
+      "distance_km": 1.7,
+      "address": "4E Võ Thị Sáu, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÚN BÒ HUẾ 175 CÔ GIANG QUẬN 1",
+      "rating": 4.8,
+      "count": 63,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–13:00",
+      "distance_km": 1.9,
+      "address": "175 Cô Giang, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế Nam Giao - Since 1991",
+      "rating": 4.3,
+      "count": 555,
+      "price": "100-200 N ₫",
+      "hours": "06:00–23:00",
+      "distance_km": 1.3,
+      "address": "242 Đề Thám, Bến Thành, Hồ Chí Minh 10000, Việt Nam"
+    },
+    {
+      "name": "Quán Nam Giao",
+      "rating": 4.1,
+      "count": 1135,
+      "price": "100-200 N ₫",
+      "hours": "07:30–21:00",
+      "distance_km": 0.5,
+      "address": "136/15 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Bò Kho Hà | Bún Bò Ngon Quận 1",
+      "rating": 4.3,
+      "count": 12,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–21:00",
+      "distance_km": 1.9,
+      "address": "57 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bún Bò Huế 24H",
+      "rating": 4.1,
+      "count": 420,
+      "price": "1-100.000 ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.6,
+      "address": "139 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chi Rứa Quán | Nhà Hàng Huế Quận 1",
+      "rating": 3.9,
+      "count": 357,
+      "price": "1-100.000 ₫",
+      "hours": "08:30–22:00",
+      "distance_km": 0.9,
+      "address": "15/29 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Huế O Xuân",
+      "rating": 3.9,
+      "count": 692,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–21:30",
+      "distance_km": 1.9,
+      "address": "22 Nguyễn Hữu Cầu, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Bún Bò Cô Tiên | Bún Bò Ngon Quận 1 | Bún Bò Ngon Bùi Viện",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 8,
+        "distance_km": 1.4,
+        "price_up_to_vnd": 100000,
+        "open_now": false,
+        "opening_hours": "08:00–12:30"
+      }
+    },
+    {
+      "name": "Bún bò Huế O Tâm",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 105,
+        "distance_km": 1.8,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "11:30–02:00"
+      }
+    },
+    {
+      "name": "BẾP ÔNG CẬU | BÚN BÒ THỐ ĐÁ QUẬN 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1011,
+        "distance_km": 1.7,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "06:30–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm quán bún bò ngon ở Quận 1 trong tầm giá dưới 80k cho bạn nhé.\n\nMình chọn **Bún Bò Cô Tiên** cho bạn! Mặc dù hiện đang đóng cửa (mở 8h-12h30), nhưng đây là lựa chọn tuyệt vời cho bữa sáng hoặc trưa.\n\nNếu bạn muốn ăn tối, **Bún bò Huế O Tâm** là lựa chọn thay thế tốt — 4.9⭐ (105 đánh giá), mở đến 2h sáng, cách bạn 1.8km.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Bún Bò Cô Tiên\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Bun+Bo+Co+Tien+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Bún Bò Cô Tiên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=712999985558320213\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế O Tâm mở đến 2h|BẾP ÔNG CẬU mở cả ngày|Quán Nam Giao gần nhất|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "tim quan bun bo ngon o q1 duoi 80k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán bún bò ngon ở Quận 1 trong tầm giá dưới 80k cho bạn nhé.\n\nMình chọn **Bún Bò Cô Tiên** cho bạn! Mặc dù hiện đang đóng cửa (mở 8h-12h30), nhưng đây là lựa chọn tuyệt vời cho bữa sáng hoặc trưa.\n\nNếu bạn muốn ăn tối, **Bún bò Huế O Tâm** là lựa chọn thay thế tốt — 4.9⭐ (105 đánh giá), mở đến 2h sáng, cách bạn 1.8km.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Bún Bò Cô Tiên\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Bun+Bo+Co+Tien+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - Bún Bò Cô Tiên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=712999985558320213\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Bún bò Huế O Tâm mở đến 2h|BẾP ÔNG CẬU mở cả ngày|Quán Nam Giao gần nhất|[/FOLLOWUPS]"
+    }
+  ]
+}

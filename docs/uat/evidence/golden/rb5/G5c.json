@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 13610,
+      "textFrames": 407,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, giấy đăng ký xe. Đảm bảo tên chủ xe khớp với người bán, không có tranh chấp hay nợ nần.\n- **Tình trạng xe**: Xe có bị khoá từ xa, nợ trả góp, hay bị cấm xuất cảnh không? Hỏi rõ lý do bán.\n- **Gặp trực tiếp**: Luôn gặp người bán tại chỗ, kiểm tra xe trước khi chuyển tiền. Không chuyển tiền trước qua link lạ hay QR code.\n- **Giá hợp lý**: Giá 300 triệu rẻ bất thường so với thị trường → dấu hiệu cần nghi. Tìm hiểu giá xe cùng dòng, cùng năm để so sánh.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn xe (có bị sơn lại không), kính, gương, đèn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, hệ thống điều hòa, âm thanh.\n- **Động cơ & khung gầm**: Nghe tiếng động cơ, kiểm tra dầu, nước, mức pin. Nếu có thể, đưa đi kiểm tra tại xưởm chuyên nghiệp (không phải xưởm của người bán).\n- **Lịch sử bảo dưỡng**: Hỏi xe đã sửa chữa gì, bảo dưỡng khi nào, có lịch sử tai nạn không.\n- **Số km**: Kiểm tra đồng hồ km có khớp với tình trạng xe không (xe cũ nhưng km ít → có thể bị chỉnh).\n\n**💡 TRƯỚC KHI CHUYỂN TIỀN:**\nNếu gặp người lạ hoặc qua nhóm/trang bán hàng online, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\nBạn đang tìm xe dòng nào cụ thể? Mình có thể giúp bạn tìm thông tin giá tham khảo để so sánh xem 300 triệu có hợp lý không.\n\n[FOLLOWUPS]Tìm giá xe cũ|Kiểm tra xe trước mua|Hỏi về dòng xe cụ thể[/FOLLOWUPS]",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, giấy đăng ký xe. Đảm bảo tên chủ xe khớp với người bán, không có tranh chấp hay nợ nần.\n- **Tình trạng xe**: Xe có bị khoá từ xa, nợ trả góp, hay bị cấm xuất cảnh không? Hỏi rõ lý do bán.\n- **Gặp trực tiếp**: Luôn gặp người bán tại chỗ, kiểm tra xe trước khi chuyển tiền. Không chuyển tiền trước qua link lạ hay QR code.\n- **Giá hợp lý**: Giá 300 triệu rẻ bất thường so với thị trường → dấu hiệu cần nghi. Tìm hiểu giá xe cùng dòng, cùng năm để so sánh.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE:**\n- **Ngoại thất**: Kiểm tra vết va đập, sơn xe (có bị sơn lại không), kính, gương, đèn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển, hệ thống điều hòa, âm thanh.\n- **Động cơ & khung gầm**: Nghe tiếng động cơ, kiểm tra dầu, nước, mức pin. Nếu có thể, đưa đi kiểm tra tại xưởm chuyên nghiệp (không phải xưởm của người bán).\n- **Lịch sử bảo dưỡng**: Hỏi xe đã sửa chữa gì, bảo dưỡng khi nào, có lịch sử tai nạn không.\n- **Số km**: Kiểm tra đồng hồ km có khớp với tình trạng xe không (xe cũ nhưng km ít → có thể bị chỉnh).\n\n**💡 TRƯỚC KHI CHUYỂN TIỀN:**\nNếu gặp người lạ hoặc qua nhóm/trang bán hàng online, dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.\n\nBạn đang tìm xe dòng nào cụ thể? Mình có thể giúp bạn tìm thông tin giá tham khảo để so sánh xem 300 triệu có hợp lý không."
+    }
+  ]
+}

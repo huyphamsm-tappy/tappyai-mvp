@@ -6,7 +6,7 @@
 // viewer first watched it, their browser re-downloaded all 45,683,721 bytes from GCS. Egress is
 // the cost line that matters here, and it was being paid again every hour, per viewer, per clip.
 //
-// WHY A ONE-YEAR LIFETIME IS SAFE HERE, and would not be in general: these objects are immutable
+// WHY A LONG LIFETIME IS SAFE FOR CORRECTNESS HERE (now one day — see below), and would not be in general: these objects are immutable
 // by CONSTRUCTION, not by convention. `resolveUploadTarget` builds every key as
 // `${prefix}/${ownerId}/${randomMediaSuffix(24)}.${ext}` — 24 random characters minted server-side
 // per upload. A caller cannot choose a key, cannot reuse one, and cannot overwrite an existing
@@ -15,8 +15,12 @@
 // needs cache invalidation, because nothing is ever invalidated — a new upload is a new URL.
 //
 // The corollary is what keeps this honest: if key generation ever becomes caller-influenced or
-// deterministic, this cache policy turns into a correctness bug that is invisible for a year. The
+// deterministic, this cache policy turns into a correctness bug for the whole lifetime. The
 // last describe block ties the two together so they cannot drift apart silently.
+//
+// ONE DAY, NOT ONE YEAR (owner decision 2026-09-26): the lifetime also bounds how long a cached copy
+// can outlive a DELETION (F-096, account deletion removes the file). A year-long max-age made that
+// promise unenforceable for clips; a day bounds it while still avoiding the hourly re-download.
 
 import { describe, it, expect, vi } from 'vitest'
 import { createGcsProvider } from './providers/gcs'
@@ -53,18 +57,30 @@ const openSession = async (contentType = 'video/mp4') => {
 }
 
 describe('the cache policy constant', () => {
-  it('is one year and marked immutable', () => {
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('public, max-age=31536000, immutable')
+  it('is one day, private and marked immutable', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toBe('private, max-age=86400, immutable')
   })
 
-  it('is a year in seconds, not a transcription slip', () => {
+  it('is a day in seconds, not a transcription slip', () => {
     const seconds = Number(/max-age=(\d+)/.exec(IMMUTABLE_MEDIA_CACHE_CONTROL)![1])
-    expect(seconds).toBe(365 * 24 * 60 * 60)
+    expect(seconds).toBe(24 * 60 * 60)
   })
 
-  it('is public, so a shared cache or CDN may serve it too', () => {
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toMatch(/\bpublic\b/)
-    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bprivate\b|\bno-store\b|\bno-cache\b/)
+  it('🚨 never longer than a day — a deletion must take effect within it (F-096)', () => {
+    const seconds = Number(/max-age=(\d+)/.exec(IMMUTABLE_MEDIA_CACHE_CONTROL)![1])
+    expect(seconds).toBeLessThanOrEqual(86400)
+  })
+
+  // F-100 (owner 2026-09-26): a deleted PUBLIC object kept serving from Google's shared edge cache
+  // until max-age (measured) and built-in caching cannot be invalidated. `private` keeps shared caches
+  // out, so deletion is immediate at Google; the viewer's own browser may still keep it ≤ one day.
+  it('🚨 is private — no shared cache (Google edge, CDN) may store a clip', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).toMatch(/\bprivate\b/)
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bpublic\b|\bs-maxage\b/)
+  })
+
+  it('still lets the viewer’s browser cache it (no no-store / no-cache)', () => {
+    expect(IMMUTABLE_MEDIA_CACHE_CONTROL).not.toMatch(/\bno-store\b|\bno-cache\b/)
   })
 })
 
@@ -114,9 +130,9 @@ describe('the session binding is unchanged', () => {
   })
 })
 
-describe('what makes the one-year lifetime safe', () => {
+describe('what makes the long lifetime safe', () => {
   // If this block ever fails, IMMUTABLE_MEDIA_CACHE_CONTROL has become unsafe — a mutable or
-  // guessable key means a cached URL could later point at different bytes, for up to a year.
+  // guessable key means a cached URL could later point at different bytes, for the whole max-age.
   it('mints a fresh random key per upload, so no URL is ever reused', () => {
     const a = resolveUploadTarget({ kind: 'video', contentType: 'video/mp4', sizeBytes: 10, ownerId: OWNER }, ['video'])
     const b = resolveUploadTarget({ kind: 'video', contentType: 'video/mp4', sizeBytes: 10, ownerId: OWNER }, ['video'])
@@ -135,5 +151,55 @@ describe('what makes the one-year lifetime safe', () => {
     const t = resolveUploadTarget({ kind: 'video', contentType: 'video/mp4', sizeBytes: 10, ownerId: OWNER }, ['video'])
     const random = t.key.split('/')[2].replace(/\.mp4$/, '')
     expect(random).toHaveLength(24)
+  })
+})
+
+describe('server-side put() carries the same policy (photos, avatars, covers)', () => {
+  // A plain media upload cannot carry object metadata, so it got GCS's default public
+  // max-age=3600 — shared-cacheable, so a deleted photo stayed reachable for up to an hour (F-100).
+  const putOnce = async (bytes: Uint8Array, contentType: string) => {
+    const calls: Array<{ url: string; init: RequestInit }> = []
+    const fetchImpl = vi.fn(async (url: string, init: RequestInit) => {
+      calls.push({ url: String(url), init })
+      return { ok: true, status: 200 } as Response
+    }) as unknown as typeof fetch
+    const provider = createGcsProvider({ bucket: BUCKET, getAccessToken: async () => 'ya29.test', fetchImpl })
+    await provider.put(`reviews/${OWNER}/1-abcdefghijklmnopqrstuvwx.jpg`, bytes, { contentType })
+    const headers = calls[0].init.headers as Record<string, string>
+    const boundary = /boundary=(\S+)$/.exec(headers['Content-Type'])![1]
+    const raw = Buffer.from(await (calls[0].init.body as Blob).arrayBuffer())
+    return { url: calls[0].url, headers, boundary, raw }
+  }
+
+  it('sends one multipart request whose metadata part sets the private one-day policy', async () => {
+    const { url, headers, boundary, raw } = await putOnce(new Uint8Array([1, 2, 3]), 'image/jpeg')
+    expect(url).toContain('uploadType=multipart')
+    expect(url).toContain(`name=${encodeURIComponent(`reviews/${OWNER}/1-abcdefghijklmnopqrstuvwx.jpg`)}`)
+    expect(headers['Content-Type']).toBe(`multipart/related; boundary=${boundary}`)
+    expect(headers.Authorization).toBe('Bearer ya29.test')
+    const text = raw.toString('latin1')
+    const json = /application\/json; charset=UTF-8\r\n\r\n(\{.*?\})\r\n/.exec(text)![1]
+    expect(JSON.parse(json)).toEqual({ contentType: 'image/jpeg', cacheControl: IMMUTABLE_MEDIA_CACHE_CONTROL })
+  })
+
+  it('passes the bytes through unchanged, framed by the boundary', async () => {
+    const bytes = new Uint8Array(256).map((_, i) => i) // every byte value, including CR and LF
+    const { boundary, raw } = await putOnce(bytes, 'image/png')
+    const head = Buffer.from(`--${boundary}\r\nContent-Type: image/png\r\n\r\n`, 'latin1')
+    const start = raw.indexOf(head) + head.length
+    const tail = Buffer.from(`\r\n--${boundary}--\r\n`, 'latin1')
+    expect(raw.subarray(raw.length - tail.length).equals(tail)).toBe(true)
+    expect(raw.subarray(start, raw.length - tail.length).equals(Buffer.from(bytes))).toBe(true)
+  })
+
+  it('every server-side upload key carries a random suffix, so `immutable` stays true', async () => {
+    const { readFileSync } = await import('node:fs')
+    for (const file of ['src/app/api/reviews/upload/route.ts', 'src/app/api/profile/route.ts', 'src/app/api/group/[id]/avatar/route.ts']) {
+      const src = readFileSync(file, 'utf8')
+      const keys = [...src.matchAll(/putMedia\(\s*([^,]+),/g)].map(m => m[1].trim())
+      const resolved = keys.map(k => (/^[A-Za-z_]\w*$/.test(k) ? new RegExp(`const ${k} = ([^\n]+)`).exec(src)?.[1] ?? k : k))
+      expect(resolved.length, file).toBeGreaterThan(0)
+      for (const k of resolved) expect(k, file).toContain('randomMediaSuffix()')
+    }
   })
 })

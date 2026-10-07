@@ -1,0 +1,84 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 22252,
+  "evidenceId": "93aa7508-97fe-43b0-af99-951d43a02f32",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": [
+    "upscale"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn đi cuối tuần tới (check-in 3/10, check-out 4/10) và tìm cho 2 người. Để gợi ý đúng ý bạn, mình cần biết: **tầm giá bạn muốn?**\n\nMình thấy **Ocean Bay Resort & Spa** là lựa chọn hợp lý nhất cho kỷ niệm của bạn — **4.7⭐ (3.183 đánh giá)** với hơn 3.000 khách đánh giá là dấu hiệu mạnh về chất lượng.\n\nNgoài ra, **Thiên Thanh Phú Quốc Resort** cũng đạt **4.7⭐ (1.759 đánh giá)** — tương đương chất lượng nhưng ít khách hơn.\n\nBạn nên xem chi tiết trên Booking để chọn loại phòng phù hợp với dự tính của mình.\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]dưới 1 triệu/đêm|1–2 triệu/đêm|trên 2 triệu/đêm[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 1tr/đêm / 1–2tr/đêm / trên 2tr/đêm)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi cuối tuần tới (check-in 3/10, check-out 4/10) và tìm cho 2 người. Để gợi ý đúng ý bạn, mình cần biết: **tầm giá bạn muốn?**\n\nMình thấy **Ocean Bay Resort & Spa** là lựa chọn hợp lý nhất cho kỷ niệm của bạn — **4.7⭐ (3.183 đánh giá)** với hơn 3.000 khách đánh giá là dấu hiệu mạnh về chất lượng.\n\nNgoài ra, **Thiên Thanh Phú Quốc Resort** cũng đạt **4.7⭐ (1.759 đánh giá)** — tương đương chất lượng nhưng ít khách hơn.\n\nBạn nên xem chi tiết trên Booking để chọn loại phòng phù hợp với dự tính của mình.\n\nGiờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.\n\n[FOLLOWUPS]dưới 1 triệu/đêm|1–2 triệu/đêm|trên 2 triệu/đêm[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 1tr/đêm / 1–2tr/đêm / trên 2tr/đêm)?"
+    }
+  ]
+}

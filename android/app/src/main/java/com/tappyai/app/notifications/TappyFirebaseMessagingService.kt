@@ -40,6 +40,10 @@ class TappyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
+        // The person's own "Tappy notifications" switch (ON unless they turned it OFF). Read at
+        // delivery time, never cached: switching it back ON takes effect on the next push.
+        if (!NotificationPreferenceStore(applicationContext).enabled) return
+
         val data = message.data
         val kind = TappyNotificationKind.from(data)
         val click = TappyNotificationClick.from(data)

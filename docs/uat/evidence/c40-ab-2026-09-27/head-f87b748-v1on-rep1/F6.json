@@ -1,0 +1,101 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 11285,
+  "evidenceId": "cdada7a7-3ed8-4946-8235-12db06b92351",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Quán Bụi Central Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "price": "200-800 N ₫",
+      "hours": "07:00–23:00",
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ kiểm tra thông tin về tình trạng đông của **Quán Bụi Central** cho bạn.\n\nTheo dữ liệu Google Maps, **Quán Bụi Central hiện đang đóng cửa** (mở từ 07:00–23:00, bây giờ là 23:41). Quán này không có thông tin về tình trạng đông vào giờ này trên Google Maps.\n\nNếu bạn muốn ăn tối **hôm nay**, mình gợi ý quay lại **Hải Sản Hoàng Gia**.\n\nBạn muốn tìm quán khác mở đến muộn hôm nay, hay sẽ đi vào ngày mai?\n\nGiờ mở cửa mình chưa xác nhận được từ nguồn đã tìm — bạn kiểm tra trên Maps trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Quán Bụi Central trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8054492323917688722\",\"primary\":false},{\"label\":\"🍽️ Đặt bàn qua Chope\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=quanbuicentral2607vn&rwg_token=AE37R_ivQwgNBLrcuU3jkoJdiCMeZyCFD3afg9l3yQlBKBWlehGbjO52wy8x8vldgYI7fIioiNpmnJwt2MAVNwmfsKBW2dnk7gYnFCtYqFTQP4yllDv9WGg%3D\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1 với tầm giá phổ thông. Để gợi ý đúng ý bạn, mình sẽ tìm ngay các quán ăn tối ngon gần vị trí của bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn — quán này có **4.7⭐ (982 đánh giá Google Maps)**, đang mở cửa lúc này (08:00–00:00), và chuyên hải sản tươi ngon, rất phù hợp cho bữa tối 2 người. Quán nằm ở 180 Trần Hưng Đạo, Quận 1, gần vị trí của bạn.\n\nNếu thích không khí truyền thống, **Quán Bụi Central** có **4.5⭐ (901 đánh giá)** với đa dạng món Việt, mở đến 23:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán nào khác gần đây?|Ăn hải sản hay thử cơm tấm?|Có quán nào mở muộn không?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ kiểm tra thông tin về tình trạng đông của **Quán Bụi Central** cho bạn.\n\nTheo dữ liệu Google Maps, **Quán Bụi Central hiện đang đóng cửa** (mở từ 07:00–23:00, bây giờ là 23:41). Quán này không có thông tin về tình trạng đông vào giờ này trên Google Maps.\n\nNếu bạn muốn ăn tối **hôm nay**, mình gợi ý quay lại **Hải Sản Hoàng Gia**.\n\nBạn muốn tìm quán khác mở đến muộn hôm nay, hay sẽ đi vào ngày mai?\n\nGiờ mở cửa mình chưa xác nhận được từ nguồn đã tìm — bạn kiểm tra trên Maps trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Quán Bụi Central trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8054492323917688722\",\"primary\":false},{\"label\":\"🍽️ Đặt bàn qua Chope\",\"type\":\"website\",\"url\":\"https://book.chope.co/booking?source=google_dining&rid=quanbuicentral2607vn&rwg_token=AE37R_ivQwgNBLrcuU3jkoJdiCMeZyCFD3afg9l3yQlBKBWlehGbjO52wy8x8vldgYI7fIioiNpmnJwt2MAVNwmfsKBW2dnk7gYnFCtYqFTQP4yllDv9WGg%3D\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

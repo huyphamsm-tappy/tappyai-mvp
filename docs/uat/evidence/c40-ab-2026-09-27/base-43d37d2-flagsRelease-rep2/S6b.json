@@ -1,0 +1,77 @@
+{
+  "id": "S6b",
+  "text": "tai nghe bluetooth",
+  "parent": "S6",
+  "status": 200,
+  "ms": 10861,
+  "evidenceId": "57884660-bd14-4358-8391-465b370b18dc",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng",
+      "rating": 4.8,
+      "count": 326,
+      "price": 320000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC",
+      "rating": 4.7,
+      "count": 962,
+      "price": 730000
+    },
+    {
+      "name": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+      "rating": 4.7,
+      "count": 321,
+      "price": 990000
+    },
+    {
+      "name": "Baseus Tai nghe Không Dây TWS Baseus Inspire XP1",
+      "rating": 4.8,
+      "count": 163,
+      "price": 1859000
+    },
+    {
+      "name": "Tai nghe Bluetooth chụp Tai Baseus Inspire XH1",
+      "rating": 4.7,
+      "count": 580,
+      "price": 2199000
+    },
+    {
+      "name": "AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt",
+      "rating": 4.4,
+      "count": 120,
+      "price": 390000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm tai nghe Bluetooth cho bạn nhé![TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFoU56yZwiFFSTZc_uCZ-OaPV4yBAQyfWOg7RMnpso4q8kkEkYBLEU-IvzDWO_qSEMXcOAre3U50FtYqa37kg_SVcX4Ag01RZmF3Y_EogiSCmJmUyZNdxLIik\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQltwIBBiA6uhCkFa2dF_IQz5DV0qtTETjOJP6Cfaem8aI3l8gzv-8J1QcSkthvuIcRTtqeM4_J9cmrZX_xv2u6F7YDImqengGLFqKVxz_EqxAFKIbnLrDb\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTT0sK6zmU-Iv77SCw2YONaJDhUrrZKvk3_htag9i2gb68S8iibpZ4Berm5R9w1-xFmJui0txEGw6O60pPTvSrN_oxanXJIWUq1YtfWh3hsXD66qcLVxS1V\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:3\",\"name\":\"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1859000,\"priceHigh\":1859000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQD-0l-sI4zw45mGnBBV-7hdOMLPGN94vjoMW1x44s_JKmGFpp7E6ddjdVfCJeeF8BTo8zY9Dlp9rFnsrZGdiI4RhlMd8PKT1I8KpToOJ4zv-_FRbAaq2kz\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3340121238556858707,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1859000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":163}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Inspire XH1\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2199000,\"priceHigh\":2199000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSHaHwbd1_LipIeUVhiz6jsDOMWIni10GjtkpfEu4zHSa0JMyS9i-wfph02EeS9WOLFHHvIpBfxJj_ZycAZmhUe1tgiYzEAaAfpaiOcDzMYzGni6L6dmL0R\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:6558429562907044406,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2199000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":580}]},{\"key\":\"uncertain:5\",\"name\":\"AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt\",\"config\":\"M2\",\"specs\":[{\"key\":\"chip\",\"value\":\"M2\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":390000,\"priceHigh\":390000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQn7wrnWiPCGNQ9PNfaZ2Q1ah8uFWPZZ-WX8KmzxxZqDpsPiCO5ot-u2MKsKLxSlDv8zSXRkcJTf5S76N1dGRAtEkezN5NDRHmbQESaiR6TIS0UZ_M1ZnYdWA\",\"offers\":[{\"seller\":\"Aukey.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10394774150851299873,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":120}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},{\"attribute\":\"reviewCount\",\"evidence\":\"326 reviews\",\"params\":{\"count\":326}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"962 reviews\",\"params\":{\"count\":962}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình gợi ý **Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng** cho bạn.\n\nNếu bạn ưu tiên nhiều người dùng đã mua và review, **Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC** có 962 lượt đánh giá (4.7⭐) nhưng giá cao hơn (**730.000 VND**).\n\nNgoài ra còn có **AUKEY EP-M2** (**390.000 VND**) nếu bạn muốn chọn giá rẻ hơn một chút.\n\nBạn có ưu tiên gì cụ thể không — âm thanh tốt, hay giá rẻ nhất? 😊\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, bạn có thể so sánh giá trên các sàn để chọn mua.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe chụp tai hay true wireless|pin bao lâu|dùng để nghe nhạc hay gọi điện[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "mua gì bây giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn muốn mua cái gì vậy? 😊 Mình có thể giúp bạn tìm sản phẩm, so sánh giá trên các sàn TMĐT, hoặc gợi ý mua sắm theo nhu cầu của bạn.\n\nBạn cần tìm gì cụ thể không?"
+    },
+    {
+      "role": "user",
+      "content": "tai nghe bluetooth"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm tai nghe Bluetooth cho bạn nhé![TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":320000,\"priceHigh\":320000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFoU56yZwiFFSTZc_uCZ-OaPV4yBAQyfWOg7RMnpso4q8kkEkYBLEU-IvzDWO_qSEMXcOAre3U50FtYqa37kg_SVcX4Ag01RZmF3Y_EogiSCmJmUyZNdxLIik\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:8269464481924701883,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":320000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":326}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":730000,\"priceHigh\":730000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQltwIBBiA6uhCkFa2dF_IQz5DV0qtTETjOJP6Cfaem8aI3l8gzv-8J1QcSkthvuIcRTtqeM4_J9cmrZX_xv2u6F7YDImqengGLFqKVxz_EqxAFKIbnLrDb\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:8158148483166526636,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":730000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":962}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":990000,\"priceHigh\":990000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTT0sK6zmU-Iv77SCw2YONaJDhUrrZKvk3_htag9i2gb68S8iibpZ4Berm5R9w1-xFmJui0txEGw6O60pPTvSrN_oxanXJIWUq1YtfWh3hsXD66qcLVxS1V\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":990000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":321}]},{\"key\":\"uncertain:3\",\"name\":\"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1859000,\"priceHigh\":1859000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQD-0l-sI4zw45mGnBBV-7hdOMLPGN94vjoMW1x44s_JKmGFpp7E6ddjdVfCJeeF8BTo8zY9Dlp9rFnsrZGdiI4RhlMd8PKT1I8KpToOJ4zv-_FRbAaq2kz\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:3340121238556858707,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1859000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":163}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe Bluetooth chụp Tai Baseus Inspire XH1\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":2199000,\"priceHigh\":2199000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSHaHwbd1_LipIeUVhiz6jsDOMWIni10GjtkpfEu4zHSa0JMyS9i-wfph02EeS9WOLFHHvIpBfxJj_ZycAZmhUe1tgiYzEAaAfpaiOcDzMYzGni6L6dmL0R\",\"offers\":[{\"seller\":\"Baseus Việt Nam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,catalogid:6558429562907044406,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":2199000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":580}]},{\"key\":\"uncertain:5\",\"name\":\"AUKEY EP-M2 Tai Nghe Bluetooth 5.3,Thiết kế Trong suốt\",\"config\":\"M2\",\"specs\":[{\"key\":\"chip\",\"value\":\"M2\"}],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":390000,\"priceHigh\":390000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQn7wrnWiPCGNQ9PNfaZ2Q1ah8uFWPZZ-WX8KmzxxZqDpsPiCO5ot-u2MKsKLxSlDv8zSXRkcJTf5S76N1dGRAtEkezN5NDRHmbQESaiR6TIS0UZ_M1ZnYdWA\",\"offers\":[{\"seller\":\"Aukey.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+bluetooth&prds=localAnnotatedOfferId:1,productid:10394774150851299873,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.4,\"ratingCount\":120}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Thế Giới Di Động\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 4.8\",\"params\":{\"value\":4.8}},{\"attribute\":\"price\",\"evidence\":\"320000 VND\",\"params\":{\"priceVnd\":320000}},{\"attribute\":\"reviewCount\",\"evidence\":\"326 reviews\",\"params\":{\"count\":326}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"962 reviews\",\"params\":{\"count\":962}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình gợi ý **Tai nghe Bluetooth True Wireless Havit TW996 Pro Trắng** cho bạn.\n\nNếu bạn ưu tiên nhiều người dùng đã mua và review, **Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC** có 962 lượt đánh giá (4.7⭐) nhưng giá cao hơn (**730.000 VND**).\n\nNgoài ra còn có **AUKEY EP-M2** (**390.000 VND**) nếu bạn muốn chọn giá rẻ hơn một chút.\n\nBạn có ưu tiên gì cụ thể không — âm thanh tốt, hay giá rẻ nhất? 😊\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, bạn có thể so sánh giá trên các sàn để chọn mua.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+bluetooth\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=tai+nghe+bluetooth\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]tai nghe chụp tai hay true wireless|pin bao lâu|dùng để nghe nhạc hay gọi điện[/FOLLOWUPS]"
+    }
+  ]
+}

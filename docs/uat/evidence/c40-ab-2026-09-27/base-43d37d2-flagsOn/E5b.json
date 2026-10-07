@@ -1,0 +1,137 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 13782,
+  "evidenceId": "eff19e08-b245-428c-86c6-bc18a7bfb764",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10480,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phố đi bộ Bùi Viện",
+      "rating": 4.3,
+      "count": 27462,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu vui chơi trẻ em công viên Tao Đàn",
+      "rating": 4.6,
+      "count": 46,
+      "distance_km": 1.1,
+      "address": "QMFR+VC5, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 170,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+      "rating": 4.2,
+      "count": 378,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15648,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12809,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1544,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn đi chơi gần vị trí hiện tại (Quận 1, TP.HCM), cuối tuần này với 1-2 người, tầm giá phổ thông.\nMình chọn **Công viên Tao Đàn** cho bạn 🎯\n\nCông viên này cách bạn chỉ ~1km, mở cửa cả ngày (7:00–22:00), có 4.5⭐ từ 15.648 đánh giá — đó là bằng chứng mạnh mẽ về chất lượng. Cuối tuần đi chơi ở đây vừa gần, vừa yên tĩnh, có không gian xanh để thả lỏng, phù hợp với 1-2 người và không tốn kém.\n\nNếu bạn muốn chọn khác: **Đường sách TP.HCM** (cách 0.5km, 4.6⭐) cũng rất gần và lý tưởng nếu thích dạo bộ, uống cà phê, xem sách; hoặc **Timezone Estella Place** (4.9⭐, 1.544 đánh giá) nếu muốn chơi arcade/VR/bowling nhưng xa hơn một chút (~6km).\n\nBạn có muốn biết thêm chi tiết về công viên Tao Đàn, hay thích một trong hai chỗ kia hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://congvientaodan.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn có gì chơi|Đường sách TP.HCM hay hơn|Timezone Estella Place arcade|Quán ăn gần công viên[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Bạn muốn làm gì? (ăn uống / đi chơi / giải trí / spa & làm đẹp)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]ăn uống|đi chơi / giải trí|spa & làm đẹp[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi gần vị trí hiện tại (Quận 1, TP.HCM), cuối tuần này với 1-2 người, tầm giá phổ thông.\nMình chọn **Công viên Tao Đàn** cho bạn 🎯\n\nCông viên này cách bạn chỉ ~1km, mở cửa cả ngày (7:00–22:00), có 4.5⭐ từ 15.648 đánh giá — đó là bằng chứng mạnh mẽ về chất lượng. Cuối tuần đi chơi ở đây vừa gần, vừa yên tĩnh, có không gian xanh để thả lỏng, phù hợp với 1-2 người và không tốn kém.\n\nNếu bạn muốn chọn khác: **Đường sách TP.HCM** (cách 0.5km, 4.6⭐) cũng rất gần và lý tưởng nếu thích dạo bộ, uống cà phê, xem sách; hoặc **Timezone Estella Place** (4.9⭐, 1.544 đánh giá) nếu muốn chơi arcade/VR/bowling nhưng xa hơn một chút (~6km).\n\nBạn có muốn biết thêm chi tiết về công viên Tao Đàn, hay thích một trong hai chỗ kia hơn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Công viên Tao Đàn\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4535741078771275632\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://congvientaodan.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Tao Đàn có gì chơi|Đường sách TP.HCM hay hơn|Timezone Estella Place arcade|Quán ăn gần công viên[/FOLLOWUPS]"
+    }
+  ]
+}

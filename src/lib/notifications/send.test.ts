@@ -19,13 +19,29 @@ vi.mock('web-push', () => ({ default: { setVapidDetails: h.setVapidDetails, send
 
 import { sendNotificationToUser } from './send'
 
-const sub = (id: string) => ({ id, provider: 'webpush', subscription_data: { endpoint: 'e' + id, keys: { p256dh: 'p', auth: 'a' } } })
+const sub = (id: string) => ({ id, provider: 'webpush', subscription_data: { endpoint: 'https://fcm.googleapis.com/fcm/send/e' + id, keys: { p256dh: 'p', auth: 'a' } } })
 
 beforeEach(() => {
   vi.clearAllMocks()
   h.state.subs = []
   h.state.subsError = null
   h.state.pruned = null
+})
+
+describe('security audit 2026-09-30 · a row written straight through PostgREST cannot aim the server', () => {
+  it('🚨 an endpoint that is not a browser push service is never requested, and the row is disabled', async () => {
+    h.state.subs = [
+      { id: 'evil', provider: 'webpush', subscription_data: { endpoint: 'http://169.254.169.254/latest/meta-data/', keys: { p256dh: 'p', auth: 'a' } } },
+      { id: 'evil2', provider: 'webpush', subscription_data: { endpoint: 'https://attacker.example/collect', keys: { p256dh: 'p', auth: 'a' } } },
+      sub('ok'),
+    ]
+    h.sendNotification.mockResolvedValue(undefined)
+    const r = await sendNotificationToUser('u1', { title: 'T', body: 'B' })
+    expect(h.sendNotification).toHaveBeenCalledTimes(1)
+    expect(h.sendNotification.mock.calls[0][0].endpoint).toBe('https://fcm.googleapis.com/fcm/send/eok')
+    expect(h.state.pruned).toEqual(['evil', 'evil2'])
+    expect(r).toMatchObject({ attempted: 3, sent: 1, failed: 0, gone: 2 })
+  })
 })
 
 describe('sendNotificationToUser → PushResult', () => {

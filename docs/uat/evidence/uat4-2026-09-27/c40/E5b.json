@@ -1,0 +1,207 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 19088,
+  "evidenceId": "e49e37f8-96ff-4e0a-bf36-043c1a305fb0",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim, karaoke, bar, quán nhạc sống Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "cinema"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke, bar nhạc sống Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke MEI",
+      "rating": 4.9,
+      "count": 1505,
+      "price": "100-200 N ₫",
+      "hours": "09:00–03:00",
+      "distance_km": 0.7,
+      "address": "159-161-163 Hàm Nghi, Quận 1, Hồ Chí Minh 710000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Avatar",
+      "rating": 4.9,
+      "count": 6411,
+      "price": "100-500 N ₫",
+      "hours": "12:00–05:00",
+      "distance_km": 2.3,
+      "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "distance_km": 0.9,
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Acoustic Bar",
+      "rating": 4.5,
+      "count": 3210,
+      "price": "100-500 N ₫",
+      "hours": "19:00–00:00",
+      "distance_km": 1.3,
+      "address": "Ngô Thời Nhiệm/6E Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 72407, Việt Nam"
+    },
+    {
+      "name": "Karaoke The Tree Lê Hiến Mai",
+      "rating": 4.9,
+      "count": 134,
+      "price": "200-500 N ₫",
+      "hours": "11:30–04:00",
+      "distance_km": 5.6,
+      "address": "10A Lê Hiến Mai, Cát Lái, Hồ Chí Minh 700250, Việt Nam"
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "rating": 4.3,
+      "count": 2070,
+      "hours": "10:00–05:00",
+      "distance_km": 2.4,
+      "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke SAFARI",
+      "rating": 4.3,
+      "count": 453,
+      "hours": "11:00–04:00",
+      "distance_km": 1.7,
+      "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "OpenShare Café",
+      "rating": 4.2,
+      "count": 166,
+      "price": "100-200 N ₫",
+      "hours": "07:00–21:00",
+      "distance_km": 5.6,
+      "address": "140 Cộng Hòa, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Limited Karaoke",
+      "rating": 3.8,
+      "count": 97,
+      "price": "Trên 1 Tr ₫",
+      "hours": "16:00–04:00",
+      "distance_km": 1.7,
+      "address": "363 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Couple Cinema Quận 9",
+      "rating": 4.6,
+      "count": 117,
+      "hours": "09:30–00:00",
+      "distance_km": 10.6,
+      "address": "8b Phan Chu Trinh, Tăng Nhơn Phú, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Karaoke MEI",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1505,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "09:00–03:00"
+      }
+    },
+    {
+      "name": "Karaoke Avatar",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6411,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "12:00–05:00"
+      }
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 94,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "14:00–03:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những địa điểm giải trí hay ở Quận 1 cho bạn nhé! 🎬\n\nMình gợi ý **Karaoke MEI** cho bạn! 🎤 Nó cách bạn chỉ 0.7km, mở từ 9h sáng đến 3h sáng, và có **4.9⭐ từ 1.505 đánh giá** — rất được yêu thích.\n\nNếu muốn nhiều lựa chọn hơn, **Karaoke Avatar** cũng đáng xem — cùng rating 4.9⭐ nhưng có 6.411 đánh giá (nhiều hơn), mở đến 5h sáng, tuy xa hơn chút (2.3km). Hoặc **BB Restaurant** nếu muốn vừa ăn vừa hát, gần lắm (0.9km).\n\nBạn muốn đi karaoke hay thử bar nhạc sống khác? 🎵\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Karaoke MEI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1743439115304590801\",\"primary\":true},{\"label\":\"🌐 Facebook - Karaoke MEI\",\"type\":\"website\",\"url\":\"https://www.facebook.com/KaraokeMei/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Karaoke Avatar gần Bến Thành|Bar nhạc sống Quận 1|Rạp phim gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn làm gì ở Quận 1 vậy? 😊 Mình có thể gợi ý:\n\n• **Ăn tối** - quán ăn sang chút với bạn bè\n• **Bar nhạc sống** - chill với nhạc live, vừa ăn vừa uống\n• **Spa/massage** - thư giãn sau tuần làm việc\n\nHay bạn muốn khám phá cái gì khác? Mình sẽ tìm những chỗ phù hợp với phong cách của bạn! 🎉"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những địa điểm giải trí hay ở Quận 1 cho bạn nhé! 🎬\n\nMình gợi ý **Karaoke MEI** cho bạn! 🎤 Nó cách bạn chỉ 0.7km, mở từ 9h sáng đến 3h sáng, và có **4.9⭐ từ 1.505 đánh giá** — rất được yêu thích.\n\nNếu muốn nhiều lựa chọn hơn, **Karaoke Avatar** cũng đáng xem — cùng rating 4.9⭐ nhưng có 6.411 đánh giá (nhiều hơn), mở đến 5h sáng, tuy xa hơn chút (2.3km). Hoặc **BB Restaurant** nếu muốn vừa ăn vừa hát, gần lắm (0.9km).\n\nBạn muốn đi karaoke hay thử bar nhạc sống khác? 🎵\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Karaoke MEI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1743439115304590801\",\"primary\":true},{\"label\":\"🌐 Facebook - Karaoke MEI\",\"type\":\"website\",\"url\":\"https://www.facebook.com/KaraokeMei/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Karaoke Avatar gần Bến Thành|Bar nhạc sống Quận 1|Rạp phim gần đây[/FOLLOWUPS]"
+    }
+  ]
+}

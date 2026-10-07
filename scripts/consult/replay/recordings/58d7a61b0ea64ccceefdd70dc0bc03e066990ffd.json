@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"The Lủi\" OR \"Nhà Hàng 56\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:17:54.467Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Tửu Lầu 13\" OR \"The Lủi\" OR \"Nhà Hàng 56\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Lủi (@thelui.official)",
+    "link": "https://www.tiktok.com/@thelui.official",
+    "snippet": "The Lủi (@thelui.official) trên TikTok |6378 Lượt thích.577 Follower.The Lủi 177 Nguyễn Cư Trinh, P. Cầu Ông Lãnh, Q1, HCM Đặt bàn: 0933544639.",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng 56 - Quận 10 (@nh.hang.56)",
+    "link": "https://www.tiktok.com/@nh.hang.56",
+    "snippet": "Đ.Đồng Nai Q10 (P.Hoà Hưng) 0865 947 556 · Hòa chung không khí nhộn nhịp cùng ca sĩ Hồ Việt Trung tại Nhà Hàng 56 · Phòng Tiệc 40 khách tại Nhà Hàng 56 .",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13)",
+    "link": "https://www.tiktok.com/@nhahangtuulau13",
+    "snippet": "Nhà Hàng Tửu Lầu 13 · @nhahangtuulau13 · Đặt Bàn Ứng Tuyển 09.02.50.57.61 06 Nam Quốc Cang, Phạm Ngũ Lão, Quận 1 https://nhahangtuulau13.vn.",
+    "position": 3
+   },
+   {
+    "title": "Một buổi tối vui tại The Lủi 🍻 Có bia lạnh, có bạn bè và rất ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7637875950545407252",
+    "snippet": "26 Lượt thích,Video TikTok từ The Lủi (@thelui.official): \"Một buổi tối vui tại The Lủi Có bia lạnh, có bạn bè và rất nhiều tiếng cười.",
+    "position": 4
+   },
+   {
+    "title": "Khách xinh ở The Lủi không bao giờ thiếu #thelui # ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7677855446144748820",
+    "snippet": "Video TikTok từ The Lủi (@thelui.official): \"Khách xinh ở The Lủi không bao giờ thiếu #thelui #quannhauquan1 #quannhau #xinhyeu\".âm thanh ...",
+    "position": 5
+   },
+   {
+    "title": "Giải vía bằng liệu pháp lạnh ở The Lủi nha anh emm - #thelui",
+    "link": "https://www.tiktok.com/@thelui.official/video/7644869587355553044",
+    "snippet": "Video TikTok từ The Lủi (@thelui.official): \"Giải vía bằng liệu pháp lạnh ở The Lủi nha anh emm #thelui #TigerBeer #BatLonCoolPack ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Sang Trọng Nhất Quận 10",
+    "link": "https://www.tiktok.com/@nh.hang.56/video/7519495356120435986",
+    "snippet": "189 Lượt thích,Video TikTok từ Nhà Hàng 56 - Quận 10 (@nh.hang.56): \"Tìm hiểu về nhà hàng 56 tại Quận 10 với phòng VIP sang trọng và các món ...",
+    "position": 7
+   },
+   {
+    "title": "Khách ơi, vô đây tụi em lo! 🍺 #thelui #quannhauquan1 # ...",
+    "link": "https://www.tiktok.com/@thelui.official/video/7670835859490458900",
+    "snippet": "Nhắc bạn rằng thứ Sáu rồi, hãy đến Lủi Quán. Lủi Quán nằm ở Quận 1. Keywords: lủi quán, the lủi quận 1, quán nhậu quận 1, quán nhậu, quán ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

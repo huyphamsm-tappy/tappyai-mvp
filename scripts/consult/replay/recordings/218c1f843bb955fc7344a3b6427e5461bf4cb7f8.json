@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max\" OR \"UAG Monarch Pro Case iPhone 17 Series (Titanium)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:24:30.214Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max\" OR \"UAG Monarch Pro Case iPhone 17 Series (Titanium)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

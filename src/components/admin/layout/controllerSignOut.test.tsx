@@ -161,7 +161,7 @@ describe('no second authentication mechanism was introduced', () => {
   })
 
   it('the consumer sign-out goes through the same helper', () => {
-    const consumer = readFileSync(join(ROOT, 'src/app/profile/SignOutButton.tsx'), 'utf8')
+    const consumer = readFileSync(join(ROOT, 'src/app/(app)/profile/SignOutButton.tsx'), 'utf8')
     expect(consumer).toContain("from '@/lib/auth/signOut'")
     expect(consumer).not.toContain('auth.signOut(')
   })

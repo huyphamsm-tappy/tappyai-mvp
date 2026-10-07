@@ -1,0 +1,149 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15738,
+  "evidenceId": "76d550bc-fab7-4725-80e6-7dbbf95e53e3",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa couple massage 2 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Senva Spa - Quận 1",
+      "rating": 4.9,
+      "count": 856,
+      "hours": "09:30–23:00",
+      "distance_km": 1,
+      "address": "153 Ký Con, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3108,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nàng Sen Message - Quận 1 Sài Gòn",
+      "rating": 4.8,
+      "count": 488,
+      "hours": "09:00–23:00",
+      "distance_km": 0.8,
+      "address": "74 Nguyễn Công Trứ, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1817,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CHẠM SPA",
+      "rating": 4.9,
+      "count": 189,
+      "hours": "10:00–19:30",
+      "distance_km": 1.3,
+      "address": "82/20A Mạc Đĩnh Chi, Đa Kao, Quận 1, Thành phố Hồ Chí Minh 700000, Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 71000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Senva Spa - Quận 1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 856,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "09:30–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3108,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nàng Sen Message - Quận 1 Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 488,
+        "distance_km": 0.8,
+        "open_now": true,
+        "opening_hours": "09:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1817,
+        "distance_km": 1.7,
+        "open_now": true,
+        "opening_hours": "10:00–22:15",
+        "attributes": []
+      }
+    },
+    {
+      "name": "CHẠM SPA",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 189,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "10:00–19:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa couple chất lượng gần Quận 1 cho bạn nhé.\n\nMình chọn **Senva Spa - Quận 1** cho bạn 👌 Spa này cách bạn chỉ 1km, đang mở cửa tới 23:00 nên hoàn hảo cho tối nay. Với 4.9⭐ từ 856 đánh giá, chất lượng massage couple rất được khách hàng tin tưởng.\n\nNếu muốn lựa chọn khác, **Massage Cổ Phong Q1** cũng rất tốt — cùng rating 4.9 nhưng có tới 3.108 đánh giá (nhiều hơn), mở tới 22:30, chỉ xa thêm 0.3km. Hoặc **Nàng Sen Message** gần nhất (0.8km), rating 4.8, mở tới 23:00 nếu bạn ưu tiên gần hơn.\n\nBạn có muốn mình tìm thêm thông tin về giá gói couple hay sẵn sàng đặt rồi?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Senva Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3479517558071959535\",\"primary\":true},{\"label\":\"📞 Liên hệ Senva Spa\",\"type\":\"website\",\"url\":\"http://wa.me/+84768333868\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá gói couple Senva Spa|Massage Cổ Phong Q1 có gì khác|Nàng Sen Message tối nay[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa couple chất lượng gần Quận 1 cho bạn nhé.\n\nMình chọn **Senva Spa - Quận 1** cho bạn 👌 Spa này cách bạn chỉ 1km, đang mở cửa tới 23:00 nên hoàn hảo cho tối nay. Với 4.9⭐ từ 856 đánh giá, chất lượng massage couple rất được khách hàng tin tưởng.\n\nNếu muốn lựa chọn khác, **Massage Cổ Phong Q1** cũng rất tốt — cùng rating 4.9 nhưng có tới 3.108 đánh giá (nhiều hơn), mở tới 22:30, chỉ xa thêm 0.3km. Hoặc **Nàng Sen Message** gần nhất (0.8km), rating 4.8, mở tới 23:00 nếu bạn ưu tiên gần hơn.\n\nBạn có muốn mình tìm thêm thông tin về giá gói couple hay sẵn sàng đặt rồi?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Senva Spa trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3479517558071959535\",\"primary\":true},{\"label\":\"📞 Liên hệ Senva Spa\",\"type\":\"website\",\"url\":\"http://wa.me/+84768333868\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá gói couple Senva Spa|Massage Cổ Phong Q1 có gì khác|Nàng Sen Message tối nay[/FOLLOWUPS]"
+    }
+  ]
+}

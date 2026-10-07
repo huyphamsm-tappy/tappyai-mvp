@@ -1,0 +1,304 @@
+{
+  "id": "F3",
+  "text": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+  "parent": null,
+  "status": 200,
+  "ms": 16040,
+  "evidenceId": "6ea8b390-2d3b-4e1b-9dd8-e3e79ebe18c4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán cà phê lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "cafe"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng lãng mạn yên tĩnh Quận 3",
+        "location": "Quận 3, TP.HCM",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "TP.HCM"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Every Half Coffee Roasters - Võ Thị Sáu",
+      "rating": 4.8,
+      "count": 1119,
+      "hours": "07:00–21:30",
+      "address": "232/23 Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trên Tầng Thượng",
+      "rating": 4.7,
+      "count": 3234,
+      "price": "1-600.000 ₫",
+      "hours": "07:30–23:30",
+      "address": "540/19 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Y Coffee Roastery",
+      "rating": 4.8,
+      "count": 177,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–22:00",
+      "address": "428 Võ Văn Tần, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "THE WISELANDS Coffee",
+      "rating": 4.5,
+      "count": 1951,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–23:00",
+      "address": "216 Điện Biên Phủ, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+      "rating": 4.7,
+      "count": 67,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–22:00",
+      "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Coffee House - Cao Thắng",
+      "rating": 4.3,
+      "count": 3090,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–22:00",
+      "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Caramew cafe",
+      "rating": 4.4,
+      "count": 444,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–22:30",
+      "address": "108/26A Trần Quang Diệu, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Phê La - Trương Định",
+      "rating": 4,
+      "count": 2147,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–22:00",
+      "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Sài Gòn Đậm Đắng",
+      "rating": 4,
+      "count": 353,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–02:00",
+      "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Barista Collective",
+      "rating": 4.6,
+      "count": 942,
+      "price": "1-100.000 ₫",
+      "hours": "08:00–17:00",
+      "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Hầm Quận 3",
+      "rating": 4.9,
+      "count": 1687,
+      "hours": "17:00–23:00",
+      "address": "540/17 Cách Mạng Tháng Tám, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Padme Chay",
+      "rating": 4.9,
+      "count": 1644,
+      "hours": "10:00–22:00",
+      "address": "290/28 Nam Kỳ Khởi Nghĩa, Quận 3, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Côn Sơn",
+      "rating": 4.6,
+      "count": 874,
+      "hours": "07:00–22:00",
+      "address": "80-84 Trần Quốc Thảo, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Lúa Về | Nhà Hàng Hải Sản Ngon Quận 3 |Quán Nhậu Ngon Trường Sa",
+      "rating": 4.5,
+      "count": 35,
+      "hours": "10:00–02:00",
+      "address": "812 Trường Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Shri Lifestyle Dining",
+      "rating": 4.2,
+      "count": 1268,
+      "hours": "17:00–23:30",
+      "address": "Tầng23Centec Tower, 72 74 Nguyễn Thị Minh Khai, Quận 3, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Ẩm Thực Quê Nhà Quận 3",
+      "rating": 4,
+      "count": 2440,
+      "hours": "09:00–23:00",
+      "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng 939 Hòn Chồng",
+      "rating": 4,
+      "count": 1625,
+      "hours": "09:00–23:30",
+      "address": "927 Hoàng Sa, Nhiêu Lộc, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Tiệm cơm, cafe Hoa Giấy",
+      "rating": 4,
+      "count": 547,
+      "hours": "07:00–22:00",
+      "address": "19 Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "a thăng eatery",
+      "rating": 4.8,
+      "count": 225,
+      "hours": "11:00–14:00, 17:00–21:00",
+      "address": "184/28 Lý Chính Thắng, Quận 3, Hồ Chí Minh 95000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Every Half Coffee Roasters - Võ Thị Sáu",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1119,
+        "open_now": true,
+        "opening_hours": "07:00–21:30"
+      }
+    },
+    {
+      "name": "Trên Tầng Thượng",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 3234,
+        "price_up_to_vnd": 600000,
+        "open_now": true,
+        "opening_hours": "07:30–23:30"
+      }
+    },
+    {
+      "name": "Y Coffee Roastery",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 177,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Trạm Hầm Quận 3",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1687,
+        "open_now": true,
+        "opening_hours": "17:00–23:00"
+      }
+    },
+    {
+      "name": "Padme Chay",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1644,
+        "open_now": true,
+        "opening_hours": "10:00–22:00"
+      }
+    },
+    {
+      "name": "Nhà Hàng Côn Sơn",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 874,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm cho bạn những chỗ lãng mạn yên tĩnh ở Quận 3 nhé! 🌙Tối nay trời TP.HCM khá đẹp, 26°C, may nhưng ít mưa (19% khả năng) — hoàn hảo cho date! 😊\n\nMình gợi ý 2 chỗ lãng mạn yên tĩnh ở Quận 3:\n\n**Every Half Coffee Roasters - Võ Thị Sáu** — **4.8⭐ (1.119 đánh giá Google Maps)**\nQuán cà phê rang cà phê chất lượng, không gian yên tĩnh, mở đến 21:30.\n\n**Trên Tầng Thượng** — **4.7⭐ (3.234 đánh giá Google Maps)**\nQuán cà phê + nhà hàng + bar cocktail, view tầng cao, không gian lãng mạn, mở đến 23:30.\n\nNếu muốn ăn cơm tối trước, **Trạm Hầm Quận 3** (4.9⭐, 1.687 đánh giá) là nhà hàng nướng ngon, mở từ 17:00, rồi sau đó ghé café để tâm sự tiếp cũng được! \n\nBạn muốn chỗ nào hơn — café yên tĩnh hay nhà hàng có đồ ăn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Every Half Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4177453590773664397\",\"primary\":true},{\"label\":\"🍹 Xem Trên Tầng Thượng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1776305989750340494\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng lãng mạn Quận 3|Quán bar yên tĩnh|Chỗ ngồi view đẹp[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm cho bạn những chỗ lãng mạn yên tĩnh ở Quận 3 nhé! 🌙Tối nay trời TP.HCM khá đẹp, 26°C, may nhưng ít mưa (19% khả năng) — hoàn hảo cho date! 😊\n\nMình gợi ý 2 chỗ lãng mạn yên tĩnh ở Quận 3:\n\n**Every Half Coffee Roasters - Võ Thị Sáu** — **4.8⭐ (1.119 đánh giá Google Maps)**\nQuán cà phê rang cà phê chất lượng, không gian yên tĩnh, mở đến 21:30.\n\n**Trên Tầng Thượng** — **4.7⭐ (3.234 đánh giá Google Maps)**\nQuán cà phê + nhà hàng + bar cocktail, view tầng cao, không gian lãng mạn, mở đến 23:30.\n\nNếu muốn ăn cơm tối trước, **Trạm Hầm Quận 3** (4.9⭐, 1.687 đánh giá) là nhà hàng nướng ngon, mở từ 17:00, rồi sau đó ghé café để tâm sự tiếp cũng được! \n\nBạn muốn chỗ nào hơn — café yên tĩnh hay nhà hàng có đồ ăn?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Xem Every Half Coffee\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4177453590773664397\",\"primary\":true},{\"label\":\"🍹 Xem Trên Tầng Thượng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1776305989750340494\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nhà hàng lãng mạn Quận 3|Quán bar yên tĩnh|Chỗ ngồi view đẹp[/FOLLOWUPS]"
+    }
+  ]
+}

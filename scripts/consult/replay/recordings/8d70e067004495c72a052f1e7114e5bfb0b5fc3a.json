@@ -1,0 +1,564 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan du lịch Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:16:50.357Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan du lịch Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,12z",
+   "engine": "google"
+  },
+  "ll": "@16.0542643,108.2021956,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Ngũ Hành Sơn",
+    "address": "81 Huyền Trân Công Chúa, Hoà Hải, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0037104,
+    "longitude": 108.2631605,
+    "rating": 4.4,
+    "ratingCount": 42954,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "website": "https://nguhanhson.org/",
+    "phoneNumber": "+84 236 3961 114",
+    "description": "Thắng cảnh Ngũ Hành Sơn có nhiều hang động và chùa chiền được xây cất công phu với cảnh sắc hữu tình.",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:30",
+     "Thứ Tư": "07:00–17:30",
+     "Thứ Năm": "07:00–17:30",
+     "Thứ Sáu": "07:00–17:30",
+     "Thứ Bảy": "07:00–17:30",
+     "Chủ Nhật": "07:00–17:30",
+     "Thứ Hai": "07:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn5Eod7tqk4cjwu_5SJ8y3lPioPIyAt5-zXrERPNIphuy9xIwYg1m2IT69S4jdGnCWzktn_9BhazB-1oJfbzeYJNCGpgUJGtsO6EaYex8PqYeANs10_TWKo9ofmu5l0_DAB-iCbHg",
+    "cid": "13577824764986909893",
+    "fid": "0x31420dd4e14b2edb:0xbc6e1faf738be4c5",
+    "placeId": "ChIJ2y5L4dQNQjERxeSLc68fbrw"
+   },
+   {
+    "position": 2,
+    "title": "Tượng Cá Chép Hóa Rồng",
+    "address": "Đ. Trần Hưng Đạo, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0629079,
+    "longitude": 108.22981829999999,
+    "rating": 4.5,
+    "ratingCount": 1483,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkPQB58Igdi2vadu6qhNXgG_5qr54WbBukErOtqoLC-bdypVw1GbNRznfGsYLsgM_AB4uLFP82PanpiLlkSHX1GoUMXzyuD9-N11YJ3fRMdul1gFjz7W5plYLlYtJ8YCHHv0rFOvg",
+    "cid": "11169243598798745011",
+    "fid": "0x3142198c825000e1:0x9b011fe03c346db3",
+    "placeId": "ChIJ4QBQgowZQjERs200POAfAZs"
+   },
+   {
+    "position": 3,
+    "title": "Bảo tàng 3D Art In Paradise",
+    "address": "Lô 10 Trần Nhân Tông, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.0954282,
+    "longitude": 108.2431088,
+    "rating": 4.4,
+    "ratingCount": 3418,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng nghệ thuật"
+    ],
+    "website": "http://artinparadise.com.vn/",
+    "phoneNumber": "+84 911 641 100",
+    "description": "Bảo tàng tương tác cho du khách tạo dáng chụp ảnh vui nhộn trước những bức tranh 3D theo chủ đề.",
+    "openingHours": {
+     "Thứ Ba": "08:30–18:00",
+     "Thứ Tư": "08:30–18:00",
+     "Thứ Năm": "08:30–18:00",
+     "Thứ Sáu": "08:30–18:00",
+     "Thứ Bảy": "08:30–18:00",
+     "Chủ Nhật": "08:30–18:00",
+     "Thứ Hai": "08:30–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmVjxd2gmxtMQClteg2duC8VT9Fid-bpOhouGNdQKuwe5yKM6Q0KPSo4mtb7jWKkgY_Dq1Zyzqxhj54kOHOkkb1g7PGHiTY9m9aRUVjzTT0iY0QX5nSqOlI8CDGRrpJ-EDEW4Ms",
+    "cid": "10503400368954609584",
+    "fid": "0x314217f750645271:0x91c392fc753f0fb0",
+    "placeId": "ChIJcVJkUPcXQjERsA8_dfySw5E"
+   },
+   {
+    "position": 4,
+    "title": "Ghềnh Bàng",
+    "address": "Hoàng Sa, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1124336,
+    "longitude": 108.31163219999999,
+    "rating": 4.5,
+    "ratingCount": 1162,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "description": "Khu vực ven biển nổi tiếng có khỉ, một khu vực nhỏ đầy cát, các phiến đá gồ ghề và vách đá phủ đầy cây xanh.",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlNEvrNxBQJtD8A_cDzwiAxgGO9o1DdZssJcPv0IXqEQOjr1UWbMK5HNVtzKpdGK2wdSg7GF_x_xfGgYm55ZK4bCVi9E1C2ScUy4L2Og47eOl5v5G0XxjUg9sbAyD8KU4EhODp5",
+    "cid": "18071023613830469926",
+    "fid": "0x31423df2819c425b:0xfac92c3b7e0f9926",
+    "placeId": "ChIJW0KcgfI9QjERJpkPfjssyfo"
+   },
+   {
+    "position": 5,
+    "title": "Cầu Rồng",
+    "address": "Cầu Rồng, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0611042,
+    "longitude": 108.2276926,
+    "rating": 4.5,
+    "ratingCount": 9563,
+    "type": "Cầu",
+    "types": [
+     "Cầu",
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWleLszCZMq_aKjTP_8920E358U0pjohbFJ2h6466XOuS0krtBjniCx3vBmP0VpPnyNkLLzN5tVzidYFMpc5MLyX2IF6ER-mW538Mf1N-rGC2Mi-OPjLtF95oHp8qNegHQT3hNDLpsvhS2aO",
+    "cid": "329807663884316974",
+    "fid": "0x31421996588a512f:0x493b652aa06b12e",
+    "placeId": "ChIJL1GKWJYZQjERLrEGqlK2kwQ"
+   },
+   {
+    "position": 6,
+    "title": "Nhà Vọng Cảnh",
+    "address": "Nhà Vọng Cảnh, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1351089,
+    "longitude": 108.24537579999999,
+    "rating": 4.5,
+    "ratingCount": 1131,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlDfKiTSerWoeCQiaTS1cysxRT12ytG7oQYKsk9i6lzgR_Maa_hDKOziuzKMoIfIIzfFVJyazjs5WFZvRTVAQIxtDtCBozPAyPWahTOSeYxFhgjFTxlGIW5BJgyV5MN-66pxgU",
+    "cid": "12683501688321103842",
+    "fid": "0x31423d36cec8c0d3:0xb004d995e07257e2",
+    "placeId": "ChIJ08DIzjY9QjER4ldy4JXZBLA"
+   },
+   {
+    "position": 7,
+    "title": "Mũi Nghê",
+    "address": "Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.118624399999998,
+    "longitude": 108.3368715,
+    "rating": 4.5,
+    "ratingCount": 217,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnlqnes-Dx9Yi2LW9yPT3ZbPV6bBtplH3jw8l_b8tIFXF01Dh4NhNxgMfFdcuIrfzGl8UU_cWq80FeR3pIO_tg5YWY_WeZTFBEjMnmOGKUuADb2fdgiIArPnwwqEBzdlpFBTFNmnA",
+    "cid": "10340325913871484412",
+    "fid": "0x31423e0ba11a79fd:0x8f8037a21e1385fc",
+    "placeId": "ChIJ_XkaoQs-QjER_IUTHqI3gI8"
+   },
+   {
+    "position": 8,
+    "title": "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+    "address": "02 Đ. 2 Tháng 9, Phường, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0603007,
+    "longitude": 108.2232677,
+    "rating": 4.2,
+    "ratingCount": 8228,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng di sản",
+     "Bảo tàng điêu khắc"
+    ],
+    "website": "http://chammuseum.vn/",
+    "phoneNumber": "+84 236 3572 935",
+    "description": "Bảo tàng nhỏ gọn trưng bày một bộ sưu tập các tác phẩm điêu khắc và văn hóa như trang phục và dụng cụ.",
+    "openingHours": {
+     "Thứ Ba": "07:00–17:00",
+     "Thứ Tư": "07:00–17:00",
+     "Thứ Năm": "07:00–17:00",
+     "Thứ Sáu": "07:00–17:00",
+     "Thứ Bảy": "07:00–17:00",
+     "Chủ Nhật": "07:00–17:00",
+     "Thứ Hai": "07:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnifvfBQ9g9YP3JSmnIDEXBX2zagQM4NuQYJMwt-seLooYjKNKPN3-asU8_ybL-w-bmxo3COW1Uv4gje3EHy6CVg_pUzNaLtuhGGsQTQI3eG7Jd-gvjZymdTwqFdFOHL1ebI5JQ",
+    "cid": "7118670658497913132",
+    "fid": "0x314219cdb3006a2d:0x62ca993f60c3a12c",
+    "placeId": "ChIJLWoAs80ZQjERLKHDYD-ZymI"
+   },
+   {
+    "position": 9,
+    "title": "Đỉnh Bàn Cờ",
+    "address": "Bàn cờ, Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1189365,
+    "longitude": 108.2719826,
+    "rating": 4.6,
+    "ratingCount": 4475,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "description": "Đài quan sát trên đỉnh đồi có tầm nhìn ra thành phố Đà Nẵng và biển cùng bức tượng đang trầm ngâm đánh cờ.",
+    "openingHours": {
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30",
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmez6IwmNh26NNJEVD3tl42er_YpWrDBVgQWugs_h7F8JjHlbTdsHsnqmaHdxQZHPega3aOmbeZlaK6o9rfoBaoNdKl1un0tYvPS85qKj1hQRPQKqgVj_aLw4_x2rSpWBLnvhms3g",
+    "cid": "7629724912977954540",
+    "fid": "0x31423d6e34ee0105:0x69e23a6263ffc6ec",
+    "placeId": "ChIJBQHuNG49QjER7Mb_Y2I64mk"
+   },
+   {
+    "position": 10,
+    "title": "Cầu Vàng",
+    "address": "XXVW+XJ, Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.994937499999999,
+    "longitude": 107.9965625,
+    "rating": 4.6,
+    "ratingCount": 14889,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "08:00–19:00",
+     "Thứ Tư": "08:00–19:00",
+     "Thứ Năm": "08:00–19:00",
+     "Thứ Sáu": "08:00–19:00",
+     "Thứ Bảy": "08:00–19:00",
+     "Chủ Nhật": "08:00–19:00",
+     "Thứ Hai": "08:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWly8mZCJJJC5sI6bLwHzcfO0uqLXz-OkPD5nLZ-adO4rDFL9Czv8B8lTbKxoo_NGXQ8o8IxqPcMa9gOIr_aLJwLK8anGx7WFN03HddfhiYSSyO_uYyDHi4HoLSsxf1bE3Splgbc",
+    "cid": "7167034678468850957",
+    "fid": "0x3141f73d19c5d38f:0x63766c11470ab50d",
+    "placeId": "ChIJj9PFGT33QTERDbUKRxFsdmM"
+   },
+   {
+    "position": 11,
+    "title": "Làng Bích họa Đà Nẵng",
+    "address": "75 Nguyễn Văn Linh, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0607296,
+    "longitude": 108.2200532,
+    "rating": 3.9,
+    "ratingCount": 892,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "08:00–21:30",
+     "Thứ Tư": "08:00–21:30",
+     "Thứ Năm": "08:00–21:30",
+     "Thứ Sáu": "08:00–21:30",
+     "Thứ Bảy": "08:00–21:30",
+     "Chủ Nhật": "08:00–21:30",
+     "Thứ Hai": "08:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlyQQyFcBRCUAO3UOcPTXmPSKiMb47iUyQuopDzUjE253kD9fUPD4VYIdAy3Lr3vu0VGz8xTMcFMRF5YrALMZ9F7wpKlqVrBNqDFyAIhP3HKjXMSAXnGnwpi1mEojHXvi--WWq5",
+    "cid": "303671275388798364",
+    "fid": "0x314219cc7844ab91:0x436db6a820a059c",
+    "placeId": "ChIJkatEeMwZQjERnAUKgmrbNgQ"
+   },
+   {
+    "position": 12,
+    "title": "Hòa Phú Thành Tourist - Trượt thác Đà Nẵng",
+    "address": "Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.9577622,
+    "longitude": 107.99169769999999,
+    "rating": 4.4,
+    "ratingCount": 2152,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Câu lạc bộ bắn cung",
+     "Trại thiếu nhi",
+     "Khu cắm trại",
+     "Quán cà phê",
+     "Nhà nghỉ dưỡng cho thuê",
+     "Nhà hàng",
+     "Hồ bơi"
+    ],
+    "website": "http://hoaphuthanh.com.vn/",
+    "phoneNumber": "+84 932 564 777",
+    "bookingLinks": [
+     "https://www.messenger.com/t/465090300194795"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlsGyskZ3eYt8R8848aTn7PY0xx2ytVFPMrxrgqqT-7GjiCyW41jJiYRJKaBDB_XOAvhcTA40t7GtOW92VwsVHuf3dBVgzqTVbTDvigEJwUh1J5JmO1Uz98lK_2Ut124ilzups",
+    "cid": "18083325343099811059",
+    "fid": "0x3141f77af7e9b92b:0xfaf4e097094874f3",
+    "placeId": "ChIJK7np93r3QTER83RICZfg9Po"
+   },
+   {
+    "position": 13,
+    "title": "Công viên Kỳ Quan",
+    "address": "01 Lê Văn Duyệt, Sơn Trà, Đà Nẵng 590000, Việt Nam",
+    "latitude": 16.0988248,
+    "longitude": 108.224412,
+    "rating": 4.4,
+    "ratingCount": 1444,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://dananggoldenbay.com/service/wonder-park/",
+    "phoneNumber": "+84 236 3878 999",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmN4Xc9aJ13WDm8rDKtuF04jxddGcyrFZkuIlydyGpKV8jIzT1NnPQPNIwj4xn-3-4wwgc44AEAWsm-3dE8TPnhWPeR7q60-iZOWy69Ux601fPYKrXH6SrKJDi1loseFI-mA3N3",
+    "cid": "2659656038350782585",
+    "fid": "0x3142198d74e5a281:0x24e8ff134e9f0079",
+    "placeId": "ChIJgaLldI0ZQjEReQCfThP_6CQ"
+   },
+   {
+    "position": 14,
+    "title": "Hải đăng Tiên Sa",
+    "address": "Sơn Trà, Đà Nẵng, Việt Nam",
+    "latitude": 16.1396875,
+    "longitude": 108.3220625,
+    "rating": 4.3,
+    "ratingCount": 478,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Ba": "05:00–21:00",
+     "Thứ Tư": "05:00–21:00",
+     "Thứ Năm": "05:00–21:00",
+     "Thứ Sáu": "05:00–21:00",
+     "Thứ Bảy": "05:00–21:00",
+     "Chủ Nhật": "05:00–21:00",
+     "Thứ Hai": "05:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHb_J6XLO1kJZf-ALsh_fjfB1xKEIpW1xGBJKbg-CGpawT_lAlZI0zK4lKM6k0wXbVAJug5oz2IqikyO9A0mMWRLe7px2k2WxFbHVXrNWdBh49zP4jUx2idh7fOTe_qBwu_oRd9g",
+    "cid": "12349139202169009045",
+    "fid": "0x31423dd18d128a23:0xab60f4ad03227395",
+    "placeId": "ChIJI4oSjdE9QjERlXMiA630YKs"
+   },
+   {
+    "position": 15,
+    "title": "Công ty Du lịch Bản Địa Đà Nẵng",
+    "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0572673,
+    "longitude": 108.22151889999999,
+    "rating": 5,
+    "ratingCount": 12,
+    "type": "Đại lý du lịch tham quan",
+    "types": [
+     "Đại lý du lịch tham quan",
+     "Nhà điều hành du lịch",
+     "Trung tâm thông tin du lịch"
+    ],
+    "website": "https://mytour.danang.vn/",
+    "phoneNumber": "+84 818 433 579",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnkq6QGB5wMaqwAxpMHkMHh_pOUwwoRwdp0JQCOFPDYwHrHhc2CsLw0hjwP7maHot7S_jxsIhXBA0GDkR2eEFFDCNV_RJvE1asPS1qXluIM8uWATMhxusw12cof6vjtSrFuqf2GHwgO609W",
+    "cid": "14002912477811630774",
+    "fid": "0x314219ee23ed6619:0xc25456b53cd8e2b6",
+    "placeId": "ChIJGWbtI-4ZQjERtuLYPLVWVMI"
+   },
+   {
+    "position": 16,
+    "title": "Khu du lịch sinh thái Suối Hoa",
+    "address": "QL14G, Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.958409999999999,
+    "longitude": 107.99502129999999,
+    "rating": 3.5,
+    "ratingCount": 150,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 986 797 461",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnUx0_yu2FVFmh-owFVpCGPFuY-_9s6NKb62U3lYcuLVeBJfvmNcCruPmBWXvVfJYqXv-Fbt8yWZv0EtJFQRv1o0nyA9c_00qAa1zW5BQyoFJ_p0y9rTq2wxa7cNWLsaBKoKavTKA",
+    "cid": "14215357278673645395",
+    "fid": "0x3141f7e396263a2d:0xc5471820f69b2f53",
+    "placeId": "ChIJLTomluP3QTERUy-b9iAYR8U"
+   },
+   {
+    "position": 17,
+    "title": "Ba Na Hills",
+    "address": "Thôn An Sơn, Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.9951364,
+    "longitude": 107.9961392,
+    "rating": 4.4,
+    "ratingCount": 98929,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Thắng cảnh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm4bWBGDpGCzQRDS470qr7fghaNodAUdlQp8Cw852YGpGvRlnwxMsawlg4QxeOrupOYlsS2NLsJYkNuCEk6Btd76DhGnlvnj6EV7mWJ1LBKf65oM9prmMi_kClfFcFG-R_Pt4uROw",
+    "cid": "9546412119288544930",
+    "fid": "0x3141f7b5026661c9:0x847bab3e51ad7ea2",
+    "placeId": "ChIJyWFmArX3QTERon6tUT6re4Q"
+   },
+   {
+    "position": 18,
+    "title": "Bảo Tàng Đà Nẵng",
+    "address": "31 Trần Phú, P, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.074554199999998,
+    "longitude": 108.2239668,
+    "rating": 4.3,
+    "ratingCount": 3718,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng lịch sử"
+    ],
+    "website": "http://baotangdanang.vn/",
+    "phoneNumber": "+84 236 3886 236",
+    "description": "Bảo tàng về lịch sử Đà Nẵng, nơi trưng bày hiện vật văn hóa và quân sự trong một không gian hiện đại.",
+    "openingHours": {
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00",
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmhRNoWyczw1Timfwv2vZF-3i7LhVMm0_DnRT6yFv8xpM4Gb68di96DbbGneTXhdfnu21xiC0RKUeosemIhXZ2yA1LAscq2ApjOrLC44KnnfrV5-JnMkLAm_qMY-6HKu_-YoYlouw",
+    "cid": "14490343043186159448",
+    "fid": "0x3142183691882913:0xc9180a3982a9ef58",
+    "placeId": "ChIJEymIkTYYQjERWO-pgjkKGMk"
+   },
+   {
+    "position": 19,
+    "title": "Du Thuyền Sông Hàn Đà Nẵng (2Da Tickets)",
+    "address": "26 Bạch Đằng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.079141099999998,
+    "longitude": 108.2242785,
+    "rating": 4.4,
+    "ratingCount": 288,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://duthuyensonghan.vn/",
+    "phoneNumber": "+84 796 768 636",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlX9aOVhRzotjV6wfEhchoI6-9ZNn55YQrua8XNY_BF_f84VaFd_d1FGywZ8O0o6CSLwSkRQkzknZr7KP3mC84KymbjT-ITUu6bxP2FA5APr_p1gXV-mSN_Ku4hKlVfVIetX1G4GA",
+    "cid": "4330735287103870185",
+    "fid": "0x314219bbf6a1c67b:0x3c19dccc641354e9",
+    "placeId": "ChIJe8ah9rsZQjER6VQTZMzcGTw"
+   },
+   {
+    "position": 20,
+    "title": "Khu Du Lịch Sinh Thái Lái Thiêu",
+    "address": "Hòa Vang, Đà Nẵng, Việt Nam",
+    "latitude": 15.956201499999999,
+    "longitude": 107.97547139999999,
+    "rating": 3.7,
+    "ratingCount": 237,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "phoneNumber": "+84 902 595 779",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnOndPHxNqH0eNruW1aI83nJGg9FiJOIn8vYug1TaoF6INJvhyZuvzTGmeD4YNrxHM6Hr0PClqEG_3bWZpLYRWb-2_0nsqyVHuk48LLH_UbeFr6nmRLdf1-PVW3MKyOAuiGelQ_uQ",
+    "cid": "8965558059555310985",
+    "fid": "0x3141f77ae8b21549:0x7c6c0f8db8ef4d89",
+    "placeId": "ChIJSRWy6Hr3QTERiU3vuI0PbHw"
+   }
+  ],
+  "credits": 3
+ }
+}

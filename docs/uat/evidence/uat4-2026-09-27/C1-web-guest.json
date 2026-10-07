@@ -1,0 +1,116 @@
+{
+ "ageUrl": "/age-check",
+ "decl": 200,
+ "gate0": "Quay lại\nTappyAI\nTappyAI\n\nTôi có thể giúp bạn tìm thông tin chính xác\n\nHôm nay bạn cảm thấy thế nào?\n\n😊\nVui\n😔\nBuồn\n😤\nStress\n😴\nMệt\n🥱\nChán\n🤩\nHứng\nTìm quán ngon không cần hỏi cả group chat nữa\nDeal hôm nay có gì để biện hộ cho ví tiền không? 💸\nĐi đâu cuối tuần mà về không muốn đi làm sớm hơn?\n📍 Tìm quanh đây\n🌙 Tappy Tối Nay\n✈️ Lên kế hoạch trip\n🎯 Theo dõi giá\nTrang chủ\nChat\nKhám phá\nDeals\nTôi\n🧪 audit dev · g1-place-guard\nrc/web-uat @ befa5a7\nsupabase: zdaprdfgpbpnxyofagmc",
+ "res": [
+  {
+   "i": 1,
+   "q": "quán cà phê yên tĩnh quận 1",
+   "sent": "sent",
+   "ms": 13182,
+   "status": 200,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": " Website Gọi Xem thêm 5 chỗ Xem tất cả trên bản đồ Mở Google Maps để khám phá thêm địa điểm 🔖 Lưu địa điểm Một số gợi ý khác cho bạn: L'Usine Lê Thánh Tôn 1996 Matcha & Coffee Quán cà phê khác ở Quận 1 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  },
+  {
+   "i": 2,
+   "q": "spa gội đầu quận 3",
+   "sent": "sent",
+   "ms": 17135,
+   "status": 200,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": "be Xem thêm 5 chỗ Xem tất cả trên bản đồ Mở Google Maps để khám phá thêm địa điểm 🔖 Lưu địa điểm Một số gợi ý khác cho bạn: Giá gội đầu bao nhiêu Có dịch vụ massage thêm không Nên đặt trước hay walk-in 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  },
+  {
+   "i": 3,
+   "q": "rạp phim gần quận 1",
+   "sent": "sent",
+   "ms": 12145,
+   "status": 200,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": "ite Tìm review trên YouTube Gọi Xem thêm 3 chỗ Xem tất cả trên bản đồ Mở Google Maps để khám phá thêm địa điểm 🔖 Lưu địa điểm Một số gợi ý khác cho bạn: phim hay hôm nay giá vé CGV rạp phim khác quận 1 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  },
+  {
+   "i": 4,
+   "q": "mua tai nghe dưới 1 triệu",
+   "sent": "sent",
+   "ms": 16189,
+   "status": 200,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": "giá Chính hãng Tìm trên Google Tai nghe DareU EH925s Pro 7.1 RGB 990.000₫ Gearvn 4.3 · 15 đánh giá Tìm trên Google So sánh 4 lựa chọn 🔖 Lưu địa điểm tai nghe không dây tai nghe gaming tai nghe chống ồn 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  },
+  {
+   "i": 5,
+   "q": "khách sạn Vũng Tàu gần biển",
+   "sent": "sent",
+   "ms": 18214,
+   "status": 200,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": "n bar Xem bản đồ Review trên TikTok Website Gọi Tìm review trên YouTube Xem thêm 5 chỗ 🔖 Lưu địa điểm Một số gợi ý khác cho bạn: Giá phòng bao nhiêu? Khách sạn nào rẻ hơn? Có khách sạn nào gần Bãi Sau? 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  },
+  {
+   "i": 6,
+   "q": "quán phở ngon quận 5",
+   "sent": "sent",
+   "ms": 1054,
+   "status": 401,
+   "gate": {
+    "age": false,
+    "limit": false
+   },
+   "tail": "a quán phở ngon quận 5 Bạn đã dùng hết 5 câu hỏi AI dùng thử. Đăng nhập để có 15 câu hỏi AI mỗi ngày với Tappy! Đăng nhập để tiếp tục trò chuyện với Tappy và mở khoá mọi tính năng! Đăng nhập để tiếp tục 📍 Tìm quanh đây 🌙 Tappy Tối Nay ✈️ Lên kế hoạch trip 🎯 Theo dõi giá 📍 Gần bạn Trang chủ Chat Khám phá Deals Tôi 🧪 audit dev · g1-place-guard rc/web-uat @ befa5a7 supabase: zdaprdfgpbpnxyofagmc"
+  }
+ ],
+ "http": [
+  "401 GET http://localhost:3007/api/preferences",
+  "401 GET http://localhost:3007/api/preferences",
+  "403 POST http://localhost:3007/api/chat",
+  "401 POST http://localhost:3007/api/conversations",
+  "401 POST http://localhost:3007/api/conversations",
+  "401 POST http://localhost:3007/api/conversations",
+  "401 POST http://localhost:3007/api/conversations",
+  "401 POST http://localhost:3007/api/conversations",
+  "401 POST http://localhost:3007/api/chat"
+ ],
+ "errors": [
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs",
+  "console.error Warning: Expected server HTML to contain a matching <%s> in <%s>.%s span div \n    at span\n    at div\n    at form\n    at div\n    at div\n    at ChatInterface (webpack-internal:///(app-pages-browser)/./src/components/ChatInterface.tsx:964:11)\n    at div\n    at div\n    at ChatPageContent (webpack-intern",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: Hydration failed because the initial UI does not match what was rendered on the server.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at throwOnHydrationMismatch (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs/react-dom",
+  "exception Error: There was an error while hydrating this Suspense boundary. Switched to client rendering.\nSee more info here: https://nextjs.org/docs/messages/react-hydration-error\n    at updateDehydratedSuspenseComponent (webpack-internal:///(app-pages-browser)/./node_modules/next/dist/compiled/react-dom/cjs"
+ ]
+}

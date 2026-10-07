@@ -1,0 +1,391 @@
+
+> tappyai-mvp@0.1.0 build
+> node scripts/check-env.mjs && next build
+
+[C9b] capability INACTIVE — Content Safety publication gate
+      not set: CONTENT_SAFETY_GATE_ENABLED, CONTENT_SAFETY_SCHEMA_MIGRATED
+      consequence: uploads are published without moderation and no lifecycle state is written
+[C9b] capability INACTIVE — Scam Shield / provider response cache (Upstash Redis)
+      not set: UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
+      consequence: every check recomputes from providers — correct, but slower and more costly
+[C9b] capability INACTIVE — Google Analytics 4 (web)
+      not set: NEXT_PUBLIC_GA_MEASUREMENT_ID
+      consequence: gtag.js is not loaded and no page_view / product event reaches GA4
+[C9b] configuration OK — 5/5 required variables present and well-formed
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+
+./src/app/admin/analytics/page.tsx
+139:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/chat/page.tsx
+42:6  Warning: React Hook useCallback has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/HomeV3.tsx
+641:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/HomeView.tsx
+153:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/profile/edit/page.tsx
+45:6  Warning: React Hook useEffect has a missing dependency: 't'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/reviews/clipViewerSinglePost.test.tsx
+13:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/feedAvatarFollow.test.tsx
+18:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/feedFirstTapUnlock.test.tsx
+29:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/likeCountClick.test.tsx
+30:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/likeCountHitArea.test.tsx
+33:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/likeListSheet.test.tsx
+13:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/loginReturnTo.test.tsx
+29:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/new/page.tsx
+339:6  Warning: React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+890:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+928:38  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+995:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/notificationFollowRollback.test.tsx
+31:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/notificationOpensClip.test.tsx
+30:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/reviews/page.tsx
+654:6  Warning: React Hook useEffect has missing dependencies: 'markAllRead' and 'supabase'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/reviews/profileGridDelete.test.tsx
+17:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/admin/deals/DealsManager.tsx
+202:32  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+295:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/chat/PlaceDecision.tsx
+113:5  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/chat/ShoppingDecision.tsx
+144:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+236:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/chat/structured/EntityCard.tsx
+120:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/ChatInterface.tsx
+1149:6  Warning: React Hook useEffect has missing dependencies: 'initialMessage', 'messages.length', and 'setInput'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+1166:6  Warning: React Hook useEffect has missing dependencies: 'conversationId', 'messages.length', 'savedMessages', and 'setMessages'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+1618:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1846:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1981:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/explore/VideoPlayer.tsx
+424:26  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+427:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+451:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+471:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/legalBackNavigation.test.tsx
+29:53  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/share/SharePreview.tsx
+65:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+78:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/TripPlanCard.tsx
+147:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/ui/BrandLogo.tsx
+54:7  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/lib/TappyMascotState.ts
+41:5  Warning: React Hook useMemo has a missing dependency: 'state'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/155) ...
+[admin] unhandled error: B [Error]: Dynamic server usage: Route /api/admin/media/wif-check couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at n (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\app\api\bookings\route.js:1:3388)
+    at E (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\chunks\3383.js:1:10179)
+    at w (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\chunks\3383.js:1:5331)
+    at m (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\chunks\3383.js:1:5635)
+    at E (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\app\api\admin\media\wif-check\route.js:1:2126)
+    at D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19) {
+  description: "Route /api/admin/media/wif-check couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (38/155) 
+[subscription] Error: B [Error]: Dynamic server usage: Route /api/subscription couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:21778)
+    at Object.get (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:29465)
+    at a (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\chunks\8216.js:1:153)
+    at p (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\g1-place-guard\.next\server\app\api\subscription\route.js:1:897)
+    at D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\compiled\next-server\app-route.runtime.prod.js:6:38417
+    at D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\next\dist\server\lib\trace\tracer.js:140:36
+    at NoopContextManager.with (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\@opentelemetry\api\build\src\context\NoopContextManager.js:25:19)
+    at ContextAPI.with (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\@opentelemetry\api\build\src\api\context.js:60:46)
+    at NoopTracer.startActiveSpan (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\@opentelemetry\api\build\src\trace\NoopTracer.js:65:31)
+    at ProxyTracer.startActiveSpan (D:\Claude\Projects\TappyAI\tappyai-mvp\.claude\worktrees\v3-phase4-design\node_modules\@opentelemetry\api\build\src\trace\ProxyTracer.js:36:24) {
+  description: "Route /api/subscription couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (77/155) 
+   Generating static pages (116/155) 
+ ✓ Generating static pages (155/155)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                       Size     First Load JS
+┌ ƒ /                                             8.93 kB         303 kB
+├ ○ /_not-found                                   158 B          87.7 kB
+├ ○ /.well-known/apple-app-site-association       0 B                0 B
+├ ƒ /access-denied                                1.56 kB         189 kB
+├ ƒ /admin                                        8.99 kB         209 kB
+├ ƒ /admin/analytics                              158 B          87.7 kB
+├ ƒ /admin/analytics/activation                   5.96 kB         192 kB
+├ ƒ /admin/analytics/auth                         3.16 kB         220 kB
+├ ƒ /admin/analytics/users                        4.89 kB         190 kB
+├ ƒ /admin/audit                                  4.34 kB         199 kB
+├ ƒ /admin/deals                                  6.67 kB         185 kB
+├ ƒ /admin/marketing/analytics                    1.21 kB         180 kB
+├ ƒ /admin/marketing/audience                     1.21 kB         180 kB
+├ ƒ /admin/marketing/campaigns                    3.31 kB         182 kB
+├ ƒ /admin/marketing/content                      1.21 kB         180 kB
+├ ƒ /admin/marketing/promotions                   1.21 kB         180 kB
+├ ƒ /admin/moderation                             4.76 kB         190 kB
+├ ƒ /admin/notifications                          6.44 kB         185 kB
+├ ƒ /admin/org/memberships                        7.64 kB         193 kB
+├ ƒ /admin/rbac                                   2.09 kB         228 kB
+├ ƒ /admin/settings                               2.08 kB         188 kB
+├ ƒ /admin/users                                  4.78 kB         231 kB
+├ ƒ /age-check                                    6.79 kB         259 kB
+├ ƒ /api/admin/analytics/activation               0 B                0 B
+├ ƒ /api/admin/analytics/auth                     0 B                0 B
+├ ƒ /api/admin/analytics/users                    0 B                0 B
+├ ƒ /api/admin/audit                              0 B                0 B
+├ ƒ /api/admin/deals                              0 B                0 B
+├ ƒ /api/admin/deals/[id]                         0 B                0 B
+├ ƒ /api/admin/deals/upload                       0 B                0 B
+├ ƒ /api/admin/home/snapshot                      0 B                0 B
+├ ƒ /api/admin/marketing/campaigns                0 B                0 B
+├ ƒ /api/admin/marketing/campaigns/[id]           0 B                0 B
+├ ƒ /api/admin/marketing/campaigns/[id]/activate  0 B                0 B
+├ ƒ /api/admin/media/wif-check                    0 B                0 B
+├ ƒ /api/admin/moderation                         0 B                0 B
+├ ƒ /api/admin/moderation/[id]/resolve            0 B                0 B
+├ ƒ /api/admin/notifications/broadcast            0 B                0 B
+├ ƒ /api/admin/notifications/send                 0 B                0 B
+├ ƒ /api/admin/org/memberships                    0 B                0 B
+├ ƒ /api/admin/rbac/roles                         0 B                0 B
+├ ƒ /api/admin/rbac/roles/[id]                    0 B                0 B
+├ ƒ /api/admin/security/sessions                  0 B                0 B
+├ ƒ /api/admin/security/sessions/[sessionId]      0 B                0 B
+├ ƒ /api/admin/security/sessions/force-logout     0 B                0 B
+├ ƒ /api/admin/settings                           0 B                0 B
+├ ƒ /api/admin/users                              0 B                0 B
+├ ƒ /api/admin/users/[id]                         0 B                0 B
+├ ƒ /api/admin/users/[id]/ban                     0 B                0 B
+├ ƒ /api/admin/users/[id]/date-of-birth           0 B                0 B
+├ ƒ /api/admin/users/[id]/notes                   0 B                0 B
+├ ƒ /api/admin/users/[id]/suspend                 0 B                0 B
+├ ƒ /api/admin/users/[id]/unban                   0 B                0 B
+├ ƒ /api/admin/users/[id]/unsuspend               0 B                0 B
+├ ƒ /api/age-declaration                          0 B                0 B
+├ ƒ /api/auth/anonymous                           0 B                0 B
+├ ƒ /api/auth/claim-anonymous                     0 B                0 B
+├ ƒ /api/auth/zalo                                0 B                0 B
+├ ƒ /api/auth/zalo/callback                       0 B                0 B
+├ ƒ /api/auth/zalo/complete                       0 B                0 B
+├ ƒ /api/bookings                                 0 B                0 B
+├ ƒ /api/chat                                     0 B                0 B
+├ ƒ /api/comments/[commentId]/reactions           0 B                0 B
+├ ƒ /api/commerce/handoff                         0 B                0 B
+├ ○ /api/config                                   0 B                0 B
+├ ƒ /api/conversations                            0 B                0 B
+├ ƒ /api/cron/analytics-snapshot                  0 B                0 B
+├ ƒ /api/cron/behavior-rollup                     0 B                0 B
+├ ƒ /api/cron/deal-notifications                  0 B                0 B
+├ ƒ /api/cron/feed-ingest                         0 B                0 B
+├ ƒ /api/cron/lunch-reminder                      0 B                0 B
+├ ƒ /api/cron/marketing-retention                 0 B                0 B
+├ ƒ /api/cron/morning-brief                       0 B                0 B
+├ ƒ /api/cron/outbox-drain                        0 B                0 B
+├ ƒ /api/cron/price-check                         0 B                0 B
+├ ƒ /api/cron/travel-reminder                     0 B                0 B
+├ ƒ /api/cron/weekly-recap                        0 B                0 B
+├ ƒ /api/deals                                    0 B                0 B
+├ ƒ /api/deals/[id]/click                         0 B                0 B
+├ ƒ /api/explore/oembed                           0 B                0 B
+├ ƒ /api/explore/process                          0 B                0 B
+├ ƒ /api/favorites                                0 B                0 B
+├ ƒ /api/group                                    0 B                0 B
+├ ƒ /api/group/[id]/join                          0 B                0 B
+├ ƒ /api/group/[id]/suggest                       0 B                0 B
+├ ƒ /api/health                                   0 B                0 B
+├ ƒ /api/iap/apple/notifications                  0 B                0 B
+├ ƒ /api/iap/apple/verify                         0 B                0 B
+├ ƒ /api/integrations                             0 B                0 B
+├ ƒ /api/integrations/google-calendar             0 B                0 B
+├ ƒ /api/integrations/google-calendar/callback    0 B                0 B
+├ ƒ /api/integrations/zalo                        0 B                0 B
+├ ƒ /api/integrations/zalo/callback               0 B                0 B
+├ ƒ /api/links/resolve                            0 B                0 B
+├ ƒ /api/memory                                   0 B                0 B
+├ ƒ /api/message-feedback                         0 B                0 B
+├ ƒ /api/messaging/threads                        0 B                0 B
+├ ƒ /api/messaging/threads/[id]/messages          0 B                0 B
+├ ƒ /api/messaging/threads/[id]/read              0 B                0 B
+├ ƒ /api/music/categories                         0 B                0 B
+├ ƒ /api/music/providers                          0 B                0 B
+├ ƒ /api/music/tracks                             0 B                0 B
+├ ƒ /api/music/tracks/[id]                        0 B                0 B
+├ ƒ /api/music/tracks/[id]/report                 0 B                0 B
+├ ƒ /api/music/tracks/search                      0 B                0 B
+├ ƒ /api/notifications                            0 B                0 B
+├ ƒ /api/notifications/backfill                   0 B                0 B
+├ ƒ /api/notifications/marketing-consent          0 B                0 B
+├ ƒ /api/notifications/read                       0 B                0 B
+├ ƒ /api/notifications/subscribe                  0 B                0 B
+├ ƒ /api/notifications/subscribe/reconcile        0 B                0 B
+├ ƒ /api/onboarding                               0 B                0 B
+├ ƒ /api/plans/share                              0 B                0 B
+├ ƒ /api/preferences                              0 B                0 B
+├ ƒ /api/preferences/profile                      0 B                0 B
+├ ƒ /api/price-watch                              0 B                0 B
+├ ƒ /api/profile                                  0 B                0 B
+├ ○ /api/rates                                    0 B                0 B
+├ ƒ /api/recommendations                          0 B                0 B
+├ ƒ /api/reviews                                  0 B                0 B
+├ ƒ /api/reviews/[id]                             0 B                0 B
+├ ƒ /api/reviews/[id]/comments                    0 B                0 B
+├ ƒ /api/reviews/[id]/interact                    0 B                0 B
+├ ƒ /api/reviews/[id]/like                        0 B                0 B
+├ ƒ /api/reviews/[id]/likes                       0 B                0 B
+├ ƒ /api/reviews/[id]/save                        0 B                0 B
+├ ƒ /api/reviews/[id]/share                       0 B                0 B
+├ ƒ /api/reviews/feed                             0 B                0 B
+├ ƒ /api/reviews/liked                            0 B                0 B
+├ ƒ /api/reviews/mine                             0 B                0 B
+├ ƒ /api/reviews/saved                            0 B                0 B
+├ ƒ /api/reviews/shared                           0 B                0 B
+├ ƒ /api/reviews/upload                           0 B                0 B
+├ ƒ /api/scam-shield/analyze                      0 B                0 B
+├ ƒ /api/scam-shield/check                        0 B                0 B
+├ ○ /api/scam-shield/directory                    0 B                0 B
+├ ƒ /api/scam-shield/qr                           0 B                0 B
+├ ƒ /api/scan                                     0 B                0 B
+├ ƒ /api/social/connections                       0 B                0 B
+├ ƒ /api/sound/[trackId]                          0 B                0 B
+├ ƒ /api/sound/[trackId]/follow                   0 B                0 B
+├ ƒ /api/sound/[trackId]/play                     0 B                0 B
+├ ƒ /api/sound/[trackId]/save                     0 B                0 B
+├ ƒ /api/stripe/checkout                          0 B                0 B
+├ ƒ /api/stripe/portal                            0 B                0 B
+├ ƒ /api/subscription                             0 B                0 B
+├ ƒ /api/suggested-prompts                        0 B                0 B
+├ ƒ /api/track                                    0 B                0 B
+├ ƒ /api/translate                                0 B                0 B
+├ ƒ /api/upload/audio                             0 B                0 B
+├ ƒ /api/upload/video                             0 B                0 B
+├ ƒ /api/users/[id]                               0 B                0 B
+├ ƒ /api/users/[id]/follow                        0 B                0 B
+├ ƒ /api/users/search                             0 B                0 B
+├ ƒ /api/version                                  0 B                0 B
+├ ƒ /api/viet-content                             0 B                0 B
+├ ƒ /api/voice/language                           0 B                0 B
+├ ƒ /api/voice/tts                                0 B                0 B
+├ ƒ /api/webhooks/stripe                          0 B                0 B
+├ ƒ /auth/callback                                0 B                0 B
+├ ƒ /auth/confirm                                 0 B                0 B
+├ ○ /auth/zalo-finish                             1.67 kB        89.2 kB
+├ ƒ /boi                                          5.66 kB         273 kB
+├ ƒ /boi/cung-hoang-dao                           9.93 kB         361 kB
+├ ƒ /boi/tarot                                    8.33 kB         346 kB
+├ ƒ /boi/tu-vi                                    16.3 kB         368 kB
+├ ○ /chat                                         1.01 kB         427 kB
+├ ƒ /chat/[id]                                    847 B           427 kB
+├ ƒ /controller                                   4.94 kB         192 kB
+├ ○ /copyright                                    152 B           196 kB
+├ ○ /currency                                     7.73 kB         269 kB
+├ ○ /deals                                        7.71 kB         302 kB
+├ ○ /delete-account                               151 B           196 kB
+├ ○ /game                                         4.3 kB          271 kB
+├ ○ /game/supertux                                1.4 kB          189 kB
+├ ○ /games/supertux                               0 B                0 B
+├ ƒ /group/[id]                                   6.56 kB         273 kB
+├ ƒ /group/new                                    6.66 kB         274 kB
+├ ○ /how-to-use                                   152 B           196 kB
+├ ○ /login                                        9.89 kB         286 kB
+├ ○ /marketplace                                  854 B           295 kB
+├ ○ /music                                        1.42 kB          89 kB
+├ ○ /music/upload                                 1.42 kB          89 kB
+├ ƒ /og/tappyai-v1.png                            0 B                0 B
+├ ○ /onboarding                                   4.96 kB         197 kB
+├ ƒ /plan/[shareId]                               2.57 kB         203 kB
+├ ƒ /plan/[shareId]/opengraph-image               0 B                0 B
+├ ƒ /plan/[shareId]/twitter-image                 0 B                0 B
+├ ƒ /planner                                      5.29 kB         299 kB
+├ ○ /privacy                                      151 B           196 kB
+├ ƒ /profile                                      11.8 kB         306 kB
+├ ƒ /profile/account                              1.54 kB         272 kB
+├ ƒ /profile/bookings                             7.83 kB         275 kB
+├ ○ /profile/edit                                 2.45 kB         273 kB
+├ ƒ /profile/favorites                            3.21 kB         297 kB
+├ ƒ /profile/history                              5.52 kB         302 kB
+├ ○ /profile/integrations                         5.56 kB         272 kB
+├ ƒ /profile/notifications                        11.3 kB         308 kB
+├ ○ /profile/preferences                          3.28 kB         274 kB
+├ ○ /profile/price-watches                        3 kB            191 kB
+├ ƒ /profile/qr                                   4.25 kB         298 kB
+├ ƒ /profile/settings                             2.9 kB          277 kB
+├ ○ /profile/tappy-knows                          5.64 kB         193 kB
+├ ○ /recommendations                              3.47 kB         182 kB
+├ ○ /register                                     2.86 kB         258 kB
+├ ○ /reviews                                      21.7 kB         348 kB
+├ ƒ /reviews/[id]                                 8.69 kB         302 kB
+├ ƒ /reviews/creator/[id]                         4.81 kB         263 kB
+├ ○ /reviews/new                                  12.8 kB         271 kB
+├ ○ /scam-shield                                  20.1 kB         317 kB
+├ ○ /scan                                         9.69 kB         277 kB
+├ ƒ /service/[id]                                 6.34 kB         273 kB
+├ ƒ /social                                       5.86 kB         300 kB
+├ ƒ /sound/[trackId]                              1.43 kB          89 kB
+├ ○ /split-bill                                   8.4 kB          270 kB
+├ ○ /startup                                      6.72 kB         207 kB
+├ ƒ /subscription                                 5.67 kB         273 kB
+├ ○ /terms                                        152 B           196 kB
+├ ƒ /tools                                        2.88 kB         297 kB
+├ ○ /translate                                    10.6 kB         278 kB
+├ ƒ /users/[id]                                   3.09 kB         296 kB
+└ ƒ /viet-content                                 7.02 kB         342 kB
++ First Load JS shared by all                     87.6 kB
+  ├ chunks/9878-f4d65ef640d0eada.js               31.9 kB
+  ├ chunks/9a78ec0f-d52e8aed1502e0fa.js           53.6 kB
+  └ other shared chunks (total)                   2.01 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

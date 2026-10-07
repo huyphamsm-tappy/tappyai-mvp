@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:15.137Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Hồ Hoàng Văn Thụ, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-h-hong-vn-th/hotels-c5204m28841605/",
+    "snippet": "Hạ Na Hotel - Đà Lạt ở trung tâm Xuân Hương - Đà Lạt, cách Chợ Đà Lạt và Hồ Xuân Hương 15 phút đi bộ. Khách sạn này cách Chùa Lâm Tỳ Ni 1 km và cách Crazy ...",
+    "position": 1
+   },
+   {
+    "title": "10 khách sạn được đề xuất gần Trường Cao đẳng Đà Lạt ...",
+    "link": "https://vn.trip.com/hotels/dalat-pedagogical-college-of-da-lat/hotels-c5204m6792511/",
+    "snippet": "Khách sạn Bee Hill · Luna Villas Đà Lạt · Khách sạn Saigon's Book Đà Lạt · Nature Hotel - Pham Hong Thai · Khách sạn DaLat Peach Valley · Nature Hotel - Win Happy.",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Đà Lạt Thiên Nhiên",
+    "link": "https://vn.trip.com/hotels/dalat-da-lat-thien-nhien/hotels-c5204m23337137/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Đà Lạt Thiên Nhiên · Yên Lam Villa Hotel · Adalia Villa With ValeyView - O'TEL · Miền Sương Khói - Home & Café · IZA Homestay · Nature ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Đồi Thông Lạc Dương ĐT 722, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-i-thng-lc-dng-t-722/hotels-c5204m32156369/",
+    "snippet": "KIEN DALAT - Nguyễn Hữu Cảnh ở Lâm Viên - Đà Lạt, cách Chợ Đà Lạt và Tượng phật vàng 5 phút lái xe. Khách sạn này cách Làng thêu XQ 1,1 km và cách Đại học Đà ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Chùa Tâm Ấn, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-cha-tm-n/hotels-c5204m12113397/",
+    "snippet": "Khách Sạn Cao Cấp Hàng Đầu Tại Đà Lạt · Grand Mercure Dalat · Khu nghỉ dưỡng & Spa Ana Mandara Villas Đà Lạt · Khách sạn Dalat Palace Heritage.",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Vườn Hồng Chân đèo Mimosa, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-vn-hng/hotels-c5204m28841781/",
+    "snippet": "Khách Sạn Cao Cấp Hàng Đầu Tại Đà Lạt ; Grand Mercure Dalat. Khách Sạn Ở Đà Lạt. 9,1 · Tuyệt Vời 153 đánh giá ; Khu nghỉ dưỡng & Spa Ana Mandara Villas Đà Lạt.",
+    "position": 6
+   },
+   {
+    "title": "Các khách sạn ở gần Công Viên Trần Hưng Đạo, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-tran-hung-dao-park/hotels-c5204m30441361/",
+    "snippet": "Khách Sạn Cao Cấp Hàng Đầu Tại Đà Lạt · Grand Mercure Dalat · Khu nghỉ dưỡng & Spa Ana Mandara Villas Đà Lạt · Khách sạn Dalat Palace Heritage.",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Phường 10 tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotels-list-5204/location100292/",
+    "snippet": "Tọa lạc tại trung tâm Đà Lạt, Khách sạn Nice Dream Đà Lạt cách Chợ Đà Lạt vài bước và cách Hồ Xuân Hương 3 phút lái xe. Khách sạn cách Dinh Bảo Đại 1,5 mi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

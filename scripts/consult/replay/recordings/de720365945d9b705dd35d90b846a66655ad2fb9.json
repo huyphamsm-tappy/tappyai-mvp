@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"TiNiWorld GigaMall\" OR \"Play More Vincom Plaza Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:39:01.832Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"TiNiWorld GigaMall\" OR \"Play More Vincom Plaza Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bài Đánh Giá TiniWorld Gigamall Thủ Đức: 50 Góc Chơi Cho Bé",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7461230100147735826",
+    "snippet": "10.5K Lượt thích,79 Bình luận.Video TikTok từ Nhà Mom Tuyền (@nhamomtuyen): \"Bài đánh giá TiniWorld Gigamall Thủ Đức với hơn 50 góc chơi, ...",
+    "date": "18 thg 1, 2025",
+    "position": 1
+   },
+   {
+    "title": "Khu Vui Chơi TiNiWorld Mừng Khai Trương Gigamall | TikTok",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7464838735646084360",
+    "snippet": "Và hơn 50++ góc chơi khác để bé đến khám phá! Nhanh chân đến tiNiWorld Gigamall – Tầng 5, Gigamall Thủ Đức trong dịp Tết này để tận hưởng ...",
+    "date": "27 thg 1, 2025",
+    "position": 2
+   },
+   {
+    "title": "Trung Thu này chẳng cần đi đâu xa, cứ đến tiNiWorld là có ... - TikTok",
+    "link": "https://www.tiktok.com/@giadinhbemay1/video/7686840886348500242",
+    "snippet": "... cần đi đâu xa, cứ đến tiNiWorld là có cả một. @Gia Đình Bé Mây · âm thanh gốc - Gia Đình Bé Mây · tiNiWorld Gigamall Thủ Đức · author. 1207.",
+    "date": "18 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Gigamall tiniWorld Review & Kids' Adventure with Cô Khánh ❤️",
+    "link": "https://www.tiktok.com/@kimkhanh_mot/video/7392579769348443400",
+    "snippet": "14.5K Lượt thích,406 Bình luận.Video TikTok từ Mót nè (@kimkhanh_mot): \"Experience the latest at tiniWorld Gigamall with Cô Khánh! Join the ...",
+    "date": "17 thg 7, 2024",
+    "position": 4
+   },
+   {
+    "title": "Sinh Nhật Kim Khánh Tại TiniWorld | Vui Quá - TikTok",
+    "link": "https://www.tiktok.com/@kimkhanh_mot/video/7663759731730812181",
+    "snippet": "... của Kim Khánh tại TiniWorld, một ngày thật đáng nhớ! @Hướng nội chơi tiktok · Dongchio_COTICHVIETNAM · tiNiWorld Gigamall Thủ Đức · author. 10.",
+    "date": "18 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Khu vui chơi trẻ em và hồ bơi trong nhà Blue Sea Kids quận 7 ...",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7422896855945579794",
+    "snippet": "... tiNiWorld Gigamall Thủ Đức, điểm đến dành cho gia đình, chương trình ... With a multitude of games available, it's a local gem that families in ...",
+    "date": "6 thg 10, 2024",
+    "position": 6
+   },
+   {
+    "title": "Khúc đi hết mình, khúc về mệt xỉuu #tuoithocuacon #yeuthuong ...",
+    "link": "https://www.tiktok.com/@duongvevuon/video/7674311356002127112",
+    "snippet": "... xỉuu #tuoithocuacon #yeuthuong #cungconkhonlon. @Dương về vườn · nhạc nền - Trai lục ngạn · tiNiWorld Gigamall Thủ Đức · author · 17.",
+    "date": "15 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "TiNiWorld: Khu vui chơi cho bé Sài Gòn mọi thời tiết | TikTok",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7649218592600247569",
+    "snippet": "Khu vui chơi tiNiWorld Gigamall siêu rộng với hơn 50 góc chơi cho ... Gigamall Thủ Đức Có Koi Thé Ko · Pacific Megamall Perai · Mega Mall ...",
+    "date": "10 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

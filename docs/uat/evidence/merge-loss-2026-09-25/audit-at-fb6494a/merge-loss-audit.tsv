@@ -1,0 +1,181 @@
+merge	file	category	conflicted	deleted_in_merge	lost_lines	missing_at_tip	clean_region_missing	kinds	sample_missing
+3cbb10e	android/app/src/main/java/com/tappyai/app/home/HomeTabHost.kt	other	y	n	1	0	0	side1	
+3cbb10e	android/app/src/main/java/com/tappyai/app/home/SmartTools.kt	other	y	n	1	0	0	side1	
+3cbb10e	android/app/src/test/java/com/tappyai/app/home/SmartToolsTest.kt	other	y	n	12	0	0	side1	
+3cbb10e	docs/audit/lang-detect-results.json	other	y	n	1	1	0	side2	"generatedAt": "2026-09-18T03:50:12.084Z",
+3cbb10e	docs/audit/p15-truncation-repro.json	other	y	n	1	1	0	side2	"generatedAt": "2026-09-18T03:50:08.904Z",
+3cbb10e	docs/audit/prompt-shape.json	other	y	n	2	2	0	side2	"generatedAt": "2026-09-18T03:50:15.728Z", ‖ "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 10:50 Thứ Sáu, 18 tháng 9, 2026, gio 
+3cbb10e	docs/audit/route-signals.json	other	y	n	1	1	0	side2	"generatedAt": "2026-09-18T03:49:30.584Z",
+3cbb10e	ios/TappyAI/Core/Config/FeatureFlags.swift	other	n	y	17	15	15	side1	/// Product feature flags — hardcoded product decisions, NOT runtime/env configuration. ‖ /// This mirrors the web `src/lib/config/product.ts` `SHOW_*` flags. A value here is a
+3cbb10e	ios/TappyAI/Features/Reviews/UI/CreateReviewView.swift	other	n	n	2	2	2	side1	// Music hidden by default (FeatureFlags.showMusic, owner decision 2026-09-24). ‖ if FeatureFlags.showMusic {
+3cbb10e	ios/TappyAI/Features/Reviews/UI/ReviewActionRail.swift	other	y	n	3	3	0	side1	// Music hidden by default (FeatureFlags.showMusic, owner decision 2026-09-24): the ‖ // feed music disc opens the retired "use this sound" SoundPage, so it stays gated off.
+3cbb10e	src/app/HomeV3.tsx	other	y	n	5	5	0	side1	titled "Gợi ý dành cho bạn" with a "see all" that opened `/recommendations` — the ‖ personalised PLACES page, a different feature with its own engine — so one name
+3cbb10e	src/app/HomeView.tsx	other	y	n	8	7	0	side2,base	{/* Music is gated off on every platform while its licensing is open (`SHOW_MUSIC`). */} ‖ {SHOW_MUSIC && (
+3cbb10e	src/app/api/chat/preModelParallel.test.ts	other	y	n	7	7	0	side1	// `!quotaExempt` (a $0 canned turn is not charged — owner decision 2026-09-18) sits betwe ‖ // the Pro check and the spend; the ordering this guard pins is unchanged. The spend is no
+3cbb10e	src/app/api/chat/route.ts	other	y	n	15	13	1	base,side2,side1	if (!isPro && !quotaExempt) { ‖ // 🚨 R-4/R-3: SET AFTER THE SPEND, NOT BEFORE. `quotaMetered` exists to stop the IP-keyed
+3cbb10e	src/app/api/profile/coverAndBio.test.ts	other	y	n	1	1	0	side1	const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10])
+3cbb10e	src/app/api/profile/route.ts	other	y	n	1	1	0	side1	return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTo
+3cbb10e	src/app/api/track/route.ts	other	y	n	46	0	0	side1	
+3cbb10e	src/app/group/[id]/page.tsx	other	y	n	56	46	43	side1	import { useEffect, useState, useCallback, useRef } from 'react' ‖ import { Copy, Check, Users, Loader2, Camera } from 'lucide-react'
+3cbb10e	src/app/homeAiFirst.test.tsx	other	y	n	4	4	0	side2	// 🚨 `/music` IS NOT ON THIS LIST, AND THAT IS DELIBERATE. Music is hidden on every platf ‖ // while its catalogue licensing is open (`SHOW_MUSIC`), so it is unreachable ON PURPOSE —
+3cbb10e	src/app/music/page.tsx	other	y	n	7	7	0	side2,base	import { notFound, useRouter } from 'next/navigation' ‖ import { ChevronLeft, ChevronRight, Flame, Headphones, Mic2, Music, Music2, Sparkles, Uplo
+3cbb10e	src/app/music/upload/page.tsx	other	y	n	22	14	0	base,side2	import { notFound, useRouter } from 'next/navigation' ‖ import { Loader2, Music, UploadCloud, CheckCircle2 } from 'lucide-react'
+3cbb10e	src/app/reviews/ExploreStage.tsx	other	y	n	1	1	0	side2	// Music is gated off everywhere while its licensing is open (`SHOW_MUSIC`).
+3cbb10e	src/app/reviews/ProfileTab.tsx	other	y	n	5	4	0	base,side2	import SoundSheet from './SoundSheet' ‖ {/* Gated off with `SHOW_MUSIC` — nothing can set `soundTrackId` while Music is hidden,
+3cbb10e	src/app/reviews/[id]/ReviewDetailView.tsx	other	y	n	3	3	0	side2	{/* Attached music — gated off with `SHOW_MUSIC`. The card carries the track's title, ‖ artist and a link to its sound page, so it is an entry point, not decoration. */}
+3cbb10e	src/app/reviews/exploreStage.test.tsx	other	y	n	4	4	0	side2	// Music is hidden on every platform while its catalogue licensing is open (`SHOW_MUSIC`), ‖ // the fourth tab is absent by design — `musicHidden.test.tsx` fails if it comes back. Res
+3cbb10e	src/app/reviews/feedShared.tsx	other	y	n	9	9	0	base,side2	import ReviewMusicDisc from './ReviewMusicDisc' ‖ {/* The clip's sound — tap to open its sound page ("use this sound").
+3cbb10e	src/app/reviews/new/page.tsx	other	y	n	6	6	0	side2,base	// The picker cannot open while `SHOW_MUSIC` is false, so `music` is always null there; th ‖ // guard is here as well so a stale draft can never post a track the UI no longer offers.
+3cbb10e	src/app/reviews/page.tsx	other	y	n	5	4	0	base,side2	import SoundSheet from './SoundSheet' ‖ {/* Gated off with `SHOW_MUSIC` — nothing can set `soundTrackId` while Music is hidden,
+3cbb10e	src/app/sound/[trackId]/page.tsx	other	y	n	52	35	0	base,side2	import { notFound, useParams, useRouter } from 'next/navigation' ‖ import { ChevronLeft, Play, Pause, Loader2, Music2, Heart, Bell, Plus, TrendingUp, Flag, X
+3cbb10e	src/app/users/[id]/PublicProfileView.tsx	other	y	n	1	1	0	side2	// Music is gated off everywhere while its licensing is open (`SHOW_MUSIC`).
+3cbb10e	src/components/v3/V3Shell.tsx	other	y	n	15	15	12	side2	Bell, Sun, Moon, UserCircle, UserRound, Wallet, Settings, HelpCircle, ‖ // Phase 7 RC (§3/§9): MY ACCOUNT is exactly these three rows, in this order — both
+3cbb10e	src/lib/qr/brandedCard.ts	other	y	n	3	3	0	side1	CARD.pad + CARD.markSize + CARD.gapLockupToQr + qrSide + ‖ CARD.gapNameToCaption + CARD.captionPx + CARD.pad
+3cbb10e	src/lib/tools/registry.ts	other	y	n	2	2	0	side2	// Music is gated off on every platform while its licensing is open (`SHOW_MUSIC`). The ro ‖ // stays in ALL so the tile, its copy and its skin come back with one boolean.
+d917c44	android/app/src/main/java/com/tappyai/app/chat/MessageActionBar.kt	other	y	n	12	9	1	side2,base,side1	shareArtifact?.let { a -> TappyShareSheet(artifact = a, onDismiss = { shareArtifact = null ‖ * G1 share-out. Returns true when it took the tap (a persisted turn → public result previe
+d917c44	docs/audit/lang-detect-results.json	other	n	n	1	1	1	side1	"generatedAt": "2026-09-18T03:08:34.384Z",
+d917c44	docs/audit/p15-truncation-repro.json	other	n	n	1	1	1	side1	"generatedAt": "2026-09-18T03:08:16.874Z",
+d917c44	docs/audit/prompt-shape.json	other	n	n	2	2	2	side1	"generatedAt": "2026-09-18T03:08:24.218Z", ‖ "THOI GIAN HIEN TAI (rat quan trong): Bay gio la lúc 10:08 Thứ Sáu, 18 tháng 9, 2026, gio 
+d917c44	docs/audit/route-signals.json	other	n	n	1	1	1	side1	"generatedAt": "2026-09-18T03:08:20.038Z",
+d917c44	src/app/api/chat/route.ts	other	y	n	25	23	0	side2,base	// AFTER the identity/quota resolution above so `authedUserId` is known, and ‖ // BEFORE any model or tool work so a refused request costs nothing.
+d917c44	src/components/chat/MessageActionBar.tsx	other	y	n	10	6	2	side2,base,side1	// G1 share-out: a PERSISTED turn can become a public result; the preview ‖ // dialog is the explicit step. An unsaved turn keeps the plain-text share.
+d917c44	src/components/share/ShareMenu.tsx	other	y	n	12	11	2	side1,side2,base	import { Copy, Check, Share2, X, Mail, Inbox, Download } from 'lucide-react' ‖ /** Optional one-line text for the OS share sheet (SMS/email/apps that ignore OG). */
+d917c44	src/components/share/SharePreviewDialog.tsx	other	n	n	4	4	4	side2	<div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center bg-bla ‖ <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900 dark:text-gra
+d917c44	src/lib/analytics/g1Events.ts	other	n	n	1	1	1	side2	const COMMERCE_HOST_RE = /(^|\.)(shopee\.vn|shopeefood\.vn|lazada\.vn|tiki\.vn|sendo\.vn|g
+d917c44	src/lib/config/product.ts	other	n	n	3	3	3	side2	// anonymous AI quota above (`ANON_DAILY_LIMIT`) stays THE hard cap for a ‖ * (dismissable, non-blocking). The HARD stop remains `ANON_DAILY_LIMIT`. Kept
+d917c44	src/lib/i18n/share.ts	other	y	n	4	4	0	side2	'share.previewTitle': 'Người khác sẽ thấy gì', ‖ 'share.previewHint': 'Đây là bản công khai đã ẩn thông tin cá nhân. Chỉ khi bạn xác nhận, 
+d917c44	src/lib/i18n/useTranslation.ts	other	y	n	4	4	0	side1,side2	vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...w6vi, ...v3vi, ...adminVi ‖ en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...w6en, ...v3en, ...adminEn
+d303a91	docs/audit/lang-detect-results.json	other	n	n	1	1	1	side2	"generatedAt": "2026-09-17T01:11:49.864Z",
+d303a91	docs/audit/p15-truncation-repro.json	other	n	n	1	1	1	side2	"generatedAt": "2026-09-17T07:53:06.940Z",
+d303a91	docs/audit/prompt-shape.json	other	n	n	8	8	8	side2	"generatedAt": "2026-09-17T01:15:54.830Z", ‖ "shared": 38158,
+d303a91	docs/audit/route-signals.json	other	n	n	2	2	2	side2	"generatedAt": "2026-09-17T01:12:56.272Z", ‖ "turnIntent": "follow_up_question",
+d303a91	src/app/(home)/page.tsx	other	y	n	2	2	0	base	const vnTime = new Date(Date.now() + 7 * 60 * 60 * 1000) ‖ const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gend
+d303a91	src/app/homeGreeting.test.tsx	other	n	n	1	0	0	side2	
+d303a91	src/lib/i18n/webHardcodedUiStrings.test.ts	other	y	n	5	5	0	side1,side2	// "Tiếng Việt" (the same hardcoded label LanguagePicker already carries). Merge ‖ // arithmetic — V3's 497 plus main's one line — not new V3 text.
+1e7b77e	src/app/api/chat/route.ts	other	y	n	8	7	0	side1,side2	import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detec ‖ import { classifyIntent, detectLang, detectExplicitLangRequest, detectForcedTool, detectTr
+1e7b77e	src/app/api/profile/coverAndBio.test.ts	other	n	y	132	1	1	side2	const JPEG = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10])
+1e7b77e	src/app/api/profile/route.ts	other	y	n	85	2	1	side2	return NextResponse.json({ error: 'image_too_large', message: serverMessage('media.imageTo ‖ const { profile, presentation } = await readOwnProfile(supabase, user.id)
+1e7b77e	src/app/api/reviews/[id]/likes/likeListRead.test.ts	other	n	n	17	17	17	side2	/** Every `rpc()` call — since 20260915b the likers come from `review_likers`, not the tab ‖ rpcs: [] as { fn: string; args: Record<string, unknown> }[],
+1e7b77e	src/app/api/reviews/[id]/likes/route.ts	other	n	n	12	11	11	side2	* Anonymous callers are allowed — this is a public read of ONE clip's likers, and only `id ‖ * `full_name` and `avatar_url` are served; no email, no auth data.
+1e7b77e	src/app/api/reviews/mine/selfScope.test.ts	other	n	y	48	0	0	side2	
+1e7b77e	src/app/api/users/[id]/publicFields.test.ts	other	n	n	51	0	0	side2	
+1e7b77e	src/app/api/users/[id]/route.ts	other	n	n	23	0	0	side2	
+1e7b77e	src/app/globals.css	other	y	n	281	0	0	side2	
+1e7b77e	src/app/profile/ProfileView.tsx	other	n	n	23	0	0	side2	
+1e7b77e	src/app/profile/edit/editProfileCover.test.tsx	other	n	y	78	0	0	side2	
+1e7b77e	src/app/profile/edit/page.tsx	other	n	n	50	0	0	side2	
+1e7b77e	src/app/profile/page.tsx	other	n	n	3	0	0	side2	
+1e7b77e	src/app/profile/profileHub.test.tsx	other	n	n	12	0	0	side2	
+1e7b77e	src/app/reviews/ExploreStage.tsx	other	n	n	10	10	10	side2	*   · Trending today — the last day's most-liked places, the phone feed's own source: ‖ *     `hot_places_24h()`, a place-name + count aggregate over visible reviews. Since
+1e7b77e	src/app/reviews/exploreStage.test.tsx	other	y	n	13	12	11	side2	/** What `hot_places_24h()` (the place + count aggregate over the last 24h of likes) retur ‖ let hotRows: Array<{ place_name: string | null; like_count: number | string }> = []
+1e7b77e	src/app/reviews/page.tsx	other	n	n	8	8	8	side2	// `hot_places_24h()` — the place-name + count aggregate over visible reviews. The like ‖ // rows are owner-read since 20260915b_review_likes_private.sql; this is the public view.
+1e7b77e	src/app/users/[id]/PublicProfileView.tsx	other	n	n	343	1	1	side2	{ href: '/music', key: 'v3.explore.navMusic', current: false },
+1e7b77e	src/app/users/[id]/UserProfileView.tsx	other	y	n	23	5	4	side2	// is unlocked: edit, cover and the private activity tabs for the owner; follow for ‖ // a visitor. Back returns to where the visitor came from (Explore); with no
+1e7b77e	src/app/users/[id]/ownerCollections.ts	other	n	n	44	5	5	side2	//   · Đã thích  — `review_likes` rows of THIS user, then the reviews. Since ‖ //                 20260915b_review_likes_private.sql the table is SELECT-own by
+1e7b77e	src/app/users/[id]/publicProfile.test.tsx	other	n	n	359	1	1	side2	expect(readFileSync('src/app/profile/edit/page.tsx', 'utf8')).toContain("from '@/lib/profi
+1e7b77e	src/components/share/ShareMenu.tsx	other	y	n	2	2	0	base	const ok = await copyText(a.text) ‖ setFeedback({ kind: ok ? 'ok' : 'error', text: ok ? (textIsMoreThanUrl ? t('share.copiedCo
+1e7b77e	src/components/share/shareMenuHistory.test.tsx	other	n	n	3	3	3	side1	fireEvent.click(screen.getByText('share.copyLink')) ‖ fireEvent.click(screen.getByText('share.facebook'))
+1e7b77e	src/lib/ai/consultative/decisionFrame.test.ts	other	n	n	1	1	1	side2	it('the measured embellishments go; the wifi fact and the name stay', () => {
+1e7b77e	src/lib/ai/placeClaimGuard.ts	guard	y	n	34	32	31	side2,base	* Atmosphere and quality — "không gian thoải mái", "sôi động", "chất lượng", ‖ * "phục vụ tốt". Measured 2026-09-15: written about OpenStreetMap rows that
+1e7b77e	src/lib/ai/planPriceGuard.test.ts	other	n	n	2	2	2	side2	it('F — prose: the budget echoed as a cost is redacted, the budget named as a budget survi ‖ it('H — the exact UAT scenario through the real stream filter: parseable, budget kept, no 
+1e7b77e	src/lib/ai/promptBuilder.ts	other	y	n	1	1	0	side2	18) CHI DUNG LINK TU CAC NEN TANG CHINH THUC DA CO TRONG HE THONG: giao do an: ShopeeFood 
+1e7b77e	src/lib/ai/snippetPriceGuard.ts	guard	y	n	22	20	19	base,side2	/** Words that present an amount as what something COSTS, and the words that name it as a  ‖ const COST_FRAME_RE = /\btong\b|\btotal\b|\buoc tinh\b|\bestimated?\b|\bestimate\b|\bchi p
+1e7b77e	src/lib/ai/streamEnrichment.ts	guard	y	n	4	4	0	side1,side2	const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, l ‖ const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainTe
+1e7b77e	src/lib/ai/tools/vnexpressTravel.test.ts	other	n	n	2	2	2	side2	for (const tool of ['searchPlaces(query, location, type, lang, userLocation), travelEditor ‖ expect(prompt).toMatch(/bai bao VnExpress CHI khi 'url' nam trong 'travel_editorial'/)
+1e7b77e	src/lib/i18n/w4/misc.ts	other	n	n	16	0	0	side2	
+1e7b77e	src/lib/media/key.ts	other	n	n	3	0	0	side2	
+1e7b77e	src/lib/profile/cover.ts	other	n	y	40	0	0	side2	
+1e7b77e	supabase/migrations/20260915_profile_public_presentation.sql	migration	n	y	7	0	0	side2	
+1e7b77e	supabase/migrations/20260915b_review_likes_private.sql	migration	n	y	46	40	40	side2	DROP POLICY IF EXISTS "Anyone can read likes" ON public.review_likes; ‖ DROP POLICY IF EXISTS review_likes_select_own ON public.review_likes;
+1e7b77e	supabase/tests/review_likes_private.test.ts	db-test	n	y	249	170	170	side2	// REVIEW LIKES — the per-user liked collection is PRIVATE, on a real PostgreSQL. ‖ // Production evidence (2026-09-15, anon key): `review_likes?user_id=eq.<author>`
+a6ca9f0	android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt	other	y	n	24	11	0	side1,base	// 🔑 SHOPPING OWNS ITS OWN DECISION SURFACE (cross-platform UAT, 15 Sep ‖ // 2026). Web renders PlaceDecision only when there is NO shopping view
+a6ca9f0	android/app/src/main/java/com/tappyai/app/chat/PlaceCard.kt	other	y	n	36	31	9	side1,side2,base	/** Web parity: the map button leads, ordering follows, anything else is a secondary butto ‖ val maps = usable.firstOrNull { it.kind == "maps" || it.kind == "directions" }
+a6ca9f0	android/app/src/main/java/com/tappyai/app/chat/PlacesLiveView.kt	other	y	n	5	5	3	side1	* The RESOLVED label key (`v3.action.purchaseLoginOn`, `v3.action.viewOn`, …), decided by  ‖ * server's one label resolver. This client renders it from its own dictionary
+a6ca9f0	android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionCard.kt	other	y	n	158	124	112	side2	// A verdict is meaningless without a request to match (web `showMatch`). ‖ if (showMatch) MatchBadge(entity.matchesRequest)
+a6ca9f0	android/app/src/main/java/com/tappyai/app/chat/ShoppingDecisionView.kt	other	y	n	44	38	35	side2	import kotlinx.serialization.json.JsonNull ‖ * The rating THIS listing carries, never the entity's — Serper puts it on the row, so it
+a6ca9f0	android/app/src/test/java/com/tappyai/app/chat/PlaceDecisionSectionTest.kt	other	n	n	2	2	2	side2	// The card draws from the facts and only from the facts. ‖ assertTrue(src.contains("private fun PlaceCard(facts: PlaceCardFacts)"))
+a6ca9f0	android/app/src/test/java/com/tappyai/app/chat/ShoppingDecisionParseTest.kt	other	n	n	14	14	14	side2	// Web `formatVndShort`: one ROUNDED decimal of a million, comma for Vietnamese. ‖ val vi = java.util.Locale("vi", "VN")
+a6ca9f0	android/app/src/test/java/com/tappyai/app/chat/ShoppingParityTest.kt	other	n	y	137	117	117	side2	* Shopping information parity with web (`ShoppingDecision.tsx`, `reasonText.ts`). ‖ * The five-domain UAT on 2026-09-12 found the phone LOSING information the wire carried: t
+a6ca9f0	src/app/api/scam-shield/analyze/route.test.ts	other	y	n	5	5	0	side2	// Canonical: every identity is metered per VN day (anonymous 5, registered 15). ‖ const limit = identity.kind !== 'user' ? 5 : 15
+a6ca9f0	src/app/reviews/[id]/ReviewShareButton.tsx	other	y	n	2	2	0	side1,side2	const menu = <ShareMenu url={url} title={reviewShareTitle({ place_name: placeName, body }) ‖ title={placeName}
+a6ca9f0	src/app/scam-shield/ScamShieldView.tsx	other	y	n	3	3	0	side2	import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product' ‖ (the message-analysis tab) past the right edge with no affordance that anything is
+a6ca9f0	src/components/chatPlaceDecisionWiring.test.tsx	other	y	n	4	4	0	side2	it('only a surface that renders the card is told to stop repeating the card facts', () =>  ‖ // Which surfaces render the card is one list (decisionSurface.ts) — web and,
+a6ca9f0	src/components/share/ShareMenu.tsx	other	y	n	21	19	5	side2,base	* Fires once per share that actually COMPLETED, with the target that completed it — the ‖ * clipboard write resolved, `navigator.share()` resolved (not rejected/cancelled), or the
+a6ca9f0	src/lib/ai/quota/__tests__/aiQuestionQuota.test.ts	quota	y	n	13	13	0	side2	import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT } from '@/lib/config/product' ‖ // Anonymous: 5 per VN day, keyed by the verified identity. Registered: 15 per VN day. One
+a6ca9f0	src/lib/ai/quota/aiQuestionQuota.ts	quota	y	n	16	16	0	side2	import { ANON_DAILY_LIMIT, FREE_DAILY_LIMIT, vnToday } from '@/lib/config/product' ‖ // THE CONTRACT (canonical, 2026-09-17)
+a6ca9f0	src/lib/ai/tools/serperCallBudget.test.ts	other	n	n	1	1	1	side2	expect(r.links).toHaveLength(3)
+a6ca9f0	src/lib/auth/anonymousWriteBoundary.test.ts	security	y	n	6	6	0	side2	// Analyze Message. Anonymous use is a product feature: metered per verified identity (or  ‖ // for an identity-less guest) through the shared AI question quota — ANON_DAILY_LIMIT per
+a6ca9f0	src/lib/recommendation/crossPlatformCommerceContract.test.ts	payment	n	n	1	1	1	side1	expect(card).toContain('openPlaceAction(context, action, commerce)')
+a6ca9f0	src/lib/structuredContent/crossPlatformParity.test.ts	other	n	n	2	2	2	side1	expect(src, 'PlaceCards must be guarded by `message.shopping == null` on a shopping turn') ‖ .toMatch(/message\.shopping == null[\s\S]{0,700}PlaceCards\(/)
+2dba2e3	android/app/src/main/AndroidManifest.xml	other	y	n	1	1	0	side1	android:resource="@xml/file_paths" />
+2dba2e3	android/app/src/test/java/com/tappyai/app/home/HomeImageParityTest.kt	other	n	n	1	1	1	side2	val web = repo("public/brands").listFiles()!!.map { it.nameWithoutExtension }.toSet()
+2dba2e3	android/app/src/test/java/com/tappyai/app/reviews/ui/ReviewShareTest.kt	other	n	n	1	1	1	side2	assertFalse("the manifest declares no target-app queries either", src("app/src/main/Androi
+2dba2e3	src/app/api/chat/route.ts	other	y	n	7	7	0	base,side1,side2	// Which client is asking. Only the web chat renders the decision as a card, so ‖ // only the web reply is told to stop repeating what the card shows. A client
+2dba2e3	src/app/profile/ProfileView.tsx	other	y	n	127	122	64	base,side2	// The personal collections are the FIVE the Android self profile shows, in its order — th ‖ // cross-platform contract pinned by `profileCollectionsParity.test.ts` (2026-09-17):
+2dba2e3	src/app/profile/profileCollectionsParity.test.ts	other	n	n	3	3	3	side2	describe('the five personal collections are the same list, in the same order, on all three ‖ describe('every collection reads the same gated route on every platform', () => {
+2dba2e3	src/app/profile/profileHub.test.tsx	other	n	n	62	62	62	side2	const SHARED = [ ‖ { id: 'shared-1', place_name: 'Quán chia sẻ', body: null, photos: null, thumbnail: null, c
+2dba2e3	src/app/profile/sharedPrivacy.test.ts	other	n	n	1	1	1	side2	describe('shared collection privacy', () => {
+2dba2e3	src/app/reviews/page.tsx	other	y	n	10	9	7	side2,base	{/* Profile — the signed-in user's OWN profile has exactly one implementation, the V3 ‖ `/profile` hub (2026-09-17). This tab used to render a second one (`ProfileTab` with
+2dba2e3	src/components/chatPlaceDecisionWiring.test.tsx	other	n	n	2	2	2	base	it('only the web surface is told to stop repeating the card facts', () => { ‖ expect(route).toMatch(/x-tappy-surface'\) === 'web'/)
+2dba2e3	src/config/brandRegistryAndroidParity.test.ts	other	n	n	1	1	1	side1	const initialAt = screen.indexOf('deal.partnerName.trim().take(1).uppercase()')
+2dba2e3	src/lib/ai/tools/food.ts	other	y	n	2	2	0	side2	* A Serper answer counts as a structured hit for the 30-minute cache exactly ‖ * like a Google one — the credits it costs are the reason the cache exists.
+2dba2e3	src/lib/ai/tools/travel.ts	other	y	n	1	1	0	base	import { buildFlightLinks } from '@/lib/platformLinks/travel'
+2dba2e3	src/lib/deals/androidDealsParity.test.ts	other	n	n	2	2	2	side1	expect(screen).toMatch(/val logo = deal\.logoImage\s*\n\s*if \(logo != null\) \{/) ‖ expect(screen).toMatch(/TappyImage\(\s*url = logo,/)
+2dba2e3	src/lib/i18n/androidLanguageAuthority.test.ts	other	n	n	3	3	3	side1	expect(screen).toMatch(/stringResource\(R\.string\.home_v3_greeting_named, /) ‖ expect(screen).toMatch(/stringResource\(R\.string\.home_v3_greeting_generic\)/)
+2dba2e3	src/lib/recommendation/fromToolResult.ts	other	y	n	1	1	0	base	.map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location }))
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/ChatMessage.kt	other	n	n	5	4	4	side1	// The structured recommendation this turn streamed (the `8:` annotation), used ONLY to bu ‖ // the share artifact. In memory for the session; NOT part of [StoredChatMessage] — Places
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/ChatScreen.kt	other	y	n	1	1	0	base	message.plan?.let { plan -> TripPlanCard(plan) }
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/ChatViewModel.kt	other	y	n	2	2	0	side1	// Share parity: the structured places of this turn (never persisted). ‖ placesView = chatRepository.takeLatestPlacesView(),
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/VoiceListeningScreen.kt	other	n	n	2	2	2	side2	.clearAndSetSemantics { contentDescription = "$lead $accent" }, ‖ .semantics { contentDescription = "$hintLabel $hintExample" },
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/data/ChatRepository.kt	other	y	n	6	5	5	side1	* The `tappy.places.v1` annotation (`8:` frame) the LAST [streamReply] carried, or null, ‖ * and clears it. Side channel so the `Flow<String>` text contract is untouched; the only
+28e1d7d	android/app/src/main/java/com/tappyai/app/chat/data/RealChatRepository.kt	other	y	n	10	9	1	side1,base	import com.tappyai.app.share.PlacesLiveViewParser ‖ // The one `8:` places annotation of the most recent turn. Held only until the ViewModel
+28e1d7d	ios/TappyAI/Core/Share/PlacesLiveView.swift	other	n	y	74	23	23	side1	/// The structured recommendation of one chat turn — the `tappy.places.v1` annotation the ‖ /// web emits as an `8:` data-stream frame (`src/lib/recommendation/liveView.ts`).
+28e1d7d	ios/TappyAI/Core/Share/ShareArtifact.swift	other	n	n	3	3	3	side1	/// web builder for the same `PlacesLiveView`, so a recommendation shared from iOS and one ‖ static func pickPlace(_ p: LivePlace) -> SharedPlace {
+28e1d7d	ios/TappyAI/Features/Chat/Model/ChatModels.swift	other	y	n	4	4	0	side1	/// The structured recommendation this turn streamed (the `8:` annotation), used ONLY to ‖ /// build the share artifact. In memory for the session; never persisted — Places data is
+28e1d7d	ios/TappyAI/Features/Chat/Model/ContentParser.swift	other	y	n	1	1	0	side1	planJSON: planJSON
+28e1d7d	ios/TappyAI/Features/Chat/UI/ChatViewModel.swift	other	y	n	4	4	0	side1	case .annotation(let data): ‖ // Share parity: the structured places of this turn (never persisted).
+28e1d7d	ios/TappyAITests/ShareArtifactTests.swift	other	n	n	4	4	4	side1	/// Android for the same `PlacesLiveView`. The fixture is a real `/api/chat` `8:` payload, ‖ private func view() throws -> PlacesLiveView {
+28e1d7d	src/app/(home)/page.tsx	other	y	n	2	2	0	side2	// suggestion to fill the row. Gender comes from the canonical `promptGender` ‖ // (user_demographics), not the deprecated auth.users.raw_user_meta_data source.
+28e1d7d	src/app/api/chat/route.ts	other	y	n	7	7	0	base,side1,side2	import { FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, vnToday, countTodayUserMessages } from '@/lib ‖ let r: unknown = await searchPlaces(query, location, type, lang, userLocation)
+28e1d7d	src/app/boi/boiLandingV3.test.tsx	other	n	n	1	0	0	side1	
+28e1d7d	src/app/chatEntryContract.test.tsx	other	y	n	4	4	0	side2	// Accepts the age-gate-aware `apiFetch` wrapper (V3 user-data foundation) as well as a ‖ // raw `fetch` — both POST the same /api/conversations endpoint; apiFetch only adds the
+28e1d7d	src/app/planner/plannerV3.test.tsx	other	n	n	1	0	0	side1	
+28e1d7d	src/app/reviews/exploreAskTappyBridge.test.tsx	other	y	n	3	0	0	side1,side2	
+28e1d7d	src/app/split-bill/splitBillV3.test.tsx	other	n	n	1	0	0	side1	
+28e1d7d	src/components/ChatInterface.tsx	other	y	n	7	7	0	base,side2	// ── V3 User Data Foundation: the 18+ gate ──────────────── ‖ // This branch is what the existing user base actually hits:
+28e1d7d	src/config/brandRegistryAndroidParity.test.ts	other	n	n	3	3	3	base	expect(screen).toMatch(/BrandLogo\(partnerName = deal\.partnerName, size = 48\.dp\)/) ‖ const logoImageAt = screen.indexOf('if (deal.logoImage != null)')
+28e1d7d	src/lib/ai/streamEnrichment.ts	guard	y	n	2	2	0	side2	}, { scope: placeClaimScope }).text ‖ : foodGuarded
+28e1d7d	src/lib/ai/tools/food.ts	other	y	n	9	9	0	base,side2	// are standing in — leaves the branches below exactly as they shipped. ‖ // for a Quy Nhơn question. Only the centre moves: the radius is the SAME 1500 every other
+28e1d7d	src/lib/ai/tools/placeDestinationScope.test.ts	other	y	n	4	4	0	side2	// 1500, not the 2000 this suite first pinned: the measurement behind the flat radius foun ‖ // the larger values timing out everywhere, not only in the dense metros. What BUG-011 own
+28e1d7d	src/lib/ai/tools/placeLocationGrounding.test.ts	other	y	n	10	9	0	side1	// Quy Nhơn, matching the geocode stub below and the GPS the tests pass. ‖ * 🚨 THE ROWS AND THE REQUESTED CITY MUST AGREE, or BUG-011's output guard
+28e1d7d	src/lib/ai/tools/travel.ts	other	y	n	1	1	0	base	import { buildFlightLinks } from '@/lib/platformLinks/travel'
+28e1d7d	src/lib/deals/androidDealsParity.test.ts	other	n	n	9	9	9	base	expect(screen).toContain('categoryColor(deal.categoryKey)') ‖ expect(screen).not.toContain('categoryColor(deal.category)')
+28e1d7d	src/lib/i18n/androidLanguageAuthority.test.ts	other	n	n	3	3	3	base	it('the hero greeting is passed the resource-resolved flag', () => { ‖ expect(read(HOME_SCREEN)).toMatch(
+28e1d7d	src/lib/i18n/useTranslation.ts	other	y	n	2	2	0	side2	vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...v3vi, ...w6vi, ...adminVi ‖ en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...v3en, ...w6en, ...adminEn
+28e1d7d	src/lib/recommendation/fromToolResult.ts	other	y	n	2	2	0	side1,side2	.map(row => buildPlaceEntity(row as PlaceRow, { domain, source, location })) ‖ const entities = eligible
+28e1d7d	src/lib/structuredContent/crossPlatformParity.test.ts	other	n	n	3	3	3	side1+2	const body = src.slice(src.indexOf('HomeHero(')) ‖ 'SuggestionsSection(',
+28e1d7d	src/modules/music/components/musicTrackCard.test.tsx	other	n	n	1	0	0	side1	
+28e1d7d	supabase/tests/user_demographics_boundary.test.ts	security	n	n	2	0	0	base	
+28e1d7d	supabase/tests/user_demographics_rollback.test.ts	db-test	n	n	1	0	0	base	
+89e65f7	src/app/(home)/page.tsx	other	y	n	5	5	0	base,side1,side2	import HomeView from '../HomeView' ‖ const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gend
+89e65f7	src/app/api/chat/route.ts	other	y	n	3	3	0	base	buildChatPromptContext(user.id, supabase), ‖ // no third-party calls. Only the four post-gate reads move in parallel.
+89e65f7	src/app/login/page.tsx	auth	y	n	2	2	0	side1,base	{/* Guest — browse anonymously (ANON_LIFETIME_LIMIT AI questions for the lifetime of the i ‖ {/* Guest — browse anonymously (5 AI questions/day, read-only social) */}
+89e65f7	src/components/ChatInterface.tsx	other	y	n	24	21	0	base,side2	{/auth_required|Unauthorized/i.test(error.message || '') ? ( ‖ import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+89e65f7	src/lib/ai/tools/food.ts	other	y	n	25	24	0	base,side2	const cityCoords: Record<string, [number, number]> = { ‖ 'ha noi': [21.0285, 105.8542], 'hanoi': [21.0285, 105.8542], 'hn': [21.0285, 105.8542],
+89e65f7	src/lib/ai/tools/placeDestinationScope.test.ts	other	y	n	1	1	0	side2	expect(c.radius).toBe(2000)
+89e65f7	src/lib/i18n/useTranslation.ts	other	y	n	4	4	0	side1,side2	vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...v3vi, ...adminVi, ...land ‖ en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...v3en, ...adminEn, ...land
+764effd	src/app/(home)/page.tsx	other	y	n	5	5	0	base,side1,side2	import HomeView from '../HomeView' ‖ const gender = user?.user_metadata?.gender === 'male' ? 'male' : user?.user_metadata?.gend
+764effd	src/components/ChatInterface.tsx	other	y	n	31	17	0	base,side2	{/auth_required|Unauthorized/i.test(error.message || '') ? ( ‖ import TripPlanCard, { type TappyPlan } from '@/components/TripPlanCard'
+764effd	src/lib/i18n/useTranslation.ts	other	y	n	4	4	0	side1,side2	vi: { ...dictionaries.vi, ...w2vi, ...w3vi, ...w4vi, ...w5vi, ...v3vi, ...adminVi, ...land ‖ en: { ...dictionaries.en, ...w2en, ...w3en, ...w4en, ...w5en, ...v3en, ...adminEn, ...land
+997f55c	src/lib/ai/identityGrounding.test.ts	other	y	n	14	13	0	base,side1	it('the detector still reads the reply WITH the decision in it', () => { ‖ // `finalText` — what ungroundedNamesIn analyses — must keep carrying EVERY structured mar
+997f55c	src/lib/ai/placesMarker.test.ts	other	n	n	42	41	41	side1	import { renderPlacesMarker, PLACES_MARKER_OPEN, PLACES_MARKER_CLOSE } from './streamEnric ‖ describe('renderPlacesMarker — the [TAPPY_PLACES] block', () => {
+997f55c	src/lib/ai/placesMarkerStream.test.ts	other	n	n	29	28	28	side1	// message text, so what the detectors analyse is exactly what ships and what persists. Th ‖ // that a SECOND marker joined that rule instead of quietly bypassing it — and that it can
+997f55c	src/lib/ai/placesProvenance.test.ts	guard	n	n	11	11	11	side1	import { renderPlacesMarker } from './streamEnrichment' ‖ describe('[TAPPY_PLACES] is gated on the provider having ranked by query text', () => {
+997f55c	src/lib/ai/streamEnrichment.ts	guard	y	n	47	43	38	side1,side2	* The `[TAPPY_PLACES]` block for the places THIS reply named, or '' when there are none. ‖ * Scoped to what the prose actually mentions, and ranked by where it mentions them, so the
+997f55c	src/lib/ai/toolResultSplit.ts	other	y	n	2	2	0	side1,side2	name, photo_url, photo_urls, order_links, platform_links, tiktok_review_url, place_id, web ‖ const carved: PlaceEnrichment = { name, photo_url, photo_urls, order_links, platform_links
+997f55c	src/lib/ai/tools/food.ts	other	y	n	40	38	0	side2,base,side1	import { cityForName, cityInText } from './vietnamCities' ‖ const cityCoords: Record<string, [number, number]> = {
+997f55c	src/lib/ai/tools/placeDestinationScope.test.ts	other	n	n	1	1	1	side1	expect(c.radius).toBe(2000)
+997f55c	src/lib/ai/tools/placeLocationGrounding.test.ts	other	n	n	2	2	2	side2	function stub(geocode: 'ok' | 'fail' | 'empty' = 'ok') { ‖ return new Response(JSON.stringify(OSM_ROWS), { status: 200 })
+997f55c	src/lib/ai/tools/placesBreaker.test.ts	other	n	n	3	3	3	side2	it('429 (quota exhausted) arms the breaker — the next turn skips Google', async () => { ‖ expect(googleCalls, 'the second turn must not re-ask a spent quota').toBe(1)
+997f55c	src/lib/ai/tools/placesFailureCache.test.ts	other	n	n	2	1	1	side1	beforeEach(() => { process.env.GOOGLE_PLACES_API_KEY = 'test-key-not-real' })
+997f55c	src/lib/links/tiktokAttribution.test.ts	other	y	n	8	8	1	side1,base	expect(filter.match(/const finalText = `([^`]*)`/)?.[1]).toContain('${prose}') ‖ // The compose step is located by its assignment, not by the exact list of marker suffixes

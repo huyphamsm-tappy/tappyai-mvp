@@ -192,6 +192,9 @@ export const ANALYTICS_FORBIDDEN_KEYS: readonly string[] = Object.freeze([
   'date_of_birth', 'dateOfBirth', 'dob', 'age_declared_at', 'dob_corrections',
   'email', 'phone', 'password', 'access_token', 'refresh_token',
   'stripe_customer_id', 'latitude', 'longitude',
+  // A5 (PRIVACY-REVIEW-G1, owner 2026-09-28): a user's free-text search/question never lands in
+  // `user_events.metadata` — it is content, not a measurement. Events keep their type and buckets.
+  'query',
 ])
 
 /**

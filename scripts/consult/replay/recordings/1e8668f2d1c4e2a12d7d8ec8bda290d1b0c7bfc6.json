@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl Tây Ninh\" Núi Bà Đen site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:14:17.195Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl Tây Ninh\" Núi Bà Đen site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Melia Vinpearl Tây Ninh - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-28122419/vinpearl-hotel-tay-ninh/",
+    "snippet": "Nhân viên, dịch vụ, phòng ốc, bữa sáng, cảnh quan và toàn bộ trải nghiệm đều xứng đáng 5 sao! Giường mềm mại và họ còn cung cấp đến 6 chiếc gối! Tôi đã có giấc ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

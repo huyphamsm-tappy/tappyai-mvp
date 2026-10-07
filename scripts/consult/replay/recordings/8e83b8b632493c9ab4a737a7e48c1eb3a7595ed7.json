@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ĐẢO HẢI SẢN Tân Mỹ (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:59:40.430Z",
+ "body": {
+  "searchParameters": {
+   "q": "ĐẢO HẢI SẢN Tân Mỹ (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đảo Hải Sản - Sushi & Sashimi - Tân Mỹ",
+    "link": "https://shopeefood.vn/ho-chi-minh/dao-hai-san-sushi-sashimi-tan-my",
+    "snippet": "Đảo Hải Sản - Sushi & Sashimi - Tân Mỹ. 2 Tân Mỹ, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 1
+   },
+   {
+    "title": "Đảo Hải Sản - Hải Sản Tươi Sống - Tân Mỹ",
+    "link": "https://shopeefood.vn/ho-chi-minh/dao-hai-san-hai-san-tuoi-song-nguyen-thi-thap",
+    "snippet": "Đảo Hải Sản - Hải Sản Tươi Sống - Tân Mỹ. 2 Tân Mỹ, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 2
+   },
+   {
+    "title": "Đảo Hải Sản - Hải Sản Tươi Sống",
+    "link": "https://shopeefood.vn/thuong-hieu/dao-hai-san-hai-san-tuoi-song",
+    "snippet": "Đảo Hải Sản - Hải Sản Tươi Sống - Phạm Văn Hai. 15/10 Phạm Văn Hai, P. 1, Tân Bình, TP. HCM. Tối thiểu 0k ; Đảo Hải Sản - Hải Sản Tươi Sống - Nguyễn Sỹ Sách. A9 ...",
+    "position": 3
+   },
+   {
+    "title": "Đảo Hải Sản - Sushi & Sashimi",
+    "link": "https://shopeefood.vn/thuong-hieu/dao-hai-san-sushi-sashimi",
+    "snippet": "Đảo Hải Sản - Sushi & Sashimi - Nguyễn Sỹ Sách. A9 Nguyễn Sỹ Sách, P. 15, Tân Bình, TP. HCM ; Đảo Hải Sản - Sushi & Sashimi - Phạm Văn Hai. 15/10 Phạm Văn Hai, P ...",
+    "position": 4
+   },
+   {
+    "title": "Đảo Hải Sản - Sushi & Sashimi - Tân Mỹ",
+    "link": "https://shopeefood.vn/ho-chi-minh/dao-hai-san-sushi-sashimi-tan-my?source_url=foody_ordernow_mobile",
+    "snippet": "Đảo Hải Sản - Sushi & Sashimi - Tân Mỹ. 2 Tân Mỹ, P. Tân Phú, Quận 7, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 5
+   },
+   {
+    "title": "Đảo Hải Sản Sushi & Sashimi - Tân Mỹ ⭐ 4.6",
+    "link": "https://food.grab.com/vn/en/restaurant/restaurant/5-C3MDEGM3CECFEN",
+    "snippet": "Combo Tiết Kiệm ; Đảo Hải Sản Sushi & Sashimi - Tân Mỹ : Combo Mix 3S. Combo Mix 3S · 375.000 ; Đảo Hải Sản Sushi & Sashimi - Tân Mỹ : Family Combo.",
+    "date": "15 thg 9, 2026",
+    "rating": 4.6,
+    "ratingCount": 1349,
+    "position": 6
+   },
+   {
+    "title": "Đảo Hải Sản - Hải Sản Tươi Sống - Tân Mỹ",
+    "link": "https://shopee.shopeefood.vn/ho-chi-minh/dao-hai-san-hai-san-tuoi-song-nguyen-thi-thap",
+    "snippet": "Đảo Hải Sản - Hải Sản Tươi Sống - Tân Mỹ. 2 Tân Mỹ, P. Tân Phú, Quận 7, TP. HCM. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt ...",
+    "position": 7
+   },
+   {
+    "title": "Đảo Hải Sản Sushi & Sashimi - Tân Mỹ ⭐ 4.6",
+    "link": "https://food.grab.com/vn/en/restaurant/%C4%91%E1%BA%A3o-h%E1%BA%A3i-s%E1%BA%A3n-sushi-sashimi-t%C3%A2n-m%E1%BB%B9-delivery/5-C3MDEGM3CECFEN",
+    "snippet": "Japanese,Sushi,Sashimi,Seafood Dish.",
+    "rating": 4.6,
+    "ratingCount": 1342,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

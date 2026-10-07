@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà Hàng Tửu Lầu 13\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:26.663Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà Hàng Tửu Lầu 13\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13)",
+    "link": "https://www.tiktok.com/@nhahangtuulau13",
+    "snippet": "Nhà Hàng Tửu Lầu 13 · @nhahangtuulau13 · Đặt Bàn Ứng Tuyển 09.02.50.57.61 06 Nam Quốc Cang, Phạm Ngũ Lão, Quận 1 https://nhahangtuulau13.vn.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7611527438962658581",
+    "snippet": "110 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Trải nghiệm ẩm thực tại Tửu Lầu 13 - quán nhậu ngon ở Quận 1!",
+    "position": 2
+   },
+   {
+    "title": "TỬU LẦU 13 - SỐ 6 NAM QUỐC CANG -Q1",
+    "link": "https://www.tiktok.com/@moonnguyen2706/video/7215592062761143578",
+    "snippet": "Nhà Hàng Tửu Lầu 13. 55 · recommend-cover. Sứ Giả Ma Quái. 674 · recommend ... Nhà Hàng Tửu Lầu 13. 113 · recommend-cover. Tố Uyên. 38.8K.",
+    "position": 3
+   },
+   {
+    "title": "Múa Trung Hoa độc đáo tại Tửu Lầu 13",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7619649594531515669",
+    "snippet": "982 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Khám phá màn múa Trung Hoa cổ trang đầy mê hoặc chỉ có tại Tửu Lầu ...",
+    "position": 4
+   },
+   {
+    "title": "Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7536833820251770119",
+    "snippet": "Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Hành trình Tửu Lầu 13 tạo nên mỹ vị từ đại dương❤️‍ #tuulau13 #nhahang ...",
+    "position": 5
+   },
+   {
+    "title": "Khai trương nhà hàng TỬU LẦU 13",
+    "link": "https://www.tiktok.com/@moonnguyen2706/video/7233093931766942982",
+    "snippet": "3905 Lượt thích,Video TikTok từ Tố Uyên (@moonnguyen2706): \"Khai trương nhà hàng TỬU LẦU 13\".nhạc nền - Đức Bin ( chill music ) - 909 Lumina ...",
+    "position": 6
+   },
+   {
+    "title": "Nhìn thôi đã muốn đặt bàn ngay! 🤤🔥🔥Tửu Lầu 13",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7664550534413552916",
+    "snippet": "6102 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Nhìn thôi đã muốn đặt bàn ngay! Tửu Lầu 13– Nơi vị giác gặp ...",
+    "position": 7
+   },
+   {
+    "title": "Múa cổ trang #tuulau13 #nhahang #montrung #quan1 # ...",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7617072634538298645",
+    "snippet": "505 Lượt thích,Video TikTok từ Nhà Hàng Tửu Lầu 13 (@nhahangtuulau13): \"Múa cổ trang #tuulau13 #nhahang #montrung #quan1 #trungquoc\".âm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

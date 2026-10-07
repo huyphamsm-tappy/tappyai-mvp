@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Thuỷ Lập Phương | Phúc Điền Tân Châu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:42.055Z",
+ "body": {
+  "searchParameters": {
+   "q": "Thuỷ Lập Phương | Phúc Điền Tân Châu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_1856,h_928,w_750/activities/lage2oofwlk1sywi0eq/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 750,
+    "imageHeight": 928,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3Pxw4gJDKO9BzfIlURnzvMnrgfyYQthHLZ6gPAPdkrQ&s=10",
+    "thumbnailWidth": 402,
+    "thumbnailHeight": 497,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_1856%2Ch_928%2Cw_750%2Factivities%2Flage2oofwlk1sywi0eq%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=Cy_DbgtDVOyW7M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=750&h=928",
+    "position": 1
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1080,h_810/w_66,x_12,y_12,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/echilcpcxdt20enextwl/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 1080,
+    "imageHeight": 810,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQB-I9kDepjl8Th6_hzYUx19tBAYJQbPH9V8EL1n_0HLA&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1080%2Ch_810%2Fw_66%2Cx_12%2Cy_12%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fechilcpcxdt20enextwl%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=1-KcsVZYID88NM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=1080&h=810",
+    "position": 2
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_2784,h_928,w_750/activities/lage2oofwlk1sywi0eq/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 750,
+    "imageHeight": 928,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToxN2VBXT2Ueh5AK8WCOwN_Q8Om_gvIjPlXXkgcKACSw&s=10",
+    "thumbnailWidth": 402,
+    "thumbnailHeight": 497,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_2784%2Ch_928%2Cw_750%2Factivities%2Flage2oofwlk1sywi0eq%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=iXHcuPpQNR6bhM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=750&h=928",
+    "position": 3
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1080,h_810/w_66,x_12,y_12,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/q4we6h9qt01utmvc1s1f/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 1080,
+    "imageHeight": 810,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5C-fWPmadCfNB1O0szA8Zad_Bw79MElc8Y8BiqjThVg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1080%2Ch_810%2Fw_66%2Cx_12%2Cy_12%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fq4we6h9qt01utmvc1s1f%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=7m_pTh0uRlVdWM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=1080&h=810",
+    "position": 4
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_3712,h_928,w_750/activities/lage2oofwlk1sywi0eq/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 750,
+    "imageHeight": 928,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-4K_6F15fCaL8v9C3_ujcZ-X3ceTu5Nr5f_tetg-9Q&s=10",
+    "thumbnailWidth": 402,
+    "thumbnailHeight": 497,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_3712%2Ch_928%2Cw_750%2Factivities%2Flage2oofwlk1sywi0eq%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=zl740EHren4MGM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=750&h=928",
+    "position": 5
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_4640,h_928,w_750/activities/lage2oofwlk1sywi0eq/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 750,
+    "imageHeight": 928,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrDaFvou4njVhOKqGEF6_DflGI3B7Y_JgJuhbCBfSLAw&s=10",
+    "thumbnailWidth": 402,
+    "thumbnailHeight": 497,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_4640%2Ch_928%2Cw_750%2Factivities%2Flage2oofwlk1sywi0eq%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=Nf4dKbx8r0A66M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=750&h=928",
+    "position": 6
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_5568,h_928,w_750/w_46,x_8,y_8,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/lage2oofwlk1sywi0eq/Thu%E1%BB%B7L%E1%BA%ADpPh%C6%B0%C6%A1ng%7CPh%C3%BAc%C4%90i%E1%BB%81nT%C3%A2nCh%C3%A2u.jpg",
+    "imageWidth": 750,
+    "imageHeight": 922,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJQzWcC6Nh3WBbmj6l975Lo7gTE46n0JhkwM9J-1uXVQ&s=10",
+    "thumbnailWidth": 402,
+    "thumbnailHeight": 497,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_5568%2Ch_928%2Cw_750%2Fw_46%2Cx_8%2Cy_8%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Flage2oofwlk1sywi0eq%2FThu%25E1%25BB%25B7L%25E1%25BA%25ADpPh%25C6%25B0%25C6%25A1ng%257CPh%25C3%25BAc%25C4%2590i%25E1%25BB%2581nT%25C3%25A2nCh%25C3%25A2u.jpg&tbnid=HegROeBoLKTBHM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F140562-water-cube-futian-xinzhou-store%2F&docid=NFXGJOuIzh7W5M&w=750&h=922",
+    "position": 7
+   },
+   {
+    "title": "Công trình thủy lợi trọng điểm 280 tỷ đồng ở Tây Ninh tăng tốc thi công |  Báo Dân trí",
+    "imageUrl": "https://cdnphoto.dantri.com.vn/3UYf7BO6yC7jxhsniKo_eS_kK2I=/thumb_w/1920/2025/10/10/hothalaanhuy21jpg-1760110714130.jpg?watermark=true",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgJBcM3InWePhTdE9J90g_S2EuxHJqfttzldUGp-CTvg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Dân trí",
+    "domain": "dantri.com.vn",
+    "link": "https://dantri.com.vn/thoi-su/cong-trinh-thuy-loi-trong-diem-280-ty-dong-o-tay-ninh-tang-toc-thi-cong-20251010235025307.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnphoto.dantri.com.vn%2F3UYf7BO6yC7jxhsniKo_eS_kK2I%3D%2Fthumb_w%2F1920%2F2025%2F10%2F10%2Fhothalaanhuy21jpg-1760110714130.jpg%3Fwatermark%3Dtrue&tbnid=QVrS58KH3fqNwM&imgrefurl=https%3A%2F%2Fdantri.com.vn%2Fthoi-su%2Fcong-trinh-thuy-loi-trong-diem-280-ty-dong-o-tay-ninh-tang-toc-thi-cong-20251010235025307.htm&docid=sbNrEgSJeqOliM&w=1920&h=1280",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,12 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { __resetAppleCapabilityCache } from '@/lib/auth/appleCapability'
 import { __resetDeletionReadyCache } from '@/lib/account/deletionReady'
-import {
-  FREE_DAILY_LIMIT, ANON_DAILY_LIMIT, SHOW_PRO_UPGRADE, SHOW_APP_CONNECTIONS, SHOW_SCAM_SHIELD,
-  SCAM_SHIELD_DAILY_LIMIT_AUTH, SCAM_SHIELD_DAILY_LIMIT_ANON, MAX_PHOTOS_PER_REVIEW, MAX_VIDEO_SIZE_MB,
-  MAX_VIDEO_DURATION_SEC, MAX_VIDEO_DURATION_ACCEPT_SEC, LINK_VIDEO_PROVIDERS, AUTH_PROVIDERS,
-  ONBOARDING_INTERESTS, ONBOARDING_CITIES,
-} from '@/lib/config/product'
 import { GET } from './route'
 
 // GET /api/config -> flags.appleSignIn and flags.accountSelfDelete, through the REAL capability sources:
@@ -43,17 +37,6 @@ async function config() {
   return { r, body: JSON.parse(text) as Record<string, any>, raw: text }
 }
 
-/** The response this route produced BEFORE this branch, rebuilt from main's own constants (deletion off: no flag, no clean-up). */
-const BEFORE = () => JSON.parse(JSON.stringify({
-  freemium: { freeDailyLimit: FREE_DAILY_LIMIT, anonDailyLimit: ANON_DAILY_LIMIT },
-  flags: { showProUpgrade: SHOW_PRO_UPGRADE, showAppConnections: SHOW_APP_CONNECTIONS, showScamShield: SHOW_SCAM_SHIELD },
-  upload: { maxPhotosPerReview: MAX_PHOTOS_PER_REVIEW, maxVideoSizeMb: MAX_VIDEO_SIZE_MB, maxVideoDurationSec: MAX_VIDEO_DURATION_SEC, maxVideoDurationAcceptSec: MAX_VIDEO_DURATION_ACCEPT_SEC },
-  scamShield: { dailyLimitAuth: SCAM_SHIELD_DAILY_LIMIT_AUTH, dailyLimitAnon: SCAM_SHIELD_DAILY_LIMIT_ANON },
-  video: { linkProviders: LINK_VIDEO_PROVIDERS },
-  auth: { providers: AUTH_PROVIDERS },
-  onboarding: { interests: ONBOARDING_INTERESTS, cities: ONBOARDING_CITIES },
-}))
-
 beforeEach(() => {
   reset()
   vi.stubEnv('NEXT_PUBLIC_SUPABASE_URL', SUPABASE)
@@ -89,16 +72,18 @@ describe('GET /api/config flags.appleSignIn', () => {
   })
 })
 
-describe('GET /api/config differs from main ONLY by the two new flags', () => {
-  it('with deletion off, removing flags.appleSignIn and flags.accountSelfDelete gives exactly the pre-change response', async () => {
+describe('GET /api/config keeps its Phase 7 shape and adds the two capability flags', () => {
+  it('with deletion off: appleSignIn is a boolean, accountSelfDelete is false, and every pre-existing block / flag is still there', async () => {
     for (const apple of [true, false]) {
       reset()
       backends({ apple })
       const { body } = await config()
       expect(typeof body.flags.appleSignIn).toBe('boolean')
+      expect(body.flags.appleSignIn).toBe(apple)
       expect(body.flags.accountSelfDelete).toBe(false)
-      const { appleSignIn: _a, accountSelfDelete: _d, ...flags } = body.flags
-      expect({ ...body, flags }).toEqual(BEFORE())
+      expect(Object.keys(body).sort()).toEqual(['auth', 'flags', 'freemium', 'onboarding', 'p8', 'scamShield', 'upload', 'video'])
+      expect(Object.keys(body.flags).sort()).toEqual(['accountSelfDelete', 'appleSignIn', 'publicShare', 'showAppConnections', 'showMusic', 'showProUpgrade', 'showScamShield', 'subscriptions'])
+      for (const k of Object.keys(body.flags)) expect(typeof body.flags[k]).toBe('boolean')
     }
   })
   it('Google / Zalo / email providers are exactly what they were; Apple is NOT added to the provider list', async () => {

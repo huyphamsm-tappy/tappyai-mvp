@@ -1,0 +1,410 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Bà Rịa Vũng Tàu",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.346,107.0843,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:55.917Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Bà Rịa Vũng Tàu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.346,107.0843,14z",
+   "engine": "google"
+  },
+  "ll": "@10.3459944,107.0842997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+    "address": "23D Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3305475,
+    "longitude": 107.087373,
+    "rating": 4.6,
+    "ratingCount": 365,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn tình yêu",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 968 900 893",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcss3Yr_IkEj21YnRw07vHHEHENFAaY9c1OeNfZ2dkTZyYoAxOUyXYv48PnwW2iD__aKEY0pylZ2GItp8huEOi46ltAHr8mwW5snMx4hIQaJWjFHhCRe-8DWowKmdXHvUsq1MEK",
+    "cid": "6995876162440303960",
+    "fid": "0x317565599537a55f:0x6116584dd2e09558",
+    "placeId": "ChIJX6U3lVlldTERWJXg0k1YFmE"
+   },
+   {
+    "position": 2,
+    "title": "Seasons Hotel",
+    "address": "126A Hạ Long, Vũng Tàu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.3395301,
+    "longitude": 107.07214959999999,
+    "rating": 4.7,
+    "ratingCount": 64,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 254 3522 855",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNMPLXAafLguFlAkoNZSn-QC_SOQKoWWVTN93l13MjhsH0bmwb6n7q1oppnDFR99HB1AbUk9tpb1XeGNuxmRMFlWkMjmsGfmDdpUr0igzLYoFtBVQD9piKJrThmoVYf2klqgP5v",
+    "cid": "2819547070824205998",
+    "fid": "0x31756f766462becf:0x27210b1f4ff84eae",
+    "placeId": "ChIJz75iZHZvdTERrk74Tx8LISc"
+   },
+   {
+    "position": 3,
+    "title": "Victory Hotel Vung Tau",
+    "address": "83QR+4C, 149 Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.3385746,
+    "longitude": 107.0912506,
+    "rating": 4.8,
+    "ratingCount": 2569,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://victoryvungtau.com/",
+    "phoneNumber": "+84 254 6556 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPlS9OfsXKgUkmpTAYyTcoHkqvbGjFAR6LtyPFK7SO0IYfZwStYCF0mnM9bQJER0Nzn0xgR5GoUERo-eJ52XV2S5HxOtlGEhcmcsPLSMaCtdMKf8lD_nX1oyT0MsTExTUSrsjaO7eoH2o0",
+    "cid": "16927681765482019855",
+    "fid": "0x31756f65d60b1e17:0xeaeb34e10669bc0f",
+    "placeId": "ChIJFx4L1mVvdTERD7xpBuE06-o"
+   },
+   {
+    "position": 4,
+    "title": "Phan Anh Hotel",
+    "address": "L14 Hoàng Văn Hòe, Khu Á Châu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.3373058,
+    "longitude": 107.0844556,
+    "rating": 4.2,
+    "ratingCount": 171,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn"
+    ],
+    "website": "https://www.facebook.com/phananhvungtau/",
+    "phoneNumber": "+84 988 851 991",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfDWuEPxpzxhuN3M7SXHIc5qFCDfsiVdII1lIsJHrSo0CKZi7Rf3GHucehToErhrQAALPqPBcM5ZkLUDurgG5DKzYRAcy6d6GGQsKSexTrW22SujRltSIVmMq2EntSQhrm-I6j4AnzatWg",
+    "cid": "8840712304850607419",
+    "fid": "0x31756f8f16c8990f:0x7ab085004c0b9d3b",
+    "placeId": "ChIJD5nIFo9vdTERO50LTACFsHo"
+   },
+   {
+    "position": 5,
+    "title": "Vias Hotel Vung Tau",
+    "address": "179 Thùy Vân, Tam Thắng, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3524061,
+    "longitude": 107.10142359999999,
+    "rating": 4.6,
+    "ratingCount": 1541,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://viashotels.com/",
+    "phoneNumber": "+84 254 3541 111",
+    "description": "Khách sạn sang trọng nhìn ra biển, có phòng ở tinh tế, 4 địa điểm ăn uống và bể bơi tầng thượng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPbK-Wl1ELW_nS1N3uIQL48cKdA3_nXR37iZjlW9iYDE95V19ALhT8-2qhQVZTzhc4oZbY0mPxppyhcTEw_f2QIqXfZ9rpU0mVvwupIhvLv1pM6lR6BK-FnoeWIRZPlwou3soBEnw",
+    "cid": "14863993309474711187",
+    "fid": "0x31756585b0238e2d:0xce4783298305e693",
+    "placeId": "ChIJLY4jsIVldTERk-YFgymDR84"
+   },
+   {
+    "position": 6,
+    "title": "Aria Vũng Tàu Hotel & Resort",
+    "address": "Shophouse Aria, 79 Hà Huy Tập, Rạch Dừa, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.3740755,
+    "longitude": 107.1266048,
+    "rating": 4.4,
+    "ratingCount": 819,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Đại lý cho thuê căn hộ",
+     "Đại lý bất động sản"
+    ],
+    "website": "https://firavilla.vn/",
+    "phoneNumber": "+84 28 3888 3379",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf1zi6nSsC9XcRmg2Kf8N23QonFrYhyiT0ZagocdE4MCeghj52YjN_rE3-hPWYwYp918Lq4kmQlYqdig7b8pBkOzh_9bCWSfrhgBOZVNNOrlQcIZHL9jKcqOYkTOzpIV0slbCgVYg",
+    "cid": "1233486937953001486",
+    "fid": "0x317571c7e73f8355:0x111e39d5b3c5e00e",
+    "placeId": "ChIJVYM_58dxdTERDuDFs9U5HhE"
+   },
+   {
+    "position": 7,
+    "title": "Minh Hải Hotel",
+    "address": "3 La Văn Cầu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.337793099999999,
+    "longitude": 107.0906528,
+    "rating": 4.8,
+    "ratingCount": 226,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 846 554 554",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgUkv1iJuzHXeOY-K5i0PibrV6VQP7WnLRwtp8D-a38Q1G0UTD13d0j1GFOPHgCwXrZ66Yr5rejSd4jj7G_VWt9q2jbPOaPCJOy8hHpiaw4Vuu92PuMarDCDIC5LJ6-QCAJhnI0g",
+    "cid": "4559984141639779093",
+    "fid": "0x31756ff9ea55e865:0x3f48516abfda8315",
+    "placeId": "ChIJZehV6vlvdTERFYPav2pRSD8"
+   },
+   {
+    "position": 8,
+    "title": "Kly Hotel Vũng Tàu",
+    "address": "81/24 Thùy Vân, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.333171499999999,
+    "longitude": 107.08734679999999,
+    "rating": 4.2,
+    "ratingCount": 249,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 377 075 855",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO8NDgsi-7A5xGZkD5MUdftqHo7yzMXehKIO4mESphOMx1vb7EHmz2wEA_ZGkN0ioOR-55C1ic1JglWsDqe9WXF6DS4hmc0v0hAw1ldA0zMRnamBfJblUcjRuWBnhjOjbPzF3VDA8ImToN2",
+    "cid": "12728607322808518348",
+    "fid": "0x317565cff55d5e41:0xb0a518ebc97006cc",
+    "placeId": "ChIJQV5d9c9ldTERzAZwyesYpbA"
+   },
+   {
+    "position": 9,
+    "title": "Thủy Vân Hotel",
+    "address": "32 Trần Quý Cáp, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.338369499999999,
+    "longitude": 107.09037269999999,
+    "rating": 3.9,
+    "ratingCount": 609,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61562201401314&mibextid=LQQJ4d",
+    "phoneNumber": "+84 938 300 783",
+    "description": "Khách sạn bình dân có phòng ở bài trí đơn giản, Wi-Fi miễn phí và sân thượng nhìn ra biển.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeaI-gv8muBSpCc_bJvTyOsV5YZcu8ib2LZLq_O7lvahviwbpO2lZfKqFrqqPSPYA2ATJhNjEjVjuA1DFFypcfYQYofPxH7EN4euo3Rl0yYvkGGrMX2lgVlKuS6204YcvzWl2x7",
+    "cid": "3795170505194815144",
+    "fid": "0x31756ff9f1e93333:0x34ab2777802d3ea8",
+    "placeId": "ChIJMzPp8flvdTERqD4tgHcnqzQ"
+   },
+   {
+    "position": 10,
+    "title": "Annata Beach Hotel",
+    "address": "165 Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3489037,
+    "longitude": 107.09795489999999,
+    "rating": 4.1,
+    "ratingCount": 1003,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 254 7303 839",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN2ISeqjbV3mqCsAHhotWAV7Ros9wok8PyOtn944-AejYjR_N_aIOTLw9VZzBbAIxEb5seIw7U0YIEyK-Q2gXLkA0xI2aci7Wz06_OEr2TLBcrqyYqleZPHBZnKJ4ZnQ6uFb2ds",
+    "cid": "2951802435226741411",
+    "fid": "0x31756f341086d1e1:0x28f6e8aceed2aaa3",
+    "placeId": "ChIJ4dGGEDRvdTERo6rS7qzo9ig"
+   },
+   {
+    "position": 11,
+    "title": "Mai hotel",
+    "address": "81/14 Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3334218,
+    "longitude": 107.08780929999999,
+    "rating": 4.3,
+    "ratingCount": 216,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100085126665753",
+    "phoneNumber": "+84 366 666 660",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMHmU1dkFjNlGCXDywrhnDhd5qwfrpXc69DL9rmB-kTJ-Wu5DdkeAdlTvxTwXCSJUybB9KiBTeKS2sql4UxAld28EGxoDrAreiYlPnHld3AjRROvhv896mzeLfA8t2QUFrbafxF",
+    "cid": "14356466270322247397",
+    "fid": "0x317565bf55512767:0xc73c6a02506f46e5",
+    "placeId": "ChIJZydRVb9ldTER5UZvUAJqPMc"
+   },
+   {
+    "position": 12,
+    "title": "Khách Sạn New Hotel",
+    "address": "126A10 Đường Hoàng Hoa Thám, Phường 2, Thành phố Vũng Tầu Bà Rịa, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3374243,
+    "longitude": 107.0855016,
+    "rating": 4.8,
+    "ratingCount": 45,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 777 617 021",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPEmUxz0gUMnQ_8X-zmnDQ4z4j7I7ajfJA0qw7zcV7LyYsHd_iVMmenJH7Dfvt9DJRm7y9dqiz5tLDNEJvf3WMq94DLCbHuhFutyYMcx9ylMtvccCi5jT04koIDeCErYAePoBvs7w",
+    "cid": "4396339973296959174",
+    "fid": "0x31756f6dfea48fad:0x3d02efe9b4372ec6",
+    "placeId": "ChIJrY-k_m1vdTERxi43tOnvAj0"
+   },
+   {
+    "position": 13,
+    "title": "Premier Pearl Hotel",
+    "address": "69-69A Thùy Vân, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+    "latitude": 10.3322495,
+    "longitude": 107.08896689999999,
+    "rating": 4.6,
+    "ratingCount": 4036,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://premierpearlhotel.vn/",
+    "phoneNumber": "+84 254 6506 666",
+    "description": "Khách sạn đẹp mắt có sân thượng, bể bơi vô cực, quầy bar, nhà hàng, spa và phòng tập thể dục.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMKO1iDlyk9mLZeUR9aa6QqbqZcG7cUMQ52Zbe4oN5P5V2hOAZRYTlGxbpD-RtxU_IQ6QRl0cSW5WxqgNientz7tuwRb2aqRw86Io02AchIF_VQr1HIG0JBuBU_--BlHDZN7nAK",
+    "cid": "5865959305163415112",
+    "fid": "0x3175652e810d9ca7:0x516812e8ab299e48",
+    "placeId": "ChIJp5wNgS5ldTERSJ4pq-gSaFE"
+   },
+   {
+    "position": 14,
+    "title": "THE LAND HOTEL - VŨNG TÀU",
+    "address": "91 Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3329155,
+    "longitude": 107.0819968,
+    "rating": 4.8,
+    "ratingCount": 144,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://theland.xtadia.com/",
+    "phoneNumber": "+84 948 469 093",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN-J0EKmSDjAoK3Q0j-SgsYguhBq6UhjHf1DV__PWhVTxk5pRF_VrPSfSw57Tqzs8vHuIi94ybaKS8ujQwZ5JNfcDrdM8YToqQmK9eDUyjzh-TFIYKc2d5jLnyPq2_Vpri2p5MD",
+    "cid": "11230752258240353459",
+    "fid": "0x317565b36e3aa3f7:0x9bdba5ad00d514b3",
+    "placeId": "ChIJ96M6brNldTERsxTVAK2l25s"
+   },
+   {
+    "position": 15,
+    "title": "Khách sạn Vũng Tàu - Nguyễn Hoàng Hotel",
+    "address": "A36 đường Đ. 3 Tháng 2, Tam Thắng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.359146599999999,
+    "longitude": 107.09711399999999,
+    "rating": 4.1,
+    "ratingCount": 43,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 904 116 004",
+    "description": "Khách sạn bình dị, ấm cúng có quầy bar phục vụ ăn uống, chỗ đỗ xe và phòng ở đơn giản. Một số phòng có ban công.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP9pSh9N7T844vyeo5SrMd1PadddfVs_TYjiH6bxNZ6n9ucgdlNzKvghttpN0AIcYHgok_kE2g1fyF56I88Y4cHbBDWPWsi62OKeJbld4LJNhFSCkBf43EfnhlmD8afUdOHjfuf8A",
+    "cid": "4662088427503681506",
+    "fid": "0x31756f3bedeb6165:0x40b310b958d0ffe2",
+    "placeId": "ChIJZWHr7TtvdTER4v_QWLkQs0A"
+   },
+   {
+    "position": 16,
+    "title": "Vacsava Hotel",
+    "address": "143 Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3300334,
+    "longitude": 107.0863979,
+    "rating": 3.7,
+    "ratingCount": 288,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 254 3523 239",
+    "description": "Khách sạn bình dị này cung cấp các phòng và suite đơn giản, không cầu kỳ, với không gian tổ chức sự kiện và sảnh chờ.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmObN_xzEV_YP7wDNrmyQf_T4hxO4ETYkNBlBdDgkQcSsZuGEznsGPjqSrY74HZZtxl9KvUizPS-c8i6w3DCh9vijhkJSAltRDyUevLk5Q3nHP37_iLhJ1H5i8fY32cNRJObVa41",
+    "cid": "5784297945361192059",
+    "fid": "0x3175674bb0efc5fb:0x5045f455b446947b",
+    "placeId": "ChIJ-8XvsEtndTERe5RGtFX0RVA"
+   },
+   {
+    "position": 17,
+    "title": "BELLA VT HOTEL",
+    "address": "17 Phan Văn Trị, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.3375554,
+    "longitude": 107.08989629999999,
+    "rating": 4.2,
+    "ratingCount": 815,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 254 2203 040",
+    "description": "Khách sạn ấm cúng có bữa sáng và phòng ở đơn giản, trong đó có một số phòng có ban công nhìn ra phố.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcwBUmD-e9mEefngRFF7brKSPg6rh7LHMVKKvUSD4ya1kHaSncJ0_nq--5H_L-bRT76fKU36T6TO00HJlgOXvKPSOZzxxD4tgWpKqLmQHUU9-oYfaPpP_ZOuS_xWFXH0_c9S8hreA",
+    "cid": "7501746754752720155",
+    "fid": "0x31756fd6dd3dde6d:0x681b8eed6ff9ad1b",
+    "placeId": "ChIJbd493dZvdTERG635b-2OG2g"
+   },
+   {
+    "position": 18,
+    "title": "Nami Hotel & Apartment Vũng Tàu",
+    "address": "51H Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.336331399999999,
+    "longitude": 107.0813773,
+    "rating": 4.7,
+    "ratingCount": 58,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 773 268 868",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN_Rs25TJVYC812QfEeVcvh8WZMOlooAEzI7Jy4ywiy0wTwtVZPrd_eZX2sO5zNy4Xj-LpopUO1RThiGGtVSGSB8mN2meUTfPTinGRzU1qdDSXcm1i2nrLnA6Z2LOmzCG0CtfqolLzjBVX-",
+    "cid": "10956307659519110793",
+    "fid": "0x31756f58921c1d03:0x980c9fc46f872e89",
+    "placeId": "ChIJAx0cklhvdTERiS6Hb8SfDJg"
+   },
+   {
+    "position": 19,
+    "title": "Mercure Vung Tau",
+    "address": "03 06 Hạ Long, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+    "latitude": 10.3269272,
+    "longitude": 107.08099159999999,
+    "rating": 4.5,
+    "ratingCount": 2948,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=B738&merchantid=seo-maps-VN-B738&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+    "phoneNumber": "+84 254 3526 010",
+    "description": "Khách sạn sang trọng bên bãi biển, có nhà hàng, 2 quán bar, bể bơi ngoài trời và phòng tập thể dục.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMv10EYluMr9_nSQiIJnbDcwNKYo3cL7MqS3Xw7Vj8tLPUWdGtGiCnN6DT8P6Kr7prbbV9owMoBN3YIIyYi48RamT0Bw7yARGL-1JMR2PPokMaF7RmCs2u6YARma6beuHBPcodZ",
+    "cid": "8550023420614199819",
+    "fid": "0x317565569dd1fbd1:0x76a7c90046faca0b",
+    "placeId": "ChIJ0fvRnVZldTERC8r6RgDJp3Y"
+   },
+   {
+    "position": 20,
+    "title": "Hôtel D'Melin",
+    "latitude": 10.342106,
+    "longitude": 107.076332,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Phòng tiệc",
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn nghỉ dưỡng",
+     "Nhà hàng",
+     "Bể bơi"
+    ],
+    "cid": "3034569465048400868",
+    "fid": "0x31756f46bcc368ad:0x2a1cf4d9c27503e4",
+    "placeId": "ChIJrWjDvEZvdTER5AN1wtn0HCo"
+   }
+  ],
+  "credits": 3
+ }
+}

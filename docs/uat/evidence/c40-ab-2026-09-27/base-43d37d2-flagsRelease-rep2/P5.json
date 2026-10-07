@@ -1,0 +1,25 @@
+{
+  "id": "P5",
+  "text": "massage",
+  "parent": null,
+  "status": 200,
+  "ms": 3403,
+  "evidenceId": "1a382fad-6165-4463-bee0-1822287012f7",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2. **Bạn ưu tiên gì?** (chất lượng cao, giá rẻ, gần nhất, v.v.)\n\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2.\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2. **Bạn ưu tiên gì?** (chất lượng cao, giá rẻ, gần nhất, v.v.)\n\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n1. **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n2.\nBạn đang ở Quận 1, TP.HCM — mình sẽ tìm những nơi gần bạn nhất khi bạn cho biết thêm! 😊"
+    }
+  ]
+}

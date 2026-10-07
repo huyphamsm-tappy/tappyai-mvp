@@ -53,12 +53,24 @@ function setHistoryLength(n: number) {
   Object.defineProperty(window.history, 'length', { value: n, configurable: true })
 }
 
+/**
+ * The in-app depth `lib/nav/inAppBack` keeps per tab. Phase 7 replaced the raw
+ * `history.length <= 1` test with this count (a fresh tab's blank entry made the
+ * old test read 2 and walk out of the site); `history.length` alone no longer
+ * decides anything, which the first two cases now prove.
+ */
+function setInAppDepth(n: number) {
+  const entries = Array.from({ length: n + 1 }, (_, i) => `/page-${i}`)
+  sessionStorage.setItem('tappy:nav-stack', JSON.stringify({ entries, index: n }))
+}
+
 describe('Header back navigation', () => {
   beforeEach(() => {
     back.mockClear()
     replace.mockClear()
     push.mockClear()
     localStorage.clear()
+    sessionStorage.clear()
   })
   // The project registers no vitest setupFiles, so Testing Library's automatic
   // cleanup is not installed — without this, renders accumulate in the document
@@ -69,7 +81,8 @@ describe('Header back navigation', () => {
   })
 
   it('pops history instead of pushing a destination when no backHref is given', () => {
-    setHistoryLength(5) // arrived here from another in-app screen
+    setInAppDepth(2) // arrived here from another in-app screen
+    setHistoryLength(5)
     render(<Header showBack backFallbackHref="/" />)
 
     fireEvent.click(screen.getByRole('button', { name: /common\.back/ }))
@@ -80,7 +93,11 @@ describe('Header back navigation', () => {
   })
 
   it('falls back to the declared route when the tab opened directly on the page', () => {
-    setHistoryLength(1) // deep link / Play Console listing — nothing to pop
+    // Deep link / Play Console listing — nothing of ours to pop. history.length is 2
+    // on purpose: a fresh tab's blank entry already counts, and that number used to
+    // send Back out of the site.
+    setInAppDepth(0)
+    setHistoryLength(2)
     render(<Header showBack backFallbackHref="/" />)
 
     fireEvent.click(screen.getByRole('button', { name: /common\.back/ }))

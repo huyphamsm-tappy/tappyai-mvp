@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Quán Nhậu Bờ Kè Lucky Beer Bình Thạnh Bình Thạnh Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:39:20.623Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quán Nhậu Bờ Kè Lucky Beer Bình Thạnh Bình Thạnh Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7941937,106.695811,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Quán Nhậu Bờ Kè - Lucky Beer",
+    "address": "144 Trường Sa, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7941937,
+    "longitude": 106.69838589999999,
+    "rating": 4.2,
+    "ratingCount": 92,
+    "priceLevel": "300-400 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán bia sân vườn",
+     "Quán bia"
+    ],
+    "phoneNumber": "+84 937 888 938",
+    "openingHours": {
+     "Thứ Hai": "11:00–02:00",
+     "Thứ Ba": "11:00–02:00",
+     "Thứ Tư": "11:00–02:00",
+     "Thứ Năm": "11:00–02:00",
+     "Thứ Sáu": "11:00–02:00",
+     "Thứ Bảy": "11:00–02:00",
+     "Chủ Nhật": "11:00–02:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/479007028235178258"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMrbABjlIG2VanTVuAMUmxz1dOvkNhZRalKgRdj43R1qAR0KsvlSMq4XNgzGeTpFSy7NOkNbickCS4NnHK0JX7vRsfb6LfpEHcLOfS9W7PPX6Vv2GeNOPebCwh4JCCRpd33GxZn",
+    "cid": "1088576405826094532",
+    "fid": "0x317529cf4abeb499:0xf1b66793c22c5c4",
+    "placeId": "ChIJmbS-Ss8pdTERxMUiPHlmGw8"
+   }
+  ],
+  "credits": 3
+ }
+}

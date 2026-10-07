@@ -95,7 +95,7 @@ describe('the two vision calls on one image are not a duplicate', () => {
 })
 
 describe('the link field does not spend a model call per keystroke', () => {
-  const composer = readFileSync('src/app/reviews/new/page.tsx', 'utf8')
+  const composer = readFileSync('src/app/(app)/reviews/new/page.tsx', 'utf8')
 
   it('resolution is debounced away from onChange', () => {
     // `onChange` runs on every keystroke. Once `detectSource` matches — around character 20 of a

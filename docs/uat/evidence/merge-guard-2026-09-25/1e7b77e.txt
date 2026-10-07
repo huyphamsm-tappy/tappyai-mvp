@@ -1,0 +1,99 @@
+merge-guard — a merge may not silently drop what one side brought in (docs/uat/MERGE-LOSS-AUDIT.md §4)
+• 1e7b77e Merge wip/cool-vaughan-b3c7ff-2026-09-17 (consultative decision core, : ✖ 31 finding(s)
+    R1 [protected]  src/lib/ai/placeClaimGuard.ts — 32 line(s) git merged cleanly were dropped
+        − * Atmosphere and quality — "không gian thoải mái", "sôi động", "chất lượng",
+        − * "phục vụ tốt". Measured 2026-09-15: written about OpenStreetMap rows that
+        − * carried a name, a pin and (once) a wifi flag. These are claims about what a
+    R3 [protected]  src/lib/ai/placeClaimGuard.ts — 1 line(s) of one side's change lost in a protected-path conflict
+        − import { protectedSpans, sentenceSpans } from './moneyGuard'
+    R1 [protected]  src/lib/ai/snippetPriceGuard.ts — 19 line(s) git merged cleanly were dropped
+        − /** Words that present an amount as what something COSTS, and the words that name it as a budget. */
+        − const COST_FRAME_RE = /\btong\b|\btotal\b|\buoc tinh\b|\bestimated?\b|\bestimate\b|\bchi phi\b|\bcost\b|\bspen
+        − const BUDGET_FRAME_RE = /\bngan sach\b|\bbudget\b|\btam gia\b|\btrong khoang\b|\btoi da\b/
+    R3 [protected]  src/lib/ai/snippetPriceGuard.ts — 1 line(s) of one side's change lost in a protected-path conflict
+        − import { normalizeVN } from './intent'
+    R3 [protected]  src/lib/ai/streamEnrichment.ts — 4 line(s) of one side's change lost in a protected-path conflict
+        − const enriched = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: me
+        − const enrichedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang)
+        − const scaffoldStripped = unemphasizeLinks(stripFalseDisconnectClaims(validateModelCtaBlock(unlinkMislabelledMe
+    R2 [protected]  supabase/migrations/20260915_profile_public_presentation.sql — file added by parent 2 is deleted in the result
+    R2 [protected]  supabase/migrations/20260915b_review_likes_private.sql — file added by parent 2 is deleted in the result
+    R2 [protected]  supabase/tests/review_likes_private.test.ts — file added by parent 2 is deleted in the result
+    R2  src/app/api/profile/coverAndBio.test.ts — file added by parent 2 is deleted in the result
+    R1  src/app/api/profile/route.ts — 57 line(s) git merged cleanly were dropped
+        − // The profile row is the source of truth; auth metadata is where the bio
+        − // lived before the column existed, and still holds the last value a user
+        − // saved before the migration — shown until they save again.
+    R1  src/app/api/reviews/[id]/likes/likeListRead.test.ts — 17 line(s) git merged cleanly were dropped
+        − /** Every `rpc()` call — since 20260915b the likers come from `review_likers`, not the table. */
+        − rpcs: [] as { fn: string; args: Record<string, unknown> }[],
+        − /** The limit the like read asked for, and any cursor. */
+    R1  src/app/api/reviews/[id]/likes/route.ts — 12 line(s) git merged cleanly were dropped
+        − * Anonymous callers are allowed — this is a public read of ONE clip's likers, and only `id`,
+        − * `full_name` and `avatar_url` are served; no email, no auth data.
+        − * 🔑 Since `20260915b_review_likes_private.sql` the `review_likes` table is owner-read (a person's
+    R2  src/app/api/reviews/mine/selfScope.test.ts — file added by parent 2 is deleted in the result
+    R1  src/app/api/users/[id]/route.ts — 23 line(s) git merged cleanly were dropped
+        − // The columns every caller may see. `profiles` is public-read, and these are the
+        − // social-identity fields — never `language`, `onboarded` or anything else the row
+        − // carries for the owner's own use.
+    R1  src/app/globals.css — 2 line(s) git merged cleanly were dropped
+        − /* The shipped lockup (TappyLockup) sits here as-is: no letter-spacing, no uppercase. */
+        − .v3-pb-brand { display: inline-flex; align-items: center; color: var(--pb-fg); text-decoration: none; }
+    R1  src/app/profile/ProfileView.tsx — 23 line(s) git merged cleanly were dropped
+        − import Image from 'next/image'
+        − //   • CHANGE-COVER CONTROL — the cover itself is real since `profiles.cover_url`
+        − //     (`20260915_profile_public_presentation.sql`, uploaded through POST /api/profile), and the
+    R2  src/app/profile/edit/editProfileCover.test.tsx — file added by parent 2 is deleted in the result
+    R1  src/app/profile/edit/page.tsx — 50 line(s) git merged cleanly were dropped
+        − import { Check, Save, Loader2, Camera, ImagePlus, Trash2 } from 'lucide-react'
+        − import { rejectCoverFile, uploadCover, removeCover } from '@/lib/profile/cover'
+        − // Present (string or null) once `profiles.cover_url` exists; absent before the
+    R1  src/app/profile/page.tsx — 3 line(s) git merged cleanly were dropped
+        − // `profiles.cover_url` — `20260915_profile_public_presentation.sql`. `select('*')` above
+        − // means this is simply absent (null) until the column exists; the hero then stays a gradient.
+        − coverUrl={typeof profile?.cover_url === 'string' && profile.cover_url ? profile.cover_url : null}
+    R1  src/app/profile/profileHub.test.tsx — 12 line(s) git merged cleanly were dropped
+        − // the cover is real since `profiles.cover_url` (2026-09-15) and renders ONLY when the row has
+        − // one; there is no username column in use, no location column, no points/rewards/tier table
+        − it('offers no cover-photo upload HERE — the hub keeps one edit entry point (the avatar badge → /profile/edit)'
+    R1  src/app/reviews/ExploreStage.tsx — 10 line(s) git merged cleanly were dropped
+        − *   · Trending today — the last day's most-liked places, the phone feed's own source:
+        − *     `hot_places_24h()`, a place-name + count aggregate over visible reviews. Since
+        − *     `20260915b_review_likes_private.sql` the like rows themselves are owner-read, so the
+    R1  src/app/reviews/exploreStage.test.tsx — 12 line(s) git merged cleanly were dropped
+        − /** What `hot_places_24h()` (the place + count aggregate over the last 24h of likes) returns, per test. */
+        − let hotRows: Array<{ place_name: string | null; like_count: number | string }> = []
+        − /** Every rpc the stage made — the like rows are owner-read, so the table must never be selected. */
+    R1  src/app/reviews/page.tsx — 8 line(s) git merged cleanly were dropped
+        − // `hot_places_24h()` — the place-name + count aggregate over visible reviews. The like
+        − // rows are owner-read since 20260915b_review_likes_private.sql; this is the public view.
+        − const { data } = await supabase.rpc('hot_places_24h', { p_limit: 10 })
+    R1  src/app/users/[id]/UserProfileView.tsx — 16 line(s) git merged cleanly were dropped
+        − // The Explore profile. The URL stays /users/[id]; the page is `PublicProfileView`,
+        − // which renders in the Explore shell and decides from viewer vs owner what it may
+        − // show: the public identity and content for everyone, the owner's private activity
+    R1  src/components/share/shareMenuHistory.test.tsx — 3 line(s) git merged cleanly were dropped
+        − fireEvent.click(screen.getByText('share.copyLink'))
+        − fireEvent.click(screen.getByText('share.facebook'))
+        − fireEvent.click(screen.getByText('share.zalo'))
+    R1  src/lib/ai/consultative/decisionFrame.test.ts — 1 line(s) git merged cleanly were dropped
+        − it('the measured embellishments go; the wifi fact and the name stay', () => {
+    R1  src/lib/ai/planPriceGuard.test.ts — 2 line(s) git merged cleanly were dropped
+        − it('F — prose: the budget echoed as a cost is redacted, the budget named as a budget survives', () => {
+        − it('H — the exact UAT scenario through the real stream filter: parseable, budget kept, no fabricated cost', as
+    R1  src/lib/ai/tools/vnexpressTravel.test.ts — 2 line(s) git merged cleanly were dropped
+        − for (const tool of ['searchPlaces(query, location, type, lang, userLocation), travelEditorialFor(location)', '
+        − expect(prompt).toMatch(/bai bao VnExpress CHI khi 'url' nam trong 'travel_editorial'/)
+    R1  src/lib/i18n/w4/misc.ts — 16 line(s) git merged cleanly were dropped
+        − 'editProfile.cover': 'Ảnh bìa',
+        − 'editProfile.coverHint': 'Hiện trên trang cá nhân của bạn · JPG, PNG, WebP · Tối đa 5MB',
+        − 'editProfile.coverChange': 'Thay ảnh bìa',
+    R1  src/lib/media/key.ts — 3 line(s) git merged cleanly were dropped
+        − // Profile cover images — same public bucket and the same server-only writer
+        − // (POST /api/profile) as avatars; a prefix of its own so the two never collide.
+        − 'covers',
+    R2  src/lib/profile/cover.ts — file added by parent 2 is deleted in the result
+
+✖ 31 unwaived finding(s). Restore the dropped change, or state it in the merge message: "Merge-Drop: <path> — <reason>".
+exit=1

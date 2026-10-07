@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" OR \"Gạo Spa\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:44:16.118Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"Qispa Head & Massage Quận 1\" OR \"Gạo Spa\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Review Lúa Mạch Spa Ở Vĩnh Long · Spa Vuốt Lướt Phú Nhuận. Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen # ...",
+    "position": 1
+   },
+   {
+    "title": "Mầm Gạo Spa (@mamgaospa)",
+    "link": "https://www.tiktok.com/@mamgaospa",
+    "snippet": "Mầm Gạo Spa · @mamgaospa · 69 Hoa Lan, P. Cầu Kiệu 33/24 Quốc Hương, P. An Khánh No TIP Spa.",
+    "position": 2
+   },
+   {
+    "title": "Vừa làm việc vừa chill cùng Mầm nha 🥰 ------------------------- ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7658684442285722900",
+    "snippet": "Video TikTok từ Mầm Gạo Spa (@mamgaospa): \"Vừa làm việc vừa chill cùng Mầm nha ...",
+    "position": 3
+   },
+   {
+    "title": "Video của Gạo spa (Gội đầu ở đảo lý sơn) (@gao.spa97) với ...",
+    "link": "https://www.tiktok.com/@gao.spa97/video/7644961770653650197",
+    "snippet": "... Gạo spa - Gạo spa (Gội đầu ở đảo lý sơn) ... - Các truy vấn liên quan: \"chỗ đi chơi tối ở quận 1 ... Empire Quận 1 bar, Empire Club Quận 1, bar quận 1 Sài ...",
+    "position": 4
+   },
+   {
+    "title": "Video của Mầm Gạo Spa (@mamgaospa) với bản nhạc Lucky ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7638237376237653268",
+    "snippet": "Cùng Mầm phục hồi làn da với trẻ hóa căng có sinh học Collagen da cá #collagen #facialcare #facialmask ------------------------------ Mầm Gạo Spa - 100% ...",
+    "position": 5
+   },
+   {
+    "title": "Tắm trắng thiên nhiên Bạch Quý Phi 😚 lâu lâu Mầm sale 1 ...",
+    "link": "https://www.tiktok.com/@mamgaospa/video/7676316350926589204",
+    "snippet": "... Gạo Spa - 100% Thiên Nhiên - No Tip - “Yêu Thương Bản Thân Từ Những ... Quận 2 (Thủ Đức): 33/24 Quốc Hương, phường An Khánh | 0917 414 ...",
+    "position": 6
+   },
+   {
+    "title": "Gạo Spa Wellness",
+    "link": "https://www.tiktok.com/discover/g%E1%BA%A1o-spa-wellness",
+    "snippet": "Khám phá Gạo Spa & Wellness, nơi thư giãn và chăm sóc sắc đẹp tuyệt vời. Ưu đãi triệt lông cho học sinh sinh viên, trải nghiệm ngay hôm nay!",
+    "position": 7
+   },
+   {
+    "title": "Sữa Gạo Spa (@suagaospa)",
+    "link": "https://www.tiktok.com/@suagaospa",
+    "snippet": "Chào mừng đại lễ 30/4 & 1/5, Sữa Gạo Spa mang đến ưu đãi siêu hot! ✨ Xông hơi đá muối – chỉ 79.000đ ✨ Tắm bồn thảo dược – chỉ 79.000đ",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

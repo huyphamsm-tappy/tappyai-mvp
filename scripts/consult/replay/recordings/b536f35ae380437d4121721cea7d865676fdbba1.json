@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gội đầu thư giãn Quận 3\" OR \"Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa\" OR \"Tiệm Gội Đầu\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:49:52.136Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gội đầu thư giãn Quận 3\" OR \"Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa\" OR \"Tiệm Gội Đầu\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm Gội Đầu Dưỡng Sinh Hàn Quốc Quận 3 Sài Gòn",
+    "link": "https://www.tiktok.com/@duyenwithlove/video/7289049706708094216",
+    "snippet": "Tiệm gội đầu dưỡng sinh không gian Hàn quốc , zá rẻ , dùng toàn hàng xịnnn , ngay trung tâm Quận 3 Sài Gòn ✨ #goidauduongsinh #quan3 # ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm gội đầu massage quận 3 siêu healing #raytaitrunghoa ...",
+    "link": "https://www.tiktok.com/@lanharetreat/video/7627938053855710485",
+    "snippet": "Video TikTok từ TIỆM GỘI ĐẦU RÁY TAI QUẬN 3 (@lanharetreat): \"Tiệm gội đầu massage quận 3 siêu healing #raytaitrunghoa #goidauduongsinhtrunghoa ...",
+    "position": 2
+   },
+   {
+    "title": "Nail - gội đầu thư giãn quận 3 (@halina.beauty)",
+    "link": "https://www.tiktok.com/@halina.beauty",
+    "snippet": "Nail - gội đầu thư giãn quận 3 · @halina.beauty · Sdt book lịch : 0937633489 163 Đ. Nguyễn Thông , P9 , Q3.",
+    "position": 3
+   },
+   {
+    "title": "TIỆM GỘI ĐẦU RÁY TAI QUẬN 3 (@nguyenhuyentrang.351)",
+    "link": "https://www.tiktok.com/@nguyenhuyentrang.351",
+    "snippet": "TIỆM GỘI ĐẦU RÁY TAI QUẬN 3 (@nguyenhuyentrang.351) trên TikTok |1.9M Lượt thích.123.8K Follower.Là Nhà Retreat 351/48 Lê văn sỹ quận3.",
+    "position": 4
+   },
+   {
+    "title": "POV:ĐI GỘI ĐẦU LẤY RÁY TAI Ở QUẬN 3 .# ...",
+    "link": "https://www.tiktok.com/@nguyenhuyentrang.351/video/7626671482357255444",
+    "snippet": "80 Lượt thích,Video TikTok từ TIỆM GỘI ĐẦU RÁY TAI QUẬN 3 (@nguyenhuyentrang.351): \"POV:ĐI GỘI ĐẦU LẤY RÁY TAI Ở QUẬN 3 .",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Gội Đầu: Spa & Massage Quận 3 - Chỉ 69k",
+    "link": "https://www.tiktok.com/@tiemgoidau123/photo/7644154107695058184",
+    "snippet": "Tiệm Gội Đầu - Spa & Massage 123 Đỗ Thị Lời, Quận 3 Book Now: 086 558 3878 #gôidauduongsinh #gội_đầu_thư_giãn #headspa #massage #selfcare. Tiệm ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Gội Đầu Dưỡng Sinh Thư Giãn Quận 10",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7607097818246843666",
+    "snippet": "Khám phá tiệm gội đầu dưỡng sinh thư giãn tại quận 10 mở xuyên Tết với giá chỉ từ 99K! Trải nghiệm massage thư giãn tuyệt vời! #spathugian # ...",
+    "position": 7
+   },
+   {
+    "title": "Cạo mặt hénnnnnn ❤️❤️#tiemgoidauchibay # ...",
+    "link": "https://www.tiktok.com/@chibay_1818/video/7661154693879483655?lang=es",
+    "snippet": "Tiệm gội đầu Chị Bảy- Quận 3. 3 · recommend-cover. Nha Trang TV. 93 ... Tiệm gội đầu Chị Bảy- Quận 3. 2 · recommend-cover. Tiệm Vàng Thanh Tuyền.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

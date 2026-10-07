@@ -1,0 +1,108 @@
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3101
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · staleTimes
+
+ ✓ Starting...
+ ✓ Ready in 1749ms
+ ✓ Compiled /api/health in 325ms (145 modules)
+ GET /api/health 200 in 463ms
+ GET /api/health 200 in 19ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 890ms (435 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"phở ngon","location":"Quận 1 TP HCM","placeType":"restaurant","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"restaurant"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"phở ngon","location":"Quận 1 TP HCM","placeType":"restaurant","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"Phở Nhất Vị - Nguyễn Thị Minh Khai","role":"best_overall","attributes":null},{"name":"Phở Việt Nam- best pho in ho chi minh open 24/24h","role":null,"attributes":null},{"name":"PHỞ SOL - BẾN THÀNH","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":[],"action":"recommend","goal":"inform","criteria":[]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"Phở Nhất Vị - Nguyễn Thị Minh Khai","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":1,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"rehomed","card1":"Phở Nhất Vị - Nguyễn Thị Minh Khai","model_pick":"Phở Nhất Vị - Nguyễn Thị Minh Khai","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":15,"sentences_removed":1,"chars_in":781,"chars_removed":187,"chars_kept":594,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":1,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":1,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"phở ngon"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3636,"completionTokens":563,"totalTokens":4199,"cacheReadTokens":21658,"cacheCreationTokens":21658,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":12641,"preModelMs":1193,"ttftMs":2520,"modelFinishMs":10592,"ttuaMs":2520,"postModelMs":2049,"toolMs":2361,"providerId":"claude","modelRole":"fast","generationMs":8072,"firstStepFinishMs":5740,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 13781ms
+ ✓ Compiled /api/subscription in 301ms (437 modules)
+ GET /api/subscription 200 in 562ms
+ ✓ Compiled in 33ms
+ ✓ Compiled /api/profile in 259ms (180 modules)
+ PATCH /api/profile 200 in 1326ms
+ PATCH /api/profile 200 in 236ms
+ PATCH /api/profile 200 in 302ms
+ PATCH /api/profile 200 in 210ms
+ PATCH /api/profile 200 in 213ms
+ PATCH /api/profile 409 in 120ms
+ GET /api/profile 200 in 229ms
+ ✓ Compiled /api/plans/share in 358ms (177 modules)
+[plans/share] insert {
+  code: '23514',
+  details: null,
+  hint: null,
+  message: 'new row for relation "plan_shares" violates check constraint "plan_shares_plan_check"'
+}
+ POST /api/plans/share 500 in 1570ms
+ ✓ Compiled /api/conversations in 443ms (171 modules)
+ POST /api/conversations 200 in 1289ms
+ ○ Compiling /api/reviews ...
+ ✓ Compiled /api/reviews in 1376ms (279 modules)
+ POST /api/reviews 200 in 2427ms
+ ○ Compiling /api/reviews/mine ...
+ ✓ Compiled /api/reviews/mine in 5.1s (281 modules)
+ GET /api/reviews/mine 200 in 6325ms
+ GET /api/conversations?id=2689bcc7-82b2-421f-9591-7efff998c907 200 in 228ms
+[conversations] {
+  code: 'PGRST116',
+  details: 'The result contains 0 rows',
+  hint: null,
+  message: 'Cannot coerce the result to a single JSON object'
+}
+ PUT /api/conversations 500 in 292ms
+ ✓ Compiled /api/reviews/[id] in 471ms (283 modules)
+ DELETE /api/reviews/abbc6f8b-e261-4375-b93d-1351fd51808b 404 in 1731ms
+ PATCH /api/reviews/abbc6f8b-e261-4375-b93d-1351fd51808b 404 in 309ms
+ ○ Compiling /api/admin/users ...
+ ✓ Compiled /api/admin/users in 1017ms (313 modules)
+[controller][rbac] deny NO_GRANT user=be827a35-7535-42e9-8234-febb2a489045 permission=users.list.read
+ GET /api/admin/users 403 in 1432ms
+ ✓ Compiled /api/admin/deals in 357ms (317 modules)
+[controller][rbac] deny NO_GRANT user=be827a35-7535-42e9-8234-febb2a489045 permission=commerce.deals.read
+ GET /api/admin/deals 403 in 847ms
+ ✓ Compiled /api/admin/audit in 369ms (319 modules)
+[controller][rbac] deny NO_GRANT user=be827a35-7535-42e9-8234-febb2a489045 permission=audit.log.read
+ GET /api/admin/audit 403 in 517ms
+ GET /api/conversations 200 in 379ms
+ ○ Compiling /api/subscription ...
+ ✓ Compiled /api/subscription in 747ms (322 modules)
+ GET /api/subscription 200 in 1425ms
+ ○ Compiling /api/chat ...
+ ✓ Compiled /api/chat in 2.8s (517 modules)
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_intent_gate","turnIntent":"new_consultation","decisionStage":null,"hasPriorAssistantTurn":false,"assistantAskedClarification":false}
+{"type":"tappyai_model","model":"fast","planningIntent":null}
+{"type":"tappyai_model","model":"smart","planningIntent":null}
+{"type":"tappyai_tool_called","tool":"search_places","query":"cafe ngon Quận 1","location":"Quận 1 TP HCM","placeType":"cafe","hasLocationBias":false,"locationFromClip":false}
+{"type":"tappyai_places_budget","step":"provider_attempt","provider":"serper","placeType":"cafe"}
+{"type":"tappyai_tool_called","tool":"searchPlaces","step":"fn_entry","hasKey":true,"query":"cafe ngon Quận 1","location":"Quận 1 TP HCM","placeType":"cafe","destination":"Ho Chi Minh City, Vietnam","remoteDestination":false,"gps":null,"centeredOnUser":false}
+{"type":"tappyai_places_provider","provider":"serper","hasKey":true}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3,"completionTokens":219,"totalTokens":222,"cacheReadTokens":0,"cacheCreationTokens":21652,"llmCalls":1,"memoryExtract":1,"toolCalls":0,"elapsedMs":6041,"preModelMs":765,"ttftMs":2319,"modelFinishMs":4850,"ttuaMs":2319,"postModelMs":1191,"toolMs":null,"providerId":"claude","modelRole":"fast","generationMs":2531,"firstStepFinishMs":4848,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"web_search","planningIntent":null,"planEmitted":null,"frameGoal":"inform","frameDomains":[],"frameClarify":null}
+ POST /api/chat 200 in 9186ms
+{"type":"tappyai_places_debug","provider":"serper_maps","step":"price_level_retry","skipped":"no_price_signal"}
+{"type":"tappyai_places_debug","provider":"serper_maps","returned":20,"inScope":20,"destination":"Ho Chi Minh City, Vietnam","centeredOnUser":false}
+{"type":"tappyai_places_budget","step":"google_ok_cached"}
+{"type":"tappyai_consultative_v1","step":"shortlist","tool":"search_places","v1":false,"selected":[{"name":"XLIII Specialty Coffee","role":"best_overall","attributes":null},{"name":"Tonkin Specialty Coffee","role":null,"attributes":null},{"name":"Naii Specialty Coffee","role":null,"attributes":null}]}
+{"type":"tappyai_evidence_gap","tool":"search_places","qualified":10,"total":10,"needed":["rating","reviewCount"],"action":"recommend","goal":"recommend","criteria":["quality"]}
+{"type":"tappyai_cards_preliminary","items":8,"card1":"XLIII Specialty Coffee","rows":10}
+{"type":"tappyai_tiktok_enrichment","entities":3,"searched":true,"attributed":2,"batch":true}
+{"type":"tappyai_cards","shown":3,"picked":2,"items":8,"named_in_prose":2,"pick_unmatched":false,"emphasis":"rehomed","card1":"XLIII Specialty Coffee","model_pick":"XLIII Specialty Coffee","engine_pick":null}
+{"type":"tappyai_guard","guard":"place_claim","v2":false,"sentences_in":18,"sentences_removed":0,"chars_in":1107,"chars_removed":0,"chars_kept":1107,"reasons":{"quality":0,"popularity":0,"ordering":0,"ticket":0,"ticket_availability":0,"score":0,"review_count":0,"phone":0,"distance":0,"orphan":0,"cascade":0},"unattributable_claims":0,"attribution":{"L1":0,"L2":0,"L2p":0,"L3":0,"L4":0,"L5":0,"anaphora":0,"multi":0},"pick_attributable":null}
+{"type":"tappyai_place_evidence","step":"saved","shown":2,"query":"cafe ngon Quận 1"}
+{"type":"tappyai_usage","intent":"tool","finishReason":"stop","promptTokens":3623,"completionTokens":642,"totalTokens":4265,"cacheReadTokens":22790,"cacheCreationTokens":22790,"llmCalls":2,"memoryExtract":1,"toolCalls":1,"elapsedMs":13970,"preModelMs":1008,"ttftMs":2391,"modelFinishMs":12104,"ttuaMs":2977,"postModelMs":1866,"toolMs":2203,"providerId":"claude","modelRole":"smart","generationMs":9713,"firstStepFinishMs":6898,"photoTotalMs":null,"photoMaxPlaceMs":null,"photoPlacesSelected":null,"photoPlacesEnriched":null,"photoSteps":null,"retryCount":"unknown","worthExtract":true,"forcedTool":"search_places","planningIntent":null,"planEmitted":null,"frameGoal":"recommend","frameDomains":["food"],"frameClarify":"location"}
+ POST /api/chat 200 in 17280ms
+ GET /api/subscription 200 in 371ms
+[?25h

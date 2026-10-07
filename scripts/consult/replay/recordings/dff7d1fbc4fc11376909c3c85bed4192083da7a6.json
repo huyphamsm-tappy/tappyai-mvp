@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:45:34.875Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"The Nail\" OR \"Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Hoà Hưng (Quận 10), Tp.HCM Hotline: 033 7979 106 ... Keywords: Iris Nailbar SGN,Nails Quận 10,Nối mi thiết kế,Đào tạo học ...",
+    "position": 1
+   },
+   {
+    "title": "The Nail Chic - Tiệm nail mới tại 193 Nguyễn Lâm, P. Diên Hồng ...",
+    "link": "https://www.tiktok.com/@thuy.chung.ly/video/7651110247737740564",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10).",
+    "position": 2
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "... The Nail Resort in Port Harcourt. Body What defines an almond nail ... Lead Nail xinh mỗi ngày giới thiệu 10 ý tưởng nail art dễ làm để thay đổi ...",
+    "position": 3
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 4
+   },
+   {
+    "title": "Mấy ngày này các chị đẹo vô là yêu cầu sơn đỏ, tone màu ...",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/video/7585585312781405461",
+    "snippet": "Video TikTok từ ✨ Iris Nailbar SGN ✨ (@irisnailbarsgn): \"Mấy ngày ... 10 ngón 229k ⏰ Thứ 2–Thứ 5 | 09:00–15:00 2A Thạch Thị Thanh ...",
+    "position": 5
+   },
+   {
+    "title": "What Is the Nail in Basketball? NBA All‑Star Court Setup",
+    "link": "https://www.tiktok.com/@nba/video/7335896018195729710",
+    "snippet": "The nail is also one of the most underrated terms in basketball. Players often hear the advice to “find the nail” before shooting a free throw.",
+    "position": 6
+   },
+   {
+    "title": "Zarla Larson The Nail Lab | TikTok",
+    "link": "https://www.tiktok.com/discover/zarla-larson-the-nail-lab",
+    "snippet": "@sydneylaurrenn Thank you for the recommendation to this salon Tiny was Fabulous! @The Nail Lab of Cary is Sarah and Zara approved",
+    "date": "7 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Làm nail cho người lạ: quy trình, ý tưởng và lưu ý",
+    "link": "https://www.tiktok.com/@the.nail.chic/video/7664983012924247316",
+    "snippet": "Quy trình làm cơ bản 1. Ngâm và làm mềm da quanh móng. 2. Dũa và tạo hình móng theo yêu cầu (vuông, tròn, oval, nhọn). 3. Làm sạch bột dũa, xử lý da thừa, đẩy ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

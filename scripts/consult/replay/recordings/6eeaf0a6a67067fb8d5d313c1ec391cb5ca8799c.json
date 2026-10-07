@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:52:18.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9",
+    "link": "https://www.facebook.com/bibokidsquan9/?locale=vi_VN",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9. BIBO KIDS - Khu vui chơi Giáo-Trí kết hợp giáo dục và giải trí thông qua không ...",
+    "position": 1
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC",
+    "link": "https://id.trip.com/travel-guide/attraction/ho-chi-minh-city/khu-vui-chi-tr-em-bibo-kids-qun-9-th-c-147563045?poiType=3",
+    "snippet": "Pesan tiket KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC online di Trip.com. Cek harga tiket, temukan promo, baca ulasan pengunjung asli, ...",
+    "position": 2
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9",
+    "link": "https://m.facebook.com/100085221386757/photos/527417220108986/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 added a new photo.",
+    "position": 3
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC, 6 ...",
+    "link": "https://id.maptons.com/p/15171233709",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC, 6 Tăng Nhơn Phú, Việt Nam, peta lokasi, sân chơi, telepon +84 902 778 199. Có ghế ngồi massage cho người lớn ...",
+    "position": 4
+   },
+   {
+    "title": "Điểm danh 10 khu vui chơi trẻ em Quận 9 hấp dẫn nhất",
+    "link": "http://moma.vn/tin-tuc/diem-danh-10-khu-vui-choi-tre-em-quan-9-hap-dan-nhat-NV7tupY6",
+    "snippet": "Khu vui chơi trẻ em BIBO KIDS Quận 9. Đăng ký nhận sách miễn phí Từ Kết Công Nghệ. Địa chỉ: 6 Đ. Tăng Nhơn Phú, KP4, P. Phước Long B, Quận 9; Số điện thoại ...",
+    "position": 5
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9",
+    "link": "https://m.facebook.com/100085221386757/photos/555785487272159/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 added a new photo ... Thủ Đức (Đối diện Chùa Pháp Trí) ☎ Liên hệ: 0967 477 791 ⏰ 8 ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

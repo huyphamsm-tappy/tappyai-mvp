@@ -1,0 +1,25 @@
+{
+  "id": "P5",
+  "text": "massage",
+  "parent": null,
+  "status": 200,
+  "ms": 3201,
+  "evidenceId": "a5f58f17-f16a-4ff6-9f15-1acf963543e0",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm spa massage. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn muốn massage ở đâu — Quận 7 (nơi bạn đang quan tâm) hay gần vị trí hiện tại ở Quận 1?**\n\n(Mình cũng giả sử bạn đi trong hôm nay, 1-2 người, và tầm giá phổ thông nhé 😊)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm spa massage. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn muốn massage ở đâu — Quận 7 (nơi bạn đang quan tâm) hay gần vị trí hiện tại ở Quận 1?**\n\n(Mình cũng giả sử bạn đi trong hôm nay, 1-2 người, và tầm giá phổ thông nhé 😊)"
+    }
+  ]
+}

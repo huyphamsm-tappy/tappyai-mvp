@@ -1,0 +1,138 @@
+{
+ "label": "after",
+ "ref": "zdaprdfgpbpnxyofagmc",
+ "at": "2026-09-24T23:30:16.832Z",
+ "truth": [
+  {
+   "group_id": "85a46c61-21b8-494e-aa98-f9f9ce9b8ced",
+   "creator": "huypham.sm@gmail.com",
+   "members": 0,
+   "member_accounts": ""
+  },
+  {
+   "group_id": "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c",
+   "creator": "manual.uat.user@tappyai.com",
+   "members": 2,
+   "member_accounts": "manual.uat.pro@tappyai.com,manual.uat.user@tappyai.com"
+  }
+ ],
+ "policies": [
+  {
+   "tablename": "group_members",
+   "policyname": "group_members_delete_self",
+   "roles": "{authenticated}",
+   "cmd": "DELETE",
+   "qual": "(auth.uid() = user_id)"
+  },
+  {
+   "tablename": "group_members",
+   "policyname": "group_members_insert_self",
+   "roles": "{authenticated}",
+   "cmd": "INSERT",
+   "qual": null
+  },
+  {
+   "tablename": "group_members",
+   "policyname": "group_members_select_participant",
+   "roles": "{authenticated}",
+   "cmd": "SELECT",
+   "qual": "fn_group_participant(group_id)"
+  },
+  {
+   "tablename": "groups",
+   "policyname": "Creators manage own groups",
+   "roles": "{public}",
+   "cmd": "ALL",
+   "qual": "(auth.uid() = creator_id)"
+  },
+  {
+   "tablename": "groups",
+   "policyname": "groups_select_participant",
+   "roles": "{authenticated}",
+   "cmd": "SELECT",
+   "qual": "fn_group_participant(id)"
+  }
+ ],
+ "reads": {
+  "anon_key_only": {
+   "groups": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   },
+   "group_members_bulk": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   },
+   "group_members_sensitive_cols": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   }
+  },
+  "manual.uat.fresh@tappyai.com": {
+   "groups": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   },
+   "group_members_bulk": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   },
+   "group_members_sensitive_cols": {
+    "status": 200,
+    "rows": 0,
+    "groupIds": []
+   }
+  },
+  "manual.uat.pro@tappyai.com": {
+   "groups": {
+    "status": 200,
+    "rows": 1,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   },
+   "group_members_bulk": {
+    "status": 200,
+    "rows": 2,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   },
+   "group_members_sensitive_cols": {
+    "status": 200,
+    "rows": 2,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   }
+  },
+  "manual.uat.user@tappyai.com": {
+   "groups": {
+    "status": 200,
+    "rows": 1,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   },
+   "group_members_bulk": {
+    "status": 200,
+    "rows": 2,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   },
+   "group_members_sensitive_cols": {
+    "status": 200,
+    "rows": 2,
+    "groupIds": [
+     "3fb5af25-bd08-4cee-aacb-9cbff2e17e1c"
+    ]
+   }
+  }
+ }
+}

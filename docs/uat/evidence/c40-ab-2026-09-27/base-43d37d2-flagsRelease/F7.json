@@ -1,0 +1,173 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 12155,
+  "evidenceId": "f4e3401b-42ea-45de-9040-93970366a80d",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon bua toi",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "rating": 4.9,
+      "count": 6034,
+      "price": "200-600 N ₫",
+      "hours": "10:00–23:00",
+      "distance_km": 2.3,
+      "address": "486 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tàu Bến Nghé",
+      "rating": 4.8,
+      "count": 4789,
+      "price": "400-800 N ₫",
+      "hours": "17:30–22:00",
+      "distance_km": 1.4,
+      "address": "5 Đ. Nguyễn Tất Thành, Xóm Chiếu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "price": "100-300 N ₫",
+      "hours": "15:00–02:00",
+      "distance_km": 2,
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Sài Gòn Pearl",
+      "rating": 4.6,
+      "count": 995,
+      "price": "200-500 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 2.5,
+      "address": "31, D5/92 Nguyễn Hữu Cảnh, Saigon Pearl, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1210,
+      "price": "200-600 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 901,
+      "price": "200-800 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.5,
+      "count": 1026,
+      "price": "100-200 N ₫",
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "price": "200-600 N ₫",
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6034,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–23:00"
+      }
+    },
+    {
+      "name": "Tàu Bến Nghé",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 4789,
+        "distance_km": 1.4,
+        "open_now": true,
+        "opening_hours": "17:30–22:00"
+      }
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 280,
+        "distance_km": 2,
+        "open_now": true,
+        "opening_hours": "15:00–02:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những quán ăn ngon gần bạn lúc này nhé! 🍽️\n\nMình chọn **BÒ TƠ QUÁN MỘC** cho bạn! Mặc dù cách bạn 2.3km, nhưng số lượng review khổng lồ. Quán mở đến 23:00 nên bạn còn thời gian.\n\nNếu muốn gần hơn, **Tàu Bến Nghé** (1.4km, 4.8⭐) cũng là lựa chọn tuyệt vời — chuyên hải sản, mở từ 17:30 đến 22:00.\n\n*Gợi ý dựa trên đánh giá thực tế trên Google Maps, không phải quảng cáo. Bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - BÒ TƠ QUÁN MỘC\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=B%C3%92+T%C6%A0+QU%C3%81N+M%E1%BB%99C+H%E1%BB%93+Ch%C3%AD+Minh\",\"primary\":true},{\"label\":\"📍 Maps - BÒ TƠ QUÁN MỘC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13037705567458725001\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn gì khác|Tìm quán khác loại|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn ngon gần bạn lúc này nhé! 🍽️\n\nMình chọn **BÒ TƠ QUÁN MỘC** cho bạn! Mặc dù cách bạn 2.3km, nhưng số lượng review khổng lồ. Quán mở đến 23:00 nên bạn còn thời gian.\n\nNếu muốn gần hơn, **Tàu Bến Nghé** (1.4km, 4.8⭐) cũng là lựa chọn tuyệt vời — chuyên hải sản, mở từ 17:30 đến 22:00.\n\n*Gợi ý dựa trên đánh giá thực tế trên Google Maps, không phải quảng cáo. Bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - BÒ TƠ QUÁN MỘC\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=B%C3%92+T%C6%A0+QU%C3%81N+M%E1%BB%99C+H%E1%BB%93+Ch%C3%AD+Minh\",\"primary\":true},{\"label\":\"📍 Maps - BÒ TƠ QUÁN MỘC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13037705567458725001\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn gì khác|Tìm quán khác loại|[/FOLLOWUPS]"
+    }
+  ]
+}

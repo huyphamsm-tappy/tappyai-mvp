@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 13763,
+      "textFrames": 388,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Rủi ro trước tiên:**\n- **Giấy tờ không chính chủ** — xe có thể bị khoá từ xa, không sang tên được, hoặc đang nợ trả góp\n- **Xe bị khoá/cấm** — liên hệ công an giao thông để kiểm tra xe có bị khoá hay không\n- **Lừa đảo** — nếu gặp người lạ, giao dịch qua group/chợ online, hoặc giá rẻ bất thường, hãy cẩn thận\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**Kiểm tra tình trạng xe:**\n- **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không\n- **Khung gầm & thân xe** — xem có bị va đập, gỉ sét, hoặc sơn lại không\n- **Lốp & phanh** — lốp còn hạn sử dụng không, phanh có còn hiệu lực không\n- **Đèn & điện** — đèn pha, đèn xi nhan, còi có hoạt động bình thường không\n- **Số km chạy** — kiểm tra đồng hồ công tơ mét, so sánh với tình trạng xe\n- **Giấy tờ** — kiểm tra giấy đăng ký, biên lai mua bán, chứng chỉ kiểm định\n\n**Cách giao dịch an toàn:**\n- Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền\n- Nên mang theo người thân hoặc bạn biết để chứng kiến\n- Giữ lại biên lai mua bán, giấy đăng ký gốc\n- Nên kiểm tra xe tại cửa hàng sửa chữa uy tín nếu không chắc\n\n**Nên mua hay không?** Chỉ mua khi: giấy tờ chính chủ, xe không bị khoá, tình trạng máy tốt, giá hợp lý so với thị trường, và bạn đã kiểm tra trực tiếp. Nếu có dấu hiệu lạ, tốt nhất từ chối và tìm xe khác.\n\n[FOLLOWUPS]Tìm xe máy cũ ở Quận 7|Giá xe Wave cũ hiện nay|Cách kiểm tra giấy tờ xe[/FOLLOWUPS]",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng bạn nên xem:\n\n**Rủi ro trước tiên:**\n- **Giấy tờ không chính chủ** — xe có thể bị khoá từ xa, không sang tên được, hoặc đang nợ trả góp\n- **Xe bị khoá/cấm** — liên hệ công an giao thông để kiểm tra xe có bị khoá hay không\n- **Lừa đảo** — nếu gặp người lạ, giao dịch qua group/chợ online, hoặc giá rẻ bất thường, hãy cẩn thận\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\n**Kiểm tra tình trạng xe:**\n- **Động cơ** — nổ máy xem có khó hay không, nghe tiếng gầm có bất thường không\n- **Khung gầm & thân xe** — xem có bị va đập, gỉ sét, hoặc sơn lại không\n- **Lốp & phanh** — lốp còn hạn sử dụng không, phanh có còn hiệu lực không\n- **Đèn & điện** — đèn pha, đèn xi nhan, còi có hoạt động bình thường không\n- **Số km chạy** — kiểm tra đồng hồ công tơ mét, so sánh với tình trạng xe\n- **Giấy tờ** — kiểm tra giấy đăng ký, biên lai mua bán, chứng chỉ kiểm định\n\n**Cách giao dịch an toàn:**\n- Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền\n- Nên mang theo người thân hoặc bạn biết để chứng kiến\n- Giữ lại biên lai mua bán, giấy đăng ký gốc\n- Nên kiểm tra xe tại cửa hàng sửa chữa uy tín nếu không chắc\n\n**Nên mua hay không?** Chỉ mua khi: giấy tờ chính chủ, xe không bị khoá, tình trạng máy tốt, giá hợp lý so với thị trường, và bạn đã kiểm tra trực tiếp. Nếu có dấu hiệu lạ, tốt nhất từ chối và tìm xe khác."
+    }
+  ]
+}

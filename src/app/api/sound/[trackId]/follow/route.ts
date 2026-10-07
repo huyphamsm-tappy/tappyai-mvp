@@ -1,46 +1,8 @@
-import { getRequestUser } from '@/lib/auth/getRequestUser'
-import type { SupabaseClient } from '@supabase/supabase-js'
-import { NextRequest, NextResponse } from 'next/server'
-import { requestLocale } from '@/lib/i18n/requestLocale'
-import { serverMessage } from '@/lib/i18n/serverMessages'
-import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+// F-024 — music reuse removed. This endpoint powered the "use this sound" path (browse a
+// sound, save/follow it, upload a reusable track, or attach one to a clip). The whole path is
+// withdrawn; every method answers 410 Gone. A clip still plays its OWN audio, which never used
+// this route. Deletion of the already-collected music rows is deferred to the owner.
+import { gone } from '@/lib/http/gone'
 
-export const dynamic = 'force-dynamic'
-
-async function followCount(client: SupabaseClient, trackId: string): Promise<number> {
-  try {
-    const { data } = await client.rpc('music_followed_count', { p_track: trackId })
-    return Number(data) || 0
-  } catch { return 0 }
-}
-
-// POST — follow this track: reserve the user's intent to be notified when new
-// videos use it. Notification delivery is deferred; the state is stored now.
-export async function POST(req: NextRequest, { params }: { params: { trackId: string } }) {
-  const trackId = params.trackId?.trim()
-  if (!trackId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
-  const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
-  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
-  const anonRefusal = refuseAnonymousSocialWrite(req, user)
-  if (anonRefusal) return anonRefusal
-
-  const { error } = await supabase.from('music_followed').insert({ user_id: user.id, track_id: trackId })
-  if (error && error.code !== '23505') return NextResponse.json({ error: 'follow_failed', message: serverMessage('music.followFailed', requestLocale(req)) }, { status: 500 })
-
-  return NextResponse.json({ followed: true, followCount: await followCount(supabase, trackId) })
-}
-
-// DELETE — unfollow.
-export async function DELETE(req: NextRequest, { params }: { params: { trackId: string } }) {
-  const trackId = params.trackId?.trim()
-  if (!trackId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
-  const { user, supabase } = await getRequestUser(req)
-  if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
-  // B17 — an anonymous session is authenticated but is not an account; social writes need one.
-  const anonRefusal = refuseAnonymousSocialWrite(req, user)
-  if (anonRefusal) return anonRefusal
-
-  await supabase.from('music_followed').delete().eq('user_id', user.id).eq('track_id', trackId)
-  return NextResponse.json({ followed: false, followCount: await followCount(supabase, trackId) })
-}
+export function POST() { return gone('music-reuse:sound-follow') }
+export function DELETE() { return gone('music-reuse:sound-follow') }

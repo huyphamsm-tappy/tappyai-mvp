@@ -10,7 +10,22 @@ import kotlinx.serialization.json.put
 @Serializable
 data class ChatRequest(
     val messages: List<ChatMessageDto>,
+    /**
+     * The device's position, when the user granted it (`src/app/api/chat/route.ts` reads
+     * `userLocation {lat, lng}`; non-numbers are dropped server-side). Absent = no bias, exactly
+     * as before: the search is centred on the destination the user named. With it, rows carry
+     * `distance_km` and "gần đây" means near the phone (BUG-011 D2).
+     */
+    val userLocation: UserLocationDto? = null,
+    /**
+     * This chat's id for the server-side consultation state (ANDROID-REQUESTS R14): a UUID v4 made
+     * once per chat and sent on every turn — see [com.tappyai.app.chat.ChatSessionId].
+     */
+    val chatSessionId: String? = null,
 )
+
+@Serializable
+data class UserLocationDto(val lat: Double, val lng: Double)
 
 /**
  * [content] is [JsonElement] rather than `String` because `/api/chat` accepts two shapes on the

@@ -1,0 +1,83 @@
+{
+  "id": "P1",
+  "text": "Spa nào tốt rẻ ở Đà Nẵng",
+  "parent": null,
+  "status": 200,
+  "ms": 15451,
+  "evidenceId": "0eff6589-791e-42fb-b9da-c9bab4fe4019",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa rẻ Đà Nẵng",
+        "location": "Đà Nẵng",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bliss Spa Đà Nẵng",
+      "rating": 5,
+      "count": 3149,
+      "hours": "08:00–23:00",
+      "address": "122 Yên Bái, Hải Châu, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Jang Mi Spa & Massage",
+      "rating": 4.9,
+      "count": 8562,
+      "hours": "09:00–22:00",
+      "address": "77 D. Đình Nghệ, An Hải, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Chill Out Spa & Massage Da Nang",
+      "rating": 4.9,
+      "count": 2130,
+      "hours": "08:30–23:30",
+      "address": "60 Đỗ Bá, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Spa & Massage Đà Nẵng",
+      "rating": 5,
+      "count": 258,
+      "hours": "08:30–23:30",
+      "address": "147 Lê Quang Đạo, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam"
+    },
+    {
+      "name": "Panda Spa & Massage",
+      "rating": 4.8,
+      "count": 2853,
+      "hours": "09:00–23:45",
+      "address": "Panda Spa, 229 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm spa rẻ mà chất lượng tốt ở Đà Nẵng cho bạn.\n\nMình gợi ý **Bliss Spa Đà Nẵng** — **5⭐ (3.149 đánh giá Google Maps)**, mở 8:00–23:00. Spa này được đánh giá cao nhất và có rất nhiều khách hàng tin tưởng.\nNếu muốn so sánh, **Jang Mi Spa & Massage** cũng rất tốt với **4.9⭐ (8.562 đánh giá)** — có nhiều khách review hơn, mở 9:00–22:00.\n\nBạn có muốn biết thêm về dịch vụ cụ thể nào (massage body, mặt, đá nóng...) để mình tìm giá chi tiết không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Bliss Spa Đà Nẵng\",\"type\":\"website\",\"url\":\"https://blissspadanang.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Bliss Spa Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13248382995551822102\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]dịch vụ massage nào tốt nhất|giá cụ thể từng dịch vụ|spa khác gần đây[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa nào tốt rẻ ở Đà Nẵng"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm spa rẻ mà chất lượng tốt ở Đà Nẵng cho bạn.\n\nMình gợi ý **Bliss Spa Đà Nẵng** — **5⭐ (3.149 đánh giá Google Maps)**, mở 8:00–23:00. Spa này được đánh giá cao nhất và có rất nhiều khách hàng tin tưởng.\nNếu muốn so sánh, **Jang Mi Spa & Massage** cũng rất tốt với **4.9⭐ (8.562 đánh giá)** — có nhiều khách review hơn, mở 9:00–22:00.\n\nBạn có muốn biết thêm về dịch vụ cụ thể nào (massage body, mặt, đá nóng...) để mình tìm giá chi tiết không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Bliss Spa Đà Nẵng\",\"type\":\"website\",\"url\":\"https://blissspadanang.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Bliss Spa Đà Nẵng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13248382995551822102\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]dịch vụ massage nào tốt nhất|giá cụ thể từng dịch vụ|spa khác gần đây[/FOLLOWUPS]"
+    }
+  ]
+}

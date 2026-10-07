@@ -125,14 +125,18 @@ describe('raising video does not move any other upload limit', () => {
     expect(MEDIA_UPLOAD_POLICIES[kind].maxBytes).toBe(bytes)
   })
 
+  // Still 5MB, and still nothing to do with video. The assertion moved off the literal spelling
+  // when §5 made the number a named constant (`maxPhotoSizeMB`) so it could be served by
+  // /api/config; the photo contract itself now lives in photoSize.test.ts.
   it('leaves the iOS photo limit alone', () => {
     const ios = read('ios/TappyAI/Features/Reviews/Model/CreateReviewModels.swift')
-    expect(ios).toMatch(/maxPhotoSizeBytes\s*=\s*5 \* 1024 \* 1024/)
+    expect(ios).toMatch(/static let maxPhotoSizeMB = 5\b/)
+    expect(ios).toMatch(/maxPhotoSizeBytes\s*=\s*maxPhotoSizeMB \* 1024 \* 1024/)
   })
 })
 
 describe('the web composer reads the shared limit rather than its own', () => {
-  const page = () => read('src/app/reviews/new/page.tsx')
+  const page = () => read('src/app/(app)/reviews/new/page.tsx')
 
   it('derives its byte ceiling from the shared config', () => {
     expect(page()).toContain('MAX_VIDEO_SIZE_MB')
@@ -191,31 +195,45 @@ describe('iOS pins the same number', () => {
   })
 })
 
-describe('Android has no video size limit to keep in sync', () => {
-  // Re-audited for this change: every Android media picker is ImageOnly and nothing calls
-  // /api/upload/video, so there is no size rule there to raise. This guard is what makes that a
-  // checked fact rather than a claim — if a video picker appears later, it fails and whoever adds
-  // it has to wire the shared limit at the same time.
+describe('Android posts video through the shared size limit (ANDROID-REQUESTS R8)', () => {
+  // Was "Android has no video size limit": Android now has a video composer, so its limit must be
+  // the shared 150 (binary MiB, inclusive) and its copy must say 150MB. Before the Android video
+  // commit lands there is no video path and only the stale-copy checks run.
   const androidSources = () => {
     const { globSync } = require('tinyglobby') as typeof import('tinyglobby')
     return globSync(['android/app/src/main/**/*.kt'], { cwd: root })
   }
+  const VM = 'android/app/src/main/java/com/tappyai/app/reviews/ui/ReviewComposerViewModel.kt'
+  const hasVideoPath = () => androidSources().some(f => /upload\/video|media\.create-upload-session|PickVisualMedia\.(VideoOnly|ImageAndVideo)/.test(read(f)))
 
   it('finds Android sources, so the guard is not vacuous', () => {
     expect(androidSources().length).toBeGreaterThan(50)
   })
 
-  it('declares no video size constant anywhere', () => {
-    const offenders = androidSources().filter((f) => /maxVideoSize|MAX_VIDEO_SIZE/i.test(read(f)))
+  it('declares the video size in one place only — the composer ViewModel', () => {
+    const offenders = androidSources().filter(f => /MAX_VIDEO_SIZE_MB\s*=/.test(read(f)) && !f.endsWith('reviews/ui/ReviewComposerViewModel.kt'))
     expect(offenders).toEqual([])
   })
 
-  it('shows no video upload size copy in either language', () => {
+  it('when the video path exists: 150 MB, binary convention, inclusive ceiling', () => {
+    if (!hasVideoPath()) return
+    const vm = read(VM)
+    expect(vm).toMatch(/MAX_VIDEO_SIZE_MB\s*=\s*150\b/)
+    expect(vm).toMatch(/MAX_VIDEO_SIZE_MB \* 1024L? \* 1024L?/)
+    expect(vm).toMatch(/length\(\)\s*>\s*MAX_VIDEO_SIZE_MB/)
+  })
+
+  it('carries no stale 50MB video copy in either language', () => {
     const { globSync } = require('tinyglobby') as typeof import('tinyglobby')
-    const strings = globSync(['android/app/src/main/res/values*/strings.xml'], { cwd: root })
+    const strings = globSync(['android/app/src/main/res/values*/strings*.xml'], { cwd: root })
     expect(strings.length).toBeGreaterThan(0)
-    const offenders = strings.filter((f) => /50MB|150MB/i.test(read(f)))
-    expect(offenders).toEqual([])
+    expect(strings.filter((f) => STALE_50MB.test(read(f)))).toEqual([])
+  })
+
+  it('when the video path exists: states 150MB in both languages', () => {
+    if (!hasVideoPath()) return
+    expect(read('android/app/src/main/res/values/strings_reviews.xml')).toContain('Video is too large. Please choose a video up to 150MB.')
+    expect(read('android/app/src/main/res/values-vi/strings_reviews.xml')).toContain('Video quá lớn. Vui lòng chọn video tối đa 150MB.')
   })
 })
 

@@ -26,6 +26,14 @@ export interface CandidateAttrs {
   stars?: number
   cuisine?: string[]
   openingHours?: string
+  /** Provider-computed "open right now", when the row carried it. */
+  openNow?: boolean
+  /**
+   * The provider's own price band for a PLACE — Google `price_range` {low, high}
+   * or the Serper "1-100.000 ₫" band — as its upper bound in VND. Distinct from
+   * `priceVnd` (a product's structured price): a band says "up to", never "is".
+   */
+  priceHighVnd?: number
   wifi?: boolean
   vegetarian?: boolean
   outdoorSeating?: boolean
@@ -49,7 +57,34 @@ export interface CandidateAttrs {
    * time would be a fabricated claim, so the name says what it is.
    */
   etaMinutes?: number
+  // ── Phase 3B.1: supplied attributes the decision state can name (decisionState.ts registry). Each is present ONLY when the provider row
+  //    carried a real boolean for it: absent = UNKNOWN, never `false`, never inferred from a name, a snippet or the user's request.
+  /** Evidence that the venue suits children. Never inferred from "family" in a title or from the user saying they have a child. */
+  familyFriendly?: boolean
+  /** Evidence about spicy food (true = the dish / venue is spicy). */
+  spicy?: boolean
+  /** Evidence that a helmet is included (rentals). */
+  helmetIncluded?: boolean
 }
+
+/** One supplied attribute with its provenance, so UNKNOWN stays distinguishable from FACT downstream. */
+export interface EvidenceEntry {
+  id: 'family_friendly' | 'spicy' | 'helmet_included'
+  value: boolean
+  /** Where the value came from: the provider row field it was read from. */
+  source: string
+  kind: 'FACT'
+}
+
+/**
+ * Provider row field -> attribute. The ONE place a provider-specific name is mapped (the ranker reads `CandidateAttrs` only). A row key
+ * that is absent, or not a boolean, yields nothing.
+ */
+const EVIDENCE_FIELDS: ReadonlyArray<[field: string, attr: 'familyFriendly' | 'spicy' | 'helmetIncluded', id: EvidenceEntry['id']]> = [
+  ['family_friendly', 'familyFriendly', 'family_friendly'],
+  ['spicy', 'spicy', 'spicy'],
+  ['helmet_included', 'helmetIncluded', 'helmet_included'],
+]
 
 export interface Candidate {
   /** Stable identity: place_id, link, or name. Used for tie-breaking and dedup. */
@@ -57,6 +92,8 @@ export interface Candidate {
   name: string
   domain: 'places' | 'hotel' | 'shopping' | 'transport'
   attrs: CandidateAttrs
+  /** Phase 3B.1: the supplied decision-relevant facts with their source (additive; absent when the row supplied none). */
+  evidence?: EvidenceEntry[]
   /** The real provider link. Never synthesised. */
   link: string | null
   /** The original record, carried through so links/photos can never detach. */
@@ -121,6 +158,32 @@ function str(v: unknown): string {
  * return `price_search_results`, but those are menu/service prices for the venue
  * found by a separate web search — not a structured field on the venue itself.
  */
+/**
+ * The upper bound of a place's price band, from the two shapes the tools emit.
+ * Google: `price_range: { low, high, currency }` in VND. Serper: `price_range_text`
+ * like "1-100.000 ₫" or "100.000-200.000 ₫" — the LAST number is the bound; the
+ * first may be the placeholder 1 the shopping guard exists to reject, which is
+ * why the low end is never read. Absent or non-VND ⇒ undefined: no band, no term.
+ */
+function priceBandHigh(r: Record<string, unknown>): number | undefined {
+  const range = r.price_range as { high?: number; currency?: string } | undefined
+  if (range && typeof range.high === 'number' && range.high > 0 && (range.currency === undefined || range.currency === 'VND')) return range.high
+  const text = str(r.price_range_text)
+  if (!text || !/₫|đ|vnd/i.test(text)) return undefined
+  // An open-ended band ("Trên 1 Tr ₫" = over 1 million) has no upper end — it is a floor, never a ceiling.
+  if (/^\s*(?:tr[eê]n|over|above|from|t[uừ])\b/i.test(text)) return undefined
+  const nums = text.match(/\d[\d.,]*/g)
+  if (!nums) return undefined
+  const raw = nums[nums.length - 1]
+  // Serper writes a unit after the band: "100-200 N ₫" = 100–200 nghìn, "1-2 Tr ₫" = 1–2 triệu. Without a unit the numbers are full dong ("1-100.000 ₫").
+  const unit = text.slice(text.lastIndexOf(raw) + raw.length).match(/^\s*(n|k|ngh[iì]n|ng[aà]n|tr|tri[eệ]u|m)(?![a-zà-ỹ])/i)?.[1]?.toLowerCase()
+  const scale = !unit ? 1 : /^(?:n|k|ngh|ng)/.test(unit) ? 1_000 : 1_000_000
+  // With a unit a single separator before 1–2 digits is a decimal ("1,5 Tr"); a 3-digit group stays a thousands group.
+  const n = scale > 1 && /^\d+[.,]\d{1,2}$/.test(raw) ? parseFloat(raw.replace(',', '.')) : parseInt(raw.replace(/[.,]/g, ''), 10)
+  const last = Math.round(n * scale)
+  return Number.isFinite(last) && last > 1000 ? last : undefined
+}
+
 export function normalizePlaces(toolResult: unknown): Candidate[] {
   const root = (toolResult && typeof toolResult === 'object') ? toolResult as Record<string, unknown> : {}
   const out: Candidate[] = []
@@ -141,6 +204,8 @@ export function normalizePlaces(toolResult: unknown): Candidate[] {
     // OSM shape — every one of these is present ONLY when the tag existed
     put(attrs, 'distanceKm', typeof r.distance_km === 'number' ? r.distance_km : undefined)
     put(attrs, 'openingHours', str(r.opening_hours) || undefined)
+    put(attrs, 'openNow', typeof r.open_now === 'boolean' ? r.open_now : undefined)
+    put(attrs, 'priceHighVnd', priceBandHigh(r))
     put(attrs, 'wifi', typeof r.wifi === 'boolean' ? r.wifi : undefined)
     put(attrs, 'vegetarian', typeof r.vegetarian === 'boolean' ? r.vegetarian : undefined)
     put(attrs, 'outdoorSeating', typeof r.outdoor_seating === 'boolean' ? r.outdoor_seating : undefined)
@@ -154,11 +219,20 @@ export function normalizePlaces(toolResult: unknown): Candidate[] {
       if (list.length) put(attrs, 'cuisine', list)
     }
 
+    const evidence: EvidenceEntry[] = []
+    for (const [field, attr, id] of EVIDENCE_FIELDS) {
+      const v = r[field]
+      if (typeof v !== 'boolean') continue
+      attrs[attr] = v
+      evidence.push({ id, value: v, source: `row.${field}`, kind: 'FACT' })
+    }
+
     out.push({
       id: str(r.place_id) || str(r.maps_link) || name,
       name,
       domain: 'places',
       attrs,
+      ...(evidence.length ? { evidence } : {}),
       link: str(r.maps_link) || null,
       raw: r,
     })
@@ -205,6 +279,9 @@ export function normalizeShopping(toolResult: unknown): Candidate[] {
   const isStructured = (r: Record<string, unknown>): boolean =>
     typeof r.price === 'number' || typeof r.price_vnd === 'number'
     || typeof r.productId === 'string' || typeof r.product_id === 'string'
+    // UAT 2026-09-28: a merchant's OWN product page (shopping.ts `merchantProductRows`, URL grammar
+    // checked per host) is a listing too — unpriced, but a real product at a real URL, not an article.
+    || r.merchant_page === true
 
   const rows = [...asArray(root.shopping_results), ...asArray(root.search_results)]
     .filter((i): i is Record<string, unknown> => !!i && typeof i === 'object')
@@ -304,7 +381,15 @@ export function normalizeTransport(toolResult: unknown): Candidate[] {
  * Two sources with very different evidence quality:
  *   `search_results` — Serper web results (title/link/snippet). The ONLY structured
  *      signal is whether the link is a specific hotel page, derived from the URL.
- *   `hotel_list` — OSM nodes, which do carry stars and distance.
+ *   `hotel_list` — Serper `/maps` records (Phase 4: the primary source — name, address,
+ *      `google_rating`, `rating_value`/`rating_count`, phone, price band, photo) or, as the
+ *      fallback, OSM nodes, which carry stars and distance only.
+ *
+ * 🚨 Measured 2026-09-18 (T2/T8 of CONSULTATIVE-40): `/maps` returned 18 real Đà Nẵng hotels
+ * with ratings, and this function read only `distance_km`/`stars` from them — so no hotel
+ * carried evidence, the shortlist was empty, the model had no pick, and G1 cut every sentence
+ * that named a hotel. The provider was fine; the candidate was blind. The `/maps` rating is
+ * read here exactly as `normalizePlaces` reads it.
  *
  * The room price is visible in snippet text ("Từ 393.582 VND/đêm") and is
  * deliberately NOT read. `applyBudgetFilter` already uses snippet text for the
@@ -340,12 +425,18 @@ export function normalizeHotels(toolResult: unknown): Candidate[] {
     if (!name) continue
 
     const attrs: CandidateAttrs = {}
+    // `/maps` shape — same formatted string `normalizePlaces` parses; absent on an OSM node.
+    const { rating, reviewCount } = parseGoogleRating(r.google_rating)
+    put(attrs, 'rating', rating)
+    put(attrs, 'reviewCount', reviewCount)
+    put(attrs, 'priceHighVnd', priceBandHigh(r))
+    // OSM shape
     put(attrs, 'distanceKm', typeof r.distance_km === 'number' ? r.distance_km : undefined)
     const starsRaw = str(r.stars).trim()
     if (/^[1-5]$/.test(starsRaw)) put(attrs, 'stars', parseInt(starsRaw, 10))
 
     out.push({
-      id: str(r.maps_link) || name,
+      id: str(r.place_id) || str(r.maps_link) || name,
       name,
       domain: 'hotel',
       attrs,

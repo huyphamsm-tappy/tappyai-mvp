@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh\" Núi Bà Đen, Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:38:47.111Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh\" Núi Bà Đen, Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn 3 sao tốt nhất tại Tây Ninh cho kỳ nghỉ thoải mái ...",
+    "link": "https://vn.trip.com/hotels/star3/city/vn/tay-ninh.html",
+    "snippet": "Đặt khách sạn 3 sao tại Tây Ninh trên Trip.com. So sánh NaN chỗ nghỉ thoải mái dựa trên tiện ích, đánh giá của khách, giá phòng và các ưu đãi.",
+    "position": 1
+   },
+   {
+    "title": "Đặt phòng khách sạn & Khách sạn giá rẻ | Trip.com",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "Từ 1.456.625₫ 9,3/10 193 đánh giá Charmant Suites a Boutique Hotel Cần Thơ 45 Đường Ngô Quyền, Ninh Kiều, Cần Thơ | 0.41KM from city center Từ 817.414₫ Đọc Đánh Giá",
+    "position": 2
+   },
+   {
+    "title": "Homestay Tí Nị - Giá cả và Ưu đãi 2026, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-61839425/homestay-ti-ni/",
+    "snippet": "Bạn đang tìm đặt phòng Homestay Tí Nị tại Tân Ninh? Hãy chọn phòng cho bạn, xem đánh giá khách sạn, so sánh giá cả và đặt kỳ nghỉ hoàn hảo ngay trên Trip.com!",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Hương Thầm Tây Ninh - Giá cả và Ưu đãi 2026, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-101020302/khch-sn-hng-thm-ty-ninh/",
+    "snippet": "Khách sạn Hương Thầm Tây Ninh tọa lạc ở Tây Ninh và có khu vườn. Khách sạn 4 sao này có dịch vụ phòng và quầy lễ tân 24 giờ. Tại đây có sân hiên và khách có thể sử dụng Wi-Fi miễn phí và chỗ đậu xe riêng miễn phí. Sân bay Quốc tế Tân Sơn Nhất cách 86 km.",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Lộc Ninh, Việt Nam - Ưu đãi + Giảm ...",
+    "link": "https://vn.trip.com/hotels/loc-ninh-hotels-list-697182/",
+    "snippet": "Khám phá ưu đãi khách sạn tại Lộc Ninh từ cơ sở lưu trú. So sánh giá, đọc đánh giá, kiểm tra tình trạng phòng, tận hưởng hủy phòng linh hoạt, và nhận Trip Coins cho mỗi lần đặt phòng!",
+    "position": 5
+   },
+   {
+    "title": "Top 10 khách sạn tại Cúc Phương, Việt Nam | Trip.com",
+    "link": "https://vn.trip.com/hotels/cuc-phuong-hotels-list-457962/",
+    "snippet": "Cúc Phương có nhiều khách sạn phổ biến. Bất kể là bạn đi công tác hay nghỉ dưỡng, thì Wyndham Grand Vedana Ninh Binh Resort (từ 1.412.331₫), Cuc Phuong Mebi Hotel (từ 719.708₫) và Thung Din Homestay (từ 429.503₫) luôn là những khách sạn được ưa chuộng.",
+    "position": 6
+   },
+   {
+    "title": "Như Ý Hotel Tây Ninh - Giá cả và Ưu đãi 2026, Bình Minh",
+    "link": "https://vn.trip.com/hotels/binh-minh-hotel-detail-132517187/nhu-y-hotel-tay-ninh/",
+    "snippet": "Bạn đang tìm đặt phòng Như Ý Hotel Tây Ninh tại Bình Minh? Hãy chọn phòng cho bạn, xem đánh giá khách sạn, so sánh giá cả và đặt kỳ nghỉ hoàn hảo ngay trên Trip.com!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

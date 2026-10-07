@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aloha Hotel\" Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:33.027Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aloha Hotel\" Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Aloha Vũng Tàu - Giá cả và Ưu đãi 2026, TP. ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-94138867/aloha-hotel-vung-tau/",
+    "snippet": "Khách sạn Aloha Vũng Tàu(Aloha Hotel Vung Tau). logo.",
+    "position": 1
+   },
+   {
+    "title": "Aloha Hotel - Giá cả và Ưu đãi 2026, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-72241271/aloha-hotel/",
+    "snippet": "Giờ nhận phòng và trả phòng tại Aloha Hotel là khi nào? Giờ nhận phòng tại Aloha Hotel bắt đầu từ 14:00, và giờ trả phòng là 12:00.",
+    "position": 2
+   },
+   {
+    "title": "Aloha Hotel and Resorts - Giá cả và Ưu đãi 2026, Osogbo",
+    "link": "https://vn.trip.com/hotels/ifon-osun-hotel-detail-36577911/aloha-hotel-and-resorts/",
+    "snippet": "Giờ nhận phòng tại Aloha Hotel and Resorts bắt đầu từ 14:00, và giờ trả phòng là 12:00. Có được mang theo thú cưng tại Aloha Hotel and Resorts không ...",
+    "position": 3
+   },
+   {
+    "title": "Hua Du Hotel - Giá cả và Ưu đãi 2026, Cơ Long",
+    "link": "https://vn.trip.com/hotels/jilong-hotel-detail-19832587/hua-du-hotel/",
+    "snippet": "Vé Tàu: Sankeng Station. 1,0km. Vé Tàu: Keelung Station. 1,1km. Sân Bay ... Jin Hwa HotelLight InnYung Feng HotelAloha Hotel KeelungJust live inn - New ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

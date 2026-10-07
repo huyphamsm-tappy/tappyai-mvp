@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 import { ControllerHome } from './ControllerHome'
@@ -24,6 +25,9 @@ import type { ControllerHomeData } from './types'
 vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
 // The Home probes /api/health on mount; jsdom has no fetch server.
 vi.stubGlobal('fetch', vi.fn(() => Promise.resolve({ ok: true } as Response)))
+// The section-order assertions look up English headings ("Enterprise Command Center", "Platform
+// Signals"), so the locale is stated rather than inherited — the product default is Vietnamese.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const HOME_DIR = join(process.cwd(), 'src/components/admin/home')

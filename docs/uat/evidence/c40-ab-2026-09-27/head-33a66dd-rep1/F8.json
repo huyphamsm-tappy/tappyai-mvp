@@ -1,0 +1,157 @@
+{
+  "id": "F8",
+  "text": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 16614,
+  "evidenceId": "9c4588e9-ffa6-40c2-99f6-db493d765b36",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng phòng riêng sinh nhật 8 người Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 514,
+      "hours": "17:00–23:30",
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+      "rating": 4.7,
+      "count": 280,
+      "hours": "15:00–02:00",
+      "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Tửu Lầu 13",
+      "rating": 4.7,
+      "count": 278,
+      "hours": "Mở cửa cả ngày",
+      "address": "6 Nam Quốc Cang, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 619,
+      "hours": "14:00–22:00",
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Izakaya Choioinoodle | Nhà Hàng Nhật Quận 1 | Mì Ramen Ngon Trần Hưng Đạo",
+      "rating": 4.8,
+      "count": 201,
+      "hours": "11:00–22:00",
+      "address": "25 Trần Hưng Đạo, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Tân Hải Vân",
+      "rating": 4.3,
+      "count": 3401,
+      "hours": "Mở cửa cả ngày",
+      "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "The Log Restaurant",
+      "rating": 4,
+      "count": 945,
+      "hours": "18:00–22:30",
+      "address": "Rooftop, Gem Center, 8 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+      "rating": 4.7,
+      "count": 982,
+      "hours": "08:00–00:00",
+      "address": "180 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "HOMIDO",
+      "rating": 4.8,
+      "count": 733,
+      "hours": "11:00–15:00, 17:00–23:00",
+      "address": "12 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 760000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "private_room"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn cần tìm quán ăn ngon ở Quận 1 hôm nay để tổ chức sinh nhật sếp với 8 người, phòng riêng, tầm 500k/người. Để gợi ý đúng ý, mình sẽ tìm ngay các quán phù hợp.\n\nMình chưa xác nhận được giá, phòng riêng và mức giá — nên gọi hỏi trước khi đi. Vì vậy, mình gợi ý **Hải Sản Hoàng Gia** (180 Trần Hưng Đạo) — quán có **4.7⭐ (982 đánh giá)**, chuyên hải sản, mở cửa đến 00:00, phù hợp tổ chức sinh nhật.\n\nNgoài ra, **Nhà Hàng Tửu Lầu 13** (6 Nam Quốc Cang) cũng là lựa chọn tốt — **4.7⭐ (278 đánh giá)**, mở cả ngày, thích hợp cho tiệc nhóm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Quán nào có view đẹp|Có thể đặt tiệc sinh nhật không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn cần tìm quán ăn ngon ở Quận 1 hôm nay để tổ chức sinh nhật sếp với 8 người, phòng riêng, tầm 500k/người. Để gợi ý đúng ý, mình sẽ tìm ngay các quán phù hợp.\n\nMình chưa xác nhận được giá, phòng riêng và mức giá — nên gọi hỏi trước khi đi. Vì vậy, mình gợi ý **Hải Sản Hoàng Gia** (180 Trần Hưng Đạo) — quán có **4.7⭐ (982 đánh giá)**, chuyên hải sản, mở cửa đến 00:00, phù hợp tổ chức sinh nhật.\n\nNgoài ra, **Nhà Hàng Tửu Lầu 13** (6 Nam Quốc Cang) cũng là lựa chọn tốt — **4.7⭐ (278 đánh giá)**, mở cả ngày, thích hợp cho tiệc nhóm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi xác nhận phòng riêng|Quán nào có view đẹp|Có thể đặt tiệc sinh nhật không[/FOLLOWUPS]"
+    }
+  ]
+}

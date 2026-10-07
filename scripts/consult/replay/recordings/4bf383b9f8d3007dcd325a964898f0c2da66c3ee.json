@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:41:37.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nalod Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/property/76993632/0/bfc346ca1707644e01f223fc459afaf0.jpeg?va=1&ce=2&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdWB3CsKT0HhTfSr8ppN846jnik0d62wf54Do70lFo1Q&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/the-nalod-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F76993632%2F0%2Fbfc346ca1707644e01f223fc459afaf0.jpeg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=K9eRXTOwCbeBjM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fthe-nalod-da-nang%2Fhotel%2Fda-nang-vn.html&docid=D7NloavOVSSV-M&w=348&h=232",
+    "position": 1
+   },
+   {
+    "title": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ - Giá cả và Ưu đãi 2026, Đà  Nẵng",
+    "imageUrl": "https://ak-d.tripcdn.com/images/0220612000ovlo13m0FD4_R_960_660_R5_D.jpg",
+    "imageWidth": 523,
+    "imageHeight": 360,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQD650h_2oB0C1jF0AHbMI_AEXjWEVe3x5qFxkNmDO7Gw&s=10",
+    "thumbnailWidth": 523,
+    "thumbnailHeight": 359,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-8065694/the-nalod-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F0220612000ovlo13m0FD4_R_960_660_R5_D.jpg&tbnid=LAuoQ6VLky-zLM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fda-nang-hotel-detail-8065694%2Fthe-nalod-da-nang%2F&docid=Pvr5Vosun43SDM&w=523&h=360",
+    "position": 2
+   },
+   {
+    "title": "THE NALOD DA NANG - BEACH HOTEL, SPA & CONVENTION CENTER",
+    "imageUrl": "https://nalod.com.vn/uploads/files/Image-thumbnail.png",
+    "imageWidth": 1600,
+    "imageHeight": 971,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF1Ky1fAbcZ_R6SXY42N6C7GOmNoCwJ7nQEpOy_Fl4-g&s=10",
+    "thumbnailWidth": 574,
+    "thumbnailHeight": 348,
+    "source": "nalod.com.vn",
+    "domain": "nalod.com.vn",
+    "link": "https://nalod.com.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnalod.com.vn%2Fuploads%2Ffiles%2FImage-thumbnail.png&tbnid=7VOWEGRnOBQmMM&imgrefurl=https%3A%2F%2Fnalod.com.vn%2F&docid=QalMxN8UCr3ZxM&w=1600&h=971",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Nalod Đà Nẵng review toàn tập",
+    "imageUrl": "https://ik.imgkit.net/tvlk/blog/2023/10/khach-san-nalod-da-nang-51.jpg?tr=q-70,c-at_max,w-1000,h-600",
+    "imageWidth": 800,
+    "imageHeight": 467,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwlQpmcWTIpwf6TABm-bhCxP2k-WOYTt_rVEjRfhd3eA&s=10",
+    "thumbnailWidth": 584,
+    "thumbnailHeight": 342,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/explore/destination/nalod-danang-hotel-review-acc/186623",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imgkit.net%2Ftvlk%2Fblog%2F2023%2F10%2Fkhach-san-nalod-da-nang-51.jpg%3Ftr%3Dq-70%2Cc-at_max%2Cw-1000%2Ch-600&tbnid=quZTivfvCOQHZM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fexplore%2Fdestination%2Fnalod-danang-hotel-review-acc%2F186623&docid=dg9zB4Tqr_MvEM&w=800&h=467",
+    "position": 4
+   },
+   {
+    "title": "Nalod Đà Nẵng Khách Sạn & Trung Tâm Hội Nghị",
+    "imageUrl": "https://vivatrip.vn/public/images/uploads/thumbs/nalod-da-nang-1.jpg",
+    "imageWidth": 600,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ00cvmOh-L-BrUKFqk4akCagEuWv2Yoad2RRfdCmHJww&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 375,
+    "source": "Viva Trip website đặt Khách Sạn, Villa Giá Tốt Nhất",
+    "domain": "vivatrip.vn",
+    "link": "https://vivatrip.vn/chi-tiet/nalod-da-nang-khach-san-trung-tam-hoi-nghi",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvivatrip.vn%2Fpublic%2Fimages%2Fuploads%2Fthumbs%2Fnalod-da-nang-1.jpg&tbnid=cObfXTReLUq3rM&imgrefurl=https%3A%2F%2Fvivatrip.vn%2Fchi-tiet%2Fnalod-da-nang-khach-san-trung-tam-hoi-nghi&docid=sMP1U29i18z8PM&w=600&h=375",
+    "position": 5
+   },
+   {
+    "title": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+    "imageUrl": "https://nalod.com.vn/uploads/gallery/slider-slide4-1714239787.webp",
+    "imageWidth": 1920,
+    "imageHeight": 1066,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7QIpvr0C44rm5ew4Orc1xLSUnvWsu8iB3zF9JDvyDbg&s=10",
+    "thumbnailWidth": 601,
+    "thumbnailHeight": 332,
+    "source": "The Nalod Da Nang Hotel - The Nalod Da Nang Hotel",
+    "domain": "nalod.com.vn",
+    "link": "https://nalod.com.vn/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnalod.com.vn%2Fuploads%2Fgallery%2Fslider-slide4-1714239787.webp&tbnid=Mc6aO6rSRyNHBM&imgrefurl=https%3A%2F%2Fnalod.com.vn%2Fvi%2F&docid=buhvRLOiboHdjM&w=1920&h=1066",
+    "position": 6
+   },
+   {
+    "title": "The Nalod Da Nang, khách sạn 5 sao cao cấp hàng đầu Đà Nẵng",
+    "imageUrl": "https://mia.vn/media/uploads/blog-du-lich/the-nalod-da-nang-khach-san-5-sao-cao-cap-hang-dau-da-nang-1-1654572375.jpg",
+    "imageWidth": 1300,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ95wFgp6c37zuWvmtXT7rVJBA7k6FEsCErbVd-6672_A&s=10",
+    "thumbnailWidth": 538,
+    "thumbnailHeight": 371,
+    "source": "MIA.vn",
+    "domain": "mia.vn",
+    "link": "https://mia.vn/cam-nang-du-lich/the-nalod-da-nang-khach-san-5-sao-cao-cap-hang-dau-da-nang-6375",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmia.vn%2Fmedia%2Fuploads%2Fblog-du-lich%2Fthe-nalod-da-nang-khach-san-5-sao-cao-cap-hang-dau-da-nang-1-1654572375.jpg&tbnid=pKGmXWRHH2N42M&imgrefurl=https%3A%2F%2Fmia.vn%2Fcam-nang-du-lich%2Fthe-nalod-da-nang-khach-san-5-sao-cao-cap-hang-dau-da-nang-6375&docid=IWJyPOtzg-g6xM&w=1300&h=900",
+    "position": 7
+   },
+   {
+    "title": "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ Đánh giá của khách: Xếp hạng  thực tế, Hình ảnh & Phản hồi | Trip.com",
+    "imageUrl": "https://ak-d.tripcdn.com/images/1mc4u12000cm0fq5d4445_W_750_375_R5.webp?default=1",
+    "imageWidth": 340,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi5SYoAl7x9OyV83duOWf9YU1YDrHKrIoAhJVYMJUu3Q&s=10",
+    "thumbnailWidth": 340,
+    "thumbnailHeight": 375,
+    "source": "Trip.com",
+    "domain": "vn.trip.com",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-8065694/the-nalod-da-nang/review.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F1mc4u12000cm0fq5d4445_W_750_375_R5.webp%3Fdefault%3D1&tbnid=gVdi1I1Vlbb6YM&imgrefurl=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fda-nang-hotel-detail-8065694%2Fthe-nalod-da-nang%2Freview.html&docid=C1H7wEmbSiDyKM&w=340&h=375",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

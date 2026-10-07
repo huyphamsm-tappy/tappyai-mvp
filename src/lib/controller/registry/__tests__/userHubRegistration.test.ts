@@ -99,7 +99,10 @@ describe('"you never see a door you cannot open" — 01_ARCH §8', () => {
     // it holds for every module added after this one.
     const missing = ADMIN_MODULES.flatMap((m) =>
       m.routes
-        .filter((route) => !existsSync(join(process.cwd(), 'src/app', route, 'page.tsx')))
+        .filter((route) =>
+          // Route groups change no URL: the page may sit at src/app/<route> or src/app/(app)/<route>.
+          !existsSync(join(process.cwd(), 'src/app', route, 'page.tsx')) &&
+          !existsSync(join(process.cwd(), 'src/app/(app)', route, 'page.tsx')))
         .map((route) => `${m.id} → ${route}`)
     )
     expect(missing).toEqual([])

@@ -1,5 +1,13 @@
-import { extractBudget, type Budget } from '../budget'
-import { normalizeVN } from '../intent'
+import { extractBudget, parseMoneyAmount, type Budget } from '../budget'
+import { normalizeVN, namedVenueIn } from '../intent'
+import { statedDistrict } from '../districts'
+import { maskStreetNames } from '../streetNames'
+import { foldForLexicon } from '../foldSense'
+import { PRODUCT_TYPES, PRODUCT_TYPE_QUERY_VI } from './shoppingConstraints'
+import {
+  CONSTRAINT_REGISTRY, mandatorySpanFor, avoidSpanFor, householdIn, validateDecisionState, isConstraintId,
+  type Constraint, type ConstraintId, type DecisionTradeoff, type DismissedPriority, type Household, type Provenance,
+} from './decisionState'
 
 // ── The structured need (Phase 2 §3) ────────────────────────────────────────
 //
@@ -27,6 +35,11 @@ export interface Priority {
   /** Higher wins. Comparatives are directional, so the loser is damped, not dropped. */
   weight: number
   source: 'stated' | 'comparative' | 'preference'
+  /**
+   * A superlative on one rankable axis ("rẻ nhất", "gần nhất", "đánh giá cao nhất", "chỉ cần gần"): the user wants the EXTREME candidate on this axis, not
+   * a little more of it. Read only by the places ranker, which then orders by min–max over the surviving candidates on this one key (no new weight).
+   */
+  extreme?: true
 }
 
 export interface NeedProfile {
@@ -47,6 +60,20 @@ export interface NeedProfile {
   turnsObserved: number
   /** Provenance: which user turn last set each field. */
   changedAtTurn: Record<string, number>
+  // ── Phase 3A decision state (docs/audit/PHASE-3-IMPLEMENTATION-SPECIFICATION.md 3A.1). All OPTIONAL: absent = the behaviour
+  //    before 3A, so every existing consumer is unaffected. None of these is a score; 3B consumes them.
+  /** "cân bằng X và Y": equal importance among the criteria the user STATED — never anything added silently (D4). */
+  tradeoff?: DecisionTradeoff
+  /** Child / household context (D8): context and a soft preference. Never hard by itself. */
+  household?: Household
+  /** Registry-backed must-have / avoid / soft items with strength and provenance (superset of mustHave / avoid for new ids). */
+  constraints?: Constraint[]
+  /** Priorities the user said do NOT matter ("giá không quan trọng"). Kept apart from `priorities` so a negation can never read as a request. */
+  dismissed?: DismissedPriority[]
+  /** What the decision still needs that the user did not say (e.g. `domain`, `tradeoff_criteria`). */
+  ambiguity?: string[]
+  /** Priority keys the user contradicted across turns (the latest turn wins; the key is recorded here). */
+  conflicts?: string[]
 }
 
 export interface StoredPreferences {
@@ -67,7 +94,7 @@ const W_COMPARATIVE_WIN = 2
 /** The losing side. Damped, never removed: the user still mentioned it. */
 const W_COMPARATIVE_LOSE = 0.5
 /** A durable stored preference. Strictly below anything said this conversation. */
-const W_PREFERENCE = 0.25
+export const W_PREFERENCE = 0.25
 
 // ── Lexicons ────────────────────────────────────────────────────────────────
 // All matched against normalizeVN() output: lowercase, diacritics stripped.
@@ -76,21 +103,47 @@ const W_PREFERENCE = 0.25
 /** Subject nouns that NAME the thing being chosen, and the domain each implies. */
 const SUBJECTS: ReadonlyArray<[RegExp, string, NeedProfile['domain']]> = [
   [/\b(macbook|laptop|may tinh xach tay|notebook)\b/, 'laptop', 'shopping'],
-  [/\b(dien thoai|smartphone|iphone|galaxy|phone)\b/, 'phone', 'shopping'],
+  // "Galaxy" is a phone unless it is the cinema chain ("rạp Galaxy", "Galaxy Cinema") — Phase D.
+  [/\b(dien thoai|smartphone|iphone|(?<!rap )galaxy(?! cine)|phone)\b/, 'phone', 'shopping'],
   [/\b(tai nghe|headphone|headphones|earbuds|airpods)\b/, 'headphones', 'shopping'],
-  [/\b(may anh|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
+  // UAT3: unaccented "may anh oi" is "mấy anh ơi" (you guys), not "máy ảnh".
+  [/\b(may anh(?! (?:oi|nhe|a|ay|co|lam|noi|di|em|chi|biet)\b)|camera body|dslr|mirrorless)\b/, 'camera', 'shopping'],
   [/\b(tivi|tv|television)\b/, 'tv', 'shopping'],
+  // B2 (2026-09-20, measured S7 live: "Máy lọc không khí phòng ngủ 20m2" resolved to domain null,
+  // so the whole consultative stack — situation, gate, smart model, backstop — stood down on a
+  // shopping turn). Every product family the shopping validator knows names the shopping domain.
+  ...PRODUCT_TYPES.filter(([type]) => !['laptop', 'phone', 'headphones', 'camera', 'tv'].includes(type)).map(([type, re]): [RegExp, string, NeedProfile['domain']] => [re, PRODUCT_TYPE_QUERY_VI[type] ?? type, 'shopping']),
   [/\b(khach san|hotel|resort|homestay|nha nghi)\b/, 'hotel', 'hotel'],
   [/\b(nha hang|quan an|restaurant|quan nhau)\b/, 'restaurant', 'places'],
   [/\b(cafe|ca phe|coffee)\b/, 'cafe', 'places'],
   [/\bspa\b|\bmassage\b/, 'spa', 'places'],
-  [/\b(rap phim|rap chieu|cinema|karaoke|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
+  // Phase D (2026-09-20, measured live run 19): "rạp CGV Vincom Đồng Khởi" named no venue noun
+  // this row knew ("rap cgv" is neither "rap phim" nor "rap chieu"), so the domain stayed null and
+  // the whole consultative stack stood down on a cinema turn. Cinema chains, water parks,
+  // aquariums and play venues are VENUES: they resolve to a venue card like a café does.
+  [/\b(rap phim|rap chieu|rap (?:cgv|lotte|galaxy|bhd|cinestar|mega)|cgv|lotte cinema|galaxy cinema|bhd star|cinestar|chieu phim|cinema|(?<!loa |dan |micro |mic |may |bo )karaoke|cong vien nuoc|water ?park|thuy cung|aquarium|khu vui choi|bowling|bida|billiards?|escape room|san truot bang|truot bang|ice rink|nha hat|\bbar\b|\bgym\b)\b/, 'entertainment', 'places'],
   [/\b(xe khach|tau hoa|tau lua|ve xe|\btaxi\b)\b/, 'transport', 'transport'],
 ]
 
 /** Weaker domain hints — set the domain but never the subject, and never reset. */
 const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
+  // UAT 2026-09-28: "mua đồ ăn vặt" was read as a food OUTING (the "đồ ăn" hint below fires first) and
+  // asked "dưới 100k/người". Buying PACKAGED food — snacks, dried food — or any food "online" / on a
+  // marketplace ("trên sàn") is a product purchase. "ăn vặt ở đâu" / "quán ăn vặt" (no buy verb) stay
+  // places. No provider is named here (architectureLock).
+  [/\b(?:mua|dat mua|dat hang|order)\b(?:\s+\S+){0,3}?\s+(?:do an vat|an vat|do an kho|do kho|banh keo|snack)\b|\b(?:mua|dat mua|dat hang|order)\b.*\b(?:online|tren san|san thuong mai dien tu|san tmdt)\b/, 'shopping'],
   [/\ban gi\b|\bdo an\b|\ban ngon\b|\bmon an\b/, 'places'],
+  // 🚨 MULTI-ACTIVITY OUTINGS — measured gap, 2026-09-14. "ăn chơi nhảy múa
+  // tối nay" names no venue noun the SUBJECTS lexicon knows, so an evening
+  // plan resolved to `domain: null` and lost the ranking-instruction block on
+  // exactly the turn that runs the most place searches. Nightlife and outing
+  // words are place-seeking by definition; a false positive still lands on
+  // `places`, which is where every one of them belongs.
+  [/\ban choi\b|\bnhay mua_?\b|\bnightlife\b|\bnight out\b|\bclub\b|\bpub\b|\bvui choi\b|\bdi choi\b|\bhen ho\b|\bdate night\b/, 'places'],
+  // B2: a buy verb names the shopping domain even when the product noun is unknown to the lexicon.
+  // AFTER the outing hint, and never the "mua" of "nhảy múa" (dancing).
+  // UAT3: unaccented "troi mua" / "mua he" are rain and season, not the buy verb (see decisionFrame).
+  [/(?<!nhay |troi |con |cuoi |dau |vao |giua )\b(mua|dat mua|shopping|san pham|nen mua)\b(?! (?:he|dong|thu|xuan|mua|le hoi|cao diem|thap diem|roi|to|phun|bao|ret|lan)\b)/, 'shopping'],
   // 🚨 DISH NAMES — measured gap, 2026-08-27. `SUBJECTS` covers the venue nouns
   // ("quan an", "nha hang", "cafe") but NOT the dish, and the most common
   // Vietnamese food query names the DISH, not the venue: "tìm quán hủ tiếu Phú
@@ -115,7 +168,8 @@ const DOMAIN_HINTS: ReadonlyArray<[RegExp, NeedProfile['domain']]> = [
   // phố Huế" resolves to shopping before this line is reached), and DOMAIN_HINTS
   // only fires when no domain is set at all. A genuine "phố cổ Hà Nội" false
   // positive resolves to `places`, which is the correct domain for it anyway.
-  [/\b(hu tieu|pho|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
+  // UAT3: "thành phố", "phố cổ", "phố đi bộ" typed without diacritics are streets, not phở.
+  [/\b(hu tieu|(?<!thanh |duong |khu |via |dao |ngo |tuyen )pho(?! (?:co|di bo|hang|xa|tay|nui|thi|bien|cang)\b)|bun bo|bun cha|bun rieu|bun dau|bun thit nuong|com tam|com ga|com nieu|banh mi|banh xeo|banh cuon|banh canh|mi quang|hai san|chao long|goi cuon|ga ran|tra sua|nem nuong|bo kho|ca kho|thit nuong|lau nuong|do nuong)\b/, 'places'],
 ]
 
 /**
@@ -148,7 +202,10 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   // phrase set a storage priority the user never expressed.
   [/dung luong(?! pin)|\bstorage\b|\bssd\b|bo nho/, 'storage', false],
   [/man hinh|\bscreen\b|\bdisplay\b|\boled\b/, 'screen', false],
-  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b/, 'rating', true],
+  // "ngon" / "chất lượng" / "tốt nhất" name the same axis the rating scores — the
+  // measured 2026-09-15 lunch request ("ăn gì cho ngon") stated its one criterion
+  // and the ranker heard nothing.
+  [/danh gia cao|nhieu review|duoc danh gia (tot|cao)|highly rated|well reviewed|\brating\b|\bngon\b|ngon nhat|chat luong|\btot nhat\b|\bdelicious\b|\btasty\b/, 'rating', true],
   [/\bgan\b|\bnear\b|\bclose to\b|gan day|gan toi|khoang cach|\bdistance\b/, 'distance', true],
   // Transport pickup speed. Phrases are deliberately specific ("toi nhanh", not
   // bare "nhanh") so a laptop "xu ly nhanh" query still resolves to performance.
@@ -157,6 +214,9 @@ const ATTRIBUTES: ReadonlyArray<[RegExp, string, boolean]> = [
   [/gan bien|\bbeach\b|view bien|beachfront/, 'beach', true],
   [/trung tam|\bcentral\b|\bdowntown\b|city cent(er|re)/, 'central', true],
   [/\bwifi\b|\bwi-fi\b/, 'wifi', true],
+  // Time-bound: "trưa nay", "tối nay", "đang mở", "bây giờ" make being open a
+  // stated criterion, scored only when the row says whether it is open.
+  [/dang mo|con mo|\bmo cua\b|open now|\bbay gio\b|\bright now\b|trua nay|toi nay|sang nay|chieu nay|\btonight\b/, 'openNow', true],
   [/ngoai troi|\boutdoor\b|san vuon/, 'outdoor', true],
 ]
 
@@ -203,7 +263,9 @@ const USE_CASES: ReadonlyArray<[RegExp, string]> = [
 
 /** Cuisines, so a food preference is a rankable attribute rather than free text. */
 const CUISINES: ReadonlyArray<[RegExp, string]> = [
-  [/\bnhat\b|japanese|\bsushi\b|\bramen\b/, 'japanese'],
+  // "nhật" (Japan) and "nhất" (most) fold to the same "nhat": a superlative ("quán ăn gần nhất", "món ngon nhất") read as a Japanese-cuisine priority and, being a
+  // second priority, also kept the single-superlative ranking mode from applying. "Nhat" now names the cuisine only after a food / venue word (món Nhật, quán Nhật, ăn Nhật …).
+  [/\b(?:mon|do|quan|nha hang|an|am thuc|com|thuc don|kieu|lau|bun)\s+nhat\b|japanese|\bsushi\b|\bramen\b/, 'japanese'],
   [/\bhan\b|korean|\bbbq han\b/, 'korean'],
   [/\bviet\b|vietnamese/, 'vietnamese'],
   [/\bthai\b/, 'thai'],
@@ -316,6 +378,47 @@ export function extractBudgetBilingual(text: string): { budget: Budget; stated: 
   return null
 }
 
+// ── Budget refinement (final fix A) ─────────────────────────────────────────────────────────────────────────────────────────────────
+//
+// A refinement turn changes the number, not the topic: "Có thể lên 300k nếu đáng", "xuống 200k thôi", "nâng lên 1.3 triệu", "thêm 100k nữa",
+// "we can go to 400k". None of these carries a budget keyword, so extractBudgetBilingual (keyword-led) returned null and the stored budget stayed
+// at the previous turn's value (benchmark B02–B08 turn 2: 21 of 21 conversations). Only read when a budget is ALREADY stated — without one a bare
+// "lên 300k" is not evidence of money — and only with an explicit money unit, so "lên tầng 3" or "thêm 2 người" can never become a budget.
+//
+// Semantics kept: the refinement changes the AMOUNT and preserves the strictness class the user chose earlier — a soft budget ("khoảng") stays
+// soft (`around`, ±20 % around the new amount), a ceiling ("dưới", "không quá", a range) stays a ceiling (`under`). No number or phrase is hard-coded.
+const RF_MONEY = '(\\d[\\d.,]*)\\s*(k|tr|trieu|nghin|ngan|mil|million)\\b'
+/** "lên 300k", "nâng lên 1.3 triệu", "xuống 200k", "giảm còn 200k", "đổi thành 400k": a NEW amount. */
+const VI_REFINE_TO = new RegExp(`(?:\\b(?:nang|tang|day|giam|ha|bot|doi|chuyen|sua)\\b(?:\\s+(?:ngan sach|budget|muc gia))?\\s+(?:len|xuong|con|toi|den|thanh|sang|la)|\\b(?:len|xuong))\\s*${RF_MONEY}`)
+/** "thêm 100k", "tăng thêm 100k": the amount grows BY this much. */
+const VI_REFINE_UP_BY = new RegExp(`\\b(?:tang them|nang them|cong them|chi them|them|tang|nang)\\s*${RF_MONEY}`)
+/** "bớt 50k", "giảm bớt 50k", "giảm 50k": the amount shrinks BY this much. */
+const VI_REFINE_DOWN_BY = new RegExp(`\\b(?:giam bot|bot|giam|ha)\\s*${RF_MONEY}`)
+/** "we can go to 400k", "lower it to 200k", "cut the budget to 200k". ("up to X" / "increase … to X" are already read by EN_UNDER.) */
+const EN_REFINE_TO = new RegExp(`\\b(?:(?:can|could|may) (?:go|stretch|spend)[^.!?]{0,10}?to|(?:lower|reduce|cut|drop|decrease)[^.!?]{0,20}?\\bto)\\s*~?\\s*${EN_NUM}${EN_UNIT}`, 'i')
+
+export function extractBudgetRefinement(text: string, prev: Budget | null, prevStated: number | null): { budget: Budget; stated: number } | null {
+  if (!prev) return null
+  const t = normalizeVN(text.toLowerCase())
+  const around = prev.type === 'around'
+  const base = around ? (prevStated ?? Math.round((prev.min + prev.max) / 2)) : prev.max
+  const shaped = (amount: number): { budget: Budget; stated: number } | null => {
+    if (!(amount > 0)) return null
+    return around
+      ? { budget: { min: Math.round(amount * 0.8), max: Math.round(amount * 1.2), type: 'around' }, stated: amount }
+      : { budget: { min: 0, max: amount, type: 'under' }, stated: amount }
+  }
+  let m = t.match(VI_REFINE_TO)
+  if (m) { const a = parseMoneyAmount(m[1], m[2]); if (a !== null) return shaped(a) }
+  m = t.match(EN_REFINE_TO)
+  if (m) { const a = parseEnAmount(m[1], m[2]); if (a !== null) return shaped(a) }
+  m = t.match(VI_REFINE_UP_BY)
+  if (m) { const d = parseMoneyAmount(m[1], m[2]); if (d !== null) return shaped(base + d) }
+  m = t.match(VI_REFINE_DOWN_BY)
+  if (m) { const d = parseMoneyAmount(m[1], m[2]); if (d !== null) return shaped(base - d) }
+  return null
+}
+
 // ── The fold ────────────────────────────────────────────────────────────────
 
 function emptyProfile(gps: { lat: number; lng: number } | null): NeedProfile {
@@ -334,6 +437,9 @@ function emptyProfile(gps: { lat: number; lng: number } | null): NeedProfile {
   }
 }
 
+// (isConstraintId is re-exported for callers that validate AI-proposed ids against the same registry.)
+export { isConstraintId }
+
 function setPriority(p: NeedProfile, key: string, weight: number, source: Priority['source']): void {
   const existing = p.priorities.find(x => x.key === key)
   if (!existing) {
@@ -344,6 +450,29 @@ function setPriority(p: NeedProfile, key: string, weight: number, source: Priori
   if (source === 'preference' && existing.source !== 'preference') return
   existing.weight = weight
   existing.source = source
+  delete existing.extreme // a restated priority is no longer the superlative unless the caller says so again
+}
+
+/**
+ * Superlatives (final fix B). "Rẻ nhất" / "gần nhất" / "chỉ cần gần nhà" name the extreme on ONE axis the product can rank in a fixed direction
+ * (price: lower is better; distance: lower is better; rating: higher is better). The opposite extremes ("đắt nhất", "xa nhất", rating thấp nhất) have
+ * no direction in the product contract and are deliberately NOT read — an unsupported priority is never invented. "gần biển / trung tâm nhất" names
+ * a place feature, not the distance axis, and is excluded.
+ */
+const SUPERLATIVES: ReadonlyArray<[RegExp, string]> = [
+  [/\b(?:re nhat|gia re nhat|gia thap nhat|tiet kiem nhat|it ton kem nhat|cheapest|lowest price|least expensive|most affordable)\b|\bchi can\s+(?:chon\s+)?(?:cho\s+|quan\s+|noi\s+)?(?:re|gia re|tiet kiem)\b/, 'price'],
+  [/\bgan(?!\s+(?:bien|trung))(?:\s+\w+){0,2}?\s+nhat\b|\bchi can\s+(?:chon\s+)?(?:cho\s+|quan\s+|noi\s+)?gan(?!\s+(?:bien|trung))\b|\bnearest\b|\bclosest\b|\bshortest distance\b/, 'distance'],
+  [/\b(?:danh gia|rating)\s+cao nhat\b|\bhighest[- ]rated\b|\bbest[- ]rated\b|\bhighest rating\b/, 'rating'],
+]
+
+function applySuperlatives(p: NeedProfile, t: string, turn: number): void {
+  for (const [re, key] of SUPERLATIVES) {
+    if (!re.test(t)) continue
+    setPriority(p, key, W_COMPARATIVE_WIN, 'stated')
+    const x = p.priorities.find(y => y.key === key)
+    if (x && x.source !== 'preference') x.extreme = true
+    p.changedAtTurn.priorities = turn
+  }
 }
 
 /** "battery is more important than GPU" / "pin quan trọng hơn GPU" — directional. */
@@ -436,6 +565,70 @@ function applyOneSidedComparative(p: NeedProfile, t: string, turn: number): bool
   return false
 }
 
+// ── Phase 3A helpers ────────────────────────────────────────────────────────────────────────────
+
+/** "price does not matter": a negator directly in front of an importance phrase. The negated clause is dismissed AND stripped, so the
+ *  ordinary importance patterns below can never read it as a request (RC2: "giá không quan trọng" used to become price weight 2). */
+const NEGATED_IMPORTANCE = new RegExp(
+  '([^,;.!?]{1,40}?)\\s*\\b(?:khong|chang|chua|ko|not|isnt|isn\'t|is not|arent|aren\'t|are not|doesnt|doesn\'t|does not|dont|don\'t|do not)\\s*' +
+  '(?:qua |can |con |that |phai |la |that su |really |very |so )*(?:rat )?(?:quan trong|matters?|important)\\b', 'g')
+const NEGATED_PRIORITY = /\bkhong\s+(?:phai\s+)?(?:uu tien|quan tam)\s+([^,;.!?]{1,30})/g
+
+function dismissalsIn(t: string): { keys: string[]; spans: Record<string, string>; stripped: string } {
+  const keys: string[] = []
+  const spans: Record<string, string> = {}
+  let stripped = t
+  for (const m of t.matchAll(NEGATED_IMPORTANCE)) {
+    const key = attributeNearestEnd(m[1])
+    if (key && !keys.includes(key)) { keys.push(key); spans[key] = m[0] }
+    stripped = stripped.replace(m[0], ' ')
+  }
+  for (const m of t.matchAll(NEGATED_PRIORITY)) {
+    const key = attributeNearestEnd(m[1])
+    if (key && !keys.includes(key)) { keys.push(key); spans[key] = m[0] }
+    stripped = stripped.replace(m[0], ' ')
+  }
+  return { keys, spans, stripped }
+}
+
+const BALANCE = /\bcan bang\b|\bbalanced?\b|\bbalance\b/
+
+/** The attribute keys NAMED in a fragment, in the order the user said them. Only what is there: nothing is added. */
+function attributeKeysInOrder(fragment: string): string[] {
+  const found: Array<[number, string]> = []
+  // English "quality" names the same axis as "chat luong" (ATTRIBUTES is deliberately left alone: it is read by the ranker's inputs).
+  const extra: ReadonlyArray<[RegExp, string]> = [[/\bquality\b/, 'rating']]
+  for (const [re, key] of [...ATTRIBUTE_NOUNS, ...ATTRIBUTES, ...extra]) {
+    const m = fragment.match(new RegExp(re.source))
+    if (m && m.index !== undefined && !found.some(f => f[1] === key)) found.push([m.index, key])
+  }
+  return found.sort((a, b) => a[0] - b[0]).map(f => f[1])
+}
+
+/**
+ * The criteria of a balance statement, taken from the SENTENCE that carries it (a list may run across commas: "gia, chat luong va khoang cach").
+ * Read on the text with dismissed clauses already removed, so a dismissed price is never listed. Time words ("trua nay" = openNow) are not
+ * trade-off criteria. `null` = no balance wording.
+ */
+function balancedCriteria(t: string): string[] | null {
+  for (const sentence of t.split(/[;.!?]/)) {
+    const m = sentence.match(BALANCE)
+    if (!m) continue
+    return attributeKeysInOrder(sentence.replace(BALANCE, ' ')).filter(k => k !== 'openNow')
+  }
+  return null
+}
+
+const prov = (turn: number, span?: string): Provenance => ({ source: 'user_text', turn, ...(span ? { span: span.trim().slice(0, 60) } : {}) })
+
+/** Insert or refresh one constraint (same id + kind: the latest turn wins). */
+function setConstraint(p: NeedProfile, c: Constraint): void {
+  const list = (p.constraints ??= [])
+  const i = list.findIndex(x => x.id === c.id && x.kind === c.kind)
+  if (i >= 0) list[i] = c
+  else list.push(c)
+}
+
 /**
  * Fold the conversation into a structured need.
  *
@@ -462,15 +655,24 @@ export function deriveNeedProfile(
 
   for (const [idx, raw] of userTurns.entries()) {
     const turn = idx + 1
-    const t = normalizeVN(String(raw ?? '').toLowerCase())
+    let t = normalizeVN(String(raw ?? '').toLowerCase())
     if (!t) { p.turnsObserved = turn; continue }
 
     // ── Subject and reset ───────────────────────────────────────────────────
     let matchedSubject: string | null = null
     let matchedDomain: NeedProfile['domain'] = null
+    // UAT3: subject nouns read sense-preserving folding — "mấy anh" is not "máy ảnh".
+    const tSense = foldForLexicon(String(raw ?? ''))
     for (const [re, subject, domain] of SUBJECTS) {
-      if (re.test(t)) { matchedSubject = subject; matchedDomain = domain; break }
+      if (re.test(tSense)) { matchedSubject = subject; matchedDomain = domain; break }
     }
+    // E3 (2026-09-20, measured SK1 "CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?"): a venue the user
+    // NAMED is a place whatever its kind — no lexicon row knows a store chain, but the name is there.
+    if (!matchedDomain && namedVenueIn(String(raw ?? '')) !== null) { matchedSubject = 'venue'; matchedDomain = 'places' }
+    // E3 (measured PP2 "mua tinh dầu massage body chính hãng online"): a message that OPENS with a buy
+    // verb is a purchase whatever venue noun follows ("massage" named the spa subject) — the product
+    // itself is the unknown-type noun the shopping validator reads.
+    if (matchedDomain === 'places' && /^(?:mua|dat mua|can mua|muon mua|order|dat hang)\s/.test(t)) { matchedSubject = null; matchedDomain = 'shopping' }
 
     if (matchedDomain && p.domain && matchedDomain !== p.domain) {
       // A genuine task switch. Everything task-scoped goes; GPS is not
@@ -482,11 +684,14 @@ export function deriveNeedProfile(
       p.domain = matchedDomain
       p.changedAtTurn.subject = turn
     } else if (!p.domain) {
-      for (const [re, domain] of DOMAIN_HINTS) if (re.test(t)) { p.domain = domain; break }
+      for (const [re, domain] of DOMAIN_HINTS) if (re.test(tSense)) { p.domain = domain; break }
     }
 
+    // Priorities as they stand before this turn speaks (after any task-switch reset): the baseline for cross-turn conflicts.
+    const prioritiesBefore = new Map(p.priorities.map(x => [x.key, `${x.weight}|${x.source}`]))
+
     // ── Budget ─────────────────────────────────────────────────────────────
-    const b = extractBudgetBilingual(raw as string)
+    const b = extractBudgetBilingual(raw as string) ?? extractBudgetRefinement(raw as string, p.budget, p.budgetStated)
     if (b) {
       p.budget = b.budget
       p.budgetStated = b.stated
@@ -494,13 +699,26 @@ export function deriveNeedProfile(
     }
 
     // ── Location ───────────────────────────────────────────────────────────
+    let placedThisTurn = false
+    // A city is a WORD of the text with street / dish names masked (UAT 29/09: "Nguyễn Huệ" ⊃ "hue" → Huế).
+    const tCity = maskStreetNames(t)
     for (const place of PLACES) {
-      if (t.includes(place)) { p.location.text = place; p.changedAtTurn.location = turn; break }
+      if (new RegExp(`\\b${place}\\b`).test(tCity)) { p.location.text = place; p.changedAtTurn.location = turn; placedThisTurn = true; break }
     }
     const district = t.match(/\bquan\s+(\d{1,2})\b/)
     if (district && !p.location.text) {
       p.location.text = `quan ${district[1]}`
       p.changedAtTurn.location = turn
+      placedThisTurn = true
+    }
+    // UAT4 A/B (27 Sep 2026): "q1", "Gò Vấp", "Bình Thạnh", "Phú Nhuận" left the location EMPTY
+    // (only a spelled-out "quận N" and the city list were read), so the search centred on the GPS
+    // and the reply argued with the user ("Bạn vừa nói Gò Vấp, nhưng vị trí hiện tại…"). The
+    // district table the route already trusts (districts.ts) names it; a district named in a later
+    // turn replaces the earlier one.
+    if (!placedThisTurn && !district) {
+      const named = statedDistrict(raw)
+      if (named) { p.location.text = named.label; p.changedAtTurn.location = turn }
     }
 
     // ── Use cases ──────────────────────────────────────────────────────────
@@ -518,6 +736,33 @@ export function deriveNeedProfile(
         p.useCases.push(key)
         p.changedAtTurn.useCases = turn
       }
+    }
+
+    // ── Phase 3A: negation, balance, household ──────────────────────────────
+    // Dismissals first: a negated importance clause is recorded as dismissed and REMOVED from the text the positive patterns read.
+    const dis = dismissalsIn(t)
+    const tFull = t
+    t = dis.stripped
+    for (const key of dis.keys) {
+      p.dismissed = [...(p.dismissed ?? []).filter(d => d.key !== key), { key, provenance: prov(turn, dis.spans[key] ?? key) }]
+      p.changedAtTurn.dismissed = turn
+      const i = p.priorities.findIndex(x => x.key === key)
+      if (i >= 0) {
+        // The user said it matters earlier and now says it does not: the latest turn wins, and the contradiction stays visible.
+        p.priorities.splice(i, 1)
+        if (prioritiesBefore.has(key)) p.conflicts = [...new Set([...(p.conflicts ?? []), key])]
+      }
+    }
+    const bal = balancedCriteria(t)
+    if (bal !== null) {
+      if (bal.length > 0) { p.tradeoff = { kind: 'balanced', keys: bal, provenance: prov(turn, 'can bang ' + bal.join('+')) }; p.changedAtTurn.tradeoff = turn }
+      else { delete p.tradeoff; p.ambiguity = [...new Set([...(p.ambiguity ?? []), 'tradeoff_criteria'])] }
+    }
+    const hh = householdIn(tFull)
+    if (hh) {
+      const ages = [...new Set([...(p.household?.childAges ?? []), ...hh.childAges])]
+      p.household = { kids: true, ...(ages.length ? { childAges: ages } : {}), provenance: prov(turn, hh.span) }
+      p.changedAtTurn.household = turn
     }
 
     // ── Priorities ─────────────────────────────────────────────────────────
@@ -548,6 +793,7 @@ export function deriveNeedProfile(
         const key = attributeNearestEnd(postfix[1])
         if (key) { setPriority(p, key, W_COMPARATIVE_WIN, 'stated'); p.changedAtTurn.priorities = turn }
       }
+      applySuperlatives(p, t, turn)
       // Evaluative qualifiers are requests in themselves — see the note on
       // ATTRIBUTES. Applied AFTER the explicit form so "ưu tiên gần" keeps the
       // stronger weight rather than being flattened back to a bare mention.
@@ -567,7 +813,37 @@ export function deriveNeedProfile(
       }
     }
 
+    // A priority (re)stated THIS turn overrides an earlier dismissal of the same key (latest turn wins, conflict recorded).
+    if (p.dismissed) {
+      for (const x of p.priorities) {
+        if (prioritiesBefore.get(x.key) === `${x.weight}|${x.source}`) continue
+        const earlier: DismissedPriority | undefined = p.dismissed.find(y => y.key === x.key && y.provenance.turn < turn)
+        if (earlier) {
+          p.dismissed = p.dismissed.filter(y => y !== earlier)
+          p.conflicts = [...new Set([...(p.conflicts ?? []), x.key])]
+        }
+      }
+      if (p.dismissed.length === 0) delete p.dismissed
+    }
+
     // ── Hard constraints ───────────────────────────────────────────────────
+    // Phase 3A: registry-backed must-have / avoid. Hard ONLY on the user's own mandatory wording (D8.b); a bare mention is not a requirement.
+    for (const id of Object.keys(CONSTRAINT_REGISTRY) as ConstraintId[]) {
+      const must3a = mandatorySpanFor(id, tFull)
+      if (must3a) {
+        setConstraint(p, { id, kind: 'must_have', strength: 'stated', against: 'contradiction', provenance: prov(turn, must3a) })
+        p.changedAtTurn.constraints = turn
+      }
+      const avoid3a = avoidSpanFor(id, tFull)
+      if (avoid3a) {
+        setConstraint(p, { id, kind: 'avoid', strength: 'stated', against: 'contradiction', provenance: prov(turn, avoid3a) })
+        p.changedAtTurn.constraints = turn
+      }
+    }
+    if (VEGETARIAN.test(t)) {
+      setConstraint(p, { id: 'vegetarian', kind: 'must_have', strength: 'stated', against: 'contradiction', provenance: prov(turn, 'chay') })
+      p.changedAtTurn.constraints = turn
+    }
     const must = t.match(/(?:phai co|can co|bat buoc co|must have|needs to have|with)\s+(.{1,30})/)
     if (must) {
       const key = attributeIn(must[1])
@@ -588,6 +864,9 @@ export function deriveNeedProfile(
       // A dietary restriction is a HARD constraint (prompt rule R20 already
       // ranks it above every other suggestion), not a soft preference.
       if (!p.avoid.includes('non-vegetarian')) p.avoid.push('non-vegetarian')
+      if (!p.constraints?.some(c => c.id === 'vegetarian')) {
+        setConstraint(p, { id: 'vegetarian', kind: 'must_have', strength: 'stated', against: 'contradiction', provenance: { source: 'memory', turn: 0 } })
+      }
     }
     for (const like of prefs.cuisine_likes || []) {
       const norm = normalizeVN(String(like).toLowerCase())
@@ -597,5 +876,11 @@ export function deriveNeedProfile(
     }
   }
 
+  // Phase 3A: deterministic validation of the structured state, then the one ambiguity the profile itself can name. UNKNOWN stays unknown:
+  // nothing is invented to fill a gap (a missing domain is recorded, not guessed).
+  validateDecisionState(p)
+  const stated = p.priorities.length > 0 || !!p.constraints || !!p.dismissed || p.mustHave.length > 0 || p.avoid.length > 0 || p.budget !== null || !!p.tradeoff
+  if (p.domain === null && stated) p.ambiguity = [...new Set([...(p.ambiguity ?? []), 'domain'])]
+  if (p.ambiguity && p.ambiguity.length === 0) delete p.ambiguity
   return p
 }

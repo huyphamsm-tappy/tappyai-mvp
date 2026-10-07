@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà tặng nhân viên 018 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:14.433Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng nhân viên 018 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vitamin 3B Bổ Sung Vitamin B1 B6 B12 Giúp Tăng Cường ...",
+    "link": "https://www.lazada.vn/products/vitamin-3b-bo-sung-vitamin-b1-b6-b12-giup-tang-cuong-suc-khoe-giam-met-moi-phap-eiffel-hop-100-vien-i2297498276.html?srsltid=AU7gw4UAlPserlHhIpmOQhbkN_qNt-ZlH2Wmyiqag3_mWC4tpQLqWE3n",
+    "snippet": "Vitamin 3B của Pháp Eiffel cung cấp vitamin B1, B6, B12 giúp tăng cường sức khỏe, giảm mệt mỏi. Hộp 100 viên tiện lợi, bổ sung các dưỡng chất thiết yếu, ...",
+    "position": 1
+   },
+   {
+    "title": "Sách - Tôi Yêu Nữ Phản Diện - Tập 3 | Lazada Việt Nam",
+    "link": "https://www.lazada.vn/products/sach-toi-yeu-nu-phan-dien-tap-3-i2485756531.html?srsltid=AU7gw4VT1X6R85_FHfddRXrCHHm3pKxZu4IeoPeVsIlRYMSynAIS8M8e",
+    "snippet": "... 18 cm. Số trang: 412 trang. ISBN: 978-604-339-494-8. NXB liên kết: NXB Hà Nội. Ngày phát hành: 12/12/2021. Quà tặng kèm: Sách - Tôi Yêu Nữ Phản Diện - Tập 3.",
+    "position": 2
+   },
+   {
+    "title": "Túi Giấy, Túi Quà Tặng, Túi Hoạt Hình Dễ Thương 21*27*14cm",
+    "link": "https://www.lazada.vn/products/pdp-i2661021741-s13012600393.html?priceCompare=skuId%3A13012600393%3Bsource%3Alzd-shop-center%3Bip%3A33.1.29.205%3Bsn%3Ab0b8bf9baf228587de12da9b6677f3ef%3BunionTrace%3A0830559c17835740686331463e%3BoriginPrice%3A14000%3BsubsidyPrice%3A14000%3BacrossSubsidyPrice%3A14000%3BshopPrice%3A14000%3BvoucherPrice%3A14000%3BdisplayPrice%3A14000%3BisGray%3Afalse%3BsinglePromotionId%3A-1%3BsingleToolCode%3A-1%3BvoucherPricePlugin%3A1%3BbuyerId%3A0%3BnewBuyer%3Afalse%3Btimestamp%3A1783574069102%3BisPreHeat%3Afalse%3BisPreHeat%3Afalse%3BitemType%3A0&search=store&mp=3&srsltid=AU7gw4XOx8Oot-4FPZjag11eu-kWKxb9BMY_SIbqdTaWVeFKOQ8Gwxxl",
+    "snippet": "– Gửi quà tặng đến khách hàng, nhân viên, đối tác một cách lịch sự, sang trọng, như một cách để tri ân, cảm ơn đến người nhận quà. ... - Có thể dùng làm hộp kẹo, ...",
+    "position": 3
+   },
+   {
+    "title": "Size |24*18*9| (cm) Hộp đựng Quà tặng Premium Gift Box cao ...",
+    "link": "https://www.lazada.vn/products/size-24189-cm-hop-dung-qua-tang-premium-gift-box-cao-cap-tang-sinh-nhat-le-valentine83-2010-dang-hut-nam-cham-i13373626167.html?srsltid=AU7gw4WlNs3rg5BbX1g3VBsZVIjCVeQYULFiIttzWYSBYm6oGf4alZ11",
+    "snippet": "Chịu trách nhiệm về hàng hóa: ✓ Đóng gói: Với tất cả đơn hàng đều được nhân viên đóng gói cẩn thận + Chèn chống xốc, đóng túi zip đối với các set Hoa lụa lẻ, ...",
+    "position": 4
+   },
+   {
+    "title": "Bộ Quà Tặng 18 Món Phim Truyền Hình Revenged",
+    "link": "https://www.lazada.vn/products/bo-qua-tang-18-mon-phim-truyen-hinh-revenged-the-anh-thien-tung-tu-vu-bookmark-buu-thiep-qua-tang-danh-cho-nguoi-yeu-thich-phim-truyen-hinh-i3207414880-s15330828110.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4U4y-gnWqDmrAzmczauq8MbeTaTdZ452prHHJyIRjVLgh1Bh8RT",
+    "snippet": "Gói hàng hóa này cung cấp bộ sưu tập đa dạng bao gồm bưu thiếp, thiệp vuông, dấu trang và thiệp lomo, hoàn hảo cho người hâm mộ Tian Xuning & Zi Yu.",
+    "position": 5
+   },
+   {
+    "title": "Hộp Quà Tặng Tổ Yến Sào 18% Bổ Sung Vitamin K2 Không ...",
+    "link": "https://h5.lazada.vn/products/hop-qua-tang-to-yen-sao-18-bo-sung-vitamin-k2-khong-duong-khanh-hoa-nutrition-hop-6-lo-70ml-i3053461928-s14692253157.html",
+    "snippet": "Hộp Quà Tặng Tổ Yến Sào 18% Bổ Sung Vitamin K2 Không Đường - Khánh Hoà Nutrition ( Hộp 6 lọ * 70ml) ; Thông số. Thương hiệu,Thành phần,Dạng Sản Phẩm ; Giao hàng.",
+    "position": 6
+   },
+   {
+    "title": "Hộp Quà Tặng Tổ Yến Sào 18% Bổ Sung Vitamin K2 Chưng ...",
+    "link": "https://h5.lazada.vn/products/hop-qua-tang-to-yen-sao-18-bo-sung-vitamin-k2-chung-duong-phen-khanh-hoa-nutrition-hop-6-lo-70-ml-i3053795375-s14692475211.html",
+    "snippet": "Hộp Quà Tặng Tổ Yến Sào 18% Bổ Sung Vitamin K2 Chưng Đường Phèn - Khánh Hoà Nutrition ( Hộp 6 lọ * 70 ml). Tuỳ chọn sản phẩm. Thông số.",
+    "position": 7
+   },
+   {
+    "title": "Hộp Giấy Đựng Chocolate (Socola) Hình Chữ Nhật 9,12, ...",
+    "link": "https://www.lazada.vn/products/hop-giay-dung-chocolate-socola-hinh-chu-nhat-91218-ngan-225x115x4-i2308996893.html?srsltid=AU7gw4VWqM7rrtM9EA7txdSEQMK2tpPEb-BXb5Sh9FS9faGa9BiiTmzO",
+    "snippet": "Hộp kẹo chia ngăn phù hợp đựng socola quà tặng, kẹo handmade. Gửi quà tặng đến khách hàng, nhân viên, đối tác một cách lịch sự, sang trọng, như một cách để ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6568,
+  "evidenceId": "4c76b9d6-1af8-4499-9502-1e068a4ff978",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động mãn nhãn. Bộ phim kết hợp hai nhân vật biểu tượng với chemistry tuyệt vời 🎬\n\n**Twisters** — nếu bạn muốn xem thứ gì đó kịch tính, rạng rỡ với những cảnh quay thiên nhiên hoang dã. Phim hay cho những ai thích thể loại thảm họa/hành động.\n\n**Wicked** — nếu bạn thích âm nhạc, kịch tính cảm xúc và những bộ trang phục lộng lẫy. Bộ phim dành cho những ai yêu thích musical và câu chuyện có chiều sâu.\n\n Mình sẽ giúp bạn tìm rạp chiếu gần đó! 🎭",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động mãn nhãn. Bộ phim kết hợp hai nhân vật biểu tượng với chemistry tuyệt vời 🎬\n\n**Twisters** — nếu bạn muốn xem thứ gì đó kịch tính, rạng rỡ với những cảnh quay thiên nhiên hoang dã. Phim hay cho những ai thích thể loại thảm họa/hành động.\n\n**Wicked** — nếu bạn thích âm nhạc, kịch tính cảm xúc và những bộ trang phục lộng lẫy. Bộ phim dành cho những ai yêu thích musical và câu chuyện có chiều sâu.\n\n Mình sẽ giúp bạn tìm rạp chiếu gần đó! 🎭"
+    }
+  ]
+}

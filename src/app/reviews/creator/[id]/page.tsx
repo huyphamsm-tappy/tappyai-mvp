@@ -2,7 +2,8 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import Image from '@/components/media/SafeImage'
 import Link from 'next/link'
 import { ArrowLeft, Heart, Play, Loader2, UserPlus, UserCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
@@ -80,6 +81,7 @@ export default function CreatorPage() {
       .select('view_count, watch_time_avg, like_count, save_count, completion_rate')
       .eq('user_id', creatorId)
       .or('is_hidden.is.null,is_hidden.eq.false')
+      .or(publishableFilter()) // R19: restricted posts do not count in public creator stats
 
     if (stats) {
       const views = stats.reduce((s, r) => s + (r.view_count || 0), 0)

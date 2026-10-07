@@ -1,0 +1,84 @@
+{
+  "label": "uat4-p1-golden-71df07a-T2-rep1",
+  "base": "http://localhost:3007",
+  "calls": 2,
+  "at": "2026-09-28T01:41:59.286Z",
+  "cases": [
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 19445,
+          "usage": {
+            "promptTokens": 2850,
+            "completionTokens": 415
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Galaxy Cinema Trung Chánh",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "Cinestar Satra Quận 6",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Thủ Đức",
+              "CGV Sư Vạn Hạnh",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "Galaxy Cinema Trung Chánh",
+              "Mega GS Cinemas Lý Chính Thắng"
+            ]
+          ],
+          "dup": false,
+          "chars": 687
+        },
+        {
+          "status": 200,
+          "ms": 14249,
+          "usage": {
+            "promptTokens": 2842,
+            "completionTokens": 641
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Hoàng Văn Thụ",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "Galaxy Cinema Thiso Mall",
+              "Aeon Beta Central Premium",
+              "Cinestar Quốc Thanh"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Hoàng Văn Thụ",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "Galaxy Cinema Thiso Mall",
+              "Aeon Beta Central Premium"
+            ]
+          ],
+          "dup": false,
+          "chars": 806
+        }
+      ]
+    }
+  ]
+}

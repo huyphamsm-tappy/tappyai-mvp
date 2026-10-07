@@ -48,6 +48,8 @@ object NetworkModule {
         authInterceptor: AuthInterceptor,
         appLanguageInterceptor: AppLanguageInterceptor,
         tokenAuthenticator: TokenAuthenticator,
+        deploymentProtectionInterceptor: DeploymentProtectionInterceptor,
+        guestAgeInterceptor: GuestAgeInterceptor,
         @Named("isDebug") isDebug: Boolean,
     ): OkHttpClient {
         // HEADERS, never BODY. At BODY level the interceptor reads the ENTIRE response body
@@ -64,6 +66,7 @@ object NetworkModule {
         // Guarded by StreamingNotBufferedByLoggingTest.
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             redactHeader("Authorization")
+            redactHeader(DeploymentProtectionInterceptor.HEADER)
             level = if (isDebug) HttpLoggingInterceptor.Level.HEADERS else HttpLoggingInterceptor.Level.NONE
         }
         return OkHttpClient.Builder()
@@ -71,6 +74,10 @@ object NetworkModule {
             // Before the logging interceptor, so a debug log shows the header the server will
             // actually receive rather than the request as it looked one step earlier.
             .addInterceptor(appLanguageInterceptor)
+            // Inert unless this is the `uat` build (empty secret everywhere else).
+            .addInterceptor(deploymentProtectionInterceptor)
+            // A guest's 18+ declaration on every own-API request (the web's cookie equivalent).
+            .addInterceptor(guestAgeInterceptor)
             .addInterceptor(loggingInterceptor)
             .authenticator(tokenAuthenticator)
             // Explicit rather than relying on OkHttp's undocumented-in-this-codebase implicit

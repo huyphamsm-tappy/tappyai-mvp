@@ -4,18 +4,18 @@
     <string name="scam_shield_url_label">Link</string>
     <string name="scam_shield_url_placeholder">example.com or https://…</string>
     <string name="scam_shield_check">Check this link</string>
-    <string name="scam_shield_checking">Checking…</string>
+    <string name="scam_shield_checking">Checking...</string>
 
-    <string name="scam_shield_level_safe">Looks safe</string>
+    <string name="scam_shield_level_safe">Safe</string>
     <string name="scam_shield_level_low">Low risk</string>
-    <string name="scam_shield_level_medium">Be careful</string>
+    <string name="scam_shield_level_medium">Use caution</string>
     <string name="scam_shield_level_high">High risk</string>
-    <string name="scam_shield_level_critical">Do not open this</string>
+    <string name="scam_shield_level_critical">Very dangerous</string>
     <!--
       Deliberately NOT worded like a mild pass. This is what the engine reports when too little of
       its evidence base responded to stand behind a reassuring answer.
     -->
-    <string name="scam_shield_level_inconclusive">Not enough evidence</string>
+    <string name="scam_shield_level_inconclusive">Could not be checked</string>
 
     <string name="scam_shield_score">Risk score %1$d · confidence %2$d%%</string>
     <string name="scam_shield_official_match">Official site of %1$s (%2$s)</string>
@@ -34,6 +34,32 @@
 
     <!-- Home tile — mirrors the web (home.scamShieldTitle/Desc). The description says QR codes
          because the web accepts them; the Android screen checks links only for now. -->
-    <string name="home_scam_shield_title">🛡️ Safety check</string>
-    <string name="home_scam_shield_desc">Check a link before you open it</string>
+    <string name="home_scam_shield_title">Scam Shield</string>
+    <string name="home_scam_shield_desc">Check links, websites and QR codes before you open them</string>
+    <!-- Scam Shield — the canonical web /scam-shield (v3.scam.*, scamShield.*), 2026-09-17 -->
+    <string name="scam_shield_v3_name">Scam Shield</string>
+    <string name="scam_shield_v3_tagline">Protects you from suspicious links and websites</string>
+    <string name="scam_shield_v3_check_title">Check a link / website</string>
+    <string name="scam_shield_v3_cta">Check now</string>
+    <string name="scam_shield_v3_url_placeholder">Enter URL or domain...</string>
+    <string name="scam_shield_v3_qr_upload">Scan QR</string>
+    <string name="scam_shield_v3_confidence_high">High confidence</string>
+    <string name="scam_shield_v3_confidence_medium">Limited data</string>
+    <string name="scam_shield_v3_confidence_low">Insufficient data</string>
+    <string name="scam_shield_v3_evidence">Analysis details</string>
+    <string name="scam_shield_v3_actions">Recommendations</string>
+    <string name="scam_shield_v3_official">Official information</string>
+    <string name="scam_shield_v3_official_website">Official website</string>
+    <string name="scam_shield_v3_official_hotline">Hotline</string>
+    <string name="scam_shield_v3_score">Score</string>
+    <string name="scam_shield_v3_history_title">Check history</string>
+    <string name="scam_shield_v3_history_empty">No checks yet.</string>
+    <string name="scam_shield_v3_history_local">History is stored on this device only.</string>
+    <string name="scam_shield_v3_history_clear">Clear history</string>
+    <string name="scam_shield_v3_history_all">See all</string>
+    <string name="scam_shield_v3_history_less">Show less</string>
+    <string name="scam_shield_v3_recheck">Check again</string>
+    <string name="scam_shield_error_qr_decode">Could not read QR code</string>
+    <string name="scam_shield_error_qr_no_url">QR code does not contain a link</string>
+    <string name="scam_shield_error_qr_failed">Could not check QR code</string>
 </resources>

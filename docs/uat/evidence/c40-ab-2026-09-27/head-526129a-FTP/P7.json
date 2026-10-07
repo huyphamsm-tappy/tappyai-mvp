@@ -1,0 +1,174 @@
+{
+  "id": "P7",
+  "text": "gội đầu dưỡng sinh gần đây",
+  "parent": null,
+  "status": 200,
+  "ms": 9230,
+  "evidenceId": "ed0163b1-38ee-407c-900a-e522f8b2742e",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1073,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "AN’s spa",
+      "rating": 4.9,
+      "count": 3414,
+      "hours": "10:00–23:30",
+      "distance_km": 0.9,
+      "address": "12 Đặng Trần Côn, P, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "AN’s spa",
+      "rating": 4.9,
+      "count": 3038,
+      "hours": "10:00–22:00",
+      "distance_km": 1,
+      "address": "130 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Spa by Park - Massage & Body Care",
+      "rating": 4.9,
+      "count": 237,
+      "hours": "10:00–23:00",
+      "distance_km": 2.1,
+      "address": "214/55BD1 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "LOTUS SPA MASSAGE",
+      "rating": 4.7,
+      "count": 248,
+      "hours": "09:00–02:00",
+      "distance_km": 0.6,
+      "address": "19 Thủ Khoa Huân, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Serene Head Spa & Massage - Saigon Branch",
+      "rating": 5,
+      "count": 197,
+      "hours": "09:30–23:00",
+      "distance_km": 0.4,
+      "address": "54 Đông Du, Ward, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nara Spa | Massage & Hair Spa Quận 3",
+      "rating": 4.9,
+      "count": 1166,
+      "hours": "11:00–21:30",
+      "distance_km": 2.5,
+      "address": "595/74 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Gạo Spa - Massage Hochiminh",
+      "rating": 4.5,
+      "count": 189,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "231 Lý Tự Trọng, p, Bến Thành, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "22Spa & Massage",
+      "rating": 4.6,
+      "count": 3061,
+      "hours": "10:00–22:30",
+      "distance_km": 1.5,
+      "address": "100 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay. Mình chọn **Serene Head Spa & Massage** cho bạn — cách bạn chỉ 0.4km, gần nhất trong danh sách, đang mở cửa lúc này (09:30–23:00), và có đánh giá tuyệt vời **5⭐ (197 đánh giá Google Maps)** 👌\n\nNếu muốn lựa chọn khác, **AN's spa** (0.9km) cũng rất tốt với **4.9⭐ (3.414 đánh giá)** và chuyên về massage toàn thân, hoặc **LOTUS SPA MASSAGE** (0.6km) nếu bạn thích mở cửa sớm từ 09:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt chỗ trước|Xem spa khác gần đây|Gội đầu + massage toàn thân[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn gội đầu dưỡng sinh gần vị trí hiện tại (Quận 1) trong hôm nay. Mình chọn **Serene Head Spa & Massage** cho bạn — cách bạn chỉ 0.4km, gần nhất trong danh sách, đang mở cửa lúc này (09:30–23:00), và có đánh giá tuyệt vời **5⭐ (197 đánh giá Google Maps)** 👌\n\nNếu muốn lựa chọn khác, **AN's spa** (0.9km) cũng rất tốt với **4.9⭐ (3.414 đánh giá)** và chuyên về massage toàn thân, hoặc **LOTUS SPA MASSAGE** (0.6km) nếu bạn thích mở cửa sớm từ 09:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Serene Head Spa\",\"type\":\"website\",\"url\":\"https://saigon.serenespa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Serene Head Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13719755983101528130\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt chỗ trước|Xem spa khác gần đây|Gội đầu + massage toàn thân[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 300k / 300–500k / trên 500k)?"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "id": "T2",
+  "text": "khach san da nang gan bien duoi 1tr/dem",
+  "parent": null,
+  "status": 200,
+  "ms": 17807,
+  "evidenceId": "71e3f03b-7fec-4bbb-a7c1-98c643b7de02",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Da Nang",
+        "checkIn": "2026-10-03",
+        "checkOut": "2026-10-04"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn lưu trú cuối tuần tới (check-in 3/10, check-out 4/10) ở Đà Nẵng, gần biển, dưới 1 triệu/đêm. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình thấy danh sách khách sạn gần biển Đà Nẵng, nhưng kết quả chưa có giá cụ thể để so sánh với ngân sách 1 triệu/đêm của bạn. Để xem giá chính xác theo ngày bạn muốn, bạn có thể kiểm tra trực tiếp trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da%20Nang&checkin=2026-10-03&checkout=2026-10-04)Agoda — lọc theo khoảng giá dưới 1 triệu để tìm phòng phù hợp.\n\nBạn muốn mình tìm thêm thông tin về quận/khu vực cụ thể nào không, hay bạn sẽ tự lọc trên trang booking?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Da%20Nang&checkin=2026-10-03&checkout=2026-10-04\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn lưu trú cuối tuần tới (check-in 3/10, check-out 4/10) ở Đà Nẵng, gần biển, dưới 1 triệu/đêm. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình thấy danh sách khách sạn gần biển Đà Nẵng, nhưng kết quả chưa có giá cụ thể để so sánh với ngân sách 1 triệu/đêm của bạn. Để xem giá chính xác theo ngày bạn muốn, bạn có thể kiểm tra trực tiếp trên [Booking.com](https://www.booking.com/searchresults.vi.html?ss=Da%20Nang&checkin=2026-10-03&checkout=2026-10-04)Agoda — lọc theo khoảng giá dưới 1 triệu để tìm phòng phù hợp.\n\nBạn muốn mình tìm thêm thông tin về quận/khu vực cụ thể nào không, hay bạn sẽ tự lọc trên trang booking?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Da%20Nang&checkin=2026-10-03&checkout=2026-10-04\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

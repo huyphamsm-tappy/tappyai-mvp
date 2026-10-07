@@ -1,0 +1,1243 @@
+{
+  "id": "B2",
+  "group": "budget-unit-quantity-age",
+  "criteria": [
+    "No budget is inferred from '5-6 người' or 'dưới 5 tuổi' (no 5k/6k ceiling in the reply or on the cards)",
+    "Cards are ordinary family restaurants at normal prices — not emptied or filtered by a phantom budget",
+    "The group size and the child's age are used as needs (space, kid-friendly), not as money"
+  ],
+  "turns": [
+    {
+      "user": "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây",
+      "status": 200,
+      "elapsedMs": 10838,
+      "usage": {
+        "promptTokens": 3245,
+        "completionTokens": 493
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn sáng ngon",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "searching"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+              "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 152,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng",
+                "Quán ăn nhỏ",
+                "Quán cà phê",
+                "Nhà hàng gia đình",
+                "Nhà hàng phở",
+                "Quán ăn nhẹ"
+              ],
+              "hours": "06:00–00:00",
+              "open": true,
+              "distanceKm": 3.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng chị Hoà & Hồng",
+              "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 20,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–15:00",
+              "open": true,
+              "distanceKm": 2.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bún Riêu Yến",
+              "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1211,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–18:00",
+              "open": true,
+              "distanceKm": 4.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn Cô Ba",
+              "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 42,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–17:00",
+              "open": true,
+              "distanceKm": 1.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+              "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–10:00",
+              "open": true,
+              "distanceKm": 3.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng Quang",
+              "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 5,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–10:00",
+              "open": true,
+              "distanceKm": 5.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn Sáng Hạnh",
+              "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 5,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–12:00",
+              "open": true,
+              "distanceKm": 4.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng Nhung Ngô",
+              "address": "602/37/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 10,
+              "price": null,
+              "categories": [
+                "Nhà hàng chuyên phục vụ bữa sáng"
+              ],
+              "hours": "06:00–12:30",
+              "open": true,
+              "distanceKm": 3,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79573,106.67066",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIj9dKzUy5Mz51FBUezht3JJsVgXQlXxfcC_qgWY0n6E3GQUk23X78V_zD-67F8pG-QPN4LvX33NoO0t-OnbfQIe8o5s1hDM5-o8gJzeRpHXuOufLUY5scVDNsCpmSzcMSmuvaJuucBlFE",
+                "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 152,
+                "openingHours": "06:00–00:00",
+                "openNow": true,
+                "phone": "+84 909 464 688",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–00:00",
+                  "Thứ Ba": "06:00–17:00",
+                  "Thứ Tư": "06:00–17:00",
+                  "Thứ Năm": "06:00–17:00",
+                  "Thứ Sáu": "06:00–17:00",
+                  "Thứ Bảy": "06:00–17:00",
+                  "Chủ Nhật": "06:00–17:00"
+                },
+                "distanceKm": 3.9,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán ăn nhỏ",
+                  "Quán cà phê",
+                  "Nhà hàng gia đình",
+                  "Nhà hàng phở",
+                  "Quán ăn nhẹ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14051362995194974537",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%E1%BA%BFp%20Qu%C3%A0%20S%C3%A1ng%20%E2%80%93%20X%C3%B4i%2C%20B%C3%BAn%2C%20Ph%E1%BB%9F%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100091615847862&mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909464688",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76063,106.69193",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng chị Hoà & Hồng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnk6O4GLD13XQZYIvSBJlxtTfrBMp4hsRBG8e7xVoXvCTSEJgWvcOAF6ERDdibjkXYGUtWYAD4HTd1-KI3nG32z9b6f8O_UAMF-n0tsvKrvwBM_aejPzZPqSxsy7XpaJw2gjA2j1R1_VhA8",
+                "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 20,
+                "openingHours": "06:00–15:00",
+                "openNow": true,
+                "phone": "+84 938 423 833",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–15:00",
+                  "Thứ Ba": "06:00–15:00",
+                  "Thứ Tư": "06:00–15:00",
+                  "Thứ Năm": "06:00–15:00",
+                  "Thứ Sáu": "06:00–15:00",
+                  "Thứ Bảy": "06:00–15:00",
+                  "Chủ Nhật": "06:00–15:00"
+                },
+                "distanceKm": 2.1,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8625784955279311279",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20ch%E1%BB%8B%20Ho%C3%A0%20%26%20H%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938423833",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79167,106.66410",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Riêu Yến",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm3m4lwSGA5bS3-fnosXISmt6paPyz1CDOOHXNcFnVxPxmGJPPl3hCcpipbYolgcz9FrY63GERPk32A971_Uu5lr6_JPjlp3cOq1AVQIgN5Xa0q6QAydmKDnDRNqCULDjeMSAc",
+                "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1211,
+                "openingHours": "06:00–18:00",
+                "openNow": true,
+                "phone": "+84 937 273 217",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–18:00",
+                  "Thứ Ba": "06:00–18:00",
+                  "Thứ Tư": "06:00–18:00",
+                  "Thứ Năm": "06:00–18:00",
+                  "Thứ Sáu": "06:00–18:00",
+                  "Thứ Bảy": "06:00–18:00",
+                  "Chủ Nhật": "06:00–11:00"
+                },
+                "distanceKm": 4.3,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7088139094692586053",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20Ri%C3%AAu%20Y%E1%BA%BFn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/bun-rieu-yen",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84937273217",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76431,106.70573",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn Cô Ba",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnV54TvqB__Oa7pHnE2LKDS7AAOBa7bw8GEA3TSPzLNC7Jwx3gbzYYhZpJVK_CVm7QGpwMu1OIofs1B4AKa0VHOfwezOmXzcU2kOiOuTMxRkfgTDzYwK1cWnuyPSUURM95cxeU",
+                "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 42,
+                "openingHours": "06:00–17:00",
+                "openNow": true,
+                "phone": "+84 947 787 879",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–17:00",
+                  "Thứ Ba": "06:00–17:00",
+                  "Thứ Tư": "06:00–17:00",
+                  "Thứ Năm": "06:00–17:00",
+                  "Thứ Sáu": "06:00–17:00",
+                  "Thứ Bảy": "06:00–17:00",
+                  "Chủ Nhật": "06:00–17:00"
+                },
+                "distanceKm": 1.5,
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7840715486018332515",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20C%C3%B4%20Ba%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Qu%C3%A1n-%C4%83n-C%C3%B4-Ba-1768222573440797/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84947787879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80391,106.71081",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWliiC3yi6wQmHv3BzdOfneJNA7XQu672kiOy10DbUoqGSzesAKW933qP4ObEZNm2ie1AH3ZF2B34GS3mOnTMKEMAZbcCVPgvQ61Nk7n-HFrJgmZ8Euac7CEEDp4P10HPUvDABBs",
+                "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3,
+                "openingHours": "06:00–10:00",
+                "openNow": true,
+                "phone": "+84 909 815 832",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–10:00",
+                  "Thứ Ba": "06:00–10:00",
+                  "Thứ Tư": "06:00–10:00",
+                  "Thứ Năm": "06:00–10:00",
+                  "Thứ Sáu": "06:00–10:00",
+                  "Thứ Bảy": "06:00–10:00",
+                  "Chủ Nhật": "06:00–10:00"
+                },
+                "distanceKm": 3.2,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8387588919857554290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20Ch%E1%BB%8B%20%C3%9At%20-%207%20ng%C3%A0y%207%20m%C3%B3n%20%F0%9F%8F%B3%EF%B8%8F%E2%80%8D%F0%9F%8C%88%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909815832",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74857,106.66325",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng Quang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLP10KNz8ArH9Jmkq_6iwdL3kF0twdO-QHYgrQyexxriESSYsBKIxydBDA--_4dJUVMaUNnSqY-an_SSgJsJoLyzhmos7644CZLCGWrIkYOAmuLhZ-wS_MM6GvT544gOGYkuQg",
+                "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 5,
+                "openingHours": "06:00–10:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–10:00",
+                  "Thứ Ba": "06:00–10:00",
+                  "Thứ Tư": "06:00–10:00",
+                  "Thứ Năm": "06:00–10:00",
+                  "Thứ Sáu": "06:00–10:00",
+                  "Thứ Bảy": "06:00–10:00",
+                  "Chủ Nhật": "06:00–10:00"
+                },
+                "distanceKm": 5.2,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2122953250089974973",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20Quang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78634,106.73837",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn Sáng Hạnh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk083Hc_tr__Qa7k3lTSpqFBmm4OqvwnXCdCYHIEsnjmztoZwbp6JDQaDl-vIA51DJxr96xJ4ynVvtQNcpH_GKNm1TvlaqMOhxN8RwMHCByvL8JyecKfiCSKCiIzAlhHNAkeeaI",
+                "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 5,
+                "openingHours": "06:00–12:00",
+                "openNow": true,
+                "phone": "+84 382 395 778",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–12:00",
+                  "Thứ Ba": "06:00–12:00",
+                  "Thứ Tư": "06:00–12:00",
+                  "Thứ Năm": "06:00–12:00",
+                  "Thứ Sáu": "06:00–12:00",
+                  "Thứ Bảy": "06:00–12:00",
+                  "Chủ Nhật": "06:00–12:00"
+                },
+                "distanceKm": 4.2,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13767654572646737797",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qua%CC%81n%20%C4%83n%20Sa%CC%81ng%20Ha%CC%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84382395778",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79806,106.71812",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng Nhung Ngô",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlzWTfUknWcRLtaiJeP7TU8JS-wo4YbtKQSNfkrjBGwbN59HfsbFICZxegvrRBcG9hIYY-Z96oaap9g6_o9Har72h0wGiQQfLXTYIKstvbppKf_dWm2_3gi3TrSXH95593lDV5WWSv8W8e5",
+                "address": "602/37/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 10,
+                "openingHours": "06:00–12:30",
+                "openNow": true,
+                "phone": "+84 913 895 077",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–12:30",
+                  "Thứ Ba": "06:00–12:30",
+                  "Thứ Tư": "06:00–12:30",
+                  "Thứ Năm": "06:00–12:30",
+                  "Thứ Sáu": "06:00–12:30",
+                  "Thứ Bảy": "Đóng cửa",
+                  "Chủ Nhật": "Đóng cửa"
+                },
+                "distanceKm": 3,
+                "categories": [
+                  "Nhà hàng chuyên phục vụ bữa sáng"
+                ],
+                "rank": 7,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=350288567355249549",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20Nhung%20Ng%C3%B4%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84913895077",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20ngon%20",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+              "address": "11 Số 34, Khánh Hội, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 10,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:30–11:00",
+              "open": true,
+              "distanceKm": 2.1,
+              "recommended": true,
+              "reasons": [
+                "rated 4.8",
+                "10 reviews",
+                "2.1km away"
+              ]
+            },
+            {
+              "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+              "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 152,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng",
+                "Quán ăn nhỏ",
+                "Quán cà phê",
+                "Nhà hàng gia đình",
+                "Nhà hàng phở",
+                "Quán ăn nhẹ"
+              ],
+              "hours": "06:00–00:00",
+              "open": true,
+              "distanceKm": 3.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng chị Hoà & Hồng",
+              "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 20,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–15:00",
+              "open": true,
+              "distanceKm": 2.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bún Riêu Yến",
+              "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1211,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–18:00",
+              "open": true,
+              "distanceKm": 4.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn Cô Ba",
+              "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 42,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–17:00",
+              "open": true,
+              "distanceKm": 1.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+              "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 3,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–10:00",
+              "open": true,
+              "distanceKm": 3.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn sáng Quang",
+              "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 5,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–10:00",
+              "open": true,
+              "distanceKm": 5.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn Sáng Hạnh",
+              "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 5,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–12:00",
+              "open": true,
+              "distanceKm": 4.2,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.75820,106.70057",
+                "domain": "food",
+                "kind": "place",
+                "name": "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmL9bBKHDjxftTtU24e85XRjtR7SixCyMCXY4qCpGR7Bt_lJHmZIlpyRHTFIytU-dgE32fFVAIQC0Xqy9767T_Xp7aO9p8phXDlRXCt1BuAZI7Urvh0xwRsfzZY8wGjezp_REy2",
+                "address": "11 Số 34, Khánh Hội, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 10,
+                "openingHours": "06:30–11:00",
+                "openNow": true,
+                "phone": "+84 356 131 483",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:30–11:00",
+                  "Thứ Ba": "06:30–11:00",
+                  "Thứ Tư": "06:30–11:00",
+                  "Thứ Năm": "06:30–11:00",
+                  "Thứ Sáu": "06:30–11:00",
+                  "Thứ Bảy": "00:00–11:00",
+                  "Chủ Nhật": "Đóng cửa"
+                },
+                "distanceKm": 2.1,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 8,
+                "shortlistPosition": 2,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.8",
+                    "params": {
+                      "value": 4.8
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "10 reviews",
+                    "params": {
+                      "count": 10
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "2.1km away",
+                    "params": {
+                      "km": 2.1
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@dadaykhongday95/video/7657051230618897672",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14713743347636644663",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84356131483",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%90I%C3%8A%CC%89M%20T%C3%82M%20-%20%C4%82n%20Sa%CC%81ng%20-%20Ch%C3%A2n%20G%C3%A0%20xa%CC%83%20t%C4%83%CC%81c%20-%20%C3%9Ac%20V%C3%A2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79573,106.67066",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIj9dKzUy5Mz51FBUezht3JJsVgXQlXxfcC_qgWY0n6E3GQUk23X78V_zD-67F8pG-QPN4LvX33NoO0t-OnbfQIe8o5s1hDM5-o8gJzeRpHXuOufLUY5scVDNsCpmSzcMSmuvaJuucBlFE",
+                "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 152,
+                "openingHours": "06:00–00:00",
+                "openNow": true,
+                "phone": "+84 909 464 688",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–00:00",
+                  "Thứ Ba": "06:00–17:00",
+                  "Thứ Tư": "06:00–17:00",
+                  "Thứ Năm": "06:00–17:00",
+                  "Thứ Sáu": "06:00–17:00",
+                  "Thứ Bảy": "06:00–17:00",
+                  "Chủ Nhật": "06:00–17:00"
+                },
+                "distanceKm": 3.9,
+                "categories": [
+                  "Nhà hàng",
+                  "Quán ăn nhỏ",
+                  "Quán cà phê",
+                  "Nhà hàng gia đình",
+                  "Nhà hàng phở",
+                  "Quán ăn nhẹ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14051362995194974537",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%E1%BA%BFp%20Qu%C3%A0%20S%C3%A1ng%20%E2%80%93%20X%C3%B4i%2C%20B%C3%BAn%2C%20Ph%E1%BB%9F%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100091615847862&mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909464688",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76063,106.69193",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng chị Hoà & Hồng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnk6O4GLD13XQZYIvSBJlxtTfrBMp4hsRBG8e7xVoXvCTSEJgWvcOAF6ERDdibjkXYGUtWYAD4HTd1-KI3nG32z9b6f8O_UAMF-n0tsvKrvwBM_aejPzZPqSxsy7XpaJw2gjA2j1R1_VhA8",
+                "address": "48/1 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 20,
+                "openingHours": "06:00–15:00",
+                "openNow": true,
+                "phone": "+84 938 423 833",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–15:00",
+                  "Thứ Ba": "06:00–15:00",
+                  "Thứ Tư": "06:00–15:00",
+                  "Thứ Năm": "06:00–15:00",
+                  "Thứ Sáu": "06:00–15:00",
+                  "Thứ Bảy": "06:00–15:00",
+                  "Chủ Nhật": "06:00–15:00"
+                },
+                "distanceKm": 2.1,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8625784955279311279",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20ch%E1%BB%8B%20Ho%C3%A0%20%26%20H%E1%BB%93ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938423833",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79167,106.66410",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Riêu Yến",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm3m4lwSGA5bS3-fnosXISmt6paPyz1CDOOHXNcFnVxPxmGJPPl3hCcpipbYolgcz9FrY63GERPk32A971_Uu5lr6_JPjlp3cOq1AVQIgN5Xa0q6QAydmKDnDRNqCULDjeMSAc",
+                "address": "1348 Trường Sa, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1211,
+                "openingHours": "06:00–18:00",
+                "openNow": true,
+                "phone": "+84 937 273 217",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–18:00",
+                  "Thứ Ba": "06:00–18:00",
+                  "Thứ Tư": "06:00–18:00",
+                  "Thứ Năm": "06:00–18:00",
+                  "Thứ Sáu": "06:00–18:00",
+                  "Thứ Bảy": "06:00–18:00",
+                  "Chủ Nhật": "06:00–11:00"
+                },
+                "distanceKm": 4.3,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7088139094692586053",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20Ri%C3%AAu%20Y%E1%BA%BFn%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/bun-rieu-yen",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84937273217",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76431,106.70573",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn Cô Ba",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnV54TvqB__Oa7pHnE2LKDS7AAOBa7bw8GEA3TSPzLNC7Jwx3gbzYYhZpJVK_CVm7QGpwMu1OIofs1B4AKa0VHOfwezOmXzcU2kOiOuTMxRkfgTDzYwK1cWnuyPSUURM95cxeU",
+                "address": "63 Hoàng Diệu, Xóm Chiếu, Hồ Chí Minh 72806, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 42,
+                "openingHours": "06:00–17:00",
+                "openNow": true,
+                "phone": "+84 947 787 879",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–17:00",
+                  "Thứ Ba": "06:00–17:00",
+                  "Thứ Tư": "06:00–17:00",
+                  "Thứ Năm": "06:00–17:00",
+                  "Thứ Sáu": "06:00–17:00",
+                  "Thứ Bảy": "06:00–17:00",
+                  "Chủ Nhật": "06:00–17:00"
+                },
+                "distanceKm": 1.5,
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7840715486018332515",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20C%C3%B4%20Ba%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Qu%C3%A1n-%C4%83n-C%C3%B4-Ba-1768222573440797/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84947787879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80391,106.71081",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWliiC3yi6wQmHv3BzdOfneJNA7XQu672kiOy10DbUoqGSzesAKW933qP4ObEZNm2ie1AH3ZF2B34GS3mOnTMKEMAZbcCVPgvQ61Nk7n-HFrJgmZ8Euac7CEEDp4P10HPUvDABBs",
+                "address": "341/24 Xô Viết Nghệ Tĩnh, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 3,
+                "openingHours": "06:00–10:00",
+                "openNow": true,
+                "phone": "+84 909 815 832",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–10:00",
+                  "Thứ Ba": "06:00–10:00",
+                  "Thứ Tư": "06:00–10:00",
+                  "Thứ Năm": "06:00–10:00",
+                  "Thứ Sáu": "06:00–10:00",
+                  "Thứ Bảy": "06:00–10:00",
+                  "Chủ Nhật": "06:00–10:00"
+                },
+                "distanceKm": 3.2,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8387588919857554290",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20Ch%E1%BB%8B%20%C3%9At%20-%207%20ng%C3%A0y%207%20m%C3%B3n%20%F0%9F%8F%B3%EF%B8%8F%E2%80%8D%F0%9F%8C%88%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909815832",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74857,106.66325",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn sáng Quang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkLP10KNz8ArH9Jmkq_6iwdL3kF0twdO-QHYgrQyexxriESSYsBKIxydBDA--_4dJUVMaUNnSqY-an_SSgJsJoLyzhmos7644CZLCGWrIkYOAmuLhZ-wS_MM6GvT544gOGYkuQg",
+                "address": "94 Đ. Ưu Long, Phú Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 5,
+                "openingHours": "06:00–10:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–10:00",
+                  "Thứ Ba": "06:00–10:00",
+                  "Thứ Tư": "06:00–10:00",
+                  "Thứ Năm": "06:00–10:00",
+                  "Thứ Sáu": "06:00–10:00",
+                  "Thứ Bảy": "06:00–10:00",
+                  "Chủ Nhật": "06:00–10:00"
+                },
+                "distanceKm": 5.2,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2122953250089974973",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20Quang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78634,106.73837",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn Sáng Hạnh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk083Hc_tr__Qa7k3lTSpqFBmm4OqvwnXCdCYHIEsnjmztoZwbp6JDQaDl-vIA51DJxr96xJ4ynVvtQNcpH_GKNm1TvlaqMOhxN8RwMHCByvL8JyecKfiCSKCiIzAlhHNAkeeaI",
+                "address": "8 Đường B, Bình Khánh, An Khánh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 5,
+                "openingHours": "06:00–12:00",
+                "openNow": true,
+                "phone": "+84 382 395 778",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–12:00",
+                  "Thứ Ba": "06:00–12:00",
+                  "Thứ Tư": "06:00–12:00",
+                  "Thứ Năm": "06:00–12:00",
+                  "Thứ Sáu": "06:00–12:00",
+                  "Thứ Bảy": "06:00–12:00",
+                  "Chủ Nhật": "06:00–12:00"
+                },
+                "distanceKm": 4.2,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13767654572646737797",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qua%CC%81n%20%C4%83n%20Sa%CC%81ng%20Ha%CC%A3nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84382395778",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20ngon%20",
+            "picked": [
+              "place:osm:10.75820,106.70057",
+              "place:osm:10.76431,106.70573",
+              "place:osm:10.79573,106.67066"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.75820,106.70057",
+            "place:osm:10.76431,106.70573",
+            "place:osm:10.79573,106.67066"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+          "Quán ăn sáng chị Hoà & Hồng",
+          "Bún Riêu Yến",
+          "Quán ăn Cô Ba",
+          "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+          "Quán ăn sáng Quang",
+          "Quán ăn Sáng Hạnh",
+          "Quán ăn sáng Nhung Ngô"
+        ],
+        [
+          "ĐIỂM TÂM - Ăn Sáng - Chân Gà xã tắc - Úc Vân",
+          "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+          "Quán ăn sáng chị Hoà & Hồng",
+          "Bún Riêu Yến",
+          "Quán ăn Cô Ba",
+          "Quán ăn sáng Chị Út - 7 ngày 7 món 🏳️‍🌈",
+          "Quán ăn sáng Quang",
+          "Quán ăn Sáng Hạnh"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn sáng hôm nay gần vị trí hiện tại. Mình chọn **Quán ăn Cô Ba** — cách bạn chỉ 1.5km, mở từ 6h sáng, có 4.6⭐ (42 đánh giá).\n**Lựa chọn khác:** Nếu muốn không gian rộng hơn, **Bếp Quà Sáng** (3.9km, 4.9⭐ 152 đánh giá) là nhà hàng gia đình lớn hơn, mở cả tối, có nhiều lựa chọn xôi, bún, phở.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán ăn Cô Ba\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7840715486018332515\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn trưa gia đình|Quán có không gian rộng[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "visible": "Mình giả sử bạn muốn ăn sáng hôm nay gần vị trí hiện tại. Mình chọn **Quán ăn Cô Ba** — cách bạn chỉ 1.5km, mở từ 6h sáng, có 4.6⭐ (42 đánh giá).\n**Lựa chọn khác:** Nếu muốn không gian rộng hơn, **Bếp Quà Sáng** (3.9km, 4.9⭐ 152 đánh giá) là nhà hàng gia đình lớn hơn, mở cả tối, có nhiều lựa chọn xôi, bún, phở.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "preGuard": "Mình giả sử bạn muốn ăn sáng hôm nay gần vị trí hiện tại. Mình chọn **Quán ăn Cô Ba** — cách bạn chỉ 1.5km, mở từ 6h sáng, có 4.6⭐ (42 đánh giá). Quán nhỏ, ấm cúng, phù hợp gia đình có bé, giá bình dân 1-100k/người, có thể gọi online qua GrabFood nếu cần 🍜\n\n**Lựa chọn khác:** Nếu muốn không gian rộng hơn, **Bếp Quà Sáng** (3.9km, 4.9⭐ 152 đánh giá) là nhà hàng gia đình lớn hơn, mở cả tối, có nhiều lựa chọn xôi, bún, phở.\n\nBạn muốn ăn sáng hay bữa khác trong ngày?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Quán ăn Cô Ba\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n+%C4%83n+C%C3%B4+Ba+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"📍 Maps - Quán ăn Cô Ba\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7840715486018332515\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn trưa gia đình|Quán có không gian rộng[/FOLLOWUPS]"
+    }
+  ]
+}

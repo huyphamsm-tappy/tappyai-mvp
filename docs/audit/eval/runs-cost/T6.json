@@ -1,0 +1,147 @@
+{
+  "id": "T6",
+  "text": "Hội An có gì hay, đi 1 ngày",
+  "parent": null,
+  "status": 200,
+  "ms": 20974,
+  "evidenceId": "05399a27-fea0-4f45-a36a-0c18c054f29a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon Hội An",
+        "location": "Hội An",
+        "type": "restaurant"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Hội An"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+      "rating": 4.9,
+      "count": 14142,
+      "hours": "10:00–22:30",
+      "address": "49 Nguyễn Thái Học, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+      "rating": 5,
+      "count": 551,
+      "hours": "10:00–22:00",
+      "address": "12 18 Tháng 8, Hội An, Đà Nẵng 51000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn Cô Hoa",
+      "rating": 5,
+      "count": 229,
+      "hours": "06:00–22:00",
+      "address": "27 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Ngon Phố Hội",
+      "rating": 4.8,
+      "count": 1537,
+      "hours": "10:30–22:00",
+      "address": "21 La Hối, Phường, Hội An, Đà Nẵng 51309, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng - Bar Vina Ngon",
+      "rating": 4.9,
+      "count": 303,
+      "hours": "09:00–22:00",
+      "address": "To 5 thôn Thanh Đông, Hội An Đông, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "MẸT Hội An - Vietnamese cuisine & Vegetarian options 7",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 14142,
+        "open_now": true,
+        "opening_hours": "10:00–22:30",
+        "attributes": [
+          "có món chay (\"MẸT Hội An - Vietnamese cuisine & Vegetarian options 7\")"
+        ]
+      }
+    },
+    {
+      "name": "ĐẶC SẢN HỘI AN , QUẢNG NAM :Bánh xèo....",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 551,
+        "open_now": true,
+        "opening_hours": "10:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán ăn Cô Hoa",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 229,
+        "open_now": true,
+        "opening_hours": "06:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ngon Phố Hội",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 1537,
+        "open_now": true,
+        "opening_hours": "10:30–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nhà Hàng - Bar Vina Ngon",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 303,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm những quán ăn ngon ở Hội An cho bạn, và cùng với đó là thông tin thời tiết để lên kế hoạch cho ngày hôm nay.\n\nHội An hôm nay có mây với khả năng mưa nhẹ (29%), nhiệt độ khoảng 28°C — thời tiết khá dễ chịu để đi dạo phố cổ.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍜 GrabFood - MẸT Hội An\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=M%E1%BA%B8T+H%E1%BB%99i+An\",\"primary\":true},{\"label\":\"📍 Maps - MẸT Hội An\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8609020210729391502\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Hội An có gì hay, đi 1 ngày"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn ngon ở Hội An cho bạn, và cùng với đó là thông tin thời tiết để lên kế hoạch cho ngày hôm nay.\n\nHội An hôm nay có mây với khả năng mưa nhẹ (29%), nhiệt độ khoảng 28°C — thời tiết khá dễ chịu để đi dạo phố cổ.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍜 GrabFood - MẸT Hội An\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=M%E1%BA%B8T+H%E1%BB%99i+An\",\"primary\":true},{\"label\":\"📍 Maps - MẸT Hội An\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8609020210729391502\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

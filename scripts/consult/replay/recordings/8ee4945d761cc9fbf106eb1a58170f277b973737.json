@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:38.239Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Pathfinder Case with MagSafe for iPhone 18 Pro Max/17 Pro Max site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vỏ Fibr Armr chính hãng của UAG có MagSafe dành cho ...",
+    "link": "https://www.lazada.vn/products/vo-fibr-armr-chinh-hang-cua-uag-co-magsafe-danh-cho-iphone-18-pro-max-iphone-17-pro-max-iphone-17-air-samsung-galaxy-s26-ultra-vo-dien-thoai-chong-soc-chac-chan-chong-truot-dat-bac-quan-su-vo-bao-ve-co-chan-de-i13408559496-s117100309069.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XC91BtZXs9Tm_SH_cSCwa9A0GtXzPlmDTNGyPwYdelBUwkiGWh",
+    "snippet": "Ốp lưng UAG Pathfinder Pro chính hãng với Magsafe cho iPhone 17 Pro Max / iPhone. 346.000 ₫. Bản gốc hợp kim casetify gợn iPhone 18 Pro Max/iPhone 17 Pro Max/.",
+    "position": 1
+   },
+   {
+    "title": "Uag Cho iPhone 18 Pro Max Trường Hợp 17 16 Pro 15 ...",
+    "link": "https://h5.lazada.vn/products/uag-cho-iphone-18-pro-max-truong-hop-17-16-pro-15-pro-max-tuong-thich-voi-magsafe-day-du-co-the-voi-cong-trong-suot-bao-ve-bac-quan-su-bao-ve-toan-bo-than-bia-i13464662963-s117341558333.html",
+    "snippet": "Uag Cho iPhone 18 Pro Max Trường Hợp 17 16 Pro 15 Pro Max Tương Thích Với Magsafe Đầy Đủ Cơ Thể Với Cổng trong suốt bảo vệ bậc quân sự bảo vệ toàn bộ thân ...",
+    "position": 2
+   },
+   {
+    "title": "UAG Pathfinder MagSafe Series Case for iPhone iPhone 17 Pro ...",
+    "link": "https://www.lazada.vn/products/uag-pathfinder-magsafe-series-case-for-iphone-iphone-17-pro-max-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-13-pro-max-iphone-14-plus-magsafe-charging-slim-lightweight-shockproof-dropproof-rugged-protective-cover-i13429688789-s117190551354.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4UCQorH7uppm8x2r3Un2L28a1ugImHXVeXTv0A6dMrIbZpZr27-",
+    "snippet": "Feather-light composite construction. Oversized tactile buttons · Enhanced corner protection. Integrated lanyard anchor (lanyard not included) · Built-in MagSafe ...",
+    "position": 3
+   },
+   {
+    "title": "UAG cho iPhone 18 Pro Max trường hợp 17 16 ...",
+    "link": "https://h5.lazada.vn/products/uag-cho-iphone-18-pro-max-truong-hop-17-16-pro-15-pro-max-voi-chan-de-plasma-xte-tuong-thich-voi-lop-trong-suot-vo-bao-ve-trotitan-i13464862352-s117326549816.html",
+    "snippet": "UAG cho iPhone 18 Pro Max trường hợp 17 16 Pro 15 Pro Max với chân đế Plasma xte-tương thích với lớp trong suốt Vỏ bảo vệ, tro/Titan ; Thông số. Chủ đề ốp điện ...",
+    "position": 4
+   },
+   {
+    "title": "UAG Pathfinder for iPhone 17 Pro Max CASE ...",
+    "link": "https://h5.lazada.vn/products/uag-pathfinder-for-iphone-17-pro-max-case-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-13-pro-max-iphone-14-plus-magsafe-charging-slim-lightweight-shockproof-dropproof-rugged-protective-cover-i13428185116-s117204268412.html",
+    "snippet": "MagSafe Compatible: Works with MagSafe compatible wireless chargers and magnetic accessories. · Featherlight and Durable: Lightweight construction with an impact ...",
+    "position": 5
+   },
+   {
+    "title": "UAG Limited Edition Plyo XTE iPhone 16 Pro Max Case ...",
+    "link": "https://h5.lazada.vn/products/uag-limited-edition-plyo-xte-iphone-16-pro-max-case-for-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-13prp-max-magnetic-holder-mobile-phone-case-i13428081588-s117203992534.html",
+    "snippet": "MagSafe Compatible: Works with MagSafe compatible wireless chargers and magnetic accessories. · Integrated Metal Kickstand: Allows for hands-free usage in ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng UAG PLYO w MAGSAFE Cho iPhone 14 Pro Max ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-plyo-w-magsafe-cho-iphone-14-pro-max-67-inch-i2025784119.html?srsltid=AU7gw4Unii-coHvp5SoY7BDi0adKBZSinbgg5q7bbyDQIDJSUj86cW7z",
+    "snippet": "LazMall Ốp Lưng UAG PLYO w MAGSAFE Cho iPhone 14 Pro Max [6.7 INCH] ; Dịch vụ · 100% chính hãng. service. 30 ngày miễn phí trả hàng. service. Tem bảo hành 3 tháng.",
+    "rating": 4.8,
+    "ratingCount": 18,
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng Uag Pathfinder SE cho iPhone 15 Pro Max ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-se-cho-iphone-15-pro-max-15-plus-15-pro-15-14-pro-max-14-pro-14-plus-14-13-pro-max-13-pro-13-pro-12-pro-max-12-pro-12-magsafe-sac-vo-bao-ve-chong-soc-i2675739456.html?srsltid=AU7gw4Vny0-_q2RZ17GE5_hehyyq8T543fRUMnEZm0RlKZB1dRL2j2dO",
+    "snippet": "UAG TPU. Vật liệu nhẹ: Vỏ của chúng tôi có cấu trúc hỗn hợp ánh sáng lông vũ có vỏ giáp ngoài cứng được cấp bằng sáng chế của chúng tôi, lõi mềm chống va ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "làm nail sơn gel quan 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:07.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "làm nail sơn gel quan 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan",
+    "link": "https://www.klook.com/vi/activity/98525-chocobusy-nail/",
+    "snippet": "Làm bộ móng tay mới theo phong cách Hàn Quốc ở Busan với giá cả phải chăng; Thoải mái lựa chọn thiết kế và màu sắc từ nhiều mẫu khác nhau ...",
+    "rating": 4.8,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "DAKYO NAIL Seongsu: Trải Nghiệm Làm Móng Nghệ Thuật & K ...",
+    "link": "https://www.klook.com/vi/activity/226892-dakyo-nail-seongsu-korean-trend-nail-art-k-beauty-experience/",
+    "snippet": "Trải nghiệm DAKYO Được tạo ra ở Seongsu. Trải nghiệm nghệ thuật làm móng Hàn Quốc lấy cảm hứng từ khu phố sáng tạo nhất Seoul.",
+    "position": 2
+   },
+   {
+    "title": "Nail Princess Shinjuku Tokyo",
+    "link": "https://www.klook.com/vi/activity/175160-tokyo-nail-princess/",
+    "snippet": "Đây là một tiệm làm móng và thẩm mỹ viện nổi tiếng ở Shinjuku, với nhiều nghệ sĩ làm móng từng đoạt giải thưởng, chuyên về thiết kế hợp thời trang và nối móng.",
+    "position": 3
+   },
+   {
+    "title": "Trải Nghiệm Fisukinail Nail Ở Tsim Sha Tsui",
+    "link": "https://www.klook.com/vi/activity/66775-fisukinail-nail-experience-tsim-sha-tsui-hong-kong/",
+    "snippet": "Fisukinail cung cấp dịch vụ làm móng tay thiết kế riêng cho khách hàng. Mỗi kỹ thuật viên làm móng đều có hơn 10 năm kinh nghiệm và được đào tạo nhanh chóng ...",
+    "rating": 4.2,
+    "ratingCount": 6,
+    "position": 4
+   },
+   {
+    "title": "Salon làm móng tay & móng chân riêng tư Dongdaemun",
+    "link": "https://www.klook.com/vi/activity/161868-private-nail-pedicure-salon-experience-in-seoul-dongdaemun/",
+    "snippet": "'Nail garden' ở Dongdaemun là một tiệm làm móng & chăm sóc móng chân riêng tư 1:1. ✨Tận hưởng sự chăm sóc chuyên nghiệp từ chuyên gia có hơn 10 năm kinh ...",
+    "position": 5
+   },
+   {
+    "title": "Lash Artist - Tiệm Nail (Lan Kwai Fong)",
+    "link": "https://www.klook.com/vi/activity/60480-lash-artist-nail-salon-treatments-lan-kwai-fong-hong-kong/",
+    "snippet": "Lash Artist - Salon Làm Móng Cao Cấp | Lan Quế Phường (Lan Kwai Fong) · Ưu đãi 1: Đặt hoạt động Klook và được giảm HK$25 khi chi tiêu từ HK$300 trở lên và nhập ...",
+    "position": 6
+   },
+   {
+    "title": "Dịch vụ chăm sóc và làm móng tay chân cao cấp với sơn ...",
+    "link": "https://www.klook.com/vi/activity/175092-luxury-manicure-pedicure-with-nail-polish-at-julius-spa/",
+    "snippet": "Dịch vụ chăm sóc và làm móng tay, chân cao cấp với sơn móng tay tại Julius Spa · Tận hưởng một không gian yên bình tại Julius Spa với sự chăm sóc tận tình trong ...",
+    "position": 7
+   },
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "snippet": "Sơn Gel - Tay: Kèm Hình Ảnh, Thiết Kế Đơn Giản (90 phút). Sơn Gel Tay - Thiết Kế Cầu Kỳ (120 phút): Mang Theo Ảnh Mẫu. Nối/Đắp móng bằng Crystal • Sử dụng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

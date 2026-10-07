@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Melissa - Vung Tau | Khách Sạn Bãi Sau\" Vũng Tàu site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:33.721Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Melissa - Vung Tau | Khách Sạn Bãi Sau\" Vũng Tàu site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-105061137/melissa-hotel/",
+    "snippet": "Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu · Dịch vụ xuất sắc · Rất sạch sẽ · Nhiều hoạt động · Chỗ đậu xe miễn phí. Xem tất cả điểm ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-105061137/melissa-hotel/review.html",
+    "snippet": "Khám phá đánh giá Melissa - Vung Tau | Khách Sạn Bãi Sau Vũng Tàu thực tế từ khách du lịch. Với 5 đánh giá đã được xác thực và xếp hạng 9.4/10, ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

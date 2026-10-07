@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Maison Camellia Hotel ở TN\" OR \"PHÚ THẮNG GRAND HOTEL\" OR \"NEW CITY HOTEL\" Tây Ninh site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:26:21.788Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Maison Camellia Hotel ở TN\" OR \"PHÚ THẮNG GRAND HOTEL\" OR \"NEW CITY HOTEL\" Tây Ninh site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Maison Camellia Hotel: Experience the Best Views in Tây ...",
+    "link": "https://www.tiktok.com/@huutho0504/video/7473091389153234194",
+    "snippet": "... Tây Ninh, unique cafes in Tây Ninh, scenic views in Tây Ninh. Đây là bản ... Perfect. @2 Thọ ☘️ · nhạc nền - Dunne · Maison Camellia Hotel ở TN.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Maison Camellia – Trải nghiệm tuyệt vời tại Tây ...",
+    "link": "https://www.tiktok.com/@maianhtran109/video/7595970424429694216",
+    "snippet": "... Tây Ninh, bánh canh giò heo ngon. Đây là bản tóm tắt nội dung do AI tạo và không nhằm mục đích ... Maison Camellia Hotel ở TN · author. 36 · 13.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Quán Cafe Maison Camellia Tây Ninh",
+    "link": "https://www.tiktok.com/@nguyen_nienie/video/7477184935242042632",
+    "snippet": "Tìm hiểu quán cafe Maison Camellia tại Tây Ninh, địa điểm check-in châu. @NGUYÊN NIE · Love story orchestra · Maison Camellia Hotel ở TN.",
+    "position": 3
+   },
+   {
+    "title": "Maison Camellia Tây Ninh — Nghỉ dưỡng, cà phê và giải trí",
+    "link": "https://vt.tiktok.com/ZS4ghQSuc/",
+    "snippet": "Maison Camellia Tây Ninh, tổ hợp nghỉ dưỡng Tây Ninh ... Maison Camellia Hotel ở TN · author · 710 · 16 ... Nổ đ/c : cho mấy bạn tham khảo nha 56 Nguyễn Hữu Thọ, ...",
+    "position": 4
+   },
+   {
+    "title": "Maison Camellia Tây Ninh: Quán Coffee View Sang Chảnh",
+    "link": "https://www.tiktok.com/@hoangbuu070/video/7467889297278995720",
+    "snippet": "Review Maison Camellia Coffee Tây Ninh – quán cà phê view đẹp, không gian sang. @Bủ Bủ · nhạc nền - Bủ Bủ · Maison Camellia Hotel ở TN · author.",
+    "position": 5
+   },
+   {
+    "title": "New City Hotel giới thiệu đến các bạn hạng phòng \"mini ...",
+    "link": "https://www.tiktok.com/@newcity_hotel/video/7530859352907894023",
+    "snippet": "New City Hotel giới thiệu đến các bạn hạng phòng \"mini\" giá \"hạt dẻ\" nhưng có view cực chill, phòng được thiết kế đơn giản với đầy đủ tiện ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Maison Camellia Hotel Tây Ninh",
+    "link": "https://www.tiktok.com/@thohongthichcarot26062k/video/7472036019848695058",
+    "snippet": "Tìm hiểu về Maison Camellia Hotel tại Tây Ninh, gần Núi Bà Đen và Campuchia. @ Bunny · Đây Là 1 Bản Nhạc Chill · Maison Camellia Hotel ở TN.",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Maison Camellia Tây Ninh: Địa Điểm Lý Tưởng",
+    "link": "https://www.tiktok.com/@thuthuy020896/video/7474878836719668498",
+    "snippet": "Khám phá khách sạn Maison Camellia Tây Ninh, nơi dừng chân tuyệt vời với dịch. @Thuỷ.1996 · Hours (青村秀和 Remix) · Maison Camellia Hotel ở TN.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

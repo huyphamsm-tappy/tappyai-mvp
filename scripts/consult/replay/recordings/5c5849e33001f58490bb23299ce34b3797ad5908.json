@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Sa Pa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:13.961Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Sa Pa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Du lịch Sa Pa tăng lợi thế nhờ đa dạng sản phẩm, dịch vụ",
+    "link": "https://vnexpress.net/du-lich-sa-pa-tang-loi-the-nho-da-dang-san-pham-dich-vu-4629550.html",
+    "snippet": "Lào Cai- 6 tháng đầu năm, nhờ loạt sản phẩm mới, cùng nhiều lễ hội và sự kiện lớn, Sa Pa góp phần đưa Lào Cai đứng thứ 8 cả nước về doanh ...",
+    "date": "17 thg 7, 2023",
+    "position": 1
+   },
+   {
+    "title": "Du lịch ăn xổi ở Sa Pa, Đà Lạt",
+    "link": "https://vnexpress.net/du-lich-an-xoi-o-sa-pa-da-lat-4425467.html",
+    "snippet": "Chạy theo các trào lưu sống ảo để câu khách, Sa Pa lọt vào top 10 điểm đến gây thất vọng, còn Đà Lạt bị ô nhiễm nặng nề.",
+    "date": "9 thg 2, 2022",
+    "position": 2
+   },
+   {
+    "title": "du lịch Sa Pa",
+    "link": "https://video.vnexpress.net/du-lich-sa-pa/tag-482693-1.html",
+    "snippet": "du lịch Sa Pa · Nụ cười Sa Pa · Video nổi bật · Nga phóng loạt tên lửa tầm xa từ quần đảo tranh chấp với Nhật · Nhà máy thép lớn nhất Ukraine ngừng hoạt động sau ...",
+    "position": 3
+   },
+   {
+    "title": "Sa Pa trong clip những điểm đến đẹp nhất thế giới",
+    "link": "https://video.vnexpress.net/du-lich/sa-pa-trong-clip-nhung-diem-den-dep-nhat-the-gioi-3258006.html",
+    "snippet": "Sa Pa trong clip những điểm đến đẹp nhất thế giới · Sa Pa cấm leo Fansipan vì tuyết rơi · Cung đường mới lên Sa Pa năm 2015.",
+    "date": "3 thg 8, 2015",
+    "position": 4
+   },
+   {
+    "title": "Du lịch Sa Pa mà gặp sự cố thì liên hệ với ai?",
+    "link": "https://vnexpress.net/du-lich-sa-pa-ma-gap-su-co-thi-lien-he-voi-ai-3309990.html",
+    "snippet": "Nhóm chúng tôi gồm 3 gia đình, chuẩn bị cùng lên Sa Pa du lịch 4 ngày cuối tuần. Đây là lần đầu chúng tôi đến nơi đây nên khá e ngại về vấn đề ...",
+    "date": "10 thg 11, 2015",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Sa Pa tăng trưởng thúc đẩy bất động sản nghỉ dưỡng",
+    "link": "https://vnexpress.net/du-lich-sa-pa-tang-truong-thuc-day-bat-dong-san-nghi-duong-3776856.html",
+    "snippet": "Sa Pa cùng với Đà Lạt, Bà Nà, Mẫu Sơn, Tam Đảo, Ba Vì là sáu khu nghỉ dưỡng trên núi có khí hậu trong lành quanh năm, do người Pháp phát hiện và ...",
+    "date": "13 thg 7, 2018",
+    "position": 6
+   },
+   {
+    "title": "Cẩm nang chia sẻ tin tức kinh nghiệm du lịch an toàn - Safe Go",
+    "link": "https://vnexpress.net/du-lich/safe-go/topic/24796",
+    "snippet": "Ngồi tàu hỏa leo núi, check-in đỉnh Fansipan, đắm mình trong hồ bơi vô cực giữa núi rừng là những gợi ý tránh nóng ở Sa Pa.",
+    "position": 7
+   },
+   {
+    "title": "Du lịch Sa Pa – 'săn' tuyết nhiệt đới giá ưu đãi",
+    "link": "https://vnexpress.net/du-lich-sa-pa-san-tuyet-nhiet-doi-gia-uu-dai-3680536.html",
+    "snippet": "Tour Sa Pa thăm bản Cát Cát, Fansipan, Hàm Rồng 3 ngày 2 đêm có giá khuyến mãi giảm 300.000 đồng so với giá gốc. Giá gốc: từ 5.599.000 đồng.",
+    "date": "7 thg 12, 2017",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop thiết kế (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:26.853Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop thiết kế (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop đồ hoạ giá rẻ | Cấu hình mạnh, màu sắc chân thật",
+    "link": "https://cellphones.com.vn/laptop/do-hoa.html",
+    "snippet": "Laptop đồ hoạ chính hãng, cấu hình mạnh, màu sắc chân thật, sắc nét, hiệu năng mượt mà, trả góp 0%. Mua ngay laptop thiết kế đồ hoạ tại đây!",
+    "position": 1
+   },
+   {
+    "title": "Sinh viên nên mua laptop nào để học thiết kế đồ họa?",
+    "link": "https://cellphones.com.vn/sforum/sinh-vien-thiet-ke-do-hoa-chon-laptop-nao",
+    "snippet": "Laptop thiết kế đồ họa giá rẻ nào đáng mua cho sinh viên? Đây là danh sách hàng loạt lựa chọn nổi bật từ 10 triệu, ưu tiên màn hình đẹp và cấu hình mạnh.",
+    "position": 2
+   },
+   {
+    "title": "[TOP 5] Laptop cho sinh viên thiết kế đồ họa mạnh mẽ ...",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-thiet-ke-do-hoa",
+    "snippet": "Là laptop cho sinh viên thiết kế đồ họa đang rất được ưa chuộng, Lenovo Ideapad Gaming 3 15ARH7 sở hữu con chip Ryzen 7 6800H của nhà AMD với cấu trúc 8 nhân, ...",
+    "position": 3
+   },
+   {
+    "title": "Top 5 laptop cho sinh viên kiến trúc năm 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-sinh-vien-kien-truc",
+    "snippet": "Theo đó, bạn nên ưu tiên các dòng CPU từ Intel Core i5, Core i7 hoặc AMD Ryzen 5, Ryzen 7 trở lên. Nếu có nhu cầu sử dụng lâu dài và muốn tối ưu các tính năng ...",
+    "position": 4
+   },
+   {
+    "title": "Top 10 laptop lập trình chất lượng, đáng mua nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-lap-trinh-vien",
+    "snippet": "Laptop có thiết kế mỏng nhẹ, màu xám thanh lịch, phù hợp cho người dùng di động và yêu thích sự tinh tế. Trang bị bộ vi xử lý Intel Core U5 ...",
+    "date": "16 thg 7, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 6
+   },
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Dell Latitude 7440 là mẫu laptop cao cấp nổi tiếng với độ bền vượt trội, thiết kế sang trọng cùng khả năng vận hành ổn định. Sản phẩm là lựa ...",
+    "date": "29 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Laptop văn phòng giá rẻ | Mỏng nhẹ, sang trọng, bền bỉ",
+    "link": "https://cellphones.com.vn/laptop/van-phong.html",
+    "snippet": "Laptop văn phòng chính hãng, giá rẻ, uy tín, trả góp 0%, bảo hành 24 tháng, giao ngay tận nhà. Mua ngay laptop văn phòng ưu đãi hấp dẫn tại đây.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

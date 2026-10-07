@@ -1,0 +1,13 @@
+{
+  "name": "tappyai-android-e2e",
+  "private": true,
+  "type": "module",
+  "description": "Android (uat build, emulator) + web (Playwright) e2e against UAT — see docs/uat/ANDROID-PROGRESS.md",
+  "scripts": {
+    "seed": "node seed/seed-accounts.mjs",
+    "e2e": "node run.mjs"
+  },
+  "dependencies": {
+    "playwright": "1.63.0"
+  }
+}

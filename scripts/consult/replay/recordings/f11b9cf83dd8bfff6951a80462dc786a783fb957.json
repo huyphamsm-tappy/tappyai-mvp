@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Grand Mercure Dalat",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:23.148Z",
+ "body": {
+  "searchParameters": {
+   "q": "Grand Mercure Dalat",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Grand Mercure Dalat - Resort 5 sao sang trọng tại Việt Nam",
+    "imageUrl": "https://www.grandmercuredalat.com/wp-content/uploads/sites/4/2026/06/Facade_3622-2048x1200.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-6QVEAMylkir4Gxb2O7_I4t_L9TYdHVXYG5Rwg-FLuQ&s=10",
+    "thumbnailWidth": 724,
+    "thumbnailHeight": 424,
+    "source": "Grand Mercure Dalat",
+    "domain": "www.grandmercuredalat.com",
+    "link": "https://www.grandmercuredalat.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fwp-content%2Fuploads%2Fsites%2F4%2F2026%2F06%2FFacade_3622-2048x1200.jpg&tbnid=MvjQ3WSW0k5V_M&imgrefurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fvi%2F&docid=OzpMkMFNi388mM&w=2048&h=1200",
+    "position": 1
+   },
+   {
+    "title": "Grand Mercure Dalat - Resort 5 sao sang trọng tại Việt Nam",
+    "imageUrl": "https://www.grandmercuredalat.com/wp-content/uploads/sites/4/2026/06/Thiet-ke-chua-co-ten-4-scaled.png",
+    "imageWidth": 2560,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6CzKAYuAgp49OLkiyqIsQR32jmIoEi2IG6K2Vqvgr6g&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Grand Mercure Dalat",
+    "domain": "www.grandmercuredalat.com",
+    "link": "https://www.grandmercuredalat.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fwp-content%2Fuploads%2Fsites%2F4%2F2026%2F06%2FThiet-ke-chua-co-ten-4-scaled.png&tbnid=9KLJJDkcyi_PtM&imgrefurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fvi%2F&docid=OzpMkMFNi388mM&w=2560&h=1920",
+    "position": 2
+   },
+   {
+    "title": "Grand Mercure Dalat, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/914623083.jpg?k=9223bd0d808f6cd46b2fa81284d6c28f7e1771700d5985cac62d0f8ec9461934&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvMOEo_NnK4bbHyrmGKH5rOWV0dRL-0Ikey-UQphF9vg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/mercure-da-lat-resort.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F914623083.jpg%3Fk%3D9223bd0d808f6cd46b2fa81284d6c28f7e1771700d5985cac62d0f8ec9461934%26o%3D&tbnid=J4pYYoSDPBjGcM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmercure-da-lat-resort.vi.html&docid=EPM4K34lD-FYHM&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "Hotel Location | Grand Mercure Dalat Resort in City Center",
+    "imageUrl": "https://www.grandmercuredalat.com/wp-content/uploads/sites/4/2025/11/Where-r-we.jpg",
+    "imageWidth": 1300,
+    "imageHeight": 716,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW0SpIj0j50dBkbiqKPHyRz6YVL3WgMNkNGYJWm3pWIQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 408,
+    "source": "Grand Mercure Dalat",
+    "domain": "www.grandmercuredalat.com",
+    "link": "https://www.grandmercuredalat.com/where-we-are/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fwp-content%2Fuploads%2Fsites%2F4%2F2025%2F11%2FWhere-r-we.jpg&tbnid=6SkYF-0ETAtRMM&imgrefurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fwhere-we-are%2F&docid=I_Os1bu9Ww1ulM&w=1300&h=716",
+    "position": 4
+   },
+   {
+    "title": "KHU NGHỈ DƯỠNG MERCURE ĐÀ LẠT (Đà Lạt) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/23/ae/7a/ff/mercure-dalat-resort.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS62Rt6zqGQcn8O6NR-TQ_Qx_4s36CfyuscoIFw6VR1VA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293922-d23838965-Reviews-Grand_Mercure_Dalat-Da_Lat_Lam_Dong_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F23%2Fae%2F7a%2Fff%2Fmercure-dalat-resort.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=m18-skHCAJbluM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293922-d23838965-Reviews-Grand_Mercure_Dalat-Da_Lat_Lam_Dong_Province.html&docid=l2_XCqkomv1ysM&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "Grand Mercure Dalat Hotel - Deals, Photos & Reviews",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/31642453/-1/2d7039e8965893b7e9d7d8282c680999.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 333,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMYFSLxLswugcgG4IXxEiyZ4o2fdlp9RuRHrI4TnTubQ&s=10",
+    "thumbnailWidth": 333,
+    "thumbnailHeight": 231,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/grand-mercure-dalat/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F31642453%2F-1%2F2d7039e8965893b7e9d7d8282c680999.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=oOFh-jOxQiixgM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fgrand-mercure-dalat%2Fhotel%2Fdalat-vn.html&docid=xPnwNUx85bicCM&w=333&h=232",
+    "position": 6
+   },
+   {
+    "title": "Grand Mercure Dalat Resort: Di sản kiến trúc giữa lòng thành phố ngàn hoa",
+    "imageUrl": "https://admin.travelsig.vn/uploads/7_c90ebf5eab.jpg",
+    "imageWidth": 1600,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSoFBtEzP0AU26q2puIHJvQ32RYzGZLND-vI9pLEXbs8A&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "TravelSig+",
+    "domain": "travelsig.vn",
+    "link": "https://travelsig.vn/bai-viet/grand-mercure-dalat-resort-di-san-kien-truc-giua-long-thanh-pho-ngan-hoa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fadmin.travelsig.vn%2Fuploads%2F7_c90ebf5eab.jpg&tbnid=4SMf2bp6-yS-pM&imgrefurl=https%3A%2F%2Ftravelsig.vn%2Fbai-viet%2Fgrand-mercure-dalat-resort-di-san-kien-truc-giua-long-thanh-pho-ngan-hoa&docid=nOJ54rnNpYb4SM&w=1600&h=900",
+    "position": 7
+   },
+   {
+    "title": "Grand Mercure Dalat - Resort 5 sao sang trọng tại Việt Nam",
+    "imageUrl": "https://www.grandmercuredalat.com/wp-content/uploads/sites/4/2025/09/Pool-26.jpg",
+    "imageWidth": 1800,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1Jxrhnuqqu4YVH2mJ6DEyK-KIKSKNQ0gxrLzk-9FJGA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Grand Mercure Dalat",
+    "domain": "www.grandmercuredalat.com",
+    "link": "https://www.grandmercuredalat.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fwp-content%2Fuploads%2Fsites%2F4%2F2025%2F09%2FPool-26.jpg&tbnid=PSh2R7vEPbnMEM&imgrefurl=https%3A%2F%2Fwww.grandmercuredalat.com%2Fvi%2F&docid=OzpMkMFNi388mM&w=1800&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

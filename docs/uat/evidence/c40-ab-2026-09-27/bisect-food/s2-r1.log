@@ -1,0 +1,9 @@
+F1 200 16707ms tools=search_places rows=10 shortlist=3 prose=672ch
+F2 200 14221ms tools=search_places rows=10 shortlist=3 prose=742ch
+F3 200 14450ms tools=search_places,search_places,get_weather rows=10 shortlist=3 prose=899ch
+F4 200 17402ms tools=search_places rows=10 shortlist=3 prose=974ch
+F5 200 5099ms tools=- rows=0 shortlist=0 prose=226ch
+F6 200 6334ms tools=- rows=0 shortlist=0 prose=270ch
+F7 200 14137ms tools=search_places rows=10 shortlist=3 prose=690ch
+F8 200 10181ms tools=search_places rows=10 shortlist=0 prose=429ch
+F7b 200 14480ms tools=search_places rows=10 shortlist=3 prose=740ch

@@ -37,6 +37,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     // (R.string.settings_delete_account), which Google Play requires to be
     // discoverable in-app as well as on the open web.
     'settings.deleteAccount': 'Yêu cầu xóa tài khoản',
+    'settings.mic': 'Micrô',
+    'settings.mic.desc': 'Cho phép nói để nhập trong chat. Micrô chỉ bật khi bạn bấm.',
 
     // Common
     'common.or': 'hoặc',
@@ -78,7 +80,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f1Title': 'Trợ lý AI tất-cả-trong-một',
     'login.f1Desc': 'Chat, tìm kiếm, lên kế hoạch — xong hết trong một nơi.',
     'login.f2Title': 'Khám phá mọi thứ',
-    'login.f2Desc': 'Du lịch, ẩm thực, review, âm nhạc — tất cả được kết nối.',
+    'login.f2Desc': 'Du lịch, ẩm thực, review, giải trí — tất cả được kết nối.',
     'login.f3Title': 'Bảo mật & Riêng tư',
     'login.f3Desc': 'Dữ liệu thuộc về bạn. Chúng tôi bảo vệ quyền riêng tư của bạn.',
     'login.f4Title': 'Luôn bên bạn',
@@ -111,6 +113,17 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.creating': 'Đang tạo tài khoản...',
     'register.submit': 'Tạo tài khoản',
     'register.agreePrefix': 'Bằng cách tạo tài khoản, bạn đồng ý với',
+    // Register page redesign (owner brief 2026-09-26). `{brand}` marks where the TappyAI name sits in
+    // the headline — the page splits on it to colour the brand, it is never substituted.
+    'register.heroTitle': 'Tạo tài khoản {brand}',
+    'register.heroDesc': 'Khám phá địa điểm, món ăn, mua sắm, du lịch và những trải nghiệm phù hợp với bạn.',
+    'register.benefit1Title': 'Khám phá dễ dàng',
+    'register.benefit1Desc': 'Nhận gợi ý phù hợp với nhu cầu của bạn',
+    'register.benefit2Title': 'Lưu những nơi yêu thích',
+    'register.benefit2Desc': 'Xây dựng danh sách riêng của bạn',
+    'register.benefit3Title': 'Trải nghiệm cá nhân hóa',
+    'register.benefit3Desc': 'TappyAI hiểu sở thích của bạn theo thời gian',
+    'register.haveAccount': 'Đã có tài khoản?',
 
     // Onboarding
     'common.next': 'Tiếp theo',
@@ -121,11 +134,25 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.locationDesc': 'TappyAI sẽ giúp bạn tìm những trải nghiệm phù hợp tại nơi bạn quan tâm.',
     'onboarding.otherCity': 'Nhập tên thành phố hoặc điểm đến khác...',
     'onboarding.start': '🚀 Bắt đầu khám phá',
+    // Approved design 2026-09-11 counts the whole account setup as four steps
+    // (1 account + 18+ check, 2 interests, 3 location, 4 start) — so the two
+    // onboarding panels are steps 2 and 3 of 4.
     'onboarding.stepInterests': 'Bước 1/2',
     'onboarding.stepLocation': 'Bước 2/2',
-    'onboarding.tagline': 'Người bạn AI cho ngày vui hơn',
+    // English in both locales: the approved VI design prints the brand line so.
+    'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Chọn những chủ đề bạn yêu thích nhé! 💙',
     'onboarding.mascotCaption': 'Khám phá thế giới cùng TappyAI',
+    // The welcome headline split for the design's accent on "TappyAI!".
+    'onboarding.welcomeTitleLead': 'Chào mừng đến với ',
+    'onboarding.welcomeTitleAccent': 'TappyAI!',
+    'onboarding.welcomeTitleEmoji': '👋',
+    'onboarding.interest.food.desc': 'Khám phá quán ngon, công thức nấu ăn và xu hướng ẩm thực mới',
+    'onboarding.interest.spa.desc': 'Chăm sóc bản thân, làm đẹp và sống khỏe mỗi ngày',
+    'onboarding.interest.travel.desc': 'Khám phá điểm đến, lên kế hoạch và trải nghiệm những vùng đất mới',
+    'onboarding.interest.shopping.desc': 'Tìm kiếm sản phẩm yêu thích và cập nhật ưu đãi mới nhất',
+    'onboarding.interest.entertainment.desc': 'Phim ảnh, âm nhạc, sự kiện và những hoạt động thú vị',
+    'onboarding.interest.hotel.desc': 'Tìm nơi lưu trú lý tưởng cho mọi hành trình',
 
     // Home
     'home.greetingUser': 'Xin chào, {name} 👋',
@@ -148,6 +175,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'home.musicTitle': '🎵 Thư viện nhạc',
     'home.musicDesc': 'Nghe & chọn nhạc nền cho review',
     'home.toolsTitle': '🛠️ Công cụ tiện ích',
+    'home.forYouTitle': 'Dành cho bạn',
     'home.currencyTitle': '💱 Đổi tiền tệ',
     'home.currencyDesc': 'VND, USD, EUR, JPY... tỷ giá thực',
     'home.splitTitle': '🧮 Chia tiền',
@@ -216,11 +244,13 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'tripPlan.map': 'Bản đồ',
     'tripPlan.bookNow': 'Đặt ngay',
     'tripPlan.costBreakdown': '💰 Chi phí ước tính',
-    'tripPlan.totalEstimate': 'Tổng ước tính',
+    'tripPlan.totalEstimate': 'Ngân sách',
+    'tripPlan.localTips': '📍 Mẹo địa phương',
+    'tripPlan.generalTip': 'Kinh nghiệm chung',
     'tripPlan.shareItinerary': '📤 Chia sẻ lịch trình',
     'tripPlan.shareCopied': '✓ Đã sao chép vào clipboard!',
     'tripPlan.shareHint': 'Chia sẻ lên Zalo, Facebook hoặc gửi cho bạn bè',
-    'tripPlan.peopleCount': '{count} người · ',
+    'tripPlan.peopleCount': '{count} người',
     'tripPlan.shareFallback': '{title} — kế hoạch từ TappyAI 🎉 #TappyAI',
 
     // Video player
@@ -228,7 +258,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Tắt tiếng',
 
     // Scam Shield
-    'scamShield.title': 'Kiểm Tra An Toàn',
+    'scamShield.title': 'Kiểm tra kỹ',
     'scamShield.subtitle': 'Kiểm tra liên kết, website, mã QR',
     'scamShield.urlPlaceholder': 'Nhập URL hoặc tên miền...',
     'scamShield.check': 'Kiểm tra',
@@ -236,17 +266,18 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.qrUpload': 'Quét mã QR',
     'scamShield.qrCamera': 'Chụp ảnh QR',
     'scamShield.orScanQr': 'hoặc quét mã QR',
-    'scamShield.result.safe': 'An toàn',
-    'scamShield.result.low': 'Nguy cơ thấp',
-    'scamShield.result.medium': 'Cần cẩn thận',
-    'scamShield.result.high': 'Nguy cơ cao',
-    'scamShield.result.critical': 'Rất nguy hiểm',
+    'scamShield.result.safe': 'Chưa nhận ra dấu hiệu quen thuộc',
+    'scamShield.result.low': 'Chưa nhận ra dấu hiệu quen thuộc',
+    'scamShield.result.medium': 'Có một số dấu hiệu đáng ngờ',
+    'scamShield.result.high': 'Có dấu hiệu lừa đảo quen thuộc',
+    'scamShield.result.critical': 'Có dấu hiệu lừa đảo quen thuộc',
+    // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
+    'musicRemoved.title': 'Tính năng âm thanh không còn khả dụng',
+    'musicRemoved.body': 'Tappy đã gỡ bỏ tính năng “Dùng âm thanh này”. Các video vẫn phát âm thanh của chính chúng.',
+    'musicRemoved.back': 'Quay lại',
     // Không phải một mức trên thang đo — là lời nói rằng chưa có kết luận. Tuyệt đối không được
     // dịch thành một biến thể của "An toàn".
-    'scamShield.result.inconclusive': 'Chưa kết luận được',
-    'scamShield.confidence.high': 'Độ tin cậy cao',
-    'scamShield.confidence.medium': 'Dữ liệu hạn chế',
-    'scamShield.confidence.low': 'Dữ liệu không đủ',
+    'scamShield.result.inconclusive': 'Chưa nhận ra dấu hiệu quen thuộc',
     'scamShield.evidence': 'Chi tiết phân tích',
     'scamShield.actions': 'Khuyến nghị',
     'scamShield.official': 'Thông tin chính thức',
@@ -265,7 +296,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Trang chủ',
     'nav.chat': 'Chat',
     'nav.explore': 'Khám phá',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Tôi',
   },
   en: {
@@ -297,6 +328,8 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'settings.version': 'Current version: {v}',
     'settings.signOut': 'Sign out',
     'settings.deleteAccount': 'Request Account Deletion',
+    'settings.mic': 'Microphone',
+    'settings.mic.desc': 'Allow speaking to type in chat. The mic only turns on when you tap it.',
 
     // Common
     'common.or': 'or',
@@ -338,7 +371,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'login.f1Title': 'All-in-One AI Assistant',
     'login.f1Desc': 'Chat, search, plan, and get things done in one place.',
     'login.f2Title': 'Explore Everything',
-    'login.f2Desc': 'Travel, food, reviews, music and more — all connected.',
+    'login.f2Desc': 'Travel, food, reviews, entertainment and more — all connected.',
     'login.f3Title': 'Secure & Private',
     'login.f3Desc': 'Your data belongs to you. We protect your privacy.',
     'login.f4Title': 'Always with You',
@@ -368,6 +401,15 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'register.creating': 'Creating account...',
     'register.submit': 'Create account',
     'register.agreePrefix': 'By creating an account, you agree to our',
+    'register.heroTitle': 'Create your {brand} account',
+    'register.heroDesc': 'Discover places, food, shopping, travel and experiences that suit you.',
+    'register.benefit1Title': 'Discover with ease',
+    'register.benefit1Desc': 'Get suggestions that fit what you need',
+    'register.benefit2Title': 'Save the places you love',
+    'register.benefit2Desc': 'Build lists of your own',
+    'register.benefit3Title': 'A personal experience',
+    'register.benefit3Desc': 'TappyAI learns what you like over time',
+    'register.haveAccount': 'Already have an account?',
 
     // Onboarding
     'common.next': 'Next',
@@ -383,6 +425,15 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'onboarding.tagline': 'Your AI friend for a happier you',
     'onboarding.mascotBubble': 'Pick the topics you love! 💙',
     'onboarding.mascotCaption': 'Explore the world with TappyAI',
+    'onboarding.welcomeTitleLead': 'Welcome to ',
+    'onboarding.welcomeTitleAccent': 'TappyAI!',
+    'onboarding.welcomeTitleEmoji': '👋',
+    'onboarding.interest.food.desc': 'Discover great places to eat, recipes and new food trends',
+    'onboarding.interest.spa.desc': 'Self-care, beauty and feeling good every day',
+    'onboarding.interest.travel.desc': 'Discover destinations, plan trips and experience new places',
+    'onboarding.interest.shopping.desc': 'Find products you love and the latest deals',
+    'onboarding.interest.entertainment.desc': 'Movies, music, events and fun things to do',
+    'onboarding.interest.hotel.desc': 'Find the ideal stay for every journey',
 
     // Home
     'home.greetingUser': 'Hi, {name} 👋',
@@ -405,6 +456,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'home.musicTitle': '🎵 Music library',
     'home.musicDesc': 'Listen & pick soundtracks for reviews',
     'home.toolsTitle': '🛠️ Handy tools',
+    'home.forYouTitle': 'For you',
     'home.currencyTitle': '💱 Currency converter',
     'home.currencyDesc': 'VND, USD, EUR, JPY... live rates',
     'home.splitTitle': '🧮 Split the bill',
@@ -473,11 +525,13 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'tripPlan.map': 'Map',
     'tripPlan.bookNow': 'Book now',
     'tripPlan.costBreakdown': '💰 Estimated cost',
-    'tripPlan.totalEstimate': 'Total estimate',
+    'tripPlan.totalEstimate': 'Budget',
+    'tripPlan.localTips': '📍 Local tips',
+    'tripPlan.generalTip': 'General advice',
     'tripPlan.shareItinerary': '📤 Share itinerary',
     'tripPlan.shareCopied': '✓ Copied to clipboard!',
     'tripPlan.shareHint': 'Share via Zalo, Facebook or send to friends',
-    'tripPlan.peopleCount': '{count} people · ',
+    'tripPlan.peopleCount': '{count} people',
     'tripPlan.shareFallback': '{title} — an itinerary from TappyAI 🎉 #TappyAI',
 
     // Video player
@@ -485,7 +539,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'video.mute': 'Mute',
 
     // Scam Shield
-    'scamShield.title': 'Safety Check',
+    'scamShield.title': 'Check it first',
     'scamShield.subtitle': 'Check links, websites, QR codes',
     'scamShield.urlPlaceholder': 'Enter URL or domain...',
     'scamShield.check': 'Check',
@@ -493,17 +547,18 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'scamShield.qrUpload': 'Scan QR',
     'scamShield.qrCamera': 'Capture QR',
     'scamShield.orScanQr': 'or scan a QR code',
-    'scamShield.result.safe': 'Safe',
-    'scamShield.result.low': 'Low risk',
-    'scamShield.result.medium': 'Use caution',
-    'scamShield.result.high': 'High risk',
-    'scamShield.result.critical': 'Very dangerous',
+    'scamShield.result.safe': 'No familiar signs recognised',
+    'scamShield.result.low': 'No familiar signs recognised',
+    'scamShield.result.medium': 'Some suspicious signs found',
+    'scamShield.result.high': 'Familiar scam signs found',
+    'scamShield.result.critical': 'Familiar scam signs found',
+    // F-024 — the 'use this sound' music-reuse feature was removed; these pages show a notice.
+    'musicRemoved.title': 'This sound feature is no longer available',
+    'musicRemoved.body': 'Tappy has removed the “use this sound” feature. Videos still play their own audio.',
+    'musicRemoved.back': 'Back',
     // Not a point on the scale — a statement that there is no verdict. It must never be worded
     // as a variant of "Safe".
-    'scamShield.result.inconclusive': 'Could not be checked',
-    'scamShield.confidence.high': 'High confidence',
-    'scamShield.confidence.medium': 'Limited data',
-    'scamShield.confidence.low': 'Insufficient data',
+    'scamShield.result.inconclusive': 'No familiar signs recognised',
     'scamShield.evidence': 'Analysis details',
     'scamShield.actions': 'Recommendations',
     'scamShield.official': 'Official information',
@@ -522,7 +577,7 @@ export const dictionaries: Record<Locale, Record<string, string>> = {
     'nav.home': 'Home',
     'nav.chat': 'Chat',
     'nav.explore': 'Explore',
-    'nav.deals': 'Deals',
+    'nav.deals': 'Deal',
     'nav.profile': 'Me',
   },
 }

@@ -1,3 +1,24 @@
+import { execSync } from 'node:child_process'
+import { assertNotProduction } from './scripts/prodEnvGuard.mjs'
+
+// ── Environment identity + production-DB startup guard (consolidation 2026-09-24) ──
+// Prevents the "UAT'd the wrong worktree on the production database" class of bug.
+function gitInfo() {
+  try {
+    return {
+      sha: execSync('git rev-parse --short HEAD', { encoding: 'utf8' }).trim(),
+      branch: execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim(),
+    }
+  } catch { return { sha: 'unknown', branch: 'unknown' } }
+}
+const GIT = gitInfo()
+const WORKTREE = process.cwd()
+// Refuse `next dev`, `next build` AND `next start` when anything — a process env value or any env
+// file Next loads (.env.production.local included) — points at the PRODUCTION Supabase project.
+// Only a real Vercel build is exempt. The override is loud on every start. See prodEnvGuard.mjs.
+const NEXT_COMMAND = (process.argv.find((a) => ['dev', 'build', 'start'].includes(a))) || 'unknown'
+assertNotProduction({ command: NEXT_COMMAND })
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Build gates ENFORCED: production builds fail on TypeScript or ESLint errors.
@@ -17,6 +38,12 @@ const nextConfig = {
   // Fixes the recurring "iPhone Safari keeps showing an old cached build" issue.
   env: {
     NEXT_PUBLIC_BUILD_ID: process.env.VERCEL_GIT_COMMIT_SHA || 'dev',
+    // Dev-only identity for the DevEnvBadge. These are read only inside a
+    // `process.env.NODE_ENV === 'development'` branch, so they are tree-shaken
+    // out of a production build (see DevEnvBadge + layout gate).
+    NEXT_PUBLIC_DEV_GIT_SHA: GIT.sha,
+    NEXT_PUBLIC_DEV_GIT_BRANCH: GIT.branch,
+    NEXT_PUBLIC_DEV_WORKTREE: WORKTREE,
   },
   images: {
     remotePatterns: [
@@ -40,14 +67,18 @@ const nextConfig = {
   },
   async headers() {
     // Content-Security-Policy. Tuned to exactly what the app loads:
-    //   scripts  — self + PostHog; 'unsafe-inline' for Next's bootstrap inline
-    //              scripts and 'wasm-unsafe-eval' for the SuperTux WASM game
-    //              (no nonce pipeline, so inline can't be dropped yet).
+    //   scripts  — self + PostHog + GA4's gtag.js (googletagmanager.com);
+    //              'unsafe-inline' for Next's bootstrap inline scripts and
+    //              'wasm-unsafe-eval' for the SuperTux WASM game (no nonce
+    //              pipeline, so inline can't be dropped yet).
     //   styles   — self + Google Fonts CSS; 'unsafe-inline' for Tailwind's
     //              inline style props (animationDelay, etc.).
     //   img/media— any https + data/blob (place photos come from many CDNs;
     //              review video/music from Blob/Supabase).
-    //   connect  — Supabase (REST + realtime wss), PostHog, Nominatim geocode,
+    //   connect  — Supabase (REST + realtime wss), PostHog, GA4 collect
+    //              endpoints (*.google-analytics.com incl. the regional
+    //              region1.* host, *.analytics.google.com, and
+    //              googletagmanager.com for gtag's own config fetch), Nominatim geocode,
     //              Zalo profile graph (graph.zalo.me/v2.0/me — the client-side
     //              fetch in /auth/zalo-finish; Zalo returns profile only to VN IPs),
     //              Vercel vitals, and Cloud Storage (the browser PUTs review
@@ -68,6 +99,7 @@ const nextConfig = {
       "script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'",
       isDev ? "'unsafe-eval'" : '',
       'https://us.i.posthog.com https://us-assets.i.posthog.com',
+      'https://www.googletagmanager.com',
     ].filter(Boolean).join(' ')
 
     const csp = [
@@ -91,7 +123,7 @@ const nextConfig = {
       // network error and retries 10x with backoff, so the UI hung on "Đang tải
       // clip lên" instead of showing an error. Playback kept working (storage
       // hosts were allowed), which is what hid the breakage.
-      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com",
       "frame-src 'self' https://www.youtube.com",
       "worker-src 'self' blob:",
       "manifest-src 'self'",

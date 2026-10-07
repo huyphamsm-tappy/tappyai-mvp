@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"La Siesta Premium Saigon\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" Gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:38:05.979Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"La Siesta Premium Saigon\" OR \"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" Gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "La Siesta Premium Saigon",
+    "link": "https://www.tiktok.com/discover/la-siesta-premium-saigon",
+    "snippet": "Link Bistro nằm ngay tầng trệt khách sạn La Siesta Premium Saigon Central, giữa trung tâm Quận 1 nhưng bước vào lại có cảm giác khá tách biệt khỏi sự ồn ào ...",
+    "position": 1
+   },
+   {
+    "title": "La Siesta Premium Saigon: Khách Sạn 4 Sao Sang Trọng",
+    "link": "https://www.tiktok.com/@phaplybds_tandaiduong/photo/7547320789125565704",
+    "snippet": "Khách sạn 4 La Siesta Premium Saigon • Địa chỉ: 180-182-184-186-188 Lý Tự Trọng, Phường Bến Thành, Quận 1 • Diện tích: 19 ...",
+    "position": 2
+   },
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "Hotel Majestic Saigon 100 Năm Trước. Khám phá lịch sử 100 năm của ... Fusion Original Saigon Centre · Vintage Culture Saigon Bar · Athena ...",
+    "date": "31 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hotel Fusion",
+    "link": "https://www.tiktok.com/discover/hotel-fusion?lang=en",
+    "snippet": "khách sạn Fusion Original Saigon Centre, review khách sạn Sài Gòn, trải ... gần bãi tắm Vũng Tàu, nghỉ dưỡng gia đình Vũng Tàu, khách sạn có tiện ích ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Fusion Original Saigon Centre Độc Đáo",
+    "link": "https://www.tiktok.com/@mason.booking.trav/photo/7606945132851776788?image_index=2",
+    "snippet": "Mọi thứ đều Original, hiện đại - nghệ thuật và táo bạo. #fusionoriginalsaigoncentre #tphcm #saigon #fusion #dulichsaigon. Khám Phá Fusion Original Saigon Centre ...",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn 5 Sao Fusion Original Saigon Centre Tại TP.HCM",
+    "link": "https://www.tiktok.com/@tasteinframe_/photo/7569227203674737928?image_index=11",
+    "snippet": "FUSION ORIGINAL SAIGON CENTRE 65 Lê Lợi, phường Sài Gòn, TPHCM #learnontiktok #fusionoriginalsaigoncentre #reviewkhachsan #hcmc # ...",
+    "position": 6
+   },
+   {
+    "title": "Review Hotel Sài Gòn Quận 1 Gia Đình Lê Lợi",
+    "link": "https://www.tiktok.com/discover/review-hotel-s%C3%A0i-g%C3%B2n-qu%E1%BA%ADn-1-gia-%C4%91%C3%ACnh-l%C3%AA-l%E1%BB%A3i",
+    "snippet": "Khám Phá Fusion Original Saigon Centre: Review Khách Sạn. Trải nghiệm khách sạn Fusion Original ở Sài Gòn với dịch vụ miễn phí ấn tượng và cảnh đẹp. Cám ơn ...",
+    "position": 7
+   },
+   {
+    "title": "Khách Sạn Riverside - Gợi Ý Tuyệt Vời Cho Cặp Tình Nhân",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7528357846891891975",
+    "snippet": "nhạc nền - LU EATING · Hotel Majestic Saigon · Paragon Hotel and Suites Baguio · Saltline Hotel Seaside Oregon · Miss Saigon Vietnamese ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

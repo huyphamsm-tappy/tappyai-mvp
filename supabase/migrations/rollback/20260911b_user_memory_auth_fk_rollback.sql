@@ -1,0 +1,138 @@
+-- ============================================================================
+-- ROLLBACK for supabase/migrations/20260911b_user_memory_auth_fk.sql
+-- `public.user_memory.user_id` — remove the auth.users foreign key.
+--
+-- NOT applied automatically. Kept beside the migration so the rollback is a
+-- rehearsed file rather than something improvised during an incident.
+--
+-- ---------------------------------------------------------------------------
+-- READ THIS FIRST: WHAT ROLLING BACK DOES AND DOES NOT UNDO
+-- ---------------------------------------------------------------------------
+-- The migration did three separable things. They do not all reverse, and
+-- pretending otherwise is how a rollback becomes its own incident.
+--
+--   1. ADDED the foreign key.            -> section 1 removes it. Fully reversible.
+--   2. CONVERTED user_id text -> uuid.   -> section 2 converts it back, and is
+--                                           COMMENTED OUT. See below.
+--   3. DELETED orphan / null-owner rows. -> NOT REVERSIBLE, AND MUST NOT BE.
+--
+-- On (3): those rows were the private memory of accounts that had ALREADY been
+-- deleted from Auth. The migration recorded a fingerprint of each in
+-- `public.user_memory_fk_cleanup_log` — which row, whose id, when last written,
+-- why — and deliberately did NOT copy the memory content anywhere, because an
+-- archive of a deleted user's private memory is the exact defect this work
+-- exists to close. There is therefore nothing to restore, by design and not by
+-- oversight. If the cleanup deleted something it should not have, the ledger
+-- tells you precisely what and when; the content is gone, and that is the
+-- correct outcome of erasure.
+--
+-- ---------------------------------------------------------------------------
+-- WHY SECTION 1 IS USUALLY ALL YOU WANT
+-- ---------------------------------------------------------------------------
+-- The failure mode a rollback is for is "the constraint is refusing a write
+-- production needs". Dropping the FK (section 1) resolves that completely and
+-- instantly, changes no data, and leaves the column as `uuid` — which every
+-- caller already handles, because PostgREST has always sent and received the
+-- value as a JSON string and no code in this repository, on any platform,
+-- inspects the column's type. Section 1 alone is a full functional rollback.
+--
+-- Section 2 exists only for returning the schema to its exact pre-migration
+-- shape, and it is strictly worse than leaving the column alone:
+--
+--   * It REOPENS the defect. `text` cannot carry the foreign key at all
+--     ("Key columns are of incompatible types: text and uuid"), so from that
+--     moment deleted Auth users start stranding memory rows again.
+--   * It must drop and recreate the RLS policy, because PostgreSQL refuses to
+--     alter a column a policy references, and the recreated policy must use the
+--     `(auth.uid())::text = user_id` form — a `uuid = text` comparison does not
+--     parse. Getting that wrong locks every user out of their own memory.
+--
+-- So: run section 1. Run section 2 only if something specifically requires the
+-- column to be `text`, and know that you are restoring a known defect.
+--
+-- ---------------------------------------------------------------------------
+-- SAFE WHILE: any deployed build.
+-- ---------------------------------------------------------------------------
+-- Unlike the V3 Foundation rollback, this one is NOT code-first. No application
+-- code references the constraint, the column type, or the cleanup ledger — the
+-- migration changed the database's guarantees, not the product's behaviour.
+-- Section 1 is invisible to every build, old or new.
+-- ============================================================================
+
+
+-- ============================================================================
+-- 1. Remove the foreign key. Runs as written. Destroys nothing.
+--
+-- After this, deleting an Auth user once again leaves `user_memory` behind.
+-- That is what rolling back means here, and it is the whole cost of section 1.
+-- ============================================================================
+ALTER TABLE public.user_memory
+  DROP CONSTRAINT IF EXISTS user_memory_user_id_fkey;
+
+-- The unique index the migration guaranteed is NOT dropped. It predates this
+-- work (`supabase-schema.sql` declares `unique`) and it is the conflict target
+-- for `memoryService.updateMemory`'s upsert. Dropping it would break every
+-- memory write in the product — a far worse outage than the one being rolled
+-- back. It is not part of this migration's footprint and must stay.
+
+
+-- ============================================================================
+-- 2. !! COMMENTED OUT !! Convert user_id back to `text`.
+--
+-- Uncomment ONLY with a specific reason to need `text` back. This reopens the
+-- referential-integrity defect described above.
+--
+-- The NOT NULL is dropped too, because the pre-migration column permitted NULL.
+-- Nothing in the product writes a NULL `user_id`, so this widens the schema
+-- without changing behaviour.
+--
+-- The policy dance is mandatory, not stylistic: ALTER COLUMN TYPE fails with
+-- "cannot alter type of a column used in a policy definition" while the policy
+-- exists, and the recreated policy MUST cast, because `auth.uid() = user_id`
+-- against a text column fails with "operator does not exist: uuid = text".
+-- ============================================================================
+-- DROP POLICY IF EXISTS "Users can manage own memory" ON public.user_memory;
+--
+-- ALTER TABLE public.user_memory ALTER COLUMN user_id DROP NOT NULL;
+-- ALTER TABLE public.user_memory
+--   ALTER COLUMN user_id TYPE text USING user_id::text;
+--
+-- CREATE POLICY "Users can manage own memory" ON public.user_memory
+--   FOR ALL USING ((auth.uid())::text = user_id)
+--   WITH CHECK ((auth.uid())::text = user_id);
+
+
+-- ============================================================================
+-- 3. !! COMMENTED OUT !! Drop the cleanup ledger.
+--
+-- Leave it. It is the only record of what the migration removed and from whom,
+-- it holds no memory content, and it is readable by `service_role` alone. It
+-- costs nothing to keep and is the first thing anyone investigating this change
+-- will ask for.
+-- ============================================================================
+-- DROP TABLE IF EXISTS public.user_memory_fk_cleanup_log;
+
+
+-- ============================================================================
+-- VERIFY (read-only, after rollback)
+--
+--   -- 1. The foreign key is gone.
+--   SELECT count(*) AS fks FROM pg_constraint
+--    WHERE conrelid='public.user_memory'::regclass AND contype='f';
+--   -- Expect: 0.
+--
+--   -- 2. No data was touched.
+--   SELECT count(*) AS rows FROM public.user_memory;
+--   -- Expect: the same count as before the rollback.
+--
+--   -- 3. The upsert conflict target still exists.
+--   SELECT indexname FROM pg_indexes
+--    WHERE schemaname='public' AND tablename='user_memory' AND indexdef ILIKE '%UNIQUE%user_id%';
+--   -- Expect: at least one row. If this is empty, memory writes are broken.
+--
+--   -- 4. Owner-only access is intact.
+--   SELECT policyname, cmd, qual, with_check FROM pg_policies
+--    WHERE schemaname='public' AND tablename='user_memory';
+--   -- Expect: "Users can manage own memory", ALL, owner-only on both sides.
+--   -- If section 2 was run, both read `((auth.uid())::text = user_id)`.
+-- ============================================================================

@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "spa massage phòng riêng quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:36.532Z",
+ "body": {
+  "searchParameters": {
+   "q": "spa massage phòng riêng quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "snippet": "Các gói dịch vụ · Gội đầu thảo dược · Massage Nến Ấm Thư Giãn Toàn Thân · Dermalogica Hydra Glow · [Bán chạy nhất] Massage Toàn thân bằng Tinh dầu Truyền thống.",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Thuỷ Lập Phương | Phúc Điền Tân Châu",
+    "link": "https://www.klook.com/vi/activity/140562-water-cube-futian-xinzhou-store/",
+    "snippet": "Trang trí hoàn toàn mới, 60 phòng riêng · Một trong những thương hiệu massage lớn tại Thâm Quyến · Kỹ thuật viên massage chuyên nghiệp, môi trường massage và spa ...",
+    "rating": 4.2,
+    "ratingCount": 112,
+    "position": 2
+   },
+   {
+    "title": "The Moc Spa: Một lối thoát lấy cảm hứng từ thiên nhiên ở ...",
+    "link": "https://www.klook.com/vi/activity/189146-the-moc-spa-a-nature-inspired-escape-in-district-1/",
+    "snippet": "Tận hưởng không khí yên bình, thư thái tránh xa sự ồn ào của thành phố · Massage body, gội đầu thảo dược, chăm sóc da và chăm sóc móng—tất cả ở một nơi · Thư giãn ...",
+    "position": 3
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Shinrin Spa cung cấp các dịch vụ massage chuyên nghiệp, đạt tiêu chuẩn quốc tế bởi các kỹ thuật viên lành nghề. logoImg.",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 4
+   },
+   {
+    "title": "Sparadise Spa Aromatherapy Massage Taipei",
+    "link": "https://www.klook.com/vi/activity/3722-sparadise-aromatherapy-massage-taipei/",
+    "snippet": "Làm mới tâm trí, cơ thể và tâm hồn của bạn tại Sparadise, spa được xếp hạng hàng đầu trên Tripadvisor ở Đài Bắc · Thưởng thức các loại tinh dầu Florihana chất ...",
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Phân Tích Màu Sắc Cá Nhân & Da Tại Seoul ...",
+    "link": "https://www.klook.com/vi/activity/235444-personal-color-and-skin-analysis-experience-in-seoul/",
+    "snippet": "Khám phá màu sắc trang phục, màu trang điểm, họa tiết và phụ kiện tôn da nhất của bạn thông qua việc thử màu cá nhân gần Cung điện ...",
+    "date": "9 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "COMFY舒悦·疗愈SPA (Cửa hàng Trung tâm mua sắm ...",
+    "link": "https://www.klook.com/vi/activity/98448-comfy-spa-shen-zhen/",
+    "snippet": "Có phòng riêng biệt, môi trường thoải mái; Sáu liệu trình tùy chọn, giải tỏa ... Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian. ☆ 4.2 (11).",
+    "rating": 4.1,
+    "ratingCount": 8,
+    "position": 7
+   },
+   {
+    "title": "The An Nam Wellness: Trải nghiệm gội đầu và Massage ở ...",
+    "link": "https://www.klook.com/vi/activity/211692-the-an-nam-wellness-hair-wash-and-massage-experience-in-district-1/",
+    "snippet": "The An Nam Wellness: Trải nghiệm gội đầu và Massage ở Quận 1 · Không gian spa riêng tư, yên tĩnh được thiết kế để thư giãn sâu và thoải mái · Vị trí thuận tiện ...",
+    "rating": 4.6,
+    "ratingCount": 12,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

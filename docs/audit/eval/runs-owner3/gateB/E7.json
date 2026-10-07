@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5036,
+  "evidenceId": "d820e7f9-63c1-4b52-a2df-a896a96f50d7",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời 🎬\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, rùng rợn với cốt truyện cuốn hút, đây là gợi ý hay cho tối nay\n\n**Twisters** — nếu bạn thích phim thảm họa, hành động kịch tính với những cảnh quay ấn tượng, bộ phim này sẽ không làm bạn thất vọng",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ phim hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng, bộ phim này là lựa chọn tuyệt vời 🎬\n\n**Ngôi Nhà Buồn** — nếu bạn muốn xem một bộ phim tâm lý, rùng rợn với cốt truyện cuốn hút, đây là gợi ý hay cho tối nay\n\n**Twisters** — nếu bạn thích phim thảm họa, hành động kịch tính với những cảnh quay ấn tượng, bộ phim này sẽ không làm bạn thất vọng"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

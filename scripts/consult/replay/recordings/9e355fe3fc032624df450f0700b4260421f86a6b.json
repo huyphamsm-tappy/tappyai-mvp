@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Laptop mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:36:54.189Z",
+ "body": {
+  "searchParameters": {
+   "q": "Laptop mới (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Laptop, máy tính xách tay giá rẻ, trả góp 0%, đổi điểm giảm thêm tới 10%. Mua online laptop giảm thêm đến 5 triệu, giao hàng miễn phí tận nhà.",
+    "position": 1
+   },
+   {
+    "title": "Laptop cũ giá rẻ, uy tín, trả góp 0%, dùng thử 7 ngày",
+    "link": "https://cellphones.com.vn/hang-cu/laptop.html",
+    "snippet": "Laptop cũ giá rẻ, giảm HSSV 700k, trả góp 0%, trả trước 0đ, phụ phí 0đ, 7 ngày dùng thử miễn phí, giảm 2tr lên đời. Mua ngay laptop cũ uy tín.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell | Máy tính Dell (core i5 - i7) giá rẻ, giảm 6Tr",
+    "link": "https://cellphones.com.vn/laptop/dell.html",
+    "snippet": "Laptop Dell (core i5 -i7) giá rẻ, trả góp 0%, HSSV giảm 1 triệu, đổi điểm giảm đến 3 triệu. Mua máy tính laptop Dell nhận quà hấp dẫn tại đây.",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Mua laptop dưới 25 triệu uy tín tại CellphoneS. Các mẫu laptop 25 triệu tới từ nhiều thương hiệu như Dell, HP, Asus, MSI, Lenovo, Acer,...hiện đang được bày bán ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop dưới 20 triệu | Thiết kế sang trọng, mạnh mẽ, bền bỉ",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-15-20-trieu",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 256GB | Chính hãng Apple Việt Nam · 18.990.000đ. 19.490.000đ · 3% ; Laptop MSI Modern 15 F1MG-1225VN · 19.190.000đ.",
+    "position": 5
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 6
+   },
+   {
+    "title": "Laptop HP core i5, i3, i7 | Máy tính xách tay HP - Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop/hp.html",
+    "snippet": "Laptop HP Omnibook. Các mẫu laptop HP OmniBook mới thường được trang bị bộ vi xử lý Intel Core Ultra 5, Core Ultra 7 hoặc AMD Ryzen AI 300 Series tích hợp ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop.One1, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/laptop.one1",
+    "snippet": "Laptop Latitude DeLL E7450 core i5/i7 - 8G/16G - 256G/512G - 14 inch FHD. 4.330.000₫. rating-star 4.8. 614 đã bán · Ổ cứng SSD M2 Pcle Nvme 2280 / 128GB, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

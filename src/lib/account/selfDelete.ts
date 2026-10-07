@@ -16,10 +16,6 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 // auth user leaves AI memory, share pages and uploads behind — exactly what /delete-account says
 // is removed. `ACCOUNT_SELF_DELETE_ENABLED=true` is set per environment AFTER D1/D2/D4 are live
 // there (applied on AUDIT 2026-09-25/26; NOT on production). Off → the request-by-email flow.
-//
-// HOTFIX SCOPE (apple-account-deletion): this branch carries the route, the Apple revocation and the flag ONLY. The clean-up it
-// relies on (D1/D2/D4 migrations, the account-deletion-jobs worker, GCS list/delete) is NOT part of it and must be live in an
-// environment BEFORE this flag is turned on there. See docs/ios/APPLE-ACCOUNT-DELETION-HANDOFF.md.
 
 export function selfDeleteEnabled(env: Record<string, string | undefined> = process.env): boolean {
   return env.ACCOUNT_SELF_DELETE_ENABLED === 'true'

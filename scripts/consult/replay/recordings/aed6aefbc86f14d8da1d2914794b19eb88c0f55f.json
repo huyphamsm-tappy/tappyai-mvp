@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:17:53.052Z",
+ "body": {
+  "searchParameters": {
+   "q": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/kqlq868j1vqlvbbf17kh/Tr%E1%BA%A3i%20nghi%E1%BB%87m%20KARAOKE%20tuy%E1%BB%87t%20v%E1%BB%9Di%20nh%E1%BA%A5t%20%E1%BB%9F%20Kyoto.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1Xx-IibBK15tJDPQlSUNUmFCA1dj88n8boxWyrs9fSQ&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/166239-best-karaoke-experience-in-kyoto/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fkqlq868j1vqlvbbf17kh%2FTr%25E1%25BA%25A3i%2520nghi%25E1%25BB%2587m%2520KARAOKE%2520tuy%25E1%25BB%2587t%2520v%25E1%25BB%259Di%2520nh%25E1%25BA%25A5t%2520%25E1%25BB%259F%2520Kyoto.jpg&tbnid=MRm4TdzvkQXFvM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F166239-best-karaoke-experience-in-kyoto%2F&docid=Ytih10QyrSIrHM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/waukpwsxdmxhqv9d1gxv.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxDSMdxWJTt0mzJ7fWsTJh0OWv3x1E3uv15V1rVyUADA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/166239-best-karaoke-experience-in-kyoto/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwaukpwsxdmxhqv9d1gxv.jpg&tbnid=FVF__URatbCaRM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F166239-best-karaoke-experience-in-kyoto%2F&docid=Ytih10QyrSIrHM&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm KARAOKE tuyệt vời nhất ở Kyoto - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/o3vnhqadglwakat7i1gl.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDZ8BvBBmRpWekTythIXqpqMIwhbROu_ABg3JLveMehA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/166239-best-karaoke-experience-in-kyoto/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fo3vnhqadglwakat7i1gl.jpg&tbnid=Ni97U4tRJS7iAM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F166239-best-karaoke-experience-in-kyoto%2F&docid=Ytih10QyrSIrHM&w=750&h=469",
+    "position": 3
+   },
+   {
+    "title": "20 trải nghiệm tuyệt vời ở Kyoto suốt bốn mùa - Phần 1",
+    "imageUrl": "https://demo.vietnhan.co/lienminhtravel/files/common/20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-n5bjprbavy.jpg",
+    "imageWidth": 800,
+    "imageHeight": 525,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ86YSenI6HiDWY-q4gJQKVRyg1ZOETqFBTVub6jqPQFw&s=10",
+    "thumbnailWidth": 552,
+    "thumbnailHeight": 362,
+    "source": "Du lịch Liên Bang",
+    "domain": "lienbangtravel.com",
+    "link": "https://lienbangtravel.com/vi/tin-tuc/81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdemo.vietnhan.co%2Flienminhtravel%2Ffiles%2Fcommon%2F20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-n5bjprbavy.jpg&tbnid=RpERKgjm3LCC7M&imgrefurl=https%3A%2F%2Flienbangtravel.com%2Fvi%2Ftin-tuc%2F81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1&docid=zloafFh-6uFnuM&w=800&h=525",
+    "position": 4
+   },
+   {
+    "title": "20 trải nghiệm tuyệt vời ở Kyoto suốt bốn mùa - Phần 1",
+    "imageUrl": "https://demo.vietnhan.co/lienminhtravel/files/common/20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-glrv3oco1p.jpg",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTgUbAziA6cbDo-xHkn5GKX2UREijMAOOit5qFPAyFSA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Du lịch Liên Bang",
+    "domain": "lienbangtravel.com",
+    "link": "https://lienbangtravel.com/vi/tin-tuc/81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdemo.vietnhan.co%2Flienminhtravel%2Ffiles%2Fcommon%2F20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-glrv3oco1p.jpg&tbnid=gLltxDFWrudzzM&imgrefurl=https%3A%2F%2Flienbangtravel.com%2Fvi%2Ftin-tuc%2F81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1&docid=zloafFh-6uFnuM&w=800&h=533",
+    "position": 5
+   },
+   {
+    "title": "Kinh nghiệm du lịch Kyoto - Nhật Bản",
+    "imageUrl": "https://bizweb.dktcdn.net/100/132/269/articles/201554153255585.jpg?v=1475204694487",
+    "imageWidth": 1024,
+    "imageHeight": 709,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKltAwnaRRKI3exhoyggy9plvKXFNyiNK_ueDZbxIRzA&s=10",
+    "thumbnailWidth": 538,
+    "thumbnailHeight": 371,
+    "source": "Hàng Nhật nội địa",
+    "domain": "hello-japan.vn",
+    "link": "https://hello-japan.vn/kinh-nghiem-du-lich-kyoto-nhat-ban",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F132%2F269%2Farticles%2F201554153255585.jpg%3Fv%3D1475204694487&tbnid=8ahPyhc-w7Vr6M&imgrefurl=https%3A%2F%2Fhello-japan.vn%2Fkinh-nghiem-du-lich-kyoto-nhat-ban&docid=5NDQ5-PzAYHXRM&w=1024&h=709",
+    "creator": "Picasa",
+    "position": 6
+   },
+   {
+    "title": "20 trải nghiệm tuyệt vời ở Kyoto suốt bốn mùa - Phần 1",
+    "imageUrl": "https://demo.vietnhan.co/lienminhtravel/files/common/20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-ih2kc68pv9.jpg",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTp-1S0PwH7AG73nfc3lCKiXn7RWB2Y_amTyxorp5R3ow&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Du lịch Liên Bang",
+    "domain": "lienbangtravel.com",
+    "link": "https://lienbangtravel.com/vi/tin-tuc/81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdemo.vietnhan.co%2Flienminhtravel%2Ffiles%2Fcommon%2F20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1-ih2kc68pv9.jpg&tbnid=Gz79xxv1LD3QMM&imgrefurl=https%3A%2F%2Flienbangtravel.com%2Fvi%2Ftin-tuc%2F81-20-trai-nghiem-tuyet-voi-o-kyoto-suot-bon-mua-phan-1&docid=zloafFh-6uFnuM&w=800&h=533",
+    "position": 7
+   },
+   {
+    "title": "Karaoke Kan Shibuya Nhật Bản: Những hoạt động không thể bỏ lỡ 2026",
+    "imageUrl": "https://res.klook.com/image/upload/w_500,h_313,c_fill,q_85/activities/tgasmwchkfnz6eeoif52.jpg",
+    "imageWidth": 500,
+    "imageHeight": 313,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXswgfnXdV9gslUDiVXnYpU0F0NQAK4uQKddffNkbHOQ&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 178,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/destination/p60272373-karaoke-kan-shibuya/1-things-to-do/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_500%2Ch_313%2Cc_fill%2Cq_85%2Factivities%2Ftgasmwchkfnz6eeoif52.jpg&tbnid=mpVewlODyIVeUM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fdestination%2Fp60272373-karaoke-kan-shibuya%2F1-things-to-do%2F&docid=_nEwZaBSqnPFNM&w=500&h=313",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

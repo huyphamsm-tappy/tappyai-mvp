@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:16:51.161Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp LongNails-Emma - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ozzay5lxqyeh59ucnujq.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2SOjrXh7P4qLUmGnltPpoPFz--ZHZAclMf1UCtcVbcQ&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fozzay5lxqyeh59ucnujq.jpg&tbnid=2Y3xhvzcedCsBM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo%2F&docid=lYzDYqk9eiCE8M&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp LongNails-Emma - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wxo72szb3gvycbaocjie/TokyoIkebukuroTi%E1%BB%87ml%C3%A0mm%C3%B3ngn%E1%BB%91ichuy%C3%AAnnghi%E1%BB%87pLongNails-Emma.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 971,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKT8EjX5GBBJmEaoyLDFRhJ_mBkD-oQ1NKXT6PPr-xWw&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_971%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwxo72szb3gvycbaocjie%2FTokyoIkebukuroTi%25E1%25BB%2587ml%25C3%25A0mm%25C3%25B3ngn%25E1%25BB%2591ichuy%25C3%25AAnnghi%25E1%25BB%2587pLongNails-Emma.jpg&tbnid=8MYtYvq-rj2IJM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo%2F&docid=lYzDYqk9eiCE8M&w=1295&h=971",
+    "position": 2
+   },
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp LongNails-Emma - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/bhhn6hhmwgpe2qfavqig.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSmNXNrfrFpBTLpYJt-W7zd-7jO4HldSM4-Ptxfm6lEw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fbhhn6hhmwgpe2qfavqig.jpg&tbnid=BWQGduZUD6Xr4M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo%2F&docid=lYzDYqk9eiCE8M&w=750&h=469",
+    "position": 3
+   },
+   {
+    "title": "Tokyo Ikebukuro Tiệm làm móng nối chuyên nghiệp LongNails-Emma - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/b1bxk4mcwa5s3q6xw0aw.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR2yhXS5J7WEcOMpi4CSQuBZh6fJZbaoM_5aNCbeSKlg&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fb1bxk4mcwa5s3q6xw0aw.jpg&tbnid=gTcs0QaQj0UlMM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F167200-longnails-emma-nail-extension-specialty-salon-in-ikebukuro-tokyo%2F&docid=lYzDYqk9eiCE8M&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Tiệm làm móng Babarla nail salon ở Ikebukuro, Tokyo - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hzngtlkszhffv7nyz36x/Ti%E1%BB%87ml%C3%A0mm%C3%B3ngBabarlanailsalon%E1%BB%9FIkebukuro,Tokyo-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHEbgJ-_9q-JZmEfv1SjFaQlwcNYQixUz6tIFCMrbV-A&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhzngtlkszhffv7nyz36x%2FTi%25E1%25BB%2587ml%25C3%25A0mm%25C3%25B3ngBabarlanailsalon%25E1%25BB%259FIkebukuro%2CTokyo-Klook.jpg&tbnid=Uc5BR6bmzCx7QM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon%2F&docid=cwpa3xQnnayhXM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Tiệm làm móng Babarla nail salon ở Ikebukuro, Tokyo - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wwgqxsuszngvhi67l4u2.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQANyoqho_MpvfoAo6O7-m1qZv6L0Bmbz9lvBppAQ5zHw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwwgqxsuszngvhi67l4u2.jpg&tbnid=xUojUo8T_hSWHM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon%2F&docid=cwpa3xQnnayhXM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Toko D Nail Ikebukuro - Làm móng đẹp tại Nhật Bản | Toshima Tokyo",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100049091812667",
+    "imageWidth": 1337,
+    "imageHeight": 1337,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU2nmk0dQGgxrwIvj5z3yRYYFZ8e5is3h_ERZ4ynGVZg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/queennailikebukuro/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100049091812667&tbnid=m0RHs3iIZDXBSM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fqueennailikebukuro%2F&docid=s2KWPjN2RkxRZM&w=1337&h=1337",
+    "position": 7
+   },
+   {
+    "title": "Tiệm làm móng Babarla nail salon ở Ikebukuro, Tokyo - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/c_crop,h_1600,w_2560,x_0,y_154,z_0.1/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wiecu5qahwqrbsmp69az.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxxfiPf-4nqBLqKYVso-wEnHbCst-nVDkR4TwUiETgYA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fc_crop%2Ch_1600%2Cw_2560%2Cx_0%2Cy_154%2Cz_0.1%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwiecu5qahwqrbsmp69az.jpg&tbnid=jQVmp_ReoHW-iM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F183478-tokyo-ikebukuro-nail-salon-babarla-nail-salon%2F&docid=cwpa3xQnnayhXM&w=750&h=469",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

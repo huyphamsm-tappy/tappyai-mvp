@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Karaoke Avatar\" OR \"Karaoke MEI\" OR \"Karaoke iCool 90 Mạc Đĩnh Chi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:13:54.947Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Karaoke Avatar\" OR \"Karaoke MEI\" OR \"Karaoke iCool 90 Mạc Đĩnh Chi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30 ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7423246235756203272",
+    "snippet": "Karaoke Avatar Quận 1: Công Nghệ 3D Đột Phá, Giảm 30% Giờ Hát. ### Avatar Karaoke: Trải Nghiệm Hát Karaoke Đột Phá Tại Quận 1 Nếu bạn đang ...",
+    "position": 1
+   },
+   {
+    "title": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới ...",
+    "link": "https://www.tiktok.com/@reviewsaigon.59/video/7593323014628986129",
+    "snippet": "Còn ai nghĩ karaoke quận 1 rổ rá trên trời nữa thì bước tới đây ... Karaoke MEI. 38 · recommend-cover. Dạ Dày Không Đáy. 1126 · recommend-cover.",
+    "position": 2
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ #KaraokeAVATAR # ...",
+    "link": "https://www.tiktok.com/@nguyenhuuphuoc87/video/7686689985394691349",
+    "snippet": "1832 Lượt thích,86 Bình luận.Video TikTok từ Nguyễn Hữu Phước (@nguyenhuuphuoc87): \"Karaoke AVATAR Cần Thơ #KaraokeAVATAR ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá AVATAR KARAOKE: Địa Điểm Tiệc Tùng Đỉnh ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7536174017997180178",
+    "snippet": "Mời các dân chơi dạo 1 vòng từ sân đến sảnh của AVATAR KARAOKE ... Karaoke Avatar · Avatar Kataang Kiss · Kai Avatar · Tuki Avatar · Aang ...",
+    "position": 4
+   },
+   {
+    "title": "Karaoke Xịn Sò Tại Quận Nhất Chỉ 80k/giờ",
+    "link": "https://www.tiktok.com/@duckim90/video/7593335608710417685",
+    "snippet": "Karaoke Kingdom Quận 1 · Karaoke Bareng Di Tempat Karaoke · Karaoke Chong Oi ... Karaoke MEI. 289. recommend-cover. Gia-Bảo96. 79 · recommend- ...",
+    "position": 5
+   },
+   {
+    "title": "Karaoke Quận 1 Giá 50k/h - Quán Hot Hit Dân Gen Z",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7614418613503823125",
+    "snippet": "22 Lượt thích,Video TikTok từ Karaoke MEI (@mei.karaoke): \"Trải nghiệm hát karaoke cực chill tại quán hot hit Quận 1 chỉ với 50k/giờ.",
+    "position": 6
+   },
+   {
+    "title": "Khó Nha Bro: Trải Nghiệm Karaoke Đầy Thú Vị",
+    "link": "https://www.tiktok.com/@mei.karaoke/video/7577767144100875538",
+    "snippet": "66K Lượt thích,1432 Bình luận.Video TikTok từ Karaoke MEI (@mei.karaoke): \"Khám phá những điều thú vị khi karaoke tại Quận 1!",
+    "position": 7
+   },
+   {
+    "title": "Karaoke AVATAR Cần Thơ",
+    "link": "https://www.tiktok.com/@honghotcantho65ct/video/7686689936371666197",
+    "snippet": "Karaoke AVATAR Cần Thơ là chủ đề của video. Nội dung liên quan tới Karaoke AVATAR Cần Thơ và sử dụng các hashtag: #KaraokeAVATAR, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

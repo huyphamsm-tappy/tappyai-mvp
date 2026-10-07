@@ -28,6 +28,7 @@ import {
   publicationStateFor,
   type Resolution,
 } from '@/lib/admin/moderation/moderationService'
+import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
 import { ResolveSchema, isUuid } from '../../schema'
 
 export const dynamic = 'force-dynamic'
@@ -80,6 +81,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       return adminError('VALIDATION_ERROR', parsed.error.issues[0]?.message ?? 'Invalid body', 422)
     }
     const { kind, reason, notes } = parsed.data
+
+    // Once the moderation desk is on (MODERATION_ADMIN_ENABLED), a hide / restore / delete goes through /decide so that every action
+    // that touches content or a person lands on the strike ledger. Dismissing a report stays here (no person is sanctioned).
+    if (moderationAdminEnabled() && kind !== 'dismiss') {
+      return adminError('CONFLICT', 'Use /decide: with the moderation desk on, content actions are recorded on the ledger', 409)
+    }
 
     // The authorization decision, now that `kind` is known. Still ONE call, and
     // still `requirePermission` — the only route-level authorization helper.

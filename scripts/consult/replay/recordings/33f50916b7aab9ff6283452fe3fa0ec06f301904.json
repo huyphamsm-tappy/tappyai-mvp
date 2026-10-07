@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:33.217Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl Tây Ninh\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các đánh giá Khách sạn Melia Vinpearl Tây Ninh",
+    "link": "https://vn.trip.com/hotels/tan-ninh-hotel-detail-28122419/vinpearl-hotel-tay-ninh/review.html",
+    "snippet": "... Meliá Vinpearl Tây Ninh.Chúng tôi rất vui khi biết rằng Quý khách hài lòng với sự sạch sẽ, gọn gàng của phòng nghỉ cũng như sự nhiệt tình và tận tâm của đội ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Melia Vinpearl Tây Ninh - Xem 70 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/tay-ninh-hotel-detail-28122419/vinpearl-hotel-tay-ninh/photo.html",
+    "snippet": "... Meliá Vinpearl Tây Ninh.Chúng tôi rất vui khi biết rằng Quý khách hài lòng với sự sạch sẽ, gọn gàng của phòng nghỉ cũng như sự nhiệt tình và tận tâm của đội ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

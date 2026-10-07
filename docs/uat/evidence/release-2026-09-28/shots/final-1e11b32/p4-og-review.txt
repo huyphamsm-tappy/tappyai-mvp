@@ -1,0 +1,12 @@
+<meta property="og:title" content="Quán Phở Bò (UAT) — 5/5 sao
+<meta property="og:description" content="Nước dùng trong, thơm quế hồi, thịt bò mềm. Buổi sáng hơi đông nhưng lên món nhanh. [UAT ảnh tổng hợp]
+<meta property="og:url" content="https://uat.tappyai.com/reviews/6821a7aa-a939-499f-accf-a6b4a1878806
+<meta property="og:site_name" content="TappyAI
+<meta property="og:locale" content="vi_VN
+<meta property="og:image" content="https://zdaprdfgpbpnxyofagmc.supabase.co/storage/v1/object/sign/uat-seed-media/reviews/pho-bo.jpg?token=…
+<meta property="og:image:alt" content="Quán Phở Bò (UAT)
+<meta property="og:type" content="article
+<meta name="twitter:card" content="summary_large_image
+<meta name="twitter:title" content="Quán Phở Bò (UAT) — 5/5 sao
+<meta name="twitter:description" content="Nước dùng trong, thơm quế hồi, thịt bò mềm. Buổi sáng hơi đông nhưng lên món nhanh. [UAT ảnh tổng hợp]
+<meta name="twitter:image" content="https://zdaprdfgpbpnxyofagmc.supabase.co/storage/v1/object/sign/uat-seed-media/reviews/pho-bo.jpg?token=…

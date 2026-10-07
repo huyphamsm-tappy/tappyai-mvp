@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 4530,
+  "evidenceId": "5be4c60f-b1fb-4783-9c74-df0bf65dce51",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "**Tám Riêu. Quán** mở từ **10:30 đến 21:30** hàng ngày, nên hoàn toàn phù hợp cho bữa trưa cuối tuần của bạn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu. Quán\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Quán+Phú+Nhuận\"},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Tám+Riêu+Phú+Nhuận\"}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán ăn gia đình ở Phú Nhuận cho bữa trưa hôm nay nhé.\n\nMình chọn **Tám Riêu. Quán có **4.8⭐ (1.290 đánh giá Google Maps)**, cách bạn chỉ 2.1km, mở cửa từ 10:30 đến 21:30 nên hoàn toàn phù hợp. Giá khoảng 100-200k/người, vừa phải cho bữa gia đình.\n\nNếu muốn thử khác, **San Fu Lou Restaurant Phan Xích Long** cũng tốt (4.6⭐, 3.996 đánh giá) — chuyên Quảng Đông, nhưng xa hơn một chút (2.8km).\n\nBạn có thể xem chi tiết và liên hệ qua Google Maps hoặc website của quán.\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=T%C3%A1m+Ri%C3%AAu+Ph%C3%BA+Nhu%E1%BA%ADn\",\"primary\":true},{\"label\":\"📍 Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10880845782038429541\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem San Fu Lou (Quảng Đông)|Tìm quán khác ở Phú Nhuận|Cần gợi ý món ăn gì[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "**Tám Riêu. Quán** mở từ **10:30 đến 21:30** hàng ngày, nên hoàn toàn phù hợp cho bữa trưa cuối tuần của bạn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu. Quán\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Quán+Phú+Nhuận\"},{\"label\":\"🛵 GrabFood - Tám Riêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Tám+Riêu+Phú+Nhuận\"}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

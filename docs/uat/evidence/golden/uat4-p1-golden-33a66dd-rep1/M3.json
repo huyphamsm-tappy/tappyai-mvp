@@ -1,0 +1,2184 @@
+{
+  "id": "M3",
+  "group": "switch-fold-collisions",
+  "criteria": [
+    "Turn 1: hot-pot (lẩu) restaurants in Quận 1",
+    "Turn 2 (\"bao lâu\" = how long): answers travel time to the venue just suggested — does NOT start a new hot-pot search",
+    "Turn 3 (\"trời mưa\" = it is raining): indoor entertainment/outing suggestions — NO product search (search_products never runs), no shopping cards",
+    "Turn 4 (\"mùa này\" = this season): a travel/weather answer about Đà Lạt — no shopping, no product cards"
+  ],
+  "turns": [
+    {
+      "user": "ăn lẩu ở đâu ngon quận 1",
+      "status": 200,
+      "elapsedMs": 6752,
+      "usage": {
+        "promptTokens": 3365,
+        "completionTokens": 367
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn khuya",
+            "type": "restaurant",
+            "location": "quan 1"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "searching"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán Ăn Hùng Xíu",
+              "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 76,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "17:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+              "address": "38 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 117,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "15:00–01:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Thố Xá Lị - Tôn Thất Đạm",
+              "address": "76/6 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 99,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "09:30–13:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 6204,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Tân Hải Vân",
+              "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3401,
+              "price": null,
+              "categories": [
+                "Nhà hàng Trung Quốc"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 2434,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "PHỞ HÀ",
+              "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1050,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76994,106.69226",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Hùng Xíu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlK83zAnt3DXeW26DGfVJxjG5l8ejL8_rQwZxN42KA4vl0-aZXfRCvsF4Hwp2fAy0WM0XcOQ5lf45Gm1Wrta-PPHVkPpT0UxEVzbs797FxNj6bMpGg8rcD4lI-xxmo8oUqka-J",
+                "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 76,
+                "openingHours": "17:00–04:00",
+                "openNow": true,
+                "phone": "+84 909 488 181",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "17:00–04:00",
+                  "Thứ Hai": "17:00–04:00",
+                  "Thứ Ba": "17:00–04:00",
+                  "Thứ Tư": "17:00–04:00",
+                  "Thứ Năm": "17:00–04:00",
+                  "Thứ Sáu": "17:00–04:00",
+                  "Thứ Bảy": "17:00–04:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9628037356867564204",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20H%C3%B9ng%20X%C3%ADu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/hung-xiu",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909488181",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76344,106.69596",
+                "domain": "food",
+                "kind": "place",
+                "name": "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgvZBai_UjNhFukxoyy2P1d977tKX85L4jNvkks0lAjM13y0IRHO-E4CoQzZl9PLRccZGTB4z-4MDzoFgvU8eEJioIYCwfJx4j7d2aHMWhjDx42nNiOC236Mk9z3A4oYyfOUbUmx8DK-WT",
+                "address": "38 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 117,
+                "openingHours": "15:00–01:00",
+                "openNow": false,
+                "phone": "+84 877 044 242",
+                "openingHoursWeek": {
+                  "Thứ Hai": "15:00–01:00",
+                  "Thứ Ba": "15:00–01:00",
+                  "Thứ Tư": "15:00–01:00",
+                  "Thứ Năm": "15:00–01:00",
+                  "Thứ Sáu": "15:00–01:00",
+                  "Thứ Bảy": "15:00–01:00",
+                  "Chủ Nhật": "15:00–01:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2077509490893768302",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=INU%20EATERY%20M%E1%BB%B2%20CAY%20%7C%20M%E1%BB%B3%20Cay%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20%C4%82n%20V%E1%BA%B7t%20Tr%C3%A0%20S%E1%BB%AFa%20Ngon%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84877044242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk8g-4u4-udhZrojUlc4PILQvqhcHeCTvljFYQM2en5dOFccyrKZohuZAZuvjk_zEd9CUePC17GqUQNUsXi_acBbK9l_nCoziD5yeBKFj9mou1_q-3Cag6cEILVLmMAEUyhyyvazJ_RdhE",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77159,106.70338",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Thố Xá Lị - Tôn Thất Đạm",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmufkmjZwPqPuM35qrkQ3MIfXs-AZ2A2qk-1X1vgSZ0lJeGsUFVSLT_0HuvbJFDzMXAkWPZRiYn9VqgCAVACfBHQEzSYPnnHg2SJhP63VuwCAziLe3dUgUFecLY4_Yq67ySSVw8",
+                "address": "76/6 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 99,
+                "openingHours": "09:30–13:30",
+                "openNow": false,
+                "phone": "+84 28 3821 0929",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:30–13:30",
+                  "Thứ Ba": "09:30–13:30",
+                  "Thứ Tư": "09:30–13:30",
+                  "Thứ Năm": "09:30–13:30",
+                  "Thứ Sáu": "09:30–13:30",
+                  "Thứ Bảy": "09:30–13:30",
+                  "Chủ Nhật": "09:30–13:30"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15141118167541404616",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Th%E1%BB%91%20X%C3%A1%20L%E1%BB%8B%20-%20T%C3%B4n%20Th%E1%BA%A5t%20%C4%90%E1%BA%A1m%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838210929",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkonYXbnH145ATvHM3TI6C1hQI4qccnzcLtchtrKjEH6jyw6NlQcpST6A9m3FrTpojE_UTEJ2ogm5T8f5F8h8cRhP0_fUCjT0kiWxiwkHd09A6DmeQwtrMeCBk2bgFFrGfrw3Z",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6204,
+                "openingHours": "11:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Hai": "11:00–22:30",
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30",
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 4,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76943,106.69038",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Tân Hải Vân",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9CmvUVd9hZH8emddKlJuVw3UZ8wS-99WYdZS9MGxYErZLrv4eWc0UPPOWSqbTMgRlPzChSk66gZ4Bk81AV9OxshVBu2yd0FV8W7SYzuIRpL7TG7dL_Vy57KAydSvqVFy0mt47",
+                "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3401,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 901 301 428",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng Trung Quốc"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8546005621860637494",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20T%C3%A2n%20H%E1%BA%A3i%20V%C3%A2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.tanhaivan.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901301428",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76918,106.69048",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnhpQkw1CzSHsChwmBnZaNeqtsqsFHilDO3XwUWSi-uh3Cs1zkwCovbObdAwSAv4TQnrZ8tAmGEipi89H3v0muUHsg5Y0WUUHno4eJWZh-Ab5OvfyLKWg3CNShEpA59l-Czk20eow",
+                "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 2434,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 911 879",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1147451480670108994",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20D%C3%ACn%20K%C3%BD%20Nguy%E1%BB%85n%20Tr%C3%A3i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dinkynguyentrai.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902911879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77197,106.70523",
+                "domain": "food",
+                "kind": "place",
+                "name": "PHỞ HÀ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnuDR-HTaz5XfuSbMLelY8FuEwT0wWrcXstYwAn4dieGRxnPAntrdHyNFrmi6d-HI9R0tw3EnWYGyTLK1esBxS4WBl5C5wkTcWDcP9CpfuOfg3VXcNMRCJmxs-hnxW7npED0iV01w",
+                "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1050,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 333 135 797",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9423037160852756111",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=PH%E1%BB%9E%20H%C3%80%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84333135797",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20khuya%20quan%201",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà hàng Tân Hải Vân",
+              "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3401,
+              "price": null,
+              "categories": [
+                "Nhà hàng Trung Quốc"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.3",
+                "3401 reviews"
+              ]
+            },
+            {
+              "name": "Quán Ăn Hùng Xíu",
+              "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 76,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "17:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+              "address": "38 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 117,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "15:00–01:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Thố Xá Lị - Tôn Thất Đạm",
+              "address": "76/6 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 99,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "09:30–13:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ụt Ụt - Bến Thành",
+              "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 6204,
+              "price": null,
+              "categories": [
+                "Nhà hàng Mỹ",
+                "Nhà hàng món nướng",
+                "Quán bia sân vườn",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "11:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 2434,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "PHỞ HÀ",
+              "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1050,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76943,106.69038",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Tân Hải Vân",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn9CmvUVd9hZH8emddKlJuVw3UZ8wS-99WYdZS9MGxYErZLrv4eWc0UPPOWSqbTMgRlPzChSk66gZ4Bk81AV9OxshVBu2yd0FV8W7SYzuIRpL7TG7dL_Vy57KAydSvqVFy0mt47",
+                "address": "152 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3401,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 901 301 428",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng Trung Quốc"
+                ],
+                "rank": 5,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.3",
+                    "params": {
+                      "value": 4.3
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3401 reviews",
+                    "params": {
+                      "count": 3401
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@tanhaivan.restaurant/video/7431115019682729237",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8546005621860637494",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.tanhaivan.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901301428",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20T%C3%A2n%20H%E1%BA%A3i%20V%C3%A2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76994,106.69226",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Hùng Xíu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmlK83zAnt3DXeW26DGfVJxjG5l8ejL8_rQwZxN42KA4vl0-aZXfRCvsF4Hwp2fAy0WM0XcOQ5lf45Gm1Wrta-PPHVkPpT0UxEVzbs797FxNj6bMpGg8rcD4lI-xxmo8oUqka-J",
+                "address": "15 Nguyễn Văn Tráng, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 76,
+                "openingHours": "17:00–04:00",
+                "openNow": true,
+                "phone": "+84 909 488 181",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "17:00–04:00",
+                  "Thứ Hai": "17:00–04:00",
+                  "Thứ Ba": "17:00–04:00",
+                  "Thứ Tư": "17:00–04:00",
+                  "Thứ Năm": "17:00–04:00",
+                  "Thứ Sáu": "17:00–04:00",
+                  "Thứ Bảy": "17:00–04:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9628037356867564204",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20H%C3%B9ng%20X%C3%ADu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/hung-xiu",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84909488181",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76344,106.69596",
+                "domain": "food",
+                "kind": "place",
+                "name": "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgvZBai_UjNhFukxoyy2P1d977tKX85L4jNvkks0lAjM13y0IRHO-E4CoQzZl9PLRccZGTB4z-4MDzoFgvU8eEJioIYCwfJx4j7d2aHMWhjDx42nNiOC236Mk9z3A4oYyfOUbUmx8DK-WT",
+                "address": "38 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 117,
+                "openingHours": "15:00–01:00",
+                "openNow": false,
+                "phone": "+84 877 044 242",
+                "openingHoursWeek": {
+                  "Thứ Hai": "15:00–01:00",
+                  "Thứ Ba": "15:00–01:00",
+                  "Thứ Tư": "15:00–01:00",
+                  "Thứ Năm": "15:00–01:00",
+                  "Thứ Sáu": "15:00–01:00",
+                  "Thứ Bảy": "15:00–01:00",
+                  "Chủ Nhật": "15:00–01:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2077509490893768302",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=INU%20EATERY%20M%E1%BB%B2%20CAY%20%7C%20M%E1%BB%B3%20Cay%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20%C4%82n%20V%E1%BA%B7t%20Tr%C3%A0%20S%E1%BB%AFa%20Ngon%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84877044242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk8g-4u4-udhZrojUlc4PILQvqhcHeCTvljFYQM2en5dOFccyrKZohuZAZuvjk_zEd9CUePC17GqUQNUsXi_acBbK9l_nCoziD5yeBKFj9mou1_q-3Cag6cEILVLmMAEUyhyyvazJ_RdhE",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77159,106.70338",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Thố Xá Lị - Tôn Thất Đạm",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmufkmjZwPqPuM35qrkQ3MIfXs-AZ2A2qk-1X1vgSZ0lJeGsUFVSLT_0HuvbJFDzMXAkWPZRiYn9VqgCAVACfBHQEzSYPnnHg2SJhP63VuwCAziLe3dUgUFecLY4_Yq67ySSVw8",
+                "address": "76/6 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 99,
+                "openingHours": "09:30–13:30",
+                "openNow": false,
+                "phone": "+84 28 3821 0929",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:30–13:30",
+                  "Thứ Ba": "09:30–13:30",
+                  "Thứ Tư": "09:30–13:30",
+                  "Thứ Năm": "09:30–13:30",
+                  "Thứ Sáu": "09:30–13:30",
+                  "Thứ Bảy": "09:30–13:30",
+                  "Chủ Nhật": "09:30–13:30"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15141118167541404616",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Th%E1%BB%91%20X%C3%A1%20L%E1%BB%8B%20-%20T%C3%B4n%20Th%E1%BA%A5t%20%C4%90%E1%BA%A1m%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838210929",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76468,106.69844",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ụt Ụt - Bến Thành",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlkonYXbnH145ATvHM3TI6C1hQI4qccnzcLtchtrKjEH6jyw6NlQcpST6A9m3FrTpojE_UTEJ2ogm5T8f5F8h8cRhP0_fUCjT0kiWxiwkHd09A6DmeQwtrMeCBk2bgFFrGfrw3Z",
+                "address": "168 Võ Văn Kiệt, P, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 6204,
+                "openingHours": "11:00–22:30",
+                "openNow": false,
+                "phone": "+84 28 3914 4500",
+                "openingHoursWeek": {
+                  "Thứ Hai": "11:00–22:30",
+                  "Thứ Ba": "11:00–22:30",
+                  "Thứ Tư": "11:00–22:30",
+                  "Thứ Năm": "11:00–22:30",
+                  "Thứ Sáu": "11:00–22:30",
+                  "Thứ Bảy": "11:00–22:30",
+                  "Chủ Nhật": "11:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng Mỹ",
+                  "Nhà hàng món nướng",
+                  "Quán bia sân vườn",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 4,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15363423650517456835",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%E1%BB%A4t%20%E1%BB%A4t%20-%20B%E1%BA%BFn%20Th%C3%A0nh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839144500",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76918,106.69048",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnhpQkw1CzSHsChwmBnZaNeqtsqsFHilDO3XwUWSi-uh3Cs1zkwCovbObdAwSAv4TQnrZ8tAmGEipi89H3v0muUHsg5Y0WUUHno4eJWZh-Ab5OvfyLKWg3CNShEpA59l-Czk20eow",
+                "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 2434,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 911 879",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1147451480670108994",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20D%C3%ACn%20K%C3%BD%20Nguy%E1%BB%85n%20Tr%C3%A3i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://dinkynguyentrai.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902911879",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77197,106.70523",
+                "domain": "food",
+                "kind": "place",
+                "name": "PHỞ HÀ",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnuDR-HTaz5XfuSbMLelY8FuEwT0wWrcXstYwAn4dieGRxnPAntrdHyNFrmi6d-HI9R0tw3EnWYGyTLK1esBxS4WBl5C5wkTcWDcP9CpfuOfg3VXcNMRCJmxs-hnxW7npED0iV01w",
+                "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1050,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 333 135 797",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9423037160852756111",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=PH%E1%BB%9E%20H%C3%80%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84333135797",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20khuya%20quan%201",
+            "picked": [
+              "place:osm:10.76943,106.69038"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76943,106.69038"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán Ăn Hùng Xíu",
+          "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+          "Hàng Dương Quán Quận 1",
+          "Cơm Thố Xá Lị - Tôn Thất Đạm",
+          "Quán Ụt Ụt - Bến Thành",
+          "Nhà hàng Tân Hải Vân",
+          "Nhà hàng Dìn Ký Nguyễn Trãi",
+          "PHỞ HÀ"
+        ],
+        [
+          "Nhà hàng Tân Hải Vân",
+          "Quán Ăn Hùng Xíu",
+          "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+          "Hàng Dương Quán Quận 1",
+          "Cơm Thố Xá Lị - Tôn Thất Đạm",
+          "Quán Ụt Ụt - Bến Thành",
+          "Nhà hàng Dìn Ký Nguyễn Trãi",
+          "PHỞ HÀ"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn lẩu tối nay ở Quận 1 với tầm giá phổ thông. Tuy nhiên, kết quả tìm kiếm chủ yếu là các quán ăn khuya chung chung. Để gợi ý lẩu ngon chính xác hơn, mình cần bạn cho biết:\n\nTừ kết quả hiện có, **Nhà hàng Tân Hải Vân** (152 Nguyễn Trãi) có **4.3⭐ (3.401 đánh giá)** — chuyên Trung Quốc nên có lẩu, mở cả ngày. Nhưng mình chưa chắc chắn đó là lẩu bạn tìm.\n\n[FOLLOWUPS]Lẩu Thái|Lẩu Hải Sản|Lẩu Trung Quốc[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "visible": "Mình giả sử bạn muốn ăn lẩu tối nay ở Quận 1 với tầm giá phổ thông. Tuy nhiên, kết quả tìm kiếm chủ yếu là các quán ăn khuya chung chung. Để gợi ý lẩu ngon chính xác hơn, mình cần bạn cho biết:\n\nTừ kết quả hiện có, **Nhà hàng Tân Hải Vân** (152 Nguyễn Trãi) có **4.3⭐ (3.401 đánh giá)** — chuyên Trung Quốc nên có lẩu, mở cả ngày. Nhưng mình chưa chắc chắn đó là lẩu bạn tìm.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "preGuard": "Mình giả sử bạn muốn ăn lẩu tối nay ở Quận 1 với tầm giá phổ thông. Tuy nhiên, kết quả tìm kiếm chủ yếu là các quán ăn khuya chung chung. Để gợi ý lẩu ngon chính xác hơn, mình cần bạn cho biết:\n\n**Bạn muốn ăn lẩu loại nào?** (lẩu Thái, lẩu Trung Quốc, lẩu Hải Sản, lẩu Mỹ, hay lẩu Việt?)\n\nTừ kết quả hiện có, **Nhà hàng Tân Hải Vân** (152 Nguyễn Trãi) có **4.3⭐ (3.401 đánh giá)** — chuyên Trung Quốc nên có lẩu, mở cả ngày, có thể đặt bàn trực tiếp. Nhưng mình chưa chắc chắn đó là lẩu bạn tìm.\n\n[FOLLOWUPS]Lẩu Thái|Lẩu Hải Sản|Lẩu Trung Quốc[/FOLLOWUPS]"
+    },
+    {
+      "user": "bao lâu thì tới đó",
+      "status": 200,
+      "elapsedMs": 3441,
+      "usage": {
+        "promptTokens": 3,
+        "completionTokens": 249
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình cần biết bạn muốn ăn lẩu ở quán nào cụ thể để tính khoảng cách và thời gian đi.\n\nBạn có quán lẩu yêu thích nào rồi không, hay muốn mình tìm kiếm lẩu ngon ở Quận 1 trước? Nếu muốn mình tìm, bạn cho biết:\n\n- **Loại lẩu**: lẩu thái / lẩu Trung Quốc / lẩu cua / lẩu gà...\n\nSau đó mình sẽ gợi ý quán cụ thể và tính thời gian đi cho bạn 👍",
+      "visible": "Mình cần biết bạn muốn ăn lẩu ở quán nào cụ thể để tính khoảng cách và thời gian đi.\n\nBạn có quán lẩu yêu thích nào rồi không, hay muốn mình tìm kiếm lẩu ngon ở Quận 1 trước? Nếu muốn mình tìm, bạn cho biết:\n\n- **Loại lẩu**: lẩu thái / lẩu Trung Quốc / lẩu cua / lẩu gà...\n\nSau đó mình sẽ gợi ý quán cụ thể và tính thời gian đi cho bạn 👍",
+      "preGuard": "Mình cần biết bạn muốn ăn lẩu ở quán nào cụ thể để tính khoảng cách và thời gian đi. \n\nBạn có quán lẩu yêu thích nào rồi không, hay muốn mình tìm kiếm lẩu ngon ở Quận 1 trước? Nếu muốn mình tìm, bạn cho biết:\n- **Tầm giá**: dưới 100k / 100–200k / trên 200k mỗi người?\n- **Loại lẩu**: lẩu thái / lẩu Trung Quốc / lẩu cua / lẩu gà... hay không quan trọng?\n\nSau đó mình sẽ gợi ý quán cụ thể và tính thời gian đi cho bạn 👍"
+    },
+    {
+      "user": "trời mưa tối nay đi đâu chơi quận 1",
+      "status": 200,
+      "elapsedMs": 12570,
+      "usage": {
+        "promptTokens": 2251,
+        "completionTokens": 744
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "TP HCM"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán cà phê, karaoke, rạp phim, trung tâm thương mại trong nhà quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "entertainment"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Kingdom Karaoke",
+              "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 2068,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "10:00–05:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Karaoke Avatar",
+              "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 6411,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "12:00–05:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "NOWZONE Fashion Mall",
+              "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 6818,
+              "price": null,
+              "categories": [
+                "Trung tâm thương mại",
+                "Trà trân châu",
+                "Cửa hàng tiện lợi",
+                "Quán cà phê espresso",
+                "Khu ăn uống",
+                "Rạp chiếu phim",
+                "Công viên xe dã ngoại"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Karaoke SAFARI",
+              "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 452,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "11:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cinestar Quốc Thanh",
+              "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 6033,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76575,106.68248",
+                "domain": "food",
+                "kind": "place",
+                "name": "Kingdom Karaoke",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmAepIXSsLglidw8FV-XrXREkrgJ2x2dP9CTDZt1pfRTDFTdyOv3JV8Swi1jQQ8XgG01djghUtaTjIVhILzq1KXESymRuo9suO41cFpiguvBQEFqf4-pfqjWhS8e-UfAIBkDNKF",
+                "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 2068,
+                "openingHours": "10:00–05:00",
+                "openNow": true,
+                "phone": "+84 938 737 272",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–05:00",
+                  "Thứ Hai": "10:00–05:00",
+                  "Thứ Ba": "10:00–05:00",
+                  "Thứ Tư": "10:00–05:00",
+                  "Thứ Năm": "10:00–05:00",
+                  "Thứ Sáu": "10:00–05:00",
+                  "Thứ Bảy": "10:00–05:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 0,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4134951517314821589",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://kingdomkaraoke.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kingdom%20Karaoke%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938737272",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76589,106.68258",
+                "domain": "food",
+                "kind": "place",
+                "name": "Karaoke Avatar",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlYhMowv5ZorCJ_krH4kp-RwLqxgGfb-kn_D-4_gdasCPXOdASJ3Z6nFWQZ5Z-FZSuE1PGITqA_voBbRpd6e4Sl7GO-cR86AmBrCN-40r764LVOUZtsqzrUImu8MUazSR0imjnGNg",
+                "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 6411,
+                "openingHours": "12:00–05:00",
+                "openNow": true,
+                "phone": "+84 915 031 111",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "12:00–05:00",
+                  "Thứ Hai": "12:00–05:00",
+                  "Thứ Ba": "12:00–05:00",
+                  "Thứ Tư": "12:00–05:00",
+                  "Thứ Năm": "12:00–05:00",
+                  "Thứ Sáu": "12:00–05:00",
+                  "Thứ Bảy": "12:00–05:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15540783769004242466",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://karaokeavatar.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Karaoke%20Avatar%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84915031111",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76376,106.68265",
+                "domain": "food",
+                "kind": "place",
+                "name": "NOWZONE Fashion Mall",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmvkMZc2E6o1zjEWnaUGGK-XuqZrQ7VqFEsgjbjxAuW_S6mb_LHpsgAJ4W1vQr5sfY_Of5JwjgVTgKa02vxij4axKr3ynBfLo8JZBk_oU7gnQVZZh_tM74IaCV4dzl0WEMtWy4",
+                "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6818,
+                "phone": "+84 28 3925 1550",
+                "categories": [
+                  "Trung tâm thương mại",
+                  "Trà trân châu",
+                  "Cửa hàng tiện lợi",
+                  "Quán cà phê espresso",
+                  "Khu ăn uống",
+                  "Rạp chiếu phim",
+                  "Công viên xe dã ngoại"
+                ],
+                "rank": 2,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5445069449815588451",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nowzone.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=NOWZONE%20Fashion%20Mall%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839251550",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76781,106.68850",
+                "domain": "food",
+                "kind": "place",
+                "name": "Karaoke SAFARI",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnakTS0vSTJhW58LBAv-ZjI_SJtpFZ0W0X-VzGn7rmJ1ni2Y7lvi6YcCgQDt0ZIp4tEcpZhJiLgepCQqQWxrqBguTtYecmTP038rQkFizyHC-NKWBOvhVAZ6suh0zbfi4nOfyfVjGB0_dg",
+                "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 452,
+                "openingHours": "11:00–04:00",
+                "openNow": true,
+                "phone": "+84 899 202 568",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–04:00",
+                  "Thứ Hai": "11:00–04:00",
+                  "Thứ Ba": "11:00–04:00",
+                  "Thứ Tư": "11:00–04:00",
+                  "Thứ Năm": "11:00–04:00",
+                  "Thứ Sáu": "11:00–04:00",
+                  "Thứ Bảy": "11:00–04:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13874040439977271757",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Safari-Karaoke-109490391822168",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Karaoke%20SAFARI%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84899202568",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZmrznxgQ9J_RnGMzPH_vKBkMkrlmPewSn0dmaBu92HJncrC3PRXDHF33jyDpnEj-4cGm_TrG9Q6bnr6MM7l-DLNUPBLSma8W7aGAuC1Rk1QzuoasiCaYhX4Kc_pGQr_39FaQO",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76384,106.68735",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cinestar Quốc Thanh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmUYXkTjUKB4cqXMfRgu1h8hlIIEF-E_ib6rVL6nPzCwkRXX9myu3xVFrnJTFuJRZOYBn7AXWwuvn3TizFgjl4QUXhyBMJIJSbF4y3kAEsDr0PMXAriqV1eGL6_MHLY8Zd7q8A",
+                "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6033,
+                "phone": "+84 1900 0085",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15331409235007030248",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Cinestar%20Qu%E1%BB%91c%20Thanh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419000085",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%2C%20karaoke%2C%20r%E1%BA%A1p%20phim%2C%20trung%20t%C3%A2m%20th%C6%B0%C6%A1ng%20m%E1%BA%A1i%20trong%20nh%C3%A0%20qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Karaoke Avatar",
+              "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 6411,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "12:00–05:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.9",
+                "open now",
+                "6411 reviews"
+              ]
+            },
+            {
+              "name": "Kingdom Karaoke",
+              "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 2068,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "10:00–05:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "NOWZONE Fashion Mall",
+              "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 6818,
+              "price": null,
+              "categories": [
+                "Trung tâm thương mại",
+                "Trà trân châu",
+                "Cửa hàng tiện lợi",
+                "Quán cà phê espresso",
+                "Khu ăn uống",
+                "Rạp chiếu phim",
+                "Công viên xe dã ngoại"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Karaoke SAFARI",
+              "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 452,
+              "price": null,
+              "categories": [
+                "Quán bar karaoke"
+              ],
+              "hours": "11:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cinestar Quốc Thanh",
+              "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 6033,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76589,106.68258",
+                "domain": "food",
+                "kind": "place",
+                "name": "Karaoke Avatar",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlYhMowv5ZorCJ_krH4kp-RwLqxgGfb-kn_D-4_gdasCPXOdASJ3Z6nFWQZ5Z-FZSuE1PGITqA_voBbRpd6e4Sl7GO-cR86AmBrCN-40r764LVOUZtsqzrUImu8MUazSR0imjnGNg",
+                "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 6411,
+                "openingHours": "12:00–05:00",
+                "openNow": true,
+                "phone": "+84 915 031 111",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "12:00–05:00",
+                  "Thứ Hai": "12:00–05:00",
+                  "Thứ Ba": "12:00–05:00",
+                  "Thứ Tư": "12:00–05:00",
+                  "Thứ Năm": "12:00–05:00",
+                  "Thứ Sáu": "12:00–05:00",
+                  "Thứ Bảy": "12:00–05:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.9",
+                    "params": {
+                      "value": 4.9
+                    }
+                  },
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "6411 reviews",
+                    "params": {
+                      "count": 6411
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15540783769004242466",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@nguyenhuuphuoc87/video/7686689985394691349",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://karaokeavatar.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84915031111",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Karaoke%20Avatar%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76575,106.68248",
+                "domain": "food",
+                "kind": "place",
+                "name": "Kingdom Karaoke",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmAepIXSsLglidw8FV-XrXREkrgJ2x2dP9CTDZt1pfRTDFTdyOv3JV8Swi1jQQ8XgG01djghUtaTjIVhILzq1KXESymRuo9suO41cFpiguvBQEFqf4-pfqjWhS8e-UfAIBkDNKF",
+                "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 2068,
+                "openingHours": "10:00–05:00",
+                "openNow": true,
+                "phone": "+84 938 737 272",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–05:00",
+                  "Thứ Hai": "10:00–05:00",
+                  "Thứ Ba": "10:00–05:00",
+                  "Thứ Tư": "10:00–05:00",
+                  "Thứ Năm": "10:00–05:00",
+                  "Thứ Sáu": "10:00–05:00",
+                  "Thứ Bảy": "10:00–05:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 0,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4134951517314821589",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://kingdomkaraoke.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kingdom%20Karaoke%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938737272",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76376,106.68265",
+                "domain": "food",
+                "kind": "place",
+                "name": "NOWZONE Fashion Mall",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmvkMZc2E6o1zjEWnaUGGK-XuqZrQ7VqFEsgjbjxAuW_S6mb_LHpsgAJ4W1vQr5sfY_Of5JwjgVTgKa02vxij4axKr3ynBfLo8JZBk_oU7gnQVZZh_tM74IaCV4dzl0WEMtWy4",
+                "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6818,
+                "phone": "+84 28 3925 1550",
+                "categories": [
+                  "Trung tâm thương mại",
+                  "Trà trân châu",
+                  "Cửa hàng tiện lợi",
+                  "Quán cà phê espresso",
+                  "Khu ăn uống",
+                  "Rạp chiếu phim",
+                  "Công viên xe dã ngoại"
+                ],
+                "rank": 2,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5445069449815588451",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.nowzone.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=NOWZONE%20Fashion%20Mall%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842839251550",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76781,106.68850",
+                "domain": "food",
+                "kind": "place",
+                "name": "Karaoke SAFARI",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnakTS0vSTJhW58LBAv-ZjI_SJtpFZ0W0X-VzGn7rmJ1ni2Y7lvi6YcCgQDt0ZIp4tEcpZhJiLgepCQqQWxrqBguTtYecmTP038rQkFizyHC-NKWBOvhVAZ6suh0zbfi4nOfyfVjGB0_dg",
+                "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 452,
+                "openingHours": "11:00–04:00",
+                "openNow": true,
+                "phone": "+84 899 202 568",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–04:00",
+                  "Thứ Hai": "11:00–04:00",
+                  "Thứ Ba": "11:00–04:00",
+                  "Thứ Tư": "11:00–04:00",
+                  "Thứ Năm": "11:00–04:00",
+                  "Thứ Sáu": "11:00–04:00",
+                  "Thứ Bảy": "11:00–04:00"
+                },
+                "categories": [
+                  "Quán bar karaoke"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13874040439977271757",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/Safari-Karaoke-109490391822168",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Karaoke%20SAFARI%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84899202568",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkZmrznxgQ9J_RnGMzPH_vKBkMkrlmPewSn0dmaBu92HJncrC3PRXDHF33jyDpnEj-4cGm_TrG9Q6bnr6MM7l-DLNUPBLSma8W7aGAuC1Rk1QzuoasiCaYhX4Kc_pGQr_39FaQO",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76384,106.68735",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cinestar Quốc Thanh",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmUYXkTjUKB4cqXMfRgu1h8hlIIEF-E_ib6rVL6nPzCwkRXX9myu3xVFrnJTFuJRZOYBn7AXWwuvn3TizFgjl4QUXhyBMJIJSbF4y3kAEsDr0PMXAriqV1eGL6_MHLY8Zd7q8A",
+                "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6033,
+                "phone": "+84 1900 0085",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 5,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15331409235007030248",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@cinestarquocthanh/video/7676721698053393682",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419000085",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Cinestar%20Qu%E1%BB%91c%20Thanh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%2C%20karaoke%2C%20r%E1%BA%A1p%20phim%2C%20trung%20t%C3%A2m%20th%C6%B0%C6%A1ng%20m%E1%BA%A1i%20trong%20nh%C3%A0%20qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76589,106.68258",
+              "place:osm:10.76376,106.68265",
+              "place:osm:10.76384,106.68735"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76589,106.68258",
+            "place:osm:10.76376,106.68265",
+            "place:osm:10.76384,106.68735"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Kingdom Karaoke",
+          "Karaoke Avatar",
+          "NOWZONE Fashion Mall",
+          "Karaoke SAFARI",
+          "Hàng Dương Quán Quận 1",
+          "Cinestar Quốc Thanh"
+        ],
+        [
+          "Karaoke Avatar",
+          "Kingdom Karaoke",
+          "NOWZONE Fashion Mall",
+          "Karaoke SAFARI",
+          "Hàng Dương Quán Quận 1",
+          "Cinestar Quốc Thanh"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Tối nay ở TP HCM có mưa rải rác, nhiệt độ 26°C, độ ẩm cao (89%) — lý tưởng để ở trong nhà chơi 🎤☕\n\nMình gợi ý **Karaoke Avatar** — **4.9⭐ (6.411 đánh giá Google Maps)**, dang mở từ 12:00–05:00. Quán này có rating cao nhất, đông khách, phòng sạch sẽ và âm thanh tốt.\n\nNếu muốn thay đổi, còn có:\n\n- **Cinestar Quốc Thanh** (4.2⭐, 6.033 đánh giá) — rạp phim, xem phim là lựa chọn thoải mái khi trời mưa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🏬 NOWZONE Fashion Mall\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5445069449815588451\",\"primary\":false},{\"label\":\"🎬 Cinestar Quốc Thanh\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15331409235007030248\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke|xem phim|ăn gì trước[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "visible": "Tối nay ở TP HCM có mưa rải rác, nhiệt độ 26°C, độ ẩm cao (89%) — lý tưởng để ở trong nhà chơi 🎤☕\n\nMình gợi ý **Karaoke Avatar** — **4.9⭐ (6.411 đánh giá Google Maps)**, dang mở từ 12:00–05:00. Quán này có rating cao nhất, đông khách, phòng sạch sẽ và âm thanh tốt.\n\nNếu muốn thay đổi, còn có:\n\n- **Cinestar Quốc Thanh** (4.2⭐, 6.033 đánh giá) — rạp phim, xem phim là lựa chọn thoải mái khi trời mưa.\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?",
+      "preGuard": "Tối nay ở TP HCM có mưa rải rác, nhiệt độ 26°C, độ ẩm cao (89%) — lý tưởng để ở trong nhà chơi 🎤☕\n\nMình gợi ý **Karaoke Avatar** — **4.9⭐ (6.411 đánh giá Google Maps)**, dang mở từ 12:00–05:00. Quán này có rating cao nhất, đông khách, phòng sạch sẽ và âm thanh tốt. Địa chỉ: 61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Quận 1.\n\nNếu muốn thay đổi, còn có:\n- **NOWZONE Fashion Mall** (4.2⭐, 6.818 đánh giá) — trung tâm thương mại lớn, có rạp phim, quán cà phê, ăn uống đa dạng, phù hợp nếu muốn chơi nhiều thứ.\n- **Cinestar Quốc Thanh** (4.2⭐, 6.033 đánh giá) — rạp phim, xem phim là lựa chọn thoải mái khi trời mưa.\n\nBạn muốn karaoke hay xem phim hơn? 🎬\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎤 Karaoke Avatar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15540783769004242466\",\"primary\":true},{\"label\":\"🏬 NOWZONE Fashion Mall\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5445069449815588451\",\"primary\":false},{\"label\":\"🎬 Cinestar Quốc Thanh\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15331409235007030248\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke|xem phim|ăn gì trước[/FOLLOWUPS]"
+    },
+    {
+      "user": "mùa này đi Đà Lạt có đẹp không",
+      "status": 200,
+      "elapsedMs": 6350,
+      "usage": {
+        "promptTokens": 3,
+        "completionTokens": 410
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mùa này (cuối tháng 9) Đà Lạt đang vào mùa mưa — trời hay mây mù, sương mù dày vào sáng sớm và chiều tối, nhưng cũng có những ngày nắng đẹp xen kẽ. Nhiệt độ mát mẻ quanh 18–22°C, lý tưởng để tránh nóng TP HCM 🌤️\n\n**Điểm cộng:**\n- Thời tiết mát, không nóng bức\n- Ít du khách so với mùa hè (giá phòng rẻ hơn)\n\nBạn định đi Đà Lạt khi nào?",
+      "visible": "Mùa này (cuối tháng 9) Đà Lạt đang vào mùa mưa — trời hay mây mù, sương mù dày vào sáng sớm và chiều tối, nhưng cũng có những ngày nắng đẹp xen kẽ. Nhiệt độ mát mẻ quanh 18–22°C, lý tưởng để tránh nóng TP HCM 🌤️\n\n**Điểm cộng:**\n- Thời tiết mát, không nóng bức\n- Ít du khách so với mùa hè (giá phòng rẻ hơn)\n\nBạn định đi Đà Lạt khi nào?",
+      "preGuard": "Mùa này (cuối tháng 9) Đà Lạt đang vào mùa mưa — trời hay mây mù, sương mù dày vào sáng sớm và chiều tối, nhưng cũng có những ngày nắng đẹp xen kẽ. Nhiệt độ mát mẻ quanh 18–22°C, lý tưởng để tránh nóng TP HCM 🌤️\n\n**Điểm cộng:**\n- Thời tiết mát, không nóng bức\n- Ít du khách so với mùa hè (giá phòng rẻ hơn)\n- Cảnh sắc xanh mướt, hoa nở đẹp\n\n**Điểm trừ:**\n- Mưa có thể ảnh hưởng kế hoạch tham quan ngoài trời\n- Một số đường núi có thể trơn trượt\n\n**Lời khuyên:** Mang áo khoác, ô, và chuẩn bị kế hoạch trong nhà (thăm bảo tàng, cafe, chợ đêm) để phòng trường hợp mưa.\n\nBạn định đi Đà Lạt khi nào? Mình có thể giúp tìm khách sạn, quán ăn, hoặc hoạt động vui chơi phù hợp với thời tiết mưa 👍"
+    }
+  ]
+}

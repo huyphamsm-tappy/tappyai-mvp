@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:23:29.887Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Bluzen Đà Nẵng (Bluzen Hotel Da Nang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87886144/0/a4e82b1152c8082e630a2b8c4b23fe20.jpg?va=1&ce=3&s=1024x768",
+    "imageWidth": 614,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUBHJwzRspOhpw5Ce4g57fyX5sFearVtcC56mjm1f51g&s",
+    "thumbnailWidth": 201,
+    "thumbnailHeight": 251,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bluzen-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87886144%2F0%2Fa4e82b1152c8082e630a2b8c4b23fe20.jpg%3Fva%3D1%26ce%3D3%26s%3D1024x768&tbnid=3qjWIfHvqatRzM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbluzen-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=NQA9eW3oKjlOqM&w=614&h=768",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Bluzen Đà Nẵng (Bluzen Hotel Da Nang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87886144/1374208023/de0219fc0ef97c60c277409ac55ff792.jpg?va=1&ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPmy2SQVWJjequSt1lKj1d-WbBfS8iLCrZGBfQ30Ve1A&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bluzen-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87886144%2F1374208023%2Fde0219fc0ef97c60c277409ac55ff792.jpg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=paLrZphKerGtPM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbluzen-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=NQA9eW3oKjlOqM&w=348&h=232",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Bluzen Đà Nẵng (Bluzen Hotel Da Nang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87886144/1374208024/5299756050d6be2eba486230236253fb.jpg?va=1&ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnA-2Xf8M778hmA5vdv5S7FdeyaEJYWOD6PZv3fMkhWg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bluzen-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87886144%2F1374208024%2F5299756050d6be2eba486230236253fb.jpg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=Mam7oNQV9b-qoM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbluzen-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=NQA9eW3oKjlOqM&w=348&h=232",
+    "position": 3
+   },
+   {
+    "title": "Bluzen Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/863037934.jpg?k=8f943f63a931da93e6087400505da0ac1887b3d44ada830dab8083d2f65f34b3&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsoez9ehZb1qHLfyCcXb8Mn558oBNV9d8KbBcWS5NXPw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bluzen.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F863037934.jpg%3Fk%3D8f943f63a931da93e6087400505da0ac1887b3d44ada830dab8083d2f65f34b3%26o%3D&tbnid=pDYakdQya40AGM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbluzen.vi.html&docid=vRbJCRPikAT2-M&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Bluzen Đà Nẵng (Bluzen Hotel Da Nang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87886144/0/ebb973049997f39faf871b6d53d922dc.jpg?va=1&ce=3&s=800x600",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhSANe7JKq5HEMJpzrSYxu0d95fS6q4fxUXlPI4BkE3Q&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bluzen-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87886144%2F0%2Febb973049997f39faf871b6d53d922dc.jpg%3Fva%3D1%26ce%3D3%26s%3D800x600&tbnid=5UJ4xfXF77mG-M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbluzen-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=NQA9eW3oKjlOqM&w=800&h=533",
+    "position": 5
+   },
+   {
+    "title": "Bluzen Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/863038021.jpg?k=7d711780bc1dc1c22152da96c4c771d79e8bd35be3d70a55f74dfb856589f965&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgHMTGs3mnX0svTp8GlrCHFrfErVohEtozhCYAEJkgCg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bluzen.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F863038021.jpg%3Fk%3D7d711780bc1dc1c22152da96c4c771d79e8bd35be3d70a55f74dfb856589f965%26o%3D&tbnid=xoi3z8wrSOz0gM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbluzen.vi.html&docid=vRbJCRPikAT2-M&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Bluzen Đà Nẵng (Bluzen Hotel Da Nang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87886144/1374208022/dad995c3db231883de66b364d724f683.jpg?va=1&ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWEy_F9206kt0uOohN14XFGSGgitHThLRk5OBEzbeJ5g&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bluzen-hotel-da-nang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87886144%2F1374208022%2Fdad995c3db231883de66b364d724f683.jpg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=vMnemKZ-XNCZ_M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbluzen-hotel-da-nang%2Fhotel%2Fda-nang-vn.html&docid=NQA9eW3oKjlOqM&w=348&h=232",
+    "position": 7
+   },
+   {
+    "title": "✨BLUZEN HOTEL - KHÁCH SẠN 7 TẦNG | QUY MÔ 900M²✨ Bluzen Hotel gây ấn tượng  ngay từ cái nhìn đầu tiên với hình khối kiến trúc cao tầng gọn gàng, đường",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1395748848918551",
+    "imageWidth": 2048,
+    "imageHeight": 1862,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQKXVLrXgJk3l_F4bNFa7H3odHw_iJ3rl98TmTG8OBOw&s=10",
+    "thumbnailWidth": 580,
+    "thumbnailHeight": 528,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/trianconstruction/posts/bluzen-hotel-kh%C3%A1ch-s%E1%BA%A1n-7-t%E1%BA%A7ng-quy-m%C3%B4-900m%C2%B2bluzen-hotel-g%C3%A2y-%E1%BA%A5n-t%C6%B0%E1%BB%A3ng-ngay-t%E1%BB%AB-c%C3%A1i-/1395749258918510/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1395748848918551&tbnid=arMh1fLOLtaWfM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Ftrianconstruction%2Fposts%2Fbluzen-hotel-kh%25C3%25A1ch-s%25E1%25BA%25A1n-7-t%25E1%25BA%25A7ng-quy-m%25C3%25B4-900m%25C2%25B2bluzen-hotel-g%25C3%25A2y-%25E1%25BA%25A5n-t%25C6%25B0%25E1%25BB%25A3ng-ngay-t%25E1%25BB%25AB-c%25C3%25A1i-%2F1395749258918510%2F&docid=Ur-DgujIKQ4R-M&w=2048&h=1862",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

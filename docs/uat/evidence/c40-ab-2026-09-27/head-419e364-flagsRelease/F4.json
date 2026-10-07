@@ -1,0 +1,186 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 18387,
+  "evidenceId": "647507d9-c08f-41e9-abcc-e225bab4c072",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn trưa gia đình 6 người có chỗ đậu xe ô tô Phú Nhuận",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CƠM KHAY GỖ",
+      "rating": 4.8,
+      "count": 931,
+      "hours": "10:00–21:00",
+      "address": "214 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.7,
+      "count": 2114,
+      "hours": "10:30–21:30",
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Hoàng Tâm - Phan Xích Long",
+      "rating": 4.5,
+      "count": 1662,
+      "hours": "06:30–22:00",
+      "address": "352 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "hours": "15:00–05:00",
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 410,
+      "hours": "07:00–22:00",
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm Hẻm 33",
+      "rating": 4.3,
+      "count": 576,
+      "hours": "06:30–11:00, 17:30–21:30",
+      "address": "33/16 Đ. Nguyễn Đình Chính, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Hoa viên Tri Kỷ",
+      "rating": 4.1,
+      "count": 1858,
+      "hours": "06:30–23:00",
+      "address": "123 Hồng Hà, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Ngõ 8",
+      "rating": 4.1,
+      "count": 1246,
+      "hours": "15:00–23:30",
+      "address": "8 Cù Lao, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Quê Mười Khó 2",
+      "rating": 3.9,
+      "count": 767,
+      "hours": "10:00–22:00",
+      "address": "8 Đ. Nguyễn Văn Trỗi, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Hoàng Ty 74 Trương Quốc Dung",
+      "rating": 3.9,
+      "count": 71,
+      "hours": "10:00–22:00",
+      "address": "74 Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CƠM KHAY GỖ",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 931,
+        "open_now": true,
+        "opening_hours": "10:00–21:00"
+      }
+    },
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 2114,
+        "open_now": true,
+        "opening_hours": "10:30–21:30"
+      }
+    },
+    {
+      "name": "Nhà hàng Hoàng Tâm - Phan Xích Long",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 1662,
+        "open_now": true,
+        "opening_hours": "06:30–22:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nít, có chỗ đậu xe ô tô nhé.Mình gợi ý **Cơm Khay Gỗ** — quán gia đình lý tưởng cho bữa trưa cuối tuần với 6 người 👨‍👩‍👧‍👦\n\n**4.8⭐ (931 đánh giá Google Maps)**\n📍 214 Nguyễn Trọng Tuyển, Phú Nhuận\n⏰ 10:00–21:00 (mở cửa)\n\nQuán chuyên cơm, lẩu, mì — đa dạng món ăn phù hợp cả lớn lẫn bé. Không gian rộng.\n\nHai lựa chọn khác cũng tốt: **Tám Riêu** (4.7⭐, 2.114 đánh giá) hoặc **Nhà hàng Hoàng Tâm** (4.5⭐, 1.662 đánh giá) — cả hai đều ở Phan Xích Long, gần nhau.\n\nBạn muốn xem thêm chi tiết hoặc cần gợi ý về loại món ăn cụ thể không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán khác ở Phú Nhuận|Gợi ý món ăn cho con nít|Quán có khu vui chơi cho trẻ[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nít, có chỗ đậu xe ô tô nhé.Mình gợi ý **Cơm Khay Gỗ** — quán gia đình lý tưởng cho bữa trưa cuối tuần với 6 người 👨‍👩‍👧‍👦\n\n**4.8⭐ (931 đánh giá Google Maps)**\n📍 214 Nguyễn Trọng Tuyển, Phú Nhuận\n⏰ 10:00–21:00 (mở cửa)\n\nQuán chuyên cơm, lẩu, mì — đa dạng món ăn phù hợp cả lớn lẫn bé. Không gian rộng.\n\nHai lựa chọn khác cũng tốt: **Tám Riêu** (4.7⭐, 2.114 đánh giá) hoặc **Nhà hàng Hoàng Tâm** (4.5⭐, 1.662 đánh giá) — cả hai đều ở Phan Xích Long, gần nhau.\n\nBạn muốn xem thêm chi tiết hoặc cần gợi ý về loại món ăn cụ thể không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Khay Gỗ\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17441684341141711614\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán khác ở Phú Nhuận|Gợi ý món ăn cho con nít|Quán có khu vui chơi cho trẻ[/FOLLOWUPS]"
+    }
+  ]
+}

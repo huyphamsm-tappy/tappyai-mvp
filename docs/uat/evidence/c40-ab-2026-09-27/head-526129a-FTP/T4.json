@@ -1,0 +1,174 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 14593,
+  "evidenceId": "483231af-9247-45e0-a0e4-7a38eaafd291",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction",
+        "location": "sai gon"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3284,
+      "hours": "Đóng cửa",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Nước Đầm Sen",
+      "rating": 4.3,
+      "count": 36027,
+      "hours": "09:00–17:30",
+      "distance_km": 7.1,
+      "address": "3 Hòa Bình, Bình Thới, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36885,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên văn hóa Suối Tiên",
+      "rating": 4.3,
+      "count": 22902,
+      "hours": "08:00–17:00",
+      "distance_km": 14.9,
+      "address": "120 Song Hành Xa Lộ Hà Nội, Tăng Nhơn Phú, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8514,
+      "hours": "14:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé",
+      "rating": 4.5,
+      "count": 195,
+      "hours": "15:30–21:30",
+      "distance_km": 6.5,
+      "address": "908 Tạ Quang Bửu, Bình Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+      "rating": 4.2,
+      "count": 378,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Khu du lịch Đầm Sen Cổng 2",
+      "rating": 4.1,
+      "count": 64,
+      "distance_km": 7,
+      "address": "QJ9Q+G2C, Bình Thới, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn tìm một địa điểm vui chơi phù hợp cho gia đình 4 người vào cuối tuần. Mình gợi ý **Thảo Cầm Viên Sài Gòn** — cách bạn chỉ ~1.2km, rất gần và thuận tiện. Nơi đây có 4.3⭐ từ 36.885 đánh giá Google Maps, là điểm đến lý tưởng cho gia đình với các bé nhỏ, vừa xem động vật vừa thoải mái đi bộ. Mở cửa từ 7h-18h30, nên bạn có thể đi sáng hoặc chiều.\n\nNếu muốn chơi nước, **Công Viên Nước Đầm Sen** cũng rất phổ biến (4.3⭐, 36.027 đánh giá), cách ~7.1km, mở 9h-17h30 — hoàn hảo cho ngày hè cuối tuần.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"🎢 Xem Đầm Sen trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15688581395936079051\",\"primary\":false},{\"label\":\"🎪 Xem Vietopia trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16351191221892170681\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên có gì hay|Đầm Sen nước mấy độ|Vietopia giá vé bao nhiêu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn tìm một địa điểm vui chơi phù hợp cho gia đình 4 người vào cuối tuần. Mình gợi ý **Thảo Cầm Viên Sài Gòn** — cách bạn chỉ ~1.2km, rất gần và thuận tiện. Nơi đây có 4.3⭐ từ 36.885 đánh giá Google Maps, là điểm đến lý tưởng cho gia đình với các bé nhỏ, vừa xem động vật vừa thoải mái đi bộ. Mở cửa từ 7h-18h30, nên bạn có thể đi sáng hoặc chiều.\n\nNếu muốn chơi nước, **Công Viên Nước Đầm Sen** cũng rất phổ biến (4.3⭐, 36.027 đánh giá), cách ~7.1km, mở 9h-17h30 — hoàn hảo cho ngày hè cuối tuần.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Thảo Cầm Viên trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"🎢 Xem Đầm Sen trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15688581395936079051\",\"primary\":false},{\"label\":\"🎪 Xem Vietopia trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16351191221892170681\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thảo Cầm Viên có gì hay|Đầm Sen nước mấy độ|Vietopia giá vé bao nhiêu[/FOLLOWUPS]"
+    }
+  ]
+}

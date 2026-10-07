@@ -1,0 +1,25 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 4686,
+  "evidenceId": "8f12c3c4-097e-443d-adca-df4ea3592189",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn bay tuần sau (khoảng 2-5 tháng 10) và tìm giá rẻ nhất. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào?** (vd: 2-3 tháng 10, hay cuối tuần 4-5 tháng 10?)\n\nCòn nếu bạn muốn mình tìm luôn với ngày gần nhất tuần sau, mình sẽ check ngay! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn bay tuần sau (khoảng 2-5 tháng 10) và tìm giá rẻ nhất. Để gợi ý chính xác, mình cần biết:\n\n**Ngày cụ thể nào?** (vd: 2-3 tháng 10, hay cuối tuần 4-5 tháng 10?)\n\nCòn nếu bạn muốn mình tìm luôn với ngày gần nhất tuần sau, mình sẽ check ngay! 😊"
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bánh Cuốn Nóng Cao Bằng (site:food.grab.com/vn OR site:shopeefood.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:57.699Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bánh Cuốn Nóng Cao Bằng (site:food.grab.com/vn OR site:shopeefood.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phúc Lợi Food - Bánh Cuốn Nóng Cao Bằng",
+    "link": "https://shopeefood.vn/ho-chi-minh/phuc-loi-food-bo-kho-tho-banh-cuon-cao-bang?source_url=foody_ordernow_mobile",
+    "snippet": "Xem menu & đặt món trực tuyến từ Phúc Lợi Food - Bánh Cuốn Nóng Cao Bằng rất dễ dàng. Giao hàng tận nơi trong vòng ít phút.",
+    "position": 1
+   },
+   {
+    "title": "Bánh Cuốn Cao Bằng - 4 Đường Số 5B",
+    "link": "https://shopeefood.vn/ho-chi-minh/banh-cuon-minh-tham-banh-cuon-cao-bang-4-duong-so-5b",
+    "snippet": "Bánh Cuốn Minh Thắm - Bánh Cuốn Cao Bằng - 4 Đường Số 5B. 4 Đường Số 5B, Bình Tân, TP. HCM. Mở cửa. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, ...",
+    "position": 2
+   },
+   {
+    "title": "Bánh Cuốn Cao Bằng - Kiều Mai",
+    "link": "https://shopeefood.vn/ha-noi/banh-cuon-cao-bang-kieu-mai",
+    "snippet": "Số 2 Ngõ 2 Kiều Mai, P. Phúc Diễn, Bắc Từ Liêm, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt ...",
+    "position": 3
+   },
+   {
+    "title": "Bánh Cuốn Cao Bằng ⭐ 3.7",
+    "link": "https://food.grab.com/vn/vi/restaurant/b%C3%A1nh-cu%E1%BB%91n-cao-b%E1%BA%B1ng-delivery/5-C7K3NT63SGM2EX",
+    "snippet": "Bánh Cuốn Cao Bằng : bánh cuốn nóng + chả quế. bánh cuốn nóng + chả quế. bánh cuốn nóng ( 4 bánh ) nước mắm chua ngọt + hành phi thơm. 45.000. Chúng tôi luôn cố ...",
+    "rating": 3.7,
+    "ratingCount": 35,
+    "position": 4
+   },
+   {
+    "title": "Phúc Lợi Food - Bánh Cuốn Nóng Cao Bằng",
+    "link": "https://shopeefood.vn/ho-chi-minh/phuc-loi-food-banh-cuon-nong-cao-bang",
+    "snippet": "Phúc Lợi Food - Bánh Cuốn Nóng Cao Bằng. V3 - 17 The Manhattan Glory, The Manhattan, Vinhome Grand Park, P. Long Bình, Thành Phố Thủ Đức, TP. HCM.",
+    "position": 5
+   },
+   {
+    "title": "Bánh Cuốn Cao Bằng & Phở Vịt Quay ⭐ 3.7",
+    "link": "https://food.grab.com/vn/vi/restaurant/b%C3%A1nh-cu%E1%BB%91n-cao-b%E1%BA%B1ng-ph%E1%BB%9F-v%E1%BB%8Bt-quay-delivery/5-C7AUJK5ZANWYUE",
+    "snippet": "30.000. Bánh Cuốn Cao Bằng & Phở Vịt Quay : Bánh Bò. Bánh Bò. 42/1c như ảnh ạ. nguyên chất ạ. 42.000. Bánh cuốn nóng – thịt băm, canh xương. Bánh Cuốn Cao Bằng ...",
+    "rating": 3.7,
+    "ratingCount": 117,
+    "position": 6
+   },
+   {
+    "title": "Bánh Cuốn Cao Bằng - Hạnh Dũng - 89 Hoàng Cầu",
+    "link": "https://shopeefood.vn/ha-noi/banh-cuon-cao-bang-hanh-dung-89-hoang-cau",
+    "snippet": "89 Hoàng Cầu, P. Ô Chợ Dừa, Đống Đa, Hà Nội. Đã đóng. Quán được gắn nhãn Yêu thích là Quán Yêu Thích, gồm những quán đạt chất lượng dịch vụ vượt trội và ...",
+    "position": 7
+   },
+   {
+    "title": "An Huy Quán Bánh Cuốn Nóng Phở Vịt Cao Bằng",
+    "link": "https://shopeefood.vn/ha-noi/an-huy-quan-banh-cuon-nong-pho-vit-cao-bang-long-bien",
+    "snippet": "An Huy Quán Bánh Cuốn Nóng Phở Vịt Cao Bằng - Long Biên. Số 4 Lô 9 Khu Tái Định Cư Phố Trạm Long Biên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

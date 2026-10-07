@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Điện thoại cũ giá rẻ T09/2026, đẹp như mới",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:54:31.941Z",
+ "body": {
+  "searchParameters": {
+   "q": "Điện thoại cũ giá rẻ T09/2026, đẹp như mới",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Điện thoại cũ giá rẻ T9/2026, Trả góp 0%",
+    "imageUrl": "https://cdni.dienthoaivui.com.vn/x,webp,q100/https://media-asset.dienthoaivui.com.vn/uploads/wp-content/uploads/images/dien-thoai-cu-gia-re.jpg",
+    "imageWidth": 840,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbn95MwTXCcOdlRA0eoHI3GLdgjb9dOrLcRUHOJmpkLg&s=10",
+    "thumbnailWidth": 580,
+    "thumbnailHeight": 344,
+    "source": "Điện Thoại Vui",
+    "domain": "dienthoaivui.com.vn",
+    "link": "https://dienthoaivui.com.vn/may-cu/dien-thoai-cu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdni.dienthoaivui.com.vn%2Fx%2Cwebp%2Cq100%2Fhttps%3A%2F%2Fmedia-asset.dienthoaivui.com.vn%2Fuploads%2Fwp-content%2Fuploads%2Fimages%2Fdien-thoai-cu-gia-re.jpg&tbnid=EnqO9MKs1MuL6M&imgrefurl=https%3A%2F%2Fdienthoaivui.com.vn%2Fmay-cu%2Fdien-thoai-cu&docid=s_v0WTMLbl8b9M&w=840&h=500",
+    "position": 1
+   },
+   {
+    "title": "Điện thoại mới nhất - sắp ra mắt 09/2026 | Giá rẻ, có thu cũ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/o/p/oppo-reno15-f-03_15.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQX1hJlEE8Ap1ZyQWh3xUalIKHHb7AhDA8Jy9qwex2gUA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/mobile/hang-sap-ve.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fo%2Fp%2Foppo-reno15-f-03_15.jpg&tbnid=d23Tqo1ZD3cn6M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmobile%2Fhang-sap-ve.html&docid=UiRgaNUdG7v96M&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "Điện Thoại Cũ Giá Rẻ Dưới 2 Triệu 09/2026",
+    "imageUrl": "https://cdn.chotot.com/GuKLhOlxsOhWSVOOY1MSPO2RNqJ6opSpo5WUpF9PAKw/preset:listing/plain/1e689991a255ec1c6f6c62cbcf05b9bf-3003959348725215867.jpg",
+    "imageWidth": 300,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxCcSNnHOkl3Vx-ChUHRp5yhFx-KU9Rfazq_QXcdC_xA&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Chợ Tốt",
+    "domain": "www.chotot.com",
+    "link": "https://www.chotot.com/tags/mua-ban-dien-thoai/dien-thoai-duoi-2-trieu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.chotot.com%2FGuKLhOlxsOhWSVOOY1MSPO2RNqJ6opSpo5WUpF9PAKw%2Fpreset%3Alisting%2Fplain%2F1e689991a255ec1c6f6c62cbcf05b9bf-3003959348725215867.jpg&tbnid=EN6o95GuemhS7M&imgrefurl=https%3A%2F%2Fwww.chotot.com%2Ftags%2Fmua-ban-dien-thoai%2Fdien-thoai-duoi-2-trieu&docid=CvqrSjPL6cZ6vM&w=300&h=400",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại Xiaomi cũ | Máy đẹp, đủ VAT, giá tốt 09/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-redmi-note-17-purple_3.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR32tHH5gmE_5Xcqn1GxUEZEE1xEJ-aK-ISo-V35IbU5g&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/hang-cu/xiaomi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fx%2Fi%2Fxiaomi-redmi-note-17-purple_3.jpg&tbnid=aA1Oh8a4NVXUZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fhang-cu%2Fxiaomi.html&docid=my3Zzg40a0omnM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Top 10 điện thoại cũ giá rẻ cho sinh viên đáng mua nhất 2026",
+    "imageUrl": "https://static.chotot.com/storage/chotot-kinhnghiem/c2c/2026/05/0bc7e31c-dien-thoai-sinh-vien.webp",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo9Xv-akli97OHDFZGrZPtWYpq2IZvZmLZtPQwae8NFw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Chợ Tốt",
+    "domain": "www.chotot.com",
+    "link": "https://www.chotot.com/kinh-nghiem/dien-thoai-cu-gia-re-cho-sinh-vien.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.chotot.com%2Fstorage%2Fchotot-kinhnghiem%2Fc2c%2F2026%2F05%2F0bc7e31c-dien-thoai-sinh-vien.webp&tbnid=1oX8PLvrNOykvM&imgrefurl=https%3A%2F%2Fwww.chotot.com%2Fkinh-nghiem%2Fdien-thoai-cu-gia-re-cho-sinh-vien.html&docid=4x6K_lrdXndsSM&w=800&h=533",
+    "position": 5
+   },
+   {
+    "title": "iPhone cũ giá rẻ tháng 09/2026, dùng thử 7 ngày cho S-Edu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus-256gb-color-pink-image_3_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/hang-cu/iphone.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-15-plus-256gb-color-pink-image_3_1.png&tbnid=_fKJ86ilSLOVFM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fhang-cu%2Fiphone.html&docid=m1jWNIW0sl97hM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Mua bán điện thoại cũ tại Huyện Đức Thọ, Hà Tĩnh giá rẻ, like new 28/09/2026",
+    "imageUrl": "https://cdn.chotot.com/FP50wpqfa8F5Cf0BP1CtTZXkUYxbNRTVdF2uphB43k4/preset:listing/plain/a09474e2e120b130cfa77423b6882c56-3003970116795749196.jpg",
+    "imageWidth": 300,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqRLebNc5zHXlk_zMtIjiMyIS3rgupHLG_BVLQl_Hfxw&s",
+    "thumbnailWidth": 194,
+    "thumbnailHeight": 259,
+    "source": "Chợ Tốt",
+    "domain": "www.chotot.com",
+    "link": "https://www.chotot.com/mua-ban-dien-thoai-huyen-duc-tho-ha-tinh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.chotot.com%2FFP50wpqfa8F5Cf0BP1CtTZXkUYxbNRTVdF2uphB43k4%2Fpreset%3Alisting%2Fplain%2Fa09474e2e120b130cfa77423b6882c56-3003970116795749196.jpg&tbnid=IaT8wv5m0EXyRM&imgrefurl=https%3A%2F%2Fwww.chotot.com%2Fmua-ban-dien-thoai-huyen-duc-tho-ha-tinh&docid=eIP_Vi3ShAwvCM&w=300&h=400",
+    "position": 7
+   },
+   {
+    "title": "Điện thoại iPhone X cũ - Như mới, đủ VAT, giá tốt 09/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_xr_64gb_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMx_83k11YQ791YaXDFuvM4gbM0HO_Af2UQn8w4uwFKw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/hang-cu/iphone/iphone-x.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone_xr_64gb_1.png&tbnid=19NkbSalYcn10M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fhang-cu%2Fiphone%2Fiphone-x.html&docid=V_YMHr-63Uk4GM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

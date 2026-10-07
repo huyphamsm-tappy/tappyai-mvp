@@ -1,0 +1,83 @@
+{
+  "generatedAt": "2026-09-17T05:59:33.061Z",
+  "source": "Management API database/query on fwznnobrdctuskgrvuik as supabase_read_only_user (pg_read_all_data); catalog SELECTs only",
+  "counts": {
+    "extensions": 3,
+    "enums": 4,
+    "domains": 0,
+    "composite_types": 0,
+    "sequences": 1,
+    "tables": 70,
+    "columns": 619,
+    "functions": 66,
+    "constraints": 244,
+    "foreign_keys": 83,
+    "indexes": 107,
+    "triggers": 16,
+    "policies": 95,
+    "rls_enabled_tables": 70,
+    "column_grants": 29,
+    "functions_with_explicit_acl": 66,
+    "publication_tables": 6
+  },
+  "extraction_role": {
+    "current_user": "supabase_read_only_user",
+    "rolsuper": false
+  },
+  "defaults_referencing_public_functions": [],
+  "functions_security_definer": 50,
+  "triggers_on_auth_users": [
+    "on_auth_user_created"
+  ],
+  "not_extracted": {
+    "storage_policies": 0,
+    "auth_schema_functions_not_owned_by_auth_admin": 0,
+    "comments": "skipped",
+    "default_privileges": "Supabase defaults assumed",
+    "object_ownership": "objects will be owned by the executing role (postgres) in the new project",
+    "storage_buckets": "data — not extracted"
+  },
+  "top_level_statement_kinds": {
+    "CREATE EXTENSION": 3,
+    "CREATE TYPE": 4,
+    "CREATE SEQUENCE": 1,
+    "CREATE TABLE": 70,
+    "SET CHECK_FUNCTION_BODIES": 2,
+    "CREATE OR": 66,
+    "ALTER TABLE": 314,
+    "CREATE INDEX": 99,
+    "CREATE UNIQUE": 8,
+    "CREATE TRIGGER": 16,
+    "CREATE POLICY": 95,
+    "REVOKE ALL": 137,
+    "GRANT DELETE,": 165,
+    "GRANT MAINTAIN,": 2,
+    "GRANT SELECT": 19,
+    "GRANT INSERT,": 2,
+    "GRANT SELECT,": 3,
+    "GRANT UPDATE": 7,
+    "GRANT INSERT": 8,
+    "GRANT EXECUTE": 208,
+    "ALTER PUBLICATION": 6
+  },
+  "forbidden_top_level_statements": 0,
+  "sensitivity_locations": {
+    "emails_in": [
+      "public.fn_owner_recovery_audit"
+    ],
+    "uuid_literals_in": [
+      "public.fn_owner_recovery_audit"
+    ]
+  },
+  "sensitivity": {
+    "emails": 1,
+    "jwt_like": 0,
+    "pat_like": 0,
+    "api_key_like": 0,
+    "uuid_literals": 1,
+    "password_words": 0
+  },
+  "sha256": "b7c358ac0ee192919fb1cc4f572bd4829a40fc18c7cfa67054c1edd9756fe0dc",
+  "bytes": 220988,
+  "statements": 1235
+}

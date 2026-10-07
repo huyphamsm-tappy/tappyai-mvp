@@ -1,0 +1,261 @@
+{
+  "label": "uat3-tips-after",
+  "base": "http://localhost:3007",
+  "calls": 6,
+  "at": "2026-09-27T10:19:12.580Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 40184,
+          "usage": {
+            "promptTokens": 11466,
+            "completionTokens": 3775
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ],
+            [
+              "Đỉnh Bàn Cờ",
+              "Cầu Vàng",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ]
+          ],
+          "dup": false,
+          "chars": 755
+        },
+        {
+          "status": 200,
+          "ms": 45898,
+          "usage": {
+            "promptTokens": 16244,
+            "completionTokens": 4110
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_flight_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Ngũ Hành Sơn",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ],
+            [
+              "Ngũ Hành Sơn",
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Cầu Rồng",
+              "Tượng Cá Chép Hóa Rồng",
+              "Phố đi bộ - chợ đêm Bạch Đằng Đà Nẵng",
+              "Bảo tàng 3D Art In Paradise",
+              "Mũi Nghê"
+            ]
+          ],
+          "dup": false,
+          "chars": 497
+        },
+        {
+          "status": 200,
+          "ms": 42361,
+          "usage": {
+            "promptTokens": 15168,
+            "completionTokens": 2998
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "HAIAN Beach Hotel & Spa",
+              "A La Carte Danang Beach",
+              "Alani Hotel",
+              "Diamond Sea Hotel",
+              "La Maison DaNang Beach",
+              "Temple Beach Resort Da Nang"
+            ],
+            [
+              "NALOD ĐÀ NẴNG - KHÁCH SẠN & TRUNG TÂM HỘI NGHỊ",
+              "Sala Danang Beach Hotel",
+              "HAIAN Beach Hotel & Spa",
+              "A La Carte Danang Beach",
+              "Alani Hotel",
+              "Diamond Sea Hotel",
+              "La Maison DaNang Beach",
+              "Temple Beach Resort Da Nang"
+            ]
+          ],
+          "dup": false,
+          "chars": 86
+        }
+      ]
+    },
+    {
+      "id": "G1a",
+      "group": "travel-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 39574,
+          "usage": {
+            "promptTokens": 8225,
+            "completionTokens": 2750
+          },
+          "tools": [
+            "search_places",
+            "get_hotel_prices",
+            "get_weather",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ],
+            [
+              "QUÁN ỐC HẢI SẢN SƯƠNG",
+              "Nhà hàng hải sản La Sirena",
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "NaKa buffet Hải sản",
+              "Nhà Hàng Gành Hào 2",
+              "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+            ]
+          ],
+          "dup": false,
+          "chars": 1137
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 44136,
+          "usage": {
+            "promptTokens": 11770,
+            "completionTokens": 3494
+          },
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "Ốc Hà Nội",
+              "La Mozza Dalat",
+              "Hải Sản Anh Đức",
+              "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "Nhà Hàng Hải Sản ĐÀ LẠT GOLF"
+            ],
+            [
+              "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "Ốc Hà Nội",
+              "La Mozza Dalat",
+              "Hải Sản Anh Đức",
+              "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "Nhà Hàng Hải Sản ĐÀ LẠT GOLF"
+            ]
+          ],
+          "dup": false,
+          "chars": 1144
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "group": "travel-local-tips",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 47827,
+          "usage": {
+            "promptTokens": 5089,
+            "completionTokens": 3837
+          },
+          "tools": [
+            "search_places",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Nhà Hàng Cá Khói",
+              "Hải Sản Tươi Sống Mr Mộc",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Hải sản Tươi sống Ông Minh",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "4Q Restaurant"
+            ],
+            [
+              "Nhà Hàng Cá Khói",
+              "Hải Sản Tươi Sống Mr Mộc",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Hải sản Tươi sống Ông Minh",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "4Q Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 875
+        }
+      ]
+    }
+  ]
+}

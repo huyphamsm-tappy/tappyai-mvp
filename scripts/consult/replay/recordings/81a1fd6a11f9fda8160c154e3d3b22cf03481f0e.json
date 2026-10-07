@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "H Hôtel L'Art Hanoi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:00:01.872Z",
+ "body": {
+  "searchParameters": {
+   "q": "H Hôtel L'Art Hanoi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Best Price on H Hotel L&#39;art Hanoi in Hanoi + Reviews!",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/713063890.jpg?k=f11b7273b6d0709ac829b76c8bb8073ae264316ae825f01dab69cdcdc6b3c98b&o=",
+    "imageWidth": 500,
+    "imageHeight": 498,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw5VBr7nQgy8bPqiYVJrbbCIZF90EenYI68dxD73r3dA&s=10",
+    "thumbnailWidth": 448,
+    "thumbnailHeight": 446,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/h-hotel-ha-noi/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F713063890.jpg%3Fk%3Df11b7273b6d0709ac829b76c8bb8073ae264316ae825f01dab69cdcdc6b3c98b%26o%3D&tbnid=GXjgH_4nb_5pvM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fh-hotel-ha-noi%2Fhotel%2Fhanoi-vn.html&docid=1pS2d1lMXcJlbM&w=500&h=498",
+    "position": 1
+   },
+   {
+    "title": "H Hôtel L'Art Hanoi (Hotel) Reviews, Deals & Photos 2026 - Expedia.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/107000000/106650000/106642200/106642170/01995c51.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJ2XLfp8ypkT8BS5PID9GjiJWOXtZVoxBqfAhjAvd78g&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Hanoi-Hotels-H-Hotel-Ha-Noi.h106642170.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F107000000%2F106650000%2F106642200%2F106642170%2F01995c51.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=_n-bvpnGm8NmxM&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FHanoi-Hotels-H-Hotel-Ha-Noi.h106642170.Hotel-Information&docid=jpYyFXp-HTraxM&w=767&h=575",
+    "position": 2
+   },
+   {
+    "title": "H Hôtel L'Art Hanoi, Hà Nội (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/713004041.jpg?k=39afd8e689e32c28625b2c1f8f267f0e5784db11ef8a8a88af79d8f88c96ff59&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKLOKnQ1rhGaS8M9eMqpEbqZKIMZ7UbrVP0t5vBqQ3IA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/h-hanoi.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F713004041.jpg%3Fk%3D39afd8e689e32c28625b2c1f8f267f0e5784db11ef8a8a88af79d8f88c96ff59%26o%3D&tbnid=7hUvZBCPGhnK5M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fh-hanoi.vi.html&docid=icngLnJWQ5ZZJM&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "H HOTEL HA NOI (Hà Nội) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/e4/b3/fd/caption.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSESzG6n9GMfTBrUqVeibbEReDbA0sWo1Pn1UthZuTwVw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293924-d28008616-Reviews-H_Hotel_L_art_Hanoi-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2c%2Fe4%2Fb3%2Ffd%2Fcaption.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=VoITE9Yqol4w5M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293924-d28008616-Reviews-H_Hotel_L_art_Hanoi-Hanoi.html&docid=7fmctCwLkfjNvM&w=900&h=500",
+    "position": 4
+   },
+   {
+    "title": "H HÔTEL L'ART HANOI - Updated 2026 Hotel Reviews (Vietnam)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/02/0e/c4/caption.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQWN9WjSb0tseRX9Udkfmpzyd5dDYDuFYpB37fYV_VjA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g293924-d28008616-Reviews-H_Hotel_L_art_Hanoi-Hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F32%2F02%2F0e%2Fc4%2Fcaption.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=yMYHMjksTrC5aM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g293924-d28008616-Reviews-H_Hotel_L_art_Hanoi-Hanoi.html&docid=aD0ENZ9nQOyygM&w=1200&h=1200",
+    "position": 5
+   },
+   {
+    "title": "H Hôtel L'Art Hanoi (Hotel) Reviews, Deals & Photos 2026 - Expedia.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/107000000/106650000/106642200/106642170/9e6f7ad8.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 780,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRokiCrAMUug7Dys6aGi2dNO2UdYGE9LkfmSzuCW4AEGw&s=10",
+    "thumbnailWidth": 383,
+    "thumbnailHeight": 522,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Hanoi-Hotels-H-Hotel-Ha-Noi.h106642170.Hotel-Information",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F107000000%2F106650000%2F106642200%2F106642170%2F9e6f7ad8.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=tpeNtBN7oZeIzM&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FHanoi-Hotels-H-Hotel-Ha-Noi.h106642170.Hotel-Information&docid=jpYyFXp-HTraxM&w=575&h=780",
+    "position": 6
+   },
+   {
+    "title": "Best Price on H Hotel L&#39;art Hanoi in Hanoi + Reviews!",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/59031469/0/9a349b16b1cb47c899c117be04eaf24e.jpg?ce=2&s=414x232",
+    "imageWidth": 347,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOaC6DlJxFSTHSWqyU2OsicVSoqbbx0sc7Wmdn-p3KxQ&s=10",
+    "thumbnailWidth": 347,
+    "thumbnailHeight": 231,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/h-hotel-ha-noi/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F59031469%2F0%2F9a349b16b1cb47c899c117be04eaf24e.jpg%3Fce%3D2%26s%3D414x232&tbnid=MC5Q0TbG8p-lpM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fh-hotel-ha-noi%2Fhotel%2Fhanoi-vn.html&docid=1pS2d1lMXcJlbM&w=347&h=232",
+    "position": 7
+   },
+   {
+    "title": "H Hôtel L'Art Hanoi, Hanoi (updated prices 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/834608285.jpg?k=dcb87e3085b1a063bcd8bebe3e90bdbf663ea32716a015e28044c5d2dec99510&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAJipeOlJutrBdhjybBzE5DefnIVrSsaq1jjyFRgXR4Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/h-hanoi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F834608285.jpg%3Fk%3Ddcb87e3085b1a063bcd8bebe3e90bdbf663ea32716a015e28044c5d2dec99510%26o%3D&tbnid=urnX1nDTzQnRtM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fh-hanoi.html&docid=42kmbrusMUdO7M&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

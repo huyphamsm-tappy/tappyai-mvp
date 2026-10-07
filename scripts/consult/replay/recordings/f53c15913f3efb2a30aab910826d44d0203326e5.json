@@ -1,0 +1,405 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Tây Ninh",
+  "gl": "vn",
+  "hl": "vi"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:31.584Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "engine": "google"
+  },
+  "ll": "@11.0906751,106.289261,10z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Meliá Vinpearl Tây Ninh",
+    "address": "90 Lê Duẩn Block 5, Ward 3, 63 Lê Duẩn, Khu phố 1, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.3194511,
+    "longitude": 106.1001903,
+    "rating": 4.9,
+    "ratingCount": 4602,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.melia.com/vi/hotels/vietnam/tay-ninh/melia-vinpearl-tay-ninh?utm_campaign=google&utm_content=6117&utm_medium=organic&utm_source=directories",
+    "phoneNumber": "+84 276 3728 888",
+    "description": "Khách sạn sang trọng có phòng ở cao cấp, nhà hàng, quầy bar, khu spa và bể bơi trong nhà.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf4896YZ5ltTFgz3NfNZfoUFcvO64lcoRPn-qAAB_-DA_k7X9LckPgeJnnSai0o2WHmpMvvNDgbKQdf7zFtGvNlgPnhufYDzC80pgaq_8lmE14BGWjmoUnaOX4TzesAARER9I0luw",
+    "cid": "428108144602996216",
+    "fid": "0x310b6bb0e777c9c3:0x5f0f216dc835df8",
+    "placeId": "ChIJw8l357BrCzER-F2D3Bby8AU"
+   },
+   {
+    "position": 2,
+    "title": "SUNRISE HOTEL TÂY NINH",
+    "address": "81 Hoàng Lê Kha, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.3044558,
+    "longitude": 106.10551509999999,
+    "rating": 4.3,
+    "ratingCount": 1503,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://sunrisehotel.com.vn/",
+    "phoneNumber": "+84 276 3714 714",
+    "description": "Khách sạn sang trọng cung cấp Wi-Fi và chỗ đậu xe miễn phí, cùng với nhà hàng sáng sủa và sân tennis.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNe8n1u55a7FKcX03ojucHvZUqDIYAUMsB_6x97sDf-5sewDBybwvS4biyjh3Q8qjK23cmkVw28W5vVqmjZ8EA3x_95fkdwgM_PFvFMoZzT_i-Dk4q_46i5hT3e6jxllf1sDDzjGFXX05I",
+    "cid": "3187991579960813202",
+    "fid": "0x310b6baa1f22f84b:0x2c3e057386802692",
+    "placeId": "ChIJS_giH6prCzERkiaAhnMFPiw"
+   },
+   {
+    "position": 3,
+    "title": "Lê Phan Hotel Tây Ninh",
+    "address": "Khu thương mại Mai Anh, A3, 2 Trường Chinh, Khu phố 6, Tân Ninh, Tây Ninh 840000, Việt Nam",
+    "latitude": 11.3222423,
+    "longitude": 106.10923,
+    "rating": 4.4,
+    "ratingCount": 229,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 276 6555 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdSiqfq_onfealecUbJ35GDJSWY2ElO-rZNawq0cro51Q_CSycZiHGP4AW5LWYN9Wq3m0TS2MyuPS8eLZgbPKgqooFBNuUha5-1C8bTPqUXkBa0CTHdXJKZRj7Q5gLNPyA9M1EW",
+    "cid": "15031655789950638045",
+    "fid": "0x310b6be50004e9b7:0xd09b2b4cc1f397dd",
+    "placeId": "ChIJt-kEAOVrCzER3ZfzwUwrm9A"
+   },
+   {
+    "position": 4,
+    "title": "Maison Camellia Hotel ở TN",
+    "address": "56 nguyễn hữu thọ, khu phố 5, phường 3, thành phố tây ninh, Tây ninh, Tây Ninh 840000, Việt Nam",
+    "latitude": 11.3273286,
+    "longitude": 106.1109761,
+    "rating": 4.5,
+    "ratingCount": 256,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://maisontayninh.com/",
+    "phoneNumber": "+84 907 780 790",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPFvSWIT2N3Nb1MfX4b9s9ZBztKAGq-RZmX8Hu2iY1gP85F7dmNwNWAH288T2aGFlxfR1PcnjcT9Wwie0i7NiVptpTj799Bqlnh4RueTfhU0t7k9k_v3wV6gtTMq5_f3_z8Ie-2",
+    "cid": "12718301315341614379",
+    "fid": "0x310b6bb1a0f9663b:0xb0807ba96f51fd2b",
+    "placeId": "ChIJO2b5oLFrCzERK_1Rb6l7gLA"
+   },
+   {
+    "position": 5,
+    "title": "RUBY HOTEL TÂY NINH",
+    "address": "Vincom shophouse, Khu phố 5, Tân Ninh, Tây Ninh 840000, Việt Nam",
+    "latitude": 11.319505999999999,
+    "longitude": 106.10103319999999,
+    "rating": 4.4,
+    "ratingCount": 151,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/share/1CnorGEGZq/?mibextid=wwXIfr",
+    "phoneNumber": "+84 818 196 196",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd0iIJh693tAlOfH3Rt4l_WY1Jtf_nJ5CYsDH1V2lC0RWR9_Tbptqh8jKmue-VdKzR2J-eVjKk-jtNEAMA8MXjh23gZOWfrbKsWVd3nOYt-pEpsZc9AaZOcpf9nT4g_opVj6iMk-g",
+    "cid": "176555734486212244",
+    "fid": "0x310b6b046c41b84d:0x27340814d1bde94",
+    "placeId": "ChIJTbhBbARrCzERlN4bTYFAcwI"
+   },
+   {
+    "position": 6,
+    "title": "Tây Ninh City Hotel",
+    "address": "Khu TTTM Vincom, Đường 30/4, KP.1, Tân Ninh, Tây Ninh 80000, Việt Nam",
+    "latitude": 11.3202828,
+    "longitude": 106.1007836,
+    "rating": 4.5,
+    "ratingCount": 93,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "phoneNumber": "+84 865 037 679",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNcuLwhS01Oe5IO53he2lfmd7nyqjj5JRAGbgfPgadz1RZjKdz4PuZ2lmjrHxWgsJLqn75bBCSCRtCQh90IO5akMyQRPorWWR24QA3ErY4YjR03qehsLc3u1sLJURXaI-GhJGdi2A",
+    "cid": "10325550002287364773",
+    "fid": "0x310b6bebb4f4035f:0x8f4bb9051cdf4aa5",
+    "placeId": "ChIJXwP0tOtrCzERpUrfHAW5S48"
+   },
+   {
+    "position": 7,
+    "title": "Mai Vy Hotel Tây Ninh",
+    "address": "150 Đường 30/4, KP4, Tân Ninh, Tây Ninh 84000, Việt Nam",
+    "latitude": 11.3002892,
+    "longitude": 106.1022921,
+    "rating": 4,
+    "ratingCount": 383,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://maivyhotel.com.vn/",
+    "phoneNumber": "+84 941 556 998",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOzaud1cHkf_HHlIeESy_kbJSQru2jNUraknvr9RlAzWIdjf_RnBtrfHWReoSJ4wI5bQSsTiLjbPyt9hiOYe7MMHL1cZCyARkETB2Nc7Ur8L9yUsUvLuVc9HWdHolZQ5yen720Q",
+    "cid": "16761724635879073879",
+    "fid": "0x310b6b2730355873:0xe89d9bbfb87c6857",
+    "placeId": "ChIJc1g1MCdrCzERV2h8uL-bneg"
+   },
+   {
+    "position": 8,
+    "title": "PHÚ THẮNG GRAND HOTEL - LONG AN",
+    "address": "Khu Công Nghiệp Tân Đô, Ấp Bình Tiền 2, Đức Hòa, Tây Ninh 82700, Việt Nam",
+    "latitude": 10.798966199999999,
+    "longitude": 106.49068749999999,
+    "rating": 4.4,
+    "ratingCount": 299,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://phuthanggrandhotel.com/",
+    "phoneNumber": "+84 982 663 016",
+    "description": "Khách sạn cao cấp có phòng ở sáng sủa nhìn ra thành phố, khu spa, nhà hàng/quầy bar và bữa sáng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOJZbV5lE9U21mj-eH5Vs_mzw3dz7HYTo_COewGVHuLy_KGq1OPMR6-b2Y_ZC_lB1n6CyavYs9tjUFp1dmyMBSs4KCbinMxswClUxHs__KnxJK9NU2kTe_BFeX9nZQRUlGmmQWn",
+    "cid": "6040149706148268848",
+    "fid": "0x310ad57dc5b860b5:0x53d2ec27d925cb30",
+    "placeId": "ChIJtWC4xX3VCjERMMsl2Sfs0lM"
+   },
+   {
+    "position": 9,
+    "title": "Hotel 986 . Tây Ninh",
+    "address": "C12C, khu thương mại Mai Anh, đường, Trường Chinh, Tân Ninh, Tây Ninh 70000, Việt Nam",
+    "latitude": 11.3217705,
+    "longitude": 106.1093147,
+    "rating": 4.4,
+    "ratingCount": 244,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.sen7.vn/",
+    "phoneNumber": "+84 941 084 986",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeouLsPwz2zcUHkM_bhgnG37YTRQM3kOD9J01q0S6AfVJ4vTHmbxTXpV1sINLmC_QRJDrcQk2YUAGhyRQ28XUP3HrjX3O4OfNb4eDSU5azR42HvyGwW3eOZEmq_ulqQicWjVcjFtA",
+    "cid": "14055136553700093232",
+    "fid": "0x310b6b7584c7c89b:0xc30de03a70e6ed30",
+    "placeId": "ChIJm8jHhHVrCzERMO3mcDrgDcM"
+   },
+   {
+    "position": 10,
+    "title": "NEW CITY HOTEL",
+    "address": "PG1-18,19, Khu TTTM VINCOM/Số 444 đường 30/4, Khu phố 1, Tân Ninh, Tây Ninh 840000, Việt Nam",
+    "latitude": 11.320122999999999,
+    "longitude": 106.1012679,
+    "rating": 4.6,
+    "ratingCount": 171,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 911 023 272",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLefoIr4tBLvzC6l4Zhc6QtdNwjzN1qp2iTJpwHS5iFZ7h5NawYiT0Vko2oWdW9joZWGlHpeX4kN_gmHkYl_Cs1iBjugOW3jHIJ1WhNY_fYCh5VT-dhLGogOVByftYT3ebufmh6F",
+    "cid": "5456018666952199083",
+    "fid": "0x310b6b394f2a4bdf:0x4bb7ac1203960bab",
+    "placeId": "ChIJ30sqTzlrCzERqwuWAxKst0s"
+   },
+   {
+    "position": 11,
+    "title": "Khách sạn THANH PHƯỚC (Hotel) Tây Ninh",
+    "address": "Đường 786 hẻm 57, khu phố Thanh Phước, Thanh Điền, Tây Ninh, Việt Nam",
+    "latitude": 11.2794271,
+    "longitude": 106.0878345,
+    "rating": 4.9,
+    "ratingCount": 65,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 852 555 897",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcUj20zRIxuXmuRe2iMJlMiptHUEnfFlo9bcWQV_sGCH8Nl1P_2E9OBCc4EB8vAYSUuRdSn2TnSdCP_Ai1VKqCZy6HgJ0fg5roWwhYatu5GkyDwAk08MTFzk07iD3TeoG8a_0XKIsMAGKw",
+    "cid": "1960795867869059521",
+    "fid": "0x310b6bb8fdbd75b7:0x1b362573fd6399c1",
+    "placeId": "ChIJt3W9_bhrCzERwZlj_XMlNhs"
+   },
+   {
+    "position": 12,
+    "title": "Khách sạn Mỹ Mỹ",
+    "address": "81a Nguyễn Hữu Thọ, Hiệp Thạnh, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.3277906,
+    "longitude": 106.11122239999999,
+    "rating": 4.4,
+    "ratingCount": 335,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://maisontayninh.com/",
+    "phoneNumber": "+84 276 3780 790",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPrDdIYrMP_0gkn4faXs77Zu7uVVTpdf-oJRtcn5my3b4WOjMpo7W8c_PNHbxFjN6lZsbEDVbDuXlt7DvGe_5VLcIu31IU2O8RaNSJVvhwIw4vpNTYeUYsDKHb83ZnQvaECC5Mu6VC5OGDj",
+    "cid": "15870033158674880134",
+    "fid": "0x310b6a352919a155:0xdc3daf13247c9686",
+    "placeId": "ChIJVaEZKTVqCzERhpZ8JBOvPdw"
+   },
+   {
+    "position": 13,
+    "title": "The Q villa retreat",
+    "address": "567 Trần Phú, Tân Phước, Tây Ninh, Việt Nam",
+    "latitude": 11.3823841,
+    "longitude": 106.1260618,
+    "rating": 5,
+    "ratingCount": 110,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://theqvilla.com/",
+    "phoneNumber": "+84 362 741 801",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNAzpIV7dAdBQDr3O99wgcDehs-hVvyssVWpsYo_y-Cne7r555yu72f6J1n1mWDNt9mMbkkMU3VSKGJoJaRe1wYKyJJJkniV7VlCmANz_oZNWFumfXU6kgDy3Kwv6bji6ubUXU_yjGXHPLz",
+    "cid": "13275022353456504838",
+    "fid": "0x310b69e915c190ff:0xb83a5a7f13252006",
+    "placeId": "ChIJ_5DBFelpCzERBiAlE39aOrg"
+   },
+   {
+    "position": 14,
+    "title": "Homestay Phương Linh – Khách sạn Gần Núi Bà Đen Tây Ninh",
+    "address": "Ninh Tân, Bình Minh, Tây Ninh, Việt Nam",
+    "latitude": 11.3483431,
+    "longitude": 106.1333569,
+    "rating": 4.8,
+    "ratingCount": 35,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Khách sạn lưu trú dài hạn",
+     "Lưu trú nhà dân"
+    ],
+    "website": "https://booking.ezcms.vn/hotel/BeDetailHotel?hotel_code=TG43CD&check_in=2026-07-02&check_out=2026-07-03&num_of_rooms=1&num_of_adults=2&num_of_children=0&promo_code=&rate_code=&room_code=&lang=vi&currency=VND&utm_source=&utm_campaign=&utm_medium=&utm_term=&utm_content=",
+    "phoneNumber": "+84 982 839 252",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNXHdOlYMkbw27LPnpCUE5AcQWjXc_am_VfrNke4oXlnZr_vxTT0e0WtFbNrRIJRMGmVKYGWELu_niVik-MDSHuW8ms0jDpvLdxbZQ-przoOu8Y63yHhT-S3pxjI3BkyM2wYLdFBzxfQOvr",
+    "cid": "12431794079943365714",
+    "fid": "0x310b69000cc03f3b:0xac869ad967d41452",
+    "placeId": "ChIJOz_ADABpCzERUhTUZ9mahqw"
+   },
+   {
+    "position": 15,
+    "title": "Hotel Sân Golf West Lakes - Hotel Hậu Nghĩa",
+    "address": "145 ĐT822, Ap Tan My, Hậu Nghĩa, Tây Ninh 82000, Việt Nam",
+    "latitude": 10.972742199999999,
+    "longitude": 106.3665836,
+    "rating": 4.8,
+    "ratingCount": 30,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.trip.com/w/BqnpUgQ7BV2",
+    "phoneNumber": "+84 909 487 005",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe-aNloeVNDYggDIcpIkYdJ98s7Yv7XBUanhjlhKKIaNoXUzaHS-o_fOmOPl87RO84ExxG5PnlGF9LnalrrIukfK9-AMForDsWkvCDJByGRzYHFpd93WwCTRYDy6rrYyQWENBQq16NLhbba",
+    "cid": "7920737965037193440",
+    "fid": "0x310b290062ebcb33:0x6dec1d369cfe08e0",
+    "placeId": "ChIJM8vrYgApCzER4Aj-nDYd7G0"
+   },
+   {
+    "position": 16,
+    "title": "Khách sạn Hoàng Mai",
+    "address": "130 Nguyễn Hữu Thọ, Hiệp Thạnh, Tân Ninh, Tây Ninh 800000, Việt Nam",
+    "latitude": 11.322662,
+    "longitude": 106.12086,
+    "rating": 4.1,
+    "ratingCount": 162,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 276 3888 979",
+    "description": "Khách sạn bình dị có phòng ở thoáng mát giản dị, Wi-Fi, tủ lạnh nhỏ và TV thông minh.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLevxZnaAGA1qMVmVv8pfdSAR83Z6AB6AFwn4x6aFzPtYzoYBDZDAuVB70DcEEJ_Mt-R1TV0UIPSy5rwr16OBmEiUO5l6dcqpfEMz6wvYFgf3xGDWAgsuSV4Oqu9BqnnJKz3gjOU",
+    "cid": "9418195148019303456",
+    "fid": "0x310b6bb82ee8f2fd:0x82b426965eff8420",
+    "placeId": "ChIJ_fLoLrhrCzERIIT_XpYmtII"
+   },
+   {
+    "position": 17,
+    "title": "AN BADEN Boutique Hotel Tây Ninh",
+    "address": "216 Đường 68, Ninh Hòa, Ninh Thạnh, Tây Ninh 80000, Việt Nam",
+    "latitude": 11.329009,
+    "longitude": 106.13052409999999,
+    "rating": 5,
+    "ratingCount": 3,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 966 346 378",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdc8j6SaV_FeaA_7-Yd6Nby-74clEgxE7lTWgsqO5VfXf25MMF05rab50jhHrxME7PkpB13eu0MbAR_8BUISIkqFpKBC1ppT216JsUk-lzfJPiXP1MBnWjvL5YkM9qus58-LqGJriXqU3Bn",
+    "cid": "16179246216114525714",
+    "fid": "0x310b6b14b4e897e3:0xe0883ab65516d612",
+    "placeId": "ChIJ45fotBRrCzEREtYWVbY6iOA"
+   },
+   {
+    "position": 18,
+    "title": "Khách Sạn Ngọc An (Có trạm sạc điện AC xe Vinfast)",
+    "address": "18, Đường Trường Hòa, Trường Cửu, Long Hoa, Tây Ninh, Việt Nam",
+    "latitude": 11.2553188,
+    "longitude": 106.1621581,
+    "rating": 4.2,
+    "ratingCount": 64,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://ngocanhotel.info/",
+    "phoneNumber": "+84 773 717 767",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNmNsuFRaNNMfd4JQxWxYFgHJFvU2brrwSyEny74fmchYPUJas-gbZcJMp1CBLftGe7ExIJbuxGqgPFA5Vg8FKTPpQ6lsJe6kGk4cB-4ZsDz3wUUDt3gcfyle0hTEkGBTbABpDE",
+    "cid": "14879849142615867119",
+    "fid": "0x310b3fa7b1c3475f:0xce7fd7f55904feef",
+    "placeId": "ChIJX0fDsac_CzER7_4EWfXXf84"
+   },
+   {
+    "position": 19,
+    "title": "Khách sạn New Star",
+    "address": "560 Đường 30 tháng 4, Khu phố 1, Tân Ninh, Tây Ninh, Việt Nam",
+    "latitude": 11.324904499999999,
+    "longitude": 106.10256229999999,
+    "rating": 4.9,
+    "ratingCount": 52,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://newstarhotel.vn/",
+    "phoneNumber": "+84 843 589 806",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeo4Q_ysm6uCR5FvwhSw4YFERGJAnoCI-hUzb8WM5_dFIl6hYjaCENsdx-mSMCb0aP0gcWgEGI9zGZFy4jsAnoKW2mTqBBDLbyzrUnRey0arNyy3RvbxEOeaFycyQVnpCTqJETxmtfzQtQ",
+    "cid": "282460969887865097",
+    "fid": "0x310b6b0016f0194b:0x3eb80c16d141909",
+    "placeId": "ChIJSxnwFgBrCzERCRkUbcGA6wM"
+   },
+   {
+    "position": 20,
+    "title": "Khách sạn Lavender-Vincom Tây Ninh",
+    "address": "Trương Tùng Quân, Khu phố 1, Tân Ninh, Tây Ninh 84000, Việt Nam",
+    "latitude": 11.320659899999999,
+    "longitude": 106.1005596,
+    "rating": 4.6,
+    "ratingCount": 152,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 974 790 758",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLejhH-78lMsmwd3SXoqsCWlLoO_oHIn2ZSc-rfPOCChs37FyRoCZ95THWnD_wnqAEz3wldoj22LikcDnZW2qUB1azLbaFhAIEsvTEqv0hqh1rh6z7oyFjon6PFVH_PfHXKU8hqf",
+    "cid": "2863366983162007918",
+    "fid": "0x310b6b21f4185d61:0x27bcb919b4f4116e",
+    "placeId": "ChIJYV0Y9CFrCzERbhH0tBm5vCc"
+   }
+  ],
+  "credits": 3
+ }
+}

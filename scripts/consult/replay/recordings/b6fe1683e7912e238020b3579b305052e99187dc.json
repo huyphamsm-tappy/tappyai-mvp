@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng Thịt Nướng Nhật NIKUTARO\" OR \"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:15:27.206Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng Thịt Nướng Nhật NIKUTARO\" OR \"Chiyoda Sushi Bến Thành\" OR \"La Phong Sushi House\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng bò Nhật NIKUTARO Quận 1 mở cửa đến 2h sáng",
+    "link": "https://www.tiktok.com/@hoaoididau/video/7662971135402724628",
+    "snippet": "NIKUTARO Quận 1, nhà hàng bò Nhật mở khuya, yakiniku Quận 1, Nikutaro menu, nhà hàng ... Nhà hàng Thịt Nướng Nhật NIKUTARO · author. 973 · 28.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng Nhật mở tới 2h sáng mà tui thích tại Quận 1 ...",
+    "link": "https://www.tiktok.com/@daitiengnoianuong/video/7675411327220714772",
+    "snippet": "... Quận 1 #reviewanngon #ancungtiktok #yakiniku #thitnuong #nikutaro. Nhà hàng Nhật mở tới ... Nhà hàng Thịt Nướng Nhật NIKUTARO · author. 582 · 7.",
+    "position": 2
+   },
+   {
+    "title": "Chiyoda Sushi Sài Gòn: Review Sushi Sashimi chất lượng ...",
+    "link": "https://www.tiktok.com/@_.ngoctai._/video/7639721292773592328",
+    "snippet": "... Sushi Sài Gòn: sushi sashimi chuẩn Nhật, chất lượng vượt mong. @✨ Tài Nè ✨ · âm thanh gốc - ✨ Tài Nè ✨ · Chiyoda Sushi Bến Thành · author.",
+    "position": 3
+   },
+   {
+    "title": "Ăn bò wagyu sống với tui nè ông bà oi, thử đi ...",
+    "link": "https://www.tiktok.com/@hi.vidayyy/video/7351774718984244496",
+    "snippet": "Nhà hàng Thịt Nướng Nhật NIKUTARO · author · 913 · 21 ... Xem thêm câu trả lời khác (1). thanh nè. hấp dzẫn quó òoo. 2024-4-2Trả lời. 2. Cô ...",
+    "position": 4
+   },
+   {
+    "title": "Ngồi Lại Sau 1-2 Năm: Khoảnh Khắc Gặp Lại Bạn Bè",
+    "link": "https://www.tiktok.com/@xuan_van_88/video/7676716947404344594",
+    "snippet": "1-2 năm mới có dịp ngồi lại với nhau — chia sẻ khoảnh khắc. @Xuân Văn · âm thanh gốc - Cô Hảo ( giáo viên mầm non ) · Chiyoda Sushi Bến Thành.",
+    "position": 5
+   },
+   {
+    "title": "Ms.Ngọc♟️❤️ (@msngoc93)",
+    "link": "https://www.tiktok.com/@msngoc93",
+    "snippet": "Chiyoda Sushi Bến Thành ❤️#saigon #amthucnhatban . 444 · Cuối tuần 2 vợ chồng lòng vòng ra Hải Phòng - Chuyến đi cấp tốc. 566 · Taiwan - Day 3 ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

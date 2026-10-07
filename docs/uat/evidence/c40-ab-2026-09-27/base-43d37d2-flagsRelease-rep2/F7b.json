@@ -1,0 +1,182 @@
+{
+  "id": "F7b",
+  "text": "dưới 100k/người",
+  "parent": "F7",
+  "status": 200,
+  "ms": 14502,
+  "evidenceId": "ded45762-0b98-4592-ac58-b2063e3852f6",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn dưới 100k Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "rating": 4.9,
+      "count": 6035,
+      "price": "200-600 N ₫",
+      "hours": "10:00–23:00",
+      "distance_km": 2.3,
+      "address": "486 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "SOKO Cake Bake & Brunch - Nguyễn Trung Trực",
+      "rating": 4.8,
+      "count": 4174,
+      "price": "100-500 N ₫",
+      "hours": "08:00–22:00",
+      "distance_km": 0.4,
+      "address": "27a Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Gyu Shige - Ngưu Phồn - Đông Du",
+      "rating": 4.6,
+      "count": 1746,
+      "price": "300-800 N ₫",
+      "hours": "10:30–23:00",
+      "distance_km": 0.4,
+      "address": "48-50 Đông Du, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.5,
+      "count": 1026,
+      "price": "100-200 N ₫",
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    },
+    {
+      "name": "Peofood - Xôi Bắc chuẩn vị",
+      "rating": 4.5,
+      "count": 336,
+      "price": "1-100.000 ₫",
+      "hours": "06:00–13:00, 17:00–21:00",
+      "distance_km": 1,
+      "address": "180 Ký Con, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "price": "100-500 N ₫",
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ốc Đào",
+      "rating": 4.2,
+      "count": 2473,
+      "price": "100-500 N ₫",
+      "hours": "11:00–22:15",
+      "distance_km": 2.2,
+      "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "price": "100-400 N ₫",
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Dìn Ký Nguyễn Trãi",
+      "rating": 3.9,
+      "count": 2434,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.4,
+      "address": "137c Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Út Hương",
+      "rating": 3.7,
+      "count": 308,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–00:00",
+      "distance_km": 2.5,
+      "address": "TK18/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "BÒ TƠ QUÁN MỘC 486 Nguyễn Thị Minh Khai",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 6035,
+        "distance_km": 2.3,
+        "open_now": true,
+        "opening_hours": "10:00–23:00"
+      }
+    },
+    {
+      "name": "SOKO Cake Bake & Brunch - Nguyễn Trung Trực",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 4174,
+        "distance_km": 0.4,
+        "open_now": true,
+        "opening_hours": "08:00–22:00"
+      }
+    },
+    {
+      "name": "Gyu Shige - Ngưu Phồn - Đông Du",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1746,
+        "distance_km": 0.4,
+        "open_now": true,
+        "opening_hours": "10:30–23:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình hiểu rồi, bạn muốn ăn dưới 100k/người. Để tìm quán phù hợp với ngân sách này, mình cần biết bạn muốn ăn **loại gì** — phở, cơm, bánh mì, lẩu, hay bất kỳ món nào khác không? 🤔\n\nMình chọn **Béo Ơi Quán** cho bạn! 🍲\n\nCách bạn chỉ 0.9km, mở cửa 10:30–22:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Béo Ơi Quán\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Béo+Ơi+Quán+Quận+1\",\"primary\":true},{\"label\":\"📍 Maps - Béo Ơi Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2565826368530141912\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem quán khác gần đây|Ăn gì khác dưới 100k|Quán nào mở muộn|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn ngon gần bạn cho bữa tối này nhé! 🍽️\n\nMình chọn **Hải Sản Hoàng Gia** cho bạn! Cách bạn khoảng 1.9km, mở cửa đến 00:00.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem chi tiết - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":true},{\"label\":\"📍 Xem tất cả trên bản đồ\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/nh%C3%A0+h%C3%A0ng+qu%C3%A1n+%C4%83n+ng%C3%B2n+Qu%E1%BA%ADn+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản tươi sống|Quán Bụi ẩm thực Việt|Nhà hàng Nhật SORAE[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 100k/người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu rồi, bạn muốn ăn dưới 100k/người. Để tìm quán phù hợp với ngân sách này, mình cần biết bạn muốn ăn **loại gì** — phở, cơm, bánh mì, lẩu, hay bất kỳ món nào khác không? 🤔\n\nMình chọn **Béo Ơi Quán** cho bạn! 🍲\n\nCách bạn chỉ 0.9km, mở cửa 10:30–22:00.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Béo Ơi Quán\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Béo+Ơi+Quán+Quận+1\",\"primary\":true},{\"label\":\"📍 Maps - Béo Ơi Quán\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2565826368530141912\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem quán khác gần đây|Ăn gì khác dưới 100k|Quán nào mở muộn|[/FOLLOWUPS]"
+    }
+  ]
+}

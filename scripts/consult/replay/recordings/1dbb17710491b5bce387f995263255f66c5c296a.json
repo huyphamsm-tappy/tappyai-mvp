@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tây Ninh City Hotel\" Tây Ninh site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T05:20:06.058Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tây Ninh City Hotel\" Tây Ninh site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "TÂY NINH CITY HOTEL - Giá cả và Ưu đãi 2026, Tân Ninh",
+    "link": "https://vn.trip.com/hotels/tay-ninh-hotel-detail-104365186/ty-ninh-city-hotel/",
+    "snippet": "Giá phòng tại TÂY NINH CITY HOTEL thay đổi tùy theo ngày, chính sách của khách sạn và các yếu tố khác. Hãy nhập ngày du lịch của bạn để kiểm tra giá hiện ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

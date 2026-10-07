@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:27.006Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hòa Tan 3IN1 KING COFFEE - Túi 88 gói x 16g",
+    "link": "https://shop.tiktok.com/vn/pdp/ca-phe-hoa-tan-3in1-king-coffee-huong-%C4%91am-%C4%91a-88-goi-x-16g/1729656461897206184",
+    "snippet": "Đóng gói: Túi 88 gói x 16g>> Thành phần chính:Cà phê hòa tan, bột kem, đường.>> Hạn sử dụng : 2 năm kể từ ngày sản xuất in trên bao bì.>> Sản phẩm được đóng kín ...",
+    "rating": 4.9,
+    "ratingCount": 57,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

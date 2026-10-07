@@ -1,0 +1,55 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 7750,
+  "evidenceId": "b04d54ed-28cb-4656-93c7-0bdfa4a77bf3",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-09-26"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm vé máy bay rẻ nhất từ Sài Gòn đến Hà Nội cho tuần sau cho bạn.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 26/9, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây.\n\n**Mẹo tìm vé rẻ:**\n• Đặt sớm (2-3 tuần trước) hoặc chờ deal flash sale\n• So sánh giữa Vietjet, Bamboo Airways, Vietnam Airlines\n• Chọn giờ bay sáng sớm hoặc chiều muộn thường rẻ hơn\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26)\n\nBạn muốn tìm vé cho ngày cụ thể nào trong tuần sau không?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm vé máy bay rẻ nhất từ Sài Gòn đến Hà Nội cho tuần sau cho bạn.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 26/9, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây.\n\n**Mẹo tìm vé rẻ:**\n• Đặt sớm (2-3 tuần trước) hoặc chờ deal flash sale\n• So sánh giữa Vietjet, Bamboo Airways, Vietnam Airlines\n• Chọn giờ bay sáng sớm hoặc chiều muộn thường rẻ hơn\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26)\n\nBạn muốn tìm vé cho ngày cụ thể nào trong tuần sau không?"
+    }
+  ],
+  "toolResults": [
+    {
+      "error": "Chua cau hinh API gia ve may bay",
+      "booking_links": [
+        {
+          "name": "Trip.com",
+          "url": "https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND"
+        },
+        {
+          "name": "Traveloka",
+          "url": "https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY"
+        },
+        {
+          "name": "Google Flights",
+          "url": "https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26"
+        }
+      ],
+      "note": "Tim chuyen bay tren cac nen tang tren"
+    }
+  ],
+  "frames8Raw": []
+}

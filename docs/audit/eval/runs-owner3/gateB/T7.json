@@ -1,0 +1,55 @@
+{
+  "id": "T7",
+  "text": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+  "parent": null,
+  "status": 200,
+  "ms": 8403,
+  "evidenceId": "f53926eb-0d2c-4218-b6cd-5de7f64f333c",
+  "toolCalls": [
+    {
+      "tool": "get_flight_prices",
+      "args": {
+        "origin": "TP HCM",
+        "destination": "Ha Noi",
+        "departDate": "2026-09-26"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình tìm giúp bạn vé máy bay Sài Gòn - Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 26/9, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26)\n\n**Mẹo tìm vé rẻ:** So sánh giá trên cả 3 trang, thử các ngày khác trong tuần (thứ 2-5 thường rẻ hơn), và đặt sớm để có giá tốt nhất. Bạn muốn tìm ngày cụ thể nào hoặc cần gợi ý về thời điểm bay rẻ nhất?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm trên Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm trên Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn vé máy bay Sài Gòn - Hà Nội tuần sau với giá rẻ nhất nhé.\n\nMình chưa có kết quả giá vé trực tuyến cho ngày 26/9, nhưng bạn có thể kiểm tra giá rẻ nhất qua các nền tảng đáng tin cậy dưới đây:\n\n[Trip.com](https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND) · [Traveloka](https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY) · [Google Flights](https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26)\n\n**Mẹo tìm vé rẻ:** So sánh giá trên cả 3 trang, thử các ngày khác trong tuần (thứ 2-5 thường rẻ hơn), và đặt sớm để có giá tốt nhất. Bạn muốn tìm ngày cụ thể nào hoặc cần gợi ý về thời điểm bay rẻ nhất?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm trên Trip.com\",\"type\":\"website\",\"url\":\"https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND\",\"primary\":true},{\"label\":\"✈️ Tìm trên Traveloka\",\"type\":\"website\",\"url\":\"https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "error": "Chua cau hinh API gia ve may bay",
+      "booking_links": [
+        {
+          "name": "Trip.com",
+          "url": "https://vn.trip.com/flights/showfarefirst?dcity=sgn&acity=han&ddate=2026-09-26&flighttype=ow&class=y&quantity=1&locale=vi-VN&curr=VND"
+        },
+        {
+          "name": "Traveloka",
+          "url": "https://www.traveloka.com/vi-VN/flight/fullsearch?ap=SGN.HAN&dt=26-09-2026.null&ps=1.0.0&sc=ECONOMY"
+        },
+        {
+          "name": "Google Flights",
+          "url": "https://www.google.com/travel/flights?q=Flights%20from%20SGN%20to%20HAN%20on%202026-09-26"
+        }
+      ],
+      "note": "Tim chuyen bay tren cac nen tang tren"
+    }
+  ],
+  "frames8Raw": []
+}

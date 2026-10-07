@@ -1,0 +1,10 @@
+ scripts/ingest-jamendo.mjs                 | 64 +++++++++++++++++---
+ src/app/(home)/page.tsx                    | 95 +++---------------------------
+ src/app/HomeV3.tsx                         | 23 +++++++-
+ src/app/HomeView.tsx                       | 32 +++-------
+ src/app/chatEntryContract.test.tsx         |  5 +-
+ src/app/homeAiFirst.test.tsx               |  1 +
+ src/app/homeSuggestedArt.test.tsx          |  2 +-
+ src/lib/i18n/v3/web.ts                     |  2 -
+ src/lib/i18n/webHardcodedUiStrings.test.ts |  4 +-
+ 9 files changed, 99 insertions(+), 129 deletions(-)

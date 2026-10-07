@@ -1,0 +1,155 @@
+{
+  "id": "F7",
+  "text": "ăn gì ngon giờ",
+  "parent": null,
+  "status": 200,
+  "ms": 17783,
+  "evidenceId": "009ff3a7-b348-4c4e-8cf0-2d0c957853a5",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon trưa Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Cơm Ngon Hà Nội",
+      "rating": 4.9,
+      "count": 279,
+      "price": "1-100.000 ₫",
+      "hours": "10:00–19:30",
+      "distance_km": 0.9,
+      "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Ben.la - Mâm cơm nhà quận 1",
+      "rating": 4.9,
+      "count": 82,
+      "price": "1-100.000 ₫",
+      "hours": "07:00–17:00",
+      "distance_km": 0.5,
+      "address": "3bis Phan Văn Đạt, Sài Gòn, Hồ Chí Minh 24000, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.6,
+      "count": 1189,
+      "price": "100-200 N ₫",
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 890,
+      "price": "100-600 N ₫",
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 717,
+      "hours": "09:00–23:30",
+      "distance_km": 0.6,
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Cơm Ngon Hà Nội",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 279,
+        "distance_km": 0.9,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "10:00–19:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Ben.la - Mâm cơm nhà quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 82,
+        "distance_km": 0.5,
+        "price_up_to_vnd": 100000,
+        "open_now": true,
+        "opening_hours": "07:00–17:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 1189,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:30–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 890,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "07:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 717,
+        "distance_km": 0.6,
+        "open_now": true,
+        "opening_hours": "09:00–23:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn đang ở Quận 1 (theo vị trí hiện tại) và muốn ăn trưa gần đó. Để gợi ý đúng ý bạn, mình cần tìm xem có những quán nào ngon. Mình đang tìm kiếm...\n\nMình chọn **Cơm Ngon Hà Nội** cho bạn — **4.9⭐ (279 đánh giá Google Maps)**, cách bạn 0.9km, mở đến 19:30 nên còn kịp ăn trưa. Quán chuyên cơm Hà Nội ngon, giá phổ thông (dưới 100k), và được đánh giá rất cao.\n\nNếu muốn gần hơn, **Ben.la - Mâm cơm nhà quận 1** cách chỉ 0.5km, cũng 4.9⭐ nhưng đóng cửa lúc 17:00 nên bạn cần vào sớm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Cơm Ngon Hà Nội\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m+Ngon+H%C3%A0+N%E1%BB%99i+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"📍 Maps - Cơm Ngon Hà Nội\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17709648029835947889\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ben.la gần hơn|Béo Ơi Quán nhiều review|Quán Bụi ăn cả ngày[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "ăn gì ngon giờ"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đang ở Quận 1 (theo vị trí hiện tại) và muốn ăn trưa gần đó. Để gợi ý đúng ý bạn, mình cần tìm xem có những quán nào ngon. Mình đang tìm kiếm...\n\nMình chọn **Cơm Ngon Hà Nội** cho bạn — **4.9⭐ (279 đánh giá Google Maps)**, cách bạn 0.9km, mở đến 19:30 nên còn kịp ăn trưa. Quán chuyên cơm Hà Nội ngon, giá phổ thông (dưới 100k), và được đánh giá rất cao.\n\nNếu muốn gần hơn, **Ben.la - Mâm cơm nhà quận 1** cách chỉ 0.5km, cũng 4.9⭐ nhưng đóng cửa lúc 17:00 nên bạn cần vào sớm.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Cơm Ngon Hà Nội\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m+Ngon+H%C3%A0+N%E1%BB%99i+Qu%E1%BA%ADn+1\",\"primary\":true},{\"label\":\"📍 Maps - Cơm Ngon Hà Nội\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17709648029835947889\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ben.la gần hơn|Béo Ơi Quán nhiều review|Quán Bụi ăn cả ngày[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp quà tặng kèm sổ da Parker site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:13.606Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng kèm sổ da Parker site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miles Morales Peter Parker Người Nhện Funko POP, Mặt Dây ...",
+    "link": "https://shop.tiktok.com/vn/pdp/moc-chia-khoa-spider-man-miles-morales-kich-thuoc-4cm/1731347674387221155",
+    "snippet": "Miles Morales Peter Parker Người Nhện Funko POP, Mặt Dây Chuyền Móc Chìa Khóa GWEM, Mô Hình Hành Động, Búp Bê Anime, Đồ Chơi Mô Hình, Thích Hợp Cho Người Hâm Mộ.",
+    "position": 1
+   },
+   {
+    "title": "Bộ Văn Phòng Phẩm Học Sinh Anime Kawaii, 4 Cái ...",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-van-phong-pham-anime-kawaii-4-cai-but-xoa-%C4%91uoc-hello-kitty-qua-tang-tre-em/1731684425469495731",
+    "snippet": "Thông số kỹ thuật:Chất liệu: NhựaBao bì: 4 Cái / BộĐầu bút: 0,5mmMàu lõi bút: xanh biển/ đenMô tả:Được làm bằng vật liệu chất lượng cao để đảm bảo rằng nó ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Ống co nhiệt, ống chịu nhiệt, bộ đóng gói co nhiệt, dây kết ...",
+    "link": "https://shop.tiktok.com/vn/pdp/ong-co-nhiet-chiu-nhiet-cao-cap-bao-ve-day-%C4%91ien-hieu-qua/1731747710139794667",
+    "snippet": "Hình dán biểu đồ tăng trưởng tự dính, Đo chiều cao với khả năng hiển thị rõ ràng, Hình dán tòa nhà, xe cộ và tường đầy màu sắc, dễ bóc và dán, không để lại cặn, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "HOT Banh bóng chuyền da MIKASA V200W - Loại da mềm",
+    "link": "https://shop.tiktok.com/vn/pdp/bong-chuyen-da-mikasa-v200w-size-5-tang-phu-kien-chuyen-dung/1734563359959451556",
+    "snippet": "Quả bóng chuyền được phối ba màu: vàng, trắng, xanh rất đẹp mắt, phù hợp với mọi đối tượng sử dụng.Quả bóng chuyền đạt tiêu chuẩn tập luyện và phù hợp sử ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "CSK Combo 2 tập Giấy in ảnh decal photo ĐL ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734479229071165348",
+    "snippet": "Ưu Điểm Nổi Bật:+ Bề Mặt Bóng Láng, Sáng Mịn, Thấm Hút Mực Tốt+ Lớp Keo Siêu Bám Chắc Trên Các Bề Mặt Vật Liệu+ Giấy Có 2 Mặt Trước/Sau Với Mặt Trước Sáng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Đánh giá của khách hàng",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-suu-tap-beyblade-burst-launcher-thiet-ke-%C4%91ep-tien-loi/1732144655337163427",
+    "snippet": "Chúng tôi sẽ cung cấp giá ưu đãi và dịch vụ xuất sắc.Tên: Bộ phóng Beyblade BurstChất liệu: PVCKích thước: như hình minh họaPhù hợp cho:> từ 3 tuổi trở lênĐóng ...",
+    "rating": 4.4,
+    "ratingCount": 7,
+    "position": 6
+   },
+   {
+    "title": "Bộ Cọ Màu Nước Bột Màu Chì Bộ Đầy Đủ Chuyên Nghiệp ...",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-co-mau-nuoc-zugzom-24-mieng-long-mem-%C4%91an-hoi-ve-son-dau/1731203514908116604",
+    "snippet": "Mua Bộ Cọ Màu Nước Bột Màu Chì Bộ Đầy Đủ Chuyên Nghiệp, Zugzom24 Miếng, Lông Mềm, Đàn Hồi, Thích Hợp Vẽ Tranh Sơn Dầu, Thủ Công, # 2400 trên TikTok Shop.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Áo Choàng Hóa Trang Siêu Anh Hùng Marvel, Người ...",
+    "link": "https://shop.tiktok.com/vn/pdp/khan-choang-sieu-anh-hung-marvel-unisex-kich-thuoc-70x70cm/1731260190006347427",
+    "snippet": "Thông tin sản phẩm:Tên: Khăn choàng áo choàng siêu anh hùngKích thước: 70x70cmGiới tính: UnisexĐộ tuổi: > 3 tuổiChất liệu: vảiĐóng gói: 1 chiếc, túi oppTHỨC ĂN ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

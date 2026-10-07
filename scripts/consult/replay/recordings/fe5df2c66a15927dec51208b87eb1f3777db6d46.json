@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"TiNiWorld GigaMall\" OR \"Win.D Gaming & Billiards Thủ Đức\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:58:22.954Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"TiNiWorld GigaMall\" OR \"Win.D Gaming & Billiards Thủ Đức\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bài Đánh Giá TiniWorld Gigamall Thủ Đức: 50 Góc Chơi ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7461230100147735826",
+    "snippet": "TiniWorld Gigamall Thủ Đức là khu vui chơi trẻ em rộng lớn với hơn 50 góc chơi được đầu tư chỉn chu và an toàn. Khi khu vui chơi mở lại với ...",
+    "position": 1
+   },
+   {
+    "title": "NHÌN LẠI KHAI TRƯƠNG TINIWORLD GIGAMALL",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7459356013297274130",
+    "snippet": "NHÌN LẠI KHAI TRƯƠNG TINIWORLD GIGAMALL – VUI HẾT CỠ! ​ Đừng quên chương trình \"GIẢM GIÁ VÉ CỔNG CHỈ TỪ 96K\" và \"CHECK-IN NHẬN BẮP NƯỚC\" ...",
+    "position": 2
+   },
+   {
+    "title": "Win.D Gaming & Billiards tại Thủ Đức",
+    "link": "https://www.tiktok.com/@windgamingstudio/video/7471534272847940871",
+    "snippet": "Win.D Gaming & Billiards Thủ Đức, 2 Pasteur, Phước Long B, Thủ Đức, Hồ Chí Minh 700000#windgaming #windgamingthủđức #congjanktran @Win.D ...",
+    "position": 3
+   },
+   {
+    "title": "Trung Thu này chẳng cần đi đâu xa, cứ đến tiNiWorld là có ...",
+    "link": "https://www.tiktok.com/@giadinhbemay1/video/7686840886348500242",
+    "snippet": "... cần đi đâu xa, cứ đến tiNiWorld là có cả một. @Gia Đình Bé Mây · âm thanh gốc - Gia Đình Bé Mây · tiNiWorld Gigamall Thủ Đức · author. 1207.",
+    "position": 4
+   },
+   {
+    "title": "Đúng 17h là bỏ hết #windgaming #xuhuongtiktok ...",
+    "link": "https://www.tiktok.com/@windgaming.vn/video/7643027812298788104",
+    "snippet": "... Đúng 17h là bỏ hết #windgaming #xuhuongtiktok #gamingontiktok #viral #xh. @windgaming.vn · Funny · Win.D Gaming & Billiards Thủ Đức · author.",
+    "position": 5
+   },
+   {
+    "title": "Wind Gaming Thủ Đức: Phòng Cinema Xịn Sò",
+    "link": "https://www.tiktok.com/@windgaming.vn/video/7618896183720758536",
+    "snippet": "... tại Wind Gaming Thủ Đức với màn hình lớn,. @windgaming.vn · âm thanh gốc - Win.D Gaming · Win.D Gaming & Billiards Thủ Đức · author. 3389.",
+    "position": 6
+   },
+   {
+    "title": "Khu Vui Chơi TiNiWorld Mừng Khai Trương Gigamall",
+    "link": "https://www.tiktok.com/@tiniworldofficial/video/7464838735646084360",
+    "snippet": "Nhanh chân đến tiNiWorld Gigamall – Tầng 5, Gigamall Thủ Đức trong dịp Tết này để tận hưởng ngay thôi! ⏰ 9:00 - 22:00 mỗi ngày. ... Khu Vui ...",
+    "position": 7
+   },
+   {
+    "title": "Ai hướng nội đâuu vô ngồi chung với tui neee ...",
+    "link": "https://www.tiktok.com/@windgaming.vn/video/7640513736117177608",
+    "snippet": "... #windgaming #xuhuongtiktok #gamingontiktok #viral #fyp · âm thanh gốc - Win.D Gaming · Win.D Gaming & Billiards Thủ Đức · author · 85 · 3.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

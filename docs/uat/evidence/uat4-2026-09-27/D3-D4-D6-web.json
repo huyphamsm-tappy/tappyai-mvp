@@ -1,0 +1,71 @@
+{
+ "login": "submitted → /onboarding",
+ "explore": {
+  "imgs": 8,
+  "broken": 0,
+  "posts": 5,
+  "crashed": false
+ },
+ "feed": {
+  "status": 200,
+  "n": 12,
+  "first": "6821a7aa-a939-499f-accf-a6b4a1878806"
+ },
+ "like": 200,
+ "comment": 200,
+ "unlike": 200,
+ "postPage": {
+  "comment": false,
+  "crashed": false
+ },
+ "brokenImgPage": "ok",
+ "thread": {
+  "status": 400
+ },
+ "deals": {
+  "crashed": false,
+  "text": "TappyAI Your Personal AI Agent AI AGENT Home – AI Agent Explore (Video) Mới Deals / Groupon Inbox KHẢ NĂNG Gợi ý cho bạn Smart Tools AI Planner (My Plans) Cảnh báo lừa đảo Nhóm ăn Bói Viết CỘNG Đ"
+ },
+ "scam": {
+  "phoneTab": false,
+  "tabs": [
+   "Logout",
+   "Kiểm tra URL",
+   "Quét mã QR",
+   "Phân tích tin nhắn",
+   "Kiểm tra ngay",
+   "Tất cả",
+   "Cơ quan nhà nước",
+   "AI – Deepfake",
+   "Đầu tư, việc làm",
+   "Mua bán trực tuyến",
+   "Đánh cắp dữ liệu",
+   "Xem thêm tình huống"
+  ]
+ },
+ "/music": {
+  "notFound": true,
+  "path": "/music"
+ },
+ "/marketplace": {
+  "notFound": true,
+  "path": "/marketplace"
+ },
+ "navMusic": 0,
+ "http": [
+  "400 POST http://localhost:3007/api/messaging/threads",
+  "404 GET http://localhost:3007/inbox",
+  "404 GET http://localhost:3007/music",
+  "404 GET http://localhost:3007/marketplace"
+ ],
+ "errors": [],
+ "loginB": "submitted → /onboarding",
+ "receiver": {
+  "status": 200,
+  "body": "{\"threads\":[]}"
+ },
+ "receiverErrors": [],
+ "receiverHttp": [
+  "404 GET http://localhost:3007/inbox"
+ ]
+}

@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Wink Saigon Centre\" OR \"Khách Sạn Núi Thành\" OR \"Khách Sạn Hạnh Phúc\" núi gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:46:01.897Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Wink Saigon Centre\" OR \"Khách Sạn Núi Thành\" OR \"Khách Sạn Hạnh Phúc\" núi gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đường Núi Thành.P13.Tân Bình -DT:3,8x8/Nhà 1trệt 2lầu",
+    "link": "https://www.tiktok.com/@phongbannhanoithiet/video/7643060443686194450",
+    "snippet": "... #nhahemxehoi. Đường Núi Thành.P13.Tân Bình -DT:3,8x8/Nhà. @Phong Bán Nhà Nói Thiệt · âm thanh gốc - Phong Bán Nhà Nói Thiệt · Khách Sạn Núi Thành · author.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Hà Tiên: Điểm Đến Du Lịch Đầy Hấp Dẫn",
+    "link": "https://www.tiktok.com/@phnhuyne/video/7597047907816181010",
+    "snippet": "khách sạn Hạnh Phúc Hà Tiên, phòng ban công view biển Hà Tiên, chỗ nghỉ qua đêm tại Hà Tiên, khách sạn gần biển Hà Tiên, review khách sạn Hạnh ...",
+    "position": 2
+   },
+   {
+    "title": "#kháchsạn #ẩmthực #cásôngthiênnhiên #cáleo",
+    "link": "https://www.tiktok.com/@thanhdangfood/video/7685563602832510226",
+    "snippet": "... gần Sài Gòn, hồ câu rộng rãi thoáng mát. âm thanh gốc - Mê Đồ Câu ... Game vô tri: Khách sạn hạnh phúc #kháchsạn #hạnhphúc #hoạthình ...",
+    "position": 3
+   },
+   {
+    "title": "#kháchsạn #nhàhàng #cásôngthiênnhiên #ẩmthực #cágiáo",
+    "link": "https://www.tiktok.com/@thanhdangfood/video/7689801142599027975",
+    "snippet": "... (gần khu công nghiệp, cách chợ Vỏ Vương khoảng 100–200m) Gợi ý khi ... Game vô tri: Khách sạn hạnh phúc #kháchsạn #hạnhphúc #hoạthình ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

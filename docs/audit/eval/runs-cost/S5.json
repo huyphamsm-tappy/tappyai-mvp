@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 6268,
+  "evidenceId": "7baa8b17-4b1c-4cb9-b4e1-7ebda1dacd5c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu VND nhé! 🎁\n\nTrước tiên, mình cần biết bạn gái thích loại quà gì để gợi ý chính xác hơn? Ví dụ:\n- **Đồ dùng cá nhân** (túi xách, ví, phụ kiện)\n- **Công nghệ** (tai nghe, sạc dự phòng, smartwatch)\n- **Làm đẹp** (mỹ phẩm, dưỡng da, nước hoa)\n- **Thời trang** (áo, giày, phụ kiện)\n- **Trải nghiệm** (spa, ăn uống, vé xem phim)\n- **Khác** (sách, đồ trang trí, quà lưu niệm)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu VND nhé! 🎁\n\nTrước tiên, mình cần biết bạn gái thích loại quà gì để gợi ý chính xác hơn? Ví dụ:\n- **Đồ dùng cá nhân** (túi xách, ví, phụ kiện)\n- **Công nghệ** (tai nghe, sạc dự phòng, smartwatch)\n- **Làm đẹp** (mỹ phẩm, dưỡng da, nước hoa)\n- **Thời trang** (áo, giày, phụ kiện)\n- **Trải nghiệm** (spa, ăn uống, vé xem phim)\n- **Khác** (sách, đồ trang trí, quà lưu niệm)"
+    }
+  ]
+}

@@ -26,6 +26,11 @@ class RealRecommendationsRepository @Inject constructor(
                     placeId = r.placeId,
                     placeName = r.placeName,
                     matchedSignals = r.matchedSignals,
+                    address = r.address?.takeIf { it.isNotBlank() },
+                    photoUrl = r.photoUrl?.takeIf { it.isNotBlank() },
+                    averageRating = r.averageRating?.takeIf { it > 0 },
+                    reviewCount = r.reviewCount,
+                    latestReviewAt = r.latestReviewAt,
                 )
             },
             explanation = dto.explanation,

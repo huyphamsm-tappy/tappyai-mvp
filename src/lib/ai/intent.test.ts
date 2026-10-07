@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { detectLang, detectExplicitLangRequest, classifyIntent } from './intent'
+import { detectLang, detectExplicitLangRequest, classifyIntent, detectForcedTool, namedVenueIn } from './intent'
 
 // classifyIntent picks between the full tool-capable prompt and the lightweight
 // no-tool prompt. Getting it wrong is not a cost problem, it is a correctness
@@ -180,5 +180,36 @@ describe('detectExplicitLangRequest — explicit instruction overrides detection
   it('returns null for ordinary messages with no language instruction', () => {
     expect(detectExplicitLangRequest('Good bún bò spots in TP.HCM?')).toBeNull()
     expect(detectExplicitLangRequest('Quán bún bò ngon ở TP.HCM?')).toBeNull()
+  })
+})
+
+// ── Phase D (2026-09-20): venue kinds take the place tool, not web_search ──
+describe('Phase D — cinema / karaoke / water park / aquarium are forced to search_places', () => {
+  it.each([
+    'tối nay rạp CGV Vincom Đồng Khởi chiếu phim gì, mấy giờ, vé bao nhiêu?',
+    'karaoke gần đây cho 10 người?',
+    'công viên nước nào gần Sài Gòn cho trẻ em?',
+    'thủy cung ở đâu gần đây?',
+    'chỗ chơi bowling gần Quận 7?',
+  ])('%s', (text) => {
+    expect(detectForcedTool(text)).toBe('search_places')
+  })
+  it('a plain question still goes to web_search', () => {
+    expect(detectForcedTool('tỷ giá USD hôm nay bao nhiêu?')).toBe('web_search')
+  })
+})
+
+describe('E3 — a fact question about a named venue is a place lookup; namedVenueIn precision', () => {
+  it('named-venue hours questions take search_places, not web_search', () => {
+    expect(detectForcedTool('CellphoneS Nguyễn Trãi Quận 5 mở cửa mấy giờ?')).toBe('search_places')
+    expect(detectForcedTool('Sả Spa Quận 1 mở cửa đến mấy giờ, có cần đặt lịch không?')).toBe('search_places')
+  })
+  it('namedVenueIn reads the name and ignores sentence case, areas and product asks', () => {
+    expect(namedVenueIn('quán Cơm Tấm Ba Ghiền Đặng Văn Ngữ mở đến mấy giờ?')).toBe('Cơm Tấm Ba Ghiền Đặng Văn Ngữ')
+    expect(namedVenueIn('Sả Spa Quận 1 mở cửa đến mấy giờ?')).toBe('Sả Spa')
+    expect(namedVenueIn('Thế Giới Di Động gần Quận 1 mấy giờ đóng cửa?')).toBe('Thế Giới Di Động')
+    for (const t of ['Tìm quán ăn tối ngon gần Quận 1 cho 2 người', 'Resort Phú Quốc cho kỷ niệm 1 năm, sang chút', 'Đi Đà Nẵng 3 ngày 2 đêm cho 2 người', 'Mua tai nghe bluetooth dưới 1 triệu', 'Hội An có gì hay, đi 1 ngày', 'Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?']) {
+      expect(namedVenueIn(t), t).toBeNull()
+    }
   })
 })

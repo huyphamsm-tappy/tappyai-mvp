@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Nori - Modern Izakaya\" OR \"Japan Eats\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:00:03.656Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"寿司と天ぷら居酒屋かむら- Izakaya Kamura\" OR \"Nori - Modern Izakaya\" OR \"Japan Eats\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đặt bàn liền để thưởng thức món ngon tại Japan Eats ngay ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7659051795548818709",
+    "snippet": "Đặt bàn liền để thưởng thức món ngon tại Japan Eats ngay nè #japanese #japanesefood #quan1 #teriyakichicken · recommend-cover. Best Ever Food ...",
+    "position": 1
+   },
+   {
+    "title": "Pov: Quán mình có tv để xem World Cup không em #japaneats ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7657580320283397397",
+    "snippet": "Don't miss out on this hidden gem in Quan 1! Keywords: fresh ingredients Japanese cuisine, best restaurants in Quan 1, Japan Eats cozy vibes, quality ...",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm ẩm thực Nhật Bản tại Japan Eats Quận 1 cùng ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7683145286822284565",
+    "snippet": "Video TikTok từ JAPAN EATS (@japan.eats8386): \"Khám phá hương vị Nhật Bản đích thực tại Japan Eats Quận 1 cùng trải nghiệm ẩm thực độc đáo.",
+    "position": 3
+   },
+   {
+    "title": "Phục vụ nước mình vất vả quá ha 😂😂 #anhdaden # ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7660392963742108949",
+    "snippet": "Video TikTok từ JAPAN EATS (@japan.eats8386): \"Phục vụ nước mình vất vả quá ha #anhdaden #japaneats #quan1 #jokeoftheday\".original ...",
+    "position": 4
+   },
+   {
+    "title": "Nori Modern Izakaya Quận 1: Review quán Nhật Lý Tự Trọng",
+    "link": "https://www.tiktok.com/@lulureview_/video/7517598383498890514",
+    "snippet": "Nori Modern Izakaya nằm ngay mặt tiền đường Lý Tự Trọng, Quận 1 là một quán izakaya Nhật Bản thu hút nhiều người tìm đến nhờ không gian hiện ...",
+    "position": 5
+   },
+   {
+    "title": "JAPAN EATS (@japan.eats8386)",
+    "link": "https://www.tiktok.com/@japan.eats8386",
+    "snippet": "Nhà hàng Nhật JAPAN EATS 5/70 Nguyễn Trung Ngạn,Bến Nghé,Q1,HCM ☎️0903636940 ... Một chiếc quán Nhật ngon, núp hẻm mà tui mới phát hiện ra ở quận.",
+    "position": 6
+   },
+   {
+    "title": "Nấu bằng tâm – ăn là ghiền ✨ Ghé thử là biết! #foodreview ...",
+    "link": "https://www.tiktok.com/@japan.eats8386/video/7629210013994618133",
+    "snippet": "23 Lượt thích,Video TikTok từ JAPAN EATS (@japan.eats8386): \"Nấu bằng tâm – ăn là ghiền ✨ Ghé thử là biết! #foodreview #quan1 #japaneats ...",
+    "position": 7
+   },
+   {
+    "title": "Níu mà quen em thì đừng có tới gằn lúc em đang nấu mì ý ...",
+    "link": "https://www.tiktok.com/@chiquanlyje/video/7689400303208205588",
+    "snippet": "Chị quản lý Japan Eats ‍♀️. Hôm nay bớt đu trend chị quản lý sẽ すすめ cho mọi người 1 số món nên gọi khi đến Japan Eats nhớ 1 lưu ý ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

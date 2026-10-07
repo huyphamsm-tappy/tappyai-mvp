@@ -1,26 +1,7 @@
-import { createClient } from '@/lib/supabase/server'
-import { clientIp, rateLimit } from '@/lib/security/rateLimit'
-import { NextRequest, NextResponse } from 'next/server'
-import { requestLocale } from '@/lib/i18n/requestLocale'
-import { serverMessage } from '@/lib/i18n/serverMessages'
+// F-024 — music reuse removed. This endpoint powered the "use this sound" path (browse a
+// sound, save/follow it, upload a reusable track, or attach one to a clip). The whole path is
+// withdrawn; every method answers 410 Gone. A clip still plays its OWN audio, which never used
+// this route. Deletion of the already-collected music rows is deferred to the owner.
+import { gone } from '@/lib/http/gone'
 
-export const dynamic = 'force-dynamic'
-
-// POST /api/sound/[trackId]/play — bump the track's play counter. No auth:
-// anonymous listens count too (the SECURITY DEFINER music_increment_play
-// function bypasses the read-only RLS on music_tracks). Best-effort and fire-
-// and-forget from the client — a failed increment never affects playback.
-export async function POST(req: NextRequest, { params }: { params: { trackId: string } }) {
-  const trackId = params.trackId?.trim()
-  if (!trackId) return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
-
-  // Prevent rapid count inflation from a single IP.
-  const { ok } = rateLimit(`play:${clientIp(req)}`, 30, 60_000)
-  if (!ok) return NextResponse.json({ ok: true }) // silent — never break playback UX
-
-  try {
-    await createClient().rpc('music_increment_play', { p_track: trackId })
-  } catch { /* pre-migration or transient — non-fatal */ }
-
-  return NextResponse.json({ ok: true })
-}
+export function POST() { return gone('music-reuse:sound-play') }

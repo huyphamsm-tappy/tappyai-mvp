@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:14.022Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quà Tặng TOOLA Ngẫu Nhiên - Trị Giá Đến 70k\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

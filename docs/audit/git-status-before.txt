@@ -1,0 +1,15 @@
+ M scripts/ingest-jamendo.mjs
+ M src/app/(home)/page.tsx
+ M src/app/HomeV3.tsx
+ M src/app/HomeView.tsx
+ M src/app/chatEntryContract.test.tsx
+ M src/app/homeAiFirst.test.tsx
+ M src/app/homeSuggestedArt.test.tsx
+ M src/lib/i18n/v3/web.ts
+ M src/lib/i18n/webHardcodedUiStrings.test.ts
+?? docs/audit/
+?? scripts/musicGenreCategory.mjs
+?? scripts/musicGenreCategory.test.mjs
+?? src/app/homeGreeting.test.tsx
+?? src/lib/home/
+?? src/modules/music/repository/getTracksCategoryFilter.test.ts

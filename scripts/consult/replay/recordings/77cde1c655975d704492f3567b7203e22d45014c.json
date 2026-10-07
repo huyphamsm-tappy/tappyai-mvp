@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Green Bamboo Lodge Resort\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:12:43.831Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Green Bamboo Lodge Resort\" Cát Tiên, Lâm Đồng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Green Bamboo Lodge Resort - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/cat-tien-hotel-detail-6345149/green-bamboo-lodge-resort/",
+    "snippet": "Giờ nhận phòng tại Green Bamboo Lodge Resort bắt đầu từ 14:00-22:00, và giờ trả phòng là 11:30. Green Bamboo Lodge Resort có hồ bơi không? Có, Green Bamboo ...",
+    "position": 1
+   },
+   {
+    "title": "Top 10 khách sạn tại Phú Vinh, Việt Nam với giá từ",
+    "link": "https://vn.trip.com/hotels/phu-vinh-hotels-list-807551/",
+    "snippet": "Green Bamboo Lodge Resort. Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam, Nam Cát Tiên. 8,4 (32 đánh giá). \"Vi trí thuận tiện đi lại ...",
+    "position": 2
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Đạ Tẻh, Việt Nam",
+    "link": "https://vn.trip.com/hotels/da-teh-hotels-list-456273/",
+    "snippet": "917.356₫. Đặt ngay. Green Bamboo Lodge Resort. 8,4 (41 đánh giá). Green Bamboo Lodge Resort. Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam, Nam Cát Tiên. \" ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Thuyền Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/landmark/vn/nam-cat-tien-boat.html",
+    "snippet": "Green Bamboo Lodge Resort Các khách sạn gần Thuyền Nam Cát Tiên. Green Bamboo Lodge Resort. 8,4/10. Rất Tốt. 41 đánh giá. Cách Thuyền Nam Cát Tiên 0.22km. Green ...",
+    "position": 4
+   },
+   {
+    "title": "Top 10 khách sạn tại Đak Lua, Việt Nam với giá từ",
+    "link": "https://vn.trip.com/hotels/dak-lua-hotels-list-806209/",
+    "snippet": "Green Bamboo Lodge Resort. 8,4 (37 đánh giá). Green Bamboo Lodge Resort. Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam, Nam Cát Tiên. \"Bạn nên chọn Green ...",
+    "position": 5
+   },
+   {
+    "title": "Các khách sạn ở gần Sông Đồng Nai, Nam Cát Tiên",
+    "link": "https://vn.trip.com/hotels/cat-tien-dong-nai-river/hotels-c77085m51032925/",
+    "snippet": "Các khách sạn nổi tiếng ở gần Sông Đồng Nai ; Cat Tien Nature Hotel · 1 đánh giá ; Green Bamboo Lodge Resort. 8,4 · 41 đánh giá ; Cat Tien Farmer Lodge · 1 đánh giá.",
+    "position": 6
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Đạ Huoai, Việt Nam",
+    "link": "https://vn.trip.com/hotels/da-huoai-hotels-list-77062/",
+    "snippet": "916.498₫. Đặt ngay. Green Bamboo Lodge Resort. 8,4 (41 đánh giá). Green Bamboo Lodge Resort. Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam, Nam Cát Tiên. \" ...",
+    "position": 7
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Tánh Linh, Việt Nam",
+    "link": "https://vn.trip.com/hotels/tanh-linh-district-hotels-list-696821/",
+    "snippet": "Green Bamboo Lodge Resort. 8,4 (41 đánh giá). Green Bamboo Lodge Resort. Ấp 1, Nam Cát Tiên, Đồng Nai, Việt Nam, Nam Cát Tiên. \"Không gian thoáng mát ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

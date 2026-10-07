@@ -1,0 +1,175 @@
+{
+  "id": "T4",
+  "text": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+  "parent": null,
+  "status": 200,
+  "ms": 13529,
+  "evidenceId": "5c0e0f10-3dcb-463d-b620-e8f35ba18cb1",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí",
+        "type": "attraction",
+        "location": "sai gon"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Vietopia",
+      "rating": 4.2,
+      "count": 3283,
+      "hours": "09:00–17:00",
+      "distance_km": 4,
+      "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+      "rating": 4.3,
+      "count": 461,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 4.9,
+      "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công Viên Nước Đầm Sen",
+      "rating": 4.3,
+      "count": 36029,
+      "hours": "08:30–17:30",
+      "distance_km": 7.1,
+      "address": "3 Hòa Bình, Bình Thới, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36881,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8514,
+      "hours": "08:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KHU VUI CHƠI TRẺ EM BIGFUN",
+      "rating": 4.2,
+      "count": 378,
+      "hours": "09:30–22:00",
+      "distance_km": 3.5,
+      "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé",
+      "rating": 4.5,
+      "count": 195,
+      "hours": "08:30–21:30",
+      "distance_km": 6.5,
+      "address": "908 Tạ Quang Bửu, Bình Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên văn hóa Suối Tiên",
+      "rating": 4.3,
+      "count": 22901,
+      "hours": "08:00–17:00",
+      "distance_km": 14.9,
+      "address": "120 Song Hành Xa Lộ Hà Nội, Tăng Nhơn Phú, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "META RACE & COFFEE | Khu vui chơi giải trí đua xe điều khiển RC",
+      "rating": 5,
+      "count": 1179,
+      "hours": "09:00–22:30",
+      "distance_km": 6.3,
+      "address": "49 Ông Ích Khiêm, Bình Thới, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình gợi ý **Thảo Cầm Viên Sài Gòn** cho bữa cuối tuần gia đình 4 người — cách bạn chỉ 1.2km, có **4.3⭐ (36.881 đánh giá Google Maps)**, mở cửa 07:00–18:30.\n\nNếu muốn chọn khác, **Công viên Nước Đầm Sen** cũng rất phổ biến (4.3⭐, 36.029 đánh giá), nhưng xa hơn một chút (7.1km) — phù hợp nếu bạn muốn trải nghiệm nước vào mùa này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Thảo Cầm Viên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"🌐 Website - Thảo Cầm Viên\",\"type\":\"website\",\"url\":\"https://s.shopee.vn/8V7uC7gWA0\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Nước Đầm Sen|Vietopia - công viên giải trí|Thiên Đường Giải Trí Thỏ Trắng[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Thảo Cầm Viên Sài Gòn** cho bữa cuối tuần gia đình 4 người — cách bạn chỉ 1.2km, có **4.3⭐ (36.881 đánh giá Google Maps)**, mở cửa 07:00–18:30.\n\nNếu muốn chọn khác, **Công viên Nước Đầm Sen** cũng rất phổ biến (4.3⭐, 36.029 đánh giá), nhưng xa hơn một chút (7.1km) — phù hợp nếu bạn muốn trải nghiệm nước vào mùa này.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Thảo Cầm Viên\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5600618488004010382\",\"primary\":true},{\"label\":\"🌐 Website - Thảo Cầm Viên\",\"type\":\"website\",\"url\":\"https://s.shopee.vn/8V7uC7gWA0\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Công viên Nước Đầm Sen|Vietopia - công viên giải trí|Thiên Đường Giải Trí Thỏ Trắng[/FOLLOWUPS]"
+    }
+  ]
+}

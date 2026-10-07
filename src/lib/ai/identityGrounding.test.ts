@@ -42,6 +42,17 @@ describe('the detector catches the identity fabrication that was measured', () =
     expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toHaveLength(FABRICATED.length)
   })
 
+  // 2026-09-19: a bold LABEL is not a venue claim (the grounding gate's rule, shared).
+  it('a bold label ("**Lưu ý:**", "**Bữa trưa:**") is never reported as a fabricated name', () => {
+    const reply = [
+      '**Cà Phê Acoustic** – không gian yên tĩnh.',
+      '**Lưu ý:** mình chưa xác nhận được quán nào yên tĩnh, nên gọi hỏi trước.',
+      '**Bữa trưa:** ghé quán lúc 11h30.',
+      '**Soo Kafe** – góc ấm cúng.',
+    ].join('\n\n')
+    expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toEqual(['Soo Kafe'])
+  })
+
   it('reports nothing when every named option came from the tool', () => {
     const reply = '**Cà Phê Acoustic** – yên tĩnh.\n\n**Cà Phê Sỏi Đá** – rộng.'
     expect(ungroundedNamesIn(reply, TOOL_RETURNED, [], [])).toEqual([])
@@ -95,8 +106,15 @@ describe('the detector reports and never rewrites', () => {
     // The whole span between detection and the emit. Widened from 600 when the second delivery
     // split (A5-P1) was documented above it — the window must still reach the enqueue, or this
     // stops checking anything.
-    const emit = filter.slice(filter.indexOf('ungroundedNames = ungroundedNamesIn('))
-      .slice(0, 1600)
+    // 🔄 ANCHOR UPDATED, PROTECTION WIDENED. The assignment gained a second
+    // source (the grounding gate's own record of what it removed), so the old
+    // literal no longer appears. The property is unchanged and now also covers
+    // the gate: neither the detector's finding nor the gate's finding may be
+    // read back to decide what is emitted.
+    // 🔄 WIDENED AGAIN (Phase 7, 2026-09-22): the whole-reply duplicate fix documents itself
+    // between the assignment and the enqueue (`alignReleasedPrefix`), so the window is 3000.
+    const emit = filter.slice(filter.indexOf('ungroundedNames = [...new Set(['))
+      .slice(0, 3000)
     // The property this protects: the detector REPORTS and never rewrites.
     //
     // The emitted variable is no longer `finalText` itself. There are now TWO delivery splits,
@@ -109,6 +127,14 @@ describe('the detector reports and never rewrites', () => {
     expect(emit).toContain("controller.enqueue(encoder.encode('0:' + JSON.stringify(send)")
     expect(emit).not.toContain('ungroundedNames.')
     expect(emit).not.toContain('presentedNames.')
+    // The grounding gate runs BEFORE composition and is deterministic; its
+    // result may be RECORDED on the evidence (that is the assignment this slice
+    // opens with) but must never be READ BACK to decide what is emitted. So the
+    // check is on everything after that assignment ends, and it forbids uses —
+    // any property access — exactly as the two lines above do for the detector.
+    const afterRecord = emit.slice(emit.indexOf('])]') + 3)
+    expect(afterRecord).not.toContain('gated.')
+    expect(afterRecord).not.toContain('ungroundedNames')
   })
 
   it('the emitted text is chosen by delivery state alone, not by any finding', () => {
@@ -116,20 +142,55 @@ describe('the detector reports and never rewrites', () => {
     // starts depending on anything but the early-send flag, this fails — which
     // is the moment "we noticed a fabricated name" could turn into "we silently
     // edited the user's reply".
-    expect(filter).toMatch(/const outText = earlyShoppingMarkerSent \? prose : finalText/)
+    //
+    // Asserted through the ternary's two branches rather than one literal byte string. The
+    // property is "delivery state alone decides", not "the expression never changes shape": the
+    // early branch must drop EXACTLY what the early send already delivered (the shopping marker)
+    // and keep everything else, or a turn that searched both places and products would silently
+    // lose its place cards. A literal match cannot tell those two apart.
+    const outTernary = filter.match(/const outText = (.*)/)?.[1]
+    expect(outTernary).toBeDefined()
+    expect(outTernary).toMatch(/^earlyShoppingMarkerSent \?/)
+    const [earlyBranch, lateBranch] = outTernary!.replace(/^earlyShoppingMarkerSent \?/, '').split(':')
+    // Early branch: everything `finalText` carries EXCEPT the marker that already shipped.
+    expect(earlyBranch).toContain('${prose}')
+    expect(earlyBranch).toContain('${placesSuffix}')
+    expect(earlyBranch).not.toContain('markerSuffix')
+    // Late branch: the detector's input, unchanged.
+    expect(lateBranch.trim()).toBe('finalText')
     // The second split obeys the same rule: `send` subtracts what was already streamed, and its
-    // only inputs are `flushedText` (delivery state) and `outText`. If a detector result ever
-    // appears in this expression, this fails — which is the moment "we noticed a fabricated name"
-    // could turn into "we silently edited the user's reply".
-    expect(filter).toMatch(/const send = flushedText && outText\.startsWith\(flushedText\)/)
+    // only inputs are `flushedSent` (delivery state: the bytes the early release actually sent,
+    // C3 2026-09-20) and `outText`. If a detector result ever appears in this expression, this
+    // fails — which is the moment "we noticed a fabricated name" could turn into "we silently
+    // edited the user's reply".
+    // 🔄 EXPRESSION UPDATED (Phase 7, 2026-09-22): the byte-exact `startsWith` re-sent whole
+    // replies when the settled text differed from the released bytes by whitespace alone, so
+    // the prefix is now aligned whitespace-insensitively. Its inputs are unchanged — the settled
+    // `outText` and the delivered `flushedSent` — and nothing a detector found enters it.
+    expect(filter).toMatch(/const releasedEnd = flushedSent \? alignReleasedPrefix\(outText, flushedSent\) : 0/)
+    expect(filter).toMatch(/const send = releasedEnd === null \? outText : outText\.slice\(releasedEnd\)/)
   })
 
-  it('the detector still reads the reply WITH the decision in it', () => {
+  it('the detector still reads the reply WITH every appended block in it', () => {
     // `finalText` — what ungroundedNamesIn analyses — must keep carrying the
     // marker even though the marker may already have shipped separately.
-    expect(filter).toMatch(/const finalText = `\$\{prose\}\$\{markerSuffix\}`/)
-    const detectAt = filter.indexOf('ungroundedNames = ungroundedNamesIn(')
-    expect(filter.indexOf('const finalText = `${prose}${markerSuffix}`')).toBeLessThan(detectAt)
+    //
+    // 🔄 THE COMPOSITION GREW; THE PROPERTY DID NOT CHANGE. The unified
+    // recommendation work added two more suffixes ([TAPPY_PLACES] and the
+    // server-authored CTA) and renamed `prose` to `ctaOwnedProse` at this line.
+    // What must still hold — and is what this asserts — is that the detector's
+    // input is the SAME string the user receives, composed before it runs. So
+    // the assertion is written against the parts rather than one frozen
+    // expression: every appended block has to be inside `finalText`.
+    const compose = /const finalText = `((?:\$\{\w+\})+)`/.exec(filter)
+    expect(compose, 'finalText must be a single template of composed parts').not.toBeNull()
+    const parts = [...compose![1].matchAll(/\$\{(\w+)\}/g)].map(m => m[1])
+    expect(parts, 'the prose must lead').toContain('ctaOwnedProse')
+    expect(parts, 'the shopping decision must be analysed').toContain('markerSuffix')
+    expect(parts, 'the recommendation block must be analysed').toContain('placesSuffix')
+    expect(parts, 'the server CTA must be analysed').toContain('ctaSuffix')
+    const detectAt = filter.indexOf('ungroundedNames = [...new Set([')
+    expect(filter.indexOf('const finalText = `')).toBeLessThan(detectAt)
   })
 
   // REMOVED ON INTEGRATION: this asserted how `/api/chat` CONSUMES the detector's finding, and

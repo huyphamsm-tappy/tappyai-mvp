@@ -8,6 +8,12 @@
     <string name="fortune_hub_zodiac_title">Cung hoàng đạo</string>
     <string name="fortune_hub_zodiac_description">Nhập ngày sinh để biết cung của bạn, tính cách và vận may hiện tại.</string>
 
+    <!-- Hub hero (V3, web `fortune.hero*`) -->
+    <string name="fortune_hub_hero_eyebrow">Xem bói online \uD83D\uDD2E</string>
+    <string name="fortune_hub_hero_title_line1">Tò mò vận may</string>
+    <string name="fortune_hub_hero_title_line2">hôm nay của bạn?</string>
+    <string name="fortune_hub_hero_description">Tarot, tử vi 12 con giáp và cung hoàng đạo — chỉ mang tính giải trí, tham khảo cho vui.</string>
+
     <!-- Shared disclaimer (Hub + Tarot + Tu Vi + Zodiac) -->
     <string name="fortune_disclaimer">Nội dung chỉ mang tính giải trí, tham khảo — không thay thế lời khuyên chuyên môn.</string>
 

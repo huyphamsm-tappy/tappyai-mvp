@@ -1,0 +1,117 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 15204,
+  "evidenceId": "91a8dbdb-0b27-4014-9e1e-7ae13cae7cce",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "quà sinh nhật cho bạn gái 1 triệu đẹp ý nghĩa"
+      }
+    },
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "vòng tay nữ bạc 1 triệu"
+      }
+    },
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "nước hoa nữ cao cấp 1 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Bánh sinh nhật 1 tuổi cho bé gái tuổi dần",
+      "price": 400000
+    },
+    {
+      "name": "Bánh kem Bánh sinh nhật Style Tối giản Decor Lá Hương thảo Viết chữ theo yêu cầu 16cm",
+      "price": 470000
+    },
+    {
+      "name": "Bánh kem sinh nhật CF01 trái cây mix vị theo mùa thơm ngon tươi mát",
+      "price": 479000
+    },
+    {
+      "name": "Bánh kem Giáng sinh Bánh sinh nhật Dâu tây Phủ Socola Chảy Dễ thương",
+      "price": 630000
+    },
+    {
+      "name": "Set Quà Tặng Nước hoa Pháp ý nghĩa tặng người yêu, sinh nhật, quà tặng mẹ, cô giáo, bạn gái",
+      "price": 699000
+    },
+    {
+      "name": "Mách Bạn Quà Tặng Cho Bạn Trai Thích",
+      "price": 799000
+    },
+    {
+      "name": "Vòng tay bạc nữ kiểu bi",
+      "price": 400000
+    },
+    {
+      "name": "Vòng tay bi bạc nữ",
+      "price": 450000
+    },
+    {
+      "name": "Vòng tay bạc cao cấp cho nữ",
+      "price": 460000
+    },
+    {
+      "name": "Vòng tay bạc đẹp cho nữ",
+      "price": 490000
+    },
+    {
+      "name": "Vòng tay bạc nữ",
+      "price": 500000
+    },
+    {
+      "name": "Vòng tay bạc nữ kiểu xoắn - Cable",
+      "price": 660000
+    },
+    {
+      "name": "Nước Hoa Nữ Pháp Cổ Điển Thanh Lịch Lâu Dài Hương Thơm Tươi Nhẹ Nữ Tính Tình Yêu Hương Thơm Lãng Mạn Phong Cách Pháp 26.7.31",
+      "price": 482135
+    },
+    {
+      "name": "Nước hoa Nuxe Bio Beauté Cologne Fresh - Pháp",
+      "price": 495000
+    },
+    {
+      "name": "Nước hoa nữ D",
+      "price": 509000
+    },
+    {
+      "name": "Combo nước hoa cho Huyền",
+      "price": 585000
+    },
+    {
+      "name": "10 Loại Nước Hoa Nữ Thích Nhất",
+      "price": 749000
+    },
+    {
+      "name": "Nước Hoa Nữ Cao Cấp",
+      "price": 749000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình sẽ tìm quà sinh nhật ý nghĩa trong tầm 1 triệu cho bạn gái nhé! 🎁[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Bánh sinh nhật 1 tuổi cho bé gái tuổi dần\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":400000,\"priceHigh\":400000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQQlKgDtEWcxNG1Tg9qEf8LPqfAGIxQuTPVfd-ImvlTmmVi0XLjGMlyWyMJQfJJu2PPvwE2ujF_VzKfh6mwT8KG3lC14SqbXqHbvjUItNfj\",\"offers\":[{\"seller\":\"Bánh sinh nhật Daily Cake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,catalogid:12483959526044732469,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":400000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:1\",\"name\":\"Bánh kem Bánh sinh nhật Style Tối giản Decor Lá Hương thảo Viết chữ theo yêu cầu 16cm\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":470000,\"priceHigh\":470000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwYBJtECDEaZ0OGyRVZlC_UclgQDPl8F3oPPxjeh82pOg_kj1n3YhkCX5GBGEjeW52FdcEf4xySRCwd8uZVzF0wizzlTXA5w7bQZ5ig16L\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:7512267637343848109,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":470000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Bánh kem sinh nhật CF01 trái cây mix vị theo mùa thơm ngon tươi mát\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":479000,\"priceHigh\":479000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQEFDMOj4957t6uhqX7Z-M2AntxOVvbb06BiJGiAq9BAeByLjjNwBxKDsPFSIt-O5zm71iJX1njhs4CnisgziqkulfmP6nhaaalHvaGnq9V\",\"offers\":[{\"seller\":\"Banhngot.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:8960835283912868559,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":479000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Bánh kem Giáng sinh Bánh sinh nhật Dâu tây Phủ Socola Chảy Dễ thương\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":630000,\"priceHigh\":630000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTHgck3BLEi6OLQp0DR9QzW1tYrtzgjvE201jRrX9yKal_fhmSxt0lPGxPu8Cdr8FraZXHIYPWbBS1uABAUCDdmk2vko0wpill_jk--o_Qz\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:1135413728781305984,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":630000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Set Quà Tặng Nước hoa Pháp ý nghĩa tặng người yêu, sinh nhật, quà tặng mẹ, cô giáo, bạn gái\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":699000,\"priceHigh\":699000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQDgb3oQmHSxddpwLU-tiZ5ec4rShLMqXnwHbP39pqinZNUU29yRKGydN-9IlpwkTgAcbZ7dRchjujrWVCTdIhZFrfJvpAULm9vTh8ILom3\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:6611943931505277398,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":699000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Mách Bạn Quà Tặng Cho Bạn Trai Thích\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":799000,\"priceHigh\":799000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQrkKmfJbl8Yg8l_SkP6UQrKHRPWktS2hiJvJuvhmphmZV889cHAmKKzSh06VADzaOm10pEbyB_sSnp53L-Y6FNe4xI6Lk4XPWahyZlbRHC0V7G6R95G4JcAA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:4634400565084516637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":799000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Bánh sinh nhật Daily Cake\",\"reasons\":[{\"attribute\":\"price\",\"evidence\":\"400000 VND\",\"params\":{\"priceVnd\":400000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nGiá rẻ nhất nên còn dư tiền để kết hợp quà khác.\n\n Quà sang trọng, để lâu dài, rất phù hợp cho sinh nhật.\n\n 💝\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=v%C3%B2ng+tay+b%E1%BA%A1c+n%E1%BB%AF\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=v%C3%B2ng+tay+b%E1%BA%A1c+n%E1%BB%AF\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nước hoa nữ cao cấp|Quà tặng kết hợp|Túi xách nữ 1 triệu[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm quà sinh nhật ý nghĩa trong tầm 1 triệu cho bạn gái nhé! 🎁[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Bánh sinh nhật 1 tuổi cho bé gái tuổi dần\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":400000,\"priceHigh\":400000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQQlKgDtEWcxNG1Tg9qEf8LPqfAGIxQuTPVfd-ImvlTmmVi0XLjGMlyWyMJQfJJu2PPvwE2ujF_VzKfh6mwT8KG3lC14SqbXqHbvjUItNfj\",\"offers\":[{\"seller\":\"Bánh sinh nhật Daily Cake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,catalogid:12483959526044732469,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":400000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:1\",\"name\":\"Bánh kem Bánh sinh nhật Style Tối giản Decor Lá Hương thảo Viết chữ theo yêu cầu 16cm\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":470000,\"priceHigh\":470000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwYBJtECDEaZ0OGyRVZlC_UclgQDPl8F3oPPxjeh82pOg_kj1n3YhkCX5GBGEjeW52FdcEf4xySRCwd8uZVzF0wizzlTXA5w7bQZ5ig16L\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:7512267637343848109,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":470000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:2\",\"name\":\"Bánh kem sinh nhật CF01 trái cây mix vị theo mùa thơm ngon tươi mát\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":479000,\"priceHigh\":479000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQEFDMOj4957t6uhqX7Z-M2AntxOVvbb06BiJGiAq9BAeByLjjNwBxKDsPFSIt-O5zm71iJX1njhs4CnisgziqkulfmP6nhaaalHvaGnq9V\",\"offers\":[{\"seller\":\"Banhngot.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:8960835283912868559,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":479000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:3\",\"name\":\"Bánh kem Giáng sinh Bánh sinh nhật Dâu tây Phủ Socola Chảy Dễ thương\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":630000,\"priceHigh\":630000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTHgck3BLEi6OLQp0DR9QzW1tYrtzgjvE201jRrX9yKal_fhmSxt0lPGxPu8Cdr8FraZXHIYPWbBS1uABAUCDdmk2vko0wpill_jk--o_Qz\",\"offers\":[{\"seller\":\"WinkCake\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:1135413728781305984,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":630000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Set Quà Tặng Nước hoa Pháp ý nghĩa tặng người yêu, sinh nhật, quà tặng mẹ, cô giáo, bạn gái\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":699000,\"priceHigh\":699000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQDgb3oQmHSxddpwLU-tiZ5ec4rShLMqXnwHbP39pqinZNUU29yRKGydN-9IlpwkTgAcbZ7dRchjujrWVCTdIhZFrfJvpAULm9vTh8ILom3\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:6611943931505277398,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":699000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Mách Bạn Quà Tặng Cho Bạn Trai Thích\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":799000,\"priceHigh\":799000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQrkKmfJbl8Yg8l_SkP6UQrKHRPWktS2hiJvJuvhmphmZV889cHAmKKzSh06VADzaOm10pEbyB_sSnp53L-Y6FNe4xI6Lk4XPWahyZlbRHC0V7G6R95G4JcAA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=qu%C3%A0+sinh+nh%E1%BA%ADt+cho+b%E1%BA%A1n+g%C3%A1i+1+tri%E1%BB%87u+%C4%91%E1%BA%B9p+%C3%BD+ngh%C4%A9a&prds=localAnnotatedOfferId:1,productid:4634400565084516637,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":799000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Bánh sinh nhật Daily Cake\",\"reasons\":[{\"attribute\":\"price\",\"evidence\":\"400000 VND\",\"params\":{\"priceVnd\":400000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nGiá rẻ nhất nên còn dư tiền để kết hợp quà khác.\n\n Quà sang trọng, để lâu dài, rất phù hợp cho sinh nhật.\n\n 💝\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=v%C3%B2ng+tay+b%E1%BA%A1c+n%E1%BB%AF\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=v%C3%B2ng+tay+b%E1%BA%A1c+n%E1%BB%AF\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Nước hoa nữ cao cấp|Quà tặng kết hợp|Túi xách nữ 1 triệu[/FOLLOWUPS]"
+    }
+  ]
+}

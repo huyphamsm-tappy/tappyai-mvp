@@ -1,0 +1,447 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "ốp UAG",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:06:05.145Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:5570854008236708658,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.275.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTLdAbuX92ZcGT_O8cORSihL9YKifMbiitWM0WxuHfOMxW8-MiYHqcSUhkQq-Lj2n-gwp6Je9qxAFrFsjSbyMNTTN6gBTgZns3tuRcRWdTCn5eytjp6f8RdfA",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "5570854008236708658",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max Uag chống sốc Plyo With Magsafe",
+    "source": "broshop.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:11868090721749616589,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "840.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTsVpILc3wxtKNP4YZAhXNkPYXluQlBOFC623O7UPpUNVLI-hbLHdaxWmdDEPtXbw2V8UGnOS47b1xrzAWb-iq2IFK47nOxxo0nNjB1LwcNqAW_-GSh7pC4",
+    "rating": 4.6,
+    "ratingCount": 94,
+    "productId": "11868090721749616589",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch Pro Titanium",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:10369835625400552380,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ57tHyk2Cv6V5lyqm40UOF4tjjflCvAZC88R9aQfkADvgI1b8zs4kIKE9CkryszMkBE3frmg5CYrP1m_vYODvggaIUyUujo0iI6w3Ji5JYxklHn4uH6RuO",
+    "rating": 4.7,
+    "ratingCount": 302,
+    "productId": "10369835625400552380",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Pathfinder With Magsafe",
+    "source": "minhtuanmobile.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:7910631979814942134,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRczw5OyQ8YkuqL4B_tkmH_oobBxH0Kztyrz9zHyH0rfbMURY8GOw39E1orsqyDY8ftgZLzUX5F5tt3QTUngHApsMO99r2b12yET_PG0Dh2bqJd9Dud81dENQ",
+    "rating": 4.8,
+    "ratingCount": 388,
+    "productId": "7910631979814942134",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:9963511138660996960,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRiHBfKelFY2fBnB9Uvjy5SBVRWsi7twvMzKGGrLLajXPCrCxTFwVdJaEZpQvY8E-yogwQVtss6ZHD3vDRnQDGZ-EtpnVH9yBdfGQ2tXEes_tCViUQCyf4i",
+    "rating": 4.6,
+    "ratingCount": 401,
+    "productId": "9963511138660996960",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro UAG Monarch Pro - Titanium",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:12489010403366035959,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQXqLUsxWoT6TOt6BAZSGVlURXFbwVPVZ-sLNgS-g6xdvASU0p41ptELaOwjboH6w8Ywmv3OdaK-S8gXSKzcCMnpBzEubSueIRHtZa2muu-DmE0IquzcJ00UA",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "12489010403366035959",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder Clear With M",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:2831840473617178395,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.275.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSGQjQX3kCuLbMlE6BUQu30hJ6glO9VMmNJq1rcwwmvzlaik_8lM7P1ToL_phu8hL0DCu0LHxnOaNOIi8o8DVn92gJsEKiWNK7TvPv7KDYaP9-8Xzf3n12kgw",
+    "rating": 4.4,
+    "ratingCount": 324,
+    "productId": "2831840473617178395",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch Pro Orange",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:14549016134021999447,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.125.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQhAGzXxH3-avTIHDv4OOwhQ2JLYd8fQWuj1w6WWKjRAN80pge1QuK5-qYTvSLj5pdFpPUzAj3nLujTCSagnlh1FRhZsY3YaHLqzBSw1MRqeNcH2lmpvV0fow",
+    "rating": 4.7,
+    "ratingCount": 59,
+    "productId": "14549016134021999447",
+    "position": 8
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Scout With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:11328777645598825837,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "850.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRh85xIIHMXQNMZj9rHxfLH2IdUeSkDkZn8Q5HR0n_dlCXltpJgwNZDYA6JHJH12CvMT0wyIFUy8enqJFeJWIZK7JOSeTdsn6XfpGDZ8RSlGEYqsJ3u5hhUOA",
+    "rating": 4.9,
+    "ratingCount": 318,
+    "productId": "11328777645598825837",
+    "position": 9
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:16538941989716221652,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQe4Zw6uzfO6NwF20ngko8kGvBzokWWYelx4LeWsBS6yrIpqkCAtN2mOSu5ZCTeVt0ScKOwtSAIhLaHmaoy6_VYhFZhowyuOUrrigcHNZ-Rteu7bq-9881t",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "16538941989716221652",
+    "position": 10
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Plyo Ice",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:9806624077675179698,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "935.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQQxzosa06UzUmDFl5ES9CXt2nOlRr2INAYFPXQbPZqhklPNwdVZ3uqVEaFjvLOctaua0JwjeaVMc0HammTZVkZRTyTTcEXdoxSz0C9eMIaUpI8H_zasDjK",
+    "rating": 4.6,
+    "ratingCount": 22,
+    "productId": "9806624077675179698",
+    "position": 11
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro UAG Plasma XTE - Ash/Titanium",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:9700369765330243416,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-U2CSj_-YsxAwbGiSP9_t1P3hTMznC7V7pAzR0IJJuvnD_N58UGfTKg8lVdFe8O59i-lKMOphQ4X-gk8jh9tjZZbaTYO2UgI0BJ8lv82Lx4hg7YerXYHi",
+    "productId": "9700369765330243416",
+    "position": 12
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Uag chống sốc Plyo With Magsafe",
+    "source": "minhtuanmobile.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:9550434324673386874,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.270.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQQzGUppDTtRsw8ljvj4ROWl5ZOUOs25EeRLfRjewZPX9XJsoZ8Iq9ZfEIkSUpKaUXXKdB0teLxP-8hEs-BohybPO1ORSC8ojplyvamGMBPGZqj6ZaPxX8dng",
+    "rating": 4.7,
+    "ratingCount": 75,
+    "productId": "9550434324673386874",
+    "position": 13
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Pathfinder Clear With M",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:15464527685324439828,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRYSO_QInHshI58Ta9CLg0jHxrXgEnwaU9wh0KM1RyU-Ts4O_OkFsPhiQuBkw6oKKCuRURTIBosEZWI0Eeax4WZ3W3GhP4kNMcJ4YpKdaMe_o8nmqMaMyYgeg",
+    "rating": 4.6,
+    "ratingCount": 201,
+    "productId": "15464527685324439828",
+    "position": 14
+   },
+   {
+    "title": "Ốp UAG Scout Viền TPU Dẻo Chống Sốc Đạt Chuẩn Tích Hợp Sạc Từ Tính Chính Hãng cho iPhone 17 Pro Max| 17 Pro -iPhone 17 Pro",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:16856587438058512280,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "855.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRZD4rz652mgI3JJxCSlDXoWvMNiyajxLF8axUn5c4LBSVJBMZdnEBjwFjTcU8ajExeF7-NAbw1o3MNb8EBWVVeHh6qizSSoiLNGXH6i_5p4_NLcmN_4cWV",
+    "rating": 4.9,
+    "ratingCount": 318,
+    "productId": "16856587438058512280",
+    "position": 15
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Trooper With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:8175104977367041132,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.360.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR-O8BWjJm-T3kNr5LpTdVlW9myNh5EbJOng-IDcDX4Fx_ptQZxEOvd-LowLF-7loBb9SRSfTS49LsFsO-Mg3xoDjQkHkYbAYXLECTWlPgF8os8lO1VTWma",
+    "rating": 4.2,
+    "ratingCount": 24,
+    "productId": "8175104977367041132",
+    "position": 16
+   },
+   {
+    "title": "Ốp Lưng iPhone 13 UAG Plasma - Mallard",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:4639198289830921638,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "950.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ-ZzPBJlgPZy6ldLvYzh7cmAEdyvjO1XqfAInryxT5tBV4AdHQ1ID2LaPNGjnDLV7jf5zf8sKQRu50xJy0zoamafqoNf3oeVG-jkOuteh9F5wwcJeRnDvzkg",
+    "productId": "4639198289830921638",
+    "position": 17
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder Clear With Magsa",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:1215990323809417678,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQiixHJUIWH6Icuh9-smmESnnKu-3KdzkjoY523wrmyta57ghNO6zbvGf6VsHQbjdxuE7rH0S6m4BaU6e0rGZAKLxEm3AcXEUDnUwM2wJO2jWTXrQFVfLmVbw",
+    "rating": 4.4,
+    "ratingCount": 132,
+    "productId": "1215990323809417678",
+    "position": 18
+   },
+   {
+    "title": "Ốp lưng UAG Plasma XTE Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:5249820169299081808,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.798.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTbC2wqNrUSxZZvziNj7GVL6dEp7qENSlaH18VdlrEj_nVq3kOyloe6lSYSO7d0qtyvU7oquqIABr5LHqAfRkmLwqAd4zNsVnglTbtq37V9u-lzumJbsnzjeA",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "productId": "5249820169299081808",
+    "position": 19
+   },
+   {
+    "title": "Ốp UAG Plyo w Mag Chống Sốc Đạt Chuẩn Có Nút Camera Control Chính Hãng cho iP 17 Pro/ 17 Pro Max -Ice/ Clear / 17 Pro Max",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:4612797860168388334,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.279.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRLe0ATEOQ1gz1s4MrJMJ7-RpVzKmW2EgoRv3OvXRy4DhfF1L-Rw8RxCS7ZO3ef3J9Sx6v6EFrCCmviIlM5FOSPUd5sdF2AC2w99ndVeIn-8koPYwXIxCdXTg",
+    "rating": 4.3,
+    "ratingCount": 6,
+    "productId": "4612797860168388334",
+    "position": 20
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Plyo XTE With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:13285533457045132798,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.530.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSATSt7zKGF-p0c_3QJjAhh4Us7yeQm7pDR2QFJGX9GitHn0xVKcL5PAHsbqwZiZsT7sTFisOwuxoRbWVY7ZCx2nxQEFRYJzLn88Q21iwsZ3vwXogQVlnQN",
+    "rating": 4.6,
+    "ratingCount": 35,
+    "productId": "13285533457045132798",
+    "position": 21
+   },
+   {
+    "title": "Ốp lưng iPhone 17 UAG chống sốc Scout With Magsafe",
+    "source": "minhtuanmobile.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:4019762218572228796,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "950.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQZU-myo5SCxBwOIneUV5bIRDdiA27hwcszwKus9wXzY9ZrWz8m3ul3Y5324WylCFIhaAkwiGsz5wal7ca4RrGPmif2lfS8__76mFL0D8qTPAZik6r9cXXwsw",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "4019762218572228796",
+    "position": 22
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Pathfinder SE With Mags",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:6439869731019066861,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSMVm9p_OEFH_Uk62qm_KPZGpCg8Ux9RxQKespOGvYW7Wh0ZNLhuKHr-JawPV7oot-OLItUQ2voO8tICfPTOUEoYvgwJjse4C5LCLhoTtH3CqrOCwbKwIQ0",
+    "rating": 4.8,
+    "ratingCount": 84,
+    "productId": "6439869731019066861",
+    "position": 23
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro UAG Plyo - Ash/White",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:11126531451816702311,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQm0ac3dTmfV88J2Ld4ZmEBsSVnk4WEGhw7oBsmja68OB6gkRpMCSMcBEXFxWD6Xs_Zp4nmC9MjyPZeBQXHHjfiPUGJ1DSUcslHfJktqJKjTw9NdPNFbxiPzig",
+    "productId": "11126531451816702311",
+    "position": 24
+   },
+   {
+    "title": "Ốp UAG Essential Armor Chống Sốc Đạt Chuẩn Chính Hãng cho iPhone 17 Pro Max -Ash / 17 Pro Max",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:11540520253093714468,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "925.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRaS_IUYnJ2teq1UwrI5KqJ06RONE6fPAN-ZrmRpC2sIJHXVRVGSzwZYaG-6_BsYAODIZ1MnT1ZnpXEyA6EYwwjFvshq3F6P0W-vTnFLx1kYMrA467mmvPo",
+    "rating": 4.2,
+    "ratingCount": 4,
+    "productId": "11540520253093714468",
+    "position": 25
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Plasma XTE With Magsafe",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:6008913483827086348,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.620.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQML-fiRgepSvDCjPMsCh1SdvcuLGIdGflYh4wOtiUzyIGF6JrfCYZkdvxvASH2wCpicqeqRxXpAOV21nrpWELyUadQqEBPp59vuZcTL6uvWgyVz31-4m5PPQ",
+    "rating": 4.6,
+    "ratingCount": 190,
+    "productId": "6008913483827086348",
+    "position": 26
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro Magsafe cho iPhone 17 Promax",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:10345256391470581496,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.998.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTth9ndJO7iuYUGPjtHD2CV9_2kkrP6KyyS1NqnvQqJvIxC1QUJznpHXvLe1GixZ8l40NM3MpRimdAEwKoAG0zOXtNou_gzHshDe-OCFWjcXfH5-g_afOlT",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "10345256391470581496",
+    "position": 27
+   },
+   {
+    "title": "Ốp UAG MONARCH KEVLAR cho IPHONE 15 (Hết hàng)",
+    "source": "Phụ Kiện Dế Yêu",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:413594321881849763,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "690.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSAbPaY44P9L4_H6lAFluYU7GlPxQfOeRutyYnQQsY19nW2kpwqIEqBDsKvlU-izS1IQqgKZtakA2RJRkXkX5OR-dpsnoWwUlld7GLTuiF-WiqwD3SZLafnoQ",
+    "productId": "413594321881849763",
+    "position": 28
+   },
+   {
+    "title": "Ốp lưng iPhone 16 - UAG Monarch Pro - Crimson / 16 Pro",
+    "source": "Dâu Đen",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:5169569652383288841,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSftw7YYFuu-6VwCA6flV1DII0Yv62wedDuje9vQEIKckukk_7Hn5W7NDvorRYfzPi6DRkyKL-p8r27pC3DcOfGOX_bMs2n7EX6MrrSZ9LnVFNoJZzW4Ijv",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "5169569652383288841",
+    "position": 29
+   },
+   {
+    "title": "Ốp Lưng iPhone 15 Pro UAG Monarch Pro Magsafe - Rust",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:13180031918541064469,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSmGVUYCL0lsxlo4pdSf8zslHI1tz3qHVBiEBncCs4FLD9xkClF-q-pH63RTFMJsXkJriRANc5x4omwCHLDQB6AjeO8MWKlIO7nCZWPehMHoUWVF0QikqriwA",
+    "productId": "13180031918541064469",
+    "position": 30
+   },
+   {
+    "title": "Ốp lưng Magsafe iPhone 16 Pro UAG Monarch Pro",
+    "source": "minhtuanmobile.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:1073000494725808388,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTJHp19v682ZanIaQ5g5UW6dVE2b1Vv1zk0QnzhTwz1-aWzYz-DOTgNcEghsXAAo6JcfAhqXJ952hO2i6HdfFfVqbSLmzYUaUTBcYsR7icnObDT6QINqwo_Hg",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "1073000494725808388",
+    "position": 31
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder With Magsafe",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:3460567121529895921,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.289.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSVaTeqvR9xt9SoP59ZJ5oh_EJwuwSJ-sQ_a7tAz3td_F1sLJsu_RgxaeiGIxkpHUGV8zZ5ZzhaULoKY4XzvxIE5y5X2ZyPx1ioa4eZFO6ZP7eymHA1vXBizg",
+    "rating": 4.6,
+    "ratingCount": 163,
+    "productId": "3460567121529895921",
+    "position": 32
+   },
+   {
+    "title": "Ốp lưng UAG iPad Pro 11 inch (2024, M4) Metropolis SE - Bordeaux",
+    "source": "broshop.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:11327337855559644034,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.440.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTAO4qz386a1wCENW9179b6RKt5tD5APPdfZFGKqQ6ThFS7_8GiI2UzIXlhajdlckrAF24PNNi5cHZ81_gbhLfdmsnZPEllgRfGRAXkXdUK5u339hVFbOlu1Q",
+    "rating": 4.2,
+    "ratingCount": 290,
+    "productId": "11327337855559644034",
+    "position": 33
+   },
+   {
+    "title": "Ốp Lưng UAG Essential Armor Magsafe iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:7968154225393009017,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRwr-h9j8kZwPrBm6jRV1zbOOMJFv4Ca4Jhx7n56g_wa_6weqxcEf0hxlhzzpHboAOoCCwAC2N0hnvl6EEWH7vkbkC20yQo__k2VSWgNocpsGUWQ48ufiw1",
+    "productId": "7968154225393009017",
+    "position": 34
+   },
+   {
+    "title": "Ốp Lưng iPhone 16 Pro UAG Pathfinder Clear Magsafe - Ash/Black",
+    "source": "Cello.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:15537700910209129909,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRf3fbEkcSh949wAyGg9hUpdQnFxq0JLZAA7QkrDw5DxWaHjrY1IfI3Qhwgw7dHm3CnnnQUnlrZqJZyadPzCMeiNog1YMVuiGz3ApA92EUv1-pIhcsdoVANFA",
+    "productId": "15537700910209129909",
+    "position": 35
+   },
+   {
+    "title": "Standout / Đen MagSafe",
+    "source": "Slimcase Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,catalogid:7822189395549939516,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "749.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTXp5GkIXxRUyuQURVxEHA6lqf9xobx0NYWxCbW12oMc6J4u2o5xyC0PrY4O_JbZQShfcNdN7jAtofZpju7JgCUWoNFZuSMZ_UJunfj2x0mYuRZn7Zkn1vm1g",
+    "rating": 4.3,
+    "ratingCount": 318,
+    "productId": "7822189395549939516",
+    "position": 36
+   },
+   {
+    "title": "Ốp lưng UAG iPhone 16 Pro Monarch Pro Kevlar có Magsafe - MCL Trading Vietnam Co.,Ltd",
+    "source": "MCL Vietnam Trading CO.,LTD",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:9230999671674005942,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTWFslyJBihifY30JXUvcl2f1JrRB8I1RmuwpP8D3FwADkyGd9my3Nea_gaGAiTuviI7jEGSxI7w_EqGIOpL0NtJ-ns_Z6gRedwAKG9Qo9UJGffAFty5rH2",
+    "rating": 4.8,
+    "ratingCount": 219,
+    "productId": "9230999671674005942",
+    "position": 37
+   },
+   {
+    "title": "Ốp lưng iPhone 17 - UAG Monarch Pro - 17 Pro / Carbon Fiber",
+    "source": "Dâu Đen",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:17481539846279822600,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQcUpZ_K4Hl-VnRdJpJv6aJdIiZ7WXdC2JyNrgZJCvqd1Q7jzXFy54K-ZgLgFubIPfFPjNzLKTQ4CfLTqbzePrxd5y6YkY9CUhSxfKYaVUNI8vZ_RV5ykwm",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "17481539846279822600",
+    "position": 38
+   },
+   {
+    "title": "Ốp UAG Plasma XTE Kiêm Giá Đỡ Chống Sốc Đạt Chuẩn Tích Hợp Sạc Không Dây Chính Hãng cho iPhone 17 Pro Max -Clear/ Titanium / iPhone 17 Pro Max",
+    "source": "Xù Case Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:17199114556860496686,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.529.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTcYjqZMOsXvDROBWa6leXwx1v26RLjlcF8UWqlDAXYuE0gezACI7ykOZM_P7PCVZAGUBk7aXPFw89p0TTrLv1h2h1IpJ1Cm4_isIAnJdKISJAlUQvUBylI",
+    "productId": "17199114556860496686",
+    "position": 39
+   },
+   {
+    "title": "Ốp Lưng UAG Plyo Magsafe cho iPhone 17 Pro",
+    "source": "vuapk.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=%E1%BB%91p+UAG&prds=localAnnotatedOfferId:1,productid:1213763747494704059,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2",
+    "price": "1.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS_BWnHYdodu3l1k-aGW85_Yw0Lg3KJWhjbQyomJ6uRQDjh9bNeTORgmKZsy1TR7XAdOpbRNO8VyxB1JCmwpBvQQtWxKxmZbDK_t5qf0TQcrbkdcjUOHHVlvQ",
+    "productId": "1213763747494704059",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

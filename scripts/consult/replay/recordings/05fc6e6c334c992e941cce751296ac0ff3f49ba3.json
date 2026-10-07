@@ -1,0 +1,70 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:02.275Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-H%E1%BA%A1t-A-Cafe-Premium-Gift-Box-Coffee-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.312500391.7074996441",
+    "snippet": "Mua Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 stick giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 131,
+    "position": 1
+   },
+   {
+    "title": "set quà tặng cà phê - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA",
+    "snippet": "Hộp Mix 3 Vị 18 Gói Cà phê Hòa Tan Cộng Cà Phê Vị Bạc Xỉu,Cốt Dừa, Cà Phê Sữa Đậm Vị Hỗ Trợ Tỉnh Táo. 100.940₫. 113.000₫. -11%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 2
+   },
+   {
+    "title": "Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại ...",
+    "link": "https://shopee.vn/H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-cao-c%E1%BA%A5p-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-H%E1%BA%A1t-A-Cafe-3-lo%E1%BA%A1i-c%C3%A0-ph%C3%AA-h%C3%B2a-tan-288g-16-stick-i.1476155731.27226615016",
+    "snippet": "Mua Hộp quà tặng cao cấp cà phê hòa tan Hạt A Cafe 3 loại cà phê hòa tan 288g - 16 stick giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 3
+   },
+   {
+    "title": "Hương mai cafe - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/h%C6%B0%C6%A1ng%20mai%20cafe",
+    "snippet": "[GÓI LẺ] Cà phê hòa tan Hạt A Cafe các vị sữa dừa, sầu riêng, hạt dẻ mật ong gói 18gr. 15.000₫. Mua để nhận quà. rating-star 4.9.",
+    "position": 4
+   },
+   {
+    "title": "Kyo Coffee Store, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/0x6h_8q3zh",
+    "snippet": "Cà phê hòa tan Cappuccino Hạt A Cafe 4 in 1 vị sữa dừa tự nhiên-Hàng chính hãng 216gr/12 gói. 55.000₫. rating-star 5.0. 212 đã bán.",
+    "position": 5
+   },
+   {
+    "title": "café giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=cafe%CC%81",
+    "snippet": "LION CAFE - Cà phê hòa tan 3in1 - Hộp 288g (16 gói x 18g. custom-overlay. LION CAFE - Cà phê hòa tan 3in1 - Hộp 288g (16 gói x 18g). 415.150₫. 460.000₫. -10 ...",
+    "position": 6
+   },
+   {
+    "title": "Hoa mai hương - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/hoa%20mai/h%C6%B0%C6%A1ng",
+    "snippet": "[GÓI LẺ] Cà phê hòa tan Hạt A Cafe các vị sữa dừa, sầu riêng, hạt dẻ mật ong gói 18gr. 15.000₫. rating-star 4.9 · Muối Ô Mai Xí Muội DLFresh – Muối Chấm ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

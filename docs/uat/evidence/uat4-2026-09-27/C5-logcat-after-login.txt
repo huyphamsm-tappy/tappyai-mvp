@@ -1,0 +1,231 @@
+09-27 18:17:46.395   593   667 I ActivityTaskManager: START u0 {act=android.intent.action.VIEW dat=tappyai://auth-callback/... flg=0x10000000 pkg=com.tappyai.app.debug cmp=com.tappyai.app.debug/com.tappyai.app.MainActivity} with LAUNCH_MULTIPLE from uid 2000 (BAL_ALLOW_PERMISSION) result code=0
+09-27 18:17:46.395   831   900 V WindowManagerShell: Transition requested (#14): android.os.BinderProxy@8f698f1 TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=264 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.tappyai.app.debug/com.tappyai.app.MainActivity } baseActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} topActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} origActivity=null realActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} numActivities=2 lastActiveTime=682740 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@efebcd6} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{383cb57 com.tappyai.app.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 14 }
+09-27 18:17:46.539   593  1518 D CoreBackPreview: Window{6945252 u0 com.tappyai.app.debug/com.tappyai.app.MainActivity}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@c6093d9, mPriority=0, mIsAnimationCallback=false}
+09-27 18:17:46.577   593   617 I ActivityTaskManager: Displayed com.tappyai.app.debug/com.tappyai.app.MainActivity for user 0: +191ms
+09-27 18:17:46.577   593   617 V WindowManager: Sent Transition (#14) createdAt=09-27 18:17:46.386 via request=TransitionRequestInfo { type = OPEN, triggerTask = TaskInfo{userId=0 taskId=264 displayId=0 isRunning=true baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=com.tappyai.app.debug/com.tappyai.app.MainActivity } baseActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} topActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} origActivity=null realActivity=ComponentInfo{com.tappyai.app.debug/com.tappyai.app.MainActivity} numActivities=2 lastActiveTime=682740 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{b6ec4e3 Task{f886575 #264 type=standard A=10209:com.tappyai.app.debug}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=null topActivityInfo=ActivityInfo{fafe511 com.tappyai.app.MainActivity} launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false topActivityEligibleForLetterboxEducation= falseisLetterboxEducationEnabled= true isLetterboxDoubleTapEnabled= false topActivityEligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=1080 topActivityLetterboxHeight=2400 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false cameraCompatTaskInfo=CameraCompatTaskInfo { cameraCompatControlState=hidden freeformCameraCompatMode=inactive}}}, pipTask = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 14 }
+09-27 18:17:46.579   831   900 V WindowManagerShell: onTransitionReady (#14) android.os.BinderProxy@8f698f1: {id=14 t=OPEN f=0x0 trk=0 opt={t=FROM_STYLE} r=[0@Point(0, 0)] c=[{null m=OPEN f=FILLS_TASK leash=Surface(name=ActivityRecord{8057fab u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x35c4644 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) d=-1->0 r=-1->0:-1 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity},{null m=TO_BACK f=FILLS_TASK leash=Surface(name=ActivityRecord{9f714ac u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x84ad32d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity}]}
+09-27 18:17:46.581   831   900 V WindowManagerShell: Transition doesn't have explicit remote, search filters for match for {id=14 t=OPEN f=0x0 trk=0 opt={t=FROM_STYLE} r=[0@Point(0, 0)] c=[{null m=OPEN f=FILLS_TASK leash=Surface(name=ActivityRecord{8057fab u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x35c4644 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) d=-1->0 r=-1->0:-1 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity},{null m=TO_BACK f=FILLS_TASK leash=Surface(name=ActivityRecord{9f714ac u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x84ad32d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity}]}
+09-27 18:17:46.583   831   900 V WindowManagerShell: start default transition animation, info = {id=14 t=OPEN f=0x0 trk=0 opt={t=FROM_STYLE} r=[0@Point(0, 0)] c=[{null m=OPEN f=FILLS_TASK leash=Surface(name=ActivityRecord{8057fab u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x35c4644 sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) d=-1->0 r=-1->0:-1 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity},{null m=TO_BACK f=FILLS_TASK leash=Surface(name=ActivityRecord{9f714ac u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x84ad32d sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity}]}
+09-27 18:17:46.584   593   617 V WindowManager:         {null m=OPEN f=FILLS_TASK leash=Surface(name=ActivityRecord{8057fab u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x7c9a99b sb=Rect(0, 0 - 0, 0) eb=Rect(0, 0 - 1080, 2400) d=-1->0 r=-1->0:-1 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity},
+09-27 18:17:46.584   593   617 V WindowManager:         {null m=TO_BACK f=FILLS_TASK leash=Surface(name=ActivityRecord{9f714ac u0 com.tappyai.app.debug/com.tappyai.app.MainActivity)/@0x8bbd9aa sb=Rect(0, 0 - 1080, 2400) eb=Rect(0, 0 - 1080, 2400) d=0 bc=ff303030 component=com.tappyai.app.debug/com.tappyai.app.MainActivity}
+09-27 18:17:46.604  3635  3929 I okhttp.OkHttpClient: --> POST http://localhost:3007/api/auth/claim-anonymous
+09-27 18:17:46.604  3635  3929 I okhttp.OkHttpClient: Content-Type: application/json; charset=utf-8
+09-27 18:17:46.604  3635  3929 I okhttp.OkHttpClient: Content-Length: 720
+09-27 18:17:46.605  3635  3929 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:46.605  3635  3929 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:46.606  3635  3929 I okhttp.OkHttpClient: --> END POST
+09-27 18:17:46.779  3635  3933 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/conversations
+09-27 18:17:46.780  3635  3933 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:46.780  3635  3933 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:46.781  3635  3933 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:46.784  3635  3934 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/reviews/feed?page=0&limit=20&sort=trending
+09-27 18:17:46.784  3635  3934 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:46.784  3635  3934 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:46.785  3635  3934 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:46.788  3635  3936 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/profile
+09-27 18:17:46.788  3635  3936 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:46.789  3635  3936 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:46.791  3635  3936 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:46.794  3635  3935 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/deals?lang=vi
+09-27 18:17:46.795  3635  3935 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:46.795  3635  3935 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:46.795  3635  3935 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:47.162  1049  3937 W AdvertisingIdSettings: Package com.tappyai.app.debug failed Ad Id permission check. Apps that target Android SDK 33 or higher should declare com.google.android.gms.permission.AD_ID in the app manifest to access Ad Id.
+09-27 18:17:47.345   593   706 I ImeTracker: com.tappyai.app.debug:21e2d1ee: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+09-27 18:17:47.345   593   706 I ImeTracker: com.tappyai.app.debug:21e2d1ee: onCancelled at PHASE_SERVER_SHOULD_HIDE
+09-27 18:17:47.364  1256  1256 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1532 onStartInput(EditorInfo{EditorInfo{packageName=com.tappyai.app.debug, inputType=0, inputTypeString=NULL, enableLearning=false, autoCorrection=false, autoComplete=false, imeOptions=0, privateImeOptions=null, actionName=UNSPECIFIED, actionLabel=null, initialSelStart=-1, initialSelEnd=-1, initialCapsMode=0, label=null, fieldId=0, fieldName=null, extras=null, hintText=null, hintLocales=[]}}, false)
+09-27 18:17:48.777  3635  3934 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/reviews/feed?page=0&limit=20&sort=trending (1991ms)
+09-27 18:17:48.777  3635  3934 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:48.777  3635  3934 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:48.777  3635  3934 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:48.777  3635  3934 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: cache-control: private, no-store
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: vary: Authorization, Cookie
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:49 GMT
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:48.783  3635  3934 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:48.784  3635  3934 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:48.784  3635  3934 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:48.808  3635  3944 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/recommendations
+09-27 18:17:48.808  3635  3944 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:48.808  3635  3944 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:48.808  3635  3944 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:49.030  3635  3935 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/deals?lang=vi (2234ms)
+09-27 18:17:49.030  3635  3935 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:49 GMT
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:49.031  3635  3935 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:49.033  3635  3933 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/conversations (2251ms)
+09-27 18:17:49.033  3635  3933 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:49.033  3635  3933 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:49.033  3635  3933 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:49 GMT
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:49.034  3635  3933 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:49.037  3635  3933 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: --> POST http://localhost:3007/api/notifications/subscribe
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: Content-Type: application/json; charset=utf-8
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: Content-Length: 171
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:49.038  3635  3934 I okhttp.OkHttpClient: --> END POST
+09-27 18:17:49.044  3635  3935 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/profile
+09-27 18:17:49.045  3635  3935 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:49.045  3635  3935 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:49.045  3635  3935 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:49.175  3635  3936 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/profile (2383ms)
+09-27 18:17:49.175  3635  3936 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:49.175  3635  3936 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:49.175  3635  3936 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:49 GMT
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:49.176  3635  3936 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:49.181  3635  3933 I okhttp.OkHttpClient: --> POST http://localhost:3007/api/notifications/subscribe
+09-27 18:17:49.181  3635  3933 I okhttp.OkHttpClient: Content-Type: application/json; charset=utf-8
+09-27 18:17:49.181  3635  3933 I okhttp.OkHttpClient: Content-Length: 171
+09-27 18:17:49.182  3635  3933 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:49.182  3635  3933 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:49.182  3635  3933 I okhttp.OkHttpClient: --> END POST
+09-27 18:17:49.335  3635  3929 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/auth/claim-anonymous (2728ms)
+09-27 18:17:49.335  3635  3929 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:49.335  3635  3929 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:49.336  3635  3929 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:49 GMT
+09-27 18:17:49.337  3635  3929 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:49.337  3635  3929 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:49.337  3635  3929 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:49.337  3635  3929 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:49.341  3635  3936 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/notifications
+09-27 18:17:49.341  3635  3936 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:49.341  3635  3936 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:49.341  3635  3936 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:49.342  3635  3936 I okhttp.OkHttpClient: <-- HTTP FAILED: java.io.IOException: Canceled
+09-27 18:17:49.344  3635  3929 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/notifications
+09-27 18:17:49.344  3635  3929 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:49.344  3635  3929 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:49.344  3635  3929 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:49.401   593  1454 E TaskPersister: File error accessing recents directory (directory doesn't exist?).
+09-27 18:17:50.114  3635  3934 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/notifications/subscribe (1076ms)
+09-27 18:17:50.114  3635  3934 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.114  3635  3934 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.114  3635  3934 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:50 GMT
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.115  3635  3934 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:50.157  3635  3929 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/notifications (812ms)
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:50 GMT
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.158  3635  3929 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: <-- 500 Internal Server Error http://localhost:3007/api/notifications/subscribe (1015ms)
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:50 GMT
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.197  3635  3933 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.198  3635  3933 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.198  3635  3933 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:50.238  3635  3681 E NotificationSubscription: FCM token registration failed: HTTP 500 Internal Server Error
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/profile (1263ms)
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.309  3635  3935 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:50 GMT
+09-27 18:17:50.310  3635  3935 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.310  3635  3935 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.310  3635  3935 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.310  3635  3935 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:50.387  3635  3935 I okhttp.OkHttpClient: --> GET http://localhost:3007/api/config
+09-27 18:17:50.387  3635  3935 I okhttp.OkHttpClient: Authorization: ██
+09-27 18:17:50.387  3635  3935 I okhttp.OkHttpClient: Accept-Language: vi
+09-27 18:17:50.387  3635  3935 I okhttp.OkHttpClient: --> END GET
+09-27 18:17:50.435  3635  3944 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/recommendations (1627ms)
+09-27 18:17:50.435  3635  3944 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.435  3635  3944 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:50 GMT
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.436  3635  3944 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: <-- 200 OK http://localhost:3007/api/config (336ms)
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' 'unsafe-eval' https://us.i.posthog.com https://us-assets.i.posthog.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://us.i.posthog.com https://us-assets.i.posthog.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://nominatim.openstreetmap.org https://graph.zalo.me https://vitals.vercel-insights.com https://*.public.blob.vercel-storage.com https://blob.vercel-storage.com https://vercel.com https://storage.googleapis.com; frame-src 'self' https://www.youtube.com; worker-src 'self' blob:; manifest-src 'self'; upgrade-insecure-requests
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: X-Content-Type-Options: nosniff
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: X-Frame-Options: SAMEORIGIN
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: Referrer-Policy: strict-origin-when-cross-origin
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: Permissions-Policy: camera=(self), microphone=(self), geolocation=(self), browsing-topics=()
+09-27 18:17:50.724  3635  3935 I okhttp.OkHttpClient: Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: cache-control: public, max-age=300, stale-while-revalidate=3600
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: content-type: application/json
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: Date: Sun, 27 Sep 2026 11:17:51 GMT
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: Connection: keep-alive
+09-27 18:17:50.725  3635  3935 I okhttp.OkHttpClient: Keep-Alive: timeout=5
+09-27 18:17:50.726  3635  3935 I okhttp.OkHttpClient: Transfer-Encoding: chunked
+09-27 18:17:50.726  3635  3935 I okhttp.OkHttpClient: <-- END HTTP
+09-27 18:17:54.777  3948  3948 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+09-27 18:17:54.785  3948  3948 I AndroidRuntime: Using default boot image
+09-27 18:17:54.785  3948  3948 I AndroidRuntime: Leaving lock profiling enabled
+09-27 18:17:55.250  3948  3948 D AndroidRuntime: Calling main entry com.android.commands.uiautomator.Launcher
+09-27 18:17:56.328  3948  3948 D AndroidRuntime: Shutting down VM

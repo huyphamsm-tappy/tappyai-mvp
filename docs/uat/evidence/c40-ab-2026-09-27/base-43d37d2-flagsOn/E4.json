@@ -1,0 +1,124 @@
+{
+  "id": "E4",
+  "text": "chỗ đó có giữ xe không?",
+  "parent": "E3",
+  "status": 200,
+  "ms": 11144,
+  "evidenceId": "60784e23-0221-4270-b5c0-32f72a6cb915",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Dot Bar Quận 1 parking giữ xe",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dot Bar",
+      "rating": 4.9,
+      "count": 708,
+      "hours": "17:00–02:00",
+      "distance_km": 0.3,
+      "address": "37 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "BÃI XE PARKING PRO",
+      "rating": 2.5,
+      "count": 72,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.1,
+      "address": "2B Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "District K",
+      "rating": 4.4,
+      "count": 1831,
+      "hours": "17:00–02:00",
+      "distance_km": 0.5,
+      "address": "30 Thủ Khoa Huân, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bãi giữ xe ô tô",
+      "rating": 4,
+      "count": 58,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.5,
+      "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "HER ROOM",
+      "rating": 4.8,
+      "count": 325,
+      "hours": "18:00–01:00",
+      "distance_km": 2.1,
+      "address": "85B Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chill Skybar & Dining",
+      "rating": 4.4,
+      "count": 5938,
+      "hours": "17:30–01:30",
+      "distance_km": 1,
+      "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bãi giữ xe máy 24/24",
+      "rating": 3.3,
+      "count": 8,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 0.8,
+      "address": "35 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Bãi giữ xe Parking 24/24 xe máy Hai Bà Trưng",
+      "rating": 1,
+      "count": 4,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.9,
+      "address": "338 Hai Bà Trưng, P.Tân Định, 235-237 Trần Hưng Đạo, P, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "live_music"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thông tin về chỗ đậu xe tại Dot Bar cho bạn.\n\nNên bạn gọi trực tiếp **+84 762 202 420** để hỏi xem quán có giữ xe không — vì Quận 1 khá chật hẹp, nhiều quán bar nhỏ không có bãi riêng.\n\nNếu Dot Bar không có, gần đó có **BÃI XE PARKING PRO** (1.1km) mở cả ngày, hoặc bạn có thể dùng Grab để tránh lo giữ xe.\n\nMình chưa thấy bằng chứng về nhạc sống ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Dot Bar\",\"type\":\"website\",\"url\":\"tel:+84762202420\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6583537619726149911\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý chính xác, mình sẽ tìm ngay các quán phù hợp.\n\nMình chọn **Dot Bar** cho bạn — cách vị trí bạn chỉ 0.3km, mở cửa từ 17:00 đến 02:00 hôm nay, và có 4.9⭐ từ 708 đánh giá.\n\nNgoài ra, **Loop 1 - Cocktail Bar & Kitchen** cũng rất gần (0.3km), đánh giá cao 4.8⭐ (2.508 đánh giá), mở đến 01:00, không gian hiện đại với cocktail chất lượng.\n\nCả hai quán đều gần bạn, dễ di chuyển bộ hoặc Grab.\n\nMình chưa thấy bằng chứng về nhạc sống ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Dot Bar trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6583537619726149911\",\"primary\":true},{\"label\":\"🌐 Loop 1 - Cocktail Bar\",\"type\":\"website\",\"url\":\"https://www.facebook.com/loop1cocktailnkitchen1/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]gọi hỏi nhạc sống hôm nay|quán bar khác Quận 1|quán ăn gần đó|spa thư giãn|karaoke nhạc sống[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có giữ xe không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thông tin về chỗ đậu xe tại Dot Bar cho bạn.\n\nNên bạn gọi trực tiếp **+84 762 202 420** để hỏi xem quán có giữ xe không — vì Quận 1 khá chật hẹp, nhiều quán bar nhỏ không có bãi riêng.\n\nNếu Dot Bar không có, gần đó có **BÃI XE PARKING PRO** (1.1km) mở cả ngày, hoặc bạn có thể dùng Grab để tránh lo giữ xe.\n\nMình chưa thấy bằng chứng về nhạc sống ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Dot Bar\",\"type\":\"website\",\"url\":\"tel:+84762202420\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6583537619726149911\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

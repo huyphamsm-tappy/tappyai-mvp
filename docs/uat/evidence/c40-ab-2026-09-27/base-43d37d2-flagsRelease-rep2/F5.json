@@ -1,0 +1,33 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 6021,
+  "evidenceId": "7ae6776d-5f40-40fd-9fef-0eed1e3225e5",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Quán **Tám Riêu - Phan Xích Long** mở cửa từ **10:30 đến 21:30** hàng ngày. Vậy nên bạn có thể đi ăn trưa vào bất kỳ lúc nào trong khung giờ đó mà không lo đóng cửa 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\"}],\"primary\":true}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nít, có chỗ đậu xe ô tô nhé.\n\nMình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình cuối tuần của bạn. Quán có **4.7⭐ (2.114 đánh giá Google Maps)**, cách bạn ~2.9km, mở cửa 10:30–21:30. Đây là nhà hàng riêu nổi tiếng, phù hợp cho gia đình 6 người, không gian thoáng mát và dễ phục vụ trẻ nhỏ. Bạn có thể xem chi tiết trên Maps để kiểm tra tình trạng chỗ đậu xe ô tô trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍜 Xem trên Google Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đó?|Có quán nào có khu vui chơi cho trẻ?|Ăn gì khác ngoài riêu?[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Quán **Tám Riêu - Phan Xích Long** mở cửa từ **10:30 đến 21:30** hàng ngày. Vậy nên bạn có thể đi ăn trưa vào bất kỳ lúc nào trong khung giờ đó mà không lo đóng cửa 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Tám+Riêu+Phan+Xích+Long+Phú+Nhuận\"}],\"primary\":true}[/CTA_BUTTONS]"
+    }
+  ]
+}

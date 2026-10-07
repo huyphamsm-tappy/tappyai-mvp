@@ -1,0 +1,149 @@
+{
+  "id": "P7",
+  "text": "gội đầu dưỡng sinh gần đây",
+  "parent": null,
+  "status": 200,
+  "ms": 13910,
+  "evidenceId": "cdd0d249-7e14-4814-b495-0796b2e05a81",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "gội đầu dưỡng sinh",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "rating": 4.9,
+      "count": 882,
+      "hours": "09:00–22:00",
+      "distance_km": 1,
+      "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+      "rating": 5,
+      "count": 26,
+      "hours": "09:30–23:00",
+      "distance_km": 1.3,
+      "address": "95/21 Nguyễn Trãi, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "distance_km": 1.2,
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+      "rating": 4.7,
+      "count": 99,
+      "hours": "09:00–23:00",
+      "distance_km": 0.9,
+      "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+      "rating": 5,
+      "count": 31,
+      "hours": "10:00–00:00",
+      "distance_km": 1.8,
+      "address": "47 Thạch Thị Thanh, Tân Định, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 882,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Nemo Gội Đầu Dưỡng Sinh - Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 26,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:30–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 443,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Như Ý Spa | Gội Đầu Dưỡng Sinh Quận 1 | Massage Thư Giãn Quận 1 | Tiệm Nail Gần Đây",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 99,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "09:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "LYN - Gội đầu dưỡng sinh Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 31,
+        "distance_km": 1.8,
+        "open_now": true,
+        "opening_hours": "10:00–00:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm các địa điểm gội đầu dưỡng sinh gần vị trí của bạn ở Quận 1 ngay.\n\nMình gợi ý **An Miên Spa** — cách bạn chỉ 1km, mở cửa đến 22:00 hôm nay, và có 4.9⭐ từ 882 đánh giá Google Maps. Đây là địa điểm gội đầu dưỡng sinh uy tín nhất gần đây với dịch vụ massage kết hợp. 👍\n\nNếu muốn gần hơn, **Như Ý Spa** chỉ 0.9km, cũng có gội đầu + massage, mở đến 23:00.\n\nBạn muốn đi hôm nay hay cuối tuần?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]giá gội đầu An Miên Spa|đặt lịch gội đầu|spa gần đây khác|gội đầu + massage combo|review An Miên Spa[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm các địa điểm gội đầu dưỡng sinh gần vị trí của bạn ở Quận 1 ngay.\n\nMình gợi ý **An Miên Spa** — cách bạn chỉ 1km, mở cửa đến 22:00 hôm nay, và có 4.9⭐ từ 882 đánh giá Google Maps. Đây là địa điểm gội đầu dưỡng sinh uy tín nhất gần đây với dịch vụ massage kết hợp. 👍\n\nNếu muốn gần hơn, **Như Ý Spa** chỉ 0.9km, cũng có gội đầu + massage, mở đến 23:00.\n\nBạn muốn đi hôm nay hay cuối tuần?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - An Miên Spa\",\"type\":\"website\",\"url\":\"https://anmienspa.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - An Miên Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=11468270118479026497\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]giá gội đầu An Miên Spa|đặt lịch gội đầu|spa gần đây khác|gội đầu + massage combo|review An Miên Spa[/FOLLOWUPS]"
+    }
+  ]
+}

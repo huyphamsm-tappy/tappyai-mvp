@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanoi Ngon\" OR \"Bánh xèo Hẹn Hò Miền Tây\" OR \"Bánh Xèo Dì Tuyết\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:28.322Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanoi Ngon\" OR \"Bánh xèo Hẹn Hò Miền Tây\" OR \"Bánh Xèo Dì Tuyết\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hanoi Ngon - Chi nhánh mới ở Quận 7",
+    "link": "https://www.tiktok.com/@daitiengnoianuong/video/7538447495752437000",
+    "snippet": "Hanoi Ngon - Chi nhánh mới ở Quận 7. Khám phá chi nhánh mới của Hanoi Ngon tại Quận 7 với nhiều món ăn ngon đặc trưng. Hãy đến thưởng thức nhé!",
+    "position": 1
+   },
+   {
+    "title": "Đơn lớn cho Văn Phòng thì nhớ Hanoi Ngon nha ✨🫶🏻 ...",
+    "link": "https://www.tiktok.com/@hanoingon/video/7689072032092474642",
+    "snippet": "22 Lượt thích,Video TikTok từ Hanoi Ngon (@hanoingon): \"Đơn lớn cho Văn Phòng thì nhớ Hanoi Ngon nha ✨ #anvatsaigon #vanphonggenz ...",
+    "position": 2
+   },
+   {
+    "title": "Hanoi Ngon (@hanoingon)",
+    "link": "https://www.tiktok.com/@hanoingon",
+    "snippet": "Hanoi Ngon (@hanoingon) trên TikTok |786.8K Lượt thích.46.5K Follower.ĂN VẶT CHUẨN HÀ NỘI TỪ 2017 XEM MENU GIỜ MỞ CỬA & CHI NHÁNH .",
+    "position": 3
+   },
+   {
+    "title": "Quán 7 ăn gì: gợi ý hôm nay và mai ở Quận 7",
+    "link": "https://www.tiktok.com/@hanoingon/video/7665634690354711826",
+    "snippet": "33 Lượt thích,Video TikTok từ Hanoi Ngon (@hanoingon): \"Gợi ý món ngon Quận 7 để ăn hôm nay và ngày mai: địa điểm, phong cách ăn uống và hashtag liên quan.",
+    "position": 4
+   },
+   {
+    "title": "Ăn vặt Quận 9: Quán ngon, địa điểm hot",
+    "link": "https://www.tiktok.com/@hanoingon/video/7660752378026577170",
+    "snippet": "32 Lượt thích,Video TikTok từ Hanoi Ngon (@hanoingon): \"Khám phá các quán ăn vặt hấp dẫn, địa điểm ăn uống thú vị tại Quận 9. Thưởng thức ẩm thực đường phố ...",
+    "position": 5
+   },
+   {
+    "title": "Mê ăn vặt thì ghé mình chơi nha 💛 #anvatsaigon ...",
+    "link": "https://www.tiktok.com/@hanoingon/photo/7683388389768645906",
+    "snippet": "37 Likes, TikTok video from Hanoi Ngon (@hanoingon): “Mê ăn vặt thì ghé mình chơi nha #anvatsaigon #nemchuaran #quan7 #quan7angi”. âm ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Bánh Xèo Miền Tây Ngon Ở Quận 7",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7180554803087494426",
+    "snippet": "quán này á là quán bánh xèo hẹn hò miền tây. có các loại nhân như là vịt. tôm thịt. hến đặc biệt là có bánh xèo chay vào ngày rằm. vào mùng ...",
+    "position": 7
+   },
+   {
+    "title": "Ghé làm 1 phần nem còn được thêm ly trà chanh hẹ ...",
+    "link": "https://www.tiktok.com/@hanoingon/video/7666336302513573138",
+    "snippet": "... quan đã yêu mến sản phẩm của HANOI NGON. HANOI NGON chưa có cơ hội tài trợ sản phẩm trong chương trình, rất may mắn được Ekip đặ-t món về dùng và có cơ hội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng 3 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:02.127Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng 3 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SET QUÀ TẶNG BẠN GÁI Quốc tế phụ nữ 8/3 SINH NHẬT ...",
+    "link": "https://h5.lazada.vn/products/set-qua-tang-ban-gai-quoc-te-phu-nu-83-sinh-nhat-gau-dau-vo-va-phu-kien-gom-hop-va-thiep-doc-ky-mo-ta-i2296822805.html",
+    "snippet": "SET QUÀ TẶNG BẠN GÁI Quốc tế phụ nữ 8/3 SINH NHẬT GẤU DÂU VỚ VÀ PHỤ KIỆN, GỒM HỘP VÀ THIỆP (ĐỌC KỸ MÔ TẢ).",
+    "position": 1
+   },
+   {
+    "title": "Quà tặng mẹ, bạn gái, phái nữ tốt cho sức khỏe CTG316",
+    "link": "https://www.lazada.vn/products/set-qua-tang-83-tra-hoa-mat-qua-tang-me-ban-gai-phai-nu-tot-cho-suc-khoe-ctg316-i2414956675.html?srsltid=AU7gw4WQQjJXPZR_bf1U6NHngXIXlxypoXJE9ZaSfoemDVF70w-TLoLO",
+    "snippet": "2- Hộp quà mật ong thích hợp cho nhiều dịp: Bộ quà bánh cookies và trà phù hợp cho nhiều dịp khác nhau, từ quà tặng sinh nhật, lễ kỷ niệm, đám cưới đến quà tặng ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Quà Tặng Túi Tập Tô Cho Bé 3-4 Tuổi Khám Phá Thế Giới ...",
+    "link": "https://www.lazada.vn/products/qua-tang-tui-tap-to-cho-be-3-4-tuoi-kham-pha-the-gioi-nhieu-chu-de-than-quen-i2284743257.html?srsltid=AU7gw4VwAKqvevM5r_p1-vtO6og-2Y8-ylUZqLMUplI9a-CuwGPoYW9d",
+    "snippet": "Quà tặng túi tập tô cho bé từ 3-4 tuổi là sản phẩm lý tưởng để khơi dậy sự sáng tạo và khám phá thế giới xung quanh. Với nhiều chủ đề thân quen, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng Mini Gift Box - Quà 8 tháng 3 Sinh Nhật Tốt ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-mini-gift-box-qua-8-thang-3-sinh-nhat-tot-nghiep-tang-ban-trai-ban-gai-nguoi-yeu-i3016739928.html?srsltid=AU7gw4UuvK4-gD77OPYHIcxnYP29yGsi3M98Cw7fJTJ4frgMcrCSgU5K",
+    "snippet": "SET quà tặng sẽ có các tùy chọn bao gồm: Body Mist 10ml (mùi ngẫu nhiên), nến thơm hoa khô (ngẫu nhiên), tinh dầu thơm Cube Home, sáp thơm treo tủ, xà phòng ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "QUÀ TẶNG HỘP TRÁI TIM 3 BÔNG HỒNG VÀ GẤU MÓN ...",
+    "link": "https://www.lazada.vn/products/qua-tang-hop-trai-tim-3-bong-hong-va-gau-mon-qua-tang-y-nghia-cho-nguoi-thuong-yeu-hop-qua-tang-hoa-gau-trai-tim-hop-qua-tang-set-hoa-va-gau-trai-tim-qua-tang-qua-tang-qua-tang-set-qua-tang-hop-qua-tang-trai-tim-i448308234.html?srsltid=AU7gw4Wx_Q-HriRgRWx1mw8VLEg7RnIa-_2qmBdj9K3MyG7QmXW4T-_T",
+    "snippet": "Hoa sáp thơm hay còn gọi là sáp thơm vĩnh cữu là sản phẩm được tạo hình đẹp mắt và sống động cùng hương thơm quyến rũ, là quà tặng thú vị mà bạn có thể lựa chọn ...",
+    "rating": 4.4,
+    "ratingCount": 28,
+    "position": 5
+   },
+   {
+    "title": "Quà Tặng Sinh Nhật Bé 3-8 Tuổi",
+    "link": "https://www.lazada.vn/products/qua-tang-sinh-nhat-be-3-8-tuoi-i3233745654.html?srsltid=AU7gw4U9-VVVJXlewIMvcgh7h5Ky6mnJL_U_GB8N2HlTozQ_2iHFDQaW",
+    "snippet": "LazMall Quà Tặng Sinh Nhật Bé 3-8 Tuổi · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 6
+   },
+   {
+    "title": "Sét quà tặng 8/3 ý nghĩa cho bạn gái, combo ...",
+    "link": "https://www.lazada.vn/products/set-qua-tang-83-y-nghia-cho-ban-gai-combo-qua-tang-y-nghia-va-thiet-thuc-83-i2178802792.html?srsltid=AU7gw4Uszzrs6jN7t9oNIacFqx0M1-KPLhMRhrg8RGxD9TqGjH0IGd1P",
+    "snippet": "Sét quà tặng 8/3 ý nghĩa cho bạn gái, combo quà tặng ý. 1/8. 150.000 ₫. Sét quà tặng 8/3 ý nghĩa cho bạn gái, combo quà tặng ý nghĩa và thiết thực 8/3.",
+    "position": 7
+   },
+   {
+    "title": "[GIFT] Quà Tặng Cho 3 Hộp Không Bán",
+    "link": "https://www.lazada.vn/products/gift-qua-tang-cho-3-hop-khong-ban-i2053865777-s13750065996.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4X7qLLr9CiwTOLL3F5eGNCLUHdFcVVt1e0RjI1IOwHOBGU5dgST",
+    "snippet": "LazMall [GIFT] Quà Tặng Cho 3 Hộp Không Bán · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 4.8,
+    "ratingCount": 35,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

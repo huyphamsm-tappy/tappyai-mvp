@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Ốp lưng UAG Pathfinder ... site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:41:00.221Z",
+ "body": {
+  "searchParameters": {
+   "q": "Ốp lưng UAG Pathfinder ... site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng chống sốc UAG Pathfinder Clear w Magnetic cho ...",
+    "link": "https://www.lazada.vn/products/op-lung-chong-soc-uag-pathfinder-clear-w-magnetic-cho-iphone-17-series-i3206062571-s15318425348.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VQWu8lRHWexv3MMSmkHLF40hzYj_ucPEMfoxCfFtNSSzOm5c40",
+    "snippet": "Ốp Lưng Chống Sốc UAG Pathfinder Hỗ Trợ Sạc Magsafe Cho iPhone 15 Pro [6.1. 1.120.000 ₫ · Ốp Lưng UAG PATHFINDER w MAGSAFE Cho iPhone 14 [6.1 INCH]. 909.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder cho Samsung Galaxy S22 Plus ...",
+    "link": "https://www.lazada.vn/products/pdp-i1722117165.html?srsltid=AU7gw4WhaXvhHcWGGvHossoRODGmtxDQ37altIMDSSzfduoqjHLZqxlq",
+    "snippet": "Đặc điểm nổi bật. - Sự kết hợp với thiết kế mỏng nhẹ. - Lớp vỏ ngoài chống xước và lõi sản phẩm mỏng giúp chống va đập và bảo vệ xung quanh viền màn hình.",
+    "position": 2
+   },
+   {
+    "title": "Ốp Lưng UAG PATHFINDER Cho iPhone 14 Pro Max [6.7 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-cho-iphone-14-pro-max-67-inch-i2025750222.html?srsltid=AU7gw4XncMT9LE2YZFFaRz41T_gjhjgqWw1QsWSRnkv84AqtIPIbe2aI",
+    "snippet": "LazMall Ốp Lưng UAG PATHFINDER Cho iPhone 14 Pro Max [6.7 INCH] · 100% chính hãng · 30 ngày miễn phí trả hàng · Tem bảo hành 3 tháng.",
+    "rating": 4.8,
+    "ratingCount": 25,
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng chống sốc UAG Pathfinder SE dành cho iρhone ...",
+    "link": "https://www.lazada.vn/products/op-lung-chong-soc-uag-pathfinder-se-danh-cho-ihone-14-series-i2383804665.html?srsltid=AU7gw4UqeSrfivEksFanadb9Po5dCWiPjixpi6B7VDoT91qi7oMaRrt1",
+    "snippet": "Nhựa cứng. Ốp lưng chống sốc UAG Pathfinder SE dành cho i hone 14 series. MÔ TẢ SẢN PHẨMTình trạng mới 100 nguyên hộpSản phẩm chính hãng UAGBảo hành chính ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng UAG Pathfinder xanh Mallard cho iPhone 12 Pro ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-xanh-mallard-cho-iphone-12-pro-max-12-pro-i1588006900.html?srsltid=AU7gw4WLJbedkEqYkAW6w2Q30PWhv8CTBablajyZABIaBqiSLYf2qO8A",
+    "snippet": "Ốp lưng UAG Pathfinder cho iPhone 12 Pro Max với màu xanh Mallard sang trọng, thiết kế chống trầy hiệu quả. Tương thích hoàn hảo với iPhone 12 Pro, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng UAG PATHFINDER w MAGSAFE Cho iPhone 14 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-w-magsafe-cho-iphone-14-61-inch-i2025551770.html?srsltid=AU7gw4UxB4ZfFTAVlFCa89fI9GQCF9oGMWyE9mnIK0jNjnlsEMd4afoy",
+    "snippet": "LazMall Ốp Lưng UAG PATHFINDER w MAGSAFE Cho iPhone 14 [6.1 INCH] · 100% chính hãng · 30 ngày miễn phí trả hàng · Tem bảo hành 3 tháng.",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng Uag Pathfinder SE cho iPhone 15 Pro Max, 15 Plus ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-pathfinder-se-cho-iphone-15-pro-max-15-plus-15-pro-15-14-pro-max-14-pro-14-plus-14-13-pro-max-13-pro-13-pro-12-pro-max-12-pro-12-magsafe-sac-vo-bao-ve-chong-soc-i2675739456-s13099638198.html",
+    "snippet": "Tương thích với sạc Magsafe: Khóa mô-đun nam châm tích hợp mạnh mẽ tại chỗ cho khả năng tương thích sạc MagSafe. Tương thích với lương Apple. Bậc quân sự chống ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng UAG PATHFINDER Cho iPhone 14 Plus [6.7 INCH]",
+    "link": "https://www.lazada.vn/products/op-lung-uag-pathfinder-cho-iphone-14-plus-67-inch-i2025745238.html?srsltid=AU7gw4VEpzSvKCCsSlI14CO79R9-ivoXGX5YB23hE5gyhtYhKQckZpFy",
+    "snippet": "Mô tả sản phẩm. Ốp Lưng UAG PATHFINDER Cho iPhone 14 Plus [6.7 INCH]. ⚡️ Thông số kỹ thuật: - Trong lượng: ~ 40.8g. - Kích thước: ~ 16.3 x 8.4 x 1.27 cm.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

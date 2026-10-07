@@ -118,10 +118,10 @@ describe('F1 — public review detail boundary', () => {
     expect(await getReview(RESTRICTED)).toBeNull()
   })
 
-  it('the guard is inert before the schema migration, exactly as the API guard is', async () => {
-    // Deploy-order safety: filtering a column that does not exist yet would take
-    // the page down. Legacy behaviour must survive until the migration lands.
+  it('R19: an UNSET flag still hides a restricted post; only an explicit "false" (no column) lets it through', async () => {
     process.env.CONTENT_SAFETY_SCHEMA_MIGRATED = ''
+    expect(await getReview(RESTRICTED)).toBeNull()
+    process.env.CONTENT_SAFETY_SCHEMA_MIGRATED = 'false'
     expect((await getReview(RESTRICTED))?.id).toBe(RESTRICTED)
   })
 })

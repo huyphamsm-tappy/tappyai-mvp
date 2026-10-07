@@ -24,7 +24,9 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** The refusal codes `requireEligibleUser` / `refuseIneligible` can return. */
-export const AGE_GATE_CODES = ['age_verification_required', 'age_ineligible'] as const
+// `age_declaration_required` is the GUEST form of the gate (owner D1, revised 2026-09-17):
+// the chat trial needs an 18+ self-declaration first. Same screen, same redirect.
+export const AGE_GATE_CODES = ['age_verification_required', 'age_ineligible', 'age_declaration_required'] as const
 export type AgeGateCode = (typeof AGE_GATE_CODES)[number]
 
 const CODE_SET: ReadonlySet<string> = new Set(AGE_GATE_CODES)

@@ -1,0 +1,12 @@
+{
+ "tag": "A",
+ "email": "uat2609_a@tappyai.com",
+ "landed": "http://localhost:3101/register",
+ "authCalls": [
+  "POST <sb>/auth/v1/signup → 200"
+ ],
+ "sbCookies": [
+  "sb-zdaprdfgpbpnxyofagmc-auth-token-code-verifier"
+ ],
+ "bodyPreview": "T TappyAI Tạo tài khoản mới Kiểm tra email của bạn 📩 Chúng tôi đã gửi link xác nhận tới uat2609_a@tappyai.com. Hãy mở email và bấm vào link để hoàn tất đăng ký. Quay lại đăng nhập"
+}

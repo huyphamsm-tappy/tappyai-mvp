@@ -121,7 +121,7 @@ describe('the Marketing foundation pages are guarded and claim nothing', () => {
     // Source-level because the guard's VALUE is the contract: a page that calls
     // `requirePagePermission` with the wrong permission would still "have a
     // guard". Asserted per page so one file cannot be left open.
-    const src = readFileSync(`src/app/admin/marketing/${slug}/page.tsx`, 'utf8')
+    const src = readFileSync(`src/app/(app)/admin/marketing/${slug}/page.tsx`, 'utf8')
     expect(src).toContain('requirePagePermission')
     expect(src, `${slug} does not guard on ${permission}`).toContain(`PERMISSIONS.${permission}`)
   })
@@ -131,7 +131,7 @@ describe('the Marketing foundation pages are guarded and claim nothing', () => {
     // the moment one of them queries or writes, it has stopped being a
     // placeholder and this fails.
     for (const slug of Object.keys(PAGES)) {
-      const src = readFileSync(`src/app/admin/marketing/${slug}/page.tsx`, 'utf8')
+      const src = readFileSync(`src/app/(app)/admin/marketing/${slug}/page.tsx`, 'utf8')
       for (const forbidden of ['createAdminClient', 'createClient', 'fetch(', '.from(', 'writeAuditLog', 'revalidate']) {
         expect(src, `${slug}/page.tsx does more than render a placeholder: ${forbidden}`).not.toContain(forbidden)
       }

@@ -1,0 +1,51 @@
+# scripts/audit/goldenCompare.mjs — every edit made to the checker during Session C
+#
+# The file was written once (first version scored baseline→final at 25/58 → 51/58) and edited
+# twice BEFORE its first commit (2b0664f), so `git log` shows a single version. The two edits are
+# reproduced here from the working session, with the reason for each. No check was loosened to
+# make a case pass; both edits corrected a measurement that was wrong about the DATA.
+
+--- goldenCompare.mjs (first version)
++++ goldenCompare.mjs (as committed in 2b0664f)
+@@ plan helpers @@
+ const plan = t => { const m = t.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/); if (!m) return null; try { return JSON.parse(m[1]) } catch { return 'invalid' } }
++/** Calendar days in a plan: "Ngày 1 - Sáng", "Ngày 1 - Tối", "Ngày 2" are TWO days. */
++const planDays = p => p && p !== 'invalid' && Array.isArray(p.days) ? new Set(p.days.map(d => (String(d.label ?? '').match(/ngày\s*(\d+)|day\s*(\d+)/i) ?? [, d.label])[1] ?? d.label)).size : 0
+@@ T1 @@
+-    't2 plan has 2 days': plan(turns[1])?.days?.length === 2,
++    't2 plan has 2 days': planDays(plan(turns[1])) === 2,
+@@ G4a @@
+-    'plan has 2 days': plan(turns[0])?.days?.length === 2,
++    'plan has 2 days': planDays(plan(turns[0])) === 2,
+#
+# EDIT 1 — reason: the check counted ARRAY ENTRIES of `days`, but the model splits a calendar day
+# into parts ("Ngày 1 - Sáng/Chiều", "Ngày 1 - Tối", "Ngày 2 - Sáng/Chiều" = 3 entries, 2 days).
+# The plan WAS two days (the stated constraint) and the check said it was not. Counting distinct
+# "Ngày N" labels measures what the case criterion asks ("2 ngày 1 đêm"). Effect: T1 t2 FAIL→PASS
+# in the final column (52→53/58). A plan with 3 real days still fails.
+
+@@ G3a @@
+-    'no over-50k band in cards': (() => { const it = turns[0].annotations.filter(x => x.items).pop(); return !!it && it.items.every(i => !i.price || !/^(1\d\d|[2-9]\d\d|\d{4,})/.test(String(i.price).replace(/^1-/, ''))) })(),
++    // A band whose LOWER bound is above 50k cannot fit; "1-100.000 ₫" (open below) can. Baseline
++    // prices were recorded as null (wrong summariser keys), so the baseline column is uninformative.
++    'no band starting above 50k in cards': (() => {
++      const it = turns[0].annotations.filter(x => x.items).pop()
++      const lo = p => { const m = String(p).match(/^(\d[\d.]*)\s*[-–]\s*(\d[\d.]*)\s*(N|Tr)?/i); if (!m) return 0; const n = Number(m[1].replace(/\./g, '')); return n <= 1 ? 0 : n * ((m[3] ?? '').toUpperCase() === 'N' ? 1000 : (m[3] ?? '').toUpperCase() === 'TR' ? 1e6 : 1) }
++      return !!it && it.items.every(i => !i.price || lo(i.price) <= 50000)
++    })(),
+#
+# EDIT 2 — reason: the first regex stripped the leading "1-" from "1-100.000 ₫" and then read the
+# remaining "100.000" as a band ABOVE 50k. "1-100.000 ₫" is Google's open lower bound ("up to
+# 100.000") — the same fact recommendation/priceBand.ts and the constraint filter rely on — so
+# every café card with that band was being scored as over budget. The rewritten check parses the
+# LOWER bound and fails only when it exceeds the ceiling. The baseline column for this check is
+# uninformative either way: the baseline runner recorded `price: null` for every card (it read the
+# key `priceRange`; the annotation carries `priceRangeText`), which is also why goldenSet.mjs's
+# summariser was corrected before the after-runs. Effect: G3a FAIL→PASS in the final column and
+# the false "WORSE: G3a" line disappeared (that line had compared a null-price baseline against a
+# real-price final).
+
+# Not an edit to the checker, but part of the measurement story: goldenSet.mjs `stripMarkers`
+# stripped an INLINE-closed [TAPPY_SHOPPING]…[/TAPPY_SHOPPING] to end-of-text, which is why G5a
+# read as "searched then never answered" in the baseline summary; and the summariser keys were
+# fixed as above. Both are in 2b0664f.

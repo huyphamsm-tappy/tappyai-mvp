@@ -243,7 +243,11 @@ describe('BUG-011 · 5 — same-city keeps the nearby behaviour', () => {
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    // 1500, not the 2000 this test shipped with: measured 2026-09-08 in District 1,
+    // r=2000 timed out against both Overpass mirrors and returned 0 rows while r=1500
+    // returned 10. What this assertion protects is that a nearby search uses the TIGHT
+    // radius; the tight value itself is owned by that measurement.
+    expect(c.radius).toBe(1500)
     expect(rows(r)[0]).toHaveProperty('distance_km')
   })
 })
@@ -257,7 +261,11 @@ describe('BUG-011 · 6 — no location supplied leaves "near me" untouched', () 
     const c = overpassCentre(captured.overpass[0])
     expect(c.lat).toBeCloseTo(here.lat, 5)
     expect(c.lon).toBeCloseTo(here.lng, 5)
-    expect(c.radius).toBe(2000)
+    // 1500, not the 2000 this test shipped with: measured 2026-09-08 in District 1,
+    // r=2000 timed out against both Overpass mirrors and returned 0 rows while r=1500
+    // returned 10. What this assertion protects is that a nearby search uses the TIGHT
+    // radius; the tight value itself is owned by that measurement.
+    expect(c.radius).toBe(1500)
   })
 
   it('does not filter results when no destination was named', async () => {
@@ -297,3 +305,4 @@ describe('BUG-011 · 8 — a previous destination cannot contaminate the next se
     expect(names(second)).not.toContain('Saigon place')
   })
 })
+

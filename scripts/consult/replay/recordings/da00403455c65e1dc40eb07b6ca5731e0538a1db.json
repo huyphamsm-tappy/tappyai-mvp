@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"𝗠𝗜𝗡𝗧 𝗡𝗔𝗜𝗟 𝗥𝗢𝗢𝗠 | Nail xinh Sài Gòn Quận 10\" Quận 10, Hồ Chí Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:31.834Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"𝗠𝗜𝗡𝗧 𝗡𝗔𝗜𝗟 𝗥𝗢𝗢𝗠 | Nail xinh Sài Gòn Quận 10\" Quận 10, Hồ Chí Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "snippet": "Một trong những spa yêu thích của tôi ở Thành phố Hồ Chí Minh, với không gian thư giãn, đội ngũ nhân viên lành nghề và vị trí thuận tiện.",
+    "position": 1
+   },
+   {
+    "title": "Vé xe Limousine đi Tây Ninh từ Hồ Chí Minh và ngược lại",
+    "link": "https://www.klook.com/vi/activity/74524-shared-limousine-ho-chi-minh-city-tay-ninh/",
+    "snippet": "Chuyến xe buýt chung từ Hồ Chí Minh đi Bà Đen rất êm ái, thoải mái và được tổ chức hoàn hảo. Hướng dẫn viên rất hữu ích, chuyến đi thư giãn và mọi thứ diễn ra chính xác như mô tả.",
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Dii Sauna & Icebath tại Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/159902-dii-sauna-icebath-experience-in-ho-chi-minh/",
+    "snippet": "Không nên ăn quá no trong vòng 2 giờ trước khi đến, nhưng cũng đừng để bụng đói. Ngồi xuống, đổ mồ hôi, thư giãn, lặp lại. Lắng nghe cơ thể, từ từ thực hiện và nghỉ ngơi 10 - 15 phút giữa các hiệp. Hãy nhớ: đây là về sự khỏe mạnh, không phải sức bền.",
+    "position": 3
+   },
+   {
+    "title": "Vé Xe Buýt Đi Từ Phnom Penh Về Sài Gòn Và Ngược Lại - Klook",
+    "link": "https://www.klook.com/vi/activity/15926-bus-transfer-ho-chi-minh-phnom-penh/",
+    "snippet": "Đặt qua Klook dịch vụ xe buýt từ Phnom Penh đến Hồ Chí Minh hoặc ngược lại! Đây là dịch vụ vận tải hành khách có kỉ lục an toàn nhất trong nước, xe buýt hiện đại có kết nối WiFi, nước uống miễn phí, chỗ ngồi ấm cúng, và hơn thế nữa.",
+    "position": 4
+   },
+   {
+    "title": "Golden Lotus Healing World & Jjimjilbang Spa tại Hồ Chí Minh ...",
+    "link": "https://www.klook.com/vi/activity/153878-golden-lotus-healing-world-jjimjilbang-spa-in-ho-chi-minh/",
+    "snippet": "Tận hưởng dịch vụ thư giãn đặc trưng Healing World (Jjim Jil Bang); Nhà tắm hơi (Sauna) tại Quận 2, hoặc chọn từ các dịch vụ cao cấp bao gồm Tẩy tế bào chết toàn thân.",
+    "position": 5
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Họ cho bạn trà trong khi chờ đợi, có tủ khóa cho đồ đạc của bạn (bạn giữ chìa khóa bằng một loại dây buộc tóc), và họ thậm chí còn phục vụ súp gà thảo dược sau khi mát-xa, đó là một phần thưởng rất tuyệt.",
+    "position": 6
+   },
+   {
+    "title": "Điểm nổi bật của Thành phố Hồ Chí Minh nửa ngày kèm ẩm thực",
+    "link": "https://www.klook.com/vi/activity/9443-private-hidden-adventure-tour-ho-chi-minh/",
+    "snippet": "Tham quan những góc đường bí mật và đi dạo quanh những con đường vắng người ở Sài Gòn như 1 người dân địa phương và khám phá về lịch sử, văn hóa và cách sống ở thành phố Hồ Chí Minh. Đặt ngay với Klook để được xác nhận tức thời!",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

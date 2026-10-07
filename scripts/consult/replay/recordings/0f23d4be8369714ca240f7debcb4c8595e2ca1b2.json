@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bia Khô Mực\" OR \"Quán M'Đoen\" OR \"Ốc nâu mắm gừng Hà Nội\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:05:17.893Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bia Khô Mực\" OR \"Quán M'Đoen\" OR \"Ốc nâu mắm gừng Hà Nội\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Menu quán lai rai, có món ốc sẽ như nào ? #quan10 ...",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7666422195551259925",
+    "snippet": "Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Menu quán lai rai, có món ốc sẽ như nào ?",
+    "position": 1
+   },
+   {
+    "title": "vậy k đó - #ngayroichuyenbay - #xuhuong - #fyp",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7656355355835829512",
+    "snippet": "... Lượt thích,Video TikTok từ Quán Bia Khô Mực ( ... Quán Bia Khô Mực - 192 Võ Văn Kiệt, Q1 · author · 26 · 0.",
+    "position": 2
+   },
+   {
+    "title": "Một món ăn mà chị em ai cũng khoái 🥹 #quanbiakhomuc",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7680934072822074632",
+    "snippet": "Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Một món ăn mà chị em ai cũng khoái #quanbiakhomuc\".âm thanh gốc - Quán Bia Khô Mực ...",
+    "position": 3
+   },
+   {
+    "title": "Món này ngon bá cháy nhấp thêm miếng bi.a chuẩn bài 😋 ...",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7684974713335991560",
+    "snippet": "Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Món này ngon bá cháy nhấp thêm miếng bi.a chuẩn bài #quanbiakhomuc\".âm thanh gốc ...",
+    "position": 4
+   },
+   {
+    "title": "Cầu Cho Ăn Nhậu Hanh Thông, Vạn Dặm Bình An",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7624774640061222162",
+    "snippet": "29.9K Lượt thích,100 Bình luận.Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Nguyện cầu cho con đường ăn nhậu được hanh thông, ...",
+    "position": 5
+   },
+   {
+    "title": "Khô mực và bia tại Quán Bia Khô Mực",
+    "link": "https://www.tiktok.com/@beakhongsay/video/7549625566824123665",
+    "snippet": "Khám phá món khô mực độc đáo kết hợp với bia tại Quán Bia Khô Mực. Hương vị hấp dẫn đang chờ đón bạn! #khomuc #quánbia. Đây là bản tóm tắt nội ...",
+    "position": 6
+   },
+   {
+    "title": "Món này có hao sinh tố không, xác nhận giúp tui tiếng ...",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7676813404975238418",
+    "snippet": "Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Món này có hao sinh tố không, xác nhận giúp tui tiếng #quanbiakhomuc\".âm thanh gốc ...",
+    "position": 7
+   },
+   {
+    "title": "Tai Heo Trộn Thính Quán Bia Khô Mực CMT8 - Ngon Tuyệt!",
+    "link": "https://www.tiktok.com/@quanbiakhomuc/video/7669047337628486933",
+    "snippet": "Video TikTok từ Quán Bia Khô Mực (@quanbiakhomuc): \"Trải nghiệm món tai heo trộn thính giòn thơm, ăn cùng lá sung và lá cóc, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7590,
+  "evidenceId": "6b4d17fd-9f14-4f26-bbf1-072a0f9d3962",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bạn có thể tìm số điện thoại của quán trên Google Maps hoặc gọi để hỏi tình trạng chỗ trống.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Bụi\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Qu%C3%A1n+B%E1%BB%A5i+L%C3%AA+Th%C3%A1nh+T%C3%B4n+Qu%C3%A1n+1\",\"primary\":true},{\"label\":\"📍 Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/H%E1%BA%A3i+S%E1%BA%A3n+Ho%C3%A0ng+Gia+Qu%C3%A1n+1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn.\n\nMình chọn **Hải Sản Hoàng Gia** cho bữa tối của bạn — quán có rating 4.7⭐ từ 961 đánh giá Google Maps, chuyên hải sản tươi ngon, phù hợp cho 2 người. Quán mở đến nửa đêm nên bạn có thể đến thoải mái 👍\n\nNếu bạn muốn gần hơn, **Quán Bụi - Lê Thánh Tôn** cách bạn chỉ 0.7km, cũng có 4.5⭐ từ 1.188 đánh giá, chuyên ẩm thực Việt authentic, giá khoảng 200-600k/người.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm phòng trên Haisanhoanggia\",\"type\":\"search\",\"url\":\"https://haisanhoanggia.com/\",\"primary\":true},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8690476982161666487\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi gần hơn|Nhà hàng Việt khác|Quán lẩu Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn có thể tìm số điện thoại của quán trên Google Maps hoặc gọi để hỏi tình trạng chỗ trống.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Bụi\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Qu%C3%A1n+B%E1%BB%A5i+L%C3%AA+Th%C3%A1nh+T%C3%B4n+Qu%C3%A1n+1\",\"primary\":true},{\"label\":\"📍 Maps - Hải Sản Hoàng Gia\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/H%E1%BA%A3i+S%E1%BA%A3n+Ho%C3%A0ng+Gia+Qu%C3%A1n+1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

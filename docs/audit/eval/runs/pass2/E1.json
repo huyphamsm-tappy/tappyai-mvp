@@ -1,0 +1,196 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 15346,
+  "evidenceId": "fd7c8e5a-9edd-420b-bac5-cfca63ee5d59",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán bar karaoke vui chơi tối Quận 1",
+        "location": "Quận 1, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke MEI",
+      "rating": 4.9,
+      "count": 1350,
+      "price": "100-200 N ₫",
+      "hours": "09:00–03:00",
+      "distance_km": 0.7,
+      "address": "159-161-163 Hàm Nghi, Quận 1, Hồ Chí Minh 710000, Việt Nam"
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "rating": 5,
+      "count": 199,
+      "price": "100-600 N ₫",
+      "hours": "07:00–00:00",
+      "distance_km": 1.4,
+      "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "rating": 4.8,
+      "count": 959,
+      "price": "1-400.000 ₫",
+      "hours": "09:00–03:00",
+      "distance_km": 5.5,
+      "address": "876 878 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "rating": 4.3,
+      "count": 2060,
+      "hours": "10:00–05:00",
+      "distance_km": 2.4,
+      "address": "67 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke SAFARI",
+      "rating": 4.3,
+      "count": 454,
+      "hours": "11:00–04:00",
+      "distance_km": 1.7,
+      "address": "202 Nguyễn Trãi, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Nốt Nhạc Vui Party - Lê Văn Sỹ",
+      "rating": 4.1,
+      "count": 406,
+      "price": "100-500 N ₫",
+      "hours": "10:00–00:00",
+      "distance_km": 4.3,
+      "address": "252/1 Đ. Lê Văn Sỹ, Tân Sơn Hòa, Hồ Chí Minh 100000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Avatar",
+      "rating": 4.9,
+      "count": 6371,
+      "price": "100-500 N ₫",
+      "hours": "12:00–05:00",
+      "distance_km": 2.3,
+      "address": "61-63-65 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 487,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "distance_km": 2.1,
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1",
+      "rating": 4.8,
+      "count": 94,
+      "hours": "14:00–03:00",
+      "distance_km": 0.9,
+      "address": "127 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.8,
+      "count": 48,
+      "hours": "21:00–03:00",
+      "distance_km": 1.2,
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Karaoke MEI",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1350,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "09:00–03:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 199,
+        "distance_km": 1.4,
+        "open_now": true,
+        "opening_hours": "07:00–00:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke ICOOL",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 959,
+        "distance_km": 5.5,
+        "price_up_to_vnd": 400000,
+        "open_now": true,
+        "opening_hours": "09:00–03:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Kingdom Karaoke",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 2060,
+        "distance_km": 2.4,
+        "open_now": true,
+        "opening_hours": "10:00–05:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Karaoke SAFARI",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 454,
+        "distance_km": 1.7,
+        "open_now": true,
+        "opening_hours": "11:00–04:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé.\n\nMình gợi ý **Karaoke MEI** cho buổi tối nay với hội bạn 🎤 Quán này cách bạn chỉ 0.7km, đang mở cửa và có rating 4.9⭐ (1.350 đánh giá) — lý tưởng để 5 người tụ tập hát karaoke. Giá khoảng 100-200k/người, mở đến 3h sáng nên có thời gian chơi thoải mái.\n\nNếu muốn không khí bar cocktail thêm sang chút, **FunnyBone Bar & Coffe** cũng là lựa chọn hay với rating 5⭐ (199 đánh giá), cách 1.4km, nhưng đóng cửa lúc 0h nên hơi sớm.\n\nMình gợi ý MEI vì vừa gần, vừa đang mở, rating cao và phù hợp nhất cho tụ tập 5 người tối nay 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Chỉ đường - Karaoke MEI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1743439115304590801\",\"primary\":true},{\"label\":\"🌐 Website - Karaoke MEI\",\"type\":\"website\",\"url\":\"https://www.facebook.com/KaraokeMei/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán karaoke khác|Tìm quán ăn gần đó|Chỗ chơi khác ở Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các địa điểm vui chơi gần bạn ở Quận 1 cho buổi tối nay nhé.\n\nMình gợi ý **Karaoke MEI** cho buổi tối nay với hội bạn 🎤 Quán này cách bạn chỉ 0.7km, đang mở cửa và có rating 4.9⭐ (1.350 đánh giá) — lý tưởng để 5 người tụ tập hát karaoke. Giá khoảng 100-200k/người, mở đến 3h sáng nên có thời gian chơi thoải mái.\n\nNếu muốn không khí bar cocktail thêm sang chút, **FunnyBone Bar & Coffe** cũng là lựa chọn hay với rating 5⭐ (199 đánh giá), cách 1.4km, nhưng đóng cửa lúc 0h nên hơi sớm.\n\nMình gợi ý MEI vì vừa gần, vừa đang mở, rating cao và phù hợp nhất cho tụ tập 5 người tối nay 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Chỉ đường - Karaoke MEI\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=1743439115304590801\",\"primary\":true},{\"label\":\"🌐 Website - Karaoke MEI\",\"type\":\"website\",\"url\":\"https://www.facebook.com/KaraokeMei/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán karaoke khác|Tìm quán ăn gần đó|Chỗ chơi khác ở Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+ "login": "submitted → /onboarding",
+ "edit": "saved:/profile/account",
+ "afterReload": {
+  "name": "UAT4 Thành Viên",
+  "bio": "Bio UAT4 — thích bún bò & karaoke"
+ },
+ "profileShowsName": true,
+ "share": true,
+ "download": "clicked",
+ "files": [
+  "tappyai-qr.png"
+ ],
+ "http": [],
+ "errors": []
+}

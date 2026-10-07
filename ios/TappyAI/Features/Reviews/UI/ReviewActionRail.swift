@@ -47,7 +47,11 @@ struct ReviewActionRail: View {
             )
 
             if isUploadVideo {
-                ReviewMusicDisc(music: review.music, isPlaying: isPlaying, onTap: onMusicTap)
+                // Hidden with `ProductFlags.showMusic`: the disc is the entry point to the sound
+                // page, so while Music is hidden a clip carries no music affordance at all.
+                if ProductFlags.showMusic {
+                    ReviewMusicDisc(music: review.music, isPlaying: isPlaying, onTap: onMusicTap)
+                }
             }
         }
     }

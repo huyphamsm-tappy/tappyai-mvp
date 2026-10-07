@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Luxury Karaoke\" OR \"BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1\" OR \"Karaoke SAFARI\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:42:57.596Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Luxury Karaoke\" OR \"BB Restaurant | Nhà Hàng Quận 1 | Đặt tiệc Quận 1\" OR \"Karaoke SAFARI\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "HẸN NHAU TẠI QUÁN LUXURY KARAOKE! 🎉 Cuối tuần sắp đ...",
+    "link": "https://www.tiktok.com/@karaokeluxury.choenan/video/7663067822494321940",
+    "snippet": "THỨ 5 RỰC RỠ – HẸN NHAU TẠI QUÁN LUXURY KARAOKE! Cuối tuần sắp đến rồi, ghé quán mình thư giãn trước nhé! ✨ Không gian vui vẻ, âm nhạc sôi động.",
+    "position": 1
+   },
+   {
+    "title": "68 luxury karaoke",
+    "link": "https://www.tiktok.com/@68.luxury.karaoke/video/7677789104129445127",
+    "snippet": "1. 68 luxury karaoke · Tác giả. Bờ kè tánh Linh - gần quán nhậu gia phú - và ks gia phú. 8-26Trả lời. 0. Xem thêm câu trả lời khác (3). Thiện ...",
+    "position": 2
+   },
+   {
+    "title": "Karaoke Luxury: Cảm xúc trong bài hát buồn",
+    "link": "https://www.tiktok.com/@karaokeluxury/video/7509543929612602642",
+    "snippet": "Karaoke Hàn Quốc Quận 1 · Karaoke Luxury Tân An · Karaoke Cilacap · Karaoke ... luxury karaoke Quan 9, B3 luxury karaoke, karaoke experience ...",
+    "position": 3
+   },
+   {
+    "title": "Luxury Karaoke: Hát Hết Mình - Quẩy Hết Ga!",
+    "link": "https://www.tiktok.com/@yn.nhi94114/photo/7664608725327432981",
+    "snippet": "Cuộc vui bắt đầu tại Luxury Karaoke! Hát hết mình – Quẩy hết ga – Không gian chuẩn luxury Đặt phòng ngay: 010-2787-2589. Luxury Karaoke ...",
+    "position": 4
+   },
+   {
+    "title": "LUXURY Karaoke: Xả Stress Cuối Tuần Cùng Âm Thanh Cực Chất",
+    "link": "https://www.tiktok.com/@yn.nhi94114/photo/7669396346285329685",
+    "snippet": "Thư giãn cuối tuần tại LUXURY Karaoke ở Cheonan, Thiên An. Thưởng thức âm nhạc, đồ uống đa dạng và không gian sang trọng. Keywords: karaoke cheonan,karaoke ...",
+    "position": 5
+   },
+   {
+    "title": "Luxury Karaoke - Trò Vui, Rượu Bia Ở Thiên An",
+    "link": "https://www.tiktok.com/@yn.nhi94114/photo/7677494169975180565",
+    "snippet": "Tìm chỗ vui chơi xả stress? Luxury Karaoke ở Thiên An có nhạc, rượu, bia và nhiều trò vui. Liên hệ 010 2787 2589. Keywords: luxury karaoke, ...",
+    "position": 6
+   },
+   {
+    "title": "Luxury Karaoke Kỳ Anh",
+    "link": "https://www.tiktok.com/discover/luxury-karaoke-k%E1%BB%B3-anh",
+    "snippet": "Luxury Karaoke Kỳ Anh · Khám phá hệ thống karaoke luxury Kỷ Anh với phòng hát chất lượng cao, âm thanh ánh sáng đỉnh cao, sức chứa lên đến 50 ...",
+    "date": "4 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Khai Trương T² KTV Luxury: Karaoke, Bi-a, Coffee Tại Nghiên ...",
+    "link": "https://www.tiktok.com/@menem.ne/photo/7648546692400336149",
+    "snippet": "Khai Trương T² KTV Luxury: Karaoke, Bi-a, Coffee Tại Nghiên Loan. Sẵn sàng cho trải nghiệm giải trí mới tại T² KTV Luxury! Karaoke, bi-a, và coffee tại Nghiên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

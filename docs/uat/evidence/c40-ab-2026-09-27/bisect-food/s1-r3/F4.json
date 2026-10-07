@@ -1,0 +1,199 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 13931,
+  "evidenceId": "4c5b1c2c-54c6-42aa-9d87-83af304bfdf6",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn trưa gia đình 6 người con nhỏ có chỗ đậu xe ô tô",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "San Fu Lou Restaurant Phan Xích Long",
+      "rating": 4.6,
+      "count": 4006,
+      "hours": "07:00–22:00",
+      "distance_km": 2.8,
+      "address": "195-197, Phan Xích Long Cầu Kiệu, Phường, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "rating": 4.6,
+      "count": 619,
+      "hours": "14:00–22:00",
+      "distance_km": 2.2,
+      "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 410,
+      "hours": "07:00–22:00",
+      "distance_km": 2.5,
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Thuần Chay BÀ XÃ - CN Nguyễn Văn Trỗi - Vegan Restaurant",
+      "rating": 4.4,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 2.8,
+      "address": "21G Đ. Nguyễn Văn Trỗi, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Here & Now Vegetarian (Open kitchen & chill)",
+      "rating": 4.4,
+      "count": 572,
+      "hours": "10:00–14:00, 17:00–22:00",
+      "distance_km": 3.8,
+      "address": "220/12 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cô Quyên Xứ Quảng",
+      "rating": 4,
+      "count": 446,
+      "hours": "08:00–21:00",
+      "distance_km": 3.2,
+      "address": "62 Đ. Hồ Biểu Chánh, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Quê Mười Khó 2",
+      "rating": 3.9,
+      "count": 767,
+      "hours": "10:00–22:00",
+      "distance_km": 2.7,
+      "address": "8 Đ. Nguyễn Văn Trỗi, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Cơm Xưa",
+      "rating": 3.7,
+      "count": 348,
+      "hours": "10:30–20:00",
+      "distance_km": 0.9,
+      "address": "20 Trần Cao Vân, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hoàng Ty 74 Trương Quốc Dung",
+      "rating": 3.9,
+      "count": 71,
+      "hours": "10:00–22:00",
+      "distance_km": 3.7,
+      "address": "74 Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "San Fu Lou Restaurant Phan Xích Long",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 4006,
+        "distance_km": 2.8,
+        "open_now": true,
+        "opening_hours": "07:00–22:00"
+      }
+    },
+    {
+      "name": "Nhà Hàng Maison Mận-Đỏ",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 619,
+        "distance_km": 2.2,
+        "open_now": true,
+        "opening_hours": "14:00–22:00"
+      }
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 100,
+        "distance_km": 2.4,
+        "open_now": true,
+        "opening_hours": "15:00–05:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người với con nhỏ, có chỗ đậu xe ô tô nhé.\n\nMình gợi ý **San Fu Lou Restaurant Phan Xích Long** — nhà hàng Quảng Đông với **4.6⭐ (4.006 đánh giá Google Maps)**, cách bạn 2.8km, mở từ 7h-22h. Quán rộng rãi, phục vụ gia đình tốt, có chỗ đậu xe ô tô, và menu đa dạng phù hợp cho cả trẻ em 👍\n\nNgoài ra còn **Nhà Hàng Maison Mận-Đỏ** (4.6⭐, 2.2km, gần hơn) nếu bạn thích ẩm thực Pháp-Việt, hoặc **Quán Ăn Gia Đình Ngọc Hương** (4.5⭐, hải sản tươi sống, mở từ 15h).\n\nBạn muốn đặt bàn trước không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - San Fu Lou\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5744447946455467984\",\"primary\":true},{\"label\":\"🍽️ Đặt bàn - San Fu Lou\",\"type\":\"website\",\"url\":\"https://www.d1-concepts.com/dat-ban\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Thích ăn gì cụ thể|Quán khác ở Phú Nhuận[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người với con nhỏ, có chỗ đậu xe ô tô nhé.\n\nMình gợi ý **San Fu Lou Restaurant Phan Xích Long** — nhà hàng Quảng Đông với **4.6⭐ (4.006 đánh giá Google Maps)**, cách bạn 2.8km, mở từ 7h-22h. Quán rộng rãi, phục vụ gia đình tốt, có chỗ đậu xe ô tô, và menu đa dạng phù hợp cho cả trẻ em 👍\n\nNgoài ra còn **Nhà Hàng Maison Mận-Đỏ** (4.6⭐, 2.2km, gần hơn) nếu bạn thích ẩm thực Pháp-Việt, hoặc **Quán Ăn Gia Đình Ngọc Hương** (4.5⭐, hải sản tươi sống, mở từ 15h).\n\nBạn muốn đặt bàn trước không?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - San Fu Lou\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5744447946455467984\",\"primary\":true},{\"label\":\"🍽️ Đặt bàn - San Fu Lou\",\"type\":\"website\",\"url\":\"https://www.d1-concepts.com/dat-ban\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Đặt bàn trước không|Thích ăn gì cụ thể|Quán khác ở Phú Nhuận[/FOLLOWUPS]"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vnexpress.net/du-lich Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:07.001Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vnexpress.net/du-lich Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Du lịch, hạ tầng đô thị 'tiếp sức' cho địa ốc Đà Nẵng",
+    "link": "https://vnexpress.net/du-lich-ha-tang-do-thi-tiep-suc-cho-dia-oc-da-nang-5083135.html",
+    "snippet": "Gần 6 triệu lượt khách trong 4 tháng đầu năm cùng đà tăng của dòng vốn đầu tư đang tạo thêm nguồn cầu cho thị trường bất động sản Đà Nẵng.",
+    "date": "10 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Du lịch tạo dư địa cho bất động sản lưu trú tại Nam Đà Nẵng",
+    "link": "https://vnexpress.net/du-lich-tao-du-dia-cho-bat-dong-san-luu-tru-tai-nam-da-nang-5089489.html",
+    "snippet": "Khu vực nằm trên trục kết nối giữa trung tâm Đà Nẵng với phố cổ Hội An, đồng thời là điểm trung chuyển thuận lợi trên hành trình khám phá các di ...",
+    "date": "24 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Du lịch Đà Nẵng sau sáp nhập có thể 'sánh ngang Bali, ...",
+    "link": "https://vnexpress.net/du-lich-da-nang-sau-sap-nhap-co-the-sanh-ngang-bali-phuket-4891268.html",
+    "snippet": "Du lịch Đà Nẵng sau sáp nhập có thể 'sánh ngang Bali, Phuket'. Sự hiện đại, năng động của Đà Nẵng kết hợp với di sản văn hóa của Quảng Nam sẽ ...",
+    "date": "29 thg 5, 2025",
+    "position": 3
+   },
+   {
+    "title": "du lịch Đà Nẵng",
+    "link": "https://video.vnexpress.net/du-lich-da-nang/tag-50385-1.html",
+    "snippet": "Gần 300 người tranh tài xây tượng cát trên bãi biển Đà Nẵng. 12/2018. 300 người dọn 10 tấn rác ở bãi biển Đà Nẵng | 00:48. 300 người dọn 10 tấn rác ở bãi biển ...",
+    "position": 4
+   },
+   {
+    "title": "Du lịch tăng trưởng thúc đẩy thị trường bất động sản Đà ...",
+    "link": "https://vnexpress.net/du-lich-tang-truong-thuc-day-thi-truong-bat-dong-san-da-nang-4806989.html",
+    "snippet": "Dự báo, kết năm 2024, Đà Nẵng sẽ đón khoảng 10,3 triệu lượt khách, đạt mức 118% so với 2019 và thu về 38 nghìn tỷ đồng - bằng 178% so với 2019.",
+    "date": "22 thg 10, 2024",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Đà Nẵng, Huế, Lâm Đồng tăng trưởng mạnh ...",
+    "link": "https://vnexpress.net/du-lich-da-nang-hue-lam-dong-tang-truong-manh-du-mua-bao-4961876.html",
+    "snippet": "Tính chung 10 tháng, tỉnh đón gần 5,4 triệu lượt khách (tăng 66%) và 1,5 triệu khách quốc tế. Doanh thu du lịch ước đạt 10.700 tỷ đồng, tăng 60% ...",
+    "date": "10 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "Du lịch Đà Nẵng 'khoác áo mới' nhờ những sản phẩm độc ...",
+    "link": "https://vnexpress.net/du-lich-da-nang-khoac-ao-moi-nho-nhung-san-pham-doc-dao-4625401.html",
+    "snippet": "Đà Nẵng nằm giữa ba di sản văn hóa thế giới: cố đô Huế, phố cổ Hội An, thánh địa Mỹ Sơn. Vị trí này từng biến Đà Nẵng cách đây gần hai thập kỷ ...",
+    "date": "5 thg 7, 2023",
+    "position": 7
+   },
+   {
+    "title": "'Du lịch Đà Nẵng theo hướng bền vững sẽ không lãng phí ...",
+    "link": "https://vnexpress.net/du-lich-da-nang-theo-huong-ben-vung-se-khong-lang-phi-tai-nguyen-4782378.html",
+    "snippet": "Trên cơ sở tài nguyên, hạ tầng sẵn có, Đà Nẵng cần sự đồng hành của các nhà đầu tư đủ tầm để phát triển theo hướng bền vững, theo ông Cao ...",
+    "date": "17 thg 8, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

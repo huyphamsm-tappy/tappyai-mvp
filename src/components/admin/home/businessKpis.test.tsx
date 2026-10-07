@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
-import { describe, it, expect, vi, afterEach } from 'vitest'
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest'
 import { render, screen, cleanup } from '@testing-library/react'
+import { setLocale } from '@/lib/i18n/useTranslation'
 import { BusinessKpis } from './BusinessKpis'
 import { vi as viStrings, en as enStrings } from '@/lib/i18n/admin'
 import type { HomeKpis } from '@/lib/admin/analytics/homeSnapshotService'
@@ -13,6 +14,9 @@ import type { HomeKpis } from '@/lib/admin/analytics/homeSnapshotService'
 // cannot recover them by looking harder.
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/admin' }))
+// `T = enStrings` below, so the rendered locale has to be English by request rather than by
+// accident — the product default is Vietnamese.
+beforeEach(() => setLocale('en'))
 afterEach(cleanup)
 
 const T = enStrings

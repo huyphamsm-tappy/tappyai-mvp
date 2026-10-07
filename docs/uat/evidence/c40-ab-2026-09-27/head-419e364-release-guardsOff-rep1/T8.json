@@ -1,0 +1,105 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 16085,
+  "evidenceId": "7ee5f387-fb0f-4ed3-9afd-2477429ab90d",
+  "toolCalls": [
+    {
+      "tool": "get_hotel_prices",
+      "args": {
+        "location": "Phú Quốc"
+      }
+    }
+  ],
+  "rows": [],
+  "shortlist": [
+    {
+      "name": "The Poplar Resort",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 320
+      }
+    },
+    {
+      "name": "Ocean Bay Resort & Spa Phu Quoc",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 3183
+      }
+    },
+    {
+      "name": "Thiên Thanh Phú Quốc Resort",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1759
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟\n\n Ngoài ra, **Ocean Bay Resort & Spa Phu Quoc** (4.7⭐, 3.183 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn resort có spa đầy đủ và nhiều tiện ích. **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) là option thứ ba nếu bạn ưu tiên giá hợp lý hơn.\n\nBạn muốn check-in vào ngày nào để mình xem giá cụ thể? 📅\n\n\n[FOLLOWUPS]Ngày check-in nào?|Bạn muốn có spa?|Resort gần biển?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm resort sang chút ở Phú Quốc cho kỷ niệm 1 năm của bạn nhé! 🏝️\n\nMình chọn **The Poplar Resort** cho bạn! 🌟\n\n Ngoài ra, **Ocean Bay Resort & Spa Phu Quoc** (4.7⭐, 3.183 đánh giá) cũng là lựa chọn tuyệt vời nếu bạn muốn resort có spa đầy đủ và nhiều tiện ích. **Thiên Thanh Phú Quốc Resort** (4.7⭐, 1.759 đánh giá) là option thứ ba nếu bạn ưu tiên giá hợp lý hơn.\n\nBạn muốn check-in vào ngày nào để mình xem giá cụ thể? 📅\n\n\n[FOLLOWUPS]Ngày check-in nào?|Bạn muốn có spa?|Resort gần biển?[/FOLLOWUPS]"
+    }
+  ]
+}

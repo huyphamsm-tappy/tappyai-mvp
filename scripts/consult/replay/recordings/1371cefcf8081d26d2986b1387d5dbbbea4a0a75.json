@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán nhậu quận 1\" OR \"Quán Ụt Ụt\" OR \"Nhà hàng Dìn Ký Nguyễn Trãi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:10:11.340Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán nhậu quận 1\" OR \"Quán Ụt Ụt\" OR \"Nhà hàng Dìn Ký Nguyễn Trãi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7611527438962658581",
+    "snippet": "Nhà Hàng Long Phụng Lầu Quận 6. Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1. Trải nghiệm ẩm thực tại Tửu Lầu 13 - quán nhậu ngon ở Quận 1! Đến ngay ...",
+    "position": 1
+   },
+   {
+    "title": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@jellyfishwandering95/photo/7656311801801461000",
+    "snippet": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1. Khám phá Xôi Gà Number ... Quan Điểm ' của mình là hợp với mình, địa điểm dễ tìm nằm trong con ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Dìn Ký Nguyễn Trãi (@dinkynguyentrai137)",
+    "link": "https://www.tiktok.com/@dinkynguyentrai137",
+    "snippet": "Nhà Hàng Dìn Ký Nguyễn Trãi · @dinkynguyentrai137 · Nhà Hàng Dìn Ký số 137C Nguyễn Trãi, Quận 1 Hotline: 0902911879.",
+    "position": 3
+   },
+   {
+    "title": "Quán Ụt Ụt",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-%E1%BB%A5t-%E1%BB%A5t",
+    "snippet": "Đánh giá quán Ụt Ụt tại Quận 2. Khám phá quán Ụt Ụt với đồ ăn ngon, không gian thoáng đãng và phục vụ nhanh chóng. Một điểm đến lý tưởng tại Quận 2!",
+    "position": 4
+   },
+   {
+    "title": "Mọi người mà muốn lai rai xiên nướng thì cứ tới The Zing ...",
+    "link": "https://www.tiktok.com/@baobanhbao2308/video/7652302387352309013",
+    "snippet": "The Zing Quận 1, xiên nướng trung quốc, lai rai quận 1, quán nhậu quận 1, đồ ăn cay quận 1, the zing menu, thịt xiên nướng, gân bò sọc ...",
+    "position": 5
+   },
+   {
+    "title": "Review quán Ụt Ụt Quận 2 | Đồ ăn ngon, không gian ...",
+    "link": "https://www.tiktok.com/@dicungphuc/video/7108508225149881626",
+    "snippet": "Review quán Ụt Ụt Quận 2 | Đồ ăn ngon, không gian thoáng, nhân. @Đi Cùng Phúc · A tropical house that feels Summer vibes · Quan Ut Ut - Xuan ...",
+    "position": 6
+   },
+   {
+    "title": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@jellyfishwandering95/photo/7656311801801461000?image_index=3",
+    "snippet": "Nếu quán có thêm dầu hành baro rưới lên xôi bắp thì thật pơ phẹc #c#creatorsearchinsights. Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1.",
+    "position": 7
+   },
+   {
+    "title": "Ga Cát Linh đã đông rồi nay còn nhộn nhịp hơn khi có ...",
+    "link": "https://www.tiktok.com/@anhvuoi/video/7583626301693611272",
+    "snippet": "... Quán Ụt ỤtQuán Ăn Ngon Đống ĐaQuán Ăn Ngon Gần Bệnh Viện Việt ĐứcReview Quán Ăn Vặt Quận 1 ... Chè rất ngon,ít ngọt.Cơ quan mình hay đặt về ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

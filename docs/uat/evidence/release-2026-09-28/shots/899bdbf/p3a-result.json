@@ -1,0 +1,17 @@
+{
+  "calls": [
+    "200 POST uat.tappyai.com/api/reviews/upload",
+    "200 POST uat.tappyai.com/api/upload/video",
+    "200 POST uat.tappyai.com/api/upload/video",
+    "200 POST uat.tappyai.com/api/upload/video"
+  ],
+  "photoImgs": [
+    "https://uat.tappyai.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Ftappyai-media-uat%2Freviews%2F5c674157-7bfd-4eb5-b1b1-6c61d13b30ef%2F1790589977513-awjxNXDR0XLaFwqNvY7dxLUw.webp&w=3840&q=75"
+  ],
+  "errors": [
+    "console.error: Access to XMLHttpRequest at 'https://storage.googleapis.com/upload/storage/v1/b/tappyai-media-uat/o?uploadType=resumable&name=thumbnails%2F5c674157-7bfd-4eb5-b1b1-6c61d13b30ef%2FR6xSsveiFwgWY9jetS73IKw2.jpg&upload_id=AP6rU81-_x15tBdoMNTe-YHdEJy64VCYjDmlt13WW1AeYw5Jwj9DJ1er9_W7OUQsFMaaXXNU0MFOsiLhf7M",
+    "console.error: Failed to load resource: net::ERR_FAILED",
+    "console.error: Access to XMLHttpRequest at 'https://storage.googleapis.com/upload/storage/v1/b/tappyai-media-uat/o?uploadType=resumable&name=videos%2F5c674157-7bfd-4eb5-b1b1-6c61d13b30ef%2FArQiudvQIxiadP2DG0sQL81Q.mp4&upload_id=AP6rU81PhbYzKx3owavwhbkYV0g7RTYUQWjuBXXexgh75syiOg-_XSjrYIFexDVTMsM7MoR7UCKoDNXl9OjggWZ",
+    "console.error: Failed to load resource: net::ERR_FAILED"
+  ]
+}

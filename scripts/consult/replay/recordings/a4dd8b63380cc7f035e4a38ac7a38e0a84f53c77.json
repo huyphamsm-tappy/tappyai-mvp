@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell 15 DC15250 Core i5-1334U site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:28.738Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell 15 DC15250 Core i5-1334U site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop Dell 15 DC15250 Intel Core i5-1334U 8GB 512GB ...",
+    "link": "https://shopee.vn/Laptop-Dell-15-DC15250-Intel-Core-i5-1334U-8GB-512GB-15.6-NK-(DC15250-5315BLK-1334U)-i.1909923851.50116887550",
+    "snippet": "Laptop Dell 15 DC15250 Intel Core i5-1334U 8GB 512GB 15.6\" NK (DC15250-5315BLK-1334U). outline grey truck icon. Không hỗ trợ. DGL.DIGITAL. Online 3 phút trước.",
+    "position": 1
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - i5U165W11SLU-27 - Core i5 ...",
+    "link": "https://shopee.vn/Laptop-Dell-15-DC15250-i5U165W11SLU-27-Core-i5-1334U-RAM-16GB-512GB-SSD-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.1663495353.51563009649",
+    "snippet": "Mua Laptop Dell 15 DC15250 - i5U165W11SLU-27 - Core i5-1334U - RAM 16GB - 512GB SSD - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 - i5U085W11SLU-2Y | 15.6\"",
+    "link": "https://shopee.vn/Laptop-Dell-15-DC15250-i5U085W11SLU-2Y-15.6-Core-i5-1334U-8GB-512GB-SSD-Win11-Office-i.600507109.51264170152",
+    "snippet": "Mua Laptop Dell 15 DC15250 - i5U085W11SLU-2Y | 15.6\" | Core i5-1334U | 8GB | 512GB SSD | Win11 + Office giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Laptop Dell 15 DC15250 DC5I5897W1 (Core i5-1334U | 16GB",
+    "link": "https://shopee.vn/Laptop-Dell-15-DC15250-DC5I5897W1-(Core-i5-1334U-16GB-512GB-15-inch)-i.988217951.57913613417",
+    "snippet": "Laptop Dell 15 DC15250 DC5I5897W1 (Core i5-1334U | 16GB | 512GB | 15 inch). 1/7. 24.890.000₫. Laptop Dell 15 DC15250 DC5I5897W1 (Core i5-1334U | 16GB | 512GB | ...",
+    "position": 4
+   },
+   {
+    "title": "[New FULL VAT] Dell 15 DC15250 2025 (Core i5 1334U ...",
+    "link": "https://shopee.vn/-New-FULL-VAT-Dell-15-DC15250-2025-(Core-i5-1334U-Ram-8GB-SSD-512GB-M%C3%A0n-15.6-FHD-Touch)-i.19221765.43861927927",
+    "snippet": "Mua [New FULL VAT] Dell 15 DC15250 2025 (Core i5 1334U, Ram 8GB, SSD 512GB, Màn 15.6 FHD Touch) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 5
+   },
+   {
+    "title": "Máy tính xách tay Dell 15 DC15250-5315BLK Intel i5 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Dell-15-DC15250-5315BLK-Intel-i5-1334U-512GB-SSD-8GB-16GB-15.6-inch-FHD-Touch-Win-11_1XVHG_c%C3%B3-c%E1%BA%A3m-%E1%BB%A9ng-i.1502970133.45211894574",
+    "snippet": "Mua Máy tính xách tay Dell 15 DC15250-5315BLK Intel i5-1334U 512GB SSD 8GB/16GB 15.6 inch FHD Touch Win 11_1XVHG_có cảm ứng giá tốt. Mua hàng qua mạng uy ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop Dell 15 DC15250-CPH992 | Core i5-1334U | 16GB",
+    "link": "https://shopee.vn/Laptop-Dell-15-DC15250-CPH992-Core-i5-1334U-16GB-512GB-SSD-15.6-FHD-120Hz-Win-11-Office-i.600507109.48413038789",
+    "snippet": "Mua Laptop Dell 15 DC15250-CPH992 | Core i5-1334U | 16GB | 512GB SSD | 15.6\" FHD 120Hz | Win 11 + Office giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "[TẶNG KÈM CHUỘT] Laptop Dell 15 DC15250 ...",
+    "link": "https://shopee.vn/-T%E1%BA%B6NG-K%C3%88M-CHU%E1%BB%98T-Laptop-Dell-15-DC15250-DC5I5897W1-(Core-i5-1334U-16GB-512GB-15-inch)-i.988217951.57913613417?extraParams=%7B%22display_model_id%22%3A371178587725%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [TẶNG KÈM CHUỘT] Laptop Dell 15 DC15250 DC5I5897W1 (Core i5-1334U | 16GB | 512GB | 15 inch) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

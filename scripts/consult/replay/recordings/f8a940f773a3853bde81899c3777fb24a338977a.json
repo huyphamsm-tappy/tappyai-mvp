@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngon Phố Đà\" OR \"Nhà Hàng Hải Sản\" OR \"NGON DA NANG\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T01:06:24.444Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngon Phố Đà\" OR \"Nhà Hàng Hải Sản\" OR \"NGON DA NANG\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mỳ Quảng tráng thủ công tại chỗ ở Ngon Phố Đà",
+    "link": "https://www.tiktok.com/@anngaynoithat/video/7664919591692389653",
+    "snippet": "Keywords: mỳ Quảng tráng thủ công, mỳ Quảng Đà Nẵng, Ngon Phố Đà 300 Võ Nguyên Giáp, quán mỳ Quảng tại chỗ, món ngon Đà Nẵng, cách làm mỳ ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng Hải Sản Làng Cá - Hải sản tươi ngon ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@vegasoppausa/video/7582412748189928735",
+    "snippet": "Khám phá nhà hàng Hải Sản Làng Cá, nơi phục vụ các món hải sản tươi ngon nhất tại Đà Nẵng với giá cao nhưng chất lượng cực tốt! #danangvietnam # ...",
+    "position": 2
+   },
+   {
+    "title": "Ngon Phố Đà (@ngonphoda.official)",
+    "link": "https://www.tiktok.com/@ngonphoda.official",
+    "snippet": "Ngon Phố Đà - Homey Authentic Vietnamese Cuisine 300 Võ Nguyên Giáp, Đà Nẵng ⏰ 10:00 - 22:00. m.me/NgonPhoDa.official.",
+    "position": 3
+   },
+   {
+    "title": "Review nhà hàng hải sản tươi sống gần biển Mỹ Khê",
+    "link": "https://www.tiktok.com/@anngaynoithat/video/7656331082069019922",
+    "snippet": "- Loại hình: nhà hàng hải sản, chi nhánh từ Ăn Thôi chợ Hàn. - Điểm mạnh: hải sản tươi nhập hàng ngày, giá niêm yết theo lạng, sốt ăn hợp vị, ...",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý cho Nàng các góc checkin khi đến Ngon Phố Đà # ...",
+    "link": "https://www.tiktok.com/@ngonphoda.official/video/7689056971525295366",
+    "snippet": "Gợi ý cho Nàng các góc checkin khi đến Ngon Phố Đà #NgonPhoDa #TrungThu #BelgroupHospitality #Xuhuong #VietRestaurant ; âm thanh gốc - Đà Lạt ...",
+    "position": 5
+   },
+   {
+    "title": "SỰ GIAO THOA GIỮA ẨM THỰC VÀ VĂN HOÁ 🎋 Tại Ngon ...",
+    "link": "https://www.tiktok.com/@ngonphoda.official/video/7668664401792093460?lang=ko-KR",
+    "snippet": "SỰ GIAO THOA GIỮA ẨM THỰC VÀ VĂN HOÁ Tại Ngon Phố Đà, mỗi món ăn không chỉ được nêm nếm bằng gia vị, mà còn bằng lòng hiếu khách nồng hậu ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng hải sản có các món Âu và anh chủ người Hàn ở ...",
+    "link": "https://www.tiktok.com/@tuandidau/video/7688329826360429842",
+    "snippet": "Nhà hàng hải sản có các món Âu và anh chủ người Hàn ở Đà Nẵng #tuanoididauthe #vtmgr #learnontiktok #danang. Nhà hàng hải sản có các món Âu ...",
+    "position": 7
+   },
+   {
+    "title": "Nhà Hàng Hải Sản View Biển Ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@chuyencuadanang_official/video/7254163737769200901",
+    "snippet": "Nhà Hàng Hải Sản View Biển Ở Đà Nẵng. Khám phá nhà hàng hải sản tươi ngon với view biển đẹp ở Đà Nẵng. Ăn ngon, check-in đẹp tại đây! #danang ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

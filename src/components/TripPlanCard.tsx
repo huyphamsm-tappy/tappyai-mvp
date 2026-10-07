@@ -1,8 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import { plainTextDeep } from '@/lib/chat/markdownNormalize'
 import { MapPin, Share2, ExternalLink, ChevronRight } from 'lucide-react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
+import ShareMenu from '@/components/share/ShareMenu'
+import { buildPlanArtifact } from '@/lib/share/shareArtifact'
+import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPhotos'
 
 export interface PlanItem {
   time: string
@@ -33,6 +37,8 @@ export interface TappyPlan {
   days: PlanDay[]
   cost_breakdown?: Record<string, string>
   share_text?: string
+  /** Trip plans only; every tip already passed the server's planLocalTipsGuard (UAT3 P2). */
+  local_tips?: Array<{ text: string; basis: 'tool' | 'general'; place?: string }>
 }
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -47,28 +53,29 @@ function categoryColor(cat: string) {
   return CATEGORY_COLORS[cat] || CATEGORY_COLORS.transport
 }
 
-export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
+export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
+  plan: TappyPlan
+  /** The same turn's place cards: their own photos become the SHARED plan's stop photos (see planPhotos). */
+  placePhotos?: readonly PlacePhotoSource[] | null
+}) {
+  // Every field below renders as PLAIN text, and the model writes markdown inside the plan JSON
+  // ("**4.7⭐**"): strip it once, here, for every source (live chat, restored history, planner).
+  const plan = useMemo(() => plainTextDeep(rawPlan), [rawPlan])
   const { t } = useTranslation()
   const [activeDay, setActiveDay] = useState(0)
-  const [shareState, setShareState] = useState<'idle' | 'copied'>('idle')
+  const [shareOpen, setShareOpen] = useState(false)
+  const { locale } = useTranslation()
 
-  const handleShare = async () => {
-    const shareText =
-      plan.share_text ||
-      t('tripPlan.shareFallback', { title: plan.title })
-
-    try {
-      if (typeof navigator !== 'undefined' && navigator.share) {
-        await navigator.share({ title: plan.title, text: shareText })
-      } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText)
-        setShareState('copied')
-        setTimeout(() => setShareState('idle'), 2500)
-      }
-    } catch {
-      // user cancelled
-    }
-  }
+  /**
+   * Share opens the TappyAI share menu with the plan's canonical artifact.
+   *
+   * 🚨 THIS USED TO SHARE `plan.share_text` — a model-authored caption — via the
+   * OS sheet. The brochure is now built deterministically from `days[].items[]`
+   * (times, places, prices, addresses, Maps/booking links); `share_text` may
+   * contribute one introductory line and nothing structural.
+   */
+  const handleShare = () => setShareOpen(true)
+  const artifact = buildPlanArtifact(withPlacePhotos(plan, placePhotos), locale === 'en' ? 'en' : 'vi')
 
   const currentDay = plan.days[activeDay] ?? plan.days[0]
 
@@ -79,19 +86,22 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <h3 className="font-bold text-sm leading-snug line-clamp-2">{plan.title}</h3>
-            {(plan.people || plan.budget_total) && (
-              <p className="text-primary-100 text-xs mt-0.5">
-                {plan.people && plan.people > 1 ? t('tripPlan.peopleCount', { count: String(plan.people) }) : ''}
-                {plan.budget_total}
-              </p>
-            )}
+            {(() => {
+              // Joined, not concatenated: with no real budget (planPrice.ts drops a "chưa có giá"
+              // sentinel) the people count must not be left with a dangling " · ".
+              const meta = [
+                plan.people && plan.people > 1 ? t('tripPlan.peopleCount', { count: String(plan.people) }) : '',
+                plan.budget_total ?? '',
+              ].filter(Boolean).join(' · ')
+              return meta ? <p className="text-primary-100 text-xs mt-0.5">{meta}</p> : null
+            })()}
           </div>
           <button
             onClick={handleShare}
             className="flex-shrink-0 flex items-center gap-1 bg-white/20 hover:bg-white/30 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-all active:scale-95"
           >
             <Share2 size={11} />
-            {shareState === 'copied' ? t('tripPlan.shared') : t('tripPlan.share')}
+            {t('tripPlan.share')}
           </button>
         </div>
       </div>
@@ -204,6 +214,23 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
         ))}
       </div>
 
+      {/* ── Local tips (grounded: a stop of this plan, or flagged general advice) ── */}
+      {Array.isArray(plan.local_tips) && plan.local_tips.some(tip => tip && typeof tip.text === 'string') && (
+        <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3" data-plan-local-tips>
+          <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">{t('tripPlan.localTips')}</p>
+          <ul className="space-y-1.5">
+            {plan.local_tips.filter(tip => tip && typeof tip.text === 'string').map((tip, i) => (
+              <li key={i} className="text-xs leading-snug text-content-secondary">
+                {tip.basis === 'tool' && tip.place
+                  ? <span className="font-semibold text-gray-700 dark:text-gray-300">{tip.place}: </span>
+                  : <span className="mr-1 rounded bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400">{t('tripPlan.generalTip')}</span>}
+                {tip.text}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* ── Cost breakdown ── */}
       {plan.cost_breakdown && Object.keys(plan.cost_breakdown).length > 0 && (
         <div className="border-t border-gray-100 dark:border-gray-800 px-4 py-3 bg-gray-50 dark:bg-gray-800/40">
@@ -231,15 +258,11 @@ export default function TripPlanCard({ plan }: { plan: TappyPlan }) {
           onClick={handleShare}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-interactive hover:bg-interactive-hover active:scale-[0.98] text-white text-sm font-semibold transition-all"
         >
-          {shareState === 'copied' ? (
-            t('tripPlan.shareCopied')
-          ) : (
-            <>
-              <Share2 size={14} />
-              {t('tripPlan.shareItinerary')}
-            </>
-          )}
+          <Share2 size={14} />
+          {t('tripPlan.shareItinerary')}
         </button>
+        {/* Owner SL1 (29/09): the approved sheet (#6) with the plan image; it mints the link itself. */}
+        <ShareMenu artifact={artifact} variant="plan" profileName={plan.title} open={shareOpen} onClose={() => setShareOpen(false)} />
         <p className="text-center text-xs text-gray-400 dark:text-gray-500 mt-1.5">
           {t('tripPlan.shareHint')}
         </p>

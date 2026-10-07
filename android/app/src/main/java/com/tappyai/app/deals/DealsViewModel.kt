@@ -20,8 +20,9 @@ import javax.inject.Inject
  * State for the Deals screen (`/deals` on the web) — loads the active partner-deal pool from
  * `GET /api/deals`, and reloads it when the app language changes (see [onLanguageResolved]; the
  * feed is localized server-side, so the data is language-dependent, not just the chrome around it).
- * No pagination/filtering (the web has none either); tapping a card bumps the popularity counter
- * and opens [Deal.officialUrl] externally, same as the web's `<a target="_blank">`.
+ * No pagination; the only filtering is the V3 category pills ([selectedCategory]), applied on the
+ * client over the loaded pool. Tapping a card bumps the popularity counter and opens
+ * [Deal.officialUrl] externally, same as the web's `<a target="_blank">`.
  */
 @HiltViewModel
 class DealsViewModel @Inject constructor(
@@ -32,6 +33,38 @@ class DealsViewModel @Inject constructor(
 
     var uiState by mutableStateOf<UiState<List<Deal>>>(UiState.Loading)
         private set
+
+    /** The V3 category pill currently selected, or null for "all". */
+    var selectedCategory by mutableStateOf<String?>(null)
+        private set
+
+    /**
+     * The categories the loaded deals ACTUALLY have, in feed order.
+     *
+     * Read off the data, never a hardcoded list: the live feed carries three ("Mua sắm",
+     * "Vận chuyển", "Du lịch"), and offering a pill for a category with nothing behind it would be
+     * a filter that can only ever return an empty screen. These are the LOCALIZED labels
+     * ([Deal.category]) because they are what the pills display; a language reload clears the
+     * selection (see [load]) so a label from the previous language can never be left selected.
+     */
+    val categories: List<String>
+        get() = (uiState as? UiState.Success)?.data
+            ?.map { it.category }
+            ?.filter { it.isNotBlank() }
+            ?.distinct()
+            .orEmpty()
+
+    /** The deals the grid shows: everything, or just the selected category. */
+    val visibleDeals: List<Deal>
+        get() {
+            val all = (uiState as? UiState.Success)?.data.orEmpty()
+            val category = selectedCategory ?: return all
+            return all.filter { it.category == category }
+        }
+
+    fun onCategorySelected(category: String?) {
+        selectedCategory = category
+    }
 
     private var loadJob: Job? = null
 
@@ -72,6 +105,8 @@ class DealsViewModel @Inject constructor(
     private fun load() {
         loadJob?.cancel()
         uiState = UiState.Loading
+        // A fresh pool may carry different categories (or the same ones in another language).
+        selectedCategory = null
         loadJob = viewModelScope.launch {
             when (val result = repository.getDeals()) {
                 is NetworkResult.Success -> {

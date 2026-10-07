@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "laptop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:42.608Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop | Máy tính xách tay giá rẻ, trả góp 0%, giảm 15 triệu",
+    "link": "https://cellphones.com.vn/laptop.html",
+    "snippet": "Laptop, máy tính xách tay giá rẻ, trả góp 0%, đổi điểm giảm thêm tới 10%. Mua online laptop giảm thêm đến 5 triệu, giao hàng miễn phí tận nhà.",
+    "position": 1
+   },
+   {
+    "title": "⚡Sạc laptop Microsoft Surface Laptop 3 1872 1873 1867 ...",
+    "link": "https://shopee.vn/%E2%9A%A1S%E1%BA%A1c-laptop-Microsoft-Surface-Laptop-3-1872-1873-1867-1868-65W-15V-4A-H%C3%A0ng-zin-nh%E1%BA%ADp-kh%E1%BA%A9u-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao-i.301533053.27571177939",
+    "snippet": "Mua ⚡Sạc laptop Microsoft Surface Laptop 3 1872 1873 1867 1868 65W 15V 4A -Hàng zin nhập khẩu chất lượng cao giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "Laptop Gaming | Laptop chơi game giá rẻ, giảm đến 9 triệu",
+    "link": "https://cellphones.com.vn/laptop/gaming.html",
+    "snippet": "Laptop gaming giá rẻ, hiệu năng mạnh mẽ, giảm thêm đến 400k, tặng balo cho sinh viên. Mua laptop chơi game, trợ giá đến 3 triệu khi lên đời!",
+    "position": 3
+   },
+   {
+    "title": "Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt ...",
+    "link": "https://shopee.vn/Gi%C3%A1-%C4%91%E1%BB%A1-laptop-nh%C3%B4m-%C4%91i%E1%BB%81u-ch%E1%BB%89nh-%C4%91%E1%BB%99-cao-linh-ho%E1%BA%A1t-t%E1%BA%A3n-nhi%E1%BB%87t-t%E1%BB%91t-i.338344025.3566029986?extraParams=%7B%22display_model_id%22%3A340450146534%2C%22model_selection_logic%22%3A3%7D&rModelId=340450146534&vItemId=26436222612&vModelId=271275737257&vShopId=1506174776",
+    "snippet": "Mua Giá đỡ laptop nhôm điều chỉnh độ cao linh hoạt, tản nhiệt tốt giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 4
+   },
+   {
+    "title": "Jack DC Chân Sạc Laptop Sony VPCEB PCG-71311N ...",
+    "link": "https://shopee.vn/Jack-DC-Ch%C3%A2n-S%E1%BA%A1c-Laptop-Sony-VPCEB-PCG-71311N-i.121885649.43808776781",
+    "snippet": "Mua Jack DC Chân Sạc Laptop Sony VPCEB PCG-71311N giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng ...",
+    "position": 5
+   },
+   {
+    "title": "ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop ...",
+    "link": "https://shopee.vn/%F0%9F%8C%9F-ZIN-QUA-S%E1%BB%AC-D%E1%BB%A4NG-%F0%9F%8C%9F-B%E1%BB%98-NGU%E1%BB%92N-C%E1%BB%A5c-s%E1%BA%A1c-ADAPTER-laptop-Hp-200W-19.5V-10.3A-ch%C3%A2n-kim-xanh-zin-th%C3%A1o-m%C3%A1y-HP-HP-Compad-i.228219692.22721883616",
+    "snippet": "Mua ZIN QUA SỬ DỤNG BỘ NGUỒN Cục sạc ADAPTER laptop Hp 200W 19.5V 10.3A chân kim xanh zin tháo máy HP HP-Compad giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 6
+   },
+   {
+    "title": "Tư vấn nên mua laptop hay máy tính bàn cho học sinh?",
+    "link": "https://cellphones.com.vn/sforum/nen-mua-laptop-hay-may-tinh-ban-cho-hoc-sinh",
+    "snippet": "Tư vấn nên mua laptop hay máy tính bàn cho học sinh chi tiết. Nếu bạn là phụ huynh hoặc học sinh nên cân nhắc chọn máy tính vừa đáp ứng nhu cầu, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Sạc Laptop Dell Oval 65W - 19.5V - 3.34A - Đầu kim nhỏ 4.5 ...",
+    "link": "https://shopee.vn/S%E1%BA%A1c-Laptop-Dell-Oval-65W-19.5V-3.34A-%C4%90%E1%BA%A7u-kim-nh%E1%BB%8F-4.5*3.0mm-DELL-XPS-13-9360-9350-9343-9333-9365-(Dell-Ovan-65w)-i.9099784.4272081850",
+    "snippet": "Mua Sạc Laptop Dell Oval 65W - 19.5V - 3.34A - Đầu kim nhỏ 4.5*3.0mm DELL XPS 13 9360 9350 9343 9333 9365 (Dell Ovan 65w) giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

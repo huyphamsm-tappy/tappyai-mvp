@@ -1,0 +1,67 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" Quận 1, Hồ Chí Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:29:41.896Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" Quận 1, Hồ Chí Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thư giãn & Tái tạo: Gội đầu dưỡng sinh, Massage chân & toàn ...",
+    "link": "https://www.klook.com/vi/activity/174207-relax-refresh-hair-spa-foot-body-massage-in-ho-chi-minh-city/",
+    "snippet": "Hấp dẫn không kém Điểm tham quan nổi tiếng ở Thành phố Hồ Chí Minh 1 Địa đạo Củ Chi 2 Sông Sài Gòn 3 Bảo tàng Chứng tích Chiến tranh 4 Chợ Bến Thành 5 Nhà hát Lớn 6 Phố đi bộ Bùi Viện 7 Landmark TVGB 81 8 Phố đi bộ Nguyễn Huệ 9 Quận 1 10 Dinh Độc Lập 11 Chợ hoa Hồ ...",
+    "date": "Jun 24, 2026",
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Địa chỉ Ha Spa (Tên trên Google Map: 15B Spa) Tham khảo bản đồ để biết thêm chi tiết 49 Phạm Viết Chánh, Phường Nguyễn Cư Trinh, Quận 1, Thành phố Hồ Chí Minh, Việt Nam",
+    "position": 2
+   },
+   {
+    "title": "Sả Spa - Massage Body Giá Tốt Độc Quyền - Klook",
+    "link": "https://www.klook.com/vi/activity/43971-sa-spa-body-massage-experience-ho-chi-minh/",
+    "snippet": "Trải nghiệm Sả spa tại TP. HCM khi đặt qua Klook với nhiều ưu đãi hấp dẫn và giá tốt nhất. Ưu đãi cho massage body và các dịch vụ chăm sóc, làm đẹp khác.",
+    "position": 3
+   },
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "snippet": "Klook Travel Trải nghiệm một trong những thương hiệu spa lâu đời nhất Việt Nam với các chi nhánh tại các thành phố du lịch lớn Vị trí thuận tiện tại Quận 1, lý tưởng để thư giãn sau khi tham quan hoặc mua sắm Tận hưởng các liệu pháp massage và chăm sóc sức khỏe chuyên nghiệp từ các chuyên viên trị liệu giàu ...",
+    "position": 4
+   },
+   {
+    "title": "Spa Gội Đầu Thảo Dược Chí Tú tại Thành phố Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Chị Tư Spa - Gội Đầu Thảo Dược & Trị Liệu Chi Nhánh 10 Quận 1 (Hair Wash, Facial & Body Massage)",
+    "position": 5
+   },
+   {
+    "title": "Tam Oi Head Spa và Massage ở Quận 1, TP. Hồ Chí Minh - Klook",
+    "link": "https://www.klook.com/vi/activity/222222-tam-oi-head-spa-and-massage-in-district-1-ho-chi-minh-city/",
+    "snippet": "Địa chỉ SPA TẤM ƠI QUẬN 1 - TAM OI SPA DISTRICT 1 97 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Vietnam Tham khảo bản đồ để biết thêm chi tiết",
+    "position": 6
+   },
+   {
+    "title": "Bloom Spa & Hairwash tại Quận 1, Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/220015-bloom-spa-hairwash-in-district-1-ho-chi-minh-city/",
+    "snippet": "Hấp dẫn không kém Điểm tham quan nổi tiếng ở Thành phố Hồ Chí Minh 1 Địa đạo Củ Chi 2 Sông Sài Gòn 3 Bảo tàng Chứng tích Chiến tranh 4 Chợ Bến Thành 5 Nhà hát Lớn 6 Phố đi bộ Bùi Viện 7 Landmark TVGB 81 8 Phố đi bộ Nguyễn Huệ 9 Quận 1 10 Dinh Độc Lập 11 Chợ hoa Hồ ...",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

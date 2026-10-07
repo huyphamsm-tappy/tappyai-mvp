@@ -5,6 +5,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 
 /**
  * Android must offer the same share targets, and enforce the same URL guard, as
@@ -14,14 +15,44 @@ import org.junit.Test
  */
 class TappyShareTest {
 
-    private val review = "https://www.tappyai.com/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d"
+    private val review = "${TappyShare.CANONICAL_ORIGIN}/reviews/af7dfbea-b41f-41e3-853c-9a5403ca1f3d"
 
     @Test
     fun `offers the same targets in the same order as web`() {
         assertEquals(
-            listOf("facebook", "tiktok", "zalo", "copy", "native"),
+            listOf(
+                "facebook", "messenger", "zalo", "whatsapp", "telegram", "viber", "line", "tiktok", "email",
+                "inbox", "save", "copy", "native",
+            ),
             TappyShare.targets.map { it.id }
         )
+    }
+
+    /** Direct handoff is a claim about specific apps; every claimed package must be queryable. */
+    @Test
+    fun `direct app packages are exactly the manifest queries`() {
+        val manifest = File("src/main/AndroidManifest.xml").readText()
+        val declared = Regex("""<package android:name="([^"]+)"""").findAll(manifest).map { it.groupValues[1] }.toList()
+        assertEquals(TappyShare.queriedPackages.sorted(), declared.sorted())
+        // The text-handoff apps plus TikTok's two packages (the file handoff, TikTokHandoff).
+        val mapped = TappyShare.targets.mapNotNull { TappyShare.packageFor(it) } + TikTokHandoff.PACKAGES
+        assertEquals(TappyShare.queriedPackages.sorted(), mapped.sorted())
+        assertTrue(declared.containsAll(listOf("com.zhiliaoapp.musically", "com.ss.android.ugc.trill")))
+    }
+
+    @Test
+    fun `only messaging apps have a package`() {
+        assertEquals("com.facebook.orca", TappyShare.packageFor(TappyShare.Target.MESSENGER))
+        assertEquals("com.zing.zalo", TappyShare.packageFor(TappyShare.Target.ZALO))
+        assertEquals("com.whatsapp", TappyShare.packageFor(TappyShare.Target.WHATSAPP))
+        assertEquals("org.telegram.messenger", TappyShare.packageFor(TappyShare.Target.TELEGRAM))
+        assertEquals("com.viber.voip", TappyShare.packageFor(TappyShare.Target.VIBER))
+        assertEquals("jp.naver.line.android", TappyShare.packageFor(TappyShare.Target.LINE))
+        // Facebook is the sharer dialog, not an app handoff — Messenger is the app.
+        for (t in listOf(TappyShare.Target.FACEBOOK, TappyShare.Target.TIKTOK, TappyShare.Target.EMAIL,
+            TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
+            assertNull(t.id, TappyShare.packageFor(t))
+        }
     }
 
     @Test
@@ -31,10 +62,19 @@ class TappyShareTest {
         assertTrue(out.contains("tappyai.com"))
     }
 
+    /** Zalo has no standalone web share URL (its SDK hands links to the app via ACTION_SEND — the package path here). */
     @Test
-    fun `zalo receives the canonical url encoded`() {
-        val out = TappyShare.buildShareUrl(TappyShare.Target.ZALO, review)
-        assertTrue(out!!.contains("zalo.me"))
+    fun `zalo has no web handoff url`() {
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.ZALO, review))
+        assertEquals("com.zing.zalo", TappyShare.packageFor(TappyShare.Target.ZALO))
+    }
+
+    /** Messenger's own share deep link — a scheme, so the caller copies first. */
+    @Test
+    fun `messenger receives its share deep link with the canonical url encoded`() {
+        val out = TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, review)
+        assertEquals("fb-messenger://share?link=" + java.net.URLEncoder.encode(review, "UTF-8"), out)
+        assertNull(TappyShare.buildShareUrl(TappyShare.Target.MESSENGER, "${TappyShare.CANONICAL_ORIGIN}/reviews/x?token=secret"))
     }
 
     /** No public web endpoint exists; saying so is the feature. */
@@ -44,15 +84,60 @@ class TappyShareTest {
     }
 
     @Test
-    fun `copy and native are not url handoffs`() {
-        assertNull(TappyShare.buildShareUrl(TappyShare.Target.COPY, review))
-        assertNull(TappyShare.buildShareUrl(TappyShare.Target.NATIVE, review))
+    fun `non url targets are not url handoffs`() {
+        for (t in listOf(TappyShare.Target.WHATSAPP, TappyShare.Target.TELEGRAM, TappyShare.Target.VIBER,
+            TappyShare.Target.LINE, TappyShare.Target.EMAIL, TappyShare.Target.INBOX, TappyShare.Target.SAVE,
+            TappyShare.Target.COPY, TappyShare.Target.NATIVE)) {
+            assertNull(t.id, TappyShare.buildShareUrl(t, review))
+        }
+    }
+
+    @Test
+    fun `text handoff carries the brochure, encoded, for email viber line whatsapp and telegram only`() {
+        val text = "TappyAI gợi ý: bún bò\n\n1. Quán A\n   📍 12 Lê Lợi\n\nGợi ý bởi TappyAI · ${TappyShare.CANONICAL_ORIGIN.removePrefix("https://")}"
+        val mail = TappyShare.buildTextShareUrl(TappyShare.Target.EMAIL, "TappyAI gợi ý", text)!!
+        assertTrue(mail.startsWith("mailto:?subject="))
+        assertTrue(mail.contains("&body="))
+        assertFalse(mail.contains("+"))
+        assertTrue(mail.contains("%0A"))
+        val viber = TappyShare.buildTextShareUrl(TappyShare.Target.VIBER, "s", text)!!
+        assertTrue(viber.startsWith("viber://forward?text="))
+        val line = TappyShare.buildTextShareUrl(TappyShare.Target.LINE, "s", text)!!
+        assertTrue(line.startsWith("https://line.me/R/share?text="))
+        assertEquals(text, java.net.URLDecoder.decode(line.removePrefix("https://line.me/R/share?text="), "UTF-8"))
+        val wa = TappyShare.buildTextShareUrl(TappyShare.Target.WHATSAPP, "s", text)!!
+        assertTrue(wa.startsWith("https://wa.me/?text="))
+        assertEquals(text, java.net.URLDecoder.decode(wa.removePrefix("https://wa.me/?text="), "UTF-8"))
+        for (t in listOf(TappyShare.Target.FACEBOOK, TappyShare.Target.MESSENGER, TappyShare.Target.ZALO,
+            TappyShare.Target.TIKTOK, TappyShare.Target.INBOX, TappyShare.Target.SAVE, TappyShare.Target.COPY,
+            TappyShare.Target.NATIVE)) {
+            assertNull(t.id, TappyShare.buildTextShareUrl(t, "s", text))
+        }
+        assertNull(TappyShare.buildTextShareUrl(TappyShare.Target.EMAIL, "s", "   "))
+        assertNull(TappyShare.buildTextShareUrl(TappyShare.Target.WHATSAPP, "s", "   "))
+    }
+
+    /** Telegram takes the link and the text apart; a bare link goes once, as the url. */
+    @Test
+    fun `telegram carries the link and the brochure separately`() {
+        val text = "TappyAI gợi ý: bún bò\n\n1. Quán A"
+        val both = TappyShare.buildTextShareUrl(TappyShare.Target.TELEGRAM, "s", text, review)!!
+        assertTrue(both.startsWith("https://t.me/share/url?url="))
+        val query = both.removePrefix("https://t.me/share/url?url=")
+        val url = query.substringBefore("&text=")
+        assertEquals(review, java.net.URLDecoder.decode(url, "UTF-8"))
+        assertEquals(text, java.net.URLDecoder.decode(query.substringAfter("&text="), "UTF-8"))
+
+        val linkOnly = TappyShare.buildTextShareUrl(TappyShare.Target.TELEGRAM, "s", review)!!
+        assertEquals("https://t.me/share/url?url=" + java.net.URLEncoder.encode(review, "UTF-8").replace("+", "%20"), linkOnly)
+        assertFalse(linkOnly.contains("&text="))
     }
 
     @Test
     fun `accepts canonical public pages`() {
         assertTrue(TappyShare.isShareableUrl(review))
         assertTrue(TappyShare.isShareableUrl("https://tappyai.com/reviews/x"))
+        assertTrue(TappyShare.isShareableUrl(TappyShare.CANONICAL_ORIGIN))
     }
 
     @Test
@@ -60,10 +145,10 @@ class TappyShareTest {
         val bad = listOf(
             "https://y5ozy0i9wdb73mam.public.blob.vercel-storage.com/videos/1.mp4",
             "https://storage.googleapis.com/tappyai-media-prod/videos/u/a.mp4",
-            "https://www.tappyai.com/api/reviews/feed",
-            "https://www.tappyai.com/reviews/x?token=secret",
+            "${TappyShare.CANONICAL_ORIGIN}/api/reviews/feed",
+            "${TappyShare.CANONICAL_ORIGIN}/reviews/x?token=secret",
             "https://tappyai-mvp-abc.vercel.app/reviews/x",
-            "https://www.tappyai.com.evil.test/x",
+            "${TappyShare.CANONICAL_ORIGIN}.evil.test/x",
             "http://www.tappyai.com/x",
             "",
         )
@@ -76,14 +161,21 @@ class TappyShareTest {
     /** A conversation is authenticated; a shared link would only show a login page. */
     @Test
     fun `private chat is not shareable`() {
-        val chat = "https://www.tappyai.com/chat/6164ff68-eae6-49da-abe7-525fbccf2827"
+        val chat = "${TappyShare.CANONICAL_ORIGIN}/chat/6164ff68-eae6-49da-abe7-525fbccf2827"
         assertFalse(TappyShare.isShareableUrl(chat))
         assertNull(TappyShare.buildShareUrl(TappyShare.Target.ZALO, chat))
     }
 
     @Test
     fun `review url is canonical`() {
-        assertEquals("https://www.tappyai.com/reviews/abc", TappyShare.reviewUrl("abc"))
+        assertEquals("${TappyShare.CANONICAL_ORIGIN}/reviews/abc", TappyShare.reviewUrl("abc"))
         assertTrue(TappyShare.isShareableUrl(TappyShare.reviewUrl("abc")))
+    }
+
+    /** The Inbox URL is the web Messenger — a canonical page, not an API or a chat. */
+    @Test
+    fun `inbox url is a shareable canonical page`() {
+        assertTrue(TappyShare.INBOX_URL.startsWith("${TappyShare.CANONICAL_ORIGIN}/"))
+        assertFalse(TappyShare.INBOX_URL.contains("/api/"))
     }
 }

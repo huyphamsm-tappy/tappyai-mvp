@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phan Rang Quán\" OR \"Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7\" OR \"Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:04:54.405Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phan Rang Quán\" OR \"Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7\" OR \"Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phan Rang Quán: Thiên Đường Ẩm Thực Bình Thạnh",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7473010939579731208",
+    "snippet": "Khám phá Phan Rang Quán - quán ngon với món chả cuốn, bánh canh tuyệt hảo tại Bình Thạnh. Đừng bỏ lỡ nhé! #diachianuong #vtmgr #PhanRangQuan.",
+    "position": 1
+   },
+   {
+    "title": "An Cafe Phan Rang: Quán Cafe Trung Tâm Đáng Ghé Thăm",
+    "link": "https://www.tiktok.com/@ancafephanrang/video/7678169343342955797",
+    "snippet": "An Cafe là một điểm đến lý tưởng cho những ai yêu thích cafe và muốn tìm một không gian thư giãn ngay tại trung tâm thành phố Phan Rang. Quán ...",
+    "position": 2
+   },
+   {
+    "title": "Ăn Bánh Cuốn, Bánh Xèo, Bánh Khọt Phan Rang Quận 7",
+    "link": "https://www.tiktok.com/@synbeosne/video/7677637621014727952",
+    "snippet": "Địa điểm hấp dẫn này tọa lạc tại 399 Lê Văn Lương, P. Phú Thuận, thuộc khu vực Tân Hưng, Thành phố Hồ Chí Minh. Quán Phan Rang Quán mang đến một ...",
+    "position": 3
+   },
+   {
+    "title": "Cháo hàu bào ngư Phan Rang: quán ngon, giá hợp lý",
+    "link": "https://www.tiktok.com/@sieunhan85nt/video/7668176139050945810",
+    "snippet": "Cháo hàu bào ngư Phan Rang: quán ngon, giá hợp lý. Lead Nếu bạn ở Phan Rang – Tháp Chàm và muốn ăn cháo hàu bào ngư ngon, video gợi ý chỗ ăn đảm bảo vị và chất ...",
+    "position": 4
+   },
+   {
+    "title": "Cuối tuần relax tại Highlands Coffee Khu K1 Phan Rang",
+    "link": "https://www.tiktok.com/@annoroitinhpr/video/7661577145784732948",
+    "snippet": "Highlands Coffee Khu K1 Phan Rang - Quán cà phê thư giãn cuối tuần. POV: Cuối tuần relax tại Highlands Coffee Khu K1 Phan Rang Nếu đang tìm ...",
+    "position": 5
+   },
+   {
+    "title": "Quán cafe 11:11 review - Ăn mì tôm mực ở Phan Rang",
+    "link": "https://www.tiktok.com/@annoroitinhpr/video/7657911290383502612",
+    "snippet": "Nếu bạn đang lên kế hoạch ăn sáng tại Phan Rang, quán cafe 11:11 là điểm đáng cân nhắc. ... 7-3Trả lời. Đã thích bởi nhà sáng tạo. 16. Ăn no ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Quán Đặc Sản Miền Trung Tại Quận 7",
+    "link": "https://www.tiktok.com/@hieunguyensyo/video/7361803470615219464",
+    "snippet": "Trải nghiệm những món ăn đặc sản miền Trung tại Phan Rang quán, Quận 7. Đừng bỏ lỡ món nem cuốn hấp dẫn nhé! #hieusyo #reviewanngon #anvatquan7.",
+    "position": 7
+   },
+   {
+    "title": "Ốc Nóng Nga Hà ở Phan Rang - Quán Ốc Ngon Tuyệt",
+    "link": "https://www.tiktok.com/@ocnongngahaphanrang/photo/7502855149174476050",
+    "snippet": "Ốc Nóng Nga Hà ở Phan Rang - Quán Ốc Ngon Tuyệt. Thèm ốc luộc ở Phan Rang? Ghé ngay quán Ốc Nóng Nga Hà để thưởng thức ốc với nước chấm dâu tằm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

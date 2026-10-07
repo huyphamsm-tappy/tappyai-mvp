@@ -24,12 +24,31 @@ import javax.inject.Inject
  * the web which never treats zero recs as an error. A 401 maps to the sign-in message; any other
  * failure to the generic retry message — the same two-way split the web page makes.
  */
+/** Whether the page must first ask 18+ (web: `apiFetch` sends an age refusal to /age-check). */
+enum class RecommendationsAgeState { None, Required }
+
 @HiltViewModel
 class RecommendationsViewModel @Inject constructor(
     private val repository: RecommendationsRepository,
     private val stringProvider: StringProvider,
     private val logger: LoggerProvider,
+    private val authRepository: com.tappyai.features.auth.data.AuthRepository,
 ) : ViewModel() {
+
+    private val _ageState = MutableStateFlow(RecommendationsAgeState.None)
+    val ageState: StateFlow<RecommendationsAgeState> = _ageState.asStateFlow()
+
+    /** A guest declares on the device; an account PATCHes its date of birth — same screen. */
+    val isGuest: Boolean get() = authRepository.isAnonymous() || !authRepository.hasSession()
+
+    /** Set once the 18+ screen has been answered, so a guest is never looped back to it (R6). */
+    private var ageAnswered = false
+
+    fun onAgeConfirmed() {
+        ageAnswered = true
+        _ageState.value = RecommendationsAgeState.None
+        load()
+    }
 
     private val _state = MutableStateFlow<UiState<Recommendations>>(UiState.Loading)
     val state: StateFlow<UiState<Recommendations>> = _state.asStateFlow()
@@ -50,7 +69,16 @@ class RecommendationsViewModel @Inject constructor(
                 is NetworkResult.Success -> UiState.Success(result.data)
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Recommendations load failed: ${result.error}")
-                    val isAuth = (result.error as? NetworkError.Http)?.code == 401
+                    // 403 = an age refusal (age_declaration_required / age_verification_required):
+                    // ask 18+ instead of showing "Không tải được" (parity 2026-09-28, L5).
+                    val code = (result.error as? NetworkError.Http)?.code
+                    when {
+                        code == 403 && !ageAnswered -> RecommendationsAgeState.Required
+                        else -> null
+                    }?.let { _ageState.value = it }
+                    // Still 403 after the 18+ answer: the route has no guest path (ANDROID-REQUESTS
+                    // R6) — the way on is an account, so say that instead of asking again.
+                    val isAuth = code == 401 || (code == 403 && ageAnswered)
                     val messageRes =
                         if (isAuth) R.string.recommendations_error_auth
                         else R.string.recommendations_error_generic

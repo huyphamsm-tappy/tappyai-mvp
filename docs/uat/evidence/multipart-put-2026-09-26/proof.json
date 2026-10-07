@@ -1,0 +1,186 @@
+{
+ "at": "2026-09-26T04:42:04.964Z",
+ "bucket": "tappyai-media-audit",
+ "owner": "4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e",
+ "multipartPut": [
+  {
+   "label": "review photo (GPS JPEG after stripImageMetadata)",
+   "key": "reviews/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/1790397724981-Z7Xw96RSMgqp4sTZJI01HmSw.jpg",
+   "returnedUrl": "https://storage.googleapis.com/tappyai-media-audit/reviews/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/1790397724981-Z7Xw96RSMgqp4sTZJI01HmSw.jpg",
+   "sent": {
+    "size": 324,
+    "sha256": "318dab7a564e1a528b9dd2a361c6a475f78ff3ab134c67edfcf63907bbe8de74"
+   },
+   "stored": {
+    "size": 324,
+    "sha256": "318dab7a564e1a528b9dd2a361c6a475f78ff3ab134c67edfcf63907bbe8de74",
+    "identical": true
+   },
+   "objectMetadata": {
+    "contentType": "image/jpeg",
+    "cacheControl": "private, max-age=86400, immutable",
+    "size": "324"
+   },
+   "exifBefore": {
+    "Make": "SyntheticMaker",
+    "Model": "SYN-PHONE-A1",
+    "Software": "SynOS 14",
+    "Artist": "Synthetic Author",
+    "DateTimeOriginal": "2026:09:26 09:30:00",
+    "BodySerialNumber": "SYN0000SERIAL",
+    "LensModel": "SYN back camera 6mm f/1.8",
+    "GPS": {
+     "lat": 10.7725,
+     "lon": 106.698
+    }
+   },
+   "exifStored": {}
+  },
+  {
+   "label": "avatar PNG",
+   "key": "avatars/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e-Phw0KFPkc6h74pzWgSnjdd18.png",
+   "returnedUrl": "https://storage.googleapis.com/tappyai-media-audit/avatars/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e-Phw0KFPkc6h74pzWgSnjdd18.png",
+   "sent": {
+    "size": 203,
+    "sha256": "b02a059871086094248e54602ee18022f0e47484536359e151d89bf1528e0a17"
+   },
+   "stored": {
+    "size": 203,
+    "sha256": "b02a059871086094248e54602ee18022f0e47484536359e151d89bf1528e0a17",
+    "identical": true
+   },
+   "objectMetadata": {
+    "contentType": "image/png",
+    "cacheControl": "private, max-age=86400, immutable",
+    "size": "203"
+   }
+  },
+  {
+   "label": "cover WebP",
+   "key": "covers/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e-fol81f1YklDGlqKbF0bOlAKa.webp",
+   "returnedUrl": "https://storage.googleapis.com/tappyai-media-audit/covers/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e-fol81f1YklDGlqKbF0bOlAKa.webp",
+   "sent": {
+    "size": 84,
+    "sha256": "3a3985c3ceeb62983e62d95e5e6f4a68c97f423c04e4f30043acaccd32ca3fed"
+   },
+   "stored": {
+    "size": 84,
+    "sha256": "3a3985c3ceeb62983e62d95e5e6f4a68c97f423c04e4f30043acaccd32ca3fed",
+    "identical": true
+   },
+   "objectMetadata": {
+    "contentType": "image/webp",
+    "cacheControl": "private, max-age=86400, immutable",
+    "size": "84"
+   }
+  },
+  {
+   "label": "3 MB random bytes as JPEG type (binary-safety of the multipart framing)",
+   "key": "reviews/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/1790397724982-CVMgdgucWQ9Vb6YRtBVavk6h.jpg",
+   "returnedUrl": "https://storage.googleapis.com/tappyai-media-audit/reviews/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/1790397724982-CVMgdgucWQ9Vb6YRtBVavk6h.jpg",
+   "sent": {
+    "size": 3145728,
+    "sha256": "f9aad73d7ba643f04b873d9a1e269a93e5183597ddda1e502a06ae2514584a58"
+   },
+   "stored": {
+    "size": 3145728,
+    "sha256": "f9aad73d7ba643f04b873d9a1e269a93e5183597ddda1e502a06ae2514584a58",
+    "identical": true
+   },
+   "objectMetadata": {
+    "contentType": "image/jpeg",
+    "cacheControl": "private, max-age=86400, immutable",
+    "size": "3145728"
+   }
+  }
+ ],
+ "formatChecks": {
+  "WebM declared video/webm (session)": {
+   "session": 415,
+   "sessionBody": {
+    "error": "Định dạng tệp không được hỗ trợ"
+   }
+  },
+  "WebM bytes declared video/mp4": {
+   "session": 200,
+   "put": 200,
+   "completion": 422,
+   "body": {
+    "error": "unsupported_format",
+    "message": "Chỉ nhận video MP4 hoặc MOV. Tệp này không phải MP4 hay MOV."
+   },
+   "objectAfter": "deleted",
+   "cacheControl": null
+  },
+  "GPS JPEG bytes declared video/quicktime": {
+   "session": 200,
+   "put": 200,
+   "completion": 422,
+   "body": {
+    "error": "unsupported_format",
+    "message": "Chỉ nhận video MP4 hoặc MOV. Tệp này không phải MP4 hay MOV."
+   },
+   "objectAfter": "deleted",
+   "cacheControl": null
+  },
+  "neutralised playable MP4 (regression: must pass)": {
+   "session": 200,
+   "put": 200,
+   "completion": 200,
+   "body": {
+    "ok": true,
+    "url": "https://storage.googleapis.com/tappyai-media-audit/videos/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/YraAau1fSdxegBs49fzZE1K7.mp4",
+    "key": "videos/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/YraAau1fSdxegBs49fzZE1K7.mp4"
+   },
+   "objectAfter": "present",
+   "cacheControl": "private, max-age=86400, immutable"
+  },
+  "deal logo: GPS JPEG": {
+   "session": 200,
+   "put": 200,
+   "completion": 422,
+   "body": {
+    "error": "identifying_metadata",
+    "reasons": [
+     "image-metadata"
+    ],
+    "message": "Ảnh còn thông tin vị trí hoặc thiết bị (EXIF). Hãy xuất lại ảnh không kèm metadata rồi tải lên."
+   },
+   "objectAfter": "deleted",
+   "cacheControl": null
+  },
+  "deal banner: clean PNG (must pass)": {
+   "session": 200,
+   "put": 200,
+   "completion": 200,
+   "body": {
+    "ok": true,
+    "url": "https://storage.googleapis.com/tappyai-media-audit/deals/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/fV1D8XXD0Ptn7dzIxYD0nC84.png",
+    "key": "deals/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/fV1D8XXD0Ptn7dzIxYD0nC84.png"
+   },
+   "objectAfter": "present",
+   "cacheControl": "private, max-age=86400, immutable"
+  },
+  "deal logo: GPS JPEG declared image/png": {
+   "session": 200,
+   "put": 200,
+   "completion": 422,
+   "body": {
+    "error": "unsupported_format",
+    "message": "Chỉ nhận ảnh JPEG, PNG, WebP hoặc SVG."
+   },
+   "objectAfter": "deleted",
+   "cacheControl": null
+  }
+ },
+ "appClientClip": {
+  "url": "https://storage.googleapis.com/tappyai-media-audit/videos/4ff12a75-ccb9-4a84-aa1e-e2c19cf48f5e/GBKxnmnD3fsE2QxkeVhmRcxx.mp4",
+  "stored": "db032156c72abfd846a557e2ae57b1fc2badb5f5b8a0d1f93d714f0a86340d44",
+  "expected": "db032156c72abfd846a557e2ae57b1fc2badb5f5b8a0d1f93d714f0a86340d44",
+  "cacheControl": "private, max-age=86400, immutable"
+ },
+ "cleanup": {
+  "attempted": 11,
+  "remaining": []
+ }
+}

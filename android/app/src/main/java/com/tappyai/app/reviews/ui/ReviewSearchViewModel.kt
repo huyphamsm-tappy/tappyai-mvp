@@ -6,6 +6,7 @@ import com.tappyai.app.reviews.data.Review
 import com.tappyai.app.reviews.data.ReviewErrorMessages
 import com.tappyai.app.reviews.data.ReviewsRepository
 import com.tappyai.app.reviews.data.UserSearchResult
+import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.core.logging.LoggerProvider
 import com.tappyai.core.network.NetworkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,6 +46,7 @@ class ReviewSearchViewModel @Inject constructor(
     private val repository: ReviewsRepository,
     private val logger: LoggerProvider,
     private val reviewErrorMessages: ReviewErrorMessages,
+    private val analytics: AnalyticsProvider,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ReviewSearchUiState())
@@ -86,8 +88,13 @@ class ReviewSearchViewModel @Inject constructor(
         _uiState.update { it.copy(isSearching = true, error = null) }
         when (_uiState.value.mode) {
             ReviewSearchMode.Reviews -> when (val result = repository.getFeed(page = 0, limit = RESULTS_LIMIT, sort = "latest", search = query)) {
-                is NetworkResult.Success -> _uiState.update {
-                    it.copy(results = result.data, isSearching = false, error = null, hasSearched = true)
+                is NetworkResult.Success -> {
+                    // search (RUNBOOK §3.19) — mirrors web review_search → GA4 `search`
+                    // {search_type:'reviews'}. The query string is never forwarded.
+                    analytics.track("search", mapOf("search_type" to "reviews"))
+                    _uiState.update {
+                        it.copy(results = result.data, isSearching = false, error = null, hasSearched = true)
+                    }
                 }
                 is NetworkResult.Error -> {
                     logger.e(TAG, "Review search failed: ${result.error}")

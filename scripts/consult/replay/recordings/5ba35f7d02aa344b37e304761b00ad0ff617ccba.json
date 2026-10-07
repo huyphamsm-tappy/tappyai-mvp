@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Combo quà tặng thời trang cho nam 5 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:16:06.576Z",
+ "body": {
+  "searchParameters": {
+   "q": "Combo quà tặng thời trang cho nam 5 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo 5 sản phẩm (Set quà tặng nam gồm",
+    "link": "https://shop.tiktok.com/vn/pdp/qua-tang-nam-gio-set-5-mon-cao-cap-nuoong-ho-more/1729434522099288964",
+    "snippet": "Mua Quà tặng nam GIO - Quà tặng nam thời trang cao cấp - Combo 5 sản phẩm (Set quà tặng nam gồm: Nước hoa, Đồng hồ, Ví da, Bút ký, Móc khóa) trên TikTok ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Sét quà tặng sinh nhật nam 5 sản phẩm (Combo gồm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/qua-tang-nam-cao-cap-bo-5-mon-nuoong-ho-more/1729434520082221956",
+    "snippet": "Mua Quà tặng nam thời trang cao cấp - Sét quà tặng sinh nhật nam 5 sản phẩm (Combo gồm: Nước hoa, Đồng hồ , Ví da, Bút ký, Móc khoá) trên TikTok Shop.",
+    "position": 2
+   },
+   {
+    "title": "18 gift ideas men",
+    "link": "https://shop.tiktok.com/vn/k/18-gift-ideas-men",
+    "snippet": "Quà tặng nam MANIN BLACK - Bộ quà tặng sinh nhật thời trang cho nam (Sét 3 sản phẩm: Ví da - Đồng hồ - Nước Hoa). 4.2. 92 sold. ₫550.000. Quà tặng nam MANIN ...",
+    "position": 3
+   },
+   {
+    "title": "bag for men gift with box",
+    "link": "https://shop.tiktok.com/vn/k/bag-for-men-gift-with-box",
+    "snippet": "Set quà tặng cho nam giới ACEMAN | Box MEN LÌ kèm hộp sang trọng, túi xách và thiệp chúc yêu thương. 4.7. 1327 sold. ₫339.000. ₫489.000 ...",
+    "position": 4
+   },
+   {
+    "title": "suan la fen instant",
+    "link": "https://shop.tiktok.com/vn/k/suan-la-fen-instant",
+    "snippet": "500G QUẢ LA HÁN SẤY KHÔ THƠM NGON. 4.9. 117 sold · 190.000 ; ISoup Huups Súp Nấm Yến Mạch Ăn Liền Sấy Thăng Hoa - Ly 24G. 4.8. 1494 sold · 27.000 ; Sỉ 1 KG QỦA LA ...",
+    "position": 5
+   },
+   {
+    "title": "barang lelaki untuk hantaran",
+    "link": "https://shop.tiktok.com/vn/k/barang-lelaki-untuk-hantaran",
+    "snippet": "barang lelaki untuk hantaran · Hộp quà tặng cho nam gồm nước hoa bờ lu 50ml, móc khoá gấu và thiệp · Hộp quà tặng cho nam gồm nước hoa bờ lu 50ml, móc khoá gấu và ...",
+    "position": 6
+   },
+   {
+    "title": "מה אפשר לקנות לחבר ליום הולדת",
+    "link": "https://shop.tiktok.com/vn/k/mh-fsr-lknvt-lhvr-lyvm-hvldt",
+    "snippet": "Combo quà tặng sinh nhật bạn trai, quà tặng valentine trắng, ngày lễ ngày kỉ niệm gồm nến thơm, sáp vuốt tóc, gấu, nước hoa, hộp quà túi quà và phụ kiện trang ...",
+    "position": 7
+   },
+   {
+    "title": "quà family mart tháng 5 2024",
+    "link": "https://shop.tiktok.com/vn/k/qua-family-mart-thang-5-2024",
+    "snippet": "(6-24kg) Combo 5 BỘ CỘC TAY HOẶC BA LỖ CHẤT THUN LẠNH MỀM MÁT CHO BÉ ... quà tặng tháng 5 family mart · quà family mart tháng 12 2024 · quà family mart ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,100 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 9807,
+  "evidenceId": "cc30d90b-c0fe-4893-b762-0b3dfbb46023",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hàng Dương Quán Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hàng Dương Quán Quận 1",
+      "rating": 4.5,
+      "count": 723,
+      "hours": "09:00–23:30",
+      "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thêm thông tin về **Hàng Dương Quán** cho bạn nhé.\n\nDựa trên dữ liệu Google Maps, **Hàng Dương Quán** có **723 đánh giá** — con số này cho thấy quán rất được yêu thích và khá đông khách. Tuy nhiên, mình không có thông tin cụ thể về tình trạng đông/vắng vào giờ cụ thể hôm nay.\n\nQuán mở đến 23:30 nên bạn có thể linh hoạt chọn giờ ăn nhé! 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Aniki Nhà Hàng Nhật Quận 1** cho bạn — có **4.9⭐ (445 đánh giá Google Maps)**, đó là lựa chọn tuyệt vời cho bữa tối 2 người. Mở từ 17:00 tối nên hoàn hảo cho kế hoạch của bạn.\n\nNếu muốn thử khác, **Hàng Dương Quán** (4.5⭐, 723 đánh giá) cũng rất ngon, chuyên ẩm thực Việt truyền thống, mở đến 23:30 nên linh hoạt hơn. Hoặc **NHÀ HÀNG NGON** (4⭐, 11.428 đánh giá) — nổi tiếng lâu năm, đa dạng menu, phù hợp nếu bạn chưa quyết định ăn gì.\n\nBạn có thể gọi hoặc vào website của từng quán để đặt nhé! 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Aniki trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16756436020149602015\",\"primary\":true},{\"label\":\"🍽️ Đặt bàn Aniki\",\"type\":\"website\",\"url\":\"https://www.aniki.vn/reservation\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Aniki có menu gì ngon|Hàng Dương Quán ở đâu|Quán nào gần nhất|[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 100k/người / 100–200k/người / trên 200k/người)?"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thêm thông tin về **Hàng Dương Quán** cho bạn nhé.\n\nDựa trên dữ liệu Google Maps, **Hàng Dương Quán** có **723 đánh giá** — con số này cho thấy quán rất được yêu thích và khá đông khách. Tuy nhiên, mình không có thông tin cụ thể về tình trạng đông/vắng vào giờ cụ thể hôm nay.\n\nQuán mở đến 23:30 nên bạn có thể linh hoạt chọn giờ ăn nhé! 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6865477283024017585\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

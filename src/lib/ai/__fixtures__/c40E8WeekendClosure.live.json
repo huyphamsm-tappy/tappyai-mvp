@@ -1,0 +1,84 @@
+{
+ "_source": "c40 UAT @ 2bd5c59, run E8; post-guard prose; rows = the a: frame (model copy, no week) + opening_hours_week from the same venues' 8: card frame.",
+ "userText": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+ "reply": "Mình chọn **Khu Vui chơi Trẻ em - Công viên Gia Định** — 4.3⭐ (461 đánh giá Google Maps); giờ mở cửa theo Google Maps: Mở cửa cả ngày.\n\nTôi sẽ tìm những chỗ chơi phù hợp cho trẻ em 5 tuổi ở Sài Gòn cuối tuần nhé.\n\nMình gợi ý **Happy Kids - Quận 8** cho bữa chơi cuối tuần của bé 5 tuổi. Nơi này có 4.6⭐ (37 đánh giá Google Maps), mở cửa từ 15:00–21:30 nên hoàn hảo cho chiều/tối cuối tuần. Khu vui chơi có đầy đủ tiện ích cho trẻ nhỏ, cách bạn khoảng 7.9km, và còn có dịch vụ tiệc sinh nhật nếu cần.\n\nNếu muốn gần hơn, **Tinker Box** (1.3km) cũng rất tốt với 4.4⭐, là sân chơi trong nhà phù hợp với trẻ nhỏ, nhưng lưu ý nó đóng cửa vào cuối tuần nên cần kiểm tra lại lịch mở cửa trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Happy Kids\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7624381290804565391\",\"primary\":true},{\"label\":\"🌐 Website - DONNA Kidsplay\",\"type\":\"website\",\"url\":\"https://donna.kids/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Happy Kids có tiệc sinh nhật không|DONNA Kidsplay có menu gì cho bé|Vietopia mở cửa lúc mấy giờ[/FOLLOWUPS]",
+ "rows": [
+  {
+   "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+   "place_id": "ChIJE2s16d8odTERhi4YxyrQpg4",
+   "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam",
+   "rating_value": 4.3,
+   "rating_count": 461,
+   "google_rating": "4.3⭐ (461 đánh giá Google Maps)",
+   "distance_km": 4.9,
+   "open_now": true,
+   "opening_hours": "Mở cửa cả ngày",
+   "place_types": [
+    "Sân chơi",
+    "Công viên giải trí"
+   ],
+   "maps_link": "https://maps.google.com/?cid=1055760044812414598",
+   "opening_hours_week": {
+    "Thứ Hai": "Mở cửa cả ngày",
+    "Thứ Ba": "Mở cửa cả ngày",
+    "Thứ Tư": "Mở cửa cả ngày",
+    "Thứ Năm": "Mở cửa cả ngày",
+    "Thứ Sáu": "Mở cửa cả ngày",
+    "Thứ Bảy": "Mở cửa cả ngày",
+    "Chủ Nhật": "Mở cửa cả ngày"
+   }
+  },
+  {
+   "name": "Tinker Box",
+   "place_id": "ChIJLwB-bsQvdTERXLdP2IuZvt4",
+   "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+   "rating_value": 4.4,
+   "rating_count": 170,
+   "google_rating": "4.4⭐ (170 đánh giá Google Maps)",
+   "distance_km": 1.3,
+   "open_now": false,
+   "opening_hours": "Đóng cửa",
+   "place_types": [
+    "Sân chơi trong nhà",
+    "Dịch vụ tiệc cho trẻ em"
+   ],
+   "maps_link": "https://maps.google.com/?cid=16050434947903633244",
+   "opening_hours_week": {
+    "Thứ Hai": "Đóng cửa",
+    "Thứ Ba": "Đóng cửa",
+    "Thứ Tư": "Đóng cửa",
+    "Thứ Năm": "Đóng cửa",
+    "Thứ Sáu": "08:30–21:00",
+    "Thứ Bảy": "08:30–21:00",
+    "Chủ Nhật": "08:30–21:00"
+   }
+  },
+  {
+   "name": "Happy Kids - Khu vui chơi trẻ em Quận 8",
+   "place_id": "ChIJ4Uh2xdQvdTERj1WKZmM-z2k",
+   "address": "2225 Phạm Thế Hiển, Bình Đông, Hồ Chí Minh 100000, Việt Nam",
+   "rating_value": 4.6,
+   "rating_count": 37,
+   "google_rating": "4.6⭐ (37 đánh giá Google Maps)",
+   "distance_km": 7.9,
+   "open_now": true,
+   "opening_hours": "15:00–21:30",
+   "place_types": [
+    "Trung tâm vui chơi dành cho trẻ em",
+    "Khu trẻ em",
+    "Dịch vụ tiệc cho trẻ em",
+    "Trung tâm vui chơi giải trí"
+   ],
+   "maps_link": "https://maps.google.com/?cid=7624381290804565391",
+   "opening_hours_week": {
+    "Thứ Hai": "15:00–21:30",
+    "Thứ Ba": "15:00–21:30",
+    "Thứ Tư": "15:00–21:30",
+    "Thứ Năm": "15:00–21:30",
+    "Thứ Sáu": "15:00–21:30",
+    "Thứ Bảy": "08:30–21:30",
+    "Chủ Nhật": "08:30–21:30"
+   }
+  }
+ ]
+}

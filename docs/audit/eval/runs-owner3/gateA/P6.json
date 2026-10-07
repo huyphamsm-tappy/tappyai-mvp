@@ -1,0 +1,1023 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 13187,
+  "evidenceId": "5eee60a0-8e94-4df3-be1b-b11f8e21f2aa",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa couple massage 2 người tối nay Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3106,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "rating": 4.9,
+      "count": 395,
+      "hours": "10:00–02:00",
+      "distance_km": 0.9,
+      "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+      "rating": 4.8,
+      "count": 588,
+      "hours": "08:30–21:30",
+      "distance_km": 1.2,
+      "address": "143 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 00700, Việt Nam"
+    },
+    {
+      "name": "Zen Spa",
+      "rating": 4.7,
+      "count": 1572,
+      "hours": "10:00–23:30",
+      "distance_km": 1.2,
+      "address": "244 Đề Thám, street, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+      "rating": 5,
+      "count": 116,
+      "hours": "09:30–21:00",
+      "distance_km": 1.7,
+      "address": "1B4 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3106,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 395,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–02:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 588,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "08:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Zen Spa",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 1572,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "10:00–23:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 116,
+        "distance_km": 1.7,
+        "open_now": true,
+        "opening_hours": "09:30–21:00",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Tôi sẽ tìm spa couple phù hợp cho bạn gần Quận 1 tối nay.\n\nMình chọn **Massage Cổ Phong Q1** cho bạn — spa này có đánh giá 4.9⭐ từ 3.106 người, đang mở cửa tới 22:30 tối nay, và chỉ cách bạn 1.3km.\n\nNếu bạn muốn gần hơn, **Trạm Relax Spa** cách chỉ 0.9km, cũng đánh giá 4.9⭐ và mở tới 2:00 sáng nên rất linh hoạt về thời gian. Mộc Kim Spa 2 cũng là lựa chọn tốt với 4.8⭐ và đóng cửa lúc 21:30.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Massage Cổ Phong Q1\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Trạm Relax Spa gần hơn|Mộc Kim Spa 2 có dịch vụ gì|Spa nào rẻ hơn[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ tìm spa couple phù hợp cho bạn gần Quận 1 tối nay.\n\nMình chọn **Massage Cổ Phong Q1** cho bạn — spa này có đánh giá 4.9⭐ từ 3.106 người, đang mở cửa tới 22:30 tối nay, và chỉ cách bạn 1.3km.\n\nNếu bạn muốn gần hơn, **Trạm Relax Spa** cách chỉ 0.9km, cũng đánh giá 4.9⭐ và mở tới 2:00 sáng nên rất linh hoạt về thời gian. Mộc Kim Spa 2 cũng là lựa chọn tốt với 4.8⭐ và đóng cửa lúc 21:30.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Massage Cổ Phong Q1\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Trạm Relax Spa gần hơn|Mộc Kim Spa 2 có dịch vụ gì|Spa nào rẻ hơn[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Massage Cổ Phong Q1",
+          "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 832 222 292",
+          "website_uri": "https://massagecophongquan1.com/",
+          "place_id": "ChIJ26mU5xsvdTERtQCiqyht7S4",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (3.106 đánh giá Google Maps)",
+          "rating_count": 3106,
+          "place_types": [
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3381478916670750901",
+          "booking_links": [
+            "https://www.klook.com/en-US/activity/215744-co-phong-spa-traditional-chinese-style-massage/?source_channel=googlettd&aid=84101&package_id=1&rwg_token=AE37R_giZkbBIO0UiP1_PQkR6rQRFjkpM4QF6uAdFxOkQsUenOfpfJ0NSm4DCcDDBCQmom9s5GmgH1wKA5vs34k1gcD34tMkJ-0uckDS5X0YngoWgPO_JPA%3D"
+          ],
+          "opening_hours": "09:00–22:30",
+          "open_now": true,
+          "distance_km": 1.3,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Massage Cổ Phong Q1",
+              "url": "https://maps.google.com/?cid=3381478916670750901",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Massage Cổ Phong Q1",
+              "url": "https://massagecophongquan1.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Massage%20C%E1%BB%95%20Phong%20Q1%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+          "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 901 867 547",
+          "website_uri": "http://tramrelax.com/",
+          "place_id": "ChIJkQLdZqsvdTERZ2lRLQfkgkY",
+          "rating_value": 4.9,
+          "google_rating": "4.9⭐ (395 đánh giá Google Maps)",
+          "rating_count": 395,
+          "place_types": [
+            "Spa sức khỏe"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5080874049103554919",
+          "opening_hours": "10:00–02:00",
+          "open_now": true,
+          "distance_km": 0.9,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+              "url": "https://maps.google.com/?cid=5080874049103554919",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+              "url": "http://tramrelax.com/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Tr%E1%BA%A1m%20Relax%20Spa%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Herbal%20Headspa%20%26%20Massage%20Qu%E1%BA%ADn%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+          "address": "143 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 00700, Việt Nam",
+          "phone": "+84 968 459 618",
+          "website_uri": "https://duongsinhspa.vn/en/ben-thanh-branch/",
+          "place_id": "ChIJDV-cECovdTER16-kJf8wTsg",
+          "rating_value": 4.8,
+          "google_rating": "4.8⭐ (588 đánh giá Google Maps)",
+          "rating_count": 588,
+          "place_types": [
+            "Spa mát xa",
+            "Spa mặt",
+            "Spa sức khỏe",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14433527728175362007",
+          "booking_links": [
+            "https://duongsinhspa.vn/en/service-price-list/"
+          ],
+          "opening_hours": "08:30–21:30",
+          "open_now": true,
+          "distance_km": 1.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+              "url": "https://maps.google.com/?cid=14433527728175362007",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+              "url": "https://duongsinhspa.vn/en/ben-thanh-branch/",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20Kim%20Spa%202%20-%20Ben%20Thanh%20Branch%20-%20Massage%20Near%20Me%2C%20Head%20Spa%20%26%20Facial%20District%201%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "Zen Spa",
+          "address": "244 Đề Thám, street, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 909 733 988",
+          "place_id": "ChIJIwFXOuEvdTERwPoksarD-9A",
+          "rating_value": 4.7,
+          "google_rating": "4.7⭐ (1.572 đánh giá Google Maps)",
+          "rating_count": 1572,
+          "place_types": [
+            "Spa mát xa",
+            "Spa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=15058844916927232704",
+          "opening_hours": "10:00–23:30",
+          "open_now": true,
+          "distance_km": 1.2,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — Zen Spa",
+              "url": "https://maps.google.com/?cid=15058844916927232704",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=Zen%20Spa%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        },
+        {
+          "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+          "address": "1B4 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 789 600 088",
+          "website_uri": "https://www.facebook.com/Cochunhospaquan1",
+          "place_id": "ChIJl9t_FiYpdTERsxyuhyqvqys",
+          "rating_value": 5,
+          "google_rating": "5⭐ (116 đánh giá Google Maps)",
+          "rating_count": 116,
+          "place_types": [
+            "Spa",
+            "Spa mát xa"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3146801361848245427",
+          "booking_links": [
+            "https://booking.easysalon.vn/spa-co-chu-nho"
+          ],
+          "opening_hours": "09:30–21:00",
+          "open_now": true,
+          "distance_km": 1.7,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "label": "📍 Google Maps — SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+              "url": "https://maps.google.com/?cid=3146801361848245427",
+              "attributed": true
+            },
+            {
+              "kind": "official_website",
+              "label": "🌐 Website — SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+              "url": "https://www.facebook.com/Cochunhospaquan1",
+              "attributed": true
+            },
+            {
+              "kind": "youtube_search_fallback",
+              "label": "🔎 Tìm video review trên YouTube",
+              "url": "https://www.youtube.com/results?search_query=SPA%20C%C3%B4%20Ch%E1%BB%A7%20Nh%E1%BB%8F%20%7C%20Tri%CC%A3%20Li%C3%AA%CC%A3u%20-%20Th%C6%B0%20Gia%CC%83n%20-%20G%C3%B4%CC%A3i%20D%C6%B0%C6%A1%CC%83ng%20Sinh%20%7C%20review",
+              "attributed": false
+            }
+          ],
+          "has_maps": true,
+          "has_website": true,
+          "has_photo": true,
+          "has_hours": true,
+          "has_phone": true,
+          "has_reviews": "search"
+        }
+      ],
+      "google_maps_search": "https://maps.google.com/maps?q=spa%20couple%20massage%202%20ng%C6%B0%E1%BB%9Di%20t%E1%BB%91i%20nay%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+      "_tappy_place_domain": "spa",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJ26mU5xsvdTERtQCiqyht7S4",
+          "name": "Massage Cổ Phong Q1",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 3106,
+            "distance_km": 1.3,
+            "open_now": true,
+            "opening_hours": "09:00–22:30",
+            "attributes": []
+          },
+          "why": [
+            "1.3km away",
+            "open now",
+            "rated 4.9"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJkQLdZqsvdTERZ2lRLQfkgkY",
+          "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 395,
+            "distance_km": 0.9,
+            "open_now": true,
+            "opening_hours": "10:00–02:00",
+            "attributes": []
+          },
+          "why": [
+            "0.9km away",
+            "open now",
+            "rated 4.9"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJDV-cECovdTER16-kJf8wTsg",
+          "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+          "role": null,
+          "evidence": {
+            "rating": 4.8,
+            "reviews": 588,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "08:30–21:30",
+            "attributes": []
+          },
+          "why": [
+            "1.2km away",
+            "open now",
+            "rated 4.8"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJIwFXOuEvdTERwPoksarD-9A",
+          "name": "Zen Spa",
+          "role": null,
+          "evidence": {
+            "rating": 4.7,
+            "reviews": 1572,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "10:00–23:30",
+            "attributes": []
+          },
+          "why": [
+            "1.2km away",
+            "open now",
+            "rated 4.7"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJl9t_FiYpdTERsxyuhyqvqys",
+          "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 116,
+            "distance_km": 1.7,
+            "open_now": true,
+            "opening_hours": "09:30–21:00",
+            "attributes": []
+          },
+          "why": [
+            "1.7km away",
+            "open now",
+            "rated 5"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "openingHours",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "_tappy_ranking": {
+        "pick": "Massage Cổ Phong Q1",
+        "decided_by": [
+          {
+            "attribute": "distance",
+            "evidence": "1.3km away - Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1: 0.9km away (KHONG duoc goi pick la \"nhat\" o distance)"
+          },
+          {
+            "attribute": "openNow",
+            "evidence": "open now"
+          },
+          {
+            "attribute": "rating",
+            "evidence": "rated 4.9"
+          }
+        ],
+        "not_chosen": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+        "not_chosen_leads_on": {
+          "attribute": "distance",
+          "evidence": "0.9km away"
+        },
+        "conditional": true
+      },
+      "results_note": "Hien thi 5/10 ket qua tot nhat theo engine; cac ket qua khac da co tren the (card) cua user."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "spa",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77126,106.69041",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Massage Cổ Phong Q1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpAL44pSuMVhZQTq3U2lXx2Gn1DT7AzYeYSFlZpIOrMYgCfLQV7L21tR3WFBWCB7232MZJtpPsyCJ_osO4gnf_E42hbJcveY0oZqogqqvCkdwfN38ozJFMTaEI5v-Qe7ZJOu9lY2XtgDay",
+            "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3106,
+            "openingHours": "09:00–22:30",
+            "openNow": true,
+            "phone": "+84 832 222 292",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:30",
+              "Chủ Nhật": "09:00–22:30",
+              "Thứ Hai": "09:00–22:30",
+              "Thứ Ba": "09:00–22:30",
+              "Thứ Tư": "09:00–22:30",
+              "Thứ Năm": "09:00–22:30",
+              "Thứ Sáu": "09:00–22:30"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Spa mát xa"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "distance",
+                "evidence": "1.3km away"
+              },
+              {
+                "attribute": "openNow",
+                "evidence": "open now"
+              },
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.9"
+              }
+            ],
+            "tradeOff": {
+              "attribute": "distance",
+              "evidence": "0.9km away"
+            },
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://massagecophongquan1.com/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@cobidimassage/video/7534701041246293255",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3381478916670750901",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84832222292",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Massage%20C%E1%BB%95%20Phong%20Q1%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76876,106.69848",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlREuadRq0ERsWJ6Lzmpo7IHkU2yz2CeudvMKWRVxcPo36p1nYOkv28c44vNnJQ_i8JkwREs0sF85Rs3meqJoeqfV3vfQ2hLnDWaJUY1yMcyL_UZFMq5UCVvOIGYvFGdEwr4unMrGy9tHQ",
+            "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 395,
+            "openingHours": "10:00–02:00",
+            "openNow": true,
+            "phone": "+84 901 867 547",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–02:00",
+              "Chủ Nhật": "10:00–02:00",
+              "Thứ Hai": "10:00–02:00",
+              "Thứ Ba": "10:00–02:00",
+              "Thứ Tư": "10:00–02:00",
+              "Thứ Năm": "10:00–02:00",
+              "Thứ Sáu": "10:00–02:00"
+            },
+            "distanceKm": 0.9,
+            "categories": [
+              "Spa sức khỏe"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5080874049103554919",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84901867547",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Tr%E1%BA%A1m%20Relax%20Spa%20-%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Herbal%20Headspa%20%26%20Massage%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76760,106.69628",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnB_c-UN7pd1U1Pew2yxnytI2HUc1Xgx4VtHTjMx4A0IzUxvj5MvNwezJNCRlPS5g4LNmh3rG_WYucVi0hJQNzp_TQQ5o6FgrPu-IA8f4-7DepwJtGustpCs9AI9dU2Zj-FvB3alQ-mFUrC",
+            "address": "143 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 00700, Việt Nam",
+            "rating": 4.8,
+            "ratingCount": 588,
+            "openingHours": "08:30–21:30",
+            "openNow": true,
+            "phone": "+84 968 459 618",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–21:30",
+              "Chủ Nhật": "08:30–21:30",
+              "Thứ Hai": "08:30–21:30",
+              "Thứ Ba": "08:30–21:30",
+              "Thứ Tư": "08:30–21:30",
+              "Thứ Năm": "08:30–21:30",
+              "Thứ Sáu": "08:30–21:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Spa mát xa",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://duongsinhspa.vn/en/ben-thanh-branch/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14433527728175362007",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84968459618",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=M%E1%BB%99c%20Kim%20Spa%202%20-%20Ben%20Thanh%20Branch%20-%20Massage%20Near%20Me%2C%20Head%20Spa%20%26%20Facial%20District%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76805,106.69385",
+            "domain": "spa",
+            "kind": "place",
+            "name": "Zen Spa",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlDsSBzl20lGj75H2mtbfID8ckWBg6I_g-d2-Vic7gDO6DSMwzPCmivfD5Fz5Cpgl3OYnBxmsi_dbIqVr242hxhzVD1mxoH8fe6LP1LRpRkkAupTpmIxO-gkHUP3b6azafz-deF",
+            "address": "244 Đề Thám, street, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 1572,
+            "openingHours": "10:00–23:30",
+            "openNow": true,
+            "phone": "+84 909 733 988",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–23:30",
+              "Chủ Nhật": "10:00–23:30",
+              "Thứ Hai": "10:00–23:30",
+              "Thứ Ba": "10:00–23:30",
+              "Thứ Tư": "10:00–23:30",
+              "Thứ Năm": "10:00–23:30",
+              "Thứ Sáu": "10:00–23:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Spa mát xa",
+              "Spa"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=15058844916927232704",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84909733988",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Zen%20Spa%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79208,106.70305",
+            "domain": "spa",
+            "kind": "place",
+            "name": "SPA Cô Chủ Nhỏ | Trị Liệu - Thư Giãn - Gội Dưỡng Sinh |",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMgZVPwywgvZPkLz20uVPp9qWfzbzlJAcRQGJf3cplpgJQa6uBJeWfWtCbIuzisdKNEru2UQagJq6WZALxov_3N21mvp3dFGz02HUv7cW27KTDHgcfSNWvo8zWOonSicnRbsZMBmgA_x2J",
+            "address": "1B4 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 116,
+            "openingHours": "09:30–21:00",
+            "openNow": true,
+            "phone": "+84 789 600 088",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–21:00",
+              "Chủ Nhật": "09:30–21:00",
+              "Thứ Hai": "09:30–21:00",
+              "Thứ Ba": "09:30–21:00",
+              "Thứ Tư": "09:30–21:00",
+              "Thứ Năm": "09:30–21:00",
+              "Thứ Sáu": "09:30–21:00"
+            },
+            "distanceKm": 1.7,
+            "categories": [
+              "Spa",
+              "Spa mát xa"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/Cochunhospaquan1",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3146801361848245427",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84789600088",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=SPA%20C%C3%B4%20Ch%E1%BB%A7%20Nh%E1%BB%8F%20%7C%20Tri%CC%A3%20Li%C3%AA%CC%A3u%20-%20Th%C6%B0%20Gia%CC%83n%20-%20G%C3%B4%CC%A3i%20D%C6%B0%C6%A1%CC%83ng%20Sinh%20%7C%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76354,106.68973",
+            "domain": "spa",
+            "kind": "place",
+            "name": "SPA TẤM ƠI QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkrlvbUacAXPwo-Ayw83F-Cl86I1keuogqds08wfZ-aeuEYk0mt99I5j0LmCub6HeF4wQYYBARV0mGFxhcXFhP8Yn4R1f26iqrvkconU5p7vJMMwTqP5miP2_A82fP3byWo5TES",
+            "address": "97 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 726,
+            "openingHours": "10:00–20:30",
+            "openNow": true,
+            "phone": "+84 903 894 789",
+            "openingHoursWeek": {
+              "Thứ Bảy": "10:00–20:30",
+              "Chủ Nhật": "10:00–20:30",
+              "Thứ Hai": "10:00–20:30",
+              "Thứ Ba": "10:00–20:30",
+              "Thứ Tư": "10:00–20:30",
+              "Thứ Năm": "10:00–20:30",
+              "Thứ Sáu": "10:00–20:30"
+            },
+            "distanceKm": 1.9,
+            "categories": [
+              "Spa mát xa",
+              "Cửa hàng chăm sóc sức khỏe và làm đẹp",
+              "Spa đá nóng",
+              "Spa"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2532271481889858155",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84903894789",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=SPA%20T%E1%BA%A4M%20%C6%A0I%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76618,106.68293",
+            "domain": "spa",
+            "kind": "place",
+            "name": "MASSAGE HẠ SPA QUẬN 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_odgk6Hx_kWZVZERToMuJURrBVX0cXB_Vaq9-iPBs4J-5RSOMt2suw5xqy60GXSP-Wr1NOdn7VrG3uOB_tPkFwWa0tcCbc0OdxuPl4hceyBh8TrDktx1f7DgaoRU93s4bJFXYAstiPO6f",
+            "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 3518,
+            "openingHours": "09:30–22:30",
+            "openNow": true,
+            "phone": "+84 945 705 000",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:30–22:30",
+              "Chủ Nhật": "09:30–22:30",
+              "Thứ Hai": "09:30–22:30",
+              "Thứ Ba": "09:30–22:30",
+              "Thứ Tư": "09:30–22:30",
+              "Thứ Năm": "09:30–22:30",
+              "Thứ Sáu": "09:30–22:30"
+            },
+            "distanceKm": 2.3,
+            "categories": [
+              "Spa mát xa",
+              "Spa ban ngày",
+              "Spa mặt",
+              "Spa sức khỏe",
+              "Spa đá nóng",
+              "Bác sĩ trị liệu xoa bóp",
+              "Câu lạc bộ spa và sức khỏe"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://haspamassage.vn/",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@meimei_reivew/video/7555463276042145032",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5564503278764968347",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84945705000",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=MASSAGE%20H%E1%BA%A0%20SPA%20QU%E1%BA%ACN%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78760,106.70402",
+            "domain": "spa",
+            "kind": "place",
+            "name": "WellNest Spa Quận 1",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmyAHCzUWkJh4DnymPXHf44XXssT5jbSBjw-Fg5nRf4Hy0VBKXgMqaWuSNrejxghLO_dcQESNcvgUcbvPlPc0Y913qsylBQUAxLjpCrE_ktq5_Kgr_8ZiLdb5LCk11daOdoMSRs8rM1NQ1c",
+            "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.7,
+            "ratingCount": 443,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 366 562 565",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "09:00–21:00",
+              "Thứ Ba": "09:00–21:00",
+              "Thứ Tư": "09:00–21:00",
+              "Thứ Năm": "09:00–21:00",
+              "Thứ Sáu": "09:00–21:00"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Spa sức khỏe",
+              "Spa ban ngày",
+              "Spa mặt"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/wellnestspaduongsinhq1",
+                "labelKey": "v3.action.website",
+                "platform": "Official Website"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=11707432227452166",
+                "labelKey": "v3.action.maps",
+                "platform": "Google Maps"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84366562565",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=WellNest%20Spa%20Qu%E1%BA%ADn%201%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=spa%20couple%20massage%202%20ng%C6%B0%E1%BB%9Di%20t%E1%BB%91i%20nay%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM"
+      }
+    ]
+  ]
+}

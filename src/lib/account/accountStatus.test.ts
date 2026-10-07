@@ -6,6 +6,7 @@ import {
   getAccountRestriction,
   accountRestrictionCode,
   accountRestrictionMessage,
+  accountRestrictionStatus,
   ACCOUNT_STATUS_COLUMNS,
   type AccountStatusRow,
 } from './accountStatus'
@@ -113,24 +114,57 @@ describe('the query', () => {
   })
 })
 
-describe('read failure is allowed through, loudly', () => {
+// ── R-4 (2026-09-24): a read failure now REFUSES the action, loudly ─────────────────────────
+//
+// This block used to be called "read failure is allowed through" and asserted `blocked === false`.
+// That was fail-open on an enforcement control: a suspended account only had to retry during a
+// database blip. What made fail-closed unacceptable was never the refusal, it was telling an
+// innocent user they were suspended — so the failure has its own reason, its own code and a 503,
+// and the message accuses nobody.
+describe('read failure refuses the action, loudly, without accusing the user', () => {
   afterEach(() => vi.restoreAllMocks())
 
-  it('allows and logs when the query errors', async () => {
+  it('refuses and logs when the query errors', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {})
     const supabase = {
       from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => ({ data: null, error: { message: 'boom' } }) }) }) }),
     } as unknown as SupabaseClient
     const r = await getAccountRestriction(supabase, 'u1', NOW)
-    expect(r.blocked).toBe(false)
+    expect(r).toEqual({ blocked: true, reason: 'unavailable', suspendedUntil: null })
     expect(err).toHaveBeenCalled()
   })
 
-  it('allows and logs when the query throws', async () => {
+  it('retries once before giving up — most of these are one dropped connection', async () => {
+    vi.spyOn(console, 'error').mockImplementation(() => {})
+    let calls = 0
+    const supabase = {
+      from: () => ({ select: () => ({ eq: () => ({ maybeSingle: async () => {
+        calls++
+        return calls === 1 ? { data: null, error: { message: 'transient' } } : { data: null, error: null }
+      } }) }) }),
+    } as unknown as SupabaseClient
+    const r = await getAccountRestriction(supabase, 'u1', NOW)
+    expect(calls).toBe(2)
+    // Second attempt succeeded with no row — absent row still means ACTIVE.
+    expect(r.blocked).toBe(false)
+  })
+
+  it('the refusal is a 503 and its own code, never the suspended one', () => {
+    expect(accountRestrictionStatus('unavailable')).toBe(503)
+    expect(accountRestrictionStatus('suspended')).toBe(403)
+    expect(accountRestrictionStatus('banned')).toBe(403)
+    expect(accountRestrictionCode('unavailable')).toBe('account_status_unavailable')
+    const msg = accountRestrictionMessage({ blocked: true, reason: 'unavailable', suspendedUntil: null })
+    // Says the CHECK failed. Never implies moderation.
+    expect(msg).not.toMatch(/khóa|khóa|suspend|ban/i)
+    expect(msg).toMatch(/thử lại|thử lại/i)
+  })
+
+  it('refuses and logs when the query throws', async () => {
     const err = vi.spyOn(console, 'error').mockImplementation(() => {})
     const supabase = { from: () => { throw new Error('network') } } as unknown as SupabaseClient
     const r = await getAccountRestriction(supabase, 'u1', NOW)
-    expect(r.blocked).toBe(false)
+    expect(r).toEqual({ blocked: true, reason: 'unavailable', suspendedUntil: null })
     expect(err).toHaveBeenCalled()
   })
 })
@@ -172,13 +206,15 @@ describe('the three surfaces named by 10 §4 are guarded', () => {
   // alone satisfies it, so deleting the call and hardcoding
   // `{ blocked: false }` would pass. Mutation testing found exactly that.
   // Assert the AWAITED CALL EXPRESSION, then that its result gates a 403.
-  it.each(SURFACES)('%s — %s awaits the guard and gates a 403 on it', (_label, rel) => {
+  it.each(SURFACES)('%s — %s awaits the guard and gates the refusal on it', (_label, rel) => {
     const src = readFileSync(join(REPO, rel), 'utf8')
 
     expect(src, 'must await the real guard, not a stand-in')
       .toMatch(/await\s+getAccountRestriction\s*\(\s*supabase\s*,\s*user\.id\s*\)/)
 
-    const gate = /if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,400}?403/
-    expect(src, 'the 403 must be gated on restriction.blocked').toMatch(gate)
+    // R-4: the literal 403 became `accountRestrictionStatus(...)`, which is 403 for a real
+    // sanction and 503 when the status could not be read. The gate is what matters.
+    const gate = /if\s*\(\s*restriction\.blocked\s*\)\s*\{[\s\S]{0,500}?accountRestrictionStatus\s*\(/
+    expect(src, 'the refusal must be gated on restriction.blocked').toMatch(gate)
   })
 })

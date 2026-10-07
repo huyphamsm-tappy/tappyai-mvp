@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sala Danang Beach Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:27:10.344Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sala Danang Beach Hotel\" Đà Nẵng site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sala Danang Beach - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-34994003/sala-danang-beach-hotel/",
+    "snippet": "Khách sạn Sala Danang Beach. Sala Danang Beach Hotel. 36 Lâm Hoành, Q., An Hải ... nắng nóng của Đà Nẵng. Khách sạn rất sạch sẽ, mọi thứ đều được bảo ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Sala Danang Beach",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-34994003/sala-danang-beach-hotel/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Sala Danang Beach thực tế từ khách du lịch. Với 1018 đánh giá đã được xác thực và xếp hạng 9.4/10, bạn có thể đặt phòng với sự ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

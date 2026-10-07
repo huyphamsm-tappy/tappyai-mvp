@@ -1,0 +1,27 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 3392,
+  "evidenceId": "48a3c6f5-bb98-4f82-a26a-34c8dce46b9f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Cuối tuần này bạn muốn làm gì? Mình cần biết thêm một chút để gợi ý phù hợp nhất:\n\n- **Đi chơi với ai?** (một mình, bạn bè, gia đình?)\n- **Thích loại hoạt động nào?** (ăn uống, spa, xem phim, dã ngoại, mua sắm...)\n- **Có nhu cầu gì cụ thể không?** (thư giãn, vui vẻ, khám phá chỗ mới...)\n\nBiết thêm chi tiết sẽ giúp mình gợi ý những địa điểm hay nhất ở Sài Gòn cho bạn! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Cuối tuần này bạn muốn làm gì? Mình cần biết thêm một chút để gợi ý phù hợp nhất:\n\n- **Đi chơi với ai?** (một mình, bạn bè, gia đình?)\n- **Thích loại hoạt động nào?** (ăn uống, spa, xem phim, dã ngoại, mua sắm...)\n- **Có nhu cầu gì cụ thể không?** (thư giãn, vui vẻ, khám phá chỗ mới...)\n\nBiết thêm chi tiết sẽ giúp mình gợi ý những địa điểm hay nhất ở Sài Gòn cho bạn! 😊"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

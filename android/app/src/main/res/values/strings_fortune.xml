@@ -8,6 +8,12 @@
     <string name="fortune_hub_zodiac_title">Star Signs</string>
     <string name="fortune_hub_zodiac_description">Enter your birth date to find your sign, personality traits and current luck.</string>
 
+    <!-- Hub hero (V3, web `fortune.hero*`) -->
+    <string name="fortune_hub_hero_eyebrow">Online fortune telling \uD83D\uDD2E</string>
+    <string name="fortune_hub_hero_title_line1">Wondering what today</string>
+    <string name="fortune_hub_hero_title_line2">has in store for you?</string>
+    <string name="fortune_hub_hero_description">Tarot, Chinese zodiac horoscope and star signs — just for fun, entertainment only.</string>
+
     <!-- Shared disclaimer (Hub + Tarot + Tu Vi + Zodiac) -->
     <string name="fortune_disclaimer">For entertainment purposes only — not a substitute for professional advice.</string>
 

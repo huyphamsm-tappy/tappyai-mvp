@@ -1,0 +1,178 @@
+[
+ {
+  "branch": "integration/v3-foundation",
+  "findings": [
+   {
+    "commit": "2caff4b",
+    "subject": "refactor(security): /api/chat no longer performs a privileged operation",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 7,
+      "presentOnShip": 0.29,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "fc115b7",
+    "subject": "fix(security): disconnecting an integration now revokes it at the provider",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "scripts/architecture/check-sql-grants.mjs",
+      "addedLines": 50,
+      "presentOnShip": 0.08,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "a3c342a",
+    "subject": "fix(security): the account-existence oracle was not actually throttled",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "scripts/architecture/check-sql-grants.mjs",
+      "addedLines": 67,
+      "presentOnShip": 0.04,
+      "fileOnShip": true
+     },
+     {
+      "path": "scripts/architecture/check.mjs",
+      "addedLines": 15,
+      "presentOnShip": 0.13,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "558ba49",
+    "subject": "fix(security): group membership was readable by the open internet",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "supabase/migrations/20260904_group_read_boundary.sql",
+      "addedLines": 82,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "supabase/tests/group_read_boundary.test.ts",
+      "addedLines": 162,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "66e4c46",
+    "subject": "fix(v3): close the three egress channels a compromised model could still use",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "src/lib/ai/security/imageEgressBoundary.test.ts",
+      "addedLines": 13,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/security/linkEgressBoundary.test.ts",
+      "addedLines": 239,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 211,
+      "presentOnShip": 0.02,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "44d8f32",
+    "subject": "test(v3): lock the one invariant Phase 1 satisfies by construction",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "src/lib/ai/security/needBriefBoundary.test.ts",
+      "addedLines": 79,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   },
+   {
+    "commit": "a711181",
+    "subject": "fix(v3): close the security findings Phase 0 deferred",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "src/lib/ai/security/fence.ts",
+      "addedLines": 1,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/security/fenceBoundary.test.ts",
+      "addedLines": 4,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/ai/security/imageEgressBoundary.test.ts",
+      "addedLines": 128,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/ai/streamEnrichment.ts",
+      "addedLines": 92,
+      "presentOnShip": 0.02,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/explore/contentProcessorBoundary.test.ts",
+      "addedLines": 80,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/security/__tests__/clientIpTrust.test.ts",
+      "addedLines": 97,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     },
+     {
+      "path": "src/lib/security/addressPolicy.ts",
+      "addedLines": 16,
+      "presentOnShip": 0.13,
+      "fileOnShip": true
+     },
+     {
+      "path": "src/lib/security/rateLimit.ts",
+      "addedLines": 45,
+      "presentOnShip": 0,
+      "fileOnShip": true
+     }
+    ]
+   },
+   {
+    "commit": "ff55c27",
+    "subject": "perf(v3): optimize AI cost",
+    "ageDays": 20,
+    "files": [
+     {
+      "path": "src/lib/ai/llm/providers/cacheBoundary.test.ts",
+      "addedLines": 51,
+      "presentOnShip": 0,
+      "fileOnShip": false
+     }
+    ]
+   }
+  ],
+  "allowedBy": null
+ }
+]

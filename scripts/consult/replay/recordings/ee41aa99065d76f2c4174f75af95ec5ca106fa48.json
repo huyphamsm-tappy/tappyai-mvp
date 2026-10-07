@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Dell Precision 5530 Core i9-8950HK RAM 16G SSD 512GB Quadro P2000 4G 4K site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:05:08.848Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dell Precision 5530 Core i9-8950HK RAM 16G SSD 512GB Quadro P2000 4G 4K site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "laptop precision giá tốt Tháng 8, 2026 Laptop",
+    "link": "https://shopee.vn/search?category=11035954&keyword=laptop%20precision&page=0&sortBy=relevancy&subcategory=11036015",
+    "snippet": "Laptop Dell Precision 5560 l Core™ i7-11800H l ram 64G l SSD 1TB l Màn hình 15'6 4K [ Bảo hành 3 tháng ] hàng đẹp 98%. 17.800.000₫. rating-star 5.0.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

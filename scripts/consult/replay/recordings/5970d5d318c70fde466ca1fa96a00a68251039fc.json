@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng sếp (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:12.788Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng sếp (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà tặng sếp - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/s%E1%BA%BFp",
+    "snippet": "Hộp quà tặng cao cấp màu trắng hộp quà tặng bất ngờ kèm ô, quạt · Set Quà tặng Sổ tay bút ký MIỄN PHÍ KHẮC TÊN da PU+ túi hộp sang · Bộ hộp quà tặng cốc cà phê ...",
+    "position": 1
+   },
+   {
+    "title": "Top 12 Quà tặng sức khỏe cho sếp ý nghĩa",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-suc-khoe-cho-sep",
+    "snippet": "Top quà tặng sức khỏe cho sếp phù hợp nhất · Yến sào cao cấp · Đông trùng hạ thảo · Yến chưng đường phèn · Hồng sâm linh chi · Nhân sâm Hàn Quốc · Nhụy hoa nghệ ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Quà biếu sếp - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/qu%C3%A0/bi%E1%BA%BFu%20s%E1%BA%BFp",
+    "snippet": "Bộ Trà Hộp Gỗ 2 Hũ Chè Uống Thượng Hạng Ngon Quà Tặng Trung Thu Doanh · Yến hũ LAMIE 6 hũ 6,5g tiện lợi, đa dạng vị cho mọi · Set Quà Hộp Bánh Trung Thu Cao Cấp ...",
+    "position": 3
+   },
+   {
+    "title": "Top 16+ [Quà 20/10 cho sếp nữ] 4 \"mẹo\" chọn quà khéo léo",
+    "link": "https://cellphones.com.vn/qua-20-10/cho-sep-nu",
+    "snippet": "Danh sách quà tặng. Ngân sách dự kiến ; Tai nghe Bluetooth cao cấp. 1.000.000 đồng - 2.000.000 đồng ; Đồng hồ đeo tay / Đồng hồ thông minh. 2.000.000 đồng - 4.000 ...",
+    "position": 4
+   },
+   {
+    "title": "20+ Quà 8/3 cho sếp nữ tinh tế & được lòng nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/qua-tang-8-3-cho-sep-nu",
+    "snippet": "Hoa tươi sang trọng · Nước hoa cao cấp · Túi xách thời trang · Sổ tay da cao cấp · Đồng hồ thông minh · Tai nghe không dây · Máy đọc sách · Máy massage ...",
+    "date": "6 thg 3, 2026",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "15+ món quà Tết cho sếp vừa cao cấp vừa tinh tế, dễ ghi ...",
+    "link": "https://shopee.vn/blog/qua-tet-cho-sep/",
+    "snippet": "Quà phù hợp với sở thích và tính cách sếp như áo sơ mi, đồng hồ, nước hoa, các phụ kiện công nghệ, vật trang trí phong thủy hay tặng rượu vang ...",
+    "date": "6 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "Quà tặng sinh nhật sếp nữ - Giá Tốt, Sale Tháng 08, Ship 0 ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%20t%E1%BA%B7ng/sinh%20nh%E1%BA%ADt%20s%E1%BA%BFp%20n%E1%BB%AF",
+    "snippet": "[Hỏa tốc] Set quà tặng nữ Tomo Box | W1 | Quà sinh nhật, quà tặng bạn gái, tặng giáo viên, tặng mẹ, tặng sếp. 459.000₫. Mua 2 & giảm 5%. rating-star 5.0.",
+    "position": 7
+   },
+   {
+    "title": "15 Quà Tết tặng sếp nam, sếp nữ sang trọng, ý nghĩa, ấn ... - Tiki",
+    "link": "https://tiki.vn/blog/qua-tet-tang-sep/",
+    "snippet": "Quà tặng sếp nam ngày Tết · 1. Rượu vang · 2. Giỏ quà Tết cao cấp · 3. Cà vạt · 4. Đồng hồ đeo tay · 5. Vật trang trí phong thủy · 6. Nước hoa.",
+    "date": "19 thg 12, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

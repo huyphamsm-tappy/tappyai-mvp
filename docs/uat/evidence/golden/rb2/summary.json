@@ -1,0 +1,88 @@
+{
+  "label": "rb2",
+  "base": "http://localhost:3000",
+  "calls": 6,
+  "at": "2026-09-22T09:41:36.913Z",
+  "cases": [
+    {
+      "id": "T4",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 20854,
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 685
+        },
+        {
+          "status": 200,
+          "ms": 15608,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 2515
+        }
+      ]
+    },
+    {
+      "id": "G5a",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 13156,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1660
+        }
+      ]
+    },
+    {
+      "id": "G5b",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15625,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1378
+        }
+      ]
+    },
+    {
+      "id": "G5c",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14929,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1775
+        }
+      ]
+    },
+    {
+      "id": "G5d",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12572,
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1611
+        }
+      ]
+    }
+  ]
+}

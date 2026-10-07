@@ -10,13 +10,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, cleanup } from '@testing-library/react'
 
+// Phase 7 8A hides the button by default (SHOW_ASK_ABOUT_CLIP=false); these tests exercise the capability itself, so it is on here.
+vi.mock('@/lib/config/product', async (orig) => ({ ...(await orig<typeof import('@/lib/config/product')>()), SHOW_ASK_ABOUT_CLIP: true }))
+vi.mock('@/components/media/SafeImage', () => ({ default: (p: any) => <img src={typeof p.src === 'string' ? p.src : ''} alt={p.alt || ''} /> }))
 vi.mock('next/image', () => ({ default: (p: any) => <img src={typeof p.src === 'string' ? p.src : ''} alt={p.alt || ''} /> }))
 vi.mock('next/link', () => ({ default: (p: any) => <a href={typeof p.href === 'string' ? p.href : '#'}>{p.children}</a> }))
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }), useSearchParams: () => new URLSearchParams() }))
 vi.mock('@/components/explore/VideoPlayer', () => ({ default: () => <div data-testid="video-player" /> }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
-vi.mock('./ReviewMusicDisc', () => ({ default: () => null }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./LikeListSheet', () => ({ default: ({ reviewId }: { reviewId: string }) => <div data-testid="like-list" data-review={reviewId} /> }))
 vi.mock('@/components/LinkPoster', () => ({ default: () => null }))
 vi.mock('@/lib/ui/gridFill', () => ({ trailingFillerCount: () => 0 }))
@@ -31,7 +32,6 @@ vi.mock('@/lib/supabase/client', () => ({
   }),
 }))
 vi.mock('@/lib/i18n/useTranslation', () => ({ useTranslation: () => ({ t: (k: string) => k, locale: 'vi', setLocale: vi.fn() }) }))
-vi.mock('@/modules/music', () => ({ useMusicTrack: () => ({ track: null, loading: false }), getPreviewUrl: () => '' }))
 
 import { ClipViewer } from './ProfileTab'
 
@@ -107,5 +107,32 @@ describe('ClipViewer driven with a single post (the Inbox path)', () => {
     expect(close).not.toBeNull()
     fireEvent.click(close)
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('ClipViewer on a tablet/desktop is the Khám phá stage (B3)', () => {
+  const mq = (matches: boolean) => vi.stubGlobal('matchMedia', (q: string) => ({ matches, media: q, addEventListener: () => {}, removeEventListener: () => {} }))
+
+  it('draws the shared stage: Ask Tappy, rail, Post CTA - and no up/down pager', () => {
+    mq(true)
+    const onClose = vi.fn()
+    const { container } = render(<ClipViewer posts={[CLIP]} startIndex={0} me="me" onClose={onClose} />)
+    expect(document.querySelector('[data-shared-clip-viewer]')).not.toBeNull()
+    expect(document.querySelector('[data-explore-stage]')).not.toBeNull()
+    // (the test's next/link mock keeps only href, so the bridge and the CTA are found by destination)
+    expect(document.querySelector(`a[href^="/chat?q="][href*="ctx=${TARGET}"]`)).not.toBeNull()
+    expect(document.querySelector('[data-xp-like]')).not.toBeNull()
+    expect(document.querySelector('[data-xp-save]')).not.toBeNull()
+    expect(document.querySelector('a[href="/reviews/new"]')).not.toBeNull()
+    expect(container.querySelector('.h-dvh.snap-start')).toBeNull()
+    fireEvent.click(document.querySelector('[data-clip-viewer-close]') as HTMLButtonElement)
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('on a phone it keeps the full-screen vertical pager', () => {
+    mq(false)
+    const { container } = render(<ClipViewer posts={[CLIP]} startIndex={0} me="me" onClose={vi.fn()} />)
+    expect(document.querySelector('[data-shared-clip-viewer]')).toBeNull()
+    expect(container.querySelector('.h-dvh.flex-shrink-0.snap-start.bg-black')).not.toBeNull()
   })
 })

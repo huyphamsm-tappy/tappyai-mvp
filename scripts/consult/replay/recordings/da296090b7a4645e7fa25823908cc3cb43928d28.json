@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Mandarin Oriental Đài Bắc",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:39.451Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Mandarin Oriental Đài Bắc",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Mandarin Oriental, Taipei, Quận Songshan, Đài Bắc",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/3849631/-1/6a153b26b7397cbbf2dcc688b0d5308a.jpg?ca=7&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS70qzkhGI1Bih_VOFFYozgpKjpGKHGbXiwrlCHW730Eg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mandarin-oriental-taipei_10/hotel/taipei-tw.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F3849631%2F-1%2F6a153b26b7397cbbf2dcc688b0d5308a.jpg%3Fca%3D7%26ce%3D1%26s%3D414x232&tbnid=OHs16XwI5SGVuM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmandarin-oriental-taipei_10%2Fhotel%2Ftaipei-tw.html&docid=FoqP3TzDwfFlZM&w=348&h=232",
+    "position": 1
+   },
+   {
+    "title": "Mandarin Oriental, Taipei, Đài Bắc (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/673712544.jpg?k=0657b10d53f227f41197db54054e3d2b8dc6100b5a3227422c423c44dedf2879&o=",
+    "imageWidth": 1024,
+    "imageHeight": 632,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcSll2QMX8dImaFbDVcTYVONTazWRYABuTrjB_NrJM8g&s=10",
+    "thumbnailWidth": 704,
+    "thumbnailHeight": 435,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/tw/mandarin-oriental-taipei.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F673712544.jpg%3Fk%3D0657b10d53f227f41197db54054e3d2b8dc6100b5a3227422c423c44dedf2879%26o%3D&tbnid=INO16728lhS_kM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Ftw%2Fmandarin-oriental-taipei.vi.html&docid=9-h-2BPNi9EQLM&w=1024&h=632",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Mandarin Oriental Taipei Đài Bắc | Taipei - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/2211/06/khach-san-mandarin-oriental-taipei-dai-bac-2.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 854,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIh79ePsDSIR0OwToiBBe24jl9H87cyeOcFr_mt732Eg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/taiwan-daibac/ksqt.11639.khach-san-mandarin-oriental-taipei-dai-bac.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2211%2F06%2Fkhach-san-mandarin-oriental-taipei-dai-bac-2.jpg&tbnid=M7kzlYWDyopOJM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Ftaiwan-daibac%2Fksqt.11639.khach-san-mandarin-oriental-taipei-dai-bac.html&docid=w7WHS6GOTiuqWM&w=1280&h=854",
+    "position": 3
+   },
+   {
+    "title": "Mandarin Oriental, Taipei, Đài Bắc | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/8000000/7760000/7757600/7757502/9a7b5b57.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 908,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-ZlWfdL_gkO_Wrsw7bezaxvmm-dZwyJA6TgYoaD2uJg&s=10",
+    "thumbnailWidth": 561,
+    "thumbnailHeight": 356,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho510024/mandarin-oriental-taipei-ai-bac-ai-loan/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F8000000%2F7760000%2F7757600%2F7757502%2F9a7b5b57.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=FXJT7KVdXCa-5M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho510024%2Fmandarin-oriental-taipei-ai-bac-ai-loan%2F&docid=WveckRWuGC_K5M&w=908&h=575",
+    "position": 4
+   },
+   {
+    "title": "Mandarin Oriental, Taipei, Quận Songshan, Đài Bắc",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/37484645/0/637ce7f2f728f1df8462a92045c3c484.jpeg?ce=3&s=414x232",
+    "imageWidth": 351,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmaYShtJjEl47z3nJmATKDn-G9kQAklajW81g3NTXQOw&s",
+    "thumbnailWidth": 276,
+    "thumbnailHeight": 182,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mandarin-oriental-taipei_10/hotel/taipei-tw.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F37484645%2F0%2F637ce7f2f728f1df8462a92045c3c484.jpeg%3Fce%3D3%26s%3D414x232&tbnid=MHmjReLR1mumhM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmandarin-oriental-taipei_10%2Fhotel%2Ftaipei-tw.html&docid=FoqP3TzDwfFlZM&w=351&h=232",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Mandarin Oriental Taipei Đài Bắc | Taipei - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2211/06/khach-san-mandarin-oriental-taipei-dai-bac-24.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdozrC1RoYryqQe3ZsZpL8X0GhfZI0rLzExiOV7nvLMg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/taiwan-daibac/ksqt.11639.khach-san-mandarin-oriental-taipei-dai-bac.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2211%2F06%2Fkhach-san-mandarin-oriental-taipei-dai-bac-24.jpg%3Fw%3D800%26h%3D500&tbnid=ttZenh6EQWm2pM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Ftaiwan-daibac%2Fksqt.11639.khach-san-mandarin-oriental-taipei-dai-bac.html&docid=w7WHS6GOTiuqWM&w=800&h=500",
+    "position": 6
+   },
+   {
+    "title": "Mandarin Oriental, Taipei, Đài Bắc | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/8000000/7760000/7757600/7757502/453bb3dd.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReZGmG8qlfEeoe8IoYX4qbXd0TS5ITInMLf5i587YR4w&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho510024/mandarin-oriental-taipei-ai-bac-ai-loan/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F8000000%2F7760000%2F7757600%2F7757502%2F453bb3dd.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=5d9kyH6e6DcWvM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho510024%2Fmandarin-oriental-taipei-ai-bac-ai-loan%2F&docid=WveckRWuGC_K5M&w=862&h=575",
+    "position": 7
+   },
+   {
+    "title": "Mandarin Oriental, Taipei, Quận Songshan, Đài Bắc",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/739227954.jpg?k=8e61bac93d31453f7e5187abfa56f35ed73a9861808801684315aebb164277f5&o=",
+    "imageWidth": 500,
+    "imageHeight": 318,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5XVP9uL2DZ7kdYyw2rmW8gW3aMt3syodWLRPpzdyR_Q&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 317,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/mandarin-oriental-taipei_10/hotel/taipei-tw.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F739227954.jpg%3Fk%3D8e61bac93d31453f7e5187abfa56f35ed73a9861808801684315aebb164277f5%26o%3D&tbnid=hHrV22b2nqSo8M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmandarin-oriental-taipei_10%2Fhotel%2Ftaipei-tw.html&docid=FoqP3TzDwfFlZM&w=500&h=318",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

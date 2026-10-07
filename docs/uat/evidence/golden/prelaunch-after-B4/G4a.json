@@ -1,0 +1,1226 @@
+{
+  "id": "G4a",
+  "group": "over-clarifying",
+  "criteria": [
+    "Gives a useful first answer (a sketch plan or concrete suggestions) with stated assumptions",
+    "Asks at most ONE question, and only one that would materially change the result",
+    "Does not re-ask anything already stated (destination, timing)"
+  ],
+  "turns": [
+    {
+      "user": "Đi Đà Lạt cuối tuần này",
+      "status": 200,
+      "elapsedMs": 45773,
+      "textFrames": 56,
+      "tools": [
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Đà Lạt",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Đà Lạt",
+            "location": "Đà Lạt",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Đà Lạt",
+            "location": "Đà Lạt",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Đà Lạt"
+          }
+        },
+        {
+          "name": "get_transport_options",
+          "args": {
+            "origin": "Quận 1, TP HCM",
+            "destination": "Đà Lạt",
+            "mode": "intercity",
+            "date": "2026-09-26"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "address": "38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 1681,
+              "price": null,
+              "categories": [
+                "Quán cà phê",
+                "Nhà hàng"
+              ],
+              "hours": "09:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "address": "392 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 43,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+              "address": "20 Đường Thi Sách, Cam Ly - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 809,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "address": "9 Đ. Huỳnh Thúc Kháng, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 431,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Anh Đức",
+              "address": "42F, Đ. Trần Phú/hẻm Đ. Thiên Thành, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 324,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:30–21:40",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "address": "25 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 269,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+              "address": "B6-5 Golf Valley, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 112,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản tươi sống Mỹ Yến dalat",
+              "address": "35e Đ. Hoàng Diệu, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 14,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:30–17:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:11.94428,108.43490",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm ăn Đà Lạt Phố - Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMdBkvgG0M4S_jcZWoAyhcSAEtnJl2KYJkWQcD62Q_5s5-wT0pcWjENV2TvJFNdYKmvaitbk77T616lIgwBHRkVt7tzl5IFFVRKttkyYL4hy58EgPa-L1RVUWccuMraQQc7-4deEHJvowPU",
+                "address": "38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 1681,
+                "openingHours": "09:30–21:30",
+                "openNow": false,
+                "phone": "+84 327 606 839",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:30–21:30",
+                  "Thứ Bảy": "09:30–21:30",
+                  "Chủ Nhật": "09:30–21:30",
+                  "Thứ Hai": "09:30–21:30",
+                  "Thứ Ba": "09:30–21:30",
+                  "Thứ Tư": "09:30–21:30",
+                  "Thứ Năm": "09:30–21:30"
+                },
+                "categories": [
+                  "Quán cà phê",
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1249534276121307597",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20%C4%83n%20%C4%90%C3%A0%20L%E1%BA%A1t%20Ph%E1%BB%91%20-%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://vietchallenge.com/restaurant",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84327606839",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.95501,108.43018",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYLqHRdmBjqZq_8NX8TYoo_aTuqttOpuczOjRkqu6ytwv73cN77f2mlD1oc2jUMbICZk5s9j37fpxxW2YiE14i7JglKAct71hu3Jzih-KNOrV4ubV3t6JATuVmnkMW7TlqsrdLCA",
+                "address": "392 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 43,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 337 141 713",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9723695759732642197",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%E1%BA%A1i%20D%C6%B0%C6%A1ng%20-%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84337141713",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94725,108.43330",
+                "domain": "food",
+                "kind": "place",
+                "name": "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM9HXqGQr0BECDr9Z5u0wl492HMTgh9kkJ2FX8lmblsAk_hePQVpTBGq03T5DtTbtjMt5f_d8RcIC32Q1eVgy_JFTewTJ7NHZVyljmAeXlhmCdOEqoOnG85H6g5403PsLZXUt18",
+                "address": "20 Đường Thi Sách, Cam Ly - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 809,
+                "openingHours": "11:00–22:00",
+                "openNow": false,
+                "phone": "+84 972 797 973",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–22:00",
+                  "Thứ Bảy": "11:00–22:00",
+                  "Chủ Nhật": "11:00–22:00",
+                  "Thứ Hai": "11:00–22:00",
+                  "Thứ Ba": "11:00–22:00",
+                  "Thứ Tư": "11:00–22:00",
+                  "Thứ Năm": "11:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12990210456028223695",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L%E1%BA%A8U%20GH%E1%BA%B8%20KIM%20CHI%20SINCE%202016%20-%20KH%C3%94NG%20C%C3%93%20CHI%20NH%C3%81NH%20T%E1%BA%A0I%20%C4%90%C3%80%20L%E1%BA%A0T.%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84972797973",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.93529,108.43002",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Bích Câu 3 - Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNF308KRRUpM3_2okukkIM093Xjt-o6j8q45uwBHBsmQtH4cs5074nvV2Hq4FvGfXK02QdGwtuhece6q9p3Iyy7wnHif-bqgnF43Ui9X5P4n6iXhVRRtyx05H8HCpjZKuFCIau2",
+                "address": "9 Đ. Huỳnh Thúc Kháng, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 431,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 969 004 900",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14573439623742637451",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20B%C3%ADch%20C%C3%A2u%203%20-%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84969004900",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.93842,108.43076",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Anh Đức",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPi_m3BVpg-IKSI9HbQ78tOTWae1ERysmfvRUNuNZJEJvS1jYNskWkG-etNVoHaaf2ufQuL-ihANDHLqeqSRSaToBLktICkPRFXeQ6S-Tgu3PiS4CFM4X6_PuxEeOr1xMhjL4b0",
+                "address": "42F, Đ. Trần Phú/hẻm Đ. Thiên Thành, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 324,
+                "openingHours": "10:30–21:40",
+                "openNow": false,
+                "phone": "+84 901 234 579",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–21:40",
+                  "Thứ Bảy": "10:30–21:40",
+                  "Chủ Nhật": "10:30–21:40",
+                  "Thứ Hai": "10:30–21:40",
+                  "Thứ Ba": "10:30–21:40",
+                  "Thứ Tư": "10:30–21:40",
+                  "Thứ Năm": "10:30–21:40"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9455282369687636640",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Anh%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901234579",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94435,108.46346",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM1hI_BxmwfHmhUAqUVjlq9y6z8j5K9h1eDbNc26VXSqRZhIYg4nrwphBvR4kQ2GIVTq0tEwcXFznaw4h_ziYFgPvV34wxX82gWn-ecU4ucKOpmtAghnve7x0lOaZ9K2gdkkz_t",
+                "address": "25 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 269,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 868 739 779",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11513789297959422926",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20B%C3%A9%20T%C3%A2n%20-%20Chi%20nh%C3%A1nh%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84868739779",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94698,108.44155",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNWZ2qq4zOQyJqpiWW4qlN8KV2cE317VWg5ksnCKmZy4toCpp0_ZVgjlYdUujwhaFrEStjxTNypzjsG3on2fFJ9mOVuPj7iucq6r3ylElSCGFcGwVCNGfcr6Nq9hcLJeIrlayVVOg",
+                "address": "B6-5 Golf Valley, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 112,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 263 3988 880",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7090085818358130607",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%80%20L%E1%BA%A0T%20GOLF%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://facebook.com/haisandalatgolf/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633988880",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94275,108.42860",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản tươi sống Mỹ Yến dalat",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYdcVUeYcpPHY6iFBOU6fLDzNdPXhyObpjVK4_Er_l-mJNDJQKF-cSK08VA85mFdZJLWlnmD2fTM4JnDiFuNNL8N9umyMXvSm2ImuF3G8vExdny5tpGdnH9Rjd_Z6elvH-iLMvueJuIMFA",
+                "address": "35e Đ. Hoàng Diệu, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 14,
+                "openingHours": "07:30–17:30",
+                "openNow": false,
+                "phone": "+84 388 933 075",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30",
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8950253019915938710",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20t%C6%B0%C6%A1i%20s%E1%BB%91ng%20M%E1%BB%B9%20Y%E1%BA%BFn%20dalat%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/hai.san.my.yen?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84388933075",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20L%E1%BA%A1t%20%C4%90%C3%A0%20L%E1%BA%A1t",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà hàng Bích Câu 3 - Đà Lạt",
+              "address": "9 Đ. Huỳnh Thúc Kháng, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 431,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.4",
+                "431 reviews"
+              ]
+            },
+            {
+              "name": "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "address": "38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 1681,
+              "price": null,
+              "categories": [
+                "Quán cà phê",
+                "Nhà hàng"
+              ],
+              "hours": "09:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+              "address": "392 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 43,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+              "address": "20 Đường Thi Sách, Cam Ly - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 809,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Anh Đức",
+              "address": "42F, Đ. Trần Phú/hẻm Đ. Thiên Thành, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 324,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:30–21:40",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+              "address": "25 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 269,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+              "address": "B6-5 Golf Valley, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 112,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải sản tươi sống Mỹ Yến dalat",
+              "address": "35e Đ. Hoàng Diệu, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 14,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:30–17:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:11.93529,108.43002",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Bích Câu 3 - Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNF308KRRUpM3_2okukkIM093Xjt-o6j8q45uwBHBsmQtH4cs5074nvV2Hq4FvGfXK02QdGwtuhece6q9p3Iyy7wnHif-bqgnF43Ui9X5P4n6iXhVRRtyx05H8HCpjZKuFCIau2",
+                "address": "9 Đ. Huỳnh Thúc Kháng, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 431,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 969 004 900",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.4",
+                    "params": {
+                      "value": 4.4
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "431 reviews",
+                    "params": {
+                      "count": 431
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@haisanbichcau3/video/7462737414398676242",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14573439623742637451",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84969004900",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20B%C3%ADch%20C%C3%A2u%203%20-%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94428,108.43490",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm ăn Đà Lạt Phố - Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMdBkvgG0M4S_jcZWoAyhcSAEtnJl2KYJkWQcD62Q_5s5-wT0pcWjENV2TvJFNdYKmvaitbk77T616lIgwBHRkVt7tzl5IFFVRKttkyYL4hy58EgPa-L1RVUWccuMraQQc7-4deEHJvowPU",
+                "address": "38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt, Lâm Đồng 66100, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 1681,
+                "openingHours": "09:30–21:30",
+                "openNow": false,
+                "phone": "+84 327 606 839",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "09:30–21:30",
+                  "Thứ Bảy": "09:30–21:30",
+                  "Chủ Nhật": "09:30–21:30",
+                  "Thứ Hai": "09:30–21:30",
+                  "Thứ Ba": "09:30–21:30",
+                  "Thứ Tư": "09:30–21:30",
+                  "Thứ Năm": "09:30–21:30"
+                },
+                "categories": [
+                  "Quán cà phê",
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1249534276121307597",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20%C4%83n%20%C4%90%C3%A0%20L%E1%BA%A1t%20Ph%E1%BB%91%20-%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://vietchallenge.com/restaurant",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84327606839",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.95501,108.43018",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYLqHRdmBjqZq_8NX8TYoo_aTuqttOpuczOjRkqu6ytwv73cN77f2mlD1oc2jUMbICZk5s9j37fpxxW2YiE14i7JglKAct71hu3Jzih-KNOrV4ubV3t6JATuVmnkMW7TlqsrdLCA",
+                "address": "392 Đường Hai Bà Trưng, Cam Ly - Đà Lạt, Lâm Đồng 670000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 43,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 337 141 713",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9723695759732642197",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%E1%BA%A1i%20D%C6%B0%C6%A1ng%20-%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84337141713",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94725,108.43330",
+                "domain": "food",
+                "kind": "place",
+                "name": "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM9HXqGQr0BECDr9Z5u0wl492HMTgh9kkJ2FX8lmblsAk_hePQVpTBGq03T5DtTbtjMt5f_d8RcIC32Q1eVgy_JFTewTJ7NHZVyljmAeXlhmCdOEqoOnG85H6g5403PsLZXUt18",
+                "address": "20 Đường Thi Sách, Cam Ly - Đà Lạt, Lâm Đồng 66000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 809,
+                "openingHours": "11:00–22:00",
+                "openNow": false,
+                "phone": "+84 972 797 973",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "11:00–22:00",
+                  "Thứ Bảy": "11:00–22:00",
+                  "Chủ Nhật": "11:00–22:00",
+                  "Thứ Hai": "11:00–22:00",
+                  "Thứ Ba": "11:00–22:00",
+                  "Thứ Tư": "11:00–22:00",
+                  "Thứ Năm": "11:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12990210456028223695",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L%E1%BA%A8U%20GH%E1%BA%B8%20KIM%20CHI%20SINCE%202016%20-%20KH%C3%94NG%20C%C3%93%20CHI%20NH%C3%81NH%20T%E1%BA%A0I%20%C4%90%C3%80%20L%E1%BA%A0T.%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84972797973",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.93842,108.43076",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Anh Đức",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPi_m3BVpg-IKSI9HbQ78tOTWae1ERysmfvRUNuNZJEJvS1jYNskWkG-etNVoHaaf2ufQuL-ihANDHLqeqSRSaToBLktICkPRFXeQ6S-Tgu3PiS4CFM4X6_PuxEeOr1xMhjL4b0",
+                "address": "42F, Đ. Trần Phú/hẻm Đ. Thiên Thành, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 324,
+                "openingHours": "10:30–21:40",
+                "openNow": false,
+                "phone": "+84 901 234 579",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:30–21:40",
+                  "Thứ Bảy": "10:30–21:40",
+                  "Chủ Nhật": "10:30–21:40",
+                  "Thứ Hai": "10:30–21:40",
+                  "Thứ Ba": "10:30–21:40",
+                  "Thứ Tư": "10:30–21:40",
+                  "Thứ Năm": "10:30–21:40"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9455282369687636640",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20Anh%20%C4%90%E1%BB%A9c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901234579",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94435,108.46346",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM1hI_BxmwfHmhUAqUVjlq9y6z8j5K9h1eDbNc26VXSqRZhIYg4nrwphBvR4kQ2GIVTq0tEwcXFznaw4h_ziYFgPvV34wxX82gWn-ecU4ucKOpmtAghnve7x0lOaZ9K2gdkkz_t",
+                "address": "25 Đ. Hùng Vương, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 269,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 868 739 779",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11513789297959422926",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20B%C3%A9%20T%C3%A2n%20-%20Chi%20nh%C3%A1nh%20%C4%90%C3%A0%20L%E1%BA%A1t%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84868739779",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94698,108.44155",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNWZ2qq4zOQyJqpiWW4qlN8KV2cE317VWg5ksnCKmZy4toCpp0_ZVgjlYdUujwhaFrEStjxTNypzjsG3on2fFJ9mOVuPj7iucq6r3ylElSCGFcGwVCNGfcr6Nq9hcLJeIrlayVVOg",
+                "address": "B6-5 Golf Valley, Xuân Hương - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 112,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 263 3988 880",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7090085818358130607",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20H%E1%BA%A3i%20S%E1%BA%A3n%20%C4%90%C3%80%20L%E1%BA%A0T%20GOLF%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://facebook.com/haisandalatgolf/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842633988880",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:11.94275,108.42860",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải sản tươi sống Mỹ Yến dalat",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYdcVUeYcpPHY6iFBOU6fLDzNdPXhyObpjVK4_Er_l-mJNDJQKF-cSK08VA85mFdZJLWlnmD2fTM4JnDiFuNNL8N9umyMXvSm2ImuF3G8vExdny5tpGdnH9Rjd_Z6elvH-iLMvueJuIMFA",
+                "address": "35e Đ. Hoàng Diệu, Cam Ly - Đà Lạt, Lâm Đồng, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 14,
+                "openingHours": "07:30–17:30",
+                "openNow": false,
+                "phone": "+84 388 933 075",
+                "openingHoursWeek": {
+                  "Thứ Sáu": "07:30–17:30",
+                  "Thứ Bảy": "07:30–17:30",
+                  "Chủ Nhật": "07:30–17:30",
+                  "Thứ Hai": "07:30–17:30",
+                  "Thứ Ba": "07:30–17:30",
+                  "Thứ Tư": "07:30–17:30",
+                  "Thứ Năm": "07:30–17:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8950253019915938710",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20s%E1%BA%A3n%20t%C6%B0%C6%A1i%20s%E1%BB%91ng%20M%E1%BB%B9%20Y%E1%BA%BFn%20dalat%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/hai.san.my.yen?mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84388933075",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20%C4%90%C3%A0%20L%E1%BA%A1t%20%C4%90%C3%A0%20L%E1%BA%A1t",
+            "picked": [
+              "place:osm:11.93529,108.43002",
+              "place:osm:11.95501,108.43018",
+              "place:osm:11.94428,108.43490"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:11.93529,108.43002",
+            "place:osm:11.95501,108.43018",
+            "place:osm:11.94428,108.43490"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Tiệm ăn Đà Lạt Phố - Restaurant",
+          "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+          "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+          "Nhà hàng Bích Câu 3 - Đà Lạt",
+          "Hải Sản Anh Đức",
+          "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+          "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+          "Hải sản tươi sống Mỹ Yến dalat"
+        ],
+        [
+          "Nhà hàng Bích Câu 3 - Đà Lạt",
+          "Tiệm ăn Đà Lạt Phố - Restaurant",
+          "Nhà Hàng Hải Sản Đại Dương - Đà Lạt",
+          "LẨU GHẸ KIM CHI SINCE 2016 - KHÔNG CÓ CHI NHÁNH TẠI ĐÀ LẠT.",
+          "Hải Sản Anh Đức",
+          "Hải sản Bé Tân - Chi nhánh Đà Lạt",
+          "Nhà Hàng Hải Sản ĐÀ LẠT GOLF",
+          "Hải sản tươi sống Mỹ Yến dalat"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch cho chuyến đi Đà Lạt cuối tuần này cho bạn. Mình giả định là 2 ngày 1 đêm, 2 người, và sẽ tìm khách sạn, nhà hàng, điểm tham quan, cùng kiểm tra thời tiết. Bạn có thể điều chỉnh nếu cần nhé! 🏔️Tuyệt vời! Mình đã tìm được những lựa chọn tuyệt vời cho chuyến đi Đà Lạt cuối tuần này.\n\n**Lưu ý thời tiết:** Đà Lạt sẽ có sương mù dày, nhiệt độ 17-19°C và khả năng mưa 68% — hãy mang áo khoác ấm và ô nhé! 🌫️\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Chuyến đi Đà Lạt cuối tuần - Yên tĩnh & hải sản tươi\",\"people\":2,\"budget_total\":\"3.500.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Thứ Bảy\",\"items\":[{\"time\":\"06:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe Phương Trang - TP HCM đi Đà Lạt\",\"description\":\"Xe khách tuyến Sài Gòn - Đà Lạt, giá tham khảo 260.000đ/người, thời gian ~5-6 giờ\",\"price\":\"520.000 VND\",\"address\":\"Quận 1, TP HCM\",\"maps_link\":\"https://maps.google.com/maps/search/Sai+Gon+Bus+Station\",\"booking_link\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html\",\"place_id\":\"\"},{\\\"time\\\":\\\"12:00\\\",\\\"emoji\\\":\\\"🏨\\\",\\\"category\\\":\\\"hotel\\\",\\\"name\\\":\\\"MerPerle Dalat Hotel\\\",\\\"description\\\":\\\"Khách sạn 4.9⭐ (6.177 đánh giá), vị trí trung tâm, check-in sớm có thể được\\\",\\\"price\\\":\\\"chưa có giá\\\",\\\"address\\\":\\\"1 Đ. Hùng Vương, Xuân Hương - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=2925261577989617457\\\",\\\"booking_link\\\":\\\"https://www.booking.com/searchresults.vi.html?ss=MerPerle+Dalat+Hotel\\\",\\\"place_id\\\":\\\"ChIJb3zd0SsTcTERMXcrD-idmCg\\\"},{\\\"time\\\":\\\"13:00\\\",\\\"emoji\\\":\\\"🍜\\\",\\\"category\\\":\\\"food\\\",\\\"name\\\":\\\"Nhà Hàng Hải Sản Đại Dương - Đà Lạt\\\",\\\"description\\\":\\\"Hải sản tươi sống, 4.9⭐ (43 đánh giá), mở 10:00-22:00, yên tĩnh\\\",\\\"price\\\":\\\"khoảng 200.000-300.000 VND/2 người\\\",\\\"address\\\":\\\"392 Đường Hai Bà Trưng, Cam Ly - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=9723695759732642197\\\",\\\"booking_link\\\":\\\"\\\",\\\"place_id\\\":\\\"ChIJx7hEJQATcTERlRHWbsaB8YY\\\"},{\\\"time\\\":\\\"15:00\\\",\\\"emoji\\\":\\\"🌸\\\",\\\"category\\\":\\\"entertainment\\\",\\\"name\\\":\\\"Làng Nấm Đà Lạt\\\",\\\"description\\\":\\\"Điểm tham quan 4.9⭐ (2.482 đánh giá), trang trại hữu cơ, mở 08:00-17:00, vé tham quan ~50.000đ/người\\\",\\\"price\\\":\\\"100.000 VND\\\",\\\"address\\\":\\\"Cam Ly, Thôn Măng Lin, Lang Biang - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=9162349584810285832\\\",\\\"booking_link\\\":\\\"https://langnamdalat.com/\\\",\\\"place_id\\\":\\\"ChIJu5bHoextcTERCJuQNmc0J38\\\"},{\\\"time\\\":\\\"18:00\\\",\\\"emoji\\\":\\\"🍜\\\",\\\"category\\\":\\\"food\\\",\\\"name\\\":\\\"Tiệm ăn Đà Lạt Phố - Restaurant\\\",\\\"description\\\":\\\"Quán ăn địa phương 4.7⭐ (1.681 đánh giá), mở 09:30-21:30, không quá đông\\\",\\\"price\\\":\\\"khoảng 150.000-200.000 VND/2 người\\\",\\\"address\\\":\\\"38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=1249534276121307597\\\",\\\"booking_link\\\":\\\"\\\",\\\"place_id\\\":\\\"ChIJMzXtGY4TcTERzanixs08VxE\\\"}]},{\\\"label\\\":\\\"Ngày 2 - Thứ Chủ Nhật\\\",\\\"items\\\":[{\\\"time\\\":\\\"07:30\\\",\\\"emoji\\\":\\\"☕\\\",\\\"category\\\":\\\"food\\\",\\\"name\\\":\\\"Quảng trường Lâm Viên\\\",\\\"description\\\":\\\"Quảng trường trung tâm 4.5⭐ (14.663 đánh giá), mở cả ngày, có quán cà phê xung quanh\\\",\\\"price\\\":\\\"khoảng 50.000 VND\\\",\\\"address\\\":\\\"Đ. Trần Quốc Toản, Xuân Hương - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=7416178250348386697\\\",\\\"booking_link\\\":\\\"\\\",\\\"place_id\\\":\\\"ChIJKQb-oyQTcTERiVn-etOO62Y\\\"},{\\\"time\\\":\\\"09:00\\\",\\\"emoji\\\":\\\"🌺\\\",\\\"category\\\":\\\"entertainment\\\",\\\"name\\\":\\\"KDL Sinh Thái Cao Nguyên Hoa Đà Lạt\\\",\\\"description\\\":\\\"Khu du lịch sinh thái 4.5⭐ (4.159 đánh giá), mở 07:00-16:30, vé ~50.000đ/người\\\",\\\"price\\\":\\\"100.000 VND\\\",\\\"address\\\":\\\"Đèo, Tiểu khu 158, Cam Ly - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=2201333556298856468\\\",\\\"booking_link\\\":\\\"https://www.facebook.com/KDLSinhThaiCaoNguyenHoaDaLat/\\\",\\\"place_id\\\":\\\"ChIJy0IMmMttcTERFDhXzzS1jB4\\\"},{\\\"time\\\":\\\"12:00\\\",\\\"emoji\\\":\\\"🍜\\\",\\\"category\\\":\\\"food\\\",\\\"name\\\":\\\"Tiệm ăn Đà Lạt Phố - Restaurant\\\",\\\"description\\\":\\\"Bữa trưa trước khi về, 4.7⭐, mở 09:30-21:30\\\",\\\"price\\\":\\\"khoảng 150.000-200.000 VND/2 người\\\",\\\"address\\\":\\\"38 Đường Tăng Bạt Hổ, Xuân Hương - Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/?cid=1249534276121307597\\\",\\\"booking_link\\\":\\\"\\\",\\\"place_id\\\":\\\"ChIJMzXtGY4TcTERzanixs08VxE\\\"},{\\\"time\\\":\\\"14:00\\\",\\\"emoji\\\":\\\"🚗\\\",\\\"category\\\":\\\"transport\\\",\\\"name\\\":\\\"Xe Phương Trang - Đà Lạt về TP HCM\\\",\\\"description\\\":\\\"Xe khách chiều về, giá tham khảo 260.000đ/người, thời gian ~5-6 giờ\\\",\\\"price\\\":\\\"520.000 VND\\\",\\\"address\\\":\\\"Đà Lạt\\\",\\\"maps_link\\\":\\\"https://maps.google.com/maps/search/Da+Lat+Bus+Station\\\",\\\"booking_link\\\":\\\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html\\\",\\\"place_id\\\":\\\"\\\"}]}],\"cost_breakdown\":{\"Xe khách (2 chiều)\":\"1.040.000 VND\",\"Khách sạn (1 đêm)\":\"chưa có giá\",\"Ăn uống (3 bữa)\":\"500.000 VND\",\"Tham quan (2 điểm)\":\"200.000 VND\"},\"share_text\":\"Cuối tuần này mình đi Đà Lạt - hải sản tươi, không khí yên tĩnh, sương mù lãng mạn 🌫️ #TappyAI\"}\n[/TAPPY_PLAN]\n\n**Tại sao chọn kế hoạch này:**\n- **Hải sản tươi:** Nhà Hàng Hải Sản Đại Dương có rating 4.9⭐ — hoàn hảo cho sở thích của bạn, và nằm ở khu yên tĩnh Cam Ly\n- **Khách sạn chất lượng:** MerPerle Dalat Hotel là lựa chọn hàng đầu với 6.177 đánh giá 4.9⭐, vị trí trung tâm, dễ di chuyển\n- **Tham quan đa dạng:** Làng Nấm (trang trại hữu cơ) + Khu sinh thái Cao Nguyên Hoa — vừa yên tĩnh vừa có trải nghiệm\n- **Ngân sách hợp lý, nằm trong ngân sách chuyến đi của bạn\n\n**Lưu ý:** Giá khách sạn chưa xác nhận — bạn cần check trên Booking.com để xem giá chính xác cho ngày 26-27/9. Nếu muốn thay đổi số ngày, khu vực hay hoạt động, mình sẽ điều chỉnh ngay nhé! 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm vé trên Vexere\",\"type\":\"search\",\"url\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-lat-lam-dong-129t23991.html\",\"primary\":true},{\"label\":\"📍 Xem bản đồ Đà Lạt\",\"type\":\"maps\",\"url\":\"https://maps.google.com/maps/search/Da+Lat\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thay đổi số ngày|Chọn khách sạn khác|Thêm hoạt động khác[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch cho chuyến đi Đà Lạt cuối tuần này cho bạn. Mình giả định là 2 ngày 1 đêm, 2 người, và sẽ tìm khách sạn, nhà hàng, điểm tham quan, cùng kiểm tra thời tiết. Bạn có thể điều chỉnh nếu cần nhé! 🏔️Tuyệt vời! Mình đã tìm được những lựa chọn tuyệt vời cho chuyến đi Đà Lạt cuối tuần này.\n\n**Lưu ý thời tiết:** Đà Lạt sẽ có sương mù dày, nhiệt độ 17-19°C và khả năng mưa 68% — hãy mang áo khoác ấm và ô nhé! 🌫️\n\n**Tại sao chọn kế hoạch này:**\n- **Hải sản tươi:** Nhà Hàng Hải Sản Đại Dương có rating 4.9⭐ — hoàn hảo cho sở thích của bạn, và nằm ở khu yên tĩnh Cam Ly\n- **Khách sạn chất lượng:** MerPerle Dalat Hotel là lựa chọn hàng đầu với 6.177 đánh giá 4.9⭐, vị trí trung tâm, dễ di chuyển\n- **Tham quan đa dạng:** Làng Nấm (trang trại hữu cơ) + Khu sinh thái Cao Nguyên Hoa — vừa yên tĩnh vừa có trải nghiệm\n- **Ngân sách hợp lý, nằm trong ngân sách chuyến đi của bạn\n\n**Lưu ý:** Giá khách sạn chưa xác nhận — bạn cần check trên Booking.com để xem giá chính xác cho ngày 26-27/9. Nếu muốn thay đổi số ngày, khu vực hay hoạt động, mình sẽ điều chỉnh ngay nhé! 😊"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+== project confirm
+aerobic-lock-498409-u7	1023373437508	ACTIVE
+== bucket must not exist yet
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-audit not found: 404.
+== create (non-public)
+Creating gs://tappyai-media-audit/...
+tappyai-media-audit	enforced	True
+== IAM (no allUsers / allAuthenticatedUsers expected)
+['projectEditor:aerobic-lock-498409-u7', 'projectOwner:aerobic-lock-498409-u7'];['projectViewer:aerobic-lock-498409-u7'];['projectEditor:aerobic-lock-498409-u7', 'projectOwner:aerobic-lock-498409-u7'];['projectViewer:aerobic-lock-498409-u7']
+== run prove.mts → proof.json (exit 0; run-state.txt records the working tree)
+== independent listing before delete
+ERROR: (gcloud.storage.ls) One or more URLs matched no objects.
+== delete bucket
+Removing gs://tappyai-media-audit/...
+...........................
+ERROR: gs://tappyai-media-audit not found: 404.
+..................
+== describe after delete
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-audit not found: 404.
+tappyai-media-prod: not named by any command. No permission granted or changed.

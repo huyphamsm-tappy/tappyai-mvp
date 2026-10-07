@@ -1,0 +1,151 @@
+{
+  "label": "uat4-p1-golden-6f6630a-sub-rep1",
+  "base": "http://localhost:3007",
+  "calls": 7,
+  "at": "2026-09-27T17:03:19.982Z",
+  "cases": [
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 1039,
+          "usage": {
+            "promptTokens": 0,
+            "completionTokens": 0
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 221
+        },
+        {
+          "status": 200,
+          "ms": 17766,
+          "usage": {
+            "promptTokens": 2778,
+            "completionTokens": 479
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "BHD Star Cineplex Lê Văn Việt",
+              "CGV Vincom Thủ Đức",
+              "CGV Celadon Tân Phú",
+              "Galaxy Cinema Nguyễn Du",
+              "Beta Cinemas Ung Văn Khiêm"
+            ],
+            [
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Giga Mall Thủ Đức",
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Vincom Plaza Phan Văn Trị",
+              "BHD Star Cineplex Lê Văn Việt",
+              "CGV Vincom Thủ Đức",
+              "CGV Celadon Tân Phú",
+              "Beta Cinemas Ung Văn Khiêm"
+            ]
+          ],
+          "dup": false,
+          "chars": 484
+        }
+      ]
+    },
+    {
+      "id": "G1b",
+      "group": "entertainment-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 457,
+          "usage": {
+            "promptTokens": 0,
+            "completionTokens": 0
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 221
+        }
+      ]
+    },
+    {
+      "id": "G5a",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 10517,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 716
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1340
+        }
+      ]
+    },
+    {
+      "id": "G5b",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 14716,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 999
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1839
+        }
+      ]
+    },
+    {
+      "id": "G5c",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15119,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 1080
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1931
+        }
+      ]
+    },
+    {
+      "id": "G5d",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 10657,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 729
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1680
+        }
+      ]
+    }
+  ]
+}

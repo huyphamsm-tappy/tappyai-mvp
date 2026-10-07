@@ -1,0 +1,444 @@
+{
+  "id": "T3",
+  "group": "food-constraints",
+  "criteria": [
+    "Turn 2: every card respects the 50-60k budget; no restaurants/beer venues (nhà hàng, quán nhậu, bia)",
+    "Places closed at lunch are not ranked first (or are clearly marked and ranked down)",
+    "Text and cards recommend the SAME places",
+    "No invented cuisine (no seafood unless the user asked)",
+    "The budget correction replaces the earlier constraint and the reply acknowledges it"
+  ],
+  "turns": [
+    {
+      "user": "trưa nay ăn gì cho ngon",
+      "status": 200,
+      "elapsedMs": 11408,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa ngon Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "10:00–19:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "07:00–17:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Niêu Chú Chen - Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Niêu Thiên Lý - Nguyễn Đình Chiểu",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "10:00–14:30, 16:00–21:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "10:00–19:30",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "07:00–17:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Niêu Chú Chen - Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Niêu Thiên Lý - Nguyễn Đình Chiểu",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "10:00–14:30, 16:00–21:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.77313,106.69405",
+            "place:osm:10.77519,106.70514",
+            "place:osm:10.79088,106.70163"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Cơm Ngon Hà Nội",
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Cơm Niêu Chú Chen - Quận 1",
+          "Cơm Niêu Thiên Lý - Nguyễn Đình Chiểu",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "HÀ NỘI QUÁN"
+        ],
+        [
+          "Cơm Ngon Hà Nội",
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Cơm Niêu Chú Chen - Quận 1",
+          "Cơm Niêu Thiên Lý - Nguyễn Đình Chiểu",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "HÀ NỘI QUÁN"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm những quán ăn trưa ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Cơm Ngon Hà Nội** cho bạn! 🍚\n\n Chuyên cơm Việt ngon, đủ các món ăn trưa hấp dẫn. Bạn có thể gọi online qua GrabFood hoặc đến trực tiếp.\n\nNếu muốn gần hơn, **Ben.la - Mâm cơm nhà quận 1** cũng 4.9⭐ nhưng chỉ 0.5km, tuy nhiên đóng cửa lúc 17:00 nên hơi sớm cho bữa trưa muộn.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Cơm Ngon Hà Nội\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17709648029835947889\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Ben.la gần hơn|Quán Bụi ăn cả ngày|Cơm niêu Thiên Lý[/FOLLOWUPS]",
+      "visible": "Mình tìm những quán ăn trưa ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Cơm Ngon Hà Nội** cho bạn! 🍚\n\n Chuyên cơm Việt ngon, đủ các món ăn trưa hấp dẫn. Bạn có thể gọi online qua GrabFood hoặc đến trực tiếp.\n\nNếu muốn gần hơn, **Ben.la - Mâm cơm nhà quận 1** cũng 4.9⭐ nhưng chỉ 0.5km, tuy nhiên đóng cửa lúc 17:00 nên hơi sớm cho bữa trưa muộn."
+    },
+    {
+      "user": "chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng",
+      "status": 200,
+      "elapsedMs": 13526,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa rẻ tiền dưới 60k Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "A Mà Kitchen Cống Quỳnh",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "10:30–22:15",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ann Quán",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "07:00–01:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán ăn ngon Sài Gòn",
+              "rating": 4.1,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "NHÀ HÀNG NGON",
+              "rating": 4,
+              "price": null,
+              "category": null,
+              "hours": "07:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Bắc Làng Cua Đồng",
+              "rating": 4,
+              "price": null,
+              "category": null,
+              "hours": "07:00–14:30, 17:00–21:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "A Mà Kitchen Cống Quỳnh",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "10:30–22:15",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "10:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ann Quán",
+              "rating": 4.2,
+              "price": null,
+              "category": null,
+              "hours": "07:00–01:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán ăn ngon Sài Gòn",
+              "rating": 4.1,
+              "price": null,
+              "category": null,
+              "hours": "08:00–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "NHÀ HÀNG NGON",
+              "rating": 4,
+              "price": null,
+              "category": null,
+              "hours": "07:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cơm Bắc Làng Cua Đồng",
+              "rating": 4,
+              "price": null,
+              "category": null,
+              "hours": "07:00–14:30, 17:00–21:00",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.76692,106.68754",
+            "place:osm:10.77332,106.70504"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "A Mà Kitchen Cống Quỳnh",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+          "Ann Quán",
+          "Quán ăn ngon Sài Gòn",
+          "NHÀ HÀNG NGON",
+          "Cơm Bắc Làng Cua Đồng"
+        ],
+        [
+          "A Mà Kitchen Cống Quỳnh",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+          "Ann Quán",
+          "Quán ăn ngon Sài Gòn",
+          "NHÀ HÀNG NGON",
+          "Cơm Bắc Làng Cua Đồng"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình hiểu rồi! 🍜\n\nMình chọn **A Mà Kitchen Cống Quỳnh** cho bạn! 🍜\n\nQuán này ngon, giá hợp lý, mở cửa lúc 10:30 nên vừa cho bữa trưa. Cách bạn 1.8km, có thể gọi online qua GrabFood hoặc đến trực tiếp.\n\n 👍\n\n[FOLLOWUPS]Xem thêm quán khác gần đây|Ăn gì khác ở Quận 1|Tìm quán ăn tối|[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - A Mà Kitchen\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=70259930786333238\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "visible": "Mình hiểu rồi! 🍜\n\nMình chọn **A Mà Kitchen Cống Quỳnh** cho bạn! 🍜\n\nQuán này ngon, giá hợp lý, mở cửa lúc 10:30 nên vừa cho bữa trưa. Cách bạn 1.8km, có thể gọi online qua GrabFood hoặc đến trực tiếp.\n\n 👍"
+    }
+  ]
+}

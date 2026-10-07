@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:07.416Z",
+ "body": {
+  "searchParameters": {
+   "q": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ztmzeipvdtlgeso4hxjh/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc:G%E1%BB%99i%C4%91%E1%BA%A7ud%C6%B0%E1%BB%A1ngsinhki%E1%BB%83uVi%E1%BB%87t24H-D%C3%B4mei-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLfeyXgXPKJNeiBX_AUqJ2EZjYX3hf_hV6dwI1kzCh1g&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fztmzeipvdtlgeso4hxjh%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%3AG%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7ud%25C6%25B0%25E1%25BB%25A1ngsinhki%25E1%25BB%2583uVi%25E1%25BB%2587t24H-D%25C3%25B4mei-Klook.jpg&tbnid=UMeMaeCzjQKwHM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F125966-domei-spa-in-taipei%2F&docid=BhYimsZpdZWWcM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/wmamwaknwyrfqyoyvhpd/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc:G%E1%BB%99i%C4%91%E1%BA%A7ud%C6%B0%E1%BB%A1ngsinhki%E1%BB%83uVi%E1%BB%87t24H-D%C3%B4mei-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlzlqs7wxsd-XFT9t5Y4W1P_Okw_BPkNtNk59Ed0TYCA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fwmamwaknwyrfqyoyvhpd%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%3AG%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7ud%25C6%25B0%25E1%25BB%25A1ngsinhki%25E1%25BB%2583uVi%25E1%25BB%2587t24H-D%25C3%25B4mei-Klook.jpg&tbnid=uB3--QkF20CVoM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F125966-domei-spa-in-taipei%2F&docid=BhYimsZpdZWWcM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/drd55ecryzjrarrs0oi1/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc:G%E1%BB%99i%C4%91%E1%BA%A7ud%C6%B0%E1%BB%A1ngsinhki%E1%BB%83uVi%E1%BB%87t24H-D%C3%B4mei-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwZbnkTO4bhVoUIx9_TqqnQoc91AgAyf5dv53VSDFOCA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fdrd55ecryzjrarrs0oi1%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%3AG%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7ud%25C6%25B0%25E1%25BB%25A1ngsinhki%25E1%25BB%2583uVi%25E1%25BB%2587t24H-D%25C3%25B4mei-Klook.jpg&tbnid=zdqqj5bs8kgC8M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F125966-domei-spa-in-taipei%2F&docid=BhYimsZpdZWWcM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ut4mjm6mdg04xt4uv7mx/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc:G%E1%BB%99i%C4%91%E1%BA%A7ud%C6%B0%E1%BB%A1ngsinhki%E1%BB%83uVi%E1%BB%87t24H-D%C3%B4mei-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1oAr6w262VEzmgEx3DHplbYa4hzMS1jK8prEnBAluew&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fut4mjm6mdg04xt4uv7mx%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%3AG%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7ud%25C6%25B0%25E1%25BB%25A1ngsinhki%25E1%25BB%2583uVi%25E1%25BB%2587t24H-D%25C3%25B4mei-Klook.jpg&tbnid=T81rCdZz0PMjRM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F125966-domei-spa-in-taipei%2F&docid=BhYimsZpdZWWcM&w=1200&h=630",
+    "position": 4
+   },
+   {
+    "title": "Đại An, Đài Bắc: Gội đầu dưỡng sinh kiểu Việt 24H - Dômei - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/e09su4mf5nu4xrsivn9k/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc:G%E1%BB%99i%C4%91%E1%BA%A7ud%C6%B0%E1%BB%A1ngsinhki%E1%BB%83uVi%E1%BB%87t24H-D%C3%B4mei-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJFkRzgUrHCtOlOxt5UadhPxcPE83jQVVFROlXkaEMEw&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/125966-domei-spa-in-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fe09su4mf5nu4xrsivn9k%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%3AG%25E1%25BB%2599i%25C4%2591%25E1%25BA%25A7ud%25C6%25B0%25E1%25BB%25A1ngsinhki%25E1%25BB%2583uVi%25E1%25BB%2587t24H-D%25C3%25B4mei-Klook.jpg&tbnid=t57oaplexScCjM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F125966-domei-spa-in-taipei%2F&docid=BhYimsZpdZWWcM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Đại An, Đài Bắc | Yijing Oriental Manor | Ga Tưởng niệm Tôn Trung Sơn MRT -  Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/k59ovtwghv5sclldrg3f/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc%7CYijingOrientalManor%7CGaT%C6%B0%E1%BB%9Fngni%E1%BB%87mT%C3%B4nTrungS%C6%A1nMRT-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmDKQSnT3N6jArsIig02BmvPOhCmpzhJdbDvaGnMdcGA&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/16035-body-oil-massage-iching-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fk59ovtwghv5sclldrg3f%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%257CYijingOrientalManor%257CGaT%25C6%25B0%25E1%25BB%259Fngni%25E1%25BB%2587mT%25C3%25B4nTrungS%25C6%25A1nMRT-Klook.jpg&tbnid=O8NZtcXfQnnk0M&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F16035-body-oil-massage-iching-taipei%2F&docid=Qo1LO6YzG2616M&w=1200&h=630",
+    "position": 6
+   },
+   {
+    "title": "Đại An, Đài Bắc | Yijing Oriental Manor | Ga Tưởng niệm Tôn Trung Sơn MRT -  Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_863/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/b4k1x1t0vb5hqebetfcq/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc%7CTrangvi%C3%AAnYijingOriental%7CGaT%C6%B0%E1%BB%9Fngni%E1%BB%87mQu%E1%BB%91cPh%E1%BB%A5(c%E1%BA%A7n%C4%91%E1%BA%B7ttr%C6%B0%E1%BB%9Bc).jpg",
+    "imageWidth": 1295,
+    "imageHeight": 863,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLqLunrI2MeSgGwx7OLvrFgFEBR0wA8QcDjlMOs_LZdA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/16035-body-oil-massage-iching-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_863%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fb4k1x1t0vb5hqebetfcq%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%257CTrangvi%25C3%25AAnYijingOriental%257CGaT%25C6%25B0%25E1%25BB%259Fngni%25E1%25BB%2587mQu%25E1%25BB%2591cPh%25E1%25BB%25A5(c%25E1%25BA%25A7n%25C4%2591%25E1%25BA%25B7ttr%25C6%25B0%25E1%25BB%259Bc).jpg&tbnid=9W7DL6RYh4AUmM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F16035-body-oil-massage-iching-taipei%2F&docid=Qo1LO6YzG2616M&w=1295&h=863",
+    "position": 7
+   },
+   {
+    "title": "Đại An, Đài Bắc | Yijing Oriental Manor | Ga Tưởng niệm Tôn Trung Sơn MRT -  Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/tkl1s4khdsqyzxasdfk1/%C4%90%E1%BA%A1iAn,%C4%90%C3%A0iB%E1%BA%AFc%7CYijingOrientalManor%7CGaT%C6%B0%E1%BB%9Fngni%E1%BB%87mT%C3%B4nTrungS%C6%A1nMRT-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTq9E850HbI9lt6WIlTa8EONYonRkJWbqTFAwxTshlcnQ&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/16035-body-oil-massage-iching-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ftkl1s4khdsqyzxasdfk1%2F%25C4%2590%25E1%25BA%25A1iAn%2C%25C4%2590%25C3%25A0iB%25E1%25BA%25AFc%257CYijingOrientalManor%257CGaT%25C6%25B0%25E1%25BB%259Fngni%25E1%25BB%2587mT%25C3%25B4nTrungS%25C6%25A1nMRT-Klook.jpg&tbnid=7pMkKOn4oMeChM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F16035-body-oil-massage-iching-taipei%2F&docid=Qo1LO6YzG2616M&w=1200&h=630",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

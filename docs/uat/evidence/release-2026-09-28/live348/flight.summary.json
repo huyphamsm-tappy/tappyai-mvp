@@ -1,0 +1,20 @@
+{
+  "caseId": "flight",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T06:29:01.248Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "vé máy bay Sài Gòn đi Hà Nội",
+      "status": 200,
+      "ms": 5902,
+      "literalDoubleStar": 0,
+      "unbalancedBoldLines": [],
+      "proseTail": "2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.HAN%26dt%3D05-10-2026.null%26ps%3D1.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=aa8541fc5388670431e5cd73)\n\nBạn vào trang, chọn ngày bay mong muốn rồi nhập thông tin hành khách để xem giá cụ thể nhé. Tuyen Sài Gòn - Hà Nội có nhiều chuyến bay mỗi ngày từ các hãng như Vietnam Airlines, Vietjet, Bamboo Airways.\n\nBạn muốn đi ngày nào cụ thể không?",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": null
+    }
+  ]
+}

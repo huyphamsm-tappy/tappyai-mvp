@@ -1,0 +1,164 @@
+{
+  "id": "P6",
+  "text": "Spa couple cho 2 người tối nay gần Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 11079,
+  "evidenceId": "f5bc8b44-d01e-4d55-a5b1-af7ab4a46023",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa couple 2 người tối nay Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3177,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "rating": 4.9,
+      "count": 421,
+      "hours": "10:00–02:00",
+      "distance_km": 0.9,
+      "address": "127 Đ. Calmette, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+      "rating": 4.8,
+      "count": 628,
+      "hours": "08:30–21:30",
+      "distance_km": 1.2,
+      "address": "143 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 00700, Việt Nam"
+    },
+    {
+      "name": "Zen Spa",
+      "rating": 4.7,
+      "count": 1573,
+      "hours": "10:00–23:30",
+      "distance_km": 1.2,
+      "address": "244 Đề Thám, street, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Jay Spa - Spa for Men",
+      "rating": 4.9,
+      "count": 271,
+      "hours": "11:00–22:00",
+      "distance_km": 1.8,
+      "address": "21 Lý Văn Phức, Tân Định, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "ĐẸP SÀI GÒN SPA 1 - Foot Body Massage, Gội đầu dưỡng sinh, Massage trị liệu Quận 4",
+      "rating": 4.8,
+      "count": 90,
+      "hours": "09:30–21:30",
+      "distance_km": 1.3,
+      "address": "43 Đ. Lê Quốc Hưng, Xóm Chiếu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa - 44 đặng dung Q1",
+      "rating": 4.8,
+      "count": 727,
+      "hours": "09:00–22:00",
+      "distance_km": 2.2,
+      "address": "44 Đặng Dung, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Massage tận nơi Sài Gòn",
+      "rating": 5,
+      "count": 1,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 2.2,
+      "address": "212B/D72 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "WellNest Spa Quận 1",
+      "rating": 4.7,
+      "count": 443,
+      "hours": "09:00–21:00",
+      "distance_km": 1.2,
+      "address": "25/65 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Massage Cổ Phong Q1",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 3177,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "09:00–22:30"
+      }
+    },
+    {
+      "name": "Trạm Relax Spa - Gội đầu dưỡng sinh Herbal Headspa & Massage Quận 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 421,
+        "distance_km": 0.9,
+        "open_now": true,
+        "opening_hours": "10:00–02:00"
+      }
+    },
+    {
+      "name": "Mộc Kim Spa 2 - Ben Thanh Branch - Massage Near Me, Head Spa & Facial District 1",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 628,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "08:30–21:30"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm spa couple gần Quận 1 cho bạn nhé! 🧖‍♀️\n\nMình chọn **Massage Cổ Phong Q1** cho bạn! 👌 Spa này có rating 4.9⭐ từ 3.177 đánh giá, mở đến 22:30 tối nay, và chỉ cách bạn 1.3km. Dù **Trạm Relax Spa** gần hơn (0.9km), nhưng Cổ Phong có lượng đánh giá lớn hơn nhiều, chứng tỏ chất lượng ổn định.\n\nCả hai đều mở cửa bây giờ và phù hợp cho couple massage. 💆‍♀️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Massage Cổ Phong Q1\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Trạm Relax Spa gần hơn?|Gọi để hỏi gói couple|Xem spa khác ở Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Spa couple cho 2 người tối nay gần Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa couple gần Quận 1 cho bạn nhé! 🧖‍♀️\n\nMình chọn **Massage Cổ Phong Q1** cho bạn! 👌 Spa này có rating 4.9⭐ từ 3.177 đánh giá, mở đến 22:30 tối nay, và chỉ cách bạn 1.3km. Dù **Trạm Relax Spa** gần hơn (0.9km), nhưng Cổ Phong có lượng đánh giá lớn hơn nhiều, chứng tỏ chất lượng ổn định.\n\nCả hai đều mở cửa bây giờ và phù hợp cho couple massage. 💆‍♀️\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Massage Cổ Phong Q1\",\"type\":\"website\",\"url\":\"https://massagecophongquan1.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Massage Cổ Phong Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3381478916670750901\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Trạm Relax Spa gần hơn?|Gọi để hỏi gói couple|Xem spa khác ở Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

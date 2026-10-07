@@ -1,0 +1,65 @@
+{
+  "id": "F5",
+  "text": "quán này mở mấy giờ?",
+  "parent": "F4",
+  "status": 200,
+  "ms": 13695,
+  "evidenceId": "ecfe350d-3f51-47ce-b5ef-3787ea414a5e",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Tám Riêu Phan Xích Long",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.8,
+      "count": 2106,
+      "price": "100-200 N ₫",
+      "hours": "10:30–21:30",
+      "distance_km": 2.9,
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình cần tìm lại thông tin giờ mở cửa của **Tám Riêu - Phan Xích Long** cho bạn.\n\n**Tám Riêu - Phan Xích Long** mở từ **10:30 đến 21:30** — hoàn hảo cho bữa trưa cuối tuần của bạn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình gợi ý **Tám Riêu - Phan Xích Long** cho bữa trưa gia đình của bạn 👨‍👩‍👧‍👦 Quán có **4.8⭐ (2.106 đánh giá)**, cách bạn ~2.9km, mở từ 10:30 nên hoàn hảo cho buổi trưa cuối tuần. Không gian rộng rãi, phù hợp cho 6 người, ăn cơm riêu truyền thống với giá khoảng 100-200k/người.\n\nNếu muốn thử hải sản, **Ốc Hân** cũng là lựa chọn tốt — **4.6⭐ (238 đánh giá)**, gần hơn (2.8km), mở từ 11:00, giá 200-300k/người.\n\nQuán nào bạn đang nghĩ chọn?\n\nMình chưa thấy bằng chứng về chỗ đậu xe, phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🍽️ Xem trên Maps — Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🌐 Website — Tám Riêu\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt bàn|Thử quán khác ở Phú Nhuận|Tìm quán có khu vui chơi cho trẻ[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán này mở mấy giờ?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần tìm lại thông tin giờ mở cửa của **Tám Riêu - Phan Xích Long** cho bạn.\n\n**Tám Riêu - Phan Xích Long** mở từ **10:30 đến 21:30** — hoàn hảo cho bữa trưa cuối tuần của bạn 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"http://www.amthuctamrieu.com/\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

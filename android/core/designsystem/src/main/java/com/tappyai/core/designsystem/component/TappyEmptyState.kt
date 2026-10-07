@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.SearchOff
 import androidx.compose.ui.unit.dp
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import com.tappyai.core.designsystem.theme.TappySpacing
+import androidx.compose.ui.graphics.Color
 
 /** "Nothing here yet" state — feature-illustration-sized icon (32dp+) per §12, one-line
  *  title, optional supporting message, optional single action. */
@@ -29,6 +30,17 @@ fun TappyEmptyState(
     message: String? = null,
     actionText: String? = null,
     onAction: (() -> Unit)? = null,
+    /**
+     * Colours for a host that paints its OWN surface.
+     *
+     * 🚨 A LIGHT-THEME EMPTY STATE ON A BLACK SCREEN IS AN INVISIBLE EMPTY STATE. These resolved
+     * from `MaterialTheme.colorScheme` only, and the Inbox paints a hard black background of its
+     * own — so "No notifications yet" and its subtitle rendered dark grey on black and the screen
+     * read as broken rather than empty. Defaulted to the theme, so every existing caller is
+     * unchanged; a host with its own surface passes the colours that belong to it.
+     */
+    titleColor: Color = MaterialTheme.colorScheme.onSurface,
+    contentColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     Column(
         modifier = modifier
@@ -40,19 +52,20 @@ fun TappyEmptyState(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+            tint = contentColor,
             modifier = Modifier.size(40.dp),
         )
         Text(
             text = title,
             style = MaterialTheme.typography.titleLarge,
+            color = titleColor,
             textAlign = TextAlign.Center,
         )
         if (message != null) {
             Text(
                 text = message,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                color = contentColor,
                 textAlign = TextAlign.Center,
             )
         }

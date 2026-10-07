@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Nail\" OR \"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:07:51.963Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Nail\" OR \"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Nail Chic - Tiệm nail mới tại 193 Nguyễn Lâm, P. Diên Hồng ...",
+    "link": "https://www.tiktok.com/@thuy.chung.ly/video/7651110247737740564",
+    "snippet": "The Nail Chic vừa bố trí lại không gian tiệm với hy vọng khách hàng sẽ thích phong cách mới. Địa chỉ: 193 Nguyễn Lâm, Phường Diên Hồng, TP.HCM (Quận 10).",
+    "position": 1
+   },
+   {
+    "title": "dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty ...",
+    "link": "https://www.tiktok.com/@yenchou88/video/7629270629119806741",
+    "snippet": "#dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty #quan10. #dzinnailmi ... Dzin Nail Mi Quận 10 - Núp Hẻm Giá Sinh Viên · author. 3 · 0.",
+    "position": 2
+   },
+   {
+    "title": "Đặc điểm nail Quan 10 tại Sài Gòn",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7631040715178495239",
+    "snippet": "Nail Quan 10 tại Sài Gòn nổi bật với nhiều phong cách và kiểu dáng độc đáo, hấp dẫn. Với sự phong phú về mẫu mã và màu sắc, salon nail nơi đây thu hút đông ...",
+    "position": 3
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "... The Nail Resort in Port Harcourt. Body What defines an almond nail ... Lead Nail xinh mỗi ngày giới thiệu 10 ý tưởng nail art dễ làm để thay đổi ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Nail The Nail Corner quận 4 — Gội, Chà gót thư giãn",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7652543433940274450",
+    "snippet": "Không gian và vị trí The Nail Corner nằm ở quận 4, có nét “hidden” — không gian ấm cúng, thoải mái, phù hợp cho người muốn thư giãn khi làm nail ...",
+    "position": 5
+   },
+   {
+    "title": "Làm nail xinh tại Dzin Nail Mi Quận 10 🥰#dzinna...",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7624818801313451285",
+    "snippet": "Dzin Nail Mi Quận 10- Làm nail xinh tại Dzin Nail Mi Quận 10 #dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty #quan10 · Các video hàng đầu trong ngày ...",
+    "position": 6
+   },
+   {
+    "title": "thank you @The Nail Junkie Inc. 😚💓 use code “megan10” ...",
+    "link": "https://www.tiktok.com/@manisby.megan/video/7556433458311007501",
+    "snippet": "36 Likes, TikTok video from megan | nail tech (@manisby.megan): “thank you @The Nail Junkie Inc. use code “megan10” for $$ off!",
+    "position": 7
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 6061,
+  "evidenceId": "c87df9b9-82fa-4d1e-9b91-241f4437f042",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Okee, cuối tuần này bạn muốn đi chơi giải trí! 🎉 Mình sẽ tìm những địa điểm vui vẻ gần bạn ở Quận 1.\n\nTrước khi gợi ý, bạn cho mình biết một chút:\n- **Thích loại gì?** Xem phim, karaoke, bar/lounge, cà phê sống ảo, công viên, khu vui chơi, hay cái gì khác?\n- **Đi với ai?** Bạn bè, gia đình, hay một mình?\n- **Budget khoảng bao nhiêu?** (để mình tìm chỗ phù hợp)\n\nHoặc nếu bạn muốn mình tự gợi ý luôn thì cứ nói, mình sẽ tìm những địa điểm hot nhất cuối tuần này!",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (27-28/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🛍️ **Mua sắm** - tìm đồ cần thiết hoặc quà tặng\n🎬 **Giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n🧖 **Spa/làm đẹp** - thư giãn sau tuần làm việc\n🎯 **Kế hoạch du lịch** - nếu muốn đi chơi xa\n\nBạn có ý tưởng gì chưa, hay muốn mình gợi ý? 😊\n\n[FOLLOWUPS]Ăn gì ngon|Xem phim gì|Đi đâu chơi[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Okee, cuối tuần này bạn muốn đi chơi giải trí! 🎉 Mình sẽ tìm những địa điểm vui vẻ gần bạn ở Quận 1.\n\nTrước khi gợi ý, bạn cho mình biết một chút:\n- **Thích loại gì?** Xem phim, karaoke, bar/lounge, cà phê sống ảo, công viên, khu vui chơi, hay cái gì khác?\n- **Đi với ai?** Bạn bè, gia đình, hay một mình?\n- **Budget khoảng bao nhiêu?** (để mình tìm chỗ phù hợp)\n\nHoặc nếu bạn muốn mình tự gợi ý luôn thì cứ nói, mình sẽ tìm những địa điểm hot nhất cuối tuần này!"
+    }
+  ]
+}

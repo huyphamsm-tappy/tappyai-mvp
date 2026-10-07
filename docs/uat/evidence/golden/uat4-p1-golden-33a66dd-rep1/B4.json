@@ -1,0 +1,1355 @@
+{
+  "id": "B4",
+  "group": "budget-subject-reset-plan",
+  "criteria": [
+    "Turns 1-2: headphones stay under 2 triệu (as before)",
+    "Turn 3: the 2 triệu headphone budget does NOT follow into the Vũng Tàu trip — the reply never states 'ngân sách 2 triệu' and the place search is not filtered to a 2,000,000 ceiling (server log budget_max is null)",
+    "Turn 3 is handled as a new trip plan for 2 people in Vũng Tàu"
+  ],
+  "turns": [
+    {
+      "user": "Tư vấn tai nghe chống ồn dưới 2 triệu",
+      "status": 200,
+      "elapsedMs": 20188,
+      "usage": {
+        "promptTokens": 4482,
+        "completionTokens": 832
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "tai nghe chống ồn dưới 2 triệu"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe không dây ngoắc cổ, tai nghe bluetooth 5.2 thời lượng pin siêu dài, chống nước JOLA\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":199000,\"priceHigh\":199000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQiDNocHJY1GaFyxQgmtGl-FKLlV7CsNYbPWmo698iBbRwCohXaul8TSvOsgaz6dIK5wv1v5XUvrI-WfXqBERBUjRT2TMGrE04lcViO_J_qsQYR2aV82AR9\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:7794880426324741864,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":199000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":10}],\"commerce\":{\"linkId\":\"6d9465bf289d40ee41515569\",\"requestId\":\"352ff1d4-f683-40c8-b1e1-62cbb4745132\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-ngo%E1%BA%AFc-c%E1%BB%95-tai-nghe-bluetooth-5.2-th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-pin-si%C3%AAu-d%C3%A0i-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-JOLA-i.618207121.18784691105\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"6d9465bf289d40ee41515569\",\"requestId\":\"352ff1d4-f683-40c8-b1e1-62cbb4745132\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-ngo%E1%BA%AFc-c%E1%BB%95-tai-nghe-bluetooth-5.2-th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-pin-si%C3%AAu-d%C3%A0i-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-JOLA-i.618207121.18784691105\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:1\",\"name\":\"Tai Nghe Bluetooth Nhét Tai EDIFIER X3 LITE/ X3 PRO/ X2 PRO | Khử Tiếng Ồn | Sử Dụng Đến 24H | Bảo Hành 15 Tháng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":790000,\"priceHigh\":790000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRmAYy1iQ7JxDGiceQSSVP4k-KWjJ6YkjiAszo0Qu7HoS89lOBKscdCzMnVSmyrfIaFMYT7uzK6pDDJFNbekg_tBkMIm4Bc6JxG5rn2x87W\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:13598630543875162243,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":790000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":173}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Bluetooth Chụp Tai Philips Tah3220 Trắng\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":675000,\"priceHigh\":675000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQIoKS8dd0p7RLjmaHd75xjfXh8NucvQjDlutJa4PAvlxB_uspGK9SRxozRfGygxbtwhlWK7C7SI8pXTFrg8ZjYPpOLTzZM1CLvpp-gKhufOt54l4Xy_wt5QA\",\"offers\":[{\"seller\":\"Thế Giới Di Động\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:14035392529247957872,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":675000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe gaming HyperX Cloud Stinger 2 Core 683L9AA\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":870000,\"priceHigh\":870000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRd4l2EY_bxY7bvhEsTUpHgx_8nQKRbOEmwMCclSu1DslcQf8RB3IzuPUqzCbYMMsJvHd3fFR0Frif6ELhCqjXUeFiPATEM_z114Hw6aIzvBwzksC_kWamu\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:15409172715738044047,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":870000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":865}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe không dây chống ồn Baseus Bowie M2S Ultra\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1390000,\"priceHigh\":1390000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR1qN0LnVBHCOuKUAV7f0U2UbVLXJvp1wTITLm8epg-WJXVeYUpRiVhMm7mKulkiHpuVlT3vpm09ETAPpMvM2sCxuh6pfa5Y_3GcLDjGlMYpufoRWQQAo7p\",\"offers\":[{\"seller\":\"CellphoneS\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,catalogid:12884478133365709077,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1390000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.8,\"ratingCount\":246}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe Bluetooth không dây Sansui - Tuyệt đỉnh âm thanh HiFi cảm ứng (Kèm Dock sạc pin 5-6 ngày dùng) - Agiadep.com\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":1280000,\"priceHigh\":1280000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRHM9sY80A5_ETorDLyPZZ12ji31CNNh2vfWvNuYIpklVsqJdUQHr0fgDGzjpDxCbsQ2frHMfVE_Al9duzvlUrzrHi96MmCXs0uhLewCi7POKdPgl_qtvhSWg\",\"offers\":[{\"seller\":\"Shopee\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u&prds=localAnnotatedOfferId:1,productid:5019734297207878715,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":1280000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":2}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Shopee\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"199000 VND\",\"params\":{\"priceVnd\":199000}},{\"attribute\":\"reviewCount\",\"evidence\":\"10 reviews\",\"params\":{\"count\":10}}],\"tradeOff\":{\"attribute\":\"reviewCount\",\"evidence\":\"173 reviews\",\"params\":{\"count\":173}},\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **Tai nghe không dây ngoắc cổ, tai nghe bluetooth 5.2 thời lượng pin siêu dài, chống nước JOLA** — 199.000₫, 5⭐ (10 đánh giá), tại Shopee — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình chọn **Tai nghe không dây ngoắc cổ JOLA** vì giá siêu rẻ.\n\nNếu bạn muốn chất lượng âm thanh tốt hơn và bảo hành lâu, **Edifier X3 Lite** (4.8⭐ với 173 đánh giá) là lựa chọn thay thế\n\nTổng cộng mình tìm được 29 sản phẩm. Bạn có thể xem thêm các lựa chọn khác trên Shopee hoặc Lazada.\n\n*Gia tham khảo từ kết quả tìm kiếm hiện tại, có thể đã thay đổi — bấm link để xem giá chính xác và mua hàng.*\n\n\n[FOLLOWUPS]Edifier X3 Lite giá bao nhiêu|Baseus Bowie M2S Ultra có gì đặc biệt|Tai nghe gaming dưới 1 triệu[/FOLLOWUPS]",
+      "visible": "Mình chọn **Tai nghe không dây ngoắc cổ, tai nghe bluetooth 5.2 thời lượng pin siêu dài, chống nước JOLA** — 199.000₫, 5⭐ (10 đánh giá), tại Shopee — phù hợp nhất với yêu cầu của bạn trong các kết quả tìm được.\n\nMình chọn **Tai nghe không dây ngoắc cổ JOLA** vì giá siêu rẻ.\n\nNếu bạn muốn chất lượng âm thanh tốt hơn và bảo hành lâu, **Edifier X3 Lite** (4.8⭐ với 173 đánh giá) là lựa chọn thay thế\n\nTổng cộng mình tìm được 29 sản phẩm. Bạn có thể xem thêm các lựa chọn khác trên Shopee hoặc Lazada.\n\n*Gia tham khảo từ kết quả tìm kiếm hiện tại, có thể đã thay đổi — bấm link để xem giá chính xác và mua hàng.*",
+      "preGuard": "Mình tìm tai nghe chống ồn dưới 2 triệu cho bạn ngay nhé.Mình chọn **Tai nghe không dây ngoắc cổ JOLA** vì giá siêu rẻ (199k), đạt 5⭐ và có chức năng chống ồn + chống nước. Đây là lựa chọn tốt nhất cho ngân sách dưới 2 triệu của bạn.\n\nNếu bạn muốn chất lượng âm thanh tốt hơn và bảo hành lâu, **Edifier X3 Lite** (790k, 4.8⭐ với 173 đánh giá) là lựa chọn thay thế — pin dùng tới 24h và bảo hành 15 tháng, nhưng đắt hơn gần 600k.\n\nTổng cộng mình tìm được 29 sản phẩm. Bạn có thể xem thêm các lựa chọn khác trên [Shopee](https://shopee.vn/search?keyword=tai%20nghe%20ch%E1%BB%91ng%20%E1%BB%93n%20d%C6%B0%E1%BB%9Bi%202%20tri%E1%BB%87u) hoặc [Lazada](https://www.lazada.vn/catalog/?q=tai%20nghe%20ch%E1%BB%91ng%20%E1%BB%93n%20d%C6%B0%E1%BB%9Bi%202%20tri%E1%BB%87u).\n\n*Gia tham khảo từ kết quả tìm kiếm hiện tại, có thể đã thay đổi — bấm link để xem giá chính xác và mua hàng.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Mua trên Shopee - JOLA\",\"type\":\"website\",\"url\":\"https://shopee.vn/search?keyword=tai+nghe+JOLA+ch%E1%BB%91ng+%E1%BB%93n\",\"primary\":true},{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=tai%20nghe%20ch%E1%BB%91ng%20%E1%BB%93n%20d%C6%B0%E1%BB%9Bi%202%20tri%E1%BB%87u\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Edifier X3 Lite giá bao nhiêu|Baseus Bowie M2S Ultra có gì đặc biệt|Tai nghe gaming dưới 1 triệu[/FOLLOWUPS]"
+    },
+    {
+      "user": "Cân bằng cả hai",
+      "status": 200,
+      "elapsedMs": 19864,
+      "usage": {
+        "promptTokens": 4295,
+        "completionTokens": 788
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_products",
+          "args": {
+            "query": "tai nghe chống ồn dưới 2 triệu Edifier X3 Lite JOLA"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        }
+      ],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"Tai nghe không dây Edifier X3\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":590000,\"priceHigh\":590000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTjTPk2MBJgZRNpigyNFFSiV-LDJ5MiQ0aXLTI_9fH9aouYCwzCWFZyZUHRO0x6AAV6FHu2M0vaKEGPuEbOYamB-pHXrhChGrTLH9Fkt5yBjOQ4_5ds_owL\",\"offers\":[{\"seller\":\"Truesmart.com.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:10697829928463138427,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":590000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":14}],\"commerce\":{\"linkId\":\"a73bd81736c7e57ecaf3d8a7\",\"requestId\":\"766ac41a-ceb4-456f-83d6-64b37057e7fe\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/%E1%BB%90p-b%E1%BA%A3o-v%E1%BB%87-cho-tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-EDIFIER-X3-LITE-V%E1%BB%8F-ch%E1%BB%91ng-r%C6%A1i-i.135572771.24230714969\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"},\"commerceLinks\":[{\"linkId\":\"a73bd81736c7e57ecaf3d8a7\",\"requestId\":\"766ac41a-ceb4-456f-83d6-64b37057e7fe\",\"providerId\":\"shopee\",\"merchantName\":\"Shopee\",\"url\":\"https://shopee.vn/%E1%BB%90p-b%E1%BA%A3o-v%E1%BB%87-cho-tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-EDIFIER-X3-LITE-V%E1%BB%8F-ch%E1%BB%91ng-r%C6%A1i-i.135572771.24230714969\",\"depth\":3,\"guestDepth\":2,\"authRequiredAt\":\"before_selection\",\"loginRequired\":true,\"freshnessType\":\"static\",\"expiresAt\":null,\"tracked\":false,\"capability\":\"product_purchase\",\"primary\":true,\"kind\":\"DETAIL_HANDOFF\",\"handoff\":\"merchant_login\",\"authenticatedDepth\":5,\"labelKey\":\"v3.action.purchaseLoginOn\"}]},{\"key\":\"uncertain:1\",\"name\":\"Tai nghe Edifier X2, 13 mm Dynamic Driver, Pin 28 Giờ, Bluetooth 5.1, IP54\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":548000,\"priceHigh\":548000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTiuqTpeGyLhc-fkbcXOyuFaCJwNxctcZ4SV5Je795HJFGnZSh-n4mxRNo16UoP47Kc84Kxb5shrDE2qsO6mYXO4IqA4s6pbLWTnS7aXM1xb3KhIl9_N_Am9g\",\"offers\":[{\"seller\":\"HDRadio.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:11659482298596529141,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":548000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.7,\"ratingCount\":898}]},{\"key\":\"uncertain:2\",\"name\":\"Tai nghe Edifier X3 To-U, Pin 24 Giờ, Chống Ồn, Bluetooth 5.0, IP55\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":560000,\"priceHigh\":560000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcScsDyAbcSUM_DTfnbEL7ehl_K4WuL3Tdfz85JhM6ssXUuHLW4ZAnegupjX_SVjscBQi9druCfjBAL8gSU1Y9AgzSbRPWnUKAoqmjCsQiJS4gtszKPNghEH\",\"offers\":[{\"seller\":\"HDRadio.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:672245208907878021,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":560000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.9,\"ratingCount\":10}]},{\"key\":\"uncertain:3\",\"name\":\"Tai nghe Bluetooth 5.0 True Wireless Edifier X3 TO U (White/ Pink/ Blue)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":580000,\"priceHigh\":580000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwJ3AnvcFBv8_eJFVNSJ2nZWBzcMzbgK7YkIB_S3i6U3JpAbsn3x2XVJQrUqsJ1bvyFLPH4dxnpcGC0Ju6XQ7jTjIhqJA7K1XZoFHpRz1JjEEF-epHiW99\",\"offers\":[{\"seller\":\"TranNamPC\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:153667754193681323,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":580000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:4\",\"name\":\"Tai nghe EDIFIER X2S (Bluetooth, Không dây)\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":220000,\"priceHigh\":220000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQE8NKRfbR-a-valyMba2vHPVHIc9A0W8CfzmASz0yE8jOOt5E1scHKHLmqCmshz1V9KyEu0oNF4BZRFC3c-YWG5k7NixphlD-Me1JpuHxuWkwdPzLbUFVwP6w\",\"offers\":[{\"seller\":\"tmins.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:1327942473794239423,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":220000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":24}]},{\"key\":\"uncertain:5\",\"name\":\"Tai nghe không dây Edifier X2s\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":450000,\"priceHigh\":450000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSIlZub2G6LCd_okm-o2pEQJ_iXDrMJyFuYSzcXgnmtppD4eMDgaagss9aQSccluokRJ_b4502gJoqech6stMbCwYif_fCrWfhj-AAsuh1VJEbpQMm_Z5vZSXY\",\"offers\":[{\"seller\":\"OwlGaming\",\"url\":\"https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+d%C6%B0%E1%BB%9Bi+2+tri%E1%BB%87u+Edifier+X3+Lite+JOLA+*+*+*&prds=localAnnotatedOfferId:1,productid:4196854803090270061,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":450000,\"currency\":\"VND\",\"condition\":null,\"rating\":4.5,\"ratingCount\":52}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Truesmart.com.vn\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"590000 VND\",\"params\":{\"priceVnd\":590000}},{\"attribute\":\"reviewCount\",\"evidence\":\"14 reviews\",\"params\":{\"count\":14}}],\"tradeOff\":{\"attribute\":\"price\",\"evidence\":\"548000 VND\",\"params\":{\"priceVnd\":548000}},\"conditional\":true}}[/TAPPY_SHOPPING]\n\nMình tìm lại để so sánh kỹ hơn giữa hai lựa chọn này cho bạn.\n\nMình cân bằng hai lựa chọn cho bạn:\n\n**Edifier X3** (5⭐ từ 14 đánh giá) — chất lượng âm thanh tốt, được đánh giá cao, nhưng giá hơi cao hơn.\n\n**Edifier X2** (4.7⭐ từ 898 đánh giá), chống nước IP54, và được 898 người đánh giá (bằng chứng uy tín mạnh hơn). Điểm yếu là rating 4.7 thay vì 5.\n\nNếu bạn **ưu tiên giá + độ tin cậy từ số lượng đánh giá**, **Edifier X2** là lựa chọn hợp lý hơn — tiết kiệm được tiền mà vẫn có chất lượng tốt. Nếu muốn **rating cao nhất**, **Edifier X3** là chọn, nhưng chỉ có 14 đánh giá nên bằng chứng còn ít.\n\nMình nghiêng về **Edifier X2** vì 898 đánh giá là bằng chứ mạnh về độ tin cậy, và tiết kiệm được tiền.\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.*\n\n[FOLLOWUPS]Edifier X3 To-U chống ồn tốt không?|Tai nghe nào pin lâu nhất dưới 2 triệu?|Có tai nghe nào dưới 500k tốt không?[/FOLLOWUPS]",
+      "visible": "Mình tìm lại để so sánh kỹ hơn giữa hai lựa chọn này cho bạn.\n\nMình cân bằng hai lựa chọn cho bạn:\n\n**Edifier X3** (5⭐ từ 14 đánh giá) — chất lượng âm thanh tốt, được đánh giá cao, nhưng giá hơi cao hơn.\n\n**Edifier X2** (4.7⭐ từ 898 đánh giá), chống nước IP54, và được 898 người đánh giá (bằng chứng uy tín mạnh hơn). Điểm yếu là rating 4.7 thay vì 5.\n\nNếu bạn **ưu tiên giá + độ tin cậy từ số lượng đánh giá**, **Edifier X2** là lựa chọn hợp lý hơn — tiết kiệm được tiền mà vẫn có chất lượng tốt. Nếu muốn **rating cao nhất**, **Edifier X3** là chọn, nhưng chỉ có 14 đánh giá nên bằng chứng còn ít.\n\nMình nghiêng về **Edifier X2** vì 898 đánh giá là bằng chứ mạnh về độ tin cậy, và tiết kiệm được tiền.\n\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.*",
+      "preGuard": "Mình tìm lại để so sánh kỹ hơn giữa hai lựa chọn này cho bạn.Mình cân bằng hai lựa chọn cho bạn:\n\n**Edifier X3** (590.000₫, 5⭐ từ 14 đánh giá) — chất lượng âm thanh tốt, được đánh giá cao, nhưng giá hơi cao hơn.\n\n**Edifier X2** (548.000₫, 4.7⭐ từ 898 đánh giá) — rẻ hơn 42.000₫, có pin 28 giờ (lâu hơn), chống nước IP54, và được 898 người đánh giá (bằng chứng uy tín mạnh hơn). Điểm yếu là rating 4.7 thay vì 5.\n\nNếu bạn **ưu tiên giá + độ tin cậy từ số lượng đánh giá**, **Edifier X2** là lựa chọn hợp lý hơn — tiết kiệm được tiền mà vẫn có chất lượng tốt. Nếu muốn **rating cao nhất**, **Edifier X3** là chọn, nhưng chỉ có 14 đánh giá nên bằng chứng còn ít.\n\nMình nghiêng về **Edifier X2** vì 898 đánh giá là bằng chứ mạnh về độ tin cậy, pin lâu, và tiết kiệm được tiền.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛒 Tìm trên Shopee\",\"type\":\"search\",\"url\":\"https://shopee.vn/search?keyword=Edifier+X2+tai+nghe\",\"primary\":true},{\"label\":\"📦 Tìm trên Lazada\",\"type\":\"search\",\"url\":\"https://www.lazada.vn/catalog/?q=Edifier+X2+tai+nghe\",\"primary\":false}]}[/CTA_BUTTONS]\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến sàn để tự so sánh & mua — quyền quyết định là của bạn.*\n\n[FOLLOWUPS]Edifier X3 To-U chống ồn tốt không?|Tai nghe nào pin lâu nhất dưới 2 triệu?|Có tai nghe nào dưới 500k tốt không?[/FOLLOWUPS]"
+    },
+    {
+      "user": "Lên lịch trình 1 ngày ở Vũng Tàu cho 2 người",
+      "status": 200,
+      "elapsedMs": 43753,
+      "usage": {
+        "promptTokens": 13139,
+        "completionTokens": 3298
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Vũng Tàu",
+            "checkIn": "2026-09-28",
+            "checkOut": "2026-09-29"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn sáng Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "điểm tham quan Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "attraction"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "spa massage Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "spa"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Vũng Tàu"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+              "address": "163 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1452,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán mì",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Cửa hàng bán thực phẩm đặc sản",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh canh ghẹ Anh Vy",
+              "address": "109 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 79000, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 1462,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hủ Tiếu Mực Vũng Tàu",
+              "address": "225c Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 780000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 528,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+              "address": "19 Phan Bội Châu, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 485,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:30–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh khọt Dì Hương",
+              "address": "84a Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 941,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng gia đình"
+              ],
+              "hours": "07:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Rơm Bánh Canh Cua",
+              "address": "9 Hoàng Văn Thụ, Tam Thắng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 600,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng chuyên phục vụ bữa sáng"
+              ],
+              "hours": "05:00–12:00, 15:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+              "address": "71 Trương Công Định, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 962,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+              "address": "118 Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 1881,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán mì",
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.33854,107.08729",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmg-GacGK8qSYwJN5ftW3WN7pnRtWPFij6dfA-5RgR3GCnPMG22DA29FzyisWND1Op56bZxB4vVraKuWpJQF5mJeD_RMiuW1Ms6bZJV5k54_-1QrSJFieYqjO9NfhIZ-4mQZqy2bg",
+                "address": "163 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1452,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 905 806 186",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00",
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00"
+                },
+                "categories": [
+                  "Quán mì",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Cửa hàng bán thực phẩm đặc sản",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13698270580322512840",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20H%E1%BA%A3i%20S%E1%BA%A3n%20B%E1%BB%81%20B%E1%BB%81%20L%C3%B4%CC%A3c%20D%C6%B0%C6%A1ng%20-%20%C4%90%C4%83%CC%A3c%20Sa%CC%89n%20Vu%CC%83ng%20Ta%CC%80u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://bunbebevungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905806186",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33466,107.08578",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh canh ghẹ Anh Vy",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkClL0QlU_w8OOnY-Z6UQcaIw_UO_aDMDR2urAVTzI879_u5Q0iQI-gSkhdacgirIms4KTTk4f_D5mXGQ2MeNezm_ZngrEQTxh6x5z0BV8dVHpzsWmVQ5If6hqP_Uu5kGbPShKIHw",
+                "address": "109 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 79000, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 1462,
+                "openingHours": "06:00–20:30",
+                "openNow": false,
+                "phone": "+84 913 709 837",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–20:30",
+                  "Thứ Ba": "06:00–20:30",
+                  "Thứ Tư": "06:00–20:30",
+                  "Thứ Năm": "06:00–20:30",
+                  "Thứ Sáu": "06:00–20:30",
+                  "Thứ Bảy": "06:00–20:30",
+                  "Chủ Nhật": "06:00–20:30"
+                },
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8571716941852086658",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20canh%20gh%E1%BA%B9%20Anh%20Vy%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84913709837",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34663,107.09082",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hủ Tiếu Mực Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkuOPrP7bvZwGb2Terw1PZK7ipijwmQS5lclRrtNaykgJYVBHvEhZFc3TBoxYwAmU9ohxQt8bbpxOl_zsqBZBKF3NgiBXhpPxCeylXP5QpeGSxyZQ18PCJSalllHfeE56k11WABFCchvKMy",
+                "address": "225c Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 780000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 528,
+                "openingHours": "06:00–20:00",
+                "openNow": false,
+                "phone": "+84 914 976 978",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–20:00",
+                  "Thứ Ba": "06:00–20:00",
+                  "Thứ Tư": "06:00–20:00",
+                  "Thứ Năm": "06:00–20:00",
+                  "Thứ Sáu": "06:00–20:00",
+                  "Thứ Bảy": "06:00–20:00",
+                  "Chủ Nhật": "06:00–20:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1872553829196223315",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A7%20Ti%E1%BA%BFu%20M%E1%BB%B1c%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hutieumucvungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84914976978",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34062,107.07587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCvl6FEKabH5dyczEbOEsIhNEOLHZqKeT6aiid5CUMA7SO3jvONtCLwyiWTTDcMd2Vqp8PK1JvZbb_dvQ8_AxpeIIucdsIgMSm-iHVgZTUQLKQ9MHDVF6Vn6d0x32K0_Qh1k4",
+                "address": "19 Phan Bội Châu, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 485,
+                "openingHours": "06:30–19:00",
+                "openNow": false,
+                "phone": "+84 933 687 314",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:30–19:00",
+                  "Thứ Ba": "06:30–19:00",
+                  "Thứ Tư": "06:30–19:00",
+                  "Thứ Năm": "06:30–19:00",
+                  "Thứ Sáu": "06:30–19:00",
+                  "Thứ Bảy": "06:30–20:00",
+                  "Chủ Nhật": "06:30–19:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10209956560107163334",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20canh%20gh%E1%BA%B9%20B%C3%A0%20Ba%20-%20qu%C3%A1n%20Ch%C3%A1nh%20g%E1%BB%91c%20t%E1%BA%A1i%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933687314",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33974,107.08272",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh khọt Dì Hương",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniAiGBq0KTKzfXzoS_hw3qfKWWoIQMggZBwmYMYie40V0du03EMRfwl9TbctUvHcdNImqea590cl-3mqWd0PHvgNZ4kcc9BdEQHWKxbx1xs4ULB6UMXaM18WvL1NX2qLPJ_Olyug_uOXQr",
+                "address": "84a Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 941,
+                "openingHours": "07:00–20:00",
+                "openNow": false,
+                "phone": "+84 962 022 878",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–20:00",
+                  "Thứ Ba": "07:00–20:00",
+                  "Thứ Tư": "07:00–20:00",
+                  "Thứ Năm": "07:00–20:00",
+                  "Thứ Sáu": "07:00–20:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng gia đình"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14778171332301194201",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20kh%E1%BB%8Dt%20D%C3%AC%20H%C6%B0%C6%A1ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84962022878",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.36249,107.08565",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Rơm Bánh Canh Cua",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlodAPAjeUr66Xr03uAs8mhub6VWk2K3rrYb5k3mmAszqTj3jhapehVKMtGYalylTQjyipUZzW9Kl5aESJmBmLD7HEtLym5wPsPIqSRsBvAUjdjQ1ufSA3LosPUeGvVek86xRWN0g",
+                "address": "9 Hoàng Văn Thụ, Tam Thắng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 600,
+                "openingHours": "05:00–12:00, 15:00–20:00",
+                "openNow": false,
+                "phone": "+84 938 503 838",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "05:00–12:00, 15:00–20:00",
+                  "Thứ Ba": "05:00–12:00, 15:00–20:00",
+                  "Thứ Tư": "05:00–12:00, 15:00–20:00",
+                  "Thứ Năm": "05:00–12:00, 15:00–20:00",
+                  "Thứ Sáu": "05:00–12:00, 15:00–20:00",
+                  "Thứ Bảy": "05:00–12:00, 15:00–20:00",
+                  "Chủ Nhật": "05:00–12:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng chuyên phục vụ bữa sáng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9760285779968662816",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20R%C6%A1m%20B%C3%A1nh%20Canh%20Cua%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/vung-tau/a-rom-banh-canh-cua",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938503838",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34472,107.07957",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_MvQnFYXBln24Yv_xbjl0s2oLkKd0L8W-Sgdm8YgU4VnhfngMXj75fZ2ksX6Wrln32D7blGeYxTur65zLGJWVhuvlwIEotm4nQYRTNhrpuGVdTBRptL1UDw_B91GtNA4OXguqZA",
+                "address": "71 Trương Công Định, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 962,
+                "openingHours": "06:00–22:00",
+                "openNow": false,
+                "phone": "+84 355 157 272",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–22:00",
+                  "Thứ Ba": "06:00–22:00",
+                  "Thứ Tư": "06:00–22:00",
+                  "Thứ Năm": "06:00–22:00",
+                  "Thứ Sáu": "06:00–22:00",
+                  "Thứ Bảy": "06:00–22:00",
+                  "Chủ Nhật": "06:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14770179546670397342",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20Th%C3%A1i%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20M%C3%AC%20Tr%E1%BB%99n%20L%C3%B2ng%20%C4%90%C3%A0o%20V%C5%A9ng%20T%C3%A0u%20L%C3%A3o%20Qu%C3%BD%20Chi%20Nh%C3%A1nh%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/bunthailaoquy",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84355157272",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33888,107.08457",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxzw8D9PEevss3vrlkdcceWJy6saT2FjQOP2rg1S4ZYR_2whTKjhhVOUwhc6mDykCLlD-FsDULx9PuyFw728XE7SQHx9Zn46WC1vCihBlTzv69E6Yvr23Seoy36ilN1JvoldVCVg",
+                "address": "118 Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1881,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 942 222 985",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00",
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00"
+                },
+                "categories": [
+                  "Quán mì",
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 7,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6244241675905425343",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20Canh%20Gh%E1%BA%B9%20Qu%E1%BA%ADn%20Nh%E1%BA%A5t%20-%20C%C6%A1%20s%E1%BB%9F%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84942222985",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20V%C5%A9ng%20T%C3%A0u%20V%C5%A9ng%20T%C3%A0u",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+              "address": "118 Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 1881,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán mì",
+                "Quán ăn nhỏ"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.6",
+                "1881 reviews"
+              ]
+            },
+            {
+              "name": "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+              "address": "163 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 1452,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán mì",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Cửa hàng bán thực phẩm đặc sản",
+                "Nhà hàng hải sản"
+              ],
+              "hours": "06:00–21:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh canh ghẹ Anh Vy",
+              "address": "109 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 79000, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 1462,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng"
+              ],
+              "hours": "06:00–20:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hủ Tiếu Mực Vũng Tàu",
+              "address": "225c Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 780000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 528,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+              "address": "19 Phan Bội Châu, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 485,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:30–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bánh khọt Dì Hương",
+              "address": "84a Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 941,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng gia đình"
+              ],
+              "hours": "07:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Rơm Bánh Canh Cua",
+              "address": "9 Hoàng Văn Thụ, Tam Thắng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 600,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Nhà hàng chuyên phục vụ bữa sáng"
+              ],
+              "hours": "05:00–12:00, 15:00–20:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+              "address": "71 Trương Công Định, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 962,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "06:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.33888,107.08457",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxzw8D9PEevss3vrlkdcceWJy6saT2FjQOP2rg1S4ZYR_2whTKjhhVOUwhc6mDykCLlD-FsDULx9PuyFw728XE7SQHx9Zn46WC1vCihBlTzv69E6Yvr23Seoy36ilN1JvoldVCVg",
+                "address": "118 Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1881,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 942 222 985",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00",
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00"
+                },
+                "categories": [
+                  "Quán mì",
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 7,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.6",
+                    "params": {
+                      "value": 4.6
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "1881 reviews",
+                    "params": {
+                      "count": 1881
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6244241675905425343",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20Canh%20Gh%E1%BA%B9%20Qu%E1%BA%ADn%20Nh%E1%BA%A5t%20-%20C%C6%A1%20s%E1%BB%9F%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84942222985",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33854,107.08729",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmg-GacGK8qSYwJN5ftW3WN7pnRtWPFij6dfA-5RgR3GCnPMG22DA29FzyisWND1Op56bZxB4vVraKuWpJQF5mJeD_RMiuW1Ms6bZJV5k54_-1QrSJFieYqjO9NfhIZ-4mQZqy2bg",
+                "address": "163 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 78000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 1452,
+                "openingHours": "06:00–21:00",
+                "openNow": false,
+                "phone": "+84 905 806 186",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–21:00",
+                  "Thứ Ba": "06:00–21:00",
+                  "Thứ Tư": "06:00–21:00",
+                  "Thứ Năm": "06:00–21:00",
+                  "Thứ Sáu": "06:00–21:00",
+                  "Thứ Bảy": "06:00–21:00",
+                  "Chủ Nhật": "06:00–21:00"
+                },
+                "categories": [
+                  "Quán mì",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Cửa hàng bán thực phẩm đặc sản",
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13698270580322512840",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20H%E1%BA%A3i%20S%E1%BA%A3n%20B%E1%BB%81%20B%E1%BB%81%20L%C3%B4%CC%A3c%20D%C6%B0%C6%A1ng%20-%20%C4%90%C4%83%CC%A3c%20Sa%CC%89n%20Vu%CC%83ng%20Ta%CC%80u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://bunbebevungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905806186",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33466,107.08578",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh canh ghẹ Anh Vy",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkClL0QlU_w8OOnY-Z6UQcaIw_UO_aDMDR2urAVTzI879_u5Q0iQI-gSkhdacgirIms4KTTk4f_D5mXGQ2MeNezm_ZngrEQTxh6x5z0BV8dVHpzsWmVQ5If6hqP_Uu5kGbPShKIHw",
+                "address": "109 Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 79000, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 1462,
+                "openingHours": "06:00–20:30",
+                "openNow": false,
+                "phone": "+84 913 709 837",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–20:30",
+                  "Thứ Ba": "06:00–20:30",
+                  "Thứ Tư": "06:00–20:30",
+                  "Thứ Năm": "06:00–20:30",
+                  "Thứ Sáu": "06:00–20:30",
+                  "Thứ Bảy": "06:00–20:30",
+                  "Chủ Nhật": "06:00–20:30"
+                },
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@banhcanhgheanhvy/video/7674475919838285063",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8571716941852086658",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84913709837",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20canh%20gh%E1%BA%B9%20Anh%20Vy%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34663,107.09082",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hủ Tiếu Mực Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkuOPrP7bvZwGb2Terw1PZK7ipijwmQS5lclRrtNaykgJYVBHvEhZFc3TBoxYwAmU9ohxQt8bbpxOl_zsqBZBKF3NgiBXhpPxCeylXP5QpeGSxyZQ18PCJSalllHfeE56k11WABFCchvKMy",
+                "address": "225c Võ Thị Sáu, Vũng Tàu, Hồ Chí Minh 780000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 528,
+                "openingHours": "06:00–20:00",
+                "openNow": false,
+                "phone": "+84 914 976 978",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–20:00",
+                  "Thứ Ba": "06:00–20:00",
+                  "Thứ Tư": "06:00–20:00",
+                  "Thứ Năm": "06:00–20:00",
+                  "Thứ Sáu": "06:00–20:00",
+                  "Thứ Bảy": "06:00–20:00",
+                  "Chủ Nhật": "06:00–20:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1872553829196223315",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A7%20Ti%E1%BA%BFu%20M%E1%BB%B1c%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hutieumucvungtau.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84914976978",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34062,107.07587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnCvl6FEKabH5dyczEbOEsIhNEOLHZqKeT6aiid5CUMA7SO3jvONtCLwyiWTTDcMd2Vqp8PK1JvZbb_dvQ8_AxpeIIucdsIgMSm-iHVgZTUQLKQ9MHDVF6Vn6d0x32K0_Qh1k4",
+                "address": "19 Phan Bội Châu, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 485,
+                "openingHours": "06:30–19:00",
+                "openNow": false,
+                "phone": "+84 933 687 314",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:30–19:00",
+                  "Thứ Ba": "06:30–19:00",
+                  "Thứ Tư": "06:30–19:00",
+                  "Thứ Năm": "06:30–19:00",
+                  "Thứ Sáu": "06:30–19:00",
+                  "Thứ Bảy": "06:30–20:00",
+                  "Chủ Nhật": "06:30–19:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10209956560107163334",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20canh%20gh%E1%BA%B9%20B%C3%A0%20Ba%20-%20qu%C3%A1n%20Ch%C3%A1nh%20g%E1%BB%91c%20t%E1%BA%A1i%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933687314",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33974,107.08272",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bánh khọt Dì Hương",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniAiGBq0KTKzfXzoS_hw3qfKWWoIQMggZBwmYMYie40V0du03EMRfwl9TbctUvHcdNImqea590cl-3mqWd0PHvgNZ4kcc9BdEQHWKxbx1xs4ULB6UMXaM18WvL1NX2qLPJ_Olyug_uOXQr",
+                "address": "84a Hoàng Hoa Thám, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 941,
+                "openingHours": "07:00–20:00",
+                "openNow": false,
+                "phone": "+84 962 022 878",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–20:00",
+                  "Thứ Ba": "07:00–20:00",
+                  "Thứ Tư": "07:00–20:00",
+                  "Thứ Năm": "07:00–20:00",
+                  "Thứ Sáu": "07:00–20:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng gia đình"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14778171332301194201",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%A1nh%20kh%E1%BB%8Dt%20D%C3%AC%20H%C6%B0%C6%A1ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84962022878",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.36249,107.08565",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Rơm Bánh Canh Cua",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlodAPAjeUr66Xr03uAs8mhub6VWk2K3rrYb5k3mmAszqTj3jhapehVKMtGYalylTQjyipUZzW9Kl5aESJmBmLD7HEtLym5wPsPIqSRsBvAUjdjQ1ufSA3LosPUeGvVek86xRWN0g",
+                "address": "9 Hoàng Văn Thụ, Tam Thắng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 600,
+                "openingHours": "05:00–12:00, 15:00–20:00",
+                "openNow": false,
+                "phone": "+84 938 503 838",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "05:00–12:00, 15:00–20:00",
+                  "Thứ Ba": "05:00–12:00, 15:00–20:00",
+                  "Thứ Tư": "05:00–12:00, 15:00–20:00",
+                  "Thứ Năm": "05:00–12:00, 15:00–20:00",
+                  "Thứ Sáu": "05:00–12:00, 15:00–20:00",
+                  "Thứ Bảy": "05:00–12:00, 15:00–20:00",
+                  "Chủ Nhật": "05:00–12:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Nhà hàng chuyên phục vụ bữa sáng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9760285779968662816",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20R%C6%A1m%20B%C3%A1nh%20Canh%20Cua%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/vung-tau/a-rom-banh-canh-cua",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938503838",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34472,107.07957",
+                "domain": "food",
+                "kind": "place",
+                "name": "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm_MvQnFYXBln24Yv_xbjl0s2oLkKd0L8W-Sgdm8YgU4VnhfngMXj75fZ2ksX6Wrln32D7blGeYxTur65zLGJWVhuvlwIEotm4nQYRTNhrpuGVdTBRptL1UDw_B91GtNA4OXguqZA",
+                "address": "71 Trương Công Định, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 962,
+                "openingHours": "06:00–22:00",
+                "openNow": false,
+                "phone": "+84 355 157 272",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "06:00–22:00",
+                  "Thứ Ba": "06:00–22:00",
+                  "Thứ Tư": "06:00–22:00",
+                  "Thứ Năm": "06:00–22:00",
+                  "Thứ Sáu": "06:00–22:00",
+                  "Thứ Bảy": "06:00–22:00",
+                  "Chủ Nhật": "06:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14770179546670397342",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=B%C3%BAn%20Th%C3%A1i%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20M%C3%AC%20Tr%E1%BB%99n%20L%C3%B2ng%20%C4%90%C3%A0o%20V%C5%A9ng%20T%C3%A0u%20L%C3%A3o%20Qu%C3%BD%20Chi%20Nh%C3%A1nh%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/bunthailaoquy",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84355157272",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20s%C3%A1ng%20V%C5%A9ng%20T%C3%A0u%20V%C5%A9ng%20T%C3%A0u",
+            "picked": [
+              "place:osm:10.33888,107.08457",
+              "place:osm:10.33854,107.08729"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.33888,107.08457",
+            "place:osm:10.33854,107.08729"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+          "Bánh canh ghẹ Anh Vy",
+          "Hủ Tiếu Mực Vũng Tàu",
+          "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+          "Bánh khọt Dì Hương",
+          "A Rơm Bánh Canh Cua",
+          "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+          "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu"
+        ],
+        [
+          "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+          "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+          "Bánh canh ghẹ Anh Vy",
+          "Hủ Tiếu Mực Vũng Tàu",
+          "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+          "Bánh khọt Dì Hương",
+          "A Rơm Bánh Canh Cua",
+          "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình chọn **Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu** — 4.4⭐ (1.452 đánh giá Google Maps); giờ mở cửa theo Google Maps: 06:00–21:00.\n\nMình lập kế hoạch 1 ngày ở Vũng Tàu cho 2 người, giả sử đi hôm nay bằng xe khách (~63 km từ vị trí bạn). Mình chọn các hoạt động phổ biến: ăn sáng/trưa, tham quan thắng cảnh, và thư giãn — bạn có thể điều chỉnh nếu muốn khác.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Một ngày tại Vũng Tàu - Biển, ẩm thực & thư giãn cho 2 người\",\"people\":2,\"budget_total\":\"chưa có giá\",\"days\":[{\"label\":\"Ngày 1 - Hôm nay\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ Quận 1 đến Vũng Tàu\",\"description\":\"Chuyến đi khoảng 63 km, mất ~1.5-2 giờ. Bạn có thể đổi sang máy bay nếu muốn nhanh hơn.\",\"price\":\"chưa có giá\",\"address\":\"Quận 1, TP HCM → Vũng Tàu\",\"maps_link\":\"\",\"booking_link\":\"\"},{\"time\":\"09:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Bánh Canh Ghẹ Quận Nhất\",\"description\":\"**4.6⭐ (1.881 đánh giá Google Maps)** — Bánh canh ghẹ nổi tiếng, đặc sản Vũng Tàu, giá phổ thông 1-100k/bát. Mở từ 06:00–21:00.\",\"price\":\"chưa có giá\",\"address\":\"118 Hoàng Hoa Thám, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=6244241675905425343\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Tháp Tam Thắng - Bãi Sau Vũng Tàu\",\"description\":\"**4.7⭐ (3.064 đánh giá Google Maps)** — Tháp cổ kính với view biển đẹp, mở cửa cả ngày.\",\"price\":\"chưa có giá\",\"address\":\"1810 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=1825206740430071783\",\"booking_link\":\"\"},{\"time\":\"13:00\",\"emoji\":\"🦐\",\"category\":\"food\",\"name\":\"Nhà hàng hải sản La Sirena\",\"description\":\"**4.6⭐ (1.659 đánh giá Google Maps)** — Hải sản tươi sống, view biển, Mở 10:30–14:00, 17:00–22:30.\",\"price\":\"chưa có giá\",\"address\":\"159 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=15039716562630094517\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Bãi Trước Vũng Tàu\",\"description\":\"**4.7⭐ (431 đánh giá Google Maps)** — Bãi biển đẹp, yên tĩnh, lý tưởng để thư giãn & chụp ảnh. Mở cửa cả ngày.\",\"price\":\"Miễn phí\",\"address\":\"83VF+5PC, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=10244873575681704181\",\"booking_link\":\"\"},{\"time\":\"17:30\",\"emoji\":\"💆\",\"category\":\"spa\",\"name\":\"Mây Spa - Vũng Tàu\",\"description\":\"**5⭐ (677 đánh giá Google Maps)** — Spa massage chất lượng cao, mở 08:30–19:30.\",\"price\":\"chưa có giá\",\"address\":\"33 Nam Kỳ Khởi Nghĩa, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=1543333543726922779\",\"booking_link\":\"https://www.massagevungtaumayspa.com/\"},{\"time\":\"19:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2\",\"description\":\"**4.3⭐ (6.896 đánh giá Google Maps)** — Ốc nướng & hải sản, Mở 10:00–22:30.\",\"price\":\"chưa có giá\",\"address\":\"34 Trần Phú, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=13541304505137005941\",\"booking_link\":\"\"},{\"time\":\"21:30\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách về Quận 1\",\"description\":\"Chuyến về khoảng 21:30-23:00. Bạn có thể chọn xe đêm hoặc ở lại qua đêm.\",\"price\":\"chưa có giá\",\"address\":\"Vũng Tàu → Quận 1, TP HCM\",\"maps_link\":\"\",\"booking_link\":\"\"}]}],\"cost_breakdown\":{\"Xe khách (khứ hồi)\":\"chưa có giá\",\"Ăn sáng (bánh canh)\":\"chưa có giá\",\"Tham quan (Tháp Tam Thắng)\":\"chưa có giá\",\"Ăn trưa (hải sản)\":\"chưa có giá\",\"Bãi biển\":\"Miễn phí\",\"Massage spa\":\"chưa có giá\",\"Ăn tối (ốc nướng)\":\"chưa có giá\"},\"local_tips\":[{\"text\":\"Mây Spa nên đặt trước qua Zalo/WhatsApp để chắc chắn có chỗ, đặc biệt vào cuối tuần.\",\"basis\":\"tool\",\"place\":\"Mây Spa - Vũng Tàu\"},{\"text\":\"Thời tiết hôm nay có mưa nhẹ, mang theo áo khoác nhẹ và ô để thoải mái tham quan.\",\"basis\":\"general\"}],\"share_text\":\"🏖️ Một ngày tuyệt vời ở Vũng Tàu: bánh canh ghẹ, tháp cổ, hải sản tươi & massage thư giãn! 🦐💆 #TappyAI\"}\n[/TAPPY_PLAN]\n\nKế hoạch này bao trọn các hoạt động phổ biến: ăn đặc sản bánh canh, tham quan Tháp Tam Thắng, thư giãn bãi biển & massage spa.\n\n**Lưu ý thời tiết:** Hôm nay có mưa nhẹ (28°C, độ ẩm 78%), nên mang theo áo khoác nhẹ & ô để thoải mái tham quan.\n\nBạn muốn điều chỉnh gì không — thay đổi hoạt động, ngan sách, hay lưu trú qua đêm?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🚌 Đặt vé xe khách Vexere\",\"type\":\"website\",\"url\":\"https://www.vexere.com/tim-chuyen?from=Ho%20Chi%20Minh&to=Vung%20Tau\",\"primary\":true},{\"label\":\"📍 Xem bản đồ Vũng Tàu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Vung+Tau\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thay đổi hoạt động nào không?|Muốn lưu trú qua đêm?|Điều chỉnh ngan sách?[/FOLLOWUPS]",
+      "visible": "Mình chọn **Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu** — 4.4⭐ (1.452 đánh giá Google Maps); giờ mở cửa theo Google Maps: 06:00–21:00.\n\nMình lập kế hoạch 1 ngày ở Vũng Tàu cho 2 người, giả sử đi hôm nay bằng xe khách (~63 km từ vị trí bạn). Mình chọn các hoạt động phổ biến: ăn sáng/trưa, tham quan thắng cảnh, và thư giãn — bạn có thể điều chỉnh nếu muốn khác.\n\nKế hoạch này bao trọn các hoạt động phổ biến: ăn đặc sản bánh canh, tham quan Tháp Tam Thắng, thư giãn bãi biển & massage spa.\n\n**Lưu ý thời tiết:** Hôm nay có mưa nhẹ (28°C, độ ẩm 78%), nên mang theo áo khoác nhẹ & ô để thoải mái tham quan.\n\nBạn muốn điều chỉnh gì không — thay đổi hoạt động, ngan sách, hay lưu trú qua đêm?",
+      "preGuard": "Mình lập kế hoạch 1 ngày ở Vũng Tàu cho 2 người, giả sử đi hôm nay bằng xe khách (~63 km từ vị trí bạn). Mình chọn các hoạt động phổ biến: ăn sáng/trưa, tham quan thắng cảnh, và thư giãn — bạn có thể điều chỉnh nếu muốn khác.[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Một ngày tại Vũng Tàu - Biển, ẩm thực & thư giãn cho 2 người\",\"people\":2,\"budget_total\":\"2.500.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Hôm nay\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách từ Quận 1 đến Vũng Tàu\",\"description\":\"Chuyến đi khoảng 63 km, mất ~1.5-2 giờ. Bạn có thể đổi sang máy bay nếu muốn nhanh hơn.\",\"price\":\"300.000 VND (ước tính 2 người)\",\"address\":\"Quận 1, TP HCM → Vũng Tàu\",\"maps_link\":\"\",\"booking_link\":\"\"},{\"time\":\"09:30\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Bánh Canh Ghẹ Quận Nhất\",\"description\":\"**4.6⭐ (1.881 đánh giá Google Maps)** — Bánh canh ghẹ nổi tiếng, đặc sản Vũng Tàu, giá phổ thông 1-100k/bát. Mở từ 06:00–21:00.\",\"price\":\"150.000 VND (ước tính 2 người)\",\"address\":\"118 Hoàng Hoa Thám, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=6244241675905425343\",\"booking_link\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Tháp Tam Thắng - Bãi Sau Vũng Tàu\",\"description\":\"**4.7⭐ (3.064 đánh giá Google Maps)** — Tháp cổ kính với view biển đẹp, mở cửa cả ngày. Vé tham quan khoảng 50-100k/người.\",\"price\":\"200.000 VND (ước tính 2 người)\",\"address\":\"1810 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=1825206740430071783\",\"booking_link\":\"\"},{\"time\":\"13:00\",\"emoji\":\"🦐\",\"category\":\"food\",\"name\":\"Nhà hàng hải sản La Sirena\",\"description\":\"**4.6⭐ (1.659 đánh giá Google Maps)** — Hải sản tươi sống, view biển, giá 200-800k/người. Mở 10:30–14:00, 17:00–22:30.\",\"price\":\"800.000 VND (ước tính 2 người)\",\"address\":\"159 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=15039716562630094517\",\"booking_link\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"attraction\",\"name\":\"Bãi Trước Vũng Tàu\",\"description\":\"**4.7⭐ (431 đánh giá Google Maps)** — Bãi biển đẹp, yên tĩnh, lý tưởng để thư giãn & chụp ảnh. Mở cửa cả ngày.\",\"price\":\"Miễn phí\",\"address\":\"83VF+5PC, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=10244873575681704181\",\"booking_link\":\"\"},{\"time\":\"17:30\",\"emoji\":\"💆\",\"category\":\"spa\",\"name\":\"Mây Spa - Vũng Tàu\",\"description\":\"**5⭐ (677 đánh giá Google Maps)** — Spa massage chất lượng cao, mở 08:30–19:30. Giá massage khoảng 300-500k/người/60 phút.\",\"price\":\"600.000 VND (ước tính 2 người, 60 phút)\",\"address\":\"33 Nam Kỳ Khởi Nghĩa, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=1543333543726922779\",\"booking_link\":\"https://www.massagevungtaumayspa.com/\"},{\"time\":\"19:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2\",\"description\":\"**4.3⭐ (6.896 đánh giá Google Maps)** — Ốc nướng & hải sản, giá 100-300k/người. Mở 10:00–22:30.\",\"price\":\"400.000 VND (ước tính 2 người)\",\"address\":\"34 Trần Phú, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=13541304505137005941\",\"booking_link\":\"\"},{\"time\":\"21:30\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách về Quận 1\",\"description\":\"Chuyến về khoảng 21:30-23:00. Bạn có thể chọn xe đêm hoặc ở lại qua đêm.\",\"price\":\"300.000 VND (ước tính 2 người)\",\"address\":\"Vũng Tàu → Quận 1, TP HCM\",\"maps_link\":\"\",\"booking_link\":\"\"}]}],\"cost_breakdown\":{\"Xe khách (khứ hồi)\":\"600.000 VND\",\"Ăn sáng (bánh canh)\":\"150.000 VND\",\"Tham quan (Tháp Tam Thắng)\":\"200.000 VND\",\"Ăn trưa (hải sản)\":\"800.000 VND\",\"Bãi biển\":\"Miễn phí\",\"Massage spa\":\"600.000 VND\",\"Ăn tối (ốc nướng)\":\"400.000 VND\",\"Tổng\":\"2.750.000 VND\"},\"local_tips\":[{\"text\":\"Bánh canh ghẹ là đặc sản nổi tiếng Vũng Tàu — nên ăn sáng sớm vì hàng đông khách.\",\"basis\":\"tool\",\"place\":\"Bánh Canh Ghẹ Quận Nhất\"},{\"text\":\"Tháp Tam Thắng có view biển tuyệt đẹp lúc chiều tà — nên đi vào lúc 16:00-17:00 để chụp ảnh hoàng hôn.\",\"basis\":\"general\"},{\"text\":\"Mây Spa nên đặt trước qua Zalo/WhatsApp để chắc chắn có chỗ, đặc biệt vào cuối tuần.\",\"basis\":\"tool\",\"place\":\"Mây Spa - Vũng Tàu\"},{\"text\":\"Thời tiết hôm nay có mưa nhẹ, mang theo áo khoác nhẹ và ô để thoải mái tham quan.\",\"basis\":\"general\"}],\"share_text\":\"🏖️ Một ngày tuyệt vời ở Vũng Tàu: bánh canh ghẹ, tháp cổ, hải sản tươi & massage thư giãn! 🦐💆 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình lập kế hoạch cho 2 người với tổng ước tính **2.75 triệu VND** (bao gồm xe khách khứ hồi, ăn sáng/trưa/tối, tham quan & massage). Kế hoạch này bao trọn các hoạt động phổ biến: ăn đặc sản bánh canh, tham quan Tháp Tam Thắng, thư giãn bãi biển & massage spa.\n\n**Danh đổi:** Nếu muốn tiết kiệm, bạn có thể bỏ massage spa (tiết kiệm 600k) hoặc chọn nhà hàng hải sản rẻ hơn. Nếu muốn sang trọng hơn, có thể lưu trú qua đêm tại **Fusion Suites Vũng Tàu** (4.8⭐, 4.819 đánh giá) hoặc **Aloha Hotel** (4.8⭐, 682 đánh giá).\n\n**Lưu ý thời tiết:** Hôm nay có mưa nhẹ (28°C, độ ẩm 78%), nên mang theo áo khoác nhẹ & ô để thoải mái tham quan.\n\nBạn muốn điều chỉnh gì không — thay đổi hoạt động, ngan sách, hay lưu trú qua đêm?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🚌 Đặt vé xe khách Vexere\",\"type\":\"website\",\"url\":\"https://www.vexere.com/tim-chuyen?from=Ho%20Chi%20Minh&to=Vung%20Tau\",\"primary\":true},{\"label\":\"🏨 Booking.com - Khách sạn Vũng Tàu\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=Vung+Tau\",\"primary\":false},{\"label\":\"📍 Xem bản đồ Vũng Tàu\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/Vung+Tau\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Thay đổi hoạt động nào không?|Muốn lưu trú qua đêm?|Điều chỉnh ngan sách?[/FOLLOWUPS]"
+    }
+  ]
+}

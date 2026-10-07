@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:09:46.445Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Michi Sushi\" OR \"Haru Sushi Quận 1\" OR \"MANMARU - Japanese Restaurant - 71 Mạc Đĩnh Chi, Hồ Chí Minh\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 1
+   },
+   {
+    "title": "Haru Sushi Quận 1 (@harusushinguyenthaihoc)",
+    "link": "https://www.tiktok.com/@harusushinguyenthaihoc",
+    "snippet": "Haru Sushi Quận 1 · @harusushinguyenthaihoc · HARU SUSHI - 93 NGUYỄN THÁI HỌC, PHƯỜNG CẦU ÔNG LÃNH, QUẬN 1.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Sushi Ngon Tại Haru Sushi Quận 1",
+    "link": "https://www.tiktok.com/@winter290796/photo/7658315768630709524",
+    "snippet": "Đánh giá: 4.5/5⭐️ Đc: 93 Nguyễn Thái Học, Cầu Ông Lãnh, Hồ Chí Minh #shushi #shushiharu #hcm #quan1. Khám Phá Sushi Ngon Tại Haru Sushi Quận 1.",
+    "position": 3
+   },
+   {
+    "title": "Michi Sushi Nguyễn Huệ",
+    "link": "https://www.tiktok.com/discover/michi-sushi-nguy%E1%BB%85n-hu%E1%BB%87",
+    "snippet": "Khám phá các video liên quan đến Michi Sushi Nguyễn Huệ trên TikTok. ... Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday)",
+    "date": "14 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Sơn Tùng M-TP Đếm Ngược Đón 2025 Tại Phố Đi Bộ",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7449321349237017863",
+    "snippet": "Tham gia cùng Sơn Tùng M-TP đếm ngược đón năm mới 2025 tại phố. @Michi Sushi. Sơn Tùng ...",
+    "position": 5
+   },
+   {
+    "title": "Ca sĩ Thanh Duy #thanhduy #oxfam #bridgefest ...",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue/video/7310602035236195586",
+    "snippet": "... MICHI SUSHI - MÓN NHẬT - GIÁ VIỆT ADDRESS: 42/73, đường Nguyễn Huệ, phường Bến Nghé, Quận 1 (lầu 7) OPEN: 10:00 AM - 22:00 PM (from Monday to Sunday) ...",
+    "position": 6
+   },
+   {
+    "title": "Sushi Haru Quận 1",
+    "link": "https://www.tiktok.com/discover/sushi-haru-qu%E1%BA%ADn-1",
+    "snippet": "Khám phá tiệm sushi giá ổn áp tại Sài Gòn, thưởng thức món ăn hấp dẫn. Đừng bỏ lỡ! 31 Likes, 1 Comments. TikTok video from Haru Sushi Quận 1 (@ ...",
+    "date": "8 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Ăn Sushi Trên Thuyền Khổng Lồ Tại Quận 1",
+    "link": "https://www.tiktok.com/@thon_foodie/video/7211907584675040538",
+    "snippet": "Michi Sushi Nguyễn Huệ · Sushi Hạ Long · Sushi Bà Rịa · Hagi Sushi Nguyễn Chánh Menu · Sushi Triệu Việt Vương · Sushi Haru Quận 1 · Sushi Almere ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

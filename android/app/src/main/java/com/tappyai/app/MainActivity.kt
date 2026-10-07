@@ -8,13 +8,16 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import com.tappyai.app.growth.PublicLinkOpener
 import com.tappyai.app.navigation.AppNavHost
 import com.tappyai.app.navigation.AppNavHostViewModel
+import com.tappyai.app.navigation.PublicWebLinks
 import com.tappyai.core.designsystem.theme.TappyAITheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Phase 1B: hosts the real [AppNavHost] instead of directly rendering the Design System
@@ -42,19 +45,44 @@ class MainActivity : AppCompatActivity() {
      */
     private val navHostViewModel: AppNavHostViewModel by viewModels()
 
+    /** The app's existing key-value settings store; see [PREF_DARK_THEME]. */
+    @Inject lateinit var languageManager: com.tappyai.app.language.LanguageManager
+
+    @Inject
+    lateinit var appearance: AppearanceStore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // TappyAI is Vietnamese-first, but with no explicit choice AppCompat falls back to the
+        // DEVICE locale — so an `en-US` handset got an English UI even though 1118 of 1119 strings
+        // are translated. Applied from the Activity, not Application.onCreate: on API 33+ AppCompat
+        // delegates to the framework LocaleManager and a call made before any Activity exists does
+        // not persist (verified — `cmd locale get-app-locales` stayed empty).
+        languageManager.applyDefaultIfUnset()
         enableEdgeToEdge()
         handleIntent(intent)
+        // Read once, before the first frame; an unreadable store degrades to "follow the system".
+        val initialMode = appearance.initialMode()
 
         setContent {
-            var darkTheme by rememberSaveable { mutableStateOf<Boolean?>(null) }
-            val isDark = darkTheme ?: isSystemInDarkTheme()
+            // The appearance mode (see [AppearanceMode] / [AppearanceStore]): SYSTEM until the
+            // person picks Light or Dark — in Settings ("Giao diện") or with the Home top-bar
+            // toggle — and back to SYSTEM when they pick "Theo hệ thống" again. Kept in DataStore
+            // so it survives a full restart; in SYSTEM the OS setting keeps applying live. The
+            // first frame reads the store synchronously so an explicit choice is honoured from the
+            // first frame instead of flashing the system palette once. This stays the ONE place
+            // the app resolves light/dark; everything below, Home V3 included, reads the resolved
+            // value rather than asking the system again.
+            val mode by appearance.mode.collectAsStateWithLifecycle(initialValue = initialMode)
+            val isDark = resolveDarkTheme(mode = mode, systemDark = isSystemInDarkTheme())
 
             TappyAITheme(darkTheme = isDark) {
                 AppNavHost(
                     isDarkTheme = isDark,
-                    onToggleDarkTheme = { darkTheme = !isDark },
+                    // The Home toggle is an explicit choice of the OTHER side, never a reset.
+                    onToggleDarkTheme = {
+                        lifecycleScope.launch { appearance.set(if (isDark) AppearanceMode.Light else AppearanceMode.Dark) }
+                    },
                     viewModel = navHostViewModel,
                 )
             }
@@ -71,9 +99,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
-        val uri = intent?.data ?: return
+        if (intent == null) return
+        // G1-F: an inbound system share (another app → Share → Tappy) has no data URI; it
+        // carries its payload in extras. Handled before the deep-link path so the two never
+        // compete — a share intent is never also a link intent.
+        // G1 completion: a text selection sent through the toolbar (ACTION_PROCESS_TEXT) is
+        // the same inbound shape — extras, no data URI — and takes the same path.
+        if (intent.action == Intent.ACTION_SEND || intent.action == Intent.ACTION_PROCESS_TEXT) {
+            navHostViewModel.handleIncomingShare(intent)
+            return
+        }
+        val uri = intent.data ?: return
         if (uri.scheme == "tappyai") {
             navHostViewModel.handleDeepLink(intent)
+            return
+        }
+        // App Links (prepared, off by default): a verified https://<origin>/r/<slug> arrives here
+        // only when the PublicLinkActivity alias is enabled. The public page is the product — show
+        // it in a session-bound Custom Tab. If no browser offers Custom Tabs, the app simply opens.
+        if (PublicWebLinks.isPublicResultLink(uri.toString(), BuildConfig.WEB_APP_URL)) {
+            PublicLinkOpener.open(this, uri)
         }
     }
 }

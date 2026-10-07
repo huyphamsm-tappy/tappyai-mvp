@@ -1,0 +1,48 @@
+{
+ "osLight": [
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Xe khách hoặc ô tô (~63 km, khoảng 1.5-2 giờ)"
+  },
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Hải sản tươi sống, 4.6⭐ (1.658 đánh giá), mở đến 2"
+  },
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Khách sạn 4.8⭐ (4.819 đánh giá), gần biển, có bar "
+  }
+ ],
+ "osDark": [
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Xe khách hoặc ô tô (~63 km, khoảng 1.5-2 giờ)"
+  },
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Hải sản tươi sống, 4.6⭐ (1.658 đánh giá), mở đến 2"
+  },
+  {
+   "color": "rgb(156, 163, 175)",
+   "bg": "rgba(0, 0, 0, 0)",
+   "opacity": 1,
+   "ratio": 1,
+   "text": "Khách sạn 4.8⭐ (4.819 đánh giá), gần biển, có bar "
+  }
+ ]
+}

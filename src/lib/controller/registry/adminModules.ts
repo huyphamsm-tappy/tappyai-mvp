@@ -7,7 +7,7 @@
 //
 // This is the integration SUBSTRATE, proven equivalent to the legacy nav (see
 // adminModules.equivalence.test.ts). It IS wired into the live AdminShell:
-// src/app/admin/page.tsx calls buildAdminController() and derives navigation
+// src/app/(app)/admin/page.tsx calls buildAdminController() and derives navigation
 // from the registry.
 //
 // Note on terminology: the `ready:false` entries in the legacy nav.ts are
@@ -96,7 +96,7 @@ function mod(
 //
 // Home DECLARES its dependency on `audit.read` because it genuinely has one:
 // the Controller Home renders a recent-audit panel. The declaration is
-// load-bearing, not decorative — `src/app/admin/page.tsx` resolves it through
+// load-bearing, not decorative — `src/app/(app)/admin/page.tsx` resolves it through
 // `bindCapability` and renders the panel as unavailable when the capability
 // does not resolve. That is the first real provides/requires relationship in
 // the registry; before it, capability resolution existed but no shipped module

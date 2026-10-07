@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quà tặng cà phê cao cấp hộp đẹp (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:10.080Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng cà phê cao cấp hộp đẹp (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bộ cà phê cấp tinh xảo, đặc biệt đẹp, cốc gốm sứ cao ...",
+    "link": "https://shopee.vn/B%E1%BB%99-c%C3%A0-ph%C3%AA-c%E1%BA%A5p-tinh-x%E1%BA%A3o-%C4%91%E1%BA%B7c-bi%E1%BB%87t-%C4%91%E1%BA%B9p-c%E1%BB%91c-g%E1%BB%91m-s%E1%BB%A9-cao-c%E1%BA%A5p-h%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-tr%C3%A0-chi%E1%BB%81u-c%E1%BB%95-%C4%91i%E1%BB%83n-i.1613333314.51751553986",
+    "snippet": "Mua Bộ cà phê cấp tinh xảo, đặc biệt đẹp, cốc gốm sứ cao cấp, hộp quà tặng trà chiều cổ điển giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 116,
+    "position": 1
+   },
+   {
+    "title": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8",
+    "link": "https://shopee.vn/Trung-Nguy%C3%AAn-Legend-H%E1%BB%99p-Qu%C3%A0-T%E1%BA%B7ng-C%C3%A0-Ph%C3%AA-S%C3%A1ng-T%E1%BA%A1o-8-B%E1%BB%99-Qu%C3%A0-T%E1%BA%B7ng-Gi%C3%A0u-C%C3%B3-i.195688286.23609877102",
+    "snippet": "Mua Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8 - Bộ Quà Tặng Giàu Có giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.4,
+    "ratingCount": 118,
+    "position": 2
+   },
+   {
+    "title": "Con đường làm đẹp Nữ hoàng hoa hồng Bộ ly cà phê hộp ...",
+    "link": "https://shopee.vn/Con-%C4%91%C6%B0%E1%BB%9Dng-l%C3%A0m-%C4%91%E1%BA%B9p-N%E1%BB%AF-ho%C3%A0ng-hoa-h%E1%BB%93ng-B%E1%BB%99-ly-c%C3%A0-ph%C3%AA-h%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-t%C3%A2n-gia-qu%C3%A0-c%C6%B0%E1%BB%9Bi-ly-qu%C3%A0-t%E1%BA%B7ng-c%E1%BA%B7p-%C4%91%C3%B4i-m%E1%BB%9Bi-h%E1%BB%99p-qu%C3%A0-cao-c%E1%BA%A5p-i.1542322290.43613698374",
+    "snippet": "Mua Con đường làm đẹp Nữ hoàng hoa hồng Bộ ly cà phê hộp quà tặng tân gia quà cưới ly quà tặng cặp đôi mới hộp quà cao cấp giá tốt.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "Con đường làm đẹp Hộp quà tặng cốc cà phê gốm sứ ...",
+    "link": "https://shopee.vn/Con-%C4%91%C6%B0%E1%BB%9Dng-l%C3%A0m-%C4%91%E1%BA%B9p-H%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-c%E1%BB%91c-c%C3%A0-ph%C3%AA-g%E1%BB%91m-s%E1%BB%A9-x%C6%B0%C6%A1ng-cao-c%E1%BA%A5p-cho-sinh-nh%E1%BA%ADt-b%E1%BA%A1n-th%C3%A2n-i.1542326374.42818057813",
+    "snippet": "Mua Con đường làm đẹp Hộp quà tặng cốc cà phê gốm sứ xương cao cấp cho sinh nhật bạn thân giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Bộ cốc cà phê cao cấp tinh xảo đẹp nhẹ nhàng sang trọng ...",
+    "link": "https://shopee.vn/B%E1%BB%99-c%E1%BB%91c-c%C3%A0-ph%C3%AA-cao-c%E1%BA%A5p-tinh-x%E1%BA%A3o-%C4%91%E1%BA%B9p-nh%E1%BA%B9-nh%C3%A0ng-sang-tr%E1%BB%8Dng-c%E1%BB%91c-%C4%91%E1%BB%99c-%C4%91%C3%A1o-b%E1%BB%99-tr%C3%A0-chi%E1%BB%81u-g%E1%BB%91m-s%E1%BB%A9-cao-c%E1%BA%A5p-h%E1%BB%99p-qu%C3%A0-t%E1%BA%B7ng-phong-c%C3%A1ch-i.1542326374.43318057434",
+    "snippet": "Mua Bộ cốc cà phê cao cấp tinh xảo đẹp nhẹ nhàng sang trọng cốc độc đáo bộ trà chiều gốm sứ cao cấp hộp quà tặng phong cách giá tốt.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Con đường làm đẹp Biển sương mù Bộ tách cà phê sứ ...",
+    "link": "https://shopee.vn/Con-%C4%91%C6%B0%E1%BB%9Dng-l%C3%A0m-%C4%91%E1%BA%B9p-Bi%E1%BB%83n-s%C6%B0%C6%A1ng-m%C3%B9-B%E1%BB%99-t%C3%A1ch-c%C3%A0-ph%C3%AA-s%E1%BB%A9-x%C6%B0%C6%A1ng-ch%C3%A2u-%C3%82u-qu%C3%A0-t%E1%BA%B7ng-gia-%C4%91%C3%ACnh-cao-c%E1%BA%A5p-b%E1%BB%99-tr%C3%A0-chi%E1%BB%81u-b%E1%BB%99-c%C3%A0-ph%C3%AA-h%E1%BB%99p-qu%C3%A0-i.1542322290.29789986972",
+    "snippet": "Mua Con đường làm đẹp Biển sương mù Bộ tách cà phê sứ xương châu Âu quà tặng gia đình cao cấp bộ trà chiều bộ cà phê hộp quà giá tốt.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "Trung Nguyên Legend - Hộp Quà Tặng Cà Phê Sáng Tạo 8",
+    "link": "https://www.lazada.vn/products/trung-nguyen-legend-hop-qua-tang-ca-phe-sang-tao-8-bo-qua-tang-giau-co-i2115448139.html?srsltid=AU7gw4UzdQ6WJIGAP8K518DhniK0aD7JL8J1FuCVuzwSHUecgZ4Zd1kT",
+    "snippet": "01 phin cà phê phin nhôm hoa văn trống đồng. Được đặt trong hộp giấy sang trọng hình quyển sách và tặng kèm một túi giấy cao cấp. THÔNG TIN CHI TIẾT: Bộ sản ...",
+    "rating": 4.8,
+    "ratingCount": 163,
+    "position": 7
+   },
+   {
+    "title": "set quà tặng cà phê - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/set%20qu%C3%A0%20t%E1%BA%B7ng/c%C3%A0%20ph%C3%AA",
+    "snippet": "Hộp Mix 3 Vị 18 Gói Cà phê Hòa Tan Cộng Cà Phê Vị Bạc Xỉu,Cốt Dừa, Cà Phê Sữa Đậm Vị Hỗ Trợ Tỉnh Táo. 100.940₫. 113.000₫. -11%. Rẻ Vô Địch. rating-star 4.9.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

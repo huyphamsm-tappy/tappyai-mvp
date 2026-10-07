@@ -1,0 +1,2 @@
+connected via db.zdaprdfgpbpnxyofagmc.supabase.co
+applied supabase/migrations/20260920_f028_dob_self_correct_while_ineligible.sql

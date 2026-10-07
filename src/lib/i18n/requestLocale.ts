@@ -10,6 +10,7 @@ import { searchParam } from '@/lib/http/searchParams'
  * message cap on `/api/chat` got
  *
  *     "Bạn đã dùng hết 5 câu hỏi miễn phí hôm nay. Đăng nhập để tiếp tục trò chuyện với Tappy!"
+ *     (the wording of the day; the anonymous allowance has since become a lifetime trial)
  *
  * — in production, in the middle of an otherwise entirely English session. Same for the anonymous
  * rate limiter and every translate error.

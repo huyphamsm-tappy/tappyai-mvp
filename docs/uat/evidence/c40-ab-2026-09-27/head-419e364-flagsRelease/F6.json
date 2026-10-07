@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7729,
+  "evidenceId": "98157650-4158-4319-90da-31373d4ca342",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Nếu bạn muốn chắc chắn có chỗ ngồi thoải mái cho 2 người, bạn có thể:\n- **Đến sớm hơn** (khoảng 17h-18h) để tránh giờ cao điểm\n\n[FOLLOWUPS]Gọi đặt bàn trước không?|Thích ăn gì cụ thể?|Tìm quán khác?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **Izakaya Choioinoodle** cho bạn! Vừa vặn cho bữa tối 2 người ở Quận 1.\n\nNếu bạn muốn thử hải sản, **Hải Sản Hoàng Gia** cũng tuyệt vời với 4.7⭐ (981 đánh giá) — mở đến nửa đêm, rất phù hợp cho bữa tối.\n\n 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Izakaya Choioinoodle\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6525976663471549326\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải sản Hoàng Gia|Quán Bụi ăn Việt|Xem thêm quán khác[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Nếu bạn muốn chắc chắn có chỗ ngồi thoải mái cho 2 người, bạn có thể:\n- **Đến sớm hơn** (khoảng 17h-18h) để tránh giờ cao điểm\n\n[FOLLOWUPS]Gọi đặt bàn trước không?|Thích ăn gì cụ thể?|Tìm quán khác?[/FOLLOWUPS]"
+    }
+  ]
+}

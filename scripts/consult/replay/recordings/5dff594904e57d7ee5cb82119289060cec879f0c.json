@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:26.841Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hòa Tan Đen Americano Premium King Coffee ...",
+    "link": "https://shopee.vn/C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-%C4%90en-Americano-Premium-King-Coffee-H%E1%BB%99p-15-G%C3%B3i-1g-i.22658454.25676269169",
+    "snippet": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g. 1/9. Đã bán hết. 65.000₫. Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g.",
+    "position": 1
+   },
+   {
+    "title": "[IRUJA] Vietnam COMBO X2 Cà Phê Hòa Tan Đen ...",
+    "link": "https://shopee.vn/-IRUJA-Vietnam-COMBO-X2-C%C3%A0-Ph%C3%AA-H%C3%B2a-Tan-%C4%90en-Americano-Premium-King-Coffee-H%E1%BB%99p-15-G%C3%B3i-1g-i.1885419746.47715042899?extraParams=%7B%22display_model_id%22%3A396290005616%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [IRUJA] Vietnam COMBO X2 Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 2
+   },
+   {
+    "title": "[IRUJA VIETNAM] CÀ PHÊ HÒA TAN ĐEN AMERICANO ...",
+    "link": "https://shopee.vn/-IRUJA-VIETNAM-C%C3%80-PH%C3%8A-H%C3%92A-TAN-%C4%90EN-AMERICANO-PREMIUM-KING-COFFEE-H%E1%BB%98P-15-G%C3%93I-1G-(15G)-i.1377425884.51713350884?extraParams=%7B%22display_model_id%22%3A446155735888%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [IRUJA VIETNAM] CÀ PHÊ HÒA TAN ĐEN AMERICANO PREMIUM KING COFFEE HỘP 15 GÓI 1G (15G) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Cà phê KING COFFEE hòa tan cao cấp Americano",
+    "link": "https://shopee.vn/C%C3%A0-ph%C3%AA-KING-COFFEE-h%C3%B2a-tan-cao-c%E1%BA%A5p-Americano-H%E1%BB%99p-15-g%C3%B3i-x-1g-i.215432479.4093093404",
+    "snippet": "Mua Cà phê KING COFFEE hòa tan cao cấp Americano - Hộp 15 gói x 1g giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 5,
+    "ratingCount": 101,
+    "position": 4
+   },
+   {
+    "title": "-tNI giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?&keyword=-tNI",
+    "snippet": "King Coffee Cà Phê Hòa Tan 3 in 1 X3 - Hộp 324g ( 12 gói x 27g) - Hàm lượng caffeine gấp 3 lần thông thường. 79.464₫. -12%. 6?.??6₫ 7.7 lúc 01:00.",
+    "rating": 4.9,
+    "ratingCount": 90,
+    "position": 5
+   },
+   {
+    "title": "King coffee - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/king%20coffee",
+    "snippet": "Cà Phê Sữa plus hòa tan 3IN1 TNI KING COFFEE 1kg - Túi 50 gói x 20g. 815.000₫. 1.115.000₫. -27%. Rẻ Vô Địch. rating-star 5.0.",
+    "position": 6
+   },
+   {
+    "title": "[ Date 07/28 ] Cà phê đen hoà tan Americano King Coffee ...",
+    "link": "https://shopee.vn/-Date-07-28-C%C3%A0-ph%C3%AA-%C4%91en-ho%C3%A0-tan-Americano-King-Coffee-15g-(-1g-x-15-g%C3%B3i-)-i.338455552.52516832790?extraParams=%7B%22display_model_id%22%3A401430385977%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua [ Date 07/28 ] Cà phê đen hoà tan Americano King Coffee 15g ( 1g x 15 gói ) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 7
+   },
+   {
+    "title": "Tni giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=Tni",
+    "snippet": "Cà Phê KING COFFEE Hòa Tan 3IN1 KING COFFEE - Túi 88 gói x 16g · 293.625 · 337.500₫. -13% ; Cà phê hòa tan 3in1 TNI King Coffee X3 324g (12 gói x 27g) · 73.296 ; Cà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

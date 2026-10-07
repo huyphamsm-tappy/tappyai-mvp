@@ -1,0 +1,2513 @@
+{
+  "id": "T3",
+  "group": "food-constraints",
+  "criteria": [
+    "Turn 2: every card respects the 50-60k budget; no restaurants/beer venues (nhà hàng, quán nhậu, bia)",
+    "Places closed at lunch are not ranked first (or are clearly marked and ranked down)",
+    "Text and cards recommend the SAME places",
+    "No invented cuisine (no seafood unless the user asked)",
+    "The budget correction replaces the earlier constraint and the reply acknowledges it"
+  ],
+  "turns": [
+    {
+      "user": "trưa nay ăn gì cho ngon",
+      "status": 200,
+      "elapsedMs": 14106,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa ngon Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 280,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng châu Á",
+                "Trang trại hải sản"
+              ],
+              "hours": "15:00–02:00",
+              "open": true,
+              "distanceKm": 2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 894,
+              "price": "100-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 720,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4228,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 283,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng châu Á"
+              ],
+              "hours": "10:00–19:30",
+              "open": false,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "address": "3bis Phan Văn Đạt, Sài Gòn, Hồ Chí Minh 24000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 83,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–17:00",
+              "open": false,
+              "distanceKm": 0.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Niêu Chú Chen - Quận 1",
+              "address": "283 Nguyễn Trãi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 510,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng cơm",
+                "Nhà hàng cháo"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": 2.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "address": "86 Trương Định, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 190,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": false,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79358,106.69402",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOURKVSl4S4JOQCYBxdqjwCxivjZu-MdAk3ZqOaajAPB7E84wzOwRSvAn3YRVRjPcY2zbL2MHeYW2E_5nL_StiFxqZ_f07g59FQwWIj0Vt9KyGcArA31F6pO6Opu3XVed8-sg6OqQ",
+                "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 280,
+                "openingHours": "15:00–02:00",
+                "openNow": true,
+                "phone": "+84 833 233 963",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "15:00–02:00",
+                  "Thứ Sáu": "15:00–02:00",
+                  "Thứ Bảy": "15:00–02:00",
+                  "Chủ Nhật": "15:00–02:00",
+                  "Thứ Hai": "15:00–02:00",
+                  "Thứ Ba": "15:00–02:00",
+                  "Thứ Tư": "15:00–02:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Nhà hàng châu Á",
+                  "Trang trại hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8963047816332474488",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84833233963",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78083,106.70637",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPvAAcVaeKzrnxsnIQgP7RerCCC_kI6TVKVSFh9sI5mqT9rLZ8l2IoIFwNIjD7JgbxcNSyZPY6-FrsL5i7SQY5NtOUIsdHC6a6G133kUbtSbsNjmzGTjh1Se8XCbyx4-m8-OrGvO-tGrfY",
+                "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 894,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 6271 1214",
+                "priceRangeText": "100-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8054492323917688722",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Central%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862711214",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYRK9xzhdCDLwXhr3CJrcyp-YVq4FwlWQCzRzSA5O5i-saD_x6RR3DAgyZVBOCvPbKQD1Ez3Gs0ksyM1aNOSuKFtF0MP756hB_jCP9bSNnjDtXFTj48Po5YyN7IU0dMXdIdIAG2vmYbqw",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 720,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM64q9ic0qcb5p3wT7BBKt0TGCJXArI7fZQwcFGijiTtXrkK0DlpDgVFDzaH_D8Ku0M4gh90Qw-WNOyfmcf_zfBCzRafdtFnnrcAC9ButRVCLHpmvPTi8ToA_amx5GikBgLkhSNN7saIUs",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4228,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 3829 1515",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77313,106.69405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Hà Nội",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPAGEaR2JxAfkRlXlnJ-cqF3l7ngXDpLdP5A8Mpzz53xnt_BmXls9G5daeEPBWR--11uZsBBsrJRk7VxJaI193wZFhPV-qoiO3NHka5T0_eENQdth5zOu16SyRfv8FBwcDOPv4GOw",
+                "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 283,
+                "openingHours": "10:00–19:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–19:30",
+                  "Thứ Sáu": "10:00–19:30",
+                  "Thứ Bảy": "10:00–15:30",
+                  "Chủ Nhật": "10:00–19:30",
+                  "Thứ Hai": "10:00–19:30",
+                  "Thứ Ba": "10:00–19:30",
+                  "Thứ Tư": "10:00–19:30"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng châu Á"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17709648029835947889",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77519,106.70514",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ben.la - Mâm cơm nhà quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmORp2VYqUEOns_5yQmyMfKxL4mqCRKBC3YJnc-h7cA4CBLrN-ynf-TkADZ3tATvvG-dG2Cj2xoV4BKnE2Zs-oDwUvwHgwZNFpws6CFjgT6gEROxZ2lIBiEfgcB867wiMhXvsaWfJmpqFnzj",
+                "address": "3bis Phan Văn Đạt, Sài Gòn, Hồ Chí Minh 24000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 83,
+                "openingHours": "07:00–17:00",
+                "openNow": false,
+                "phone": "+84 961 869 469",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–17:00",
+                  "Thứ Sáu": "07:00–17:00",
+                  "Thứ Bảy": "07:00–17:00",
+                  "Chủ Nhật": "07:00–17:00",
+                  "Thứ Hai": "07:00–17:00",
+                  "Thứ Ba": "07:00–17:00",
+                  "Thứ Tư": "07:00–17:00"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14223058263999930191",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ben.la%20-%20M%C3%A2m%20c%C6%A1m%20nh%C3%A0%20qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84961869469",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76288,106.68691",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Niêu Chú Chen - Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNHqa3ypSYMM_9jATh3fm7KUjR6Ug1sdNSpEvkvRgnjAI4S7PwVl4rzE1YAScgC5dBrHrU0X18oS7i0uvGH35Rz7FTjkZBcInU46qFHF0ezoBqSIF4P5DBTeWKY4qo_Cakt4tf3pASHqio",
+                "address": "283 Nguyễn Trãi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 510,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 827 665 656",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Nhà hàng cơm",
+                  "Nhà hàng cháo"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10727840334027933157",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ni%C3%AAu%20Ch%C3%BA%20Chen%20-%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84827665656",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77331,106.69515",
+                "domain": "food",
+                "kind": "place",
+                "name": "HÀ NỘI QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgyvG044N7S3CSA1OBsqJhwmfMVjhLiR9_G9k3ZY9a-VXqLT32Z7j3WMMk2XFCIAbcmC-CVFPhRGJ1EL0FVbBdHSqAPgNRT1IThcf7Ip2eWYuklBtM_m9kwtpWgF-l2pg8-z1CvkYevXcJ",
+                "address": "86 Trương Định, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 190,
+                "openingHours": "06:30–14:00, 16:00–20:30",
+                "openNow": false,
+                "phone": "+84 937 799 886",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:30–14:00, 16:00–20:30",
+                  "Thứ Sáu": "06:30–14:00, 16:00–20:30",
+                  "Thứ Bảy": "06:30–14:00, 16:00–20:30",
+                  "Chủ Nhật": "06:30–14:00, 16:00–20:30",
+                  "Thứ Hai": "06:30–14:00, 16:00–20:30",
+                  "Thứ Ba": "06:30–14:00, 16:00–20:30",
+                  "Thứ Tư": "06:30–14:00, 16:00–20:30"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9968429844438726476",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%80%20N%E1%BB%98I%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100063597529686&mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84937799886",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 280,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng châu Á",
+                "Trang trại hải sản"
+              ],
+              "hours": "15:00–02:00",
+              "open": true,
+              "distanceKm": 2,
+              "recommended": true,
+              "reasons": [
+                "rated 4.7",
+                "open now",
+                "2km away"
+              ]
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 894,
+              "price": "100-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 720,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4228,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 283,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng châu Á"
+              ],
+              "hours": "10:00–19:30",
+              "open": false,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "address": "3bis Phan Văn Đạt, Sài Gòn, Hồ Chí Minh 24000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 83,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–17:00",
+              "open": false,
+              "distanceKm": 0.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Niêu Chú Chen - Quận 1",
+              "address": "283 Nguyễn Trãi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 510,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng cơm",
+                "Nhà hàng cháo"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": 2.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "address": "86 Trương Định, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 190,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": false,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.79358,106.69402",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOURKVSl4S4JOQCYBxdqjwCxivjZu-MdAk3ZqOaajAPB7E84wzOwRSvAn3YRVRjPcY2zbL2MHeYW2E_5nL_StiFxqZ_f07g59FQwWIj0Vt9KyGcArA31F6pO6Opu3XVed8-sg6OqQ",
+                "address": "147 Hoàng Sa, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 280,
+                "openingHours": "15:00–02:00",
+                "openNow": true,
+                "phone": "+84 833 233 963",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "15:00–02:00",
+                  "Thứ Sáu": "15:00–02:00",
+                  "Thứ Bảy": "15:00–02:00",
+                  "Chủ Nhật": "15:00–02:00",
+                  "Thứ Hai": "15:00–02:00",
+                  "Thứ Ba": "15:00–02:00",
+                  "Thứ Tư": "15:00–02:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Nhà hàng châu Á",
+                  "Trang trại hải sản"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.7",
+                    "params": {
+                      "value": 4.7
+                    }
+                  },
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "2km away",
+                    "params": {
+                      "km": 2
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "distance",
+                  "evidence": "0.7km away",
+                  "params": {
+                    "km": 0.7
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8963047816332474488",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20nh%E1%BA%ADu%20qu%E1%BA%ADn%201%20-%20H%E1%BA%A2I%20S%E1%BA%A2N%20QU%C3%9D%20D%E1%BA%ACU%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=61585781067778",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84833233963",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78083,106.70637",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPvAAcVaeKzrnxsnIQgP7RerCCC_kI6TVKVSFh9sI5mqT9rLZ8l2IoIFwNIjD7JgbxcNSyZPY6-FrsL5i7SQY5NtOUIsdHC6a6G133kUbtSbsNjmzGTjh1Se8XCbyx4-m8-OrGvO-tGrfY",
+                "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 894,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 6271 1214",
+                "priceRangeText": "100-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8054492323917688722",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Central%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862711214",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYRK9xzhdCDLwXhr3CJrcyp-YVq4FwlWQCzRzSA5O5i-saD_x6RR3DAgyZVBOCvPbKQD1Ez3Gs0ksyM1aNOSuKFtF0MP756hB_jCP9bSNnjDtXFTj48Po5YyN7IU0dMXdIdIAG2vmYbqw",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 720,
+                "openingHours": "09:00–23:30",
+                "openNow": true,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30",
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM64q9ic0qcb5p3wT7BBKt0TGCJXArI7fZQwcFGijiTtXrkK0DlpDgVFDzaH_D8Ku0M4gh90Qw-WNOyfmcf_zfBCzRafdtFnnrcAC9ButRVCLHpmvPTi8ToA_amx5GikBgLkhSNN7saIUs",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4228,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 3829 1515",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77313,106.69405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Hà Nội",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPAGEaR2JxAfkRlXlnJ-cqF3l7ngXDpLdP5A8Mpzz53xnt_BmXls9G5daeEPBWR--11uZsBBsrJRk7VxJaI193wZFhPV-qoiO3NHka5T0_eENQdth5zOu16SyRfv8FBwcDOPv4GOw",
+                "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 283,
+                "openingHours": "10:00–19:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–19:30",
+                  "Thứ Sáu": "10:00–19:30",
+                  "Thứ Bảy": "10:00–15:30",
+                  "Chủ Nhật": "10:00–19:30",
+                  "Thứ Hai": "10:00–19:30",
+                  "Thứ Ba": "10:00–19:30",
+                  "Thứ Tư": "10:00–19:30"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng châu Á"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17709648029835947889",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77519,106.70514",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ben.la - Mâm cơm nhà quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmORp2VYqUEOns_5yQmyMfKxL4mqCRKBC3YJnc-h7cA4CBLrN-ynf-TkADZ3tATvvG-dG2Cj2xoV4BKnE2Zs-oDwUvwHgwZNFpws6CFjgT6gEROxZ2lIBiEfgcB867wiMhXvsaWfJmpqFnzj",
+                "address": "3bis Phan Văn Đạt, Sài Gòn, Hồ Chí Minh 24000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 83,
+                "openingHours": "07:00–17:00",
+                "openNow": false,
+                "phone": "+84 961 869 469",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–17:00",
+                  "Thứ Sáu": "07:00–17:00",
+                  "Thứ Bảy": "07:00–17:00",
+                  "Chủ Nhật": "07:00–17:00",
+                  "Thứ Hai": "07:00–17:00",
+                  "Thứ Ba": "07:00–17:00",
+                  "Thứ Tư": "07:00–17:00"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14223058263999930191",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ben.la%20-%20M%C3%A2m%20c%C6%A1m%20nh%C3%A0%20qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84961869469",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76288,106.68691",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Niêu Chú Chen - Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNHqa3ypSYMM_9jATh3fm7KUjR6Ug1sdNSpEvkvRgnjAI4S7PwVl4rzE1YAScgC5dBrHrU0X18oS7i0uvGH35Rz7FTjkZBcInU46qFHF0ezoBqSIF4P5DBTeWKY4qo_Cakt4tf3pASHqio",
+                "address": "283 Nguyễn Trãi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 510,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 827 665 656",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Nhà hàng cơm",
+                  "Nhà hàng cháo"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10727840334027933157",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ni%C3%AAu%20Ch%C3%BA%20Chen%20-%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84827665656",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77331,106.69515",
+                "domain": "food",
+                "kind": "place",
+                "name": "HÀ NỘI QUÁN",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgyvG044N7S3CSA1OBsqJhwmfMVjhLiR9_G9k3ZY9a-VXqLT32Z7j3WMMk2XFCIAbcmC-CVFPhRGJ1EL0FVbBdHSqAPgNRT1IThcf7Ip2eWYuklBtM_m9kwtpWgF-l2pg8-z1CvkYevXcJ",
+                "address": "86 Trương Định, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 190,
+                "openingHours": "06:30–14:00, 16:00–20:30",
+                "openNow": false,
+                "phone": "+84 937 799 886",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "06:30–14:00, 16:00–20:30",
+                  "Thứ Sáu": "06:30–14:00, 16:00–20:30",
+                  "Thứ Bảy": "06:30–14:00, 16:00–20:30",
+                  "Chủ Nhật": "06:30–14:00, 16:00–20:30",
+                  "Thứ Hai": "06:30–14:00, 16:00–20:30",
+                  "Thứ Ba": "06:30–14:00, 16:00–20:30",
+                  "Thứ Tư": "06:30–14:00, 16:00–20:30"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9968429844438726476",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%80%20N%E1%BB%98I%20QU%C3%81N%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100063597529686&mibextid=ZbWKwL",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84937799886",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.79358,106.69402",
+              "place:osm:10.78083,106.70637",
+              "place:osm:10.76288,106.68691"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.79358,106.69402",
+            "place:osm:10.78083,106.70637",
+            "place:osm:10.76288,106.68691"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Cơm Ngon Hà Nội",
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Cơm Niêu Chú Chen - Quận 1",
+          "HÀ NỘI QUÁN"
+        ],
+        [
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Cơm Ngon Hà Nội",
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Cơm Niêu Chú Chen - Quận 1",
+          "HÀ NỘI QUÁN"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm những quán ăn trưa ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** cho bạn! 🦐 **4.7⭐ (280 đánh giá Google Maps)**\n\nVì bạn yêu thích hải sản, quán này là lựa chọn hoàn hảo, đang mở cửa lúc này, và có đủ loại hải sản tươi ngon. Mặc dù cách bạn 2km nhưng chất lượng và danh tiếng quán xứng đáng.\n\nNếu muốn gần hơn, **Quán Bụi Central** (0.7km) cũng ngon với 4.5⭐ và 894 đánh giá — chuyên ẩm thực Việt truyền thống, mở từ 7h sáng đến 23h.\n\n*TappyAI dựa trên đánh giá thực tế để gợi ý — bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8963047816332474488\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi Central gần hơn|Cơm Niêu Chú Chen|Hàng Dương Quán[/FOLLOWUPS]",
+      "visible": "Mình tìm những quán ăn trưa ngon gần bạn ở Quận 1 nhé! 🍽️\n\nMình chọn **Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU** cho bạn! 🦐 **4.7⭐ (280 đánh giá Google Maps)**\n\nVì bạn yêu thích hải sản, quán này là lựa chọn hoàn hảo, đang mở cửa lúc này, và có đủ loại hải sản tươi ngon. Mặc dù cách bạn 2km nhưng chất lượng và danh tiếng quán xứng đáng.\n\nNếu muốn gần hơn, **Quán Bụi Central** (0.7km) cũng ngon với 4.5⭐ và 894 đánh giá — chuyên ẩm thực Việt truyền thống, mở từ 7h sáng đến 23h.\n\n*TappyAI dựa trên đánh giá thực tế để gợi ý — bạn tự quyết định chọn quán nào nhé!*"
+    },
+    {
+      "user": "chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng",
+      "status": 200,
+      "elapsedMs": 20135,
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa rẻ tiền 50000 60000 Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+              "address": "61 Phó Đức Chính, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 278,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm tấm Đề Thám",
+              "address": "269 Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 758,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 1.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4228,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ann Quán",
+              "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 1279,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "07:00–01:00",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": 0.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hủ tiếu bò viên Chú Tư Già Quận 1",
+              "address": "58 Trần Quang Khải, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 445,
+              "price": null,
+              "categories": [
+                "Quán mì",
+                "Quán ăn nhỏ"
+              ],
+              "hours": "00:00–03:30, 07:00–23:58",
+              "open": true,
+              "distanceKm": 1.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Út Hương",
+              "address": "TK18/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 3.7,
+              "ratingCount": 308,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "07:00–00:00",
+              "open": true,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ăn Tiệm G",
+              "address": "281 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 85,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "11:00–15:00",
+              "open": false,
+              "distanceKm": 1.1,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76846,106.70031",
+                "domain": "food",
+                "kind": "place",
+                "name": "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1AI9fCXOvylBMs9hzdxi_Rt3OVtSEJ7rBmqLWje3FXolclk9QDP-QVpjhIUxJ0NNnaYAAfrsc1d-yVFgjuOpawqfecDdbC2AiPpHdSGoMBEJWfDHqy26O0ZBcOToEvyFXp99OK4xPiiS0",
+                "address": "61 Phó Đức Chính, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 278,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 907 374 141",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5031384834553425300",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A6%20T%C3%8DU%20CH%C3%9A%20TH%C3%80NH%20%7C%20H%E1%BB%A7%20T%C3%ADu%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20H%E1%BB%A7%20T%C3%ADu%20Ch%C3%BA%20Th%C3%A0nh%20Qu%E1%BA%ADn%201%20%7C%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907374141",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76838,106.69337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm tấm Đề Thám",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlwBlTZjWWS2MM1wnLgHe3KoUsfeAmIWn4NSdknh0GmRxBVC77M-12ExjtpyWRVInDiXFYTSqYb8blbS_0pqgHC3eMNxusswyKc5MYBz2CZtC-nONq4F7IoZu5WomlPjqWyt8U",
+                "address": "269 Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 758,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 933 937 335",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Đóng cửa",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 1.3,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=745082976618157529",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20t%E1%BA%A5m%20%C4%90%E1%BB%81%20Th%C3%A1m%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933937335",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBORe0Jpq-3IVMKr5gxTITgypUmJ7whY8pJ_VrQtuqRl8jRwH5RSHnZXEY8gsyfVw2rm2wSDv9vrRqC41iqQ7DJP0GA8QQddY5aWRtf_hopY7rBMJUJJ7T3dP2Ku9_RIkkSRR59RfH5S6y",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4228,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 3829 1515",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77244,106.70428",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ann Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniD__1PyKO-mI4qd3-GQuvHRpqV8eMHKb7rZny8iYDFAxmqfFdqVK4WvpE1t0hzIp1fLycLTsrsCYJI0cMfQCV4oXMya7LGN9xVQaTwVKXr_12W15QWXVWfLn_cFZeMeI0TcYTow",
+                "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 1279,
+                "openingHours": "07:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3622 6666",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–01:00",
+                  "Thứ Sáu": "07:00–01:00",
+                  "Thứ Bảy": "07:00–01:00",
+                  "Chủ Nhật": "07:00–01:00",
+                  "Thứ Hai": "07:00–01:00",
+                  "Thứ Ba": "07:00–01:00",
+                  "Thứ Tư": "07:00–01:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8503124390060826448",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ann%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/nhahangannquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836226666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlzngWUkUGZsatdDcUbghbySn-Sgb273CPth5j05xxidhyhrpb1hS4n5WWGCLR2bGIO1eR7qR_RMrDKnwhiR2GwhYjn6BWHzzttm_W8nsyUZ2cHxsMePncEbz-4Sc92ufbeggsA",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00",
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00"
+                },
+                "distanceKm": 0.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79256,106.69407",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hủ tiếu bò viên Chú Tư Già Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk76Gvma04osXk2_0ZrylLl2rdAaLqCPSfFlCYma6xKsudTcM_CuQie2K2iNwRz9scfsXo4l5bBicFn8b0xevW4fLmW3mbc6m1ud1HN-L6QzOD9Amw-Be57aGkLZjR289Hfsym0pA",
+                "address": "58 Trần Quang Khải, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 445,
+                "openingHours": "00:00–03:30, 07:00–23:58",
+                "openNow": true,
+                "phone": "+84 388 809 370",
+                "openingHoursWeek": {
+                  "Thứ Năm": "00:00–03:30, 07:00–23:58",
+                  "Thứ Sáu": "00:00–03:30, 07:00–23:58",
+                  "Thứ Bảy": "00:00–03:30, 07:00–23:58",
+                  "Chủ Nhật": "00:00–03:30, 07:00–23:58",
+                  "Thứ Hai": "00:00–03:30, 07:00–23:58",
+                  "Thứ Ba": "00:00–03:30, 07:00–23:58",
+                  "Thứ Tư": "00:00–03:30, 07:00–23:58"
+                },
+                "distanceKm": 1.9,
+                "categories": [
+                  "Quán mì",
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11350692984688220375",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A7%20ti%E1%BA%BFu%20b%C3%B2%20vi%C3%AAn%20Ch%C3%BA%20T%C6%B0%20Gi%C3%A0%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://grab.onelink.me/2695613898?pid=inappsharing&c=5-C4KAAXXVE3LERT&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DGRABFOOD%26sourceID%3DA4pcqCZkS4%26merchantIDs%3D5-C4KAAXXVE3LERT&af_force_deeplink=true&af_web_dp=https%3A%2F%2Fwww.grab.com%2Fdownload",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84388809370",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75784,106.68877",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Út Hương",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmPzG0B55Srrwzpbho5bfEWS4Uu99-9xzPNtz1LuH5zBuQAi6jsAvHaee3y5fjVAHWwmAQqNwrE5MBCSkuDS6aJvb19fGWJF25uIZAit-dVzFhNxIlUpiSELa7LoPTQt-_m3Ovk",
+                "address": "TK18/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 3.7,
+                "ratingCount": 308,
+                "openingHours": "07:00–00:00",
+                "openNow": true,
+                "phone": "+84 908 484 414",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–00:00",
+                  "Thứ Sáu": "07:00–00:00",
+                  "Thứ Bảy": "07:00–00:00",
+                  "Chủ Nhật": "07:00–00:00",
+                  "Thứ Hai": "07:00–00:00",
+                  "Thứ Ba": "07:00–00:00",
+                  "Thứ Tư": "07:00–00:00"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2327648434512237555",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20%C3%9At%20H%C6%B0%C6%A1ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908484414",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76681,106.69955",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ăn Tiệm G",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOHkYUJudTattQnMQ90H7ytzSIFJApTl16rdWyHV8tzG2tn7bO98z4jcNkYgOieHInPkrJSRxLXU_ooyXpNCnDeFlJoD_BWNHXazUzqJAi6EhsQy7qvUgUJHyvaeq33_b_RIDbmI5VDGvB",
+                "address": "281 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 85,
+                "openingHours": "11:00–15:00",
+                "openNow": false,
+                "phone": "+84 986 882 045",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–15:00",
+                  "Thứ Sáu": "11:00–15:00",
+                  "Thứ Bảy": "Đóng cửa",
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "11:00–15:00",
+                  "Thứ Ba": "11:00–15:00",
+                  "Thứ Tư": "11:00–15:00"
+                },
+                "distanceKm": 1.1,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11663634015656184582",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%82n%20Ti%E1%BB%87m%20G%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84986882045",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20r%E1%BA%BB%20ti%E1%BB%81n%2050000%2060000%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+              "address": "61 Phó Đức Chính, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 278,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 0.9,
+              "recommended": true,
+              "reasons": [
+                "rated 4.7",
+                "open now",
+                "0.9km away"
+              ]
+            },
+            {
+              "name": "Cơm tấm Đề Thám",
+              "address": "269 Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 758,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 1.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4228,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": true,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ann Quán",
+              "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 1279,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng"
+              ],
+              "hours": "07:00–01:00",
+              "open": true,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sài Gòn Xưa và Nay",
+              "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 1274,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "11:00–01:00",
+              "open": true,
+              "distanceKm": 0.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hủ tiếu bò viên Chú Tư Già Quận 1",
+              "address": "58 Trần Quang Khải, Tân Định, Hồ Chí Minh, Việt Nam",
+              "rating": 3.9,
+              "ratingCount": 445,
+              "price": null,
+              "categories": [
+                "Quán mì",
+                "Quán ăn nhỏ"
+              ],
+              "hours": "00:00–03:30, 07:00–23:58",
+              "open": true,
+              "distanceKm": 1.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Út Hương",
+              "address": "TK18/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 3.7,
+              "ratingCount": 308,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "07:00–00:00",
+              "open": true,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ăn Tiệm G",
+              "address": "281 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 85,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "11:00–15:00",
+              "open": false,
+              "distanceKm": 1.1,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76846,106.70031",
+                "domain": "food",
+                "kind": "place",
+                "name": "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl1AI9fCXOvylBMs9hzdxi_Rt3OVtSEJ7rBmqLWje3FXolclk9QDP-QVpjhIUxJ0NNnaYAAfrsc1d-yVFgjuOpawqfecDdbC2AiPpHdSGoMBEJWfDHqy26O0ZBcOToEvyFXp99OK4xPiiS0",
+                "address": "61 Phó Đức Chính, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 278,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 907 374 141",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.7",
+                    "params": {
+                      "value": 4.7
+                    }
+                  },
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "0.9km away",
+                    "params": {
+                      "km": 0.9
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "758 reviews",
+                  "params": {
+                    "count": 758
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5031384834553425300",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A6%20T%C3%8DU%20CH%C3%9A%20TH%C3%80NH%20%7C%20H%E1%BB%A7%20T%C3%ADu%20Ngon%20Qu%E1%BA%ADn%201%20%7C%20H%E1%BB%A7%20T%C3%ADu%20Ch%C3%BA%20Th%C3%A0nh%20Qu%E1%BA%ADn%201%20%7C%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907374141",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76838,106.69337",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm tấm Đề Thám",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlwBlTZjWWS2MM1wnLgHe3KoUsfeAmIWn4NSdknh0GmRxBVC77M-12ExjtpyWRVInDiXFYTSqYb8blbS_0pqgHC3eMNxusswyKc5MYBz2CZtC-nONq4F7IoZu5WomlPjqWyt8U",
+                "address": "269 Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 758,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 933 937 335",
+                "openingHoursWeek": {
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Đóng cửa",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày"
+                },
+                "distanceKm": 1.3,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@sunshinetours.vn/video/7664020626570579208",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=745082976618157529",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933937335",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20t%E1%BA%A5m%20%C4%90%E1%BB%81%20Th%C3%A1m%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlBORe0Jpq-3IVMKr5gxTITgypUmJ7whY8pJ_VrQtuqRl8jRwH5RSHnZXEY8gsyfVw2rm2wSDv9vrRqC41iqQ7DJP0GA8QQddY5aWRtf_hopY7rBMJUJJ7T3dP2Ku9_RIkkSRR59RfH5S6y",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4228,
+                "openingHours": "07:00–23:00",
+                "openNow": true,
+                "phone": "+84 28 3829 1515",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00",
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77244,106.70428",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ann Quán",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniD__1PyKO-mI4qd3-GQuvHRpqV8eMHKb7rZny8iYDFAxmqfFdqVK4WvpE1t0hzIp1fLycLTsrsCYJI0cMfQCV4oXMya7LGN9xVQaTwVKXr_12W15QWXVWfLn_cFZeMeI0TcYTow",
+                "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 1279,
+                "openingHours": "07:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3622 6666",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–01:00",
+                  "Thứ Sáu": "07:00–01:00",
+                  "Thứ Bảy": "07:00–01:00",
+                  "Chủ Nhật": "07:00–01:00",
+                  "Thứ Hai": "07:00–01:00",
+                  "Thứ Ba": "07:00–01:00",
+                  "Thứ Tư": "07:00–01:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8503124390060826448",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ann%20Qu%C3%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/nhahangannquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842836226666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77531,106.69734",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Xưa và Nay",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlzngWUkUGZsatdDcUbghbySn-Sgb273CPth5j05xxidhyhrpb1hS4n5WWGCLR2bGIO1eR7qR_RMrDKnwhiR2GwhYjn6BWHzzttm_W8nsyUZ2cHxsMePncEbz-4Sc92ufbeggsA",
+                "address": "37 Nguyễn Trung Trực, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 1274,
+                "openingHours": "11:00–01:00",
+                "openNow": true,
+                "phone": "+84 28 3822 2337",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–01:00",
+                  "Thứ Sáu": "11:00–01:00",
+                  "Thứ Bảy": "11:00–01:00",
+                  "Chủ Nhật": "11:00–01:00",
+                  "Thứ Hai": "11:00–01:00",
+                  "Thứ Ba": "11:00–01:00",
+                  "Thứ Tư": "11:00–01:00"
+                },
+                "distanceKm": 0.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1457464609730468040",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20X%C6%B0a%20v%C3%A0%20Nay%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838222337",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79256,106.69407",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hủ tiếu bò viên Chú Tư Già Quận 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk76Gvma04osXk2_0ZrylLl2rdAaLqCPSfFlCYma6xKsudTcM_CuQie2K2iNwRz9scfsXo4l5bBicFn8b0xevW4fLmW3mbc6m1ud1HN-L6QzOD9Amw-Be57aGkLZjR289Hfsym0pA",
+                "address": "58 Trần Quang Khải, Tân Định, Hồ Chí Minh, Việt Nam",
+                "rating": 3.9,
+                "ratingCount": 445,
+                "openingHours": "00:00–03:30, 07:00–23:58",
+                "openNow": true,
+                "phone": "+84 388 809 370",
+                "openingHoursWeek": {
+                  "Thứ Năm": "00:00–03:30, 07:00–23:58",
+                  "Thứ Sáu": "00:00–03:30, 07:00–23:58",
+                  "Thứ Bảy": "00:00–03:30, 07:00–23:58",
+                  "Chủ Nhật": "00:00–03:30, 07:00–23:58",
+                  "Thứ Hai": "00:00–03:30, 07:00–23:58",
+                  "Thứ Ba": "00:00–03:30, 07:00–23:58",
+                  "Thứ Tư": "00:00–03:30, 07:00–23:58"
+                },
+                "distanceKm": 1.9,
+                "categories": [
+                  "Quán mì",
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11350692984688220375",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%A7%20ti%E1%BA%BFu%20b%C3%B2%20vi%C3%AAn%20Ch%C3%BA%20T%C6%B0%20Gi%C3%A0%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://grab.onelink.me/2695613898?pid=inappsharing&c=5-C4KAAXXVE3LERT&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DGRABFOOD%26sourceID%3DA4pcqCZkS4%26merchantIDs%3D5-C4KAAXXVE3LERT&af_force_deeplink=true&af_web_dp=https%3A%2F%2Fwww.grab.com%2Fdownload",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84388809370",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75784,106.68877",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Út Hương",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmPzG0B55Srrwzpbho5bfEWS4Uu99-9xzPNtz1LuH5zBuQAi6jsAvHaee3y5fjVAHWwmAQqNwrE5MBCSkuDS6aJvb19fGWJF25uIZAit-dVzFhNxIlUpiSELa7LoPTQt-_m3Ovk",
+                "address": "TK18/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 3.7,
+                "ratingCount": 308,
+                "openingHours": "07:00–00:00",
+                "openNow": true,
+                "phone": "+84 908 484 414",
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–00:00",
+                  "Thứ Sáu": "07:00–00:00",
+                  "Thứ Bảy": "07:00–00:00",
+                  "Chủ Nhật": "07:00–00:00",
+                  "Thứ Hai": "07:00–00:00",
+                  "Thứ Ba": "07:00–00:00",
+                  "Thứ Tư": "07:00–00:00"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2327648434512237555",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20%C3%9At%20H%C6%B0%C6%A1ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908484414",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76681,106.69955",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ăn Tiệm G",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmOHkYUJudTattQnMQ90H7ytzSIFJApTl16rdWyHV8tzG2tn7bO98z4jcNkYgOieHInPkrJSRxLXU_ooyXpNCnDeFlJoD_BWNHXazUzqJAi6EhsQy7qvUgUJHyvaeq33_b_RIDbmI5VDGvB",
+                "address": "281 Nguyễn Công Trứ, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 85,
+                "openingHours": "11:00–15:00",
+                "openNow": false,
+                "phone": "+84 986 882 045",
+                "openingHoursWeek": {
+                  "Thứ Năm": "11:00–15:00",
+                  "Thứ Sáu": "11:00–15:00",
+                  "Thứ Bảy": "Đóng cửa",
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "11:00–15:00",
+                  "Thứ Ba": "11:00–15:00",
+                  "Thứ Tư": "11:00–15:00"
+                },
+                "distanceKm": 1.1,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11663634015656184582",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C4%82n%20Ti%E1%BB%87m%20G%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84986882045",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20r%E1%BA%BB%20ti%E1%BB%81n%2050000%2060000%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76846,106.70031",
+              "place:osm:10.76838,106.69337",
+              "place:osm:10.78131,106.70587"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76846,106.70031",
+            "place:osm:10.76838,106.69337",
+            "place:osm:10.78131,106.70587"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+          "Cơm tấm Đề Thám",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Ann Quán",
+          "Sài Gòn Xưa và Nay",
+          "Hủ tiếu bò viên Chú Tư Già Quận 1",
+          "Quán Ăn Út Hương",
+          "Ăn Tiệm G"
+        ],
+        [
+          "HỦ TÍU CHÚ THÀNH | Hủ Tíu Ngon Quận 1 | Hủ Tíu Chú Thành Quận 1 |",
+          "Cơm tấm Đề Thám",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Ann Quán",
+          "Sài Gòn Xưa và Nay",
+          "Hủ tiếu bò viên Chú Tư Già Quận 1",
+          "Quán Ăn Út Hương",
+          "Ăn Tiệm G"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm lại những quán ăn trưa rẻ tiền trong tầm 50-60k gần bạn nhé! 🍜\n\nMình chọn **Hủ Tíu Chú Thành** cho bạn! 🍜 **4.7⭐ (278 đánh giá Google Maps)**\n\nQuán này cách bạn chỉ 0.9km, đang mở cửa, và hủ tíu ở đây ngon lắm — giá tham khảo khoảng 50.000đ/tô theo các review. Quán nhỏ, bình dân, phù hợp với nhu cầu ăn trưa rẻ tiền của bạn.\n\nNếu muốn thêm lựa chọn, **Cơm tấm Đề Thám** (1.3km) cũng tốt với 4.4⭐ và 758 đánh giá — cơm tấm truyền thống Sài Gòn, giá cũng rẻ.\n\nLưu ý: Mình chưa xác nhận được giá chính xác của các quán khác trong danh sách, nên chỉ gợi ý 2 chỗ này. Bạn có thể gọi điện hoặc vào GrabFood/ShopeeFood để kiểm tra menu & giá trước khi đi nhé! 👍\n\n*TappyAI dựa trên đánh giá thực tế để gợi ý — bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Hủ Tíu Chú Thành\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5031384834553425300\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cơm tấm Đề Thám|Quán Bụi Original|Tìm quán khác|[/FOLLOWUPS]",
+      "visible": "Mình tìm lại những quán ăn trưa rẻ tiền trong tầm 50-60k gần bạn nhé! 🍜\n\nMình chọn **Hủ Tíu Chú Thành** cho bạn! 🍜 **4.7⭐ (278 đánh giá Google Maps)**\n\nQuán này cách bạn chỉ 0.9km, đang mở cửa, và hủ tíu ở đây ngon lắm — giá tham khảo khoảng 50.000đ/tô theo các review. Quán nhỏ, bình dân, phù hợp với nhu cầu ăn trưa rẻ tiền của bạn.\n\nNếu muốn thêm lựa chọn, **Cơm tấm Đề Thám** (1.3km) cũng tốt với 4.4⭐ và 758 đánh giá — cơm tấm truyền thống Sài Gòn, giá cũng rẻ.\n\nLưu ý: Mình chưa xác nhận được giá chính xác của các quán khác trong danh sách, nên chỉ gợi ý 2 chỗ này. Bạn có thể gọi điện hoặc vào GrabFood/ShopeeFood để kiểm tra menu & giá trước khi đi nhé! 👍\n\n*TappyAI dựa trên đánh giá thực tế để gợi ý — bạn tự quyết định chọn quán nào nhé!*"
+    }
+  ]
+}

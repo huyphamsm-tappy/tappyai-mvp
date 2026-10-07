@@ -21,7 +21,7 @@ const read = (p: string) => readFileSync(join(REPO, p), 'utf8')
 const MIGRATION = read('supabase/migrations/20261005_account_deletion_cleanup.sql')
 const ROLLBACK = read('supabase/migrations/rollback/20261005_account_deletion_cleanup_rollback.sql')
 
-const PORT = 54379
+const PORT = 54310 // 54379 belongs to plan_shares_boundary (RC); unique per suite, see portAllocation.test.ts
 const U = '11111111-1111-4111-8111-111111111111'      // the account being deleted
 const OTHER = '22222222-2222-4222-8222-222222222222'  // someone who must be untouched
 const BARE = '44444444-4444-4444-8444-444444444444'   // no groups, no integration, no leftovers

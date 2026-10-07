@@ -1,0 +1,33 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4310,
+  "evidenceId": "a99cae9b-c211-4980-9d01-f5c6aa39beb3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về bao gồm ăn sáng hay không từ kết quả tìm kiếm. Để kiểm tra rõ ràng, bạn cần vào trang đặt phòng (Booking.com / Agoda) của từng khách sạn — chúng sẽ hiển thị rõ \"Bao gồm ăn sáng\" hay \"Không bao gồm\" khi bạn chọn phòng cụ thể.\n\nBạn muốn mình tìm lại khách sạn với tiêu chí **bao gồm ăn sáng** không? Nếu có, mình sẽ tìm kiếm lại để gợi ý những nơi chắc chắn có ăn sáng trong gói phòng.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.860 đánh giá Google Maps).\n\nĐể gợi ý chính xác, mình cần biết: **mấy người** sẽ ở?\n\nMình tìm được 10 khách sạn gần biển Đà Nẵng, nhưng chưa có giá cụ thể để đối chiếu với ngân sách 1 triệu/đêm của bạn. (1–2 người / 3–5 người / nhóm đông)\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về bao gồm ăn sáng hay không từ kết quả tìm kiếm. Để kiểm tra rõ ràng, bạn cần vào trang đặt phòng (Booking.com / Agoda) của từng khách sạn — chúng sẽ hiển thị rõ \"Bao gồm ăn sáng\" hay \"Không bao gồm\" khi bạn chọn phòng cụ thể.\n\nBạn muốn mình tìm lại khách sạn với tiêu chí **bao gồm ăn sáng** không? Nếu có, mình sẽ tìm kiếm lại để gợi ý những nơi chắc chắn có ăn sáng trong gói phòng."
+    }
+  ]
+}

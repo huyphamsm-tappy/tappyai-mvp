@@ -35,7 +35,12 @@ describe('reviewActionsForPlace — Phase A A11 priority order', () => {
     expect(acts.map(a => a.kind)).toContain('google_maps')
     expect(acts.map(a => a.kind)).toContain('official_website')
     // Both platform URLs are attributed (belong to the place unambiguously).
-    for (const a of acts) expect(a.attributed).toBe(true)
+    // The fallback now rides alongside them (it is not review CONTENT), and it
+    // is the one action that is deliberately NOT attributed.
+    for (const a of acts) {
+      if (a.kind === 'youtube_search_fallback') continue
+      expect(a.attributed).toBe(true)
+    }
   })
 
   it('YouTube search fallback ONLY when nothing else exists', () => {
@@ -48,11 +53,34 @@ describe('reviewActionsForPlace — Phase A A11 priority order', () => {
     expect(decodeURIComponent(acts[0].url.split('search_query=')[1])).toBe('Quán Vô Danh review')
   })
 
-  it('drops YouTube fallback the moment any attributed URL exists', () => {
+  /**
+   * CONTRACT CHANGED, deliberately — 2026-09-10.
+   *
+   * This used to assert that a Maps link suppressed the fallback. Measured
+   * across four live domains: 100% of `review_actions` were `google_maps` or
+   * `official_website`, and `actions.ts` skips exactly those two kinds because
+   * their URLs duplicate the Maps and Website buttons. So the old rule filled
+   * the ladder with entries guaranteed to be discarded and ZERO review buttons
+   * reached a card on 26 of 26 places. A platform destination is not a review.
+   */
+  it('a Maps link does NOT suppress the fallback — it is not review content', () => {
     const acts = reviewActionsForPlace({
       name: 'Q',
       maps_link: 'https://maps.google.com/q',
     })
+    expect(acts.map(a => a.kind)).toContain('google_maps')
+    expect(acts.map(a => a.kind)).toContain('youtube_search_fallback')
+    expect(acts.find(a => a.kind === 'youtube_search_fallback')?.attributed).toBe(false)
+  })
+
+  it('real review CONTENT does suppress the fallback', () => {
+    const acts = reviewActionsForPlace({
+      name: 'Q',
+      maps_link: 'https://maps.google.com/q',
+      has_tiktok_review: true,
+      tiktok_review_url: 'https://www.tiktok.com/@a/video/1',
+    })
+    expect(acts.map(a => a.kind)).toContain('tiktok_verified')
     expect(acts.every(a => a.kind !== 'youtube_search_fallback')).toBe(true)
   })
 

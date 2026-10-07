@@ -1,0 +1,14 @@
+{
+ "id": "T3",
+ "group": "food-constraints",
+ "turns": [
+  {
+   "user": "trưa nay ăn gì cho ngon",
+   "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]"
+  },
+  {
+   "user": "chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng",
+   "text": "Mình giả sử bạn ăn một mình hoặc hai người, trưa nay ở quanh Quận 1 — chọn **Ý Quán Căn Tin Yết Kiêu** cho bạn nhé 👍\n\n**4.9⭐ (10 đánh giá Google Maps)**\n\nQuán này dang mở cửa lúc này, cách bạn khoảng 1.6km, và là quán ăn nhỏ kiểu căn tin — vừa rẻ tiền vừa ngon. Mặc dù chỉ có 10 đánh giá nhưng đều 4.9 sao, tức là những ai ăn đều khen.\n\nNếu muốn thử khác, **Cơm Ngon Hà Nội** (0.9km, 4.9⭐ 285 đánh giá) cũng gần lắm, nhưng hiện đang đóng cửa (mở lại từ 10:00 sáng). Còn **A Xỉu - Quán Ăn Ngon** (1.6km, 4.7⭐) thì mở từ 5 chiều nên không kịp trưa.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Ý Quán Căn Tin Yết Kiêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3914162296961446115\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Cơm Ngon Hà Nội gần hơn|Nâng ngân sách lên 70-80k|Quán khác ở Quận 1[/FOLLOWUPS]"
+  }
+ ]
+}

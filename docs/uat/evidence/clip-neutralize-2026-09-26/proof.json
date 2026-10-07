@@ -1,0 +1,168 @@
+{
+ "at": "2026-09-26T04:01:23.556Z",
+ "bucket": "tappyai-media-audit",
+ "ownerId": "daf0b9d0-b1d2-4670-80b4-125bd27a9814",
+ "rangeReads": [
+  {
+   "range": "0-99",
+   "status": 206,
+   "contentRange": "bytes 0-99/112868",
+   "bytesMatch": true,
+   "cacheControl": "no-cache, no-store, max-age=0, must-revalidate"
+  },
+  {
+   "range": "760-1759",
+   "status": 206,
+   "contentRange": "bytes 760-1759/112868",
+   "bytesMatch": true,
+   "cacheControl": "no-cache, no-store, max-age=0, must-revalidate"
+  },
+  {
+   "range": "60000-60999",
+   "status": 206,
+   "contentRange": "bytes 60000-60999/112868",
+   "bytesMatch": true,
+   "cacheControl": "no-cache, no-store, max-age=0, must-revalidate"
+  },
+  {
+   "range": "111868-112867",
+   "status": 206,
+   "contentRange": "bytes 111868-112867/112868",
+   "bytesMatch": true,
+   "cacheControl": "no-cache, no-store, max-age=0, must-revalidate"
+  }
+ ],
+ "clips": [
+  {
+   "file": "android.mp4 (synthetic boxes)",
+   "beforeUpload": {
+    "fields": {
+     "mvhd creation time": "2026-09-26T02:30:00.000Z",
+     "udta ©xyz (location)": "+10.7725+106.6980/",
+     "com.android.version": "14",
+     "com.android.manufacturer": "SyntheticMaker",
+     "com.android.model": "SYN-PHONE-A1"
+    },
+    "identifyingStrings": [
+     "+10.7725",
+     "106.6980",
+     "SYN-PHONE-A1",
+     "SyntheticMaker"
+    ]
+   },
+   "storedAfterDownload": {
+    "sameLength": true,
+    "fields": {},
+    "identifyingStrings": [],
+    "sha": "385dd1a65746b005"
+   },
+   "storedObject": {
+    "contentType": "video/mp4",
+    "size": "503",
+    "cacheControl": "private, max-age=86400, immutable"
+   }
+  },
+  {
+   "file": "iphone.mov (synthetic boxes)",
+   "beforeUpload": {
+    "fields": {
+     "mvhd creation time": "2026-09-26T02:30:00.000Z",
+     "com.apple.quicktime.location.ISO6709": "+10.7725+106.6980/",
+     "com.apple.quicktime.make": "Apple",
+     "com.apple.quicktime.model": "iPhone SYN",
+     "com.apple.quicktime.software": "17.6",
+     "com.apple.quicktime.creationdate": "2026-09-26T09:30:00+0700"
+    },
+    "identifyingStrings": [
+     "+10.7725",
+     "106.6980",
+     "iPhone SYN",
+     "com.apple.quicktime.location"
+    ]
+   },
+   "storedAfterDownload": {
+    "sameLength": true,
+    "fields": {},
+    "identifyingStrings": [],
+    "sha": "d96351bac3bd3e22"
+   },
+   "storedObject": {
+    "contentType": "video/quicktime",
+    "size": "639",
+    "cacheControl": "private, max-age=86400, immutable"
+   }
+  },
+  {
+   "file": "playable phone-like MP4 (browser-recorded, metadata added)",
+   "beforeUpload": {
+    "fields": {
+     "mvhd creation time": "2026-09-26T02:30:00.000Z",
+     "udta ©xyz (location)": "+10.7725+106.6980/",
+     "com.apple.quicktime.location.ISO6709": "+10.7725+106.6980/",
+     "com.apple.quicktime.make": "Apple",
+     "com.apple.quicktime.model": "iPhone SYN",
+     "com.apple.quicktime.software": "17.6",
+     "com.apple.quicktime.creationdate": "2026-09-26T09:30:00+0700"
+    },
+    "identifyingStrings": [
+     "+10.7725",
+     "106.6980",
+     "iPhone SYN",
+     "com.apple.quicktime.location"
+    ]
+   },
+   "storedAfterDownload": {
+    "sameLength": true,
+    "fields": {},
+    "identifyingStrings": [],
+    "sha": "db032156c72abfd8"
+   },
+   "storedObject": {
+    "contentType": "video/mp4",
+    "size": "112868",
+    "cacheControl": "private, max-age=86400, immutable"
+   }
+  }
+ ],
+ "photoOnClipPath": {
+  "status": 415,
+  "json": {
+   "error": "Định dạng tệp không được hỗ trợ"
+  }
+ },
+ "photoOnServerPath": {
+  "key": "reviews/daf0b9d0-b1d2-4670-80b4-125bd27a9814/1790395288514-Yk1X37z2ELkIm0lvjLeN6dYO.jpg",
+  "before": {
+   "Make": "SyntheticMaker",
+   "Model": "SYN-PHONE-A1",
+   "Software": "SynOS 14",
+   "Artist": "Synthetic Author",
+   "DateTimeOriginal": "2026:09:26 09:30:00",
+   "BodySerialNumber": "SYN0000SERIAL",
+   "LensModel": "SYN back camera 6mm f/1.8",
+   "GPS": {
+    "lat": 10.7725,
+    "lon": 106.698
+   }
+  },
+  "storedAfterDownload": {},
+  "identifyingStrings": []
+ },
+ "bypass": {
+  "put": 200,
+  "completion": {
+   "status": 422,
+   "json": {
+    "error": "identifying_metadata",
+    "reasons": [
+     "creation-time",
+     "metadata-box",
+     "location",
+     "device-or-author"
+    ],
+    "message": "Video chứa thông tin vị trí hoặc thiết bị. Vui lòng cập nhật ứng dụng rồi tải lên lại."
+   }
+  },
+  "objectAfter": "deleted"
+ }
+}

@@ -1,0 +1,134 @@
+[
+ {
+  "turn": 1,
+  "chars": 387,
+  "cumChars": 425,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Mình tìm giúp bạn những địa điểm vui chơi hay ở Sài Gòn tối nay nhé! Đ"
+ },
+ {
+  "turn": 2,
+  "chars": 953,
+  "cumChars": 1414,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, bạn đi một mình tối nay muốn ăn uống thư giãn 🍽️ Mình tìm giúp "
+ },
+ {
+  "turn": 3,
+  "chars": 725,
+  "cumChars": 2194,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình tìm giúp bạn những quán ăn cơm, cháo, mì ngon trong tầm 50-"
+ },
+ {
+  "turn": 4,
+  "chars": 661,
+  "cumChars": 2887,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Mình tìm giúp bạn những quán ăn cơm, cháo, mì rẻ ở Quận 1 Sài Gòn tối "
+ },
+ {
+  "turn": 5,
+  "chars": 507,
+  "cumChars": 3418,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Tối nay bạn muốn ăn xong rồi đi chơi tiếp à? 😊 Mình tìm giúp bạn nhữn"
+ },
+ {
+  "turn": 6,
+  "chars": 522,
+  "cumChars": 3981,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình lập kế hoạch hoàn chỉnh cho bạn tối nay ở Quận 1 Sài Gòn nh"
+ },
+ {
+  "turn": 7,
+  "chars": 3576,
+  "cumChars": 7675,
+  "quyNhon": true,
+  "plan": true,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình lập kế hoạch đầy đủ cho chuyến Quy Nhơn thứ 2 tuần sau cho "
+ },
+ {
+  "turn": 8,
+  "chars": 5269,
+  "cumChars": 12975,
+  "quyNhon": true,
+  "plan": true,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình lập kế hoạch chi tiết cho chuyến Quy Nhơn thứ 2 tuần sau ch"
+ },
+ {
+  "turn": 9,
+  "chars": 323,
+  "cumChars": 13330,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình tìm giúp bạn MacBook nhé! 💻 Bạn muốn mua MacBook loại nào?"
+ },
+ {
+  "turn": 10,
+  "chars": 6315,
+  "cumChars": 19688,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": true,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình tìm MacBook Pro M1 cũ giá rẻ cho bạn nhé! 💻[TAPPY_SHOPPING"
+ },
+ {
+  "turn": 11,
+  "chars": 6157,
+  "cumChars": 25880,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": true,
+  "places": false,
+  "error": false,
+  "head": "Okee, mình tìm MacBook Pro M1 RAM 32GB, SSD 512GB cũ cho bạn nhé! 💻[T"
+ },
+ {
+  "turn": 12,
+  "chars": 1204,
+  "cumChars": 27115,
+  "quyNhon": false,
+  "plan": false,
+  "shopping": false,
+  "places": false,
+  "error": false,
+  "head": "Khi mua MacBook cũ, bạn cần check những điều này theo thứ tự **rủi ro "
+ }
+]

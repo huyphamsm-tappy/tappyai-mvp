@@ -1,0 +1,563 @@
+{
+ "ENT-1-t1": {
+  "lead": "Để chọn chỗ karaoke hợp nhất:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "party",
+     "q": "Mấy người / đi với ai?",
+     "options": [
+      "1 mình",
+      "2 người",
+      "Nhóm 3-5",
+      "Nhóm đông"
+     ]
+    },
+    {
+     "id": "time",
+     "q": "Đi lúc mấy giờ?",
+     "options": [
+      "Chiều nay",
+      "Tối nay",
+      "Cuối tuần"
+     ]
+    },
+    {
+     "id": "vibe",
+     "q": "Sôi động hay chill?",
+     "options": [
+      "Sôi động",
+      "Chill",
+      "Lãng mạn"
+     ]
+    }
+   ]
+  }
+ },
+ "ENT-2-t1": {
+  "lead": "Để gợi ý chỗ chơi hợp nhất:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "activity",
+     "q": "Muốn chơi gì?",
+     "options": [
+      "Karaoke",
+      "Xem phim",
+      "Bar/pub",
+      "Bida/bowling"
+     ]
+    },
+    {
+     "id": "party",
+     "q": "Mấy người / đi với ai?",
+     "options": [
+      "1 mình",
+      "2 người",
+      "Nhóm 3-5",
+      "Nhóm đông"
+     ]
+    },
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    }
+   ]
+  }
+ },
+ "ENT-3-t1": {
+  "lead": "Để gợi ý chỗ chơi hợp nhất:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "activity",
+     "q": "Cho bé chơi gì?",
+     "options": [
+      "Khu vui chơi",
+      "Công viên",
+      "Thủy cung/bảo tàng",
+      "Xem phim"
+     ]
+    },
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    },
+    {
+     "id": "vibe",
+     "q": "Sôi động hay chill?",
+     "options": [
+      "Sôi động",
+      "Chill",
+      "Lãng mạn"
+     ]
+    }
+   ]
+  }
+ },
+ "FOOD-1-t1": {
+  "lead": "Để chọn đúng quán ở quận 1 cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "dish",
+     "q": "Món gì / kiểu quán?",
+     "options": [
+      "Món Việt",
+      "Nhật/Hàn",
+      "Lẩu/nướng",
+      "Chưa biết"
+     ]
+    },
+    {
+     "id": "party",
+     "q": "Đi mấy người?",
+     "options": [
+      "1 người",
+      "2 người",
+      "3-5 người",
+      "Nhóm đông"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm bao nhiêu mỗi người?",
+     "options": [
+      "Dưới 100k",
+      "100-300k",
+      "300-500k",
+      "Trên 500k"
+     ]
+    }
+   ]
+  }
+ },
+ "FOOD-2-t1": {
+  "lead": "Để chọn đúng quán cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "dish",
+     "q": "Món gì / kiểu quán?",
+     "options": [
+      "Món Việt",
+      "Nhật/Hàn",
+      "Lẩu/nướng",
+      "Chưa biết"
+     ]
+    },
+    {
+     "id": "party",
+     "q": "Đi mấy người?",
+     "options": [
+      "1 người",
+      "2 người",
+      "3-5 người",
+      "Nhóm đông"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm bao nhiêu mỗi người?",
+     "options": [
+      "Dưới 100k",
+      "100-300k",
+      "300-500k",
+      "Trên 500k"
+     ]
+    }
+   ]
+  }
+ },
+ "FOOD-3-t1": {
+  "lead": "Để chọn đúng quán nhậu cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "style",
+     "q": "Nhậu kiểu nào?",
+     "options": [
+      "Bình dân",
+      "Hải sản",
+      "Lẩu nướng",
+      "Bia craft"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm bao nhiêu mỗi người?",
+     "options": [
+      "Dưới 100k",
+      "100-300k",
+      "300-500k",
+      "Trên 500k"
+     ]
+    },
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    }
+   ]
+  }
+ },
+ "SHOP-1-t1": {
+  "lead": "Để chọn đúng ốp UAG cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "line",
+     "q": "Dòng nào?",
+     "options": [
+      "Monarch",
+      "Pathfinder",
+      "Plyo",
+      "Chưa biết"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm giá bao nhiêu?",
+     "options": [
+      "Dưới 300k",
+      "300-700k",
+      "700k-1,5tr",
+      "Trên 1,5tr"
+     ]
+    },
+    {
+     "id": "must",
+     "q": "Cần MagSafe không?",
+     "options": [
+      "Có MagSafe",
+      "Không cần"
+     ]
+    }
+   ]
+  }
+ },
+ "SHOP-2-t1": {
+  "lead": "Để chọn đúng quà tặng cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "line",
+     "q": "Người nhận thích gì?",
+     "options": [
+      "Cà phê/trà",
+      "Đồ công nghệ",
+      "Làm đẹp",
+      "Chưa biết"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm giá món quà?",
+     "options": [
+      "Dưới 500k",
+      "500k-1tr",
+      "1-2tr",
+      "Trên 2tr"
+     ]
+    },
+    {
+     "id": "must",
+     "q": "Quà kiểu nào?",
+     "options": [
+      "Thiết thực",
+      "Kỷ niệm",
+      "Trải nghiệm"
+     ]
+    }
+   ]
+  }
+ },
+ "SHOP-3-t1": {
+  "lead": "Để chọn đúng laptop cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "purpose",
+     "q": "Dùng chủ yếu để làm gì?",
+     "options": [
+      "Văn phòng",
+      "Đồ hoạ",
+      "Gaming",
+      "Học tập"
+     ]
+    },
+    {
+     "id": "must",
+     "q": "Cần gì nhất?",
+     "options": [
+      "Nhẹ",
+      "Pin trâu",
+      "Màn đẹp",
+      "Cấu hình mạnh"
+     ]
+    },
+    {
+     "id": "condition",
+     "q": "Mới hay cũ?",
+     "options": [
+      "Mới",
+      "Cũ/like new",
+      "Đều được"
+     ]
+    }
+   ]
+  }
+ },
+ "SPA-1-t1": {
+  "lead": "Để chọn đúng chỗ thư giãn cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "service",
+     "q": "Muốn làm dịch vụ gì?",
+     "options": [
+      "Massage",
+      "Gội đầu dưỡng sinh",
+      "Xông hơi",
+      "Chăm sóc da"
+     ]
+    },
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm giá bao nhiêu?",
+     "options": [
+      "Dưới 200k",
+      "200-500k",
+      "500k-1tr",
+      "Trên 1tr"
+     ]
+    }
+   ]
+  }
+ },
+ "SPA-2-t1": {
+  "lead": "Để chọn đúng chỗ gội đầu dưỡng sinh cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm giá bao nhiêu?",
+     "options": [
+      "Dưới 200k",
+      "200-500k",
+      "500k-1tr",
+      "Trên 1tr"
+     ]
+    },
+    {
+     "id": "time",
+     "q": "Khi nào đi?",
+     "options": [
+      "Hôm nay",
+      "Tối nay",
+      "Cuối tuần"
+     ]
+    }
+   ]
+  }
+ },
+ "SPA-3-t1": {
+  "lead": "Để chọn đúng chỗ làm nail cho bạn:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "style",
+     "q": "Làm kiểu nào?",
+     "options": [
+      "Sơn gel",
+      "Vẽ/đính đá",
+      "Đắp bột",
+      "Chăm sóc móng"
+     ]
+    },
+    {
+     "id": "area",
+     "q": "Khu vực nào?",
+     "options": [
+      "Quận 1",
+      "Quận 3",
+      "Bình Thạnh",
+      "Quận 7"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Tầm giá bao nhiêu?",
+     "options": [
+      "Dưới 200k",
+      "200-500k",
+      "500k-1tr",
+      "Trên 1tr"
+     ]
+    }
+   ]
+  }
+ },
+ "TRAVEL-1-t1": {
+  "lead": "Để lên chuyến Đà Nẵng vừa ý:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "date",
+     "q": "Đi ngày nào?",
+     "options": [
+      "Cuối tuần này",
+      "Tuần sau",
+      "Tháng sau",
+      "Chưa chốt"
+     ]
+    },
+    {
+     "id": "origin",
+     "q": "Xuất phát từ đâu?",
+     "options": [
+      "TP.HCM",
+      "Hà Nội",
+      "Đà Nẵng",
+      "Nơi khác"
+     ]
+    },
+    {
+     "id": "party",
+     "q": "Mấy người?",
+     "options": [
+      "1 người",
+      "2 người",
+      "Gia đình",
+      "Nhóm bạn"
+     ]
+    }
+   ]
+  }
+ },
+ "TRAVEL-2-t1": {
+  "lead": "Để chọn điểm đến hợp nhất:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "party",
+     "q": "Mấy người?",
+     "options": [
+      "1 người",
+      "2 người",
+      "Gia đình",
+      "Nhóm bạn"
+     ]
+    },
+    {
+     "id": "budget",
+     "q": "Ngân sách cả chuyến?",
+     "options": [
+      "Dưới 3tr",
+      "3-7tr",
+      "7-15tr",
+      "Trên 15tr"
+     ]
+    },
+    {
+     "id": "style",
+     "q": "Thích kiểu gì?",
+     "options": [
+      "Biển",
+      "Núi",
+      "Ăn uống",
+      "Nghỉ dưỡng"
+     ]
+    }
+   ]
+  }
+ },
+ "TRAVEL-3-t1": {
+  "lead": "Để tìm chuyến bay TP.HCM – Hà Nội hợp nhất:",
+  "ask": {
+   "v": 1,
+   "questions": [
+    {
+     "id": "date",
+     "q": "Ngày bay?",
+     "options": [
+      "Cuối tuần này",
+      "Tuần sau",
+      "Tháng sau",
+      "Chưa chốt"
+     ]
+    },
+    {
+     "id": "time",
+     "q": "Bay buổi nào?",
+     "options": [
+      "Sáng",
+      "Chiều",
+      "Tối"
+     ]
+    },
+    {
+     "id": "party",
+     "q": "Mấy người?",
+     "options": [
+      "1 người",
+      "2 người",
+      "Gia đình",
+      "Nhóm bạn"
+     ]
+    }
+   ]
+  }
+ }
+}

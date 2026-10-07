@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Nhà thiếu nhi Thủ Đức\" OR \"Play More Vincom Plaza Thủ Đức\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:40:57.546Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"Nhà thiếu nhi Thủ Đức\" OR \"Play More Vincom Plaza Thủ Đức\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trà sữa, ăn vặt & hạt dẻ gần Nhà Thiếu Nhi Thủ Đức",
+    "link": "https://www.tiktok.com/@ansapquan9thuduc/video/7659636285342027015",
+    "snippet": "Địa chỉ nổi bật - Các quán trà sữa gần Nhà Thiếu Nhi Thủ Đức: chọn các chuỗi và quán local có đồ uống phong phú, topping tươi và giá hợp lý. - ...",
+    "position": 1
+   },
+   {
+    "title": "Biểu Diễn Nhà Thiếu Nhi Thủ Đức Cùng Vstar",
+    "link": "https://www.tiktok.com/@vstarband/video/7618916904895384849",
+    "snippet": "Đêm diễn tại Nhà Thiếu Nhi Thủ Đức Cảm ơn mọi người đã cháy hết mình cùng tụi mình Hẹn gặp lại ở sân khấu tiếp theo nhé #Vstar # ...",
+    "position": 2
+   },
+   {
+    "title": "Hội chợ Thái Lan tại Nhà Thiếu Nhi Thủ Đức — 18/5",
+    "link": "https://www.tiktok.com/@ngatuthuduc/video/7639998797627559189",
+    "snippet": "Hội chợ Thái Lan sắp diễn ra tại Nhà Thiếu Nhi Thủ Đức vào ngày 18/5 , mọi người note lại để tranh thủ ghé trải nghiệm nha #Hoichothailan # ...",
+    "position": 3
+   },
+   {
+    "title": "Lễ Hội Thiếu Nhi Phường Thủ Đức",
+    "link": "https://www.tiktok.com/@lacasaigon.vn/video/7661656325704731918",
+    "snippet": "Lễ Hội Thiếu Nhi Phường Thủ Đức chính thức diễn ra tại Nhà Thiếu Nhi Thủ Đức từ ngày 13/7 đến 19/7/2026. Sự kiện mở cửa tự do, ...",
+    "position": 4
+   },
+   {
+    "title": "Quán ăn ngon Thủ Đức gần Nhà Văn Hóa Thiếu Nhi cơ sở 2",
+    "link": "https://www.tiktok.com/@cobelolem195/video/7661905039954316564",
+    "snippet": "Cá Viên Chiên Nhà Thiếu Nhi Thủ Đức. Quán ăn ngon Thủ Đức gần Nhà Văn Hóa Thiếu Nhi cơ sở 2. Khu vực xung quanh Nhà Văn Hóa Thiếu Nhi Thủ Đức ...",
+    "position": 5
+   },
+   {
+    "title": "Hội Chợ Thái Lan Tại Nhà Thiếu Nhi Thủ Đức 18/5-24/5",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7640695131317882132",
+    "snippet": "Hội Chợ Thái Lan sắp sửa khai màn tại Nhà Thiếu Nhi Thủ Đức, mang đến một tuần lễ ẩm thực và văn hóa đặc sắc.",
+    "position": 6
+   },
+   {
+    "title": "Giao lưu bóng đá tại sân bóng Nhà Thiếu Nhi Thủ Đức ...",
+    "link": "https://www.tiktok.com/@phuihtstore/video/7665685860741811477",
+    "snippet": "Giao lưu bóng đá tại sân bóng Nhà Thiếu Nhi Thủ Đức #bongda #phuiht. @Thắng Phủi ( PHỦI HT STORE ).",
+    "position": 7
+   },
+   {
+    "title": "Lễ Hội Thanh Niên \"Thủ Đức Youth Fest\" đang diễn ra tại ...",
+    "link": "https://www.tiktok.com/@lacasaigon.vn/video/7621203754817277197",
+    "snippet": "Lễ Hội Thanh Niên \"Thủ Đức Youth Fest\" đang diễn ra tại Nhà Thiếu Nhi Thủ Đức từ ngày 25/3 - 29/3/2026 nè cả nhà. Vào Cổng Tự Do. # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,7 +1,9 @@
 /**
- * security-audit L6 — the account-deletion cron checks CRON_SECRET in constant time (the other crons on main keep their own inline check; this hotfix does not touch them).
+ * security-audit L6 — scheduler routes check CRON_SECRET in constant time, in one place.
  */
 import { describe, it, expect, vi } from 'vitest'
+import fs from 'node:fs'
+import path from 'node:path'
 import { isAuthorizedCronRequest } from './cronAuth'
 
 const tse = vi.hoisted(() => ({ calls: [] as Array<[Buffer, Buffer]> }))
@@ -42,5 +44,27 @@ describe('isAuthorizedCronRequest', () => {
     isAuthorizedCronRequest(withAuth(`Bearer ${'x'.repeat(500)}`), ENV)
     expect(tse.calls).toHaveLength(2)
     for (const [a, b] of tse.calls) expect(a.length).toBe(b.length)
+  })
+})
+
+describe('guard — every scheduler route uses it', () => {
+  const routes = [
+    ...fs.readdirSync('src/app/api/cron').map((d) => path.join('src/app/api/cron', d, 'route.ts')).filter((f) => fs.existsSync(f)),
+    'src/app/api/notifications/backfill/route.ts',
+  ]
+
+  it('covers all 18 cron routes and the notifications backfill', () => {
+    // 15 since the R21 click-attributions-sweep cron (rc, 2026-09-29) — added after L6 was written.
+    // 17 since the two moderation crons (moderation-digest, moderation-snapshot-purge; 02/10, flagged, not scheduled)
+    // 18 since subscriptions-expire (P7 subscriptions; flagged, not scheduled)
+    expect(routes.length).toBe(19)
+  })
+
+  it.each(routes)('%s', (file) => {
+    const src = fs.readFileSync(file, 'utf8')
+    expect(src).toMatch(/import \{ isAuthorizedCronRequest \} from '@\/lib\/security\/cronAuth'/)
+    expect(src).toMatch(/if \(!isAuthorizedCronRequest\(req\)\)/)
+    expect(src).not.toMatch(/process\.env\.CRON_SECRET/)
+    expect(src).not.toMatch(/!==\s*`Bearer/)
   })
 })

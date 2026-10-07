@@ -14,6 +14,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
+import { checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -33,6 +34,11 @@ export async function POST(req: Request) {
 
     if (!originalTransactionId || !productId) {
       return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
+    }
+    // Apple transaction ids are decimal strings. Anything else is not one, and would otherwise be
+    // written into subscriptions.stripe_sub_id as `apple_<whatever was sent>`.
+    if (!/^\d{1,32}$/.test(String(originalTransactionId))) {
+      return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
     }
 
     // ── Determine authoritative expiry ────────────────────────────────────
@@ -99,6 +105,14 @@ export async function POST(req: Request) {
     if (!authoritative && signedTransactionInfo) {
       try {
         const decoded = await verifyTransactionInfo(signedTransactionInfo)
+        // Security audit 2026-09-30: Apple signs every app's transactions, Sandbox ones included,
+        // and a made-up originalTransactionId is enough to land here (the API lookup 404s). The
+        // JWS must be OUR Pro product, in OUR environment, for the subscription the caller named.
+        const refusal = checkAppleTransaction(decoded, { originalTransactionId: String(originalTransactionId) })
+        if (refusal) {
+          console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
+          return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+        }
         if (decoded.expiresDate) {
           expiresAt = new Date(decoded.expiresDate)
           isPro = expiresAt > new Date()
@@ -124,12 +138,34 @@ export async function POST(req: Request) {
     // admin client). Using the request-scoped RLS client here would be silently
     // denied and the entitlement would never persist.
 
-    const { error } = await createAdminClient()
+    const admin = createAdminClient()
+    // One App Store subscription, one TappyAI account (security audit 2026-09-30). Without this, a
+    // single real subscriber could POST their originalTransactionId from any number of accounts and
+    // every one of them became Pro (300 AI questions/day each). The iOS client sends no
+    // appAccountToken yet, so the binding is first-come: the account that registered it keeps it.
+    const subId = `apple_${originalTransactionId}`
+    const { data: holder, error: holderError } = await admin
+      .from('subscriptions')
+      .select('user_id')
+      .eq('stripe_sub_id', subId)
+      .neq('user_id', user.id)
+      .limit(1)
+      .maybeSingle()
+    if (holderError) {
+      console.error('[iap/apple/verify] ownership lookup failed:', holderError)
+      return NextResponse.json({ error: 'verify_unavailable', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
+    }
+    if (holder) {
+      console.error('[iap/apple/verify] transaction already bound to another account')
+      return NextResponse.json({ error: 'transaction_in_use', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 409 })
+    }
+
+    const { error } = await admin
       .from('subscriptions')
       .upsert(
         {
           user_id: user.id,
-          stripe_sub_id: `apple_${originalTransactionId}`,
+          stripe_sub_id: subId,
           plan: 'pro',
           status: isPro ? 'active' : 'expired',
           current_period_end: expiresAt?.toISOString() ?? null,

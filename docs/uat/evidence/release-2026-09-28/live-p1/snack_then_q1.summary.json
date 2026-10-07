@@ -1,0 +1,106 @@
+{
+  "caseId": "snack_then_q1",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T07:32:40.241Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "mua đồ ăn vặt",
+      "status": 200,
+      "ms": 1809,
+      "literalDoubleStar": 0,
+      "unbalancedBoldLines": [],
+      "proseTail": "Để chọn đúng, mình cần biết:\n• Bạn muốn mua món gì?\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "placeActions": [],
+      "shopping": null,
+      "plan": null,
+      "cta": null
+    },
+    {
+      "user": "tối nay đi đâu chơi quận 1",
+      "status": 200,
+      "ms": 13443,
+      "literalDoubleStar": 8,
+      "unbalancedBoldLines": [],
+      "proseTail": ". Để gợi ý chính xác, mình cần biết bạn muốn ăn **gì cụ thể** — bánh mì, bánh tráng nướng, chè, kem, gà rán, hay loại ăn vặt nào khác? 🤔\n\nMình tìm được 9 chỗ ăn vặt ở Quận 1. Vì bạn chưa nói cụ thể muốn ăn gì, mình gợi ý **Ngọc Thạch Quán Q1** — chuyên chè Hà Nội, **4.8⭐ (848 đánh giá)**, mở đến 23:00 nên hoàn hảo cho tối nay.\nHoặc **Ghé Ăn Vặt** nếu thích đơn giản, 4.9⭐ nhưng mới có 18 đánh giá.",
+      "placeActions": [
+        {
+          "name": "Ngọc Thạch Quán Q1 ( đặc sản chè Hà Nội )",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Ng%E1%BB%8Dc%20Th%E1%BA%A1ch%20Qu%C3%A1n%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=5887300605198398840",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Ng%E1%BB%8Dc%20Th%E1%BA%A1ch%20Qu%C3%A1n%20Q1",
+            "call:v3.action.call:tel:+84788283555"
+          ]
+        },
+        {
+          "name": "Hẻm Ăn Vặt 76",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=H%E1%BA%BBm%20%C4%82n%20V%E1%BA%B7t%2076%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=16316324537153818015",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=H%E1%BA%BBm%20%C4%82n%20V%E1%BA%B7t%2076%20re"
+          ]
+        },
+        {
+          "name": "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=INU%20EATERY%20M%E1%BB%B2%20CAY%20%7C%20M%E",
+            "maps:v3.action.maps:https://maps.google.com/?cid=2077509490893768302",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=INU%20EATERY%20M%E1%BB%B2%20CAY%20%7C%20M%E1%",
+            "call:v3.action.call:tel:+84877044242"
+          ]
+        },
+        {
+          "name": "Fruit Crush - Trái Cây Tươi & Ăn Vặt - Quận 1",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Fruit%20Crush%20-%20Tr%C3%A1i%20C%C3%A2y%20",
+            "maps:v3.action.maps:https://maps.google.com/?cid=14314609487996245499",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Fruit%20Crush%20-%20Tr%C3%A1i%20C%C3%A2y%20T%",
+            "website:v3.action.website:https://www.facebook.com/traicayfruitcrush/",
+            "call:v3.action.call:tel:+84912375335"
+          ]
+        },
+        {
+          "name": "NAO - Ăn uống ngay nào",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=NAO%20-%20%C4%82n%20u%E1%BB%91ng%20ngay%20n",
+            "maps:v3.action.maps:https://maps.google.com/?cid=16497425481996987648",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=NAO%20-%20%C4%82n%20u%E1%BB%91ng%20ngay%20n%C",
+            "website:v3.action.website:https://shopeefood.vn/ho-chi-minh/nao-an-uong-ngay-nao?shareChannel=copy_link&smtt=0.0.9"
+          ]
+        },
+        {
+          "name": "Ghé Ăn Vặt",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@buffetrasuahem/video/7638949598123412757",
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=Gh%C3%A9%20%C4%82n%20V%E1%BA%B7t%20Qu%E1%BA",
+            "maps:v3.action.maps:https://maps.google.com/?cid=2617030865661163456",
+            "call:v3.action.call:tel:+84933308788",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Gh%C3%A9%20%C4%82n%20V%E1%BA%B7t%20review"
+          ]
+        },
+        {
+          "name": "Mỳ Quảng Bà Mua Chi Nhánh Quận 1",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=M%E1%BB%B3%20Qu%E1%BA%A3ng%20B%C3%A0%20Mua%",
+            "maps:v3.action.maps:https://maps.google.com/?cid=12219616303330509788",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=M%E1%BB%B3%20Qu%E1%BA%A3ng%20B%C3%A0%20Mua%20",
+            "call:v3.action.call:tel:+84332130588"
+          ]
+        },
+        {
+          "name": "Ăn vặt sì gòn",
+          "actions": [
+            "delivery:v3.action.orderSearch:https://food.grab.com/vn/vi/restaurants?search=%C4%82n%20v%E1%BA%B7t%20s%C3%AC%20g%C3%B2n%",
+            "maps:v3.action.maps:https://maps.google.com/?cid=716545588550192413",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=%C4%82n%20v%E1%BA%B7t%20s%C3%AC%20g%C3%B2n%20",
+            "call:v3.action.call:tel:+84796303139"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": null,
+      "cta": "{\"buttons\":[{\"label\":\"📍 Maps - Ngọc Thạch Quán Q1\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5887300605198398840\",\"primary\":false}]}"
+    }
+  ]
+}

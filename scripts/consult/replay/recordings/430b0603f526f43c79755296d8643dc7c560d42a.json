@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bánh Cuốn Nóng Cao Bằng\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:38:34.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bánh Cuốn Nóng Cao Bằng\" OR \"Ẩm thực sân vườn Mái Lá Quận 7\" OR \"Hải Sản Hoàng Gia CN Phạm Văn Nghị Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ẩm Thực Sân Vườn Mái Lá Quận 7",
+    "link": "https://www.tiktok.com/discover/%E1%BA%A9m-th%E1%BB%B1c-s%C3%A2n-v%C6%B0%E1%BB%9Dn-m%C3%A1i-l%C3%A1-qu%E1%BA%ADn-7",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7: Địa Chỉ, Menu & Không Gian. Ẩm Thực Sân Vườn Mái Lá là nhà hàng với không gian sân vườn thoáng mát, ...",
+    "date": "8 ngày trước",
+    "position": 1
+   },
+   {
+    "title": "Ẩm thực sân vườn Lê Vy: Góc trốn chill đồng quê",
+    "link": "https://www.tiktok.com/@levycafe2/video/7629316389542825234",
+    "snippet": "Ẩm Thực Sân Vườn Mái Lá Quận 7 · Lê Nguyễn Trà Vi · Vườn Ẩm Thực N86 Tuy Hoà Phú Yên · Vy Vân Lê Nói Tiếng Việt · Cafe Tuệ Nhi Vĩnh Long · Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "Vườn chay xanh mát - Địa điểm ẩm thực chay tại Sài Gòn",
+    "link": "https://www.tiktok.com/@phomai.anramen/video/7313408399230700801",
+    "snippet": "Nhà Hàng Chay Của Chao · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Quán Ẩm Thực Chay Lạc Hiên Trà Vinh · Quán Chay Thập Phương Thủ Đức · Quán Chay Chạm.",
+    "position": 3
+   },
+   {
+    "title": "Công viên ánh sáng mới tại quận 7",
+    "link": "https://www.tiktok.com/@saigonloco/video/7613738104423271700",
+    "snippet": "... Ẩm Thực Sân Vườn Mái Lá Quận 7Cầu Ánh Sao Quận 7Vườn Sao Băng Thái Lan Tập 7 Tiếng ViệtBánh Tầm Bì Quận 7Sao Vàng Limousine Quận 7. Công ...",
+    "position": 4
+   },
+   {
+    "title": "Ẩm Thực Đồng Quê - Tràng An Quán - Trải Nghiệm Hương ...",
+    "link": "https://www.tiktok.com/@thetruong98/video/7345781581669321986",
+    "snippet": "... ẩm thực sân vườn mái lá quận 7, tràng an quán menu, quán hương việt quận 7, nhà hàng quận 7, quán ăn gia đình ngon quận 7. Đây là bản tóm ...",
+    "position": 5
+   },
+   {
+    "title": "Sân bóng rổ miễn phí ở Quận 7",
+    "link": "https://www.tiktok.com/@m6choibongro/video/7378827869247540497",
+    "snippet": "Trả lời @Tiny Love Sân bóng rổ miễn phí Quận 7 của em nè . Anh em ... Ẩm Thực Sân Vườn Mái Lá Quận 7Gà Hầm Sâm Quận 7Đội Hình Sân 7Ứng ...",
+    "position": 6
+   },
+   {
+    "title": "Lắp đặt nét cuốn cơ sở 2 tại địa chỉ 110B Triệu Việt Vương ...",
+    "link": "https://www.tiktok.com/@7ngayrautuoi/video/7520236029635202311",
+    "snippet": "Lạc Buffet Lẩu Rau Nấm Quận 7 · Ẩm Thực Sân Vườn Mái Lá Quận 7 · Cách Trồng Rau Mùi Bằng Hạt Ở Nhật. Lắp đặt nét cuốn cơ sở 2 tại địa chỉ 110B ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Quán Cà Phê Mái Lá Tại An Giang",
+    "link": "https://www.tiktok.com/@nhadep4phuong/video/7614796380107836693",
+    "snippet": "Nhà Hàng Nón Lá · Quán Uyên Lẩ Gà Lá É Biên Hoà · Vườn Hoa Mẫu Đơn Trung Quốc Siêu Đẹp · Ẩm Thực Sân Vườn Mái Lá Quận 7.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:45:27.053Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/c_crop,h_1875,w_3000,x_0,y_148,z_0.3/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/yia1wnhne3glhc3uirg7.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWjpg2IcS2j8bOBUDEkV9sThQRQu2kWWf03KEIXI7TaA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fc_crop%2Ch_1875%2Cw_3000%2Cx_0%2Cy_148%2Cz_0.3%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fyia1wnhne3glhc3uirg7.jpg&tbnid=qKEVYfeJQ0AICM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F190734-yi-tou-xiong-massage-spa-futian-branch%2F&docid=B8T8yI8WW0ouUM&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_crop,x_0,y_750,h_750,w_3000/activities/p1pmebpbw9rfejtwykgw/Qu%C3%A1nSpaMassageG%E1%BB%99i%C4%90%E1%BA%A7uNh%E1%BA%A5t%C4%90%E1%BA%A7uH%C3%B9ng%C2%B7Chinh%C3%A1nhFutian.jpg",
+    "imageWidth": 3000,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ85nKvMMcoWbMYIGHAZxSiOTE-VQ5IK_LXL5N6sCI8&s",
+    "thumbnailWidth": 450,
+    "thumbnailHeight": 112,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_crop%2Cx_0%2Cy_750%2Ch_750%2Cw_3000%2Factivities%2Fp1pmebpbw9rfejtwykgw%2FQu%25C3%25A1nSpaMassageG%25E1%25BB%2599i%25C4%2590%25E1%25BA%25A7uNh%25E1%25BA%25A5t%25C4%2590%25E1%25BA%25A7uH%25C3%25B9ng%25C2%25B7Chinh%25C3%25A1nhFutian.jpg&tbnid=auIQUaTNWnKFDM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F190734-yi-tou-xiong-massage-spa-futian-branch%2F&docid=B8T8yI8WW0ouUM&w=3000&h=750",
+    "position": 2
+   },
+   {
+    "title": "Top 5 Địa chỉ gội đầu dưỡng sinh tốt nhất phường Tân Hưng, TPHCM -  toplist.vn",
+    "imageUrl": "https://toplist.vn/images/800px/blue-spa-1415235.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa0HhtlDPFsByByYuIks2zkkKaBd-n88lfCkv9U7fC3Q&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "toplist.vn",
+    "domain": "toplist.vn",
+    "link": "https://toplist.vn/top-list/dia-chi-goi-dau-duong-sinh-tot-nhat-phuong-tan-hung-tphcm-65125.htm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftoplist.vn%2Fimages%2F800px%2Fblue-spa-1415235.jpg&tbnid=-pb1cgudulW_LM&imgrefurl=https%3A%2F%2Ftoplist.vn%2Ftop-list%2Fdia-chi-goi-dau-duong-sinh-tot-nhat-phuong-tan-hung-tphcm-65125.htm&docid=Pma2Zmles6BT_M&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Spa gội đầu dưỡng sinh núp hẻm tại Quận 1 , mọi người tham khảo nha ♥️  𝐋𝐀̣𝐂 𝐇𝐘 : 📍 150/54 Nguyễn Trãi , Phạm Ngũ Lão , Quận 1 ,",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3874344750811829599",
+    "imageWidth": 1440,
+    "imageHeight": 1917,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ57PtqpRXqCc8gojsaz0_xQpTxkGJVl6t7pmvKAyB0PQ&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DXEcHucCSKy/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3874344750811829599&tbnid=xRhB8oCshd-AmM&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDXEcHucCSKy%2F&docid=oN2-OiX3wJ36jM&w=1440&h=1917",
+    "position": 4
+   },
+   {
+    "title": "Tổng Hợp Địa Chỉ Massage Trần Hưng Đạo Lành Mạnh, Uy Tín (Cập Nhật Mới Nhất)",
+    "imageUrl": "https://queenspa.com.vn/wp-content/uploads/2026/07/massage-tran-hung-dao-768x512.webp",
+    "imageWidth": 768,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTklaVLe5pERttL3sMWy2SWgGifq9sX9hrVoXjN0Ygqlw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Queen Spa",
+    "domain": "queenspa.com.vn",
+    "link": "https://queenspa.com.vn/review-spa/massage-tran-hung-dao/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fqueenspa.com.vn%2Fwp-content%2Fuploads%2F2026%2F07%2Fmassage-tran-hung-dao-768x512.webp&tbnid=P2VE7Qf4_LKBwM&imgrefurl=https%3A%2F%2Fqueenspa.com.vn%2Freview-spa%2Fmassage-tran-hung-dao%2F&docid=D0rf6h7L18EYqM&w=768&h=512",
+    "position": 5
+   },
+   {
+    "title": "Nay chủ nhật cuối tuần, Tiệm Làm Đẹp Cô 3 chi nhánh Lagi Spa Gội Đầu Dưỡng  Sinh Massage Foot còn trống nhiều khung giờ! Khách cùng gia đình, bạn bè ghé",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2260723044292781",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVJ_vl-FlBICm_Twkyvdsn6SD5KStHauCVr1k5DfgbRQ&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/534239037336576/posts/1800796094014191/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2260723044292781&tbnid=kbHv5q3NvYBvGM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2F534239037336576%2Fposts%2F1800796094014191%2F&docid=o4LeM9SCoy4LHM&w=2048&h=1536",
+    "position": 6
+   },
+   {
+    "title": "Spa gội đầu dưỡng sinh núp hẻm tại Quận 1 , mọi người tham khảo nha ♥️  𝐋𝐀̣𝐂 𝐇𝐘 : 📍 150/54 Nguyễn Trãi , Phạm Ngũ Lão , Quận 1 ,",
+    "imageUrl": "https://lookaside.instagram.com/seo/google_widget/crawler/?media_id=3874344787495179719",
+    "imageWidth": 1440,
+    "imageHeight": 1917,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxRKhrl65r1mGdA6YbF1QTW1qXkch02loq7FIaqlAjrA&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Instagram",
+    "domain": "www.instagram.com",
+    "link": "https://www.instagram.com/p/DXEcHucCSKy/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.instagram.com%2Fseo%2Fgoogle_widget%2Fcrawler%2F%3Fmedia_id%3D3874344787495179719&tbnid=qtrkcH4ZbcpceM&imgrefurl=https%3A%2F%2Fwww.instagram.com%2Fp%2FDXEcHucCSKy%2F&docid=oN2-OiX3wJ36jM&w=1440&h=1917",
+    "position": 7
+   },
+   {
+    "title": "Gội đầu dưỡng sinh quận 5 ở đâu uy tín? Top 12+ Tiệm Ok Nhất",
+    "imageUrl": "https://haspamassage.vn/wp-content/uploads/2026/05/goi-dau-duong-sinh-quan-5.png",
+    "imageWidth": 1000,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRtRdDA8oIudSZdrFLmUYVYLgMuVCNMSJi2oDq9bYRYg&s=10",
+    "thumbnailWidth": 618,
+    "thumbnailHeight": 495,
+    "source": "Hạ Spa",
+    "domain": "haspamassage.vn",
+    "link": "https://haspamassage.vn/goi-dau-duong-sinh-quan-5/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhaspamassage.vn%2Fwp-content%2Fuploads%2F2026%2F05%2Fgoi-dau-duong-sinh-quan-5.png&tbnid=lkwVn7B7Q5xxNM&imgrefurl=https%3A%2F%2Fhaspamassage.vn%2Fgoi-dau-duong-sinh-quan-5%2F&docid=C7oPybKg9iJB8M&w=1000&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,1470 @@
+{
+  "label": "uat4-p1-golden-33a66dd-rep1",
+  "base": "http://localhost:3007",
+  "calls": 51,
+  "at": "2026-09-27T18:26:59.808Z",
+  "cases": [
+    {
+      "id": "T1",
+      "group": "travel-multiturn",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 57759,
+          "usage": {
+            "promptTokens": 10887,
+            "completionTokens": 4602
+          },
+          "tools": [
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_flight_prices"
+          ],
+          "cards": [
+            [
+              "Ngũ Hành Sơn",
+              "Ba Na Hills",
+              "Cầu Rồng",
+              "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+              "Hải đăng Tiên Sa",
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Nhà Vọng Cảnh"
+            ],
+            [
+              "Bảo tàng Điêu khắc Chăm Đà Nẵng",
+              "Ngũ Hành Sơn",
+              "Ba Na Hills",
+              "Cầu Rồng",
+              "Hải đăng Tiên Sa",
+              "Cầu Vàng",
+              "Đỉnh Bàn Cờ",
+              "Nhà Vọng Cảnh"
+            ]
+          ],
+          "dup": false,
+          "chars": 543
+        },
+        {
+          "status": 200,
+          "ms": 49997,
+          "usage": {
+            "promptTokens": 15925,
+            "completionTokens": 3759
+          },
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Muối Biển Seafood Restaurant - Nhà hàng hải sản Đà Nẵng",
+              "Hải sản My Hanh Seafood",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ],
+            [
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Hải Sản Ku Tom Đà Nẵng",
+              "Muối Biển Seafood Restaurant - Nhà hàng hải sản Đà Nẵng",
+              "Hải sản My Hanh Seafood",
+              "Mộc quán Seafood Đà Nẵng",
+              "Thèm Hải Sản",
+              "Quán Hải Sản Thời Cổ Đà Nẵng - Seafood Restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 450
+        },
+        {
+          "status": 200,
+          "ms": 43926,
+          "usage": {
+            "promptTokens": 15854,
+            "completionTokens": 3997
+          },
+          "tools": [
+            "get_flight_prices",
+            "search_places",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Muối Biển Seafood Restaurant - Nhà hàng hải sản Đà Nẵng",
+              "Hải sản My Hanh Seafood",
+              "Nhà Hàng Hải Sản 24h",
+              "Nhà Hàng Biển Việt",
+              "Bé Ni 2",
+              "Nhà Hàng Hải Sản - Ơ Kìa"
+            ],
+            [
+              "Nhà Hàng Hải Sản - Ơ Kìa",
+              "Hải Sản Đà Nẵng Bé Biển",
+              "Buffet Hải Sản Đà Nẵng Mr Mộc",
+              "Muối Biển Seafood Restaurant - Nhà hàng hải sản Đà Nẵng",
+              "Hải sản My Hanh Seafood",
+              "Nhà Hàng Hải Sản 24h",
+              "Nhà Hàng Biển Việt",
+              "Bé Ni 2"
+            ]
+          ],
+          "dup": false,
+          "chars": 584
+        }
+      ]
+    },
+    {
+      "id": "T2",
+      "group": "entertainment-imax",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16823,
+          "usage": {
+            "promptTokens": 2686,
+            "completionTokens": 349
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Giga Mall Thủ Đức",
+              "Cinestar Satra Quận 6",
+              "CGV Vincom Center Đồng Khởi",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Vincom Thủ Đức",
+              "Galaxy GO! An Lạc",
+              "DCINE Bến Thành",
+              "Cinestar Quốc Thanh"
+            ],
+            [
+              "CGV Vincom Center Đồng Khởi",
+              "CGV Giga Mall Thủ Đức",
+              "Cinestar Satra Quận 6",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Vincom Thủ Đức",
+              "Galaxy GO! An Lạc",
+              "DCINE Bến Thành",
+              "Cinestar Quốc Thanh"
+            ]
+          ],
+          "dup": false,
+          "chars": 428
+        },
+        {
+          "status": 200,
+          "ms": 10854,
+          "usage": {
+            "promptTokens": 2861,
+            "completionTokens": 547
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Hoàng Văn Thụ",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vincom Thủ Đức",
+              "CGV Saigonres Nguyễn Xí"
+            ],
+            [
+              "CGV Vivo City",
+              "CGV Vincom Center Landmark 81",
+              "CGV Sư Vạn Hạnh",
+              "Galaxy Cinema Nguyễn Du",
+              "CGV Hoàng Văn Thụ",
+              "Galaxy Cinema Thiso Mall",
+              "CGV Vincom Thủ Đức",
+              "CGV Saigonres Nguyễn Xí"
+            ]
+          ],
+          "dup": false,
+          "chars": 472
+        }
+      ]
+    },
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12978,
+          "usage": {
+            "promptTokens": 3774,
+            "completionTokens": 685
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hàng Dương Quán Quận 1",
+              "NHÀ HÀNG NGON",
+              "Cơm Ngon Hà Nội",
+              "Quán ăn ngon Sài Gòn",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "HÀ NỘI QUÁN",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine"
+            ],
+            [
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Hàng Dương Quán Quận 1",
+              "NHÀ HÀNG NGON",
+              "Cơm Ngon Hà Nội",
+              "Quán ăn ngon Sài Gòn",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "HÀ NỘI QUÁN",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine"
+            ]
+          ],
+          "dup": false,
+          "chars": 513
+        },
+        {
+          "status": 200,
+          "ms": 18274,
+          "usage": {
+            "promptTokens": 4809,
+            "completionTokens": 697
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Hàng Dương Quán Quận 1",
+              "Quán Nhà",
+              "Cơm Bắc Làng Cua Đồng",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán Ăn Thanh Bình",
+              "Quán ăn ngon Sài Gòn",
+              "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+              "Cô Tư Cà Mau"
+            ],
+            [
+              "Quán Ăn Thanh Bình",
+              "Hàng Dương Quán Quận 1",
+              "Quán Nhà",
+              "Cơm Bắc Làng Cua Đồng",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "Quán ăn ngon Sài Gòn",
+              "Quán ăn gia đình Gà Lên Mâm Mai Phai",
+              "Cô Tư Cà Mau"
+            ]
+          ],
+          "dup": false,
+          "chars": 795
+        }
+      ]
+    },
+    {
+      "id": "T4",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12600,
+          "usage": {
+            "promptTokens": 4408,
+            "completionTokens": 639
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 552
+        },
+        {
+          "status": 200,
+          "ms": 12236,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 825
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1484
+        }
+      ]
+    },
+    {
+      "id": "G1a",
+      "group": "travel-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 38322,
+          "usage": {
+            "promptTokens": 5001,
+            "completionTokens": 2921
+          },
+          "tools": [
+            "search_places",
+            "get_hotel_prices",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "Nhà Hàng Gành Hào 2",
+              "Hải sản tươi sống Vũng tàu (Làng nướng đêm 2)",
+              "NaKa buffet Hải sản",
+              "BOHO Restaurant",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Quán hải sản Hùng Chi"
+            ],
+            [
+              "BOHO Restaurant",
+              "Nhà hàng Gành Hào 1",
+              "Hải Sản Bờ Biển",
+              "Nhà Hàng Gành Hào 2",
+              "Hải sản tươi sống Vũng tàu (Làng nướng đêm 2)",
+              "NaKa buffet Hải sản",
+              "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "Quán hải sản Hùng Chi"
+            ]
+          ],
+          "dup": false,
+          "chars": 589
+        }
+      ]
+    },
+    {
+      "id": "G1b",
+      "group": "entertainment-single",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 16728,
+          "usage": {
+            "promptTokens": 3059,
+            "completionTokens": 612
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "Chiin Coffee & Cinema Quận 7",
+              "LOTTE Mart Quận 7",
+              "Galaxy Cinema Huỳnh Tấn Phát",
+              "CGV Crescent Mall",
+              "LOTTE Cinema Nam Sài Gòn",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "Sho Cinema - Lovetech Quận 7 - 48Đ77"
+            ],
+            [
+              "Chiin Coffee & Cinema Quận 7",
+              "FIGHT STATION - PS5 PES Cinema Nintendo TÂN MỸ QUẬN 7",
+              "LOTTE Mart Quận 7",
+              "Galaxy Cinema Huỳnh Tấn Phát",
+              "CGV Crescent Mall",
+              "LOTTE Cinema Nam Sài Gòn",
+              "kidzooona & Tiny Mollyfantasy LOTTE MART QUẬN 7",
+              "Sho Cinema - Lovetech Quận 7 - 48Đ77"
+            ]
+          ],
+          "dup": false,
+          "chars": 557
+        }
+      ]
+    },
+    {
+      "id": "G3a",
+      "group": "food-hours-budget",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15685,
+          "usage": {
+            "promptTokens": 3350,
+            "completionTokens": 644
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Sài Gòn Đậm Đắng",
+              "Tiệm cà phê Cư Xá 30",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Phê La - Trương Định",
+              "Café Slow",
+              "Little Cam Saigon (Trần Quốc Thảo)"
+            ],
+            [
+              "Sài Gòn Đậm Đắng",
+              "Tiệm cà phê Cư Xá 30",
+              "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "Barista Collective",
+              "The Coffee House - Cao Thắng",
+              "Phê La - Trương Định",
+              "Café Slow",
+              "Little Cam Saigon (Trần Quốc Thảo)"
+            ]
+          ],
+          "dup": false,
+          "chars": 435
+        }
+      ]
+    },
+    {
+      "id": "G3b",
+      "group": "food-correction",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17119,
+          "usage": {
+            "promptTokens": 3035,
+            "completionTokens": 602
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm ...",
+              "Hàng Dương Quán Quận 1",
+              "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "Kim's Tavern Girl Bar Saigon",
+              "Pasteur Street Craft Beer",
+              "Loop 1 - Cocktail Bar & Kitchen",
+              "Quán Bia Khô Mực"
+            ],
+            [
+              "Kim's Tavern Girl Bar Saigon",
+              "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "Tour uống rượu đêm Sài Gòn trên xe buýt hai tầng ngắm ...",
+              "Hàng Dương Quán Quận 1",
+              "Ốc luộc HÀ NGUYÊN - CN Quận 1 | Ốc luộc mắm gừng Hà Nội chi nhánh Quận 1",
+              "Pasteur Street Craft Beer",
+              "Loop 1 - Cocktail Bar & Kitchen",
+              "Quán Bia Khô Mực"
+            ]
+          ],
+          "dup": false,
+          "chars": 390
+        },
+        {
+          "status": 200,
+          "ms": 17957,
+          "usage": {
+            "promptTokens": 5332,
+            "completionTokens": 692
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Hàng Dương Quán Quận 1",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "NHÀ HÀNG NGON",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán",
+              "Quán ăn ngon Sài Gòn",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Quán ăn gia đình 79"
+            ],
+            [
+              "Quán ăn gia đình 79",
+              "Hàng Dương Quán Quận 1",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "NHÀ HÀNG NGON",
+              "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "Cục Gạch Quán",
+              "Quán ăn ngon Sài Gòn",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine"
+            ]
+          ],
+          "dup": false,
+          "chars": 677
+        }
+      ]
+    },
+    {
+      "id": "G4a",
+      "group": "over-clarifying",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 45687,
+          "usage": {
+            "promptTokens": 11339,
+            "completionTokens": 3130
+          },
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather",
+            "get_transport_options"
+          ],
+          "cards": [
+            [
+              "Quán Ăn Ngon Đà Lạt",
+              "Quán cơm Linh Đà Lạt",
+              "Quán cơm Linh Đà Lạt - Sương Nguyệt Anh",
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà hàng MÓN NGON ĐÀ LẠT",
+              "Tiệm Nướng Trên Mây",
+              "Ốc Ngon Đà Lạt",
+              "QUÁN ĂN TÀI (LẨU + NƯỚNG ĐÀ LẠT)"
+            ],
+            [
+              "Quán cơm Linh Đà Lạt",
+              "Quán Ăn Ngon Đà Lạt",
+              "Quán cơm Linh Đà Lạt - Sương Nguyệt Anh",
+              "Tiệm ăn Đà Lạt Phố - Restaurant",
+              "Nhà hàng MÓN NGON ĐÀ LẠT",
+              "Tiệm Nướng Trên Mây",
+              "Ốc Ngon Đà Lạt",
+              "QUÁN ĂN TÀI (LẨU + NƯỚNG ĐÀ LẠT)"
+            ]
+          ],
+          "dup": false,
+          "chars": 752
+        }
+      ]
+    },
+    {
+      "id": "G5a",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 19282,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 859
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1790
+        }
+      ]
+    },
+    {
+      "id": "G5b",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12032,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 834
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1580
+        }
+      ]
+    },
+    {
+      "id": "G5c",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 15499,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 1093
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 2143
+        }
+      ]
+    },
+    {
+      "id": "G5d",
+      "group": "used-purchase-risk",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 11611,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 795
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 1501
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "group": "budget-unit-percent",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 18071,
+          "usage": {
+            "promptTokens": 4314,
+            "completionTokens": 801
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 349
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "group": "budget-unit-quantity-age",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 4845,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 191
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 269
+        }
+      ]
+    },
+    {
+      "id": "B3",
+      "group": "budget-subject-reset",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 12396,
+          "usage": {
+            "promptTokens": 3132,
+            "completionTokens": 730
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm Ngon Hà Nội",
+              "Quán Ăn Út Hương",
+              "PHỞ HÀ",
+              "Quán ăn ngon Sài Gòn",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "DOYA JJAMBBONG",
+              "Ốc Đào"
+            ],
+            [
+              "Cơm Ngon Hà Nội",
+              "Quán Ăn Út Hương",
+              "PHỞ HÀ",
+              "Quán ăn ngon Sài Gòn",
+              "Béo Ơi Quán - Món ngon Hà Nội",
+              "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "DOYA JJAMBBONG",
+              "Ốc Đào"
+            ]
+          ],
+          "dup": false,
+          "chars": 624
+        },
+        {
+          "status": 200,
+          "ms": 21906,
+          "usage": {
+            "promptTokens": 4245,
+            "completionTokens": 843
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 684
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "group": "district-stated-vs-gps",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 8425,
+          "usage": {
+            "promptTokens": 2029,
+            "completionTokens": 479
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Ẩm Thực Quê Nhà Quận 3",
+              "Sao Cũng Được",
+              "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+              "Mực 280"
+            ],
+            [
+              "Sao Cũng Được",
+              "Ẩm Thực Quê Nhà Quận 3",
+              "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+              "Mực 280"
+            ]
+          ],
+          "dup": false,
+          "chars": 447
+        }
+      ]
+    },
+    {
+      "id": "D2",
+      "group": "district-named",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 9606,
+          "usage": {
+            "promptTokens": 3361,
+            "completionTokens": 672
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+              "PỜ CAFÉ - BÌNH THẠNH",
+              "Cú Trên Cây Coffee",
+              "Muỗng coffee - Bình Thạnh",
+              "Welike Bình Thạnh",
+              "Cà Kê Café",
+              "Cỏ cafe",
+              "Bamos Coffee Bình Thạnh - Cà phê 24h"
+            ],
+            [
+              "PỜ CAFÉ - BÌNH THẠNH",
+              "JACK’S COFFEE | Coffee Rooftop Bình Thạnh",
+              "Cú Trên Cây Coffee",
+              "Muỗng coffee - Bình Thạnh",
+              "Welike Bình Thạnh",
+              "Cà Kê Café",
+              "Cỏ cafe",
+              "Bamos Coffee Bình Thạnh - Cà phê 24h"
+            ]
+          ],
+          "dup": false,
+          "chars": 490
+        }
+      ]
+    },
+    {
+      "id": "B4",
+      "group": "budget-subject-reset-plan",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 20188,
+          "usage": {
+            "promptTokens": 4482,
+            "completionTokens": 832
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 610
+        },
+        {
+          "status": 200,
+          "ms": 19864,
+          "usage": {
+            "promptTokens": 4295,
+            "completionTokens": 788
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 820
+        },
+        {
+          "status": 200,
+          "ms": 43753,
+          "usage": {
+            "promptTokens": 13139,
+            "completionTokens": 3298
+          },
+          "tools": [
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+              "Bánh canh ghẹ Anh Vy",
+              "Hủ Tiếu Mực Vũng Tàu",
+              "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+              "Bánh khọt Dì Hương",
+              "A Rơm Bánh Canh Cua",
+              "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2",
+              "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu"
+            ],
+            [
+              "Bánh Canh Ghẹ Quận Nhất - Cơ sở Vũng Tàu",
+              "Bún Hải Sản Bề Bề Lộc Dương - Đặc Sản Vũng Tàu",
+              "Bánh canh ghẹ Anh Vy",
+              "Hủ Tiếu Mực Vũng Tàu",
+              "Bánh canh ghẹ Bà Ba - quán Chánh gốc tại Vũng Tàu",
+              "Bánh khọt Dì Hương",
+              "A Rơm Bánh Canh Cua",
+              "Bún Thái Hải Sản - Mì Trộn Lòng Đào Vũng Tàu Lão Quý Chi Nhánh 2"
+            ]
+          ],
+          "dup": false,
+          "chars": 698
+        }
+      ]
+    },
+    {
+      "id": "M1",
+      "group": "multi-domain-long-thread",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 374,
+          "usage": {
+            "promptTokens": 0,
+            "completionTokens": 0
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 174
+        },
+        {
+          "status": 200,
+          "ms": 7500,
+          "usage": {
+            "promptTokens": 3297,
+            "completionTokens": 487
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 985
+        },
+        {
+          "status": 200,
+          "ms": 15269,
+          "usage": {
+            "promptTokens": 3825,
+            "completionTokens": 700
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Bánh mì chảo Dì Nữ",
+              "Cháo sườn chú Chen",
+              "Quán Cơm Gà, Mẹt, Gỏi - Gà Ta Ngon Số 1 - Chi Nhánh 72 Út Tịch, Tân Bình",
+              "Cơm Niêu Bình Dân - Bình Thới - Quận 11",
+              "Cơm Tấm Sà Bì Chưởng - Trần Bình Trọng",
+              "Quán Cháo Mực 10",
+              "Chảo Bánh Mì restaurant",
+              "Cháo sườn Ông Tạ"
+            ],
+            [
+              "Cháo sườn Cô Giang",
+              "Bánh mì chảo Dì Nữ",
+              "Cháo sườn chú Chen",
+              "Quán Cơm Gà, Mẹt, Gỏi - Gà Ta Ngon Số 1 - Chi Nhánh 72 Út Tịch, Tân Bình",
+              "Cơm Niêu Bình Dân - Bình Thới - Quận 11",
+              "Cơm Tấm Sà Bì Chưởng - Trần Bình Trọng",
+              "Quán Cháo Mực 10",
+              "Chảo Bánh Mì restaurant"
+            ]
+          ],
+          "dup": false,
+          "chars": 685
+        },
+        {
+          "status": 200,
+          "ms": 12449,
+          "usage": {
+            "promptTokens": 2537,
+            "completionTokens": 637
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Bánh mì chảo Dì Nữ",
+              "NAO - Ăn uống ngay nào",
+              "Cháo lòng Chị Thanh",
+              "Cơm Bắc Làng Cua Đồng",
+              "Cháo sườn chú Chen"
+            ],
+            [
+              "Cháo sườn chú Chen",
+              "Bánh mì chảo Dì Nữ",
+              "NAO - Ăn uống ngay nào",
+              "Cháo lòng Chị Thanh",
+              "Cơm Bắc Làng Cua Đồng"
+            ]
+          ],
+          "dup": false,
+          "chars": 424
+        },
+        {
+          "status": 200,
+          "ms": 14493,
+          "usage": {
+            "promptTokens": 4704,
+            "completionTokens": 629
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 1480
+        },
+        {
+          "status": 200,
+          "ms": 24520,
+          "usage": {
+            "promptTokens": 5548,
+            "completionTokens": 1291
+          },
+          "tools": [
+            "search_places",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Bánh mì chảo Dì Nữ",
+              "Quán Chị Hoà - Gia Truyền Hơn 60 Năm",
+              "Cháo lòng Chị Thanh",
+              "Cháo Lòng Cô Ba Đakao"
+            ],
+            [
+              "Cháo lòng Chị Thanh",
+              "Bánh mì chảo Dì Nữ",
+              "Quán Chị Hoà - Gia Truyền Hơn 60 Năm",
+              "Cháo Lòng Cô Ba Đakao"
+            ]
+          ],
+          "dup": false,
+          "chars": 321
+        },
+        {
+          "status": 200,
+          "ms": 51752,
+          "usage": {
+            "promptTokens": 9866,
+            "completionTokens": 3594
+          },
+          "tools": [
+            "get_flight_prices",
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Phố ẩm thực Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Hải sản Tươi sống Ông Minh"
+            ],
+            [
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Phố ẩm thực Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Hải sản Tươi sống Ông Minh"
+            ]
+          ],
+          "dup": false,
+          "chars": 656
+        },
+        {
+          "status": 200,
+          "ms": 49222,
+          "usage": {
+            "promptTokens": 9772,
+            "completionTokens": 3954
+          },
+          "tools": [
+            "get_flight_prices",
+            "get_hotel_prices",
+            "search_places",
+            "search_places",
+            "get_weather"
+          ],
+          "cards": [
+            [
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Phố ẩm thực Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Hải sản Tươi sống Ông Minh"
+            ],
+            [
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Phố ẩm thực Quy Nhơn",
+              "Nhà Hàng HQ Quy Nhon",
+              "Hải Sản Quy Nhơn - 48 Xuân Diệu - Lộc Biển",
+              "Nhà hàng Hoa Viên Quy Nhơn",
+              "Hải sản Tươi sống Ông Minh"
+            ]
+          ],
+          "dup": false,
+          "chars": 406
+        },
+        {
+          "status": 200,
+          "ms": 3428,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 182
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 243
+        },
+        {
+          "status": 200,
+          "ms": 13523,
+          "usage": {
+            "promptTokens": 2677,
+            "completionTokens": 609
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 696
+        },
+        {
+          "status": 200,
+          "ms": 12788,
+          "usage": {
+            "promptTokens": 2746,
+            "completionTokens": 615
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 674
+        },
+        {
+          "status": 200,
+          "ms": 9429,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 632
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 833
+        }
+      ]
+    },
+    {
+      "id": "M2",
+      "group": "switch-food-spa-entertainment",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 11683,
+          "usage": {
+            "promptTokens": 2698,
+            "completionTokens": 770
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "CƠM NIÊU ĐẨU",
+              "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "Tám Riêu - Lý Chính Thắng"
+            ],
+            [
+              "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "CƠM NIÊU ĐẨU",
+              "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "Tám Riêu - Lý Chính Thắng"
+            ]
+          ],
+          "dup": false,
+          "chars": 442
+        },
+        {
+          "status": 200,
+          "ms": 22719,
+          "usage": {
+            "promptTokens": 8801,
+            "completionTokens": 980
+          },
+          "tools": [
+            "search_places",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Gội Đầu Dưỡng Sinh SEA | Massage quận 1",
+              "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+              "May Xưa Spa Quận 1 - Massage body, Foot, Gội đầu dưỡng sinh, tắm tẩy tế bào dưỡng mịn, xông hơi",
+              "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+              "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+              "Gội Đầu Dưỡng Sinh Quận 1"
+            ],
+            [
+              "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+              "Gội Đầu Dưỡng Sinh SEA | Massage quận 1",
+              "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+              "May Xưa Spa Quận 1 - Massage body, Foot, Gội đầu dưỡng sinh, tắm tẩy tế bào dưỡng mịn, xông hơi",
+              "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+              "Gội Đầu Dưỡng Sinh Quận 1"
+            ]
+          ],
+          "dup": false,
+          "chars": 719
+        },
+        {
+          "status": 200,
+          "ms": 11030,
+          "usage": {
+            "promptTokens": 1677,
+            "completionTokens": 642
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Mega GS Cinemas Lý Chính Thắng",
+              "CGV Lý Chính Thắng",
+              "Mega GS Cinemas - Cao Thắng",
+              "CGV La Vela Sai Gon"
+            ],
+            [
+              "Mega GS Cinemas - Cao Thắng",
+              "Mega GS Cinemas Lý Chính Thắng",
+              "CGV Lý Chính Thắng",
+              "CGV La Vela Sai Gon"
+            ]
+          ],
+          "dup": false,
+          "chars": 727
+        }
+      ]
+    },
+    {
+      "id": "M3",
+      "group": "switch-fold-collisions",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 6752,
+          "usage": {
+            "promptTokens": 3365,
+            "completionTokens": 367
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Quán Ăn Hùng Xíu",
+              "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+              "Hàng Dương Quán Quận 1",
+              "Cơm Thố Xá Lị - Tôn Thất Đạm",
+              "Quán Ụt Ụt - Bến Thành",
+              "Nhà hàng Tân Hải Vân",
+              "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "PHỞ HÀ"
+            ],
+            [
+              "Nhà hàng Tân Hải Vân",
+              "Quán Ăn Hùng Xíu",
+              "INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1",
+              "Hàng Dương Quán Quận 1",
+              "Cơm Thố Xá Lị - Tôn Thất Đạm",
+              "Quán Ụt Ụt - Bến Thành",
+              "Nhà hàng Dìn Ký Nguyễn Trãi",
+              "PHỞ HÀ"
+            ]
+          ],
+          "dup": false,
+          "chars": 464
+        },
+        {
+          "status": 200,
+          "ms": 3441,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 249
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 338
+        },
+        {
+          "status": 200,
+          "ms": 12570,
+          "usage": {
+            "promptTokens": 2251,
+            "completionTokens": 744
+          },
+          "tools": [
+            "get_weather",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Kingdom Karaoke",
+              "Karaoke Avatar",
+              "NOWZONE Fashion Mall",
+              "Karaoke SAFARI",
+              "Hàng Dương Quán Quận 1",
+              "Cinestar Quốc Thanh"
+            ],
+            [
+              "Karaoke Avatar",
+              "Kingdom Karaoke",
+              "NOWZONE Fashion Mall",
+              "Karaoke SAFARI",
+              "Hàng Dương Quán Quận 1",
+              "Cinestar Quốc Thanh"
+            ]
+          ],
+          "dup": false,
+          "chars": 490
+        },
+        {
+          "status": 200,
+          "ms": 6350,
+          "usage": {
+            "promptTokens": 3,
+            "completionTokens": 410
+          },
+          "tools": [],
+          "cards": [],
+          "dup": false,
+          "chars": 336
+        }
+      ]
+    },
+    {
+      "id": "M4",
+      "group": "switch-spa-shopping-spa",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 17562,
+          "usage": {
+            "promptTokens": 3538,
+            "completionTokens": 617
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "Trải Nghiệm Mầm Gạo Spa Với Giá Tốt Độc Quyền",
+              "Paradise spa",
+              "Mini Spa | Massage Phú Nhuận",
+              "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh"
+            ],
+            [
+              "Massage Foot Body Phú Nhuận – Quý Phi spa",
+              "Massage Body Trị Liệu - RÊU Spa Phú Nhuận",
+              "Trải Nghiệm Mầm Gạo Spa Với Giá Tốt Độc Quyền",
+              "Paradise spa",
+              "Mini Spa | Massage Phú Nhuận",
+              "Spa Việt - Massage Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Lụa Spa Hoa Lan Phú Nhuận – Cổ Vai Gáy & Gội Đầu Dưỡng Sinh",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh"
+            ]
+          ],
+          "dup": false,
+          "chars": 663
+        },
+        {
+          "status": 200,
+          "ms": 22607,
+          "usage": {
+            "promptTokens": 4308,
+            "completionTokens": 783
+          },
+          "tools": [
+            "search_products"
+          ],
+          "cards": [],
+          "dup": false,
+          "chars": 377
+        },
+        {
+          "status": 200,
+          "ms": 19371,
+          "usage": {
+            "promptTokens": 3746,
+            "completionTokens": 591
+          },
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Mèo Mây Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận"
+            ],
+            [
+              "Gội đầu dưỡng sinh - SPA CÔ ÚT",
+              "Gội đầu dưỡng sinh Mudra House Phú Nhuận",
+              "Massage Hoàng Tử - Gội đầu dưỡng sinh",
+              "Saigon Spa - Massage & Gội Đầu Dưỡng Sinh",
+              "MIA GỘI ĐẦU DƯỠNG SINH | GỘI ĐẦU DƯỠNG SINH PHÚ NHUẬN |",
+              "Gội Đầu Thảo Dược và Massage Phú Nhuận - An Miên spa",
+              "Mèo Mây Gội đầu dưỡng sinh",
+              "Gội đầu dưỡng sinh Healing House - Gội đầu dưỡng sinh Quận Phú Nhuận"
+            ]
+          ],
+          "dup": false,
+          "chars": 382
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "group": "travel-local-tips",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 61888,
+          "usage": {
+            "promptTokens": 16466,
+            "completionTokens": 4493
+          },
+          "tools": [
+            "search_places",
+            "get_weather",
+            "get_hotel_prices",
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Phố ẩm thực Quy Nhơn",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Hải sản Tươi sống Ông Minh",
+              "Quán Ghẹ 23",
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Nhà Hàng Cá Khói"
+            ],
+            [
+              "Cơm Niêu Hội An - Quy Nhơn",
+              "Đặc Sản Bình Định Quy Nhơn Ông Bảy",
+              "Nẫu Cuốn - Quán Ăn Ngon Quy Nhơn",
+              "Phố ẩm thực Quy Nhơn",
+              "Đặc Sản Quy Nhơn: Làm Quà",
+              "Hải sản Tươi sống Ông Minh",
+              "Quán Ghẹ 23",
+              "Nhà Hàng Cá Khói"
+            ]
+          ],
+          "dup": false,
+          "chars": 536
+        }
+      ]
+    }
+  ]
+}

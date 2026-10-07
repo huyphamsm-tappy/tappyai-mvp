@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:29.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"Hanami Hotel Danang\" OR \"Sala Danang Beach Hotel\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng: Đáng giá không?",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7527881669731159314",
+    "snippet": "Khách sạn Mường Thanh Luxury Đà Nẵng: Đáng giá không? Khách sạn Mường Thanh Luxury Đà Nẵng có đầy đủ tiện nghi, vị trí sát biển, nhưng có thật ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach ...",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "... Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành trình thú vị này! #saladanangbeachhotel #danang ...",
+    "position": 2
+   },
+   {
+    "title": "Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@muongthanhhospitality/video/7268295488397511941",
+    "snippet": "Video TikTok từ Mường Thanh Hospitality (@muongthanhhospitality): \"Khách sạn Mường Thanh Luxury Đà Nẵng có những góc check-in tuyệt đẹp.",
+    "position": 4
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "position": 5
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@maitructhanh1/video/7391360870858722578",
+    "snippet": "Khám phá trải nghiệm tuyệt vời tại Khách Sạn Mường Thanh Luxury Đà Nẵng và đánh giá chân thực về dịch vụ, phòng làm việc, hồ bơi và nhân viên. # ...",
+    "position": 7
+   },
+   {
+    "title": "Sáng nay thức dậy tại Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@nguyetbanhbeo98_nick_phu/video/7670015364952001810",
+    "snippet": "Ai nên chọn khách sạn này - Du khách muốn khách sạn đẹp, tiện nghi nhưng không tốn nhiều chi phí. - Cặp đôi hoặc nhóm nhỏ muốn ở vị trí thuận tiện để khám phá ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

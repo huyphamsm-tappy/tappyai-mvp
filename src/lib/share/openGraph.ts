@@ -51,7 +51,13 @@ const FALLBACK_SITE_URL = 'https://www.tappyai.com'
 
 /** The canonical public origin, without a trailing slash. */
 function siteOrigin(env: NodeJS.ProcessEnv = process.env): string {
-  const raw = (env.NEXT_PUBLIC_SITE_URL || FALLBACK_SITE_URL).trim()
+  // 🚨 UAT 2026-09-28 (plan share 404): Next inlines `process.env.NEXT_PUBLIC_*` into the BROWSER
+  // bundle only where it is written out literally. `env.NEXT_PUBLIC_SITE_URL` read through the
+  // parameter stayed empty in client code (ShareMenu), so every web share link fell back to
+  // www.tappyai.com — where a UAT (audit-DB) plan does not exist. The literal read below is the one
+  // the bundler replaces; an explicit env object (tests, server callers) still wins.
+  const inlined = env === process.env ? process.env.NEXT_PUBLIC_SITE_URL : undefined
+  const raw = (env.NEXT_PUBLIC_SITE_URL || inlined || FALLBACK_SITE_URL).trim()
   return raw.replace(/\/+$/, '')
 }
 
@@ -244,6 +250,11 @@ export const ROUTE_TITLES: Record<string, { vi: string; en: string }> = {
   '/terms': { en: 'Terms of Service — TappyAI', vi: 'Điều khoản dịch vụ — TappyAI' },
   '/viet-content': { en: 'Social media content writer — TappyAI', vi: 'Viết content mạng xã hội — TappyAI' },
   '/game/supertux': { en: 'SuperTux — TappyAI Games', vi: 'SuperTux — Trò chơi TappyAI' },
+  '/scam-shield': { en: 'Scam Shield — free scam link checker — TappyAI', vi: 'Scam Shield — kiểm tra link lừa đảo miễn phí — TappyAI' },
+  '/about': { en: 'About TappyAI — what it is and how it answers', vi: 'Giới thiệu TappyAI — Tappy là gì và trả lời như thế nào' },
+  '/extension': { en: 'TappyAI browser extension — ask Tappy about any page', vi: 'Tiện ích TappyAI cho trình duyệt — hỏi Tappy về bất kỳ trang nào' },
+  '/extension/welcome': { en: 'TappyAI extension installed — try it', vi: 'Đã cài tiện ích TappyAI — thử ngay' },
+  '/extension/privacy': { en: 'Privacy policy — TappyAI browser extension', vi: 'Chính sách riêng tư — Tiện ích TappyAI' },
 }
 
 /**

@@ -1,0 +1,1154 @@
+{
+  "id": "L1",
+  "group": "travel-local-tips",
+  "criteria": [
+    "Gives a complete [TAPPY_PLAN] with real places from tools",
+    "Local tips (UAT3 P2, 2026-09-27): every tip is tied to a stop in the plan (basis tool) or flagged as general knowledge; no invented venue, price, hour or showtime in a tip; no tips at all is acceptable when nothing supports one"
+  ],
+  "turns": [
+    {
+      "user": "Lên kế hoạch đi Quy Nhơn 3 ngày 2 đêm cho 2 người, budget 8 triệu, thích ăn đồ địa phương",
+      "status": 200,
+      "elapsedMs": 48252,
+      "usage": {
+        "promptTokens": 15593,
+        "completionTokens": 3725
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn địa phương Quy Nhơn",
+            "location": "Quy Nhơn",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Quy Nhơn"
+          }
+        },
+        {
+          "name": "get_flight_prices",
+          "args": {
+            "origin": "TP HCM",
+            "destination": "Quy Nhơn",
+            "passengers": 2
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Quy Nhơn",
+            "checkIn": "2026-10-03",
+            "checkOut": "2026-10-05"
+          }
+        },
+        {
+          "name": "web_search",
+          "args": {
+            "query": "khách sạn Quy Nhơn giá phòng 2 người 1 đêm dưới 1.5 triệu 2026"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+              "address": "1H1 Nguyễn Thị Định, Quy Nhơn Nam, Gia Lai 55000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 826,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng",
+                "Quán bar",
+                "Hội họp",
+                "Khách sạn",
+                "Hồ bơi ngoài trời",
+                "Nhà hàng",
+                "Spa"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+              "address": "11A Ngô Mây, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 565,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách Sạn Sala Quy Nhon Beach",
+              "address": "124 Phan Chu Trinh, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 848,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Grand Hyams Hotel - Quy Nhon Beach",
+              "address": "28 Nguyễn Huệ, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2533,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Fleur De Lys Hotel Quy Nhon",
+              "address": "16 Nguyễn Huệ, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2169,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Quy Nhơn Hoàng Hưng",
+              "address": "51 Nguyễn Lạc, Quy Nhơn, Gia Lai 59000, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 101,
+              "price": null,
+              "categories": [
+                "Khách sạn lưu trú dài hạn",
+                "Đại lý cho thuê xe ô tô",
+                "Đại lý cho thuê thiết bị",
+                "Đại lý cho thuê xe máy"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách Sạn Lucien Hotel Quy Nhơn",
+              "address": "223 Trần Hưng Đạo, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 286,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Sài Gòn - Quy Nhơn",
+              "address": "24 Nguyễn Huệ, str, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 248,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": false,
+            "items": [
+              {
+                "id": "stay:13.75520,109.21270",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP22G8o1N5tGp_DUm7M3gyEYWI0_50f_5bt5ZAMUYV6Hr23EnVRzuiaJJcjCNDPjG6uzjLIlEoIimDo1CquALhDirh0WnmKojUh9iZhr8Qfg7byTO1_59ov0UbAzuVreyO9tDer",
+                "address": "1H1 Nguyễn Thị Định, Quy Nhơn Nam, Gia Lai 55000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 826,
+                "phone": "+84 256 2226 868",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng",
+                  "Quán bar",
+                  "Hội họp",
+                  "Khách sạn",
+                  "Hồ bơi ngoài trời",
+                  "Nhà hàng",
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8748368044748479156",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://lamorboutiquehotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L'amor%20Boutique%20Hotel%20Quy%20Nh%C6%A1n%20%7C%20360%C2%B0%20City%20View%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842562226868",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.76172,109.21927",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPHB5SHXqZLTJ9KtQqhh19VAtFdy6VmAkFJsp6pGHK1NVNUIjSVR22AHFuCpMQFez0bqHDja3wRB9jQo9zoDwIsS9U-7ByQwaHHG8Bv1RBkokER2paTJ7X97vLEMHbUtYroLeGpTA",
+                "address": "11A Ngô Mây, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 565,
+                "phone": "+84 256 6288 488",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "booking",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fdetail%2F%3FhotelId%3D47568349%26checkIn%3D2026-10-03%26checkOut%3D2026-10-05%26adult%3D2%26children%3D0%26crn%3D1%26curr%3DVND%26locale%3Dvi-VN&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def",
+                    "labelKey": "v3.action.bookingOn",
+                    "platform": "Trip.com",
+                    "commerce": {
+                      "linkId": "a9168fa222708f1e93a35c2d",
+                      "requestId": "5ad7b1fd-0e39-4453-8fb5-c8cd33fa220e",
+                      "providerId": "tripcom",
+                      "depth": 4,
+                      "guestDepth": 5,
+                      "authRequiredAt": "none",
+                      "loginRequired": false,
+                      "handoff": "guest",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "static",
+                      "expiresAt": "2026-10-02T17:00:00.000Z",
+                      "tracked": true,
+                      "capability": "hotel_booking",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2153335601128165931",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Mira%20-%20Kh%C3%A1ch%20s%E1%BA%A1n%20g%E1%BA%A7n%20bi%E1%BB%83n%20%E1%BB%9F%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842566288488",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77218,109.23717",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách Sạn Sala Quy Nhon Beach",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJNzMHfKgTQkAiy4HHlcQcUdVvEs8j3kBYa0bYsYWckLOjD0ObcxSUdLK78UrgxZDfNZ8E0WRj8FgFkfGY5kSsEn5pdaCW2mOUY4eSjc51wCKvksGNiM4NfJQ30KsVvcYzBbnNR9pzmzs",
+                "address": "124 Phan Chu Trinh, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 848,
+                "phone": "+84 256 3903 388",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11167646921468983029",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://salahotelgroup.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Sala%20Quy%20Nhon%20Beach%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563903388",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77019,109.23302",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Grand Hyams Hotel - Quy Nhon Beach",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNoIaLlofWg9QWuzs4SdGphirwQQrfCRU6KTcUzcfCEgV-z7I31cKhMbwH-lYksbYEtTAPY-rqd-h0oBe-b3d5EFKwaekW0rBmTrhCcjrVfmMaCEts6xAiP9V18OkaCwI7zzLs",
+                "address": "28 Nguyễn Huệ, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2533,
+                "phone": "+84 256 3906 666",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16336796624940629935",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.grandhyamshotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Grand%20Hyams%20Hotel%20-%20Quy%20Nhon%20Beach%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563906666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77116,109.23628",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Fleur De Lys Hotel Quy Nhon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMcQvJv7iIr_sODhLvjrr4Du_7dsqhqmUWe46nv9MDmdSqdBV-oqx2oi5oq_9QJCbVLAC3o05zalrTMQRaq0eDfSyFADVfT2npzyFAl-9xS4-qukcfjU00kK0eaoPYUguwKqzrJAObrSjNf",
+                "address": "16 Nguyễn Huệ, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2169,
+                "phone": "+84 256 3666 888",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9471020358039100644",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://fleurdelys.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Fleur%20De%20Lys%20Hotel%20Quy%20Nhon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563666888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.76471,109.22501",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Quy Nhơn Hoàng Hưng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMbmF99tbf1bTnvxnLzF_rPHtbFHNHj--bzpKKugnZAGpWQkJYMa4UrqvYqAYwxdt6DZf3OLp6f4qPUrG4c9sXvKXtRsqkmOw1RiPjnpyFhpimR26NUUON95rbdZTm4YvTN_6E",
+                "address": "51 Nguyễn Lạc, Quy Nhơn, Gia Lai 59000, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 101,
+                "phone": "+84 905 602 927",
+                "categories": [
+                  "Khách sạn lưu trú dài hạn",
+                  "Đại lý cho thuê xe ô tô",
+                  "Đại lý cho thuê thiết bị",
+                  "Đại lý cho thuê xe máy"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14889196015560719803",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phuotvivu.com/blog/review-khach-san-hoang-hung-khach-san-gia-re-giua-trung-tam-thanh-pho-quy-nhon/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Quy%20Nh%C6%A1n%20Ho%C3%A0ng%20H%C6%B0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905602927",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77511,109.23272",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách Sạn Lucien Hotel Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJCfD0vosUDgtcYBP6zWPdmfPkDobtcKz4CL3bvuPdIPoUtWVoo7nYELF21_WD7o12IlUCT2xx44kpjoNq83WhTj7BXJWB2pNksCTtF1wun8mNpoDCdIdNKym2g0r9wnlox9dveg",
+                "address": "223 Trần Hưng Đạo, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 286,
+                "phone": "+84 256 3585 559",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12480267733413728405",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100085842124726",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Lucien%20Hotel%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563585559",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77082,109.23426",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Sài Gòn - Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1ml_qFS1pnUMkDZqbmqulaxE6SvwJQBQMoxfQonYdMeIxsWUs9N0Q8CeeaiOiZTeYK7eA96Xjv_R0yoAnsfXR5uzgccE7nu5HpRsI9MJ7tNScu-PSmSa7quUvmAzBfUxvIrsf2GJOUahbQauI3gA2G_MJirjY70iFUXWYTbrdLEKjYGJDFqNQ",
+                "address": "24 Nguyễn Huệ, str, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 248,
+                "phone": "+84 256 3829 922",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14343114360201408470",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20S%C3%A0i%20G%C3%B2n%20-%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563829922",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "travel"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Khách sạn Sài Gòn - Quy Nhơn",
+              "address": "24 Nguyễn Huệ, str, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 248,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.3",
+                "248 reviews"
+              ]
+            },
+            {
+              "name": "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+              "address": "1H1 Nguyễn Thị Định, Quy Nhơn Nam, Gia Lai 55000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 826,
+              "price": null,
+              "categories": [
+                "Khách sạn nghỉ dưỡng",
+                "Quán bar",
+                "Hội họp",
+                "Khách sạn",
+                "Hồ bơi ngoài trời",
+                "Nhà hàng",
+                "Spa"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+              "address": "11A Ngô Mây, Quy Nhơn Nam, Gia Lai, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 565,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách Sạn Sala Quy Nhon Beach",
+              "address": "124 Phan Chu Trinh, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 848,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Grand Hyams Hotel - Quy Nhon Beach",
+              "address": "28 Nguyễn Huệ, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 2533,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Fleur De Lys Hotel Quy Nhon",
+              "address": "16 Nguyễn Huệ, Quy Nhơn, Gia Lai, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 2169,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách sạn Quy Nhơn Hoàng Hưng",
+              "address": "51 Nguyễn Lạc, Quy Nhơn, Gia Lai 59000, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 101,
+              "price": null,
+              "categories": [
+                "Khách sạn lưu trú dài hạn",
+                "Đại lý cho thuê xe ô tô",
+                "Đại lý cho thuê thiết bị",
+                "Đại lý cho thuê xe máy"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Khách Sạn Lucien Hotel Quy Nhơn",
+              "address": "223 Trần Hưng Đạo, Quy Nhơn, Gia Lai 55000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 286,
+              "price": null,
+              "categories": [
+                "Khách sạn"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "travel",
+            "ranked": true,
+            "items": [
+              {
+                "id": "stay:13.77082,109.23426",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Sài Gòn - Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1ml_qFS1pnUMkDZqbmqulaxE6SvwJQBQMoxfQonYdMeIxsWUs9N0Q8CeeaiOiZTeYK7eA96Xjv_R0yoAnsfXR5uzgccE7nu5HpRsI9MJ7tNScu-PSmSa7quUvmAzBfUxvIrsf2GJOUahbQauI3gA2G_MJirjY70iFUXWYTbrdLEKjYGJDFqNQ",
+                "address": "24 Nguyễn Huệ, str, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 248,
+                "phone": "+84 256 3829 922",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 7,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.3",
+                    "params": {
+                      "value": 4.3
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "248 reviews",
+                    "params": {
+                      "count": 248
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14343114360201408470",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20S%C3%A0i%20G%C3%B2n%20-%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563829922",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.75520,109.21270",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP22G8o1N5tGp_DUm7M3gyEYWI0_50f_5bt5ZAMUYV6Hr23EnVRzuiaJJcjCNDPjG6uzjLIlEoIimDo1CquALhDirh0WnmKojUh9iZhr8Qfg7byTO1_59ov0UbAzuVreyO9tDer",
+                "address": "1H1 Nguyễn Thị Định, Quy Nhơn Nam, Gia Lai 55000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 826,
+                "phone": "+84 256 2226 868",
+                "categories": [
+                  "Khách sạn nghỉ dưỡng",
+                  "Quán bar",
+                  "Hội họp",
+                  "Khách sạn",
+                  "Hồ bơi ngoài trời",
+                  "Nhà hàng",
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8748368044748479156",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://lamorboutiquehotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=L'amor%20Boutique%20Hotel%20Quy%20Nh%C6%A1n%20%7C%20360%C2%B0%20City%20View%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842562226868",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.76172,109.21927",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPHB5SHXqZLTJ9KtQqhh19VAtFdy6VmAkFJsp6pGHK1NVNUIjSVR22AHFuCpMQFez0bqHDja3wRB9jQo9zoDwIsS9U-7ByQwaHHG8Bv1RBkokER2paTJ7X97vLEMHbUtYroLeGpTA",
+                "address": "11A Ngô Mây, Quy Nhơn Nam, Gia Lai, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 565,
+                "phone": "+84 256 6288 488",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "booking",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fhotels%2Fdetail%2F%3FhotelId%3D47568349%26checkIn%3D2026-10-03%26checkOut%3D2026-10-05%26adult%3D2%26children%3D0%26crn%3D1%26curr%3DVND%26locale%3Dvi-VN&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def",
+                    "labelKey": "v3.action.bookingOn",
+                    "platform": "Trip.com",
+                    "commerce": {
+                      "linkId": "a9168fa222708f1e93a35c2d",
+                      "requestId": "5ad7b1fd-0e39-4453-8fb5-c8cd33fa220e",
+                      "providerId": "tripcom",
+                      "depth": 4,
+                      "guestDepth": 5,
+                      "authRequiredAt": "none",
+                      "loginRequired": false,
+                      "handoff": "guest",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "static",
+                      "expiresAt": "2026-10-02T17:00:00.000Z",
+                      "tracked": true,
+                      "capability": "hotel_booking",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@vibeqn/video/7688587554597211413",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2153335601128165931",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842566288488",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Mira%20-%20Kh%C3%A1ch%20s%E1%BA%A1n%20g%E1%BA%A7n%20bi%E1%BB%83n%20%E1%BB%9F%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77218,109.23717",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách Sạn Sala Quy Nhon Beach",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJNzMHfKgTQkAiy4HHlcQcUdVvEs8j3kBYa0bYsYWckLOjD0ObcxSUdLK78UrgxZDfNZ8E0WRj8FgFkfGY5kSsEn5pdaCW2mOUY4eSjc51wCKvksGNiM4NfJQ30KsVvcYzBbnNR9pzmzs",
+                "address": "124 Phan Chu Trinh, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 848,
+                "phone": "+84 256 3903 388",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=11167646921468983029",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://salahotelgroup.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Sala%20Quy%20Nhon%20Beach%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563903388",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77019,109.23302",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Grand Hyams Hotel - Quy Nhon Beach",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNoIaLlofWg9QWuzs4SdGphirwQQrfCRU6KTcUzcfCEgV-z7I31cKhMbwH-lYksbYEtTAPY-rqd-h0oBe-b3d5EFKwaekW0rBmTrhCcjrVfmMaCEts6xAiP9V18OkaCwI7zzLs",
+                "address": "28 Nguyễn Huệ, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 2533,
+                "phone": "+84 256 3906 666",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16336796624940629935",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.grandhyamshotel.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Grand%20Hyams%20Hotel%20-%20Quy%20Nhon%20Beach%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563906666",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77116,109.23628",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Fleur De Lys Hotel Quy Nhon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMcQvJv7iIr_sODhLvjrr4Du_7dsqhqmUWe46nv9MDmdSqdBV-oqx2oi5oq_9QJCbVLAC3o05zalrTMQRaq0eDfSyFADVfT2npzyFAl-9xS4-qukcfjU00kK0eaoPYUguwKqzrJAObrSjNf",
+                "address": "16 Nguyễn Huệ, Quy Nhơn, Gia Lai, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 2169,
+                "phone": "+84 256 3666 888",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=9471020358039100644",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://fleurdelys.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Fleur%20De%20Lys%20Hotel%20Quy%20Nhon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563666888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.76471,109.22501",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách sạn Quy Nhơn Hoàng Hưng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMbmF99tbf1bTnvxnLzF_rPHtbFHNHj--bzpKKugnZAGpWQkJYMa4UrqvYqAYwxdt6DZf3OLp6f4qPUrG4c9sXvKXtRsqkmOw1RiPjnpyFhpimR26NUUON95rbdZTm4YvTN_6E",
+                "address": "51 Nguyễn Lạc, Quy Nhơn, Gia Lai 59000, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 101,
+                "phone": "+84 905 602 927",
+                "categories": [
+                  "Khách sạn lưu trú dài hạn",
+                  "Đại lý cho thuê xe ô tô",
+                  "Đại lý cho thuê thiết bị",
+                  "Đại lý cho thuê xe máy"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14889196015560719803",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phuotvivu.com/blog/review-khach-san-hoang-hung-khach-san-gia-re-giua-trung-tam-thanh-pho-quy-nhon/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20s%E1%BA%A1n%20Quy%20Nh%C6%A1n%20Ho%C3%A0ng%20H%C6%B0ng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84905602927",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "stay:13.77511,109.23272",
+                "domain": "travel",
+                "kind": "stay",
+                "name": "Khách Sạn Lucien Hotel Quy Nhơn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJCfD0vosUDgtcYBP6zWPdmfPkDobtcKz4CL3bvuPdIPoUtWVoo7nYELF21_WD7o12IlUCT2xx44kpjoNq83WhTj7BXJWB2pNksCTtF1wun8mNpoDCdIdNKym2g0r9wnlox9dveg",
+                "address": "223 Trần Hưng Đạo, Quy Nhơn, Gia Lai 55000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 286,
+                "phone": "+84 256 3585 559",
+                "categories": [
+                  "Khách sạn"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12480267733413728405",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/profile.php?id=100085842124726",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Kh%C3%A1ch%20S%E1%BA%A1n%20Lucien%20Hotel%20Quy%20Nh%C6%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842563585559",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20%C4%91%E1%BB%8Ba%20ph%C6%B0%C6%A1ng%20Quy%20Nh%C6%A1n%20Quy%20Nh%C6%A1n",
+            "picked": [
+              "stay:13.77082,109.23426"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "stay:13.77082,109.23426"
+          ],
+          "domain": "travel"
+        }
+      ],
+      "cardItems": [
+        [
+          "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+          "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+          "Khách Sạn Sala Quy Nhon Beach",
+          "Grand Hyams Hotel - Quy Nhon Beach",
+          "Fleur De Lys Hotel Quy Nhon",
+          "Khách sạn Quy Nhơn Hoàng Hưng",
+          "Khách Sạn Lucien Hotel Quy Nhơn",
+          "Khách sạn Sài Gòn - Quy Nhơn"
+        ],
+        [
+          "Khách sạn Sài Gòn - Quy Nhơn",
+          "L'amor Boutique Hotel Quy Nhơn | 360° City View",
+          "Khách sạn Mira - Khách sạn gần biển ở Quy Nhơn",
+          "Khách Sạn Sala Quy Nhon Beach",
+          "Grand Hyams Hotel - Quy Nhon Beach",
+          "Fleur De Lys Hotel Quy Nhon",
+          "Khách sạn Quy Nhơn Hoàng Hưng",
+          "Khách Sạn Lucien Hotel Quy Nhơn"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình chọn **Khách Sạn Sala Quy Nhon Beach** — 4.9⭐ (848 đánh giá Google Maps).\n\nMình sẽ tìm những quán ăn địa phương ngon ở Quy Nhơn cho kế hoạch này nhé.\n\nMình cần xác nhận giá phòng khách sạn để hoàn thiện kế hoạch.\n\nDựa trên kết quả tìm kiếm, mình sẽ lập kế hoạch 3 ngày 2 đêm cho bạn. Thời tiết Quy Nhơn hôm nay có mưa nhẹ, nhiệt độ khoảng 26°C, nên bạn nên mang áo khoác nhẹ nhé.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"3 ngày 2 đêm ăn đặc sản Quy Nhơn cho 2 người\",\"people\":2,\"budget_total\":\"8.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối (Hôm nay)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Quy Nhơn\",\"description\":\"Máy bay chiều (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"16:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Khách sạn Hoàng Hưng Quy Nhơn\",\"description\":\"Khách sạn 3 sao, giá rẻ, gần trung tâm thành phố\",\"price\":\"chưa có giá\",\"address\":\"51 Nguyễn Lạc, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=14889196015560719803\",\"booking_link\":\"https://www.booking.com/city/vn/quy-nhon.vi.html\",\"place_id\":\"ChIJ38UaQo1sbzERu32oyuMMoc4\"},{\"time\":\"18:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Nhà Hàng Cá Khói\",\"description\":\"**4.9⭐ (2.745 đánh giá Google Maps)** - Chuyên cá khói, đặc sản Quy Nhơn, mở 10:00–00:00\",\"price\":\"chưa có giá\",\"address\":\"04 Nguyễn Trung Tín, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=16609590883614827774\",\"booking_link\":\"\",\"place_id\":\"ChIJf_D-gKxtbzER_qRtQugegeY\"}]},{\"label\":\"Ngày 2 - Sáng & Trưa\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Quán bún chả cá Phượng Tèo\",\"description\":\"**4⭐ (932 đánh giá Google Maps)** - Bún chả cá địa phương, mở từ 05:45\",\"price\":\"chưa có giá\",\"address\":\"211 Nguyễn Huệ, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=830135899430377558\",\"booking_link\":\"\",\"place_id\":\"ChIJp1nzIYxsbzERVtjYyDM8hQs\"},{\"time\":\"12:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Cá Ngừ Đại Dương Chị Thuận\",\"description\":\"**4.4⭐ (616 đánh giá Google Maps)** - Cá ngừ tươi sống, đặc sản biển, mở 09:00–23:00\",\"price\":\"chưa có giá\",\"address\":\"15 Bùi Hữu Nghĩa, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=12705741387033972281\",\"booking_link\":\"\",\"place_id\":\"ChIJ543IdulsbzEROY4jPnncU7A\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi biển Quy Nhơn\",\"description\":\"Thư giãn, tắm biển, ngắm hoàng hôn\",\"price\":\"Miễn phí\",\"address\":\"Bãi biển Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/bai+bien+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"}]},{\"label\":\"Ngày 2 - Tối\",\"items\":[{\"time\":\"19:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Tươi Sống Ông Minh\",\"description\":\"**4.6⭐ (2.710 đánh giá Google Maps)** - Hải sản tươi sống, mở 10:00–01:00\",\"price\":\"chưa có giá\",\"address\":\"29 Diên Hồng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=23206850385491721\",\"booking_link\":\"\",\"place_id\":\"ChIJj2pTUmBtbzERCTeV6YFyUgA\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"07:30\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Đặc Sản Quy Nhơn: Làm Quà\",\"description\":\"**4.9⭐ (90 đánh giá Google Maps)** - Đặc sản địa phương, mở 07:00–20:30\",\"price\":\"chưa có giá\",\"address\":\"03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=18258014560512854841\",\"booking_link\":\"\",\"place_id\":\"ChIJwySNXd9tbzEROUtH94F_Yf0\"},{\"time\":\"11:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Đặc Sản Bình Định Quy Nhơn Ông Bảy\",\"description\":\"**4.8⭐ (79 đánh giá Google Maps)** - Đặc sản Bình Định, mở 06:00–21:30\",\"price\":\"chưa có giá\",\"address\":\"23 Phan Văn Lân, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=13226199828310724599\",\"booking_link\":\"https://zalo.me/0908319357\",\"place_id\":\"ChIJK2KLuyttbzER9w_LHqvmjLc\"},{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Quy Nhơn → TP.HCM\",\"description\":\"Máy bay chiều (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người, khứ hồi)\":\"chưa có giá\",\"Lưu trú (2 đêm)\":\"chưa có giá\",\"Ăn sáng (3 bữa)\":\"chưa có giá\",\"Ăn trưa (2 bữa)\":\"chưa có giá\",\"Ăn tối (2 bữa)\":\"chưa có giá\",\"Hoạt động & di chuyển\":\"chưa có giá\"},\"share_text\":\"🌊 3 ngày 2 đêm ăn cá khói, hải sản tươi sống ở Quy Nhơn với 8 triệu cho 2 người — đặc sản Bình Định ngon lắm! 🐟 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì bạn muốn ăn đặc sản địa phương với ngân sách 8 triệu cho 2 người.\n\nBạn muốn giữ máy bay hay đổi sang xe khách?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Khách sạn Quy Nhơn\",\"type\":\"booking\",\"url\":\"https://www.booking.com/city/vn/quy-nhon.vi.html\",\"primary\":false}]}[/CTA_BUTTONS]\n\n🔗 Liên kết chính thức: [Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def) · [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.UIH%26dt%3D04-10-2026.null%26ps%3D2.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def)",
+      "visible": "Mình chọn **Khách Sạn Sala Quy Nhon Beach** — 4.9⭐ (848 đánh giá Google Maps).\n\nMình sẽ tìm những quán ăn địa phương ngon ở Quy Nhơn cho kế hoạch này nhé.\n\nMình cần xác nhận giá phòng khách sạn để hoàn thiện kế hoạch.\n\nDựa trên kết quả tìm kiếm, mình sẽ lập kế hoạch 3 ngày 2 đêm cho bạn. Thời tiết Quy Nhơn hôm nay có mưa nhẹ, nhiệt độ khoảng 26°C, nên bạn nên mang áo khoác nhẹ nhé.\n\nMình chọn kế hoạch này vì bạn muốn ăn đặc sản địa phương với ngân sách 8 triệu cho 2 người.\n\nBạn muốn giữ máy bay hay đổi sang xe khách?\n\n🔗 Liên kết chính thức: [Trip.com](https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def) · [Traveloka](https://go.isclix.com/deep_link/6277265300509373567/6654251588167732819?url=https%3A%2F%2Fwww.traveloka.com%2Fvi-VN%2Fflight%2Ffullsearch%3Fap%3DSGN.UIH%26dt%3D04-10-2026.null%26ps%3D2.0.0%26sc%3DECONOMY&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def)",
+      "preGuard": "Mình giả sử bạn đi máy bay từ TP.HCM (khoảng 432 km), có thể đổi sang xe khách nếu muốn. Mình sẽ tìm những quán ăn địa phương ngon ở Quy Nhơn cho kế hoạch này nhé.Mình cần xác nhận giá phòng khách sạn để hoàn thiện kế hoạch. Hãy để mình tìm thêm thông tin chi tiết về giá lưu trú nhé.Dựa trên kết quả tìm kiếm, mình sẽ lập kế hoạch 3 ngày 2 đêm cho bạn. Mình chọn các quán ăn địa phương nổi tiếng nhất ở Quy Nhơn, kết hợp với khách sạn giá hợp lý. Thời tiết Quy Nhơn hôm nay có mưa nhẹ, nhiệt độ khoảng 26°C, nên bạn nên mang áo khoác nhẹ nhé.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"3 ngày 2 đêm ăn đặc sản Quy Nhơn cho 2 người\",\"people\":2,\"budget_total\":\"8.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Chiều tối (Hôm nay)\",\"items\":[{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay TP.HCM → Quy Nhơn\",\"description\":\"Máy bay chiều (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"16:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Khách sạn Hoàng Hưng Quy Nhơn\",\"description\":\"Khách sạn 3 sao, giá rẻ, gần trung tâm thành phố\",\"price\":\"~600.000 VND/đêm\",\"address\":\"51 Nguyễn Lạc, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=14889196015560719803\",\"booking_link\":\"https://www.booking.com/city/vn/quy-nhon.vi.html\",\"place_id\":\"ChIJ38UaQo1sbzERu32oyuMMoc4\"},{\"time\":\"18:30\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Nhà Hàng Cá Khói\",\"description\":\"**4.9⭐ (2.745 đánh giá Google Maps)** - Chuyên cá khói, đặc sản Quy Nhơn, mở 10:00–00:00\",\"price\":\"~150.000-300.000 VND/người\",\"address\":\"04 Nguyễn Trung Tín, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=16609590883614827774\",\"booking_link\":\"https://wa.me/963774377?text=Welcome%20to%20Ca%20Khoi%20Restaurant!\",\"place_id\":\"ChIJf_D-gKxtbzER_qRtQugegeY\"}]},{\"label\":\"Ngày 2 - Sáng & Trưa\",\"items\":[{\"time\":\"07:00\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Quán bún chả cá Phượng Tèo\",\"description\":\"**4⭐ (932 đánh giá Google Maps)** - Bún chả cá địa phương, mở từ 05:45\",\"price\":\"~50.000-80.000 VND/người\",\"address\":\"211 Nguyễn Huệ, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=830135899430377558\",\"booking_link\":\"\",\"place_id\":\"ChIJp1nzIYxsbzERVtjYyDM8hQs\"},{\"time\":\"12:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Cá Ngừ Đại Dương Chị Thuận\",\"description\":\"**4.4⭐ (616 đánh giá Google Maps)** - Cá ngừ tươi sống, đặc sản biển, mở 09:00–23:00\",\"price\":\"~200.000-300.000 VND/người\",\"address\":\"15 Bùi Hữu Nghĩa, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=12705741387033972281\",\"booking_link\":\"\",\"place_id\":\"ChIJ543IdulsbzEROY4jPnncU7A\"},{\"time\":\"15:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi biển Quy Nhơn\",\"description\":\"Thư giãn, tắm biển, ngắm hoàng hôn\",\"price\":\"Miễn phí\",\"address\":\"Bãi biển Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/bai+bien+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"}]},{\"label\":\"Ngày 2 - Tối\",\"items\":[{\"time\":\"19:00\",\"emoji\":\"🍽️\",\"category\":\"food\",\"name\":\"Hải Sản Tươi Sống Ông Minh\",\"description\":\"**4.6⭐ (2.710 đánh giá Google Maps)** - Hải sản tươi sống, mở 10:00–01:00\",\"price\":\"~200.000-400.000 VND/người\",\"address\":\"29 Diên Hồng, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=23206850385491721\",\"booking_link\":\"\",\"place_id\":\"ChIJj2pTUmBtbzERCTeV6YFyUgA\"}]},{\"label\":\"Ngày 3 - Sáng & Trưa\",\"items\":[{\"time\":\"07:30\",\"emoji\":\"☕\",\"category\":\"food\",\"name\":\"Đặc Sản Quy Nhơn: Làm Quà\",\"description\":\"**4.9⭐ (90 đánh giá Google Maps)** - Đặc sản địa phương, mở 07:00–20:30\",\"price\":\"~50.000-100.000 VND/người\",\"address\":\"03a Võ Lai, Chợ Khu 6, Quy Nhơn Nam\",\"maps_link\":\"https://maps.google.com/?cid=18258014560512854841\",\"booking_link\":\"\",\"place_id\":\"ChIJwySNXd9tbzEROUtH94F_Yf0\"},{\"time\":\"11:00\",\"emoji\":\"🍜\",\"category\":\"food\",\"name\":\"Đặc Sản Bình Định Quy Nhơn Ông Bảy\",\"description\":\"**4.8⭐ (79 đánh giá Google Maps)** - Đặc sản Bình Định, mở 06:00–21:30\",\"price\":\"~80.000-150.000 VND/người\",\"address\":\"23 Phan Văn Lân, Quy Nhơn\",\"maps_link\":\"https://maps.google.com/?cid=13226199828310724599\",\"booking_link\":\"https://zalo.me/0908319357\",\"place_id\":\"ChIJK2KLuyttbzER9w_LHqvmjLc\"},{\"time\":\"14:00\",\"emoji\":\"✈️\",\"category\":\"transport\",\"name\":\"Chuyến bay Quy Nhơn → TP.HCM\",\"description\":\"Máy bay chiều (khoảng 1 tiếng bay)\",\"price\":\"chưa có giá\",\"address\":\"Sân bay Phù Cát, Quy Nhơn\",\"maps_link\":\"https://www.google.com/maps/search/san+bay+phu+cat+quy+nhon\",\"booking_link\":\"\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Vé máy bay (2 người, khứ hồi)\":\"chưa có giá\",\"Lưu trú (2 đêm)\":\"~1.200.000 VND\",\"Ăn sáng (3 bữa)\":\"~450.000 VND\",\"Ăn trưa (2 bữa)\":\"~1.000.000 VND\",\"Ăn tối (2 bữa)\":\"~1.000.000 VND\",\"Hoạt động & di chuyển\":\"~500.000 VND\"},\"local_tips\":[{\"text\":\"Cá khói là đặc sản nổi tiếng nhất Quy Nhơn — thịt cá được hun khói, ăn kèm với bánh tráng nướng rất ngon\",\"basis\":\"tool\",\"place\":\"Nhà Hàng Cá Khói\"},{\"text\":\"Bún chả cá Phượng Tèo mở sớm từ 5h45 sáng, lý tưởng cho bữa sáng nhẹ nhàng trước khi khám phá thành phố\",\"basis\":\"tool\",\"place\":\"Quán bún chả cá Phượng Tèo\"},{\"text\":\"Quy Nhơn có thời tiết ấm áp quanh năm, nhưng tháng 10 có mưa nhẹ — mang áo khoác nhẹ và ô để thoải mái\",\"basis\":\"general\"}],\"share_text\":\"🌊 3 ngày 2 đêm ăn cá khói, hải sản tươi sống ở Quy Nhơn với 8 triệu cho 2 người — đặc sản Bình Định ngon lắm! 🐟 #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn kế hoạch này vì bạn muốn ăn đặc sản địa phương với ngân sách 8 triệu cho 2 người. Các quán mình gợi ý đều có rating cao (4.6–4.9⭐) và chuyên về cá khói, hải sản tươi sống — những đặc sản nổi tiếng nhất Quy Nhơn. Tổng ước tính ăn + lưu trú khoảng 4.1 triệu, còn lại cho vé máy bay (khoảng 2–3 triệu cho 2 người khứ hồi) và di chuyển.\n\nNếu muốn tiết kiệm hơn, bạn có thể chọn xe khách thay máy bay (tiết kiệm ~1.5 triệu nhưng mất thêm 8–10 tiếng đi lại). Bạn muốn giữ máy bay hay đổi sang xe khách?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"✈️ Tìm vé máy bay - Trip.com\",\"type\":\"website\",\"url\":\"https://go.isclix.com/deep_link/6277265300509373567/6455552313033835511?url=https%3A%2F%2Fvn.trip.com%2Fflights%2Fshowfarefirst%3Fdcity%3Dsgn%26acity%3Duih%26ddate%3D2026-10-04%26flighttype%3Dow%26class%3Dy%26quantity%3D2%26locale%3Dvi-VN%26curr%3DVND&utm_source=tappyai&utm_medium=ccp&sub1=95753c04f1755c72dabc1def\",\"primary\":true},{\"label\":\"🏨 Booking.com - Khách sạn Quy Nhơn\",\"type\":\"booking\",\"url\":\"https://www.booking.com/city/vn/quy-nhon.vi.html\",\"primary\":false},{\"label\":\"🍽️ GrabFood - Cá Khói Quy Nhơn\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=ca+khoi+quy+nhon\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

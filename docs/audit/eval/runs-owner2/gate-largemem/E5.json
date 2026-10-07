@@ -1,0 +1,27 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 2927,
+  "evidenceId": "9c70c971-a4bd-4935-9d34-7801b4fa2104",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tôi sẽ giúp bạn tìm gợi ý cho cuối tuần! Để đưa ra lựa chọn phù hợp nhất, mình cần biết:\n\n**Bạn muốn làm gì cuối tuần này — đi chơi với bạn bè, đi ăn, spa thư giãn, hay tham quan nơi nào đó?** 🎉\n\n(Mình biết bạn ở Quận 1, TP.HCM, nên sẽ gợi ý những chỗ gần bạn nhất!)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ giúp bạn tìm gợi ý cho cuối tuần! Để đưa ra lựa chọn phù hợp nhất, mình cần biết:\n\n**Bạn muốn làm gì cuối tuần này — đi chơi với bạn bè, đi ăn, spa thư giãn, hay tham quan nơi nào đó?** 🎉\n\n(Mình biết bạn ở Quận 1, TP.HCM, nên sẽ gợi ý những chỗ gần bạn nhất!)"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

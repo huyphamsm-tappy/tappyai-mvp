@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:26.721Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Đen Americano Premium King Coffee Hộp 15 Gói 1g site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Combo 5 Cà Phê Hòa Tan Americano KING COFFEE",
+    "link": "https://www.lazada.vn/products/combo-5-ca-phe-hoa-tan-americano-king-coffee-hop-15-goi-x-1g-tang-1-hop-cung-loai-i1578062955.html?srsltid=AU7gw4Xg_cx9IHFRzcQey-4fiihRQJ_UbTSg1Urc_PGoV2qxGSVGyTjm",
+    "snippet": "Combo 5 Cà Phê Hòa Tan Americano KING COFFEE - Hộp 15 gói x 1g + 1/5 promotion 47.970 ₫ 321.030 ₫369.000 ₫-13% LazMall",
+    "rating": 5,
+    "ratingCount": 76,
+    "position": 1
+   },
+   {
+    "title": "Cà phê hòa tan cao cấp Americano KING COFFEE",
+    "link": "https://www.lazada.vn/products/ca-phe-hoa-tan-cao-cap-americano-king-coffee-hop-15-goi-x-1g-i2035022292.html?srsltid=AU7gw4X5fExDXFmUqesGD8NyktRLGP8mc-oQUozDiI6jRERnDJ6pZjFO",
+    "snippet": "LazMall Cà phê hòa tan cao cấp Americano KING COFFEE - Hộp 15 gói x 1g · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 2
+   },
+   {
+    "title": "(Combo 2-5 hộp) Cà phê đen hòa tan cao cấp KING ...",
+    "link": "https://www.lazada.vn/products/combo-2-5-hop-ca-phe-den-hoa-tan-cao-cap-king-coffee-americano-hop-15g-15-goi-x-1g-co-them-ca-phe-rang-xay-nhuyen-i13379925792.html?srsltid=AU7gw4V06X7HE4CAzj1F1c2tP2tf4J6JledBU4oP_cRZY9JdlzgOb7FM",
+    "snippet": "Thưởng thức một ngụm Americano Premium, bạn sẽ cảm nhận được vị chua dịu, đắng nhẹ nơi đầu lưỡi đi cùng hậu vị êm và cân bằng trong khi hương thơm luôn kéo dài ...",
+    "position": 3
+   },
+   {
+    "title": "Combo trải nghiệm cà phê hòa tan 2 - CHUẨN VỊ ĐEN ĐÁ ...",
+    "link": "https://www.lazada.vn/products/combo-trai-nghiem-ca-phe-hoa-tan-2-chuan-vi-den-da-khong-duong-king-coffee-i2502313228.html?srsltid=AU7gw4WvWpu-KRILOG6SiLuspMpudciMYwiNMj4fRzzBmYqwJ0U0c6KJ",
+    "snippet": "KING COFFEE - Hộp 15 gói x 1g 61.500 ₫. Cà Phê Hòa Tan 100% Đen Thuần Khiết KING COFFEE - Hộp 15 gói x 42.100",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 4
+   },
+   {
+    "title": "Combo 5 Cà Phê Đen Hòa Tan Espresso KING COFFEE",
+    "link": "https://www.lazada.vn/products/combo-5-ca-phe-den-hoa-tan-espresso-king-coffee-hop-15-goi-x-25g-i2316356816.html?srsltid=AU7gw4Wz1-RcPnkkJLJL-XixXsjezk4mluhr2fNkoCQ97OV-eHq5XQcX",
+    "snippet": "LazMall Combo 5 Cà Phê Đen Hòa Tan Espresso KING COFFEE - Hộp 15 gói x 2.5g · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 5,
+    "ratingCount": 47,
+    "position": 5
+   },
+   {
+    "title": "3 Loại Cà Phê Hòa Tan Không Đường KING COFFEE",
+    "link": "https://www.lazada.vn/products/combo-manh-me-3-loai-ca-phe-hoa-tan-khong-duong-king-coffee-phu-hop-voi-phai-nam-i1666402544.html?srsltid=AU7gw4XH0c46ZXxFHjxBF62x6ppR8oGRNdr5cf4CsVLi-ja8YAY-gj_T",
+    "snippet": "Cà Phê Hòa Tan Americano KING COFFEE - Hộp 15 gói x 1g + 354.240 ₫ Combo 5 Cà Phê Đen Hòa Tan Espresso KING COFFEE",
+    "rating": 5,
+    "ratingCount": 14,
+    "position": 6
+   },
+   {
+    "title": "Combo trải nghiệm cà phê hòa tan 2 - CHUẨN VỊ ĐEN ĐÁ ...",
+    "link": "https://h5.lazada.vn/products/combo-trai-nghiem-ca-phe-hoa-tan-2-chuan-vi-den-da-khong-duong-king-coffee-i2502313228.html",
+    "snippet": "KING COFFEE Hòa Tan Đen được chiết xuất từ những hạt cà phê Arabica & Robusta chọn lọc, cùng với công nghệ tiên tiến từ châu Âu, mang đến cho bạn một trải ...",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 7
+   },
+   {
+    "title": "Cà Phê Arabica Rang Xay Premium Blend KING COFFEE ...",
+    "link": "https://www.lazada.vn/products/ca-phe-arabica-rang-xay-premium-blend-king-coffee-nguyen-chat-100-lon-450g-voi-vi-chua-nhe-va-huong-thom-lau-ca-phe-arabica-rang-xay-premium-blend-king-coffee-nguyen-chat-100-lon-450g-voi-vi-chua-nhe-va-huong-thom-lau-pha-phin-i337424189.html?srsltid=AU7gw4Xc3rL4tOot046U_3qM5InnavO8Yd2-oaly8jtJHXNGhoDPnOhf",
+    "snippet": "Cà Phê Đen Hòa Tan Espresso KING COFFEE - Hộp 100 gói x 2.5g -. 533.800 ₫ · Cà Phê Sữa PLUS Hòa Tan 3IN1 KING COFFEE – Túi 50 gói x 20g. 322.000 ₫. Ưu đãi từ ...",
+    "rating": 4.9,
+    "ratingCount": 7,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

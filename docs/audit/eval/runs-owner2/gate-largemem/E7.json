@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 5156,
+  "evidenceId": "1867c3f1-410d-461b-ba93-fac65cc1b860",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì thì mình gợi ý 3 bộ hay cho bạn nhé:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng. Bộ phim này vừa có tính giải trí cao, vừa có những khoảnh khắc cười sảng khoái.\n\n**Twisters** — nếu bạn muốn xem phim thảm họa kịch tính với những cảnh quay thiên nhiên ấn tượng. Phim có nhịp độ nhanh, hấp dẫn từ đầu đến cuối.\n\n**Trap** — nếu bạn thích phim tâm lý, ly kỳ với twist bất ngờ. Bộ phim này sẽ giữ bạn căng thẳng suốt thời gian xem.\n\nBạn thích thể loại nào trong ba bộ này, hay muốn mình tìm thêm gợi ý khác?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì thì mình gợi ý 3 bộ hay cho bạn nhé:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động hoành tráng. Bộ phim này vừa có tính giải trí cao, vừa có những khoảnh khắc cười sảng khoái.\n\n**Twisters** — nếu bạn muốn xem phim thảm họa kịch tính với những cảnh quay thiên nhiên ấn tượng. Phim có nhịp độ nhanh, hấp dẫn từ đầu đến cuối.\n\n**Trap** — nếu bạn thích phim tâm lý, ly kỳ với twist bất ngờ. Bộ phim này sẽ giữ bạn căng thẳng suốt thời gian xem.\n\nBạn thích thể loại nào trong ba bộ này, hay muốn mình tìm thêm gợi ý khác?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

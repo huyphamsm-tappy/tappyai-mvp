@@ -295,7 +295,10 @@ enum UploadLimits {
         return seconds <= Double(maxVideoDurationAcceptSec)
     }
     static let maxVideoSizeBytes = maxVideoSizeMB * 1024 * 1024
-    static let maxPhotoSizeBytes = 5 * 1024 * 1024
+    /// Binary megabytes, matching Web `MAX_PHOTO_SIZE_MB` and now served as
+    /// `upload.maxPhotoSizeMb` by /api/config — this is the fallback for an older deployment.
+    static let maxPhotoSizeMB = 5
+    static let maxPhotoSizeBytes = maxPhotoSizeMB * 1024 * 1024
     static let maxBodyLength = 1000
     static let maxPlaceNameLength = 100
     static let allowedVideoTypes = ["video/mp4", "video/quicktime", "video/webm"]

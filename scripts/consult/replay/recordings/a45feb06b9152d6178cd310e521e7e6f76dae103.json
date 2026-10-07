@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ốp lưng iPhone 17 Pro Max\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:30.158Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ốp lưng iPhone 17 Pro Max\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 (Pro Max | Pro) chính hãng",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17.html",
+    "snippet": "Ốp lưng iPhone 17 (Pro Max | Pro) chính hãng ; Phân loại ốp. Chống sốc; Ốp trong ; Tính năng. Hỗ trợ sạc không dây/MagSafe; Hỗ trợ sạc không dây ; Dòng iPhone.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max TGVIS Grace Neon | Giá rẻ",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-tgvis-grace-neon.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max TGVIS Grace Neon được chế tác để chịu lực va đập, giảm thiểu nguy cơ hư hỏng khi thiết bị rơi rớt. Bề mặt kháng trầy xước giúp hạn chế ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp iPhone chính hãng, cao cấp, có Magsafe giá tốt 09/2026",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone.html",
+    "snippet": "... Ốp lưng iPhone 17 Pro Max Apple Techwoven With Magsafe. Trả góp 0%. : 1.670.000đ. Smember giảm đến ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max Apple With Magsafe Clear",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-apple-with-magsafe-clear-mgfw4fe-a.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max Apple With Magsafe Clear MGFW4FE/A nổi bật với khả năng bảo vệ vượt trội và thiết kế trong suốt vừa khít sang trọng cho thiết bị.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max Zagg Esntl Hampton With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-zagg-esntl-hampton-with-magsafe-lite-foggy.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max Zagg Esntl Hampton With Magsafe Lite Foggy có thiết kế mỏng nhẹ, bề mặt nhám mờ tạo cảm giác cầm nắm chắc tay cho người dùng.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max Mutural Armor With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-mutural-armor-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max Mutural Armor with Magsafe được thiết kế vừa khít kích cỡ máy, đồng thời tương thích sạc không dây MagSafe trở nên thuận tiện.",
+    "position": 6
+   },
+   {
+    "title": "Đây là chiếc ốp lưng iPhone 17 Pro Max có màn hình phụ",
+    "link": "https://cellphones.com.vn/sforum/op-lung-iphone-17-pro-max-man-hinh-phu",
+    "snippet": "Đây là chiếc ốp lưng iPhone 17 Pro Max độc lạ: Có thêm màn hình sau, chơi được game cổ điển · Ốp lưng iPhone 18 Pro Max/17 Pro Max UAG Plasma Xte ...",
+    "date": "5 thg 6, 2026",
+    "rating": 3,
+    "ratingCount": 2,
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max Mutural Pure With Magsafe",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-mutural-pure-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max Mutural Pure with Magsafe được hoàn thiện vô cùng tỉ mỉ từ chất liệu silicone lỏng cao cấp cùng lớp lót microfiber siêu mịn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

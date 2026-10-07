@@ -1,0 +1,749 @@
+{
+  "id": "M2",
+  "group": "switch-food-spa-entertainment",
+  "criteria": [
+    "Turn 1: food cards in Quận 3 within 100k/person",
+    "Turn 2: spa venues only (gội đầu / massage) — no restaurants; the 100k meal budget is NOT applied to the spa (server log budget_max is not 100000)",
+    "Turn 3: cinemas only — no spa or food cards; no 100k budget stated",
+    "Every turn returns 200; reply text appears exactly once"
+  ],
+  "turns": [
+    {
+      "user": "trưa nay ăn gì dưới 100k quận 3",
+      "status": 200,
+      "elapsedMs": 12349,
+      "usage": {
+        "promptTokens": 2415,
+        "completionTokens": 701
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa ngon dưới 100k quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 89,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "11:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Dịch vụ tiệc cho trẻ em",
+                "Nhà hàng ẩm thực đồng quê",
+                "Nhà tổ chức buổi tiệc",
+                "Nhà hàng cơm"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CƠM NIÊU ĐẨU",
+              "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 467,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 337,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76798,106.68280",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOuWDnFw6osSDRvwNj2c26BaksJLxUv4JDO1TiGQgL25-OR1Y0E9u8YMWKT5MJzhaOCcFY2M_-xQnpkiNBdEktj4bao5f-Wdkl53hJ_8rA0fYLE-iX6M1ym0EJMBjsHuerUp_4m",
+                "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 89,
+                "openingHours": "11:00–19:00",
+                "openNow": false,
+                "phone": "+84 906 924 242",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–19:00",
+                  "Thứ Hai": "11:00–19:00",
+                  "Thứ Ba": "11:00–19:00",
+                  "Thứ Tư": "11:00–19:00",
+                  "Thứ Năm": "11:00–19:00",
+                  "Thứ Sáu": "11:00–19:00",
+                  "Thứ Bảy": "11:00–19:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15871974343931156735",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20V%E1%BA%B7t%20H%E1%BA%BBm%2016%20(Nguy%E1%BB%85n%20Thi%E1%BB%87n%20Thu%E1%BA%ADt)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/quan-an-vat-hem-16-nguyen-thien-thuat",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906924242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77234,106.67964",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMuwF4z1mPMMU5BOm9L5H6TooJsr8r_0jgdds0SxWOsuASRj3h7JnJfCmx_q7lTBvTAsk6FDbGlopTxpOIpnXSe2Xra6c2w10rjhRtrCZ6rAt0O79DImD6qmcv2-79LiUnBeytiCw",
+                "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 328,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 932 765 886",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng",
+                  "Dịch vụ tiệc cho trẻ em",
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Nhà tổ chức buổi tiệc",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6113469374134102339",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20C%C6%A1m%20Ni%C3%AAu%20-%20Ni%C3%AAu%20House%20(Nieu%20House%20Authentic%20Vietnam%20Claypot%20Rice%20Restaurant)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://linktr.ee/nieuhouse",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932765886",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79010,106.68435",
+                "domain": "food",
+                "kind": "place",
+                "name": "CƠM NIÊU ĐẨU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMeI8LSVBNnLd4Wk26n2bfKClJ-SHlZdpLnCVdqqA9mtEGzp320P7XqFvcO9pct0sCvqABemdI7ponbISdNH9uf-sOapNOL0jtCs8ZVdAUdvG8tIWRAbRbvzInL7gZJAS0Rdj91jw",
+                "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 467,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 979 353 791",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2172502052880975776",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20NI%C3%8AU%20%C4%90%E1%BA%A8U%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84979353791",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78702,106.69189",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNmryGaOTmvqFTBB4Yz2arAQqjCc4e15oFysX6dqkZsLZCenKgGq09YFP79wuxAnMyRsAZEDma3rXpDiKi6ZsEhMk2NjglNGYQ3NETEmztVrnDqj9Q37cP1EOEWawTCjt6D6XYw06m1tT1U",
+                "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 337,
+                "openingHours": "09:00–00:00",
+                "openNow": true,
+                "phone": "+84 983 831 717",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–00:00",
+                  "Thứ Hai": "09:00–00:00",
+                  "Thứ Ba": "09:00–00:00",
+                  "Thứ Tư": "09:00–00:00",
+                  "Thứ Năm": "09:00–00:00",
+                  "Thứ Sáu": "09:00–00:00",
+                  "Thứ Bảy": "09:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5463238262657446239",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20Ph%C3%A1t%2013%20-%20C%C6%A1m%20Ni%C3%AAu%20-%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C4%90%E1%BB%93%20R%E1%BB%ABng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://comnieuaphat.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983831717",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 89,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "11:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.7",
+                "89 reviews"
+              ]
+            },
+            {
+              "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Dịch vụ tiệc cho trẻ em",
+                "Nhà hàng ẩm thực đồng quê",
+                "Nhà tổ chức buổi tiệc",
+                "Nhà hàng cơm"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CƠM NIÊU ĐẨU",
+              "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 467,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 337,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–00:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76798,106.68280",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOuWDnFw6osSDRvwNj2c26BaksJLxUv4JDO1TiGQgL25-OR1Y0E9u8YMWKT5MJzhaOCcFY2M_-xQnpkiNBdEktj4bao5f-Wdkl53hJ_8rA0fYLE-iX6M1ym0EJMBjsHuerUp_4m",
+                "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 89,
+                "openingHours": "11:00–19:00",
+                "openNow": false,
+                "phone": "+84 906 924 242",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–19:00",
+                  "Thứ Hai": "11:00–19:00",
+                  "Thứ Ba": "11:00–19:00",
+                  "Thứ Tư": "11:00–19:00",
+                  "Thứ Năm": "11:00–19:00",
+                  "Thứ Sáu": "11:00–19:00",
+                  "Thứ Bảy": "11:00–19:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.7",
+                    "params": {
+                      "value": 4.7
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "89 reviews",
+                    "params": {
+                      "count": 89
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15871974343931156735",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20V%E1%BA%B7t%20H%E1%BA%BBm%2016%20(Nguy%E1%BB%85n%20Thi%E1%BB%87n%20Thu%E1%BA%ADt)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/quan-an-vat-hem-16-nguyen-thien-thuat",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906924242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77234,106.67964",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMuwF4z1mPMMU5BOm9L5H6TooJsr8r_0jgdds0SxWOsuASRj3h7JnJfCmx_q7lTBvTAsk6FDbGlopTxpOIpnXSe2Xra6c2w10rjhRtrCZ6rAt0O79DImD6qmcv2-79LiUnBeytiCw",
+                "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 328,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 932 765 886",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng",
+                  "Dịch vụ tiệc cho trẻ em",
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Nhà tổ chức buổi tiệc",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@thanhtructatt/video/7688218893613059349",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6113469374134102339",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://linktr.ee/nieuhouse",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932765886",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20C%C6%A1m%20Ni%C3%AAu%20-%20Ni%C3%AAu%20House%20(Nieu%20House%20Authentic%20Vietnam%20Claypot%20Rice%20Restaurant)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79010,106.68435",
+                "domain": "food",
+                "kind": "place",
+                "name": "CƠM NIÊU ĐẨU",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMeI8LSVBNnLd4Wk26n2bfKClJ-SHlZdpLnCVdqqA9mtEGzp320P7XqFvcO9pct0sCvqABemdI7ponbISdNH9uf-sOapNOL0jtCs8ZVdAUdvG8tIWRAbRbvzInL7gZJAS0Rdj91jw",
+                "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 467,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 979 353 791",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–22:00",
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2172502052880975776",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20NI%C3%8AU%20%C4%90%E1%BA%A8U%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84979353791",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78702,106.69189",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNmryGaOTmvqFTBB4Yz2arAQqjCc4e15oFysX6dqkZsLZCenKgGq09YFP79wuxAnMyRsAZEDma3rXpDiKi6ZsEhMk2NjglNGYQ3NETEmztVrnDqj9Q37cP1EOEWawTCjt6D6XYw06m1tT1U",
+                "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 337,
+                "openingHours": "09:00–00:00",
+                "openNow": true,
+                "phone": "+84 983 831 717",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–00:00",
+                  "Thứ Hai": "09:00–00:00",
+                  "Thứ Ba": "09:00–00:00",
+                  "Thứ Tư": "09:00–00:00",
+                  "Thứ Năm": "09:00–00:00",
+                  "Thứ Sáu": "09:00–00:00",
+                  "Thứ Bảy": "09:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@ganhdoan/video/7636745548896259335",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5463238262657446239",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://comnieuaphat.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983831717",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20Ph%C3%A1t%2013%20-%20C%C6%A1m%20Ni%C3%AAu%20-%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C4%90%E1%BB%93%20R%E1%BB%ABng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76798,106.68280",
+              "place:osm:10.78702,106.69189"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76798,106.68280",
+            "place:osm:10.78702,106.69189"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+          "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+          "CƠM NIÊU ĐẨU",
+          "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng"
+        ],
+        [
+          "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+          "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+          "CƠM NIÊU ĐẨU",
+          "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.\n\nMình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có 4.7⭐ từ 89 đánh giá Google Maps, chuyên ăn vặt ngon với giá dưới 100k, đang mở từ 11:00 nên bạn có thể ăn trưa ngay.\n\nBạn có thể gọi trước để hỏi các món dưới 100k.\n\n[FOLLOWUPS]Quán ăn vặt khác quận 3|Cơm tấm dưới 100k|Bánh mì ngon quận 3[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Vặt Hẻm 16\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15871974343931156735\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "visible": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.\n\nMình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có 4.7⭐ từ 89 đánh giá Google Maps, chuyên ăn vặt ngon với giá dưới 100k, đang mở từ 11:00 nên bạn có thể ăn trưa ngay.\n\nBạn có thể gọi trước để hỏi các món dưới 100k.",
+      "preGuard": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.Mình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có 4.7⭐ từ 89 đánh giá Google Maps, chuyên ăn vặt ngon với giá dưới 100k, đang mở từ 11:00 nên bạn có thể ăn trưa ngay. Quán nằm gần bạn khoảng 1.5km, có thể gọi GrabFood hoặc đi trực tiếp.\n\nNếu muốn thử cơm niêu thay vì ăn vặt, **A Phát 13** cũng là lựa chọn tốt — 4.7⭐ (337 đánh giá), đang mở cửa lúc này, nhưng giá cơm niêu thường từ 100-200k nên có thể vượt ngân sách bạn. Bạn có thể gọi trước để hỏi các món dưới 100k.\n\n[FOLLOWUPS]Quán ăn vặt khác quận 3|Cơm tấm dưới 100k|Bánh mì ngon quận 3[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Quán Ăn Vặt Hẻm 16\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Quán+Ăn+Vặt+Hẻm+16+Quận+3\",\"primary\":true},{\"label\":\"📍 Maps - Quán Ăn Vặt Hẻm 16\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15871974343931156735\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "user": "chiều đi gội đầu massage ở đâu gần đó",
+      "status": 200,
+      "elapsedMs": 441,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    },
+    {
+      "user": "tối nay xem phim rạp nào gần quận 3",
+      "status": 200,
+      "elapsedMs": 427,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    }
+  ]
+}

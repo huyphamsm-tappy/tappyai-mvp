@@ -1,0 +1,35 @@
+{
+  "id": "T3",
+  "text": "Cái thứ hai có bao gồm ăn sáng không?",
+  "parent": "T2",
+  "status": 200,
+  "ms": 4177,
+  "evidenceId": "4e8d423a-cb0d-45f6-b3a6-d55f82c0da2b",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về bữa sáng của các khách sạn trong kết quả tìm kiếm vừa rồi. Để kiểm tra xem khách sạn nào bao gồm ăn sáng, bạn cần vào trang Booking.com hoặc Agoda — lúc chọn phòng sẽ thấy rõ \"Bao gồm bữa sáng\" hay \"Không bao gồm\".\n\nNếu bạn muốn **ăn sáng ngon ở Đà Nẵng dưới 1 triệu**, mình có thể gợi ý luôn các quán ăn sáng gần biển để bạn đặt riêng — vừa linh hoạt hơn, vừa có thể thử nhiều chỗ khác nhau. Bạn thích ăn gì buổi sáng (bánh mì, cơm, phở, hay gì khác)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **M Hotel Da Nang** — 4.8⭐ (2.824 đánh giá Google Maps).\n\nMình giả sử bạn muốn lưu trú cuối tuần tới (26-27/9) ở Đà Nẵng, gần biển, dưới 1 triệu/đêm. Để gợi ý chính xác, mình cần tìm ngay.\n\nMình thấy danh sách khách sạn gần biển Đà Nẵng, nhưng chưa có giá cụ thể trong kết quả tìm kiếm. Để xem giá chính xác theo ngày 26-27/9 và lọc dưới 1 triệu, bạn cần vào [Booking.com](https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27) hoặc **Agoda\n\nBạn có thích ở khu nào cụ thể (Mỹ Khê, Ngũ Hành Sơn, hay trung tâm)?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🏨 Booking.com - Đà Nẵng\",\"type\":\"booking\",\"url\":\"https://www.booking.com/searchresults.vi.html?ss=%C4%90%C3%A0%20N%E1%BA%B5ng&checkin=2026-09-26&checkout=2026-09-27\",\"primary\":true}]}[/CTA_BUTTONS]"
+    },
+    {
+      "role": "user",
+      "content": "Cái thứ hai có bao gồm ăn sáng không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về bữa sáng của các khách sạn trong kết quả tìm kiếm vừa rồi. Để kiểm tra xem khách sạn nào bao gồm ăn sáng, bạn cần vào trang Booking.com hoặc Agoda — lúc chọn phòng sẽ thấy rõ \"Bao gồm bữa sáng\" hay \"Không bao gồm\".\n\nNếu bạn muốn **ăn sáng ngon ở Đà Nẵng dưới 1 triệu**, mình có thể gợi ý luôn các quán ăn sáng gần biển để bạn đặt riêng — vừa linh hoạt hơn, vừa có thể thử nhiều chỗ khác nhau. Bạn thích ăn gì buổi sáng (bánh mì, cơm, phở, hay gì khác)?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

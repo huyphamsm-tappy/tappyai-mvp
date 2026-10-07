@@ -1,0 +1,27 @@
+[
+ {
+  "id": "E3",
+  "what": "legitimate hotel turn: links/buttons still reach the client",
+  "result": "FAIL",
+  "detail": {
+   "status": 200,
+   "tools": [
+    "get_hotel_prices"
+   ],
+   "replyUrlHosts": [],
+   "replyUrlCount": 0,
+   "ctaButtons": [],
+   "toolBookingUrls": 1,
+   "replyTail": "Mình tìm khách sạn ở Đà Nẵng gần biển trong tầm giá dưới 1 triệu cho bạn nhé.\n\nMình thấy kết quả tìm được nhưng chưa có thông tin giá cụ thể từ các trang đặt phòng. Để gợi ý chính xác khách sạn dưới 1 triệu, mình cần biết thêm:\n\n**Bạn dự định check-in vào ngày nào và check-out ngày nào?** (Ví dụ: 1-2 tháng 10, hay cuối tuần này...)\n\nKhi bạn cho mình biết ngày cụ thể, mình sẽ tìm giá realtime trên Booking.com và Agoda để chắc chắn các khách sạn gần biển nào thực sự nằm trong tầm giá của bạn nhé! 🏨",
+   "urlsNotInToolResults_structuredOrServer": []
+  }
+ },
+ {
+  "id": "E4",
+  "what": "a URL already published is repeatable on a follow-up",
+  "result": "UNVERIFIED",
+  "detail": {
+   "note": "E3 reply carried no URL to repeat"
+  }
+ }
+]

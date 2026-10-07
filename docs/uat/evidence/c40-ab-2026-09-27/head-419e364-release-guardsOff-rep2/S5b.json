@@ -1,0 +1,84 @@
+{
+  "id": "S5b",
+  "text": "nước hoa",
+  "parent": "S5",
+  "status": 200,
+  "ms": 15586,
+  "evidenceId": "15bb3b63-6ee0-4c1c-a095-101bef6146d3",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "nước hoa nữ 1 triệu đồng"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CK One Shock For Her EDT - Chiết 20 ml",
+      "rating": 5,
+      "count": 1,
+      "price": 440000
+    },
+    {
+      "name": "Nước Hoa Nữ Nike Ultra Purple 100ml - Hương Hoa Cỏ & Trái Cây, Tươi Mát, Dễ Gần, Phong Cách Nữ Tính, Phù Hợp Hằng Ngày",
+      "rating": 4,
+      "count": 1,
+      "price": 600000
+    },
+    {
+      "name": "Nước Hoa Nữ Chính Hãng 100%",
+      "rating": 4,
+      "count": 3,
+      "price": 749000
+    },
+    {
+      "name": "Nước Hoa Calvin Klein CK One EDT",
+      "price": 430000
+    },
+    {
+      "name": "Nước hoa nữ Hathor 10ml/30ml/75ml",
+      "price": 459000
+    },
+    {
+      "name": "Nước Hoa NauNau Thảo Mộc Thiên Nhiên",
+      "price": 495000
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "recipient"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm nước hoa trong tầm 1 triệu cho bạn nhé! 🌸[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"CK One Shock For Her EDT - Chiết 20 ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":440000,\"priceHigh\":440000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRIy-ef85LdNuf6HU90DHG2Z5BnMoxh_LDfVU8A7XJFW4nmQDT2VM7iSHPnrxSrHc-dCFLHCkidW8IQlaJWmh7VtMaf3k417wb5XUIZYszRLHL3Z1e_HppRDg\",\"offers\":[{\"seller\":\"Missi Perfume\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:14203904292135658028,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":440000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Nước Hoa Nữ Nike Ultra Purple 100ml - Hương Hoa Cỏ & Trái Cây, Tươi Mát, Dễ Gần, Phong Cách Nữ Tính, Phù Hợp Hằng Ngày\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":600000,\"priceHigh\":600000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSgjiyIifZRpUjvwWKF-G9bKnQNmnxyUcskMFq9w0amfWnRdNngIyU13j5W4nDOYt-YbnW3LVns_HgVbwEIydwxSfFdHwr9FmB-uZYmJjE\",\"offers\":[{\"seller\":\"Chiaki.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:9928251834001685257,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":600000,\"currency\":\"VND\",\"condition\":null,\"rating\":4,\"ratingCount\":1}]},{\"key\":\"uncertain:2\",\"name\":\"Nước Hoa Nữ Chính Hãng 100%\",\"config\":\"Chính hãng\",\"specs\":[],\"condition\":{\"key\":\"genuine\",\"label\":\"Chính hãng\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQEp7WJ56oUDiOu4ol0BKb1HBcyJPvPHR2Ybr8A4XDee0gmUIXKUZEAyirxZxBl5ejNOIvDAugnEladFrZjSzjHprliEHbc35NlZRFA9GA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:11370447695361983126,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":\"Chính hãng\",\"rating\":4,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Nước Hoa Calvin Klein CK One EDT\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":430000,\"priceHigh\":430000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRUWanqUfyRhbRFSc4SWjLeMrfz0wdJ7KI4qIrvk0K1CZnVrmOdg3ZfUqgqFBW0B33HNZHyMzryqOWUF3sSem3hjU7Tuh0tMTNbLdJXnm0G119oRse9wONt\",\"offers\":[{\"seller\":\"Beauty Garden\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,catalogid:5651763624202467660,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":430000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Nước hoa nữ Hathor 10ml/30ml/75ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":459000,\"priceHigh\":459000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTOXEyRfIlxm-i-QyIIDQCJXJSzfQRYKbgJgwrTY9YHQdBBR1ouVfMtYcpdks_UbAAu7vJOLsnLnYw-BaifmWZstXlQUO4NbTyrds_TgebIdz5dOUVz276I\",\"offers\":[{\"seller\":\"Rootoo Vietnam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:7982637361091939245,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":459000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Nước Hoa NauNau Thảo Mộc Thiên Nhiên\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":495000,\"priceHigh\":495000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRetbFXrRFpjNuC6m8jpw6YMyyJSpmEUAOZLKhoDgpEzPm9brjGKMFxVcF9pGmMPEXehZexDep2koOe5UTA5bw0qFYvMT-a5LWhzJDoABmqtjhzgm85Twu-\",\"offers\":[{\"seller\":\"NauNau\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,catalogid:5497730931100387769,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":495000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Missi Perfume\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"440000 VND\",\"params\":{\"priceVnd\":440000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **CK One Shock For Her EDT - Chiết 20 ml** cho bạn! 💝\n\nSản phẩm này có **5⭐** từ người mua CK One Shock là dòng nước hoa nổi tiếng của Calvin Klein, hương tươi mát, dễ gần — phù hợp làm quà sinh nhật.\n\n**Danh đổi:** Nếu bạn muốn chai to hơn (100ml), có thể xem **Nike Ultra Purple 100ml** — hương hoa cỏ & trái cây, tươi mát, phù hợp hằng ngày. **CK One EDT** từ Beauty Garden nếu muốn tiết kiệm hơn.\n\nMình chưa xác nhận được hương thơm cụ thể phù hợp với bạn gái không.\n\n\n[FOLLOWUPS]Nước hoa hãng nào bạn gái thích?|Bạn gái thích hương nào?|Có muốn tìm quà khác không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giúp bạn tìm quà sinh nhật cho bạn gái trong tầm 1 triệu đồng nhé! 🎁\n\nTrước tiên, mình cần biết thêm một chút để gợi ý đúng ý:\n- **Bạn gái thích gì?** (trang sức, mỹ phẩm, điện tử, thời trang, đồ trang trí, sách...?)\n- **Có ưu tiên nào không?** (hàng hiệu, quà lãng mạn, quà thực dụng...?)\n\nHoặc mình có thể tìm luôn các sản phẩm phổ biến trong tầm giá này — bạn muốn mình tìm gì cụ thể không?\n\n[FOLLOWUPS]Trang sức nữ|Mỹ phẩm cao cấp|Điện thoại/Tai nghe|Túi xách/Ví[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "nước hoa"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm nước hoa trong tầm 1 triệu cho bạn nhé! 🌸[TAPPY_SHOPPING]{\"v\":1,\"entities\":[{\"key\":\"uncertain:0\",\"name\":\"CK One Shock For Her EDT - Chiết 20 ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":true,\"priceLow\":440000,\"priceHigh\":440000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRIy-ef85LdNuf6HU90DHG2Z5BnMoxh_LDfVU8A7XJFW4nmQDT2VM7iSHPnrxSrHc-dCFLHCkidW8IQlaJWmh7VtMaf3k417wb5XUIZYszRLHL3Z1e_HppRDg\",\"offers\":[{\"seller\":\"Missi Perfume\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:14203904292135658028,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":440000,\"currency\":\"VND\",\"condition\":null,\"rating\":5,\"ratingCount\":1}]},{\"key\":\"uncertain:1\",\"name\":\"Nước Hoa Nữ Nike Ultra Purple 100ml - Hương Hoa Cỏ & Trái Cây, Tươi Mát, Dễ Gần, Phong Cách Nữ Tính, Phù Hợp Hằng Ngày\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":600000,\"priceHigh\":600000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSgjiyIifZRpUjvwWKF-G9bKnQNmnxyUcskMFq9w0amfWnRdNngIyU13j5W4nDOYt-YbnW3LVns_HgVbwEIydwxSfFdHwr9FmB-uZYmJjE\",\"offers\":[{\"seller\":\"Chiaki.vn\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:9928251834001685257,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":600000,\"currency\":\"VND\",\"condition\":null,\"rating\":4,\"ratingCount\":1}]},{\"key\":\"uncertain:2\",\"name\":\"Nước Hoa Nữ Chính Hãng 100%\",\"config\":\"Chính hãng\",\"specs\":[],\"condition\":{\"key\":\"genuine\",\"label\":\"Chính hãng\"},\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":749000,\"priceHigh\":749000,\"image\":\"https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQEp7WJ56oUDiOu4ol0BKb1HBcyJPvPHR2Ybr8A4XDee0gmUIXKUZEAyirxZxBl5ejNOIvDAugnEladFrZjSzjHprliEHbc35NlZRFA9GA\",\"offers\":[{\"seller\":\"Thegioisonmoi.com\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:11370447695361983126,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":749000,\"currency\":\"VND\",\"condition\":\"Chính hãng\",\"rating\":4,\"ratingCount\":3}]},{\"key\":\"uncertain:3\",\"name\":\"Nước Hoa Calvin Klein CK One EDT\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":430000,\"priceHigh\":430000,\"image\":\"https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRUWanqUfyRhbRFSc4SWjLeMrfz0wdJ7KI4qIrvk0K1CZnVrmOdg3ZfUqgqFBW0B33HNZHyMzryqOWUF3sSem3hjU7Tuh0tMTNbLdJXnm0G119oRse9wONt\",\"offers\":[{\"seller\":\"Beauty Garden\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,catalogid:5651763624202467660,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":430000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:4\",\"name\":\"Nước hoa nữ Hathor 10ml/30ml/75ml\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":459000,\"priceHigh\":459000,\"image\":\"https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTOXEyRfIlxm-i-QyIIDQCJXJSzfQRYKbgJgwrTY9YHQdBBR1ouVfMtYcpdks_UbAAu7vJOLsnLnYw-BaifmWZstXlQUO4NbTyrds_TgebIdz5dOUVz276I\",\"offers\":[{\"seller\":\"Rootoo Vietnam\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,productid:7982637361091939245,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":459000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]},{\"key\":\"uncertain:5\",\"name\":\"Nước Hoa NauNau Thảo Mộc Thiên Nhiên\",\"config\":\"\",\"specs\":[],\"condition\":null,\"matchesRequest\":\"chua_ro\",\"recommended\":false,\"priceLow\":495000,\"priceHigh\":495000,\"image\":\"https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRetbFXrRFpjNuC6m8jpw6YMyyJSpmEUAOZLKhoDgpEzPm9brjGKMFxVcF9pGmMPEXehZexDep2koOe5UTA5bw0qFYvMT-a5LWhzJDoABmqtjhzgm85Twu-\",\"offers\":[{\"seller\":\"NauNau\",\"url\":\"https://www.google.com/search?ibp=oshop&q=n%C6%B0%E1%BB%9Bc+hoa+n%E1%BB%AF+1+tri%E1%BB%87u+%C4%91%E1%BB%93ng&prds=localAnnotatedOfferId:1,catalogid:5497730931100387769,pvo:2,pvt:hg,rds:PC_6027158597472037202%7CPROD_PC_6027158597472037202&gl=vn&udm=28&pvorigin=2\",\"price\":495000,\"currency\":\"VND\",\"condition\":null,\"rating\":null,\"ratingCount\":null}]}],\"requested\":null,\"recommendation\":{\"entityKey\":\"uncertain:0\",\"seller\":\"Missi Perfume\",\"reasons\":[{\"attribute\":\"rating\",\"evidence\":\"rated 5\",\"params\":{\"value\":5}},{\"attribute\":\"price\",\"evidence\":\"440000 VND\",\"params\":{\"priceVnd\":440000}}],\"tradeOff\":null,\"conditional\":false}}[/TAPPY_SHOPPING]\n\nMình chọn **CK One Shock For Her EDT - Chiết 20 ml** cho bạn! 💝\n\nSản phẩm này có **5⭐** từ người mua CK One Shock là dòng nước hoa nổi tiếng của Calvin Klein, hương tươi mát, dễ gần — phù hợp làm quà sinh nhật.\n\n**Danh đổi:** Nếu bạn muốn chai to hơn (100ml), có thể xem **Nike Ultra Purple 100ml** — hương hoa cỏ & trái cây, tươi mát, phù hợp hằng ngày. **CK One EDT** từ Beauty Garden nếu muốn tiết kiệm hơn.\n\nMình chưa xác nhận được hương thơm cụ thể phù hợp với bạn gái không.\n\n\n[FOLLOWUPS]Nước hoa hãng nào bạn gái thích?|Bạn gái thích hương nào?|Có muốn tìm quà khác không?[/FOLLOWUPS]"
+    }
+  ]
+}

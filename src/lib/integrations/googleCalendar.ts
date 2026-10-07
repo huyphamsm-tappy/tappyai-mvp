@@ -107,6 +107,27 @@ export function formatEventsForPrompt(events: CalendarEvent[]): string {
   return `\n===== LỊCH TUẦN NÀY =====\n${fenceUntrusted('calendar_events', lines.join('\n'))}\n========================`
 }
 
+// ── C-1: disconnecting must actually disconnect ──────────────────────────────
+//
+// "Disconnect" used to mean `DELETE FROM user_integrations`. That removes OUR
+// copy of the credential; it does nothing to Google's grant. Two consequences,
+// and the second is the one that matters:
+//
+//  1. The user is told they revoked access and they did not. A Google refresh
+//     token stays valid until it is revoked or goes six months unused, so the
+//     grant outlives the disconnect indefinitely.
+//
+//  2. 🚨 Every database copy taken BEFORE the disconnect still holds a LIVE
+//     credential. Deleting our row cannot reach into a backup, a replica, or a
+//     leaked dump — but revoking at Google invalidates the token everywhere at
+//     once, including in copies we do not control. That is the only action
+//     available to us that shrinks the blast radius of a leak that has already
+//     happened.
+//
+// Revoking the REFRESH token is deliberate: Google treats it as the grant, so
+// this invalidates the issued access tokens with it. When only an access token
+// was ever stored (no offline grant), that is revoked instead.
+
 const GOOGLE_REVOKE_ENDPOINT = 'https://oauth2.googleapis.com/revoke'
 
 /**

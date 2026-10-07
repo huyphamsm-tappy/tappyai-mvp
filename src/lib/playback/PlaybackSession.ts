@@ -31,6 +31,7 @@ export class DefaultPlaybackSession implements PlaybackSession {
   isUserPaused() { return this.userPaused }
   isAudioUnlocked() { return this.audioUnlocked }
   isDocumentVisible() { return this.visible }
+  isDisposed() { return this.disposed }
   /** Derived, never stored: the clip may play only if all three hold. */
   isAutoplayEligible() { return this.active && this.visible && !this.userPaused }
 

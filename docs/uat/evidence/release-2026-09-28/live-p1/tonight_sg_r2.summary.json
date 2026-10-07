@@ -1,0 +1,150 @@
+{
+  "caseId": "tonight_sg_r2",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T07:58:03.010Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "tối nay có chỗ nào đi chơi ở sài gòn ko",
+      "status": 200,
+      "ms": 25950,
+      "literalDoubleStar": 6,
+      "unbalancedBoldLines": [],
+      "proseTail": " (12:00–03:00), ở Mạc Thị Bưởi, Quận 1.\n**Social Club Rooftop** (4.5⭐ 2.535 đánh giá) — quán bar rooftop nổi tiếng, view Sài Gòn tuyệt đẹp, nhưng sắp đóng cửa lúc 00:00 nên bạn nên đi sớm 🌃\n\n**Timezone - AEON MALL Tân Phú Celadon** (5⭐ 3.138 đánh giá) — trung tâm vui chơi giải trí với bowling, game điện tử, đang mở (10:00–22:00) 🎮\n\nBạn muốn đi với bao nhiêu người và có ngân sách bao nhiêu không?",
+      "placeActions": [
+        {
+          "name": "Timezone - AEON MALL Tân Phú Celadon",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=15724558577898258957",
+            "website:v3.action.website:https://www.timezonegames.com/vi-vn/dia-diem/timezone-aeon-mall-tan-phu-celadon-hcmc-atp?u",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Timezone%20-%20AEON%20MALL%20T%C3%A2n%20Ph%C3",
+            "call:v3.action.call:tel:+842873009791"
+          ]
+        },
+        {
+          "name": "Khu vui chơi thiếu nhi",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=2547413428165950104",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20vui%20ch%C6%A1i%20thi%E1%BA%BFu%20nhi%2"
+          ]
+        },
+        {
+          "name": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@trai.nghiem.cung.an/video/7688194922695953684",
+            "maps:v3.action.maps:https://maps.google.com/?cid=1055760044812414598",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20Vui%20ch%C6%A1i%20Tr%E1%BA%BB%20em%20-%"
+          ]
+        },
+        {
+          "name": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=5482288068739924202",
+            "website:v3.action.website:https://www.facebook.com/KHU-VUI-CH%C6%A0I-TR%E1%BA%BA-EM-BIBO-KIDS-Qu%E1%BA%ADn-9-1065170",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=KHU%20VUI%20CH%C6%A0I%20TR%E1%BA%BA%20EM%20BI",
+            "call:v3.action.call:tel:+84902778199"
+          ]
+        },
+        {
+          "name": "Vietopia",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=16351191221892170681",
+            "website:v3.action.website:https://vietopia.com.vn/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Vietopia%20review"
+          ]
+        },
+        {
+          "name": "Công viên văn hóa Suối Tiên",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=17289752153175166486",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20v%C4%83n%20h%C3%B3a%2",
+            "call:v3.action.call:tel:+842838960260"
+          ]
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=9372760170466884556",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20c%C3%B4ng%20vi%C3%AAn%20gi%E1%BA%A3i%20",
+            "call:v3.action.call:tel:+84766011411"
+          ]
+        },
+        {
+          "name": "Vườn thú Đầm Sen",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=9425873494310243504",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=V%C6%B0%E1%BB%9Dn%20th%C3%BA%20%C4%90%E1%BA%A"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": {
+        "type": "evening",
+        "title": "Tối vui chơi Sài Gòn - Bar & Giải trí",
+        "people": 1,
+        "budget_total": "chưa xác định",
+        "days": [
+          {
+            "label": "Tối nay",
+            "items": [
+              {
+                "time": "19:00",
+                "emoji": "🍽️",
+                "category": "food",
+                "name": "Chill Skybar & Dining",
+                "description": "Nhà hàng bar cocktail với view cao, đang mở từ 17:30, 4.4⭐ (5.940 đánh giá)",
+                "price": "chưa có giá",
+                "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000",
+                "maps_link": "https://maps.google.com/?cid=7070654652790197972",
+                "place_id": "ChIJMRRuhj4vdTER1M4F3fECIGI"
+              },
+              {
+                "time": "21:00",
+                "emoji": "🍹",
+                "category": "entertainment",
+                "name": "Lost - Drink & Chill",
+                "description": "Quán bar cocktail chill, đang mở (12:00–03:00), 4.7⭐ (520 đánh giá)",
+                "price": "chưa có giá",
+                "address": "71/5 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh",
+                "maps_link": "https://maps.google.com/?cid=3905461921896049367",
+                "booking_link": "",
+                "place_id": "ChIJlzKT_hIvdTER16ptCu38MjY"
+              },
+              {
+                "time": "21:30",
+                "emoji": "🍹",
+                "category": "drinks",
+                "name": "Bar 22 Girl Bar Ho Chi Minh City",
+                "description": "",
+                "price": "",
+                "address": "22 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "maps_link": "https://maps.google.com/?cid=3717427229702850687",
+                "place_id": "ChIJZXuvTiQvdTERf4jNoF70ljM",
+                "booking_link": "https://www.girlybar22.com/contact"
+              },
+              {
+                "time": "22:30",
+                "emoji": "🥃",
+                "category": "entertainment",
+                "name": "House of Barbaard Bar",
+                "description": "Bar cocktail cao cấp tại Sofitel, đang mở (09:00–01:00), 4.9⭐ (339 đánh giá)",
+                "price": "chưa có giá",
+                "address": "Sofitel Saigon Plaza, 17 Lê Duẩn, Bến Nghé, Quận 1, Hồ Chí Minh 710545",
+                "maps_link": "https://maps.google.com/?cid=17092596760560417700",
+                "booking_link": "",
+                "place_id": "ChIJkeNbrxcpdTERpDsyejEaNe0"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Bữa tối tại Chill Skybar & Dining": "chưa có giá",
+          "Cocktail tại Lost - Drink & Chill": "chưa có giá",
+          "Cocktail tại House of Barbaard Bar": "chưa có giá"
+        },
+        "share_text": "Tối nay đi bar hopping Sài Gòn - từ Chill Skybar đến Lost rồi House of Barbaard 🍹✨ #TappyAI"
+      },
+      "cta": "{\"buttons\":[{\"label\":\"📍 Xem Lost - Drink & Chill\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3905461921896049367\",\"primary\":true},{\"label\":\"📍 Xem House of Barbaard Bar\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17092596760560417700\",\"primary\":false},{\"label\":\"📍 Xem Social Club Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14342053608653436246\",\"primary\":false}]}"
+    }
+  ]
+}

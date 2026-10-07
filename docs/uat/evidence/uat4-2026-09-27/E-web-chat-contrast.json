@@ -1,0 +1,152 @@
+{
+ "light": {
+  "path": "/chat/3557dbdc-257a-45e3-881b-0d549d548895",
+  "msgs": 11,
+  "color": "rgb(204, 227, 255)",
+  "bg": "rgb(17, 24, 39)",
+  "ratio": 13.52,
+  "htmlClass": "",
+  "sample": "2 người · 4.000.000 VND"
+ },
+ "cap": {
+  "t": {
+   "sent": "sent",
+   "ms": 26275,
+   "status": 200
+  },
+  "status": 200,
+  "resp": "f:{\"messageId\":\"msg-t82oKzu53sPoUXoCnHOu5BdL\"}\n9:{\"toolCallId\":\"toolu_01BjAge8fCHkXU44EF8Lycoc\",\"toolName\":\"search_places\",\"args\":{\"query\":\"spa cặp đôi quận 1\",\"location\":\"Quận 1, TP HCM\",\"type\":\"spa\"}}\na:{\"toolCallId\":\"toolu_01BjAge8fCHkXU44EF8Lycoc\",\"result\":{\"_tappy_data\":\"⟦DATA source=tool_resul",
+  "totalChars": 29128,
+  "keys": {
+   "id": 18,
+   "messages": 29032,
+   "userLocation": 43
+  },
+  "msgs": [
+   [
+    "user",
+    118,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1305,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    146,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1380,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    118,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    777,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    162,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    9112,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    108,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1181,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    98,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    2157,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    186,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1697,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    144,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    5187,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    128,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1727,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    138,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1390,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    104,
+    "role+content+parts"
+   ],
+   [
+    "assistant",
+    1533,
+    "role+content+parts"
+   ],
+   [
+    "user",
+    112,
+    "role+content+parts"
+   ]
+  ]
+ },
+ "dark": {
+  "path": "/chat/3557dbdc-257a-45e3-881b-0d549d548895",
+  "msgs": 12,
+  "color": "rgb(204, 227, 255)",
+  "bg": "rgb(17, 24, 39)",
+  "ratio": 13.52,
+  "htmlClass": "dark",
+  "sample": "2 người · 4.000.000 VND"
+ }
+}

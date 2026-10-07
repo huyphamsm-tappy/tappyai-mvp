@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "UAG Monarch Pro Case iPhone 17 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:18:37.528Z",
+ "body": {
+  "searchParameters": {
+   "q": "UAG Monarch Pro Case iPhone 17 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "UAG MONARCH PRO KEVLAR® FOR iPhone 17 Pro Max 16 ...",
+    "link": "https://www.lazada.vn/products/uag-monarch-pro-kevlar-for-iphone-17-pro-max-16-pro-max-magsafe-iphone-15-pro-max-case-top-model-kevlar-magnetic-for-iphone-15-14-13-plus-pro-pro-maxplus-i13428041655-s117190555097.html?srsltid=AU7gw4V66CC3AA4oJzoneAFKqB_Gp6_uv6tmP5fhA_NAKABBIeAM3vYF",
+    "snippet": "The Monarch Pro Kevlar - the ultimate all-terrain, rugged protective case now featuring a powerful built-in MagSafe module. Engineered with premium materials ...",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic tích hợp sạc không ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-monarch-pro-w-magnetic-tich-hop-sac-khong-day-cho-iphone-17-series-i3209485709.html",
+    "snippet": "UAG Monarch Pro w Magnetic tích hợp sạc không dây cho iPhone 17 Series 1/7 1.900.000 ₫2.300.000 ₫-17% năng Magnetic liền mạch.",
+    "position": 2
+   },
+   {
+    "title": "Bao da uag monarch Pro chính hãng có Magsafe cho ...",
+    "link": "https://www.lazada.vn/products/bao-da-uag-monarch-pro-chinh-hang-co-magsafe-cho-iphone-17-pro-max-iphone-16-pro-max-iphone-15-pro-max-iphone-14-13-pro-max-plus-op-bao-ve-chong-soc-chong-roi-kieu-quan-su-chong-truot-i13405195086.html?srsltid=AU7gw4Wy-2Pr3nDWxjQezORXYXZkriSROToyhKFN_Wgfeam7syb8JiD6",
+    "snippet": "Bao da uag monarch Pro chính hãng có Magsafe cho iPhone 17 Pro Max / iPhone 16 Pro Max / iPhone 15 Pro Max / iPhone 14 13 Pro Max Plus, ốp bảo vệ chống sốc, ...",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng UAG có Camera Button cho iPhone 17 Pro Max ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-co-camera-button-cho-iphone-17-pro-max-monarch-pro-exclusive-chong-soc-toan-dien-i3197724604-s15249095072.html",
+    "snippet": "Nút bấm Camera tích hợp ngay trên ốp, tương thích hoàn hảo với tính năng Camera Control của iPhone 17 Series. Được chế tác từ kính chống trầy xước + khung kim ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng Chống Sốc UAG cho iPhone 17 Pro Max / 17 ...",
+    "link": "https://h5.lazada.vn/products/op-lung-chong-soc-uag-cho-iphone-17-pro-max-17-pro-monarch-pro-kevlar-chong-soc-toi-uu-sac-khong-day-tu-tinh-i3194963761-s15213451809.html",
+    "snippet": "Monarch Pro Series hỗ trợ Magnetic (Mag.S.a.fe) hoàn toàn, cho phép sạc nhanh không dây và gắn phụ kiện từ tính liền mạch, không cần tháo ốp.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng UAG Pathfinder / Civilian / Monarch Pro Orange Cho ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-pathfinder-civilian-monarch-pro-orange-cho-iphone-17-pro-17-pro-max-phien-ban-cam-dac-biet-i3264819254-s15760585524.html",
+    "snippet": "Ốp Lưng UAG Pathfinder / Civilian / Monarch Pro Orange Cho iPhone 17 Pro / 17 Pro Max, Phiên Bản Cam Đặc Biệt · Thương hiệu: UAG · Dòng sản phẩm: Ốp Lưng UAG ...",
+    "position": 6
+   },
+   {
+    "title": "UAG Pathfinder iPhone 16 Pro Max Case for iPhone 17 ...",
+    "link": "https://www.lazada.vn/products/uag-pathfinder-iphone-16-pro-max-case-for-iphone-17-pro-max-iphone-16-pro-max-iphone-15-pro-max-iphone-14-pro-max-iphone-13-pro-max-iphone-14-plus-magsafe-charging-slim-lightweight-shockproof-dropproof-rugged-protective-cover-i13429812550-s117190939492.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VzJpHSitvs0hU2Uq1eBaWPR9-vUPxY_NkqOIHlwcqkUIHAEAdE",
+    "snippet": "The raised screen surround safeguards your display from accidental drops, while tough TPU bumpers provide extra corner protection. With a powerful built-in ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng UAG MONARCH Pro Magsafe Cho iPhone 14 ...",
+    "link": "https://www.lazada.vn/products/op-lung-uag-monarch-pro-magsafe-cho-iphone-14-pro-61-inch-i2025777126.html?srsltid=AU7gw4Ug_Sc6ByFsTWIMdWL89eGZ7g54MujX8NrJ4cPuNSF2ZNytRxTJ",
+    "snippet": "Mô tả sản phẩm. Mô tả. Vỏ bảo vệ chắc chắn, vượt mọi địa hình, tích hợp MagSafe. Monarch Pro được trang bị vật liệu cao cấp để bảo vệ cao cấp.",
+    "rating": 4.5,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

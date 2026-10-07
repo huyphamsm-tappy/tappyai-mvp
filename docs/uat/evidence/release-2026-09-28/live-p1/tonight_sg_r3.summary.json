@@ -1,0 +1,135 @@
+{
+  "caseId": "tonight_sg_r3",
+  "base": "https://uat.tappyai.com",
+  "at": "2026-09-28T08:29:26.641Z",
+  "guest": "anonymous session (token not stored)",
+  "turns": [
+    {
+      "user": "tối nay có chỗ nào đi chơi ở sài gòn ko",
+      "status": 200,
+      "ms": 22819,
+      "literalDoubleStar": 12,
+      "unbalancedBoldLines": [],
+      "proseTail": " giãn và ngắm thành phố buổi tối.\n\n**Lost - Drink & Chill** — **4.7⭐ (520 đánh giá Google Maps)** — quán bar cocktail ở Mạc Thị Bưởi, mở từ 12:00 đến 03:00, không khí chill và đang mở cửa lúc này.\n\n**Timezone - AEON MALL Tân Phú Celadon** — **5⭐ (3.138 đánh giá Google Maps)** — trung tâm vui chơi giải trí với bowling, game điện tử, mở từ 10:00 đến 22:00, phù hợp nếu bạn muốn chơi game hay bowling.",
+      "placeActions": [
+        {
+          "name": "Timezone - AEON MALL Tân Phú Celadon",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=15724558577898258957",
+            "website:v3.action.website:https://www.timezonegames.com/vi-vn/dia-diem/timezone-aeon-mall-tan-phu-celadon-hcmc-atp?u",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Timezone%20-%20AEON%20MALL%20T%C3%A2n%20Ph%C3",
+            "call:v3.action.call:tel:+842873009791"
+          ]
+        },
+        {
+          "name": "Công viên văn hóa Suối Tiên",
+          "actions": [
+            "review:v3.action.reviewOn:https://www.tiktok.com/@suoitienthemepark/video/7668578677935901973",
+            "maps:v3.action.maps:https://maps.google.com/?cid=17289752153175166486",
+            "call:v3.action.call:tel:+842838960260",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20v%C4%83n%20h%C3%B3a%2"
+          ]
+        },
+        {
+          "name": "Vietopia",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=16351191221892170681",
+            "website:v3.action.website:https://vietopia.com.vn/",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Vietopia%20review"
+          ]
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=9372760170466884556",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=Khu%20c%C3%B4ng%20vi%C3%AAn%20gi%E1%BA%A3i%20",
+            "call:v3.action.call:tel:+84766011411"
+          ]
+        },
+        {
+          "name": "Công viên Văn hoá Lê Thị Riêng",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=15974133587192918591",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%B4ng%20vi%C3%AAn%20V%C4%83n%20ho%C3%A1%2"
+          ]
+        },
+        {
+          "name": "CÔNG VIÊN GIA ĐỊNH",
+          "actions": [
+            "maps:v3.action.maps:https://maps.google.com/?cid=1597779693383310824",
+            "review:v3.action.reviewSearch:https://www.youtube.com/results?search_query=C%C3%94NG%20VI%C3%8AN%20GIA%20%C4%90%E1%BB%8A",
+            "call:v3.action.call:tel:+84855686090"
+          ]
+        }
+      ],
+      "shopping": null,
+      "plan": {
+        "type": "evening",
+        "title": "Tối vui chơi Sài Gòn - Bar & Giải trí",
+        "people": 1,
+        "budget_total": "chưa có giá",
+        "days": [
+          {
+            "label": "Tối nay",
+            "items": [
+              {
+                "time": "19:00",
+                "emoji": "🍽️",
+                "category": "food",
+                "name": "Social Club Rooftop",
+                "description": "Quán bar rooftop với view đẹp, 4.5⭐ (2.535 đánh giá), mở từ 15:00–00:00",
+                "price": "chưa có giá",
+                "address": "76-78 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh",
+                "maps_link": "https://maps.google.com/?cid=14342053608653436246",
+                "booking_link": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F173921-saigon-food-tour-nostalgic-scents-modern-flavour%2F&utm_source=tappyai&utm_medium=ccp&sub1=341476cd1c544055928164db",
+                "place_id": "ChIJO9BqXjYvdTERVrVlBcU1Ccc"
+              },
+              {
+                "time": "21:00",
+                "emoji": "🍺",
+                "category": "entertainment",
+                "name": "Lost - Drink & Chill",
+                "description": "Quán bar cocktail chill, 4.7⭐ (520 đánh giá), mở từ 12:00–03:00",
+                "price": "chưa có giá",
+                "address": "71/5 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh",
+                "maps_link": "https://maps.google.com/?cid=3905461921896049367",
+                "booking_link": "",
+                "place_id": "ChIJlzKT_hIvdTER16ptCu38MjY"
+              },
+              {
+                "time": "21:30",
+                "emoji": "🍹",
+                "category": "drinks",
+                "name": "Bar 22 Girl Bar Ho Chi Minh City",
+                "description": "",
+                "price": "",
+                "address": "22 Huỳnh Thúc Kháng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "maps_link": "https://maps.google.com/?cid=3717427229702850687",
+                "place_id": "ChIJZXuvTiQvdTERf4jNoF70ljM",
+                "booking_link": "https://www.girlybar22.com/contact"
+              },
+              {
+                "time": "22:30",
+                "emoji": "🎉",
+                "category": "entertainment",
+                "name": "House of Barbaard Bar",
+                "description": "Quán bar cocktail cao cấp, 4.9⭐ (339 đánh giá), mở từ 09:00–01:00",
+                "price": "chưa có giá",
+                "address": "Sofitel Saigon Plaza, 17 Lê Duẩn, Bến Nghé, Quận 1, Hồ Chí Minh",
+                "maps_link": "https://maps.google.com/?cid=17092596760560417700",
+                "booking_link": "",
+                "place_id": "ChIJkeNbrxcpdTERpDsyejEaNe0"
+              }
+            ]
+          }
+        ],
+        "cost_breakdown": {
+          "Ăn tối": "chưa có giá",
+          "Bar & Cocktail": "chưa có giá"
+        },
+        "share_text": "Tối nay đi bar hopping ở Sài Gòn - từ rooftop view đến cocktail chill 🍹 #TappyAI"
+      },
+      "cta": "{\"buttons\":[{\"label\":\"📍 Xem Social Club Rooftop\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14342053608653436246\",\"primary\":true},{\"label\":\"📍 Xem Lost - Drink & Chill\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3905461921896049367\",\"primary\":false},{\"label\":\"📍 Xem Timezone AEON MALL\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15724558577898258957\",\"primary\":false}]}"
+    }
+  ]
+}

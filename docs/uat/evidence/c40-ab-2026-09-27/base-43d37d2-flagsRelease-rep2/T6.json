@@ -1,0 +1,156 @@
+{
+  "id": "T6",
+  "text": "Hội An có gì hay, đi 1 ngày",
+  "parent": null,
+  "status": 200,
+  "ms": 17222,
+  "evidenceId": "aadea204-c461-4d8d-9eab-e732a8f70b19",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "điểm tham quan Hội An",
+        "location": "Hội An",
+        "type": "attraction"
+      }
+    },
+    {
+      "tool": "get_weather",
+      "args": {
+        "location": "Hội An"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+      "rating": 4.8,
+      "count": 3879,
+      "hours": "08:00–18:00",
+      "address": "39 Cửa Đại, Hội An Đông, Đà Nẵng 513000, Việt Nam"
+    },
+    {
+      "name": "Đảo Ký ức Hội An",
+      "rating": 4.7,
+      "count": 5298,
+      "hours": "16:00–22:00",
+      "address": "Cồn Hến, rẽ trái, 200 Nguyễn Tri Phương, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Phố Cổ Hội An",
+      "rating": 4.8,
+      "count": 676,
+      "hours": "Mở cửa cả ngày",
+      "address": "Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Bay Mau Coconut Forest Tour",
+      "rating": 4.7,
+      "count": 1977,
+      "hours": "09:00–17:00",
+      "address": "Võ Chí Công, Hội An Đông, Đà Nẵng 51300, Việt Nam"
+    },
+    {
+      "name": "KÝ ỨC HỘI AN",
+      "rating": 4.6,
+      "count": 5268,
+      "hours": "16:00–22:00",
+      "address": "200 Nguyễn Tri Phương, Phường, Hội An, Đà Nẵng 51000, Việt Nam"
+    },
+    {
+      "name": "Phố cổ Hội An",
+      "rating": 4.9,
+      "count": 14,
+      "hours": "Mở cửa cả ngày",
+      "address": "V8HH+5H2, Phố cổ, Old Town, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Phố cổ hội an",
+      "rating": 4.7,
+      "count": 66,
+      "address": "V8GG+7MR, An Hội, Hội An, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Làng lụa Hội An",
+      "rating": 4.3,
+      "count": 3275,
+      "hours": "08:00–16:00",
+      "address": "28 Nguyễn Tất Thành, Hội An Tây, Đà Nẵng, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Quân Thắng",
+      "rating": 4.3,
+      "count": 403,
+      "hours": "09:00–19:00",
+      "address": "77 Trần Phú, Old Town, Hội An, Đà Nẵng 560000, Việt Nam"
+    },
+    {
+      "name": "Nhà cổ Phùng Hưng",
+      "rating": 3.6,
+      "count": 617,
+      "hours": "08:00–18:00",
+      "address": "4 Nguyễn Thị Minh Khai, Hội An, Đà Nẵng, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Hoi An Coconut Village - Coconut Basket Boat Tour",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 3879,
+        "open_now": false,
+        "opening_hours": "08:00–18:00"
+      }
+    },
+    {
+      "name": "Đảo Ký ức Hội An",
+      "role": null,
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 5298,
+        "open_now": true,
+        "opening_hours": "16:00–22:00"
+      }
+    },
+    {
+      "name": "Phố Cổ Hội An",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 676,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Tôi sẽ tìm kiếm những điểm tham quan và hoạt động hay nhất ở Hội An cho bạn.Hội An là một trong những điểm đến tuyệt vời nhất Việt Nam! Với 1 ngày, bạn có thể trải nghiệm những hoạt động hay nhất ở đây. Thời tiết hôm nay khá đẹp — 27°C, có mây, độ ẩm 82%, cơ hội mưa thấp (22%) — rất thích hợp để khám phá.\n\n**Những điểm không nên bỏ lỡ:**\n\n🚣 **Hoi An Coconut Village - Coconut Basket Boat Tour** — **4.8⭐ (3.879 đánh giá Google Maps)**\nTrải nghiệm chèo thuyền rổ trên sông Hoài, ngắm cảnh quê hương Hội An từ trên nước. Mở cửa 08:00–18:00, đây là hoạt động sáng sớm lý tưởng để bắt đầu ngày.\n[Xem trên Maps](https://maps.google.com/?cid=9729814368620428803)\n\n🎡 **Đảo Ký ức Hội An** — **4.7⭐ (5.298 đánh giá Google Maps)**\nCông viên giải trí với show diễn văn hóa, trò chơi dân gian, và không gian tái hiện Hội An xưa. Mở từ 16:00–22:00, rất phù hợp cho buổi tối. Đây là nơi để thưởng thức văn hóa địa phương một cách sinh động.\n[Xem trên Maps](https://maps.google.com/?cid=13188427962945185160)\n\nTrung tâm của Hội An với kiến trúc cổ kính, các nhà cổ, chợ đêm, và quán cà phê nhỏ xinh. Mở cửa cả ngày, bạn có thể dạo bộ, chụp ảnh, mua sắm đồ lưu niệm, và thưởng thức ẩm thực địa phương.\n[Xem trên Maps](https://maps.google.com/?cid=16041945140456063900)\n\n**Gợi ý lịch trình 1 ngày:**\n- **Sáng (8:00–10:00):** Chèo thuyền rổ ở Coconut Village\n- **Trưa (11:00–14:00):** Dạo phố cổ, ăn trưa tại các quán ăn địa phương\n- **Chiều (14:00–16:00):** Thăm các nhà cổ, làng lụa, hoặc thư giãn ở quán cà phê\n- **Tối (16:00–22:00):** Đảo Ký ức Hội An để xem show văn hóa và chợ đêm\n\nBạn muốn tôi lập kế hoạch chi tiết với các quán ăn cụ thể không? 😊\n\n[FOLLOWUPS]Quán ăn ngon Hội An|Làng lụa Hội An|Chợ đêm Hội An[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Hội An có gì hay, đi 1 ngày"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi sẽ tìm kiếm những điểm tham quan và hoạt động hay nhất ở Hội An cho bạn.Hội An là một trong những điểm đến tuyệt vời nhất Việt Nam! Với 1 ngày, bạn có thể trải nghiệm những hoạt động hay nhất ở đây. Thời tiết hôm nay khá đẹp — 27°C, có mây, độ ẩm 82%, cơ hội mưa thấp (22%) — rất thích hợp để khám phá.\n\n**Những điểm không nên bỏ lỡ:**\n\n🚣 **Hoi An Coconut Village - Coconut Basket Boat Tour** — **4.8⭐ (3.879 đánh giá Google Maps)**\nTrải nghiệm chèo thuyền rổ trên sông Hoài, ngắm cảnh quê hương Hội An từ trên nước. Mở cửa 08:00–18:00, đây là hoạt động sáng sớm lý tưởng để bắt đầu ngày.\n[Xem trên Maps](https://maps.google.com/?cid=9729814368620428803)\n\n🎡 **Đảo Ký ức Hội An** — **4.7⭐ (5.298 đánh giá Google Maps)**\nCông viên giải trí với show diễn văn hóa, trò chơi dân gian, và không gian tái hiện Hội An xưa. Mở từ 16:00–22:00, rất phù hợp cho buổi tối. Đây là nơi để thưởng thức văn hóa địa phương một cách sinh động.\n[Xem trên Maps](https://maps.google.com/?cid=13188427962945185160)\n\nTrung tâm của Hội An với kiến trúc cổ kính, các nhà cổ, chợ đêm, và quán cà phê nhỏ xinh. Mở cửa cả ngày, bạn có thể dạo bộ, chụp ảnh, mua sắm đồ lưu niệm, và thưởng thức ẩm thực địa phương.\n[Xem trên Maps](https://maps.google.com/?cid=16041945140456063900)\n\n**Gợi ý lịch trình 1 ngày:**\n- **Sáng (8:00–10:00):** Chèo thuyền rổ ở Coconut Village\n- **Trưa (11:00–14:00):** Dạo phố cổ, ăn trưa tại các quán ăn địa phương\n- **Chiều (14:00–16:00):** Thăm các nhà cổ, làng lụa, hoặc thư giãn ở quán cà phê\n- **Tối (16:00–22:00):** Đảo Ký ức Hội An để xem show văn hóa và chợ đêm\n\nBạn muốn tôi lập kế hoạch chi tiết với các quán ăn cụ thể không? 😊\n\n[FOLLOWUPS]Quán ăn ngon Hội An|Làng lụa Hội An|Chợ đêm Hội An[/FOLLOWUPS]"
+    }
+  ]
+}

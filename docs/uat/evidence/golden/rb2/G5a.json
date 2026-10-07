@@ -1,0 +1,24 @@
+{
+  "id": "G5a",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with iCloud Activation Lock / Find My, MDM, stolen-device (IMEI/blacklist) and deposit scams; then condition checks",
+    "No unsupported numeric thresholds",
+    "Points to 'Cảnh báo lừa đảo' for the online-deposit/stranger-seller vector"
+  ],
+  "turns": [
+    {
+      "user": "mua iPhone 13 cũ thì cần check gì",
+      "status": 200,
+      "elapsedMs": 13156,
+      "textFrames": 366,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra tình trạng pháp lý**: hỏi rõ máy có bị báo mất, bị cấm sử dụng không\n- **Ghi lại thông tin người bán**: số điện thoại, tên, địa chỉ để có bằng chứng nếu cần\n\n**💻 KIỂM TRA TÌNH TRẠNG MÁY:**\n- **Pin**: mở Settings > Battery > Battery Health — pin trên 80% là tốt, dưới 70% là đã chai khá\n- **Màn hình**: kiểm tra xem có vết nứt, chấm đen, hay burn-in không; bật video để xem màu sắc\n- **Camera**: chụp ảnh, quay video để kiểm tra có bị mờ hay lỗi không\n- **Loa & mic**: gọi điện, nghe nhạc để chắc chắn hoạt động bình thường\n- **Nút bấm & cảm ứng**: thử tất cả nút (âm lượng, nguồn, home), kiểm tra màn hình cảm ứng có phản ứng tốt không\n- **Vỏ máy**: xem có trầy xước, móp méo hay không (ảnh hưởng đến giá)\n- **Chạy phần mềm**: kiểm tra iOS phiên bản mới nhất, không bị lỗi hay lag\n\n**💰 VỀ GIÁ:**\nGiá iPhone 13 cũ thường rẻ bất thường (dưới 30% giá gốc) là dấu hiệu cần nghi — có thể máy bị khóa, bị lỗi ẩn, hoặc không phải hàng chính hãng.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm mua iPhone 13 cũ ở đâu (Facebook, Tiki, Shopee) hay cần mình giúp tìm các nơi bán uy tín?\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng.",
+      "visible": "Mua iPhone 13 cũ là quyết định lớn, nên cần kiểm tra kỹ trước khi chuyển tiền. Dưới đây là những điểm quan trọng:\n\n**🚨 TRƯỚC TIÊN — RỦI RO GIAO DỊCH:**\n- **Gặp trực tiếp** để kiểm tra máy, KHÔNG chuyển tiền trước\n- **Kiểm tra tài khoản Apple**: máy có bị khóa iCloud không (đây là rủi ro lớn nhất — nếu bị khóa, bạn không dùng được)\n- **Kiểm tra tình trạng pháp lý**: hỏi rõ máy có bị báo mất, bị cấm sử dụng không\n- **Ghi lại thông tin người bán**: số điện thoại, tên, địa chỉ để có bằng chứng nếu cần\n\n**💻 KIỂM TRA TÌNH TRẠNG MÁY:**\n- **Pin**: mở Settings > Battery > Battery Health — pin trên 80% là tốt, dưới 70% là đã chai khá\n- **Màn hình**: kiểm tra xem có vết nứt, chấm đen, hay burn-in không; bật video để xem màu sắc\n- **Camera**: chụp ảnh, quay video để kiểm tra có bị mờ hay lỗi không\n- **Loa & mic**: gọi điện, nghe nhạc để chắc chắn hoạt động bình thường\n- **Nút bấm & cảm ứng**: thử tất cả nút (âm lượng, nguồn, home), kiểm tra màn hình cảm ứng có phản ứng tốt không\n- **Vỏ máy**: xem có trầy xước, móp méo hay không (ảnh hưởng đến giá)\n- **Chạy phần mềm**: kiểm tra iOS phiên bản mới nhất, không bị lỗi hay lag\n\n**💰 VỀ GIÁ:**\nGiá iPhone 13 cũ thường rẻ bất thường (dưới 30% giá gốc) là dấu hiệu cần nghi — có thể máy bị khóa, bị lỗi ẩn, hoặc không phải hàng chính hãng.\n\n**Trước khi chuyển tiền, bạn dán tin nhắn, link hoặc mã QR của người bán vào **Cảnh báo lừa đảo** trong TappyAI để kiểm tra nhé.**\n\nBạn đang tìm mua iPhone 13 cũ ở đâu (Facebook, Tiki, Shopee) hay cần mình giúp tìm các nơi bán uy tín?\n\nCác con số phần trăm / mốc nêu trên là kinh nghiệm chung, không phải số liệu từ nguồn đã tìm — dùng làm gợi ý, không phải ngưỡng cứng."
+    }
+  ]
+}

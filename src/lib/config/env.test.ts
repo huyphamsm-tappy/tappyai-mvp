@@ -126,7 +126,7 @@ describe('C9b — migrated consumers actually go through the typed boundary', ()
       expects: '@/lib/config/env',
     },
     {
-      file: 'app/admin/settings/page.tsx',
+      file: 'app/(app)/admin/settings/page.tsx',
       forbidden: ['process.env.AUDIT_LOG_RETENTION_DAYS', 'process.env.BACKOFFICE_ENABLED'],
       expects: '@/lib/config/env',
     },

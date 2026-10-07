@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"MASSAGE HẠ SPA QUẬN 1\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:15.790Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL\" OR \"MASSAGE HẠ SPA QUẬN 1\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Hạ Spa Quận 1",
+    "link": "https://www.tiktok.com/discover/massage-h%E1%BA%A1-spa-qu%E1%BA%ADn-1",
+    "snippet": "11.9M bài đăng. Hãy khám phá video liên quan đến Massage Hạ Spa Quận 1 trên TikTok. Xem thêm video về Spa Massage Quận 1, Các Spa Massage Quận 1, Shiva Spa ...",
+    "position": 1
+   },
+   {
+    "title": "Quá lí tưởng để hẹn hò relax cùng người iu ✨❤️ ...",
+    "link": "https://www.tiktok.com/@meimei_reivew/video/7555463276042145032",
+    "snippet": "La Spa Saigon Quận 1 · Saigon Nuru Spa · District 1 Ho Chi Minh City Spa · Saigon Spa for Men District ... MASSAGE HẠ SPA QUẬN 1 · author · 12.7K.",
+    "position": 2
+   },
+   {
+    "title": "Massage Trị Liệu Mở Khuya tại Quận 1 TPHCM",
+    "link": "https://www.tiktok.com/@haspamassagequan1/video/7516841995797613831",
+    "snippet": "Massage Trị Liệu Mở Khuya nhận khách 22h và làm xong đến 24h mới nghỉ ở Quận 1 Tphcm ... MASSAGE HẠ SPA QUẬN 1 · author · 31 · 5.",
+    "position": 3
+   },
+   {
+    "title": "Chữa Lành ở Spa Cực Thư Giãn Quận 1 sài gòn ...",
+    "link": "https://www.tiktok.com/@haspamassagequan1/video/7648603618714619157",
+    "snippet": "Chữa Lành ở Spa Cực Thư Giãn Quận 1 sài gòn #thebestspahochiminh #spahochiminhcity #spaquan1 #spadistrict1 #massagequan1 ... MASSAGE HẠ SPA QUẬN 1.",
+    "position": 4
+   },
+   {
+    "title": "SPA GỘI ĐẦU DƯỠNG SINH QUẬN 1 mở khuya, team văn ...",
+    "link": "https://www.tiktok.com/@hanyu339/video/7647507707544489236",
+    "snippet": "SPA GỘI ĐẦU DƯỠNG SINH QUẬN 1 mở khuya, team văn phòng thích mê luôn #haspamassagecotruyen ... MASSAGE HẠ SPA QUẬN 1 · author. 1670 · 19.",
+    "position": 5
+   },
+   {
+    "title": "Light Meal at HẠ SPA @Hạ Spa - Massage Quận 1 SaiGon ...",
+    "link": "https://www.tiktok.com/@vietjoetv/video/7686183917954632978",
+    "snippet": "Light Meal at HẠ SPA @Hạ Spa - Massage Quận 1 SaiGon A relaxing spa. @VietJOE TV · âm thanh gốc - Thanh Music · MASSAGE HẠ SPA QUẬN 1 · author.",
+    "position": 6
+   },
+   {
+    "title": "Bà nào đang tìm Spa massage thư giãn ngay Quận 1, thì ...",
+    "link": "https://www.tiktok.com/@ngocminh0224/video/7687900702206692628",
+    "snippet": "Bà nào đang tìm Spa massage thư giãn ngay Quận 1, thì lưu ngay Hạ. @Jolie · âm thanh gốc - Jolie · MASSAGE HẠ SPA QUẬN 1 · author.",
+    "position": 7
+   },
+   {
+    "title": "Spa gội đầu dưỡng sinh sang xịn mịn tại Quận 1 ♥️ ...",
+    "link": "https://www.tiktok.com/@hanyu339/video/7618896420086615317",
+    "snippet": "... mịn tại Quận 1 ♥️ #haspamassagecotruyen #haspa. @Cafe quài luôn ☕️ · âm thanh gốc - Cafe quài luôn ☕️ · MASSAGE HẠ SPA QUẬN 1 · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

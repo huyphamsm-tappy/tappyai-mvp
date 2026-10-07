@@ -1,5 +1,6 @@
 package com.tappyai.app.reviews.ui
 
+import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -24,7 +25,6 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.MusicNote
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Videocam
 import androidx.compose.material3.CircularProgressIndicator
@@ -91,9 +91,6 @@ fun ReviewComposerScreen(
     onBack: () -> Unit,
     onPost: () -> Unit,
     modifier: Modifier = Modifier,
-    attachedSoundTitle: String? = null,
-    onRemoveSound: () -> Unit = {},
-    onAddMusic: () -> Unit = {},
     photoUrls: List<String> = emptyList(),
     isUploadingPhoto: Boolean = false,
     onPickPhotos: () -> Unit = {},
@@ -103,16 +100,27 @@ fun ReviewComposerScreen(
     linkSourceType: String? = null,
     linkThumbnailUrl: String? = null,
     isFetchingLinkMeta: Boolean = false,
+    videoPreview: String? = null,
+    hasVideo: Boolean = false,
+    isUploadingVideo: Boolean = false,
+    videoProgress: Int = 0,
+    onPickVideo: () -> Unit = {},
+    onRemoveVideo: () -> Unit = {},
 ) {
-    // A valid pasted link is postable on its own (no body needed), matching the web + backend
-    // rule that a review needs body OR media.
+    // A valid pasted link, an uploaded clip or photos are postable on their own (no body needed),
+    // matching the web + backend rule that a review needs body OR media.
     val hasValidLink = linkSourceType != null && linkUrl.isNotBlank()
+    val hasMedia = when (mediaMode) {
+        ComposerMediaMode.Photo -> photoUrls.isNotEmpty()
+        ComposerMediaMode.Video -> hasVideo
+        ComposerMediaMode.Link -> hasValidLink
+    }
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(ComposerBackground),
     ) {
-        ComposerHeader(onBack = onBack, onPost = onPost, canPost = body.isNotBlank() || hasValidLink)
+        ComposerHeader(onBack = onBack, onPost = onPost, canPost = (body.isNotBlank() || hasMedia) && !isUploadingVideo && !isUploadingPhoto)
         HorizontalDivider(color = ComposerDivider, thickness = 0.5.dp)
 
         Column(
@@ -124,16 +132,18 @@ fun ReviewComposerScreen(
         ) {
             Spacer(modifier = Modifier.height(TappySpacing.md))
 
-            if (attachedSoundTitle != null) {
-                AttachedSoundChip(title = attachedSoundTitle, onRemove = onRemoveSound)
-            } else {
-                AddMusicButton(onClick = onAddMusic)
-            }
-
             MediaModeTabs(selected = mediaMode, onSelect = onMediaModeChange)
 
             when (mediaMode) {
-                // Photo and Link are the wired media lanes; Video remains a placeholder.
+                // All three lanes are wired (Video since 2026-09-28: web /reviews/new clip upload).
+                ComposerMediaMode.Video -> ComposerVideoSection(
+                    preview = videoPreview,
+                    uploaded = hasVideo,
+                    isUploading = isUploadingVideo,
+                    progress = videoProgress,
+                    onPick = onPickVideo,
+                    onRemove = onRemoveVideo,
+                )
                 ComposerMediaMode.Photo -> ComposerPhotoSection(
                     photoUrls = photoUrls,
                     isUploading = isUploadingPhoto,
@@ -298,70 +308,6 @@ private fun MediaTab(
             fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
         )
         Spacer(modifier = Modifier.weight(1f))
-    }
-}
-
-/** "Using: {title}" bar — mirrors TikTok/the web's attached-sound indicator on the composer,
- *  shown when this session was reached via Sound Detail's "Use this sound". */
-@Composable
-private fun AttachedSoundChip(title: String, onRemove: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(ComposerSurface)
-            .padding(horizontal = TappySpacing.lg, vertical = TappySpacing.md),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(
-            imageVector = Icons.Filled.MusicNote,
-            contentDescription = null,
-            tint = ActionRowIcon,
-            modifier = Modifier.size(18.dp),
-        )
-        Text(
-            text = stringResource(R.string.reviews_composer_using_sound, title),
-            color = ComposerTextPrimary,
-            fontSize = 13.sp,
-            modifier = Modifier.weight(1f).padding(start = TappySpacing.sm),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        IconButton(onClick = onRemove) {
-            Icon(
-                imageVector = Icons.Filled.Close,
-                contentDescription = stringResource(R.string.reviews_composer_remove_sound),
-                tint = ComposerTextSecondary,
-                modifier = Modifier.size(18.dp),
-            )
-        }
-    }
-}
-
-/** Web parity: the composer's "Add music" text button (Music icon + accent label) shown when no
- *  track is attached — opens the in-composer [com.tappyai.app.music.MusicPickerSheet]. */
-@Composable
-private fun AddMusicButton(onClick: () -> Unit) {
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
-            .clickable(onClick = onClick)
-            .padding(vertical = TappySpacing.xs, horizontal = TappySpacing.xs),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(TappySpacing.sm),
-    ) {
-        Icon(
-            imageVector = Icons.Filled.MusicNote,
-            contentDescription = null,
-            tint = ComposerAccent,
-            modifier = Modifier.size(16.dp),
-        )
-        Text(
-            text = stringResource(R.string.reviews_composer_add_music),
-            color = ComposerAccent,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-        )
     }
 }
 
@@ -667,4 +613,41 @@ private fun ComposerFilledPreview() {
         onBack = {},
         onPost = {},
     )
+}
+
+/**
+ * The Video lane — web /reviews/new: a picker (MP4/MOV, "mp4 · mov · tối đa 5 phút · 150MB"), the
+ * poster while it uploads with a progress line, "Video đã tải lên" when the server confirmed it.
+ */
+@Composable
+private fun ComposerVideoSection(preview: String?, uploaded: Boolean, isUploading: Boolean, progress: Int, onPick: () -> Unit, onRemove: () -> Unit) {
+    Column(verticalArrangement = Arrangement.spacedBy(TappySpacing.sm)) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .border(1.dp, ComposerDivider, RoundedCornerShape(16.dp))
+                .clickable(enabled = !isUploading, onClick = onPick)
+                .testTag("composer-video-pick"),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (preview != null) {
+                com.tappyai.core.designsystem.component.TappyImage(url = preview, contentDescription = null, modifier = Modifier.fillMaxSize())
+            } else {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Icon(Icons.Filled.Videocam, contentDescription = null, tint = androidx.compose.ui.graphics.Color(0xFF9CA3AF), modifier = Modifier.size(32.dp))
+                    Text(stringResource(R.string.reviews_composer_video_pick), color = androidx.compose.ui.graphics.Color.White, modifier = Modifier.padding(top = 6.dp))
+                }
+            }
+        }
+        Text(stringResource(R.string.reviews_composer_video_hint), color = androidx.compose.ui.graphics.Color(0xFF9CA3AF), fontSize = 12.sp)
+        when {
+            isUploading -> Text(stringResource(R.string.reviews_composer_video_uploading) + " " + progress + "%", color = androidx.compose.ui.graphics.Color(0xFF93C5FD), fontSize = 13.sp)
+            uploaded -> Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(stringResource(R.string.reviews_composer_video_uploaded), color = androidx.compose.ui.graphics.Color(0xFF6EE7B7), fontSize = 13.sp, modifier = Modifier.weight(1f))
+                Text(stringResource(R.string.reviews_composer_video_remove), color = androidx.compose.ui.graphics.Color(0xFFFCA5A5), fontSize = 13.sp, modifier = Modifier.clickable(onClick = onRemove))
+            }
+        }
+    }
 }

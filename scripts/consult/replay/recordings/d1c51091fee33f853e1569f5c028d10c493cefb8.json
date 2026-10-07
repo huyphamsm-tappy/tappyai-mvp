@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn THANH PHƯỚC (Hotel) Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:26:30.076Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn THANH PHƯỚC (Hotel) Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Thanh Phước Hotel | Tỉnh Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122125155038937276",
+    "imageWidth": 1128,
+    "imageHeight": 1338,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTigTR_jFTxOu8QPyyaNP-BV-ZjgeFMRKqnztkLwMoXEw&s=10",
+    "thumbnailWidth": 410,
+    "thumbnailHeight": 487,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122125155038937276&tbnid=Vm9v_7Gl355WqM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=1128&h=1338",
+    "position": 1
+   },
+   {
+    "title": "Thanh Phước Hotel | Tỉnh Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=61578118290935",
+    "imageWidth": 1155,
+    "imageHeight": 1150,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTARcg1SLaoSLShrco_GKnr1U00R7pHeEjYDlFjGLMtrA&s=10",
+    "thumbnailWidth": 448,
+    "thumbnailHeight": 446,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D61578118290935&tbnid=WOwDOuF2Wz3gnM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=1155&h=1150",
+    "position": 2
+   },
+   {
+    "title": "📍 KHÁCH SẠN THANH PHƯỚC TÂY NINH– NGHỈ NGƠI THOẢI MÁI, GIÁ CẢ BÌNH DÂN",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122130475016937276",
+    "imageWidth": 1536,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbPiSwPc-l_ZxTdm1IBTOsbSh-rHjLSuy0W0YNqVeCBg&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/tayninhlaca/posts/1521023735747635/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122130475016937276&tbnid=0YPhoQyuQuh_ZM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Ftayninhlaca%2Fposts%2F1521023735747635%2F&docid=DVa70xKi9tpT_M&w=1536&h=2048",
+    "position": 3
+   },
+   {
+    "title": "☘️☘️ Chúc mừng hành trình rực rỡ và nhiều kỉ niệm của đoàn thi đấu môn điền  kinh, đạt rất nhiều huy chương vàng, bạc, đồng. Cảm ơn các em đã lưu trú  tại khách sạn Thanh Phước 💓 | Thanh Phước Hotel | ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=875064278698461&get_thumbnail=1",
+    "imageWidth": 704,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmEJRUMC62rIZyXDZvqzVCmdMAAR_cNiHbF42HZcVj7A&s",
+    "thumbnailWidth": 166,
+    "thumbnailHeight": 303,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D875064278698461%26get_thumbnail%3D1&tbnid=dhko82vF1oHirM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=704&h=1280",
+    "position": 4
+   },
+   {
+    "title": "☘️☘️ Chúc mừng hành trình rực rỡ và nhiều kỉ niệm của đoàn thi đấu môn điền  kinh, đạt rất nhiều huy chương vàng, bạc, đồng. Cảm ơn các em đã lưu trú  tại khách sạn Thanh Phước 💓 | Thanh Phước Hotel | ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1589547255796272&get_thumbnail=1",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyQu3GjSpI0l-_pz7iLLOpITAHrO9wgQ-5-Dcv0naJ2Q&s",
+    "thumbnailWidth": 168,
+    "thumbnailHeight": 300,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1589547255796272%26get_thumbnail%3D1&tbnid=mjLJy-9ekLAtFM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=720&h=1280",
+    "position": 5
+   },
+   {
+    "title": "☘️☘️ Chúc mừng hành trình rực rỡ và nhiều kỉ niệm của đoàn thi đấu môn điền  kinh, đạt rất nhiều huy chương vàng, bạc, đồng. Cảm ơn các em đã lưu trú  tại khách sạn Thanh Phước 💓 | Thanh Phước Hotel | ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2019953875286392&get_thumbnail=1",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQh-mk720oBrQNGX-WIbfUqnEPycgI50z9KYcH70dPHcw&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2019953875286392%26get_thumbnail%3D1&tbnid=AfKxzG5TITj-VM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=720&h=1280",
+    "position": 6
+   },
+   {
+    "title": "📍 KHÁCH SẠN THANH PHƯỚC TÂY NINH– NGHỈ NGƠI THOẢI MÁI, GIÁ CẢ BÌNH DÂN",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122130474968937276",
+    "imageWidth": 1536,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVatitz7qMh29VHSWSBXlyhxeP-mKoe4qqYlLNinCDGg&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/groups/tayninhlaca/posts/1521023735747635/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122130474968937276&tbnid=a0rPuG8QfD-23M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fgroups%2Ftayninhlaca%2Fposts%2F1521023735747635%2F&docid=DVa70xKi9tpT_M&w=1536&h=2048",
+    "position": 7
+   },
+   {
+    "title": "☘️☘️ Chúc mừng hành trình rực rỡ và nhiều kỉ niệm của đoàn thi đấu môn điền  kinh, đạt rất nhiều huy chương vàng, bạc, đồng. Cảm ơn các em đã lưu trú  tại khách sạn Thanh Phước 💓 | Thanh Phước Hotel | ...",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=2090948615033211&get_thumbnail=1",
+    "imageWidth": 720,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5HmEgQVqT2IPMV4UNacBnHtiSPao6rJYKHCFid-tWww&s=10",
+    "thumbnailWidth": 335,
+    "thumbnailHeight": 597,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/Thanh-Ph%C6%B0%E1%BB%9Bc-Hotel-61578118290935/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D2090948615033211%26get_thumbnail%3D1&tbnid=t1hUijkSp8p8CM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FThanh-Ph%25C6%25B0%25E1%25BB%259Bc-Hotel-61578118290935%2F&docid=JxGREYXYTTp_4M&w=720&h=1280",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,114 @@
+09-27 14:06:11.822  4501  4501 W ppyai.app.debug: Unexpected CPU variant for x86: x86_64.
+09-27 14:06:11.822  4501  4501 W ppyai.app.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, default
+09-27 14:06:11.992  4501  4501 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:06:11.992  4501  4501 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:06:13.510  4501  4563 W ppyai.app.debug: ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[])
+09-27 14:06:13.552  4501  4563 W System  : ClassLoader referenced unknown path: 
+09-27 14:06:13.597  4501  4563 W ppyai.app.debug: ClassLoaderContext classpath element checksum mismatch. expected=3022087169, found=3755590521 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.apk*3755590521])
+09-27 14:06:14.247  4501  4600 W ppyai.app.debug: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (unsupported, reflection, allowed)
+09-27 14:06:14.389  4501  4596 E ppyai.app.debug: No package ID 6b found for resource ID 0x6b0b0013.
+09-27 14:06:14.681  4501  4501 W System.err: SLF4J(W): No SLF4J providers were found.
+09-27 14:06:14.681  4501  4501 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+09-27 14:06:14.681  4501  4501 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+09-27 14:06:15.720  4501  4501 W ppyai.app.debug: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+09-27 14:06:15.758  4501  4501 W HWUI    : Unknown dataspace 0
+09-27 14:06:17.330  4501  4583 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:06:22.125  4501  4507 W ppyai.app.debug: Cleared Reference was only reachable from finalizer (only reported once)
+09-27 14:06:22.212  4501  4651 W AuthRepository: refreshSession failed: No refresh token found in current session
+09-27 14:06:22.223  4501  4614 E NotificationSubscription: FCM token registration failed: HTTP 401 Unauthorized
+09-27 14:06:27.633  4501  4759 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:06:39.194  4501  4501 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:06:39.194  4501  4501 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:06:50.224  4501  4501 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:06:50.224  4501  4501 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:08:31.127  5447  5447 W ppyai.app.debug: Unexpected CPU variant for x86: x86_64.
+09-27 14:08:31.127  5447  5447 W ppyai.app.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, default
+09-27 14:08:31.423  5447  5447 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:08:31.423  5447  5447 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:08:32.456  5447  5470 W ppyai.app.debug: ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[])
+09-27 14:08:32.498  5447  5470 W System  : ClassLoader referenced unknown path: 
+09-27 14:08:32.519  5447  5470 W ppyai.app.debug: ClassLoaderContext classpath element checksum mismatch. expected=3022087169, found=3755590521 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.apk*3755590521])
+09-27 14:08:32.620  5447  5486 W ppyai.app.debug: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (unsupported, reflection, allowed)
+09-27 14:08:32.636  5447  5485 E ppyai.app.debug: No package ID 6b found for resource ID 0x6b0b0013.
+09-27 14:08:33.015  5447  5447 W System.err: SLF4J(W): No SLF4J providers were found.
+09-27 14:08:33.015  5447  5447 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+09-27 14:08:33.015  5447  5447 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+09-27 14:08:33.469  5447  5447 W ppyai.app.debug: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+09-27 14:08:33.485  5447  5447 W HWUI    : Unknown dataspace 0
+09-27 14:08:34.341  5447  5481 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:08:38.947  5447  5447 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:08:38.947  5447  5447 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:08:40.261  5447  5557 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:08:40.335  5447  5489 E NotificationSubscription: FCM token registration failed: HTTP 400 Bad Request
+09-27 14:08:40.467  5447  5454 W ppyai.app.debug: Cleared Reference was only reachable from finalizer (only reported once)
+09-27 14:08:58.371  5447  5447 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:08:58.371  5447  5447 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:09:21.545  5447  5447 W RemoteInputConnectionImpl: requestCursorUpdates on inactive InputConnection
+09-27 14:09:22.685  5447  5447 W InteractionJankMonitor: Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.tappyai.app.debug
+09-27 14:09:55.829  5447  5456 W ppyai.app.debug: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~HxzwEMoJud1TIkbHzNAZeQ==/com.google.android.tts-bmk0K2kWGaxe4-vfsVRVVg==/base.apk' with 1 weak references
+09-27 14:09:55.830  5447  5456 W ppyai.app.debug: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~HxzwEMoJud1TIkbHzNAZeQ==/com.google.android.tts-bmk0K2kWGaxe4-vfsVRVVg==/split_config.en.apk' with 1 weak references
+09-27 14:09:55.830  5447  5456 W ppyai.app.debug: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~HxzwEMoJud1TIkbHzNAZeQ==/com.google.android.tts-bmk0K2kWGaxe4-vfsVRVVg==/split_config.x86_64.apk' with 1 weak references
+09-27 14:09:55.830  5447  5456 W ppyai.app.debug: ApkAssets: Deleting an ApkAssets object '<empty> and /data/app/~~HxzwEMoJud1TIkbHzNAZeQ==/com.google.android.tts-bmk0K2kWGaxe4-vfsVRVVg==/split_config.xxhdpi.apk' with 1 weak references
+09-27 14:12:02.708  5447  5557 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:12:02.723  5447  5491 E GraphicBufferAllocator: Failed to allocate (1 x 1) layerCount 1 format 56 usage 100: 7
+09-27 14:12:02.723  5447  5491 E AHardwareBuffer: GraphicBuffer(w=1, h=1, lc=1) failed (Unknown error -7), handle=0x0
+09-27 14:16:48.890  5447  5557 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:20:07.947  5447  5557 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:20:41.828  5447  5447 W InsetsController: collectSourceControls can't continue for type: ime, fromIme: true requires a control with a leash but we have control: null
+09-27 14:27:26.953  5447  5447 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:27:26.953  5447  5447 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:28:00.084  5447  5447 W RemoteInputConnectionImpl: requestCursorUpdates on inactive InputConnection
+09-27 14:29:12.440  5447  5447 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@a6072b
+09-27 14:29:12.463  5447  5447 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:29:12.463  5447  5447 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:29:51.250  5447  5447 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@b1cedb
+09-27 14:30:06.489  5447  5447 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:30:06.489  5447  5447 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:30:27.600 11177 11177 W ppyai.app.debug: Unexpected CPU variant for x86: x86_64.
+09-27 14:30:27.600 11177 11177 W ppyai.app.debug: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, goldmont-without-sha-xsaves, tremont, kabylake, default
+09-27 14:30:27.829 11177 11177 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:30:27.829 11177 11177 W ziparchive: Unable to open '/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.dm': No such file or directory
+09-27 14:30:29.184 11177 11201 W ppyai.app.debug: ClassLoaderContext classpath size mismatch. expected=1, found=0 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[])
+09-27 14:30:29.227 11177 11201 W System  : ClassLoader referenced unknown path: 
+09-27 14:30:29.259 11177 11201 W ppyai.app.debug: ClassLoaderContext classpath element checksum mismatch. expected=3022087169, found=3755590521 (DLC[];PCL[base.apk*3022087169]{PCL[/system/framework/org.apache.http.legacy.jar*437079508]#PCL[/system/framework/com.android.location.provider.jar*3414091812]#PCL[/system/framework/com.android.media.remotedisplay.jar*2042759013]#PCL[/system_ext/framework/androidx.window.extensions.jar*1060046784]#PCL[/system_ext/framework/androidx.window.sidecar.jar*2147524027]} | DLC[];PCL[/data/app/~~VvGSGhEAtCKVm5AYD7f8YA==/com.tappyai.app.debug-UMkdRG7w9HBgYLt_LnCcZQ==/base.apk*3755590521])
+09-27 14:30:29.360 11177 11220 W ppyai.app.debug: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (unsupported, reflection, allowed)
+09-27 14:30:29.383 11177 11219 E ppyai.app.debug: No package ID 6b found for resource ID 0x6b0b0013.
+09-27 14:30:29.871 11177 11177 W System.err: SLF4J(W): No SLF4J providers were found.
+09-27 14:30:29.871 11177 11177 W System.err: SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+09-27 14:30:29.871 11177 11177 W System.err: SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+09-27 14:30:30.427 11177 11177 W ppyai.app.debug: Accessing hidden method Landroid/view/ViewGroup;->makeOptionalFitsSystemWindows()V (unsupported, reflection, allowed)
+09-27 14:30:30.445 11177 11177 W HWUI    : Unknown dataspace 0
+09-27 14:30:31.540 11177 11214 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:30:36.460 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:30:36.460 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:30:37.686 11177 11183 W ppyai.app.debug: Cleared Reference was only reachable from finalizer (only reported once)
+09-27 14:30:39.262 11177 11227 E NotificationSubscription: FCM token registration failed: HTTP 400 Bad Request
+09-27 14:30:39.446 11177 11289 W HWUI    : Failed to initialize 101010-2 format, error = EGL_SUCCESS
+09-27 14:30:50.818 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:30:50.818 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:31:39.847 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:31:39.847 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:31:39.860 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:31:39.860 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:31:46.511 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@b6c4738
+09-27 14:31:48.630 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:31:48.630 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:31:48.640 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:31:48.640 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:31:58.466 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@62a7ccb
+09-27 14:31:58.542 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@a945c31
+09-27 14:31:58.697 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:31:58.697 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:32:30.310 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:32:30.310 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:32:38.797 11177 11177 W RemoteInputConnectionImpl: requestCursorUpdates on inactive InputConnection
+09-27 14:32:39.182 11177 11672 W InteractionJankMonitor: Initializing without READ_DEVICE_CONFIG permission. enabled=false, interval=1, missedFrameThreshold=3, frameTimeThreshold=64, package=com.tappyai.app.debug
+09-27 14:32:51.066 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:32:51.066 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:32:52.134 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@921e96a
+09-27 14:33:01.553 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@239e7ba
+09-27 14:33:01.566 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:33:01.566 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+09-27 14:33:32.917 11177 11177 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda11@176652e
+09-27 14:33:40.769 11177 11177 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+09-27 14:33:40.769 11177 11177 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.

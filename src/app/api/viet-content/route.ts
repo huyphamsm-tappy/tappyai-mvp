@@ -1,7 +1,11 @@
 import { AI } from '@/lib/ai/llm'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicDailyRateLimit, publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
+
+/** Generations per client IP per VN day — the same ceiling as /api/translate. */
+const VIET_CONTENT_DAILY_LIMIT = 30
 
 const PLATFORM_GUIDE: Record<string, string> = {
   facebook: 'Facebook (phong cách thân thiện, có thể dùng emoji, phù hợp mọi lứa tuổi)',
@@ -26,11 +30,23 @@ const LENGTH_GUIDE: Record<string, string> = {
 export async function POST(req: Request) {
   // Cost-abuse guard: this is an unauthenticated LLM endpoint. Cap bursts per IP
   // before doing any Claude work (protects Anthropic billing from floods).
-  const rl = rateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
+  //
+  // P1-5: the cap is now SHARED across instances where a store is configured (production is). It
+  // counted per lambda before, so the real ceiling was N × 10/min with N chosen by the platform.
+  const rl = await publicRateLimit(`viet-content:${clientIp(req)}`, 10, 60_000)
   if (!rl.ok) {
     return Response.json(
       { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
       { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    )
+  }
+  // Security audit 2026-09-30: the burst cap alone still admitted 10/min × 1,440 min = 14,400
+  // 'smart'-model generations per IP per day, with no account. /api/translate and /api/scan have
+  // carried a daily ceiling since P1-5; this is the same one.
+  if (!(await publicDailyRateLimit(`viet-content:day:${clientIp(req)}`, VIET_CONTENT_DAILY_LIMIT)).ok) {
+    return Response.json(
+      { error: 'rate_limit', message: serverMessage('rate.retryTomorrow', requestLocale(req)) },
+      { status: 429 },
     )
   }
 

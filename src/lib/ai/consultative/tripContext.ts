@@ -1,4 +1,5 @@
 import { normalizeVN, detectPlanningIntent } from '../intent'
+import { maskStreetNames } from '../streetNames'
 
 // ── The trip context, and the transport-mode stage (owner product decision) ──
 //
@@ -135,7 +136,7 @@ export function resolveTripContext(
   let sawNonTrip = false
 
   for (const raw of userTurns) {
-    const t = normalizeVN(String(raw ?? '').toLowerCase())
+    const t = maskStreetNames(normalizeVN(String(raw ?? '').toLowerCase()))
     if (!t) continue
 
     if (detectPlanningIntent(raw as string) === 'trip') out.isTrip = true

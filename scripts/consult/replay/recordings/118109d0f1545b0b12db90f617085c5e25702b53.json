@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG iPhone 17 pro max monarch magsafe màu đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:53:48.567Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG iPhone 17 pro max monarch magsafe màu đen (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Civilian With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-civilian-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích MagSafe. Các điểm neo dây đeo tích hợp. Bảo vệ chống va đập Hypercush Bảo vệ khi rơi từ độ cao 6m",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Chống rơi từ độ cao 5.5m. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-monarch-pro-kevlar.html",
+    "snippet": "Ốp lưng iPhone 17 Pro UAG Monarch Pro tự hào đạt chuẩn quân sự 5X MIL-STD 810G-516.6, bảo vệ thiết bị an toàn khi rơi khỏi độ cao từ 7,6 mét (25 ft). Sản phẩm ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 18 Pro Max/17 Pro Max Uag Monarch Pro ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-with-magsafe-forged.html",
+    "snippet": "Dùng được cho. iPhone 18 Pro Max/17 Pro Max ; Tính năng. Chất liệu Forged Carbon Fiber độc bản, nhẹ bằng 1/3 titan. Cấu trúc 5 lớp bảo vệ kết hợp da PU thuần ...",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng chống sốc UAG Monarch cho iPhone 12 Pro Max",
+    "link": "https://cellphones.com.vn/op-lung-chong-soc-uag-monarch-cho-iphone-12-pro-max.html",
+    "snippet": "Ốp lưng chống sốc cho iPhone 12 Pro Max UAG Monarch được hãng thiết kế rất nhỏ gọn không chiếm nhiều diện tích khi bạn cho vào túi. Giúp người dùng có thể mang ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-carbon-fiber.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Monarch Pro Carbon Fiber sở hữu cấu trúc 5 lớp bảo vệ đa tầng, đạt chuẩn quân đội MIL-SPEC 810G, chống rơi lên đến 7,6 mét. Sản ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng iPhone 16 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-16-pro-max-uag-monarch-pro-titanium.html",
+    "snippet": "Chống sốc hiệu quả, giảm xước tối ưu. Ốp lưng iPhone 16 Pro Max UAG Monarch Pro Titanium sở hữu cấu trúc 5 lớp kết hợp vật liệu cao cấp, tạo nên lớp bảo vệ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,11 @@
+PRE-FLIGHT CHECK 2: target zdaprdfgpbpnxyofagmc = AUDIT (non-prod). Applying 20260911b_user_memory_auth_fk.sql in one transaction.
+BEFORE: user_memory.user_id text; FKs on user_memory/decision_evidence/anon_chat_usage: none; policy "Users can manage own memory" ALL; rows user_memory=4 decision_evidence=26 anon_chat_usage=0
+  NOTICE: user_memory FK migration: preflight OK (user_id is text).
+  NOTICE: user_memory FK migration: pre-existing policy Users can manage own memory (cmd=ALL, roles={public}) USING ((auth.uid())::text = user_id) WITH CHECK <none>
+  NOTICE: user_memory FK migration: cleanup removed 0 of 4 row(s) — every row already references a live auth user.
+  NOTICE: user_memory FK migration: user_id converted text -> uuid.
+  NOTICE: policy "Users can manage own memory" for relation "public.user_memory" does not exist, skipping
+  NOTICE: user_memory FK migration: user_memory_user_id_fkey added (ON DELETE CASCADE).
+  NOTICE: user_memory FK migration: all post-conditions hold.
+APPLIED
+AFTER : user_memory.user_id uuid; user_memory_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE valid=true; policy "Users can manage own memory" ALL; rows user_memory=4 (unchanged)

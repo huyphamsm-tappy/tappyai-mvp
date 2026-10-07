@@ -112,8 +112,11 @@ describe('TikTok does not disturb the rest of the link contract', () => {
 
   it('leaves a YouTube link the model wrote completely alone', async () => {
     const yt = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    // 2026-09-25 (P3-F4 restored): the model may publish a URL only by COPYING one this turn
+    // handed it, so the link rides in on the tool result (as a review video would). An INVENTED
+    // YouTube URL is now reduced to its label — linkEgressBoundary.test.ts owns that case.
     const out = await through([
-      call('banh mi'), result(PLACE()), say(`**Bánh Mì HH** — [YouTube](${yt})`), 'd:{}',
+      call('banh mi'), result(PLACE({ review_video_url: yt })), say(`**Bánh Mì HH** — [YouTube](${yt})`), 'd:{}',
     ])
     expect(out).toContain(yt)
   })

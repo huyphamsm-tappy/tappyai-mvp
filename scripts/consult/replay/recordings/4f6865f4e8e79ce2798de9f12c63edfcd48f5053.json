@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:30:40.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/so1prtxv9iof4etgaseo/SpaMusesTaipei%EF%BD%9CPhi%E1%BA%BFumassage%EF%BD%9CGat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mNanjingFuxing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd1QuW0m2M1okLObGR71PzBeEz91an5OgZhKP61LEJog&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fso1prtxv9iof4etgaseo%2FSpaMusesTaipei%25EF%25BD%259CPhi%25E1%25BA%25BFumassage%25EF%25BD%259CGat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mNanjingFuxing-Klook.jpg&tbnid=Hrst-dqBLv3GPM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=1200&h=630",
+    "position": 1
+   },
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/v8jbixync3epkskxessm/SpaMusesTaipei%EF%BD%9CPhi%E1%BA%BFumassage%EF%BD%9CGat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mNanjingFuxing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRw20Bp1gZ0aqJyQ6Kr9trpnmM0G6HDrQ40MeQiaJk5Mg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fv8jbixync3epkskxessm%2FSpaMusesTaipei%25EF%25BD%259CPhi%25E1%25BA%25BFumassage%25EF%25BD%259CGat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mNanjingFuxing-Klook.jpg&tbnid=KOGqEcoyJKNtYM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=1200&h=630",
+    "position": 2
+   },
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/y7raj5kiuk0dbymki2eq/SpaMusesTaipei%EF%BD%9CPhi%E1%BA%BFumassage%EF%BD%9CGat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mNanjingFuxing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjbRcadR66XIuP8aVjLlrynuAqiT0sSSnhP9Ct12c5xg&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fy7raj5kiuk0dbymki2eq%2FSpaMusesTaipei%25EF%25BD%259CPhi%25E1%25BA%25BFumassage%25EF%25BD%259CGat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mNanjingFuxing-Klook.jpg&tbnid=lG0XWs0sPNlzwM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=1200&h=630",
+    "position": 3
+   },
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/ucwm6qp1jj5iy7xlju6r/SpaMusesTaipei%EF%BD%9CPhi%E1%BA%BFumassage%EF%BD%9CGat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mNanjingFuxing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsg4SEVnfDpYO2YgTSwCMXqOnAwEXih274B6B4-2m5LA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fucwm6qp1jj5iy7xlju6r%2FSpaMusesTaipei%25EF%25BD%259CPhi%25E1%25BA%25BFumassage%25EF%25BD%259CGat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mNanjingFuxing-Klook.jpg&tbnid=w1dsECVKeEvzRM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=1200&h=630",
+    "position": 4
+   },
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/luw7toeuf9tlrfs9dwyu/SpaMusesTaipei%EF%BD%9CPhi%E1%BA%BFumassage%EF%BD%9CGat%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mNanjingFuxing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrxalAQ59hikmspPJoUc4yqVd2jzr_n2554lQmDrBuaA&s",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 163,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fluw7toeuf9tlrfs9dwyu%2FSpaMusesTaipei%25EF%25BD%259CPhi%25E1%25BA%25BFumassage%25EF%25BD%259CGat%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mNanjingFuxing-Klook.jpg&tbnid=MRQmwGSRaUEbBM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=1200&h=630",
+    "position": 5
+   },
+   {
+    "title": "Spa Muses Taipei｜Phiếu massage｜Ga tàu điện ngầm Nanjing Fuxing - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/atzw9qim7sqidyb4gkld.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReyHS2gRtN8sCEk1jLrVZ545udFTeodlgKu75ZJvj1-A&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/71437-muxi-spa-massage-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fatzw9qim7sqidyb4gkld.jpg&tbnid=ynVmsY-vzmjsAM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F71437-muxi-spa-massage-taipei%2F&docid=mdCCl71YX6X4uM&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Mát-xa tại Trung tâm Sức khỏe Tái Xuân - Ga Tàu điện ngầm Songjiang Nanjing  - Klook",
+    "imageUrl": "https://res.klook.com/images/w_1200,h_630,c_fill,q_65/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/dpcysorvpj7jtvidhxvw/M%C3%A1t-xat%E1%BA%A1iTrungt%C3%A2mS%E1%BB%A9ckh%E1%BB%8FeT%C3%A1iXu%C3%A2n-GaT%C3%A0u%C4%91i%E1%BB%87nng%E1%BA%A7mSongjiangNanjing-Klook.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmWXE5EVYbGFRukxp_OvIejiY98KV4e9CU7vcmHpvemw&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/25525-tsay-chuen-kuan-massage-treatment-taipei/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Fw_1200%2Ch_630%2Cc_fill%2Cq_65%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fdpcysorvpj7jtvidhxvw%2FM%25C3%25A1t-xat%25E1%25BA%25A1iTrungt%25C3%25A2mS%25E1%25BB%25A9ckh%25E1%25BB%258FeT%25C3%25A1iXu%25C3%25A2n-GaT%25C3%25A0u%25C4%2591i%25E1%25BB%2587nng%25E1%25BA%25A7mSongjiangNanjing-Klook.jpg&tbnid=NwDzJ2PGHL66XM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F25525-tsay-chuen-kuan-massage-treatment-taipei%2F&docid=pS_gIHOIaONfZM&w=1200&h=630",
+    "position": 7
+   },
+   {
+    "title": "Massage tại LOHAS Foot Spa Đài Bắc - Gần ga Nam Kinh Phục Hưng - KKday",
+    "imageUrl": "https://image.kkday.com/v2/image/get/c_fill%2Cq_55%2Ct_webp%2Cw_960/s1.kkday.com/product_130566/20221109003129_jmfcZ/png",
+    "imageWidth": 959,
+    "imageHeight": 565,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYbpORzP4l0P9BXCXloBNLWk67eFoI_7uHKW7q8TXTDA&s",
+    "thumbnailWidth": 293,
+    "thumbnailHeight": 172,
+    "source": "KKday",
+    "domain": "www.kkday.com",
+    "link": "https://www.kkday.com/vi/product/130566?srsltid=AU7gw4VwDFQ7NThEltvUN58wlVnPM91YnirI4nLr81-QyaSriKpmcjR-",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.kkday.com%2Fv2%2Fimage%2Fget%2Fc_fill%252Cq_55%252Ct_webp%252Cw_960%2Fs1.kkday.com%2Fproduct_130566%2F20221109003129_jmfcZ%2Fpng&tbnid=8t7iNB2SiEeEPM&imgrefurl=https%3A%2F%2Fwww.kkday.com%2Fvi%2Fproduct%2F130566%3Fsrsltid%3DAU7gw4VwDFQ7NThEltvUN58wlVnPM91YnirI4nLr81-QyaSriKpmcjR-&docid=7417Dti4pfPoyM&w=959&h=565",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

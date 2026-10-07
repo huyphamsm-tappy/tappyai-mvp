@@ -1,0 +1,606 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán bánh đồ chiên quan 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:52:21.384Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bánh đồ chiên quan 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "CHUỐI CHIÊN ÚT TÂM QUẬN 7",
+    "address": "41 Đ. Võ Thị Nhờ, Tân Thuận, Hồ Chí Minh 72910, Việt Nam",
+    "latitude": 10.745046199999999,
+    "longitude": 106.73143789999999,
+    "rating": 5,
+    "ratingCount": 26,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "phoneNumber": "+84 836 278 373",
+    "openingHours": {
+     "Thứ Ba": "08:00–18:00",
+     "Thứ Tư": "08:00–18:00",
+     "Thứ Năm": "08:00–18:00",
+     "Thứ Sáu": "08:00–18:00",
+     "Thứ Bảy": "08:00–18:00",
+     "Chủ Nhật": "08:00–18:00",
+     "Thứ Hai": "08:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNYnCkSFo_nfVOkBbrOKL5LSMm2tMq8F4p30JkyNLkzgFBrcZMhwCfUQ3P8npRl3HkVh9MVrGUUv9yMVJZvdXH0zY_ww_GR047fhq8omx6KTCRFVDlcPkj75DlbyC3z68ei0yeaJA",
+    "cid": "17867091522155398635",
+    "fid": "0x317525a3a3b25d7f:0xf7f4a913537745eb",
+    "placeId": "ChIJf12yo6MldTER60V3UxOp9Pc"
+   },
+   {
+    "position": 2,
+    "title": "Hanoi Ngon - 34 Lê Văn Lương, Q7 | Ăn vặt chuẩn Hà Nội Ngon, Nem chua rán, Bánh giò, Bánh gà sốt phô mai, Chân gà, Trà chanh",
+    "address": "139 Lê Văn Lương, Quận 7, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7488951,
+    "longitude": 106.7049613,
+    "rating": 4.9,
+    "ratingCount": 289,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhẹ",
+    "types": [
+     "Quán ăn nhẹ"
+    ],
+    "website": "https://hanoingon.com/",
+    "phoneNumber": "+84 773 800 807",
+    "openingHours": {
+     "Thứ Ba": "11:00–22:00",
+     "Thứ Tư": "11:00–22:00",
+     "Thứ Năm": "11:00–22:00",
+     "Thứ Sáu": "11:00–22:00",
+     "Thứ Bảy": "11:00–22:00",
+     "Chủ Nhật": "11:00–22:00",
+     "Thứ Hai": "11:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNqRp-61d0vdaJn1tXGjevVuyj782tqehS-f-wSgLyo45NaTscGd2HZ5B-VyGug5xiO2bl0imG3JBWLMejeVS1q38dgTiD2V0A6Yra0-I6l0PYaoc23-Ff964G3JTfdR-0kpWpc3269-Ew",
+    "cid": "14822477094278668086",
+    "fid": "0x31752ff48b1cba85:0xcdb4046267d81f36",
+    "placeId": "ChIJhboci_QvdTERNh_YZ2IEtM0"
+   },
+   {
+    "position": 3,
+    "title": "PINE'S - Tiệm Pizza Trong Rừng Quận 7",
+    "address": "56 Nguyễn Cao, Khu đô thị Phú Mỹ Hưng, Quận 7, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.722448499999999,
+    "longitude": 106.71221129999999,
+    "rating": 4.9,
+    "ratingCount": 405,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng pizza",
+    "types": [
+     "Nhà hàng pizza"
+    ],
+    "phoneNumber": "+84 819 492 929",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00",
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN3LoZ7HI1lMnSFE_N38zykXtoFMoZjWYa-R-MUd-PfCKyA0QbIQeknZj5n8Vi6CfT7ynnlgpHjFYHZd6yMwPryrbMtiu1WGfsjZbO5_H11NbCfHG84-DnHqy30GmW0WRkN2Qo3pNylxCc",
+    "cid": "10566206727643960878",
+    "fid": "0x31752fd7ae96c56b:0x92a2b509608f962e",
+    "placeId": "ChIJa8WWrtcvdTERLpaPYAm1opI"
+   },
+   {
+    "position": 4,
+    "title": "Bếp nhà Nụ - Chân Gà & Xôi Chiên",
+    "address": "Đ. 14A/29NH Tân Thuận Tây, Quận 7, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.750996599999999,
+    "longitude": 106.718266,
+    "rating": 5,
+    "ratingCount": 20,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhẹ",
+    "types": [
+     "Quán ăn nhẹ"
+    ],
+    "website": "https://www.facebook.com/share/1AB4MJApi7/?mibextid=wwXIfr",
+    "phoneNumber": "+84 906 296 941",
+    "openingHours": {
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30",
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "18:00–21:30",
+     "Thứ Hai": "09:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfkKotCwl1k2DKkFnBhjKEFc1-rZ0yOrncFmu32alR9AHveoR8piOa5ASx2BG2UFGZQzsR11GG_pkVmbk8AHvSkxt-UCU8vT4f0zoUlg7sKguSNTQ1vHIwQ_B2zDxsdIj9Kn32JiWHI38Cl",
+    "cid": "10971905842571366129",
+    "fid": "0x31752fb2278c3a0f:0x98440a3b6f7fcef1",
+    "placeId": "ChIJDzqMJ7IvdTER8c5_bzsKRJg"
+   },
+   {
+    "position": 5,
+    "title": "Bánh xèo Hẹn Hò Miền Tây",
+    "address": "34L Đường số 7L, khu phố 5, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7497274,
+    "longitude": 106.71691399999999,
+    "rating": 4.6,
+    "ratingCount": 306,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 907 463 355",
+    "openingHours": {
+     "Thứ Ba": "16:00–21:00",
+     "Thứ Tư": "16:00–21:00",
+     "Thứ Năm": "16:00–21:00",
+     "Thứ Sáu": "16:00–21:00",
+     "Thứ Bảy": "16:00–21:00",
+     "Chủ Nhật": "16:00–21:00",
+     "Thứ Hai": "16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdrgLp_MMhklTdVuP8mmr9gY8_bHGyiZUf7dM6TE6z1BHNTbHR1nxvA6DTCGusibgs7gqdT_XMDrDRAymYoIMOnuUhW8C9pxT7CE1CcbbpwxY5v1KnBNcgBaTWjTXPoWPPT-p80",
+    "cid": "18278372291184388987",
+    "fid": "0x31752f79410eeab9:0xfda9d2c180636b7b",
+    "placeId": "ChIJueoOQXkvdTERe2tjgMHSqf0"
+   },
+   {
+    "position": 6,
+    "title": "Bánh Xèo Dì Tuyết",
+    "address": "Mỹ Viên, Tân Phú, Khu đô thị Phú Mỹ Hưng, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7175619,
+    "longitude": 106.73000359999999,
+    "rating": 4.4,
+    "ratingCount": 294,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 906 626 872",
+    "openingHours": {
+     "Thứ Ba": "07:00–20:30",
+     "Thứ Tư": "07:00–20:30",
+     "Thứ Năm": "07:00–20:30",
+     "Thứ Sáu": "07:00–20:30",
+     "Thứ Bảy": "07:00–20:30",
+     "Chủ Nhật": "07:00–20:30",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcJosXncSc9RSfXnoDkKkLiMmmNUnXMt9Wr_N7QyyNFbIYzP5t6nW849fo3H5aiPFWoqu2pFGP0lFqMRk0hBr9HPPs7Tam1AHmcmGUy0-aSFLwOiBSC9p7ZIpSzazntTK3UzfQ",
+    "cid": "15538999851398883265",
+    "fid": "0x3175255c1a776a8d:0xd7a59e09237a67c1",
+    "placeId": "ChIJjWp3GlwldTERwWd6Iwmepdc"
+   },
+   {
+    "position": 7,
+    "title": "Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7",
+    "address": "460/4/10 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7364395,
+    "longitude": 106.7019765,
+    "rating": 4.7,
+    "ratingCount": 111,
+    "priceLevel": "100-500 N ₫",
+    "type": "Cửa hàng bánh",
+    "types": [
+     "Cửa hàng bánh",
+     "Tiệm bánh"
+    ],
+    "website": "https://tiembanhdolcevita.com/",
+    "phoneNumber": "+84 903 789 390",
+    "openingHours": {
+     "Thứ Ba": "07:30–20:30",
+     "Thứ Tư": "07:30–20:30",
+     "Thứ Năm": "07:30–20:30",
+     "Thứ Sáu": "07:30–20:30",
+     "Thứ Bảy": "07:30–20:30",
+     "Chủ Nhật": "07:30–20:30",
+     "Thứ Hai": "07:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdsHu2AVVJdVhQ1Zx5Teu8GfrsCLugHw5mpc5cnHc98ISX0x6s8nKQGFC4vb-BrxzpuQYmAlTW9AviT0t6sPvSpi8Bs3eD-FXIKjcsa2m91-M3REEZiJqZwqKIAwqiooNMVePTZ0g",
+    "cid": "8208209024027685629",
+    "fid": "0x317528b1311212df:0x71e96a9e4f5372fd",
+    "placeId": "ChIJ3xISMbEodTER_XJTT55q6XE"
+   },
+   {
+    "position": 8,
+    "title": "BÁNH XÈO CÔ ÚT MIỀN TÂY QUẬN 7",
+    "address": "76 đường 11, Tân Hưng, Hồ Chí Minh 756841, Việt Nam",
+    "latitude": 10.7464949,
+    "longitude": 106.7076987,
+    "rating": 4.7,
+    "ratingCount": 93,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 908 390 008",
+    "openingHours": {
+     "Thứ Ba": "Đóng cửa",
+     "Thứ Tư": "11:00–19:30",
+     "Thứ Năm": "11:00–19:30",
+     "Thứ Sáu": "11:00–19:30",
+     "Thứ Bảy": "11:00–20:00",
+     "Chủ Nhật": "11:00–20:00",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcRGoCxmagbTKYea63TD2dKUMk1jNHr6rGtiBekjZr71JxhWBaMHH7nZLjlsa_xGhyxnK4wEormwvf8_vKacEzX9iZ5s8iexE1mCJZuWn98Ct9hCd9gHguojoeFvhF-tf4uh0fa",
+    "cid": "5181096487676914303",
+    "fid": "0x31752f49cf67f6ab:0x47e6f3ce0f01aa7f",
+    "placeId": "ChIJq_Znz0kvdTERf6oBD87z5kc"
+   },
+   {
+    "position": 9,
+    "title": "K-JEJU CHICKEN -CN PHÚ MỸ HƯNG QUẬN 7",
+    "address": "34 Đ. số 6, Hưng vượng 2, Tân Hưng, Hồ Chí Minh 000007, Việt Nam",
+    "latitude": 10.7302985,
+    "longitude": 106.7088759,
+    "rating": 4.9,
+    "ratingCount": 3652,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://kjejuchicken.com/",
+    "phoneNumber": "+84 896 615 574",
+    "openingHours": {
+     "Thứ Hai": "10:00–03:00",
+     "Thứ Ba": "10:00–03:00",
+     "Thứ Tư": "10:00–03:00",
+     "Thứ Năm": "10:00–03:00",
+     "Thứ Sáu": "10:00–03:00",
+     "Thứ Bảy": "10:00–03:00",
+     "Chủ Nhật": "10:00–03:00"
+    },
+    "bookingLinks": [
+     "http://kjejuchicken.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLesYgYS5_8DL9dOiTGvgzs6Br7c7FbSwZiCDyJZhIgewMebUSbQSDgkb9w-ZbiNnOxyjPZ55r2_2qKSn7trXD7Gn8wtngK42h5ZGp_C5bb9JXYvuJOMG1OSWKkm9DquikMV0Ru6",
+    "cid": "8796482834109451716",
+    "fid": "0x31752f15b1dfd6c1:0x7a13628827ea4dc4",
+    "placeId": "ChIJwdbfsRUvdTERxE3qJ4hiE3o"
+   },
+   {
+    "position": 10,
+    "title": "Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7",
+    "address": "878 Huỳnh Tấn Phát, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.728334199999999,
+    "longitude": 106.73271369999999,
+    "rating": 4.2,
+    "ratingCount": 162,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://www.facebook.com/Banhkembanhinhnhat/?ref=pages_you_manage",
+    "phoneNumber": "+84 908 367 930",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdKoQCNBJvrf9RpjgjOeucg79Oua6zUmC1ZdIZ4mNoyQhL3IhKVryWDDRflcBdiVCQGf0QWfYX26GwAbv6QZIJs-gmATGCHgylWxtHzi1kq_exwb5oFUA5AYrLsIELojw3EsGj-",
+    "cid": "227466770189823929",
+    "fid": "0x31752509b0abf91b:0x3281fd2835eafb9",
+    "placeId": "ChIJG_mrsAkldTERua9eg9IfKAM"
+   },
+   {
+    "position": 11,
+    "title": "Quán Hưng - Xôi xéo Hà Nội",
+    "address": "159a Đường số 79, Ward, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.740633899999999,
+    "longitude": 106.70580319999999,
+    "rating": 4,
+    "ratingCount": 60,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 988 748 840",
+    "openingHours": {
+     "Thứ Ba": "06:00–21:00",
+     "Thứ Tư": "06:00–21:00",
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMWr8bmLBoFzioGpCsBMGRl2fGOVpJs5uED-SnRkmj-UUtYQ9LOQmiGvCtx1-P3B0FUk_TeWpHGEqOu0mPzdoFeIlB82Wuz9ru6skknYOoBGy2EMpmhIMVnfCfOOyiTERsDt-K-092Gt_0s",
+    "cid": "9795766996158584947",
+    "fid": "0x31752f7ef729d33f:0x87f18e2ecc871873",
+    "placeId": "ChIJP9Mp934vdTERcxiHzC6O8Yc"
+   },
+   {
+    "position": 12,
+    "title": "Phố Ăn Vặt Nguyễn Hữu Thọ",
+    "address": "Nguyễn Hữu Thọ, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.743326099999999,
+    "longitude": 106.7016226,
+    "rating": 4.2,
+    "ratingCount": 40,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng ăn nhanh",
+    "types": [
+     "Nhà hàng ăn nhanh"
+    ],
+    "phoneNumber": "+84 907 053 592",
+    "openingHours": {
+     "Thứ Hai": "16:00–02:00",
+     "Thứ Ba": "16:00–02:00",
+     "Thứ Tư": "16:00–02:00",
+     "Thứ Năm": "16:00–02:00",
+     "Thứ Sáu": "16:00–02:00",
+     "Thứ Bảy": "16:00–02:00",
+     "Chủ Nhật": "16:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOL30MbeSgHdwsjajnJR4VG6mUFdXHbV1OXlS_thL7UdhYw-TfwvNrHG0aOcrTFpjrCD1c2x-_2G6PpAx9BPhFzMsXJ11LGO3zlpQftB5uQsgam0EFwLIbxqXXJtbyoDggD6ngJ",
+    "cid": "10778980237478089170",
+    "fid": "0x31752f019478a829:0x9596a16a9fd651d2",
+    "placeId": "ChIJKah4lAEvdTER0lHWn2qhlpU"
+   },
+   {
+    "position": 13,
+    "title": "Bột chiên bánh xếp Quốc Triều",
+    "address": "19 Đường Số 14, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7362595,
+    "longitude": 106.7164677,
+    "rating": 4.8,
+    "ratingCount": 28,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 326 026 903",
+    "openingHours": {
+     "Thứ Ba": "06:00–21:00",
+     "Thứ Tư": "06:00–21:00",
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeC_26PMjd0bVgwHY0x8jwG8vADG82sgXQBqHXnlqkHwnsIVDO-O88VH6E4ycUqv7Brb2kDzI-E-Df5m0Nr-NcfcDIDRv04taN-KAQFs2wTN1erHj4ImoZwkYANzskUjL6qQAyz",
+    "cid": "18261061492814309418",
+    "fid": "0x31752f000c7374a5:0xfd6c52ad2cc2e82a",
+    "placeId": "ChIJpXRzDAAvdTERKujCLK1SbP0"
+   },
+   {
+    "position": 14,
+    "title": "Bánh Canh Chị Ba Sài Gòn",
+    "address": "150A Đường số 79, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7407369,
+    "longitude": 106.706031,
+    "rating": 4.6,
+    "ratingCount": 48,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://www.facebook.com/banhcanhchiba",
+    "phoneNumber": "+84 932 192 185",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdGLkT1PGF5-PHzFx6RwJNQYQCET3PtesrHxyk3D6MKuUplaydhMtev3YdY_foWtk6v0OrEc9OxeHHLeVP8fH2sNhck2cRcO__mp68jEBg3ioC0fDByIkNbfUPuefy-mPn1vKQ9rU44ZcCG",
+    "cid": "17358031786597889591",
+    "fid": "0x31752fdab446d169:0xf0e41df1701b3637",
+    "placeId": "ChIJadFGtNovdTERNzYbcPEd5PA"
+   },
+   {
+    "position": 15,
+    "title": "Phan Rang Quán - bánh căn, bánh xèo, nem cuốn",
+    "address": "399 Lê Văn Lương, P. Phú Thuận, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7393843,
+    "longitude": 106.70358929999999,
+    "rating": 4.2,
+    "ratingCount": 560,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/phanrangquan.dacsan?mibextid=LQQJ4d",
+    "phoneNumber": "+84 915 291 929",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/phanrangquan.dacsan/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe_SXcyFunC7YTEjJ4_J_bYI5o1sl9KHWfu99sGOBxAgdSLG3l3lwOSzN5pxNE0W__Mx55jw5Z-pSn82e0yOrtzOnzATBwIS9-nPwTn81l7Y3wsvVfOofnGzpv6n1Vz_Yv1CsLU",
+    "cid": "9182357668897377095",
+    "fid": "0x31752f9ce7de8369:0x7f6e49a64f364b47",
+    "placeId": "ChIJaYPe55wvdTERR0s2T6ZJbn8"
+   },
+   {
+    "position": 16,
+    "title": "Tràng An Quán - Nhà hàng Ẩm Thực Đồng Quê Ngon Quận 7",
+    "address": "131 Số 47, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.741821999999999,
+    "longitude": 106.7123838,
+    "rating": 4.6,
+    "ratingCount": 842,
+    "priceLevel": "200-600 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng gia đình",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://tranganquan.com/",
+    "phoneNumber": "+84 969 273 254",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOz7iA8TGUlJqWbz--sl8JuDOsoU5F6Xvt23l1xbb4F7MEx3WgVrK_E8WLMT1QT9ylTVL7j0rW2RUvmMGBgNIxQhlZRjW-uvZ1Rcl6YAWWcQ-FCZhSU1hGERgI4X0GfZJYgU1Tn",
+    "cid": "1003303381397085479",
+    "fid": "0x31752f3380b18f65:0xdec731c121f1d27",
+    "placeId": "ChIJZY-xgDMvdTERJx0fEhxz7A0"
+   },
+   {
+    "position": 17,
+    "title": "Bột chiên",
+    "address": "127 Đ. 17, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7476086,
+    "longitude": 106.71643089999999,
+    "rating": 4.4,
+    "ratingCount": 100,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 979 263 856",
+    "openingHours": {
+     "Thứ Ba": "15:00–00:00",
+     "Thứ Tư": "15:00–00:00",
+     "Thứ Năm": "15:00–00:00",
+     "Thứ Sáu": "15:00–00:00",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "15:00–00:00",
+     "Thứ Hai": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNTp0b5QUgnlgDm7s9xo5Wm27HPNN3lpnmhr8PDgBPBA1j1m5CXcBGz4artNugnAJOXTwzKbk5ijPsrLxIMw-xDj8G-Y4GlhWWx1Id5KRHx_NtJHx4S1kTgrpYzwgriGEJE_9zg",
+    "cid": "15541748428090864041",
+    "fid": "0x31752f614126dc21:0xd7af61da04d771a9",
+    "placeId": "ChIJIdwmQWEvdTERqXHXBNphr9c"
+   },
+   {
+    "position": 18,
+    "title": "Bò Lá Lốt Tân Quy",
+    "address": "24 Đường 67, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.744726499999999,
+    "longitude": 106.70547739999999,
+    "rating": 4.1,
+    "ratingCount": 961,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "website": "https://grab.onelink.me/2695613898?pid=inappsharing&c=5-C4CXENTEGZKDAE&is_retargeting=true&af_dp=grab%3A%2F%2Fopen%3FscreenType%3DGRABFOOD%26sourceID%3DA4pcqCZkS4%26merchantIDs%3D5-C4CXENTEGZKDAE&af_force_deeplink=true&af_web_dp=https%3A%2F%2Fwww.grab.com%2Fdownload",
+    "openingHours": {
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "16:00–22:00",
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMaHhzJBzP0n2MH48mHFVZMB9CRMTfIw2LO2_EceY8O3Wt9jEXaNnnJa4CxQZaikBAFdUumn8OYhMl0D0mqVUIt4609KG5xGYBcT-HILNl-kowPmgmIyd79IrvkjcNuUTlhzRf0gw",
+    "cid": "1756453390445091907",
+    "fid": "0x31752f9e04434997:0x18602d0d72029c43",
+    "placeId": "ChIJl0lDBJ4vdTERQ5wCcg0tYBg"
+   },
+   {
+    "position": 19,
+    "title": "Quán Chè Mỹ",
+    "address": "591 Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.739697999999999,
+    "longitude": 106.70402569999999,
+    "rating": 3.8,
+    "ratingCount": 279,
+    "type": "Cửa hàng bán đồ tráng miệng",
+    "types": [
+     "Cửa hàng bán đồ tráng miệng"
+    ],
+    "website": "https://www.facebook.com/chemyfun/",
+    "phoneNumber": "+84 947 223 030",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdeNR-MteJNHVh4T_kNlbTNbF5v8eWxoX82wqmlmhUYeJOc0sXX-7u0RonBdqpDRRAbImNHPHGULN2bMhNVkFOfuRqWKn_sLu-j8zjYu3jS3Djkj0zLEUo-YuF9pNTQz58tDdw1",
+    "cid": "7576602770126020049",
+    "fid": "0x31752f9934c2e089:0x69258013ad9a1dd1",
+    "placeId": "ChIJieDCNJkvdTER0R2arROAJWk"
+   },
+   {
+    "position": 20,
+    "title": "CHÈ CHANG HI QUẬN 7 - CHÈ NGON SÁNG TẠO",
+    "address": "390 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.739333499999999,
+    "longitude": 106.70333679999999,
+    "rating": 3.5,
+    "ratingCount": 141,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng món chè bánh lọt",
+    "types": [
+     "Nhà hàng món chè bánh lọt",
+     "Trà trân châu"
+    ],
+    "website": "http://order.chechanghiquan7.com/",
+    "phoneNumber": "+84 989 858 948",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLflbuykQAz7mvr80F6Ewzxr7BFPPffCbnkgCtlDwZunxgU33iPRdO6WDO4U2-dOvgZuH5bOsvr9RmpGmosUqZE9MSges8-Y_GOw5A7OxVdgwvDnNJE1WRZ0tt3TClYggJ5jWlpt",
+    "cid": "12167939596632855995",
+    "fid": "0x31752f53b2b79403:0xa8dd349839b615bb",
+    "placeId": "ChIJA5S3slMvdTERuxW2OZg03ag"
+   }
+  ],
+  "credits": 3
+ }
+}

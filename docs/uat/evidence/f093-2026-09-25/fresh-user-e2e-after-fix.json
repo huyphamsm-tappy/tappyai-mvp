@@ -1,0 +1,25 @@
+{
+ "label": "after-fix",
+ "at": "2026-09-25T05:34:15.015Z",
+ "email": "f093-probe-55a87c56@example.test",
+ "steps": {
+  "auth.users insert (trigger on_auth_user_created runs)": "ok",
+  "user_memory row": "ok",
+  "decision_evidence via decision_evidence_save (auth.uid() = the new user)": "ok",
+  "decision_evidence_save()": "ok",
+  "anon_chat_usage row": "ok",
+  "conversations row": "ok",
+  "user_preferences row": "ok",
+  "DELETE the account (auth.users)": "ok"
+ },
+ "before": {
+  "public.anon_chat_usage.user_id": 1,
+  "public.conversations.user_id": 1,
+  "public.decision_evidence.owner_id": 1,
+  "public.profiles.id": 1,
+  "public.user_memory.user_id": 1,
+  "public.user_preferences.user_id": 1
+ },
+ "after": {},
+ "rolledBack": true
+}

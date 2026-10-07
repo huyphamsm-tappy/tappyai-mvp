@@ -1,0 +1,108 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 14030,
+  "evidenceId": "4d24e980-6105-4917-9c0e-344102e248b0",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "MASSAGE HẠ SPA QUẬN 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3549,
+      "hours": "09:30–22:30",
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình cần tìm thêm thông tin chi tiết về **MASSAGE HẠ SPA QUẬN 1** để xem có hỗ trợ đặt trước không.\n\n**MASSAGE HẠ SPA QUẬN 1** có website riêng (haspamassage.vn) — bạn có thể gọi **0945 705 000** hoặc vào website để đặt trước dịch vụ massage chân.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - MASSAGE HẠ SPA\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - MASSAGE HẠ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **MASSAGE HẠ SPA QUẬN 1** — 4.9⭐ (3.549 đánh giá Google Maps); giờ mở cửa theo Google Maps: 09:30–22:30.\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này để đối chiếu với ngân sách 300k.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[FOLLOWUPS]Tìm spa rẻ hơn|Xem chi tiết Hyan Spa|Gọi để hỏi giá[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình cần tìm thêm thông tin chi tiết về **MASSAGE HẠ SPA QUẬN 1** để xem có hỗ trợ đặt trước không.\n\n**MASSAGE HẠ SPA QUẬN 1** có website riêng (haspamassage.vn) — bạn có thể gọi **0945 705 000** hoặc vào website để đặt trước dịch vụ massage chân.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - MASSAGE HẠ SPA\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - MASSAGE HẠ SPA\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

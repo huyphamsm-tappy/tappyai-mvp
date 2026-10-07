@@ -1,0 +1,25 @@
+{
+  "id": "S5",
+  "text": "quà sinh nhật cho bạn gái tầm 1tr",
+  "parent": null,
+  "status": 200,
+  "ms": 7174,
+  "evidenceId": "d214fc64-be87-4e89-83e1-ce6e381ad6f7",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm quà sinh nhật cho bạn gái với ngân sách khoảng 1 triệu đồng. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn gái thích loại quà nào nhất?** Ví dụ:\n- 💄 Mỹ phẩm, skincare, nước hoa\n- 👜 Túi xách, phụ kiện thời trang\n- 📱 Gadget, tai nghe, sạc dự phòng\n- 💍 Trang sức, nhẫn, vòng tay\n- 🎁 Đồ trang trí, nến thơm, hộp quà\n- 🍫 Quà ăn (socola, bánh, trà cao cấp)\n\nHay bạn muốn mình tìm **những sản phẩm hot** trong tầm giá đó để bạn lựa chọn?\n\n[FOLLOWUPS]mỹ phẩm cao cấp|túi xách thời trang|tai nghe wireless|trang sức bạc[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm quà sinh nhật cho bạn gái với ngân sách khoảng 1 triệu đồng. Để gợi ý đúng ý bạn, mình cần biết thêm một chút:\n\n**Bạn gái thích loại quà nào nhất?** Ví dụ:\n- 💄 Mỹ phẩm, skincare, nước hoa\n- 👜 Túi xách, phụ kiện thời trang\n- 📱 Gadget, tai nghe, sạc dự phòng\n- 💍 Trang sức, nhẫn, vòng tay\n- 🎁 Đồ trang trí, nến thơm, hộp quà\n- 🍫 Quà ăn (socola, bánh, trà cao cấp)\n\nHay bạn muốn mình tìm **những sản phẩm hot** trong tầm giá đó để bạn lựa chọn?\n\n[FOLLOWUPS]mỹ phẩm cao cấp|túi xách thời trang|tai nghe wireless|trang sức bạc[/FOLLOWUPS]"
+    }
+  ]
+}

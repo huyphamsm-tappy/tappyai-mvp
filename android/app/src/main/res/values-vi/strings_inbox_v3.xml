@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Inbox (web /profile/notifications, `v3.inbox.*` in src/lib/i18n/v3/web.ts), 2026-09-17. -->
+<resources>
+    <string name="inbox_v3_title">Hộp thư</string>
+    <string name="inbox_v3_subtitle">Thông báo và hoạt động của bạn</string>
+    <string name="inbox_v3_unread">%1$d chưa đọc</string>
+    <string name="inbox_v3_mark_all_read">Đánh dấu đã đọc</string>
+    <string name="inbox_v3_settings">Cài đặt thông báo</string>
+    <string name="inbox_v3_cat_all">Tất cả</string>
+    <string name="inbox_v3_cat_social">Xã hội</string>
+    <string name="inbox_v3_cat_deal">Ưu đãi</string>
+    <string name="inbox_v3_cat_explore">Khám phá</string>
+    <string name="inbox_v3_cat_system">Hệ thống</string>
+    <string name="inbox_v3_empty_all">Chưa có thông báo nào.</string>
+    <string name="inbox_v3_empty_filtered">Không có thông báo nào trong mục này.</string>
+    <string name="inbox_v3_count_more">+%1$d</string>
+    <string name="inbox_v3_sign_in">Đăng nhập để xem thông báo của bạn</string>
+    <string name="inbox_v3_messages">Tin nhắn</string>
+    <string name="inbox_v3_announcements">Thông báo</string>
+    <string name="msg_v3_new">Tin nhắn mới</string>
+    <string name="msg_v3_search">Tìm kiếm tin nhắn, tên hoặc nhóm...</string>
+    <string name="msg_v3_empty">Chưa có cuộc trò chuyện nào</string>
+    <string name="msg_v3_empty_hint">Kết nối với bạn bè và bắt đầu trò chuyện ngay hôm nay.</string>
+    <string name="msg_v3_no_messages">Chưa có tin nhắn nào. Hãy gửi lời chào!</string>
+    <string name="msg_v3_composer">Nhập tin nhắn...</string>
+    <string name="msg_v3_send">Gửi</string>
+    <string name="msg_v3_back">Quay lại</string>
+    <string name="msg_v3_unknown_user">Người dùng</string>
+    <string name="msg_v3_unnamed_group">Nhóm</string>
+    <string name="msg_v3_group_members">%1$d thành viên</string>
+    <string name="msg_v3_find_people">Tìm tên bạn bè...</string>
+    <string name="msg_v3_search_hint">Nhập ít nhất 2 ký tự để tìm.</string>
+    <string name="msg_v3_no_results">Không tìm thấy người dùng nào.</string>
+    <string name="msg_v3_start_chat">Bắt đầu trò chuyện</string>
+    <string name="msg_v3_start_chat_n">Bắt đầu trò chuyện (%1$d)</string>
+    <string name="msg_v3_group_name">Tên nhóm (không bắt buộc)</string>
+    <string name="msg_v3_error">Không tải được tin nhắn. Vui lòng thử lại.</string>
+    <string name="msg_v3_send_error">Không gửi được tin nhắn.</string>
+    <string name="msg_v3_close">Đóng</string>
+    <string name="msg_v3_load_older">Tin nhắn cũ hơn</string>
+</resources>

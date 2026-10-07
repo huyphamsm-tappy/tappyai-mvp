@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Parosand",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:16.430Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Parosand",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Đặt phòng KHÁCH SẠN & CĂN HỘ PAROSAND HÀ NỘI (PAROSAND HANOI HOTEL &  APARTMENT) giá rẻ",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/225373396.jpg?k=0c8cd1c0391f1045d5e5adbe68bdf981cec5f18bbe2b761b03d40b576f265d8b&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQainvLnFygC4uP1vASFKEi9mNxTg9FxGy3SyqtCFWnSQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/parosand-hanoi-hotel/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F225373396.jpg%3Fk%3D0c8cd1c0391f1045d5e5adbe68bdf981cec5f18bbe2b761b03d40b576f265d8b%26o%3D&tbnid=F96iNSj7yDNUIM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fparosand-hanoi-hotel%2Fhotel%2Fhanoi-vn.html&docid=8ilpQizIi_g9WM&w=500&h=333",
+    "position": 1
+   },
+   {
+    "title": "Nhận xét về Khách sạn & Căn hộ Parosand Hanoi, ưu đãi & hình ảnh 2026 -  Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/36000000/35590000/35583900/35583837/d9598cac.jpg?impolicy=fcrop&w=578&h=578",
+    "imageWidth": 578,
+    "imageHeight": 578,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQcGN3ba77wa7dDV5Huu9Oy-VbQYuDZFKHmq4N8wNuuug&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Hanoi-Khach-San-Parosand-Hanoi-Hotel-Apartment.h35583837.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F36000000%2F35590000%2F35583900%2F35583837%2Fd9598cac.jpg%3Fimpolicy%3Dfcrop%26w%3D578%26h%3D578&tbnid=sfKSMm-6_0myMM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FHanoi-Khach-San-Parosand-Hanoi-Hotel-Apartment.h35583837.Thong-tin-khach-san&docid=AqZuaK9sf2K9wM&w=578&h=578",
+    "position": 2
+   },
+   {
+    "title": "PAROSAND HANOI HOTEL & APARTMENTS – PAROSAND Hotel",
+    "imageUrl": "https://parosand.com/wp-content/uploads/2025/01/IMG_9005-1-1.jpg",
+    "imageWidth": 1900,
+    "imageHeight": 1267,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMQnQoWk3RRDLKPaSoK1tTfTLQu6KLg0PB5A9vIVV2oA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "parosand.com",
+    "domain": "parosand.com",
+    "link": "https://parosand.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fparosand.com%2Fwp-content%2Fuploads%2F2025%2F01%2FIMG_9005-1-1.jpg&tbnid=3ubbhiV6JAYFHM&imgrefurl=https%3A%2F%2Fparosand.com%2F&docid=VV07GwywgdjiLM&w=1900&h=1267",
+    "position": 3
+   },
+   {
+    "title": "Đặt phòng KHÁCH SẠN & CĂN HỘ PAROSAND HÀ NỘI (PAROSAND HANOI HOTEL &  APARTMENT) giá rẻ",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/6849457/-1/da735698163d138bf3f79db70a66f54d.jpg?ca=9&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStrRJUGOrclDmT0i9rm1C9QotFubYCyMCM_AD6ZKXzMA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/parosand-hanoi-hotel/hotel/hanoi-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F6849457%2F-1%2Fda735698163d138bf3f79db70a66f54d.jpg%3Fca%3D9%26ce%3D1%26s%3D414x232&tbnid=zxVv1rhEFq4PKM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fparosand-hanoi-hotel%2Fhotel%2Fhanoi-vn.html&docid=8ilpQizIi_g9WM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "PAROSAND HANOI HOTEL & APARTMENTS – PAROSAND Hotel",
+    "imageUrl": "https://parosand.com/wp-content/uploads/2025/01/CAN_1827-1-3.jpg",
+    "imageWidth": 1900,
+    "imageHeight": 1267,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ4aKJbdu7fkh3pjOl8KnfH88bGdyfSh07UvgK8tGcfGg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "parosand.com",
+    "domain": "parosand.com",
+    "link": "https://parosand.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fparosand.com%2Fwp-content%2Fuploads%2F2025%2F01%2FCAN_1827-1-3.jpg&tbnid=DSOKSMOk_826AM&imgrefurl=https%3A%2F%2Fparosand.com%2F&docid=VV07GwywgdjiLM&w=1900&h=1267",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Parosand Đà Nẵng (Parosand Danang Hotel) - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2306/28/khach-san-belle-maison-parosand-da-nang-5.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT6CPifCQVBN32Rj07LmrlbwtBBnMFDvTeVVyAhKc0Dw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.5123.khach-san-parosand-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2306%2F28%2Fkhach-san-belle-maison-parosand-da-nang-5.jpg%3Fw%3D800%26h%3D500&tbnid=PDh7qPItIMqUdM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.5123.khach-san-parosand-da-nang.html&docid=oPlp4XUUphIbHM&w=800&h=500",
+    "position": 6
+   },
+   {
+    "title": "Belle Maison Parosand Đà Nẵng: Vị trí, các loại hình lưu trú, tiện ích &  kinh nghiệm đặt phòng",
+    "imageUrl": "https://happyvivu.com/wp-content/uploads/2023/11/maison-da-nang.jpg",
+    "imageWidth": 700,
+    "imageHeight": 525,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNDm-JTPyh-gjkHtUzxj1OijcrP-VXburJnU3v-z-tYw&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/belle-maison-parosand-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhappyvivu.com%2Fwp-content%2Fuploads%2F2023%2F11%2Fmaison-da-nang.jpg&tbnid=4cQsk0JmELSehM&imgrefurl=https%3A%2F%2Fphetravel.com%2Fbelle-maison-parosand-da-nang&docid=4IiPaTOK2nGHGM&w=700&h=525",
+    "position": 7
+   },
+   {
+    "title": "Parosand Hanoi Hotel, Hà Nội (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/199408131.jpg?k=8981cb795b5ae2c73c45a165815feffb20b0c37be4d7e00d741da6a746f0f06b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqFrE4_hTxb02e6gu4I2hx1TrL-2PHHMMzAH73DgM2Kg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/parosand-hanoi.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F199408131.jpg%3Fk%3D8981cb795b5ae2c73c45a165815feffb20b0c37be4d7e00d741da6a746f0f06b%26o%3D&tbnid=nJZgW4VPOQNBgM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fparosand-hanoi.vi.html&docid=QiQXVrQQR0CnIM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,4264 @@
+{
+  "generatedAt": "2026-09-17T03:49:00.958Z",
+  "source": "PostgREST OpenAPI root (GET /rest/v1/), read-only; schema metadata only",
+  "project_ref": "fwznnobrdctuskgrvuik",
+  "postgrest_version": "14.5",
+  "exposed_schema": "standard public schema",
+  "table_count": 70,
+  "exposed_path_count": 70,
+  "rpc_count": 52,
+  "limitations": "OpenAPI exposes tables/columns/types/defaults/PK-FK notes and RPC signatures of the exposed schema only. It does NOT carry indexes, CHECK/UNIQUE constraints, triggers, RLS policies, function bodies, grants, enum members, or non-exposed schemas (auth.*).",
+  "tables": {
+    "music_saved": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "track_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `music_tracks.id`.<fk table='music_tracks' column"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "review_interactions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "watch_seconds",
+        "type": "number",
+        "format": "double precision",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "completion_rate",
+        "type": "number",
+        "format": "double precision",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "groups": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "creator_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "open"
+      },
+      {
+        "column": "suggestion",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "user_follows": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "follower_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "following_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "review_shares": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "channel",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "unknown"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "system_health_log": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "check_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "latency_ms",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "message",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "checked_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "chat_participants": [
+      {
+        "column": "thread_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/> This is a Foreign Key to `chat_threads.id`.<fk"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "joined_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "moderation_queue": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "type",
+        "type": "string",
+        "format": "public.moderation_type",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "public.moderation_status",
+        "required": true,
+        "default": "pending"
+      },
+      {
+        "column": "priority",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "1"
+      },
+      {
+        "column": "reported_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "target_type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "target_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "assigned_to",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "resolved_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "resolution",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "resolved_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      }
+    ],
+    "daily_snapshots": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "snapshot_date",
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      {
+        "column": "platform",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "all"
+      },
+      {
+        "column": "total_users",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "new_users",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "returning_users",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "dau",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "wau",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "mau",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "is_final",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "reconciled_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "organization": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "slug",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "subscriptions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "stripe_customer_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "stripe_sub_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "plan",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "free"
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "active"
+      },
+      {
+        "column": "current_period_end",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "cancel_at_period_end",
+        "type": "boolean",
+        "format": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "chat_messages": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "thread_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `chat_threads.id`.<fk table='chat_threads' column"
+      },
+      {
+        "column": "sender_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "body",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "music_followed": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "track_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `music_tracks.id`.<fk table='music_tracks' column"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "user_preferences": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "budget_level",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "cuisine_likes",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "dietary_restrictions",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "inferred_preferences",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "budget_min",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "budget_max",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "preferred_style",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "dietary_tags",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "disliked_tags",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "usual_party_size",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "preference_profile",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "profile_updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "preferences",
+        "format": "jsonb",
+        "required": false
+      }
+    ],
+    "chat_blocks": [
+      {
+        "column": "blocker_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "blocked_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "user_events": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "event_type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "place_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "event_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "schema_version",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "1"
+      },
+      {
+        "column": "anon_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "platform",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "app_version",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "build_number",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "os_name",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "os_version",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "device_type",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "country",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "language",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "session_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "client_timestamp",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "is_unknown_event",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "device_context",
+        "format": "jsonb",
+        "required": false
+      }
+    ],
+    "music_providers": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "slug",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "department": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "organization_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `organization.id`.<fk table='organization' column"
+      },
+      {
+        "column": "name_key",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "display_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "placeholder"
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "platform_owner_recovery": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "target_user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "requested_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "expires_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "column": "closed_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "outcome",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": true
+      }
+    ],
+    "message_feedback": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "conversation_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `conversations.id`.<fk table='conversations' colu"
+      },
+      {
+        "column": "message_index",
+        "type": "integer",
+        "format": "integer",
+        "required": true
+      },
+      {
+        "column": "type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "user_notes": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "author_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "note",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "is_pinned",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "review_milestones": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "milestone",
+        "type": "integer",
+        "format": "integer",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "audit_log": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "actor_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "actor_email",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "actor_role",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "action",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "target_type",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "target_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "before_state",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "after_state",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "ip_address",
+        "type": "string",
+        "format": "inet",
+        "required": false
+      },
+      {
+        "column": "user_agent",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "seq",
+        "type": "integer",
+        "format": "bigint",
+        "required": true
+      },
+      {
+        "column": "prev_hash",
+        "type": "string",
+        "format": "bytea",
+        "required": false
+      },
+      {
+        "column": "row_hash",
+        "type": "string",
+        "format": "bytea",
+        "required": true
+      }
+    ],
+    "profiles": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "username",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "full_name",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "avatar_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "onboarded",
+        "type": "boolean",
+        "format": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "column": "follower_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "following_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "language",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "user_integrations": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "provider",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "access_token",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "refresh_token",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "expires_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "scope",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "provider_user_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "connected_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "anon_chat_usage": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "day",
+        "type": "string",
+        "format": "date",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "count",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      }
+    ],
+    "auth_daily_rollup": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "snapshot_date",
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      {
+        "column": "platform",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "unknown"
+      },
+      {
+        "column": "method",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "unknown"
+      },
+      {
+        "column": "signups",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "logins_success",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "logins_failed",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "first_logins",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "returning_logins",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "unique_users",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "activation_daily_rollup": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "snapshot_date",
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      {
+        "column": "platform",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "unknown"
+      },
+      {
+        "column": "signup_source",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "organic"
+      },
+      {
+        "column": "rule_version",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "none"
+      },
+      {
+        "column": "signups_in_cohort",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "activated_count",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "activated_within_7d_count",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "avg_time_to_activation_seconds",
+        "type": "number",
+        "format": "numeric",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "place_photos": [
+      {
+        "column": "place_id",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "photo_url",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "platform_owner": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "assigned_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "assigned_by",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "revoked_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "notes",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "favorites": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "place_id",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "place_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "place_address",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "place_type",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "services": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "description",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "address",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "city",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "ho-chi-minh"
+      },
+      {
+        "column": "price_exact",
+        "type": "number",
+        "format": "numeric",
+        "required": false
+      },
+      {
+        "column": "price_unit",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "per_person"
+      },
+      {
+        "column": "rating",
+        "type": "number",
+        "format": "numeric",
+        "required": false
+      },
+      {
+        "column": "phone",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "booking_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "images",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "tags",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": false,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "bookings": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "service_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "service_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "service_type",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "food"
+      },
+      {
+        "column": "date",
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      {
+        "column": "time",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "guests",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "1"
+      },
+      {
+        "column": "customer_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "customer_phone",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "notes",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "pending"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "place_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "partner_deal_translations": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "deal_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `partner_deals.id`.<fk table='partner_deals' colu"
+      },
+      {
+        "column": "locale",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "description",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "partner_deals": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "partner_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "description",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "official_url",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "banner_image",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "logo_image",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "display_order",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "start_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "end_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "country_code",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "VN"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "partner_slug",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "partner_type",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "ecommerce"
+      },
+      {
+        "column": "affiliate_code",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "is_featured",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "click_count",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": true
+      }
+    ],
+    "admin_roles": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "role",
+        "type": "string",
+        "format": "public.admin_role",
+        "required": true
+      },
+      {
+        "column": "granted_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "granted_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "expires_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "notes",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "admin_permissions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "permission",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "granted",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "granted_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "event_outbox": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "event_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "schema_version",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "1"
+      },
+      {
+        "column": "type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "event_version",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "producer",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "actor",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "correlation_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "security_class",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "payload",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "metadata",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "occurred_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true
+      },
+      {
+        "column": "consumer_id",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "pending"
+      },
+      {
+        "column": "attempts",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "next_attempt_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "last_error",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "delivered_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      }
+    ],
+    "user_memory": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "location_base",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "preferences",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "budget",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "history",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp without time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "companions",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "timing",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "personality",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "behavior_summary",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "discovery_city",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "price_watches": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "product_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "target_price",
+        "type": "integer",
+        "format": "bigint",
+        "required": true
+      },
+      {
+        "column": "current_price",
+        "type": "integer",
+        "format": "bigint",
+        "required": false
+      },
+      {
+        "column": "search_query",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "active"
+      },
+      {
+        "column": "notified_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "last_checked",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "music_track_reports": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "track_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `music_tracks.id`.<fk table='music_tracks' column"
+      },
+      {
+        "column": "reporter_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "details",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "open"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "chat_threads": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "kind",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "direct_key",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "last_message_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "review_comments": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "body",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "parent_comment_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `review_comments.id`.<fk table='review_comments' "
+      }
+    ],
+    "marketing_consent": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "channel",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "opted_in",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true
+      },
+      {
+        "column": "opted_in_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "opted_out_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "chat_settings": [
+      {
+        "column": "id",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "reachability",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "mutual_follow"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "comment_reactions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "comment_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `review_comments.id`.<fk table='review_comments' "
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "reaction",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "marketing_campaigns": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "body",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "link",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "marketing"
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "draft"
+      },
+      {
+        "column": "audience_filter",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "created_by",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "activated_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "activated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "completed_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      }
+    ],
+    "review_likes": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "cohort_metrics": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "cohort_date",
+        "type": "string",
+        "format": "date",
+        "required": true
+      },
+      {
+        "column": "platform",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "all"
+      },
+      {
+        "column": "cohort_size",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "d1_retained",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "d7_retained",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "d30_retained",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "d1_rate",
+        "type": "number",
+        "format": "numeric",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "d7_rate",
+        "type": "number",
+        "format": "numeric",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "d30_rate",
+        "type": "number",
+        "format": "numeric",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "computed_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "account_status": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/> This is a Foreign Key to `profiles.id`.<fk tab"
+      },
+      {
+        "column": "is_suspended",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "suspended_until",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "is_banned",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "ban_reason",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "billing_customers": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "stripe_customer_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "music_categories": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "slug",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "label_i18n",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "sort_order",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "department_membership": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "organization_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `organization.id`.<fk table='organization' column"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "department_id",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `department.id`.<fk table='department' column='id"
+      },
+      {
+        "column": "org_role",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "scope",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "GLOBAL"
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "active"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "review_saves": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "review_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "music_tracks": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "artist",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "duration_sec",
+        "type": "integer",
+        "format": "integer",
+        "required": true
+      },
+      {
+        "column": "audio_url",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "preview_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "cover_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "category_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `music_categories.id`.<fk table='music_categories"
+      },
+      {
+        "column": "provider_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `music_providers.id`.<fk table='music_providers' "
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "music_type",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "royalty_free"
+      },
+      {
+        "column": "play_count",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "uploaded_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "rights_confirmed",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      }
+    ],
+    "platform_settings": [
+      {
+        "column": "key",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "value",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "scope",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "global"
+      },
+      {
+        "column": "value_schema",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "updated_by",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      }
+    ],
+    "vouchers": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "service_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `services.id`.<fk table='services' column='id'/>"
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "original_price",
+        "type": "number",
+        "format": "numeric",
+        "required": true
+      },
+      {
+        "column": "sale_price",
+        "type": "number",
+        "format": "numeric",
+        "required": true
+      },
+      {
+        "column": "discount_pct",
+        "type": "integer",
+        "format": "smallint",
+        "required": false
+      },
+      {
+        "column": "conditions",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "expires_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "quantity_total",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "quantity_sold",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "is_active",
+        "type": "boolean",
+        "format": "boolean",
+        "required": false,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "chat_reads": [
+      {
+        "column": "thread_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/> This is a Foreign Key to `chat_threads.id`.<fk"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "last_read_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "-infinity"
+      }
+    ],
+    "notification_subscriptions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "provider",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "webpush"
+      },
+      {
+        "column": "subscription_data",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "enabled",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "true"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "music_usage": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "track_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `music_tracks.id`.<fk table='music_tracks' column"
+      },
+      {
+        "column": "entity_type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "entity_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ],
+    "user_demographics": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/> This is a Foreign Key to `profiles.id`.<fk tab"
+      },
+      {
+        "column": "date_of_birth",
+        "type": "string",
+        "format": "date",
+        "required": false
+      },
+      {
+        "column": "age_declared_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "dob_corrections",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "admin_corrections",
+        "type": "integer",
+        "format": "smallint",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "gender",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "gender_self_describe",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "city",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "country",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "occupation",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "industry",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "education_level",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "notification_deliveries": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "campaign_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `marketing_campaigns.id`.<fk table='marketing_cam"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "channel",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "push"
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "marketing"
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "skip_reason",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "notification_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "user_acquisition": [
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/> This is a Foreign Key to `profiles.id`.<fk tab"
+      },
+      {
+        "column": "anon_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "signup_method",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_platform",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_app_version",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_device_type",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_country",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_language",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "acquisition_source",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "signup_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "first_login_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "last_login_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "activated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "activation_rule_version",
+        "type": "string",
+        "format": "text",
+        "required": false
+      }
+    ],
+    "decision_evidence": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "owner_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "evidence",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      },
+      {
+        "column": "expires_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true
+      }
+    ],
+    "content_reports": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "content_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `reviews.id`.<fk table='reviews' column='id'/>"
+      },
+      {
+        "column": "reporter_source_id",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "policy_id",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "verification_state",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "UNVERIFIED"
+      },
+      {
+        "column": "status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "open"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "moderation_actions": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "queue_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `moderation_queue.id`.<fk table='moderation_queue"
+      },
+      {
+        "column": "action",
+        "type": "string",
+        "format": "public.moderation_action_type",
+        "required": true
+      },
+      {
+        "column": "actor_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "target_user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "target_content_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "reason",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "duration_hours",
+        "type": "integer",
+        "format": "integer",
+        "required": false
+      },
+      {
+        "column": "notes",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "reviews": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `profiles.id`.<fk table='profiles' column='id'/>"
+      },
+      {
+        "column": "place_id",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "place_name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "place_address",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "rating",
+        "type": "integer",
+        "format": "smallint",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "body",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": ""
+      },
+      {
+        "column": "is_hidden",
+        "type": "boolean",
+        "format": "boolean",
+        "required": true,
+        "default": "false"
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "photos",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "is_verified",
+        "type": "boolean",
+        "format": "boolean",
+        "required": false,
+        "default": "false"
+      },
+      {
+        "column": "like_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "comment_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "content_type",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "photo"
+      },
+      {
+        "column": "media_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "thumbnail",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "hashtags",
+        "type": "array",
+        "format": "text[]",
+        "required": false
+      },
+      {
+        "column": "watch_time_avg",
+        "type": "number",
+        "format": "double precision",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "completion_rate",
+        "type": "number",
+        "format": "double precision",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "save_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "source_type",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "upload"
+      },
+      {
+        "column": "source_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "view_count",
+        "type": "integer",
+        "format": "integer",
+        "required": false,
+        "default": "0"
+      },
+      {
+        "column": "music",
+        "format": "jsonb",
+        "required": false
+      },
+      {
+        "column": "publication_state",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "safety_state",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "evaluated_version",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "evaluated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      }
+    ],
+    "group_members": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "group_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "note": "Note: This is a Foreign Key to `groups.id`.<fk table='groups' column='id'/>"
+      },
+      {
+        "column": "name",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "budget",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "food_preferences",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "dietary_restrictions",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "area",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      }
+    ],
+    "notifications": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "type",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "body",
+        "type": "string",
+        "format": "text",
+        "required": true
+      },
+      {
+        "column": "actor_id",
+        "type": "string",
+        "format": "uuid",
+        "required": false
+      },
+      {
+        "column": "entity_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "image_url",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "data",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "read_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "push_status",
+        "type": "string",
+        "format": "text",
+        "required": true,
+        "default": "pending"
+      },
+      {
+        "column": "push_sent_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false
+      },
+      {
+        "column": "push_attempts",
+        "type": "integer",
+        "format": "integer",
+        "required": true,
+        "default": "0"
+      },
+      {
+        "column": "push_error",
+        "type": "string",
+        "format": "text",
+        "required": false
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": true,
+        "default": "now()"
+      }
+    ],
+    "conversations": [
+      {
+        "column": "id",
+        "type": "string",
+        "format": "uuid",
+        "required": true,
+        "default": "gen_random_uuid()",
+        "note": "Note: This is a Primary Key.<pk/>"
+      },
+      {
+        "column": "user_id",
+        "type": "string",
+        "format": "uuid",
+        "required": true
+      },
+      {
+        "column": "title",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "Cuộc trò chuyện mới"
+      },
+      {
+        "column": "category",
+        "type": "string",
+        "format": "text",
+        "required": false,
+        "default": "general"
+      },
+      {
+        "column": "messages",
+        "format": "jsonb",
+        "required": true
+      },
+      {
+        "column": "created_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      },
+      {
+        "column": "updated_at",
+        "type": "string",
+        "format": "timestamp with time zone",
+        "required": false,
+        "default": "now()"
+      }
+    ]
+  },
+  "rpcs": [
+    "admin_set_user_date_of_birth",
+    "age_band_of",
+    "anon_chat_usage_increment",
+    "anon_chat_usage_today",
+    "chat_can_reach",
+    "chat_create_group",
+    "chat_is_participant",
+    "chat_start_direct",
+    "chat_thread_blocked",
+    "chat_thread_summaries",
+    "decision_evidence_load",
+    "decision_evidence_save",
+    "disown_push_credential",
+    "fn_audit_part",
+    "fn_audit_row_hash",
+    "fn_audit_ts",
+    "fn_claim_anonymous_conversations",
+    "fn_finalize_daily_snapshots",
+    "fn_grant_admin_role",
+    "fn_ingest_moderation_reports",
+    "fn_is_platform_owner",
+    "fn_original_sound_is_servable",
+    "fn_outbox_claim",
+    "fn_outbox_publish",
+    "fn_outbox_settle",
+    "fn_owner_recovery_arm",
+    "fn_owner_recovery_audit",
+    "fn_owner_recovery_cancel",
+    "fn_owner_recovery_execute",
+    "fn_revoke_admin_role",
+    "fn_rollup_activation_daily",
+    "fn_rollup_auth_daily",
+    "fn_rollup_cohort_metrics",
+    "fn_rollup_daily_snapshots",
+    "fn_session_inventory",
+    "fn_session_revoke",
+    "fn_session_revoke_all",
+    "fn_session_subject",
+    "fn_sync_last_login",
+    "fn_upsert_activation",
+    "fn_upsert_user_acquisition",
+    "fn_verify_audit_chain",
+    "get_interaction_avgs",
+    "increment_deal_click",
+    "increment_review_view",
+    "music_followed_count",
+    "music_increment_play",
+    "music_saved_count",
+    "push_credential",
+    "set_user_date_of_birth",
+    "sync_review_watch_stats",
+    "user_age_status"
+  ]
+}

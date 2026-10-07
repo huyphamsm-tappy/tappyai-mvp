@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bếp Quà Sáng\" OR \"Quán ăn sáng chị Hoà & Hồng\" OR \"Bún Riêu Yến\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:47:58.471Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bếp Quà Sáng\" OR \"Quán ăn sáng chị Hoà & Hồng\" OR \"Bún Riêu Yến\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bún riêu Yến Bình Thạnh - Review quán bún riêu chả mực ...",
+    "link": "https://www.tiktok.com/@bethanhne_02/video/7658566710990998804",
+    "snippet": "Review này tập trung vào hương vị, món chả mực, địa chỉ và điểm cần lưu ý khi đến ăn. Vị chính và điểm nhấn Bún riêu Yến nổi bật ở riêu cua mực ...",
+    "position": 1
+   },
+   {
+    "title": "Best Bún Riêu in Ho Chi Minh City (1346 Trường Sa)",
+    "link": "https://www.tiktok.com/@kisstour/video/7675264601545624849",
+    "snippet": "Lead Bún Riêu Yến (1346 Trường Sa Street, Tân Sơn Hoà Ward, Ho Chi Minh City) is a humble street-corner shop celebrated in KissTour Michelin ...",
+    "position": 2
+   },
+   {
+    "title": "Bún riêu Yến - Ngon,cực đông khách, giá chỉ 35 ngàn ...",
+    "link": "https://www.tiktok.com/@haivivu1989/video/7555341497013521685",
+    "snippet": "Bún Riêu Cua Ngon Nhất Tại Lạng Sơn · Bún Riêu Nguyễn Thiện Thuật. Bún riêu Yến - Ngon,cực đông khách, giá chỉ 35 ngàn, đáng.",
+    "position": 3
+   },
+   {
+    "title": "Làm 1 tô Bún Riêu Yến sáng sớm cùng Vợ Chồng mình ...",
+    "link": "https://www.tiktok.com/@danbichchuong/video/7676886373961436437",
+    "snippet": "Video TikTok từ Dân Bích Chương ☼ (@danbichchuong): \"Làm 1 tô Bún Riêu Yến sáng sớm cùng Vợ Chồng mình nha #AnCungTikTok ...",
+    "position": 4
+   },
+   {
+    "title": "Bún Riêu Yến - Tiệm Bún Nổi Tiếng Ở Trường Sa",
+    "link": "https://www.tiktok.com/@bethanhne_02/video/7402113370242977041",
+    "snippet": "Khám phá tiệm bún riêu Yến nổi tiếng bờ kè Trường Sa với món ăn ngon, phong cách phục vụ nhanh chóng. #bunrieu #review #ancungtiktok #xuhuong.",
+    "position": 5
+   },
+   {
+    "title": "Bún Riêu Yến - Địa Điểm Nổi Tiếng Ở Tân Bình",
+    "link": "https://www.tiktok.com/@tigercrystal_0803/video/7567193921156058376",
+    "snippet": "Bún Riêu Yến - Địa Điểm Nổi Tiếng Ở Tân Bình. Khám phá Bún Riêu Yến, quán bún riêu đông khách ở Trường Sa, Tân Bình. Đừng bỏ lỡ đánh giá và ...",
+    "position": 6
+   },
+   {
+    "title": "Bún Riêu Yến: Michelin Guide Honored Crab Noodle Soup ...",
+    "link": "https://www.tiktok.com/@danbichchuong/photo/7678360488731823381",
+    "snippet": "Bún Riêu Yến: Michelin Guide Honored Crab Noodle Soup in Ho Chi Minh City. Discover Bún Riêu Yến, a Michelin Guide Bib Gourmand recognized ...",
+    "position": 7
+   },
+   {
+    "title": "Bún riêu Yến Sài Gòn – Ngon cực, topping ngập tràn",
+    "link": "https://www.tiktok.com/@tigercrystal_0803/video/7683006096868396295",
+    "snippet": "Kết luận Nếu đang tìm bún riêu ngon ở Sài Gòn, bún riêu Yến là điểm đến đáng thử — đặc biệt khi muốn phần bún “topping ngập tràn”. Hãy thử phần ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,1181 @@
+{
+  "id": "G3a",
+  "group": "food-hours-budget",
+  "criteria": [
+    "Every card is a cafe (not a restaurant/bar), within budget where price data exists",
+    "A closed place is not ranked first",
+    "Text and cards agree",
+    "If price data is missing, says so instead of presenting out-of-budget places as fitting"
+  ],
+  "turns": [
+    {
+      "user": "quán cà phê yên tĩnh ở Quận 3 dưới 50k, đang mở cửa",
+      "status": 200,
+      "elapsedMs": 15685,
+      "usage": {
+        "promptTokens": 3350,
+        "completionTokens": 644
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán cà phê yên tĩnh Quận 3",
+            "location": "Quận 3, Thành phố Hồ Chí Minh",
+            "type": "cafe"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Sài Gòn Đậm Đắng",
+              "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 353,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tiệm cà phê Cư Xá 30",
+              "address": "30/1F Ngô Thời Nhiệm, Quận 3, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 106,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 67,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Barista Collective",
+              "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 942,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "The Coffee House - Cao Thắng",
+              "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3090,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phê La - Trương Định",
+              "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2147,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Café Slow",
+              "address": "27/63A Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 841,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Little Cam Saigon (Trần Quốc Thảo)",
+              "address": "Trần Quốc Thảo/115/3 Võ Thị Sáu, Quận 3, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 739,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:30–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78603,106.69346",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Đậm Đắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNl7YzGFu4N53fFAoLNitG45RuZzIek1LXLBylT6WsnDCpN6ZxYopgZlSgHiYaeXxm3eplArKdPQigjf_CeV9FT_pd_NJRoy91nHxzA37XD6g4hLoItnHivvZzLc_LH5OVzdKvu55jW9i7S",
+                "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 353,
+                "openingHours": "07:00–02:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–02:00",
+                  "Thứ Hai": "07:00–02:00",
+                  "Thứ Ba": "07:00–02:00",
+                  "Thứ Tư": "07:00–02:00",
+                  "Thứ Năm": "07:00–02:00",
+                  "Thứ Sáu": "07:00–02:00",
+                  "Thứ Bảy": "07:00–02:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2279520715517354907",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20%C4%90%E1%BA%ADm%20%C4%90%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77759,106.68657",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm cà phê Cư Xá 30",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNDkcHsho0UqHE0EjbxbCcLnu3tRWXY5jmURI_fMmAxvPp6ET1H0bPHU9SPQvLqKrB46I31FR-PelMuwG-Cr0vevj7iTuL1h42n5vGMaUtt30qIhvZLtjfTADV3ltZxjZRZ1ng",
+                "address": "30/1F Ngô Thời Nhiệm, Quận 3, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 106,
+                "openingHours": "08:00–22:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–22:00",
+                  "Thứ Ba": "08:00–22:00",
+                  "Thứ Tư": "08:00–22:00",
+                  "Thứ Năm": "08:00–22:00",
+                  "Thứ Sáu": "08:00–22:00",
+                  "Thứ Bảy": "08:00–22:00",
+                  "Chủ Nhật": "08:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14110346674099565281",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20c%C3%A0%20ph%C3%AA%20C%C6%B0%20X%C3%A1%2030%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76767,106.68138",
+                "domain": "food",
+                "kind": "place",
+                "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO_KRVmQPjVbjYslcUaCTm1z4wgz-1RcIEtSFUqA8EeyyrlDoxwEV-0D1e3L3t3oSGXf8CuB8Y6JUAkiFk2O-cQv8F7Buuf_HMmXODOFDqIhfuUvjRMQtYFmKTXuIcIkjUwp4bL",
+                "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 67,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 702 692 468",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15898818185606195562",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Winnie%20Coffee%20%26%20Tea%20%7C%20QU%C3%81N%20CAFE%20%C4%90%E1%BA%B8P%20QU%E1%BA%ACN%203%20%7C%20QU%C3%81N%20CAFE%20CHECK%20IN%20QU%E1%BA%ACN%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84702692468",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78469,106.67269",
+                "domain": "food",
+                "kind": "place",
+                "name": "Barista Collective",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOD7YOH9ano7Zw8pkFu9bEZwFyhd-OUurwssooSY4f_HC6YU9ICiVD3hxf8551ain0tjVROmQRJ2g56TCsGHH8fJwSfTdfr7welsXGkmGS6ahfe26k-p8lOgBWRsisZg4i3ZB42KQ",
+                "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 942,
+                "openingHours": "08:00–17:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–17:00",
+                  "Thứ Ba": "08:00–17:00",
+                  "Thứ Tư": "08:00–17:00",
+                  "Thứ Năm": "08:00–17:00",
+                  "Thứ Sáu": "08:00–17:00",
+                  "Thứ Bảy": "08:00–17:00",
+                  "Chủ Nhật": "08:00–17:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14144172923822990992",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Barista%20Collective%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/baristacollective/",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77110,106.68111",
+                "domain": "food",
+                "kind": "place",
+                "name": "The Coffee House - Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMaZswjTM_fatpBZPe_h34b3G5cTnzNdSA-gQSvfzf955UGrP4SVi0qNM_5vSejrv_vqZawn2uM7gUCpUQEFZqaak1si8xygMh1EM_XXrBCLn2tfAKWGt20OvE6OWl7bz7XJEa3",
+                "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3090,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 28 7303 9079",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15343922622511307487",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=The%20Coffee%20House%20-%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842873039079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78008,106.68697",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phê La - Trương Định",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTJLe6vyn1smzh7WCqvOIWyKNhmHrcYJIttJUPu4BvdI8BD4BCNg1jGqto4wCfwsYasrcn-645EoR6Uh6HbDVtWLRChTjonB44AiJhmOo2uTl0cLj64Co9cyitxbi0-xTSOdg",
+                "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2147,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 1900 3013",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4750523830558972923",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%C3%AA%20La%20-%20Tr%C6%B0%C6%A1ng%20%C4%90%E1%BB%8Bnh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phela.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003013",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78814,106.68758",
+                "domain": "food",
+                "kind": "place",
+                "name": "Café Slow",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPQLtXBS92TN00OIbOcK5w9g5GEI9wPqiRoeMtPJltmQBBIlXxgjmGWvKRvu_Lt5XxDHtv0EYXl7bX7rmITC-PgPUcsJcLH8h6JBg12LKE4dbrOPJ7JB72zLacuSdfuBkfDvKvg",
+                "address": "27/63A Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 841,
+                "openingHours": "07:00–19:00",
+                "openNow": false,
+                "phone": "+84 981 063 880",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–19:00",
+                  "Thứ Ba": "07:00–19:00",
+                  "Thứ Tư": "07:00–19:00",
+                  "Thứ Năm": "07:00–19:00",
+                  "Thứ Sáu": "07:00–19:00",
+                  "Thứ Bảy": "07:00–19:00",
+                  "Chủ Nhật": "07:00–19:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10165122400031791426",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Caf%C3%A9%20Slow%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/cafeslowsaigon/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981063880",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78332,106.68566",
+                "domain": "food",
+                "kind": "place",
+                "name": "Little Cam Saigon (Trần Quốc Thảo)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPUFbIlq-KeDuX4n_2cS7CGxFZ09gX_EeBUS-2Cvtyywr3aEedCVDZSD17HjWu3KwlRciE6_WjdYuhwsDc8IkOm82FXLpTHrvaLSHbTa2u-L2rO0dQhvBmpCLpqPq_VQoQwA08E",
+                "address": "Trần Quốc Thảo/115/3 Võ Thị Sáu, Quận 3, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 739,
+                "openingHours": "07:30–22:00",
+                "openNow": false,
+                "phone": "+84 342 608 538",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00",
+                  "Thứ Năm": "07:30–22:00",
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14437927788352186653",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Little%20Cam%20Saigon%20(Tr%E1%BA%A7n%20Qu%E1%BB%91c%20Th%E1%BA%A3o)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84342608538",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Sài Gòn Đậm Đắng",
+              "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 353,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–02:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "open now",
+                "rated 4",
+                "353 reviews"
+              ]
+            },
+            {
+              "name": "Tiệm cà phê Cư Xá 30",
+              "address": "30/1F Ngô Thời Nhiệm, Quận 3, Hồ Chí Minh, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 106,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+              "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 67,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Barista Collective",
+              "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 942,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "08:00–17:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "The Coffee House - Cao Thắng",
+              "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3090,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Phê La - Trương Định",
+              "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2147,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Café Slow",
+              "address": "27/63A Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 841,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Little Cam Saigon (Trần Quốc Thảo)",
+              "address": "Trần Quốc Thảo/115/3 Võ Thị Sáu, Quận 3, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 739,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán cà phê"
+              ],
+              "hours": "07:30–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.78603,106.69346",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sài Gòn Đậm Đắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNl7YzGFu4N53fFAoLNitG45RuZzIek1LXLBylT6WsnDCpN6ZxYopgZlSgHiYaeXxm3eplArKdPQigjf_CeV9FT_pd_NJRoy91nHxzA37XD6g4hLoItnHivvZzLc_LH5OVzdKvu55jW9i7S",
+                "address": "Điện Biên Phủ/193 Võ Thị Sáu, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 353,
+                "openingHours": "07:00–02:00",
+                "openNow": true,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–02:00",
+                  "Thứ Hai": "07:00–02:00",
+                  "Thứ Ba": "07:00–02:00",
+                  "Thứ Tư": "07:00–02:00",
+                  "Thứ Năm": "07:00–02:00",
+                  "Thứ Sáu": "07:00–02:00",
+                  "Thứ Bảy": "07:00–02:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4",
+                    "params": {
+                      "value": 4
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "353 reviews",
+                    "params": {
+                      "count": 353
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "rating",
+                  "evidence": "rated 4.7",
+                  "params": {
+                    "value": 4.7
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@bb_trann/video/7484893788100463893",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2279520715517354907",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=S%C3%A0i%20G%C3%B2n%20%C4%90%E1%BA%ADm%20%C4%90%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77759,106.68657",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm cà phê Cư Xá 30",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNDkcHsho0UqHE0EjbxbCcLnu3tRWXY5jmURI_fMmAxvPp6ET1H0bPHU9SPQvLqKrB46I31FR-PelMuwG-Cr0vevj7iTuL1h42n5vGMaUtt30qIhvZLtjfTADV3ltZxjZRZ1ng",
+                "address": "30/1F Ngô Thời Nhiệm, Quận 3, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 106,
+                "openingHours": "08:00–22:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–22:00",
+                  "Thứ Ba": "08:00–22:00",
+                  "Thứ Tư": "08:00–22:00",
+                  "Thứ Năm": "08:00–22:00",
+                  "Thứ Sáu": "08:00–22:00",
+                  "Thứ Bảy": "08:00–22:00",
+                  "Chủ Nhật": "08:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14110346674099565281",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20c%C3%A0%20ph%C3%AA%20C%C6%B0%20X%C3%A1%2030%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76767,106.68138",
+                "domain": "food",
+                "kind": "place",
+                "name": "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmO_KRVmQPjVbjYslcUaCTm1z4wgz-1RcIEtSFUqA8EeyyrlDoxwEV-0D1e3L3t3oSGXf8CuB8Y6JUAkiFk2O-cQv8F7Buuf_HMmXODOFDqIhfuUvjRMQtYFmKTXuIcIkjUwp4bL",
+                "address": "543/42 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 67,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 702 692 468",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 2,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15898818185606195562",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Winnie%20Coffee%20%26%20Tea%20%7C%20QU%C3%81N%20CAFE%20%C4%90%E1%BA%B8P%20QU%E1%BA%ACN%203%20%7C%20QU%C3%81N%20CAFE%20CHECK%20IN%20QU%E1%BA%ACN%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84702692468",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78469,106.67269",
+                "domain": "food",
+                "kind": "place",
+                "name": "Barista Collective",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOD7YOH9ano7Zw8pkFu9bEZwFyhd-OUurwssooSY4f_HC6YU9ICiVD3hxf8551ain0tjVROmQRJ2g56TCsGHH8fJwSfTdfr7welsXGkmGS6ahfe26k-p8lOgBWRsisZg4i3ZB42KQ",
+                "address": "191 Trần Văn Đang, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 942,
+                "openingHours": "08:00–17:00",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "08:00–17:00",
+                  "Thứ Ba": "08:00–17:00",
+                  "Thứ Tư": "08:00–17:00",
+                  "Thứ Năm": "08:00–17:00",
+                  "Thứ Sáu": "08:00–17:00",
+                  "Thứ Bảy": "08:00–17:00",
+                  "Chủ Nhật": "08:00–17:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14144172923822990992",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Barista%20Collective%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/baristacollective/",
+                    "labelKey": "v3.action.website"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77110,106.68111",
+                "domain": "food",
+                "kind": "place",
+                "name": "The Coffee House - Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMaZswjTM_fatpBZPe_h34b3G5cTnzNdSA-gQSvfzf955UGrP4SVi0qNM_5vSejrv_vqZawn2uM7gUCpUQEFZqaak1si8xygMh1EM_XXrBCLn2tfAKWGt20OvE6OWl7bz7XJEa3",
+                "address": "86-88 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3090,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 28 7303 9079",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15343922622511307487",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=The%20Coffee%20House%20-%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842873039079",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78008,106.68697",
+                "domain": "food",
+                "kind": "place",
+                "name": "Phê La - Trương Định",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTJLe6vyn1smzh7WCqvOIWyKNhmHrcYJIttJUPu4BvdI8BD4BCNg1jGqto4wCfwsYasrcn-645EoR6Uh6HbDVtWLRChTjonB44AiJhmOo2uTl0cLj64Co9cyitxbi0-xTSOdg",
+                "address": "Trương Định/115 Võ Thị Sáu, Quận 3, Hồ Chí Minh, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2147,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 1900 3013",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4750523830558972923",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ph%C3%AA%20La%20-%20Tr%C6%B0%C6%A1ng%20%C4%90%E1%BB%8Bnh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://phela.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003013",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78814,106.68758",
+                "domain": "food",
+                "kind": "place",
+                "name": "Café Slow",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPQLtXBS92TN00OIbOcK5w9g5GEI9wPqiRoeMtPJltmQBBIlXxgjmGWvKRvu_Lt5XxDHtv0EYXl7bX7rmITC-PgPUcsJcLH8h6JBg12LKE4dbrOPJ7JB72zLacuSdfuBkfDvKvg",
+                "address": "27/63A Huỳnh Tịnh Của, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 841,
+                "openingHours": "07:00–19:00",
+                "openNow": false,
+                "phone": "+84 981 063 880",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–19:00",
+                  "Thứ Ba": "07:00–19:00",
+                  "Thứ Tư": "07:00–19:00",
+                  "Thứ Năm": "07:00–19:00",
+                  "Thứ Sáu": "07:00–19:00",
+                  "Thứ Bảy": "07:00–19:00",
+                  "Chủ Nhật": "07:00–19:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 6,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10165122400031791426",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Caf%C3%A9%20Slow%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/cafeslowsaigon/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981063880",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78332,106.68566",
+                "domain": "food",
+                "kind": "place",
+                "name": "Little Cam Saigon (Trần Quốc Thảo)",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPUFbIlq-KeDuX4n_2cS7CGxFZ09gX_EeBUS-2Cvtyywr3aEedCVDZSD17HjWu3KwlRciE6_WjdYuhwsDc8IkOm82FXLpTHrvaLSHbTa2u-L2rO0dQhvBmpCLpqPq_VQoQwA08E",
+                "address": "Trần Quốc Thảo/115/3 Võ Thị Sáu, Quận 3, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 739,
+                "openingHours": "07:30–22:00",
+                "openNow": false,
+                "phone": "+84 342 608 538",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:30–22:00",
+                  "Thứ Ba": "07:30–22:00",
+                  "Thứ Tư": "07:30–22:00",
+                  "Thứ Năm": "07:30–22:00",
+                  "Thứ Sáu": "07:30–22:00",
+                  "Thứ Bảy": "07:30–22:00",
+                  "Chủ Nhật": "07:30–22:00"
+                },
+                "categories": [
+                  "Quán cà phê"
+                ],
+                "rank": 7,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14437927788352186653",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Little%20Cam%20Saigon%20(Tr%E1%BA%A7n%20Qu%E1%BB%91c%20Th%E1%BA%A3o)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84342608538",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20c%C3%A0%20ph%C3%AA%20y%C3%AAn%20t%C4%A9nh%20Qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20Th%C3%A0nh%20ph%E1%BB%91%20H%E1%BB%93%20Ch%C3%AD%20Minh",
+            "picked": [
+              "place:osm:10.78603,106.69346",
+              "place:osm:10.78008,106.68697"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.78603,106.69346",
+            "place:osm:10.78008,106.68697"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Sài Gòn Đậm Đắng",
+          "Tiệm cà phê Cư Xá 30",
+          "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+          "Barista Collective",
+          "The Coffee House - Cao Thắng",
+          "Phê La - Trương Định",
+          "Café Slow",
+          "Little Cam Saigon (Trần Quốc Thảo)"
+        ],
+        [
+          "Sài Gòn Đậm Đắng",
+          "Tiệm cà phê Cư Xá 30",
+          "Winnie Coffee & Tea | QUÁN CAFE ĐẸP QUẬN 3 | QUÁN CAFE CHECK IN QUẬN 3",
+          "Barista Collective",
+          "The Coffee House - Cao Thắng",
+          "Phê La - Trương Định",
+          "Café Slow",
+          "Little Cam Saigon (Trần Quốc Thảo)"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình chọn **Sài Gòn Đậm Đắng** cho bạn — quán đang mở cửa lúc này, có 4⭐ từ 353 đánh giá Google Maps, và nằm ngay Quận 3 với mức giá dưới 50k.\n\nNgoài ra, **Phê La - Trương Định** cũng là lựa chọn tốt với 4⭐ (2.147 đánh giá), nhưng hiện đang đóng cửa (mở lại từ 7:00 sáng).\n\nBạn đi mấy người vậy? 😊\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Sài Gòn Đậm Đắng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2279520715517354907\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+      "visible": "Mình chọn **Sài Gòn Đậm Đắng** cho bạn — quán đang mở cửa lúc này, có 4⭐ từ 353 đánh giá Google Maps, và nằm ngay Quận 3 với mức giá dưới 50k.\n\nNgoài ra, **Phê La - Trương Định** cũng là lựa chọn tốt với 4⭐ (2.147 đánh giá), nhưng hiện đang đóng cửa (mở lại từ 7:00 sáng).\n\nBạn đi mấy người vậy? 😊\n\nMình chưa thấy bằng chứng về yên tĩnh ở các quán này — nên gọi hỏi trước khi đi.\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+      "preGuard": "Mình tìm ngay các quán cà phê yên tĩnh ở Quận 3 cho bạn nhé.Mình chọn **Sài Gòn Đậm Đắng** cho bạn — quán đang mở cửa lúc này, có 4⭐ từ 353 đánh giá Google Maps, và nằm ngay Quận 3 với mức giá dưới 50k. Không gian quán có vibe chill, phù hợp để thư giãn yên tĩnh 👌\n\nLưu ý: Mình chưa xác nhận được thông tin chi tiết về độ yên tĩnh của quán, nên bạn có thể gọi trước hoặc xem review trên Google Maps để chắc chắn hơn nhé.\n\nNgoài ra, **Phê La - Trương Định** cũng là lựa chọn tốt với 4⭐ (2.147 đánh giá), nhưng hiện đang đóng cửa (mở lại từ 7:00 sáng).\n\nBạn đi mấy người vậy? 😊\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"☕ Tìm trên GrabFood - Sài Gòn Đậm Đắng\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Sài+Gòn+Đậm+Đắng+Quận+3\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Sài Gòn Đậm Đắng\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2279520715517354907\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]"
+    }
+  ]
+}

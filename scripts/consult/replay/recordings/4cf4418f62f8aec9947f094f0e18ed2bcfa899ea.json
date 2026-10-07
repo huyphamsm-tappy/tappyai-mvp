@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà tặng nhân viên 018 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:12:14.060Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà tặng nhân viên 018 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "COMBO 18 CHI TIẾT HOA NHÍ CAO CẤP",
+    "link": "https://shop.tiktok.com/vn/pdp/1730916683972512355",
+    "snippet": "Mua COMBO 18 CHI TIẾT HOA NHÍ CAO CẤP trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi độc quyền!",
+    "position": 1
+   },
+   {
+    "title": "socola valentine circle k",
+    "link": "https://shop.tiktok.com/vn/k/socola-valentine-circle-k",
+    "snippet": "Socola valentine hộp 12 viên siêu xinh. 1. 5 sold · 229.000 ; (ORDER 2 NGÀY )Hộp quà tặng valentine socola hình vuông dễ thương kèm túi và thiệp. 5. 5 sold.",
+    "position": 2
+   },
+   {
+    "title": "Hộp 18 Viên Cà Phê Hòa Tan Sấy Thăng Hoa Mix Vị NONLA ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-18-vien-ca-phe-hoa-tan-nonla-coffee-%C4%91o-%C4%91am-cap-1-5/1733229442168030447?source=anchor",
+    "snippet": "Hộp 18 Viên Cà Phê Hòa Tan Dạng Viên NONLA COFFEE – Đa Cấp Độ, Đậm Vị, Tiện Lợi Mỗi Ngày Hộp cà phê hòa tan dạng viên NONLA COFFEE 18 viên là lựa chọn hoàn ...",
+    "position": 3
+   },
+   {
+    "title": "bouquet of chocolate gift",
+    "link": "https://shop.tiktok.com/vn/k/bouquet-of-chocolate-gift",
+    "snippet": "[QUÀ TẶNG Chocolate] TẶNG ĐÈN NHÁY - Quà Sinh nhật/ Valentine 14/2, Quà tặng bạn trai/ gái socola ngọt ngào yêu thương Food Snack Ăn Vặt Sô Cô La.",
+    "position": 4
+   },
+   {
+    "title": "Túi & Quà tặng dự tiệc",
+    "link": "https://shop.tiktok.com/vn/c/party-bags-gifts/855944",
+    "snippet": "Set quà đặc biệt tặng bạn gái 20/10 tặng người yêu ý nghĩa ngày sinh nhật 8/3 valentine túi xách nữ full box GIZEN 7K STORE TX26.",
+    "position": 5
+   },
+   {
+    "title": "skema box kimoci 18in",
+    "link": "https://shop.tiktok.com/vn/k/skema-box-kimoci-18in",
+    "snippet": "Bộ Kim Chỉ 18-21 món kèm hộp đựnġ trong suốt/bao da tiện lợi 15.4x11x5.7cm. Flash sale. 16 sold. ₫48.576. ₫75.900. Bộ Kim Chỉ 18-21 món kèm hộp đựnġ trong ...",
+    "position": 6
+   },
+   {
+    "title": "Nhẫn Nữ Đời Đời Ko Phai-Màu 18 Viên chủ đính đá Đỏ 10li",
+    "link": "https://shop.tiktok.com/vn/pdp/nhan-nu-%C4%91oi-%C4%91oi-ko-phai-18-vien-%C4%91a-%C4%91o-10li-chon-%C4%91u-co-ni-tay-san-pham-thoi-/1731125295782202002",
+    "snippet": "Nhẫn Nữ Đời Đời Ko Phai-Màu 18 Viên chủ đính đá Đỏ 10li. Nhẫn có đủ cỡ ni tay. Chị vào giỏ hàng để chọn mua nha.",
+    "rating": 4.2,
+    "ratingCount": 29,
+    "position": 7
+   },
+   {
+    "title": "quà tặng 14/2 hộp vuông 9 viên socola tông trắng đen siêu ...",
+    "link": "https://shop.tiktok.com/vn/pdp/qua-tang-14-2-hop-9-vien-socola-truffle-kem-tui-thiep-mon-qua-ngot-ngao-thich-hop-tang-ban-be-nguoi-/1733264716843288433",
+    "snippet": "Chi tiết sản phẩm:·Hộp vuông: Hộp có hình vuông, chứa 9 viên socola truffle.·Túi thiệp: Sản phẩm đi kèm với túi thiệp, tiện lợi cho việc tặng quà. Hình ảnh ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

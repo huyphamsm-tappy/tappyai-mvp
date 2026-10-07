@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quang Trung Night Market\" OR \"Chợ đêm\" OR \"Phố đi bộ Nguyễn Tri Phương\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:27.350Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quang Trung Night Market\" OR \"Chợ đêm\" OR \"Phố đi bộ Nguyễn Tri Phương\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chợ đêm Sài Gòn ngay tại St.Pete Florida ...",
+    "link": "https://www.tiktok.com/@hoanganhnguyenflorida/video/7249030358753168682",
+    "snippet": "Open app. Chợ đêm Sài Gòn ngay tại St.Pete Florida #hoanganhnguyenfl #hoanganhnguyenofficial #hoanganhnguyenus #traveltips #cuocsongmy ...",
+    "position": 1
+   },
+   {
+    "title": "Chợ Đêm Hà Nội - Ẩm Thực Đường Phố",
+    "link": "https://www.tiktok.com/@anhcamep/video/7688053866331393298",
+    "snippet": "Chợ đêm tại Hà Nội, ngày 26 tháng 09, mang đến trải nghiệm ẩm thực đường phố phong phú. Video ghi lại không khí tại khu phố cổ, một địa điểm ...",
+    "position": 2
+   },
+   {
+    "title": "Chợ Đêm Hè Phước Lộc Thọ: Ăn Vặt, Nhạc Nhảy & Không ...",
+    "link": "https://www.tiktok.com/@phokobebo/video/7655173442232159518",
+    "snippet": "Ngày đầu tiên của Chợ Đêm Hè Phước Lộc Thọ đã mở cửa đón chào du khách với không khí vô cùng đông vui và nhộn nhịp, mang đậm không khí mùa ...",
+    "position": 3
+   },
+   {
+    "title": "Chợ đêm 12/09/26 (p19) ở Hà Nội",
+    "link": "https://www.tiktok.com/@anhcamep/video/7687096098674150663",
+    "snippet": "Thân bài 1) Không khí chợ đêm Mô tả tổng quan: dãy quầy sắp xếp sát nhau, ánh đèn vàng ấm, dòng người đi bộ, âm thanh giao tiếp và tiếng chảo ...",
+    "position": 4
+   },
+   {
+    "title": "Xem tập 16 | Vua Bếp Chợ Đêm Phản Công – Phim ngắn ...",
+    "link": "https://www.tiktok.com/shortdrama/episode/vi/7646070298147591186/16",
+    "snippet": "Tập 16: Stir-Frying a Future – Vua Bếp Chợ Đêm Phản Công Thể loại: Family & Ethics, City, Lost Child ⏱️ Thời lượng: 1min8s Xem tuyển tập đầy đủ ngay ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Ẩm Thực Chợ Đêm Trung Quốc",
+    "link": "https://www.tiktok.com/@dangthuhaf/video/7572193327945157909",
+    "snippet": "Tham gia chuyến foodtour tuyệt vời tại chợ đêm Trung Quốc 1 năm trước, khám phá món ăn vặt độc đáo! #dangthuhaf #dangthuha #schannel. Keywords: ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Chợ Đêm: Hạn Sử Dụng Mayonnaise và Trứng",
+    "link": "https://www.tiktok.com/@twaydabae/video/7584201548943592759",
+    "snippet": "Khám phá đi chợ đêm và món ăn thú vị. #nightmarket #mayonnaise #eggfloattest. Keywords: hạn sử dụng mayonnaise, mayonnaise sau hạn sử dụng, chợ ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Chợ Đêm Đài Loan: Tránh Tây Môn Đình",
+    "link": "https://www.tiktok.com/@chubuvivu/video/7507267913234140424",
+    "snippet": "Khám Phá Chợ Đêm Đài Loan: Tránh Tây Môn Đình. Chợ đêm Đài Loan đa dạng và phong phú. Tìm hiểu lý do vì sao nên tránh chợ Tây Môn Đình khi du ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

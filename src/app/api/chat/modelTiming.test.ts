@@ -32,17 +32,31 @@ function hasField(record: string, name: string): boolean {
   return new RegExp(`(^|[{,\\s])${name}\\s*(:|,|\\r?\\n|\\})`).test(record)
 }
 
-/** The single `tappyai_usage` object literal, brace-matched out of the source. */
-function usageRecord(): string {
-  const anchor = CODE.indexOf("type: 'tappyai_usage'")
-  expect(anchor, 'the tappyai_usage record must exist').toBeGreaterThan(-1)
-  const open = CODE.lastIndexOf('{', anchor)
+/** The object literal starting at `from`, brace-matched out of the source. */
+function literalAt(from: number, what: string): string {
+  expect(from, `${what} must exist`).toBeGreaterThan(-1)
+  const open = CODE.lastIndexOf('{', from)
   let depth = 0
   for (let i = open; i < CODE.length; i++) {
     if (CODE[i] === '{') depth++
     else if (CODE[i] === '}') { depth--; if (depth === 0) return CODE.slice(open, i + 1) }
   }
-  throw new Error('unterminated tappyai_usage literal')
+  throw new Error(`unterminated ${what} literal`)
+}
+
+/**
+ * Everything the `tappyai_usage` line emits.
+ *
+ * P1-3 split the one literal in two: `usageEvent` is the typed, allow-listed record that goes to
+ * the cost pipeline, and the console line spreads it and adds console-only diagnostics. Both are
+ * emitted on the same line, so both are in scope here — and they have to be, or the split would
+ * silently drop every assertion below about the diagnostics half. Concatenating them keeps this
+ * file measuring WHAT IS LOGGED rather than how the object happens to be assembled.
+ */
+function usageRecord(): string {
+  const event = literalAt(CODE.indexOf("type: 'tappyai_usage'"), 'the usageEvent record')
+  const printed = literalAt(CODE.indexOf('...usageEvent,'), 'the console line')
+  return `${event}\n${printed}`
 }
 
 describe('the stage split is emitted', () => {
@@ -179,10 +193,20 @@ describe('the existing tappyai_usage shape is unchanged', () => {
   })
 
   it('is still a single console.log of one JSON object', () => {
-    expect(CODE).toMatch(/console\.log\(JSON\.stringify\(\{[\s\S]*?type:\s*'tappyai_usage'/)
+    // Anchored on the SPREAD, which is what the console line now opens with. The old pattern
+    // looked for `type: 'tappyai_usage'` after any amount of anything, so it matched a console.log
+    // elsewhere in the file followed by the type string further down — it would have passed even
+    // if the usage line had been deleted outright.
+    expect(CODE).toMatch(/console\.log\(JSON\.stringify\(\{\s*\.\.\.usageEvent,/)
+    expect(CODE.match(/console\.log\(JSON\.stringify\(\{\s*\.\.\.usageEvent,/g) ?? []).toHaveLength(1)
   })
 
   it('still reports total elapsed time from t0', () => {
-    expect(usageRecord()).toMatch(/elapsedMs\s*:\s*Date\.now\(\)\s*-\s*startTime/)
+    // P1-3 hoisted the clock read into `const now = Date.now()` so elapsedMs and postModelMs are
+    // measured from the SAME instant — before, they were two separate Date.now() calls and the
+    // record could disagree with itself by a millisecond. The property under test is unchanged:
+    // total elapsed is measured from t0.
+    expect(usageRecord()).toMatch(/elapsedMs\s*:\s*now\s*-\s*startTime/)
+    expect(CODE).toMatch(/const now = Date\.now\(\)/)
   })
 })

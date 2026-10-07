@@ -1,0 +1,572 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 10643,
+  "evidenceId": "4e7167f3-231d-4f6a-82ec-303830cddf6b",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Quán Bụi Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 889,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+      "rating": 4.5,
+      "count": 1191,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+      "rating": 4.3,
+      "count": 4219,
+      "hours": "07:00–23:00",
+      "distance_km": 0.7,
+      "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Bụi Garden",
+      "rating": 4.4,
+      "count": 2811,
+      "hours": "07:00–23:00",
+      "distance_km": 4.9,
+      "address": "55A Ngô Quang Huy, An Khánh, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm thêm thông tin về tình trạng đông của **Quán Bụi** cho bạn.\n\nMình chua co thong tin chinh xac ve tinh trang dong cua **Quán Bụi** vào lúc này.\n\nNếu bạn muốn chắc chắn có chỗ, mình gợi ý **đặt bàn trước** qua website của quán (quan-bui.com) hoặc gọi **+84 28 6271 1214** (chi nhánh Central) để xác nhận.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Quán Bụi\",\"type\":\"website\",\"url\":\"tel:+84286271214\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Quán Bụi\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8054492323917688722\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn ăn tối hôm nay ở quanh Quận 1 với tầm giá phổ thông.\n\nMình chọn **Nhà Hàng Ngon** cho bạn — cách vị trí bạn chỉ 0.1km, rất gần và đang mở cửa. Với **4⭐ từ 11.407 đánh giá Google Maps**, đây là lựa chọn chắc chắn cho bữa tối 2 người, phục vụ ẩm thực Việt Nam truyền thống. Quán mở đến 22:30 nên bạn có thời gian thoải mái.\n\nNếu muốn thử **Quán Bụi** (4.5⭐, 889-1.191 đánh giá), quán có không khí lâu đời, phục vụ cơm, phở, nướng và ăn chay — cách bạn 0.7km, cũng rất gần.\n\nMình gợi ý **Nhà Hàng Ngon** vì vị trí cực gần, danh gia cao nhất và phục vụ đa dạng 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Nhà Hàng Ngon\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Nhà+Hàng+Ngon+Quận+1\",\"primary\":true},{\"label\":\"📍 Maps - Nhà Hàng Ngon\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=13622103453648835628\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi có gì đặc biệt|Hải Sản Hoàng Gia ở đâu|Có quán nào gần hơn không[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm thêm thông tin về tình trạng đông của **Quán Bụi** cho bạn.\n\nMình chua co thong tin chinh xac ve tinh trang dong cua **Quán Bụi** vào lúc này.\n\nNếu bạn muốn chắc chắn có chỗ, mình gợi ý **đặt bàn trước** qua website của quán (quan-bui.com) hoặc gọi **+84 28 6271 1214** (chi nhánh Central) để xác nhận.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📞 Gọi Quán Bụi\",\"type\":\"website\",\"url\":\"tel:+84286271214\",\"primary\":true},{\"label\":\"📍 Xem trên Maps - Quán Bụi\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=8054492323917688722\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 4,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "place_id": "ChIJrRdAKn4vdTERkm85FRhOx28",
+          "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 6271 1214",
+          "google_rating": "4.5⭐ (889 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 889,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "07:00–23:00",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng món nướng",
+            "Nhà hàng chuyên phục vụ bữa sáng",
+            "Nhà hàng chuyên phục vụ bữa nửa buổi",
+            "Bữa tối",
+            "Nhà hàng ăn chay",
+            "Nhà hàng phục vụ bữa trưa",
+            "Nhà hàng phở",
+            "Nhà hàng",
+            "Nhà hàng cơm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=8054492323917688722",
+          "booking_links": [
+            "https://quan-bui.com/eforms/reservation-form/6/",
+            "https://book.chope.co/booking?source=google_dining&rid=quanbuicentral2607vn&rwg_token=AE37R_iiociZZR12PgoAISVx6qHBUrjncWV30O1pIZ54JHsuLlzZPoqLgs2G0FIqF3YyB8b_sShhp5YmTmm9AAfSwAHLGtVlDRWV1tfnTOLmSLKLbo96I9I%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/tcZme1qWhpQ?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://www.quan-bui.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=8054492323917688722",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+          "place_id": "ChIJYdRYiicvdTERZUTjQW8Hplg",
+          "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 6686 8478",
+          "google_rating": "4.5⭐ (1.191 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 1191,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "07:00–23:00",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng món nướng",
+            "Nhà hàng chuyên phục vụ bữa sáng",
+            "Nhà hàng chuyên phục vụ bữa nửa buổi",
+            "Bữa tối",
+            "Nhà hàng ăn chay",
+            "Nhà hàng phục vụ bữa trưa",
+            "Nhà hàng phở",
+            "Nhà hàng",
+            "Nhà hàng cơm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6387801295899804773",
+          "booking_links": [
+            "https://quan-bui.com/eforms/reservation-form/6/",
+            "https://book.chope.co/booking?source=google_dining&rid=quanbuibenthanh2607vn&rwg_token=AE37R_jwegpZvYm3krwhExn3U4m-HLcBjZ4aix-ynfBLMM6CgvOr1sq0NUHacV566D_nLp733shm8wR2u4wVFWXWqyKEpUsKWvJ-eiXkqjWTrZuyTi6AcZY%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/VEwIoqzxIrU?source=pa&opi=79508299"
+          ],
+          "website_uri": "https://www.quan-bui.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=6387801295899804773",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "place_id": "ChIJPzgjndIodTERR7D0TJyKXpg",
+          "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1515",
+          "google_rating": "4.3⭐ (4.219 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 4219,
+          "distance_km": 0.7,
+          "open_now": true,
+          "opening_hours": "07:00–23:00",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng món nướng",
+            "Nhà hàng chuyên phục vụ bữa sáng",
+            "Nhà hàng chuyên phục vụ bữa nửa buổi",
+            "Bữa tối",
+            "Nhà hàng ăn chay",
+            "Nhà hàng phục vụ bữa trưa",
+            "Nhà hàng phở",
+            "Nhà hàng",
+            "Nhà hàng cơm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10979365345486483527",
+          "booking_links": [
+            "https://quan-bui.com/eforms/reservation-form/6/",
+            "https://book.chope.co/booking?source=google_dining&rid=quanbuioriginal2607vn&rwg_token=AE37R_ju2QjlIXemmFVPfUJiAwk24Uo5lxAyZhpK_lNQ2nb9WbuIF-KGc36AgzDYtyyJGfR8dTdZogQa9WSx-DoL0gavdiREzg%3D%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/7_m7RUagBMA?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://quan-bui.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=10979365345486483527",
+              "attributed": true
+            }
+          ]
+        },
+        {
+          "name": "Quán Bụi Garden",
+          "place_id": "ChIJa2NxZhcmdTER21n8D2a-cQQ",
+          "address": "55A Ngô Quang Huy, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 28 3898 9088",
+          "google_rating": "4.4⭐ (2.811 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 2811,
+          "distance_km": 4.9,
+          "open_now": true,
+          "opening_hours": "07:00–23:00",
+          "place_types": [
+            "Nhà hàng Việt Nam",
+            "Nhà hàng món nướng",
+            "Nhà hàng chuyên phục vụ bữa sáng",
+            "Nhà hàng chuyên phục vụ bữa nửa buổi",
+            "Bữa tối",
+            "Nhà hàng ăn chay",
+            "Nhà hàng phục vụ bữa trưa",
+            "Nhà hàng phở",
+            "Nhà hàng",
+            "Nhà hàng cơm"
+          ],
+          "maps_link": "https://maps.google.com/?cid=320246394084153819",
+          "booking_links": [
+            "https://quan-bui.com/eforms/reservation-form/6/",
+            "https://book.chope.co/booking?source=google_dining&rid=quanbuigarden2607vn&rwg_token=AE37R_gIeZ5-pboNmk_9M34d9Gu5KOrJ_Xq2ru-aqA74KC-ZTye_iAj5DcjZQI6XRg29jQR7S0V2vTGLlayaQFLxhhigtDNnqmMoLc6cYiEMRPnbRy5wqp8%3D",
+            "https://www.google.com/maps/reserve/v/dine/c/KwRymA232h8?source=pa&opi=79508299"
+          ],
+          "website_uri": "http://quan-bui.com/",
+          "has_tiktok_review": false,
+          "review_actions": [
+            {
+              "kind": "google_maps",
+              "url": "https://maps.google.com/?cid=320246394084153819",
+              "attributed": true
+            }
+          ]
+        }
+      ],
+      "_tappy_place_domain": "food",
+      "place_search_status": "has_results",
+      "_tappy_evidence_gap": {
+        "qualified": 4,
+        "total": 4,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 4 ket qua theo thu tu nha cung cap, KHONG phai thu tu uu tien — ban tu chon cho dung tinh huong (rut gon: chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77262,106.69660",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmJNIaAGqydO_MgwWGqrVhhC9pn8Hoew4fyPvZSay7wTrXYf-XiNqqfoOyiiu4nHOC1NVRD_4tZNo9w2TW61swrmVNzaNsWRDqqjyd7ppOBdcezONAIWe3GVRpytMNCT989WkD3IaFZxS9b",
+            "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 1191,
+            "openingHours": "07:00–23:00",
+            "openNow": true,
+            "phone": "+84 28 6686 8478",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–23:00",
+              "Chủ Nhật": "07:00–23:00",
+              "Thứ Hai": "07:00–23:00",
+              "Thứ Ba": "07:00–23:00",
+              "Thứ Tư": "07:00–23:00",
+              "Thứ Năm": "07:00–23:00",
+              "Thứ Sáu": "07:00–23:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng món nướng",
+              "Nhà hàng chuyên phục vụ bữa sáng",
+              "Nhà hàng chuyên phục vụ bữa nửa buổi",
+              "Bữa tối",
+              "Nhà hàng ăn chay",
+              "Nhà hàng phục vụ bữa trưa",
+              "Nhà hàng phở",
+              "Nhà hàng",
+              "Nhà hàng cơm"
+            ],
+            "rank": 1,
+            "shortlistPosition": 1,
+            "recommended": true,
+            "reasons": [
+              {
+                "attribute": "rating",
+                "evidence": "rated 4.5"
+              },
+              {
+                "attribute": "distance",
+                "evidence": "0.7km away"
+              },
+              {
+                "attribute": "reviewCount",
+                "evidence": "1191 reviews"
+              }
+            ],
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20B%E1%BB%A5i%20-%20L%C3%AA%20Th%C3%A1nh%20T%C3%B4n%20-%20Authentic%20Vietnamese%20Cuisine%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6387801295899804773",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20-%20L%C3%AA%20Th%C3%A1nh%20T%C3%B4n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.quan-bui.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842866868478",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78083,106.70637",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkq5F1rs6lZc6uZvmv7UyJWnfoLVHB_zsYFf9rVURX3zkq82CXHIsUxSzQ4lYSAAz6FZO0cya1xPKz1BUdbE1r8pl7szCpm0HOX0moGejTrtQFL1umoPH95JjqDdXgg71As3ak",
+            "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 889,
+            "openingHours": "07:00–23:00",
+            "openNow": true,
+            "phone": "+84 28 6271 1214",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–23:00",
+              "Chủ Nhật": "07:00–23:00",
+              "Thứ Hai": "07:00–23:00",
+              "Thứ Ba": "07:00–23:00",
+              "Thứ Tư": "07:00–23:00",
+              "Thứ Năm": "07:00–23:00",
+              "Thứ Sáu": "07:00–23:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng món nướng",
+              "Nhà hàng chuyên phục vụ bữa sáng",
+              "Nhà hàng chuyên phục vụ bữa nửa buổi",
+              "Bữa tối",
+              "Nhà hàng ăn chay",
+              "Nhà hàng phục vụ bữa trưa",
+              "Nhà hàng phở",
+              "Nhà hàng",
+              "Nhà hàng cơm"
+            ],
+            "rank": 0,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20B%E1%BB%A5i%20Central%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=8054492323917688722",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Central%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842862711214",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78131,106.70587",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk-RICueCF5oioOFudUhb9ERf6P0Dr_BJspGZUZSfiwx5cB82Rnpub5MJuvPEahrvJtrvU9Jz20diVkkMrO7ipqGG5XOFnYAY-vcRoq6yh3SyXLLQm1BVsVieG_oFTLAJOXn1JIhjIBJiM",
+            "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 4219,
+            "openingHours": "07:00–23:00",
+            "openNow": true,
+            "phone": "+84 28 3829 1515",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–23:00",
+              "Chủ Nhật": "07:00–23:00",
+              "Thứ Hai": "07:00–23:00",
+              "Thứ Ba": "07:00–23:00",
+              "Thứ Tư": "07:00–23:00",
+              "Thứ Năm": "07:00–23:00",
+              "Thứ Sáu": "07:00–23:00"
+            },
+            "distanceKm": 0.7,
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng món nướng",
+              "Nhà hàng chuyên phục vụ bữa sáng",
+              "Nhà hàng chuyên phục vụ bữa nửa buổi",
+              "Bữa tối",
+              "Nhà hàng ăn chay",
+              "Nhà hàng phục vụ bữa trưa",
+              "Nhà hàng phở",
+              "Nhà hàng",
+              "Nhà hàng cơm"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10979365345486483527",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291515",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80512,106.73576",
+            "domain": "food",
+            "kind": "place",
+            "name": "Quán Bụi Garden",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWljpF7oWGDrPKFgXOUKZBHkRctga4Q3wBw_CKIqAjPOzeEIixLGNyi5_AENQ7rQh24rqiwISDS9nRffFJH2g6I-SwkuVBZfr-StzSm4RzaXamcmWhQMU2R8RFCYgf4JYLH6ADWVVQ",
+            "address": "55A Ngô Quang Huy, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 2811,
+            "openingHours": "07:00–23:00",
+            "openNow": true,
+            "phone": "+84 28 3898 9088",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–23:00",
+              "Chủ Nhật": "07:00–23:00",
+              "Thứ Hai": "07:00–23:00",
+              "Thứ Ba": "07:00–23:00",
+              "Thứ Tư": "07:00–23:00",
+              "Thứ Năm": "07:00–23:00",
+              "Thứ Sáu": "07:00–23:00"
+            },
+            "distanceKm": 4.9,
+            "categories": [
+              "Nhà hàng Việt Nam",
+              "Nhà hàng món nướng",
+              "Nhà hàng chuyên phục vụ bữa sáng",
+              "Nhà hàng chuyên phục vụ bữa nửa buổi",
+              "Bữa tối",
+              "Nhà hàng ăn chay",
+              "Nhà hàng phục vụ bữa trưa",
+              "Nhà hàng phở",
+              "Nhà hàng",
+              "Nhà hàng cơm"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "order",
+                "urlKind": "search",
+                "url": "https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n%20B%E1%BB%A5i%20Garden%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+                "labelKey": "v3.action.orderSearch",
+                "platform": "GrabFood"
+              },
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=320246394084153819",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Garden%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838989088",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=Qu%C3%A1n%20B%E1%BB%A5i%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.78083,106.70637",
+          "place:osm:10.77262,106.69660",
+          "place:osm:10.78131,106.70587"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

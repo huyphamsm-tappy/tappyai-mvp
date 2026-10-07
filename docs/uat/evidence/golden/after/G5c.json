@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 23262,
+      "textFrames": 472,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh lừa đảo & mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, hóa đơn mua bán có khớp với người bán không. Xe không sang tên được = rủi ro cao nhất.\n- **Lịch sử xe**: Hỏi rõ xe từng bị tai nạn, ngập nước, cháy hay không. Nếu bán qua đại lý, yêu cầu xem báo cáo lịch sử từ hệ thống.\n- **Gặp trực tiếp & kiểm tra trước khi trả tiền**: Không chuyển tiền qua link lạ, không cọc qua app thanh toán. Gặp mặt, xem xe, kiểm tra giấy tờ xong mới trả tiền.\n- **Nếu mua qua nhóm/Facebook**: Cảnh báo lừa đảo TappyAI có thể giúp bạn kiểm tra số điện thoại/tài khoản người bán trước khi gửi tiền.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE (máy móc & thân vỏ):**\n- **Ngoại thất**: Kiểm tra xem có dấu hiệu sơn lại, va đập, gỉ sét hay không. Nếu sơn lại nhiều chỗ = có thể từng bị tai nạn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển có bị mòn quá mức so với số km hay không (dấu hiệu xe chạy nhiều hơn số km khai báo).\n- **Động cơ & hộp số**: Khởi động xe, nghe tiếng động cơ có bất thường không, chạy thử để cảm nhận hộp số có trơn hay không.\n- **Hệ thống phanh, lái, treo**: Kiểm tra độ cứng phanh, vô lăng có bị lỏng, xe có bị xóc hay không.\n- **Lốp & phanh**: Xem độ mòn lốp, kiểm tra phanh có còn tốt không.\n\n**📋 THÔNG TIN CẦN HỎI:**\n- Số km thực tế (so sánh với tình trạng xe).\n- Lần bảo dưỡng cuối cùng khi nào, bảo dưỡng ở đâu.\n- Có bao nhiêu chủ sở hữu trước đó.\n- Xe có vay ngân hàng hay nợ trả góp không (nếu có = không thể sang tên).\n\n**💡 LỜI KHUYÊN CUỐI:**\nNếu không tự tin kiểm tra, hãy nhờ thợ sửa xe uy tín hoặc dịch vụ kiểm tra xe cũ chuyên nghiệp (có phí nhưng đáng giá). Tầm 300 triệu là khoản tiền lớn — hãy dành thời gian kiểm tra kỹ trước khi quyết định.\n\nBạn đang tìm mua xe ở đâu (Facebook, Chợ Tốt, đại lý) hay cần giúp gì thêm không?",
+      "visible": "Mua ô tô cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điểm quan trọng bạn nên check:\n\n**🚨 RỦI RO TRƯỚC TIÊN (tránh lừa đảo & mất tiền):**\n- **Giấy tờ pháp lý**: Kiểm tra giấy chứng nhận quyền sở hữu, biên lai thuế, hóa đơn mua bán có khớp với người bán không. Xe không sang tên được = rủi ro cao nhất.\n- **Lịch sử xe**: Hỏi rõ xe từng bị tai nạn, ngập nước, cháy hay không. Nếu bán qua đại lý, yêu cầu xem báo cáo lịch sử từ hệ thống.\n- **Gặp trực tiếp & kiểm tra trước khi trả tiền**: Không chuyển tiền qua link lạ, không cọc qua app thanh toán. Gặp mặt, xem xe, kiểm tra giấy tờ xong mới trả tiền.\n- **Nếu mua qua nhóm/Facebook**: Cảnh báo lừa đảo TappyAI có thể giúp bạn kiểm tra số điện thoại/tài khoản người bán trước khi gửi tiền.\n\n**🔧 KIỂM TRA TÌNH TRẠNG XE (máy móc & thân vỏ):**\n- **Ngoại thất**: Kiểm tra xem có dấu hiệu sơn lại, va đập, gỉ sét hay không. Nếu sơn lại nhiều chỗ = có thể từng bị tai nạn.\n- **Nội thất**: Ghế, vô lăng, bảng điều khiển có bị mòn quá mức so với số km hay không (dấu hiệu xe chạy nhiều hơn số km khai báo).\n- **Động cơ & hộp số**: Khởi động xe, nghe tiếng động cơ có bất thường không, chạy thử để cảm nhận hộp số có trơn hay không.\n- **Hệ thống phanh, lái, treo**: Kiểm tra độ cứng phanh, vô lăng có bị lỏng, xe có bị xóc hay không.\n- **Lốp & phanh**: Xem độ mòn lốp, kiểm tra phanh có còn tốt không.\n\n**📋 THÔNG TIN CẦN HỎI:**\n- Số km thực tế (so sánh với tình trạng xe).\n- Lần bảo dưỡng cuối cùng khi nào, bảo dưỡng ở đâu.\n- Có bao nhiêu chủ sở hữu trước đó.\n- Xe có vay ngân hàng hay nợ trả góp không (nếu có = không thể sang tên).\n\n**💡 LỜI KHUYÊN CUỐI:**\nNếu không tự tin kiểm tra, hãy nhờ thợ sửa xe uy tín hoặc dịch vụ kiểm tra xe cũ chuyên nghiệp (có phí nhưng đáng giá). Tầm 300 triệu là khoản tiền lớn — hãy dành thời gian kiểm tra kỹ trước khi quyết định.\n\nBạn đang tìm mua xe ở đâu (Facebook, Chợ Tốt, đại lý) hay cần giúp gì thêm không?"
+    }
+  ]
+}

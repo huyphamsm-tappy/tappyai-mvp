@@ -1,0 +1,12 @@
+{
+  "uploads": [
+    "200 PATCH /api/profile",
+    "200 POST /api/profile",
+    "200 POST /api/profile"
+  ],
+  "mediaImgs": [
+    "https://uat.tappyai.com/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Ftappyai-media-uat%2Favatars%2F5c674157-7bfd-4eb5-b1b1-6c61d13b30ef-5NspmXjTAEkIrVzPhnfu7MoV.webp&w=256&q=75",
+    "https://storage.googleapis.com/tappyai-media-uat/covers/5c674157-7bfd-4eb5-b1b1-6c61d13b30ef-gR5Ec4f2JuGmI1Tgww8a9sNF.webp"
+  ],
+  "errors": []
+}

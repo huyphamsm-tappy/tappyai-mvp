@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bánh Kem Thỏ Tây | Thỏ Tây Bakery\" OR \"Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7\" OR \"Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:51:45.952Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bánh Kem Thỏ Tây | Thỏ Tây Bakery\" OR \"Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7\" OR \"Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiệm bánh Hoàng Phucd Quận 7#bánhkemsinhnhật ...",
+    "link": "https://www.tiktok.com/@banhkemquan7/video/7477941208917003528",
+    "snippet": "Tiệm bánh Hoàng Phucd Quận 7#bánhkemsinhnhật #banhtiramisu #banhkemquan7 #banhngot #kembap ... Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

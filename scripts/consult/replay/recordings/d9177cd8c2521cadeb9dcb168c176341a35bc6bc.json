@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Seasons Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:21:04.104Z",
+ "body": {
+  "searchParameters": {
+   "q": "Seasons Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "SEASONS Hotel, Vũng Tàu (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/899205600.jpg?k=d692c373a473005daf1bf75dabc7c42d5c7cd8709c90df0c3e6296f5ff219018&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPsN-UtBGBIzokIEM5krW-8SKXIrq1duZmFwt5hshqnA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/seasons.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F899205600.jpg%3Fk%3Dd692c373a473005daf1bf75dabc7c42d5c7cd8709c90df0c3e6296f5ff219018%26o%3D&tbnid=ffaKx_l8Oj01cM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fseasons.vi.html&docid=U0Bb_BfO82HtEM&w=576&h=768",
+    "position": 1
+   },
+   {
+    "title": "Ban công riêng của Seasons Hotel: Hình ảnh và Đánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0c/9b/38/6c/entry-facade.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf1HlmtrwpRHXpXxNu0TEJjP6iMDw09F6sWjoAeOYbaA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Feature-g660181-d1720535-zft11284-Seasons_Hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0c%2F9b%2F38%2F6c%2Fentry-facade.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=Q6lm6HcCLmF9IM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Feature-g660181-d1720535-zft11284-Seasons_Hotel.html&docid=CxdjQwEZ_eyVoM&w=900&h=500",
+    "position": 2
+   },
+   {
+    "title": "SEASONS Hotel, Vũng Tàu (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/624357084.jpg?k=13bf828a3a79950c72c1dd1e09d3cb7dc0a0ab50242491f683a5230b046f6581&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2ovg0hIueeGt1cxYVj_rKVsyE7hf9FMsKOmAOU738jQ&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/seasons.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F624357084.jpg%3Fk%3D13bf828a3a79950c72c1dd1e09d3cb7dc0a0ab50242491f683a5230b046f6581%26o%3D&tbnid=AkIBBAMEJM4ljM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fseasons.vi.html&docid=U0Bb_BfO82HtEM&w=576&h=768",
+    "position": 3
+   },
+   {
+    "title": "Seasons Hotel and Convention Center San Jose (Mindoro Occidental),  Philippines: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/150/1504825/1504825_17031707210051593171.jpg?ca=6&ce=1&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwCcLj7B8_puhTHplxrABTSAdsB0wFUfjDNvgU5NasJg&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/seasons-hotel-and-convention-center/hotel/san-jose-mindoro-occidental-ph.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F150%2F1504825%2F1504825_17031707210051593171.jpg%3Fca%3D6%26ce%3D1%26s%3D414x232&tbnid=yJ2s383b3Zl1AM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fseasons-hotel-and-convention-center%2Fhotel%2Fsan-jose-mindoro-occidental-ph.html&docid=inxWXHXza8fDFM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Seasons Hotel (Adults Only), Ayia Napa (updated prices 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/727821947.jpg?k=d49bb939567a9bef79ca3dfd8b6ae0316da422134423e945e246e770c7feb0db&o=",
+    "imageWidth": 1024,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDNYxTmM2w6n_kRfAua2Pk9Qz8WvddMoERPCZXZN5EHw&s=10",
+    "thumbnailWidth": 640,
+    "thumbnailHeight": 479,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/cy/tasia-maris-seasons.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F727821947.jpg%3Fk%3Dd49bb939567a9bef79ca3dfd8b6ae0316da422134423e945e246e770c7feb0db%26o%3D&tbnid=ARSAmjj6XcXlsM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fcy%2Ftasia-maris-seasons.html&docid=wABBaL2G_3PCnM&w=1024&h=767",
+    "position": 5
+   },
+   {
+    "title": "FOUR SEASONS HOTEL MADRID - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/91/a4/05/four-seasons-hotel-madrid.jpg?w=500&h=400&s=1",
+    "imageWidth": 500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9SHgrwHA6lvmQKHB2R1Hu6uPVBaVWPi1sA2Wh1xUHVw&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 400,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g187514-d20255744-Reviews-Four_Seasons_Hotel_Madrid-Madrid.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2f%2F91%2Fa4%2F05%2Ffour-seasons-hotel-madrid.jpg%3Fw%3D500%26h%3D400%26s%3D1&tbnid=OgE5j9o_uANgsM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g187514-d20255744-Reviews-Four_Seasons_Hotel_Madrid-Madrid.html&docid=97zEJxjwp8SNrM&w=500&h=400",
+    "position": 6
+   },
+   {
+    "title": "SEASONS Hotel, Vũng Tàu (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/674068841.jpg?k=990ade8adc6bb9b91158d76c38ba8bcab209055302090fc9b4b58aee9eaa681f&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPj4q84JhBH11FArKEbpbcpf-17t-WChujdzdazcklCA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/seasons.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F674068841.jpg%3Fk%3D990ade8adc6bb9b91158d76c38ba8bcab209055302090fc9b4b58aee9eaa681f%26o%3D&tbnid=Aafy_IuCWCsh8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fseasons.vi.html&docid=U0Bb_BfO82HtEM&w=576&h=768",
+    "position": 7
+   },
+   {
+    "title": "Travel Luxe: Four Seasons Hanoi chuẩn bị khai trương vào năm 2026 Four Seasons  Hotels and Resorts, thương hiệu quản lý khách sạn sang trọng hàng đầu thế  giới chính thức đưa",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=905811795434096",
+    "imageWidth": 1366,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrVWRx9T6Axz1HhWt6DB9kWNPdRGYWxTqnrUHS6huUqA&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Luxuovietnamofficial/posts/travel-luxe-four-seasons-hanoi-chu%E1%BA%A9n-b%E1%BB%8B-khai-tr%C6%B0%C6%A1ng-v%C3%A0o-n%C4%83m-2026-four-seasons-ho/905788558769753/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D905811795434096&tbnid=DFq5VrSWLV8txM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FLuxuovietnamofficial%2Fposts%2Ftravel-luxe-four-seasons-hanoi-chu%25E1%25BA%25A9n-b%25E1%25BB%258B-khai-tr%25C6%25B0%25C6%25A1ng-v%25C3%25A0o-n%25C4%2583m-2026-four-seasons-ho%2F905788558769753%2F&docid=Yk2kg2UEn-09JM&w=1366&h=2048",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

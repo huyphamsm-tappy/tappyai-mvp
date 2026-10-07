@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Colline Dalat\" OR \"Golden Sun Hotel\" OR \"Khách Sạn Dalat Palace\" Đà Lạt site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:33.342Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Colline Dalat\" OR \"Golden Sun Hotel\" OR \"Khách Sạn Dalat Palace\" Đà Lạt site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Colline Dalat Hotel: Góc Đà Lạt Chill, View Đẹp",
+    "link": "https://www.tiktok.com/@nhaphuong.didau/video/7687452652975934740",
+    "snippet": "Colline Dalat Hotel mang đến một không gian sang trọng và hiện đại tại trung tâm Đà Lạt. Khách sạn có vị trí thuận tiện, dễ dàng đi bộ đến Hồ ...",
+    "position": 1
+   },
+   {
+    "title": "Experience the Heart of Hotel Lobby Life in Đà Lạt",
+    "link": "https://www.tiktok.com/@collinedalat/video/7519782352072035602",
+    "snippet": "Discover the vibrant lobby life in Đà Lạt hotels, where every arrival tells a story. @Colline Dalat.",
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm Golden Sun Hotel Đà Lạt Hè Này",
+    "link": "https://www.tiktok.com/@checkincungnhu/video/7613072377458609416",
+    "snippet": "Video TikTok từ Ngọc Như Mia Travel (@checkincungnhu): \"Khám phá Golden Sun Hotel với view Hồ Xuân Hương đỉnh, phòng sang trọng và dịch vụ ...",
+    "position": 3
+   },
+   {
+    "title": "Ghé Đà Lạt, ghé vào Colline quậy với tụi em xíu nha cả ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7678606161377103111",
+    "snippet": "1359 Lượt thích,119 Bình luận.Video TikTok từ Colline Dalat (@collinedalat): \"Ghé Đà Lạt, ghé vào Colline quậy với tụi em xíu nha cả nhà hé ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn ở Đà Lạt: trai xinh gái đẹp và thông minh thế lày",
+    "link": "https://www.tiktok.com/@collinedalat/video/7676817925566713096",
+    "snippet": "43 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \"Khám phá khách sạn ở Đà Lạt đầy trai xinh gái đẹp cùng khoảnh khắc thông minh, ...",
+    "position": 5
+   },
+   {
+    "title": "Connecting Room Premier Twin x Premier Double tại ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7678163581866872082",
+    "snippet": "... Colline Dalat, kết hợp Premier Twin và Premier Double tạo không gian 60m² liền mạch với tầm nhìn Đà Lạt. Hạng phòng này rất phù hợp cho gia ...",
+    "position": 6
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt — Trải nghiệm sang trọng đẳng ...",
+    "link": "https://www.tiktok.com/@alotravel.231/video/7675987404741758228",
+    "snippet": "Vị trí và ấn tượng ban đầu Golden Sun Hotel Đà Lạt tọa lạc ở vị trí thuận tiện cho các điểm tham quan nổi tiếng, giúp tiết kiệm thời gian di ...",
+    "position": 7
+   },
+   {
+    "title": "Hôtel Colline Dalat Của Ai",
+    "link": "https://www.tiktok.com/discover/h%C3%B4tel-colline-dalat-c%E1%BB%A7a-ai",
+    "snippet": "Ưu Đãi Đặc Biệt Cho Fan Á Hậu Nguyễn Quỳnh Châu. Khám phá ưu đãi hấp dẫn tại Colline Dalat từ 08-20/11/2025! Giảm 20% và nhận quà ngọt ngào với ...",
+    "date": "3 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

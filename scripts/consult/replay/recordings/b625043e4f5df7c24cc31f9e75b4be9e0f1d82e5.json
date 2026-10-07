@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:48:27.593Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cà Phê Hòa Tan Cappuccino Dừa Con Chồn Vàng C7 Hộp 272g site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê Hoà Tan 4in1 Cappuccino Cốt Dừa Con Chồn ...",
+    "link": "https://www.lazada.vn/products/ca-phe-hoa-tan-4in1-cappuccino-cot-dua-con-chon-vang-c7-hop-16-goi-i2413320215.html?srsltid=AU7gw4UnyQ3LSAREFuxSGo8vWunh0Y52sITfRy4elaxVXDN8MwHOneIE",
+    "snippet": "Cà Phê Hòa Tan Cốt Dừa Cappuccino 4in1 Con Chồn Vàng C7 - Hộp 16Que x 17Gr - Huca Food · Cà phê dừa hòa tan cappuccino!. · Được chế biến từ bột cốt dừa nguyên ...",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Chồn Robusta 150g – Hộp Cao Cấp",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-robusta-150g-hop-cao-cap-i1729855618.html?srsltid=AU7gw4Xz59wMY7yMPo3R_ENFvQP7cZQ_uhylzhJTAFbc65lCktAuv3eD",
+    "snippet": "Combo 3 hộp ( 45 gói x 2.5g ) - Cà phê hòa tan đen. 144.000 ₫. Combo 2 hộp ( 32 gói x 17g ) - Cà phê Hoà Tan Vị Sầu. 220.000 ₫. Cà phê hòa tan Con Chồn Rừng - ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

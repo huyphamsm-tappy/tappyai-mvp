@@ -192,7 +192,8 @@ describe('the product surfaces are actually gated', () => {
     // a looser pattern would compare the gate against a comment and pass or
     // fail for the wrong reason.
     const gate = code.indexOf('getAgeEligibility(supabase)')
-    const stream = code.search(/result\s*=\s*AI\.stream\(/)
+    // TAPPY_AGENT (04/10): the one model call site is `result = agentOn ? await agentTurn(…) : AI.stream(streamOpts)` — the gate must precede both arms.
+    const stream = code.search(/result\s*=\s*(?:agentOn \? await agentTurn\([^)]*\) : )?AI\.stream\(/)
     expect(gate).toBeGreaterThan(-1)
     expect(stream).toBeGreaterThan(-1)
     expect(gate).toBeLessThan(stream)

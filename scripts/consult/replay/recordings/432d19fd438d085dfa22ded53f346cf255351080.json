@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "spa massage quan 10 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:16:40.261Z",
+ "body": {
+  "searchParameters": {
+   "q": "spa massage quan 10 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh ...",
+    "link": "https://www.klook.com/vi/activity/190734-yi-tou-xiong-massage-spa-futian-branch/",
+    "snippet": "Quán Spa Massage & Gội Đầu Nhất Đầu Hùng · Chi nhánh Futian · Trải nghiệm trị liệu đầu chuyên sâu · Ốc đảo giải tỏa căng thẳng đô thị · Không gian trang nhã và yên ...",
+    "rating": 4.1,
+    "ratingCount": 10,
+    "position": 1
+   },
+   {
+    "title": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/150402-mac-thuy-vietnamese-traditional-massage-in-district-10-ho-chi-minh/",
+    "snippet": "Massage Truyền Thống Mạc Thụy ở Quận 10, Hồ Chí Minh · Mua trước, đặt lịch sau · Chat với spa dễ dàng · Đặt lịch nhanh chóng và đơn giản · Linh hoạt chọn khung giờ, ...",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Ha Spa nằm ngay trước khách sạn của tôi, siêu tiện lợi, giá cả phải chăng, chất lượng dịch vụ tốt. Liệu trình gội đầu siêu thoải mái khiến chúng tôi muốn đến ...",
+    "rating": 4.4,
+    "ratingCount": 77,
+    "position": 3
+   },
+   {
+    "title": "Mát-xa cân bằng cơ và Mát-xa chân (Ga tàu điện ngầm Đài ...",
+    "link": "https://www.klook.com/vi/activity/193908-healing-spa-massage/",
+    "snippet": "Trải nghiệm không gian Pháp thanh lịch với tầm nhìn trên cao, tận hưởng liệu pháp hương thơm chuyên nghiệp và dịch vụ chu đáo, tỉ mỉ.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 4
+   },
+   {
+    "title": "Slow Life Spa - Massage Thái Trung Hoa - Tinh dầu SPA",
+    "link": "https://www.klook.com/vi/activity/136460-manman-life-center-chinese-and-thai-massage-essential-oil-spa/",
+    "snippet": "Spa âm nhạc & hương liệu thư giãn; Giá cả niêm yết rõ ràng, không có tiền boa và phí dịch vụ bắt buộc; Thương hiệu Mạn Mạn Sinh Hoạt Quán đã phục vụ hơn 5 ...",
+    "position": 5
+   },
+   {
+    "title": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+    "link": "https://www.klook.com/vi/activity/201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Lấy cảm hứng từ nghi thức spa đầu truyền thống, các liệu pháp kết hợp dầu gội thảo dược, tẩy tế bào chết da đầu và massage thư giãn đầu, cổ, vai để giúp khách ...",
+    "rating": 4.8,
+    "ratingCount": 61,
+    "position": 6
+   },
+   {
+    "title": "The Grace Spa & Massage Experience in Ho Chi Minh",
+    "link": "https://www.klook.com/vi/activity/132844-the-grace-spa-massage-experience-in-ho-chi-minh/",
+    "snippet": "Experience one of the leading spas in District 10, specializing in authentic Korean therapies. Unwind in our contemporary environment designed to elevate ...",
+    "position": 7
+   },
+   {
+    "title": "Đài Trung: Vé massage tại Ngũ Diệp Tùng Túc Thể Dưỡng ...",
+    "link": "https://www.klook.com/vi/activity/64484-wu-ye-song-spa-massage-taichung/",
+    "snippet": "Ưu đãi 23% cho dịch vụ massage chân kiểu Trung Hoa tại Ngũ Diệp Tùng Túc Thể Dưỡng Sinh Quán, massage 60 phút chỉ TWD500, rẻ hơn so với giá tại chỗ!",
+    "rating": 4.2,
+    "ratingCount": 68,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

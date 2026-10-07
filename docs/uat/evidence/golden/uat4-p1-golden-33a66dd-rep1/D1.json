@@ -1,0 +1,656 @@
+{
+  "id": "D1",
+  "group": "district-stated-vs-gps",
+  "criteria": [
+    "Every card's ADDRESS is in Quận 3 (explicit 'Quận 3' or a Quận 3 ward: Bàn Cờ, Xuân Hòa, Nhiêu Lộc, Võ Thị Sáu), or the card is explicitly marked as outside Quận 3",
+    "The prose never claims a venue outside Quận 3 is in Quận 3",
+    "If nothing in Quận 3 is found, it says so honestly and labels the alternatives as outside Quận 3 with their real district",
+    "The stated Quận 3 beats the user's GPS (Quận 1): results are not simply the places nearest the user"
+  ],
+  "turns": [
+    {
+      "user": "Quán phở ngon ở Quận 3",
+      "status": 200,
+      "elapsedMs": 8425,
+      "usage": {
+        "promptTokens": 2029,
+        "completionTokens": 479
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn khuya",
+            "type": "restaurant",
+            "location": "quan 3"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "searching"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ẩm Thực Quê Nhà Quận 3",
+              "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2440,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "09:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Sao Cũng Được",
+              "address": "69 Rạch Bùng Binh, Nhiêu Lộc, Hồ Chí Minh 100000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 42,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "15:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+              "address": "122D Cách Mạng Tháng Tám, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 1292,
+              "price": null,
+              "categories": [
+                "Quán mì"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mực 280",
+              "address": "278 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 508,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "14:30–03:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78454,106.69403",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ẩm Thực Quê Nhà Quận 3",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmv7IlOCtqEJqExcl6tPYBQpsoZ4hqJhBjMbcPpr_MoIInazyjEy9LeGIucv3Gb0qjhg9VAZ1hIv9OJKXke4g1Oa3wBV2RhNbz2RHsaAtLsvgGfKRHQOmc27v2cpqZgwqtoNlR34g",
+                "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2440,
+                "openingHours": "09:00–23:00",
+                "openNow": false,
+                "phone": "+84 938 226 166",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00",
+                  "Chủ Nhật": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13954616740709857054",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BA%A8m%20Th%E1%BB%B1c%20Qu%C3%AA%20Nh%C3%A0%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938226166",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78280,106.68006",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sao Cũng Được",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4tj2YrwPzSVgtPwk6QTsrFu8VnLr-kLyLjRwYPFgWwt9-wOsHaoFQmSILtZ5k_GSaDcCvQrgM5-CqjMOD0mv7kUBnWDNM8iUB4PQSbXwXnO5BLWbJTpmhs5PfSU4UCWJpmKI",
+                "address": "69 Rạch Bùng Binh, Nhiêu Lộc, Hồ Chí Minh 100000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 42,
+                "openingHours": "15:00–04:00",
+                "openNow": true,
+                "phone": "+84 903 853 362",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "15:00–04:00",
+                  "Thứ Hai": "15:00–04:00",
+                  "Thứ Ba": "15:00–04:00",
+                  "Thứ Tư": "15:00–04:00",
+                  "Thứ Năm": "15:00–04:00",
+                  "Thứ Sáu": "15:00–04:00",
+                  "Thứ Bảy": "15:00–04:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6699211083010388701",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Sao%20C%C5%A9ng%20%C4%90%C6%B0%E1%BB%A3c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903853362",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77728,106.68301",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWliZ_ZYjRvcHmM4r2RIgQJ6RPB3Zvef4qXi04sup9btp4AU_iv_hIxW3tATGju1laM723xsm6Stt31qn74t8vCun_NCoQN6XcioSI50zqgqYM6vG7BcG_u8hpgvcEq2C79W_rIW",
+                "address": "122D Cách Mạng Tháng Tám, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 1292,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 967 409",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán mì"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1416523878894445603",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A2n%20Qu%C3%A1n%20S%C3%A0i%20G%C3%B2n%20-%20H%E1%BB%A7%20Ti%E1%BA%BFu%20Nam%20Vang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902967409",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78685,106.68007",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mực 280",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaZueNHp8asZTFZJDj0MjZEI2oqV5om9i80Zv_bHeH_k4A8UtH41qWJ3jBPtOcJVQezcmXiAule4qZ11emC_AbgEWCN04Csw5G51Mc02Qukc80WGj8HvEztCohZsia1U8sLnM",
+                "address": "278 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 508,
+                "openingHours": "14:30–03:00",
+                "openNow": true,
+                "phone": "+84 907 458 606",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "14:30–03:00",
+                  "Thứ Hai": "14:30–03:00",
+                  "Thứ Ba": "14:30–03:00",
+                  "Thứ Tư": "14:30–03:00",
+                  "Thứ Năm": "14:30–03:00",
+                  "Thứ Sáu": "14:30–03:00",
+                  "Thứ Bảy": "14:30–03:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10676631757614149125",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%B1c%20280%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907458606",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20khuya%20quan%203",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Sao Cũng Được",
+              "address": "69 Rạch Bùng Binh, Nhiêu Lộc, Hồ Chí Minh 100000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 42,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "15:00–04:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.5",
+                "42 reviews"
+              ]
+            },
+            {
+              "name": "Ẩm Thực Quê Nhà Quận 3",
+              "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2440,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "09:00–23:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+              "address": "122D Cách Mạng Tháng Tám, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 1292,
+              "price": null,
+              "categories": [
+                "Quán mì"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mực 280",
+              "address": "278 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 508,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "14:30–03:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.78280,106.68006",
+                "domain": "food",
+                "kind": "place",
+                "name": "Sao Cũng Được",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4tj2YrwPzSVgtPwk6QTsrFu8VnLr-kLyLjRwYPFgWwt9-wOsHaoFQmSILtZ5k_GSaDcCvQrgM5-CqjMOD0mv7kUBnWDNM8iUB4PQSbXwXnO5BLWbJTpmhs5PfSU4UCWJpmKI",
+                "address": "69 Rạch Bùng Binh, Nhiêu Lộc, Hồ Chí Minh 100000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 42,
+                "openingHours": "15:00–04:00",
+                "openNow": true,
+                "phone": "+84 903 853 362",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "15:00–04:00",
+                  "Thứ Hai": "15:00–04:00",
+                  "Thứ Ba": "15:00–04:00",
+                  "Thứ Tư": "15:00–04:00",
+                  "Thứ Năm": "15:00–04:00",
+                  "Thứ Sáu": "15:00–04:00",
+                  "Thứ Bảy": "15:00–04:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.5",
+                    "params": {
+                      "value": 4.5
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "42 reviews",
+                    "params": {
+                      "count": 42
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "1292 reviews",
+                  "params": {
+                    "count": 1292
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@quansaocungduocq3/video/7674669906264132885",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6699211083010388701",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903853362",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Sao%20C%C5%A9ng%20%C4%90%C6%B0%E1%BB%A3c%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78454,106.69403",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ẩm Thực Quê Nhà Quận 3",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmv7IlOCtqEJqExcl6tPYBQpsoZ4hqJhBjMbcPpr_MoIInazyjEy9LeGIucv3Gb0qjhg9VAZ1hIv9OJKXke4g1Oa3wBV2RhNbz2RHsaAtLsvgGfKRHQOmc27v2cpqZgwqtoNlR34g",
+                "address": "28 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2440,
+                "openingHours": "09:00–23:00",
+                "openNow": false,
+                "phone": "+84 938 226 166",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–23:00",
+                  "Thứ Ba": "09:00–23:00",
+                  "Thứ Tư": "09:00–23:00",
+                  "Thứ Năm": "09:00–23:00",
+                  "Thứ Sáu": "09:00–23:00",
+                  "Thứ Bảy": "09:00–23:00",
+                  "Chủ Nhật": "09:00–23:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13954616740709857054",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BA%A8m%20Th%E1%BB%B1c%20Qu%C3%AA%20Nh%C3%A0%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938226166",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77728,106.68301",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWliZ_ZYjRvcHmM4r2RIgQJ6RPB3Zvef4qXi04sup9btp4AU_iv_hIxW3tATGju1laM723xsm6Stt31qn74t8vCun_NCoQN6XcioSI50zqgqYM6vG7BcG_u8hpgvcEq2C79W_rIW",
+                "address": "122D Cách Mạng Tháng Tám, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 1292,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 902 967 409",
+                "openingHoursWeek": {
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày",
+                  "Chủ Nhật": "Mở cửa cả ngày"
+                },
+                "categories": [
+                  "Quán mì"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1416523878894445603",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A2n%20Qu%C3%A1n%20S%C3%A0i%20G%C3%B2n%20-%20H%E1%BB%A7%20Ti%E1%BA%BFu%20Nam%20Vang%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902967409",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78685,106.68007",
+                "domain": "food",
+                "kind": "place",
+                "name": "Mực 280",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmaZueNHp8asZTFZJDj0MjZEI2oqV5om9i80Zv_bHeH_k4A8UtH41qWJ3jBPtOcJVQezcmXiAule4qZ11emC_AbgEWCN04Csw5G51Mc02Qukc80WGj8HvEztCohZsia1U8sLnM",
+                "address": "278 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 508,
+                "openingHours": "14:30–03:00",
+                "openNow": true,
+                "phone": "+84 907 458 606",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "14:30–03:00",
+                  "Thứ Hai": "14:30–03:00",
+                  "Thứ Ba": "14:30–03:00",
+                  "Thứ Tư": "14:30–03:00",
+                  "Thứ Năm": "14:30–03:00",
+                  "Thứ Sáu": "14:30–03:00",
+                  "Thứ Bảy": "14:30–03:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10676631757614149125",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=M%E1%BB%B1c%20280%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907458606",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20khuya%20quan%203",
+            "picked": [
+              "place:osm:10.78280,106.68006",
+              "place:osm:10.77728,106.68301"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.78280,106.68006",
+            "place:osm:10.77728,106.68301"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Ẩm Thực Quê Nhà Quận 3",
+          "Sao Cũng Được",
+          "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+          "Mực 280"
+        ],
+        [
+          "Sao Cũng Được",
+          "Ẩm Thực Quê Nhà Quận 3",
+          "Nhân Quán Sài Gòn - Hủ Tiếu Nam Vang",
+          "Mực 280"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn khuya hôm nay ở Quận 3 với tầm giá phổ thông. Trong các quán tìm được, mình chọn **Sao Cũng Được** — **4.5⭐ (42 đánh giá Google Maps)**, mở cửa đến 4 giờ sáng, nên hoàn hảo cho ăn khuya. Quán này gần vị trí bạn, chuyên các món ăn nhẹ.\n\nNếu muốn chọn khác, **Nhân Quán Sài Gòn** (4.1⭐, 1.292 đánh giá) mở cả ngày, chuyên hủ tiếu & mì — cũng là lựa chọn tốt nếu bạn thích những món này hơn.\n\nTầm giá bạn dự tính là bao nhiêu?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Sao Cũng Được\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6699211083010388701\",\"primary\":false}]}[/CTA_BUTTONS]",
+      "visible": "Mình giả sử bạn muốn ăn khuya hôm nay ở Quận 3 với tầm giá phổ thông. Trong các quán tìm được, mình chọn **Sao Cũng Được** — **4.5⭐ (42 đánh giá Google Maps)**, mở cửa đến 4 giờ sáng, nên hoàn hảo cho ăn khuya. Quán này gần vị trí bạn, chuyên các món ăn nhẹ.\n\nNếu muốn chọn khác, **Nhân Quán Sài Gòn** (4.1⭐, 1.292 đánh giá) mở cả ngày, chuyên hủ tiếu & mì — cũng là lựa chọn tốt nếu bạn thích những món này hơn.\n\nTầm giá bạn dự tính là bao nhiêu?",
+      "preGuard": "Mình giả sử bạn muốn ăn khuya hôm nay ở Quận 3 với tầm giá phổ thông. Trong các quán tìm được, mình chọn **Sao Cũng Được** — **4.5⭐ (42 đánh giá Google Maps)**, mở cửa đến 4 giờ sáng, nên hoàn hảo cho ăn khuya. Quán này gần vị trí bạn, chuyên các món ăn nhẹ, có giao hàng và đặt online.\n\nNếu muốn chọn khác, **Nhân Quán Sài Gòn** (4.1⭐, 1.292 đánh giá) mở cả ngày, chuyên hủ tiếu & mì — cũng là lựa chọn tốt nếu bạn thích những món này hơn.\n\nTầm giá bạn dự tính là bao nhiêu? Dưới 100k/người, 100–200k/người, hay trên 200k/người?\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Sao Cũng Được\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Sao+Cũng+Được+Quận+3\",\"primary\":true},{\"label\":\"📍 Maps - Sao Cũng Được\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6699211083010388701\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { buildAIContext } from '@/lib/ai/contextBuilder'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
+import { pickReviewImage } from '@/lib/recommendation/placeImage'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
@@ -64,7 +65,7 @@ export async function GET(req: NextRequest) {
   // 2. Candidate places: aggregate visible community reviews by place.
   const { data: reviewRows } = await supabase
     .from('reviews')
-    .select('place_id, place_name, place_address, rating, hashtags, created_at')
+    .select('place_id, place_name, place_address, rating, hashtags, created_at, photos, thumbnail')
     .eq('is_hidden', false)
     // Content safety gate. Exclusion only — no ranking or recommendation penalty
     // is introduced here; unpublishable rows simply are not candidates.
@@ -79,13 +80,15 @@ export async function GET(req: NextRequest) {
     return parts[parts.length - 1] || addr
   }
 
-  type PlaceAgg = { name: string; address: string | null; ratings: number[]; tags: Set<string>; latest: string }
+  type PlaceAgg = { name: string; address: string | null; ratings: number[]; tags: Set<string>; latest: string; photo: string | null }
   const byPlace = new Map<string, PlaceAgg>()
   for (const r of reviewRows ?? []) {
     const pid = (r.place_id as string | null)?.trim()
     if (!pid) continue
     if (isShareOnlyPlace(r.place_name as string | null)) continue // skip place-less "sharing" posts
-    const e: PlaceAgg = byPlace.get(pid) ?? { name: r.place_name ?? '', address: r.place_address ?? null, ratings: [], tags: new Set<string>(), latest: r.created_at as string }
+    const e: PlaceAgg = byPlace.get(pid) ?? { name: r.place_name ?? '', address: r.place_address ?? null, ratings: [], tags: new Set<string>(), latest: r.created_at as string, photo: null }
+    // Rows arrive newest first: the first public https photo is the place's most recent one.
+    if (!e.photo) e.photo = pickReviewImage(r)
     if (typeof r.rating === 'number') e.ratings.push(r.rating)
     for (const t of (r.hashtags ?? [])) if (t) e.tags.add(String(t))
     if ((r.created_at as string) > e.latest) e.latest = r.created_at as string
@@ -132,8 +135,16 @@ export async function GET(req: NextRequest) {
 
   const result = rankCandidates(context, candidates)
 
+  // UAT 2026-09-28 (design "Gợi ý cho bạn"): each card shows the place's address, photo, rating and
+  // recent activity. Additive fields only — existing clients read the same keys as before.
+  const detailOf = (id: string) => {
+    const e = byPlace.get(id)
+    if (!e) return {}
+    const avg = e.ratings.length ? Math.round((e.ratings.reduce((a, b) => a + b, 0) / e.ratings.length) * 10) / 10 : null
+    return { address: e.address, photoUrl: e.photo, averageRating: avg, reviewCount: e.ratings.length, latestReviewAt: e.latest }
+  }
   return NextResponse.json({
-    recommendations: result.recommendations,
+    recommendations: result.recommendations.map(r => ({ ...r, ...detailOf(r.placeId) })),
     explanation: result.explanation,
     personalized: !!built,
     confidence: context.confidence,

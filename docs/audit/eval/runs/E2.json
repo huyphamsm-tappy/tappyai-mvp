@@ -1,0 +1,141 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 12014,
+  "evidenceId": "e1edc2cf-b76f-4589-aee3-6f5736c01816",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "rạp phim Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "cinema"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "rating": 4.4,
+      "count": 1746,
+      "distance_km": 0.2,
+      "address": "Khách sạn Liberty Citypoint, Pasteur, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "rating": 4.3,
+      "count": 4500,
+      "distance_km": 0.2,
+      "address": "72 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "rating": 4.3,
+      "count": 9369,
+      "distance_km": 0.9,
+      "address": "116 Nguyễn Du, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "rating": 4.3,
+      "count": 1256,
+      "distance_km": 0.8,
+      "address": "6 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "rating": 4.2,
+      "count": 6025,
+      "distance_km": 2.1,
+      "address": "271 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Beta Cinemas Trần Quang Khải",
+      "rating": 4.1,
+      "count": 1313,
+      "distance_km": 1.9,
+      "address": "62 Trần Quang Khải, Tân Định, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "CGV Liberty Citypoint",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 1746,
+        "distance_km": 0.2,
+        "attributes": []
+      }
+    },
+    {
+      "name": "CGV Vincom Center Đồng Khởi",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 4500,
+        "distance_km": 0.2,
+        "attributes": []
+      }
+    },
+    {
+      "name": "Galaxy Cinema Nguyễn Du",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 9369,
+        "distance_km": 0.9,
+        "attributes": []
+      }
+    },
+    {
+      "name": "DCINE Bến Thành",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 1256,
+        "distance_km": 0.8,
+        "attributes": []
+      }
+    },
+    {
+      "name": "Cinestar Quốc Thanh",
+      "role": null,
+      "evidence": {
+        "rating": 4.2,
+        "reviews": 6025,
+        "distance_km": 2.1,
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ tìm các rạp phim gần vị trí của bạn ở Quận 1 ngay.\n\n**CGV Liberty Citypoint** là lựa chọn gần nhất cho bạn — chỉ cách 0.2km, đánh giá 4.4⭐ từ 1.746 lượt đánh giá. Rạp này nằm ngay tại khách sạn Liberty Citypoint trên đường Pasteur, rất tiện để xem phim.\n\nNếu bạn muốn nhiều lựa chọn phim hơn, **CGV Vincom Center Đồng Khởi** cũng cách bạn 0.2km, có 4.500 đánh giá (nhiều hơn) nhưng đánh giá chung là 4.3⭐. Hoặc **Galaxy Cinema Nguyễn Du** (0.9km) với 9.369 đánh giá — rạp này được yêu thích nhất về số lượng khách.\n\nBạn muốn xem phim gì hôm nay không?\n\n[FOLLOWUPS]xem phim gì hôm nay|rạp phim khác ở Q1|giờ chiếu phim[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm các rạp phim gần vị trí của bạn ở Quận 1 ngay.\n\n**CGV Liberty Citypoint** là lựa chọn gần nhất cho bạn — chỉ cách 0.2km, đánh giá 4.4⭐ từ 1.746 lượt đánh giá. Rạp này nằm ngay tại khách sạn Liberty Citypoint trên đường Pasteur, rất tiện để xem phim.\n\nNếu bạn muốn nhiều lựa chọn phim hơn, **CGV Vincom Center Đồng Khởi** cũng cách bạn 0.2km, có 4.500 đánh giá (nhiều hơn) nhưng đánh giá chung là 4.3⭐. Hoặc **Galaxy Cinema Nguyễn Du** (0.9km) với 9.369 đánh giá — rạp này được yêu thích nhất về số lượng khách.\n\nBạn muốn xem phim gì hôm nay không?\n\n[FOLLOWUPS]xem phim gì hôm nay|rạp phim khác ở Q1|giờ chiếu phim[/FOLLOWUPS]"
+    }
+  ]
+}

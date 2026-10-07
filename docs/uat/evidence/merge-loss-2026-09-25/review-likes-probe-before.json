@@ -1,0 +1,27 @@
+{
+ "label": "before",
+ "ref": "zdaprdfgpbpnxyofagmc",
+ "at": "2026-09-25T00:11:12.829Z",
+ "review": "8d959f57-3f60-48f9-966a-d769c2185bbb",
+ "owner": "manual.uat.user",
+ "reads": {
+  "anon_key_only": {
+   "owner_like_collection": 1,
+   "all_like_rows": 1,
+   "rpc_review_likers": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.review_likers wit",
+   "rpc_hot_places_24h": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.hot_places_24h wi"
+  },
+  "other_user (manual.uat.fresh)": {
+   "owner_like_collection": 1,
+   "all_like_rows": 1,
+   "rpc_review_likers": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.review_likers wit",
+   "rpc_hot_places_24h": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.hot_places_24h wi"
+  },
+  "owner (manual.uat.user)": {
+   "owner_like_collection": 1,
+   "all_like_rows": 1,
+   "rpc_review_likers": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.review_likers wit",
+   "rpc_hot_places_24h": "status 404: {\"code\":\"PGRST202\",\"details\":\"Searched for the function public.hot_places_24h wi"
+  }
+ }
+}

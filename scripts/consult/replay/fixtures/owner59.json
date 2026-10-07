@@ -1,0 +1,640 @@
+{
+ "_about": "Owner review (c40-step2) — the 59 questions, copied from the review manifest (sha 83853cc6c857c7e029ec6dd96a4b43e2dca7f903, generated 28/09/2026 22:03 GMT+7). Only id/domain/title/turns[].q are kept; the replay harness reads this when the scratchpad manifest is gone.",
+ "items": [
+  {
+   "id": "F1",
+   "domain": "food",
+   "title": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người",
+   "turns": [
+    {
+     "q": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    }
+   ]
+  },
+  {
+   "id": "F2",
+   "domain": "food",
+   "title": "tim quan bun bo ngon o q1 duoi 80k",
+   "turns": [
+    {
+     "q": "tim quan bun bo ngon o q1 duoi 80k"
+    }
+   ]
+  },
+  {
+   "id": "F3",
+   "domain": "food",
+   "title": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?",
+   "turns": [
+    {
+     "q": "Đi date với gấu tối nay, chỗ nào lãng mạn yên tĩnh ở Quận 3?"
+    }
+   ]
+  },
+  {
+   "id": "F4",
+   "domain": "food",
+   "title": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+   "turns": [
+    {
+     "q": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    }
+   ]
+  },
+  {
+   "id": "F5",
+   "domain": "food",
+   "title": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+   "turns": [
+    {
+     "q": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+     "q": "quán này mở mấy giờ?"
+    }
+   ]
+  },
+  {
+   "id": "F6",
+   "domain": "food",
+   "title": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người",
+   "turns": [
+    {
+     "q": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+     "q": "quán số 2 có đông không?"
+    }
+   ]
+  },
+  {
+   "id": "F7",
+   "domain": "food",
+   "title": "ăn gì ngon giờ",
+   "turns": [
+    {
+     "q": "ăn gì ngon giờ"
+    }
+   ]
+  },
+  {
+   "id": "F7b",
+   "domain": "clarify",
+   "title": "ăn gì ngon giờ",
+   "turns": [
+    {
+     "q": "ăn gì ngon giờ"
+    },
+    {
+     "q": "dưới 100k/người"
+    }
+   ]
+  },
+  {
+   "id": "F8",
+   "domain": "food",
+   "title": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1",
+   "turns": [
+    {
+     "q": "Sinh nhật sếp, tiếp khách 8 người, phòng riêng, tầm 500k/người, Quận 1"
+    }
+   ]
+  },
+  {
+   "id": "S1",
+   "domain": "shopping",
+   "title": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu",
+   "turns": [
+    {
+     "q": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu"
+    }
+   ]
+  },
+  {
+   "id": "S2",
+   "domain": "shopping",
+   "title": "mua laptop van phong duoi 15tr",
+   "turns": [
+    {
+     "q": "mua laptop van phong duoi 15tr"
+    }
+   ]
+  },
+  {
+   "id": "S3",
+   "domain": "shopping",
+   "title": "mua laptop van phong duoi 15tr",
+   "turns": [
+    {
+     "q": "mua laptop van phong duoi 15tr"
+    },
+    {
+     "q": "cái rẻ nhất có tốt không?"
+    }
+   ]
+  },
+  {
+   "id": "S4",
+   "domain": "shopping",
+   "title": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu",
+   "turns": [
+    {
+     "q": "Robot hút bụi cho nhà có chó, tầm 5-7 triệu"
+    }
+   ]
+  },
+  {
+   "id": "S5",
+   "domain": "shopping",
+   "title": "quà sinh nhật cho bạn gái tầm 1tr",
+   "turns": [
+    {
+     "q": "quà sinh nhật cho bạn gái tầm 1tr"
+    }
+   ]
+  },
+  {
+   "id": "S5b",
+   "domain": "clarify",
+   "title": "quà sinh nhật cho bạn gái tầm 1tr",
+   "turns": [
+    {
+     "q": "quà sinh nhật cho bạn gái tầm 1tr"
+    },
+    {
+     "q": "nước hoa"
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "domain": "shopping",
+   "title": "mua gì bây giờ",
+   "turns": [
+    {
+     "q": "mua gì bây giờ"
+    }
+   ]
+  },
+  {
+   "id": "S6b",
+   "domain": "clarify",
+   "title": "mua gì bây giờ",
+   "turns": [
+    {
+     "q": "mua gì bây giờ"
+    },
+    {
+     "q": "tai nghe bluetooth"
+    }
+   ]
+  },
+  {
+   "id": "S7",
+   "domain": "shopping",
+   "title": "Máy lọc không khí cho phòng ngủ 20m2",
+   "turns": [
+    {
+     "q": "Máy lọc không khí cho phòng ngủ 20m2"
+    }
+   ]
+  },
+  {
+   "id": "S8",
+   "domain": "shopping",
+   "title": "Nồi chiên không dầu 5L loại nào tốt",
+   "turns": [
+    {
+     "q": "Nồi chiên không dầu 5L loại nào tốt"
+    }
+   ]
+  },
+  {
+   "id": "T1",
+   "domain": "travel",
+   "title": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu",
+   "turns": [
+    {
+     "q": "Đi Đà Nẵng 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu"
+    }
+   ]
+  },
+  {
+   "id": "T2",
+   "domain": "travel",
+   "title": "khach san da nang gan bien duoi 1tr/dem",
+   "turns": [
+    {
+     "q": "khach san da nang gan bien duoi 1tr/dem"
+    }
+   ]
+  },
+  {
+   "id": "T3",
+   "domain": "travel",
+   "title": "khach san da nang gan bien duoi 1tr/dem",
+   "turns": [
+    {
+     "q": "khach san da nang gan bien duoi 1tr/dem"
+    },
+    {
+     "q": "Cái thứ hai có bao gồm ăn sáng không?"
+    }
+   ]
+  },
+  {
+   "id": "T4",
+   "domain": "travel",
+   "title": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?",
+   "turns": [
+    {
+     "q": "Cuối tuần này gia đình 4 người đi đâu gần Sài Gòn?"
+    }
+   ]
+  },
+  {
+   "id": "T5",
+   "domain": "travel",
+   "title": "đi chơi ở đâu",
+   "turns": [
+    {
+     "q": "đi chơi ở đâu"
+    }
+   ]
+  },
+  {
+   "id": "T5b",
+   "domain": "clarify",
+   "title": "đi chơi ở đâu",
+   "turns": [
+    {
+     "q": "đi chơi ở đâu"
+    },
+    {
+     "q": "3–5 người"
+    }
+   ]
+  },
+  {
+   "id": "T6",
+   "domain": "travel",
+   "title": "Hội An có gì hay, đi 1 ngày",
+   "turns": [
+    {
+     "q": "Hội An có gì hay, đi 1 ngày"
+    }
+   ]
+  },
+  {
+   "id": "T7",
+   "domain": "travel",
+   "title": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất",
+   "turns": [
+    {
+     "q": "Vé máy bay Sài Gòn Hà Nội tuần sau rẻ nhất"
+    }
+   ]
+  },
+  {
+   "id": "T8",
+   "domain": "travel",
+   "title": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+   "turns": [
+    {
+     "q": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    }
+   ]
+  },
+  {
+   "id": "P1",
+   "domain": "spa",
+   "title": "Spa nào tốt rẻ ở Đà Nẵng",
+   "turns": [
+    {
+     "q": "Spa nào tốt rẻ ở Đà Nẵng"
+    }
+   ]
+  },
+  {
+   "id": "P2",
+   "domain": "spa",
+   "title": "spa massage chan gan q1 duoi 300k",
+   "turns": [
+    {
+     "q": "spa massage chan gan q1 duoi 300k"
+    }
+   ]
+  },
+  {
+   "id": "P3",
+   "domain": "spa",
+   "title": "spa massage chan gan q1 duoi 300k",
+   "turns": [
+    {
+     "q": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+     "q": "chỗ đó có đặt trước được không?"
+    }
+   ]
+  },
+  {
+   "id": "P4",
+   "domain": "spa",
+   "title": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7",
+   "turns": [
+    {
+     "q": "Đi spa với mẹ cuối tuần, chỗ nào yên tĩnh sạch sẽ Quận 7"
+    }
+   ]
+  },
+  {
+   "id": "P5",
+   "domain": "spa",
+   "title": "massage",
+   "turns": [
+    {
+     "q": "massage"
+    }
+   ]
+  },
+  {
+   "id": "P5b",
+   "domain": "clarify",
+   "title": "massage",
+   "turns": [
+    {
+     "q": "massage"
+    },
+    {
+     "q": "dưới 300k"
+    }
+   ]
+  },
+  {
+   "id": "P6",
+   "domain": "spa",
+   "title": "Spa couple cho 2 người tối nay gần Quận 1",
+   "turns": [
+    {
+     "q": "Spa couple cho 2 người tối nay gần Quận 1"
+    }
+   ]
+  },
+  {
+   "id": "P7",
+   "domain": "spa",
+   "title": "gội đầu dưỡng sinh gần đây",
+   "turns": [
+    {
+     "q": "gội đầu dưỡng sinh gần đây"
+    }
+   ]
+  },
+  {
+   "id": "P7b",
+   "domain": "clarify",
+   "title": "gội đầu dưỡng sinh gần đây",
+   "turns": [
+    {
+     "q": "gội đầu dưỡng sinh gần đây"
+    },
+    {
+     "q": "1–2 người"
+    }
+   ]
+  },
+  {
+   "id": "P8",
+   "domain": "spa",
+   "title": "Spa nào mở khuya sau 22h ở Quận 3",
+   "turns": [
+    {
+     "q": "Spa nào mở khuya sau 22h ở Quận 3"
+    }
+   ]
+  },
+  {
+   "id": "E1",
+   "domain": "entertainment",
+   "title": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+   "turns": [
+    {
+     "q": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    }
+   ]
+  },
+  {
+   "id": "E2",
+   "domain": "entertainment",
+   "title": "rap phim nao gan q1",
+   "turns": [
+    {
+     "q": "rap phim nao gan q1"
+    }
+   ]
+  },
+  {
+   "id": "E2b",
+   "domain": "clarify",
+   "title": "rap phim nao gan q1",
+   "turns": [
+    {
+     "q": "rap phim nao gan q1"
+    },
+    {
+     "q": "dưới 200k/người"
+    }
+   ]
+  },
+  {
+   "id": "E3",
+   "domain": "entertainment",
+   "title": "quán bar nào chill có nhạc sống Quận 1",
+   "turns": [
+    {
+     "q": "quán bar nào chill có nhạc sống Quận 1"
+    }
+   ]
+  },
+  {
+   "id": "E4",
+   "domain": "entertainment",
+   "title": "quán bar nào chill có nhạc sống Quận 1",
+   "turns": [
+    {
+     "q": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+     "q": "chỗ đó có giữ xe không?"
+    }
+   ]
+  },
+  {
+   "id": "E5",
+   "domain": "entertainment",
+   "title": "cuối tuần làm gì",
+   "turns": [
+    {
+     "q": "cuối tuần làm gì"
+    }
+   ]
+  },
+  {
+   "id": "E5b",
+   "domain": "clarify",
+   "title": "cuối tuần làm gì",
+   "turns": [
+    {
+     "q": "cuối tuần làm gì"
+    },
+    {
+     "q": "đi chơi / giải trí"
+    }
+   ]
+  },
+  {
+   "id": "E6",
+   "domain": "entertainment",
+   "title": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+   "turns": [
+    {
+     "q": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    }
+   ]
+  },
+  {
+   "id": "E7",
+   "domain": "entertainment",
+   "title": "Xem phim gì hay tối nay",
+   "turns": [
+    {
+     "q": "Xem phim gì hay tối nay"
+    }
+   ]
+  },
+  {
+   "id": "E8",
+   "domain": "entertainment",
+   "title": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+   "turns": [
+    {
+     "q": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    }
+   ]
+  },
+  {
+   "id": "O1",
+   "domain": "owner",
+   "title": "tối nay có chỗ nào đi chơi ở sài gòn ko",
+   "turns": [
+    {
+     "q": "tối nay có chỗ nào đi chơi ở sài gòn ko"
+    }
+   ]
+  },
+  {
+   "id": "O2",
+   "domain": "owner",
+   "title": "mua đồ ăn vặt",
+   "turns": [
+    {
+     "q": "mua đồ ăn vặt"
+    }
+   ]
+  },
+  {
+   "id": "O2b",
+   "domain": "owner",
+   "title": "mua đồ ăn vặt",
+   "turns": [
+    {
+     "q": "mua đồ ăn vặt"
+    },
+    {
+     "q": "tối nay đi đâu chơi quận 1"
+    }
+   ]
+  },
+  {
+   "id": "O3",
+   "domain": "owner",
+   "title": "quán phở ngon quận 3",
+   "turns": [
+    {
+     "q": "quán phở ngon quận 3"
+    }
+   ]
+  },
+  {
+   "id": "O4",
+   "domain": "owner",
+   "title": "mua tai nghe bluetooth dưới 1 triệu",
+   "turns": [
+    {
+     "q": "mua tai nghe bluetooth dưới 1 triệu"
+    }
+   ]
+  },
+  {
+   "id": "O5",
+   "domain": "owner",
+   "title": "đặt phở giao tận nhà quận 1",
+   "turns": [
+    {
+     "q": "đặt phở giao tận nhà quận 1"
+    }
+   ]
+  },
+  {
+   "id": "O6",
+   "domain": "owner",
+   "title": "khách sạn Đà Lạt dưới 1 triệu một đêm",
+   "turns": [
+    {
+     "q": "khách sạn Đà Lạt dưới 1 triệu một đêm"
+    }
+   ]
+  },
+  {
+   "id": "O7",
+   "domain": "owner",
+   "title": "mua vé concert tháng 10 ở Sài Gòn",
+   "turns": [
+    {
+     "q": "mua vé concert tháng 10 ở Sài Gòn"
+    }
+   ]
+  },
+  {
+   "id": "O8",
+   "domain": "owner",
+   "title": "vé máy bay Sài Gòn đi Hà Nội",
+   "turns": [
+    {
+     "q": "vé máy bay Sài Gòn đi Hà Nội"
+    }
+   ]
+  },
+  {
+   "id": "O9",
+   "domain": "owner",
+   "title": "đi du lịch Đà Nẵng 3 ngày 2 đêm",
+   "turns": [
+    {
+     "q": "đi du lịch Đà Nẵng 3 ngày 2 đêm"
+    }
+   ]
+  },
+  {
+   "id": "O10",
+   "domain": "owner",
+   "title": "tìm giùm cái ốp 17 promax uag",
+   "turns": [
+    {
+     "q": "tìm giùm cái ốp 17 promax uag"
+    }
+   ]
+  }
+ ]
+}

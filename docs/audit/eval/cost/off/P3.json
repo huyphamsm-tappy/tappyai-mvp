@@ -1,0 +1,33 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 4710,
+  "evidenceId": "518c59a9-201d-4600-99d0-444a8ec7d003",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa từ kết quả tìm kiếm. Để chắc chắn, bạn nên:\n\n1. **Gọi trực tiếp** qua số điện thoại của spa (nếu có trên Google Maps)\n2. **Nhắn tin Facebook** hoặc **Zalo** nếu spa có trang này\n3. **Xem trên website** của spa (nếu có) để kiểm tra chính sách đặt chỗ\n\nThường các spa ở Sài Gòn đều hỗ trợ đặt trước, nhưng mình không thể xác nhận 100% cho Hyan Spa mà không có dữ liệu cụ thể. Bạn liên hệ trực tiếp sẽ nhanh nhất! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm spa massage chân gần Quận 1 với budget dưới 300k cho bạn nhé.\n\nSpa này chuyên massage chân, body massage và hair spa, vị trí rất gần Quận 1 nên tiện lợi 👍\n\nTuy **CHẠM SPA** có nhiều đánh giá hơn (189 reviews), nhưng Hyan Spa gần hơn và đánh giá cao hơn, phù hợp hơn với nhu cầu của bạn.\n\nBạn có thể xem chi tiết và liên hệ trực tiếp qua website hoặc Google Maps để hỏi giá dịch vụ massage chân cụ thể nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website — Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps — Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Giá massage chân bao nhiêu?|Spa nào có gói combo rẻ?|Tìm spa khác gần hơn[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chưa có thông tin chi tiết về chính sách đặt trước của Hyan Spa từ kết quả tìm kiếm. Để chắc chắn, bạn nên:\n\n1. **Gọi trực tiếp** qua số điện thoại của spa (nếu có trên Google Maps)\n2. **Nhắn tin Facebook** hoặc **Zalo** nếu spa có trang này\n3. **Xem trên website** của spa (nếu có) để kiểm tra chính sách đặt chỗ\n\nThường các spa ở Sài Gòn đều hỗ trợ đặt trước, nhưng mình không thể xác nhận 100% cho Hyan Spa mà không có dữ liệu cụ thể. Bạn liên hệ trực tiếp sẽ nhanh nhất! 😊"
+    }
+  ]
+}

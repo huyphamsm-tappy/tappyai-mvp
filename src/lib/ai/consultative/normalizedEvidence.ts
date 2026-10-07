@@ -109,6 +109,30 @@ const CONDITION_TERMS: { re: RegExp; label: string }[] = [
   { re: new RegExp(`(?<![${VN_LETTER}])c[uũ](?![${VN_LETTER}])`), label: 'Cũ' },
 ]
 
+/**
+ * A stable key for each condition label, for clients that must SAY it.
+ *
+ * The labels above are deliberately the seller's own Vietnamese wording and are
+ * part of `identityKey`, so they cannot be renamed without regrouping every
+ * entity. They also reached an English session verbatim - "chip ? · 16GB · 512GB
+ * · Chính hãng" inside an otherwise English card.
+ *
+ * So the label stays the label, and this map adds the key a dictionary can hang
+ * a translation on. A label with no entry (none today) degrades to the label
+ * itself, which is what shipped before.
+ */
+export const CONDITION_KEY: Readonly<Record<string, string>> = {
+  'Đại lý chính thức': 'dealerOfficial',
+  'Bảo hành chính hãng': 'warrantyOfficial',
+  'Chính hãng': 'genuine',
+  'Chính thức': 'official',
+  'Like new': 'likeNew',
+  'Refurbished': 'refurbished',
+  'Sealed': 'sealed',
+  '99%': 'gradeHigh',
+  'Cũ': 'used',
+}
+
 export function conditionFromTitle(title: string): Known<string> {
   const t = normalizeVN(title.toLowerCase())
   for (const c of CONDITION_TERMS) if (c.re.test(t)) return c.label

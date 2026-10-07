@@ -50,15 +50,25 @@ const name = (cn: string) => seq(
 const ECDSA_SHA256 = seq(oid('1.2.840.10045.4.3.2'))
 
 let serial = 1
-function makeCert(subjectCn: string, issuerCn: string, subjectKey: KeyObject, issuerKey: KeyObject): X509Certificate {
+interface CertOpts {
+  /** Extension OIDs to carry, each with a NULL value — how Apple's marker extensions are encoded. */
+  extOids?: string[]
+  notBefore?: Date
+  notAfter?: Date
+}
+function makeCert(subjectCn: string, issuerCn: string, subjectKey: KeyObject, issuerKey: KeyObject, opts: CertOpts = {}): X509Certificate {
+  const extensions = opts.extOids?.length
+    ? [tlv(0xa3, seq(...opts.extOids.map(o => seq(oid(o), tlv(0x04, Buffer.from([0x05, 0x00]))))))]
+    : []
   const tbs = seq(
     tlv(0xa0, tlv(0x02, Buffer.from([2]))), // [0] version v3
     tlv(0x02, Buffer.from([serial++])),
     ECDSA_SHA256,
     name(issuerCn),
-    seq(utc(new Date(Date.now() - 86_400_000)), utc(new Date(Date.now() + 365 * 86_400_000))),
+    seq(utc(opts.notBefore ?? new Date(Date.now() - 86_400_000)), utc(opts.notAfter ?? new Date(Date.now() + 365 * 86_400_000))),
     name(subjectCn),
     subjectKey.export({ type: 'spki', format: 'der' }) as Buffer,
+    ...extensions,
   )
   const signature = sign('sha256', tbs, issuerKey) // DER ECDSA-Sig-Value, what X.509 carries
   return new X509Certificate(seq(tbs, ECDSA_SHA256, tlv(0x03, Buffer.concat([Buffer.from([0]), signature]))))
@@ -80,6 +90,23 @@ function forgedAppleChain() {
   const rootCert = makeCert('Apple Root CA - G3', 'Apple Root CA - G3', root.publicKey, root.privateKey)
   const leafCert = makeCert('Prod ECC Mac App Store and iTunes Store Receipt Signing', 'Apple Root CA - G3', leaf.publicKey, root.privateKey)
   return { rootCert, leafCert, leafKey: leaf.privateKey }
+}
+
+const LEAF_OID = '1.2.840.113635.100.6.11.1'
+const WWDR_OID = '1.2.840.113635.100.6.2.1'
+
+/**
+ * A chain shaped like Apple's real one: root → WWDR intermediate → receipt-signing leaf. Each
+ * certificate's marker can be dropped, and the leaf's validity moved, to build the attacks.
+ */
+function appleShapedChain(opts: { leafOids?: string[]; intermediateOids?: string[]; leaf?: CertOpts } = {}) {
+  const root = ec()
+  const inter = ec()
+  const leaf = ec()
+  const rootCert = makeCert('Apple Root CA - G3', 'Apple Root CA - G3', root.publicKey, root.privateKey)
+  const interCert = makeCert('Apple Worldwide Developer Relations Certification Authority', 'Apple Root CA - G3', inter.publicKey, root.privateKey, { extOids: opts.intermediateOids ?? [WWDR_OID] })
+  const leafCert = makeCert('Prod ECC Mac App Store and iTunes Store Receipt Signing', 'Apple Worldwide Developer Relations Certification Authority', leaf.publicKey, inter.privateKey, { extOids: opts.leafOids ?? [LEAF_OID], ...opts.leaf })
+  return { chain: [leafCert, interCert, rootCert], rootCert, leafKey: leaf.privateKey }
 }
 
 const savedPem = process.env.APPLE_ROOT_CA_PEM
@@ -114,9 +141,9 @@ describe('Apple JWS — the root is pinned in code (security-audit C2)', () => {
   it('APPLE_ROOT_CA_PEM ADDS an anchor: the same chain passes only once its root is configured', async () => {
     // Proves the rest of the path (chain, names, signature) works end to end, and that the pin is
     // the only thing that stopped the forged chain above.
-    const { rootCert, leafCert, leafKey } = forgedAppleChain()
+    const { chain, rootCert, leafKey } = appleShapedChain()
     process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
-    await expect(verifyTransactionInfo(await jws([leafCert, rootCert], leafKey))).resolves.toMatchObject({ productId: 'pro_monthly' })
+    await expect(verifyTransactionInfo(await jws(chain, leafKey))).resolves.toMatchObject({ productId: 'pro_monthly' })
   })
 
   it('rejects a trusted root that is not self-signed', async () => {
@@ -139,8 +166,52 @@ describe('Apple JWS — the root is pinned in code (security-audit C2)', () => {
   })
 
   it('rejects a payload signed by a key that is not the leaf certificate', async () => {
-    const { rootCert, leafCert } = forgedAppleChain()
+    const { chain, rootCert } = appleShapedChain()
     process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
-    await expect(verifyTransactionInfo(await jws([leafCert, rootCert], ec().privateKey))).rejects.toThrow(/signature invalid/)
+    await expect(verifyTransactionInfo(await jws(chain, ec().privateKey))).rejects.toThrow(/signature invalid/)
+  })
+})
+
+// Security audit 2026-09-30. In each case below the root IS trusted (configured as an anchor), so
+// the pin passes — exactly the position of a developer holding a certificate that really chains to
+// Apple Root CA - G3 (e.g. via Apple WWDR G6). Only the checks Apple's own library makes stop it.
+describe('Apple JWS — a pinned root is not enough (developer-held certificates)', () => {
+  it('🚨 a leaf WITHOUT the App Store receipt-signing marker is refused', async () => {
+    const { chain, rootCert, leafKey } = appleShapedChain({ leafOids: [] })
+    process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
+    await expect(verifyTransactionInfo(await jws(chain, leafKey))).rejects.toThrow(/marker OID missing/)
+  })
+
+  it('🚨 an intermediate WITHOUT the WWDR marker is refused', async () => {
+    const { chain, rootCert, leafKey } = appleShapedChain({ intermediateOids: [] })
+    process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
+    await expect(verifyTransactionInfo(await jws(chain, leafKey))).rejects.toThrow(/marker OID missing/)
+  })
+
+  it('🚨 a two-certificate chain straight off a trusted root is refused', async () => {
+    const { rootCert, leafCert, leafKey } = forgedAppleChain()
+    process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
+    await expect(verifyTransactionInfo(await jws([leafCert, rootCert], leafKey))).rejects.toThrow(/leaf, intermediate, root/)
+  })
+
+  it('🚨 an expired leaf is refused', async () => {
+    const past = { notBefore: new Date(Date.now() - 400 * 86_400_000), notAfter: new Date(Date.now() - 86_400_000) }
+    const { chain, rootCert, leafKey } = appleShapedChain({ leaf: past })
+    process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
+    await expect(verifyTransactionInfo(await jws(chain, leafKey))).rejects.toThrow(/validity/)
+  })
+
+  it('🚨 the header cannot choose the algorithm', async () => {
+    const root = ec()
+    const inter = ec()
+    const leaf = generateKeyPairSync('ec', { namedCurve: 'P-384' })
+    const rootCert = makeCert('Apple Root CA - G3', 'Apple Root CA - G3', root.publicKey, root.privateKey)
+    const interCert = makeCert('Apple WWDR', 'Apple Root CA - G3', inter.publicKey, root.privateKey, { extOids: [WWDR_OID] })
+    const leafCert = makeCert('Leaf', 'Apple WWDR', leaf.publicKey, inter.privateKey, { extOids: [LEAF_OID] })
+    process.env.APPLE_ROOT_CA_PEM = rootCert.toString()
+    const token = await new CompactSign(new TextEncoder().encode(JSON.stringify({ transactionId: '1' })))
+      .setProtectedHeader({ alg: 'ES384', x5c: [leafCert, interCert, rootCert].map(b64) })
+      .sign(leaf.privateKey)
+    await expect(verifyTransactionInfo(token)).rejects.toThrow(/Unexpected JWS algorithm/)
   })
 })

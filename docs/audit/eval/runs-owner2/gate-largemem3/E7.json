@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 4707,
+  "evidenceId": "cbe06cc3-f69e-4449-9674-08acd448aa05",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho tâm trạng thư giãn:\n\n**Deadpool & Wolverine** — nếu thích hành động hài hước, bộ phim này vừa có cảnh hành động mãn nhãn vừa hài hước, không quá nặng nề cho tối.\n\n**Wicked** — nếu muốn xem musical/drama nhẹ nhàng, phim có âm nhạc hay và câu chuyện cảm động, phù hợp để thư giãn sau ngày làm việc.\n\n**Inside Out 2** — nếu thích phim hoạt hình nhưng muốn có chiều sâu cảm xúc, bộ phim này vừa dễ thương vừa có ý nghĩa, không quá dài.",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì? Mình gợi ý 3 bộ phim hay cho tâm trạng thư giãn:\n\n**Deadpool & Wolverine** — nếu thích hành động hài hước, bộ phim này vừa có cảnh hành động mãn nhãn vừa hài hước, không quá nặng nề cho tối.\n\n**Wicked** — nếu muốn xem musical/drama nhẹ nhàng, phim có âm nhạc hay và câu chuyện cảm động, phù hợp để thư giãn sau ngày làm việc.\n\n**Inside Out 2** — nếu thích phim hoạt hình nhưng muốn có chiều sâu cảm xúc, bộ phim này vừa dễ thương vừa có ý nghĩa, không quá dài."
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

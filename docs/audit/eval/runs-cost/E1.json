@@ -1,0 +1,165 @@
+{
+  "id": "E1",
+  "text": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 14301,
+  "evidenceId": "eccc0002-fc0b-47d5-9af6-f81aad92c0c7",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi tối nay quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "cafe lounge quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "cafe"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "rating": 4.6,
+      "count": 12774,
+      "hours": "08:00–21:00",
+      "distance_km": 0.5,
+      "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "rating": 4.5,
+      "count": 15637,
+      "hours": "07:00–22:00",
+      "distance_km": 1,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Saigon Skydeck",
+      "rating": 4.4,
+      "count": 12727,
+      "hours": "09:30–21:30",
+      "distance_km": 0.7,
+      "address": "36 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "rating": 4.6,
+      "count": 8980,
+      "hours": "06:00–21:30",
+      "distance_km": 3.2,
+      "address": "Trần Trọng Kim, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "rating": 4.4,
+      "count": 10458,
+      "hours": "Mở cửa cả ngày",
+      "distance_km": 1.3,
+      "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Đường sách Thành phố Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 12774,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "08:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên Tao Đàn",
+      "role": null,
+      "evidence": {
+        "rating": 4.5,
+        "reviews": 15637,
+        "distance_km": 1,
+        "open_now": true,
+        "opening_hours": "07:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Saigon Skydeck",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 12727,
+        "distance_km": 0.7,
+        "open_now": true,
+        "opening_hours": "09:30–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên Vinhomes Central Park",
+      "role": null,
+      "evidence": {
+        "rating": 4.6,
+        "reviews": 8980,
+        "distance_km": 3.2,
+        "open_now": true,
+        "opening_hours": "06:00–21:30",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Công viên 23 tháng 9",
+      "role": null,
+      "evidence": {
+        "rating": 4.4,
+        "reviews": 10458,
+        "distance_km": 1.3,
+        "open_now": true,
+        "opening_hours": "Mở cửa cả ngày",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm giúp bạn những địa điểm vui chơi tối nay ở Quận 1 cho 5 người nhé.\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh** cho tối nay — nơi này cách bạn chỉ 0.5km, đang mở cửa, và có **4.6⭐ từ 12.774 đánh giá**. Đây là điểm vui chơi lý tưởng cho nhóm 5 người: không gian rộng, có quán cà phê, sách báo, và không khí thoải mái để tụ tập. 📚\n\nNgoài ra, **Công viên Tao Đàn** (1km, mở đến 22:00) cũng là lựa chọn hay nếu bạn muốn không gian xanh, thoáng mát hơn — đánh giá 4.5⭐ với 15.637 lượt đánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách Thành phố Hồ Chí Minh\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke quận 1|bar tối nay|quán cà phê lounge[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tối nay đi chơi gì với hội bạn 5 người ở Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn những địa điểm vui chơi tối nay ở Quận 1 cho 5 người nhé.\n\nMình gợi ý **Đường sách Thành phố Hồ Chí Minh** cho tối nay — nơi này cách bạn chỉ 0.5km, đang mở cửa, và có **4.6⭐ từ 12.774 đánh giá**. Đây là điểm vui chơi lý tưởng cho nhóm 5 người: không gian rộng, có quán cà phê, sách báo, và không khí thoải mái để tụ tập. 📚\n\nNgoài ra, **Công viên Tao Đàn** (1km, mở đến 22:00) cũng là lựa chọn hay nếu bạn muốn không gian xanh, thoáng mát hơn — đánh giá 4.5⭐ với 15.637 lượt đánh giá.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Đường sách Thành phố Hồ Chí Minh\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=18199100751481245008\",\"primary\":true},{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://duongsachtphcm.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]karaoke quận 1|bar tối nay|quán cà phê lounge[/FOLLOWUPS]"
+    }
+  ]
+}

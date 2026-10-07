@@ -1,0 +1,604 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "rooftop bar view đẹp",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:14.964Z",
+ "body": {
+  "searchParameters": {
+   "q": "rooftop bar view đẹp",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "The View Rooftop Bar",
+    "address": "On the 9th floor of Duc Vuong Hotel, 195 Bùi Viện, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7657083,
+    "longitude": 106.6910667,
+    "rating": 4.6,
+    "ratingCount": 5068,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quầy giải khát",
+     "Nhà hàng"
+    ],
+    "website": "http://facebook.com/TheViewRooftopBarHCM",
+    "phoneNumber": "+84 944 795 522",
+    "openingHours": {
+     "Thứ Hai": "07:00–02:00",
+     "Thứ Ba": "07:00–02:00",
+     "Thứ Tư": "07:00–02:00",
+     "Thứ Năm": "07:00–02:00",
+     "Thứ Sáu": "07:00–02:00",
+     "Thứ Bảy": "07:00–02:00",
+     "Chủ Nhật": "07:00–02:00"
+    },
+    "bookingLinks": [
+     "http://facebook.com/TheViewRooftopBarHCM"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNQAhhZVj2VM16bdnaqmxAosgtiIVTMKfexGnNfUU37dD0Yo2643BOT6FZub6JCeUREsmzX_Xf67InybTHeOFPp8sbcwuCTctFeqmn_25og__5yzdIFvJTDNz5eJHm39_ZyWStyPA",
+    "cid": "1757212914108003051",
+    "fid": "0x31752f17ad65fec9:0x1862dfd5d422f2eb",
+    "placeId": "ChIJyf5lrRcvdTER6_Ii1NXfYhg"
+   },
+   {
+    "position": 2,
+    "title": "Boosh 2 - Rooftop Bar",
+    "address": "26 Đỗ Quang Đẩu, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7667143,
+    "longitude": 106.6911009,
+    "rating": 4.9,
+    "ratingCount": 1124,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 903 743 911",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM6onIgHQb34tfTvoJgRP6FrwhzrRTYke8mknmXjyeAQJ3NMJdL_RZp-ecfzSXkBTubog1sXDAtLEf9g3OR0-aQy8VeyOxIPtaj1VoGujyFX2Y77_HV5KCY50WPucYq5rqXbm6nSVxp83uL",
+    "cid": "5966469745665685456",
+    "fid": "0x31752f7df8e5ac25:0x52cd289f3984b7d0",
+    "placeId": "ChIJJazl-H0vdTER0LeEOZ8ozVI"
+   },
+   {
+    "position": 3,
+    "title": "Mai Sky Rooftop Bar",
+    "address": "Mai House Saigon Hotel, 1 Ngô Thời Nhiệm, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.781877999999999,
+    "longitude": 106.6918322,
+    "rating": 4.9,
+    "ratingCount": 139,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://maihouse.com.vn/pages/Mai-Sky",
+    "phoneNumber": "+84 28 7303 9000",
+    "openingHours": {
+     "Thứ Hai": "17:30–01:00",
+     "Thứ Ba": "17:30–01:00",
+     "Thứ Tư": "17:30–01:00",
+     "Thứ Năm": "17:30–01:00",
+     "Thứ Sáu": "17:30–01:00",
+     "Thứ Bảy": "17:30–01:00",
+     "Chủ Nhật": "17:30–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPgFtwLkF8lk15FohZ5D_1qfgAj4DvCxDdCpjFxJqBu7UHzBCqDu0K6h7adrVTYunPUWF4NCnvNa6gmtS5J7sS0mkM6ttWS6eORTynGAwpXpTB-Ky_QvdrjYTWjC_ojvNg4lwHSp1r8-17P",
+    "cid": "943393573549264232",
+    "fid": "0x31752f0016b479c5:0xd179b74f2ca4d68",
+    "placeId": "ChIJxXm0FgAvdTERaE3K8nSbFw0"
+   },
+   {
+    "position": 4,
+    "title": "Ráng Chiều Rooftop",
+    "address": "39A Trần Khắc Chân, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7985282,
+    "longitude": 106.67899519999999,
+    "rating": 4.9,
+    "ratingCount": 1902,
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "https://rangchieurooftop.vn/",
+    "phoneNumber": "+84 367 778 478",
+    "description": "Quán bar bình dị nhìn ra thành phố, có các món ăn nhẹ, cocktail độc đáo và bia thủ công.",
+    "openingHours": {
+     "Thứ Hai": "16:30–00:30",
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMyQsHLeOi17kslB5lOPm60jiuId_GqwEjfPsgDAU5Tg8p8GldTMOz_AhqHyJsQRLJpybGUvxdwDebEybzq7ensUqgVBm6gVt5O3D7nXQTtnn7al16LmQfFhbyuCyPMy6m-4ZdpHw",
+    "cid": "1346462130994968363",
+    "fid": "0x317529ddf4f19253:0x12af982c9d78772b",
+    "placeId": "ChIJU5Lx9N0pdTERK3d4nSyYrxI"
+   },
+   {
+    "position": 5,
+    "title": "Boosh Rooftop",
+    "address": "6 Bùi Viện, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7679609,
+    "longitude": 106.6950667,
+    "rating": 4.9,
+    "ratingCount": 1744,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 938 640 280",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–03:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXNO3nGTOvUmAHjFjAZKaO2dJv0pYAhYu4bb7A09GA5-jIjZZECJH5FOBzHAS2WfN78rsYtweHB8K_LpDZLOW4DX3wAQQBNgmFkraJjeF6NHtJ34niNFvoddjHmjXX8w0nR0dc6Q",
+    "cid": "16314187895479162507",
+    "fid": "0x31752ff8fb6030f1:0xe267a3746503568b",
+    "placeId": "ChIJ8TBg-_gvdTERi1YDZXSjZ-I"
+   },
+   {
+    "position": 6,
+    "title": "Mít Cocktail Bar & Rooftop Bistro",
+    "address": "& Tầng Thượng, 30 Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7736661,
+    "longitude": 106.70540079999999,
+    "rating": 4.7,
+    "ratingCount": 578,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Quán bar cocktail",
+     "Nơi tổ chức sự kiện"
+    ],
+    "website": "https://www.facebook.com/mit.rooftop",
+    "phoneNumber": "+84 987 790 012",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "bookingLinks": [
+     "https://www.instagram.com/mit.rooftop/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOajBuwGOOQR9mUCpV6VH3Z1_36J_vvhnrYWTmgmttx_SLU0HG_0OdAX2JtzeIUesikgOvtzK347VpP-PUtyNG5UnJ75CT-fpPraCNqbCaHDehS85gf_CXOR9gq5b5lcOy5ep8",
+    "cid": "9713538379595775553",
+    "fid": "0x31752f7032cf4b8b:0x86cd6bb113edfe41",
+    "placeId": "ChIJi0vPMnAvdTERQf7tE7FrzYY"
+   },
+   {
+    "position": 7,
+    "title": "Tan Rooftop Bar",
+    "address": "37 Đ. Hoàng Văn Thụ, Phú Nhuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7990994,
+    "longitude": 106.6792536,
+    "rating": 4.9,
+    "ratingCount": 95,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.facebook.com/tanrooftopbar",
+    "phoneNumber": "+84 775 077 360",
+    "openingHours": {
+     "Thứ Hai": "17:30–00:30",
+     "Thứ Ba": "17:30–00:30",
+     "Thứ Tư": "17:30–00:30",
+     "Thứ Năm": "17:30–00:30",
+     "Thứ Sáu": "17:30–00:30",
+     "Thứ Bảy": "17:30–00:30",
+     "Chủ Nhật": "17:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNVa29vLsP5mK8EDCQCaVGrVAeXLYBDWnS_-tOLEAiyO4bU6aHC8T34QZSHx3iI8f0fHPTADxUSC5rrrTCY5bDHn9VRuiI7WgzjENzzYuFLebQSRyzl3JYbzEZlXGWS8dN8hzG4Z_eX13Y7",
+    "cid": "16651616116662962280",
+    "fid": "0x317529001a52aead:0xe7166ca251dd8868",
+    "placeId": "ChIJra5SGgApdTERaIjdUaJsFuc"
+   },
+   {
+    "position": 8,
+    "title": "Chill Skybar & Dining",
+    "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770564799999999,
+    "longitude": 106.69437769999999,
+    "rating": 4.4,
+    "ratingCount": 5941,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Bữa tối",
+     "Nhà hàng hỗn hợp",
+     "Hộp đêm"
+    ],
+    "website": "http://www.chillsaigon.com/",
+    "phoneNumber": "+84 938 822 838",
+    "description": "Quán bar hiện đại nhìn ra đường chân trời, phục vụ các món nhẹ, đồ ăn dùng chung, món thịt và cocktail.",
+    "openingHours": {
+     "Thứ Hai": "17:30–01:30",
+     "Thứ Ba": "17:30–01:30",
+     "Thứ Tư": "17:30–01:30",
+     "Thứ Năm": "17:30–01:30",
+     "Thứ Sáu": "17:30–01:30",
+     "Thứ Bảy": "17:30–01:30",
+     "Chủ Nhật": "17:30–01:30"
+    },
+    "bookingLinks": [
+     "http://chillsaigon.com/book-a-table/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPDOafxqHOlqUYAEe6b1RJhqUfhc7-NqhKTLNBSOreUCqx0TLyUncjSqGjTqFWU8CFOgJKA4TboUmOAiZK1wsJJSepLb0ZwTlt-J8CnYyE8uWcfYdeN7DrejznTc_u3NpR9nNU",
+    "cid": "7070654652790197972",
+    "fid": "0x31752f3e866e1431:0x622002f1dd05ced4",
+    "placeId": "ChIJMRRuhj4vdTER1M4F3fECIGI"
+   },
+   {
+    "position": 9,
+    "title": "HALO Skybar Saigon",
+    "address": "Centec Tower, 72 Nguyễn Thị Minh Khai, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7826466,
+    "longitude": 106.6975063,
+    "rating": 4.8,
+    "ratingCount": 454,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 969 434 570",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOfi3XmqFBrlR_eOVCVQRzFJ2St-NQ23JDc793mVGLL1uBUkxOuEElv5A3le6w5pCvaXlhWebAeV1tBKHxf2j95puRukTmKMKI0GKHeHtk2WyojopNv5zajrF5kI1wdV1AhTP3r",
+    "cid": "8044884807439197156",
+    "fid": "0x31752fe80a750789:0x6fa52c1bd659a3e4",
+    "placeId": "ChIJiQd1CugvdTER5KNZ1hsspW8"
+   },
+   {
+    "position": 10,
+    "title": "Thương Rooftop",
+    "address": "258 Tôn Đản, Khánh Hội, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7568339,
+    "longitude": 106.7060929,
+    "rating": 4.9,
+    "ratingCount": 3874,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bia sân vườn"
+    ],
+    "website": "https://thuongrooftop.vn/",
+    "phoneNumber": "+84 378 038 438",
+    "openingHours": {
+     "Thứ Hai": "16:30–00:30",
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfP2uYFGmJ6Urk0058VwITWe1kuLdQOtNCFmiwy1pfrTe8PPA4ilVG6LPKWngo3KztdQPjZYqKVxzOFJfrLw7_O9D48Rn6JQVItU6sypeLxl77fPbvrEaSnb0jMuk7KN84SSlvagA",
+    "cid": "1607776340620736460",
+    "fid": "0x31752faff8a91e2b:0x164ff8103cf9f7cc",
+    "placeId": "ChIJKx6p-K8vdTERzPf5PBD4TxY"
+   },
+   {
+    "position": 11,
+    "title": "The Park Rooftop Bar & Lounge",
+    "address": "5th Floor, 20 Đỗ Quang Đẩu, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7665747,
+    "longitude": 106.6912351,
+    "rating": 4.9,
+    "ratingCount": 1027,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail",
+     "Quầy giải khát",
+     "Nhà hàng"
+    ],
+    "website": "https://theparksaigon.com/",
+    "phoneNumber": "+84 902 327 607",
+    "openingHours": {
+     "Thứ Ba": "17:00–00:00",
+     "Thứ Tư": "17:00–00:00",
+     "Thứ Năm": "17:00–00:00",
+     "Thứ Sáu": "17:00–02:00",
+     "Thứ Bảy": "17:00–02:00",
+     "Chủ Nhật": "17:00–00:00",
+     "Thứ Hai": "17:00–00:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/theparkrooftop"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmODUFlksb5XVkWKn0E08y53-TexwCBaJLfDXwBft1GQLAxX6lNRJUSLG9f_2Hhd4SVdPdqQqZDkT5BaVTjB3LCS9RhurliTp3Y2RFWfqdK6WK9wBFb4QhGMb1ICkPdSpzNv__9w4SR-b1sw",
+    "cid": "7258371201194066981",
+    "fid": "0x31752f80e97e2b03:0x64baea26a7190425",
+    "placeId": "ChIJAyt-6YAvdTERJQQZpybqumQ"
+   },
+   {
+    "position": 12,
+    "title": "1991 Rooftop Coffee & More",
+    "address": "37/4 Đinh Công Tráng, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7891801,
+    "longitude": 106.6918506,
+    "rating": 4.7,
+    "ratingCount": 142,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/1991Rooftop.CoffeeAndMore",
+    "phoneNumber": "+84 931 163 491",
+    "openingHours": {
+     "Thứ Ba": "16:30–23:00",
+     "Thứ Tư": "16:30–23:00",
+     "Thứ Năm": "16:30–23:00",
+     "Thứ Sáu": "16:30–23:00",
+     "Thứ Bảy": "16:30–23:00",
+     "Chủ Nhật": "16:30–23:00",
+     "Thứ Hai": "16:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMmIyCbltA1mPJ8M9dR1S2TJg9Zl8cOLlfLWRbziVFOcvo5iDVSEUt_FToBGtfhIp-j3FHFjwTmf-51AktX91FqJll2vcplDu0g8wSRU7Ao3VZZWIJRFy-6aw5hzsAw9ZUkGUG9",
+    "cid": "11799588782076198093",
+    "fid": "0x31752fe3085eab89:0xa3c08f7afb55fccd",
+    "placeId": "ChIJiateCOMvdTERzfxV-3qPwKM"
+   },
+   {
+    "position": 13,
+    "title": "Chênh Vênh Rooftop",
+    "address": "7 Đường số 54, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.801494,
+    "longitude": 106.7291903,
+    "rating": 4.9,
+    "ratingCount": 4613,
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "https://chenhvenhrooftop.vn/",
+    "phoneNumber": "+84 374 035 975",
+    "description": "Quán bar sân vườn bình dị, thoáng mát nhìn ra sông và đường chân trời thành phố, phục vụ cocktail và đồ ăn nhẹ.",
+    "openingHours": {
+     "Thứ Hai": "16:30–00:30",
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM-w8Bte53nV9OJFA80RJMbPEqPXb6spLkBnNtWD4ypQaLUjmZhuD9PUWMK4z4TEyeGGaVY5FWkRnt32jbW3ds36hJE-sytqubJJK2LA4MUikIaX6UDMGETY41UFW01oM8ocBQ",
+    "cid": "3887772050503050004",
+    "fid": "0x3175270a23f99a09:0x35f42414e5ed2314",
+    "placeId": "ChIJCZr5IwondTERFCPt5RQk9DU"
+   },
+   {
+    "position": 14,
+    "title": "H’UP SKYBAR",
+    "address": "302-304 Võ Văn Kiệt, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7621737,
+    "longitude": 106.6962042,
+    "rating": 4.3,
+    "ratingCount": 466,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 901 185 302",
+    "openingHours": {
+     "Thứ Hai": "16:00–01:00",
+     "Thứ Ba": "16:00–01:00",
+     "Thứ Tư": "16:00–01:00",
+     "Thứ Năm": "16:00–01:00",
+     "Thứ Sáu": "16:00–01:00",
+     "Thứ Bảy": "16:00–01:00",
+     "Chủ Nhật": "16:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMQKKrWubkzJ2s78-yrof8JwGqWyGBDD9UYXhJX70EU2pWgnsjAv8hoIaphUNA1p55auxilpB36UBxgqxVlb5lpkab35mgpv47T-A9kXFRtJOGKgHVKrSUNCW4nRvHw7Q_fj8FHORo9rAg",
+    "cid": "15306441780344918017",
+    "fid": "0x31752f30b11137c5:0xd46b67b3c4a81001",
+    "placeId": "ChIJxTcRsTAvdTERARCoxLNna9Q"
+   },
+   {
+    "position": 15,
+    "title": "Gét Gô Rooftop",
+    "address": "348/9 Đ. Ung Văn Khiêm, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.80039,
+    "longitude": 106.7231601,
+    "rating": 4.7,
+    "ratingCount": 199,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.facebook.com/G%C3%89T-G%C3%94-Rooftop-112289268172028/",
+    "phoneNumber": "+84 888 586 698",
+    "openingHours": {
+     "Thứ Hai": "17:00–00:30",
+     "Thứ Ba": "17:00–00:30",
+     "Thứ Tư": "17:00–00:30",
+     "Thứ Năm": "17:00–00:30",
+     "Thứ Sáu": "17:00–00:30",
+     "Thứ Bảy": "17:00–00:30",
+     "Chủ Nhật": "17:00–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOU9Fto6LpSLhmWq8sFfQvmvUnQQ8n03julL83DyqbifqjkQpjDZqH-yhQGO_QC7POshgqeUYPc4rlPv-8CyonECRnlT3p0lbJ3_7I2o1dwCHgxgcVzdj1julKY-_bfCAY5vb-ga34sSM27",
+    "cid": "11024036060266457977",
+    "fid": "0x31752953b47dd773:0x98fd3e6393476b79",
+    "placeId": "ChIJc9d9tFMpdTEReWtHk2M-_Zg"
+   },
+   {
+    "position": 16,
+    "title": "Vertical Sky Bar",
+    "address": "17 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7740942,
+    "longitude": 106.7062768,
+    "rating": 4.7,
+    "ratingCount": 122,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://www.libertycentralsaigonriverside.com/en/dining/#home",
+    "openingHours": {
+     "Thứ Ba": "08:30–00:00",
+     "Thứ Tư": "08:30–00:00",
+     "Thứ Năm": "08:30–00:00",
+     "Thứ Sáu": "08:30–00:00",
+     "Thứ Bảy": "08:30–00:00",
+     "Chủ Nhật": "08:30–00:00",
+     "Thứ Hai": "08:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMUuMdX8VfzoQagJVSWws7NOQiuiN2V0rwCN34hjbVqY4ZM6Hf6tXkvUNv9ChGN39_uUQy5oQOkuDxpd7XTCoIboKl9EIFE-FYhtv9v1h7lPc4J4i9tD8ICGKc6g-doUXxqV3N5",
+    "cid": "17863801553367808255",
+    "fid": "0x31752fd48764eb9f:0xf7e8f8ddc68f38ff",
+    "placeId": "ChIJn-tkh9QvdTER_ziPxt346Pc"
+   },
+   {
+    "position": 17,
+    "title": "SolLuna - Rooftop Bar",
+    "address": "65-67 Hai Bà Trưng, St, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.776793699999999,
+    "longitude": 106.7045023,
+    "rating": 4.8,
+    "ratingCount": 362,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://sollunarooftoppoolbar.carrd.co/",
+    "phoneNumber": "+84 365 673 080",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30",
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfqP6jYFgFHjmr5PJbrHrChcGeldV4s8yFoy1IjlJTGgSeQWRsUvQ_BunVjpn95xqVlvAun7jL_2L96MCBfEdwv17a7PfULvA3b7BRgaeTBgR_Ne7FMaP8nyo8gvodaT2j-UtKwPw",
+    "cid": "7658802326794357669",
+    "fid": "0x31752fdd10312659:0x6a4988235d834ba5",
+    "placeId": "ChIJWSYxEN0vdTERpUuDXSOISWo"
+   },
+   {
+    "position": 18,
+    "title": "Spiritz Rooftop Bar",
+    "address": "Sân Thượng, 347 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7719945,
+    "longitude": 106.6840972,
+    "rating": 5,
+    "ratingCount": 93,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.facebook.com/share/18wrzEhJoJ/?mibextid=wwXIfr",
+    "phoneNumber": "+84 798 025 937",
+    "openingHours": {
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–01:00",
+     "Thứ Bảy": "18:00–01:00",
+     "Chủ Nhật": "18:00–01:00",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdxGaPDs_v4_ykjkeUdy2IQBkVy5PjPNMkj1p6jJEuZ78CO6KvLXz7ztSQ0nIT110gAwCi7HuGyQiHpfkig8tyXtOUMsP5GSAYKGhQrAGE3UQYY2IIOeUNKkYPnidbkDkR3xyli",
+    "cid": "16179633735386754210",
+    "fid": "0x31752f001a0f024d:0xe0899b28b1a76ca2",
+    "placeId": "ChIJTQIPGgAvdTERomynsSibieA"
+   },
+   {
+    "position": 19,
+    "title": "Chạng Vạng Rooftop",
+    "address": "72/6 Bạch Đằng, Bình Thạnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.803915799999999,
+    "longitude": 106.7090527,
+    "rating": 4.9,
+    "ratingCount": 4723,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "https://changvangrooftop.vn/",
+    "phoneNumber": "+84 366 106 807",
+    "description": "Quán bia thời thượng ngoài trời trên tầng 6, nhìn ra toàn cảnh đường chân trời, phục vụ bia, cocktail và đồ ăn nhẹ.",
+    "openingHours": {
+     "Thứ Hai": "16:30–00:30",
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOrVl1G6fejaBbfL7H0g1N1hwY6c1XTKF8P5jKLIDJhVUx_rTjF5AZ5QAV-rLozbYkKmCra4ivTikQBz2FVMvjUctUvSEIULnETm8ZEqgDyVqlemztKrq-TKP9_Qa8MHkp0KFNKjQ",
+    "cid": "6507223176456077379",
+    "fid": "0x317529f25f70f1ed:0x5a4e4d0092da8043",
+    "placeId": "ChIJ7fFwX_IpdTERQ4DakgBNTlo"
+   },
+   {
+    "position": 20,
+    "title": "Afterglow Sky Bar",
+    "address": "43A - 43B Xuân Thủy, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8034094,
+    "longitude": 106.731664,
+    "rating": 4.5,
+    "ratingCount": 377,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Câu lạc bộ khiêu vũ",
+     "Quầy giải khát"
+    ],
+    "website": "https://www.facebook.com/afterglow.sgn",
+    "phoneNumber": "+84 855 337 943",
+    "openingHours": {
+     "Thứ Ba": "17:00–02:00",
+     "Thứ Tư": "17:00–02:00",
+     "Thứ Năm": "17:00–02:00",
+     "Thứ Sáu": "17:00–02:00",
+     "Thứ Bảy": "17:00–02:00",
+     "Chủ Nhật": "17:00–02:00",
+     "Thứ Hai": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM2omKr0Xi3-u-ZzVkKwYre_AJafhjM-5BG2zyDOjxi54_7v4mtAzjgKymFCbVSzQ6ZUB1OcmuMbb7QktvgdZO2i43q5zpD-0GcnvzmHum0geum5Uq4rf4ofAGaP5OlA_8im-AiE-14AJVp",
+    "cid": "15098622732371174406",
+    "fid": "0x317527ef79b16dd9:0xd1891561109f2406",
+    "placeId": "ChIJ2W2xee8ndTERBiSfEGEVidE"
+   }
+  ],
+  "credits": 3
+ }
+}

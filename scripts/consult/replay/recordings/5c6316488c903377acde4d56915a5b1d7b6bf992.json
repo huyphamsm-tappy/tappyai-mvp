@@ -1,0 +1,40 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage KTV nữ kỹ thuật viên nữ quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:58:59.870Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage KTV nữ kỹ thuật viên nữ quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khu phức hợp ẩm thực và spa Nam Sơn Golden Coast",
+    "link": "https://www.klook.com/vi/activity/146455-nanshan-gold-coast-food-club-massage-and-sauna-health-care/",
+    "snippet": "Môi trường sạch sẽ, hợp vệ sinh, không ép buộc phải boa tiền, miễn phí trái cây và đồ uống; nhân viên phục vụ rất nhiệt tình; kỹ thuật massage của nhân viên ...",
+    "rating": 4.9,
+    "ratingCount": 26,
+    "position": 1
+   },
+   {
+    "title": "Tắm bùn tại Galina Hotel and Spa ở Nha Trang",
+    "link": "https://www.klook.com/vi/activity/17316-mud-bath-galina-hotel-nha-trang/",
+    "snippet": "Massage được thực hiện trong phòng riêng rộng rãi với liệu trình đầy đủ 2 tiếng bao gồm cả đá nóng. Tại quầy lễ tân, tôi được hỏi trước về độ mạnh mong muốn và ...",
+    "rating": 4.5,
+    "ratingCount": 470,
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

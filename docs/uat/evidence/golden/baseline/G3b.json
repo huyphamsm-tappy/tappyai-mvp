@@ -1,0 +1,442 @@
+{
+  "id": "G3b",
+  "group": "food-correction",
+  "criteria": [
+    "Turn 2 replaces the venue-type constraint (no beer/nhậu venues) and acknowledges the change",
+    "Cards match the new constraint and the text",
+    "Budget 100-150k respected where data exists"
+  ],
+  "turns": [
+    {
+      "user": "tìm quán nhậu ở Quận 1 tối nay",
+      "status": 200,
+      "elapsedMs": 18506,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán nhậu Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Pasteur Street Craft Beer",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "11:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "FunnyBone Bar & Coffe Quận 1",
+              "rating": 5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "えびすEbisu District1( Udon & Sushi)",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "11:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "08:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ghiền Mồi bén & Bia",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "15:30–01:00",
+              "open": false,
+              "picked": null
+            },
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "15:00–02:00",
+              "open": false,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Pasteur Street Craft Beer",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "11:00–00:00",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "FunnyBone Bar & Coffe Quận 1",
+              "rating": 5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "えびすEbisu District1( Udon & Sushi)",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "11:30–22:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "08:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Ghiền Mồi bén & Bia",
+              "rating": 4.8,
+              "price": null,
+              "category": null,
+              "hours": "15:30–01:00",
+              "open": false,
+              "picked": null
+            },
+            {
+              "name": "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "15:00–02:00",
+              "open": false,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.77412,106.69716",
+            "place:osm:10.76594,106.69558",
+            "place:osm:10.78166,106.70515"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Pasteur Street Craft Beer",
+          "FunnyBone Bar & Coffe Quận 1",
+          "えびすEbisu District1( Udon & Sushi)",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Ghiền Mồi bén & Bia",
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU"
+        ],
+        [
+          "Pasteur Street Craft Beer",
+          "FunnyBone Bar & Coffe Quận 1",
+          "えびすEbisu District1( Udon & Sushi)",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Ghiền Mồi bén & Bia",
+          "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm quán nhậu ngon ở Quận 1 cho bạn nhé. Vì bạn hay đi 2 người và thích chất lượng và đang mở cửa lúc này.\n\nMình chọn **Pasteur Street Craft Beer** cho bạn 🍺 — quán đang mở cửa, cách bạn chỉ 0.5km, và có **4.8⭐ (2.862 đánh giá)** nên chất lượng rất đáng tin. Quán vừa là nhà hàng vừa là bar, phù hợp để nhậu tối nay với 2 người.\n\nNếu muốn thử cái khác, **FunnyBone Bar & Coffe** cũng hay — đánh giá 5⭐ nhưng xa hơn một chút (1.4km), hoặc **Ebisu** nếu bạn thích ăn kèm udon/sushi Nhật Bản.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Pasteur Street Craft Beer\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3123673193691217346\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]FunnyBone Bar & Coffe Quận 1|Ebisu Udon & Sushi|Hải Sản Hoàng Gia[/FOLLOWUPS]",
+      "visible": "Mình tìm quán nhậu ngon ở Quận 1 cho bạn nhé. Vì bạn hay đi 2 người và thích chất lượng và đang mở cửa lúc này.\n\nMình chọn **Pasteur Street Craft Beer** cho bạn 🍺 — quán đang mở cửa, cách bạn chỉ 0.5km, và có **4.8⭐ (2.862 đánh giá)** nên chất lượng rất đáng tin. Quán vừa là nhà hàng vừa là bar, phù hợp để nhậu tối nay với 2 người.\n\nNếu muốn thử cái khác, **FunnyBone Bar & Coffe** cũng hay — đánh giá 5⭐ nhưng xa hơn một chút (1.4km), hoặc **Ebisu** nếu bạn thích ăn kèm udon/sushi Nhật Bản."
+    },
+    {
+      "user": "thôi không nhậu nữa, quán ăn gia đình thôi, 100-150k/người",
+      "status": 200,
+      "elapsedMs": 23227,
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "07:00–17:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "08:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "06:30–21:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cục Gạch Quán",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ben.la - Mâm cơm nhà quận 1",
+              "rating": 4.9,
+              "price": null,
+              "category": null,
+              "hours": "07:00–17:00",
+              "open": true,
+              "picked": true
+            },
+            {
+              "name": "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+              "rating": 4.7,
+              "price": null,
+              "category": null,
+              "hours": "08:00–00:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "07:00–23:00",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "rating": 4.5,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+              "rating": 4.6,
+              "price": null,
+              "category": null,
+              "hours": "06:30–21:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "HÀ NỘI QUÁN",
+              "rating": 4.4,
+              "price": null,
+              "category": null,
+              "hours": "06:30–14:00, 16:00–20:30",
+              "open": true,
+              "picked": null
+            },
+            {
+              "name": "Cục Gạch Quán",
+              "rating": 4.3,
+              "price": null,
+              "category": null,
+              "hours": "09:00–23:30",
+              "open": true,
+              "picked": null
+            }
+          ],
+          "picked": [
+            "place:osm:10.77519,106.70514",
+            "place:osm:10.76306,106.69074"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+          "HÀ NỘI QUÁN",
+          "Cục Gạch Quán"
+        ],
+        [
+          "Ben.la - Mâm cơm nhà quận 1",
+          "Hải Sản Hoàng Gia - 180 Trần Hưng Đạo Quận 1",
+          "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+          "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+          "Hàng Dương Quán Quận 1",
+          "Trần Ký Mì Gia | Tiệm Mì Quận 1 | Mì Người Hoa Quận 1",
+          "HÀ NỘI QUÁN",
+          "Cục Gạch Quán"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm quán ăn gia đình giá 100-150k/người ở Quận 1 cho bạn nhé.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến nền tảng chính thức để tự so sánh & đặt — quyền quyết định là của bạn.*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Ben.la\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=14223058263999930191\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác ở Quận 1|Ăn gì khác tối nay|Tìm quán gần vị trí hiện tại[/FOLLOWUPS]",
+      "visible": "Mình tìm quán ăn gia đình giá 100-150k/người ở Quận 1 cho bạn nhé.\n\n*Gợi ý dựa trên kết quả tìm kiếm thực, TappyAI dẫn bạn đến nền tảng chính thức để tự so sánh & đặt — quyền quyết định là của bạn.*"
+    }
+  ]
+}

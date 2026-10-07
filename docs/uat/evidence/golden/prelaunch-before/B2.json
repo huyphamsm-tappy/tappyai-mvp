@@ -1,0 +1,675 @@
+{
+  "id": "B2",
+  "group": "budget-unit-quantity-age",
+  "criteria": [
+    "No budget is inferred from '5-6 người' or 'dưới 5 tuổi' (no 5k/6k ceiling in the reply or on the cards)",
+    "Cards are ordinary family restaurants at normal prices — not emptied or filtered by a phantom budget",
+    "The group size and the child's age are used as needs (space, kid-friendly), not as money"
+  ],
+  "turns": [
+    {
+      "user": "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây",
+      "status": 200,
+      "elapsedMs": 20100,
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình 5-6 người có bé nhỏ dưới 5 tuổi",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình có khu vui chơi cho trẻ em",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà Hàng Maison Mận-Đỏ",
+              "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 621,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Nhà hàng Pháp thượng hạng",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "14:00–22:00",
+              "open": false,
+              "distanceKm": 2.2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 516,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Hai Lúa",
+              "address": "648 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 976,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "08:00–23:00",
+              "open": true,
+              "distanceKm": 4.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Gia Đình Sài Gòn",
+              "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 22,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.79314,106.69019",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Maison Mận-Đỏ",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM3iPO5gjeZOzNEIYcA_X7JufZ4DWhMyXzwAJ_qQ4qDbSgKp3ROLOyYSoBZIC0g47derc-6MT1Wl-KjjnGfIhqosxp7B9CYk-ppTp0-8V1jTfCNAltabTbSf_KAQH1QLvNG36UF",
+                "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 621,
+                "openingHours": "14:00–22:00",
+                "openNow": false,
+                "phone": "+84 933 774 487",
+                "openingHoursWeek": {
+                  "Thứ Năm": "14:00–22:00",
+                  "Thứ Sáu": "14:00–22:00",
+                  "Thứ Bảy": "14:00–22:00",
+                  "Chủ Nhật": "14:00–22:00",
+                  "Thứ Hai": "14:00–22:00",
+                  "Thứ Ba": "14:00–22:00",
+                  "Thứ Tư": "14:00–22:00"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Nhà hàng",
+                  "Nhà hàng Pháp thượng hạng",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6400778564842628826",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933774487",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmODYy4qKWN80JVflzXF4wkVVYuQf__SZP_3ppKbG3SaOkJdsBQthECgsJOrxGSD7npNQ2phG8m796uXISR1gVRGLCGiu9sXFj9g-CCAZStRjf5LHCOhPMJ9tHN9SCq5g6US1ufCE2fEKhcu",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 516,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75370,106.66439",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Hai Lúa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMkVWlHvRzQnXhrg5q9ylnBQuthD9n8nT94-cBvqMaJdbjgF_cm5_jPT6oO3XN--15Fqm4_LY_quh_JRCgS7FpAqzX5WL95-i-zBSm8BJ9LhTFXY2gGrm79ckn9WImtEMIkOYdl7ApUptA",
+                "address": "648 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 976,
+                "openingHours": "08:00–23:00",
+                "openNow": true,
+                "phone": "+84 919 563 338",
+                "openingHoursWeek": {
+                  "Thứ Năm": "08:00–23:00",
+                  "Thứ Sáu": "08:00–23:00",
+                  "Thứ Bảy": "08:00–23:00",
+                  "Chủ Nhật": "08:00–23:00",
+                  "Thứ Hai": "08:00–23:00",
+                  "Thứ Ba": "08:00–23:00",
+                  "Thứ Tư": "08:00–23:00"
+                },
+                "distanceKm": 4.7,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=770060742063590472",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20Hai%20L%C3%BAa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84919563338",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78934,106.65330",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Gia Đình Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP84D2fqK9oXIpe9bkTkQJGJMiHLgKwBmhHqaNAahHk9qygUEgb1xWLYjqqQjE8xTEwUrMRpEtzkSNjCGKvhrGzD9uuY20gBBmOCAppLgTivCYVL6zXREwp5Umvx6QDH44V6qQ",
+                "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 22,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10008312733178879668",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%205-6%20ng%C6%B0%E1%BB%9Di%20c%C3%B3%20b%C3%A9%20nh%E1%BB%8F%20d%C6%B0%E1%BB%9Bi%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà Hàng Maison Mận-Đỏ",
+              "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.6,
+              "ratingCount": 621,
+              "price": null,
+              "categories": [
+                "Nhà hàng",
+                "Nhà hàng Pháp thượng hạng",
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "14:00–22:00",
+              "open": false,
+              "distanceKm": 2.2,
+              "recommended": true,
+              "reasons": [
+                "2.2km away",
+                "rated 4.6",
+                "621 reviews"
+              ]
+            },
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 516,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Hai Lúa",
+              "address": "648 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+              "rating": 3.8,
+              "ratingCount": 976,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "08:00–23:00",
+              "open": true,
+              "distanceKm": 4.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Gia Đình Sài Gòn",
+              "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 22,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.79314,106.69019",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Maison Mận-Đỏ",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmM3iPO5gjeZOzNEIYcA_X7JufZ4DWhMyXzwAJ_qQ4qDbSgKp3ROLOyYSoBZIC0g47derc-6MT1Wl-KjjnGfIhqosxp7B9CYk-ppTp0-8V1jTfCNAltabTbSf_KAQH1QLvNG36UF",
+                "address": "27J Đ. Trần Nhật Duật, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 621,
+                "openingHours": "14:00–22:00",
+                "openNow": false,
+                "phone": "+84 933 774 487",
+                "openingHoursWeek": {
+                  "Thứ Năm": "14:00–22:00",
+                  "Thứ Sáu": "14:00–22:00",
+                  "Thứ Bảy": "14:00–22:00",
+                  "Chủ Nhật": "14:00–22:00",
+                  "Thứ Hai": "14:00–22:00",
+                  "Thứ Ba": "14:00–22:00",
+                  "Thứ Tư": "14:00–22:00"
+                },
+                "distanceKm": 2.2,
+                "categories": [
+                  "Nhà hàng",
+                  "Nhà hàng Pháp thượng hạng",
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 0,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "distance",
+                    "evidence": "2.2km away",
+                    "params": {
+                      "km": 2.2
+                    }
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.6",
+                    "params": {
+                      "value": 4.6
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "621 reviews",
+                    "params": {
+                      "count": 621
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "distance",
+                  "evidence": "1.6km away",
+                  "params": {
+                    "km": 1.6
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@maisonmando/video/7230426110771612933",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6400778564842628826",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84933774487",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20Maison%20M%E1%BA%ADn-%C4%90%E1%BB%8F%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmODYy4qKWN80JVflzXF4wkVVYuQf__SZP_3ppKbG3SaOkJdsBQthECgsJOrxGSD7npNQ2phG8m796uXISR1gVRGLCGiu9sXFj9g-CCAZStRjf5LHCOhPMJ9tHN9SCq5g6US1ufCE2fEKhcu",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 516,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00",
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75370,106.66439",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Hai Lúa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMkVWlHvRzQnXhrg5q9ylnBQuthD9n8nT94-cBvqMaJdbjgF_cm5_jPT6oO3XN--15Fqm4_LY_quh_JRCgS7FpAqzX5WL95-i-zBSm8BJ9LhTFXY2gGrm79ckn9WImtEMIkOYdl7ApUptA",
+                "address": "648 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh, Việt Nam",
+                "rating": 3.8,
+                "ratingCount": 976,
+                "openingHours": "08:00–23:00",
+                "openNow": true,
+                "phone": "+84 919 563 338",
+                "openingHoursWeek": {
+                  "Thứ Năm": "08:00–23:00",
+                  "Thứ Sáu": "08:00–23:00",
+                  "Thứ Bảy": "08:00–23:00",
+                  "Chủ Nhật": "08:00–23:00",
+                  "Thứ Hai": "08:00–23:00",
+                  "Thứ Ba": "08:00–23:00",
+                  "Thứ Tư": "08:00–23:00"
+                },
+                "distanceKm": 4.7,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@myxhoo/video/7561844837436214535",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=770060742063590472",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84919563338",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20Hai%20L%C3%BAa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78934,106.65330",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Gia Đình Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP84D2fqK9oXIpe9bkTkQJGJMiHLgKwBmhHqaNAahHk9qygUEgb1xWLYjqqQjE8xTEwUrMRpEtzkSNjCGKvhrGzD9uuY20gBBmOCAppLgTivCYVL6zXREwp5Umvx6QDH44V6qQ",
+                "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 22,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00",
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10008312733178879668",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%205-6%20ng%C6%B0%E1%BB%9Di%20c%C3%B3%20b%C3%A9%20nh%E1%BB%8F%20d%C6%B0%E1%BB%9Bi%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.79314,106.69019",
+              "place:osm:10.76347,106.69585",
+              "place:osm:10.75370,106.66439"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.79314,106.69019",
+            "place:osm:10.76347,106.69585",
+            "place:osm:10.75370,106.66439"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Nhà Hàng Maison Mận-Đỏ",
+          "Quán ăn gia đình 79",
+          "Nhà hàng Hai Lúa",
+          "Quán Ăn Gia Đình Sài Gòn"
+        ],
+        [
+          "Nhà Hàng Maison Mận-Đỏ",
+          "Quán ăn gia đình 79",
+          "Nhà hàng Hai Lúa",
+          "Quán Ăn Gia Đình Sài Gòn"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ tìm quán ăn gia đình gần vị trí của bạn ở Quận 1 cho 5-6 người, có bé nhỏ.\n\nMình gợi ý **Nhà Hàng Maison Mận-Đỏ** — quán này cách bạn 2.2km, có **4.6⭐ (621 đánh giá)**, không gian rộng rãi phù hợp cho gia đình 5-6 người với bé nhỏ. Quán mở từ 14:00–22:00, phục vụ cơm, cơm tấm Việt Nam và Pháp.\n\nNếu muốn gần hơn, **Quán ăn gia đình 79** chỉ 1.6km, đang mở cửa, có **4.4⭐ (516 đánh giá)** — vừa vặn cho gia đình. Quán mở tới 00:00 nên tiện nếu bạn muốn ăn khuya.\n\n⚠️ Lưu ý: Mình chưa xác nhận được giá chính xác của Maison Mận-Đỏ và Nhà hàng Hai Lúa, nên bạn nên gọi trước để hỏi giá.\n\n[FOLLOWUPS]Quán ăn khuya gần đây|Quán lẩu gia đình|Quán cơm tấm rẻ[/FOLLOWUPS]\n\nNếu bạn muốn quán có khu vui chơi cho bé, bạn có thể [xem thêm trên Google Maps](https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20c%C3%B3%20khu%20vui%20ch%C6%A1i%20cho%20tr%E1%BA%BB%20em%20Qu%E1%BA%ADn%201%2C%20TP%20HCM) để tìm thêm lựa chọn khác nhé!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Maison Mận-Đỏ trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=6400778564842628826\",\"primary\":true}]}[/CTA_BUTTONS]",
+      "visible": "Mình sẽ tìm quán ăn gia đình gần vị trí của bạn ở Quận 1 cho 5-6 người, có bé nhỏ.\n\nMình gợi ý **Nhà Hàng Maison Mận-Đỏ** — quán này cách bạn 2.2km, có **4.6⭐ (621 đánh giá)**, không gian rộng rãi phù hợp cho gia đình 5-6 người với bé nhỏ. Quán mở từ 14:00–22:00, phục vụ cơm, cơm tấm Việt Nam và Pháp.\n\nNếu muốn gần hơn, **Quán ăn gia đình 79** chỉ 1.6km, đang mở cửa, có **4.4⭐ (516 đánh giá)** — vừa vặn cho gia đình. Quán mở tới 00:00 nên tiện nếu bạn muốn ăn khuya.\n\n⚠️ Lưu ý: Mình chưa xác nhận được giá chính xác của Maison Mận-Đỏ và Nhà hàng Hai Lúa, nên bạn nên gọi trước để hỏi giá.\n\nNếu bạn muốn quán có khu vui chơi cho bé, bạn có thể [xem thêm trên Google Maps](https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%20c%C3%B3%20khu%20vui%20ch%C6%A1i%20cho%20tr%E1%BA%BB%20em%20Qu%E1%BA%ADn%201%2C%20TP%20HCM) để tìm thêm lựa chọn khác nhé!"
+    }
+  ]
+}

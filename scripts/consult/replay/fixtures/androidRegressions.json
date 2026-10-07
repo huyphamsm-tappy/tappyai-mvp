@@ -1,0 +1,171 @@
+{
+  "note": "ANDROID-REQUESTS R9/R11/R12/R13 reproduced offline (UAT 28-29/09, e2e.android.pro; R16 = UAT 29/09 evening plan, \"Nguyễn Huệ\" read as Huế).",
+  "items": [
+    {
+      "id": "R13",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": null
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R12",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm",
+          "expect": "ask"
+        },
+        {
+          "text": "Tuần này",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R12b",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm",
+          "expect": "ask"
+        },
+        {
+          "text": "Tuần này · 2 người · 5-10 triệu",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "domain": "entertainment",
+      "turns": [
+        {
+          "text": "vé concert tháng 10",
+          "expect": "ask"
+        },
+        {
+          "text": "Chưa biết · 1 người · Dưới 500k",
+          "expect": "pick"
+        }
+      ]
+    },
+    {
+      "id": "R9",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "đi du lịch Đà Nẵng 3 ngày 2 đêm",
+          "expect": "ask"
+        },
+        {
+          "text": "Tuần sau · 2 người · 5-10 triệu",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R15-1",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R15-2",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R15-3",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R15-4",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R15-5",
+      "domain": "travel",
+      "turns": [
+        {
+          "text": "Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết",
+          "expect": "plan"
+        }
+      ]
+    },
+    {
+      "id": "R16",
+      "domain": "food",
+      "turns": [
+        {
+          "text": "Lên kế hoạch tối nay ở Quận 1 cho 2 người: ăn tối món Việt, dạo phố đi bộ Nguyễn Huệ, rồi cà phê view đẹp",
+          "expect": "pick"
+        },
+        {
+          "text": "Lên kế hoạch chi tiết luôn nhé, 2 người, khoảng 500k/người",
+          "expect": "plan"
+        }
+      ]
+    }
+  ]
+}

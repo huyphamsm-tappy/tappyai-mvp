@@ -1,0 +1,81 @@
+{
+  "notes": [
+    "run 1: ratingsByEntity rebuilt from recorded tool rows on 13/15 records"
+  ],
+  "captured": 30,
+  "guard_ran": 28,
+  "by_run": {
+    "run1": 15,
+    "run2": 15
+  },
+  "server_output_equals_v1_replay": 5,
+  "cta": {
+    "in_input": 27,
+    "kept_v1_replay": 27,
+    "kept_v2_replay": 27,
+    "kept_by_server_during_run": 5
+  },
+  "v1": {
+    "turns_with_removals": 13,
+    "turns_with_fragments": 1,
+    "turns_le_35pct": 0,
+    "fabricated_surviving": 0,
+    "median_ratio": 0.951,
+    "min_ratio": 0.531
+  },
+  "v2": {
+    "turns_with_removals": 6,
+    "turns_with_fragments": 0,
+    "turns_le_35pct": 0,
+    "fabricated_surviving": 0,
+    "fallback_used": 1,
+    "pick_attributable": 20,
+    "pick_present": 20,
+    "median_ratio": 1,
+    "min_ratio": 0.65,
+    "attribution_totals": {
+      "L1": 44,
+      "L2": 6,
+      "L2p": 5,
+      "L3": 2,
+      "L4": 2,
+      "L5": 8,
+      "anaphora": 8,
+      "multi": 2
+    },
+    "reason_totals": {
+      "quality": 1,
+      "popularity": 0,
+      "ordering": 3,
+      "ticket": 0,
+      "ticket_availability": 0,
+      "score": 2,
+      "review_count": 1,
+      "phone": 0,
+      "distance": 0,
+      "orphan": 0,
+      "cascade": 0
+    }
+  },
+  "fabricated_numbers_in_inputs": 2,
+  "injection_mobile_path_replay": {
+    "records_with_rows": 14,
+    "blocks_inserted": 69,
+    "blocks_mid_sentence": 10,
+    "turns_with_mid_sentence": 9,
+    "samples": [
+      "… nếu bạn muốn không khí izakaya truyền thống, hoặc ⟨![Ảnh địa điểm](https://lh3.go…⟩  **KOHAKU RAMEN & UDON** (4.8⭐) nếu thíc…",
+      "…ông gian ấm cúng. Hoặc nếu bạn thích ẩm thực Nhật, ⟨![Ảnh địa điểm](https://lh3.go…⟩  **Ebisu District1** (4.7⭐) chuyên mì ud…",
+      "…ở đến 21h30 nên thoải mái hơn khi muốn ở lâu. Hoặc ⟨![Ảnh địa điểm](https://lh3.go…⟩  **SOO COFFEE** (4.7⭐, 556 đánh giá) nếu…",
+      "…ó thể thử **Wego Coffee** (4.8⭐, 337 đánh giá) hay ⟨![Ảnh địa điểm](https://lh3.go…⟩  **Every Half Roastery** (4.7⭐, 943 đánh…",
+      "…*BULMAKYEOLSAM** (4.8⭐, mở từ 15:00 đến 3 sáng) và ⟨![Ảnh địa điểm](https://lh3.go…⟩  **Gogi House** (4.7⭐, 11:00-22:00) cũng…",
+      "…hất, chỉ 0.9km, 4.6⭐) nếu muốn ăn món Hà Nội, hoặc ⟨![Ảnh địa điểm](https://lh3.go…⟩  **Nhà hàng chay Phương Mai** (1.7km, 4.…"
+    ]
+  },
+  "injection_mobile_path_replay_v2": {
+    "blocks_inserted": 69,
+    "blocks_mid_sentence": 0,
+    "turns_with_mid_sentence": 0,
+    "samples": []
+  }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Aspire Lite 14 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:28.684Z",
+ "body": {
+  "searchParameters": {
+   "q": "Aspire Lite 14 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "acer aspire lite 14 accessories",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-accessories",
+    "snippet": "Khám phá acer aspire lite 14 accessories mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 1
+   },
+   {
+    "title": "acer aspire lite 14 pink cover case",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-pink-cover-case",
+    "snippet": "Khám phá acer aspire lite 14 pink cover case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 2
+   },
+   {
+    "title": "acer aspire lite 14 internal keyboard",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-internal-keyboard",
+    "snippet": "acer aspire lite 14 internal keyboard ; 5. 6 sold · 5.389.020. ₫5.499.000 ; 4. 75 sold · 39.900. ₫58.000 ; 1 sold · 155.000 ...",
+    "position": 3
+   },
+   {
+    "title": "aspire lite 14 case",
+    "link": "https://shop.tiktok.com/vn/k/aspire-lite-14-case",
+    "snippet": "Khám phá aspire lite 14 case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 4
+   },
+   {
+    "title": "acer aspire lite 14 keyboard backlight",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-keyboard-backlight",
+    "snippet": "l4x tặng pass và công tắc · l4x tặng pass và công tắc · Đèn cắm USB, đèn sạc pin dự phòng cho máy tính, đèn LED bảo vệ mắt, đèn đọc sách, đèn ngủ nhỏ hình tròn.",
+    "position": 5
+   },
+   {
+    "title": "acer aspire lite 14 cover case",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-14-cover-case",
+    "snippet": "Khám phá acer aspire lite 14 cover case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 6
+   },
+   {
+    "title": "acer aspire lite 16 r",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-16-r",
+    "snippet": "Khám phá acer aspire lite 16 r mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 7
+   },
+   {
+    "title": "acer aspire lite 15",
+    "link": "https://shop.tiktok.com/vn/k/acer-aspire-lite-15",
+    "snippet": "Khám phá acer aspire lite 15 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

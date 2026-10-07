@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Le House Da Lat\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:24.884Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hana Dalat Hotel\" OR \"Golden Sun Hotel\" OR \"Le House Da Lat\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Golden Sun Hotel - Dalat (@goldensunhotel.dalat)",
+    "link": "https://www.tiktok.com/@goldensunhotel.dalat",
+    "snippet": "Chào mừng bạn đến với Golden Sun Hotel – Dalat. Nghỉ dưỡng đẳng cấp chuẩn 5⭐. EVERY KIND WORD MEANS A LOT Mỗi trải nghiệm được sẻ ...",
+    "position": 1
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt: Phòng ấm, decor xinh",
+    "link": "https://www.tiktok.com/@icungbaynhatrangdalat/video/7628599640945921301",
+    "snippet": "“Đà Lạt lạnh vậy, chỉ muốn trốn ở Golden Sun Hotel thôi… Phòng ấm, decor xinh xắn kiểu nhẹ nhàng Sáng mở cửa là thấy trời Đà Lạt mờ sương ...",
+    "position": 2
+   },
+   {
+    "title": "Golden Sun Hotel Greece — photos, location, and visitor tips",
+    "link": "https://www.tiktok.com/@panagiotis164/video/7648861365469285654",
+    "snippet": "Lead Golden Sun Hotel in Greece — find quick facts, photos, location cues, and visitor tips to plan a stay. This guide summarizes what ...",
+    "position": 3
+   },
+   {
+    "title": "Anna _ Golden Sun Hotel",
+    "link": "https://www.tiktok.com/@annanguyen61283/video/7674588712281394452",
+    "snippet": "Anna _ Golden Sun Hotel · Tác giả. Bên em hiện tại ở Tp HCM nha a. 8-23Trả lời. 0. Xem thêm câu trả lời khác (1). Đại Luyến Nguyễn. xinh nhé bà ...",
+    "position": 4
+   },
+   {
+    "title": "Golden Sun Hotel Đà Lạt — Trải nghiệm sang trọng đẳng ...",
+    "link": "https://www.tiktok.com/@alotravel.231/video/7675987404741758228",
+    "snippet": "Vị trí và ấn tượng ban đầu Golden Sun Hotel Đà Lạt tọa lạc ở vị trí thuận tiện cho các điểm tham quan nổi tiếng, giúp tiết kiệm thời gian di ...",
+    "position": 5
+   },
+   {
+    "title": "Discover Serenity at Golden Sun Hotel in Mang Den",
+    "link": "https://www.tiktok.com/@goldensunhotel.mangden/video/7627346372567567637?lang=ja-JP",
+    "snippet": "Nestled amidst the lush landscape of Mang Den, Golden Sun Hotel boasts beautifully designed rooms that enhance the serene surroundings. Each ...",
+    "position": 6
+   },
+   {
+    "title": "Golden Sun Hotel – Mang Den: Business & Leisure Retreat",
+    "link": "https://www.tiktok.com/@goldensunhotel.mangden/photo/7673879476492700949",
+    "snippet": "Golden Sun Hotel in Mang Den offers a unique setting for business meetings, balancing work with leisure through fresh highland air and curated ...",
+    "position": 7
+   },
+   {
+    "title": "GOLDEN SUN HOTEL APARTMENTS – PHÚ MỸ HƯNG ✨ ...",
+    "link": "https://www.tiktok.com/@annanguyen61283/video/7686380154670632212",
+    "snippet": "✨ GOLDEN SUN HOTEL APARTMENTS – PHÚ MỸ HƯNG ✨ Không gian lưu trú sang trọng – hiện đại – tiện nghi, phù hợp cho nghỉ ngơi, công tác và lưu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

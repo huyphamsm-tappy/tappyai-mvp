@@ -1,0 +1,138 @@
+{
+  "id": "P5b",
+  "text": "dưới 300k",
+  "parent": "P5",
+  "status": 200,
+  "ms": 14022,
+  "evidenceId": "5857fc04-ce85-44bd-b615-719644544dc2",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "massage spa dưới 300k",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "distance_km": 2.1,
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "distance_km": 2.3,
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "distance_km": 1.7,
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3179,
+      "hours": "09:00–22:30",
+      "distance_km": 1.3,
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "RELAX SPA MASSAGE VAI, CỔ, GÁY. BODY MASSAGE, FOOT MASSAGE, GỘI ĐẦU DƯỠNG SINH QUẬN 1",
+      "rating": 4.8,
+      "count": 533,
+      "hours": "09:00–22:00",
+      "distance_km": 1.2,
+      "address": "65B Lê Thị Riêng, Bến Thành, Hồ Chí Minh 71009, Việt Nam"
+    },
+    {
+      "name": "HANA SPA",
+      "rating": 4.8,
+      "count": 124,
+      "hours": "09:00–23:00",
+      "distance_km": 0.7,
+      "address": "15B Lê Thánh Tôn, phường, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MASSAGE DUBAI LUXURY",
+      "rating": 4.6,
+      "count": 609,
+      "hours": "09:00–03:00",
+      "distance_km": 0.9,
+      "address": "41 Lê Thị Hồng Gấm, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Bloom Spa Quận 1 - Massage Body & Gội Đầu Dưỡng Sinh",
+      "rating": 4.9,
+      "count": 539,
+      "hours": "09:00–22:00",
+      "distance_km": 1.1,
+      "address": "165/48 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Gội Đầu Dưỡng Sinh & Massage Quận 1 - An Miên Spa⁠",
+      "rating": 4.9,
+      "count": 948,
+      "hours": "09:00–22:00",
+      "distance_km": 1,
+      "address": "Đối diện nhà thờ MẠC TY NHO, 15/3 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Phaya Thai Spa Quận 1",
+      "rating": 4.6,
+      "count": 620,
+      "hours": "09:00–22:00",
+      "distance_km": 1.3,
+      "address": "10B Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn đi 1–2 người, muốn massage gần vị trí hiện tại (Quận 1) hôm nay. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Hana Spa** cho bạn — gần nhất (chỉ 0.7km), mở đến 23:00 hôm nay, và có 4.8⭐ từ 124 đánh giá Google Maps.\n\nNếu muốn chọn khác: **Massage Cổ Phong Q1** (1.3km, 4.9⭐ 3.179 đánh giá) là lựa chọn thay thế — nổi tiếng hơn, chuyên massage kiểu Trung Quốc truyền thống, nhưng xa hơn một chút.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hana Spa\",\"type\":\"website\",\"url\":\"https://massageenjoy.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hana Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3334509728689370412\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt chỗ|Muốn chọn spa khác|Cần massage chuyên sâu|[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 300k / 300–500k / trên 500k)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 300k|300–500k|trên 500k[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "dưới 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 1–2 người, muốn massage gần vị trí hiện tại (Quận 1) hôm nay. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Hana Spa** cho bạn — gần nhất (chỉ 0.7km), mở đến 23:00 hôm nay, và có 4.8⭐ từ 124 đánh giá Google Maps.\n\nNếu muốn chọn khác: **Massage Cổ Phong Q1** (1.3km, 4.9⭐ 3.179 đánh giá) là lựa chọn thay thế — nổi tiếng hơn, chuyên massage kiểu Trung Quốc truyền thống, nhưng xa hơn một chút.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hana Spa\",\"type\":\"website\",\"url\":\"https://massageenjoy.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hana Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3334509728689370412\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi trước để đặt chỗ|Muốn chọn spa khác|Cần massage chuyên sâu|[/FOLLOWUPS]"
+    }
+  ]
+}

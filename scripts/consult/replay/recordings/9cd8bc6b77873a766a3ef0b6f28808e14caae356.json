@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán hải sản giao tận nơi đồ chiên quan 7 gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T03:59:34.109Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán hải sản giao tận nơi đồ chiên quan 7 gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "“Phá đảo” 10 quán hải sản ngon ở Quận 7 nổi tiếng, hấp dẫn",
+    "link": "https://vincom.com.vn/trend/quan-hai-san-ngon-o-quan-7",
+    "snippet": "Làng ẩm thực Cù Lao Xanh - Nhà hàng hải sản quận 7 · Địa chỉ: 88 Nguyễn Đức Cảnh, P. Tân Phong, Quận 7, TP. HCM · Giờ mở cửa: 10:00 - 23:00 · Giá tham khảo: 60.000 ...",
+    "position": 1
+   },
+   {
+    "title": "Hải Sản Hoàng Gia Quận 7: Chi Nhánh, Menu & Giá 2026",
+    "link": "https://haisanhoanggia.com/blogs/goc-am-thuc/hai-san-hoang-gia-quan-7",
+    "snippet": "Hải Sản Hoàng Gia Quận 7 có 5 chi nhánh khu Phú Mỹ Hưng: hải sản nhập khẩu tươi sống, chọn tại bể chế biến tại chỗ, giao tận nơi.",
+    "date": "7 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Biển Nhớ Quận 7 có gì? 🔥Có Bể hải sản TƯƠI SỐNG MỖI ...",
+    "link": "https://www.facebook.com/haisanbiennho/posts/bi%E1%BB%83n-nh%E1%BB%9B-qu%E1%BA%ADn-7-c%C3%B3-g%C3%ACc%C3%B3-b%E1%BB%83-h%E1%BA%A3i-s%E1%BA%A3n-t%C6%B0%C6%A1i-s%E1%BB%91ng-m%E1%BB%97i-ng%C3%A0y-b%E1%BA%AFt-t%E1%BA%A1i-h%E1%BB%93-ch%E1%BA%BF-bi%E1%BA%BFn-t%E1%BA%A1i-b%C3%A0/1090174686455261/",
+    "snippet": "Biển Nhớ Quận 7 có gì? Có Bể hải sản TƯƠI SỐNG MỖI NGÀY, BẮT TẠI HỒ, CHẾ BIẾN TẠI BÀN, thực đơn đa dạng, có rất nhiều món NGON ĐỘC LẠ.",
+    "position": 3
+   },
+   {
+    "title": "HẢI VỊ HOÀNG GIA - GIAO NGAY TẬN NHÀ   Thèm hải sản ...",
+    "link": "https://www.facebook.com/haisanhoanggia/videos/h%E1%BA%A3i-s%E1%BA%A3n-ho%C3%A0ng-gia-chi-nh%C3%A1nh-qu%E1%BA%ADn-7-thi%C3%AAn-%C4%91%C6%B0%E1%BB%9Dng-h%E1%BA%A3i-s%E1%BA%A3n-gi%E1%BB%AFa-l%C3%B2ng-ph%C3%BA-m%E1%BB%B9-h%C6%B0ng/3655385561251694/",
+    "snippet": "⚜️ Hải Sản Hoàng Gia tự tin CAM KẾT 1 ĐỔI 1 trong vòng 2h để đảm bảo bữa ăn của bạn được trọn vẹn và đáng giá trong từng trải nghiệm. Hoặc ...",
+    "position": 4
+   },
+   {
+    "title": "Hải Sản Biển Nhớ",
+    "link": "https://haisanbiennho.com/",
+    "snippet": "Liên hệ đặt chỗ ; Điện thoại. 083 333 9997 ; E-mail. truongngochien1987@gmail.com ; Địa chỉ. R3-36 Phan Khiêm Ích, Hưng Gia 1, Phú Mỹ Hưng, Phường Tân Phong, Quận ...",
+    "position": 5
+   },
+   {
+    "title": "5 nhà hàng giao hải sản tận nơi ở TP.HCM",
+    "link": "https://znews.vn/5-nha-hang-giao-hai-san-tan-noi-o-tphcm-post1225993.html",
+    "snippet": "Món gợi ý: Cua sốt ớt Singapore, cua sốt tiêu đen, miến xào cua, cơm chiên cua. Lion city là địa chỉ nổi tiếng phục vụ món ngon từ đảo quốc ...",
+    "date": "15 thg 6, 2021",
+    "position": 6
+   },
+   {
+    "title": "Top 10 nhà hàng hải sản quận 7 tươi ngon 'đỉnh của chóp'",
+    "link": "https://digiticket.vn/blog/hai-san-quan-7/",
+    "snippet": "Nếu bạn đang săn tìm một nhà hàng hải sản quận 7 ngon thì The Crab Shack là cái tên tuyệt vời. Nhà hàng này được rất nhiều thực khách yêu thích ...",
+    "date": "17 thg 1, 2024",
+    "position": 7
+   },
+   {
+    "title": "Quận 7 có vựa hải sản nào bán đồ uy tín không mọi người ...",
+    "link": "https://www.facebook.com/groups/choonlineq7/posts/1919739395271316/",
+    "snippet": "Chợ Online Quận 7. Kieu Ky Au12h. ms 2075 Ship 15k đơn q7 MENU THỨ 6 Bon bon #59k/kg Nho keo xanh #49k/hộp Nho mix đủ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

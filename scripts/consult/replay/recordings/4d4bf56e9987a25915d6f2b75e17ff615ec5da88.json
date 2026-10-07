@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Grand\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:08:15.202Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Grand\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Jay Grand Hotel Đà Lạt - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-128736569/jay-grand-dalat-hotel/",
+    "snippet": "Giờ nhận phòng tại Jay Grand Hotel Đà Lạt bắt đầu từ 14:00, và giờ trả phòng là 12:00. Có được mang theo thú cưng tại Jay Grand Hotel Đà ...",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Hồ Hoàng Văn Thụ, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-h-hong-vn-th/hotels-c5204m28841605/",
+    "snippet": "Khách Sạn Cao Cấp Hàng Đầu Tại Đà Lạt · Grand Mercure Dalat · Khu nghỉ dưỡng & Spa Ana Mandara Villas Đà Lạt · Khách sạn Dalat Palace Heritage.",
+    "position": 2
+   },
+   {
+    "title": "Grand Mercure Dalat - Xem 158 Ảnh & Đánh giá",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-80834711/grand-mercure-dalat/photo.html",
+    "snippet": "Khám phá 158 ảnh của Grand Mercure Dalat, bao gồm phòng ốc, tiện nghi, cơ sở vật chất và khu vực xung quanh. Sử dụng hình ảnh khách sạn thực tế để hiểu rõ ...",
+    "position": 3
+   },
+   {
+    "title": "Tìm Khách Sạn 5 Sao Tại Đà Lạt",
+    "link": "https://vn.trip.com/hotels/star5/city/vn/dalat.html",
+    "snippet": "Về khách sạn 5 sao ở Đà Lạt và có quầy bar, MerPerle Dalat Hotel (từ 1.716.612₫) , Grand Mercure Dalat (từ 2.234.688₫) và Imperial Dalat Hotel, BW Premier ...",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Grand Center Dalat By Lilly - Giá cả và Ưu đãi ...",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-128670349/grand-center-dalat-by-lilly-hotel/",
+    "snippet": "Khách sạn Grand Center Dalat By Lilly · 22m² | Tầng: 1-4 · Có cửa sổ · Không hút thuốc · Wi-Fi miễn phí.",
+    "position": 5
+   },
+   {
+    "title": "Top 10 khách sạn tại Đà Lạt, Việt Nam",
+    "link": "https://vn.trip.com/hotels/dalat-hotels-list-5204/",
+    "snippet": "Tìm chỗ nghỉ hoàn hảo tại Đà Lạt theo phong cách du lịch của bạn ; Vmt Villa · 441.233₫ · Grand Mercure Dalat Các khách sạn ở Đà Lạt ; TTR Rin Villa & Hotel.",
+    "position": 6
+   },
+   {
+    "title": "Grand Mercure Dalat - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-80834711/grand-mercure-dalat/",
+    "snippet": "Giờ nhận phòng tại Grand Mercure Dalat bắt đầu từ 15:00, và giờ trả phòng là 12:00. Grand Mercure Dalat có hồ bơi không? Có, Grand Mercure Dalat có hồ bơi cho ...",
+    "position": 7
+   },
+   {
+    "title": "Các khách sạn ở gần Nhà thờ Mai Anh, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-domaine-de-marie-church/hotels-c5204m6788590/",
+    "snippet": "... Đà Lạt cho kỳ lưu trú tiếp theo của bạn. No. 1. Grand Mercure Dalat Các khách sạn ở Đà Lạt. Grand Mercure Dalat. Khách Sạn Ở Đà Lạt. 9,1/10. Tuyệt Vời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

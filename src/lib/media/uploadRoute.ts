@@ -15,6 +15,7 @@
 // disabled, because a disabled path comes back the moment an env var is wrong.
 
 import { getMediaProvider } from './index'
+import { isUploadServiceUnavailable } from './uploadAvailability'
 import { recordEvent } from '@/lib/observability'
 import {
   MediaUploadRejectedError,
@@ -49,6 +50,22 @@ export interface UploadSessionContext {
   ownerId: string
   /** The kinds THIS endpoint may mint. Its own authorization scope. */
   allowedKinds: readonly MediaUploadKind[]
+  /** The caller's own origin, declared on the session so the browser's PUT gets CORS headers. */
+  origin?: string | null
+}
+
+/**
+ * The request's Origin, only when it is this deployment's own host (https): the session is opened
+ * for the page that asked, never for an origin a caller names.
+ */
+export function sameHostOrigin(req: Pick<Request, 'headers'>): string | null {
+  const origin = req.headers.get('origin')
+  const host = req.headers.get('x-forwarded-host') ?? req.headers.get('host')
+  if (!origin || !host) return null
+  try {
+    const u = new URL(origin)
+    return u.protocol === 'https:' && u.host === host ? u.origin : null
+  } catch { return null }
 }
 
 export interface UploadSessionOutcome {
@@ -91,7 +108,7 @@ export async function createUploadSessionResponse(
   }
 
   try {
-    const opened = await provider.createUploadSession(target)
+    const opened = await provider.createUploadSession(ctx.origin ? { ...target, origin: ctx.origin } : target)
     return {
       status: 200,
       body: {
@@ -162,6 +179,15 @@ export async function createUploadSessionResponse(
       status,
       kind: String(input.kind ?? 'unknown'),
     })
-    return { status: 502, body: { error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.' } }
+    // Same classification /api/profile, /api/reviews/upload and the group avatar use: a credential / storage outage is
+    // the SERVICE being unavailable. The status and message stay as they were; only a machine `code` is added so the
+    // client can say "unavailable" instead of a generic retryable failure.
+    return {
+      status: 502,
+      body: {
+        error: 'Không thể tạo phiên tải lên. Vui lòng thử lại.',
+        ...(isUploadServiceUnavailable(e) ? { code: 'upload_unavailable' } : {}),
+      },
+    }
   }
 }

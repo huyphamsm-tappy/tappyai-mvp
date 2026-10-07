@@ -88,12 +88,13 @@ describe('every server message exists in both languages and they differ', () => 
   }
 
   it('placeholders are substituted, not left as literals', () => {
-    const en = serverMessage('chat.anonLimit', 'en', { n: 5 })
-    const vi = serverMessage('chat.anonLimit', 'vi', { n: 5 })
+    const en = serverMessage('chat.anonLimit', 'en', { n: 5, d: 15 })
+    const vi = serverMessage('chat.anonLimit', 'vi', { n: 5, d: 15 })
     expect(en).toContain('5')
     expect(vi).toContain('5')
-    expect(en).not.toContain('{n}')
-    expect(vi).not.toContain('{n}')
+    expect(en).toContain('15')
+    expect(en).not.toMatch(/\{[nd]\}/)
+    expect(vi).not.toMatch(/\{[nd]\}/)
   })
 
   it('leaks no implementation detail', () => {

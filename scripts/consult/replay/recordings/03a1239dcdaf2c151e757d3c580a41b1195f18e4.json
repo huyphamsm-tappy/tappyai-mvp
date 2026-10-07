@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "massage toàn thân thư giãn quận 1 quan 1 site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:19:06.651Z",
+ "body": {
+  "searchParameters": {
+   "q": "massage toàn thân thư giãn quận 1 quan 1 site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Gội Đầu & Massage tại Charm Garden Spa ở Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/212930-charm-garden-spa-hair-wash-massage-in-district-1-ho-chi-minh/",
+    "snippet": "Vị trí thuận tiện tại Quận 1, lý tưởng để thư giãn sau khi tham quan hoặc mua sắm ... Massage Nến Ấm Thư Giãn Toàn Thân. Ngày mở: Hiệu lực 14 ngày. Dermalogica ...",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Các gói dịch vụ · Massage toàn thân [60'/90'] · Massage toàn thân đá nóng [60'/90'] · Massage toàn thân đá muối Himalaya [60'/90'] · Natural Skin Dream [60'] · Combo ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 2
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Kỹ thuật viên massage: Lực vừa phải, massage toàn thân 60 phút bao gồm tinh dầu, đá nóng và chườm nóng, giúp cả người thư giãn. Cơ sở vật chất: Trước khi ...",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Massage đáng tiền ở Quận 1. Không gian rộng rãi với khu vực chờ, tủ khóa, phòng xông hơi ở tầng 1. Phòng massage ở tầng 2. Tôi thích massage kiểu Việt ...",
+    "rating": 4.4,
+    "ratingCount": 77,
+    "position": 4
+   },
+   {
+    "title": "Trải nghiệm Amy Spa & Massage ở Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147259-amy-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Dịch vụ tại quầy rất tốt, môi trường tuyệt vời! Có thể đặt lịch hẹn tắm trước, massage thư giãn, trước và sau khi massage đều có trà nóng và đồ ăn nhẹ.",
+    "rating": 4.8,
+    "ratingCount": 17,
+    "position": 5
+   },
+   {
+    "title": "The Moc Spa: Một lối thoát lấy cảm hứng từ thiên nhiên ở ...",
+    "link": "https://www.klook.com/vi/activity/189146-the-moc-spa-a-nature-inspired-escape-in-district-1/",
+    "snippet": "The Moc Spa: Một lối thoát lấy cảm hứng từ thiên nhiên ở Quận 1 · Tận hưởng không khí yên bình, thư thái tránh xa sự ồn ào của thành phố · Massage body, gội đầu ...",
+    "position": 6
+   },
+   {
+    "title": "Đài Bắc: Trung tâm Dưỡng sinh Vạn Hoa Nguyên Khí",
+    "link": "https://www.klook.com/vi/activity/121986-genki-spa/",
+    "snippet": "Massage tinh dầu thơm toàn thân thư giãn 90 phút. Massage đá nóng tinh dầu thư giãn 90 phút. Massage toàn thân 90 phút. Massage chân 70 phút. Massage trị liệu ...",
+    "rating": 4.8,
+    "ratingCount": 34,
+    "position": 7
+   },
+   {
+    "title": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+    "link": "https://www.klook.com/vi/activity/201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city/",
+    "snippet": "Với không khí ấm cúng và đội ngũ trị liệu viên địa phương thân thiện, Chị Tư Spa là một nơi chào đón du khách đến thư giãn và trải nghiệm văn hóa chăm sóc sức ...",
+    "rating": 4.8,
+    "ratingCount": 61,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

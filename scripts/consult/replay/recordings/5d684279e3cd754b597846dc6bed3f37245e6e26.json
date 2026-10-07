@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Set quà tặng phụ kiện thời trang cho nam 5\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:11:50.676Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Set quà tặng phụ kiện thời trang cho nam 5\" (site:dienmayxanh.com OR site:cellphones.com.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

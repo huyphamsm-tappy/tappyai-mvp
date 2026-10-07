@@ -1,0 +1,199 @@
+{
+  "id": "F4",
+  "text": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận",
+  "parent": null,
+  "status": 200,
+  "ms": 15076,
+  "evidenceId": "252df624-f4ac-4d54-a0fa-5d77c56533fa",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "nhà hàng quán ăn trưa gia đình 6 người có chỗ đậu xe Phú Nhuận",
+        "location": "Phú Nhuận, TP HCM",
+        "type": "restaurant"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "rating": 4.7,
+      "count": 2114,
+      "hours": "10:30–21:30",
+      "distance_km": 2.9,
+      "address": "235 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Tiệm Cơm Vị Nhà",
+      "rating": 4.8,
+      "count": 234,
+      "hours": "10:00–21:00",
+      "distance_km": 2.9,
+      "address": "72/1B Huỳnh Văn Bánh, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CƠM KHAY GỖ",
+      "rating": 4.8,
+      "count": 931,
+      "hours": "10:00–21:00",
+      "distance_km": 3.8,
+      "address": "214 Nguyễn Trọng Tuyển, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Bếp Quà Sáng – Xôi, Bún, Phở Hà Nội",
+      "rating": 4.9,
+      "count": 152,
+      "hours": "06:00–17:00",
+      "distance_km": 3.9,
+      "address": "35 Hoàng Diệu, Phú Nhuận, Hồ Chí Minh 72252, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Hoàng Tâm - Phan Xích Long",
+      "rating": 4.5,
+      "count": 1662,
+      "hours": "06:30–22:00",
+      "distance_km": 3,
+      "address": "352 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Gia Đình Ngọc Hương",
+      "rating": 4.5,
+      "count": 100,
+      "hours": "15:00–05:00",
+      "distance_km": 2.4,
+      "address": "592 Trường Sa, Quận Phú Nhuận, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Mô Rứa",
+      "rating": 4.4,
+      "count": 410,
+      "hours": "07:00–22:00",
+      "distance_km": 2.5,
+      "address": "45 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Nhà Hàng Ngõ 8",
+      "rating": 4.1,
+      "count": 1246,
+      "hours": "15:00–23:30",
+      "distance_km": 2.5,
+      "address": "8 Cù Lao, Cầu Kiệu, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Quán Nhớ Gia Lai",
+      "rating": 4,
+      "count": 324,
+      "hours": "07:00–22:30",
+      "distance_km": 2.7,
+      "address": "76 Đ. Hoa Cúc, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hoàng Ty 74 Trương Quốc Dung",
+      "rating": 3.9,
+      "count": 71,
+      "hours": "10:00–22:00",
+      "distance_km": 3.7,
+      "address": "74 Trương Quốc Dung, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Tám Riêu - Phan Xích Long",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 4.7,
+        "reviews": 2114,
+        "distance_km": 2.9,
+        "open_now": false,
+        "opening_hours": "10:30–21:30"
+      }
+    },
+    {
+      "name": "Tiệm Cơm Vị Nhà",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 234,
+        "distance_km": 2.9,
+        "open_now": false,
+        "opening_hours": "10:00–21:00"
+      }
+    },
+    {
+      "name": "CƠM KHAY GỖ",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 931,
+        "distance_km": 3.8,
+        "open_now": false,
+        "opening_hours": "10:00–21:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm giúp bạn những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nhỏ, có chỗ đậu xe 🚗Mình chọn **Tám Riêu - Phan Xích Long** cho bạn 👍 Quán có **4.7⭐ (2.114 đánh giá)**, cách bạn ~2.9km, mở từ 10:30–21:30. Đây là nhà hàng riêu cua nổi tiếng, không gian rộng phù hợp gia đình 6 người, có chỗ đậu xe ô tô.\n\nNếu muốn thêm lựa chọn, **Tiệm Cơm Vị Nhà** (4.8⭐, 2.9km) hoặc **CƠM KHAY GỖ** (4.8⭐, 3.8km) cũng đều tốt cho gia đình có con nhỏ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác ở Phú Nhuận|Ăn gì cho con nhỏ|Đặt bàn trước không[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Cả nhà 6 người có con nít ăn trưa cuối tuần, cần chỗ đậu xe ô tô, Phú Nhuận"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm giúp bạn những quán ăn trưa ở Phú Nhuận phù hợp cho gia đình 6 người có con nhỏ, có chỗ đậu xe 🚗Mình chọn **Tám Riêu - Phan Xích Long** cho bạn 👍 Quán có **4.7⭐ (2.114 đánh giá)**, cách bạn ~2.9km, mở từ 10:30–21:30. Đây là nhà hàng riêu cua nổi tiếng, không gian rộng phù hợp gia đình 6 người, có chỗ đậu xe ô tô.\n\nNếu muốn thêm lựa chọn, **Tiệm Cơm Vị Nhà** (4.8⭐, 2.9km) hoặc **CƠM KHAY GỖ** (4.8⭐, 3.8km) cũng đều tốt cho gia đình có con nhỏ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Tám Riêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5129199686849166520\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác ở Phú Nhuận|Ăn gì cho con nhỏ|Đặt bàn trước không[/FOLLOWUPS]"
+    }
+  ]
+}

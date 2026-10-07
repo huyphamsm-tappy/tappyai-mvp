@@ -16,4 +16,10 @@ sealed interface HomeTabRoute {
      *  the top-level `AppRoute.GroupDetail` via the cross-cutting navigator. */
     @Serializable
     data object GroupDining : HomeTabRoute
+
+    /** The Smart Tools catalogue (web `/tools`) — every tool, grouped as the web groups them,
+     *  reached from Home's Smart Tools section ("Xem tất cả"). Each card opens the destination
+     *  this host already routes to; the page adds no tool of its own. */
+    @Serializable
+    data object SmartTools : HomeTabRoute
 }

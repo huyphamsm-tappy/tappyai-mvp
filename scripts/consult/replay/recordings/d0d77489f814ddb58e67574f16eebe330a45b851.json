@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Núi Thành",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:56:08.838Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Núi Thành",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nui Thanh Hotel, Tân Bình, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/296863/0/c9928e8b54baa2c8651f790e9d8839e2.jpeg?ce=0&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLyz_grmZcqow9Ti5CMWcRDecN1_wa12TezeVL6H7ysA&s=10",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/nui-thanh-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F296863%2F0%2Fc9928e8b54baa2c8651f790e9d8839e2.jpeg%3Fce%3D0%26s%3D414x232&tbnid=FVTc47zAvKrI3M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnui-thanh-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=FybmDF_HB1WouM&w=309&h=232",
+    "position": 1
+   },
+   {
+    "title": "Nui Thanh Hotel, Tân Bình, Hồ Chí Minh",
+    "imageUrl": "https://pix10.agoda.net/property/77012907/0/9ee56ff3ca4cc8e95266c30eee9a1ffe.jpeg?ce=3&s=414x232",
+    "imageWidth": 369,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1M_R3aslIWfXl-hPrIhsHT0PBp4DY9C9yUKgjeKPsyg&s",
+    "thumbnailWidth": 283,
+    "thumbnailHeight": 178,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/nui-thanh-hotel/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F77012907%2F0%2F9ee56ff3ca4cc8e95266c30eee9a1ffe.jpeg%3Fce%3D3%26s%3D414x232&tbnid=QJkW6OpXi1M2dM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fnui-thanh-hotel%2Fhotel%2Fho-chi-minh-city-vn.html&docid=FybmDF_HB1WouM&w=369&h=232",
+    "position": 2
+   },
+   {
+    "title": "SoLex Hotel, TP. Hồ Chí Minh (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/122664665.jpg?k=7037416e7ac71b50c05280877c1b83aa2b5e9d6292d33c226eb4a82054eaa7b3&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvLEGqhYhYm8KZjeUBcQfv_pVrsnl4ZE4f9KXMDHk3rw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/solex.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F122664665.jpg%3Fk%3D7037416e7ac71b50c05280877c1b83aa2b5e9d6292d33c226eb4a82054eaa7b3%26o%3D&tbnid=3mQf8gY7bpWoOM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsolex.vi.html&docid=rXiZLhPxSXtv3M&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn 5 sao ở Núi Thành – Từ 2.767.104 VND | Traveloka",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/20062547-d5abcaf95a54e4ce17d12105bfc03058.jpeg?_src=imagekit&tr=fo-auto,h-144,q-40,w-300",
+    "imageWidth": 300,
+    "imageHeight": 144,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzhm557fAqKLiRirWbCl62W2hKNyUH9RXUHtyc9n8TfA&s=10",
+    "thumbnailWidth": 300,
+    "thumbnailHeight": 144,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/city/nui-thanh-10010512/5-star-hotels-in-nui-thanh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F20062547-d5abcaf95a54e4ce17d12105bfc03058.jpeg%3F_src%3Dimagekit%26tr%3Dfo-auto%2Ch-144%2Cq-40%2Cw-300&tbnid=bDXLjY9mIaoIdM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fcity%2Fnui-thanh-10010512%2F5-star-hotels-in-nui-thanh&docid=dLd5y70t7QJcUM&w=300&h=144",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Hoàng Yến Boutique Quảng Nam giá tốt 2026 - Eholiday.vn",
+    "imageUrl": "https://eholiday.vn/wp-content/uploads/2024/03/Khach-san-Hoang-Yen-Boutique-Quang-Nam.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1707,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwzRQAdK10nL5CFlgc2l2kGzzg4kUbDOBMKGqo-ttA_Q&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Eholiday",
+    "domain": "eholiday.vn",
+    "link": "https://eholiday.vn/khach-san-hoang-yen-boutique-quang-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Feholiday.vn%2Fwp-content%2Fuploads%2F2024%2F03%2FKhach-san-Hoang-Yen-Boutique-Quang-Nam.jpg&tbnid=pQqJUz7WJ400AM&imgrefurl=https%3A%2F%2Feholiday.vn%2Fkhach-san-hoang-yen-boutique-quang-nam%2F&docid=ClEchb7grpUHoM&w=2560&h=1707",
+    "position": 5
+   },
+   {
+    "title": "9 khách sạn Núi Thành, Giá giảm tới 30%",
+    "imageUrl": "https://img.cnt.traveloka.com/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/20075517-79b1fff6b75b098ee99453cf56dfea1a.jpeg?tr=q-40,w-300,h-300&_src=imagekit",
+    "imageWidth": 300,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSenLt-0yPGnswtTuqobOLP321GcHzM1Osewfyv-h5fsQ&s=10",
+    "thumbnailWidth": 300,
+    "thumbnailHeight": 300,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/city/nui-thanh-10010512",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.cnt.traveloka.com%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F20075517-79b1fff6b75b098ee99453cf56dfea1a.jpeg%3Ftr%3Dq-40%2Cw-300%2Ch-300%26_src%3Dimagekit&tbnid=jkWtHOB_HIHepM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fcity%2Fnui-thanh-10010512&docid=K2Qfmss_qedXJM&w=300&h=300",
+    "position": 6
+   },
+   {
+    "title": "10 khách sạn tốt nhất tại Núi Thành năm 2026",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/840x460/785632546.jpg?k=f7161e188f010950d8abcb0549c39db1f5f1374ce6301c7bab271cfde60c3ad8&o=",
+    "imageWidth": 840,
+    "imageHeight": 460,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRIWYkjTjhXyDT-EJ1-c-BqbPQCAbWzy2Zp7uZuBVYhg&s",
+    "thumbnailWidth": 304,
+    "thumbnailHeight": 166,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/city/nui-thanh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2F840x460%2F785632546.jpg%3Fk%3Df7161e188f010950d8abcb0549c39db1f5f1374ce6301c7bab271cfde60c3ad8%26o%3D&tbnid=UvmMI6_xKPRY3M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcity%2Fnui-thanh-vn.html&docid=Q0rAz9FYxPiXJM&w=840&h=460",
+    "position": 7
+   },
+   {
+    "title": "SKY HOTEL NÚI THÀNH (@Skyhotelnuithanh) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=417544003705688",
+    "imageWidth": 1280,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKwGO0hZWz3j_lYjer7hhNdNESoZgrMAWOkfRmNbptJA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Skyhotelnuithanh/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D417544003705688&tbnid=9no58k4QFYiVEM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FSkyhotelnuithanh%2F&docid=TTgSFV9iZ5xm0M&w=1280&h=960",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

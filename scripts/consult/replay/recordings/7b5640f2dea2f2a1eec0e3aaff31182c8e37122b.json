@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "spa massage kỹ thuật viên nữ sai gon site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:28:18.284Z",
+ "body": {
+  "searchParameters": {
+   "q": "spa massage kỹ thuật viên nữ sai gon site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm Ha Spa & Massage tại Quận 1, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/165262-ha-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Massage đáng tiền ở Quận 1. Không gian rộng rãi với khu vực chờ, tủ khóa, phòng xông hơi ở tầng 1. Phòng massage ở tầng 2. Tôi thích massage kiểu Việt ...",
+    "rating": 4.4,
+    "ratingCount": 77,
+    "position": 1
+   },
+   {
+    "title": "La Maison Spa Sài Gòn",
+    "link": "https://www.klook.com/vi/activity/182710-la-maison-spa-saigon/",
+    "snippet": "Cửa hàng này chỉ massage toàn thân ở lưng, đùi sau và đùi trước. Kỹ thuật viên không chuyên nghiệp, vừa uống nước vừa ngồi xuống massage cho bạn. Xem tất cả ...",
+    "rating": 3.8,
+    "ratingCount": 4,
+    "position": 2
+   },
+   {
+    "title": "Trải nghiệm Lilo Spa và Massage tại Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/129195-lilo-spa-and-massage-experience-in-ho-chi-minh/",
+    "snippet": "Các kỹ thuật viên massage cũng giỏi. Chúng tôi chỉ không thích việc không có sự riêng tư, họ thực hiện massage trong khi đèn rất sáng. Khu vực gội đầu và ...",
+    "rating": 4.4,
+    "ratingCount": 64,
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm 90 phút tại Sense Spa ở Thành phố Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/133221-90-minutes-experience-at-sense-spa-in-ho-chi-minh-city/",
+    "snippet": "Sense Spa, được thành lập vào năm 2014, nằm ở trung tâm khu vực Đồng Khởi. Đa dạng các loại massage kết hợp sự hiếu khách của Việt Nam với các kỹ thuật chuyên ...",
+    "position": 4
+   },
+   {
+    "title": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Shinrin Spa cung cấp các dịch vụ massage chuyên nghiệp, đạt tiêu chuẩn quốc tế bởi các kỹ thuật viên lành nghề. logoImg.",
+    "rating": 4.8,
+    "ratingCount": 470,
+    "position": 5
+   },
+   {
+    "title": "KOKORO Spa & Aesthetic tại Quận 3, Hồ Chí Minh",
+    "link": "https://www.klook.com/vi/activity/147260-kokoro-spa-aesthetic-in-district-3-ho-chi-minh/",
+    "snippet": "Với một loạt các dịch vụ bao gồm chăm sóc da mặt, massage, các liệu pháp toàn thân và chăm sóc da, Kokoro Spa sử dụng các sản phẩm chất lượng cao và kỹ thuật ...",
+    "position": 6
+   },
+   {
+    "title": "Trải nghiệm La Spa & Massage Premium tại Quận 1, Hồ ...",
+    "link": "https://www.klook.com/vi/activity/157287-la-spa-massage-premium-experience-in-district-1-ho-chi-minh/",
+    "snippet": "Tọa lạc tại trung tâm Thành phố Hồ Chí Minh, La Spa Sài Gòn mang đến một không gian thư giãn thanh bình, kết hợp giữa nét thanh lịch truyền thống của Việt Nam ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm Elle'B Beaute Spa tại Chợ Bến Thành, Hồ Chí ...",
+    "link": "https://www.klook.com/vi/activity/146021-elle-b-beaute-spa-experience-in-ben-thanh-market-ho-chi-minh/",
+    "snippet": "Gội đầu 60 phút ở ElleB khác biệt hoàn toàn so với những spa khác mà tôi từng đến. Họ massage cổ & vai cho bạn trước, khi bạn NẰM SẤP. Một kiểu massage đúng ...",
+    "rating": 4.7,
+    "ratingCount": 50,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

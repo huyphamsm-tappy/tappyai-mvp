@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "set cafe phố tặng 1 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:22:52.828Z",
+ "body": {
+  "searchParameters": {
+   "q": "set cafe phố tặng 1 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "ntuc fairpricedisney coffee mug",
+    "link": "https://shop.tiktok.com/vn/k/ntuc-fairpricedisney-coffee-mug",
+    "snippet": "COMBO 3 HỘP CAFE PHỐ TẶNG 3 LY THUỶ TINH XỊN · 26 sold · 145.900 ; MUA 1 TẶNG 1 LY THUỶ TINH XỊN CAFE PHỐ SỮA. 11 sold · 53.333 ; COMBO 2 HỘP CAFE PHỐ SỮA NÓNG (TẶNG ...",
+    "position": 1
+   },
+   {
+    "title": "888 Tea amp; Coffee",
+    "link": "https://shop.tiktok.com/vn/k/888-tea-amp-coffee",
+    "snippet": "Trà Trầm Hương Thượng Hạng · 644 sold · 169.150 ; MUA 1 TẶNG 1 LY THUỶ TINH XỊN CAFE PHỐ SỮA. 11 sold · 53.333 ; Trà rau má túi díp 50 sét. 0 sold · 110.000 ...",
+    "position": 2
+   },
+   {
+    "title": "Set 5 ly thủy tinh sọc 360ml ( Quà tặng Cafe Phố)",
+    "link": "https://shop.tiktok.com/vn/pdp/1734054908542026939",
+    "snippet": "SET 5 Ly thủy tinh sọc – QUÀ TẶNG CAFE PHỐ✨ Thủy tinh dày dặn, trong suốt – sang đẹp Dung tích 360ml, dùng cho sinh tố, trà, nước ép , cafe GIÁ ...",
+    "position": 3
+   },
+   {
+    "title": "zus coffee tea series promotion",
+    "link": "https://shop.tiktok.com/vn/k/zus-coffee-tea-series-promotion",
+    "snippet": "MUA 1 TÚI TẶNG 1 TÚI CÙNG LOẠI CÀ PHÊ SỮA MACHIATO KOPIKO (túi 20 gói) ( tặng kèm 1 viên khăn nén) Coffee Cafe. 4. 2 sold. ₫149.900. MUA 1 TÚI TẶNG 1 TÚI ...",
+    "position": 4
+   },
+   {
+    "title": "CAFE PHỐ SỮA NÓNG TẶNG KÈM LY THỦY TINH CAO ...",
+    "link": "https://shop.tiktok.com/vn/pdp/maccoffee-cafe-pho-sua-nong-ly-thuy-tinh-cao-cap-h-hop-160gram-10-goi-thom-ngot-sang-trong/1733085290028827929",
+    "snippet": "MACCOFFEE - CAFE PHỐ SỮA NÓNG TẶNG KÈM LY THỦY TINH CAO CẤP - HỘP 160GRAM (10 GÓI)✨ Giới thiệu sản phẩm: MACCOFFEE mang đến cho bạn cà phê phố sữa nóng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "tumbler zus coffee gift box malaysia",
+    "link": "https://shop.tiktok.com/vn/k/tumbler-zus-coffee-gift-box-malaysia",
+    "snippet": "[FLASHSALE - MUA 1 TẶNG 1]MUA 1 túi Đậu hũ Cá nhân phô mai Malaysia EB (500g)/T20 TẶNG 1 túi Nước lẩu Thái Homecook. Giới hạn mỗi đơn 1 lượt tặng.",
+    "position": 6
+   },
+   {
+    "title": "888teacoffee - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/888teacoffee",
+    "snippet": "CHÈ BÚP TÂN CƯƠNG THÁI NGUYÊN. 0 sold · 250.000 ; Trà túi lọc Tô Điệp tiện lợi 50 sét. 0 sold · 112.000 ; Cà phê Trùng thảo (Cordy Cafe) · 3 sold · 147.000 ...",
+    "position": 7
+   },
+   {
+    "title": "กาแฟ merry coffee",
+    "link": "https://shop.tiktok.com/vn/k/kaaef-merry-coffee",
+    "snippet": "MacCoffee Cafe Phố - Cafe Sữa Nóng Tặng Ly Thủy Tinh - Sản Phẩm Ngon Và Thoải Mái. 0 sold · 65.000 ; COMBO 3 BỊCH CAFE MEKONG Thơm ngon béo ngậy · 67 sold · 139.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

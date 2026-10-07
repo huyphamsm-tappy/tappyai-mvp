@@ -1,0 +1,27 @@
+{
+  "id": "E5",
+  "text": "cuối tuần làm gì",
+  "parent": null,
+  "status": 200,
+  "ms": 4989,
+  "evidenceId": "90203eca-335c-45b5-91aa-b98b25c017d3",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tôi cần biết thêm một chút để gợi ý cho bạn nhé! 😊\n\n**Cuối tuần này (19-20/9) bạn muốn:**\n- Đi chơi với bạn bè hay gia đình?\n- Thích hoạt động ngoài trời hay trong nhà?\n- Budget khoảng bao nhiêu?\n\nHoặc nếu bạn chưa có ý tưởng cụ thể, tôi có thể gợi ý vài hoạt động vui ở Quận 1 (nơi bạn đang ở) — từ quán cà phê, bar, rạp phim, đến các điểm tham quan gần đó. Bạn muốn thử cái nào? 🎬🍹\n\n[FOLLOWUPS]đi chơi với bạn bè|ở nhà thư giãn|tham quan di tích[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Tôi cần biết thêm một chút để gợi ý cho bạn nhé! 😊\n\n**Cuối tuần này (19-20/9) bạn muốn:**\n- Đi chơi với bạn bè hay gia đình?\n- Thích hoạt động ngoài trời hay trong nhà?\n- Budget khoảng bao nhiêu?\n\nHoặc nếu bạn chưa có ý tưởng cụ thể, tôi có thể gợi ý vài hoạt động vui ở Quận 1 (nơi bạn đang ở) — từ quán cà phê, bar, rạp phim, đến các điểm tham quan gần đó. Bạn muốn thử cái nào? 🎬🍹\n\n[FOLLOWUPS]đi chơi với bạn bè|ở nhà thư giãn|tham quan di tích[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

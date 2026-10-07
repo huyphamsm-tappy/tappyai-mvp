@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Iris Nailbar SGN\" OR \"Nail TT19 Sài Gòn\" OR \"The Nail\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:00:51.185Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Iris Nailbar SGN\" OR \"Nail TT19 Sài Gòn\" OR \"The Nail\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nails xinh tại Iris Nailbar SGN 💅📸",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/photo/7681231691645668628",
+    "snippet": "Hoà Hưng (Quận 10), Tp.HCM Hotline: 033 7979 106 ... Keywords: Iris Nailbar SGN,Nails Quận 10,Nối mi thiết kế,Đào tạo học ...",
+    "position": 1
+   },
+   {
+    "title": "Mấy ngày này các chị đẹo vô là yêu cầu sơn đỏ, tone màu ...",
+    "link": "https://www.tiktok.com/@irisnailbarsgn/video/7585585312781405461",
+    "snippet": "Video TikTok từ ✨ Iris Nailbar SGN ✨ (@irisnailbarsgn): \"Mấy ngày ... 10 ngón 229k ⏰ Thứ 2–Thứ 5 | 09:00–15:00 2A Thạch Thị Thanh ...",
+    "position": 2
+   },
+   {
+    "title": "i'm obsessed with this colorrr @the nail lab NYC #fy #nails",
+    "link": "https://www.tiktok.com/@dianerysl/video/7686614122833661198",
+    "snippet": "782 Likes, TikTok video from dianeryscastillo (@dianerysl): “i'm obsessed with this colorrr @the nail lab NYC #fy #nails”. nails. original ...",
+    "position": 3
+   },
+   {
+    "title": "Funny Client Interactions at the Nail Salon",
+    "link": "https://www.tiktok.com/@nailboo/video/7590913075046354231",
+    "snippet": "Laugh at relatable moments with clients at the nail salon! Discover funny nail memes and client stories. #nails #relatablememes #funny #nailtech.",
+    "position": 4
+   },
+   {
+    "title": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà ...",
+    "link": "https://www.tiktok.com/@thudidaurua/video/7534663646899719431",
+    "snippet": "Tiệm nail gội đầu ở quận 10 giá mềm chỉ 75K sơn gel mà sử dụng ... ✨ Iris Nailbar SGN ✨. 206 · recommend-cover. Tiệm neo thư giãn. 2677.",
+    "position": 5
+   },
+   {
+    "title": "Grand Opening Nail Supply Store — 10% Off Today",
+    "link": "https://www.tiktok.com/@thenailsupplycofresno/video/7673216469689273630",
+    "snippet": "A: The Nail Supply Co. is offering gifts and 10% off the entire store during their grand opening celebration. Q: When does the 10% off discount ...",
+    "position": 6
+   },
+   {
+    "title": "Lessons at the nail salon 💅 #life #lifelessons # ...",
+    "link": "https://www.tiktok.com/@andiearonow/video/7663111169044974862",
+    "snippet": "TikTok video from Andie Aronow (@andiearonow): “Lessons at the nail salon #life #lifelessons #lifehack #work #worklife”. Nail Tech Life. what if you just ...",
+    "position": 7
+   },
+   {
+    "title": "Bring Back Airbrushed Square Nails at the Nail Salon",
+    "link": "https://www.tiktok.com/@thewnailbar/video/7335554225013034286",
+    "snippet": "Dreaming of Airbrushed Nails! A trip to the nail salon sparked a wave of nostalgia for classic airbrushed nails and squared tips!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,964 @@
+{
+  "id": "T5b",
+  "text": "3–5 người",
+  "parent": "T5",
+  "status": 200,
+  "ms": 13028,
+  "evidenceId": "9db1294e-bb98-4acf-8e52-09521ecb0901",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "địa điểm vui chơi giải trí nhóm 5 người",
+        "location": "Quận 1, TP.HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Real Escape Hồ Chí Minh",
+      "rating": 5,
+      "count": 7146,
+      "hours": "09:00–22:00",
+      "distance_km": 3.4,
+      "address": "662/3 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 10000, Việt Nam"
+    },
+    {
+      "name": "Inside Xcape Room",
+      "rating": 4.9,
+      "count": 2180,
+      "hours": "08:00–23:00",
+      "distance_km": 3.5,
+      "address": "240 Nguyễn Đình Chính, Phú Nhuận, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "CLB Bắn Cung Tinh Võ Quận 5",
+      "rating": 5,
+      "count": 1217,
+      "hours": "09:00–21:00",
+      "distance_km": 4.6,
+      "address": "107B Trần Hưng Đạo/1108 Võ Văn Kiệt, An Đông, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "rating": 4.9,
+      "count": 1506,
+      "hours": "09:00–22:00",
+      "distance_km": 5.9,
+      "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "rating": 4.3,
+      "count": 36811,
+      "hours": "07:00–18:30",
+      "distance_km": 1.2,
+      "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Board Game Station",
+      "rating": 4.4,
+      "count": 776,
+      "hours": "09:00–00:00",
+      "distance_km": 1.4,
+      "address": "30 Cô Bắc, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Tinker Box",
+      "rating": 4.4,
+      "count": 167,
+      "hours": "08:30–21:00",
+      "distance_km": 1.3,
+      "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Jump Arena Lê Thị Riêng",
+      "rating": 4.5,
+      "count": 609,
+      "hours": "09:00–22:00",
+      "distance_km": 4,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Thiên Đường Giải Trí Thỏ Trắng",
+      "rating": 4.3,
+      "count": 8509,
+      "hours": "08:00–22:00",
+      "distance_km": 3.9,
+      "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Khu công viên giải trí D-Joy",
+      "rating": 3.6,
+      "count": 133,
+      "hours": "17:00–22:00",
+      "distance_km": 1.2,
+      "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Real Escape Hồ Chí Minh",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 7146,
+        "distance_km": 3.4,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Inside Xcape Room",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 2180,
+        "distance_km": 3.5,
+        "open_now": true,
+        "opening_hours": "08:00–23:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "CLB Bắn Cung Tinh Võ Quận 5",
+      "role": null,
+      "evidence": {
+        "rating": 5,
+        "reviews": 1217,
+        "distance_km": 4.6,
+        "open_now": true,
+        "opening_hours": "09:00–21:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Timezone Estella Place - Arcade, VR & Parties",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 1506,
+        "distance_km": 5.9,
+        "open_now": true,
+        "opening_hours": "09:00–22:00",
+        "attributes": []
+      }
+    },
+    {
+      "name": "Thảo Cầm Viên Sài Gòn",
+      "role": null,
+      "evidence": {
+        "rating": 4.3,
+        "reviews": 36811,
+        "distance_km": 1.2,
+        "open_now": true,
+        "opening_hours": "07:00–18:30",
+        "attributes": []
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn đi 5 người, hôm nay, gần vị trí hiện tại, tầm giá phổ thông. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Real Escape Hồ Chí Minh** cho nhóm bạn. Đây là trung tâm trò chơi truy tìm lối thoát (escape room) với **5⭐ từ 7.146 đánh giá** — rất phù hợp để nhóm 5 người cùng chơi, vừa vui vừa kích thích. Cách bạn khoảng 3.4km, đang mở cửa đến 22:00 hôm nay.\n\nHoặc **Inside Xcape Room** (4.9⭐, 3.5km) cũng là lựa chọn tốt nếu muốn thêm tùy chọn escape room khác.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Real Escape\",\"type\":\"website\",\"url\":\"http://realescape.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Real Escape\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2489848036890084602\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Escape room khác ở gần|Chỗ chơi khác cho nhóm|Ăn gì sau khi chơi[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 200k/người / 200–500k/người / trên 500k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 200k/người|200–500k/người|trên 500k/người[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "3–5 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn đi 5 người, hôm nay, gần vị trí hiện tại, tầm giá phổ thông. Để gợi ý chính xác, mình sẽ tìm ngay.\n\nMình chọn **Real Escape Hồ Chí Minh** cho nhóm bạn. Đây là trung tâm trò chơi truy tìm lối thoát (escape room) với **5⭐ từ 7.146 đánh giá** — rất phù hợp để nhóm 5 người cùng chơi, vừa vui vừa kích thích. Cách bạn khoảng 3.4km, đang mở cửa đến 22:00 hôm nay.\n\nHoặc **Inside Xcape Room** (4.9⭐, 3.5km) cũng là lựa chọn tốt nếu muốn thêm tùy chọn escape room khác.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Real Escape\",\"type\":\"website\",\"url\":\"http://realescape.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Real Escape\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2489848036890084602\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Escape room khác ở gần|Chỗ chơi khác cho nhóm|Ăn gì sau khi chơi[/FOLLOWUPS]"
+    }
+  ],
+  "toolResults": [
+    {
+      "source": "Serper Maps",
+      "count": 20,
+      "location": "Quận 1, TP.HCM",
+      "results": [
+        {
+          "name": "Real Escape Hồ Chí Minh",
+          "place_id": "ChIJG1_zo8EvdTER-oSJB5m3jSI",
+          "address": "662/3 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 10000, Việt Nam",
+          "phone": "+84 902 698 362",
+          "google_rating": "5⭐ (7.146 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 7146,
+          "distance_km": 3.4,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Trung tâm trò chơi truy tìm lối thoát"
+          ],
+          "maps_link": "https://maps.google.com/?cid=2489848036890084602",
+          "website_uri": "http://realescape.vn/"
+        },
+        {
+          "name": "Inside Xcape Room",
+          "place_id": "ChIJQTPV5OApdTERMXc0waXCCFo",
+          "address": "240 Nguyễn Đình Chính, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+          "google_rating": "4.9⭐ (2.180 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 2180,
+          "distance_km": 3.5,
+          "open_now": true,
+          "opening_hours": "08:00–23:00",
+          "place_types": [
+            "Trung tâm trò chơi truy tìm lối thoát"
+          ],
+          "maps_link": "https://maps.google.com/?cid=6487649280394032945",
+          "website_uri": "https://insidexcape.vn/"
+        },
+        {
+          "name": "CLB Bắn Cung Tinh Võ Quận 5",
+          "place_id": "ChIJfSetyL4vdTERNHLovM3SezY",
+          "address": "107B Trần Hưng Đạo/1108 Võ Văn Kiệt, An Đông, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 965 637 573",
+          "google_rating": "5⭐ (1.217 đánh giá Google Maps)",
+          "rating_value": 5,
+          "rating_count": 1217,
+          "distance_km": 4.6,
+          "open_now": true,
+          "opening_hours": "09:00–21:00",
+          "place_types": [
+            "Câu lạc bộ bắn cung"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3925963281262998068",
+          "website_uri": "https://www.bancungtinhvo.com/"
+        },
+        {
+          "name": "Timezone Estella Place - Arcade, VR & Parties",
+          "place_id": "ChIJYYbJ_zIndTERIJOcMGU6Y7M",
+          "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 7300 7790",
+          "google_rating": "4.9⭐ (1.506 đánh giá Google Maps)",
+          "rating_value": 4.9,
+          "rating_count": 1506,
+          "distance_km": 5.9,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Trung tâm vui chơi giải trí",
+            "Sàn chơi bô-linh",
+            "Cửa hàng trò chơi điện tử"
+          ],
+          "maps_link": "https://maps.google.com/?cid=12926239561765131040",
+          "website_uri": "https://www.timezonegames.com/vi-vn/dia-diem/timezone-estella-place-hcmc-est?utm_source=google&utm_medium=organic&utm_campaign=Google+My+Business&utm_term=plcid_10638312601158007886&utm_content=Timezone+Estella+Place+-+10-Pin+Mini+Bowling+and+Arcade+-+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh"
+        },
+        {
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "place_id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 28 3829 1425",
+          "google_rating": "4.3⭐ (36.811 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 36811,
+          "distance_km": 1.2,
+          "open_now": true,
+          "opening_hours": "07:00–18:30",
+          "place_types": [
+            "Điểm thu hút khách du lịch",
+            "Vườn bách thú"
+          ],
+          "maps_link": "https://maps.google.com/?cid=5600618488004010382",
+          "website_uri": "https://s.shopee.vn/8V7uC7gWA0"
+        },
+        {
+          "name": "Board Game Station",
+          "place_id": "ChIJLxNghBUvdTERwPn_iOjz1pc",
+          "address": "30 Cô Bắc, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+          "phone": "+84 353 771 890",
+          "google_rating": "4.4⭐ (776 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 776,
+          "distance_km": 1.4,
+          "open_now": true,
+          "opening_hours": "09:00–00:00",
+          "place_types": [
+            "Câu lạc bộ trò chơi cờ bàn",
+            "Quán cà phê"
+          ],
+          "maps_link": "https://maps.google.com/?cid=10941200524799637952",
+          "website_uri": "https://www.facebook.com/Boardgamestation30cobac/"
+        },
+        {
+          "name": "Tinker Box",
+          "place_id": "ChIJLwB-bsQvdTERXLdP2IuZvt4",
+          "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 847 120 325",
+          "google_rating": "4.4⭐ (167 đánh giá Google Maps)",
+          "rating_value": 4.4,
+          "rating_count": 167,
+          "distance_km": 1.3,
+          "open_now": true,
+          "opening_hours": "08:30–21:00",
+          "place_types": [
+            "Sân chơi trong nhà",
+            "Dịch vụ tiệc cho trẻ em"
+          ],
+          "maps_link": "https://maps.google.com/?cid=16050434947903633244"
+        },
+        {
+          "name": "Jump Arena Lê Thị Riêng",
+          "place_id": "ChIJacTdgFsvdTER_aIXqZFc4M0",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+          "phone": "+84 1900 636808",
+          "google_rating": "4.5⭐ (609 đánh giá Google Maps)",
+          "rating_value": 4.5,
+          "rating_count": 609,
+          "distance_km": 4,
+          "open_now": true,
+          "opening_hours": "09:00–22:00",
+          "place_types": [
+            "Sân chơi trong nhà"
+          ],
+          "maps_link": "https://maps.google.com/?cid=14834958953235325693",
+          "website_uri": "https://jumparena.vn/"
+        },
+        {
+          "name": "Thiên Đường Giải Trí Thỏ Trắng",
+          "place_id": "ChIJ9YE09dEudTERNEcX1eDdajY",
+          "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 28 3977 1975",
+          "google_rating": "4.3⭐ (8.509 đánh giá Google Maps)",
+          "rating_value": 4.3,
+          "rating_count": 8509,
+          "distance_km": 3.9,
+          "open_now": true,
+          "opening_hours": "08:00–22:00",
+          "place_types": [
+            "Công viên giải trí",
+            "Công viên giải trí",
+            "Công viên",
+            "Điểm thu hút khách du lịch"
+          ],
+          "maps_link": "https://maps.google.com/?cid=3921190383296923444",
+          "website_uri": "https://www.facebook.com/GiaiTriThoTrang/?locale=vi_VN"
+        },
+        {
+          "name": "Khu công viên giải trí D-Joy",
+          "place_id": "ChIJp-SfCAAvdTERzLubTbe7EoI",
+          "address": "QPH6+8M4, An Khánh, Hồ Chí Minh, Việt Nam",
+          "phone": "+84 766 011 411",
+          "google_rating": "3.6⭐ (133 đánh giá Google Maps)",
+          "rating_value": 3.6,
+          "rating_count": 133,
+          "distance_km": 1.2,
+          "open_now": false,
+          "opening_hours": "17:00–22:00",
+          "place_types": [
+            "Sân chơi"
+          ],
+          "maps_link": "https://maps.google.com/?cid=9372760170466884556"
+        }
+      ],
+      "_tappy_place_domain": "place",
+      "place_search_status": "has_results",
+      "_tappy_shortlist": [
+        {
+          "rank": 0,
+          "id": "ChIJG1_zo8EvdTER-oSJB5m3jSI",
+          "name": "Real Escape Hồ Chí Minh",
+          "role": "best_overall",
+          "evidence": {
+            "rating": 5,
+            "reviews": 7146,
+            "distance_km": 3.4,
+            "open_now": true,
+            "opening_hours": "09:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "3.4km away",
+            "7146 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 1,
+          "id": "ChIJQTPV5OApdTERMXc0waXCCFo",
+          "name": "Inside Xcape Room",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 2180,
+            "distance_km": 3.5,
+            "open_now": true,
+            "opening_hours": "08:00–23:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "3.5km away",
+            "2180 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 2,
+          "id": "ChIJfSetyL4vdTERNHLovM3SezY",
+          "name": "CLB Bắn Cung Tinh Võ Quận 5",
+          "role": null,
+          "evidence": {
+            "rating": 5,
+            "reviews": 1217,
+            "distance_km": 4.6,
+            "open_now": true,
+            "opening_hours": "09:00–21:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 5",
+            "4.6km away",
+            "1217 reviews"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 3,
+          "id": "ChIJYYbJ_zIndTERIJOcMGU6Y7M",
+          "name": "Timezone Estella Place - Arcade, VR & Parties",
+          "role": null,
+          "evidence": {
+            "rating": 4.9,
+            "reviews": 1506,
+            "distance_km": 5.9,
+            "open_now": true,
+            "opening_hours": "09:00–22:00",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.9",
+            "1506 reviews",
+            "5.9km away"
+          ],
+          "missing": []
+        },
+        {
+          "rank": 4,
+          "id": "ChIJx7wwM0svdTERjuH2a9dkuU0",
+          "name": "Thảo Cầm Viên Sài Gòn",
+          "role": null,
+          "evidence": {
+            "rating": 4.3,
+            "reviews": 36811,
+            "distance_km": 1.2,
+            "open_now": true,
+            "opening_hours": "07:00–18:30",
+            "attributes": []
+          },
+          "why": [
+            "rated 4.3",
+            "1.2km away",
+            "36811 reviews"
+          ],
+          "missing": []
+        }
+      ],
+      "_tappy_evidence_gap": {
+        "qualified": 10,
+        "total": 10,
+        "needed": [
+          "rating",
+          "reviewCount",
+          "distance"
+        ],
+        "action": "recommend"
+      },
+      "results_note": "Day la TOAN BO 10 ket qua, rut gon (chi cac truong de chon); the (card) cua user hien anh/dia chi/SDT/nut hanh dong."
+    }
+  ],
+  "frames8Raw": [
+    [
+      {
+        "kind": "tappy.places.v1",
+        "v": 1,
+        "domain": "food",
+        "ranked": true,
+        "items": [
+          {
+            "id": "place:osm:10.77032,106.67081",
+            "domain": "food",
+            "kind": "place",
+            "name": "Real Escape Hồ Chí Minh",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnJdkH_LtN6BaoCYaUyDm21TCzE-cytdwUtwow1AaTfxJOQtq59jOhCfhXDXHtLfOMhzI3vgABtkgMpHtAO7PmV2hZQtMJRxViXMgjVr6oBfZChneo8FUNYns5TTfl_D8hdqGi8AW9QSDia",
+            "address": "662/3 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 10000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 7146,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 902 698 362",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "09:00–22:00",
+              "Thứ Ba": "09:00–22:00",
+              "Thứ Tư": "09:00–22:00",
+              "Thứ Năm": "09:00–22:00",
+              "Thứ Sáu": "09:00–22:00"
+            },
+            "distanceKm": 3.4,
+            "categories": [
+              "Trung tâm trò chơi truy tìm lối thoát"
+            ],
+            "rank": 0,
+            "shortlistPosition": 1,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=2489848036890084602",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Real%20Escape%20H%E1%BB%93%20Ch%C3%AD%20Minh%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84902698362",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.79252,106.67290",
+            "domain": "food",
+            "kind": "place",
+            "name": "Inside Xcape Room",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlRgj0N__c7eJ8DX1I0f4FWrsGN5CehATmxQF5nqnDVCNXVNC4p6vP9ecv5PWbYyDAjxuoLA7_n1U2nXgJFE4W1zZ4utVyvMVIMcgE4IJvLFqPl8rAqr2XtqCK7ykdiUyrnFQxz",
+            "address": "240 Nguyễn Đình Chính, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 2180,
+            "openingHours": "08:00–23:00",
+            "openNow": true,
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:00–23:00",
+              "Chủ Nhật": "08:00–23:00",
+              "Thứ Hai": "08:00–23:00",
+              "Thứ Ba": "08:00–23:00",
+              "Thứ Tư": "08:00–23:00",
+              "Thứ Năm": "08:00–23:00",
+              "Thứ Sáu": "08:00–23:00"
+            },
+            "distanceKm": 3.5,
+            "categories": [
+              "Trung tâm trò chơi truy tìm lối thoát"
+            ],
+            "rank": 1,
+            "shortlistPosition": 2,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=6487649280394032945",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@insidexcape/video/7327290181336190210",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://insidexcape.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Inside%20Xcape%20Room%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.75111,106.66793",
+            "domain": "food",
+            "kind": "place",
+            "name": "CLB Bắn Cung Tinh Võ Quận 5",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl29-Ibte_Ifs_XV_qGQKUj0q1QZodaW66vkSvZDLjgfwrS1NPaqTQGgQMKg-TYd8Q4ow4DiQLSVovhsZpr4TQkKZUDgeNotga4U6wOimIgxibq2vlfrmUXd7ayml_7d-iEC6BRmQ",
+            "address": "107B Trần Hưng Đạo/1108 Võ Văn Kiệt, An Đông, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 5,
+            "ratingCount": 1217,
+            "openingHours": "09:00–21:00",
+            "openNow": true,
+            "phone": "+84 965 637 573",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–21:00",
+              "Chủ Nhật": "09:00–21:00",
+              "Thứ Hai": "13:00–21:00",
+              "Thứ Ba": "13:00–21:00",
+              "Thứ Tư": "13:00–21:00",
+              "Thứ Năm": "13:00–21:00",
+              "Thứ Sáu": "13:00–21:00"
+            },
+            "distanceKm": 4.6,
+            "categories": [
+              "Câu lạc bộ bắn cung"
+            ],
+            "rank": 2,
+            "shortlistPosition": 3,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=3925963281262998068",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.bancungtinhvo.com/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=CLB%20B%E1%BA%AFn%20Cung%20Tinh%20V%C3%B5%20Qu%E1%BA%ADn%205%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84965637573",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.80199,106.74878",
+            "domain": "food",
+            "kind": "place",
+            "name": "Timezone Estella Place - Arcade, VR & Parties",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk7Sp960MFexH8DEk1tZHaWXh1YZSyIHJAeKEKq9rffY9SWceAknybnAczl33b5fCkqJq0rsSQpi6eCEg9qsuZZR58IQQB9zE3MnnLl6CJ44dFszlsM-ykeSscqStZLqjoBmg5MMg",
+            "address": "Estella Place, 88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.9,
+            "ratingCount": 1506,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 28 7300 7790",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "10:00–22:00",
+              "Thứ Ba": "10:00–22:00",
+              "Thứ Tư": "10:00–22:00",
+              "Thứ Năm": "10:00–22:00",
+              "Thứ Sáu": "10:00–22:00"
+            },
+            "distanceKm": 5.9,
+            "categories": [
+              "Trung tâm vui chơi giải trí",
+              "Sàn chơi bô-linh",
+              "Cửa hàng trò chơi điện tử"
+            ],
+            "rank": 3,
+            "shortlistPosition": 4,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=12926239561765131040",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.timezonegames.com/vi-vn/dia-diem/timezone-estella-place-hcmc-est?utm_source=google&utm_medium=organic&utm_campaign=Google+My+Business&utm_term=plcid_10638312601158007886&utm_content=Timezone+Estella+Place+-+10-Pin+Mini+Bowling+and+Arcade+-+Th%C3%A0nh+ph%E1%BB%91+H%E1%BB%93+Ch%C3%AD+Minh",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Timezone%20Estella%20Place%20-%20Arcade%2C%20VR%20%26%20Parties%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842873007790",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78733,106.70506",
+            "domain": "food",
+            "kind": "place",
+            "name": "Thảo Cầm Viên Sài Gòn",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnn-hZ8GRwC5P1G22AfkBTOdFGCFfZq1tSYtkOvlnIZyutJK0QMvu_6UT5qyfbZqbO5M_xFwlsCipMch-pPhMoXuTn2e1msPXMxCjVM2p_E0aL3FH5emvahsuI_SeQgKc7vMwby9Q",
+            "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.3,
+            "ratingCount": 36811,
+            "openingHours": "07:00–18:30",
+            "openNow": true,
+            "phone": "+84 28 3829 1425",
+            "openingHoursWeek": {
+              "Thứ Bảy": "07:00–18:30",
+              "Chủ Nhật": "07:00–18:30",
+              "Thứ Hai": "07:00–18:30",
+              "Thứ Ba": "07:00–18:30",
+              "Thứ Tư": "07:00–18:30",
+              "Thứ Năm": "07:00–18:30",
+              "Thứ Sáu": "07:00–18:30"
+            },
+            "distanceKm": 1.2,
+            "categories": [
+              "Điểm thu hút khách du lịch",
+              "Vườn bách thú"
+            ],
+            "rank": 4,
+            "shortlistPosition": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=5600618488004010382",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "direct",
+                "url": "https://www.tiktok.com/@ancungdaune/video/7589868113433218325",
+                "labelKey": "v3.action.reviewOn",
+                "platform": "TikTok",
+                "attributed": true
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://s.shopee.vn/8V7uC7gWA0",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+842838291425",
+                "labelKey": "v3.action.call"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Th%E1%BA%A3o%20C%E1%BA%A7m%20Vi%C3%AAn%20S%C3%A0i%20G%C3%B2n%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.76579,106.69569",
+            "domain": "food",
+            "kind": "place",
+            "name": "Board Game Station",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmDKb8iMNhpYKNNL1hV-4UzcAvZekbXKPZsLqtGIiusS65YXouBkklti6eZSeiHfNEcGTK6l-_Jy6UX1RvwgmtSMYBV5I1NXPAuIk4XDVxGfD0fHaaV9SFTTk6LWxc4SUcJZe3A",
+            "address": "30 Cô Bắc, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 776,
+            "openingHours": "09:00–00:00",
+            "openNow": true,
+            "phone": "+84 353 771 890",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–00:00",
+              "Chủ Nhật": "09:00–00:00",
+              "Thứ Hai": "09:00–00:00",
+              "Thứ Ba": "09:00–00:00",
+              "Thứ Tư": "09:00–00:00",
+              "Thứ Năm": "09:00–00:00",
+              "Thứ Sáu": "09:00–00:00"
+            },
+            "distanceKm": 1.4,
+            "categories": [
+              "Câu lạc bộ trò chơi cờ bàn",
+              "Quán cà phê"
+            ],
+            "rank": 5,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=10941200524799637952",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://www.facebook.com/Boardgamestation30cobac/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Board%20Game%20Station%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84353771890",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78833,106.70299",
+            "domain": "food",
+            "kind": "place",
+            "name": "Tinker Box",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmX7HXZK4Bjw14w9hWJg388xv_JLDc1GwoO-fI40ig9-0IVxHTpLzvAbN7hfRs8SijNceLOHiWdDT_q5v_NbCGoPMXmGAebppwry3uJ1QaQXG5ZIIYYvzWa8k01ZoZRVfqiPFVlhjU_0XOb",
+            "address": "10/2 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+            "rating": 4.4,
+            "ratingCount": 167,
+            "openingHours": "08:30–21:00",
+            "openNow": true,
+            "phone": "+84 847 120 325",
+            "openingHoursWeek": {
+              "Thứ Bảy": "08:30–21:00",
+              "Chủ Nhật": "08:30–21:00",
+              "Thứ Hai": "Đóng cửa",
+              "Thứ Ba": "Đóng cửa",
+              "Thứ Tư": "Đóng cửa",
+              "Thứ Năm": "Đóng cửa",
+              "Thứ Sáu": "08:30–21:00"
+            },
+            "distanceKm": 1.3,
+            "categories": [
+              "Sân chơi trong nhà",
+              "Dịch vụ tiệc cho trẻ em"
+            ],
+            "rank": 6,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=16050434947903633244",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Tinker%20Box%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+84847120325",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          },
+          {
+            "id": "place:osm:10.78482,106.66497",
+            "domain": "food",
+            "kind": "place",
+            "name": "Jump Arena Lê Thị Riêng",
+            "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlgOCopHfgjeL5rRCRYllfopMDwKZTs386WPbXTopjRO4YUvDywoeHp0j6DGlkKqra6ylRr7n7_kiPfwd0L8-QL5BabOSqFaRSzaiAVIYFqiZoMiprMFfxSvYnEe3gFGwbQbLkK",
+            "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+            "rating": 4.5,
+            "ratingCount": 609,
+            "openingHours": "09:00–22:00",
+            "openNow": true,
+            "phone": "+84 1900 636808",
+            "openingHoursWeek": {
+              "Thứ Bảy": "09:00–22:00",
+              "Chủ Nhật": "09:00–22:00",
+              "Thứ Hai": "14:00–22:00",
+              "Thứ Ba": "14:00–22:00",
+              "Thứ Tư": "14:00–22:00",
+              "Thứ Năm": "14:00–22:00",
+              "Thứ Sáu": "14:00–22:00"
+            },
+            "distanceKm": 4,
+            "categories": [
+              "Sân chơi trong nhà"
+            ],
+            "rank": 7,
+            "actions": [
+              {
+                "kind": "maps",
+                "urlKind": "direct",
+                "url": "https://maps.google.com/?cid=14834958953235325693",
+                "labelKey": "v3.action.maps"
+              },
+              {
+                "kind": "website",
+                "urlKind": "direct",
+                "url": "https://jumparena.vn/",
+                "labelKey": "v3.action.website"
+              },
+              {
+                "kind": "review",
+                "urlKind": "search",
+                "url": "https://www.youtube.com/results?search_query=Jump%20Arena%20L%C3%AA%20Th%E1%BB%8B%20Ri%C3%AAng%20review",
+                "labelKey": "v3.action.reviewSearch",
+                "platform": "YouTube",
+                "attributed": false
+              },
+              {
+                "kind": "call",
+                "urlKind": "direct",
+                "url": "tel:+841900636808",
+                "labelKey": "v3.action.call"
+              }
+            ]
+          }
+        ],
+        "mapsSearchUrl": "https://maps.google.com/maps?q=%C4%91%E1%BB%8Ba%20%C4%91i%E1%BB%83m%20vui%20ch%C6%A1i%20gi%E1%BA%A3i%20tr%C3%AD%20nh%C3%B3m%205%20ng%C6%B0%E1%BB%9Di%20Qu%E1%BA%ADn%201%2C%20TP.HCM",
+        "picked": [
+          "place:osm:10.77032,106.67081",
+          "place:osm:10.78733,106.70506",
+          "place:osm:10.79252,106.67290"
+        ],
+        "shown": 3
+      }
+    ]
+  ]
+}

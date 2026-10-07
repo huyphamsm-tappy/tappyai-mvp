@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Michi Sushi\" OR \"Miya Sushi\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T01:58:56.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Aniki Nhà Hàng Nhật Quận 1\" OR \"Michi Sushi\" OR \"Miya Sushi\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7481613174857354503",
+    "snippet": "Miya Sushi: Tiệm Sushi Ngon Ở Quận 1 Để Hẹn Hò. Khám phá Miya Sushi – tiệm sushi tuyệt vời tại quận 1, hoàn hảo cho buổi hẹn hò của bạn!",
+    "position": 1
+   },
+   {
+    "title": "Miya Sushi: Tiệm Sushi Ngon Núp Hẻm Quận 1",
+    "link": "https://www.tiktok.com/@loveoffoods/video/7493880324817046802",
+    "snippet": "Khám phá Miya Sushi, tiệm sushi chất lượng tại quận 1 với sashimi tươi ngon và không gian thoải mái. Chắc chắn bạn sẽ hài lòng! #mammamcungzit # ...",
+    "position": 2
+   },
+   {
+    "title": "MIYA SUSHI: Tiệm Sushi Ngon Núp Hẻm Hẹn Hò Quận 1",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7461992108774149394",
+    "snippet": "### Món Sushi Ngon Tại MIYA SUSHI Với tư cách là một quán ăn Nhật Bản (Japanese food) uy tín, MIYA SUSHI tự hào mang đến những món sushi tươi ...",
+    "position": 3
+   },
+   {
+    "title": "Review Ẩm Thực Nhật Bản Aniki — Nhà hàng Nhật quận 1",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7638582596653698325",
+    "snippet": "... Aniki, nhà hàng Nhật quận 1, ẩm thực Nhật giản đơn, trải nghiệm nhà hàng Aniki, món Nhật cân bằng hương vị, Aniki restaurant review, review ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm sushi ngon rẻ khu Bình Thạnh nhiều bạn sinh viên ...",
+    "link": "https://www.tiktok.com/@toiladansaigon/video/7368090102658043143",
+    "snippet": "### Món Sushi Ngon Tại MIYA SUSHI Với tư cách là một quán ăn Nhật Bản (Japanese food) uy tín, MIYA SUSHI tự hào mang đến những món sushi tươi ...",
+    "position": 5
+   },
+   {
+    "title": "Michi Sushi (@michi_sushi_42nguyenhue)",
+    "link": "https://www.tiktok.com/@michi_sushi_42nguyenhue",
+    "snippet": "Michi Sushi Chung cư 42 Nguyễn huệ-lầu 7, Bến Nghé, Q.1 Đặt món tại đây · Đã follow · Tài khoản được đề xuất · Tận hưởng trải nghiệm đầy đủ trong ứng dụng.",
+    "position": 6
+   },
+   {
+    "title": "miyasushi",
+    "link": "https://www.tiktok.com/tag/miyasushi",
+    "snippet": "Let's go chez Miya Sushi à Lyon 1 · Đến với Miya, không chỉ được trải nghiệm ... Sushi núp hẻm quận 1 #haituiminhdian #ancungtiktok #vtmgr #xuhuong #reviewanngon ...",
+    "position": 7
+   },
+   {
+    "title": "Discover Authentic Japanese Cuisine at Aniki Restaurant",
+    "link": "https://www.tiktok.com/@aniki_restaurant/video/7636674767533264148",
+    "snippet": "Located in Quan 1, Aniki Restaurant is a testament to the beauty and subtlety of Japanese ... Aniki Nhà Hàng Nhật Quận 1 · author · 330 · 11.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

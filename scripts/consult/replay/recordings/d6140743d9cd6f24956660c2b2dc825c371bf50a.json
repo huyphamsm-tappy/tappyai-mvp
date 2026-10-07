@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "DLG Hotel Danang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:49:55.328Z",
+ "body": {
+  "searchParameters": {
+   "q": "DLG Hotel Danang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "DLG Hotel Danang | Khách sạn 5 sao bên biển Mỹ Khê",
+    "imageUrl": "https://dlghoteldanang.com/img/dlg-overview.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1443,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrFb_0xFdW3eKzSjAiVB92Y-6ON2QIKAyoNQGhnCdqQA&s=10",
+    "thumbnailWidth": 456,
+    "thumbnailHeight": 438,
+    "source": "DLG Hotel Danang",
+    "domain": "dlghoteldanang.com",
+    "link": "https://dlghoteldanang.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdlghoteldanang.com%2Fimg%2Fdlg-overview.jpg&tbnid=Z7fQuZ2Dq6iAJM&imgrefurl=https%3A%2F%2Fdlghoteldanang.com%2Fvi%2F&docid=5t375HqiaoIMGM&w=1500&h=1443",
+    "position": 1
+   },
+   {
+    "title": "DLG Hotel Danang | Khách sạn 5 sao bên biển Mỹ Khê",
+    "imageUrl": "https://dlghoteldanang.com/img/r/deluxe-double-ocean-view.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 983,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlfSzYk8jikJTNFMFRQZH8ZMMYyfmk7k1lgt7ykOrvjg&s=10",
+    "thumbnailWidth": 552,
+    "thumbnailHeight": 362,
+    "source": "DLG Hotel Danang",
+    "domain": "dlghoteldanang.com",
+    "link": "https://dlghoteldanang.com/vi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdlghoteldanang.com%2Fimg%2Fr%2Fdeluxe-double-ocean-view.jpg&tbnid=0Ht97Ikt4RbErM&imgrefurl=https%3A%2F%2Fdlghoteldanang.com%2Fvi%2F&docid=5t375HqiaoIMGM&w=1500&h=983",
+    "position": 2
+   },
+   {
+    "title": "DLG HOTEL DANANG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1a/27/3c/a2/toan-c-nh-khach-s-n.jpg?w=900&h=-1&s=1",
+    "imageWidth": 900,
+    "imageHeight": 506,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXdAwhg2tJEx1k9HLu1ZTmRnpaIDKreguRUppiMiCdrw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d14094174-Reviews-DLG_Hotel_Danang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F1a%2F27%2F3c%2Fa2%2Ftoan-c-nh-khach-s-n.jpg%3Fw%3D900%26h%3D-1%26s%3D1&tbnid=2L6bQma836n76M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d14094174-Reviews-DLG_Hotel_Danang-Da_Nang.html&docid=tmXoGaYX0G8pBM&w=900&h=506",
+    "position": 3
+   },
+   {
+    "title": "DLG Hotel Danang, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/property/5835783/0/0ec2513a77206e394870fb51fef5f986.jpeg?va=1&ce=3&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd2w0lnF03x-_yblliUSWyRSdbCa11QkrnIYr1LGIOcw&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/dlg-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F5835783%2F0%2F0ec2513a77206e394870fb51fef5f986.jpeg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=7tumXGwmoEqF6M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdlg-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=cSf4jw-GtF4zcM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Phòng & Suite | DLG Hotel Danang",
+    "imageUrl": "https://dlghoteldanang.com/img/r/executive-suite-ocean-front.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 982,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrKMiFOf1a7VuTGTbSiEpRtRv2N961f5X8f8kwRd5cVg&s=10",
+    "thumbnailWidth": 552,
+    "thumbnailHeight": 362,
+    "source": "DLG Hotel Danang",
+    "domain": "dlghoteldanang.com",
+    "link": "https://dlghoteldanang.com/vi/rooms/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdlghoteldanang.com%2Fimg%2Fr%2Fexecutive-suite-ocean-front.jpg&tbnid=UX0J__tVMGCStM&imgrefurl=https%3A%2F%2Fdlghoteldanang.com%2Fvi%2Frooms%2F&docid=8qVAeXFaWnKY9M&w=1500&h=982",
+    "position": 5
+   },
+   {
+    "title": "Giới thiệu | DLG Hotel Danang",
+    "imageUrl": "https://dlghoteldanang.com/img/about-banner.jpg",
+    "imageWidth": 2000,
+    "imageHeight": 963,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIM-ZEmSu4gj7Thq91dDxQIeIKTPxfON49Wc3q36rXWQ&s=10",
+    "thumbnailWidth": 645,
+    "thumbnailHeight": 310,
+    "source": "DLG Hotel Danang",
+    "domain": "dlghoteldanang.com",
+    "link": "https://dlghoteldanang.com/vi/about-us/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdlghoteldanang.com%2Fimg%2Fabout-banner.jpg&tbnid=xG4a-7fAAWppPM&imgrefurl=https%3A%2F%2Fdlghoteldanang.com%2Fvi%2Fabout-us%2F&docid=27Kt1JntejGUuM&w=2000&h=963",
+    "position": 6
+   },
+   {
+    "title": "DLG Hotel Danang, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/487525176.jpg?k=4a42146110f7b84510519abac6cf5caac977444d2efd3d30cb76d0611f539012&o=",
+    "imageWidth": 500,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQZgTz4mee-afKvzOVWPUJ3CdzHMMp2h4sf6mkfCl61w&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 375,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/dlg-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F487525176.jpg%3Fk%3D4a42146110f7b84510519abac6cf5caac977444d2efd3d30cb76d0611f539012%26o%3D&tbnid=Ln7pxsZ6XCRc5M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdlg-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=cSf4jw-GtF4zcM&w=500&h=375",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn DLG Đà Nẵng",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/487524003.jpg?k=6f51428eead2b47ffaf6901702043671324dd7363dd6f5c4c721d5343522dc96&o=&hp=1",
+    "imageWidth": 796,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTwOLUX82TxC5D507GqsWzpIDNcf7EDGgR2gKCnUsP5Q&s=10",
+    "thumbnailWidth": 455,
+    "thumbnailHeight": 439,
+    "source": "Đà Nẵng",
+    "domain": "visitdanang.travel",
+    "link": "https://visitdanang.travel/vi/khach-san-dlg-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F487524003.jpg%3Fk%3D6f51428eead2b47ffaf6901702043671324dd7363dd6f5c4c721d5343522dc96%26o%3D%26hp%3D1&tbnid=lm1DI3dPU0zwTM&imgrefurl=https%3A%2F%2Fvisitdanang.travel%2Fvi%2Fkhach-san-dlg-da-nang&docid=VPGK80RdPyakeM&w=796&h=768",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

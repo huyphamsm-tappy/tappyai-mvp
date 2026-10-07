@@ -12,5 +12,28 @@
   ],
   "categories": ["lifestyle", "utilities"],
   "lang": "vi-VN",
-  "prefer_related_applications": false
+  "prefer_related_applications": false,
+  "id": "/",
+  "shortcuts": [
+    {
+      "name": "H\u1ecfi Tappy",
+      "short_name": "H\u1ecfi Tappy",
+      "description": "\u0110\u1eb7t c\u00e2u h\u1ecfi m\u1edbi cho Tappy",
+      "url": "/chat?src=pwa_shortcut",
+      "icons": [{ "src": "/branding/otter-logo.png", "sizes": "1254x1254", "type": "image/png" }]
+    },
+    {
+      "name": "Scam Shield \u2013 ki\u1ec3m tra link l\u1eeba \u0111\u1ea3o",
+      "short_name": "Scam Shield",
+      "description": "Ki\u1ec3m tra link, m\u00e3 QR ho\u1eb7c tin nh\u1eafn \u0111\u00e1ng ng\u1edd",
+      "url": "/scam-shield?src=pwa_shortcut",
+      "icons": [{ "src": "/branding/otter-logo.png", "sizes": "1254x1254", "type": "image/png" }]
+    }
+  ],
+  "share_target": {
+    "action": "/share-target",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": { "title": "title", "text": "text", "url": "url" }
+  }
 }

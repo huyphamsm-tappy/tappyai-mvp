@@ -1,0 +1,24 @@
+{
+  "id": "G5c",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership/legal: registration, liens/ngân hàng thế chấp, accident/flood history, VIN check, deposit scams; then condition",
+    "No invented numbers",
+    "Scam-vector pointer where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua ô tô cũ tầm 300 triệu cần check gì",
+      "status": 200,
+      "elapsedMs": 10283,
+      "textFrames": 171,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mình hiểu bạn đang tìm mua ô tô cũ với ngân sách khoảng 300 triệu. Tuy nhiên, **mua ô tô cũ nằm ngoài phạm vi hỗ trợ của TappyAI** — mình chuyên giúp bạn với ăn uống, mua sắm (điện tử, phụ kiện), du lịch, spa/làm đẹp, và giải trí tại Việt Nam.\n\nĐể kiểm tra ô tô cũ, bạn nên tham khảo:\n- **Các trang chuyên mua bán ô tô**: Oto.com.vn, Carmudi, Xehay.vn\n- **Tư vấn từ chuyên gia cơ khí** hoặc **thợ sửa ô tô uy tín** trước khi mua\n- **Kiểm tra giấy tờ pháp lý** tại cơ quan đăng ký xe\n\nNếu bạn cần giúp với các dịch vụ khác (ăn ở Đà Lạt cuối tuần, tìm xe máy cũ Honda Wave, hay bất kỳ thứ gì trong 5 lĩnh vực trên), mình sẵn sàng hỗ trợ! 😊\n\n[FOLLOWUPS]Tìm quán ăn ở Đà Lạt|Kiểm tra xe máy Honda Wave|Gợi ý spa massage[/FOLLOWUPS]",
+      "visible": "Mình hiểu bạn đang tìm mua ô tô cũ với ngân sách khoảng 300 triệu. Tuy nhiên, **mua ô tô cũ nằm ngoài phạm vi hỗ trợ của TappyAI** — mình chuyên giúp bạn với ăn uống, mua sắm (điện tử, phụ kiện), du lịch, spa/làm đẹp, và giải trí tại Việt Nam.\n\nĐể kiểm tra ô tô cũ, bạn nên tham khảo:\n- **Các trang chuyên mua bán ô tô**: Oto.com.vn, Carmudi, Xehay.vn\n- **Tư vấn từ chuyên gia cơ khí** hoặc **thợ sửa ô tô uy tín** trước khi mua\n- **Kiểm tra giấy tờ pháp lý** tại cơ quan đăng ký xe\n\nNếu bạn cần giúp với các dịch vụ khác (ăn ở Đà Lạt cuối tuần, tìm xe máy cũ Honda Wave, hay bất kỳ thứ gì trong 5 lĩnh vực trên), mình sẵn sàng hỗ trợ! 😊"
+    }
+  ]
+}

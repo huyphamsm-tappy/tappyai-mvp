@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Thương Rooftop\" OR \"Phê La\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:52:57.904Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Thương Rooftop\" OR \"Phê La\" OR \"Quán cà phê đợi một người\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cà Phê Đợi Một Người Quận 3 – Góc Nhỏ Ấm Cúng ...",
+    "link": "https://www.tiktok.com/@duydayvlog/video/7367281162647096592",
+    "snippet": "Quán cà phê Đợi Một Người tại 136/5 Trần Quang Diệu, Phường 15, Quận 3, TP.HCM là một góc nhỏ mang cảm giác ấm cúng và yên bình giữa lòng ...",
+    "position": 1
+   },
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 2
+   },
+   {
+    "title": "Quán Cà Phê Đợi Một Người Ở Quận 3",
+    "link": "https://www.tiktok.com/@chamdidau/video/7362067427053587730",
+    "snippet": "Quán Cà Phê Đợi Một Người Ở Quận 3: Một Điểm Hẹn Xinh Xắn. Khám phá ... Keywords: quán cà phê đợi một người, quán cafe quận 3, đường đi quán ...",
+    "position": 3
+   },
+   {
+    "title": "Thương Rooftop: Quán Cafe Đẹp Nhất Quận 4",
+    "link": "https://www.tiktok.com/@wild.noodles__/video/7379991500106599681",
+    "snippet": "Thương Rooftop - quán cafe có chiếc view đẹp ngắm bầu trời ngay giữa lòng quận 4 ♥️♥️♥️♥️ ————- #trending #congmihoangda #reviewquancafe ...",
+    "position": 4
+   },
+   {
+    "title": "Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự ...",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7509150236988787976",
+    "snippet": "Cà Phê Nguyễn Gia Trí Quận Bình Thạnh. Phê La hướng dẫn Đồng Chill trải nghiệm “Máy gọi món tự động” nha.",
+    "position": 5
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Điểm nổi bật của Phê La là tiện lợi cho người đi xe máy. Quán có chỗ gửi xe ngay trước cửa, phù hợp với những ai đang dạo phố Quận 1 hoặc muốn ...",
+    "position": 6
+   },
+   {
+    "title": "Phê La Trương Định Quận 3",
+    "link": "https://www.tiktok.com/discover/ph%C3%AA-la-tr%C6%B0%C6%A1ng-%C4%91%E1%BB%8Bnh-qu%E1%BA%ADn-3",
+    "snippet": "Phê La Có Hỷ: Trải Nghiệm Cà Phê Đậm Chất Cưới. Khám phá concept mới Phê La với không gian cà phê như đám cưới. Quán nằm tại 115 Trương Định Q3.",
+    "date": "8 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Concept Đám Cưới Tại Phê La Cà Phê: Ý Tưởng Độc Đáo ...",
+    "link": "https://www.tiktok.com/@baro.phe/video/7557249820193262856",
+    "snippet": "Nhiều chi nhánh của Phê La tại Sài Gòn và các tỉnh thành như Phú Yên đã lên concept đám cưới cực kỳ vui nhộn, thu hút sự chú ý của nhiều cặp đôi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

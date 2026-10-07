@@ -1,0 +1,28 @@
+B1 t1    urls 17→11  cta 0→0   money 4→3    với 0→0   chars 10205→5917  LOST:encrypted-tbn0.gstatic.com,cellphones.com.vn,www.lazada.vn,shopee.vn,shop.tiktok.com
+B2 t1    urls 1→1    cta 1→2   money 3→1    với 0→0   chars 722→690     
+B3 t1    urls 1→1    cta 1→1   money 5→3    với 0→0   chars 894→1019    
+B3 t2    urls 17→12  cta 0→0   money 5→5    với 0→0   chars 10066→6352  LOST:shop.tiktok.com,shopee.vn,encrypted-tbn2.gstatic.com,cellphones.com.vn,www.lazada.vn,encrypted-tbn0.gstatic.com
+B4 t1    urls 12→12  cta 0→0   money 2→8    với 0→0   chars 5753→5895   
+B4 t2    urls 12→13  cta 0→0   money 3→8    với 0→0   chars 6042→7828   
+B4 t3    urls 6→11   cta 2→2   money 12→12  với 0→0   chars 3886→4665   LOST:www.massagevungtaumayspa.com
+D1 t1    urls 1→1    cta 1→1   money 2→3    với 0→0   chars 594→738     
+D2 t1    urls 2→1    cta 2→1   money 2→0    với 0→0   chars 847→438     LOST:pocafe.vn
+G1a t1   urls 7→10   cta 2→2   money 12→16  với 0→0   chars 3947→4053   LOST:vexere.com,www.booking.com
+G1b t1   urls 2→1    cta 2→1   money 1→3    với 0→0   chars 822→671     
+G3a t1   urls 1→1    cta 1→1   money 5→3    với 0→0   chars 940→755     
+G3b t1   urls 1→2    cta 1→2   money 2→2    với 0→0   chars 734→897     
+G3b t2   urls 2→1    cta 2→1   money 4→3    với 0→0   chars 944→864     LOST:hangduongquan.com
+G4a t1   urls 9→15   cta 1→2   money 12→14  với 0→0   chars 4335→4688   LOST:www.booking.com
+G5a t1   urls 0→0    cta 0→0   money 0→0    với 0→0   chars 1975→1516   
+G5b t1   urls 0→0    cta 0→0   money 2→0    với 0→0   chars 2009→1595   
+G5c t1   urls 0→0    cta 0→0   money 0→0    với 0→0   chars 1993→2051   
+G5d t1   urls 0→0    cta 0→0   money 0→0    với 0→0   chars 1537→1437   
+T1 t1    urls 2→12   cta 0→2   money 9→14   với 0→0   chars 2176→6133   
+T1 t2    urls 11→12  cta 2→1   money 20→15  với 0→0   chars 5722→4702   LOST:www.booking.com,www.google.com
+T1 t3    urls 8→10   cta 1→1   money 10→14  với 0→0   chars 3835→4509   LOST:yarraoceansuitesdanang.com,themhaisandn.com
+T2 t1    urls 2→0    cta 2→0   money 6→2    với 0→0   chars 1124→733    LOST:www.cgv.vn,maps.google.com
+T2 t2    urls 1→0    cta 1→0   money 6→6    với 0→0   chars 998→979     LOST:galaxycine.vn
+T3 t1    urls 1→1    cta 1→1   money 3→3    với 0→0   chars 589→716     
+T3 t2    urls 0→1    cta 0→1   money 1→6    với 0→0   chars 313→761     
+T4 t1    urls 14→12  cta 0→0   money 7→6    với 0→0   chars 8153→6542   LOST:encrypted-tbn3.gstatic.com,cellphones.com.vn,shopee.vn
+T4 t2    urls 0→0    cta 0→0   money 0→0    với 0→0   chars 1863→1510   

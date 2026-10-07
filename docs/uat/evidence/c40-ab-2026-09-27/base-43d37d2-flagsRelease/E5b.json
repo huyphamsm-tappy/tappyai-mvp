@@ -1,0 +1,33 @@
+{
+  "id": "E5b",
+  "text": "đi chơi / giải trí",
+  "parent": "E5",
+  "status": 200,
+  "ms": 6501,
+  "evidenceId": "55eac32b-9805-4abf-9c06-bc09350a138c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tuyệt vời! 🎉 Mình sẽ tìm những địa điểm giải trí hay ở gần bạn (Quận 1, TP.HCM).\n\nBạn muốn chơi gì cụ thể? Để mình gợi ý đúng ý:\n\n🎬 **Xem phim** - rap chiếu phim\n🎤 **Karaoke** - hát với bạn bè\n🍺 **Bar/Lounge** - uống bia, cocktail, thư giãn\n🎮 **Game/Arcade** - chơi game, bowling\n🌳 **Ngoài trời** - công viên, dạo phố, hoạt động vui chơi\n🏋️ **Gym/Thể thao** - tập luyện, yoga\n\nTuyệt vời! 🎉 Mình sẽ tìm những địa điểm giải trí hay ở gần bạn (Quận 1, TP.HCM).\n\nBạn muốn chơi gì cụ thể? Để mình gợi ý đúng ý:\n\n🎬 **Xem phim** - rap chiếu phim\n🎤 **Karaoke** - hát với bạn bè\n🍺 **Bar/Lounge** - uống bia, cocktail, thư giãn\n🎮 **Game/Arcade** - chơi game, bowling\n🌳 **Ngoài trời** - công viên, dạo phố, hoạt động vui chơi\n🏋️ **Gym/Thể thao** - tập luyện, yoga",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "cuối tuần làm gì"
+    },
+    {
+      "role": "assistant",
+      "content": "Chào bạn! 👋 Cuối tuần này (28-29/9) bạn muốn làm gì? Mình có thể giúp bạn:\n\n🍽️ **Tìm quán ăn ngon** - từ phở, cơm tấm đến quán cafe hay nhà hàng\n🛍️ **Mua sắm** - tìm đồ cần thiết hoặc quà tặng\n🎬 **Giải trí** - xem phim, karaoke, bar, hoặc hoạt động ngoài trời\n🏖️ **Du lịch** - lên kế hoạch đi chơi, tìm khách sạn, vé máy bay\n💆 **Spa & làm đẹp** - thư giãn sau tuần làm việc\n\nBạn có ý tưởng gì chưa, hay muốn mình gợi ý cụ thể? 😊"
+    },
+    {
+      "role": "user",
+      "content": "đi chơi / giải trí"
+    },
+    {
+      "role": "assistant",
+      "content": "Tuyệt vời! 🎉 Mình sẽ tìm những địa điểm giải trí hay ở gần bạn (Quận 1, TP.HCM).\n\nBạn muốn chơi gì cụ thể? Để mình gợi ý đúng ý:\n\n🎬 **Xem phim** - rap chiếu phim\n🎤 **Karaoke** - hát với bạn bè\n🍺 **Bar/Lounge** - uống bia, cocktail, thư giãn\n🎮 **Game/Arcade** - chơi game, bowling\n🌳 **Ngoài trời** - công viên, dạo phố, hoạt động vui chơi\n🏋️ **Gym/Thể thao** - tập luyện, yoga\n\nTuyệt vời! 🎉 Mình sẽ tìm những địa điểm giải trí hay ở gần bạn (Quận 1, TP.HCM).\n\nBạn muốn chơi gì cụ thể? Để mình gợi ý đúng ý:\n\n🎬 **Xem phim** - rap chiếu phim\n🎤 **Karaoke** - hát với bạn bè\n🍺 **Bar/Lounge** - uống bia, cocktail, thư giãn\n🎮 **Game/Arcade** - chơi game, bowling\n🌳 **Ngoài trời** - công viên, dạo phố, hoạt động vui chơi\n🏋️ **Gym/Thể thao** - tập luyện, yoga"
+    }
+  ]
+}

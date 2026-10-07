@@ -6,7 +6,9 @@
 
 export const vi: Record<string, string> = {
   // ── Page chrome (the onboarding composition around the card) ──────────────
-  'age.brand.tagline': 'Trải nghiệm tốt hơn, cùng nhau.',
+  // The brand slogan is English in both locales — the approved VI design
+  // (2026-09-10) prints it that way under the wordmark.
+  'age.brand.tagline': 'Discover. Chat. Shop. Together.',
   'age.intro.eyebrow': 'CỘNG ĐỒNG TAPPYAI',
   'age.intro.titleLead': 'Những trải nghiệm tốt đẹp hơn,',
   'age.intro.titleAccent': 'cùng nhau',
@@ -17,7 +19,7 @@ export const vi: Record<string, string> = {
   'age.feature.shop.desc': 'Sản phẩm chính hãng, đáng tin cậy',
   'age.feature.together.title': 'Cùng nhau',
   'age.feature.together.desc': 'Xây dựng cộng đồng tích cực',
-  'age.mascot.bubble': 'Cùng bạn khám phá thế giới thú vị hơn!',
+  'age.mascot.bubble': 'Cùng bạn khám phá thế giới thú vị hơn! 💜',
   'age.trust.privacy.title': 'An toàn & riêng tư',
   'age.trust.privacy.desc': 'Thông tin của bạn luôn được bảo vệ.',
   'age.trust.ageOnly.title': 'Chỉ xác nhận độ tuổi',
@@ -31,6 +33,10 @@ export const vi: Record<string, string> = {
   // — no advertising, analytics, personalisation or recommendation framing,
   // which would turn a required eligibility check into data collection.
   'age.ask.title': 'Xác nhận bạn đủ 18 tuổi',
+  // The same headline split so the accent can carry the design's gradient.
+  // Lead keeps its trailing space. Lead + accent === age.ask.title.
+  'age.ask.titleLead': 'Xác nhận bạn ',
+  'age.ask.titleAccent': 'đủ 18 tuổi',
   'age.ask.desc': 'TappyAI cung cấp dịch vụ và nội dung dành cho người từ 18 tuổi trở lên. Vui lòng cho chúng tôi biết ngày sinh để xác nhận bạn đủ tuổi sử dụng.',
   'age.ask.privacyTitle': 'Ngày sinh của bạn được giữ riêng tư',
   'age.ask.privacy': 'Chúng tôi chỉ sử dụng thông tin này để xác nhận bạn đủ 18 tuổi và không hiển thị ngày sinh trên hồ sơ của bạn.',
@@ -77,7 +83,7 @@ export const vi: Record<string, string> = {
 }
 
 export const en: Record<string, string> = {
-  'age.brand.tagline': 'Better experiences, together.',
+  'age.brand.tagline': 'Discover. Chat. Shop. Together.',
   'age.intro.eyebrow': 'THE TAPPYAI COMMUNITY',
   'age.intro.titleLead': 'Better experiences,',
   'age.intro.titleAccent': 'together',
@@ -88,7 +94,7 @@ export const en: Record<string, string> = {
   'age.feature.shop.desc': 'Genuine products you can trust',
   'age.feature.together.title': 'Together',
   'age.feature.together.desc': 'Building a positive community',
-  'age.mascot.bubble': 'Let us explore a more interesting world together!',
+  'age.mascot.bubble': 'Let us explore a more interesting world together! 💜',
   'age.trust.privacy.title': 'Safe & private',
   'age.trust.privacy.desc': 'Your information is always protected.',
   'age.trust.ageOnly.title': 'Age confirmation only',
@@ -97,6 +103,8 @@ export const en: Record<string, string> = {
   'age.trust.better.desc': 'Building a healthy, positive community together.',
   'age.footer.tagline': 'TappyAI — better experiences, together.',
   'age.ask.title': 'Confirm you are 18 or over',
+  'age.ask.titleLead': 'Confirm you are ',
+  'age.ask.titleAccent': '18 or over',
   'age.ask.desc': 'TappyAI provides services and content for people aged 18 and over. Please tell us your date of birth so we can confirm you are old enough to use it.',
   'age.ask.privacyTitle': 'Your date of birth is kept private',
   'age.ask.privacy': 'We use this only to confirm you are 18 or over, and we never show your date of birth on your profile.',

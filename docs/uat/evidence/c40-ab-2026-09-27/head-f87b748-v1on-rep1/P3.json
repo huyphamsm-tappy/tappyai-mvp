@@ -1,0 +1,108 @@
+{
+  "id": "P3",
+  "text": "chỗ đó có đặt trước được không?",
+  "parent": "P2",
+  "status": 200,
+  "ms": 15647,
+  "evidenceId": "aa13a668-6fb7-4870-967a-a200138d2df4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "Hyan Spa Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+      "address": "Quận 1, TP.HCM"
+    },
+    {
+      "name": "Trải nghiệm Temple Leaf Spa Land với vé Jjimjilbang ở Hồ ...",
+      "address": "Quận 1, TP.HCM"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình sẽ kiểm tra thông tin đặt trước của **Hyan Spa** cho bạn:\n\n**Hyan Spa** có **website riêng** (hyanspa.com) — bạn có thể gọi **0932 665 046** hoặc vào website để **đặt trước**. Spa này mở 10:00–21:00, chuyên massage chân & body.\n\n Bạn nên **gọi hoặc vào website hỏi giá dịch vụ massage chân** trước khi đặt nhé.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Để gợi ý đúng ý, mình cần biết: **bạn muốn massage chân thôi hay kèm toàn bộ cơ thể?** Hay mình tìm luôn các spa massage chân chuyên biệt gần đây?\n\nĐể mình tìm nhanh, mình sẽ search spa massage chân ở Quận 1 ngay:\n\nMình tìm được 10 spa massage chân ở Quận 1, nhưng **chưa xác nhận được giá cụ thể** của các chỗ này để đối chiếu với ngân sách 300k của bạn. Tuy nhiên, mình gợi ý **Hyan Spa** — có **5⭐ từ 103 đánh giá Google Maps**, mở 10:00–21:00, chuyên massage chân & body. Hoặc **CHARM SPA Garden** — **4.9⭐ (234 đánh giá)**, mở 10:00–00:00, nếu bạn muốn tối nay.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Hyan Spa - Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":true},{\"label\":\"🌐 CHARM SPA Garden\",\"type\":\"website\",\"url\":\"https://charmspa.com.vn/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi Hyan Spa hỏi giá|Tìm spa khác rẻ hơn|Massage body kèm chân được không|[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "chỗ đó có đặt trước được không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ kiểm tra thông tin đặt trước của **Hyan Spa** cho bạn:\n\n**Hyan Spa** có **website riêng** (hyanspa.com) — bạn có thể gọi **0932 665 046** hoặc vào website để **đặt trước**. Spa này mở 10:00–21:00, chuyên massage chân & body.\n\n Bạn nên **gọi hoặc vào website hỏi giá dịch vụ massage chân** trước khi đặt nhé.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website - Hyan Spa\",\"type\":\"website\",\"url\":\"https://hyanspa.com/\",\"primary\":true},{\"label\":\"📍 Google Maps - Hyan Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=4888533510458212203\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

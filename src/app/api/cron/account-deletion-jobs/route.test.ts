@@ -76,9 +76,10 @@ describe('GET /api/cron/account-deletion-jobs', () => {
 })
 
 describe('schedule', () => {
-  it('vercel.json runs the deletion jobs daily (18:45 UTC = 01:45 VN)', async () => {
+  it('vercel.json runs the deletion jobs daily (18:45 UTC = 01:45 VN) and the audit retention (19:00 UTC)', async () => {
     const { readFileSync } = await import('node:fs')
     const vercel = JSON.parse(readFileSync('vercel.json', 'utf8')) as { crons: Array<{ path: string; schedule: string }> }
     expect(vercel.crons).toContainEqual({ path: '/api/cron/account-deletion-jobs', schedule: '45 18 * * *' })
+    expect(vercel.crons).toContainEqual({ path: '/api/cron/audit-retention', schedule: '0 19 * * *' })
   })
 })

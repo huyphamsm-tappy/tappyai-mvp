@@ -5,13 +5,16 @@ import { buildSystem, buildSystemSimple, buildPlanningBlock } from './promptBuil
 // REPRODUCTION GATE for the production defect found on 2026-08-15: a Vietnamese message came back
 // in English from https://www.tappyai.com, three times out of three.
 //
-// The inputs below are the EXACT strings that were sent to production, not paraphrases. The
-// language contract lives at src/app/api/chat/route.ts:96-100 — "Response language = the user's
-// LATEST message… Never derived from UI locale, browser language" — implemented as
-// `detectExplicitLangRequest(lastText) ?? detectLang(lastText)`. So this pair of functions is the
-// whole decision, and if it says 'vi' the fault is downstream of it.
+// The inputs below are the EXACT strings that were sent to production, not paraphrases.
+//
+// ⚠️ SCOPE, since ADR-027 (2026-09-09): this file pins the TEXT half of the decision —
+// `detectExplicitLangRequest` then `detectLang` — which is what the 2026-08-15 defect was about
+// and which ADR-027 left unchanged. It is no longer the whole decision: the route now consults
+// `detectLangConfident` and the client's locale in between, and that full four-step chain is
+// pinned in src/lib/i18n/chatLanguagePriority.test.ts. Both files must stay green; neither one
+// alone describes the route.
 
-/** The composed decision the chat route actually makes. */
+/** The text half of the route's decision — see the scope note above. */
 const decide = (text: string) => detectExplicitLangRequest(text) ?? detectLang(text)
 
 describe('the production strings that came back in English', () => {

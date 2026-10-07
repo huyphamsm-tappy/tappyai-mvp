@@ -1,0 +1,10 @@
+{
+  "_comment": "Tappy plan prices - the ONE place prices live. `vnd` is the FIXED payment catalog value charged by bank transfer (SePay/VietQR); it is NOT computed from `usd`. `usd` is only the list-price label shown on web (\"$1 · 7 ngày\"). Owner-approved values; Pip is a one-time trial per account.",
+  "plans": {
+    "pip": { "usd": 1, "vnd": 29000 },
+    "momo": { "usd": 7, "vnd": 179000 },
+    "coco": { "usd": 19, "vnd": 489000 },
+    "milo": { "usd": 36, "vnd": 939000 },
+    "sunny": { "usd": 66, "vnd": 1719000 }
+  }
+}

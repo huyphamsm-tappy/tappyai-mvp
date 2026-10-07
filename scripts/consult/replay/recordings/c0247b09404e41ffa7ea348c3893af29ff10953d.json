@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Luxury Karaoke\" OR \"Catwalk Bar & KTV\" OR \"Limited Karaoke\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:06.699Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Luxury Karaoke\" OR \"Catwalk Bar & KTV\" OR \"Limited Karaoke\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám phá Căn Phòng Hoàng Gia tại Luxury Karaoke Q1, ...",
+    "link": "https://www.tiktok.com/@avatarkaraokesg/video/7315979869043674375",
+    "snippet": "Khám phá Căn Phòng Hoàng Gia tại Luxury Karaoke Q1, Sài Gòn. Dành cho những ai muốn trải nghiệm không gian đẳng cấp cùng với dịch vụ KTV đỉnh ...",
+    "position": 1
+   },
+   {
+    "title": "Có một điều không phải dân chơi SG nào cũng biết ! ...",
+    "link": "https://www.tiktok.com/@quan.air/video/7197691059307023642",
+    "snippet": "Có một điều không phải dân chơi SG nào cũng biết ! Limited karaoke - 363 Phạm Ngũ Lão - Quận 1 Sang Sịn mịn bậc nhất SG #QuanAir #Karaoke # ...",
+    "position": 2
+   },
+   {
+    "title": "Karaoke Luxury: Cảm xúc trong bài hát buồn",
+    "link": "https://www.tiktok.com/@karaokeluxury/video/7509543929612602642",
+    "snippet": "Karaoke Hàn Quốc Quận 1 · Karaoke Luxury Tân An · Karaoke Cilacap · Karaoke ... luxury karaoke Quan 9, B3 luxury karaoke, karaoke experience ...",
+    "position": 3
+   },
+   {
+    "title": "68 luxury karaoke",
+    "link": "https://www.tiktok.com/@68.luxury.karaoke/video/7677789104129445127",
+    "snippet": "1. 68 luxury karaoke · Tác giả. Bờ kè tánh Linh - gần quán nhậu gia phú - và ks gia phú. 8-26Trả lời. 0. Xem thêm câu trả lời khác (3). Thiện ...",
+    "position": 4
+   },
+   {
+    "title": "Luxury Karaoke: Hát Hết Mình - Quẩy Hết Ga!",
+    "link": "https://www.tiktok.com/@yn.nhi94114/photo/7664608725327432981",
+    "snippet": "Cuộc vui bắt đầu tại Luxury Karaoke! Hát hết mình – Quẩy hết ga – Không gian chuẩn luxury Đặt phòng ngay: 010-2787-2589. Luxury Karaoke ...",
+    "position": 5
+   },
+   {
+    "title": "Karaoke Luxury Hà Xá - Số 1 Hà Nội (Hà Hạ, Đại Hưng ...",
+    "link": "https://www.tiktok.com/@luxury6789999/video/7653383184184331540",
+    "snippet": "Karaoke Luxury Hà Xá - Số 1 Hà Nội (Hà Hạ, Đại Hưng, Mỹ Đức) ... Luxury Karaoke Hà Nội, quán karaoke Hà Xá, dịch vụ karaoke chuyên nghiệp.",
+    "position": 6
+   },
+   {
+    "title": "Luxury Karaoke Kỳ Anh",
+    "link": "https://www.tiktok.com/discover/luxury-karaoke-k%E1%BB%B3-anh",
+    "snippet": "Luxury Karaoke Kỳ Anh · Khám phá hệ thống karaoke luxury Kỷ Anh với phòng hát chất lượng cao, âm thanh ánh sáng đỉnh cao, sức chứa lên đến 50 ...",
+    "date": "7 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Luxury Karaoke tuyển nhân viên nữ tại Cheonan",
+    "link": "https://www.tiktok.com/@yn.nhi94114/photo/7672686805564607764",
+    "snippet": "Thông tin tuyển dụng nhân viên nữ cho quán Luxury Karaoke khu vực Cheonan, công việc phục vụ, nhận liền tiền sau ca làm, hỗ trợ chỗ ở và ăn uống ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

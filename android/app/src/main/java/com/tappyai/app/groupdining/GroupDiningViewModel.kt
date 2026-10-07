@@ -69,9 +69,9 @@ class GroupDiningViewModel @Inject constructor(
         }
     }
 
-    private companion object {
-        const val TAG = "GroupDiningViewModel"
-        // Matches the web input's maxLength.
+    companion object {
+        private const val TAG = "GroupDiningViewModel"
+        /** Matches the web input's `maxLength`; the screen's counter says the same number. */
         const val MAX_NAME = 80
     }
 }

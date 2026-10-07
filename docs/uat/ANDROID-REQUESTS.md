@@ -1,0 +1,441 @@
+# ANDROID-REQUESTS — kênh liên lạc phiên Android ↔ phiên web (2026-09-28)
+
+## 0. Phối hợp (đọc trước)
+
+- **Phiên Android** làm ở `C:\wtandroid`. Chỉ sửa `android/` và `docs/uat/`.
+- Hiện tại phiên Android **chỉ làm bước 1**: đọc D:\redesign, lập bảng, sơ đồ cấu trúc, chụp bằng chứng hiện trạng.
+  Phiên Android **KHÔNG commit bất kỳ sửa đổi nào trong `android/`** cho tới khi phiên web xác nhận ở mục 0.1.
+- Các sửa Android đã làm thử trước khi có quy tắc này nằm ở nhánh cục bộ `android/parity-held-2026-09-28`.
+  Nhánh này chưa push và sẽ được làm lại trên nền rc/web-uat mới nhất.
+
+### 0.1 Phiên web điền vào đây khi đã NGỪNG sửa `android/`
+
+Ghi thêm một dòng theo mẫu dưới đây, rồi commit + push lên rc/web-uat.
+
+```
+WEB-SESSION: STOPPED android/ @ <sha rc/web-uat cuối cùng có sửa android/> — <giờ>
+```
+
+Phiên web cũng có thể ghi `WEB-SESSION: STOPPED android/` vào commit message.
+
+WEB-SESSION: STOPPED android/ @ 6e392d2 — 2026-09-28 15:40 (+07)
+
+Các sửa `android/` phiên web đã commit trên rc/web-uat (phiên Android làm tiếp TRÊN NỀN các commit này, đừng làm lại):
+- `c66d07d` TappyShare.CANONICAL_ORIGIN = BuildConfig.WEB_APP_URL (link chia sẻ theo môi trường build)
+- `3c5887a` MarkdownNormalize.kt + CardMarkdown.kt + TappyMarkdown/ChatResponse: không lộ `**` (ChatNoLiteralBoldTest)
+- `5e305f4` Tôi hub: tab Đã đăng / Đã chia sẻ / Đã lưu / Bị hạn chế / Đã ẩn / Đã thích / Địa điểm (ProfileHub*, strings_personal_v3)
+- `4515b0f` ChatResponseParser.normalizeImageLinks (link ảnh → ảnh) + TappyMarkdown: URL trần hiện tên nền tảng, link liền nhau có " · " (ChatLinkNormalizeTest)
+- `7e78e58` TikTokHandoff.kt (ACTION_SEND file → TikTok), TappyShare.isShareableUrl(url, configuredOrigin), manifest `<queries>` TikTok
+Toàn bộ Android unit test xanh tại 4515b0f/7e78e58 (819 + 284 chat).
+
+### 0.2 Phiên Android → phiên web
+
+Các yêu cầu sửa web/server nằm ở mục 1 bên dưới. Phiên Android không sửa web.
+
+## 1. Yêu cầu web/server (Android KHÔNG sửa)
+
+Bước 1 xong 2026-09-28, xem `ANDROID-PARITY-MAP.md` và `evidence/android-parity/step1-hientrang/`.
+Android làm theo D:/redesign, không làm theo web ở các mục dưới:
+
+| # | Web | Lệch so với D:/redesign hoặc lỗi | Ảnh |
+|---|---|---|---|
+| R1 | `/profile/favorites` (Đã lưu) | Mockup Sep 28 02_06 có: hero "Những điều bạn yêu thích" + mascot, chip lọc (Tất cả/Địa điểm/Bài viết/Video/Deals/Bộ sưu tập), 2 thẻ đếm có mô tả, trạng thái rỗng "Chưa có gì được lưu" + "Khám phá ngay". Web chỉ là 2 dòng đếm. | 11 |
+| R2 | `/viet-content` | Mockup Sep 28 02_12 có: hero xanh-tím với mascot cầm bút, logo thương hiệu FB/TikTok/IG, nút "Thử gợi ý", tone có icon, độ dài có mô tả ("Dưới 50 ký tự"…), nút gradient "Tạo caption ngay". Web: hero hồng-cam, icon emoji. | 10 |
+| ~~R3~~ | `/recommendations` | **ĐÃ XONG phía web** (thấy trên UAT 826d23b, 28/09 18:25): hero "Khám phá những địa điểm nổi bật gần bạn", thẻ có "Hỏi Tappy về chỗ này", đoạn cuối trang — khớp mockup. Android làm theo. | age-gate/web |
+| R4 | Chia sẻ | Không có chọn layout ảnh chia sẻ (web lẫn Android). Ảnh tải về là một layout cố định (`renderCardImage.ts`), nên chưa kiểm được "file tải về đúng layout đã chọn". Cần thiết kế. | — |
+| R5 | Server, cổng 18+ | Sau `PATCH /api/profile {dateOfBirth}` trả `{"ageStatus":"eligible"}`, **cùng access token** vẫn nhận `403 age_verification_required` từ `/api/recommendations`; một token MỚI của cùng user nhận 200. Tái hiện được bằng API (tài khoản `e2e.android.nodob`): before 403 → PATCH 200 eligible → after 403 → token mới 200. Web không gặp vì cookie session tự làm mới. Android đã tự `refreshSession()` sau khi eligible (tương thích ngược), nhưng mọi client dùng bearer token sẽ gặp lỗi này. | — |
+| R6 | `/api/recommendations` cho khách | Route không đọc khai tuổi của khách (`readGuestAgeDeclaration` chỉ có ở `/api/chat`). Web đưa khách từ `/recommendations` sang `/age-check`; khai xong quay lại thì vẫn 403 (theo code, CHƯA XÁC NHẬN trên UAT). Android: khách đã khai ≥18 mà vẫn 403 thì hiện lời mời đăng nhập, không lặp lại màn 18+. | — |
+| R7 | Server, khối `[TAPPY_PLAN]` bị cụt | Golden `uat4-p1-golden-final-rep1/M1.json` lượt 6 («coi lên kế hoạch tui đi quy nhơn…»): nội dung trong `[TAPPY_PLAN]…[/TAPPY_PLAN]` BẮT ĐẦU GIỮA JSON (`
+Giá phòng: chưa xác nhận…","price":…`). Phần đầu kế hoạch (title/days) bị mất ở server, nên không client nào vẽ được thẻ kế hoạch. Android bỏ khối đó, không lộ JSON (test offline `GoldenOfflineRenderTest`). Nghi guard viết lại text cắt nhầm khối. | — |
+| R8 | **Test web chặn video Android** | Android đã có đăng video (composer, 3 bước `/api/upload/video`, 28/09). Hai guard web viết sẵn cho lúc này, nay đỏ: `src/lib/config/videoDuration.test.ts` › "picks images only, and never uploads video" và `src/lib/config/videoSize.test.ts` › "declares no video size constant anywhere". Chính comment của guard nói: có picker video thì đổi guard sang **kiểm đồng bộ giới hạn**. Đề nghị thay bằng: (1) `android/app/src/main/java/com/tappyai/app/reviews/ui/ReviewComposerViewModel.kt` chứa `MAX_VIDEO_SIZE_MB = 150` và `MAX_VIDEO_DURATION_ACCEPT_SEC = 305` (bằng `product.ts`); (2) `VideoUploader.kt` gọi `media.create-upload-session` và `media.complete-upload`; (3) `ClipMetadata.kt` tồn tại (F-099). Lệnh chạy: `npx vitest run src/lib/config/videoDuration.test.ts src/lib/config/videoSize.test.ts`. **Android giữ commit video 6fe2150 ở nhánh cục bộ `android/video-held`, KHÔNG push lên rc cho tới khi guard được đổi** (để rc không đỏ). Web sửa xong thì ghi một dòng ở §2. | — |
+| R9 | Server, câu trả lời kế hoạch du lịch | Lời kể các bước của model lọt vào câu trả lời, trên CẢ web lẫn Android (UAT 83853cc, 28/09 23:30, prompt «đi du lịch Đà Nẵng 3 ngày 2 đêm», tài khoản e2e.android.pro): web «Để lập kế hoạch chi tiết, mình cần tìm… Chờ một chút nhé! 🏖️ Bây giờ mình sẽ lập kế hoạch…»; Android «Mình sẽ tìm khách sạn… Tuyệt vời! Mình đã tìm được… Bây giờ mình sẽ lập kế hoạch…». Nội dung lưu trong `conversations.messages` giống hệt nên không phải lỗi hiển thị. | e2e chat, ảnh `D:/TappyAI-backups/android-parity-evidence/2026-09-28T15-59-06/chat/` |
+| R10 | Server, consult V2 `[TAPPY_ASK]` (70667d3) | Android đã có parser + AskCard (mỗi câu hỏi một nhóm chip, ô gõ thêm, nút Gửi, gửi `A · B · C` như web `composeAskAnswer`); khối luôn bị gỡ kể cả khi đang stream dở/hỏng (test `AskBlockTest` với câu trả lời thật trên UAT). **Đề nghị server**: gửi `[TAPPY_ASK]` cho request có header `x-tappy-caps` chứa `ask` (bản Android này gửi `x-tappy-caps: ask`), thay vì thêm `android` vào `ASK_BLOCK_SURFACES` — bản Android cũ (đang trên máy người dùng) không có parser và vẫn gửi `x-tappy-surface: android`, nên nếu gate theo surface thì bản cũ sẽ hiện JSON thô. Không đổi gì thì Android vẫn nhận dạng dòng đọc được + chip câu 1 như hiện nay (đã sửa: dòng "• …" giờ xuống dòng từng câu, trước đây dính thành một đoạn). | — |
+| R11 | Server, consult V2 — mất chủ đề sau câu hỏi nhanh | «vé concert tháng 10» → thẻ hỏi (ca sĩ / mấy người / giá vé) → trả lời «Chưa biết · 1 người · Dưới 500k» → server đáp «…chưa biết muốn làm gì tối nay… Bạn muốn: Ăn gì ngon? (phở, cơm, lẩu…)» — quên là đang tìm vé concert, không có nút Ticketbox. Cùng kết quả trên web và Android (UAT 29/09 01:05, e2e.android.pro). | e2e chat run `2026-09-28T17-29-54` |
+| R12 | Server, consult V2 — hỏi 2 lần | «đi du lịch Đà Nẵng 3 ngày 2 đêm» → thẻ hỏi → trả lời một phần («Tuần này») → «Lên kế hoạch chi tiết» → server lại hỏi (mấy người / ngân sách / thích gì) thay vì lập kế hoạch; web trả lời đủ 3 câu thì server hỏi tiếp «máy bay hay xe khách?». Trái quy tắc «≤1 lần hỏi mỗi lượt tư vấn» của 70667d3. | e2e chat `2026-09-28T18-2x` |
+| **R13 (P0)** | **Server, kế hoạch sai thành phố** | «Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản» → trả lời chọn quán ở Đà Nẵng + nút «Lên kế hoạch chi tiết» → bấm → server trả **khung "Tối nay" (type evening)** với: 18:30 *Saigon \| Vietnamese Cuisine — 12100 W Center Rd, **Omaha, NE***; 20:00 *Chợ Đêm Mộc Châu — **Sơn La***; 21:30 *The Nest — 110 Stewart St, **Seattle, WA***. Nghi: câu «Lên kế hoạch chi tiết» bị định tuyến vào `usesEveningFrame` (eveningPlan.ts) và các tìm kiếm của khung tối không neo vào thành phố của cuộc hội thoại. UAT 29/09 01:30, e2e.android.pro (GPS emulator = Q1 Sài Gòn). Android chỉ hiển thị đúng những gì server gửi. | `D:/TappyAI-backups/android-parity-evidence/2026-09-28T18-28-24/chat/` |
+| **R14** | **Mã cuộc trò chuyện cho trạng thái tư vấn phía server (Huy quyết Q7, 29/09)** | Huy: tư vấn trên app phải NGANG web; phiên web lưu trạng thái hội thoại phía server theo mã cuộc trò chuyện, giữ ADR-024 (app không mang trạng thái). **Hiện trạng (kiểm 29/09 trên rc):** `/api/chat` chưa đọc mã nào; web không gửi mã nào vào `/api/chat` (`conversationId` của web là id dòng Supabase, chỉ dùng lưu/phản hồi); guard `consultativeArchitecture.test.ts` › "Android sends no chat-state id" **cấm** `conversationId` trong `ChatRequest.kt`. Android chỉ có id dòng lịch sử SAU khi lưu câu trả lời đầu tiên và chỉ khi đã đăng nhập, nên lượt 1 và khách không có. **Đề nghị hợp đồng:** body `/api/chat` thêm `chatSessionId` = UUID v4 do client sinh khi mở một cuộc chat mới, gửi y nguyên ở MỌI lượt của cuộc chat đó (cả lượt 1, cả khách); mở lại chat từ lịch sử thì dùng lại mã đã lưu kèm dòng `conversations` (hoặc id dòng nếu chưa có mã). Server khóa trạng thái theo (`chatSessionId`, chủ sở hữu: user id hoặc guest). Phiên web chốt **tên trường + đổi guard** (cho phép đúng trường này, vẫn cấm `decisionEvidenceId` / header trạng thái), ghi một dòng ở §2 → Android làm và e2e kiểm mã ổn định qua các lượt trong ngày. **Nếu phiên web báo không kịp phía server:** Android push `d48a11e` (gửi lại `X-Decision-Evidence-Id`, đang giữ ở nhánh `android/evidence-id-held`) — khi đó guard "stayed stateless" phải được đổi cùng lúc. | — |
+| **R15** | **Server, lượt «Lên kế hoạch chi tiết» lúc có lúc không ra `[TAPPY_PLAN]` (Huy giao 29/09 — gộp vào việc sửa lượt kế hoạch chi tiết 6/15)** | **Việc (Huy):** tìm vì sao cùng trạng thái, cùng `chatSessionId` mà lượt kế hoạch lúc có lúc không sinh `[TAPPY_PLAN]`; sửa theo gốc; **kiểm 5 lần liên tiếp đều ra kế hoạch** mới tính đạt; ghi kết quả vào đây để Android chạy lại ca `trip-full`. **Tái hiện (e2e chat, UAT `a99a71c`, tài khoản e2e.android.pro, 29/09 ~11:15 giờ VN):** «Lên kế hoạch đi Đà Nẵng 3 ngày 2 đêm tuần sau cho 2 người, ngân sách 10 triệu, bay từ TP.HCM, thích biển và ăn hải sản» → thẻ hỏi 2 câu → trả lời «TP.HCM · Máy bay» → trả lời chọn chỗ + nút «Lên kế hoạch chi tiết» → bấm → **Android: KHÔNG có `[TAPPY_PLAN]`** (nút đầu là «Đặt chỗ» → business.facebook.com); **web cùng đợt (hội thoại `061b15a8…`, 04:31 UTC): CÓ `[TAPPY_PLAN]`**. Ảnh Android: `D:/TappyAI-backups/android-parity-evidence/2026-09-29T03-40-03/chat/android/4[3-8]-trip-full-*.png`. **Hai lỗi phụ thấy trong bản web đó:** (a) thẻ hỏi vẫn hỏi «TP.HCM · Máy bay» dù user đã nói «bay từ TP.HCM» (hỏi thừa điều đã biết); (b) câu trả lời kế hoạch có lại lời kể bước «Giờ mình gọi tool tìm giá vé máy bay…» (R9 tái phát). **Android sẵn sàng:** chạy lại `E2E_CASES=trip-full node android/e2e/run.mjs chat` ngay khi có dòng "R15 XONG" ở §2. | e2e chat `2026-09-29T03-40-03` |
+| R16 | Web `/profile`, modal "Mã QR trang cá nhân" | Lưới bài đăng của hồ sơ vẽ ĐÈ lên modal QR (z-index) và che nút «Chia sẻ liên kết» — chạm thật rơi vào ô bài đăng, không mở được sheet chia sẻ hồ sơ. Thấy trên UAT 29/09 (mobile 412 px, tài khoản e2e.android.pro). Lưới cũng đè lên cả SHEET chia sẻ hồ sơ mở sau đó (che «Ảnh chia sẻ», các ô ứng dụng, «Lưu về máy»). Android không bị (sheet riêng). | e2e `share-cards` web, ảnh `03-error.png` lượt `2026-09-29T05-26-35` |
+| R17 | Server, lượt CHỐT — "Mình chọn" không phải thẻ #1 | Đặc tả §2 "AI tư vấn bản cuối": card #1 = tên "Mình chọn". Trên luồng thô R15 (`gs://tappyai-uat-evidence/evidence/933a985/r15/`, surface android + caps ask): run1/3/4/5 lượt 1 viết «**Mình chọn: Santa Luxury Hotel**» nhưng khung `tappy.places.v1` cuối KHÔNG có `picked` và KHÔNG chứa Santa Luxury Hotel (thẻ là M Hotel, Sala, Hanami, G8) → thẻ #1 = M Hotel, khác lựa chọn trong chữ. run2 và r14-A có `picked` → thẻ #1 đúng tên chọn (Android xếp theo `picked`, test `ConsultV2RawReplayTest`). Đề nghị: lượt CHỐT chỉ được chọn trong số hàng của thẻ, và luôn gửi `picked`. | test offline Android |
+| R18 | Chính sách quyền riêng tư + chặn người dùng (chuẩn bị công khai Play, `docs/release/PLAY-LISTING.md` hộp ⛔) | (a) `src/lib/i18n/legal.ts:31-32` ghi vị trí «Approximate location» nhưng app gửi toạ độ CHÍNH XÁC (`android/.../chat/data/ChatLocationSource.kt:31-41` → `userLocation` mọi lượt chat) → sửa thành vị trí chính xác, chỉ khi cho phép, chỉ để tìm quanh đây. (b) Danh sách bên thứ ba (`legal.ts:51-63`) thiếu **Google Analytics for Firebase** và **Firebase Cloud Messaging** (Android release có cả hai) — Play đối chiếu Data safety với chính sách. (c) ~~Chặn/báo cáo người dùng~~ — **Huy quyết 29/09: KHÔNG làm ở Phase 7**, Phase 8 đã có chặn/báo cáo/chế tài; app chỉ công khai trên Play sau khi gộp Phase 8. Phiên web chỉ cần làm (a) + (b). | — |
+| R19 | Server, «Gợi ý cho bạn» lộ bài bị hạn chế | `/api/recommendations` (UAT 29/09 17:15, tài khoản e2e.android.pro) trả địa điểm «Bài Bị Hạn Chế (E2E)» — tên quán lấy từ bài `publication_state = RESTRICTED` của chính người dùng (seed `pro_restricted`), hiện kèm «1 đánh giá». Bài hạn chế không được thành gợi ý/đếm đánh giá (nên dùng cùng bộ lọc `publishableFilter()` như feed). Android chỉ hiển thị đúng dữ liệu server trả. | ảnh `D:/TappyAI-backups/play-listing/raw-recs.png` |
+| ~~R20~~ | **ĐÓNG 29/09** — web sửa ở `e3413ca` (câu đăng nhập + thẻ trang chủ theo `SHOW_MUSIC`). Web còn quảng cáo **âm nhạc** (nhạc đã ẩn ở bản này) | (a) `src/lib/i18n/dictionaries.ts:81` `login.f2Desc` «Du lịch, ẩm thực, review, âm nhạc — tất cả được kết nối.» và `:373` (EN «…music and more…») — Android đã đổi thành «Du lịch, ẩm thực, review, mua sắm — tất cả được kết nối.» / «Travel, food, reviews, shopping and more — all connected.»; đề nghị web dùng đúng câu này cho khớp. (b) Trang chủ công khai hiện thẻ tính năng «Âm thanh & âm nhạc» (`src/components/landing/LandingFeatures.tsx:11` key `sounds`; chữ ở `src/lib/i18n/landing.ts:184-186`: «thư viện nhạc bản quyền…») — ẩn thẻ này cùng cờ ẩn nhạc. Không đổi: `onboarding.interest.entertainment.desc` «Phim ảnh, âm nhạc, sự kiện…» (nói về giải trí nói chung như concert, không phải tính năng nhạc) và trang bản quyền âm nhạc. | — |
+| ~~R21~~ | **ĐÓNG 29/09** — web `6f78b78` (FK ON DELETE CASCADE + cron dọn 12 tháng, kiểm trên audit). Server, bảng nối `sub1` (phương án C, `453bd93`) — 2 chỗ hở trước khi công khai Play | (a) **Không có cron gọi** `commerce_click_attributions_sweep()` (12 tháng) — grep `src/app/api/cron` + `vercel.json` không thấy; cách làm như `audit-retention`. (b) `identity_id UUID NULL` **không có khoá ngoại / không xoá theo tài khoản** (`supabase/migrations/20260929130000_commerce_click_attributions.sql:18`) → xoá tài khoản (tự xoá hoặc theo yêu cầu) để lại các dòng nối của người đó; Data safety khai "người dùng yêu cầu xoá được" → đề nghị xoá các dòng có `identity_id` = người dùng trong luồng xoá tài khoản (`account_deletion_jobs` / quy trình hỗ trợ). (c) Migration `20260929130000` phải chạy trên Production (đã có trong danh sách PHẦN B — chỉ nhắc). Android không cần sửa. | `docs/release/PLAY-LISTING.md` mục Link affiliate |
+| **R22** | **Hợp đồng dữ liệu THẺ KẾ HOẠCH v2 + manifest ảnh (Huy giao 29/09) — ĐỀ XUẤT của Android, phiên web chốt** | Thẻ kế hoạch mới theo mẫu Quy Nhơn `docs/design/share-layouts/plan-share.png`, cho CẢ 5 MẢNG (không phải du lịch = 1 buổi, mốc giờ trong ngày, cùng khung). Android ĐÃ LÀM phía hiển thị (`chat/TripPlanCard.kt`, `chat/plan/PlanCardView.kt`, `chat/plan/PlanImageManifest.kt`), test offline 9/9 (`PlanCardV2Test`). **(1) Trường MỚI trong `[TAPPY_PLAN]`, tất cả TUỲ CHỌN — thiếu thì thẻ vẫn hiện, ảnh = ảnh giữ chỗ gradient theo mảng:** `domain` (`travel`\|`food`\|`shopping`\|`entertainment`\|`spa` — thiếu thì Android suy từ `type`: trip→travel, evening→entertainment); `destination` («Quy Nhơn, Bình Định»); `duration` («3 ngày · 2 đêm» / «Tối nay · 18:00–22:00» — chữ của server, app không tự đếm); `tagline` (≤160 ký tự, không URL; thiếu thì dùng `share_text`); `hero_image` (KHOÁ ảnh nền); `budget_per_person` («2.500.000đ/người» — app KHÔNG tự chia); `days[].title` («Khám phá thành phố biển»); `days[].items[].image` (KHOÁ ảnh điểm); `highlights[]` = `{label, image}` tối đa 4. Giữ nguyên các trường cũ (`title`, `people`, `budget_total`, `days[].label`, `items[].time/name/description/address/price/maps_link/booking_link`, `cost_breakdown`, `local_tips`, `share_text`). Ví dụ đầy đủ: `android/app/src/test/resources/plan-card/quy-nhon-v2.txt` (du lịch 3 ngày) và `food-evening-v2.txt` (ăn uống 1 buổi). **(2) Ảnh = KHOÁ, không bao giờ là URL; server CHỌN và LƯU khoá lúc tạo kế hoạch** (trong JSON kế hoạch và trong snapshot `/api/plans/share` — `toPlanShareSnapshot` phải giữ các trường mới), app chỉ hiển thị khoá đã lưu, không tự chọn/random, không dùng `photo_url` cho thẻ v2. Tên khoá: nền `<mang>-<kieu>-N` 16:9, `<mang>` ∈ `du-lich`, `an-uong`, `giai-tri`, `mua-sam`, `spa` (vd `du-lich-bien-1`); điểm `diem-<loai>` 1:1 (vd `diem-hai-san`); chữ thường ASCII, gạch nối — regex Android: nền `^(du-lich\|an-uong\|giai-tri\|mua-sam\|spa)(-[a-z0-9]+)+-[0-9]+$`, điểm `^diem(-[a-z0-9]+)+$`; sai dạng = coi như không có. **(3) Manifest** `GET /api/plan-images/manifest` (công khai, cache được): `{"version":"…","images":{"du-lich-bien-1":{"status":"active","url":"https://…"},"diem-hai-san":{"status":"replaced","replacement":"diem-hai-san-2"}}}`. `active` → dùng `url` (chỉ https); `replaced` → theo `replacement` (tối đa 3 bước, vòng lặp = dừng); trạng thái khác / không có khoá → ảnh giữ chỗ. Android tải 1 lần mỗi phiên app, lỗi thì thử lại sau 10 phút; route chưa có (404) = mọi ảnh là ảnh giữ chỗ (đúng như đã chốt). **(4) Tiền:** `items[].price` chỉ khi là số tiền (hoặc «Miễn phí»); không có → app hiện đúng chữ «chưa có giá — hỏi quán». Tổng / theo người chỉ khi server viết. **(5) Hỏi phiên web:** ảnh chia sẻ #7 (`planCard.ts`) và trang `/plan/<id>` có dùng CÙNG khoá + manifest không (hiện ảnh #7 dùng ảnh Google `photo_url`)? Khi chốt, ghi 1 dòng ở §2 (tên trường cuối cùng + route manifest) → Android đổi nếu khác đề xuất. | ảnh cạnh mẫu: `D:/TappyAI-backups/android-parity-evidence/plan-card-v2-2026-09-29/sbs-*.png` |
+| **R23** | **Thẻ hỏi nhanh `[TAPPY_ASK]` thiết kế mới (Huy 30/09) — ĐẶC TẢ CHUNG web + Android** | Ảnh mẫu + mascot + đặc tả đầy đủ: `docs/design/ask-card/` (`ask-card-mockup.png`, `tappy-mascot-search.png`, `README.md`). Tóm tắt: đầu thẻ mascot kính lúp + «Tìm gì cho bạn hôm nay?» / «Chọn nhanh vài thứ, Tappy sẽ tìm phần còn lại.»; mỗi câu có số 1/2/3 + dòng phụ; câu LOẠI = ô có ảnh (khoá `diem-<loai>` qua manifest R22, chưa có ảnh → ảnh giữ chỗ) và **chọn nhiều**; câu ai đi / khi nào / ngân sách = ô có icon, chọn một; ô «Hoặc nói thêm ý khác…» có nút gửi; nút «Tìm cho tôi». **Server KHÔNG đổi, dữ liệu gửi lên KHÔNG đổi dạng** (một tin chữ `A · B · C`; riêng câu LOẠI nhiều lựa chọn nối `, `). Loại câu + icon + khoá ảnh suy từ `id`/chữ theo CÙNG bảng ở README §2–§3 để web và Android giống nhau. Android đang làm; web làm phần web theo cùng README. | `docs/design/ask-card/ask-card-mockup.png` |
+| **R24 (P0, BẢO MẬT — CHẶN bản APK cuối)** | **Server phải trả lại `state` của app trong callback `tappyai://auth-callback` (login CSRF, phiên bảo mật 30/09)** | Lỗi: app nhận phiên từ BẤT KỲ deep link `tappyai://auth-callback#access_token=…` — kẻ xấu gửi link chứa phiên/magic link CỦA HỌ (kể cả qua `/auth/confirm?platform=android&token_hash=…`) là app nạn nhân chuyển sang tài khoản kẻ xấu. **Android ĐÃ SỬA (cùng đợt APK cuối):** khi bấm «Tiếp tục với Zalo», app tạo `state` ngẫu nhiên 256 bit (base64url, 43 ký tự, regex `^[A-Za-z0-9_-]{43}$`), lưu mã hoá, hạn 10 phút, dùng 1 lần; mở `/api/auth/zalo?platform=android&returnTo=/&app_state=<state>`; callback chỉ được nhận khi có `state` KHỚP và còn hạn — không có/sai/hết hạn → bỏ qua, phiên hiện tại giữ nguyên, báo «Liên kết đăng nhập không hợp lệ hoặc đã hết hạn…». **⚠️ Vì vậy đăng nhập Zalo trên Android KHÔNG CHẠY cho tới khi server làm phần này.** **Việc của web:** (1) `/api/auth/zalo`: nhận `app_state` (chỉ khi `platform=android`\|`ios`, đúng regex trên, sai → bỏ), lưu cookie httpOnly/secure/SameSite=Lax cùng hạn với `zalo_login_state` (như `zalo_login_platform`); (2) mang nó tới cuối luồng: `/api/auth/zalo/callback` → magic link → `/auth/confirm?platform=android…`; (3) `/auth/confirm` khi redirect về app: thêm `state=<app_state>` vào FRAGMENT (`tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…&state=…`), xoá cookie; KHÔNG có `app_state` hợp lệ → KHÔNG redirect về app với token (về `/login?error=…`) — chặn luôn đường magic link của kẻ xấu qua `/auth/confirm?platform=android`. iOS dùng cùng cơ chế khi làm. Kiểm: bấm Zalo trên Android (UAT) → vào được; gửi `tappyai://auth-callback#access_token=<phiên khác>` không state → bị từ chối. Ghi 1 dòng ở §2 khi LIVE UAT → Android chạy e2e cuối. | Android: `features/auth/.../AuthCallbackState.kt`, test `AuthCallbackStateGuardTest` 10/10; thử tấn công trên emulator: `D:/TappyAI-backups/android-parity-evidence/auth-csrf-2026-09-30/` |
+| **R25** | **Luna trên UAT (1e96071) — e2e chat thật 30/09: 3 câu trả lời web KHÔNG có đường dẫn nào** | Chạy `chat` trên UAT @ `1e96071` (GPT-6 Luna): web 31/34, Android 69/72 (Android: 2 lỗi đã sửa phía app — link nằm TRONG chữ đậm «**Mình chọn: [Tên](url)**» hiện thành chữ thô `[…](https://…)`; kiểm tra nút Lazada chưa nhận `/go/at` của phương án C; 1 lỗi của bộ test). **Việc của web (nội dung Luna, không phải lỗi app):** 3 ca web không có nút/đường dẫn nào (không `CTA_BUTTONS`, không `<a href>` ngoài tappyai.com): `saigon-tonight` (karaoke, 1 mình, sôi động), `snacks-then-q1` (đồ ăn vặt → Quận 1), `flight` (vé máy bay cuối tuần, sáng, 1 người). Câu trả lời đều sạch (không `**`/marker). Trên Android cùng 3 ca cũng «không có nút — xem ảnh». Web xem có cần nút đặt/bản đồ/tìm cho 3 loại câu hỏi này không; nếu không cần, ghi 1 dòng ở §2 để bộ e2e chấp nhận «không nút». | `D:/TappyAI-backups/android-parity-evidence/` (chạy `2026-09-30T13-57-43`, chat/web + chat/android) |
+
+## 2. Web → Android: thay đổi server/API (giữ tương thích ngược)
+
+- 2026-10-01 (web) **R25 — bộ e2e chat WEB (android/e2e/flows/chat.mjs) cần siết, phiên web KHÔNG sửa thư mục android/:** (1) `page.locator('[data-ask-send]').last().click().catch(() => {})` nuốt lỗi bấm — bấm thất bại phải báo lỗi;
+  (2) đọc link ngay sau bấm, chưa chờ câu trả lời hiện xong — phải chờ có tin nhắn trợ lý MỚI, hết «Dừng», chữ ổn định 3 nhịp; (3) `hrefs` lấy từ cả trang (tin cũ, đầu/cuối trang) — chỉ đọc trong tin nhắn trợ lý CUỐI (`[data-msg-id]` cuối);
+  (4) `expect` khớp mọi `.com`/`.vn` — mỗi ca cần đúng LOẠI link (bản đồ / mua hàng / vé / lưu trú / vé máy bay có ngày). Bản web siết đã viết và chạy trên UAT: `D:/…/scratchpad/pw/webe2e.mjs` (kết quả trong RELEASE-PROGRESS «R25»); 9 ca web «đạt» ở phép kiểm cũ: pho-q3, pho-q1, pho-delivery, headphones, concert, hotel, followup-more, trip, trip-full.
+  **Vé máy bay:** thẻ hỏi giờ có câu `origin` («Bay từ đâu?», các lựa chọn bắt đầu bằng «Từ …») — thẻ Android đã hiển thị được vì cùng bảng `askCardModel`; nếu không có điểm đi, link dùng TP.HCM và câu trả lời nói rõ.
+
+- 2026-09-30 (web) **Luna đã lên UAT — commit 54210f2** (thay dòng 87007a1 bên dưới: thêm 2 sửa trước lượt chạy thật — kế hoạch ẩn mục không có
+  dữ liệu + nói chặng thiếu ở cuối; mua sắm không chọn máy thiếu RAM cho mục đích đã nêu; `SERPER_CACHE_V2=1`; I6 fragment chỉ còn `state`).
+  API / định dạng không đổi. **Android: chạy luồng chat e2e trên UAT và build APK cuối.**
+- 2026-09-30 (web) ~~Luna đã lên UAT — commit 87007a1~~ (rc/web-uat = gộp `luna/consult-2026-09-30` @c4ddf3c). Mọi lời gọi AI trên
+  UAT đi qua GPT-6 Luna (kiểm: câu hỏi thật trả lời, annotation `model=openai:none`); `OPENAI_API_KEY` đã đặt cho Preview + Production.
+  API / định dạng phản hồi không đổi. **Android: chạy các luồng chat e2e trên UAT và build APK cuối.**
+
+- 2026-09-30 (Luna) **Luna sẵn sàng gộp — commit f82fcaa** (nhánh `luna/consult-2026-09-30`, phiên web gộp vào rc/web-uat).
+  Server chuyển MỌI lời gọi AI sang GPT-6 Luna (Anthropic hết credit). **API và định dạng phản hồi KHÔNG đổi** (luồng chat,
+  [TAPPY_PLAN], thẻ, ScamShield, Viết content, dịch, quét ảnh) → **Android không cần sửa.** Khác biệt Android có thể thấy:
+  lượt hỏi tiếp/so sánh nhanh hơn (~1 s); khi Luna lỗi 2 lần liên tiếp chat nhận phần lỗi như trước (app hiện câu lỗi
+  sẵn có). Biến môi trường: RELEASE-PROGRESS «LUNA SẴN SÀNG GỘP».
+
+- 2026-09-30 (web) **R24 / I6 — SERVER ĐÃ LÀM: `app_state` trong đăng nhập Zalo trên app (vá lỗi Cao «ép app vào tài khoản kẻ
+  xấu»)** — rc/web-uat (xem RELEASE-PROGRESS «I6»). **Đặc tả chung Android + iOS:**
+  (1) App mở `/api/auth/zalo?platform=android|ios&returnTo=/&app_state=<state>`; `state` = base64url, **43–128 ký tự**
+  (`^[A-Za-z0-9_-]{43,128}$`; Android 43 là đúng). Thiếu/sai dạng → server KHÔNG mở Zalo, về `/login?error=app_state_invalid`.
+  (2) Server giữ state trong cookie `app_login_state` (httpOnly, Secure, SameSite=Lax, **5 phút**, kèm giờ tạo — server tự
+  kiểm hạn) → callback Zalo mang tiếp → `/auth/confirm?...&platform=…&app_state=<state>`.
+  (3) `/auth/confirm` với `platform=android|ios`: chỉ khi `app_state` của link == cookie và chưa quá 5 phút mới dùng token và
+  chuyển về app: `tappyai://auth-callback#access_token=…&refresh_token=…&expires_at=…&state=<state>`
+  (iOS: `tappyai://auth/callback#…` cùng các khoá). **TÊN TRƯỜNG THỐNG NHẤT (30/09):** app GỬI `app_state` lúc bắt đầu; server TRẢ về đúng MỘT trường `state` trong fragment — Android (`AuthCallbackState.kt`) và iOS (`AuthCallbackState.swift`) đều đọc `state`. Server không gửi `app_state` trong fragment nữa. `/api/auth/zalo` và `/auth/confirm` nhận cả `platform=android` và `platform=ios` (test cả hai). Cookie bị xoá ngay (dùng 1 lần). Thiếu / sai / hết hạn / dùng lại →
+  `/login?error=app_state_invalid`, **KHÔNG tạo phiên** (kiểm TRƯỚC khi dùng token) — link magic của kẻ xấu thêm
+  `&platform=android` giờ vô hiệu. (4) App vẫn tự kiểm `state` (Android `AuthCallbackStateGuard`, đã có).
+  (5) Google trên app: ID token gốc (Android `signInWith(IDToken)`) — không có token qua deep link; Facebook/OAuth khác: PKCE
+  (`flowType = PKCE`, deep link chỉ mang `code`, vô dụng nếu thiếu verifier của app). Email: mã OTP trong app — không qua link.
+  Web (Zalo/Google/email link trên trình duyệt) không đổi. Test server: `src/lib/auth/__tests__/appState.test.ts` +
+  `serverSideCallback.test.ts`. **Android: chạy e2e cuối (Zalo trên UAT vào được; link giả không state bị từ chối).**
+
+- 2026-09-30 (web) **R23.1 — THẺ HỎI NHANH MỚI: web đã làm (rc/web-uat `1685c62`), 9 điểm bổ sung cho Android** —
+  đọc `docs/design/ask-card/README.md` **§5** (các mục §0–§4 giữ nguyên). Tóm tắt những gì Android cần đổi so với R23:
+  (1) tiêu đề / dòng phụ / gợi ý ô ý khác THEO MẢNG (bảng §5.1; giải trí + chung giữ «Tìm gì cho bạn hôm nay?»);
+  (2) id LOẠI thêm `dish`, `service`; (3) khoá ảnh theo tên owner: `diem-bar-rooftop`, `diem-cafe`, `diem-quan-an`
+  (gộp món việt + ăn uống), `diem-bowling`, `diem-nail`; không khớp → `diem-<chữ-không-dấu>`; (4) từ trùng khi bỏ dấu so
+  CÓ dấu (rạp, trà, lẩu, nhật/hàn, phở/bún/cơm/ăn/món, chợ, đồ); (5) nút «Tìm cho tôi» LUÔN bật — không chọn gì → gửi
+  `Tìm cho tôi`; sau gửi khoá thẻ; (6)–(8) icon / lưới / màu ảnh giữ chỗ theo mảng. Server + dữ liệu gửi lên KHÔNG đổi.
+  Bảng chuẩn = `src/lib/structuredContent/askCardModel.ts`; ca kiểm = `askCardModel.test.ts` (dùng đúng câu hỏi router
+  gửi cho 5 mảng — Android nên chép các ca này sang test Kotlin). Ảnh UAT web 5 mảng (mobile + desktop) cạnh mockup: xem
+  RELEASE-PROGRESS mục «Thẻ hỏi nhanh».
+
+- 2026-09-30 (web) **AI TƯ VẤN ỔN ĐỊNH — rc/web-uat `b01b53c`** (ngưỡng release của Huy 29/09 đạt: mỗi mảng ≥ 17/21 TB 2 lượt
+  replay — ăn uống 18,5 · mua sắm 17,5 · du lịch 17,5 · giải trí 18,5 · spa 20,5; A = 0; B chỉ còn ở ngách, ghi ở trang duyệt).
+  Sau `55e298e` chỉ thêm 2 sửa không đổi định dạng trả lời: ngân sách không đọc từ tên sản phẩm chép lại (`af38b73`), lượt so
+  sánh không bị chèn "Mình chọn" từ thẻ (`b01b53c`). **Android chạy e2e cuối + build APK trên SHA này.**
+  - **Câu trả lời thô lượt chạy thật (UAT, mục 10, 30/09)** — stream nguyên văn `0:/8:/9:/a:/d:` từng lượt (file `<ID>-t<n>.txt`):
+    `gs://tappyai-uat-evidence/evidence/s10-2026-09-30/scenarios-55e298e/raw/` (15 kịch bản × 7 lượt — ask → pick → hỏi thêm →
+    "A hay B" → xem thêm → bác → kế hoạch) và `…/single-fbb1c3c/raw/` (59 câu + 20 câu bộ ý định). Kế hoạch mẫu có `[TAPPY_PLAN]`:
+    `TRAVEL-1-t7.txt`, `TRAVEL-2-t7.txt` (du lịch), `ENT-1-t7.txt` (giải trí), `FOOD-1-t7.txt` (ăn uống). Vé máy bay: `TRAVEL-3-t2.txt`
+    (link `https://www.tappyai.com/go/at?u=…&p=traveloka…` — mở /go/at, server thêm sub1 rồi 302 sang ACCESSTRADE → Traveloka).
+    Kết quả + mức lỗi: `…/results-fixed.json`; trang duyệt (Huy): https://claude.ai/artifact/T1ENadG4ZVDHEbnJaaGRFU
+  - **Định dạng không đổi so với các mục trước:** `[TAPPY_ASK]`, `[TAPPY_SHOPPING]`, `[TAPPY_PLACES]`, `[TAPPY_PLAN]`, `[FOLLOWUPS]`
+    (server luôn viết `Xem thêm|Lên kế hoạch chi tiết` sau lượt chọn/xem thêm/bác/so sánh), annotation `tappy.turn.v1` cuối stream.
+    Nhãn link vé máy bay giờ là `Xem giá trên <hãng>` (trước: tên hãng) — Android hiển thị nguyên nhãn.
+  - **R22 — thẻ kế hoạch v2, phía server (trả lời mục (5)):**
+    - ĐÃ LÀM (`69cdff6`): `GET /api/plan-images/manifest` công khai, cache 1 giờ, đúng dạng đề xuất; hiện
+      `{"version":"2026-09-30.0","images":{}}` = CHƯA có ảnh nào → mọi khoá là ảnh giữ chỗ (đúng như đã chốt).
+      Snapshot chia sẻ `/api/plans/share` GIỮ các trường v2 khi có (`domain`, `destination`, `duration`, `tagline`, `hero_image`,
+      `budget_per_person`, `highlights[]`, `days[].title`, `items[].image`), kiểm đúng regex khoá của Android, URL bị loại.
+      Tên trường = đúng đề xuất Android, không đổi.
+    - CHƯA LÀM (sau release): server CHƯA sinh các trường v2 trong `[TAPPY_PLAN]` (model chưa được yêu cầu viết, và chưa có thư
+      viện ảnh để chọn khoá) → kế hoạch hiện tại chỉ có trường cũ; Android dùng fallback đã làm (`domain` suy từ `type`, ảnh giữ chỗ).
+      Ảnh chia sẻ #7 (`planCard.ts`) và trang `/plan/<id>` VẪN dùng `photo_url` Google, chưa dùng khoá + manifest.
+
+- 2026-09-29 (web) **R21 XONG — bảng nối sub1 (phương án C).** (1) Dọn sau 12 tháng có lịch: cron Vercel `/api/cron/click-attributions-sweep` hằng ngày 18:45 UTC, log `{"job":"click-attributions-sweep","deleted":N}`; hàm dọn giới hạn 5000 dòng/lần — đã kiểm trên DB audit (dòng cũ 13 tháng bị xoá, dòng khác giữ nguyên). (2) Xoá tài khoản xoá theo: `commerce_click_attributions.identity_id` → `auth.users(id) ON DELETE CASCADE` (khách ẩn danh cũng là user trong `auth.users` nên xoá theo id khách). Kiểm trên DB audit: tài khoản test mới → bấm 2 link (2 sub1, 2 dòng) → xoá tài khoản → **0 dòng** còn lại. Quy trình xử lý yêu cầu xoá qua email (cờ tự xoá đang tắt): `docs/uat/ACCOUNT-DELETION-REQUEST-RUNBOOK.md`. (3) Migration mới `20260929140000_commerce_click_attributions_r21` = bước **7c** trong RELEASE-PLAN §1 (PHẦN B). Không đổi API cho Android. Bằng chứng: `gs://tappyai-uat-evidence/evidence/r21-2026-09-29/`.
+
+- 2026-09-29 (web) **sub1 ACCESSTRADE — PHƯƠNG ÁN C, LIVE UAT `453bd93` → cập nhật Data safety.** Link affiliate trong câu trả lời chat (thẻ lẫn chữ) nay là link của Tappy: `https://<site>/go/at?u=<deep link ACCESSTRADE, KHÔNG có sub1>&p=<provider>&a=<danh tính đã MÃ HOÁ>&h=…&s=<chữ ký>`. Mỗi lần bấm, server sinh `sub1` NGẪU NHIÊN mới, lưu bảng nối `commerce_click_attributions` (sub1 → tài khoản/khách, thời điểm, đối tác, link; RLS chỉ server; giữ 12 tháng) rồi 302 sang ACCESSTRADE kèm `sub1`. **Android không cần sửa code**: vẫn mở `url` của link như cũ (trình duyệt ngoài OK — không cần cookie, danh tính nằm trong link đã mã hoá); beacon handoff + GA4 `affiliate_click` giữ nguyên. Kiểm UAT: 2 lần bấm cùng link → 2 `sub1` khác nhau, bảng nối có đúng các dòng cho đúng user, redirect go.isclix.com → click.accesstrade.vn → vn.trip.com. **Data safety:** đối tác không nhận dữ liệu nhận diện → không tính "chia sẻ"; bảng nối là dữ liệu Tappy tự giữ (Hoạt động trong app), 12 tháng — xem `docs/release/PLAY-LISTING.md` mục Link affiliate. Chính sách `/privacy` (vi + en) đã sửa theo cơ chế này. Bằng chứng: `gs://tappyai-uat-evidence/evidence/453bd93/sub1/`.
+
+- 2026-09-29 (web) **R18 (a)+(b) XONG — LIVE UAT `e3413ca`**: trang `/privacy` (vi + en, `src/lib/i18n/legal.ts`) nay ghi **vị trí CHÍNH XÁC, tuỳ chọn, chỉ khi cho phép, không thu khi chạy nền**; thêm **ngày sinh** (cổng 18+), **nội dung người dùng tạo** (review, ảnh/clip, bình luận, bio, tin nhắn), và các bên xử lý **Google Analytics (web) + Google Analytics for Firebase (Android, không thu advertising ID)**, **Firebase Cloud Messaging**, **ACCESSTRADE** (mã bí danh `sub1` — phương án A của PLAY-LISTING); Anthropic, Supabase, Google Cloud Storage đã có. Ngày hiệu lực: tháng 9/2026. Đối chiếu từng dòng Data safety ở `docs/release/PLAY-LISTING.md` §1 (dòng "Chính sách khớp"). Ảnh + text: `gs://tappyai-uat-evidence/evidence/e3413ca/r18/`. **Android:** `PrivacyPolicyScreen.kt` nên dẫn tới / dùng cùng nội dung này (việc của phiên Android). R18 (c) chặn người dùng: chưa làm — chờ Huy quyết (không thuộc sửa chính sách). Màn đăng nhập web không còn chữ "âm nhạc"; thẻ "Âm thanh & âm nhạc" trên landing đi theo `SHOW_MUSIC` (ẩn).
+
+- 2026-09-29 (web) **R19 XONG — LIVE UAT `0399988`.** Gốc: `publishableFilter()` chỉ lọc bài `RESTRICTED`/`UNDER_REVIEW` khi `CONTENT_SAFETY_SCHEMA_MIGRATED=true`; Preview (UAT) không đặt biến này → mọi bề mặt dùng bộ lọc (gợi ý, feed, hồ sơ, đọc từng bài) đều KHÔNG lọc. Nay lọc mặc định BẬT, chỉ tắt khi biến = `false` rõ ràng. Rà thêm và gắn bộ lọc cho các nơi chưa dùng: đánh giá ở trang địa điểm `service/[id]`, điểm quán mà AI đọc (`food.ts`), bộ sưu tập đã thích/đã lưu, thống kê trang tác giả. Kiểm với e2e.android.pro: trước (UAT `0ab1ee5`) `/api/recommendations` + trang «Gợi ý cho bạn» có «Bài Bị Hạn Chế (E2E)»; sau (`0399988`) không còn ở recommendations, feed, tìm kiếm feed, hồ sơ. Bằng chứng: `gs://tappyai-uat-evidence/evidence/0ab1ee5/r19-before/`, `…/0399988/r19/`. Không đổi hợp đồng API — Android chạy lại ca gợi ý là thấy.
+
+- 2026-09-29 (web) **R15 XONG — LIVE UAT `1507c1e`. Android chạy lại: `E2E_CASES=trip-full node android/e2e/run.mjs chat`.**
+  - **Gốc:** lượt kế hoạch chuyến đi tự đi lấy dữ liệu qua tối đa 3 bước model nối tiếp (39–68 s/lượt, lượt chậm vượt 60 s của Vercel → khối bị cắt), lệnh kế hoạch chỉ nêu các tiêu đề nên model/lượt hoàn tất bỏ khối, và có lượt JSON hỏng (`{time":"10:00"`) nên thẻ không dựng được.
+  - **Sửa:** khách sạn + quán ăn + thời tiết lấy SONG SONG trước một bước model duy nhất; lệnh kế hoạch đặt khối `[TAPPY_PLAN]` ĐẦU TIÊN; lượt hoàn tất điền sẵn `[TAPPY_PLAN]`; JSON gọn (≤ 4 mục/ngày); JSON gần-đúng được sửa (thiếu ngoặc kép ở khoá, khoá không ngoặc, dấu phẩy thừa) trước khi guard giá chạy (`planJsonRepair.ts`).
+  - **Kiểm 5 lần liên tiếp trên UAT `1507c1e`** (khách Android: `x-tappy-surface: android`, `x-tappy-caps: ask`, mỗi lần một `chatSessionId` mới; tin nhắn đúng như ca trip-full rồi «Lên kế hoạch chi tiết»): **5/5 có `[TAPPY_PLAN]` hợp lệ, 3 ngày**, 38–40 s/lượt, lượt 1 = pick, lượt 2 = plan, 0 lời kể bước. Bằng chứng: `gs://tappyai-uat-evidence/evidence/1507c1e/r15/` (r15-uat.json + 10 raw stream).
+  - Không đổi hợp đồng API; Android không cần sửa code.
+
+- 2026-09-29 (web) **Layout chia sẻ — sửa theo duyệt của Huy (lượt 2)**:
+  - **QR hồ sơ**: dùng bản CÓ huy hiệu Google Play (cột trái «Tải TappyAI ngay» + huy hiệu; cột phải «Hoặc truy cập website» + pill). Link Play = `https://play.google.com/store/apps/details?id=com.tappyai.app` (applicationId release). Kiểm 29/09 11:15: trang công khai trả 404 (VN/US) → CHƯA công khai. Web: hiện huy hiệu ở UAT; production chỉ hiện khi đặt `NEXT_PUBLIC_PLAY_LISTING_LIVE=1` sau khi trang Play mở được. Android: dùng CÙNG điều kiện (không vẽ huy hiệu/không mở link khi trang chưa công khai). App Store: CHƯA gắn.
+  - **Thẻ gợi ý**: tối đa **2 quán** (trước 4), phần còn lại ghi «+N quán khác».
+  - **Ảnh kế hoạch**: ảnh của kế hoạch làm NỀN (poster từ mép trên, như thẻ OG), + «Điểm nổi bật» khi có ≥2 ảnh.
+  - **Thẻ kế hoạch trong chat (SL1)**: mở sheet mẫu 6; trạng thái link kế hoạch (đang tạo / cần đăng nhập / lỗi + Thử lại) nằm TRONG sheet mẫu 6; ô chỉ-link chờ có link; ảnh kế hoạch chờ link để in đúng URL.
+  - **QR thẻ gợi ý (SL3)**: mở trang chủ (tạm).
+- 2026-09-29 (web) **ẢNH CHIA SẺ — mẫu Huy chọn 29/09, web XONG, LIVE UAT `30c0724`** (Android làm theo; web KHÔNG sửa `android/`).
+  Mẫu gốc + quy tắc phong cách: `docs/design/share-layouts/` (`profile-qr.png` = #1, `share-sheet.png` = #6, `plan-share.png` = #7,
+  `README.md` = bảng màu/chữ/bo góc/khoảng cách). Code tham chiếu: `src/lib/share/cardStyle.ts` (token), `contentCards.ts`,
+  `planCard.ts`, `shareCardFile.ts`, `src/components/share/ShareMenu.tsx`. Bằng chứng (RIÊNG TƯ):
+  `gs://tappyai-uat-evidence/evidence/30c0724/share-layouts/` (`<thẻ>-card.jpg`, `<thẻ>-download.png` = file gốc,
+  `<thẻ>-sheet*.png`, `results-*.json`: file tải về trùng từng pixel với ảnh xem trước).
+  - **KHÔNG có API ảnh mới.** Ảnh được VẼ TẠI MÁY (web: canvas 2D; Android: `Bitmap`/`Canvas` trong `ShareImageRenderer.kt`)
+    từ dữ liệu app đã có: bài Explore (`GET /api/reviews/feed`, `GET /api/reviews/{id}`), thẻ gợi ý (dữ liệu `tappy.places.v1`
+    đã whitelist như `ShareArtifact`), kế hoạch (snapshot `[TAPPY_PLAN]` / `POST /api/plans/share` như cũ), QR hồ sơ như cũ.
+    Ảnh OG của `/plan/<id>` (`/plan/<id>/opengraph-image`, 1200×630) KHÔNG thay ảnh kế hoạch này.
+  - **Thẻ sáng (mẫu #1)** — review, clip, gợi ý: **1080×1920 PNG**. Từ trên xuống: otter tròn 116 px căn giữa (y=56) + wordmark
+    "Tappy" `#0B1B3F` / "AI" `#3391FF` 54 px/800 + tagline "One Agent. One Conversation. Everyday Life." 26 px `#4F5B76`;
+    panel trắng x 60–1020, y 330–1330, bo 40, viền 2 px `#D8E4FA`; hàng mã y 1360–1620 (panel trắng bo 32): trái = "Quét mã để
+    xem trên TappyAI" 32 px/800 + pill website (nền `#EAF3FF`, viền `#B9D2FB`, chữ `#1E6BFF` 32 px/700, host của link), PHẢI = QR
+    212 px của CHÍNH link chia sẻ, quiet zone 4 module, 4 góc ngoặc `#1E6BFF` 7 px nằm ngoài quiet zone; banner y 1690, cao 170,
+    bo 40, gradient `#1453D9`→`#2F8CFF`, slogan "Kết nối · Khám phá · Chia sẻ" nghiêng 40 px/800 trắng + dòng phụ 24 px `#E3EEFF`,
+    otter hoodie cao 300 px đứng ở đầu trái banner. Nền dọc `#FFFFFF`→`#F2F7FF`→`#EAF3FF`. Sao `#FFB020`/tắt `#D5DEEE`.
+    - **Review** (`content_type` ≠ video): ảnh đầu tiên (bo 28, cao 480, cover) — không có ảnh thì khối xanh nhạt có dấu “;
+      badge "★ REVIEW"; tên địa điểm 46 px/800 (2 dòng); 5 sao + "N/5" (CHỈ khi có địa điểm thật và rating 1–5); ghim + địa chỉ;
+      trích caption trong ngoặc kép (≤ 220 ký tự, tối đa 5 dòng); "Đăng bởi {tên}" + vòng chữ cái đầu ở đáy panel.
+    - **Clip** (`content_type` = video): thumbnail cao 560 + nút play tròn trắng giữa; badge "▶ CLIP"; KHÔNG sao; còn lại như review.
+      Bài có tên địa điểm là "Chia sẻ" (sentinel) → không địa điểm/địa chỉ/sao; tiêu đề = dòng caption đầu (như `reviewShareTitle`).
+    - **Gợi ý**: badge "TAPPY GỢI Ý"; tiêu đề = subject (2 dòng); tối đa 4 quán × 176 px: ảnh 144 bo 24 (không ảnh → ô số thứ tự),
+      "i. Tên" 32 px/800, ★ rating (số đánh giá) · loại · giá, ghim + địa chỉ; "+N địa điểm khác". KHÔNG khoảng cách (quyền riêng tư).
+      QR = link thương hiệu (gợi ý không có trang riêng).
+  - **Ảnh kế hoạch (mẫu #7)**: 1080 × cao theo nội dung (≈2000–2900), nền `#070A12`→`#0B1220`→`#14133A`; thanh logo; hero 640 px =
+    ảnh địa điểm thật đầu tiên phủ tối dần (không có → gradient, KHÔNG ảnh thay thế); "TAPPY PLAN" `#8FB8FF`, tiêu đề 76 px/800,
+    "N ngày · N điểm dừng · N người", tóm tắt; "Hành trình": tối đa 3 ngày × 4 chặng, vòng số "01" gradient `#3B82F6`→`#8B5CF6`,
+    giờ / ảnh 150×100 (nếu có) / tên / mô tả 1 dòng / ghim tím `#A78BFA` + địa chỉ, dư ghi "+N"; hộp "Tổng quan chuyến đi"
+    (Thời gian / Số người / Ngân sách ước tính — chỉ trường có); pill CTA gradient "XEM KẾ HOẠCH ĐẦY ĐỦ TRÊN TAPPY →"; link kế hoạch;
+    "Được tạo bởi TappyAI". Kế hoạch ĐÃ có link thì nay CÓ "Lưu về máy" (ảnh này), không còn ẩn.
+  - **QR hồ sơ**: giữ nguyên thẻ đã duyệt UAT3 (1200 × ≈2062).
+  - **Màn chia sẻ (mẫu #6)** cho hồ sơ, bài Explore, gợi ý chat, trang kế hoạch: như sheet hồ sơ hiện có + mục mới **"Ảnh chia sẻ"**
+    ngay dưới thẻ link: nút chọn mẫu (chỉ hiện khi ≥ 2 mẫu) + ảnh xem trước cao 280 dp + dòng "Đúng ảnh này được lưu về máy và gửi
+    lên TikTok.". Mẫu theo thứ tự (mẫu đầu = mặc định): hồ sơ [QR hồ sơ]; bài Explore [Thẻ review | Thẻ clip, Mã QR]; gợi ý [Thẻ gợi ý];
+    kế hoạch [Ảnh kế hoạch]. Gợi ý chat: nút sao chép ghi "Sao chép nội dung" (chép văn bản gợi ý).
+  - **QUY TẮC MỘT FILE**: render MỘT lần cho mỗi (mẫu, link), giữ file đó; ảnh xem trước, "Lưu về máy" và TikTok dùng CÙNG file
+    (tên `tappyai-<review|clip|suggestion|plan|post|profile>-YYYY-MM-DD.png`). Đổi mẫu → đổi cả xem trước lẫn file. Ngoại lệ 28/09
+    giữ nguyên: clip TẢI LÊN gửi TikTok bằng chính video; không lấy được video → ảnh mẫu đang chọn. Render lỗi → báo "Chưa tạo được
+    ảnh — vẫn chia sẻ link được." và "Lưu về máy" rơi về tệp văn bản như cũ.
+
+- 2026-09-29 (web) **R7/R9–R14 ĐÃ LIVE TRÊN UAT** — kiểm thật trên uat.tappyai.com (khách, mobile 390 px), bằng chứng RIÊNG TƯ:
+  - UAT `9644d8e` → `gs://tappyai-uat-evidence/evidence/9644d8e/android-requests/` (R13, R12, R11: ảnh `.jpg` + chữ `.txt` +
+    luồng thô `/api/chat` `.raw.txt` để Android test offline). R13: kế hoạch Đà Nẵng, 0 địa điểm ngoài VN/ngoài Đà Nẵng;
+    R7: khối `[TAPPY_PLAN]` parse được (3.797 và 5.496 ký tự); R9/R12: 0 lời kể bước, 0 câu hỏi lần 2; R11: «Mình chọn:
+    Tinh Hà "Say Hi" Concert» + 2 concert khác, nút Ticketbox.
+  - UAT `0377288` → `gs://tappyai-uat-evidence/evidence/0377288/android-requests/` (`api-evidence.jpg` + `.raw.txt`):
+    R10 — Android + `x-tappy-caps: ask` → có `[TAPPY_ASK]`; không caps → dòng đọc được. R14 — khách A gửi CHỈ «xem thêm» +
+    `chatSessionId` (không lịch sử) → lượt «more», chọn quán MỚI ở Bình Thạnh cho 6 người; khách B gửi CÙNG mã → không thấy gì
+    của A (hỏi lại từ đầu).
+- 2026-09-29 (web) **KẾT QUẢ R7/R9–R14** (server sửa xong, tái hiện offline bằng bộ replay `androidR` với
+  `x-tappy-surface: android`):
+  - **R13 (P0) — SỬA TẬN GỐC.** Nguyên nhân: câu «Lên kế hoạch chi tiết» bị bộ phạm vi chủ đề coi là CUỘC TƯ VẤN MỚI →
+    cắt cả cuộc trò chuyện còn đúng 1 dòng → khối kế hoạch ghi «user chưa nêu» thành phố/ngày/điểm đi; bản UAT cũ rơi vào
+    khung «Tối nay» không có thành phố → tìm toàn cầu (Omaha/Seattle). Nay: lượt tiếp nối (kế hoạch/hỏi thêm/so sánh/xem
+    thêm/chê/trả lời thẻ hỏi) giữ nguyên cả cuộc tư vấn; + guard CODE `placeGeoGuard.ts` loại mọi địa điểm ngoài Việt Nam
+    và ngoài tỉnh/thành đang hỏi (không đọc tên đường: «Nguyễn Thái Bình, Quận 1, TP.HCM» là TP.HCM). Serper vốn đã
+    `gl=vn, hl=vi`. Replay: kế hoạch Đà Nẵng ở lại Đà Nẵng (M Hotel Võ Nguyên Giáp, Mộc quán…), 0 địa điểm nước ngoài.
+  - **R7** — thân `[TAPPY_PLAN]` được che qua cả tầng guard V1 (bước dọn dòng xoá dòng JSON có «)» dư → khối rỗng/cụt).
+    Replay: 4/4 kế hoạch du lịch có JSON đủ (~4.3k ký tự).
+  - **R9** — lời kể các bước («Đang tìm…», «Mình gọi tool…», «Bây giờ mình sẽ lập…», «Tuyệt vời! Mình đã tìm được…») bị
+    CODE gỡ ở mọi lượt tư vấn (`stepNarration.ts`).
+  - **R10** — server gửi `[TAPPY_ASK]` cho request có `x-tappy-caps` chứa `ask` (không đổi `ASK_BLOCK_SURFACES`). Bản
+    Android cũ (không gửi caps) vẫn nhận dòng đọc được.
+  - **R11** — tư vấn concert/show/lễ hội: thẻ hỏi là «Ca sĩ / thể loại? · Mấy người đi? · Giá vé mỗi người?» (không còn
+    «chiều nay/tối nay»); lượt chọn tìm SỰ KIỆN (web_search → Ticketbox `event_links`), câu chọn «**Mình chọn: <sự kiện>** —
+    [link Ticketbox]». Replay: «Tinh Hà "Say Hi" Concert» + 2 concert khác, đều link ticketbox.vn.
+  - **R12** — sau thẻ hỏi: không còn hỏi «máy bay hay xe khách» / «ngày bay» ở lượt chọn; «Lên kế hoạch chi tiết» lập kế
+    hoạch ngay (giả định ghi ở dòng «Mình giả định…»).
+  - **R14 / Q7** — server XONG: `chatSessionId` đọc từ body; trạng thái (mảng, thông tin đã biết, lựa chọn đã chốt, các chỗ đã
+    giới thiệu, dòng bằng chứng tìm kiếm) lưu 30 ngày theo băm(chủ sở hữu, mã). Request KHÔNG có `decisionEvidenceId` được
+    trả lại bằng chứng từ trạng thái → «xem thêm»/hỏi tiếp trên app ngang web. Mã của người khác → phiên mới (có test).
+    Web đã chuyển sang gửi `chatSessionId`. Guard cho phép `chatSessionId` trong `ChatRequest.kt`.
+- 2026-09-29 (web) **R14 — HỢP ĐỒNG CHỐT `chatSessionId`** (Huy duyệt R14/Q7). Android làm song song được ngay:
+  - Body `POST /api/chat` thêm trường cấp cao nhất `chatSessionId`: chuỗi UUID dạng `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` (36 ký tự, hex thường, client sinh UUID v4 bằng `UUID.randomUUID()`). Sinh 1 lần khi mở cuộc chat MỚI; gửi y nguyên ở MỌI lượt của cuộc chat đó — cả lượt 1, cả khách (tài khoản ẩn danh). Mở lại chat từ lịch sử → dùng lại mã đã lưu cùng cuộc chat; cuộc chat cũ chưa có mã → sinh mã mới lúc mở lại (server dựng lại trạng thái từ lịch sử tin nhắn).
+  - Không header mới, không đọc header trạng thái nào; KHÔNG gửi `decisionEvidenceId` / `X-Decision-Evidence-Id` (bỏ `d48a11e`).
+  - Server lưu trạng thái tư vấn (mảng, thành phố, thông tin đã biết, lựa chọn đã chốt, các chỗ đã giới thiệu/bị chê, lần tìm gần nhất) theo khoá = băm(chủ sở hữu + `chatSessionId`), chủ sở hữu = user id (kể cả user ẩn danh). Mã của người khác → khoá khác → coi như phiên mới, không đọc được gì. Không có user nào (chưa đăng nhập, không ẩn danh) → không lưu, chạy như hiện nay. Giữ 30 ngày.
+  - Mã sai định dạng → bỏ qua (không lỗi). Thiếu mã → như hiện nay (tương thích bản Android cũ).
+  - Guard web `consultativeArchitecture.test.ts` sẽ CHO PHÉP `chatSessionId` trong `ChatRequest.kt`, vẫn cấm `decisionEvidenceId` và header trạng thái. Web cũng chuyển sang gửi `chatSessionId` (cùng cơ chế). Server + web + guard XONG (xem mục KẾT QUẢ ngay trên).
+- 2026-09-29 (web) **R8 XONG**: `videoDuration.test.ts` + `videoSize.test.ts` không còn cấm video Android. Nay kiểm ĐỒNG BỘ: (1) chỉ `reviews/ui/ReviewComposer{ViewModel,Screen}.kt`, `reviews/ui/ReviewsScreens.kt` (picker) và `reviews/data/VideoUploader.kt` được chọn/tải video; (2) khi có đường video: `ReviewComposerViewModel.kt` có `MAX_VIDEO_SIZE_MB = 150` (nhân 1024×1024, so `length() > …`) và `MAX_VIDEO_DURATION_ACCEPT_SEC = 305` (so `durationSec > …`); (3) `VideoUploader.kt` gọi `/api/upload/video` với `media.create-upload-session` + `media.complete-upload`; (4) `ClipMetadata.kt` tồn tại (F-099); (5) strings EN/VI nói 150MB, không còn "50MB". Đã chạy với 6fe2150 cherry-pick: 92/92 xanh; không có 6fe2150: 92/92 xanh. **Android push 6fe2150 được.** Lệnh: `npx vitest run src/lib/config/videoDuration.test.ts src/lib/config/videoSize.test.ts`.
+- 2026-09-28 (web): kế hoạch "tối nay" không nêu hoạt động riêng do SERVER dựng trên khung cố định
+  (ăn tối 18:30 → chơi 20:00 → uống 21:30, `src/lib/ai/eveningPlan.ts`). Định dạng `[TAPPY_PLAN]` KHÔNG đổi
+  (type "evening", days[0].items có time/emoji/category/name/description/price/address/maps_link/place_id/
+  photo_url/booking_link) — Android không cần sửa. Luồng trả về có thêm nhiều cặp `9:`/`a:` search_places ở đầu
+  (1 cặp cho mỗi chặng) — Android đã bỏ qua frame `9:`/`a:` như trước.
+- 2026-09-28 (web): `GET /api/recommendations` — each recommendation gains OPTIONAL `address`, `photoUrl`, `averageRating`,
+  `reviewCount`, `latestReviewAt` (from the place's community reviews). Additive only.
+- 2026-09-28 (web): UAT media now goes to `gs://tappyai-media-uat` via a UAT-only SA (docs/uat/UAT-MEDIA-INFRA.md). Upload
+  API unchanged. Resumable sessions are opened with the request `Origin` when it is the same host — native apps send no
+  Origin and are unaffected.
+
+- 2026-09-28 (web): kế hoạch DU LỊCH không còn tự giả định ngày đi / điểm xuất phát / phương tiện khi user chưa nói
+  (`src/lib/ai/planTripFactsGuard.ts`): nhãn ngày không kèm ngày tháng, không có bước bay/xe liên tỉnh, câu hỏi cuối
+  hỏi đúng các ý còn thiếu. Định dạng `[TAPPY_PLAN]` KHÔNG đổi — Android không cần sửa. Server cũng sửa chữ "ngan sách"
+  → "ngân sách" trong câu trả lời.
+
+- 2026-09-28 (web, owner decisions — Android should match): Đã lưu **ẩn chip Deals và Bộ sưu tập** (không hiện "Sắp có"),
+  dù mockup R1 có — chỉ còn Tất cả / Địa điểm / Bài viết / Video. Onboarding: bộ đếm theo số bước thật (web: "Bước 1/2", "Bước 2/2").
+  Tab hồ sơ giữ tên "Đã chia sẻ" (lịch sử link chia sẻ); tab repost của Phase 8 sẽ tên "Đăng lại" khi gộp.
+- 2026-09-28 (web): `/delete-account` hiện nội dung theo cờ ACCOUNT_SELF_DELETE_ENABLED (tắt → gửi yêu cầu qua email, như app
+  khi cờ tắt). Android không cần sửa.
+- 2026-09-28 (web): Phase 8 overlap §5 (tappyai-phase8 `docs/uat/PHASE8-OVERLAP-2026-09-29.md`): 11 mục KHÔNG làm trong Phase 7
+  (Android cũng vậy: không sửa 2 nút Google/Zalo ngoài màu, không tự viết image fallback, không thêm tile "gửi qua tin nhắn"…).
+
+- 2026-09-28 (web): **Khung đầu ra 6 mảng (FOOD / SHOPPING / TRAVEL / ENTERTAINMENT / SPA-WELLNESS / MAIN CHAT) + định dạng dữ liệu**
+  (frame `0:`/`8:`, marker `[TAPPY_PLAN]`/`[TAPPY_SHOPPING]`/`[CTA_BUTTONS]`/`[FOLLOWUPS]` = gợi ý trả lời nhanh, annotation
+  `tappy.places.v1`/`tappy.progress.v1`, nút CCP `labelKey`, hàng tìm kiếm `urlKind:'search'`): `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md`.
+  Đây là hành vi HIỆN TẠI của rc (thiết kế 26/9 chưa tìm thấy). Câu hỏi đóng của server có thể đứng SAU khối CTA/FOLLOWUPS —
+  Android phải hiển thị text sau khối. Câu trả lời thô để test offline: `gs://tappyai-uat-evidence/evidence/<SHA>/golden-raw/` (xem §5 của file).
+
+- 2026-09-28 22:00 (web → Android, **test đỏ trên rc**): `src/lib/i18n/androidHardcodedUiStrings.test.ts` ("no contentDescription is a string literal") báo `android/app/src/main/java/com/tappyai/app/age/AgeCheck.kt:222` (`contentDescription = "TappyAI"`, commit 06b5284). Nhờ phiên Android đổi sang `stringResource(...)` (hoặc chuỗi có sẵn như các màn khác). Web KHÔNG sửa android/.
+
+- 2026-09-29 (web): **Khung đầu ra 6 mảng đã duyệt được cài** (83853cc, `domainFrames.ts`) — đổi NỘI DUNG câu chữ, KHÔNG đổi
+  định dạng stream/marker. Mới: dòng `💰 Ngân sách: … ÷ … người = …` (văn bản thường) ngay sau `[/TAPPY_PLAN]` khi user nêu ngân sách —
+  Android hiển thị như một dòng chữ sau khối kế hoạch. Chi tiết: `docs/consultative/OUTPUT-CONTRACT-6-DOMAINS.md` §0.
+  Câu trả lời thô mới để test offline: `gs://tappyai-uat-evidence/evidence/83853cc/golden-raw/`.
+
+- 2026-09-29 (web, **AI tư vấn bản cuối — định dạng để Android làm theo**; server đổi xong, backward-compatible):
+  **Lượt HỎI** (khi thiếu thông tin; do code tạo, 0 LLM, 0 tìm kiếm): server gửi
+  - cho `x-tappy-surface: web`: câu dẫn + `[TAPPY_ASK]{"v":1,"questions":[{"id":"party","q":"Đi mấy người?","options":["1 người","2 người","3-5 người","Nhóm đông"]},…]}[/TAPPY_ASK]` + câu đuôi
+    "Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được." (2–3 câu hỏi, mỗi câu 2–4 nút);
+  - cho Android/iOS HIỆN TẠI (chưa có parser): câu dẫn + mỗi câu hỏi 1 dòng `• Câu? (A / B / C)` + câu đuôi + `[FOLLOWUPS]` = nút của câu 1.
+  👉 Yêu cầu Android: thêm parser `[TAPPY_ASK]` (strip khỏi text) + render mỗi câu 1 nhóm chip (chọn 1/nhóm, bấm lại để bỏ) + ô gõ tự do
+  + nút "Gửi" gửi `"<chọn 1> · <chọn 2> · <tự gõ>"` như tin nhắn user; khi xong, gửi header `x-tappy-surface: android` VÀ báo web để bật
+  `ASK_BLOCK_SURFACES` cho android (src/lib/ai/decisionSurface.ts) — **ĐÃ THAY bằng R10**: gửi `x-tappy-caps: ask`, không bật theo surface. Tham chiếu web: src/components/chat/AskCard.tsx, src/lib/structuredContent/parseAsk.ts.
+  **Lượt CHỐT**: text = 1 câu xác nhận + `**Mình chọn: <tên>** — lý do` + (lưu ý nếu có căn cứ) + tối đa 2 dòng `- **<tên>**: hơn/kém…`
+  + dòng do server đếm `Mình còn N lựa chọn nữa, muốn xem thêm không?` + `[FOLLOWUPS]Xem thêm|Lên kế hoạch chi tiết[/FOLLOWUPS]` (server gắn,
+  thay mọi FOLLOWUPS của model). Card `tappy.places.v1`/`[TAPPY_SHOPPING]` như cũ; card #1 = tên "Mình chọn".
+  **Kế hoạch chi tiết** (khi user bấm "Lên kế hoạch chi tiết"): văn bản có tiêu đề in đậm cố định theo mảng —
+  ĂN UỐNG: Giờ đến & đặt bàn · Gọi món · Chi phí · Đi lại & gửi xe · Mẹo địa phương · Phương án dự phòng;
+  MUA SẮM: Mua ở đâu · Kiểm tra trước khi trả tiền · So giá & thời điểm mua · Bảo hành & đổi trả · Cạm bẫy thường gặp · Tổng chi phí;
+  DU LỊCH: `[TAPPY_PLAN]` như cũ + Tóm tắt chuyến · Ăn ở đâu, gọi món gì · Mẹo & cạm bẫy · Khi trời mưa · Ngân sách · Việc cần làm trước khi đi
+  (+ dòng `💰 Ngân sách: … ÷ … người = …` do server viết);
+  GIẢI TRÍ: Lịch buổi · Đặt chỗ / vé · Di chuyển giữa các chặng · Mẹo từng chỗ · Chi phí;
+  SPA/LÀM ĐẸP: Gói / dịch vụ nên chọn · Đặt lịch · Chuẩn bị trước khi đến · Thời lượng · Chi phí · Lưu ý.
+  Android chỉ cần render markdown in đậm như thường. Mỗi lượt có thêm annotation `8:` `{kind:"tappy.turn.v1", domain, turnType, usd…}` — BỎ QUA.
+  Câu trả lời thô lượt chạy cuối (để test offline): sẽ ở `gs://tappyai-uat-evidence/evidence/<SHA>/consult-raw/`.
+
+### R26 (2026-10-01) — Xoá tài khoản: câu trả lời cho phiên Android (web ghi, Android đọc)
+
+**Luồng trong app ĐÃ XONG ở phía web/server từ UAT3 (27/09); không có gì cần Android build lại.** Hành vi là **XOÁ NGAY**, không phải "ghi yêu cầu rồi xử lý trong 24 giờ".
+- Endpoint: `POST /api/account/delete`, body `{"confirm":"XÓA"|"XOÁ"|"DELETE"}` (server kiểm lại từ xác nhận; Bearer JWT dùng được). 200 `{ok:true}` = đã xoá; 400 thiếu từ xác nhận; 401 hết phiên; 403 phiên ẩn danh; 404 `not_available` = cờ TẮT; 409 tài khoản nhân viên; 500 `delete_failed` = tài khoản còn nguyên.
+- Cờ: `ACCOUNT_SELF_DELETE_ENABLED` (chỉ `"true"` mới BẬT; mặc định TẮT ở Production). Client đọc `GET /api/config` → `flags.accountSelfDelete`.
+- Cờ TẮT: hàng «Yêu cầu xóa tài khoản» → trang /delete-account (hướng dẫn gửi email tới hỗ trợ), KHÔNG xoá gì.
+- Cờ BẬT: hàng «Xóa tài khoản» (cuối mục Khác) → trang liệt kê 9 mục bị xoá + 2 mục giữ lại → gõ **XÓA** (EN: DELETE) → nút «Xóa vĩnh viễn tài khoản» → server `auth.admin.deleteUser`, DB cascade → app đăng xuất → màn «Tài khoản của bạn đã được xóa»: "Dữ liệu của bạn đã được xóa khỏi cơ sở dữ liệu; ảnh, video và âm thanh bạn đã tải lên được xóa khỏi kho lưu trữ tệp trong vòng 48 giờ sau đó. Bạn đã được đăng xuất…". Dọn tệp/Google do cron 01:45 VN (`account_deletion_jobs`).
+- **Đối chiếu client:** Android "gõ XÓA → xoá ngay" và iOS "đã xóa" KHÔNG lệch với server. Chỉ có hai chỗ lệch: (1) mô tả của Huy "kín đáo / xử lý trong 24 giờ" không có trong code (hàng nằm cuối mục Khác, màu đỏ; con số thật là "ngay + 48 giờ cho tệp"); (2) màn Android khi cờ TẮT mở hộp «Yêu cầu xóa tài khoản?» rồi email — khớp web.
+- Web KHÔNG đổi sang "ghi yêu cầu": đổi sẽ lệch cả hai app đã port 1:1 (phải build lại) và yếu hơn chính sách Play. Nếu Huy vẫn muốn luồng 24 giờ → quyết định riêng, đụng cả ba client.
+- Chính sách Google Play (https://support.google.com/googleplay/android-developer/answer/13327111): bắt buộc cả (1) đường xoá TRONG app và (2) link web để yêu cầu xoá; email/biểu mẫu/dịch vụ khách hàng được chấp nhận cho phần web; "phải cho người dùng biết sẽ xảy ra gì và hoàn tất trong thời gian hợp lý"; vô hiệu hoá/đóng băng không tính là xoá. ⇒ một app CHỈ mở email để xoá (cờ TẮT) có thể bị từ chối ở bước khai Data deletion nếu app cho tạo tài khoản trong app. Vì vậy cờ nên BẬT trước khi nộp AAB (PHẦN B).
+
+### R27 (2026-10-01) — thẻ hỏi: tiêu đề đúng mảng, câu «Bay từ đâu?», cửa sổ giới thiệu (KHÔNG cần build lại Android/iOS)
+
+- **Sửa phía server (commit eaefa04, đang trên UAT):** câu hỏi món ăn (phở Bắc/Nam, bún, cà phê…) nay có `id` = `dish` (trước `style`), câu hỏi dịch vụ spa (massage / nail / tóc) có `id` = `service` (trước `style`). `askAreaOf` của Android (`AskCardModel.kt`) đã coi `dish` → ăn uống, `service` → spa; nên thẻ ăn uống hết hiện «Chuyến đi thế nào đây?». `style` chỉ còn dùng cho khách sạn / chọn kiểu chuyến đi (đúng là du lịch). Hợp đồng `[TAPPY_ASK]` giữ nguyên.
+- Khi người dùng đã nói rõ món (vd. «ăn phở Bắc tối nay») thẻ chỉ còn Số người / Ngân sách / Khu vực; không câu nào mang id của mảng, nên `askAreaOf` trả `main` và thẻ hiện tiêu đề trung tính «Tìm gì cho bạn hôm nay?» — không sai mảng. Muốn tiêu đề «Hôm nay ăn gì nhỉ?» cho cả trường hợp này thì cần thêm một id báo mảng vào hợp đồng (đụng cả hai app) — chưa làm.
+- **Vé máy bay — câu «Bay từ đâu?»:** id `origin`, 3–4 nút `Từ TP.HCM` / `Từ Hà Nội` / `Từ Đà Nẵng` (bỏ nơi trùng điểm đến) + `Từ nơi khác`. Bước kiểu «khác» (một lựa chọn). `askAreaOf` đã đọc `origin` là du lịch. Android gửi lại câu trả lời dạng văn bản như mọi thẻ («Từ TP.HCM · …»); server đọc «Từ …» là điểm đi.
+- **Cửa sổ «Tappy muốn hiểu bạn hơn!» (chỉ web, 16e5256):** không còn chồng lên thẻ hỏi/ô chọn ngôn ngữ — chờ chọn ngôn ngữ, không hiện khi có thẻ hỏi hoặc câu trả lời đang chạy. Không đụng API hay app.
+- **Trang /privacy (web, chờ Huy duyệt chữ):** nay ghi OpenAI (không còn Anthropic) + wttr.in, Upstash, Brevo, Overpass, Google Maps Platform. Data safety trên Play cần khai OpenAI nhận nội dung chat (phiên Android đã hỏi ở mục 5 báo cáo 01/10 — câu trả lời: CÓ).
+
+### R28 (2026-10-01 chiều) — thay đổi SERVER mà app native cần biết (không đổi hợp đồng; KHÔNG cần build lại để chạy đúng)
+
+- **Thẻ hỏi `[TAPPY_ASK]`:** id mới `dest` («Bay đến đâu?», nút «Đến Đà Nẵng / Đến Hà Nội / Đến Phú Quốc / Đến nơi khác»), `style` hỏi KIỂU điểm đến khi chưa có nơi nào («Biển / Núi / Thành phố / Nước ngoài»), `device` («Dùng cho iPhone nào?» khi mua phụ kiện), `service`/`dish` (R27). Câu trả lời của thẻ vẫn là văn bản nối bằng « · ». Chuỗi một thành phố đứng một mình trong câu trả lời (vd. «3N2Đ · TP.HCM · 2 người») nay được hiểu là **điểm xuất phát**.
+- **Mua phụ kiện:** «kính cường lực / ốp / sạc cho iPhone …» được hiểu là phụ kiện (không còn hỏi «iPhone nào để mua»); thẻ sản phẩm chỉ gồm đúng loại phụ kiện.
+- **«Có phim gì hay»:** server trả lời trực tiếp (không thẻ, không tìm kiếm) kèm 1 link trang phim đang chiếu của CGV (markdown); Galaxy/Lotte/BHD/Beta chỉ nhắc tên + `[FOLLOWUPS]Tìm rạp gần mình[/FOLLOWUPS]`. Android chỉ cần render markdown như thường.
+- **Thẻ địa điểm:** loại địa điểm phải đúng loại hoạt động (karaoke chỉ ra karaoke); công ty tour/du lịch không bao giờ thành thẻ trừ khi người dùng hỏi tour; tin KẾ HOẠCH chuyến đi luôn mang khối thẻ KHÁCH SẠN.
+- **Link vé máy bay:** số người người dùng nêu (vd. «2 người») đã điền sẵn (Trip.com `quantity`, Traveloka `ps`). Link khách sạn KHÔNG đổi (ngày chỉ điền khi người dùng nói ngày cụ thể — quyết định cũ 30/09 được giữ).
+- **Cờ giọng `STYLE_LUNA6` (mặc định TẮT):** BẬT trên UAT cho vòng test cuối nếu đạt D7; đổi chữ cố định phía server (đuôi thẻ hỏi, dòng «Còn N lựa chọn nữa», câu thiếu dữ liệu). Phát hiện «đây là tin hỏi» của app phải nhận cả hai đuôi: `Bạn chọn nhanh bên dưới hoặc gõ tự do nhé — trả lời một phần cũng được.` và `Chọn nhanh bên dưới, hoặc gõ thẳng ý bạn — trả lời một phần cũng được.` (nếu app có kiểm đuôi này; cách tin cậy là `[TAPPY_ASK]`).
+- **Màn Mic mới:** chỉ web (PL-VOICE-NATIVE cho Android/iOS).
+- **Trang /privacy** nay ghi OpenAI + wttr.in/Upstash/Brevo/Overpass/Google Maps Platform (R27) — Data safety phải khớp.
+- **Android phải chạy lại e2e trên ĐÚNG SHA cuối** (xem RELEASE-PROGRESS) rồi build APK/AAB cuối.
+
+### R29 (2026-10-01) — Xoá tài khoản BẬT khi release: chỉ sửa CHỮ màn xác nhận (KHÔNG đổi hợp đồng dữ liệu)
+
+Huy quyết: cờ `ACCOUNT_SELF_DELETE_ENABLED` BẬT lúc release; bấm xoá trong app = xoá luôn (như luồng cờ BẬT hiện có: gõ XÓA → `POST /api/account/delete {confirm}` → đăng xuất). Android chỉ đổi chữ ở hộp/ màn xác nhận (hàng «Xóa tài khoản» vẫn kín đáo, cuối mục Khác, không đỏ nổi bật):
+- **Chữ chính xác (VI):** «Xóa tài khoản vĩnh viễn? Toàn bộ dữ liệu của bạn sẽ bị xóa ngay và không thể khôi phục: lịch sử chat, địa điểm đã lưu, bài đăng, ảnh và clip. {GÓI} Gõ XÓA để xác nhận.»
+- **{GÓI} khi app BIẾT tài khoản đang có gói trả phí đang hoạt động:** «Gói trả phí và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.»
+- **{GÓI} khi app KHÔNG biết (bản chung):** «Nếu bạn đang có gói trả phí, gói và credit còn lại sẽ mất, Tappy không hoàn lại phần chưa dùng. Xóa tài khoản không tự hủy gói trên App Store hoặc Google Play, bạn cần hủy gói ở đó để không bị tính phí tiếp.»
+- **EN:** «Delete your account permanently? All your data will be deleted immediately and cannot be recovered: chat history, saved places, posts, photos and clips. {PLAN} Type DELETE to confirm.» — {PLAN} known: «Your paid plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.» — unknown: «If you have a paid plan, your plan and any remaining credit will be lost, and Tappy does not refund the unused part. Deleting your account does not cancel your subscription on the App Store or Google Play — cancel it there so you are not charged again.»
+- Từ xác nhận vẫn **XÓA / DELETE** (server nhận XÓA, XOÁ, DELETE). Chữ «hoàn tiền do App Store/Google Play quyết» nằm ở trang web, không bắt buộc trong hộp.
+- «Có gói trả phí» web lấy từ `subscriptions.status = 'active'`; nếu Android đã đọc `GET /api/subscription` thì dùng chính dữ liệu đó, không thì dùng bản chung. KHÔNG thêm field/endpoint.
+- **KIỂU HÀNG MỚI (Huy 01/10, kiểu TikTok) — thay hàng đỏ hiện có:** hàng «Xóa tài khoản» là hàng CHỮ THƯỜNG (cùng kiểu mọi hàng khác trong mục), KHÔNG đỏ, KHÔNG nền/biểu tượng đỏ; nằm trong mục **«Khác»**, là hàng CUỐI mục (sau Điều khoản, Chính sách riêng tư), và **KHÔNG nằm cạnh «Đăng xuất»** (Đăng xuất đứng riêng một khung bên dưới, xa hàng này). Bấm → màn cảnh báo (chữ ở trên) → gõ XÓA/DELETE → nút «Xóa vĩnh viễn tài khoản». Nhãn: «Xóa tài khoản» / «Delete account» (khi cờ TẮT vẫn là «Yêu cầu xóa tài khoản», mở email). Android hiện đang là hàng đỏ cạnh Đăng xuất (`SettingsScreen.kt`) ⇒ cần sửa app; bản AAB vc10 hiện có hàng đỏ — chấp nhận được cho tới bản kế tiếp nếu Huy không yêu cầu build lại.
+- Thứ tự release: áp D1/D2/D4 → bật cờ → xoá thử tài khoản test (ENV-RELEASE-CHECKLIST §1). Android dò cờ qua `GET /api/config` → `flags.accountSelfDelete` như hiện nay.
+
+## 3. Quy tắc bằng chứng mới (chủ dự án, 2026-09-28) — áp dụng cho CẢ phiên Android
+
+- KHÔNG commit ảnh/video vào git nữa (không sửa lịch sử commit cũ).
+- Upload ảnh chụp lên `gs://tappyai-uat-evidence/evidence/<SHA>/` (SHA = commit được chụp; web dùng SHA UAT từ
+  `/api/version`, Android dùng SHA đã build APK). Ví dụ: `gcloud storage cp *.png gs://tappyai-uat-evidence/evidence/<SHA>/android/`.
+- 2026-09-29 (Huy): bằng chứng KHÔNG được đọc công khai. Bucket bằng chứng là `gs://tappyai-uat-evidence` (RIÊNG TƯ:
+  public access prevention = enforced, không có `allUsers`; đọc bằng `gcloud` đã đăng nhập). KHÔNG upload bằng chứng vào
+  `gs://tappyai-media-uat` nữa — bucket media đó đọc công khai (ảnh app cần). 913 tệp cũ đã chép sang bucket riêng; Huy đã XOÁ `gs://tappyai-media-uat/evidence/` (913/913, kiểm lại: trống, URL cũ 404).
+  Trang duyệt cho Huy dùng ảnh nhúng trong artifact hoặc signed URL có hạn.
+- Vẫn chỉ chụp tài khoản test, không dữ liệu thật/cá nhân.
+- Repo chỉ giữ RELEASE-PROGRESS.md (web) / tài liệu Android với đường dẫn `gs://…` hoặc
+  `gs://tappyai-uat-evidence/evidence/<SHA>/…`.
+
+## 4. Chặn người dùng — HỢP ĐỒNG CUỐI (01/10, nhánh sec/user-blocks-slice; chưa merge)
+- Hiện nút «Chặn» CHỈ khi `GET /api/config` → `p8.userBlocks === true` (thiếu khối `p8` = tắt). Không cần build lại: cờ do server bật.
+- `POST /api/users/{id}/block` → `200 {ok:true, blocked:true}`; `DELETE` cùng đường dẫn → `{ok:true, blocked:false}`. Idempotent. 401 chưa đăng nhập; 403 tài khoản ẩn danh; 400 id sai hoặc chính mình; 429 quá 30 lần/phút; 404 thân rỗng khi cờ tắt. Không phân biệt được «tài khoản kia không tồn tại».
+- `GET /api/users/blocks` → `{blocks:[{blocked_id, created_at}]}` (chỉ của chính mình, mới nhất trước, gồm cả chặn từ chat).
+- Sau khi chặn: bài/bình luận hai bên biến mất khỏi feed/danh sách phía server; hồ sơ đối phương 404; client xoá tạm khỏi danh sách đang hiển thị.
+- `p8.commentModeration` (cùng cờ): chủ bài xoá được bình luận trên bài mình (`DELETE /api/reviews/{id}/comments`).
+- **`GET /api/config` → `p8` (đối tượng cấp cao nhất, cạnh `flags`/`upload`; boolean thuần):** `{ reports, userBlocks, commentModeration, accountDeletion }`. `userBlocks` và `commentModeration` = `USER_BLOCKS_ENABLED === 'true'`; `reports` = `REPORTS_ENABLED === 'true'`; `accountDeletion` luôn false (dùng `flags.accountSelfDelete`). Thiếu khối `p8` = tắt hết.
+- **Báo cáo bình luận / người dùng** (khi `p8.reports` true; route 404 thân rỗng khi tắt): `POST /api/comments/{id}/report` và `POST /api/users/{id}/report`, body `{reason, note?}` (`details` cũng được đọc như `note`, cắt còn 300 ký tự). `reason` nhận: `spam, harassment, inappropriate, copyright, misinformation, violence, other` và các giá trị native `scam, sensitive, hate, sexual, self_harm, impersonation` (lưu đúng như gửi). Thành công `200 {ok:true, reported:true}`; gửi lại lần hai `200 {..., alreadyReported:true}`. Lỗi: 400 (lý do/id sai, hoặc tự báo mình/bình luận của mình), 401, 403 (ẩn danh), 429 (quá 10 lần/10 phút), 500 — **mọi lỗi là mã HTTP không phải 2xx kèm `{error, message}`**. Đối tượng không tồn tại/không thấy được → vẫn `200` (không lộ tồn tại).
+- **Báo cáo bài/clip** vẫn `POST /api/reviews/{id}/report` (luôn bật); nhận cả các lý do native (server quy về lý do chuẩn: scam→misinformation, sensitive/sexual→inappropriate, hate→harassment, self_harm→violence, impersonation→other).
+- **KHÔNG có `POST /api/reports`** (route gộp của Phase 8 không vào bản này). Ai đang gọi đường đó (iOS I7) phải đổi sang hai đường riêng ở trên.
+
+## 5. Báo cáo nâng cao + Thông báo vi phạm (01/10, nhánh sec/user-blocks-slice; chưa merge) — KHÔNG bắt build lại bây giờ
+Mọi thứ dưới đây do server bật; app đọc `GET /api/config` → `p8.reports` và `p8.moderationNotices` (boolean). Chưa cần làm trong bản app hiện tại; ghi để bản kế tiếp dùng.
+- **Trạng thái báo cáo của chính mình:** `GET /api/reports/mine` (cần đăng nhập thật, chỉ khi `p8.reports`) → `{reports:[{id, target_type:'review'|'comment'|'user', target_id, reason, created_at, status}]}`, `status` ∈ `received` (đã nhận) · `in_review` (đang xem xét) · `actioned` (đã xử lý) · `no_violation` (không vi phạm). Không bao giờ có chi tiết quyết định hay người duyệt. Người bị báo không biết ai báo.
+- **Ẩn cho riêng mình:** sau khi báo cáo, app tự ẩn đối tượng đó khỏi màn hình của chính người báo (dùng `target_id` ở danh sách trên để ẩn trên máy khác). Người khác vẫn thấy cho đến khi người duyệt quyết — báo cáo KHÔNG ẩn/gỡ gì cho ai.
+- **Lý do báo cáo (user_reports):** `spam, harassment, inappropriate, copyright, misinformation, violence, other, scam, sensitive, hate, sexual, self_harm, impersonation, child_safety` (thêm `child_safety` — nhóm nghiêm trọng, được ưu tiên). Báo cáo bài/clip (`POST /api/reviews/{id}/report`) vẫn nhận các lý do native và quy về lý do chuẩn.
+- **Thông báo vi phạm** (chỉ khi `p8.moderationNotices`): web có `/profile/notices`. API: `GET /api/moderation/decisions` → `{decisions:[{id, created_at, rule_group, feature, severity, outcome:'warning'|'content_removed'|'restricted'|'banned', restrict_days, content_type, strike_expires_at, appeal:{status:'pending'|'upheld'|'reversed', created_at}|null, can_appeal}]}`; `POST /api/moderation/decisions/{id}/appeal` body `{message}` (10–1000 ký tự) → `200 {ok:true,status:'pending'}`; 404 (không phải quyết định của mình / không có), 409 (đã kháng nghị / quá 30 ngày), 429. Mỗi quyết định kháng nghị MỘT lần trong 30 ngày. Thông báo hệ thống tới người bị xử lý có `data.kind = 'moderation_decision'` và `entityUrl = /profile/notices?d=<id>`; kết quả kháng nghị: `data.kind = 'moderation_appeal_result'`.
+- **Trang Quy tắc cộng đồng:** `https://www.tappyai.com/community-guidelines` (công khai, vi/en). Hộp «Quy tắc cộng đồng» trong app hiện trỏ Điều khoản: nên trỏ trang này ở bản sau.
+- Lỗi vẫn là mã HTTP khác 2xx kèm `{error, message}`.
+
+## 6. Lá chắn lừa đảo đồng bộ 3 nền tảng — HỢP ĐỒNG (02/10, phiên WEB chủ trì)
+Chi tiết đầy đủ và bảng thực tế web: `docs/uat/SCAM-SHIELD-PARITY.md` §2. Tóm tắt: **server KHÔNG đổi**; dùng `POST /api/scam-shield/check {url}` (kiểm link), `POST /api/scam-shield/analyze {text, url?}` (kiểm tin nhắn; chỉ gửi `text`/`url`, không gửi ảnh), QR **giải mã trên máy** rồi gửi MỖI link đã giải mã tới `/check` (loại khác link: hiện loại + cảnh báo, KHÔNG gọi máy chủ), `POST /api/scam-shield/share {url}` cho kết quả link. Route cũ `/api/scam-shield/qr` (nhận ảnh) không dùng nữa. Không có `matchScenario` ở release (Phase 8).
+
+## 7. Lá chắn lừa đảo — bỏ «An toàn», bỏ điểm số, bỏ AI (02/10, nhánh final/scam; server đã đổi, app CHƯA đổi)
+**Quyết định phía server (tương thích ngược, đã làm):** `risk.level` KHÔNG BAO GIỜ trả `SAFE` hoặc `LOW` nữa (cả `/check`, `/analyze`, QR-link, trang chia sẻ); hai mức đó được đổi thành `INCONCLUSIVE`. Lý do: cả Android (`ScamShieldResult.kt`: `RiskLevel.SAFE -> scam_shield_level_safe`, tông xanh) lẫn iOS (`ScamShieldView.swift`: `.safe -> scamShield.level.safe`) tự in chữ «An toàn» khi nhận `SAFE`; còn `INCONCLUSIVE` cả hai app đã vẽ trung tính, không có khiên xanh. Nhờ vậy bản app cũ đang chạy không còn hiện «An toàn». Thêm trường mới (không đổi/xóa trường cũ): `verdict` ∈ `familiar | suspicious | unrecognized` (cả `/check` và `/analyze`), và ở `/analyze` thêm `scenario` (null hoặc `{id, officialNumber, title, summary, warningSigns[], whatToDo[], whatNotToDo[], source{organization,title,url,publishedAt}, hotline, strength}`). `risk.score` và `risk.confidence` vẫn có trong JSON (app cũ giải mã số nguyên bắt buộc) nhưng web không hiện.
+**Tin nhắn không còn gọi AI** (cờ `SCAM_SHIELD_AI_ENABLED`, mặc định TẮT): `analysis.aiStatus` luôn `not_needed`, `analysis.tier` = 0, `quota` = `null`; `advice` và `reasoningSummary` đã dùng lời văn mới. Ảnh chụp tin nhắn (`imageBase64`) bị từ chối `400 screenshot_unavailable` (app v1 vốn không gửi ảnh). Nhận diện tin ngắn dùng thư viện 25 tình huống (khớp cụm từ có trọng số).
+**App cần đổi ở bản kế tiếp (KHÔNG bắt build lại bây giờ):**
+- **Android:** (1) không in số `risk.score` và nhãn «Độ tin cậy …» (`ConfidenceBadge`, `VerdictHead`, chuỗi `scam_shield_v3_score` / `scam_shield_v3_confidence_*`); (2) đọc `verdict` để chọn 1 trong 3 tiêu đề (bản dịch ở `docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md` mục 1; link dùng nhóm `scamVerdict.link.*`); (3) không hiện ghi chú AI / «AI hôm nay x/15» (server luôn `not_needed`, `quota` null nên bộ đếm tự ẩn; dòng ghi chú «không dùng lượt AI» có thể còn hiện); (4) thêm khối `scenario` + dòng «TappyAI không thay thế cơ quan chức năng».
+- Cho tới lúc đó: bản cũ vẫn chạy đúng, chỉ còn hiện con số điểm và «Độ tin cậy» (đã không còn chữ «An toàn»).
+
+## 8. Lá chắn lừa đảo — CHỮ CUỐI (vi + en) và LÝ DO cho link/QR (02/10, nhánh final/web-2026-10-02)
+Android và iOS dùng ĐÚNG những câu dưới đây. Chữ này vẫn cần người am hiểu luật Việt Nam xem (docs/uat/SCAMSHIELD-WORDING-FOR-REVIEW.md). Không bao giờ hiện «An toàn/Safe», điểm số hay «Độ tin cậy».
+
+**Tin nhắn — ba trạng thái** (`verdict` trong JSON của /analyze: `familiar` | `suspicious` | `unrecognized`)
+| Trạng thái | Tiêu đề vi | Tiêu đề en | Câu đi kèm vi | Câu đi kèm en |
+|---|---|---|---|---|
+| familiar | Có dấu hiệu lừa đảo quen thuộc | Familiar scam signs found | Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó. | This looks like a scam tactic the authorities have warned about. Do not do what it asks. |
+| suspicious | Có một số dấu hiệu đáng ngờ | Some suspicious signs found | Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì. | Not enough to be certain, but stop and verify through an official channel before doing anything. |
+| unrecognized | Chưa nhận ra dấu hiệu quen thuộc | No familiar signs recognised | Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức. | This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel. |
+
+**Link / QR có link — ba trạng thái**
+| Trạng thái | Tiêu đề vi | Tiêu đề en |
+|---|---|---|
+| familiar | Đường link có đặc điểm thường gặp ở link giả mạo | This link has traits that are common in fake links |
+| suspicious | Đường link có một số điểm đáng ngờ | This link has some suspicious traits |
+| unrecognized | Chưa nhận ra dấu hiệu quen thuộc ở đường link này | No familiar signs recognised in this link |
+- familiar, câu đi kèm vi: «Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này.»
+- suspicious: «Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức.»
+- unrecognized: cùng câu «Điều này KHÔNG có nghĩa là an toàn…» như trên.
+- Tiêu đề khối lý do: «Lý do cụ thể» / «Specific reasons».
+- QR KHÔNG phải link: hiện loại mã + «TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức.» / «TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel.»
+
+**Dòng cuối mọi kết quả:** «TappyAI không thay thế cơ quan chức năng.» / «TappyAI does not replace the authorities.»
+**Dòng 113 (khi có tình huống khớp):** «Báo ngay cho Công an nơi gần nhất hoặc gọi 113 nếu nghi ngờ bị lừa.» / «Report to the nearest police station or call 113 if you suspect a scam.»
+**Khối tình huống:** «Tình huống tương ứng» / «Matching scenario»; «Kịch bản số {n} trong danh sách của Bộ Công an» / «Scenario #{n} in the Ministry of Public Security list»; «Dấu hiệu nhận biết (theo bài viết)» / «Warning signs (from the article)»; «Thông tin từ nguồn chính thức» / «Information from an official source»; «Xem bài viết gốc» / «Open the original article»; «Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn.» / «The signs and advice were written by TappyAI from the official material, not quoted verbatim.»
+
+**LÝ DO bằng vi/en cho link/QR (mới, CỘNG THÊM vào hợp đồng, không đổi trường cũ).** Mỗi phần tử của `evidence.items[]` ở /check (kể cả kiểm link do QR) có thêm (`urlChecks[]` của /analyze chỉ là bản tóm tắt, KHÔNG có các trường này):
+- `reasonCode` — mã ổn định `<source>.<finding>` (bảng dưới);
+- `reason_vi`, `reason_en` — câu đã điền số liệu; app chọn theo ngôn ngữ (mặc định vi) hoặc tự dịch từ `reasonCode`;
+- `detail`/`summary` vẫn là dòng tiếng Anh kỹ thuật cũ (cho bản app cũ). Bản app cũ vẫn chạy; muốn hết chữ Anh thì app phải ĐỌC `reason_vi/reason_en` → **Android và iOS build lại MỘT lần**.
+Chỉ hiện các mục `severity` là `warning` hoặc `critical` (mục `safe` là «bình thường», không hiện thành lý do). Không có lý do nào kết luận «link/tên miền này là lừa đảo» hay nói «an toàn».
+Lưu ý: engine link HIỆN KHÔNG có tín hiệu «từ khoá đăng nhập/ngân hàng» hay «link rút gọn» nên không có câu cho chúng; chỉ khi engine thêm tín hiệu thì thêm câu vào `src/lib/scam-shield/reasons.ts` (test chặn: finding mới mà thiếu câu thì test đỏ).
+| reasonCode | Tiếng Việt | English |
+|---|---|---|
+| `blocklist.BLOCKLISTED` | Tên miền nằm trong danh sách trang web xấu của Việt Nam mà TappyAI đối chiếu. | The domain appears on a Vietnamese bad-site list that TappyAI checks against. |
+| `blocklist.NOT_LISTED` | Tên miền không nằm trong danh sách trang web xấu mà TappyAI đối chiếu. | The domain is not on the bad-site list TappyAI checks against. |
+| `dns.NO_A_RECORD` | Tên miền chưa trỏ tới máy chủ nào (không có bản ghi địa chỉ). Hay gặp ở tên miền bỏ không hoặc mới đăng ký. | The domain does not point to any server yet (no address record). Common with parked or newly registered domains. |
+| `dns.NO_NS_RECORD` | Tên miền không khai báo máy chủ tên (không có bản ghi NS). | The domain declares no name servers (no NS record). |
+| `dns.RESOLVED` | Tên miền có bản ghi DNS bình thường. | The domain has ordinary DNS records. |
+| `redirect.UNSAFE_REDIRECT` | Đường link chuyển hướng tới một địa chỉ không được phép truy cập (địa chỉ nội bộ). | The link redirects to an address that must not be visited (an internal address). |
+| `redirect.CROSS_DOMAIN_REDIRECT` | Đường link chuyển qua 3 tên miền khác nhau trước khi tới trang cuối. | The link passes through 3 different domains before the final page. |
+| `redirect.EXCESSIVE_REDIRECTS` | Đường link chuyển hướng 4 lần trước khi tới trang cuối. | The link redirects 4 times before the final page. |
+| `redirect.MULTIPLE_REDIRECTS` | Đường link chuyển hướng 4 lần trước khi tới trang cuối. | The link redirects 4 times before the final page. |
+| `redirect.FEW_REDIRECTS` | Đường link chuyển hướng ít lần, trong cùng một tên miền. | The link redirects a few times, within the same domain. |
+| `redirect.NO_REDIRECTS` | Đường link không chuyển hướng. | The link does not redirect. |
+| `ssl.INVALID_CERT` | Chứng chỉ bảo mật (SSL) của trang không hợp lệ hoặc đã hết hạn. | The page’s security certificate (SSL) is invalid or expired. |
+| `ssl.EXPIRING_SOON` | Chứng chỉ bảo mật (SSL) của trang sắp hết hạn (còn 9 ngày). | The page’s security certificate (SSL) expires soon (9 days left). |
+| `ssl.NO_SSL` | Không xác minh được chứng chỉ bảo mật (SSL) của trang. | The page’s security certificate (SSL) could not be verified. |
+| `ssl.VALID` | Chứng chỉ bảo mật (SSL) của trang hợp lệ. | The page’s security certificate (SSL) is valid. |
+| `whois.NEWLY_REGISTERED` | Tên miền mới được đăng ký cách đây 5 ngày. | The domain was registered only 5 days ago. |
+| `whois.RECENTLY_REGISTERED` | Tên miền mới được đăng ký cách đây 5 ngày. | The domain was registered only 5 days ago. |
+| `whois.ESTABLISHED` | Tên miền đã được đăng ký cách đây 5 ngày. | The domain was registered 5 days ago. |
+| `impersonation.BRAND_IMPERSONATION` | Tên miền có chứa tên «Vietcombank» nhưng không nằm trong các tên miền chính thức mà TappyAI có của tổ chức này. | The domain contains the name “Vietcombank” but is not one of the official domains TappyAI has for that organisation. |
+| `impersonation.OFFICIAL_DOMAIN` | Tên miền trùng với tên miền chính thức của «Vietcombank» trong danh bạ TappyAI. | The domain matches an official domain of “Vietcombank” in the TappyAI directory. |
+| `webRisk.CLEAN` | Google Web Risk không ghi nhận cảnh báo cho địa chỉ này. | Google Web Risk has no warning recorded for this address. |
+| `webRisk.SOCIAL_ENGINEERING` | Google Web Risk có cảnh báo về địa chỉ này: trang giả mạo để lấy thông tin (lừa đảo trực tuyến). | Google Web Risk has a warning about this address: a page that imitates another to steal information (phishing). |
+| `webRisk.MALWARE` | Google Web Risk có cảnh báo về địa chỉ này: trang phát tán phần mềm độc hại. | Google Web Risk has a warning about this address: a page that spreads malicious software. |
+| `webRisk.UNWANTED_SOFTWARE` | Google Web Risk có cảnh báo về địa chỉ này: trang cài phần mềm không mong muốn. | Google Web Risk has a warning about this address: a page that installs unwanted software. |
+(Câu có số: số ngày, số lần chuyển hướng, số ngày còn hạn của chứng chỉ, tên tổ chức được điền từ dữ liệu; tên tổ chức đã lọc ký tự đặc biệt.)

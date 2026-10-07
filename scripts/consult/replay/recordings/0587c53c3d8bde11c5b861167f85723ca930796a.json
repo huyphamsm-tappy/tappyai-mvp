@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1\" OR \"May Xưa Spa Quận 1\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T04:39:44.572Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1\" OR \"May Xưa Spa Quận 1\" OR \"Qispa Head & Massage Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -19,7 +19,13 @@ export default function HomeBackground() {
   const bg = getActiveBackground()
 
   return (
-    <div aria-hidden className="fixed inset-0 -z-10 hidden md:block">
+    <div
+      aria-hidden
+      className="fixed inset-0 -z-10 hidden md:block"
+      // The fill continues the image's own sky into whatever band `contain` leaves,
+      // so showing the WHOLE artwork does not read as a letterboxed photo.
+      style={bg.fill ? { backgroundColor: bg.fill } : undefined}
+    >
       <Image
         src={bg.src}
         alt={bg.alt}
@@ -31,7 +37,7 @@ export default function HomeBackground() {
         unoptimized
         // Not `priority`: keeps it lazy so the hidden (mobile) instance is not
         // fetched, and the background never competes with the Hero for LCP.
-        className="object-cover"
+        className={bg.fit === 'contain' ? 'object-contain' : 'object-cover'}
         style={{ objectPosition: bg.position }}
       />
       {bg.overlayLight && (

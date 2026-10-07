@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:43:52.846Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS THỦ ĐỨC\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cà Phê và Trà Matcha Tươi Ngon Gần Gigamall Thủ Đức",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627122751819582740?image_index=1",
+    "snippet": "... , please report at: Feedback and help - TikTok · âm thanh gốc - DJ BaBi Hai · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 1
+   },
+   {
+    "title": "Bán cà phê tại Thủ Đức gần Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7616974997730446609",
+    "snippet": "... , please report at: Feedback and help - TikTok · Lỡ Cả Đời Không Rực Rỡ Thì Sao · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Địa Điểm Sinh Nhật Đang Hot Cho GenZ",
+    "link": "https://www.tiktok.com/@dzinomnomfood/video/7524954878511156498",
+    "snippet": "... không giới hạn giờ và giảm giá đến 25%. @Di Nom Nom · nhạc nền - Dzi rì viu dạo · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author.",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm cà phê, trà và matcha mang đi tại Gigamall",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627364433278323988",
+    "snippet": "... , please report at: Feedback and help - TikTok · âm thanh gốc - BIẾT CHƯA NÈ · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author. 17.",
+    "position": 4
+   },
+   {
+    "title": "Đi đu trend Bò Bông Tuyết thoai #KichiKichi # ...",
+    "link": "https://www.tiktok.com/@dundunvivu/video/7552872686796492050",
+    "snippet": "Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 7791 · 69 ... @Đức Thiện . 2025-9-22Trả lời. 0. Xem thêm câu trả lời khác (1). Thúy ...",
+    "position": 5
+   },
+   {
+    "title": "viral #xuhuong",
+    "link": "https://www.tiktok.com/@caphe.mo/photo/7627122751819582740?image_index=4",
+    "snippet": "... (caphe.mo · @Cà Phê Mơ · #viral #xuhuong · âm thanh gốc - DJ BaBi Hai · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author. 22 · 2.",
+    "position": 6
+   },
+   {
+    "title": "Cloudpot GigaMall: Khám Phá Không Gian Thư Giãn",
+    "link": "https://www.tiktok.com/@cloudpot.gigamall/video/7387012082526342408",
+    "snippet": "... tuyệt vời cho bạn! Đến và. @Cloudpot Gigamall PVĐ · nhạc nền - Cloudpot Gigamall PVĐ · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức.",
+    "position": 7
+   },
+   {
+    "title": "Quotes about true friends and relationships in Vietnamese",
+    "link": "https://www.tiktok.com/@nhk_1606/photo/7667655179449290004",
+    "snippet": "... at: Feedback and help - TikTok · âm thanh gốc - ÔngGià 1:5 ━○━━─0:6 · Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức · author · 30.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

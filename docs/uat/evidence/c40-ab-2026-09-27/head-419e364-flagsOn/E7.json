@@ -1,0 +1,25 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 6294,
+  "evidenceId": "05716e42-946d-4ec9-9ea4-b6a5163a67de",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, nhẹ nhàng, không cần suy nghĩ nhiều, hoàn hảo cho buổi tối sau một ngày làm việc.\n\n**Nếu muốn kịch tính, hồi hộp**: *Dune: Part Two* — phim hành động hoành tráng, cốt truyện cuốn hút, thích hợp nếu bạn thích những bộ phim lớn với hiệu ứng đẹp mắt.\n\n**Nếu muốn cảm xúc, sâu sắc**: *Poor Things* — phim độc lạ, tưởng tượng, phù hợp nếu bạn muốn xem cái gì khác biệt và có chiều sâu.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý vài bộ hay cho bạn nhé 🎬\n\n**Nếu muốn thư giãn, cười tươi**: *Gia đình Addams: Ngày hội quái vật* — phim hài gia đình vui nhộn, nhẹ nhàng, không cần suy nghĩ nhiều, hoàn hảo cho buổi tối sau một ngày làm việc.\n\n**Nếu muốn kịch tính, hồi hộp**: *Dune: Part Two* — phim hành động hoành tráng, cốt truyện cuốn hút, thích hợp nếu bạn thích những bộ phim lớn với hiệu ứng đẹp mắt.\n\n**Nếu muốn cảm xúc, sâu sắc**: *Poor Things* — phim độc lạ, tưởng tượng, phù hợp nếu bạn muốn xem cái gì khác biệt và có chiều sâu.\n"
+    }
+  ]
+}

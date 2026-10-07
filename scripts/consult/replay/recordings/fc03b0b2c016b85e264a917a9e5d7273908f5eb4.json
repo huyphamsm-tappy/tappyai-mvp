@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" Thủ Đức site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:44:10.123Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức)\" OR \"KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9\" OR \"Tầng 5, Giga Mall, 240-242 Phạm Văn Đồng, Thủ Đức\" Thủ Đức site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 | Ho Chi Minh City",
+    "link": "https://www.facebook.com/bibokidsquan9/?locale=vi_VN",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9, Thành phố Hồ Chí Minh. 7.445 người ... Thủ Đức, Ho Chi Minh City · Quận 9, Ho Chi Minh City. Chi tiết. +84 90 277 ...",
+    "sitelinks": [
+     {
+      "title": "Giá lại dễ thương? 👉 Bibo ...",
+      "link": "https://www.facebook.com/bibokidsquan9/posts/-b%C3%A9-ch%C6%A1i-th%E1%BA%A3-ga-m%E1%BA%B9-kh%C3%B4ng-lo-v%E1%BB%81-gi%C3%A1-t%E1%BA%A1i-bibo-kids-cu%E1%BB%91i-tu%E1%BA%A7n-cho-b%C3%A9-%C4%91i-%C4%91%C3%A2u-ch%C6%A1i-v%E1%BB%AB/826809366836435/"
+     },
+     {
+      "title": "️🎉 CHÍNH THỨC KHAI ...",
+      "link": "https://www.facebook.com/bibokidsquan9/posts/%EF%B8%8F-ch%C3%ADnh-th%E1%BB%A9c-khai-tr%C6%B0%C6%A1ng-khu-vui-ch%C6%A1i-bibokids-linh-xu%C3%A2n-th%E1%BB%A7-%C4%91%E1%BB%A9c-v%E1%BA%ADy-l%C3%A0-bibokids/485786947605347/"
+     }
+    ],
+    "position": 1
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC Tickets ...",
+    "link": "https://us.trip.com/travel-guide/attraction/ho-chi-minh-city/khu-vui-chi-tr-em-bibo-kids-qun-9-th-c-147563045/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC FAQ · 1. Blank Lounge Landmark - Highest Cafe & Bar Lounge in Vietnam, 29m from KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN ...",
+    "position": 2
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC, bản đồ vị trí",
+    "link": "https://vn.maptons.com/p/15171233709",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC, 6 Tăng Nhơn Phú, Việt Nam, bản đồ vị trí, sân chơi, điện thoại +84 902 778 199.",
+    "position": 3
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 - Facebook",
+    "link": "https://www.facebook.com/100085221386757/photos/721412607376112/",
+    "snippet": "KHU VUI CHƠI TRẺ EM BIBO KIDS - Quận 9 added a new photo ... Thủ Đức (Đối diện Chùa Pháp Trí) ☎ Liên hệ: 0967 477 791 ⏰ 8 ...",
+    "date": "6 thg 8, 2025",
+    "position": 4
+   },
+   {
+    "title": "Điểm danh 10 khu vui chơi trẻ em Quận 9 hấp dẫn nhất - Moma.vn",
+    "link": "http://moma.vn/tin-tuc/diem-danh-10-khu-vui-choi-tre-em-quan-9-hap-dan-nhat-NV7tupY6",
+    "snippet": "Điểm danh 10 khu vui chơi trẻ em Quận 9 hấp dẫn nhất · 1. Vũ trụ giải trí mới - Công Viên Grand Park Quận 9 · 2. Khu vui chơi trẻ em BIBO KIDS Quận 9 · 3. Khu vui ...",
+    "position": 5
+   },
+   {
+    "title": "sconti sui biglietti, prezzi e tariffe, prenotazioni per KHU VUI CHƠI ...",
+    "link": "https://it.trip.com/travel-guide/attraction/ho-chi-minh-city/khu-vui-chi-tr-em-bibo-kids-qun-9-th-c-147563045/",
+    "snippet": "1. Ben Xua, a 16,95 km da KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC · 2. KC-A Coffee Bistro, a 19,11 km da KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC · 3 ...",
+    "position": 6
+   },
+   {
+    "title": "10 near Đ. Võ Văn Ngân, Hồ Chí Minh, Vietnam - Google Maps",
+    "link": "https://forum.skullgirlsmobile.com/misc/location-info?location=10+V%C3%B5+V%C4%83n+Ng%C3%A2n%2C+Linh+Chi%E1%BB%83u%2C+Th%E1%BB%A7+%C4%90%E1%BB%A9c",
+    "snippet": "Nhà văn hoá Thành phố Thủ Đức. 98 Đ. Võ Văn Ngân, Thủ Đức, Hồ Chí Minh, Vietnam. Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức). 6 Đ. Võ Văn Ngân, Thủ Đức, Hồ ...",
+    "position": 7
+   },
+   {
+    "title": "Lễ hội mới ở Thủ Đức — mở cổng tự do, siêu vui - TikTok",
+    "link": "https://www.tiktok.com/@lankhapthuduc/video/7662629263270579474",
+    "snippet": "lễ hội Thủ Đức, lễ hội mở cổng tự do Thủ Đức, sự kiện Thủ Đức 2026, Thủ Đức đi ... Khu vui chơi (Nhà văn hoá thiếu nhi Thủ Đức) · author · 21 · 2.",
+    "date": "14 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

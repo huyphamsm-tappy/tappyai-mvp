@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán nhậu quận 1\" OR \"Quán Ăn Hùng Xíu\" OR \"INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:51:29.761Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán nhậu quận 1\" OR \"Quán Ăn Hùng Xíu\" OR \"INU EATERY MỲ CAY | Mỳ Cay Ngon Quận 1 | Ăn Vặt Trà Sữa Ngon Quận 1\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@jellyfishwandering95/photo/7656311801801461000",
+    "snippet": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1. Khám phá Xôi Gà Number ... Quan Điểm ' của mình là hợp với mình, địa điểm dễ tìm nằm trong con ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@nhahangtuulau13/video/7611527438962658581",
+    "snippet": "Nhà Hàng Long Phụng Lầu Quận 6. Khám Phá Tửu Lầu 13: Quán Nhậu Quận 1. Trải nghiệm ẩm thực tại Tửu Lầu 13 - quán nhậu ngon ở Quận 1! Đến ngay ...",
+    "position": 2
+   },
+   {
+    "title": "Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1",
+    "link": "https://www.tiktok.com/@jellyfishwandering95/photo/7656311801801461000?image_index=3",
+    "snippet": "Nếu quán có thêm dầu hành baro rưới lên xôi bắp thì thật pơ phẹc #c#creatorsearchinsights. Xôi Gà Number One: Đánh Giá Chi Tiết Quán Nhậu Quận 1.",
+    "position": 3
+   },
+   {
+    "title": "Mọi người mà muốn lai rai xiên nướng thì cứ tới The Zing ...",
+    "link": "https://www.tiktok.com/@baobanhbao2308/video/7652302387352309013",
+    "snippet": "The Zing Quận 1, xiên nướng trung quốc, lai rai quận 1, quán nhậu quận 1, đồ ăn cay quận 1, the zing menu, thịt xiên nướng, gân bò sọc cây ...",
+    "position": 4
+   },
+   {
+    "title": "Quán nhậu ấn tượng nhất tại Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@nai.nguyen/video/7073817977359043866",
+    "snippet": "Keywords: quán nhậu ngon ở Sài Gòn, địa chỉ quán nhậu Quận 1, review quán nhậu bình dân, quán nhậu có nhạc sống, quán nhậu hẹn hò tại Sài ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Nhậu Anh Trai Say Hi Đi Tên Là Gì",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-nh%E1%BA%ADu-anh-trai-say-hi-%C4%91i-t%C3%AAn-l%C3%A0-g%C3%AC",
+    "snippet": "quán nhậu quận 1, địa điểm ăn uống quận 1, nhậu vui vẻ Sài Gòn, quán The Gangs Nguyễn Huệ, chỗ nhậu đông vui nhất Sài Gòn, quán bar rooftop Sài Gòn, địa ...",
+    "position": 6
+   },
+   {
+    "title": "Hải Sản Quý Dậu – Hải sản tươi sống & lai rai bên bờ kè ...",
+    "link": "https://www.tiktok.com/@vietjoetv/video/7602076908452351239",
+    "snippet": "Hải Sản Quý Dậu – Hải sản tươi sống & lai rai bên bờ kè Located on Hoàng Sa in District 1 ... Quán nhậu quận 1 - FANTASY BROS · author.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Quán Nhậu Ngõ 90 Quận 1",
+    "link": "https://www.tiktok.com/@anngoncungcam01/video/7517522290309893394",
+    "snippet": "Quận 1 - Ngõ 90 Quán nhụ này có vibe Hà Nội món ngon mà giá ... Keywords: quán nhậu Quận 1, món ngon Ngõ 90, review quán nhậu Hà Nội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "E7",
+  "text": "Xem phim gì hay tối nay",
+  "parent": null,
+  "status": 200,
+  "ms": 4939,
+  "evidenceId": "70dba6d6-bef3-4d5e-ae6a-b31af53c68e2",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Twisters** — nếu bạn muốn xem phim thảm họa với những cảnh quay tuyệt đẹp và kịch tính. Phim có tính giải trí cao, không quá nặng nề.\n\n**Alien: Romulus** — nếu bạn thích kinh dị khoa học viễn tưởng. Phim có không khí căng thẳng, hình ảnh đẹp, rất hấp dẫn cho những ai yêu thích thể loại này.\n",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Xem phim gì hay tối nay"
+    },
+    {
+      "role": "assistant",
+      "content": "Tối nay bạn muốn xem phim gì à? Mình gợi ý 3 bộ hay cho bạn:\n\n**Deadpool & Wolverine** — nếu bạn thích hành động sôi động, hài hước và những pha hành động cực kỳ. Phim vừa hài vừa kịch tính, rất phù hợp để giải tỏa sau một ngày làm việc.\n\n**Twisters** — nếu bạn muốn xem phim thảm họa với những cảnh quay tuyệt đẹp và kịch tính. Phim có tính giải trí cao, không quá nặng nề.\n\n**Alien: Romulus** — nếu bạn thích kinh dị khoa học viễn tưởng. Phim có không khí căng thẳng, hình ảnh đẹp, rất hấp dẫn cho những ai yêu thích thể loại này.\n"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

@@ -1,0 +1,25 @@
+{
+  "id": "T8",
+  "text": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút",
+  "parent": null,
+  "status": 200,
+  "ms": 5670,
+  "evidenceId": "7d13b7e6-4925-44df-a28e-c89568cdf83f",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm resort Phú Quốc cho kỷ niệm 1 năm, với style sang trọng 💎 Để gợi ý đúng ý, mình cần biết thêm:\n\n• **Ngày check-in & check-out** là khi nào?\n\nSau khi bạn cho mình biết, mình sẽ tìm những resort thực sự xứng đáng cho dịp đặc biệt này! 🌴",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Resort Phú Quốc cho kỷ niệm 1 năm, sang chút"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm resort Phú Quốc cho kỷ niệm 1 năm, với style sang trọng 💎 Để gợi ý đúng ý, mình cần biết thêm:\n\n• **Ngày check-in & check-out** là khi nào?\n\nSau khi bạn cho mình biết, mình sẽ tìm những resort thực sự xứng đáng cho dịp đặc biệt này! 🌴"
+    }
+  ]
+}

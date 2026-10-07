@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { safeFlushPoint } from './progressiveFlush'
+import { safeFlushPoint, alignReleasedPrefix } from './progressiveFlush'
 import { extractMoneyClaims } from './moneyGuard'
 import { guardSnippetPricesInText } from './snippetPriceGuard'
 
@@ -82,10 +82,22 @@ describe('safeFlushPoint — what may be released early', () => {
   })
 
   it('a number without a currency is not a money claim, and must not stall the stream', () => {
-    // "4.6⭐ (57 đánh giá)" is a rating, not a price — the guard would never touch it.
-    const text = 'Quán này 4.6⭐ với 57 đánh giá Google Maps. '
+    // 🔑 THE INTENT IS UNCHANGED — a bare number must not be mistaken for a price.
+    // The fixture changed: it used to be "Quán này 4.6⭐ với 57 đánh giá Google
+    // Maps.", which really does hold no money claim, but IS a rating and a review
+    // count. `guardPlaceClaimsInText` can remove exactly that sentence, so
+    // releasing it early was the streaming leak this boundary now closes.
+    // A number that no guard can act on still streams immediately.
+    const text = 'Quán mở cửa từ 6h sáng đến 22h. '
     expect(extractMoneyClaims(text)).toHaveLength(0)
     expect(safeFlushPoint(text)).toBeGreaterThan(0)
+  })
+
+  it('a rating or review count DOES stall the stream, because the guard can remove it', () => {
+    // The old fixture, kept as the case it actually is now.
+    const text = 'Quán này 4.6⭐ với 57 đánh giá Google Maps. '
+    expect(extractMoneyClaims(text)).toHaveLength(0)
+    expect(safeFlushPoint(text)).toBe(0)
   })
 })
 
@@ -180,5 +192,71 @@ describe('segmentComplete — the pre-tool segment has finished arriving', () =>
 
   it('releases nothing when the whole complete segment carries a price', () => {
     expect(safeFlushPoint(FABRICATED, true)).toBe(0)
+  })
+})
+
+// ── C3 (2026-09-20): a link splits a sentence into spans; a link's end is not a sentence end ──
+describe('an inline markdown link does not create a release point', () => {
+  const NL = String.fromCharCode(10)
+  const OPENING = 'Mình cần truy cập trực tiếp trang CGV để xem lịch chiếu chi tiết.'
+  const LINKED = ' Bạn có thể vào **[trang CGV Vincom Đồng Khởi](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/)** để xem danh sách phim tối nay, giờ chiếu và giá vé (thường từ 80k-150k tùy suất chiếu).'
+
+  it('the measured live text: releases the opening sentence, never the piece cut off by the link', () => {
+    const p = safeFlushPoint(OPENING + LINKED)
+    expect(p).toBe(OPENING.length)
+  })
+
+  it('a linked sentence with no claim is released whole once it ends', () => {
+    const t = OPENING + ' Bạn xem trên [trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/) nhé.' + NL + 'Bạn muốn'
+    const p = safeFlushPoint(t)
+    expect(t.slice(0, p)).toBe(OPENING + ' Bạn xem trên [trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/) nhé.' + NL)
+  })
+
+  it('mid-stream, right after the link closes, nothing past the opening goes out', () => {
+    const t = OPENING + ' Bạn có thể vào **[trang CGV](https://www.cgv.vn/en/cinox/site/cgv-vincom-dong-khoi/)'
+    expect(safeFlushPoint(t)).toBe(OPENING.length)
+  })
+})
+
+// ── Phase 7 (2026-09-22): the WHOLE reply was sent twice ─────────────────────
+//
+// Golden set T1 turn 3 ("gần biển"), captured from the real stream: the model wrote one trailing
+// space before a line break inside the released prefix; the settled text had it folded away by
+// `stripModelScaffolding`; `outText.startsWith(flushedSent)` was false; the belt re-sent the
+// entire reply after the prefix the client already had — "…chuyến đi.Hiểu rồi! Bạn muốn ở gần
+// biển…". Same seam the owner's screenshot shows on turn 1 of that conversation.
+describe('alignReleasedPrefix — the released prefix is subtracted up to whitespace, not bytes', () => {
+  const RELEASED =
+    'Hiểu rồi! Bạn muốn ở gần biển. Mình đang tìm khách sạn và quán ăn hải sản tốt ở Đà Nẵng, nhưng trước tiên cần xác nhận:\n\n' +
+    '**Bạn muốn đi máy bay hay xe khách?** \n\n' + // ← the one trailing space the model wrote
+    'Cái này ảnh hưởng đến lịch trình và chi phí của chuyến đi.'
+  const SETTLED_HEAD = RELEASED.replace(/[ \t]+\n/g, '\n') // what stripModelScaffolding makes of it
+  const REST = '\n\nMình tìm được khách sạn gần biển và quán hải sản ngon rồi!'
+
+  it('🚨 the measured seam: a trailing space before "\\n" no longer re-sends the whole reply', () => {
+    const settled = SETTLED_HEAD + REST
+    expect(settled.startsWith(RELEASED)).toBe(false) // the old belt condition — this is the bug
+    const end = alignReleasedPrefix(settled, RELEASED)
+    expect(end).toBe(SETTLED_HEAD.length)
+    expect(settled.slice(end!)).toBe(REST)
+  })
+
+  it('byte-identical prefix behaves exactly as `startsWith` did', () => {
+    const settled = RELEASED + REST
+    expect(alignReleasedPrefix(settled, RELEASED)).toBe(RELEASED.length)
+  })
+
+  it('a trimmed end (trimEnd) and collapsed runs are still aligned', () => {
+    expect(alignReleasedPrefix('A b.\nC', 'A  b. \n\n')).toBe('A b.\n'.length)
+    expect(alignReleasedPrefix('A b.', 'A b.  ')).toBe(4)
+  })
+
+  it('a real content change inside the released region is reported, not silently aligned', () => {
+    // The guard proof says this cannot happen; if it does, the caller keeps the belt and logs it.
+    expect(alignReleasedPrefix('Mình chọn quán B. Rest', 'Mình chọn quán A.')).toBeNull()
+  })
+
+  it('an empty released prefix means nothing was sent: offset 0', () => {
+    expect(alignReleasedPrefix('anything', '')).toBe(0)
   })
 })

@@ -35,8 +35,6 @@ vi.mock('next/link', () => ({ default: (p: any) => <a href={typeof p.href === 's
 vi.mock('next/navigation', () => ({ useRouter: () => ({ push: vi.fn(), replace: vi.fn(), refresh: vi.fn() }), useSearchParams: () => new URLSearchParams() }))
 vi.mock('@/components/explore/VideoPlayer', () => ({ default: () => null }))
 vi.mock('@/lib/explore/behaviorTracker', () => ({ attachWatchTracker: () => () => {} }))
-vi.mock('./ReviewMusicDisc', () => ({ default: () => null }))
-vi.mock('./SoundSheet', () => ({ default: () => null }))
 vi.mock('./LikeListSheet', () => ({ default: () => null }))
 vi.mock('@/app/reviews/LikeListSheet', () => ({ default: () => null }))
 vi.mock('@/components/LinkPoster', () => ({ default: () => null }))
@@ -52,7 +50,6 @@ vi.mock('@/lib/supabase/client', () => ({
   }),
 }))
 vi.mock('@/lib/i18n/useTranslation', () => ({ useTranslation: () => ({ t: (k: string) => k, locale: 'vi', setLocale: vi.fn() }) }))
-vi.mock('@/modules/music', () => ({ useMusicTrack: () => ({ track: null, loading: false }), getPreviewUrl: () => '' }))
 
 import { ClipViewer } from './ProfileTab'
 import ReviewLikeButton from './[id]/ReviewLikeButton'

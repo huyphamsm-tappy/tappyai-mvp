@@ -1,0 +1,27 @@
+{
+  "id": "E2",
+  "text": "rap phim nao gan q1",
+  "parent": null,
+  "status": 200,
+  "ms": 2665,
+  "evidenceId": "cdcab937-5084-4396-80c3-19f549025606",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn xem phim gần vị trí hiện tại hôm nay. Để gợi ý rạp phim phù hợp, mình cần tìm kiếm. Để gợi ý chính xác hơn, bạn muốn xem phim lúc mấy giờ và thích rạp nào (CGV, BHD, Lotte, Galaxy...)?",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "rap phim nao gan q1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn xem phim gần vị trí hiện tại hôm nay. Để gợi ý rạp phim phù hợp, mình cần tìm kiếm. Để gợi ý chính xác hơn, bạn muốn xem phim lúc mấy giờ và thích rạp nào (CGV, BHD, Lotte, Galaxy...)?"
+    }
+  ],
+  "toolResults": [],
+  "frames8Raw": []
+}

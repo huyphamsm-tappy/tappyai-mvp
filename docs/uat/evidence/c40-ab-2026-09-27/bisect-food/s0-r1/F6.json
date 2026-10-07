@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 5548,
+  "evidenceId": "6fcdbe27-95dd-4d06-9ac1-ae860203bfb9",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Dữ liệu mình tìm được chỉ bao gồm đánh giá, rating và giờ mở cửa.\n\nĐể biết quán có đông không, bạn có thể:\n- **Gọi điện trực tiếp** để hỏi tình trạng khách hiện tại\n- **Xem Google Maps** - thường hiển thị mức độ đông đúc theo giờ\n- **Đến trực tiếp** để cảm nhận không khí quán\n\nBạn muốn mình tìm thêm quán ăn khác gần Quận 1 không, hoặc cần gợi ý về loại ăn gì cụ thể? 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **The Cajun Cua** cho bạn! 🦞 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km. Mở đến 23:00 nên hoàn hảo cho bữa tối. Dù Hải Sản Hoàng Gia có rating cao hơn (4.7⭐), nhưng The Cajun Cua gần hơn và có nhiều đánh giá hơn, rất phù hợp cho 2 người muốn ăn tối ngon gần nhất.\n\n 👍\n\n*TappyAI dựa trên đánh giá thực tế từ Google Maps để gợi ý — bạn tự quyết định chọn quán nào nhé!*\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - The Cajun Cua\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=The+Cajun+Cua+Quan+1\",\"primary\":true},{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán Bụi gần hơn không?|Có quán nào ăn chay không?|Tìm quán khác ở Quận 1[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Dữ liệu mình tìm được chỉ bao gồm đánh giá, rating và giờ mở cửa.\n\nĐể biết quán có đông không, bạn có thể:\n- **Gọi điện trực tiếp** để hỏi tình trạng khách hiện tại\n- **Xem Google Maps** - thường hiển thị mức độ đông đúc theo giờ\n- **Đến trực tiếp** để cảm nhận không khí quán\n\nBạn muốn mình tìm thêm quán ăn khác gần Quận 1 không, hoặc cần gợi ý về loại ăn gì cụ thể? 😊"
+    }
+  ]
+}

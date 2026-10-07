@@ -9,8 +9,10 @@ import * as account from './account'
 import * as profileLists from './profileLists'
 import * as group from './group'
 import * as shoppingDecision from './shoppingDecision'
+import * as placeDecision from './placeDecision'
+import * as chatResilience from './chatResilience'
 
-const modules = [account, profileLists, group, shoppingDecision]
+const modules = [account, profileLists, group, shoppingDecision, placeDecision, chatResilience]
 
 export const w5vi: Record<string, string> = Object.assign({}, ...modules.map((m) => m.vi))
 export const w5en: Record<string, string> = Object.assign({}, ...modules.map((m) => m.en))

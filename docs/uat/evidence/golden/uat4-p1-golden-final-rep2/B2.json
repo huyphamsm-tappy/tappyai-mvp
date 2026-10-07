@@ -1,0 +1,1268 @@
+{
+  "id": "B2",
+  "group": "budget-unit-quantity-age",
+  "criteria": [
+    "No budget is inferred from '5-6 người' or 'dưới 5 tuổi' (no 5k/6k ceiling in the reply or on the cards)",
+    "Cards are ordinary family restaurants at normal prices — not emptied or filtered by a phantom budget",
+    "The group size and the child's age are used as needs (space, kid-friendly), not as money"
+  ],
+  "turns": [
+    {
+      "user": "Tìm quán ăn cho gia đình 5-6 người, có bé dưới 5 tuổi, gần đây",
+      "status": 200,
+      "elapsedMs": 18421,
+      "usage": {
+        "promptTokens": 4991,
+        "completionTokens": 871
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn gia đình 5-6 người gần Quận 1",
+            "location": "Quận 1, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 517,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Gia Đình Sài Gòn",
+              "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 22,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4232,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": false,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "99 By Night - Dine & Chill",
+              "address": "99 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 1648,
+              "price": "400-900 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Nơi tổ chức sự kiện",
+                "Địa điểm ca nhạc trực tiếp",
+                "Địa điểm tổ chức lễ cưới"
+              ],
+              "hours": "10:30–23:30",
+              "open": false,
+              "distanceKm": 0.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "QUÁN ĂN GIA ĐÌNH 41",
+              "address": "41/10a Hẻm 43 Dạ Nam, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 181,
+              "price": "100-400 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 3.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2196,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hội An Sense Restaurant",
+              "address": "12 Phan Kế Bính, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 363,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng cao cấp",
+                "Nhà hàng"
+              ],
+              "hours": "11:00–14:00, 17:00–23:00",
+              "open": false,
+              "distanceKm": 1.5,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXQjrVl-MmLrrGQnEtuJh-GoGKNRuwVcghPpV7cDPqdj14geWLs_W0J0UdkZFilUxNjzyE6tGmUF7j8hWl_FO1WpfV-_73DvXMC9IVmqhnuZCn--TIYlNi7AQXzRbDXxi_mm1bTubTr9k",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 517,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMh780KmzN8L3KPS0ojHRoqxmFY2EOwe1gtoOc8hxzoD6uBMar0eD1z7dsa5Avlcya_vzIm0yFWmfIYxv3kyfTP4jr_-DvXJWu9jgve_qWB3e1q46nO5huz1O9DY3fsspH3rEX",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78934,106.65330",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Gia Đình Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLcW2LDYx3HUBgs6wm2xCe3AtXUS2QI41NCTqIABD_t0DAWGMzM7GkYEihqpP4D2SLEd_T6jYRAw-45HAcYpMtZ00qH25bsJouRYEhxHTpPxEY_FmEiPZXOcrhH6ANWgDcVMMKY",
+                "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 22,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00",
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10008312733178879668",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdvQtNfkWl9jM6A8Qb-bRj8B1Jvjxx-mvlI6z2fwhCOhBIVUT9yxD3vMikstrEDZ8XB8w2H3QXP5gYyGe5ju4eXAQy2VUvyTFkXrwsIRwhrSCeUcZUYNNzu_Lh-3_tIc5-n3EllI-qNCdA9",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4232,
+                "openingHours": "07:00–23:00",
+                "openNow": false,
+                "phone": "+84 28 3829 1515",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77335,106.70386",
+                "domain": "food",
+                "kind": "place",
+                "name": "99 By Night - Dine & Chill",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNwMHYYhcRA86uzQw1n0hKAhk3VGn9y5sj3NuP81RqYVno-RMHwaChhIrtOzKxO7Ztot-s2uIQaQF5Uw4yxucbjWlQPP44N2gAqaI6L8-sY7oxZS_qOwmX0YGM5Do2Elorrg-T",
+                "address": "99 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 1648,
+                "openingHours": "10:30–23:30",
+                "openNow": false,
+                "phone": "+84 938 118 888",
+                "priceRangeText": "400-900 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:30–23:30",
+                  "Thứ Hai": "10:30–23:30",
+                  "Thứ Ba": "10:30–23:30",
+                  "Thứ Tư": "10:30–23:30",
+                  "Thứ Năm": "10:30–23:30",
+                  "Thứ Sáu": "10:30–23:30",
+                  "Thứ Bảy": "10:30–23:30"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng",
+                  "Nơi tổ chức sự kiện",
+                  "Địa điểm ca nhạc trực tiếp",
+                  "Địa điểm tổ chức lễ cưới"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16652932084960979343",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=99%20By%20Night%20-%20Dine%20%26%20Chill%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/99bynight",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938118888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74881,106.68623",
+                "domain": "food",
+                "kind": "place",
+                "name": "QUÁN ĂN GIA ĐÌNH 41",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLe78VRi6Dy5TKn1sprUaILRYbsxa2XEoe-5r5FkKvdmxYl9_AWuXGGpKCI4WBZpHwPR7rQBlkCsBXGMtJAlbhLjGq3168hP7yg2_7TpqGxlKYhQIsmlKIrYYdb4KS49JfcBJXqc",
+                "address": "41/10a Hẻm 43 Dạ Nam, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 181,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 899 999 941",
+                "priceRangeText": "100-400 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00"
+                },
+                "distanceKm": 3.5,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8103203889480559780",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=QU%C3%81N%20%C4%82N%20GIA%20%C4%90%C3%8CNH%2041%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/quanan41?mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84899999941",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNs-krEuWyKZ8AXToxfVF5s3shW-TV3VFZvt_qJQECzKq8JhxB1aWybfxTygbajfqwypgNgpRTd-SGU_bgBDqBwMk9UhtzIDTfXHOn-U09TOjue50B7OnmsP5GDxEkv_Ah3Z3JxkRCuBhru",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2196,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 765 371 893",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 6,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79050,106.69884",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hội An Sense Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLc5gUBuwl2al4GT8vYkmdpTVYTkncvAIyMB2Ru25LsYGSX6tHyhTApFRXCzK5J2CY8M7eoBmZ10QEnbzJEPjhu5xBNz4Tuu7jCJ1HX9zmoYh_89aiNAD_aBz4Wk8B00GdI1HnGHwDl0DzIs",
+                "address": "12 Phan Kế Bính, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 363,
+                "openingHours": "11:00–14:00, 17:00–23:00",
+                "openNow": false,
+                "phone": "+84 28 3823 7694",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–14:00, 17:00–23:00",
+                  "Thứ Hai": "11:00–14:00, 17:00–23:00",
+                  "Thứ Ba": "11:00–14:00, 17:00–23:00",
+                  "Thứ Tư": "11:00–14:00, 17:00–23:00",
+                  "Thứ Năm": "11:00–14:00, 17:00–23:00",
+                  "Thứ Sáu": "11:00–14:00, 17:00–23:00",
+                  "Thứ Bảy": "11:00–14:00, 17:00–23:00"
+                },
+                "distanceKm": 1.5,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng cao cấp",
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4233470760793689116",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%99i%20An%20Sense%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hoiansense.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838237694",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%205-6%20ng%C6%B0%E1%BB%9Di%20g%E1%BA%A7n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+              "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 2196,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": 0.6,
+              "recommended": true,
+              "reasons": [
+                "rated 4.5",
+                "2196 reviews",
+                "0.6km away"
+              ]
+            },
+            {
+              "name": "Quán ăn gia đình 79",
+              "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 517,
+              "price": "1-400.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàng Dương Quán Quận 1",
+              "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 723,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–23:30",
+              "open": false,
+              "distanceKm": 0.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Ăn Gia Đình Sài Gòn",
+              "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4,
+              "ratingCount": 22,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "07:00–21:00",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+              "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 4232,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng món nướng",
+                "Nhà hàng chuyên phục vụ bữa sáng",
+                "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                "Bữa tối",
+                "Nhà hàng ăn chay",
+                "Nhà hàng phục vụ bữa trưa",
+                "Nhà hàng phở",
+                "Nhà hàng",
+                "Nhà hàng cơm"
+              ],
+              "hours": "07:00–23:00",
+              "open": false,
+              "distanceKm": 0.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "99 By Night - Dine & Chill",
+              "address": "99 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 1648,
+              "price": "400-900 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Nơi tổ chức sự kiện",
+                "Địa điểm ca nhạc trực tiếp",
+                "Địa điểm tổ chức lễ cưới"
+              ],
+              "hours": "10:30–23:30",
+              "open": false,
+              "distanceKm": 0.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "QUÁN ĂN GIA ĐÌNH 41",
+              "address": "41/10a Hẻm 43 Dạ Nam, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.2,
+              "ratingCount": 181,
+              "price": "100-400 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "16:00–00:00",
+              "open": true,
+              "distanceKm": 3.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hội An Sense Restaurant",
+              "address": "12 Phan Kế Bính, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 363,
+              "price": null,
+              "categories": [
+                "Nhà hàng Việt Nam",
+                "Nhà hàng cao cấp",
+                "Nhà hàng"
+              ],
+              "hours": "11:00–14:00, 17:00–23:00",
+              "open": false,
+              "distanceKm": 1.5,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.77332,106.70504",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmNs-krEuWyKZ8AXToxfVF5s3shW-TV3VFZvt_qJQECzKq8JhxB1aWybfxTygbajfqwypgNgpRTd-SGU_bgBDqBwMk9UhtzIDTfXHOn-U09TOjue50B7OnmsP5GDxEkv_Ah3Z3JxkRCuBhru",
+                "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 2196,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 765 371 893",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–22:00",
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 6,
+                "shortlistPosition": 3,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.5",
+                    "params": {
+                      "value": 4.5
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "2196 reviews",
+                    "params": {
+                      "count": 2196
+                    }
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "0.6km away",
+                    "params": {
+                      "km": 0.6
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15089939659221729349",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Qu%C3%AA%20D%C6%B0%E1%BB%A3ng%20B%E1%BA%A7u%20-%20Vietnamese%20Homecooked%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84765371893",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76347,106.69585",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán ăn gia đình 79",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPXQjrVl-MmLrrGQnEtuJh-GoGKNRuwVcghPpV7cDPqdj14geWLs_W0J0UdkZFilUxNjzyE6tGmUF7j8hWl_FO1WpfV-_73DvXMC9IVmqhnuZCn--TIYlNi7AQXzRbDXxi_mm1bTubTr9k",
+                "address": "44 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 517,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 932 114 041",
+                "priceRangeText": "1-400.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=403634638146792061",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%2079%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932114041",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77353,106.70534",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàng Dương Quán Quận 1",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMh780KmzN8L3KPS0ojHRoqxmFY2EOwe1gtoOc8hxzoD6uBMar0eD1z7dsa5Avlcya_vzIm0yFWmfIYxv3kyfTP4jr_-DvXJWu9jgve_qWB3e1q46nO5huz1O9DY3fsspH3rEX",
+                "address": "32-34 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 723,
+                "openingHours": "09:00–23:30",
+                "openNow": false,
+                "phone": "+84 968 817 788",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:00–23:30",
+                  "Thứ Hai": "09:00–23:30",
+                  "Thứ Ba": "09:00–23:30",
+                  "Thứ Tư": "09:00–23:30",
+                  "Thứ Năm": "09:00–23:30",
+                  "Thứ Sáu": "09:00–23:30",
+                  "Thứ Bảy": "09:00–23:30"
+                },
+                "distanceKm": 0.6,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 1,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@comque.duongbau/video/7511179892155829511",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6865477283024017585",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84968817788",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0ng%20D%C6%B0%C6%A1ng%20Qu%C3%A1n%20Qu%E1%BA%ADn%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78934,106.65330",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Gia Đình Sài Gòn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLcW2LDYx3HUBgs6wm2xCe3AtXUS2QI41NCTqIABD_t0DAWGMzM7GkYEihqpP4D2SLEd_T6jYRAw-45HAcYpMtZ00qH25bsJouRYEhxHTpPxEY_FmEiPZXOcrhH6ANWgDcVMMKY",
+                "address": "544 Đ. Lý Thường Kiệt, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4,
+                "ratingCount": 22,
+                "openingHours": "07:00–21:00",
+                "openNow": false,
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–21:00",
+                  "Thứ Hai": "07:00–21:00",
+                  "Thứ Ba": "07:00–21:00",
+                  "Thứ Tư": "07:00–21:00",
+                  "Thứ Năm": "07:00–21:00",
+                  "Thứ Sáu": "07:00–21:00",
+                  "Thứ Bảy": "07:00–21:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10008312733178879668",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20Gia%20%C4%90%C3%ACnh%20S%C3%A0i%20G%C3%B2n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78131,106.70587",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdvQtNfkWl9jM6A8Qb-bRj8B1Jvjxx-mvlI6z2fwhCOhBIVUT9yxD3vMikstrEDZ8XB8w2H3QXP5gYyGe5ju4eXAQy2VUvyTFkXrwsIRwhrSCeUcZUYNNzu_Lh-3_tIc5-n3EllI-qNCdA9",
+                "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 4232,
+                "openingHours": "07:00–23:00",
+                "openNow": false,
+                "phone": "+84 28 3829 1515",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "07:00–23:00",
+                  "Thứ Hai": "07:00–23:00",
+                  "Thứ Ba": "07:00–23:00",
+                  "Thứ Tư": "07:00–23:00",
+                  "Thứ Năm": "07:00–23:00",
+                  "Thứ Sáu": "07:00–23:00",
+                  "Thứ Bảy": "07:00–23:00"
+                },
+                "distanceKm": 0.7,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng món nướng",
+                  "Nhà hàng chuyên phục vụ bữa sáng",
+                  "Nhà hàng chuyên phục vụ bữa nửa buổi",
+                  "Bữa tối",
+                  "Nhà hàng ăn chay",
+                  "Nhà hàng phục vụ bữa trưa",
+                  "Nhà hàng phở",
+                  "Nhà hàng",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 3,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10979365345486483527",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20B%E1%BB%A5i%20Original%2C%20S%C3%A0i%20G%C3%B2n%20-%20Authentic%20Vietnamese%20Cuisine%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838291515",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77335,106.70386",
+                "domain": "food",
+                "kind": "place",
+                "name": "99 By Night - Dine & Chill",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNwMHYYhcRA86uzQw1n0hKAhk3VGn9y5sj3NuP81RqYVno-RMHwaChhIrtOzKxO7Ztot-s2uIQaQF5Uw4yxucbjWlQPP44N2gAqaI6L8-sY7oxZS_qOwmX0YGM5Do2Elorrg-T",
+                "address": "99 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 1648,
+                "openingHours": "10:30–23:30",
+                "openNow": false,
+                "phone": "+84 938 118 888",
+                "priceRangeText": "400-900 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:30–23:30",
+                  "Thứ Hai": "10:30–23:30",
+                  "Thứ Ba": "10:30–23:30",
+                  "Thứ Tư": "10:30–23:30",
+                  "Thứ Năm": "10:30–23:30",
+                  "Thứ Sáu": "10:30–23:30",
+                  "Thứ Bảy": "10:30–23:30"
+                },
+                "distanceKm": 0.5,
+                "categories": [
+                  "Nhà hàng",
+                  "Nơi tổ chức sự kiện",
+                  "Địa điểm ca nhạc trực tiếp",
+                  "Địa điểm tổ chức lễ cưới"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=16652932084960979343",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=99%20By%20Night%20-%20Dine%20%26%20Chill%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/99bynight",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84938118888",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74881,106.68623",
+                "domain": "food",
+                "kind": "place",
+                "name": "QUÁN ĂN GIA ĐÌNH 41",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLe78VRi6Dy5TKn1sprUaILRYbsxa2XEoe-5r5FkKvdmxYl9_AWuXGGpKCI4WBZpHwPR7rQBlkCsBXGMtJAlbhLjGq3168hP7yg2_7TpqGxlKYhQIsmlKIrYYdb4KS49JfcBJXqc",
+                "address": "41/10a Hẻm 43 Dạ Nam, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 181,
+                "openingHours": "16:00–00:00",
+                "openNow": true,
+                "phone": "+84 899 999 941",
+                "priceRangeText": "100-400 N ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "16:00–00:00",
+                  "Thứ Hai": "16:00–00:00",
+                  "Thứ Ba": "16:00–00:00",
+                  "Thứ Tư": "16:00–00:00",
+                  "Thứ Năm": "16:00–00:00",
+                  "Thứ Sáu": "16:00–00:00",
+                  "Thứ Bảy": "16:00–00:00"
+                },
+                "distanceKm": 3.5,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8103203889480559780",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=QU%C3%81N%20%C4%82N%20GIA%20%C4%90%C3%8CNH%2041%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/quanan41?mibextid=LQQJ4d",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84899999941",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79050,106.69884",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hội An Sense Restaurant",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLc5gUBuwl2al4GT8vYkmdpTVYTkncvAIyMB2Ru25LsYGSX6tHyhTApFRXCzK5J2CY8M7eoBmZ10QEnbzJEPjhu5xBNz4Tuu7jCJ1HX9zmoYh_89aiNAD_aBz4Wk8B00GdI1HnGHwDl0DzIs",
+                "address": "12 Phan Kế Bính, Tân Định, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 363,
+                "openingHours": "11:00–14:00, 17:00–23:00",
+                "openNow": false,
+                "phone": "+84 28 3823 7694",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "11:00–14:00, 17:00–23:00",
+                  "Thứ Hai": "11:00–14:00, 17:00–23:00",
+                  "Thứ Ba": "11:00–14:00, 17:00–23:00",
+                  "Thứ Tư": "11:00–14:00, 17:00–23:00",
+                  "Thứ Năm": "11:00–14:00, 17:00–23:00",
+                  "Thứ Sáu": "11:00–14:00, 17:00–23:00",
+                  "Thứ Bảy": "11:00–14:00, 17:00–23:00"
+                },
+                "distanceKm": 1.5,
+                "categories": [
+                  "Nhà hàng Việt Nam",
+                  "Nhà hàng cao cấp",
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4233470760793689116",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BB%99i%20An%20Sense%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://hoiansense.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842838237694",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20gia%20%C4%91%C3%ACnh%205-6%20ng%C6%B0%E1%BB%9Di%20g%E1%BA%A7n%20Qu%E1%BA%ADn%201%20Qu%E1%BA%ADn%201%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.77332,106.70504",
+              "place:osm:10.77353,106.70534"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.77332,106.70504",
+            "place:osm:10.77353,106.70534"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán ăn gia đình 79",
+          "Hàng Dương Quán Quận 1",
+          "Quán Ăn Gia Đình Sài Gòn",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "99 By Night - Dine & Chill",
+          "QUÁN ĂN GIA ĐÌNH 41",
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Hội An Sense Restaurant"
+        ],
+        [
+          "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+          "Quán ăn gia đình 79",
+          "Hàng Dương Quán Quận 1",
+          "Quán Ăn Gia Đình Sài Gòn",
+          "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+          "99 By Night - Dine & Chill",
+          "QUÁN ĂN GIA ĐÌNH 41",
+          "Hội An Sense Restaurant"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại hôm nay. Để gợi ý đúng ý, mình cần tìm các quán phù hợp với gia đình nhỏ.\n\nMình chọn **Cơm Quê Dương Bầu** cho gia đình bạn 👍 Quán này cách vị trí hiện tại chỉ **0.6km**, rất gần, có **4.5⭐ (2.196 đánh giá)** — là cơm gia đình Việt chính hiệu, giá phổ thông 100-200k/người, phù hợp với bé nhỏ. Quán mở đến 22:00 nên bạn có thời gian ăn thoải mái.\n\nNếu muốn chọn khác, **Hàng Dương Quán** (0.6km, 4.5⭐, 723 đánh giá) cũng tốt — là nhà hàng lớn hơn, có phòng riêng nếu bạn muốn yên tĩnh với bé. Hoặc **Sài Gòn Xưa và Nay** (0.4km, 4⭐) nếu muốn gần nhất, đang mở cửa bây giờ.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Quê Dương Bầu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15089939659221729349\",\"primary\":true}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hàng Dương Quán có phòng riêng không|Sài Gòn Xưa và Nay đang mở cửa|Quán nào có ghế cao cho bé[/FOLLOWUPS]",
+      "visible": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại hôm nay. Để gợi ý đúng ý, mình cần tìm các quán phù hợp với gia đình nhỏ.\n\nMình chọn **Cơm Quê Dương Bầu** cho gia đình bạn 👍 Quán này cách vị trí hiện tại chỉ **0.6km**, rất gần, có **4.5⭐ (2.196 đánh giá)** — là cơm gia đình Việt chính hiệu, giá phổ thông 100-200k/người, phù hợp với bé nhỏ. Quán mở đến 22:00 nên bạn có thời gian ăn thoải mái.\n\nNếu muốn chọn khác, **Hàng Dương Quán** (0.6km, 4.5⭐, 723 đánh giá) cũng tốt — là nhà hàng lớn hơn, có phòng riêng nếu bạn muốn yên tĩnh với bé. Hoặc **Sài Gòn Xưa và Nay** (0.4km, 4⭐) nếu muốn gần nhất, đang mở cửa bây giờ.",
+      "preGuard": "Mình giả sử bạn muốn ăn cơm gia đình gần vị trí hiện tại hôm nay. Để gợi ý đúng ý, mình cần tìm các quán phù hợp với gia đình nhỏ. Để chọn tốt hơn, bạn muốn ăn **loại gì** (cơm tấm, lẩu, hải sản, Việt Nam chung chung...) hay mình tìm các quán ăn gia đình phổ biến gần đây?Mình chọn **Cơm Quê Dương Bầu** cho gia đình bạn 👍 Quán này cách vị trí hiện tại chỉ **0.6km**, rất gần, có **4.5⭐ (2.196 đánh giá)** — là cơm gia đình Việt chính hiệu, giá phổ thông 100-200k/người, phù hợp với bé nhỏ. Quán mở đến 22:00 nên bạn có thời gian ăn thoải mái.\n\nNếu muốn chọn khác, **Hàng Dương Quán** (0.6km, 4.5⭐, 723 đánh giá) cũng tốt — là nhà hàng lớn hơn, có phòng riêng nếu bạn muốn yên tĩnh với bé. Hoặc **Sài Gòn Xưa và Nay** (0.4km, 4⭐) nếu muốn gần nhất, đang mở cửa bây giờ.\n\nBạn muốn **đặt bàn trước** không, hay đi thẳng?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Cơm Quê Dương Bầu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15089939659221729349\",\"primary\":true},{\"label\":\"🛵 GrabFood - Cơm Quê Dương Bầu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=C%C6%A1m+Qu%C3%AA+D%C6%B0%C6%A1ng+B%C3%A0u+Qu%C3%A1n+1\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hàng Dương Quán có phòng riêng không|Sài Gòn Xưa và Nay đang mở cửa|Quán nào có ghế cao cho bé[/FOLLOWUPS]"
+    }
+  ]
+}

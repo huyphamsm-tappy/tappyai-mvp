@@ -1,0 +1,170 @@
+{
+  "id": "E3",
+  "text": "quán bar nào chill có nhạc sống Quận 1",
+  "parent": null,
+  "status": 200,
+  "ms": 10578,
+  "evidenceId": "dc9fab58-1249-4ea6-8e7f-b52ef462b67a",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "bar nhạc sống chill Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "rating": 5,
+      "count": 1394,
+      "hours": "19:00–02:00",
+      "distance_km": 0.5,
+      "address": "8a/11d1 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Dot Bar",
+      "rating": 4.9,
+      "count": 708,
+      "price": "200-300 N ₫",
+      "hours": "17:00–02:00",
+      "distance_km": 0.3,
+      "address": "37 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "rating": 4.8,
+      "count": 2511,
+      "price": "200-600 N ₫",
+      "hours": "17:00–01:00",
+      "distance_km": 0.3,
+      "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "FunnyBone Bar & Coffe Quận 1",
+      "rating": 5,
+      "count": 202,
+      "price": "100-600 N ₫",
+      "hours": "07:00–00:00",
+      "distance_km": 1.4,
+      "address": "135/44 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mingles Hidden Cocktail Bar",
+      "rating": 4.9,
+      "count": 362,
+      "price": "100-200 N ₫",
+      "hours": "16:00–02:00",
+      "distance_km": 1.7,
+      "address": "102/7 Đ. Cống Quỳnh, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Lủi - Quán Nhậu Chill Quận 1 Sài Gòn",
+      "rating": 4.9,
+      "count": 513,
+      "price": "200-300 N ₫",
+      "hours": "17:00–23:30",
+      "distance_km": 2.1,
+      "address": "177 Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "Lost - Drink & Chill",
+      "rating": 4.6,
+      "count": 519,
+      "hours": "12:00–03:00",
+      "distance_km": 0.5,
+      "address": "71/5 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Chill Skybar & Dining",
+      "rating": 4.4,
+      "count": 5938,
+      "hours": "17:30–01:30",
+      "distance_km": 1,
+      "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Empire Club Quận 1",
+      "rating": 4.7,
+      "count": 49,
+      "hours": "21:00–03:00",
+      "distance_km": 1.2,
+      "address": "Nguyễn Văn Tráng/2 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Drinking Healing",
+      "rating": 4.4,
+      "count": 741,
+      "price": "200-300 N ₫",
+      "hours": "17:00–02:00",
+      "distance_km": 0.8,
+      "address": "25 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [
+    {
+      "name": "Dollhouse bar HCMC",
+      "role": "best_overall",
+      "evidence": {
+        "rating": 5,
+        "reviews": 1394,
+        "distance_km": 0.5,
+        "open_now": true,
+        "opening_hours": "19:00–02:00"
+      }
+    },
+    {
+      "name": "Dot Bar",
+      "role": null,
+      "evidence": {
+        "rating": 4.9,
+        "reviews": 708,
+        "distance_km": 0.3,
+        "open_now": true,
+        "opening_hours": "17:00–02:00"
+      }
+    },
+    {
+      "name": "Loop 1 - Cocktail Bar & Kitchen",
+      "role": null,
+      "evidence": {
+        "rating": 4.8,
+        "reviews": 2511,
+        "distance_km": 0.3,
+        "open_now": true,
+        "opening_hours": "17:00–01:00"
+      }
+    }
+  ],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình chọn **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.394 đánh giá Google Maps, cách bạn chỉ 0.5km, mở từ 19:00 đến 02:00. Không gian chill, phù hợp với vibe bạn tìm, và là lựa chọn được yêu thích nhất ở khu vực này.\n\nNếu muốn gần hơn, **Dot Bar** (0.3km) và 4.8⭐) với không khí bar cocktail chất lượng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website - Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dot Bar gần hơn|Loop 1 Cocktail Bar|Chill Skybar & Dining[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "quán bar nào chill có nhạc sống Quận 1"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm các quán bar chill có nhạc sống ở Quận 1 cho bạn nhé.\n\nMình chọn **Dollhouse bar HCMC** cho bạn — quán này có rating 5⭐ từ 1.394 đánh giá Google Maps, cách bạn chỉ 0.5km, mở từ 19:00 đến 02:00. Không gian chill, phù hợp với vibe bạn tìm, và là lựa chọn được yêu thích nhất ở khu vực này.\n\nNếu muốn gần hơn, **Dot Bar** (0.3km) và 4.8⭐) với không khí bar cocktail chất lượng.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Dollhouse bar HCMC\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=12322941922998073283\",\"primary\":true},{\"label\":\"🌐 Website - Dollhouse bar HCMC\",\"type\":\"website\",\"url\":\"http://www.dollhousebar.com/\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Dot Bar gần hơn|Loop 1 Cocktail Bar|Chill Skybar & Dining[/FOLLOWUPS]"
+    }
+  ]
+}

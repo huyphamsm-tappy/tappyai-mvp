@@ -1,0 +1,33 @@
+{
+  "id": "F6",
+  "text": "quán số 2 có đông không?",
+  "parent": "F1",
+  "status": 200,
+  "ms": 7198,
+  "evidenceId": "ca7a5dc5-d2aa-49cc-b709-de8ac9cb87e9",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Bạn muốn mình tìm thêm quán khác không, hay sẽ thử một trong hai quán này?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Cajun+Cua+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Tìm quán ăn tối ngon gần Quận 1 cho 2 người"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình sẽ tìm những quán ăn tối ngon gần Quận 1 cho bạn nhé! 🍽️\n\nMình chọn **The Cajun Cua** cho bạn! 🦞 Quán này có rating 4.6⭐ từ 1.740 đánh giá, chuyên hải sản tươi ngon, cách bạn chỉ 0.9km. Mở đến 23:00 nên hoàn hảo cho bữa tối. Dù Hải Sản Hoàng Gia có rating cao hơn (4.7⭐), nhưng The Cajun Cua gần hơn và có nhiều đánh giá hơn, rất phù hợp cho 2 người.\n\nNgoài ra, **Quán Bụi** (0.7km) cũng là lựa chọn tuyệt vời nếu bạn thích ẩm thực Việt Nam truyền thống 👌\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=16404492089141180620\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Hải Sản Hoàng Gia có rating cao hơn|Quán Bụi ăn Việt truyền thống|Nhà Hàng Ngon gần nhất[/FOLLOWUPS]"
+    },
+    {
+      "role": "user",
+      "content": "quán số 2 có đông không?"
+    },
+    {
+      "role": "assistant",
+      "content": "Bạn muốn mình tìm thêm quán khác không, hay sẽ thử một trong hai quán này?\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - The Cajun Cua\",\"type\":\"maps\",\"url\":\"https://www.google.com/maps/search/The+Cajun+Cua+Quan+1\",\"primary\":false}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

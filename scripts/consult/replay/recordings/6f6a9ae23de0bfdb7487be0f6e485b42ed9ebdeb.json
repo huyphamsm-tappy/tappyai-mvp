@@ -1,0 +1,578 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "bida bowling quận 3 Quận 3 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:10:19.351Z",
+ "body": {
+  "searchParameters": {
+   "q": "bida bowling quận 3 Quận 3 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Powerbowl 388 Sư Vạn Hạnh",
+    "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7704468,
+    "longitude": 106.6699412,
+    "rating": 4.1,
+    "ratingCount": 556,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh"
+    ],
+    "website": "https://powerbowl.vn/",
+    "phoneNumber": "+84 901 806 336",
+    "openingHours": {
+     "Thứ Ba": "09:30–22:30",
+     "Thứ Tư": "09:30–22:30",
+     "Thứ Năm": "09:30–22:30",
+     "Thứ Sáu": "09:30–22:30",
+     "Thứ Bảy": "09:30–22:30",
+     "Chủ Nhật": "09:30–22:30",
+     "Thứ Hai": "09:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMk84q3rfwQYq26N5wkq6FwqwgPkC7wfSIGWJI6DF4P4t-2wgibjK-rWOUzFKLZI8d3NaLhgWqVdV-5N-wys5bxLQdJs-flIYnYKm8k_UWQ6ipP7p3hZXDWfy6l4RrkTjwEH00Ubw",
+    "cid": "7286886727031694737",
+    "fid": "0x31752fb9e39f8a2d:0x652038dee33ba591",
+    "placeId": "ChIJLYqf47kvdTERkaU74944IGU"
+   },
+   {
+    "position": 2,
+    "title": "B52 Billiards Quận 3",
+    "address": "204 Pasteur, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7830593,
+    "longitude": 106.69335679999999,
+    "rating": 4.2,
+    "ratingCount": 205,
+    "type": "Câu lạc bộ bi da lỗ",
+    "types": [
+     "Câu lạc bộ bi da lỗ"
+    ],
+    "website": "https://www.facebook.com/b52billiardclub",
+    "phoneNumber": "+84 28 2222 2225",
+    "openingHours": {
+     "Thứ Hai": "08:00–03:00",
+     "Thứ Ba": "08:00–03:00",
+     "Thứ Tư": "08:00–03:00",
+     "Thứ Năm": "08:00–03:00",
+     "Thứ Sáu": "08:00–03:00",
+     "Thứ Bảy": "08:00–03:00",
+     "Chủ Nhật": "08:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcDnip41l9hYoGBAosQR666oCC7i9nbj4EMi16H7QFWyDvlzOgktB5_aX2kToG0KIhFkRxXdr6X8WdpCeXtI1fIZVBRssK54JykwNOlUpwENKQxmEyQcG8vVyH8TeCDHUw_GlPLAA",
+    "cid": "17811182698920822327",
+    "fid": "0x31752f10336d7815:0xf72e084c06c24637",
+    "placeId": "ChIJFXhtMxAvdTERN0bCBkwILvc"
+   },
+   {
+    "position": 3,
+    "title": "Bida ACB",
+    "address": "623 Điện Biên Phủ, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7693137,
+    "longitude": 106.6757363,
+    "rating": 5,
+    "ratingCount": 40,
+    "type": "Câu lạc bộ",
+    "types": [
+     "Câu lạc bộ",
+     "Cửa hàng bán dụng cụ Bi-a",
+     "Trung tâm vui chơi giải trí",
+     "Trường bi-a"
+    ],
+    "website": "https://www.facebook.com/bida.acb",
+    "phoneNumber": "+84 837 228 221",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNZGZR-pxV_JvWe4s-LUiGSC7odcGbaJGxlQ3ld2nxwNmnTKD5xqoGv-qYfhTFZ9FEzs1Q5J15eX8D9MtQ1UurFbvRQQOpyMnnLgxDdMmgvlGBcrIBXIBjklvHtxObwucnWt0pTkGGlgiUU",
+    "cid": "2077117938487598838",
+    "fid": "0x31752ff08674269b:0x1cd367c290251ef6",
+    "placeId": "ChIJmyZ0hvAvdTER9h4lkMJn0xw"
+   },
+   {
+    "position": 4,
+    "title": "Bida Chuyên Nghiệp",
+    "address": "202 Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7688207,
+    "longitude": 106.67905549999999,
+    "rating": 3.9,
+    "ratingCount": 74,
+    "type": "Câu lạc bộ thể thao",
+    "types": [
+     "Câu lạc bộ thể thao",
+     "Cửa hàng bán dụng cụ Bi-a"
+    ],
+    "phoneNumber": "+84 397 816 781",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfN7sEOX-k5FN2hAau6P9WYmqXLkSdeXnHroqfCxkYUaNFEBK1YwzQuleadjcs6sWzZSouNluU-pgdxcgjMsute-F4HO2cMgeUyPe-ZYlnysyFYbZ3PcDNO--7WIrEzt2yPcinB",
+    "cid": "6903065272504223844",
+    "fid": "0x31752f56b32ad863:0x5fcc9d4a94f30864",
+    "placeId": "ChIJY9gqs1YvdTERZAjzlEqdzF8"
+   },
+   {
+    "position": 5,
+    "title": "Bida Bảo Bình - Bảo Bình Billiards Club",
+    "address": "35 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7841957,
+    "longitude": 106.6933469,
+    "rating": 4.3,
+    "ratingCount": 694,
+    "type": "Câu lạc bộ bi da lỗ",
+    "types": [
+     "Câu lạc bộ bi da lỗ",
+     "Trung tâm vui chơi giải trí",
+     "Câu lạc bộ thể thao"
+    ],
+    "website": "http://bidabaobinh.blogspot.com/",
+    "phoneNumber": "+84 902 340 029",
+    "openingHours": {
+     "Thứ Ba": "08:00–01:00",
+     "Thứ Tư": "08:00–01:00",
+     "Thứ Năm": "08:00–01:00",
+     "Thứ Sáu": "08:00–01:00",
+     "Thứ Bảy": "08:00–01:00",
+     "Chủ Nhật": "08:00–01:00",
+     "Thứ Hai": "08:00–01:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/bidabaobinh"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOjB3EJtYpPSGHLNd-9wAVwXNzgPABOv0m12NIT81jXvnHZUTHQMbA6-kykjZbhJe-1Y21xkgCz1K_A1sp7DqtYEzxgZBa515PWSabSJQZWcx82LRN62SparHqiiat32Veq-zXd",
+    "cid": "6032775988737439006",
+    "fid": "0x31752f33fd9623ff:0x53b8b9cc7a33751e",
+    "placeId": "ChIJ_yOW_TMvdTERHnUzesy5uFM"
+   },
+   {
+    "position": 6,
+    "title": "Cowboy Billiards - Bida Cao Bồi Quận 4",
+    "address": "224 Tôn Thất Thuyết, Vĩnh Hội, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7532021,
+    "longitude": 106.69885169999999,
+    "rating": 4.9,
+    "ratingCount": 521,
+    "type": "Câu lạc bộ bi da lỗ",
+    "types": [
+     "Câu lạc bộ bi da lỗ"
+    ],
+    "website": "https://www.facebook.com/bidacaoboiquan4",
+    "phoneNumber": "+84 988 998 649",
+    "openingHours": {
+     "Thứ Hai": "09:00–03:00",
+     "Thứ Ba": "09:00–03:00",
+     "Thứ Tư": "09:00–03:00",
+     "Thứ Năm": "09:00–03:00",
+     "Thứ Sáu": "09:00–03:00",
+     "Thứ Bảy": "09:00–03:00",
+     "Chủ Nhật": "09:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMCN3vqFfh5vtYxj9vrhVHr37EIZsb6LpC6cCHuD5YHhCYS448H5zntj2H447N6UsxR9v4qzIGKoSpXUAHSxFqxP5rJz_v5tkcxnsEmHsQvBmAPpr7JhTZ5AQEzTb_VD5KEp3i9",
+    "cid": "15533996822790217494",
+    "fid": "0x31752f72e463fe41:0xd793d7cec4751f16",
+    "placeId": "ChIJQf5j5HIvdTERFh91xM7Xk9c"
+   },
+   {
+    "position": 7,
+    "title": "Powerbowl 388 Pandora",
+    "address": "TTTM Pandora City, 1/1 Trường Chinh, Tây Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.806714399999999,
+    "longitude": 106.6342962,
+    "rating": 3.9,
+    "ratingCount": 16,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh"
+    ],
+    "website": "https://powerbowl.vn/",
+    "phoneNumber": "+84 901 806 336",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00",
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNgkwq-GFjsI-ocW9JDmzKms9B10Xub1oTzrtSHJB1iFyqEzwKLaeZfbA2Jji9ndj5KSSgB5bzQtx4WdReFfsppDM8Tx2DwCouJ_5zhQgI_RwH-JW8QZ24vTTZVMH1csX17uQCI6w",
+    "cid": "10574984504231419544",
+    "fid": "0x317529c17c9239ff:0x92c1e460bff95e98",
+    "placeId": "ChIJ_zmSfMEpdTERmF75v2DkwZI"
+   },
+   {
+    "position": 8,
+    "title": "Câu Lạc Bộ Bida Thái Bảo",
+    "address": "A9/26/1D, Võ Văn Vân, Xã Vĩnh Lộc B, Huyện Bình Chánh, Thành Phố Hồ Chí Minh, Thành Phố Hồ Chí Minh, Tân Vĩnh Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.777048599999999,
+    "longitude": 106.5733478,
+    "rating": 5,
+    "ratingCount": 3,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh"
+    ],
+    "phoneNumber": "+84 965 818 497",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc3JoXT2GL6K7Qkw3PZ_pdcIeaT5q6LZutdhw7F1Sbul9jHJeL-2vviCIN9DX55HqESjSQ7TbRwLI55H1penU-jE6odoGFOjvVDw4qchrKGkC-i_J6kZmhMyf71CRy6WHjzKloH",
+    "cid": "8681074662679334588",
+    "fid": "0x31752c8c55d78e61:0x78795f6951a54ebc",
+    "placeId": "ChIJYY7XVYwsdTERvE6lUWlfeXg"
+   },
+   {
+    "position": 9,
+    "title": "Bida Hà Đô",
+    "address": "77 Đường TA 13, Thới An, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.882249999999999,
+    "longitude": 106.65209999999999,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh"
+    ],
+    "phoneNumber": "+84 915 300 072",
+    "openingHours": {
+     "Thứ Ba": "08:00–23:00",
+     "Thứ Tư": "08:00–23:00",
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid=i7ayX1L9huLuFk8cKnZkJA&cb_client=search.gws-prod.grass&w=80&h=92&yaw=91.57867&pitch=0&thumbfov=100",
+    "cid": "5151033132136822846",
+    "fid": "0x3174d61f7af729c7:0x477c2557a348783e",
+    "placeId": "ChIJxyn3eh_WdDERPnhIo1clfEc"
+   },
+   {
+    "position": 10,
+    "title": "JP BOWLING & GAME CENTER",
+    "address": "240 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8280326,
+    "longitude": 106.7221225,
+    "rating": 3.7,
+    "ratingCount": 339,
+    "type": "Câu lạc bộ thể thao",
+    "types": [
+     "Câu lạc bộ thể thao"
+    ],
+    "website": "http://www.jpcenter.com.vn/",
+    "phoneNumber": "+84 789 240 240",
+    "openingHours": {
+     "Thứ Ba": "09:30–23:00",
+     "Thứ Tư": "09:30–23:00",
+     "Thứ Năm": "09:30–23:00",
+     "Thứ Sáu": "09:30–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMoWl4CE-4wqlouehUXLN8ldE3xeENqxYJN2GuvmYzflIKzHNT7l1LVW0LfF4ayVCMzhvgCjKzISKkX_1hlpz_XlRmPRKGikTJC029oWM1GKmj-nmyvxYK-SXqjuFj-Xyr8vpHY",
+    "cid": "1825064607697273508",
+    "fid": "0x317529e31a63cc85:0x1953ee9751ef02a4",
+    "placeId": "ChIJhcxjGuMpdTERpALvUZfuUxk"
+   },
+   {
+    "position": 11,
+    "title": "Trạm Billiards Quận 2",
+    "address": "137 Trần Não, Quận 2, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7920015,
+    "longitude": 106.7307136,
+    "rating": 4.6,
+    "ratingCount": 431,
+    "type": "Câu lạc bộ thể thao",
+    "types": [
+     "Câu lạc bộ thể thao"
+    ],
+    "phoneNumber": "+84 777 558 857",
+    "openingHours": {
+     "Thứ Hai": "09:00–05:00",
+     "Thứ Ba": "09:00–05:00",
+     "Thứ Tư": "09:00–05:00",
+     "Thứ Năm": "09:00–05:00",
+     "Thứ Sáu": "09:00–05:00",
+     "Thứ Bảy": "09:00–05:00",
+     "Chủ Nhật": "09:00–05:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPoiJ_PZSf0pyf4TIAmBGbvVqqcf9nxSk3WyZeW7NkIh-Z0TPbBGZVLuWFwc1XwKp2ofQqHV2TG5bSDXrmOY-5Hz7rSuIWqArrEe0HeGkU4RFDSij86Plz5-fYeI0Q4p7P_cAgWbQ",
+    "cid": "6427808229586212458",
+    "fid": "0x317527bc83770f5d:0x5934298760d1966a",
+    "placeId": "ChIJXQ93g7wndTERapbRYIcpNFk"
+   },
+   {
+    "position": 12,
+    "title": "Timezone Parc Mall",
+    "address": "Parc Mall, 547-549 Tạ Quang Bửu, Chánh Hưng, Hồ Chí Minh 700002, Việt Nam",
+    "latitude": 10.7404475,
+    "longitude": 106.67873469999999,
+    "rating": 5,
+    "ratingCount": 2022,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh",
+     "Trung tâm vui chơi giải trí",
+     "Cửa hàng trò chơi điện tử"
+    ],
+    "website": "https://www.timezonegames.com/en-vn/",
+    "phoneNumber": "+84 292 7300 079",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNAww7TvYKht7V5Gl4c_zwy_04kAgExvAY-BkMiVnLxXUW0fuoA47SQy_PH8i6aQSh3qsOs7sC0cPHdQ_QKMAOlpzQDgDvg9F0wZQkB9dEhz5IVVUPQqGXiOVpOBZrLVURsHOxhUkY06SE_",
+    "cid": "15866115092445409799",
+    "fid": "0x31752f007ab4d84d:0xdc2fc39d42ac3207",
+    "placeId": "ChIJTdi0egAvdTERBzKsQp3DL9w"
+   },
+   {
+    "position": 13,
+    "title": "Trung tâm giải trí Dream Games Bình Tân",
+    "address": "1 Đường Số 17A, An Lạc, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7427958,
+    "longitude": 106.61193109999999,
+    "rating": 3.5,
+    "ratingCount": 221,
+    "type": "Trung tâm vui chơi giải trí",
+    "types": [
+     "Trung tâm vui chơi giải trí"
+    ],
+    "website": "http://dreamgames-net.com/location06.php",
+    "phoneNumber": "+84 28 2253 0480",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPCj1pSvRywPj_gsj7-0lNOfi5EmvChx5bLA5etK61k1HtVLb1tmy_WJx1Budp1FiOPrf1MbOVoASFuvINCsySWC5qmH5mH3RKqE3_RBD2tbgFBEqkfRTASQelc2UOIGh1vBox8KQ",
+    "cid": "17555588664848223350",
+    "fid": "0x31752dceb5f79275:0xf3a1fae08f270c76",
+    "placeId": "ChIJdZL3tc4tdTERdgwnj-D6ofM"
+   },
+   {
+    "position": 14,
+    "title": "Holic Billiards Pub",
+    "address": "Số 9 Đ. Số 8A, Khu đô thị An Phú An Khánh, An Khánh, Hồ Chí Minh 71106, Việt Nam",
+    "latitude": 10.7987442,
+    "longitude": 106.7362459,
+    "rating": 4.9,
+    "ratingCount": 383,
+    "type": "Câu lạc bộ thể thao",
+    "types": [
+     "Câu lạc bộ thể thao"
+    ],
+    "website": "http://www.tiktok.com/@holic.billiards",
+    "phoneNumber": "+84 327 231 890",
+    "openingHours": {
+     "Thứ Ba": "09:00–02:00",
+     "Thứ Tư": "09:00–02:00",
+     "Thứ Năm": "09:00–02:00",
+     "Thứ Sáu": "09:00–02:00",
+     "Thứ Bảy": "09:00–02:00",
+     "Chủ Nhật": "09:00–02:00",
+     "Thứ Hai": "09:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLePkeXWbCtz6RCetqEJWFzpk8zS9I1kYBc94KsZxN3F6OflUKBkgptmfN2a8Xuoy59VZVDJHRPeLZVWi_exr09b-eZDPwmVU3xJPz1mta_UuGW2Hha3zD6xp_OjPwDoHx0vf7iuDJwQnySj",
+    "cid": "11134046161008904316",
+    "fid": "0x3175275869c0de19:0x9a8413fe23bcc87c",
+    "placeId": "ChIJGd7AaVgndTERfMi8I_4ThJo"
+   },
+   {
+    "position": 15,
+    "title": "Clb Billiards Quang Minh",
+    "address": "43 43 Đ. Vườn Lài, An Phú Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.858064899999999,
+    "longitude": 106.6952369,
+    "rating": 2.4,
+    "ratingCount": 10,
+    "type": "Câu lạc bộ giải trí dành cho người lớn",
+    "types": [
+     "Câu lạc bộ giải trí dành cho người lớn"
+    ],
+    "phoneNumber": "+84 777 771 990",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYO33dBdcbLk5UDMDv-AUeE9HDxGqynqVjG2uTp-csJvOBMJDz7Tejbouy_LC-PgbZWrDYK14q9Jk8C2xxcvWgzM3WzrrFF5zADcA4KjvT6RaRJ_9qt3tlcVmjw5A9G-7PB3qM",
+    "cid": "12220160954988182964",
+    "fid": "0x3175283edc519cc5:0xa996bba4b42b3db4",
+    "placeId": "ChIJxZxR3D4odTERtD0rtKS7lqk"
+   },
+   {
+    "position": 16,
+    "title": "Hismory Biliards Club Quận 7",
+    "address": "36 - 38 Lê Văn Thiêm, P, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.731176399999999,
+    "longitude": 106.70906079999999,
+    "rating": 4.9,
+    "ratingCount": 53,
+    "type": "Câu lạc bộ",
+    "types": [
+     "Câu lạc bộ"
+    ],
+    "openingHours": {
+     "Thứ Ba": "09:00–01:00",
+     "Thứ Tư": "09:00–01:00",
+     "Thứ Năm": "09:00–01:00",
+     "Thứ Sáu": "09:00–01:00",
+     "Thứ Bảy": "09:00–01:00",
+     "Chủ Nhật": "09:00–01:00",
+     "Thứ Hai": "09:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN-F2zwuJGXEODryZhzcld7COYBP5vrxC7HBrWzyKO5Kv1KGeJbprVCgfYHBnItQbpL4m6mdDFh3MiyK1sh1Y6nCgK0TTaPGe8Eb1naejmgjh-TO3qP0ebi17qaljjOMq2bt2PV",
+    "cid": "10920536219125543605",
+    "fid": "0x31752f64eeddb6af:0x978d89d4f1c3f2b5",
+    "placeId": "ChIJr7bd7mQvdTERtfLD8dSJjZc"
+   },
+   {
+    "position": 17,
+    "title": "CLB Bida Thiên Bảo",
+    "address": "85 Bùi Minh Trực, Bình Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.73617,
+    "longitude": 106.6531,
+    "type": "Sàn chơi bô-linh",
+    "types": [
+     "Sàn chơi bô-linh"
+    ],
+    "phoneNumber": "+84 1699338099",
+    "openingHours": {
+     "Thứ Ba": "09:00–22:30",
+     "Thứ Tư": "09:00–22:30",
+     "Thứ Năm": "09:00–22:30",
+     "Thứ Sáu": "09:00–22:30",
+     "Thứ Bảy": "09:00–22:30",
+     "Chủ Nhật": "09:00–22:30",
+     "Thứ Hai": "09:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP5ZHOH5G_us3ll_waEmZVCHNyu1rWOKYp85GPMJn4HwRJWT7nw_vpSKVV-JCA2bfKTbDXxxojqdqEVCTLKkG4kUq4bhN2Vf4hLvSjPWfMXNldLB1od0AYJELFr2JxF0nFXsLDjgQ",
+    "cid": "18021040657990084889",
+    "fid": "0x31752e42a3de80b3:0xfa1798ffb65ee919",
+    "placeId": "ChIJs4Deo0IudTERGeletv-YF_o"
+   },
+   {
+    "position": 18,
+    "title": "Bida gần đây",
+    "address": "Đối diện 22, 22 Thống Nhất, Thủ Đức, Hồ Chí Minh 75000, Việt Nam",
+    "latitude": 10.8440856,
+    "longitude": 106.7691646,
+    "rating": 4.8,
+    "ratingCount": 10,
+    "type": "Câu lạc bộ bi da lỗ",
+    "types": [
+     "Câu lạc bộ bi da lỗ"
+    ],
+    "phoneNumber": "+84 964 647 648",
+    "openingHours": {
+     "Thứ Ba": "09:00–23:30",
+     "Thứ Tư": "09:00–23:30",
+     "Thứ Năm": "09:00–23:30",
+     "Thứ Sáu": "09:00–23:30",
+     "Thứ Bảy": "09:00–23:30",
+     "Chủ Nhật": "09:00–23:30",
+     "Thứ Hai": "09:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM6gJ-B0YX9T7uWtGTO6zU-00x-zZCOcoQQOkdu9FFMlVzCy--kLcXlaM-k83ajcB6SRxc8bOkR8CDQtW8LrzHcRqsz5l1p35PJ_dzLEgdEehVpdFxK8g0gXR-iB86b_ySNTXQ",
+    "cid": "4003352600804720021",
+    "fid": "0x317527efdfc57525:0x378ec3fad199fd95",
+    "placeId": "ChIJJXXF3-8ndTERlf2Z0frDjjc"
+   },
+   {
+    "position": 19,
+    "title": "Shop Cơ BiDa NHẪN & SINH BILLIARDS",
+    "address": "Man Thiện, Tăng Nhơn Phú, Hồ Chí Minh 100000, Việt Nam",
+    "latitude": 10.853656299999999,
+    "longitude": 106.78956289999999,
+    "rating": 3.8,
+    "ratingCount": 10,
+    "type": "Cửa hàng",
+    "types": [
+     "Cửa hàng"
+    ],
+    "phoneNumber": "+84 903 866 463",
+    "openingHours": {
+     "Thứ Ba": "08:00–00:00",
+     "Thứ Tư": "08:00–00:00",
+     "Thứ Năm": "08:00–00:00",
+     "Thứ Sáu": "08:00–00:00",
+     "Thứ Bảy": "08:00–00:00",
+     "Chủ Nhật": "08:00–00:00",
+     "Thứ Hai": "08:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPnf6lHZLKi7ey7IzkrdVzkiUMx__h_-Z7aB1V_1V_qO4NvupnRbDgiGQF39Tmy6H5Ot32a92GWdnc-XUFzHXZgnp32_CDYZGQlGA4z5DdMTazIPEmeidxuQ0hIK_T-tbbGUiU",
+    "cid": "15893732611378903996",
+    "fid": "0x317527d8cd9d94dd:0xdc91e199f847fbbc",
+    "placeId": "ChIJ3ZSdzdgndTERvPtH-Jnhkdw"
+   },
+   {
+    "position": 20,
+    "title": "Trung Tâm Thương Mại Vạn Hạnh",
+    "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7705748,
+    "longitude": 106.6699228,
+    "rating": 4.4,
+    "ratingCount": 23291,
+    "type": "Trung tâm mua sắm",
+    "types": [
+     "Trung tâm mua sắm"
+    ],
+    "website": "http://vanhanhmall.com/",
+    "phoneNumber": "+84 28 3862 5588",
+    "description": "Trung tâm mua sắm nổi tiếng có thương hiệu quốc tế, rạp chiếu phim, quầy ẩm thực, siêu thị và khu vui chơi trẻ em.",
+    "openingHours": {
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00",
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:30–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOxZj9JQ5D1z1thx26b_9nTke6KE5JpN9FExxjmizkYDsib5losuTnyjlYDZJGAppBxEMIb0Q2cQHuFagrRzNnxGOtTg4HOpIkGeXg3gQktxbTxh9Z2a229CwpDSJ5QgK-9RN3A",
+    "cid": "18197925710633870296",
+    "fid": "0x31752edddb818ebf:0xfc8c05045f47a3d8",
+    "placeId": "ChIJv46B290udTER2KNHXwQFjPw"
+   }
+  ],
+  "credits": 3
+ }
+}

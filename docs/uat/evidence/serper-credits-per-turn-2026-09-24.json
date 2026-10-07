@@ -1,0 +1,174 @@
+{
+ "measured_on": "2026-09-24",
+ "method": "NODE_OPTIONS --require netmeter.cjs wrapping fetch in the dev server; credits = the credits field Serper returns per call; 3 food queries x 3 runs (MAX_ITEMS 3 vs 8 cards)",
+ "runs": {
+  "m3": [
+   {
+    "q": "gợi ý vài quán cơm tấm ngon gần đây",
+    "cards": 3,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3937,
+    "completionTokens": 642
+   },
+   {
+    "q": "quán phở ngon ở quận 1",
+    "cards": 3,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3845,
+    "completionTokens": 650
+   },
+   {
+    "q": "tối nay ăn bún bò huế ở đâu ngon gần đây",
+    "cards": 3,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 4057,
+    "completionTokens": 556
+   }
+  ],
+  "m8": [
+   {
+    "q": "gợi ý vài quán cơm tấm ngon gần đây",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3842,
+    "completionTokens": 570
+   },
+   {
+    "q": "quán phở ngon ở quận 1",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3650,
+    "completionTokens": 569
+   },
+   {
+    "q": "tối nay ăn bún bò huế ở đâu ngon gần đây",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3899,
+    "completionTokens": 599
+   }
+  ],
+  "m8b": [
+   {
+    "q": "gợi ý vài quán cơm tấm ngon gần đây",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3932,
+    "completionTokens": 606
+   },
+   {
+    "q": "quán phở ngon ở quận 1",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 3650,
+    "completionTokens": 519
+   },
+   {
+    "q": "tối nay ăn bún bò huế ở đâu ngon gần đây",
+    "cards": 8,
+    "serperCalls": 2,
+    "serperCredits": 4,
+    "byPath": {
+     "/maps": {
+      "calls": 1,
+      "credits": 3
+     },
+     "/search": {
+      "calls": 1,
+      "credits": 1
+     }
+    },
+    "promptTokens": 4258,
+    "completionTokens": 581
+   }
+  ]
+ }
+}

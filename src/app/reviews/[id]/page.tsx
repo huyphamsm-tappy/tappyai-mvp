@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getReview } from './getReview'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import { BRAND, absoluteUrl, safeOgImageUrl } from '@/lib/share/openGraph'
+import { buildReviewMetadata } from '@/lib/share/reviewMetadata'
 import ReviewDetailView from './ReviewDetailView'
 import ReviewClipView from './ReviewClipView'
 import type { Review } from '@/app/reviews/feedShared'
@@ -60,33 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const review = await getReview(params.id)
   if (!review) return { title: 'Review | TappyAI' }
 
-  const desc = `${review.body.slice(0, 150)}${review.body.length > 150 ? '...' : ''}`
-
-  // The review's own photo when a crawler can actually fetch it, otherwise the
-  // branded card. Previously this published `photos[0]` unconditionally — those
-  // are Vercel Blob URLs, the store is suspended and they 403, so shared review
-  // links showed a broken image; a review with no photo published none at all.
-  const image = safeOgImageUrl(review.photos?.[0])
-  const ogTitle = `${review.place_name} — ${review.rating}/5 sao`
-
-  return {
-    title: `${'★'.repeat(review.rating)} ${review.place_name} | TappyAI`,
-    description: desc,
-    openGraph: {
-      title: ogTitle,
-      description: desc,
-      url: absoluteUrl(`/reviews/${params.id}`),
-      siteName: BRAND.name,
-      images: [image],
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: ogTitle,
-      description: desc,
-      images: [image],
-    },
-  }
+  // The post's own title, caption and picture (a clip's thumbnail, else its first photo, else the
+  // branded card) — never the share-only sentinel, never a suspended Blob URL. See reviewMetadata.ts.
+  return buildReviewMetadata(params.id, review)
 }
 
 /**

@@ -1,0 +1,185 @@
+{
+  "id": "E8",
+  "text": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn",
+  "parent": null,
+  "status": 200,
+  "ms": 14746,
+  "evidenceId": "150fff83-1410-48a6-a5e5-4b380bde2ad4",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "quán ăn ngon có khu trẻ em",
+        "type": "restaurant",
+        "location": "sai gon"
+      }
+    },
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "khu vui chơi trẻ em 5 tuổi",
+        "location": "Quận 1 TP HCM",
+        "type": "attraction"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "A Xỉu - Quán Ăn Ngon",
+      "rating": 4.7,
+      "count": 246,
+      "hours": "17:00–22:30",
+      "distance_km": 1.6,
+      "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Nhà hàng Quá Ngon",
+      "rating": 4.6,
+      "count": 3759,
+      "hours": "09:00–00:00",
+      "distance_km": 4.5,
+      "address": "306 308 Đ. Lê Văn Sỹ, Tân Sơn Hòa, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Cơm Ngon Hà Nội",
+      "rating": 4.9,
+      "count": 285,
+      "hours": "10:00–19:30",
+      "distance_km": 0.9,
+      "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "NHÀ HÀNG NGON",
+      "rating": 4,
+      "count": 11428,
+      "hours": "07:30–22:30",
+      "distance_km": 0.1,
+      "address": "160 Pasteur, Quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Secret Garden",
+      "rating": 4.1,
+      "count": 4824,
+      "hours": "11:00–22:00",
+      "distance_km": 0.1,
+      "address": "158 Pasteur, Sài Gòn, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Quán ăn ngon Sài Gòn",
+      "rating": 4.1,
+      "count": 1156,
+      "hours": "08:00–22:30",
+      "distance_km": 0.4,
+      "address": "138 Nam Kỳ Khởi Nghĩa, Sài Gòn, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Quán Ăn Mây Bốn Phương",
+      "rating": 4.1,
+      "count": 435,
+      "hours": "11:00–14:00, 16:00–22:00",
+      "distance_km": 2,
+      "address": "132/6 Vườn Chuối, 6 Đ. Vườn Chuối, Bàn Cờ, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Cơm Tấm A Hào - SaiGon Broken Rice",
+      "rating": 4.5,
+      "count": 210,
+      "hours": "16:00–22:30",
+      "distance_km": 3.1,
+      "address": "293/4 Phan Xích Long, Cầu Kiệu, Hồ Chí Minh 10000, Việt Nam"
+    },
+    {
+      "name": "Ann Quán",
+      "rating": 4.2,
+      "count": 1279,
+      "hours": "07:00–01:00",
+      "distance_km": 0.6,
+      "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Béo Ơi Quán - Món ngon Hà Nội",
+      "rating": 4.5,
+      "count": 1026,
+      "hours": "10:30–22:00",
+      "distance_km": 0.9,
+      "address": "Hẻm 15M kế bên, 15/20, hẻm phía bên tay trái!, Nguyễn Thị Minh Khai/số 17A quán cuối, Sài Gòn, Hồ Chí Minh 00084, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": [
+    "kids"
+  ],
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình chọn **A Xỉu - Quán Ăn Ngon** — 4.7⭐ (246 đánh giá Google Maps); giờ mở cửa theo Google Maps: 17:00–22:30.\n\nĐể gợi ý chính xác hơn cho bé 5 tuổi cuối tuần, mình cần tìm lại với từ khóa rõ ràng hơn về địa điểm vui chơi cho trẻ.\n\nBạn có thể xem thêm trên [Google Maps](https://maps.google.com/maps?q=khu%20vui%20ch%C6%A1i%20tr%E1%BA%BB%20em%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%20TP%20HCM) để tìm các công viên, sân chơi, hoặc trung tâm vui chơi gần vị trí bạn.\n\nNgoài ra, bạn cũng có thể kết hợp ăn cơm gia đình tại các nhà hàng có không gian rộng rãi (như **Nhà Hàng Ngon** hay **Secret Garden** gần bạn) rồi sau đó đi chơi tại các điểm vui chơi khác.\n\nMình chưa thấy bằng chứng về phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Tìm trên Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/maps?q=khu%20vui%20ch%C6%A1i%20tr%E1%BA%BB%20em%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%20TP%20HCM\",\"primary\":true}]}[/CTA_BUTTONS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Chỗ chơi cho trẻ em 5 tuổi cuối tuần ở Sài Gòn"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình chọn **A Xỉu - Quán Ăn Ngon** — 4.7⭐ (246 đánh giá Google Maps); giờ mở cửa theo Google Maps: 17:00–22:30.\n\nĐể gợi ý chính xác hơn cho bé 5 tuổi cuối tuần, mình cần tìm lại với từ khóa rõ ràng hơn về địa điểm vui chơi cho trẻ.\n\nBạn có thể xem thêm trên [Google Maps](https://maps.google.com/maps?q=khu%20vui%20ch%C6%A1i%20tr%E1%BA%BB%20em%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%20TP%20HCM) để tìm các công viên, sân chơi, hoặc trung tâm vui chơi gần vị trí bạn.\n\nNgoài ra, bạn cũng có thể kết hợp ăn cơm gia đình tại các nhà hàng có không gian rộng rãi (như **Nhà Hàng Ngon** hay **Secret Garden** gần bạn) rồi sau đó đi chơi tại các điểm vui chơi khác.\n\nMình chưa thấy bằng chứng về phù hợp trẻ em ở các quán này — nên gọi hỏi trước khi đi.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Tìm trên Google Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/maps?q=khu%20vui%20ch%C6%A1i%20tr%E1%BA%BB%20em%205%20tu%E1%BB%95i%20Qu%E1%BA%ADn%201%20TP%20HCM\",\"primary\":true}]}[/CTA_BUTTONS]"
+    }
+  ]
+}

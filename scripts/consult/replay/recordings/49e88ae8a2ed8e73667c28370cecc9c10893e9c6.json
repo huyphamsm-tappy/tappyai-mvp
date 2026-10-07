@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Meliá Vinpearl\" Da Nang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:20:07.370Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Meliá Vinpearl\" Da Nang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các đánh giá Khách sạn Melia Vinpearl Riverfront Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-22154936/melia-vinpearl-danang-riverfront/review.html",
+    "snippet": "Khám phá đánh giá Khách sạn Melia Vinpearl Riverfront Đà Nẵng thực tế từ khách du lịch ... Một lần nữa, xin cảm ơn Quý khách đã lựa chọn Meliá Vinpearl Danang ...",
+    "position": 1
+   },
+   {
+    "title": "Meliá Vinpearl Quảng Bình - Giá cả và Ưu đãi 2026, Đồng ...",
+    "link": "https://vn.trip.com/hotels/dong-hoi-hotel-detail-23963648/vinpearl-hotel-quang-binh/",
+    "snippet": "Meliá Vinpearl Quảng Bình ; 5 · Suite Nhìn ra Sông 2+1 · 1 Giường king ; 6 · Phòng Hướng Sông Sang Trọng · 1 Giường đôi hay 2 Giường đơn ; 6 · Phòng Hướng Phố Hạng Sang.",
+    "position": 2
+   },
+   {
+    "title": "Meliá Vinpearl Phu Quoc - Giá cả và Ưu đãi 2026, Đảo ...",
+    "link": "https://vn.trip.com/hotels/phu-quoc-island-hotel-detail-7047736/vinpearl-discovery-2-phu-quoc/",
+    "snippet": "Meliá Vinpearl Phu Quoc ; Điểm tham quan: Bãi Dài. 1,6km ; Điểm tham quan: Grand World Phú Quốc. 3,8km ; Vui chơi giải trí: VinWonders Phú Quốc. 2,4km.",
+    "position": 3
+   },
+   {
+    "title": "Các đánh giá Vinpearl Empire Nha Trang, Affiliated by Meliá",
+    "link": "https://vn.trip.com/hotels/nha-trang-hotel-detail-15965564/vinpearl-empire-nha-trang-affiliated-by-meli/review.html",
+    "snippet": "Đánh giá Vinpearl Empire Nha Trang, Affiliated by Meliá, Vinpearl Empire Nha ... Nang Krabi Resort, Frank Ao Nang Krabi Resort đánh giá của khách ...",
+    "position": 4
+   },
+   {
+    "title": "Vinpearl Cua Hoi, Affiliated by Meliá Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/cua-lo-hotel-detail-97488542/vinpearl-cua-hoi-affiliated-by-meli/review.html",
+    "snippet": "Đánh giá Vinpearl Cua Hoi, Affiliated by Meliá, Vinpearl Cua Hoi, Affiliated by Meliá đánh giá của khách, Vinpearl Cua Hoi, Affiliated by Meliá đánh giá từ ...",
+    "position": 5
+   },
+   {
+    "title": "Các đánh giá Meliá Vinpearl Phu Quoc",
+    "link": "https://vn.trip.com/hotels/phu-quoc-island-hotel-detail-7047736/vinpearl-discovery-2-phu-quoc/review.html",
+    "snippet": "Khám phá đánh giá Meliá Vinpearl Phu Quoc thực tế từ khách du lịch. Với 257 đánh giá đã được xác thực và xếp hạng 8.6/10, bạn có thể đặt phòng với sự an tâm ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Melia Vipearl Huế - Giá cả và Ưu đãi 2026, Huế",
+    "link": "https://vn.trip.com/hotels/hue-hotel-detail-23780615/vinpearl-hotel-hue/",
+    "snippet": "Một kỳ nghỉ tuyệt vời tại Meliá Vinpearl Huế! Phòng rất rộng rãi và phòng tắm cũng rất lớn, đầy đủ tiện nghi. Điểm nhấn trong kỳ nghỉ của tôi là được ngắm ...",
+    "position": 7
+   },
+   {
+    "title": "Các khách sạn ở gần Mũi Gành Dầu, Đảo Phú Quốc",
+    "link": "https://vn.trip.com/hotels/landmark/vn/mui-ganh-dau-beach.html",
+    "snippet": "2.318.420₫. /đêm. Meliá Vinpearl Phu Quoc Các khách sạn gần Mũi Gành Dầu. Meliá Vinpearl Phu Quoc. 8,6/10. Rất Tốt. 247 đánh giá. Cách Mũi Gành Dầu 2.02km.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

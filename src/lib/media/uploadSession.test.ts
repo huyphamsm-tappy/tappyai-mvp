@@ -767,3 +767,26 @@ function catchReject(fn: () => unknown): MediaUploadRejectedError {
   }
   throw new Error('expected the call to be rejected, but it succeeded')
 }
+
+// UAT 2026-09-28: the clip landed in the bucket but the browser reported a failure — GCS returns CORS
+// headers on a session's PUTs only for the Origin declared when the session was opened.
+describe('resumable session CORS origin', () => {
+  it('the session is opened with the caller origin, so the browser can read its PUT response', async () => {
+    const { provider, calls } = mockSession()
+    await provider.createUploadSession!({ key: `videos/${OWNER}/abc.mp4`, contentType: 'video/mp4', sizeBytes: 1024, origin: 'https://uat.tappyai.com' })
+    expect((calls[0].init.headers as Record<string, string>).Origin).toBe('https://uat.tappyai.com')
+  })
+  it('no origin → no Origin header (server-side callers)', async () => {
+    const { provider, calls } = mockSession()
+    await provider.createUploadSession!({ key: `videos/${OWNER}/abc.mp4`, contentType: 'video/mp4', sizeBytes: 1024 })
+    expect((calls[0].init.headers as Record<string, string>).Origin).toBeUndefined()
+  })
+  it('sameHostOrigin accepts only an https origin of this very host', async () => {
+    const { sameHostOrigin } = await import('./uploadRoute')
+    const h = (o: Record<string, string>) => ({ headers: new Headers(o) })
+    expect(sameHostOrigin(h({ origin: 'https://uat.tappyai.com', host: 'uat.tappyai.com' }))).toBe('https://uat.tappyai.com')
+    expect(sameHostOrigin(h({ origin: 'https://evil.example', host: 'uat.tappyai.com' }))).toBeNull()
+    expect(sameHostOrigin(h({ origin: 'http://uat.tappyai.com', host: 'uat.tappyai.com' }))).toBeNull()
+    expect(sameHostOrigin(h({ host: 'uat.tappyai.com' }))).toBeNull()
+  })
+})

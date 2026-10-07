@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:39.256Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/hhjtmaibwx0smkwcknwx.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgdyYTUlcvXCEwL0zgwgw-yR_gKhH2AdGh0Rw5sBuLmg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fhhjtmaibwx0smkwcknwx.jpg&tbnid=TlAb4Ztmr-FgNM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 1
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/zxn4zmcc50zir9yqtdcd.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKIoNIHGSn5iOFJur8qjNCAyKSfHPIHUe4DSXMHILq8A&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fzxn4zmcc50zir9yqtdcd.jpg&tbnid=CnAupCIFb11ojM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 2
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xnxrpozwmusfwl3zvurz.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1wAHCNw6LaTwCn_heK3C1iqujyQc6XlzVnQdIO2rdng&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxnxrpozwmusfwl3zvurz.jpg&tbnid=_tHERSPskxyLZM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 3
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/fttq9cqc88idx8krbwh4.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRz7P0TwNMJvqbwAFAtDFdcTBMY9WyEwUCBSNAkzRvqPA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Ffttq9cqc88idx8krbwh4.jpg&tbnid=NKD7ge3GH148uM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 4
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/xbutxrnvl0hxpeutbzoc.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkCG9yuadhQdS9Q1Ce5sx7ARZuBriDiqWtNPRB54bX5g&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fxbutxrnvl0hxpeutbzoc.jpg&tbnid=6ACSFx68u97edM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 5
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/escsfbizkosq8o4cdrga.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJoNWyGFunhSwn6pco3fkm_0fBHzKOAMzz8_OmfVrqNg&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fescsfbizkosq8o4cdrga.jpg&tbnid=-OKiCbnFyFIqfM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 6
+   },
+   {
+    "title": "Tour Đêm Ultimate Rooftop Bar & Lounge ở New York - Klook",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,h_469,c_fill,q_85/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/qqx4disma1f7pxxuksuz.jpg",
+    "imageWidth": 750,
+    "imageHeight": 469,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRwtOdRb4F8Dty7kwq_7W-3CM-nIYo9HGccYAGz1zwqA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Ch_469%2Cc_fill%2Cq_85%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fqqx4disma1f7pxxuksuz.jpg&tbnid=4H9WP2osrVxwMM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=bdFoko9r9cN-6M&w=750&h=469",
+    "position": 7
+   },
+   {
+    "title": "Ultimate Rooftop Bar & Lounge Night Tour in New York - Klook",
+    "imageUrl": "https://res.klook.com/images/fl_lossy.progressive,q_65/c_fill,w_1295,h_971/w_80,x_15,y_15,g_south_west,l_Klook_water_br_trans_yhcmh3/activities/jinifmyhq0890tgxjelo/RooftopBarLoungeNightTourNYC.jpg",
+    "imageWidth": 1295,
+    "imageHeight": 971,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoTKDc6FdQKi_wLClIFwD1u71RU5OgsDM7Ac0ktRtRUg&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/en-HK/activity/82449-ultimate-rooftop-bar-lounge-night-tour-new-york/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimages%2Ffl_lossy.progressive%2Cq_65%2Fc_fill%2Cw_1295%2Ch_971%2Fw_80%2Cx_15%2Cy_15%2Cg_south_west%2Cl_Klook_water_br_trans_yhcmh3%2Factivities%2Fjinifmyhq0890tgxjelo%2FRooftopBarLoungeNightTourNYC.jpg&tbnid=2n10rKwnd6d0UM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fen-HK%2Factivity%2F82449-ultimate-rooftop-bar-lounge-night-tour-new-york%2F&docid=sf0kqpBv0jLWCM&w=1295&h=971",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

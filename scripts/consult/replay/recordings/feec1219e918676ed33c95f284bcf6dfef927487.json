@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Kingdom Karaoke\" OR \"KARAOKE MONACO KTV\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T03:03:19.966Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Kingdom Karaoke\" OR \"KARAOKE MONACO KTV\" OR \"Karaoke Nnice 121 Võ Thị Sáu\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7430847353332026631",
+    "snippet": "Em có rồi - Kingdom Karaoke Quận 1 Phạm Viết Chanh. Enjoy singing Em có rồi at Kingdom Karaoke in Quận 1 by Phạm Viết Chanh. Entertainment at ...",
+    "position": 1
+   },
+   {
+    "title": "Karaoke Kingdom",
+    "link": "https://www.tiktok.com/@karaoke.kingdom",
+    "snippet": "Kingdom Karaoke - Nơi huy động niềm vui. kingdomkaraoke.com. Vương Quốc Restaurant. Đi karaoke mà mắc cỡ kiểu #TikTokAwardsVN #kingdomkaraoke #kingdom ...",
+    "position": 2
+   },
+   {
+    "title": "🔜 Nghe nói hôm nay trời trở gió Anh đi đâu đó nhớ ghé ...",
+    "link": "https://www.tiktok.com/@diadiemgiaitri/video/7570418955181935892",
+    "snippet": "Karaoke Kingdom Quận 1 · Kingdom Karaoke Từ Sơn · Karaoke Lập Xuân · Karaoke Kingdom Nha Trang · Karaoke Phượng Hoàng Cần Thơ · Karaoke Hong ...",
+    "position": 3
+   },
+   {
+    "title": "Karaoke Chào Cao Hơn Mâm Cỗ: Hài Hước Quận 1",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7384766283448896769",
+    "snippet": "1330 Lượt thích,23 Bình luận.Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Khám phá buổi karaoke vui nhộn với lời chào độc đáo!",
+    "position": 4
+   },
+   {
+    "title": "Sự việc lại thành ra thế này #KingdomKaraoke #Karaoke ...",
+    "link": "https://www.tiktok.com/@karaoke.kingdom/video/7378835124667845889",
+    "snippet": "2395 Lượt thích,42 Bình luận.Video TikTok từ Karaoke Kingdom (@karaoke.kingdom): \"Sự việc lại thành ra thế này #KingdomKaraoke #Karaoke ...",
+    "position": 5
+   },
+   {
+    "title": "T 🎤🔥 KINGDOM KARAOKE – CHUẨN BỊ BÙNG NỔ GIỮA ...",
+    "link": "https://www.tiktok.com/@kingdom.ktv.ha.lo/video/7506007048916651271",
+    "snippet": "T KINGDOM KARAOKE – CHUẨN BỊ BÙNG NỔ GIỮA LÒNG HẠ LONG! Chúng tôi đang gấp rút hoàn thiện từng chi tiết cuối cùng Để mang đến cho ...",
+    "position": 6
+   },
+   {
+    "title": "KingdomKaraoke",
+    "link": "https://www.tiktok.com/tag/kingdomkaraoke",
+    "snippet": "kingdom karaoke | Watch the latest videos about #kingdomkaraoke on TikTok.",
+    "position": 7
+   },
+   {
+    "title": "Đi hát với tui nà ❤️ #KingdomKaraoke #LostinKingdom ...",
+    "link": "https://www.tiktok.com/@lethao6996/video/7374748623080262919",
+    "snippet": "Đi hát với tui nà ❤️ #KingdomKaraoke #LostinKingdom #Kingdom #Karaoke #KaraokeQuan1 @Karaoke Kingdom · recommend-cover. ☘ Phương Thảo ☘️.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

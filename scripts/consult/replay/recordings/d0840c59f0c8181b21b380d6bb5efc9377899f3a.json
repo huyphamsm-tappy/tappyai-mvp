@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"CHARM SPA Garden\" OR \"Gạo Spa\" OR \"Massage Golden\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:41:17.438Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"CHARM SPA Garden\" OR \"Gạo Spa\" OR \"Massage Golden\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thư Giãn Tại Charm Spa Garden Quận 1",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7636350570244197640",
+    "snippet": "Với không gian riêng tư, sạch sẽ và tinh tế, Charm Spa Garden là lựa chọn lý tưởng cho những ai muốn tìm đến sự thư giãn giữa lòng thành phố.",
+    "position": 1
+   },
+   {
+    "title": "Charm Spa Garden Quận 1 (@charmspagardenquan1)",
+    "link": "https://www.tiktok.com/@charmspagardenquan1",
+    "snippet": "Charm Spa Garden Quận 1 · @charmspagardenquan1 · A 13 Years haven of relaxation and wellness at 6 Branches in Ho Chi Minh, Da Nang, Nha Trang, Da Lat. -Since 2013 ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn đang tìm MASSAGE QUẬN 1 nhưng muốn một nơi ...",
+    "link": "https://www.tiktok.com/@charmspagardenquan1/video/7685264046618201362",
+    "snippet": "Charm Spa Garden Quận 1. CHARM SPA GARDEN QUẬN 1 – KHOẢNG DỪNG GIỮA LÒNG SÀI GÒN Một ngày mệt mỏi, đôi khi điều bạn cần không phải là ...",
+    "position": 3
+   },
+   {
+    "title": "charmspagrand",
+    "link": "https://www.tiktok.com/tag/charmspagrand",
+    "snippet": "... quận 1 tại · spa Garden giữa Quận 1 ✨ Charm Spa Garden Quận 1 — nơi bạn có · nếu bạn là tín đồ spa lâu năm ở Đà Nẵng thì chắc chắc đã biết · Ưu đãi ...",
+    "position": 4
+   },
+   {
+    "title": "TING! Charm Spa Garden Nha Trang vừa cập nhật những ...",
+    "link": "https://www.tiktok.com/@charm.spa.garden/video/7398553669723049233",
+    "snippet": "TING! Charm Spa Garden Nha Trang vừa cập nhật những hình ảnh mới nhất ^^ Sau bao ngày tháng bận rộn tối mặt “ngôi nhà thứ 6” trong chuỗi hệ ...",
+    "position": 5
+   },
+   {
+    "title": "chạmspachill",
+    "link": "https://www.tiktok.com/tag/ch%E1%BA%A1mspachill",
+    "snippet": "Ghé ngay Charm Spa Garden Quận 1 Relax đúng · Ghé qua chill spa chăm da ... Charm Spa Garden Quận 1 – không gian xanh, sang và cực chill ‍♀️ ...",
+    "position": 6
+   },
+   {
+    "title": "Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc ...",
+    "link": "https://www.tiktok.com/@02baoanh/video/7502039618146094343",
+    "snippet": "Review Lúa Mạch Spa Ở Vĩnh Long · Spa Vuốt Lướt Phú Nhuận. Gạo Spa gội đầu siêu rẻ chỉ 29k #goidauthaoduoc #goidaulongxuyen #gaospalongxuyen # ...",
+    "position": 7
+   },
+   {
+    "title": "Charm Spa Nha Trang 43 Đống Đa Nha Trang",
+    "link": "https://www.tiktok.com/discover/charm-spa-nha-trang-43-%C4%91%E1%BB%91ng-%C4%91a-nha-trang",
+    "snippet": "Ưu đãi massage tại Charm Spa Garden Nha Trang. Trải nghiệm thư giãn tuyệt vời với dịch vụ massage tại Charm Spa Garden Nha Trang. Đừng bỏ lỡ ...",
+    "date": "21 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Cát Tiên Sa\" Cát Tiên site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:35:55.706Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Cát Tiên Sa\" Cát Tiên site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Cát Tiên Sa - Giá cả và Ưu đãi 2026, TP. Hồ ...",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-hotel-detail-104119357/hotel-cat-tien-sa/",
+    "snippet": "Giờ nhận phòng tại Khách sạn Cát Tiên Sa bắt đầu từ 14:00, và giờ trả phòng là 12:00. Giá phòng tại Khách sạn Cát Tiên Sa là bao nhiêu ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

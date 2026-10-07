@@ -1,0 +1,1273 @@
+{
+  "id": "G1a",
+  "group": "travel-single",
+  "criteria": [
+    "First reply gives a usable plan (stay + eat) from what is known, states assumptions, asks at most ONE question",
+    "Hotel/places render as cards with names",
+    "No delivery apps for another city",
+    "Reply appears once"
+  ],
+  "turns": [
+    {
+      "user": "Cuối tuần này đi Vũng Tàu 2 người, budget 5 triệu, thích hải sản",
+      "status": 200,
+      "elapsedMs": 35198,
+      "textFrames": 3,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "nhà hàng hải sản Vũng Tàu",
+            "location": "Vũng Tàu",
+            "type": "restaurant"
+          }
+        },
+        {
+          "name": "get_hotel_prices",
+          "args": {
+            "location": "Vũng Tàu",
+            "checkIn": "2026-09-26",
+            "checkOut": "2026-09-27"
+          }
+        },
+        {
+          "name": "get_weather",
+          "args": {
+            "location": "Vũng Tàu"
+          }
+        },
+        {
+          "name": "get_transport_options",
+          "args": {
+            "origin": "Quận 7, TP HCM",
+            "destination": "Vũng Tàu",
+            "mode": "intercity",
+            "date": "2026-09-26"
+          }
+        }
+      ],
+      "toolResults": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà hàng hải sản La Sirena",
+              "rating": 4.6,
+              "ratingCount": 1654,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:30–14:00, 17:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hàu Nướng Oyster Box",
+              "rating": 4.7,
+              "ratingCount": 240,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng hải sản",
+                "Khu ăn uống",
+                "Chợ thực phẩm tươi sống",
+                "Nhà hàng bán đồ ăn mang về",
+                "Nhà cung cấp sò biển",
+                "Nhà hàng cháo",
+                "Nhà hàng",
+                "Nhà hàng phục vụ sò",
+                "Nhà bán buôn hải sản",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "10:30–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "BOHO Restaurant",
+              "rating": 4.6,
+              "ratingCount": 999,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Gành Hào 1",
+              "rating": 4.3,
+              "ratingCount": 10196,
+              "price": "200-800 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–21:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "rating": 4.3,
+              "ratingCount": 6884,
+              "price": "100-300 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Bờ Biển",
+              "rating": 4.3,
+              "ratingCount": 2930,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "08:30–03:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Gành Hào 2",
+              "rating": 4.2,
+              "ratingCount": 6885,
+              "price": "200-700 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–21:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+              "rating": 4.2,
+              "ratingCount": 2136,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.34382,107.09478",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng hải sản La Sirena",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWloLQ5G10Pb-e1WwLG3Y5A4wyZWLKFqLv9Ubl-bUh1NaV1RAzHS2Z7D6rq79NOOC1fBqDxgWEu9lEXx76jGIA9IeMKidtN6gfYfzRPoKVcJuen1NWB3jxO6UjZpL-v1KDDCl4zgCw",
+                "address": "159 Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1654,
+                "openingHours": "10:30–14:00, 17:00–22:30",
+                "openNow": false,
+                "phone": "+84 908 429 866",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:30–14:00, 17:00–22:30",
+                  "Thứ Tư": "10:30–14:00, 17:00–22:30",
+                  "Thứ Năm": "10:30–14:00, 17:00–22:30",
+                  "Thứ Sáu": "10:30–14:00, 17:00–22:30",
+                  "Thứ Bảy": "10:30–14:00, 17:00–22:30",
+                  "Chủ Nhật": "10:30–14:00, 17:00–22:30",
+                  "Thứ Hai": "10:30–14:00, 17:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15039716562630094517",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20La%20Sirena%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/vung-tau/la-sirena-bar-grill",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908429866",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33102,107.08262",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàu Nướng Oyster Box",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmu1t2XJEuncyIA-Jzf9FKlRW2y2hQ6z-jccMuBw70zgRtOWMQteUossm4_KCT9vA1mAKDSnHRNu647hrUBKEkoBiCaBhbbzrLSu96aFzb0TL3-vuIWW1DYNvbdv0MXXpLHFw_T",
+                "address": "212A Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 240,
+                "openingHours": "10:30–22:30",
+                "openNow": true,
+                "phone": "+84 901 421 009",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30",
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Khu ăn uống",
+                  "Chợ thực phẩm tươi sống",
+                  "Nhà hàng bán đồ ăn mang về",
+                  "Nhà cung cấp sò biển",
+                  "Nhà hàng cháo",
+                  "Nhà hàng",
+                  "Nhà hàng phục vụ sò",
+                  "Nhà bán buôn hải sản",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12946812521466819301",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0u%20N%C6%B0%E1%BB%9Bng%20Oyster%20Box%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/oysterboxvungtau",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901421009",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33063,107.07570",
+                "domain": "food",
+                "kind": "place",
+                "name": "BOHO Restaurant",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1wkHm6QGNzuqoFq5Z0KGbM1DkIYLDn-BtqiBx3ccNGjn6SBVmAMPqNM-SApM3riBCLqY_XiJZkjg9pj0a-jnUJiU9bKLuE7AZhDZGcrcsD0w23Of8auu6u4QjdWFEXo9yXCTVDHMOLJuQ",
+                "address": "66 Hạ Long, Vũng Tàu, Hồ Chí Minh 240000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 999,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 798 633 339",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10826302059591349316",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=BOHO%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84798633339",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.36003,107.06027",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Gành Hào 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnVPnN_GsPbvJzomqR0nXWQ3OboY1CUuJBZWltOt_6Nm1BrI_nnv9wyp7blG-3QSwB5NYKhdVYB-5nfKzCLTRqr94bY1K_dQPd3iaVsPYoYSiebvEIMt8tXkohp-kWHIHvD9hJ4B6cOY9zj",
+                "address": "03 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 10196,
+                "openingHours": "10:00–21:00",
+                "openNow": true,
+                "phone": "+84 1900 3332",
+                "priceRangeText": "200-800 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–21:00",
+                  "Thứ Tư": "10:00–21:00",
+                  "Thứ Năm": "10:00–21:00",
+                  "Thứ Sáu": "10:00–21:00",
+                  "Thứ Bảy": "10:00–21:00",
+                  "Chủ Nhật": "10:00–21:00",
+                  "Thứ Hai": "10:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17550626060477245407",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20G%C3%A0nh%20H%C3%A0o%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003332",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.35365,107.06344",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_F4lj7EV5Fp4mNTll5abBEVcGB6MzKWgUBzI48dmU3xUZmi5R-LGrlB6ERzrswyendELXVrIZgmuDwSmTgLooQdxraDQbbQDxV-sJVVRixp8L9gytvfzrMXrU5a_h1o-Jpm3aDooAjVKP",
+                "address": "34 Trần Phú, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 6884,
+                "openingHours": "10:00–22:30",
+                "openNow": true,
+                "phone": "+84 903 376 468",
+                "priceRangeText": "100-300 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–22:30",
+                  "Thứ Tư": "10:00–22:30",
+                  "Thứ Năm": "10:00–22:30",
+                  "Thứ Sáu": "10:00–22:30",
+                  "Thứ Bảy": "10:00–22:30",
+                  "Chủ Nhật": "10:00–22:30",
+                  "Thứ Hai": "10:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13541304505137005941",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20T%E1%BB%B1%20Nhi%C3%AAn%20V%C5%A9ng%20T%C3%A0u%20-%20%E1%BB%90c%20T%E1%BB%B1%20Nhi%C3%AAn%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/octunhien",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903376468",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.32841,107.07958",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Bờ Biển",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkOoSXcopoduGgCllyzyJ3aktfv1KG-lninR40053-FMEbw9Ntrwdpvzbb2CxpD6DJj9ekgmMoGobRO_5DQe0KWaSwwWd530AZ8FzDYR_pKWk1p1yw6Vmgem7ukhNHjNeq5zMg4WH2m0P8",
+                "address": "32 Hạ Long, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 2930,
+                "openingHours": "08:30–03:00",
+                "openNow": true,
+                "phone": "+84 902 720 807",
+                "openingHoursWeek": {
+                  "Thứ Ba": "08:30–03:00",
+                  "Thứ Tư": "08:30–03:00",
+                  "Thứ Năm": "08:30–03:00",
+                  "Thứ Sáu": "08:30–03:00",
+                  "Thứ Bảy": "08:30–03:00",
+                  "Chủ Nhật": "08:30–03:00",
+                  "Thứ Hai": "08:30–03:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15680268805366210021",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20B%E1%BB%9D%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902720807",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33909,107.07140",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Gành Hào 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkAclGhoi0_IOHEieqnke5veeYAc8GN6y1x8Jx6pyrPqYatO54jnqW2H0Xl9ypP_1FWyZx1btkEE5vJHyB2-4fvske2CGle9YUdsxgaTM3FGYVHjjWQ1fPKyHcIcqoU8qkAbfhU9A",
+                "address": "83QC+RM3, 09 Hạ Long, Thành phố Vũng Tầu, Bà Rịa - Vũng Tàu, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6885,
+                "openingHours": "09:00–21:00",
+                "openNow": true,
+                "phone": "+84 1900 3332",
+                "priceRangeText": "200-700 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00",
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=789246756626221904",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20G%C3%A0nh%20H%C3%A0o%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ganhhao.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003332",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34714,107.09324",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmK8aDb0woI_m_i56lnvxlDvgPYiwGabjkiYsmp98F5U-ymhD4_FqEuf2-UXvqfyGC0PtXl5f7BKrQ9ePuU4aDrTYeNrc1N9TR7O4gRAs7ME7BV_WhCpqZDsBMMuvhFK0resUOK",
+                "address": "02-04 Lê Hồng Phong, Vũng Tàu, Hồ Chí Minh 970000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 2136,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 901 558 866",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14528467955073905872",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nha%CC%80%20Ha%CC%80ng%20Va%CC%A3n%20Cha%CC%80i%20%7C%20Nh%C3%A0%20H%C3%A0ng%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901558866",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20V%C5%A9ng%20T%C3%A0u%20V%C5%A9ng%20T%C3%A0u",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Nhà hàng hải sản La Sirena",
+              "rating": 4.6,
+              "ratingCount": 1654,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:30–14:00, 17:00–22:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.6",
+                "1654 reviews"
+              ]
+            },
+            {
+              "name": "Hàu Nướng Oyster Box",
+              "rating": 4.7,
+              "ratingCount": 240,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng hải sản",
+                "Khu ăn uống",
+                "Chợ thực phẩm tươi sống",
+                "Nhà hàng bán đồ ăn mang về",
+                "Nhà cung cấp sò biển",
+                "Nhà hàng cháo",
+                "Nhà hàng",
+                "Nhà hàng phục vụ sò",
+                "Nhà bán buôn hải sản",
+                "Nhà hàng Phương Tây"
+              ],
+              "hours": "10:30–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "BOHO Restaurant",
+              "rating": 4.6,
+              "ratingCount": 999,
+              "price": "200-600 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Gành Hào 1",
+              "rating": 4.3,
+              "ratingCount": 10196,
+              "price": "200-800 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–21:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+              "rating": 4.3,
+              "ratingCount": 6884,
+              "price": "100-300 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "10:00–22:30",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Hải Sản Bờ Biển",
+              "rating": 4.3,
+              "ratingCount": 2930,
+              "price": null,
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "08:30–03:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Gành Hào 2",
+              "rating": 4.2,
+              "ratingCount": 6885,
+              "price": "200-700 N ₫",
+              "categories": [
+                "Nhà hàng hải sản"
+              ],
+              "hours": "09:00–21:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+              "rating": 4.2,
+              "ratingCount": 2136,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–22:00",
+              "open": true,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.34382,107.09478",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng hải sản La Sirena",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWloLQ5G10Pb-e1WwLG3Y5A4wyZWLKFqLv9Ubl-bUh1NaV1RAzHS2Z7D6rq79NOOC1fBqDxgWEu9lEXx76jGIA9IeMKidtN6gfYfzRPoKVcJuen1NWB3jxO6UjZpL-v1KDDCl4zgCw",
+                "address": "159 Thùy Vân, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 1654,
+                "openingHours": "10:30–14:00, 17:00–22:30",
+                "openNow": false,
+                "phone": "+84 908 429 866",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:30–14:00, 17:00–22:30",
+                  "Thứ Tư": "10:30–14:00, 17:00–22:30",
+                  "Thứ Năm": "10:30–14:00, 17:00–22:30",
+                  "Thứ Sáu": "10:30–14:00, 17:00–22:30",
+                  "Thứ Bảy": "10:30–14:00, 17:00–22:30",
+                  "Chủ Nhật": "10:30–14:00, 17:00–22:30",
+                  "Thứ Hai": "10:30–14:00, 17:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 0,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.6",
+                    "params": {
+                      "value": 4.6
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "1654 reviews",
+                    "params": {
+                      "count": 1654
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "rating",
+                  "evidence": "rated 4.7",
+                  "params": {
+                    "value": 4.7
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@khoasheep/video/7356455186396728593",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15039716562630094517",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/vung-tau/la-sirena-bar-grill",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84908429866",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20La%20Sirena%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33102,107.08262",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hàu Nướng Oyster Box",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmu1t2XJEuncyIA-Jzf9FKlRW2y2hQ6z-jccMuBw70zgRtOWMQteUossm4_KCT9vA1mAKDSnHRNu647hrUBKEkoBiCaBhbbzrLSu96aFzb0TL3-vuIWW1DYNvbdv0MXXpLHFw_T",
+                "address": "212A Phan Chu Trinh, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 240,
+                "openingHours": "10:30–22:30",
+                "openNow": true,
+                "phone": "+84 901 421 009",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:30–22:30",
+                  "Thứ Tư": "10:30–22:30",
+                  "Thứ Năm": "10:30–22:30",
+                  "Thứ Sáu": "10:30–22:30",
+                  "Thứ Bảy": "10:30–22:30",
+                  "Chủ Nhật": "10:30–22:30",
+                  "Thứ Hai": "10:30–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản",
+                  "Khu ăn uống",
+                  "Chợ thực phẩm tươi sống",
+                  "Nhà hàng bán đồ ăn mang về",
+                  "Nhà cung cấp sò biển",
+                  "Nhà hàng cháo",
+                  "Nhà hàng",
+                  "Nhà hàng phục vụ sò",
+                  "Nhà bán buôn hải sản",
+                  "Nhà hàng Phương Tây"
+                ],
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@qmthau/video/7149527202277641498",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=12946812521466819301",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/oysterboxvungtau",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901421009",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%C3%A0u%20N%C6%B0%E1%BB%9Bng%20Oyster%20Box%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33063,107.07570",
+                "domain": "food",
+                "kind": "place",
+                "name": "BOHO Restaurant",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1wkHm6QGNzuqoFq5Z0KGbM1DkIYLDn-BtqiBx3ccNGjn6SBVmAMPqNM-SApM3riBCLqY_XiJZkjg9pj0a-jnUJiU9bKLuE7AZhDZGcrcsD0w23Of8auu6u4QjdWFEXo9yXCTVDHMOLJuQ",
+                "address": "66 Hạ Long, Vũng Tàu, Hồ Chí Minh 240000, Việt Nam",
+                "rating": 4.6,
+                "ratingCount": 999,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 798 633 339",
+                "priceRangeText": "200-600 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@dorcasumutoniwase/video/7669427737391598856",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10826302059591349316",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84798633339",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=BOHO%20Restaurant%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.36003,107.06027",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Gành Hào 1",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnVPnN_GsPbvJzomqR0nXWQ3OboY1CUuJBZWltOt_6Nm1BrI_nnv9wyp7blG-3QSwB5NYKhdVYB-5nfKzCLTRqr94bY1K_dQPd3iaVsPYoYSiebvEIMt8tXkohp-kWHIHvD9hJ4B6cOY9zj",
+                "address": "03 Trần Phú, Vũng Tàu, Hồ Chí Minh, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 10196,
+                "openingHours": "10:00–21:00",
+                "openNow": true,
+                "phone": "+84 1900 3332",
+                "priceRangeText": "200-800 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–21:00",
+                  "Thứ Tư": "10:00–21:00",
+                  "Thứ Năm": "10:00–21:00",
+                  "Thứ Sáu": "10:00–21:00",
+                  "Thứ Bảy": "10:00–21:00",
+                  "Chủ Nhật": "10:00–21:00",
+                  "Thứ Hai": "10:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17550626060477245407",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20G%C3%A0nh%20H%C3%A0o%201%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003332",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.35365,107.06344",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_F4lj7EV5Fp4mNTll5abBEVcGB6MzKWgUBzI48dmU3xUZmi5R-LGrlB6ERzrswyendELXVrIZgmuDwSmTgLooQdxraDQbbQDxV-sJVVRixp8L9gytvfzrMXrU5a_h1o-Jpm3aDooAjVKP",
+                "address": "34 Trần Phú, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 6884,
+                "openingHours": "10:00–22:30",
+                "openNow": true,
+                "phone": "+84 903 376 468",
+                "priceRangeText": "100-300 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "10:00–22:30",
+                  "Thứ Tư": "10:00–22:30",
+                  "Thứ Năm": "10:00–22:30",
+                  "Thứ Sáu": "10:00–22:30",
+                  "Thứ Bảy": "10:00–22:30",
+                  "Chủ Nhật": "10:00–22:30",
+                  "Thứ Hai": "10:00–22:30"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=13541304505137005941",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%E1%BB%90c%20T%E1%BB%B1%20Nhi%C3%AAn%20V%C5%A9ng%20T%C3%A0u%20-%20%E1%BB%90c%20T%E1%BB%B1%20Nhi%C3%AAn%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/octunhien",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84903376468",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.32841,107.07958",
+                "domain": "food",
+                "kind": "place",
+                "name": "Hải Sản Bờ Biển",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkOoSXcopoduGgCllyzyJ3aktfv1KG-lninR40053-FMEbw9Ntrwdpvzbb2CxpD6DJj9ekgmMoGobRO_5DQe0KWaSwwWd530AZ8FzDYR_pKWk1p1yw6Vmgem7ukhNHjNeq5zMg4WH2m0P8",
+                "address": "32 Hạ Long, Vũng Tàu, Hồ Chí Minh 790000, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 2930,
+                "openingHours": "08:30–03:00",
+                "openNow": true,
+                "phone": "+84 902 720 807",
+                "openingHoursWeek": {
+                  "Thứ Ba": "08:30–03:00",
+                  "Thứ Tư": "08:30–03:00",
+                  "Thứ Năm": "08:30–03:00",
+                  "Thứ Sáu": "08:30–03:00",
+                  "Thứ Bảy": "08:30–03:00",
+                  "Chủ Nhật": "08:30–03:00",
+                  "Thứ Hai": "08:30–03:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15680268805366210021",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=H%E1%BA%A3i%20S%E1%BA%A3n%20B%E1%BB%9D%20Bi%E1%BB%83n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84902720807",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.33909,107.07140",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Gành Hào 2",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkAclGhoi0_IOHEieqnke5veeYAc8GN6y1x8Jx6pyrPqYatO54jnqW2H0Xl9ypP_1FWyZx1btkEE5vJHyB2-4fvske2CGle9YUdsxgaTM3FGYVHjjWQ1fPKyHcIcqoU8qkAbfhU9A",
+                "address": "83QC+RM3, 09 Hạ Long, Thành phố Vũng Tầu, Bà Rịa - Vũng Tàu, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 6885,
+                "openingHours": "09:00–21:00",
+                "openNow": true,
+                "phone": "+84 1900 3332",
+                "priceRangeText": "200-700 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00",
+                  "Chủ Nhật": "09:00–21:00",
+                  "Thứ Hai": "09:00–21:00"
+                },
+                "categories": [
+                  "Nhà hàng hải sản"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=789246756626221904",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20H%C3%A0ng%20G%C3%A0nh%20H%C3%A0o%202%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://ganhhao.com.vn/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419003332",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.34714,107.09324",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmK8aDb0woI_m_i56lnvxlDvgPYiwGabjkiYsmp98F5U-ymhD4_FqEuf2-UXvqfyGC0PtXl5f7BKrQ9ePuU4aDrTYeNrc1N9TR7O4gRAs7ME7BV_WhCpqZDsBMMuvhFK0resUOK",
+                "address": "02-04 Lê Hồng Phong, Vũng Tàu, Hồ Chí Minh 970000, Việt Nam",
+                "rating": 4.2,
+                "ratingCount": 2136,
+                "openingHours": "09:00–22:00",
+                "openNow": true,
+                "phone": "+84 901 558 866",
+                "openingHoursWeek": {
+                  "Thứ Ba": "09:00–22:00",
+                  "Thứ Tư": "09:00–22:00",
+                  "Thứ Năm": "09:00–22:00",
+                  "Thứ Sáu": "09:00–22:00",
+                  "Thứ Bảy": "09:00–22:00",
+                  "Chủ Nhật": "09:00–22:00",
+                  "Thứ Hai": "09:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14528467955073905872",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nha%CC%80%20Ha%CC%80ng%20Va%CC%A3n%20Cha%CC%80i%20%7C%20Nh%C3%A0%20H%C3%A0ng%20V%C5%A9ng%20T%C3%A0u%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84901558866",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=nh%C3%A0%20h%C3%A0ng%20h%E1%BA%A3i%20s%E1%BA%A3n%20V%C5%A9ng%20T%C3%A0u%20V%C5%A9ng%20T%C3%A0u",
+            "picked": [
+              "place:osm:10.34382,107.09478",
+              "place:osm:10.33102,107.08262",
+              "place:osm:10.33063,107.07570"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.34382,107.09478",
+            "place:osm:10.33102,107.08262",
+            "place:osm:10.33063,107.07570"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Nhà hàng hải sản La Sirena",
+          "Hàu Nướng Oyster Box",
+          "BOHO Restaurant",
+          "Nhà hàng Gành Hào 1",
+          "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+          "Hải Sản Bờ Biển",
+          "Nhà Hàng Gành Hào 2",
+          "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+        ],
+        [
+          "Nhà hàng hải sản La Sirena",
+          "Hàu Nướng Oyster Box",
+          "BOHO Restaurant",
+          "Nhà hàng Gành Hào 1",
+          "Ốc Tự Nhiên Vũng Tàu - Ốc Tự Nhiên 2",
+          "Hải Sản Bờ Biển",
+          "Nhà Hàng Gành Hào 2",
+          "Nhà Hàng Vạn Chài | Nhà Hàng Vũng Tàu"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình sẽ lập kế hoạch cho chuyến Vũng Tàu cuối tuần này cho 2 người. Mình tìm nhà hàng hải sản ngon và kiểm tra thời tiết nha.\n\nTuyệt vời! Mình vừa tìm được những chỗ hải sản ngon ở Vũng Tàu. Thời tiết cuối tuần có mưa nhẹ (78% khả năng mưa), nên mình sẽ lập kế hoạch 2 ngày 1 đêm cho 2 người với tổng budget 5 triệu VND.\n\n[TAPPY_PLAN]\n{\"type\":\"trip\",\"title\":\"Cuối tuần hải sản Vũng Tàu - 2 người, 2 ngày 1 đêm\",\"people\":2,\"budget_total\":\"5.000.000 VND\",\"days\":[{\"label\":\"Ngày 1 - Thứ 7 (26/9)\",\"items\":[{\"time\":\"08:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách Phương Trang - TP HCM đi Vũng Tàu\",\"description\":\"Xe ghế ngồi 28 chỗ, khoảng 2 giờ, giá tham khao 140.000-160.000 VND/người\",\"price\":\"chưa có giá\",\"address\":\"Bến xe Miền Tây, TP HCM\",\"maps_link\":\"https://maps.google.com/maps/search/Ben+xe+Mien+Tay+TPHCM\",\"booking_link\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-vung-tau-ba-ria-vung-tau-129t2131.html\",\"place_id\":\"\"},{\"time\":\"11:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Nhà hàng hải sản La Sirena\",\"description\":\"4.6⭐ (1.654 đánh giá) - Hải sản tươi, view biển đẹp, mở 10:30-14:00 & 17:00-22:30\",\"price\":\"chưa có giá\",\"address\":\"159 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=15039716562630094517\",\"booking_link\":\"https://www.foody.vn/vung-tau/la-sirena-bar-grill\",\"place_id\":\"ChIJKfyGn_xvdTERtS4gpofOt9A\"},{\"time\":\"14:00\",\"emoji\":\"🏨\",\"category\":\"hotel\",\"name\":\"Khách sạn Golden Era - Vũng Tàu\",\"description\":\"4.9⭐ (1.765 đánh giá) - Vị trí bãi Sau, gần biển, phòng sạch sẽ, dịch vụ tốt\",\"price\":\"chưa có giá\",\"address\":\"03-05 Thùy Vân, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=5172176436806287195\",\"booking_link\":\"https://goldenera.vttu.edu.vn/\",\"place_id\":\"ChIJBfGiCwBldTERW_973xBDx0c\"},{\"time\":\"18:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"Hàu Nướng Oyster Box\",\"description\":\"4.7⭐ (240 đánh giá) - Chuyên hàu nướng, tươi sống, giá 100-200k/người, mở 10:30-22:30\",\"price\":\"chưa có giá\",\"address\":\"212A Phan Chu Trinh, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=12946812521466819301\",\"booking_link\":\"https://www.facebook.com/oysterboxvungtau\",\"place_id\":\"ChIJLfGUrgxvdTER5fKbo2RRrLM\"}]},{\"label\":\"Ngày 2 - Chủ nhật (27/9)\",\"items\":[{\"time\":\"09:00\",\"emoji\":\"🍤\",\"category\":\"food\",\"name\":\"BOHO Restaurant\",\"description\":\"4.6⭐ (999 đánh giá) - Hải sản cao cấp, view biển, giá 200-600k/người, mở 09:00-22:00\",\"price\":\"chưa có giá\",\"address\":\"66 Hạ Long, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/?cid=10826302059591349316\",\"booking_link\":\"http://bohovungtau.vn/\",\"place_id\":\"ChIJaf_lUwBldTERRLQF7VzAPpY\"},{\"time\":\"12:00\",\"emoji\":\"🏖️\",\"category\":\"entertainment\",\"name\":\"Bãi Sau Vũng Tàu\",\"description\":\"Bãi biển đẹp, nước xanh, thích hợp tắm biển và thư giãn (lưu ý: có mưa nhẹ)\",\"price\":\"chưa có giá\",\"address\":\"Bãi Sau, Vũng Tàu\",\"maps_link\":\"https://maps.google.com/maps/search/Bai+Sau+Vung+Tau\",\"booking_link\":\"\",\"place_id\":\"\"},{\"time\":\"15:00\",\"emoji\":\"🚗\",\"category\":\"transport\",\"name\":\"Xe khách Phương Trang - Vũng Tàu về TP HCM\",\"description\":\"Xe ghế ngồi 28 chỗ, khoảng 2 giờ, giá tham khao 140.000-160.000 VND/người\",\"price\":\"chưa có giá\",\"address\":\"Bến xe Vũng Tàu, 192 Nam Kỳ Khởi Nghĩa\",\"maps_link\":\"https://maps.google.com/maps/search/Ben+xe+Vung+Tau\",\"booking_link\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-vung-tau-ba-ria-vung-tau-129t2131.html\",\"place_id\":\"\"}]}],\"cost_breakdown\":{\"Xe khách (2 chiều)\":\"chưa có giá\",\"Khách sạn (1 đêm)\":\"chưa có giá\",\"Ăn trưa ngày 1 (La Sirena)\":\"chưa có giá\",\"Ăn tối ngày 1 (Oyster Box)\":\"chưa có giá\",\"Ăn sáng ngày 2 (BOHO)\":\"chưa có giá\"},\"share_text\":\"Cuối tuần hải sản tươi ở Vũng Tàu cùng người yêu 🦐🌊 Lên kế hoạch với #TappyAI\"}\n[/TAPPY_PLAN]\n\nMình chọn **Nhà hàng hải sản La Sirena** cho bữa trưa ngày 1 vì có rating 4.6⭐ từ 1.654 đánh giá — đủ mạnh để tin tưởng. Mặc dù **Hàu Nướng Oyster Box** cao hơn (4.7⭐), nhưng La Sirena có đánh giá nhiều hơn và view biển đẹp, phù hợp cho bữa chính. Tối hôm đó mình gợi ý Oyster Box để thử hàu nướng — đặc sản Vũng Tàu.\n\nVề khách sạn, **Golden Era** là lựa chọn tốt nhất với 4.9⭐ và 1.765 đánh giá, vị trí bãi Sau gần biển. Sáng ngày 2, **BOHO Restaurant** là nơi lý tưởng để ăn sáng trước khi về.\n\n**Tổng ước tính, nước uống, hoặc mua đặc sản. Lưu ý: thời tiết có mưa nhẹ (78% khả năng), nên mang ô và chọn các hoạt động trong nhà nếu cần.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"Tìm vé trên Vexere\",\"type\":\"search\",\"url\":\"https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-vung-tau-ba-ria-vung-tau-129t2131.html\",\"primary\":true},{\"label\":\"📍 Maps - La Sirena\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15039716562630094517\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem thêm quán hải sản khác|Tìm hoạt động ngoài trời Vũng Tàu|Mua đặc sản Vũng Tàu[/FOLLOWUPS]",
+      "visible": "Mình sẽ lập kế hoạch cho chuyến Vũng Tàu cuối tuần này cho 2 người. Mình tìm nhà hàng hải sản ngon và kiểm tra thời tiết nha.\n\nTuyệt vời! Mình vừa tìm được những chỗ hải sản ngon ở Vũng Tàu. Thời tiết cuối tuần có mưa nhẹ (78% khả năng mưa), nên mình sẽ lập kế hoạch 2 ngày 1 đêm cho 2 người với tổng budget 5 triệu VND.\n\nMình chọn **Nhà hàng hải sản La Sirena** cho bữa trưa ngày 1 vì có rating 4.6⭐ từ 1.654 đánh giá — đủ mạnh để tin tưởng. Mặc dù **Hàu Nướng Oyster Box** cao hơn (4.7⭐), nhưng La Sirena có đánh giá nhiều hơn và view biển đẹp, phù hợp cho bữa chính. Tối hôm đó mình gợi ý Oyster Box để thử hàu nướng — đặc sản Vũng Tàu.\n\nVề khách sạn, **Golden Era** là lựa chọn tốt nhất với 4.9⭐ và 1.765 đánh giá, vị trí bãi Sau gần biển. Sáng ngày 2, **BOHO Restaurant** là nơi lý tưởng để ăn sáng trước khi về.\n\n**Tổng ước tính, nước uống, hoặc mua đặc sản. Lưu ý: thời tiết có mưa nhẹ (78% khả năng), nên mang ô và chọn các hoạt động trong nhà nếu cần."
+    }
+  ]
+}

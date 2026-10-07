@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Thương Rooftop\" OR \"Xào Xạc cafe & plants\" OR \"Phê La\" quan 3 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:22:43.072Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Thương Rooftop\" OR \"Xào Xạc cafe & plants\" OR \"Phê La\" quan 3 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi nhánh Phê La cực chill ngay tại Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigondidautaaa/video/7330201421733776647",
+    "snippet": "Quán Cà Phê Ở Sea 3 Ở Đâu. Chi nhánh Phê La cực chill ngay tại Quận 3 #saigondidauta #diadiemsongao #phela.",
+    "position": 1
+   },
+   {
+    "title": "Phê La: Quán Cà Phê Đẹp Ở Quận 3",
+    "link": "https://www.tiktok.com/@quiz_didaukhum/video/7154908789995556122",
+    "snippet": "Phê La: Quán Cà Phê Đẹp Ở Quận 3. Khám phá quán cà phê Phê La với không gian ngập tràn nắng tại Quận 3. Tìm hiểu view đẹp và những trải nghiệm ...",
+    "position": 2
+   },
+   {
+    "title": "Xào xạc cafe & plants 📍 453/15 Nguyễn Đình Chiểu ...",
+    "link": "https://www.tiktok.com/@cafehoppersg/photo/7482220926134750471?lang=ro-RO",
+    "snippet": "Xào xạc cafe & plants 453/15 Nguyễn Đình Chiểu, phường 5, quận 3, TpHCM 7:30 am - 10 pm #xaoxac #xaoxaccafe #xaoxaccafeplants #cafe # ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Cửa Hàng Phê La Mới Tại Quận 5 HCM",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7387795688312081671",
+    "snippet": "Khám phá không gian và thực đơn độc đáo tại Phê La, 994 Trần Hưng Đạo, Quận 5. Trải nghiệm cafe đẹp và thú vị! #phela #nothuongdacsan. Đây là ...",
+    "position": 4
+   },
+   {
+    "title": "Tạm gác âu lo lại mình cùng đi Phê La chi nhánh mới ...",
+    "link": "https://www.tiktok.com/@lee.haydi/video/7157261988249308443",
+    "snippet": "Phê La Hồ Tùng Mậu là quán cafe mộc mạc nằm ở số 125 Hồ Tùng Mậu, phường Bến Nghé, Quận 1, TP.HCM. Quán được nhiều người tìm đến vì không gian ...",
+    "position": 5
+   },
+   {
+    "title": "Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7215572400639905050",
+    "snippet": "1581 Lượt thích,Video TikTok từ Sài Gòn Béo ☕️ (@saigonbeoreview): \"Chi nhánh Phê La mới toanh tại Hồ Con Rùa Quận 3 ...",
+    "position": 6
+   },
+   {
+    "title": "PHÊ LA: The Hot New Chill Café in Saigon",
+    "link": "https://www.tiktok.com/@vivucungdung/video/7644528934310153480",
+    "snippet": "PHÊ LA has officially landed at Vincom 3/2, making waves in the café scene for those looking to chill. This trendy spot is designed for ...",
+    "position": 7
+   },
+   {
+    "title": "Phê La Hồ Con Rùa trở lại rồi Đồng Chill ơiiii #PhêLa",
+    "link": "https://www.tiktok.com/@phela_xinchaoo/video/7512493303921691912",
+    "snippet": "**Vị trí dễ tìm** Chi nhánh mới của Phê La nằm tại số 42 đường Trần Cao Vân, phường Võ Thị Sáu, Quận 3. Bạn có thể dễ dàng nhận ra cửa hàng mới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

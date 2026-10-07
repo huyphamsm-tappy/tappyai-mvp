@@ -1,0 +1,53 @@
+{
+  "id": "S1",
+  "text": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu",
+  "parent": null,
+  "status": 200,
+  "ms": 35444,
+  "evidenceId": "10c0ae35-8f22-47aa-babe-cf215871abc8",
+  "toolCalls": [
+    {
+      "tool": "search_products",
+      "args": {
+        "query": "tai nghe bluetooth pin trâu dưới 1 triệu"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu"
+    },
+    {
+      "name": "Top 10+ mẫu tai nghe Bluetooth tốt nhất 2026 dưới 1 triệu"
+    },
+    {
+      "name": "thảo luận - Tìm tai nghe bluetooth nhét tai nghe dưới 1 triệu"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm tai nghe Bluetooth pin trâu dưới 1 triệu cho bạn nhé.Mình thấy có.\n\nTuy nhiên, kết quả hiện tại chưa có giá chính xác và đầy đủ thông tin chi tiết từ các sàn bán hàng.\n\nBạn muốn mình tìm kiếm sâu hơn về một mẫu cụ thể nào không?\n\nGiá nêu trên chưa được xác nhận từ listing đã tìm — bạn kiểm tra trên trang bán trước khi đặt.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[FOLLOWUPS]Soundpeats TrueFree 2 giá bao nhiêu|QCY T13 ở đâu bán|Edifier TWS 1 Pro có tốt không[/FOLLOWUPS]\n\n📸 _Hình ảnh & link review:_\n\n**Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpjMIaKsvH0P7U1ohVi5fuwZQatvoPmb8hULt07k0eOQ&s=10)\n\n**Top 10+ mẫu tai nghe Bluetooth tốt nhất 2026 dưới 1 triệu**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIVGoHLf8cNe31Du-PdcWNdpIshKjtETUqfh1fczB22A&s=10)\n\n**thảo luận**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4nMoWVVRtYM-yiROZ9GdYVLey7-SEZXjtEP4nDGBVeA&s)\n\n🎵 [Video liên quan trên TikTok](https://www.tiktok.com/@h.say.268/video/7629638624639814920)",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Mua tai nghe bluetooth dưới 1 triệu, pin trâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm tai nghe Bluetooth pin trâu dưới 1 triệu cho bạn nhé.Mình thấy có.\n\nTuy nhiên, kết quả hiện tại chưa có giá chính xác và đầy đủ thông tin chi tiết từ các sàn bán hàng.\n\nBạn muốn mình tìm kiếm sâu hơn về một mẫu cụ thể nào không?\n\nGiá nêu trên chưa được xác nhận từ listing đã tìm — bạn kiểm tra trên trang bán trước khi đặt.\n\nNhững lựa chọn mình xác minh được cho yêu cầu này nằm ở thẻ bên dưới.[FOLLOWUPS]Soundpeats TrueFree 2 giá bao nhiêu|QCY T13 ở đâu bán|Edifier TWS 1 Pro có tốt không[/FOLLOWUPS]\n\n📸 _Hình ảnh & link review:_\n\n**Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpjMIaKsvH0P7U1ohVi5fuwZQatvoPmb8hULt07k0eOQ&s=10)\n\n**Top 10+ mẫu tai nghe Bluetooth tốt nhất 2026 dưới 1 triệu**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQIVGoHLf8cNe31Du-PdcWNdpIshKjtETUqfh1fczB22A&s=10)\n\n**thảo luận**\n![Ảnh địa điểm](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4nMoWVVRtYM-yiROZ9GdYVLey7-SEZXjtEP4nDGBVeA&s)\n\n🎵 [Video liên quan trên TikTok](https://www.tiktok.com/@h.say.268/video/7629638624639814920)"
+    }
+  ]
+}

@@ -67,7 +67,10 @@ fun TappyMarkdown(
     markdown: String,
     modifier: Modifier = Modifier,
 ) {
-    val blocks = remember(markdown) { parseMarkdownBlocks(markdown) }
+    // Bold is balanced per line BEFORE parsing: the inline scan below emits an unterminated `**`
+    // literally, so an unmatched one (model slip, guard cut, pair split by a line break) must be
+    // gone by then (owner UAT 2026-09-28; mirrors web formatMessage).
+    val blocks = remember(markdown) { parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)) }
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(TappySpacing.md),
@@ -75,6 +78,26 @@ fun TappyMarkdown(
         blocks.forEach { block -> MarkdownBlock(block) }
     }
 }
+
+/**
+ * Exactly the characters [TappyMarkdown] puts on screen for [markdown] — block by block, one line
+ * each — with the same bold balancing, link labels ("Google Maps", never the URL) and " · " between
+ * adjacent links. For tests that assert what a reader sees (no `**`, no raw URL, no glued links)
+ * without a device; it runs the same inline scan the renderer uses.
+ */
+fun markdownVisibleText(markdown: String): String =
+    parseMarkdownBlocks(MarkdownNormalize.balanceBoldPerLine(markdown)).joinToString("\n") { block ->
+        val inline = { s: String -> buildInlineAnnotated(s, Color.Unspecified, Color.Unspecified).text }
+        when (block) {
+            is MdBlock.Heading -> inline(block.text)
+            is MdBlock.Paragraph -> inline(block.text)
+            is MdBlock.CodeBlock -> block.code
+            is MdBlock.BulletList -> block.items.joinToString("\n") { "• " + inline(it) }
+            is MdBlock.NumberedList -> block.items.mapIndexed { i, it -> "${i + 1}. " + inline(it) }.joinToString("\n")
+            is MdBlock.Quote -> inline(block.text)
+            MdBlock.Rule -> "—"
+        }
+    }
 
 // ---------------------------------------------------------------------------------------------
 // Block model + parser (pure Kotlin, no Compose — trivially unit-testable and lib-swappable).
@@ -91,7 +114,9 @@ private sealed interface MdBlock {
 }
 
 private val HEADING_REGEX = Regex("^(#{1,3})\\s+(.*)$")
-private val BULLET_REGEX = Regex("^\\s*[-*]\\s+(.*)$")
+// "•" too: the server writes its clarify / ASK questions as "• …" lines (consult V2, 2026-09-29);
+// without it they folded into one run-on paragraph on Android while web showed one per line.
+private val BULLET_REGEX = Regex("^\\s*[-*•]\\s+(.*)$")
 private val NUMBERED_REGEX = Regex("^\\s*\\d+\\.\\s+(.*)$")
 private val RULE_REGEX = Regex("^\\s*([-*_])\\1{2,}\\s*$")
 private val QUOTE_REGEX = Regex("^\\s*>\\s?(.*)$")
@@ -188,6 +213,8 @@ private fun buildInlineAnnotated(
 ): AnnotatedString = buildAnnotatedString {
     var i = 0
     val n = text.length
+    // True right after a link was appended; any other character resets it (link branches `continue`).
+    var lastWasLink = false
     while (i < n) {
         val c = text[i]
         when {
@@ -205,8 +232,10 @@ private fun buildInlineAnnotated(
             c == '*' && i + 1 < n && text[i + 1] == '*' -> {
                 val end = text.indexOf("**", i + 2)
                 if (end > i) {
+                    // The inner text is itself inline markdown: Luna (30/09) writes a link INSIDE
+                    // bold — "**Mình chọn: [Tên](url)**" — which rendered as raw "[…](https://…)".
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append(text.substring(i + 2, end))
+                        append(buildInlineAnnotated(text.substring(i + 2, end), codeBackground, linkColor))
                     }
                     i = end + 2
                 } else {
@@ -217,7 +246,7 @@ private fun buildInlineAnnotated(
                 val end = text.indexOf(c, i + 1)
                 if (end > i) {
                     withStyle(SpanStyle(fontStyle = FontStyle.Italic)) {
-                        append(text.substring(i + 1, end))
+                        append(buildInlineAnnotated(text.substring(i + 1, end), codeBackground, linkColor))
                     }
                     i = end + 1
                 } else {
@@ -234,6 +263,9 @@ private fun buildInlineAnnotated(
                         // Real clickable link: withLink + LinkAnnotation.Url. With no explicit
                         // listener, the Text opens it through the ambient UriHandler, i.e. the
                         // system browser (Intent.ACTION_VIEW) — no in-app browser, no analytics.
+                        // UAT 2026-09-28 (P1c): two links written back to back rendered as one
+                        // word ("Official WebsiteGoogle Maps") — a separator keeps them apart.
+                        if (lastWasLink) append(" · ")
                         withLink(
                             LinkAnnotation.Url(
                                 url = url,
@@ -245,9 +277,12 @@ private fun buildInlineAnnotated(
                                 ),
                             ),
                         ) {
-                            append(linkText)
+                            // A label that is itself a URL is never printed: the platform name instead.
+                            append(if (linkText.startsWith("http", ignoreCase = true)) linkLabelFor(url) else linkText)
                         }
                         i = closeParen + 1
+                        lastWasLink = true
+                        continue
                     } else {
                         append(c); i++
                     }
@@ -255,11 +290,91 @@ private fun buildInlineAnnotated(
                     append(c); i++
                 }
             }
+            // A BARE url — `https://vnexpress.net/...` written straight into the prose.
+            //
+            // 🚨 WEB LINKIFIES THESE AND ANDROID DID NOT, WHICH LOST THE SOURCE. `formatMessage`
+            // has two link passes: markdown links first, then a second for any remaining
+            // `https?://...`. Android only had the markdown pass, so a news or web-search answer
+            // that cited its source as a plain URL — which the model does whenever it is not
+            // handed a label — rendered as untappable grey text. The facts were on screen; the way
+            // to check them was not, and there is no other route to that page from the reply.
+            (c == 'h' || c == 'H') && text.startsWith("http", i, ignoreCase = true) -> {
+                val url = bareUrlAt(text, i)
+                if (url == null) {
+                    append(c); i++
+                } else {
+                    withLink(
+                        LinkAnnotation.Url(
+                            url = url,
+                            styles = TextLinkStyles(
+                                style = SpanStyle(
+                                    color = linkColor,
+                                    textDecoration = TextDecoration.Underline,
+                                ),
+                            ),
+                        ),
+                    ) {
+                        // UAT 2026-09-28 (P1c): a raw URL is never printed — the place it goes to is.
+                        append(linkLabelFor(url))
+                    }
+                    i += url.length
+                    lastWasLink = true
+                    continue
+                }
+            }
             else -> {
                 append(c); i++
             }
         }
+        lastWasLink = false
     }
+}
+
+private val LINK_LABELS: List<Pair<Regex, String>> = listOf(
+    Regex("""(^|\.)(google\.[a-z.]+|goo\.gl)$""") to "Google Maps",
+    Regex("""(^|\.)(facebook\.com|fb\.com|fb\.me)$""") to "Facebook",
+    Regex("""(^|\.)instagram\.com$""") to "Instagram",
+    Regex("""(^|\.)tiktok\.com$""") to "TikTok",
+    Regex("""(^|\.)(youtube\.com|youtu\.be)$""") to "YouTube",
+    Regex("""(^|\.)shopeefood\.vn$""") to "ShopeeFood",
+    Regex("""(^|\.)grab\.com$""") to "GrabFood",
+    Regex("""(^|\.)shopee\.vn$""") to "Shopee",
+    Regex("""(^|\.)lazada\.vn$""") to "Lazada",
+    Regex("""(^|\.)booking\.com$""") to "Booking.com",
+    Regex("""(^|\.)traveloka\.com$""") to "Traveloka",
+    Regex("""(^|\.)trip\.com$""") to "Trip.com",
+    Regex("""(^|\.)ticketbox\.vn$""") to "Ticketbox",
+)
+
+/** A readable name for a link target — the platform, else the short host. Never the URL (web parity: linkLabelFor). */
+internal fun linkLabelFor(url: String): String {
+    val host = Regex("""^https?://([^/?#:]+)""", RegexOption.IGNORE_CASE).find(url)?.groupValues?.get(1)?.lowercase()?.removePrefix("www.")
+        ?: return "Link"
+    if (Regex("""(^|\.)google\.[a-z.]+$""").containsMatchIn(host) && !url.contains("/maps") && !host.startsWith("maps.")) return "Google"
+    LINK_LABELS.firstOrNull { it.first.containsMatchIn(host) }?.let { return it.second }
+    return if (host.length > 28) host.take(26) + "…" else host
+}
+
+/**
+ * The bare URL starting at [start], or null when this is not one.
+ *
+ * Web's boundary is `[^\s<]+`, and this matches it — with one deliberate improvement: sentence
+ * punctuation that ends the sentence rather than the address is left OUT of the link. Web keeps it,
+ * so `…theo vnexpress.net/abc.` links to a URL with a trailing dot. Same link, one fewer 404, and
+ * the character still renders as text either way.
+ */
+private fun bareUrlAt(text: String, start: Int): String? {
+    val scheme = when {
+        text.startsWith("https://", start, ignoreCase = true) -> 8
+        text.startsWith("http://", start, ignoreCase = true) -> 7
+        else -> return null
+    }
+    var end = start + scheme
+    while (end < text.length && !text[end].isWhitespace() && text[end] != '<' && text[end] != ')') end++
+    // Nothing after the scheme is not an address, it is the word "https://" on its own.
+    if (end <= start + scheme) return null
+    while (end > start + scheme && text[end - 1] in ".,;:!?") end--
+    return text.substring(start, end)
 }
 
 // ---------------------------------------------------------------------------------------------

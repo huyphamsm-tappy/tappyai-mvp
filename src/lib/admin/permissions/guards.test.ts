@@ -105,7 +105,7 @@ describe('requirePagePermission — redirect loop regression', () => {
   })
 
   it('REGRESSION: /admin passes a deniedRedirect that leaves the Controller', async () => {
-    // Mirrors src/app/admin/page.tsx. Without the override this is the loop:
+    // Mirrors src/app/(app)/admin/page.tsx. Without the override this is the loop:
     // denial on /admin redirects to /admin.
     h.resolveActorForUser.mockResolvedValue(actor([]))
 

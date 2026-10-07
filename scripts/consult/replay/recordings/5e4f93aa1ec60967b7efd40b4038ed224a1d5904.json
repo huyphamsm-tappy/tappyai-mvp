@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Hotel Danang\" OR \"DLG Hotel Danang\" OR \"Sala Danang Beach Hotel\" Đà Nẵng site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:59:46.261Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Hotel Danang\" OR \"DLG Hotel Danang\" OR \"Sala Danang Beach Hotel\" Đà Nẵng site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Rooftop Mới Tại Đà Nẵng - Sala Danang Beach ...",
+    "link": "https://www.tiktok.com/@saigoncityview/video/7358804491241639169",
+    "snippet": "Khám phá một rooftop mới tuyệt đẹp với view toàn cảnh Đà Nẵng và đường ven biển tại Sala Danang Beach Hotel. Đến với Đà Nẵng để trải nghiệm hành ...",
+    "position": 1
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL: Lý tưởng tại Đà Nẵng gần ...",
+    "link": "https://www.tiktok.com/@bigonetravel/photo/7655784608008572180",
+    "snippet": "Khám phá Sala Danang Beach Hotel, điểm dừng chân lý tưởng tại Đà Nẵng với nhiều hạng phòng từ tiêu chuẩn đến suite cao cấp, chỉ vài phút tới ...",
+    "position": 2
+   },
+   {
+    "title": "Sala Danang Beach Hotel",
+    "link": "https://www.tiktok.com/@sala.danang.beach",
+    "snippet": "Kênh Tiktok chính thức của Sala Danang Beach Hotel Hotline đặt phòng: 0236//3658//555. Buffet sáng tại Khách sạn Sala Danang Beach sẽ có gì?",
+    "position": 3
+   },
+   {
+    "title": "Sala Danang Beach Hotel (@saladanangbeachhotel)",
+    "link": "https://www.tiktok.com/@saladanangbeachhotel",
+    "snippet": "Sala Danang Beach Hotel (@saladanangbeachhotel) trên TikTok |1060 Lượt thích.227 Follower.36 - 38 Lam Hoang Street, Son Tra District, Danang City, Viet Nam.",
+    "position": 4
+   },
+   {
+    "title": "Trải Nghiệm Khách Sạn Bên Biển Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@dlgdanang/video/7637814526527737106",
+    "snippet": "Video TikTok từ DLG Hotel Danang (@dlgdanang): \"Khách sạn bên biển với dịch vụ tiện nghi mang đến cho bạn mùa hè đáng nhớ tại Đà Nẵng. Khám ...",
+    "position": 5
+   },
+   {
+    "title": "(English below) Tận hưởng kỳ nghỉ trọn vẹn tại DLG Hotel ...",
+    "link": "https://www.tiktok.com/@review.danang.tui/video/7498766012444151058",
+    "snippet": "(English below) Tận hưởng kỳ nghỉ trọn vẹn tại DLG Hotel Danang, nơi kết hợp hoàn hảo giữa thư giãn và công việc. Experience the perfect blend of work and ...",
+    "position": 6
+   },
+   {
+    "title": "SALA DANANG BEACH HOTEL | DELUXE BALCONY SEA ...",
+    "link": "https://www.tiktok.com/@onearmedwanderer/video/7687295015692799253",
+    "snippet": "SALA DANANG BEACH HOTEL | DELUXE BALCONY SEA VIEW ROOM TOUR Take a look inside the Deluxe Balcony Sea View Room at Sala Danang Beach ...",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm dịch vụ đưa/đón sân bay miễn phí của Sala ...",
+    "link": "https://www.tiktok.com/@sala.danang.beach/video/7689332810422865158",
+    "snippet": "87 Lượt thích,Video TikTok từ Sala Danang Beach Hotel (@sala.danang.beach): \"Video ghi lại trải nghiệm dịch vụ xe đưa/đón sân bay miễn phí ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

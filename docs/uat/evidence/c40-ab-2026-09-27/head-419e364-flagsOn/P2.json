@@ -1,0 +1,149 @@
+{
+  "id": "P2",
+  "text": "spa massage chan gan q1 duoi 300k",
+  "parent": null,
+  "status": 200,
+  "ms": 21323,
+  "evidenceId": "0cf20300-d086-409e-b72f-bbd62ed5bd30",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "SIZ SPA - Best Massage Spa and Packages - District 1",
+      "rating": 4.9,
+      "count": 1072,
+      "hours": "10:00–22:15",
+      "address": "154 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "森嶼SPA - SPA Thái Lan chính thống/MASSAGE tinh dầu"
+    },
+    {
+      "name": "Trải nghiệm Spa và Massage tại The Spa By Thalgo ở ..."
+    },
+    {
+      "name": "Serene Head Spa & Massage - Saigon Branch",
+      "rating": 5,
+      "count": 195,
+      "hours": "09:30–23:00",
+      "address": "54 Đông Du, Ward, Sài Gòn, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "The Spa by Park - Massage & Body Care",
+      "rating": 4.9,
+      "count": 236,
+      "hours": "10:00–23:00",
+      "address": "214/55BD1 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 70000, Cầu Ông Lãnh, Hồ Chí Minh 71000, Việt Nam"
+    },
+    {
+      "name": "LaVie En Spa - Massage Hochiminh | Massage near me | 胡志明市按摩",
+      "rating": 4.8,
+      "count": 192,
+      "hours": "09:00–02:30",
+      "address": "255 Lý Tự Trọng, P. Phú Thuận, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Raku Spa Massage",
+      "rating": 4.7,
+      "count": 109,
+      "hours": "09:00–22:00",
+      "address": "153/3 Nguyễn Thị Minh Khai, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Mori Spa & Massage",
+      "rating": 4.9,
+      "count": 530,
+      "hours": "Mở cửa cả ngày",
+      "address": "361A Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình giả sử bạn muốn massage chân/body gần đây hôm nay. Tìm được 7 spa ở Quận 1, nhưng chưa xác nhận được giá cụ thể của chúng — nên mình không thể khẳng định nằm trong 300k.\n\n**SIZ SPA** là lựa chọn mình nghiêng về nhất: **4.9⭐ (1.072 đánh giá)**, mở đến 22:15, chuyên massage chân & body. Địa chỉ 154 Cống Quỳnh, gần vị trí bạn. Bạn có thể gọi **0775 271 878** hoặc vào website để hỏi giá gói massage chân trước khi đặt.\n\nBạn nên liên hệ trực tiếp để kiểm tra giá gói chân/body có phù hợp ngân sách không nhé.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website SIZ SPA\",\"type\":\"website\",\"url\":\"https://sizspa.com/dat-cho/\",\"primary\":false},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=672160052658345250\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá gói massage chân|Xem review SIZ SPA|Tìm spa khác ở Quận 1[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn massage chân/body gần đây hôm nay. Tìm được 7 spa ở Quận 1, nhưng chưa xác nhận được giá cụ thể của chúng — nên mình không thể khẳng định nằm trong 300k.\n\n**SIZ SPA** là lựa chọn mình nghiêng về nhất: **4.9⭐ (1.072 đánh giá)**, mở đến 22:15, chuyên massage chân & body. Địa chỉ 154 Cống Quỳnh, gần vị trí bạn. Bạn có thể gọi **0775 271 878** hoặc vào website để hỏi giá gói massage chân trước khi đặt.\n\nBạn nên liên hệ trực tiếp để kiểm tra giá gói chân/body có phù hợp ngân sách không nhé.\n\nKết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website SIZ SPA\",\"type\":\"website\",\"url\":\"https://sizspa.com/dat-cho/\",\"primary\":false},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=672160052658345250\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi hỏi giá gói massage chân|Xem review SIZ SPA|Tìm spa khác ở Quận 1[/FOLLOWUPS]"
+    }
+  ]
+}

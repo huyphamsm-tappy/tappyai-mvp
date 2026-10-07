@@ -33,6 +33,8 @@ export {
 } from './gcpAuth'
 export type { WifConfig, WifDeps } from './gcpAuth'
 export {
+  accountMediaPrefixes,
+  assertOwnerScopedPrefix,
   assertSafeMediaKey,
   isAbsoluteMediaUrl,
   randomMediaSuffix,

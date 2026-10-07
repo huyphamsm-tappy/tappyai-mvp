@@ -1,0 +1,70 @@
+# Merge-loss guards — docs/uat/MERGE-LOSS-AUDIT.md §4 (owner-approved 2026-09-25).
+#
+#   merge-guard        a merge may not silently drop what one side brought in
+#                      (the a6ca9f0 / 1e7b77e shapes). Waive a path only with a
+#                      "Merge-Drop: <path> — <reason>" trailer in the merge message.
+#   branch-containment protected work (migrations, DB tests, security/auth/RLS,
+#                      quota, payment, guards) may not sit on a side branch longer
+#                      than N days without reaching the shipping branch (the F-065
+#                      shape). Record a deliberate exception in
+#                      scripts/merge-guard/containment-allow.json (reason + until).
+#
+# Same checks locally:
+#   npm run merge:guard -- --staged                      (during a merge, before committing)
+#   npm run merge:guard -- --range origin/main..HEAD
+#   npm run merge:containment -- --ship origin/main
+#
+# Zero-dependency scripts: no npm install needed.
+name: Merge Guard
+
+on:
+  pull_request:
+  push:
+    branches: [main, 'rc/**', 'release/**']
+  schedule:
+    - cron: '0 1 * * *' # daily: stranded protected work does not announce itself
+  workflow_dispatch:
+
+env:
+  # The branch that ships (owner decision 2026-09-25: rc/web-uat). The repository variable
+  # SHIP_BRANCH overrides it without a code change.
+  SHIP_BRANCH: ${{ vars.SHIP_BRANCH || 'rc/web-uat' }}
+  CONTAINMENT_DAYS: ${{ vars.CONTAINMENT_DAYS || '7' }}
+
+jobs:
+  merge-guard:
+    name: No silently dropped changes in merges
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # the guard re-merges parents; it needs full history
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Every merge commit this change brings in
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BASE="$(git merge-base "origin/${{ github.base_ref }}" HEAD)"
+          elif [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ] && git cat-file -e "${{ github.event.before }}^{commit}" 2>/dev/null; then
+            BASE="${{ github.event.before }}"
+          else
+            BASE="$(git merge-base "origin/${SHIP_BRANCH}" HEAD)"
+          fi
+          node scripts/merge-guard/merge-guard.mjs --range "${BASE}..HEAD"
+
+  branch-containment:
+    name: No protected work stranded on side branches
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Fetch every remote branch
+        run: git fetch --no-tags --prune origin '+refs/heads/*:refs/remotes/origin/*'
+      - name: Protected commits older than N days that have not reached the shipping branch
+        run: node scripts/merge-guard/branch-containment.mjs --ship "origin/${SHIP_BRANCH}" --remote-only --days "${CONTAINMENT_DAYS}"

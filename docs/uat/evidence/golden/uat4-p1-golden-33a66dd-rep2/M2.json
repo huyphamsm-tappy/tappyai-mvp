@@ -1,0 +1,2572 @@
+{
+  "id": "M2",
+  "group": "switch-food-spa-entertainment",
+  "criteria": [
+    "Turn 1: food cards in Quận 3 within 100k/person",
+    "Turn 2: spa venues only (gội đầu / massage) — no restaurants; the 100k meal budget is NOT applied to the spa (server log budget_max is not 100000)",
+    "Turn 3: cinemas only — no spa or food cards; no 100k budget stated",
+    "Every turn returns 200; reply text appears exactly once"
+  ],
+  "turns": [
+    {
+      "user": "trưa nay ăn gì dưới 100k quận 3",
+      "status": 200,
+      "elapsedMs": 15053,
+      "usage": {
+        "promptTokens": 2680,
+        "completionTokens": 754
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa ngon dưới 100k quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 89,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "11:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Dịch vụ tiệc cho trẻ em",
+                "Nhà hàng ẩm thực đồng quê",
+                "Nhà tổ chức buổi tiệc",
+                "Nhà hàng cơm"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CƠM NIÊU ĐẨU",
+              "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 467,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 338,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tám Riêu - Lý Chính Thắng",
+              "address": "140a Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1290,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.76798,106.68280",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk0jU6-xw0sv0vr8UZs4GaXxc4gKnm7Z2LyEYrZl30BnW8RykVUBtk0e7-MSOBa4UZZGgDULoYBsKzdP-CfR2RX8QEAnjSDnILTKGR9IBhEeqNatSj-gW8UHmiG40ACbjF0D5VH",
+                "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 89,
+                "openingHours": "11:00–19:00",
+                "openNow": false,
+                "phone": "+84 906 924 242",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "11:00–19:00",
+                  "Thứ Ba": "11:00–19:00",
+                  "Thứ Tư": "11:00–19:00",
+                  "Thứ Năm": "11:00–19:00",
+                  "Thứ Sáu": "11:00–19:00",
+                  "Thứ Bảy": "11:00–19:00",
+                  "Chủ Nhật": "11:00–19:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15871974343931156735",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20V%E1%BA%B7t%20H%E1%BA%BBm%2016%20(Nguy%E1%BB%85n%20Thi%E1%BB%87n%20Thu%E1%BA%ADt)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/quan-an-vat-hem-16-nguyen-thien-thuat",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906924242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77234,106.67964",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm-fY3cHgLUvv3pcow3QS0oIhlMxgmZmKMmaJiwnU-1kmZWIx1MixZNPXlBhUlyTvIMm1jnmmJuU5BRWQN7Gwzgjy9WxCSeEOIpl96jxZWkrem8lWcmTAY7Ufl3sdO2yljM7uhVBA",
+                "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 328,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 932 765 886",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng",
+                  "Dịch vụ tiệc cho trẻ em",
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Nhà tổ chức buổi tiệc",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6113469374134102339",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20C%C6%A1m%20Ni%C3%AAu%20-%20Ni%C3%AAu%20House%20(Nieu%20House%20Authentic%20Vietnam%20Claypot%20Rice%20Restaurant)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://linktr.ee/nieuhouse",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932765886",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79010,106.68435",
+                "domain": "food",
+                "kind": "place",
+                "name": "CƠM NIÊU ĐẨU",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTNVlqALb1Za93Kz3SD28edVVO--iZc7nP0mxodevMjuLHEd5osWrAzpk1lTfBO5MtzAKFs6gZOvwP0fW3JKXkPLA4tKEkJ2wWSHmFRXDoHlcIrxJkeGbzddagd4fEENgUBH5ASw",
+                "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 467,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 979 353 791",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2172502052880975776",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20NI%C3%8AU%20%C4%90%E1%BA%A8U%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84979353791",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78702,106.69189",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnDG-LgtT0QPP-jY78c1zqUH2Gu4bXQgpdDMSEMLG70WddCn0aMP-IG3Z8fuhdIX5Lt5zI0QNfFmw1uxB54WilvLx5sC--44Zh9LWVQZzAQkTLyzEO60fz3wi89HkkSYsFqaa6NoC9-KeS-",
+                "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 338,
+                "openingHours": "09:00–00:00",
+                "openNow": false,
+                "phone": "+84 983 831 717",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–00:00",
+                  "Thứ Ba": "09:00–00:00",
+                  "Thứ Tư": "09:00–00:00",
+                  "Thứ Năm": "09:00–00:00",
+                  "Thứ Sáu": "09:00–00:00",
+                  "Thứ Bảy": "09:00–00:00",
+                  "Chủ Nhật": "09:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5463238262657446239",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20Ph%C3%A1t%2013%20-%20C%C6%A1m%20Ni%C3%AAu%20-%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C4%90%E1%BB%93%20R%E1%BB%ABng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://comnieuaphat.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983831717",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78727,106.68471",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tám Riêu - Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmVQjLsXvteDFJjZuky_2KhPftmkFep2XvTdlzx5k9o5jy9kE6h2q91eR8GavCnzhvGGb8A-L0UxuOk2-5aSjg3vbgOSQWCGbTOwvTcJFvcxyso35Jsrejcdj0oJYLhnsgC0Pd6jv1fxQk",
+                "address": "140a Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1290,
+                "openingHours": "10:30–21:30",
+                "openNow": false,
+                "phone": "+84 334 626 060",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:30–21:30",
+                  "Thứ Ba": "10:30–21:30",
+                  "Thứ Tư": "10:30–21:30",
+                  "Thứ Năm": "10:30–21:30",
+                  "Thứ Sáu": "10:30–21:30",
+                  "Thứ Bảy": "10:30–21:30",
+                  "Chủ Nhật": "10:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10880845782038429541",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=T%C3%A1m%20Ri%C3%AAu%20-%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84334626060",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+              "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 89,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "11:00–19:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.7",
+                "89 reviews"
+              ]
+            },
+            {
+              "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+              "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.5,
+              "ratingCount": 328,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng",
+                "Dịch vụ tiệc cho trẻ em",
+                "Nhà hàng ẩm thực đồng quê",
+                "Nhà tổ chức buổi tiệc",
+                "Nhà hàng cơm"
+              ],
+              "hours": "10:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CƠM NIÊU ĐẨU",
+              "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 467,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng Việt Nam"
+              ],
+              "hours": "07:00–22:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+              "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 338,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:00–00:00",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tám Riêu - Lý Chính Thắng",
+              "address": "140a Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 1290,
+              "price": "100-200 N ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "10:30–21:30",
+              "open": false,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76798,106.68280",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk0jU6-xw0sv0vr8UZs4GaXxc4gKnm7Z2LyEYrZl30BnW8RykVUBtk0e7-MSOBa4UZZGgDULoYBsKzdP-CfR2RX8QEAnjSDnILTKGR9IBhEeqNatSj-gW8UHmiG40ACbjF0D5VH",
+                "address": "16/73a Đ. Nguyễn Thiện Thuật, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 89,
+                "openingHours": "11:00–19:00",
+                "openNow": false,
+                "phone": "+84 906 924 242",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "11:00–19:00",
+                  "Thứ Ba": "11:00–19:00",
+                  "Thứ Tư": "11:00–19:00",
+                  "Thứ Năm": "11:00–19:00",
+                  "Thứ Sáu": "11:00–19:00",
+                  "Thứ Bảy": "11:00–19:00",
+                  "Chủ Nhật": "11:00–19:00"
+                },
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 0,
+                "shortlistPosition": 4,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.7",
+                    "params": {
+                      "value": 4.7
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "89 reviews",
+                    "params": {
+                      "count": 89
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15871974343931156735",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20%C4%82n%20V%E1%BA%B7t%20H%E1%BA%BBm%2016%20(Nguy%E1%BB%85n%20Thi%E1%BB%87n%20Thu%E1%BA%ADt)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.foody.vn/ho-chi-minh/quan-an-vat-hem-16-nguyen-thien-thuat",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84906924242",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77234,106.67964",
+                "domain": "food",
+                "kind": "place",
+                "name": "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm-fY3cHgLUvv3pcow3QS0oIhlMxgmZmKMmaJiwnU-1kmZWIx1MixZNPXlBhUlyTvIMm1jnmmJuU5BRWQN7Gwzgjy9WxCSeEOIpl96jxZWkrem8lWcmTAY7Ufl3sdO2yljM7uhVBA",
+                "address": "122 Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.5,
+                "ratingCount": 328,
+                "openingHours": "10:00–22:00",
+                "openNow": false,
+                "phone": "+84 932 765 886",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–22:00",
+                  "Thứ Ba": "10:00–22:00",
+                  "Thứ Tư": "10:00–22:00",
+                  "Thứ Năm": "10:00–22:00",
+                  "Thứ Sáu": "10:00–22:00",
+                  "Thứ Bảy": "10:00–22:00",
+                  "Chủ Nhật": "10:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng",
+                  "Dịch vụ tiệc cho trẻ em",
+                  "Nhà hàng ẩm thực đồng quê",
+                  "Nhà tổ chức buổi tiệc",
+                  "Nhà hàng cơm"
+                ],
+                "rank": 1,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6113469374134102339",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Nh%C3%A0%20h%C3%A0ng%20C%C6%A1m%20Ni%C3%AAu%20-%20Ni%C3%AAu%20House%20(Nieu%20House%20Authentic%20Vietnam%20Claypot%20Rice%20Restaurant)%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://linktr.ee/nieuhouse",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84932765886",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79010,106.68435",
+                "domain": "food",
+                "kind": "place",
+                "name": "CƠM NIÊU ĐẨU",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmTNVlqALb1Za93Kz3SD28edVVO--iZc7nP0mxodevMjuLHEd5osWrAzpk1lTfBO5MtzAKFs6gZOvwP0fW3JKXkPLA4tKEkJ2wWSHmFRXDoHlcIrxJkeGbzddagd4fEENgUBH5ASw",
+                "address": "Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 72400, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 467,
+                "openingHours": "07:00–22:00",
+                "openNow": false,
+                "phone": "+84 979 353 791",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "07:00–22:00",
+                  "Thứ Ba": "07:00–22:00",
+                  "Thứ Tư": "07:00–22:00",
+                  "Thứ Năm": "07:00–22:00",
+                  "Thứ Sáu": "07:00–22:00",
+                  "Thứ Bảy": "07:00–22:00",
+                  "Chủ Nhật": "07:00–22:00"
+                },
+                "categories": [
+                  "Nhà hàng Việt Nam"
+                ],
+                "rank": 2,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@hem.saigon/video/7397287762581409066",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2172502052880975776",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84979353791",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A0M%20NI%C3%8AU%20%C4%90%E1%BA%A8U%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78702,106.69189",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnDG-LgtT0QPP-jY78c1zqUH2Gu4bXQgpdDMSEMLG70WddCn0aMP-IG3Z8fuhdIX5Lt5zI0QNfFmw1uxB54WilvLx5sC--44Zh9LWVQZzAQkTLyzEO60fz3wi89HkkSYsFqaa6NoC9-KeS-",
+                "address": "13 Đ. Trương Quyền, Xuân Hòa, Hồ Chí Minh 72419, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 338,
+                "openingHours": "09:00–00:00",
+                "openNow": false,
+                "phone": "+84 983 831 717",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–00:00",
+                  "Thứ Ba": "09:00–00:00",
+                  "Thứ Tư": "09:00–00:00",
+                  "Thứ Năm": "09:00–00:00",
+                  "Thứ Sáu": "09:00–00:00",
+                  "Thứ Bảy": "09:00–00:00",
+                  "Chủ Nhật": "09:00–00:00"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=5463238262657446239",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20Ph%C3%A1t%2013%20-%20C%C6%A1m%20Ni%C3%AAu%20-%20H%E1%BA%A3i%20S%E1%BA%A3n%20-%20%C4%90%E1%BB%93%20R%E1%BB%ABng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://comnieuaphat.com/",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84983831717",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78727,106.68471",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tám Riêu - Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmVQjLsXvteDFJjZuky_2KhPftmkFep2XvTdlzx5k9o5jy9kE6h2q91eR8GavCnzhvGGb8A-L0UxuOk2-5aSjg3vbgOSQWCGbTOwvTcJFvcxyso35Jsrejcdj0oJYLhnsgC0Pd6jv1fxQk",
+                "address": "140a Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 1290,
+                "openingHours": "10:30–21:30",
+                "openNow": false,
+                "phone": "+84 334 626 060",
+                "priceRangeText": "100-200 N ₫",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:30–21:30",
+                  "Thứ Ba": "10:30–21:30",
+                  "Thứ Tư": "10:30–21:30",
+                  "Thứ Năm": "10:30–21:30",
+                  "Thứ Sáu": "10:30–21:30",
+                  "Thứ Bảy": "10:30–21:30",
+                  "Chủ Nhật": "10:30–21:30"
+                },
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10880845782038429541",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=T%C3%A1m%20Ri%C3%AAu%20-%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84334626060",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20d%C6%B0%E1%BB%9Bi%20100k%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76798,106.68280",
+              "place:osm:10.78702,106.69189",
+              "place:osm:10.79010,106.68435"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76798,106.68280",
+            "place:osm:10.78702,106.69189",
+            "place:osm:10.79010,106.68435"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+          "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+          "CƠM NIÊU ĐẨU",
+          "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+          "Tám Riêu - Lý Chính Thắng"
+        ],
+        [
+          "Quán Ăn Vặt Hẻm 16 (Nguyễn Thiện Thuật)",
+          "Nhà hàng Cơm Niêu - Niêu House (Nieu House Authentic Vietnam Claypot Rice Restaurant)",
+          "CƠM NIÊU ĐẨU",
+          "A Phát 13 - Cơm Niêu - Hải Sản - Đồ Rừng",
+          "Tám Riêu - Lý Chính Thắng"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.\n\nMình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có **4.7⭐ (89 đánh giá)**, chuyên ăn vặt ngon, giá dưới 100k, và đang mở cửa từ 11:00 đến 19:00 hôm nay. Quán nhỏ, thân thiện, rất phù hợp cho bữa trưa nhanh gọn.\n\nNếu bạn muốn ăn cơm niêu thay vì ăn vặt, **Cơm Niêu Đẩu** cũng là lựa chọn tốt — **4.7⭐ (467 đánh giá)**, mở từ 7:00 sáng.\n\nLưu ý: Hẻm 16 đóng cửa lúc 19:00, nên nếu bạn ăn muộn hơn thì chọn Cơm Niêu Đẩu (mở đến 22:00).\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Quán Ăn Vặt Hẻm 16\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15871974343931156735\",\"primary\":false}]}[/CTA_BUTTONS]\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+      "visible": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.\n\nMình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có **4.7⭐ (89 đánh giá)**, chuyên ăn vặt ngon, giá dưới 100k, và đang mở cửa từ 11:00 đến 19:00 hôm nay. Quán nhỏ, thân thiện, rất phù hợp cho bữa trưa nhanh gọn.\n\nNếu bạn muốn ăn cơm niêu thay vì ăn vặt, **Cơm Niêu Đẩu** cũng là lựa chọn tốt — **4.7⭐ (467 đánh giá)**, mở từ 7:00 sáng.\n\nLưu ý: Hẻm 16 đóng cửa lúc 19:00, nên nếu bạn ăn muộn hơn thì chọn Cơm Niêu Đẩu (mở đến 22:00).\n\nBạn đi mấy người (1–2 người / 3–5 người / nhóm đông)?",
+      "preGuard": "Mình giả sử bạn muốn ăn trưa hôm nay ở quận 3 với ngân sách dưới 100k. Để gợi ý đúng ý, mình cần tìm các quán ăn trưa phù hợp ngay.Mình chọn **Quán Ăn Vặt Hẻm 16** cho bạn — quán này có **4.7⭐ (89 đánh giá)**, chuyên ăn vặt ngon, giá dưới 100k, và đang mở cửa từ 11:00 đến 19:00 hôm nay. Quán nhỏ, thân thiện, rất phù hợp cho bữa trưa nhanh gọn.\n\nNếu bạn muốn ăn cơm niêu thay vì ăn vặt, **Cơm Niêu Đẩu** cũng là lựa chọn tốt — **4.7⭐ (467 đánh giá)**, mở từ 7:00 sáng, và có giao hàng nếu bạn muốn.\n\nLưu ý: Hẻm 16 đóng cửa lúc 19:00, nên nếu bạn ăn muộn hơn thì chọn Cơm Niêu Đẩu (mở đến 22:00).\n\n**Bạn ăn một mình hay mấy người?**\n\n[FOLLOWUPS]1–2 người|3–5 người|nhóm đông[/FOLLOWUPS]\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Quán Ăn Vặt Hẻm 16\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Qu%C3%A1n+%C3%82n+V%E1%BA%B1t+H%E1%BA%BB m+16+Qu%E1%BA%ADn+3\",\"primary\":true},{\"label\":\"📍 Maps - Quán Ăn Vặt Hẻm 16\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=15871974343931156735\",\"primary\":false}]}[/CTA_BUTTONS]"
+    },
+    {
+      "user": "chiều đi gội đầu massage ở đâu gần đó",
+      "status": 200,
+      "elapsedMs": 17615,
+      "usage": {
+        "promptTokens": 2675,
+        "completionTokens": 569
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "gội đầu massage quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "spa"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+              "address": "Phường Nhiêu Lộc, 123 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 23,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:30–20:30",
+              "open": false,
+              "distanceKm": 3.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "address": "Quận 3, TP HCM",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "address": "Quận 3, TP HCM",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+              "address": "563/2 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 11,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–21:00",
+              "open": false,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+              "address": "202/18 Võ Văn Tần, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 56,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:30–22:00",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+              "address": "399/28 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70010, Việt Nam",
+              "rating": 5,
+              "ratingCount": 150,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": 2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+              "address": "14/36 Đ. Kỳ Đồng, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 76,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–21:30",
+              "open": false,
+              "distanceKm": 2.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa",
+              "address": "306/9 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 1,
+              "price": null,
+              "categories": [
+                "Tiệm chăm sóc móng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78687,106.67169",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP0pcOdCTlA4MFVG2LPMzSFiLKv5xu0GQ2-Mv4QxMH71xEmFCvRORLJ5kFHdufqVAahu3BwKYsOCN_jix-h2s-0WXvTWLp43yTyki9IOt3s7YayQkFdPGhFBlfUQ88naoDIcW8cNv0dRx3y",
+                "address": "Phường Nhiêu Lộc, 123 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 23,
+                "openingHours": "09:30–20:30",
+                "openNow": false,
+                "phone": "+84 865 583 878",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:30–20:30",
+                  "Thứ Ba": "09:30–20:30",
+                  "Thứ Tư": "09:30–20:30",
+                  "Thứ Năm": "09:30–20:30",
+                  "Thứ Sáu": "09:30–20:30",
+                  "Thứ Bảy": "09:30–20:30",
+                  "Chủ Nhật": "09:30–20:30"
+                },
+                "distanceKm": 3.4,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2498013902067565805",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84865583878",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20-%20Hair%20Spa%20%26%20Massage%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:name:shinrin spa: gội đầu & massage tại quận 1, tp. hồ chí minh",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+                "address": "Quận 3, TP HCM",
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh%2F&utm_source=tappyai&utm_medium=ccp&sub1=3b683193b561f38827da3744",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "d9957d3a4c2816bdc0427aa4",
+                      "requestId": "1b893f3b-4635-43cb-8558-60f0c1bd0a4c",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/Shinrin%20Spa%3A%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20%26%20Massage%20t%E1%BA%A1i%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Shinrin%20Spa%3A%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20%26%20Massage%20t%E1%BA%A1i%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:name:gội đầu thảo dược, massage và chăm sóc da mặt tại ...",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+                "address": "Quận 3, TP HCM",
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city%2F&utm_source=tappyai&utm_medium=ccp&sub1=3b683193b561f38827da3744",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "38d459b7f63bf3c42d19fed9",
+                      "requestId": "09dc919a-ac08-4144-b508-2f51b48ee7a1",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%2C%20Massage%20v%C3%A0%20Ch%C4%83m%20S%C3%B3c%20Da%20M%E1%BA%B7t%20t%E1%BA%A1i%20...",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%2C%20Massage%20v%C3%A0%20Ch%C4%83m%20S%C3%B3c%20Da%20M%E1%BA%B7t%20t%E1%BA%A1i%20...%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76795,106.68032",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPBYu-eltNProum5H_HTbnz1CKJtjPigi1payUM2IV0o7sTwg2w-10D3uOCYei6Jl0hm2cjU_FB0Uf5f8WHIehG68V3rMMd0_1FD16MUjuBGCgTdOv6IixUqxrnMrj3Wg4IeQANOqH1PGI",
+                "address": "563/2 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 11,
+                "openingHours": "10:00–21:00",
+                "openNow": false,
+                "phone": "+84 828 884 688",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–21:00",
+                  "Thứ Ba": "10:00–21:00",
+                  "Thứ Tư": "10:00–21:00",
+                  "Thứ Năm": "10:00–21:00",
+                  "Thứ Sáu": "10:00–21:00",
+                  "Thứ Bảy": "10:00–21:00",
+                  "Chủ Nhật": "10:00–21:00"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10328278084259332002",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84828884688",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20th%C6%B0%20gi%C3%A3n%20Qu%E1%BA%ADn%203%20-%20D%E1%BA%ADu%20Xinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77298,106.68665",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Y-O5aBu5n8WVtLDwbUoSdOdCJqCID5P_wrj4_n9h_ivYgh0aLTWYiWWExJdttYdMUSZEEqnhV5HzRO96t8l18YX4sdU2NG6YT7BGxZh6xVIRj9TQmfmsTXI0V6VvGQfjELosPo5UlW_m",
+                "address": "202/18 Võ Văn Tần, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 56,
+                "openingHours": "10:30–22:00",
+                "openNow": false,
+                "phone": "+84 345 870 685",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:30–22:00",
+                  "Thứ Ba": "10:30–22:00",
+                  "Thứ Tư": "10:30–22:00",
+                  "Thứ Năm": "10:30–22:00",
+                  "Thứ Sáu": "10:30–22:00",
+                  "Thứ Bảy": "10:30–22:00",
+                  "Chủ Nhật": "10:30–22:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1JCzTXkDaX/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2383666130334040291",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84345870685",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%203%20H%E1%BA%BAM%20SPA%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77076,106.68382",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP03uDL_v6Mpn2e8hWHf3cNCXlEX5OfrAaSN_H1M2y58zd7Ey5VEp9dwkwvmAd5bcsbWLpy28toOuctkylOug7mzfkhVRFJhH3TqzLF-0Nc3baC32yLF8wgrNkrnlYgqViOJnGQFUE6ubCc",
+                "address": "399/28 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70010, Việt Nam",
+                "rating": 5,
+                "ratingCount": 150,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 966 966 404",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00",
+                  "Chủ Nhật": "09:00–21:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 5,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6891423283179521845",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84966966404",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20Massage%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20C%C3%B4%20%C3%9At%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78419,106.68129",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMmk-AlvvngSt3qP179L1yxeIg4_wHUtdmyTXaJqbvVPVLlVVX8EdqkH8_HKsIo8w9HXyqynnOEbm4eoCxdZD7U4gufTvY8SaK1al5NTW4lt-PC3UZMJ4TBLt9BfG5qqtQVAm9gYkb9PQPj",
+                "address": "14/36 Đ. Kỳ Đồng, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 76,
+                "openingHours": "10:00–21:30",
+                "openNow": false,
+                "phone": "+84 357 171 400",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–21:30",
+                  "Thứ Ba": "10:00–21:30",
+                  "Thứ Tư": "10:00–21:30",
+                  "Thứ Năm": "10:00–21:30",
+                  "Thứ Sáu": "10:00–21:30",
+                  "Thứ Bảy": "10:00–21:30",
+                  "Chủ Nhật": "10:00–21:30"
+                },
+                "distanceKm": 2.3,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15127296766410187618",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84357171400",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20G%E1%BB%99i%20V%E1%BB%81%20Nh%C3%A0%20-%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77300,106.68843",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN49CniqQhxXz8pZu_AXjfSrh7aJJorFiQZkM66W3E5H4EJtwx69Bx4oEejvRiCL8DXeHLlJw1SvI7KDYi6O7qDpu9DX5LzurO4IsbtclsQIc0UKt4712D7vrqLN0kmPioA8ZrrTazAtuJ8",
+                "address": "306/9 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 1,
+                "phone": "+84 981 999 118",
+                "distanceKm": 1.4,
+                "categories": [
+                  "Tiệm chăm sóc móng"
+                ],
+                "rank": 7,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6961769032490393967",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981999118",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20massage%20body%20Qu%E1%BA%ADn%203%20%7C%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%203%20%7C%20Halavu%20Spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20massage%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "spa"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+              "address": "202/18 Võ Văn Tần, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 56,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:30–22:00",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": true,
+              "reasons": [
+                "1.6km away",
+                "rated 5",
+                "56 reviews"
+              ]
+            },
+            {
+              "name": "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+              "address": "Phường Nhiêu Lộc, 123 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.4,
+              "ratingCount": 23,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:30–20:30",
+              "open": false,
+              "distanceKm": 3.4,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+              "address": "Quận 3, TP HCM",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+              "address": "Quận 3, TP HCM",
+              "rating": null,
+              "ratingCount": null,
+              "price": null,
+              "categories": null,
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+              "address": "563/2 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 11,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–21:00",
+              "open": false,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+              "address": "399/28 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70010, Việt Nam",
+              "rating": 5,
+              "ratingCount": 150,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "09:00–21:00",
+              "open": false,
+              "distanceKm": 2,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+              "address": "14/36 Đ. Kỳ Đồng, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 76,
+              "price": null,
+              "categories": [
+                "Spa"
+              ],
+              "hours": "10:00–21:30",
+              "open": false,
+              "distanceKm": 2.3,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa",
+              "address": "306/9 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 5,
+              "ratingCount": 1,
+              "price": null,
+              "categories": [
+                "Tiệm chăm sóc móng"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": 1.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "spa",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.77298,106.68665",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP-Y-O5aBu5n8WVtLDwbUoSdOdCJqCID5P_wrj4_n9h_ivYgh0aLTWYiWWExJdttYdMUSZEEqnhV5HzRO96t8l18YX4sdU2NG6YT7BGxZh6xVIRj9TQmfmsTXI0V6VvGQfjELosPo5UlW_m",
+                "address": "202/18 Võ Văn Tần, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 56,
+                "openingHours": "10:30–22:00",
+                "openNow": false,
+                "phone": "+84 345 870 685",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:30–22:00",
+                  "Thứ Ba": "10:30–22:00",
+                  "Thứ Tư": "10:30–22:00",
+                  "Thứ Năm": "10:30–22:00",
+                  "Thứ Sáu": "10:30–22:00",
+                  "Thứ Bảy": "10:30–22:00",
+                  "Chủ Nhật": "10:30–22:00"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 4,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "distance",
+                    "evidence": "1.6km away",
+                    "params": {
+                      "km": 1.6
+                    }
+                  },
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 5",
+                    "params": {
+                      "value": 5
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "56 reviews",
+                    "params": {
+                      "count": 56
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "150 reviews",
+                  "params": {
+                    "count": 150
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/share/1JCzTXkDaX/?mibextid=wwXIfr",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2383666130334040291",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84345870685",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%203%20H%E1%BA%BAM%20SPA%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78687,106.67169",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP0pcOdCTlA4MFVG2LPMzSFiLKv5xu0GQ2-Mv4QxMH71xEmFCvRORLJ5kFHdufqVAahu3BwKYsOCN_jix-h2s-0WXvTWLp43yTyki9IOt3s7YayQkFdPGhFBlfUQ88naoDIcW8cNv0dRx3y",
+                "address": "Phường Nhiêu Lộc, 123 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.4,
+                "ratingCount": 23,
+                "openingHours": "09:30–20:30",
+                "openNow": false,
+                "phone": "+84 865 583 878",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:30–20:30",
+                  "Thứ Ba": "09:30–20:30",
+                  "Thứ Tư": "09:30–20:30",
+                  "Thứ Năm": "09:30–20:30",
+                  "Thứ Sáu": "09:30–20:30",
+                  "Thứ Bảy": "09:30–20:30",
+                  "Chủ Nhật": "09:30–20:30"
+                },
+                "distanceKm": 3.4,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 0,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=2498013902067565805",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84865583878",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20-%20Hair%20Spa%20%26%20Massage%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:name:shinrin spa: gội đầu & massage tại quận 1, tp. hồ chí minh",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-rZPo0acTtRsVnPWBHJ4ugkNDXOgJaXNuoPqLuo_umw&s=10",
+                "address": "Quận 3, TP HCM",
+                "rank": 1,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F151252-shinrin-spa-massage-experience-in-district-1-ho-chi-minh%2F&utm_source=tappyai&utm_medium=ccp&sub1=3b683193b561f38827da3744",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "d9957d3a4c2816bdc0427aa4",
+                      "requestId": "1b893f3b-4635-43cb-8558-60f0c1bd0a4c",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/Shinrin%20Spa%3A%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20%26%20Massage%20t%E1%BA%A1i%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Shinrin%20Spa%3A%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20%26%20Massage%20t%E1%BA%A1i%20Qu%E1%BA%ADn%201%2C%20TP.%20H%E1%BB%93%20Ch%C3%AD%20Minh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:name:gội đầu thảo dược, massage và chăm sóc da mặt tại ...",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+                "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUbNu6qu7IJ63XJMuA2bPr8xfq1ECToTC8VbAIeYlJbA&s",
+                "address": "Quận 3, TP HCM",
+                "rank": 2,
+                "actions": [
+                  {
+                    "kind": "purchase",
+                    "urlKind": "direct",
+                    "url": "https://go.isclix.com/deep_link/6277265300509373567/4704521809526929067?url=https%3A%2F%2Fwww.klook.com%2Fvi%2Factivity%2F201167-chi-tu-herbal-hair-wash-spa-in-ho-chi-minh-city%2F&utm_source=tappyai&utm_medium=ccp&sub1=3b683193b561f38827da3744",
+                    "labelKey": "v3.action.purchaseLoginOn",
+                    "platform": "Klook",
+                    "commerce": {
+                      "linkId": "38d459b7f63bf3c42d19fed9",
+                      "requestId": "09dc919a-ac08-4144-b508-2f51b48ee7a1",
+                      "providerId": "klook",
+                      "depth": 3,
+                      "guestDepth": 4,
+                      "authRequiredAt": "before_checkout",
+                      "loginRequired": true,
+                      "handoff": "merchant_login",
+                      "authenticatedDepth": 5,
+                      "freshnessType": "near_realtime",
+                      "expiresAt": null,
+                      "tracked": true,
+                      "capability": "spa_voucher",
+                      "primary": true
+                    }
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://www.google.com/maps/search/G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%2C%20Massage%20v%C3%A0%20Ch%C4%83m%20S%C3%B3c%20Da%20M%E1%BA%B7t%20t%E1%BA%A1i%20...",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%90%E1%BA%A7u%20Th%E1%BA%A3o%20D%C6%B0%E1%BB%A3c%2C%20Massage%20v%C3%A0%20Ch%C4%83m%20S%C3%B3c%20Da%20M%E1%BA%B7t%20t%E1%BA%A1i%20...%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76795,106.68032",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmPBYu-eltNProum5H_HTbnz1CKJtjPigi1payUM2IV0o7sTwg2w-10D3uOCYei6Jl0hm2cjU_FB0Uf5f8WHIehG68V3rMMd0_1FD16MUjuBGCgTdOv6IixUqxrnMrj3Wg4IeQANOqH1PGI",
+                "address": "563/2 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 11,
+                "openingHours": "10:00–21:00",
+                "openNow": false,
+                "phone": "+84 828 884 688",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–21:00",
+                  "Thứ Ba": "10:00–21:00",
+                  "Thứ Tư": "10:00–21:00",
+                  "Thứ Năm": "10:00–21:00",
+                  "Thứ Sáu": "10:00–21:00",
+                  "Thứ Bảy": "10:00–21:00",
+                  "Chủ Nhật": "10:00–21:00"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=10328278084259332002",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84828884688",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=G%E1%BB%99i%20%C4%91%E1%BA%A7u%20th%C6%B0%20gi%C3%A3n%20Qu%E1%BA%ADn%203%20-%20D%E1%BA%ADu%20Xinh%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77076,106.68382",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmP03uDL_v6Mpn2e8hWHf3cNCXlEX5OfrAaSN_H1M2y58zd7Ey5VEp9dwkwvmAd5bcsbWLpy28toOuctkylOug7mzfkhVRFJhH3TqzLF-0Nc3baC32yLF8wgrNkrnlYgqViOJnGQFUE6ubCc",
+                "address": "399/28 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 70010, Việt Nam",
+                "rating": 5,
+                "ratingCount": 150,
+                "openingHours": "09:00–21:00",
+                "openNow": false,
+                "phone": "+84 966 966 404",
+                "openingHoursWeek": {
+                  "Thứ Hai": "09:00–21:00",
+                  "Thứ Ba": "09:00–21:00",
+                  "Thứ Tư": "09:00–21:00",
+                  "Thứ Năm": "09:00–21:00",
+                  "Thứ Sáu": "09:00–21:00",
+                  "Thứ Bảy": "09:00–21:00",
+                  "Chủ Nhật": "09:00–21:00"
+                },
+                "distanceKm": 2,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 5,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6891423283179521845",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84966966404",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20Massage%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20C%C3%B4%20%C3%9At%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78419,106.68129",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMmk-AlvvngSt3qP179L1yxeIg4_wHUtdmyTXaJqbvVPVLlVVX8EdqkH8_HKsIo8w9HXyqynnOEbm4eoCxdZD7U4gufTvY8SaK1al5NTW4lt-PC3UZMJ4TBLt9BfG5qqtQVAm9gYkb9PQPj",
+                "address": "14/36 Đ. Kỳ Đồng, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 76,
+                "openingHours": "10:00–21:30",
+                "openNow": false,
+                "phone": "+84 357 171 400",
+                "openingHoursWeek": {
+                  "Thứ Hai": "10:00–21:30",
+                  "Thứ Ba": "10:00–21:30",
+                  "Thứ Tư": "10:00–21:30",
+                  "Thứ Năm": "10:00–21:30",
+                  "Thứ Sáu": "10:00–21:30",
+                  "Thứ Bảy": "10:00–21:30",
+                  "Chủ Nhật": "10:00–21:30"
+                },
+                "distanceKm": 2.3,
+                "categories": [
+                  "Spa"
+                ],
+                "rank": 6,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=15127296766410187618",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84357171400",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20G%E1%BB%99i%20V%E1%BB%81%20Nh%C3%A0%20-%20G%E1%BB%99i%20%C4%90%E1%BA%A7u%20D%C6%B0%E1%BB%A1ng%20Sinh%20Qu%E1%BA%ADn%203%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77300,106.68843",
+                "domain": "spa",
+                "kind": "place",
+                "name": "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmN49CniqQhxXz8pZu_AXjfSrh7aJJorFiQZkM66W3E5H4EJtwx69Bx4oEejvRiCL8DXeHLlJw1SvI7KDYi6O7qDpu9DX5LzurO4IsbtclsQIc0UKt4712D7vrqLN0kmPioA8ZrrTazAtuJ8",
+                "address": "306/9 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 5,
+                "ratingCount": 1,
+                "phone": "+84 981 999 118",
+                "distanceKm": 1.4,
+                "categories": [
+                  "Tiệm chăm sóc móng"
+                ],
+                "rank": 7,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6961769032490393967",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84981999118",
+                    "labelKey": "v3.action.call"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Spa%20massage%20body%20Qu%E1%BA%ADn%203%20%7C%20G%E1%BB%99i%20%C4%91%E1%BA%A7u%20d%C6%B0%E1%BB%A1ng%20sinh%20Qu%E1%BA%ADn%203%20%7C%20Halavu%20Spa%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=g%E1%BB%99i%20%C4%91%E1%BA%A7u%20massage%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.77298,106.68665",
+              "place:osm:10.77076,106.68382"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.77298,106.68665",
+            "place:osm:10.77076,106.68382"
+          ],
+          "domain": "spa"
+        }
+      ],
+      "cardItems": [
+        [
+          "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+          "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+          "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+          "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+          "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+          "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+          "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+          "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa"
+        ],
+        [
+          "Gội Đầu Dưỡng Sinh Quận 3 HẺM SPA",
+          "Tiệm Gội Đầu - Hair Spa & Massage Quận 3",
+          "Shinrin Spa: Gội Đầu & Massage tại Quận 1, TP. Hồ Chí Minh",
+          "Gội Đầu Thảo Dược, Massage và Chăm Sóc Da Mặt tại ...",
+          "Gội đầu thư giãn Quận 3 - Dậu Xinh",
+          "Spa Massage Gội Đầu Dưỡng Sinh Cô Út Quận 3",
+          "Tiệm Gội Về Nhà - Gội Đầu Dưỡng Sinh Quận 3",
+          "Spa massage body Quận 3 | Gội đầu dưỡng sinh Quận 3 | Halavu Spa"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình tìm các spa gội đầu massage gần quận 3 cho bạn chiều nay.\n\nMình chọn **Hẻm Spa** cho bạn — **5⭐ (56 đánh giá)**, cách vị trí bạn chỉ ~1.6km, mở từ 10:30 đến 22:00 nên hoàn toàn phù hợp chiều nay. Spa này chuyên gội đầu dưỡng sinh + massage, đánh giá rất cao và gần nhất.\n\nNếu muốn chọn khác, **Spa Cô Út** cũng tuyệt vời — **5⭐ (150 đánh giá)**, cách ~2km, mở từ 9:00 sáng. Đây là spa lâu đời, nhiều khách tin tưởng.\n\nCả hai đều có website/fanpage để bạn xem giá dịch vụ trước khi đến nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hẻm Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2383666130334040291\",\"primary\":true},{\"label\":\"🌐 Fanpage - Hẻm Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1JCzTXkDaX/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gội đầu bao lâu?|Massage body thêm không?|Quanh đó ăn tối ở đâu?[/FOLLOWUPS]",
+      "visible": "Mình tìm các spa gội đầu massage gần quận 3 cho bạn chiều nay.\n\nMình chọn **Hẻm Spa** cho bạn — **5⭐ (56 đánh giá)**, cách vị trí bạn chỉ ~1.6km, mở từ 10:30 đến 22:00 nên hoàn toàn phù hợp chiều nay. Spa này chuyên gội đầu dưỡng sinh + massage, đánh giá rất cao và gần nhất.\n\nNếu muốn chọn khác, **Spa Cô Út** cũng tuyệt vời — **5⭐ (150 đánh giá)**, cách ~2km, mở từ 9:00 sáng. Đây là spa lâu đời, nhiều khách tin tưởng.\n\nCả hai đều có website/fanpage để bạn xem giá dịch vụ trước khi đến nhé.",
+      "preGuard": "Mình tìm các spa gội đầu massage gần quận 3 cho bạn chiều nay.Mình chọn **Hẻm Spa** cho bạn — **5⭐ (56 đánh giá)**, cách vị trí bạn chỉ ~1.6km, mở từ 10:30 đến 22:00 nên hoàn toàn phù hợp chiều nay. Spa này chuyên gội đầu dưỡng sinh + massage, đánh giá rất cao và gần nhất.\n\nNếu muốn chọn khác, **Spa Cô Út** cũng tuyệt vời — **5⭐ (150 đánh giá)**, cách ~2km, mở từ 9:00 sáng. Đây là spa lâu đời, nhiều khách tin tưởng.\n\nCả hai đều có website/fanpage để bạn xem giá dịch vụ trước khi đến nhé.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem trên Maps - Hẻm Spa\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=2383666130334040291\",\"primary\":true},{\"label\":\"🌐 Fanpage - Hẻm Spa\",\"type\":\"website\",\"url\":\"https://www.facebook.com/share/1JCzTXkDaX/?mibextid=wwXIfr\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gội đầu bao lâu?|Massage body thêm không?|Quanh đó ăn tối ở đâu?[/FOLLOWUPS]"
+    },
+    {
+      "user": "tối nay xem phim rạp nào gần quận 3",
+      "status": 200,
+      "elapsedMs": 13554,
+      "usage": {
+        "promptTokens": 1643,
+        "completionTokens": 553
+      },
+      "textFrames": 2,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "rạp phim quận 3",
+            "location": "Quận 3, TP HCM",
+            "type": "cinema"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Mega GS Cinemas Lý Chính Thắng",
+              "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2591,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Lý Chính Thắng",
+              "address": "83 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 72408, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 1690,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Mega GS Cinemas - Cao Thắng",
+              "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3436,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV La Vela Sai Gon",
+              "address": "280 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 3.5,
+              "ratingCount": 17,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.78064,106.68242",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Mega GS Cinemas Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TrEtCFaIEIxdsHyz1orQyNY7YkQvvzjca70a9NnyO3eJmX0Xc5UTcLbzzZCxch6VsEfza2R2Z2L5_pkjcRJn6WRGqMLm98i1_1jg4h4usbXR74ArU6jloP3dUyJ3UQPV8W2Z0",
+                "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2591,
+                "phone": "+84 28 6282 3737",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.megagscinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=318959309129777034",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862823737",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78910,106.68565",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S95u2t0aFY_3tM6ZWjlzJlH2Mln5B4g0pRzgh2S-1acJTCHvaLDu7C6k789fWGEhzOePLwYH8-GVF22YkDhhm0cVwP7Hm1Rdd4ccoccAqEwqBM_8HZbfFaSzijazFQeAWDVy3X",
+                "address": "83 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 72408, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 1690,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14594346812979919090",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76899,106.68294",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Mega GS Cinemas - Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Tn-2xbpb-CX_KsezGiHp7L1qKHNDUunZlJjZlLi9mdgo1AnqLMXRsMGbQZwuxdXa5OR_UwSD-tX8tKr8C018M7Q-7vuOAsm-OLBvLYwy6NLvnj_hcMMVMG-DS56TuIIh8joP8v",
+                "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3436,
+                "phone": "+84 28 6264 9911",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 2,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.megagscinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7890681826732241057",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20-%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862649911",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78867,106.68547",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV La Vela Sai Gon",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SAnk81kjWLFfnGpUxU73AfkTFi3hlk9_zVoB8udKQOuYDZYlgpFTFdOsDzZqMVl1sDg7807-5vp60FqtXVsmSSNp6NPuyLh4cQEwQiJDtmZq7Ylp5LM5HSVELeOa0PcJTSEoZ2GQ",
+                "address": "280 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 3.5,
+                "ratingCount": 17,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 3,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1127080513183137342",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20La%20Vela%20Sai%20Gon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20phim%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "entertainment"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Mega GS Cinemas - Cao Thắng",
+              "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+              "rating": 4.3,
+              "ratingCount": 3436,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": true,
+              "reasons": [
+                "rated 4.3",
+                "3436 reviews"
+              ]
+            },
+            {
+              "name": "Mega GS Cinemas Lý Chính Thắng",
+              "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam",
+              "rating": 4,
+              "ratingCount": 2591,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV Lý Chính Thắng",
+              "address": "83 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 72408, Việt Nam",
+              "rating": 4.1,
+              "ratingCount": 1690,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "CGV La Vela Sai Gon",
+              "address": "280 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+              "rating": 3.5,
+              "ratingCount": 17,
+              "price": null,
+              "categories": [
+                "Rạp chiếu phim"
+              ],
+              "hours": null,
+              "open": null,
+              "distanceKm": null,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "entertainment",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.76899,106.68294",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Mega GS Cinemas - Cao Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Tn-2xbpb-CX_KsezGiHp7L1qKHNDUunZlJjZlLi9mdgo1AnqLMXRsMGbQZwuxdXa5OR_UwSD-tX8tKr8C018M7Q-7vuOAsm-OLBvLYwy6NLvnj_hcMMVMG-DS56TuIIh8joP8v",
+                "address": "19 Cao Thắng, Bàn Cờ, Hồ Chí Minh 72418, Việt Nam",
+                "rating": 4.3,
+                "ratingCount": 3436,
+                "phone": "+84 28 6264 9911",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 2,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.3",
+                    "params": {
+                      "value": 4.3
+                    }
+                  },
+                  {
+                    "attribute": "reviewCount",
+                    "evidence": "3436 reviews",
+                    "params": {
+                      "count": 3436
+                    }
+                  }
+                ],
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.megagscinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7890681826732241057",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20-%20Cao%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862649911",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78064,106.68242",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "Mega GS Cinemas Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TrEtCFaIEIxdsHyz1orQyNY7YkQvvzjca70a9NnyO3eJmX0Xc5UTcLbzzZCxch6VsEfza2R2Z2L5_pkjcRJn6WRGqMLm98i1_1jg4h4usbXR74ArU6jloP3dUyJ3UQPV8W2Z0",
+                "address": "212 Lý Chính Thắng, Nhiêu Lộc, Hồ Chí Minh 72414, Việt Nam",
+                "rating": 4,
+                "ratingCount": 2591,
+                "phone": "+84 28 6282 3737",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.megagscinemas.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=318959309129777034",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Mega%20GS%20Cinemas%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+842862823737",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78910,106.68565",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV Lý Chính Thắng",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9S95u2t0aFY_3tM6ZWjlzJlH2Mln5B4g0pRzgh2S-1acJTCHvaLDu7C6k789fWGEhzOePLwYH8-GVF22YkDhhm0cVwP7Hm1Rdd4ccoccAqEwqBM_8HZbfFaSzijazFQeAWDVy3X",
+                "address": "83 Lý Chính Thắng, Xuân Hòa, Hồ Chí Minh 72408, Việt Nam",
+                "rating": 4.1,
+                "ratingCount": 1690,
+                "phone": "+84 1900 6017",
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 1,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.cgv.vn/",
+                    "labelKey": "v3.action.website",
+                    "platform": "Official Website"
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14594346812979919090",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20L%C3%BD%20Ch%C3%ADnh%20Th%E1%BA%AFng%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+8419006017",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.78867,106.68547",
+                "domain": "entertainment",
+                "kind": "place",
+                "name": "CGV La Vela Sai Gon",
+                "image": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SAnk81kjWLFfnGpUxU73AfkTFi3hlk9_zVoB8udKQOuYDZYlgpFTFdOsDzZqMVl1sDg7807-5vp60FqtXVsmSSNp6NPuyLh4cQEwQiJDtmZq7Ylp5LM5HSVELeOa0PcJTSEoZ2GQ",
+                "address": "280 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+                "rating": 3.5,
+                "ratingCount": 17,
+                "categories": [
+                  "Rạp chiếu phim"
+                ],
+                "rank": 3,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=1127080513183137342",
+                    "labelKey": "v3.action.maps",
+                    "platform": "Google Maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=CGV%20La%20Vela%20Sai%20Gon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=r%E1%BA%A1p%20phim%20qu%E1%BA%ADn%203%20Qu%E1%BA%ADn%203%2C%20TP%20HCM",
+            "picked": [
+              "place:osm:10.76899,106.68294",
+              "place:osm:10.78910,106.68565"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.76899,106.68294",
+            "place:osm:10.78910,106.68565"
+          ],
+          "domain": "entertainment"
+        }
+      ],
+      "cardItems": [
+        [
+          "Mega GS Cinemas Lý Chính Thắng",
+          "CGV Lý Chính Thắng",
+          "Mega GS Cinemas - Cao Thắng",
+          "CGV La Vela Sai Gon"
+        ],
+        [
+          "Mega GS Cinemas - Cao Thắng",
+          "Mega GS Cinemas Lý Chính Thắng",
+          "CGV Lý Chính Thắng",
+          "CGV La Vela Sai Gon"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình chọn **Mega GS Cinemas - Cao Thắng** — 4.3⭐ (3.436 đánh giá Google Maps).\n\nMình tìm các rạp phim gần quận 3 cho bạn xem tối nay.\n\nTối nay bạn có thể vào xem phim mới, chọn suất chiếu phù hợp trên trang rạp.\n\nBạn vào website rạp để chọn phim, suất chiếu và đặt vé nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Mega GS Cinemas - Cao Thắng\",\"type\":\"website\",\"url\":\"https://www.megagscinemas.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Mega GS\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7890681826732241057\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay?|Cần đặt vé trước không?|Muốn ăn gì trước xem phim?[/FOLLOWUPS]\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 200k/người / 200–500k/người / trên 500k/người)?",
+      "visible": "Mình chọn **Mega GS Cinemas - Cao Thắng** — 4.3⭐ (3.436 đánh giá Google Maps).\n\nMình tìm các rạp phim gần quận 3 cho bạn xem tối nay.\n\nTối nay bạn có thể vào xem phim mới, chọn suất chiếu phù hợp trên trang rạp.\n\nBạn vào website rạp để chọn phim, suất chiếu và đặt vé nhé 👍\n\nBạn muốn tầm giá khoảng bao nhiêu (dưới 200k/người / 200–500k/người / trên 500k/người)?",
+      "preGuard": "Mình tìm các rạp phim gần quận 3 cho bạn xem tối nay.Mình chọn **Mega GS Cinemas - Cao Thắng** cho bạn — **4.3⭐ (3.436 đánh giá)**, cách bạn ~1.8km, rạp này có đánh giá cao nhất và gần nhất quận 3. Tối nay bạn có thể vào xem phim mới, chọn suất chiếu phù hợp trên trang rạp.\n\nNếu muốn chọn khác, **CGV Lý Chính Thắng** cũng tốt — **4.1⭐ (1.690 đánh giá)**, cách ~2.1km, cùng khu vực với Mega GS Lý Chính Thắng nên tiện lợi.\n\nBạn vào website rạp để chọn phim, suất chiếu và đặt vé nhé 👍\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🎬 Mega GS Cinemas - Cao Thắng\",\"type\":\"website\",\"url\":\"https://www.megagscinemas.vn/\",\"primary\":true},{\"label\":\"📍 Google Maps - Mega GS\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=7890681826732241057\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Xem phim gì hôm nay?|Cần đặt vé trước không?|Muốn ăn gì trước xem phim?[/FOLLOWUPS]"
+    }
+  ]
+}

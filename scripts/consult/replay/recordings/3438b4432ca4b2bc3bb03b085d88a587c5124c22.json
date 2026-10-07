@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG 17 pro max monarch magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:24:23.411Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG 17 pro max monarch magsafe (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng UAG cho iPhone 17 Series - CellphoneS",
+    "link": "https://cellphones.com.vn/phu-kien/bao-da-op-lung/iphone/iphone-17/uag.html",
+    "snippet": "Mua ốp lưng UAG iPhone 17 Series tại CellphoneS giúp sở hữu sản phẩm chính hãng với mức giá hấp dẫn. CellphoneS cung cấp đa dạng lựa chọn từ kiểu dáng mạnh mẽ, thời trang cho đến phiên bản có MagSafe tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng 18 Pro Max/17 Pro Max Uag Monarch Pro With Magsafe ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-18-pro-max17-pro-max-uag-monarch-pro-with-magsafe-forged.html",
+    "snippet": "Đánh giá Ốp lưng iPhone 18 Pro Max/17 Pro Max Uag Monarch Pro With Magsafe Lọc đánh giá theo Tất cả Có hình ảnh",
+    "position": 2
+   },
+   {
+    "title": "Ốp UAG Monarch Pro Magsafe iPhone 17 Pro Max - Hàng Chính ...",
+    "link": "https://shopee.vn/%E1%BB%90p-UAG-Monarch-Pro-Magsafe-iPhone-17-Pro-Max-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-i.133330086.43128128733",
+    "snippet": "Được thiết kế cho những môi trường khắc nghiệt nhất, ốp lưng Monarch Pro sở hữu mô-đun nam châm tích hợp mạnh mẽ giúp sạc pin dễ dàng và tương thích với Pay, đảm bảo thiết bị của bạn luôn hoạt động và sẵn sàng cho mọi tình huống.",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng UAG Monarch Pro w Magnetic cho iPhone 17 Pro Max [6.9 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-UAG-Monarch-Pro-w-Magnetic-cho-iPhone-17-Pro-Max-6.9-inch--i.241319331.43818320892",
+    "snippet": "Chọn Vỏ Monarch Pro để kết hợp khả năng bảo vệ tiên tiến, thiết kế đẹp mắt và chức năng vô song. Hoàn hảo cho những ai yêu cầu nhiều hơn từ ốp điện thoại của mình.",
+    "position": 4
+   },
+   {
+    "title": "Ốp Lưng UAG Pathfinder / Civilian / Monarch Pro Orange Cho ...",
+    "link": "https://h5.lazada.vn/products/op-lung-uag-pathfinder-civilian-monarch-pro-orange-cho-iphone-17-pro-17-pro-max-phien-ban-cam-dac-biet-i3264049694.html",
+    "snippet": "Ốp Lưng UAG Pathfinder / Civilian / Monarch Pro Orange Cho iPhone 17 Pro / 17 Pro Max, Phiên Bản Cam Đặc Biệt",
+    "position": 5
+   },
+   {
+    "title": "Ốp UAG | Bao da UAG - Ốp chống sốc chính hãng, giá rẻ",
+    "link": "https://cellphones.com.vn/phu-kien/uag.html",
+    "snippet": "Mua phụ kiện UAG chính hãng tại CellphoneS là lựa chọn an tâm dành cho người yêu thích công nghệ. Tại đây, khách hàng sẽ tìm thấy đủ các dòng phụ kiện từ ốp lưng, dây đeo, balo đến túi bảo vệ với mẫu mã đa dạng.",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch Pro Exclusive ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Sản phẩm ốp lưng iPhone 17 Pro Max có nam châm MagSafe, cho phép sạc không dây và hỗ trợ Apple Pay. Ốp lưng có nút bấm lớn dễ thao tác và mép nhô cao bảo vệ màn hình, camera giúp tăng thêm sự an tâm khi sử dụng.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

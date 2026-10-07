@@ -1,0 +1,1231 @@
+{
+  "id": "T3",
+  "group": "food-constraints",
+  "criteria": [
+    "Turn 2: every card respects the 50-60k budget; no restaurants/beer venues (nhà hàng, quán nhậu, bia)",
+    "Places closed at lunch are not ranked first (or are clearly marked and ranked down)",
+    "Text and cards recommend the SAME places",
+    "No invented cuisine (no seafood unless the user asked)",
+    "The budget correction replaces the earlier constraint and the reply acknowledges it"
+  ],
+  "turns": [
+    {
+      "user": "trưa nay ăn gì cho ngon",
+      "status": 200,
+      "elapsedMs": 448,
+      "usage": {
+        "promptTokens": 0,
+        "completionTokens": 0
+      },
+      "textFrames": 1,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.\n\n[FOLLOWUPS]dưới 100k/người|100–200k/người|trên 200k/người[/FOLLOWUPS]",
+      "visible": "Để chọn đúng chỗ, mình cần biết thêm:\n• Tầm giá? (dưới 100k/người / 100–200k/người / trên 200k/người)\n• Mấy người? (1–2 người / 3–5 người / nhóm đông)\nBạn trả lời phần nào cũng được, phần còn lại mình tự giả sử và nói rõ.",
+      "preGuard": null
+    },
+    {
+      "user": "chọn quán rẻ tiền thôi, 50-60k thôi mé gì toàn nhà hàng",
+      "status": 200,
+      "elapsedMs": 11016,
+      "usage": {
+        "promptTokens": 2969,
+        "completionTokens": 626
+      },
+      "textFrames": 1,
+      "tools": [
+        {
+          "name": "search_places",
+          "args": {
+            "query": "quán ăn trưa ngon",
+            "type": "restaurant"
+          }
+        }
+      ],
+      "toolResults": [
+        null
+      ],
+      "annotations": [
+        {
+          "type": "tappy.progress.v1",
+          "stage": "searching"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "found"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 285,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng châu Á"
+              ],
+              "hours": "10:00–19:30",
+              "open": false,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Ý Quán Căn Tin Yết Kiêu",
+              "address": "1 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 10,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Khu ăn uống"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Xỉu - Quán Ăn Ngon",
+              "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 246,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "17:00–22:30",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tiệm cơm trưa",
+              "address": "54 Ngô Bệ, Tân Bình, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 15,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:30–14:00",
+              "open": false,
+              "distanceKm": 7.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+              "address": "997 Trần Hưng Đạo, An Đông, Hồ Chí Minh, Việt Nam",
+              "rating": 3.2,
+              "ratingCount": 26,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 3.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon Bình Dân Vạn",
+              "address": "2 Đường 34B, Khu đô thị An Phú An Khánh, Bình Trưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 4.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán cơm trưa văn phòng Chị Thuý",
+              "address": "TK15/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 40,
+              "price": null,
+              "categories": [
+                "Nhà hàng gia đình"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon",
+              "address": "PMX6+8H2, 22 Đ. Vĩnh Nam, Phú Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 14,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": false,
+            "items": [
+              {
+                "id": "place:osm:10.77313,106.69405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Hà Nội",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMrpgJolhVtFRoHx2tMv6MtNAyC7vZd_3pcvov9vb2mCUEW9gJllaJ9TXrWLaUCl2C-cuPbnCVMqGoerHBeTTaK2IWRoMHzSeIF7qss3FCHaVf7gcy-Q4xCJriSbbVu1doV2qeiwA",
+                "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 285,
+                "openingHours": "10:00–19:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–19:30",
+                  "Thứ Hai": "10:00–19:30",
+                  "Thứ Ba": "10:00–19:30",
+                  "Thứ Tư": "10:00–19:30",
+                  "Thứ Năm": "10:00–19:30",
+                  "Thứ Sáu": "10:00–19:30",
+                  "Thứ Bảy": "10:00–15:30"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng châu Á"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17709648029835947889",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79073,106.70600",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ý Quán Căn Tin Yết Kiêu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdJRx63Mo8YJGBg4hbHMNFe3_6DvWHwg3f_Xxg0EX_B6KSm9N9Et7m5vbYEuLBvskYp5pKFgwrn02qLxHxpU4YddH3ywySfpqufkwUIxAJp2Bfo6ZJ1H30Hh6BMPnfyG8eDf5MiXPiWeIE",
+                "address": "1 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 10,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 898 506 618",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Khu ăn uống"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3914162296961446115",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C3%9D%20Qu%C3%A1n%20C%C4%83n%20Tin%20Y%E1%BA%BFt%20Ki%C3%AAu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://giaodoan.vn/yquan/yquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898506618",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76330,106.69604",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Xỉu - Quán Ăn Ngon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOqtzOFlGxUZOHJDBDJ1CkBEmtvELXATEK6g27MXAI8CI5ldqTTDb2P4sFTTIQ0N9qdZP7WE432iXq2xNS702KCOcPYngUUJRu2FlNwWP5LoDuWXNBrRrUC0zj3SXpmvpHtJIR6mNtAVmoL",
+                "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 246,
+                "openingHours": "17:00–22:30",
+                "openNow": false,
+                "phone": "+84 921 942 754",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "17:00–22:30",
+                  "Thứ Hai": "17:00–22:00",
+                  "Thứ Ba": "17:00–22:30",
+                  "Thứ Tư": "17:00–22:30",
+                  "Thứ Năm": "17:00–22:30",
+                  "Thứ Sáu": "17:00–22:30",
+                  "Thứ Bảy": "17:00–22:30"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 2,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4972183245674149675",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20X%E1%BB%89u%20-%20Qu%C3%A1n%20%C4%82n%20Ngon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/AXIU.QuanAnNgon",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84921942754",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80415,106.64174",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm cơm trưa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdwiYJ-U2ntIs8KPu-5D6vjKPnINVXZVEC7RWNJJtukihu_5KHoPusfq0SqtOuM2Oe-70SPHQfsUIxccv7_0Bh07JKXQPq7RnsGDsvpLUt5dHArHuQG1erusxTMsxsVmbdugIexb8GzrEL5",
+                "address": "54 Ngô Bệ, Tân Bình, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 15,
+                "openingHours": "09:30–14:00",
+                "openNow": false,
+                "phone": "+84 977 689 160",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:30–14:00",
+                  "Thứ Hai": "09:30–14:00",
+                  "Thứ Ba": "09:30–14:00",
+                  "Thứ Tư": "09:30–14:00",
+                  "Thứ Năm": "09:30–14:00",
+                  "Thứ Sáu": "09:30–14:00",
+                  "Thứ Bảy": "09:30–14:00"
+                },
+                "distanceKm": 7.1,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8036371213966995706",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20c%C6%A1m%20tr%C6%B0a%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977689160",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75375,106.67602",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLeYhIAoZ6FBS1s1Scqg6Pg6nsUN1bXZHKbtvSS1rBjXETRcPdMvX3S6ps4CbqVwqaFjQSusxa-hO-BnDPOWkJcUDIYChnQAP1j4krB3PyY8HWYl3vnpcbOqBuLe7iN_v2yRmWQ",
+                "address": "997 Trần Hưng Đạo, An Đông, Hồ Chí Minh, Việt Nam",
+                "rating": 3.2,
+                "ratingCount": 26,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 907 137 438",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "distanceKm": 3.7,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7495859104550535816",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20C%C6%A1m%20C%C3%B4%20C%C3%B4%20My%20-%20C%C6%A1m%20Tr%C6%B0a%20V%C4%83n%20Ph%C3%B2ng%20Qu%E1%BA%ADn%205%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907137438",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79309,106.74023",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Bình Dân Vạn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdR1sBbqM3fKeKX2CUUO_8Z8Y6xfDYIcRZ3-dHKsiUcP66-tByS7gPNNFkoN4OojgoWf0W8kYi_6YrGceKrSmkp3AxN_DDxf4mbvhwxz_Z_9ylPtp8KzCtT_PRbpwFm-IXfB0aWbQ",
+                "address": "2 Đường 34B, Khu đô thị An Phú An Khánh, Bình Trưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 973 434 286",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "06:00–14:00",
+                  "Thứ Ba": "06:00–14:00",
+                  "Thứ Tư": "06:00–14:00",
+                  "Thứ Năm": "06:00–14:00",
+                  "Thứ Sáu": "06:00–14:00",
+                  "Thứ Bảy": "06:00–14:00"
+                },
+                "distanceKm": 4.7,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8885785655220574009",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20B%C3%ACnh%20D%C3%A2n%20V%E1%BA%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84973434286",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75828,106.68835",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán cơm trưa văn phòng Chị Thuý",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLd8OrNB8zud9Fn9g_EzFIxfcrv1yPk-IaN_YWfBLEYViwQ6fZga6hhYywqggqJ4i2StfGklnLtu8uvm9Z1JjfoExRURy5pBJCayvnkdpWEobkNdKg24UY0RRNDBEmdY2JFmYbnYT_Q4ZlU",
+                "address": "TK15/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 40,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 859 785 636",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "08:00–13:30",
+                  "Thứ Ba": "08:00–13:30",
+                  "Thứ Tư": "08:00–13:30",
+                  "Thứ Năm": "08:00–13:30",
+                  "Thứ Sáu": "08:00–13:30",
+                  "Thứ Bảy": "Đóng cửa"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Nhà hàng gia đình"
+                ],
+                "rank": 6,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6399979327143504720",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20c%C6%A1m%20tr%C6%B0a%20v%C4%83n%20ph%C3%B2ng%20Ch%E1%BB%8B%20Thu%C3%BD%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84859785636",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74827,106.66135",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXCW0K2TJcOjiVNDmmhV8F4f6nG7dPwmESsCEsusRbHegkOmXUPWrW5q--4Kmbx8oFJMo80MzycHpZkX4gXSZAwz21HO4KuHpxqiZkYXQpT5CbGhidpIebMqn3ufRsDJr4BLuyXmUabBBq",
+                "address": "PMX6+8H2, 22 Đ. Vĩnh Nam, Phú Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 14,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 987 067 006",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "10:30–03:00",
+                  "Thứ Ba": "10:30–03:00",
+                  "Thứ Tư": "10:30–03:00",
+                  "Thứ Năm": "10:30–03:00",
+                  "Thứ Sáu": "10:30–03:00",
+                  "Thứ Bảy": "10:30–03:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14708633743583017659",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84987067006",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20",
+            "shown": 3,
+            "preliminary": true
+          },
+          "preliminary": true,
+          "domain": "food"
+        },
+        {
+          "type": "tappy.progress.v1",
+          "stage": "finishing"
+        },
+        {
+          "type": "tappy.places.v1",
+          "items": [
+            {
+              "name": "Ý Quán Căn Tin Yết Kiêu",
+              "address": "1 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 10,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ",
+                "Khu ăn uống"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 1.6,
+              "recommended": true,
+              "reasons": [
+                "rated 4.9",
+                "open now",
+                "1.6km away"
+              ]
+            },
+            {
+              "name": "Cơm Ngon Hà Nội",
+              "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 285,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng châu Á"
+              ],
+              "hours": "10:00–19:30",
+              "open": false,
+              "distanceKm": 0.9,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "A Xỉu - Quán Ăn Ngon",
+              "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 4.7,
+              "ratingCount": 246,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "17:00–22:30",
+              "open": false,
+              "distanceKm": 1.6,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Tiệm cơm trưa",
+              "address": "54 Ngô Bệ, Tân Bình, Hồ Chí Minh, Việt Nam",
+              "rating": 4.9,
+              "ratingCount": 15,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "09:30–14:00",
+              "open": false,
+              "distanceKm": 7.1,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+              "address": "997 Trần Hưng Đạo, An Đông, Hồ Chí Minh, Việt Nam",
+              "rating": 3.2,
+              "ratingCount": 26,
+              "price": "1-100.000 ₫",
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Mở cửa cả ngày",
+              "open": true,
+              "distanceKm": 3.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon Bình Dân Vạn",
+              "address": "2 Đường 34B, Khu đô thị An Phú An Khánh, Bình Trưng, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 30,
+              "price": null,
+              "categories": [
+                "Quán ăn nhỏ"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 4.7,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Quán cơm trưa văn phòng Chị Thuý",
+              "address": "TK15/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+              "rating": 5,
+              "ratingCount": 40,
+              "price": null,
+              "categories": [
+                "Nhà hàng gia đình"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 2.5,
+              "recommended": null,
+              "reasons": null
+            },
+            {
+              "name": "Cơm Ngon",
+              "address": "PMX6+8H2, 22 Đ. Vĩnh Nam, Phú Định, Hồ Chí Minh, Việt Nam",
+              "rating": 4.8,
+              "ratingCount": 14,
+              "price": null,
+              "categories": [
+                "Nhà hàng"
+              ],
+              "hours": "Đóng cửa",
+              "open": false,
+              "distanceKm": 5.4,
+              "recommended": null,
+              "reasons": null
+            }
+          ],
+          "raw": {
+            "kind": "tappy.places.v1",
+            "v": 1,
+            "domain": "food",
+            "ranked": true,
+            "items": [
+              {
+                "id": "place:osm:10.79073,106.70600",
+                "domain": "food",
+                "kind": "place",
+                "name": "Ý Quán Căn Tin Yết Kiêu",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdJRx63Mo8YJGBg4hbHMNFe3_6DvWHwg3f_Xxg0EX_B6KSm9N9Et7m5vbYEuLBvskYp5pKFgwrn02qLxHxpU4YddH3ywySfpqufkwUIxAJp2Bfo6ZJ1H30Hh6BMPnfyG8eDf5MiXPiWeIE",
+                "address": "1 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 10,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 898 506 618",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ",
+                  "Khu ăn uống"
+                ],
+                "rank": 1,
+                "shortlistPosition": 1,
+                "recommended": true,
+                "reasons": [
+                  {
+                    "attribute": "rating",
+                    "evidence": "rated 4.9",
+                    "params": {
+                      "value": 4.9
+                    }
+                  },
+                  {
+                    "attribute": "openNow",
+                    "evidence": "open now"
+                  },
+                  {
+                    "attribute": "distance",
+                    "evidence": "1.6km away",
+                    "params": {
+                      "km": 1.6
+                    }
+                  }
+                ],
+                "tradeOff": {
+                  "attribute": "reviewCount",
+                  "evidence": "26 reviews",
+                  "params": {
+                    "count": 26
+                  }
+                },
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=3914162296961446115",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=%C3%9D%20Qu%C3%A1n%20C%C4%83n%20Tin%20Y%E1%BA%BFt%20Ki%C3%AAu%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://giaodoan.vn/yquan/yquan",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84898506618",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.77313,106.69405",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Hà Nội",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMrpgJolhVtFRoHx2tMv6MtNAyC7vZd_3pcvov9vb2mCUEW9gJllaJ9TXrWLaUCl2C-cuPbnCVMqGoerHBeTTaK2IWRoMHzSeIF7qss3FCHaVf7gcy-Q4xCJriSbbVu1doV2qeiwA",
+                "address": "131 Nguyễn Du, Bến Thành, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 285,
+                "openingHours": "10:00–19:30",
+                "openNow": false,
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "10:00–19:30",
+                  "Thứ Hai": "10:00–19:30",
+                  "Thứ Ba": "10:00–19:30",
+                  "Thứ Tư": "10:00–19:30",
+                  "Thứ Năm": "10:00–19:30",
+                  "Thứ Sáu": "10:00–19:30",
+                  "Thứ Bảy": "10:00–15:30"
+                },
+                "distanceKm": 0.9,
+                "categories": [
+                  "Nhà hàng châu Á"
+                ],
+                "rank": 0,
+                "shortlistPosition": 3,
+                "actions": [
+                  {
+                    "kind": "review",
+                    "urlKind": "direct",
+                    "url": "https://www.tiktok.com/@congnhanvanphongvn/video/7622290966287813908",
+                    "labelKey": "v3.action.reviewOn",
+                    "platform": "TikTok",
+                    "attributed": true
+                  },
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=17709648029835947889",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20H%C3%A0%20N%E1%BB%99i%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.76330,106.69604",
+                "domain": "food",
+                "kind": "place",
+                "name": "A Xỉu - Quán Ăn Ngon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmOqtzOFlGxUZOHJDBDJ1CkBEmtvELXATEK6g27MXAI8CI5ldqTTDb2P4sFTTIQ0N9qdZP7WE432iXq2xNS702KCOcPYngUUJRu2FlNwWP5LoDuWXNBrRrUC0zj3SXpmvpHtJIR6mNtAVmoL",
+                "address": "26 Đề Thám, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 4.7,
+                "ratingCount": 246,
+                "openingHours": "17:00–22:30",
+                "openNow": false,
+                "phone": "+84 921 942 754",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "17:00–22:30",
+                  "Thứ Hai": "17:00–22:00",
+                  "Thứ Ba": "17:00–22:30",
+                  "Thứ Tư": "17:00–22:30",
+                  "Thứ Năm": "17:00–22:30",
+                  "Thứ Sáu": "17:00–22:30",
+                  "Thứ Bảy": "17:00–22:30"
+                },
+                "distanceKm": 1.6,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 2,
+                "shortlistPosition": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=4972183245674149675",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=A%20X%E1%BB%89u%20-%20Qu%C3%A1n%20%C4%82n%20Ngon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "website",
+                    "urlKind": "direct",
+                    "url": "https://www.facebook.com/AXIU.QuanAnNgon",
+                    "labelKey": "v3.action.website"
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84921942754",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.80415,106.64174",
+                "domain": "food",
+                "kind": "place",
+                "name": "Tiệm cơm trưa",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdwiYJ-U2ntIs8KPu-5D6vjKPnINVXZVEC7RWNJJtukihu_5KHoPusfq0SqtOuM2Oe-70SPHQfsUIxccv7_0Bh07JKXQPq7RnsGDsvpLUt5dHArHuQG1erusxTMsxsVmbdugIexb8GzrEL5",
+                "address": "54 Ngô Bệ, Tân Bình, Hồ Chí Minh, Việt Nam",
+                "rating": 4.9,
+                "ratingCount": 15,
+                "openingHours": "09:30–14:00",
+                "openNow": false,
+                "phone": "+84 977 689 160",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "09:30–14:00",
+                  "Thứ Hai": "09:30–14:00",
+                  "Thứ Ba": "09:30–14:00",
+                  "Thứ Tư": "09:30–14:00",
+                  "Thứ Năm": "09:30–14:00",
+                  "Thứ Sáu": "09:30–14:00",
+                  "Thứ Bảy": "09:30–14:00"
+                },
+                "distanceKm": 7.1,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 3,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8036371213966995706",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Ti%E1%BB%87m%20c%C6%A1m%20tr%C6%B0a%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84977689160",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75375,106.67602",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLeYhIAoZ6FBS1s1Scqg6Pg6nsUN1bXZHKbtvSS1rBjXETRcPdMvX3S6ps4CbqVwqaFjQSusxa-hO-BnDPOWkJcUDIYChnQAP1j4krB3PyY8HWYl3vnpcbOqBuLe7iN_v2yRmWQ",
+                "address": "997 Trần Hưng Đạo, An Đông, Hồ Chí Minh, Việt Nam",
+                "rating": 3.2,
+                "ratingCount": 26,
+                "openingHours": "Mở cửa cả ngày",
+                "openNow": true,
+                "phone": "+84 907 137 438",
+                "priceRangeText": "1-100.000 ₫",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Mở cửa cả ngày",
+                  "Thứ Hai": "Mở cửa cả ngày",
+                  "Thứ Ba": "Mở cửa cả ngày",
+                  "Thứ Tư": "Mở cửa cả ngày",
+                  "Thứ Năm": "Mở cửa cả ngày",
+                  "Thứ Sáu": "Mở cửa cả ngày",
+                  "Thứ Bảy": "Mở cửa cả ngày"
+                },
+                "distanceKm": 3.7,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 4,
+                "shortlistPosition": 2,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=7495859104550535816",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20C%C6%A1m%20C%C3%B4%20C%C3%B4%20My%20-%20C%C6%A1m%20Tr%C6%B0a%20V%C4%83n%20Ph%C3%B2ng%20Qu%E1%BA%ADn%205%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84907137438",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.79309,106.74023",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon Bình Dân Vạn",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLdR1sBbqM3fKeKX2CUUO_8Z8Y6xfDYIcRZ3-dHKsiUcP66-tByS7gPNNFkoN4OojgoWf0W8kYi_6YrGceKrSmkp3AxN_DDxf4mbvhwxz_Z_9ylPtp8KzCtT_PRbpwFm-IXfB0aWbQ",
+                "address": "2 Đường 34B, Khu đô thị An Phú An Khánh, Bình Trưng, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 30,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 973 434 286",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "06:00–14:00",
+                  "Thứ Ba": "06:00–14:00",
+                  "Thứ Tư": "06:00–14:00",
+                  "Thứ Năm": "06:00–14:00",
+                  "Thứ Sáu": "06:00–14:00",
+                  "Thứ Bảy": "06:00–14:00"
+                },
+                "distanceKm": 4.7,
+                "categories": [
+                  "Quán ăn nhỏ"
+                ],
+                "rank": 5,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=8885785655220574009",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20B%C3%ACnh%20D%C3%A2n%20V%E1%BA%A1n%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84973434286",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.75828,106.68835",
+                "domain": "food",
+                "kind": "place",
+                "name": "Quán cơm trưa văn phòng Chị Thuý",
+                "image": "https://lh3.googleusercontent.com/grass-cs/AABkmLd8OrNB8zud9Fn9g_EzFIxfcrv1yPk-IaN_YWfBLEYViwQ6fZga6hhYywqggqJ4i2StfGklnLtu8uvm9Z1JjfoExRURy5pBJCayvnkdpWEobkNdKg24UY0RRNDBEmdY2JFmYbnYT_Q4ZlU",
+                "address": "TK15/1 Nguyễn Cảnh Chân, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+                "rating": 5,
+                "ratingCount": 40,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 859 785 636",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "08:00–13:30",
+                  "Thứ Ba": "08:00–13:30",
+                  "Thứ Tư": "08:00–13:30",
+                  "Thứ Năm": "08:00–13:30",
+                  "Thứ Sáu": "08:00–13:30",
+                  "Thứ Bảy": "Đóng cửa"
+                },
+                "distanceKm": 2.5,
+                "categories": [
+                  "Nhà hàng gia đình"
+                ],
+                "rank": 6,
+                "shortlistPosition": 4,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=6399979327143504720",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=Qu%C3%A1n%20c%C6%A1m%20tr%C6%B0a%20v%C4%83n%20ph%C3%B2ng%20Ch%E1%BB%8B%20Thu%C3%BD%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84859785636",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              },
+              {
+                "id": "place:osm:10.74827,106.66135",
+                "domain": "food",
+                "kind": "place",
+                "name": "Cơm Ngon",
+                "image": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXCW0K2TJcOjiVNDmmhV8F4f6nG7dPwmESsCEsusRbHegkOmXUPWrW5q--4Kmbx8oFJMo80MzycHpZkX4gXSZAwz21HO4KuHpxqiZkYXQpT5CbGhidpIebMqn3ufRsDJr4BLuyXmUabBBq",
+                "address": "PMX6+8H2, 22 Đ. Vĩnh Nam, Phú Định, Hồ Chí Minh, Việt Nam",
+                "rating": 4.8,
+                "ratingCount": 14,
+                "openingHours": "Đóng cửa",
+                "openNow": false,
+                "phone": "+84 987 067 006",
+                "openingHoursWeek": {
+                  "Chủ Nhật": "Đóng cửa",
+                  "Thứ Hai": "10:30–03:00",
+                  "Thứ Ba": "10:30–03:00",
+                  "Thứ Tư": "10:30–03:00",
+                  "Thứ Năm": "10:30–03:00",
+                  "Thứ Sáu": "10:30–03:00",
+                  "Thứ Bảy": "10:30–03:00"
+                },
+                "distanceKm": 5.4,
+                "categories": [
+                  "Nhà hàng"
+                ],
+                "rank": 7,
+                "actions": [
+                  {
+                    "kind": "maps",
+                    "urlKind": "direct",
+                    "url": "https://maps.google.com/?cid=14708633743583017659",
+                    "labelKey": "v3.action.maps"
+                  },
+                  {
+                    "kind": "review",
+                    "urlKind": "search",
+                    "url": "https://www.youtube.com/results?search_query=C%C6%A1m%20Ngon%20review",
+                    "labelKey": "v3.action.reviewSearch",
+                    "platform": "YouTube",
+                    "attributed": false
+                  },
+                  {
+                    "kind": "call",
+                    "urlKind": "direct",
+                    "url": "tel:+84987067006",
+                    "labelKey": "v3.action.call"
+                  }
+                ]
+              }
+            ],
+            "mapsSearchUrl": "https://maps.google.com/maps?q=qu%C3%A1n%20%C4%83n%20tr%C6%B0a%20ngon%20",
+            "picked": [
+              "place:osm:10.79073,106.70600"
+            ],
+            "shown": 3
+          },
+          "picked": [
+            "place:osm:10.79073,106.70600"
+          ],
+          "domain": "food"
+        }
+      ],
+      "cardItems": [
+        [
+          "Cơm Ngon Hà Nội",
+          "Ý Quán Căn Tin Yết Kiêu",
+          "A Xỉu - Quán Ăn Ngon",
+          "Tiệm cơm trưa",
+          "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+          "Cơm Ngon Bình Dân Vạn",
+          "Quán cơm trưa văn phòng Chị Thuý",
+          "Cơm Ngon"
+        ],
+        [
+          "Ý Quán Căn Tin Yết Kiêu",
+          "Cơm Ngon Hà Nội",
+          "A Xỉu - Quán Ăn Ngon",
+          "Tiệm cơm trưa",
+          "Quán Cơm Cô Cô My - Cơm Trưa Văn Phòng Quận 5",
+          "Cơm Ngon Bình Dân Vạn",
+          "Quán cơm trưa văn phòng Chị Thuý",
+          "Cơm Ngon"
+        ]
+      ],
+      "duplicate": null,
+      "text": "Mình giả sử bạn ăn một mình hoặc hai người, trưa nay ở quanh Quận 1 — mình chọn **Ý Quán Căn Tin Yết Kiêu** cho bạn 👍\n\n**4.9⭐ (10 đánh giá Google Maps)**\n\nQuán này dang mở cửa lúc này, cách bạn khoảng 1.6km, và là quán ăn nhỏ kiểu căn tin — vừa rẻ tiền vừa ngon. Mặc dù chỉ có 10 đánh giá nhưng đều 4.9 sao, tức là những ai ăn đều khen.\n\nNgoài ra, **Cơm Ngon Hà Nội** (4.9⭐, 285 đánh giá) cũng gần bạn (0.9km) và rất được yêu thích, nhưng hiện đang đóng cửa (mở lại từ 10:00 sáng mai).\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Maps - Ý Quán Căn Tin Yết Kiêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3914162296961446115\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn gì khác ngon|Tìm quán khác|[/FOLLOWUPS]",
+      "visible": "Mình giả sử bạn ăn một mình hoặc hai người, trưa nay ở quanh Quận 1 — mình chọn **Ý Quán Căn Tin Yết Kiêu** cho bạn 👍\n\n**4.9⭐ (10 đánh giá Google Maps)**\n\nQuán này dang mở cửa lúc này, cách bạn khoảng 1.6km, và là quán ăn nhỏ kiểu căn tin — vừa rẻ tiền vừa ngon. Mặc dù chỉ có 10 đánh giá nhưng đều 4.9 sao, tức là những ai ăn đều khen.\n\nNgoài ra, **Cơm Ngon Hà Nội** (4.9⭐, 285 đánh giá) cũng gần bạn (0.9km) và rất được yêu thích, nhưng hiện đang đóng cửa (mở lại từ 10:00 sáng mai).",
+      "preGuard": "Mình giả sử bạn ăn một mình hoặc hai người, trưa nay ở quanh Quận 1 — mình chọn **Ý Quán Căn Tin Yết Kiêu** cho bạn 👍\n\n**4.9⭐ (10 đánh giá Google Maps)**\n\nQuán này dang mở cửa lúc này, cách bạn khoảng 1.6km, và là quán ăn nhỏ kiểu căn tin — vừa rẻ tiền vừa ngon. Mặc dù chỉ có 10 đánh giá nhưng đều 4.9 sao, tức là những ai ăn đều khen. Giá trong tầm 1-100k nên chắc chắn nằm trong ngân sách 50-60k của bạn.\n\nNgoài ra, **Cơm Ngon Hà Nội** (4.9⭐, 285 đánh giá) cũng gần bạn (0.9km) và rất được yêu thích, nhưng hiện đang đóng cửa (mở lại từ 10:00 sáng mai). Nếu bạn muốn chắc chắn có chỗ ăn ngay bây giờ thì Ý Quán là lựa chọn tốt nhất.\n\nBạn có thể gọi trước hoặc đặt qua GrabFood/ShopeeFood để chắc chắn nhé!\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🛵 GrabFood - Ý Quán Căn Tin Yết Kiêu\",\"type\":\"website\",\"url\":\"https://food.grab.com/vn/vi/restaurants?search=Y+Quan+Can+Tin+Yet+Kieu+Ho+Chi+Minh\",\"primary\":true},{\"label\":\"📍 Maps - Ý Quán Căn Tin Yết Kiêu\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=3914162296961446115\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Quán khác gần đây|Ăn gì khác ngon|Tìm quán khác|[/FOLLOWUPS]"
+    }
+  ]
+}

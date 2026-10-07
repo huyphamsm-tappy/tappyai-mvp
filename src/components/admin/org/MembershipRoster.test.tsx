@@ -138,7 +138,7 @@ describe('D6 · failure is never dressed up as emptiness', () => {
 })
 
 describe('D6 · the page enforces before it renders', () => {
-  const PAGE = readFileSync(join(__dirname, '../../../app/admin/org/memberships/page.tsx'), 'utf8')
+  const PAGE = readFileSync(join(__dirname, '../../../app/(app)/admin/org/memberships/page.tsx'), 'utf8')
 
   it('guards on the READ permission', () => {
     expect(PAGE).toMatch(/requirePagePermission\(PERMISSIONS\.SECURITY_MEMBERSHIP_READ\)/)

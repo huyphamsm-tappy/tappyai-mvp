@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"SPA AN YÊN\" OR \"MASSAGE VENUS\" OR \"Massage Tân Thủ Đô Hai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:31:00.326Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"SPA AN YÊN\" OR \"MASSAGE VENUS\" OR \"Massage Tân Thủ Đô Hai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Massage Venus Saigon",
+    "link": "https://www.tiktok.com/discover/massage-venus-saigon",
+    "snippet": "5.3M bài đăng. Hãy khám phá video liên quan đến Massage Venus Saigon trên TikTok. Xem thêm video về Massage Az Saigon, Pho Saigonese Vegas, Aimee Saigon, ...",
+    "position": 1
+   },
+   {
+    "title": "Mtv Massage Venus",
+    "link": "https://www.tiktok.com/discover/mtv-massage-venus",
+    "snippet": "760.6K publications. Découvre des vidéos liées à Mtv Massage Venus sur TikTok. Découvre plus de vidéos en lien avec « Mons Venus Massage, Công Ty Tnhh Mtv ...",
+    "position": 2
+   },
+   {
+    "title": "⚜️ MASSAGE VENUS ⚜️ (@massage35vantiendung)",
+    "link": "https://www.tiktok.com/@massage35vantiendung",
+    "snippet": "⚜️ MASSAGE VENUS ⚜️ · @massage35vantiendung · ☎️ 0326 196 115 ☎️ 035 224 406.",
+    "position": 3
+   },
+   {
+    "title": "Massage Venus 368",
+    "link": "https://www.tiktok.com/discover/massage-venus-368",
+    "snippet": "4.6M bài đăng. Hãy khám phá video liên quan đến Massage Venus 368 trên TikTok. Xem thêm video về Massage Venus Hcmc, Venus Online, ...",
+    "position": 4
+   },
+   {
+    "title": "Massage Venus Long Biên",
+    "link": "https://www.tiktok.com/discover/massage-venus-long-bi%C3%AAn",
+    "snippet": "18.7M bài đăng. Hãy khám phá video liên quan đến Massage Venus Long Biên trên TikTok. Xem thêm video về Massage Venus Phạm Ngũ Lão, ...",
+    "date": "8 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "Spa Massage Venus",
+    "link": "https://www.tiktok.com/discover/spa-massage-venus",
+    "snippet": "5.6M publications. Découvre des vidéos liées à Spa Massage Venus sur TikTok. Découvre plus de vidéos en lien avec « Venus Spa Massages, ...",
+    "date": "14 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Nana Massage Venus",
+    "link": "https://www.tiktok.com/discover/nana-massage-venus",
+    "snippet": "4.9M posts. Discover videos related to Nana Massage Venus on TikTok. See more videos about Mons Venus Massage, Encantada Venus Massagem, ...",
+    "date": "31 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "Massage Venus Phạm Ngũ Lão",
+    "link": "https://www.tiktok.com/discover/massage-venus-ph%E1%BA%A1m-ng%C5%A9-l%C3%A3o",
+    "snippet": "5.5M bài đăng. Hãy khám phá video liên quan đến Massage Venus Phạm Ngũ Lão trên TikTok. Xem thêm video về Massage Venus Văn Tiến Dũng, ...",
+    "date": "31 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

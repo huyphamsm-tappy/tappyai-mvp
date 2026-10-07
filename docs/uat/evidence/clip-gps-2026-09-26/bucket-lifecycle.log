@@ -1,0 +1,13 @@
+== project confirm
+aerobic-lock-498409-u7	1023373437508	ACTIVE
+== create (non-public)
+Creating gs://tappyai-media-audit/...
+tappyai-media-audit	ASIA-SOUTHEAST1	True	enforced
+== run: npx tsx docs/uat/evidence/clip-gps-2026-09-26/real-upload-path.mts → real-upload-path.json (3 synthetic files, byte-identical, deleted by the script)
+== independent listing
+ERROR: (gcloud.storage.ls) One or more URLs matched no objects.
+== delete bucket
+..........................
+== describe after delete
+ERROR: (gcloud.storage.buckets.describe) gs://tappyai-media-audit not found: 404.
+tappyai-media-prod: not named by any command. No permission granted or changed.

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Quà Tặng 3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:54:02.692Z",
+ "body": {
+  "searchParameters": {
+   "q": "Quà Tặng 3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quà Tặng 8/3 (COMBO 1),Chăm sóc da,quà tặng người ...",
+    "link": "https://shopee.vn/Qu%C3%A0-T%E1%BA%B7ng-8-3-(COMBO-1)-Ch%C4%83m-s%C3%B3c-da-qu%C3%A0-t%E1%BA%B7ng-ng%C6%B0%E1%BB%9Di-th%C3%A2n-y%C3%AAu.-i.944024717.25992020518",
+    "snippet": "Mua Quà Tặng 8/3 (COMBO 1),Chăm sóc da,quà tặng người thân yêu. giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 1
+   },
+   {
+    "title": "Quà Tặng 3 Con Mèo, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/quatang3conmeo?entryPoint=ShopByPDP",
+    "snippet": "CHÀO MỪNG BẠN ĐẾN VỚI SHOP QUÀ TẶNG 3 CON MÈO Nơi bạn tìm thấy hộp quà đẹp – bánh kẹo xinh – quà tặng ý nghĩa cho mọi dịp! sdt: 0909.196.488 Tiktokshop: ...",
+    "position": 2
+   },
+   {
+    "title": "15+ quà 8/3 cho các bạn nữ trong lớp vừa ý nghĩa, vừa tiết ...",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-cac-ban-nu-trong-lop/",
+    "snippet": "Các loại móc khóa hình thú, hoạt hình với đa dạng kiểu dáng, kích cỡ, màu sắc là gợi ý để tặng quà 8/3 cho các bạn nữ trong lớp đơn giản nhưng ...",
+    "date": "13 thg 4, 2025",
+    "position": 3
+   },
+   {
+    "title": "15+ quà 8/3 cho mẹ chồng khiến mẹ hài lòng và cảm động",
+    "link": "https://shopee.vn/blog/qua-8-3-cho-me-chong/",
+    "snippet": "Gợi ý 15+ quà tặng mẹ chồng tương lai ngày 8/3 · Quà mùng 8/3 cho mẹ chồng – Túi xách · Đồ trang sức – Quà 8/3 tặng mẹ chồng ý nghĩa · Nước hoa – ...",
+    "date": "25 thg 2, 2025",
+    "position": 4
+   },
+   {
+    "title": "SET QUÀ TẶNG 3 MÓN CHO BÉ",
+    "link": "https://shopee.vn/SET-QU%C3%80-T%E1%BA%B6NG-3-M%C3%93N-CHO-B%C3%89-i.992668373.25000788337",
+    "snippet": "Mua SET QUÀ TẶNG 3 MÓN CHO BÉ giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí. XEM NGAY!",
+    "position": 5
+   },
+   {
+    "title": "Quà 8 3 cho người yêu - Giá Tốt, Miễn Phí Vận Chuyển, Đủ ...",
+    "link": "https://shopee.vn/list/qu%C3%A0%208%203/cho%20ng%C6%B0%E1%BB%9Di%20y%C3%AAu",
+    "snippet": "1. Nến thơm tinh dầu thư giãn · 2. Đèn ngủ trang trí 3D tùy chỉnh · 3. Bộ chăn ga gối lụa tencel cao cấp · 4. Máy xông tinh dầu siêu âm · 5. Cốc sứ in hình hoặc ...",
+    "position": 6
+   },
+   {
+    "title": "10+ quà tặng 8/3 cho khách hàng và đối tác ghi điểm ...",
+    "link": "https://shopee.vn/blog/qua-tang-8-3-cho-khach-hang/",
+    "snippet": "Gợi ý 10+ quà tặng 8/3 cho khách hàng nữ thiết thực, ý nghĩa · Bình giữ nhiệt · Bộ sổ bút · Giỏ trái cây · Bộ ấm chén · Giỏ hoa tươi · Vật dụng ...",
+    "date": "6 thg 3, 2025",
+    "position": 7
+   },
+   {
+    "title": "[ Quà Tặng 8/3] Set Quà Tặng Người Yêu- ...",
+    "link": "https://shopee.vn/-Qu%C3%A0-T%E1%BA%B7ng-8-3-Set-Qu%C3%A0-T%E1%BA%B7ng-Ng%C6%B0%E1%BB%9Di-Y%C3%AAu-Qu%C3%A0-T%E1%BA%B7ng-%C3%9D-Ngh%C4%A9a-Cho-Ng%C6%B0%E1%BB%9Di-Th%C3%A2n-B%E1%BA%A1n-B%C3%A8-D%E1%BB%85-Th%C6%B0%C6%A1ng-03071-i.391756.53451262635",
+    "snippet": "Mua [ Quà Tặng 8/3] Set Quà Tặng Người Yêu-Quà Tặng Ý Nghĩa Cho Người Thân, Bạn Bè Dễ Thương 03071 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.6,
+    "ratingCount": 26,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

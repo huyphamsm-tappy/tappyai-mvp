@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "rooftop bar view đẹp site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T17:18:19.921Z",
+ "body": {
+  "searchParameters": {
+   "q": "rooftop bar view đẹp site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xem Bangkok Rooftop Bar và Nhà hàng",
+    "link": "https://www.klook.com/vi/activity/126093-view-bangkok-rooftop-bar-and-restaurant/",
+    "snippet": "Về dịch vụ này. Tọa lạc tại trung tâm Bangkok, View Bar and Restaurant mang đến trải nghiệm ăn uống và giải trí về đêm độc đáo. Với tầm nhìn toàn cảnh tuyệt đẹp ...",
+    "position": 1
+   },
+   {
+    "title": "Mojjo Rooftop Lounge & Bar Khách sạn Skyview",
+    "link": "https://www.klook.com/vi/activity/112522-mojjo-rooftop-lounge-bar-skyview-hotel/",
+    "snippet": "Mojjo Rooftop Lounge Bar, tọa lạc tại khách sạn Sky View, mang đến sự pha trộn quyến rũ giữa sự sang trọng và thư giãn. Với tầm nhìn toàn cảnh ra đường chân ...",
+    "position": 2
+   },
+   {
+    "title": "ANJU Quán Bar Hàn Quốc Trên Sân Thượng",
+    "link": "https://www.klook.com/vi/activity/143971-anju-korean-rooftop-bar/",
+    "snippet": "Cảnh quan tuyệt đẹp trên sân thượng: Ngắm nhìn toàn cảnh ngoạn mục của đường chân trời Bangkok từ một sân thượng ngoài trời đầy phong cách; Không khí sôi ...",
+    "position": 3
+   },
+   {
+    "title": "Quán bar trên tầng thượng Cooling Tower tại Carlton Hotel ...",
+    "link": "https://www.klook.com/vi/activity/143413-cooling-tower-rooftop-bar-at-carlton-hotel-bangkok-sukhumvit/",
+    "snippet": "View đẹp ... Nhóm chúng tôi rất thích quang cảnh tuyệt đẹp và dịch vụ chăm sóc khách hàng tuyệt vời của Cooling Tower Rooftop Bar tại Carlton Hotel Bangkok!",
+    "rating": 4.9,
+    "ratingCount": 29,
+    "position": 4
+   },
+   {
+    "title": "Quán bar trên nóc CHAR tại khách sạn Indigo",
+    "link": "https://www.klook.com/vi/activity/86003-char-rooftop-bar-hotel-indigo/",
+    "snippet": "tầm nhìn đẹp từ tầng 26, hoàng hôn tuyệt vời với đường chân trời của thành phố Bangkok. chắc chắn được đề nghị.",
+    "position": 5
+   },
+   {
+    "title": "Quán Bar Speakeasy Trên Sân Thượng Tại Khách Sạn ...",
+    "link": "https://www.klook.com/vi/activity/144501-the-speakeasy-rooftop-bar-at-hotel-muse-bangkok/",
+    "snippet": "Thư giãn tại The Speakeasy Rooftop Bar và ngắm nhìn quang cảnh tuyệt đẹp của đường chân trời Bangkok. Nhâm nhi những ly cocktail ngon lành và thưởng thức ...",
+    "position": 6
+   },
+   {
+    "title": "ThreeSixty Rooftop Bar tại Millennium Hilton Bangkok",
+    "link": "https://www.klook.com/vi/activity/124788-threesixty-rooftop-bar-at-millennium-hilton-bangkok/",
+    "snippet": "Thư giãn tại ThreeSixty Rooftop Bar, một địa điểm tuyệt đẹp trên cao tại Millennium Hilton Bangkok, với tầm nhìn toàn cảnh ngoạn mục ra Sông Chao Phraya.",
+    "rating": 4.6,
+    "ratingCount": 29,
+    "position": 7
+   },
+   {
+    "title": "The Vue Rooftop Bar tại Mercure Bangkok Sukhumvit 24",
+    "link": "https://www.klook.com/vi/activity/196676-the-vue-rooftop-bar-at-mercure-bangkok-sukhumvit-24/",
+    "snippet": "Tầm nhìn đường chân trời tuyệt đẹp: Chiêm ngưỡng khung cảnh 360 độ ngoạn mục của đường chân trời thành phố từ vị trí đắc địa của chúng tôi trên tầng 29.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ốp UAG Monarch Pathfinder MagSafe iPhone 17 Pro Max dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:02:43.361Z",
+ "body": {
+  "searchParameters": {
+   "q": "ốp UAG Monarch Pathfinder MagSafe iPhone 17 Pro Max dưới 1 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-with-magsafe.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Tương thích với MagSafe. Chống rơi từ độ cao 5.5m. Kết cấu nhẹ với lõi mềm chống va đập, bảo vệ đáng tin cậy",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Pathfinder ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro Max UAG Pathfinder Clear with MagSafe là sự kết hợp giữa khả năng bảo vệ bền bỉ và ngoại hình độc đáo, mạnh mẽ. Đây là lựa chọn đáng tin ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Monarch Pro Orange",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-monarch-pro-orange.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro ; Tính năng. Lõi chống sốc hấp thụ và phân tán lực va đập. Khung giáp Signature Armor tăng cường độ bền và tạo vẻ ngoài đặc trưng",
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro UAG chống sốc Pathfinder With ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-uag-pathfinder-with-magsafe.html",
+    "snippet": "Ốp lưng iPhone 17 Pro UAG Pathfinder With Magsafe đạt chuẩn 18 FT Drop Protection, giảm thiểu hư hại khi rơi rớt nhờ kháng sốc 3X tiêu chuẩn quân đội.",
+    "position": 4
+   },
+   {
+    "title": "Ốp lưng iPhone 17 Pro Max UAG chống sốc Monarch ...",
+    "link": "https://cellphones.com.vn/op-lung-iphone-17-pro-max-uag-monarch-pro-exclusive-cap-carbon-fiber.html",
+    "snippet": "Dùng được cho. iPhone 17 Pro Max. Tính năng. Lõi Chống Sốc Lớp đệm bảo vệ chống va chạm và sốc. Tương thích MagSafe. Bảo vệ chống va đập từ độ cao 7,6 mét",
+    "position": 5
+   },
+   {
+    "title": "Các hãng ốp lưng nổi tiếng được yêu thích hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-hang-op-lung-noi-tieng",
+    "snippet": "Ốp lưng iPhone Duo Uag Mouve With Magsafe. 1.800.000đ ; Bao da Apple iPad Air 13 (M2/M3/M4)/Pro 12.9. Bao da Apple iPad Air 13 (M2/M3/M4)/Pro ...",
+    "date": "20 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "Các mẫu ốp lưng điện thoại mới nhất hiện nay",
+    "link": "https://cellphones.com.vn/sforum/mau-op-lung-dien-thoai-moi-nhat",
+    "snippet": "Sforum sẽ bật mí cho bạn top 5 mẫu ốp lưng điện thoại mới nhất và được ưa chuộng sử dụng hiện nay. Ốp lưng iPhone 14 Pro Max UAG Monarch hỗ ...",
+    "date": "9 thg 6, 2024",
+    "position": 7
+   },
+   {
+    "title": "Ốp lưng kèm dây đeo iPhone 17 Pro Max UAG chống sốc ...",
+    "link": "https://cellphones.com.vn/op-lung-kem-day-deo-iphone-17-pro-max-uag-pathfinder-clear-with-magsafe.html",
+    "snippet": "Ốp lưng kèm dây đeo iPhone 17 Pro Max UAG Pathfinder Clear With MagSafe có khả năng giảm sốc lên đến 18ft (5.4m) với lớp đệm lục giác, cấu trúc Composite. Bên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

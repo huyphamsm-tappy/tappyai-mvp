@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:04.401Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vietnam coffee - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/vietnam%20coffee",
+    "snippet": "Cà Phê Hòa Tan Vị Dừa Cocobrew Vietnam Coffee Hộp 10 Gói x 20g Cà Phê · Combo 3 Cà Phê Vinacafé Chất Sài Gòn Cà Phê Sữa Đá - Hộp 10 Gói · [BEST SELLER] Cà Phê ...",
+    "position": 1
+   },
+   {
+    "title": "cafe lon tiện lợi, đậm vị sảng khoái",
+    "link": "https://shopee.vn/list/cafe/lon",
+    "snippet": "cafe lon đa dạng hương vị cho ngày bận rộn. Dung tích 170–235 ml, lốc 6 hoặc thùng 24; ít đường/không đường. Săn ưu đãi và chốt đơn ngay trên Shopee.",
+    "position": 2
+   },
+   {
+    "title": "cà giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=c%C3%A0",
+    "snippet": "Mua cà giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "9.9 Ngày Hội Voucher | Ngày Siêu Mua Sắm",
+    "link": "https://shopee.vn/m/ngay-hoi-voucher?mmp_pid=an_17365130000&uls_trackid=559gjf8s00re&",
+    "snippet": "(*) Mua từ 3 sản phẩm trở lên sẽ được giảm đến 30%. Số lượng có hạn. Áp dụng cho một số sản phẩm nhất định.",
+    "position": 4
+   },
+   {
+    "title": "Sale Gì Cũng Rẻ | Miễn Phí Vận Chuyển",
+    "link": "https://shopee.vn/m/gi-cung-re-freeship-2212",
+    "snippet": "Sale gì cũng rẻ với vô vàn sản phẩm chất lượng cùng ưu đãi, khuyến mãi cực lớn. Freeship siêu tiết kiệm, giao hàng nhanh chóng. Lướt Shopee ngay!",
+    "position": 5
+   },
+   {
+    "title": "café giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=cafe%CC%81",
+    "snippet": "Mua café giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "Shopee Siêu Rẻ | Săn Deal Đồng Giá Từ 1.000Đ",
+    "link": "https://shopee.vn/m/shopee-sieu-re",
+    "snippet": "MAGEFY Bút Kẻ Mắt Dạng Lỏng Khô Nhanh Chống Nước Giữ Màu 24h Không Nhòe Màu · [NHẬP KHẨU] Combo 2 Gói - 4 Gói Bông Tẩy Trang Mềm Mịn TOOLA · 500Gr Yến mạch nướng ...",
+    "position": 7
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?promotionId=1429636963405824&signature=16ca2cf24eb2220de12d9166a3dd29a88482a8311399418e5008ca00e8cc1b90&stm_medium=referral&stm_source=rw&uls_trackid=55pojr0v0320&voucherCode=1626FMCG150K16",
+    "snippet": "(Sỉ Tại Nhà vườn) Gói 1kg Lá Xạ đen Hòa Bình sấy khô xanh thơm giúp thanh nhiệt giải độc cơ thể - Thảo Dược Việt. 72.000₫. rating-star 4.8. location-icon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

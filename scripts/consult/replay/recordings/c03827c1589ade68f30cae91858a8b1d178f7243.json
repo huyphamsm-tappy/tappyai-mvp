@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" OR \"DAKYO NAIL Seongsu: Trải Nghiệm Làm Móng Nghệ Thuật & K ...\" quan 10 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:23:18.476Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dzin Nail Mi Quận 10\" OR \"Trải Nghiệm Làm Móng tại Tiệm Nail ChocoBusy ở Busan\" OR \"DAKYO NAIL Seongsu: Trải Nghiệm Làm Móng Nghệ Thuật & K ...\" quan 10 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty ...",
+    "link": "https://www.tiktok.com/@yenchou88/video/7629270629119806741",
+    "snippet": "#dzinnailmi #dzinnailmiquan10 #nailquan10 #saigonbeauty #quan10. #dzinnailmi ... Dzin Nail Mi Quận 10 - Núp Hẻm Giá Sinh Viên · author. 3 · 0.",
+    "position": 1
+   },
+   {
+    "title": "Đặc điểm nail Quan 10 tại Sài Gòn",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7631040715178495239",
+    "snippet": "Video TikTok từ ꧁༺chou☘️chou༻꧂ (@dzinnailmiquan10_nuphem): \"Khám phá những phong cách nail độc đáo tại Quan 10, Sài Gòn. Hãy ... Dzin Nail Mi Quận 10 ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Dịch Vụ Làm Nail Chuyên Nghiệp Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7626398416486059284",
+    "snippet": "Keywords: làm nail Sài Gòn, dịch vụ nail chuyên nghiệp, nail đẹp, đặt lịch nail, trải nghiệm làm nail, nail quan ... Dzin Nail Mi Quận 10 - Núp ...",
+    "position": 3
+   },
+   {
+    "title": "Combo cắt da sơn gel 99#k giá sinh viên . Nail 1:1 nhắn ...",
+    "link": "https://www.tiktok.com/@dzinnailmiquan10_nuphem/video/7624730774423784724",
+    "snippet": "Nail 1:1 nhắn trước khi qua nhé khách #chouchou88 #nailnuphem #nailq10. Combo ... Dzin Nail Mi Quận 10 - Núp Hẻm Giá Sinh Viên · author. 141 · 2.",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

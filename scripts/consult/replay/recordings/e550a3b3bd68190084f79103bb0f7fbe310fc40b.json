@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:34:04.257Z",
+ "body": {
+  "searchParameters": {
+   "q": "Set quà tặng Cà phê Cộng Cà – 01 phin nhôm, 01 hộp bột Việt Nam, hạn dùng 12 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bộ quà tặng tiện lợi - Bộ quà Yêu Nước - Cộng Cà Phê",
+    "link": "https://www.lazada.vn/products/bo-qua-tang-tien-loi-bo-qua-yeu-nuoc-cong-ca-phe-i3091285207.html?srsltid=AU7gw4WqjwV9iZRH8rvm1iTjZiZGAv7sNfUWoSkgJiVKaBwiZq5xWRhD",
+    "snippet": "Mô tả sản phẩm. 1. THÔNG TIN SẢN PHẨM: - Thương hiệu: Cộng Cà Phê - Quy cách đóng gói: 01 phin cà phê nhôm + 01 hộp cà phê bột - Hạn sử dụng: 12 tháng ...",
+    "position": 1
+   },
+   {
+    "title": "Combo 3 Hũ Thủy Tinh Đựng Đồ Khô, Gia Vị, Ngâm Hoa ...",
+    "link": "https://h5.lazada.vn/products/combo-3-hu-thuy-tinh-dung-do-kho-gia-vi-ngam-hoa-qua-nap-khoa-cai-silicon-chong-ho-khi-500ml-750ml-1500ml-i3318395918-s116892662557.html",
+    "snippet": "Combo 3 hũ thủy tinh đựng đồ khô là giải pháp lưu trữ tiện lợi cho mọi gian bếp hiện đại. Sản phẩm phù hợp để đựng gia vị, trà, cà phê, ngũ cốc, hạt khô, hoa ...",
+    "position": 2
+   },
+   {
+    "title": "cà phê chồn -Lam Huy trắng - pha phin cam kết thơm ngon ...",
+    "link": "https://www.lazada.vn/products/ca-phe-chon-lam-huy-trang-pha-phin-cam-ket-thom-ngon-so-1-goi-500g-3kg-i2382938236.html?srsltid=AU7gw4WNXe1Vydw_PCEGBstqr9IM_HOqbDAmWbX-Z_3Zdjlj-JiD-DrD",
+    "snippet": "Đầu tiên, những hạt cà phê chín sẽ được mang cho chồn hương ăn. · Hạt cà phê sau khi vào ruột chồn sẽ được thải ra ngoài cùng với phân. · Tiếp đến, hạt cà phê lần ...",
+    "position": 3
+   },
+   {
+    "title": "HỘP 8 GÓI TRÀ SỮA 22GR + 8 GÓI TRÂN CHÂU 30GR",
+    "link": "https://www.lazada.vn/products/tra-sua-tu-pha-tran-chau-duong-den-ban-milk-tea-hop-8-goi-tra-sua-22gr-8-goi-tran-chau-30gr-date-dai-i1455796367.html?srsltid=AU7gw4UWdCbCflP5H0EfmpsIELSWriT_Yzu00YqW1d1x-EV4dPn8Ynv0",
+    "snippet": "TRÀ SỮA TỰ PHA TRÂN CHÂU ĐƯỜNG ĐEN BẢN MILK TEA - HỘP 8 GÓI TRÀ SỮA 22GR + 8 GÓI TRÂN CHÂU 30GRTRÀ SỮA TRÂN CHÂU ĐƯỜNG ĐENBẠN MONG MUỐN GÌ KHI MUA HÀNG ...",
+    "rating": 4.8,
+    "ratingCount": 8,
+    "position": 4
+   },
+   {
+    "title": "Cà phê phin giấy Arabica Cầu Đất DalatFarm - Hộp 10 túi x ...",
+    "link": "https://h5.lazada.vn/products/ca-phe-phin-giay-arabica-cau-dat-dalatfarm-hop-10-tui-x-10-g-i2375510074-s11547032454.html",
+    "snippet": "Mô tả sản phẩm. Cà phê phin giấy Arabica Cầu Đất DalatFarm - Hộp 10 túi x 10 g • Cà phê Arabica mang hương thơm ngất ngây, vị chua để lại hậu vị ngòn ngọt ...",
+    "rating": 4.9,
+    "ratingCount": 42,
+    "position": 5
+   },
+   {
+    "title": "Combo 4 hộp (hộp/1gr) saffron Kingdom Herb hữu cơ ...",
+    "link": "https://www.lazada.vn/products/combo-4-hop-hop1gr-saffron-kingdom-herb-huu-co-nhuy-hoa-nghe-tay-iran-chinh-hang-super-negin-thuong-hang-i1387442180.html?srsltid=AU7gw4UoKV3hXitjA8KsDJuTdKvMg6F0VufI89CUWD6BM05BFSppLXP-",
+    "snippet": "Đặc điểm nổi bật · Saffron loại Super Negin thượng hạng tại Iran. · Cam kết saffron chính hãng, chất lượng được đảm bảo, đầy đủ giấy tờ xuất xứ tại Iran, chứng ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 6
+   },
+   {
+    "title": "500g cà phê chồn -Lam Huy- gu mạnh pha phin cam kết ...",
+    "link": "https://www.lazada.vn/products/500g-ca-phe-chon-lam-huy-gu-manh-pha-phin-cam-ket-thom-ngon-tron-vi-i2382752719.html?srsltid=AU7gw4UEZuM0Z2LnYr_wVYmFzZm19ZU1s7LjYGF3SsIP2RMXSiuivlV8",
+    "snippet": "Đầu tiên, những hạt cà phê chín sẽ được mang cho chồn hương ăn. · Hạt cà phê sau khi vào ruột chồn sẽ được thải ra ngoài cùng với phân. · Tiếp đến, hạt cà phê lần ...",
+    "position": 7
+   },
+   {
+    "title": "[Yến sào Thanh Vân Nha Trang] Combo 10 hũ ...",
+    "link": "https://www.lazada.vn/products/yen-sao-thanh-van-nha-trang-combo-10-hu-yen-nha-trang-khong-chat-bao-quan-giup-tang-suc-de-khang-30-yen-i2261535828.html?srsltid=AU7gw4VchZ2tLPIaaIrOP3xuIxgeVbRrfTse5av5R2DIsmx3w3y4tzRk",
+    "snippet": "Mô tả sản phẩm · Yến sào - Tổ yến chưng 70ml đủ vị - Yến sào Nha Trang chính gốc thật 100% · Yến chưng Khánh Hòa gồm các vị · - Yến chưng yến sào Khánh Hòa Yến ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

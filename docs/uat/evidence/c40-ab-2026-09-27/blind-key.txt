@@ -1,0 +1,3 @@
+R1=base-flagsOn R2=head-release R3=head-flagsOn R4=base-release
+R5=base-release-rep2 R6=head-release-rep2
+R7=head-release-guardsOff-rep1 R8=head-release-guardsOff-rep2

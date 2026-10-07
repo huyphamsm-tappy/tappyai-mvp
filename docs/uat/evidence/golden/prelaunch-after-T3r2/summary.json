@@ -1,0 +1,66 @@
+{
+  "label": "prelaunch-after-T3r2",
+  "base": "http://localhost:3007",
+  "calls": 2,
+  "at": "2026-09-24T16:25:17.959Z",
+  "cases": [
+    {
+      "id": "T3",
+      "group": "food-constraints",
+      "turns": [
+        {
+          "status": 200,
+          "ms": 10991,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "Hàng Dương Quán Quận 1",
+              "Ann Quán",
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "HÀ NỘI QUÁN"
+            ],
+            [
+              "Quán nhậu quận 1 - HẢI SẢN QUÝ DẬU",
+              "Hàng Dương Quán Quận 1",
+              "Ann Quán",
+              "Cơm Ngon Hà Nội",
+              "Ben.la - Mâm cơm nhà quận 1",
+              "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+              "Cơm Niêu Chú Chen - Quận 1",
+              "HÀ NỘI QUÁN"
+            ]
+          ],
+          "dup": false,
+          "chars": 428
+        },
+        {
+          "status": 200,
+          "ms": 17169,
+          "tools": [
+            "search_places"
+          ],
+          "cards": [
+            [
+              "Cơm tấm Đề Thám",
+              "Quán Ăn Út Hương",
+              "Xù Food - Đồ Ăn Hàn Việt"
+            ],
+            [
+              "Cơm tấm Đề Thám",
+              "Quán Ăn Út Hương",
+              "Xù Food - Đồ Ăn Hàn Việt"
+            ]
+          ],
+          "dup": false,
+          "chars": 541
+        }
+      ]
+    }
+  ]
+}

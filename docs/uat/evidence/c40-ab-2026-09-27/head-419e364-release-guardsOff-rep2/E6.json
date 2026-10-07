@@ -1,0 +1,123 @@
+{
+  "id": "E6",
+  "text": "Karaoke cho 10 người tầm 100k/người Gò Vấp",
+  "parent": null,
+  "status": 200,
+  "ms": 17815,
+  "evidenceId": "13dfa66d-5d70-49d5-b481-33c3e38fc0dd",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "karaoke Gò Vấp",
+        "location": "Gò Vấp, TP HCM",
+        "type": "bar"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "Karaoke Santori",
+      "rating": 4.5,
+      "count": 358,
+      "price": "100-600 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "176 Đ. Lê Văn Thọ, Thông Tây Hội, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "KARAOKE NEWSTYLE",
+      "rating": 4.2,
+      "count": 1237,
+      "price": "100-200 N ₫",
+      "hours": "10:00–04:00",
+      "address": "40 Đ. Lê Đức Thọ, Hạnh Thông, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Karaoke Queen Star",
+      "rating": 4.2,
+      "count": 190,
+      "hours": "Mở cửa cả ngày",
+      "address": "378 Đ. Nguyễn Văn Lượng, An Hội Đông, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Karaoke CADILLAC",
+      "rating": 3.8,
+      "count": 58,
+      "hours": "Mở cửa cả ngày",
+      "address": "1388 Đ. Lê Đức Thọ, An Hội Tây, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Karaoke Hạ Trắng",
+      "rating": 3.4,
+      "count": 185,
+      "price": "100-700 N ₫",
+      "hours": "Mở cửa cả ngày",
+      "address": "11 Đ. Số 4, Hạnh Thông, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm karaoke ở Gò Vấp cho 10 người với budget khoảng 100k/người nhé.\n\nMình tìm được 5 karaoke ở Gò Vấp, nhưng tình hình là **chưa có chỗ nào xác nhận giá nằm trong tầm 100k/người**. Hệ thống đã loại 5 chỗ khác vì vượt ngân sách.\n\nTrong những chỗ còn lại:\n\n**Karaoke Santori** — **4.5⭐ (358 đánh giá)** — 176 Lê Văn Thọ, Gò Vấp\n Mở cả ngày, có thể phù hợp nếu bạn chọn phòng giá thấp hơn.\n\n**KARAOKE NEWSTYLE** — **4.2⭐ (1.237 đánh giá)** — 40 Lê Đức Thọ, Gò Vấp\n Mở 10:00-04:00, nhiều người review.\n\n2 chỗ còn lại (Queen Star, CADILLAC) chưa xác nhận được giá cụ thể.\n\n 🎤\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Santori trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17009804611308589550\",\"primary\":true},{\"label\":\"📍 Xem NEWSTYLE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10899724477710488983\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá phòng|Chọn khung giờ nào?|Có đồ ăn kèm không?[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "Karaoke cho 10 người tầm 100k/người Gò Vấp"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm karaoke ở Gò Vấp cho 10 người với budget khoảng 100k/người nhé.\n\nMình tìm được 5 karaoke ở Gò Vấp, nhưng tình hình là **chưa có chỗ nào xác nhận giá nằm trong tầm 100k/người**. Hệ thống đã loại 5 chỗ khác vì vượt ngân sách.\n\nTrong những chỗ còn lại:\n\n**Karaoke Santori** — **4.5⭐ (358 đánh giá)** — 176 Lê Văn Thọ, Gò Vấp\n Mở cả ngày, có thể phù hợp nếu bạn chọn phòng giá thấp hơn.\n\n**KARAOKE NEWSTYLE** — **4.2⭐ (1.237 đánh giá)** — 40 Lê Đức Thọ, Gò Vấp\n Mở 10:00-04:00, nhiều người review.\n\n2 chỗ còn lại (Queen Star, CADILLAC) chưa xác nhận được giá cụ thể.\n\n 🎤\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"📍 Xem Santori trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=17009804611308589550\",\"primary\":true},{\"label\":\"📍 Xem NEWSTYLE trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=10899724477710488983\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Gọi để hỏi giá phòng|Chọn khung giờ nào?|Có đồ ăn kèm không?[/FOLLOWUPS]"
+    }
+  ]
+}

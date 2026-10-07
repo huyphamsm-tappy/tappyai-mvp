@@ -1,0 +1,155 @@
+{
+  "id": "P2",
+  "text": "spa massage chan gan q1 duoi 300k",
+  "parent": null,
+  "status": 200,
+  "ms": 18855,
+  "evidenceId": "b1995b86-1ece-4fd4-a8d0-f635f07ad7a1",
+  "toolCalls": [
+    {
+      "tool": "search_places",
+      "args": {
+        "query": "spa massage chân Quận 1",
+        "location": "Quận 1, TP.HCM",
+        "type": "spa"
+      }
+    }
+  ],
+  "rows": [
+    {
+      "name": "MASSAGE HẠ SPA QUẬN 1",
+      "rating": 4.9,
+      "count": 3550,
+      "hours": "09:30–22:30",
+      "address": "49 Phạm Viết Chánh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Massage Cổ Phong Q1",
+      "rating": 4.9,
+      "count": 3177,
+      "hours": "09:00–22:30",
+      "address": "106 - 108 Lê Thị Riêng, Bến Thành, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "Hyan Spa | Foot Spa | Body Massage | Hair Spa Quận 1",
+      "rating": 5,
+      "count": 103,
+      "hours": "10:00–21:00",
+      "address": "17C Nguyễn Thị Minh Khai, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "CHARM SPA Garden - Massage Spa Quận 1",
+      "rating": 4.9,
+      "count": 234,
+      "hours": "10:00–00:00",
+      "address": "116 Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam"
+    },
+    {
+      "name": "MOON SPA | MASSAGE FOOT | MASSAGE BODY | GỘI ĐẦU DƯỠNG SINH | NAIL",
+      "rating": 4.9,
+      "count": 34,
+      "hours": "Mở cửa cả ngày",
+      "address": "166 Đ. Cống Quỳnh, quận 1, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "An Spa 1",
+      "rating": 4.7,
+      "count": 538,
+      "hours": "10:00–00:00",
+      "address": "222 228 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "Qispa Head & Massage Quận 1",
+      "rating": 4.8,
+      "count": 74,
+      "hours": "09:30–23:30",
+      "address": "321 Lý Tự Trọng, Quận 1, Hồ Chí Minh 70000, Việt Nam"
+    },
+    {
+      "name": "Dora 1 spa | nail quận 1 | mi quận 1 | massage quận 1",
+      "rating": 4.8,
+      "count": 28,
+      "hours": "10:00–23:30",
+      "address": "219A Đề Thám, Bến Thành, Hồ Chí Minh, Việt Nam"
+    },
+    {
+      "name": "LV SPA - body massage - foot massage Quận 1",
+      "rating": 4.6,
+      "count": 33,
+      "hours": "09:00–01:00",
+      "address": "8B Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 71006, Việt Nam"
+    },
+    {
+      "name": "Charm Spa | Massage Foot Quận 1",
+      "rating": 1.8,
+      "count": 31,
+      "hours": "09:00–00:00",
+      "address": "153 Lý Tự Trọng, Bến Thành, Hồ Chí Minh 70000, Việt Nam"
+    }
+  ],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "count",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "shown",
+          "preliminary"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "stage",
+          "text"
+        ]
+      }
+    ],
+    [
+      {
+        "keys": [
+          "kind",
+          "v",
+          "domain",
+          "ranked",
+          "items",
+          "mapsSearchUrl",
+          "picked",
+          "shown"
+        ]
+      }
+    ]
+  ],
+  "prose": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này. Tuy nhiên, dựa trên đánh giá và số lượt review, mình gợi ý **MASSAGE HẠ SPA QUẬN 1** — nơi này có **4.9⭐ (3.550 đánh giá Google Maps)**, đang mở cửa, và nằm gần bạn ở Quận 1.\n\nBạn có thể gọi trực tiếp **(+84.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":false},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Spa khác ở Quận 1|Massage body thay vì chân|Spa có giá rõ ràng[/FOLLOWUPS]",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "spa massage chan gan q1 duoi 300k"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình tìm được 10 spa massage chân ở Quận 1, nhưng chưa xác nhận được giá cụ thể của các chỗ này. Tuy nhiên, dựa trên đánh giá và số lượt review, mình gợi ý **MASSAGE HẠ SPA QUẬN 1** — nơi này có **4.9⭐ (3.550 đánh giá Google Maps)**, đang mở cửa, và nằm gần bạn ở Quận 1.\n\nBạn có thể gọi trực tiếp **(+84.\n\n[CTA_BUTTONS]{\"buttons\":[{\"label\":\"🌐 Website\",\"type\":\"website\",\"url\":\"https://haspamassage.vn/\",\"primary\":false},{\"label\":\"📍 Xem trên Maps\",\"type\":\"maps\",\"url\":\"https://maps.google.com/?cid=5564503278764968347\",\"primary\":false}]}[/CTA_BUTTONS]\n\n[FOLLOWUPS]Spa khác ở Quận 1|Massage body thay vì chân|Spa có giá rõ ràng[/FOLLOWUPS]"
+    }
+  ]
+}

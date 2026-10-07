@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Lê Phan Hotel Tây Ninh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:54:41.201Z",
+ "body": {
+  "searchParameters": {
+   "q": "Lê Phan Hotel Tây Ninh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Lê Phan (Le Phan Hotel) Tây Ninh, Việt Nam: Agoda.com có giá rẻ  nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/35499928/-1/fb1529c1ab0cd88c94368a5f96a17c9d.jpg?ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjiUWAVbqDS3WsOUHZjQhfqQg8x1BhYw9XFeC1b0_OAA&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-phan-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F35499928%2F-1%2Ffb1529c1ab0cd88c94368a5f96a17c9d.jpg%3Fce%3D0%26s%3D414x232&tbnid=vyuzDUfgBvJMNM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-phan-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=fOVdhIav1pRwWM&w=348&h=232",
+    "position": 1
+   },
+   {
+    "title": "Le Phan Hotel, Tây Ninh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/402235781.jpg?k=0bdb6529dfa0f7201f6bfc74c13cdf6642d2d1c54b4b79d59fc2108b60751f10&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrdxE6UTUSRY098KTlb39CiAdM1Clyaizr5UMGj6M6Sg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/le-phan.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F402235781.jpg%3Fk%3D0bdb6529dfa0f7201f6bfc74c13cdf6642d2d1c54b4b79d59fc2108b60751f10%26o%3D&tbnid=_Ajc44HXwuhi1M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fle-phan.vi.html&docid=ZfW6WvRGe8FRKM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Lê Phan Hotel Tây Ninh | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=339943945558297",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAFTRnevpE2IugY9u_gWqTXQd_jvVdGzF9IFAv6JQFrg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lephanhoteltayninh/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D339943945558297&tbnid=prxH4NwTtfeJuM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flephanhoteltayninh%2F%3Flocale%3Dvi_VN&docid=moNFDRviDA3JYM&w=2048&h=1365",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Lê Phan (Le Phan Hotel) Tây Ninh, Việt Nam: Agoda.com có giá rẻ  nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/35499928/-1/cda3a953064c194073d81df017ec1654.jpg?ce=0&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXbxSS-KeP6AIk2vbynf9JSC04CVLTmj6Ti5iNDmJo9Q&s=10",
+    "thumbnailWidth": 348,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-phan-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F35499928%2F-1%2Fcda3a953064c194073d81df017ec1654.jpg%3Fce%3D0%26s%3D414x232&tbnid=d6RaC_G3lxJKCM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-phan-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=fOVdhIav1pRwWM&w=348&h=232",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Lê Phan Tây Ninh | Tây Ninh - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/2211/11/khach-san-le-phan-tay-ninh-2.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 853,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQj0hvDZUaJC6lb3stw2bq7Rkb8Owaupfnj6tsEgH9ESw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.11759.khach-san-le-phan-tay-ninh.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2211%2F11%2Fkhach-san-le-phan-tay-ninh-2.jpg&tbnid=KHfalikX63wxiM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.11759.khach-san-le-phan-tay-ninh.html&docid=JfPbN8q7AaM03M&w=1280&h=853",
+    "position": 5
+   },
+   {
+    "title": "Lê Phan Hotel Tây Ninh | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=649480857941334",
+    "imageWidth": 1018,
+    "imageHeight": 1440,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD2PfSzrIzcCZyFU5aSFhF9wvYYqy15TOQrGebKbdK4A&s=10",
+    "thumbnailWidth": 376,
+    "thumbnailHeight": 531,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lephanhoteltayninh/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D649480857941334&tbnid=57fzpndN2ei7tM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flephanhoteltayninh%2F%3Flocale%3Dvi_VN&docid=moNFDRviDA3JYM&w=1018&h=1440",
+    "position": 6
+   },
+   {
+    "title": "Lê Phan Hotel Tây Ninh | Tây Ninh",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=734499672772785",
+    "imageWidth": 1440,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKvwiAI5JeQzMo1MiRWTx0_Dc1KystSb9I3VheadTB6w&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/lephanhoteltayninh/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D734499672772785&tbnid=xOm6YGLXMeQsuM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Flephanhoteltayninh%2F%3Flocale%3Dvi_VN&docid=moNFDRviDA3JYM&w=1440&h=1080",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Lê Phan (Le Phan Hotel) Tây Ninh, Việt Nam: Agoda.com có giá rẻ  nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/402213201.jpg?k=b84fc44739b09cd9c2957ed1f8791e1d9c6ee8bb54a432def7980b824a0782b8&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGmhX83NaXw3DnHd6pS_rpTtuek-hHUK6J7TDUkB8K_Q&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/le-phan-hotel/hotel/tay-ninh-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F402213201.jpg%3Fk%3Db84fc44739b09cd9c2957ed1f8791e1d9c6ee8bb54a432def7980b824a0782b8%26o%3D&tbnid=Gz7iCNBbc4lb5M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fle-phan-hotel%2Fhotel%2Ftay-ninh-vn.html&docid=fOVdhIav1pRwWM&w=500&h=333",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

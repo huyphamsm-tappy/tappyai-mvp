@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Standout / Đen MagSafe site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:06:10.495Z",
+ "body": {
+  "searchParameters": {
+   "q": "Standout / Đen MagSafe site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Slimcase - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/slimcase",
+    "snippet": "Ốp lưng STANDOUT iPhone 17 Pro Max / 17 Pro & 16 Pro Max SLIMCASE - ... Magsafe / Smoky Magsafe chống sốc 1.5m. 150.000₫. 300.000₫. -50%. Mua Kèm Deal ...",
+    "position": 1
+   },
+   {
+    "title": "POPKON-VN, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/popkon1688",
+    "snippet": "Kính Cường Lực Không Viền Đen WK KK Ôm Sát Màn Hình Cho Điện Thoại iPhone ... 2 Sản phẩm. Kính Cường Lực Điện Thoại. 22 Sản phẩm. Phụ Kiện MagSafe (Từ Tính).",
+    "position": 2
+   },
+   {
+    "title": "Spigen 14 pro max - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/spigen/14%20promax",
+    "snippet": "Mua online spigen 14 pro max chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "Ốp uag iphone 15 pro max - Giá Tốt, Sale Tháng 09, Ship 0 ...",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/uag/iphone%2015%20pro%20max",
+    "snippet": "Mua online ốp uag iphone 15 pro max chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 4
+   },
+   {
+    "title": "Elago case - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/elago%20case",
+    "snippet": "Ốp lưng STANDOUT iPhone 17 Pro Max / 17 Pro & 16 Pro Max SLIMCASE - Giá đỡ xoay 360, siêu mỏng, bảo hành 2 năm. 839.000₫. Rẻ Vô Địch. Mua để nhận quà.",
+    "position": 5
+   },
+   {
+    "title": "Ốp lưng 17t pro - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/17t%20pro",
+    "snippet": "[Không Ố Vàng] Ốp Lưng iPhone Trong Suốt TORRAS Bảo Hành Kèm Bảo Vệ · Ốp lưng iphone trong suốt chống sốc - Hỗ trợ sạc không dây cho 11 pro.",
+    "position": 6
+   },
+   {
+    "title": "Ốp chanel - Giá Tốt, Sale Tháng 09, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/chanel",
+    "snippet": "Ốp Điện Thoại Apple 17pro Kim Cương Màu Đen Cổ Điển Phong Cách Chanel Thích Hợp Cho iPhone16Pro Da Hạt 15Pro / 14566.582₫ · 2. Màu Đen Chanel Nơ iPhone16 ...",
+    "position": 7
+   },
+   {
+    "title": "Caseme - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/caseme",
+    "snippet": "flag-label Ốp lưng STANDOUT iPhone 17 Pro Max / 17 Pro & 16 Pro Max SLIMCASE ... Đen Trắng Và Tím Bạc Thương Hiệu Thời Trang “NF ” ins Phong Cách Chính.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

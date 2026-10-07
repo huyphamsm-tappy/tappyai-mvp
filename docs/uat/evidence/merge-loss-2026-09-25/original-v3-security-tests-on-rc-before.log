@@ -1,0 +1,69 @@
+=== src/lib/ai/security/fenceBoundary.test.ts
+     × explore content imports the shared fence rather than rolling its own 6ms
+     × explore content calls the fence at least once 1ms
+     × every declared source label is actually used by a producer 29ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 'import { AI } from \'@/lib/ai/llm\'\n…' to match /import\s*\{[^}]*fenceUntrusted[…/fence'
+AssertionError: expected 0 to be greater than 0
+AssertionError: source "explore_clip" is declared but never applied: expected 'import { SupabaseClient } from \'@sup…' to contain '\'explore_clip\''
++     .map(([k, v]) => `${k}×${v}`)
+=== src/lib/ai/security/imageEgressBoundary.test.ts
+     × 🚨 a model-authored image URL never reaches the client on a web_search turn 40ms
+     × still delivers the prose it was hiding behind 3ms
+     × 🚨 survives the token being SPLIT across stream deltas, as it really arrives 3ms
+     × 🚨 a reply that STOPS mid-image-token does not release the half-written URL 2ms
+     × a bare image with no tool call at all is still stripped 2ms
+     × 🚨 an un-owned image the model invented is removed 44ms
+     × an owned photo mixed onto the same line as an attacker URL does not launder it 16ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+=== src/lib/explore/contentProcessorBoundary.test.ts
+     × 🚨 a caption that closes the quote and gives orders is fenced as data 8ms
+     × a caption cannot forge the fence markers themselves 2ms
+     × a title is fenced on the title-only path too 1ms
+     × a title used as a hint alongside an image is fenced as well 1ms
+     × 🚨 a megabyte caption does not become a megabyte prompt 1ms
+     × a megabyte title does not become a megabyte prompt 1ms
+     × 🚨 a category the model was talked into is replaced with "other" 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+=== src/lib/security/__tests__/clientIpTrust.test.ts
+     × uses the platform-set header, not a client-supplied x-forwarded-for 28ms
+     × ignores a spoofed leftmost hop and keeps the entry the proxy appended 1ms
+     × rejects a bare word rather than passing it through to an INET column 1ms
+     × rejects SQL-ish text rather than passing it through to an INET column 1ms
+     × rejects an INET-breaking value rather than passing it through to an INET column 1ms
+     × rejects an escaped newline injection rather than passing it through to an INET column 1ms
+     × rejects an ambiguous octal-looking quad rather than passing it through to an INET column 0ms
+     × rejects a short quad rather than passing it through to an INET column 0ms
+=== src/lib/ai/security/needBriefBoundary.test.ts
+Error: Cannot find package '@/lib/ai/consultative/needBrief' imported from C:/Users/Admin/AppData/Local/Temp/claude/D--Claude-Projects-TappyAI--worktrees-g1-growth/89302721-91af-4d74-9d1b-c9d52232820f/scratchpad/wt-sec/src/lib/ai/security/needBriefBoundary.test.ts
+      Tests  no tests
+=== src/lib/ai/security/linkEgressBoundary.test.ts
+     × 🚨 an invented link on a web_search turn is removed 35ms
+     × 🚨 a BARE invented URL is removed too — dropping the markdown is not a bypass 2ms
+     × 🚨 an invented link on a turn with NO tool call is removed 1ms
+     × 🚨 data appended to a legitimate URL breaks the copy and is removed 1ms
+     × 🚨 survives the URL being SPLIT across deltas, as it really arrives 1ms
+     × the prose around a removed link survives 2ms
+     × rule 13 — hotel Booking.com and Agoda links 8ms
+     × 🚨 a button pointing at an attacker host is dropped 1ms
+=== src/app/api/users/search/enumerationThrottle.test.ts
+     × 🚨 the 31st lookup is refused even though every request forged a new hop 15ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 40 to be 30 // Object.is equality
+      Tests  1 failed | 1 passed (2)
+=== src/app/api/integrations/google-calendar/disconnectRevokes.test.ts
+     × 🚨 revokes at Google BEFORE deleting our row 9ms
+     × still deletes the row when Google refuses — the user is not trapped 1ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected [ 'delete' ] to deeply equal [ 'revoke', 'delete' ]
+AssertionError: expected [ 'delete' ] to deeply equal [ 'revoke', 'delete' ]
+      Tests  2 failed | 2 passed (4)
+=== src/lib/integrations/tokenRevocation.test.ts
+     × POSTs the token to Google’s revocation endpoint 4ms
+     × treats 400 as revoked — an unknown token is already in the end state we want 0ms
+     × does not throw when Google is unreachable — the user can still disconnect 0ms
+     × reports failure rather than pretending, so a caller can log the truth 0ms
+     × does not call out for a missing token (null) 1ms
+     × does not call out for a missing token (undefined) 0ms
+     × does not call out for a missing token () 0ms
+     × 🚨 never puts the token in the URL, where it would land in access logs 0ms

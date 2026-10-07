@@ -1,0 +1,24 @@
+{
+  "id": "G5b",
+  "group": "used-purchase-risk",
+  "criteria": [
+    "Leads with ownership: cà vẹt/registration matches seller and frame/engine numbers, stolen vehicle, sang tên procedure, deposit scams; then mechanical checks",
+    "No invented numbers",
+    "Scam-vector pointer to 'Cảnh báo lừa đảo' where relevant"
+  ],
+  "turns": [
+    {
+      "user": "mua xe máy cũ Honda Wave cần kiểm tra gì",
+      "status": 200,
+      "elapsedMs": 17104,
+      "textFrames": 525,
+      "tools": [],
+      "toolResults": [],
+      "annotations": [],
+      "cardItems": [],
+      "duplicate": null,
+      "text": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điều **cần ưu tiên kiểm tra** khi mua Honda Wave cũ:\n\n## 🚨 **Rủi ro trước tiên**\n- **Giấy tờ & quyền sở hữu**: Kiểm tra giấy đăng ký, biên lai mua bán, chứng thực sang tên. Tránh xe không rõ nguồn gốc, xe đang cấm cơ, hoặc chủ cũ còn nợ trả góp.\n- **Lịch sử tai nạn**: Hỏi chủ cũ xe có từng gặp tai nạn lớn, va chạm hay không. Nếu có dấu hiệu sơn lại, khung cong → rủi ro cao.\n- **Giao dịch an toàn**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền. Tránh chuyển tiền trước qua link lạ hoặc người trung gian.\n\n## ✅ **Kiểm tra tình trạng xe**\n\n**Động cơ & hiệu năng:**\n- Nổ máy xem có khó hay không, tiếng gầm có bất thường không\n- Chạy thử để cảm nhận ga, phanh, số có mượt không\n- Kiểm tra khí thải (màu khí, mùi)\n- Xem dầu máy còn sạch không, mức dầu đủ không\n\n**Khung & thân xe:**\n- Kiểm tra khung có cong, nứt không (nhìn từ nhiều góc)\n- Xem sơn có đều, có dấu sơn lại không\n- Kiểm tra các mối hàn có bị ăn mòn không\n\n**Bánh xe & phanh:**\n- Lốp còn hạn sử dụng không, độ sâu gai lốp\n- Phanh trước/sau có hiệu lực, có kêu lạ không\n- Đĩa phanh có bị cong, mòn không\n\n**Điện & phụ kiện:**\n- Đèn pha, đèn xi nhan, còi có hoạt động bình thường không\n- Pin còn tốt không (nổ máy có khó không)\n- Khóa, chìa khóa có đầy đủ không\n\n**Số km & tuổi xe:**\n- Xem đồng hồ km (nếu có dấu hiệu sai lệch so với tình trạng xe → cảnh báo)\n- Hỏi năm sản xuất, năm đăng ký\n\n## 💡 **Mẹo thêm**\n- Nên mua từ người bán uy tín hoặc qua các nền tảng có xác minh (Facebook, Chotot, Autox...)\n- Nếu không chắc, có thể thuê thợ sửa xe đi kiểm tra cùng (tốn chút tiền nhưng an toàn hơn)\n- Hỏi lý do bán xe của chủ cũ\n- Kiểm tra giá thị trường trước để biết xe có bị chào cao không\n\n**Tóm lại**: Kiểm tra giấy tờ & quyền sở hữu trước, rồi kiểm tra tình trạng xe kỹ lưỡng, gặp trực tiếp và chạy thử. Nếu có dấu hiệu lạ → hỏi thêm hoặc từ chối. Đừng vội, mua xe cũ cần thận trọng! 👍",
+      "visible": "Mua xe máy cũ là quyết định lớn, nên cần kiểm tra kỹ để tránh rủi ro mất tiền hoặc mua phải xe có vấn đề. Dưới đây là những điều **cần ưu tiên kiểm tra** khi mua Honda Wave cũ:\n\n## 🚨 **Rủi ro trước tiên**\n- **Giấy tờ & quyền sở hữu**: Kiểm tra giấy đăng ký, biên lai mua bán, chứng thực sang tên. Tránh xe không rõ nguồn gốc, xe đang cấm cơ, hoặc chủ cũ còn nợ trả góp.\n- **Lịch sử tai nạn**: Hỏi chủ cũ xe có từng gặp tai nạn lớn, va chạm hay không. Nếu có dấu hiệu sơn lại, khung cong → rủi ro cao.\n- **Giao dịch an toàn**: Gặp trực tiếp, kiểm tra xe xong mới chuyển tiền. Tránh chuyển tiền trước qua link lạ hoặc người trung gian.\n\n## ✅ **Kiểm tra tình trạng xe**\n\n**Động cơ & hiệu năng:**\n- Nổ máy xem có khó hay không, tiếng gầm có bất thường không\n- Chạy thử để cảm nhận ga, phanh, số có mượt không\n- Kiểm tra khí thải (màu khí, mùi)\n- Xem dầu máy còn sạch không, mức dầu đủ không\n\n**Khung & thân xe:**\n- Kiểm tra khung có cong, nứt không (nhìn từ nhiều góc)\n- Xem sơn có đều, có dấu sơn lại không\n- Kiểm tra các mối hàn có bị ăn mòn không\n\n**Bánh xe & phanh:**\n- Lốp còn hạn sử dụng không, độ sâu gai lốp\n- Phanh trước/sau có hiệu lực, có kêu lạ không\n- Đĩa phanh có bị cong, mòn không\n\n**Điện & phụ kiện:**\n- Đèn pha, đèn xi nhan, còi có hoạt động bình thường không\n- Pin còn tốt không (nổ máy có khó không)\n- Khóa, chìa khóa có đầy đủ không\n\n**Số km & tuổi xe:**\n- Xem đồng hồ km (nếu có dấu hiệu sai lệch so với tình trạng xe → cảnh báo)\n- Hỏi năm sản xuất, năm đăng ký\n\n## 💡 **Mẹo thêm**\n- Nên mua từ người bán uy tín hoặc qua các nền tảng có xác minh (Facebook, Chotot, Autox...)\n- Nếu không chắc, có thể thuê thợ sửa xe đi kiểm tra cùng (tốn chút tiền nhưng an toàn hơn)\n- Hỏi lý do bán xe của chủ cũ\n- Kiểm tra giá thị trường trước để biết xe có bị chào cao không\n\n**Tóm lại**: Kiểm tra giấy tờ & quyền sở hữu trước, rồi kiểm tra tình trạng xe kỹ lưỡng, gặp trực tiếp và chạy thử. Nếu có dấu hiệu lạ → hỏi thêm hoặc từ chối. Đừng vội, mua xe cũ cần thận trọng! 👍"
+    }
+  ]
+}

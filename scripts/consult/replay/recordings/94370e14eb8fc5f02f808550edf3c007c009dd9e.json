@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"An Coffee\" OR \"Cà Phê Sân Vườn Du Mục\" quan 7 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T00:46:58.591Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"An Coffee\" OR \"Cà Phê Sân Vườn Du Mục\" quan 7 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "An coffee - Workshop làm gốm (@vuonnhaan208)",
+    "link": "https://www.tiktok.com/@vuonnhaan208",
+    "snippet": "An coffee - Workshop làm gốm (@vuonnhaan208) trên TikTok |78.3K Lượt thích.2503 Follower. 208 Nguyễn Hữu Thọ, Tân Hưng,Quận 7 WORKSHOP NẶN GỐM & TÔ GỐM ...",
+    "position": 1
+   },
+   {
+    "title": "Workshop làm gốm quận 7 tại An Coffee",
+    "link": "https://www.tiktok.com/@meo_dihia/video/7597632438696774930",
+    "snippet": "Ngoài việc làm gốm, quán còn là nơi check-in với không gian cafe sân vườn dễ chịu. Workshop handmade tại An Coffee quận 7 phù hợp cho những ai ...",
+    "position": 2
+   },
+   {
+    "title": "ghé An trải nghiệm ngay nhéee các tình iu ơi, nóng thế này ...",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7495291058406886664",
+    "snippet": "ghé An trải nghiệm ngay nhéee các tình iu ơi, nóng thế này vào vườn. @An coffee - Workshop làm gốm.",
+    "position": 3
+   },
+   {
+    "title": "An Coffee Quận 7: Trải nghiệm Chữa lành Từ Cây và Đất",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7665293416275643668",
+    "snippet": "Khám phá An Coffee tại Quận 7, một không gian mang đến trải nghiệm chữa lành thông qua sự kết hợp giữa cây xanh và đất.",
+    "position": 4
+   },
+   {
+    "title": "#ancoffee #q7 cà phê gì chưa các mom quận 7 ơi",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7673108080971877652",
+    "snippet": "An coffee - Workshop làm gốm · Tác giả. Dạ Nắn Gốm có các khung giờ workshop sau ạ : Thứ 2 - thứ 6: 13:00 - 20:00 Thứ 7 - Chủ Nhật : 8:00 ...",
+    "position": 5
+   },
+   {
+    "title": "Nếu tới An bạn chưa biết uống gì oder thử 2 món này nhen ...",
+    "link": "https://www.tiktok.com/@vuonnhaan208/video/7675683529891663125",
+    "snippet": "Quán cà phê yên tĩnh Quận 7 - An Coffee không gian xanh. Một góc nhỏ để chậm lại giữa nhịp sống vội vàng: An Coffee ở Quận 7 An Coffee không ...",
+    "position": 6
+   },
+   {
+    "title": "Cà phê chill thú vị tại quận 7",
+    "link": "https://www.tiktok.com/@hongdilongvong/video/7589839715747056916",
+    "snippet": "Cà phê chill giữa lòng quận 7. Tui mê đến nổi mỗi tuần tui phải ghé 1 lần mới chịu nổi đó @An coffee quận 7 - Vườn nhà An #reviewcafe ...",
+    "position": 7
+   },
+   {
+    "title": "An Coffee Quận 7",
+    "link": "https://www.tiktok.com/discover/an-coffee-qu%E1%BA%ADn-7",
+    "snippet": "An Coffee Quận 7: Góc Thư Giãn Giữa Lòng Sài Gòn. Tìm An Coffee Quận 7, nơi bạn có thể thư giãn, thưởng thức cà phê, tham gia workshop nắn gốm hoặc chỉ đơn giản ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

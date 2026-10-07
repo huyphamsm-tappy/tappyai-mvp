@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" OR \"Paragon Saigon Hotel\" gần Sài Gòn site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:37:26.426Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hotel Majestic Saigon\" OR \"Fusion Original Saigon Centre\" OR \"Paragon Saigon Hotel\" gần Sài Gòn site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hotel Fusion",
+    "link": "https://www.tiktok.com/discover/hotel-fusion?lang=en",
+    "snippet": "khách sạn Fusion Original Saigon Centre, review khách sạn Sài Gòn, trải nghiệm khách sạn 5 sao, dịch vụ miễn phí Fusion, địa điểm lưu trú đẹp Sài Gòn, hotel ...",
+    "position": 1
+   },
+   {
+    "title": "Hotel Majestic Saigon 100 Năm Trước | TikTok",
+    "link": "https://www.tiktok.com/discover/hotel-majestic-saigon-100-n%C4%83m-tr%C6%B0%E1%BB%9Bc",
+    "snippet": "Hotel Majestic Saigon 100 Năm Trước. Khám phá lịch sử 100 năm của ... Fusion Original Saigon Centre · Vintage Culture Saigon Bar · Athena ...",
+    "date": "31 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Khách Sạn 5 Sao Fusion Original Saigon Centre Tại TP.HCM",
+    "link": "https://www.tiktok.com/@tasteinframe_/photo/7569227203674737928?image_index=11",
+    "snippet": "FUSION ORIGINAL SAIGON CENTRE 65 Lê Lợi, phường Sài Gòn, TPHCM #learnontiktok #fusionoriginalsaigoncentre #reviewkhachsan #hcmc # ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Fusion Original Saigon Centre Độc Đáo",
+    "link": "https://www.tiktok.com/@mason.booking.trav/photo/7606945132851776788?image_index=2",
+    "snippet": "Mọi thứ đều Original, hiện đại - nghệ thuật và táo bạo. #fusionoriginalsaigoncentre #tphcm #saigon #fusion #dulichsaigon. Khám Phá Fusion Original Saigon Centre ...",
+    "position": 4
+   },
+   {
+    "title": "Khách Sạn Riverside - Gợi Ý Tuyệt Vời Cho Cặp Tình Nhân",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7528357846891891975",
+    "snippet": "nhạc nền - LU EATING · Hotel Majestic Saigon · Paragon Hotel and Suites Baguio · Saltline Hotel Seaside Oregon · Miss Saigon Vietnamese ...",
+    "position": 5
+   },
+   {
+    "title": "saigonhotel",
+    "link": "https://www.tiktok.com/tag/saigonhotel",
+    "snippet": "ĐI SÀI GÒN CÙNG GIA ĐÌNH, LƯU NGAY PHÒNG NÀY! Family Room tại The ... Paragon Saigon Hotel com · Phòng 300k mà vị trí đỉnh: sát BV 115 + đi đâu cũng ...",
+    "position": 6
+   },
+   {
+    "title": "Buổi bắn pháo hoa tại công viên Bến Bạch Đằng ngày 26 ...",
+    "link": "https://www.tiktok.com/@kenh14official/video/7497634683463683336",
+    "snippet": "SÀI GÒN gợi ý những điểm xem phaohoa mãn nhãn view đẹp bao quát ... Hotel Majestic Saigon · Düsseldorf Airport Victoria Secret · Ocean ...",
+    "position": 7
+   },
+   {
+    "title": "Lý Thanh Ý (@ly.thanhy)",
+    "link": "https://www.tiktok.com/@ly.thanhy",
+    "snippet": "Hotel Majestic Saigon. 3667Thích. 109Bình luận. 406Lượt chia sẻ. ly.thanhy. Lý Thanh Ý. TẬN 4.9 ⭐️ NHÀ HÀNG PHÁP NÀY CÓ GÌ ĐẶC BIỆT ? Mọi người đã ăn món Pháp ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

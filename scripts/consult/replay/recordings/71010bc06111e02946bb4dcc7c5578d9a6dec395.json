@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Bộ cà phê cấp tinh xảo, đặc biệt đẹp, cốc gốm sứ cao",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T19:19:11.332Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bộ cà phê cấp tinh xảo, đặc biệt đẹp, cốc gốm sứ cao",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Bộ cốc và đĩa cà phê gốm sứ cốc mug giá trị cao gia dụng cốc",
+    "imageUrl": "https://mych.vn/media/proxy?u=https%3A%2F%2Fcbu01.alicdn.com%2Fimg%2Fibank%2FO1CN01nXwOZk1h5YkKegzQb_%21%212550494226-0-cib.jpg",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSHVtkMn0J_zjwJdon9U4b2wYe7zu3TqvtT7HsNpTb3w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Mych",
+    "domain": "www.mych.vn",
+    "link": "https://www.mych.vn/bo-coc-va-dia-ca-phe-gom-su-coc-mug-gia-tri-cao-gia-dung-coc-nuoc-chuyen-dung-ca-nhan-coc-uong-tra-chieu-van-phong.html?srsltid=AU7gw4WMd4SgZnEzsb3HcucpDY5cQptd5rCBL2xjUcK6UKAkROVINYCm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmych.vn%2Fmedia%2Fproxy%3Fu%3Dhttps%253A%252F%252Fcbu01.alicdn.com%252Fimg%252Fibank%252FO1CN01nXwOZk1h5YkKegzQb_%2521%25212550494226-0-cib.jpg&tbnid=L3f6o2BOB36z5M&imgrefurl=https%3A%2F%2Fwww.mych.vn%2Fbo-coc-va-dia-ca-phe-gom-su-coc-mug-gia-tri-cao-gia-dung-coc-nuoc-chuyen-dung-ca-nhan-coc-uong-tra-chieu-van-phong.html%3Fsrsltid%3DAU7gw4WMd4SgZnEzsb3HcucpDY5cQptd5rCBL2xjUcK6UKAkROVINYCm&docid=YOl5zpHE5u1vDM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "Điểm danh bộ cốc sứ cao cấp đẹp “mê ly” tại Gốm Sứ CK - GỐM SỨ CK",
+    "imageUrl": "https://ckporcelain.vn/wp-content/uploads/2024/06/LINE_ALBUM_%E7%94%A3%E5%93%81%E6%83%85%E6%99%AF%E5%9C%96Daphne_211230_350.jpg",
+    "imageWidth": 2364,
+    "imageHeight": 1773,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQbPLIWm5qbnlkGStyL0hbJD-Ww5ftuGmEjla0LasT8w&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "GỐM SỨ CK",
+    "domain": "ckporcelain.vn",
+    "link": "https://ckporcelain.vn/diem-danh-bo-coc-su-cao-cap-dep-me-ly-tai-gom-su-ck/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fckporcelain.vn%2Fwp-content%2Fuploads%2F2024%2F06%2FLINE_ALBUM_%25E7%2594%25A3%25E5%2593%2581%25E6%2583%2585%25E6%2599%25AF%25E5%259C%2596Daphne_211230_350.jpg&tbnid=Jqzzz7Z9aiIIPM&imgrefurl=https%3A%2F%2Fckporcelain.vn%2Fdiem-danh-bo-coc-su-cao-cap-dep-me-ly-tai-gom-su-ck%2F&docid=yZRwHOzW2HyMIM&w=2364&h=1773",
+    "position": 2
+   },
+   {
+    "title": "Egg Cups: Bộ ly sứ rất được yêu thích ở đất nước New Zealand LOVERAMICS  VIET NAM | Gốm sứ nhập khẩu cao cấp",
+    "imageUrl": "http://file.hstatic.net/1000268940/file/14_ed499a9479c6435bade052d9fa0af62b.jpg",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBm5rd-_SbwYmcOyRGfIVV43715ObnWl5f8mlEd6rJGg&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Loveramics VietNam",
+    "domain": "loveramics.vn",
+    "link": "https://loveramics.vn/blogs/news/bo-ly-su-cao-cap-loveramics-egg-cups?srsltid=AU7gw4V-nMJEyoRrcIbEplUAVi_25381c5aw0VGjGCCKk3TbBFNCPppU",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Ffile.hstatic.net%2F1000268940%2Ffile%2F14_ed499a9479c6435bade052d9fa0af62b.jpg&tbnid=PjQfqmntTSEEUM&imgrefurl=https%3A%2F%2Floveramics.vn%2Fblogs%2Fnews%2Fbo-ly-su-cao-cap-loveramics-egg-cups%3Fsrsltid%3DAU7gw4V-nMJEyoRrcIbEplUAVi_25381c5aw0VGjGCCKk3TbBFNCPppU&docid=OtY2hw8CUydRdM&w=800&h=450",
+    "position": 3
+   },
+   {
+    "title": "Cốc cao cấp 300ml, bộ tinh xảo, cốc cà phê gốm sứ đặt làm riêng | Shopee  Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134202-8258w-mqqipi33kutr4d",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGcnA0Qu0jiwJqG5hajCDAR9Zi0RJoUL9NBGXyul4mLw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-cao-c%E1%BA%A5p-300ml-b%E1%BB%99-tinh-x%E1%BA%A3o-c%E1%BB%91c-c%C3%A0-ph%C3%AA-g%E1%BB%91m-s%E1%BB%A9-%C4%91%E1%BA%B7t-l%C3%A0m-ri%C3%AAng-i.1792060485.52364122603?extraParams=%7B%22display_model_id%22%3A441218535898%2C%22model_selection_logic%22%3A3%7D",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134202-8258w-mqqipi33kutr4d&tbnid=8B4YfDByoNN5wM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-cao-c%25E1%25BA%25A5p-300ml-b%25E1%25BB%2599-tinh-x%25E1%25BA%25A3o-c%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-g%25E1%25BB%2591m-s%25E1%25BB%25A9-%25C4%2591%25E1%25BA%25B7t-l%25C3%25A0m-ri%25C3%25AAng-i.1792060485.52364122603%3FextraParams%3D%257B%2522display_model_id%2522%253A441218535898%252C%2522model_selection_logic%2522%253A3%257D&docid=gWhddgjlHR3I5M&w=700&h=700",
+    "position": 4
+   },
+   {
+    "title": "Cốc Cà Phê Gốm Bát Tràng, Men Xanh Hỏa Biến, Quà Lưu Niệm",
+    "imageUrl": "https://chus.vn/images/detailed/281/2_wy5i-jk.jpeg",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCIJUnzRNHWxcsXeGSsQDFEqEplm_NJfgOjsh4NQQbLw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Chus.vn",
+    "domain": "chus.vn",
+    "link": "https://chus.vn/coc-ca-phe-gom-men-xanh-hoa-bien/?srsltid=AU7gw4WR3PBx1e7j92D6XBHYDINMAegOFEZnMY8H1vYf-z3ih70j5rTD",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fchus.vn%2Fimages%2Fdetailed%2F281%2F2_wy5i-jk.jpeg&tbnid=AwDGPu2BgSSomM&imgrefurl=https%3A%2F%2Fchus.vn%2Fcoc-ca-phe-gom-men-xanh-hoa-bien%2F%3Fsrsltid%3DAU7gw4WR3PBx1e7j92D6XBHYDINMAegOFEZnMY8H1vYf-z3ih70j5rTD&docid=oqTt9t92ByCWBM&w=1000&h=1000",
+    "position": 5
+   },
+   {
+    "title": "Tách cà phê gốm sứ Bát Tràng kèm đĩa lót - Bát đĩa Bát Tràng",
+    "imageUrl": "https://batdiabattrang.vn/wp-content/uploads/2019/11/ly-coc-tach-gom-su-bat-trang-cao-cap-7.jpg",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3c3O95LZzwUhMHg328bfjcExuSMQfA4BR06OlOeEP4A&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Bát đĩa Bát Tràng",
+    "domain": "batdiabattrang.vn",
+    "link": "https://batdiabattrang.vn/san-pham/tach-ca-phe-gom-su-bat-trang-kem-dia-lot/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbatdiabattrang.vn%2Fwp-content%2Fuploads%2F2019%2F11%2Fly-coc-tach-gom-su-bat-trang-cao-cap-7.jpg&tbnid=lMI_kpEzYq5ZzM&imgrefurl=https%3A%2F%2Fbatdiabattrang.vn%2Fsan-pham%2Ftach-ca-phe-gom-su-bat-trang-kem-dia-lot%2F&docid=qNk4CT_f8b5fsM&w=700&h=700",
+    "position": 6
+   },
+   {
+    "title": "Cốc cao cấp 300ml, bộ tinh xảo, cốc cà phê gốm sứ đặt làm riêng | Shopee  Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/sg-11134202-8258i-mqqip8wub2mb9d",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH3s7kA7pXYLuz7lvM_NW5ZWjqcNdlcQHCwNO_6175OQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/C%E1%BB%91c-cao-c%E1%BA%A5p-300ml-b%E1%BB%99-tinh-x%E1%BA%A3o-c%E1%BB%91c-c%C3%A0-ph%C3%AA-g%E1%BB%91m-s%E1%BB%A9-%C4%91%E1%BA%B7t-l%C3%A0m-ri%C3%AAng-i.1792060485.52364122603?extraParams=%7B%22display_model_id%22%3A441218535898%2C%22model_selection_logic%22%3A3%7D",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fsg-11134202-8258i-mqqip8wub2mb9d&tbnid=2LYEdQp0mS9OmM&imgrefurl=https%3A%2F%2Fshopee.vn%2FC%25E1%25BB%2591c-cao-c%25E1%25BA%25A5p-300ml-b%25E1%25BB%2599-tinh-x%25E1%25BA%25A3o-c%25E1%25BB%2591c-c%25C3%25A0-ph%25C3%25AA-g%25E1%25BB%2591m-s%25E1%25BB%25A9-%25C4%2591%25E1%25BA%25B7t-l%25C3%25A0m-ri%25C3%25AAng-i.1792060485.52364122603%3FextraParams%3D%257B%2522display_model_id%2522%253A441218535898%252C%2522model_selection_logic%2522%253A3%257D&docid=gWhddgjlHR3I5M&w=700&h=700",
+    "position": 7
+   },
+   {
+    "title": "1000+ mẫu ly ca cốc sứ đẹp cao cấp - giá tận xưởng",
+    "imageUrl": "https://store.longphuong.vn/wp-content/uploads/2026/01/ca-coc-su.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJePLCKevV-aU12IFVWCWZge2K2J2_WZUMVPRkuvQQNg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Sứ Long Phương",
+    "domain": "store.longphuong.vn",
+    "link": "https://store.longphuong.vn/danh-muc-san-pham/ca-coc-su/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstore.longphuong.vn%2Fwp-content%2Fuploads%2F2026%2F01%2Fca-coc-su.png&tbnid=DFdQzBeCfr00pM&imgrefurl=https%3A%2F%2Fstore.longphuong.vn%2Fdanh-muc-san-pham%2Fca-coc-su%2F&docid=nrntpu59GeaFhM&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

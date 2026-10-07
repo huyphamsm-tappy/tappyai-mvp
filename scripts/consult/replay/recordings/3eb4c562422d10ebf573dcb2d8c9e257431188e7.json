@@ -1,0 +1,609 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "bar/pub chill bar",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:43:21.700Z",
+ "body": {
+  "searchParameters": {
+   "q": "bar/pub chill bar",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Lost - Drink & Chill",
+    "address": "71/5 Mạc Thị Bưởi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7743892,
+    "longitude": 106.7044296,
+    "rating": 4.7,
+    "ratingCount": 520,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://lostdrinkandchill.com/",
+    "phoneNumber": "+84 787 655 688",
+    "openingHours": {
+     "Thứ Hai": "12:00–03:00",
+     "Thứ Ba": "12:00–03:00",
+     "Thứ Tư": "12:00–03:00",
+     "Thứ Năm": "12:00–03:00",
+     "Thứ Sáu": "12:00–03:00",
+     "Thứ Bảy": "12:00–03:00",
+     "Chủ Nhật": "12:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdr1SewVmyc0cVpmK0oV8T-jtzbQcqftsVdAAk786EmuyxGDrZeaFEyEgokrghl5hXeiLZsR4poJlCPI8QISxD0B0mgutsjYK8KYO_hEIvVKYAwC2rZa981ypU6vXYLc_wHB9B_iA",
+    "cid": "3905461921896049367",
+    "fid": "0x31752f12fe933297:0x3632fced0a6daad7",
+    "placeId": "ChIJlzKT_hIvdTER16ptCu38MjY"
+   },
+   {
+    "position": 2,
+    "title": "Mascara - The Chill Bar",
+    "address": "100/25 Hẻm Trần Hưng Đạo, Ward, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7663732,
+    "longitude": 106.6930692,
+    "rating": 4.8,
+    "ratingCount": 256,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail",
+     "Quán bar ca nhạc trực tiếp"
+    ],
+    "website": "https://www.facebook.com/mascarashisha/",
+    "phoneNumber": "+84 382 825 616",
+    "openingHours": {
+     "Thứ Hai": "19:00–04:00",
+     "Thứ Ba": "19:00–04:00",
+     "Thứ Tư": "19:00–04:00",
+     "Thứ Năm": "19:00–04:00",
+     "Thứ Sáu": "15:00–18:00, 19:00–04:00",
+     "Thứ Bảy": "15:00–18:00, 19:00–04:00",
+     "Chủ Nhật": "15:00–18:00, 19:00–04:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLea0XYw9IKWdv7cXCuvXgl-_vgJ7YlNyoD22qhCr2GLAGKHVeQ_ZUQhjcndowPgC73qseBTC1RsIdwBQpcnVIw_aoubCkAovG9IW7dxj2KY20FVQv3TgzRABPZkaqRl6FMz2lM_",
+    "cid": "495806532231661857",
+    "fid": "0x31752fc2cfb433bd:0x6e1756a06fc8921",
+    "placeId": "ChIJvTO0z8IvdTERIYn8Bmp14QY"
+   },
+   {
+    "position": 3,
+    "title": "Hem Chill Rooftop Bar Thao Dien",
+    "address": "Đường số 49B, An Khánh, Hồ Chí Minh 711000, Việt Nam",
+    "latitude": 10.8016355,
+    "longitude": 106.72870259999999,
+    "rating": 4.4,
+    "ratingCount": 387,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Nhà hàng châu Á",
+     "Bar & Grill",
+     "Quán bar cocktail",
+     "Quán bar ca nhạc trực tiếp",
+     "Nhà hàng",
+     "Bar thể thao"
+    ],
+    "website": "https://www.facebook.com/hemchill.d2",
+    "phoneNumber": "+84 908 131 568",
+    "openingHours": {
+     "Thứ Ba": "15:00–00:00",
+     "Thứ Tư": "15:00–00:00",
+     "Thứ Năm": "15:00–01:00",
+     "Thứ Sáu": "15:00–02:00",
+     "Thứ Bảy": "15:00–02:00",
+     "Chủ Nhật": "15:00–00:00",
+     "Thứ Hai": "15:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc-_GvMBaLqiRm-nHgMCT4Nxq4QL9loPSUQJI-mIyLi5sIJrrTI9HZsUrZYfWf1eK1Krbfc-cz6ZG0F8QgR7AQS-YQsCeOxEHWdHcyZEpg1R5Wd4lCJw70GACKzlswu_Zp0Sbu4",
+    "cid": "7561661577005625910",
+    "fid": "0x317527987064b03b:0x68f06b241123f236",
+    "placeId": "ChIJO7BkcJgndTERNvIjESRr8Gg"
+   },
+   {
+    "position": 4,
+    "title": "HUSH SAIGON LOUNGE",
+    "address": "74/3 Hai Bà Trưng, Saigon ward, District 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7780931,
+    "longitude": 106.70374699999999,
+    "rating": 5,
+    "ratingCount": 512,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Câu lạc bộ giải trí dành cho người lớn",
+     "Dịch vụ hẹn hò",
+     "Quầy giải khát"
+    ],
+    "website": "https://www.instagram.com/hushhush.lounge/",
+    "phoneNumber": "+84 977 181 788",
+    "openingHours": {
+     "Thứ Hai": "16:00–04:00",
+     "Thứ Ba": "16:00–04:00",
+     "Thứ Tư": "16:00–04:00",
+     "Thứ Năm": "16:00–04:00",
+     "Thứ Sáu": "16:00–04:00",
+     "Thứ Bảy": "16:00–04:00",
+     "Chủ Nhật": "16:00–04:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/hushlounge.sgn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN06sNMFpUR5kZ04TlFGbxB2_7RYPx9LmthZ79Vj22RUn-EmuZGOB3WW6w71PBUSgyJFp42d0zISTvQ8BATi48XyByskwCe6pUx2p0QsEheCId_UfKCqbZflCNILmrVJxOKKyNUm7ky5o-B",
+    "cid": "6984688766336965770",
+    "fid": "0x31752f4ad7c0d799:0x60ee996d302d1c8a",
+    "placeId": "ChIJmdfA10ovdTERihwtMG2Z7mA"
+   },
+   {
+    "position": 5,
+    "title": "The Pub Coffee - Beer & Cocktail 24h",
+    "address": "18A17 Tăng Nhơn Phú, Phước Long, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.829481099999999,
+    "longitude": 106.77378519999999,
+    "rating": 4.8,
+    "ratingCount": 206,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán bar"
+    ],
+    "phoneNumber": "+84 974 188 353",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcEPbE4rDZbGb-q-uZ2ZGh1ySrhzq3sa_epAGEUv6IXfjIkITqm7NbYNhFdnDnzXWMauZoTM4d7WIM0WYtLi2QEaUUIzrV4wzlOIqv2gwj03Xisl7GXCPIDAzcEPsfoDRf7TD0j",
+    "cid": "9137476420856649765",
+    "fid": "0x317527b418461fed:0x7eced66470ab1825",
+    "placeId": "ChIJ7R9GGLQndTERJRircGTWzn4"
+   },
+   {
+    "position": 6,
+    "title": "Cọ Vinyl Bar",
+    "address": "14B1 Ngô Tất Tố, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7930812,
+    "longitude": 106.7098899,
+    "rating": 4.8,
+    "ratingCount": 419,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://instagram.com/co.cocktailbar?igshid=OGQ5ZDc2ODk2ZA==",
+    "phoneNumber": "+84 903 959 941",
+    "openingHours": {
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–01:00",
+     "Thứ Bảy": "18:00–01:00",
+     "Chủ Nhật": "18:00–01:00",
+     "Thứ Hai": "18:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeXSnpf8p41cJ_GvCg25ZfUrqnK_rPWL4YRsTmPmBQ1Zd05jejK7mbeg-9Gp4iAMQ6PRrW_VH5cDac87r5XIlKDeXoq5xFVtAnSYkr_DkohO1aQz2bYNltOyEiaOvG1Q4cikzx4",
+    "cid": "12616054338341086830",
+    "fid": "0x317529b6d67c2f0f:0xaf153a93f7d8a66e",
+    "placeId": "ChIJDy981rYpdTERbqbY95M6Fa8"
+   },
+   {
+    "position": 7,
+    "title": "Chill Bar Kabuki",
+    "address": "38 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7994662,
+    "longitude": 106.6128207,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "phoneNumber": "+84 979 598 359",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcCzriOFqTKjQFfCmB-3k-Gpjmxw1TZaqQ2ECOPL-95-2BU6ryf9fnbF7QW-iJWkvyqoTgRfWhvrVP_GPA-YZ1WRHtnTdUV8q_Q44ZwNkyRHeB8KV8NXcZdmr_xzGVsql_yZIljpg",
+    "cid": "4299548432838122596",
+    "fid": "0x31752b0aaffb8b09:0x3bab108509e75c64",
+    "placeId": "ChIJCYv7rwordTERZFznCYUQqzs"
+   },
+   {
+    "position": 8,
+    "title": "Chill Skybar & Dining",
+    "address": "AB Tower, 76A Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770564799999999,
+    "longitude": 106.69437769999999,
+    "rating": 4.4,
+    "ratingCount": 5941,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Bữa tối",
+     "Nhà hàng hỗn hợp",
+     "Hộp đêm"
+    ],
+    "website": "http://www.chillsaigon.com/",
+    "phoneNumber": "+84 938 822 838",
+    "description": "Quán bar hiện đại nhìn ra đường chân trời, phục vụ các món nhẹ, đồ ăn dùng chung, món thịt và cocktail.",
+    "openingHours": {
+     "Thứ Ba": "17:30–01:30",
+     "Thứ Tư": "17:30–01:30",
+     "Thứ Năm": "17:30–01:30",
+     "Thứ Sáu": "17:30–01:30",
+     "Thứ Bảy": "17:30–01:30",
+     "Chủ Nhật": "17:30–01:30",
+     "Thứ Hai": "17:30–01:30"
+    },
+    "bookingLinks": [
+     "http://chillsaigon.com/book-a-table/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPFdcEq7h22GggNniO_LnN33Tws_1Wo5e2P6gnyzPEou77upnT6rmlIZB97dZN8i-mq9hYzjuuneG5xXXbl-q3gVZmHUD9_HMnM3sO63kQ3aiAyBWGQ8O9Sgg3y2TWNeuaYE2ln",
+    "cid": "7070654652790197972",
+    "fid": "0x31752f3e866e1431:0x622002f1dd05ced4",
+    "placeId": "ChIJMRRuhj4vdTER1M4F3fECIGI"
+   },
+   {
+    "position": 9,
+    "title": "Dear Bar",
+    "address": "107f Trương Định, Xuân Hòa, Hồ Chí Minh 72117, Việt Nam",
+    "latitude": 10.7784535,
+    "longitude": 106.68879059999999,
+    "rating": 4.8,
+    "ratingCount": 287,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán bar"
+    ],
+    "website": "https://www.facebook.com/dearhiddenbar?mibextid=LQQJ4d",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcErerWABtKLyqqhbdXADDcC9WmlsqBBkfL0NpQQHZhHE6Pr1LVd7HAGadll5zntTiBIHJ-ry283lA1tr_xTFKoAt5bhNYEVYIN3jln7NI8Ej_FLjYIe1Vbo0kMVDs5ia3PvyTuMLCvaT0",
+    "cid": "2378759223162286272",
+    "fid": "0x31752fc1604addff:0x21030ce906c5b0c0",
+    "placeId": "ChIJ_91KYMEvdTERwLDFBukMAyE"
+   },
+   {
+    "position": 10,
+    "title": "Loop 1 - Cocktail Bar & Kitchen",
+    "address": "39 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7792353,
+    "longitude": 106.7023131,
+    "rating": 4.8,
+    "ratingCount": 2525,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.facebook.com/loop1cocktailnkitchen1/",
+    "phoneNumber": "+84 919 115 910",
+    "openingHours": {
+     "Thứ Ba": "17:00–01:00",
+     "Thứ Tư": "17:00–01:00",
+     "Thứ Năm": "17:00–01:00",
+     "Thứ Sáu": "17:00–01:00",
+     "Thứ Bảy": "17:00–01:00",
+     "Chủ Nhật": "17:00–01:00",
+     "Thứ Hai": "17:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfnC3T5dlo6n2_N5fOo8KpfzR_30-H5PAedwcnfl91v1w93CsyqbEVcr1lf0GVkR-L7kStzoFPpQ03FGHq8l04GS50X02HH8b2VQ_gq4eOfurilqXzJPHKyNiBPTxZm3lVt8OAI",
+    "cid": "9807722277538374805",
+    "fid": "0x31752f47ec1d083d:0x881c0772a85c2495",
+    "placeId": "ChIJPQgd7EcvdTERlSRcqHIHHIg"
+   },
+   {
+    "position": 11,
+    "title": "CLIMB - Hidden Cocktails Bar",
+    "address": "2F & 3F, 15 Phan Văn Đạt, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7752061,
+    "longitude": 106.70501879999999,
+    "rating": 4.8,
+    "ratingCount": 438,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://www.instagram.com/climbhiddencocktailsbar?igsh=MWRmb3Y3bWI3eThhbw==",
+    "phoneNumber": "+84 973 005 060",
+    "openingHours": {
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–01:00",
+     "Thứ Hai": "18:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNH6Vv9g5M1LemB0KJnX1mulvd_Y62bXPkQ18KZ9cuVjYUiJbioawXPAtg_g3VX8DCjx1iE-ygdJkpPjrxraA8zseNpzLa4IajeEwR71SP9bziYmo79gC_j3mVoo2sxiXXm2b3SYw",
+    "cid": "16013150093887567793",
+    "fid": "0x31752f35f8577a39:0xde3a232b492e77b1",
+    "placeId": "ChIJOXpX-DUvdTERsXcuSSsjOt4"
+   },
+   {
+    "position": 12,
+    "title": "To - Hidden Cocktails Bar ト - 隠れ家バー",
+    "address": "02nd floor of GS25, 02 Le Thanh Ton, ward, street, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.782283399999999,
+    "longitude": 106.7059895,
+    "rating": 4.8,
+    "ratingCount": 239,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "website": "http://facebook.com/tohiddenbar",
+    "phoneNumber": "+84 822 248 898",
+    "openingHours": {
+     "Thứ Hai": "18:00–02:00",
+     "Thứ Ba": "18:00–02:00",
+     "Thứ Tư": "18:00–02:00",
+     "Thứ Năm": "18:00–02:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLevnIMLveL3A6J_zKF-i7FPb3ywwjhRNXIUA_dthcUBY5kFPNUEPkB_DdK6h6A7D5pDUSc9yTbXBjaypy-coeK5f2IPBrIKfaZUlSp2cR4G8QlmAhZJTYmjGvkYMme4HBNzpRE2",
+    "cid": "8934464433167599681",
+    "fid": "0x31752f50e32bb161:0x7bfd9810ad510841",
+    "placeId": "ChIJYbEr41AvdTERQQhRrRCY_Xs"
+   },
+   {
+    "position": 13,
+    "title": "Drinking Healing",
+    "address": "25 Hồ Tùng Mậu, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770513,
+    "longitude": 106.70446,
+    "rating": 4.4,
+    "ratingCount": 741,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail",
+     "Quán bar"
+    ],
+    "website": "https://drinkinghealing.com/",
+    "phoneNumber": "+84 934 110 110",
+    "openingHours": {
+     "Thứ Hai": "17:00–02:00",
+     "Thứ Ba": "17:00–02:00",
+     "Thứ Tư": "17:00–02:00",
+     "Thứ Năm": "17:00–02:00",
+     "Thứ Sáu": "17:00–02:00",
+     "Thứ Bảy": "17:00–02:00",
+     "Chủ Nhật": "17:00–02:00"
+    },
+    "bookingLinks": [
+     "http://booking.drinkinghealing.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcy2Kvk2ffdCHNK97yqYO6oHogLbHxPGE6kW99OlTKEedZf8qtkQwEPIGo5CPDDFMepcuOzDGmAvHv2iIqEBTQzCo7CqAq8DFNYItW4gweO-EO3n0aSiY5H3LAl8qR110oJbiNYiw",
+    "cid": "7826620716105753030",
+    "fid": "0x31752f92c23843fd:0x6c9dbe12f73261c6",
+    "placeId": "ChIJ_UM4wpIvdTERxmEy9xK-nWw"
+   },
+   {
+    "position": 14,
+    "title": "Sweet & Sour Bar",
+    "address": "86/8A Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh 710547, Việt Nam",
+    "latitude": 10.7882261,
+    "longitude": 106.69655139999999,
+    "rating": 4.8,
+    "ratingCount": 300,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "website": "https://sites.google.com/view/sweetandsourbar/menu",
+    "phoneNumber": "+84 335 715 860",
+    "openingHours": {
+     "Thứ Ba": "18:00–01:00",
+     "Thứ Tư": "18:00–01:00",
+     "Thứ Năm": "18:00–01:00",
+     "Thứ Sáu": "18:00–02:00",
+     "Thứ Bảy": "18:00–02:00",
+     "Chủ Nhật": "18:00–01:00",
+     "Thứ Hai": "18:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLewTuIBf07laEgONBXNg9PuyVgTLnCkln8N0dneSMYG08QociGmJC9QHZ6C0rRxH1F8ZJnsAj5Kyh5HBiW_odOWbIgf6lu8CJygHLZ-5VMPsrm9ah3PvmUbO9VP010cRg_lt3elRbc1iTAu",
+    "cid": "11884449569449953704",
+    "fid": "0x31752f9e3e4b1c9d:0xa4ee0beaba1bc9a8",
+    "placeId": "ChIJnRxLPp4vdTERqMkbuuoL7qQ"
+   },
+   {
+    "position": 15,
+    "title": "Chill 24/24 coffe&beer",
+    "address": "38 Dương Đức Hiền, Tây Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8082402,
+    "longitude": 106.6272623,
+    "rating": 5,
+    "ratingCount": 1,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar"
+    ],
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://streetviewpixels-pa.googleapis.com/v1/thumbnail?panoid",
+    "cid": "2682913666573133352",
+    "fid": "0x31752be869c35fb5:0x253b9fc3db21e628",
+    "placeId": "ChIJtV_DaegrdTERKOYh28OfOyU"
+   },
+   {
+    "position": 16,
+    "title": "Night Beer | Quán chill quận 7 | Beer Club Phú Mỹ Hưng",
+    "address": "34 Khu Phố Hưng Phước 3, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7306666,
+    "longitude": 106.7073539,
+    "rating": 3.9,
+    "ratingCount": 7,
+    "type": "Quán bar cocktail",
+    "types": [
+     "Quán bar cocktail"
+    ],
+    "phoneNumber": "+84 384 171 567",
+    "openingHours": {
+     "Thứ Hai": "08:30–03:00",
+     "Thứ Ba": "08:30–03:00",
+     "Thứ Tư": "08:30–03:00",
+     "Thứ Năm": "08:30–03:00",
+     "Thứ Sáu": "08:30–03:00",
+     "Thứ Bảy": "08:30–03:00",
+     "Chủ Nhật": "08:30–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfWMzu9V6MO7codNqeZ41ub5sfwXdgRcqsqKHC3hRYD_3L19YBCrdRDSkW2kYJkV1j7lmByIs1qsEvLOcsU3Zx3AQN0SY1WbDT6g-4LGMFDejn4PmQqvsTsjvnjoy8CAHMtRyae",
+    "cid": "6478829077370659271",
+    "fid": "0x31752f24a95fa999:0x59e96cb8352661c7",
+    "placeId": "ChIJmalfqSQvdTERx2EmNbhs6Vk"
+   },
+   {
+    "position": 17,
+    "title": "Ráng Chiều Rooftop",
+    "address": "39A Trần Khắc Chân, Cầu Kiệu, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7985282,
+    "longitude": 106.67899519999999,
+    "rating": 4.9,
+    "ratingCount": 1902,
+    "type": "Quán bia sân vườn",
+    "types": [
+     "Quán bia sân vườn"
+    ],
+    "website": "https://rangchieurooftop.vn/",
+    "phoneNumber": "+84 367 778 478",
+    "description": "Quán bar bình dị nhìn ra thành phố, có các món ăn nhẹ, cocktail độc đáo và bia thủ công.",
+    "openingHours": {
+     "Thứ Ba": "16:30–00:30",
+     "Thứ Tư": "16:30–00:30",
+     "Thứ Năm": "16:30–00:30",
+     "Thứ Sáu": "16:30–00:30",
+     "Thứ Bảy": "16:30–00:30",
+     "Chủ Nhật": "16:30–00:30",
+     "Thứ Hai": "16:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeSd6TBw7abmb4uQOL37-hedUIaD5lb9xL8_vqK48ZervGWMrxHhFTAGbjdN4fKd3H4RplXoUEc37jR1CCcm6q7Oj4H0_OVrjIT9uhBwsU09lScmMQ8wvC61IFxJZvNHFpXR7z1",
+    "cid": "1346462130994968363",
+    "fid": "0x317529ddf4f19253:0x12af982c9d78772b",
+    "placeId": "ChIJU5Lx9N0pdTERK3d4nSyYrxI"
+   },
+   {
+    "position": 18,
+    "title": "Elixir Lounge Bar",
+    "address": "28B/1, Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.781445699999999,
+    "longitude": 106.70610769999999,
+    "rating": 4.9,
+    "ratingCount": 1650,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Quán bar cocktail",
+     "Quán bar cho người đồng tính",
+     "Quán bar tiếp viên nữ",
+     "Cửa hàng rượu bia",
+     "Quầy giải khát",
+     "Quán rượu"
+    ],
+    "website": "https://elixirloungebar.com/",
+    "phoneNumber": "+84 977 552 155",
+    "openingHours": {
+     "Thứ Hai": "17:00–04:00",
+     "Thứ Ba": "17:00–04:00",
+     "Thứ Tư": "17:00–04:00",
+     "Thứ Năm": "17:00–04:00",
+     "Thứ Sáu": "17:00–04:00",
+     "Thứ Bảy": "17:00–04:00",
+     "Chủ Nhật": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLclspbztHh-XsWt-fWl7qrvp0XmTBbh68EttUN_m3gZ56LDLDYrjw4WSsV-8TZW_larYlLwW6Ar8k_M18j9HJ9OldxttG59SgdTUKhpyQky_eucffTUV2oCckRvQYZo-VzY_BzV78G8tr4V",
+    "cid": "18036091565864939490",
+    "fid": "0x31752f4ecea30d69:0xfa4d11b847cc6fe2",
+    "placeId": "ChIJaQ2jzk4vdTER4m_MR7gRTfo"
+   },
+   {
+    "position": 19,
+    "title": "Cali High Lounge - Chill Beer",
+    "address": "61 Lý Thái Tổ, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7668602,
+    "longitude": 106.67641979999999,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Quầy giải khát",
+    "types": [
+     "Quầy giải khát"
+    ],
+    "phoneNumber": "+84 906 728 287",
+    "openingHours": {
+     "Thứ Ba": "19:00–01:00",
+     "Thứ Tư": "19:00–01:00",
+     "Thứ Năm": "19:00–01:00",
+     "Thứ Sáu": "19:00–01:00",
+     "Thứ Bảy": "19:00–01:00",
+     "Chủ Nhật": "19:00–01:00",
+     "Thứ Hai": "19:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdVzLzhA1OYKqmlK0Vft8Uvr0kC1bigThiCyK5ZsbP1IKCRr8_zcv4zahVJZ5hd5TuiAC8Q2Gf4P2MSf444fu4KKAnMapw2hJh7j2gOyvSwmkS6OPBK_8i7Ef2PvEWX5uxSbLvjsw",
+    "cid": "6710285054851167828",
+    "fid": "0x31752f45d8542e99:0x5d1fb8b46c043654",
+    "placeId": "ChIJmS5U2EUvdTERVDYEbLS4H10"
+   },
+   {
+    "position": 20,
+    "title": "Layla - Eatery & Bar",
+    "address": "Second floor, 63 Đông Du, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.775405,
+    "longitude": 106.7041467,
+    "rating": 4.8,
+    "ratingCount": 6479,
+    "type": "Quán bar",
+    "types": [
+     "Quán bar",
+     "Nhà hàng Úc",
+     "Quán bar cocktail",
+     "Quầy tapa",
+     "Quán rượu"
+    ],
+    "website": "https://linktr.ee/laylaeateryandbar",
+    "phoneNumber": "+84 28 3827 2279",
+    "openingHours": {
+     "Thứ Ba": "16:00–01:00",
+     "Thứ Tư": "16:00–01:00",
+     "Thứ Năm": "16:00–01:00",
+     "Thứ Sáu": "16:00–02:00",
+     "Thứ Bảy": "16:00–02:00",
+     "Chủ Nhật": "13:00–01:00",
+     "Thứ Hai": "16:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf2OXuIRAv1Lti51SYcig6UbVf9EZDQLcsRvsv36vi23pdWMFz6MUfLABIgtqAHwjLY90OURWxG-JFYIoTWmJ3wcmMstVViE8JGiwtF2RvCKDexpkU5xlvcjhqksa-tH2afn1msMQ",
+    "cid": "10884616841947725611",
+    "fid": "0x31752f465f80d9eb:0x970ded593c873f2b",
+    "placeId": "ChIJ69mAX0YvdTERKz-HPFntDZc"
+   }
+  ],
+  "credits": 3
+ }
+}

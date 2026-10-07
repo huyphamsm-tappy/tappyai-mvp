@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { pruneMarketingRetention } from '@/lib/marketing/retention'
+import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 
 // GET /api/cron/marketing-retention — prune marketing records past 1 year.
 //
@@ -27,8 +28,7 @@ export const runtime = 'nodejs'
 export const maxDuration = 60
 
 export async function GET(req: Request) {
-  const secret = process.env.CRON_SECRET
-  if (!secret || req.headers.get('authorization') !== `Bearer ${secret}`) {
+  if (!isAuthorizedCronRequest(req)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hana Dalat Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-29T02:36:22.848Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hana Dalat Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Hana Đà Lạt, Trung tâm Thành phố Đà Lạt, Đà Lạt",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/4063436/-1/a89655796c63e5d75f8b2aecd3cd25c2.jpg?ca=7&ce=1&s=414x232",
+    "imageWidth": 174,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfa_gR0ZGzXuwkm9DN5iEZrPO0oMuG_2ofTFs2xoo1qA&s=10",
+    "thumbnailWidth": 174,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hana-dalat-hotel/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F4063436%2F-1%2Fa89655796c63e5d75f8b2aecd3cd25c2.jpg%3Fca%3D7%26ce%3D1%26s%3D414x232&tbnid=BuTyEEknuH0ErM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhana-dalat-hotel%2Fhotel%2Fdalat-vn.html&docid=-fNkVWzMN0LHKM&w=174&h=232",
+    "position": 1
+   },
+   {
+    "title": "Hạ Na Hotel Đà Lạt | Đà Lạt",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100050569476042",
+    "imageWidth": 628,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUaHnkPh2m9Otob1jABap6kHFafnXge-NdeMVbtRDZXQ&s=10",
+    "thumbnailWidth": 361,
+    "thumbnailHeight": 554,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/hanahoteldalat/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100050569476042&tbnid=64nEif-_q4V6OM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fhanahoteldalat%2F&docid=JfaQMXE2RLKBQM&w=628&h=960",
+    "position": 2
+   },
+   {
+    "title": "Hạ Na Hotel Đà Lạt, Đà Lạt (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/346439757.jpg?k=17e3ff2d5420330224c8bc120d26b0496f31171e4cbf3c9d601881f7043d8393&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyEhcvXLOggPxnysh8hm4beUG7xm8wf1CelWyHZFB1Jg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/ha-na-da-lat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F346439757.jpg%3Fk%3D17e3ff2d5420330224c8bc120d26b0496f31171e4cbf3c9d601881f7043d8393%26o%3D&tbnid=n4zi-_JkJwupGM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fha-na-da-lat.vi.html&docid=UtkzXqP7htdFqM&w=1024&h=683",
+    "position": 3
+   },
+   {
+    "title": "Hana Hotel Đà Lạt (하나호텔), Xuân Hương - Đà Lạt | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/22000000/21960000/21956000/21955973/718b07da.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 887,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKrEajy_khewHgPmjCwBcM1Whb1udIwmew9BjVp1ZaiA&s=10",
+    "thumbnailWidth": 360,
+    "thumbnailHeight": 555,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho703591136/khach-san-hana-a-lat-a-lat-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F22000000%2F21960000%2F21956000%2F21955973%2F718b07da.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=z0In3cZRCi8l4M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho703591136%2Fkhach-san-hana-a-lat-a-lat-viet-nam%2F&docid=aJoml5bduaBgcM&w=575&h=887",
+    "position": 4
+   },
+   {
+    "title": "Hana hotel",
+    "imageUrl": "https://dulichmedia.dalat.vn//Images/LDG/havy90/001HANA/70767909_1330276043792464_4378467481778388992_o_637099395154891653.jpg",
+    "imageWidth": 619,
+    "imageHeight": 412,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9u6WmsmbZdhtzFiS2CSCPV3ypL_1jTvG30csmjSVQXw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Cổng thông tin du lịch Đà Lạt",
+    "domain": "dalat.vn",
+    "link": "https://dalat.vn/vi/hanahotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdulichmedia.dalat.vn%2F%2FImages%2FLDG%2Fhavy90%2F001HANA%2F70767909_1330276043792464_4378467481778388992_o_637099395154891653.jpg&tbnid=bNmFL4aP9AGaeM&imgrefurl=https%3A%2F%2Fdalat.vn%2Fvi%2Fhanahotel&docid=CwZQ7-NtY7DaNM&w=619&h=412",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Hana Đà Lạt, Trung tâm Thành phố Đà Lạt, Đà Lạt",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/4063436/25391678/b2be20b9f8eb2eced16a005160b9fcf6.jpeg?va=1&ce=3&s=800x600",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJnTagWS6fbqZrDK94CFKedBDwFzk7ufNSvD_m88e3vw&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hana-dalat-hotel/hotel/dalat-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F4063436%2F25391678%2Fb2be20b9f8eb2eced16a005160b9fcf6.jpeg%3Fva%3D1%26ce%3D3%26s%3D800x600&tbnid=NRvH5k-XcEfMLM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhana-dalat-hotel%2Fhotel%2Fdalat-vn.html&docid=-fNkVWzMN0LHKM&w=800&h=600",
+    "position": 6
+   },
+   {
+    "title": "Hana Hotel Đà Lạt (하나호텔) ở Đà Lạt | Giá mới nhất và ưu đãi",
+    "imageUrl": "https://res.klook.com/klook-hotel/image/upload/fl_lossy.progressive,w_1200,h_630,c_fill,q_85/travelapi/22000000/21960000/21956000/21955973/dd5fc221_z.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 630,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzkMqnkdfTqCyytdAG1aYRyhRsaNV6zBsEygmKW8MMlw&s=10",
+    "thumbnailWidth": 617,
+    "thumbnailHeight": 324,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/hotels/detail/552369-hana-dalat-hotel-/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fklook-hotel%2Fimage%2Fupload%2Ffl_lossy.progressive%2Cw_1200%2Ch_630%2Cc_fill%2Cq_85%2Ftravelapi%2F22000000%2F21960000%2F21956000%2F21955973%2Fdd5fc221_z.jpg&tbnid=FR34uwJT53UJgM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fhotels%2Fdetail%2F552369-hana-dalat-hotel-%2F&docid=OEgMS8MkbJmavM&w=1200&h=630",
+    "position": 7
+   },
+   {
+    "title": "HANA DALAT HOTEL (Đà Lạt) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/11/bf/12/26/getlstd-property-photo.jpg?w=500&h=300&s=1",
+    "imageWidth": 498,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg9vrLeIoiZ_ydLeUaTTLFIzfUzXSqXsPeLbso7pEKvg&s",
+    "thumbnailWidth": 289,
+    "thumbnailHeight": 174,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g293922-d13380895-Reviews-Hana_Dalat_Hotel-Da_Lat_Lam_Dong_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F11%2Fbf%2F12%2F26%2Fgetlstd-property-photo.jpg%3Fw%3D500%26h%3D300%26s%3D1&tbnid=dfZEQg4_OMoGQM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g293922-d13380895-Reviews-Hana_Dalat_Hotel-Da_Lat_Lam_Dong_Province.html&docid=0wAaROMhfKdXwM&w=498&h=300",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

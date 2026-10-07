@@ -1,0 +1,25 @@
+{
+  "id": "T5",
+  "text": "đi chơi ở đâu",
+  "parent": null,
+  "status": 200,
+  "ms": 3555,
+  "evidenceId": "76e92ee9-e522-42e3-b078-28095e1923d1",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình giả sử bạn muốn đi chơi gần đây (Quận 1) trong hôm nay buổi tối với 1-2 người, phải không? 🎯",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "đi chơi ở đâu"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình giả sử bạn muốn đi chơi gần đây (Quận 1) trong hôm nay buổi tối với 1-2 người, phải không? 🎯"
+    }
+  ]
+}

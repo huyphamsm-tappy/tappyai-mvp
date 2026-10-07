@@ -1,0 +1,596 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán bánh giao tận nơi đồ chiên quan 7",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.734,106.7218,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:06.155Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán bánh giao tận nơi đồ chiên quan 7",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.734,106.7218,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7339942,106.7217997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bánh Kem Hoàng Phúc Tiệm Bánh Ngon Quận 7",
+    "address": "878 Huỳnh Tấn Phát, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.728334199999999,
+    "longitude": 106.73271369999999,
+    "rating": 4.2,
+    "ratingCount": 162,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://www.facebook.com/Banhkembanhinhnhat/?ref=pages_you_manage",
+    "phoneNumber": "+84 908 367 930",
+    "openingHours": {
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00",
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnDYCqgnDDIUhSVWYnXOoupNjhU54omrUPgebze2yf3DUrhYdMbU9dTYio_39DOI0vyA2Api4eTTsuHjkrirIAWZOQgpQB26uePJs9rVQ3k1ZbeFRP4XwdXVh_he-3l8fCx_rPA",
+    "cid": "227466770189823929",
+    "fid": "0x31752509b0abf91b:0x3281fd2835eafb9",
+    "placeId": "ChIJG_mrsAkldTERua9eg9IfKAM"
+   },
+   {
+    "position": 2,
+    "title": "Tiệm bánh Dolce Vita | Bánh Tiramisu ngon quận 7",
+    "address": "460/4/10 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7364395,
+    "longitude": 106.7019765,
+    "rating": 4.7,
+    "ratingCount": 111,
+    "type": "Cửa hàng bánh",
+    "types": [
+     "Cửa hàng bánh",
+     "Tiệm bánh"
+    ],
+    "website": "https://tiembanhdolcevita.com/",
+    "phoneNumber": "+84 903 789 390",
+    "openingHours": {
+     "Thứ Ba": "07:30–20:30",
+     "Thứ Tư": "07:30–20:30",
+     "Thứ Năm": "07:30–20:30",
+     "Thứ Sáu": "07:30–20:30",
+     "Thứ Bảy": "07:30–20:30",
+     "Chủ Nhật": "07:30–20:30",
+     "Thứ Hai": "07:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmI_1vMYvNxpN6BCRl8RMJJTT4F7d-T90JlkgDfEI0z6zdiUTeZEiGwn93Jaz4kJA1Xr3_HxADrUMVSL8A4ab0saHf0YTGIxjzhlQSC7-wxGgOjQh1XPsWYZV89blP6mfyxM1XjnA",
+    "cid": "8208209024027685629",
+    "fid": "0x317528b1311212df:0x71e96a9e4f5372fd",
+    "placeId": "ChIJ3xISMbEodTER_XJTT55q6XE"
+   },
+   {
+    "position": 3,
+    "title": "TOUS les JOURS - Nguyễn Thị Thập",
+    "address": "441 Nguyễn Thị Thập, P, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7386131,
+    "longitude": 106.7112902,
+    "rating": 4.2,
+    "ratingCount": 271,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://tous-les-jours-nguyen-thi-thap.gulagi.com/",
+    "phoneNumber": "+84 28 7306 9168",
+    "openingHours": {
+     "Thứ Ba": "06:30–22:00",
+     "Thứ Tư": "06:30–22:00",
+     "Thứ Năm": "06:30–22:00",
+     "Thứ Sáu": "06:30–22:00",
+     "Thứ Bảy": "06:30–22:00",
+     "Chủ Nhật": "06:30–22:00",
+     "Thứ Hai": "06:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwIct9PhGEfGfQI_Ujbw1sF8SB3Kw2ZLG1GbFfNyEwR8-gY6MpUz-WeyAqaHfdku8cyYhU7BiFjR2muxwRoxUlpIf0r8tUT61ciRgWZpaPa8kkq5fCus0r2dY7T-XpXkwFKLk",
+    "cid": "7809456551730215459",
+    "fid": "0x31752fd2ff8165a5:0x6c60c35b86b9fa23",
+    "placeId": "ChIJpWWB_9IvdTERI_q5hlvDYGw"
+   },
+   {
+    "position": 4,
+    "title": "Bánh Kem Thỏ Tây | Thỏ Tây Bakery - Mai Văn Vĩnh",
+    "address": "51/54 Mai Văn Vĩnh, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.744475,
+    "longitude": 106.7138049,
+    "rating": 4.9,
+    "ratingCount": 2601,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "https://banhkemthotay.vn/",
+    "phoneNumber": "+84 965 695 678",
+    "openingHours": {
+     "Thứ Ba": "06:00–23:00",
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–23:00",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm5JyimEca7ycnp_jC8WxW1X2rTQa4KOYbI5T-Ok96vlCgMHn2_rMGYcj2FwHQvUiggpLQBkvGNetyOSDdUPgGErX1aBlEbuJets9NakdLY_Dbt4LXjA9ktxRUG9SrEyeXOEUK6ea8wNVQy",
+    "cid": "598324540406623486",
+    "fid": "0x31752f829c900221:0x84dacffdb55ecfe",
+    "placeId": "ChIJIQKQnIIvdTER_uxV2_-sTQg"
+   },
+   {
+    "position": 5,
+    "title": "Bánh Cuốn Nóng Cao Bằng",
+    "address": "Đường Nguyễn Văn Linh/33 Khu Phố Hưng Gia 1, Khu đô thị Phú Mỹ Hưng, Quận 7, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.733296,
+    "longitude": 106.7090776,
+    "rating": 4.2,
+    "ratingCount": 171,
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 988 586 996",
+    "openingHours": {
+     "Thứ Hai": "06:30–02:00",
+     "Thứ Ba": "06:30–22:00",
+     "Thứ Tư": "06:30–00:30",
+     "Thứ Năm": "06:30–22:00",
+     "Thứ Sáu": "06:30–22:00",
+     "Thứ Bảy": "06:30–22:00",
+     "Chủ Nhật": "06:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9w1SAREfQtHWI0nCcBJlydP_8owH4iWL5TbjRd-ogIcy_abAKAlEW0kxAhq7k3X44Kr3os7VIBmQkYqFT5T457p9R6i4DCTXIIp0hbEfZlMCVLwRrT_pDM4bgvVf5dyi81xGY5A",
+    "cid": "8492313007228462682",
+    "fid": "0x31752500651ff80f:0x75dac1af9548265a",
+    "placeId": "ChIJD_gfZQAldTERWiZIla_B2nU"
+   },
+   {
+    "position": 6,
+    "title": "Tiệm Bánh Givral",
+    "address": "299 Nguyễn Thị Thập, Tân Mỹ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7382274,
+    "longitude": 106.7158393,
+    "rating": 3.7,
+    "ratingCount": 222,
+    "type": "Cửa hàng bánh",
+    "types": [
+     "Cửa hàng bánh"
+    ],
+    "website": "http://www.givralbakery.com.vn/",
+    "phoneNumber": "+84 28 3775 4255",
+    "openingHours": {
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00",
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3_C6PG0CcIavJFfjkGIliJ-U5QhELYjwaolVpuuTP6VgwcZRguqB6elxXlPTaSOTX186TPMuI1SJD-lax3Wrm8raPH6EmY_hPjRvEkBmu0ZCWzUgv5vALynPh7onekYH57OtxmQ3RfZeZ",
+    "cid": "7419554885810525457",
+    "fid": "0x31752f846e840fe3:0x66f78ddbb0401511",
+    "placeId": "ChIJ4w-EboQvdTERERVAsNuN92Y"
+   },
+   {
+    "position": 7,
+    "title": "TOUS les JOURS - Lotte Mart Nam Sài Gòn",
+    "address": "Lotte Mart, Nguyễn Thị Thập, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.741507799999999,
+    "longitude": 106.7016876,
+    "rating": 3.7,
+    "ratingCount": 89,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh",
+     "Cửa hàng bánh"
+    ],
+    "website": "https://www.now.vn/ho-chi-minh/tous-les-jours-lotte-mart-nam-sai-gon",
+    "phoneNumber": "+84 28 3775 1524",
+    "openingHours": {
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00",
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnxCbwEKz_yqeIq1YQvdp2aH-pqqY54R6mzr_-qTAzwNvxWeGKhfqqBJysNRuXYJAaIbeguN4DlMkOxyZpHl2JKHiFioh_NCAScc_76mYJDcMUyeIA3CvTpMIDPoRiohzYDmVw",
+    "cid": "12349636957554116657",
+    "fid": "0x31752fdeb767394f:0xab62b961b80c8831",
+    "placeId": "ChIJTzlnt94vdTERMYgMuGG5Yqs"
+   },
+   {
+    "position": 8,
+    "title": "Tấm Bakery - Tấm Bakery - 347 Lê Văn Lương",
+    "address": "347 Lê Văn Lương, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7410949,
+    "longitude": 106.70383509999999,
+    "rating": 4,
+    "ratingCount": 386,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh"
+    ],
+    "website": "http://tambakery.vn/",
+    "phoneNumber": "+84 28 2200 5433",
+    "openingHours": {
+     "Thứ Ba": "08:00–20:00",
+     "Thứ Tư": "08:00–20:00",
+     "Thứ Năm": "08:00–20:00",
+     "Thứ Sáu": "08:00–20:00",
+     "Thứ Bảy": "08:00–20:00",
+     "Chủ Nhật": "08:00–20:00",
+     "Thứ Hai": "08:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkKfiCGSdI3yxizChF8unNjqzfCzjHQkHNcfplnmhVYpBGF0ZLtIBWgXmckhXIZqqjgSAY9N5QCMMEM-q7PuoJ8Mxb2_SDYaRld0coFnPTd1-mUc7e8aM9TBR6pwfQoerDJzKQV",
+    "cid": "7327360659234377826",
+    "fid": "0x31752f73a21d278f:0x65b003b292d65062",
+    "placeId": "ChIJjycdonMvdTERYlDWkrIDsGU"
+   },
+   {
+    "position": 9,
+    "title": "Tiệm bánh Dê Núi - Bánh kem SINH NHẬT theo yêu cầu",
+    "address": "525/33 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7345724,
+    "longitude": 106.70358279999999,
+    "rating": 4.9,
+    "ratingCount": 47,
+    "type": "Tiệm bánh",
+    "types": [
+     "Tiệm bánh",
+     "Cửa hàng bánh"
+    ],
+    "website": "https://tiembanhdenui.com/",
+    "phoneNumber": "+84 374 658 499",
+    "openingHours": {
+     "Thứ Ba": "08:00–15:30",
+     "Thứ Tư": "08:00–19:00",
+     "Thứ Năm": "08:00–19:00",
+     "Thứ Sáu": "08:00–19:00",
+     "Thứ Bảy": "08:00–19:00",
+     "Chủ Nhật": "08:00–19:00",
+     "Thứ Hai": "08:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlouhs13gwuaYucH1jWlW6wrl39zmvow8O9MfwC3uT_ASKE4ZHVGOu4elq9kS5s4uDJ5iBPUtb6KaGSRhJ9xXCEkpKbBjVQCLTeMgEBM1ek2cVUC-Ronwqh8gID4wDgyIU_6ctMn_OjJq8",
+    "cid": "2787715409259774666",
+    "fid": "0x31752f908a44588f:0x26aff4650fcfc2ca",
+    "placeId": "ChIJj1hEipAvdTERysLPD2X0ryY"
+   },
+   {
+    "position": 10,
+    "title": "Phan Rang Quán - bánh căn, bánh xèo, nem cuốn",
+    "address": "399 Lê Văn Lương, P. Phú Thuận, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7393843,
+    "longitude": 106.70358929999999,
+    "rating": 4.2,
+    "ratingCount": 560,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/phanrangquan.dacsan?mibextid=LQQJ4d",
+    "phoneNumber": "+84 915 291 929",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/phanrangquan.dacsan/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm7wIhtb1XDKDTMvkKqwv9S6LpPaD5oy2a2cXCzYNWCrouTsVm9687rFDQv8CVd4-qnCD99-G5Sse3ntXBBwR0JXAF5Uk23qAq-SRPOOXPW9itAwg-arahYhkeyKcYY0GBn1g",
+    "cid": "9182357668897377095",
+    "fid": "0x31752f9ce7de8369:0x7f6e49a64f364b47",
+    "placeId": "ChIJaYPe55wvdTERR0s2T6ZJbn8"
+   },
+   {
+    "position": 11,
+    "title": "Bamos Coffee Quận 7 - Cà phê 24h",
+    "address": "130 Đ. Số 65, Khu định cư Tân Quy Đông, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.735802699999999,
+    "longitude": 106.70611199999999,
+    "rating": 4.2,
+    "ratingCount": 1318,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán cà phê động vật",
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê internet"
+    ],
+    "website": "https://bamoscoffee.com/",
+    "phoneNumber": "+84 707 014 095",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk8zU2l8ZwfLDj3FG0vPmXPSnimjSw6wmIrOhfG-6BCfmC6TOS-e2I7dg1ph_WjMym50gjuQq4X3j_GoZjNeiI19r3sKNkPRFd1GXKSWDnSWxppNwqzN_8AOswWg41QQ3V8POYPBTMT9nDR",
+    "cid": "11148006961061331146",
+    "fid": "0x31752fcad5504b43:0x9ab5ad4433a480ca",
+    "placeId": "ChIJQ0tQ1covdTERyoCkM0SttZo"
+   },
+   {
+    "position": 12,
+    "title": "Bánh Kem Meo Bakery",
+    "address": "540 Huỳnh Tấn Phát, Tân Thuận, Hồ Chí Minh 75800, Việt Nam",
+    "latitude": 10.73819,
+    "longitude": 106.7302,
+    "rating": 4.6,
+    "ratingCount": 18,
+    "type": "Cửa hàng bánh ngọt",
+    "types": [
+     "Cửa hàng bánh ngọt"
+    ],
+    "website": "http://banhkemmeo.vn/",
+    "phoneNumber": "+84 868 679 094",
+    "openingHours": {
+     "Thứ Ba": "06:00–23:00",
+     "Thứ Tư": "06:00–23:00",
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–22:30",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWniKrLgGrqMHtNURYO9aegNlzRa_hApblDGu7zCBcFE9cb1YuceDmZo55cQ_1EFbyyNS9NDXHgwUZ8AumD7DCQFFfM0ehGfdMrtuIUvsBODeYFoHemHbDjMc22dwBxUq0uzywJzITQrG8I",
+    "cid": "2371803939278699021",
+    "fid": "0x317525917dfcfc95:0x20ea571dcd943a0d",
+    "placeId": "ChIJlfz8fZEldTERDTqUzR1X6iA"
+   },
+   {
+    "position": 13,
+    "title": "Bánh xèo Hẹn Hò Miền Tây",
+    "address": "34L Đường số 7L, khu phố 5, Tân Thuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7497274,
+    "longitude": 106.71691399999999,
+    "rating": 4.6,
+    "ratingCount": 306,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 907 463 355",
+    "openingHours": {
+     "Thứ Ba": "16:00–21:00",
+     "Thứ Tư": "16:00–21:00",
+     "Thứ Năm": "16:00–21:00",
+     "Thứ Sáu": "16:00–21:00",
+     "Thứ Bảy": "16:00–21:00",
+     "Chủ Nhật": "16:00–21:00",
+     "Thứ Hai": "16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn_hCkyqTrCxlhsYmymwIcQN-HbtzLCFpAv9r5RtllZFe1WTdFgGu3Jx2LZjsKva7N78xucKm7zc1SUrrjHaWRjOd4wYJD3S8sxaSxf5bFxfJc1Zn9kyvpAEQ3tzLwvfDzJz4dCxw",
+    "cid": "18278372291184388987",
+    "fid": "0x31752f79410eeab9:0xfda9d2c180636b7b",
+    "placeId": "ChIJueoOQXkvdTERe2tjgMHSqf0"
+   },
+   {
+    "position": 14,
+    "title": "CHÈ CHANG HI QUẬN 7 - CHÈ NGON SÁNG TẠO",
+    "address": "390 Lê Văn Lương, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.739333499999999,
+    "longitude": 106.70333679999999,
+    "rating": 3.5,
+    "ratingCount": 141,
+    "type": "Nhà hàng món chè bánh lọt",
+    "types": [
+     "Nhà hàng món chè bánh lọt",
+     "Trà trân châu"
+    ],
+    "website": "http://order.chechanghiquan7.com/",
+    "phoneNumber": "+84 989 858 948",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00",
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnieneVLNfQOzybKRC9R_rw0IsmVSyQfzj60-5jtyMV58hB6NZyx9S-huId3mHBoH7sbkLy1xi5Gzlfj-XY_Pe8cdoc3Zw1p_OPUSCc5qfJhDfmANqQ7vhfvmt9HKOiJ6k1aLN-",
+    "cid": "12167939596632855995",
+    "fid": "0x31752f53b2b79403:0xa8dd349839b615bb",
+    "placeId": "ChIJA5S3slMvdTERuxW2OZg03ag"
+   },
+   {
+    "position": 15,
+    "title": "Quán Bánh Tráng Chiên Hưng Phú",
+    "address": "144/24 Đ. Hưng Phú, Chánh Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.750994,
+    "longitude": 106.67954069999999,
+    "rating": 3.6,
+    "ratingCount": 141,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 28 6260 8712",
+    "openingHours": {
+     "Thứ Ba": "10:00–22:30",
+     "Thứ Tư": "10:00–22:30",
+     "Thứ Năm": "10:00–22:30",
+     "Thứ Sáu": "10:00–22:30",
+     "Thứ Bảy": "10:00–22:30",
+     "Chủ Nhật": "10:00–22:30",
+     "Thứ Hai": "10:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWntX4tRpqEg3ypP7j9aejsjgPoG4tNteukD_Nen0XwTYrtp24uoosUs35z6e2nLW_B3gkkcySxF4C8SCgbP4KxC89MdOjPxm9s5baCH-yOilhe0KDFNIKmTjf-N7sQk6DtpL0SmjafmFYY",
+    "cid": "11529920664600259730",
+    "fid": "0x31752f9cad88d849:0xa00281c19def2c92",
+    "placeId": "ChIJSdiIrZwvdTERkizvncGBAqA"
+   },
+   {
+    "position": 16,
+    "title": "Wok of love Quận 7",
+    "address": "48 Khu Phố Hưng Phước 2, Khu đô thị Phú Mỹ Hưng, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7315098,
+    "longitude": 106.7067903,
+    "rating": 4.8,
+    "ratingCount": 824,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "phoneNumber": "+84 815 528 166",
+    "openingHours": {
+     "Thứ Ba": "10:30–00:00",
+     "Thứ Tư": "10:30–00:00",
+     "Thứ Năm": "10:30–00:00",
+     "Thứ Sáu": "10:30–00:00",
+     "Thứ Bảy": "10:30–00:00",
+     "Chủ Nhật": "10:30–00:00",
+     "Thứ Hai": "10:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl6RVIr6KWH_EnZmjrrSRRFi6edd6UIL6-IUQITVObJYAMWAX_l-84h1xXyCn9nzA8j0hS0fBj-VA66ctBJ13S7WDS43OPWr7P3gWkQALSrA3jh2sE5jhq0iel_Dm857KKDc9K5TbINXLhO",
+    "cid": "6238120914973773119",
+    "fid": "0x31752f72e1ae4369:0x569241ebd2f24d3f",
+    "placeId": "ChIJaUOu4XIvdTERP03y0utBklY"
+   },
+   {
+    "position": 17,
+    "title": "Tràng An Quán - Nhà hàng Ẩm Thực Đồng Quê Ngon Quận 7",
+    "address": "131 Số 47, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.741821999999999,
+    "longitude": 106.7123838,
+    "rating": 4.6,
+    "ratingCount": 842,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng gia đình",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://tranganquan.com/",
+    "phoneNumber": "+84 969 273 254",
+    "openingHours": {
+     "Thứ Ba": "10:00–23:00",
+     "Thứ Tư": "10:00–23:00",
+     "Thứ Năm": "10:00–23:00",
+     "Thứ Sáu": "10:00–23:00",
+     "Thứ Bảy": "10:00–23:00",
+     "Chủ Nhật": "10:00–23:00",
+     "Thứ Hai": "10:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmJs0ogwgzqCfJGOJqDnNUOb-lgbvfyOw9dX_4TksgTnEXg0158j1ASo4ZwcmCNIsogLVGTVqHZVf6-PC2v6Yy9450hPE19bdN1duFtbtcJVJ-KOWp9xvYG5KwFDT-Nnbv1kX3Big",
+    "cid": "1003303381397085479",
+    "fid": "0x31752f3380b18f65:0xdec731c121f1d27",
+    "placeId": "ChIJZY-xgDMvdTERJx0fEhxz7A0"
+   },
+   {
+    "position": 18,
+    "title": "Quán Kem Xôi Dừa Bubu",
+    "address": "113 Đ.13, P, Tân Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7458631,
+    "longitude": 106.70616319999999,
+    "rating": 4.2,
+    "ratingCount": 771,
+    "type": "Cửa hàng kem",
+    "types": [
+     "Cửa hàng kem"
+    ],
+    "website": "https://www.facebook.com/bubu.icecream.9/",
+    "phoneNumber": "+84 909 354 305",
+    "openingHours": {
+     "Thứ Ba": "15:00–23:00",
+     "Thứ Tư": "15:00–23:00",
+     "Thứ Năm": "15:00–23:00",
+     "Thứ Sáu": "15:00–23:00",
+     "Thứ Bảy": "15:00–23:00",
+     "Chủ Nhật": "15:00–23:00",
+     "Thứ Hai": "15:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkYwk-Y7BZwAVkUqZgh3wvhlh48sTSxKwQ5bKQrtKb_7UT2IqePNeQsmsunlZ5vg0NabgRwmtUcRralklJsGe7CHdwCRCHF70SeHYqA8CU1T8X9Ti0I9cUWYtr4wqELQBVISCa8GQ",
+    "cid": "18213280245540955103",
+    "fid": "0x31752f77df8d1579:0xfcc291e29e1ba3df",
+    "placeId": "ChIJeRWN33cvdTER36MbnuKRwvw"
+   },
+   {
+    "position": 19,
+    "title": "Bún Quậy Tâm Quán - Lê Văn Lương",
+    "address": "355 Lê Văn Lương, Quận 7, Hồ Chí Minh 100000, Việt Nam",
+    "latitude": 10.7411959,
+    "longitude": 106.703898,
+    "rating": 4.5,
+    "ratingCount": 727,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ",
+     "Quán mì"
+    ],
+    "website": "https://bunquay.com.vn/",
+    "phoneNumber": "+84 906 375 290",
+    "openingHours": {
+     "Thứ Ba": "07:00–13:30, 16:00–21:30",
+     "Thứ Tư": "07:00–13:30, 16:00–21:30",
+     "Thứ Năm": "07:00–13:30, 16:00–21:30",
+     "Thứ Sáu": "07:00–13:30, 16:00–21:30",
+     "Thứ Bảy": "07:00–13:30, 16:00–21:30",
+     "Chủ Nhật": "07:00–13:30, 16:00–21:30",
+     "Thứ Hai": "07:00–13:30, 16:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsSu6nl8LL0ABGrX12I6LGFR5ZY8F7dvPu33nzPzsGEZyk9uwK_Pc0aRfB9fmGn_YsV9GHyNLEv-KeObJ9Ft2MRSFyfL4fSBG3RnW1vxJMvWPLw6pDIvGQGf0KGF0YTpDiF4vXMg",
+    "cid": "115135442245613900",
+    "fid": "0x31752f5159905de9:0x1990b13201b794c",
+    "placeId": "ChIJ6V2QWVEvdTERTHkbIBMLmQE"
+   },
+   {
+    "position": 20,
+    "title": "Circle K",
+    "address": "60 Đ. Lâm Văn Bền, Quận 7, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7487813,
+    "longitude": 106.7157215,
+    "rating": 3.2,
+    "ratingCount": 246,
+    "type": "Cửa hàng tiện lợi",
+    "types": [
+     "Cửa hàng tiện lợi"
+    ],
+    "website": "https://www.circlek.com.vn/en/store-locator/",
+    "phoneNumber": "+84 28 3872 7345",
+    "openingHours": {
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày",
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkiGJYLUlBrbXE7CVbVK5EibZ5Z4fenqU8Eph-d2suOgfYpPG5Bpg2OGP68WKw8nHALWMBuE9XEHiYcqwx0dR5Nr-rsXpZ6ERzsz28caoiBjI1N_39XRho2Va8WRJi-oEnc-09M1A",
+    "cid": "3699898201502952812",
+    "fid": "0x31752f79135ec289:0x3358adcfb5b0ad6c",
+    "placeId": "ChIJicJeE3kvdTERbK2wtc-tWDM"
+   }
+  ],
+  "credits": 3
+ }
+}

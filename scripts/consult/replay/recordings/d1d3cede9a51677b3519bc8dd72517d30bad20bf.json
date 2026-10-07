@@ -1,0 +1,170 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "quà tặng thích cà phê sếp nam, 40 tuổi, thích cà phê",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:21:49.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "quà tặng thích cà phê sếp nam, 40 tuổi, thích cà phê",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Set quà tặng cà phê cao cấp - máy xay cầm tay cổ điển kèm cốc sứ, thiệp viết",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:16764726052803575726,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "466.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQi29Et3ifD2pRTGxQd0qJJDfAC3XcIN80uzv8d6Exravy1-h70JI3yh0QwFSstiHQOxYE_sG39tg4twY3bzht09nEGN2hKNM4FCXvVC_w8ibOcD5hu4DOtumeC",
+    "rating": 5,
+    "ratingCount": 8,
+    "productId": "16764726052803575726",
+    "position": 1
+   },
+   {
+    "title": "Set Quà Cà Phê A Bold Style, Quà Tặng Sếp Nam - The Curator",
+    "source": "Chus.vn",
+    "price": "770.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTBV974EOoQ_kIWe4tYfEjI30pcOXK1nNk3sogZC_pP7Gko1u1IJH-cPP0Um6z3E9qTSW0NiZ-IwGaa-_1fwKxJEiz5JOBhyAJalNRgrq6jBJdfjhjFH4C_",
+    "productId": "964833838479577685",
+    "position": 2
+   },
+   {
+    "title": "Quà Tặng Cà Phê Hộp Quà GIÀU CÓ Trung Nguyên Legend Hộp Sáng Tạo 8 Phin Nhôm Bạc Trống Đồng",
+    "source": "Shopee",
+    "price": "633.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQjhRDE32Cff-bztr4KFnurRoURI8hG5FhTvl7d0gFEM9xjuIlMqpmej0Fhr2hmN0WpPaSYymdI-Wv77eySMtKxb70padDu1SdNeaP96GhS",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "productId": "12747320940418327623",
+    "position": 3
+   },
+   {
+    "title": "Set Quà Tặng Cà Phê Cao Cấp Mee Fee",
+    "source": "Mee Fee",
+    "price": "540.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS-2j5vP8Kb-fVtBQgysJLi9ZgDuWKafBKAZTesH2-IO1XxQW8uGdC5f2Ns6CZXAZJhrK5Aa2oWWPLAq_9sjBQaB8QLwe0_JI2Boc4vAP39",
+    "productId": "10943124075084577408",
+    "position": 4
+   },
+   {
+    "title": "Hộp Quà Tặng Cà Phê Giàu Có Trung Nguyên Legend – Cà Phê Sáng Tạo 8 500g, Phin Nhôm Trống Đồng",
+    "source": "shopee.vn",
+    "price": "633.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTL4tpO6B6E77UBcNSJ682voDzZeFESariu7p8ko6jJu_M6mIUHTngJLZJ2gB3WH_ut2QsllnsLwn-V2_7sapJtT7-jLWsD9IZ2Iyp5cPOBW2ZBqruZO_gLFw",
+    "productId": "11432631842932974819",
+    "position": 5
+   },
+   {
+    "title": "Bộ quà tặng Tết Cộng Cà Phê",
+    "source": "minaco.vn",
+    "price": "339.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTSOof3ZFHhu4JY0dI3xLJeFmGjPAs_ilLrJNKsZuihQRIzR-hRHYC3_k7rYsB-mXGWrW7P2SmwizAYw3cVKY93t4WDBovM",
+    "productId": "4943664002171857286",
+    "position": 6
+   },
+   {
+    "title": "[Tặng kèm thiệp] SET QUÀ TẶNG BẠN NỮ, HỘP QUÀ TẶNG VALENTINE, SINH NHẬT, 8-3, CÁC DỊP LỄ SIÊU ĐÁNG YÊU",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:5569623121920203943,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "109.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQJbjs1Trn00TmpEX8IZIKTp1U9MbQp12YavIedtFfaJRLPNe_eByJ-ZfIC1AoqbZZwBywhf-O--QmRkAKkr6CYB6irTNKdQg7dDsnr6xdk",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "productId": "5569623121920203943",
+    "position": 7
+   },
+   {
+    "title": "SET QUÀ TẶNG CÀ PHÊ VÀ MẬT ONG CTG341 [Hộp kraft] » CT BEE FARM - Mật Ong & Quà Tặng",
+    "source": "dacsangialaitoi.com",
+    "price": "365.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT_cfnOCpWUgPqMYCnQsaoKwE88VaFvDLoZ6d8200NbdowVWP9DKjx4XNFNwEJ83qqUhxxuGiXdmuh1_Jw68SsW1y1FGUvKjVsU2KLifpYU",
+    "productId": "15777861429163141079",
+    "position": 8
+   },
+   {
+    "title": "SET QUÀ TẶNG - Tặng kèm túi xách+thiệp Set Hộp Quà - Tinh Dầu Khếch Tán Kèm Hoa Lụa - Quà Tặng 20/10 20/11 Giáng S",
+    "source": "Shopee",
+    "price": "40.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRprUuNGDOapOHSwXFosj90UTyQTbuC37CpQ7sI-gE2rGLm0SGkE32YHA-xLbnNLOpkLrrxHGI2jtJHJpXycx6rAh-h7sr3_FX4U7QdICQ",
+    "rating": 4.8,
+    "ratingCount": 65,
+    "productId": "4614479503925604203",
+    "position": 9
+   },
+   {
+    "title": "Quà Tặng 6 Gói Cà Phê Bất Kỳ",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:13201971523876044725,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "40.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQX8Zjl-ttPAqhIidOzCEY_YvdC445jK55u066ew_KCm4anucgeENo2NMwoV_sDmVijYIV1BO_46A2l-gBiRwVqCfC0pJZWAVnR4U7__IVYy44-FeX8ayiY",
+    "productId": "13201971523876044725",
+    "position": 10
+   },
+   {
+    "title": "Hộp quà tặng cao cấp Hạt A Cafe Premium Gift Box Coffee 3 loại cà phê hòa tan 288g - 16 stick",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:9791745495429777279,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "172.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQKULrIAlMvI18HIHIKljrRM_DY4wiWJljuvvWqbjdwon6hvDyTHnVHD1RMiJWmreDNXnFXvxL_UJhRKNjVZQsX2iVlSiwkPYm_6fZhOGo",
+    "rating": 4.9,
+    "ratingCount": 70,
+    "productId": "9791745495429777279",
+    "position": 11
+   },
+   {
+    "title": "Hộp Quà Cà Phê & Socola Energy Boost, Quà Tặng Bạn Trai",
+    "source": "Chus.vn",
+    "price": "1.045.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSQkyE_SLny3Re6-8H27LgAvDsPmPlGz5vYIIJujDFTwoSWEWr6wu6RM9rXFbD6N-ZHDpBg0ocfP96ie2qF7qCN4pcOgJuxhdNNA5zUrt31",
+    "productId": "18003968108919316577",
+    "position": 12
+   },
+   {
+    "title": "Set Quà Tặng 4 Hộp Cà Phê Hòa Tan, SET HAMPER TẾT Hộp Hamper Mix Vị, Hộp Quà Tặng",
+    "source": "Shopee",
+    "price": "227.150 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSJiaiddFAOMHmeZWlWtPO_T1DIIngkArKF74X28iOr1JqotXFdHhPiiI7IsElclqx7d-ZQ7llou_Hz-iUMTwwIuNX_cAbywS4IzwxRlLADUdndFiIhptglWA",
+    "productId": "17613069098665287857",
+    "position": 13
+   },
+   {
+    "title": "Set Quà Tặng Mẹ, Bạn Gái Mật Ong Kèm Hoa Cúc Kỷ Tử CTG310",
+    "source": "dacsangialaitoi.com",
+    "price": "339.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTq2uuDEie-kd-oC_eNCqyou8Yw0L662sLyWwchl9HNtVhk3UELA4E0iE9q7bUAZf05BAmwZzkhJY0bt_QjorLfGQ_LCmq1XaKVUpMPQ8Jy",
+    "productId": "15763939408212102773",
+    "position": 14
+   },
+   {
+    "title": "Bộ quà tặng doanh nghiệp \"Coffee Time\"- Kèm phin & Ly sứ đen",
+    "source": "Chus.vn",
+    "price": "715.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRF4FqQbBh5jTgipOAkwQR8WxBYbQcoeHCFy3SCSpod13z4A8kgh-Inzcfe7FzKMA5koLZG-9hoijjOmG_yPNigyQOMIzvsCl36xbiiwKE",
+    "productId": "1845317798050364623",
+    "position": 15
+   },
+   {
+    "title": "Hộp quà tặng Vietnamese Blend 3 (250g + phin Inox) - Rang vừa - Đắng vừa - Pha phin - Copen Coffee",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=qu%C3%A0+t%E1%BA%B7ng+th%C3%ADch+c%C3%A0+ph%C3%AA+s%E1%BA%BFp+nam%2C+40+tu%E1%BB%95i%2C+th%C3%ADch+c%C3%A0+ph%C3%AA&prds=localAnnotatedOfferId:1,catalogid:9529842312574145770,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "279.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ5zr1pXIoRQ-_uY7Q-Ztx0fUenPWha6j4hdAez5kA73-xUJEZ1rT3Vx5o22K1TcktiTjWkm8V4oiRb7xSh3nmIzXPjUOyqGkEaCQl7dWg",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "9529842312574145770",
+    "position": 16
+   }
+  ],
+  "credits": 2
+ }
+}

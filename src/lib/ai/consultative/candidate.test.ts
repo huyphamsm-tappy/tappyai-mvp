@@ -168,6 +168,22 @@ describe('normalizeHotels', () => {
     expect(osm.attrs.distanceKm).toBe(0.3)
   })
 
+  it('reads the Serper /maps evidence on a hotel_list row: rating, review count, price band (measured T2/T8: it read none, so no hotel ever qualified)', () => {
+    const maps = normalizeHotels({
+      source: 'Serper Maps',
+      hotel_list: [
+        { name: 'M Hotel Da Nang', address: '286 Võ Nguyên Giáp', place_id: 'ChIJ1', maps_link: 'https://maps.google.com/?cid=1', google_rating: '4.9⭐ (2.821 đánh giá Google Maps)', rating_value: 4.9, rating_count: 2821, phone: '+84 236', price_range: { high: 800000, currency: 'VND' } },
+        { name: 'No Rating Hostel', address: 'x', maps_link: 'https://maps.google.com/?cid=2' },
+      ],
+    })
+    expect(maps).toHaveLength(2)
+    expect(maps[0].id).toBe('ChIJ1')
+    expect(maps[0].attrs.rating).toBe(4.9)
+    expect(maps[0].attrs.reviewCount).toBe(2821)
+    expect(maps[0].attrs.priceHighVnd).toBe(800000)
+    expect(maps[1].attrs.rating).toBeUndefined()
+  })
+
   it('does NOT parse the price out of the snippet, even though one is visible', () => {
     // "Từ 393.582 VND/đêm" is right there in the snippet. Reading it as a
     // structured price would make it rankable AND quotable, and no provider

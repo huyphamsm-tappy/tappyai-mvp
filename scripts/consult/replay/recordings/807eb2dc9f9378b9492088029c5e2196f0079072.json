@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hộp Quà Tặng Linh Vật Mèo 16 x 16cm Mạ Vàng 24k\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T02:10:54.074Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hộp Quà Tặng Linh Vật Mèo 16 x 16cm Mạ Vàng 24k\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "P5",
+  "text": "massage",
+  "parent": null,
+  "status": 200,
+  "ms": 3337,
+  "evidenceId": "b82b4b28-8fd6-42ec-9f4b-44f56200a47c",
+  "toolCalls": [],
+  "rows": [],
+  "shortlist": [],
+  "hardGaps": null,
+  "frames8": [],
+  "prose": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n• **Bạn muốn ở đâu?** (gần Quận 1 hay khu vực khác?)\n• **Ngan sách khoảng bao nhiêu?** (để mình tìm phù hợp)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn! 😊",
+  "other": [],
+  "thread": [
+    {
+      "role": "user",
+      "content": "massage"
+    },
+    {
+      "role": "assistant",
+      "content": "Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n• **Bạn muốn ở đâu?** (gần Quận 1 hay khu vực khác?)\n• **Ngan sách khoảng bao nhiêu?** (để mình tìm phù hợp)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn!Mình hiểu bạn muốn tìm chỗ massage. Để gợi ý đúng ý bạn, mình cần biết thêm:\n\n• **Loại massage nào?** (thư giãn, trị liệu, foot massage, v.v.)\n\nCho mình biết chi tiết một chút là mình tìm ngay cho bạn! 😊"
+    }
+  ]
+}

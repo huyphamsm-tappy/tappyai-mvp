@@ -112,13 +112,16 @@ describe('buildSystem — cache-stable split', () => {
     }
   })
 
-  it('the decision-flow rule lives in the rulebook, and only once', () => {
+  it('the asking rule lives in the rulebook once (R4), and the R7 ladder that competed with the clarify gate is gone', () => {
+    // Item 7 batch 1 (2026-09-19): R7 (a)(b)(c) — "gợi ý 2-3 rồi hỏi", "thiếu thông tin quyết định
+    // → hỏi" — contradicted the V1 shape and the actionability gate, which now asks BEFORE the
+    // model. One statement remains, in R4; the one-question cap is enforced by clarificationGuard.
     const { shared } = VARIANTS[0][1]
-    expect(shared).toContain('QUYET DINH TRA LOI THE NAO')   // R7, consolidated in C2
-    expect(shared).toContain('TOI DA MOT cau hoi')            // the one-question ceiling
-    // R7 was replaced, not stacked on: the old wording must be gone.
+    expect(shared).not.toContain('QUYET DINH TRA LOI THE NAO')
+    expect(shared).not.toContain('THIEU THONG TIN QUYET DINH')
     expect(shared).not.toContain('HOI LAM RO khi that su can')
-    expect(shared.split('QUYET DINH TRA LOI THE NAO')).toHaveLength(2)
+    expect(shared.split('TOI DA MOT cau hoi')).toHaveLength(2)
+    expect(shared).toContain('He thong DA hoi user truoc khi tim')
   })
 
   it('the per-turn decision stage stays OUT of the cached rulebook', () => {

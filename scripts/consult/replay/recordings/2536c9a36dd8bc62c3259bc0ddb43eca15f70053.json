@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cà phê Linh\" OR \"PỜ CAFÉ\" OR \"ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:40:25.231Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cà phê Linh\" OR \"PỜ CAFÉ\" OR \"ViDa Cafe | CÀ PHÊ NGON QUẬN 3 | CÀ PHÊ SÀI GÒN QUẬN 3\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "PỜ CAFÉ (@pocafe.muoi)",
+    "link": "https://www.tiktok.com/@pocafe.muoi",
+    "snippet": "PỜ CAFÉ (@pocafe.muoi) trên TikTok |2.3M Lượt thích.27.7K Follower.Tiệm Cà Phê Muối Huế Giữa Lòng Sài Gòn 416/11/11 Dương Quảng Hàm, Gò Vấp 160/27 Bùi ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm cà phê Linh - Chi nhánh mới toanh view triệu đô ✨🧚🏻‍ ...",
+    "link": "https://www.tiktok.com/@vyhaydi.sg/video/7569807663941324050",
+    "snippet": "Tiệm cà phê Linh - Chi nhánh mới toanh view triệu đô ✨ ‍♀️ #linhcaphe #cafesaigon #saigon1975 #vyhaydi #xuhuong ; Sài Gòn Béo ☕️ .",
+    "position": 2
+   },
+   {
+    "title": "Tiệm cà phê Linh IEC Tứ Hiệp: Quán cafe chill, góc sống ...",
+    "link": "https://www.tiktok.com/@thanh.thanh_tri/video/7665575910657084693",
+    "snippet": "Lead Tiệm cà phê Linh vừa được phát hiện ngay khu IEC Tứ Hiệp — một quán cafe chill với đồ uống ngon và nhiều góc sống ảo.",
+    "position": 3
+   },
+   {
+    "title": "Results for \"Cà phê linh chi\"",
+    "link": "https://shop.tiktok.com/sg/k/ca-phe-linh-chi",
+    "snippet": "Results for \"Cà phê linh chi\" · Cà phê laura ( vị đông trùng hạ thảo, vị nấm linh chi) của Nhật Kim Anh hộp 10 gói · Cà phê laura ( vị đông trùng hạ thảo, vị nấm ...",
+    "position": 4
+   },
+   {
+    "title": "Tiệm Cà Phê Linh Mới Ở Quận 1 Với View Bitexco",
+    "link": "https://www.tiktok.com/@baro.phe/video/7569433852045790484",
+    "snippet": "Tiệm Cà Phê Linh Mới Ở Quận 1 Với View Bitexco. Khám phá tiệm cà phê Linh mới với view ngắm Bitexco tuyệt đẹp ở quận 1. Đừng bỏ lỡ! #coffee ...",
+    "position": 5
+   },
+   {
+    "title": "Tiệm Cà Phê Linh - Tái Hiện Sài Gòn Xưa và Nay",
+    "link": "https://www.tiktok.com/@baro.phe/video/7234435488730402053",
+    "snippet": "Khám phá tiệm cà phê Linh ở Quận 1, Sài Gòn với không gian xưa và nay độc đáo. Cảm nhận văn hóa cà phê Việt Nam qua thập kỷ sài gòn xưa và nay.",
+    "position": 6
+   },
+   {
+    "title": "Cà phê đêm, chỗ ngồi họp mặt ở Sài Gòn",
+    "link": "https://www.tiktok.com/@nguyenphu22660/video/7669107312698739984",
+    "snippet": "Kết luận Cà Phê Linh (quận 3) là điểm phù hợp cho ai cần không gian về đêm ở Sài Gòn để họp mặt, làm việc hay giải trí. Nếu bạn tìm “cafe linh ...",
+    "position": 7
+   },
+   {
+    "title": "Trải nghiệm cà phê tại PỜ CAFÉ ở Sài Gòn",
+    "link": "https://www.tiktok.com/@saigon.holic/video/7548271938108427537",
+    "snippet": "Keywords: cà phê PỜ CAFÉ ở Sài Gòn, không gian cà phê độc đáo, trải nghiệm thưởng thức cà phê, hương vị cà phê Sài Gòn, địa điểm cà phê nổi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

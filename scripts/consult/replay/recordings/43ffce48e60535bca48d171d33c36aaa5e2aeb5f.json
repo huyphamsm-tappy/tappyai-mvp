@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán nhậu phòng riêng Bình Thạnh Bình Thạnh, Hồ Chí Minh site:klook.com/vi/activity",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-28T18:25:51.974Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán nhậu phòng riêng Bình Thạnh Bình Thạnh, Hồ Chí Minh site:klook.com/vi/activity",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ăn Tối Trên Tàu Nhà Hàng Nổi Elisa, Sài Gòn",
+    "link": "https://www.klook.com/vi/activity/87965-elisa-floating-restaurant-cruise-ho-chi-minh-city/",
+    "snippet": "Tận hưởng một buổi tối lãng mạn với ẩm thực đa dạng và phong phú trên nhà hàng nổi Elisa. Đặt ngay với xác nhận nhanh chóng cùng mức giá vô cùng ưu đãi!",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -26,12 +26,12 @@ export {
   getCategories,
   getProviders,
   createSelection,
-  recordUsage,
-  createOriginalSound,
   getPreviewUrl,
   getTrackDurationLabel,
   getCategoryLabel,
   isInternalProvider,
+  attributionLine,
 } from './services/musicService'
+export { LIBRARY_TYPES } from './repository/musicRepository'
 
 export { validateSelection } from './utils'

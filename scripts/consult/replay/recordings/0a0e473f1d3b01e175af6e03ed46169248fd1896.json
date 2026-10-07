@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-09-30T04:20:08.945Z",
+ "body": {
+  "searchParameters": {
+   "q": "Microsoft Surface Laptop Go 2 i5 RAM 8GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Microsoft Surface Laptop Go 1 Cảm Ứng | i5-1035G1 | Ram 8GB",
+    "link": "https://shop.tiktok.com/vn/pdp/microsoft-surface-laptop-go-1-i5-1035g1-ram-8gb-ssd-256gb/1733733588073875381",
+    "snippet": "Mua Microsoft Surface Laptop Go 1 Cảm Ứng | i5-1035G1 | Ram 8GB | SSD 256GB | Màn 12.4” | Siêu Nhẹ 1.1kg | Ngoại Hình 93–97% trên TikTok Shop.",
+    "position": 1
+   },
+   {
+    "title": "MicrosoftSurface Pro 7 Plus Core i5 Thế hệ 11 l Ram 8GB l SSD ...",
+    "link": "https://shop.tiktok.com/vn/pdp/microsoft-surface-pro-7-plus-core-i5-ram-8gb-ssd-256gb-laptop-tablet/1733948870098454453",
+    "snippet": "Mua MicrosoftSurface Pro 7 Plus Core i5 Thế hệ 11 l Ram 8GB l SSD 256 Màn 12.3” Cảm Ứng l Dễ Dàng Nâng Cấp Màn 3K Touch trên TikTok Shop.",
+    "position": 2
+   },
+   {
+    "title": "Microsoft Surface Pro 8 Core i5 Gen 11 Ram 8GB SSD ...",
+    "link": "https://shop.tiktok.com/vn/pdp/surface-pro-8-core-i5-8gb-ram-256gb-ssd-man-hinh-3k-touch/1731744255788550069",
+    "snippet": "Microsoft Surface Pro 8CPU & RAM·CPU: Intel Core i5 Gen 11 – Tối ưu hiệu suất và tiết kiệm pin. ·RAM: 8GB – Chạy đa nhiệm mượt mà.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Surface Go Ram 4 SSD 64 máy tính 2 in 1 chính hãng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/surface-go-ram-4gb-ssd-64gb-man-hinh-cam-ung-sac-net/1731814654000859061",
+    "snippet": "Surface GoCPU: Intel Pentium Gold 4415YRam 4GB / SSD 64GBMàn hình 10\" PixelSense độ phân giải cao, cảm ứng mượt mà, hiển thị sắc nétThiết kế nhỏ gọn, ...",
+    "position": 4
+   },
+   {
+    "title": "microsoft surface pro 4",
+    "link": "https://shop.tiktok.com/vn/k/microsoft-surface-pro-4",
+    "snippet": "Microsoft Surface Laptop 4 13.5” i5 Gen 11 | Ram 8GB | SSD 256GB | Màn PixelSense Cảm Ứng | 93–97% Cao Cấp | Chuyên VP. 1 sold. ₫10.200.000 ...",
+    "position": 5
+   },
+   {
+    "title": "Microsoft Surface Go 1 Phiên Bản LTE dùng SIM 4G",
+    "link": "https://shop.tiktok.com/vn/pdp/surface-go-2in1-cpu-intel-pentium-ram-8gb-ssd-128gb-windows-10-pro/1731814690406827957",
+    "snippet": "Thông số kỹ thuật·CPU: Intel Pentium Gold 4415Y·RAM: 8GB·SSD: 128GB·Màn hình: 10\" PixelSense, độ phân giải cao, cảm ứng mượt mà, hiển thị sắc nét.·LTE: dùng SIM ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "[Đã qua sử dụng]MICROSOFT SURFACE PRO6",
+    "link": "https://shop.tiktok.com/vn/pdp/may-tinh-bang-microsoft-surface-pro-6-sieu-mong-nhanh/1732013173952578677",
+    "snippet": "Dell Laptop Latitude E7450 - Core i5/i7 Thế Hệ 5, RAM 8GB, SSD 256GB, Màn ... [Đã qua sử dụng] Laptop Surface Go cực kì mỏng nhẹ sang trọng cho văn phòng.",
+    "position": 7
+   },
+   {
+    "title": "huawei matebook e go 8g ram",
+    "link": "https://shop.tiktok.com/vn/k/huawei-matebook-e-go-8g-ram",
+    "snippet": "Microsoft Surface Go 2 Intel thế hệ 8 M3-8100Y, Mới 90-97% Ram 8Gb, SSD 128Gb, lắp sim 4G Màn hình 10.5.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
