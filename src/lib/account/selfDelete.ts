@@ -46,14 +46,20 @@ export type SelfDeleteResult =
  * must go through the leaver runbook, not a self-service button. A foreign-key refusal from the
  * delete itself is reported the same way.
  */
-export async function deleteOwnAccount(admin: SupabaseClient, userId: string): Promise<SelfDeleteResult> {
+export async function staffStatus(admin: SupabaseClient, userId: string): Promise<'staff' | 'not_staff' | 'error'> {
   const [roles, owner] = await Promise.all([
     admin.from('admin_roles').select('role', { count: 'exact', head: true }).eq('user_id', userId),
     admin.from('platform_owner').select('user_id', { count: 'exact', head: true }).eq('user_id', userId),
   ])
   // A lookup that errors is not proof of "no roles": fail closed.
-  if (roles.error || owner.error) return { ok: false, reason: 'failed' }
-  if ((roles.count ?? 0) > 0 || (owner.count ?? 0) > 0) return { ok: false, reason: 'staff_account' }
+  if (roles.error || owner.error) return 'error'
+  return (roles.count ?? 0) > 0 || (owner.count ?? 0) > 0 ? 'staff' : 'not_staff'
+}
+
+export async function deleteOwnAccount(admin: SupabaseClient, userId: string): Promise<SelfDeleteResult> {
+  const staff = await staffStatus(admin, userId)
+  if (staff === 'error') return { ok: false, reason: 'failed' }
+  if (staff === 'staff') return { ok: false, reason: 'staff_account' }
 
   const { error } = await admin.auth.admin.deleteUser(userId)
   if (!error) return { ok: true }
@@ -62,4 +68,36 @@ export async function deleteOwnAccount(admin: SupabaseClient, userId: string): P
   const msg = `${error.message ?? ''} ${(error as { code?: string }).code ?? ''}`
   if (/foreign key|23503|violates|restrict/i.test(msg)) return { ok: false, reason: 'staff_account' }
   return { ok: false, reason: 'failed' }
+}
+
+// -- Sign in with Apple: which Apple identity (if any) does this account have? -----------------------------------------------
+//
+// Needed BEFORE deleting: an account that signed in with Apple must have its Apple authorisation revoked first
+// (`lib/auth/appleRevoke.ts`). The answer comes from Supabase Auth (service role), never from the request. A lookup that errors is NOT
+// proof of "no Apple identity": the caller fails closed, so an Apple user can never be deleted unrevoked by a transient failure.
+
+export type AppleIdentityLookup =
+  | { ok: true; apple: false }
+  | { ok: true; apple: true; subjects: string[] }
+  | { ok: false }
+
+type AdminIdentity = { provider?: unknown; provider_id?: unknown; identity_data?: { sub?: unknown } | null }
+
+export async function lookupAppleIdentity(admin: SupabaseClient, userId: string): Promise<AppleIdentityLookup> {
+  const { data, error } = await admin.auth.admin.getUserById(userId)
+  if (error) {
+    // Already gone (a second tap): nothing to revoke, and `deleteOwnAccount` reports that as success.
+    if ((error as { status?: number }).status === 404 || /user_not_found|user not found/i.test(`${error.message ?? ''} ${(error as { code?: string }).code ?? ''}`)) return { ok: true, apple: false }
+    return { ok: false }
+  }
+  const user = data?.user as { identities?: AdminIdentity[] | null; app_metadata?: { provider?: unknown; providers?: unknown } } | null | undefined
+  if (!user) return { ok: false }
+  const identities = (user.identities ?? []).filter((i) => i?.provider === 'apple')
+  const listed = Array.isArray(user.app_metadata?.providers) && (user.app_metadata?.providers as unknown[]).includes('apple')
+  if (identities.length === 0 && !listed && user.app_metadata?.provider !== 'apple') return { ok: true, apple: false }
+  // An Apple account whose subject cannot be read still counts as Apple (empty subjects -> the revoke is refused, never skipped).
+  const subjects = identities
+    .flatMap((i) => [i.provider_id, i.identity_data?.sub])
+    .filter((s): s is string => typeof s === 'string' && s.length > 0)
+  return { ok: true, apple: true, subjects: [...new Set(subjects)] }
 }

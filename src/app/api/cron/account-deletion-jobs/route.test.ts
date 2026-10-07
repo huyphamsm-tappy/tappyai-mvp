@@ -8,7 +8,10 @@ const h = vi.hoisted(() => ({
   result: { processed: 1, completed: 1, failed: 0, objectsDeleted: 3, tokensRevoked: 1 },
   throws: false,
   calls: 0,
+  ready: true,
 }))
+
+vi.mock('@/lib/account/deletionReady', () => ({ accountDeletionSchemaReady: async () => h.ready }))
 
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => ({}) }))
 vi.mock('@/lib/media', () => ({ getMediaProvider: () => h.provider }))
@@ -24,7 +27,7 @@ const call = (auth?: string) => GET(new Request('http://localhost/api/cron/accou
 describe('GET /api/cron/account-deletion-jobs', () => {
   const prev = process.env.CRON_SECRET
   beforeEach(() => {
-    process.env.CRON_SECRET = 's3cret'; h.calls = 0; h.throws = false
+    process.env.CRON_SECRET = 's3cret'; h.calls = 0; h.throws = false; h.ready = true
     h.provider = { listObjects: async () => [], deleteObject: async () => true }
   })
   afterEach(() => { process.env.CRON_SECRET = prev })
@@ -43,6 +46,20 @@ describe('GET /api/cron/account-deletion-jobs', () => {
     expect(await res.json()).toEqual({ ok: true, processed: 1, completed: 1, failed: 0, objectsDeleted: 3, tokensRevoked: 1 })
   })
 
+  it('before the clean-up migration is applied it skips cleanly (200) instead of failing every night - and never touches the worker or the bucket', async () => {
+    h.ready = false
+    const res = await call('Bearer s3cret')
+    expect(res.status).toBe(200)
+    expect(await res.json()).toEqual({ ok: true, skipped: 'cleanup_not_installed' })
+    expect(h.calls).toBe(0)
+  })
+
+  it('the skip still needs the secret', async () => {
+    h.ready = false
+    expect((await call()).status).toBe(401)
+    expect((await call('Bearer nope')).status).toBe(401)
+  })
+
   it('a provider that cannot list/delete is a 500, not a silent success', async () => {
     h.provider = { listObjects: undefined, deleteObject: undefined }
     const res = await call('Bearer s3cret')
@@ -50,7 +67,7 @@ describe('GET /api/cron/account-deletion-jobs', () => {
     expect(h.calls).toBe(0)
   })
 
-  it('a worker failure (e.g. the migration is not applied) is a 500', async () => {
+  it('a worker failure AFTER the clean-up is installed is still a loud 500', async () => {
     h.throws = true
     const res = await call('Bearer s3cret')
     expect(res.status).toBe(500)
