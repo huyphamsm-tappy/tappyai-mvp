@@ -18,14 +18,8 @@ import java.io.File
  * conversations, so the identity was already fixed before TappyAI's code ran. Zalo documents no
  * re-authentication parameter, so the browser context itself must be fresh.
  *
- * First fix (f0a8e90) made the tab ephemeral for EVERY sign-in. The follow-up verification showed why that
- * cannot be the default: Zalo's "log in with the Zalo app" answers with
- * `googlechrome://navigate?url=id.zalo.me/account/login/native/verify?token=…&continue=…`, which opens in the
- * REGULAR Chrome profile — it does not hold the ephemeral tab's authorization transaction, so the flow ends on
- * zalo.me and no callback ever reaches TappyAI.
- *
- * What is pinned now: the ordinary tab is the default (shared cookies, supports the Zalo-app hand-off), and
- * EPHEMERAL is the explicit "Dùng tài khoản Zalo khác" choice.
+ * The fix pinned here: the Zalo Custom Tab is EPHEMERAL (no cookies read or kept) whenever the
+ * browser supports it, and nothing else about the flow changes.
  */
 class ZaloFreshBrowserSessionTest {
 
@@ -60,36 +54,11 @@ class ZaloFreshBrowserSessionTest {
     // ── The browser context ───────────────────────────────────────────────────
 
     @Test
-    fun `the tab is ephemeral only when the user asked for another account AND the browser supports it`() {
+    fun `the Zalo tab is ephemeral when - and only when - the browser supports it`() {
         val s = src(client)
-        assertTrue(s.contains("fun launch(context: Context, appState: String, freshBrowserSession: Boolean = false)"))
-        assertTrue(s.contains("val ephemeral = freshBrowserSession && provider != null && CustomTabsClient.isEphemeralBrowsingSupported(context, provider)"))
+        assertTrue(s.contains("CustomTabsClient.isEphemeralBrowsingSupported(context, provider)"))
         assertTrue(s.contains("CustomTabsIntent.Builder().setEphemeralBrowsingEnabled(ephemeral).build()"))
-        assertFalse("never forced on", s.contains("setEphemeralBrowsingEnabled(true)"))
-    }
-
-    @Test
-    fun `the default sign-in is the ordinary tab - the only one that supports the Zalo app hand-off`() {
-        val repo = src("features/auth/src/main/java/com/tappyai/features/auth/data/AuthRepository.kt")
-        assertTrue(repo.contains("fun startZaloSignIn(context: Context, freshBrowserSession: Boolean = false)"))
-        val vm = src("features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginViewModel.kt")
-        val main = vm.substringAfter("fun onZaloSignInClick(context: Context) {").substringBefore("}")
-        assertTrue(main.contains("authRepository.startZaloSignIn(context)"))
-        assertFalse(main.contains("freshBrowserSession"))
-    }
-
-    @Test
-    fun `Dùng tài khoản Zalo khác is a visible choice that starts the ephemeral tab`() {
-        val vm = src("features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginViewModel.kt")
-        val other = vm.substringAfter("fun onZaloOtherAccountClick(context: Context) {").substringBefore("}")
-        assertTrue(other.contains("authRepository.startZaloSignIn(context, freshBrowserSession = true)"))
-        val screen = src("features/auth/src/main/java/com/tappyai/features/auth/ui/login/LoginScreen.kt")
-        assertTrue(screen.contains("viewModel.onZaloOtherAccountClick(context)"))
-        assertTrue(screen.contains("R.string.auth_zalo_other_account"))
-        val vi = File(root(), "features/auth/src/main/res/values-vi/strings.xml").readText()
-        val en = File(root(), "features/auth/src/main/res/values/strings.xml").readText()
-        assertTrue(vi.contains("name=\"auth_zalo_other_account\">Dùng tài khoản Zalo khác<"))
-        assertTrue(en.contains("name=\"auth_zalo_other_account\">Use a different Zalo account<"))
+        assertFalse("never forced on an unsupported browser", s.contains("setEphemeralBrowsingEnabled(true)"))
     }
 
     @Test

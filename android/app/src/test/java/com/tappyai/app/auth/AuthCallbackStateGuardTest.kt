@@ -115,7 +115,7 @@ class AuthCallbackStateGuardTest {
         assertTrue("verify precedes the fragment import", check < body.indexOf("parseOAuthFragment(intent)"))
         assertTrue("verify precedes the PKCE exchange", check < body.indexOf("handleDeeplinks(intent)"))
         assertTrue(body.contains("throw AuthCallbackRejectedException(verdict)"))
-        assertTrue(repo.contains("zaloSignInClient.launch(context, newCallbackState(), freshBrowserSession)"))
+        assertTrue(repo.contains("zaloSignInClient.launch(context, newCallbackState())"))
         assertTrue(src("features/auth/src/main/java/com/tappyai/features/auth/data/ZaloSignInClient.kt").contains("&app_state=\${java.net.URLEncoder.encode(appState, \"UTF-8\")}"))
     }
 

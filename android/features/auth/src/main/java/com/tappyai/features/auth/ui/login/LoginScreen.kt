@@ -215,16 +215,6 @@ fun LoginScreen(
                         // …and Zalo's blue tile with the wordmark (web: 24px, #0068FF, 10px black).
                         leadingIcon = { ZaloMark() },
                     )
-                    // "Use another account": a fresh, cookie-less browser for Zalo, so the Zalo web session of the
-                    // previous person on this phone cannot sign the next one straight back in. The button above
-                    // stays the one-tap SSO path (and the only one that supports "log in with the Zalo app").
-                    TappyButton(
-                        text = stringResource(R.string.auth_zalo_other_account),
-                        onClick = { viewModel.onZaloOtherAccountClick(context) },
-                        modifier = Modifier.fillMaxWidth(),
-                        variant = TappyButtonVariant.Ghost,
-                        enabled = !isLoading,
-                    )
                     // Web /login card, 2026-09-28 parity: "hoặc", Email + Mật khẩu + "Đăng nhập",
                     // "Tạo tài khoản", then "Tiếp tục với tư cách Khách" — in that order. (The old
                     // hidden magic-link form and the debug-only guest button are gone; the magic-link
