@@ -7,7 +7,7 @@ import SwiftUI
 ///
 /// No Google Play badge on iOS (an iPhone user cannot use it and Apple's review does not welcome another store's badge). Like the
 /// Web card while no store listing is public (Phase 7), the bottom panel names both apps: «Android · Sắp có…» and «iOS · Sắp có…»,
-/// each with a phone glyph, then «Hoặc truy cập website» (`apps`).
+/// each with its platform chip (green Android robot head / black Apple mark, `PlatformLogo`, Web `drawPlatformLogo`), then «Hoặc truy cập website» (`apps`).
 struct BrandedQrCardView: View {
     let text: String
     let displayName: String
@@ -82,15 +82,15 @@ struct BrandedQrCardView: View {
         return AnyView(plainWebsitePanel(website))
     }
 
-    /// Two columns, as the Web card: the apps on the left (phone glyph per system), a divider, the website on the right.
+    /// Two columns, as the Web card: the apps on the left (platform chip per system), a divider, the website on the right.
     private func appsPanel(_ apps: AppsComingSoon, _ website: String) -> some View {
         HStack(spacing: 0) {
             VStack(alignment: .leading, spacing: 16) {
                 Text(apps.title).font(.system(size: 32, weight: .heavy)).foregroundStyle(CardLight.ink)
                     .lineLimit(1).minimumScaleFactor(0.6)
-                ForEach([apps.android, apps.ios], id: \.self) { line in
-                    HStack(spacing: 14) {
-                        Image(systemName: "iphone").font(.system(size: 34, weight: .regular)).foregroundStyle(CardLight.blue)
+                ForEach(Array([apps.android, apps.ios].enumerated()), id: \.offset) { i, line in
+                    HStack(spacing: PlatformLogo.textGap) {
+                        PlatformLogo(kind: i == 0 ? .android : .apple).accessibilityHidden(true)
                         Text(line).font(.system(size: 25, weight: .semibold)).foregroundStyle(CardLight.muted)
                             .lineLimit(2).minimumScaleFactor(0.6)
                     }
@@ -139,5 +139,77 @@ struct BrandedQrCardView: View {
             }
         }
         .frame(width: width - pad * 2)
+    }
+}
+
+// MARK: - Platform logo chips (Web `brandedCard.ts` `drawPlatformLogo`, `STORE_LOGO = 46`)
+
+/// Original hand-drawn platform marks: a green chip with the robot head for Android, a black chip with the apple for iOS.
+/// Same size and corner radius so the two rows read as a balanced pair. Coordinates are Web's canvas fractions of the chip side.
+struct PlatformLogo: View {
+    enum Kind { case android, apple }
+    let kind: Kind
+
+    /// Web `STORE_LOGO` (46) and the text gap (`x + STORE_LOGO + 18`).
+    static let side: CGFloat = 46
+    static let textGap: CGFloat = 18
+    static let cornerFraction: CGFloat = 0.24
+    static let androidGreen: UInt = 0x3DDC84
+    static let androidInk: UInt = 0x0B3D22
+    static let appleBlack: UInt = 0x111111
+
+    var body: some View {
+        ZStack {
+            RoundedRectangle(cornerRadius: Self.side * Self.cornerFraction, style: .continuous)
+                .fill(Color(hex: kind == .android ? Self.androidGreen : Self.appleBlack))
+            switch kind {
+            case .android:
+                AndroidRobotHead().fill(Color(hex: Self.androidInk))
+                AndroidRobotAntennae()
+                    .stroke(Color(hex: Self.androidInk), style: StrokeStyle(lineWidth: max(2, Self.side * 0.05), lineCap: .round))
+                AndroidRobotEyes().fill(Color(hex: Self.androidGreen))
+            case .apple:
+                Image(systemName: "applelogo")
+                    .font(.system(size: Self.side * 0.56, weight: .regular))
+                    .foregroundStyle(Color.white)
+            }
+        }
+        .frame(width: Self.side, height: Self.side)
+    }
+}
+
+/// Dome: half-disc of radius 0.28 centred at (0.5, 0.64), flat side down.
+struct AndroidRobotHead: Shape {
+    func path(in rect: CGRect) -> Path {
+        let s = rect.width
+        var p = Path()
+        p.move(to: CGPoint(x: rect.minX + 0.22 * s, y: rect.minY + 0.64 * s))
+        p.addArc(center: CGPoint(x: rect.minX + 0.5 * s, y: rect.minY + 0.64 * s), radius: 0.28 * s,
+                 startAngle: .degrees(180), endAngle: .degrees(0), clockwise: false)
+        p.closeSubpath()
+        return p
+    }
+}
+
+struct AndroidRobotAntennae: Shape {
+    func path(in rect: CGRect) -> Path {
+        let s = rect.width
+        func pt(_ x: CGFloat, _ y: CGFloat) -> CGPoint { CGPoint(x: rect.minX + x * s, y: rect.minY + y * s) }
+        var p = Path()
+        p.move(to: pt(0.34, 0.4)); p.addLine(to: pt(0.27, 0.27))
+        p.move(to: pt(0.66, 0.4)); p.addLine(to: pt(0.73, 0.27))
+        return p
+    }
+}
+
+struct AndroidRobotEyes: Shape {
+    func path(in rect: CGRect) -> Path {
+        let s = rect.width
+        var p = Path()
+        for ex in [CGFloat(0.38), CGFloat(0.62)] {
+            let r = 0.04 * s
+            p.addEllipse(in: CGRect(x: rect.minX + ex * s - r, y: rect.minY + 0.54 * s - r, width: 2 * r, height: 2 * r))
+        }
+        return p
     }
 }
