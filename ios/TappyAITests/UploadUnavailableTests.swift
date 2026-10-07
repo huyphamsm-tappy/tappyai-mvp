@@ -9,20 +9,20 @@ final class UploadUnavailableTests: XCTestCase {
     func testSessionRoute502WithCode() {
         let body = data(#"{"error":"Không thể tạo phiên tải lên. Vui lòng thử lại.","code":"upload_unavailable"}"#)
         XCTAssertTrue(UploadUnavailable.matches(status: 502, data: body))
-        XCTAssertEqual(APIClient.mapHTTP(status: 502, data: body), .network(status: 502, code: "upload_unavailable"))
-        XCTAssertTrue(UploadUnavailable.matches(APIClient.mapHTTP(status: 502, data: body)))
+        XCTAssertEqual(URLSessionAPIClient.mapHTTP(status: 502, data: body), .network(status: 502, code: "upload_unavailable"))
+        XCTAssertTrue(UploadUnavailable.matches(URLSessionAPIClient.mapHTTP(status: 502, data: body)))
     }
 
     func testProfile503WithErrorField() {
         let body = data(#"{"error":"upload_unavailable","message":"x"}"#)
         XCTAssertTrue(UploadUnavailable.matches(status: 503, data: body))
-        XCTAssertTrue(UploadUnavailable.matches(APIClient.mapHTTP(status: 503, data: body)))
+        XCTAssertTrue(UploadUnavailable.matches(URLSessionAPIClient.mapHTTP(status: 503, data: body)))
     }
 
     func testOther502IsNotUnavailable() {
         let body = data(#"{"error":"Không thể tạo phiên tải lên. Vui lòng thử lại."}"#)
         XCTAssertFalse(UploadUnavailable.matches(status: 502, data: body))
-        XCTAssertFalse(UploadUnavailable.matches(APIClient.mapHTTP(status: 502, data: body)))
+        XCTAssertFalse(UploadUnavailable.matches(URLSessionAPIClient.mapHTTP(status: 502, data: body)))
     }
 
     func testWrongStatusIsNotUnavailable() {
