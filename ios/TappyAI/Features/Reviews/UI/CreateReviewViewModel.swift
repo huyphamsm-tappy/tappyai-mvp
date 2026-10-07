@@ -163,7 +163,10 @@ final class CreateReviewViewModel: AppObservableObject {
             } catch is CancellationError {
                 // user cancelled
             } catch {
-                self.error = NSLocalizedString("review.error.videoUpload", comment: "")
+                // Storage service down: nothing was saved and a retry cannot work (Web `reviewNew.videoUploadUnavailable`).
+                self.error = UploadUnavailable.matches(error)
+                    ? NSLocalizedString("review.error.videoUploadUnavailable", comment: "")
+                    : NSLocalizedString("review.error.videoUpload", comment: "")
                 resetVideoState()
             }
         }

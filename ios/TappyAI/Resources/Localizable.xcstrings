@@ -4839,6 +4839,23 @@
         }
       }
     },
+    "editprofile.error.uploadUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photo uploads are temporarily unavailable. Your photo wasn't saved — please try again later."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch vụ tải ảnh đang tạm gián đoạn. Ảnh của bạn chưa được lưu — vui lòng thử lại sau."
+          }
+        }
+      }
+    },
     "editprofile.namePlaceholder": {
       "extractionState": "manual",
       "localizations": {
@@ -13837,6 +13854,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lỗi tải video"
+          }
+        }
+      }
+    },
+    "review.error.videoUploadUnavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video uploads are temporarily unavailable. Your video wasn't saved — please try again later."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch vụ tải video đang tạm gián đoạn. Video của bạn chưa được lưu — vui lòng thử lại sau."
           }
         }
       }

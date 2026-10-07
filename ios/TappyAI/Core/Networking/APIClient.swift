@@ -101,7 +101,8 @@ final class URLSessionAPIClient: APIClient {
 
         default:
             if retry.shouldRetry(status: http.statusCode, attempt: attempt),
-               !Self.isKnownLimit(status: http.statusCode, data: data) {
+               !Self.isKnownLimit(status: http.statusCode, data: data),
+               !UploadUnavailable.matches(status: http.statusCode, data: data) {
                 let delay = retry.delay(forAttempt: attempt)
                 log.debug("retry \(endpoint.path) status=\(http.statusCode) attempt=\(attempt) in \(delay)s")
                 try await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
@@ -129,7 +130,8 @@ final class URLSessionAPIClient: APIClient {
     }
 
     static func mapHTTP(status: Int, data: Data) -> AppError {
-        let code = errorCode(from: data)
+        // The 502 session body keeps its message in `error` and the machine code in `code`; carry the code through.
+        let code = UploadUnavailable.matches(status: status, data: data) ? UploadUnavailable.code : errorCode(from: data)
         switch (status, code) {
         case (_, "anon_limit_reached"): return .authentication(reason: .anonLimitReached)
         case (_, "free_limit_reached"): return .authentication(reason: .freeLimitReached)

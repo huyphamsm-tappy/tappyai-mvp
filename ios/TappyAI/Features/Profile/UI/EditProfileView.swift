@@ -341,7 +341,9 @@ struct EditProfileView: View {
                 coverUrl = url
             }
         } catch {
-            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
+            self.error = UploadUnavailable.matches(error)
+                ? NSLocalizedString("editprofile.error.uploadUnavailable", comment: "")
+                : NSLocalizedString("editprofile.error.upload", comment: "")
         }
     }
 
@@ -385,7 +387,9 @@ struct EditProfileView: View {
                 avatarUrl = url
             }
         } catch {
-            self.error = NSLocalizedString("editprofile.error.upload", comment: "")
+            self.error = UploadUnavailable.matches(error)
+                ? NSLocalizedString("editprofile.error.uploadUnavailable", comment: "")
+                : NSLocalizedString("editprofile.error.upload", comment: "")
         }
     }
 }
