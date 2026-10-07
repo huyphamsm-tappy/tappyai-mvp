@@ -34,14 +34,6 @@
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
-        <!-- Zalo sign-in opens an ephemeral Custom Tab (features/auth ZaloSignInClient). Android 11+
-             hides every other package unless it is declared, so without this the Custom Tabs provider
-             is invisible, `CustomTabsClient.getPackageName` returns null and the ephemeral mode is
-             silently never used — the previous person's Zalo web session then signs the next
-             "Tiếp tục với Zalo" straight back in. Measured on a real device: provider=null. -->
-        <intent>
-            <action android:name="android.support.customtabs.action.CustomTabsService" />
-        </intent>
         <!-- Account-deletion request opens an email app (Settings → Request account deletion).
              Without this, resolveActivity() on the mailto: intent returns null on Android 11+
              even when an email app is installed, and the flow would always fall through to the
