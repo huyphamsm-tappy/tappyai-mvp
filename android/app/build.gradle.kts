@@ -66,6 +66,7 @@ fun releaseProp(name: String, default: String): String =
 //   TAPPYAI_UAT_VERCEL_BYPASS_FILE=D:/TappyAI-backups/vercel-bypass.txt  (read at build time)
 //   TAPPYAI_UAT_SUPABASE_URL=https://<audit ref>.supabase.co
 //   TAPPYAI_UAT_SUPABASE_ANON_KEY=<audit anon key>
+//   TAPPYAI_UAT_GOOGLE_WEB_CLIENT_ID=<the Web client ID Supabase UAT's Google provider accepts>
 // ---------------------------------------------------------------------------
 val uatRequested = gradle.startParameter.taskNames.any { Regex("Uat(?![a-z])").containsMatchIn(it) }
 val localProps = Properties()
@@ -85,6 +86,11 @@ val uatBypassSecret: String = if (!uatRequested) "" else {
 }
 val uatSupabaseUrl = uatProp("TAPPYAI_UAT_SUPABASE_URL")
 val uatSupabaseAnonKey = uatProp("TAPPYAI_UAT_SUPABASE_ANON_KEY")
+// The Google "Web application" client ID that Supabase's Google provider on the UAT project accepts as an `aud`
+// (Google Cloud project 1023373437508, client "TappyAI Web - Supabase UAT"). It is NOT the release/prod client
+// (TAPPYAI_GOOGLE_WEB_CLIENT_ID): Supabase answers `Unacceptable audience in id_token` to a token issued for any
+// other client — measured on a real SM-A127F on 2026-10-07 after the Android client for .staging was registered.
+val uatGoogleWebClientId = uatProp("TAPPYAI_UAT_GOOGLE_WEB_CLIENT_ID")
 
 val supabaseUrl = releaseProp("TAPPYAI_SUPABASE_URL", "https://your-project.supabase.co")
 val supabaseAnonKey = releaseProp("TAPPYAI_SUPABASE_ANON_KEY", "REPLACE_WITH_SUPABASE_ANON_KEY")
@@ -392,6 +398,7 @@ android {
             buildConfigField("String", "WEB_APP_URL", "\"https://uat.tappyai.com\"")
             buildConfigField("String", "SUPABASE_URL", "\"$uatSupabaseUrl\"")
             buildConfigField("String", "SUPABASE_ANON_KEY", "\"$uatSupabaseAnonKey\"")
+            buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"$uatGoogleWebClientId\"")
             buildConfigField("String", "VERCEL_BYPASS_SECRET", "\"$uatBypassSecret\"")
         }
         release {
