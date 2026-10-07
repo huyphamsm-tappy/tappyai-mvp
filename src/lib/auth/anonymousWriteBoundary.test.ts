@@ -61,6 +61,7 @@ const EXEMPT: Record<string, string> = {
   'onboarding': 'runs before an account exists, by design',
   'favorites': "the visitor's own saved places; private",
   'bookings': "the visitor's own bookings; private",
+  'booking/recheck': 'a READ-ONLY provider re-check (POST only to carry the stay); writes nothing; 20/min per IP is its cost control; the anonymous tier IS chat and a recheck is part of its booking flow',
   // 'price-watch' WAS here, on the same "private, self-scoped" reasoning as its neighbours.
   //
   // 🚨 That reasoning was true and insufficient. Privacy is one axis; recurring cost is another,

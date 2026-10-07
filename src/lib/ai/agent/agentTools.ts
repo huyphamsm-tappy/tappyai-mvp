@@ -13,6 +13,7 @@ import { z } from 'zod'
 import { webSearch } from '@/lib/ai/tools/common'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
 import { movieQuery, extractMovieFacts, movieFactsPayload, filmPageLinks } from '@/lib/ai/searchIntel/movieShowtimes'
+import { CINEMA_NOW_SHOWING_PAGES } from '@/lib/ccp/adapters/nowShowing'
 
 /** Production tools that change something outside the conversation. Never callable by the model directly. */
 export const SIDE_EFFECT_TOOLS = new Set(['save_price_watch'])
@@ -32,10 +33,20 @@ export function toModelSchemas(tools: Record<string, AnyTool>): Record<string, u
   return out
 }
 
+/**
+ * The cinema chains' OWN now-showing pages as `film_links` (UAT 06/10: "phim đang chiếu" ended with titles and no way to book). Titles come from the web
+ * search, showtimes and prices have no source — so the label promises only a page where the user picks the cinema and showtime. `_tappy_commerce: []`
+ * is the marker that lets streamEnrichment append the links itself when the model does not copy them. Pages are the CCP's, nothing is composed here.
+ */
+export function nowShowingLinks(lang: string): { film_links: Array<{ name: string; platform: string; url: string }>; _tappy_commerce: [] } {
+  const name = lang === 'en' ? 'Showtimes / tickets' : 'Xem lịch chiếu / đặt vé'
+  return { film_links: CINEMA_NOW_SHOWING_PAGES.map(p => ({ name, platform: p.name, url: p.url })), _tappy_commerce: [] }
+}
+
 /** "Phim gì đang chiếu" as a tool: a dated query, a second only when the first yields too few titles (≤2 web searches inside). */
 export function nowShowingTool(lang: string, now: () => Date = () => new Date()) {
   return tool({
-    description: 'Danh sách PHIM ĐANG CHIẾU RẠP hôm nay tại Việt Nam (tên phim, nguồn Moveek / cụm rạp). Dùng cho "phim gì hay / đang chiếu / tối nay xem phim gì". Không có suất chiếu, giá vé hay điểm đánh giá.',
+    description: 'Danh sách PHIM ĐANG CHIẾU RẠP hôm nay tại Việt Nam (tên phim, nguồn Moveek / cụm rạp). Dùng cho "phim gì hay / đang chiếu / tối nay xem phim gì". Không có suất chiếu, giá vé hay điểm đánh giá. Kèm film_links = trang phim đang chiếu / lịch chiếu của từng cụm rạp: dẫn nguyên văn, nói rõ chọn rạp và suất chiếu trên trang của rạp.',
     parameters: z.object({ upcoming: z.boolean().optional().describe('true = phim sắp chiếu thay vì đang chiếu'), why: WHY }),
     execute: async ({ upcoming }) => {
       const t = now()
@@ -46,7 +57,7 @@ export function nowShowingTool(lang: string, now: () => Date = () => new Date())
         const seen = new Set(ev.titles.map(x => x.toLowerCase()))
         ev = { ...ev, titles: [...ev.titles, ...more.titles.filter(x => !seen.has(x.toLowerCase()))].slice(0, 14), sources: [...ev.sources, ...more.sources.filter(s => !ev.sources.some(y => y.url === s.url))].slice(0, 3) }
       }
-      return { source: 'Google (Serper)', results: ev.sources.map(s => ({ title: s.host, link: s.url })), ...filmEvidencePayload(ev) }
+      return { source: 'Google (Serper)', results: ev.sources.map(s => ({ title: s.host, link: s.url })), ...filmEvidencePayload(ev), ...nowShowingLinks(lang) }
     },
   })
 }

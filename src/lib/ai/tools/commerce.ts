@@ -25,6 +25,8 @@ import { discoverySubject, productIdentityMatch } from '@/lib/links/productIdent
 import { discoverBySubject, discoverCommerceHints, type DiscoveredHint, type DiscoverySubject, type SearchFn } from './commerceDiscovery'
 import { entertainmentCapabilityOf, filmTitleMatches, filmTitleOf, foodCapabilityOf, requestedProviderOf, type UserTurns } from './commerceIntent'
 import { cityToIATA } from './travel'
+import { attachRealtime } from './realtimeBooking'
+import type { ResolveDeps } from '@/lib/providers/realtime/resolve'
 import { normalizeVN } from '@/lib/ai/intent'
 import { linkDepthClass } from '@/lib/commerce/linkDepth'
 import { fetchEventPageText, scheduleFacts, scheduleIsPast, statedScheduleOf, type FetchTextFn } from './eventSchedule'
@@ -122,6 +124,8 @@ export interface CommerceAttachContext {
   fetchText?: FetchTextFn
   resolve?: typeof resolveCommerce
   now?: Date
+  /** Realtime booking layer seams (env / http / clock / adapters / location lookup) — tests and, later, the location mapping. Absent = process env + real fetch. */
+  realtime?: Partial<ResolveDeps>
 }
 
 /** One CCP request the plan will issue: an intent, and whether it is what the user ASKED for. */
@@ -836,7 +840,9 @@ export async function attachCommerceLinks(toolName: CommerceToolName, result: un
   if (toolName === 'get_hotel_prices' && !ctx.hotelListPass && isRecord(out) && Array.isArray(out.hotel_list) && out.hotel_list.length > 0) {
     await attachOnce(toolName, out, { ...ctx, hotelListPass: true })
   }
-  return out
+  // Realtime booking data (src/lib/providers/realtime): adds offers + a check time ONLY when a provider is switched on, credentialed and able to
+  // answer; otherwise the result is returned as the CCP left it (no flag, no change). Never replaces a link, a card or the consultative wording.
+  return attachRealtime(toolName, out, ctx)
 }
 
 // ── Route-level handoffs: flights and coaches (Completion Pass, 14 Sep 2026) ─

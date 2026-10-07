@@ -280,6 +280,8 @@ export interface CommerceRequest {
     budgetMaxVnd?: number
     city?: string
     merchantAllowList?: string[]
+    /** A provider's OWN numeric ids (Agoda city / hotel id). Never shared across providers: Trip.com's cityRef is not Agoda's. */
+    providerRefs?: Record<string, { cityRef?: string; propertyRef?: string }>
   }
   context?: CommerceContext
 }

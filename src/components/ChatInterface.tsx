@@ -13,12 +13,45 @@ import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { inlineLinkTap } from '@/lib/recommendation/handoff'
+import { parseRecheckHref, runRecheck } from '@/lib/providers/realtime/recheckLink'
 
-// A tap on a link inside the rendered reply text: a tracked affiliate link reports GA4
+// "Kiểm tra giá & tình trạng" (web): a realtime offer Tappy holds carries a recheck link. The tap re-asks the provider through
+// POST /api/booking/recheck and writes the answer BESIDE the link; the booking link next to it stays the CTA. The answer is plain text (never HTML),
+// and the only link it can add is the https booking page the SERVER returned.
+async function showRecheck(a: HTMLAnchorElement) {
+  if (a.dataset.rechecking === '1') return
+  a.dataset.rechecking = '1'
+  const label = a.textContent
+  a.textContent = 'Đang kiểm tra…'
+  const note = await runRecheck(a.href)
+  a.textContent = label
+  delete a.dataset.rechecking
+  if (!note) return
+  a.parentElement?.querySelectorAll('[data-recheck-note]').forEach(n => { if (n.previousElementSibling === a) n.remove() })
+  const span = document.createElement('span')
+  span.dataset.recheckNote = note.status
+  span.setAttribute('role', 'status')
+  span.className = note.status === 'unavailable' ? 'text-[13px] text-red-600 dark:text-red-400' : note.status === 'price_changed' ? 'text-[13px] text-amber-600 dark:text-amber-400' : 'text-[13px] text-gray-600 dark:text-gray-300'
+  span.textContent = ` ${note.sentence}`
+  if (note.bookingUrl && note.status !== 'unavailable') {
+    const open = document.createElement('a')
+    open.href = note.bookingUrl
+    open.target = '_blank'
+    open.rel = 'noopener noreferrer'
+    open.className = 'underline ml-1'
+    open.textContent = 'Mở trang đặt'
+    span.append(' ', open)
+  }
+  a.insertAdjacentElement('afterend', span)
+}
+
+// A tap on a link inside the rendered reply text: a recheck link runs the recheck in place; a tracked affiliate link reports GA4
 // `affiliate_click` (src/lib/recommendation/handoff.ts); every other link is untouched.
-function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
+export function onMessageLinkClick(e: React.MouseEvent<HTMLDivElement>) {
   const a = (e.target as HTMLElement | null)?.closest?.('a')
-  if (a instanceof HTMLAnchorElement) inlineLinkTap(a.href)
+  if (!(a instanceof HTMLAnchorElement)) return
+  if (parseRecheckHref(a.href)) { e.preventDefault(); void showRecheck(a); return }
+  inlineLinkTap(a.href)
 }
 import { getDynamicPrompts } from '@/lib/suggestedPrompts'
 import TripPlanCard from '@/components/TripPlanCard'
