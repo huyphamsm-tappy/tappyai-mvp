@@ -148,7 +148,11 @@ export function extractPage(html: string, o: { url: string; contentType: string;
     const head = /<head\b[\s\S]*?<\/head>/i.exec(src)?.[0] ?? src.slice(0, 20_000)
     const title = cleanText(/<title\b[^>]*>([\s\S]*?)<\/title>/i.exec(head)?.[1] ?? meta(head, ['og:title', 'twitter:title']), stats).slice(0, EXTRACT_CAPS.title)
     const canonicalTag = (head.match(/<link\b[^>]*>/gi) ?? []).find(t => /\brel\s*=\s*["']?canonical/i.test(t))
-    const canonicalUrl = absolute(canonicalTag ? attr(canonicalTag, 'href') : null, o.url) ?? absolute(meta(head, ['og:url']), o.url) ?? o.url
+    // WS2: the page's self-declared canonical / og:url is accepted only on the host it was FETCHED from. A cross-host declaration is
+    // untrusted page data (measured: a hoianheritage.danang.gov.vn page declaring hoianheritage.net was typed `other`; any page could
+    // declare apple.com and be typed `official`, or plant a URL into the task's evidence for a later read).
+    const declared = absolute(canonicalTag ? attr(canonicalTag, 'href') : null, o.url) ?? absolute(meta(head, ['og:url']), o.url)
+    const canonicalUrl = declared && sameHost(declared, o.url) ? declared : o.url
     const siteName = cleanText(meta(head, ['og:site_name', 'application-name']), stats).slice(0, 80)
     const description = cleanText(meta(head, ['description', 'og:description', 'twitter:description']), stats).slice(0, EXTRACT_CAPS.description)
     const publishedAt = meta(head, ['article:published_time', 'article:modified_time', 'og:updated_time', 'date', 'pubdate']).slice(0, 40) || null
@@ -168,6 +172,8 @@ export function extractPage(html: string, o: { url: string; contentType: string;
 
 const STOP = new Set(['va', 'cua', 'cho', 'la', 'co', 'khong', 'the', 'nao', 'bao', 'nhieu', 'gi', 'mot', 'nhung', 'cac', 'voi', 'trong', 'duoc', 've', 'theo', 'and', 'the', 'of', 'to', 'for', 'is', 'in', 'on', 'a', 'an', 'how', 'what'])
 const terms = (s: string) => [...new Set(fold(s).split(/[^a-z0-9]+/).filter(w => w.length >= 2 && !STOP.has(w)))]
+
+const sameHost = (a: string, b: string): boolean => { try { return new URL(a).hostname.replace(/^www\./, '').toLowerCase() === new URL(b).hostname.replace(/^www\./, '').toLowerCase() } catch { return false } }
 
 /** The most relevant passages (term overlap with the focus, ties by position), capped in count and total length; original order kept. */
 export function pickPassages(paras: readonly string[], focus?: string): string[] {

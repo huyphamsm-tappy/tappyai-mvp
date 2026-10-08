@@ -23,14 +23,37 @@
 // the task keeps only short evidence references (toTaskRefs) for re-use on follow-ups.
 
 import { createHash } from 'node:crypto'
-import { classifySource, reliabilityFor, reliabilityNote, hostOf, type ClaimKind, type Reliability, type SourceType } from './sourceType'
+import { classifySource, reliabilityFor, reliabilityNote, hostOf, sourceClassOf, type ClaimKind, type Reliability, type SourceType, type SourceClass } from './sourceType'
+import { parsePriceStatement, normaliseVariant, ageDays, pricesDisagree, priceView, type PriceEvidence } from './priceEvidence'
+import { extractMoneyClaims } from '@/lib/ai/moneyGuard'
 import type { PageDoc, StructuredFact } from './pageExtract'
 import { isInstructionLike, cutSecrets } from '../guards'
 
 export type EvidenceType = 'FACT' | 'INFERENCE' | 'UNKNOWN' | 'CONFLICT'
 export const CLAIM_KINDS: ClaimKind[] = ['spec', 'price', 'availability', 'hours', 'policy', 'condition', 'experience', 'location', 'other']
 
-export interface Source { id: string; url: string; canonicalUrl: string; title: string; host: string; retrievedAt: string; sourceType: SourceType; basis: string; reliabilityNote: string; publishedAt: string | null }
+export interface Source { id: string; url: string; canonicalUrl: string; title: string; host: string; retrievedAt: string; sourceType: SourceType; basis: string; reliabilityNote: string; publishedAt: string | null; /** WS2: owner taxonomy class (metadata). */ sourceClass: SourceClass; /** WS2: what following this source's link does (link contract). */ actionType: LinkActionType }
+
+/** WS2 link contract: what a real link does when followed. Research sources produce MAP / WEBSITE / PRODUCT / BOOK / SOCIAL / SOURCE;
+ *  ORDER and CALL come from provider rows (card actions), never from a page. */
+export type LinkActionType = 'MAP' | 'WEBSITE' | 'PRODUCT' | 'BOOK' | 'ORDER' | 'CALL' | 'SOCIAL' | 'SOURCE'
+/** A real source / action link (WS2 link contract): the URL is the page actually read; label and title come from the page, never the model. */
+export interface SourceLink { id: string; url: string; label: string; title: string; source_type: SourceClass; action_type: LinkActionType; host: string }
+
+/** The action type of a read page, deterministically from its class and what it states about itself. */
+export function actionTypeFor(cls: SourceClass, doc?: Pick<PageDoc, 'structured'> | null): LinkActionType {
+  const offer = (doc?.structured ?? []).some(f => /Product|Offer/i.test(f.type) && !!f.price)
+  if (cls === 'MAPS_BUSINESS') return 'MAP'
+  if (cls === 'BOOKING_PLATFORM') return 'BOOK'
+  if (offer || cls === 'PRODUCT_RETAILER') return 'PRODUCT'
+  if (cls === 'SOCIAL') return 'SOCIAL'
+  if (cls.startsWith('OFFICIAL_')) return 'WEBSITE'
+  return 'SOURCE'
+}
+/** The link contract record of a source. */
+export function sourceLink(s: Source): SourceLink {
+  return { id: s.id, url: s.url, label: s.host, title: s.title, source_type: s.sourceClass, action_type: s.actionType, host: s.host }
+}
 
 export interface EvidenceItem {
   id: string
@@ -46,6 +69,8 @@ export interface EvidenceItem {
   basis: 'stated_verified' | 'stated_unverified_quote' | 'implied' | 'not_in_source' | 'weak_source_claim' | 'structured_data' | 'sources_disagree'
   /** For a CONFLICT: the competing claims. */
   sides?: Array<{ value: string; sourceId: string; type: EvidenceType; reliability: Reliability }>
+  /** WS2: a price claim's contract record (variant, type, figures, source, retrieval time). */
+  price?: PriceEvidence
 }
 
 /** A claim as Luna reports it for one page. */
@@ -135,8 +160,11 @@ export class EvidenceLedger {
   addSource(doc: PageDoc, retrievedAt: string, lang: string): Source {
     const known = this.sourceFor(doc.url) ?? this.sourceFor(doc.canonicalUrl)
     if (known) return known
-    const c = classifySource(doc.canonicalUrl || doc.url, doc)
-    const s: Source = { id: `S${this.sources.length + 1}`, url: doc.url, canonicalUrl: doc.canonicalUrl, title: doc.title || doc.siteName || hostOf(doc.url), host: doc.host || hostOf(doc.url), retrievedAt, sourceType: c.type, basis: c.basis, reliabilityNote: reliabilityNote(c.type, lang), publishedAt: doc.publishedAt }
+    // WS2: classified by the host the page was FETCHED from (canonicalUrl is same-host only — pageExtract), never by a cross-host claim.
+    const at = doc.canonicalUrl || doc.url
+    const c = classifySource(at, doc)
+    const cls = sourceClassOf(c, at, doc)
+    const s: Source = { id: `S${this.sources.length + 1}`, url: doc.url, canonicalUrl: doc.canonicalUrl, title: doc.title || doc.siteName || hostOf(doc.url), host: doc.host || hostOf(doc.url), retrievedAt, sourceType: c.type, basis: c.basis, reliabilityNote: reliabilityNote(c.type, lang), publishedAt: doc.publishedAt, sourceClass: cls, actionType: actionTypeFor(cls, doc) }
     this.sources.push(s)
     // M4: the bounded extract (and the publication date the model was shown) stays with the turn (never persisted) so the settle-path guards can check what a cited sentence states.
     this.extracts.set(s.id, [doc.title, doc.description, doc.publishedAt ? `published ${doc.publishedAt.slice(0, 10)}` : '', ...doc.headings, ...doc.passages, ...doc.structured.map(f => [f.name, f.price && `${f.price} ${f.currency ?? ''}`, f.availability, f.openingHours, f.address, f.rating !== undefined ? `${f.rating}${f.ratingCount !== undefined ? ` (${f.ratingCount} reviews)` : ''}` : ''].filter(Boolean).join(' · '))].filter((x): x is string => typeof x === 'string' && x.trim().length > 0))
@@ -157,7 +185,11 @@ export class EvidenceLedger {
   /** Adds Luna's claims for one source (classified here) and the page's structured facts; returns what was added and any new conflicts. */
   addClaims(source: Source, raw: readonly RawClaim[], pageText: string, structured: readonly StructuredFact[] = []): { added: EvidenceItem[]; conflicts: EvidenceItem[] } {
     const added: EvidenceItem[] = []
-    for (const f of structured) for (const c of structuredClaims(f)) added.push(this.push({ ...c, sourceIds: [source.id], type: 'FACT', confidence: reliabilityFor(source.sourceType, c.kind), basis: 'structured_data' }))
+    for (const f of structured) for (const c of structuredClaims(f)) {
+      const item = this.push({ ...c, sourceIds: [source.id], type: 'FACT', confidence: reliabilityFor(source.sourceType, c.kind), basis: 'structured_data' })
+      if (c.kind === 'price') item.price = priceRecord(source, item, c.value, f.name ?? '')
+      added.push(item)
+    }
     for (const r of raw.slice(0, 12)) {
       const subject = clean(r.subject, 100), attribute = attrKey(r.attribute || ''), value = clean(r.value, 160), quote = clean(r.quote, 220)
       const kind = (CLAIM_KINDS as string[]).includes(r.kind) ? r.kind as ClaimKind : 'other'
@@ -169,7 +201,10 @@ export class EvidenceLedger {
       else if (!(quote && foundInPage(quote, pageText)) && !foundInPage(value, pageText)) { type = 'INFERENCE'; basis = 'stated_unverified_quote' }
       else if (rel === 'low') { type = 'UNKNOWN'; basis = 'weak_source_claim' }
       else { type = 'FACT'; basis = 'stated_verified' }
-      added.push(this.push({ type, subject, attribute, kind, value: type === 'UNKNOWN' && basis === 'not_in_source' ? '' : value, sourceIds: [source.id], confidence: type === 'FACT' ? rel : type === 'INFERENCE' ? (rel === 'high' ? 'medium' : 'low') : 'low', ...(quote ? { quote } : {}), basis }))
+      const item = this.push({ type, subject, attribute, kind, value: type === 'UNKNOWN' && basis === 'not_in_source' ? '' : value, sourceIds: [source.id], confidence: type === 'FACT' ? rel : type === 'INFERENCE' ? (rel === 'high' ? 'medium' : 'low') : 'low', ...(quote ? { quote } : {}), basis })
+      // WS2: a price is recorded with its type, variant and retrieval time (the variant from the sentence, else the page title).
+      if (kind === 'price' && item.value) item.price = priceRecord(source, item, quote || value, [subject, quote].join(' '))
+      added.push(item)
     }
     return { added, conflicts: this.detectConflicts(added) }
   }
@@ -189,7 +224,9 @@ export class EvidenceLedger {
     const out: EvidenceItem[] = []
     for (const n of fresh) {
       if (n.type === 'CONFLICT' || !n.value) continue
-      const rivals = this.items.filter(o => o !== n && o.type !== 'CONFLICT' && !!o.value && o.attribute === n.attribute && o.sourceIds[0] !== n.sourceIds[0] && sameSubject(o.subject, n.subject) && valuesDisagree(o.value, n.value))
+      // WS2: two prices are compared like with like (variant, condition, price type — priceEvidence.pricesDisagree), never by first number.
+      const differ = (o: EvidenceItem) => o.price && n.price ? pricesDisagree(o.price, n.price) : valuesDisagree(o.value, n.value)
+      const rivals = this.items.filter(o => o !== n && o.type !== 'CONFLICT' && !!o.value && o.attribute === n.attribute && o.sourceIds[0] !== n.sourceIds[0] && sameSubject(o.subject, n.subject) && differ(o))
       if (!rivals.length) continue
       const existing = this.items.find(c => c.type === 'CONFLICT' && c.attribute === n.attribute && sameSubject(c.subject, n.subject))
       const side = (x: EvidenceItem) => ({ value: x.value, sourceId: x.sourceIds[0], type: x.type, reliability: reliabilityFor(this.sources.find(s => s.id === x.sourceIds[0])?.sourceType ?? 'other', x.kind) })
@@ -213,8 +250,8 @@ export class EvidenceLedger {
   /** The compact view the model reads for one source (after read_page). */
   viewFor(source: Source, items: readonly EvidenceItem[], conflicts: readonly EvidenceItem[]): Record<string, unknown> {
     return {
-      source: { id: source.id, title: source.title, host: source.host, source_type: source.sourceType, reliability: source.reliabilityNote, ...(source.publishedAt ? { published: source.publishedAt } : {}) },
-      evidence: items.map(e => ({ id: e.id, type: e.type, subject: e.subject, attribute: e.attribute, ...(e.value ? { value: e.value } : {}), confidence: e.confidence, ...(e.quote ? { quote: e.quote } : {}), ...(e.basis === 'weak_source_claim' ? { note: 'claimed by a source that is weak for this kind of fact — unverified' } : e.basis === 'stated_unverified_quote' ? { note: 'not found verbatim in the page — treat as inference' } : {}) })),
+      source: { id: source.id, title: source.title, host: source.host, source_type: source.sourceType, source_class: source.sourceClass, link_kind: source.actionType, reliability: source.reliabilityNote, retrieved_at: source.retrievedAt, ...(source.publishedAt ? { published: source.publishedAt } : {}) },
+      evidence: items.map(e => ({ id: e.id, type: e.type, subject: e.subject, attribute: e.attribute, ...(e.value ? { value: e.value } : {}), ...(e.price ? { price: priceView(e.price) } : {}), confidence: e.confidence, ...(e.quote ? { quote: e.quote } : {}), ...(e.basis === 'weak_source_claim' ? { note: 'claimed by a source that is weak for this kind of fact — unverified' } : e.basis === 'stated_unverified_quote' ? { note: 'not found verbatim in the page — treat as inference' } : {}) })),
       ...(conflicts.length ? { conflicts: conflicts.map(c => ({ id: c.id, type: 'CONFLICT', subject: c.subject, attribute: c.attribute, sides: c.sides })) } : {}),
     }
   }
@@ -226,6 +263,17 @@ export class EvidenceLedger {
       claims: this.items.filter(e => e.sourceIds.includes(s.id) && e.type !== 'CONFLICT' && e.value).slice(0, 4).map(e => ({ subject: e.subject.slice(0, 80), attribute: e.attribute, value: e.value.slice(0, 120), type: e.type })),
       conflicts: this.items.filter(e => e.type === 'CONFLICT' && e.sourceIds.includes(s.id)).length,
     }))
+  }
+}
+
+/** WS2: the price contract record of one price evidence item. */
+function priceRecord(source: Source, item: EvidenceItem, statement: string, about: string): PriceEvidence {
+  const p = parsePriceStatement(statement)
+  return {
+    entity: item.subject || source.title.slice(0, 120), variant: normaliseVariant(about) ?? normaliseVariant(source.title), ...p,
+    source_url: source.url, source_title: source.title, source_type: source.sourceClass, reliability: reliabilityFor(source.sourceType, 'price'),
+    retrieved_at: source.retrievedAt, published_at: source.publishedAt, age_days: ageDays(source.publishedAt, source.retrievedAt),
+    evidence_status: item.type, confidence: item.confidence,
   }
 }
 
@@ -257,7 +305,7 @@ function structuredClaims(f: StructuredFact): Array<Omit<EvidenceItem, 'id' | 's
  * Step 2 is the enrichment site (streamEnrichment.ts citeSources), the ONE place that turns retrieval into markdown links — through
  * `sanitizeUrlForMarkdown` / `escapeMarkdownLabel`, and only for URLs that are in this turn's tool frames.
  */
-export function planCitations(text: string, sources: readonly Source[]): { text: string; cited: number; sources: Array<{ id: string; host: string; url: string }> } {
+export function planCitations(text: string, sources: readonly Source[]): { text: string; cited: number; sources: SourceLink[] } {
   const known = new Set(sources.map(s => s.id))
   const used = new Set<string>()
   const out = text.replace(/\s?\[(S\d{1,2}(?:\s*,\s*S\d{1,2})*)\]/g, (_m, ids: string) => {
@@ -265,7 +313,7 @@ export function planCitations(text: string, sources: readonly Source[]): { text:
     for (const id of keep) used.add(id)
     return keep.length ? ` [${keep.join(', ')}]` : ''
   })
-  return { text: out, cited: used.size, sources: sources.map(s => ({ id: s.id, host: s.host, url: s.url })) }
+  return { text: out, cited: used.size, sources: sources.map(sourceLink) }
 }
 
 // ── deterministic candidate claims (latency pass) ───────────────────────────────────────────────────────────────────────────────
@@ -322,8 +370,10 @@ export function candidateClaims(doc: Pick<PageDoc, 'passages' | 'title' | 'descr
   const need = Math.max(1, Math.min(2, Math.ceil(q.length / 2)))
   const scored = sentences.map((s, i) => { const t = termKeys(s, false); const hits = q.filter(w => t.has(w)).length; return { s, i, hits, num: /\d/.test(s) } })
   const stated = scored.filter(x => x.hits >= need).sort((a, b) => b.hits - a.hits || Number(b.num) - Number(a.num) || a.i - b.i).slice(0, 3)
-  if (stated.length) return stated.map(x => ({ subject: '', attribute, kind, value: quantityIn(x.s), stance: 'stated' as const, quote: x.s }))
+  // WS2: a price claim's value is the MONEY in the sentence ("MacBook Pro M4 16GB giá 39.990.000đ" is 39.990.000đ, not "4" from "M4").
+  const valueOf = (s: string) => kind === 'price' ? (extractMoneyClaims(s)[0]?.raw ?? quantityIn(s)) : quantityIn(s)
+  if (stated.length) return stated.map(x => ({ subject: '', attribute, kind, value: valueOf(x.s), stance: 'stated' as const, quote: x.s }))
   const implied = scored.filter(x => x.hits >= 1 && x.num).sort((a, b) => b.hits - a.hits || a.i - b.i).slice(0, 2)
-  if (implied.length) return implied.map(x => ({ subject: '', attribute, kind, value: quantityIn(x.s), stance: 'inferred' as const, quote: x.s }))
+  if (implied.length) return implied.map(x => ({ subject: '', attribute, kind, value: valueOf(x.s), stance: 'inferred' as const, quote: x.s }))
   return [{ subject: '', attribute, kind, value: '', stance: 'not_found', quote: '' }]
 }

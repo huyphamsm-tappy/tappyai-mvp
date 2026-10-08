@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook mới khoảng 25 triệu lập trình RAM 16GB Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:35:41.415Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook mới khoảng 25 triệu lập trình RAM 16GB Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "Top 3 Laptop Ultrabook đáng mua nhất phân khúc 25 triệu",
+    "link": "https://cellphones.com.vn/sforum/top-3-laptop-ultrabook-25-trieu",
+    "snippet": "Máy có 16GB RAM DDR5 onboard, tức RAM được tích hợp trên bo ... Ở tầm giá khoảng 25 triệu, MacBook Neo 13 nổi bật ở sự nhỏ gọn, pin ...",
+    "date": "22 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro 14 M5 10CPU 10GPU 16GB 1TB | Chính hãng Apple Việt Nam. 52.990.000đ. 50.990.000đ. MacBook Pro 14 M5 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt ...",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam ; Dung lượng RAM. 16GB ; Ổ cứng. 512GB ; Công nghệ màn hình. Màn hình Liquid Retina",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 5
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W | Chính hãng Apple Việt Nam ; HSSV, Giáo viên đến 500.000đ ; Smember Giảm thêm đến 242.000đ ; Trả góp 0% ...",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "Macbook Air M4 thiết kế thanh lịch, thời trang, dung lượng pin cao, bảo hành 12 tháng, giao nhanh. Mua ngay Apple Mac Air M4 trả góp 0% nhé!",
+    "position": 7
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Máy thực hiện hiệu quả các tính toán chỉnh sửa hình ảnh hay lập trình chuyên sâu, giúp hoàn thành công việc nhanh chóng mà không cần tốn nhiều thời gian.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

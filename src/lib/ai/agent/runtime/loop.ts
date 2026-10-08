@@ -301,7 +301,9 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
         const timedOut = e instanceof TimeoutError
         pl.outcome = timedOut ? 'timeout' : 'error'
         pl.error = e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200)
-        pl.result = { error: timedOut ? 'tool_timeout' : 'tool_failed', note: input.lang === 'en' ? 'This lookup failed; say this part is not checked.' : 'Tra cứu này lỗi; nói rõ phần này chưa kiểm tra được.' }
+        // WS2: a failed lookup is a reason to try ANOTHER source when the fact is still needed (research iterates), not to give up —
+        // measured WS-P1: search_products timed out and Luna, told only "say it is not checked", answered with a question.
+        pl.result = { error: timedOut ? 'tool_timeout' : 'tool_failed', note: input.lang === 'en' ? 'This lookup failed. If you still need this fact, try another source or tool (e.g. web_search) — not the same call again; otherwise say this part is not checked.' : 'Tra cứu này lỗi. Nếu vẫn cần dữ kiện này, thử nguồn / công cụ khác (vd web_search) — không gọi lại đúng lệnh vừa lỗi; không được thì nói rõ phần này chưa kiểm tra được.' }
         unchecked.push(pl.name)
         if (timedOut) { T.counters.timeouts++; T.add('timeout', { round, scope: 'tool', tool: pl.name, ms: now() - pl.started, cancelled: true }) } else { T.counters.errors++; T.add('error', { round, scope: 'tool', tool: pl.name, message: (pl.error ?? '').slice(0, 120) }) }
       }

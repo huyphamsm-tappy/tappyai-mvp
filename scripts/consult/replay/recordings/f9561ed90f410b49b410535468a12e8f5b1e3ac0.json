@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Novotel\" Novotel Danang Premier Han River, Da Nang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:54:09.382Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Novotel\" Novotel Danang Premier Han River, Da Nang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Novotel Danang Premier Han River Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-1963544/novotel-danang-premier-han-river/review.html",
+    "snippet": "Kính gửi Qúy Khách,Cám ơn Qúy Khách đã dành thời gian chia sẻ những trải nghiệm của mình liên quan tới kỳ nghỉ vừa rồi tại khách sạn Novotel Danang Premier Han ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Novotel tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-novotel/hotels-c1356b5/",
+    "snippet": "Đặt khách sạn Novotel tại Đà Nẵng với giá từ 379.718₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 2
+   },
+   {
+    "title": "Harmony Ocean Hotel Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/pingtung-hotel-detail-2962991/harmony-ocean-hotel/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá Metro Ratchada 36, Metro ...",
+    "position": 3
+   },
+   {
+    "title": "Green Palace Kutaisi Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/kutaisi-hotel-detail-128232020/green-palace-kutaisi/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier ... khách sạn Novotel Phuket Kata Avista Resort and ... Da Nang by Haviland14 Sathorn HotelVesna ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn ở gần Empress Tower, TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/ho-chi-minh-city-empress-tower/hotels-c301m13112698/",
+    "snippet": "... khách sạn Novotel Saigon Centre. Các không gian hội họp đều sở hữu khả năng tối ưu thu phóng và thay đổi công năng linh hoạt đáp ứng đa dạng các nhu cầu của ...",
+    "position": 5
+   },
+   {
+    "title": "Cove Valtari Canggu Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/bali-hotel-detail-135491262/cove-valtari-canggu/review.html",
+    "snippet": "... Da Nang Beach, TMS Hotel Da Nang Beach đánh giá của khách, TMS Hotel ... khách sạn Novotel Danang Premier Han RiverĐánh giá Hilton Vacation Club Lake ...",
+    "position": 6
+   },
+   {
+    "title": "Tìm Khách Sạn 4 Sao Tại TP. Hồ Chí Minh",
+    "link": "https://vn.trip.com/hotels/star4/city/vn/ho-chi-minh-city.html",
+    "snippet": "... khách sạn Novotel Saigon Centre. Các không gian hội họp đều sở hữu khả năng tối ưu thu phóng và thay đổi công năng linh hoạt đáp ứng đa dạng các nhu cầu của ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn L7 Hotels tại Hà Nội",
+    "link": "https://vn.trip.com/hotels/hanoi-l7hotels/hotels-c286b920/",
+    "snippet": "Thư giãn và nghỉ ngơi thoải mái với massage, trị liệu toàn thân và chăm sóc da mặt. ... Khách Sạn Novotel Ở Hà NộiKhách Sạn 2 Sao Ở Hà NộiKhách Sạn 3 Sao Ở Hà Nội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

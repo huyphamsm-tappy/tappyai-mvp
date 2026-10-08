@@ -173,6 +173,13 @@ function namesIn(sentence: string, known: readonly string[]): string[] {
   return [...new Set([...bold, ...known.filter(n => n && n.length >= 3 && f.includes(fold(n)))])]
 }
 const nameIn = (name: string, p: Indexed) => p.fold.includes(fold(name).replace(/\s+/g, ' ').trim())
+/** WS2: is this name the source site itself? ("CellphoneS" ↔ cellphones.com.vn, "FPT Shop" ↔ fptshop.com.vn, "Thế Giới Di Động" ↔ thegioididong.com). */
+export function ownSite(name: string, host: string): boolean {
+  const n = fold(name).replace(/[^a-z0-9]/g, '')
+  const label = host.toLowerCase().replace(/^www\./, '').split('.')[0].replace(/[^a-z0-9]/g, '')
+  if (n.length < 4 || label.length < 4) return false
+  return n === label || (Math.min(n.length, label.length) >= 6 && (label.startsWith(n) || n.startsWith(label)))
+}
 
 // Attributed ("người bán ghi …", "theo …") or explicitly QUALIFIED ("… nhưng chưa xác minh", "giá tham khảo, nên hỏi lại") — both tell the
 // user whose claim it is and how far to trust it (measured M4 eval RS-C1 run 2: "Giá vé mình tìm được là 80.000đ, nhưng nguồn hiện có
@@ -220,7 +227,12 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
     if (ids.length) {
       const cited = ids.map(id => byId.get(id)!)
       const all = cited.flatMap(c => c.ix)
-      if (!coveredBy(all)) {
+      // WS2: a sentence naming the cited source ITSELF ("**CellphoneS:** 27.990.000đ [S2]" citing cellphones.com.vn) is about that
+      // source's own page — every passage of it is entity evidence. Measured WS-I1: the retailer's own price passage never repeats the
+      // store's name, so three page-backed prices were judged "not with the entity" and deleted. A listicle naming OTHER venues is
+      // still scoped exactly as before.
+      const coveredByCited = () => qs.every(q => cited.some(c => (names.length && !names.some(n => ownSite(n, c.s.host)) ? c.ix.filter(p => names.some(n => nameIn(n, p))) : c.ix).some(p => statedIn(q, p)))) && (!cue || all.some(p => p.fold.includes(fold(cue))))
+      if (!coveredByCited()) {
         const misattributed = qs.some(q => !numberAnywhere(q, all))
         return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'MODEL_KNOWLEDGE' as const, reason: names.length && coveredByUnscoped(qs, all, cue) ? 'value_not_with_entity' : 'cited_value_not_in_source', ...(misattributed ? { misattributed: true } : {}) } }
       }

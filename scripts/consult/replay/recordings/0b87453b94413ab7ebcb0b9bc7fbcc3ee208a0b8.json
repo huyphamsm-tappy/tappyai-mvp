@@ -1,0 +1,85 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://shop-b.tappy-eval.test/macbook-pro-m4-16gb MacBook Pro M4 16GB 512GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:15:03.387Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://shop-b.tappy-eval.test/macbook-pro-m4-16gb MacBook Pro M4 16GB 512GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buy MacBook Pro, 16-inch - Apple",
+    "link": "https://www.apple.com/shop/buy-mac/macbook-pro/16-inch",
+    "snippet": "Get a new MacBook Pro laptop with M5, M5 Pro, or M5 Max from only $249.91 per month. Built for AI. Up to 24-hour battery life. Buy or lease now at apple.com.",
+    "sitelinks": [
+     {
+      "title": "Certified Refurbished",
+      "link": "https://www.apple.com/shop/refurbished"
+     },
+     {
+      "title": "iPad Pro",
+      "link": "https://www.apple.com/ipad-pro/"
+     },
+     {
+      "title": "Education",
+      "link": "https://www.apple.com/us-edu/shop/buy-mac"
+     },
+     {
+      "title": "Contact Us",
+      "link": "https://www.apple.com/us-edu/shop/buy-mac/macbook-pro/16-inch"
+     }
+    ],
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro - Apple",
+    "link": "https://www.apple.com/macbook-pro/",
+    "snippet": "Find the best MacBook Pro for you with the M5, M5 Pro, or M5 Max chip. Built for AI. Up to 24 hours of battery life. Liquid Retina XDR display.",
+    "position": 2
+   },
+   {
+    "title": "Amazon.com: Macbook M4",
+    "link": "https://www.amazon.com/macbook-m4/s?k=macbook+m4",
+    "snippet": "2025 MacBook Pro Laptop with Apple M5 chip with 10‑core CPU and 10‑core GPU: Built for AI, 14.2-inch Liquid Retina XDR Display, 16GB Unified Memory, 1TB SSD Storage; Space Black",
+    "position": 3
+   },
+   {
+    "title": "Amazon.com: Macbook Pro M4",
+    "link": "https://www.amazon.com/macbook-pro-m4/s?k=macbook+pro+m4",
+    "snippet": "2024 Apple MacBook Pro with Apple M4 Chip with 10‑core CPU (14.2-inch, 16GB RAM, 512GB SSD Storage) (QWERTY English) Space Black (Renewed) See options Display Size: 14.2 inches Disk Size: 256 GB",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14-inch M4 Pro, M4 Max Best Sale Price Deals",
+    "link": "https://prices.appleinsider.com/macbook-pro-14-inch-m4-pro",
+    "snippet": "Best 2024 14-inch MacBook Pro M4 Pro and M4 Max prices, with exclusive coupon discounts and easy price comparison.",
+    "date": "5 hours ago",
+    "position": 5
+   },
+   {
+    "title": "Apple 16\" MacBook Pro Kit with AppleCare+ (M4 Pro, Silver) B&H",
+    "link": "https://www.bhphotovideo.com/c/product/1883131-REG/apple_16_macbook_pro_kit.html",
+    "snippet": "Buy Apple 16\" MacBook Pro Kit with AppleCare+ (M4 Pro, Silver) featuring Apple M4 Pro 14-Core Chip, 24GB Unified RAM | 512GB SSD, 16\" 3456 x 2234 Liquid Retina XDR Screen, 20-Core GPU | 16-Core Neural Engine, Wi-Fi 6E (802.11ax) | Bluetooth 5.3, Thunderbolt 5 | HDMI | MagSafe 3, SDXC Slot | 12MP Center Stage Camera, Force Touch Trackpad | Touch ID Sensor, macOS with Apple Intelligence ...",
+    "position": 6
+   },
+   {
+    "title": "Apple - MacBook Pro 16-inch Laptop - Apple M4 Pro chip Built ...",
+    "link": "https://www.bestbuy.com/product/apple-macbook-pro-16-inch-laptop-apple-m4-pro-chip-built-for-apple-intelligence-48gb-memory-512gb-ssd-space-black/JJGCQ8HTCG",
+    "snippet": "Shop Apple MacBook Pro 16 inch Laptop Apple M4 Pro chip Built for Apple Intelligence 48GB Memory 512GB SSD Space Black products at Best Buy. Find low everyday prices and buy online for delivery or in-store pick-up. Price Match Guarantee.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com/mua-ban-laptop MacBook Air M1 9.000.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:01.390Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com/mua-ban-laptop MacBook Air M1 9.000.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook Air M1 8GB/256GB - 132791690",
+    "link": "https://www.chotot.com/mua-ban-laptop-quan-thanh-xuan-ha-noi/132791690.htm",
+    "snippet": "Hãng: Apple ; Dòng máy: MacBook Air M1 ; Tình trạng: Đã sử dụng (chưa sửa chữa) ; Chính sách bảo hành: Bảo hành hãng ; Kích cỡ màn hình: 13 - 14.9 inch.",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Air M1 8GB/256GB Vàng Like New - 133582995",
+    "link": "https://www.chotot.com/mua-ban-laptop-quan-nam-tu-liem-ha-noi/133582995.htm",
+    "snippet": "Thông tin chi tiết ; Dòng máy: MacBook Air M1 ; Tình trạng: Đã sử dụng (chưa sửa chữa) ; Chính sách bảo hành: Bảo hành hãng ; Bộ vi xử lý: M1 ; RAM: 8 GB.",
+    "position": 2
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "Giá MacBook Air M1 cũ vào ngày 08/10/2026 dao động khoảng 10,35 triệu - 12,65 triệu, tuỳ dung lượng RAM (8GB hoặc 16GB), SSD (256GB hoặc 512GB), ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Air M1 8GB/256GB Bạc - 134831897",
+    "link": "https://www.chotot.com/mua-ban-laptop-quan-10-tp-ho-chi-minh/134831897.htm",
+    "snippet": "Thông tin chi tiết ; Dòng máy: MacBook Air M1 ; Tình trạng: Đã sử dụng (chưa sửa chữa) ; Chính sách bảo hành: Bảo hành hãng ; Bộ vi xử lý: M1 ; RAM: 8 GB.",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Air M1 2020 Retina 8GB/256GB Nhật",
+    "link": "https://www.chotot.com/mua-ban-laptop-quan-tan-binh-tp-ho-chi-minh/134692724.htm?latitude=10.77192&longitude=106.69831&distance=10",
+    "snippet": "MACBOOK AIR M1 2020 - 8GB/256GB (tphcm) Máy đẹp, sử dụng ổn định, mất 1 phím Model: MacBook Air M1 2020 Chip: Apple M1 RAM: 8GB SSD: 256GB Màn hình: Retina ...",
+    "position": 5
+   },
+   {
+    "title": "2 Apple Macbook Air cũ đẹp Huyện Đức Hòa, Long An 09/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-huyen-duc-hoa-long-an-sdpb3pm5",
+    "snippet": "2 Laptop Apple Macbook Air cũ Huyện Đức Hòa, Long An bền đẹp. Đa dạng tin đăng bán, tìm mua Apple Macbook Air cũ ở Chợ Tốt.",
+    "position": 6
+   },
+   {
+    "title": "90 Laptop Apple cũ Quận 7 đẹp 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-quan-7-tp-ho-chi-minh-sdpb3",
+    "snippet": "90 Laptop Apple cũ Quận 7 uy tín ; MacBook Air 2020 13\" 2K 8GB/256GB 98-99%-Góp 0Đ. Intel Core i38 GB256 GBSSD. 5.900.000 đ ; MacBook Air 13\" M1 8Gb/256Gb 98%-Góp ...",
+    "position": 7
+   },
+   {
+    "title": "208 MacBook Air M1 cũ tại TPHCM like new, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-tp-ho-chi-minh-sdpb3pm141",
+    "snippet": "Giá laptop Macbook Air M1 cũ tại Tp Hồ Chí Minh khoảng 11,3 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Tp Hồ Chí Minh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

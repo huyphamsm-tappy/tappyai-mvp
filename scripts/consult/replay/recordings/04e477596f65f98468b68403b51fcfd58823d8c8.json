@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:fptshop.com.vn iPhone 16 Pro 256GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:39:44.046Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:fptshop.com.vn iPhone 16 Pro 256GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro giá giảm đến 6 triệu, nhiều ưu đãi, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-pro",
+    "snippet": "Mua iPhone 16 Pro (128GB, 256GB, 512GB, 1TB) chính hãng, đủ màu sắc mới nhất, giá rẻ kèm ưu đãi, có trả góp 0%, 1 đổi 1 trong 12 tháng, bảo hành lên đến 2 ...",
+    "rating": 4.9,
+    "ratingCount": 23,
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro Max giá tốt Th8/2026 | Giảm đến 8 triệu",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-pro-max",
+    "snippet": "Mua iPhone 16 Pro Max (256GB/512GB/1TB) chính hãng, giá tốt kèm ưu đãi giảm đến 8 triệu, thu cũ trợ giá 1 triệu tại FPT Shop. Trả góp 0%, đổi trả hàng trong ...",
+    "rating": 4.9,
+    "ratingCount": 83,
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 giá tốt, giảm đến 5 triệu, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16",
+    "snippet": "Mua điện thoại iPhone 16 (128GB, 256GB, 512GB) chính hãng, giá rẻ, trả góp 0%, 1 đổi 1 trong 12 tháng, bảo hành lên đến 2 năm. Xem ngay giá iPhone 16 thường ...",
+    "rating": 4.9,
+    "ratingCount": 170,
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro giá bao nhiêu khi lên kệ trong thời gian tới?",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/iphone-16-pro-gia-bao-nhieu-155717",
+    "snippet": "Giá iPhone 16 Pro 128GB: 28.990.000 đồng. · Giá iPhone 16 Pro 256GB: 31.990.000 đồng. · Giá iPhone 16 Pro 512GB: 37.990.000 đồng. · Giá iPhone 16 Pro 1TB: 43.990.",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 (Pro Max/Pro/Plus) giá giảm đến 4,5 triệu, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-series",
+    "snippet": "Dưới đây là giá bán chi tiết iPhone 16 Pro Max vừa được Apple công bố tại thị trường Mỹ: iPhone 16 Pro Max 256GB: 1.199 USD (Khoảng 29.6 triệu đồng). iPhone ...",
+    "position": 5
+   },
+   {
+    "title": "Máy cũ Điện thoại apple chính hãng, giá rẻ",
+    "link": "https://fptshop.com.vn/may-doi-tra/dien-thoai-cu-gia-re/apple",
+    "snippet": "iPhone 16 Pro 256GB Demo. Giá máy mới31.390.000đ. Điện thoại iPhone 16 Pro Max 256GB Titan Sa Mạc 3N534VN/A Demo. 2 máy cũ. 32.572.800đ-24%. Từ: 24.755.328đ.",
+    "position": 6
+   },
+   {
+    "title": "Bảng giá iPhone 16 mới nhất 2026: Giảm mạnh đến 8 triệu ...",
+    "link": "https://fptshop.com.vn/tin-tuc/for-gamers/bang-gia-iphone-16-moi-nhat-2026-200061",
+    "snippet": "Bảng giá iPhone 16 mới nhất 2026 tại các đại lý ; iPhone 16 Plus, 128GB, 22,59 triệu ; 256GB, 25,39 triệu ; 512GB, 30,29 triệu ; iPhone 16 Pro, 128GB, 24,39 triệu ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 giá tốt, giảm đến 5 triệu, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-256gb",
+    "snippet": "iPhone 16 256GB ... Giảm ngay 5% tối đa 50,000đ cho Khách hàng thân thiết khi thanh toán. Giảm ngay 20% tối đa 50.000đ cho Khách hàng mới Hoặc Giảm 5%.",
+    "rating": 4.9,
+    "ratingCount": 170,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

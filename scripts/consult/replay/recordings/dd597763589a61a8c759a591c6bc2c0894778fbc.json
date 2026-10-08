@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thegioididong.com/dtdd/iphone-16-pro-256gb \"đ\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:16.189Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thegioididong.com/dtdd/iphone-16-pro-256gb \"đ\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

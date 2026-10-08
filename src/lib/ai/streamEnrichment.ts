@@ -25,7 +25,10 @@ import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudge
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames } from './guardEvidence'
+import { stripSellerNames } from './agent/runtime/sourceType'
+import { bindCitationMarkers, enforceCitationIntegrity } from './citationIntegrity'
 import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
+import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
@@ -2062,15 +2065,24 @@ export function applyPlaceEnrichmentStreamFilter(
     if (collector?.semanticRanking) {
       const ex = extractRanking(mainText)
       mainText = ex.text
-      const rt: Record<string, unknown> = { block: ex.contract ? 'ok' : ex.malformed ? 'malformed' : 'absent' }
-      if (ex.contract) {
-        Object.assign(rt, { picks: ex.contract.picks.length, none: ex.contract.none, confidence: ex.contract.confidence })
+      const rt: Record<string, unknown> = { block: ex.contract ? 'ok' : ex.malformed ? 'malformed' : 'absent', via: ex.contract ? 'inline' : null }
+      // WS2: no valid inline block, and the turn has candidates → the decision is RECORDED from the final answer (one structured Luna
+      // call, validated by code — decisionRecord.ts). The answer is the decision; this is its machine-readable form.
+      let contract = ex.contract
+      const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
+      if (!contract && collector.recordDecision && candidateNames.length) {
+        const rec = await collector.recordDecision(mainText, candidateNames)
+        Object.assign(rt, { recorder_ms: rec.ms, recorder_usd: rec.usd, ...(rec.error ? { recorder_error: rec.error } : {}) })
+        if (rec.contract) { contract = rec.contract; rt.block = 'ok'; rt.via = 'structured' }
+      }
+      if (contract) {
+        Object.assign(rt, { picks: contract.picks.length, none: contract.none, confidence: contract.confidence })
         if (collector.placesRecommendations?.length) {
-          const a = applyRankingToRecs(collector.placesRecommendations, ex.contract)
+          const a = applyRankingToRecs(collector.placesRecommendations, contract)
           if (a) { collector.placesRecommendations = a.items; lunaRanked = true; Object.assign(rt, { cards: a.items.length, unmatched: a.unmatched }) } else rt.cards = 'unmatched_named_order_kept'
         }
         if (collector.shoppingMarker) {
-          const s = applyRankingToShoppingMarker(collector.shoppingMarker, ex.contract)
+          const s = applyRankingToShoppingMarker(collector.shoppingMarker, contract)
           if (s.applied) { collector.shoppingMarker = s.marker ?? undefined; lunaRanked = true; Object.assign(rt, { shopping: s.marker ? s.matched : 0, shopping_unmatched: s.unmatched }) } else rt.shopping = 'unmatched_kept'
         }
       }
@@ -2374,15 +2386,22 @@ export function applyPlaceEnrichmentStreamFilter(
      * (or by fresh task evidence) is held out of the heuristic guards below (money … unsupported_claim) and restored unchanged
      * after them; everything else is judged exactly as before. Inert without `guardEvidence` (every non-agent turn). See guardEvidence.ts.
      */
-    const evShield = shieldSupported(planMask.text, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean) })
-    gt('evidence_citation', planMask.text, evShield.text)
+    // WS2 citation integrity, step 1 (agent turns that read pages): a marker after a full stop is bound INTO its sentence before any
+    // guard runs, so removing the sentence removes its citation (citationIntegrity.ts).
+    const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean) })
+    gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
     // no network call, and nothing written that was not already in the text.
     // Inert unless the evidence carries structured prices (see moneyGuard).
-    const guardedRaw = guardMoneyClaimsInText(enriched, productRecords, productQueries)
+    // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
+    // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
+    const guardedRaw = collector?.semanticRanking
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true })
+      : guardMoneyClaimsInText(enriched, productRecords, productQueries)
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
      * money guard enforces only where a structured price exists (it is inert on organic rows, by
@@ -2445,7 +2464,11 @@ export function applyPlaceEnrichmentStreamFilter(
       snippetPlaceNames.length > 0
         ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
         : undefined
-    const snippetV2 = snippetPriceGuardV2Enabled()
+    // WS2 (TAPPY_AGENT=2 only): the agent runtime judges food / spa prices with BAND evidence (G2 v2): a price equal to the named
+    // venue's own provider band (`price_range_text`) is entity evidence. Measured M5 SR-F2: v1 knows only snippet prices, so "giá tham
+    // khảo 100–200k/người" copied from Tám Riêu's own row band "100-200 N ₫" deleted the whole pick sentence. Unsupported prices are
+    // still removed (v2 is stricter on attribution: a stated amount must lie fully inside the band). Legacy / Phase 7 keep the env flag.
+    const snippetV2 = snippetPriceGuardV2Enabled() || collector?.semanticRanking === true
     // B3/B4 (2026-09-20): a SHOPPING turn ("máy lọc không khí phòng ngủ" reads as placeIntent
     // through "phòng") is not judged by the PLACE snippet guard — its prices are the product
     // unit's, judged by the money guard above and hedged when unverifiable. Only when no place
@@ -2934,7 +2957,9 @@ export function applyPlaceEnrichmentStreamFilter(
         return `${head}${head ? '\n\n' : ''}${headsUp.join(' ')}${tail ? `\n\n${tail}` : ''}`
       })()
       // At most two hedges; beyond that they are merged into one sentence (hedgeCap.ts).
-      const hedged = capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
+      // WS2 (TAPPY_AGENT=2): Luna's own hedges are its answer — not merged into one code-written sentence. Measured WS-L1: the merge
+      // removed 156 characters of Luna's reply (a hotel name, its honest budget caveat) and wrote "chưa xác nhận được dữ liệu xác nhận và …".
+      const hedged = runtimeOwnsCautions ? { text: withHeadsUpRaw, hedges: 0, merged: 0, unmergeable: 0 } : capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
       const withHeadsUp = hedged.text
       console.log(JSON.stringify({
         type: 'tappyai_guard', guard: 'consultative_v1',
@@ -3247,7 +3272,11 @@ export function applyPlaceEnrichmentStreamFilter(
       }
       // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
       // sources line. Here, inside the grounded prose, so the TikTok fold and the grounding detector downstream see the final text.
-      return collector?.citationSources?.length ? citeSources(final, collector.citationSources, allowedUrls, lang) : final
+      if (!collector?.citationSources?.length) return final
+      // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
+      const integrity = enforceCitationIntegrity(final)
+      if (integrity.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity.removed }))
+      return citeSources(integrity.text, collector.citationSources, allowedUrls, lang)
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same

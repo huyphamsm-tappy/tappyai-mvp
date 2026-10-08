@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "so sánh giá iPhone 15 Samsung Galaxy S24 Việt Nam hiện nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:45:39.757Z",
+ "body": {
+  "searchParameters": {
+   "q": "so sánh giá iPhone 15 Samsung Galaxy S24 Việt Nam hiện nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15: Chọn iOS ổn ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s24-va-iphone-15",
+    "snippet": "Galaxy S24 tự hào với những trang bị phần cứng đỉnh cao như màn hình 120Hz và camera tele zoom quang, iPhone 15 lại tiếp tục đặt cược vào sức ...",
+    "date": "7 thg 8, 2025",
+    "position": 1
+   },
+   {
+    "title": "So sánh Samsung S24 Ultra và iPhone 15 Pro Max",
+    "link": "https://www.thegioididong.com/hoi-dap/so-sanh-samsung-s24-ultra-va-iphone-15-pro-max-1580173",
+    "snippet": "Bảng so sánh cấu hình trên cho thấy Samsung S24 Ultra nổi bật với RAM lớn, pin \"trâu\", công nghệ zoom ấn tượng cùng các tính năng AI mới lạ.",
+    "date": "29 thg 7, 2025",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 or Galaxy S24?",
+    "link": "https://www.youtube.com/watch?v=9EvJzYStpiI",
+    "snippet": "| Vật Vờ Studio ▻ Mua iPhone 15 cũ giá tốt: https://www.xtmobile.vn/iphone-15 ... So sánh iPhone 16 và Galaxy S24 !!! Tony Phùng Studio•21K views.",
+    "position": 3
+   },
+   {
+    "title": "So sánh Galaxy S24 và iPhone 15: Flagship nào đáng mua ...",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-samsung-galaxy-s24-va-apple-iphone-15-flagship-nao-dang-mua-hon-174312",
+    "snippet": "Qua bài so sánh trên, có thể thấy Galaxy S24 lấn lướt iPhone 15 ở khá nhiều khía cạnh. Máy có thiết kế đẹp hơn, màn hình sáng và mượt mà hơn, hiệu năng khỏe, ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Samsung S24 và iPhone 15: Smartphone nào ...",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/so-sanh-samsung-s24-va-iphone-15-smartphone-nao-dang-mua-hon",
+    "snippet": "Phiên bản Galaxy S24 được Samsung trang bị con chip mới của mình mang tên Exynos 2400 for Galaxy, trong khi đó, iPhone 15 hoạt động với con chip A16 Bionic.",
+    "position": 5
+   },
+   {
+    "title": "So sánh iPhone 15 và Galaxy S24: thích nhỏ gọn thì chọn máy ...",
+    "link": "https://www.youtube.com/watch?v=iSVTqjQmTI4",
+    "snippet": "Sắm iPhone, iPad, Samsung & Xiaomi MỚI chính hãng GIÁ TỐT tại #OneWay nè anh em: https://onewaymobile.vn/ ❤️ LÌ XÌ TẾT : https ...",
+    "position": 6
+   },
+   {
+    "title": "Galaxy S24 Plus vs. iPhone 15 Pro: Chênh lệch 6 triệu ...",
+    "link": "https://24hstore.vn/review-san-pham/so-sanh-galaxy-s24-plus-vs-iphone-15-pro-n8514?srsltid=AU7gw4WPkQP0z9lLktFOUxC4eWnDx0BdQoy9Cn4gU6rrostLPQfYnmW1",
+    "snippet": "Galaxy S24 Plus vs. iPhone 15 Pro có giá thành chênh lệch khoảng 6 triệu, lựa chọn nào phù hợp với bạn hơn? Cùng theo dõi những đánh giá chi ...",
+    "date": "15 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "iPhone 15 và Samsung S24 giá bán chênh lệch bao nhiêu? ; iPhone 15 128GB, 22,99 triệu, 10,08 triệu – 12,32 triệu ; iPhone 15 256GB, 25,99 triệu, 10,98 triệu – 13, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

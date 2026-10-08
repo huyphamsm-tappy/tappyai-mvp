@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:51:48.271Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Căn hộ & Khách sạn Mỹ Khê 2: Dòng tiền 180 triệu/tháng, ...",
+    "link": "https://www.tiktok.com/@nhadat_danang43/video/7665687745557220628",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4 ...",
+    "position": 1
+   },
+   {
+    "title": "Phòng thơm tho y như khách sạn 5* #xitthomphong#yomosu",
+    "link": "https://www.tiktok.com/@nhienboimom0411/video/7622935896584785159",
+    "snippet": "40Lượt chia sẻ. nhadat_danang43. Bảo Bảo Đây. CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai ...",
+    "position": 2
+   },
+   {
+    "title": "Muốn phòng nhà mình thơm tho như khách sạn 5 sao thì mua ...",
+    "link": "https://www.tiktok.com/@vyxinhne_05/video/7612506392867458312",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4,5 x 20m ...",
+    "position": 3
+   },
+   {
+    "title": "Cả nhà đều thơm,thơm như sách sạn 5* í #Ambipur #sapthom ...",
+    "link": "https://www.tiktok.com/@thu.dung1996/video/7674583018320809236",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định.",
+    "position": 4
+   },
+   {
+    "title": "1,5kg combo mắm châu đốc an Giang #duongsuadaly ...",
+    "link": "https://www.tiktok.com/@duongsua.daly/video/7659297989453696276?lang=ceb-PH",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định.",
+    "position": 5
+   },
+   {
+    "title": "Căn Biệt Thự có đơn giá rẻ nhất nằm trong Siêu Dự Án ...",
+    "link": "https://www.tiktok.com/@namchuyennhadat/video/7616645817528519944",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4,5 x 20m ...",
+    "position": 6
+   },
+   {
+    "title": "Chardon Marie Complex Hépatique",
+    "link": "https://www.tiktok.com/@tasnimlux/video/7672872978123590944",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4,5 x 20m ...",
+    "position": 7
+   },
+   {
+    "title": "Sản phẩm đa năng tiết kiệm dễ dùng, xịt thơm can 5L tiện lợi ...",
+    "link": "https://www.tiktok.com/@maimayman399/video/7627169778523819272",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4,5 x 20m ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

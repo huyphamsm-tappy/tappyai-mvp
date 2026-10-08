@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:36:31.489Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Art in Paradise 3d Museum Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/art-in-paradise-3d-museum-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Khám phá Bảo tàng 3D Art in Paradise Đà Nẵng với nhiều ảo ảnh độc đáo và điểm chụp hình siêu đẹp cho cả gia đình. Tham quan ngay! Cập nhật lần cuối 2026-08 ...",
+    "position": 1
+   },
+   {
+    "title": "Lạc vào thế giới ảo diệu tại Bảo Tàng 3D ART IN ...",
+    "link": "https://www.tiktok.com/@havivivu/video/7552038667771071761",
+    "snippet": "617 Lượt thích,22 Bình luận.Video TikTok từ Havi Vi Vu (@havivivu): \"Lạc vào thế giới ảo diệu tại Bảo Tàng 3D ART IN PARADISE Một địa ...",
+    "position": 2
+   },
+   {
+    "title": "Bảo tàng 3D Art in Paradise Đà Lạt",
+    "link": "https://www.tiktok.com/@tuyendinh_neee/photo/7658930918823857415",
+    "snippet": "Bảo tàng 3D Art in Paradise Đà Lạt. Khám phá thế giới 3D độc đáo tại Art in Paradise Đà Lạt. Địa điểm check-in không thể bỏ lỡ cho mọi du khách! #dalat ...",
+    "position": 3
+   },
+   {
+    "title": "Bảo tàng 3D Art in Paradise 📍Lô 10 Trần Nhân Tông,Thọ Quang ...",
+    "link": "https://www.tiktok.com/@ngoc_anh28022/video/7534577955721268501",
+    "snippet": "Bảo tàng 3D Art in Paradise Lô 10 Trần Nhân Tông,Thọ Quang,Sơn Trà, Đà Nẵng ⏰ 8h30 -18h hàng ngày ✓Các bạn mặc trang phục sáng màu chụp sẽ rõ hơn nha.",
+    "position": 4
+   },
+   {
+    "title": "electricglueshaker",
+    "link": "https://www.tiktok.com/tag/electricglueshaker",
+    "snippet": "Bảo tàng 3D Art in Paradise Đà Lạt. |. Lá na Somália... #meme #angolano #arabia. |. wetzel-pretzel-glaze. |. Bebé en camino: Expectativas y presión familiar.",
+    "position": 5
+   },
+   {
+    "title": "Amy Paradise - tổ hợp coffee & restaurant view biển mới ...",
+    "link": "https://www.tiktok.com/@dailangthangart/video/7461055739797179666",
+    "snippet": "Bảo Tàng 3D ART IN PARADISE Đà Nẵng, địa điểm check in Đà Nẵng, bảo tàng 3D ở Đà Nẵng, khám phá nghệ thuật 3D, kinh nghiệm ở Đà Nẵng, điểm ...",
+    "position": 6
+   },
+   {
+    "title": "baotangthegioicheckin",
+    "link": "https://www.tiktok.com/tag/Baotangthegioicheckin",
+    "snippet": "Lạc vào thế giới ảo diệu tại Bảo Tàng 3D ART IN PARADISE Một địa điểm check in không thể bỏ lỡ khi đến Đà Nẵng #havivivu #danangdidau ...",
+    "position": 7
+   },
+   {
+    "title": "Chiếu Phim3d Mapping Tại Bảo Tàng Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/chi%E1%BA%BFu-phim3d-mapping-t%E1%BA%A1i-b%E1%BA%A3o-t%C3%A0ng-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Lạc vào thế giới ảo diệu tại Bảo Tàng 3D ART IN PARADISE Một địa điểm check in không thể bỏ lỡ khi đến Đà Nẵng #havivivu ...",
+    "date": "28 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

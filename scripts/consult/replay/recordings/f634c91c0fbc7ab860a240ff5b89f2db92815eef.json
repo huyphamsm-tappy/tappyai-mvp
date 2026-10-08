@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:04.315Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_169_2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK6fK5Whg_QMwJnjW1cj0DmGSpz9fWknfv-9gFILbkug&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fg%2Fr%2Fgroup_169_2.png&tbnid=cNTxJ8E_JrlndM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods2-s-1.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_m64SSISj0nhT7VLcCYU3Ro36K19VNnxHrixxY0IOQg&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods2-s-1.png&tbnid=Hh9kfmGgX2JFoM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=678&h=358",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods2-s-6.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJJDTVmfzdWOiXGvaerh1V9vnpkOUbDz8dDcnpGxrAug&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods2-s-6.png&tbnid=xxne3fz4m15_YM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=678&h=358",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods2-s-5_1.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa6GXvs3hSwyYJwOdWEh1t0CeNBrT53Fy9tyZDpU4MZg&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods2-s-5_1.png&tbnid=IxXaaEAO2X1hDM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=678&h=358",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://img.youtube.com/vi/FQX5YU0il7s/maxresdefault.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3PiiqTtZs8q6PFi-2T07qOfizmXEooz-qJLpvu9aNzQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.youtube.com%2Fvi%2FFQX5YU0il7s%2Fmaxresdefault.jpg&tbnid=PH1MQrNBgMtCtM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=1280&h=720",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/i/airpods2-s-2.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3eLyEJdxu04R56cfzXylA2HfCyuEQqrZhtXhJEIQlQQ&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fi%2Fairpods2-s-2.png&tbnid=kVf4ewrrtJzWWM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=678&h=358",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple-airpods-2-ksp-1.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgqOHU3iJP3pJBSqqV_5yZWTZklWgTiMaYeXheePdtIA&s",
+    "thumbnailWidth": 308,
+    "thumbnailHeight": 163,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fa%2Fp%2Fapple-airpods-2-ksp-1.png&tbnid=FzgjcN7dUnq57M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=678&h=358",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/maxresdefault_1_2.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY0-WREVUFhsObi4jhqbO9uC3RWXeaNF5V7ahMvOvfOA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmaxresdefault_1_2.jpg&tbnid=gTRNLVi05hZzuM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-airpods-2.html&docid=9vJ7T7M4iKa3IM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

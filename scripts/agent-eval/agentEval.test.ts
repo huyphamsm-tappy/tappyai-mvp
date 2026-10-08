@@ -103,6 +103,13 @@ const PAGE_DIR = process.env.AGENT_EVAL_PAGE_DIR || join(tmpdir(), 'tappy-agent-
 const FIXTURES: Record<string, string> = {
   'https://www.chotot.com/tappy-eval-fixture/macbook-air-m1.htm': 'listing.html',
   'https://kiemdinh.tappy-eval.test/bao-cao/mba-m1': 'report.html',
+  // WS2 fixtures: deterministic pages (no network) for price conflicts, variants, staleness, a malicious page, a government page.
+  'https://shop-a.tappy-eval.test/macbook-pro-m4-16gb': 'shop-a-mbp.html',
+  'https://shop-b.tappy-eval.test/macbook-pro-m4-16gb': 'shop-b-mbp.html',
+  'https://shop-a.tappy-eval.test/macbook-pro-m4': 'shop-a-variants.html',
+  'https://blog.tappy-eval.test/gia-macbook-pro-m4-2023': 'stale-price.html',
+  'https://deal.tappy-eval.test/airpods-pro-2-gia-soc': 'malicious.html',
+  'https://hoianheritage.danang.gov.vn/tappy-eval/ve-tham-quan': 'gov-canonical.html',
 }
 async function installPageReplay(): Promise<void> {
   const mod = await import('@/lib/security/safePageFetch').catch(() => null) as null | { __setPageFetchOverride: (fn: unknown) => void; fetchPublicPageReal: (u: string, o: unknown) => Promise<Record<string, unknown>> }
@@ -210,7 +217,9 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
       const rt = runTraces[0]
       const research = researchFromTrace(rt as never)
       const ranking = rankingFromTrace(rt as never)
-      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0, research, ranking }
+      // WS2: every URL this turn legitimately had — tool args and results, card annotations, the user's own message.
+      const urlsSeen = [...JSON.stringify([p.tools.map(x => ({ a: x.args, r: x.result })), p.annotations, t.text]).matchAll(/https?:\/\/[^\s"'<>\\)\]]+/g)].map(m => m[0])
+      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0, research, ranking, urlsSeen, runtimeTurn: runTraces.length > 0 }
       const checks = evaluateTurn(t.expect, obs)
       const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0, taskId: rt?.task_id ?? null, taskConstraints: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.constraints ?? null, taskPersisted: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.persisted ?? null, evidenceRefs: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.evidence_refs ?? null, research } : null
       rows.push({

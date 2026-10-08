@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://shop-a.tappy-eval.test/macbook-pro-m4-16gb MacBook Pro M4 16GB 512GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:15:00.737Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://shop-a.tappy-eval.test/macbook-pro-m4-16gb MacBook Pro M4 16GB 512GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buy MacBook Pro",
+    "link": "https://www.apple.com/shop/buy-mac/macbook-pro",
+    "snippet": "Shop MacBook Pro. Buy from $1999 or $166.58/mo. per month for 12 mo.months Footnote ※ Lease from From $38.99/mo.per month for 36 mo.months with Apple Upgrade ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro M4 - Review After 3 Months: This Feels Wrong.",
+    "link": "https://www.youtube.com/watch?v=a8Szdrnq0YM",
+    "snippet": "... 16GB RAM enough in 2025? 8:21 M4 Pro is SO overpowered! 9:12 Fan noise differences 9:59 Battery Life surprised me 10:25 Webcam, mics ...",
+    "position": 2
+   },
+   {
+    "title": "Apple 2024 MacBook Pro with Apple M4 Chip (14-inch ...",
+    "link": "https://www.amazon.com/Apple-MacBook-14-inch-Storage-English/dp/B0DMKHTPLN",
+    "snippet": "Brand. Apple · Model Name. MacBook Pro · Screen Size. 14 inches · Color. Space Black · Hard Disk Size. 512 GB · CPU Model. Apple M4.",
+    "position": 3
+   },
+   {
+    "title": "Don't make a mistake! Watch this before you buy an M4 ...",
+    "link": "https://www.youtube.com/watch?v=0U5TPXBKUaY",
+    "snippet": "Before you buy the M4 MacBook Pro watch this and save money - the M1 Max Macs are STILL great! ➡️ Watch more Mac videos here: ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro M4 16GB 512GB",
+    "link": "https://www.ebay.com/shop/macbook-pro-m4-16gb-512gb?_nkw=macbook+pro+m4+16gb+512gb",
+    "snippet": "Explore a wide range of our MacBook Pro M4 16GB 512GB selection. Find top brands, exclusive offers, and unbeatable prices on eBay. Shop now for fast ...",
+    "position": 5
+   },
+   {
+    "title": "Đánh giá hiệu năng MacBook Pro M4 cho công việc mỗi ...",
+    "link": "https://1pro.vn/bai-viet/danh-gia-hieu-nang-macbook-pro-m4/?srsltid=AU7gw4Ue3mGVSTxMlshvk0sxs5cfkA3-arRqBFNLoEi0AFYwenQ3g-XS",
+    "snippet": "MacBook Pro 2021 14 inch M1 Pro 8CPU 14GPU 16GB RAM 512GB SSD – Like New. 26.890.000₫ · MacBook Pro 2020 13 inch M1 16GB RAM 256GB SSD – Like ...",
+    "date": "24 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "Đánh Giá MacBook Pro 14 inch M4 RAM 16GB SSD 512GB",
+    "link": "https://www.tiktok.com/@ttcenter.com.vn/video/7595937695931698439",
+    "snippet": "MACBOOK PRO 14inch M4. Ram 16GB | SSD 512GB (Openbox) đẹp như mới #macbook #apple #macbookpro #prom4 #ttcenter. Đánh Giá MacBook Pro 14 inch M4 ...",
+    "position": 7
+   },
+   {
+    "title": "Review MacBook Pro 14\" M4 Pro",
+    "link": "https://www.youtube.com/watch?v=nX_3eVhjN-w",
+    "snippet": "Chia sẻ về trải nghiệm của mình với MacBook Pro M4 Pro bản 14\" (bản 16\" cũng sẽ tương tự thế này nhé). Đa số anh em cần hiệu năng cao thì đi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

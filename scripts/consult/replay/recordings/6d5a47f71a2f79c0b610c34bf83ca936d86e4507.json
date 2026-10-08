@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Mỹ Khê, Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:42:43.374Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Mỹ Khê, Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0589753,108.2434895,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Mỹ Khê Beach Hotel",
+    "address": "254 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.060612799999998,
+    "longitude": 108.2459173,
+    "rating": 3.8,
+    "ratingCount": 469,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Sân pickleball"
+    ],
+    "website": "http://www.mykhebeachhotel.com/",
+    "phoneNumber": "+84 905 567 894",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMxym4XkG1IeNVjlb2kN9z1GEKteUwE90s1du-zD7deNSoYBftw3XkXGUcPIcF0zcm5AUngWndSeISmr8YJtqypXzSrCinmx4c5i6UCk7TKhTSyXSMgPXz9gWTT1D2df7j1KoLL",
+    "cid": "3772200002263076145",
+    "fid": "0x3142177883fcc497:0x34598bea849e4d31",
+    "placeId": "ChIJl8T8g3gXQjERMU2ehOqLWTQ"
+   },
+   {
+    "position": 2,
+    "title": "KHÁCH SẠN MỸ KHÊ 2",
+    "address": "260 Võ Nguyên Giáp, P, An Hải, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.0573378,
+    "longitude": 108.2462115,
+    "rating": 3.6,
+    "ratingCount": 185,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://mykhe2hoteldana.com/",
+    "phoneNumber": "+84 932 417 277",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPdoioY2xPTSIdzUFt-SZGF9oGtJazzs5UHK8YhZXJqSzCHNz_otDr6vmpgecvBSZjBbxXLoHuiEJDRzdUfgtHbZ41H9NCjz3JBsF7M9dhcdgjKF2ipdA74Wk_1j-w0BBnne6JLD7hptN_r",
+    "cid": "3701251880861622430",
+    "fid": "0x314217f1ee5fe20b:0x335d7cf9bf00e09e",
+    "placeId": "ChIJC-Jf7vEXQjERnuAAv_l8XTM"
+   }
+  ],
+  "credits": 3
+ }
+}

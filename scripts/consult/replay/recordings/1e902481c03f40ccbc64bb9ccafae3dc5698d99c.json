@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp Tai Baseus Inspire XH1 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:32:13.603Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp Tai Baseus Inspire XH1 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Chụp Tai Baseus Inspire XH1 Chính Hãng ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Baseus-Inspire-XH1-Ch%C3%ADnh-H%C3%A3ng-Sound-By-Bose-Ch%E1%BB%91ng-%E1%BB%92n-ANC-Pin-100H-Bluetooth-6.1-i.1583106641.51862834823",
+    "snippet": "Mua Tai Nghe Chụp Tai Baseus Inspire XH1 Chính Hãng Sound By Bose Chống Ồn ANC Pin 100H Bluetooth 6.1 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Baseus Inspire XH1 ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-ch%E1%BB%A5p-tai-Baseus-Inspire-XH1-Bluetooth-6.1-Hi-res-Dolby-Audio-C%C3%B4ng-ngh%E1%BB%87-ANC-ENC-Driver-35mm-i.928285061.55101654201",
+    "snippet": "Mua Tai nghe Bluetooth chụp tai Baseus Inspire XH1 Bluetooth 6.1 | Hi-res - Dolby Audio | Công nghệ ANC - ENC | Driver 35mm giá tốt.",
+    "position": 2
+   },
+   {
+    "title": "Thích hợp cho Tai nghe Baseus Inspire XH1 Vỏ bảo vệ ...",
+    "link": "https://shopee.vn/Th%C3%ADch-h%E1%BB%A3p-cho-Tai-nghe-Baseus-Inspire-XH1-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-Tai-nghe-Bluetooth-%C3%82m-thanh-c%E1%BB%A7a-Tai-nghe-Bose-Tai-nghe-ngang-V%E1%BB%8F-ch%C3%B9m-tia-ngang-V%E1%BB%8F-ch%C3%B9m-tia-ngang-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-ch%C3%B9m-tia-Tai-nghe-V%E1%BB%8F-m%E1%BB%81m-silicon-i.1234448660.50564368427",
+    "snippet": "Thích hợp cho Tai nghe Baseus Inspire XH1 Vỏ bảo vệ Tai nghe Bluetooth Âm thanh của Tai nghe Bose Tai nghe ngang Vỏ chùm tia ngang Vỏ chùm tia ngang Vỏ bảo ...",
+    "position": 3
+   },
+   {
+    "title": "h1i giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=h1i",
+    "snippet": "Tai Nghe chụp tai Không Dây chống ồn Baseus Bowie H1i, âm thanh 3D, cảm biến chạm, bluetooth 5.3, bảo hành 12 tháng. 856.000 ...",
+    "position": 4
+   },
+   {
+    "title": "Anker q20i - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/anker/q20i",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm anker q20i chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 5
+   },
+   {
+    "title": "Sennheiser giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?facet=11109141&keyword=Sennheiser&noCorrection=true&page=0",
+    "snippet": "Tai Nghe Baseus Inspire XH1 Sound by Bose, Pin 100H, Chống ồn ANC,. custom ... Tai nghe chụp tai W35 Max, Tai nghe bluetooth V5.3 pin 90H chính. custom ...",
+    "position": 6
+   },
+   {
+    "title": "havit i62 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=havit%20i62",
+    "snippet": "Tai nghe Bluetooth Headphone Havit H662BT Pin 20 tiếng | Kiểu Dáng Basic | BT 5.3 · Tai nghe Bluetooth Lenovo TH10 Chống ồn Chống nước Có Mic cho Android iOS và ...",
+    "position": 7
+   },
+   {
+    "title": "Fiio m23 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/fiio/m23",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm fiio m23 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các cửa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

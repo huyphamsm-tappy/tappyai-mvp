@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Novotel Đà Nẵng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:14:52.443Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Novotel Đà Nẵng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải nghiệm Premier Executive Lounge tầng 29 Novotel Đà ...",
+    "link": "https://www.tiktok.com/@iamintodanangcity/video/7664923093298629908",
+    "snippet": "Trải nghiệm lưu trú tại Premier Executive Lounge tầng 29 của khách sạn Novotel Đà Nẵng ... khách sạn Novotel Đà Nẵng review, Novotel Đà Nẵng tiện ...",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Novotel Đà Nẵng: Ngắm pháo hoa ấn tượng",
+    "link": "https://www.tiktok.com/@zavatravel/video/7372806598282071304",
+    "snippet": "Khám phá khách sạn Novotel Đà Nẵng với view pháo hoa tuyệt đẹp. Đặt chỗ. @Zava Travel.",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn ngắm pháo hoa Đà Nẵng 2026",
+    "link": "https://www.tiktok.com/@thuongodanang/video/7652576226648853780",
+    "snippet": "Khách sạn Novotel Đà Nẵng: Ngắm pháo hoa ấn tượng. Khám phá khách sạn Novotel Đà Nẵng với view pháo hoa tuyệt đẹp. Đặt chỗ ngay hôm nay để ...",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn Novotel Đà Nẵng Gần Pháo Hoa 2026",
+    "link": "https://www.tiktok.com/@phanhoabooker/photo/7625486161946873096",
+    "snippet": "Khách Sạn Novotel Đà Nẵng Gần Pháo Hoa 2026. Khám phá khách sạn Novotel nổi tiếng với view đẹp, thích hợp ngắm pháo hoa ở Đà Nẵng. Đặt phòng ngay hôm nay ...",
+    "position": 4
+   },
+   {
+    "title": "novoteldanang",
+    "link": "https://www.tiktok.com/tag/NovotelDanang",
+    "snippet": "Bữa sáng Buffet tại khách sạn Novotel Đà Nẵng ☆Kỉ Niệm 2025☆ # · Đi ăn buffet cuối cùng chọn món “ngoài cổng cũng có” Chọn · Năm nay có hẹn ở Đà Nẵng ...",
+    "position": 5
+   },
+   {
+    "title": "Lai Rai Tiệm Bếp Nhà Kem Đà Nẵng",
+    "link": "https://www.tiktok.com/@iamintodanangcity/video/7686131950129843476",
+    "snippet": "... khách sạn Novotel Đà Nẵng #novoteldanangpremierhanriver #novotelpremierelounge #f29 #novoteldanang #hoteldanang. Trải nghiệm Premier ...",
+    "position": 6
+   },
+   {
+    "title": "Đà Nẵng nhìn từ tầng 28 khách sạn Novotel",
+    "link": "https://www.tiktok.com/@phong_tour/video/7622628317128248596",
+    "snippet": "Keywords: Đà Nẵng nhìn từ tầng 28, cảnh Đà Nẵng từ Novotel, toàn cảnh sông Hàn và cầu Rồng, view biển Đà Nẵng từ cao, khách sạn Novotel Đà Nẵng view, du ...",
+    "position": 7
+   },
+   {
+    "title": "Hôm nay Huyn đi đâu thế ? #novotel #spa #hotel #traveltiktok ...",
+    "link": "https://www.tiktok.com/@dihuyn99/video/7127454100014238978",
+    "snippet": "Trải nghiệm ở Novotel Đà Nẵng: Có đáng giá 3-5 triệu? Khách sạn Novotel Đà Nẵng có view sông Hàn đẹp, dịch vụ ổn định, và phòng ốc rộng rãi. Thích hợp cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

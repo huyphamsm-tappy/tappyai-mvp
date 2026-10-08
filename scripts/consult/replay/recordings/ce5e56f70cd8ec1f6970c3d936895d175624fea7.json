@@ -1,0 +1,377 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:13:59.935Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "MacBook Pro 14 M4 Pro 2024 12CPU/16GPU/24GB/512GB",
+    "source": "Fptshop.com.vn",
+    "price": "49.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRFbyH8Rc6-E2IN0Bv9zBt_iw6LgMgJ3hlB9fIRFZYAMLb6u2bEyYkts1kfjyh3HEz6XprK_qg_3X5TEH7aAopkVy1qeGUF0n1mVKevAQRoQZOiedX37d-5",
+    "productId": "17440267309549764734",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14inch M4 2024 Chính hãng Apple | Giá tốt tại XTmobile",
+    "source": "XTmobile",
+    "price": "37.299.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR5zwLagmHsYckSmGcK6SI5YoNaPupgFS4a0PNmnp7qsIFsUOzuldg-2HdbjuoP8HhKIkoCWCQtBGn9WGFKWpB5W4MXmQdv",
+    "productId": "2968695129748796306",
+    "position": 2
+   },
+   {
+    "title": "Macbook Pro 14 inch Apple M4 16GB 1TB",
+    "source": "Mac24h",
+    "price": "40.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRQ_1xUGF0trQvFmgk8YnpYKctYD1H2dp-nRnT1XEpd5Okg6O9M5q-J_15J0Pgz_75GxynZsIeuxaIoANP01pYA3sAZnggRKXsg9E-4WItc",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "10374188908976559813",
+    "position": 3
+   },
+   {
+    "title": "Macbook Pro M4 14 inch 2024",
+    "source": "macvn.com.vn",
+    "price": "35.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRK0VFjfJkAago6nnZR5u1lxhMnwX-SchmT_XJ4vnPOmOSdxig7byHoZpuIQ4S_HZ2sZvpqmpIPgfF8MuEbV7l4nCXnswQm36nN5Nx74LSVlOYqPphm_za8",
+    "rating": 3.5,
+    "ratingCount": 2,
+    "productId": "16521781278424294105",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro M4 2024 14 inch 10CPU 10GPU 16GB 512GB – Chính hãng Apple Việt Nam",
+    "source": "TheTekCoffee",
+    "price": "39.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTKBzES1LeyyNUSqSZ9QBOB52foKTT-E56F19JfOjYGZyrLZSugXqJJjyVBsDfamng50aeG6S0twQUryR-gWyuuL_B8FjQdb-rurYltMNQ",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "18062129744349495008",
+    "position": 5
+   },
+   {
+    "title": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB RAM 512GB Chính hãng Apple Việt Nam - Surfacecity.vn",
+    "source": "surfacecity.vn",
+    "price": "37.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQoxfbtIqbcx3hKZ-kpi8nze3GdROufy3lxcUUE64lwAQ0IYpZydj17KKXxO1Dex5B9re09W4CwSXiRxfQEDYU9a6IBlSKq2A",
+    "productId": "5109075184345283472",
+    "position": 6
+   },
+   {
+    "title": "Macbook Pro 14 inch M4 10 CPU / 10 GPU / 16Gb RAM / 512Gb - Likenew - Black",
+    "source": "Macshop24h.vn",
+    "price": "38.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQJf1zwjWgdVifsprPpeG7lZm4eDs-okHNjqk4SLZhiC208O8_i6KISQ1WgpxZbQi43ujPjD1vM2JHNWN5l6xd76W5sV-LekVjnmnEyOF4uCeDeE9KD0J7SaA",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "productId": "317338491880090719",
+    "position": 7
+   },
+   {
+    "title": "Macbook Pro Chip M4 14 inch",
+    "source": "Táo Đen Shop",
+    "price": "36.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSNS3clGk0a2tX-1dq-6ur6GI7_MY2AZuJuqG6diL0oNBzcdmaRglCiZSyp8GAaEMaKMb9N3xAU1ytCepPpEx1MwFB2kpLY3inEudRGeROAMrZE6A-Kda5Ewg",
+    "productId": "5290504254776625082",
+    "position": 8
+   },
+   {
+    "title": "MacBook Pro 14 inch 2024 M4 (10CPU,10GPU) 16GB/512GB",
+    "source": "Tín Phát-Apple",
+    "price": "36.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS8THYbvdlrCcv-s60F8saVmBL8jGR42jSHE7VF1jGhqtVIk5-331uft259hkYz1n541YT5ov1N140Ou6P80ixjgFqYA8vKekmyeLPsnY_SB6glFLeRQO5oCg",
+    "rating": 4.6,
+    "ratingCount": 18,
+    "productId": "15254242461066578482",
+    "position": 9
+   },
+   {
+    "title": "Macbook Pro 14in M4, 16G, 512G, 99%. - Apple M4, RAM 16GB, SSD 512G.",
+    "source": "Triều Phát - Laptop xách tay giá tốt",
+    "price": "30.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOWfDDlDS3jP4oDaqIkK5PQ0aCA5aTCxEj0KBNbFTBX6rNK6gh49t3EDb_9Hvj2vsZKaHUDf4FpuuW5OhTZ4hL4gHtWLfTWuGc4Z2M2c1n",
+    "productId": "10841502358738298283",
+    "position": 10
+   },
+   {
+    "title": "MacBook Pro 14\" M4 10CPU 10GPU 16GB 512GB",
+    "source": "VuaTao",
+    "price": "38.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRn5bdtdEyNDwe_JS5L0qGFWw3fKMMY0ZvH27cGsZ7eHqF14L6ff_fOMFOD4YfG_mR0S6Ir21BBpxwjkU7pZkKg-1nD_KBsLMFRB1xizjxck79QKN9cidnNjQ",
+    "rating": 4.9,
+    "ratingCount": 8,
+    "productId": "11100729152940325292",
+    "position": 11
+   },
+   {
+    "title": "Macbook Pro 14 M4 16/512 giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "40.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTpt2GQlE1ZbaZ0EEOplWFEozTIX5FKr4YeFuFImY0BhxDdW2yZmQ1Ct71iGLEaanB1UOtn2BkKwIlHS9ahrevtT_u47aN99gk0Bv8uEYb3L93Xssjl3wuV",
+    "productId": "13801237175942547684",
+    "position": 12
+   },
+   {
+    "title": "MacBook Pro 14inch M4 Pro (12CPU-16GPU) chính hãng (VN/A)",
+    "source": "XTmobile",
+    "price": "48.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQEBBDJhMdqwrfjUQfWAfh-vTCPQu2HP_Ee-C1IAtzP5PCFNH3IL7sMeOEwZG-A0MCQPfGlc02H2weYZ_yihJAkikrrc85de41Xvu1h8Fy3M9SVZPrndyDP",
+    "productId": "17694922732561193162",
+    "position": 13
+   },
+   {
+    "title": "Macbook Pro 14 M4 - Apple M4 10-Core CPU, 10-Core GPU, 16GB RAM, 512GB SSD – Like New, Silver",
+    "source": "lapvip.com.vn",
+    "price": "36.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTCJJ7FS40ftPe3pa8464gAhF1DPgeCjPUOf6NfFxihzQTL0Re2fBCqrIcvmv0xJRkgkVYiWqJu3U5MdAEvbVPcfk7SzSriJkRSpzD2fnlwX9cMyMxD8x2W1Q",
+    "productId": "3581390578521249687",
+    "position": 14
+   },
+   {
+    "title": "MacBook Air M4 2025 13 inch 10CPU 8GPU (16GB - 256GB) - Chính hãng Apple Việt Nam",
+    "source": "Viettablet",
+    "price": "24.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSGo4XNVkjCxx6IXLcBIxLvWoXfJNP82wXHs4PeMLSa0Fg_4fgS5t_kaljlPTi0dSfl52t3idcYV34NPvSZTG5r8XM49EWHVZVHXGafUDSHS2_wojrB23Vu",
+    "productId": "8631883941741607022",
+    "position": 15
+   },
+   {
+    "title": "MACBOOK PRO 14 INCH M4 - 16GB/512GB SPACE BLACK 99%",
+    "source": "Bạch Long Store",
+    "price": "33.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS8U6NHTBWrs25OMi_NvpJje8B73_odOsdZbIARhhaRQFAFb9QcUvCAjkkzvNPF2R5FMAqg_HDUX0hTtLlu7KHUBWVf34mInbyeK0wZt4kN",
+    "productId": "17396684414689586391",
+    "position": 16
+   },
+   {
+    "title": "Apple MacBook Pro 14 inch M4 2025 10CPU/10GPU 16GB 512GB - Hàng cũ - Space Black (Đen không gian)",
+    "source": "NewTechShop.vn",
+    "price": "37.850.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT_0Y6zmWIL3kJ0Dn9d8tkRRWQq_IXksErf1FP8h4HBJ1TFMw9v8mpLejHzGEBXqeJByU8uUwGcq1rsLtGh7XSAMkYhe8rOEuDWuFH_DIJ8fa_Kt8VNYbzd",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "9585018050148608536",
+    "position": 17
+   },
+   {
+    "title": "Macbook Pro 14 M4 2024 (10 - CPU, 10 - GPU) 16GB 512GB",
+    "source": "Lapvip",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS35UYGT6i_do7NxUhCLL-6tV1vUkGzBclLKy0JHB-AfmUxFCyJV0DGE5LNthwKmSbgok3pwwkwwMenProi6apvs3iYVPO8gtOnLWLDSIwtr7AxzH-aHGRsgQ",
+    "productId": "10440978182260730869",
+    "position": 18
+   },
+   {
+    "title": "Apple MacBook Pro 14 inch",
+    "source": "QMac Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Pro+M4+16GB+RAM+gi%C3%A1+Vi%E1%BB%87t+Nam+TP.HCM&prds=localAnnotatedOfferId:1,catalogid:12853395389262271468,gpcid:15290777359043903055,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "47.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSQdFN1Shy7iHIbbGga3Y09HdmHe7_Nm_h4swc9Pvly_R93mD15e_EZWTfP9aZPImBQxZNKPVWokW1hw6udJlO55rCKrVOvszMKyyBcTlIs0vJ3YP2_uMW8Zg",
+    "rating": 3.7,
+    "ratingCount": 6,
+    "productId": "12853395389262271468",
+    "position": 19
+   },
+   {
+    "title": "MacBook Pro M4 16inch - 2024 - Like new",
+    "source": "Mac24h",
+    "price": "54.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQlu6n0JZzNeyZ1a872QChgVtGEqc_eSiKxFbAkcLkf8MiaOrHji2lEeXYpnnPHdfKXfllmoP3_UDNYdSh9QcuXmPH_sTEvsiZc5F7mz8OQ89OfRJkSc60I",
+    "rating": 4.8,
+    "ratingCount": 660,
+    "productId": "4796615699037517389",
+    "position": 20
+   },
+   {
+    "title": "MacBook Pro M4 2024 14 inch 10CPU 10GPU 16GB 1TB – Chính hãng Apple Việt Nam",
+    "source": "TheTekCoffee",
+    "price": "43.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRFUqUiN7gJqlOpKgWmenEyaYelxxBneU03oEOwhwJxL1N8wGDdecmbSfZuIyauOB-e9AIMDAYbSS2_JMPG7Yk_arWzpmuuS0aNkOUR5fQ",
+    "productId": "12580076422023244590",
+    "position": 21
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 2024 10 CPU/16GB/512GB/10 GPU Nobox/Active Online",
+    "source": "Bạch Long Store",
+    "price": "38.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRH_hUt1WSMiMp9u1CB4d5VHrUP8gdFYE3JxO4ou6fRQlHHcTsaefqHlooejfMdoi4jseDOa5uwqPkmjYkl4aDeHx0RnmPIl0gliB1NWnY",
+    "productId": "8163651562340486957",
+    "position": 22
+   },
+   {
+    "title": "[New] Macbook Pro 14 M4 Openbox 16/512 giá rẻ",
+    "source": "xoanstore.vn",
+    "price": "37.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRq2WYcHI12kExoSNiE4YQ_HYYVP-fC7cZit7jr751FDGJLbZbnf26zJIOnq-Xj04wJpWVqSj9lphAoAmMtVPYhEnuHv-XMOssJWJlRViJPb9E0sWlimQ2zSQ",
+    "productId": "1403370959693377772",
+    "position": 23
+   },
+   {
+    "title": "MacBook Pro M4 14 inch 2024 – (Chip M4/ RAM 16GB/ SSD 512GB/10 core CPU/ 10 core GPU)",
+    "source": "Macstore",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTTMYwjyWeMejb5zlBo8MbW2tGjEEf1edCuz6wbw0dbO7iWhlMCvbL3EMMW1Sx_tzV2y0adbB1FFbXRh3ub9Af8RFik5KJK",
+    "productId": "15978959557706463256",
+    "position": 24
+   },
+   {
+    "title": "MacBook Pro M4 14 inch 10GPU 10CPU 16GB/512GB - Chính hãng VN - MW2U3SA/A",
+    "source": "novazone.vn",
+    "price": "38.560.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTiApTku6uQ5lNPFAfJb7wnrPG41ZTCMuSwuLh4OBJKk8nnuF6gwVsdG6OS6PY0ju8dEOvJQAcY-98sSjkwvLWAOdWY_eWjQCPzfc6cVU5sqqx_euQKgiZg",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "13053590997547434293",
+    "position": 25
+   },
+   {
+    "title": "MacBook Pro 14 inch 2024 M4 (10C CPU / 10C GPU) 16GB 512GB - Space Black - 99P",
+    "source": "QMac Store",
+    "price": "37.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSQdFN1Shy7iHIbbGga3Y09HdmHe7_Nm_h4swc9Pvly_R93mD15e_EZWTfP9aZPImBQxZNKPVWokW1hw6udJlO55rCKrVOvszMKyyBcTlIs0vJ3YP2_uMW8Zg",
+    "productId": "10529757898492182655",
+    "position": 26
+   },
+   {
+    "title": "[Like new] Macbook Pro 14 M4 2024 (10 - CPU, 10 - GPU) RAM 16GB SSD 512GB 14-inch Liquid Retina XDR",
+    "source": "LaptopK1",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRFITsIgXDzMTtuVe_uVC7DKBI1LA7gBTedxxXfVzCi5pC3XahnkmnFr1pWMjxIT5GMYfBCyx-I12hM6rGgq2I1Nj4jfUfFAdQ3S_5ykAzLwqgWVis6-GVB",
+    "productId": "5680677606990406744",
+    "position": 27
+   },
+   {
+    "title": "Macbook Pro 14 inch M4 10 CPU / 10 GPU / 16Gb RAM / 1TB - Likenew - Silver",
+    "source": "Macshop24h.vn",
+    "price": "41.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSW2d0icbt4MdpKYazEcr4CF3pZdqQEBUkHwde2OPLEnWu9SDp3MtkQpgcwfcY9H27mi8veEQI7Ve7NQBFbD_JlTlblzZjFZIsB3a2-cQlMxL36b9-cAJ3F",
+    "productId": "13468754859082892550",
+    "position": 28
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 (10CPU | 10GPU | 16GB | 512GB | SPACE BLACK) MW2U3SA/A - Chính Hãng Apple Việt Nam - Nakio Computer Phân Phối Chính Hãng Giá Rẻ",
+    "source": "Nakio Computer",
+    "price": "38.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQBqHDz_hDJfPdjQBQX7P7b2PA7v5jB_3Vra8a4aCYIRPYmjvH1DXEiaXN9daNac7DKpJP2VRrw2jtADpzk5CquwHLMk_UP0P-TMVZ0RbEs17Z7Uo3I9djBjA",
+    "rating": 4.6,
+    "ratingCount": 24,
+    "productId": "17065760255516290003",
+    "position": 29
+   },
+   {
+    "title": "Máy Tính Xách Tay Apple Apple 2024 Macbook Pro Laptop Với M4 Pro",
+    "source": "TIC",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Pro+M4+16GB+RAM+gi%C3%A1+Vi%E1%BB%87t+Nam+TP.HCM&prds=localAnnotatedOfferId:1,catalogid:15019085402596980613,gpcid:17929916486801346060,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "47.543.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhUuXnMKPMIooUcA6Qf7nq1u6ahszUVc0174rJkIZmGeqyYXwQ6JbHQ99hmoWERElEo2wQYcnrDryUmSzNguGIubRXTHG1a_-0XJ2VSOBpPn8eFbQ-prItUg",
+    "productId": "15019085402596980613",
+    "position": 30
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 10CPU/10GPU/16GB/512GB Like New -Space Black",
+    "source": "pgluxury.com",
+    "price": "37.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSMb_QegOJPLVE71y5y9yrUIHDmI8v7AA2GLMSDq1lEaCmruVe69ldt1gH_zzxLjufP93EYfwf4iZwWCb8ZtC5jlmKpofoFD5W3LJq3oM9uFFh6dFLvXmOSFg",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "productId": "4654450764948773645",
+    "position": 31
+   },
+   {
+    "title": "TGMT - Laptop Apple MacBook Pro 14 M4 10CPU 10GPU 16GB - 512GB -Mới / Đen",
+    "source": "thegioimaytinh.net.vn",
+    "price": "39.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRhrLQZZGYKCaWlSMjcHvZWQmfqFgV5YEQsMmyKrfxKOSzdXPelb3WO1uQ-hBMT_tt45wVCZfexi6JoquI4z0dONicHmehGXsAQ5YH-iXg6FvuH-bR0GkpQ",
+    "rating": 4.7,
+    "ratingCount": 7,
+    "productId": "1142565598027233058",
+    "position": 32
+   },
+   {
+    "title": "Máy Tính Xách Tay Apple Apple Macbook Pro 16\" M4 Pro 24Gb Ram 512Gb Ssd Space Đen MX2X3LL/A 2025 Mới!",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=MacBook+Pro+M4+16GB+RAM+gi%C3%A1+Vi%E1%BB%87t+Nam+TP.HCM&prds=localAnnotatedOfferId:1,catalogid:10185965861930766405,gpcid:1312528571171073059,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "64.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRL35gjxujGawxLi9fBtDkXsHpAGJdzxVMOm1cgN-3G24Zs9On3SV02CNJv4a3eAEgol09XjOJwAo6cCm-WqOjtaVyqU5JwSLN6J672hSxCcjHDpmUxYhwEPg",
+    "productId": "10185965861930766405",
+    "position": 33
+   },
+   {
+    "title": "MacBook Pro M4 - (14 inch/16GB/512GB) | Giá Chỉ Từ 26 Triệu",
+    "source": "Laptop 15 - Laptop Cũ Hải Phòng",
+    "price": "22.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSJDfEFm_0YkOcwufkWyLOWCJ5WMkvRvUyi_0kHxDq_kj6wK35r2HLNHOnUSVgook3T5VXlp6kFzw4MVf7IPzLM8RUGQuUc613BXg4W0vU",
+    "productId": "8794759199110376634",
+    "position": 34
+   },
+   {
+    "title": "MacBook Air M4 13inch (16GB|256GB) chính hãng VN/A giá tốt tại XTmobile",
+    "source": "XTmobile",
+    "price": "24.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR4wLvBb-3obJ_VWXuOB-fVaP9TzH2AdpSSRGo-2e2cKflJ2r1COS_of1eUoq9sji9H-XD9sx0Bpi1JVGgvN0g9ODSww3w",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "6630799895660437559",
+    "position": 35
+   },
+   {
+    "title": "Apple MacBook Pro 14 inch M4 2025 10CPU/10GPU 16GB 1TB - Hàng cũ - Silver (Bạc)",
+    "source": "NewTechShop.vn",
+    "price": "40.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQFgoDPrbmACnEz59hpwrJdbyD2FXMYUeaAQgoB5A2qSpKl4w4EqyRvcQxSTQs8kvjrAP8xhlfNOUwCLg7xm85bmT1zoKGl2TmkPBQRtWLC5qE--sdw55Z0",
+    "productId": "5249113526878592595",
+    "position": 36
+   },
+   {
+    "title": "Macbook Air M4 16GB 256GB",
+    "source": "Mac24h",
+    "price": "28.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQu52fZ_24TT8lJ2JcsaOdo4AkYYG-RUBZoqz7vLGYNkB3uWvmtsNMEL-BHUiuHMgdQB2LGBxiT8xDmMu80SfvmoU4cpQQBJ8cugrYROpeYPZxfjbBtnuAzGA",
+    "productId": "16342045103708030939",
+    "position": 37
+   },
+   {
+    "title": "MacBook Pro 14'' M4",
+    "source": "apple8",
+    "price": "36.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRb5aaOw0sXfY1CPFbAcDj9y-8zz-a-HbvD0-bj23fhx5Dly8muxcxziqL4AHn56zZZ4mgEbkY0QqMlIoqMh3AQn0za9mku2gEIKBe1i-ZOPzeClveXRYI8kg",
+    "productId": "16484190946781354353",
+    "position": 38
+   },
+   {
+    "title": "Macbook Pro 14\" Chip M4 | M4 Pro | M4 Max | Chính hãng Apple Việt Nam - TaduyCo",
+    "source": "Công ty TNHH Thương Mại - Dịch Vụ Tá Duy",
+    "price": "38.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRIFj1YkJ-sGygdTWgHimZEc6vqPtSsAFw15M0-EiJNEmCqft8ccyl5nB3BwWhK7rHdPS4ukHGYI1uY1UWfGGLMMeJWmfHSBH8j9lrhGawQ5AQb0UR-fvtL77U",
+    "productId": "11812349774191965443",
+    "position": 39
+   },
+   {
+    "title": "Máy Tính Macbook Pro M4 14 inch 10C CPU 10C GPU 16GB 512GB Chính Hãng",
+    "source": "novazone.vn",
+    "price": "38.860.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS-B37FJme0I1NvAzEHY8mkapYAZb3dTY8SYP02kD7bYqNUr3ov2fErgShwPqvSg9Gll5wmgbi8hgBHep1n3YPsj2D9iKgLuhJCyHD81mOKSqwK_U_aqtLY",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "productId": "15561784521460421682",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

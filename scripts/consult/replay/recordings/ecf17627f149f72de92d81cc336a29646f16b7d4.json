@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://shop-a.tappy-eval.test/macbook-pro-m4 bản 16GB 512GB giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:15:19.782Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://shop-a.tappy-eval.test/macbook-pro-m4 bản 16GB 512GB giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buy MacBook Pro",
+    "link": "https://www.apple.com/shop/buy-mac/macbook-pro",
+    "snippet": "Shop MacBook Pro. Buy from $1999 or $166.58/mo. per month for 12 mo.months Footnote ※ Lease from From $38.99/mo.per month for 36 mo.months with Apple Upgrade ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro 14 M4 review: Longest battery life, 16GB ...",
+    "link": "https://www.youtube.com/watch?v=uimMTx6-A8s",
+    "snippet": "Macbook Pro 14 M4 bản base là một sản phẩm có giá trị rất tốt trong năm nay! Các bạn có thể tham khảo sản phẩm tại Apple Store nhé: ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro M4 16GB 512GB",
+    "link": "https://www.ebay.com/shop/macbook-pro-m4-16gb-512gb?_nkw=macbook+pro+m4+16gb+512gb",
+    "snippet": "Explore a wide range of our MacBook Pro M4 16GB 512GB selection. Find top brands, exclusive offers, and unbeatable prices on eBay. Shop now for fast ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Pro 16 inch Laptop Apple M4 Pro chip ...",
+    "link": "https://www.bestbuy.com/product/apple-macbook-pro-16-inch-laptop-apple-m4-pro-chip-built-for-apple-intelligence-24gb-memory-512gb-ssd-space-black/JJGCQ8HHY7",
+    "snippet": "Apple - MacBook Pro 16-inch Laptop - Apple M4 Pro chip Built for Apple Intelligence - 24GB Memory - 512GB SSD - Space Black ... $208.25/mo.",
+    "date": "1 thg 11, 2024",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14\" 2024 M4 16GB 512GB",
+    "link": "https://www.tiktok.com/@macvn1990/video/7680180619539795201",
+    "snippet": "Nếu bạn dựng phim chuyên sâu hoặc cần hiệu năng đồ họa tối đa, cân nhắc M4 Pro; còn lại, M4 thường đã đáp ứng xuất sắc. Bạn có đang cân nhắc ...",
+    "position": 5
+   },
+   {
+    "title": "M4 MacBook Pro 14-inch Prices",
+    "link": "https://prices.appleinsider.com/macbook-pro-14-inch-m4",
+    "snippet": "M4, 16GB, 512GB, Nano-Texture Display, Space Black · $1,749, $1,749, n/a, sold out, -. M4, 16GB, 512GB, Nano-Texture Display, Silver · $1,749, $1,749, n/a, sold ...",
+    "position": 6
+   },
+   {
+    "title": "Apple 2024 MacBook Pro with Apple M4 Pro Chip (16-inch ...",
+    "link": "https://www.amazon.com/Apple-MacBook-16-inch-Storage-English/dp/B0DMXNPT66",
+    "snippet": "Amazon.com: Apple 2024 MacBook Pro with Apple M4 Pro Chip (16-inch, 24GB RAM, 512GB SSD Storage) (QWERTY English) Space Black (Renewed) : Electronics.",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro M4 14\" Review: SO WELL-ROUNDED for ...",
+    "link": "https://www.youtube.com/watch?v=3DAgoPNfHwA",
+    "snippet": "... MacBook Pro M4 Ở ĐÂY NÈ: https://tgdd.vn/macbookprom4 00:00 - Mở đầu video 00:53 - Những ai sẽ \"phù hợp\" thực sự với chiếc Macbook Pro này ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 used inspection display keyboard ports test buy second hand",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:07.369Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 used inspection display keyboard ports test buy second hand",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "How do I test a second hand m1 MacBook before I pay?",
+    "link": "https://www.reddit.com/r/macbook/comments/1q3xbk8/how_do_i_test_a_second_hand_m1_macbook_before_i/",
+    "snippet": "So I'm finally upgrading from my Intel MacBook and I'm getting the MacBook Pro m1 second hand. Before I pay I have 10 minutes to test it at the delivery ...",
+    "position": 1
+   },
+   {
+    "title": "Things To Check Before Buying A USED MacBook Today!",
+    "link": "https://www.youtube.com/watch?v=tAj4f_DJyVQ&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "... used macbook pro,what to check when buying a second hand macbook,what to check before buying second hand macbook,how to test a macbook before",
+    "position": 2
+   },
+   {
+    "title": "MacBook for sale",
+    "link": "https://www.ebay.com/b/MacBook/111422/bn_339955",
+    "snippet": "2020 Apple M1 MacBook Air 13.3\" 8GB/256GB SSD/7-Core GPU (Space Gray) A2337. Pre-Owned · Apple. $359.00. Free shipping.",
+    "position": 3
+   },
+   {
+    "title": "While buying a used macbook, for example m1 ...",
+    "link": "https://www.facebook.com/groups/daymoncomputer/posts/3268047256694691/",
+    "snippet": "While buying a used macbook, for example m1 macbook air, what are some of the things that you must check before buying? Sorry for my ignorance.",
+    "position": 4
+   },
+   {
+    "title": "Buying a Used MacBook ? Here are 10 checks to do",
+    "link": "https://www.youtube.com/watch?v=aT9Sx_IGNPg&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "Buying a pre-owned M-Series Apple MacBook (Air, Pro, M1, M2, M3) is risky! This video is your fast-paced, 10-step guide, covering 3 critical ...",
+    "position": 5
+   },
+   {
+    "title": "Buying a second-hand MacBook: What to check?",
+    "link": "https://www.martinnobel.com/techresearch/buying-a-used-macbook-what-to-check",
+    "snippet": "You want to purchase a used Apple MacBook Pro or Air? This guide will have you sorted on what to check for before buying one!",
+    "date": "12 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "Used MacBook Air (M1, 2020): buying guide and test checklist",
+    "link": "https://techvaluecheck.com/devices/used-macbook-air-m1-2020",
+    "snippet": "Inspect display, keyboard and trackpad. Use uniform backgrounds, brightness changes and full keyboard and trackpad coverage. Look for ...",
+    "date": "25 thg 8, 2026",
+    "position": 7
+   },
+   {
+    "title": "5 Things to check before buying second hand Macbook",
+    "link": "https://medium.com/the-brave-new-world/5-things-to-check-before-buying-second-hand-macbook-ac9e52c2de06",
+    "snippet": "1: Check actual age of the machine · 2: Require proof of purchase · 3: Check how much is left of battery · 4: Confirm all keys are functional · 5: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

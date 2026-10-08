@@ -24,7 +24,7 @@ import { ASK_USER, UPDATE_TASK, askUserTool, updateTaskTool } from './controlToo
 import { applyTaskDelta, recordResearch, finishTurn, taskView, type AgentTask, type TaskSummary } from './task'
 import { trackTask, type TrackerInput } from './taskTracker'
 import { resultCount } from './trace'
-import { EvidenceLedger, normUrl, planCitations } from './evidence'
+import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evidence'
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
@@ -79,7 +79,7 @@ export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   /** M3 test seam: the page fetch. */
   research?: { fetchPage?: (url: string, signal?: AbortSignal) => Promise<PageFetchResult> }
   /** M3: the pages read this turn, for the enrichment site to turn [S#] markers into source links (streamEnrichment citeSources). */
-  onCitationSources?: (sources: Array<{ id: string; host: string; url: string }>) => void
+  onCitationSources?: (sources: SourceLink[]) => void
   /**
    * M4: the provenance the settle-path guards judge the reply against (guardEvidence.ts): this turn's sources with their extracts, the
    * ledger's conflicts, and the task's evidence references as they were at the START of the turn (with that constraint signature).

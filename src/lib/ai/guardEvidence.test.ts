@@ -5,7 +5,7 @@
 import { describe, it, expect } from 'vitest'
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
-import { judgeText, shieldSupported, quantitiesIn, freshCarried, pageGroundedNames, type GuardEvidence, type GuardSource } from './guardEvidence'
+import { judgeText, shieldSupported, quantitiesIn, freshCarried, pageGroundedNames, type GuardEvidence, type GuardSource, ownSite } from './guardEvidence'
 import { EvidenceLedger, candidateClaims } from './agent/runtime/evidence'
 import { extractPage } from './agent/runtime/pageExtract'
 
@@ -296,5 +296,25 @@ describe('settle path, per guard family (the real stream filter)', () => {
     const s = shieldSupported(HOIAN_REPLY, undefined)
     expect(s.text).toBe(HOIAN_REPLY)
     expect(s.restore('x')).toBe('x')
+  })
+})
+
+describe('WS2 · a sentence naming the cited source itself is about that page (measured WS-I1)', () => {
+  const CPS: GuardSource = { id: 'S2', host: 'cellphones.com.vn', sourceType: 'merchant', passages: ['iPhone 16 Pro 256GB | Chính hãng VN/A', 'Giá 27.990.000đ', 'Tạm hết hàng'] }
+  const FPT: GuardSource = { id: 'S3', host: 'fptshop.com.vn', sourceType: 'merchant', passages: ['iPhone 16 Pro', 'Giá bán 25.990.000đ, còn hàng'] }
+  it('"**CellphoneS:** 27.990.000đ [S2]" citing cellphones.com.vn is SUPPORTED (the store page never repeats its own name)', () => {
+    expect(judgeText('- **CellphoneS:** **27.990.000đ** [S2].', ev([CPS, FPT]))[0].j).toMatchObject({ verdict: 'SUPPORTED', reason: 'stated_by_cited_source' })
+    expect(judgeText('- **FPT Shop:** **25.990.000đ** [S3].', ev([CPS, FPT]))[0].j).toMatchObject({ verdict: 'SUPPORTED' })
+  })
+  it('a different venue named on a listicle is still entity-scoped (the area price never becomes the venue\'s)', () => {
+    const LIST: GuardSource = { id: 'S1', host: 'review-quan-an.example', sourceType: 'other', passages: ['Top quán phở Quận 1', 'Giá phở khu này khoảng 60.000đ'] }
+    expect(judgeText('**Phở Lệ** giá 60.000đ [S1].', ev([LIST]))[0].j.verdict).toBe('UNKNOWN')
+  })
+  it('own-site matching is exact or a long prefix, never a short accidental overlap', () => {
+    expect(ownSite('CellphoneS', 'cellphones.com.vn')).toBe(true)
+    expect(ownSite('FPT Shop', 'fptshop.com.vn')).toBe(true)
+    expect(ownSite('Thế Giới Di Động', 'www.thegioididong.com')).toBe(true)
+    expect(ownSite('Shopee Mall', 'shop.example')).toBe(false)
+    expect(ownSite('Phở Lệ', 'review-quan-an.example')).toBe(false)
   })
 })

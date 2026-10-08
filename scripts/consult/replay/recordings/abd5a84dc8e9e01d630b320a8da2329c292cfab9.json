@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us AirPods Pro 2 up to 6 hours listening time ANC charging case 30 hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:47:14.534Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us AirPods Pro 2 up to 6 hours listening time ANC charging case 30 hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro with MagSafe Charging Case. Up to 30 hours of listening time5. 5 minutes in the case provides around 1 hour of listening time6. Connectivity.",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/125135",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around 1 hour of listening time ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods 4 with Active Noise Cancellation - Tech Specs",
+    "link": "https://support.apple.com/en-us/121204",
+    "snippet": "Up to 30 hours of listening time with noise control off14. 5 minutes in the case provides around 1 hour of listening time15. Connectivity. Bluetooth 5.3 ...",
+    "position": 4
+   },
+   {
+    "title": "AirPods 3 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111863",
+    "snippet": "Up to 30 hours of listening time. 5 minutes in the case provides around 1 hour of listening time. Connectivity. Bluetooth 5.0 wireless technology. In the Box.",
+    "position": 5
+   },
+   {
+    "title": "AirPods 4 - Tech Specs",
+    "link": "https://support.apple.com/en-us/121203",
+    "snippet": "Up to 30 hours of listening time · 5 minutes in the case provides around 1 hour of listening time ...",
+    "position": 6
+   },
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "AirPods Max 1 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111858",
+    "snippet": "Up to 20 hours of listening time on a single charge with Active Noise Cancellation or Transparency mode enabled · Up to 20 hours of movie playback on a single ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

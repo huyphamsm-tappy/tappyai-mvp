@@ -130,6 +130,8 @@ export class AgentRunTrace {
         page_failures: reads.filter(e => e.status !== 'ok' && e.cached !== true).length,
         evidence: this.events.filter(e => e.kind === 'evidence').reduce((a, e) => ({ FACT: a.FACT + Number(e.fact ?? 0), INFERENCE: a.INFERENCE + Number(e.inference ?? 0), UNKNOWN: a.UNKNOWN + Number(e.unknown ?? 0), CONFLICT: a.CONFLICT + Number(e.conflict ?? 0) }), { FACT: 0, INFERENCE: 0, UNKNOWN: 0, CONFLICT: 0 }),
         citations: this.citations,
+        // WS2 research observability (counts / hosts / classes only — the query text is already on each tool_call, secrets cut).
+        ...researchDetail(this.events),
       }
       this.add('final', { output_type: outputType, chars: o.delivered.length, cards: o.cards, status: this.status, stop: this.stopReason, ...research })
       console.log(JSON.stringify({
@@ -156,6 +158,25 @@ export class AgentRunTrace {
 }
 
 const round7 = (n: number) => Math.round(n * 1e7) / 1e7
+
+const RESEARCH_TOOLS = new Set(['web_search', 'read_page'])
+/** WS2: the research summary of a turn, from its events (searches, results, opened hosts, source classes, prices, freshness, links). */
+export function researchDetail(events: ReadonlyArray<TraceEvent>): Record<string, unknown> {
+  const calls = events.filter(e => e.kind === 'tool_call' && RESEARCH_TOOLS.has(String(e.tool)) && e.admitted !== false)
+  const ev = events.filter(e => e.kind === 'evidence')
+  const count = (xs: unknown[]) => xs.reduce<Record<string, number>>((a, x) => { const k = String(x); a[k] = (a[k] ?? 0) + 1; return a }, {})
+  const ages = ev.map(e => e.price_age_days).filter((x): x is number => typeof x === 'number')
+  return {
+    searches: calls.filter(e => e.tool === 'web_search').length,
+    search_results: events.filter(e => e.kind === 'tool_result' && e.tool === 'web_search').reduce((n, e) => n + Number(e.result_count ?? 0), 0),
+    research_rounds: new Set(calls.map(e => e.round)).size,
+    opened_hosts: [...new Set(ev.map(e => String(e.host ?? '')).filter(Boolean))].slice(0, 12),
+    source_classes: count(ev.map(e => e.source_class ?? 'OTHER')),
+    action_links: count(ev.map(e => e.action_type ?? 'SOURCE')),
+    price_claims: ev.reduce((n, e) => n + Number(e.price_claims ?? 0), 0),
+    freshness: { pages_undated: ev.filter(e => e.page_dated === false).length, oldest_price_age_days: ages.length ? Math.max(...ages) : null },
+  }
+}
 
 /**
  * Pass-through stream that ends the trace when the response ends: it reads the `0:` text and the `8:` place-card annotation as they go

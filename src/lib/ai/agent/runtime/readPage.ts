@@ -122,7 +122,8 @@ export function createPageReader(ctx: PageReaderContext) {
       const { added, conflicts } = ctx.ledger.addClaims(source, raw, pageText, doc.structured)
       const c = { FACT: 0, INFERENCE: 0, UNKNOWN: 0, CONFLICT: conflicts.length }
       for (const a of added) c[a.type]++
-      ctx.trace.add('evidence', { source_id: source.id, source_type: source.sourceType, fact: c.FACT, inference: c.INFERENCE, unknown: c.UNKNOWN, conflict: c.CONFLICT, candidates: raw.length, ms: Date.now() - t2 })
+      const ages = added.map(a => a.price?.age_days).filter((x): x is number => typeof x === 'number')
+      ctx.trace.add('evidence', { source_id: source.id, source_type: source.sourceType, source_class: source.sourceClass, action_type: source.actionType, host: source.host, fact: c.FACT, inference: c.INFERENCE, unknown: c.UNKNOWN, conflict: c.CONFLICT, candidates: raw.length, price_claims: added.filter(a => a.price).length, page_dated: !!source.publishedAt, ...(ages.length ? { price_age_days: Math.max(...ages) } : {}), ms: Date.now() - t2 })
       out.push({
         url: source.url,
         status: doc.status,

@@ -186,7 +186,13 @@ export interface EnrichmentCollector {
   /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
   guardTrace?: (stage: string, before: string, after: string) => void
   /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */
-  citationSources?: Array<{ id: string; host: string; url: string }>
+  /** WS2 link contract: url, label, title, source_type (class), action_type — the pages the agent read this turn. */
+  /**
+   * WS2 (TAPPY_AGENT=2): records the recommendation decision of the final answer when Luna wrote no valid [TAPPY_RANK] block
+   * (agent/runtime/decisionRecord.ts). Absent on every other path.
+   */
+  recordDecision?: (answer: string, candidates: string[]) => Promise<{ contract: import('./agent/runtime/rankingContract').RankingContract | null; ms: number; usd: number; error?: string }>
+  citationSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
   /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
   guardEvidence?: import('./guardEvidence').GuardEvidence
   /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */

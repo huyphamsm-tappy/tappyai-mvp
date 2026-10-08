@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Grand Sea Hotel\" Đà Nẵng, gần biển Mỹ Khê, 2 người, đêm 10/10/2026, ngân sách khoảng 1.000.000 VND site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:55:55.333Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Grand Sea Hotel\" Đà Nẵng, gần biển Mỹ Khê, 2 người, đêm 10/10/2026, ngân sách khoảng 1.000.000 VND site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

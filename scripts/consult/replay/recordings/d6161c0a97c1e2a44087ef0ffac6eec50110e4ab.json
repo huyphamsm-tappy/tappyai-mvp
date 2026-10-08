@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Air M1 256GB 2020\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:09:10.380Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Air M1 256GB 2020\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple MacBook Air M1 256GB — 94% Battery Health (2020)",
+    "link": "https://www.tiktok.com/@gadgetmobiletampines/video/7690597388150377748",
+    "snippet": "Listing for an Apple MacBook Air M1 256GB (2020) with 94% battery health. @Gadget Communication pte ltd.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

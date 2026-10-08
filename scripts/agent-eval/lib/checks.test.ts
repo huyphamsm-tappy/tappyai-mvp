@@ -126,3 +126,34 @@ describe('M5 ranking checks', () => {
     expect(ids(evaluateTurn({ ranking: { contract: true } }, { ...base, text: 'Mình chọn A cho buổi tối nay nhé bạn.', annotations: [], ranking: { block: 'ok', picks: 1, none: false, cards: 3 } })).no_forced_top_n).toBe(false)
   })
 })
+
+describe('WS2 eval checks (pure)', () => {
+  const ids = (r: Array<{ id: string; pass: boolean }>) => Object.fromEntries(r.map(c => [c.id, c.pass]))
+  const base = { rawText: null, tools: [{ name: 'web_search', args: {} }], annotations: [], crashed: false }
+  const research = (o: Record<string, unknown> = {}) => ({ pages: 2, failures: 0, hosts: [], fact: 1, inference: 0, unknown: 0, conflict: 0, citations: 1, searchAfterRead: false, ...o })
+  it('price evidence, source class, action link (needs a real link in the reply too)', () => {
+    const text = 'Gia 39.990.000d ([shop.vn](https://shop.vn/p)) theo trang ban.'
+    const r = evaluateTurn({ research: { priceEvidence: true, sourceClass: ['PRODUCT_RETAILER'], actionLink: ['PRODUCT'] } }, { ...base, text, research: research({ priceClaims: 2, sourceClasses: { PRODUCT_RETAILER: 1 }, actionLinks: { PRODUCT: 1 } }) })
+    expect(ids(r)).toMatchObject({ price_evidence: true, source_class: true, action_link: true })
+    const r2 = evaluateTurn({ research: { priceEvidence: true, actionLink: ['PRODUCT'] } }, { ...base, text: 'Gia khoang 40 trieu, minh chua mo trang nao.', research: research({ priceClaims: 0, actionLinks: { PRODUCT: 1 } }) })
+    expect(ids(r2)).toMatchObject({ price_evidence: false, action_link: false })
+  })
+  it('orphan citation: a link opening the reply / a line or following a full stop fails; a link after its claim passes', () => {
+    expect(ids(evaluateTurn({}, { ...base, text: 'Ve 120.000d ([gov.vn](https://x.gov.vn/a)). Nen di som.' })).no_orphan_citation).toBe(true)
+    expect(ids(evaluateTurn({}, { ...base, text: ' ([gov.vn](https://x.gov.vn/a))\n\nNen di som vao buoi sang.' })).no_orphan_citation).toBe(false)
+    expect(ids(evaluateTurn({}, { ...base, text: 'Nen di som vao buoi sang. ([gov.vn](https://x.gov.vn/a))' })).no_orphan_citation).toBe(false)
+  })
+  it('fabricated URL: every URL the user can follow must be one the turn had', () => {
+    const urlsSeen = ['https://www.thegioididong.com/dtdd/iphone-16-pro']
+    expect(ids(evaluateTurn({}, { ...base, rawText: 'Xem https://thegioididong.com/dtdd/iphone-16-pro', text: 'Xem ([thegioididong.com](https://thegioididong.com/dtdd/iphone-16-pro)).', urlsSeen })).no_fabricated_url).toBe(true)
+    const fake = 'Mua tai [day](https://fake-deal.example/x) hoac https://phish.example/login'
+    expect(ids(evaluateTurn({}, { ...base, rawText: fake, text: fake, urlsSeen })).no_fabricated_url).toBe(false)
+    // An app-built action link (not in the model's text) is not the model's fabrication.
+    expect(ids(evaluateTurn({}, { ...base, rawText: 'Pizza 4Ps ngon.', text: 'Pizza 4Ps ngon. [GrabFood](https://food.grab.com/vn/vi/restaurants?search=x)', urlsSeen })).no_fabricated_url).toBe(true)
+  })
+  it('real link hosts (text or card actions) and the canned shortcut', () => {
+    expect(ids(evaluateTurn({ linkHosts: ['maps.google'] }, { ...base, text: 'Quan A gan ban nhat, mo cua den 22h.', annotations: [{ kind: 'tappy.places.v1', items: [{ name: 'A', maps: 'https://maps.google.com/?cid=1' }] }] })).real_link).toBe(true)
+    expect(ids(evaluateTurn({ canned: true }, { ...base, tools: [], text: 'Chao ban! Minh co the giup gi cho ban hom nay?', runtimeTurn: false })).canned_shortcut).toBe(true)
+    expect(ids(evaluateTurn({ canned: true }, { ...base, tools: [], text: 'Chao ban! Minh co the giup gi cho ban hom nay?', runtimeTurn: true })).canned_shortcut).toBe(false)
+  })
+})

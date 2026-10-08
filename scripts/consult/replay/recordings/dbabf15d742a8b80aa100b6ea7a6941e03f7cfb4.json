@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Soundcore Liberty 4 NC specifications IPX4 official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:49:38.920Z",
+ "body": {
+  "searchParameters": {
+   "q": "Soundcore Liberty 4 NC specifications IPX4 official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Liberty 4 NC True-Wireless ANC Earbuds",
+    "link": "https://www.soundcore.com/products/liberty-4-nc-a3947z11",
+    "snippet": "Adaptive ANC 2.0 · Adjustable Ambience · Ultra-Long Battery Life · 6-Mic Clear Calls · IPX4 Water-Resistant.",
+    "rating": 4.8,
+    "ratingCount": 781,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 ...",
+    "link": "https://ankervietnam.vn/anker-a3947-tai-nghe-khong-day-bluetooth-anker-soundcore-liberty-4-nc-chong-on-cao-cap-pin-50h-hires-bluetooth-5-3?srsltid=AU7gw4V_U-TMHF0wNh7UTz5iXJJChwtLm9Xp2BwnjSxc3hnn1JdyXAlD",
+    "snippet": "... Soundcore Liberty 4 NC đeo thoải mái suốt ngày dài. Chuẩn IPX4 chống nước bắn và mồ hôi, phù hợp cho sử dụng ngoài trời hay tập luyện nhẹ.",
+    "date": "8 thg 2, 2025",
+    "rating": 4.6,
+    "ratingCount": 800,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Anker Soundcore Liberty 4 NC | Giá rẻ 10/2026",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-liberty-4.html",
+    "snippet": "... IPX4 1.4. Trang bị driver 11mm cho chất âm hay chuẩn Hi-Res 1.5. Cá nhân hóa với HearID, kết nối bluetooth 5.3 ổn định 2. Mua ngay tai nghe Anker Soundcore ...",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 3
+   },
+   {
+    "title": "Soundcore Liberty 4 NC review: Test versus ALL competitors",
+    "link": "https://www.scarbir.com/tws/soundcore-liberty-4-nc-review",
+    "snippet": "... Soundcore Liberty 4 NC specs and features: SEE PRICE ON. Bluetooth 5.3 with AAC and LDAC codec. IPX4 waterproof (splash proof). 10 hours ...",
+    "date": "7 thg 7, 2023",
+    "position": 4
+   },
+   {
+    "title": "Soundcore by Anker Liberty 4 NC In-Ear Headphones",
+    "link": "https://manuals.plus/ae/1005007416645991",
+    "snippet": "The Liberty 4 NC earbuds are IPX4 water-resistant, meaning they are protected against splashing water from any direction. This makes them suitable for workouts ...",
+    "position": 5
+   },
+   {
+    "title": "Liberty 4 NC | Overview",
+    "link": "https://www.soundcore.com/liberty-4-nc",
+    "snippet": "Discover Liberty 4 NC earbuds with adaptive ANC, Hi-Res sound, and 40h battery. Learn features, specs, and how they deliver premium wireless listening ... IPX4",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Soundcore Liberty 4 NC ra mắt, chống ồn lên tới ...",
+    "link": "https://www.thegioididong.com/tin-tuc/tai-nghe-soundcore-liberty-4-nc-ra-mat-1536730",
+    "snippet": "Soundcore vừa ra mắt một cặp tai nghe có tên là Soundcore Liberty 4 NC với khả năng giảm tiếng ồn ấn tượng lên tới 98.5%.",
+    "date": "1 thg 1, 2023",
+    "position": 7
+   },
+   {
+    "title": "Anker Soundcore Liberty 4 NC Truly Wireless Review",
+    "link": "https://www.rtings.com/headphones/reviews/anker/soundcore-liberty-4-nc-truly-wireless",
+    "snippet": "They also have an IPX4 rating for protection against water splashes and spills. Our Verdict. 0.0. Sports And Fitness. The Anker Liberty 4 NC ...",
+    "date": "19 thg 9, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

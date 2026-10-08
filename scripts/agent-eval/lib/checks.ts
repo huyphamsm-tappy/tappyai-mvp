@@ -37,7 +37,19 @@ export interface TurnExpect {
   /** A constraint the user REPLACED must not drive this turn's lookups any more (folded substrings, checked in tool args only). */
   notCarryArgs?: Topic[]
   /** M3 research expectations (read from the Phase 8 run trace; paths without page reading fail them). */
-  research?: { minPages?: number; officialHosts?: string[]; conflict?: boolean; unknown?: boolean; cite?: boolean; mentionsBoth?: Topic[] }
+  research?: {
+    minPages?: number; officialHosts?: string[]; conflict?: boolean; unknown?: boolean; cite?: boolean; mentionsBoth?: Topic[]
+    /** WS2: at least one researched price was recorded (price contract: type, variant, source, retrieved_at). */
+    priceEvidence?: boolean
+    /** WS2: a page of one of these source classes was read (OFFICIAL_GOVERNMENT, PRODUCT_RETAILER, …). */
+    sourceClass?: string[]
+    /** WS2: a page whose link does one of these (PRODUCT, BOOK, MAP, WEBSITE, …) was read AND a real link reached the user. */
+    actionLink?: string[]
+  }
+  /** WS2: a real link to one of these hosts reaches the user (reply text or card actions), e.g. maps.google.com, booking.com. */
+  linkHosts?: string[]
+  /** WS2: the turn is a presentation shortcut (canned greeting): no runtime turn, no tool. */
+  canned?: boolean
   /**
    * M5 semantic ranking (TAPPY_AGENT=2; read from the run trace + the delivered card annotation):
    *   contract  Luna wrote its ranking line and the cards applied it;
@@ -52,7 +64,7 @@ export interface TurnExpect {
 /** M5: what the run trace says about Luna's ranking line this turn (null on paths without it). */
 export interface RankingObservation { block: string; picks: number; none: boolean; cards: number | null }
 
-export interface ResearchObservation { pages: number; failures: number; hosts: string[]; fact: number; inference: number; unknown: number; conflict: number; citations: number; searchAfterRead: boolean }
+export interface ResearchObservation { pages: number; failures: number; hosts: string[]; fact: number; inference: number; unknown: number; conflict: number; citations: number; searchAfterRead: boolean; priceClaims?: number; sourceClasses?: Record<string, number>; actionLinks?: Record<string, number> }
 
 export interface ScenarioTurn { text: string; expect: TurnExpect }
 export interface Scenario { id: string; category: string; title: string; turns: ScenarioTurn[]; inject?: { field: 'title' | 'snippet' | 'both'; text: string } }
@@ -67,6 +79,10 @@ export interface TurnObservation {
   crashed: boolean
   research?: ResearchObservation | null
   ranking?: RankingObservation | null
+  /** WS2: every URL this turn legitimately had (tool args / results, card annotations, the user's own message). Absent = not scored. */
+  urlsSeen?: string[]
+  /** WS2: the turn ran through the Phase 8 runtime (a run trace exists). */
+  runtimeTurn?: boolean
 }
 
 export interface CheckResult { id: string; pass: boolean; detail?: string }
@@ -195,6 +211,27 @@ export function evaluateTurn(e: TurnExpect, o: TurnObservation): CheckResult[] {
     if (R.cite) out.push({ id: 'sources_attributed', pass: /\]\(https?:\/\/[^)]+\)/.test(o.text), detail: r ? `${r.citations} citation(s)` : 'no ledger' })
     if (R.mentionsBoth?.length) { const c = topicCoverage(o.text, R.mentionsBoth); out.push({ id: 'conflict_explained', pass: c.missing.length === 0, detail: c.missing.length ? `missing: ${c.missing.join(', ')}` : 'both sides' }) }
   }
+  if (e.research?.priceEvidence) out.push({ id: 'price_evidence', pass: (o.research?.priceClaims ?? 0) > 0, detail: `${o.research?.priceClaims ?? 0} price claim(s)` })
+  if (e.research?.sourceClass?.length) { const got = Object.keys(o.research?.sourceClasses ?? {}); out.push({ id: 'source_class', pass: got.some(c => e.research!.sourceClass!.includes(c)), detail: got.join(',') || '—' }) }
+  if (e.research?.actionLink?.length) { const got = Object.keys(o.research?.actionLinks ?? {}); out.push({ id: 'action_link', pass: got.some(c => e.research!.actionLink!.includes(c)) && /\]\(https?:\/\/[^)]+\)/.test(o.text), detail: got.join(',') || '—' }) }
+  if (e.linkHosts?.length) {
+    const hay = (o.text + ' ' + JSON.stringify(o.annotations)).toLowerCase()
+    out.push({ id: 'real_link', pass: e.linkHosts.some(h => hay.includes(h.toLowerCase())), detail: e.linkHosts.filter(h => hay.includes(h.toLowerCase())).join(',') || 'none' })
+  }
+  if (e.canned) out.push({ id: 'canned_shortcut', pass: o.runtimeTurn === false && names.length === 0, detail: `runtime ${o.runtimeTurn} · tools ${names.length}` })
+  // WS2 (every turn): no orphan citation — a source link must follow claim text, never open the reply / a line or follow a full stop.
+  if (/\]\(https?:\/\/[^)]+\)\)/.test(o.text)) {
+    const orphan = /(^|\n)\s*\(\[[^\]]+\]\(https?:|[.!?…]\s*\(\[[^\]]+\]\(https?:/.test(o.text)
+    out.push({ id: 'no_orphan_citation', pass: !orphan, detail: orphan ? 'link without its claim' : 'ok' })
+  }
+  // WS2 (every turn, when known): no URL the MODEL wrote reaches the user unless this turn had it. App-built action links (the
+  // application is the URL authority — actions.ts templates) are not model text and are not scored here.
+  if (o.urlsSeen && o.rawText !== null) {
+    const seen = o.urlsSeen.map(normLink)
+    const modelWrote = new Set(urlsInReply(o.rawText).map(normLink))
+    const bad = urlsInReply(o.text).filter(u => { const n = normLink(u); return modelWrote.has(n) && !seen.some(s => s === n || s.startsWith(n) || n.startsWith(s)) })
+    out.push({ id: 'no_fabricated_url', pass: bad.length === 0, detail: bad.slice(0, 2).join(' ') || 'ok' })
+  }
   // M5: the ranking line never reaches the user (scored on every turn that had one).
   if (o.ranking || /TAPPY_RANK/.test(o.text)) out.push({ id: 'no_rank_leak', pass: !/TAPPY_RANK/.test(o.text), detail: o.ranking?.block ?? '—' })
   if (e.ranking) {
@@ -220,6 +257,17 @@ export function evaluateTurn(e: TurnExpect, o: TurnObservation): CheckResult[] {
   const plan = planContract(o.text)
   if (plan) out.push(plan)
   return out
+}
+
+/** A URL compared loosely: scheme, www, trailing punctuation / slash and case ignored. */
+export function normLink(u: string): string {
+  return u.trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/[.,;:!?)\]*_/]+$/, '').toLowerCase()
+}
+/** URLs the user can follow in the reply: markdown link targets and bare http(s) URLs. */
+export function urlsInReply(text: string): string[] {
+  const md = [...text.matchAll(/\]\((https?:\/\/[^)\s]+)\)/g)].map(m => m[1])
+  const bare = [...text.replace(/\]\((https?:\/\/[^)\s]+)\)/g, '](x)').matchAll(/https?:\/\/[^\s<>"')\]]+/g)].map(m => m[0])
+  return [...md, ...bare]
 }
 
 /** The items of the FINAL place-card annotation (the preliminary fold excluded). */
@@ -265,5 +313,8 @@ export function researchFromTrace(rt: { research?: { page_reads?: number; page_f
     fact: e.FACT ?? 0, inference: e.INFERENCE ?? 0, unknown: e.UNKNOWN ?? 0, conflict: e.CONFLICT ?? 0,
     citations: rt.research?.citations ?? 0,
     searchAfterRead: firstRead >= 0 && calls.slice(firstRead + 1).some(c => c !== 'read_page'),
+    priceClaims: Number((rt.research as Record<string, unknown> | undefined)?.price_claims ?? 0),
+    sourceClasses: ((rt.research as Record<string, unknown> | undefined)?.source_classes ?? {}) as Record<string, number>,
+    actionLinks: ((rt.research as Record<string, unknown> | undefined)?.action_links ?? {}) as Record<string, number>,
   }
 }

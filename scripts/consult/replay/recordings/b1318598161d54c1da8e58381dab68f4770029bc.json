@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:19.338Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Pro 14 inch M4 Pro 2025 12CPU/16GPU 24GB 512GB",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/625/402/products/1-1-4124d3a4-b323-447b-994c-2ffec59f9195-fb41c488-c5cd-4285-aa4e-ac3455b4a898-73facdd1-d618-4cc3-bc06-83d6053e0b28.png?v=1776402175580",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHdmaielPrX_3b9CyQxheajcZ_kfTkqIiu-Z59RvHTRg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Newtechshop",
+    "domain": "newtechshop.vn",
+    "link": "https://newtechshop.vn/apple-macbook-pro-14-inch-m4-pro-2025-12cpu-16gpu-24gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F625%2F402%2Fproducts%2F1-1-4124d3a4-b323-447b-994c-2ffec59f9195-fb41c488-c5cd-4285-aa4e-ac3455b4a898-73facdd1-d618-4cc3-bc06-83d6053e0b28.png%3Fv%3D1776402175580&tbnid=ZbrWXxVPfOrbQM&imgrefurl=https%3A%2F%2Fnewtechshop.vn%2Fapple-macbook-pro-14-inch-m4-pro-2025-12cpu-16gpu-24gb-512gb&docid=cDFz6OrlfLCUjM&w=800&h=800",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14inch M4 Pro (12CPU,16GPU) 24GB/512GB",
+    "imageUrl": "https://tinphatapple.vn/wp-content/uploads/2024/11/macbook-pro-14-inch-2024-m4-10cpu10gpu-16gb-512gb-4083.jpg",
+    "imageWidth": 1059,
+    "imageHeight": 595,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlcdQDc9BEFRWXnAVDknVmWUHKMHpgv5E1w22r5zNeZw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "tinphatapple.vn",
+    "domain": "tinphatapple.vn",
+    "link": "https://tinphatapple.vn/macbook-pro-14inch-m4-pro-12cpu16gpu-24gb-512gb/?srsltid=AU7gw4XSG8eFerv9iJRWl1MOgG0kvEOR1cN7ZpQcxmLxsUV8TAV-Cd7C",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftinphatapple.vn%2Fwp-content%2Fuploads%2F2024%2F11%2Fmacbook-pro-14-inch-2024-m4-10cpu10gpu-16gb-512gb-4083.jpg&tbnid=BtuwR9MwBYhhJM&imgrefurl=https%3A%2F%2Ftinphatapple.vn%2Fmacbook-pro-14inch-m4-pro-12cpu16gpu-24gb-512gb%2F%3Fsrsltid%3DAU7gw4XSG8eFerv9iJRWl1MOgG0kvEOR1cN7ZpQcxmLxsUV8TAV-Cd7C&docid=zwxDbHltMAzEAM&w=1059&h=595",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 14 M4 Pro 2024 12CPU/16GPU/24GB/512GB",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/macbook_pro_14_m4_pro_max_space_black_1_49c97ac737.png",
+    "imageWidth": 800,
+    "imageHeight": 801,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLPnxzGw_bgJQTjwxKX5d-auFcdYXgBPChl-4SnIr93g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-pro-m4-pro-14-2024-12cpu-16gpu-24gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2Fmacbook_pro_14_m4_pro_max_space_black_1_49c97ac737.png&tbnid=YqseiNdigxQpVM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-pro-m4-pro-14-2024-12cpu-16gpu-24gb-512gb&docid=c1uVBCH49low_M&w=800&h=801",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro 14 M4 Pro 2024 12CPU/16GPU/24GB/512GB",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/macbook_pro_14_m4_pro_max_space_black_6_239621ab76.png",
+    "imageWidth": 512,
+    "imageHeight": 513,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRYjAchK-Vd3pIhd_ZhVIp3UUJo0lKL2Ne_WCkcHXOvFA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-pro-m4-pro-14-2024-12cpu-16gpu-24gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_pro_14_m4_pro_max_space_black_6_239621ab76.png&tbnid=z1Xqj3mgQSscUM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-pro-m4-pro-14-2024-12cpu-16gpu-24gb-512gb&docid=c1uVBCH49low_M&w=512&h=513",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14inch M4 Pro 2024 24GB 512GB (12CPU-16GPU) | New chính hãng  tại T&T Center | Giá rẻ, ưu đãi 0%",
+    "imageUrl": "https://ttcenter.com.vn/uploads/images/SA%CC%89N%20PHA%CC%82%CC%89M/MacBook%20Pro%20M4/macbook-pro-m4-8.jpg",
+    "imageWidth": 1100,
+    "imageHeight": 619,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXfFuDyhGluzAgRTe3T7zSn9448glbfJzkC0OcZG3VRA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "T&T Center",
+    "domain": "ttcenter.com.vn",
+    "link": "https://ttcenter.com.vn/macbook-pro-14inch-m4-pro-2024-24gb-512gb-12cpu-16gpu-new?srsltid=AU7gw4WrKID7kDGmfjLOsJai8YIe7dTOGXfh5M1l0wZCBN183YSazVUS",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fttcenter.com.vn%2Fuploads%2Fimages%2FSA%25CC%2589N%2520PHA%25CC%2582%25CC%2589M%2FMacBook%2520Pro%2520M4%2Fmacbook-pro-m4-8.jpg&tbnid=sXWKUGRO1-aJjM&imgrefurl=https%3A%2F%2Fttcenter.com.vn%2Fmacbook-pro-14inch-m4-pro-2024-24gb-512gb-12cpu-16gpu-new%3Fsrsltid%3DAU7gw4WrKID7kDGmfjLOsJai8YIe7dTOGXfh5M1l0wZCBN183YSazVUS&docid=Z7P0guRXGo9s6M&w=1100&h=619",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 14\" M4 Pro 12CPU 16GPU 24GB 512GB - Vựa Táo",
+    "imageUrl": "https://vuatao.vn/wp-content/uploads/2023/12/mbp14-silver-gallery2-202310-scaled.jpeg",
+    "imageWidth": 2560,
+    "imageHeight": 1967,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk2wF0u2KlUUk0SOzjVw7RVoJYfnERVzHfjuVyJnnb6Q&s=10",
+    "thumbnailWidth": 631,
+    "thumbnailHeight": 485,
+    "source": "Vựa Táo",
+    "domain": "vuatao.vn",
+    "link": "https://vuatao.vn/san-pham/macbook-pro-14-m3-8gb-1tb/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvuatao.vn%2Fwp-content%2Fuploads%2F2023%2F12%2Fmbp14-silver-gallery2-202310-scaled.jpeg&tbnid=Zuep6TRIApn43M&imgrefurl=https%3A%2F%2Fvuatao.vn%2Fsan-pham%2Fmacbook-pro-14-m3-8gb-1tb%2F&docid=fvbWgbcTU9xNuM&w=2560&h=1967",
+    "position": 6
+   },
+   {
+    "title": "MacBook Pro 14inch M4 Pro (12CPU,16GPU) 24GB/512GB",
+    "imageUrl": "https://tinphatapple.vn/wp-content/uploads/2024/11/macbook-pro-14-inch-m4-pro-12cpu16gpu-24gb-512gb-4099.jpg",
+    "imageWidth": 719,
+    "imageHeight": 480,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPTqtAmB1v7K1FpY2JqdcqIkqdA1RQXZfwE8aByaNZTw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "tinphatapple.vn",
+    "domain": "tinphatapple.vn",
+    "link": "https://tinphatapple.vn/macbook-pro-14inch-m4-pro-12cpu16gpu-24gb-512gb/?srsltid=AU7gw4UcWWQFIaLikG-oHbMnyU281spDB9nPVlg1AqneCnmD6R8q1-xv",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftinphatapple.vn%2Fwp-content%2Fuploads%2F2024%2F11%2Fmacbook-pro-14-inch-m4-pro-12cpu16gpu-24gb-512gb-4099.jpg&tbnid=3r1D6h1kmcEY8M&imgrefurl=https%3A%2F%2Ftinphatapple.vn%2Fmacbook-pro-14inch-m4-pro-12cpu16gpu-24gb-512gb%2F%3Fsrsltid%3DAU7gw4UcWWQFIaLikG-oHbMnyU281spDB9nPVlg1AqneCnmD6R8q1-xv&docid=zwxDbHltMAzEAM&w=719&h=480",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro M4 Pro 14 inch 12CPU 16GPU 24GB RAM 512GB - Chính Hãng Việ",
+    "imageUrl": "https://product.hstatic.net/200000348419/product/macbook_pro_14_inch_m3-gray_b35856b540fe4f469696d359a6b615221_master_03e9dd3f7eb441d6800e0f639c8d209f_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGo5a42rLJaEeGCc0S67bRkeHtgiBbrzXzJoximmeqpw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Vender.vn",
+    "domain": "vender.vn",
+    "link": "https://vender.vn/products/macbook-pro-14-inch-m4-pro-12-cpu-16-gpu-24gb-ram-512gb-chinh-hang-vn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000348419%2Fproduct%2Fmacbook_pro_14_inch_m3-gray_b35856b540fe4f469696d359a6b615221_master_03e9dd3f7eb441d6800e0f639c8d209f_master.png&tbnid=MQXzdm05z_BhuM&imgrefurl=https%3A%2F%2Fvender.vn%2Fproducts%2Fmacbook-pro-14-inch-m4-pro-12-cpu-16-gpu-24gb-ram-512gb-chinh-hang-vn&docid=qNxLmWvRBQ2MmM&w=800&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

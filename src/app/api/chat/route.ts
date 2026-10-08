@@ -47,7 +47,7 @@ import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
 import { conversationIdOf, loadTask, mergeForSave, taskContextLines, validStoredTask } from '@/lib/ai/agent/runtime/task'
 import type { TaskBox } from '@/lib/ai/agent/runtime'
-import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
+import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
@@ -89,7 +89,8 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
-import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
+import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runtime/decisionRecord'
+import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
@@ -699,7 +700,9 @@ export async function POST(req: Request) {
   // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
   // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
   // and no venue card can exist. A specific follow-up ("chỗ ăn nào ngon?") is a new turn and gets its tools.
-  const planOnlyTurn = agentOn && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
+  // Phase 8 WS2: on the runtime (TAPPY_AGENT=2) LUNA decides whether a plan needs current data (weather, opening hours, prices) — research
+  // is optional, never forced and never forbidden by a keyword gate. This regex gate stays for the Phase 7 agent (TAPPY_AGENT=1) only.
+  const planOnlyTurn = agentOn && !agentV2 && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
   // Counts only — never the user's words.
   if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, plan_only: planOnlyTurn, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
@@ -2146,7 +2149,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
    * collector, so one conversation can never spend another's allowance.
    */
-  const placesBudget = createPlacesBudget(agentOn ? AGENT_LIMITS.maxToolCalls : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2861,6 +2865,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
   if (agentV2) enrichment.semanticRanking = true
   if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
+  // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.
+  // Its cost is the turn's cost (same trace counter as every other Luna call); bounded by its own short timeout.
+  if (agentV2) enrichment.recordDecision = async (answer, candidates) => {
+    const r = await recordDecision({ answer, candidates, signal: AbortSignal.timeout(DECISION_RECORD_TIMEOUT_MS) })
+    if (agentRunTrace) agentRunTrace.counters.usd += r.usd
+    return r
+  }
   // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
   // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
   const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null

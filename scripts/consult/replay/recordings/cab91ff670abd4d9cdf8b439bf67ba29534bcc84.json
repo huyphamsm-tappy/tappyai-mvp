@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Soo Kafe Bến Thành\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:31:57.221Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Soo Kafe Bến Thành\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Soo Kafe Bến Thành: quán cafe view chợ, cà phê trứng ngon",
+    "link": "https://www.tiktok.com/@tuananh.fancy/video/7344739093961510152",
+    "snippet": "Review Soo Kafe Bến Thành tại 35 Phan Chu Trinh: không gian vintage, giá. @Tuấn Anh Fancy · nhạc nền - Tuấn Anh Fancy · Soo Kafe (Soo Kafe Bến ...",
+    "position": 1
+   },
+   {
+    "title": "Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ ...",
+    "link": "https://www.tiktok.com/@qmthau/video/7103863682043628826",
+    "snippet": "810 Lượt thích,Video TikTok từ Dưa Hấu Hấu (@qmthau): \"Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ uống chất lượng #qmhau ...",
+    "position": 2
+   },
+   {
+    "title": "SOO Kafe, wow, nice place and coffee, and I ate the shrimp ...",
+    "link": "https://www.tiktok.com/@olliblum/video/7657867572427230485",
+    "snippet": "... shrimp cake with head and tail. nice. #vietnam #hochiminh #coffee #sookafe #hiddencafe · original sound · Soo Kafe (Soo Kafe Bến Thành) · author.",
+    "position": 3
+   },
+   {
+    "title": "I ended up staying in this cafe for 3 hours lol I love ...",
+    "link": "https://www.tiktok.com/@kemechann/video/7624040383416225055",
+    "snippet": "... #vietnamesecoffee #vietnamesecafe #vietnamesetiktok #hochiminh #saigon · original sound · Soo Kafe (Soo Kafe Bến Thành) · author. 148 · 19.",
+    "position": 4
+   },
+   {
+    "title": "📍 Soo Kafe Bến Thành, Saigon city, Vietnam 🇻🇳 6th day in ...",
+    "link": "https://www.tiktok.com/@igkimjupiter2489/photo/7569196369043279111",
+    "snippet": "Soo Kafe Bến Thành, Saigon city, Vietnam 6th day in Saigon ❤️‍ #foryou #travel #food #adventure #longdistanrelationship.",
+    "position": 5
+   },
+   {
+    "title": "Soo Kafe: A Cozy Coffee Spot in Saigon",
+    "link": "https://www.tiktok.com/@cafestories.somewhere/photo/7596677483173334279?image_index=4",
+    "snippet": "... provide factual context. If you think it may contain an error, please report at: Feedback and help - TikTok · Radio · Soo Kafe (Soo Kafe Bến Thành) · author.",
+    "position": 6
+   },
+   {
+    "title": "Nấm Núp Coffee Bình Thạnh: Đi Mua Cà Phê Mà Cỡ Đó ...",
+    "link": "https://www.tiktok.com/@caf_sip/video/7624909151222631701",
+    "snippet": "Soo Kafe Bến Thành: quán cafe view chợ, cà phê trứng ngon. Soo Kafe ... soo kafe bến thành, quán cafe gần chợ bến thành, soo cafe ho chi ...",
+    "position": 7
+   },
+   {
+    "title": "socafexreview",
+    "link": "https://www.tiktok.com/tag/socafexreview",
+    "snippet": "Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ uống chất · Replying ... Soo Kafe Bến Thành, không gian yên tĩnh rất có gu với đồ uống chất ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

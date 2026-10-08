@@ -1,0 +1,50 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth chụp Tai Baseus Inspire XH1\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:32:26.649Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth chụp Tai Baseus Inspire XH1\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Baseus Inspire XH1 | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-baseus-inspire-xh1.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Inspire XH1 ; HSSV, Giáo viên đến 129.500đ ; Smember Giảm thêm đến 26.000đ ; Giá sản phẩm. 3.590.000đ 2.590.000đ ; Danh sách ...",
+    "position": 1
+   },
+   {
+    "title": "Trên tay Baseus Inspire XH1: Màu Cam vũ trụ, chất âm Bose",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-baseus-inspire-xh1",
+    "snippet": "Hãy để lại bình luận bên dưới nhé. Tai nghe Bluetooth chụp tai Baseus Inspire XH1. 2.375.000đ ...",
+    "date": "19 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "TOP 5+ Tai nghe màu cam cá tính, chất lượng năm 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-mau-cam",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Inspire XH1. 2.590.000đ3.590.000đ. HSSV chỉ còn 2.460.500đ ...",
+    "date": "28 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Baseus bluetooth | Đa dạng mẫu mã, giảm đến ...",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/baseus.html",
+    "snippet": "Giá tai nghe Baseus bao nhiêu tiền? ; Tai nghe Bluetooth chụp tai Baseus Inspire XH1. 2.590.000đ ; Tai nghe Bluetooth chụp tai Baseus Encok D02 Pro. 390.000đ ; Tai ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

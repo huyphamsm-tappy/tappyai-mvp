@@ -1,0 +1,673 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng Michelin dưới 50.000 VND một người món ăn giá rẻ Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:40:58.998Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng Michelin dưới 50.000 VND một người món ăn giá rẻ Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Lune Restaurant and Bar",
+    "address": "17/14 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.779872899999999,
+    "longitude": 106.7041977,
+    "rating": 4.8,
+    "ratingCount": 413,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Pháp",
+    "types": [
+     "Nhà hàng Pháp"
+    ],
+    "website": "http://www.adrienguenzi.com/",
+    "phoneNumber": "+84 28 7777 2022",
+    "openingHours": {
+     "Thứ Năm": "11:30–14:00, 17:00–22:30",
+     "Thứ Sáu": "11:30–14:00, 17:00–22:30",
+     "Thứ Bảy": "11:30–14:00, 17:00–22:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "11:30–14:00, 17:00–22:30",
+     "Thứ Ba": "11:30–14:00, 17:00–22:30",
+     "Thứ Tư": "11:30–14:00, 17:00–22:30"
+    },
+    "bookingLinks": [
+     "https://www.adrienguenzi.com/reservations"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc9-EAAklnuB0Gy7xP_DPcm3lLAxyiXOqclt9FGDnRSBCgRsS08fNR33OOQZC4Yby3zdXKTXZ4FOoBe1-O9ecaPZVESLhk5bO7KHyDDMeNaEbV-ZSh3GdSvjppeTbYoWLS4c_xe-OdNKLEo",
+    "cid": "16434853835929295766",
+    "fid": "0x31752f822051a9e1:0xe414547cfa081b96",
+    "placeId": "ChIJ4alRIIIvdTERlhsI-nxUFOQ"
+   },
+   {
+    "position": 2,
+    "title": "CieL Dining",
+    "address": "6/3, Đ. Số 50, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8048085,
+    "longitude": 106.7334666,
+    "rating": 4.8,
+    "ratingCount": 253,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Pháp hiện đại",
+    "types": [
+     "Nhà hàng Pháp hiện đại"
+    ],
+    "website": "https://cieldining.com/",
+    "phoneNumber": "+84 903 600 505",
+    "openingHours": {
+     "Thứ Năm": "17:30–23:00",
+     "Thứ Sáu": "17:30–23:00",
+     "Thứ Bảy": "17:30–23:00",
+     "Chủ Nhật": "17:30–23:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "17:30–23:00",
+     "Thứ Tư": "17:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcy7zrtV3UDSWLOC1GSMWaw-neOZhov_64jat5zbId6z79bz2GEojTw_IIRo2N2mfs59EZgYC_ftn14K8Jls-R4hKXKjBUcEt0wOLYWrOoGzzHKAmb31IEjBlEdxJk_YicRE0abknsicX-E",
+    "cid": "10451245268834759659",
+    "fid": "0x31752700131590d7:0x910a4832ed60b3eb",
+    "placeId": "ChIJ15AVEwAndTER67Ng7TJICpE"
+   },
+   {
+    "position": 3,
+    "title": "Bếp Mẹ Ỉn - Lê Thánh Tôn",
+    "address": "136/9 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7738567,
+    "longitude": 106.6980798,
+    "rating": 4.6,
+    "ratingCount": 13090,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng gia đình",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng món chay"
+    ],
+    "website": "https://bep.mein.vn/",
+    "phoneNumber": "+84 28 2211 1119",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=bepmeinltt2607vn&rwg_token=AE37R_gkMy_4Svaf1Gj3_WVV1SOtxeF2goGeYlR3VoFs9cZYVbokBW2rZL5568XYF9hq_y65f3u32aFuMf_wRC-_03c0KcjrwSFnnL2FcY6Qk0L5PJSYZcc%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/RX2sZXezwTc?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe4MlNnvUJPFkpzuEFGKqOE6iQsCVsQxfBGbSGjAn4kIkZYybZVWWtFlV3ftHSpNQLsHeG9EodMcSNSYOAACS0RGJShjzp5OfHA2l2AWCWa6tl1ctMtlf_QR0wZJXKmEHvSONofRQ",
+    "cid": "4999984471408903447",
+    "fid": "0x31752f38c6940c73:0x45638362bccc0517",
+    "placeId": "ChIJcwyUxjgvdTERFwXMvGKDY0U"
+   },
+   {
+    "position": 4,
+    "title": "The Albion by Kirk Westaway",
+    "address": "76 78 Nguyễn Thị Minh Khai, St, District 3, Hồ Chí Minh 070000, Việt Nam",
+    "latitude": 10.782411,
+    "longitude": 106.69726059999999,
+    "rating": 4.9,
+    "ratingCount": 453,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp",
+     "Nhà hàng Châu Âu hiện đại"
+    ],
+    "website": "https://www.hoteldesartssaigon.com/restaurants-bars/the-albion-restaurant/",
+    "phoneNumber": "+84 902 849 988",
+    "openingHours": {
+     "Thứ Năm": "17:30–23:30",
+     "Thứ Sáu": "17:30–23:30",
+     "Thứ Bảy": "17:30–23:30",
+     "Chủ Nhật": "17:30–23:30",
+     "Thứ Hai": "17:30–23:30",
+     "Thứ Ba": "17:30–23:30",
+     "Thứ Tư": "17:30–23:30"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/vm5QJ0Bjolg?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLctJLazUoX37NZWA61Sj1Rd8CurAsGi-SWf7DSiiys6-zjusxr0UmM_yrnewjfM1z906DkFmeZFjeiPv-5mHeFbIUno1axR02zBkYOW_1h7ZS6Ssnz_UvdTSWXnAuw_mq3uv56pddrGVt8",
+    "cid": "12908994941804927621",
+    "fid": "0x31752f00431e113d:0xb325f6813998da85",
+    "placeId": "ChIJPREeQwAvdTERhdqYOYH2JbM"
+   },
+   {
+    "position": 5,
+    "title": "Madame Lam - Nhà hàng món Việt",
+    "address": "10 Trần Ngọc Diện, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8030526,
+    "longitude": 106.7390035,
+    "rating": 4.8,
+    "ratingCount": 1881,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://madamelam.com/",
+    "phoneNumber": "+84 703 226 262",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfrSTaIyADSOR3b2IxQCPZnUBx_7OybJkRuJvqj5aG6OpVkFathURK_FzeON1AKr8a-g6V8mTWqyMuivELQNN-tv_nmOtBC89MkOuus7UIO4X2_cYtrM8F8m6JoDLHx7f4YAaRTwNNNgFxE",
+    "cid": "539848881120654337",
+    "fid": "0x317527da08938211:0x77dedb27796b401",
+    "placeId": "ChIJEYKTCNondTERAbSWd7LtfQc"
+   },
+   {
+    "position": 6,
+    "title": "Cơm nhà Tú",
+    "address": "129/4 Võ Văn Tần, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7751517,
+    "longitude": 106.68954939999999,
+    "rating": 4.4,
+    "ratingCount": 1213,
+    "priceLevel": "200-500 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/nhahangmonvietnhatu/",
+    "phoneNumber": "+84 28 3930 5069",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf1NcmGTwvbcAcRO9_wrxET7RZfskXsDwrDk5iwZ0qFnb-cVKd_QfF24oaN_0wdbk-7fprwBaqyR3QX7Vnl7Dhwk-ftHv7FgHL7Vm9uRzTmjHGYQZJR3uBjRmkxWnwC7_6-S2NGGlupTzyE",
+    "cid": "16599986691486725031",
+    "fid": "0x31752f3b3df7558f:0xe65efff2064733a7",
+    "placeId": "ChIJj1X3PTsvdTERpzNHBvL_XuY"
+   },
+   {
+    "position": 7,
+    "title": "Dim Tu Tac",
+    "address": "55 Đông Du, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7755584,
+    "longitude": 106.70431409999999,
+    "rating": 4.4,
+    "ratingCount": 4653,
+    "type": "Nhà hàng Quảng Đông",
+    "types": [
+     "Nhà hàng Quảng Đông",
+     "Nhà hàng Trung Quốc",
+     "Nhà hàng điểm tâm"
+    ],
+    "website": "https://dimtutac.com/home",
+    "phoneNumber": "+84 28 3826 6668",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://dimtutac.com/Reservation"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeGimCkmb77zvMj1rp1nYObkgeErWL_j95JlRX4xMqKSp0LPXMMH9-6zuQr_v-M8wer8hJc-r5np3N4uiFq56yL8ho1n_BEB6qCAKaQ2bxIDg8nALo03WteB43O0dwD_dCZ-ezKs3ci5DwX",
+    "cid": "15341580677448863953",
+    "fid": "0x31752f420659913b:0xd4e83e57cc5610d1",
+    "placeId": "ChIJO5FZBkIvdTER0RBWzFc-6NQ"
+   },
+   {
+    "position": 8,
+    "title": "Square One",
+    "address": "2 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7773633,
+    "longitude": 106.7032349,
+    "rating": 4.4,
+    "ratingCount": 402,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Pháp",
+    "types": [
+     "Nhà hàng Pháp",
+     "Nhà hàng cao cấp",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.parkhyattsaigonrestaurants.com/square-one?src=nplk-saiph-lclb-square-one",
+    "phoneNumber": "+84 28 3520 2359",
+    "openingHours": {
+     "Thứ Năm": "11:30–14:30, 18:00–22:00",
+     "Thứ Sáu": "11:30–14:30, 18:00–22:00",
+     "Thứ Bảy": "11:30–14:30, 18:00–22:00",
+     "Chủ Nhật": "11:30–14:30, 18:00–22:00",
+     "Thứ Hai": "11:30–14:30, 18:00–22:00",
+     "Thứ Ba": "11:30–14:30, 18:00–22:00",
+     "Thứ Tư": "11:30–14:30, 18:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.tablecheck.com/park-hyatt-saigon-square-one/reserve?utm_source=google&rwg_token=AE37R_isGS8BW9PWlgzbTsOgSAlrn-xipLzDaACUkpq_bKA6YhG17RBC06wGiK6UZeOeqzq00AyTEShZx6t7gZspM1F5ACtpQA%3D%3D",
+     "https://www.hyatt.com/en-US/hotel/vietnam/park-hyatt-saigon/saiph/dining",
+     "https://www.google.com/maps/reserve/v/dine/c/BMv8F6PQQWI?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf3cBQFSrHzi6U2TvKi2Wf5YEAN_r2E47Pv4pK-y04Y9IFK1j6JPURyGGRImb2tahBPWOU3wjynuddA4hyXFO0WEl5shKhv199G-kzRHq2UbxB3AL7gbW9u5VeTm5m8cYq17e-6",
+    "cid": "14936961478370948928",
+    "fid": "0x31752f46246dce51:0xcf4abf533dfe7740",
+    "placeId": "ChIJUc5tJEYvdTERQHf-PVO_Ss8"
+   },
+   {
+    "position": 9,
+    "title": "Ănăn Saigon",
+    "address": "QPC3+M6Q, 89 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 000000, Việt Nam",
+    "latitude": 10.771728999999999,
+    "longitude": 106.70289299999999,
+    "rating": 4.1,
+    "ratingCount": 2456,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng lai Á"
+    ],
+    "website": "http://anansaigon.com/",
+    "phoneNumber": "+84 904 792 920",
+    "openingHours": {
+     "Thứ Năm": "17:00–23:00",
+     "Thứ Sáu": "17:00–23:00",
+     "Thứ Bảy": "17:00–23:00",
+     "Chủ Nhật": "17:00–23:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "17:00–23:00",
+     "Thứ Tư": "17:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLf7Jq9Kw50Uv61RBQt_VHtPd7459jPqpb8782zQVKYb8DGvulXyweU53Sl-6TX0oo6YzzSnsFBwJRcYhe8YF2FaLnCJ-JBdGyA8HJvNbSuh_36B4zmIsQUz70pCG_tU7Xao2y48JU1Cqp3j",
+    "cid": "17237509100999607271",
+    "fid": "0x31752f412769f767:0xef37ef32f9a503e7",
+    "placeId": "ChIJZ_dpJ0EvdTER5wOl-TLvN-8"
+   },
+   {
+    "position": 10,
+    "title": "Mặn Mòi, Thảo Điền",
+    "address": "32 Đ. Số 11, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.804472299999999,
+    "longitude": 106.7439751,
+    "rating": 4.6,
+    "ratingCount": 1486,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng châu Á",
+     "Nhà hàng gia đình",
+     "Nhà hàng",
+     "Nhà hàng Nam Á"
+    ],
+    "website": "https://manmoi.vn/?utm_source=google&utm_medium=organic&utm_campaign=gbp&utm_content=man-moi-thao-dien",
+    "phoneNumber": "+84 899 189 218",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.tablecheck.com/man-moi-thao-dien/reserve?utm_source=google&rwg_token=AE37R_inJzBVTrIwSs0ZnU1w2efOTO37dssShYxLXwHZGj1Ys7PTSOI3TEshz6rTmzvxrvB0wUf0OG1DIwI87VuwBLB2sAuo0aqCe9R66oo_2ZXwaetWo04%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/f8JZhFG-k34?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc1GWhOkygOF-9LP3fG9JoqKwFOV5oJPswRh2PBuM0Btj5icZfq3BsP6lgbSf46lVuVEaSn02z7kUifwTZ-YN3UnY31H1CcuKfLiqA4wXe7yjisMAvs3JrfenfVlzY8yUkzJ4qm1zlCeex_",
+    "cid": "11215765436780287891",
+    "fid": "0x317526148ae824cf:0x9ba6673db7649793",
+    "placeId": "ChIJzyToihQmdTERk5dktz1npps"
+   },
+   {
+    "position": 11,
+    "title": "CoCo Dining",
+    "address": "143 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.78068,
+    "longitude": 106.6932882,
+    "rating": 4.6,
+    "ratingCount": 539,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp"
+    ],
+    "website": "https://cocosgn.com/",
+    "phoneNumber": "+84 969 730 660",
+    "openingHours": {
+     "Thứ Năm": "17:30–23:00",
+     "Thứ Sáu": "17:30–23:00",
+     "Thứ Bảy": "17:30–23:00",
+     "Chủ Nhật": "17:30–23:00",
+     "Thứ Hai": "17:30–23:00",
+     "Thứ Ba": "17:30–23:00",
+     "Thứ Tư": "17:30–23:00"
+    },
+    "bookingLinks": [
+     "https://www.tablecheck.com/coco-saigon-vietnam/reserve?utm_source=google&rwg_token=AE37R_jALUDETle0ms5h8MqX0EY2TV6jR_3JIItLSKbR0kG3IJOPpcEJ8zR8QPPjx4klh6MrhKJnTxuu1fbm4j2F8V7E7KVZfBvaytQZo9_Y9zfurIRSxq0%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/z8E5zWsw3rw?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdOgHWWPr6CGjtFBQDPOfaWUOpOGBiUsuKVjHrKpLF6zR4VsPmsNnNMTa2ZjScS43TsIXlMKFRchi-wmv9Zl-DCTyXKwyQRckjN8IFJOkG5NtwoiZzFh0EoWvBt8eDTUTlVHtJxkW-C3O6M",
+    "cid": "3692014979984202914",
+    "fid": "0x31752fb8bae3b2f3:0x333cac102b611ca2",
+    "placeId": "ChIJ87LjurgvdTERohxhKxCsPDM"
+   },
+   {
+    "position": 12,
+    "title": "Cục Gạch Quán",
+    "address": "10 Đặng Tất, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.792843999999999,
+    "longitude": 106.68900889999999,
+    "rating": 4.2,
+    "ratingCount": 4282,
+    "priceLevel": "200-800 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://cucgachquan.com/",
+    "phoneNumber": "+84 28 3848 0144",
+    "openingHours": {
+     "Thứ Năm": "09:00–23:30",
+     "Thứ Sáu": "09:00–23:30",
+     "Thứ Bảy": "09:00–23:30",
+     "Chủ Nhật": "09:00–23:30",
+     "Thứ Hai": "09:00–23:30",
+     "Thứ Ba": "09:00–23:30",
+     "Thứ Tư": "09:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd8q2tqdc3EQt1T94rqXtGK-5QJod7NQg-Omd3bdsjX-ihJ4ybc_-JbWf1KGLABcEFaVEckIuRz-dI_1Xxy4zZM2h4TQV1t-Oy1640DMdfi64N-lSOa8rEBv04Zt2PmfefWIab0Yuax9cH4",
+    "cid": "10022954861294462091",
+    "fid": "0x317528cd9a13a0a5:0x8b18b057ab3b248b",
+    "placeId": "ChIJpaATms0odTERiyQ7q1ewGIs"
+   },
+   {
+    "position": 13,
+    "title": "ST25 by KOTO",
+    "address": "17 Lê Duẩn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.784088299999999,
+    "longitude": 106.70258589999999,
+    "rating": 4.8,
+    "ratingCount": 729,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://sofitel-saigon-plaza.com/restaurants-bars/st25-by-koto/",
+    "phoneNumber": "+84 28 3824 1555",
+    "openingHours": {
+     "Thứ Năm": "18:00–22:00",
+     "Thứ Sáu": "18:00–22:00",
+     "Thứ Bảy": "12:00–22:00",
+     "Chủ Nhật": "12:00–22:00",
+     "Thứ Hai": "18:00–22:00",
+     "Thứ Ba": "18:00–22:00",
+     "Thứ Tư": "18:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/DZgnq979rqo?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfnhg3vanMimdWG4JIjhE5XzgLYLqshheRXWfsxYZon_Fkzqjr5CozxEA3xqNOBYAh42DlADjs067Ri2JCeDR1AHXj3JbprtALTywZ-HRoAl1VFHcZkTEI-JP20Mwa84L20TvIE3ZL1sfv0",
+    "cid": "10983367268531252328",
+    "fid": "0x31752f002668a3e9:0x986cc2569e752c68",
+    "placeId": "ChIJ6aNoJgAvdTERaCx1nlbCbJg"
+   },
+   {
+    "position": 14,
+    "title": "Ốc Đào",
+    "address": "212B/D48 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.765238,
+    "longitude": 106.6846346,
+    "rating": 4.2,
+    "ratingCount": 2484,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng hải sản",
+    "types": [
+     "Nhà hàng hải sản"
+    ],
+    "website": "https://ocdaonguyentrai.com/",
+    "phoneNumber": "+84 909 437 033",
+    "openingHours": {
+     "Thứ Năm": "11:00–22:15",
+     "Thứ Sáu": "11:00–22:15",
+     "Thứ Bảy": "11:00–22:15",
+     "Chủ Nhật": "11:00–22:15",
+     "Thứ Hai": "11:00–22:15",
+     "Thứ Ba": "11:00–22:15",
+     "Thứ Tư": "11:00–22:15"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLftFr6HttyaobWHZEWE80fRFD6Tv6maf-KeZ-rpO04wjy1DB_c6Ff66X7LubAVcmexcNUqW5Ajqdl5YY6Gr_lFH5UrTWs_7dqFtdp7EwZHL-EPPeH1a8uEbvREdeh_YpM8FsSJT",
+    "cid": "8883448413710284811",
+    "fid": "0x31752facc18a645b:0x7b48594407b5780b",
+    "placeId": "ChIJW2SKwawvdTERC3i1B0RZSHs"
+   },
+   {
+    "position": 15,
+    "title": "Truffle Restaurant",
+    "address": "Landmark 81, Vinhomes Tân Cảng, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7949798,
+    "longitude": 106.7217893,
+    "rating": 4.7,
+    "ratingCount": 223,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Pháp",
+    "types": [
+     "Nhà hàng Pháp",
+     "Nhà hàng cao cấp",
+     "Nhà hàng hỗn hợp",
+     "Nhà hàng Pháp thượng hạng",
+     "Nhà hàng"
+    ],
+    "website": "https://www.the-truffle.com/",
+    "phoneNumber": "+84 988 783 353",
+    "openingHours": {
+     "Thứ Năm": "17:30–23:00",
+     "Thứ Sáu": "17:30–23:00",
+     "Thứ Bảy": "17:30–23:00",
+     "Chủ Nhật": "17:30–23:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "17:30–23:00",
+     "Thứ Tư": "17:30–23:00"
+    },
+    "bookingLinks": [
+     "https://the-truffle.com/book-online",
+     "https://eatapp.co/reserve/truffle-restaurant-73rd-floor-landmark-81-vinhomes-tan-c-ng-binh-th-nh-h-chi-minh-700000",
+     "https://www.facebook.com/truffle.sgn",
+     "https://www.google.com/maps/reserve/v/dine/c/bteN0CISrMk?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcOXp7Rjmk8uoPBBiWJvIjRDa3Al38V7JBk9X-JpGL5sEqpGyXtYfuhieBzwWXLNSSNmaNAaA2lGjEnk-7HdhfG-tzkVuN7haQlgf8a49hdBNiGdQWlGBYw2zTLZzu8jgy2LZ2pVQ",
+    "cid": "17958863470242527242",
+    "fid": "0x317529a6abae4a35:0xf93ab32d118b780a",
+    "placeId": "ChIJNUquq6YpdTERCniLES2zOvk"
+   },
+   {
+    "position": 16,
+    "title": "Sol Kitchen & Bar",
+    "address": "110 - 112 Lý Tự Trọng, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774106999999999,
+    "longitude": 106.6971367,
+    "rating": 4.9,
+    "ratingCount": 5363,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Mỹ Latinh",
+    "types": [
+     "Nhà hàng Mỹ Latinh"
+    ],
+    "website": "https://solkitchenbar.com/",
+    "phoneNumber": "+84 799 991 811",
+    "description": "Nhà hàng cao cấp, thời thượng phục vụ các món ăn đặc trưng kiểu Mỹ Latinh hiện đại.",
+    "openingHours": {
+     "Thứ Năm": "11:00–14:00, 17:00–22:30",
+     "Thứ Sáu": "11:00–14:00, 17:00–22:30",
+     "Thứ Bảy": "11:00–14:00, 17:00–22:30",
+     "Chủ Nhật": "11:00–14:00, 17:00–22:30",
+     "Thứ Hai": "11:00–14:00, 17:00–22:30",
+     "Thứ Ba": "11:00–14:00, 17:00–22:30",
+     "Thứ Tư": "11:00–14:00, 17:00–22:30"
+    },
+    "bookingLinks": [
+     "https://solkitchenbar.com/reservation/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdRE7_YAyhPy4T-tJZRofzG-uq-2HSPA_PXzsHOic26UagTD421HZnHfEkJj6Bw1vPRQYvtiNtv6oH0njzljgOlT5glgbf-A6RzNuTRSECXuF76PdVIsDgdkaE2yXZcdujqz7fTRpIyQyrL",
+    "cid": "4085251481480479037",
+    "fid": "0x31752f94daff25f5:0x38b1ba93ebc8413d",
+    "placeId": "ChIJ9SX_2pQvdTERPUHI65O6sTg"
+   },
+   {
+    "position": 17,
+    "title": "Upstairs Tasting Room",
+    "address": "36 Nguyễn Bá Huân, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8042464,
+    "longitude": 106.72915379999999,
+    "rating": 4.8,
+    "ratingCount": 156,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp"
+    ],
+    "website": "http://www.upstairssgn.com/",
+    "phoneNumber": "+84 859 800 586",
+    "openingHours": {
+     "Thứ Năm": "Đóng cửa",
+     "Thứ Sáu": "18:00–23:00",
+     "Thứ Bảy": "18:00–23:00",
+     "Chủ Nhật": "12:00–15:00, 18:00–23:00",
+     "Thứ Hai": "12:00–15:00, 18:00–23:00",
+     "Thứ Ba": "18:00–23:00",
+     "Thứ Tư": "Đóng cửa"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdyS72yenXgYXs3k1dn3BkEM-6pWT8JwDhMbcKDm6QhLaxOIkXWZLSFYAzzprHEfdtC6X0oATS4kCIYtbR_bQ_CITEsgIX4HhJuVKqEBaVNtH_4B8pHuRksDOTxcpy2tpuCkskWzummkfjZ",
+    "cid": "1377921284197110233",
+    "fid": "0x3175270023942c07:0x131f5c1b8104d1d9",
+    "placeId": "ChIJByyUIwAndTER2dEEgRtcHxM"
+   },
+   {
+    "position": 18,
+    "title": "Nhà hàng Long Triều",
+    "address": "22 – 36 Nguyễn Huệ &, 57 – 69F Đồng Khởi, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7739212,
+    "longitude": 106.70500539999999,
+    "rating": 4.4,
+    "ratingCount": 133,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng Quảng Đông",
+    "types": [
+     "Nhà hàng Quảng Đông",
+     "Nhà hàng Trung Quốc",
+     "Nhà hàng"
+    ],
+    "website": "https://www.thereveriesaigon.com/restaurants-bars/long-trieu/?utm_source=google&utm_medium=wix_google_business_profile&utm_campaign=16542100097497446102",
+    "phoneNumber": "+84 28 3823 6688",
+    "openingHours": {
+     "Thứ Năm": "11:00–14:00, 18:00–22:00",
+     "Thứ Sáu": "11:00–14:00, 18:00–22:00",
+     "Thứ Bảy": "10:00–14:00, 18:00–22:00",
+     "Chủ Nhật": "10:00–14:00, 18:00–22:00",
+     "Thứ Hai": "11:00–14:00, 18:00–22:00",
+     "Thứ Ba": "11:00–14:00, 18:00–22:00",
+     "Thứ Tư": "11:00–14:00, 18:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/kFL8x6uua9Y?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc76nPRSZubX0NCwAZTLkWXE_ZdnCP8EAp0Spww0y_6g9p2-byHwmZyBBvydXDqvduBbLJ_pro17SmpdO8YCftkZEijQiLaLAY8tC8UI2zhNm2cwt6434YFtCAQYexlAnmAGW0Kgna0-qQ",
+    "cid": "317098968558178582",
+    "fid": "0x31752fdc743f45e9:0x4668fd4f38d9116",
+    "placeId": "ChIJ6UU_dNwvdTERFpGN89SPZgQ"
+   },
+   {
+    "position": 19,
+    "title": "AKUNA Restaurant",
+    "address": "Le Méridien Saigon, Level 9, 3C Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.779791099999999,
+    "longitude": 106.70752689999999,
+    "rating": 4.3,
+    "ratingCount": 200,
+    "priceLevel": "Trên 1 Tr ₫",
+    "type": "Nhà hàng cao cấp",
+    "types": [
+     "Nhà hàng cao cấp"
+    ],
+    "website": "http://akunarestaurant.com/",
+    "phoneNumber": "+84 911 735 800",
+    "openingHours": {
+     "Thứ Năm": "18:00–22:00",
+     "Thứ Sáu": "18:00–22:00",
+     "Thứ Bảy": "18:00–22:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "18:00–22:00",
+     "Thứ Tư": "18:00–22:00"
+    },
+    "bookingLinks": [
+     "https://akunarestaurant.com/reservations/",
+     "https://www.google.com/maps/reserve/v/dine/c/1VUcNodFfJI?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcwUa7X4TvNdeg_H0Ry4pdQxpvRoIi0dHQ7HPmRZqCwcBlK6NIgDHAxhPpms8deacKRXzHK1bEe0oG_t_qpfyQ5krDZeqJ9EwNQtS1e0Bnw8z1GCuPHAZtLzQC4Ih7o1pD1N6jx_R0przEy",
+    "cid": "5795395148375510766",
+    "fid": "0x31752f9296eb9add:0x506d612e9ff1ceee",
+    "placeId": "ChIJ3ZrrlpIvdTER7s7xny5hbVA"
+   },
+   {
+    "position": 20,
+    "title": "Phở Việt Nam",
+    "address": "14 Phạm Hồng Thái, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.771386,
+    "longitude": 106.69613389999999,
+    "rating": 4.5,
+    "ratingCount": 5925,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng châu Á"
+    ],
+    "website": "https://www.phovietnam.vn/",
+    "openingHours": {
+     "Thứ Năm": "06:00–03:00",
+     "Thứ Sáu": "06:00–03:00",
+     "Thứ Bảy": "06:00–03:00",
+     "Chủ Nhật": "06:00–03:00",
+     "Thứ Hai": "06:00–03:00",
+     "Thứ Ba": "06:00–03:00",
+     "Thứ Tư": "06:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdKcbOC6bfdsx9shDduH5_4N5K4FBafS8AnWENcQ0LmckiEqqYv3v4kISbXj4qz2FxOJhKv7OpcG_XNGfYy2jlwryD7f91nUQ96CbQefwoAsHO2BEtg_grYm9bjuvg14goFocIa",
+    "cid": "12075454229031395530",
+    "fid": "0x31752fba354e2425:0xa794a1a48ee7a0ca",
+    "placeId": "ChIJJSRONbovdTERyqDnjqShlKc"
+   }
+  ],
+  "credits": 3
+ }
+}

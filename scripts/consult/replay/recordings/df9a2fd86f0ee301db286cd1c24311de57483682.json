@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/ \"30 giờ\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:29:41.603Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/ \"30 giờ\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Khi sử dụng vỏ với thêm bốn lần sạc bổ sung, người dùng có thể tận hưởng tổng thời gian nghe lên đến 30 giờ với công nghệ khử tiếng ồn chủ ...",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

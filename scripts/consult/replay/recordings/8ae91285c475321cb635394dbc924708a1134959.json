@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel Da Nang\" OR \"Bella Merry\" OR \"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:39:32.709Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel Da Nang\" OR \"Bella Merry\" OR \"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng",
+    "link": "https://www.tiktok.com/@anhtraidanangoffical/video/7373642762983410960",
+    "snippet": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng. Khám phá Bella Merry Hotel - nơi lưu trú tuyệt vời với giá rẻ, gần biển tại Đà Nẵng. Đặt ...",
+    "position": 1
+   },
+   {
+    "title": "Experiencia en M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@callumhirst_/video/7547007596809424150",
+    "snippet": "Location: M Hotel, Da Nang City, Vietnam If you're searching for the best hotels in Da Nang or want a modern stay next to Da Nang Beach, M ...",
+    "position": 2
+   },
+   {
+    "title": "Bella Merry",
+    "link": "https://www.tiktok.com/discover/bella-merry",
+    "snippet": "Khách sạn Bella Merry: Giá rẻ, gần biển Đà Nẵng. Khám phá Bella Merry Hotel - nơi lưu trú tuyệt vời với giá rẻ, gần biển tại Đà Nẵng. Đặt phòng ...",
+    "date": "31 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "M Hotel Da Nang sea view rooms & 28th-floor infinity pool",
+    "link": "https://www.tiktok.com/@mochibumm/video/7656047436506402068",
+    "snippet": "Why choose M Hotel Da Nang - Location: Just steps from My Khe Beach and surrounded by beach clubs, cafés, restaurants, convenience stores and ...",
+    "position": 4
+   },
+   {
+    "title": "Bella Merry Hotel: A Great Stay in Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@roseannemalinog/video/7595625206169799944",
+    "snippet": "Enjoy a fantastic experience at Bella Merry Hotel in Da Nang, with accessible, affordable options, great service, and delicious food. #travel # ...",
+    "position": 5
+   },
+   {
+    "title": "M Hotel Da Nang: A Really Sad Moment in Vietnam 🇻🇳",
+    "link": "https://www.tiktok.com/@didiqatar/video/7691608466590272775",
+    "snippet": "What exactly happened at the M Hotel Da Nang to cause such a reaction? The video leaves the full story open to interpretation, prompting viewers ...",
+    "position": 6
+   },
+   {
+    "title": "Experience Luxury at M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@byhavy/video/7450867727973010731",
+    "snippet": "Keywords: M Hotel Da Nang, Luxury hotel in Vietnam, Hotel breakfast buffet, Vietnam travel destinations, Stunning views in Da Nang, ...",
+    "position": 7
+   },
+   {
+    "title": "M Hotel Da Nang Vietnam Junior Suite",
+    "link": "https://www.tiktok.com/discover/m-hotel-da-nang-vietnam-junior-suite",
+    "snippet": "M Hotel Đà Nẵng: Khu Vườn Xanh Ngát Bên Biển Mỹ Khê. Khám phá M Hotel Đà Nẵng - khách sạn 5 sao với thiết kế ấn tượng và view biển tuyệt đẹp. Đặt phòng ngay hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

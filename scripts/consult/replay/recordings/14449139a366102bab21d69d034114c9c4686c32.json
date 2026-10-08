@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"THE WISELANDS Coffee\" OR \"Là Việt Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:55:29.917Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"THE WISELANDS Coffee\" OR \"Là Việt Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Wiselands Coffee: Quán cà phê học bài lý tưởng cho ...",
+    "link": "https://www.tiktok.com/@the_wiselands_coffee/video/7640871127782378772",
+    "snippet": "Không gian và cảm giác chung The Wiselands Coffee mang phong cách thoải mái, thân thiện — thích hợp cho buổi học cá nhân hoặc nhóm nhỏ. Không ...",
+    "position": 1
+   },
+   {
+    "title": "Là Việt Coffee (@lavietcoffee)",
+    "link": "https://www.tiktok.com/@lavietcoffee",
+    "snippet": "Là Việt Coffee (@lavietcoffee) trên TikTok |3217 Lượt thích.1246 Follower.IG: lavietcoffee.Xem video phổ biến của Là Việt Coffee: \"Đến du lịch tại Sài .",
+    "position": 2
+   },
+   {
+    "title": "The Wiselands Coffee - Góc Riêng Tư Yên Bình",
+    "link": "https://www.tiktok.com/@the_wiselands_coffee/video/7688057994206137618",
+    "snippet": "The Wiselands Coffee là một không gian yên bình nằm tại 17 Hạ Hồi, Hoàn Kiếm, Hà Nội. Nơi đây mang đến một góc riêng tư, nơi thời gian dường ...",
+    "position": 3
+   },
+   {
+    "title": "The Wiselands Coffee Review",
+    "link": "https://www.tiktok.com/discover/the-wiselands-coffee-review",
+    "snippet": "The Wiselands Coffee Review · Khám phá Wiselands Coffee: quán cà phê lý tưởng cho thư giãn, học tập và trải nghiệm ẩm thực độc đáo tại Sài Gòn!",
+    "date": "7 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Không Gian Trải Nghiệm Cà Phê Tại Là Việt Coffee",
+    "link": "https://www.tiktok.com/@lavietcoffee/video/7587653513560263957",
+    "snippet": "KHÔNG GIAN TRẢI NGHIỆM CÀ PHÊ & MORE by Là Việt Coffee – ĐIỂM HẸN THÚ VỊ CHO CÁC SỰ KIỆN CUỐI NĂM NGAY TẠI TRUNG TÂM SÀI GÒN Vui lòng ...",
+    "position": 5
+   },
+   {
+    "title": "Mừng Tết cùng The Wiselands Coffee",
+    "link": "https://www.tiktok.com/@the_wiselands_coffee/video/7606689076191759634",
+    "snippet": "Mừng Tết đến thật gần ☕️ The Wiselands Coffee 17 Hạ Hồi, Hoàn Kiếm mở cửa xuyên Tết! ☕️ . Mừng Tết cùng The Wiselands Coffee. Khám phá ...",
+    "position": 6
+   },
+   {
+    "title": "Discover Luxury and Elegance at The Wiselands Coffee",
+    "link": "https://www.tiktok.com/@the_wiselands_coffee/video/7645250239691050261",
+    "snippet": "Không gian sang trọng, tinh tế mới toanh tại The Wiselands Tầng 3 The Wiselands Coffee, 17 Hạ Hồi, Hoàn Kiếm, Hà Nội #thewiselandscoffee #cafehaoi # ...",
+    "position": 7
+   },
+   {
+    "title": "Cafe sách The Wiselands Coffee Hà Nội – 12.000 đầu sách",
+    "link": "https://www.tiktok.com/@the_wiselands_coffee/video/7651253104704261397",
+    "snippet": "The Wiselands Coffee tại 17 Hạ Hồi, Hoàn Kiếm, Hà Nội là không gian cafe sách thu hút những người yêu sách và thích không gian đọc sách yên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

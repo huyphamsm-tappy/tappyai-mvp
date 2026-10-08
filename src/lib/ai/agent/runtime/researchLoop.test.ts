@@ -53,7 +53,9 @@ describe('M3 · research loop', () => {
     // The runtime keeps the checked markers; the enrichment site turns them into links from these sources.
     expect(text).toContain('[S2]')
     expect(text).toContain('[S1]')
-    expect(t.cited[0]).toEqual([{ id: 'S1', host: 'some-blog.example', url: REVIEW }, { id: 'S2', host: 'apple.com', url: APPLE }])
+    // WS2 link contract: the same id / host / url, plus label, title, source class and what following the link does.
+    expect(t.cited[0]).toMatchObject([{ id: 'S1', host: 'some-blog.example', url: REVIEW, label: 'some-blog.example', source_type: 'OTHER', action_type: 'SOURCE' }, { id: 'S2', host: 'apple.com', url: APPLE, label: 'apple.com', source_type: 'OFFICIAL_MANUFACTURER', action_type: 'WEBSITE' }])
+    expect((t.cited[0] as Array<{ title?: string }>).map(s => typeof s.title)).toEqual(['string', 'string'])
     const kinds = t.trace.events.map(e => e.kind).filter(k => ['tool_call', 'page_read', 'evidence', 'model_round'].includes(k))
     expect(kinds).toEqual(['model_round', 'tool_call', 'model_round', 'tool_call', 'page_read', 'evidence', 'model_round', 'tool_call', 'model_round', 'tool_call', 'page_read', 'evidence', 'model_round'])
     expect(t.trace.events.filter(e => e.kind === 'evidence').map(e => e.conflict)).toEqual([0, 1])

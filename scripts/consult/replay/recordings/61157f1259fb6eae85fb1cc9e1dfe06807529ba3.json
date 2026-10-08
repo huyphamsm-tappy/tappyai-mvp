@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thegioididong.com/dtdd/iphone-16-pro-256gb iPhone 16 Pro 256GB giá hôm nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:15.934Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thegioididong.com/dtdd/iphone-16-pro-256gb iPhone 16 Pro 256GB giá hôm nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) - Giá tốt, thu cũ trợ giá đến 2 ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb",
+    "snippet": "iPhone 16 Pro 256GB chính hãng, giá tốt, thu cũ trợ giá đến 2 triệu, giảm giá các sản phẩm Apple mua kèm, đặc biệt giảm đến 500k khi mua kèm ...",
+    "date": "10 thg 9, 2024",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

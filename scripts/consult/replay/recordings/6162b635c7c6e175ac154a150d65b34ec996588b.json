@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Besea Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:04.763Z",
+ "body": {
+  "searchParameters": {
+   "q": "Besea Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Nhận xét về BeSea Hotel Da Nang, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/12000000/11880000/11877800/11877763/0d1b8e42.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiip1_0ylNR7exSHXlgipKh47A0CzxQGYTm1Hoe2EWQQ&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F12000000%2F11880000%2F11877800%2F11877763%2F0d1b8e42.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=NyNU0Ajbr5bFvM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san&docid=bnUduk_vPPAB0M&w=863&h=575",
+    "position": 1
+   },
+   {
+    "title": "Nhận xét về BeSea Hotel Da Nang, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/12000000/11880000/11877800/11877763/16815582.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2yN9l3h_R3-LTAUkT7ePPzPv_DE0zFwttWHmoOQdbCA&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F12000000%2F11880000%2F11877800%2F11877763%2F16815582.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=ocWVvx9Sq0iBYM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san&docid=bnUduk_vPPAB0M&w=767&h=575",
+    "position": 2
+   },
+   {
+    "title": "KHÁCH SẠN BESEA (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/08/1a/33/4c/khach-s-n-besea.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmh_7IPFbvhgcF8D1acO_4cRO38HNzV4kICz01DmD1rA&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d8300094-Reviews-Besea_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F08%2F1a%2F33%2F4c%2Fkhach-s-n-besea.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=FTHzljPeuPxshM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d8300094-Reviews-Besea_Hotel-Da_Nang.html&docid=PL5fWCBM3Umf4M&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "Nhận xét về BeSea Hotel Da Nang, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/12000000/11880000/11877800/11877763/e5c4a82f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6XE70OSBFZX-PVY8C88oUKeXpawP8iFTAnIiDxyjDXg&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F12000000%2F11880000%2F11877800%2F11877763%2Fe5c4a82f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=02xSWS7eI0WNrM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san&docid=bnUduk_vPPAB0M&w=862&h=575",
+    "position": 4
+   },
+   {
+    "title": "Be Sea Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100057547294901",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP0d3PH7ahRfvmfgr4JfsVjWv2gU8x3D1hgeubmoBX5A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Beseahotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100057547294901&tbnid=0lfxLTylzdbTCM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FBeseahotel%2F&docid=YhejR4y1-wy36M&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Nhận xét về BeSea Hotel Da Nang, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/12000000/11880000/11877800/11877763/24cfd1ab.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPxyP2smzzjUlasxoQ2wxxQINrbWb9d1Dq6G73azlVGA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F12000000%2F11880000%2F11877800%2F11877763%2F24cfd1ab.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=BiRVXk_zpLu5MM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Besea-Hotel.h11877763.Thong-tin-khach-san&docid=bnUduk_vPPAB0M&w=862&h=575",
+    "position": 6
+   },
+   {
+    "title": "Be Sea Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1453409003253996",
+    "imageWidth": 940,
+    "imageHeight": 788,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNa03J4vWf6sVryC7JF1b1iunOswMiEUnk65GsnxvZjw&s",
+    "thumbnailWidth": 245,
+    "thumbnailHeight": 206,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/Beseahotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1453409003253996&tbnid=6roghkXCpzkpxM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FBeseahotel%2F&docid=YhejR4y1-wy36M&w=940&h=788",
+    "position": 7
+   },
+   {
+    "title": "BeSea Hotel Da Nang - KKday",
+    "imageUrl": "https://image.kkday.com/v2/image/get/w_960%2Cc_fit%2Cq_55%2Ct_webp/s1.kkday.com/dyhotel_340366/20260810104616_FXK4s/jpg",
+    "imageWidth": 960,
+    "imageHeight": 639,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5w4eMknjMN6ZvKmkkidrcs0NmXJn91G6r1TiCveWETw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "KKday",
+    "domain": "m.kkday.com",
+    "link": "https://m.kkday.com/en-hk/hotel/product/676937",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.kkday.com%2Fv2%2Fimage%2Fget%2Fw_960%252Cc_fit%252Cq_55%252Ct_webp%2Fs1.kkday.com%2Fdyhotel_340366%2F20260810104616_FXK4s%2Fjpg&tbnid=Y8Xp1g-48uZ2TM&imgrefurl=https%3A%2F%2Fm.kkday.com%2Fen-hk%2Fhotel%2Fproduct%2F676937&docid=gnCBU-i30s04WM&w=960&h=639",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

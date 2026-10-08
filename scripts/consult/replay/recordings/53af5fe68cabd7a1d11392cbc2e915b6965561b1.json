@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 16 Pro 256GB giá Thế Giới Di Động",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:11.048Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB giá Thế Giới Di Động",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bảng giá iPhone 16/Plus/Pro/Pro Max mới nhất tại Thế ...",
+    "link": "https://www.thegioididong.com/hoi-dap/bang-gia-iphone-16-plus-pro-pro-max-chinh-thuc-1570362",
+    "snippet": "Với iPhone 16 thường từ 22.990.000đ, iPhone 16 Plus từ 25.990.000đ, iPhone 16 Pro từ 28.990.000đ và iPhone 16 Pro Max từ 34.990.000đ. Với phiên bản iPhone 16e ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) - Giá tốt, thu cũ trợ giá đến 2 ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb",
+    "snippet": "iPhone 16 Pro 1TB. 1.499 USD. 43.990.000đ. Vì sao iPhone 16 Pro 256GB là sự lựa chọn tốt tại Thế Giới Di Động? iPhone 16 Pro 256GB, sản phẩm ...",
+    "date": "10 thg 9, 2024",
+    "position": 2
+   },
+   {
+    "title": "Bảng giá iPhone hiện nay mới nhất 2026 (iPhone Mới - Cũ)",
+    "link": "https://www.thegioididong.com/hoi-dap/tong-hop-bang-gia-iphone-hien-nay-moi-nhat-nam-1466393",
+    "snippet": "iPhone 16 Pro 256GB. Từ 22.740.000đ. (Tiết kiệm: 8.250.000đ). Mua Ngay ; iPhone 16 Pro Max 256GB. Từ 24.630.000đ. (Tiết kiệm: 9.360.000đ). Mua Ngay .",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "Trả góp 0% ; Hiệu năng. 5/5. (16 đánh giá) ; Thời lượng pin. 4.9/5. (16 đánh giá) ; Chất lượng camera. 5/5. (16 đánh giá) ; Giá sản phẩm. 31.990.000đ 27.990.000đ.",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 4
+   },
+   {
+    "title": "Điện thoại iPhone 16 Pro 128GB | Giá tốt, trả chậm 0% lãi ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro",
+    "snippet": "Giá bán iPhone 16 Pro tại Thế Giới Di Động. Dưới đây là bảng tổng hợp giá bán ... iPhone 16 Pro 256GB. 1.099 USD. 31.990.000đ. iPhone 16 Pro 512GB. 1.299 ...",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro: Có ĐÁNG MUA ở HIỆN TẠI ‣ Thế Giới Di Động",
+    "link": "https://www.youtube.com/watch?v=diYD0MXTn-o",
+    "snippet": "ĐÓN CHỜ SIÊU PHẨM THẾ HỆ MỚI TẠI THẾ GIỚI DI ĐỘNG: ▻ Đăng ký nhận thông tin iPhone 18 Series chính hãng: ...",
+    "position": 6
+   },
+   {
+    "title": "Giá iPhone 16 series ưu đãi hấp dẫn, sẵn hàng, góp 0%",
+    "link": "https://www.thegioididong.com/dtdd-apple-iphone-16-series",
+    "snippet": "iPhone 16 Pro 256GB, 31.990.000đ. iPhone 16 ... Hotline tư vấn và hỗ trợ khách hàng: 1900 232 460 (8:00 - 21:30).",
+    "position": 7
+   },
+   {
+    "title": "14đánh giá Điện thoại iPhone 16 Pro 256GB",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb/danh-gia",
+    "snippet": "Điện thoại iPhone 16 Pro 256GB. ×. Kiểm tra giỏ hàng Đồng ý. 4.9 /5. 26,3k ... Tôi đồng ý với Chính sách xử lý dữ liệu cá nhân của Thế Giới Di Động. Gửi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

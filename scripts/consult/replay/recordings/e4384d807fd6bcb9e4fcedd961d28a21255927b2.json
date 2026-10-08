@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:00.948Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/a-873856.webp",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB9vvgPVmnKnv6tAvhCDDXZfZwZKQXHU7JmnuETr73xQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fa-873856.webp&tbnid=gtVrpkWLFou7cM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=810&h=456",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-5_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvs9HDDprSoyVXA83ptHYWt-hShs9paCVYE8L5-QAekA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-5_1.png&tbnid=tAw-KOPY8JuYZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-poco-f9-ultra-red.jpg",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_AN2_9kf4kvv5tzNP3POORDeWmoLrFfC311l8LltZ3g&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fx%2Fi%2Fxiaomi-poco-f9-ultra-red.jpg&tbnid=TULA6y4PsH0S2M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-9_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq6j53TD-Fk3FxLf-DrdGzEmYhdZRNTwrwcmq30CN6sQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-9_1.png&tbnid=n-2e67R_FJyg5M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-4_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhMD6nZ9jy8dik1jLk02MKiM8QtkEv6qe6hwv1IumkLQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-4_1.png&tbnid=TXfpByAMLMKpvM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-10_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR57UfyeHmTop25lDylvAoz8cUkMTjoRxiEZrJHwBWdCA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-10_1.png&tbnid=os_p8tu4b4j-DM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 256GB VN/A | Giá rẻ giảm đến 12 triệu, trả góp 0%",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/803717658.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9tQybeOaP0qHnKgvAA2p63aN1QKrk_OUMTmAxiDxAqQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-16-256gb-pid339615.html?srsltid=AU7gw4WkTcNxrSyzmOM9cSqZRjgUHxPyLWdgkmqbA5cuBHxGGplbFHu5",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F803717658.jpeg&tbnid=0VgiHOMJk1CCHM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fiphone-16-256gb-pid339615.html%3Fsrsltid%3DAU7gw4WkTcNxrSyzmOM9cSqZRjgUHxPyLWdgkmqbA5cuBHxGGplbFHu5&docid=r-cYfZ-99Pzd2M&w=500&h=500",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-7_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRS-rYohAtTnQUgYfWI0hpdOAI6GBq-AAl664u4_uqhtw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-7_1.png&tbnid=UBN_OogvWCD-JM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-256gb.html&docid=D_ft8QGdCj_opM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
