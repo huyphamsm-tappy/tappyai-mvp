@@ -178,6 +178,10 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
       const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0 }
       const checks = evaluateTurn(t.expect, obs)
       const trace = cap.events.find(e => e.type === 'tappyai_agent_trace') as Record<string, unknown> | undefined
+      // Phase 8 run trace (TAPPY_AGENT=2): exactly one per turn, with every round / tool / guard.
+      const runTraces = cap.events.filter(e => e.type === 'tappyai_agent_run_trace') as Array<{ status?: string; final_output_type?: string; totals?: Record<string, number>; events?: Array<{ kind: string }> }>
+      const rt = runTraces[0]
+      const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0 } : null
       rows.push({
         mode, scenario: s.id, category: s.category, turn: i + 1, sent: t.text,
         checks, pass: checks.every(c => c.pass),
@@ -190,6 +194,7 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
         fellBack: p.turn?.fellBack ?? false,
         guardsChanged: cap.events.filter(e => e.type === 'tappyai_guard' && guardChanged(e)).map(e => String(e.guard)),
         kept: keptRatio(rawText, p.text),
+        runTrace,
         reply: p.text, ...(crash ? { crash } : {}),
       })
       writeFileSync(join(outDir, 'raw', `${mode}-${s.id}-t${i + 1}.json`), JSON.stringify({ sent: t.text, rawText, parsed: { ...p, text: undefined }, text: p.text, logEvents: cap.events, logErrors: cap.errors }, null, 1))

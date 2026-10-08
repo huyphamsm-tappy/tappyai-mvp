@@ -25,7 +25,8 @@ describe('no scratch files are committed', () => {
   it('the replay recording set does not grow by accident (a deliberate addition raises this number in the same commit)', () => {
     const n = tracked.filter(f => f.startsWith('scripts/consult/replay/recordings/')).length
     // 2008 → 2068 (Phase 8 M0, eb3d32a): the 60 Serper recordings of the agent-eval baseline (scripts/agent-eval), added deliberately.
-    expect(n).toBeLessThanOrEqual(2068)
+    // 2068 → 2135 (Phase 8 M1): the 67 recordings of the TAPPY_AGENT=2 eval runs (scripts/agent-eval), added deliberately.
+    expect(n).toBeLessThanOrEqual(2135)
   })
 })
 

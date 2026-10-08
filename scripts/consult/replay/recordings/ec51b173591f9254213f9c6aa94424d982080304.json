@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Buffet Gánh Khách Sạn Palace Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:38:37.315Z",
+ "body": {
+  "searchParameters": {
+   "q": "Buffet Gánh Khách Sạn Palace Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7744445,106.701102,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Buffet Gánh Khách Sạn Palace",
+    "address": "56 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7744445,
+    "longitude": 106.70367689999999,
+    "rating": 4.8,
+    "ratingCount": 259,
+    "type": "Nhà hàng tiệc đứng",
+    "types": [
+     "Nhà hàng tiệc đứng"
+    ],
+    "website": "https://www.palacesaigon.com/dining/buffet-ganh-restaurant/",
+    "phoneNumber": "+84 901 005 859",
+    "openingHours": {
+     "Thứ Năm": "11:00–14:00",
+     "Thứ Sáu": "11:00–14:00",
+     "Thứ Bảy": "11:00–14:00",
+     "Chủ Nhật": "11:00–14:00",
+     "Thứ Hai": "11:00–14:00",
+     "Thứ Ba": "11:00–14:00",
+     "Thứ Tư": "11:00–14:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/XAbcWkT24bI?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPSmlfaAMtK5a7kdNtf2lnQSVazRNeEzHuxTCNcxdII_xoVhB0LbDs7ljGmxF5EVBzErGFzgZ4Yb8thgdcZEDIp8Kf-jiprT2Ee6V_RTv0F0dVKvOGGVaUbzRiAaif-bR8Dw9Emp6MfGhs",
+    "cid": "1018625144515167929",
+    "fid": "0x31752f46b60ba239:0xe22e22c0a1b86b9",
+    "placeId": "ChIJOaILtkYvdTERuYYbCiziIg4"
+   }
+  ],
+  "credits": 3
+ }
+}

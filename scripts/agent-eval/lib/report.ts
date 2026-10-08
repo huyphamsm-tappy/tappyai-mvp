@@ -23,6 +23,8 @@ export interface EvalRow {
   fellBack: boolean
   guardsChanged: string[]
   kept: number | null
+  /** TAPPY_AGENT=2 only: the run trace this turn emitted (null on other modes). */
+  runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number } | null
   reply: string
   crash?: string
 }
@@ -42,6 +44,7 @@ export interface ModeSummary {
   outputs: Record<string, number>
   crashes: number
   fellBack: number
+  trace: { turns: number; exactlyOne: number; roundsMax: number; toolCallsMax: number; serperMax: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number } | null
 }
 
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0)
@@ -74,6 +77,11 @@ export function summarizeMode(rows: readonly EvalRow[]): ModeSummary {
     outputs,
     crashes: rows.filter(r => r.crash).length,
     fellBack: rows.filter(r => r.fellBack).length,
+    trace: (() => {
+      const t = rows.map(r => r.runTrace).filter((x): x is NonNullable<EvalRow['runTrace']> => !!x)
+      if (!t.length) return null
+      return { turns: t.length, exactlyOne: t.filter(x => x.lines === 1).length, roundsMax: Math.max(...t.map(x => x.rounds)), toolCallsMax: Math.max(...t.map(x => x.toolCalls)), serperMax: Math.max(...t.map(x => x.serperCredits)), timeouts: t.reduce((a, x) => a + x.timeouts, 0), retries: t.reduce((a, x) => a + x.retries, 0), budgetRefusals: t.reduce((a, x) => a + x.budgetRefusals, 0), guardEvents: t.reduce((a, x) => a + x.guardEvents, 0) }
+    })(),
   }
 }
 
@@ -107,6 +115,9 @@ export function markdown(rows: readonly EvalRow[], s: Record<string, ModeSummary
   row('guard kept ratio mean · min · turns <60%', x => `${r2(x.guards.keptMean)} · ${r2(x.guards.keptMin)} · ${x.guards.under60}`)
   row('outputs', x => Object.entries(x.outputs).map(([k, v]) => `${k} ${v}`).join(', '))
   row('crashes · fell back', x => `${x.crashes} · ${x.fellBack}`)
+  row('run trace: turns with exactly 1 trace', x => x.trace ? `${x.trace.exactlyOne}/${x.trace.turns}` : '—')
+  row('run trace: max rounds · max tool calls · max Serper', x => x.trace ? `${x.trace.roundsMax} · ${x.trace.toolCallsMax} · ${x.trace.serperMax}` : '—')
+  row('run trace: timeouts · retries · budget refusals · guard events', x => x.trace ? `${x.trace.timeouts} · ${x.trace.retries} · ${x.trace.budgetRefusals} · ${x.trace.guardEvents}` : '—')
   L.push('', '## Guards that changed replies', '')
   for (const m of modes) L.push(`- **${m}**: ${Object.entries(s[m].guards.byGuard).map(([k, v]) => `${k} ×${v}`).join(', ') || '—'}`)
   L.push('', '## Turns', '')

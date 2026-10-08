@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 Pro 128GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:19.899Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Pro 128GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện thoại Apple iPhone 15 Pro 128GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-Pro-128GB-i.88201679.21184086567",
+    "snippet": "Mua Điện thoại Apple iPhone 15 Pro 128GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng Miễn Phí.",
+    "rating": 4.9,
+    "ratingCount": 1297,
+    "position": 1
+   },
+   {
+    "title": "Iphone 15 pro 128 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone/15%20pro%20128",
+    "snippet": "Mua online iphone 15 pro 128 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 2
+   },
+   {
+    "title": "Iphone 15 pro - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone/15%20pro",
+    "snippet": "Apple iPhone 15 128GB Chính hãng VN/A · 20.490.000 · 24.190.000 ; Điện thoại Apple iPhone 16 128GB · 22.590.000 · 24.999.000 ; Điện thoại Apple iPhone 16 Plus 128GB.",
+    "position": 3
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/4350910",
+    "snippet": "Điện thoại Apple iPhone 15 Pro 128GB. Bán hết. custom-overlay. flag-label Điện thoại Apple iPhone 15 Pro 128GB. 28.999.000₫. rating-star 4.9. 5k+ đã bán.",
+    "position": 4
+   },
+   {
+    "title": "Iphone 15 128 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/iphone/15%20128",
+    "snippet": "Mua online iphone 15 128 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 09, 2026 . Freeship 0Đ. Mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "iphone 14 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/mall/search?facet=11036031&keyword=iphone%2014&noCorrection=true&page=0",
+    "snippet": "Apple iPhone 15 128GB Chính hãng VN/A · Apple iPhone 15 128GB Chính hãng VN/A. 22.590.000 · 24.190.000₫. -7% ; Điện thoại Apple iPhone 15 128GB · Điện thoại Apple ...",
+    "position": 6
+   },
+   {
+    "title": "Điện thoại Apple iPhone 15 128GB",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Apple-iPhone-15-128GB-i.88201679.18093055535",
+    "snippet": "5 phân loại có sẵn. 20.490.000₫. 22.590.000₫. -9%. fbs-logo-vn. mall inline badge. Điện thoại Apple iPhone 15 128GB. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.9,
+    "ratingCount": 5624,
+    "position": 7
+   },
+   {
+    "title": "Điện Thoại Apple iPhone 15 128GB - Pink (Chip A16 Bionic",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Apple-iPhone-15-128GB-Pink-(Chip-A16-Bionic-Dynamic-Island-USB-C)-BH-12-Th%C3%A1ng-i.469040198.44333698300",
+    "snippet": "Mua Điện Thoại Apple iPhone 15 128GB - Pink (Chip A16 Bionic - Dynamic Island - USB-C) - BH 12 Tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

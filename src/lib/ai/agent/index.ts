@@ -14,13 +14,14 @@ import { AI } from '@/lib/ai/llm'
 import type { ModelRole } from '@/lib/ai/llm/types'
 import { withSerperToolBudget, withSerperTurnBudget } from '@/lib/ai/tools/serperToolBudget'
 import { redactForTrace, guardToolOutput } from './guards'
-import { searchingFrame } from '@/lib/ai/consultative/presearch'
+import { searchingFrame } from '@/lib/recommendation/progressAnnotation'
 import { runBoundedAgent, AGENT_LIMITS, type AgentStep, type AgentExecutableTool, type AgentRun } from './loop'
 import { toModelSchemas, nowShowingTool, movieShowtimesTool, labelFlightVerification, requestActionTool, SIDE_EFFECT_TOOLS, type PendingAction } from './agentTools'
 import { AGENT_SYSTEM, AGENT_SYSTEM_EN_NOTE } from './prompt'
 import { agentStreamResult, type AgentStreamResult } from './dataStream'
 
-export const tappyAgentEnabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '1'
+/** Any agent runtime: '1' = the Phase 7 bounded agent, '2' = the Phase 8 runtime (runtime/index.ts). Unset = the legacy Consultative path. */
+export const tappyAgentEnabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '1' || env.TAPPY_AGENT === '2'
 
 type RouteTool = { description?: string; parameters?: unknown; execute?: (args: Record<string, unknown>, ctx: { toolCallId: string; messages: unknown[] }) => unknown }
 

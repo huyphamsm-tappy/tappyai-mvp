@@ -150,9 +150,8 @@ export function prefixBody(prefix: string, body: ReadableStream<Uint8Array> | nu
 }
 
 /** A1(b): the progress frame that leads a pre-search turn — written before the search runs. */
-export function searchingFrame(lang: string): string {
-  return '8:' + JSON.stringify([buildProgressAnnotation('searching', lang)]) + '\n'
-}
+/** Moved to recommendation/progressAnnotation.ts (Phase 8 M1: the agent runtime must not import the consult pre-search); re-exported for its callers. */
+export { searchingFrame } from '@/lib/recommendation/progressAnnotation'
 
 /**
  * A1(b): a body that yields `prefix` NOW and the turn's own stream once `produce` resolves — the

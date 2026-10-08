@@ -41,6 +41,10 @@ import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } fr
 import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
+import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
+import type { AgentTurnInput } from '@/lib/ai/agent'
+import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
+import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
 import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
@@ -372,6 +376,8 @@ export async function POST(req: Request) {
   // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
   // TAPPY_AGENT (default OFF): the bounded agent decides the turn (src/lib/ai/agent). OFF = the Consultative path below, unchanged.
   const agentOn = tappyAgentEnabled() && !hasImage && !clipRef
+  // Phase 8 (TAPPY_AGENT=2): the new agent runtime. Shares every agent-path step below; differs only where marked `agentV2`.
+  const agentV2 = agentOn && agentRuntimeV2Enabled()
   const consultOn = consultV2Enabled() && !hasImage && !clipRef
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
@@ -684,7 +690,8 @@ export async function POST(req: Request) {
       : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(c => c.text || '').join(' ') : '').filter((x: string) => x.trim())
     return texts.length && texts[texts.length - 1] === lastText ? texts : [...texts, lastText].filter(x => x.trim())
   })()
-  const plannerNeedsDest = agentOn && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
+  // Phase 8: the runtime asks through Luna's ask_user action instead of this regex gate.
+  const plannerNeedsDest = agentOn && !agentV2 && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
   const plannerAsk = plannerNeedsDest ? plannerDestinationQuestion(lastText, lang) : null
   // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
   // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
@@ -2822,7 +2829,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentPendingAction: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null | undefined
   let agentExecuted: string[] = []
   // Hardening D: hard Serper budget per agent turn (tools + card photos together).
-  const agentSerperLimit = planningIntent === 'trip' ? 10 : 8
+  // Phase 8 runtime: 12 credits, 15 for travel research (hard ceilings, runtime/limits.ts).
+  const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8
   let agentSerperSpent = 0
   // The after-loop lookups (card photos + TikTok review search) share ONE scope holding what the tools left (created on first use, after the loop).
   let agentAfterBudget: ReturnType<typeof sharedSerperBudget> | null = null
@@ -2834,6 +2842,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentStatePatch: { flight?: NonNullable<ChatSessionState['flight']>; movie?: NonNullable<ChatSessionState['movie']>; plan?: NonNullable<ChatSessionState['plan']> } = {}
   let agentRejected: string[] = []
   if (agentOn) enrichment.agentMode = true
+  // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
+  const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
+  if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => agentRunTrace.guard(stage, before, after)
   const agentTurn = async (onFinish: unknown) => {
     // A pending side-effecting action is executed ONLY on the user's explicit confirmation, by code, through the tool's own action boundary.
     let actionOutcome: string | null = null
@@ -2880,7 +2891,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     })
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
-    return startAgentTurn({
+    const turnInput: AgentTurnInput = {
       routeTools: tools as never,
       noRetrieval: planOnlyTurn,
       context,
@@ -2899,7 +2910,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       sanitizeQuery: q => sanitizeSearchQuery(q, { privateTexts, ownWords }),
       codeDate: codeResolvedDate(lastText, new Date(), chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date())),
       onFinish: onFinish as never,
-    })
+    }
+    return agentRunTrace
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      : startAgentTurn(turnInput)
   }
   let result
   try {
@@ -3435,7 +3449,7 @@ ${completionInstruction(lang)}` },
         const answerUsd = (lunaAnswerCost?.usd ?? 0) + planCompletionUsd
         const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
-      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }

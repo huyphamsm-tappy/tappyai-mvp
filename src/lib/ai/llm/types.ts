@@ -21,7 +21,9 @@ export type ProviderId = 'claude' | 'openai' | 'gemini' | 'grok' | 'deepseek'
  * `consult` and `intent` resolve to the default provider unless LLM_CONSULT_PROVIDER /
  * LLM_INTENT_PROVIDER route them elsewhere (registry.ts), with the default provider as fallback.
  */
-export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision' | 'consult' | 'intent' | 'plan'
+// agent: a step of the Phase 8 agent runtime (TAPPY_AGENT=2). A RUNTIME role, not another model — it resolves to the same Luna model
+// as every other role and only carries its own timeout + abort-before-retry policy (registry.ts / fallback.ts).
+export type ModelRole = 'fast' | 'smart' | 'planning' | 'vision' | 'consult' | 'intent' | 'plan' | 'agent'
 
 /**
  * Reasoning effort for a model that reasons (owner 2026-09-30: always explicit — a vendor default of

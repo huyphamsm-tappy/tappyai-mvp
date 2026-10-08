@@ -10,7 +10,7 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-interface Scope { limit: number; spent: number; refused: number; parent: Scope | null }
+interface Scope { limit: number; spent: number; refused: number; parent: Scope | null; signal?: AbortSignal }
 const store = new AsyncLocalStorage<Scope>()
 
 async function within<T>(limit: number, fn: () => Promise<T>): Promise<{ value: T; spent: number; refused: number }> {
@@ -21,6 +21,23 @@ async function within<T>(limit: number, fn: () => Promise<T>): Promise<{ value: 
 
 /** One agent tool invocation: its own cap, nested inside the turn's cap. */
 export const withSerperToolBudget = within
+
+/**
+ * Phase 8 runtime (TAPPY_AGENT=2): a tool invocation's cap PLUS its cancellation signal. When the runtime times a tool out it aborts
+ * the signal: serperPost refuses every further request of that invocation and aborts the in-flight fetch, so a timed-out tool stops
+ * spending Serper credits. Only the Phase 8 runtime sets a signal; every other caller is unchanged.
+ */
+export async function withSerperToolScope<T>(limit: number, signal: AbortSignal, fn: () => Promise<T>): Promise<{ value: T; spent: number; refused: number }> {
+  const scope: Scope = { limit, spent: 0, refused: 0, parent: store.getStore() ?? null, signal }
+  const value = await store.run(scope, fn)
+  return { value, spent: scope.spent, refused: scope.refused }
+}
+
+/** The nearest cancellation signal of the current scope chain (undefined outside a Phase 8 tool scope). */
+export function currentSerperSignal(): AbortSignal | undefined {
+  for (let s = store.getStore() ?? null; s; s = s.parent) if (s.signal) return s.signal
+  return undefined
+}
 /** The whole agent turn. */
 export const withSerperTurnBudget = within
 

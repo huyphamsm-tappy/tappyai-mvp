@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI Katana 15 B13VFK-676VN site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:54.265Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI Katana 15 B13VFK-676VN site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop gaming MSI Katana 15 B13VFK 676VN i7| 16GB| 1TB",
+    "link": "https://shopee.vn/Laptop-gaming-MSI-Katana-15-B13VFK-676VN-i7-16GB-1TB-4060-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.1036648426.24206474580",
+    "snippet": "Laptop gaming MSI Katana 15 B13VFK 676VN i7| 16GB| 1TB| 4060| Bảo hành 24 tháng. 1/9. Đã bán hết. 37.990.000₫. Laptop gaming MSI Katana 15 B13VFK 676VN i7| 16GB ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Gaming Katana 15 B13VFK-676VN i7 13620H ...",
+    "link": "https://shopee.vn/Laptop-MSI-Gaming-Katana-15-B13VFK-676VN-i7-13620H-AI-16GB-1TB-15.6-FHD-Win11_Balo-i.1431261217.27937914790",
+    "snippet": "Mua Laptop MSI Gaming Katana 15 B13VFK-676VN i7 13620H/AI/16GB/1TB/15.6\"FHD/Win11_Balo giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 3.8,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK - 676VN ( i7-13620H)",
+    "link": "https://shopee.vn/Laptop-MSI-Katana-15-B13VFK-676VN-(-i7-13620H)-B%E1%BA%A3o-h%C3%A0nh-24-th%C3%A1ng-i.469040198.28556313979",
+    "snippet": "Mua Laptop MSI Katana 15 B13VFK - 676VN ( i7-13620H) - Bảo hành 24 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 3
+   },
+   {
+    "title": "Laptop MSI Gaming Katana 15 B13VFK-676VN i7-13620H/AI ...",
+    "link": "https://shopee.vn/Laptop-MSI-Gaming-Katana-15-B13VFK-676VN-i7-13620H-AI-16GB-1TB-Geforce-RTX-4060-8GB-15.6-FHD-Laptop-99--i.1726457446.51661086052",
+    "snippet": "Mua Laptop MSI Gaming Katana 15 B13VFK-676VN i7-13620H/AI/16GB/1TB/Geforce RTX 4060 8GB/15.6\"FHD - Laptop 99% giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Thay khung giữ ổ cứng và ốc MSI Katana 15 B13VFK-676VN",
+    "link": "https://shopee.vn/Thay-khung-gi%E1%BB%AF-%E1%BB%95-c%E1%BB%A9ng-v%C3%A0-%E1%BB%91c-MSI-Katana-15-B13VFK-676VN-i.304532270.27618279357",
+    "snippet": "Thay khung giữ ổ cứng và ốc MSI Katana 15 B13VFK-676VN. 1/1. Đã bán hết. 329.999₫. Thay khung giữ ổ cứng và ốc MSI Katana 15 B13VFK-676VN.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN i7-13620H 16GB ...",
+    "link": "https://shopee.vn/Laptop-MSI-Katana-15-B13VFK-676VN-i7-13620H-16GB-1TB-eForce-RTX-4060-8GB-15.6'-FHD-144Hz-i.59923321.20176330050",
+    "snippet": "Mua Laptop MSI Katana 15 B13VFK-676VN i7-13620H 16GB 1TB eForce RTX 4060 8GB 15.6' FHD 144Hz giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK 676VN (i7-13620H, 1TB ...",
+    "link": "https://shopee.vn/Laptop-MSI-Katana-15-B13VFK-676VN-(i7-13620H-1TB-SSD-DDR5-16GB-RTX-4060-GDDR6-15.6-FHD-144Hz)-Ch%C3%ADnh-h%C3%A3ng-BH-24-th%C3%A1ng-i.1253280646.24385021029",
+    "snippet": "Mua Laptop MSI Katana 15 B13VFK 676VN (i7-13620H, 1TB SSD, DDR5 16GB, RTX 4060 GDDR6, 15.6\"FHD 144Hz) Chính hãng BH 24 tháng giá tốt.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN",
+    "link": "https://shopee.vn/Laptop-MSI-Katana-15-B13VFK-676VN-i.1594927314.50007417886",
+    "snippet": "Laptop MSI Katana 15 B13VFK-676VN. 1/10. Đã bán hết. 34.708.800₫. Laptop MSI Katana 15 B13VFK-676VN.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

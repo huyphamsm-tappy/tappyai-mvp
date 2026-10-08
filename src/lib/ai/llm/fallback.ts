@@ -19,6 +19,12 @@ export interface FallbackOptions {
   label: string
   /** What the fallback is, for the log line: a Luna retry or the Claude model. */
   fallbackKind?: 'luna_retry' | 'haiku'
+  /**
+   * Phase 8 (role `agent`): the primary generate runs under its OWN AbortController (linked to the caller's signal). On a timeout or
+   * failure it is ABORTED before the retry starts, so the original request never keeps running — and billing — beside the retry.
+   * Off for every other role (their behaviour is unchanged).
+   */
+  abortPrimaryOnTimeout?: boolean
 }
 
 function log(label: string, reason: string, primary: LanguageModelV1, ms: number, kind?: string) {
@@ -33,6 +39,32 @@ const timeout = <T,>(ms: number): { p: Promise<T>; clear: () => void } => {
 
 const markFellBack = (meta: unknown) => ({ ...((meta as Record<string, unknown>) ?? {}), tappy: { ...(((meta as Record<string, unknown>)?.tappy as Record<string, unknown>) ?? {}), fellBack: true } })
 
+/** doGenerate with abort-before-retry (see FallbackOptions.abortPrimaryOnTimeout). Exported for tests. */
+export async function generateAbortingPrimary(primary: LanguageModelV1, fallback: LanguageModelV1, o: FallbackOptions, opts: Parameters<LanguageModelV1['doGenerate']>[0]): Promise<Awaited<ReturnType<LanguageModelV1['doGenerate']>>> {
+  const t0 = Date.now()
+  const outer = opts.abortSignal
+  if (outer?.aborted) throw outer.reason ?? new Error('aborted')
+  const ctrl = new AbortController()
+  const onOuter = () => ctrl.abort(outer?.reason)
+  outer?.addEventListener('abort', onOuter, { once: true })
+  const t = timeout<never>(o.generateMs ?? o.firstPartMs)
+  try {
+    return await Promise.race([primary.doGenerate({ ...opts, abortSignal: ctrl.signal }), t.p])
+  } catch (e) {
+    // Cancel the original FIRST: a timed-out request must not keep running (and billing) beside the retry.
+    ctrl.abort(new Error('primary_cancelled_before_retry'))
+    if (outer?.aborted) throw e
+    const reason = e instanceof Error ? e.message : String(e)
+    log(o.label, reason, primary, Date.now() - t0, o.fallbackKind)
+    const r = await fallback.doGenerate(opts)
+    const meta = markFellBack(r.providerMetadata) as { tappy: Record<string, unknown> }
+    return { ...r, providerMetadata: { ...meta, tappy: { ...meta.tappy, fallbackReason: reason.slice(0, 120), primaryAborted: true, primaryMs: Date.now() - t0 } } as never }
+  } finally {
+    t.clear()
+    outer?.removeEventListener('abort', onOuter)
+  }
+}
+
 export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1, o: FallbackOptions): LanguageModelV1 {
   return {
     ...primary,
@@ -44,6 +76,7 @@ export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1
     // 🔑 SSRF: carried explicitly — a getter on the SDK model is lost by the spread (imageUrlSsrfGuardrail.test.ts).
     supportsImageUrls: primary.supportsImageUrls,
     async doGenerate(opts) {
+      if (o.abortPrimaryOnTimeout) return generateAbortingPrimary(primary, fallback, o, opts)
       const t0 = Date.now()
       const t = timeout<never>(o.generateMs ?? o.firstPartMs)
       try {

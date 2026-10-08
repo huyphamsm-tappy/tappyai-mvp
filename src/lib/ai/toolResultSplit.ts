@@ -183,6 +183,8 @@ export interface EnrichmentCollector {
   consultBrief?: boolean
   /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
   agentMode?: boolean
+  /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
+  guardTrace?: (stage: string, before: string, after: string) => void
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */

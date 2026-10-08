@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá xăng Việt Nam mới nhất kỳ điều chỉnh giá xăng hôm nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:38:21.105Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá xăng Việt Nam mới nhất kỳ điều chỉnh giá xăng hôm nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá xăng dầu hôm nay 8/10, tin giá xăng mới nhất",
+    "link": "https://vnexpress.net/chu-de/gia-xang-dau-3026",
+    "snippet": "Giá xăng hôm nay ; Xăng E10 RON 95-III, 27.180, + 100 ; Xăng E5 RON 92, 26.560, + 170 ; Dầu Diesel, 29.710, - 780 ...",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay cập nhật mới nhất",
+    "link": "https://baomoi.com/tien-ich-gia-xang-dau.epi",
+    "snippet": "Giá Xăng dầu Ngày 08-10-2026 00:29 ; Xăng E10 RON 95 Mức 3, 27,180, 27,720 ; Xăng E10 RON 95 Mức 5, 28,180, 28,740.",
+    "position": 2
+   },
+   {
+    "title": "Thông cáo báo chí :: Petrolimex (PLX) - Tập đoàn Xăng ...",
+    "link": "https://www.petrolimex.com.vn/ndi/thong-cao-bao-chi.html",
+    "snippet": "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 01.10.2026 · Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 00 phút ngày 24.9.2026 · Petrolimex và Sun ...",
+    "position": 3
+   },
+   {
+    "title": "Tin giá xăng dầu",
+    "link": "https://www.pvoil.com.vn/tin-gia-xang-dau",
+    "snippet": "Giá điều chỉnh lúc 15:00 ngày 01/10/2026 (Đồng/lít thực tế), Chênh lệch giá điều chỉnh (tăng/giảm) (Đồng/lít thực tế). 1, Xăng E10 RON 95-III, 27.180 đ, +100. 2 ...",
+    "position": 4
+   },
+   {
+    "title": "Giá xăng dầu hôm nay RON 95, E5 ...",
+    "link": "https://vietnamnet.vn/gia-xang-dau-tag5537394984591514120.html",
+    "snippet": "Trong nước, giá xăng dầu tuần này được điều chỉnh tăng mạnh, lên mức cao nhất kể từ tháng 4. Giá xăng dầu hôm nay 26/9: Thế giới hạ nhiệt, trong nước · Thị ...",
+    "position": 5
+   },
+   {
+    "title": "Dự báo Giá Xăng Dầu hôm nay 08/10/2026",
+    "link": "https://chogia.vn/du-bao-gia-xang-dau-37804/",
+    "snippet": "Dự báo kỳ điều chỉnh ngày 08/10/2026 ; Xăng E10 RON95-IIIXăng sinh học E10 · 153.66 · Tăng 1.070đ ; Xăng E5 RON92-IIXăng sinh học E5 · 147.31 · Tăng 1.140đ ; Điêzen ...",
+    "position": 6
+   },
+   {
+    "title": "Giá xăng dầu hôm nay bao nhiêu 1 lít mới nhất?",
+    "link": "https://topi.vn/gia-xang-dau-hom-nay.html",
+    "snippet": "Xăng E10 RON 95-V · 28.180, 28.740 ; Xăng E10 RON 95-III, 27.180, 27.720 ; Xăng E5 RON 92-II, 26.560, 27.090 ; DO 0,001S-V, 31.110, 31.730.",
+    "position": 7
+   },
+   {
+    "title": "Giá xăng dầu tăng, xăng RON95 vượt 20.000 đồng/lít | THDT",
+    "link": "https://www.youtube.com/watch?v=T1CYfoG2WZg",
+    "snippet": "Share your videos with friends, family, and the world.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

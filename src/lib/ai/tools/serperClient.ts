@@ -20,7 +20,7 @@ import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperM
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
-import { admitWithinToolBudget } from './serperToolBudget'
+import { admitWithinToolBudget, currentSerperSignal } from './serperToolBudget'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
@@ -94,13 +94,18 @@ export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
  */
 export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
+  // Phase 8 runtime: a cancelled tool invocation sends nothing more (no credit spent) and its in-flight request is aborted.
+  const signal = currentSerperSignal()
+  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_admit' })); return null }
   if (!(await serperAdmit(endpoint))) return null
+  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' })); return null }
   recordSerperCall(endpoint)
   const res = await Promise.race([
     fetch(`https://google.serper.dev/${endpoint}`, {
       method: 'POST',
       headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
+      ...(signal ? { signal } : {}),
     }),
     new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
   ])
