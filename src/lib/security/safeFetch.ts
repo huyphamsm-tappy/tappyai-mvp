@@ -44,6 +44,7 @@ import https from 'node:https'
 import { lookup as dnsLookup, type LookupAddress } from 'node:dns'
 import type { LookupFunction } from 'node:net'
 import { isAllowedDestinationAddress } from './addressPolicy'
+import { isSafeHttpsUrl } from './urlGuard'
 
 /**
  * Thrown when a destination resolves somewhere we will not go.
@@ -172,6 +173,12 @@ export async function safeGetText(
   let currentUrl = rawUrl
 
   for (let hop = 0; hop <= maxRedirects; hop++) {
+    // 🚨 The pinned resolver is NOT enough on its own: Node never calls a custom `lookup` when the
+    // hostname is an IP literal, it connects straight to it. So a public page answering
+    // `302 Location: https://127.0.0.1/` (or `[::1]`, `10.x`, `169.254.169.254`) would sail past
+    // `safeLookup` — measured in `__tests__/safeGetTextRedirect.test.ts`. Callers only vet the
+    // FIRST url, so every hop, that one included, is judged here as a string before it is dialled.
+    if (!isSafeHttpsUrl(currentUrl)) throw new BlockedDestinationError()
     const res = await getOnce(currentUrl, signal, opts)
     if (res.kind === 'body') return { text: res.text, finalUrl: currentUrl, contentType: res.contentType }
 
