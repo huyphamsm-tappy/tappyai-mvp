@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"Thông tư 64/2025/TT-BTC\" hộ chiếu mức thu lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:53.422Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"Thông tư 64/2025/TT-BTC\" hộ chiếu mức thu lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 64/2025/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-nham-ho-tro-cho-doanh-nghiep-nguoi-dan--179085",
+    "snippet": "Tra cứu Thông tư 64/2025/TT-BTC, Thông tư số 64/2025/TT-BTC Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

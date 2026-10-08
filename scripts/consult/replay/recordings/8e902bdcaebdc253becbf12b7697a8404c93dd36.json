@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:06.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chỉ hơn 9 triệu có ngay MacBook M1",
+    "link": "https://www.facebook.com/didongviet/posts/-ch%E1%BB%89-h%C6%A1n-9-tri%E1%BB%87u-c%C3%B3-ngay-macbook-m1-tin-%C4%91%C6%B0%E1%BB%A3c-kh%C3%B4ng-kh%C3%B4ng-tin-c%C5%A9ng-ph%E1%BA%A3i-tin-l%C3%AAn-n/1417833127050302/",
+    "snippet": "Macbook Air M1 tầm giá 10tr Cấu hình nổi bật: Chip M1 | 8GB | SSD 256GB • Tình trạng mới: 98,9% Giá ưu đãi chỉ từ: 10trx Quyền lợi đặc biệt: • ...",
+    "position": 1
+   },
+   {
+    "title": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và ...",
+    "link": "https://www.facebook.com/VatVoStudio69/videos/c%E1%BA%A3m-nh%E1%BA%ADn-macbook-neo-v%E1%BB%ABa-m%E1%BB%9F-b%C3%A1n-t%E1%BA%A1i-vi%E1%BB%87t-nam-ngon-v%C3%A0-h%E1%BA%BFt-h%C3%A0ng-tr%C3%AAn-apple-store-o/2772270539797729/",
+    "snippet": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và Hết Hàng Trên Apple Store Online Đợt Đầu Trong video ngày hôm nay, mình và anh Đức sẽ ...",
+    "position": 2
+   },
+   {
+    "title": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng ...",
+    "link": "https://www.facebook.com/groups/aiartworksvn/posts/4512588578953991/",
+    "snippet": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng 4–5 năm, ngân sách 30 triệu đổ lại. Nhu cầu chủ yếu là Python, Data Analysis, ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook - Hội Người Dùng",
+    "link": "https://www.facebook.com/groups/hoinguoidungmacbook/",
+    "snippet": "MacBook Air 2018 13 inch Silver sang chảnh lm vp học tập tốt - Cấu hình: i5, RAM 8GB, SSD 128GB - Màn hình: 13.3 inch 2K, nét căng đẹp - Pin: Khoảng ...",
+    "position": 4
+   },
+   {
+    "title": "Top 5 MacBook đáng tiền nhất 2025-2026: Bí quyết chọn ...",
+    "link": "https://macone.vn/tin-tuc/macbook-dang-xuong-tien-nhat/?srsltid=AU7gw4WwFLB87zicG14pW_4ogn6VtXSLfKKbhHEE0HtolbkjBg_7Dnx2",
+    "snippet": "Bài toán kinh tế cho ngân sách hạn hẹp: Với mức giá chỉ khoảng 13.400.000đ cho bản Like New, đây là lựa chọn duy nhất để trải nghiệm macOS mượt ...",
+    "date": "15 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "Vừa mua MacBook, chưa kịp kích hoạt thì cửa hàng tăng ...",
+    "link": "https://www.facebook.com/Theanh28/posts/v%E1%BB%ABa-mua-macbook-ch%C6%B0a-k%E1%BB%8Bp-k%C3%ADch-ho%E1%BA%A1t-th%C3%AC-c%E1%BB%ADa-h%C3%A0ng-t%C4%83ng-gi%C3%A1-6-tri%E1%BB%87u/1353922803589485/",
+    "snippet": "Một vài dòng sản phẩm Macbook đã tăng giá Macbook Neo tăng từ 15tr và 17tr lên 19tr5 và 22tr Macbook Air M5 tăng từ 30tr lên 35tr Cuối cùng thì ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M4 | NHẸ THIẾT KẾ, MẠNH HIỆU NĂNG  Giá ...",
+    "link": "https://www.facebook.com/shopdunk.store/videos/macbook-air-m4-nh%E1%BA%B9-thi%E1%BA%BFt-k%E1%BA%BF-m%E1%BA%A1nh-hi%E1%BB%87u-n%C4%83ng-gi%C3%A1-ch%E1%BB%89-t%E1%BB%AB-23690000%C4%91-mua-ngay-httpssh/869766202476306/",
+    "snippet": "MacBook Air M4 | NHẸ THIẾT KẾ, MẠNH HIỆU NĂNG Giá chỉ từ: 23.690.000đ ---------------------------- Mua ngay: ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook | Laptop Apple giá tốt, giảm 10 triệu, góp 0%",
+    "link": "https://www.thegioididong.com/laptop-apple-macbook",
+    "snippet": "Apple MacBook chính hãng, giá tốt, giảm đến 10 triệu, HSSV giảm thêm đến 400K, trả chậm 0% lãi suất - trả trước 0đ. Máy Mac hiệu năng cao, pin 24h.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

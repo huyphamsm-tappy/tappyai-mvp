@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Ăn Tuấn Lợi\" OR \"Quán Cao Lầu Thanh\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:46:54.375Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Ăn Tuấn Lợi\" OR \"Quán Cao Lầu Thanh\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hoi An Yogurt Drink Recipe: Summer Drink from Quán Cao ...",
+    "link": "https://www.tiktok.com/@curiousaboutvietnam/video/7660836600468802846",
+    "snippet": "(Link in bio) LOCATION: Quán Cao Lầu Thanh 26 Thái Phiên, Hội An, Đà Nẵng Summer in Vietnam can be pretty intense, especially in Central ...",
+    "position": 1
+   },
+   {
+    "title": "Cao Lầu Hội An: Thưởng thức món ngon đặc sản",
+    "link": "https://www.tiktok.com/@tygioheo2/video/7626931941316627742",
+    "snippet": "Quán Cao Lầu Thanh 26 Thái Phiên, Phường Minh An, Hội An, Quảng Nam, Vietnam #hoianvietnam #hoianfood #hoianancienttown #danangvietnam #danangfood ...",
+    "position": 2
+   },
+   {
+    "title": "breakfast with a view! Such a wholesome morning spent in ...",
+    "link": "https://www.tiktok.com/@bethmcgowannn/video/7689400703416061206",
+    "snippet": "(Link in bio) LOCATION: Quán Cao Lầu Thanh 26 Thái Phiên, Hội An, Đà Nẵng Summer in Vietnam can be pretty intense, especially in Central ...",
+    "position": 3
+   },
+   {
+    "title": "Thia is the best meal to start your day in hoi an # ...",
+    "link": "https://www.tiktok.com/@marratravels/video/7672576340159171873",
+    "snippet": "... Thia is the best meal to start your day in hoi an #marratravels #travel. @Marratravels · original sound · Quán Cao Lầu Thanh Restaurant · author.",
+    "position": 4
+   },
+   {
+    "title": "Food tour",
+    "link": "https://www.tiktok.com/@truffle0493/video/7564804152958651666",
+    "snippet": "(Link in bio) LOCATION: Quán Cao Lầu Thanh 26 Thái Phiên, Hội An, Đà Nẵng Summer in Vietnam can be pretty intense, especially in Central ...",
+    "position": 5
+   },
+   {
+    "title": "When food is brought up in Hoi An, the conversation rarely ...",
+    "link": "https://www.tiktok.com/@curiousaboutvietnam/video/7524882903684107551",
+    "snippet": "... Quán Cao Lầu Thanh 26 Thái Phiên, Phường Minh An, Hội An, Quảng Nam, Vietnam #hoianvietnam #hoianfood #hoianancienttown #danangvietnam ...",
+    "position": 6
+   },
+   {
+    "title": "Exploring Taiwanese Cuisine in Taipei Food Trip",
+    "link": "https://www.tiktok.com/@royvelasco_/video/7419567589178805505",
+    "snippet": "(Link in bio) LOCATION: Quán Cao Lầu Thanh 26 Thái Phiên, Hội An, Đà Nẵng Summer in Vietnam can be pretty intense, especially in Central ...",
+    "position": 7
+   },
+   {
+    "title": "‏Rather have food poisoning in Phuket than be healthy at ...",
+    "link": "https://www.tiktok.com/@abumxh/video/7686577146206162198",
+    "snippet": "(Link in bio) LOCATION: Quán Cao Lầu Thanh 26 Thái Phiên, Hội An, Đà Nẵng Summer in Vietnam can be pretty intense, especially in Central ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

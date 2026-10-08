@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Golden Sun Hotel\" OR \"Khách sạn Green Eco Đà Lạt\" OR \"Colline Dalat\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:55:09.143Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Golden Sun Hotel\" OR \"Khách sạn Green Eco Đà Lạt\" OR \"Colline Dalat\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chị dâu đi với Colline kiểu:… #CollineDalat ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689667959370894598",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 1
+   },
+   {
+    "title": "Máu tụi em chiến lắm, quét sạch các trend cho ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7693137153575898376",
+    "snippet": "158 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \"Máu tụi em chiến lắm, quét sạch các trend cho tụi em #viral #trending ...",
+    "position": 2
+   },
+   {
+    "title": "Colline Dalat (@collinedalat)",
+    "link": "https://www.tiktok.com/@collinedalat",
+    "snippet": "Kênh Tiktok Official của Colline Dalat 10 Phan Boi Chau, Xuan Huong - Da Lat Ward, Lam Dong. facebook.com/HotelColline.",
+    "position": 3
+   },
+   {
+    "title": "Cô/ chú có hóng ba mẹ con chơi team building hông ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7688264812526177543",
+    "snippet": "4469 Lượt thích,21 Bình luận.Video TikTok từ Colline Dalat (@collinedalat): \"Cô/ chú có hóng ba mẹ con chơi team building hông ạ!",
+    "position": 4
+   },
+   {
+    "title": "Một góc Trung Thu tại Colline Dalat",
+    "link": "https://www.tiktok.com/@collinedalat/video/7689317138854612231",
+    "snippet": "Colline Moonlight Carousel mô tả một góc Trung Thu tại Colline Dalat. Lồng đèn đã lên và sắc màu mùa trăng được bày trang trí đầy không gian ...",
+    "position": 5
+   },
+   {
+    "title": "𝗧𝗢𝗚𝗘𝗧𝗛𝗘𝗥, 𝗜𝗦 𝗔 𝗕𝗘𝗔𝗨𝗧𝗜𝗙𝗨𝗟 𝗣𝗟𝗔𝗖𝗘 𝗧𝗢 𝗕𝗘 |...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7654796069175315720",
+    "snippet": "42 Lượt thích,Video TikTok từ Colline Dalat (@collinedalat): \" TOGETHER, IS A BEAUTIFUL PLACE TO BE | HỒNG ÂN ...",
+    "position": 6
+   },
+   {
+    "title": "Colline Dalat",
+    "link": "https://www.tiktok.com/@collinedalat/video/7687205174095531284",
+    "snippet": "The Colline Dalat offers a versatile accommodation solution with its Connecting Room, expertly linking a Superior Room and a Studio Room. This ...",
+    "position": 7
+   },
+   {
+    "title": "❤️ 𝗖𝗢𝗟𝗟𝗜𝗡𝗘 𝗗𝗘𝗖𝗢𝗥𝗔𝗧𝗜𝗢𝗡 𝗣𝗔𝗖𝗞𝗔𝗚𝗘𝗦 | LUXE Bạn ...",
+    "link": "https://www.tiktok.com/@collinedalat/video/7640664437908573447",
+    "snippet": "Liên hệ Colline Dalat để được tư vấn và chuẩn bị không gian phù hợp cho ngày đặc biệt của bạn. Colline Dalat – Công ty TNHH Đỉnh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

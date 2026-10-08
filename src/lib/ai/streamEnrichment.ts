@@ -25,6 +25,7 @@ import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudge
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames } from './guardEvidence'
+import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
@@ -1941,6 +1942,12 @@ export function applyPlaceEnrichmentStreamFilter(
       .map(x => x.id)
   }
   let emitted = false
+  /** M5: Luna's ranking block was applied to the card data this turn (rankingContract.ts). */
+  let lunaRanked = false
+  /** M5: the cards shown under semantic ranking when there is no ranking line — the venues Luna named (null = not that case). */
+  let namedOnlyCards: string[] | null = null
+  /** M5: the cards above the fold under Luna's ranking — its ranked list, in its order. */
+  const lunaFold = (): string[] => (collector?.placesRecommendations ?? []).slice(0, CARD_FOLD_SHOWN).map(r => r.entity.identity.name).filter((n): n is string => !!n)
 
   const PLACE_TOOLS = new Set(['search_places', 'get_hotel_prices', 'search_products'])
 
@@ -2046,6 +2053,29 @@ export function applyPlaceEnrichmentStreamFilter(
     if (emitted) return
     emitted = true
     if (!bufferMode) return // nothing buffered — everything already streamed live
+    /**
+     * Phase 8 M5 (TAPPY_AGENT=2) — LUNA'S RANKING. The machine line Luna ends a recommendation with ([TAPPY_RANK]…) is removed from the
+     * reply here, before any guard reads it, and applied to the card data: only the candidates Luna ranked, in its order, its first pick
+     * recommended with its own (qualitative) reason; `none` → no card. Everything downstream (photos, fold, emphasis) then reads that.
+     * No block / no matching name → the pre-M5 behaviour (cards follow the venues the reply names). See rankingContract.ts.
+     */
+    if (collector?.semanticRanking) {
+      const ex = extractRanking(mainText)
+      mainText = ex.text
+      const rt: Record<string, unknown> = { block: ex.contract ? 'ok' : ex.malformed ? 'malformed' : 'absent' }
+      if (ex.contract) {
+        Object.assign(rt, { picks: ex.contract.picks.length, none: ex.contract.none, confidence: ex.contract.confidence })
+        if (collector.placesRecommendations?.length) {
+          const a = applyRankingToRecs(collector.placesRecommendations, ex.contract)
+          if (a) { collector.placesRecommendations = a.items; lunaRanked = true; Object.assign(rt, { cards: a.items.length, unmatched: a.unmatched }) } else rt.cards = 'unmatched_named_order_kept'
+        }
+        if (collector.shoppingMarker) {
+          const s = applyRankingToShoppingMarker(collector.shoppingMarker, ex.contract)
+          if (s.applied) { collector.shoppingMarker = s.marker ?? undefined; lunaRanked = true; Object.assign(rt, { shopping: s.marker ? s.matched : 0, shopping_unmatched: s.unmatched }) } else rt.shopping = 'unmatched_kept'
+        }
+      }
+      try { collector.rankingTrace?.(rt) } catch { /* trace only */ }
+    }
     const places = resolvePlaces()
 
     // B7-A: photos are fetched HERE, not inside the tool, because only here do we
@@ -2054,7 +2084,8 @@ export function applyPlaceEnrichmentStreamFilter(
     if (resolvePhotos) {
       try {
         // The cards the client will actually render above the fold (see `renderedFoldNames`).
-        const cardNames = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
+        // M5: under Luna's ranking the fold IS its ranked list (no re-derivation from the prose order).
+        const cardNames = lunaRanked ? lunaFold() : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
         const needed = selectPlacesNeedingEnrichment(places, mainText, { cardNames })
         if (needed.length > 0) {
           const photos = await resolvePhotos(needed)
@@ -2186,6 +2217,13 @@ export function applyPlaceEnrichmentStreamFilter(
         pickUnmatched: unmatched,
       }
     })()
+    // M5 (TAPPY_AGENT=2) without a ranking line: the cards are the venues Luna NAMED, in its order — never filler from the provider
+    // order (measured SR-G3: an honest "no Michelin place under 50k" came with eight unranked restaurant cards). Named none → no card.
+    if (collector?.semanticRanking && !lunaRanked) {
+      if (recsForCard.length !== namedRecs.length) console.log(JSON.stringify({ type: 'tappyai_cards', step: 'agent_named_only', named: namedRecs.length, rows: recsForCard.length }))
+      recsForCard = namedRecs
+      namedOnlyCards = namedRecs.map(r => r.entity.identity.name).filter((n): n is string => !!n)
+    }
     // COST (2026-09-29): the lookup is skipped only when every card above the fold already
     // carries a verified TikTok review — there is nothing left for it to attribute. Otherwise the
     // ONE batched request for the fold is unchanged (one credit whether it names one venue or three).
@@ -2209,11 +2247,18 @@ export function applyPlaceEnrichmentStreamFilter(
     // first changes neither (logged as `engine_kept`).
     const briefPickOn = collector?.consultBrief === true
     const engineRecForCard = recsForCard.find(r => r.recommended)
-    const aligned: { recs: typeof recsForCard; outcome: string } = briefPickOn
+    const aligned: { recs: typeof recsForCard; outcome: string } = lunaRanked
+      // M5: Luna's ranking already set the order, the emphasis and its reason — the card layer does not re-rank or re-home it.
+      ? { recs: recsForCard, outcome: 'luna_ranking' }
+      // M5 without a ranking line: Luna's choice is unknown — a venue named in bold may be the one it REJECTS (measured SR-G3: "Madame
+      // Lam … không khớp" became the recommended card). The named cards show, none carries the recommendation.
+      : collector?.semanticRanking
+      ? alignEmphasisToModelPick(recsForCard, null)
+      : briefPickOn
       ? alignEmphasisToEnginePick(recsForCard, namedRecs[0]?.entity.id ?? null)
       : alignEmphasisToModelPick(recsForCard, namedRecs[0]?.entity.id ?? null)
     if (briefPickOn && aligned.outcome === 'engine_kept') console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'engine_pick_authoritative', step: 'card_emphasis_kept', engine_pick: enginePickName, model_first: namedRecs[0]?.entity.identity.name ?? null }))
-    const cardPickedIds = briefPickOn && engineRecForCard
+    const cardPickedIds = lunaRanked ? recsForCard.map(r => r.entity.id) : briefPickOn && engineRecForCard
       ? [engineRecForCard.entity.id, ...namedRecs.map(r => r.entity.id).filter(id => id !== engineRecForCard.entity.id)]
       : namedRecs.map(r => r.entity.id)
     if (aligned.outcome === 'none' && enginePickName) console.error(JSON.stringify({ type: 'tappyai_cards_error', reason: 'emphasis_dropped_no_model_pick', engine_pick: enginePickName }))
@@ -3346,7 +3391,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // A candidate is presented only if its name appears in the text the user
     // actually read; being in the pool, or considered by ranking, is not enough.
     presentedIds = namedHeldIds(finalText)
-    cardOrder = renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true) ?? []
+    cardOrder = (lunaRanked ? lunaFold() : namedOnlyCards ? namedOnlyCards : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)) ?? []
     // The gate removed these, so the detector can no longer see them in
     // `finalText`. Both are kept: the gate's own record is what shipped, and the
     // detector still runs as defence in depth against a shape the gate missed.
@@ -3787,7 +3832,8 @@ export function applyPlaceEnrichmentStreamFilter(
           //
           // Nothing model-authored rides along: this is the same server-built
           // object as before, emitted earlier and unchanged.
-          if (!earlyShoppingMarkerSent && collector?.shoppingMarker) {
+          // M5: under the agent's semantic ranking the card waits for Luna's order (it is sent with the reply).
+          if (!earlyShoppingMarkerSent && collector?.shoppingMarker && !collector.semanticRanking) {
             earlyShoppingMarkerSent = true
             controller.enqueue(encoder.encode('0:' + JSON.stringify(collector.shoppingMarker + '\n\n') + '\n'))
           }

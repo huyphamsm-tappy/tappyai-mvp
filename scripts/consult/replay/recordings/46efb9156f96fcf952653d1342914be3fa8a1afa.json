@@ -1,0 +1,354 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng món Việt dưới 300k/người có máy lạnh, yên tĩnh, không Quán Bụi Central, không gian ít ồn Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:15:29.685Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng món Việt dưới 300k/người có máy lạnh, yên tĩnh, không Quán Bụi Central, không gian ít ồn Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Quán Bụi Central, Sài Gòn - Authentic Vietnamese Cuisine",
+    "address": "1B Ngô Văn Năm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.780828699999999,
+    "longitude": 106.7063711,
+    "rating": 4.5,
+    "ratingCount": 900,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "http://www.quan-bui.com/",
+    "phoneNumber": "+84 932 641 899",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuicentral2607vn&rwg_token=AE37R_jov72hVONB5dloq-XG2XnwhXTKIQBi3WjWwJXPXWaKJYPNPeh_fsWH4ACXL4STYNIwn-RmEtgb0kYJQI6HioA1sBd3Ce5aOdLKNm0MMHPFIZ2AfNQ%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/tcZme1qWhpQ?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPN_-yIMjWYLiegqplbuWYbTRWsU5i4xdGa1VJ5MsiPybbh2infUl_QMGDBrrMRi3JpTHitJniyXsJiOF_Xd_u9IUFdb76JIYWIxwPCjdoptluR4HE2LSiKgaNpA4fx3wqTXc4HVuR31Nc",
+    "cid": "8054492323917688722",
+    "fid": "0x31752f7e2a4017ad:0x6fc74e1815396f92",
+    "placeId": "ChIJrRdAKn4vdTERkm85FRhOx28"
+   },
+   {
+    "position": 2,
+    "title": "Quán Bụi Heritage",
+    "address": "16 Trần Cao Vân, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.784537,
+    "longitude": 106.697588,
+    "rating": 5,
+    "ratingCount": 321,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://quan-bui.com/",
+    "phoneNumber": "+84 941 057 203",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuiheritage2607vn&rwg_token=AE37R_gJmcpHZCNySrRk-7UtQbB7Lhj02nXCkfNO6oC8vcRqmD9dOi83vZTpId2yt1A_IibDbJ2ieQDDz7XMN5fTtlZx4fbsYATdLzCpfCyBvYzpKjwKV6Q%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/Bm1bdfiyX2Q?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP6R2E6IGGJmfoCvk-3Z3AD6ol77_gCxYBYaGlQCjEhJbpYPcZ3bZtMoUuDplsY2ZWUT1MVnRcMqmzTa5HYo0zxcZ43mAqXQnfFkgemSB-nbksx9bzleAralgag-MS3lTD0F-ZkQu9jHrM",
+    "cid": "17503036182717781559",
+    "fid": "0x31752f002982ce89:0xf2e746ac51b3d637",
+    "placeId": "ChIJic6CKQAvdTERN9azUaxG5_I"
+   },
+   {
+    "position": 3,
+    "title": "Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine",
+    "address": "222 - 224 Lê Thánh Tôn, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.772616399999999,
+    "longitude": 106.69659779999999,
+    "rating": 4.5,
+    "ratingCount": 1223,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "https://www.quan-bui.com/",
+    "phoneNumber": "+84 938 840 599",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuibenthanh2607vn&rwg_token=AE37R_gw2K9hB-AzcD-5Vixf1wXShz8u4cjlbxtwypBqstbXMCE2nXBW0fZD22dOMGnxpwI9JuToPG1yqi8jI2FkvlnVMW3hjvk9SQrG1mvt22sf2LGkPSA%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/VEwIoqzxIrU?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOfo0BD3SOk4OZrZ0v-ZbE1nlzhp_oqFh2FKptzr2AE6S_XTBPQxNrVNa3ubeg6glR_4ULBVFjr3xklYdE8UAXbtxJdsTdYsxdkKNl2CJZY_OA3-KCJUzGT4JK9-khtdZCBiYkx3uMziX-R",
+    "cid": "6387801295899804773",
+    "fid": "0x31752f278a58d461:0x58a6076f41e34465",
+    "placeId": "ChIJYdRYiicvdTERZUTjQW8Hplg"
+   },
+   {
+    "position": 4,
+    "title": "Quán Bụi Garden 2, An Khánh - Authentic Vietnamese Cuisine",
+    "address": "3 Trần Ngọc Diện, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.803004699999999,
+    "longitude": 106.73850329999999,
+    "rating": 4.8,
+    "ratingCount": 574,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "https://quan-bui.com/",
+    "phoneNumber": "+84 347 892 647",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuigarden22607vn&rwg_token=AE37R_gEeHeMtzUyheypwsXprPMbbnOMJOfY7jvPS0zBjsfuUPggcUJXbBVv5Wwd0PKT-LZdYtbbqGI2NAlUfnlEGpOwaXxXd3pL0Uft5fq0XvEb0LYyrDk%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/RE-cpW9v9Zo?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJ8FB3oMRrG6R0l5lO37Tmj-t6ZkcJkwk_0VzjbwmoBWdJDbu8wnE-Lk4ii6M2JXeZtmgJFFLqhgyawYIo33Jl9AEa1LxvH6XJErxLKtr7CpD5Ofe0W-Rg_jxMtVZJmtLWTLLijg",
+    "cid": "12692129917778407437",
+    "fid": "0x3175277c702f0729:0xb02380ea184a300d",
+    "placeId": "ChIJKQcvcHwndTERDTBKGOqAI7A"
+   },
+   {
+    "position": 5,
+    "title": "Quán Bụi - Sài Gòn Pearl",
+    "address": "31, D5/92 Nguyễn Hữu Cảnh, Saigon Pearl, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.789983099999999,
+    "longitude": 106.72002859999999,
+    "rating": 4.6,
+    "ratingCount": 998,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "https://quan-bui.com/",
+    "phoneNumber": "+84 938 841 699",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuisgpearl2607vn&rwg_token=AE37R_jnryIxuib1h7107P1sSIxQOFx1i1gsgmHa3VduvY5cIkRsesHaXCh9W36NycZoL018i9lTKmLF2vmczPmfCjiVlXsrJiHojE05NLX-2SViMmv8Fwc%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/aT1Eh1tjw8E?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO7NTsrJhl0PL0Ofu4B9T6YPszgGwvhBpmjyt9GbSt-_8VcAEThcsVhlEFfJ5gWWzqNOpIU3-2uUU_iqvGA9J3fYWDCOR-poMSyyEwPlgcBL8G1DrXMQmvErPIGY2r9rWlwA6MSUA",
+    "cid": "11271429154686607386",
+    "fid": "0x31752f486efadf89:0x9c6c2918fc13a01a",
+    "placeId": "ChIJid_6bkgvdTERGqAT_BgpbJw"
+   },
+   {
+    "position": 6,
+    "title": "Quán Bụi Original, Sài Gòn - Authentic Vietnamese Cuisine",
+    "address": "19 Ngô Văn Năm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.781314799999999,
+    "longitude": 106.70587289999999,
+    "rating": 4.3,
+    "ratingCount": 4238,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "http://quan-bui.com/",
+    "phoneNumber": "+84 934 151 099",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuioriginal2607vn&rwg_token=AE37R_grdHsCUmuokexohMkA9Hcjc0N1d435wlVZx_mGNNxPO6VcMJh7H9nUjqZrAsnsKlzcEP3-MzX24PWgxCIe1HBCXWnovQ%3D%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/7_m7RUagBMA?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNrAUEHdF3N0l7cR1-GFPMZZjKTpBhwqWoKhkI0ZGRoaKu0In6GqKyAZ8UUpOoMH6HvzsQnKcgAd919ZSQC1DlmJgkG_DXWuzGU8gH0QroM2EzF4Co8VkdJrTQPozlZaUkMUNqIQYsGeWn_",
+    "cid": "10979365345486483527",
+    "fid": "0x317528d29d23383f:0x985e8a9c4cf4b047",
+    "placeId": "ChIJPzgjndIodTERR7D0TJyKXpg"
+   },
+   {
+    "position": 7,
+    "title": "Quán Bụi Express, Thủ Thiêm - Authentic Vietnamese Cuisine",
+    "address": "Empire City - Tilia Residences, 04 Đường D11, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7688855,
+    "longitude": 106.7131441,
+    "rating": 4.7,
+    "ratingCount": 320,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "http://www.quan-bui.com/",
+    "phoneNumber": "+84 815 958 338",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuiexpress2607vn&rwg_token=AE37R_jTPRtsvzg5nUfXF_nJ07ASFfYuftx_CnuwhPIQjEsChlq_CN15DPURymtLPOZAwqsxgXa45MaIk77wxUoPEwYSdJx2vdggvrDQzdTlXabMY6QSBmg%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/vYkqzzGCmBE?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPNwFKxuBKaA95y6EygcddoGi44wggOx1Zw9ArwBDgvfYOehkriDOXI3Sk5w6oC6wGqMCLltzkotAMPwOElEjby_IQP2ncOS6ZB27IG4FfvJJJdL23iH5RP4rHrrnvuObGLrQnT",
+    "cid": "6428758257563554410",
+    "fid": "0x31752f581832e8fb:0x5937899300ef526a",
+    "placeId": "ChIJ--gyGFgvdTERalLvAJOJN1k"
+   },
+   {
+    "position": 8,
+    "title": "Quán Bụi Garden",
+    "address": "55A Ngô Quang Huy, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.805121,
+    "longitude": 106.735759,
+    "rating": 4.4,
+    "ratingCount": 2689,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng món nướng",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi",
+     "Bữa tối",
+     "Nhà hàng ăn chay",
+     "Nhà hàng phục vụ bữa trưa",
+     "Nhà hàng phở",
+     "Nhà hàng",
+     "Nhà hàng cơm"
+    ],
+    "website": "http://quan-bui.com/",
+    "phoneNumber": "+84 937 610 299",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "bookingLinks": [
+     "https://quan-bui.com/eforms/reservation-form/6/",
+     "https://book.chope.co/booking?source=google_dining&rid=quanbuigarden2607vn&rwg_token=AE37R_iOefRdSpLupjPZA90sv9H4wU1J0RB2iTuJS0Dq35583Lb6L4phFRlu2edrC-Xisa38L-s8cKaApIKkp3XnILmV-_cq1HlZJ8mYIumEokIesFMMFxM%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/KwRymA232h8?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPkW5n-tzZM68yK4_LE36bXKHCVtMC1Pzx3y-L1yv1yG6tkKvorSfQe0NQdbNAgAwQXRAPex4HrPTQl3DqA21XF6adE7fRUOqpP6HJsOo1RTQtBjBNGb2JX3Snsa0QXYz4F4tvv_w",
+    "cid": "320246394084153819",
+    "fid": "0x317526176671636b:0x471be660ffc59db",
+    "placeId": "ChIJa2NxZhcmdTER21n8D2a-cQQ"
+   }
+  ],
+  "credits": 3
+ }
+}

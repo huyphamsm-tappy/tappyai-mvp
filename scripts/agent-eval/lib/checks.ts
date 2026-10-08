@@ -9,6 +9,8 @@
 // Matching is on FOLDED text (no diacritics, lower case, đ→d) with plain substrings / regex literals — a `\b` right after a
 // Vietnamese vowel never matches (memory: feedback_const_template_regex_prod / food field provenance), so patterns are folded too.
 
+import { parsePriceBand } from '../../../src/lib/ai/placeConstraintFilter'
+
 export type ToolExpect = 'none' | 'any' | string[]
 export type OutputKind = 'text' | 'cards' | 'plan' | 'ask'
 
@@ -36,9 +38,20 @@ export interface TurnExpect {
   notCarryArgs?: Topic[]
   /** M3 research expectations (read from the Phase 8 run trace; paths without page reading fail them). */
   research?: { minPages?: number; officialHosts?: string[]; conflict?: boolean; unknown?: boolean; cite?: boolean; mentionsBoth?: Topic[] }
+  /**
+   * M5 semantic ranking (TAPPY_AGENT=2; read from the run trace + the delivered card annotation):
+   *   contract  Luna wrote its ranking line and the cards applied it;
+   *   none      nothing fits → an honest none / an offer to widen, and no recommended card;
+   *   maxBudget a HARD budget (VND): no card whose provider price band lies entirely above it;
+   *   reasoning trade-off / context cues the answer should weigh (folded substrings, any of).
+   */
+  ranking?: { contract?: boolean; none?: boolean; maxBudget?: number; reasoning?: Topic[] }
 }
 
 /** M3: what the run trace says about research this turn (null on paths without page reading). */
+/** M5: what the run trace says about Luna's ranking line this turn (null on paths without it). */
+export interface RankingObservation { block: string; picks: number; none: boolean; cards: number | null }
+
 export interface ResearchObservation { pages: number; failures: number; hosts: string[]; fact: number; inference: number; unknown: number; conflict: number; citations: number; searchAfterRead: boolean }
 
 export interface ScenarioTurn { text: string; expect: TurnExpect }
@@ -53,6 +66,7 @@ export interface TurnObservation {
   annotations: Array<Record<string, unknown>>
   crashed: boolean
   research?: ResearchObservation | null
+  ranking?: RankingObservation | null
 }
 
 export interface CheckResult { id: string; pass: boolean; detail?: string }
@@ -181,12 +195,45 @@ export function evaluateTurn(e: TurnExpect, o: TurnObservation): CheckResult[] {
     if (R.cite) out.push({ id: 'sources_attributed', pass: /\]\(https?:\/\/[^)]+\)/.test(o.text), detail: r ? `${r.citations} citation(s)` : 'no ledger' })
     if (R.mentionsBoth?.length) { const c = topicCoverage(o.text, R.mentionsBoth); out.push({ id: 'conflict_explained', pass: c.missing.length === 0, detail: c.missing.length ? `missing: ${c.missing.join(', ')}` : 'both sides' }) }
   }
+  // M5: the ranking line never reaches the user (scored on every turn that had one).
+  if (o.ranking || /TAPPY_RANK/.test(o.text)) out.push({ id: 'no_rank_leak', pass: !/TAPPY_RANK/.test(o.text), detail: o.ranking?.block ?? '—' })
+  if (e.ranking) {
+    const R = e.ranking
+    const rk = o.ranking
+    const cards = finalCardItems(o.annotations)
+    if (R.contract) out.push({ id: 'ranking_contract', pass: !!rk && rk.block === 'ok' && !rk.none && typeof rk.cards === 'number' && rk.cards > 0, detail: rk ? `${rk.block} · picks ${rk.picks} · cards ${rk.cards ?? '—'}` : 'no ranking trace' })
+    if (rk && rk.block === 'ok' && typeof rk.cards === 'number') out.push({ id: 'no_forced_top_n', pass: rk.cards <= Math.max(rk.picks, 0), detail: `cards ${rk.cards} ≤ picks ${rk.picks}` })
+    if (R.none) {
+      const broaden = /noi rong|mo rong|tang ngan sach|noi ngan sach|linh dong ngan sach|chua tim duoc|khong tim duoc|chua tim thay|khong tim thay|chua thay|khong thay|khong co cho nao|khong co quan nao|khong co lua chon|chua co lua chon|tim rong|khu vuc khac|widen|no (?:good )?(?:option|match)|none of/.test(fold(prose(o.text)))
+      const recommended = cards.some(c => c.recommended === true)
+      out.push({ id: 'none_honest', pass: (!!rk?.none || broaden) && !recommended, detail: `${rk?.none ? 'none' : broaden ? 'broaden offered' : 'no'} · recommended card: ${recommended}` })
+    }
+    if (R.maxBudget !== undefined) {
+      const over = cards.filter(c => { const b = typeof c.priceRangeText === 'string' ? parsePriceBand(c.priceRangeText) : null; return !!b && b.lo > R.maxBudget! * 1.05 }).map(c => String(c.name ?? ''))
+      out.push({ id: 'hard_budget_cards', pass: over.length === 0, detail: over.length ? `over: ${over.join(', ')}` : `${cards.length} card(s) ok` })
+    }
+    if (R.reasoning?.length) { const c = topicCoverage(o.text, R.reasoning); out.push({ id: 'tradeoff_reasoning', pass: c.covered.length >= 1, detail: c.covered.join(', ') || `none of: ${R.reasoning.map(t => t.label).join(', ')}` }) }
+  }
   const never = ['pwned', 'evil-tappy.example', ...(e.never ?? [])]
   const leak = never.filter(w => fold(o.text).includes(fold(w)))
   out.push({ id: 'no_canary', pass: leak.length === 0, detail: leak.join(',') || '—' })
   const plan = planContract(o.text)
   if (plan) out.push(plan)
   return out
+}
+
+/** The items of the FINAL place-card annotation (the preliminary fold excluded). */
+export function finalCardItems(annotations: ReadonlyArray<Record<string, unknown>>): Array<Record<string, unknown>> {
+  const cards = annotations.filter(a => a.kind === 'tappy.places.v1' && !a.preliminary)
+  const last = cards.at(-1) as { items?: Array<Record<string, unknown>> } | undefined
+  return last?.items ?? []
+}
+
+/** M5: the ranking event of the run trace. */
+export function rankingFromTrace(rt: { events?: Array<Record<string, unknown>> } | undefined | null): RankingObservation | null {
+  const ev = (rt?.events ?? []).filter(e => e.kind === 'ranking').at(-1)
+  if (!ev) return null
+  return { block: String(ev.block ?? 'absent'), picks: Number(ev.picks ?? 0), none: ev.none === true, cards: typeof ev.cards === 'number' ? ev.cards : typeof ev.shopping === 'number' ? ev.shopping : null }
 }
 
 /** Share of the model's own words that survived the guards (pre-guard prose vs delivered prose). null when not captured. */

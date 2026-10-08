@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "không dây choàng đầu Sony WH-CH720N site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:38:56.997Z",
+ "body": {
+  "searchParameters": {
+   "q": "không dây choàng đầu Sony WH-CH720N site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Sony không dây có công nghệ chống ồn WH- ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-sony-khong-day-co-cong-nghe-chong-on-wh-ch720n-i2244687698.html?srsltid=AU7gw4XJeNUKMF0SczhJPOLqE6bxQ0tm1iIO8FkZRIVddW8EYCikgHhr",
+    "snippet": "LazMall Tai nghe Sony không dây có công nghệ chống ồn WH-CH720N · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "rating": 5,
+    "ratingCount": 160,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-CH720N",
+    "link": "https://www.lazada.vn/products/pdp-i3288860921.html?srsltid=AU7gw4UO6pK1iCJa037EKWqUE1YKOzNjliOZZx1_jgEvTwpktszpNYQW",
+    "snippet": "Mô tả sản phẩm. Kiểu tai nghe Over-ear. Kết nối Bluetooth 5.2. Kích thước driver 30 mm. Tần số phản hồi 20 Hz - 20.000 Hz.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe không dây chống ồn SONY WH-CH720N Chính ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-chong-on-sony-wh-ch720n-chinh-hang-i2251492868.html?srsltid=AU7gw4UCBadjvsXS7NSRYghQ89RaiK30nXqvd0gYZKUFq9r12TzoohWR",
+    "snippet": "Với công nghệ chống ồn, thiết kế gọn nhẹ và thời gian sử dụng pin dài, bạn có thể thưởng thức âm nhạc lâu hơn mà không bị gián đoạn bởi tiếng ồn xung quanh.",
+    "position": 3
+   },
+   {
+    "title": "Combo tai nghe Sony WH-CH720N và Sennheiser HD ...",
+    "link": "https://www.lazada.vn/products/combo-tai-nghe-sony-wh-ch720n-va-sennheiser-hd-450bt-i2324933104.html?srsltid=AU7gw4WkypT943_mTXsHTemp1S4Vb6f_1l09sFTbl_tVCvCRYOhpGkjU",
+    "snippet": "Nặng chỉ 192g, WH-CH720N là tai nghe không dây choàng đầu nhẹ nhất của chúng tôi vừa có tính năng Chống ồn vừa tạo cảm giác thoải mái đáng kinh ngạc mà không ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe choàng tai Sony ZX110AP",
+    "link": "https://www.lazada.vn/products/tai-nghe-choang-tai-sony-zx110ap-i1272879970.html?srsltid=AU7gw4W-usRCg2XD7trSEvzyC_30lpGzZZkl0nM3pgYtp9fewr0bxbmx",
+    "snippet": "Tai nghe choàng đầu không dây thời trang Sony WH-CH520. 899.000 ₫ ; Tai nghe Sony không dây có công nghệ chống ồn WH-CH720N. 2.290.000 ₫ ; Tai nghe Sony in-ear ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe choàng đầu không dây thời trang Sony WH-CH520",
+    "link": "https://www.lazada.vn/products/tai-nghe-choang-dau-khong-day-thoi-trang-sony-wh-ch520-i2281148838.html?srsltid=AU7gw4Xe3mAKOjO9l5ccI2K5bG6krBLJGq6EdUvpHcfnsPIB7nk2d3NN",
+    "snippet": "Tai nghe Sony WH-CH520 không dây thời trang với Bluetooth 5.0, mang lại trải nghiệm âm nhạc chuyên nghiệp. Thiết kế chống nước, có khả năng kheo chấn, ...",
+    "rating": 4.9,
+    "ratingCount": 1142,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe dây choàng tai Sony MDR-ZX310AP",
+    "link": "https://h5.lazada.vn/products/tai-nghe-day-choang-tai-sony-mdr-zx310ap-i1272983381-s4801237096.html",
+    "snippet": "Tai nghe choàng đầu không dây thời trang Sony WH-CH520. 1.250.000 ₫ · Tai nghe Sony không dây có công nghệ chống ồn WH-CH720N. 2.290.000 ₫ · Tai nghe In-ear ...",
+    "position": 7
+   },
+   {
+    "title": "LIXIA Thay thế Đệm tai nghe Mút xốp Vải lưới Bịt tai nghe Da giả ...",
+    "link": "https://www.lazada.vn/products/pdp-i13439874532.html?srsltid=AU7gw4UnwHh9KEadLl3iXm6-74iLzPH9_Q2RYCJ_nHcWsNFzITTAnN75",
+    "snippet": "Chỉ tương thích với tai nghe Sony WH-CH720N Kích thước bọc băng đô: 120x20mm(4.72x0.79in) Chất liệu: Da Protein/Vải Lưới + Mút Xốp Tên sản phẩm: Miếng đệm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

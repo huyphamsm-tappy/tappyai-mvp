@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth chụp Tai Sony WH-CH720N\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:16:51.521Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth chụp Tai Sony WH-CH720N\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vinamilk - Shop & More",
+    "link": "https://www.tiktok.com/@vinamilk.official/video/7643637570185776405",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 1
+   },
+   {
+    "title": "GAME ON, SHOP ON ⚡TIỆC DEAL CUỒNG NHIỆT đã ...",
+    "link": "https://www.tiktok.com/@vinamilk.official/video/7643379656644726037",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 2
+   },
+   {
+    "title": "Khi con trai thành phố về quê và gánh vác trọng trách \"săn ...",
+    "link": "https://www.tiktok.com/@vinamilk.official/video/7643652126777806100",
+    "snippet": "... Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * Trường hợp ...",
+    "position": 3
+   },
+   {
+    "title": "Se ha comprado 3 tablets! Están de oferta #tablet # ...",
+    "link": "https://www.tiktok.com/@pablorecomienda/video/7604908805482171670",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 4
+   },
+   {
+    "title": "Time to relax! 🛁 #thesims #simstok #sims1gameplay # ...",
+    "link": "https://www.tiktok.com/@vivienne_ki/video/7264407850057829664",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 5
+   },
+   {
+    "title": "Chạy bộ thôi chưa đủ, chạy bộ và nạp đạp đúng lúc sau ...",
+    "link": "https://www.tiktok.com/@vinamilk.official/video/7672622148816522513",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 6
+   },
+   {
+    "title": "Buổi sáng lý tưởng là có ly trà nóng #TikTokShop77 # ...",
+    "link": "https://www.tiktok.com/@gaaborvietnam/video/7661171803913587975",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 7
+   },
+   {
+    "title": "Take Me to the Candy Shop — snack bár ötletek esküvőre",
+    "link": "https://www.tiktok.com/@wedding_beach/video/7649826185333067030",
+    "snippet": "* Phần thưởng Tai nghe Bluetooth chụp tai Sony WH-CH720N sẽ được trao cho khách hàng hợp lệ đầu tiên xuất hiện trong danh sách chụp màn hình. * ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

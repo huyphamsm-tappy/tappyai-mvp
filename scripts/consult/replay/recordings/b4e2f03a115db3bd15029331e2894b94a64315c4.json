@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:52:39.502Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/bogiaoducdaotao/Pages/vanban.aspx?year=1955",
+    "snippet": "Cơ sở dữ liệu quốc gia về pháp luật cung cấp thông tin đầy đủ về luật, nghị định, thông tư ・ số hộ chiếu, số giấy phép lái ・ số 91/2025/QH15,",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục đăng ký nhận cha, mẹ, con",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-1.001022.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 2
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/nv2-qcdg-7946-2026-019f7ec8e09f751a911b933b0e1de891.pdf",
+    "snippet": "ngày 12/11/2025 của Thi hành án dân sự Thành phố Hồ Chí Minh; 07/3/2025 của Phòng Cảnh sát giao thông ・ ty cổ phần Định giá. Lệ phí trước bạ, ...",
+    "date": "20 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "Chi tiết văn bản",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-2.002038.html",
+    "snippet": "cấp Hộ chiếu Việt Nam, thẻ căn cước, căn cước điện tử. Miễn lệ phí đối với người mất quốc tịch. Hộ chiếu hoặc giấy tờ khác có giá trị thay thế;",
+    "position": 4
+   },
+   {
+    "title": "Số",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/3-bao-cao-thuc-hien-e-an-so-06-20260404233538-334cce88-019d59599dcc75348d9dd370cacd1442.pdf",
+    "snippet": "2,2 triệu dữ liệu. Hệ thống phần mềm của Tòa án chuyển sang Cơ sở dữ liệu hộ tịch điện tử. hỗ trợ chi phí mai táng, trợ cấp mai táng Hiện nay, ...",
+    "date": "10 thg 5, 2025",
+    "position": 5
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-kem-theo-qd-630-btp-ve-cong-bo-tthc-20260427110904-25e8b9eb-019dcd2062537de0be16872851ba69d6.pdf",
+    "snippet": "Người được thi hành án, người phải thi hành án làm đơn đề nghị xét miễn, giảm chi phí cưỡng chế thi hành án gửi cơ quan thi hành án dân sự",
+    "position": 6
+   },
+   {
+    "title": "Untitled - Đấu giá tài sản",
+    "link": "https://dgts.moj.gov.vn/du-lieu-dau-gia-truc-tuyen/thong-bao-lua-chon/3188/tep/12162",
+    "snippet": "năm 2025 (đợt 1). chi phí đấu giá tài sản để. Chi phí đấu giá tài sản (chi phí thông báo, niêm yết tài sản; chi phí",
+    "date": "24 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH QUỐC GIA VIỆT NAM",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-quy-che-52-1-2026-01a08a6f3e427462a4c0129b38e0ba9e.pdf",
+    "snippet": "người phải thi hành án nộp đủ tiền để thi hành án và thanh toán các chi phí thực tế, Mức phí tổn do các bên thỏa thuận, nếu không thỏa thuận … ...",
+    "date": "10 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

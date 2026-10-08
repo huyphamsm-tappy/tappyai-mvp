@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"Beehive Premium Kids Cafe\" OR \"Khu Vui chơi Trẻ em\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:15.597Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"Beehive Premium Kids Cafe\" OR \"Khu Vui chơi Trẻ em\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đi đâu cho bé chơi “đã cái nư”? → Dream Kids – Vạn ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7621831028214074645",
+    "snippet": "→ Dream Kids – Vạn Hạnh Mall Nhớ đọc pass “Mom Tuyền” Giảm 50 ... Khu Vui Chơi Trẻ Em Long Xuyên · Khu Vui Chơi Trẻ Em Quận 12. Đi đâu ...",
+    "position": 1
+   },
+   {
+    "title": "Khu vui chơi trẻ em mới tại Thủ Đức",
+    "link": "https://www.tiktok.com/@beli.review/video/7665678483355438344",
+    "snippet": "Khu vui chơi trẻ em mới toanh tại Thủ Đức, ba mẹ nhớ dắt bé đến chơi nha #cafe #treem #khuvuichoi #thieunhi #thuduc · Đồ Chơi Trẻ Em · Cà Phê Có ...",
+    "position": 2
+   },
+   {
+    "title": "Beehive Premium Kids Cafe: Trải Nghiệm Vui Chơi Quận 5",
+    "link": "https://www.tiktok.com/@nhasonicdidaudo28/video/7327627839124114696",
+    "snippet": "Beehive Premium Kids Cafe: Trải Nghiệm Vui Chơi Quận 5. Mẹ và bé ơi, khám phá ngay Kids Cafe mới toanh tại Quận 5! Nhà Sonic đã có mặt tại ...",
+    "position": 3
+   },
+   {
+    "title": "Khu vui chơi trẻ em Mỡ Miu",
+    "link": "https://www.tiktok.com/@memomiu/video/7629279182979075348",
+    "snippet": "Khu vui chơi trẻ em Mỡ Miu. Mỡ Miu đi chơi tại khu vui chơi trẻ em. Xem clip để biết thêm chi tiết về hoạt động vui chơi hấp dẫn. #cafekid ...",
+    "position": 4
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Rạch Giá | TikTok",
+    "link": "https://www.tiktok.com/discover/khu-vui-ch%C6%A1i-tr%E1%BA%BB-em-r%E1%BA%A1ch-gi%C3%A1",
+    "snippet": "2.5M bài đăng. Hãy khám phá video liên quan đến Khu Vui Chơi Trẻ Em Rạch Giá trên TikTok. Xem thêm video về Khu Vui Chơi Trẻ Em, ...",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Dream Kids Vạn Hạnh Mall: Giảm 50% vé vào cổng",
+    "link": "https://www.tiktok.com/@dreamkids.svh/photo/7527535134313172242",
+    "snippet": "Áp dụng voucher, cho 1 bé + 1 người lớn. Cần vớ chống trượt. Keywords: Dream Kids Vạn Hạnh Mall,khu vui chơi trẻ em,ưu đãi vé,Back to School.",
+    "position": 6
+   },
+   {
+    "title": "KHU VUI CHƠI TRẺ EM PHONG CÁCH NHẬT BẢN",
+    "link": "https://www.tiktok.com/@dreamkids.svh/video/7625520432124562709",
+    "snippet": "... khu vui chơi trẻ em phong cách Nhật Bản tại tầng B – Vạn Hạnh Mall nhé! Không gian được thiết kế theo phong cách lễ hội đầy màu sắc ...",
+    "position": 7
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa",
+    "link": "https://www.tiktok.com/@thanhphong68m1/video/7605818101921336596",
+    "snippet": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa. Khám phá khu vui chơi tuyệt vời dành cho trẻ em tại Gia Hân Hậu Nghĩa Đức Hòa. Vui vẻ, náo nhiệt và an ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

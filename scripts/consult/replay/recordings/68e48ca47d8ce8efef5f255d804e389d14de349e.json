@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congbao.chinhphu.vn 64/2025/TT-BTC hộ chiếu lệ phí cấp hộ chiếu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:55.133Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congbao.chinhphu.vn 64/2025/TT-BTC hộ chiếu lệ phí cấp hộ chiếu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 64/2025/TT-BTC quy định mức thu, miễn một số ...",
+    "link": "https://congbao.chinhphu.vn/van-ban/thong-tu-so-64-2025-tt-btc-45348.htm",
+    "snippet": "Thông tư số 64/2025/TT-BTC quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân. Nằm trong các Công báo: 881 + 882. Lược ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

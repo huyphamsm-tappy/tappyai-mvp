@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu trực tuyến 2 đồng thông tư Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:14:33.369Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu trực tuyến 2 đồng thông tư Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Cách thức thực hiện ; Trực tiếp, 08 Ngày làm việc, Phí: 160000 ĐồngXem chi tiết; Phí: 200000 ĐồngXem chi tiết ; Trực tuyến, 08 Ngày làm việc, Phí: 160000 ĐồngXem ...",
+    "position": 3
+   },
+   {
+    "title": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông ...",
+    "link": "https://www.facebook.com/LuatVietnam.vn/posts/tin-vui-t%E1%BB%AB-1582026-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-ng%C6%B0%E1%BB%9Di-c%C3%B3-vn/1607561301157093/",
+    "snippet": "TIN VUI: Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2.",
+    "position": 4
+   },
+   {
+    "title": "biểu mức thu phí, lệ phí cấp hộ chiếu đối với công dân ...",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncnn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Farticle-xncnn%2Flp-xncnn%2Fbmtp",
+    "snippet": "BIỂU MỨC THU PHÍ, LỆ PHÍ CẤP HỘ CHIẾU ĐỐI VỚI CÔNG DÂN VIỆT NAM ; Stt. Nội dung. Mức thu. (Đồng/lần cấp) ; 1. Lệ phí cấp hộ chiếu ; a. Cấp mới. 200.000 ; b. Cấp lại ...",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về phí, lệ phí khi làm thủ tục cấp hộ chiếu trực ...",
+    "link": "https://pbgdplthainguyen.gov.vn/news/gioi-thieu-noi-dung-van-ban-phap-luat-moi/quy-dinh-moi-ve-phi-le-phi-khi-lam-thu-tuc-cap-ho-chieu-truc-tuyen-663.html",
+    "snippet": "Công dân Việt Nam nộp hồ sơ đề nghị cấp hộ chiếu theo hình thức trực tuyến thì mức lệ phí quy định: - Kể từ ngày 01/01/2024 đến hết ngày 31/12/ ...",
+    "date": "18 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "Giảm 50% lệ phí làm hộ chiếu đến hết ngày 31/12/2025 ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=256856",
+    "snippet": "Trường hợp cấp hộ chiếu. Mức lệ phí ưu đãi đến 31/12/2025. Mức lệ phí từ 01/01/2026 ; Cấp mới, cấp lại. 100.000 VNĐ/lần. 200.000 VNĐ/lần ; Cấp lại do bị hỏng/mất ...",
+    "position": 7
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-cap-ho-chieu-nam-2026-bao-nhieu-tien-138082025.html",
+    "snippet": "Như vậy, lệ phí cấp hộ chiếu năm 2026 (bao gồm hộ chiếu gắn chíp điện tử và hộ chiếu không gắn chíp điện tử) là: - Cấp mới: 100.000 đồng/lần cấp ...",
+    "date": "2 thg 3, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

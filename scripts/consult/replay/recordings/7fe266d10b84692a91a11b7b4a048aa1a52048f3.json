@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Funnyland Takashimaya\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:10:58.835Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Funnyland Takashimaya\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Understanding Height Differences Between Generations",
+    "link": "https://www.tiktok.com/@urluv_leah831/video/7487087533214551342",
+    "snippet": "... the fascinating height difference between me and my mom! Discover insights and fun facts. @ℒ♕ · original sound · Funnyland Takashimaya · author.",
+    "position": 1
+   },
+   {
+    "title": "A Cautionary Tale - Staying Away from San Bernardino",
+    "link": "https://www.tiktok.com/@mileysammie/photo/7492210682851609902",
+    "snippet": "... context. If you think it may contain an error, please report at: Feedback and help - TikTok · original sound · Funnyland Takashimaya · author.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

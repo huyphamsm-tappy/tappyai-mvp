@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mỹ Khê Beach Hotel\" OR \"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:31:15.483Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mỹ Khê Beach Hotel\" OR \"KHÁCH SẠN MỸ KHÊ 2\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Căn hộ & Khách sạn Mỹ Khê 2: Dòng tiền 180 triệu/tháng, ...",
+    "link": "https://www.tiktok.com/@nhadat_danang43/video/7665687745557220628",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4 ...",
+    "position": 1
+   },
+   {
+    "title": "Kova Hotel Đà Nẵng - Khách sạn 3 sao gần biển Mỹ Khê từ 375k ...",
+    "link": "https://www.tiktok.com/@lacadanang.tiktok/video/7644183037416115464",
+    "snippet": "recommend-cover. Thanh Phương Du Lịch. 27 · recommend-cover. saurauela. 7 · recommend-cover. Mỹ Khê Beach Hotel. 95 · recommend-cover. Review Du Lịch. 1783.",
+    "position": 2
+   },
+   {
+    "title": "Phòng thơm tho y như khách sạn 5* #xitthomphong#yomosu",
+    "link": "https://www.tiktok.com/@nhienboimom0411/video/7622935896584785159",
+    "snippet": "40Lượt chia sẻ. nhadat_danang43. Bảo Bảo Đây. CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai ...",
+    "position": 3
+   },
+   {
+    "title": "Chicland Hotel Đà Nẵng: Eco-chic Stay Near Mỹ Khê Beach",
+    "link": "https://www.tiktok.com/@kingdomtourist.hotel/photo/7534922896066628882",
+    "snippet": "Enjoy 5-star amenities, infinity pool, and breakfast. Keywords: Chicland Hotel Đà Nẵng,khách sạn Đà Nẵng,eco-chic hotel,Mỹ Khê Beach hotel,resort Đà Nẵng. This ...",
+    "position": 4
+   },
+   {
+    "title": "Experience Exquisite Dining at Velora Restaurant",
+    "link": "https://www.tiktok.com/@nestaceliadananghotel/video/7650320130794196245",
+    "snippet": "Nesta Celia Danang Hotel. 463 · recommend-cover. Hotel in Danang. 198 · recommend-cover. Mỹ Khê Beach Hotel. 119 · recommend-cover. Mẩm làm du lịch. 100.",
+    "position": 5
+   },
+   {
+    "title": "Chicland Hotel Đà Nẵng: Eco-chic Stay Near Mỹ Khê Beach",
+    "link": "https://www.tiktok.com/@kingdomtourist.hotel/photo/7534922896066628882?image_index=5",
+    "snippet": "Enjoy 5-star amenities, infinity pool, and breakfast. Keywords: Chicland Hotel Đà Nẵng,khách sạn Đà Nẵng,eco-chic hotel,Mỹ Khê Beach hotel, ...",
+    "position": 6
+   },
+   {
+    "title": "Cả nhà đều thơm,thơm như sách sạn 5* í #Ambipur #sapthom ...",
+    "link": "https://www.tiktok.com/@thu.dung1996/video/7674583018320809236",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định.",
+    "position": 7
+   },
+   {
+    "title": "Căn Biệt Thự có đơn giá rẻ nhất nằm trong Siêu Dự Án ...",
+    "link": "https://www.tiktok.com/@namchuyennhadat/video/7616645817528519944",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4,5 x 20m ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

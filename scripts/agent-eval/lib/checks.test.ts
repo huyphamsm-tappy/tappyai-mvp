@@ -102,3 +102,27 @@ describe('agent eval checks', () => {
     }
   })
 })
+
+describe('M5 ranking checks', () => {
+  const card = (name: string, priceRangeText: string, recommended = false) => ({ name, priceRangeText, ...(recommended ? { recommended: true } : {}) })
+  const ann = (items: unknown[], preliminary = false) => [{ kind: 'tappy.places.v1', ...(preliminary ? { preliminary: true } : {}), items }]
+  const base = { rawText: null, tools: [{ name: 'search_places', args: {} }], crashed: false }
+  const ids = (r: Array<{ id: string; pass: boolean }>) => Object.fromEntries(r.map(c => [c.id, c.pass]))
+
+  it('contract applied, no padding, budget respected, no leak', () => {
+    const r = evaluateTurn({ ranking: { contract: true, maxBudget: 200_000, reasoning: [{ label: 'quiet', any: ['yen tinh'] }] } }, { ...base, text: 'Mình chọn **A** vì yên tĩnh hơn dù xa hơn một chút.', annotations: ann([card('A', '1-100.000 ₫', true)]), ranking: { block: 'ok', picks: 1, none: false, cards: 1 } })
+    expect(ids(r)).toMatchObject({ ranking_contract: true, no_forced_top_n: true, hard_budget_cards: true, tradeoff_reasoning: true, no_rank_leak: true })
+  })
+  it('a card whose band lies entirely above the hard budget fails; the preliminary fold is not scored', () => {
+    const r = evaluateTurn({ ranking: { maxBudget: 200_000 } }, { ...base, text: 'Có vài chỗ phù hợp cho bạn tối nay.', annotations: [...ann([card('Sky', 'Trên 1 Tr ₫')], true), ...ann([card('Sky', 'Trên 1 Tr ₫')])], ranking: null })
+    expect(ids(r).hard_budget_cards).toBe(false)
+  })
+  it('none: honest without a recommended card; a leaked line fails', () => {
+    expect(ids(evaluateTurn({ ranking: { none: true } }, { ...base, text: 'Mình chưa thấy chỗ nào hợp, bạn muốn nới ngân sách không?', annotations: [], ranking: { block: 'ok', picks: 0, none: true, cards: null } })).none_honest).toBe(true)
+    expect(ids(evaluateTurn({ ranking: { none: true } }, { ...base, text: 'Đây là lựa chọn tốt nhất cho bạn hôm nay.', annotations: ann([card('A', '1-100.000 ₫', true)]), ranking: { block: 'absent', picks: 0, none: false, cards: null } })).none_honest).toBe(false)
+    expect(ids(evaluateTurn({}, { ...base, text: 'Xong rồi nhé bạn. [TAPPY_RANK]{}[/TAPPY_RANK]', annotations: [], ranking: null })).no_rank_leak).toBe(false)
+  })
+  it('padding: more cards than picks fails', () => {
+    expect(ids(evaluateTurn({ ranking: { contract: true } }, { ...base, text: 'Mình chọn A cho buổi tối nay nhé bạn.', annotations: [], ranking: { block: 'ok', picks: 1, none: false, cards: 3 } })).no_forced_top_n).toBe(false)
+  })
+})

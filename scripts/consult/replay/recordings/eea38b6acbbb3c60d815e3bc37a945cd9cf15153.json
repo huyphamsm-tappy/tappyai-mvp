@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro AirPods Pro 2 6 giờ 30 giờ pin Apple",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:55:55.336Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro AirPods Pro 2 6 giờ 30 giờ pin Apple",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

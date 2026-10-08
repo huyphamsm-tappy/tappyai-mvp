@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng Michelin dưới 50k một người giá món Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:50:25.906Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng Michelin dưới 50k một người giá món Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "NHÀ HÀNG VIỆT NAM ĐƯỢC MICHELIN VINH DANH ...",
+    "link": "https://www.youtube.com/watch?v=3w4Toc5ub-Q",
+    "snippet": "Chi nhánh Thảo Điền: 32 Đường 11, Phường An Khánh, TP. HCM · Chi nhánh Tao Đàn: 34 Đường Võ Văn Tần, Phường Xuân Hoà, TP. HCM.",
+    "position": 1
+   },
+   {
+    "title": "So sánh độ sang chảnh của 9 nhà hàng sao Michelin ở ...",
+    "link": "https://laodong.vn/du-lich/am-thuc/so-sanh-do-sang-chanh-cua-9-nha-hang-sao-michelin-o-viet-nam-1519686.html",
+    "snippet": "Nhà hàng có những set menu từ 5,9 - 7,5 triệu đồng/khách. Khi đặt chỗ tại nhà hàng, thực khách cũng phải đặt cọc 1 triệu đồng/người. Ảnh: La ...",
+    "date": "10 thg 6, 2025",
+    "position": 2
+   },
+   {
+    "title": "Những nhà hàng Michelin ở Việt Nam không thể bỏ lỡ",
+    "link": "https://www.vietjetair.com/vi/pages/nhung-nha-hang-michelin-o-viet-nam-khong-the-bo-lo-1723425963866",
+    "snippet": "La Maison 1888 là nhà hàng đầu tiên và duy nhất tại Đà Nẵng được gắn sao Michelin. Tại đây, thực khách có thể vừa thưởng thức các món ăn Pháp với thực đơn thay ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà Hàng Michelin Sài Gòn: 8 Địa Chỉ Được ...",
+    "link": "https://madamelam.com/nha-hang-michelin-sai-gon/",
+    "snippet": "Akuna là nhà hàng 1 sao Michelin tại TP.HCM, nổi bật với phong cách fine dining hiện đại. Nhà hàng được dẫn dắt bởi chef Sam Aisbett, mang đến trải nghiệm ẩm ...",
+    "position": 4
+   },
+   {
+    "title": "4 nhà hàng được gắn 1 sao Michelin đầu tiên tại Việt Nam ...",
+    "link": "https://vneconomy.vn/4-nha-hang-duoc-gan-1-sao-michelin-dau-tien-tai-viet-nam-co-gi-dac-biet.htm",
+    "snippet": "Bên cạnh thực đơn gọi món A La Carte với các món ăn đặc trưng như Pizza Đà Lạt, bánh xèo taco, chả giò foie gras, Anan Saigon hiện còn có hai ...",
+    "date": "7 thg 6, 2023",
+    "position": 5
+   },
+   {
+    "title": "Nhà Hàng Fine Dining Hồ Chí Minh 2026 - MoMo",
+    "link": "https://www.momo.vn/blog/nha-hang-fine-dining-ho-chi-minh-c100dt2449",
+    "snippet": "Địa chỉ: Quận 1, TP. Hồ Chí Minh (liên hệ nhà hàng để xác nhận địa chỉ chi tiết) · Mức giá tham khảo: 2.000.000 – 3.500.000đ/người · Phù hợp cho: Người yêu ẩm ...",
+    "rating": 4.1,
+    "ratingCount": 26,
+    "position": 6
+   },
+   {
+    "title": "Hồ Chí Minh MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/us/en/ho-chi-minh/restaurants",
+    "snippet": "Hồ Chí Minh : 1-48 of 79 restaurants ; Sóno · ₫₫₫ · European Contemporary ; Okra FoodBar · ₫₫ · European Contemporary ; La Fontaine · ₫₫₫ · French ; Apero · ₫₫ · ...",
+    "position": 7
+   },
+   {
+    "title": "9 nhà hàng 1 sao Michelin ở Việt Nam giờ ra sao?",
+    "link": "https://baomoi.com/9-nha-hang-1-sao-michelin-o-viet-nam-gio-ra-sao-c55307608.epi",
+    "snippet": "Địa chỉ: 9F, Khách sạn Le Méridien, 3C Tôn Đức Thắng, phường Sài Gòn, TP.HCM. Gia nhập danh sách một sao Michelin năm 2024, Akuna tiếp tục ...",
+    "date": "3 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

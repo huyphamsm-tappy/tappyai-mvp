@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Dylan Hotel Danang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:52.145Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dylan Hotel Danang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "DYLAN HOTEL, Da Nang City - Official Site",
+    "imageUrl": "http://www.dylanhotel.com.vn/uploads/gal/image_299.jpg",
+    "imageWidth": 1349,
+    "imageHeight": 620,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVKb8RFHI7Qi1WIwJdDukqu_rocYlbXm51kBIPwXjm5Q&s=10",
+    "thumbnailWidth": 659,
+    "thumbnailHeight": 303,
+    "source": "DyLan Hotel Đà Nẵng",
+    "domain": "www.dylanhotel.com.vn",
+    "link": "http://www.dylanhotel.com.vn/en/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fuploads%2Fgal%2Fimage_299.jpg&tbnid=3nwoFLpqM_F-8M&imgrefurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fen%2Ftrang-chu%2F&docid=PXrzCyPLNs_adM&w=1349&h=620",
+    "position": 1
+   },
+   {
+    "title": "DYLAN HOTEL, Da Nang City - Official Site",
+    "imageUrl": "http://www.dylanhotel.com.vn/uploads/gal/image_322.jpg",
+    "imageWidth": 1349,
+    "imageHeight": 620,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLqvhwyE8Z9whYQrzKfN7Vg8gzsFmoXA4Yh1O8OumZCQ&s=10",
+    "thumbnailWidth": 659,
+    "thumbnailHeight": 303,
+    "source": "DyLan Hotel Đà Nẵng",
+    "domain": "www.dylanhotel.com.vn",
+    "link": "http://www.dylanhotel.com.vn/en/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fuploads%2Fgal%2Fimage_322.jpg&tbnid=mu57qbi1n4fHdM&imgrefurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fen%2Ftrang-chu%2F&docid=PXrzCyPLNs_adM&w=1349&h=620",
+    "position": 2
+   },
+   {
+    "title": "Dylan Hotel - Da Nang | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=782618162718507",
+    "imageWidth": 2048,
+    "imageHeight": 2029,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO6tQ-l2s4muQjxIyTNNe1CFH7jzrmlWXMM5UYXFbR_Q&s=10",
+    "thumbnailWidth": 449,
+    "thumbnailHeight": 445,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/dylanhoteldanang/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D782618162718507&tbnid=ekv-oNw_0u-LOM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fdylanhoteldanang%2F%3Flocale%3Dvi_VN&docid=TlAtQDAF9JumjM&w=2048&h=2029",
+    "copyright": "0905311322",
+    "creator": "Le Duc Nha",
+    "position": 3
+   },
+   {
+    "title": "Dylan Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/501991946.jpg?k=b0648b0a0b5a8e35f23fb0356b257f22319f791c40bd35c787212845d6144996&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaLqD93LxHpIc6oWlH7XI17ls_dHgowJp0094BmHv1aA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dylan-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F501991946.jpg%3Fk%3Db0648b0a0b5a8e35f23fb0356b257f22319f791c40bd35c787212845d6144996%26o%3D&tbnid=uo-XI7MvqbI2MM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdylan-danang.vi.html&docid=bq00DQ1JHo5IZM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "DYLAN HOTEL DA NANG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/5a/bd/9a/dylan-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSV80q9AEKyUtnc0jNSe5orW0p63lIYpER_U11gKI07GQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12442254-Reviews-Dylan_Hotel_Da_Nang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0f%2F5a%2Fbd%2F9a%2Fdylan-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=aYtIH9V11fEgEM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12442254-Reviews-Dylan_Hotel_Da_Nang-Da_Nang.html&docid=u59EK22XVszF7M&w=900&h=500",
+    "position": 5
+   },
+   {
+    "title": "DYLAN HOTEL, Da Nang City - Official Site",
+    "imageUrl": "http://www.dylanhotel.com.vn/uploads/gal/image_312.jpg",
+    "imageWidth": 1349,
+    "imageHeight": 620,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrxKDu8ycbCwamrJ1ekpLsbxXUIEiSVhl6Gj2ZA9aAnw&s=10",
+    "thumbnailWidth": 659,
+    "thumbnailHeight": 303,
+    "source": "DyLan Hotel Đà Nẵng",
+    "domain": "www.dylanhotel.com.vn",
+    "link": "http://www.dylanhotel.com.vn/en/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fuploads%2Fgal%2Fimage_312.jpg&tbnid=mAJB7xhrPDr8vM&imgrefurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fen%2Ftrang-chu%2F&docid=PXrzCyPLNs_adM&w=1349&h=620",
+    "position": 6
+   },
+   {
+    "title": "Dylan Hotel Danang, Da Nang | 2026 Updated Prices, Deals",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/100619606.jpg?k=6b06c23651823859fed4f40fa48842449230f50970ae29332c6cf16ccf9e058b&o=",
+    "imageWidth": 500,
+    "imageHeight": 332,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRAX5LgkiQwHkvwi0Oo0d4FIkRmSo5abxaVEBlQRKiuQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 331,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/dylan-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F100619606.jpg%3Fk%3D6b06c23651823859fed4f40fa48842449230f50970ae29332c6cf16ccf9e058b%26o%3D&tbnid=zEiOxYd1S-mPEM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fdylan-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=Zb1vHApgNcE0AM&w=500&h=332",
+    "position": 7
+   },
+   {
+    "title": "DYLAN HOTEL, Da Nang City - Official Site",
+    "imageUrl": "http://www.dylanhotel.com.vn/uploads/gal/image_304.jpg",
+    "imageWidth": 1349,
+    "imageHeight": 620,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMk2U3_YUL4yf6Zu5-3VCgClEsH15CkxMsvTJYWop0Cg&s=10",
+    "thumbnailWidth": 659,
+    "thumbnailHeight": 303,
+    "source": "DyLan Hotel Đà Nẵng",
+    "domain": "www.dylanhotel.com.vn",
+    "link": "http://www.dylanhotel.com.vn/en/trang-chu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fuploads%2Fgal%2Fimage_304.jpg&tbnid=nrCl17waMyO1XM&imgrefurl=http%3A%2F%2Fwww.dylanhotel.com.vn%2Fen%2Ftrang-chu%2F&docid=PXrzCyPLNs_adM&w=1349&h=620",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

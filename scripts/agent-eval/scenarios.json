@@ -1666,6 +1666,469 @@
      }
     }
    ]
+  },
+  {
+   "id": "SR-S1",
+   "category": "ranking",
+   "title": "used MacBook: battery vs price, seller risk (proactive)",
+   "turns": [
+    {
+     "text": "Mình muốn mua MacBook Air M1 cũ dưới 12 triệu, ưu tiên pin còn tốt hơn là rẻ nhất. Nên chọn máy nào?",
+     "expect": {
+      "tools": "any",
+      "ask": false,
+      "topics": [
+       {
+        "label": "battery health / cycles",
+        "any": [
+         "chu ky",
+         "cycle",
+         "tinh trang pin",
+         "suc khoe pin",
+         "dung luong pin",
+         "pin con"
+        ]
+       },
+       {
+        "label": "Activation Lock / iCloud",
+        "any": [
+         "icloud",
+         "activation",
+         "khoa kich hoat",
+         "find my"
+        ]
+       },
+       {
+        "label": "MDM",
+        "any": [
+         "mdm"
+        ]
+       },
+       {
+        "label": "inspect before paying",
+        "any": [
+         "kiem tra",
+         "xem truc tiep",
+         "test may"
+        ]
+       }
+      ],
+      "minTopics": 2,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "battery over price",
+         "any": [
+          "pin"
+         ]
+        },
+        {
+         "label": "trade-off cue",
+         "any": [
+          "nhung",
+          "doi lai",
+          "tuy",
+          "danh doi"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-S2",
+   "category": "ranking",
+   "title": "seller trust + warranty: shop with warranty vs cheaper private seller",
+   "turns": [
+    {
+     "text": "Một cửa hàng bán MacBook cũ có bảo hành 6 tháng, một người bán cá nhân rẻ hơn 1 triệu nhưng không bảo hành. Nếu là bạn thì chọn bên nào, vì sao?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "warranty value",
+        "any": [
+         "bao hanh"
+        ]
+       },
+       {
+        "label": "risk",
+        "any": [
+         "rui ro",
+         "lua",
+         "khong ro nguon goc",
+         "icloud",
+         "mdm"
+        ]
+       },
+       {
+        "label": "checks",
+        "any": [
+         "kiem tra"
+        ]
+       }
+      ],
+      "minTopics": 2,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "a choice is made",
+         "any": [
+          "minh chon",
+          "nen chon",
+          "minh se chon",
+          "nghieng ve"
+         ]
+        },
+        {
+         "label": "because",
+         "any": [
+          "vi "
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-T1",
+   "category": "ranking",
+   "title": "hotel: hard budget + walk to the beach over cheapest",
+   "turns": [
+    {
+     "text": "Tìm khách sạn ở Đà Nẵng gần biển Mỹ Khê, dưới 1 triệu một đêm; mình ưu tiên đi bộ ra biển được hơn là giá rẻ nhất",
+     "expect": {
+      "tools": [
+       "get_hotel_prices",
+       "search_places",
+       "get_trip_data",
+       "web_search"
+      ],
+      "ask": false,
+      "ranking": {
+       "maxBudget": 1000000,
+       "reasoning": [
+        {
+         "label": "beach access",
+         "any": [
+          "bien",
+          "di bo"
+         ]
+        },
+        {
+         "label": "trade-off cue",
+         "any": [
+          "nhung",
+          "doi lai",
+          "tuy",
+          "danh doi",
+          "hon"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-T2",
+   "category": "ranking",
+   "title": "less touristy dinner (soft preference, not a filter)",
+   "turns": [
+    {
+     "text": "Ở Hội An tối nay muốn ăn chỗ ít khách du lịch, giống người địa phương ăn, giá vừa phải",
+     "expect": {
+      "tools": "any",
+      "ask": false,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "local / less touristy",
+         "any": [
+          "dia phuong",
+          "nguoi dia phuong",
+          "it khach du lich",
+          "it khach tay",
+          "dan dia phuong",
+          "local"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-T3",
+   "category": "ranking",
+   "title": "heat vs schedule: indoor with aircon for a small child",
+   "turns": [
+    {
+     "text": "Trưa mai ở Sài Gòn nắng nóng, dẫn bé 5 tuổi đi chơi chỗ nào trong nhà có máy lạnh ở Quận 1 hoặc Quận 3?",
+     "expect": {
+      "tools": "any",
+      "ask": false,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "indoor / aircon",
+         "any": [
+          "trong nha",
+          "may lanh",
+          "dieu hoa",
+          "mat"
+         ]
+        },
+        {
+         "label": "child fit",
+         "any": [
+          "be",
+          "tre em",
+          "con nho"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-F1",
+   "category": "ranking",
+   "title": "rating vs suitability: quiet place to work 3 hours",
+   "turns": [
+    {
+     "text": "Chiều nay mình cần chỗ yên tĩnh ngồi làm việc 3 tiếng ở Quận 1, có ổ điện, wifi ổn",
+     "expect": {
+      "tools": [
+       "search_places",
+       "web_search"
+      ],
+      "ask": false,
+      "ranking": {
+       "contract": true,
+       "reasoning": [
+        {
+         "label": "work fit",
+         "any": [
+          "yen tinh",
+          "o dien",
+          "wifi",
+          "lam viec",
+          "ngoi lau"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-F2",
+   "category": "ranking",
+   "title": "hard budget, quality over cheapest",
+   "turns": [
+    {
+     "text": "Tối nay ăn gì ở Quận 3 dưới 200k một người mà ngon, không cần rẻ nhất",
+     "expect": {
+      "tools": [
+       "search_places"
+      ],
+      "ask": false,
+      "ranking": {
+       "contract": true,
+       "maxBudget": 200000,
+       "reasoning": [
+        {
+         "label": "quality / value",
+         "any": [
+          "ngon",
+          "dang tien",
+          "chat luong",
+          "danh gia"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-F3",
+   "category": "ranking",
+   "title": "comfort (aircon, not crowded) vs popularity",
+   "turns": [
+    {
+     "text": "Quán cà phê nào ở Quận 1 mát, có máy lạnh, không quá đông vào cuối tuần?",
+     "expect": {
+      "tools": [
+       "search_places",
+       "web_search"
+      ],
+      "ask": false,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "comfort",
+         "any": [
+          "may lanh",
+          "mat",
+          "dieu hoa"
+         ]
+        },
+        {
+         "label": "crowd",
+         "any": [
+          "dong",
+          "vang",
+          "on ao",
+          "yen tinh"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-G1",
+   "category": "ranking",
+   "title": "priority changes across turns (quiet → actually near the beach)",
+   "turns": [
+    {
+     "text": "Tìm khách sạn ở Đà Nẵng cho cuối tuần này, khoảng 1 triệu một đêm",
+     "expect": {
+      "tools": "any"
+     }
+    },
+    {
+     "text": "Mình muốn chỗ yên tĩnh hơn",
+     "expect": {
+      "carry": [
+       {
+        "label": "Da Nang",
+        "any": [
+         "da nang"
+        ]
+       }
+      ],
+      "noReask": [
+       "o dau",
+       "thanh pho nao",
+       "ngan sach"
+      ],
+      "ask": false,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "quiet",
+         "any": [
+          "yen tinh"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    {
+     "text": "Thật ra mình quan tâm gần biển hơn là yên tĩnh",
+     "expect": {
+      "carry": [
+       {
+        "label": "Da Nang",
+        "any": [
+         "da nang"
+        ]
+       }
+      ],
+      "noReask": [
+       "o dau",
+       "thanh pho nao"
+      ],
+      "ask": false,
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "beach first",
+         "any": [
+          "bien"
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-G2",
+   "category": "ranking",
+   "title": "'which would you choose and why?'",
+   "turns": [
+    {
+     "text": "Tìm quán phở ngon ở Quận 1",
+     "expect": {
+      "tools": [
+       "search_places"
+      ]
+     }
+    },
+    {
+     "text": "Nếu là bạn thì bạn chọn quán nào, vì sao?",
+     "expect": {
+      "ask": false,
+      "forbidTools": [
+       "search_products",
+       "get_hotel_prices"
+      ],
+      "ranking": {
+       "reasoning": [
+        {
+         "label": "a choice",
+         "any": [
+          "minh chon",
+          "minh se chon",
+          "minh nghieng",
+          "chon"
+         ]
+        },
+        {
+         "label": "because",
+         "any": [
+          "vi "
+         ]
+        }
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "SR-G3",
+   "category": "ranking",
+   "title": "no candidate fits (Michelin under 50k)",
+   "turns": [
+    {
+     "text": "Tìm nhà hàng Michelin ở Quận 1 dưới 50k một người",
+     "expect": {
+      "ask": false,
+      "ranking": {
+       "none": true
+      }
+     }
+    }
+   ]
   }
  ]
 }

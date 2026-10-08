@@ -1,0 +1,344 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "tiNiWorld khu vui chơi trẻ em trong nhà máy lạnh Quận 3 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:08:50.903Z",
+ "body": {
+  "searchParameters": {
+   "q": "tiNiWorld khu vui chơi trẻ em trong nhà máy lạnh Quận 3 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Sân chơi Giáo Trí Thiếu Nhi tiNiWorld Vincom Quang Trung",
+    "address": "Vincom Plaza, 190 Quang Trung, Gò Vấp, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8293011,
+    "longitude": 106.67253339999999,
+    "rating": 4.2,
+    "ratingCount": 563,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Sân chơi trong nhà"
+    ],
+    "website": "http://tiniworld.com/",
+    "phoneNumber": "+84 909 358 980",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOnUMKUNiHwkZUZMg7bezaT7QlSFZ7YpdX1NTY6YfcHddBiWVpKqLhKMltRmT4582kDFTnXS4SrMh9jl1kFm-3pF-9ZJHTkLk6OlD-SqHntnr4VqrkfxR9n5UntXb4zyjRT4awR3g",
+    "cid": "2203727800311690411",
+    "fid": "0x31752908023db55b:0x1e9536c22f3b34ab",
+    "placeId": "ChIJW7U9AggpdTERqzQ7L8I2lR4"
+   },
+   {
+    "position": 2,
+    "title": "tiNiWorld Thiso Mall Sala",
+    "address": "TTTM Thiso Sala, 10 Mai Chí Thọ, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7719776,
+    "longitude": 106.7210607,
+    "rating": 4.7,
+    "ratingCount": 814,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 906 366 857",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPzeF0KSSi408BAxt-JMiSEX0Zs7T5xXkZ3yxOyOa4DX8KqXD--d41Wr6cq3dSDO6MWCNw3d-QarEuxwrGfpm9kWpa9m0IrbHKmMAfxCD7_gOXnOWk23aFTUZD0c497ayr3b27vgMPngsQ",
+    "cid": "504450242877836657",
+    "fid": "0x31752f9baea0fbfd:0x7002ad2bd97cd71",
+    "placeId": "ChIJ_fugrpsvdTERcc2XvdIqAAc"
+   },
+   {
+    "position": 3,
+    "title": "tiNiWorld Nguyễn Thị Thập",
+    "address": "KDC, 93-95 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7407861,
+    "longitude": 106.69728669999999,
+    "rating": 4.7,
+    "ratingCount": 1013,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 938 463 995",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "08:30–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOdCcwFve1uhyFXF3NMH-g6-ew2RiQn5NpHEiGCuVdhvXr6DpO9mUW1u1AylQZ6gpuDXsDptRnfNH9BsGnbweakbWGmTA2B5SQP3Eyawj7rmjRR0JD8I8S80AxzWpbRkZltUOeI4EBYA7el",
+    "cid": "8917115208780740188",
+    "fid": "0x31752f080a272ecb:0x7bbff509989bf65c",
+    "placeId": "ChIJyy4nCggvdTERXPabmAn1v3s"
+   },
+   {
+    "position": 4,
+    "title": "tiNiWorld Parc Mall",
+    "address": "Trung tâm thương mại PARC MALL, 547-549 Tạ Quang Bửu, Chánh Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7404475,
+    "longitude": 106.67873469999999,
+    "rating": 4.7,
+    "ratingCount": 650,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 901 920 448",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "15:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNPt8Oq2MafK-Rxa0JHQSQIOP-7dj4WfghuSypcLiCv6qKzIJQGdMJfwuY2K_nufvOCrGaXm576PYsBVdUTlFEXD94KK1e7f7doPnWadN_QaCTa_zk3TkqNHT0lLqrjj32taO6HLzesfHmB",
+    "cid": "2793110358589973526",
+    "fid": "0x31752f004f0874ab:0x26c31f1296382416",
+    "placeId": "ChIJq3QITwAvdTERFiQ4lhIfwyY"
+   },
+   {
+    "position": 5,
+    "title": "tiNiWorld",
+    "address": "88 Song Hành, Bình Trưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8019698,
+    "longitude": 106.74904149999999,
+    "rating": 4.7,
+    "ratingCount": 903,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 909 650 828",
+    "openingHours": {
+     "Thứ Năm": "09:30–21:30",
+     "Thứ Sáu": "09:30–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "14:00–21:30",
+     "Thứ Ba": "09:30–21:30",
+     "Thứ Tư": "09:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOEY5htVHiPh6d5b01ba-U_7IykHfmSvu4caxcekiB8XjUBptXouyYVcLKmU6-wEhKJ77RhafbMvG8BMf7rtuZv1Dz_KukoBHezun0B0OKn_Jl_z6XkQPF3xpYWKlj-fv1ZL4j_OQ",
+    "cid": "17525075338010035580",
+    "fid": "0x317527c1d039126f:0xf335932b080c057c",
+    "placeId": "ChIJbxI50MEndTERfAUMCCuTNfM"
+   },
+   {
+    "position": 6,
+    "title": "TiNiWorld GigaMall",
+    "address": "Gigamall, 240-242 Đ. Phạm Văn Đồng, Hiệp Bình, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8276142,
+    "longitude": 106.72166419999999,
+    "rating": 4.7,
+    "ratingCount": 2120,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 901 371 858",
+    "openingHours": {
+     "Thứ Năm": "09:30–21:30",
+     "Thứ Sáu": "09:30–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "14:00–21:30",
+     "Thứ Ba": "09:30–21:30",
+     "Thứ Tư": "09:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMeSUJAzg7KFFiIu7zvKExKT9No-Rk64kIwk9jKKqSbmnrmV8n9tcY2I2LrQRWJ4nRzfj_anhlg1G3-PTaW_Kk6UOP7W5yl4Lh5SesOmBRGuqQ7yhHcvm7bJDQDaMcC2kBPHRGC",
+    "cid": "7852132376075880969",
+    "fid": "0x3175297a583f12a7:0x6cf860cb2d58ca09",
+    "placeId": "ChIJpxI_WHopdTERCcpYLctg-Gw"
+   },
+   {
+    "position": 7,
+    "title": "tiNiWorld Aeon Tân Phú",
+    "address": "Hai, Trung tâm mua sắm AEON - Tân Phú Celadon, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8015972,
+    "longitude": 106.61745739999999,
+    "rating": 4.6,
+    "ratingCount": 1275,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 903 064 040",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmP7SepXOw4a-N5QKtLVAX-5NIgzCxjcwq67jAewdKM0L0TZxOMa4jh0yVaJ-08zT2mLcBYfzJxEO6iIszi7ew47Strg5D4V0psgC0nsBeu-wLHvzcEDEg5GGl6_Jh6JLsnYipU",
+    "cid": "14113298529917683344",
+    "fid": "0x31752beca786a08d:0xc3dc823cccc94690",
+    "placeId": "ChIJjaCGp-wrdTERkEbJzDyC3MM"
+   },
+   {
+    "position": 8,
+    "title": "tiNiWorld Crescent Mall",
+    "address": "Trung tâm thương mại Crescent Mall, BF1-11 Tầng hầm B1, 101 Đ. Tôn Dật Tiên, Tân Mỹ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7290836,
+    "longitude": 106.7188731,
+    "rating": 4.7,
+    "ratingCount": 924,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 909 370 558",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "13:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPnszWMiMk5DjIbvvkgghDJZEEw1iQiVZwli5jFzuB6THA477-Cr1Mwam5tcqcYSIIptauOpNU2H0dPBwNytH49e_mWPOTqx2j-0Jn2-xeI-JXan95RRBWC79wsNJj24OUqkl81",
+    "cid": "13083414707871164562",
+    "fid": "0x31752f5fa335a0db:0xb591a05b9fc82892",
+    "placeId": "ChIJ26A1o18vdTERkijIn1ugkbU"
+   },
+   {
+    "position": 9,
+    "title": "tiNi Corp",
+    "address": "Võ Văn Kiệt, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7617818,
+    "longitude": 106.69577679999999,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Văn phòng công ty",
+    "types": [
+     "Văn phòng công ty"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 1900 636328",
+    "openingHours": {
+     "Thứ Năm": "09:00–17:00",
+     "Thứ Sáu": "09:00–17:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–17:00",
+     "Thứ Ba": "09:00–17:00",
+     "Thứ Tư": "09:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMTHOaT8FIZ036kScXWL04DQUxjRtibrCFuhUF7NPXIFINuD4OMdSpNKLNxSOFeSSUqw81YcGCEpJFBIkDHCl414t2IEnVFUJxxsfefNHKTWKXc3Wr02FxaLt6BEVbc0g4nJrz4",
+    "cid": "2414069457814079827",
+    "fid": "0x31752f138b356035:0x21807f61b020c953",
+    "placeId": "ChIJNWA1ixMvdTERU8kgsGF_gCE"
+   },
+   {
+    "position": 10,
+    "title": "tiNiworld Aeon Bình Tân",
+    "address": "Trung tâm mua sắm, AEON Bình Tân, 01 Đường Số 17A, Khu phố 11, An Lạc, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7429025,
+    "longitude": 106.612285,
+    "rating": 4.6,
+    "ratingCount": 1541,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 909 495 569",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "13:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMrdKIVAnrzmqXIKjdxYlYPKavlyq_3nQuyJVWGjHSeJTp7QXGQ-cBrsGWLrrxJHEbo4gwDAgjqDl9gSTh9ZCKrs8LFvNx8lrIV6TveVBmSBfRqfKG9TnKzBkC7wYt2v5v5iNBiZg",
+    "cid": "5818486357002133465",
+    "fid": "0x3175295acb4a4497:0x50bf6a8397919fd9",
+    "placeId": "ChIJl0RKy1opdTER2Z-Rl4Nqv1A"
+   },
+   {
+    "position": 11,
+    "title": "Sân chơi Giáo Trí Thiếu Nhi tiNiWorld Coop Phan Văn Hớn",
+    "address": "Coopmart, Tầng 1, 102 Đ. Phan Văn Hớn, Đông Hưng Thuận, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8285317,
+    "longitude": 106.61967589999999,
+    "rating": 3.5,
+    "ratingCount": 8,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 901 478 818",
+    "openingHours": {
+     "Thứ Năm": "09:30–21:00",
+     "Thứ Sáu": "09:30–21:00",
+     "Thứ Bảy": "09:30–21:00",
+     "Chủ Nhật": "09:30–21:00",
+     "Thứ Hai": "09:30–21:00",
+     "Thứ Ba": "09:30–21:00",
+     "Thứ Tư": "09:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN4FXmXrTlmkOQT7DsVJq9a6wznfXtvRKfQpyRFRQo54sBC3DahlVP9fV86XvuX2LNc_P3hMjstcMIsvzYErWnC-pJAaJPD2OJz9QvwNICLCwBefCbOcJ6DptJAvs8NEwrLOaiu",
+    "cid": "18373451045809387200",
+    "fid": "0x31752b55660cd63b:0xfefb9c61237f76c0",
+    "placeId": "ChIJO9YMZlUrdTERwHZ_I2Gc-_4"
+   }
+  ],
+  "credits": 3
+ }
+}

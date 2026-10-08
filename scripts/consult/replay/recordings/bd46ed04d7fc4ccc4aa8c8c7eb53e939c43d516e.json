@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"WESET ENGLISH CENTER\" OR \"Tiếng Anh Nghe Nói\" OR \"Tiếng Anh Nghe-Nói\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:59:00.864Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"WESET ENGLISH CENTER\" OR \"Tiếng Anh Nghe Nói\" OR \"Tiếng Anh Nghe-Nói\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "WESET ENGLISH CENTER (@wesetenglishcenter)",
+    "link": "https://www.tiktok.com/@wesetenglishcenter",
+    "snippet": "WESET ENGLISH CENTER Đồng hành cùng thế hệ trẻ vươn ra biển lớn. weset.edu.vn/lien-he-ngay. Vietsub by WESETWESET x HKSVVN.",
+    "position": 1
+   },
+   {
+    "title": "Học tiếng Anh thực hành cùng WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691576133157981448",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Khám phá các mẹo học tiếng Anh hiệu quả tại WESET qua phim ảnh và video clip.\".",
+    "position": 2
+   },
+   {
+    "title": "Tiếng Anh Junior tại WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7687985946335235335",
+    "snippet": "Tiếng Anh Junior tại WESET English Center. Học viên nhí tại WESET Junior có những trải nghiệm học tập vui vẻ và bổ ích. Các em được học từ mới, ...",
+    "position": 3
+   },
+   {
+    "title": "WESET English Center: Lừa Đảo Hay Trung Tâm Uy Tín?",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7650122281666006293",
+    "snippet": "WESET English Center: Lừa Đảo Hay Trung Tâm Uy Tín? Những nghi vấn về trung tâm Anh ngữ WESET đang gây xôn xao cộng đồng mạng. Nhiều người tìm ...",
+    "position": 4
+   },
+   {
+    "title": "Kim Yến's English Learning Journey at WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7685718553101683976",
+    "snippet": "Kim Yến shares her positive experience with WESET's English learning path, facilities, and teaching. @WESET ENGLISH CENTER.",
+    "position": 5
+   },
+   {
+    "title": "Thầy dạy tiếng Anh trả lời câu hỏi về Việt Nam thì ra ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7611066653782101268",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Thầy dạy tiếng Anh trả lời câu hỏi về Việt Nam thì ra thầy cũng thích xe máy ...",
+    "position": 6
+   },
+   {
+    "title": "Ngọc Hiếu's Journey to Global Citizen with WESET English",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7676436117532593415",
+    "snippet": "Discover Ngọc Hiếu's inspiring journey of self-improvement through English with WESET. Learn how. @WESET ENGLISH CENTER.",
+    "position": 7
+   },
+   {
+    "title": "Học tiếng Anh tại WESET để tốt nghiệp đúng hạn",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691308514412662037",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Tìm hiểu cách WESET giúp sinh viên năm tư Đại học Công nghiệp TP.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

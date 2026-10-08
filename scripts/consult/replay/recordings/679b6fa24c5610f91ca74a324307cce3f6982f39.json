@@ -1,0 +1,595 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khu vui chơi trẻ em trong nhà máy lạnh Quận 3 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:31:30.352Z",
+ "body": {
+  "searchParameters": {
+   "q": "khu vui chơi trẻ em trong nhà máy lạnh Quận 3 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khu Vui chơi Trẻ em - Công viên Gia Định",
+    "address": "RM6F+WCM, Đ. Đặng Văn Sâm, Đức Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8123367,
+    "longitude": 106.6735483,
+    "rating": 4.3,
+    "ratingCount": 461,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi",
+     "Công viên giải trí"
+    ],
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QvDkKRp3-1CgCSh87-8MjF-oGh79OXwnSSdSklsL4iXgTcn9rBCXcyjZD4ik-9y9JnK98scwPFcxxAF1XZm36B_6Cv3JLvi3QwCT1Ip8964tVOJBayCgV2E4fNacS3gS2Oov5d",
+    "cid": "1055760044812414598",
+    "fid": "0x317528dfe9356b13:0xea6d02ac7182e86",
+    "placeId": "ChIJE2s16d8odTERhi4YxyrQpg4"
+   },
+   {
+    "position": 2,
+    "title": "KHU VUI CHƠI TRẺ EM BIGFUN",
+    "address": "11 Sư Vạn Hạnh, Hòa Hưng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7704468,
+    "longitude": 106.6699412,
+    "rating": 4.2,
+    "ratingCount": 379,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi"
+    ],
+    "website": "https://bigfun.com.vn/",
+    "phoneNumber": "+84 909 338 002",
+    "openingHours": {
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:30–22:00",
+     "Chủ Nhật": "09:30–22:00",
+     "Thứ Hai": "09:30–22:00",
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R4sCNdxArjEq1eMG-iqXB2ZyxWXCtgkb9u8gM1cLy-xp1fCHvyMVIH964Mrjye3tFIRHaEfONhLJ8JQElfTct6N1ef2cKAKGlzuLNYM_5Yg8EmEP9-wQDrZswInbTOfhg3yA-tGA",
+    "cid": "15269801482351938589",
+    "fid": "0x31752f6f620e00a5:0xd3e93b8b9a520c1d",
+    "placeId": "ChIJpQAOYm8vdTERHQxSmos76dM"
+   },
+   {
+    "position": 3,
+    "title": "Khu Vui Chơi Trẻ Em",
+    "address": "3-3C 3 Tháng 2, Vườn Lài, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7757805,
+    "longitude": 106.68062549999999,
+    "rating": 4,
+    "ratingCount": 8,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi"
+    ],
+    "openingHours": {
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QZ3qYSbzyXCRzt6v7IVoFkROvW26UTcLgZy59pUVS1hp7nafleCEM62dC91CxoxIlkI4oRMYyqhG0zczPps0zZzmt6_MKJ5lpWA0IUIPhWOyam1zcxM3-4fnNfGXdyU2ADyGzswe7lk8g",
+    "cid": "6721406598474778427",
+    "fid": "0x31752f26ed21f6fd:0x5d473bb0950e473b",
+    "placeId": "ChIJ_fYh7SYvdTERO0cOlbA7R10"
+   },
+   {
+    "position": 4,
+    "title": "Dream Kids Vạn Hạnh Mall",
+    "address": "QMC9+5XH, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.770444699999999,
+    "longitude": 106.6699883,
+    "rating": 4.4,
+    "ratingCount": 242,
+    "type": "Sân chơi trong nhà",
+    "types": [
+     "Sân chơi trong nhà"
+    ],
+    "website": "https://bocapvang.net/to-tuong-o-dau-tphcm/#2_Dream_Kids_Van_hanh_Mall",
+    "phoneNumber": "+84 28 3620 7350",
+    "openingHours": {
+     "Thứ Năm": "09:30–22:00",
+     "Thứ Sáu": "09:30–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:30–22:00",
+     "Thứ Ba": "09:30–22:00",
+     "Thứ Tư": "09:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RY67ail_uIBmYpGN8xYGqSObS4icjh4q6XD0cl38TsZ6LoNBbbclSdLW0Xxkj_nlaBwBe7SovcwnUupbBbZx4GFMgE52TrMy396abkyuh52l0dUhNcXQ0kHwet0Mi6fbV2ZCTl",
+    "cid": "6022451259964309423",
+    "fid": "0x31752edddde5a325:0x53940b833b46bfaf",
+    "placeId": "ChIJJaPl3d0udTERr79GO4MLlFM"
+   },
+   {
+    "position": 5,
+    "title": "DONNA Kidsplay Cafe | Khu vui chơi quanh đây | Khu vui chơi trẻ em quận 8 | Quán cafe có khu vui chơi cho bé",
+    "address": "908 Tạ Quang Bửu, Bình Đông, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7344327,
+    "longitude": 106.66014559999999,
+    "rating": 4.5,
+    "ratingCount": 238,
+    "type": "Sân chơi trong nhà",
+    "types": [
+     "Sân chơi trong nhà",
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Quán ăn dành cho trẻ em"
+    ],
+    "website": "https://donna.kids/",
+    "phoneNumber": "+84 965 250 920",
+    "openingHours": {
+     "Thứ Năm": "15:30–21:30",
+     "Thứ Sáu": "15:30–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "08:30–21:30",
+     "Thứ Hai": "15:30–21:30",
+     "Thứ Ba": "15:30–21:30",
+     "Thứ Tư": "15:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RunfqZPJXgcl2g1B-HuzRNZG4WlIVSHArV9RwgR7f7PWBWGm866imbyFLu7rHmBeX7rC_rGF3lJ6zOnaUtZEwhYGlY3kKErqDFgTPx4ISA0kpmEHaGQxnJaPB3x3AdxLxi4xjS",
+    "cid": "15283405975658338978",
+    "fid": "0x31752754def1cdbd:0xd41990c289329aa2",
+    "placeId": "ChIJvc3x3lQndTERopoyicKQGdQ"
+   },
+   {
+    "position": 6,
+    "title": "Jungle Family & Kids Cafe - Nhà hàng & Khu vui chơi trẻ em",
+    "address": "Block B Âu Cơ Tower (mặt, Tân Thành/659 Âu Cơ, Tân Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.786959399999999,
+    "longitude": 106.6406183,
+    "rating": 4.8,
+    "ratingCount": 1661,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Quán cà phê",
+     "Nhà hàng"
+    ],
+    "website": "https://www.jungle.com.vn/",
+    "phoneNumber": "+84 979 254 154",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:00",
+     "Thứ Sáu": "10:00–21:00",
+     "Thứ Bảy": "08:00–21:30",
+     "Chủ Nhật": "08:00–21:30",
+     "Thứ Hai": "12:00–21:00",
+     "Thứ Ba": "10:00–21:00",
+     "Thứ Tư": "10:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R24WJIHQ-cZeroO1-GS7Y8HrvjN2hKv6kFUs2b_PwI4iDZVJd1LlOTuavMNiUoVSAhoX7vMINvtqgH59T1yiVkKWrUWFSe46pLGDOgXmAS7vjkh2z5FRcPgEXg_2KHH_7Kh5-Z",
+    "cid": "439324292587335445",
+    "fid": "0x31752f06e150872d:0x618cb1dd0de2f15",
+    "placeId": "ChIJLYdQ4QYvdTERFS_e0B3LGAY"
+   },
+   {
+    "position": 7,
+    "title": "Rio kidzone - khu vui chơi trẻ em",
+    "address": "351 Nơ Trang Long, Bình Lợi Trung, Hồ Chí Minh 72300, Việt Nam",
+    "latitude": 10.819398399999999,
+    "longitude": 106.70197859999999,
+    "rating": 4,
+    "ratingCount": 34,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi"
+    ],
+    "phoneNumber": "+84 949 584 584",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:30",
+     "Thứ Sáu": "08:00–22:30",
+     "Thứ Bảy": "08:00–22:30",
+     "Chủ Nhật": "08:00–22:30",
+     "Thứ Hai": "08:00–22:30",
+     "Thứ Ba": "08:00–22:30",
+     "Thứ Tư": "08:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QYJ6CHB3zEG0vmu0iQP0JKX8X0F7WgkdwsLZGU1Kz6-dNEBdPsW66hkcTQxdsVh1P2EYpFx8q3JbD8gEbckCEqYEfAzu6pEZOX3Eq2Lpqaqz8pK2pifsaqs0BOdM81f4UQzH3e9MCKGJfD",
+    "cid": "3183493498651567178",
+    "fid": "0x31752900192c2181:0x2c2e0a785be4644a",
+    "placeId": "ChIJgSEsGQApdTERSmTkW3gKLiw"
+   },
+   {
+    "position": 8,
+    "title": "Vietopia",
+    "address": "98 Nguyễn Thị Thập, Khu đô thị Him Lam, Tân Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7415542,
+    "longitude": 106.69500389999999,
+    "rating": 4.2,
+    "ratingCount": 3288,
+    "type": "Công viên giải trí",
+    "types": [
+     "Công viên giải trí",
+     "Chương trình ngoại khóa",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://vietopia.com.vn/",
+    "description": "Sân chơi trong nhà rộng kiểu thành phố thu nhỏ với các hoạt động giáo dục, thực hành.",
+    "openingHours": {
+     "Thứ Năm": "08:00–16:00",
+     "Thứ Sáu": "08:00–16:00",
+     "Thứ Bảy": "09:00–17:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "08:00–16:00",
+     "Thứ Tư": "08:00–16:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QbtiqTJZ1ugbx-BAg4UWZMQSNDsfsemUKgJO6OAlUBxfl6tQ8coqdFucI-JEgLwsa9T6_Fv2USY7M31ipXi4hwEkAgEo5F0UQlXHqo68hL3VOPN2LNmGIr0zSDPowdJJt3D0fk_g",
+    "cid": "16351191221892170681",
+    "fid": "0x31752fa142524103:0xe2eb19c8b35e43b9",
+    "placeId": "ChIJA0FSQqEvdTERuUNes8gZ6-I"
+   },
+   {
+    "position": 9,
+    "title": "Beehive Premium Kids Cafe",
+    "address": "126 An Dương Vương, An Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7567308,
+    "longitude": 106.6687944,
+    "rating": 4.8,
+    "ratingCount": 354,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Khu trẻ em",
+     "Quán cà phê",
+     "Sân chơi trong nhà",
+     "Nhà hàng"
+    ],
+    "website": "http://www.facebook.com/beehiveforkids",
+    "phoneNumber": "+84 843 688 179",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TXNpx2Tg_IMwQST5QHMgZH_NMQ9Xjes3xv5Au7NM4yjWHV2sORa0tY-MTOBi6ikcR0sz4gSm8iYru3jMIGJA1FiO8TTcNT8yggPx-srozpRJ9zO28GmVLEh2OtC2ciel2BKsgDKPErNQZw",
+    "cid": "4248924275399163097",
+    "fid": "0x31752f9771ce0185:0x3af7361de0b37cd9",
+    "placeId": "ChIJhQHOcZcvdTER2Xyz4B029zo"
+   },
+   {
+    "position": 10,
+    "title": "Khu Vui Chơi Trẻ Em Happy Kids Quận Tân Phú",
+    "address": "332 Đ. Lũy Bán Bích, Tân Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774873,
+    "longitude": 106.6333329,
+    "rating": 4.4,
+    "ratingCount": 61,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61564768147487",
+    "phoneNumber": "+84 938 700 032",
+    "openingHours": {
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "16:00–22:00",
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "16:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R5ZHZdPL7Xri7eYS4MeChE_kjVWHEu7SU_gUVZ6WVJSvs18PENO5MXb9BwzDiQAP7HzSIRE1fqw2RORyzNUoUnSOC6vkTX2egQskw3kJEfviZ4cTXLh6FQ6cC7DhdNVJOUuXNf",
+    "cid": "5588969811427589044",
+    "fid": "0x31752f0067cdf2b3:0x4d90026e8e85fbb4",
+    "placeId": "ChIJs_LNZwAvdTERtPuFjm4CkE0"
+   },
+   {
+    "position": 11,
+    "title": "Khu Vui Chơi Trẻ Em LABUBU KIDS",
+    "address": "180 Số 51, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7850944,
+    "longitude": 106.7494586,
+    "rating": 3.5,
+    "ratingCount": 30,
+    "type": "Sân chơi trong nhà",
+    "types": [
+     "Sân chơi trong nhà"
+    ],
+    "phoneNumber": "+84 979 823 928",
+    "openingHours": {
+     "Thứ Năm": "16:00–21:30",
+     "Thứ Sáu": "16:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "16:00–21:30",
+     "Thứ Ba": "16:00–21:30",
+     "Thứ Tư": "16:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TrXlaZAPAiAxH-VvTGF6I3mb7nTDAtay81sWsALWgGhHLnQY86DBpcnYDpXfuuZeWszb5IbKKDAGVsKHpYK69U4hYqGjEBiG3ZoPqQ-orrn1qG3VYjWnKedanmMXuo7qomhJIMPQ9bnPBB",
+    "cid": "5243193099504651392",
+    "fid": "0x31752500689a7b75:0x48c3905828c10c80",
+    "placeId": "ChIJdXuaaAAldTERgAzBKFiQw0g"
+   },
+   {
+    "position": 12,
+    "title": "King Kids Tea & Coffee - Khu Vui Chơi Trẻ Em KING KIDS Thế Giới Trà Sữa Cafe, Đồ Ăn Vặt",
+    "address": "A19/39 Đ. Công Nghệ Mới, Tân Vĩnh Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.776198299999999,
+    "longitude": 106.5825066,
+    "rating": 4.8,
+    "ratingCount": 338,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "website": "https://khuvuichoikingkids.com/",
+    "phoneNumber": "+84 339 241 939",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QLDd7WxKQD1eY_X_nSN7_PJbvttp7tScEbAURMxliUGns922IUYEmhuFXAmVP0wnZKUMKwWq1QkeIyvZJcxHRpCa__dz_8t0woIPUInedOUd0CApUP2K0eT-xjTaO0cvdyA_hVE7nATYs1",
+    "cid": "6916968755952359851",
+    "fid": "0x31752d003f9c5cbb:0x5ffe026f950419ab",
+    "placeId": "ChIJu1ycPwAtdTERqxkElW8C_l8"
+   },
+   {
+    "position": 13,
+    "title": "MenaWorld _ Menas Mall Sai Gon Airport",
+    "address": "60A Trường Sơn, Tân Sơn Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8133059,
+    "longitude": 106.66552949999999,
+    "rating": 4.9,
+    "ratingCount": 1379,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "website": "https://menaworld.vn/",
+    "phoneNumber": "+84 849 555 759",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QbyixZ5SbyoB_7x7bF-BMDEhldBSI-X7yMghO92n9WWFqSEyxUp9y67iNuzTf_XFOpaqWjBFVrWghWPuQVt9flmlFL-uETddI1ZQad0ujA1xrSJqH0YYxS3qg1ENY77ceoUXCVgs2JNBFg",
+    "cid": "10462468167713686052",
+    "fid": "0x3175298651aca723:0x9132275db2680224",
+    "placeId": "ChIJI6esUYYpdTERJAJosl0nMpE"
+   },
+   {
+    "position": 14,
+    "title": "Khu Vui Chơi Trẻ Em Khủng Long Nhí",
+    "address": "586 Lê Văn Khương, Thới An, Hồ Chí Minh 00700, Việt Nam",
+    "latitude": 10.8876979,
+    "longitude": 106.64798479999999,
+    "rating": 4,
+    "ratingCount": 64,
+    "type": "Khu trẻ em",
+    "types": [
+     "Khu trẻ em"
+    ],
+    "phoneNumber": "+84 774 953 988",
+    "openingHours": {
+     "Thứ Năm": "15:00–22:00",
+     "Thứ Sáu": "15:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "15:00–22:00",
+     "Thứ Ba": "15:00–22:00",
+     "Thứ Tư": "15:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q2AdR1awFX7hJl2RDfuckAraFHdXCe_kYBS2F4IzjbW0esPoLi8_joloAASDjQbbosZOsax8tpxrByTfrmaA2IMIL8SiHD5Bj60Ac7NbQsr3rutrygb2Te9UXMd8LXpf-iaSD7",
+    "cid": "2473306809483222549",
+    "fid": "0x3174d7e760d3dccf:0x2252f37067cd5e15",
+    "placeId": "ChIJz9zTYOfXdDERFV7NZ3DzUiI"
+   },
+   {
+    "position": 15,
+    "title": "Khu vui chơi PH KIDS - CN Phạm Hùng",
+    "address": "C6/27 Đ. Phạm Hùng, Bình Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7336045,
+    "longitude": 106.67454479999999,
+    "rating": 4.8,
+    "ratingCount": 134,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "website": "https://www.facebook.com/PHkidsplay",
+    "phoneNumber": "+84 848 773 366",
+    "openingHours": {
+     "Thứ Năm": "00:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T8vIQdBuQa8ZEyE842FPxFSVd1JZKTH9mvZD29l5HmJig_SfjemLBlfP-P_C2hlXd3kHVYJGh13y9G8aRXiwKgb22IzWfhIwlu9Z1m_Zzl7rXf-E30jKDwef2ho4ms4o8EbbuANgAvr0xg",
+    "cid": "12472714019041171015",
+    "fid": "0x31752fc12d45cead:0xad17fb5129fbd647",
+    "placeId": "ChIJrc5FLcEvdTERR9b7KVH7F60"
+   },
+   {
+    "position": 16,
+    "title": "Khu vui chơi trẻ em Joykids Quận 12",
+    "address": "361 Dương Thị Mười, Trung Mỹ Tây, Hồ Chí Minh 71500, Việt Nam",
+    "latitude": 10.867034199999999,
+    "longitude": 106.6350573,
+    "rating": 4.2,
+    "ratingCount": 29,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em"
+    ],
+    "phoneNumber": "+84 981 568 840",
+    "openingHours": {
+     "Thứ Năm": "15:00–21:45",
+     "Thứ Sáu": "15:00–21:45",
+     "Thứ Bảy": "08:00–21:45",
+     "Chủ Nhật": "08:00–21:45",
+     "Thứ Hai": "15:00–21:45",
+     "Thứ Ba": "15:00–21:45",
+     "Thứ Tư": "15:00–21:45"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QwjVVsODH0vpPD04S_i5oGIagoP0a2DnTms6oQB_R-SQq_Kz4WpO9Q2VqvA3kYcJWDCGzgR3fSCo-cadvA-nEyQuXkorAxlohZb-WXZ9jOupFIyTRNvkMwOKE8mz6ltENQbruw",
+    "cid": "5261152800909622800",
+    "fid": "0x317529e381f5d1ad:0x49035e98ff44fe10",
+    "placeId": "ChIJrdH1geMpdTEREP5E_5heA0k"
+   },
+   {
+    "position": 17,
+    "title": "Sân chơi Giáo Trí Thiếu Nhi tiNiWorld Vincom Quang Trung",
+    "address": "Vincom Plaza, 190 Quang Trung, Gò Vấp, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8293011,
+    "longitude": 106.67253339999999,
+    "rating": 4.2,
+    "ratingCount": 563,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Sân chơi trong nhà"
+    ],
+    "website": "http://tiniworld.com/",
+    "phoneNumber": "+84 909 358 980",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QfkKbH4SglrvW1j1ddbkPNrIIWo7U7f4XMSf6VYzDjApJUQJOg7zFK0xQa7jijXkwxP2XoBYS4HOKae7loahdOgRZ5Hp7bLQ50RigmbbMGzRXxIu3OKq2FAJmuaxjdoI_04XyYlw",
+    "cid": "2203727800311690411",
+    "fid": "0x31752908023db55b:0x1e9536c22f3b34ab",
+    "placeId": "ChIJW7U9AggpdTERqzQ7L8I2lR4"
+   },
+   {
+    "position": 18,
+    "title": "KHU VUI CHƠI TRẺ EM BIBO KIDS QUẬN 9 - THỦ ĐỨC",
+    "address": "6 Tăng Nhơn Phú, Phước Long, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8272537,
+    "longitude": 106.7695184,
+    "rating": 4.3,
+    "ratingCount": 140,
+    "type": "Sân chơi",
+    "types": [
+     "Sân chơi",
+     "Khu trẻ em"
+    ],
+    "website": "https://www.facebook.com/KHU-VUI-CH%C6%A0I-TR%E1%BA%BA-EM-BIBO-KIDS-Qu%E1%BA%ADn-9-106517048869584",
+    "phoneNumber": "+84 902 778 199",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rg_fWKTr3CsjnACg1FCWc9yOvZ_mW1vUvXYDPa-U4gfTOf9BSgI6p0qB5FXKd1pBCy5tS4w4P2O2oPsNV9zS6Huyzs_QsppENkg7wUiM0mna-4hXZS44cUb7ICcSrBP17sCGVl",
+    "cid": "5482288068739924202",
+    "fid": "0x3175278c752743e9:0x4c14fff3bd9b00ea",
+    "placeId": "ChIJ6UMndYwndTER6gCbvfP_FEw"
+   },
+   {
+    "position": 19,
+    "title": "Penguin Kidsplay & Cafe",
+    "address": "86 Trần Thị Năm, Trung Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.864265,
+    "longitude": 106.6305695,
+    "rating": 4.7,
+    "ratingCount": 240,
+    "type": "Sân chơi trong nhà",
+    "types": [
+     "Sân chơi trong nhà",
+     "Dịch vụ tiệc cho trẻ em",
+     "Sân chơi"
+    ],
+    "website": "http://www.penguin.vn/",
+    "phoneNumber": "+84 909 921 582",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sg1o8G3c975ZquC-9QcFcV_gS-HLRYM5FHVFGWhncKtaOePYLv3ZW5zy5UCxzEuwlwGB_mXd3j-rydT7Qk8HQ9PwKYAoRAFDZR3J1G7-W5yTPK7LgrvguuDqa-J4pDcOsGq56m",
+    "cid": "3897437022769203170",
+    "fid": "0x317529005727b70b:0x36167a529c9d47e2",
+    "placeId": "ChIJC7cnVwApdTER4kednFJ6FjY"
+   },
+   {
+    "position": 20,
+    "title": "tiNiWorld Aeon Tân Phú",
+    "address": "Hai, Trung tâm mua sắm AEON - Tân Phú Celadon, 30 Tân Thắng, Celadon City, Tân Sơn Nhì, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8015972,
+    "longitude": 106.61745739999999,
+    "rating": 4.6,
+    "ratingCount": 1275,
+    "type": "Trung tâm vui chơi dành cho trẻ em",
+    "types": [
+     "Trung tâm vui chơi dành cho trẻ em",
+     "Nhà hàng"
+    ],
+    "website": "https://tiniworld.com/",
+    "phoneNumber": "+84 903 064 040",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SCeBW-ZP7tRbLpRhWiryV_Ly09BCpkQ97eOLxFDZLajUZ8SIO_MiAkVRjd9HBkr2siAVfRqcpn3I2YU_vYkibie7D2RAu8NFFX1N-O7LLtHEwGyUqVc-QI3SdGwerf2-Vz6Pwdiw",
+    "cid": "14113298529917683344",
+    "fid": "0x31752beca786a08d:0xc3dc823cccc94690",
+    "placeId": "ChIJjaCGp-wrdTERkEbJzDyC3MM"
+   }
+  ],
+  "credits": 3
+ }
+}

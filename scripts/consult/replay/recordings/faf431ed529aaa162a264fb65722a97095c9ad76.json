@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Café Slow\" OR \"mỗi ngày cà phê\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:16:33.320Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Café Slow\" OR \"mỗi ngày cà phê\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn. Quán cà phê có không gian đèn vàng ấm cúng, dễ chịu với các món bánh và nước uống ngon. Quán còn ...",
+    "position": 1
+   },
+   {
+    "title": "Discover Café Slow in Hoi An: A Hidden Gem for Coffee ...",
+    "link": "https://www.tiktok.com/@betsystories/photo/7650493453951929608",
+    "snippet": "Explore the enchanting Café Slow in Hoi An with stunning sunset views. Perfect for coffee and dessert lovers! #vietnam #hiddengems #hoiantrip # ...",
+    "position": 2
+   },
+   {
+    "title": "Café Slow",
+    "link": "https://www.tiktok.com/discover/caf%C3%A9-slow",
+    "snippet": "Khám phá Café Slow, quán cà phê yên tĩnh lý tưởng cho thư giãn giữa phố Sài Gòn. Thưởng thức không gian đẹp và dịch vụ tận tình!",
+    "position": 3
+   },
+   {
+    "title": "Café Slow Hội An: Điểm đến thư giãn tuyệt vời",
+    "link": "https://www.tiktok.com/@dailangthangart/video/7502045856602918151",
+    "snippet": "Khám phá Café Slow Hội An - quán cà phê lý tưởng tại ruộng rau Trà Quế, nơi bạn có thể thư giãn mà không cần làm gì cả. #dailangthang #hoian # ...",
+    "position": 4
+   },
+   {
+    "title": "Khám phá Café Slow mới ở Thảo Điền - Review & Menu",
+    "link": "https://www.tiktok.com/@meluvmealot777/video/7167574231973252378",
+    "snippet": "Café Slow · Dolphy Cafe Thảo Điền · Cafe Phê La Thảo Điền · Slow Koi Cafe · Slowpoke Cafe · Cafe Thảo Điền Quận 2 Hoàng Hôn · Slow Cafe Roma.",
+    "position": 5
+   },
+   {
+    "title": "Café Slow Thôn Trà Quế Hội An — Quán cà phê yên tĩnh ...",
+    "link": "https://www.tiktok.com/@bychris.daily/video/7640537470538386708",
+    "snippet": "Café Slow nằm ở Thôn Trà Quế, Hội An, Việt Nam — một điểm dừng cho ai muốn tìm không gian thư giãn khi khám phá khu vực.",
+    "position": 6
+   },
+   {
+    "title": "Mỗi ngày cà phê hạt Arabica American Black #caphe ...",
+    "link": "https://www.tiktok.com/@phuongthao890/video/7571810546371153170",
+    "snippet": "Mỗi ngày cà phê hạt Arabica American Black #caphe #coffee #cafe #coffeetiktok #caphemangdi ; Thập cẩm. 687.4K ; Will in Vietnam . 657.7K.",
+    "position": 7
+   },
+   {
+    "title": "Café Slow: Nơi Thư Giãn Tại Quận 3, TP.HCM",
+    "link": "https://www.tiktok.com/@duhichuyen/video/7341036724841123079",
+    "snippet": "CAFÉ SLOW • 7:00 - 19:00 • 27/63A Huỳnh Tịnh Của, Phường 8, Quận 3, TP.HCM. Café Slow: Nơi Thư Giãn Tại Quận 3, TP.HCM. Khám phá Café Slow ở ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

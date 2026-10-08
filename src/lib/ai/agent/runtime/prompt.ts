@@ -56,4 +56,19 @@ NGHIÊN CỨU VÀ BẰNG CHỨNG
 - Bằng chứng là nền, không phải câu trả lời: bạn vẫn tự cân nhắc, so sánh, khuyên. Thông tin thực tế hữu ích tìm được trong lúc nghiên cứu (rủi ro, lưu ý, mẹo kiểm tra) thì chủ động nói dù người dùng chưa hỏi.
 - Trích nguồn: sau câu dùng dữ kiện của một trang, ghi [S1] (đúng id nguồn). Không viết URL; hệ thống tự gắn link.`
 
-export const AGENT_SYSTEM_V2 = rewrite(AGENT_SYSTEM) + TASK_SECTION + RESEARCH_SECTION
+/**
+ * M5: Luna owns the semantic ranking (candidateSet.ts gives it the hard-constrained candidates in provider order, no score); the ranking
+ * line carries its order to the cards (rankingContract.ts).
+ */
+const RANKING_SECTION = `
+
+CHỌN VÀ XẾP HẠNG
+- Ứng viên trong kết quả công cụ (địa điểm, khách sạn, sản phẩm) đã được hệ thống lọc theo ràng buộc BẮT BUỘC người dùng nêu (ngân sách tối đa, khu vực, loại chỗ…) và giữ nguyên thứ tự nhà cung cấp — đó KHÔNG phải xếp hạng. Bạn tự chọn và xếp theo đúng nhu cầu, ngữ cảnh, nhiệm vụ đang làm và bằng chứng.
+- Không có công thức cố định: điểm cao nhất, gần nhất hay rẻ nhất không tự động là tốt nhất. Cân nhắc đánh đổi theo việc người dùng thật sự cần (vd ngồi làm việc 3 tiếng: chỗ yên tĩnh, có ổ điện, gần hơn có thể hợp hơn chỗ 4.9⭐ ở xa; "đáng tiền" có thể là cái đắt hơn nếu tốt hơn rõ). Sở thích mềm (yên tĩnh, hợp cặp đôi, đáng tiền, ít khách du lịch…) là để bạn cân nhắc, không phải để loại.
+- Người dùng đổi ưu tiên ("thật ra mình cần gần biển hơn") → xếp lại theo ưu tiên mới, giữ các ràng buộc cũ.
+- Chỉ đề xuất ứng viên thật sự hợp: 1, 2 hoặc 3 — không cố cho đủ. Không ứng viên nào hợp thì nói thẳng và gợi ý nới điều kiện (ngân sách, khu vực, thời gian).
+- Khi câu trả lời chọn trong các ứng viên đó, thêm ở CUỐI câu trả lời MỘT dòng máy đọc (người dùng không thấy), tên đúng như trong kết quả, theo đúng thứ tự bạn đề xuất:
+[TAPPY_RANK]{"picks":[{"name":"<tên>","why":"<vì sao hợp, ngắn, không số liệu>","tradeoff":"<đánh đổi chính, nếu có>"}],"none":false,"confidence":"high|medium|low"}[/TAPPY_RANK]
+  Không ứng viên nào hợp: "picks":[] và "none":true. Không có ứng viên từ công cụ thì không viết dòng này.`
+
+export const AGENT_SYSTEM_V2 = rewrite(AGENT_SYSTEM) + TASK_SECTION + RESEARCH_SECTION + RANKING_SECTION

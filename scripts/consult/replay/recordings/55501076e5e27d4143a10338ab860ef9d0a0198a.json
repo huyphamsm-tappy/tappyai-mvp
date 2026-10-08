@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng, gần biển, khoảng 1 triệu đồng mỗi đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:48:00.431Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng, gần biển, khoảng 1 triệu đồng mỗi đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chung cư Hoàng Anh Gia Lai",
+    "link": "https://vn.trip.com/hotels/da-nang-chung-cu-hoang-anh-gia-lai/hotels-c1356m13092540/",
+    "snippet": "Tiện nghi phòng bao gồm điện thoại, cùng bàn và nước đóng chai miễn phí. Từ. 298.606₫. /đêm. Khách sạn Mường Thanh Luxury Sông Hàn.",
+    "position": 1
+   },
+   {
+    "title": "Các khách sạn ở gần Công viên Bắc Tượng đài 2 Tháng 9 ...",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-bc-tng-i-2-thng-9/hotels-c1356m39873163/",
+    "snippet": "Nằm ở Đà Nẵng, cách Bãi biển Xuân Thiều chưa đến 1 km, Mikazuki Villas ... Tọa lạc tại trung tâm Thành phố Đà Nẵng, Khách sạn Mường Thanh Luxury Sông ...",
+    "position": 2
+   },
+   {
+    "title": "Top 10 khách sạn tại Vĩnh Thuận, Việt Nam với giá từ",
+    "link": "https://vn.trip.com/hotels/vinh-thuan-district-hotels-list-696760/",
+    "snippet": "Khách sạn Mường Thanh Luxury Cà Mau ... \"Vị trí đẹp, nhiều lợi thế. Dịch vụ và tiện ích tốt. Thái độ nhân viên tích cực, vui vẻ !\" 1 đêm ...",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Chợ Bắc Mỹ An, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-bac-my-an-market/hotels-c1356m17118571/",
+    "snippet": "Nằm ở Đà Nẵng, cách Bãi biển Xuân Thiều chưa đến 1 km, Mikazuki Villas ... Khách sạn Mường Thanh Luxury Đà Nẵng (từ 1.293.911₫) là những khách sạn sang ...",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Kỳ Bắc, Việt Nam",
+    "link": "https://vn.trip.com/hotels/ky-bac-hotels-list-458825/",
+    "snippet": "... 1 triệu cho 2 phòng/10 phút. ... Các phòng sạch sẽ và gọn gàng, và khung cảnh sông vào buổi tối rất đẹp.\" 1 đêm 255.380₫. Đặt ngay. Khách sạn Mường Thanh Luxury ...",
+    "position": 5
+   },
+   {
+    "title": "Đặt khách sạn giá rẻ & chỗ ở, giảm giá 50%",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "Khách sạn Mường Thanh Luxury Viễn Triều ở Nha Trang, cách Chợ đêm Nha Trang và Bãi Dương 15 phút lái xe. Khách sạn 5 sao này cách Bãi biển Vinpearl 10 mi (16,1 ...",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Nhà Thờ Môi Khôi Láng Sen, Cần Thơ",
+    "link": "https://vn.trip.com/hotels/can-tho-nh-th-mi-khi-lng-sen/hotels-c36145m37245597/",
+    "snippet": "Khách sạn Mường Thanh Luxury Cần Thơ. Khách Sạn Ở Trung tâm Cần Thơ, Cần Thơ. 8,0/10. Rất Tốt 113 đánh giá. Khách sạn Mường Thanh Luxury Cần Thơ ở Ninh Kiều ...",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn giá rẻ gần Cảng hàng không quốc tế Cần Thơ ...",
+    "link": "https://vn.trip.com/hotels/can-tho-can-tho-international-airport/hotels-c36145a4326935/",
+    "snippet": "Khách sạn Mường Thanh Luxury Cần Thơ. 8,0/10. Rất Tốt. 113 đánh giá. Trung tâm Cần Thơ | Cách Cảng hàng không quốc tế Cần Thơ 9.54km. Khách sạn Mường Thanh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Workshop Coffee\" OR \"BẢN Cà Phê\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:25.524Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Workshop Coffee\" OR \"BẢN Cà Phê\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "Khám phá The Workshop Coffee - quán cafe hợp lý cho làm việc và gặp gỡ bạn bè tại quận 1. Đến thưởng thức nước ngon và không gian đẹp ngay! 139 ...",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The Workshop Coffee: Điểm Đến Lý Tưởng Tại Quận 1 Sài Gòn Nếu bạn đang tìm kiếm một quán cà phê nổi tiếng tại Sài Gòn, The Workshop Coffee ...",
+    "position": 2
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "TikTok video from Hải mê cà ☕ (@hai.meca): “Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng specialty ...",
+    "position": 3
+   },
+   {
+    "title": "4 công thức cà phê cơ bản: Cà phê đen, sữa, bạc xỉu, cà ...",
+    "link": "https://www.tiktok.com/@xiubancaphe/video/7668315135370398994",
+    "snippet": "4 công thức cà phê cơ bản: Cà phê đen, sữa, bạc xỉu, cà phê muối. Lead Nếu bạn mới khởi nghiệp quán cà phê hoặc bị bối rối vì quá nhiều món mới, ...",
+    "position": 4
+   },
+   {
+    "title": "Cà phê B52 phiên bản cà phê thế hệ mới",
+    "link": "https://www.tiktok.com/@homnayphagi/video/7659316605796617492",
+    "snippet": "Giới thiệu Cà phê B52 - phiên bản cà phê thế hệ mới là biến thể sáng tạo của thức uống quen thuộc, được nhắc trực tiếp trong mô tả.",
+    "position": 5
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7506351344945761582",
+    "snippet": "Discover the charm of The Workshop coffee shop in Wilmington, NC, with stunning ocean. @Sidney Corbin.",
+    "position": 6
+   },
+   {
+    "title": "Bản Cà Phê (@bancaphevn)",
+    "link": "https://www.tiktok.com/@bancaphevn",
+    "snippet": "Bản Cà Phê (@bancaphevn) on TikTok | 39.3K Likes. 906 Followers. Bản SG : Lầu 2, 38/7 Lê Lợi, Q.1 Nhà Bản ĐL: 29/39 đường 3/4, P.3, Tp. ĐL.",
+    "position": 7
+   },
+   {
+    "title": "Cơm tấm tân bản cà phê phin 🍲🍲🍲",
+    "link": "https://www.tiktok.com/@tudongnai4/video/7680145176295197973",
+    "snippet": "97 Lượt thích,Video TikTok từ Tú Đồng Nai (@tudongnai4): \"Cơm tấm tân bản cà phê phin \".âm thanh gốc - Tú Đồng Nai.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

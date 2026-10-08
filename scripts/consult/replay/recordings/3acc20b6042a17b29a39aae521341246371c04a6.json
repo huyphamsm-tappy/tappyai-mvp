@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Merry Land Hotel Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:46:41.759Z",
+ "body": {
+  "searchParameters": {
+   "q": "Merry Land Hotel Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Merry Land Đà Nẵng",
+    "imageUrl": "http://merrylandhoteldanang.com/uploads/gal/image_78.jpg",
+    "imageWidth": 1152,
+    "imageHeight": 943,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRFQTJAJzhjFyUAaJerzD8g4PBXhETjytaRWig2q7Rrw&s=10",
+    "thumbnailWidth": 494,
+    "thumbnailHeight": 404,
+    "source": "Khách sạn Merry Land Đà Nẵng",
+    "domain": "merrylandhoteldanang.com",
+    "link": "http://merrylandhoteldanang.com/vn/gallery/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fuploads%2Fgal%2Fimage_78.jpg&tbnid=92MM-UDMmpwgyM&imgrefurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fvn%2Fgallery%2F&docid=uDj7P5r94VQ5rM&w=1152&h=943",
+    "position": 1
+   },
+   {
+    "title": "MERRY LAND HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/30/30/fb/merry-land-hotel-would.jpg?w=1200&h=1200&s=1",
+    "imageWidth": 1200,
+    "imageHeight": 1067,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdSWuACpTAS4MnqtOdqkM5lhJ0yMkD5_MI1I8D9oZXIw&s=10",
+    "thumbnailWidth": 473,
+    "thumbnailHeight": 422,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12430718-Reviews-Merry_Land_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F19%2F30%2F30%2Ffb%2Fmerry-land-hotel-would.jpg%3Fw%3D1200%26h%3D1200%26s%3D1&tbnid=QeviKw3zWZz2rM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12430718-Reviews-Merry_Land_Hotel-Da_Nang.html&docid=WlJSUhjd9APl3M&w=1200&h=1067",
+    "position": 2
+   },
+   {
+    "title": "MERRY LAND HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/32/5f/f6/60/caption.jpg?w=1100&h=1100&s=1",
+    "imageWidth": 1100,
+    "imageHeight": 1100,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0H8dR_RppTY79nj-CrPEVWLDyEQN91dXF8hbSO4c2zw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12430718-Reviews-Merry_Land_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F32%2F5f%2Ff6%2F60%2Fcaption.jpg%3Fw%3D1100%26h%3D1100%26s%3D1&tbnid=alA5w29uuQGE_M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12430718-Reviews-Merry_Land_Hotel-Da_Nang.html&docid=WlJSUhjd9APl3M&w=1100&h=1100",
+    "position": 3
+   },
+   {
+    "title": "Merry Land Hotel Da Nang, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/105000000/104210000/104202100/104202045/686711e8.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 976,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5gBA0LJwF-6wR5tbkL-dStJb4W3hSiPwVipu2GDVZEg&s=10",
+    "thumbnailWidth": 582,
+    "thumbnailHeight": 343,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3335465440/merry-land-hotel-da-nang-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F105000000%2F104210000%2F104202100%2F104202045%2F686711e8.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=KlOhYpQU9JDqtM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3335465440%2Fmerry-land-hotel-da-nang-a-nang-viet-nam%2F&docid=H8WIHa3kju-10M&w=976&h=575",
+    "position": 4
+   },
+   {
+    "title": "MERRY LAND HOTEL DA NANG | ⋆⋆⋆ | VIETNAM | SEASON DEALS FROM $33",
+    "imageUrl": "https://merry-land.danang-hotels.com/data/Pics/OriginalPhoto/17362/1736273/1736273303/merry-land-hotel-da-nang-da-nang-pic-89.JPEG",
+    "imageWidth": 1200,
+    "imageHeight": 2000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd7eEnbftJHTWbWMzl0WnqFYLQM9kJ1gEdEwZxqvGfIA&s=10",
+    "thumbnailWidth": 429,
+    "thumbnailHeight": 715,
+    "source": "Da Nang",
+    "domain": "merry-land.danang-hotels.com",
+    "link": "https://merry-land.danang-hotels.com/en/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmerry-land.danang-hotels.com%2Fdata%2FPics%2FOriginalPhoto%2F17362%2F1736273%2F1736273303%2Fmerry-land-hotel-da-nang-da-nang-pic-89.JPEG&tbnid=Dw9ax9H-VhvTLM&imgrefurl=https%3A%2F%2Fmerry-land.danang-hotels.com%2Fen%2F&docid=N0cHlPM5pRVn_M&w=1200&h=2000",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Merry Land Đà Nẵng",
+    "imageUrl": "http://merrylandhoteldanang.com/uploads/product/lon_49_9906475.jpg",
+    "imageWidth": 1140,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlENP8O55De5RaRNvyiabSH8jXKP4zE90r1t2qoqNJ3w&s=10",
+    "thumbnailWidth": 674,
+    "thumbnailHeight": 296,
+    "source": "Khách sạn Merry Land Đà Nẵng",
+    "domain": "merrylandhoteldanang.com",
+    "link": "http://merrylandhoteldanang.com/vn/about-us/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fuploads%2Fproduct%2Flon_49_9906475.jpg&tbnid=Iaidm4oFrieZEM&imgrefurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fvn%2Fabout-us%2F&docid=jfQEYRl6Lai8RM&w=1140&h=500",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Merry Land Đà Nẵng (Da Nang Merry Land Hotel) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/property/37388682/1338891089/d7689ee0b38bfb43bd220682053fb9be.jpeg?ce=3&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLiTlYYK9nn8Cb_IVwYhJyqvLPNHhNjwG_PxeTidqqjQ&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/merry-land-hotel-da-nang_3/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F37388682%2F1338891089%2Fd7689ee0b38bfb43bd220682053fb9be.jpeg%3Fce%3D3%26s%3D414x232&tbnid=mSfA2nPJr_-EyM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmerry-land-hotel-da-nang_3%2Fhotel%2Fda-nang-vn.html&docid=-8ortAPSgPNSXM&w=309&h=232",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Merry Land Đà Nẵng",
+    "imageUrl": "http://merrylandhoteldanang.com/uploads/product/lon_49_80732910.jpg",
+    "imageWidth": 1140,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSs-_nu7ERGvUaK6piKczIyBd536r0lMR7lXs1Hx_3tg&s=10",
+    "thumbnailWidth": 674,
+    "thumbnailHeight": 296,
+    "source": "Khách sạn Merry Land Đà Nẵng",
+    "domain": "merrylandhoteldanang.com",
+    "link": "http://merrylandhoteldanang.com/vn/about-us/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fuploads%2Fproduct%2Flon_49_80732910.jpg&tbnid=1t8vR6I-1A-OqM&imgrefurl=http%3A%2F%2Fmerrylandhoteldanang.com%2Fvn%2Fabout-us%2F&docid=jfQEYRl6Lai8RM&w=1140&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -125,6 +125,7 @@ import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
+import { agentCandidateSet } from '@/lib/ai/agent/runtime/candidateSet'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
@@ -1521,6 +1522,12 @@ export async function POST(req: Request) {
       candidates = kept
     }
 
+    // Phase 8 M5 (TAPPY_AGENT=2): code applies the HARD constraints only; Luna ranks the valid set (no score, no Pick, provider order).
+    if (agentV2) {
+      const set = agentCandidateSet(toolName, r, candidates, needProfile, lang)
+      if (set.removed.length) console.log(JSON.stringify({ type: 'tappyai_agent_candidates', tool: toolName, hard_removed: set.removed.length, reasons: set.removed.map(x => x.why), kept: candidates.length - set.removed.length }))
+      return { result: set.result, pick: null, shortlistedCandidates: set.shortlisted }
+    }
     if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
@@ -2353,11 +2360,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1)), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
+          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
           const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
           // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.
-          const relax = await relaxEmptyPlaces({
+          // Phase 8 M5 (TAPPY_AGENT=2): a stated budget / district is a HARD constraint — never relaxed by code. Nothing left → the honest
+          // no-result path below, and Luna offers to widen it (the user's call).
+          const relax = agentV2 ? { result: constrained0.result, relaxed: [] as string[], empty: ((constrained0.result as { results?: unknown[] })?.results ?? []).length === 0 } : await relaxEmptyPlaces({
             budgeted, constrained: constrained0, constraints, lang,
             applyConstraints: (res, cc) => applyPlaceConstraints(res, cc, lang === 'en' ? 'en' : 'vi'),
             widen: placesOverride || clipContext ? undefined : async () => {
@@ -2415,7 +2424,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // `modelPayload.ts`.
           return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: 3 } : {}) })
         }
       }) }),
       get_news: tool({
@@ -2570,7 +2579,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list', { modelChooses: v1Active, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active || agentV2, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
         }
       }),
       get_transport_options: tool({
@@ -2849,6 +2858,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => agentRunTrace.guard(stage, before, after)
   // Phase 8 M4: the reply's provenance verdicts (counts and closed reasons only).
   if (agentRunTrace) enrichment.evidenceTrace = summary => agentRunTrace.add('evidence_guard', summary)
+  // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
+  if (agentV2) enrichment.semanticRanking = true
+  if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
   // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
   // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
   const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null

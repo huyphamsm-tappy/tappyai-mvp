@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách Sạn Avatar Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:49:52.704Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách Sạn Avatar Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "AVATAR HOTEL DA NANG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/31/ab/5e/bc/overview.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRAQjRJRFkCiVT0p3ewbnuRvjEezLBIQdAnBYhymjqnNw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d8544487-Reviews-Avatar_Hotel_Da_Nang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F31%2Fab%2F5e%2Fbc%2Foverview.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=9Paxu-CpB76jWM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d8544487-Reviews-Avatar_Hotel_Da_Nang-Da_Nang.html&docid=QZDmFImJoPuP9M&w=900&h=500",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Avatar Đà Nẵng (Avatar DaNang Hotel ) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/64030158/0/7dd653a4d0e4d406f32d40295f4b3881.jpg?va=1&ce=2&s=414x232",
+    "imageWidth": 160,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRauD4mGJhge5GXlxrgnygmMeyIn0pX6uCoC1xNynzorg&s=10",
+    "thumbnailWidth": 160,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/avatar-hotel_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F64030158%2F0%2F7dd653a4d0e4d406f32d40295f4b3881.jpg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=SgvtveP04eukqM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Favatar-hotel_2%2Fhotel%2Fda-nang-vn.html&docid=P9617qZnqm2HOM&w=160&h=232",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Avatar Đà Nẵng, Đà Nẵng | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/13000000/12070000/12066200/12066191/d707b673.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0fkbFE0oJGddXsXUQ-m5CrEjoS4uEDi-VD16T77jRQg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho543246/khach-san-avatar-a-nang-a-nang-viet-nam/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F13000000%2F12070000%2F12066200%2F12066191%2Fd707b673.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=5EF8bJORt1S96M&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho543246%2Fkhach-san-avatar-a-nang-a-nang-viet-nam%2F&docid=5bXyKqmUffjC8M&w=863&h=575",
+    "position": 3
+   },
+   {
+    "title": "Avatar Danang Hotel, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/767576015.jpg?k=fea5aa7ee3ce9236ae7c335959809a1e17239c0f7b2d63d0ca6281360b8380a5&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqehC2Kaqbqm2hkxri0eOjQWzFxKAC9W5aAQv4sdKTCw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/avatar.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F767576015.jpg%3Fk%3Dfea5aa7ee3ce9236ae7c335959809a1e17239c0f7b2d63d0ca6281360b8380a5%26o%3D&tbnid=L8Ee74wR405fcM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Favatar.vi.html&docid=wc0Os7jKT3Q5wM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "KHÁCH SẠN AVATAR ĐÀ NẴNG 3rvietnam",
+    "imageUrl": "https://bizweb.dktcdn.net/100/288/381/files/khach-san-avarta-da-nang1.jpg?v=1687749217681",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_kA7QI77BOvGF6JCorrpwo3BMWoQ_Xlu4Pi-1gC395g&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "3rvietnam",
+    "domain": "3rvietnam.com.vn",
+    "link": "https://3rvietnam.com.vn/khach-san-avatar-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F288%2F381%2Ffiles%2Fkhach-san-avarta-da-nang1.jpg%3Fv%3D1687749217681&tbnid=lJNU3UXw8vB2TM&imgrefurl=https%3A%2F%2F3rvietnam.com.vn%2Fkhach-san-avatar-da-nang&docid=3JMwBI-53R2_MM&w=800&h=500",
+    "copyright": "https://reviewdanang.net/;",
+    "creator": "https://reviewdanang.net/",
+    "position": 5
+   },
+   {
+    "title": "Avatar Danang Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=967476085810332",
+    "imageWidth": 2920,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPdjys-Ei-_p9gQhwvla5epZgdbTwI4UHKMd74uVxkTw&s=10",
+    "thumbnailWidth": 735,
+    "thumbnailHeight": 272,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/AvatarDananghotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D967476085810332&tbnid=qopTtCk14JgxkM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FAvatarDananghotel%2F&docid=u0wS-UoSn-h9TM&w=2920&h=1080",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Avatar Đà Nẵng - Mekong Heritage",
+    "imageUrl": "https://mekongheritage.vn/wp-content/uploads/2018/03/khach-san-avatar-da-nang-1.jpg",
+    "imageWidth": 898,
+    "imageHeight": 893,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJOI59UBAs1RipcoVysyApJdzgc9nCgZETvkI5HPV53g&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 552,
+    "source": "Mekong Heritage",
+    "domain": "mekongheritage.vn",
+    "link": "https://mekongheritage.vn/khach-san/khach-san-avatar-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmekongheritage.vn%2Fwp-content%2Fuploads%2F2018%2F03%2Fkhach-san-avatar-da-nang-1.jpg&tbnid=w7BcZYTSSGhSbM&imgrefurl=https%3A%2F%2Fmekongheritage.vn%2Fkhach-san%2Fkhach-san-avatar-da-nang%2F&docid=Gm1EcWIhJp8boM&w=898&h=893",
+    "position": 7
+   },
+   {
+    "title": "Home - Avatar Da Nang",
+    "imageUrl": "https://avatardanang.com/wp-content/uploads/2024/01/DHP8310-1-1200x800.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbDT9plUYnCPgVFQsX6FVw7UhhUCXH4N997UrBekXNLg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "avatardanang.com",
+    "domain": "avatardanang.com",
+    "link": "https://avatardanang.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Favatardanang.com%2Fwp-content%2Fuploads%2F2024%2F01%2FDHP8310-1-1200x800.jpg&tbnid=q3yddKOjYkD26M&imgrefurl=https%3A%2F%2Favatardanang.com%2F&docid=fHo8ML3IF0vryM&w=1200&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

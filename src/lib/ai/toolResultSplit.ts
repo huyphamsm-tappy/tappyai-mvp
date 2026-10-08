@@ -191,6 +191,10 @@ export interface EnrichmentCollector {
   guardEvidence?: import('./guardEvidence').GuardEvidence
   /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */
   evidenceTrace?: (summary: Record<string, unknown>) => void
+  /** Phase 8 M5 (TAPPY_AGENT=2): Luna ranks; its [TAPPY_RANK] line orders the cards (agent/runtime/rankingContract.ts). */
+  semanticRanking?: boolean
+  /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
+  rankingTrace?: (summary: Record<string, unknown>) => void
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
