@@ -55,6 +55,7 @@ targets:
         INFOPLIST_FILE: TappyAI/Resources/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1"             # iPhone only; must be set HERE: XcodeGen's iOS preset writes "1,2" at target level and overrides the project-level value
         CURRENT_PROJECT_VERSION: "1"
         MARKETING_VERSION: "1.0.0"
         CODE_SIGN_ENTITLEMENTS: TappyAI/TappyAI.entitlements
