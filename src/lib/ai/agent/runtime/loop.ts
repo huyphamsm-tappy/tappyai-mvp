@@ -57,6 +57,11 @@ export interface RuntimeInput {
   lang: string
   trace: AgentRunTrace
   /**
+   * Latency pass: an optional per-step note appended to the instructions of a NON-final step (e.g. "you already researched twice — answer
+   * unless a key point is missing"). Guidance only; the hard ceilings are unchanged.
+   */
+  stepNote?: (s: { round: number; toolEvents: readonly ToolEvent[] }) => string | null
+  /**
    * M2: applies Luna's update_task delta to the turn's task (task.ts, deterministic) and returns what the model reads back. Absent →
    * update_task calls are answered `task_state_unavailable`.
    */
@@ -140,7 +145,9 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     const final = reason !== null
     if (final && reason !== forceFinal) T.add('budget', { round, decision: 'force_final', reason, tool_calls: toolCalls, time_left_ms: timeLeft })
     const noteReason = reason === 'time_budget' ? 'time_budget' : 'tool_budget'
-    const system = final ? input.system + finalStepNote(noteReason, input.lang, unchecked) : input.system
+    const note = !final && input.stepNote ? input.stepNote({ round, toolEvents }) : null
+    if (note) T.add('budget', { round, decision: 'research_nudge' })
+    const system = final ? input.system + finalStepNote(noteReason, input.lang, unchecked) : note ? input.system + note : input.system
     const t0 = now()
     let step: RuntimeStep
     try {

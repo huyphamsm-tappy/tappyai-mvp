@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Quán Bụi Central\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:06.742Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Quán Bụi Central\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 5 nhà hàng ngon ở Irvine 2026 — review ăn uống ...",
+    "link": "https://www.tiktok.com/@tuilathitkho/video/7641428220532870420",
+    "snippet": "Lead Tổng hợp Top 5 nhà hàng ngon ở Irvine: lựa chọn dễ tìm cho người muốn ăn ngon, thử món Mỹ và Á, kèm nhận xét cơ bản về món ăn, ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 3
+   },
+   {
+    "title": "Gợi ý thêm 1 nhà hàng ngon ở trung tâm Sài Gòn cho mọi ...",
+    "link": "https://www.tiktok.com/@jaynioi/video/7681496087684795666",
+    "snippet": "104 Lượt thích,Video TikTok từ Jayni ơi (@jaynioi): \"Gợi ý thêm 1 nhà hàng ngon ở trung tâm Sài Gòn cho mọi người tham khảo nha!",
+    "position": 4
+   },
+   {
+    "title": "Ngon Restaurant Garden Grove CA",
+    "link": "https://www.tiktok.com/@rainaiscrazy/video/7597616189896002846",
+    "snippet": "Ngon Restaurant Garden Grove CA – Nhà Hàng Ngon Tại Garden Grove ... Keywords: ngon restaurant garden grove ca, nhà hàng ngon tại garden ...",
+    "position": 5
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Keywords: nhà hàng ngon Hàm Nghi, ẩm thực Nam Từ Liêm, món ngon Hà Nội, địa điểm hẹn hò 20/10, nhà hàng chất lượng Hà Nội, ẩm thực Việt Nam ...",
+    "position": 7
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

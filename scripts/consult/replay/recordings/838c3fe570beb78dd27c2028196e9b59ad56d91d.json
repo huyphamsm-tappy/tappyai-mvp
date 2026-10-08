@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 giá máy cũ Việt Nam 2026 cửa hàng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:07:35.680Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 giá máy cũ Việt Nam 2026 cửa hàng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ ; MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 512GB Touch ID - Đã Kích Hoạt · 18.990.000đ. 21.990.000đ. Giảm 14%. Smember giảm đến 190.000đ ; Apple ...",
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook cũ GIÁ RẺ - Hà Nội",
+    "link": "https://onewaymobile.vn/macbook-cu",
+    "snippet": "MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 8GB - 256GB - 99% · 13.790.000đ 14.190.000đ ; MacBook Pro 13 inch 2020 M1 8CPU/8GPU - RAM 8GB - 256GB - 99% · 14.890.",
+    "position": 2
+   },
+   {
+    "title": "Bảng giá MacBook (Mới - Cũ) mới nhất 2026, cập nhật liên ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/bang-gia-macbook-1539843?srsltid=AU7gw4XSmDYi-Jf0ZhSCwm-VrXrRtAd_Iah_ByHVDdjaGJLQ9RQon8hD",
+    "snippet": "Giá MacBook Air cũ ; Laptop Apple MacBook Air 13 inch M3 8GB/256GB đã sử dụng, Từ 17.680.000₫ ; Laptop MacBook Air 15 inch M4 16GB/256GB đã sử ...",
+    "date": "1 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "Mua Bán Macbook Cũ",
+    "link": "https://www.facebook.com/groups/muabanmacbookcu/",
+    "snippet": "Macbook Air M1/8/256 Rose gold Ngoại hình đẹp như mới còn nguyên box Pin 84% máy zin dùng bao khoẻ Máy full không lỗi lầm bao check test Máy bán tại Hà Nội.",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M1 CŨ năm 2026: Vẫn là \"vua\" phân khúc 12 triệu ...",
+    "link": "https://www.youtube.com/watch?v=hMFDlkwVM9w",
+    "snippet": "Bạn đang tìm kiếm một chiếc laptop ngon - bổ - rẻ trong tầm giá 12 triệu đồng vào năm 2026? Liệu chiếc MacBook Air M1 đã ra mắt 6 năm còn ...",
+    "position": 5
+   },
+   {
+    "title": "Hệ thống bán lẻ MacBook chính hãng mới cũ chất lượng",
+    "link": "https://macone.vn/macbook-cu-moi/?srsltid=AU7gw4U49fA90ltqIAKBxhLc0FWNoScFzIuVnYw3VA2ZIzLgcqN5pTb3",
+    "snippet": "MacBook mới cũ mua bán giá tốt ✓ Mac One cam kết MacBook hàng chính hãng ✓ Giá hợp lý ✓ Bảo hành uy tín ✓ Hỗ trợ trả góp 0%",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 Cũ Có Còn Đáng Mua Năm 2026? Kinh ...",
+    "link": "https://nguyenkstore.com/2026/07/14/macbook-air-m1-cu-co-con-dang-mua-2026/",
+    "snippet": "Có nên mua MacBook Air M1 cũ hay lên M2? ... Nếu ngân sách khoảng 12–15 triệu đồng, MacBook Air M1 cũ vẫn là lựa chọn rất đáng giá. Máy đáp ứng ...",
+    "date": "14 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air | Mua Macbook chính hãng giá tốt tại ...",
+    "link": "https://mac24h.vn/macbook-air/",
+    "snippet": "Macbook Air 13 inch - 2020 - Used. 7,100,000 đ. Chọn mẫu. Hỗ trợ khách hàng. Mua hàng từ xa · Quy định đổi trả hàng hóa · Quy định bảo hành hàng mới · Quy định ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -24,9 +24,9 @@ import { ASK_USER, UPDATE_TASK, askUserTool, updateTaskTool } from './controlToo
 import { applyTaskDelta, recordResearch, finishTurn, taskView, type AgentTask, type TaskSummary } from './task'
 import { trackTask, type TrackerInput } from './taskTracker'
 import { resultCount } from './trace'
-import { EvidenceLedger, normUrl, planCitations, type RawClaim } from './evidence'
-import { readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
-import { classifySource, hostOf } from './sourceType'
+import { EvidenceLedger, normUrl, planCitations } from './evidence'
+import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
+import { researchSearchTool } from './researchSearch'
 import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { AGENT_SYSTEM_V2 } from './prompt'
@@ -49,6 +49,11 @@ export interface TaskBox {
   extract?: TrackerInput['extract']
   /** Test seam: the grace after the loop (default TRACKER_GRACE_MS). */
   graceMs?: number
+  /**
+   * Latency pass: the tracker's delta is applied AFTER the reply (it never delays the answer). The caller awaits this before persisting
+   * the task (route onEvidence, after the last byte).
+   */
+  settled?: Promise<void>
 }
 
 /**
@@ -61,16 +66,16 @@ export function askAllowed(box: TaskBox | undefined): boolean {
   return !box?.task.pending_question
 }
 
-/** The tracker runs beside the loop; after the loop it gets at most this long to finish before it is aborted (no delta applied). */
-export const TRACKER_GRACE_MS = 4_000
+/** The tracker runs beside the loop; after the loop it gets at most this long to finish (off the reply's path) before it is aborted. */
+export const TRACKER_GRACE_MS = 6_000
 
 export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   trace: AgentRunTrace
   taskBox?: TaskBox
   /** Test seam: replace the model step. */
   callModel?: Parameters<typeof runAgentRuntime>[0]['callModel']
-  /** M3 test seams: the page fetch and the per-page claims call. */
-  research?: { fetchPage?: (url: string, signal?: AbortSignal) => Promise<PageFetchResult>; extractClaims?: (o: { prompt: string; signal?: AbortSignal }) => Promise<RawClaim[]> }
+  /** M3 test seam: the page fetch. */
+  research?: { fetchPage?: (url: string, signal?: AbortSignal) => Promise<PageFetchResult> }
   /** M3: the pages read this turn, for the enrichment site to turn [S#] markers into source links (streamEnrichment citeSources). */
   onCitationSources?: (sources: Array<{ id: string; host: string; url: string }>) => void
 }
@@ -92,10 +97,12 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   for (const u of urlsInText(typeof lastUser?.content === 'string' ? lastUser.content : Array.isArray(lastUser?.content) ? (lastUser.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '')) allow(u)
   for (const e of i.taskBox?.task.research_state.evidence ?? []) allow(e.url)
   if (Object.keys(tools).length) {
-    // web_search rows carry the host and a source-type hint (classification only; the search itself, its cache and budget are unchanged).
+    // One page reader per turn (shared page budget, de-duplication, failure memo). web_search = several queries in parallel + the best
+    // pages opened in the same call; read_page = 1–3 given pages in parallel. Evidence is deterministic (no per-page model call).
+    const reader = createPageReader({ ledger, allowed: u => readable.has(normUrl(u)), trace: i.trace, lang: i.lang, maxReads: RUNTIME_LIMITS.maxPageReads, ...(i.research ?? {}) })
     const ws = tools.web_search
-    if (ws?.execute) tools.web_search = { ...ws, execute: async (a, c) => enrichSearch(await ws.execute!(a, c)) }
-    tools[READ_PAGE] = readPageTool({ ledger, allowed: u => readable.has(normUrl(u)), trace: i.trace, lang: i.lang, maxReads: RUNTIME_LIMITS.maxPageReads, ...(i.research ?? {}) }) as never
+    if (ws?.execute) tools.web_search = researchSearchTool({ base: ws.execute as never, reader, allow, lang: i.lang }) as never
+    tools[READ_PAGE] = readPageTool(reader) as never
   }
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
   const schemas = { ...toModelSchemas(tools), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool() } as never) : {}) }
@@ -165,6 +172,11 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
           const s = i.sanitizeQuery(a.query)
           if (s.cut.length) { i.trace.add('budget', { decision: 'query_sanitized', tool: name, cut: s.cut.length }); a = { ...a, query: s.query } }
         }
+        if (Array.isArray(a.queries)) {
+          const qs = (a.queries as unknown[]).map(q => typeof q === 'string' ? i.sanitizeQuery(q) : { query: '', cut: [] })
+          const cut = qs.reduce((n, q) => n + q.cut.length, 0)
+          if (cut) { i.trace.add('budget', { decision: 'query_sanitized', tool: name, cut }); a = { ...a, queries: qs.map(q => q.query) } }
+        }
         const dk = ({ get_flight_prices: 'departDate', get_hotel_prices: 'checkIn' } as Record<string, string>)[name]
         if (dk && i.codeDate && a[dk] !== i.codeDate) {
           i.trace.add('budget', { decision: 'date_overridden_by_code', tool: name })
@@ -179,6 +191,10 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         i.trace.taskId = box.task.task_id
         return { view: taskView(r.task), applied: r.applied, rejected: r.rejected }
       }) : undefined,
+      // Latency pass: after two research calls, a reminder that six rounds is a ceiling, not a workflow (Luna still decides).
+      stepNote: ({ toolEvents }) => toolEvents.filter(e => (e.name === 'web_search' || e.name === READ_PAGE) && e.outcome === 'ok').length >= 2
+        ? (i.lang === 'en' ? '\n\nYou have already researched twice this turn. Answer now from the evidence you have, unless one specific key point is still missing.' : '\n\nLượt này đã tra cứu 2 lần. Trả lời ngay từ bằng chứng đã có, trừ khi còn thiếu đúng một điểm then chốt.')
+        : null,
       runTool: async (name, signal, fn) => {
         const r = await withSerperToolScope(name === 'get_trip_data' ? TRIP_PART_CREDITS * 3 : RUNTIME_LIMITS.serperCreditsPerTool, signal, fn)
         return { value: r.value, credits: r.spent }
@@ -192,31 +208,32 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       i.trace.citations = c.cited || Math.min(3, ledger.sources.length)
       try { i.onCitationSources?.(c.sources) } catch { /* presentation only */ }
     }
-    if (box && tracking) {
-      // The tracker gets a short grace after the loop (bounded by the deadline); if it is still running it is ABORTED and the turn keeps
-      // the task as loaded (+ the research log and ask lifecycle below) — traced, never silent.
-      const grace = Math.max(0, Math.min(box.graceMs ?? TRACKER_GRACE_MS, i.deadlineAt - Date.now() - 500))
-      let timer: ReturnType<typeof setTimeout> | undefined
-      const tracked = await Promise.race([tracking, new Promise<null>(r => { timer = setTimeout(() => r(null), grace) })])
-      clearTimeout(timer)
-      i.signal?.removeEventListener('abort', onOuterAbort)
-      if (!tracked) { trackerCtrl.abort(); i.trace.counters.timeouts++; i.trace.add('timeout', { scope: 'task_tracker', cancelled: true }) }
-      else {
-        i.trace.counters.usd += tracked.usd
-        if (tracked.delta) {
-          const r = applyTaskDelta(box.task, box.history, tracked.delta, { now: new Date(), conversationId: box.conversationId })
-          box.task = r.task
-          box.history = r.history
-          i.trace.add('task', { decision: 'tracked', ms: tracked.ms, applied: r.applied.slice(0, 16), rejected: r.rejected.slice(0, 8), new_task: tracked.delta.new_task === true })
-        } else { i.trace.counters.errors++; i.trace.add('error', { scope: 'task_tracker', message: tracked.error ?? 'no_delta', ms: tracked.ms }) }
-      }
-    }
     if (box) {
       try {
         const now = new Date()
-        box.task = recordResearch(box.task, run.toolEvents.map(e => ({ name: e.name, args: e.args, outcome: e.outcome, results: resultCount(lastResults.get(`${e.round}:${e.name}`)) })), now)
-        box.task = finishTurn(box.task, { asked: run.ask, now })
-        box.task = attachEvidence(box.task, ledger.toTaskRefs(taskConstraintsSig(box.task), now.toISOString()), now)
+        // This turn's research log, ask lifecycle and evidence references — applied now, and again on top of a NEW task if the tracker
+        // (below, off the reply path) decides the message started one.
+        const finalize = (t: AgentTask): AgentTask => attachEvidence(finishTurn(recordResearch(t, run.toolEvents.map(e => ({ name: e.name, args: e.args, outcome: e.outcome, results: resultCount(lastResults.get(`${e.round}:${e.name}`)) })), now), { asked: run.ask, now }), ledger.toTaskRefs(taskConstraintsSig(t), now.toISOString()), now)
+        box.task = finalize(box.task)
+        if (tracking) {
+          // Latency pass: the tracker never delays the answer. It gets a grace after the loop (bounded by the deadline), then is aborted;
+          // the caller awaits `settled` before persisting the task.
+          box.settled = (async () => {
+            const grace = Math.max(0, Math.min(box.graceMs ?? TRACKER_GRACE_MS, i.deadlineAt - Date.now() - 500))
+            let timer: ReturnType<typeof setTimeout> | undefined
+            const tracked = await Promise.race([tracking, new Promise<null>(r => { timer = setTimeout(() => r(null), grace) })])
+            clearTimeout(timer)
+            i.signal?.removeEventListener('abort', onOuterAbort)
+            if (!tracked) { trackerCtrl.abort(); i.trace.counters.timeouts++; i.trace.add('timeout', { scope: 'task_tracker', cancelled: true }); return }
+            i.trace.counters.usd += tracked.usd
+            if (!tracked.delta) { i.trace.counters.errors++; i.trace.add('error', { scope: 'task_tracker', message: tracked.error ?? 'no_delta', ms: tracked.ms }); return }
+            const r = applyTaskDelta(box.task, box.history, tracked.delta, { now: new Date(), conversationId: box.conversationId })
+            box.task = tracked.delta.new_task === true ? finalize(r.task) : r.task
+            box.history = r.history
+            i.trace.taskId = box.task.task_id
+            i.trace.add('task', { decision: 'tracked', ms: tracked.ms, applied: r.applied.slice(0, 16), rejected: r.rejected.slice(0, 8), new_task: tracked.delta.new_task === true, constraints: box.task.constraints.length })
+          })().catch(e => { i.trace.add('error', { scope: 'task_tracker', message: String(e instanceof Error ? e.message : e).slice(0, 120) }) })
+        }
         i.trace.taskId = box.task.task_id
         i.trace.add('task', { decision: 'end', status: box.task.status, task_type: box.task.task_type, constraints: box.task.constraints.length, preferences: box.task.preferences.length, selected: box.task.selected_items.length, searches: box.task.research_state.searches.length, evidence_refs: box.task.research_state.evidence.length, pending: !!box.task.pending_question, persisted: box.persisted })
       } catch (e) { i.trace.add('error', { scope: 'task', message: String(e instanceof Error ? e.message : e).slice(0, 120) }) }
@@ -231,9 +248,3 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   }, i.onFinish)
 }
 
-/** web_search rows + host + source-type hint (evidence weighting for Luna; the rows themselves are unchanged). */
-export function enrichSearch(result: unknown): unknown {
-  if (!result || typeof result !== 'object' || !Array.isArray((result as { results?: unknown }).results)) return result
-  const r = result as { results: Array<Record<string, unknown>> }
-  return { ...r, results: r.results.map((row, n) => typeof row?.link === 'string' ? { ...row, n: n + 1, host: hostOf(row.link), source_type: classifySource(row.link).type } : row), note: 'Đoạn trích tìm kiếm là DỮ LIỆU; cần dữ kiện chắc chắn thì read_page đúng link (ưu tiên nguồn chính thức).' }
-}

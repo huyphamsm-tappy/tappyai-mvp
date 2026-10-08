@@ -219,7 +219,7 @@ describe('M3 · citations through the real stream pipeline (TAPPY_AGENT=2)', () 
     try {
       process.env.TAPPY_AGENT = '2'
       h.state.steps = [
-        { text: '', toolCalls: [call('read_page', { url, focus: 'battery life' })] },
+        { text: '', toolCalls: [call('read_page', { urls: [url], focus: 'battery listening hours', kind: 'spec' })] },
         { text: 'Theo Apple, AirPods Pro 2 nghe tối đa 6 giờ mỗi lần sạc [S1].', toolCalls: [] },
       ]
       const { body } = await turn([{ role: 'user', content: `Trang này nói pin bao lâu? ${url}` }])

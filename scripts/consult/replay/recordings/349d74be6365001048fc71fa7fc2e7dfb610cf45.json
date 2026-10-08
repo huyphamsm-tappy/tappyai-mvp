@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 80. giờ 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:08:17.276Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 80. giờ 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội An đông nghẹt khách dịp Tết: Trải nghiệm thực tế và lưu ý ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-dong-nghet-khach-dip-tet-trai-nghiem-thuc-te-va-luu-y-khi-tham-quan-pho-co-3024.hwh",
+    "snippet": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026); Các hoạt động hưởng ứng Ngày Quốc tế ...",
+    "date": "23 thg 2, 2026",
+    "position": 1
+   },
+   {
+    "title": "Gìn giữ di sản cho thế hệ sau - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Van-hoa-nghe-thuat/gin-giu-di-san-cho-the-he-sau-2501.hwh",
+    "snippet": "Khu phố cổ Hội An có đến hàng ngàn di tích, chủ yếu trong khu vực I với tổng cộng 1.130 di tích kiến trúc. Hơn 80% di tích thuộc sở hữu tư nhân ...",
+    "date": "4 thg 12, 2023",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu 2026 trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:17:40.047Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu 2026 trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=180557",
+    "snippet": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ: V/v hướng dẫn thu, nộp lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh ; Số ký hiệu, 5425/VPCP ...",
+    "position": 1
+   },
+   {
+    "title": "Nghị định số 65/2012/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "http://vanban.chinhphu.vn/portal/page/portal/chinhphu/hethongvanban?class_id=1&amp;_page=1&amp;mode=detail&amp;document_id=163509",
+    "snippet": "- Hộ chiếu ngoại giao, hộ chiếu công vụ có giá trị không quá 5 năm tính từ ngày cấp. Hộ chiếu ngoại giao, hộ chiếu công vụ còn giá trị dưới 6 tháng thì được gia ...",
+    "position": 2
+   },
+   {
+    "title": "Nghị định số 77/2020/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=200396",
+    "snippet": "Nghị định số 77/2020/NĐ-CP của Chính phủ: Quy định việc quản lý, khai thác thông tin trong Cơ sở dữ liệu quốc gia về xuất nhập cảnh; dịch vụ công trực tuyến ...",
+    "position": 3
+   },
+   {
+    "title": "Quyết định số 58/2012/QĐ-TTg của Thủ tướng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=165036",
+    "snippet": "Quyết định số 58/2012/QĐ-TTg của Thủ tướng Chính phủ: Về việc sử dụng và quản lý hộ chiếu ngoại giao, hộ chiếu công vụ.",
+    "date": "24 thg 12, 2012",
+    "position": 4
+   },
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "TẤT CẢ VĂN BẢN ; 76/2026/TT-BXD 05/10/2026, 05/10/2026, Ban hành định mức chi phí, lợi nhuận áp dụng cho dịch vụ sự nghiệp công bảo đảm an toàn hàng hải sử dụng ...",
+    "position": 5
+   },
+   {
+    "title": "Nghị định số 67/2024/NĐ-CP của Chính phủ",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=210490",
+    "snippet": "Nghị định số 67/2024/NĐ-CP của Chính phủ: Sửa đổi, bổ sung một số điều của Nghị định số 76/2020/NĐ-CP ngày 01 tháng 7 năm 2020 của Chính phủ quy định chi ...",
+    "position": 6
+   },
+   {
+    "title": "Nghị định số 28/2012/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=157455",
+    "snippet": "Nghị định số 28/2012/NĐ-CP của Chính phủ: Quy định chi tiết và hướng dẫn thi hành một số điều của Luật người khuyết tật.",
+    "date": "10 thg 4, 2012",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "vii) Lệ phí visa, lệ phí cấp hộ chiếu: Thanh toán theo phiếu thu hợp pháp của cơ quan lãnh sự trong và ngoài nước;. viii) Tiền đóng góp tham gia (tham dự) hội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

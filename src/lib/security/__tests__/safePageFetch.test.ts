@@ -107,6 +107,7 @@ describe('transport (real sockets against a local server)', () => {
       else if (req.url === '/slow') { res.writeHead(200, { 'content-type': 'text/html' }); res.write('<html>'); /* never ends */ }
       else if (req.url === '/hang') { /* never answers */ }
       else if (req.url === '/404') { res.writeHead(404); res.end() }
+      else if (req.url === '/gz') { res.writeHead(200, { 'content-type': 'text/html', 'content-encoding': 'gzip' }); res.end(Buffer.from([0x1f, 0x8b, 0x08, 0x00])) }
       else { res.writeHead(200, { 'content-type': 'text/html' }); res.end('<<<<not html at all') }
     })
     await new Promise<void>(r => server.listen(0, '127.0.0.1', r))
@@ -139,6 +140,9 @@ describe('transport (real sockets against a local server)', () => {
   it('a server that never answers: no hang (connect/idle timeout path)', async () => {
     const r = await hop('/hang', { connectTimeoutMs: 150, readTimeoutMs: 150 })
     expect(r.kind).toBe('error')
+  })
+  it('a compressed body (despite Accept-Encoding: identity) is refused, never decoded as text', async () => {
+    expect(await hop('/gz')).toMatchObject({ kind: 'error', reason: 'unsupported_encoding' })
   })
   it('HTTP errors are typed', async () => {
     expect(await hop('/404')).toMatchObject({ kind: 'error', reason: 'http_error', status: 404 })

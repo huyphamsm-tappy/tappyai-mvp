@@ -143,7 +143,9 @@ describe('E2E A · restaurant: location → budget → air conditioning (one tas
     expect(t2.trace.events.find(e => e.kind === 'task')).toMatchObject({ decision: 'loaded' })
     // The trace is emitted after the save: the persist decision (no concurrent writer → ours) is in it.
     expect(t2.trace.events.find(e => e.kind === 'task' && e.decision === 'persist')).toMatchObject({ merge: 'ours' })
-    expect(t2.trace.events.find(e => e.kind === 'task' && e.decision === 'end')).toMatchObject({ status: 'active', constraints: 2, pending: false, persisted: true })
+    // Latency pass: `end` is recorded when the reply is ready; the tracker's delta lands after it (off the reply's path) — `tracked`.
+    expect(t2.trace.events.find(e => e.kind === 'task' && e.decision === 'end')).toMatchObject({ status: 'active', pending: false, persisted: true })
+    expect(t2.trace.events.find(e => e.kind === 'task' && e.decision === 'tracked')).toMatchObject({ constraints: 2 })
 
     // Turn 3: air conditioning added + the user's pick recorded
     h.state.stepCalls = []

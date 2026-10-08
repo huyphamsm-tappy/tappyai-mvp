@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro M1 Pro 16 inch 10 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:53.367Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro M1 Pro 16 inch 10 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook pro 13 i15 311",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-13-i15-311",
+    "snippet": "[Đã qua sử dụng] - Laptop Dell Latitude 7310 2-in-1 Core i5-10310U (thế hệ 10) | RAM 8GB | SSD 512GB | Màn hình 13.3 inch FHD cảm ứng xoay gập 360° | Vỏ kim ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook air A18 tomtoc",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-a18-tomtoc",
+    "snippet": "... M1/M2/M3/M4 13/14/15/16 inch. 5. 320 sold. ₫699.000 ... Macbook Pro/Air 13 inch A14-B02 - Hàng chính hãng ... Pro M2/M1 14 inch A18D2 - Hàng chính hãng. 1 sold.",
+    "position": 2
+   },
+   {
+    "title": "apple macbook neo malaysia",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-neo-malaysia",
+    "snippet": "Khám phá apple macbook neo malaysia mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 3
+   },
+   {
+    "title": "M4 Air Macbook",
+    "link": "https://shop.tiktok.com/vn/k/m4-air-macbook",
+    "snippet": "Khám phá M4 Air Macbook mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 4
+   },
+   {
+    "title": "a19 pro chip macbook",
+    "link": "https://shop.tiktok.com/vn/k/a19-pro-chip-macbook",
+    "snippet": "Khám phá a19 pro chip macbook mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 5
+   },
+   {
+    "title": "Macbook air m2 stand",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m2-stand",
+    "snippet": "... Pro M1 M2 13-16 Inch Kèm Bộ Lau Tiện Lợi. 4.2. 1278 sold. ₫55.000. ₫64.000. Dán Màn Hình Macbook ...",
+    "position": 6
+   },
+   {
+    "title": "Adapter 96W 4.7A USB-C Dùng Cho MacBook Pro ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1731151304642824824",
+    "snippet": "·Adapter nguồn sạc được cho nhiều model MacBook Pro, MacBook Air·Công suất 96W PD (Power Delivery) tự động nhận thiết bị và cấp nguồn tương ứng·Cáp USB-C ...",
+    "position": 7
+   },
+   {
+    "title": "a2681 case macbook air",
+    "link": "https://shop.tiktok.com/vn/k/a2681-case-macbook-air",
+    "snippet": "Khám phá a2681 case macbook air mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

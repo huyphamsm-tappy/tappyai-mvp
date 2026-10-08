@@ -3,9 +3,11 @@
 // One ledger per agent turn. Sources are the pages the agent read (read_page); evidence items are claims about a subject's attribute
 // ("AirPods Pro 2 · battery_life_hours = 6"). Who decides what:
 //
-//   · LUNA reads each page against what it is looking for and reports claims, each with a stance — the page STATES it (with a quote), the
-//     page IMPLIES it, or the page does NOT say (taskTracker-like structured call, readPage.ts). JSON-LD offers / ratings / hours are
-//     taken by code as stated claims directly.
+//   · CODE builds the candidate claims of each page DETERMINISTICALLY (candidateClaims, latency pass 08/10 — no per-page model call):
+//     the sentences of the bounded extract that match what the agent is looking for (`focus`) are STATED claims with their quote and
+//     the quantity they give; sentences that only partly match are IMPLIED (inference candidates); no matching sentence = NOT IN SOURCE.
+//     JSON-LD offers / ratings / hours are stated claims directly. `addClaims` also accepts claims reported by a model (RawClaim) —
+//     the classification below is the same either way.
 //   · CODE classifies, deterministically:
 //       FACT       stated, quote (or value) found in the page text, by a source reliable enough FOR THAT KIND of claim
 //                  (sourceType.ts matrix — e.g. a manufacturer for a spec, a government site for a fee);
@@ -76,9 +78,30 @@ export function numbersIn(v: string): number[] {
   }).filter(Number.isFinite)
 }
 
-/** Do two values disagree? Numeric: different leading number beyond 10 % (and beyond ±1). Text: neither contains the other. */
+/** The unit class of the first quantity in a value (hours, %, mAh, money, cycles, GB, km, …), or null. */
+export function unitOf(v: string): string | null {
+  const f = fold(v)
+  const m = /\d(?:[\d.,]*\d)?\s*(%|mah|wh|gio|h\b|hours?|hrs?|phut|minutes?|mins?|ngay|days?|thang|months?|nam\b|years?|chu ky|cycles?|gb|tb|mb|kg|g\b|km|m\b|cm|mm|inch|"|vnd|d\b|dong|trieu|tr\b|k\b|usd|\$|eur|w\b|hz|mp)/.exec(f)
+  if (!m) return /[$€]/.test(v) ? 'money' : null
+  const u = m[1]
+  if (/^(gio|h|hours?|hrs?)$/.test(u)) return 'hours'
+  if (/^(phut|minutes?|mins?)$/.test(u)) return 'minutes'
+  if (/^(ngay|days?)$/.test(u)) return 'days'
+  if (/^(thang|months?)$/.test(u)) return 'months'
+  if (/^(nam|years?)$/.test(u)) return 'years'
+  if (/^(chu ky|cycles?)$/.test(u)) return 'cycles'
+  if (/^(vnd|d|dong|trieu|tr|k|usd|\$|eur)$/.test(u)) return 'money'
+  return u
+}
+
+/** Do two values disagree? Numeric: different leading number beyond 10 % (and beyond ±1), same unit class. Text: neither contains the other. */
 export function valuesDisagree(a: string, b: string): boolean {
+  // Comparable only like with like: the same unit class (or both without a unit), and numbers with numbers — "812" (a cycle count with
+  // no unit) is never compared with "100%", and a figure is never compared with a sentence.
+  const ua = unitOf(a), ub = unitOf(b)
+  if ((ua || ub) && ua !== ub) return false
   const na = numbersIn(a), nb = numbersIn(b)
+  if ((na.length > 0) !== (nb.length > 0)) return false
   if (na.length && nb.length) {
     const x = na[0], y = nb[0]
     return Math.abs(x - y) > Math.max(1, 0.1 * Math.max(Math.abs(x), Math.abs(y)))
@@ -230,4 +253,64 @@ export function planCitations(text: string, sources: readonly Source[]): { text:
     return keep.length ? ` [${keep.join(', ')}]` : ''
   })
   return { text: out, cited: used.size, sources: sources.map(s => ({ id: s.id, host: s.host, url: s.url })) }
+}
+
+// ── deterministic candidate claims (latency pass) ───────────────────────────────────────────────────────────────────────────────
+
+const STOP = new Set(['va', 'cua', 'cho', 'la', 'co', 'khong', 'nao', 'bao', 'nhieu', 'gi', 'mot', 'nhung', 'cac', 'voi', 'trong', 'duoc', 've', 'theo', 'chinh', 'thuc', 'and', 'the', 'of', 'to', 'for', 'is', 'in', 'on', 'a', 'an', 'how', 'what', 'official', 'by', 'with'])
+/**
+ * Bilingual term groups (folded): a focus written in Vietnamese still matches an English page and back ("tình trạng pin" ↔ "battery
+ * condition", "dung lượng" ↔ "capacity"). Matching is by GROUP, so a group counts once. Retrieval vocabulary, not a judgement.
+ */
+const TERM_GROUPS: string[][] = [
+  ['pin', 'battery', 'batteries'], ['dung luong', 'capacity', 'mah'], ['chu ky', 'cycle', 'cycles'], ['tinh trang', 'condition', 'health', 'status', 'maximum capacity', 'suc khoe', 'battery health'],
+  ['gia', 'price', 'prices', 'cost', 'phi', 'fee', 'fees', 'le phi'], ['bao hanh', 'warranty', 'guarantee'], ['gio mo cua', 'mo cua', 'opening', 'open', 'hours'],
+  ['ve', 've vao', 'ticket', 'tickets', 'admission'], ['thoi luong', 'duration', 'life', 'listening', 'playback'], ['sac', 'charge', 'charging', 'charger'],
+  ['chong nuoc', 'water', 'waterproof', 'ip54', 'ip68', 'ipx4'], ['man hinh', 'display', 'screen'], ['trong luong', 'weight', 'nang'],
+]
+const GROUP_OF = new Map<string, number>()
+TERM_GROUPS.forEach((g, i) => { for (const w of g) GROUP_OF.set(w, i) })
+/** Group keys present in a text: single words and two-word phrases mapped to their group; other words stand for themselves. */
+function termKeys(text: string, dropStop: boolean): Set<string> {
+  const words = fold(text).split(/[^a-z0-9]+/).filter(Boolean)
+  const out = new Set<string>()
+  for (let i = 0; i < words.length; i++) {
+    const two = i + 1 < words.length ? `${words[i]} ${words[i + 1]}` : ''
+    if (two && GROUP_OF.has(two)) { out.add(`g${GROUP_OF.get(two)}`); continue }
+    const w = words[i]
+    if (GROUP_OF.has(w)) out.add(`g${GROUP_OF.get(w)}`)
+    else if (w.length >= 2 && !(dropStop && STOP.has(w))) out.add(w)
+  }
+  return out
+}
+const focusTerms = (s: string) => [...termKeys(s, true)]
+const sentencesOf = (passages: readonly string[]) => passages.flatMap(p => p.split(/(?<=[.!?…;])\s+(?=[A-ZÀ-Ỹ0-9"“(])/)).map(x => x.trim()).filter(x => x.length >= 12 && x.length <= 400)
+
+/** The quantity a sentence gives (number + unit when there is one), else a short form of the sentence. */
+export function quantityIn(sentence: string): string {
+  const m = /(?:(?:up to|tối đa|khoảng|around|about|from|từ)\s+)?\d[\d.,]*\s*(?:%|mAh|Wh|giờ|h\b|hours?|hrs?|phút|minutes?|ngày|days?|tháng|months?|năm|years?|chu kỳ|cycles?|GB|TB|kg|km|inch|VNĐ|VND|đ|đồng|triệu|USD|\$|W\b|Hz|MP)?/i.exec(sentence)
+  return m && /\d/.test(m[0]) ? m[0].trim() : sentence.slice(0, 160)
+}
+
+/**
+ * Candidate claims of one page for what the agent is looking for (`focus`), without a model call:
+ *   · up to 3 sentences that carry at least two of the focus's term groups (one for a one-term focus) → STATED, quote = the sentence;
+ *   · the best sentence that contains some focus term and a number, but not enough terms → IMPLIED (an inference candidate);
+ *   · nothing matching → NOT FOUND (UNKNOWN for this source).
+ * The attribute is the focus itself (folded slug), so pages read for the same focus are compared for CONFLICT; the subject is left
+ * empty (page-level). Pure; the ledger classifies them (reliability by source type × kind, quote verification, conflicts).
+ */
+export function candidateClaims(doc: Pick<PageDoc, 'passages' | 'title' | 'description'>, focus: string, kind: ClaimKind): RawClaim[] {
+  const attribute = attrKey(focus) || 'info'
+  const q = focusTerms(focus)
+  const sentences = sentencesOf([doc.description, ...doc.passages].filter(Boolean))
+  // Stated = the sentence carries at least two of the focus's term groups (or all of a one-term focus): long focus phrases rarely
+  // repeat whole in one sentence, and "half of the terms" turned most real statements into inference candidates (measured 08/10).
+  const need = Math.max(1, Math.min(2, Math.ceil(q.length / 2)))
+  const scored = sentences.map((s, i) => { const t = termKeys(s, false); const hits = q.filter(w => t.has(w)).length; return { s, i, hits, num: /\d/.test(s) } })
+  const stated = scored.filter(x => x.hits >= need).sort((a, b) => b.hits - a.hits || Number(b.num) - Number(a.num) || a.i - b.i).slice(0, 3)
+  if (stated.length) return stated.map(x => ({ subject: '', attribute, kind, value: quantityIn(x.s), stance: 'stated' as const, quote: x.s }))
+  const implied = scored.filter(x => x.hits >= 1 && x.num).sort((a, b) => b.hits - a.hits || a.i - b.i).slice(0, 2)
+  if (implied.length) return implied.map(x => ({ subject: '', attribute, kind, value: quantityIn(x.s), stance: 'inferred' as const, quote: x.s }))
+  return [{ subject: '', attribute, kind, value: '', stance: 'not_found', quote: '' }]
 }

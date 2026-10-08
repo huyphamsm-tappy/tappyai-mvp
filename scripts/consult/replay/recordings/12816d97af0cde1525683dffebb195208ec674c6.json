@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congan.quangngai.gov.vn \"VNeID mức 2\" \"hộ chiếu\" \"117/2026\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:40.520Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congan.quangngai.gov.vn \"VNeID mức 2\" \"hộ chiếu\" \"117/2026\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

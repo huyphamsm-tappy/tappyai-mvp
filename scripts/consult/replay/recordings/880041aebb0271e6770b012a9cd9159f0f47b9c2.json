@@ -1,0 +1,390 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "iPhone 15 Samsung Galaxy S24 giá Việt Nam so sánh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:16:45.958Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Samsung Galaxy S24 giá Việt Nam so sánh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Samsung Galaxy S24 FE",
+    "source": "HungMobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:2090468520740515803,gpcid:8888297900980422915,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQbNgWftiehA3C-GaDJ3dJx-BmPxDtgqz_RkHyWdI2f4cUGJVpvKfmbBnY7k3796-tQ05318IDHMkn6deAUMGvjn313JFAyNg",
+    "productId": "2090468520740515803",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 128GB (Chính Hãng VN/A) - Mới Nguyên Seal",
+    "source": "xoanstore.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:6462590923873261980,gpcid:6601648695432433635,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "14.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSQxXwzZRy_MBAgHcOLUG-72dtv85oTDV23m1-KcSGhMqH2IdvwXRsqqA1NfEUvV7G5TNJY0kDC-xiVN82AvQn12LyB_i42F6mW1NWwpbZ4kYqs6lkmbSbJyg",
+    "productId": "6462590923873261980",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 5G (8GB - 256GB) - Chính Hãng Like New",
+    "source": "Viettablet",
+    "price": "10.099.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRV4Cp1UVGHbjuaV3mGs7FbbPVTSUvxHp-dYBdIOozrYsYG4SdJtpTKaBZBYJwxTk5GuV4gNgRK5c6cVTvXZCHmxL-i7R2v5DrKoikvBpz-IPkw-5umuFKl",
+    "rating": 4.8,
+    "ratingCount": 63,
+    "productId": "10293039883514572323",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24",
+    "source": "sonpixel.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:2654294951194104850,gpcid:4807686127672394528,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQn3s--s4sIcoFycfhXxEZmrsoI_shZ8WsdYOe5AjE3eTDrexxlNv9L6QFgMODPnkylzEjxS3tUN7nZ6XUGy5dmBaI0_e1MhOTBb-4NPuDdGKOxApryF98lbw",
+    "productId": "2654294951194104850",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 5G",
+    "source": "didong3a.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:7391814718029502424,gpcid:16284344484270141109,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "15.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTpZw8SXZDEw9dOon1w7Wyl5FTVH2WwVeRMpJIk5Bb0ANbxwxnQnaMUn9VenBIylMsT0VviFUtGvf7psWt6cP7IaIK7_m0S3wzlkblAH0HetH08so8zzCDr",
+    "productId": "7391814718029502424",
+    "position": 5
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 256GB Đen",
+    "source": "Oneway Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:4921499606242702185,gpcid:2480769422155580266,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "10.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRTXTuh9LV2XXcPe8hHl1b1l3_eBnjBcE2etqwXWFgkiE1Y162q4yqDw28KXUKHdjq6JsDpkr_FHFn-lJZkc_4xRiVBhXv-6mzqBfzTepZaKGaMzQe_ukB8",
+    "rating": 4.6,
+    "ratingCount": 19,
+    "productId": "4921499606242702185",
+    "position": 6
+   },
+   {
+    "title": "IPhone 15 chính hãng VN/A siêu lướt Đen 128GB - Hồ Chí Minh",
+    "source": "Điện Thoại Hay",
+    "price": "13.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR9uFmCLCkN0wyk04cHAJENS7moJd0ZIf3GAy6MGcuhO7cxlIadexH465i3bVKC9hXWDFbcK2JwN_psxcRA7H8Tc3iPJdvxDubdBo-hG3McPpfA5C0Chuuo",
+    "productId": "15747758956612250058",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 (5G) Cũ Đẹp 99% ( 2sim) - Không zin tặng máy",
+    "source": "clickbuy.com.vn",
+    "price": "9.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTuaBvMnIp-XcpmgQGFs3d862BwDY31NYKOW6kPFW48Huxz8meT06Y2yfdZXVlYAI-p0_YvwbAf2TKy1FkFnhN0xTzMvXruTCAyviNw8BeXpAWI3r-G4iwp1w",
+    "productId": "18381670372131076032",
+    "position": 8
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G (8GB - 128GB) - Cũ Like New",
+    "source": "Viettablet",
+    "price": "7.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRa_078qdG1p-EXcpbTw64lt7Nh8LIkFOa2Rm6yyMbHgu82Jr8A2R-FPeEvpndKVTCmPFiZQSMexmky_nBVm9Vr6bKLw-x4tYXLTKY3r0MkEexQAzlAheXNNA",
+    "rating": 4.8,
+    "ratingCount": 59,
+    "productId": "12693827828112391328",
+    "position": 9
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 8GB 128GB",
+    "source": "Showroom123",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:14910524407590843479,gpcid:4719634925778856429,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "8.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT7myzizqsyrbLLkl0TYGfKfvjB0WANEWYxhR_fX4RJLr_FtL1Yg5DVCAaC-2zHcguvjuGD1JeMRC56xlKwnSfLllLvQee7ADF2s6MFcrauJA5Ujp4iG-cGrg",
+    "rating": 4.8,
+    "ratingCount": 59,
+    "productId": "14910524407590843479",
+    "position": 10
+   },
+   {
+    "title": "Samsung S24+",
+    "source": "MobileWorld.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:12223480313974253788,gpcid:9135522382799816843,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRRpx5gQ8xtHdBcW6n4Ei9EmD0MRAt5lxxx1WUbkodQNduThCu4fae-IrDkaqx6y-1yz7IypcB0eaxoe0pMcB7buS1Zsh6gjW7XAsrnI2kk1rknrQQhi9E4",
+    "productId": "12223480313974253788",
+    "position": 11
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB",
+    "source": "digiphone",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:9939816984735087709,gpcid:10811397852164665470,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSMD-n1k71d519YPBh4iJaYWvomQnju-gbsyUBUuvTlt8emRyiPbyFunZHBEEufTDiknjqCJ7kdOLm4vUbQ2vshelJgPtpT3kx53KHPn21-cUJItioEvhLqgA",
+    "rating": 4.9,
+    "ratingCount": 106,
+    "productId": "9939816984735087709",
+    "position": 12
+   },
+   {
+    "title": "Samsung Galaxy S24 5G",
+    "source": "Viettablet",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:17850832785406017656,gpcid:13829224190112497174,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQPwrjMEqWHdTxnfTd2OciHl7c2xAmBIq7mL6ICI0rySEcSBIufvo3QKiMAJJ5T__QDVPvdbFuYoIZhLBXU7rijw9gBrIEKYYqfwdog-QWuZtyksluBKP_clg",
+    "rating": 4.1,
+    "ratingCount": 203,
+    "productId": "17850832785406017656",
+    "position": 13
+   },
+   {
+    "title": "iPhone 15 Pro 128GB",
+    "source": "ngocvumobile.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:13265874213922937230,gpcid:14640691981744524571,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "15.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTxgeCce8Kch4NYupKJCprLmZ3TBiA66sQCC8BXbpzrA_tZVedM-CnX9wwO6bvXlQX5A9-SpAkb2jfoEHVhwG3EHuIVcX2z73a6YxqfnIUz",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "productId": "13265874213922937230",
+    "position": 14
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G",
+    "source": "Fptshop.com.vn",
+    "price": "18.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSz4ehOjjgUerq7x7hu4yRZR1ZXT22ynGy3VYrB1wA67YzNpL4DquZAx92avjmwvtUDKWcquNouAn7kAERpOk_n7qcraIr2iiEZmlqIPqsrYRX2YkGgwwaXrQ",
+    "rating": 4.9,
+    "ratingCount": 156,
+    "productId": "7563534508023905414",
+    "position": 15
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Plus 12GB/256GB",
+    "source": "XTmobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:17359114553706445111,gpcid:9176618287472229036,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "10.899.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSB7EQqVqpNgdfNQFSebNAwRO0TN5sz-gg2ARdWbLm-LXCLg4NUrfmEAWB1tvfj3QaqbPuAPXPVY6ewQjWEXtzZJ90TPwVmWyPvhkV0j2w",
+    "productId": "17359114553706445111",
+    "position": 16
+   },
+   {
+    "title": "Galaxy S24 Ultra Cam Titan",
+    "source": "Showroom123",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:13118091190693302148,gpcid:16734341519995466847,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT_Fx09OLOVQfnBZUBhM5ola0hDkCbSP85H5rZ16SRr5wKO8IXFW12neluGT0KuIfQhZ_Wt2js7XhEaz2sgyMGfaavbu3rSwJTo2c4zmeKrKGTTonwq5QtaYQ",
+    "productId": "13118091190693302148",
+    "position": 17
+   },
+   {
+    "title": "iPhone 15 128GB Chính hãng VN/A",
+    "source": "minhtuanmobile.com",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTZ5XMdjvWWLUsNRlsgIjPU0XNPT9S5dc4T0QNr7w_MhuY8IIdzA0KR93ZBNrNsc2cJhOsbgyixXvEFc9RutGmkrW89l8WbPd8qMNvR5qngJcY5jljgVmLOQA",
+    "productId": "6566399544380796421",
+    "position": 18
+   },
+   {
+    "title": "điện thoại Samsung Galaxy S25 FE xanh navy",
+    "source": "Điện Thoại Giá Kho",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:846150912253841452,gpcid:7403588822814496823,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRZy7VKBb0v794n5rt2_IaRwO3PeT34ZlWZb4JZ4BBmpm2SGMfuP5CxuNPzyK2TiFO4lJatLk6h6EmWp_SrnCj2UduemIQVNPIh1k7BlZQ57sDE509QR0Nx8w",
+    "rating": 4.8,
+    "ratingCount": 626,
+    "productId": "846150912253841452",
+    "position": 19
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 5G - RAM 8GB - 128GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "9.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQB3v4bKIOTW6o9grV5D6MoNDrt-XHIlskX-cTDmseRJ64qlp7RaiiKLfPWFa0bts2yl9kNLZI9__KwGcmHPyqmLSamiuV_jvNbHHgQWdUV22pEML1liHYC7w",
+    "productId": "4016013518775837197",
+    "position": 20
+   },
+   {
+    "title": "SAMSUNG Galaxy S24 5G Mỹ (8GB | 128GB) mới fullbox",
+    "source": "digiphone",
+    "price": "11.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQjUsfPNgsBopWHq6hkazgxoPyefd2INjvjuwBNCjoDbaYla95hi-p2ltAMnnEqtq72oA7XZ9WndYTdMKYsdcg0AcOjubISMGC04TshSD8oTaxKbvA_JIVwWQ",
+    "rating": 4.8,
+    "ratingCount": 7,
+    "productId": "14350592695311594575",
+    "position": 21
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G (12GB - 512GB) - Bản Mỹ chip Snapdragon 8 Gen 3",
+    "source": "Viettablet",
+    "price": "17.099.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQVwT9k6SlLsaU70GD7v3w-yeiNSfO0VW4Xm3nSGIJNT1UPh86_e9VSYrtnG_PQYwXaHSmJtjGFNkD5BUFnoqJsPrwvaH45LUGyr7xHvVXGy9Y94efIwt-L",
+    "productId": "12220775924473081108",
+    "position": 22
+   },
+   {
+    "title": "Galaxy S26 FE Xanh",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:14216310117532167906,gpcid:1757085911402137601,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "16.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT-3utvJr0W9fQBf3hlLyckC6BkmJ2AxlDOEK6WXLa6D8HJ7PwnUdoI_z8DJANQiiokcMGk0RhKo_PRNBD7z6oMQONUo2Kuv2JYKvw_KCpl3icxBXfCqQ2m",
+    "rating": 4.9,
+    "ratingCount": 518,
+    "productId": "14216310117532167906",
+    "position": 23
+   },
+   {
+    "title": "Samsung Galaxy S24 - Thu Cũ Chính Hãng",
+    "source": "Minh Hoàng Mobile",
+    "price": "8.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQl4BPChWbBJ-7X6oXDRrtXnZYCvgNJrNp49QAoIBlbOR6o-vVvHzyN9vLCdC5-xWcJrkVNjHse5TBOE1nmEQmPju6h-b_uXJ7fKULi_aRBuT_Y2ixExyf1",
+    "productId": "1085991051618173027",
+    "position": 24
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S26 256GB",
+    "source": "Điện Máy Chợ Lớn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:4830157621576549895,gpcid:1767235362374137003,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "20.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQL_dqXYSW8zor1tFArH19PBvM5jTAZYhl3g3BXSanQ9howhrsXVJEHLo87AjDGYGHWniwPJVKKl7GFlcfJPeUUjn-b9wYWL1f6bUe7VtQGojTSmHakrVzc",
+    "rating": 4.8,
+    "ratingCount": 14,
+    "productId": "4830157621576549895",
+    "position": 25
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra",
+    "source": "sonpixel.vn",
+    "price": "15.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRSZ8ItruCFtysxhrIemJjOh2r_Wb7oQnCZFVbYz3eVAXF1wG_fr0nN2Rh4SZiGMjHV30GlGnVtNefIuTBnW0aBcvX55QS1Ez_0CQM4vu_TZtfJGIxVbNXl",
+    "productId": "17331876245429945490",
+    "position": 26
+   },
+   {
+    "title": "iPhone 15 (128GB - 256GB) - Phone House",
+    "source": "Phone House - phonehousestore.vn",
+    "price": "10.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSh3PY51EDF49k3MC2CSRs6NRpPRWN9MqPkxAG9f4xRdkqlEfrWQZxZbcBmPU7MbdactqF3HmvjBwlz4XkJP_PwDm4mz79UGzB46uAZOqQ",
+    "productId": "12320304339122533007",
+    "position": 27
+   },
+   {
+    "title": "Samsung Galaxy S23 Ultra 12GB",
+    "source": "DiĐộngMango",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:2846426327984943250,gpcid:12669255127956214376,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "11.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRJ_UcF09FPg_HtgJsOUPKQz9N3N3N-UVmg7o43Yvkm2Brl9lizsoJaKaiY4JwrnE_aw9M_mD_8SYy7DoS2H1jN5q4Iuot8BRNFVgJkHDk",
+    "productId": "2846426327984943250",
+    "position": 28
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 512GB",
+    "source": "minmobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:4790451369164330959,gpcid:5452172351305424069,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "13.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQNTamu1bMzZfHUfHx21SOHqr1ZIhYcVGu4vW-2Pc3bIdcWnliZBdDODlMThG5ipWOP567n4VRnCN_-vijskEYVyJr2p2QXhl81jUrEJes6LB-pF8X7GqBw",
+    "rating": 4.9,
+    "ratingCount": 156,
+    "productId": "4790451369164330959",
+    "position": 29
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Ultra 5G - RAM 12GB - 256GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "16.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTVyqLMfpUbtvCnN5smg56-NFR2KiUcR0cfZTCrj4K79vk9aUnRM8Q1buaEJlmx4bX7vMnw5EsRnQDxcwtUMdUhHPSOlhcccPNsG7sPqGOcg5_kib5lK3HJOA",
+    "productId": "848767528446942805",
+    "position": 30
+   },
+   {
+    "title": "iPhone 15 Chính Hãng VN/A (New Seal)",
+    "source": "Tinh Tế Mobile",
+    "price": "16.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRpq-K_DcuoEiDQOJn3ah6pCT4995jOgMqVeCVAn3DvMcfElGQZQDtxZYyYTpJWZgXK2fHWfHYmAldM3duah-jXk6L01pUaf8a4dcLxXQ3tUudL9ZftXJrMyw",
+    "productId": "12884541810501036613",
+    "position": 31
+   },
+   {
+    "title": "Samsung Galaxy S26 Ultra 5G",
+    "source": "Điện Máy Chợ Lớn",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:11937985825371927216,gpcid:16418233158843180078,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT19havim2soAmJLzOjTlhdEPm7nns1qfLWVlLJxn1RHnJ3hzLTaRA83aOrcaz4Sq9aC52gWDpHxDBlEGGEEQb3qsCEHHGx534a2FAZhgtCb4edAzt8RoADTw",
+    "productId": "11937985825371927216",
+    "position": 32
+   },
+   {
+    "title": "Samsung Galaxy S24 - Phân Phối Chính Hãng",
+    "source": "Minh Hoàng Mobile",
+    "price": "18.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT5BvBdzf--bkdriPtX48ETsQaDd34dxPTqfqS3vz9jlqajcVmd1iIj-nfF17AUKqwtYUPzEmhoG6z3cu-ScKxWV6Z0CXcNpYE_Cvr_cqybDfBWebBfHRsY",
+    "productId": "10415750348449504350",
+    "position": 33
+   },
+   {
+    "title": "Samsung Galaxy S26 Ultra 5G 12GB 256GB",
+    "source": "Điện Thoại Giá Kho",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+15+Samsung+Galaxy+S24+gi%C3%A1+Vi%E1%BB%87t+Nam+so+s%C3%A1nh&prds=localAnnotatedOfferId:1,catalogid:11726982196198657244,gpcid:2535520959248489467,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSkD88a9ZFKZxtveqdORxdcQcIGnpYXpNA9NPH3d3cyR9U7ZdaMOYtpd6ZquTfvR8rRGiAXloa8SH4GkdvqulKlaMoI5V7TaxMUK4C2rTrmQsYGqDj53YgTJw",
+    "productId": "11726982196198657244",
+    "position": 34
+   },
+   {
+    "title": "iPhone 15 128GB Chính hãng -Black",
+    "source": "pgluxury.com",
+    "price": "14.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRBn30YIeHp5WvZqQO4hTP2_dodRJbHMtq3vjfFHOpusUiOQXmKW8U_YMmS4wTUVE67hWwa4gQCeR0fbKEXBS_-lUaNGAv6CJdXV7XcCIu0nfKq0ebKYWxW",
+    "productId": "7836357907375846210",
+    "position": 35
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 512GB Cũ 99% - Chính hãng Samsung Việt Nam",
+    "source": "TheTekCoffee",
+    "price": "18.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQXCOuEBvuFQfrMLPiuVASfrHhs0ey_mMFhaPWM7EwWKfxRrTGFFIcRqNnxSs-TSnqpUlApuYfCHUwhkXe-KkqqvA1d5kOfft1eNBjI_lMLfRHptWD11MnqgA",
+    "productId": "8490456775850105597",
+    "position": 36
+   },
+   {
+    "title": "Samsung Galaxy S24 128GB bản Mỹ cũ likenew | Trả góp 0%",
+    "source": "XTmobile",
+    "price": "9.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRR4m1PusxthMya05uQqTh2QQXFnmx2sfrP2n6Wd2B3jpgWtTlFih6jsK1w8cj1L-Cbhb-UL5gxQvowi2Yu_FVFxIZblC8kRp0Dr4rFjZLY",
+    "productId": "16405750377106968758",
+    "position": 37
+   },
+   {
+    "title": "Samsung Galaxy S24 5G 8GB-256G 99%",
+    "source": "Bạch Long Store",
+    "price": "9.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQDUPBzwBC8K-gEE1pMVYM-jRBJAStUgBQ44Z8McqCwPg7sBPd_pdbQzCpCJPSpNX7-DTDWaRhANFdN9SpCugqXsL3OkHfrmTGdwuXfgbQ",
+    "productId": "234120592451595814",
+    "position": 38
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Plus 5G - RAM 12GB - 256GB - 99%",
+    "source": "Oneway Mobile",
+    "price": "11.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSZgvWZpyGi5X8Jo2mtPdlPqzonj9-2Cwr1PwskITDgFmPiKS351fbm_il5O6bZF1CbTu_kyJYlRmK3sfLTK7tqQTBILasYvmfeJL6ZBwnVrNbRAE72Deiy6Q",
+    "productId": "9999387363233055111",
+    "position": 39
+   },
+   {
+    "title": "Samsung Galaxy S24 5G 8GB/128GB Like New",
+    "source": "Showroom123",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRVd9sGaU5co-owGQE8mxbcz9rCLcnFq8_kpbqejEJzfnL3xHRZRTRqzUj8V5eYQ8e3D-4RTN5aYZiGO6LVbHm-4ING5OzRlPGK4K7Wp2JI9bDpKRawx1zL",
+    "productId": "6955755917882916886",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

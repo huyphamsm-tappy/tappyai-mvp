@@ -42,6 +42,8 @@ describe('M2 · tracker inside the runtime turn', () => {
     })
     vi.spyOn(console, 'log').mockImplementation(() => {})
     await r.toDataStreamResponse().text()
+    // Latency pass: the tracker lands off the reply's path; the caller (route) awaits `settled` before persisting.
+    await box.settled
     return trace
   }
   const box = (): TaskBox => ({ task: createTask(conv, new Date()), history: [], conversationId: conv, persisted: true, turn: { userText: 'Dưới 300k', previousReply: null, cards: [] } })

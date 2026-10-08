@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"miễn lệ phí cấp hộ chiếu phổ thông\" \"VNeID\" 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:40.963Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"miễn lệ phí cấp hộ chiếu phổ thông\" \"VNeID\" 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Đối với ô tô và xe mô tô, bên chuyển nhượng phải tích hợp trên VNeID ... Theo đó, công dân được miễn lệ phí cấp hộ chiếu phổ thông trong nước.",
+    "date": "24 thg 8, 2026",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

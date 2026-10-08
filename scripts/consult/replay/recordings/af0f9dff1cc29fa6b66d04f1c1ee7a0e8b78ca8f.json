@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ giá 9 triệu Chợ Tốt 2026 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:07:36.427Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ giá 9 triệu Chợ Tốt 2026 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua bán MacBook Pro M1 cũ giá tốt, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-pro-m1-sdpb3pm140",
+    "snippet": "Giá MacBook Pro M1 cũ vào ngày 08/10/2026 dao động khoảng 20,61 triệu - 25,19 triệu, tuỳ RAM, SSD, tình trạng pin, ngoại hình máy, bảo hành và phụ kiện đi ...",
+    "position": 1
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "Giá MacBook Air M1 cũ vào ngày 08/10/2026 dao động khoảng 10,35 triệu - 12,65 triệu, tuỳ dung lượng RAM (8GB hoặc 16GB), SSD (256GB hoặc 512GB), ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1 CŨ năm 2026: Vẫn là \"vua\" phân khúc 12 triệu ...",
+    "link": "https://www.youtube.com/watch?v=hMFDlkwVM9w",
+    "snippet": "Bạn đang tìm kiếm một chiếc laptop ngon - bổ - rẻ trong tầm giá 12 triệu đồng vào năm 2026? Liệu chiếc MacBook Air M1 đã ra mắt 6 năm còn ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 4
+   },
+   {
+    "title": "Top 5 MacBook đáng tiền nhất 2025-2026: Bí quyết chọn ...",
+    "link": "https://macone.vn/tin-tuc/macbook-dang-xuong-tien-nhat/?srsltid=AU7gw4VBD2U_xDGMMaJoIYk9W8eOxmpVyhoH9uWKfj8q8P8MGGKQW72w",
+    "snippet": "Với mức giá chỉ khoảng 13.400.000đ cho bản Like New, đây là lựa chọn duy nhất để trải nghiệm macOS mượt mà nếu ví bạn đang “mỏng”. Khấu hao đã ...",
+    "date": "15 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "Mua Bán Macbook Cũ",
+    "link": "https://www.facebook.com/groups/muabanmacbookcu/",
+    "snippet": "——————————————- ✨ Macbook Air M2 13” | RAM 16GB / 256GB / 512GB SSD Likenew Giá chỉ từ : 22tr999 ĐẶC QUYỀN KHI CHỐT ĐƠN: Bảo hành: 06 tháng | Lỗi 1 ...",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M1 liệu có còn đáng mua #anhphibantao #viral ...",
+    "link": "https://www.facebook.com/anhphibantao.vn/videos/macbook-air-m1-li%E1%BB%87u-c%C3%B3-c%C3%B2n-%C4%91%C3%A1ng-mua-anhphibantao-viral-fyp-trending-macbook/2167952353749516/",
+    "snippet": "The cons are discussed as its limitations for daily use, such as being slow and heavy. The video also mentions that the MacBook Air M1 is ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro 2026, MacBook Pro Cũ, LikeNew chính hãng ...",
+    "link": "https://1pro.vn/macbook-pro/?srsltid=AU7gw4UgWEna-6FoHpYVR1ewsgm_EnLA5GypWSaUBLhA7gJFZJ0k2GD1",
+    "snippet": "Sở hữu MacBook Pro 2026, máy cũ & like new chất lượng, giá cạnh tranh. Mua MacBook Pro trả góp 0% đơn giản, giao hàng tận nơi ngay hôm nay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

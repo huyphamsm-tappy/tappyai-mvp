@@ -22,7 +22,7 @@ import { safeLookup } from './safeFetch'
 
 export type PageFailure =
   | 'invalid_url' | 'blocked_scheme' | 'blocked_credentials' | 'blocked_port' | 'blocked_host' | 'blocked_address'
-  | 'too_many_redirects' | 'redirect_without_location' | 'http_error' | 'unsupported_content_type'
+  | 'too_many_redirects' | 'redirect_without_location' | 'http_error' | 'unsupported_content_type' | 'unsupported_encoding'
   | 'connect_timeout' | 'read_timeout' | 'total_timeout' | 'aborted' | 'network_error'
 
 export type PageFetchResult =
@@ -39,7 +39,7 @@ export interface PageFetchOptions {
   signal?: AbortSignal
 }
 
-export const PAGE_FETCH_DEFAULTS = { maxBytes: 800_000, maxRedirects: 4, connectTimeoutMs: 4_000, readTimeoutMs: 5_000, totalTimeoutMs: 8_000, allowHttp: true } as const
+export const PAGE_FETCH_DEFAULTS = { maxBytes: 800_000, maxRedirects: 4, connectTimeoutMs: 3_000, readTimeoutMs: 5_000, totalTimeoutMs: 8_000, allowHttp: true } as const
 
 const TEXT_TYPES = /^(text\/html|application\/xhtml\+xml|text\/plain|application\/json|application\/ld\+json|text\/xml|application\/xml)\b/i
 
@@ -92,6 +92,10 @@ export const realHop: HopTransport = (url, o) => new Promise<HopResult>(resolve 
       if (status < 200 || status >= 300) { res.resume(); return done({ kind: 'error', reason: 'http_error', status }) }
       const contentType = String(res.headers['content-type'] ?? '')
       if (!TEXT_TYPES.test(contentType.trim())) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_content_type', status }) }
+      // We ask for identity; a server that compresses anyway is refused (decompressing would bypass the byte cap — measured: binary
+      // bodies labelled text/html reached the extractor).
+      const enc = String(res.headers['content-encoding'] ?? '').trim().toLowerCase()
+      if (enc && enc !== 'identity') { res.destroy(); return done({ kind: 'error', reason: 'unsupported_encoding', status }) }
       res.setTimeout(o.readTimeoutMs, () => { res.destroy(); done({ kind: 'error', reason: 'read_timeout', status }) })
       const chunks: Buffer[] = []
       let bytes = 0

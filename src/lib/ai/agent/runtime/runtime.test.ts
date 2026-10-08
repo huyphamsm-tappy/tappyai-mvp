@@ -316,3 +316,18 @@ describe('M2 · update_task in the loop', () => {
     expect(bare.trace.events.find(e => e.kind === 'budget')).toMatchObject({ decision: 'task_update_refused', reason: 'unavailable' })
   })
 })
+
+describe('latency pass · research nudge', () => {
+  it('a step note is appended to non-final steps only when the caller asks (guidance, not a ceiling) and is traced', async () => {
+    const systems: string[] = []
+    const h = harness([step('', [['web_search', { query: 'a' }]]), step('', [['web_search', { query: 'b' }]]), step('Trả lời.')], {
+      stepNote: ({ toolEvents }) => toolEvents.length >= 2 ? '\n\nNUDGE' : null,
+    })
+    const call = h.input.callModel
+    h.input.callModel = async o => { systems.push(o.system); return call(o) }
+    const run = await runAgentRuntime(h.input)
+    expect(run.status).toBe('answered')
+    expect(systems.map(s => s.endsWith('NUDGE'))).toEqual([false, false, true])
+    expect(h.trace.events.filter(e => e.kind === 'budget' && e.decision === 'research_nudge')).toHaveLength(1)
+  })
+})

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook cũ Activation Lock Find My Mac serial number diagnostics battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:29.696Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook cũ Activation Lock Find My Mac serial number diagnostics battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4X-CYZ7Ii9NpSTRDsNAOzl6rqXJHsFgifw52woVSIKmJ62xulVE",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 1
+   },
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Từ menu Apple ở góc màn hình, hãy chọn Giới thiệu về máy Mac này. Cửa sổ mở ra sẽ hiển thị hình ảnh của máy Mac, theo sau là tên kiểu máy. Ví dụ dưới đây ...",
+    "position": 2
+   },
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4VLs9vxkhYXdbwDUT9hiV2VOD-VVs_NTatMXsqpCKpdckOWHCPu",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "How to Check MacBook Hardware - Try Apple Diagnostics Now",
+    "link": "https://www.youtube.com/watch?v=B6fhU8SBWSo",
+    "snippet": "Với Apple Dignostic, bạn có thể kiểm tra ngay phần cứng MacBook, iMac hay các sản phẩm Mac khác nếu nghi ngờ có lỗi hay bạn đang muốn mua máy cũ ...",
+    "position": 5
+   },
+   {
+    "title": "Cảnh báo anh em mua máy Mac cũ! | Viết bởi summon_rain",
+    "link": "https://tinhte.vn/thread/canh-bao-anh-em-mua-may-mac-cu.3680805/",
+    "snippet": "Gọi lên Apple Support VN, mình nhận được câu trả lời là chiếc máy với mã serial XN7FC***** đang có Activation Lock, và đó không phải tài khoản ...",
+    "date": "12 thg 6, 2023",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 6
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ chính hãng, nhanh chóng 2026",
+    "link": "https://dienthoaivui.com.vn/cach-test-kiem-tra-macbook-pro-air-cu-truoc-khi-mua",
+    "snippet": "Bạn có thể kiểm tra pin MacBook bằng cách xem chu kỳ sạc (Cycle Count) hoặc xem tình trạng pin (Condition). Cách kiểm tra pin MacBook cũ. Nếu ...",
+    "date": "28 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "MacBook Serial Number Check: Avoid Icloud & MDM Locks!",
+    "link": "https://www.tiktok.com/@ogabasseyy/video/7647254945602751765",
+    "snippet": "The warranty, especially if purchased with Apple Care or other valid Apple coverage, is typically linked to the activation date recorded by ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

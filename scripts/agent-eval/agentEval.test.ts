@@ -16,6 +16,7 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { tmpdir } from 'node:os'
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import { installReplayFetch, netSnapshot, netDelta, setSerperInjection } from '../consult/replay/lib/serperReplay'
 import { parseDataStream } from '../consult/replay/lib/stream'
@@ -97,7 +98,8 @@ function prepareEnv(): void {
  * (pages can be large; the repo keeps only the Serper recordings). Fixture pages (conflict scenario) are served by exact URL, no network.
  * Imported dynamically so the same harness can drive older commits (M1 / M2) that have no page reader.
  */
-const PAGE_DIR = join(HERE, 'pages')
+// Outside the repository tree (pages can be large or binary; repo hygiene scans scripts/).
+const PAGE_DIR = process.env.AGENT_EVAL_PAGE_DIR || join(tmpdir(), 'tappy-agent-eval-pages')
 const FIXTURES: Record<string, string> = {
   'https://www.chotot.com/tappy-eval-fixture/macbook-air-m1.htm': 'listing.html',
   'https://kiemdinh.tappy-eval.test/bao-cao/mba-m1': 'report.html',

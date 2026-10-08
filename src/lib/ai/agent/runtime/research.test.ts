@@ -4,8 +4,9 @@ import { describe, it, expect, vi, afterEach } from 'vitest'
 import { extractPage, pickPassages } from './pageExtract'
 import { classifySource, reliabilityFor } from './sourceType'
 import { citeSources } from '@/lib/ai/streamEnrichment'
-import { EvidenceLedger, planCitations, sameSubject, valuesDisagree, foundInPage, constraintsSignature, type RawClaim } from './evidence'
-import { readPageTool, urlsIn, urlsInText, __resetPageCache } from './readPage'
+import { EvidenceLedger, planCitations, sameSubject, valuesDisagree, foundInPage, constraintsSignature, candidateClaims, unitOf, type RawClaim } from './evidence'
+import { createPageReader, readPageTool, urlsIn, urlsInText, __resetPageCache } from './readPage'
+import { researchSearchTool, pickToOpen } from './researchSearch'
 import { AgentRunTrace } from './trace'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 
@@ -181,57 +182,151 @@ describe('M3 · evidence ledger', () => {
   })
 })
 
-describe('M3 · read_page rules', () => {
+describe('M3 latency pass · deterministic evidence (no per-page model call)', () => {
+  const apple = extractPage(APPLE_HTML, { url: 'https://www.apple.com/airpods-pro/specs/', contentType: 'text/html', focus: 'battery listening hours single charge' })
+  it('FACT: a sentence matching the focus on a source reliable for that kind → stated, quoted, verified', () => {
+    const L = new EvidenceLedger()
+    const raw = candidateClaims(apple, 'listening hours single charge', 'spec')
+    expect(raw[0]).toMatchObject({ stance: 'stated', value: 'Up to 6 hours', quote: expect.stringContaining('Up to 6 hours of listening time') })
+    const r = L.addClaims(L.addSource(apple, 'x'.repeat(10), 'vi'), raw, textOf(apple))
+    expect(r.added[0]).toMatchObject({ type: 'FACT', basis: 'stated_verified', confidence: 'high' })
+  })
+  it('INFERENCE: only a partly-matching sentence with a figure → implied candidate', () => {
+    const d = docOf('https://some-blog.example/a', '<main><p>Our long test of the earbuds lasted 4 hours on the bus before needing the case again.</p><p>' + 'x '.repeat(200) + '</p></main>')
+    const raw = candidateClaims(d, 'official battery rating charging case total', 'spec')
+    expect(raw[0]).toMatchObject({ stance: 'inferred', value: '4 hours' })
+    const L = new EvidenceLedger()
+    expect(L.addClaims(L.addSource(d, 'x'.repeat(10), 'vi'), raw, textOf(d)).added[0].type).toBe('INFERENCE')
+  })
+  it('UNKNOWN: nothing on the page matches; or a weak source claims it (a seller on battery condition)', () => {
+    const L = new EvidenceLedger()
+    const raw = candidateClaims(apple, 'activation lock mdm enrollment', 'policy')
+    expect(raw).toEqual([expect.objectContaining({ stance: 'not_found' })])
+    expect(L.addClaims(L.addSource(apple, 'x'.repeat(10), 'vi'), raw, textOf(apple)).added[0].type).toBe('UNKNOWN')
+    const seller = docOf('https://www.chotot.com/x/mba.htm', '<main><p>Máy zin 100%, tình trạng pin 100%, chưa sửa chữa lần nào.</p><p>' + 'y '.repeat(200) + '</p></main>')
+    const r2 = L.addClaims(L.addSource(seller, 'x'.repeat(10), 'vi'), candidateClaims(seller, 'tình trạng pin', 'condition'), textOf(seller))
+    expect(r2.added[0]).toMatchObject({ type: 'UNKNOWN', basis: 'weak_source_claim', value: '100%' })
+  })
+  it('CONFLICT: two pages read for the same focus give different values (same unit) → both sides kept', () => {
+    const L = new EvidenceLedger()
+    const seller = docOf('https://www.chotot.com/x/mba.htm', '<main><p>Máy zin, tình trạng pin 100%, như mới.</p><p>' + 'y '.repeat(200) + '</p></main>')
+    const report = docOf('https://kiemdinh.example/r', '<main><p>Theo System Information: tình trạng pin Maximum Capacity 74%, Cycle Count 812.</p><p>' + 'z '.repeat(200) + '</p></main>')
+    L.addClaims(L.addSource(seller, 'x'.repeat(10), 'vi'), candidateClaims(seller, 'tình trạng pin', 'condition'), textOf(seller))
+    const r = L.addClaims(L.addSource(report, 'x'.repeat(10), 'vi'), candidateClaims(report, 'tình trạng pin', 'condition'), textOf(report))
+    expect(r.conflicts).toHaveLength(1)
+    expect(r.conflicts[0].sides?.map(s => s.value)).toEqual(['100%', '74%'])
+  })
+  it('different units never conflict (6 hours vs 4 GB); agreeing values never conflict', () => {
+    expect(unitOf('6 hours')).toBe('hours')
+    expect(unitOf('6 giờ')).toBe('hours')
+    expect(valuesDisagree('6 hours', '4 GB')).toBe(false)
+    expect(valuesDisagree('Up to 6 hours', '6 giờ')).toBe(false)
+    expect(valuesDisagree('6 hours', '4 hours')).toBe(true)
+  })
+})
+
+describe('M3 · page reader rules (shared by read_page and web_search)', () => {
   afterEach(() => { __resetPageCache(); vi.restoreAllMocks() })
   const page = (html: string, finalUrl: string): PageFetchResult => ({ ok: true, url: finalUrl, finalUrl, status: 200, contentType: 'text/html', body: html, bytes: html.length, truncated: false, redirects: 0, ms: 5 })
-  const make = (allowed: string[], over: Partial<Parameters<typeof readPageTool>[0]> = {}) => {
+  const make = (allowed: string[], over: { fetchPage?: (u: string) => Promise<PageFetchResult>; maxReads?: number } = {}) => {
     const trace = new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' })
     const ledger = new EvidenceLedger()
-    const fetchPage = vi.fn(async (u: string) => page(APPLE_HTML, u))
-    const extractClaims = vi.fn(async () => [claim({ value: '6 hours', quote: 'Up to 6 hours of listening time' })])
-    const t = readPageTool({ ledger, allowed: u => allowed.includes(u), trace, lang: 'vi', maxReads: 2, fetchPage, extractClaims, ...over })
-    const run = (args: { url: string; focus: string }) => (t.execute as unknown as (a: typeof args) => Promise<Record<string, unknown>>)(args)
-    return { run, trace, ledger, fetchPage, extractClaims }
+    const fetchPage = vi.fn(over.fetchPage ?? (async (u: string) => page(APPLE_HTML, u)))
+    const reader = createPageReader({ ledger, allowed: u => allowed.includes(u), trace, lang: 'vi', maxReads: over.maxReads ?? 2, fetchPage })
+    const t = readPageTool(reader)
+    const run = async (args: { urls: string[]; focus: string; kind?: string }) => ((await (t.execute as unknown as (a: typeof args) => Promise<{ pages: Array<Record<string, unknown>> }>)(args)).pages)
+    return { run, trace, ledger, fetchPage }
   }
 
   it('only URLs that appeared in this research can be opened (no guessed URLs, no crawl chains)', async () => {
     const h = make(['https://www.apple.com/airpods-pro/specs/'])
-    expect(await h.run({ url: 'https://evil.example/', focus: 'x' })).toMatchObject({ error: 'url_not_from_results' })
+    expect((await h.run({ urls: ['https://evil.example/'], focus: 'x' }))[0]).toMatchObject({ error: 'url_not_from_results' })
     expect(h.fetchPage).not.toHaveBeenCalled()
   })
   it('returns the source, typed evidence and a few passages; the page is fetched once per turn', async () => {
     const h = make(['https://www.apple.com/airpods-pro/specs/'])
-    const r = await h.run({ url: 'https://www.apple.com/airpods-pro/specs/', focus: 'battery' })
-    expect(r).toMatchObject({ source: { id: 'S1', source_type: 'official' }, evidence: expect.arrayContaining([expect.objectContaining({ type: 'FACT', value: '6 hours' })]) })
-    await h.run({ url: 'https://www.apple.com/airpods-pro/specs/', focus: 'warranty' })
+    const [r] = await h.run({ urls: ['https://www.apple.com/airpods-pro/specs/'], focus: 'listening hours single charge', kind: 'spec' })
+    expect(r).toMatchObject({ source: { id: 'S1', source_type: 'official' }, evidence: expect.arrayContaining([expect.objectContaining({ type: 'FACT', value: 'Up to 6 hours' })]) })
+    await h.run({ urls: ['https://www.apple.com/airpods-pro/specs/'], focus: 'warranty' })
     expect(h.fetchPage).toHaveBeenCalledTimes(1)
     expect(h.trace.events.filter(e => e.kind === 'page_read').map(e => e.cached)).toEqual([false, 'turn'])
+  })
+  it('several pages in ONE call are fetched in parallel', async () => {
+    const urls = ['https://a.example/1', 'https://b.example/2', 'https://c.example/3']
+    let inFlight = 0, peak = 0
+    const h = make(urls, { maxReads: 4, fetchPage: async u => { inFlight++; peak = Math.max(peak, inFlight); await new Promise(r => setTimeout(r, 40)); inFlight--; return page(APPLE_HTML, u) } })
+    const t0 = Date.now()
+    const pages = await h.run({ urls, focus: 'battery' })
+    expect(pages).toHaveLength(3)
+    expect(peak).toBe(3)
+    expect(Date.now() - t0).toBeLessThan(110) // ≈ one fetch, not three in a row
   })
   it('page budget per turn', async () => {
     const urls = ['https://a.example/1', 'https://a.example/2', 'https://a.example/3']
     const h = make(urls)
-    await h.run({ url: urls[0], focus: 'x' }); await h.run({ url: urls[1], focus: 'x' })
-    expect(await h.run({ url: urls[2], focus: 'x' })).toMatchObject({ error: 'page_budget_exhausted' })
+    const pages = await h.run({ urls, focus: 'x' })
+    expect(pages.map(p => p.error ?? 'ok')).toEqual(['ok', 'ok', 'page_budget_exhausted'])
   })
-  it('an unreadable page is an honest result, not a throw', async () => {
-    const h = make(['https://a.example/'], { fetchPage: async () => ({ ok: false, url: 'https://a.example/', reason: 'blocked_address', redirects: 1, ms: 1 }) })
-    expect(await h.run({ url: 'https://a.example/', focus: 'x' })).toMatchObject({ error: 'page_unreadable', reason: 'blocked_address' })
-  })
-  it('a page that failed this turn is not fetched again this turn', async () => {
+  it('an unreadable page is an honest result, not a throw; it is not fetched again this turn', async () => {
     const fetchPage = vi.fn(async (): Promise<PageFetchResult> => ({ ok: false, url: 'https://a.example/', reason: 'connect_timeout', redirects: 0, ms: 1 }))
     const h = make(['https://a.example/'], { fetchPage })
-    await h.run({ url: 'https://a.example/', focus: 'x' })
-    expect(await h.run({ url: 'https://a.example/', focus: 'y' })).toMatchObject({ error: 'page_unreadable', reason: 'connect_timeout' })
+    expect((await h.run({ urls: ['https://a.example/'], focus: 'x' }))[0]).toMatchObject({ error: 'page_unreadable', reason: 'connect_timeout' })
+    expect((await h.run({ urls: ['https://a.example/'], focus: 'y' }))[0]).toMatchObject({ error: 'page_unreadable' })
     expect(fetchPage).toHaveBeenCalledTimes(1)
-  })
-  it('a failed claims call still returns the page (passages + structured facts), traced', async () => {
-    const h = make(['https://www.apple.com/airpods-pro/specs/'], { extractClaims: async () => { throw new Error('model down') } })
-    const r = await h.run({ url: 'https://www.apple.com/airpods-pro/specs/', focus: 'battery' })
-    expect((r.passages as string[]).length).toBeGreaterThan(0)
-    expect(h.trace.events.find(e => e.kind === 'error')).toMatchObject({ scope: 'page_claims' })
   })
   it('URL harvesting: result link fields and the user\'s own message only', () => {
     expect(urlsIn({ results: [{ title: 't', link: 'https://a.example/1', snippet: 'see https://b.example/2' }], hotels: { results: [{ website_uri: 'https://c.example/' }] } })).toEqual(['https://a.example/1', 'https://c.example/'])
     expect(urlsInText('Người bán ở https://chotot.com/x.htm, còn https://a.example/y. nữa')).toEqual(['https://chotot.com/x.htm', 'https://a.example/y'])
+  })
+})
+
+describe('M3 latency pass · web_search: parallel queries, best pages opened in the same call', () => {
+  afterEach(() => { __resetPageCache(); vi.restoreAllMocks() })
+  it('opens official sources first, one per host; a marketplace first only for price / stock / condition', () => {
+    const rows = [{ link: 'https://www.reddit.com/r/x' }, { link: 'https://some-blog.example/a' }, { link: 'https://www.apple.com/a' }, { link: 'https://www.apple.com/b' }, { link: 'https://vnexpress.net/c' }, { link: 'https://shopee.vn/p' }]
+    expect(pickToOpen(rows, 3, 'spec')).toEqual(['https://www.apple.com/a', 'https://vnexpress.net/c', 'https://some-blog.example/a'])
+    expect(pickToOpen(rows, 2, 'price')).toEqual(['https://www.apple.com/a', 'https://shopee.vn/p'])
+    expect(pickToOpen(rows, 0, 'spec')).toEqual([])
+  })
+  it('several queries run in parallel through the production search; results merged; pages read in the same call', async () => {
+    const trace = new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' })
+    const allowed = new Set<string>()
+    const reader = createPageReader({ ledger: new EvidenceLedger(), allowed: u => allowed.has(u), trace, lang: 'vi', maxReads: 4, fetchPage: async u => ({ ok: true, url: u, finalUrl: u, status: 200, contentType: 'text/html', body: APPLE_HTML, bytes: 1, truncated: false, redirects: 0, ms: 1 }) })
+    let inFlight = 0, peak = 0
+    const base = async (a: Record<string, unknown>) => { inFlight++; peak = Math.max(peak, inFlight); await new Promise(r => setTimeout(r, 30)); inFlight--; return { results: [{ title: String(a.query), link: a.query === 'q1' ? 'https://www.apple.com/airpods-pro/specs/' : 'https://some-blog.example/b', snippet: 's' }] } }
+    const t = researchSearchTool({ base: base as never, reader, allow: u => allowed.add(u), lang: 'vi' })
+    const r = await (t.execute as unknown as (a: unknown, c: unknown) => Promise<{ results: Array<{ link: string; source_type: string }>; pages: Array<Record<string, unknown>> }>)({ queries: ['q1', 'q2'], read: 1, focus: 'listening hours single charge', kind: 'spec' }, { toolCallId: 'x', messages: [] })
+    expect(peak).toBe(2)
+    expect(r.results.map(x => x.source_type)).toEqual(['official', 'other'])
+    expect(r.pages).toHaveLength(1)
+    expect(r.pages[0]).toMatchObject({ source: { id: 'S1', host: 'apple.com' } })
+  })
+})
+
+describe('M3 latency pass · robustness of deterministic research', () => {
+  afterEach(() => { __resetPageCache(); vi.restoreAllMocks() })
+  it('CONFLICT across languages: a Vietnamese seller claim vs an English system report (bilingual term groups)', () => {
+    const L = new EvidenceLedger()
+    const seller = docOf('https://www.chotot.com/x/mba.htm', '<main><p>Máy zin, pin zin tình trạng pin 100%, như mới.</p><p>' + 'y '.repeat(200) + '</p></main>')
+    const report = docOf('https://kiemdinh.example/r', '<main><p>Battery Information: Cycle Count 812. Condition: Service Recommended. Maximum Capacity 74%.</p><p>' + 'z '.repeat(200) + '</p></main>')
+    L.addClaims(L.addSource(seller, 'x'.repeat(10), 'vi'), candidateClaims(seller, 'tình trạng pin', 'condition'), textOf(seller))
+    const r = L.addClaims(L.addSource(report, 'x'.repeat(10), 'vi'), candidateClaims(report, 'tình trạng pin', 'condition'), textOf(report))
+    expect(r.conflicts).toHaveLength(1)
+    expect(r.conflicts[0].sides?.map(s => s.value)).toEqual(['100%', '74%'])
+  })
+  it('never spends a read on a PDF or on a host that failed this turn', () => {
+    const rows = [{ link: 'https://vbpq.mof.gov.vn/doc.pdf' }, { link: 'https://dead.gov.vn/a' }, { link: 'https://congan.example.gov.vn/b' }]
+    expect(pickToOpen(rows, 2, 'policy', new Set(['dead.gov.vn']))).toEqual(['https://congan.example.gov.vn/b'])
+  })
+  it('a page that fails in a search read is replaced by the next best result in the same call', async () => {
+    const trace = new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' })
+    const allowed = new Set<string>()
+    const fetchPage = vi.fn(async (u: string): Promise<PageFetchResult> => u.includes('dead') ? { ok: false, url: u, reason: 'connect_timeout', redirects: 0, ms: 1 } : { ok: true, url: u, finalUrl: u, status: 200, contentType: 'text/html', body: APPLE_HTML, bytes: 1, truncated: false, redirects: 0, ms: 1 })
+    const reader = createPageReader({ ledger: new EvidenceLedger(), allowed: u => allowed.has(u), trace, lang: 'vi', maxReads: 4, fetchPage })
+    const base = async () => ({ results: [{ title: 'a', link: 'https://dead.gov.vn/a', snippet: '' }, { title: 'b', link: 'https://alive.gov.vn/b', snippet: '' }] })
+    const t = researchSearchTool({ base: base as never, reader, allow: u => allowed.add(u), lang: 'vi' })
+    const r = await (t.execute as unknown as (a: unknown, c: unknown) => Promise<{ pages: Array<Record<string, unknown>>; progress: string }>)({ queries: ['q'], read: 1, focus: 'battery', kind: 'spec' }, { toolCallId: 'x', messages: [] })
+    expect(r.pages.map(p => p.error ?? p.url)).toEqual(['page_unreadable', 'https://alive.gov.vn/b'])
+    expect(r.progress).toMatch(/^1 nguồn · FACT \d+/)
   })
 })

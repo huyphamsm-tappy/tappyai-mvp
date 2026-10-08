@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"117/2026/TT-BTC\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:35.998Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"117/2026/TT-BTC\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nghị quyết 89/2026/NQ-HĐND của HĐND Tỉnh Thái Nguyên",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/nghi-quyet-sua-doi-bo-sung-mot-so-dieu-cua-cac-nghi-quyet-quy-dinh-ve-phi-le-phi-cua-hoi-dong-nhan-dan-tinh-thai-nguyen--438b7820-bb44-11f1-9834-339756ba4988",
+    "snippet": "Căn cứ Thông tư số 117/2026/TT-BTC ngày 14 tháng 8 năm 2026 của. Bộ trưởng Bộ Tài chính quy định miễn, giảm một số khoản phí, lệ phí để triển ...",
+    "date": "23 thg 9, 2026",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

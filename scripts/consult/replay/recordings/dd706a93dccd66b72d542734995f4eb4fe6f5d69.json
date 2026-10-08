@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ giá vé khách Việt 80.000 khách quốc tế 120.000 2026 chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:06.409Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ giá vé khách Việt 80.000 khách quốc tế 120.000 2026 chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá vé các điểm tham quan tại Hội An",
+    "link": "https://danatravel.vn/thong-tin-du-lich/gia-ve-cac-diem-tham-quan-tai-hoi-an.html?srsltid=AU7gw4VQkNZ_loAhIc15MHeNtf4RRkd1uTfzijwFqRcjld2YQEsBk8Mk",
+    "snippet": "Phố cổ Hội An. - Khách Nội địa: 80.000 VND/khách/lượt. - Khách Quốc Tế: 120.000 VND/khách/lượt. Mỗi vé bạn có thể tham quan cảnh quan chung Khu ...",
+    "date": "13 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "Bảng Giá Vé Tham Quan Phố Cổ Hội An 2026",
+    "link": "https://dailytour.info/bang-gia-ve-tham-quan-pho-co-hoi-an.html",
+    "snippet": "Giá vé tham quan phố cổ Hội An 2026 ; Giá vé dành cho khách Việt Nam: 80.000 VNĐ/1 người ; Giá vé dành cho khách Quốc Tế: 120.000 VNĐ/1 người.",
+    "date": "21 thg 4, 2022",
+    "position": 2
+   },
+   {
+    "title": "Hội An tăng cường quản lý hoạt động tham quan khu phố cổ",
+    "link": "https://nhandan.vn/tu-ngay-155-bat-dau-thu-phi-tham-quan-pho-co-hoi-an-post752196.html",
+    "snippet": "Mức giá tham quan 120.000 đồng/vé (dành cho khách quốc tế) và 80.000 đồng/vé (dành cho khách nội địa). Thời gian hoạt động bán vé tham quan khu ...",
+    "date": "11 thg 5, 2023",
+    "position": 3
+   },
+   {
+    "title": "Hội An Office of Tourist Services",
+    "link": "https://www.facebook.com/vanphongHDTQthanhphoHoiAn/?locale=vi_VN",
+    "snippet": "- Với giá vé 80.000đ, du khách được tham quan tương ứng cảnh quan chung và 03 công trình văn hoá. Những điểm tham quan nổi bật bao gồm: - Chùa Cầu Nhật Bản – ...",
+    "position": 4
+   },
+   {
+    "title": "Từ ngày 15/5, du khách phải mua vé khi tham quan khu ...",
+    "link": "https://baochinhphu.vn/tu-ngay-15-5-du-khach-phai-mua-ve-khi-tham-quan-khu-pho-co-hoi-an-102230404005456526.htm",
+    "snippet": "(Chinhphu.vn) - Giá vé tham quan khu phố cổ Hội An vẫn giữ nguyên mức 80.000 đồng/vé đối với khách trong nước và 120.000 đồng/vé đối với khách ...",
+    "date": "4 thg 4, 2023",
+    "position": 5
+   },
+   {
+    "title": "Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/",
+    "snippet": "Hội An lan tỏa giá trị di sản qua chuỗi hoạt động sáng tạo hưởng ứng Ngày Quốc tế Bảo tàng 2026.",
+    "position": 6
+   },
+   {
+    "title": "Ưu đãi vé Ký Ức Hội An 2026 | Cập nhật giá vé mới nhất",
+    "link": "https://www.youtube.com/watch?v=nSqPsbZm55Q",
+    "snippet": "DANAGO cập nhật bảng giá vé Ký Ức Hội An 2026 mới nhất, giúp du khách dễ dàng lựa chọn và chủ động đặt vé trước cho hành trình khám phá phố ...",
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm Du lịch Hội An: Hướng dẫn chi tiết từ A-Z",
+    "link": "https://pystravel.vn/tin/17608-kinh-nghiem-du-lich-hoi-an.html?srsltid=AU7gw4XHITlW1LtajqS03qwIzziYW0I6u6ph36wYWlFBzdpgZM5aAcRY",
+    "snippet": "- Vé tham quan phố cổ: 120.000 VND/người. - Tour biển An Bàng và rừng dừa Bảy Mẫu: 200.000 - 500.000 VND/tour. - Chuyến tham quan Cù Lao ...",
+    "date": "14 thg 4, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -32,7 +32,7 @@ export const toolInputHash = (name: string, args: unknown): string => sha(`${nam
 
 /** The search query a tool was given, redacted of secret / contact shapes and capped (null when the tool has none). */
 export function traceQuery(args: Record<string, unknown> | undefined): string | null {
-  const q = args?.query ?? args?.q ?? args?.movieTitle ?? args?.destination ?? args?.location
+  const q = Array.isArray(args?.queries) ? (args!.queries as unknown[]).filter(x => typeof x === 'string').join(' | ') : Array.isArray(args?.urls) ? (args!.urls as unknown[]).filter(x => typeof x === 'string').map(u => { try { return new URL(u as string).hostname } catch { return '' } }).join(' | ') : args?.query ?? args?.q ?? args?.movieTitle ?? args?.destination ?? args?.location
   return typeof q === 'string' && q.trim() ? cutSecrets(q).text.slice(0, 100) : null
 }
 

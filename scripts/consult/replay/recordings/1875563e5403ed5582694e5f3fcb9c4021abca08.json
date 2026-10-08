@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:samsung.com Galaxy S24 battery capacity mAh typical rated",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:03:57.080Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:samsung.com Galaxy S24 battery capacity mAh typical rated",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Galaxy S24 Series Battery Capacity and Charging Speed",
+    "link": "https://www.samsung.com/ae/support/mobile-devices/what-is-the-battery-capacity-and-its-speed-in-the-galaxy-s24-series/",
+    "snippet": "Galaxy S24 Ultra: 5,000 mAh (Typical) with 45W charging speed. · Galaxy S24+: 4,900 mAh (Typical) with 45W charging speed. · Galaxy S24: 4,000 mAh ...",
+    "date": "30 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "What is the battery capacity of the Galaxy S series?",
+    "link": "https://www.samsung.com/ae/support/mobile-devices/what-is-the-battery-capacity-for-samsung-s-series/",
+    "snippet": "1. Typical Battery Capacity for Samsung Galaxy S Series · Galaxy S24 (S921B): 4,000 mAh · Galaxy S24+ (S926B): 4,700 mAh · Galaxy S24 Ultra (S928B): ...",
+    "date": "11 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Choosing The Best Battery Life Phone",
+    "link": "https://www.samsung.com/us/explore/mobile/what-is-the-best-samsung-phone-for-my-battery-needs/",
+    "snippet": "Each of our phones has an mAh value assigned, which is calculated based on average usage. This can be used to estimate the number of hours of battery life.",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S23 vs Galaxy S24: What's the difference?",
+    "link": "https://www.samsung.com/us/explore/mobile/buying-guide/galaxy-s24-vs-s23/",
+    "snippet": "Rated capacity is 3,880mAh for Galaxy S24, 4,755mAh for Galaxy S24+ and 4855mAh for Galaxy S24 Ultra. Actual battery life may vary depending on network ...",
+    "position": 4
+   },
+   {
+    "title": "Galaxy S24 Ultra | SM-S928BZVWXME",
+    "link": "https://www.samsung.com/my/business/smartphones/galaxy-s/galaxy-s24-ultra-titanium-violet-1tb-sm-s928bzvwxme/?srsltid=AU7gw4V-8UzbHA-Oh5dxg3mQk0uZtfZW4wVVvSR3nzKSxp8tluZ2y4zo",
+    "snippet": "Rated capacity is 3880mAh for Galaxy S24, 4755mAh for Galaxy S24+ and 4855mAh for Galaxy S24 Ultra. Actual battery life may vary depending on network ...",
+    "position": 5
+   },
+   {
+    "title": "Differences between the Galaxy S24 models",
+    "link": "https://www.samsung.com/us/support/answer/ANS10000756/",
+    "snippet": "Each Galaxy S24 model includes an enhanced battery capacity with up to 4.5 hours ... S24: The battery is 4,000mAh. S24+: The battery is 4,900mAh. S24 FE ...",
+    "position": 6
+   },
+   {
+    "title": "What is the battery capacity of the S24?",
+    "link": "https://www.samsung.com/ae/support/mobile-devices/what-is-the-battery-capacity-of-the-s24/",
+    "snippet": "Galaxy S24 Ultra: 5,000mAh; Galaxy S24+: 4,900mAh; Galaxy S24: 4,000mAh. 2. Why does battery capacity vary across Samsung Galaxy S24 models?",
+    "date": "30 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Specs | Samsung Galaxy S24 & S24+",
+    "link": "https://www.samsung.com/latin_en/smartphones/galaxy-s24/specs/",
+    "snippet": "Explore the specs for Samsung Galaxy S24 and S24+, including color availability, display size, camera features, storage options, battery life and more.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

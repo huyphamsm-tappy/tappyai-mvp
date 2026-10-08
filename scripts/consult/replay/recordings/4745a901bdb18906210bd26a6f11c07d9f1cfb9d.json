@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn giá vé tham quan phố cổ Hội An 80.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:04:07.987Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn giá vé tham quan phố cổ Hội An 80.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Một số thông tin chung về vé tham quan phố cổ",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Thong-bao/Mot-so-thong-tin-chung-ve-ve-tham-quan-pho-co-948.hwh",
+    "snippet": "mua một tấm vé tham quan 120 ngàn/khách quốc tế và 80 ngàn/ khách. Hội An (hơn 85% tiền vé tham quan dành cho trùng tu). thành phố hỗ trợ từ 40 ...",
+    "date": "4 thg 5, 2014",
+    "position": 1
+   },
+   {
+    "title": "Các điểm tham quan đẹp nhất Hội An - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cac-diem-tham-quan-dep-nhat-hoi-an-2334.hwh",
+    "snippet": "Trung tâm phố cổ Hội An có đến hơn 20 điểm tham quan, thuộc nhiều loại hình di tích như nhà cổ, hội quán, đình miếu…",
+    "date": "7 thg 6, 2023",
+    "position": 2
+   },
+   {
+    "title": "Hội An đông nghẹt khách dịp Tết: Trải nghiệm thực tế và lưu ý ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-dong-nghet-khach-dip-tet-trai-nghiem-thuc-te-va-luu-y-khi-tham-quan-pho-co-3024.hwh",
+    "snippet": "Hàng chục nghìn du khách đổ về Hội An trong những ngày đầu năm khiến khu vực trung tâm quá tải cục bộ, nhiều dịch vụ ăn uống và tham quan ...",
+    "date": "23 thg 2, 2026",
+    "position": 3
+   },
+   {
+    "title": "20 địa điểm du lịch Hội An đẹp mê mẩn quên lối về",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/20-dia-diem-du-lich-hoi-an-dep-me-man-quen-loi-ve-2234.hwh",
+    "snippet": "1. Chùa Cầu – linh hồn của phố cổ · 2. Sông Hoài – con sông hiền dịu, lặng lẽ · 3. Phố đèn lồng – điểm check-in lung linh · 4. Nhà cổ Phùng Hưng – ...",
+    "date": "13 thg 11, 2022",
+    "position": 4
+   },
+   {
+    "title": "Khánh thành ngôi chùa phái Nam Tông tại Hội An - Phố cổ ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Hoi-An-24h/Khanh-thanh-ngoi-chua-phai-Nam-Tong-tai-Hoi-An-230.hwh",
+    "snippet": "Ngày 17-4, chùa Nam Quang sau hơn sáu năm xây dựng đã được khánh thành tại đường Cửa Đại, phường Cẩm Châu, Hội An, Quảng Nam.",
+    "date": "18 thg 4, 2011",
+    "position": 5
+   },
+   {
+    "title": "Những Đại sứ du lịch Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/nhung-dai-su-du-lich-hoi-an-1623.hwh",
+    "snippet": "Chỉ tính trong 20 năm, VPHDTQ đã đón và hướng dẫn tham quan cho hơn 7,5 triệu lượt khách , thu được 545 tỷ đồng tiền vé, đóng góp hơn 391 tỷ ...",
+    "date": "15 thg 12, 2017",
+    "position": 6
+   },
+   {
+    "title": "Làng gốm cổ Thanh Hà hút khách tham quan - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/lang-gom-co-thanh-ha-hut-khach-tham-quan-2451.hwh",
+    "snippet": "... giá vé 35.000đ/người. Khách du lịch đến làng gốm cổ rồi từ đây đi thuyền trên sông Thu Bồn, vui chơi trong đêm ở phố cổ. Ông Hùng cho biết ...",
+    "date": "28 thg 9, 2023",
+    "position": 7
+   },
+   {
+    "title": "Còn đây dáng phố vẹn nguyên - Phố cổ Hội An - Di sản văn ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dat-va-nguoi-Hoi-An/con-day-dang-pho-ven-nguyen-2296.hwh",
+    "snippet": "Hotline: (+84) 8 43 42 8888 Trang nhất … giai đoạn thập niên 80, thập niên 90 và từ năm 2000 đến nay. Từ năm 1987, tỉnh Quảng Nam - Đà Nẵng",
+    "date": "13 thg 4, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

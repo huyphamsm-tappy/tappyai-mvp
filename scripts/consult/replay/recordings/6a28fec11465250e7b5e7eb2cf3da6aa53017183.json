@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 water resistance IP rating IP54 USB-C Lightning",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:14:30.923Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 water resistance IP rating IP54 USB-C Lightning",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 vs AirPods 4 with Active Noise Cancellation",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-pro,airpods-4-anc",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "AirPods Pro 2 are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case were tested under controlled laboratory ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/in/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57, and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat and water resistance are ...",
+    "position": 4
+   },
+   {
+    "title": "AirPods Pro 2 vs AirPods (2nd generation)",
+    "link": "https://www.apple.com/ie/airpods/compare/?modelList=airpods-pro,airpods-2nd-gen",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat and water resistance are not ...",
+    "position": 5
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/my/airpods/compare/",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat and water resistance are not ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods (2nd generation) - Technical Specifications",
+    "link": "https://www.apple.com/eg/airpods-2nd-generation/specs/",
+    "snippet": "Δ AirPods Pro (2nd generation) are dust resistant and sweat and water resistant for non-water sports and exercise, and they are IP54 rated. Dust, sweat, and ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/ca/airpods-pro/specs/",
+    "snippet": "AirPods Pro 3 with MagSafe Charging Case (USB‑C) · Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

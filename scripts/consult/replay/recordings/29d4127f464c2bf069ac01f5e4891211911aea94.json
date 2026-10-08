@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:31.601Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buffet Tôm Hùm Không Giới Hạn tại Chài Village - Quận 1",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7650442125921750292",
+    "snippet": "Chài Village, tọa lạc tại Lầu 5, số 99 Nguyễn Huệ, Quận 1, mang đến trải nghiệm buffet tôm hùm không giới hạn với mức giá hấp dẫn, ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village - Ăn thả ga ở Phố Đi Bộ ...",
+    "link": "https://www.tiktok.com/@dangtumlum20/video/7664213216897273108",
+    "snippet": "Giới thiệu nhanh Ăn buffet tôm hùm thả ga tại Chài Village, ngay trên Phố Đi Bộ Nguyễn Huệ — lựa chọn lý tưởng cho ai muốn thưởng thức hải sản ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 3
+   },
+   {
+    "title": "Buffet Tôm Hùm Tại Chài Village - Trải Nghiệm Ẩm Thực Mới",
+    "link": "https://www.tiktok.com/@ancungdaune/video/7444156152851483912",
+    "snippet": "Khám phá buffet tôm hùm tại Chài Village, nơi mang đến trải nghiệm ẩm thực phong phú. Đừng bỏ qua đánh giá ẩm thực ngon! #ancungdaune # ...",
+    "position": 4
+   },
+   {
+    "title": "Chài Village buffet — Chài Village dining guide",
+    "link": "https://www.tiktok.com/@duyhaydi86/video/7662599116760927518",
+    "snippet": "Lead Chài Village buffet highlights what visitors most want to know: buffet options, what to expect at the venue, and practical tips for planning a visit to ...",
+    "position": 5
+   },
+   {
+    "title": "Buffet Chài Village",
+    "link": "https://www.tiktok.com/discover/buffet-ch%C3%A0i-village",
+    "snippet": "Khám phá Buffet Hải Sản tại Chài Village: Lobster tươi ngon, không gian ấm cúng cho bữa tối hoàn hảo tại Sài Gòn!Xem thêm video về Chài Village Buffet ...",
+    "position": 6
+   },
+   {
+    "title": "Buffet tôm hùm ở Chài village chỉ 699 cành # ...",
+    "link": "https://www.tiktok.com/@haituiminhdian/video/7487553744331148549",
+    "snippet": "Buffet tôm hùm ở Chài village chỉ 699 cành #haituiminhdian #ancungtiktok #reviewanngon #vtmgr #xuhuong #viral #chaivillage · recommend-cover.",
+    "position": 7
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7642641884971683092",
+    "snippet": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga, view Saigon Tóm tắt nhanh Chài Village phục vụ buffet tôm hùm không giới hạn, còn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

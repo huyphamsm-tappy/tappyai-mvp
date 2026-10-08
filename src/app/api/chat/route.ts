@@ -3271,6 +3271,8 @@ ${completionInstruction(lang)}` },
     if (chatSessionId && commerceIdentityId) {
       // Phase 8 M2: the task is merged against what is stored NOW (a concurrent turn of the same conversation may have written a newer
       // revision) — never a silent overwrite.
+      // Latency pass: the task tracker's delta lands off the reply's path; wait for it here (after the last byte) before persisting.
+      if (agentTaskBox?.settled) await agentTaskBox.settled
       const taskSave = agentTaskBox?.persisted && agentTaskBase ? await (async () => {
         const latest = await loadChatSessionState(commerceIdentityId, chatSessionId)
         const m = mergeForSave(agentTaskBase, agentTaskBox.task, validStoredTask(latest?.task, agentTaskBox.conversationId))

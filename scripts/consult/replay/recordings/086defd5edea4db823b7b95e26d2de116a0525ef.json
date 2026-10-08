@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Biểu mức thu\" \"hộ chiếu phổ thông\" 2026 lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:10:22.525Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Biểu mức thu\" \"hộ chiếu phổ thông\" 2026 lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://congan.hungyen.gov.vn/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-cong-dan-du-dieu-kien-tu-ngay-1582026-c239385.html",
+    "snippet": "Đáng chú ý, khoản 8 Điều 1 Thông tư số 117/2026/TT-BTC quy định miễn lệ phí “cấp hộ chiếu phổ thông trong nước” theo Số TT 1 Mục I Biểu mức thu phí, lệ phí ...",
+    "position": 1
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2. ... Biểu mức thu phí, lệ phí trong lĩnh vực xuất cảnh, nhập ...",
+    "date": "18 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://www.facebook.com/61578188304971/posts/mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y-/122193342440939610/",
+    "snippet": "Đáng chú ý, khoản 8 Điều 1 Thông tư số 117/2026/TT- BTC quy định miễn lệ phí “cấp hộ chiếu phổ thông trong nước” theo Số TT 1 Mục I Biểu mức thu ...",
+    "position": 3
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-cap-ho-chieu-nam-2026-bao-nhieu-tien-138082025.html",
+    "snippet": "Hộ chiếu phổ thông có thời hạn bao lâu? Lệ phí cấp hộ chiếu năm ... Căn cứ theo Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư 25 ...",
+    "date": "2 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "biểu mức thu phí, lệ phí cấp hộ chiếu đối với công dân ...",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncnn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Farticle-xncnn%2Flp-xncnn%2Fbmtp",
+    "snippet": "BIỂU MỨC THU PHÍ, LỆ PHÍ. (Ban hành kèm theo Thông tư ... - Tem AB là một loại giấy miễn thị thực cho người mang hộ chiếu phổ thông đi công tác nước ngoài.",
+    "position": 5
+   },
+   {
+    "title": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/hy.qlxnc/posts/mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y-/1088837573799005/",
+    "snippet": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG NƯỚC CHO CÔNG DÂN ĐỦ ... Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư 25/2021/TT- BTC ...",
+    "position": 6
+   },
+   {
+    "title": "NHẬP CẢNH, QUÁ CẢNH, CƯ TRÚ TẠI VIỆT NAM",
+    "link": "https://tphcm.gdt.gov.vn/wps/wcm/connect/TPHCM/site/news/cucthue/c03bc103-78a6-4cdb-b4a9-2dcbe9ef3ea1?presentationTemplate=Lib/pt_new_detail_print",
+    "snippet": "Mức thu phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam được quy định tại Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư này ...",
+    "position": 7
+   },
+   {
+    "title": "Miễn lệ phí làm hộ chiếu từ 15/8/2026: điều kiện & mức miễn",
+    "link": "https://infotravel-hochieuonline.com/mien-le-phi-lam-ho-chieu-tu-15-8-2026/",
+    "snippet": "... lệ phí cấp hộ chiếu phổ thông (mức thu 0 đồng). Đây là chính sách ... Biểu mức thu ban hành kèm Thông tư 28/2026/TT-BTC (được sửa đổi ...",
+    "date": "11 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
