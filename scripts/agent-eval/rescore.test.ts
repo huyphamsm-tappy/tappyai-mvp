@@ -19,7 +19,7 @@ describe.skipIf(!DIR)('agent eval — rescore', () => {
     const out: EvalRow[] = rows.map(r => {
       const raw = JSON.parse(readFileSync(join(DIR, 'raw', `${r.mode}-${r.scenario}-t${r.turn}.json`), 'utf8')) as { parsed: { tools: Array<{ toolName?: string; args?: unknown }>; annotations: Array<Record<string, unknown>> } }
       const expect = byId.get(r.scenario)?.turns[r.turn - 1]?.expect ?? {}
-      const obs = { text: r.reply, rawText: null, tools: raw.parsed.tools.map(t => ({ name: t.toolName ?? '?', args: t.args })), annotations: raw.parsed.annotations, crashed: !!r.crash }
+      const obs = { text: r.reply, rawText: null, tools: raw.parsed.tools.map(t => ({ name: t.toolName ?? '?', args: t.args })), annotations: raw.parsed.annotations, crashed: !!r.crash, research: r.runTrace?.research ?? null }
       const checks = evaluateTurn(expect, obs)
       return { ...r, checks, pass: checks.every(c => c.pass), output: outputKind(obs) }
     })

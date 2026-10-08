@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Airpods Pro 2 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:11.176Z",
+ "body": {
+  "searchParameters": {
+   "q": "Airpods Pro 2 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vỏ Bảo Vệ Chống Sốc Sang Trọng Cho AirPods 4/Pro 2/ ...",
+    "link": "https://www.lazada.vn/products/vo-bao-ve-chong-soc-sang-trong-cho-airpods-4pro-231-co-moc-treo-bao-dung-tai-nghe-apple-i2952914865.html?srsltid=AU7gw4X8mK_7i572ztVZUIRzQ73sqpRPLzoQHMvbD7ok2d00JWHb3dam",
+    "snippet": "Được thiết kế dành riêng cho các mẫu Apple Airpod Pro, bao gồm 1, 2 và 3, đảm bảo độ vừa vặn và khả năng tương thích hoàn hảo. Thiết kế sang trọng.",
+    "rating": 4.6,
+    "ratingCount": 31,
+    "position": 1
+   },
+   {
+    "title": "Vỏ Silicon Siêu Mỏng Cho AirPods Pro 2 Hộp Đựng Tai ...",
+    "link": "https://h5.lazada.vn/products/vo-silicon-sieu-mong-cho-airpods-pro-2-hop-dung-tai-nghe-bluetooth-khong-day-bluetooth-vo-bao-ve-da-tach-roi-cho-apple-airpod-pro-2-i2615569179.html",
+    "snippet": "Vỏ bảo vệ này bảo vệ AirPods Pro 2 của bạn khỏi trầy xước, rơi và hao mòn hàng ngày, giữ cho chúng luôn ở tình trạng nguyên sơ.",
+    "rating": 5,
+    "ratingCount": 29,
+    "position": 2
+   },
+   {
+    "title": "(Sellerade) 1 cặp nút tai nghe cao su tương thích cho ...",
+    "link": "https://www.lazada.vn/products/sellerade-1-cap-nut-tai-nghe-cao-su-tuong-thich-cho-airpods-pro-2-airpods-1-va-2-i13362407503.html?srsltid=AU7gw4VYewaEQbK8_tQe_DWZ-YbGaDhlkv9IcFmjSNBWKAA1L-KVCQ0K",
+    "snippet": "Được thiết kế cho cả AirPods Pro thế hệ 1 và 2, đảm bảo vừa vặn hoàn hảo và nâng cao trải nghiệm âm thanh. Vận chuyển. Sản phẩm này có thể được vận ...",
+    "position": 3
+   },
+   {
+    "title": "BAO DA AIRPODS PRO 2 NÚT BẤM - CHÍNH HÃNG ...",
+    "link": "https://www.lazada.vn/products/bao-da-airpods-pro-2-nut-bam-chinh-hang-khactencom-i2044734875.html?srsltid=AU7gw4Xy-ERgAckFyYYOk0FrRlggotveKvJnRga1mVZobkiFktbhouy_",
+    "snippet": "Sản phẩm gồm bao da Apple Airpods Pro 2 và dây đeo tay. Thiết kế tối giản với đường cắt góc bo tròn mềm mại ôm sát sản phẩm. Lớp da bò thô bên trong giúp ...",
+    "position": 4
+   },
+   {
+    "title": "[Trả góp 0%] Phụ kiện AirPods Pro (2nd Gen) USB-C ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-phu-kien-airpods-pro-2nd-gen-usb-c-mtjv3zpa-chinh-hang-i2486642523.html?srsltid=AU7gw4VBOxRPAY0PdBpHKmcEg03qNj246Hiwj6j1xc6cjhLqZxTiYN3s",
+    "snippet": "Chip H2 do Apple thiết kế, sức mạnh đằng sau AirPods Pro 2, giúp hiệu suất âm thanh đã tốt nay còn tốt hơn. Từ khả năng khử tiếng ồn thông minh hơn đến âm thanh ...",
+    "position": 5
+   },
+   {
+    "title": "Earise | Vỏ Bảo Vệ Mềm cho AirPods Pro 2, AirPods 3 và 4",
+    "link": "https://www.lazada.vn/products/earise-vo-bao-ve-mem-cho-airpods-pro-2-airpods-3-va-4-i13395496921.html?srsltid=AU7gw4XOPcIv9pC9-WKKB9xwAahEYpo7sSnvc6-u1iai4cH-KuN00ibM",
+    "snippet": "Khuyến mãi giảm 144.000 ₫. 190.000 ₫334.000 ₫-43%. LazMall Earise | Vỏ Bảo Vệ Mềm cho AirPods Pro 2, AirPods 3 và 4. (71). Tuỳ chọn sản phẩm.",
+    "position": 6
+   },
+   {
+    "title": "Vỏ Ốp Chủ Đề Phù Thủy Xấu Ác Cho AirPods Pro 2",
+    "link": "https://www.lazada.vn/products/vo-op-chu-de-phu-thuy-xau-ac-cho-airpods-pro-2-i13347720282.html?srsltid=AU7gw4WXdzAUpU6uy_j_FqLTFFJedO8rNmhV6W6fgFaTLfOokqaC52Jm",
+    "snippet": "Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng và còn nguyên tem mạc, nguyên seal (nếu có). service. Không áp dụng chính sách bảo hành.",
+    "position": 7
+   },
+   {
+    "title": "Ốp Lưng AirPods Pro 2 Chất Liệu Mềm Matte",
+    "link": "https://www.lazada.vn/products/op-lung-airpods-pro-2-chat-lieu-mem-matte-i13444156315-s117240611484.html?srsltid=AU7gw4VUxUG6oonXa30mcU3yCNkZi1DeYjt7ZXU0HEuFk-2wpW07njAE",
+    "snippet": "Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng và còn nguyên tem mạc, nguyên seal (nếu có). service. Không áp dụng chính sách bảo hành.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

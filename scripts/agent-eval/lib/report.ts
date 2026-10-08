@@ -1,5 +1,5 @@
 // Phase 8 agent eval — aggregation + markdown report (pure).
-import { pct, type CheckResult, type OutputKind } from './checks'
+import { pct, type CheckResult, type OutputKind, type ResearchObservation } from './checks'
 
 export interface EvalRow {
   mode: string
@@ -24,7 +24,7 @@ export interface EvalRow {
   guardsChanged: string[]
   kept: number | null
   /** TAPPY_AGENT=2 only: the run trace this turn emitted (null on other modes). */
-  runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number; taskId?: string | null; taskConstraints?: number | null; taskPersisted?: boolean | null } | null
+  runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number; taskId?: string | null; taskConstraints?: number | null; taskPersisted?: boolean | null; evidenceRefs?: number | null; research?: ResearchObservation | null } | null
   reply: string
   crash?: string
 }
@@ -47,6 +47,8 @@ export interface ModeSummary {
   trace: { turns: number; exactlyOne: number; roundsMax: number; toolCallsMax: number; serperMax: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number } | null
   /** M2: multi-turn conversations whose turns all worked on ONE task (same task id), and constraints held at the last turn. */
   task: { conversations: number; stableTask: number; persistedTurns: number; meanLastConstraints: number } | null
+  /** M3 research totals (Phase 8 run trace). */
+  research: { turns: number; pages: number; failures: number; turnsWithPages: number; fact: number; inference: number; unknown: number; conflict: number; citedTurns: number; searchAfterRead: number } | null
 }
 
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0)
@@ -79,6 +81,12 @@ export function summarizeMode(rows: readonly EvalRow[]): ModeSummary {
     outputs,
     crashes: rows.filter(r => r.crash).length,
     fellBack: rows.filter(r => r.fellBack).length,
+    research: (() => {
+      const r = rows.map(x => x.runTrace?.research).filter((x): x is NonNullable<typeof x> => !!x)
+      if (!r.length) return null
+      const sum = (f: (x: typeof r[number]) => number) => r.reduce((a, x) => a + f(x), 0)
+      return { turns: r.length, pages: sum(x => x.pages), failures: sum(x => x.failures), turnsWithPages: r.filter(x => x.pages > 0).length, fact: sum(x => x.fact), inference: sum(x => x.inference), unknown: sum(x => x.unknown), conflict: sum(x => x.conflict), citedTurns: r.filter(x => x.citations > 0).length, searchAfterRead: r.filter(x => x.searchAfterRead).length }
+    })(),
     task: (() => {
       const byConv = new Map<string, EvalRow[]>()
       for (const r of rows) if (r.runTrace?.taskId) byConv.set(r.scenario, [...(byConv.get(r.scenario) ?? []), r])
@@ -125,6 +133,9 @@ export function markdown(rows: readonly EvalRow[], s: Record<string, ModeSummary
   row('outputs', x => Object.entries(x.outputs).map(([k, v]) => `${k} ${v}`).join(', '))
   row('crashes · fell back', x => `${x.crashes} · ${x.fellBack}`)
   row('task: multi-turn conversations on ONE task · turns persisted · mean constraints at last turn', x => x.task ? `${x.task.stableTask}/${x.task.conversations} · ${x.task.persistedTurns} · ${r2(x.task.meanLastConstraints)}` : '—')
+  row('research: pages read · failed · turns with pages', x => x.research ? `${x.research.pages} · ${x.research.failures} · ${x.research.turnsWithPages}/${x.research.turns}` : '—')
+  row('research: evidence FACT · INFERENCE · UNKNOWN · CONFLICT', x => x.research ? `${x.research.fact} · ${x.research.inference} · ${x.research.unknown} · ${x.research.conflict}` : '—')
+  row('research: turns citing sources · turns that searched again after a read', x => x.research ? `${x.research.citedTurns} · ${x.research.searchAfterRead}` : '—')
   row('run trace: turns with exactly 1 trace', x => x.trace ? `${x.trace.exactlyOne}/${x.trace.turns}` : '—')
   row('run trace: max rounds · max tool calls · max Serper', x => x.trace ? `${x.trace.roundsMax} · ${x.trace.toolCallsMax} · ${x.trace.serperMax}` : '—')
   row('run trace: timeouts · retries · budget refusals · guard events', x => x.trace ? `${x.trace.timeouts} · ${x.trace.retries} · ${x.trace.budgetRefusals} · ${x.trace.guardEvents}` : '—')

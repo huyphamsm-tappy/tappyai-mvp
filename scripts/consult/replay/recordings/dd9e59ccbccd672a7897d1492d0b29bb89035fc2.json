@@ -1,0 +1,213 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán cơm trưa có máy lạnh dưới 300k/người Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:08:09.944Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán cơm trưa có máy lạnh dưới 300k/người Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+    "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+    "latitude": 10.7733236,
+    "longitude": 106.7050364,
+    "rating": 4.5,
+    "ratingCount": 2233,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://www.comqueduongbau.com/",
+    "phoneNumber": "+84 765 371 893",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPkxH1U-QnU63dxHHUCKfR8jSvrOWhdxeWmwq7J2smFWNmrfSmzeuK3SF8yMFWaq5ZMkYoMnrMMiZRVXH7X8zr-nkqQPf7y6Oe9qNC3LxQaYYRsqTtrS1TvkA0kGIHJXM4l7q4WzMTO8N4",
+    "cid": "15089939659221729349",
+    "fid": "0x31752fb8746e1207:0xd16a3c2b8dfd8045",
+    "placeId": "ChIJBxJudLgvdTERRYD9jSs8atE"
+   },
+   {
+    "position": 2,
+    "title": "Cơm Bắc Làng Cua Đồng",
+    "address": "Hẻm 18A Nguyễn Thi Minh Khai, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7858305,
+    "longitude": 106.70072379999999,
+    "rating": 4,
+    "ratingCount": 513,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://www.cuadong.com/",
+    "phoneNumber": "+84 28 3824 6825",
+    "openingHours": {
+     "Thứ Năm": "07:00–14:30, 17:00–21:00",
+     "Thứ Sáu": "07:00–14:30, 17:00–21:00",
+     "Thứ Bảy": "07:00–14:30, 17:00–21:00",
+     "Chủ Nhật": "07:00–14:30, 17:00–21:00",
+     "Thứ Hai": "07:00–14:30, 17:00–21:00",
+     "Thứ Ba": "07:00–14:30, 17:00–21:00",
+     "Thứ Tư": "07:00–14:30, 17:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOSj4Uf4k2NqU6UnkOcBrBSggMX99ER4xbiMqmMp7LMnBlfrfmUljinPSNiQtKKPzaTn_dbxKHYm2HBSvKf5eOxIncHhG5ithwNqfvjs61vz_PPqUqXHriJzXF-FlEQ2ylgsYs",
+    "cid": "16895576148479512129",
+    "fid": "0x31752f4a812c6055:0xea7924fd8daf0e41",
+    "placeId": "ChIJVWAsgUovdTERQQ6vjf0keeo"
+   },
+   {
+    "position": 3,
+    "title": "Cơm Niêu Thiên Lý",
+    "address": "B1, 72 Nguyễn Cơ Thạch, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.770328099999999,
+    "longitude": 106.72469369999999,
+    "rating": 4.6,
+    "ratingCount": 576,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://comnieuthienly.com/",
+    "phoneNumber": "+84 978 785 500",
+    "openingHours": {
+     "Thứ Năm": "10:00–14:30, 16:00–21:00",
+     "Thứ Sáu": "10:00–14:30, 16:00–21:00",
+     "Thứ Bảy": "10:00–14:30, 16:00–21:00",
+     "Chủ Nhật": "10:00–14:30, 16:00–21:00",
+     "Thứ Hai": "10:00–14:30, 16:00–21:00",
+     "Thứ Ba": "10:00–14:30, 16:00–21:00",
+     "Thứ Tư": "10:00–14:30, 16:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOcl-cGVYWjXYJkjPFsMc4jMfA8_q0KpnBIq5fqPZf7eOD7OOz-VLHSgd4wfsAnrtwbORuB8P7SuG0zDOfuvF5En5J9YXlJ59tTqv-cveN2NY8LUll4bPwvJpr1yQfE9auxXq9mBoulIeWi",
+    "cid": "7365346558287256025",
+    "fid": "0x317525dee18e0f85:0x6636f7abe65b99d9",
+    "placeId": "ChIJhQ-O4d4ldTER2Zlb5qv3NmY"
+   },
+   {
+    "position": 4,
+    "title": "Nhà hàng chay Phương Mai",
+    "address": "82/86F, Võ Thị Sáu, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7890657,
+    "longitude": 106.6921263,
+    "rating": 4.9,
+    "ratingCount": 3399,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng ăn chay",
+     "Nhà hàng",
+     "Nhà hàng món chay",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://www.phuongmaivegan.com/",
+    "phoneNumber": "+84 888 339 257",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://phuongmaivegan.com/",
+     "https://www.facebook.com/nhahang.chay.ngon.phuongmai.chay.quan",
+     "https://topgo.vn/ho-chi-minh/nha-hang-chay-phuong-mai/",
+     "https://pasgo.vn/nha-hang/phuong-mai-chay-quan-vo-thi-sau-623"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOSalYDOckKEM--kI0b6L9alAAqVK4nJNzPoNaRl1vSA1VGe9Ko_SFo1ZM8I8KKyO6ktVyBYMJ9jtC_pZx9rXpGn6QjVm_H2r_OZjtedukxubmVEd_hAbq8du423yrDLbw1YpK28rKCNnoD",
+    "cid": "6354591245376837820",
+    "fid": "0x31752f33313de573:0x58300b11d17e58bc",
+    "placeId": "ChIJc-U9MTMvdTERvFh-0RELMFg"
+   },
+   {
+    "position": 5,
+    "title": "Ann Quán",
+    "address": "66 Ngô Đức Kế, Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.772439,
+    "longitude": 106.704285,
+    "rating": 4.2,
+    "ratingCount": 1287,
+    "priceLevel": "100-600 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/nhahangannquan",
+    "phoneNumber": "+84 28 3622 6666",
+    "openingHours": {
+     "Thứ Năm": "07:00–01:00",
+     "Thứ Sáu": "07:00–01:00",
+     "Thứ Bảy": "07:00–01:00",
+     "Chủ Nhật": "07:00–01:00",
+     "Thứ Hai": "07:00–01:00",
+     "Thứ Ba": "07:00–01:00",
+     "Thứ Tư": "07:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMoJvt80r8qbE6CP68ObBzbI65SODlM1dOSbyfOSaBQvI_yykHZe8CTyyNUxYlv7bhQRirlXfDshZL7pYdvOeSYwzkIf8vvsdo7pUj7IGpGfyHQV3G6T3wj_fcK-b57tUd4kNll",
+    "cid": "8503124390060826448",
+    "fid": "0x31752fe5815b8793:0x76012a94ce891f50",
+    "placeId": "ChIJk4dbgeUvdTERUB-JzpQqAXY"
+   },
+   {
+    "position": 6,
+    "title": "Quán Ăn Mê Kông",
+    "address": "136 Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh 71000, Việt Nam",
+    "latitude": 10.770823799999999,
+    "longitude": 106.6879596,
+    "rating": 3.7,
+    "ratingCount": 325,
+    "priceLevel": "1-200.000 ₫",
+    "type": "Nhà hàng cơm",
+    "types": [
+     "Nhà hàng cơm"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/com-suon-me-kong",
+    "phoneNumber": "+84 28 3832 2165",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMNWaNQ5nNBtmAZVY_CaceLUo-qDFZkCB42vo64oISW6Hk6CVn9OFpUtY11evvtNFJIYytOX0gQjwGHT5DpIrpaevpqfwa70oOpIYEot0IlrQc4luvmHL8bcDaVBFQSpWHm-7kfZw",
+    "cid": "13871755950373258479",
+    "fid": "0x31752f22d5751f7d:0xc082608a88e8c4ef",
+    "placeId": "ChIJfR911SIvdTER78ToiIpggsA"
+   }
+  ],
+  "credits": 3
+ }
+}

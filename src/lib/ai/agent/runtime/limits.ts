@@ -27,6 +27,8 @@ export const RUNTIME_LIMITS = {
   serperCreditsPerTool: 8,
   /** M2: update_task control actions applied per turn (more are refused; they never count as tool calls). */
   maxTaskUpdates: 3,
+  /** M3: pages read_page may open per turn (each is also one of the tool calls). */
+  maxPageReads: 4,
 } as const
 
 export type RuntimeLimits = { -readonly [K in keyof typeof RUNTIME_LIMITS]: number }

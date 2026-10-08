@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nguyên lý hoạt động cơ bản của tủ lạnh là gì? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:08.437Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nguyên lý hoạt động cơ bản của tủ lạnh là gì? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nguyên lý hoạt động và cấu tạo tủ lạnh chi tiết hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cau-tao-tu-lanh",
+    "snippet": "Nguyên lý hoạt động và cấu tạo tủ lạnh chi tiết hiện nay: máy nén, dàn nóng, dàn lạnh, van tiết lưu. Nguyên lý: dùng môi chất lạnh để tải nhiệt ra ngoài.",
+    "position": 1
+   },
+   {
+    "title": "Tủ lạnh là gì? Khái niệm, cấu tạo và nguyên lý hoạt động",
+    "link": "https://cellphones.com.vn/sforum/tu-lanh-la-gi",
+    "snippet": "Tủ lạnh vận hành dựa trên cơ chế chuyển dịch nhiệt, trong đó lượng nhiệt bên trong được đẩy ra môi trường bên ngoài, giúp không gian bảo quản luôn duy trì độ ...",
+    "position": 2
+   },
+   {
+    "title": "Tìm hiểu cấu tạo sơ đồ tủ lạnh và nguyên lý hoạt động",
+    "link": "https://cellphones.com.vn/sforum/so-do-tu-lanh",
+    "snippet": "Sơ đồ tủ lạnh là bản mô tả trực quan thể hiện đầy đủ các bộ phận bên trong và cách chúng liên kết, vận hành với nhau trong một hệ thống làm lạnh hoàn chỉnh.",
+    "position": 3
+   },
+   {
+    "title": "Tủ lạnh rút ra cắm vào có tốn điện không?",
+    "link": "https://cellphones.com.vn/sforum/tu-lanh-rut-ra-cam-vao-co-ton-dien-khong",
+    "snippet": "Tủ lạnh hoạt động dựa trên chu trình làm lạnh khép kín, trong đó máy nén (block) đóng vai trò nén gas lạnh để tạo ra nhiệt độ thấp trong ngăn mát và ngăn đá.",
+    "position": 4
+   },
+   {
+    "title": "Van tiết lưu tủ lạnh: Cấu tạo, nguyên lý và kinh nghiệm sửa",
+    "link": "https://cellphones.com.vn/sforum/van-tiet-luu-tu-lanh",
+    "snippet": "Gas sau khi được nén sẽ đi qua dàn nóng để ngưng tụ thành lỏng, sau đó đi qua van tiết lưu, áp suất giảm đột ngột nên nhiệt độ của gas cũng hạ xuống. Lúc này, ...",
+    "position": 5
+   },
+   {
+    "title": "Sò nóng tủ lạnh: Cấu tạo - Chức năng - Nguyên lý hoạt động",
+    "link": "https://cellphones.com.vn/sforum/so-nong-tu-lanh",
+    "snippet": "Nhờ cơ chế làm tan tuyết trên dàn lạnh theo chu kỳ, sò nóng giúp tủ duy trì hiệu suất làm lạnh, tiết kiệm điện năng và kéo dài tuổi thọ linh kiện. Nếu tủ lạnh ...",
+    "position": 6
+   },
+   {
+    "title": "Tìm hiểu ngay 15 tác dụng của tủ lạnh nhất định phải biết",
+    "link": "https://cellphones.com.vn/sforum/tac-dung-cua-tu-lanh",
+    "snippet": "Tủ lạnh làm lạnh đồ uống nhanh chóng nhờ nguyên lý truyền nhiệt từ vật có nhiệt độ cao sang môi trường lạnh hơn. Khi đặt nước giải khát vào ngăn mát hoặc ngăn ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Thermostat tủ lạnh là gì? Hướng dẫn kiểm tra và điều chỉnh",
+    "link": "https://cellphones.com.vn/sforum/thermostat-tu-lanh",
+    "snippet": "Nguyên lý làm việc của bộ điều khiển nhiệt độ tủ lạnh (thermostat tủ lạnh) dựa trên sự giãn nở vì nhiệt của vật chất dưới tác động của nhiệt độ. Khi nhiệt độ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

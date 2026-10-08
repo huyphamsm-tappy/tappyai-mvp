@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn \"Cấp hộ chiếu phổ thông ở trong nước\" \"Hồ sơ\" căn cước ảnh tờ khai trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:10:16.917Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn \"Cấp hộ chiếu phổ thông ở trong nước\" \"Hồ sơ\" căn cước ảnh tờ khai trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các ... trực tuyến trước khi đến nộp hồ sơ trực tuyến). Không quá 05 ngày làm việc ...",
+    "position": 2
+   },
+   {
+    "title": "Trang chủ Cấp hộ chiếu phổ thông có gắn chíp ... - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35572",
+    "snippet": "08 Ngày làm việc nộp hồ sơ trực tiếp tại trụ sở Cơ quan Quản lý xuất nhập cảnh Công an cấp tỉnh (có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước ...",
+    "position": 3
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26691",
+    "snippet": "05 Ngày làm việc nộp hồ sơ trực tiếp tại trụ sở Cục Quản lý xuất nhập cảnh (có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các cổng cung ...",
+    "position": 4
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=35582",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công trực tuyến, sau đó trực tiếp nộp hồ sơ và nhận kết quả hoặc ...",
+    "position": 5
+   },
+   {
+    "title": "Ký hiệu thủ tục: 1.001456 - Chi tiết thủ tục hành chính",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=29515",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công trực tuyến, sau đó trực tiếp nộp hồ sơ và nhận kết quả hoặc ...",
+    "position": 6
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN",
+    "link": "https://dichvucong.bocongan.gov.vn/",
+    "snippet": "Thống kê số lượng hồ sơ dịch vụ công trực tuyến Bộ Công an. Năm 2026. 98,91%đúng hạn. Tổng hồ sơ nộp: 6871337. Giải quyết: 11913339 hồ sơ. Đúng hạn: 11783053 hồ ...",
+    "position": 7
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=26270",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công trực tuyến, sau đó trực tiếp nộp hồ sơ và nhận kết quả hoặc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

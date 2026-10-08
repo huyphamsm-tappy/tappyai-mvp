@@ -1,0 +1,373 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "kiểm tra MacBook Air M1 cũ giá 9 triệu có hợp lý không",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:01:46.606Z",
+ "body": {
+  "searchParameters": {
+   "q": "kiểm tra MacBook Air M1 cũ giá 9 triệu có hợp lý không",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Sửa Macbook Quận 7 – Kiểm Tra Miễn Phí",
+    "source": "Trường Thịnh Group",
+    "price": "150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTpnfmpN7dJGsjH6HDNBY7dQIsIINse5t26B_OOrJJFCzNDn42mPL4uxjnFlYhL8MWZkKJS0PsJfywNBD-7dyKBueOJX82Iozl_fQ7MgF_jahIFSs_ujJ1kMQ",
+    "productId": "13330924711743744008",
+    "position": 1
+   },
+   {
+    "title": "Bộ chia/ Hub Rapoo 5-in-1 USB-C sang 2*USB-A 3.0+USB-C 3.0+USB-C PD+HDMI",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=ki%E1%BB%83m+for+tra+for+MacBook+for+Air+for+M1+for+c%C5%A9+for+gi%C3%A1+for+9+for+tri%E1%BB%87u+for+c%C3%B3+for+h%E1%BB%A3p+for+l%C3%BD+for+kh%C3%B4ng&prds=localAnnotatedOfferId:1,catalogid:9451627385873449447,gpcid:10278407400724278437,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "359.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTQq9fEsxXyROFwXHfq4Dh5A40ZsiAB19uRb4xWlNMS3WpBdryWathX5YjY6CJbRxgj5ceRjEV74rAXCXlUpvDio_dgvqg3rVPbHAIVFNQ4dWUaJRSX3Di94A",
+    "rating": 4.7,
+    "ratingCount": 19,
+    "productId": "9451627385873449447",
+    "position": 2
+   },
+   {
+    "title": "Túi chống sốc Tomtoc 360",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=ki%E1%BB%83m+for+tra+for+MacBook+for+Air+for+M1+for+c%C5%A9+for+gi%C3%A1+for+9+for+tri%E1%BB%87u+for+c%C3%B3+for+h%E1%BB%A3p+for+l%C3%BD+for+kh%C3%B4ng&prds=localAnnotatedOfferId:1,catalogid:14273763330893764304,gpcid:8154600617203488721,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "873.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSVJ_J9_KsaeS7PCf-uhuKe7CtBFcCTvHI2OY7HyU2LUvbw0AYaEX2K-nlLySquz85ALXlZ7jTNt12alKKvC8qvNE0nKkSqhsiAzoye_7GA9_53CafBP0ti9g",
+    "rating": 4.6,
+    "ratingCount": 7,
+    "productId": "14273763330893764304",
+    "position": 3
+   },
+   {
+    "title": "Sạc MacBook Air M1 30W USB-C – Tương thích MacBook Air A2337 (2020–2023)",
+    "source": "Macshop24h.vn",
+    "price": "1.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS4jsnTGBoOgLLwbzQYFNroqxj9vPkucsEaRzu2Lm1cuo0pVBWqwjpTrnoS9MsrR9qkz9rOROZt30NKSa4LxrKC6_yKq5RaiGm4P5q5-tWkqANqC-BdCOJQXA",
+    "productId": "11923913472974994776",
+    "position": 4
+   },
+   {
+    "title": "Bao da Macbook Air 13 inches ( Chíp M5, M4, M3, M2, M1 ) Nâu / 13 inches",
+    "source": "Lethnic Việt Nam",
+    "price": "1.259.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQI01sBOilM98y-W8ppJrBPD8Qbs16JvgCbrut8OI5_XvATh3RDcGf8daeKDwDvzI3yufwBOysMgJUkMOd_H0MWVleH-l14Wq3y6-y5dAdmJcPzDx1yHUT0pg",
+    "productId": "756276187646849176",
+    "position": 5
+   },
+   {
+    "title": "Bộ dán MacBook Air 13 inch M1 JRC 5 in 1 Full - JMA13M1GR",
+    "source": "minhtuanmobile.com",
+    "price": "590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2CVOJj1gx7bdqNOX7px1b4AgT0Uih2vCJ5w7hHCgbbC_nU6PkFjJ6kt7-BxRjEffjKpmapMNs1FY7iW0TqizQf5gPvReSUP6Z0fWrsOQxLpi0njYJ2cD1dA",
+    "productId": "1519116207345691016",
+    "position": 6
+   },
+   {
+    "title": "Củ sạc Macbook 30W - For Macbook Air - Cũ",
+    "source": "xoanstore.vn",
+    "price": "490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTFEi_hyl8HA33Wj9HVeQv_2-p2KstIxQ-JNonoXFLr1qbm4Joz_8Hki1C6VxecqYi0rLQDfEYkHkWb3JY3m1vYG7Iu-3BiQZ0yrqiFRJr27WPqx6b8nq5p",
+    "productId": "3326094282951383838",
+    "position": 7
+   },
+   {
+    "title": "Sạc nhanh Type-C 30W Apple",
+    "source": "Thế Giới Di Động",
+    "price": "840.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRJyyFBOOFGH1uM8bAL6JBc7TgNoGSU9K3DZGuLozRCEl_rsWB0ZHVG3PnRite5HZbwcFWYJSPJ5GMGQBmjpxpOcjLMGum3vWSu1NeyecvI9if5HZdJ6rsv",
+    "rating": 4.6,
+    "ratingCount": 268,
+    "productId": "1331905626779781672",
+    "position": 8
+   },
+   {
+    "title": "Ốp Cao Cấp Chống Sốc Tomtoc (Usa) Hardshell Slim for Macbook Air 13 2020 B03-C01",
+    "source": "HẰNG ĐẶNG",
+    "price": "246.500 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQRLbIgUe8Iuf1zK2MLe8D3AI0sXg_D7MMfNLbA5AsCEZboLq2PGsr2fcxB9aU2hDrywBQtLRdSVD3YlNz6A5IW2qCn3LG-KmCJQlPKrSngS-6tE-DxXR9q",
+    "productId": "12964517322594130566",
+    "position": 9
+   },
+   {
+    "title": "Đế sạc để bàn 4 IN 1 GaN USB C 140W cho MacBook Air/Pro iPhone 17/16 Pro",
+    "source": "cabletimetech",
+    "link": "https://www.google.com/search?ibp=oshop&q=ki%E1%BB%83m+for+tra+for+MacBook+for+Air+for+M1+for+c%C5%A9+for+gi%C3%A1+for+9+for+tri%E1%BB%87u+for+c%C3%B3+for+h%E1%BB%A3p+for+l%C3%BD+for+kh%C3%B4ng&prds=localAnnotatedOfferId:1,catalogid:12384353411740802886,gpcid:4669645368134924818,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.078.181 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSKGH4W6AvolptfQaKXmeUsLcxuTBqpzHa1hJ3a2l0UsCFVR0AGesT7e4uoJKQvLQbOiyZj7Jv3SNYQzbcKTjrtcAdBr2j7TYLO-VW71T7E6W41QJ1JTu5mMJk",
+    "productId": "12384353411740802886",
+    "position": 10
+   },
+   {
+    "title": "Bao Da Macbook ( Nâu )",
+    "source": "Mac24h",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ7C_3i5OKgibPN2cm1YHKRcoE_a2l6JFVrzf1rAox_7EmSQ6p_E4YMv60izNehY922dLRx6dbC_MTIPcLsjZgaZHz01Ed_",
+    "productId": "15169704036512603487",
+    "position": 11
+   },
+   {
+    "title": "Apple 30W Cho Macbook Air 13'' ( Bao gồm cáp Type C )",
+    "source": "Mac18",
+    "price": "1.150.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQdVl1TMdO_VeGge3_CpuHJGGBACPoz9pj8FMuwvGzc9k3MbwsYNJY1eBVZLgX3DvNGqBwQkUmiF4SHpKYZ5m6ZYqIpp9FZHttHUYBrUqT1AtCyKDHE9HXb",
+    "productId": "2699424384584910870",
+    "position": 12
+   },
+   {
+    "title": "Bao da Macbook Pro 13 inches",
+    "source": "Lethnic Việt Nam",
+    "price": "1.259.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSnoI1Dxhngtmoz_xhDpsdgnnVZU8Bc8ZmFGFd8M7qq5uIaJL2jBQgV4Z1ufBpvX0aIhSCpPsC-UIFCPAbOuCZTcvgqj6AJV1UxhnL6TXaob4osF37cSUGhAg",
+    "productId": "15336687840080743461",
+    "position": 13
+   },
+   {
+    "title": "Ốp Tomtoc Hardshell Slim Macbook Air 13 (2018-2020 M1) - Trong suốt (Transparent)",
+    "source": "broshop.vn",
+    "price": "586.500 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTxseVW97qBbLRoYWL4q4hzQ53-aLlE1mupCBujPcQ_PbKg54OvpfDrcXhfMKYkKRBq8mGYra9ODgNyrUT-_bc0ueD-ZmOkC7KJTrZQAymhMO4NnMW1TDZ1",
+    "productId": "11823538322903425734",
+    "position": 14
+   },
+   {
+    "title": "Set Combo 5in1 chất liệu da cho Macbook",
+    "source": "Mac Insta",
+    "price": "390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSfZCb_O0UU77ciLHAU3w0PQNJko5XP6KiVXEwMyGFnymV1zCu1q7Gn3e3LaoznF-ccqQ-MVYjq152FRx42I2CTuMlbsswe8x_NNbA16caGiRVTmuvDZhDt",
+    "productId": "3476654791026847142",
+    "position": 15
+   },
+   {
+    "title": "Sạc Macbook Air 13 inch M1 ( 30W Type C ) Chính Hãng",
+    "source": "Ngọc Nguyễn Care",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT_CLWiuQG6nIatC9vH320iZ6G0EBtkszKsO5LCemAlICE8S_V78nwxRUmaCQlcf2d7A7-9dHiHDh7Z6Yr4L-bNAlhLI5Nzi6heBHNzKNkKthfx7EPrNoKgjQ",
+    "rating": 4.9,
+    "ratingCount": 75,
+    "productId": "408373829805636366",
+    "position": 16
+   },
+   {
+    "title": "Bảo Hành Nguồn MacBook",
+    "source": "lapvip.com.vn",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTznHpjuUQi_UDzMGXNuEYWlgi1sM4-rngDFwT7ACcb-W6UtCY-QcQV7ABfySNd8aJESjshl4_S77bAVB1GNhAtVeHAqLaZyw",
+    "productId": "5302347142206913650",
+    "position": 17
+   },
+   {
+    "title": "Túi chống sốc Macbook 16 inch Tomtoc (USA) Essence-A35 A35F2 Đen",
+    "source": "Thế Giới Di Động",
+    "price": "945.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRftn_PC-23s6j6_RjOiqlCRiwKJG0fgP-ipT80bh_Xj-JEdtr-gC7JyS_CUjXHAN0ypNKEQiNsT3QK6G5rJAuTlxade0dVPFmAHTfx4XX9iFmv3wsNPHvokQ",
+    "productId": "7509276063170623810",
+    "position": 18
+   },
+   {
+    "title": "Dịch Vụ Thay Wifi Macbook",
+    "source": "Macbook Việt",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRkUZLPYmde5I8abHfCEFJ7yv6UU1HFOrKjkPItF8-s1Bv1pxwZ3Hl5xTbfKyV0uJ-cr7A0u2zJnbpdZRJuCIddOFlKTw0mtw",
+    "productId": "5998315717361135088",
+    "position": 19
+   },
+   {
+    "title": "Bao da thật Macbook ToNi chính hãng. Bao da Macbook cao cấp. Bao da chống sốc Macbook. Bao da cho Macbook Air M1. Bao da Macbook mỏng nhẹ chính hãng",
+    "source": "MacStore24h",
+    "price": "1.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRBgO-BizZgll0iYKUDMC37Y4-C-teVkyHlYgmWnq4CB7jnTUCRLARGspCkziJxt6wzf93MjuAzJRiDjrSOr79mzTTnWIFDRblBehw_aYE",
+    "productId": "15079844768454142691",
+    "position": 20
+   },
+   {
+    "title": "【CTO】Macbook Air M1 13 inch 2020 - Apple M1 8-Core CPU / 16GB / 2TB / New 99%",
+    "source": "Mac24h",
+    "price": "26.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQp5OqnFAbX7GtloUPMe4egewS4ESou8Kk1YX140nhkRE7v4Nv44M-n3dwDvf12mGLA7Gtqht15CfTIpyBdRYJqQjQ12z2y",
+    "productId": "15564090325045019621",
+    "position": 21
+   },
+   {
+    "title": "Sạc Macbook Air - Địa Chỉ Mua Bán Sửa Chữa Uy Tín Giá Rẻ",
+    "source": "Trường Thịnh Group",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSko091qQptME9IOr3NUNwUuS9UG7lCPFjbQcjGZmipqaYYLtwBxs-_kBCALJnKQvLkzQBXvHsMFhBM_gJGOdRR6-8gQs_hANlRJFWLi9vAAgm00Jl5p-C21A",
+    "productId": "8584933811858944395",
+    "position": 22
+   },
+   {
+    "title": "Sạc dùng cho Macbook 20.5V-4.7A (96W) USB-C - ZIN",
+    "source": "benhvienlaptop.com",
+    "price": "960.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSp1OUZ1bOakz-EpUvqncAb4dBmhEWgsiP0ny6JVPOI3X7bR9Mwtm3pwsDrUksiM1IVI4pgM-wJcA-xNlvvr40oQwvBoOTgYDYQV8LsDnDoL0zB_fian7Yz",
+    "productId": "18153597189347579895",
+    "position": 23
+   },
+   {
+    "title": "Thay vỏ Macbook Air M1 2020 13 inch - Ko phát sinh thêm phí",
+    "source": "Bảo Hành One",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSNaANu8o7Xwa78e1Cjc1bpojibsVjq_dFbpR4Z6U3ywg1uLHPLoXEYT84-laorhS1H8Xw20oAKFftmuAYma8zMSjmFfmvLgPfhON1lGSeoERXoJEutu4IO",
+    "productId": "9061445506195624659",
+    "position": 24
+   },
+   {
+    "title": "Cáp sạc Trusmi USB-C to USB-C PD 100W CA34, dài 1M, màu trắng",
+    "source": "Hacom.vn",
+    "price": "89.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTry8mMEV52irjKupIVmwIOGY5RGRG9O6Rod_8xnhUpcZpyFW9-8FGrhyyXExxytWJDNfIYe1J0z7md5PvYVENq3jOGLfxx5xlb684am8KG14bz9VhkLKc9",
+    "productId": "16982962076013415161",
+    "position": 25
+   },
+   {
+    "title": "Ốp Trong Suốt Macbook 13 Air (2018 - M1) - Case Transparent JRC Protect Shell 360°",
+    "source": "9SS Việt Nam",
+    "price": "580.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTI-dKPp6oo30bYyzN-CtvP_s0RM7og4wH4GzfxSpE2qwrdAM3NA0mYEerLVVY-O_42kp-cIGxg10YL3hA4YthoJW3ds3koySyw2AO1u2Q847XIemv1swPV",
+    "productId": "4351941898259700130",
+    "position": 26
+   },
+   {
+    "title": "Cáp nối dài test màn hình Macbook Pro 14inch, 16inch",
+    "source": "maccare.vn",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQTxJ5yIdOhXNHaC-YldtXnsymTFMa_iPL57g18hnCitkCUmZIH1AbidElZCRxKD74kHfN_WxnTrIJDHP3Gn05qnZMEEF0YkMrfytd0i1owu8tCiGT_jlAR",
+    "productId": "1321480268167011079",
+    "position": 27
+   },
+   {
+    "title": "Túi chống sốc Tomtoc Spill-Resistant Macbook Pro/Air 13-14 inch A22-C01 - Black",
+    "source": "broshop.vn",
+    "price": "668.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQZ8fwZZWEYhN-39mg9JKaNOg9MjcOkiuMN020TzitxJdrJJDe3ibl_DgSYe1LcDTTtjugZty5K7AEGhwSCSxGQnz5o6oAYIFZHU5O5OBVGV3GWI3evpcgp",
+    "rating": 4.9,
+    "ratingCount": 140,
+    "productId": "3360220642478127475",
+    "position": 28
+   },
+   {
+    "title": "Bao Da Hình Phong Thư Cho MacBook Air 13\" (Đen)",
+    "source": "Macbook Việt",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRbzdo71yKwm87z9TfmXK80hvE8KC6GyvmO0UzLIvr2SPwNngNvVmcyWLpdbQhDDrW_jguLI8fTuGsW04EHfl9BqxqdUelZyjzbETsd26sji1Yawtms_tIsNw",
+    "productId": "4471333947533150306",
+    "position": 29
+   },
+   {
+    "title": "Pin Apple MacBook Air M1 2020 A2389 A2337 EMC 3598 2021 Chính hãng",
+    "source": "daiphatloc.vn",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR_oQ1W1TsfTZA-v1aI3chmadhM76djNHDDEJj1N2S_Dz8tjYU5Vhv9OJEPiB1S2m4cKrJi450yrxYkHIYOSX22XeX0qCXU02-Ssqti-DQLkXL5Wy2b8Gxk1Q",
+    "rating": 3,
+    "ratingCount": 2,
+    "productId": "2104039316621577277",
+    "position": 30
+   },
+   {
+    "title": "PKNK Sạc 96W USB-C Power Adapter",
+    "source": "Fptshop.com.vn",
+    "price": "1.812.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTmbO8Ej1mhiMTi_kTOFb9n_eeTaxFwitTdv3oYunBvTxgO8OKTtCPUXlBs0UTEH3Cbuytlc1lFOHgysUBKOqH0vHsidied",
+    "rating": 4.7,
+    "ratingCount": 434,
+    "productId": "13336102544924824645",
+    "position": 31
+   },
+   {
+    "title": "Cáp USB-C sang USB-C kép 2 trong 1 140W dành cho MacBook Pro",
+    "source": "cabletimetech",
+    "link": "https://www.google.com/search?ibp=oshop&q=ki%E1%BB%83m+for+tra+for+MacBook+for+Air+for+M1+for+c%C5%A9+for+gi%C3%A1+for+9+for+tri%E1%BB%87u+for+c%C3%B3+for+h%E1%BB%A3p+for+l%C3%BD+for+kh%C3%B4ng&prds=localAnnotatedOfferId:1,catalogid:12762523740622339010,gpcid:9076792370108661453,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "441.409 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRH_HxYWKQ-6a5N4-WCuIpqGGKgZ-LYIUD1dNeK2BzeZc5YhViV9xHtMAUfCo-bJlxWwmui1phFi1alRYlCYerJn58-V5YBy-Qal6HJQFzXVBLAZQBNXrEq",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "12762523740622339010",
+    "position": 32
+   },
+   {
+    "title": "Cặp Chống Sốc Macbook Air 13\" TOMTOC (USA) A42D3B1 - Navy",
+    "source": "BigBag.vn",
+    "price": "983.200 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRa6YaSo_Hl-ON0MeohqTMwcAJyia-wqx_20ftuCxgPxNVfu68hoFWTfh6U8sa-kbJ6UxbLTFanFKwblWZHzPyXbL_Xt4vf0w1S71OpLl7RLIMi4yoIdHLN",
+    "rating": 4.9,
+    "ratingCount": 270,
+    "productId": "4114283068678702011",
+    "position": 33
+   },
+   {
+    "title": "Ốp Macbook trong suốt chính hãng JRC - Siêu Mỏng - Siêu Nhẹ - 13.3\" Air A1932/A2179/A2337 M1",
+    "source": "Thanhphukien",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTjtm91p4uXp-phv9QAPqrTyJEN4txFulqz1rvXHVyZrtzA2ULzvP2Zs48LWpRvuSn9vEZBHB2Ct75pxzkAvz8Wcup_XiNzjHdfS_uNfqnAzvot4eoWnAzF",
+    "productId": "14927041568201309300",
+    "position": 34
+   },
+   {
+    "title": "Túi Đựng Phụ Kiện MacBook WiWU Minimal Tech Pouch -Xám",
+    "source": "Lucas Combo",
+    "price": "299.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcROWVfnV4UYNCJ5dsPEIHEJBKl9lO30oMqjvk468TsUOx2Ev0jTkdAdJaWmWycayOUiwwyliWi2U_-VFLkIxlPSdgvGWggIbV_7zmzPeHzTsQzdPO3SzKiV",
+    "rating": 5,
+    "ratingCount": 7,
+    "productId": "9537700828948547757",
+    "position": 35
+   },
+   {
+    "title": "Túi Chống Sốc Laptop/ Macbook Bagasin",
+    "source": "9SS Việt Nam",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTDiK5wCYoDBcX2skKI0pN8dw0XwHxtG10_LdTtqQRTWgF9LRJ1rOyrgorO5o4n886YbGuAckeLwXHfJvoUaGhKPM8Uuurt1--XWxteru_7QSl9JIfOm-xK7A",
+    "productId": "10089637139897459774",
+    "position": 36
+   },
+   {
+    "title": "Bao đựng Macbook cao cấp (T013)",
+    "source": "Lapvip",
+    "price": "190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSMDdOwN4qLztSjUaMCTNRgu1Q6fjpc4Vhqn52-otdfsIFToRqpbpMTQ288xa8XHvH9nIELe0B7RK-Qm3qwGRLHoSAYfyz12e2YVKHwOGk12vfUwtqWQDxx",
+    "productId": "12527003064334125427",
+    "position": 37
+   },
+   {
+    "title": "Cáp Sạc MacBook USB-C Bọc Dù 2m – Tương thích MacBook Air/Pro 2016–2024",
+    "source": "Macshop24h.vn",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTHK4q1c9yIg6B4IUuSMJgsOEjyfycdtfPHDRCezfeWQTlIzm4JO5Js9fNdR2d57VrqLxu2YxUSrj5tGbYyXgz0Ch5loegbl8MvVT8zxonY4mutk5OrPWA5",
+    "rating": 4.9,
+    "ratingCount": 163,
+    "productId": "14851154509864693076",
+    "position": 38
+   },
+   {
+    "title": "Túi Da Macbook 11/12/13/15\" Tommy Town (M179)",
+    "source": "Macbook Việt",
+    "price": "600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQlrCnlluv0cRnhNI4hKMuJs4lT0JRE-gJAoc0ND72S0xvzuoxt4TncZb4bLQyNJVlhkC_hUIjk9KpmjfVrjYQPN4pjYIFHkLCdTjil51WxqpBKTkOJTDCC",
+    "productId": "17194442401697483675",
+    "position": 39
+   },
+   {
+    "title": "Củ sạc Fullbox nguyên Seal Macbook 30/67/96W USB-C Power Adapter MNF72 | Pro M1 M2 - 30W",
+    "source": "MacStore24h",
+    "price": "1.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSqXEFRSKEKo_h1rhbO4xRLrLm5_6H1zjoq9_IKQ1I1kmHrVykLWX6QAGbkFHR6oQzPDucIvVLUybeTDLQ5gabGww3kXRLq5SaNymW2bd2izlr07vhX344fzQ",
+    "rating": 4.7,
+    "ratingCount": 434,
+    "productId": "7204085602758417055",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

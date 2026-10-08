@@ -17,6 +17,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { z } from 'zod'
 import { cutSecrets, isInstructionLike } from '../guards'
 import { neutralizeFenceMarkers } from '@/lib/ai/security/fence'
+import { constraintsSignature, normUrl, type EvidenceRef } from './evidence'
 
 export const TASK_TYPES = ['local_discovery', 'shopping', 'travel_planning', 'comparison', 'troubleshooting', 'how_to', 'question', 'planning', 'other'] as const
 export type TaskType = typeof TASK_TYPES[number]
@@ -25,7 +26,7 @@ export type TaskStatus = 'active' | 'waiting_user' | 'completed' | 'abandoned'
 /** A task untouched this long is archived (abandoned) when the conversation resumes; a fresh task starts. */
 export const TASK_STALE_MS = 7 * 24 * 3600_000
 
-export const TASK_CAPS = { goal: 200, key: 40, value: 120, constraints: 16, preferences: 12, entities: 12, selected: 8, searches: 12, findings: 8, finding: 200, question: 300, history: 3, updatesPerTurn: 3 } as const
+export const TASK_CAPS = { evidence: 8, goal: 200, key: 40, value: 120, constraints: 16, preferences: 12, entities: 12, selected: 8, searches: 12, findings: 8, finding: 200, question: 300, history: 3, updatesPerTurn: 3 } as const
 
 export interface TaskConstraint { key: string; value: string; hard: boolean; updated_at: string }
 export interface TaskPreference { key: string; value: string; updated_at: string }
@@ -44,7 +45,8 @@ export interface AgentTask {
   entities: TaskEntity[]
   preferences: TaskPreference[]
   selected_items: TaskSelected[]
-  research_state: { searches: TaskSearch[]; findings: string[] }
+  /** M3: `evidence` = short references to pages read (source + up to 4 key claims, never page text), newest last. */
+  research_state: { searches: TaskSearch[]; findings: string[]; evidence: EvidenceRef[] }
   pending_question: { text: string; choices: string[]; asked_at: string } | null
   status: TaskStatus
   created_at: string
@@ -99,6 +101,12 @@ const TaskSchema = z.object({
   research_state: z.object({
     searches: z.array(z.object({ tool: z.string().max(40), query: z.string().max(TASK_CAPS.value), results: z.number().int().min(0).max(1000), turn: z.number().int().min(0), at: iso })).max(TASK_CAPS.searches),
     findings: z.array(z.string().max(TASK_CAPS.finding)).max(TASK_CAPS.findings),
+    // M3 (optional so M2 tasks still load).
+    evidence: z.array(z.object({
+      url: z.string().url().max(600), title: z.string().max(200), host: z.string().max(120), source_type: z.string().max(30), retrieved_at: iso, constraints_sig: z.string().max(20), at: iso,
+      claims: z.array(z.object({ subject: z.string().max(100), attribute: z.string().max(40), value: z.string().max(160), type: z.enum(['FACT', 'INFERENCE', 'UNKNOWN', 'CONFLICT']) })).max(4),
+      conflicts: z.number().int().min(0).max(50),
+    })).max(TASK_CAPS.evidence).default([]),
   }),
   pending_question: z.object({ text: z.string().min(1).max(TASK_CAPS.question + 1), choices: z.array(z.string().max(60)).max(4), asked_at: iso }).nullable(),
   status: z.enum(['active', 'waiting_user', 'completed', 'abandoned']),
@@ -143,7 +151,7 @@ export function createTask(conversationId: string | null, now: Date): AgentTask 
   const at = now.toISOString()
   return {
     v: 1, task_id: randomUUID(), conversation_id: conversationId ?? '0'.repeat(32), task_type: 'other', goal: '',
-    constraints: [], entities: [], preferences: [], selected_items: [], research_state: { searches: [], findings: [] },
+    constraints: [], entities: [], preferences: [], selected_items: [], research_state: { searches: [], findings: [], evidence: [] },
     pending_question: null, status: 'active', created_at: at, updated_at: at, turns: 1, rev: 0,
   }
 }
@@ -179,7 +187,7 @@ export function applyTaskDelta(task: AgentTask, history: readonly TaskSummary[],
   const at = o.now.toISOString()
   const applied: string[] = []
   const rejected: string[] = []
-  let t: AgentTask = { ...task, constraints: [...task.constraints], preferences: [...task.preferences], entities: [...task.entities], selected_items: [...task.selected_items], research_state: { searches: [...task.research_state.searches], findings: [...task.research_state.findings] } }
+  let t: AgentTask = { ...task, constraints: [...task.constraints], preferences: [...task.preferences], entities: [...task.entities], selected_items: [...task.selected_items], research_state: { searches: [...task.research_state.searches], findings: [...task.research_state.findings], evidence: [...(task.research_state.evidence ?? [])] } }
   let hist = [...history]
 
   if (d.new_task === true) {
@@ -308,6 +316,7 @@ export function mergeForSave(base: AgentTask, ours: AgentTask, stored: AgentTask
     research_state: {
       searches: [...stored.research_state.searches.filter(x => !ours.research_state.searches.some(y => y.tool === x.tool && y.query === x.query)), ...ours.research_state.searches].slice(-TASK_CAPS.searches),
       findings: [...new Set([...stored.research_state.findings, ...ours.research_state.findings])].slice(-TASK_CAPS.findings),
+      evidence: [...(stored.research_state.evidence ?? []).filter(x => !(ours.research_state.evidence ?? []).some(y => normUrl(y.url) === normUrl(x.url))), ...(ours.research_state.evidence ?? [])].slice(-TASK_CAPS.evidence),
     },
     turns: Math.max(ours.turns, stored.turns),
     rev: stored.rev + 1,
@@ -333,6 +342,11 @@ export function taskContextLines(t: AgentTask, history: readonly TaskSummary[], 
   if (t.selected_items.length) out.push(`Người dùng đã chọn: ${t.selected_items.map(s => s.note ? `${s.name} (${s.note})` : s.name).join(' · ')}`)
   const recent = t.research_state.searches.slice(-5)
   if (recent.length) out.push(`Đã tra: ${recent.map(s => `${s.tool} "${s.query}" (${s.results} kết quả, ${ago(s.at, now)})`).join(' · ')}`)
+  const sig = constraintsSignature(t.constraints)
+  for (const e of (t.research_state.evidence ?? []).slice(-3)) {
+    const claims = e.claims.map(c => `${c.attribute}=${c.value} [${c.type}]`).join('; ')
+    out.push(`Nguồn đã đọc: ${e.host} (${e.source_type}, ${ago(e.retrieved_at, now)})${claims ? ` — ${claims}` : ''}${e.conflicts ? ` · ${e.conflicts} mâu thuẫn` : ''}${e.constraints_sig !== sig ? ' · đọc TRƯỚC khi đổi ràng buộc — kiểm tra lại nếu ràng buộc mới ảnh hưởng' : ''}`)
+  }
   if (t.research_state.findings.length) out.push(`Ghi chú nghiên cứu: ${t.research_state.findings.slice(-4).join(' · ')}`)
   if (t.pending_question) out.push(`Bạn vừa hỏi người dùng: "${t.pending_question.text}" — tin nhắn mới nhất có thể là câu trả lời.`)
   const prev = history.slice(-1)[0]
@@ -346,3 +360,18 @@ export function taskContextLines(t: AgentTask, history: readonly TaskSummary[], 
 export function taskView(t: AgentTask): Record<string, unknown> {
   return { goal: t.goal, task_type: t.task_type, status: t.status, constraints: t.constraints.map(c => `${c.key}: ${c.value}`), preferences: t.preferences.map(p => `${p.key}: ${p.value}`), selected_items: t.selected_items.map(s => s.name) }
 }
+
+/**
+ * M3: keeps short references to the evidence this turn gathered (evidence.ts toTaskRefs): newest wins per URL, at most 8, no page text.
+ * Each reference carries the constraint signature it was gathered under, so a follow-up that changed the constraints sees it as
+ * "read before the constraints changed" (taskContextLines) and Luna decides whether to research again.
+ */
+export function attachEvidence(task: AgentTask, refs: readonly EvidenceRef[], now: Date): AgentTask {
+  if (!refs.length) return task
+  const prev = task.research_state.evidence ?? []
+  const merged = [...prev.filter(p => !refs.some(r => normUrl(r.url) === normUrl(p.url))), ...refs].slice(-TASK_CAPS.evidence)
+  return { ...task, research_state: { ...task.research_state, evidence: merged }, updated_at: now.toISOString() }
+}
+
+/** The signature of the task's current constraints (evidence gathered now is tagged with it). */
+export const taskConstraintsSig = (t: AgentTask): string => constraintsSignature(t.constraints)

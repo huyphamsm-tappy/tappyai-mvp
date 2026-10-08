@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 Plus 12GB 256GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:20.858Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 Plus 12GB 256GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Plus 5G - Hàng chính hãng",
+    "link": "https://h5.lazada.vn/products/dien-thoai-samsung-galaxy-s24-plus-5g-hang-chinh-hang-i2795824297-s13643593329.html",
+    "snippet": "Thông tin chung về Điện thoại Samsung Galaxy S24 Plus. 12GB/256GB: ✓ Công nghệ màn hình: Dynamic AMOLED 2X. ✓ Độ phân giải: 2K+ (1440 x 3120 Pixels).",
+    "position": 1
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24, Điện thoại AI, Camera ...",
+    "link": "https://h5.lazada.vn/products/dien-thoai-samsung-galaxy-s24-dien-thoai-ai-camera-50mp-man-hinh-62-fhd-hieu-nang-manh-me-i2533183500-s12415317699.html",
+    "snippet": "\"Trải nghiệm hiệu năng mạnh mẽ với Samsung Galaxy S24, sở hữu màn hình Dynamic AMOLED 2X FHD+ 6,2 inch. Được trang bị hệ thống ba camera 50MP cho khả năng chụp ...",
+    "position": 2
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24, Điện thoại AI, Camera ...",
+    "link": "https://www.lazada.vn/products/duy-nhat-235-dien-thoai-samsung-galaxy-s24-dien-thoai-ai-camera-50mp-man-hinh-62-fhd-hieu-nang-manh-me-i2533183500.html?srsltid=AU7gw4VUtyyIpX8BEdVdqbYXrkSZdgzglcHYT9Jzi9v-vkdxFDSnHVCw",
+    "snippet": "ngày 12:08:59 ; Voucher. Giảm ₫8000K ; Thông số. Thương hiệu,Coming Soon,Kích thước màn hình (inch) ; Trả góp. Trả góp trong 6 tháng, chỉ với 2.831.667 ₫ mỗi tháng ...",
+    "rating": 4.6,
+    "ratingCount": 47,
+    "position": 3
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S23 plus 5G (8GB/256GB) Nguyên ...",
+    "link": "https://www.lazada.vn/products/dien-thoai-samsung-galaxy-s23-plus-5g-8gb256gb-nguyen-seal-chinh-hang-moi-100-man-hinh-66-inch-dynamic-amoled-2x-fhd-camera-sau-500-mp-120-mp-100-mp-camera-selfie-100-mp-cpu-snapdragon-8-gen-2-pin-4700-ma-i2161003219.html?srsltid=AU7gw4UkcUjfCVLrK7ZS_nWKuN_9T4E6x6dXQ5l6k3TXIBeWRUDiqlJO",
+    "snippet": "Samsung Galaxy S23 Plus 5G - điện thoại di động đỉnh cao với màn hình Dynamic AMOLED 2X 6.6 inch và camera 50+12+10 MP. Trang bị RAM 8GB và ROM 256GB, ...",
+    "position": 4
+   },
+   {
+    "title": "Máy tính bảng Samsung Galaxy Tab S10 Plus Wifi / 5G",
+    "link": "https://www.lazada.vn/products/may-tinh-bang-samsung-galaxy-tab-s10-plus-wifi-5g-hang-chinh-hang-i2815764003.html?srsltid=AU7gw4WHwtp3kxLcRurbAqs9bkjjiSacnhECrzyOF2cKxGETxEV3aczF",
+    "snippet": "Mô tả sản phẩm ; Bộ nhớ trong · 256 GB/512 GB (hỗ trợ mở rộng qua thẻ nhớ tối đa 1.5 TB). ; Camera sau · 13 MP (camera chính) + 8 MP (camera góc siêu rộng). ; Camera ...",
+    "position": 5
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S25+, Điện thoại AI, Tìm kiếm ...",
+    "link": "https://h5.lazada.vn/products/dien-thoai-samsung-galaxy-dien-thoai-ai-tim-kiem-thong-minh-video-camera-dem-nightography-chip-snapdragon-i2977981604-s14351053015.html",
+    "snippet": "Điện thoại Samsung Galaxy ... Điện thoại Samsung Galaxy S24, Điện thoại AI, Camera 50MP, Màn hình 6. 24.990.000 ₫. Điện thoại Samsung Galaxy S26+, 12GB/256GB | ...",
+    "rating": 5,
+    "ratingCount": 71,
+    "position": 6
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy Z Flip 6 chính hãng (đã kích hoạt ...",
+    "link": "https://www.lazada.vn/products/dien-thoai-samsung-galaxy-z-flip-6-chinh-hang-da-kich-hoat-bhdt-i2800355793.html?srsltid=AU7gw4WgtViUscOf0eSZQGsZy0X5b7Qh-Zva1qcRgraHldrFnxgzTyli",
+    "snippet": "Điện thoại Samsung Galaxy S24 Ultra 12GB/256GB (đã kích hoạt BHĐT). 37.490.000 ₫ · Điên thoại di động Samsung Galaxy Z Flip5 (đã kích hoạt BHĐT). 25.990.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Typer Cover Surface Pro 4,5,6 Chính hãng Tại Playmobile",
+    "link": "https://www.lazada.vn/products/ban-phim-microsoft-surface-pro-456-typer-cover-surface-pro-456-chinh-hang-tai-playmobile-i1432721256.html?srsltid=AU7gw4WTIWwbrLbrSgZGGXqeiBEPFyOfreXYbZNJnGXYaL5NfHSnF9wW",
+    "snippet": "Samsung Galaxy S23 Ultra 5G 2 sim Likenew chính hãng 12GB-512GB | Tặng sạc. 15.090.000 ₫ · Điện Thoại Samsung Galaxy S24 Plus 5G 12GB|256GB (Bản Mỹ Snapdragon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

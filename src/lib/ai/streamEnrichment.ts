@@ -1493,6 +1493,31 @@ function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Reco
   })
 }
 
+
+/**
+ * Phase 8 M3 — the SEVENTH markdown-from-retrieval site (retrievalArchitecture.test.ts): source citations.
+ * The URL's origin is a page the agent READ this turn through the secure page fetch (security/safePageFetch.ts: every hop validated,
+ * DNS pinned) and it must also be in this turn's tool frames (`allowed`); the label is the source's host, never model text; both go
+ * through the sanitisers on the line that builds the link. Markers naming no such source are removed.
+ */
+export function citeSources(text: string, sources: ReadonlyArray<{ id: string; host: string; url: string }>, allowed: ReadonlySet<string>, lang: string): string {
+  const ok = new Map(sources.filter(s => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))).map(s => [s.id, s]))
+  const link = (s: { host: string; url: string }) => `[${escapeMarkdownLabel(s.host)}](${sanitizeUrlForMarkdown(s.url)})`
+  let used = 0
+  let out = text.replace(/\s?\[(S\d{1,2}(?:\s*,\s*S\d{1,2})*)\]/g, (_m, ids: string) => {
+    const ls = ids.split(/\s*,\s*/).map(id => ok.get(id)).filter((s): s is { id: string; host: string; url: string } => !!s)
+    if (!ls.length) return ''
+    used++
+    return ` (${ls.map(link).join(', ')})`
+  })
+  if (!used && ok.size) {
+    const list = [...ok.values()].slice(0, 3).map(link).join(' · ')
+    const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
+    const line = `${/^en/i.test(lang) ? 'Sources' : 'Nguồn'}: ${list}`
+    out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${line}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${line}\n\n${out.slice(at)}`
+  }
+  return out
+}
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
   lang = 'vi',
@@ -3155,7 +3180,9 @@ export function applyPlaceEnrichmentStreamFilter(
         if (emptyReply) patches.push('empty_reply_fallback')
         console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: collector.consultTurn, patches }))
       }
-      return final
+      // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
+      // sources line. Here, inside the grounded prose, so the TikTok fold and the grounding detector downstream see the final text.
+      return collector?.citationSources?.length ? citeSources(final, collector.citationSources, allowedUrls, lang) : final
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same

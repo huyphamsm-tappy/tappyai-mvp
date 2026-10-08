@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB, Tai Nghe A4 1571AM site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:40.183Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB, Tai Nghe A4 1571AM site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "1571am - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/1571am",
+    "snippet": "Tai Nghe TWS NHT Ap4 Hổ 1571AM New 2025 - Thiết Kế Mới - Xuyên âm chống ồn -Âm thanh Không gian Thật-thích nghi tai nghe. 1.293.000₫. 1.500.000₫.",
+    "position": 1
+   },
+   {
+    "title": "Mua và Bán Trên Ứng Dụng Di Động Hoặc Website",
+    "link": "https://shopee.vn/search?evcode=UE9URUNIMTFL&promotionId=873626287587328&signature=102b00ac5fb4476ab2475296bab0b469ba57f09e1cc5bc25d8229461d7288e5b",
+    "snippet": "Tai Nghe Hổ Vằn Louda 1571AM ANC 48DB, Tai Nghe Pro 2 Adaptive Nhận Biết Hội Thoại - Âm Thanh Vòm 8D | Update Mới Nhất. 1.179.980₫. 1.790.000₫.",
+    "position": 2
+   },
+   {
+    "title": "[ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ...",
+    "link": "https://shopee.vn/-A4-Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-Louda-1571AM-1563E-Ch%E1%BB%91ng-%E1%BB%92n-ANC-45DB-Tai-Nghe-A4-1571AM-Adaptive-Nh%E1%BA%ADn-Bi%E1%BA%BFt-H%E1%BB%99i-Tho%E1%BA%A1i-i.120312521.43261702000",
+    "snippet": "Mua [ A4 ] Tai Nghe Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB, Tai Nghe A4 1571AM - Adaptive Nhận Biết Hội Thoại giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 3
+   },
+   {
+    "title": "Louda hổ vằn - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/louda/h%E1%BB%95%20v%E1%BA%B1n",
+    "snippet": "Tai Nghe Hổ Vằn Louda 1563E ANC 40DB, Tai Nghe Pro 3 Vuốt Tăng Giảm Âm Lượng, Cảm Biến Hồng Ngoại | Update Mới Nhất. 714.000₫. 930.000₫. -23%. voucher-icon.",
+    "position": 4
+   },
+   {
+    "title": "[ A4 ] Tai Nghe Hổ Vằn A4 1571AM/1563E Chống Ồn ANC ...",
+    "link": "https://shopee.vn/-A4-Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-A4-1571AM-1563E-Ch%E1%BB%91ng-%E1%BB%92n-ANC-45DB-Xuy%C3%AAn-%C3%82m-HDR-C%E1%BA%A3m-Bi%E1%BA%BFn-H%E1%BB%93ng-Ngo%E1%BA%A1i-i.390079780.42013677101",
+    "snippet": "Mua [ A4 ] Tai Nghe Hổ Vằn A4 1571AM/1563E Chống Ồn ANC 45DB - Xuyên Âm HDR - Cảm Biến Hồng Ngoại giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe hổ vằn 1562f - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe/h%E1%BB%95%20v%E1%BA%B1n/1562f",
+    "snippet": "Tai nghe 1563E Thỏ Công Nghệ, khử ồn real ANC, thích hợp cho tất cả các dòng máy -Bảo hành 12 tháng. 1.040.000₫. 1.155.000₫. -10%. rating-star 4.9.",
+    "position": 6
+   },
+   {
+    "title": "[ Pro 2 ] Tai Nghe Hổ Vằn Louda 1562AE/1563E Xuyên Âm",
+    "link": "https://shopee.vn/-Pro-2-Tai-Nghe-H%E1%BB%95-V%E1%BA%B1n-Louda-1562AE-1563E-Xuy%C3%AAn-%C3%82m-Ch%E1%BB%91ng-%E1%BB%92n-ANC-45DB-Tai-Nghe-Pro-2-1562AE-T%C4%83ng-Gi%E1%BA%A3m-%C3%82m-L%C6%B0%E1%BB%A3ng-i.120312521.49056244039",
+    "snippet": "[ Pro 2 ] Tai Nghe Hổ Vằn Louda 1562AE/1563E Xuyên Âm - Chống Ồn ANC 45DB, Tai Nghe Pro 2 1562AE - Tăng Giảm Âm Lượng ; Chọn loại hàng. Pro. 2 Hổ Vằn 1563E. Pro.",
+    "rating": 4.7,
+    "ratingCount": 10,
+    "position": 7
+   },
+   {
+    "title": "Hổ vằn - Giá Tốt, Chính Hãng, Đảm Bảo",
+    "link": "https://shopee.vn/list/h%E1%BB%95%20v%E1%BA%B1n",
+    "snippet": "Tai nghe 1563E Thỏ Công Nghệ, khử ồn real ANC, thích hợp cho tất cả các dòng máy -Bảo hành 12 tháng. 1.040.000₫. 1.155.000₫. -10%. rating-star 4.9.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

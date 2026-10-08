@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congan.gov.vn \"15/8/2026\" \"hộ chiếu\" lệ phí miễn Thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:06:16.262Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congan.gov.vn \"15/8/2026\" \"hộ chiếu\" lệ phí miễn Thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

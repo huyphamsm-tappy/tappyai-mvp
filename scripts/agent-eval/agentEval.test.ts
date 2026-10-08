@@ -16,10 +16,10 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest'
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { randomBytes, randomUUID } from 'node:crypto'
+import { createHash, randomBytes, randomUUID } from 'node:crypto'
 import { installReplayFetch, netSnapshot, netDelta, setSerperInjection } from '../consult/replay/lib/serperReplay'
 import { parseDataStream } from '../consult/replay/lib/stream'
-import { evaluateTurn, keptRatio, outputKind, type Scenario } from './lib/checks'
+import { evaluateTurn, keptRatio, outputKind, researchFromTrace, type Scenario } from './lib/checks'
 import { summarize, markdown, type EvalRow } from './lib/report'
 
 const ON = process.env.AGENT_EVAL === '1'
@@ -92,6 +92,32 @@ function prepareEnv(): void {
   process.env.CCP_ATTRIBUTION_SECRET = randomBytes(24).toString('hex')
 }
 
+/**
+ * M3 page reading in the eval: pages are recorded on first read (real, secure fetch) and replayed after - into a git-IGNORED folder
+ * (pages can be large; the repo keeps only the Serper recordings). Fixture pages (conflict scenario) are served by exact URL, no network.
+ * Imported dynamically so the same harness can drive older commits (M1 / M2) that have no page reader.
+ */
+const PAGE_DIR = join(HERE, 'pages')
+const FIXTURES: Record<string, string> = {
+  'https://www.chotot.com/tappy-eval-fixture/macbook-air-m1.htm': 'listing.html',
+  'https://kiemdinh.tappy-eval.test/bao-cao/mba-m1': 'report.html',
+}
+async function installPageReplay(): Promise<void> {
+  const mod = await import('@/lib/security/safePageFetch').catch(() => null) as null | { __setPageFetchOverride: (fn: unknown) => void; fetchPublicPageReal: (u: string, o: unknown) => Promise<Record<string, unknown>> }
+  if (!mod?.__setPageFetchOverride) return
+  mkdirSync(PAGE_DIR, { recursive: true })
+  mod.__setPageFetchOverride(async (url: string, o: unknown) => {
+    const fx = FIXTURES[url]
+    if (fx) { const body = readFileSync(join(HERE, 'fixtures', 'pages', fx), 'utf8'); return { ok: true, url, finalUrl: url, status: 200, contentType: 'text/html; charset=utf-8', body, bytes: body.length, truncated: false, redirects: 0, ms: 1 } }
+    const file = join(PAGE_DIR, `${createHash('sha1').update(url).digest('hex')}.json`)
+    if (existsSync(file)) return JSON.parse(readFileSync(file, 'utf8'))
+    if (process.env.REPLAY_NO_RECORD === '1') return { ok: false, url, reason: 'network_error', redirects: 0, ms: 0 }
+    const r = await mod.fetchPublicPageReal(url, o)
+    if (r.ok) writeFileSync(file, JSON.stringify(r)) // a transient failure is never replayed as a permanent one
+    return r
+  })
+}
+
 function captureConsole() {
   const events: Array<Record<string, unknown>> = []
   const errors: string[] = []
@@ -117,6 +143,7 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
   beforeAll(async () => {
     prepareEnv()
     uninstall = installReplayFetch(RECORDINGS)
+    await installPageReplay()
     ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST })
     ;({ __resetAiQuestionQuotaLocal: resetQuota } = await import('@/lib/ai/quota/aiQuestionQuota'))
     ;({ GOLDEN_CAPTURE_DIR: captureDir } = await import('@/lib/ai/goldenCapture'))
@@ -175,13 +202,14 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
       const capFile = join(captureDir, `${captureId}.txt`)
       const rawText = existsSync(capFile) ? readFileSync(capFile, 'utf8') : null
       const tools = p.tools.map(x => ({ name: x.toolName ?? '?', args: x.args }))
-      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0 }
-      const checks = evaluateTurn(t.expect, obs)
       const trace = cap.events.find(e => e.type === 'tappyai_agent_trace') as Record<string, unknown> | undefined
       // Phase 8 run trace (TAPPY_AGENT=2): exactly one per turn, with every round / tool / guard.
-      const runTraces = cap.events.filter(e => e.type === 'tappyai_agent_run_trace') as Array<{ status?: string; final_output_type?: string; task_id?: string | null; totals?: Record<string, number>; events?: Array<{ kind: string; decision?: string; constraints?: number; persisted?: boolean }> }>
+      const runTraces = cap.events.filter(e => e.type === 'tappyai_agent_run_trace') as Array<{ status?: string; final_output_type?: string; task_id?: string | null; totals?: Record<string, number>; research?: { page_reads?: number; page_failures?: number; evidence?: Record<string, number>; citations?: number }; events?: Array<{ kind: string; decision?: string; constraints?: number; persisted?: boolean; evidence_refs?: number }> }>
       const rt = runTraces[0]
-      const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0, taskId: rt?.task_id ?? null, taskConstraints: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.constraints ?? null, taskPersisted: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.persisted ?? null } : null
+      const research = researchFromTrace(rt as never)
+      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0, research }
+      const checks = evaluateTurn(t.expect, obs)
+      const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0, taskId: rt?.task_id ?? null, taskConstraints: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.constraints ?? null, taskPersisted: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.persisted ?? null, evidenceRefs: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.evidence_refs ?? null, research } : null
       rows.push({
         mode, scenario: s.id, category: s.category, turn: i + 1, sent: t.text,
         checks, pass: checks.every(c => c.pass),

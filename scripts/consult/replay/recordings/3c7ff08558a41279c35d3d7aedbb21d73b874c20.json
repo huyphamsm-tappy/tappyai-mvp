@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ giá 9 triệu Chợ Tốt 2026 giá thị trường kiểm tra máy cũ pin iCloud MDM",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:53:26.346Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ giá 9 triệu Chợ Tốt 2026 giá thị trường kiểm tra máy cũ pin iCloud MDM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 1
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "Giá MacBook Air M1 cũ vào ngày 08/10/2026 dao động khoảng 10,35 triệu - 12,65 triệu, tuỳ dung lượng RAM (8GB hoặc 16GB), SSD (256GB hoặc 512GB), ...",
+    "position": 2
+   },
+   {
+    "title": "Hội macbook VN",
+    "link": "https://www.facebook.com/groups/macbookmdm/?locale=vi_VN",
+    "snippet": "Macbook M1 Max 16inch Ram 32GB - SSD 1TB Hình thức đẹp | Máy Zin Nguyên Bản Cam Kết Không MDM | Không iCloud Màu Sliver,Pin 95% Giá chỉ : 33.x Hỗ Trợ Góp ...",
+    "position": 3
+   },
+   {
+    "title": "5.740 Macbook cũ like new chính hãng giá rẻ 08/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-sdpb3",
+    "snippet": "5.740 Macbook cũ like new chính hãng, máy đẹp, uy tín, giá cực rẻ cập nhật 08/10/2026. Dễ dàng tìm mua Macbook cũ tại Chợ Tốt.",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M1 CŨ năm 2026: Vẫn là \"vua\" phân khúc 12 triệu ...",
+    "link": "https://www.youtube.com/watch?v=hMFDlkwVM9w",
+    "snippet": "Bạn đang tìm kiếm một chiếc laptop ngon - bổ - rẻ trong tầm giá 12 triệu đồng vào năm 2026? Liệu chiếc MacBook Air M1 đã ra mắt 6 năm còn ...",
+    "position": 5
+   },
+   {
+    "title": "Thu Mua MacBook Air Cũ Giá Cao TPHCM",
+    "link": "https://tuandigi.vn/thu-mua-macbook-air-cu/",
+    "snippet": "Thu mua MacBook Air cũ T9/2026: 35,4 triệu tiền mặt cho MacBook Air 15 M5, lên đời 36,5 triệu. Đủ 29 cấu hình M1–M5, định giá 5-10 phút, ...",
+    "date": "22 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 Cũ Có Còn Đáng Mua Năm 2026? Kinh ...",
+    "link": "https://nguyenkstore.com/2026/07/14/macbook-air-m1-cu-co-con-dang-mua-2026/",
+    "snippet": "Pin có thể sử dụng cả ngày. Màn hình Retina sắc nét. Bàn phím Magic Keyboard gõ thoải mái. Giữ giá tốt trên thị trường máy cũ. Cấu hình ...",
+    "date": "14 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Có Nên Mua MacBook Cũ? Hướng Dẫn & Địa Chỉ Uy Tín ...",
+    "link": "https://macone.vn/tin-tuc/giai-dap-co-nen-mua-macbook-cu-khong/?srsltid=AU7gw4UvwMTQQ4zFrdLCGiJdq14IxwUry8td_jVeAmqcjAE1RylIkIXH",
+    "snippet": "MacBook Air M1 2020 cũ đang rao bán khoảng 15.2 triệu đồng, trong khi mua mới bạn phải chi ~25-26 triệu. Chênh lệch gần 10 triệu, tương đương 40% – con số khiến ...",
+    "rating": 5,
+    "ratingCount": 335,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

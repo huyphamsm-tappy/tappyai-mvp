@@ -27,7 +27,8 @@ describe('no scratch files are committed', () => {
     // 2008 → 2068 (Phase 8 M0, eb3d32a): the 60 Serper recordings of the agent-eval baseline (scripts/agent-eval), added deliberately.
     // 2068 → 2135 (Phase 8 M1): the 67 recordings of the TAPPY_AGENT=2 eval runs (scripts/agent-eval), added deliberately.
     // 2135 → 2371 (Phase 8 M2): the 236 recordings of the M2 follow-up / regression eval runs (scripts/agent-eval), added deliberately.
-    expect(n).toBeLessThanOrEqual(2371)
+    // 2371 → 2542 (Phase 8 M3): the recordings of the M3 research / regression eval runs (scripts/agent-eval), added deliberately.
+    expect(n).toBeLessThanOrEqual(2542)
   })
 })
 

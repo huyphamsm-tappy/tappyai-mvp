@@ -336,6 +336,10 @@ export interface AgentRunEvent {
   completionTokens: number
   costMicroUsd: number
   elapsedMs: number
+  /** M3 research counters. */
+  pageReads?: number
+  evidenceItems?: number
+  conflicts?: number
 }
 
 export type ObservabilityEvent =
@@ -428,6 +432,8 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // Phase 8 agent run summary (AgentRunEvent): ids are a random per-run UUID; everything else counters / closed vocabularies.
   'traceId', 'agentStatus', 'stopReason', 'outputType', 'modelRounds', 'serperCredits', 'serperLimit', 'timeouts', 'retries',
   'budgetRefusals', 'guardChanges', 'costMicroUsd',
+  // Phase 8 M3 research counters (numbers only).
+  'pageReads', 'evidenceItems', 'conflicts',
 ])
 
 /**

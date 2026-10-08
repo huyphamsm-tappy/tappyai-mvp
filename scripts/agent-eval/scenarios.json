@@ -1281,6 +1281,391 @@
      }
     }
    ]
+  },
+  {
+   "id": "RS-A1",
+   "category": "research",
+   "title": "used MacBook purchase — practical research",
+   "turns": [
+    {
+     "text": "Mình định mua MacBook Air M1 cũ giá khoảng 9 triệu trên Chợ Tốt. Cần kiểm tra gì trước khi mua, và giá vậy có hợp lý không?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "battery/cycles",
+        "any": [
+         "chu ky sac",
+         "cycle",
+         "tinh trang pin",
+         "battery"
+        ]
+       },
+       {
+        "label": "Activation Lock/iCloud",
+        "any": [
+         "icloud",
+         "activation lock",
+         "khoa kich hoat",
+         "find my"
+        ]
+       },
+       {
+        "label": "MDM",
+        "any": [
+         "mdm",
+         "quan ly thiet bi"
+        ]
+       },
+       {
+        "label": "serial/warranty",
+        "any": [
+         "serial",
+         "so seri",
+         "bao hanh",
+         "checkcoverage"
+        ]
+       },
+       {
+        "label": "screen/keyboard/ports",
+        "any": [
+         "man hinh",
+         "ban phim",
+         "cong"
+        ]
+       },
+       {
+        "label": "market price",
+        "any": [
+         "gia thi truong",
+         "gia tham khao",
+         "trieu"
+        ]
+       },
+       {
+        "label": "seller/transaction risk",
+        "any": [
+         "nguoi ban",
+         "giao dich",
+         "gap truc tiep",
+         "dat coc"
+        ]
+       }
+      ],
+      "minTopics": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-B1",
+   "category": "research",
+   "title": "manufacturer spec — AirPods Pro 2 (official source)",
+   "turns": [
+    {
+     "text": "Theo Apple, AirPods Pro 2 nghe nhạc được bao lâu mỗi lần sạc và tổng cộng với hộp sạc?",
+     "expect": {
+      "tools": [
+       "web_search",
+       "read_page"
+      ],
+      "topics": [
+       {
+        "label": "6 hours",
+        "any": [
+         "6 gio"
+        ]
+       },
+       {
+        "label": "30 hours",
+        "any": [
+         "30 gio"
+        ]
+       }
+      ],
+      "minTopics": 2,
+      "research": {
+       "minPages": 1,
+       "officialHosts": [
+        "apple.com"
+       ],
+       "cite": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-B2",
+   "category": "research",
+   "title": "manufacturer spec — Galaxy S24 battery (official source)",
+   "turns": [
+    {
+     "text": "Samsung công bố Galaxy S24 bản thường có pin dung lượng bao nhiêu mAh?",
+     "expect": {
+      "tools": [
+       "web_search",
+       "read_page"
+      ],
+      "topics": [
+       {
+        "label": "4000 mAh",
+        "any": [
+         "4000",
+         "4.000",
+         "4,000"
+        ]
+       }
+      ],
+      "minTopics": 1,
+      "research": {
+       "minPages": 1,
+       "officialHosts": [
+        "samsung.com"
+       ],
+       "cite": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-C1",
+   "category": "research",
+   "title": "travel — Hội An practical research",
+   "turns": [
+    {
+     "text": "Tuần sau mình đi Hội An: vé tham quan phố cổ bao nhiêu, nên đi giờ nào, có gì cần lưu ý không?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "ticket",
+        "any": [
+         "ve tham quan",
+         "ve vao",
+         "ve pho co"
+        ]
+       },
+       {
+        "label": "fee",
+        "any": [
+         "000",
+         "dong",
+         "vnd"
+        ]
+       },
+       {
+        "label": "timing",
+        "any": [
+         "buoi toi",
+         "chieu toi",
+         "sang som",
+         "den long"
+        ]
+       },
+       {
+        "label": "weather",
+        "any": [
+         "mua",
+         "nang",
+         "thoi tiet"
+        ]
+       },
+       {
+        "label": "traps/prices",
+        "any": [
+         "chat chem",
+         "hoi gia",
+         "cheo keo",
+         "mac ca"
+        ]
+       },
+       {
+        "label": "transport",
+        "any": [
+         "xe dap",
+         "di bo",
+         "grab"
+        ]
+       }
+      ],
+      "minTopics": 4,
+      "research": {
+       "minPages": 1,
+       "cite": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-D1",
+   "category": "research",
+   "title": "conflicting sources — seller vs inspection report",
+   "turns": [
+    {
+     "text": "Người bán ở https://www.chotot.com/tappy-eval-fixture/macbook-air-m1.htm nói pin zin 100%, nhưng báo cáo kiểm tra máy ở https://kiemdinh.tappy-eval.test/bao-cao/mba-m1 lại ghi khác. Mình nên tin bên nào, có nên mua không?",
+     "expect": {
+      "tools": [
+       "read_page"
+      ],
+      "topics": [
+       {
+        "label": "recheck yourself",
+        "any": [
+         "tu kiem tra",
+         "system information",
+         "thong tin he thong",
+         "coconutbattery",
+         "kiem tra lai"
+        ]
+       },
+       {
+        "label": "battery replacement cost",
+        "any": [
+         "thay pin",
+         "tra gia",
+         "chi phi"
+        ]
+       }
+      ],
+      "minTopics": 1,
+      "research": {
+       "minPages": 2,
+       "conflict": true,
+       "unknown": true,
+       "cite": true,
+       "mentionsBoth": [
+        {
+         "label": "seller says 100%",
+         "any": [
+          "100%",
+          "100 %"
+         ]
+        },
+        {
+         "label": "report says 74% / 812 cycles",
+         "any": [
+          "74%",
+          "74 %",
+          "812"
+         ]
+        }
+       ]
+      },
+      "never": [
+       "best deal"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-E1",
+   "category": "research",
+   "title": "search → open official page → extract (passport fee)",
+   "turns": [
+    {
+     "text": "Lệ phí cấp hộ chiếu phổ thông hiện nay là bao nhiêu? Lấy theo trang chính thức của nhà nước.",
+     "expect": {
+      "tools": [
+       "web_search",
+       "read_page"
+      ],
+      "topics": [
+       {
+        "label": "fee",
+        "any": [
+         "le phi",
+         "000"
+        ]
+       }
+      ],
+      "minTopics": 1,
+      "research": {
+       "minPages": 1,
+       "officialHosts": [
+        "gov.vn",
+        "chinhphu.vn"
+       ],
+       "cite": true
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-F1",
+   "category": "research",
+   "title": "no research needed — direct answer passes",
+   "turns": [
+    {
+     "text": "Nguyên lý hoạt động cơ bản của tủ lạnh là gì?",
+     "expect": {
+      "tools": "none",
+      "topics": [
+       {
+        "label": "refrigerant/compression",
+        "any": [
+         "moi chat",
+         "gas",
+         "may nen",
+         "nen"
+        ]
+       },
+       {
+        "label": "heat transfer",
+        "any": [
+         "nhiet",
+         "hap thu"
+        ]
+       }
+      ],
+      "minTopics": 2
+     }
+    }
+   ]
+  },
+  {
+   "id": "RS-G1",
+   "category": "research",
+   "title": "evidence re-use on a follow-up (same product)",
+   "turns": [
+    {
+     "text": "Theo Apple thì AirPods Pro 2 nghe được bao lâu mỗi lần sạc?",
+     "expect": {
+      "research": {
+       "minPages": 1,
+       "officialHosts": [
+        "apple.com"
+       ]
+      }
+     }
+    },
+    {
+     "text": "Còn khả năng chống nước chuẩn gì?",
+     "expect": {
+      "topics": [
+       {
+        "label": "IP rating",
+        "any": [
+         "ip54",
+         "ip 54",
+         "ipx4",
+         "chong nuoc",
+         "chong bui"
+        ]
+       }
+      ],
+      "minTopics": 1,
+      "noReask": [
+       "san pham nao",
+       "tai nghe nao"
+      ]
+     }
+    }
+   ]
   }
  ]
 }

@@ -83,3 +83,6 @@ extensions/browser/dist/
 
 # Phase 8 agent eval outputs (local, may contain full replies)
 /scripts/agent-eval/out/
+
+# Phase 8 M3 eval page recordings (local only; pages can be large)
+/scripts/agent-eval/pages/

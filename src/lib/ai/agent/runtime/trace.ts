@@ -14,7 +14,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { recordEvent } from '@/lib/observability'
 import { cutSecrets } from '../guards'
 
-export type TraceKind = 'model_round' | 'tool_call' | 'tool_result' | 'timeout' | 'retry' | 'budget' | 'guard' | 'ask' | 'task' | 'error' | 'final'
+export type TraceKind = 'model_round' | 'tool_call' | 'tool_result' | 'timeout' | 'retry' | 'budget' | 'guard' | 'ask' | 'task' | 'page_read' | 'evidence' | 'error' | 'final'
 export interface TraceEvent { seq: number; t: number; kind: TraceKind; [k: string]: unknown }
 
 export type OutputType = 'text' | 'ask' | 'cards' | 'plan'
@@ -74,6 +74,8 @@ export class AgentRunTrace {
   readonly messageCount: number
   counters = { modelRounds: 0, toolCalls: 0, timeouts: 0, retries: 0, budgetRefusals: 0, errors: 0, guardChanges: 0, guardCharsRemoved: 0, promptTokens: 0, completionTokens: 0, usd: 0, serperCredits: 0 }
   status = 'running'
+  /** M3: [S#] citations resolved into source links in the final reply. */
+  citations = 0
   stopReason = 'running'
   private emitted = false
 
@@ -121,7 +123,15 @@ export class AgentRunTrace {
     try {
       const outputType: OutputType = /\[TAPPY_PLAN\][\s\S]*\[\/TAPPY_PLAN\]/.test(o.delivered) ? 'plan' : this.status === 'asked' ? 'ask' : (o.cards > 0 || /\[TAPPY_SHOPPING\]/.test(o.delivered)) ? 'cards' : 'text'
       const elapsedMs = this.now() - this.started
-      this.add('final', { output_type: outputType, chars: o.delivered.length, cards: o.cards, status: this.status, stop: this.stopReason })
+      // M3 research totals, from the events (so they can never disagree with them).
+      const reads = this.events.filter(e => e.kind === 'page_read')
+      const research = {
+        page_reads: reads.filter(e => e.status === 'ok' && e.cached !== 'turn').length,
+        page_failures: reads.filter(e => e.status !== 'ok' && e.cached !== true).length,
+        evidence: this.events.filter(e => e.kind === 'evidence').reduce((a, e) => ({ FACT: a.FACT + Number(e.fact ?? 0), INFERENCE: a.INFERENCE + Number(e.inference ?? 0), UNKNOWN: a.UNKNOWN + Number(e.unknown ?? 0), CONFLICT: a.CONFLICT + Number(e.conflict ?? 0) }), { FACT: 0, INFERENCE: 0, UNKNOWN: 0, CONFLICT: 0 }),
+        citations: this.citations,
+      }
+      this.add('final', { output_type: outputType, chars: o.delivered.length, cards: o.cards, status: this.status, stop: this.stopReason, ...research })
       console.log(JSON.stringify({
         type: 'tappyai_agent_run_trace',
         trace_id: this.traceId, conversation_id: this.conversationId, task_id: this.taskId, message_id: this.messageId, message_count: this.messageCount,
@@ -129,6 +139,7 @@ export class AgentRunTrace {
         status: this.status, stop_reason: this.stopReason, final_output_type: outputType,
         limits: { serper: this.serperLimit, deadline_ms: this.deadlineMs },
         totals: { ...this.counters, usd: round7(this.counters.usd), elapsed_ms: elapsedMs },
+        research,
         events: this.events,
       }))
       recordEvent({
@@ -138,6 +149,7 @@ export class AgentRunTrace {
         timeouts: this.counters.timeouts, retries: this.counters.retries, budgetRefusals: this.counters.budgetRefusals, errors: this.counters.errors,
         guardChanges: this.counters.guardChanges, promptTokens: this.counters.promptTokens, completionTokens: this.counters.completionTokens,
         costMicroUsd: Math.round(this.counters.usd * 1e6), elapsedMs,
+        pageReads: research.page_reads, evidenceItems: research.evidence.FACT + research.evidence.INFERENCE + research.evidence.UNKNOWN + research.evidence.CONFLICT, conflicts: research.evidence.CONFLICT,
       })
     } catch { /* trace only */ }
   }

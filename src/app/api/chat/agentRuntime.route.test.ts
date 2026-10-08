@@ -108,7 +108,7 @@ describe('TAPPY_AGENT=2 — the Phase 8 runtime', () => {
     const o = h.state.stepCalls[0] as { role: string; systemShared: string; tools: Record<string, unknown> }
     expect(o.role).toBe('agent')
     expect(o.systemShared).toContain('đủ để trả lời tốt chưa?')
-    expect(Object.keys(o.tools)).toEqual(expect.arrayContaining(['ask_user', 'search_places', 'web_search']))
+    expect(Object.keys(o.tools)).toEqual(expect.arrayContaining(['ask_user', 'search_places', 'web_search', 'read_page']))
     expect(Object.keys(o.tools)).not.toContain('save_price_watch')
     // M2: exactly one structured call per turn = the task tracker (runtime/taskTracker.ts), never a stream / intent call.
     expect(h.state.streamCalls).toBe(0)
@@ -182,6 +182,7 @@ describe('flag isolation', () => {
     const o = h.state.stepCalls[0] as { role: string; tools: Record<string, unknown> }
     expect(o.role).toBe('consult')
     expect(Object.keys(o.tools)).not.toContain('ask_user')
+    expect(Object.keys(o.tools)).not.toContain('read_page') // M3 page reading is TAPPY_AGENT=2 only
     expect(traces).toHaveLength(0)
   })
 
@@ -204,5 +205,27 @@ describe('flag isolation', () => {
       await turn([{ role: 'user', content: 'phở là gì?' }])
       expect(h.state.stepCalls).toHaveLength(0)
     }
+  })
+})
+
+describe('M3 · citations through the real stream pipeline (TAPPY_AGENT=2)', () => {
+  it('a page the agent read is cited: the [S1] marker becomes a sanitised link at the enrichment site, and survives the guards', async () => {
+    const { __setPageFetchOverride } = await import('@/lib/security/safePageFetch')
+    const { __resetPageCache } = await import('@/lib/ai/agent/runtime/readPage')
+    __resetPageCache()
+    const url = 'https://www.apple.com/airpods-pro/specs/'
+    const html = '<html><head><title>AirPods Pro 2 - Tech Specs - Apple</title></head><body><main><p>Up to 6 hours of listening time with a single charge.</p><p>' + 'Thông tin thêm. '.repeat(40) + '</p></main></body></html>'
+    __setPageFetchOverride(async u => ({ ok: true, url: u, finalUrl: u, status: 200, contentType: 'text/html', body: html, bytes: html.length, truncated: false, redirects: 0, ms: 1 }))
+    try {
+      process.env.TAPPY_AGENT = '2'
+      h.state.steps = [
+        { text: '', toolCalls: [call('read_page', { url, focus: 'battery life' })] },
+        { text: 'Theo Apple, AirPods Pro 2 nghe tối đa 6 giờ mỗi lần sạc [S1].', toolCalls: [] },
+      ]
+      const { body } = await turn([{ role: 'user', content: `Trang này nói pin bao lâu? ${url}` }])
+      const reply = body.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+      expect(reply).toContain('([apple.com](https://www.apple.com/airpods-pro/specs/))')
+      expect(reply).not.toContain('[S1]')
+    } finally { __setPageFetchOverride(null) }
   })
 })

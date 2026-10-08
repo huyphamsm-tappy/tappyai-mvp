@@ -185,6 +185,8 @@ export interface EnrichmentCollector {
   agentMode?: boolean
   /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
   guardTrace?: (stage: string, before: string, after: string) => void
+  /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */
+  citationSources?: Array<{ id: string; host: string; url: string }>
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */

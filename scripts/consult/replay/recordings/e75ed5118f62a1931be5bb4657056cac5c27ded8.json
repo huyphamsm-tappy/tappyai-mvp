@@ -1,0 +1,372 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Nguyên lý hoạt động cơ bản của tủ lạnh là gì?",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:06.639Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nguyên lý hoạt động cơ bản của tủ lạnh là gì?",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Mẫu Tủ lạnh cũ giá rẻ",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT8dVMasB0O3mXOUlIX0QjLjxAS9UTVuKGjxB0OP5B73jr93X_hfkA0GqSAMgfffw63xsPIh9SkJow5sMsZtusxR1a8iPuzNN1tSLB79iqviqMVBDHJxWvZ",
+    "productId": "8142295629722268822",
+    "position": 1
+   },
+   {
+    "title": "tủ lạnh LG inverter 635 lít gr-g257bl",
+    "source": "Điện Tử Miền Bắc",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:397672846313823696,gpcid:1696723158566979457,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "23.070.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR2gsj0BQZReorpxaye5sYjSNRQbUcQsLiRlNufsxj4FDfEzOCOefjSpqfwSI_vgFVz8cLMxe4-OIqkvSVwuul68efwAw3uzTzToKKEhcyJnJGZSizHxNCV",
+    "rating": 4.9,
+    "ratingCount": 29,
+    "productId": "397672846313823696",
+    "position": 2
+   },
+   {
+    "title": "Nguyên Lý Kế Toán",
+    "source": "Bến Nghé Books",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:16926213798425508539,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "54.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSlqzESWQFYjioMjN9pKSwWBGGbzSwUiRmPfkmeAGd5dhs0nMJ7iwU-7z7hJ9HLVTUfMzs8s8fY91vPAn0u1GZw2WkYQOzPhzYWnnuIFFSb4yC3x6tSfBt3ZA",
+    "rating": 4.9,
+    "ratingCount": 136,
+    "productId": "16926213798425508539",
+    "position": 3
+   },
+   {
+    "title": "Mua tủ lạnh cũ giá rẻ dung tích 120 lít",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTJzzakPLBlZGuW3DcmGvGEWbe5KVx0cXYmHkRkyf6MnxByLVp5SnnnwvSt6Izqd2H9AcHW02Mr4CA7OxlWfd1n9OOzyZy9ee4Ccp4M2kvNtM4L8ISW47F4xy74",
+    "productId": "17966837476938584825",
+    "position": 4
+   },
+   {
+    "title": "Tủ đông 2 cánh inox Bamboo Cool 500 lít",
+    "source": "Điện Máy Lê Anh",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:8843570222403042946,gpcid:4118754087371270988,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "16.400.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRyiKZgylXBBQu2bbLgaDGdZtFGggv6hvEvLMgDCmvPaTKpB6gvGkHH9cqsTtD-pWOqlfYoGfbXgcX8Pf8o0669NY6x3yXlzp2Kv7mi347bKU45F-cm88mc",
+    "productId": "8843570222403042946",
+    "position": 5
+   },
+   {
+    "title": "Tủ lạnh Smeg FQ60CPO5 581L 4 ngăn",
+    "source": "Bếp Lê Phan",
+    "price": "268.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTJ4XOjdBJuQr81Ek1HGx8ET-NSIA2wu7SFl3xqCimseeTXGKtY2agG9d5X_5CBX3rzURQe0hlRfQohMBOeltk_A25dgGSOYkr4MPjqWJxv",
+    "productId": "11960319994384661336",
+    "position": 6
+   },
+   {
+    "title": "Mẫu Tủ Lạnh Sinh Viên",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTOXmY1DTpPhGVirBzRIcN277_pJbwvMaxx9AHH9sTaL__IIFkBbMKp0BUBSLZnVu9OPj8HS7FIeekFG7EONs79C7mhOKSoo_qB5obMag0YLspJ3LKwijV6cEc",
+    "productId": "18138684853352510151",
+    "position": 7
+   },
+   {
+    "title": "Tủ lạnh nhập khẩu Sài Gòn SKU: DD33041",
+    "source": "Aneto - Nội Thất Văn Phòng",
+    "price": "23.560.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRQ-bg8PygYiXC5AGQeF1_MEbGNDn_-XMhOy2NlhIx9jpgpnHJrh0VEzKkk0UDIgfy4yIoe8J_HtPD7z7vrXdKhpP1nGmbEnylf3_4_IIdZWKzoY6l9HqHU",
+    "productId": "15805264474371789164",
+    "position": 8
+   },
+   {
+    "title": "Tủ lạnh Smeg 2 cửa, độc lập, cửa có thể đổi chiều với bản lề tay phải FD70FN1HX 535.14.593",
+    "source": "Bếp Hoàng Duy Phát",
+    "price": "39.912.600 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcStjBGr0LhWlQzijE4iJKqzJMLq8Le5gcxbUwYMjlFrTeHdt3egczSHhhQVJaU7sk8sQYfo1BCDSmvNmY2hU4MrsfyK9QMX9uR4HZyIJoUfZQOUmiaC7PtRsQ",
+    "productId": "17582963670183666143",
+    "position": 9
+   },
+   {
+    "title": "Tủ lạnh đông Bosch HMH.GSN36VIFP",
+    "source": "Thế Giới Bếp",
+    "price": "35.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT06cxpmzsoDqZw5zfjpvSqlcbIDKkEeG9ZAHKdJt1HiDxkeVasb2LEeKpiVPvpI0iPypbQOL4DhRMFRP8xH70sP0hEDzzt-JiRrrsvOQ0G4lbZskQV3ZSQyaE",
+    "rating": 4.3,
+    "ratingCount": 187,
+    "productId": "11630448823439137472",
+    "position": 10
+   },
+   {
+    "title": "Tủ lạnh kết hợp tủ đông âm tường Gaggenau RB492305",
+    "source": "Ha Anh Germany",
+    "price": "610.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSx6dKklp65KWf2z7xs1tr93cma8UiLP11yOF4o9P5Bc7PFFXELV11YglpA71yNjgvpkWEel022euQAqWhREXb_FWF7GuWo486ffyJBs_zA",
+    "productId": "17045742267797146514",
+    "position": 11
+   },
+   {
+    "title": "Tủ lạnh đông Bosch GSN36VIFP Serie 4",
+    "source": "Kitchen Store",
+    "price": "42.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQaVLIB2sCN1LnZTxqDTNvovMaO7LLHbh7GAlb0ZtzoTVmV_Hsw5M-zsEN2l2M4pdlrmJ2ltP7Wz1w7AHaoB1gIbgSlA_eQBlkwenvLOVY4TPM_ojsUCu_RUQ",
+    "productId": "2894507770750663628",
+    "position": 12
+   },
+   {
+    "title": "C9174DN2D1",
+    "source": "KingHome.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:16603812517857970216,gpcid:7440706653723299125,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "79.269.300 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQLanru4xl5pUiHb1d8vwtCJMhefJIYSyPXjTWmCA1iV7WYkBtc2jT1VjKHwuGOblKMVwxGViZfDavIljCD0KBoXF3i_8yjSSAyD3kEjgWxqeNEXVR2QOrG5A",
+    "productId": "16603812517857970216",
+    "position": 13
+   },
+   {
+    "title": "Tủ lạnh âm tủ Miele 475 lít K 2802 Vi MasterCool",
+    "source": "Gia Dụng Đức Sài Gòn",
+    "price": "531.430.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcScOd2c-jAPjW377B-2zGhknK5aW_QdMpx7Kkn5X6Rzs3IG4MhPZVm6VIqZqzQ2-rC_OI2huUye4A7psKVUZuklWuGoPsDmI59JIbP3dA4",
+    "productId": "6804076291551459522",
+    "position": 14
+   },
+   {
+    "title": "Thanh lý tủ lạnh cũ Panasonic",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRFThjdHuWk4fobVRfjVZQa-kyqfOjiIjVsKGJlgm3B9FeC-Ww_mAcIjbNHTgSdCMo-ROwAZCPGM7CzGi_FlpcFQm_B_TyZJzndpBw91u_t",
+    "productId": "4569790033854039767",
+    "position": 15
+   },
+   {
+    "title": "Tủ lạnh Side by Side Smeg FQ60BDF White",
+    "source": "grimex.com.vn",
+    "price": "128.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ2fuggpnssuRYfWKrysWJlmkAbLpHtmvd7SqObWLEIY1YJg_O2OAqgpUfdgcP9HkFCRLmAUFzI8zXzdLT_k0pTRs2pqyIy",
+    "productId": "16909317240465331017",
+    "position": 16
+   },
+   {
+    "title": "Tủ lạnh 2 cánh side by side 581 lít Brandt BFA1791NA » Bếp 365 Vinh",
+    "source": "Bếp 365",
+    "price": "55.875.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ4GAMTIkqC5MSra--rLhFNe5hU-9DpHD4JZLvrs_9skl7ExHxihoE-OZpLInx047OYCA9KI2O3Y5ZCQsOsN3-4SPscgzm-4Q",
+    "productId": "3763036119507329836",
+    "position": 17
+   },
+   {
+    "title": "Tủ lạnh Panasonic Inverter 325 lít NR-BV361GPKV",
+    "source": "Tổng Kho Điện Máy Gia Hân",
+    "price": "15.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQRfGoD1WevKvFEqT2K_a4vRPf0reFJfVNDkDEYRL18gdpAu0hni-nB4GjWKkOpfrSF-FvPxtMDn9raUPvDHgXvZICAz6fLkoHrCFGrBDWG7utZ8xBCrqXq",
+    "productId": "10644605350483206607",
+    "position": 18
+   },
+   {
+    "title": "Thiêt Bị Bảo Vệ Tủ Lạnh Rsc",
+    "source": "Lioa Nhật Linh",
+    "price": "190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQMm-OfjNLwUllr6qtNTupUfzRGv4wVyyq22dotKHs-LmWfKX5hPovxzoiyXoxuSO3Vo0ZuMc4WNAqOgGPtbtLecf3qhqjsf-yOx_5olh8",
+    "productId": "15058578607181774830",
+    "position": 19
+   },
+   {
+    "title": "Thanh lý tủ lạnh cũ sinh viên",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "2.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT7XUdHYayHv5AgKse8qzxQQASUs8lSplD3EBvdLF5GICwnHZcUIvISemH6tPU38P1iMqnQkHlL4T-Px9MYRvva8qMgeqcjIqWPZKFqFFE",
+    "productId": "6502359179901366008",
+    "position": 20
+   },
+   {
+    "title": "Tủ lạnh Side by Side Smeg FQ60NDF Black",
+    "source": "grimex.com.vn",
+    "price": "129.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQsVLRbAPCA5g4PUbC095jbcTUIIfhRIJ9GkwQWlhxaUkvaaqPcY7yS8EeAUuapoKwVWOUqLhwmvfBpdjDqOXVKk2dVtjl4HDMv3A-bCDrtD-DboCImbegX_w",
+    "rating": 4.5,
+    "ratingCount": 4,
+    "productId": "11964062184901415386",
+    "position": 21
+   },
+   {
+    "title": "Tinh chất dưỡng sáng da ban đêm Garnier Skin Active Vitamin C Brightening Night Serum - 30ml",
+    "source": "Ausmart Commercial",
+    "price": "1.149.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTbKjiQyP6pUXQ-NIFnoTNSxrgDqV5svdbD-d3b5G-LgnyDl9zBKBvXQQCrH53hgXzNS9Xi6jSACrbRd1T36fVHes9Yo4jqm7zMmTk1cKYdvK2eoqIr3rXO",
+    "rating": 4.7,
+    "ratingCount": 314,
+    "productId": "9536034700106590113",
+    "position": 22
+   },
+   {
+    "title": "Bút Nước Xóa Được M&G - Mực Xanh B4472",
+    "source": "nhasachphuongnam.com",
+    "price": "17.550 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ86CEirSfLFmzD2xZnA2AVigmuCXpTka_9oR39VgLt0MrT8BE9HMQaEHCQibkXdziGRYjGYS7n-JQPWDCLQwkvgtXqBvu26DCJSxtHXsWiTyo5J8V6IcDyKw",
+    "productId": "14834028893200006877",
+    "position": 23
+   },
+   {
+    "title": "BÀN MÁT 1 CÁNH KÍNH CÔNG NGHIỆP UC 1G 76 09 TURBOCOOL",
+    "source": "Auacorp.vn",
+    "price": "24.899.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTzeDm_1oh-46XWWPWjqqJcDKY0LDA2wv1qtpkQ_rPiZ4U04fYBistSJcJgleX3BmYCaYYihUq4r-WjEeIT6qLtdxg_GJQ-jfPWqe8XiMdQNBy06vKPSktY",
+    "productId": "11675512873104701381",
+    "position": 24
+   },
+   {
+    "title": "Tủ lạnh 4 ngăn Smeg FQ60CAO5 màu than Anthrazit",
+    "source": "grimex.com.vn",
+    "price": "179.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTz3IKN3VGyOkuTn77XHAxnZisvI1s75K7RQb72sZDgq7ePcUAr3w7tllYKB24Z3Ztpzl7cmoF7CydGK10yTmTZp6tV8OvUiQ",
+    "productId": "15237397216073259312",
+    "position": 25
+   },
+   {
+    "title": "Tủ Lạnh Cũ Sinh Viên",
+    "source": "Bán Tủ Lạnh Cũ - Điện Máy Tùng Lâm",
+    "price": "1.800.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRn-Gm7jVg_jV8HqgE9p91x0PiM3k4MM7F-F9tqlqE2X8T-V4If6QvBSTKAWwVzi8d2xhgyFDizJhL3uEsm8RG_0LS8gSO7k3vS__dEinA",
+    "productId": "7603972678731425189",
+    "position": 26
+   },
+   {
+    "title": "Máy hút ẩm công nghiệp Fujihaia DH360BG | Hàng chính hãng",
+    "source": "TIC",
+    "price": "49.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTqSmJxBTykK8c_q2pSYMuSxfmAALle-KcUZ54xRdgu1uRd4fQVv5NcxJ8H9hDwl6aeRVxxOUXjl6zk4wKDIH7zDo-NRPPmpYXbWz0YyOt2iUYIvzsI5lCZrA",
+    "productId": "17563821385293112977",
+    "position": 27
+   },
+   {
+    "title": "Tủ lạnh Samsung Inverter 236 lít RT22M4032BU/SV",
+    "source": "Samsung Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:16124698801997276944,gpcid:10769495398612995988,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSeaD9ddQhvu-4ES33hXp1Um9h9CPvUCps0YY1aB170c8TFhOs04TKu1uNEaAFdoR7XfV0CU74pm-MLs3LZaZlLaGAdZkAHb3fE_PePp6PodGuHVetH2w0LmA",
+    "rating": 5,
+    "ratingCount": 23,
+    "productId": "16124698801997276944",
+    "position": 28
+   },
+   {
+    "title": "Tủ lạnh đơn 1 cánh độc lập Bosch HMH.GSN36VI3P | Flexhouse VN",
+    "source": "Flexhouse VN",
+    "price": "54.100.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT9UmuqKztRzDhJ1CcPWOUUtZjBy8N9aec1WzL3_UkoA5NjTziT_8QDaPdHe8Vm862B0EEbUtHBQG-PqMJ8HH1hJ1pad3-1BQ",
+    "productId": "5636171452291200744",
+    "position": 29
+   },
+   {
+    "title": "Bàn phím gaming Logitech G715 TKL LIGHTSPEED Wireless chính hãng - Hồng",
+    "source": "TIC",
+    "price": "3.870.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT8g3k9iU94UfiPBkyWgh7DZb-ABlwvneEl9YuNpgC4J-I01wqEeuWcJ1KBZvZGWU4OvC4eqUCerAY11vNtYQXXaiepcPfE1A",
+    "productId": "17367027767926872577",
+    "position": 30
+   },
+   {
+    "title": "Tủ lạnh Samsung Inverter 256 lít RT25M4032BU/SV",
+    "source": "Samsung Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:1397522894476574661,gpcid:4935013345235934775,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ9PqiJFqK2prS4zjhP9EV28LhJEIVUXAQF1sphrUNSLpV-UKfCMitKfj7p84zZiF3X4EWIPNVGgTdIBrnx5vmQI7yUlxqpJRjWEpg4jfZxL5RiC4Xu72L6",
+    "rating": 4.6,
+    "ratingCount": 236,
+    "productId": "1397522894476574661",
+    "position": 31
+   },
+   {
+    "title": "Tủ lạnh âm bàn nhập khẩu cao cấp GD47",
+    "source": "Vua Nội Thất",
+    "price": "34.035.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTHlqchlNDyXOS6sn8E9juTPQJ9Ae_3s_ymkd6-pj1jKscHF_IZRgaaqUezDVf8RouTRfhi5uYEKPS3DzOjBp4rTA0YSq7dN9S4-sOTsQxg",
+    "productId": "9350711811447959820",
+    "position": 32
+   },
+   {
+    "title": "Tủ Lạnh Bosch HMH.GSN36VI3P - 255L Thổ Nhĩ Kỳ",
+    "source": "Lucasa Việt Nam",
+    "price": "56.262.700 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRLIsUE4rnYWpyVcqrjiQ3gXA6ruU1VxjILLYRE5JBDBOiemHJ5Q2HumaGBibfNQT-I-xSCrvqenZDM9pABeeJhmYXfVNB1wwOap_sutnbwUH8k6aorCPYV",
+    "rating": 4.5,
+    "ratingCount": 38,
+    "productId": "10874359080930513760",
+    "position": 33
+   },
+   {
+    "title": "Tủ lạnh Samsung Inverter 236 lít RT22M4032BY/SV",
+    "source": "Samsung Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=Nguy%C3%AAn+l%C3%BD+ho%E1%BA%A1t+%C4%91%E1%BB%99ng+c%C6%A1+b%E1%BA%A3n+c%E1%BB%A7a+t%E1%BB%A7+l%E1%BA%A1nh+l%C3%A0+g%C3%AC%3F&prds=localAnnotatedOfferId:1,catalogid:18240751760366926718,gpcid:9457416667637948278,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTMkQUNOOPwFEzpyy78ZBGD3DHmEH_XHA0bFGm3uQjVETkXBy9mslOSV9AE_pyobwEvcd4QUd04ppsA0ZdcI1VJcv70j3O-otX8TcfL_uhllvjGoomA9Vjx",
+    "rating": 4.2,
+    "ratingCount": 402,
+    "productId": "18240751760366926718",
+    "position": 34
+   },
+   {
+    "title": "Tủ lạnh trưng bày 2 chế 1.5m",
+    "source": "Cty Thành Phát",
+    "price": "22.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTUEQq8jGGV6qrP9M7bPjYPVKe3iyEZWPxukAGmdThx5gzMSnDNtL9Jb74P4XrJUvtSN6-6b_txisK9IXS2JpxcxmjsBUjYpqR9iD6WsZWQ",
+    "productId": "8271242469999749042",
+    "position": 35
+   },
+   {
+    "title": "Tủ lạnh/ đông bảo quản dược phẩm FUKUSHIMA GALILEI FMS-F304G, 315/113 lít 2-14oC/ -30 đến -20oC",
+    "source": "qtetech.com",
+    "price": "164.656.800 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSsOABbip4-C9BqW6h4bTh9mZFb8sKQrc89Nk1Osv6K6G_JPegwFg6e3uPIYGDbGWLfx3ZIb7RJHMtK_9HKFyMP0QLRWWDfoD8dKv2BwWA_W4hrMbkpgjbE9Q",
+    "productId": "1757903612570331721",
+    "position": 36
+   },
+   {
+    "title": "Tủ lạnh 4 ngăn Smeg FQ55FXDF Stainless steel",
+    "source": "grimex.com.vn",
+    "price": "103.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS8kiWd7kKw-2fg16ythab4GZFHxh63x7UN-431BMhQcT2exxy7WBesMDXKh0PbJJSjr3op2sFGMfN3MXoyyXt-XVGols-e",
+    "rating": 4.8,
+    "ratingCount": 12,
+    "productId": "5810548514138879759",
+    "position": 37
+   },
+   {
+    "title": "1987 Rồi - Lý Dịch Phong",
+    "source": "Ngọc Hiển Sách Cũ",
+    "price": "168.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRJ4WeIR1eNLIt2lP0ZuxOZFjwl_16iwJ3_-dPDML7Tu3J5SbS6mdxDSAX2x8sX1dcOrn1G6_qOJlyZoiKIwhn-eIQwfud7cDADmaqwCqNwKQPu4mBv3p1g8w",
+    "productId": "8978324610129528740",
+    "position": 38
+   },
+   {
+    "title": "Van góc Kagol VG03 Inox 304 2 đầu",
+    "source": "Pimisi",
+    "price": "95.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR1Ugw-6O6uLiQIrs0kuMaH9lUWreOeCTPOOB1-pSl-WOr9o8W6L4VF8UYnNJvNtdVaAoAenrE1SMNyndWxEINYE1goWkIOvx0d88_v5n0JaDC-plt0T2ce",
+    "productId": "6598340136139264860",
+    "position": 39
+   },
+   {
+    "title": "Tủ lạnh bảo quản 500 lít 2-14oC FUKUSHIMA GALILEI FMS-504G",
+    "source": "qtetech.com",
+    "price": "211.701.600 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRQeUAvXwQuER32apgdj012N6__WhmabTVcIhvwU82sZcCVN5hNfvDIV8lgphERpixcMkNcDJyzIBR-crBH2TAFpFak8xRdx_gtWVCnSWdRCY0gEaNvFqQn",
+    "productId": "6796008350130866811",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

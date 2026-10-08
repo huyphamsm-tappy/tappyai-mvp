@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu trực tuyến 2026 90% 180.000 đồng Bộ Tài chính hồ sơ online hộ chiếu giấy tờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:10:08.229Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu trực tuyến 2026 90% 180.000 đồng Bộ Tài chính hồ sơ online hộ chiếu giấy tờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "160.000 đồng/hộ chiếu. Trường hợp cấp lại do bị hỏng hoặc bị mất: 320.000/hộ chiếu (Thông tư số 44/2023/TT-BTC ngày 29/6/2023 của Bộ Tài chính).",
+    "position": 1
+   },
+   {
+    "title": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/hy.qlxnc/posts/mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y-/1088837573799005/",
+    "snippet": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG NƯỚC CHO CÔNG DÂN ĐỦ ĐIỀU KIỆN TỪ NGÀY 15/8/2026 • Thời gian áp dụng: 15/8/2026-28/02/2027.",
+    "position": 2
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Toàn Bộ Quy Trình Làm Hộ Chiếu Online Và Trực Tiếp 2026",
+    "link": "https://fisc.com.vn/lam-ho-chieu/",
+    "snippet": "Cấp mới hộ chiếu, 200.000 ; Cấp lại do hết hạn, 200.000 ; Cấp lại do bị mất hoặc hư hỏng, 400.000 ; Sửa đổi thông tin, 50.000 ; Trẻ em dưới 9 tuổi cấp chung hộ ...",
+    "position": 4
+   },
+   {
+    "title": "Applying for a Passport Online in 2026: Just a Few Clicks ...",
+    "link": "https://www.youtube.com/watch?v=URQ-DCcLfH8",
+    "snippet": "Làm hộ chiếu online 2026: Chỉ vài thao tác, nhận tại nhà Trong bối cảnh nhiều thủ tục hành chính được đẩy mạnh số hóa, việc đăng ký làm hộ ...",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn cách làm hộ chiếu online 2026 từ A - Z",
+    "link": "https://www.traveloka.com/vi-vn/explore/tips/ta-lam-ho-chieu-online/620146?utm_id=Pamlbfc2",
+    "snippet": "5.1 Chi phí làm hộ chiếu online ; Hộ chiếu được cấp mới hoàn toàn. 100.000 VND ; Hộ chiếu được cấp lại do mất hoặc hư hỏng. 200.000 VND ; Cấp giấy xác nhận yếu tố ...",
+    "position": 6
+   },
+   {
+    "title": "Lưu ý thời gian được giảm lệ phí hộ chiếu online",
+    "link": "https://laodong.vn/xa-hoi/luu-y-thoi-gian-duoc-giam-le-phi-ho-chieu-online-1280308.ldo",
+    "snippet": "Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chíp điện tử và hộ chiếu không gắn chíp điện tử) với cấp mới là 180.000 đồng; cấp lại do bị hỏng hoặc ...",
+    "date": "15 thg 12, 2023",
+    "position": 7
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

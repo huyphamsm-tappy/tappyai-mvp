@@ -1,0 +1,615 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán cà phê yên tĩnh làm việc học tập Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:18.166Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán cà phê yên tĩnh làm việc học tập Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "The Workshop Coffee",
+    "address": "27 Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7734764,
+    "longitude": 106.7056037,
+    "rating": 4.4,
+    "ratingCount": 4139,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi"
+    ],
+    "website": "http://www.facebook.com/the.workshop.coffee",
+    "phoneNumber": "+84 28 3824 6801",
+    "description": "Địa điểm nổi tiếng phục vụ espresso, cà phê lạnh, cà phê kiểu pour-over và bữa sáng trong không gian thoải mái.",
+    "openingHours": {
+     "Thứ Năm": "08:00–20:30",
+     "Thứ Sáu": "08:00–20:30",
+     "Thứ Bảy": "08:00–20:30",
+     "Chủ Nhật": "08:00–20:30",
+     "Thứ Hai": "08:00–20:30",
+     "Thứ Ba": "08:00–20:30",
+     "Thứ Tư": "08:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOkYJMnf1KhyAlm7CHNxvl1hfjHT0cVuJ4sgUqJFPGEDGJQusKXWzfI7jEazBffXNRl7_cdRLy6HDyqXsg9V1cbg7ewlCYY_irIoolDg3q7PPfyGfjzcWUp5coHAFJci8WTesdn",
+    "cid": "8864834756804505306",
+    "fid": "0x31752f46a0eb2777:0x7b06383e4fde6eda",
+    "placeId": "ChIJdyfroEYvdTER2m7eTz44Bns"
+   },
+   {
+    "position": 2,
+    "title": "Oromia Coffee & Lounge",
+    "address": "85 Phan Kế Bính, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7906677,
+    "longitude": 106.69836169999999,
+    "rating": 4,
+    "ratingCount": 805,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/oromiacafe",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMyOXqxesvnuUQBhHAoaq20xmn0965yhrMkTNR2IxPcNshfzbbX4TuGJCvTnX0hXrfEwSBncjpAyb0AIDkJn5NDRYO4mvjfLjW0fwnfc3DO4b2SMJvucx4obTLE9UxBMI67S6s4",
+    "cid": "13416404655005980095",
+    "fid": "0x317529d17a01d24f:0xba30a4f3588755bf",
+    "placeId": "ChIJT9IBetEpdTERv1WHWPOkMLo"
+   },
+   {
+    "position": 3,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNtwqSzaSJb1Q5Y1lLDT-fXfCBdjGS1m8udmmTgtQJNVPSZvWR7z05DR1Dk5XkHDz9BOgXj7zVg-kVrYVSHMCsAXCWi4VyNZMrJOj-k-5v2ovhFiOXpOe5dGZxPHsVppAMO3aDO",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   },
+   {
+    "position": 4,
+    "title": "Bâng Khuâng Café",
+    "address": "9 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.77869,
+    "longitude": 106.7050646,
+    "rating": 4.3,
+    "ratingCount": 652,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://www.facebook.com/BangkhuangCafe",
+    "phoneNumber": "+84 903 667 888",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM9MPZWztL3kS9kEX0Dw6C-5NG1nJbihEMUfSJR9zaNBB9aJDH0mRkA3iPCNIx2yKWs7Q_fDMieJazxnctGv6yZnMHoKwUOElhVxf9dWnR8wyqPGbKTFjKs082XqJWzUkZcUSvy",
+    "cid": "7102748001445612474",
+    "fid": "0x31752f48ae0e71a3:0x629207ace3480bba",
+    "placeId": "ChIJo3EOrkgvdTERugtI46wHkmI"
+   },
+   {
+    "position": 5,
+    "title": "Ghé Coffee",
+    "address": "39/10 Mạc Thị Bưởi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7749288,
+    "longitude": 106.7050526,
+    "rating": 4.9,
+    "ratingCount": 499,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán cà phê nghệ thuật",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Cửa hàng bán đồ tráng miệng",
+     "Quán cà phê espresso"
+    ],
+    "website": "https://www.instagram.com/ghecoffee.saigon",
+    "phoneNumber": "+84 903 463 615",
+    "openingHours": {
+     "Thứ Năm": "07:00–18:00",
+     "Thứ Sáu": "07:00–18:00",
+     "Thứ Bảy": "07:00–18:00",
+     "Chủ Nhật": "07:00–18:00",
+     "Thứ Hai": "07:00–18:00",
+     "Thứ Ba": "07:00–18:00",
+     "Thứ Tư": "07:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNW7BldowqQrdcIwfrje_sLHTIIpSFwZaWXRxE2ZoA_RSdpL_uKUBqDyk2GSnPwerxFEijMibpeA_rw_OwagY3xC71l_rnc3GD2cSh7K9XPbKc6XSwjIQfetaPPS64yehCNfWC11YsyvT_-",
+    "cid": "14537307804676147680",
+    "fid": "0x31752fc402650d41:0xc9bee46d283c49e0",
+    "placeId": "ChIJQQ1lAsQvdTER4Ek8KG3kvsk"
+   },
+   {
+    "position": 6,
+    "title": "1996 Matcha & Coffee | 1996 Space",
+    "address": "41 Đ. Calmette, Street, District 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.766558,
+    "longitude": 106.69991399999999,
+    "rating": 4.7,
+    "ratingCount": 486,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.instagram.com/1996matchanmore/",
+    "phoneNumber": "+84 898 710 809",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNPLTWmPk4cvKmdbQxUN1Ck2dnmNi58JLu3Y1ILzP3mKNYddyOB-DYE9piB8AJC_-T0vmaIS2quEfk99_M7g-BxY8VpqCYiCgayKZ3m2ck_5W20NC3taGYQDSPd5oTwoPnWsFOEBvRixvJV",
+    "cid": "17643948851829051270",
+    "fid": "0x31752f00430cdf47:0xf4dbe5ffc46e8f86",
+    "placeId": "ChIJR98MQwAvdTERho9uxP_l2_Q"
+   },
+   {
+    "position": 7,
+    "title": "BẢN Cà Phê",
+    "address": "38/7 Lê Lợi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7741572,
+    "longitude": 106.7004781,
+    "rating": 4.7,
+    "ratingCount": 608,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/bancaphevn/",
+    "phoneNumber": "+84 28 6672 6936",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPn4aHB5jFL6Mz4tHLN0GuWFHr9VMJud_1tQvurPb0j8iQcmXsJw3nIXvJkNHXBO9l2rGCak3Mi-SbtE-SQ7-FYchj1zu5q-BR5-OVEJ8IVfHctfjaOYUrFYZCc7hVmAP4CXK29YA",
+    "cid": "455297107363496728",
+    "fid": "0x31752fb17c270d9d:0x6518a4e8faa0318",
+    "placeId": "ChIJnQ0nfLEvdTERGAOqj06KUQY"
+   },
+   {
+    "position": 8,
+    "title": "Soo Kafe Bến Thành",
+    "address": "35 Phan Chu Trinh, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.772407999999999,
+    "longitude": 106.6972096,
+    "rating": 4.6,
+    "ratingCount": 2030,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 899 312 386",
+    "openingHours": {
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00",
+     "Thứ Tư": "08:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPJJZe-iXEWYnU_NCvggWYjoHoFDaVbzeSpzScpm_9EWzxpHIDElUzuvfyIvcj-uP_9MHJTiFfJwP-b3mMif8UCDKHuuIW6kktY-FDeoVQ1K6oyyS0pzANJLMLfSYfArfAcrllO3g",
+    "cid": "16210604624372407733",
+    "fid": "0x31752f3f2ecd492d:0xe0f7a304b6059db5",
+    "placeId": "ChIJLUnNLj8vdTERtZ0FtgSj9-A"
+   },
+   {
+    "position": 9,
+    "title": "Work'in Saigon Cafe",
+    "address": "384/7 Nam Kỳ Khởi Nghĩa, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7912912,
+    "longitude": 106.6829631,
+    "rating": 4.3,
+    "ratingCount": 219,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/workinsaigoncafe/",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPbuO3BVk6-oZFo7bFblGRkCadGY2GsHQ7SLdncPQx2MmAIHBd9xFhWiqM-KOHhUHWavcSucxahw3saFudybuOSWz415uobq1Vds2nq-5ojICvuXK-cBYVT8g3Dc5gt-gPRdaQR",
+    "cid": "11652246967120890794",
+    "fid": "0x3175295612789f63:0xa1b518e15e5d0baa",
+    "placeId": "ChIJY594ElYpdTERqgtdXuEYtaE"
+   },
+   {
+    "position": 10,
+    "title": "Mockingbird Cafe",
+    "address": "14, Đường Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7695583,
+    "longitude": 106.7041722,
+    "rating": 4.3,
+    "ratingCount": 608,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://mockingbird-cafe.gulagi.com/",
+    "phoneNumber": "+84 981 056 780",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO1jT2uTYsSP5DtuNU7AsIksDY0bz-Tl2mlweaAlF4XRudl4VEbhIJiCyBsrsVzpC30P-tmHSBG6ukoh7MECx6rVVPcHe-J09v2BrYvHn3diQfUHjdxDtgkjOZ7FVOa6Z844sGYOQ",
+    "cid": "12848911427970202763",
+    "fid": "0x31752f41a197a8dd:0xb25080de069efc8b",
+    "placeId": "ChIJ3aiXoUEvdTERi_yeBt6AULI"
+   },
+   {
+    "position": 11,
+    "title": "The Hummingbird Café & Roastery",
+    "address": "103BIS Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7864174,
+    "longitude": 106.69101189999999,
+    "rating": 4.6,
+    "ratingCount": 717,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://thehummingbirdsaigon.com/",
+    "phoneNumber": "+84 28 6270 3153",
+    "openingHours": {
+     "Thứ Năm": "08:00–19:00",
+     "Thứ Sáu": "08:00–19:00",
+     "Thứ Bảy": "08:00–19:00",
+     "Chủ Nhật": "08:00–19:00",
+     "Thứ Hai": "08:00–19:00",
+     "Thứ Ba": "08:00–19:00",
+     "Thứ Tư": "08:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNL_kCvBL9tOytbKHGpvnVt1tyURGeW5cLZ5r7-O-k8HMWX8bTL_AdFIVPqQeuC7sngqTRdIZXBAw7GUefzwLnWwQeG1TCMN1E_EK2kbv227YWwcsnSbq0clzR3j-zEqynh9RNZ",
+    "cid": "6784318869373534947",
+    "fid": "0x31752f6a86db62e3:0x5e26be111bfd42e3",
+    "placeId": "ChIJ42LbhmovdTER40L9GxG-Jl4"
+   },
+   {
+    "position": 12,
+    "title": "Bibli Library Café",
+    "address": "42/5 Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.76198,
+    "longitude": 106.692302,
+    "rating": 4.6,
+    "ratingCount": 618,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 768 864 134",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTcb8O2P8NgtERpGSgqqygaDUa_RU_w4LUQbt4Mcullk14N9_Tb9214slEgVB2SJdd94ggjuDvYy5LTMD80yApF5TiCigCsg_anGxesVazzbiDMu7XSCz0eBS2P_nye51s9g0",
+    "cid": "17770018566245163496",
+    "fid": "0x31752f371faf942d:0xf69bc9bc8523a1e8",
+    "placeId": "ChIJLZSvHzcvdTER6KEjhbzJm_Y"
+   },
+   {
+    "position": 13,
+    "title": "Ơi Deli - Cafe",
+    "address": "12 Chu Mạnh Trinh, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.782247,
+    "longitude": 106.704371,
+    "rating": 4.6,
+    "ratingCount": 214,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.oideli.com/",
+    "phoneNumber": "+84 373 676 330",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvQXM3EZ3fkRmo_HrS4TcFlTlHu9C-ouGFDSyqNjtV2TR22TuvTVVf93JLFLwre0d38tWaqoWE4z_jTDhy89qpjcc7X7wuwPxJg9uXVL61BW-lJNwLzJNus0QOzn1a8z2xzA-5OA",
+    "cid": "14056897595621174959",
+    "fid": "0x31752f0f1ba30667:0xc31421e2f70aeeaf",
+    "placeId": "ChIJZwajGw8vdTERr-4K9-IhFMM"
+   },
+   {
+    "position": 14,
+    "title": "OKKIO",
+    "address": "120 - 122 Lê Lợi, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7725195,
+    "longitude": 106.69895849999999,
+    "rating": 4.6,
+    "ratingCount": 1285,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cửa hàng cà phê",
+     "Nhà bán buôn cà phê",
+     "Quán cà phê espresso"
+    ],
+    "website": "https://www.facebook.com/okkiocaffe/",
+    "phoneNumber": "+84 848 011 118",
+    "openingHours": {
+     "Thứ Năm": "07:30–20:00",
+     "Thứ Sáu": "07:30–20:00",
+     "Thứ Bảy": "07:30–20:00",
+     "Chủ Nhật": "07:30–20:00",
+     "Thứ Hai": "07:30–20:00",
+     "Thứ Ba": "07:30–20:00",
+     "Thứ Tư": "07:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPoCBlEk5gx56m2bTtyTwlVFA1PHI5mGNWoHU2T5ksm6hJrUIaVEH7dXblKlP9MunuXJgZ36ni6ZcIYxEZyGhuaK69j-bslEWHPL1nhYUkgncUG2hLJTDYwtqxNnzYxG_6cfx2ZJw",
+    "cid": "3414222865992025664",
+    "fid": "0x31752f7ccb494b71:0x2f61c19b77788640",
+    "placeId": "ChIJcUtJy3wvdTERQIZ4d5vBYS8"
+   },
+   {
+    "position": 15,
+    "title": "Corner Cafe",
+    "address": "2/8i Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7912248,
+    "longitude": 106.7051649,
+    "rating": 4.8,
+    "ratingCount": 81,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/Corner-Cafe-113983654115063",
+    "phoneNumber": "+84 799 635 028",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOK67k_kWrTyiSi7TA8E2X3AZ6W36DtMaH1SafdyufuGny1FBnAYlxHFKWW_gBFlT6nfCaVFRoKocgpH9pnyBCyz-d29vsFsP-36ppt82na9SDrZkPyXNmLfsSd9WGSTcxueK2_",
+    "cid": "11491789884288412585",
+    "fid": "0x31752fd6263f4efd:0x9f7b0a037e702ba9",
+    "placeId": "ChIJ_U4_JtYvdTERqStwfgMKe58"
+   },
+   {
+    "position": 16,
+    "title": "Hemmat Café",
+    "address": "189/B4 Đ. Cống Quỳnh, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7657479,
+    "longitude": 106.6872427,
+    "rating": 4.1,
+    "ratingCount": 362,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/Hemmatvuive",
+    "phoneNumber": "+84 338 807 227",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvm8cxquiE3Zd5yTwqIY1E2JOM89MRf-hpmNAvAKZgD6irRbz8uBDso7aM87MTOhjLZsntW8borwjG4IN8yYvzFBdfZia_HAa28rRxa8TYfuMP8uhXzO-prJmVflYBiHe7kQ1n",
+    "cid": "16392099758933169210",
+    "fid": "0x31752f2cf4f28f59:0xe37c6fe1b5fa543a",
+    "placeId": "ChIJWY_y9CwvdTEROlT6teFvfOM"
+   },
+   {
+    "position": 17,
+    "title": "L'Usine Lê Thánh Tôn",
+    "address": "19 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7796591,
+    "longitude": 106.70399599999999,
+    "rating": 4.6,
+    "ratingCount": 3421,
+    "priceLevel": "200-300 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cửa hàng quần áo nam",
+     "Cửa hàng lưu niệm",
+     "Cửa hàng quần áo nữ"
+    ],
+    "website": "http://lusinespace.com/",
+    "phoneNumber": "+84 832 810 888",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNesviPZ4kzASFMFk_CjXf0IzJA0QwoA7EAMt-SbhR_-_kpGPGDJgDr63fDIrqZUTN01HogfxxRdioTUUWBdBIUt_ApUZ8AN1t-dwKEgUw8OEbFOlIbQ_r6KAjYnmb96KcfB5s",
+    "cid": "11299012106951449328",
+    "fid": "0x31752f48ebef2699:0x9cce27a583addaf0",
+    "placeId": "ChIJmSbv60gvdTER8Nqtg6Unzpw"
+   },
+   {
+    "position": 18,
+    "title": "Cỏ cafe",
+    "address": "1C Mê Linh, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7882699,
+    "longitude": 106.7092483,
+    "rating": 4.5,
+    "ratingCount": 1036,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 909 763 314",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30",
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO3yIBByape0lwNWgjVgMjKcN0gkNbUAbD5CWtNSKjdO7oHg4spD2FEX3m6XjdUy5_FsfBuV_b_ID9w4CDD7VffFGzcf-RkpcYilEnQvq4LSKv5SKJ5LrsSIiIAqcdXMCuZRqqL",
+    "cid": "14233944808103183148",
+    "fid": "0x31752943bed6270b:0xc58921636781832c",
+    "placeId": "ChIJCyfWvkMpdTERLIOBZ2MhicU"
+   },
+   {
+    "position": 19,
+    "title": "Cooku’s nest café",
+    "address": "17bis Tú Xương, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7826762,
+    "longitude": 106.6884832,
+    "rating": 4.3,
+    "ratingCount": 783,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/cafecookunest/",
+    "phoneNumber": "+84 28 2241 2043",
+    "openingHours": {
+     "Thứ Năm": "08:30–22:00",
+     "Thứ Sáu": "08:30–22:00",
+     "Thứ Bảy": "08:30–22:00",
+     "Chủ Nhật": "08:30–22:00",
+     "Thứ Hai": "08:30–22:00",
+     "Thứ Ba": "08:30–22:00",
+     "Thứ Tư": "08:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNVrLSCZg9j1ofIsC4pMrVELoiFypdqsLY_0QyUmu8bZ7Nr_QnjNOg5r_1E2zBMDSL7H-0aSD30eGacfh6_ncdjCVxFVTJ0_uLzDQ31fcdstkEXY99Et-sAD18nG-zYssCOwfY",
+    "cid": "11847732737677958441",
+    "fid": "0x31752f2e3262d1c5:0xa46b9a27270f9d29",
+    "placeId": "ChIJxdFiMi4vdTERKZ0PJyeaa6Q"
+   },
+   {
+    "position": 20,
+    "title": "Haru Cafe - Coffee & Souvenir",
+    "address": "Chung cư, Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7695591,
+    "longitude": 106.7041158,
+    "rating": 4.8,
+    "ratingCount": 479,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cửa hàng sách lưu niệm",
+     "Cửa hàng lưu niệm"
+    ],
+    "website": "https://instagram.com/cafeharu_harucraft?igshid=YmMyMTA2M2Y=",
+    "phoneNumber": "+84 388 909 926",
+    "openingHours": {
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOEJdA7LdDG5Gv5EBNSRvrrdtmGBhx9IRLY_-q7r7fhpch52hRcPl5DQ0FzF5t93NI6bgmC-g159LxkpLE-g7nJWXOl0CPCQGMy4ffOwU4drjFFCNZk1Ua6qdfRIhSOk-ry4qQ2iw",
+    "cid": "335637769397433638",
+    "fid": "0x31752fb731b6a437:0x4a86cc5e2237526",
+    "placeId": "ChIJN6S2MbcvdTERJnUj4sVsqAQ"
+   }
+  ],
+  "credits": 3
+ }
+}

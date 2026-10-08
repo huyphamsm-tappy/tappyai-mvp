@@ -2929,7 +2929,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result

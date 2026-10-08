@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:10.640Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "airpods pro 3 apple original",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-3-apple-original",
+    "snippet": "Khám phá airpods pro 3 apple original mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods pro gen",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-gen",
+    "snippet": "The AirPods Pro Gen have revolutionized the way we experience audio, combining cutting-edge technology with user-friendly design.",
+    "position": 2
+   },
+   {
+    "title": "จุกหูฟังairpods pro 1",
+    "link": "https://shop.tiktok.com/vn/k/chuk-hufang-airpods-pro-1",
+    "snippet": "Vỏ Ốp Airpods Pro 2, Nút Nhấn, Thiết Kế Hoạt Hình Trò Chơi, Ốp Bảo Vệ Cứng, Tương Thích Với Airpods Pro 3 Thế Hệ Thứ 2, Ốp 3. 4.4. 1572 sold. ₫105.980.",
+    "position": 3
+   },
+   {
+    "title": "airpods pro cover case",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-cover-case",
+    "snippet": "Khám phá airpods pro cover case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 4
+   },
+   {
+    "title": "airpods pro 2 ear tip set",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-ear-tip-set",
+    "snippet": "Khám phá airpods pro 2 ear tip set mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 5
+   },
+   {
+    "title": "airpods pro 2 apple store",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-apple-store",
+    "snippet": "Khám phá airpods pro 2 apple store mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 6
+   },
+   {
+    "title": "airpods pro in orange dubai",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-in-orange-dubai",
+    "snippet": "Ốp Hình 4D Bảo Vệ Tai Nghe AIRPOD Pro Gen2/Pro Xuất Xứ Việt Nam - Nhựa Mềm, Nhiều Màu, Gói Trong Túi Gọn Gàng · Ốp Hình 4D Bảo Vệ Tai Nghe AIRPOD Pro Gen2/Pro ...",
+    "position": 7
+   },
+   {
+    "title": "airpods pro 2 hổ vằn",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-ho-van",
+    "snippet": "Khám phá airpods pro 2 hổ vằn mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Inverter 236 lít RT22M4032BU/SV site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:09.709Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Inverter 236 lít RT22M4032BU/SV site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "bo công suất tủ lạnh samsung inverter",
+    "link": "https://shop.tiktok.com/vn/k/bo-cong-suat-tu-lanh-samsung-inverter",
+    "snippet": "Tủ lạnh Samsung 236 lít inverter RT22M4032BU/SV màu đen. Free shipping. Tủ lạnh Samsung 236 lít inverter RT22M4032BU/SV màu đen. 0 sold. ₫6.767.100. ₫13.490.000 ...",
+    "position": 1
+   },
+   {
+    "title": "ตู้เย็น samsung RT42CB66448AST",
+    "link": "https://shop.tiktok.com/vn/k/tueyn-samsung-rt42cb66448ast",
+    "snippet": "RT38CG6584B1SV - Tủ lạnh Samsung Inverter 382 lít RT38CG6584B1SV - Tính năng làm đá tự động, chỉ cần đổ nước đầy bình chứa là có đá viên sử dụng.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

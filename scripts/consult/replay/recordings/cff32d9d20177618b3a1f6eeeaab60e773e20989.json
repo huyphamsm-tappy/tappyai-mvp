@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:20.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 FE 5G 8GB 128GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 FE 5G Chính Hãng Samsung Việt Nam và ...",
+    "link": "https://www.lazada.vn/products/samsung-galaxy-s24-fe-5g-chinh-hang-samsung-viet-nam-va-ban-my-8g128gb-2-sim-tang-kem-sac-nhanh-i13360871830.html?srsltid=AU7gw4WDNoLClGywI50cRXCgCuN95wC0F9u_1pXEKztbG7DsbRAUvym7",
+    "snippet": "Galaxy S24 FE sử dụng màn hình 6.7 inch Dynamic AMOLED 2X, mang đến cho người dùng những trải nghiệm hình ảnh sống động, sắc nét và chi tiết. Độ phân giải FHD+ ...",
+    "position": 1
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24, Điện thoại AI, Camera 50MP ...",
+    "link": "https://www.lazada.vn/products/sale-tet-7-141-dien-thoai-samsung-galaxy-s24-dien-thoai-ai-camera-50mp-man-hinh-62-fhd-hieu-nang-manh-me-i2533183500-s12415317699.html?srsltid=AU7gw4Wc7momVKbdoKS_delYy65VlnOZUuxcnshufDS_wEBQvcXGMxDU",
+    "snippet": "\"Trải nghiệm hiệu năng mạnh mẽ với Samsung Galaxy S24, sở hữu màn hình Dynamic AMOLED 2X FHD+ 6,2 inch. Được trang bị hệ thống ba camera 50MP cho khả năng chụp ...",
+    "position": 2
+   },
+   {
+    "title": "Điện Thoại Samsung Galaxy S24 5G Mỹ 2 Sim ...",
+    "link": "https://www.lazada.vn/products/dien-thoai-samsung-galaxy-s24-5g-my-2-sim-snapdragon-8-gen-3-chinh-hang-tang-kem-day-du-phu-kien-i2830031705.html?srsltid=AU7gw4U_k5U18Qk8xjiCX2QGm9zZTexrz97KxJz_56Y6GNaDn6_pE8M3",
+    "snippet": "Điện thoại Samsung Galaxy S24 5G Mỹ 2 sim với Snapdragon 8 Gen 3, màn hình AMOLED 6.2 inch, camera 50 MP và 12 MP. Tích hợp nhiều tính năng hiện đại như GPS ...",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 5G - Hàng chính hãng",
+    "link": "https://www.lazada.vn/products/dien-thoai-samsung-galaxy-s24-5g-hang-chinh-hang-i2795736472-s13642860806.html?srsltid=AU7gw4WyN4HhhOpvwfb-0TUmgot3BgY0P3LTr49--5Y5g2c_i4mp0f7m",
+    "snippet": "Điện thoại Samsung Galaxy S24 5G - Hàng chính hãng ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Đảm bảo nhận vào 29 thg 9-3 thg 10.",
+    "position": 4
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S23 FE 5G 128GB | 256GB",
+    "link": "https://www.lazada.vn/products/dien-thoai-samsung-galaxy-s23-fe-5g-128gb-256gb-hang-chinh-hang-i2476609087.html?srsltid=AU7gw4VuVbezHQPNPoCpH58UUFADOR9dCJ7vCi31dnrl_8oCzbTW1qB-",
+    "snippet": "Điện thoại Samsung Galaxy S24 Ultra 5G - Hàng chính hãng. 26.490.000 ₫ · Điện ... - RAM : 8GB. - ROM : 128GB - 256GB. - Chip : Exynos 2200 8 nhân. - Pin ...",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S25 FE 5G 2 SIM Bản Mỹ không hộp , tặng sạc ...",
+    "link": "https://www.lazada.vn/products/pdp-i13377789323.html?srsltid=AU7gw4Wzqna6xQEREE9HnUoSEr_ycp4MVZWwItvUCMKDEGvyK3N2K1uO",
+    "snippet": "Màn hình : 6.7 inch, Dynamic AMOLED 2X, FHD+, 120Hz (thích ứng), độ sáng tối đa 1.900 nits -Vi xử lý (CPU) : Exynos 2400 (10 nhân, tiến trình 4nm) -Bộ nhớ ...",
+    "position": 6
+   },
+   {
+    "title": "Máy tính bảng Samsung Galaxy Tab S9 FE 5G (8GB/128GB) ...",
+    "link": "https://h5.lazada.vn/products/may-tinh-bang-samsung-galaxy-tab-fe-5g-8gb128gb-nguyen-seal-chinh-hang-moi-100-man-hinh-109-camera-sau-8-mp-camera-truoc-12-mp-goc-sieu-rong-chipset-exynos-1380-pin-8000mah-the-sim-nano-sim-esim-i2473503255-s12111085088.html",
+    "snippet": "Máy tính bảng Samsung Galaxy Tab S9 FE 5G (8GB/128GB) Nguyên seal, chính hãng, MỚI 100%, Màn hình: 10.9\", Camera sau: 8 MP, Camera trước: 12 MP (góc siêu rộng), ...",
+    "position": 7
+   },
+   {
+    "title": "Điện Thoại Samsung Galaxy S23 FE 5G Bản Mỹ/Quốc Tế Chip ...",
+    "link": "https://www.lazada.vn/products/pdp-i13360833867.html?srsltid=AU7gw4UP6X2u-Fn1rYz3I793XzuxqP_tUjJ0e2DyngrAsnrBITbDFaIa",
+    "snippet": "Điện Thoại Samsung Galaxy S23 FE 5G Bản Mỹ/Quốc Tế Chip Snapdragon 8 gen1. Ngoài ra, Samsung cung cấp trên chiếc điện thoại này RAM 8GB cùng bộ nhớ trong 128GB.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

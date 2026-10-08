@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Apple MacBook Neo 13 inch\" OR \"Apple MacBook Air\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:11:40.781Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Apple MacBook Neo 13 inch\" OR \"Apple MacBook Air\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686275604391529741",
+    "snippet": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 8GB 256GB Space ... Apple MacBook Air A1466 (2017) – Disponible ✨ Léger ...",
+    "position": 1
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7683162012251098381",
+    "snippet": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020) 8GB RAM 128GB ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 2
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Apple Macbook Neo 13 Inch · 2020 Refurbished Apple Macbook Air 13.3-Inch M1, 8GB - 16GB Ram, 128GB - 1TB SSD (Good) · 2020 Refurbished Apple Macbook Air 13.3-Inch ...",
+    "position": 3
+   },
+   {
+    "title": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686587010311523598",
+    "snippet": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB SSD Wi-Fi Space ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 4
+   },
+   {
+    "title": "Unboxing My New Apple MacBook Air",
+    "link": "https://www.tiktok.com/@bethanylearmont/video/7607604170346007838",
+    "snippet": "Unboxing new tech is always an exciting experience, and today I have the pleasure of unboxing my new Apple MacBook Air .",
+    "position": 5
+   },
+   {
+    "title": "Refurbished Apple Macbook Air 13.3-Inch M1, 8GB-16GB ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-macbook-air-13-3-m1-8gb-ram-1tb-ssd/1730796231038112204",
+    "snippet": "Refurbished Apple Macbook Air 13.3-Inch M1, 8GB-16GB Ram, 128GB-1TB SSD ... Refurbished Apple Macbook Air 13.3-Inch Intel Core i5, 8GB-16GB Ram, 128GB ...",
+    "rating": 4.9,
+    "ratingCount": 1470,
+    "position": 6
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 13\" MQD32LL/A 128GB ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7685484012080581902",
+    "snippet": "Refurbished Apple MacBook Air 13\" MQD32LL/A 128GB SSD WiFi Silver ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 7
+   },
+   {
+    "title": "Refurbished Apple Macbook Air 13.3-Inch Intel Core i5, ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-macbook-air-13-3-intel-core-i5-8gb-16gb-ram/1730721996151296460",
+    "snippet": "Refurbished Apple Macbook Air 13.3-Inch Intel Core i5, 8GB-16GB Ram, 128GB-1.5TB SSD, All colors, (Excellent) ; Other dangerous goods or hazardous materials, No.",
+    "rating": 4.8,
+    "ratingCount": 1633,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -41,6 +41,7 @@ const SAMPLES: Record<ObservabilityEvent['type'], ObservabilityEvent> = {
     type: 'tappyai_agent_run', traceId: '550e8400-e29b-41d4-a716-446655440000', sessionHash: 'c'.repeat(32), agentStatus: 'answered', stopReason: 'model_answered',
     outputType: 'text', providerId: 'openai', modelRole: 'agent', modelRounds: 2, toolCalls: 1, serperCredits: 3, serperLimit: 12, timeouts: 0, retries: 0,
     budgetRefusals: 0, errors: 0, guardChanges: 1, promptTokens: 100, completionTokens: 50, costMicroUsd: 900, elapsedMs: 4000,
+    pageReads: 2, evidenceItems: 7, conflicts: 1,
   },
   tts_request: {
     type: 'tts_request', language: 'vi', characters: 137, cacheHit: false, elapsedMs: 812,
