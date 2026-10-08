@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:54.419Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không ...",
+    "link": "https://shopee.vn/-Tu%E1%BB%95i-th%E1%BB%8D-pin-%C4%91%C6%A1n-4-5-gi%E1%BB%9D-Pin-thay-th%E1%BA%BF-cho-tai-nghe-kh%C3%B4ng-d%C3%A2y-th%E1%BA%BF-h%E1%BB%87-Airpods-1-2-A1722-A1523-A2031-A2031-25mAh-i.1243263233.40774861690",
+    "snippet": "1/5. 2 phân loại có sẵn. 96.800₫-165.000₫. [Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh.",
+    "position": 1
+   },
+   {
+    "title": "[Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không ...",
+    "link": "https://shopee.vn/-Tu%E1%BB%95i-th%E1%BB%8D-pin-%C4%91%C6%A1n-4-5-gi%E1%BB%9D-Pin-thay-th%E1%BA%BF-cho-tai-nghe-kh%C3%B4ng-d%C3%A2y-th%E1%BA%BF-h%E1%BB%87-2-Airpods-A1722-A1523-A2031-A2031-25mAh-A1602-A1938-%C4%90%E1%BB%99-b%E1%BB%81n-d%C3%A0i-i.1141937086.56262628280",
+    "snippet": "[Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ 2 Airpods A1722 A1523 A2031 A2031 25mAh A1602 A1938 Độ bền dài.",
+    "position": 2
+   },
+   {
+    "title": "Pin tai nghe airpods 2 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/pin%20tai%20nghe/airpods%202",
+    "snippet": "[Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh96.800₫ · 6. Pin Tai Nghe Air/pods 1,2,pro120.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Jtzii.vn, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/jtzii.vn",
+    "snippet": "[Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh. 96.800₫. rating-star 5.0. 47 đã bán. Tai nghe ...",
+    "position": 4
+   },
+   {
+    "title": "pin airpod 2 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=pin%20airpod%202&page=4",
+    "snippet": "Tai nghe không dây Airpod Pro (Thế hệ thứ 2), Tai nghe Bluetooth có hộp sạc, Tuổi thọ pin trên 42 giờ, Thiết lập dễ dàng cho iOS / Android. 932.634₫.",
+    "position": 5
+   },
+   {
+    "title": "lm324 giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=lm324",
+    "snippet": "flag-label [Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh. 96.800₫. rating-star 5.0. location ...",
+    "position": 6
+   },
+   {
+    "title": "Airpod 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth/airpods/2",
+    "snippet": "... Bluetooth Bằng Silicon Kèm Móc Khóa Tiện Dụng Cho Airpods 1 / 225.000₫ · 5. Tai nghe Bluetooth không dây nghiêm ngặt AirPods Pin thế hệ 1 / 2 45230 25mah ...",
+    "position": 7
+   },
+   {
+    "title": "Bass trap - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/bass%20trap",
+    "snippet": "flag-label [Tuổi thọ pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh. 96.800₫. rating-star 5.0.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

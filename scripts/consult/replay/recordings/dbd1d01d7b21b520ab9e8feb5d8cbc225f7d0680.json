@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:33.372Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 vs Samsung Galaxy S24 so sánh giá shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh nhẹ camrema zoom của iPhone 15 Pro Max với ...",
+    "link": "https://www.facebook.com/didongviet/videos/so-s%C3%A1nh-nh%E1%BA%B9-camrema-zoom-c%E1%BB%A7a-iphone-15-pro-max-v%E1%BB%9Bi-galaxy-s24-ultra-s%C4%83n-ngay-htt/782060747362363/",
+    "snippet": "So sánh nhẹ camrema zoom của iPhone 15 Pro Max với Galaxy S24 Ultra >> Săn ngay: https://didongviet.vn/samsung-galaxy- s24-series.",
+    "position": 1
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "Bài viết sẽ phân tích những gì liên quan đến cấu hình, hiệu năng, màn hình, camera, thời lượng pin và mức giá để giúp bạn tìm ra câu trả lời chính xác nhất.",
+    "position": 2
+   },
+   {
+    "title": "Em đang dùng Iphone 13 muốn lên đời, giờ ...",
+    "link": "https://www.facebook.com/groups/262207701611812/posts/1347551459744092/",
+    "snippet": "Em đang dùng Iphone 13 muốn lên đời, giờ đang phân vân giữa 15 pro và s24 ultra. 2 con đều xêm xêm giá. Em muốn sang S24 ultra vì Camera zoom ...",
+    "position": 3
+   },
+   {
+    "title": "Galaxy S24 Ultra SHOCKING PRICE DROP, better than iPhone ...",
+    "link": "https://www.youtube.com/watch?v=AAWpa0j4AQc",
+    "snippet": "Galaxy S24 Ultra GIẢM GIÁ SỐC, hơn iPhone 15 và iPhone 15 Plus? S24 ... SO SÁNH iPHONE 15 PRO MAX VS GALAXY S24 ULTRA: HƠN 30 TRIỆU MÁY ...",
+    "position": 4
+   },
+   {
+    "title": "【So sánh】 iPhone 15 Pro Max vs Samsung Galaxy S24 Ultra",
+    "link": "https://clickbuy.com.vn/so-sanh-iphone-15-pro-max-2025-vs-15-pro-14-pro-max-16-pro-max-s24-ultra.html?srsltid=AU7gw4XPMJjsm6VF3HkeCmJ7pG0lziyYnc7iOi-vj2EVtTFb2Iq5Ur13",
+    "snippet": "Phân tích chi tiết iPhone 15 Pro Max so với các model khác để giúp bạn đưa ra quyết định phù hợp nhất. Dưới đây là 4 bảng so sánh quan trọng ...",
+    "date": "29 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "Xin so sánh S24 và iPhone 15, chênh 1-2tr mua cũ Màn ...",
+    "link": "https://www.facebook.com/groups/SamfansCom/posts/3463095500490424/",
+    "snippet": "Xin so sánh S24 và iPhone 15, chênh 1-2tr mua cũ Màn các thứ chắc chắn S24 hơn r, Mình chủ yếu dùng MXH cơ bản thôi, chủ yếu dùng iOS để ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Samsung S24 Plus và iPhone 15: Nên mua máy ...",
+    "link": "https://www.xtmobile.vn/so-sanh-galaxy-s24-plus-va-iphone-15",
+    "snippet": "Theo đó, Samsung S24 Plus cho không gian hiển thị rộng rãi hơn, tuy nhiên trải nghiệm sử dụng bằng một tay lại không thoải mái bằng iPhone 15.",
+    "date": "18 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "So sánh Samsung S24 và iPhone 15: Smartphone nào ...",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/so-sanh-samsung-s24-va-iphone-15-smartphone-nao-dang-mua-hon",
+    "snippet": "Đặt lên bàn cân so sánh Samsung S24 và iPhone 15 về khả năng hiển thị có thể thấy những thông số màn hình trên Galaxy S24 chiếm ưu thế hơn so với đối thủ đến từ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

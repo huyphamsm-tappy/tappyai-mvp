@@ -1,0 +1,364 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop tốt đáng mua 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:01.084Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop tốt đáng mua 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU (8GB - 256GB) | Chính hãng Apple Việt Nam",
+    "source": "Viettablet",
+    "price": "14.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQIxHWG-J98VuLmrJC-57co4APdHHf6N7EFptla50T0hjJ7QhNCFUwrOlQWYVbXzGX93y-X8I97Pn6qXg0zeahkyxOyd6sc3wCXwNECdkBtpdk0336YMRxj",
+    "rating": 4.6,
+    "ratingCount": 13,
+    "productId": "13986904458936602046",
+    "position": 1
+   },
+   {
+    "title": "Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới",
+    "source": "thegioimaytinh.net.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026&prds=localAnnotatedOfferId:1,catalogid:8071037808297078357,gpcid:6376925527945280566,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "18.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTj1EJClj0J9U9Gprc2pooxGcA8uLzQ2T1n3etNPNhZe2kEdWY31Mj5lSGLhzqdotDQizrs-ZzGl36G8kpCU-plkTdF8xRczFxQVESy-XW_F3v8pRP6Qw67",
+    "productId": "8071037808297078357",
+    "position": 2
+   },
+   {
+    "title": "MacBook Neo 2026 8GB/256GB",
+    "source": "Hoàng Hà Mobile",
+    "price": "18.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTE6yacqU4VH_eLhsX7sCpOfZxxK03wRTRnfMCeB5vgibPxJcgG9Oa_atv0rkyMzu_pwpGsGr1meTIFi0T8OOg843LTxEzSH1XXJk33nPDnhGfPZ9tyJ1vgSg",
+    "rating": 4.9,
+    "ratingCount": 976,
+    "productId": "17274758981531550528",
+    "position": 3
+   },
+   {
+    "title": "Laptop asus Gaming Vivobook 16X K3605VC-RP431W",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026&prds=localAnnotatedOfferId:1,catalogid:14815073807381256573,gpcid:353486394062008016,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRP_b3U1_Sijum7uTZtAykTBZtkvZfI8Wj7BQF-c_N8_uPMoHPhAla89vOk18ruheDes6EQk-KuFS6lsw_K8asMbjTzO2PQe1USp4jkQ2bMVhuwmOurkgju",
+    "rating": 4.5,
+    "ratingCount": 13,
+    "productId": "14815073807381256573",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Neo 13 inch",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026&prds=localAnnotatedOfferId:1,catalogid:10206249499082954624,gpcid:3153650274114845939,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTqw15o_ltMGMqP01b0AWbbZaaG_NmV5jMOz5-tvxX71VJA1DIbfwZmrx5lJEEdr6EjSMtTwbmDUVbg_WUuyJZc8hS0utW9M5b4oG6XZy8O8MWoOEpvqMtY",
+    "rating": 4.9,
+    "ratingCount": 976,
+    "productId": "10206249499082954624",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU (16GB - 512GB) | Chính hãng Apple Việt Nam",
+    "source": "Viettablet",
+    "price": "27.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRiy_dzRg65QXuTzEgf0vXPlyV-lkUu8m67JjV_SBuc7aD1lwT8Aaqd6rCvYBQVU92ftyP1sMnI2MNT0nXP5mMKqI5j6wowQR1LF_cu0q6a713MgSTug_EpbA",
+    "productId": "12064298131941527612",
+    "position": 6
+   },
+   {
+    "title": "Lenovo IdeaPad Slim 5 (Xiaoxin 14 AHP10R) - 2026",
+    "source": "Mac24h",
+    "price": "23.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcShVhXfkH_ZWQGURna9UKEb7c31b3x76ziS1v3_uovU2d-ochmrKD9s9TlxajgGyXnqWcjy1beiG_AVJH1AwYbDOo4jjpppSi6bsKqNsLgXj1a3sxHPUuynaw",
+    "productId": "5725344708209580026",
+    "position": 7
+   },
+   {
+    "title": "MacBook Neo 13\" 2026 (Chính hãng) (A18 Pro 6core RAM 8GB SSD 256GB) - Hồng",
+    "source": "Mac18",
+    "price": "18.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRnEOQtCyqE4WvHDVhbAm72Ss3JUuMtdwIN3_9UHJMomM2MA662FtJuxWKmFqi1zcEE20uWpbYPEBQmGTkNTBpZVH38Ab5cUyuHyBNw42wMgYcRK6Jlryvy",
+    "rating": 4.6,
+    "ratingCount": 13,
+    "productId": "2561777681566891057",
+    "position": 8
+   },
+   {
+    "title": "MacBook Neo 2026 chip A18 Pro, RAM 8GB, SSD 256GB, chính hãng",
+    "source": "Surfaceviet.vn",
+    "price": "19.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBKuW1S8HhZ-giYxSndE8TzMLDgnBFIldPtIxrVW43NTpRYyMOxn34smGMUNnDg3drHbJcK0mrHezzpNNyigOdcSUEh6BRGmWdqdCieYvBe2CBmm4MHz8GHA",
+    "productId": "16503987954491033171",
+    "position": 9
+   },
+   {
+    "title": "Redmi Book Pro 16 2026 (Ultra X7-358H| 32GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "42.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQayT-bXmtKx8EG4qt5YsICFcRMKDgTRfJnyFh_OYkYdSU87yRCnFv8bcoYj8jy4mcJeHjF-Ucp4X-9B6_LH9j-0kdgvXcM_54aQ0_BZYeXsyISjTc4xFivKA",
+    "productId": "10167020488817571455",
+    "position": 10
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/10GPU/16GB/512GB/70W",
+    "source": "Fptshop.com.vn",
+    "price": "35.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSExmbS3GnKaFPDQeS2SG-qOZUXAmdu133grdRjtMCfhWJ8vlj_eePwjoPlRmropPr2g2Y3LJqX5Yi1BbSnvF_kyQollq3uVUeOZJEZhx7apCHILjkKEpkN",
+    "productId": "17168301959252280806",
+    "position": 11
+   },
+   {
+    "title": "Laptop Dell XPS 13 2026 CPU Core 5-320 RAM 16GB LPDDR5x SSD 512GB PCle VGA Onboard 13.4 QHD 2K5 IPS, Touch cảm ứng, 100% sRGB Win11. Part: DX132",
+    "source": "Laptopnew",
+    "price": "22.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSzlu-CLL943_U8PuZqY88eeiB8_skUisHdvjtQXe0Ee-QfhqYmOEX3x947b3hoyNrZ2sHjAiyN7QPNZ0l_vhE7bPzVaKJJ-lHaLnrTvTy4-rDTv6aXWrhtwA",
+    "productId": "13238421399753336972",
+    "position": 12
+   },
+   {
+    "title": "MacBook Neo 13\" 2026 (Chính hãng)",
+    "source": "zshop.vn",
+    "price": "18.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTq3L_bYn45wr2iPQbiJTh-afQcBdwtOTeLdHOsmV1CCApP5xWAKdTANLQpbyJ0NrElJHjEYTEXmVfSnxSmdDZy5qu9fqi1cGgyLYm19Ac",
+    "productId": "15816772930898842762",
+    "position": 13
+   },
+   {
+    "title": "Laptop Lenovo Lecoo Air 14 N140A 2026 Intel Core 5-315 12GB RAM 512GB SSD 14 inch FHD Windows 11 Màu Bạc",
+    "source": "laptop kim anh",
+    "price": "17.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSAilkffCRqQtIKI7UKcGrlkTxol6S25uqQTSA7GMl-ffRHxE5CqKuAaENxdABIrJUmzW7lFVlXA7xjleWdkT3bQnTkHIs977xv9ogzANj8nR-W2K4bpegJ",
+    "productId": "8475486658502244609",
+    "position": 14
+   },
+   {
+    "title": "MacBook Neo 2026 Apple A18 PRO 8GB RAM 256GB SSD – NEW",
+    "source": "MacOne",
+    "price": "18.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQXyrzAzya3LMgNmwSHAu7wcusPzQZQglEVhkJCyXElISldT1c9YSRv-5HwJlrB23StAG0d5H9bgA2TbfJkeY_4IVm5ZbumLaT5YaxoL9Z4lCDKTcTIx4d-s7M",
+    "productId": "8737339989767562554",
+    "position": 15
+   },
+   {
+    "title": "MacBook Neo 2026 chip A18 Pro, RAM 8GB, SSD 512GB kèm touchID, chính hãng",
+    "source": "Surfaceviet.vn",
+    "price": "21.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTt4ljCd-c8fKtjAnXgFhtkihpEmLCKKHYjpPnxuEJCMlEfe02_QjP4uC0HDvzi5uXOx0RpmH9KOtlmGVQfuIvynkId-8jNn9KM-KAjrqI5s6JmNRzDMnm0AA",
+    "productId": "1175918063709606359",
+    "position": 16
+   },
+   {
+    "title": "ThinkPad T14s 2 in 1 - 2026",
+    "source": "Mac24h",
+    "price": "33.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTJ3V4-HiQ5WTlU0KK8sN1UDI6Elcdmk8AwyKQ15GdNGtVbBjmHLQ0iHVzm7by6M0YvPluh1F1OnNM3cMU7wO-PlUiLSXE2WGdCr6ELp35N_Vvcv6oEtvk1",
+    "rating": 4.6,
+    "ratingCount": 5,
+    "productId": "972305800475216975",
+    "position": 17
+   },
+   {
+    "title": "MacBook Neo A18 Pro 13 inch 2026 6CPU 5GPU 8GB 256GB",
+    "source": "minhtuanmobile.com",
+    "price": "18.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRidILkLey3tj-HAhT9qaGri7_SOVaAsDD55oSXxpLMsMiyeNvyxx33cL3Zouxe4pAoGGxnnKkVQydrhUK7u5_5Kx_MAVXP2aVGCGfoM8FASIzOCuvCnl-sEQ",
+    "productId": "14558810150846922863",
+    "position": 18
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6 CPU/5 GPU 8GB 512GB - Hồng (Blush)",
+    "source": "NewTechShop.vn",
+    "price": "21.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRDpOtvKTHzJ5ipoCh-0dGuEwOfzKYDWQddzhH9FQPOVD3KIaX9H2FwdXgeg7kxMDgNNpySEg5IholgHVNHnI39R60HUuLabZu7NPwom-kbY9r81x_-jWERqg",
+    "productId": "4793415095663850841",
+    "position": 19
+   },
+   {
+    "title": "Laptop Lenovo LOQ 15AHP10 83JG0047VN",
+    "source": "Lapvip",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026&prds=localAnnotatedOfferId:1,catalogid:5550317412104919965,gpcid:3824250900768689966,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRRFCoxHHW-vz_GOxbCztpAU1qvPkRVdiaPEE-i9Wji7cZywn4b0S7hVV4RA3uWAsH5ex9OXcdIQMPGOsrsEer-it-zxAsqmF1nrmkOCXn1fdy-1kIlAVgEkg",
+    "productId": "5550317412104919965",
+    "position": 20
+   },
+   {
+    "title": "Macbook Air M5 13 inch 10-core CPU 8-core GPU RAM 16GB SSD 512GB",
+    "source": "Surfaceviet.vn",
+    "price": "34.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT4lKod3QSBVJeaTLj-2Uo8TNECRUo5I0BJGy2rWtbKP7phihr267w49RtZNHfSHCFAAB5QfO_SHuSylAGk57nmFOVWJ6GKIyIgbc_wU7BovNwpvMEf9gc5",
+    "productId": "2077022218925078423",
+    "position": 21
+   },
+   {
+    "title": "MacBook Air 2026 13 inch Apple M5 16GB RAM 1TB SSD - NEW",
+    "source": "MacOne",
+    "price": "38.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTLkzYkwzhnY-vmN3Lfr7f3HzNoLyIAEisbhWlsKMPquGMNXvI8fa0LzBaTXm-YsMNHKAcFaTqqvwc6v6NyN6dBR_LNx508QXCQEGOb40NnjEt61DFG9AwL",
+    "productId": "16971497050158141142",
+    "position": 22
+   },
+   {
+    "title": "MacBook Neo 13\" 2026 (Chính hãng) (A18 Pro 6core RAM 8GB SSD 512GB Touch ID) - Silver",
+    "source": "Mac18",
+    "price": "21.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQKaG5OMECFHY3Q1FSyrsmFgXMZ4mq-2gVvUPlzi1P8wCexKMAbkFN0Rcs314OueNyyA0u0l3pOaz-4aSuSrQFdsHHQFDilBAKOFpa26AMOrMarYcNcLlTI",
+    "productId": "15656560790736170958",
+    "position": 23
+   },
+   {
+    "title": "[Like new] Acer Nitro V ANV15-41-R1JY - AMD Ryzen 5 6600H Nvidia RTX 3050 15.6 inch FHD 165Hz",
+    "source": "LaptopK1",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRtuFoq44HY_LSpwHJpILqw2a8H6Eq-WnyVA7Ur-ZYErYqoU4IymJBhKldwkHsAOjtgG1ax66XaD37ILQFE_BWuPh6SHeYLW9ss5mOU3Vr_nxKEoUkr10C31w",
+    "productId": "1160590919700822690",
+    "position": 24
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng",
+    "source": "IMOBI.vn",
+    "price": "33.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQlQaHnXkJfKoqDPE_QGvkT0Laui93HO7cUsDJCJ0HUBXTYyY2IFfP5QM1wlXGSRVvLnSS8SMOtuIVI8XtheFPhDG-PlRKGsIqzT7Nrbf-v3o0gxaKPLys8rZg",
+    "productId": "2907843795893391324",
+    "position": 25
+   },
+   {
+    "title": "MacBook Air 13 inch 2026 M5 (10C CPU / 8C GPU) 16GB 512GB - Sky Blue - LNE",
+    "source": "QMac Store",
+    "price": "30.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQhEoqZiEU1X7q4RKQHhonSXohkjAf9JbYjEtxqukcu0yImKKBZBxmwgwbGJ_mX2G55_Q-zGyXFHSpwLxzu9-H50MgNK57qVHwFtqkp07d4ERvlHa2YSurk9g",
+    "productId": "16866910098893596391",
+    "position": 26
+   },
+   {
+    "title": "MacBook Neo A18 Pro 13 inch 2026 6CPU 5GPU 8GB 512GB Touch ID",
+    "source": "minhtuanmobile.com",
+    "price": "20.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTBh93a5EPUPpSxF8k5Z30UM9KVdljM7WYtO_ej6Zh2cLQMNbH7ODyknA9Hx5lb8Yj5UznN-ZpT6mlUleTZWPSz6GcSJabCHiPyb-7zst54wQtCTQdl9UiIfg",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "productId": "4447817675461157409",
+    "position": 27
+   },
+   {
+    "title": "Macbook Air M5 13.6 inch 10-core CPU 10-core GPU RAM 16GB SSD 1TB",
+    "source": "Surfaceviet.vn",
+    "price": "42.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS1Hz1yfvqlMTWPfnTVEZjuN6ZWjgfpRnbllKFaFb3dwIKNqU3u8iG-vlUk0TrtnKxyQayMzP2fL1vmCJAGJ2Wwgk3Z5TjCRA55nEHEd72NDrSrSrbG1lGV1Q",
+    "productId": "15316533746169762323",
+    "position": 28
+   },
+   {
+    "title": "Macbook Air M5 13inch 2026 - MDHH4SA/A - 10 CPU | 8 GPU | 16GB | 512GB | New, Silver",
+    "source": "lapvip.com.vn",
+    "price": "34.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTrCbl1L4zl1BTI3NKBABe6vrez0sWCPmNCATlMrDf8mUDyAZxhN6wy8d4V98EedSglNygRS8o7yU8mHlSC0bJbvVaCrMOemmrMSTseNE3HxO39VfH9qF_G_Q",
+    "productId": "9831066085558857763",
+    "position": 29
+   },
+   {
+    "title": "MacBook Air 2026 13 inch Apple M5 16GB RAM 512GB SSD – Openbox",
+    "source": "MacOne",
+    "price": "31.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTowv62K6abMeK6_LvSa2IvWlKSOQ33ZYIo2oZUshzcuijVs4yW3QJXlDim7n_5McecdLIIqtbqZQqmMMBHdakn8qO-da481zYiue6hxVkd8xzMDRghIj-t",
+    "productId": "7860276436493192974",
+    "position": 30
+   },
+   {
+    "title": "Macbook Air M1 13 inch Cũ -Hàng 95%",
+    "source": "Tinh Tế Mobile",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQIepCMiz774rUox2-_YnRrY9D5IPghnXhMXa-ZLwO9fLqU4GokP2pgziCfkI14kTn4X7Vg-LwTWAzRhG_drFS8OYxW3VS5AMl7hcp0GXcG3COCvi1pjDX7",
+    "productId": "22228383453806073",
+    "position": 31
+   },
+   {
+    "title": "Macbook Air M1 13.3\" 8GB/256GB Silver Fullbox 98% – Giá Siêu Tốt",
+    "source": "Quang Minh Mobile",
+    "price": "11.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQE1dKv6K_sxCsi4__gOmYdZ8ZKHMhZsaQPyzizkivQCIxqzWMQNOuPReP5epqIEn9mIkQK92yDwiqh8XuOgDMMdFUvQGll_CPZ17asY2WjQRx6-pExmjQd3g",
+    "productId": "14281130331467853670",
+    "position": 32
+   },
+   {
+    "title": "Apple MacBook Air 13 inch",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026&prds=localAnnotatedOfferId:1,catalogid:5968618191690698253,gpcid:17412229144642628653,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "28.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRDoZrzFpvcs7skqQLBdTTYs3i1AB9WjLKqLciwc70TV069LxkpH5UO9D0xjnWzyagBnyZIOxI0lpN8UX9_rCnQ8kFHrKr2ImNzNKssQw7sOsSnoqjkyVXc8g",
+    "productId": "5968618191690698253",
+    "position": 33
+   },
+   {
+    "title": "Macbook Air M5 13.6 inch 10-core CPU 10-core GPU RAM 24GB SSD 1TB",
+    "source": "Surfaceviet.vn",
+    "price": "47.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTK5Ix80fAkL8cOBAhW0Nds2XwwnJh-sHCRU1YCycSEVQ1lRcX-F9XBoC6tp4BXFhKuPd6jT8xrM4cLmgJo6qQaGP_s_hsKcrw4K7AMhJtXPFFswB5Uulc1",
+    "productId": "11994823354093690176",
+    "position": 34
+   },
+   {
+    "title": "MacBook Air 13inch M5 2026 10CPU/8GPU/16GB/512GB Like New",
+    "source": "pgluxury.com",
+    "price": "30.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTganUl07sD0cWS2SEkQf94SWLEzsrzSfBJf0XbV_U4RMEMZtQNaqLv1b6Nq6V_vF5Q3cGTNCeM1NFAal0DFAEAlfSGZhOV7jc-VAanWx2hdcnyzDEggLSreQ",
+    "productId": "11560082511685885384",
+    "position": 35
+   },
+   {
+    "title": "Macbook Air M5 13inch 2026 MDHH4SA/A Sky Blue (10 CPU/ 8 GPU/ 16GB/ 512GB/ Chính hãng Apple Việt Nam)",
+    "source": "kinglap",
+    "price": "34.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR7YHomMkPXFC5ApGmAqOnjo5kpALCXu9E4RqYBAH50oXsBkndBMQ4EiPsj6iojeZgQEiL1DqKtZOnzIecwrNALVRjB8XR3nYnOv9ELr0-U6Np9HWJ0gPWOwA",
+    "productId": "2266311925561930566",
+    "position": 36
+   },
+   {
+    "title": "MacBook Neo 2026 - Apple A18 PRO, 8GB RAM, 512GB SSD – NEW, Blush",
+    "source": "lapvip.com.vn",
+    "price": "20.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTsOFF-rQQYZB-2DPgOy6T2mnVWSfnW_jzFAVq5iegaMykdhm6QWf1Q9JVYXzv3sOdi_uwxzKrgSoN72Qja5J4p3JnyTM_wjVci-NAPmsvJu679gPuWgEYxrw",
+    "productId": "14833065965443756416",
+    "position": 37
+   },
+   {
+    "title": "MacBook Air 13 inch M5 2026 16GB RAM 1TB SSD Chính Hãng - Midnight",
+    "source": "Mac18",
+    "price": "40.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSHBts7IXCd6TeKbk4msZrgSHty0uSQLktBnTKs_S2W7tBzpuv3cbybreOSg9WK436ZL_leP9qsAvn3yJDglH_t_kd_7SJkaFFMjHYi8AOX55Y3z2iA8n_g8w",
+    "productId": "6635090314647474833",
+    "position": 38
+   },
+   {
+    "title": "MacBook Air M5 2026 13 inch 10CPU 8GPU 16GB 512GB - MDHE4SA/A",
+    "source": "minhtuanmobile.com",
+    "price": "33.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSOL3SIvRJtdZy_u6HAwIbtNybtKFKLz31wzo8PVqllTS0xDxI2O6vf1GKy8bjHiwwk5RIAyNZDD8YOQ3dSxWfzmdnr1FGlixGqfUnG6XXN_VvvfVr1nBmD",
+    "productId": "7521232506159650987",
+    "position": 39
+   },
+   {
+    "title": "MacBook Air 13 inch M5 2026 10-core CPU/16GB/512GB/8-core GPU",
+    "source": "Bạch Long Store",
+    "price": "33.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQz8JqAfxbTIOaHpq4F1jlvFkkOjI6AycuF93FDQVQrm5YvTlNCKL0A_t82rk9nucmpTqMIq-2hAZT0poDfKMRjLqVAJH12ZoLgHLAmreHWcBb_KgvXqyjl2A",
+    "productId": "1485733121778750182",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

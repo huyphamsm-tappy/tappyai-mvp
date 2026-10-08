@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Khánh\" OR \"Hà Nội Phở Phú Lai | Phở Ngon Quận 3\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:52:49.906Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Khánh\" OR \"Hà Nội Phở Phú Lai | Phở Ngon Quận 3\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Khánh Sài Gòn — Quán phở ngon đáng thử (Tập 32)",
+    "link": "https://www.tiktok.com/@pika_laca/video/7670503031095495957",
+    "snippet": "Lead Phở Khánh được giới thiệu trong Series 100 quán phở ngon tại Sài Gòn (Tập 32). Bài viết tóm tắt những điểm chính về quán, ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Khánh (@phobochuanvihanoi)",
+    "link": "https://www.tiktok.com/@phobochuanvihanoi",
+    "snippet": "Phở Khánh - Phở bò chuẩn vị Hà Nội đã có mặt tại TPHCM CN1: 673 Đỗ Xuân Hợp, Phước Long B, TPHCM CN2: Số 1 Phạm Viết Chánh, Cầu Ông Lãnh, TPHCM.",
+    "position": 2
+   },
+   {
+    "title": "Vì sao phở Khánh không dùng chất tạo ngọt? ...",
+    "link": "https://www.tiktok.com/@phobochuanvihanoi/video/7668181648147582228",
+    "snippet": "Vì sao phở Khánh không dùng chất tạo ngọt? Vì với phở Khánh, giá trị của một tô phở nằm ở vị ngọt tự nhiên từ xương, thịt, gia vị truyền ...",
+    "position": 3
+   },
+   {
+    "title": "Hiện tại phở Khánh có 2 chi nhánh tại TPHCM nhé cả nhà ...",
+    "link": "https://www.tiktok.com/@phobochuanvihanoi/video/7679090624204655893",
+    "snippet": "50 Lượt thích,Video TikTok từ Phở Khánh (@phobochuanvihanoi): \"Hiện tại phở Khánh có 2 chi nhánh tại TPHCM nhé cả nhà☺️ #fyp #phokhanh ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Quán Phở Khánh Bình Cùng Danh Hài BẢO ...",
+    "link": "https://www.tiktok.com/@casikhanhbinh81/video/7308370338482605313",
+    "snippet": "Để dễ dàng tìm được quán, bạn có thể định hướng từ chợ Hưng Long, quán phở Khánh Bình nằm ngay phía sau. Đặc biệt, hãy thử món phở 2 tô, một ...",
+    "position": 5
+   },
+   {
+    "title": "Nếu được hỏi \"Điều gì phở Khánh không bao giờ đánh đổi ...",
+    "link": "https://www.tiktok.com/@phobochuanvihanoi/video/7667412981071940884",
+    "snippet": "29 Lượt thích,Video TikTok từ Phở Khánh (@phobochuanvihanoi): \"Nếu được hỏi \"Điều gì phở Khánh không bao giờ đánh đổi khi bán phở?\" .",
+    "position": 6
+   },
+   {
+    "title": "Ưu đãi cuối tuần tại Phở Khánh: Gọi 3 Tặng 1",
+    "link": "https://www.tiktok.com/@phobochuanvihanoi/photo/7655368679395314965",
+    "snippet": "Phở Khánh – Số 1 Phạm Viết Chánh, TP. Hồ Chí Minh ⏰ Phục vụ hằng ngày đến 14:00. ------------------- Phở Khánh✨ CN1: 673 Đỗ Xuân Hợp ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Khánh 3 Sa Đéc: Phở đá giá rẻ 25k, gần công viên",
+    "link": "https://www.tiktok.com/@kitsanereview/video/7476301803454303505",
+    "snippet": "Phở Khánh 3 là một quán phở đá giá rẻ tại Sa Đéc, Đồng Tháp, được nhiều người tìm đến nhờ mức giá rất hợp lý và phần ăn đầy đặn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

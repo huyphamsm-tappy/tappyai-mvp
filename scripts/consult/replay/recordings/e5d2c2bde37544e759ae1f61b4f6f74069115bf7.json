@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn cấp hộ chiếu phổ thông lệ phí 2026 online 15/8/2026 VNeID mức 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:58:30.200Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn cấp hộ chiếu phổ thông lệ phí 2026 online 15/8/2026 VNeID mức 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

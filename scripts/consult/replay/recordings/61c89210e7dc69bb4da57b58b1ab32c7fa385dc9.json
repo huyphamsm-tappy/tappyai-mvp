@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hôm nay cafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:54:22.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hôm nay cafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hôm Nay Cafe",
+    "link": "https://www.tiktok.com/discover/h%C3%B4m-nay-cafe",
+    "snippet": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra cũ người mới ta ... ” là hai trong nhiều lời yêu thương mà Hôm nay Cafe gửi tới mình.",
+    "date": "3 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hôm nay cafe núp hẻm Q.1 hummm #homnaycafe #xuhuong # ...",
+    "link": "https://www.tiktok.com/@phat_su/video/7237762514455399686?lang=bn-IN",
+    "snippet": "Hôm nay cafe núp hẻm Q.1 hummm #homnaycafe #xuhuong #coffee #coffeetime #viral #cafesongao #saigoncafe #langthangwithphat.",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Không Gian Hàng Cafe Hôm Nay Đà Nẵng",
+    "link": "https://www.tiktok.com/@vanvyt1993/photo/7656775859231149319",
+    "snippet": "Khám Phá Không Gian Hàng Cafe Hôm Nay Đà Nẵng. Tận hưởng không gian độc đáo và ẩm thực đa dạng tại Hôm Nay Cafe Đà Nẵng. Đến ngay để trải nghiệm! #homnaycafe # ...",
+    "position": 3
+   },
+   {
+    "title": "HÔM NAY CAFE ở Phước Sơn, Tuy Phước, Bình Định, với ...",
+    "link": "https://www.tiktok.com/@homnay.cafe.binhdinh/video/7565013239684156688",
+    "snippet": "HÔM NAY CAFE ở Phước Sơn, Tuy Phước, Bình Định, với không gian cực kì xanh mát, sự kết hợp trong trẻo giữa gỗ, nắng, đá, cây xanh, ...",
+    "position": 4
+   },
+   {
+    "title": "Café ngon tại Long Biên - Không có gì hôm nay",
+    "link": "https://www.tiktok.com/@khong.cogihomnay/photo/7501579838176627989",
+    "snippet": "Keywords: cafe tại Long Biên,quán cafe ngon ở Hà Nội,không có gì hôm nay,cafe gần ngã tư Hồng Tiến,thời gian mở cửa quán cà phê,cafe nổi ...",
+    "position": 5
+   },
+   {
+    "title": "hôm nay cafe một mình",
+    "link": "https://www.tiktok.com/@l.phng7133/video/7683122217965653269",
+    "snippet": "510 Lượt thích,369 Bình luận.Video TikTok từ lê phương (@l.phng7133): \"hôm nay cafe một mình\".chúc cả nhà buổi tối vui vẻ ấm áp bên gia đình ...",
+    "position": 6
+   },
+   {
+    "title": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra ...",
+    "link": "https://www.tiktok.com/@thuantran.68/video/7671590321129606417",
+    "snippet": "Hôm nay cafe gặp lại người cũ bên tình mới. Hóa ra cũ người mới ta' là có thật, chúc hai bạn hạnh phúc. . Hôm nay cafe gặp lại người cũ bên tình mới.",
+    "position": 7
+   },
+   {
+    "title": "Quán cà phê có món mới hôm nay - cafe mang đi, cafe máy",
+    "link": "https://www.tiktok.com/@1234nbh7/video/7665220100277931284",
+    "snippet": "Quán em hôm nay có món mới các anh chị nhé #cafemangdi #cafemay #cafeviral #cafengon @Bùi Trường TV (Hát Mường). Quán cà phê có món mới hôm nay - cafe mang đi, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
