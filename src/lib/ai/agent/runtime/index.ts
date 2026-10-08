@@ -27,6 +27,7 @@ import { resultCount } from './trace'
 import { EvidenceLedger, normUrl, planCitations } from './evidence'
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
+import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { AGENT_SYSTEM_V2 } from './prompt'
@@ -111,7 +112,15 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     tools[READ_PAGE] = readPageTool(reader) as never
   }
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
-  const schemas = { ...toModelSchemas(tools), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool() } as never) : {}) }
+  // M6: a small core every round; deferred tools by this turn's capability hints / the task's last tools; the rest through use_tool.
+  // One set per turn (the tool list is part of the cached prompt prefix). See toolRegistry.ts.
+  const userTexts = i.messages.filter(m => m.role === 'user').slice(-2).map(m => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '')
+  const lastTurnTools = (() => { const s = i.taskBox?.task.research_state.searches ?? []; const t = Math.max(-1, ...s.map(x => x.turn)); return s.filter(x => x.turn === t).map(x => x.tool) })()
+  const selection = selectTools(tools, { texts: userTexts, recentTools: lastTurnTools })
+  const proxy = proxyToolSchema(tools, selection.catalog, i.lang)
+  const exposedTools = Object.fromEntries(selection.exposed.map(n => [n, tools[n]]))
+  const schemas = { ...toModelSchemas(exposedTools), ...(proxy ? { [USE_TOOL]: proxy } : {}), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool() } as never) : {}) }
+  i.trace.add('tools', { exposed: selection.exposed, preselected: selection.preselected, deferred: selection.catalog.length, schemas: Object.keys(schemas).length })
   const box = i.taskBox
   if (box) i.trace.taskId = box.task.task_id
   const system = i.context.system + (i.lang === 'en' ? AGENT_SYSTEM_EN_NOTE : '')
@@ -194,6 +203,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         }
         return a
       },
+      resolveCall: call => call.toolName === USE_TOOL ? resolveUseTool(call.args, tools, selection, i.lang) : null,
       onTaskUpdate: box ? (args => {
         const r = applyTaskDelta(box.task, box.history, args, { now: new Date(), conversationId: box.conversationId })
         box.task = r.task

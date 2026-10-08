@@ -66,6 +66,12 @@ export interface RuntimeInput {
    * update_task calls are answered `task_state_unavailable`.
    */
   onTaskUpdate?: (args: Record<string, unknown>) => { view: unknown; applied: string[]; rejected: string[] }
+  /**
+   * M6: resolves a proxy call (`use_tool`, toolRegistry.ts) into the real tool BEFORE the input guard, so the real tool takes the normal
+   * path (guard, budgets, de-duplication, Serper scope, timeout, output guard, frames) under its own name. Returns null for an ordinary
+   * call; `refused` answers the model with a structured result and executes nothing.
+   */
+  resolveCall?: (call: { toolName: string; args: Record<string, unknown> }) => null | { toolName: string; args: Record<string, unknown> } | { refused: string; result: Record<string, unknown> }
 }
 
 export interface RuntimeRun {
@@ -233,54 +239,61 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     })
 
     // Phase 1 (sequential, deterministic): input guard, budgets, dedupe, allow-list.
-    type Planned = { tc: AgentToolCall; why: string | null; args: Record<string, unknown>; key: string; outcome: ToolEvent['outcome']; result?: unknown; error?: string; started: number; credits: number }
+    // `name` = the tool that runs (a resolved proxy call runs as its real tool); `tc` stays the model's own call (history, ids).
+    type Planned = { tc: AgentToolCall; name: string; via?: string; why: string | null; args: Record<string, unknown>; key: string; outcome: ToolEvent['outcome']; result?: unknown; error?: string; started: number; credits: number }
     const planned: Planned[] = []
     for (const tc of toolCallsThisStep) {
       const why = typeof tc.args?.why === 'string' ? (tc.args.why as string).slice(0, 160) : null
       let args = stripWhy(tc.args)
-      const verdict = guardToolInput(tc.toolName, args, { disallowed: input.disallowedTools ?? new Set() })
+      let name = tc.toolName
+      const resolved = input.resolveCall ? input.resolveCall({ toolName: tc.toolName, args }) : null
+      if (resolved && 'toolName' in resolved) { name = resolved.toolName; args = resolved.args }
+      const verdict = guardToolInput(name, args, { disallowed: input.disallowedTools ?? new Set() })
       if (verdict.ok) args = verdict.args
-      const key = `${tc.toolName}:${stable(args)}`
-      const pl: Planned = { tc, why, args, key, outcome: 'ok', started: now(), credits: 0 }
+      const key = `${name}:${stable(args)}`
+      const pl: Planned = { tc, name, ...(name !== tc.toolName ? { via: tc.toolName } : {}), why, args, key, outcome: 'ok', started: now(), credits: 0 }
       const left = input.deadlineAt - now()
-      if (!verdict.ok) {
+      if (resolved && 'refused' in resolved) {
+        pl.outcome = 'blocked'
+        pl.result = resolved.result
+      } else if (!verdict.ok) {
         pl.outcome = 'blocked'
         pl.result = { error: verdict.reason, note: input.lang === 'en' ? 'This tool is not available to you. Continue without it.' : 'Công cụ này không dùng được. Tiếp tục mà không có nó.' }
-      } else if (CONTROL_TOOLS.has(tc.toolName)) {
+      } else if (CONTROL_TOOLS.has(name)) {
         pl.outcome = 'blocked'
         pl.result = { error: 'control_action_alone', note: input.lang === 'en' ? 'ask_user must be called alone.' : 'ask_user phải được gọi riêng.' }
       } else if (toolCalls >= L.maxToolCalls || left < L.finalReserveMs) {
         pl.outcome = 'budget'
         pl.result = { error: 'tool_budget_exhausted', note: input.lang === 'en' ? 'No more lookups this turn — answer from the data you have.' : 'Hết lượt tra cứu trong lượt này — trả lời từ dữ liệu đã có.' }
-        unchecked.push(tc.toolName)
+        unchecked.push(name)
         T.counters.budgetRefusals++
-        T.add('budget', { round, decision: 'tool_refused', tool: tc.toolName, reason: toolCalls >= L.maxToolCalls ? 'tool_budget' : 'time_budget', tool_calls: toolCalls, time_left_ms: left })
+        T.add('budget', { round, decision: 'tool_refused', tool: name, reason: toolCalls >= L.maxToolCalls ? 'tool_budget' : 'time_budget', tool_calls: toolCalls, time_left_ms: left })
       } else if (seen.has(key)) {
         pl.outcome = 'duplicate'
         pl.result = { error: 'duplicate_call', note: input.lang === 'en' ? 'Same lookup already done this turn; use its result above.' : 'Đã tra cứu đúng như vậy trong lượt này; dùng kết quả ở trên.' }
-        T.add('budget', { round, decision: 'duplicate_refused', tool: tc.toolName })
-      } else if (!input.tools[tc.toolName]?.execute) {
+        T.add('budget', { round, decision: 'duplicate_refused', tool: name })
+      } else if (!input.tools[name]?.execute) {
         pl.outcome = 'unknown_tool'
         pl.result = { error: 'unknown_tool' }
       } else {
         toolCalls++
         seen.add(key)
-        pl.args = input.prepareArgs ? input.prepareArgs(tc.toolName, args) : args
+        pl.args = input.prepareArgs ? input.prepareArgs(name, args) : args
       }
-      T.add('tool_call', { round, tool: tc.toolName, admitted: pl.outcome === 'ok', outcome_planned: pl.outcome, input_hash: toolInputHash(tc.toolName, pl.args), query: traceQuery(pl.args), why: why ? why.slice(0, 80) : null })
+      T.add('tool_call', { round, tool: name, ...(pl.via ? { via: pl.via } : {}), ...(resolved && 'refused' in resolved ? { refused: resolved.refused } : {}), admitted: pl.outcome === 'ok', outcome_planned: pl.outcome, input_hash: toolInputHash(name, pl.args), query: traceQuery(pl.args), why: why ? why.slice(0, 80) : null })
       planned.push(pl)
     }
 
     // Phase 2: admitted calls run — read-only ones concurrently, side-effect ones one by one — each cancellable on its own.
     const execute = async (pl: Planned) => {
-      const tool = input.tools[pl.tc.toolName]
-      input.onToolStart?.({ ...pl.tc, args: pl.args })
+      const tool = input.tools[pl.name]
+      input.onToolStart?.({ ...pl.tc, toolName: pl.name, args: pl.args })
       pl.started = now()
       const budgetMs = Math.max(1_000, Math.min(L.toolTimeoutMs, input.deadlineAt - now() - L.finalReserveMs))
       try {
         const r = await cancellable(signal => {
           const run = () => Promise.resolve(tool.execute!(pl.args, { toolCallId: pl.tc.toolCallId, messages: [] }))
-          return input.runTool ? input.runTool(pl.tc.toolName, signal, run) : run().then(value => ({ value, credits: 0 }))
+          return input.runTool ? input.runTool(pl.name, signal, run) : run().then(value => ({ value, credits: 0 }))
         }, budgetMs, input.signal)
         pl.result = r.value
         pl.credits = r.credits
@@ -289,23 +302,23 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
         pl.outcome = timedOut ? 'timeout' : 'error'
         pl.error = e instanceof Error ? e.message.slice(0, 200) : String(e).slice(0, 200)
         pl.result = { error: timedOut ? 'tool_timeout' : 'tool_failed', note: input.lang === 'en' ? 'This lookup failed; say this part is not checked.' : 'Tra cứu này lỗi; nói rõ phần này chưa kiểm tra được.' }
-        unchecked.push(pl.tc.toolName)
-        if (timedOut) { T.counters.timeouts++; T.add('timeout', { round, scope: 'tool', tool: pl.tc.toolName, ms: now() - pl.started, cancelled: true }) } else { T.counters.errors++; T.add('error', { round, scope: 'tool', tool: pl.tc.toolName, message: (pl.error ?? '').slice(0, 120) }) }
+        unchecked.push(pl.name)
+        if (timedOut) { T.counters.timeouts++; T.add('timeout', { round, scope: 'tool', tool: pl.name, ms: now() - pl.started, cancelled: true }) } else { T.counters.errors++; T.add('error', { round, scope: 'tool', tool: pl.name, message: (pl.error ?? '').slice(0, 120) }) }
       }
     }
     const runnable = planned.filter(pl => pl.outcome === 'ok')
-    await Promise.all(runnable.filter(pl => !RUNTIME_SEQUENTIAL_TOOLS.has(pl.tc.toolName)).map(execute))
-    for (const pl of runnable.filter(pl => RUNTIME_SEQUENTIAL_TOOLS.has(pl.tc.toolName))) await execute(pl)
+    await Promise.all(runnable.filter(pl => !RUNTIME_SEQUENTIAL_TOOLS.has(pl.name)).map(execute))
+    for (const pl of runnable.filter(pl => RUNTIME_SEQUENTIAL_TOOLS.has(pl.name))) await execute(pl)
 
     // Phase 3 (model order): output guard, events, client frames, the model's tool message.
     const parts: Array<{ type: 'tool-result'; toolCallId: string; toolName: string; result: unknown }> = [...taskParts()]
     for (const pl of planned) {
-      const event: ToolEvent = { round, name: pl.tc.toolName, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
+      const event: ToolEvent = { round, name: pl.name, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)
       const guarded = guardToolOutput(pl.result)
       T.counters.serperCredits += pl.credits
-      T.add('tool_result', { round, tool: pl.tc.toolName, outcome: pl.outcome, ms: event.ms, credits: pl.credits, result_count: pl.outcome === 'ok' ? resultCount(pl.result) : 0, dropped_keys: guarded.stats.droppedKeys, cleaned_strings: guarded.stats.cleanedStrings, truncated: guarded.stats.truncated })
-      if (pl.outcome === 'ok' || pl.outcome === 'timeout' || pl.outcome === 'error') input.onToolResult?.({ ...pl.tc, args: pl.args }, guarded.forClient, event)
+      T.add('tool_result', { round, tool: pl.name, outcome: pl.outcome, ms: event.ms, credits: pl.credits, result_count: pl.outcome === 'ok' ? resultCount(pl.result) : 0, dropped_keys: guarded.stats.droppedKeys, cleaned_strings: guarded.stats.cleanedStrings, truncated: guarded.stats.truncated })
+      if (pl.outcome === 'ok' || pl.outcome === 'timeout' || pl.outcome === 'error') input.onToolResult?.({ ...pl.tc, toolName: pl.name, args: pl.args }, guarded.forClient, event)
       parts.push({ type: 'tool-result', toolCallId: pl.tc.toolCallId, toolName: pl.tc.toolName, result: guarded.forModel })
     }
     messages.push({ role: 'tool', content: parts })

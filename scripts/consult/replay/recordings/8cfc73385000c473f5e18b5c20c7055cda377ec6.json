@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"WESET ENGLISH CENTER\" OR \"Axcela Vietnam\" OR \"Trung Tâm Ngoại Ngữ ILI\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:12:18.463Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"WESET ENGLISH CENTER\" OR \"Axcela Vietnam\" OR \"Trung Tâm Ngoại Ngữ ILI\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "WESET ENGLISH CENTER (@wesetenglishcenter)",
+    "link": "https://www.tiktok.com/@wesetenglishcenter",
+    "snippet": "WESET ENGLISH CENTER Đồng hành cùng thế hệ trẻ vươn ra biển lớn. weset.edu.vn/lien-he-ngay. Vietsub by WESETWESET x HKSVVN.",
+    "position": 1
+   },
+   {
+    "title": "Ấn tượng sâu sắc của Á Hậu Hellen khi học tiếng Anh tại ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7685325567733927176",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Ấn tượng sâu sắc của Á Hậu Hellen khi học tiếng Anh tại WESET #WESET ...",
+    "position": 2
+   },
+   {
+    "title": "Thầy dạy tiếng Anh trả lời câu hỏi về Việt Nam thì ra ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7611066653782101268",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Thầy dạy tiếng Anh trả lời câu hỏi về Việt Nam thì ra thầy cũng thích xe máy ...",
+    "position": 3
+   },
+   {
+    "title": "Học tiếng Anh tại WESET để tốt nghiệp đúng hạn",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691308514412662037",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Tìm hiểu cách WESET giúp sinh viên năm tư Đại học Công nghiệp TP.",
+    "position": 4
+   },
+   {
+    "title": "Tiếng Anh Junior tại WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7687985946335235335",
+    "snippet": "Tiếng Anh Junior tại WESET English Center. Học viên nhí tại WESET Junior có những trải nghiệm học tập vui vẻ và bổ ích. Các em được học từ mới, ...",
+    "position": 5
+   },
+   {
+    "title": "Kim Yến's English Learning Journey at WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7685718553101683976",
+    "snippet": "Kim Yến shares her positive experience with WESET's English learning path, facilities, and teaching. @WESET ENGLISH CENTER.",
+    "position": 6
+   },
+   {
+    "title": "Hà Trúc Linh chọn học tiếng Anh tại WESET",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7689316666471107858",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Hà Trúc Linh đánh giá cao hệ thống học online của WESET và nhận được sự hỗ trợ ...",
+    "position": 7
+   },
+   {
+    "title": "Hành trình đến với tiếng Anh tại WESET của Á Hậu Hạnh ...",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7691966691173076232",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"Hành trình đến với tiếng Anh tại WESET của Á Hậu Hạnh Nguyên như thế nào #WESET ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

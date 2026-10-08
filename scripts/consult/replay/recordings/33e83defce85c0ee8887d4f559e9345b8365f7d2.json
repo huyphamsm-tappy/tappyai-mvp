@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:56.033Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Havit Space NC01H là mẫu tai nghe Bluetooth over-ear nổi bật nhờ sự cân bằng giữa thời lượng pin, khả năng chống ồn và thiết kế bền bỉ. Với pin ...",
+    "date": "20 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Top 7 tai nghe bluetooth thể thao tốt cho dân tập luyện",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-the-thao-tot/",
+    "snippet": "Tai nghe bluetooth thể thao Jaybird X3 cách âm tốt nên bạn thoải mái chạy bộ, đi bộ mà không phải nghe tiếng ồn bên ngoài. Âm lượng và chất ...",
+    "date": "21 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "tai nghe bluetooth - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth",
+    "snippet": "JBL Signature Sound, chống ồn đa cấp độ, 6 micro đàm thoại. Âm bass uy lực, phù hợp với các dòng nhạc sôi động. Các loại tai nghe thay thế bạn có thể cân nhắc.",
+    "position": 3
+   },
+   {
+    "title": "Sennheiser Momentum True Wireless 3",
+    "link": "https://shopee.vn/list/sennheiser/Momentum%20True%20Wireless%203",
+    "snippet": "Sennheiser Momentum True Wireless 3 có khả năng chống ồn chủ động tốt nhờ công nghệ Adaptive Noise Cancellation. Bạn có thể sử dụng tai nghe trong lúc di chuyển ...",
+    "position": 4
+   },
+   {
+    "title": "Top 5 tai nghe không dây tốt trên thị trường hiện nay",
+    "link": "https://shopee.vn/blog/tai-nghe-khong-day-tot-nhat/",
+    "snippet": "Tai nghe Haylou Gt1 Xr · Tai nghe True Wireless AUKEY EP-T10 · Tai nghe bluetooth TWS Soundcore Life P2 · Tai nghe In-ear Bluetooth Sony WI-C400.",
+    "date": "21 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Điểm Danh Bí Kíp Chọn Tai Nghe Chạy Bộ Phù Hợp Và ...",
+    "link": "https://shopee.vn/blog/tai-nghe-chay-bo/",
+    "snippet": "2. Jaybird X3 Wireless – Giá khoảng 1.900.000đ ... Jaybird X3 Wireless cải thiện độ bền và tính tiện dụng từ người tiền nhiệm X2 của mình bằng ...",
+    "date": "13 thg 6, 2026",
+    "position": 6
+   },
+   {
+    "title": "Mpow - Headphones Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/mpow",
+    "snippet": "Mpow X3 là dòng tai nghe nhét tai lý tưởng với mức giá rất hợp lý. Sản phẩm được trang bị khả năng chống ồn chủ động tốt, kháng nước và chống mồ hôi. Ngoài ...",
+    "position": 7
+   },
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone-1010",
+    "snippet": "Tai nghe HUAWEI FreeBuds 7i | Chống Ồn Chủ Động Thông Minh ANC 4.0 | Âm ... Tai Nghe HUAWEI FreeBuds Pro 5 | Công Nghệ Chống Ồn AI Với Bộ Xử Lý. custom ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

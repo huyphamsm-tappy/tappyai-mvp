@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook ngân sách khoảng 25 triệu Việt Nam shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:32:35.843Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook ngân sách khoảng 25 triệu Việt Nam shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng ...",
+    "link": "https://www.facebook.com/groups/aiartworksvn/posts/4512588578953991/",
+    "snippet": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng 4–5 năm, ngân sách 30 triệu đổ lại. Nhu cầu chủ yếu là Python, Data Analysis, ...",
+    "position": 1
+   },
+   {
+    "title": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và ...",
+    "link": "https://www.facebook.com/VatVoStudio69/videos/c%E1%BA%A3m-nh%E1%BA%ADn-macbook-neo-v%E1%BB%ABa-m%E1%BB%9F-b%C3%A1n-t%E1%BA%A1i-vi%E1%BB%87t-nam-ngon-v%C3%A0-h%E1%BA%BFt-h%C3%A0ng-tr%C3%AAn-apple-store-o/2772270539797729/",
+    "snippet": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và Hết Hàng Trên Apple Store Online Đợt Đầu Trong video ngày hôm nay, mình và anh Đức sẽ ...",
+    "position": 2
+   },
+   {
+    "title": "MACBOOK AIR GIÁ DỄ TIẾP CẬN – VỀ THÊM VÀI EM CHO ...",
+    "link": "https://www.facebook.com/macbook18/videos/-macbook-air-gi%C3%A1-d%E1%BB%85-ti%E1%BA%BFp-c%E1%BA%ADn-v%E1%BB%81-th%C3%AAm-v%C3%A0i-em-cho-anh-ch%E1%BB%8B-em-v%C4%83n-ph%C3%B2ngn%E1%BA%BFu-anh-ch%E1%BB%8B-/1805570147119868/",
+    "snippet": "Bảy triệu thì mua được MacBook gì? Thì hôm nay Max Mười Tám lên cho anh em được à ba cây anh em nhé, ba cây MacBook Air hai không mười tám mức ...",
+    "position": 3
+   },
+   {
+    "title": "Mua Macbook Ở Đâu Uy Tín? Top 15 Địa Chỉ Đáng Tin ...",
+    "link": "https://macone.vn/tin-tuc/mua-macbook-o-dau-uy-tin/?srsltid=AU7gw4V-trVjUQXnPv6LJsICfaxraRT5G4rnRQNlZV7S2HSKhICxas9E",
+    "snippet": "Bạn có thể kiểm tra danh sách AAR chính thức trên website của Apple Việt Nam. Ngoài AAR, còn có Apple Premium Reseller (APR) – đây là cấp độ ...",
+    "date": "29 thg 7, 2025",
+    "position": 4
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Nếu ngân sách tầm 22 triệu, MacBook Neo là lựa chọn ổn áp nhất cho sinh viên phổ thông, học online, soạn thảo cơ bản. Muốn hiệu năng cao hơn, học ngành có yếu ...",
+    "position": 5
+   },
+   {
+    "title": "Nên mua Macbook học ngành công nghệ tài chính ko mấy b:)",
+    "link": "https://www.facebook.com/groups/1167458176969308/posts/2514110368970742/",
+    "snippet": "VENDER - Chuyên sản phẩm Apple chính hãng Việt Nam ➤ Đặt hàng và hỗ trợ qua tin nhắn ➤ Hotline 028 2200 6007 ➤ 379 Võ Văn Tần, Phường Bàn Cờ, ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook | Laptop Apple giá rẻ, HSSV giảm 500k, góp 0%",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/apple-macbook",
+    "snippet": "Chưa có mẫu MacBook nào. Nếu cần 16GB bộ nhớ, nên chuẩn bị ngân sách từ khoảng 35 triệu đồng. Khoảng 35-55 triệu đồng. MacBook Air M5 16GB đến 32GB. Đa số người ...",
+    "position": 7
+   },
+   {
+    "title": "Mua Bán Macbook Sài Gòn",
+    "link": "https://www.facebook.com/groups/macbookhcm/",
+    "snippet": "MacBook Air 2018 13 inch Silver sang chảnh lm vp học tập tốt - Cấu hình: i5, RAM 16GB, SSD 128GB - Màn hình: 13.3 inch 2K, nét căng đẹp - Pin: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

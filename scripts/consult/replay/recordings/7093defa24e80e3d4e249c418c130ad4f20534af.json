@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu MacBook Air M4 M3 giá Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:40.607Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu MacBook Air M4 M3 giá Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 256GB | Chính hãng Apple Việt Nam. 28.990.000đ. 26.990.000đ. MacBook Air M5 15 inch 2026 10CPU 10GPU 24GB 1TB ...",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "Giá MacBook Air M4 bao nhiêu tiền? ; MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB Sạc 70W | Chính hãng Apple Việt Nam. 25.890.000đ. 23.890.000đ ; MacBook Air ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro giá bao nhiêu tiền vào tháng 10/2026 ; MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB Nano | Chính hãng Apple Việt Nam. 59.990.000đ. 57.990.000đ.",
+    "position": 4
+   },
+   {
+    "title": "So sánh MacBook Air M4 với M3 và M2: Liệu có vượt trội?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-air-m4-va-m3-va-m2",
+    "snippet": "Hiện tại, mẫu máy M4 13 inch có giá khởi điểm là 999 đô la và tại Việt Nam đang được bán chính hãng với giá 26.9 triệu đồng. Tổng quan MacBook Air M2 vs M3 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Mua Macbook Air cũ giá rẻ - Trợ giá lên đời 2 triệu, giảm HSSV 10% tối đa 500k, giảm 1% cho Smember, BH 12 tháng. Mua ngay Macbook Air cũ tại đây.",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W | Chính hãng Apple Việt Nam ; Trả góp 0% ; Thời lượng pin. 5/5. (2 đánh giá) ; Hiệu năng. 5/5. (2 đánh ...",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 7
+   },
+   {
+    "title": "Trên tay MacBook Air M4: Giá chỉ 26.9 triệu!",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-macbook-air-m4-13-inch",
+    "snippet": "Trên tay MacBook Air M4 13 inch: Màu Sky Blue tươi mới, chip M4 mạnh mẽ, Desk View độc đáo, giá chỉ 26.9 triệu! Trên tay MacBook Air M4 13 inch: Màu Sky Blue ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

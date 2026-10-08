@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Dream Palace Ben Thanh Grand Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:51.080Z",
+ "body": {
+  "searchParameters": {
+   "q": "Dream Palace Ben Thanh Grand Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/857807960.jpg?k=c6b235a1eafc9feb9e179b05c41ff593d65e22dc0154ffed569e7a72064d8e61&o=",
+    "imageWidth": 614,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToZ9L79EVKeiptG6LnigzltPAT10I_I3HD66ui1kD-Ew&s=10",
+    "thumbnailWidth": 494,
+    "thumbnailHeight": 619,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dream-palace-grand.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F857807960.jpg%3Fk%3Dc6b235a1eafc9feb9e179b05c41ff593d65e22dc0154ffed569e7a72064d8e61%26o%3D&tbnid=oGsEsWU_lnpWnM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdream-palace-grand.vi.html&docid=nUdEzJMl82i4xM&w=614&h=768",
+    "position": 1
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/856790879.jpg?k=8d5839442f8afd05a19843e7382fd5bdfb90e7614ff74367420239f326295609&o=",
+    "imageWidth": 1024,
+    "imageHeight": 567,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_7uR-4s3nrzOj9a9pVkYSnNYYKS3BkEXKm4lEACdh0w&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 408,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dream-palace-grand.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F856790879.jpg%3Fk%3D8d5839442f8afd05a19843e7382fd5bdfb90e7614ff74367420239f326295609%26o%3D&tbnid=k4-bRhMNZxB91M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdream-palace-grand.vi.html&docid=nUdEzJMl82i4xM&w=1024&h=567",
+    "position": 2
+   },
+   {
+    "title": "189 Dream Palace Ben Thanh Grand Hotel Reviews, Ratings & Prices | Trip.com",
+    "imageUrl": "https://ak-d.tripcdn.com/images/1mc6e12000s8c6dnb12AC_W_750_375_R5.webp?default=1",
+    "imageWidth": 307,
+    "imageHeight": 375,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrQGquqYINmK4tH1VuSVO4OkLNbZPGlxvDDjBe28QBNg&s",
+    "thumbnailWidth": 203,
+    "thumbnailHeight": 248,
+    "source": "Trip.com",
+    "domain": "www.trip.com",
+    "link": "https://www.trip.com/hotels/ho-chi-minh-city-hotel-detail-133836046/dream-palace-ben-thanh-grand-hotel/review.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fak-d.tripcdn.com%2Fimages%2F1mc6e12000s8c6dnb12AC_W_750_375_R5.webp%3Fdefault%3D1&tbnid=TRpqpWbDoOTgmM&imgrefurl=https%3A%2F%2Fwww.trip.com%2Fhotels%2Fho-chi-minh-city-hotel-detail-133836046%2Fdream-palace-ben-thanh-grand-hotel%2Freview.html&docid=kamds4BX3UdQCM&w=307&h=375",
+    "position": 3
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/861735416.jpg?k=2da0d96f6de5b58afa7a8410dc5e7da21ed5800d001b9fcb52497975ebf000ff&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsYMt6027ObR2drP-zj-lifipjDymTdGcMMo2PgbOrpg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dream-palace-grand.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F861735416.jpg%3Fk%3D2da0d96f6de5b58afa7a8410dc5e7da21ed5800d001b9fcb52497975ebf000ff%26o%3D&tbnid=pygeM7W-bh1juM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdream-palace-grand.vi.html&docid=nUdEzJMl82i4xM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Dream Palace Ben Thanh Grand (Dream Palace Ben Thanh Grand Hotel)  Hồ Chí Minh, Việt Nam: Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/87175756/0/730b654bea0cc666b303de2654d0340c.jpg?va=1&ce=3&s=414x232",
+    "imageWidth": 330,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ0WhNJr8GdZCSqbdEv964rhm0d0BGKWnROVV37AoxBw&s=10",
+    "thumbnailWidth": 330,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/dream-palace-ben-thanh-grand-hotel-h87175756/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F87175756%2F0%2F730b654bea0cc666b303de2654d0340c.jpg%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=33lX5p1AL_E7LM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fdream-palace-ben-thanh-grand-hotel-h87175756%2Fhotel%2Fho-chi-minh-city-vn.html&docid=B-14J1GqqLqH2M&w=330&h=232",
+    "position": 5
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel | Ho Chi Minh City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=61586004517176",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6f_EQkcW6EE08epc844XF93WZ3MYgRKjxXOM7NPcr4A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/DreamPalace.BenThanh.GrandHotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D61586004517176&tbnid=dfx0WKyCrZYBsM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FDreamPalace.BenThanh.GrandHotel%2F&docid=XulfLBXG7Mj5yM&w=2048&h=2048",
+    "position": 6
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel, TP. Hồ Chí Minh (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/856790872.jpg?k=0619857530e3fa32c3541acd5f6eaca082a92d8cd5fe23fc6099069e17b194a3&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJEUYBlpEL6wrJ7tYqJPB9zEVOFYy9A_yZ1xHjTCdvOA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/dream-palace-grand.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F856790872.jpg%3Fk%3D0619857530e3fa32c3541acd5f6eaca082a92d8cd5fe23fc6099069e17b194a3%26o%3D&tbnid=C8vTTlbPRiTJbM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdream-palace-grand.vi.html&docid=nUdEzJMl82i4xM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Dream Palace Ben Thanh Grand Hotel, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/128000000/127230000/127223100/127223038/5478c078.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 862,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwmB4D-RMl-4N-qHzSvHt9fKyEHT5lQoYtx8z8KqRRKg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho4072137216/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F128000000%2F127230000%2F127223100%2F127223038%2F5478c078.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=hXAZC94cUV8SOM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho4072137216%2F&docid=xDeycKRXtoFlkM&w=862&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

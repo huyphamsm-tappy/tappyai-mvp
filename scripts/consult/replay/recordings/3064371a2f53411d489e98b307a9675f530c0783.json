@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth chụp Tai Sony WH-CH720N\" OR \"Tai Nghe Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 Chính Hãng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:26:46.767Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Anker Tai nghe Bluetooth Soundcore Liberty 4 NC\" OR \"Tai nghe Bluetooth chụp Tai Sony WH-CH720N\" OR \"Tai Nghe Louda Hổ Vằn Punki Pro 1563E Khử Ồn Chủ Động HiFi AI ENC Pin Trâu Bluetooth 5.3 Chính Hãng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-ch720n.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH720N · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho đơn hàng từ 4 triệu đồng · Giảm đến 350.000 ...",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-chup-tai-sony-wh-ch720n",
+    "snippet": "Tai nghe bluetooth chụp tai Sony WH-CH720N chính hãng, giá rẻ, giảm thêm đến 150K, góp 0%, giao nhanh, BH 12 tháng, gọn nhẹ, chống ồn, sạc nhanh, ...",
+    "rating": 4.9,
+    "ratingCount": 2949,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N",
+    "link": "https://shopdunk.com/tai-nghe-sony-wh-ch720nbce",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N ... Nếu bạn đang tìm kiếm một chiếc tai nghe chụp tai chống ồn mang thương hiệu Sony, cung cấp hiệu suất đáng tin cậy ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N",
+    "link": "https://www.dienmayxanh.com/tai-nghe/tai-nghe-bluetooth-chup-tai-sony-wh-ch720n?srsltid=AU7gw4VfjoMkRYJfBzDKjAHPmDIuOIWmaNAUnCpWm8RO7Nb6QfojNdC4",
+    "snippet": "Đánh giá Tai nghe Bluetooth Chụp Tai Sony WH-CH720N ... Mua online ở Huế. Không có bằng chứng nào cho thấy là brand new. Seal bóc rồi, hết cả keo ko dán lại được.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-ch%E1%BB%A5p-tai-Sony-WH-CH720N-i.288286284.25595258375",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH720N. outline grey truck icon. Không hỗ trợ. service entrance icon. Chính hãng 100% • Miễn phí vận chuyển • Bảo hiểm Thiết ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N NEW MỚI 100 ...",
+    "link": "https://www.facebook.com/groups/hoitainghe/posts/739899478775221/",
+    "snippet": "Tai nghe Bluetooth chụp tai Sony WH-CH720N NEW MỚI 100% CHƯA SỬ DỤNG - Cảm biến tiếng ồn kép giúp loại bỏ mọi tiếng ồn xung quanh, đắm chìm trong âm...",
+    "position": 6
+   },
+   {
+    "title": "Mua Tai nghe Bluetooth Chụp Tai Sony WH-CH720N cũ ...",
+    "link": "https://www.thegioididong.com/may-doi-tra/tai-nghe/tai-nghe-bluetooth-chup-tai-sony-wh-ch720n?pid=313697&isimei=1",
+    "snippet": "53 sản phẩm Tai nghe Bluetooth Chụp Tai Sony WH-CH720N đã sử dụng, trưng bày giá rẻ Toàn quốc. Giá sản phẩm mới: 2.935.000₫ Xem sản phẩm mới.",
+    "position": 7
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-sony-wh-ch720n-vs-tai-nghe-khong-day-marshall-motif-anc",
+    "snippet": "So Sánh Tai nghe Bluetooth chụp tai Sony WH-CH720N và Tai nghe Bluetooth True Wireless Marshall Motif ANC ; Kích thước. Dài 26 cm - Rộng 20.8 cm - Cao 5.5 cm.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

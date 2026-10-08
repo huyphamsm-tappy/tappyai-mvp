@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:55.290Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ chống mồ hôi dưới 3 triệu Việt Nam shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe 2-3 triệu nào ổn cho chạy bộ và có chống ồn ...",
+    "link": "https://www.facebook.com/groups/cuongsac/posts/1499219045508407/",
+    "snippet": "2. Mục tiêu: tai Bluetooth đi thể thao, không chú trọng chất âm, chú trọng việc khó rớt, rớt ko hỏng. Tầm tiền: 300k.",
+    "position": 1
+   },
+   {
+    "title": "Inbox ngay để nhận ưu đãi tai nghe",
+    "link": "https://www.facebook.com/Xsportspassionwithoutlimits/videos/inbox-ngay-%C4%91%E1%BB%83-nh%E1%BA%ADn-%C6%B0u-%C4%91%C3%A3i-tai-nghe/4371212979764621/",
+    "snippet": "CÓ ANH CHỊ EM NÀO ĐI CHẠY MÀ... TAI NGHE CỨ DĂM BA BỮA LẠI HỎNG VÌ DÍNH NƯỚC VỚI MỒ HÔI MUỐI GIỐNG TRANG THÙY KHÔNG? Trang Thùy chạy bộ chia ...",
+    "position": 2
+   },
+   {
+    "title": "Top 10 tai nghe chống ồn tốt, chất lượng, đáng mua hiện nay",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-chong-on-tot?srsltid=AU7gw4W18ZUg74ubLPoM07GeUkjgY58fNgxP04RCPrzJHT28ob4zMtgi",
+    "snippet": "Công nghệ chống ồn ANC an toàn, nhưng nên nghe ở âm lượng dưới 70% và cho tai nghỉ ngơi định kỳ để bảo vệ thính giác. 1. Tiêu chí chọn mua tai ...",
+    "date": "20 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "RẺ THÌ CỨ XENIQ X5 MÀ CHƠI CHO EM ...",
+    "link": "https://www.facebook.com/XsportsHoChiMinh/posts/%EF%B8%8F-tai-nghe-ch%E1%BA%A1y-b%E1%BB%99-ngon-b%E1%BB%95-r%E1%BA%BB-th%C3%AC-c%E1%BB%A9-xeniq-x5-m%C3%A0-ch%C6%A1i-cho-em-nha-anh-ch%E1%BB%8B-em-runn/1400342192186349/",
+    "snippet": "✔️ Công nghệ truyền âm qua xương (bone conduction) – không nhét tai, đeo cực kỳ thoải mái, chạy bộ – đạp xe – làm việc cả ngày không đau tai.",
+    "position": 4
+   },
+   {
+    "title": "Khám phá Top 3 tai nghe chuyên dụng dành cho dân chạy ...",
+    "link": "https://shokz.com.vn/blog/top-3-tai-nghe-chay-bo-chuyen-dung",
+    "snippet": "Với các đặc điểm nổi bật như: Tính năng sạc pin nhanh chóng, khả năng kháng nước đến IP67, tai nghe cũng có tính năng chống ồn tốt giúp bạn tập trung vào âm ...",
+    "position": 5
+   },
+   {
+    "title": "Hội Tai Nghe True Wireless Việt Nam !",
+    "link": "https://www.facebook.com/groups/2148371655449073/?locale=vi_VN",
+    "snippet": "bose qc ultra earbuds chất âm đẳng cấp đen siêu đẹp ạ ( no box) kèm sạc zin giá : 3.3 em chỉ gdtt tại kvuc sg hoặc lân cận q4 tks mng tks ad · May be an image ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe thao chạy bộ - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/thao%20ch%E1%BA%A1y%20b%E1%BB%99",
+    "snippet": "... Dây FIIL C1 | Kẹp Tai Open Ear Bluetooth 5.4 | Tai Nghe Thể Thao Chạy Bộ Chống Mồ Hôi. 731.500₫. 770.000₫. -5%. Hàng mới về. rating-star 4.9 Đánh giá shop.",
+    "position": 7
+   },
+   {
+    "title": "Top các tai nghe ANC chống ồn chủ động, đáng tiền theo ...",
+    "link": "https://www.thegioididong.com/game-app/top-13-tai-nghe-anc-chong-on-chu-dong-dang-tien-nhat-cho-1403478",
+    "snippet": "Tai nghe chống ồn chủ động ANC là loại tai nghe có khả năng giảm hoặc loại bỏ tiếng ồn từ môi trường xung quanh bằng cách sử dụng công nghệ xử lý âm thanh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

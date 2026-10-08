@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Asanoha - Modern Japanese Hotpot\" OR \"Pachi Pachi Nướng Lẩu Nhật Bản\" OR \"Chill Thái\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:17:22.466Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Asanoha - Modern Japanese Hotpot\" OR \"Pachi Pachi Nướng Lẩu Nhật Bản\" OR \"Chill Thái\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mookata chuẩn Thái tại Chill Thái (163 Cô Giang)",
+    "link": "https://www.tiktok.com/@1phut_saigon/video/7686036233746730248",
+    "snippet": "Mookata chuẩn Thái tại Chill Thái (163 Cô Giang). Quán phục vụ Mookata vừa nướng vừa lẩu với không gian từ sân vườn đến trong nhà. Buffet thả ga ...",
+    "position": 1
+   },
+   {
+    "title": "Chill Thái gợi ý khách thương “thời khoá biểu ẩm thực” cho ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7675586884885564680",
+    "snippet": "Chill Thái gợi ý khách thương “thời khoá biểu ẩm thực” cho cả tuần lao động hăng say! 🎖️ Lưu ngay \"thời khoá biểu\" này để không bỏ lỡ tuyệt ...",
+    "position": 2
+   },
+   {
+    "title": "Chill Thái - Thai food (@chillthai_thaifood)",
+    "link": "https://www.tiktok.com/@chillthai_thaifood",
+    "snippet": "Chill Thái - Thai food (@chillthai_thaifood) trên TikTok |31.2K Lượt thích.4566 Follower.✨ MÓN THÁI NGON CHUẨN VỊ ☎️ 090 536 32 86.",
+    "position": 3
+   },
+   {
+    "title": "\"Té\" ngay cái lẩu nướng Mookata nhân dịp Tết Songran ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7625521974596341008",
+    "snippet": "Chi tiết chính cần biết - Loại hình: buffet Mookata (lẩu kết hợp nướng kiểu Thái). - Vị trí tham khảo: Chill Thái — nhiều tìm kiếm liên quan đến ...",
+    "position": 4
+   },
+   {
+    "title": "Chill Thái ưu đãi 10% toàn bộ món chay 🌿 Đổi gió cho ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7672253717676166416",
+    "snippet": "Chill Thái ưu đãi 10% toàn bộ món chay Đổi gió cho mâm cơm chay mùa Vu Lan năm nay với đại tiệc chay không thể bỏ qua tại Chill Thái! ... —---- ...",
+    "position": 5
+   },
+   {
+    "title": "Bạn chỉ cần gọi 1 trong 4 món ăn mới sẽ được tặng ngay ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7674119210389523719",
+    "snippet": "Hương vị của quán được người viết mô tả là đúng “chill Thái” — đậm đà và thỏa mãn. Giá cả và giá trị Người đánh giá nhấn mạnh Chilli Thai là ...",
+    "position": 6
+   },
+   {
+    "title": "Asanoha - Modern Japanese Hotpot - Mô hình lẩu 1 người ...",
+    "link": "https://www.tiktok.com/@saigondulich/video/7386337316064857361",
+    "snippet": "Video TikTok từ Sài Gòn (@saigondulich): \"Asanoha - Modern Japanese Hotpot - Mô hình lẩu 1 người Nhật Bản với tiêu chí NGON - KHOẺ - ĐẸP ...",
+    "position": 7
+   },
+   {
+    "title": "NƯỚNG THOẢ SỨC, HÚP LẨU THẢ GA CHỈ VỚI 239 cành! 🇹🇭 ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7647388237308136722",
+    "snippet": "92 Lượt thích,Video TikTok từ Chill Thái - Thai food (@chillthai_thaifood): \"NƯỚNG THOẢ SỨC, HÚP LẨU THẢ GA CHỈ VỚI 239 cành! Người yêu có thể không có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

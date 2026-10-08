@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"mỗi ngày cà phê\" OR \"Café Slow\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:09.088Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"mỗi ngày cà phê\" OR \"Café Slow\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn. Quán cà phê có không gian đèn vàng ấm cúng, dễ chịu với các món bánh và nước uống ngon. Quán còn ...",
+    "position": 1
+   },
+   {
+    "title": "Discover Café Slow in Hoi An: A Hidden Gem for Coffee ...",
+    "link": "https://www.tiktok.com/@betsystories/photo/7650493453951929608",
+    "snippet": "Explore the enchanting Café Slow in Hoi An with stunning sunset views. Perfect for coffee and dessert lovers! #vietnam #hiddengems #hoiantrip # ...",
+    "position": 2
+   },
+   {
+    "title": "Café Slow: Nơi An Yên Giữa Thiên Nhiên và Kiến Trúc",
+    "link": "https://www.tiktok.com/@dicaphe.dn/video/7292975577462590738",
+    "snippet": "Café Slow: Nơi An Yên Giữa Thiên Nhiên và Kiến Trúc. Khám phá Café Slow, quán cà phê đẹp ở Hội An nơi hòa quyện thiên nhiên và kiến trúc ...",
+    "position": 3
+   },
+   {
+    "title": "Mỗi ngày cà phê hạt Arabica American Black #caphe ...",
+    "link": "https://www.tiktok.com/@phuongthao890/video/7571810546371153170",
+    "snippet": "Mỗi ngày cà phê hạt Arabica American Black #caphe #coffee #cafe #coffeetiktok #caphemangdi ; Thập cẩm. 687.4K ; Will in Vietnam . 657.7K.",
+    "position": 4
+   },
+   {
+    "title": "Timorina Café: Slow Mornings With Good Coffee",
+    "link": "https://www.tiktok.com/@timorinacaffee.id/photo/7649589710683196679",
+    "snippet": "Slow mornings, good coffee, and timeless moments. Welcome to Timorina Café. Timorina Café: Slow Mornings With Good Coffee. Enjoy slow mornings filled with good ...",
+    "position": 5
+   },
+   {
+    "title": "Le Temps Café: Slow Coffee Moments & Beautiful UAEEvents",
+    "link": "https://www.tiktok.com/@letemps.cafe/video/7633857349156900129",
+    "snippet": "Le Temps Café: Slow Coffee Moments & Beautiful UAEEvents. Le Temps Café embodies a philosophy of savoring slow moments, enjoying great coffee, and ...",
+    "position": 6
+   },
+   {
+    "title": "📍Café Slow Hội An A work-friendly cafe hidden in Tra Que ...",
+    "link": "https://www.tiktok.com/@bybellenotbell/photo/7683872405680409874",
+    "snippet": "Café Slow Hội An A work-friendly cafe hidden in Tra Que Village, a peaceful vegetable village in Hoi An. #vietnam #hoian #traquevillage ...",
+    "position": 7
+   },
+   {
+    "title": "College Town Café Slow Season: No Business for 3 Months",
+    "link": "https://www.tiktok.com/@honeydcafe/video/7653259942715018509",
+    "snippet": "College Town Café Slow Season: No Business for 3 Months. That time of the year again: no business until school starts in 3 months. For a cafe located in a ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,92 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Neo 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:18:12.434Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Neo 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "THE NEW MacBook Neo - 13 inches - $599USD/$799CAD - A18 Pro ...",
+    "link": "https://www.tiktok.com/@brett.tech/video/7613407036524612882",
+    "snippet": "812 Likes, TikTok video from brett.tech (@brett.tech): “THE NEW MacBook Neo - 13 inches - $599USD/$799CAD - A18 Pro chip - 8GB - 256GB base store - 4 new colours”. The new super affordable MacBook Neo ⬇️Sunset in Calabasas - Adrian.",
+    "position": 1
+   },
+   {
+    "title": "LAPTOP APPLE MACBOOK NEO 13-INCH RAM 8GB 256GB | TikTok",
+    "link": "https://www.tiktok.com/@renoh.kouba/video/7691655534382042420",
+    "snippet": "33 j'aime,Vidéo TikTok de RENOH KOUBA (@renoh.kouba) : « LAPTOP APPLE MACBOOK NEO 13-INCH RAM 8GB 256GB ».original sound - RENOH KOUBA.",
+    "position": 2
+   },
+   {
+    "title": "[Promo] Apple MacBook Neo (13-inch,2026) - TikTok",
+    "link": "https://www.tiktok.com/shop/my/pdp/apple-macbook-neo-13-inci-2026-layar-liquid-retina-ai/1734409631169676313",
+    "snippet": "Beli [Promo] Apple MacBook Neo (13-inch,2026) pada TikTok Shop. Temukan harga hebat bagi Laptops dan dapatkan penghantaran percuma bagi item yang layak. Beli-belah sekarang untuk menikmati tawaran eksklusif!",
+    "position": 3
+   },
+   {
+    "title": "Vincent Mukey (@vincentmukey)’s videos with original sound ...",
+    "link": "https://www.tiktok.com/@vincentmukey/video/7686443534848691474",
+    "snippet": "82 Likes, TikTok video from Vincent Mukey (@vincentmukey): “”. original sound - Vincent Mukey.",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Air (13-inch, M5 chip, 2026) - TikTok Shop",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m5-chip-18-jam-bateri-ssd-512gb/1734537836536759954",
+    "snippet": "Beli Apple MacBook Air (13-inch, M5 chip, 2026) pada TikTok Shop. Temukan harga hebat bagi Laptops dan dapatkan penghantaran percuma bagi item yang layak. Beli-belah sekarang untuk menikmati tawaran eksklusif!",
+    "position": 5
+   },
+   {
+    "title": "Zainabfaisal (@zainabfaisal_25)’s video of zainab hijab girl ...",
+    "link": "https://www.tiktok.com/@zainabfaisal_25/video/7671296108831722772",
+    "snippet": "45.1K Likes, 659 Comments. TikTok video from Zainabfaisal (@zainabfaisal_25): “”. zainab hijab girl trending video. original sound - Zainabfaisal.",
+    "position": 6
+   },
+   {
+    "title": "mode bapak atau mode janda ? | TikTok",
+    "link": "https://www.tiktok.com/@dzbua_/video/7687678314907045140",
+    "snippet": "35 Likes, TikTok video from DHAN ZEBUA🎤 (@dzbua_): “mode bapak atau mode janda ?”. suara asli - DHAN ZEBUA🎤.",
+    "position": 7
+   }
+  ],
+  "relatedSearches": [
+   {
+    "query": "apple macbook neo 13 inch site:tiktok.com 1"
+   },
+   {
+    "query": "apple macbook neo 13 inch site:tiktok.com screen"
+   },
+   {
+    "query": "apple macbook neo 13 inch site:tiktok.com price"
+   },
+   {
+    "query": "13 inch to cm"
+   },
+   {
+    "query": "apple macbook neo 13 inch site:tiktok.com 2"
+   },
+   {
+    "query": "13 inch rims"
+   },
+   {
+    "query": ".13 inches in fraction"
+   },
+   {
+    "query": "13 inch tv"
+   }
+  ],
+  "credits": 1
+ }
+}

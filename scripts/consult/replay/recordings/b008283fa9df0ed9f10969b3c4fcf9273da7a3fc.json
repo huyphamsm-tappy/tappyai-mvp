@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"The Workshop Coffee\" OR \"Hoff Coffee Brewers by BeanHop\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:23:26.686Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"The Workshop Coffee\" OR \"Hoff Coffee Brewers by BeanHop\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Workshop Coffee",
+    "link": "https://www.tiktok.com/discover/the-workshop-coffee",
+    "snippet": "The workshop coffee which has been honoured with a place on the 'Asia's 50 Best Coffee Shops' list, is an absolute must-visit destination",
+    "date": "14 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Review The Workshop Coffee Quận 1: Quán Cafe Nổi ...",
+    "link": "https://www.tiktok.com/@chamdidau/video/7345025504321244423",
+    "snippet": "The workshop coffee là quán cafe đã rất nổi tiếng ở SG từ đó giờ rồi nè, mình thích quán này vì nước, vì không gian và không khí tại quán. Quán ...",
+    "position": 2
+   },
+   {
+    "title": "The Workshop Coffee Roasters: Review sau nhiều năm",
+    "link": "https://www.tiktok.com/@hai.meca/photo/7661536948552535304",
+    "snippet": "TikTok video from Hải mê cà ☕ (@hai.meca): “Đánh giá The Workshop Coffee Roasters - một trong những nhà rang được nhắc đến nhiều trong cộng đồng specialty ...",
+    "position": 3
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7506351344945761582",
+    "snippet": "2162 Likes, TikTok video from Sidney Corbin (@sidneycorbin): “Discover the charm of The Workshop coffee shop in Wilmington, NC, with stunning ocean views.",
+    "position": 4
+   },
+   {
+    "title": "The Workshop Coffee 27 Ngô Đức Kế Quận 1 – Saigon Cafe",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7517147745224789278",
+    "snippet": "The Workshop Coffee at 27 Ngô Đức Kế, Bến Nghé, Quận 1 is a Saigon cafe spot known for coffee and Vietnamese food in the heart of Ho Chi ...",
+    "position": 5
+   },
+   {
+    "title": "Wrightsville Beach loop & The Workshop Coffee — why locals ...",
+    "link": "https://www.tiktok.com/@siennarealtor/video/7663523929763351838",
+    "snippet": "The Workshop Coffee: local café vibe The Workshop Coffee sits along the Loop and serves as a convenient stop for caffeine, casual conversation and a quick rest.",
+    "position": 6
+   },
+   {
+    "title": "Exploring The Workshop Coffee Shop in Wilmington, NC",
+    "link": "https://www.tiktok.com/@sidneycorbin/video/7473646342024400174",
+    "snippet": "Exploring The Workshop Coffee Shop in Wilmington, NC. ☕️ Day 25 of exploring every coffee spot in Wilmington, North Carolina brought me ...",
+    "position": 7
+   },
+   {
+    "title": "Asia's 50 Best Coffee Shop in Ho Chi Minh City",
+    "link": "https://www.tiktok.com/@bill741227/photo/7679371459915156744",
+    "snippet": "The workshop coffee which has been honoured with a place on the 'Asia's 50 Best Coffee Shops' list, is an absolute must-visit destination ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

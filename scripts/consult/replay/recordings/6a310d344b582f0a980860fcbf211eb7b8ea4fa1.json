@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:10:41.505Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB 1TB | Chính hãng Apple Việt Nam",
+    "imageUrl": "https://img.youtube.com/vi/ZmQSna5xlE8/maxresdefault.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDoX40qv4Sqskpl2dvl7K11LeklJ5GGnceNmTnFvkXTw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-10-gpu-16gb-1tb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.youtube.com%2Fvi%2FZmQSna5xlE8%2Fmaxresdefault.jpg&tbnid=YO2CUZXWdeQDjM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-10-gpu-16gb-1tb.html&docid=IXZJ40PryfTjiM&w=1280&h=720",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/10GPU/16GB/1TB/35W",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/macbook_air_13_m5_sky_blue_1_d2ba4f7e98.png",
+    "imageWidth": 512,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVoCEqsids1ICbhlNgMOkcZhPnErH6lZLHZm5bq_Fkjw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-inch-m5-2026-10cpu-10gpu-16gb-1tb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_13_m5_sky_blue_1_d2ba4f7e98.png&tbnid=JlcaRqWXm5EDFM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-inch-m5-2026-10cpu-10gpu-16gb-1tb&docid=jogJAjGzzcF6-M&w=512&h=512",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU/10GPU - RAM 16GB - 1TB",
+    "imageUrl": "https://onewaymobile.vn/upload/1Macbook/Macbook-air-m5/starlight.webp",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHq0Ttm-5Yhc0eog0f2lXOqT_p9NWeyAELsVOHLZjwuw&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "ONEWAY",
+    "domain": "onewaymobile.vn",
+    "link": "https://onewaymobile.vn/macbook-air-m5-13-inch-2026-10cpu-10gpu-ram-16gb-1tb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fonewaymobile.vn%2Fupload%2F1Macbook%2FMacbook-air-m5%2Fstarlight.webp&tbnid=aZnYh6dU9DTjfM&imgrefurl=https%3A%2F%2Fonewaymobile.vn%2Fmacbook-air-m5-13-inch-2026-10cpu-10gpu-ram-16gb-1tb&docid=JNO3HYVyUa5GEM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB 1TB | Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_3__19.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIdInEYfjVkiX3ykcs_3ZkRbOcahoaeC4x6exjRHEhLg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-10-gpu-16gb-1tb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_3__19.png&tbnid=T6CaaA-h81AoOM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-10-gpu-16gb-1tb.html&docid=IXZJ40PryfTjiM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M5 2026 13 inch 10CPU 10GPU 16GB 1TB",
+    "imageUrl": "https://static.minhtuanmobile.com/uploads/editer/2026-03/09/images/macbook-air-m5-13-inch-10cpu-10gpu-16gb-1tb-2.png",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuUo2bYlew3r-obmtOklH9UYrwDEbS6BCpcqSuBVYGpw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Minh Tuấn Mobile",
+    "domain": "minhtuanmobile.com",
+    "link": "https://minhtuanmobile.com/macbook-air-m5-13-10cpu-10gpu-16gb-1tb/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.minhtuanmobile.com%2Fuploads%2Fediter%2F2026-03%2F09%2Fimages%2Fmacbook-air-m5-13-inch-10cpu-10gpu-16gb-1tb-2.png&tbnid=Q9Ybs03TZxZzoM&imgrefurl=https%3A%2F%2Fminhtuanmobile.com%2Fmacbook-air-m5-13-10cpu-10gpu-16gb-1tb%2F&docid=twawJl0O7XS2WM&w=800&h=450",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU 10GPU 16GB 1TB | Giá tốt nhất",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/macbook_air_13_m5_sky_blue_2_3315c939a5.png",
+    "imageWidth": 512,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcyXvgnJT2BMT7hzgWNd6U7WmySZMzYAuQYShAOKZu4A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-inch-m5-2026-10cpu-10gpu-16gb-1tb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_13_m5_sky_blue_2_3315c939a5.png&tbnid=eu9qUNOTHNbe-M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-inch-m5-2026-10cpu-10gpu-16gb-1tb&docid=jogJAjGzzcF6-M&w=512&h=512",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 10GPU 16GB 1TB - Bạc /  10CPU/10GPU/16GB/1TB",
+    "imageUrl": "https://cdn.hstatic.net/products/200000837185/untitled_-_may_27__2026_at_22.28.36_c42776358bab48f28df57796f1e72bb0.png",
+    "imageWidth": 2048,
+    "imageHeight": 1312,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpPhJsGfBC5HoZEBIVOWtuihQXDJqu3M7a_H0dH70B4w&s",
+    "thumbnailWidth": 280,
+    "thumbnailHeight": 180,
+    "source": "Xgear",
+    "domain": "xgear.net",
+    "link": "https://xgear.net/products/macbook-air-m5-13-inch-2026-10cpu-10gpu-16gb-1tb?srsltid=AU7gw4WYomriBMOXmBG-S9JRqsX2QoGBcLYIWUCct1iOflBTrjNJ587a",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000837185%2Funtitled_-_may_27__2026_at_22.28.36_c42776358bab48f28df57796f1e72bb0.png&tbnid=wvy7eGn310fGNM&imgrefurl=https%3A%2F%2Fxgear.net%2Fproducts%2Fmacbook-air-m5-13-inch-2026-10cpu-10gpu-16gb-1tb%3Fsrsltid%3DAU7gw4WYomriBMOXmBG-S9JRqsX2QoGBcLYIWUCct1iOflBTrjNJ587a&docid=vgYHauMOfcAmoM&w=2048&h=1312",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M5 2026 13 inch 10CPU 10GPU 16GB 1TB Chính Hãng VN - Midnight",
+    "imageUrl": "https://tymo.vn/wp-content/uploads/2026/04/macbook-air-m5-2026-13-inch-10cpu-10gpu-16gb-1tb-10.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE0xM-s-GsuWhgtJbxWTG5nvB-cYl3abGaxTmi65NHMw&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "TYMO",
+    "domain": "tymo.vn",
+    "link": "https://tymo.vn/macbook/macbook-air-m5-2026-13-inch-16gb-1tb?srsltid=AU7gw4WSHMzptqMRDfkUtCG0Z_w7HTUAnVugxdqvth_B8x1-Zex0UBoa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftymo.vn%2Fwp-content%2Fuploads%2F2026%2F04%2Fmacbook-air-m5-2026-13-inch-10cpu-10gpu-16gb-1tb-10.jpg&tbnid=AE4-8d5ki-FqOM&imgrefurl=https%3A%2F%2Ftymo.vn%2Fmacbook%2Fmacbook-air-m5-2026-13-inch-16gb-1tb%3Fsrsltid%3DAU7gw4WSHMzptqMRDfkUtCG0Z_w7HTUAnVugxdqvth_B8x1-Zex0UBoa&docid=VPX_yUzKxRgj7M&w=500&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

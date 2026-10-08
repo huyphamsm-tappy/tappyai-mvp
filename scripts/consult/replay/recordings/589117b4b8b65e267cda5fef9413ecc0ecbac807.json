@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn ngon tầm giá dưới 200k mỗi người Quận 3, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:28:33.591Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn ngon tầm giá dưới 200k mỗi người Quận 3, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ ...",
+    "link": "https://www.youtube.com/watch?v=AvS9oprIc4s",
+    "snippet": "Địa chỉ : Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ Địa Chỉ Đường Mới Biết 1. GÀ NƯỚNG CHÚ THÀNH (10H -22H) 00:00 110/39 SỐ 30, ...",
+    "position": 1
+   },
+   {
+    "title": "16 nhà hàng Quận 3 ngon mê ly, sang chảnh, cực chill",
+    "link": "https://zalopay.vn/nha-hang-quan-3-5592",
+    "snippet": "1. La Maison Wine Dining · 2. Hum, Café & Restaurant · 3. CTY Kitchen + Bar · 4. Côn Sơn Restaurant & Lounge · 1. Stix - Banquets & Events · 2. Nhà ...",
+    "date": "4 thg 6, 2024",
+    "position": 2
+   },
+   {
+    "title": "Gợi ý quán ăn cho 10 người ở quận 3 với ngân sách 200k ...",
+    "link": "https://www.facebook.com/groups/riviu.official/posts/3787514908045098/",
+    "snippet": "Giá tầm 159k/người (gồm tráng miệng), nếu ko dùng tráng miệng thì rẻ ... Đi ăn Mê Rau đi bạn, ngon lắm, lại rẻ nữa. 1y · 1 like. Trần ...",
+    "position": 3
+   },
+   {
+    "title": "Top 16 QUÁN ĂN NGON RẺ dân Sành Ăn không nên bỏ lỡ ...",
+    "link": "https://www.youtube.com/watch?v=i7EWrRAirgc",
+    "snippet": "Địa chỉ : TỔNG HỢP 16 QUÁN ĂN NGON RẺ NỔI TIẾNG QUẬN 3 NĂM 2026 (PHẦN 5) 1. HỘT VỊT LỘN CÔ VÂN (14H -24H) ĐỊA CHỈ: 2B Bàn Cờ, Phường Bàn Cờ ...",
+    "position": 4
+   },
+   {
+    "title": "Top những quán ăn ngon, nổi tiếng, giá 200k ở Sài Gòn",
+    "link": "https://pasgo.vn/blog/top-nhung-quan-an-mon-ngon-noi-tieng-nhat-o-sai-gon-726",
+    "snippet": "1. Pachi Pachi - 52 Mạc Đĩnh Chi, Phường Đa Kao, Quận 1 · 2. Lẩu & Nướng Soa Soa - 64 Phạm Ngọc Thạch, Phường 6, Quận 3 · 3. Subin BBQ – Quán ...",
+    "date": "9 thg 12, 2018",
+    "position": 5
+   },
+   {
+    "title": "Gợi ý những quán ăn ngon và rẻ : r/saigon",
+    "link": "https://www.reddit.com/r/saigon/comments/16xoqrb/cheap_food_recommendations/?tl=vi",
+    "snippet": "Vợ tui với mấy đứa bạn nó khoái lắm cái quán ốc hải sản ở Q4 này: Quán Bò Né 128 Vĩnh khánh (40 Vĩnh Khánh, Phường 8, Quận 4, Thành phố Hồ Chí ...",
+    "position": 6
+   },
+   {
+    "title": "Top 25 Quán Ăn Quận 3 Ngon, Nổi Tiếng, Ăn Là Ghiền!",
+    "link": "https://vincom.com.vn/trend/quan-an-quan-3",
+    "snippet": "Top 25 quán ăn quận 3 ngon, nổi tiếng, ăn là ghiền! · Quán lẩu Ba Con Cừu · Bánh mì Chảo Restaurant · Lẩu Thái Food House · Canh bún Nam Kỳ Khởi ...",
+    "date": "11 thg 11, 2022",
+    "position": 7
+   },
+   {
+    "title": "Địa điểm ăn uống hấp dẫn ở quận 3",
+    "link": "https://vemaybayvietmy.com/dia-diem-an-uong-hap-dan-o-quan-3.html",
+    "snippet": "Làng Nướng Nam Bộ – Cách mạng tháng 8 ... Địa chỉ: 285/C145 CMT8, P.12, Quận 3, Tp. HCM. Nếu muốn kiếm một nơi để thưởng thức các món nướng bạn có thể đến đây.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu phổ thông trực tuyến người đủ 14 tuổi ảnh chân dung CCCD lệ phí 2026 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:16:44.457Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu phổ thông trực tuyến người đủ 14 tuổi ảnh chân dung CCCD lệ phí 2026 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước (mẫu TK01 dành cho người từ 14 tuổi trở lên; mẫu TK01a dành cho người chưa đủ 14 tuổi) ban hành kèm theo ...",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "... Cấp hộ chiếu và nộp hồ sơ. - Tải ảnh chân dung 4x6 cm nền trắng, ảnh mặt trước và sau của CCCD;. - Nhập đầy đủ thông tin vào các cột mục;.",
+    "date": "24 thg 12, 2024",
+    "position": 2
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước",
+    "link": "https://conganthanhhoa.gov.vn/dich-vu-cong/quan-ly-xuat-nhap-canh/cap-ho-chieu-pho-thong.html",
+    "snippet": "Tên TTHC, Cấp hộ chiếu phổ thông ở trong nước. Trình tự, cách thức thực hiện. 1. Trình tự thực hiện: Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật.",
+    "position": 3
+   },
+   {
+    "title": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/hy.qlxnc/posts/mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y-/1088837573799005/",
+    "snippet": "🗣️Ngày 28/4/2026, Cục Quản lý xuất nhập cảnh, Bộ Công an đã triển khai dịch vụ công cấp hộ chiếu phổ thông ở trong nước trên ứng dụng VNeID.",
+    "position": 4
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu/passport online cho trẻ em dưới 14 tuổi",
+    "link": "https://ketoananpha.vn/thu-tuc-lam-ho-chieu-online-cho-tre-em.html",
+    "snippet": "Thủ tục, cách làm hộ chiếu (passport) cho trẻ em dưới 14 tuổi online và trực tiếp tại cơ quan xuất nhập cảnh. Tải mẫu tờ khai làm hộ chiếu cho trẻ dưới 14 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "HƯỚNG DẪN NỘP HỒ SƠ CẤP HỘ CHIẾU TRÊN ỨNG DỤNG ...",
+    "link": "https://www.facebook.com/congantinhtuyenquang/videos/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-n%E1%BB%99p-h%E1%BB%93-s%C6%A1-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-tr%C3%AAn-%E1%BB%A9ng-d%E1%BB%A5ng-vneidnh%E1%BA%B1m-t%E1%BA%A1o-thu%E1%BA%ADn-l%E1%BB%A3i-cho-ng%C6%B0%E1%BB%9Di/948024608129618/",
+    "snippet": "Gõ từ khóa “Hộ chiếu”. Chọn Cấp hộ chiếu phổ thông ở trong nước. Nhập passcode → Ấn Tạo mới yêu cầu. Chọn đúng đối tượng (từ đủ 14 tuổi hoặc ...",
+    "position": 6
+   },
+   {
+    "title": "HƯỚNG DẪN LÀM HỘ CHIẾU CHO TRẺ EM DƯỚI 14 TUỔI ...",
+    "link": "https://congan.caobang.gov.vn/thoi-su-chinh-tri/huong-dan-lam-ho-chieu-cho-tre-em-duoi-14-tuoi-tren-cong-dich-vu-cong-bo-cong-an-1032207",
+    "snippet": "1️⃣ Hồ sơ cần chuẩn bị: Các thông tin về Họ và tên, Ngày tháng năm sinh, Nơi đăng ký thường trú, Năm sinh bố, mẹ hoặc người giám hộ... 01 File ...",
+    "date": "13 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn thủ tục cấp hộ chiếu trên VNeID",
+    "link": "https://www.youtube.com/watch?v=U9T6ZCOixB8",
+    "snippet": "Hướng dẫn thủ tục cấp hộ chiếu phổ thông trong nước thực hiện trên ứng dụng VNeID mới nhất. Trong video này, bạn sẽ được hướng dẫn từng bước ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

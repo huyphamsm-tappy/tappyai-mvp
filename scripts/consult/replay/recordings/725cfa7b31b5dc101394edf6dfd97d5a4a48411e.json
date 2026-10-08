@@ -1,0 +1,114 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "lịch trình du lịch 20–23/11/2026; gợi ý  quán đặc sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:18:26.745Z",
+ "body": {
+  "searchParameters": {
+   "q": "lịch trình du lịch 20–23/11/2026; gợi ý  quán đặc sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đặc Sản Ngon Đà Nẵng - Đặc Sản Làm Quà shop online",
+    "address": "171 P. Đức Chính, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0810019,
+    "longitude": 108.23967359999999,
+    "rating": 4.5,
+    "ratingCount": 41,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản"
+    ],
+    "website": "https://dacsanngondanang.com/",
+    "phoneNumber": "+84 987 428 428",
+    "openingHours": {
+     "Thứ Năm": "06:30–22:30",
+     "Thứ Sáu": "06:30–22:30",
+     "Thứ Bảy": "06:30–22:30",
+     "Chủ Nhật": "06:30–22:30",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "06:30–22:30",
+     "Thứ Tư": "06:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmtXIGZbODYlHlOv_oU5KLkecji7KMcexQitWNzSo82-Mhe1MgOKV9Ui_Wyax8lJeBXMJo33peWLfegQz_5zpdCU5ZoRAMVwQdisWTUGAydk4DXJrlz-8EqUcUFHS0aQ---IJcOkg",
+    "cid": "3915797310732470034",
+    "fid": "0x314217451b1890bb:0x3657b4e846a38712",
+    "placeId": "ChIJu5AYG0UXQjEREoejRui0VzY"
+   },
+   {
+    "position": 2,
+    "title": "Công ty Du lịch Bản Địa Đà Nẵng",
+    "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0572673,
+    "longitude": 108.22151889999999,
+    "rating": 5,
+    "ratingCount": 12,
+    "type": "Nhà điều hành du lịch",
+    "types": [
+     "Nhà điều hành du lịch",
+     "Đại lý du lịch tham quan",
+     "Trung tâm thông tin du lịch"
+    ],
+    "website": "https://mytour.danang.vn/",
+    "phoneNumber": "+84 818 433 579",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl2sX7wkRDuZbtQWVb0KcWi6ZHAR0tq3xV3XdrX1mQkkIYTtbrjWb3krJRXbxexHGsTp_PprZHfQCD29AnvsNGcXtjFbrgsxSSPRytuuQfXbWOiTpyucJ6y-fV5K41oUxBz9N0QsjYu45s",
+    "cid": "14002912477811630774",
+    "fid": "0x314219ee23ed6619:0xc25456b53cd8e2b6",
+    "placeId": "ChIJGWbtI-4ZQjERtuLYPLVWVMI"
+   },
+   {
+    "position": 3,
+    "title": "Đà Nẵng Food Tour",
+    "address": "4 Trần Quốc Toản, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0661013,
+    "longitude": 108.22436189999999,
+    "rating": 4.6,
+    "ratingCount": 115,
+    "type": "Nhà điều hành du lịch",
+    "types": [
+     "Nhà điều hành du lịch",
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "http://danangfoodtour.com/",
+    "phoneNumber": "+84 787 796 006",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnmIzblo3cc5ASi16P27Bbe7-VRUIWeIUjIloyY8Q5MwEkKttF3m5p9Sw-PnCjzrZu-LeCkZ81OhmMmnzUzscN62KC9Sg2cy9qSba-fLUUHeSGgBo2PnXi7IfrAE_btKO9s0Jxw",
+    "cid": "16283078399283292555",
+    "fid": "0x314218211e40911f:0xe1f91d885f1de98b",
+    "placeId": "ChIJH5FAHiEYQjERi-kdX4gd-eE"
+   }
+  ],
+  "credits": 3
+ }
+}

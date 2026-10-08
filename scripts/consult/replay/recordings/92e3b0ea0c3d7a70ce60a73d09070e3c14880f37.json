@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhu Minh Plaza Danang Hotel\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:54:15.085Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhu Minh Plaza Danang Hotel\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhu Minh Plaza Danang hotel (@nmpdananghotel)",
+    "link": "https://www.tiktok.com/@nmpdananghotel",
+    "snippet": "Nhu Minh Plaza Danang hotel · @nmpdananghotel · Phòng khách sạn biển - sảnh sự kiện 4 ⭐️ 0947.04.00.11 41 Phạm Văn Đồng, Tp Đà Nẵng.",
+    "position": 1
+   },
+   {
+    "title": "Các Hạng Phòng Khách Sạn Như Mình Plaza - View Biển ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/photo/7638447415628025108",
+    "snippet": "TikTok video from Nhu Minh Plaza Danang hotel (@nmpdananghotel): “Khám phá các hạng phòng tại Như Mình Plaza với sức chứa đa dạng, ...",
+    "position": 2
+   },
+   {
+    "title": "WE MADE IN VIETNAM! #vietnam #nghile30_41_5 # ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7634070667662511380",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"WE MADE IN VIETNAM! #vietnam #nghile30_41_5 #learnontiktok #foryoupage ...",
+    "position": 3
+   },
+   {
+    "title": "Nhu Minh Plaza Danang Hotel Ktv",
+    "link": "https://www.tiktok.com/discover/nhu-minh-plaza-danang-hotel-ktv",
+    "snippet": "10.3M bài đăng. Hãy khám phá video liên quan đến Nhu Minh Plaza Danang Hotel Ktv trên TikTok. Xem thêm video về Centre Point Danang Hotel, Nhu Minh Plaza Đà ...",
+    "position": 4
+   },
+   {
+    "title": "Video thực tế phòng dành cho 4 người lớn, phù hợp với ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7650052081889414420",
+    "snippet": "Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Video thực tế phòng dành cho 4 người lớn, phù hợp với gia đình và nhóm bạn.",
+    "position": 5
+   },
+   {
+    "title": "Nhu Minh Plaza Danang hotel - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-Nhu-Minh-Plaza-Danang-hotel-7658218051465497352",
+    "snippet": "original sound - Nhu Minh Plaza Danang hotel. Nhu Minh Plaza Danang hotel. 1 videos. Trending. New. Thiết kế sảnh cưới 2 tầng, lý tưởng cho tiệc cưới, ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệc trưa 160 khách: cách tổ chức và phục vụ thành công",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7640319535710555413",
+    "snippet": "Kinh nghiệm tổ chức tiệc trưa cho 160 khách: chuẩn bị, nhân sự,. @Nhu Minh Plaza Danang hotel ...",
+    "position": 7
+   },
+   {
+    "title": "Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7 ...",
+    "link": "https://www.tiktok.com/@nmpdananghotel/video/7638463919052377365",
+    "snippet": "35 Lượt thích,Video TikTok từ Nhu Minh Plaza Danang hotel (@nmpdananghotel): \"Lịch lễ hội pháo hoa quốc tế Đà Nẵng 2026 từ 30/5-11/7/2026.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

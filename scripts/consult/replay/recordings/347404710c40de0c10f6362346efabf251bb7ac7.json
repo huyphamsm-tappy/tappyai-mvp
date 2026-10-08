@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí hộ chiếu trực tuyến 2 5",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:24:42.482Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí hộ chiếu trực tuyến 2 5",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "Khoản chi phí đó bao gồm: a) Những khoản thanh toán trực tiếp cho cá nhân người đi công tác nước ngoài gồm: i) Tiền vé các phương tiện đi lại ...",
+    "position": 1
+   },
+   {
+    "title": "Nghị định số 28/2012/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=157455",
+    "snippet": "Nghị định số 28/2012/NĐ-CP của Chính phủ: Quy định chi tiết và hướng dẫn thi hành một số điều của Luật người khuyết tật.",
+    "date": "10 thg 4, 2012",
+    "position": 2
+   },
+   {
+    "title": "Quyết định số 62/2011/QĐ-TTG của Thủ tướng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=152531",
+    "snippet": "Quyết định này quy định chế độ trợ cấp hàng tháng, trợ cấp một lần, chế độ bảo hiểm y tế, mai táng phí đối với một số đối tượng trực tiếp tham gia chiến tranh ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư số 222/2010/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=99517",
+    "snippet": "Thông tư số 222/2010/TT-BTC của Bộ Tài chính: Quy định chế độ quản lý tài chính, tài sản đối với các Cơ quan Việt Nam ở nước ngoài.",
+    "date": "31 thg 12, 2010",
+    "position": 4
+   },
+   {
+    "title": "Thông tư số 138/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=48955",
+    "snippet": "a) Hộ tái định cư và hộ sở tại phải di dời nhà ở được thanh toán toàn bộ chi phí bồi thường trước khi di dời toàn bộ gia đình. b) Hộ tái định cư tự nguyện: Phải ...",
+    "position": 5
+   },
+   {
+    "title": "Nghị định số 83/2010/NĐ-CP của Chính phủ: Về đăng ký giao ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=95833",
+    "snippet": "Người yêu cầu đăng ký giao dịch bảo đảm phải nộp lệ phí đăng ký. 2. Người yêu cầu cung cấp thông tin về giao dịch bảo đảm phải nộp phí cung cấp ...",
+    "date": "23 thg 7, 2010",
+    "position": 6
+   },
+   {
+    "title": "Luật số 16/2012/QH13 của Quốc hội: LUẬT QUẢNG CÁO",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=163008",
+    "snippet": "a) Tên cơ quan chủ quản trực tiếp (nếu có);. b) Tên cơ sở sản xuất, kinh doanh theo đúng giấy chứng nhận đăng ký kinh doanh;. c) Địa chỉ ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 01/2012/TT-BNG của Bộ Ngoại giao",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=161538",
+    "snippet": "Giấy tờ, tài liệu nêu tại khoản 2 Điều 10 Nghị định có các chi tiết trong bản thân giấy tờ, tài liệu đó mâu thuẫn với nhau hoặc mâu thuẫn với giấy tờ, tài liệu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hana Dalat Hotel\" OR \"Le House Da Lat\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:09:12.210Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hana Dalat Hotel\" OR \"Le House Da Lat\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ekskluzywny hotel z wyżywieniem za 120 zł 🏨🇻🇳 📍Le ...",
+    "link": "https://www.tiktok.com/@bsktravels/video/7552551529690058006",
+    "snippet": "Ekskluzywny hotel z wyżywieniem za 120 zł Le House, Da Lat #Wietnam #Vlog #vlogpodróżniczy #podróże #azja · recommend-cover. RK90. 206.7 ...",
+    "position": 1
+   },
+   {
+    "title": "Le House Đà Lạt review: khách sạn gần concert, đại nhạc hội",
+    "link": "https://www.tiktok.com/@lulureview_/video/7424072660772228359",
+    "snippet": "Đây cũng là lý do khiến các từ khóa như “le house da lat”, “le house boutique hotel” hay “bài đánh giá về le house da lat” thường xuất hiện ...",
+    "position": 2
+   },
+   {
+    "title": "Khách Sạn Le House Đà Lạt - Địa Điểm Lý Tưởng Cho Du ...",
+    "link": "https://www.tiktok.com/@anhdadenbooking.com/video/7458111334614355201",
+    "snippet": "Khách Sạn Le House Đà Lạt - Địa Điểm Lý Tưởng Cho Du Khách. Khách sạn Le House Đà Lạt mang phong cách Indochine, lý tưởng cho chuyến du lịch ...",
+    "position": 3
+   },
+   {
+    "title": "Discover Le House Hotel in Da Lat: A Perfect Stay",
+    "link": "https://www.tiktok.com/@user8309188803891/video/7634888069770071317",
+    "snippet": "... giúp - TikTok. Explore Le House Hotel in Da Lat with spacious rooms, breakfast buffet, and friendly. @Mỹ Anh · Theo Nắng Mà Đi · Le House Da Lat Hotel · author.",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Những Bảo Tàng Nghệ Thuật Ở Đà Lạt",
+    "link": "https://www.tiktok.com/@hanahotel.dalat/photo/7619571223642574100",
+    "snippet": "If you think it may contain an error, please report at: Feedback and help - TikTok · nhạc nền - Hà An Huy · Hana Dalat Hotel · author. 1602 · 1.",
+    "position": 5
+   },
+   {
+    "title": "Cindy Lư với Đạt G: Nghe đi nghe lại ca khúc mới nhất",
+    "link": "https://www.tiktok.com/@ccindylu/video/7663102244409052424",
+    "snippet": "Nghe đi nghe lại cũng đủ rồi — yêu cầu ra thêm nhạc của Cindy Lư. @CINDY LƯ · âm thanh gốc - NHẠC VÀO LỜI RA · Le House Da Lat Hotel · author.",
+    "position": 6
+   },
+   {
+    "title": "Kiết khánh hạ bảo bình ann nha ăm chã húi @Nguyễn Tấn ...",
+    "link": "https://www.tiktok.com/@ccindylu/video/7667564816508341511",
+    "snippet": "... Kiết khánh hạ bảo bình ann nha ăm chã húi @Nguyễn Tấn Đạt #CINDYLU. @CINDY LƯ · âm thanh gốc - CINDY LƯ · Le House Da Lat Hotel · author. 6378.",
+    "position": 7
+   },
+   {
+    "title": "leehousedalat",
+    "link": "https://www.tiktok.com/tag/leehousedalat",
+    "snippet": "Le House Đà Lạt - Địa chỉ : 124 Phạm Ngọc Thạch, Phường 6, · Một chiếc villa mới tinh ngay chợ đêm ạ #fyp #dalat #villadalat # · Ekskluzywny hotel z wyżywieniem ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

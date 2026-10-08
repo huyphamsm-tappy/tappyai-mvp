@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple Macbook Air M3 15 inch 2024 8CPU 10GPU 16GB 256GB Sạc 35W\" OR \"Apple Macbook Air M3 13 inch 2024 8CPU\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:50.717Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple Macbook Air M3 15 inch 2024 8CPU 10GPU 16GB 256GB Sạc 35W\" OR \"Apple Macbook Air M3 13 inch 2024 8CPU\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}
