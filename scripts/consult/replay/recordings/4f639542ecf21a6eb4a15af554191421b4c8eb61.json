@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:36.625Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=182515",
+    "snippet": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, ...",
+    "position": 1
+   },
+   {
+    "title": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=180557",
+    "snippet": "Công văn số 5425/VPCP-KTTH của Văn phòng Chính phủ: V/v hướng dẫn thu, nộp lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh ; Số ký hiệu, 5425/VPCP ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214418",
+    "snippet": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân.",
+    "position": 3
+   },
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "76/2026/TT-BXD 05/10/2026, 05/10/2026, Ban hành định mức chi phí, lợi nhuận áp dụng cho dịch vụ sự nghiệp công bảo đảm an toàn hàng hải sử dụng ngân sách nhà ...",
+    "position": 4
+   },
+   {
+    "title": "Nghị định số 65/2012/NĐ-CP của Chính phủ - Hệ thống văn bản",
+    "link": "http://vanban.chinhphu.vn/portal/page/portal/chinhphu/hethongvanban?class_id=1&amp;_page=1&amp;mode=detail&amp;document_id=163509",
+    "snippet": "- Hộ chiếu ngoại giao, hộ chiếu công vụ có giá trị không quá 5 năm tính từ ngày cấp. Hộ chiếu ngoại giao, hộ chiếu công vụ còn giá trị dưới 6 tháng thì được gia ...",
+    "position": 5
+   },
+   {
+    "title": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=208496",
+    "snippet": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính: Quy định quản lý, sử dụng và quyết toán kinh phí sự nghiệp từ nguồn ngân sách nhà nước thực hiện các chương trình ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư số 68/2025/TT-BCA của Bộ Công an",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214804&classid=1&typegroupid=6",
+    "snippet": "... Thông tư số 31/2023/TT-BCA ngày 20 tháng 7 năm 2023 của Bộ trưởng Bộ Công an quy định về mẫu hộ chiếu, mẫu giấy thông hành và các biểu mẫu liên quan.",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "vii) Lệ phí visa, lệ phí cấp hộ chiếu: Thanh toán theo phiếu thu hợp pháp của cơ quan lãnh sự trong và ngoài nước;. viii) Tiền đóng góp tham gia (tham dự) hội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

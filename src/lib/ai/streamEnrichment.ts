@@ -2806,7 +2806,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const claims = guardSearchClaims(v1PlanMask.text, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes })
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -2902,7 +2902,11 @@ export function applyPlaceEnrichmentStreamFilter(
       const contraryUnsaid = (v1.hardContrary ?? []).filter(g => gapWords[g] && !/khong (?:co|thay)|kem|lacks?|no (?:ac|air)/.test(said))
       const budgetUnsaid = v1.budgetGap && !/chua (?:co|thay|tim thay) (?:duoc )?(?:muc |thong tin )?gia|khong (?:co|tim thay) (?:muc |thong tin )?gia|no price/.test(said)
       const headsUp: string[] = []
-      if (unsaid.length > 0) {
+      // M7 (TAPPY_AGENT=2): Luna owns reading the user's needs and what to caution about. These lines come from the legacy situation
+      // frame, which parses the conversation itself and knows nothing of the task state — measured SR-G1: the user dropped "yên tĩnh" for
+      // "gần biển" and code still appended "chưa thấy bằng chứng về yên tĩnh". Facts stay protected by the guards; Phase 7 / legacy unchanged.
+      const runtimeOwnsCautions = collector?.semanticRanking === true
+      if (unsaid.length > 0 && !runtimeOwnsCautions) {
         // B1: a shopping turn's heads-up points at the seller page, not at a phone call.
         const shoppingGaps = unsaid.every(g => g in SHOPPING_GAP_WORDS)
         headsUp.push(lang === 'en'
@@ -2913,12 +2917,12 @@ export function applyPlaceEnrichmentStreamFilter(
             ? `Mình chưa xác nhận được ${unsaid.map(g => gapWords[g][0]).join(', ')} từ các listing — bạn kiểm tra trên trang bán trước khi đặt.`
             : `Mình chưa thấy bằng chứng về ${unsaid.map(g => gapWords[g][0]).join(', ')} ở các quán này — nên gọi hỏi trước khi đi.`))
       }
-      if (contraryUnsaid.length > 0) {
+      if (contraryUnsaid.length > 0 && !runtimeOwnsCautions) {
         headsUp.push(lang === 'en'
           ? `Some reviews say ${contraryUnsaid.map(g => gapWords[g][1]).join(', ')} is lacking here — worth checking before you go.`
           : `Có đánh giá nói ${contraryUnsaid.map(g => gapWords[g][0]).join(', ')} ở đây không tốt — nên hỏi trước khi đi.`)
       }
-      if (budgetUnsaid) {
+      if (budgetUnsaid && !runtimeOwnsCautions) {
         headsUp.push(lang === 'en'
           ? 'None of these results carries a price, so I cannot confirm they fit your budget.'
           : 'Kết quả chưa có mức giá, nên mình chưa khẳng định được có vừa ngân sách của bạn không.')
@@ -3057,7 +3061,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // server-authored pick sentence names (`pickName` below).
     const modelPickRow = collector?.consultBrief === true ? null : modelPickName(mainText, places.map(p => p.name || '').filter(Boolean))
     const pickForFallback = modelPickRow && fallbackSentence(modelPickRow) ? modelPickRow : pickName
-    const g1bFallback = bodyLetters < 40 ? fallbackSentence(subjectOnly(pickForFallback)) : null
+    // M7 (agent path): Luna owns the answer — the evidence-only pick sentence is a BACKSTOP for a pick the guards cut, never a second
+    // "Mình chọn …" under a short reply that already states it (measured M6 route test: the pick appeared twice).
+    const pickAlreadyStated = !!collector?.agentMode && !!pickForFallback && pickStillStated(bodyAfterGuards, pickForFallback)
+    const g1bFallback = bodyLetters < 40 && !pickAlreadyStated ? fallbackSentence(subjectOnly(pickForFallback)) : null
     if (g1bFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'place_claim_fallback', v2: guardV2, body_letters: bodyLetters, emitted: true }))
     /**
      * Consultative V1 backstop — THE PICK MUST BE STATED (rule 1). Measured 2026-09-18 on the

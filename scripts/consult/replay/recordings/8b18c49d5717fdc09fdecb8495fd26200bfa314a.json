@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe nhạc một lần sạc hộp sạc tổng cộng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:22:02.615Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe nhạc một lần sạc hộp sạc tổng cộng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/?modelList=airpods-2nd-gen,airpods-3rd-gen-lightning",
+    "snippet": "5 giờThời gian nghe lên đến 5 giờ với một lần sạc. 6 giờThời gian nghe lên đến 6 giờ với một lần sạc. Thời gian nghe hơn 24 giờ với hộp sạc. Thời gian ...",
+    "position": 2
+   },
+   {
+    "title": "Mua AirPods Max 2 - Đêm Xanh Thẳm",
+    "link": "https://www.apple.com/vn-edu/shop/buy-airpods/airpods-max-2/%C4%91%C3%AAm-xanh-th%E1%BA%B3m",
+    "snippet": "AirPods Max 2. Âm thanh có độ trung thực cao, Chủ Động Khử Tiếng Ồn cải tiến, các tính năng thông minh mới. Miễn phí vận chuyển và khắc hình khi mua tại ...",
+    "position": 3
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro có thêm thời gian nghe là 1,5 giờ so với thế hệ đầu tiên ... Memoji và Animoji cá nhân hóa trên hộp sạc của AirPods (thế hệ thứ 2.",
+    "date": "7 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Thời gian nghe nhạc hoặc xem phim lên đến 20 giờ khi bật tính năng Chủ Động ... Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động ...",
+    "position": 5
+   },
+   {
+    "title": "Apple giới thiệu AirPods 5 với tính năng Chủ Động Khử ...",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-introduces-airpods-5-featuring-best-in-class-open-ear-active-noise-cancellation/",
+    "snippet": "Thời lượng sử dụng có thể lên đến 22 giờ khi kết hợp với hộp sạc và nghe nhạc với tính năng Chủ Động Khử Tiếng Ồn. ... AirPods 5 với Hộp Sạc Không ...",
+    "date": "10 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "iPhone 14 - Anker - Sạc & Bộ Tiếp Hợp Nguồn - Tất Cả Phụ ...",
+    "link": "https://www.apple.com/vn/shop/accessories/all/chargers-adapters/iphone-14-anker",
+    "snippet": "Buy charging devices from the Apple Online Store, including Lightning adapters, iPhone chargers, and more.",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 3 - Sức Khỏe Thính Giác",
+    "link": "https://www.apple.com/vn/airpods-pro/hearing-health/",
+    "snippet": "Nay tăng thêm 67% thời lượng pin ở chế độ Xuyên Âm chỉ với một lần sạc trên AirPods Pro 3. Chỉ cần bật lên và nghe rõ ràng mọi âm thanh. Tìm hiểu về cách ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

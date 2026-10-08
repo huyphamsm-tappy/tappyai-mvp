@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam earbuds chụp tai",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:00.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam earbuds chụp tai",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe chụp tai không dây MCDODO HP-582 T03 ANC doubly-fed noise-cancelling - Đen",
+    "source": "chube.vn",
+    "price": "928.280 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRmFgfAvF8pQO_QnLTQxVpCumkwfLyDkuVm4ueLbvEYrKNMfE0lJjRCvzC_8XIsOVmRYJvB9c3ykrEtun9oDjsrQ4iST95xNfAIqG8mvTCvfB0piu4yUYbQOg",
+    "productId": "2497420960266407011",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp",
+    "source": "Lazada Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+a+nghe+a+ch%E1%BB%91ng+a+%E1%BB%93n+a+ch%E1%BB%A7+a+%C4%91%E1%BB%99ng+a+ANC+a+d%C6%B0%E1%BB%9Bi+a+3+a+tri%E1%BB%87u+a+Vi%E1%BB%87t+a+Nam+a+earbuds+a+ch%E1%BB%A5p+a+tai&prds=localAnnotatedOfferId:1,catalogid:16733264710386075329,gpcid:3803479169539710410,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "97.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT4RPFMpGWs_xDcqPw7XXLNKoK51f5bvwRucT39bRjng0kS6YXoRLoh0OQ5ffZQ6_TeZMTVwQ1rXutNtf74gU-VJwBMo-ZCfJ1Zri0nzAbKN-7rjcLhlGDD",
+    "productId": "16733264710386075329",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Có Dây - Nhét Tai, Chống Ồn, Điều Khiển Tiện Lợi, Type C",
+    "source": "shopee.vn",
+    "price": "67.805 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQhx1Pjivf4wh5earujlAuKIbG5u8aYgS-SMnMGNL0UU_WKcGULte1KpnsHe3-o2aoPWvernAFfI1IeNcLfTsD4g2cwsyPfS5Svt9r7hu2LMpH2WQY8HaiC",
+    "productId": "7419570033116015709",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe cách âm HONIBAGU LL-1 Chống ồn Âm thanh giảm tiếng ồn Học tập không dây Ngủ chống ngáy Tai nghe ngủ20260924",
+    "source": "shopee.vn",
+    "price": "85.221 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSEyjrhGHFYvelValK9Hrb7LvWCOIAP8a_4utzUh8m04x2l1bNXRmgeWdJkOlNatSj1U_WSIdo_wtWVF0kavI4dkbJNOFPMJgpvGaPsZ-U6iyRDeCK8-e51",
+    "productId": "10609383836446974199",
+    "position": 4
+   }
+  ],
+  "credits": 2
+ }
+}

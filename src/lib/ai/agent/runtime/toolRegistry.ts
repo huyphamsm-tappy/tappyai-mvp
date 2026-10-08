@@ -167,8 +167,10 @@ export function proxyToolSchema(tools: Record<string, AnyTool>, catalog: readonl
   return tool({
     description,
     parameters: z.object({
-      tool: z.enum(catalog as [string, ...string[]]).describe('tên công cụ'),
-      args: z.record(z.unknown()).describe('tham số của công cụ đó'),
+      // A plain string, not an enum: the RUNTIME decides (resolveUseTool) and answers a wrong name with a structured result. An enum let
+      // the SDK reject the whole model step before the runtime saw it (M7 eval: Luna proxied an already-exposed tool → forced final answer).
+      tool: z.string().describe('tên công cụ'),
+      args: z.record(z.unknown()).optional().describe('tham số của công cụ đó'),
       why: z.string().max(160).optional().describe('Lý do ngắn (≤12 từ). Không hiển thị cho người dùng.'),
     }),
   })
@@ -184,10 +186,11 @@ export type Resolution = { toolName: string; args: Record<string, unknown> } | {
  */
 export function resolveUseTool(args: Record<string, unknown>, tools: Record<string, AnyTool>, sel: ToolSelection, lang: string): Resolution {
   const name = typeof args.tool === 'string' ? args.tool : ''
-  const m = META.get(name)
-  const reachable = new Set([...sel.catalog, ...sel.preselected.map(p => p.name)])
+  // Reachable = every tool this turn offers: the catalog, and the tools already exposed (core / preselected) — proxying an exposed tool
+  // is the same call Luna could make directly, so it resolves to it instead of costing a round.
+  const reachable = new Set([...sel.catalog, ...sel.exposed])
   const t = tools[name]
-  if (!name || !m || m.tier !== 'deferred' || !reachable.has(name) || !t || typeof t.execute !== 'function' || SIDE_EFFECT_TOOLS.has(name) || CONTROL_TOOLS.has(name)) {
+  if (!name || !reachable.has(name) || !t || typeof t.execute !== 'function' || SIDE_EFFECT_TOOLS.has(name) || CONTROL_TOOLS.has(name) || name === USE_TOOL) {
     return { refused: 'tool_unavailable', result: { error: 'tool_unavailable', tool: name || null, note: lang === 'en' ? 'This tool is not available this turn. Do not invent its result — use another tool, answer with what you have, or say it could not be checked.' : 'Công cụ này không dùng được lượt này. Không tự bịa kết quả — dùng công cụ khác, trả lời từ dữ liệu đã có, hoặc nói rõ chưa kiểm tra được.' } }
   }
   const raw = (args.args && typeof args.args === 'object' && !Array.isArray(args.args)) ? args.args as Record<string, unknown> : {}

@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Asus Rog Cetra True site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:05:07.426Z",
+ "body": {
+  "searchParameters": {
+   "q": "Asus Rog Cetra True site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe gaming không dây độ trễ thấp ASUS ROG ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-gaming-khong-day-asus-rog-cetra-true-chong-nuoc-ipx4-anc/1730018451961711396",
+    "snippet": "Thời lượng pin kéo dài: Với thời lượng pin sử dụng đến 27 giờ và công nghệ sạc nhanh. Sạc không dây: Có thể sạc không dây bằng hộp đựng đầy tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "airphone with wire gaming",
+    "link": "https://shop.tiktok.com/vn/k/airphone-with-wire-gaming",
+    "snippet": "Tai nghe Bluetooth True Wireless Gaming Asus Rog Cetra SpeedNova. Free shipping. Tai nghe Bluetooth True Wireless Gaming Asus Rog Cetra SpeedNova. 7 sold.",
+    "position": 2
+   },
+   {
+    "title": "Kết nối ba chế độ với Công nghệ SpeedNova - Led RGB",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-gaming-khong-day-asus-rog-pelta-led-rgb-mic-chat-luong-cao-tuong-thich-ps4-ps5/1731846360892147492",
+    "snippet": "ROG PeltaTai nghe chơi game RGB ba chế độ với công nghệ không dây ROG SpeedNova, trình điều khiển màng loa mạ titan ROG 50 mm, chất lượng âm thanh không dây ...",
+    "position": 3
+   },
+   {
+    "title": "Chuột game có dây ASUS TUF GAMING M4 AIR, siêu nhẹ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/chuot-game-asus-tuf-gaming-m4-air-sieu-nhe-16-000-dpi-ipx6-lap-trinh-6-nut/1730013563224034084",
+    "snippet": "THÔNG TIN SẢN PHẨMChuột chơi game siêu nhẹ với cảm biến 16.000 dpi, sáu nút có thể lập trình, Air Shell siêu nhẹ, khả năng chống nước IPX6, lớp kháng khuẩn ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

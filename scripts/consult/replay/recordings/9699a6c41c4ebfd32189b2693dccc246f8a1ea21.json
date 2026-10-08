@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán nướng Bình Dân\" OR \"Quán nhậu bình dân ngon ở hội an\" OR \"Món Huế\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:49:16.852Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán nướng Bình Dân\" OR \"Quán nhậu bình dân ngon ở hội an\" OR \"Món Huế\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Toàn là món Huế ngon không",
+    "link": "https://www.tiktok.com/@haan.nghiem/video/7692015019046833414",
+    "snippet": "Toàn là món Huế ngon không. Quán được mô tả là chuyên các đặc sản và món Huế ngon, chất lượng. Video có sticker bìa ghi chữ “Toàn Là Món ...",
+    "position": 1
+   },
+   {
+    "title": "Thêm một quán nướng bình dân mà team ghiền ...",
+    "link": "https://www.tiktok.com/@maibodidau/video/7679699529767161095",
+    "snippet": "Thêm một quán nướng bình dân mà team ghiền nướng siuu mê #maibodidau #. @Mai Bơ Đi Đâu? âm thanh gốc - Mai Bơ Đi Đâu? Cạp Nướng 2 - Tân Hoá.",
+    "position": 2
+   },
+   {
+    "title": "Quán Món Huế Tân Phú: Chuyên Bún Mắm Nem Ngon ...",
+    "link": "https://www.tiktok.com/@tieusanhanuong/video/7693022990166002945",
+    "snippet": "Quán Món Huế Tân Phú: Chuyên Bún Mắm Nem Ngon Bình Dân. Bạn đang tìm kiếm một địa điểm ăn uống tại Tân Phú để thưởng thức những món ăn Huế ...",
+    "position": 3
+   },
+   {
+    "title": "Hành trình này cũng được 3 năm rồi , cám ơn mng rất ...",
+    "link": "https://www.tiktok.com/@toanmonhue/video/7689489094446976263",
+    "snippet": "Quán Toàn Món Huế Tân Phú - Bún Mắm Đậm Đà. Hôm nay, chúng ta sẽ cùng theo chân các TikToker để khám phá quán Toàn Món Huế tại địa chỉ 38 ...",
+    "position": 4
+   },
+   {
+    "title": "Video của Quán nhỏ món Huế (@monhue_75) với ...",
+    "link": "https://www.tiktok.com/@monhue_75/video/7691179269510237460",
+    "snippet": "393 Lượt thích,Video TikTok từ Quán nhỏ món Huế (@monhue_75).âm thanh gốc - Ngọc Xinh Air.",
+    "position": 5
+   },
+   {
+    "title": "Bánh Nậm & Tré Trộn: Món Huế đặc sắc bạn nên thử",
+    "link": "https://www.tiktok.com/@tracyum_/video/7679767451722206482",
+    "snippet": "Bánh Nậm & Tré Trộn: Món Huế đặc sắc bạn nên thử. Luôn luôn là không theo dòng sự kiện — hai món Huế nổi bật cần thử: Bánh Nậm và Tré Trộn.",
+    "position": 6
+   },
+   {
+    "title": "Món Huế ở Hội An: Gợi ý đặc sản từ Bánh Canh đến Bún Bò",
+    "link": "https://www.tiktok.com/@c.ba.yellow/video/7640768658070981908",
+    "snippet": "Lead Hội An không chỉ có phố cổ mà còn là nơi dễ tìm các món Huế được chế biến tại chỗ: từ bánh canh, bún bò Huế đến bún mắm, ...",
+    "position": 7
+   },
+   {
+    "title": "+1 quán nướng bình dân ngon Galbi House",
+    "link": "https://www.tiktok.com/@nguyenthai.story/video/7689422890541812998",
+    "snippet": "+1 quán nướng bình dân ngon Galbi House - 37 Huỳnh Tấn Phát #danangangi. @Nguyên Thái.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

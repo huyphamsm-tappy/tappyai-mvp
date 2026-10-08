@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:05.895Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth Anker soundcore Liberty 4 Pro, Chống ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-soundcore-liberty-4-pro-by-anker-noise-cancelling-wireless-earbuds-7-sensor-and-real-time-adaptive-noise-cancelling-2-faster-charging-studio-level-hi-fi-music-clear-calls-with-6-mics-and-ai-i3152108357.html?srsltid=AU7gw4VM7tWtzOV0Rfr151MRv3VxRvGkyUG0Nva9m2tk_gSUWtGAvUeW",
+    "snippet": "LazMall Tai Nghe Bluetooth Anker soundcore Liberty 4 Pro, Chống Ồn Chủ Động, Màn Hình Cảm Ứng, Sạc Nhanh ; Trả góp. Trả góp trong 6 tháng, chỉ với 516.667 ₫ mỗi ...",
+    "rating": 5,
+    "ratingCount": 30,
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth Anker soundcore Liberty 4 NC, Chống ...",
+    "link": "https://h5.lazada.vn/products/tai-nghe-khong-day-soundcore-by-anker-liberty-4-nc-earbuds-bluetooth-53-anc-hi-res-sound-earphones-wireless-charging-50h-battery-wireless-headsets-tai-nghe-bluetooth-model-a3947-i3146254718.html",
+    "snippet": "Tai nghe không dây Soundcore by Anker Liberty 4 với Bluetooth 5.3 và ANC giảm tiếng ồn, pin lên đến 50 giờ. Thiết kế phù hợp cho trẻ em và người lớn, ...",
+    "rating": 5,
+    "ratingCount": 174,
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Không Dây Soundcore Liberty 4 Pro by Anker, ...",
+    "link": "https://h5.lazada.vn/products/tai-nghe-khong-day-soundcore-liberty-4-pro-by-anker-noise-cancelling-wireless-earbuds-7-sensor-and-real-time-adaptive-noise-cancelling-2-faster-charging-studio-level-hi-fi-music-clear-calls-with-6-mics-and-ai-i3152108357.html",
+    "snippet": "Tai Nghe Không Dây Soundcore by Anker Liberty 4 NC Earbuds Bluetooth 5.3 ANC Hi-. 1.490.000 ₫ · Tai Nghe Không Dây Soundcore Liberty 5 by Anker, Noise ...",
+    "rating": 5,
+    "ratingCount": 30,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore Liberty 4 Pro ...",
+    "link": "https://h5.lazada.vn/products/tai-nghe-bluetooth-true-wireless-anker-soundcore-liberty-4-pro-a3954-hang-chinh-hang-thiet-ke-nap-truot-noi-bat-mau-sac-sang-trong-bat-mat-tich-hop-man-hinh-va-thanh-cam-ung-trang-bi-6-micro-ai-khu-on-hieu-qua-i2910464212-s14060723393.html",
+    "snippet": "Tai nghe Bluetooth True Wireless Anker Soundcore Liberty 4 Pro với thiết kế nắp trượt nổi bật, màu sắc sang trọng. Tích hợp màn hình và thanh cảm ứng, ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-bluetooth-anker-soundcore-liberty-4-nc-a3947-i3047349895.html?srsltid=AU7gw4U7Je8a8nNANoYTr5EGPCfl4Lf6R9IBokeLhGmCpNNSd3bZ3U5Z",
+    "snippet": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC với công nghệ Bluetooth 5.3 và chống nước, mang lại trải nghiệm âm thanh chất lượng cao.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe bluetooth soundcore Liberty 4NC | Chống ồn ANC 50 ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-soundcore-liberty-4nc-chong-on-anc-50-gio-phat-nhac-sac-nhanh-ai-translation-i2685469358-s13160563599.html?srsltid=AU7gw4WV6CHZAZ0atlMDBuFZXFBY6JWRwCn3jDzCe5clg6HtwDePo56e",
+    "snippet": "Tai nghe Bluetooth Soundcore Liberty 4NC có công nghệ chống ồn ANC tiên tiến, pin lên đến 50 giờ cho trải nghiệm âm thanh chất lượng cao. Thiết kế nhỏ gọn, ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-bluetooth-anker-soundcore-liberty-4-nc-tai-nghe-nhet-tai-chong-on-chu-dong-hires-pin-50-tieng-i2549026370.html?srsltid=AU7gw4X2lwqMvvBpXedpY1--qL4IntoOAFIZmnOx689Ju8SI4zCD2OP0",
+    "snippet": "Anker Soundcore Liberty 4 NC mang lại cho người dùng 5 cấp độ chống ồn, 2 chế độ xuyên âm và 4 chế độ cho việc di chuyển. Chất lượng âm thanh của Anker ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Bluetooth Anker soundcore Liberty 5, Chống Ồn Chủ ...",
+    "link": "https://h5.lazada.vn/products/tai-nghe-bluetooth-anker-soundcore-liberty-5-chong-on-chu-dong-am-thanh-hi-res-dam-thoai-ro-net-i3135842168-s14971488642.html",
+    "snippet": "Tai Nghe Bluetooth Anker soundcore Liberty 4 NC, Chống Ồn Tới 98.5%, Âm. 1.490.000 ₫ · Tai Nghe Bluetooth Anker soundcore R60i NC, Chống Ồn 52dB, Âm Thanh Hi-.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

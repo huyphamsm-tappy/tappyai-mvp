@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth True Wireless Huawei Freebuds SE 4\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:12.558Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth True Wireless Huawei Freebuds SE 4\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Huawei Freebuds SE 4 ANC chính hãng, giá rẻ <1tr",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-true-wireless-huawei-freebuds-se-4.html",
+    "snippet": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 nổi bật nhờ được tích hợp công nghệ chống ồn chủ động cùng khả năng ghép nối Bluetooth ổn định. Thiết bị ...",
+    "position": 1
+   },
+   {
+    "title": "Trên tay Huawei FreeBuds SE 4: Chỉ 890K đã có siêu ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-huawei-freebuds-se-4-anc",
+    "snippet": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC). 790.000đ990.000đ.",
+    "date": "21 thg 10, 2025",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Huawei Freebuds SE | Giá rẻ, khuyến mãi hấp dẫn",
+    "link": "https://cellphones.com.vn/tai-nghe-khong-day-huawei-freebuds-se.html",
+    "snippet": "... Huawei Freebuds SE - 3. Tai nghe Bluetooth True Wireless Huawei Freebuds SE - 4. Tai nghe Bluetooth True Wireless Huawei Freebuds SE. TN.HW.02. 5 (1 đánh giá).",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 ...",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-true-wireless-huawei-freebuds-se-4-cu.html",
+    "snippet": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC) - Cũ ; Smember Giảm thêm đến 11.000đ ; Trọng lượng. Tai nghe: 4.3g ; Công nghệ âm thanh. Chống ồn chủ ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth True Wireless Huawei Freebuds SE ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-khong-day-huawei-freebuds-se-vs-tui-chong-soc-seine-scene-orleans-15-6-inch",
+    "snippet": "... Bluetooth True Wireless Huawei Freebuds SE - 4 · Tai nghe Bluetooth True ... Bluetooth True Wireless Huawei Freebuds SE - 4. Tai nghe Bluetooth True ...",
+    "position": 5
+   },
+   {
+    "title": "Huawei FreeBuds SE 4 ANC ra mắt: Pin 50 giờ",
+    "link": "https://cellphones.com.vn/sforum/huawei-freebuds-se-4-anc-ra-mat",
+    "snippet": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC). 790.000đ990.000đ.",
+    "date": "28 thg 8, 2025",
+    "position": 6
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth True Wireless Huawei ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-khong-day-huawei-freebuds-se-vs-tai-nghe-khong-day-soundpeats-runfree-lite",
+    "snippet": "... Bluetooth True Wireless Huawei Freebuds SE - 4. Tai nghe Bluetooth True ... Bluetooth True Wireless Huawei Freebuds SE - 4. Tai nghe Bluetooth True ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe bluetooth Huawei | Giá tốt 10/2026, giao nhanh",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/huawei.html",
+    "snippet": "... Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC). Trả góp 0%. : 790.000đ. 990.000đ. Giảm 20 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

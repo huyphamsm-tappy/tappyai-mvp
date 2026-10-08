@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu thông tư lệ phí hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:07:06.272Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu thông tư lệ phí hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tuyên Quang - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/tuyenquang/Pages/vbpq-toanvan.aspx?ItemID=12176&Keyword=",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Bộ Văn hóa - Thể thao và Du lịch - VBPL - MoJ.gov.vn - Bộ tư pháp",
+    "link": "https://vbpl.moj.gov.vn/bovanhoathethao/Pages/vbpq-toanvan.aspx?ItemID=15550&Keyword=",
+    "snippet": "Niêm yết hoặc thông báo công khai mức thu lệ phí tại địa điểm thu. Khi thu tiền phải lập và cấp biên lai thu cho đối tượng nộp lệ phí theo quy định hiện hành.",
+    "position": 2
+   },
+   {
+    "title": "Bộ Tài Chính - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/botaichinh/Pages/vbpq-toanvan.aspx?ItemID=19774",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá ...",
+    "position": 3
+   },
+   {
+    "title": "Đà Nẵng - VBPL - MoJ.gov.vn - Bộ tư pháp",
+    "link": "https://vbpl.moj.gov.vn/danang/Pages/vbpq-toanvan.aspx?ItemID=84083&Keyword=",
+    "snippet": "CSDL Thành phố Đà Nẵng »; Văn bản pháp luật ... - Cấp hộ chiếu thuyền viên :40.000đ/ \". - Thay đổi ... Thông tư này (sau đây gọi là cơ quan thu lệ phí).",
+    "position": 4
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/vanphongchinhphu/Pages/vbpq-toanvan.aspx?dvid=329&ItemID=17000&Keyword=",
+    "snippet": "Dữ liệu cá nhân cơ bản: Họ, chữ đệm và tên khai sinh, tên gọi khác (nếu có). Ngày, tháng, năm sinh; ngày, tháng, năm chết hoặc mất tích. Giới tính. Nơi sinh, ...",
+    "position": 5
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn sử dụng - Trang chủ",
+    "link": "https://dichvucong.moj.gov.vn/Pages/H%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-s%E1%BB%AD-d%E1%BB%A5ng.aspx?ItemID=1",
+    "snippet": "CỔNG DỊCH VỤ CÔNG BỘ TƯ PHÁP ... Địa chỉ: 60 Trần Phú, Ba Đình, Hà Nội. Điện thoại: 04.62739718 - Fax: 04.62739359. Email: banbientap@moj.gov.vn; cntt@moj.gov.vn.",
+    "position": 7
+   },
+   {
+    "title": "Thủ tục đăng ký nhận cha, mẹ, con",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-1.001022.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

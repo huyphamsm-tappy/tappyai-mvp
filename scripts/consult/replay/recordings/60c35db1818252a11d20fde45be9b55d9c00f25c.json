@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 kiểm tra pin chu kỳ sạc Activation Lock bảo hành",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:24:56.215Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 kiểm tra pin chu kỳ sạc Activation Lock bảo hành",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xác định số chu kỳ sạc của pin trên máy tính xách tay Mac",
+    "link": "https://support.apple.com/vi-vn/102888",
+    "snippet": "Giữ phím Option và bấm vào menu Apple , sau đó chọn Thông tin hệ thống. · Trong mục Phần cứng trên cửa sổ Thông tin hệ thống, chọn Nguồn. Số chu kỳ sạc hiện ...",
+    "position": 1
+   },
+   {
+    "title": "Cách kiểm tra số lần sạc pin và độ chai pin trên Macbook ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-pin-chai-tren-macbook-nhanh-nhat-1226190",
+    "snippet": "Bước 1: Chọn vào biểu tượng Apple > Chọn About This Mac. Số chu kỳ sạc, giúp bạn kiểm tra số lần sạc Macbook.",
+    "date": "21 thg 2, 2023",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn kiểm tra chu kỳ sạc trên các sản phẩm MacBook",
+    "link": "https://macone.vn/tin-tuc/huong-dan-kiem-tra-chu-ky-sac-tren-cac-san-pham-macbook/?srsltid=AU7gw4UBWzFF8Fdc6c1oTw_gdlXtUnV0uHSjxcuv47rlzHaDLtCjTtqe",
+    "snippet": "Kiểm tra số chu kỳ sạc trên MacBook B1: Nhấp vào logo Apple ở góc trên bên trái thanh menu rồi ấn vào “Giới thiệu về máy Mac Này” (About This Mac).",
+    "position": 3
+   },
+   {
+    "title": "Cách kiểm tra tình trạng pin của Macbook",
+    "link": "https://www.youtube.com/watch?v=glp9GKm7rpM",
+    "snippet": "... sạc Apple Kiểm tra % pin còn lại Kiểm tra tình trạng pin Macbook. ... Hướng Dẫn Chi Tiết Cách Thay Pin MacBook Air M1 (A2337) | MacBook Air A2337 ...",
+    "position": 4
+   },
+   {
+    "title": "Tình trạng pin MacBook Air M1 2020 còn 40% sau 187 chu ...",
+    "link": "https://www.reddit.com/r/macbook/comments/15qy090/macbook_air_m1_2020_battery_health_at_40_after/?tl=vi",
+    "snippet": "Theo Apple thì bình thường phải còn 80% sau 1000 chu kỳ. Ngoài ra, cái vạch báo pin ở góc phải màn hình có vẻ không hoạt động đúng, máy hay bị ...",
+    "position": 5
+   },
+   {
+    "title": "Làm sao để check Mac cũ. Chu kỳ sạc với %pin gần như ...",
+    "link": "https://www.facebook.com/groups/hoinguoidungmacbook/posts/4579333488964324/",
+    "snippet": "Chu kỳ sạc với %pin gần như mới nếu cắm sạc làm việc. Macbook Pro 16” M1 Max 64GB|1TB|24GPU Pin … bảo hành 3 tháng phần cứng ạ",
+    "date": "28 thg 6, 2026",
+    "position": 6
+   },
+   {
+    "title": "Bạn luôn quan tâm đến thời lượng và sức khỏe pin của máy ...",
+    "link": "https://www.facebook.com/topzone.vn/videos/b%E1%BA%A1n-%C4%91%C3%A3-bi%E1%BA%BFt-c%C3%A1ch-ki%E1%BB%83m-tra-s%E1%BB%91-l%E1%BA%A7n-s%E1%BA%A1c-v%C3%A0-s%E1%BB%AD-d%E1%BB%A5ng-macbook-%C4%91%C3%BAng-c%C3%A1ch-ch%C6%B0a/482158046949102/",
+    "snippet": "Đừng lo ở video này TopZone sẽ hướng dẫn các bạn cách xem số lần sạc và sử dụng pin Macbook đúng cách giúp pin có tuổi thọ cao hơn. Hãy cùng ...",
+    "position": 7
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4UV-kDZIlHuHXLHoulnRz7bIjft2a8ClIDn-RKT5QTojSo7WO3z",
+    "snippet": "khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power.",
+    "date": "9 thg 6, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

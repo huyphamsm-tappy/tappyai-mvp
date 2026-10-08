@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn Thông tư 64/2025/TT-BTC hộ chiếu lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:48:18.199Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn Thông tư 64/2025/TT-BTC hộ chiếu lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214418",
+    "snippet": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân ; Số ký hiệu, 64/2025/TT-BTC.",
+    "position": 1
+   },
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "142/2026/TT-BTC 29/09/2026, 29/09/2026, Sửa đổi, bổ sung một số điều của các Thông tư quy định thủ tục hải quan đối với hàng hóa xuất khẩu, nhập khẩu, quá cảnh ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"YE SO BAN\" OR \"Lil' Sago\" OR \"Rakuen Hotpot\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:17:36.571Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"YE SO BAN\" OR \"Lil' Sago\" OR \"Rakuen Hotpot\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lil' Sago Hotpot & more (@lilsagoquanlaungon)",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon",
+    "snippet": "Lil' Sago Hotpot & more (@lilsagoquanlaungon) trên TikTok |214.2K Lượt thích.4787 Follower.299 Võ Văn Tần, P5, Q3 0️⃣9️⃣ 0️⃣8️⃣ 1️⃣0️⃣ ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet Lẩu Ngon Tại Rakuen Hotpot",
+    "link": "https://www.tiktok.com/@neooididau/video/7513553994774564104",
+    "snippet": "Buffet Lẩu Ngon Tại Rakuen Hotpot. Khám phá buffet lẩu tại Rakuen Hotpot với nhiều món ngon hấp dẫn. Đánh giá và trải nghiệm ẩm thực không ...",
+    "position": 2
+   },
+   {
+    "title": "ĐI 4 LỜI 🥢 Rủ hội bạn đi lẩu ngay hôm nay để nhận ưu đã...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7686676676020899093",
+    "snippet": "... Lil' Sago – Hotpot & More ❤️ Nhóm 2 người ✓ Hóa đơn từ 399.000đ được tham gia Vòng quay may mắn với nhiều phần quà hấp dẫn. ‍ ‍ ‍ ...",
+    "position": 3
+   },
+   {
+    "title": "Hẹn hò cuối tuần #lilsago #quan3 #hotpot #reviewanngon",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7635173293934349588",
+    "snippet": "347 Lượt thích,Video TikTok từ Lil' Sago Hotpot & more (@lilsagoquanlaungon): \"Hẹn hò cuối tuần #lilsago #quan3 #hotpot #reviewanngon\".âm ...",
+    "position": 4
+   },
+   {
+    "title": "Thiên đường buffet tokbokki hấp dẫn tại YE SO BAN",
+    "link": "https://www.tiktok.com/@minn.cookie/video/7520844469684489490",
+    "snippet": "Tìm hiểu buffet tokbokki tuyệt vời tại YE SO BAN. Quán ăn ngon, trải nghiệm ẩm thực độc đáo với nhiều món hấp dẫn. #MinnCookie #MCV # ...",
+    "position": 5
+   },
+   {
+    "title": "Mới cãi nhau xong, chưa kịp làm hoà… Bả thả nấm vô nồi rồi ...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7560536198146493703",
+    "snippet": "Không chỉ là một bữa lẩu ngon, mà còn là trải nghiệm với nước lẩu đậm đà, nguyên liệu tươi ngon và không gian ấm cúng cho gia đình, bạn bè. Lil' Sago ...",
+    "position": 6
+   },
+   {
+    "title": "Tại nhà hàng Lil' Sago Cơm & Lẩu, có một vòng quay mà người ...",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon/video/7484817470616898834",
+    "snippet": "Tại nhà hàng Lil' Sago Cơm & Lẩu, có một vòng quay mà người ta đồn là \"thần thánh\", có thể biến ước mơ thành hiện thực (hoặc chí ít là một bữa no say).",
+    "position": 7
+   },
+   {
+    "title": "Lil Sago (@lilsxgo)",
+    "link": "https://www.tiktok.com/@lilsxgo",
+    "snippet": "Lil Sago (@lilsxgo) on TikTok | 6281 Likes. 489 Followers. Music available on YouTube and Spotify Search “Lil Sago” #CAONTHEMAP.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

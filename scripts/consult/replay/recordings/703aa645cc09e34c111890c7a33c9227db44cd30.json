@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng giá dưới 300k mỗi người, tránh Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:12:59.868Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng giá dưới 300k mỗi người, tránh Quán Bụi - Lê Thánh Tôn - Authentic Vietnamese Cuisine Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Một không gian đủ rộng để đón những cuộc hội ngộ ...",
+    "link": "https://www.facebook.com/quanbuirestaurant/videos/m%E1%BB%99t-kh%C3%B4ng-gian-%C4%91%E1%BB%A7-r%E1%BB%99ng-%C4%91%E1%BB%83-%C4%91%C3%B3n-nh%E1%BB%AFng-cu%E1%BB%99c-h%E1%BB%99i-ng%E1%BB%99-%C4%91%E1%BB%A7-%E1%BA%A5m-c%C3%BAng-%C4%91%E1%BB%83-gi%E1%BB%AF-tr%E1%BB%8Dn-c%E1%BA%A3m-gi%C3%A1c/1250417213711877/",
+    "snippet": "Một không gian đủ rộng để đón những cuộc hội ngộ, đủ ấm cúng để giữ trọn cảm giác thân quen. Tầng 1 của Quán Bụi Heritage là nơi những buổi ...",
+    "position": 1
+   },
+   {
+    "title": "Site Map - Quán Bụi Restaurants",
+    "link": "https://quan-bui.com/vi/so-do-trang-web-2/",
+    "snippet": "Quán Bụi – Mooncake · Quán Bụi Heritage · Services Banquet & Catering · Quán Bụi Express · Quán Bụi Phú Mỹ Hưng · Quán Bụi Central · Quán Bụi – Saigon Pearl · Quán Bụi ...",
+    "position": 2
+   },
+   {
+    "title": "[English below] 🇻🇳 Những góc nhỏ tại Quán Bụi Lê Thánh ...",
+    "link": "https://www.facebook.com/quanbuirestaurant/posts/english-below-nh%E1%BB%AFng-g%C3%B3c-nh%E1%BB%8F-t%E1%BA%A1i-qu%C3%A1n-b%E1%BB%A5i-l%C3%AA-th%C3%A1nh-t%C3%B4n-kh%C3%B4ng-c%E1%BA%A7n-d%E1%BB%8Bp-g%C3%AC-%C4%91%E1%BA%B7c-bi%E1%BB%87t-/1081216524034283/",
+    "snippet": "Như một lời hẹn hò với hương vị quê nhà, menu lần này của Quán Bụi vừa ra mắt thêm những món mới, mang đậm tinh thần ẩm thực ba miền, mỗi món ăn ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Bụi, Thành phố Hồ Chí Minh - Đánh giá về nhà hàng",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d8614066-Reviews-Quan_B_i-Ho_Chi_Minh_City.html",
+    "snippet": "Quán Bụi, Thành phố Hồ Chí Minh: Xem 353 đánh giá không thiên vị về Quán Bụi, được xếp hạng 4.6 trên 5 trên Tripadvisor và được xếp hạng #116 trên 5.068 nhà ...",
+    "rating": 4.6,
+    "ratingCount": 353,
+    "position": 4
+   },
+   {
+    "title": "Quán Bụi Lê Thánh Tôn vinh hạnh chào đón đoàn khách ...",
+    "link": "https://www.instagram.com/reel/DGM3-9juWtx/",
+    "snippet": "Tại Quán Bụi Heritage, nét đẹp Đông Dương hòa cùng những món Việt đậm đà, tạo nên một trải nghiệm vừa thân thuộc vừa tinh tế. Mời bạn cùng theo ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Bụi Lê Thánh Tôn | XEM NGAY ƯU ĐÃI MỚI ...",
+    "link": "https://www.pasgo.vn/nha-hang/quan-bui-le-thanh-ton-5190",
+    "snippet": "Menu đầu bếp gợi ý: mâm gà xé cơm cháy, cuốn khai vị, mẹt heo nướng, nấm mỡ nhồi thịt nướng sả tiêu, canh gà kim chi, cánh gà xốt cam,... Các món cuốn và gỏi ...",
+    "position": 6
+   },
+   {
+    "title": "QUÁN BỤI - AUTHENTIC VIETNAMESE CUISINE We are ...",
+    "link": "https://www.facebook.com/quanbuirestaurant/videos/qu%C3%A1n-b%E1%BB%A5i-authentic-vietnamese-cuisinewe-are-passionately-committed-to-offering-t/1022723284429116/",
+    "snippet": "Opening Time: 8AM - 11PM Happy Hours: 4PM - 7PM Reservation: 08 38291515 www.quanbui.vn #vietfood #vietnamese #vietnameserestaurant #foodlover # ...",
+    "position": 7
+   },
+   {
+    "title": "Quán Bụi - Authentic Vietnamese Cuisine ở TP. HCM",
+    "link": "https://www.foody.vn/ho-chi-minh/quan-bui-authentic-vietnamese-cuisine",
+    "snippet": "Các món ăn cơm như gà kho, cá kho, đậu hũ thì cũng ok, ko quá xuất sắc. Đừng order trứng chiên nhé. 7-80k mà mỏng te, nêm lạt lắm. Giá trong menu chưa vat và 5% ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

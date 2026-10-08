@@ -182,6 +182,12 @@ export function guardAtmosphereClaims(
      * is about the pick without saying so.
      */
     gapAttributes?: readonly VenueAttribute[]
+    /**
+     * Phase 8 M7 (TAPPY_AGENT=2 only): an honest UNVERIFIED statement ("chưa xác minh được quán nào thật sự yên tĩnh") and the user's
+     * re-prioritisation ("mình ưu tiên gần biển và bỏ tiêu chí yên tĩnh") are not venue claims — the agent's own hedge was being deleted
+     * (measured M7 eval SR-F1 / SR-G1). Off for the legacy and Phase 7 paths (unchanged).
+     */
+    agentHedges?: boolean
   },
 ): AtmosphereGuardResult {
   if (!text || (ctx.names.length === 0 && !(ctx.gapAttributes && ctx.gapAttributes.length > 0))) return { text, removed: 0, unsupportedInPick: 0 }
@@ -215,6 +221,7 @@ export function guardAtmosphereClaims(
     // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
     // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).
     if (/(?:^|[,;—–-]\s*|\b(?:vi|neu|theo nhu|nhu|do)\s+)ban (?:muon|can|thich|noi)\b|\byou (?:want|asked|said|need)\b|chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|no evidence/.test(f)) return
+    if (ctx.agentHedges && /\bchua (?:xac minh|xac nhan|kiem chung|ro)\b|\bkhong (?:xac minh|xac nhan) duoc\b|\b(?:could not|cannot|can't) (?:verify|confirm)\b|\bnot (?:verified|confirmed)\b|\b(?:minh|ban) uu tien\b|\bbo tieu chi\b/.test(f)) return
     const unsupported: RegExp[] = []
     for (const [attr, re] of CLAIM_WORDS) {
       const m = f.match(re)

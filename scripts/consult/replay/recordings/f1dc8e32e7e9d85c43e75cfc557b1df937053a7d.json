@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông Thông tư 25/2021/TT-BTC hiện hành",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:48:09.853Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông Thông tư 25/2021/TT-BTC hiện hành",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 25/2021/TT-BTC phí lệ phí xuất cảnh nhập ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-25-2021-TT-BTC-phi-le-phi-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-Viet-Nam-471407.aspx",
+    "snippet": "03 trường hợp được miễn lệ phí cấp hộ chiếu từ 22/5/2021 ; a. Có thời hạn không quá 02 năm. 145 USD/thẻ ; b. Có thời hạn từ trên 02 năm đến 05 năm.",
+    "date": "7 thg 4, 2021",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Lệ phí cấp hộ chiếu năm ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/108810/thong-tu-28-2026-tt-btc-le-phi-cap-ho-chieu-nam-2026-moi-nhat",
+    "snippet": "- Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân sự: 100.000 đồng/lần cấp. Lưu ý, các trường hợp được ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chinh-thuc-giam-50-le-phi-cap-ho-chieu-den-het-2026-theo-thong-tu-642025-209665.html",
+    "snippet": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 theo Thông tư 64/2025? ; Cấp mới. 100.000 ; Cấp lại do bị hỏng hoặc bị mất. 200.000 ; Cấp giấy ...",
+    "date": "15 thg 8, 2025",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC mức thu nộp phí lệ phí lĩnh vực ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-28-2026-TT-BTC-muc-thu-nop-phi-le-phi-linh-vuc-xuat-canh-nhap-canh-cu-tru-tai-Viet-Nam-699533.aspx",
+    "snippet": "b. Có thời hạn trên 02 năm đến 05 năm. 155 USD/thẻ ; c. Có thời hạn trên 05 năm đến 10 năm. 165 USD/thẻ ; 6. Gia hạn tạm trú. 10 USD/lần ; 7. Cấp ...",
+    "date": "27 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 62/2023/TT-BTC sửa đổi Thông tư 25/2021/TT- ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-62-2023-TT-BTC-sua-doi-Thong-tu-25-2021-TT-BTC-su-dung-phi-le-phi-linh-vuc-xuat-canh-581457.aspx",
+    "snippet": "Số TT. Nội dung. Mức thu ; 2. Cấp thị thực có giá trị nhiều lần: ; a. Loại có giá trị không quá 90 ngày. 50 USD/chiếc ; b. Loại có giá trị trên 90 ...",
+    "date": "3 thg 10, 2023",
+    "position": 5
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Đăng ký cấp hộ chiếu có gắn chíp điện tử cấp tỉnh năm ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/dang-ky-cap-ho-chieu-co-gan-chip-dien-tu-cap-tinh-nam-2025-le-phi-cap-moi-ho-chieu-co-gan-chip-la-b-528965-209662.html",
+    "snippet": "Cụ thể, mức lệ phí cấp mới hộ chiếu (bao gồm hộ chiếu gắn chip và không gắn chip) là 100.000 đồng. 03 trường hợp sẽ bị từ chối cấp hộ chiếu năm ...",
+    "date": "15 thg 8, 2025",
+    "position": 7
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu mới nhất 2023? Trường hợp nào được ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/41506/le-phi-cap-ho-chieu-tu-ngay-01-7-2022",
+    "snippet": "Lệ phí cấp hộ chiếu mới nhất năm 2023 ; c. Cấp giấy xác nhận yếu tố nhân sự. 100.000 ; 2. Lệ phí cấp giấy thông hành ; a. Giấy thông hành biên giới ...",
+    "date": "31 thg 12, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

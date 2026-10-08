@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhu Minh Plaza Danang Hotel\" Đà Nẵng, khách sạn gần biển, khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:30.187Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhu Minh Plaza Danang Hotel\" Đà Nẵng, khách sạn gần biển, khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

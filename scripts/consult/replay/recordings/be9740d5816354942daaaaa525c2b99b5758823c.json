@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam earbuds chụp tai (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:01.955Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Việt Nam earbuds chụp tai (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Tai nghe chụp tai giá bao nhiêu? ; Bose. Thường hơn 6 triệu đồng. Cao cấp ; Marshall. Từ khoảng 3 triệu đồng trở lên. Trung đến cao cấp ; Edifier. Trải dài từ 500 ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Sony bluetooth chống ồn, chính hãng [GIẢM 47%]",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/sony.html",
+    "snippet": "Tai nghe Sony được đánh giá cao vì có chất âm sống động cùng với công nghệ hạn chế tiếng ồn ANC hiện đại, mang đến trải nghiệm nghe nhạc đầy ấn tượng.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe bluetooth giá rẻ dưới 500K | Đa dạng mẫu mã",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-re-duoi-500000",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 4
+   },
+   {
+    "title": "Top 5 tai nghe chống ồn tốt nhất dưới 1 triệu mới 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-chong-on-tot-nhat",
+    "snippet": "Tai nghe bluetooth Xiaomi Redmi Buds 3 được trang bị micro kép với khả năng khử tiếng ồn cực tốt, giúp những cuộc đàm thoại của bạn được trọn vẹn và rõ ràng. Đi ...",
+    "rating": 2,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe bluetooth không dây bền rẻ, chính hãng, giao 2h",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-bluetooth.html",
+    "snippet": "Các dòng sản phẩm phổ biến như Redmi Buds 4 và Xiaomi Buds 3T Pro mang đến trải nghiệm âm thanh tuyệt vời, cùng với tính năng chống ồn giúp nâng cao chất lượng ...",
+    "position": 6
+   },
+   {
+    "title": "ANC là gì? Có nên mua tai nghe chống ồn chủ động ...",
+    "link": "https://cellphones.com.vn/sforum/anc-la-gi",
+    "snippet": "Những tai nghe sử dụng công nghệ chống ồn ANC · Tai nghe AirPods 4 ANC Chính hãng (VN/A) · Samsung Galaxy Buds3 · Anker Soundcore R60i NC.",
+    "date": "22 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "Gợi ý quà 8/3: Top 5 tai nghe xinh xắn, thiết thực cho phái nữ",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-tang-qua-8-3-2026",
+    "snippet": "1. Huawei Freebuds 7i màu hồng · 2. Apple AirPods 4 · 3. Anker Soundcore R60i NC · 4. SoundPeats Air 5 · 5. JBL Wave Buds 2 · 6. Chương trình “Quà ...",
+    "date": "7 thg 3, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

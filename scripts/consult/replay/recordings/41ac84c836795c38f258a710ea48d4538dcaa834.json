@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac Activation Lock MacBook cũ serial coverage battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:47:07.875Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac Activation Lock MacBook cũ serial coverage battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4V8e8nsS0KlRE_uGvKclsull3PRFKBBixaA7cmnODyPiqHzswbp",
+    "snippet": "Cách kiểm tra battery cycle count? Trên macOS Ventura trở lên: Click logo Apple > System Settings; Chọn Battery > Battery Health; Xem “Cycle Count”. Trên macOS ...",
+    "position": 1
+   },
+   {
+    "title": "Xem phạm vi bảo hành – AppleCare & Bảo hành",
+    "link": "https://checkcoverage.apple.com/?locale=vi_VN",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 2
+   },
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "MacBook Serial Number Check: Avoid Icloud & MDM Locks!",
+    "link": "https://www.tiktok.com/@ogabasseyy/video/7647254945602751765",
+    "snippet": "The warranty, especially if purchased with Apple Care or other valid Apple coverage, is typically linked to the activation date recorded by ...",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn kiểm tra MacBook cũ, test máy chi tiết trước khi mua.",
+    "link": "https://thumacbook.com/huong-dan-kiem-tra-macbook-cu-test-may-chi-tiet-truoc-khi-mua/",
+    "snippet": "Bước quan trọng nhất để kiểm tra máy có iCloud ẩn hay không là reset máy về cài đặt gốc. Vào menu Apple → System Settings → General → Transfer or Reset → ...",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn check bảo hành MacBook Air, MacBook Pro ...",
+    "link": "https://viendidong.com/check-bao-hanh-macbook/",
+    "snippet": "Check bảo hành MacBook của bạn thông qua Check Coverage – 1. Bước 2: Tại tab Overview, hãy sao chép Serial Number của MacBook để tiến hành kiểm tra bảo hành.",
+    "rating": 5,
+    "ratingCount": 2879,
+    "position": 6
+   },
+   {
+    "title": "Apple Check Coverage",
+    "link": "https://checkcoverage.apple.com/",
+    "snippet": "Check your Apple warranty status. Enter a serial number to review your eligibility for support and extended coverage.",
+    "position": 7
+   },
+   {
+    "title": "How to Check Macbook Pro's macOS Information and ...",
+    "link": "https://www.isumsoft.com/mac-tips/check-your-macbook-pro-system-and-battery-information.html",
+    "snippet": "How to Check Macbook Pro's macOS Information and Battery Status · 1. Check Your macOS Version · 2. Check Your Mac's Serial Number · 3. Check the ...",
+    "date": "24 thg 7, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

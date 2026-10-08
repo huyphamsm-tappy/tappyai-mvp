@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB\" OR \"Laptop MacBook Pro M1 2020 13 inch 512GB MYD92SA/A Xám\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:41:39.235Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB\" OR \"Laptop MacBook Pro M1 2020 13 inch 512GB MYD92SA/A Xám\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

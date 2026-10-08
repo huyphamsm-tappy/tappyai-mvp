@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air 15 inch M2 8GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:32:40.015Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air 15 inch M2 8GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "【Must-Have Gadgets】 Laptop Case For Macbook Air Pro 13 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13449512752.html?srsltid=AU7gw4V7cOaGc5qwGFv-c74HUTvhc8vyFe0vFNG85dokm-njI5wkTw9W",
+    "snippet": "... ₫990.000 ₫-11%. 【Must-Have Gadgets】 Laptop Case For Macbook Air Pro 13 Case 2025 2024 2023 M4 M3 M2 Air 15 Touch ID For Macbook Pro 16 12 14 Marble Hard.",
+    "position": 1
+   },
+   {
+    "title": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch",
+    "link": "https://h5.lazada.vn/products/dan-ppf-man-hinh-mat-lung-mat-de-macbook-pro-13-inch-14-inch-16-inch-m2-m2-pro-m2-max-air-m2-13-inch-15-inch-i2364779871-s11490845569.html",
+    "snippet": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch/ 14 inch/ 16 inch (M2, M2 Pro, M2 Max)/ Air (M2) 13 inch/ 15 inch ... Giảm 11.000 ₫ phí vận chuyển cho một ...",
+    "position": 2
+   },
+   {
+    "title": "【Top Selling Item】 PU Laptop Sleeve Case for MacBook Pro/ ...",
+    "link": "https://www.lazada.vn/products/pdp-i13447383779.html?srsltid=AU7gw4U6pieG352bus4x6zlXKBaZrzzmG5IWO0ygq6JZ6oKbzQpX4v2_",
+    "snippet": "Wide Compatibility and Perfect Fit: This laptop sleeve case is compatible with multiple MacBook models, including the compatible with MacBook Air M2/M3 13.6- ...",
+    "position": 3
+   },
+   {
+    "title": "【HOT】 Matte Laptop Case For Macbook Air 13 A2337 A2681For ...",
+    "link": "https://www.lazada.vn/products/limited-edition-matte-laptop-case-for-macbook-air-13-a2337-a2681for-mac-m1-chip-pro-13-a2338-for-macbook-pro-14-16-153-a2941-protective-cover-i3012064021-s14507429638.html?srsltid=AU7gw4UoC2H9r-IPuekF09PF24u9neN2A7BXBLNFQBpijx24tz5RSDKI",
+    "snippet": "Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng và còn nguyên tem mạc, nguyên seal (nếu có). service. Không bảo hành 1 tháng. Aura Mall.",
+    "position": 4
+   },
+   {
+    "title": "【Best value】 11 13 15 Inch Clear Hard Case for Macbook M1 ...",
+    "link": "https://www.lazada.vn/products/best-value-11-13-15-inch-clear-hard-case-for-macbook-m1-chip-air-13-m2-136-pro-133-14-16-touch-bar-a2338-a2485-a2681-with-keyboard-cover-i13449542127-s117256277673.html?srsltid=AU7gw4WlXviYngbehHk6-aE3WzJNlw61TxHRAzLgK9pMoTejJbpcpaod",
+    "snippet": "【Best value】 11 13 15 Inch Clear Hard Case for Macbook M1 Chip Air 13 M2 13.6 Pro 13.3 14 16 Touch Bar A2338 A2485 A2681 with Keyboard Cover · Solace Haven.",
+    "position": 5
+   },
+   {
+    "title": "【Top-Rated Product】 Newest Laptop cases for MacBook Pro 14 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13449524681.html?srsltid=AU7gw4WmCK7hItVx5DSrzJvR3HLKC_TRfvXPPfLYEmphnXvmd_I7aW1o",
+    "snippet": "【Top-Rated Product】 Newest Laptop cases for MacBook Pro 14 Case M2 A2779 Air 15.3 2024 for MacBook Air 13.6 A3113 for MacBook Pro 13 Case A2338 · Solace Haven.",
+    "position": 6
+   },
+   {
+    "title": "【Trending】 New Puffy Laptop Sleeve Cover Bag 11 12 13 14 15 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13447395674.html?srsltid=AU7gw4XiRmV2bbbAneM1MoaZQGQdC9_MZoBraZ39yzdlygvhlHcH2ijD",
+    "snippet": "New Puffy Laptop Sleeve Cover Bag 11 12 13 14 15 16 Inch Waterproof Computer Carrying Case Bags for Macbook Inner Size : 9.7-11 inch: 10.6 x 8.6 x 1 inches ...",
+    "position": 7
+   },
+   {
+    "title": "Lót bàn phím Macbook Air M2 M3 13.6 ...",
+    "link": "https://www.lazada.vn/products/lot-ban-phim-macbook-air-m2-m3-136-macbook-pro-m2-13-nam-2022-2024-model-a2681-a2338-i2074626264.html?srsltid=AU7gw4XKtRdJJDr4_oe-WAGoc4IPRhN-5gYFsfkESYIbSA_vGcHWz8op",
+    "snippet": "+ Phủ phím Silicon bảo vệ bàn phím siêu mỏng , siêu bền thân thiện với môi trường. + Chống bụi bẩn, chống thấm nước duy trì tuổi thọ sử dụng của phím.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

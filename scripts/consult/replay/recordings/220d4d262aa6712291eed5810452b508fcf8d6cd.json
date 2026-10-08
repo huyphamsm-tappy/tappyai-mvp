@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe Anker Soundcore R50I NC",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:43:49.909Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe Anker Soundcore R50I NC",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tai Nghe Bluetooth Soundcore R50i NC - A3959",
+    "imageUrl": "https://cdn.hstatic.net/products/1000153276/soundcore_a3959_6_34a90b80a634482ba339f73b62c404c3.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBXgeAHboDDM6l0wEdpYMN_5qKLuLaCaHIZ1cW_gMBew&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Anker.vn",
+    "domain": "anker.vn",
+    "link": "https://anker.vn/products/tai-nghe-bluetooth-soundcore-r50i-nc-a3959-by-anker?srsltid=AU7gw4WpASOC4UJJuJY14qIm1nQHAILnAXB0lmGhGv8AWwYGSk0axgEN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000153276%2Fsoundcore_a3959_6_34a90b80a634482ba339f73b62c404c3.png&tbnid=-oRpYZpXLhYmpM&imgrefurl=https%3A%2F%2Fanker.vn%2Fproducts%2Ftai-nghe-bluetooth-soundcore-r50i-nc-a3959-by-anker%3Fsrsltid%3DAU7gw4WpASOC4UJJuJY14qIm1nQHAILnAXB0lmGhGv8AWwYGSk0axgEN&docid=ZH3PibtMHL4NBM&w=1500&h=1500",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore R50I NC",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_344_1__1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYzRv75_uG93nj6xj4e0nazp7yzun-WhfjVwm0VwnxrQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/tai-nghe-khong-day-anker-soundcore-r50i-nc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Ff%2Fr%2Fframe_344_1__1.png&tbnid=TKGwkkhQbqXbxM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Ftai-nghe-khong-day-anker-soundcore-r50i-nc.html&docid=RqYZvVnOXLxbaM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Soundcore R50i NC chống ồn ANC chính hãng, giá tốt",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/54/330833/tai-nghe-bluetooth-true-wireless-soundcore-r50i-a3959-den-1-638641672307090050.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW_qP8txO208d5WZTR8sTdH4Ddvi5bc_ANKTofP66_ag&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-true-wireless-soundcore-r50i-a3959",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F54%2F330833%2Ftai-nghe-bluetooth-true-wireless-soundcore-r50i-a3959-den-1-638641672307090050.jpg&tbnid=bMk0ApDtinlDXM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Ftai-nghe%2Ftai-nghe-bluetooth-true-wireless-soundcore-r50i-a3959&docid=2WkfzZB9KDF_6M&w=1020&h=680",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Anker Soundcore TWS R50i NC - Model A3959",
+    "imageUrl": "https://ankershop.vn/wp-content/uploads/2024/09/ANKER-A9521.jpg",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUblcE6qCqPdmW9uNHkHel1cEnRjTl-Kml-hzlqP7IBA&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "AnkerShop",
+    "domain": "ankershop.vn",
+    "link": "https://ankershop.vn/san-pham/tai-nghe-anker-soundcore-tws-r50i-nc/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fankershop.vn%2Fwp-content%2Fuploads%2F2024%2F09%2FANKER-A9521.jpg&tbnid=tqSUc_cF9a8hfM&imgrefurl=https%3A%2F%2Fankershop.vn%2Fsan-pham%2Ftai-nghe-anker-soundcore-tws-r50i-nc%2F&docid=V4HPBQMtXl7E9M&w=900&h=900",
+    "position": 4
+   },
+   {
+    "title": "Anker soundcore Tai nghe bluetooth R50i NC, chống ồn chủ động thông minh,  bass mạnh, pin 45H, chống nước IP54",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ra0g-m6vg8cexeun5f8",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjnST3mxajU0b4esc_wtPVtIG4GE8DKeiRrktiEhycoQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Anker-soundcore-Tai-nghe-bluetooth-R50i-NC-ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-th%C3%B4ng-minh-bass-m%E1%BA%A1nh-pin-45H-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP54-i.264864376.29653295095",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ra0g-m6vg8cexeun5f8&tbnid=OhLAC7tajtDOkM&imgrefurl=https%3A%2F%2Fshopee.vn%2FAnker-soundcore-Tai-nghe-bluetooth-R50i-NC-ch%25E1%25BB%2591ng-%25E1%25BB%2593n-ch%25E1%25BB%25A7-%25C4%2591%25E1%25BB%2599ng-th%25C3%25B4ng-minh-bass-m%25E1%25BA%25A1nh-pin-45H-ch%25E1%25BB%2591ng-n%25C6%25B0%25E1%25BB%259Bc-IP54-i.264864376.29653295095&docid=g_NmUAduoe5CIM&w=1024&h=1024",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe bluetooth Anker soundcore R50i - A3949 (Đen/ Trắng)",
+    "imageUrl": "https://cdn.mediamart.vn/images/product/tai-nghe-bluetooth-soundcore-r50i---a3949_55db5444.webp",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYdyjZ56ppKSwFowQXTl-skmZjY7ttrtZHbVK-xTECeQ&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "MediaMart",
+    "domain": "mediamart.vn",
+    "link": "https://mediamart.vn/tai-nghe-bluetooth/tai-nghe-bluetooth-soundcore-r50i-a3949",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.mediamart.vn%2Fimages%2Fproduct%2Ftai-nghe-bluetooth-soundcore-r50i---a3949_55db5444.webp&tbnid=8Uf2iKNMLaOIIM&imgrefurl=https%3A%2F%2Fmediamart.vn%2Ftai-nghe-bluetooth%2Ftai-nghe-bluetooth-soundcore-r50i-a3949&docid=AsXYT7oN2F-52M&w=800&h=800",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Anker Soundcore R50i NC | Giá tốt, ưu đãi hấp dẫn",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/800x0/Anker_Soundcore_R50i_NC_3_7cf8cf05d2.png",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkIWGA3GgjG1wjCus2i0Zg9g0L264w4bQzudPEaMRfRg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-bluetooth-nhet-tai-anker-soundcore-r50i-nc",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F800x0%2FAnker_Soundcore_R50i_NC_3_7cf8cf05d2.png&tbnid=X_QvRj3AaYol-M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fphu-kien%2Ftai-nghe-bluetooth-nhet-tai-anker-soundcore-r50i-nc&docid=PAxu2rFl8eoTWM&w=800&h=533",
+    "position": 7
+   },
+   {
+    "title": "Trên tay Anker Soundcore R50i NC: Thiết kế chỉn chu, chất âm hay",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/common/News/1571499/Anker%20Soundcore%20R50i%20NC-01.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWBsd3urfGoHIv1i1ruBO3gbc2TOHgCw4qYn_AL6hn0A&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/tin-tuc/tren-tay-anker-soundcore-r50i-nc-1571499",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Fcommon%2FNews%2F1571499%2FAnker%2520Soundcore%2520R50i%2520NC-01.jpg&tbnid=XbfN8FyarORhOM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Ftin-tuc%2Ftren-tay-anker-soundcore-r50i-nc-1571499&docid=gHfP-dFXWAbH3M&w=1280&h=720",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

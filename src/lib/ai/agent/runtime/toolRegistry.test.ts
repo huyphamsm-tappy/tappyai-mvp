@@ -106,7 +106,7 @@ describe('M6 · use_tool reaches a deferred tool in the SAME step, as the real t
 describe('M6 · the runtime stays authoritative (5/6/13)', () => {
   const sel = (tools = routeTools()) => selectTools(tools, { texts: ['xin chào'] })
   it('side-effect, control, core, unknown and not-offered tools are refused with a structured result; nothing runs', async () => {
-    for (const name of ['save_price_watch', 'ask_user', 'update_task', 'web_search', 'search_places', 'rm_rf', 'get_movie_showtimes']) {
+    for (const name of ['save_price_watch', 'ask_user', 'update_task', 'use_tool', 'rm_rf', 'get_movie_showtimes', '']) {
       const r = resolveUseTool({ tool: name, args: { query: 'x' } }, routeTools(), sel(), 'vi')
       expect(r).toMatchObject({ refused: 'tool_unavailable', result: { error: 'tool_unavailable' } })
     }
@@ -176,5 +176,24 @@ describe('M6 · one canonical schema; cache keyed by schema version (7/15)', () 
     const s = selectTools(only, { texts: ['xin chào'] })
     expect(s.catalog).toEqual([])
     expect(proxyToolSchema(only, s.catalog, 'vi')).toBeNull()
+  })
+})
+
+describe('M7 · a proxied call never fails at the SDK layer (measured: an enum made the model step fail before the runtime saw it)', () => {
+  it('the use_tool schema accepts ANY tool name and missing / non-object args — the runtime decides', () => {
+    const p = (proxyToolSchema(routeTools(), ['get_flight_prices'], 'vi') as { parameters: z.ZodTypeAny }).parameters
+    for (const v of [{ tool: 'get_hotel_prices', args: { location: 'Đà Nẵng' } }, { tool: 'search_places', args: { query: 'phở' } }, { tool: 'not_a_tool' }, { tool: 'get_flight_prices' }]) expect(p.safeParse(v).success, JSON.stringify(v)).toBe(true)
+  })
+  it('proxying a tool that is already exposed this turn (core or preselected) resolves to it and runs once, in the same step', async () => {
+    const t = turn([step('', [[USE_TOOL, { tool: 'search_places', args: { query: 'phở quận 1' } }]]), step('Có quán.')], { user: 'tìm quán phở' })
+    await t.body()
+    expect(calls).toEqual([['search_places', { query: 'phở quận 1' }]])
+    expect(t.trace.counters.modelRounds).toBe(2)
+    const w = turn([step('', [[USE_TOOL, { tool: 'get_weather', args: { location: 'Đà Lạt' } }]]), step('Có mưa.')], { user: 'Mai Đà Lạt có mưa không?' })
+    await w.body()
+    expect(calls.at(-1)).toEqual(['get_weather', { location: 'Đà Lạt' }])
+  })
+  it('missing args → the tool\'s own schema answers invalid_arguments (structured), nothing runs', () => {
+    expect(resolveUseTool({ tool: 'get_flight_prices' }, routeTools(), selectTools(routeTools(), { texts: ['x'] }), 'vi')).toMatchObject({ refused: 'invalid_arguments' })
   })
 })

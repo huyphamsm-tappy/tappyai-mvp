@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Việt Nam\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:43:29.037Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Việt Nam\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Việt Nam by Võ Quốc: Menu Mới 3 Món Hấp Dẫn Từ 1/7",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7657383191719726356",
+    "snippet": "Từ ngày 1/7, Phở Việt Nam by Võ Quốc cập nhật menu với 3 món mới siêu hấp dẫn phục vụ cả nhà: - Phở bò sa tế - Phở gà quay sa tế - Cơm gà quay ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành ...",
+    "link": "https://www.tiktok.com/@davisitonguyen/video/7578405776998305055",
+    "snippet": "Phở Việt Nam - 14 Phạm Hồng Thái, Phường Bến Thành, Quận 1 #gowithdavis #vietnamesefood #pho #beefnoodles #xuhuong Phở Đặc BiệtPhở Bò Thành Đạt ...",
+    "position": 2
+   },
+   {
+    "title": "Chén Tiết 2 Trứng: Món Phở Đỉnh Cao Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@pho.viet.nam.q7/video/7569119895149890836",
+    "snippet": "Khám phá món phở tươi ngon với tiết 2 trứng tuyệt hảo, đỉnh cao của. @Phở Việt Nam. Nội dung quảng bá.",
+    "position": 3
+   },
+   {
+    "title": "Phở Việt Nam ngon khó cưỡng | Phở Cần Thơ",
+    "link": "https://www.tiktok.com/@happyinvn/video/7678602526194797844",
+    "snippet": "Phở Cần Thơ: Phở Việt Nam ngon khó cưỡng Lead Phở Cần Thơ được mô tả là “ngonnnn lắm” — một lời khuyên mạnh mẽ nên thử. Bát phở ở Cần Thơ ...",
+    "position": 4
+   },
+   {
+    "title": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2",
+    "link": "https://www.tiktok.com/@tuantudo86/video/7693090789445930260",
+    "snippet": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2 | Menu quá hay & đáng học hỏi #tuantudo #quannhautudo #phobotudo #laucuadongtudo #nuongtudo #vtmgr # ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái",
+    "link": "https://www.tiktok.com/@vine.2905/video/7601361027833269522",
+    "snippet": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái. Khám phá quán phở nổi tiếng ngon tại Sài Gòn. Chất lượng tuyệt hảo, nước lèo thơm ngon, phục vụ đa ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Việt Nam Quận 7 – Tô phở truyền thống chuẩn vị Việt",
+    "link": "https://www.tiktok.com/@pho.viet.nam.q7/video/7566842710242495765",
+    "snippet": "Phở Việt Nam Quận 7 mang đến hương vị phở truyền thống đúng chuẩn Việt giữa lòng Quận 7. Quán theo phong cách mộc mạc, ấm cúng, phù hợp cho bữa sáng hoặc ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Việt Nam (@phovietnam.homemade)",
+    "link": "https://www.tiktok.com/@phovietnam.homemade",
+    "snippet": "66 Trần Quốc Toản, q3 14 Phạm Hồng Thái, Q1 S36-1 Bùi Bằng Đoàn, Hưng Vượng 2 q7. #CapCut PHỞ VIỆT NAM PHỤC VỤ XUYÊN TẾT tại 66 Trần Quốc Toản và 14.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:41:50.874Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng ...",
+    "link": "https://www.facebook.com/groups/aiartworksvn/posts/4512588578953991/",
+    "snippet": "Em muốn mua một chiếc MacBook để dùng lâu dài khoảng 4–5 năm, ngân sách 30 triệu đổ lại. Nhu cầu chủ yếu là Python, Data Analysis, ...",
+    "position": 1
+   },
+   {
+    "title": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và ...",
+    "link": "https://www.facebook.com/VatVoStudio69/videos/c%E1%BA%A3m-nh%E1%BA%ADn-macbook-neo-v%E1%BB%ABa-m%E1%BB%9F-b%C3%A1n-t%E1%BA%A1i-vi%E1%BB%87t-nam-ngon-v%C3%A0-h%E1%BA%BFt-h%C3%A0ng-tr%C3%AAn-apple-store-o/2772270539797729/",
+    "snippet": "Cảm Nhận MacBook Neo Vừa Mở Bán Tại Việt Nam: Ngon Và Hết Hàng Trên Apple Store Online Đợt Đầu Trong video ngày hôm nay, mình và anh Đức sẽ ...",
+    "position": 2
+   },
+   {
+    "title": "💻 Học sinh, sinh viên sắm MacBook mùa tựu trường, nhận ...",
+    "link": "https://www.facebook.com/didongviet/posts/-h%E1%BB%8Dc-sinh-sinh-vi%C3%AAn-s%E1%BA%AFm-macbook-m%C3%B9a-t%E1%BB%B1u-tr%C6%B0%E1%BB%9Dng-nh%E1%BA%ADn-voucher-gi%E1%BA%A3m-th%C3%AAm-%C4%91%E1%BA%BFn-800k-t/1558015963032017/",
+    "snippet": "✓ Đổi máy cũ – Lên đời MacBook mới với trợ giá đến 4 triệu đồng. ✓ Mua MacBook nhận quà tặng giá trị: Đơn từ 20 triệu: Tặng tai nghe không ...",
+    "position": 3
+   },
+   {
+    "title": "Vừa mua MacBook, chưa kịp kích hoạt thì cửa hàng tăng ...",
+    "link": "https://www.facebook.com/Theanh28/posts/v%E1%BB%ABa-mua-macbook-ch%C6%B0a-k%E1%BB%8Bp-k%C3%ADch-ho%E1%BA%A1t-th%C3%AC-c%E1%BB%ADa-h%C3%A0ng-t%C4%83ng-gi%C3%A1-6-tri%E1%BB%87u/1353922803589485/",
+    "snippet": "Một vài dòng sản phẩm Macbook đã tăng giá Macbook Neo tăng từ 15tr và 17tr lên 19tr5 và 22tr Macbook Air M5 tăng từ 30tr lên 35tr Cuối cùng thì ...",
+    "position": 4
+   },
+   {
+    "title": "Hội MacBook Đà Nẵng",
+    "link": "https://www.facebook.com/groups/hoimacbookdanang/",
+    "snippet": "*Giá rất tốt, chỉ: 9.500.000 vnđ MacBook Pro ... Máy zin full chức năng, đáp ứng tốt học tập, văn phòng, lập trình và chỉnh sửa ảnh cơ bản, pin tốt.",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn ...",
+    "link": "https://www.facebook.com/Mac24h/videos/macbook-air-13-inch-apple-m1-like-new-fullboxt%E1%BA%A7m-gi%C3%A1-h%C6%A1n-10-tri%E1%BB%87u-cho-%C4%91a-d%E1%BA%A1ng-nh/1228533325419511/",
+    "snippet": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn 10 triệu - cho đa dạng nhu cầu từ thiết kế - học tập - văn phòng ...",
+    "position": 6
+   },
+   {
+    "title": "Top 5 Macbook giá rẻ tầm 40 triệu nên mua tại Thế Giới Di ...",
+    "link": "https://www.thegioididong.com/hoi-dap/top-5-macbook-gia-re-tam-40-trieu-nen-mua-tai-the-gioi-di-1429803",
+    "snippet": "Với mức giá khoảng 37 triệu đồng, phiên bản Apple MacBook Air M2 2022 16GB/256GB cao cấp này xứng đáng với số tiền bạn bỏ ra nhằm đáp ứng hầu ...",
+    "date": "10 thg 10, 2022",
+    "position": 7
+   },
+   {
+    "title": "Macbook ngày càng rẻ thế mới ảo, thế cùng 1 số tiền thì mua ...",
+    "link": "https://www.facebook.com/thinkview.vn/videos/macbook-ng%C3%A0y-c%C3%A0ng-r%E1%BA%BB-th%E1%BA%BF-m%E1%BB%9Bi-%E1%BA%A3o-th%E1%BA%BF-c%C3%B9ng-1-s%E1%BB%91-ti%E1%BB%81n-th%C3%AC-mua-c%C3%A1i-n%C3%A0o-%C4%91%C3%A2y-ae-%C6%A1i/1068608779248945/",
+    "snippet": "Macbook ngày càng rẻ thế mới ảo, thế cùng 1 số tiền thì mua cái nào đây ae ơi ; MTLS - Hồ Chí Minh. 8w · Public ; Nguyễn Văn Thọ. 12w · Public ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

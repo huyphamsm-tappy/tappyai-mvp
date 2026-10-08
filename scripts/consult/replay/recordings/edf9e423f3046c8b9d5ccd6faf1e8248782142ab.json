@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Anker Soundcore Spirit Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:49.499Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Anker Soundcore Spirit Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe bluetooth SOUNDCORE Spirit Pro GVA (by Anker)",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-SOUNDCORE-Spirit-Pro-GVA-(by-Anker)-A3404-i.366227238.8411891182",
+    "snippet": "Tai nghe bluetooth SOUNDCORE Spirit Pro GVA (by Anker) - A3404. 1/7. 1.200.000₫. Tai nghe bluetooth SOUNDCORE Spirit Pro GVA (by Anker) - A3404.",
+    "position": 1
+   },
+   {
+    "title": "tin-tuc/review-anker-soundcore-spirit-pro-tai-nghe-the-thao-c75- ...",
+    "link": "https://shopee.vn/search?keyword=tin-tuc/review-anker-soundcore-spirit-pro-tai-nghe-the-thao-c75-2019072408304144.htm",
+    "snippet": "Tai nghe bluetooth SOUNDCORE Spirit Pro GVA (by Anker) - A3404. 1.200.000₫. Please enable ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe thể thao Bluetooth 2 tai kèm đốc sạc True ...",
+    "link": "https://shopee.vn/Tai-Nghe-th%E1%BB%83-thao-Bluetooth-2-tai-k%C3%A8m-%C4%91%E1%BB%91c-s%E1%BA%A1c-True-Wireless-Anker-Soundcore-Spirit-X2-A3918-i.85776939.18667943817",
+    "snippet": "Mua Tai Nghe thể thao Bluetooth 2 tai kèm đốc sạc True Wireless Anker Soundcore Spirit X2 - A3918 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Soundcore liberty air 2 pro",
+    "link": "https://shopee.vn/list/soundcore/liberty%20air%202%20pro",
+    "snippet": "Tai nghe Bluetooth Anker SoundCore Liberty Air 2 Pro cũ499.000₫ · 2. Tai nghe Anker soundcore liberty air 2 pro - A3951 New Màu Xanh1.450.000₫ · 3. Tai nghe lẻ ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe thể thao Bluetooth Soundcore Sport X10 Anker ...",
+    "link": "https://shopee.vn/Tai-nghe-th%E1%BB%83-thao-Bluetooth-Soundcore-Sport-X10-Anker-A3961-chuy%C3%AAn-d%E1%BB%A5ng-t%E1%BA%ADp-luy%E1%BB%87n-kh%C3%A1ng-n%C6%B0%E1%BB%9Bc-IPX7-xoay-210%C2%B0-i.2849999.25152251771",
+    "snippet": "Tai nghe thể thao Bluetooth Soundcore Sport X10 Anker A3961 chuyên dụng tập luyện, kháng nước IPX7, xoay 210°. outline grey truck icon. Không hỗ trợ.",
+    "position": 5
+   },
+   {
+    "title": "ốp điện thoại soundcore - Giá Tốt, Sale Tháng 10, Freeship ...",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/soundcore",
+    "snippet": "Mua Online ốp điện thoại soundcore chất lượng, Freeship 0Đ, Voucher Shopee giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026. Mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe không dây thể thao Bluetooth Anker Soundcore ...",
+    "link": "https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-th%E1%BB%83-thao-Bluetooth-Anker-Soundcore-AeroFit-A3872-Bluetooth-5.3-Ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX7-pin-42h-i.2849999.22686958996",
+    "snippet": "Tai nghe không dây thể thao Bluetooth Anker Soundcore AeroFit A3872, Bluetooth 5.3, Chống nước IPX7, pin 42h. outline grey truck icon. Không hỗ trợ.",
+    "position": 7
+   },
+   {
+    "title": "Anker soundcore Tai nghe bluetooth dạng móc V20i siêu ...",
+    "link": "https://shopee.vn/Anker-soundcore-Tai-nghe-bluetooth-d%E1%BA%A1ng-m%C3%B3c-V20i-si%C3%AAu-tho%E1%BA%A3i-m%C3%A1i-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IP55-th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-ph%C3%A1t-t%E1%BB%9Bi-36H-A3876-i.264864376.25338128274?extraParams=%7B%22display_model_id%22%3A252776530456%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua Anker soundcore Tai nghe bluetooth dạng móc V20i siêu thoải mái, chống nước IP55, thời lượng phát tới 36H A3876 giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

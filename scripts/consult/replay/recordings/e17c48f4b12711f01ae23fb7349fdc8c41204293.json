@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu 2026 400. online",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:02:33.641Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu 2026 400. online",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thủ tục cấp HỘ CHIẾU PHỔ THÔNG ở trong nước mới ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/thu-tuc-cap-ho-chieu-pho-thong-o-trong-nuoc-moi-nhat-tu-0172026-tai-cap-tinh-theo-quyet-dinh-4245-t-51831.html",
+    "snippet": "... cấp hộ chiếu nộp lệ phí thành công. (5) Lệ phí: - 100.000đ/hộ chiếu ... Bài Viết Bản Án Cách làm hộ chiếu trên VNeID 2026 chi tiết?",
+    "date": "29 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hướng dẫn thực hiện thủ tục xin cấp hộ chiếu toàn trình ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/huong-dan-thuc-hien-thu-tuc-xin-cap-ho-chieu-toan-trinh-qua-cong-dich-vu-cong-bo-ngoai-giao-dichvuco-19714.html",
+    "snippet": "Thủ tục xin cấp hộ chiếu toàn trình được thực hiện trực tuyến trên Cổng Dịch vụ công Bộ Ngoại giao, cho phép người dân kê khai hồ sơ, theo dõi tiến độ, ...",
+    "position": 2
+   },
+   {
+    "title": "Từ 01/7/2026, hộ chiếu phổ thông cấp theo thủ tục rút gọn ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/tu-0172026-ho-chieu-pho-thong-cap-theo-thu-tuc-rut-gon-chi-co-gia-tri-su-dung-01-lan-ho-chieu-pho-th-21180.html",
+    "snippet": "Từ 01/7/2026, hộ chiếu phổ thông cấp theo thủ tục rút gọn chỉ có giá trị sử đúng 01 lần? · Giấy tờ xuất nhập cảnh bao gồm những gì?",
+    "position": 3
+   },
+   {
+    "title": "Pháp luật về Văn hóa - Xã hội",
+    "link": "https://thuvienphapluat.vn/phap-luat/van-hoa-xa-hoi?page=123",
+    "snippet": "Kích thước ảnh làm passport 2026 được quy định tại Thông tư 69/2026/TT-BCA (có hiệu lực từ 1/7/2026) sửa đổi, bổ sung một số điều của Thông tư 31/2023/TT-BCA ...",
+    "position": 4
+   },
+   {
+    "title": "Mẫu TK01 tờ khai đề nghị cấp hộ chiếu phổ thông cho ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/mau-tk01-to-khai-de-nghi-cap-ho-chieu-pho-thong-cho-nguoi-tu-14-tuoi-tro-len-tu-0172026-moi-nhat-va-50482.html",
+    "snippet": "Mẫu TK01 tờ khai đề nghị cấp hộ chiếu phổ thông cho người từ 14 tuổi trở lên từ 01/7/2026 mới nhất và cách điền · Quy định về cấp hộ chiếu phổ ...",
+    "date": "29 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Từ 15/8/2026, công dân tích hợp đủ 05 loại giấy tờ cơ bản ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/tu-1582026-cong-dan-tich-hop-du-05-loai-giay-to-co-ban-se-duoc-mien-10-khoan-phi-le-phi-thiet-yeu-c-51434.html",
+    "snippet": "- Thực hiện đăng ký cấp hộ chiếu, giấy thông hành hoặc thẻ ABTC qua dịch vụ công trực tuyến. 6. Phí cung cấp thông tin lý lịch tư pháp (Thông tư ...",
+    "date": "14 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "hochieu xuatnhapcanh gov vn là Trang tờ khai điện tử đề ...",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/hochieu-xuatnhapcanh-gov-vn-la-trang-to-khai-dien-tu-de-nghi-cap-ho-chieu-dung-khong-138068650.html",
+    "snippet": "... 400 triệu ... Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền? Hỏi đáp Pháp luật Hướng dẫn thủ tục làm hộ chiếu online cho trẻ em nhanh nhất?",
+    "date": "1 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "Hộ chiếu số của sản phẩm có được sử dụng để thay thế ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/ho-chieu-so-cua-san-pham-co-duoc-su-dung-de-thay-the-nhan-hang-hoa-dien-tu-khong-20323.html",
+    "snippet": "Theo quy định tại Khoản 4 Điều Điều 32 Nghị định 37/2026/NĐ-CP, tổ chức, cá nhân sản xuất, kinh doanh có thể sử dụng hộ chiếu số của sản phẩm ...",
+    "date": "29 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

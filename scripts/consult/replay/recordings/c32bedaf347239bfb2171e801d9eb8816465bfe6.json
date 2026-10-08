@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hana Dalat Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:18:01.763Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hana Dalat Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Những Bảo Tàng Nghệ Thuật Ở Đà Lạt",
+    "link": "https://www.tiktok.com/@hanahotel.dalat/photo/7619571223642574100",
+    "snippet": "If you think it may contain an error, please report at: Feedback and help - TikTok · nhạc nền - Hà An Huy · Hana Dalat Hotel · author. 1602 · 1.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

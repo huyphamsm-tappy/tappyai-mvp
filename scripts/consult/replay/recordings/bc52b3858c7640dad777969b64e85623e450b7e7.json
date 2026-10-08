@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:learnenglish.britishcouncil.org speaking A1 listening English audio British Council beginner",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:32.075Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:learnenglish.britishcouncil.org speaking A1 listening English audio British Council beginner",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "A1 listening | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening/a1",
+    "snippet": "Each lesson has a preparation task, an audio recording and two tasks to check your understanding and to practise a variety of listening skills. Make a start ...",
+    "position": 1
+   },
+   {
+    "title": "Practise English listening skills | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening",
+    "snippet": "A1 listening. Listening practice to help you understand familiar words and basic phrases when people speak slowly and clearly. Situations include meeting people ...",
+    "position": 2
+   },
+   {
+    "title": "Booking a table | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening/a1/booking-table",
+    "snippet": "Listen to someone booking a table in a restaurant to practise and improve your listening skills! Do the preparation task first. Then listen to the audio and ...",
+    "position": 3
+   },
+   {
+    "title": "The first English class | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening/a1/first-english-class",
+    "snippet": "Listening A1: The first English class – 1 · 1. This is an English course. True · 2. There are three classes every week. True · 3. The class begins in May. · 4.",
+    "position": 4
+   },
+   {
+    "title": "Audio zone | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/audio-zone",
+    "snippet": "You will improve your listening comprehension and develop your vocabulary. Each recording has a transcript and interactive exercises to help you understand and ...",
+    "position": 5
+   },
+   {
+    "title": "Meeting a new team member",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening/a1/meeting-new-team-member",
+    "snippet": "Listen to a conversation between two new colleagues to practise your listening skills. Do the preparation task first. Then listen to the audio and do the ...",
+    "position": 6
+   },
+   {
+    "title": "Podcasts series 1 | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/audio-series/podcasts/s1",
+    "snippet": "You will improve your listening comprehension and develop your vocabulary. Each recording has a transcript and interactive exercises to help you understand and ...",
+    "position": 7
+   },
+   {
+    "title": "Meeting other students | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/listening/a1/meeting-other-students",
+    "snippet": "Listen to a group of new students meeting for the first time to practise and improve your listening skills. Do the preparation task first.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

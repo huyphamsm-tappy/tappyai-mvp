@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4\" OR \"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:18.184Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4\" OR \"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth True Wireless Huawei Freebuds Se 4 Anc",
+    "link": "https://www.tiktok.com/discover/tai-nghe-bluetooth-true-wireless-huawei-freebuds-se-4-anc",
+    "snippet": "21.6M posts. Discover videos related to Tai Nghe Bluetooth True Wireless Huawei Freebuds Se 4 Anc on TikTok. See more videos about Thay Pin Tai Nghe Huawei ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

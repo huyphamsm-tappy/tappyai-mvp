@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com mua MacBook Air M1 cũ 9 triệu TP.HCM",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:43.609Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com mua MacBook Air M1 cũ 9 triệu TP.HCM",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "5.740 Macbook cũ like new chính hãng giá rẻ 08/10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-sdpb3",
+    "snippet": "MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua. M16 GB256 GBSSD. 8.800.000 đ ... MacBook Air M1 cũ. 10,35 triệu - 12,65 triệu, 476. MacBook Air M2 cũ. 17,55 ...",
+    "position": 1
+   },
+   {
+    "title": "143 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Toàn quốc",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tu-5-trieu-den-10-trieu-sfk84zHjxuXIsn",
+    "snippet": "MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua · 8.800.000 đ · 4.9. 1052 đã bán ; [CẦN BÁN] MACBOOK AIR M1 - 10tr · 10.000.000 đ.",
+    "position": 2
+   },
+   {
+    "title": "53 Apple Macbook Air cũ giá trên 25 triệu tốt Tp Hồ Chí Minh",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-gia-tren-25-trieu-tp-ho-chi-minh-sfvBZhqBVhS3F1",
+    "snippet": "53 Apple Macbook Air cũ giá trên 25 triệu tốt Tp Hồ Chí Minh ; MacBook Air 13 inch M5 24GB/512GB Xanh, Mới 100%. Khác24 GB512 GBSSD. 41.000.000 đ ; MacBook Air M5 ...",
+    "position": 3
+   },
+   {
+    "title": "8 Apple Macbook Air M1 cũ giá 10 - 15 triệu đẹp Quận Tân ...",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tu-10-trieu-den-15-trieu-quan-tan-phu-tp-ho-chi-minh-sf9kc2CTGLcSc6",
+    "snippet": "8 Apple Macbook Air M1 cũ giá 10 - 15 triệu tốt Quận Tân Phú ; MacBook Air M1 Retina Bạc 98% · 8 GB256 GBSSD. 10.900.000 đ. Giá tốt ; Apple Macbook Air M1 8GB/ ...",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Air M1 giá dưới 5 triệu Tp Hồ Chí Minh",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-duoi-5-trieu-tp-ho-chi-minh-sfgCpYjATShNwa",
+    "snippet": "2 Laptop Apple Macbook Air M1 cũ giá dưới 5 triệu Tp Hồ Chí Minh. Apple MacBook Air A2337 M1 Vàng hồng M18 GB256 GB 1.500.000. Macbook Air M1 full box 1.150. ...",
+    "position": 5
+   },
+   {
+    "title": "208 MacBook Air M1 cũ tại TPHCM like new, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-tp-ho-chi-minh-sdpb3pm141",
+    "snippet": "Giá laptop Macbook Air M1 cũ tại Tp Hồ Chí Minh khoảng 11,3 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Tp Hồ Chí Minh ...",
+    "position": 6
+   },
+   {
+    "title": "2 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Quận Hoàng Mai",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tu-5-trieu-den-10-trieu-quan-hoang-mai-ha-noi-sf57spo8gzyjly",
+    "snippet": "2 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Quận Hoàng Mai · Apple Macbook Air M1/8GB/256GB/13.3\" Rentina Rẻ · Apple MacBook Air M1 8GB/256GB Vàng chính hãng ...",
+    "position": 7
+   },
+   {
+    "title": "509 MacBook Air cũ tại TPHCM giá rẻ, like new 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-tp-ho-chi-minh-sdpb3pm5",
+    "snippet": "Giá laptop Macbook Air cũ tại Tp Hồ Chí Minh khoảng 4,9 triệu, tùy thuộc vào cấu hình, đời máy và tình trạng sử dụng thực tế. Người mua tại Tp Hồ Chí Minh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

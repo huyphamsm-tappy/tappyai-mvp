@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:chotot.com/mua-ban-laptop-apple-macbook-air-m1 \"8.800.000\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:48.960Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:chotot.com/mua-ban-laptop-apple-macbook-air-m1 \"8.800.000\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "143 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Toàn quốc",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-gia-tu-5-trieu-den-10-trieu-sfk84zHjxuXIsn",
+    "snippet": "143 Apple Macbook Air M1 cũ giá 5 - 10 triệu tốt Toàn quốc ; MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua · 8.800.000 đ · 4.9. 1052 đã bán ; [CẦN BÁN] MACBOOK ...",
+    "position": 1
+   },
+   {
+    "title": "Mua bán MacBook Air M1 cũ giá rẻ, máy like new, đẹp 99%",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-sdpb3pm141",
+    "snippet": "MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua · 8.800.000 đ · 4.9. 1053 đã bán ; Macbook Air M1 8GB/256GB Vàng hồng · 12.600.000 đ · Hoàng Táo. 5.0. 300 đã bán.",
+    "position": 2
+   },
+   {
+    "title": "208 MacBook Air M1 cũ tại TPHCM like new, giá rẻ 10/2026",
+    "link": "https://www.chotot.com/mua-ban-laptop-apple-macbook-air-m1-tp-ho-chi-minh-sdpb3pm141",
+    "snippet": "208 MacBook Air M1 cũ tại TPHCM giá rẻ chính hãng đang bán 10/2026 ; MacBook Air 13\" M1 8Gb/256Gb 98%-Góp 0đ-Thu Mua · 8.800.000 đ · (P. Tân Hưng mới) ; MACBOOK AIR ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

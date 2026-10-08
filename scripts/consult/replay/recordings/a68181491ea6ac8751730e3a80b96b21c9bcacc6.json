@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook cũ Activation Lock pin cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:06:10.374Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook cũ Activation Lock pin cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua chuẩn xác, kỹ ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-macbook-cu-truoc-khi-mua-chuan-xac-1533818",
+    "snippet": "Trong trường hợp người quan tâm đến tình trạng pin, sàc của máy, hãy khởi động ứng dụng System Information. Trong phần menu của Power sẽ hiển ...",
+    "date": "10 thg 6, 2023",
+    "position": 1
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4VEkeYw7XzGLjFw-do7EthBQAHqGUh2OI0-X5bEaCpJ4Hay6Q5z",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 2
+   },
+   {
+    "title": "mua macbook cũ nên check số lần sạc pin hay thời gian sử ...",
+    "link": "https://voz.vn/t/mua-macbook-cu-nen-check-so-lan-sac-pin-hay-thoi-gian-su-dung-ssd.1262498/",
+    "snippet": "Bác nào cắm sạc liên tục qua dock/hub xài như máy bàn thì số lần sạc tăng cực chậm, nhưng pin vẫn có thể bị phù do ngâm sạc tỏa nhiệt liên tục.",
+    "date": "21 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "Xác định số chu kỳ sạc của pin trên máy tính xách tay Mac",
+    "link": "https://support.apple.com/vi-vn/102888",
+    "snippet": "Xác định kiểu máy MacBook Pro. Tìm số chu kỳ sạc của pin. Hãy sử dụng bảng bên dưới để xem giới hạn số chu kỳ sạc cho pin máy tính ...",
+    "position": 4
+   },
+   {
+    "title": "Kinh nghiệm chọn mua Macbook cũ và cách kiểm tra số ...",
+    "link": "https://laptopthanhnga.com/ai-amp;-ung-dung-cong-nghe/kinh-nghiem-chon-mua-macbook-cu-va-cach-kiem-tra-so-lan-sac-cycle-count-n183.html",
+    "snippet": "Hướng dẫn kiểm tra số lần sạc (Cycle Count) MacBook cũ chính xác ... Bước 1: Kiểm tra tài khoản iCloud ẩn và khóa MDM; Bước 2: Kiểm tra ...",
+    "date": "sau 19 giờ nữa",
+    "position": 5
+   },
+   {
+    "title": "10 phút. Mua Macbook cũ thì check ngay cho mình những yếu ...",
+    "link": "https://www.facebook.com/thinkview.vn/videos/10-ph%C3%BAt-mua-macbook-c%C5%A9-th%C3%AC-check-ngay-cho-m%C3%ACnh-nh%E1%BB%AFng-y%E1%BA%BFu-t%E1%BB%91-n%C3%A0y-nha/1708083160468379/",
+    "snippet": "This video is a fast-paced tutorial in Chinese, demonstrating numerous tips and tricks for using an Apple Macbook. The creator, speaking in ...",
+    "position": 6
+   },
+   {
+    "title": "Có cách nào check xem máy đã được kích pin, số lần sạc ...",
+    "link": "https://www.facebook.com/groups/muabanmacbookcu/posts/2136499760507471/",
+    "snippet": "Có cách nào check xem máy đã được kích pin, số lần sạc không ạ. Thấy máy đời sâu mà toàn pin 100% e hơi lo.",
+    "position": 7
+   },
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4W4A5pIpznbVX09gkOLfQOil4f6TEJVWbKUL_VoIxqU5GKX7dOB",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

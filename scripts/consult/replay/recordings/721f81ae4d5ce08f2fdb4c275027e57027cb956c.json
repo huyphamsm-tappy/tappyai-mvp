@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Thông tư 157/2015/TT-BTC lệ phí cấp hộ chiếu 200000 cấp lại mất hư hỏng 400000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:52.197Z",
+ "body": {
+  "searchParameters": {
+   "q": "Thông tư 157/2015/TT-BTC lệ phí cấp hộ chiếu 200000 cấp lại mất hư hỏng 400000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 157/2015/TT-BTC lệ phí cấp hộ chiếu thị thực ...",
+    "link": "https://luatvietnam.vn/thue/thong-tu-157-2015-tt-btc-bo-tai-chinh-99371-d1.html",
+    "snippet": "Thông tư 157/2015/TT-BTC về việc quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, ...",
+    "date": "21 thg 10, 2015",
+    "position": 1
+   },
+   {
+    "title": "Chi tiết - Cổng thông tin điện tử Kho bạc Nhà nước",
+    "link": "https://vst.mof.gov.vn/webcenter/portal/dvc_kbnn/r/m/gytthc4/ttdvc_chitiet?dDocName=BTC206624&dID=23832",
+    "snippet": "Lệ phí chuyển ngang giá trị thị thực, tạm trú còn giá trị từ hộ chiếu cũ sang hộ chiếu mới giảm từ 15 USD còn 5 USD; cấp thẻ tạm trú có giá trị ...",
+    "date": "13 thg 10, 2015",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 157/2015/TT-BTC thu nộp quản lý sử dụng lệ phí ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-157-2015-TT-BTC-thu-nop-quan-ly-su-dung-le-phi-cap-ho-chieu-thi-thuc-giay-to-ve-xuat-nhap-canh-293400.aspx",
+    "snippet": "TT. Tên lệ phí. Mức thu (Đồng). 1. Hộ chiếu: + Cấp mới. 200.000. + Cấp lại do bị hư hỏng hoặc bị mất. 400.000. 2. Giấy thông hành: 100.000. a).",
+    "date": "8 thg 10, 2015",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 157/2015/tt-btc quy định chế độ thu, nộp và quản ...",
+    "link": "https://hethongphapluat.com/thong-tu-157-2015-tt-btc-quy-dinh-che-do-thu-nop-va-quan-ly-su-dung-le-phi-cap-ho-chieu-thi-thuc-giay-to-ve-nhap-canh-xuat-canh-qua-canh-va-cu-tru-tai-viet-nam-do-bo-truong-bo-tai-chinh-ban-hanh.html",
+    "snippet": "Thông tư 157/2015/TT-BTC quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư trú tại Việt ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 97/2011/TT-BTC Sửa đổi lệ phí cấp hộ chiếu, thị ...",
+    "link": "https://caselaw.vn/van-ban-phap-luat/267776-thong-tu-so-97-2011-tt-btc-ngay-05-07-2011-cua-bo-truong-bo-tai-chinh-sua-doi-thong-tu-66-2009-tt-btc-quy-dinh-che-do-thu-nop-quan-ly-va-su-dung-le-phi-cap-ho-chieu-thi-thuc-giay-to-ve-nhap-xuat-qua-canh-va-cu-tru-tai-viet-nam-van-ban-het-hieu-luc",
+    "snippet": "... NAM. TT. Tên lệ phí. Mức thu (đồng). 1. Hộ chiếu: + Cấp mới. 200.000. + Cấp lại do hư hỏng hoặc bị mất. 400.000. + Gia hạn. 100.000. 2. Giấy ...",
+    "date": "5 thg 7, 2011",
+    "position": 5
+   },
+   {
+    "title": "Thông tư 219/2016/TT-BTC phí lệ phí trong lĩnh vực xuất ...",
+    "link": "https://luatvietnam.vn/thue/thong-tu-219-2016-tt-btc-bo-tai-chinh-110831-d1.html",
+    "snippet": "Stt. Nội dung. Mức thu (Đồng/lần cấp). 1. Lệ phí cấp hộ chiếu. a. Cấp mới. 200.000. b. Cấp lại do bị hỏng hoặc bị mất. 400.000. c. Gia hạn hộ ...",
+    "date": "5 thg 12, 2016",
+    "position": 6
+   },
+   {
+    "title": "​Giảm lệ phí cấp thị thực - Tuổi Trẻ Online",
+    "link": "https://tuoitre.vn/giam-le-phi-cap-thi-thuc-985045.htm",
+    "snippet": "Đối với công dân Việt Nam, lệ phí cấp hộ chiếu mới là 200.000 đồng, cấp lại do bị hư hỏng hoặc bị mất là 400.000 đồng. Lệ phí cấp giấy phép ...",
+    "date": "14 thg 10, 2015",
+    "position": 7
+   },
+   {
+    "title": "Giảm lệ phí cấp thị thực cho người nước ngoài đến Việt Nam",
+    "link": "https://vov.vn/kinh-te/giam-le-phi-cap-thi-thuc-cho-nguoi-nuoc-ngoai-den-viet-nam-440363.vov",
+    "snippet": "Đối với công dân Việt Nam, lệ phí cấp hộ chiếu mới là 200.000 đồng, cấp lại do bị hư hỏng hoặc bị mất là 400.000 đồng. Lệ phí cấp giấy phép xuất cảnh là 200.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

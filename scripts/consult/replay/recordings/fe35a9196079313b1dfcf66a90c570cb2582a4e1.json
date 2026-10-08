@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:43:09.960Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, Thổ ...",
+    "position": 2
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 3
+   },
+   {
+    "title": "Tour Ngũ Hành Sơn - Rừng dừa - Phố cổ Hội An, có gì ?? ...",
+    "link": "https://www.tiktok.com/@thoitietdanang.tiktok/video/7660887470355123464",
+    "snippet": "Tour Ngũ Hành Sơn - Rừng dừa - Phố cổ Hội An, có gì ?? #thoitietdanang #locatravel #locatours #vivu365 #dulichdanang2026.",
+    "position": 4
+   },
+   {
+    "title": "Cải tạo cầu Biện quận Ngũ Hành Sơn đến cuối 2025",
+    "link": "https://www.tiktok.com/@hatangdanang/video/7487300469480508727",
+    "snippet": "Cải tạo cầu Biện quận Ngũ Hành Sơn đến cuối 2025. Khám phá dự án cải tạo cầu Biện quận Ngũ Hành Sơn, dự kiến hoàn thành vào cuối năm 2025.",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn: Chốn Tịnh Tâm Đà Nẵng",
+    "link": "https://www.tiktok.com/@quioidithoi/video/7515787471498546440",
+    "snippet": "“Ngũ Hành Sơn – không chỉ là núi đá. Là chốn tịnh tâm, nơi người ta trở về với chính mình.” Một buổi sáng leo núi. Gió biển. Chuông chùa. Hơi ...",
+    "position": 6
+   },
+   {
+    "title": "Ngũ Hành Sơn: Khám Phá Những Điều Kỳ Diệu",
+    "link": "https://www.tiktok.com/@dichuachualanh/video/7507997823179377927",
+    "snippet": "Sáu ngọn núi thiêng giữa lòng Đà Nẵng – nơi được gọi là Ngũ Hành Sơn từng chìm dưới đại dương. ... Ngũ Hành Sơn: Khám Phá Những Điều Kỳ Diệu.",
+    "position": 7
+   },
+   {
+    "title": "Sự Tích Ngũ Hành Sơn Ở Đà Nẵng",
+    "link": "https://www.tiktok.com/@nhudichoii/video/6998367326735207707",
+    "snippet": "45.3K Lượt thích,176 Bình luận.Video TikTok từ Nhụ (@nhudichoii): \"Khám phá sự tích Ngũ Hành Sơn ở Đà Nẵng qua video thú vị này.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn \"Phí: 200000 Đồng\" \"hộ chiếu\" \"160000\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:45:45.818Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn \"Phí: 200000 Đồng\" \"hộ chiếu\" \"160000\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Cách thức thực hiện ; Trực tiếp, 08 Ngày làm việc, Phí: 160000 ĐồngXem chi tiết; Phí: 200000 ĐồngXem chi tiết ; Trực tuyến, 08 Ngày làm việc, Phí: 160000 ĐồngXem ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,140 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn EROS Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:23:27.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn EROS Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Eros Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/119/1197960/1197960_16051215230042275242.jpg?ca=13&ce=1&s=800x600",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxcsGyF3sISvWeNAZdcMB3uJ-fzXqSzXD5wSuX_fGk5w&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eros-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F119%2F1197960%2F1197960_16051215230042275242.jpg%3Fca%3D13%26ce%3D1%26s%3D800x600&tbnid=KehAVPIKccTrcM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feros-hotel%2Fhotel%2Fda-nang-vn.html&docid=pac_W2JD2isjlM&w=800&h=600",
+    "position": 1
+   },
+   {
+    "title": "Eros Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/119/1197960/1197960_16051215210042275221.png?ca=6&ce=1&s=1024x768",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFvHxjd8qYo0FfL-WBBBxyl1p4a3VqSDhJGrYIhHB-dw&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eros-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F119%2F1197960%2F1197960_16051215210042275221.png%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=q1nmleyYTdrtjM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feros-hotel%2Fhotel%2Fda-nang-vn.html&docid=pac_W2JD2isjlM&w=1024&h=768",
+    "position": 2
+   },
+   {
+    "title": "Eros Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/03/28/large/vietgoing_svq2303228000.webp",
+    "imageWidth": 800,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTNzTRcPan8CXQKPo8l8sSRkSZ4wew5x5cwi4k4hN32Q&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/2728-eros-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F03%2F28%2Flarge%2Fvietgoing_svq2303228000.webp&tbnid=Q3Y-CFHJx0nq_M&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F2728-eros-hotel-da-nang.html&docid=PhU9zSBtN5cVIM&w=800&h=600",
+    "position": 3
+   },
+   {
+    "title": "Khách Sạn Eros Đà Nẵng – Điểm Dừng Chân Thanh Lịch Cho Kỳ Nghỉ Đáng Nhớ",
+    "imageUrl": "https://ngocthachtravel.vn/wp-content/uploads/2026/06/khach-san-eros-da-nang-1.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRv0k_vCbO9K0GhN6VF1LhJIKRKHa2-POAAMowXflE9pw&s=10",
+    "thumbnailWidth": 682,
+    "thumbnailHeight": 449,
+    "source": "ngọc thạch travel",
+    "domain": "ngocthachtravel.vn",
+    "link": "https://ngocthachtravel.vn/khach-san-eros-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fngocthachtravel.vn%2Fwp-content%2Fuploads%2F2026%2F06%2Fkhach-san-eros-da-nang-1.jpg&tbnid=hx7b2NJbE_acaM&imgrefurl=https%3A%2F%2Fngocthachtravel.vn%2Fkhach-san-eros-da-nang%2F&docid=3tQnTrPyBR1OdM&w=1000&h=660",
+    "copyright": "https://ngocthachtravel.vn/",
+    "creator": "Ngọc Thạch Travel",
+    "position": 4
+   },
+   {
+    "title": "Eros Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/03/28/large/vietgoing_kpk2303228239.webp",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRib8qlgkpomK1AgQG0x_YdULtpur4ST8fRCeAv9wuc4Q&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/2728-eros-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F03%2F28%2Flarge%2Fvietgoing_kpk2303228239.webp&tbnid=fz10Xtpp0coBwM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F2728-eros-hotel-da-nang.html&docid=PhU9zSBtN5cVIM&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Khách Sạn Eros Đà Nẵng – Điểm Dừng Chân Thanh Lịch Cho Kỳ Nghỉ Đáng Nhớ",
+    "imageUrl": "https://ngocthachtravel.vn/wp-content/uploads/2026/06/khach-san-eros-da-nang-4.jpg",
+    "imageWidth": 1000,
+    "imageHeight": 660,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfOpTK5HeCDiSYhuofwFthuplTfCpvG64Jcf3S7ff8OA&s=10",
+    "thumbnailWidth": 682,
+    "thumbnailHeight": 449,
+    "source": "ngọc thạch travel",
+    "domain": "ngocthachtravel.vn",
+    "link": "https://ngocthachtravel.vn/khach-san-eros-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fngocthachtravel.vn%2Fwp-content%2Fuploads%2F2026%2F06%2Fkhach-san-eros-da-nang-4.jpg&tbnid=2aGKF6dycICFRM&imgrefurl=https%3A%2F%2Fngocthachtravel.vn%2Fkhach-san-eros-da-nang%2F&docid=3tQnTrPyBR1OdM&w=1000&h=660",
+    "copyright": "https://ngocthachtravel.vn/",
+    "creator": "Ngọc Thạch Travel",
+    "position": 6
+   },
+   {
+    "title": "Eros Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/1197960/7434070/18f391646f9575693f99e49bf0239b44.jpeg?ce=0&s=414x232",
+    "imageWidth": 349,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2exXo2eoFOBAo355tFYkmTKaJ5ymX7JN3-fI-7z7mvw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eros-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F1197960%2F7434070%2F18f391646f9575693f99e49bf0239b44.jpeg%3Fce%3D0%26s%3D414x232&tbnid=RNQIRk4KduF1eM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feros-hotel%2Fhotel%2Fda-nang-vn.html&docid=pac_W2JD2isjlM&w=349&h=232",
+    "position": 7
+   },
+   {
+    "title": "Eros Hotel - Ảnh của Khách Sạn Eros, Đà Nẵng - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/0b/e6/93/19/eros-hotel.jpg",
+    "imageWidth": 338,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQISV39Dhv7_-TAB7EZniDz3PhTPxxSiqalK3u9qg2npQ&s=10",
+    "thumbnailWidth": 338,
+    "thumbnailHeight": 450,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/LocationPhotoDirectLink-g298085-d10437754-i199660313-Eros_Hotel-Da_Nang_Quang_Nam_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F0b%2Fe6%2F93%2F19%2Feros-hotel.jpg&tbnid=ABH9Mr7F1xGV9M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FLocationPhotoDirectLink-g298085-d10437754-i199660313-Eros_Hotel-Da_Nang_Quang_Nam_Province.html&docid=Ee1uA0kHNf8CFM&w=338&h=450",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

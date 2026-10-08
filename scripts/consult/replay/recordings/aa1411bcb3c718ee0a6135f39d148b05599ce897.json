@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:41:50.427Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Review mua Macbook trả góp không lãi suất trên Lazada",
+    "link": "https://bloggiamgia.vn/review-mua-macbook-tra-gop-khong-lai-suat-tren-lazada",
+    "snippet": "Trên đây mình đã review mua macbook trả góp không lãi suất trên Lazada, và giải thích những thắc mắc cần biết khi mua hàng trả góp nói riêng mà mua sắm online ...",
+    "position": 1
+   },
+   {
+    "title": "Mua Macbook Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/macbook/?page=101&srsltid=AU7gw4X5rPLbg_CHbmiqt5yGk_O9FXmhUXXWTMsdUm4V5aDjBM5LPSvW",
+    "snippet": "Mua macbook chất lượng cao với giá ưu đãi, freeship toàn quốc chỉ từ 0Đ và tận hưởng tới 6 tầng giảm giá hấp dẫn. Khuyến mãi mỗi ngày, mua ngay macbook tại ...",
+    "rating": 4.9,
+    "ratingCount": 2306,
+    "position": 2
+   },
+   {
+    "title": "Chi 25 triệu mua MacBook Pro M1 Pro sau 5 năm ra mắt",
+    "link": "https://www.youtube.com/watch?v=PsAUDRxp8MU",
+    "snippet": "tìm mua MacBook cũ dùng ngon, giá hời thì có thể lượn qua bên Điện Thoại Vui xem sao nhé. Bên này đang có quả chương trình máy cũ chất lượng ...",
+    "position": 3
+   },
+   {
+    "title": "Mua MacBook trên các sàn thương mại điện tử, khuyến ...",
+    "link": "https://kenh14.vn/mua-macbook-tren-cac-san-thuong-mai-dien-tu-khuyen-mai-giam-nhieu-nhung-co-re-hon-tai-cac-cua-hang-ban-le-20210226105148137.chn",
+    "snippet": "... khoảng giá 22,9 triệu đồng cho phiên bản 8GB/256GB. MacBook chạy chip M1 của Apple sẽ có giá nhỉnh hơn từ 25,5 triệu đồng đến 27,7 triệu đồng.",
+    "date": "26 thg 2, 2021",
+    "position": 4
+   },
+   {
+    "title": "Top 5 mẫu Macbook tầm giá 30 triệu đáng mua hiện nay",
+    "link": "https://macvn.com.vn/macbook-tam-gia-30-trieu/?srsltid=AU7gw4WjkucuwVMxPcZnezU6IlenLzlQIUOQ9fTT9S-RBEiTCAB3KSyx",
+    "snippet": "Top 5 Macbook tầm giá 30 triệu đáng đầu tư cho dân văn phòng. Nên mua Macbook Pro hay Macbook Air cấu hình cao? Nhận tư vấn ngay!",
+    "date": "20 thg 11, 2025",
+    "position": 5
+   },
+   {
+    "title": "Gợi ý Macbook dành cho dân Design, Editor, Lập trình | 1Pro",
+    "link": "https://www.facebook.com/1pro.vn/videos/g%E1%BB%A3i-%C3%BD-macbook-d%C3%A0nh-cho-d%C3%A2n-design-editor-l%E1%BA%ADp-tr%C3%ACnh/25703593462612053/",
+    "snippet": "Siêu rẻ chỉ 6tr9/máy.Macbook Pro phiên bản phím US core i... Sep 9, 2026 · 47K views.",
+    "position": 6
+   },
+   {
+    "title": "THANH LÝ Macbook White ĐỜI TỐNG giá 1 TRIỆU thì có ai ...",
+    "link": "https://www.youtube.com/watch?v=A_9t7DOaYhk",
+    "snippet": "Anh em đăng ký kênh này: https://t.me/clubmuare (mình up sản phẩm lên Shopee Lazada sẽ thông báo ở kênh đó cho anh em biết để mua nhanh nhé) ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook - Laptop Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/macbook",
+    "snippet": "MacBook Pro thì mạnh mẽ hơn, được trang bị chip xử lý hiệu năng cao, thích hợp cho dân chuyên nghiệp như các nhà thiết kế đồ họa, lập trình viên, hoặc biên tập ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

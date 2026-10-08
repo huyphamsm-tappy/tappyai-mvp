@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site: mof.gov.vn lệ phí cấp hộ chiếu 2026 trực tuyến hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:31:39.330Z",
+ "body": {
+  "searchParameters": {
+   "q": "site: mof.gov.vn lệ phí cấp hộ chiếu 2026 trực tuyến hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "1.1.1. THỦ TỤC CẤP HỘ CHIẾU LẦN ĐẦU ĐỐI VỚI ...",
+    "link": "https://vietnamembassy-usa.org/vi/basic-page/111-thu-tuc-cap-ho-chieu-lan-dau-doi-voi-nguoi-chua-tung-co-ho-chieu-viet-nam",
+    "snippet": "Hồ sơ xin cấp Hộ chiếu bao gồm: - Tờ khai đề nghị cấp hộ chiếu có dán ảnh (tải tại đây) hoặc khai online tại địa chỉ https://passport.mofa.gov.vn. - 02 ảnh ...",
+    "position": 2
+   },
+   {
+    "title": "How to apply for your first passport online in 2026",
+    "link": "https://www.youtube.com/watch?v=slwKUk-oKR4",
+    "snippet": "Cảm ơn bạn đã ghé thăm video của kênh. Video này hướng dẫn các bạn cách làm hộ chiếu lần đầu online mới nhất 2026. - Hướng dẫn chỉnh ảnh hộ ...",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ | Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/",
+    "snippet": "Đối với những hộ chiếu cấp trước ngày 01/7/2025 thông tin về nơi sinh của công dân trong hộ chiếu sẽ thể hiện theo tên của tỉnh thành (cũ) trước khi thực ...",
+    "position": 4
+   },
+   {
+    "title": "📕📕 MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/cathungyen/posts/-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y/122251399514292680/",
+    "snippet": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG NƯỚC CHO CÔNG DÂN ĐỦ ĐIỀU KIỆN TỪ NGÀY 15/8/2026 Từ ngày 15/8/2026 đến hết ngày 28/02/2027, ...",
+    "position": 5
+   },
+   {
+    "title": "tờ khai cấp hộ chiếu phổ thông ở nước ngoài - Bộ Ngoại giao",
+    "link": "https://passport.mofa.gov.vn/",
+    "snippet": "Quy định đối với ảnh chân dung. Ảnh mới chụp (không quá 6 tháng);; Tỉ lệ ảnh: rộng × dài = 3 × 4; Phông nền trắng; Độ phân giải tối thiểu 300 dpi; ...",
+    "position": 6
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "Thủ tục làm hộ chiếu online cấp độ 4 là làm hoàn toàn online, người làm hộ chiếu chỉ một lần duy nhất khai cấp hộ chiếu trực tuyến, thanh toán ...",
+    "date": "24 thg 12, 2024",
+    "position": 7
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2.",
+    "date": "18 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

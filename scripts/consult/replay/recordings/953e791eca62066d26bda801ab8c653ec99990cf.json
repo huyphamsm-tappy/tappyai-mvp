@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm, cuối tuần 10–11/10/2026; không đề xuất Hanami Hotel Danang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:37:35.369Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm, cuối tuần 10–11/10/2026; không đề xuất Hanami Hotel Danang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hanami Hotel Danang",
+    "address": "61-63 Hoàng Kế Viêm, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.048601899999998,
+    "longitude": 108.2424468,
+    "rating": 4.6,
+    "ratingCount": 2275,
+    "type": "Khách sạn lưu trú dài hạn",
+    "types": [
+     "Khách sạn lưu trú dài hạn",
+     "Khách sạn",
+     "Khách sạn nghỉ dưỡng",
+     "Căn hộ nghỉ mát"
+    ],
+    "website": "https://hanamihotel.com/",
+    "phoneNumber": "+84 905 432 992",
+    "description": "Khách sạn bình dân có quán cà phê, sân thượng có mái che, phòng ở bài trí đơn giản, một số phòng có ban công.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN4wL3BZOLlapei6CzH3nxLLLVG2PWPaaZrpmLUlKK2pySYwWV675LhxKqz4ghV6mI3CoZ5KmqktYPe1QXr2rTUxsC4GZ6Q7w5kuRCDLOO4247KLR3HGRCYhLo5x4qD8I3gWxwM",
+    "cid": "10058567874015609189",
+    "fid": "0x3142176372388b9f:0x8b97363057db4165",
+    "placeId": "ChIJn4s4cmMXQjERZUHbVzA2l4s"
+   },
+   {
+    "position": 2,
+    "title": "Hanami Residence & Hotel",
+    "address": "4/3, Lưu Quang Thuận, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0411805,
+    "longitude": 108.2449269,
+    "rating": 4.4,
+    "ratingCount": 51,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 905 432 992",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNLZWv9vsmoBZAPC_2556IEjf3MFBp6pQ0n-mhjl_QzuN1zbNyIK5FX5f_haGFSoRicuV8waQQ1knEKfE1klZ4tLMeAfa6kSHyf_56YLajSTfgumJ4Q-N8pRvJEFvGs7jWJuyLAE4B2oqzy",
+    "cid": "1040575915912011042",
+    "fid": "0x314217b3ad257e25:0xe70de4845c31d22",
+    "placeId": "ChIJJX4lrbMXQjERIh3DRUjecA4"
+   },
+   {
+    "position": 3,
+    "title": "Hana Hotel Da Nang",
+    "address": "261 Nguyễn Công Trứ, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.065121299999998,
+    "longitude": 108.241638,
+    "rating": 2.9,
+    "ratingCount": 102,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 342 888 678",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM6maFcKAC4P3UYeEFukigEc_6kOznaWtvYo0-z1tggFzPVwsKTq9UlPXhrsV_OqlGeaAAEEEqVdVHOI8e1Fx9um0SnJyjuTCcVrXumLys6xMfxvIoQHC2xLkwtyPoNY0RqtI7k6A",
+    "cid": "8485125713007761931",
+    "fid": "0x31421780fa28bbad:0x75c138e13e5c5a0b",
+    "placeId": "ChIJrbso-oAXQjERC1pcPuE4wXU"
+   }
+  ],
+  "credits": 3
+ }
+}

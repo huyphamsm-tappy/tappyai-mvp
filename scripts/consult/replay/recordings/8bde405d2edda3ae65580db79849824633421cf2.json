@@ -1,0 +1,138 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Canvas Danang Beach Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:36.066Z",
+ "body": {
+  "searchParameters": {
+   "q": "Canvas Danang Beach Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Canvas Danang Beach Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/610505667.jpg?k=725ca19f3f0069fa43847ba71f0d0676ef0c2cf40e7958e3bdec6d75bde6444c&o=",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQII3hfiwQfpr7wBr3fgganWXXTGP4Vu48zIGrtGm3WsA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/canvas-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F610505667.jpg%3Fk%3D725ca19f3f0069fa43847ba71f0d0676ef0c2cf40e7958e3bdec6d75bde6444c%26o%3D&tbnid=PErOoS8A8touMM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcanvas-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=6Kg3twYJz20XeM&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Canvas Danang Beach Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/507820746.jpg?k=dd82bd8c379fcbcae3fe4d77ad1c0fa52066da92298a00614d14810a2f6e61e8&o=",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG0Zcse1T90Qf6aNj-Zei3fgKHGpsrHv14UFRAavwQPw&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/canvas-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F507820746.jpg%3Fk%3Ddd82bd8c379fcbcae3fe4d77ad1c0fa52066da92298a00614d14810a2f6e61e8%26o%3D&tbnid=p1EszTY-__FDUM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcanvas-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=6Kg3twYJz20XeM&w=500&h=334",
+    "position": 2
+   },
+   {
+    "title": "Canvas Hotel",
+    "imageUrl": "https://canvashotel.com.vn/files/images/Lobby%20Canvas(1).jpg",
+    "imageWidth": 1181,
+    "imageHeight": 788,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrTIsnmqK21GelffyD2xTS9sZP41Ggq8h71_mUj8Z5aw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "canvashotel.com.vn",
+    "domain": "canvashotel.com.vn",
+    "link": "https://canvashotel.com.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcanvashotel.com.vn%2Ffiles%2Fimages%2FLobby%2520Canvas(1).jpg&tbnid=2L7OoW-raKgQHM&imgrefurl=https%3A%2F%2Fcanvashotel.com.vn%2F&docid=xAuN83FXI_QaWM&w=1181&h=788",
+    "copyright": "0383305909",
+    "creator": "Ha Phong",
+    "position": 3
+   },
+   {
+    "title": "Canvas Danang Beach Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/679739869.jpg?k=8e6395f23859804e58cbea7f16d2c71a2fa02b1f7433a70f85a712f13eb80d55&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFM0FqdPuBq0owUenuz6f48m0IVfHFIVMg7jeFRt7tkg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/canvas-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F679739869.jpg%3Fk%3D8e6395f23859804e58cbea7f16d2c71a2fa02b1f7433a70f85a712f13eb80d55%26o%3D&tbnid=K_qU_iIs4qd-jM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcanvas-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=6Kg3twYJz20XeM&w=500&h=333",
+    "position": 4
+   },
+   {
+    "title": "Canvas Danang Beach Hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/262447513.jpg?k=cf838545f8537b9c296fe01345723b81b077b31cf5db70c5437b5df830b5ac83&o=",
+    "imageWidth": 500,
+    "imageHeight": 334,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSA-KVOXdxVM12NY3euBKb-kJWWkQgW61UnVmiiu-XelQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/canvas-danang-beach-hotel/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F262447513.jpg%3Fk%3Dcf838545f8537b9c296fe01345723b81b077b31cf5db70c5437b5df830b5ac83%26o%3D&tbnid=NsV-BAbzy0qEeM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcanvas-danang-beach-hotel%2Fhotel%2Fda-nang-vn.html&docid=6Kg3twYJz20XeM&w=500&h=334",
+    "position": 5
+   },
+   {
+    "title": "CANVAS HOTEL ở Đà Nẵng | Giá mới nhất và ưu đãi hấp dẫn 2026 - Klook Việt  Nam",
+    "imageUrl": "https://res.klook.com/image/upload/w_750,c_fill,q_85/v1740628546/hotel/s7xfhg41amtmout8nqfy.jpg",
+    "imageWidth": 750,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgzZRQRDGNe8XY_x9oBsoODLVUQ_oAEt8x6a1ct9gBpA&s=10",
+    "thumbnailWidth": 365,
+    "thumbnailHeight": 547,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/hotels/detail/1756513-canvas-hotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fimage%2Fupload%2Fw_750%2Cc_fill%2Cq_85%2Fv1740628546%2Fhotel%2Fs7xfhg41amtmout8nqfy.jpg&tbnid=Pd4QxTF_E_UOkM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fhotels%2Fdetail%2F1756513-canvas-hotel%2F&docid=eyhl3F_Atuf20M&w=750&h=1125",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Canvas Đà Nẵng | Đà Nẵng - Chudu24",
+    "imageUrl": "https://du-lich.chudu24.com/f/m/2007/20/khach-san-canvas-da-nang.jpg?w=800&h=500",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfY6_j-TDPKXetIBAefzknYthwwki_TkhMOwCVv31yXw&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.6457.khach-san-canvas-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2007%2F20%2Fkhach-san-canvas-da-nang.jpg%3Fw%3D800%26h%3D500&tbnid=eO-Zy1sBphodPM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.6457.khach-san-canvas-da-nang.html&docid=5AVRuxjhYefNuM&w=800&h=500",
+    "position": 7
+   },
+   {
+    "title": "Canvas Danang Beach Hotel, Đà Nẵng (giá cập nhật)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/676597515.jpg?k=4cce1e0911f2a5ebdd1085f102131b7ed839a8054334c4dc2bdc8e53459fe3ee&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-0wfM-QvaqHVmERXRiYD4P996q2-CVPZYuwbgBTLdQQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/canvas-danang-beach.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F676597515.jpg%3Fk%3D4cce1e0911f2a5ebdd1085f102131b7ed839a8054334c4dc2bdc8e53459fe3ee%26o%3D&tbnid=og9yEDSLTHqp7M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fcanvas-danang-beach.vi.html&docid=HyvQjXEqhSk6pM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

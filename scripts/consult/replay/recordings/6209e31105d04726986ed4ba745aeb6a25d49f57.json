@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng Michelin Quận 1 Michelin Guide danh sách",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:51.546Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng Michelin Quận 1 Michelin Guide danh sách",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ho Chi Minh City MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/vn/en/ho-chi-minh/ho-chi-minh_2978179/restaurants",
+    "snippet": "Long Trieu · Square One · The Albion by Kirk Westaway · Coco Dining · Chay Garden (Xuan Hoa) · Bếp Mẹ ỉn (Le Thanh Ton Street) · La Lola · Fashionista Café.",
+    "position": 1
+   },
+   {
+    "title": "Những quán ăn, nhà hàng Michelin ở Sài Gòn nổi bật nhất",
+    "link": "https://vinwonders.com/vi/wonderpedia/news/nha-hang-michelin-o-sai-gon/",
+    "snippet": "Nhà hàng Michelin ở Sài Gòn đã ghi dấu ấn với ba địa điểm đạt sao Michelin, gồm Ănăn Saigon, Akuna và The Royal Pavilion. Trong đó, Ănăn Saigon ...",
+    "date": "24 thg 7, 2025",
+    "position": 2
+   },
+   {
+    "title": "MICHELIN vừa công bố danh sách các nhà hàng, quán ăn ...",
+    "link": "https://www.facebook.com/hoteliervietnam/posts/michelin-v%E1%BB%ABa-c%C3%B4ng-b%E1%BB%91-danh-s%C3%A1ch-c%C3%A1c-nh%C3%A0-h%C3%A0ng-qu%C3%A1n-%C4%83n-ngon-%E1%BB%9F-h%C3%A0-n%E1%BB%99i-%C4%91%C3%A0-n%E1%BA%B5ng-v%C3%A0-th%C3%A0/122231755838192610/",
+    "snippet": "Danh sách bao gồm 181 địa điểm với 9 nhà hàng đạt 1 MICHELIN, 63 nhà hàng được trao danh hiệu Bib Gourmand, 2 nhà hàng với danh hiệu Ngôi ...",
+    "position": 3
+   },
+   {
+    "title": "Cập nhật 181 nhà hàng và quán ăn Michelin vinh danh ở ...",
+    "link": "https://laodong.vn/du-lich/tin-tuc/cap-nhat-181-nha-hang-va-quan-an-michelin-vinh-danh-o-viet-nam-nam-2025-1519001.html",
+    "snippet": "Michelin Guide đã chính thức công bố danh sách 181 nhà hàng, quán ăn ... Sol Kitchen & Bar (Quận 1). Tiệm Cơm Thố Chuyên Ký. Vị Quê Kitchen.",
+    "date": "6 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Các nhà hàng, quán ăn ở Hà Nội và TPHCM có trong ...",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/cac-nha-hang-quan-an-o-ha-noi-va-tphcm-co-trong-michelin-guide-ceremony-1533821",
+    "snippet": "Cẩm nang ẩm thực Michelin danh tiếng đã vinh danh 103 nhà hàng, quán ăn ở Hà Nội và Thành phố Hồ Chí Minh thông qua buổi lễ tổ lễ được tổ chức long trọng ...",
+    "position": 5
+   },
+   {
+    "title": "Khám phá 181 nhà hàng Michelin Guide 2025 Việt Nam ...",
+    "link": "https://www.bonboncar.vn/blog/kham-pha-michelin-guide-viet-nam-2025-tat-tan-tat-danh-sach-cac-quan-an-nha-hang-khong-the-bo-lo/",
+    "snippet": "9 nhà hàng một Sao Michelin (1 mới, 1 nâng hạng) – Dấu hiệu của ẩm thực chất lượng cao, xứng đáng dừng chân. 2 nhà hàng Sao Xanh Michelin (1 mới) ...",
+    "date": "9 thg 6, 2025",
+    "position": 6
+   },
+   {
+    "title": "Nhà Hàng Michelin Sài Gòn: 8 Địa Chỉ Được ...",
+    "link": "https://madamelam.com/nha-hang-michelin-sai-gon/",
+    "snippet": "Akuna là nhà hàng 1 sao Michelin tại TP.HCM, nổi bật với phong cách fine dining hiện đại. Nhà hàng được dẫn dắt bởi chef Sam Aisbett, mang đến trải nghiệm ẩm ...",
+    "position": 7
+   },
+   {
+    "title": "Danh sách nhà hàng của TP Hồ Chí Minh được Cẩm nang ...",
+    "link": "https://www.vietnamplus.vn/danh-sach-nha-hang-cua-tp-ho-chi-minh-duoc-cam-nang-am-thuc-michelin-vinh-danh-post1043397.vnp",
+    "snippet": "Danh sách nhà hàng mới được công bố gồm 181 cơ sở - bao gồm 9 nhà hàng Một (1) sao Michelin (trong đó có 1 nhà hàng mới và 1 nhà hàng được thăng ...",
+    "date": "9 thg 6, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

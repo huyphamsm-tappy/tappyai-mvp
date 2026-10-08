@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com MacBook Air M1 technical specifications 2020 8GB 256GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:06.243Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com MacBook Air M1 technical specifications 2020 8GB 256GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air (M1, 2020) - Tech Specs",
+    "link": "https://support.apple.com/en-us/111883",
+    "snippet": "8GB unified memory. Configurable to. 16GB. Storage2. 128GB SSD. Configurable to. 256GB SSD, 512GB SSD, 1TB, or 2TB. Keyboard and Trackpad. Backlit Magic ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro (13-inch, M1, 2020) - Tech Specs",
+    "link": "https://support.apple.com/en-us/111893",
+    "snippet": "Display. Retina display. 13.3-inch (diagonal) LED-backlit display with IPS technology; 2560-by-1600 native resolution at 227 pixels per inch with support ...",
+    "position": 2
+   },
+   {
+    "title": "Mac mini (M1, 2020) - Tech Specs",
+    "link": "https://support.apple.com/en-us/111894",
+    "snippet": "Chip · 8-core CPU with 4 performance cores and 4 efficiency cores. 8-core GPU ; Memory. 8GB unified memory. Configurable to: ; Storage · 256GB SSD. Configurable to:.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air (Retina, 13-inch, 2020)",
+    "link": "https://support.apple.com/en-us/111991",
+    "snippet": "Testing conducted by Apple in February 2020 using preproduction 1.1GHz dual-core Intel Core i3-based MacBook Air systems with 8GB of RAM and 256GB SSD. The ...",
+    "position": 4
+   },
+   {
+    "title": "Identify your MacBook Air model",
+    "link": "https://support.apple.com/en-us/102869",
+    "snippet": "Use this information to find out which MacBook Air you have ... Tech Specs for MacBook Air (M1, 2020) · User Guide for MacBook Air (M1 ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air (M1, 2020) Manuals and Downloads",
+    "link": "https://support.apple.com/en-us/docs/mac/300267",
+    "snippet": "Manuals, technical specifications, downloads, and more for Apple software and hardware.",
+    "position": 6
+   },
+   {
+    "title": "iPad Air (5th generation) - Tech Specs",
+    "link": "https://support.apple.com/en-us/111887",
+    "snippet": "Apple M1 chip. 8-core CPU with 4 performance cores and 4 efficiency cores. 8-core GPU. 16-core Neural Engine. 8GB RAM ; Media engine. Hardware-accelerated H.264 ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air (M2, 2022) - Tech Specs",
+    "link": "https://support.apple.com/en-us/111867",
+    "snippet": "Configuration tested: M2, 8-core CPU, 10-core GPU, 8GB unified memory, 1TB storage. Screen size is measured diagonally. The displays on the 13-inch and 15-inch ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
