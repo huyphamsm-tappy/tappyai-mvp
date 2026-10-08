@@ -54,6 +54,9 @@ export interface GuardEvidence {
   constraintsSig: string | null
   /** The user's message this turn (identifier staleness; user-echo provenance). */
   userText: string
+  /** WS2 final: price figures from OLD pages vs fresh ones (No-Fabrication Gate stale rule). */
+  stalePrices?: number[]
+  freshPrices?: number[]
 }
 
 export interface SentenceJudgement {

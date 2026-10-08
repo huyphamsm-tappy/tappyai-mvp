@@ -27,6 +27,7 @@ import { resultCount } from './trace'
 import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evidence'
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
+import { withProductFallback } from './toolState'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
@@ -110,6 +111,10 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     const ws = tools.web_search
     if (ws?.execute) tools.web_search = researchSearchTool({ base: ws.execute as never, reader, allow, lang: i.lang }) as never
     tools[READ_PAGE] = readPageTool(reader) as never
+    // WS2 final: a failed product provider falls back ONCE to a public-web price search (bounded, inside the same tool call); a failure
+    // that the fallback cannot cover stays a failure — the price is UNKNOWN, never filled from memory (toolState.ts).
+    const sp = tools.search_products
+    if (sp?.execute) tools.search_products = { ...sp, execute: withProductFallback(sp.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'search_products', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState }) }) } as never
   }
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
   // M6: a small core every round; deferred tools by this turn's capability hints / the task's last tools; the rest through use_tool.

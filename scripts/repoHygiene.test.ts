@@ -34,7 +34,8 @@ describe('no scratch files are committed', () => {
     // 3179 → 3465 (Phase 8 M6): the recordings of the M6 tool-registry A/B and M3 / M5 / regression eval runs, added deliberately.
     // 3465 → 3886 (Phase 8 M7): the recordings of the M7 final eval gate (full scenario set, regression / research / ranking), added deliberately.
     // 3886 → 4252 (Phase 8 WS2 research intelligence): the recordings of the WS2 eval runs (new price / link / source scenarios + full regression), added deliberately.
-    expect(n).toBeLessThanOrEqual(4252)
+    // 4252 → 4332 (Phase 8 WS2 final reliability closure): the recordings of the No-Fabrication / repeated-run evals, added deliberately.
+    expect(n).toBeLessThanOrEqual(4332)
   })
 })
 

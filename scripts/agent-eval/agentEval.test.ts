@@ -18,9 +18,9 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { tmpdir } from 'node:os'
 import { createHash, randomBytes, randomUUID } from 'node:crypto'
-import { installReplayFetch, netSnapshot, netDelta, setSerperInjection } from '../consult/replay/lib/serperReplay'
+import { installReplayFetch, netSnapshot, netDelta, setSerperInjection, setSerperFailure } from '../consult/replay/lib/serperReplay'
 import { parseDataStream } from '../consult/replay/lib/stream'
-import { evaluateTurn, keptRatio, outputKind, researchFromTrace, rankingFromTrace, type Scenario } from './lib/checks'
+import { evaluateTurn, keptRatio, outputKind, researchFromTrace, rankingFromTrace, fabricationOracle, type Scenario } from './lib/checks'
 import { summarize, markdown, type EvalRow } from './lib/report'
 
 const ON = process.env.AGENT_EVAL === '1'
@@ -110,6 +110,12 @@ const FIXTURES: Record<string, string> = {
   'https://blog.tappy-eval.test/gia-macbook-pro-m4-2023': 'stale-price.html',
   'https://deal.tappy-eval.test/airpods-pro-2-gia-soc': 'malicious.html',
   'https://hoianheritage.danang.gov.vn/tappy-eval/ve-tham-quan': 'gov-canonical.html',
+  // WS2 final adversarial fixtures: a product page with no price, a hotel room page with no breakfast line, a business page with an
+  // address but no hours, a review guessing the hours.
+  'https://shop-c.tappy-eval.test/sony-wh-1000xm5': 'noprice-product.html',
+  'https://hotel-x.tappy-eval.test/phong-superior': 'hotel-nobreakfast.html',
+  'https://quan-y.tappy-eval.test/lien-he': 'business-nohours.html',
+  'https://review-z.tappy-eval.test/quan-z': 'review-guess-hours.html',
 }
 async function installPageReplay(): Promise<void> {
   const mod = await import('@/lib/security/safePageFetch').catch(() => null) as null | { __setPageFetchOverride: (fn: unknown) => void; fetchPublicPageReal: (u: string, o: unknown) => Promise<Record<string, unknown>> }
@@ -184,16 +190,18 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
     return { status: res.status, raw, ttftMs }
   }
 
-  async function runScenario(mode: Mode, s: Scenario, outDir: string, rows: EvalRow[]) {
+  async function runScenario(mode: Mode, s: Scenario, outDir: string, rows: EvalRow[], rep = 1) {
     const messages: Array<{ role: string; content: string }> = []
     const chatSessionId = randomUUID()
+    // WS2 final: everything this conversation legitimately had — the independent fabrication oracle reads it.
+    let corpus = ''
     for (let i = 0; i < s.turns.length; i++) {
       const t = s.turns[i]
       messages.push({ role: 'user', content: t.text })
       resetQuota()
       const net0 = netSnapshot()
       const cap = captureConsole()
-      const captureId = `p8eval-${mode}-${s.id}-t${i + 1}-${Date.now()}`
+      const captureId = `p8eval-${mode}-${s.id}-t${i + 1}${rep > 1 ? `-r${rep}` : ''}-${Date.now()}`
       const t0 = Date.now()
       let raw = '', crash: string | undefined, ttftMs: number | null = null
       try {
@@ -219,7 +227,10 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
       const ranking = rankingFromTrace(rt as never)
       // WS2: every URL this turn legitimately had — tool args and results, card annotations, the user's own message.
       const urlsSeen = [...JSON.stringify([p.tools.map(x => ({ a: x.args, r: x.result })), p.annotations, t.text]).matchAll(/https?:\/\/[^\s"'<>\\)\]]+/g)].map(m => m[0])
-      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0, research, ranking, urlsSeen, runtimeTurn: runTraces.length > 0 }
+      corpus += `\n${t.text}\n${JSON.stringify(p.tools.map(x => ({ a: x.args, r: x.result })))}\n${JSON.stringify(p.annotations)}`
+      const obs = { text: p.text, rawText, tools, annotations: p.annotations, crashed: !!crash || p.errors.length > 0, research, ranking, urlsSeen, runtimeTurn: runTraces.length > 0, corpus }
+      const gateEv = ((rt as { events?: Array<Record<string, unknown>> } | undefined)?.events ?? []).find(e => e.kind === 'claims') ?? null
+      const fallbacks = ((rt as { events?: Array<Record<string, unknown>> } | undefined)?.events ?? []).filter(e => e.kind === 'fallback').length
       const checks = evaluateTurn(t.expect, obs)
       const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0, taskId: rt?.task_id ?? null, taskConstraints: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.constraints ?? null, taskPersisted: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.persisted ?? null, evidenceRefs: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.evidence_refs ?? null, research } : null
       rows.push({
@@ -236,8 +247,10 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
         kept: keptRatio(rawText, p.text),
         runTrace,
         reply: p.text, ...(crash ? { crash } : {}),
+        rep, unsupported: fabricationOracle(p.text, corpus), gate: gateEv, fallbacks,
       })
-      writeFileSync(join(outDir, 'raw', `${mode}-${s.id}-t${i + 1}.json`), JSON.stringify({ sent: t.text, rawText, parsed: { ...p, text: undefined }, text: p.text, logEvents: cap.events, logErrors: cap.errors }, null, 1))
+      corpus += `\n${p.text}`
+      writeFileSync(join(outDir, 'raw', `${mode}-${s.id}-t${i + 1}${rep > 1 ? `-r${rep}` : ''}.json`), JSON.stringify({ sent: t.text, rawText, parsed: { ...p, text: undefined }, text: p.text, logEvents: cap.events, logErrors: cap.errors }, null, 1))
       messages.push({ role: 'assistant', content: p.text })
       if (crash && !p.text) break
     }
@@ -262,10 +275,14 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
     }
     for (const mode of modes) {
       if (MODE_FLAG[mode] === undefined) delete process.env.TAPPY_AGENT; else process.env.TAPPY_AGENT = MODE_FLAG[mode]
-      for (const s of scenarios) {
+      // WS2 final: AGENT_EVAL_REPEAT=N runs every scenario N times (same recorded searches, independent Luna runs) — model variance is
+      // measured on structured outcomes, never on text equality.
+      const repeat = Math.max(1, Number(process.env.AGENT_EVAL_REPEAT ?? 1) || 1)
+      for (const s of scenarios) for (let rep = 1; rep <= repeat; rep++) {
         process.env.REPLAY_SERPER_CONV = `${mode}-${s.id}`
         setSerperInjection(s.inject ?? null)
-        try { await runScenario(mode, s, outDir, rows) } finally { setSerperInjection(null) }
+        setSerperFailure(s.failSerper ?? null)
+        try { await runScenario(mode, s, outDir, rows, rep) } finally { setSerperInjection(null); setSerperFailure(null) }
         flush()
       }
     }

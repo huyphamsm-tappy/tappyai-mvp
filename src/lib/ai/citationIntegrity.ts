@@ -42,3 +42,25 @@ export function enforceCitationIntegrity(text: string): { text: string; removed:
   out = out.split('\n').filter((l, i, a) => !(l.trim() === '' && i > 0 && a[i - 1].trim() === '' )).join('\n').replace(/^\s+/, '')
   return { text: out, removed }
 }
+
+/**
+ * WS2 final (Bug 2) — a list marker with nothing after it ("2.", "3)", "-") is what remains when a guard removed the item's only
+ * sentence (measured M5 SR-T1: "1. **Mỹ Khê 2** …\n2.\n3. **Bella Merry** …"). Such a line is dropped; a numbered item that still has
+ * content is never touched (Markdown keeps rendering the list), nothing is renumbered, no text is written. Lines inside a machine block
+ * ([TAPPY_PLAN] / [TAPPY_SHOPPING] / … JSON) are left alone.
+ */
+export function dropBareListMarkers(text: string): { text: string; removed: number } {
+  let removed = 0
+  let inBlock = false
+  const lines = text.split('\n').filter(l => {
+    const opens = (l.match(/\[(TAPPY_[A-Z]+|CTA_BUTTONS|FOLLOWUPS)\]/g) ?? []).length
+    const closes = (l.match(/\[\/(TAPPY_[A-Z]+|CTA_BUTTONS|FOLLOWUPS)\]/g) ?? []).length
+    const was = inBlock
+    if (opens > closes) inBlock = true
+    if (closes > opens) inBlock = false
+    if (was || opens || closes) return true
+    if (/^\s*(?:\d{1,2}[.)]|[-*+•])\s*[.,;:–—-]?\s*$/.test(l)) { removed++; return false }
+    return true
+  })
+  return { text: removed ? lines.join('\n').replace(/\n{3,}/g, '\n\n') : text, removed }
+}

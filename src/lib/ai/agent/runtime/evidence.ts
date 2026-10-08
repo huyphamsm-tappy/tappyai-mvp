@@ -25,6 +25,7 @@
 import { createHash } from 'node:crypto'
 import { classifySource, reliabilityFor, reliabilityNote, hostOf, sourceClassOf, type ClaimKind, type Reliability, type SourceType, type SourceClass } from './sourceType'
 import { parsePriceStatement, normaliseVariant, ageDays, pricesDisagree, priceView, type PriceEvidence } from './priceEvidence'
+import { claimsDisagree } from './claimConflict'
 import { extractMoneyClaims } from '@/lib/ai/moneyGuard'
 import type { PageDoc, StructuredFact } from './pageExtract'
 import { isInstructionLike, cutSecrets } from '../guards'
@@ -175,10 +176,13 @@ export class EvidenceLedger {
   private readonly extracts = new Map<string, string[]>()
 
   /** M4: what the settle-path guards read (guardEvidence.ts): each source with its extract, and the conflicts with their sides. */
-  guardView(): { sources: Array<{ id: string; host: string; sourceType: SourceType; passages: string[] }>; conflicts: Array<{ attribute: string; sides: Array<{ value: string; sourceId: string; reliability: string }> }> } {
+  guardView(): { sources: Array<{ id: string; host: string; sourceType: SourceType; passages: string[] }>; conflicts: Array<{ attribute: string; sides: Array<{ value: string; sourceId: string; reliability: string }> }>; stalePrices: number[]; freshPrices: number[] } {
     return {
       sources: this.sources.map(s => ({ id: s.id, host: s.host, sourceType: s.sourceType, passages: this.extracts.get(s.id) ?? [] })),
       conflicts: this.items.filter(i => i.type === 'CONFLICT' && i.sides?.length).map(i => ({ attribute: i.attribute, sides: i.sides!.map(x => ({ value: x.value, sourceId: x.sourceId, reliability: x.reliability })) })),
+      // WS2 final: price figures by freshness (a page dated > 180 days before the read is OLD) — the No-Fabrication Gate's stale rule.
+      stalePrices: this.items.filter(i => i.price && i.price.age_days !== null && i.price.age_days > 180).flatMap(i => [i.price!.amount, i.price!.amount_max].filter((x): x is number => typeof x === 'number')),
+      freshPrices: this.items.filter(i => i.price && !(i.price.age_days !== null && i.price.age_days > 180)).flatMap(i => [i.price!.amount, i.price!.amount_max].filter((x): x is number => typeof x === 'number')),
     }
   }
 
@@ -225,8 +229,12 @@ export class EvidenceLedger {
     for (const n of fresh) {
       if (n.type === 'CONFLICT' || !n.value) continue
       // WS2: two prices are compared like with like (variant, condition, price type — priceEvidence.pricesDisagree), never by first number.
-      const differ = (o: EvidenceItem) => o.price && n.price ? pricesDisagree(o.price, n.price) : valuesDisagree(o.value, n.value)
-      const rivals = this.items.filter(o => o !== n && o.type !== 'CONFLICT' && !!o.value && o.attribute === n.attribute && o.sourceIds[0] !== n.sourceIds[0] && sameSubject(o.subject, n.subject) && differ(o))
+      // WS2 final: every other kind is compared like with like as well (claimConflict.ts: hours, availability, durations, policy polarity,
+      // numbers) — two wordings of one fact are not a conflict, a hedged or subjective claim never is.
+      const differ = (o: EvidenceItem) => o.price && n.price ? pricesDisagree(o.price, n.price) : claimsDisagree(n.kind, { value: o.value, quote: o.quote }, { value: n.value, quote: n.quote })
+      // Hours / availability read from a page's own structured data are compared with the same kind read from another page's text.
+      const sameAttr = (o: EvidenceItem) => o.attribute === n.attribute || (o.kind === n.kind && (n.kind === 'hours' || n.kind === 'availability'))
+      const rivals = this.items.filter(o => o !== n && o.type !== 'CONFLICT' && !!o.value && sameAttr(o) && o.sourceIds[0] !== n.sourceIds[0] && sameSubject(o.subject, n.subject) && differ(o))
       if (!rivals.length) continue
       const existing = this.items.find(c => c.type === 'CONFLICT' && c.attribute === n.attribute && sameSubject(c.subject, n.subject))
       const side = (x: EvidenceItem) => ({ value: x.value, sourceId: x.sourceIds[0], type: x.type, reliability: reliabilityFor(this.sources.find(s => s.id === x.sourceIds[0])?.sourceType ?? 'other', x.kind) })

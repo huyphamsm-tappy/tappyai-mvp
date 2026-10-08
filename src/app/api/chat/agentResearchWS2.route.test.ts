@@ -18,6 +18,9 @@ const h = vi.hoisted(() => {
     decision: null as null | { picks: Array<{ name: string; why: string | null; tradeoff: string | null }>; none: boolean; confidence: 'high' | 'medium' | 'low' },
     decisionPrompts: [] as string[],
     placeCalls: [] as Array<{ query: string; type?: string; location?: string; budgetLimit: number | null; allowed: boolean }>,
+    productMode: 'ok' as 'ok' | 'throw',
+    webMode: 'ok' as 'ok' | 'throw',
+    webCalls: [] as string[],
   }
   const builder = (): any => {
     const b: any = {
@@ -78,6 +81,15 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
   }
 })
 
+vi.mock('@/lib/ai/tools/shopping', async (importOriginal) => {
+  const real = await importOriginal<typeof import('@/lib/ai/tools/shopping')>()
+  return { ...real, searchProducts: async (query: string) => { if (h.state.productMode === 'throw') throw new Error('provider 504'); return { query, source: 'test', search_results: [{ title: 'MacBook Pro M4 16GB', price: 39990000, price_vnd: 39990000, source: 'Shop A', link: 'https://shop-a.example/mbp' }] } } }
+})
+vi.mock('@/lib/ai/tools/common', async (importOriginal) => {
+  const real = await importOriginal<typeof import('@/lib/ai/tools/common')>()
+  return { ...real, webSearch: async (query: string) => { h.state.webCalls.push(query); if (h.state.webMode === 'throw') throw new Error('serper down'); return { query, source: 'web', results: [{ title: 'MacBook Pro M4 16GB 512GB - Shop B', link: 'https://shop-b.example/mbp', snippet: 'Giá bán 41.490.000đ, còn hàng' }] } } }
+})
+
 import { POST } from '@/app/api/chat/route'
 
 const post = async (messages: unknown[]) => {
@@ -109,6 +121,7 @@ const search = () => ({ text: '', toolCalls: [call('search_places', { query: 'qu
 
 beforeEach(() => {
   h.state.steps = []; h.state.stepCalls = []; h.state.streamCalls = 0; h.state.extracts = []; h.state.decision = null; h.state.decisionPrompts = []; h.state.placeCalls = []
+  h.state.productMode = 'ok'; h.state.webMode = 'ok'; h.state.webCalls = []
   __resetAiQuestionQuotaLocal()
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'; process.env.TAPPY_AGENT = '2'
 })
@@ -240,5 +253,34 @@ describe('WS2 · research is Luna\'s decision on trip-plan turns too', () => {
     await turn([{ role: 'user', content: 'Lên lịch trình Đà Nẵng 3 ngày 2 đêm cho 2 người' }])
     const tools = Object.keys((h.state.stepCalls[0]?.tools ?? {}) as Record<string, unknown>)
     expect(tools).toEqual(expect.arrayContaining(['web_search']))
+  })
+})
+
+describe('WS2 final · a product provider failure never becomes a price (Bug 4, route level)', () => {
+  const ask = [{ role: 'user', content: 'MacBook Pro M4 16GB giờ bao nhiêu?' }]
+  it('provider ERROR → one public-web fallback inside the same call; a price the fallback states is usable', async () => {
+    h.state.productMode = 'throw'
+    h.state.steps = [{ text: '', toolCalls: [call('search_products', { query: 'MacBook Pro M4 16GB' })] }, { text: 'Theo kết quả web, Shop B niêm yết 41.490.000đ.', toolCalls: [] }]
+    const { body, traces } = await turn(ask)
+    expect(h.state.webCalls).toEqual(['MacBook Pro M4 16GB giá'])
+    expect(text(body)).toContain('41.490.000')
+    expect((traces[0]?.events ?? []).find((e: { kind: string }) => e.kind === 'fallback')).toMatchObject({ tool: 'search_products', state: 'ERROR', fallback_state: 'SUCCESS' })
+    // What Luna read: the explicit failure state and the fallback's results.
+    expect(JSON.stringify(h.state.stepCalls[1])).toMatch(/tool_state.{0,4}ERROR/)
+  })
+  it('provider ERROR and fallback ERROR → Luna’s remembered price is removed; the reply says the price is not verified', async () => {
+    h.state.productMode = 'throw'; h.state.webMode = 'throw'
+    h.state.steps = [{ text: '', toolCalls: [call('search_products', { query: 'MacBook Pro M4 16GB' })] }, { text: 'MacBook Pro M4 16GB hiện có giá khoảng 42.000.000đ. Máy hợp cho lập trình và dựng video.', toolCalls: [] }]
+    const { body, traces } = await turn(ask)
+    const t = text(body)
+    expect(t).not.toContain('42.000.000')
+    expect(t).toMatch(/chưa xác minh được giá hiện tại/)
+    expect(t).toContain('Máy hợp cho lập trình')
+    expect((traces[0]?.events ?? []).find((e: { kind: string }) => e.kind === 'claims')).toMatchObject({ FABRICATED: 1, fabricated: ['price'] })
+  })
+  it('no tool at all and a remembered price → removed too (model memory is not current evidence)', async () => {
+    h.state.steps = [{ text: 'MacBook Pro M4 16GB hiện giá 39.990.000đ.', toolCalls: [] }]
+    const t = text((await turn(ask)).body)
+    expect(t).not.toContain('39.990.000')
   })
 })

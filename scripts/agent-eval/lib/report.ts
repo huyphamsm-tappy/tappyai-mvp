@@ -27,6 +27,13 @@ export interface EvalRow {
   runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number; taskId?: string | null; taskConstraints?: number | null; taskPersisted?: boolean | null; evidenceRefs?: number | null; research?: ResearchObservation | null } | null
   reply: string
   crash?: string
+  /** WS2 final: repeated-run index (1-based) when AGENT_EVAL_REPEAT > 1. */
+  rep?: number
+  /** WS2 final: the independent oracle's unsupported current claims in the delivered reply. */
+  unsupported?: string[]
+  /** WS2 final: No-Fabrication Gate summary (run trace `claims` event) and tool fallbacks this turn. */
+  gate?: Record<string, unknown> | null
+  fallbacks?: number
 }
 
 export interface ModeSummary {
@@ -139,6 +146,16 @@ export function markdown(rows: readonly EvalRow[], s: Record<string, ModeSummary
   row('run trace: turns with exactly 1 trace', x => x.trace ? `${x.trace.exactlyOne}/${x.trace.turns}` : '—')
   row('run trace: max rounds · max tool calls · max Serper', x => x.trace ? `${x.trace.roundsMax} · ${x.trace.toolCallsMax} · ${x.trace.serperMax}` : '—')
   row('run trace: timeouts · retries · budget refusals · guard events', x => x.trace ? `${x.trace.timeouts} · ${x.trace.retries} · ${x.trace.budgetRefusals} · ${x.trace.guardEvents}` : '—')
+  // WS2 final — reliability invariants per scenario across repeated runs (structured outcomes, never text equality).
+  if (rows.some(r => (r.rep ?? 1) > 1) || rows.some(r => r.unsupported)) {
+    L.push('', '## Reliability invariants (repeated runs)', '', '| scenario · turn | runs | pass | unsupported current claims | fabricated tool results | orphan citations | fabricated URLs | gate FABRICATED removed | gate CONFLICT | conflict detected | fallbacks |', '|---|---|---|---|---|---|---|---|---|---|---|')
+    const groups = new Map<string, EvalRow[]>()
+    for (const r of rows) groups.set(`${r.mode} ${r.scenario} t${r.turn}`, [...(groups.get(`${r.mode} ${r.scenario} t${r.turn}`) ?? []), r])
+    const failN = (rs: readonly EvalRow[], id: string) => rs.filter(r => r.checks.some(c => c.id === id && !c.pass)).length
+    for (const [k, rs] of groups) L.push(`| ${k} | ${rs.length} | ${rs.filter(r => r.pass).length} | ${rs.reduce((a, r) => a + (r.unsupported?.length ?? 0), 0)} | ${failN(rs, 'no_fabricated_tool_result')} | ${failN(rs, 'no_orphan_citation')} | ${failN(rs, 'no_fabricated_url')} | ${rs.reduce((a, r) => a + Number(r.gate?.FABRICATED ?? 0), 0)} | ${rs.reduce((a, r) => a + Number(r.gate?.CONFLICT ?? 0), 0)} | ${rs.filter(r => (r.runTrace?.research?.conflict ?? 0) > 0).length} | ${rs.reduce((a, r) => a + (r.fallbacks ?? 0), 0)} |`)
+    const all = rows
+    L.push('', `Totals: unsupported current claims ${all.reduce((a, r) => a + (r.unsupported?.length ?? 0), 0)} · fabricated tool results ${failN(all, 'no_fabricated_tool_result')} · orphan citations ${failN(all, 'no_orphan_citation')} · fabricated URLs ${failN(all, 'no_fabricated_url')} · gate removed ${all.reduce((a, r) => a + Number(r.gate?.FABRICATED ?? 0), 0)}`)
+  }
   L.push('', '## Guards that changed replies', '')
   for (const m of modes) L.push(`- **${m}**: ${Object.entries(s[m].guards.byGuard).map(([k, v]) => `${k} ×${v}`).join(', ') || '—'}`)
   L.push('', '## Turns', '')

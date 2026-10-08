@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu trực tuyến giảm 10% 2 Bộ Tài chính Thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:41.266Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu trực tuyến giảm 10% 2 Bộ Tài chính Thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2.",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "🇻🇳 GIẢM 50% LỆ PHÍ HỘ CHIẾU, GIẤY THÔNG HÀNH, ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/-gi%E1%BA%A3m-50-l%E1%BB%87-ph%C3%AD-h%E1%BB%99-chi%E1%BA%BFu-gi%E1%BA%A5y-th%C3%B4ng-h%C3%A0nh-gi%E1%BA%A5y-ph%C3%A9p-xu%E1%BA%A5t-c%E1%BA%A3nh-tem-ab-t%E1%BB%AB-ng%C3%A0y-0172/744018704946130/",
+    "snippet": "THÔNG BÁO TĂNG PHÍ HỘ CHIẾU TỪ 1/1/2026 Từ ngày 1/1/2026, người dân làm hộ chiếu online không còn được giảm 10% lệ phí và sẽ áp dụng mức thu ...",
+    "position": 3
+   },
+   {
+    "title": "Đề xuất giảm 10% lệ phí cấp hộ chiếu online",
+    "link": "https://tapchicongthuong.vn/de-xuat-giam-10--le-phi-cap-ho-chieu-online-107045.htm",
+    "snippet": "- Đối với trường hợp “Cấp lại do bị hỏng hoặc bị mất” sẽ giảm từ 400.000 đồng/lần cấp xuống còn 360.000 đồng/lần cấp. - Đối với trường hợp “Cấp giấy ...",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "160.000 đồng/hộ chiếu. Trường hợp cấp lại do bị hỏng hoặc bị mất: 320.000/hộ chiếu (Thông tư số 44/2023/TT-BTC ngày 29/6/2023 của Bộ Tài chính).",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "- Cấp lại do bị hỏng hoặc bị mất: 400.000 đồng/lần cấp. - Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân ...",
+    "date": "29 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Giảm 50% lệ phí làm hộ chiếu đến hết ngày 31/12/2025 ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=256856",
+    "snippet": "Thông tư này quy định giảm đến 50% mức thu đối với lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem AB so với mức thu quy định tại Mục I Biểu mức ...",
+    "position": 7
+   },
+   {
+    "title": "Từ 1/7, giảm lệ phí làm thẻ Căn cước, hộ chiếu",
+    "link": "https://xaydungchinhsach.chinhphu.vn/tu-1-7-giam-le-phi-lam-the-can-cuoc-ho-chieu-119240630111531134.htm",
+    "snippet": "Giảm 20% lệ phí cấp hộ chiếu ; b. Cấp lại do bị hỏng hoặc bị mất. 320.000. 400.000 ; c. Cấp giấy xác nhận yếu tố nhân sự. 80.000. 100.000 ; 2. Lệ ...",
+    "date": "1 thg 7, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

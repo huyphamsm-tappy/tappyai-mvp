@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá iPhone 17 Pro Max hiện tại Việt Nam Apple Store",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:22.239Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá iPhone 17 Pro Max hiện tại Việt Nam Apple Store",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua iPhone",
+    "link": "https://www.apple.com/vn/shop/buy-iphone",
+    "snippet": "Mọi phiên bản. ; ĐẶT TRƯỚC TỪ NGÀY 16 THÁNG 10 · 64.999.000đ ; MỚI · 38.999.000đ ; iPhone Air · 34.999.000đ ; iPhone 17 · 28.999.000đ ; iPhone 17e · 21.999.000đ.",
+    "position": 1
+   },
+   {
+    "title": "iPhone 17 Pro Max 256GB đủ màu hot, giá tốt, trả góp 0%",
+    "link": "https://www.thegioididong.com/dtdd/iphone-17-pro-max",
+    "snippet": "Giá iPhone 17 Pro Max 256GB giảm ngay 3 triệu, thu cũ giảm thêm đến 2tr, tặng PMH 7tr1, sẵn hàng màu cam vũ trụ, bạc, xanh đậm, trả góp 0%. Mua iP 17 Pro ...",
+    "rating": 4.9,
+    "ratingCount": 313312,
+    "position": 2
+   },
+   {
+    "title": "iPhone 17 Pro Max (256GB) Chính Hãng, Bảng Giá 2026",
+    "link": "https://www.viettablet.com/iphone-17-pro-max?srsltid=AU7gw4VSSFf4jpnj9LtA3LniOOcqQPf2ysk10dKyflgLXHTvr6OirFh-",
+    "snippet": "iPhone 17 Pro Max (256GB) Chính Hãng, Mới Nguyên Seal · Thu Cũ Đổi Mới 31.999.000đ · Cam Vũ Trụ 32.999.000đ · Xanh Đậm 33.299.000đ · Bạc 34.399.000đ.",
+    "position": 3
+   },
+   {
+    "title": "iPhone 17 Pro Max 256GB | Chính hãng",
+    "link": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "snippet": "Lên đời chỉ từ 31.640.000đ ; Trợ giá đến 3.000.000đ ; Hệ điều hành khi ra mắt. iOS 26 ; Chipset. Chip A19 Pro ; Bộ nhớ trong. 256 GB.",
+    "position": 4
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Nhận 4.400.000đ–27.100.000đ dưới hình thức điểm tín dụng để mua iPhone Duo hoặc iPhone 18 Pro khi bạn trao đổi iPhone 13 trở lên.",
+    "position": 5
+   },
+   {
+    "title": "Dạo xem giá bán iPhone 17 chính hãng tại Việt Nam, mua ...",
+    "link": "https://cafef.vn/dao-xem-gia-ban-iphone-17-chinh-hang-tai-viet-nam-mua-o-apple-store-hay-dai-ly-nao-re-hon-188250911064506489.chn",
+    "snippet": "- iPhone 17 Pro Max có giá 37,999 triệu đồng cho bản 256GB, 44,499 triệu đồng cho bản 512GB, 50,999 triệu đồng cho bản 1TB và 63,999 triệu đồng ...",
+    "date": "11 thg 9, 2025",
+    "position": 6
+   },
+   {
+    "title": "Giá iPhone 17 series tại Việt Nam: iPhone 17 Pro Max bao ...",
+    "link": "https://www.24h.com.vn/thoi-trang-hi-tech/gia-iphone-17-series-tai-viet-nam-iphone-17-pro-max-bao-nhieu-tien-c407a1696538.html",
+    "snippet": "iPhone 17 Pro Max, 256GB, 37,99. 512GB, 44,49. 1TB, 50,99. 2TB, 63,99. * Giá chính thức từ Apple Store Online tại Việt Nam. Lưu bài viết thành ...",
+    "date": "10 thg 9, 2025",
+    "position": 7
+   },
+   {
+    "title": "iPhone 17 Pro Max giá tốt, thu cũ giảm đến 3tr, sẵn hàng",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-17-pro-max-pid355086.html?srsltid=AU7gw4VnGezraEQ4mfSDiqQZCE07PZqhzI6JqtSbK0WVcamtDIxbig96",
+    "snippet": "iPhone 17 Pro Max 256GB 34.490.000 ₫ · iPhone 17 Pro Max 512GB 39.990.000 ₫ · iPhone 17 Pro Max 1TB 46.990.000 ₫ · iPhone 17 Pro Max 2TB 59.490.000 ₫.",
+    "rating": 5,
+    "ratingCount": 468,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

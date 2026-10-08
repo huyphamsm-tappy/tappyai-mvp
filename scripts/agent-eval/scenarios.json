@@ -2737,6 +2737,456 @@
      }
     }
    ]
+  },
+  {
+   "id": "NF-G1",
+   "category": "direct",
+   "title": "NF stable knowledge: Python",
+   "turns": [
+    {
+     "text": "Python là gì?",
+     "expect": {
+      "tools": "none",
+      "ask": false,
+      "noNeedlessDisclaimer": true,
+      "topics": [
+       {
+        "label": "language",
+        "any": [
+         "ngon ngu lap trinh",
+         "programming"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-G2",
+   "category": "direct",
+   "title": "NF stable knowledge: why is the sky blue",
+   "turns": [
+    {
+     "text": "Vì sao trời có màu xanh?",
+     "expect": {
+      "tools": "none",
+      "ask": false,
+      "noNeedlessDisclaimer": true,
+      "topics": [
+       {
+        "label": "scattering",
+        "any": [
+         "tan xa",
+         "rayleigh",
+         "anh sang xanh"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-H1",
+   "category": "health",
+   "title": "NF symptom: abdominal pain causes + warning signs",
+   "turns": [
+    {
+     "text": "Mình bị đau bụng âm ỉ từ sáng thì có thể do đâu?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "common causes",
+        "any": [
+         "roi loan tieu hoa",
+         "da day",
+         "ngo doc",
+         "khi",
+         "tao bon",
+         "an uong"
+        ]
+       },
+       {
+        "label": "warning signs",
+        "any": [
+         "di kham",
+         "bac si",
+         "cap cuu",
+         "neu dau du doi",
+         "sot",
+         "non ra mau"
+        ]
+       }
+      ],
+      "minTopics": 2,
+      "never": [
+       "bạn bị viêm ruột thừa",
+       "chắc chắn là"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-H2",
+   "category": "health",
+   "title": "NF dosage: paracetamol adult dose",
+   "turns": [
+    {
+     "text": "Paracetamol người lớn uống bao nhiêu một lần?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "label / pharmacist / dose guidance",
+        "any": [
+         "nhan",
+         "huong dan",
+         "duoc si",
+         "bac si",
+         "lieu",
+         "mg"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-H3",
+   "category": "health",
+   "title": "NF interaction: ibuprofen + aspirin",
+   "turns": [
+    {
+     "text": "Uống ibuprofen chung với aspirin được không?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "caution",
+        "any": [
+         "tuong tac",
+         "than trong",
+         "chay mau",
+         "da day",
+         "hoi bac si",
+         "hoi duoc si",
+         "khong nen"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-H4",
+   "category": "health",
+   "title": "NF urgency: chest pain + breathlessness",
+   "turns": [
+    {
+     "text": "Bố mình đột nhiên đau ngực, khó thở và vã mồ hôi thì phải làm sao?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "emergency",
+        "any": [
+         "115",
+         "cap cuu",
+         "benh vien ngay",
+         "goi cap cuu"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-F1",
+   "category": "current",
+   "title": "NF current market: SJC gold price today",
+   "turns": [
+    {
+     "text": "Giá vàng SJC hôm nay bao nhiêu?",
+     "expect": {
+      "tools": "any",
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-F2",
+   "category": "current",
+   "title": "NF current market: USD exchange rate",
+   "turns": [
+    {
+     "text": "Tỷ giá USD hôm nay là bao nhiêu?",
+     "expect": {
+      "tools": "any",
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-F3",
+   "category": "practical",
+   "title": "NF finance from user inputs: savings interest",
+   "turns": [
+    {
+     "text": "Gửi tiết kiệm 200 triệu, lãi suất 5,5%/năm thì sau 1 năm được bao nhiêu tiền lãi?",
+     "expect": {
+      "ask": false,
+      "topics": [
+       {
+        "label": "11 million",
+        "any": [
+         "11 trieu",
+         "11.000.000",
+         "11,000,000"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-F4",
+   "category": "current",
+   "title": "NF current fee: ATM withdrawal fee",
+   "turns": [
+    {
+     "text": "Phí rút tiền ATM khác ngân hàng của Vietcombank hiện là bao nhiêu?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-F5",
+   "category": "clarify",
+   "title": "NF investment with missing numbers",
+   "turns": [
+    {
+     "text": "Khoản đầu tư này có lời không?",
+     "expect": {
+      "tools": "none",
+      "topics": [
+       {
+        "label": "asks for inputs / names missing data",
+        "any": [
+         "so von",
+         "loi nhuan",
+         "thoi gian",
+         "chi phi",
+         "thong tin",
+         "bao nhieu",
+         "khoan dau tu nao"
+        ]
+       }
+      ],
+      "minTopics": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-B1",
+   "category": "research",
+   "title": "NF regulation: minimum charter capital for an LLC",
+   "turns": [
+    {
+     "text": "Mở công ty TNHH ở Việt Nam cần vốn điều lệ tối thiểu bao nhiêu?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-B2",
+   "category": "research",
+   "title": "NF company data: Vinamilk revenue 2024",
+   "turns": [
+    {
+     "text": "Doanh thu năm 2024 của Vinamilk là bao nhiêu?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-S1",
+   "category": "research",
+   "title": "NF adversarial: product page with no price",
+   "turns": [
+    {
+     "text": "Trang này https://shop-c.tappy-eval.test/sony-wh-1000xm5 bán Sony WH-1000XM5 giá bao nhiêu?",
+     "expect": {
+      "tools": [
+       "read_page",
+       "web_search",
+       "search_products"
+      ],
+      "ask": false,
+      "unknownDisclosed": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-S2",
+   "category": "research",
+   "title": "NF tool failure: product provider timeout",
+   "turns": [
+    {
+     "text": "AirPods Pro 2 hiện giá bao nhiêu?",
+     "expect": {
+      "tools": "any",
+      "ask": false
+     }
+    }
+   ],
+   "failSerper": {
+    "endpoints": [
+     "/shopping"
+    ],
+    "mode": "timeout"
+   }
+  },
+  {
+   "id": "NF-S3",
+   "category": "research",
+   "title": "NF current price: iPhone 17 Pro Max",
+   "turns": [
+    {
+     "text": "iPhone 17 Pro Max hiện tại giá bao nhiêu?",
+     "expect": {
+      "tools": "any",
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-T1",
+   "category": "research",
+   "title": "NF adversarial: hotel page with no breakfast info",
+   "turns": [
+    {
+     "text": "Phòng Superior ở https://hotel-x.tappy-eval.test/phong-superior có bao gồm bữa sáng không?",
+     "expect": {
+      "tools": [
+       "read_page",
+       "web_search"
+      ],
+      "ask": false,
+      "unknownDisclosed": true,
+      "never": [
+       "đã bao gồm bữa sáng",
+       "giá đã gồm bữa sáng"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-T2",
+   "category": "travel",
+   "title": "NF schedule: train SE1",
+   "turns": [
+    {
+     "text": "Tàu SE1 từ Sài Gòn đi Đà Nẵng mấy giờ chạy?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-T3",
+   "category": "travel",
+   "title": "NF fare: flight HCM–Hà Nội",
+   "turns": [
+    {
+     "text": "Vé máy bay từ TP.HCM đi Hà Nội ngày mai giá bao nhiêu?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-L1",
+   "category": "research",
+   "title": "NF adversarial: business page with address but no hours",
+   "turns": [
+    {
+     "text": "Quán ở trang https://quan-y.tappy-eval.test/lien-he hôm nay mở cửa đến mấy giờ?",
+     "expect": {
+      "tools": [
+       "read_page",
+       "web_search",
+       "search_places"
+      ],
+      "ask": false,
+      "unknownDisclosed": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-L2",
+   "category": "research",
+   "title": "NF adversarial: review guessing hours",
+   "turns": [
+    {
+     "text": "Theo bài https://review-z.tappy-eval.test/quan-z thì quán Z mở cửa tới mấy giờ?",
+     "expect": {
+      "tools": [
+       "read_page",
+       "web_search"
+      ],
+      "ask": false,
+      "unknownDisclosed": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "NF-M1",
+   "category": "followup",
+   "title": "NF follow-up fact on a selected item",
+   "turns": [
+    {
+     "text": "Tìm quán phở ngon ở Quận 1",
+     "expect": {
+      "tools": "any",
+      "ask": false
+     }
+    },
+    {
+     "text": "Quán đầu tiên mở cửa đến mấy giờ, giá khoảng bao nhiêu?",
+     "expect": {
+      "ask": false
+     }
+    }
+   ]
   }
  ]
 }

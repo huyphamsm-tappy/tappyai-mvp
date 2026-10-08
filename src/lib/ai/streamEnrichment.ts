@@ -26,7 +26,8 @@ import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames } from './guardEvidence'
 import { stripSellerNames } from './agent/runtime/sourceType'
-import { bindCitationMarkers, enforceCitationIntegrity } from './citationIntegrity'
+import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers } from './citationIntegrity'
+import { noFabricationGate } from './noFabricationGate'
 import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
@@ -1604,6 +1605,9 @@ export function applyPlaceEnrichmentStreamFilter(
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
+  // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
+  const gateCorpus: string[] = []
+  const gateTools: string[] = []
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
   let bufferMode = false
@@ -2677,7 +2681,30 @@ export function applyPlaceEnrichmentStreamFilter(
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
     // Principle 7 (owner 2026-09-29): a plan the user budgeted shows the split as code-written arithmetic,
     // added AFTER the prose guards so no price guard reads the user's own total ÷ people as a claim.
-    const evRestored = evShield.restore(unsupported.text)
+    /**
+     * WS2 final — THE NO-FABRICATION GATE (TAPPY_AGENT=2). After every specialised guard, before the M4-supported sentences are restored
+     * and before any code-written line (plan budget math, heads-ups) is added: each current / entity claim Luna stated (price, market /
+     * finance figure, hours, rating, review count, availability, dosage, distance, booking status) must be in the evidence the turn had,
+     * be derived from it, be disclosed as unverified, or be a labelled planning estimate — otherwise it is FABRICATED and its sentence
+     * goes, with one line saying what could not be verified. See noFabricationGate.ts.
+     */
+    const gate = collector?.semanticRanking
+      ? noFabricationGate(unsupported.text, {
+        corpus: [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)],
+        userTexts: collector.userTexts ?? [userText],
+        tools: gateTools,
+        conflicts: collector.guardEvidence?.conflicts ?? [],
+        stalePrices: collector.guardEvidence?.stalePrices ?? [],
+        freshPrices: collector.guardEvidence?.freshPrices ?? [],
+      }, { lang })
+      : null
+    if (gate && (gate.claims.length || gate.removedSentences)) {
+      const summary = { claims: gate.claims.length, ...gate.counts, removed_sentences: gate.removedSentences, note_added: gate.noteAdded, categories: [...new Set(gate.claims.map(c => c.category))], fabricated: gate.claims.filter(c => c.state === 'FABRICATED').map(c => c.category) }
+      console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'no_fabrication', ...summary }))
+      try { collector?.claimsTrace?.(summary) } catch { /* trace only */ }
+    }
+    if (gate) gt('no_fabrication', unsupported.text, gate.text)
+    const evRestored = evShield.restore(gate ? gate.text : unsupported.text)
     if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
     const budgeted = appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
@@ -3272,9 +3299,12 @@ export function applyPlaceEnrichmentStreamFilter(
       }
       // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
       // sources line. Here, inside the grounded prose, so the TikTok fold and the grounding detector downstream see the final text.
-      if (!collector?.citationSources?.length) return final
+      // WS2 final (Bug 2): on agent turns (buffered — nothing has been released yet) a list marker a guard left without its item goes.
+      const listed = collector?.agentMode ? dropBareListMarkers(final) : { text: final, removed: 0 }
+      if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_list_marker', removed: listed.removed }))
+      if (!collector?.citationSources?.length) return listed.text
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
-      const integrity = enforceCitationIntegrity(final)
+      const integrity = enforceCitationIntegrity(listed.text)
       if (integrity.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity.removed }))
       return citeSources(integrity.text, collector.citationSources, allowedUrls, lang)
     })(settleMarkdown((() => {
@@ -3578,6 +3608,7 @@ export function applyPlaceEnrichmentStreamFilter(
             // where an accessory price is correct) from "WH-1000XM5".
             // De-duplicated: with the pre-search seed a query can arrive twice — once seeded,
             // once live — and the money guard treats a repeated query as a second entity.
+            if (call.toolName) gateTools.push(call.toolName)
             if (call.toolName === 'search_products' && call.args?.query && !productQueries.includes(call.args.query)) {
               productQueries.push(call.args.query)
             }
@@ -3589,6 +3620,8 @@ export function applyPlaceEnrichmentStreamFilter(
           // and a per-shape reader would miss the next one — failing CLOSED into deleting a
           // legitimate link. Scanning the JSON text catches all of them.
           for (const u of extractUrls(line)) allowUrl(u)
+          // WS2 final: every tool result of an agent turn is evidence the No-Fabrication Gate may check a claim against (bounded).
+          if (collector?.semanticRanking && gateCorpus.length < 120) gateCorpus.push(line.slice(2, 2 + 120_000))
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string

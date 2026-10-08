@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:18:53.736Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông thông tư 2025 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 1
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.vn/",
+    "snippet": "Dữ liệu cá nhân cơ bản: Họ, chữ đệm và tên khai sinh, tên gọi khác (nếu có). Ngày, tháng, năm sinh; ngày, tháng, năm chết hoặc mất tích. Giới tính. Nơi sinh, ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 74/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-74-2026-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-nang-luong-nguyen-tu--165ac560-713c-11f1-a2d9-abf44845dfbd",
+    "snippet": "Thông tư số 74/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực năng lượng nguyên tử. Còn hiệu lực. Ngày có hiệu lực:10/08/2026.",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 66/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-66-2026-tt-btc-huong-dan-xac-dinh-nhu-cau-nguon-va-phuong-thuc-chi-thuc-hien-muc-luong-co-so-va-che-do-tien-thuong-theo-nghi-dinh-so-161-2026-nd-cp-ngay-15-thang-5-nam-2026-cua-chinh-phu-va-dieu-chinh-tro-cap-hang-thang-doi-voi-can-bo-xa-da-nghi-viec-theo-nghi-dinh-so-162-2026-nd-cp-ngay-15-thang-5-nam-2026-cua-chinh-phu--0793b480-6faa-11f1-a61a-ebc9f6b1d56e",
+    "snippet": "- Kinh phí tăng thêm (từ mức lương cơ sở 1,49 triệu đồng/tháng lên mức lương cơ sở 2,34 triệu đồng/tháng) thực hiện chi trả tiền lương, phụ cấp, ...",
+    "date": "16 thg 6, 2026",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 60/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-60-2026-tt-btc-huong-dan-quan-ly-su-dung-va-quyet-toan-kinh-phi-chi-thuong-xuyen-ngan-sach-nha-nuoc-thuc-hien-chuong-trinh-muc-tieu-quoc-gia-ve-xay-dung-nong-thon-moi-giam-ngheo-ben-vung-va-phat-trien-kinh-te-xa-hoi-vung-dong-bao-dan-toc-thieu-so-va-mien-nui-giai-doan-2026-2035-giai-doan-i-tu-nam-2026-den-nam-2030--4aceaa00-656b-11f1-b135-7d62e1e93809",
+    "snippet": "Tra cứu Thông tư 60/2026/TT-BTC, Thông tư số 60/2026/TT-BTC Hướng dẫn quản lý, sử dụng và quyết toán kinh phí chi thường xuyên ngân sách nhà nước thực hiện ...",
+    "position": 5
+   },
+   {
+    "title": "Thông tư 29/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-29-2026-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-de-ho-tro-viec-ket-noi-khai-thac-su-dung-du-lieu-va-khuyen-khich-thuc-hien-dich-vu-cong-tren-ung-dung-vneid--49379ca0-58f1-11f1-8ef7-112d67e18519",
+    "snippet": "Lệ phí cấp chứng chỉ hành nghề kiến trúc sư. Bằng 50% mức thu lệ phí quy định ... a) Lệ phí nộp đơn đăng ký bảo hộ quyền sở hữu công nghiệp (gồm cả đơn ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 123/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-123-2026-tt-btc-sua-doi-bo-sung-mot-so-dieu-cua-thong-tu-so-130-2025-tt-btc-ngay-24-thang-12-nam-2025-cua-bo-truong-bo-tai-chinh-quy-dinh-he-thong-muc-luc-ngan-sach-nha-nuoc--924665f0-a295-11f1-99e1-b33d2a685ca5",
+    "snippet": "Tiểu mục 2768 “Lệ phí cấp chứng minh nhân dân, căn cước công dân” thuộc Mục 2750 “Lệ phí quản lý nhà nước liên quan đến quyền và nghĩa vụ của công dân” thành “ ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư 72/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-72-2026-tt-btc-quy-dinh-muc-thu-mien-giam-che-do-thu-nop-phi-thi-hanh-an-dan-su--0dfbd3a0-713c-11f1-89b4-7bc0e6257cee",
+    "snippet": "Thông tư số 72/2026/TT-BTC Quy định mức thu, miễn, giảm, chế độ thu, nộp phí thi hành án dân sự. số hộ chiếu, số giấy phép lái xe, nộp phí thi ...",
+    "date": "23 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

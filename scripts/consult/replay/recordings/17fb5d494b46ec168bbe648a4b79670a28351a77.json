@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán ăn ngon Sài Gòn\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:12:48.184Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán ăn ngon Sài Gòn\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 2
+   },
+   {
+    "title": "âm thanh gốc - Nhà Hàng Chay Phương Mai",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Nh%C3%A0-H%C3%A0ng-Chay-Ph%C6%B0%C6%A1ng-Mai-7666888284526365456",
+    "snippet": "Bài hát âm thanh gốc - Nhà Hàng Chay Phương Mai do Nhà Hàng Chay Phương Mai sáng tác. Xem video mới nhất về âm thanh gốc - Nhà Hàng Chay Phương Mai trên TikTok.",
+    "position": 3
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai Quận 1 – không gian yên bình ...",
+    "link": "https://www.tiktok.com/@pvtoby/video/7678216948299140353",
+    "snippet": "... Lượt thích,29 Bình luận.Video TikTok từ tiền ít mà thích review (@pvtoby): \"Khám phá Nhà hàng Chay Phương Mai ... Quán Ăn Ngon Sài Gòn · Tạp ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Quán Chay Phương Mai Ngon Nhất Tháng 7",
+    "link": "https://www.tiktok.com/@yang10290/video/7542927318956739848",
+    "snippet": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực khách. Khám phá nhà hàng chay Phương Mai với không gian đẹp và món ăn ngon. Đừng bỏ lỡ ...",
+    "position": 5
+   },
+   {
+    "title": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài ...",
+    "link": "https://www.tiktok.com/@cheebeesosweet/video/7418469162802007304",
+    "snippet": "Mâm Đồ Ăn Chee Bee Burger Review - Quán Ăn Ngon Sài Gòn. Khám phá mâm đồ ăn Chee Bee Burger tại quán ăn ngon Sài Gòn. Review chân thực về ...",
+    "position": 6
+   },
+   {
+    "title": "... Phương Mai... nét thường vi...💚💚💚 #nhahangchay ...",
+    "link": "https://www.tiktok.com/@lan.calla/video/7544983659204381960",
+    "snippet": "76 Lượt thích,Video TikTok từ Nhà Hàng Chay Phương Mai (@lan.calla): \"... Phương Mai... nét thường vi.",
+    "position": 7
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonvui0/photo/7690860748167286024",
+    "snippet": "Mưa gì thì mưa chứ mấy quán này vẫn phải đi ăn bằng được #gsm164 #gsm205 #ghiensaigon #saigonangi #quananngonsaigon. Quán ăn ngon Sài Gòn. Mưa ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

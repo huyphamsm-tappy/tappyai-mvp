@@ -458,3 +458,24 @@ describe('WS2 · seller names in Luna\'s product query are not product words (me
     expect(await settle(REPLY, false)).not.toContain('4,19 triệu')
   })
 })
+
+describe('WS2 final · the snippet guard still owns ENTITY scope (a layer the corpus-level gate cannot replace)', () => {
+  it('a price inside ANOTHER venue\'s band is evidence somewhere in the turn, but not for this venue: removed on TAPPY_AGENT=2', async () => {
+    const ROWS = { results: [
+      { name: 'Tám Riêu - Lý Chính Thắng', address: '140a Lý Chính Thắng', price_range_text: '100-200 N ₫', rating_value: 4.8, rating_count: 1291, maps_link: 'https://maps.google.com/?cid=1' },
+      { name: 'Nhà Hàng Sky', address: '1 Lê Lợi', price_range_text: '200-300 N ₫', rating_value: 4.5, rating_count: 800, maps_link: 'https://maps.google.com/?cid=2' },
+    ] }
+    const c = createEnrichmentCollector('Quán ăn tối ở Quận 3', [])
+    c.agentMode = true; c.semanticRanking = true
+    const lines = [
+      `9:${JSON.stringify({ toolCallId: 't1', toolName: 'search_places', args: { query: 'quán ăn tối', location: 'Quận 3' } })}`,
+      `a:${JSON.stringify({ toolCallId: 't1', result: ROWS })}`,
+      `0:${JSON.stringify('Mình chọn **Tám Riêu - Lý Chính Thắng** cho tối nay. Ở đây khoảng 250.000đ/người.')}`,
+      'd:{"finishReason":"stop","usage":{"promptTokens":1,"completionTokens":1}}',
+    ]
+    const raw = await new Response(applyPlaceEnrichmentStreamFilter(new Response(lines.join('\n') + '\n'), 'vi', c, undefined, undefined, undefined, false, 'Quán ăn tối ở Quận 3', true).body).text()
+    const out = raw.split('\n').filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+    expect(out).toContain('Tám Riêu')
+    expect(out).not.toContain('250.000')
+  })
+})

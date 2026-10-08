@@ -242,7 +242,7 @@ const CAPABILITY_NEGATION_RE = /(?:chưa|chua|không|khong|not|cannot|can't|does
 // the streaming boundary, and an entity-level evidence set.
 
 /** Anything that talks about tickets or showtimes. */
-const TICKET_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|còn vé|con ve|hết vé|het ve|có vé|co ve|vé xem phim|ve xem phim|suất chiếu|suat chieu|lịch chiếu|lich chieu|đang chiếu|dang chieu|suất \d|suat \d|book(?:ing)? tickets?|buy tickets?|tickets? available|sold out|showtimes?)/iu
+const TICKET_RE = /(đặt vé|dat ve|mua vé|mua ve|bán vé|ban ve|còn vé|con ve|hết vé|het ve|có vé|co ve|vé xem phim|ve xem phim|suất chiếu|suat chieu|lịch chiếu|lich chieu|đang chiếu|dang chieu|(?<!(?:lãi|lai|công|cong|năng|nang|hiệu|hieu|áp|ap|tần|tan|xác|xac|sinh|biên|bien) )suất \d|(?<!(?:lai|cong|nang|hieu|ap|tan|xac|sinh|bien) )suat \d|book(?:ing)? tickets?|buy tickets?|tickets? available|sold out|showtimes?)/iu
 
 /**
  * A claim about CURRENT AVAILABILITY or a SPECIFIC SHOWTIME.

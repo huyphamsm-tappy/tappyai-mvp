@@ -157,3 +157,31 @@ describe('WS2 eval checks (pure)', () => {
     expect(ids(evaluateTurn({ canned: true }, { ...base, tools: [], text: 'Chao ban! Minh co the giup gi cho ban hom nay?', runtimeTurn: true })).canned_shortcut).toBe(false)
   })
 })
+
+describe('WS2 final · the independent fabrication oracle', () => {
+  it('flags figures the conversation never had; passes corpus, derived, disclosed and planning figures', async () => {
+    const { fabricationOracle } = await import('./checks')
+    const corpus = 'user: ngân sách 20 triệu cho 2 người | {"price":39990000,"rating_value":4.8,"rating_count":1291,"opening_hours":"10:30–21:30"} | Shop B 45.990.000đ'
+    expect(fabricationOracle('Giá 39.990.000đ, 4.8⭐ với 1.291 đánh giá, mở cửa đến 21:30.', corpus)).toEqual([])
+    expect(fabricationOracle('Shop B đắt hơn 6 triệu. Mỗi người 10 triệu.', corpus)).toEqual([])
+    expect(fabricationOracle('Giá phòng khoảng 1,2 triệu nhưng mình chưa xác minh được.', corpus)).toEqual([])
+    expect(fabricationOracle('Bạn nên dự trù khoảng 300k mỗi bữa.', corpus)).toEqual([])
+    expect(fabricationOracle('Tỷ giá hôm nay 25.420 đồng, lãi suất 4,8%.', 'user: tỷ giá hôm nay?')).toEqual(['25.420 dong', '4,8%'])
+    expect(fabricationOracle('Quán mở cửa đến 23:00 và có 4.9⭐.', corpus)).toEqual(['23:00', '4.9⭐'])
+    expect(fabricationOracle('Người lớn uống paracetamol 500mg mỗi lần.', corpus)).toEqual(['500mg'])
+    expect(fabricationOracle('Python ra đời năm 1991.', corpus)).toEqual([])
+    expect(fabricationOracle('Quán có hơn 1.200 đánh giá.', corpus)).toEqual([])
+    expect(fabricationOracle('Quán có hơn 5.000 đánh giá.', corpus)).toEqual(['hon 5.000 danh gia'])
+  })
+  it('fabricated tool result, unknown disclosure and needless disclaimers', async () => {
+    const { evaluateTurn } = await import('./checks')
+    const ids = (r: Array<{ id: string; pass: boolean }>) => Object.fromEntries(r.map(c => [c.id, c.pass]))
+    const base = { rawText: null, annotations: [], crashed: false }
+    expect(ids(evaluateTurn({}, { ...base, tools: [], text: 'Mình vừa tra được giá vàng hôm nay khá cao so với tuần trước.' })).no_fabricated_tool_result).toBe(false)
+    expect(ids(evaluateTurn({}, { ...base, tools: [{ name: 'web_search', args: {} }], text: 'Mình vừa tra được giá vàng hôm nay khá cao so với tuần trước.' })).no_fabricated_tool_result).toBe(true)
+    expect(ids(evaluateTurn({ unknownDisclosed: true }, { ...base, tools: [], text: 'Trang này không ghi giá bán, bạn hỏi shop nhé.' })).unknown_disclosed).toBe(true)
+    expect(ids(evaluateTurn({ unknownDisclosed: true }, { ...base, tools: [], text: 'Giá khoảng 6,5 triệu, mua đi bạn.' })).unknown_disclosed).toBe(false)
+    expect(ids(evaluateTurn({ noNeedlessDisclaimer: true }, { ...base, tools: [], text: 'Python là ngôn ngữ lập trình bậc cao, dễ học.' })).no_needless_disclaimer).toBe(true)
+    expect(ids(evaluateTurn({ noNeedlessDisclaimer: true }, { ...base, tools: [], text: 'Python là ngôn ngữ lập trình, nhưng mình chưa xác minh được.' })).no_needless_disclaimer).toBe(false)
+  })
+})

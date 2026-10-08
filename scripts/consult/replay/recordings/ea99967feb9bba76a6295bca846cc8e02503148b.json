@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn 59/2020/QH14 Điều 47 vốn điều lệ công ty trách nhiệm hữu hạn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:39.132Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn 59/2020/QH14 Điều 47 vốn điều lệ công ty trách nhiệm hữu hạn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Luật số 59/2020/QH14 của Quốc hội: Luật Doanh nghiệp",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=200447",
+    "snippet": "Luật số 59/2020/QH14 của Quốc hội: Luật Doanh nghiệp ; Ngày ban hành, 17-06-2020 ; Ngày có hiệu lực, 01-01-2021 ; Loại văn bản, Luật ; Cơ quan ban hành, Quốc hội.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -27,6 +27,7 @@ import { stripWhy, finalStepNote, type AgentStep, type AgentToolCall, type Agent
 import { RUNTIME_LIMITS, type RuntimeLimits } from './limits'
 import { ASK_USER, UPDATE_TASK, CONTROL_TOOLS, parseAskUser, renderAsk, type AskUser } from './controlTools'
 import { toolInputHash, traceQuery, resultCount, type AgentRunTrace } from './trace'
+import { toolStateOf, withToolState } from './toolState'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -317,9 +318,12 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     for (const pl of planned) {
       const event: ToolEvent = { round, name: pl.name, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)
+      // WS2 final: every result carries ONE explicit state (SUCCESS · EMPTY · TIMEOUT · ERROR · UNAVAILABLE) — a failure is never evidence.
+      const state = toolStateOf(pl.outcome, pl.result)
+      pl.result = withToolState(pl.result, state, input.lang)
       const guarded = guardToolOutput(pl.result)
       T.counters.serperCredits += pl.credits
-      T.add('tool_result', { round, tool: pl.name, outcome: pl.outcome, ms: event.ms, credits: pl.credits, result_count: pl.outcome === 'ok' ? resultCount(pl.result) : 0, dropped_keys: guarded.stats.droppedKeys, cleaned_strings: guarded.stats.cleanedStrings, truncated: guarded.stats.truncated })
+      T.add('tool_result', { round, tool: pl.name, outcome: pl.outcome, state, ms: event.ms, credits: pl.credits, result_count: pl.outcome === 'ok' ? resultCount(pl.result) : 0, dropped_keys: guarded.stats.droppedKeys, cleaned_strings: guarded.stats.cleanedStrings, truncated: guarded.stats.truncated })
       if (pl.outcome === 'ok' || pl.outcome === 'timeout' || pl.outcome === 'error') input.onToolResult?.({ ...pl.tc, toolName: pl.name, args: pl.args }, guarded.forClient, event)
       parts.push({ type: 'tool-result', toolCallId: pl.tc.toolCallId, toolName: pl.tc.toolName, result: guarded.forModel })
     }

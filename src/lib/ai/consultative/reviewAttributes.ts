@@ -221,7 +221,7 @@ export function guardAtmosphereClaims(
     // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
     // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).
     if (/(?:^|[,;—–-]\s*|\b(?:vi|neu|theo nhu|nhu|do)\s+)ban (?:muon|can|thich|noi)\b|\byou (?:want|asked|said|need)\b|chua (?:thay|co|tim thay) (?:duoc )?bang chung|khong (?:tim )?thay bang chung|no evidence/.test(f)) return
-    if (ctx.agentHedges && /\bchua (?:xac minh|xac nhan|kiem chung|ro)\b|\bkhong (?:xac minh|xac nhan) duoc\b|\b(?:could not|cannot|can't) (?:verify|confirm)\b|\bnot (?:verified|confirmed)\b|\b(?:minh|ban) uu tien\b|\bbo tieu chi\b/.test(f)) return
+    if (ctx.agentHedges && /\bchua (?:xac minh|xac nhan|kiem chung|ro)\b|\bkhong (?:xac minh|xac nhan) duoc\b|\b(?:could not|cannot|can't) (?:verify|confirm)\b|\bnot (?:verified|confirmed)\b|\b(?:minh|ban) uu tien\b|\bbo tieu chi\b|\b(?:goi |nen |hay )?hoi (?:truoc|lai|quan|nhan vien)\b|\bkiem tra (?:truoc|lai)\b|\bxac nhan truoc\b|\b(?:ask|call|check) (?:ahead|first)\b/.test(f)) return
     const unsupported: RegExp[] = []
     for (const [attr, re] of CLAIM_WORDS) {
       const m = f.match(re)

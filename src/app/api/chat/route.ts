@@ -2865,6 +2865,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
   if (agentV2) enrichment.semanticRanking = true
   if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
+  if (agentRunTrace) enrichment.claimsTrace = summary => agentRunTrace.add('claims', summary)
   // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.
   // Its cost is the turn's cost (same trace counter as every other Luna call); bounded by its own short timeout.
   if (agentV2) enrichment.recordDecision = async (answer, candidates) => {
@@ -2931,6 +2932,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
       state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
+    // WS2 final: what the No-Fabrication Gate may accept as given this turn — the DATA context Luna read (card facts, task evidence,
+    // follow-up state), the user's saved memory, and the conversation's earlier replies (each passed the gate when it was shown).
+    if (agentV2) enrichment.gateContext = [context.data ?? '', memoryBlock ?? '', ...(modelMessages as Array<{ role: string; content: unknown }>).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content))]
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
     const turnInput: AgentTurnInput = {

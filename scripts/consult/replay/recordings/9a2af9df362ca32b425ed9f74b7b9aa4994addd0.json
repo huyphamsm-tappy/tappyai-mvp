@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tỷ giá USD hôm nay 8/10/2026 ngân hàng Việt Nam tỷ giá trung tâm USD VND",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:07.019Z",
+ "body": {
+  "searchParameters": {
+   "q": "tỷ giá USD hôm nay 8/10/2026 ngân hàng Việt Nam tỷ giá trung tâm USD VND",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tỷ giá trung tâm giảm còn 25.634 đồng/USD",
+    "link": "https://vov.vn/thi-truong/ty-gia-usd-hom-nay-810-ty-gia-trung-tam-giam-con-25634-dongusd-post1339244.vov",
+    "snippet": "Tỷ giá USD hôm nay, tỷ giá trung tâm tại Ngân hàng Nhà nước ngày 8/10 ở mức 25.634 đồng/USD, giảm 4 đồng so với hôm qua. Cùng thời điểm, giá USD ...",
+    "date": "15 giờ trước",
+    "position": 1
+   },
+   {
+    "title": "Tỷ giá USD hôm nay (8/10): DXY bật tăng khi lợi suất trái ...",
+    "link": "https://thoibaotaichinhvietnam.vn/ty-gia-usd-hom-nay-8-10-dxy-bat-tang-khi-loi-suat-trai-phieu-my-cham-dinh-24-nam-fed-con-tang-lai-suat-205026.html",
+    "snippet": "Cụ thể, tỷ giá USD tại Vietcombank niêm yết mua vào - bán ra ở mức 25.760 - 26.170 VND/USD, cùng giảm 10 đồng ở cả hai chiều so với phiên trước.",
+    "date": "15 giờ trước",
+    "position": 2
+   },
+   {
+    "title": "Tỷ giá",
+    "link": "https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/Ty-gia",
+    "snippet": "Tỷ giá ngoại tệ ; USD, US DOLLAR, 25,760.00 ; EUR, EURO, 28,350.15 ; GBP, UK POUND STERLING, 33,438.44 ; JPY, JAPANESE YEN, 158.50 ...",
+    "position": 3
+   },
+   {
+    "title": "(Interactive) Tỷ giá trung tâm ngày 8/10/2026: 1 USD = ...",
+    "link": "https://infographics.vn/interactive-ty-gia-trung-tam-ngay-8-10-2026-1-usd-25634-vnd/242567.vna",
+    "snippet": "Kinh tế - Hội nhập · (Interactive) Tỷ giá trung tâm ngày 8/10/2026: 1 USD = 25.634 VND. Hà Nội (TTXVN 8/10) ...",
+    "date": "14 giờ trước",
+    "position": 4
+   },
+   {
+    "title": "Bản tin Ngân hàng 24h Thông tin thị trường tài chính - tiền tệ ...",
+    "link": "https://www.facebook.com/thoibaonganhang.vn/posts/b%E1%BA%A3n-tin-ng%C3%A2n-h%C3%A0ng-24h-th%C3%B4ng-tin-th%E1%BB%8B-tr%C6%B0%E1%BB%9Dng-t%C3%A0i-ch%C3%ADnh-ti%E1%BB%81n-t%E1%BB%87-trong-n%C6%B0%E1%BB%9Bc-v%C3%A0-qu%E1%BB%91c-/1687543296715757/",
+    "snippet": "Thị trường ngoại tệ: Trong phiên 01/07/2025, NHNN niêm yết tỷ giá trung tâm ở mức 25,058 VND/USD. Tỷ giá mua giao ngay và tỷ giá bán giao ...",
+    "position": 5
+   },
+   {
+    "title": "Ngày 8/10: Tỷ giá trung tâm giảm tiếp 4 đồng",
+    "link": "https://thitruongtaichinhtiente.vn/ngay-8-10-ty-gia-trung-tam-giam-tiep-4-dong-86134.html",
+    "snippet": "Tại BIDV, giá mua - bán đồng USD được niêm yết ở mức 25.790- 26.170 VND/USD, giảm 10 đồng ở cả chiều mua và chiều bán so với cùng giờ hôm qua.",
+    "date": "14 giờ trước",
+    "position": 6
+   },
+   {
+    "title": "Tỷ giá ngoại tệ, tỷ giá USD/VND hôm nay 8/10",
+    "link": "https://baoquocte.vn/ty-gia-ngoai-te-ty-gia-usd-vnd-hom-nay-8-10-dong-usd-quay-dau-tang-nho-luc-do-tu-gia-nang-luong-tang-cao-453249.html",
+    "snippet": "... ngày 8/10, Ngân hàng Nhà nước công bố tỷ giá trung tâm của đồng Việt Nam ở mức 25.638 đồng. Tỷ giá USD tham khảo tại Sở Giao dịch Ngân hàng ...",
+    "date": "16 giờ trước",
+    "position": 7
+   },
+   {
+    "title": "Tỷ giá USD hôm nay 8/10: Tỷ giá trung tâm giảm 4 đồng",
+    "link": "https://doanhnghieptiepthi.vn/ty-gia-usd-hom-nay-8-10-ty-gia-trung-tam-giam-4-dong-161261008110653705.htm",
+    "snippet": "Ngày 8/10, NHNN niêm yết tỷ giá trung tâm ở mức 25.634 đồng. Giá mua - bán USD tại hầu hết các ngân hàng thương mại được điều chỉnh giảm so ...",
+    "date": "13 giờ trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

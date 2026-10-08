@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" OR \"Cầu Rồng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:16:09.868Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" OR \"Cầu Rồng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "* **Ngày diễn:** Chỉ có vào thứ Bảy và Chủ Nhật. * **Địa điểm:** Cầu Rồng, nối liền hai quận Hải Châu và Sơn Trà. ### Kinh Nghiệm Xem Cầu Rồng ...",
+    "position": 1
+   },
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 2
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng Phun Lửa Lúc Mấy Giờ? Lịch Trình & ...",
+    "link": "https://www.tiktok.com/@nhungdanang43/video/7507491855471283478",
+    "snippet": "Vào những dịp đặc biệt hoặc cuối tuần, cầu Rồng có thể thực hiện màn phun lửa và phun nước, tạo nên khung cảnh rực rỡ trên sông Hàn. Đây cũng là ...",
+    "position": 3
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng phun lửa nước 6 ngày mừng Quốc ...",
+    "link": "https://www.tiktok.com/@vivudanang243/video/7677565973016235285",
+    "snippet": "Cầu Rồng, biểu tượng nổi tiếng của thành phố, sẽ có màn trình diễn phun lửa và phun nước liên tục trong suốt 6 ngày để chào mừng ngày lễ lớn của ...",
+    "position": 4
+   },
+   {
+    "title": "Đề cử Ngũ Hành Sơn thành Di sản Thế giới hỗn hợp",
+    "link": "https://www.tiktok.com/@enews.trending/video/7690770118795742471",
+    "snippet": "Đà Nẵng sẽ nộp đề cử danh thắng Ngũ Hành Sơn trở thành Di sản Thế giới hỗn hợp. Đây là thông tin rằng chính quyền Đà Nẵng sẽ tiến hành nộp ...",
+    "position": 5
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, Thổ ...",
+    "position": 7
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Vietcombank biểu phí thẻ ghi nợ ATM ngoài hệ thống trong lãnh thổ Việt Nam phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:19.513Z",
+ "body": {
+  "searchParameters": {
+   "q": "Vietcombank biểu phí thẻ ghi nợ ATM ngoài hệ thống trong lãnh thổ Việt Nam phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ ÁP DỤNG CHO KHÁCH ...",
+    "link": "https://www.vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/KHCN/San-pham-Dich-vu/The/The-moi/VCB-Haha/202608_VNI_BP-TGN_KHCN_BS-Haha.pdf?ts=20260818075423",
+    "snippet": "Mức phí. 10 Phí giao dịch tại ATM trong hệ thống VCB. 10.1 Nộp tiền mặt. Miễn phí. 10.2 Rút tiền mặt. 1.000 VNĐ/giao dịch. 10.3 Chuyển khoản.",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ VÀ LÃI SUẤT THẺ ÁP DỤNG CHO ...",
+    "link": "https://portal.vietcombank.com.vn/content/personal/BieuPhi/Th%E1%BA%BB/Th%E1%BA%BB%20t%C3%ADn%20d%E1%BB%A5ng%20qu%E1%BB%91c%20t%E1%BA%BF/BIEU%20PHI%20THE%20TIN%20DUNG%20QUOC%20TE%20CHUNG/20200120%20Bieu%20phi%20the%20tong%20hop%20up%20web%20(bieu%20phi%20khong%20VAT).pdf",
+    "snippet": "6 Phí giao dịch tại ATM trong hệ thống VCB. 6.1 Rút tiền mặt. 1.000 VNĐ/giao dịch. 6.2 Chuyển khoản. 3.000 VNĐ/giao dịch. 7 Phí giao dịch tại ATM ngoài hệ thống ...",
+    "position": 2
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ QUỐC TẾ ÁP DỤNG ...",
+    "link": "https://portal.vietcombank.com.vn/content/personal/BieuPhi/Th%E1%BA%BB/Th%E1%BA%BB%20phi%20v%E1%BA%ADt%20l%C3%BD/Bieu%20phi%20the%20ghi%20no%20quoc%20te.pdf",
+    "snippet": "10 Phí giao dịch tại ATM ngoài hệ thống VCB. 10.1 RTM trong lãnh thổ Việt Nam. 10.1.a Thẻ Vietcombank Visa công nghệ chip. 3.000 VNĐ/giao dịch. 10.1.b. Các thẻ ...",
+    "position": 3
+   },
+   {
+    "title": "BIỂU PHÍ THẺ GHI NỢ QUỐC TẾ VIETCOMBANK VISA ...",
+    "link": "https://portal.vietcombank.com.vn/content/Corporate/BieuPhi/D%E1%BB%8Bch%20v%E1%BB%A5%20th%E1%BA%BB%20-%20T%E1%BB%95%20ch%E1%BB%A9c/THE%20GHI%20NO%20VIETCOMBANK%20VISA%20BUSINESS/Bieu%20phi%20the%20ghi%20no%20VCB%20Visa%20Business.pdf",
+    "snippet": "9 Phí giao dịch tại ATM ngoài hệ thống VCB. 9.1 RTM trong lãnh thổ Việt Nam. 10.000 VNĐ/giao dịch. 9.1 RTM ngoài lãnh thổ Việt Nam. 4 % số tiền giao dịch. 10 ...",
+    "position": 4
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ THẺ GHI NỢ ÁP DỤNG CHO KHÁCH ...",
+    "link": "https://vietcombank.com.vn/-/media/Project/VCB-Sites/VCB/KHCN/Bieu-mau-Bieu-phi-KHCN/Bieu-phi/The/12052025-Cap-nhat-bieu-phi-dich-vu-the-ghi-no-VCB/20250512_-Bieu-phi-dich-vu-the-ghi-no-KHCN-Vie.pdf?ts=20250512092028",
+    "snippet": "Các mức phí nêu trên là phí dành cho chủ thẻ do Vietcombank quy định, không bao gồm các loại phí phát sinh khác do các Ngân hàng/Tổ chức khác ...",
+    "date": "12 thg 5, 2025",
+    "position": 5
+   },
+   {
+    "title": "Các loại thẻ Vietcombank: Cách phân biệt và biểu phí sử ...",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/cac-loai-the-vietcombank-185745",
+    "snippet": "Biểu phí phát hành, sử dụng thẻ · Thẻ Vietcombank Visa Signature: 3.000.000 VNĐ/thẻ/năm. · Thẻ Vietcombank Visa Platinum: 800.000 VNĐ/thẻ/năm (thẻ ...",
+    "date": "2 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "Biểu Phí Thẻ Ghi Nợ Tại Vietcombank (Hiệu Lực Từ 01.07. ...",
+    "link": "https://www.studocu.vn/vn/document/truong-dai-hoc-thanh-dong/luat-ngan-hang/bieu-phi-the-ghi-no-hieu-luc-tu-01072023-vn-up-web/110768105",
+    "snippet": "STT · Dịch vụ · Mức phí · 6.2 · Giao dịch giá trị từ trên 2.000.000 VNĐ đến dưới · 7.000 VNĐ/giao dịch · 6.3 · Giao dịch giá trị từ 10.000.000 VNĐ trở lên.",
+    "position": 7
+   },
+   {
+    "title": "Cập nhật Biểu phí dịch vụ thẻ",
+    "link": "https://www.vietcombank.com.vn/vi-VN/KHCN/Truy-cap-nhanh/Tin-noi-bat/Articles/2026/01/14/Cap-nhat-bieu-phi-dich-vu-the-ghi-no",
+    "snippet": "Cập nhật Biểu phí dịch vụ thẻ ; 3, Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao dịch. (tối thiểu 45.454 VND/giao dịch) ; 4 ...",
+    "date": "14 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

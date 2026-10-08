@@ -659,11 +659,13 @@ export async function webSearch(query: string, lang = 'vi') {
     }
 
     result = results.length === 0
-      ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl }
+      ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl, ...(serperResults === null ? { provider_status: 'error' } : {}) }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
   } catch {
-    result = { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl }
+    result = { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl, provider_status: 'error' }
   }
-  setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
+  // WS2 final: a provider FAILURE (Serper non-OK / over its ceiling / no key, and no fallback rows) is said as such — never an empty
+  // answer that reads like "nothing exists" (measured: an exhausted Serper account surfaced as EMPTY). A failure is not cached.
+  if ((result as { provider_status?: string }).provider_status !== 'error') setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result
 }

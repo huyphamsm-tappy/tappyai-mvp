@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro 14 sai gon site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:21:12.543Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 sai gon site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bảo vệ bàn phím cho 2024 MacBook Pro 14 M4 A3112 ...",
+    "link": "https://shopee.vn/B%E1%BA%A3o-v%E1%BB%87-b%C3%A0n-ph%C3%ADm-cho-2024-MacBook-Pro-14-M4-A3112-MacBooKPro-M4Max-A3185-Pro14-A3401-Pro-16-M4-Max-A3186-Pro16-A3403-Keyboard-protector-V%E1%BB%8F-b%C3%A0n-ph%C3%ADm-silicon-m%E1%BB%81m-i.129754294.28617047934",
+    "snippet": "Bảo vệ bàn phím cho 2024 MacBook Pro 14 M4 A3112 MacBooKPro M4Max A3185 Pro14 A3401 Pro 16 M4 Max A3186 Pro16 A3403 Keyboard protector Vỏ bàn phím silicon mềm.",
+    "rating": 4.9,
+    "ratingCount": 25,
+    "position": 1
+   },
+   {
+    "title": "Case macbook air m4 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/case%20macbook/air/m4",
+    "snippet": "Ốp Mácbook Trong Suốt Nhựa Dẻo, Ốp Lưng Case Mácbook Đủ Dòng Mácbook 13\" - 16\" Pro Air M1 M2 M3 M4. 128.000₫. 150.000₫. -15%. voucher-icon. Mua Kèm Deal Sốc.",
+    "position": 2
+   },
+   {
+    "title": "MobyCaseShop, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/gtlstore",
+    "snippet": "cung cấp sỉ - lẻ các miếng dán ppf iphone, ipad, macbook ! Và các thiết bị điện thoại Khám phá các ưu đãi sản phẩm và đánh giá về MobyCaseShop online.",
+    "position": 3
+   },
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Apple MacBook Neo, Học sinh phổ thông, sinh viên kinh tế, ngôn ngữ, 15.990.000 – 18.990.000 ; Lenovo IdeaPad 5 Pro 14, Thiết kế đồ họa, marketing ...",
+    "date": "29 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tiêu chí chọn laptop cho sinh viên kinh tế",
+    "link": "https://shopee.vn/blog/laptop-cho-sinh-vien-kinh-te/",
+    "snippet": "Lenovo Ideapad 5 Pro 14 luôn nằm trong danh sách top laptop cho sinh viên kinh tế giá rẻ nhờ màn hình chuẩn màu siêu nét cùng hiệu năng vượt ...",
+    "date": "15 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "15.9 Sale Giữa Tháng | Siêu Rẻ - Chỉ Từ 1.000Đ",
+    "link": "https://shopee.vn/m/sale-giua-thang?uls_trackid=56bmmde200il&utm_content=4BiSsj6nciCEjVhDuZjtBSjQjFef",
+    "snippet": "Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch (15 core CPU |. custom-overlay. -9%. flag-label Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch (15 core ...",
+    "position": 6
+   },
+   {
+    "title": "9.9 Ngày Hội Voucher | Ngày Siêu Mua Sắm",
+    "link": "https://shopee.vn/m/ngay-hoi-voucher",
+    "snippet": "Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch (15 core CPU |. custom-overlay. flag-label Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch (15 core CPU | ...",
+    "position": 7
+   },
+   {
+    "title": "Túi chống sốc laptop - Giá Tốt, Miễn Phí Vận Chuyển, Đủ ...",
+    "link": "https://shopee.vn/list/t%C3%BAi%20ch%E1%BB%91ng%20s%E1%BB%91c%20laptop",
+    "snippet": "Case Logic nổi tiếng với các sản phẩm có thiết kế tối ưu, bao gồm lớp đệm bảo vệ giúp giảm thiểu rủi ro từ va chạm và cú sốc. Túi chống sốc của Case Logic ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

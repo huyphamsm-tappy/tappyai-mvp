@@ -191,6 +191,10 @@ export interface EnrichmentCollector {
    * WS2 (TAPPY_AGENT=2): records the recommendation decision of the final answer when Luna wrote no valid [TAPPY_RANK] block
    * (agent/runtime/decisionRecord.ts). Absent on every other path.
    */
+  /** WS2 final: the DATA context Luna was given this turn (card facts, task evidence) and earlier replies — evidence for the gate. */
+  gateContext?: string[]
+  /** WS2 final: the No-Fabrication Gate's per-turn claim summary, for the run trace. */
+  claimsTrace?: (summary: Record<string, unknown>) => void
   recordDecision?: (answer: string, candidates: string[]) => Promise<{ contract: import('./agent/runtime/rankingContract').RankingContract | null; ms: number; usd: number; error?: string }>
   citationSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
   /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
