@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple Macbook Air M3 13 inch 2024 8CPU\" OR \"Apple MacBook Air 13 inch\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:05:37.748Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple Macbook Air M3 13 inch 2024 8CPU\" OR \"Apple MacBook Air 13 inch\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple MacBook Neo 13-inch: Powerful & Lightweight | TikTok",
+    "link": "https://www.tiktok.com/@abed_tahan/video/7631836350374825232",
+    "snippet": "Apple MacBook Neo 13-inch: Powerful & Lightweight. The highly anticipated Apple MacBook Neo has arrived, boasting a blend of power and portability. This new ...",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Everyday Use Laptop - TikTok",
+    "link": "https://www.tiktok.com/@phoneplacekenya/video/7628692759058107655",
+    "snippet": "The Apple MacBook Neo 13-inch is designed for simplicity and everyday use, making it an ideal choice for students and daily tasks. For KES ...",
+    "date": "14 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Neo (13-inch, A18 Pro) - TikTok Shop Malaysia",
+    "link": "https://shop.tiktok.com/my/pdp/1734982376212890946",
+    "snippet": "Beli Apple MacBook Neo (13-inch, A18 Pro) pada TikTok Shop. Temukan harga hebat bagi dan dapatkan penghantaran percuma bagi item yang layak.",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Air 13 Inch Laptop Apple M4 Chip Built - TikTok Shop",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-air-13-inch-laptop-apple-m4-chip-built",
+    "snippet": "Apple Macbook Air 13 Inch Laptop Apple M4 Chip Built · 2023 Refurbished Apple Macbook Air 15.3-Inch M2 8GB-24GB RAM, 256GB-2TB SSD (Good Condition) · 2024 ...",
+    "position": 4
+   },
+   {
+    "title": "Model: Apple MacBook Air 13-inch (M3, 2024) Processor - TikTok",
+    "link": "https://www.tiktok.com/@silicon_savannah_tech/video/7685338126272728327",
+    "snippet": "37 Likes, TikTok video from SILICON SAVANNAH TECHNOLOGIES (@silicon_savannah_tech): “✓ Model: Apple MacBook Air 13-inch (M3, ...",
+    "date": "14 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Air 13-inch M2 Laptop - Silver Model | TikTok",
+    "link": "https://www.tiktok.com/@karabobonoex/photo/7618650000507047188?lang=vi-VN",
+    "snippet": "Apple MacBook Air 13-inch M2 Laptop - Silver Model. Discover the sleek Apple MacBook Air 13-inch with M2 chip in silver. Get yours now and ...",
+    "date": "18 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue - TikTok",
+    "link": "https://www.tiktok.com/discover/apple-macbook-air-13-inch-m4-midnight-vs-sky-blue",
+    "snippet": "Discover videos related to Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue on TikTok.",
+    "date": "28 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air (13-inch, M3 chip) - TikTok Shop Malaysia",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-dengan-chip-m3-layar-retina-kuat/1729606948220077081",
+    "snippet": "Beli Apple MacBook Air (13-inch, M3 chip) pada TikTok Shop. Temukan harga hebat bagi dan dapatkan penghantaran percuma bagi item yang layak.",
+    "rating": 4.9,
+    "ratingCount": 7,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

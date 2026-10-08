@@ -265,3 +265,54 @@ describe('M1 · ask_user parsing and prompt', () => {
     expect(AGENT_SYSTEM_V2).toContain('[TAPPY_PLAN]') // the Make Plan contract stays in the instructions
   })
 })
+
+describe('M2 · update_task in the loop', () => {
+  const taskHarness = (script: Script) => {
+    const deltas: Array<Record<string, unknown>> = []
+    const h = harness(script, { onTaskUpdate: args => { deltas.push(args); return { view: { goal: String(args.goal ?? '') }, applied: Object.keys(args), rejected: [] } } })
+    return { ...h, deltas }
+  }
+
+  it('same step as a lookup: applied first, never counted as a tool call, its result is fed back with the tool results', async () => {
+    const h = taskHarness([step('', [['update_task', { goal: 'Tìm nhà hàng Quận 1', why: 'việc mới' }], ['search_places', { query: 'nhà hàng quận 1' }]]), step('**Quán A**.')])
+    const run = await runAgentRuntime(h.input)
+    expect(h.deltas).toEqual([{ goal: 'Tìm nhà hàng Quận 1' }]) // `why` stripped
+    expect(run.toolCalls).toBe(1)
+    expect(h.trace.events.find(e => e.kind === 'task')).toMatchObject({ decision: 'update', applied: ['goal'] })
+  })
+
+  it('text + update_task in one step = the answer (no extra round)', async () => {
+    const h = taskHarness([{ ...step('Phở bò dùng xương bò.'), toolCalls: [{ toolCallId: 'u1', toolName: 'update_task', args: { task_type: 'question' } }] }])
+    const run = await runAgentRuntime(h.input)
+    expect(run.status).toBe('answered')
+    expect(run.modelCalls).toBe(1)
+    expect(h.deltas).toHaveLength(1)
+  })
+
+  it('update_task alone: applied, fed back, and the answer comes next round', async () => {
+    const h = taskHarness([step('', [['update_task', { set_constraints: [{ key: 'ngan_sach', value: '300k' }] }]]), step('Dưới 300k thì có Quán A.')])
+    const run = await runAgentRuntime(h.input)
+    expect(run.modelCalls).toBe(2)
+    expect(run.toolCalls).toBe(0)
+    expect(run.text).toContain('Dưới 300k')
+  })
+
+  it('ask_user + update_task in one step: the update is kept, the turn ends with the question', async () => {
+    const h = taskHarness([step('', [['update_task', { goal: 'Mua laptop' }], [ASK_USER, { question: 'Ngân sách bao nhiêu?' }]])])
+    const run = await runAgentRuntime(h.input)
+    expect(run.status).toBe('asked')
+    expect(h.deltas).toHaveLength(1)
+    expect(h.trace.events.find(e => e.kind === 'budget' && e.decision === 'ask_preempts_tools')).toBeUndefined()
+  })
+
+  it('at most 3 task updates per turn; without a task box the call is answered "unavailable"', async () => {
+    const four = Array.from({ length: 4 }, (_, i) => ['update_task', { goal: `g${i}` }] as [string, Record<string, unknown>])
+    const h = taskHarness([step('', four), step('ok')])
+    await runAgentRuntime(h.input)
+    expect(h.deltas).toHaveLength(3)
+    expect(h.trace.events.filter(e => e.kind === 'budget' && e.decision === 'task_update_refused')).toHaveLength(1)
+    const bare = harness([step('', [['update_task', { goal: 'x' }]]), step('ok')])
+    await runAgentRuntime(bare.input)
+    expect(bare.trace.events.find(e => e.kind === 'budget')).toMatchObject({ decision: 'task_update_refused', reason: 'unavailable' })
+  })
+})

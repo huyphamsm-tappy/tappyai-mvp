@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Hàng Dương Quán Quận 1\" OR \"Quán ăn ngon Sài Gòn\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:04:47.252Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Hàng Dương Quán Quận 1\" OR \"Quán ăn ngon Sài Gòn\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Ngon Houston",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-h%C3%A0ng-ngon-houston",
+    "snippet": "3.9M posts. Discover videos related to Nhà Hàng Ngon Houston on TikTok. See more videos about El Paisano Restaurante Houston, Món Ngon ...",
+    "date": "7 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 3
+   },
+   {
+    "title": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử",
+    "link": "https://www.tiktok.com/@hanoifoodchill/video/7664573325896731924",
+    "snippet": "Mỳ Hàn tươi làm tại nhà hàng – ngon đỉnh, nhất định thử. Mỳ Hàn tươi làm ngay tại nhà hàng — trải nghiệm ngon đỉnh Tóm tắt nhanh Mỳ Hàn tươi ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 5
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 6
+   },
+   {
+    "title": "Quán ăn ngon Sài Gòn",
+    "link": "https://www.tiktok.com/@saigonvui0/photo/7690860748167286024",
+    "snippet": "Mưa gì thì mưa chứ mấy quán này vẫn phải đi ăn bằng được #gsm164 #gsm205 #ghiensaigon #saigonangi #quananngonsaigon. Quán ăn ngon Sài Gòn. Mưa ...",
+    "position": 7
+   },
+   {
+    "title": "Nhà hàng ngon ở Hà Khẩu",
+    "link": "https://www.tiktok.com/@huymenmen90/video/7673843159897476370",
+    "snippet": "25 Lượt thích,Video TikTok từ Huy Mèn Mén (@huymenmen90): \"Nhà hàng ngon ở Hà Khẩu\".原創音樂 - 五音璇玑.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

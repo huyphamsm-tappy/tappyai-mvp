@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình RAM 16GB SSD 512GB (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:02:10.413Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình RAM 16GB SSD 512GB (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "Top 3 Laptop Ultrabook đáng mua nhất phân khúc 25 triệu",
+    "link": "https://cellphones.com.vn/sforum/top-3-laptop-ultrabook-25-trieu",
+    "snippet": "MacBook Neo 13 inch A18 Pro 2026 · Trả góp 0% · MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 512GB Touch ID | Chính hãng Apple Việt Nam · 21.990.",
+    "date": "22 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Build cấu hình MacBook CTO cho lập trình viên và phát ...",
+    "link": "https://cellphones.com.vn/sforum/build-cau-hinh-macbook-cto-cho-lap-trinh-vien",
+    "snippet": "Việc nâng cấp dung lượng ổ cứng lên 512GB và RAM lên 16GB giúp MacBook Pro 14-inch (M3, 2023) trở thành lựa chọn mạnh mẽ hơn cho các lập ...",
+    "date": "15 thg 8, 2024",
+    "position": 3
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 4
+   },
+   {
+    "title": "Laptop AMD 20 triệu cho dân IT học Code",
+    "link": "https://cellphones.com.vn/sforum/laptop-amd-cho-dan-it",
+    "snippet": "ASUS Vivobook Go 14 E1404FA nhỏ gọn với màn hình 14 inch Full HD, máy có RAM 16GB LPDDR5 onboard, SSD 512GB và nền tảng AMD Ryzen 5. Với các tác ...",
+    "date": "2 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "MacBook Air M5 15 inch 2026 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam. 38.990.000đ. 36.990.000đ ; MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 256GB | ...",
+    "position": 6
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "... MacBook Air M5 so với MacBook Neo chính là sức mạnh phần cứng. Máy được trang bị chip Apple M5 với CPU 10 nhân, GPU 8 nhân, kết hợp 16GB RAM và SSD 512GB.",
+    "position": 7
+   },
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Tiêu chuẩn cấu hình: Chip Intel Core i5/AMD Ryzen 5, RAM 16GB, SSD 512GB. ... Cấu hình ổn định trong tầm giá, dễ nâng cấp RAM và SSD về sau.",
+    "date": "29 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

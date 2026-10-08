@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:24.790Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover NK Viet Kitchen: A Vietnamese Gem in Hollywood",
+    "link": "https://www.tiktok.com/@treatyoselfeverywhere/video/7503929972520701214",
+    "snippet": "This new restaurant in South Florida is a true gem Name: NK Viet Kitchen- Cơm Gà Ninh Kiều 3373 Sheridan St, Hollywood, FL 33021 # ...",
+    "position": 1
+   },
+   {
+    "title": "🍤🍜 JAM VIET KITCHEN 🍜🍤 is a delicious modern style ...",
+    "link": "https://www.tiktok.com/@chrristiinnee/video/7678845896053886239",
+    "snippet": "JAM VIET KITCHEN is a delicious modern style Vietnamese restaurant that you definitely need to check out! Think creative cocktails ...",
+    "position": 2
+   },
+   {
+    "title": "Discovering Viet Kitchen and Tea House",
+    "link": "https://www.tiktok.com/@considerthefork/video/7611345315840494862",
+    "snippet": "Viet Kitchen and Tea House has quickly become a beloved spot for food enthusiasts looking for authentic Vietnamese cuisine.",
+    "position": 3
+   },
+   {
+    "title": "Video sponsored by @Viet Kitchen Lakewood One of my ...",
+    "link": "https://www.tiktok.com/@erika.taste.test/video/7580219334304304414",
+    "snippet": "11101 Pacific Hwy SW Suite 1, Lakewood, WA 98499 LET'S EAT! . Video sponsored by @Viet Kitchen Lakewood One of my favorite Vietnamese ...",
+    "position": 4
+   },
+   {
+    "title": "Delicious Vietnamese Food at Viet Kitchen Fast Food",
+    "link": "https://www.tiktok.com/@veeeeevee/video/7649929238891613471",
+    "snippet": "Experience the taste of authentic Vietnamese cuisine at Viet Kitchen Fast Food, a spot renowned for serving delicious and quick meals.",
+    "position": 5
+   },
+   {
+    "title": "Viet Kitchen. The newest Vietnamese restaurant in Grand ...",
+    "link": "https://www.tiktok.com/@eatgr/video/7652023618104200461",
+    "snippet": "323 Likes, TikTok video from EatGR (@eatgr): “Viet Kitchen. The newest Vietnamese restaurant in Grand Rapids.",
+    "position": 6
+   },
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "MEAT & MEET KOREAN BBQ CONTAINER Vui lòng đặt bàn qua hotline các chi nhánh · Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai ...",
+    "position": 7
+   },
+   {
+    "title": "Epic Phozilla Bowl at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@getrevi/video/7549301849958993165",
+    "snippet": "Discover the massive Phozilla bowl packed with lobster and beef rib at Gao Viet Kitchen. Perfect for hungry diners! #Phozilla #GaoVietKitchen.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

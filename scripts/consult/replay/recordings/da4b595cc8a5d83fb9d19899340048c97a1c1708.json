@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy tính Apple MacBook Pro 14 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:47.958Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy tính Apple MacBook Pro 14 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miếng Dán Màn Hình MacBook pro 14 Inch Chống Phản Quang ...",
+    "link": "https://www.lazada.vn/products/mieng-dan-man-hinh-macbook-pro-14-inch-chong-phan-quang-chong-van-tay-mo-bao-ve-cho-may-tinh-xach-tay-apple-air-136-i13348249963-s116701835915.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4Uwq66VnLqNg98PFkS3lcmH4g_acwhfTSFVRfrvFMrAcE6aZ9gf",
+    "snippet": "Miếng Dán Màn Hình MacBook pro 14 Inch Chống Phản Quang, Chống Vân Tay, Mờ, Bảo Vệ Cho Máy Tính Xách Tay Apple Air 13.6. Miễn phí vận chuyển.",
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng Bảo Vệ Siêu Mỏng Bằng Silicon Da Cho Máy Tính ...",
+    "link": "https://www.lazada.vn/products/op-lung-bao-ve-sieu-mong-bang-silicon-da-cho-may-tinh-xach-tay-macbook-pro-14-inch-m4-m2-air136-m3-apple-notebook-m1-15-inch-16-inch-i3149316198.html?srsltid=AU7gw4UCwt4Q4E-R_OYJ-3PaKDbIzs3T-ahQ4CwkpAqiUpASRQ-rArEH",
+    "snippet": "Ốp Lưng Bảo Vệ Siêu Mỏng Bằng Silicon Da Cho Máy Tính Xách Tay MacBook pro 14 Inch M4 M2 Air13.6 M3 Apple Notebook M1 15 Inch 16 Inch. Tuỳ chọn sản phẩm.",
+    "position": 2
+   },
+   {
+    "title": "Túi Đựng Máy Tính Xách Tay Nhẹ 13 Inch 14 Inch 15 Inch Bảo ...",
+    "link": "https://www.lazada.vn/products/tui-dung-may-tinh-xach-tay-nhe-13-inch-14-inch-15-inch-bao-ve-thiet-ke-don-gian-cho-macbook-pro-macbook-air-i3252939667-s15685732831.html?srsltid=AU7gw4WiKEyopPQaP6OCvuvKOEE5CaVsFdEw-iyUTRFvdX4eZjvAhEBc",
+    "snippet": "Túi Đựng Máy Tính Xách Tay Nhẹ 13 Inch 14 Inch 15 Inch Bảo Vệ Thiết Kế Đơn Giản Cho Macbook pro MacBook Air.",
+    "position": 3
+   },
+   {
+    "title": "Túi Đựng Máy Tính Trong Suốt Chống Sốc Cho Máy Tính Xách ...",
+    "link": "https://www.lazada.vn/products/tui-dung-may-tinh-trong-suot-chong-soc-cho-may-tinh-xach-tay-14-inch-16-inch-tui-dung-may-tinh-bang-cho-nam-nu-tui-dung-may-tinh-apple-macbook-pro-13-inch-i13342519822.html?srsltid=AU7gw4XoBsTmKlRo4xZ7E1w6U4uXgf4xnXyP2v6Vy0fkxDgx2sY0IZpj",
+    "snippet": "Túi Đựng Máy Tính Trong Suốt Chống Sốc Cho Máy Tính Xách Tay 14 Inch 16 Inch Túi Đựng Máy Tính Bảng Cho Nam Nữ Túi Đựng Máy Tính Apple MacBook pro 13 Inch.",
+    "position": 4
+   },
+   {
+    "title": "Miếng Dán Bàn Phím Nhanh Cho MacBook Air 13 pro 14 ...",
+    "link": "https://www.lazada.vn/products/mieng-dan-ban-phim-nhanh-cho-macbook-air-13-pro-14-m3-m2-chong-phan-quang-mieng-dan-bao-ve-ban-phim-cho-may-tinh-xach-tay-apple-i3015927211.html?srsltid=AU7gw4WAGq1eDvqudbuCI_T7SWAjnspFCUdiuRBQ0V9_M140QCDhTaBW",
+    "snippet": "Miếng Dán Bàn Phím Nhanh Cho MacBook Air 13 pro 14 M3 M2 Chống Phản Quang Miếng Dán Bảo Vệ Bàn Phím Cho Máy Tính Xách Tay Apple.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng Laptop Siêu Mỏng Cứng Cáp Cho MacBook Pro ...",
+    "link": "https://www.lazada.vn/products/op-lung-may-tinh-xach-tay-sieu-mong-cung-cap-danh-cho-macbook-pro-14air-13-m1m2m3-153m4-mau-moi-2025-vo-pu-tuong-thich-danh-cho-ca-nam-va-nu-i2656928699-s12980331648.html?srsltid=AU7gw4UFMTGpoePxm9d5xCSaG8Xl44VfYOAn4tSz7YmMpXwNQyU2X2l6",
+    "snippet": "Ốp lưng laptop siêu mỏng chất liệu PU cho MacBook Pro 14/13 inch, tương thích M1/M2/M3/M4. Thiết kế chuyên nghiệp, phù hợp cả nam và nữ, bảo vệ tối ưu cho ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp Lưng Máy Tính Xách Tay Neo Fabric Dành Cho Macbook Pro ...",
+    "link": "https://www.lazada.vn/products/pdp-i13448045229.html?srsltid=AU7gw4W8gqb54LrEU_gEYL3TzF7LyE3ItFKCNhrX4BeiMjN8ABp2meyA",
+    "snippet": "Ốp Lưng Máy Tính Xách Tay Neo Fabric Dành Cho Macbook Pro 14 M5, 16 Inch, M4, Air 13, 15 Inch, Có Chân Đế, Tương Thích Với Các Mẫu M3, M2, Unisex.",
+    "position": 7
+   },
+   {
+    "title": "Cáp khóa chống trộm cho MacBook Pro 14 16 M4 ...",
+    "link": "https://www.lazada.vn/products/cap-khoa-chong-trom-cho-macbook-pro-14-16-m4-pro-max-apple-2025-co-chia-khoa-va-mat-khau-i13333145308.html?srsltid=AU7gw4WpekQ3O18ibfcdIUHDmkbOBH3LSlli-NplCECOT5MEKdPr6akQ",
+    "snippet": "Với cáp chống trộm khóa khóa, thiết bị này cung cấp các biện pháp bảo mật mạnh mẽ để bảo vệ máy tính xách tay có giá trị của bạn.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

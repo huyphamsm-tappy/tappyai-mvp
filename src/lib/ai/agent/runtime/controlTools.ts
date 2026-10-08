@@ -13,11 +13,37 @@ import { z } from 'zod'
 import { cutSecrets } from '../guards'
 
 export const ASK_USER = 'ask_user'
-export const CONTROL_TOOLS: ReadonlySet<string> = new Set([ASK_USER])
+/**
+ * M2: Luna's task delta as an in-loop control action. NOT offered to the model by default: measured, it always cost an extra round, so
+ * the task tracker (taskTracker.ts) does this job in parallel. Kept as a generic control-action path (loop interception + tests) for the
+ * M6 registry, which may offer it where a round is free.
+ */
+export const UPDATE_TASK = 'update_task'
+export const CONTROL_TOOLS: ReadonlySet<string> = new Set([ASK_USER, UPDATE_TASK])
+
+const KV = z.object({ key: z.string().describe('khoá ngắn, vd ngan_sach, khu_vuc, so_nguoi, ngay_di, muc_dich'), value: z.string().describe('giá trị theo lời người dùng; rỗng = bỏ') })
+
+export function updateTaskTool() {
+  return tool({
+    description: 'Cập nhật NHIỆM VỤ đang làm (trạng thái qua nhiều lượt). Gọi khi: lượt đầu của một việc cần nhiều bước (đặt goal, task_type, ràng buộc); người dùng thêm / đổi / bỏ ràng buộc hay ưu tiên; người dùng chọn một lựa chọn; xong việc (status completed); chuyển sang việc khác hẳn (new_task true). Tối đa một lần mỗi lượt, ở BƯỚC ĐẦU, CÙNG BƯỚC với công cụ tra cứu hoặc ask_user, hoặc kèm câu trả lời. Không gọi khi không có gì đổi.',
+    parameters: z.object({
+      new_task: z.boolean().optional().describe('true = việc mới khác hẳn việc đang làm'),
+      task_type: z.enum(['local_discovery', 'shopping', 'travel_planning', 'comparison', 'troubleshooting', 'how_to', 'question', 'planning', 'other']).optional(),
+      goal: z.string().optional().describe('mục tiêu ngắn của người dùng, một câu'),
+      set_constraints: z.array(KV.extend({ hard: z.boolean().optional().describe('true = bắt buộc') })).optional(),
+      remove_constraints: z.array(z.string()).optional().describe('khoá ràng buộc bỏ đi'),
+      set_preferences: z.array(KV).optional(),
+      add_entities: z.array(z.object({ name: z.string(), kind: z.string().optional() })).optional().describe('sản phẩm / địa điểm / điểm đến đang bàn'),
+      selected_items: z.array(z.object({ name: z.string(), note: z.string().optional() })).optional().describe('lựa chọn người dùng đã chốt (thay danh sách cũ)'),
+      add_findings: z.array(z.string()).optional().describe('điều quan trọng đã tìm ra, mỗi ý ≤ 1 câu'),
+      status: z.enum(['active', 'completed', 'abandoned']).optional(),
+    }),
+  })
+}
 
 export function askUserTool() {
   return tool({
-    description: 'Hỏi lại người dùng MỘT câu ngắn khi thiếu thông tin làm ĐỔI HẲN kết quả và không thể giả định hợp lý (vd mua đồ đắt tiền chưa rõ nhu cầu/ngân sách, đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi có thể giả định và trả lời, khi người dùng đã nêu các lựa chọn cụ thể để so sánh (so sánh rồi nói ai hợp cái nào), hay khi đã có điểm đến cho kế hoạch.',
+    description: 'Hỏi lại người dùng MỘT câu ngắn khi thiếu thông tin làm ĐỔI HẲN kết quả và không thể giả định hợp lý (vd mua đồ đắt tiền chưa rõ nhu cầu/ngân sách, đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi có thể giả định và trả lời, khi người dùng đã nêu các lựa chọn cụ thể để so sánh (so sánh rồi nói ai hợp cái nào), hay khi đã có điểm đến cho kế hoạch. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").',
     parameters: z.object({
       question: z.string().describe('Câu hỏi, đúng giọng Tappy (xưng mình, gọi bạn), một câu'),
       choices: z.array(z.string()).optional().describe('2–4 lựa chọn bấm nhanh, mỗi lựa chọn ≤ 6 từ (tuỳ chọn)'),

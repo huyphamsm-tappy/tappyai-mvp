@@ -24,7 +24,7 @@ export interface EvalRow {
   guardsChanged: string[]
   kept: number | null
   /** TAPPY_AGENT=2 only: the run trace this turn emitted (null on other modes). */
-  runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number } | null
+  runTrace?: { lines: number; status: string | null; outputType: string | null; rounds: number; toolCalls: number; serperCredits: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number; events: number; taskId?: string | null; taskConstraints?: number | null; taskPersisted?: boolean | null } | null
   reply: string
   crash?: string
 }
@@ -45,6 +45,8 @@ export interface ModeSummary {
   crashes: number
   fellBack: number
   trace: { turns: number; exactlyOne: number; roundsMax: number; toolCallsMax: number; serperMax: number; timeouts: number; retries: number; budgetRefusals: number; guardEvents: number } | null
+  /** M2: multi-turn conversations whose turns all worked on ONE task (same task id), and constraints held at the last turn. */
+  task: { conversations: number; stableTask: number; persistedTurns: number; meanLastConstraints: number } | null
 }
 
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0)
@@ -77,6 +79,13 @@ export function summarizeMode(rows: readonly EvalRow[]): ModeSummary {
     outputs,
     crashes: rows.filter(r => r.crash).length,
     fellBack: rows.filter(r => r.fellBack).length,
+    task: (() => {
+      const byConv = new Map<string, EvalRow[]>()
+      for (const r of rows) if (r.runTrace?.taskId) byConv.set(r.scenario, [...(byConv.get(r.scenario) ?? []), r])
+      const multi = [...byConv.values()].filter(rs => rs.length > 1)
+      if (!byConv.size) return null
+      return { conversations: multi.length, stableTask: multi.filter(rs => new Set(rs.map(r => r.runTrace!.taskId)).size === 1).length, persistedTurns: rows.filter(r => r.runTrace?.taskPersisted).length, meanLastConstraints: multi.length ? mean(multi.map(rs => rs[rs.length - 1].runTrace!.taskConstraints ?? 0)) : 0 }
+    })(),
     trace: (() => {
       const t = rows.map(r => r.runTrace).filter((x): x is NonNullable<EvalRow['runTrace']> => !!x)
       if (!t.length) return null
@@ -115,6 +124,7 @@ export function markdown(rows: readonly EvalRow[], s: Record<string, ModeSummary
   row('guard kept ratio mean · min · turns <60%', x => `${r2(x.guards.keptMean)} · ${r2(x.guards.keptMin)} · ${x.guards.under60}`)
   row('outputs', x => Object.entries(x.outputs).map(([k, v]) => `${k} ${v}`).join(', '))
   row('crashes · fell back', x => `${x.crashes} · ${x.fellBack}`)
+  row('task: multi-turn conversations on ONE task · turns persisted · mean constraints at last turn', x => x.task ? `${x.task.stableTask}/${x.task.conversations} · ${x.task.persistedTurns} · ${r2(x.task.meanLastConstraints)}` : '—')
   row('run trace: turns with exactly 1 trace', x => x.trace ? `${x.trace.exactlyOne}/${x.trace.turns}` : '—')
   row('run trace: max rounds · max tool calls · max Serper', x => x.trace ? `${x.trace.roundsMax} · ${x.trace.toolCallsMax} · ${x.trace.serperMax}` : '—')
   row('run trace: timeouts · retries · budget refusals · guard events', x => x.trace ? `${x.trace.timeouts} · ${x.trace.retries} · ${x.trace.budgetRefusals} · ${x.trace.guardEvents}` : '—')

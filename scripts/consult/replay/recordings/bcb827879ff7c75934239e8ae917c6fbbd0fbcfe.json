@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:18.449Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "PhamCamThuy203451 - Shopee Mall Online",
+    "link": "https://shopee.vn/phamcamthuy203451",
+    "snippet": "Tai Nghe Không Dây Bluetooth PRO2 Pin 8h ANC Chống Ồn 40Db Bản Cao Cấp 2025 Full Chức Năng Định Vị Đổi Tên. 219.000₫. -32%. Mua để nhận quà. rating-star 4.9.",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%91ng-%E1%BB%92n-ANC-Pin-8H-%C4%90%E1%BA%A7y-%C4%90%E1%BB%A7-Ch%E1%BB%A9c-N%C4%83ng-B%E1%BA%A3n-2025-Ch%C3%ADnh-H%C3%A3ng-PKT-Ph%E1%BB%A5-Ki%E1%BB%87n-T%E1%BB%91t-i.477194183.27743499356",
+    "snippet": "3 phân loại có sẵn. 229.000₫-299.000₫. 380.000₫. -40%. mall inline badge. Tai Nghe Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 - Chính Hãng PKT ...",
+    "position": 2
+   },
+   {
+    "title": ".pkt giá tốt Tháng 8, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=.pkt",
+    "snippet": "Bút cảm ứng cao cấp cho lPad chống chạm nhầm, Sạc Type-C, Cảm biến độ nghiêng,mượt mà, chính xác, không Delay PKT Pro. 250.000₫. 300.000₫. -17%. rating-star ...",
+    "position": 3
+   },
+   {
+    "title": "1571am - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/1571am",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm 1571am chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, các sản phẩm có sẵn và bạn dễ dàng tìm thấy ở các cửa ...",
+    "position": 4
+   },
+   {
+    "title": "Soundpeats air 3 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe/soundpeats/air%203",
+    "snippet": "Tai nghe bluetooth Anker soundcore R60i NC, chống ồn 52dB, âm thanh Hi-Res, pin 50H, phiên dịch AI D1202. 749.000₫. 899.000₫. -17%. voucher-icon.",
+    "position": 5
+   },
+   {
+    "title": "Airpods anc - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/airpods/anc",
+    "snippet": "Tai nghe không dây Bluetooth 5.3 Goojodoq có tính năng điều khiển cảm ứng, âm trầm và thời lượng pin cực dài Kênh đôi. 125.000₫. 208.000₫.",
+    "position": 6
+   },
+   {
+    "title": "ap2 giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=ap2",
+    "snippet": "Goojodoq Tai nghe Bluetooth 5.3 Bass Mạnh Giảm Tiếng Ồn Không Dây Cảm Ứng Thông Minh Thể Thao - Trắng, Xám, Hồng, Đen. 136.940₫. 168.000₫.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe hổ vằn - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe/h%E1%BB%95%20v%E1%BA%B1n",
+    "snippet": "Tai nghe Bluetooth nhét đa chức năng GOOJODOQ giọng nói AI thông minh ngôn ngữ dịch thời gian thực. 130.380₫. 198.000₫. -34%. voucher-icon. Rẻ Vô Địch.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

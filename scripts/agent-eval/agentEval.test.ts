@@ -179,9 +179,9 @@ describe.skipIf(!ON)('Phase 8 agent eval — chat route, real Luna, Serper recor
       const checks = evaluateTurn(t.expect, obs)
       const trace = cap.events.find(e => e.type === 'tappyai_agent_trace') as Record<string, unknown> | undefined
       // Phase 8 run trace (TAPPY_AGENT=2): exactly one per turn, with every round / tool / guard.
-      const runTraces = cap.events.filter(e => e.type === 'tappyai_agent_run_trace') as Array<{ status?: string; final_output_type?: string; totals?: Record<string, number>; events?: Array<{ kind: string }> }>
+      const runTraces = cap.events.filter(e => e.type === 'tappyai_agent_run_trace') as Array<{ status?: string; final_output_type?: string; task_id?: string | null; totals?: Record<string, number>; events?: Array<{ kind: string; decision?: string; constraints?: number; persisted?: boolean }> }>
       const rt = runTraces[0]
-      const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0 } : null
+      const runTrace = mode === 'agent2' ? { lines: runTraces.length, status: rt?.status ?? null, outputType: rt?.final_output_type ?? null, rounds: rt?.totals?.modelRounds ?? 0, toolCalls: rt?.totals?.toolCalls ?? 0, serperCredits: rt?.totals?.serperCredits ?? 0, timeouts: rt?.totals?.timeouts ?? 0, retries: rt?.totals?.retries ?? 0, budgetRefusals: rt?.totals?.budgetRefusals ?? 0, guardEvents: (rt?.events ?? []).filter(e => e.kind === 'guard').length, events: rt?.events?.length ?? 0, taskId: rt?.task_id ?? null, taskConstraints: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.constraints ?? null, taskPersisted: (rt?.events ?? []).find(e => e.kind === 'task' && e.decision === 'end')?.persisted ?? null } : null
       rows.push({
         mode, scenario: s.id, category: s.category, turn: i + 1, sent: t.text,
         checks, pass: checks.every(c => c.pass),

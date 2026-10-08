@@ -110,7 +110,9 @@ describe('TAPPY_AGENT=2 — the Phase 8 runtime', () => {
     expect(o.systemShared).toContain('đủ để trả lời tốt chưa?')
     expect(Object.keys(o.tools)).toEqual(expect.arrayContaining(['ask_user', 'search_places', 'web_search']))
     expect(Object.keys(o.tools)).not.toContain('save_price_watch')
-    expect(h.state.streamCalls + h.state.extractCalls).toBe(0)
+    // M2: exactly one structured call per turn = the task tracker (runtime/taskTracker.ts), never a stream / intent call.
+    expect(h.state.streamCalls).toBe(0)
+    expect(h.state.extractCalls).toBe(1)
     expect(body).toContain('Phở bò dùng xương bò')
     expect(traces).toHaveLength(1)
     expect(traces[0]).toMatchObject({ flag: 'TAPPY_AGENT=2', status: 'answered', final_output_type: 'text', model_role: 'agent', limits: { serper: 12, deadline_ms: 85_000 } })

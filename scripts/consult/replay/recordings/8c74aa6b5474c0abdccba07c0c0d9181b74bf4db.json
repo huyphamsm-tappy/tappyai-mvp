@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" OR \"Bảo tàng Điêu khắc Chăm Đà Nẵng\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:17:58.012Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" OR \"Bảo tàng Điêu khắc Chăm Đà Nẵng\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn Đà Nẵng không chỉ là nơi leo núi mà còn là điểm tham quan hang động, chụp ảnh và tìm hiểu cảnh quan tự nhiên đặc trưng của khu vực.",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, ...",
+    "position": 2
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Bảo Tàng Điêu Khắc Chăm Đà Nẵng",
+    "link": "https://www.tiktok.com/@checkin_danang/video/7326942183376964865",
+    "snippet": "Khám Phá Bảo Tàng Điêu Khắc Chăm Đà Nẵng. Cùng Trà Mi tham quan Bảo Tàng Điêu Khắc Chăm Đà Nẵng, nơi có bảo vật quốc gia và nhiều mẫu cổ vật đẹp ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Động Huyền Không Tại Ngũ Hành Sơn",
+    "link": "https://www.tiktok.com/@tadicungnguoi/video/7543492916560284936",
+    "snippet": "Khám Phá Động Huyền Không Tại Ngũ Hành Sơn. Trải nghiệm ngoạn mục tại Động Huyền Không ở Ngũ Hành Sơn Đà Nẵng cùng những review chi tiết. # ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn: Chốn Tịnh Tâm Đà Nẵng",
+    "link": "https://www.tiktok.com/@quioidithoi/video/7515787471498546440",
+    "snippet": "“Ngũ Hành Sơn – không chỉ là núi đá. Là chốn tịnh tâm, nơi người ta trở về với chính mình.” Một buổi sáng leo núi. Gió biển. Chuông chùa. Hơi ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Vọng Giang Đài Ở Ngũ Hành Sơn Đà Nẵng",
+    "link": "https://www.tiktok.com/@dicungduy3843/video/7476422460796046600",
+    "snippet": "Khám phá Vọng Giang Đài ở Ngũ Hành Sơn: Trải nghiệm như Vua Chúa thời xưa! Đến Ngũ Hành Sơn, Đà Nẵng mà bỏ qua địa điểm này thì tiếc hùi ...",
+    "position": 7
+   },
+   {
+    "title": "Núi Ngũ Hành Sơn Đại Nam - Toàn cảnh & điểm nổi bật",
+    "link": "https://www.tiktok.com/@hoangflycamcameracamau/video/7665555401986985237",
+    "snippet": "Thành phần chính và điểm nổi bật - Vị trí: Núi Ngũ Hành Sơn nằm trong Khu du lịch Đại Nam, gần các hạng mục tham quan khác. - Kiến trúc: Tháp 9 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

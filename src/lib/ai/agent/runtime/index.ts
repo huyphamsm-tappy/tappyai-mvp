@@ -20,14 +20,48 @@ import { AGENT_SYSTEM_EN_NOTE } from '../prompt'
 import { agentStreamResult, type AgentStreamResult } from '../dataStream'
 import { runAgentRuntime, type RuntimeStep } from './loop'
 import { RUNTIME_LIMITS } from './limits'
-import { ASK_USER, askUserTool } from './controlTools'
+import { ASK_USER, UPDATE_TASK, askUserTool, updateTaskTool } from './controlTools'
+import { applyTaskDelta, recordResearch, finishTurn, taskView, type AgentTask, type TaskSummary } from './task'
+import { trackTask, type TrackerInput } from './taskTracker'
+import { resultCount } from './trace'
 import { AGENT_SYSTEM_V2 } from './prompt'
 import type { AgentRunTrace } from './trace'
 
 export const agentRuntimeV2Enabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '2'
 
+/**
+ * M2: the task this turn works on, owned by the caller (route) and mutated here: Luna's update_task deltas, then — at the end of the
+ * loop — the research log and the ask / answered-question lifecycle. The caller persists `task` + `history` with the chat-session state.
+ */
+export interface TaskBox {
+  task: AgentTask
+  history: TaskSummary[]
+  conversationId: string | null
+  persisted: boolean
+  /** What the task tracker reads (taskTracker.ts): the new message, the end of the previous reply, the card names on screen. */
+  turn: { userText: string; previousReply: string | null; cards: string[] }
+  /** Test seam for the tracker's Luna call. */
+  extract?: TrackerInput['extract']
+  /** Test seam: the grace after the loop (default TRACKER_GRACE_MS). */
+  graceMs?: number
+}
+
+/**
+ * Conversation-flow guardrail (like the budget ceilings, not a semantic rule): when the previous turn ASKED (a question is pending), this
+ * turn is the user's answer, so ask_user is not offered — the turn must make progress. Measured on the M2 follow-up eval: with the rule
+ * only in the instructions Luna still asked a second question right after the answer in 4 of 23 turns. A refinement question at the end
+ * of a real answer stays possible (prose).
+ */
+export function askAllowed(box: TaskBox | undefined): boolean {
+  return !box?.task.pending_question
+}
+
+/** The tracker runs beside the loop; after the loop it gets at most this long to finish before it is aborted (no delta applied). */
+export const TRACKER_GRACE_MS = 4_000
+
 export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   trace: AgentRunTrace
+  taskBox?: TaskBox
   /** Test seam: replace the model step. */
   callModel?: Parameters<typeof runAgentRuntime>[0]['callModel']
 }
@@ -41,7 +75,9 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     emitLine(`a:${JSON.stringify({ toolCallId: id, result: guardToolOutput(result).forClient })}`)
   })
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
-  const schemas = { ...toModelSchemas(tools), ...toModelSchemas({ [ASK_USER]: askUserTool() as never }) }
+  const schemas = { ...toModelSchemas(tools), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool() } as never) : {}) }
+  const box = i.taskBox
+  if (box) i.trace.taskId = box.task.task_id
   const system = i.context.system + (i.lang === 'en' ? AGENT_SYSTEM_EN_NOTE : '')
   const messages: CoreMessage[] = (() => {
     if (!i.context.data) return i.messages
@@ -76,6 +112,11 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     let progressSent = false
     const lastResults = new Map<string, unknown>()
     emitLine = emit
+    // M2: the task tracker (one structured Luna call) runs CONCURRENTLY with the loop — no extra round on the critical path.
+    const trackerCtrl = new AbortController()
+    const onOuterAbort = () => trackerCtrl.abort()
+    i.signal?.addEventListener('abort', onOuterAbort, { once: true })
+    const tracking = box ? trackTask({ task: box.task, userText: box.turn.userText, previousReply: box.turn.previousReply, cards: box.turn.cards, lang: i.lang, signal: trackerCtrl.signal, extract: box.extract }) : null
     const turn = await withSerperTurnBudget(i.serperTurnCredits, () => runAgentRuntime({
       system,
       messages,
@@ -107,12 +148,47 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         }
         return a
       },
+      onTaskUpdate: box ? (args => {
+        const r = applyTaskDelta(box.task, box.history, args, { now: new Date(), conversationId: box.conversationId })
+        box.task = r.task
+        box.history = r.history
+        i.trace.taskId = box.task.task_id
+        return { view: taskView(r.task), applied: r.applied, rejected: r.rejected }
+      }) : undefined,
       runTool: async (name, signal, fn) => {
         const r = await withSerperToolScope(name === 'get_trip_data' ? TRIP_PART_CREDITS * 3 : RUNTIME_LIMITS.serperCreditsPerTool, signal, fn)
         return { value: r.value, credits: r.spent }
       },
     }))
     const run = turn.value
+    if (box && tracking) {
+      // The tracker gets a short grace after the loop (bounded by the deadline); if it is still running it is ABORTED and the turn keeps
+      // the task as loaded (+ the research log and ask lifecycle below) — traced, never silent.
+      const grace = Math.max(0, Math.min(box.graceMs ?? TRACKER_GRACE_MS, i.deadlineAt - Date.now() - 500))
+      let timer: ReturnType<typeof setTimeout> | undefined
+      const tracked = await Promise.race([tracking, new Promise<null>(r => { timer = setTimeout(() => r(null), grace) })])
+      clearTimeout(timer)
+      i.signal?.removeEventListener('abort', onOuterAbort)
+      if (!tracked) { trackerCtrl.abort(); i.trace.counters.timeouts++; i.trace.add('timeout', { scope: 'task_tracker', cancelled: true }) }
+      else {
+        i.trace.counters.usd += tracked.usd
+        if (tracked.delta) {
+          const r = applyTaskDelta(box.task, box.history, tracked.delta, { now: new Date(), conversationId: box.conversationId })
+          box.task = r.task
+          box.history = r.history
+          i.trace.add('task', { decision: 'tracked', ms: tracked.ms, applied: r.applied.slice(0, 16), rejected: r.rejected.slice(0, 8), new_task: tracked.delta.new_task === true })
+        } else { i.trace.counters.errors++; i.trace.add('error', { scope: 'task_tracker', message: tracked.error ?? 'no_delta', ms: tracked.ms }) }
+      }
+    }
+    if (box) {
+      try {
+        const now = new Date()
+        box.task = recordResearch(box.task, run.toolEvents.map(e => ({ name: e.name, args: e.args, outcome: e.outcome, results: resultCount(lastResults.get(`${e.round}:${e.name}`)) })), now)
+        box.task = finishTurn(box.task, { asked: run.ask, now })
+        i.trace.taskId = box.task.task_id
+        i.trace.add('task', { decision: 'end', status: box.task.status, task_type: box.task.task_type, constraints: box.task.constraints.length, preferences: box.task.preferences.length, selected: box.task.selected_items.length, searches: box.task.research_state.searches.length, pending: !!box.task.pending_question, persisted: box.persisted })
+      } catch (e) { i.trace.add('error', { scope: 'task', message: String(e instanceof Error ? e.message : e).slice(0, 120) }) }
+    }
     i.trace.counters.serperCredits = turn.spent
     if (turn.refused) i.trace.add('budget', { decision: 'serper_refused', refused: turn.refused, limit: i.serperTurnCredits })
     try { i.onSerperSpent?.(turn.spent) } catch { /* accounting only */ }

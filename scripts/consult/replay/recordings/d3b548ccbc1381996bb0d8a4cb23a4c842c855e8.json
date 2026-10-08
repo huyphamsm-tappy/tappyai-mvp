@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth thể thao Anker Soundcore V40i\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:28.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth thể thao Anker Soundcore V40i\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Anker Soundcore V40i (A3878) | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-the-thao-anker-soundcore-v40i.html",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878) ; Micro. Có (4 mics) ; Thời lượng sử dụng Pin. Tai nghe: 6 giờ. Hộp sạc: 21 giờ ; Phương thức điều khiển.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Soundcore Anker Bluetooth chống ồn, giá rẻ ...",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/anker.html",
+    "snippet": "... Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ. Giảm 34%. Smember ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Anker Soundcore V40i (A3878) - Cũ | Giá rẻ",
+    "link": "https://cellphones.com.vn/tai-nghe-the-thao-anker-soundcore-v40i-cu.html",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878) - Cũ ; Phương thức điều khiển. Cảm ứng chạm ; Tính năng khác. Kháng nước IP55 ; Giá sản phẩm. 1.500.000đ ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Anker Soundcore P40i | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-p40i.html",
+    "snippet": "... Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ. Giảm 34%. 2 Giờ.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Anker Soundcore C50i | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-c50i.html",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ. Giảm 34 ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Anker Soundcore Spirit",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-spirit.html",
+    "snippet": "... Yêu thích. Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth Anker Soundcore Spirit X",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-spirit-x.html",
+    "snippet": "Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "... Tai nghe Bluetooth thể thao Anker Soundcore V40i (A3878). Trả góp 0%. : 990.000đ. 1.500.000đ. Giảm 34%. Smember ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

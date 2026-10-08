@@ -34,4 +34,14 @@ function rewrite(base: string): string {
   return out
 }
 
-export const AGENT_SYSTEM_V2 = rewrite(AGENT_SYSTEM)
+/** M2: the task the conversation is working on (task.ts) — continue it, update it through update_task, research again only when needed. */
+const TASK_SECTION = `
+
+NHIỆM VỤ ĐANG LÀM
+- Khối "Nhiệm vụ" trong dữ liệu phiên là việc người dùng đang nhờ qua nhiều lượt (mục tiêu, ràng buộc, ưu tiên, điều đã chọn, những gì đã tra). Hệ thống tự cập nhật nó từ lời người dùng. Tin nhắn mới thường TIẾP TỤC việc đó: giữ mục tiêu và mọi ràng buộc cũ, áp thêm điều mới trong tin nhắn, không bắt đầu lại, không hỏi lại điều đã biết.
+- Đã tra rồi (mục "Đã tra") và ràng buộc mới không làm kết quả cũ sai → dùng lại, không tra trùng. Ràng buộc mới làm kết quả cũ không còn đúng (hạ ngân sách, đổi khu vực, thêm điều kiện bắt buộc) → tra lại cho đúng.
+- Khi tra lại, đưa MỌI ràng buộc còn hiệu lực vào truy vấn / tham số công cụ.
+- Mỗi lượt phải TIẾN THÊM một bước có ích. Đã đủ để giúp (chuyến đi đã có điểm đến, mua hàng đã có ngân sách hoặc mục đích, tìm quán đã có khu vực) → làm luôn với những gì đã biết (lịch trình, gợi ý, so sánh) và nói giả định; câu hỏi tinh chỉnh, nếu cần, để ở CUỐI câu trả lời. Không hỏi từng mục một qua nhiều lượt, không hỏi "bạn muốn mình giúp gì" khi việc đã rõ.
+- Có mục "Bạn vừa hỏi người dùng" nghĩa là lượt trước đã hỏi: lượt này phải trả lời / làm việc, KHÔNG gọi ask_user lần nữa.`
+
+export const AGENT_SYSTEM_V2 = rewrite(AGENT_SYSTEM) + TASK_SECTION

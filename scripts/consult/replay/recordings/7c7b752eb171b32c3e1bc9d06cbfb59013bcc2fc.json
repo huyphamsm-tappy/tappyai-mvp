@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Air M3 13 inch 2024 8CPU site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:51.017Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M3 13 inch 2024 8CPU site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "laptop+apple giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=laptop%2Bapple",
+    "snippet": "Mua laptop+apple giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 1
+   },
+   {
+    "title": "Macbook air m2 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/macbook/air%20m2",
+    "snippet": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 core GPU, 16GB memory, 1TB SSD, sạc 70W USB-C. 54.890.000₫. 54.999.000₫. -1%. rating-star ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

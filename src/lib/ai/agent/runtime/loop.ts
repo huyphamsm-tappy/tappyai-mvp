@@ -25,7 +25,7 @@ import type { CoreMessage } from 'ai'
 import { guardToolInput, guardToolOutput } from '../guards'
 import { stripWhy, finalStepNote, type AgentStep, type AgentToolCall, type AgentExecutableTool, type ToolEvent } from '../loop'
 import { RUNTIME_LIMITS, type RuntimeLimits } from './limits'
-import { ASK_USER, CONTROL_TOOLS, parseAskUser, renderAsk, type AskUser } from './controlTools'
+import { ASK_USER, UPDATE_TASK, CONTROL_TOOLS, parseAskUser, renderAsk, type AskUser } from './controlTools'
 import { toolInputHash, traceQuery, resultCount, type AgentRunTrace } from './trace'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
@@ -56,6 +56,11 @@ export interface RuntimeInput {
   signal?: AbortSignal
   lang: string
   trace: AgentRunTrace
+  /**
+   * M2: applies Luna's update_task delta to the turn's task (task.ts, deterministic) and returns what the model reads back. Absent →
+   * update_task calls are answered `task_state_unavailable`.
+   */
+  onTaskUpdate?: (args: Record<string, unknown>) => { view: unknown; applied: string[]; rejected: string[] }
 }
 
 export interface RuntimeRun {
@@ -110,6 +115,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
   let toolCalls = 0
   let modelCalls = 0
   let forceFinal: RuntimeStop | null = null
+  let taskUpdates = 0
 
   const done = (text: string, status: RuntimeStatus, stopReason: RuntimeStop, ask: AskUser | null = null): RuntimeRun => {
     T.status = status
@@ -161,10 +167,34 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       return done(step.text, status, reason === 'model_error' || reason === null ? 'model_answered' : reason)
     }
 
+    // TASK (M2): Luna's update_task deltas are applied FIRST (deterministic merge in task.ts), whatever else the step does — an ask or
+    // an answer in the same step keeps them. Never counted as tool calls; at most `maxTaskUpdates` per turn.
+    const taskCalls = calls.filter(c => c.toolName === UPDATE_TASK)
+    const taskResults = new Map<string, unknown>()
+    for (const tc of taskCalls) {
+      if (!input.onTaskUpdate || taskUpdates >= L.maxTaskUpdates) {
+        taskResults.set(tc.toolCallId, { error: input.onTaskUpdate ? 'task_update_limit' : 'task_state_unavailable' })
+        T.add('budget', { round, decision: 'task_update_refused', reason: input.onTaskUpdate ? 'limit' : 'unavailable' })
+        continue
+      }
+      taskUpdates++
+      try {
+        const r = input.onTaskUpdate(stripWhy(tc.args))
+        taskResults.set(tc.toolCallId, { ok: true, task: r.view, ...(r.rejected.length ? { not_applied: r.rejected } : {}) })
+        T.add('task', { round, decision: 'update', applied: r.applied.slice(0, 16), rejected: r.rejected.slice(0, 8) })
+      } catch (e) {
+        taskResults.set(tc.toolCallId, { error: 'task_update_failed' })
+        T.counters.errors++
+        T.add('error', { round, scope: 'task', message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+      }
+    }
+    const taskParts = () => taskCalls.map(tc => ({ type: 'tool-result' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, result: taskResults.get(tc.toolCallId) ?? { error: 'not_applied' } }))
+    const taskCallParts = () => taskCalls.map(tc => ({ type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: stripWhy(tc.args) }))
+
     // ASK: Luna decided a missing piece changes the decision. The question IS the reply; nothing else of this step runs.
     if (askCall) {
       const ask = parseAskUser(stripWhy(askCall.args))
-      const others = calls.filter(c => c !== askCall).map(c => c.toolName)
+      const others = calls.filter(c => c !== askCall && c.toolName !== UPDATE_TASK).map(c => c.toolName)
       if (ask) {
         if (others.length) T.add('budget', { round, decision: 'ask_preempts_tools', dropped: others })
         T.add('ask', { round, choices: ask.choices.length, chars: ask.question.length })
@@ -173,9 +203,15 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       T.add('error', { round, scope: 'ask_user', message: 'invalid_question' })
       T.counters.errors++
     }
-    const toolCallsThisStep = calls.filter(c => c.toolName !== ASK_USER)
+    const toolCallsThisStep = calls.filter(c => !CONTROL_TOOLS.has(c.toolName))
     if (toolCallsThisStep.length === 0) {
       if (step.text.trim()) return done(step.text, 'answered', 'model_answered')
+      // Only a task update this step: feed its result back; the answer (or a lookup) comes next round.
+      if (taskCalls.length) {
+        messages.push({ role: 'assistant', content: taskCallParts() })
+        messages.push({ role: 'tool', content: taskParts() })
+        continue
+      }
       forceFinal = 'model_error' // an empty step with no call: the next one is the final, tool-less attempt
       continue
     }
@@ -184,6 +220,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       role: 'assistant',
       content: [
         ...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : []),
+        ...taskCallParts(),
         ...toolCallsThisStep.map(tc => ({ type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: stripWhy(tc.args) })),
       ],
     })
@@ -254,7 +291,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     for (const pl of runnable.filter(pl => RUNTIME_SEQUENTIAL_TOOLS.has(pl.tc.toolName))) await execute(pl)
 
     // Phase 3 (model order): output guard, events, client frames, the model's tool message.
-    const parts: Array<{ type: 'tool-result'; toolCallId: string; toolName: string; result: unknown }> = []
+    const parts: Array<{ type: 'tool-result'; toolCallId: string; toolName: string; result: unknown }> = [...taskParts()]
     for (const pl of planned) {
       const event: ToolEvent = { round, name: pl.tc.toolName, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)

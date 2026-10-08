@@ -45,6 +45,8 @@ import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/run
 import type { AgentTurnInput } from '@/lib/ai/agent'
 import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
+import { conversationIdOf, loadTask, mergeForSave, taskContextLines, validStoredTask } from '@/lib/ai/agent/runtime/task'
+import type { TaskBox } from '@/lib/ai/agent/runtime'
 import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
@@ -2845,6 +2847,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => agentRunTrace.guard(stage, before, after)
+  // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
+  // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
+  const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null
+  const loadedTask = agentV2 ? loadTask(chatState?.task, chatState?.taskHistory, { conversationId: taskConversationId, now: new Date() }) : null
+  const previousReply = (() => {
+    const a = [...messages].reverse().find((m: { role?: string }) => m.role === 'assistant') as { content?: unknown } | undefined
+    return typeof a?.content === 'string' ? a.content : Array.isArray(a?.content) ? (a.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : null
+  })()
+  const agentTaskBox: TaskBox | null = loadedTask ? { task: loadedTask.task, history: loadedTask.history, conversationId: taskConversationId, persisted: !!(chatSessionId && commerceIdentityId), turn: { userText: lastText, previousReply, cards: chatState?.cards ?? [] } } : null
+  const agentTaskBase = loadedTask?.task ?? null
+  if (agentRunTrace && loadedTask) {
+    agentRunTrace.taskId = loadedTask.task.task_id
+    agentRunTrace.add('task', { decision: loadedTask.outcome, ...(loadedTask.problem ? { problem: loadedTask.problem } : {}), persisted: agentTaskBox!.persisted, turns: loadedTask.task.turns, status: loadedTask.task.status })
+    if (loadedTask.outcome === 'invalid_discarded' || loadedTask.outcome === 'foreign_discarded') console.warn(JSON.stringify({ type: 'tappyai_agent_task', step: loadedTask.outcome, problem: loadedTask.problem ?? null }))
+  }
   const agentTurn = async (onFinish: unknown) => {
     // A pending side-effecting action is executed ONLY on the user's explicit confirmation, by code, through the tool's own action boundary.
     let actionOutcome: string | null = null
@@ -2887,7 +2904,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
     const context = agentContext({
       now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
-      state: { extra: followUpContextLines(chatState), cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
+      state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
@@ -2912,7 +2929,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result
@@ -3252,7 +3269,16 @@ ${completionInstruction(lang)}` },
     const row = lastPlaceSearch ? { ...(turnEvidenceRow ?? loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } } : null
     // R14: the same row + the consult slots and the stated pick, under (owner, chatSessionId).
     if (chatSessionId && commerceIdentityId) {
+      // Phase 8 M2: the task is merged against what is stored NOW (a concurrent turn of the same conversation may have written a newer
+      // revision) — never a silent overwrite.
+      const taskSave = agentTaskBox?.persisted && agentTaskBase ? await (async () => {
+        const latest = await loadChatSessionState(commerceIdentityId, chatSessionId)
+        const m = mergeForSave(agentTaskBase, agentTaskBox.task, validStoredTask(latest?.task, agentTaskBox.conversationId))
+        agentRunTrace?.add('task', { decision: 'persist', merge: m.outcome, rev: m.task.rev })
+        return { task: m.task as unknown as Record<string, unknown>, taskHistory: agentTaskBox.history as unknown as Array<Record<string, unknown>> }
+      })() : null
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
+        ...(taskSave ?? {}),
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames, cardOrder: evidence.cardOrder,
         ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : {}),
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows), at: new Date().toISOString() } } : {}),

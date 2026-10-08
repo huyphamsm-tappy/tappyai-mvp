@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Thông tư 64/2025/TT-BTC lệ phí hộ chiếu online mức thu 2026 miễn VNeID mức 2 hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:25:27.111Z",
+ "body": {
+  "searchParameters": {
+   "q": "Thông tư 64/2025/TT-BTC lệ phí hộ chiếu online mức thu 2026 miễn VNeID mức 2 hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "✅MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU CHO CÔNG DÂN TÍCH ...",
+    "link": "https://www.facebook.com/100066997327279/posts/mi%E1%BB%85n-100-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-cho-c%C3%B4ng-d%C3%A2n-t%C3%ADch-h%E1%BB%A3p-%C4%91%E1%BB%A7-gi%E1%BA%A5y-t%E1%BB%9D-tr%C3%AAn-%E1%BB%A9ng-d%E1%BB%A5ng-vnei/1380150537561511/",
+    "snippet": "✓Điều kiện để được miễn lệ phí: 1. Có tài khoản định danh điện tử mức độ 2; 2. Hoàn thành việc tích hợp thành công thông tin hộ chiếu và 05 loại thông tin, ...",
+    "position": 1
+   },
+   {
+    "title": "Miễn lệ phí làm hộ chiếu từ 15/8/2026: điều kiện & mức miễn",
+    "link": "https://infotravel-hochieuonline.com/mien-le-phi-lam-ho-chieu-tu-15-8-2026/",
+    "snippet": "Từ 15/8/2026 đến 28/2/2027, người có VNeID mức 2, tích hợp đủ thông tin và nộp hồ sơ online được miễn lệ phí cấp hộ chiếu.",
+    "date": "11 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chinh-thuc-giam-50-le-phi-cap-ho-chieu-den-het-2026-theo-thong-tu-642025-209665.html",
+    "snippet": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 theo Thông tư 64/2025? Căn cứ theo quy định tại Điều 4 Thông tư 25/2021/TT-BTC sửa đổi bởi ...",
+    "date": "15 thg 8, 2025",
+    "position": 3
+   },
+   {
+    "title": "Từ 15/8/2026, người có VNeID mức 2 được miễn lệ phí ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/tu-15-8-2026-nguoi-co-vneid-muc-2-duoc-mien-le-phi-cap-doi-cap-lai-the-can-cuoc-186-111579-article.html",
+    "snippet": "Từ 15/8/2026, người có VNeID mức 2 được miễn lệ phí cấp đổi, cấp lại thẻ căn cước.",
+    "date": "18 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước cho công dân Việt Nam",
+    "link": "https://congan.phutho.gov.vn/article/thu-tuc-hanh-chinh/Cap-ho-chieu-pho-thong-o-trong-nuoc-cho-cong-dan-2357-17",
+    "snippet": "+ 100.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 200.000đ/hộ chiếu (Thông tư số 64/2025/TT-BTC ngày 30/6/2025 của Bộ Tài chính quy định ...",
+    "position": 5
+   },
+   {
+    "title": "Hết năm 2026, hàng triệu người làm hộ chiếu (passport) ...",
+    "link": "https://eva.vn/tin-tuc/het-nam-2026-hang-trieu-nguoi-lam-ho-chieu-passport-khong-con-duoc-huong-quyen-loi-dac-biet-nay-c73a663055.html",
+    "snippet": "Bộ Tài chính đã ban hành Thông tư 64/2025/TT-BTC, quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân. Tại ...",
+    "date": "21 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "Hồ Sơ Làm Căn Cước 2026",
+    "link": "https://vanphatgia.com/tin-tuc-su-kien/ho-so-lam-can-cuoc-2026-252.html",
+    "snippet": "Lệ Phí Làm Căn Cước 2026 — Đã Giảm 50% Đến Hết Năm. Căn cứ Thông tư 64/2025/TT-BTC sửa đổi Thông tư 25/2021/TT-BTC, từ ngày 1/7 ...",
+    "rating": 4.8,
+    "ratingCount": 108,
+    "position": 7
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước thực hiện tại Công ...",
+    "link": "https://congan.quangtri.gov.vn/dichvucong/cap-ho-chieu-pho-thong/",
+    "snippet": "– Thông tư số 64/2025/TT-BTC ngày 30/6/2025 của Bộ Tài chính quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ doanh nghiệp, người dân. Biểu Mẫu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

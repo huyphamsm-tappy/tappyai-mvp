@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro 16 inch 2021 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:04.464Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro 16 inch 2021 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "SUPCASE Unicorn Beetle Clear cho MacBook Pro Vỏ 16 ...",
+    "link": "https://shopee.vn/SUPCASE-Unicorn-Beetle-Clear-cho-MacBook-Pro-V%E1%BB%8F-16-Inch-2021-2026-Ph%C3%A1t-h%C3%A0nh-M5-M4-M3-M2-M1-Pro-Max-Chip-Ch%E1%BB%91ng-tr%E1%BA%A7y-x%C6%B0%E1%BB%9Bc-V%E1%BB%8F-trong-su%E1%BB%91t-m%E1%BB%8Fng-cho-MacBook-Pro-16-''-v%E1%BB%9Bi-Touch-ID-i.174233423.22604412714",
+    "snippet": "SUPCASE Unicorn Beetle Clear cho MacBook Pro Vỏ 16 Inch 2021-2026 Phát hành M5 / M4 / M3 / M2 / M1 Pro / Max Chip Chống trầy xước Vỏ trong suốt mỏng cho MacBook ...",
+    "rating": 4.9,
+    "ratingCount": 51,
+    "position": 1
+   },
+   {
+    "title": "Skin Nút Macbook Pro (16-inch, 2021, M1 ...",
+    "link": "https://shopee.vn/Skin-N%C3%BAt-Macbook-Pro-(16-inch-2021-M1-Pro-M1-Max)-A2485-(16-inch-2023-M2-Pro-M2-Max-M3-Pro-M3-Max)-A2991-A2780-i.1124679206.25644607624",
+    "snippet": "Mua Skin Nút Macbook Pro (16-inch, 2021, M1 Pro, M1 Max) A2485; (16-inch, 2023, M2 Pro, M2 Max, M3 Pro, M3 Max) A2991, A2780 giá tốt.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Dán nút Macbook Pro (16-inch, 2021, M1 Pro, M1 Max) ...",
+    "link": "https://shopee.vn/D%C3%A1n-n%C3%BAt-Macbook-Pro-(16-inch-2021-M1-Pro-M1-Max)-A2485-(16-inch-2023-M2-Pro-M2-Max-M3-Pro-M3-Max)-A2991-A2780-i.251879197.27185010024",
+    "snippet": "2 phân loại có sẵn. 30.000₫. Mua để nhận quà. Dán nút Macbook Pro (16-inch, 2021, M1 Pro, M1 Max) A2485; (16-inch, 2023, M2 Pro, M2 Max, M3 Pro, ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Vỏ Bàn Phím Cho MacBook Pro Mới 14 inch 2021 M1 ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-B%C3%A0n-Ph%C3%ADm-Cho-MacBook-Pro-M%E1%BB%9Bi-14-inch-2021-M1-A2442-MacBook-Pro-16-inch-2021-M1-Max-A2485-i.378438963.29510645576",
+    "snippet": "Mua Vỏ Bàn Phím Cho MacBook Pro Mới 14 inch 2021 M1 A2442 / MacBook Pro 16 inch 2021 M1 Max A2485 giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 4
+   },
+   {
+    "title": "Dán cường lực Macbook Pro 14 inch (M1 Pro 2021) / 16 ...",
+    "link": "https://shopee.vn/D%C3%A1n-c%C6%B0%E1%BB%9Dng-l%E1%BB%B1c-Macbook-Pro-14-inch-(M1-Pro-2021)-16-inch-2021-d%E1%BA%BBo-nano-ch%E1%BB%91ng-b%E1%BB%83-chu%E1%BA%A9n-c%C6%B0%E1%BB%9Dng-l%E1%BB%B1c-9H--i.106939456.21564145418",
+    "snippet": "Mua Dán cường lực Macbook Pro 14 inch (M1 Pro 2021) / 16 inch 2021 dẻo nano,chống bể, chuẩn cường lực 9H+ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.7,
+    "ratingCount": 3507,
+    "position": 5
+   },
+   {
+    "title": "Dành Cho MacBook Pro 14 16 inch Ốp Lưng 2021 A2442 ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-MacBook-Pro-14-16-inch-%E1%BB%90p-L%C6%B0ng-2021-A2442-M1-New-Pro-16-inch-A2485-A1707-A1990-V%E1%BB%8F-C%E1%BB%A9ng-M%E1%BB%9D-B%E1%BA%B1ng-Nh%E1%BB%B1a-V%E1%BB%8F-B%C3%A0n-Ph%C3%ADm-Da-Phim-M%C3%A0n-H%C3%ACnh-i.586918470.28954642546",
+    "snippet": "Dành Cho MacBook Pro 14 16 inch Ốp Lưng 2021 A2442 M1 New Pro 16 inch A2485 A1707 A1990 Vỏ Cứng Mờ Bằng Nhựa + Vỏ Bàn Phím Da + Phim Màn Hình.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "Tấm dán Trackpad cho Macbook Pro (16-inch, 2021, M1 ...",
+    "link": "https://shopee.vn/T%E1%BA%A5m-d%C3%A1n-Trackpad-cho-Macbook-Pro-(16-inch-2021-M1-Pro-M1-Max)-A2485-MacBook-Pro-(16-inch-2023-M2-Pro-M2-Max-M3-i.456562016.46257215211",
+    "snippet": "Mua Tấm dán Trackpad cho Macbook Pro (16-inch, 2021, M1 Pro, M1 Max) A2485; MacBook Pro (16-inch, 2023, M2 Pro, M2 Max, M3 giá tốt.",
+    "rating": 4.7,
+    "ratingCount": 3345,
+    "position": 7
+   },
+   {
+    "title": "Dán cường lực Macbook Pro 14 inch (M1 Pro 2021) / 16 ...",
+    "link": "https://shopee.vn/D%C3%A1n-c%C6%B0%E1%BB%9Dng-l%E1%BB%B1c-Macbook-Pro-14-inch-(M1-Pro-2021)-16-inch-2021-d%E1%BA%BBo-nano-ch%E1%BB%91ng-b%E1%BB%83-chu%E1%BA%A9n-c%C6%B0%E1%BB%9Dng-l%E1%BB%B1c-9H--i.191112734.21164145457",
+    "snippet": "Mua Dán cường lực Macbook Pro 14 inch (M1 Pro 2021) / 16 inch 2021 dẻo nano,chống bể, chuẩn cường lực 9H+ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 6313,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

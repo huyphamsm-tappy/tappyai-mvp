@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Máy tính Apple MacBook Pro 14\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:47.332Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Máy tính Apple MacBook Pro 14\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Pro 14 inch 2023 (M2 Pro - 16GB/512GB)",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m2-pro-2023.html",
+    "snippet": "Hãy đến ngay cửa hàng CellphoneS gần bạn nhất, để có thể sở hữu ngay trong tay chiếc máy tính Apple Macbook Pro 14 inch 2023 với thiết kế sang trọng và hiệu ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

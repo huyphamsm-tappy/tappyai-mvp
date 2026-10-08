@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp tai JBL Tune 530BT site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:25.315Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp tai JBL Tune 530BT site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT Pin 76H",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%A5p-Tai-JBL-Tune-530BT-Pin-76H-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-%C4%90%E1%BB%95i-Tr%E1%BA%A3-15-Ng-i.358099576.54611486372",
+    "snippet": "Mua Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT Pin 76H - Hàng Chính Hãng Bảo Hành 12 Tháng Đổi Trả 15 Ng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bluetooth JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Bluetooth-JBL-Tune-530BT-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-Ch%E1%BA%A5t-%C3%A2m-JBL-Pure-Bass-uy-l%E1%BB%B1c-i.575744847.43381618387",
+    "snippet": "Mua tối thiểu ₫3tr để được giảm 11%. Tai Nghe Chụp Tai Bluetooth JBL Tune 530BT - Hàng Chính Hãng - Chất âm JBL Pure Bass uy lực. outline grey truck icon.",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-ch%E1%BB%A5p-tai-JBL-Tune-530BT-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-Ch%C3%ADnh-H%C3%A3ng-PGI-i.628613599.51012053823",
+    "snippet": "Mua Tai nghe Bluetooth chụp tai JBL Tune 530BT - Bảo Hành 12 Tháng Chính Hãng PGI giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bluetooth JBL Tune 530BT Không Dây ...",
+    "link": "https://shopee.vn/Tai-Nghe-Ch%E1%BB%A5p-Tai-Bluetooth-JBL-Tune-530BT-Kh%C3%B4ng-D%C3%A2y-Pin-Tr%C3%A2u-i.487839364.52914873155",
+    "snippet": "Mua Tai Nghe Chụp Tai Bluetooth JBL Tune 530BT Không Dây Pin Trâu giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%A5p-Tai-JBL-Tune-530BT-B%E1%BA%A3o-H%C3%A0nh-Ch%C3%ADnh-H%C3%A3ng-12-Th%C3%A1ng-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Pin-Kh%E1%BB%A7ng-76-Gi%E1%BB%9D-Gi%C3%A1-R%E1%BA%BB-i.365019927.46861515395",
+    "snippet": "Mua Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT - Bảo Hành Chính Hãng 12 Tháng - Tai Nghe Không Dây Pin Khủng 76 Giờ Giá Rẻ giá tốt.",
+    "rating": 4.8,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-ch%E1%BB%A5p-tai-JBL-Tune-530BT-H%C3%A0ng-Ch%C3%ADnh-H%C3%A3ng-PGI-B%E1%BA%A3o-H%C3%A0nh-12-Th%C3%A1ng-%C3%82m-Thanh-Bass-Tr%E1%BA%A7m-%E1%BA%A4m-i.1733921308.46712591536",
+    "snippet": "Mua Tai nghe Bluetooth chụp tai JBL Tune 530BT - Hàng Chính Hãng PGI Bảo Hành 12 Tháng - Âm Thanh Bass Trầm Ấm giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%A5p-Tai-JBL-Tune-530BT-B%E1%BA%A3o-H%C3%A0nh-Ch%C3%ADnh-H%C3%A3ng-12-Th%C3%A1ng-Pin-76H-Bass-%C4%90%E1%BA%ADm-%C4%90%E1%BB%95i-Tr%E1%BA%A3-15-Ng%C3%A0y-i.1220970980.50261495376",
+    "snippet": "Mua Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT - Bảo Hành Chính Hãng 12 Tháng, Pin 76H, Bass Đậm, Đổi Trả 15 Ngày giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%A5p-Tai-JBL-Tune-530BT-i.973841056.54414868495?extraParams=%7B%22display_model_id%22%3A292824581530%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Mua tối thiểu ₫2,5tr để được giảm ₫25k. Tai Nghe Bluetooth Chụp Tai JBL Tune 530BT. outline grey truck icon. Không hỗ trợ. service entrance icon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

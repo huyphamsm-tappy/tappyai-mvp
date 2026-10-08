@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:38.355Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-tws-xiaomi-redmi-buds-6-am-thanh-song-dong-ket-noi-stabil-thoi-luong-pin-ang-trong/1733932526950385331",
+    "snippet": "Thời lượng pin ấn tượngRedmi Buds 6 cung cấp thời gian sử dụng lên đến 10 giờ cho một lần sạc và tổng cộng lên đến 42 giờ khi sử dụng với hộp sạc. Đặc biệt, ...",
+    "position": 1
+   },
+   {
+    "title": "หูฟัง redmi buds 6 lite เชื่อมต่อ ipad",
+    "link": "https://shop.tiktok.com/vn/k/hufang-redmi-buds-6-lite-echueomto-ipad",
+    "snippet": "Tai nghe không dây Bluetooth TWS Original Air Pro 6, dạng mini pod (tai nghe nhét tai), phù hợp với tất cả điện thoại thông minh.",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-xiaomi-redmi-buds-6-play-pin-36h-ipx4/1734453658601490270",
+    "snippet": "Mua Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng trên TikTok Shop.",
+    "position": 3
+   },
+   {
+    "title": "budi wireless earbuds",
+    "link": "https://shop.tiktok.com/vn/k/budi-wireless-earbuds",
+    "snippet": "Tai nghe bluetooth EDIFIER WH950NB - Chống ồn chủ động - Thiết kế công thái học - Đeo rất thoải mái - Pin 55 giờ - Hi-Res Audio - Chính hãng MAI THU - Bảo ...",
+    "position": 4
+   },
+   {
+    "title": "bộ tai nghe bluetooth xiaomi",
+    "link": "https://shop.tiktok.com/vn/k/bo-tai-nghe-bluetooth-xiaomi",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng - Hàng chính hãng.",
+    "position": 5
+   },
+   {
+    "title": "bluetooth earphones 6s pro",
+    "link": "https://shop.tiktok.com/vn/k/bluetooth-earphones-6s-pro",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng - Hàng chính hãng.",
+    "position": 6
+   },
+   {
+    "title": "Buds6pro - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/buds6pro",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 PLay - Pin lên đến 36h - Kết nối Bluetooth 5.4 - Chống nước IPX4* - Bảo hành 12 tháng - Hàng chính hãng.",
+    "position": 7
+   },
+   {
+    "title": "Combo 2 Tai Nghe Bluetooth Redmi Buds 6 PLay",
+    "link": "https://shop.tiktok.com/vn/pdp/1733988655836530568",
+    "snippet": "️ 5 chế độ EQ tùy chỉnh qua ứng dụng Xiaomi Earbuds. ·. ️ Giảm tiếng ồn cuộc gọi bằng AI cho âm thanh rõ ràng. ·. ️ Thời lượng pin lên đến 36 giờ khi dùng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

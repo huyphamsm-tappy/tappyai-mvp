@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cổng dịch vụ công cấp hộ chiếu phổ thông trực tuyến hồ sơ giấy tờ lệ phí cấp hộ chiếu 2026 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:25:17.347Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cổng dịch vụ công cấp hộ chiếu phổ thông trực tuyến hồ sơ giấy tờ lệ phí cấp hộ chiếu 2026 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công trực tuyến, sau đó trực tiếp nộp hồ sơ và nhận kết quả hoặc ...",
+    "position": 2
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2.",
+    "date": "18 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online 2026 nhanh nhất",
+    "link": "https://baohatinh.vn/tv/huong-dan-lam-ho-chieu-online-2026-nhanh-nhat-38063.html",
+    "snippet": "Lệ phí cấp mới passport năm 2026 là 200.000 đồng/lần - mức phí cố định cho cả hộ chiếu gắn chíp và không gắn chíp. Cấp lại passport do hỏng hoặc ...",
+    "date": "21 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước",
+    "link": "https://conganthanhhoa.gov.vn/dich-vu-cong/quan-ly-xuat-nhap-canh/cap-ho-chieu-pho-thong.html",
+    "snippet": "- Trực tuyến: Nộp hồ sơ trực tuyến qua Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ công Bộ Công an. - Dịch vị bưu chính: Nộp bổ sung hồ sơ qua dịch vụ bưu ...",
+    "position": 5
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "Thủ tục làm hộ chiếu online cấp độ 4 là làm hoàn toàn online, người làm hộ chiếu chỉ một lần duy nhất khai cấp hộ chiếu trực tuyến, thanh toán ...",
+    "date": "24 thg 12, 2024",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ",
+    "link": "https://sonmai.quangngai.gov.vn/video-clip/truyen-thong-ve-cai-cach-hanh-chinh/huong-dan-dang-ky-thu-tuc-cap-ho-chieu-pho-thong-tai-nha.html",
+    "snippet": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ. Thứ hai, 12/01/2026, 14:16. Telegram LinkedIn Twitter / X WhatsApp Email Sao chép liên kết.",
+    "date": "12 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "Thủ tục cấp hộ chiếu phổ thông ở trong nước (tại Công an cấp ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/thu-tuc-cap-ho-chieu-pho-thong-o-trong-nuoc-tai-cong-an-cap-tinh-119260714162349301.htm",
+    "snippet": "Lệ phí: 100.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 200.000đ/hộ chiếu (Thông tư số 64/2025/TT-BTC ngày 30/6/2025 của ...",
+    "date": "14 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

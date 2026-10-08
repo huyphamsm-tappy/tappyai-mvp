@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro 13 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:25.653Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro 13 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp lưng trong suốt macbook Pro 13\" 2016 -2019",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-trong-su%E1%BB%91t-macbook-Pro-13-2016-2019-i.17831296.1380784075",
+    "snippet": "Mua Ốp lưng trong suốt macbook Pro 13\" 2016 -2019 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao Hàng ...",
+    "position": 1
+   },
+   {
+    "title": "Bao da macbook pro 13 inch - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/bao%20da/macbook/pro%2013%20inch",
+    "snippet": "Bao da macbook laptop 3in1 kê tản nhiệt, kê cổ tay, đựng chống sốc DIGIMIX từ da PU chống nước. 250.000₫. 540.000₫. -54%.",
+    "position": 2
+   },
+   {
+    "title": "Túi đựng Macbook Pro 13 inch ICONIC Hàn Quốc",
+    "link": "https://shopee.vn/T%C3%BAi-%C4%91%E1%BB%B1ng-Macbook-Pro-13-inch-ICONIC-H%C3%A0n-Qu%E1%BB%91c-T%C3%BAi-%C4%91eo-Macbook-Air-13.3-th%E1%BB%9Di-trang-i.92665594.2302185332",
+    "snippet": "Mua Túi đựng Macbook Pro 13 inch ICONIC Hàn Quốc - Túi đeo Macbook Air 13.3 thời trang giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng Trong Suốt Cho 2010 2012 Macbook Pro 13 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-L%C6%B0ng-Trong-Su%E1%BB%91t-Cho-2010-2012-Macbook-Pro-13-A1278-case-2013-2015-MacBookPro-Retina-13-inch-A1502-A1425-2016-2023-Pro13-M1-A2338-A1708-A2251-A2289-A2159-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-V%E1%BB%8F-C%E1%BB%A9ng-i.262816265.24120974677",
+    "snippet": "Mua Ốp Lưng Trong Suốt Cho 2010 2012 Macbook Pro 13 A1278 case 2013 2015 MacBookPro Retina 13 inch A1502 A1425 2016 2023 Pro13 M1 A2338 A1708 A2251 A2289 ...",
+    "position": 4
+   },
+   {
+    "title": "Bộ vít pin chất lượng hàng đầu cho Apple MacBook Pro 13 inch ...",
+    "link": "https://shopee.vn/B%E1%BB%99-v%C3%ADt-pin-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-h%C3%A0ng-%C4%91%E1%BA%A7u-cho-Apple-MacBook-Pro-13-inch-A1278-i.1608641083.49266023968",
+    "snippet": "Bộ vít pin chất lượng hàng đầu cho Apple MacBook Pro 13 inch A1278. 1/4. 173.800₫. Bộ vít pin chất lượng hàng đầu cho Apple MacBook Pro 13 inch A1278.",
+    "position": 5
+   },
+   {
+    "title": "Cho MacBook Pro 13 / 15 / 16 Inch Microfiber Chống Bụi ...",
+    "link": "https://shopee.vn/Cho-MacBook-Pro-13-15-16-Inch-Microfiber-Ch%E1%BB%91ng-B%E1%BB%A5i-M%C3%A0n-H%C3%ACnh-Laptop-V%E1%BA%A3i-V%E1%BB%87-Sinh-B%E1%BA%A3o-V%E1%BB%87-S%E1%BB%95-Tay-B%C3%A0n-Ph%C3%ADm-L%C3%B2ng-B%C3%A0n-Tay-Ch%C4%83n-Bao-i.297114901.28944012534",
+    "snippet": "Mua Cho MacBook Pro 13 / 15 / 16 Inch Microfiber Chống Bụi Màn Hình Laptop Vải Vệ Sinh Bảo Vệ Sổ Tay Bàn Phím Lòng Bàn Tay Chăn Bao giá tốt.",
+    "rating": 5,
+    "ratingCount": 16,
+    "position": 6
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Neo-A18-Pro-13-inch-(6-core-CPU-5-core-GPU-8GB-RAM-256GB-512GB-SSD)-i.469040198.57108154449",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Neo A18 Pro 13 inch (6 core CPU | 5 core GPU | 8GB RAM | 256GB/512GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 7
+   },
+   {
+    "title": "Dán dành cho PPF Macbook Pro 13 inch Pro 2020 15.4 ...",
+    "link": "https://shopee.vn/D%C3%A1n-d%C3%A0nh-cho-PPF-Macbook-Pro-13-inch-Pro-2020-15.4-2017-2018-2019-cho-m%E1%BA%B7t-l%C6%B0ng-m%E1%BA%B7t-%C4%91%E1%BA%BF-b%C3%A0n-di-chu%E1%BB%99t-m%E1%BA%B7t-b%C3%AAn-to%C3%A0n-di%E1%BB%87n-i.28918100.11448657514",
+    "snippet": "Mua Dán dành cho PPF Macbook Pro 13 inch Pro 2020 15.4 2017 2018 2019 cho mặt lưng, mặt đế, bàn di chuột, mặt bên toàn diện giá tốt.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

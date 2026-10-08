@@ -25,6 +25,8 @@ export const RUNTIME_LIMITS = {
   minStepMs: 2_000,
   /** Serper credits ONE tool invocation may spend inside (provider fan-out). */
   serperCreditsPerTool: 8,
+  /** M2: update_task control actions applied per turn (more are refused; they never count as tool calls). */
+  maxTaskUpdates: 3,
 } as const
 
 export type RuntimeLimits = { -readonly [K in keyof typeof RUNTIME_LIMITS]: number }

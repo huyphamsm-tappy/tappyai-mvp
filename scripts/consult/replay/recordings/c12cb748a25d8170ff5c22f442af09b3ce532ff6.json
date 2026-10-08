@@ -1,0 +1,379 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "earbuds chống ồn ANC chạy bộ dưới 3 triệu IPX4",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:33.653Z",
+ "body": {
+  "searchParameters": {
+   "q": "earbuds chống ồn ANC chạy bộ dưới 3 triệu IPX4",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe JBL Tour Pro 3",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:19405578226371036,gpcid:9861484358977204618,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.880.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSoVmT6678pPlmr2gFYFygAzBkgcbpciqxopyIqaldYmolGPZqXCXk78YPL4YQGFhh2GBDzDmVL6q-d9bYSLFshfvQOLy-O3wcGJF3V-W48fP1kASmaZO_sCw",
+    "productId": "19405578226371036",
+    "position": 1
+   },
+   {
+    "title": "Sony Tai nghe nhét Tai chơi game chống ồn không dây đích thực INZONE Buds",
+    "source": "Phong Vũ",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:16598039994594716478,gpcid:8781180726346287617,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRCy3kNGIenWfrlQj5vtvTx9ZK9n35BBvRRg_5HUsr2zdHlmDbU1WZ4-_TzsTqQ23qo09hl-e78vo_Y5FOGSG8xLZncyQGF4tVL80AiwHbk40LLuPgwctl06A",
+    "rating": 4.4,
+    "ratingCount": 955,
+    "productId": "16598039994594716478",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe bluetooth Bose Quietcomfort Earbuds",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:3101903139109382103,gpcid:14541024020599492127,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRQqun4za7d5bH9knlbbCLkM_Apa_6OPEdI3JjAFsAM-bcLQC-YEMt6zKomoADUaEDPKz7ByNlTi9SS-Mp28ppfSTD2AUDBfyEEtQfP3bVynncVSXtU0mbQdw",
+    "productId": "3101903139109382103",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 Active",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:18079431208267426263,gpcid:7807985272077146729,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "360.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQFW1dyvP67kOjh7U6gNTl8fpXaex-cNeuP97CitZ_9WKe1bdkbw_nbKTxfszP_KgAYPcYuHMEzqaGnFmuoJenACZyA96yOR0iomWF9xkAjNi7TnpPlw4QFOds",
+    "productId": "18079431208267426263",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds 4 Pro",
+    "source": "Đức Huy Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:306612046657995937,gpcid:14442457303849656137,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.899.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTAQ4PwFbL7co2hh6538j7sI15ZMNpk2G52YSRez42ivcBNxPRjS39t2HwafkICbdBSvlYPEJg7bKpCLQHLlGy6neq_cRkm",
+    "productId": "306612046657995937",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4",
+    "source": "Huawei Vietnam",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:10655244227358683365,gpcid:1475109100044329082,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQyHRR-pnRxr581_ejCiiKnbbWujaiv_N9b01yISKDNqgqKOOGDNkVxG8R9lQ-enN4-PUOIixpWYdQPUItAPurnFJdoa1XBNLZURiZKltY2iQvQMk9tcnhz",
+    "productId": "10655244227358683365",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds 4",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:16839433182111860265,gpcid:3357474968226776724,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTloO6rOVy73GfgBajoTbJF5qTt8g1MnQp5kOV65OBThNL_HQ5mLc-E6RzX4pTCfdXp_H4mRgcWPBEHki227J4XsaG0j_txySqtN7FNe6ml2Sqbimdq07p3wQ",
+    "productId": "16839433182111860265",
+    "position": 7
+   },
+   {
+    "title": "Xiaomi Redmi Buds 6",
+    "source": "Fptshop.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:16072867927146800453,gpcid:11867549493610148423,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.460.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSPjHwjCCu-XuBUgDLVtwP5fVy8e8lvyznSHvR6MW1s7-qjWGZtqVHKTXRMqxQr96jFxPuvon4ZAaRYcEtj-rA3J2s8GsBSBXfRrxJnnBs67l_OYZuz0IIH",
+    "productId": "16072867927146800453",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless JBL Tour Pro 3 Đen",
+    "source": "Thế Giới Di Động",
+    "price": "5.880.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSvgF9wgIvqa8HL4X6o0M778bME6xsrY37Ez7pq0_l3nOtRVlgQLIcpBlsm6sru3er053ixOLWLpLeCeEre5CemXuln1Jv8uBuYTOuvXo2r75i5-I7VffcnfdU",
+    "rating": 4.6,
+    "ratingCount": 8,
+    "productId": "13175001197444152214",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Bose Quietcomfort Ultra Earbuds 2",
+    "source": "HDRadio",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:17452493350315801047,gpcid:7844991865192354685,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT2cd17jCIVXF0UCXtEl4ASJfPt-jGZMUcyHYXdtM-5Zbq-xuiDW-Zh1-MfmDvgXr7WDyZs2DTqsCGp-39HwyiDx2kBUvXfJiQ2pCqvSGWF-ap-V2OHPES0l4U",
+    "productId": "17452493350315801047",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS JBL Tour Pro 3",
+    "source": "Viettel Store",
+    "price": "5.881.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSiszOPri9P3ZX9kuVriT5UzZZTWcU6XObW05eGoxVcbe06htCt75mHhngjFV1iPrR3TX9SVQQ4A7oe0PbsKbIhcTA_LEe_DLocs0oU3srP--V_T_snv6I8",
+    "rating": 4.6,
+    "ratingCount": 8,
+    "productId": "13124214272040374962",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:10042655511360337454,gpcid:7837034781187674741,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "700.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSqP1E7j3WYio-13yeToJ_yfmZlCuzOHyUqAvE99w46b5Rsg_c7jnOdmvv9Ahpn6E1IGIMFAtmc7IVzXpk-ml9_NwRhy3VI4t8evNbEpCIfRYE3Tg34sRXk",
+    "productId": "10042655511360337454",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe Sony Inzone Buds (Không dây, Chống ồn, Pin 24 giờ, Bluetooth 5.3)",
+    "source": "HDRadio.vn",
+    "price": "3.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTPUcclGfdo1ZeQX1b6FSteVJhOAe7LoLjju4r0g7kfVM5YcmT4UjBBf-6wS6R2Hb95ZAduZiz1z5sFCvojakwvnWeM5R7U_lERVMrVF16IIvHZWYg0JuUN",
+    "rating": 4.4,
+    "ratingCount": 955,
+    "productId": "2849063362010151137",
+    "position": 13
+   },
+   {
+    "title": "Tai nghe Bose Tai nghe Mở Ultra Open-Ear",
+    "source": "Điện tử Linh Anh",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:2548677344200108123,gpcid:5011358045418386671,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.749.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRx4K2wroV2XPT2NITL88_dL8XgGQkwHjT3kd7B0WsJTzOxT0uSWZUEHZjsJZbAUlpB7_dEpgP01mEhWfG-JOryjjoo35nEwTCJOiUUVp5HLkbb0P2_muuLxg",
+    "productId": "2548677344200108123",
+    "position": 14
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Beats Solo Buds",
+    "source": "CellphoneS",
+    "price": "1.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRPr36CqiCnwrvXY7JqtWmyjNggcaX7qt55p6GAX6Nwga9ECbGJP9TnpQsNmygv6dy3iBB1uK5XRLAJhhyoPYTfY0E1toL35VrtvvhK7SMcYkU4CFuQJ-OtH28",
+    "productId": "17509867282365937726",
+    "position": 15
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3",
+    "source": "Nguyễn Kim",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:3753302085365614806,gpcid:3323897376901893063,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQiA6N5hZP7N72ZpZ4Ya6ZcUO75g5IvdY5FICihgJq_hEfqaaYivW9TONC-owP8jyl-kvpHTSw8TUAqxWB1GHAhK55p6lXjBBx0W_zKsFqkT83DPRLqncFH",
+    "productId": "3753302085365614806",
+    "position": 16
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Earfun Air Pro 4i - Trắng",
+    "source": "Thế Giới Di Động",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRrM_DXoBDPCXeSEvikdBKOnN-1lwDzcCOzzyaCfFvzO4KMJk45pb_HpxQX2gdF6H_kx_8neaQOXFkGEGtUxRAYo1fBwBYxE1Z73kcvHR6FiMDjYgb1Jhle",
+    "rating": 4.9,
+    "ratingCount": 303,
+    "productId": "13440539794883841937",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless JBL Tour Pro 3",
+    "source": "Hoàng Hà Mobile",
+    "price": "5.880.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRfufaXXyl-3gImzmRHN2ICVV1uYyN-mi63k8oyGHL-n86-89MsBkcQ4Oj1vbrbgDeYS8X9Y5CsWrqqgZwk9QmWbkMgr271BSf4DWbGL13niluYU1ad2851",
+    "productId": "7743273044846477525",
+    "position": 18
+   },
+   {
+    "title": "Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:5912543140912279423,gpcid:5615292302685123606,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTfTnrLUk8z4zbv3OZVJfvR2RfQlb90XK8z5WSI5XW3L7Or3VVKK48TRqtbfuuEKIxvrJtTSblNrAjSUa1FMEx5BYRHFdcmdZnc2ZfyNGi4BjbZP_o2CfrVJw",
+    "rating": 4.7,
+    "ratingCount": 137,
+    "productId": "5912543140912279423",
+    "position": 19
+   },
+   {
+    "title": "TAI NGHE TRUE WIRELESS JBL TOUR PRO 3",
+    "source": "1 - saigonhd.com",
+    "price": "5.881.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSZS5OkgHJcOQph2yxRnGx7wnhHVRRwdLhoUGp22pJI5erd9Qev1ttQKccZbFTxhmdDgkYRiPYDGqVWANGpyfB8gB4bKdGQ-H1RvRnM9NDqOF5jinVi4C4eQA",
+    "productId": "4825495887654962318",
+    "position": 20
+   },
+   {
+    "title": "Tai nghe Bose QuietComfort Ultra Earbuds 2 (Deep Plum)",
+    "source": "Hacom.vn",
+    "price": "6.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTCFRZUtlb9M0s9OsIETh1xLhCxcUr7olyYdnJGzsB0H-300JE2A4-rl2d8A3UOyyZD1WHkrWuHjCW_qFToCz3eJC2UHE9Pbs42K5up5sTq_gTFs3Joy9z8",
+    "productId": "16321164094762033291",
+    "position": 21
+   },
+   {
+    "title": "Tai nghe Apple AirPods 4",
+    "source": "pgluxury.com",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:3388379079241615655,gpcid:3591805395819257241,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSaLb51D_T0EA59Zm6d-wh8Gy_VzBqbxm9zTIMeLFVyKN6oS0BqErlQiFwalT3Fd5wgNUrACQXj3xmefLschnj3HbBg--4H9Q",
+    "productId": "3388379079241615655",
+    "position": 22
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless StarGO S10 Pro (ANC)",
+    "source": "CellphoneS",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQuQw1yUopBJU_Xnu2UNCnGQteNXROiv7rSqgwdnWNSRzUt84L2T-cHnN4fx8zoINGz6Pi93QSPwLcUWhStydHb6lkliQkAWuy8usAT6k5Nfv2DSaNgM-nV-tI",
+    "productId": "6129270160950870783",
+    "position": 23
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Samsung Galaxy Buds4 R540N Trắng",
+    "source": "Thế Giới Di Động",
+    "price": "3.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQbYzDrlxK9ybD1rNbofpCBiSWxYlDpxepiWT3qMSGgVYUVkWFbMaAfFCpLMGEgq12_zxSfTph5pBQOShXhXcTe-IzYCb8UY0n3VlAkMw1s4zygHHNRp3Tg",
+    "productId": "15920473733533784830",
+    "position": 24
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore C50i - D1101 (Kiểu Gài Tai Linh Hoạt, Siêu Êm)",
+    "source": "anker.vn",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTEVQOogojHfoM-GWHnOo5EEOcTlGcWowmcv6evWXfZngo5BGqxsR4QxD7EwXAlZcBn5m_Ka6Xo0QDZrjCrQMdPv6Miw3gCgbcz5xUbbCri_2animwwY-2nMu8",
+    "rating": 4.9,
+    "ratingCount": 65,
+    "productId": "16683449147293650843",
+    "position": 25
+   },
+   {
+    "title": "KYPTEC 610 Hybrid ANC Active Noise Cancelling Bluetooth Ear Buds",
+    "source": "Kyptec LifeStyle",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:7630192025765341692,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "456.176 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQwHyK6GehXIBoSml5bYubCo-KZRitRHi9JgmaL3gYKdWNf0PYTudyQ88bnqljd9oYiY0G3E-bYYF56bjg-yPFVBqaC_eV-lSl6QyfixBCHNlgSpc8MfB3J9w",
+    "productId": "7630192025765341692",
+    "position": 26
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Marshall Minor IV",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:8773017923373109145,gpcid:4205137770414532494,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.050.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSkuZOd2qtE1AztudjTa0SEOu5qkoKvSdPoLbiPUZRhbnyFFUenWP4z6LpxCjcyq64nlpNdr9PcP13dDABgFY13ssXpyLIJGuaJEcj5doy_nMzp8foc36Srvp8",
+    "rating": 4.1,
+    "ratingCount": 445,
+    "productId": "8773017923373109145",
+    "position": 27
+   },
+   {
+    "title": "Tai Nghe Bose Quietcomfort Earbuds (2nd Gen)",
+    "source": "HaLoShop",
+    "price": "4.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRHNYOwzeRD9AvxNgqD9f7KSXfT2G5XsHhaoASe3EGKEM-Jdhyd8gjJKNIrXyBRdtdTjCIxz5tCUIFCyRLyGaKB2vEL8eV1OPvnykmMdjh4qN9mHXJ6srrUmA",
+    "productId": "14336755866206248455",
+    "position": 28
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 3 Trắng MFHP4",
+    "source": "Điện máy XANH",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ4SsbeQml73coDdBLXdG16VbK0BmvgopfxlJKKiisEepGkw5qQKqwY9XWFsrFcgxdbIB4qEzFooYAjgGbACjehfJr8WSjKofcOoMv6gEjruODJiFX2NnDP4w",
+    "productId": "1189914940288710781",
+    "position": 29
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Samsung Galaxy Buds Core R410N Đen",
+    "source": "Thế Giới Di Động",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTmgC2vbz0t7PITbASxih-e2gppKr7kmMcMURfT7EH-RC8YqsWtQ9JnW35bctzaJWTN_ITDxMPMXxr4ayppmMBykpEeW03m6lPlshBClaNYawaNFiMwkR40GTk",
+    "productId": "7937801655631654658",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe True Wireless WK TWS Earbuds Gen4 MINI V59",
+    "source": "Remax Việt Nam",
+    "price": "720.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRPYWl0MZ2kBKZ-cNwwHp0KVVWqS50gYlKoNSrTYC2BIUfCK2zxO0_wTXABBdtJvrH_Z18qsU38iSCkEEAgmrMHMm_DNrTPEQxL9tfBvJodamBVVcAKsTuRVA4",
+    "productId": "5322216573513965047",
+    "position": 31
+   },
+   {
+    "title": "Vua2hand - Tai Nghe Bose QuietComfort Ultra Earbuds 2 -Đỏ Mận",
+    "source": "Vua2hand Store",
+    "price": "6.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRUza84zMpLA1ViMAqbJJp4yDNGesuSgQyeo37W15bMpg2PhfcqI4ScRjsRkZ6fkm54cUCsiQx314yXvgsAlrDljAw_rVL-9a91Woot29ifIxsUps7en5MC",
+    "productId": "7211037662553204044",
+    "position": 32
+   },
+   {
+    "title": "Tai Nghe Bluetooth Apple AirPods Pro 3 Trắng MFHP4",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "6.150.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQEBFXMwIcEsQi6qn5Lak9EG0jIWkJkFQvILDlExQguggXxz67eRVOqAAo77uqDV96JCW-bD_kkCQRVXCccXa3WA9vd59DlYgvALPHxe5MEiI7aWQTwaK78",
+    "productId": "7659687848893206406",
+    "position": 33
+   },
+   {
+    "title": "Tai nghe True Wireless JBL Tune Beam",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:846547871599203947,gpcid:4463554005620203087,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS7jezsPxdSyiNAES8gBWDwYGmAg5uYJXiiR6GnQfdZbs8Z24ffkSBSN8UmRgFML805Lv4M4sB8j7ot8hGWfEQbQROMaOiXuyE9QBEmphl4zvrixN4CCGNN",
+    "productId": "846547871599203947",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Sony WF-C510 - imei Đen",
+    "source": "Thế Giới Di Động",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRKZNsg9jMwNDsLl9wLEWItpXCWnQKmIIZMGklqjhW8JKtB_P62Zz93BoWHYZ8Q1CGviSXL5_3PIS84vMlk7-4g4gtJBRDAiusUFSHtUOjr7BKmwCPfk3WpGw",
+    "productId": "184367911504896883",
+    "position": 35
+   },
+   {
+    "title": "Tai Nghe Pro3 Hổ Vằn 1563E – True Wireless ANC, Đo Nhịp Tim, Pin 24 Giờ, Chống Nước IP57, Âm Thanh Cao Cấp, Kết Nối Bluetooth 5.3",
+    "source": "Chiaki.vn",
+    "price": "790.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRpNt0UNtLVJQxNIEFW6I9HJshVHAIWcdwm7ZB1dMekvoLWizeuoB1hGjZwIXStOufI89_47sySKK13CZh0ZwB5nTtQaday2ZJ0MPSqsBq51aqyoWglTzrn9w",
+    "productId": "553912819565684582",
+    "position": 36
+   },
+   {
+    "title": "Tai Nghe Wireless JBL Tour PRO 3 Latte",
+    "source": "Việt Music",
+    "price": "5.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQcaSW7U0t2VFgdI1hIZdWRLFwNFZLuUOaBzdAVV7NCLOMpRwo1rGQTieOQOonFSnVyR14tgdhb-V82irflIQHZq_eDx0S-XYl2quwTH05n24k30ggRX-RI",
+    "productId": "106065220101490477",
+    "position": 37
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3 Chính Hãng",
+    "source": "Di Động Việt",
+    "price": "6.170.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTzyYgnzO2QAZxwgO654HqjlavwGYGbGI6W7YDBTNeqS7iL4SDCzYWQMpI17yMwJP9H4b5M5fNu6hxNdFILdNxXkDdStbKhsZwMuWSpqsqpmEtU5Iiowi7m",
+    "productId": "11199284090301101902",
+    "position": 38
+   },
+   {
+    "title": "Tai nghe Bose QuietComfort Ultra Earbuds -Lunar Blue",
+    "source": "Chieu Duong Tech",
+    "price": "7.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR1udndU9a03aloFB2C7a9F88JCFH_kWrtPX5cX5xs_nLR8S3PRSaLR35VJ79MGSQLM5n_uyCcxfWZYMsg2Dif2aVCAV_Gdsg",
+    "productId": "58948152103100020",
+    "position": 39
+   },
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-CH720N",
+    "source": "Thế Giới Di Động",
+    "link": "https://www.google.com/search?ibp=oshop&q=earbuds+ch%E1%BB%91ng+%E1%BB%93n+ANC+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX4&prds=localAnnotatedOfferId:1,catalogid:11068168838809888464,gpcid:551968522992611298,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.080.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvI5Y_d3P2CS00eiygrupYp-F7Pw_HaJZwDP4hU1WUqMnD41YN_Qe0J_U1jya7NhPar1smWq_taeNND621VbCcLuWFLWgOM5lUpCV5KXO-eYhfpp-3eClZ3z8",
+    "productId": "11068168838809888464",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

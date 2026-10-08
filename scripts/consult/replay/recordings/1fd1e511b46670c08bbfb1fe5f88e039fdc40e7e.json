@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:21.332Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

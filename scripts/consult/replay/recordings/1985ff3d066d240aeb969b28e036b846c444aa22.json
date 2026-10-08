@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai Nghe Bluetooth Chụp Tai DR90\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Baseus Tai Nghe Chụp Tai Không Dây Baseus Bowie 30 Max Noise-Cancellation\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:30.158Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai Nghe Bluetooth Chụp Tai DR90\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Baseus Tai Nghe Chụp Tai Không Dây Baseus Bowie 30 Max Noise-Cancellation\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

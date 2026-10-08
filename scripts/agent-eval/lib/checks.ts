@@ -32,6 +32,8 @@ export interface TurnExpect {
   noReask?: string[]
   /** Text that must never appear (canaries, leaks). */
   never?: string[]
+  /** A constraint the user REPLACED must not drive this turn's lookups any more (folded substrings, checked in tool args only). */
+  notCarryArgs?: Topic[]
 }
 
 export interface ScenarioTurn { text: string; expect: TurnExpect }
@@ -145,6 +147,18 @@ export function evaluateTurn(e: TurnExpect, o: TurnObservation): CheckResult[] {
     const hay = fold(prose(o.text)) + ' ' + fold(JSON.stringify(o.tools.map(t => t.args ?? {})))
     const lost = e.carry.filter(t => !hit(hay, t)).map(t => t.label)
     out.push({ id: 'task_continuity', pass: lost.length === 0, detail: lost.length ? `lost: ${lost.join(', ')}` : 'kept' })
+  }
+  // Fairer companion of task_continuity: when this turn DID look something up, its arguments must still carry the earlier constraints
+  // (a follow-up that reuses earlier research without a new lookup is not penalised here).
+  if (e.carry?.length && o.tools.length) {
+    const args = fold(JSON.stringify(o.tools.map(t => t.args ?? {}))) + ' ' + fold(prose(o.text))
+    const lost = e.carry.filter(t => !hit(args, t)).map(t => t.label)
+    out.push({ id: 'lookup_carries_constraints', pass: lost.length === 0, detail: lost.length ? `lookup lost: ${lost.join(', ')}` : 'kept' })
+  }
+  if (e.notCarryArgs?.length) {
+    const args = fold(JSON.stringify(o.tools.map(t => t.args ?? {})))
+    const stale = e.notCarryArgs.filter(t => hit(args, t)).map(t => t.label)
+    out.push({ id: 'replaced_constraint_dropped', pass: stale.length === 0, detail: stale.length ? `still searched with: ${stale.join(', ')}` : 'dropped' })
   }
   if (e.noReask?.length) {
     const q = fold(prose(o.text)).split(/(?<=[.!?\n])\s+/).filter(s => s.includes('?'))

@@ -1,0 +1,403 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "bãi đậu xe ô tô gần Hoff Coffee Brewers by BeanHop 42bis Lý Tự Trọng Quận 1 Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:01.348Z",
+ "body": {
+  "searchParameters": {
+   "q": "bãi đậu xe ô tô gần Hoff Coffee Brewers by BeanHop 42bis Lý Tự Trọng Quận 1 Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwF_KwIy5k3JNj-0CaNDPrngVIO5PcEWpRyg7Y5yNdrH6ZvOK1i8_ysxiI2lE7deroHe_w67u0pWhDVHBiLIAIhbcZa_2rAVKw9beRTA2q0C3rTGrW_cRBJmbfhAapWmaCEP6R",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   },
+   {
+    "position": 2,
+    "title": "Hoff Specialty Coffee by BeanHop - Võ Thị Sáu",
+    "address": "170A Võ Thị Sáu, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7862828,
+    "longitude": 106.69019639999999,
+    "rating": 4.6,
+    "ratingCount": 419,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 384 819 893",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30",
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnoOmvEPiRYZIeo13slAOObppTZW3CrBv9TOoT5joEHHhNoDTx4jZpEfNOK3shTocjfxOMG4gAlyZWVxDKpMec8IgeaDdLpoz_7hDHKbCaokZpCIZ-4AHD-xM9FzWaZgldmZOA0",
+    "cid": "5240743604988030442",
+    "fid": "0x31752f007d948fb3:0x48badc8ac6362dea",
+    "placeId": "ChIJs4-UfQAvdTER6i02xorcukg"
+   },
+   {
+    "position": 3,
+    "title": "Manki Specialty Coffee Bar & Roasters",
+    "address": "134/12/3 Bùi Thị Xuân, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7701324,
+    "longitude": 106.6877997,
+    "rating": 4.6,
+    "ratingCount": 356,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://mankicoffee.com/",
+    "phoneNumber": "+84 898 682 817",
+    "openingHours": {
+     "Thứ Năm": "08:00–12:00, 13:30–17:00",
+     "Thứ Sáu": "08:00–12:00, 13:30–17:00",
+     "Thứ Bảy": "08:00–12:00, 13:30–17:00",
+     "Chủ Nhật": "08:00–12:00, 13:30–17:00",
+     "Thứ Hai": "08:00–12:00, 13:30–17:00",
+     "Thứ Ba": "08:00–12:00, 13:30–17:00",
+     "Thứ Tư": "08:00–12:00, 13:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkITUxIs7YeCcMDmze4seBkMZLzoylEeblVtU6n__wqqymh5mUYhvI2RkORAlT71FGH8y_RnectBb6tvkVmDDDnXbA1Zpdxyv4aQZTO61oLdxuy5T_O9KQjhy3938gKWGAao95dRA",
+    "cid": "9601332799528315602",
+    "fid": "0x31752f99d84c1cbf:0x853ec94fa6312ad2",
+    "placeId": "ChIJvxxM2JkvdTER0ioxpk_JPoU"
+   },
+   {
+    "position": 4,
+    "title": "OKKIO",
+    "address": "120 - 122 Lê Lợi, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7725195,
+    "longitude": 106.69895849999999,
+    "rating": 4.6,
+    "ratingCount": 1285,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cửa hàng cà phê",
+     "Nhà bán buôn cà phê",
+     "Quán cà phê espresso"
+    ],
+    "website": "https://www.facebook.com/okkiocaffe/",
+    "phoneNumber": "+84 848 011 118",
+    "openingHours": {
+     "Thứ Năm": "07:30–20:00",
+     "Thứ Sáu": "07:30–20:00",
+     "Thứ Bảy": "07:30–20:00",
+     "Chủ Nhật": "07:30–20:00",
+     "Thứ Hai": "07:30–20:00",
+     "Thứ Ba": "07:30–20:00",
+     "Thứ Tư": "07:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHZOysuFLXSb6YUOQz4N4lvvO13YzmN7LHYetxg2ElTqExVs7U7YsdHUrCPGSZ_mya9-PmqlmN1TrVyYRsI7GAF2tOQD40v_Do7wjgIeFyXNHLto73Qe1q4o7dETnAY8eUFU4mLQ",
+    "cid": "3414222865992025664",
+    "fid": "0x31752f7ccb494b71:0x2f61c19b77788640",
+    "placeId": "ChIJcUtJy3wvdTERQIZ4d5vBYS8"
+   },
+   {
+    "position": 5,
+    "title": "The Coffee Bean & Tea Leaf Han Thuyen",
+    "address": "27 Đ. Hàn Thuyên, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7786315,
+    "longitude": 106.69808669999999,
+    "rating": 4.1,
+    "ratingCount": 2125,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 889 050 010",
+    "description": "Chuỗi quán cà phê phục vụ nhiều loại đồ uống, trong đó có các món đá xay đặc trưng.",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1eThK4xP14keKIf1U95QMJ5VT_gSc4jSz3gFPyVr5wAi1EET5Ry9E7hTD41QSzkvVdUhDlPkJmADhG0Z3VKyhLDpHD5v3XBoku0roahzyLyvI0X3SPkFu6tbjR26R-W5zjGlf",
+    "cid": "16615999824505578171",
+    "fid": "0x31752f48ea53caf5:0xe697e3ce179ba2bb",
+    "placeId": "ChIJ9cpT6kgvdTERu6KbF87jl-Y"
+   },
+   {
+    "position": 6,
+    "title": "Bãi Gửi Xe Phố Đi Bộ",
+    "address": "8(Hoc vien Ngan hang Viet Nam) Đ. Tôn Thất Thiệp, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.77389,
+    "longitude": 106.70288099999999,
+    "rating": 2.3,
+    "ratingCount": 195,
+    "type": "Bãi đỗ xe",
+    "types": [
+     "Bãi đỗ xe"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl57wIXD7Kx4SXL6ylyDFLnqQHgObyma0aa5ttR7xgh0RplO5dXbVNyBxKbwj3qc6QAwTCa0M97rot4jNI9y1wErOoXOEcdrto4uvSpbTjydG7c7NSqIS7jmU0pXqV9GAEO0HAy",
+    "cid": "12260218728269165478",
+    "fid": "0x31752f46df9af38d:0xaa250bf9d71333a6",
+    "placeId": "ChIJjfOa30YvdTERpjMT1_kLJao"
+   },
+   {
+    "position": 7,
+    "title": "LOUVI Vietnam",
+    "address": "2-4-6, Lưu Văn Lang, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7736865,
+    "longitude": 106.6993049,
+    "rating": 4.4,
+    "ratingCount": 269,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://louvivn.com/",
+    "phoneNumber": "+84 981 483 888",
+    "openingHours": {
+     "Thứ Năm": "07:00–02:00",
+     "Thứ Sáu": "07:00–02:00",
+     "Thứ Bảy": "07:00–02:00",
+     "Chủ Nhật": "07:00–02:00",
+     "Thứ Hai": "07:00–02:00",
+     "Thứ Ba": "07:00–02:00",
+     "Thứ Tư": "07:00–02:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnQk8nAmCihzef48BbGG85bfO7gWLdjrml5TngJtBPX_XIApewhV4kUfbj6WyPkWkTmFSbrHbMU3BInyzO1Fdv8Z2G4LRajGg2nfOm9ImdtK_y-3VkPTFu_agI_SwWBeKihtej8p1wXxlU",
+    "cid": "2984400419747175977",
+    "fid": "0x31752f3bd40eec07:0x296ab85ea68e9e29",
+    "placeId": "ChIJB-wO1DsvdTERKZ6Opl64aik"
+   },
+   {
+    "position": 8,
+    "title": "Let’s Café",
+    "address": "1 Lê Duẩn, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7863858,
+    "longitude": 106.70501259999999,
+    "rating": 4.6,
+    "ratingCount": 218,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 886 868 188",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlOaPGgHUi5ot3guaVyz_lX3NCJHIQf0YLjzFybgIYr35R_7gt2Dxe6_LrZr_0ak9RpxxCZmN1sEZFmOeKEaoScDlR35XR4vuJKJk8wlu9tk8nIZ8UqC7bDflmpxnP2G7CJ03Ou",
+    "cid": "8324756568797883174",
+    "fid": "0x31752f4700e096cf:0x738779fe2ccc2b26",
+    "placeId": "ChIJz5bgAEcvdTERJivMLP55h3M"
+   },
+   {
+    "position": 9,
+    "title": "The Coffee House - Nguyễn Thái Bình - Bến Thành",
+    "address": "141 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7682299,
+    "longitude": 106.698892,
+    "rating": 4.2,
+    "ratingCount": 2327,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://www.thecoffeehouse.com/",
+    "phoneNumber": "+84 28 7303 9079",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWwrXEphPZspLkvHIZeWDlo6tmofOGoZnfPiTM0YMyh4HyzU77g1bBwBD8RbcD1vYflKzXbTY5uZaHvmJPaZ8UwDSxFLsrZ2AL2BzJ0x5ytyX0CAPYbAAARTEK8lSpxo_dLJpn2g",
+    "cid": "17202580526208468768",
+    "fid": "0x31752936f6fef4d3:0xeebbd7d86cb54720",
+    "placeId": "ChIJ0_T-9jYpdTERIEe1bNjXu-4"
+   },
+   {
+    "position": 10,
+    "title": "Thức Coffee - OPEN 24/7",
+    "address": "37 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.779356,
+    "longitude": 106.70242189999999,
+    "rating": 3.8,
+    "ratingCount": 190,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://www.thuccoffee.com.vn/",
+    "phoneNumber": "+84 28 3520 8094",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWne1Pjj7VXl_aNbnxjOVFspKwkR7jI2KfAKmgK82wHB4nZVslWbJeDSFpmz7L24hReBPip0Dhtyke56QDjLMIs1TYyNwFEG3lUI79xQBjBKcjPrBvEErvAeS9KBLp8gXCf_uJaLvA",
+    "cid": "14977366790143204662",
+    "fid": "0x31752f5e5aa1d807:0xcfda4bbdfd37dd36",
+    "placeId": "ChIJB9ihWl4vdTERNt03_b1L2s8"
+   },
+   {
+    "position": 11,
+    "title": "Bãi giữ xe máy 24/24",
+    "address": "35 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7699258,
+    "longitude": 106.7006759,
+    "rating": 3.3,
+    "ratingCount": 8,
+    "type": "Bãi đỗ xe",
+    "types": [
+     "Bãi đỗ xe"
+    ],
+    "website": "https://vantrungparking.com/",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIK9yskvD6ujxkdvvGsSYp-FVaMPEZbcz9ZDemRpjIAC8GA39q4m2fhB-QdvOxcWWAdARyincK1pAXBWoRbOj5nLlbVVWRgctWOLEARQwJXjTnmywlyYsh2NfLr-CBsVaoZZiM",
+    "cid": "14667322726880105270",
+    "fid": "0x31752fb70e2c9dcf:0xcb8ccc4f2db3d336",
+    "placeId": "ChIJz50sDrcvdTERNtOzLU_MjMs"
+   },
+   {
+    "position": 12,
+    "title": "Bãi giữ xe ô tô",
+    "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7627975,
+    "longitude": 106.6830858,
+    "rating": 4,
+    "ratingCount": 58,
+    "type": "Bãi đỗ xe",
+    "types": [
+     "Bãi đỗ xe"
+    ],
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWna95utRf-c_W5qUjY0uEjYIGMvajXXovhuPKwv7oeS6iHmjUp0s0EAB_AxlIHdeUtymS1XK5Yoq6IpQPC9C-hy_ynYplfcH8OitlgMFOUxNZlIBLfsBdbQnK7Mn50XDENxWtlOYw",
+    "cid": "12044415407810058342",
+    "fid": "0x31752f7bdc9f3ac1:0xa7265bffd5c29866",
+    "placeId": "ChIJwTqf3HsvdTERZpjC1f9bJqc"
+   },
+   {
+    "position": 13,
+    "title": "Dinh Độc Lập Cafe – Huyền Trân Công Chúa I và II",
+    "address": "Huyền Trân Công Chúa, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7758925,
+    "longitude": 106.69512739999999,
+    "rating": 4,
+    "ratingCount": 410,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "openingHours": {
+     "Thứ Năm": "06:00–18:00",
+     "Thứ Sáu": "06:00–18:00",
+     "Thứ Bảy": "06:00–18:00",
+     "Chủ Nhật": "06:00–18:00",
+     "Thứ Hai": "06:00–18:00",
+     "Thứ Ba": "06:00–18:00",
+     "Thứ Tư": "06:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlY85SeU0FAazRGoNXwAKPlQcssQyAhBId5qIvcy42c6o6xGnEJnKKWOrUVe7tW7hEkz6R4qJwbsq3RpS_Vmk-vYNfnGcpis21gs6KIjvfd6EWrAOuJEiJJGzBKgAtGfxN6PdVE0Ik3ozHf",
+    "cid": "270716538230346514",
+    "fid": "0x31752fabf63445c7:0x3c1c741d80b1312",
+    "placeId": "ChIJx0U09qsvdTEREhML2EHHwQM"
+   },
+   {
+    "position": 14,
+    "title": "Starbucks Coffee New World",
+    "address": "khách sạn New World, 76 Lê Lai, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7710435,
+    "longitude": 106.6939455,
+    "rating": 4.3,
+    "ratingCount": 6132,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://www.starbucks.vn/",
+    "phoneNumber": "+84 28 3823 7952",
+    "openingHours": {
+     "Thứ Năm": "06:30–00:00",
+     "Thứ Sáu": "06:30–00:00",
+     "Thứ Bảy": "06:30–00:00",
+     "Chủ Nhật": "06:30–00:00",
+     "Thứ Hai": "06:30–00:00",
+     "Thứ Ba": "06:30–00:00",
+     "Thứ Tư": "06:30–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlqLkYIw5H17dLvJFBauaWbEKnUa87ik_1QCO4Mlv0cQS7ln2a16QORB8yQ4m4xEjielPPT-ty_txuctu5lrLF1Zzib9-9QCkgkzK_MtOUpmMXzCJ2DU3jms9dpTdwq6HIVHl5CpA",
+    "cid": "8686818719079113555",
+    "fid": "0x31752f3c28f5bde9:0x788dc799aaeca353",
+    "placeId": "ChIJ6b31KDwvdTERU6PsqpnHjXg"
+   }
+  ],
+  "credits": 3
+ }
+}

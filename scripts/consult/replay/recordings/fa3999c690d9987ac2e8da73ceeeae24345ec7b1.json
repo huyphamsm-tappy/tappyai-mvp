@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "chỗ đậu ô tô bãi đỗ xe ô tô Hoff Coffee Brewers by BeanHop Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:44.826Z",
+ "body": {
+  "searchParameters": {
+   "q": "chỗ đậu ô tô bãi đỗ xe ô tô Hoff Coffee Brewers by BeanHop Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7817215,106.6848758,16.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnwF_KwIy5k3JNj-0CaNDPrngVIO5PcEWpRyg7Y5yNdrH6ZvOK1i8_ysxiI2lE7deroHe_w67u0pWhDVHBiLIAIhbcZa_2rAVKw9beRTA2q0C3rTGrW_cRBJmbfhAapWmaCEP6R",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   },
+   {
+    "position": 2,
+    "title": "Hoff Specialty Coffee by BeanHop - Võ Thị Sáu",
+    "address": "170A Võ Thị Sáu, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7862828,
+    "longitude": 106.69019639999999,
+    "rating": 4.6,
+    "ratingCount": 419,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 384 819 893",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30",
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnoOmvEPiRYZIeo13slAOObppTZW3CrBv9TOoT5joEHHhNoDTx4jZpEfNOK3shTocjfxOMG4gAlyZWVxDKpMec8IgeaDdLpoz_7hDHKbCaokZpCIZ-4AHD-xM9FzWaZgldmZOA0",
+    "cid": "5240743604988030442",
+    "fid": "0x31752f007d948fb3:0x48badc8ac6362dea",
+    "placeId": "ChIJs4-UfQAvdTER6i02xorcukg"
+   }
+  ],
+  "credits": 3
+ }
+}

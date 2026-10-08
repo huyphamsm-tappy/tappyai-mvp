@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Edifier Tai nghe không dây Edifier NeoBuds Pro3 TWS bluetooth ANC -50dB Chống ồn thích ứng Giảm tiếng ồn cuộc gọi 4-Mic LDAC LHDC Âm thanh không gian\" OR \"Tai Nghe EDIFIER W820NB Plus\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:35.022Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Edifier Tai nghe không dây Edifier NeoBuds Pro3 TWS bluetooth ANC -50dB Chống ồn thích ứng Giảm tiếng ồn cuộc gọi 4-Mic LDAC LHDC Âm thanh không gian\" OR \"Tai Nghe EDIFIER W820NB Plus\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bibli Library Café\" OR \"Cafe sách Phương Nam\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:08.859Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bibli Library Café\" OR \"Cafe sách Phương Nam\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Oromia Coffee & Lounge Phan Kế Bính",
+    "link": "https://www.tiktok.com/@oromialounge/video/7640121714239671572",
+    "snippet": "Không gian và vị trí Oromia Coffee & Lounge nằm trên đường Phan Kế Bính, khu Tân Định — một điểm thuận tiện để tản bộ và dừng chân. Quán tận ...",
+    "position": 1
+   },
+   {
+    "title": "Tham Quan Bibli Library Café Ngày Xuân",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/video/7602591992496885010",
+    "snippet": "Bibli Library Café • Inbox hoặc ☎️ gọi 0769900006 để giữ chỗ • 42/5 Hồ Hảo Hớn, P. Cầu Ông Lãnh, TP. HCM. Tham Quan Bibli Library ...",
+    "position": 2
+   },
+   {
+    "title": "Trải Nghiệm 5 Giác Quan Tại Bibli Library Café",
+    "link": "https://www.tiktok.com/@esther.luver/video/7624773568496160020",
+    "snippet": "Cùng mình trải nghiệm 5 giác quan tại Bibli Library Café nha, đảm bảo mê hong lối về luon #biblilibrarycafe #caphequan1 #coffeesaigon # ...",
+    "position": 3
+   },
+   {
+    "title": "Thăm BIBLI Library Café: Nơi Tâm Hồn Được Chữa Lành",
+    "link": "https://www.tiktok.com/@ton_social/video/7625901802776464660",
+    "snippet": "BIBLI Library Café là một điểm đến lý tưởng cho những ai đang tìm kiếm một không gian thư giãn và chữa lành. Với không khí yên bình, ...",
+    "position": 4
+   },
+   {
+    "title": "Oromia Coffee (@oromialounge)",
+    "link": "https://www.tiktok.com/@oromialounge",
+    "snippet": "Facebook: Oromia Coffee & Lounge Instagram: @oromia.lounge. Một góc Tết đủ đầy sắc xuân Oromia khoác áo mới, mở cửa.",
+    "position": 5
+   },
+   {
+    "title": "Quán cafe Harry Potter ở Sài Gòn: Bibli Library Café review",
+    "link": "https://www.tiktok.com/@cimchucneee/video/7659347680870649106",
+    "snippet": "Lead Bibli Library Café là quán cafe theo phong cách Harry Potter ở Sài Gòn được nhiều người nhắc đến — không gian decor sách và đạo cụ ma ...",
+    "position": 6
+   },
+   {
+    "title": "Quán cafe decor Trung Thu sớm nhất ở Sài Gòn",
+    "link": "https://www.tiktok.com/@didodauday/video/7666410179440741640",
+    "snippet": "Không gian và trang trí Oromia Coffee & Lounge ở Quận 1 được trang trí đậm chất Trung Thu: đèn lồng, màu sắc ấm áp và các chi tiết truyền thống.",
+    "position": 7
+   },
+   {
+    "title": "Cafe Sách Phương Nam: Thiên Đường Sách Tại TP.HCM",
+    "link": "https://www.tiktok.com/@nguyenthi_xuannguyet/video/7262180074575678738",
+    "snippet": "596 Lượt thích,Video TikTok từ Nguyễn Thị Xuân Nguyệt (@nguyenthi_xuannguyet): \"Khám phá Cafe Sách Phương Nam, nơi lý tưởng để vừa đọc sách ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

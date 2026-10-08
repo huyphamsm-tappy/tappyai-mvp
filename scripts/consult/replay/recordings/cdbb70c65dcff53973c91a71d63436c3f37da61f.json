@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "không dây TWS Sony WF-1000XM5/PCE site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:12.545Z",
+ "body": {
+  "searchParameters": {
+   "q": "không dây TWS Sony WF-1000XM5/PCE site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone-1206?af_click_lookback=7d&af_reengagement_window=7d&af_siteid=an_17365130000&af_viewthrough_lookback=1d&is_retargeting=true&pid=affiliates&stm_medium=referral&stm_source=rw&uls_trackid=8c2fdd83a097",
+    "snippet": "Tai nghe không dây Bluetooth Chống Ồn True Wireless Sony WF-1000XM5. custom-overlay. flag-label Tai nghe không dây Bluetooth Chống Ồn True Wireless Sony WF- ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -14,7 +14,7 @@ import { createHash, randomUUID } from 'node:crypto'
 import { recordEvent } from '@/lib/observability'
 import { cutSecrets } from '../guards'
 
-export type TraceKind = 'model_round' | 'tool_call' | 'tool_result' | 'timeout' | 'retry' | 'budget' | 'guard' | 'ask' | 'error' | 'final'
+export type TraceKind = 'model_round' | 'tool_call' | 'tool_result' | 'timeout' | 'retry' | 'budget' | 'guard' | 'ask' | 'task' | 'error' | 'final'
 export interface TraceEvent { seq: number; t: number; kind: TraceKind; [k: string]: unknown }
 
 export type OutputType = 'text' | 'ask' | 'cards' | 'plan'

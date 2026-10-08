@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"A Xỉu - Quán Ăn Ngon\" quan 1 site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:58:46.682Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Quán ăn ngon Sài Gòn\" OR \"A Xỉu - Quán Ăn Ngon\" quan 1 site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Khám phá Nhà Hàng Ngon ở TP.HCM, nơi mang đến những món ăn. @AnChiMiHe. Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ...",
+    "position": 1
+   },
+   {
+    "title": "Quán Ăn Ngon: Hơn 20 Năm Ẩm Thực Việt Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@ansapsaigon/video/7124664938123119898",
+    "snippet": "Keywords: quán ăn ngon Sài Gòn, ẩm thực Việt Nam, review món ngon ... nhà hàng ngon tại Sài Gòn, quán ăn Việt Nam quận Bình Tân, ăn ...",
+    "position": 2
+   },
+   {
+    "title": "Review Quán Ăn Ngon Sài Gòn - Mở Đến 2h Sáng",
+    "link": "https://www.tiktok.com/@dichoimoingay/video/7513919758367001863",
+    "snippet": "Review Quán Ăn Ngon Sài Gòn - Mở Đến 2h Sáng. Khám phá địa chỉ ẩm thực tuyệt vời tại Sài Gòn, với đồ ăn ngon, không gian mở đến khuya. Lai ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Bò Nướng Sài Gòn: Review Nhà Hàng Ngon Ở Quận 1",
+    "link": "https://www.tiktok.com/@foodinvietnam/video/7182107303259229467",
+    "snippet": "Quán Bò Nướng Sài Gòn: Review Nhà Hàng Ngon Ở Quận 1. Khám phá quán bò nướng ngon khi đến Sài Gòn. Review nhà hàng, bán bò, và các món ăn ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà hàng ngon bình dân quận 1 – gợi ý ăn uống rẻ ngon",
+    "link": "https://www.tiktok.com/@sayhihuy/video/7662183908280159495",
+    "snippet": "Lead Danh sách nhà hàng ngon bình dân ở quận 1 giúp bạn tìm quán rẻ nhưng chất lượng. Bài viết tập trung vào địa chỉ, món đặc trưng và lý do ...",
+    "position": 5
+   },
+   {
+    "title": "Tổng hợp các quán ăn ngon tại Quận 5 Phần 1. Tất cả là ...",
+    "link": "https://www.tiktok.com/@tieusanhanuong/video/7477811337389706514",
+    "snippet": "Tổng hợp các quán ăn ngon tại Quận 5 Phần 1. Tất cả là các quán ... Quán Ăn Ngon Sài GònQuán Ăn Ngon Ở Mũi NéCác Quán Ăn Ngon Ở Đống Đa ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Hương Lài Ẩn Giấu Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@jaynioi/video/7591835429364583701",
+    "snippet": "... Quán Ăn Ngon Sài GònQuán Sài Gòn Ốc Dương Quảng HàmMón Ngon Sài Gòn ... Quận 1 Sài GònQuán Lẩu Hột Vịt Lộn Sài Gòn. Khám Phá Nhà Hàng ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm. Khám phá nhà hàng chất lượng ở Hàm Nghi, Nam Từ Liêm. Đổi gió Ẩm thực cho dịp 20/10 sắp tới. # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

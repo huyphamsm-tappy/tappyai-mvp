@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chạy bộ dưới 3 triệu IPX5 ANC earbuds Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:18:53.830Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chạy bộ dưới 3 triệu IPX5 ANC earbuds Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo · Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe có bộ nhớ trong - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/c%C3%B3%20b%E1%BB%99%20nh%E1%BB%9B%20trong",
+    "snippet": "Tai Nghe Có Dây TRANYOO T-R12 R13 R14 Thiết Kế Nhét Tai Phù Hợp Nhu Cầu Văn Phòng, Học Tập, Giải Trí. 94.660₫. 172.500₫. -45%. voucher-icon. Rẻ Vô Địch.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe âm thanh nổi vô hình / Tai nghe điều khiển cảm ...",
+    "link": "https://shopee.vn/Tai-nghe-%C3%A2m-thanh-n%E1%BB%95i-v%C3%B4-h%C3%ACnh-Tai-nghe-%C4%91i%E1%BB%81u-khi%E1%BB%83n-c%E1%BA%A3m-%E1%BB%A9ng-kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX5-Tai-nghe-%E1%BA%A9n-Bluetooth-5.3-Tai-nghe-kh%C3%B4ng-d%C3%A2y-ng%E1%BB%A7-v%C3%B4-h%C3%ACnh-Mini--i.290991955.19281304167",
+    "snippet": "Tai nghe âm thanh nổi vô hình / Tai nghe điều khiển cảm ứng khử tiếng ồn chống nước IPX5 / Tai nghe ẩn Bluetooth 5.3 / không dây ngủ vô hình Mini /.",
+    "rating": 4.4,
+    "ratingCount": 30,
+    "position": 3
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 5
+   },
+   {
+    "title": "Newmsnr Chống ồn AI ENC Tai Nghe Không Dây ...",
+    "link": "https://shopee.vn/Newmsnr-Ch%E1%BB%91ng-%E1%BB%93n-AI-ENC-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Bluetooth-Kh%C3%B4ng-%C4%91au-tai-IPX5-Ch%E1%BB%91ng-Th%E1%BA%A5m-N%C6%B0%E1%BB%9Bc-Ch%E1%BA%A5t-L%C6%B0%E1%BB%A3ng-Cao-Tai-nghe-Thi%E1%BA%BFt-k%E1%BA%BF-OWS-hifi-Super-Bass-Tai-nghe-cu%E1%BB%99c-g%E1%BB%8Di-HD-Tu%E1%BB%95i-th%E1%BB%8D-pin-d%C3%A0i-tai-nghe-Ch%E1%BB%91ng-m%E1%BB%93-h%C3%B4i-t%E1%BA%ADp-gym-ch%E1%BA%A1y-b%E1%BB%99-th%E1%BB%83-thao-%C3%A2m-nh%E1%BA%A1c-i.514986264.14510756174",
+    "snippet": "Newmsnr Chống ồn AI ENC Tai Nghe Không Dây Bluetooth Không đau tai IPX5 Chống Thấm Nước Chất Lượng Cao Tai nghe Thiết kế OWS hifi Super Bass nghe cuộc gọi HD ...",
+    "rating": 4.8,
+    "ratingCount": 209,
+    "position": 6
+   },
+   {
+    "title": "5 mẫu tai nghe True Wireless hỗ trợ công nghệ chống ồn ...",
+    "link": "https://cellphones.com.vn/sforum/5-mau-tai-nghe-true-wireless-ho-tro-cong-nghe-chong-on-chu-dong-dang-mua-nhat-2019",
+    "snippet": "1. Sony WF-1000XM3 · 2. Apple AirPods Pro · 3. Master & Dynamic MW07 Plus · 4. Mobvoi TicPods Free · 5. Sony WF-SP700N.",
+    "date": "28 thg 11, 2019",
+    "position": 7
+   },
+   {
+    "title": "TOP 16 Dòng Tai Nghe Bluetooth Chính Hãng, Tốt, Giá Rẻ | TIKI",
+    "link": "https://tiki.vn/blog/tai-nghe-bluetooth-tot/",
+    "snippet": "Tiện ích nổi bật: Chống nước IPX7, có 3 micro đàm thoại, sạc nhanh. Giá tham khảo: 3.159.000 đồng.",
+    "date": "16 thg 3, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
