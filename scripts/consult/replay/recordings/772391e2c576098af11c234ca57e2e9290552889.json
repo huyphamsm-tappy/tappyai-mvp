@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mps.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 200.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:15.795Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mps.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 200.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hướng dẫn đăng ký hồ sơ đề nghị cấp hộ chiếu phổ thông ...",
+    "link": "https://mps.gov.vn/bai-viet/huong-dan-dang-ky-ho-so-de-nghi-cap-ho-chieu-pho-thong-tren-cong-dich-vu-cong-quoc-gia-d3-t797",
+    "snippet": "Sau khi hồ sơ được cơ quan quản lý xuất nhập cảnh chấp thuận, thanh toán lệ phí trực tuyến theo đường dẫn được Cổng dịch vụ công quốc gia gửi ...",
+    "date": "23 thg 8, 2022",
+    "position": 1
+   },
+   {
+    "title": "Việc bổ sung thông tin “nơi sinh” trên hộ chiếu là cần thiết ...",
+    "link": "https://mps.gov.vn/bai-viet/viec-bo-sung-thong-tin-noi-sinh-tren-ho-chieu-la-can-thiet-tao-thuan-loi-cho-cong-dan-trong-viec-nhap-canh-vao-cac-nuoc-d2-t33610",
+    "snippet": "Tuy nhiên, đến ngày 27/7/2022, một số nước thông báo tạm thời dừng cấp thị thực vào hộ chiếu mẫu mới của Việt Nam, với lý do trong hộ chiếu ...",
+    "date": "7 thg 11, 2022",
+    "position": 2
+   },
+   {
+    "title": "cấp hộ chiếu",
+    "link": "https://mps.gov.vn/tag/303",
+    "snippet": "Từ ngày 01/7/2022, Bộ Công an bắt đầu cấp hộ chiếu phổ thông mẫu mới. Công dân Việt Nam ở trong nước và công dân Việt Nam đang ở nước ngoài sẽ bắt đầu được cấp ...",
+    "position": 3
+   },
+   {
+    "title": "Điểm mới của Luật Xuất cảnh, nhập cảnh của công dân ...",
+    "link": "https://mps.gov.vn/bai-viet/diem-moi-cua-luat-xuat-canh-nhap-canh-cua-cong-dan-viet-nam-2025-1787819676",
+    "snippet": "Điểm mới đáng chú ý của Luật số 118/2025/QH15 là hộ chiếu phổ thông được cấp theo thủ tục rút gọn có thời hạn không quá 12 tháng, không được gia hạn và chỉ có ...",
+    "position": 4
+   },
+   {
+    "title": "Đắk Lắk: Xây dựng sáng kiến Chatbot trong lĩnh vực cấp ...",
+    "link": "https://mps.gov.vn/bai-viet/dak-lak-xay-dung-sang-kien-chatbot-trong-linh-vuc-cap-ho-chieu-truc-tuyen-d23-t45936",
+    "snippet": "Chatbot sẽ giúp số hóa dữ liệu văn bản, quy trình cấp hộ chiếu, đồng thời cung cấp thông tin hướng dẫn chi tiết, chính xác về trình tự, hồ sơ, ...",
+    "date": "10 thg 7, 2025",
+    "position": 5
+   },
+   {
+    "title": "hộ chiếu",
+    "link": "https://mps.gov.vn/tag/78",
+    "snippet": "Từ ngày 01/7/2022, Bộ Công an bắt đầu cấp hộ chiếu phổ thông mẫu mới. Công dân Việt Nam ở trong nước và công dân Việt Nam đang ở nước ngoài sẽ bắt đầu được cấp ...",
+    "position": 6
+   },
+   {
+    "title": "Lan tỏa tinh thần “Mỗi ngày làm một việc tốt vì Nhân dân”",
+    "link": "https://mps.gov.vn/bai-viet/gia-lai-lan-toa-tinh-than-moi-ngay-lam-mot-viec-tot-vi-nhan-dan-1768441806",
+    "snippet": "Từ ngày 1.1.2026 đến nay, Phòng Quản lý Xuất nhập cảnh đã tiếp nhận hơn 520 hồ sơ đề nghị cấp hộ chiếu hợp lệ trên hệ thống dịch vụ công trực ...",
+    "date": "15 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "Công an tỉnh Nghệ An chủ động, hiệu quả trong giải quyết ...",
+    "link": "https://www.mps.gov.vn/bai-viet/cong-an-nghe-an-chu-dong-hieu-qua-trong-giai-quyet-thu-tuc-hanh-chinh-cho-nguoi-dan-sau-tet-nguyen-dan-1771927411",
+    "snippet": "... cấp, đổi căn cước công dân; đăng ký cư trú; cấp hộ chiếu phổ thông; gia hạn tạm trú, thị thực… Để đáp ứng nhu cầu của người dân, các đơn vị ...",
+    "date": "24 thg 2, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

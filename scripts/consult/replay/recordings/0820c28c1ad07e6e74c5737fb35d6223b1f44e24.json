@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 water resistance IP54 charging case MagSafe USB-C Lightning",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:33:06.678Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 water resistance IP54 charging case MagSafe USB-C Lightning",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "AirPods 5 and AirPods Pro 3 have a rating of IP57 and AirPods Pro 2 have a rating of IP54 under IEC standard 60529. Dust, sweat, and water resistance are not ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "AirPods Pro 2 are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case were tested under controlled laboratory ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-3rd-gen-lightning,airpods-4-anc,airpods-max",
+    "snippet": "Wireless Charging Case (USB‑C) works with Apple Watch charger and Qi‑certified chargers; includes speaker for Find My. Sweat and water resistant.",
+    "position": 4
+   },
+   {
+    "title": "Refurbished AirPods Pro 2 with MagSafe Charging Case ...",
+    "link": "https://www.apple.com/shop/product/ftjv3ll/a/Refurbished-AirPods-Pro-2-with-MagSafe-Charging-Case-USB-%E2%80%8DC",
+    "snippet": "Refurbished AirPods Pro 2 with MagSafe Charging Case (USB‑C). Now $189.00. Was ... Dust, sweat, and water resistant (IP54): AirPods Pro and charging case¹² ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods (3rd generation) with Lightning Charging Case",
+    "link": "https://www.apple.com/jo/airpods/compare/?modelList=airpods-3rd-gen-lightning,airpods-pro",
+    "snippet": "Products are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case were tested under controlled laboratory ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods (3rd generation)",
+    "link": "https://www.apple.com/eg/airpods-3rd-generation/",
+    "snippet": "water resistant. MagSafe Charging Case (USB‑C) with speaker and lanyard loop. 6 hrs. Up to 6 hours of listening time with a single charge. AirPods Max.",
+    "position": 7
+   },
+   {
+    "title": "AirPods 5",
+    "link": "https://www.apple.com/airpods-5/",
+    "snippet": "AirPods 5 with Wireless Charging Case. The case works with USB‑C, as well as Apple Watch and Qi chargers.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

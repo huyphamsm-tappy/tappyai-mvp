@@ -29,7 +29,8 @@ describe('no scratch files are committed', () => {
     // 2135 → 2371 (Phase 8 M2): the 236 recordings of the M2 follow-up / regression eval runs (scripts/agent-eval), added deliberately.
     // 2371 → 2542 (Phase 8 M3): the recordings of the M3 research / regression eval runs (scripts/agent-eval), added deliberately.
     // 2542 → 2678 (Phase 8 M3 latency pass): the recordings of the latency-pass research / regression eval runs, added deliberately.
-    expect(n).toBeLessThanOrEqual(2678)
+    // 2678 → 2868 (Phase 8 M4): the recordings of the M4 evidence-guard research / regression eval runs, added deliberately.
+    expect(n).toBeLessThanOrEqual(2868)
   })
 })
 

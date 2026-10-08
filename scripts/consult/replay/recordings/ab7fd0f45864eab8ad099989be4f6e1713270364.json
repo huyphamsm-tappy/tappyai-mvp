@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An vé tham quan phố cổ 2026 80. báo Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:32:31.920Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An vé tham quan phố cổ 2026 80. báo Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tìm giải pháp chống thất thoát vé tham quan phố cổ Hội An",
+    "link": "https://baodanang.vn/tim-giai-phap-chong-that-thoat-ve-tham-quan-pho-co-hoi-an-3333899.html",
+    "snippet": "ĐNO - Ước tính khoảng 60% du khách không mua vé khi vào tham quan khu phố cổ Hội An, gây thất thoát hàng chục tỷ đồng mỗi năm.",
+    "date": "23 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hội An có đánh mất mình từ việc bán vé tham quan?",
+    "link": "https://gialaitv.vn/hoi-an-co-danh-mat-minh-tu-viec-ban-ve-tham-quan/",
+    "snippet": "Theo Đề án về kiểm soát hoạt động bán vé, hướng dẫn tham quan khu phố cổ, kể từ ngày 15/5 tới đây, thành phố Hội An áp dụng giá vé 80 nghìn đồng ...",
+    "date": "5 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Chính thức: Áp dụng mức phí tham quan mới tại Hội An, Mỹ ...",
+    "link": "https://www.facebook.com/baodanangonline/posts/ch%C3%ADnh-th%E1%BB%A9c-%C3%A1p-d%E1%BB%A5ng-m%E1%BB%A9c-ph%C3%AD-tham-quan-m%E1%BB%9Bi-t%E1%BA%A1i-h%E1%BB%99i-an-m%E1%BB%B9-s%C6%A1n-v%C3%A0-c%C3%A1c-th%C3%A1p-c%E1%BB%95-t%E1%BB%AB-ng%C3%A0/1265366275450592/",
+    "snippet": "Ding Ding thui đi hội an giờ tòa parky mai mốt nhân vơ parky parky k chặt chém ai chặt ?? 1 to pho ngoài đó cũng 120k?? 32w · 1 like.",
+    "position": 3
+   },
+   {
+    "title": "Miễn vé tham quan đô thị cổ Hội An trong ngày 4/12",
+    "link": "https://hoian.danang.gov.vn/thong-bao/chi-tiet.html?id=691bdd7981b39a37eab30d54&p_id=426",
+    "snippet": "Du khách sẽ được miễn vé tham quan đô thị cổ Hội An trong ngày 4/12 nhân dịp 26 năm đô thị cổ Hội An được UNESCO công nhận Di sản văn hóa ...",
+    "date": "17 thg 11, 2025",
+    "position": 4
+   },
+   {
+    "title": "Tạm dừng hoạt động bán vé, hướng dẫn tham quan Khu ...",
+    "link": "https://danangfantasticity.com/tam-dung-hoat-dong-ban-ve-huong-dan-tham-quan-hoi-an",
+    "snippet": "Hoạt động bán vé và hướng dẫn tham quan tại Khu phố cổ Hội An sẽ tạm dừng từ ngày 16–19/02. Trong dịp Tết Nguyên đán Bính Ngọ 2026, ...",
+    "date": "9 thg 2, 2026",
+    "position": 5
+   },
+   {
+    "title": "Từ ngày 28/8 đến 2/9/2026, UBND TP Đà Nẵng tổ chức Tuần ...",
+    "link": "https://www.facebook.com/danangtv.vn/videos/t%E1%BB%AB-ng%C3%A0y-288-%C4%91%E1%BA%BFn-292026-ubnd-tp-%C4%91%C3%A0-n%E1%BA%B5ng-t%E1%BB%95-ch%E1%BB%A9c-tu%E1%BA%A7n-l%E1%BB%85-s%C3%A1ng-t%E1%BA%A1o-h%E1%BB%99i-an-2026-v%E1%BB%9Bi-/1682116156210386/",
+    "snippet": "Từ ngày 28/8 đến 2/9/2026, UBND TP Đà Nẵng tổ chức Tuần lễ Sáng tạo Hội An 2026 với chủ đề “Hành trình chạm Di sản, chạm Sáng tạo” tại quảng ...",
+    "position": 6
+   },
+   {
+    "title": "Vé Tham Quan Phố Cổ Hội An",
+    "link": "https://www.klook.com/vi/activity/72346-hoi-an-ancient-town-attractions-adminssion-ticket/",
+    "snippet": "Thị trấn cổ kính tuyệt đẹp. Không cần vé vẫn có thể vào khu phố cổ. Điểm khác biệt là với vé, bạn có thể vào 5 điểm tham quan do bạn tự chọn với một số điều ...",
+    "rating": 4,
+    "ratingCount": 691,
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Ngày 1: Di chuyển đến Hội An, khám phá ẩm thực, hội quán, nhà cổ... Ngày 2: Thăm làng nghề, ngắm hoàng hôn, ăn hải sản ở biển An Bàng; Ngày 3: Khám phá đời sống ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

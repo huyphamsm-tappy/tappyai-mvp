@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:49:15.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.770504,106.7017951,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "MelyFood Hàm Nghi - Cơm Niêu MeLy - Ngon MeLy",
+    "address": "49 Hàm Nghi, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.770503999999999,
+    "longitude": 106.70437,
+    "rating": 4.3,
+    "ratingCount": 147,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/comnieumely",
+    "phoneNumber": "+84 931 113 949",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/BDT09HxK2LM?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO1j6SdLUnkao9jy99MUtUV1lVsAJpC8fG9QnAwjhjTrIUED4hi5-RnFjB1xAb30nbPu2gg6ZZKOah0h8MOinL-BJv_lO4hFQ7oxZM7GgqEXgClY1dUde56h-Y-VP48rErJFWJLR9htKKo",
+    "cid": "9309806400531276454",
+    "fid": "0x31752f86d4c6e4a7:0x81331398875322a6",
+    "placeId": "ChIJp-TG1IYvdTERpiJTh5gTM4E"
+   }
+  ],
+  "credits": 3
+ }
+}

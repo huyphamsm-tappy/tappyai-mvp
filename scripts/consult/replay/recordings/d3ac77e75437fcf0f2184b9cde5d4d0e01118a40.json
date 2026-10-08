@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ thể thao dưới 3 triệu chống mồ hôi Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:53:37.401Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ thể thao dưới 3 triệu chống mồ hôi Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo · Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 1
+   },
+   {
+    "title": "Top 7 tai nghe bluetooth thể thao tốt cho dân tập luyện",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-the-thao-tot/",
+    "snippet": "Tai nghe bluetooth thể thao Sony WI-C400 · Tai nghe bluetooth Jaybird X3 phù hợp cho các hoạt động thể thao · Tai nghe bluetooth thể thao tốt ...",
+    "date": "21 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Havit Space NC01H là mẫu tai nghe Bluetooth over-ear nổi bật nhờ sự cân bằng giữa thời lượng pin, khả năng chống ồn và thiết kế bền bỉ. Với pin ...",
+    "date": "20 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "tai nghe bluetooth - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth",
+    "snippet": "Khả năng kháng nước: Nếu bạn thường xuyên đeo tai nghe đi chạy bộ, hãy chọn các dòng có chuẩn chống nước từ IPX4 trở lên để bảo vệ mạch điện tử khỏi mồ hôi và ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Thiết bị thường đạt chuẩn IP từ IPX4 đến IPX8, giúp hạn chế hư hỏng khi gặp mưa, mồ hôi hoặc thậm chí ngâm nước ngắn hạn. Nhờ đó, tai nghe không chỉ hỗ trợ giải ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "... nghe ở mức 90 dB. Tai nghe có chống nước đi mưa được không? Các model tai nghe đạt chuẩn từ IPX4 trở lên hỗ trợ tốt khi tập thể thao ra mồ hôi hoặc gặp mưa nhẹ.",
+    "position": 6
+   },
+   {
+    "title": "Những mẫu tai nghe tốt nhất dành cho người chạy bộ",
+    "link": "https://cellphones.com.vn/sforum/nhung-mau-tai-nghe-tot-nhat-danh-cho-nguoi-chay-bo",
+    "snippet": "Tai nghe tốt nhất dành cho người chạy bộ: JLab Epic Air Sport · Tai nghe tốt nhất dành cho người chạy bộ sử dụng iPhone: PowerBeats Pro.",
+    "date": "16 thg 11, 2019",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Apple Airpods, Earpod | Giá rẻ 10/2026, Góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple.html",
+    "snippet": "AirPods Pro (in-ear, chống ồn). AirPod Pro Series là dòng tai nghe nhét tai cao cấp, được trang bị công nghệ chủ động khử tiếng ồn mạnh mẽ hơn. Mẫu tai nghe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

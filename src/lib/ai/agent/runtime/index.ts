@@ -31,6 +31,7 @@ import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { AGENT_SYSTEM_V2 } from './prompt'
 import type { AgentRunTrace } from './trace'
+import type { GuardEvidence } from '@/lib/ai/guardEvidence'
 
 export const agentRuntimeV2Enabled = (env: Record<string, string | undefined> = process.env): boolean => env.TAPPY_AGENT === '2'
 
@@ -78,6 +79,11 @@ export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   research?: { fetchPage?: (url: string, signal?: AbortSignal) => Promise<PageFetchResult> }
   /** M3: the pages read this turn, for the enrichment site to turn [S#] markers into source links (streamEnrichment citeSources). */
   onCitationSources?: (sources: Array<{ id: string; host: string; url: string }>) => void
+  /**
+   * M4: the provenance the settle-path guards judge the reply against (guardEvidence.ts): this turn's sources with their extracts, the
+   * ledger's conflicts, and the task's evidence references as they were at the START of the turn (with that constraint signature).
+   */
+  onGuardEvidence?: (ev: GuardEvidence) => void
 }
 
 export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
@@ -137,6 +143,10 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       modelId: (r as { response?: { modelId?: string } }).response?.modelId,
     } satisfies RuntimeStep
   })
+
+  // M4: the task's carried evidence as this turn found it (the tracker may replace the task after the reply).
+  const carriedAtStart = box ? [...(box.task.research_state.evidence ?? [])] : []
+  const sigAtStart = box ? taskConstraintsSig(box.task) : null
 
   return agentStreamResult(async emit => {
     let progressSent = false
@@ -207,6 +217,15 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       run.text = c.text
       i.trace.citations = c.cited || Math.min(3, ledger.sources.length)
       try { i.onCitationSources?.(c.sources) } catch { /* presentation only */ }
+    } else if (run.status !== 'asked' && /\[S\d/.test(run.text)) {
+      // M4 citation integrity: no page was read (all failed / none opened) — a [S#] marker would point at nothing (M4 eval RS-E1 run 2).
+      run.text = planCitations(run.text, []).text
+    }
+    if (run.status !== 'asked' && (ledger.sources.length || carriedAtStart.length)) {
+      try {
+        const view = ledger.guardView()
+        i.onGuardEvidence?.({ ...view, carried: carriedAtStart, constraintsSig: sigAtStart, userText: box?.turn.userText ?? (typeof lastUser?.content === 'string' ? lastUser.content : '') })
+      } catch { /* guards then run without page provenance, as before M4 */ }
     }
     if (box) {
       try {

@@ -2847,6 +2847,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => agentRunTrace.guard(stage, before, after)
+  // Phase 8 M4: the reply's provenance verdicts (counts and closed reasons only).
+  if (agentRunTrace) enrichment.evidenceTrace = summary => agentRunTrace.add('evidence_guard', summary)
   // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
   // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
   const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null
@@ -2929,7 +2931,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result

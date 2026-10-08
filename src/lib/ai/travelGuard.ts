@@ -118,7 +118,7 @@ const SHOW_CTX = /(?:^|\s)(?:suất|suat|chiếu|chieu|screening|showtimes?|show
 // No trailing \b after a Vietnamese noun — JS \b treats "ỗ" as a non-word char,
 // so "còn 3 chỗ\b" never matches (the same Unicode-boundary trap the money guard
 // documents). A leading (^|\s) keeps "con" from firing inside another word.
-const AVAIL_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|(?:^|\s)(?:hết|het)\s+(?:vé|ve|phòng|phong|chỗ|cho)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)|(?:sold\s*out|fully\s*booked|còn trống|con trong|hết chỗ|het cho)/iu
+export const AVAIL_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|(?:^|\s)(?:hết|het)\s+(?:vé|ve|phòng|phong|chỗ|cho)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)|(?:sold\s*out|fully\s*booked|còn trống|con trong|hết chỗ|het cho)/iu
 
 /** Sentence spans. The schedule/availability patterns require a flight verb or an
  *  explicit availability phrase, so a URL's digits can't masquerade as a claim. */

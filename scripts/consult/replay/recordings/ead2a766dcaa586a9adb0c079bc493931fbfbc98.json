@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com AirPods Pro 2 water resistance IP54 USB-C Lightning Apple",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:46:48.413Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com AirPods Pro 2 water resistance IP54 USB-C Lightning Apple",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are dust, sweat, and water resistant for non-water sports and exercise, and have a rating of IP54 ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-us/111834",
+    "snippet": "AirPods Pro 2 are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case were tested under controlled laboratory ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-hk/111851",
+    "snippet": "Sweat and water resistance are not permanent conditions and resistance might decrease as a result of normal wear. Do not attempt to charge wet AirPods Pro; ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods 4 - Tech Specs",
+    "link": "https://support.apple.com/en-us/121203",
+    "snippet": "AirPods 4 and AirPods 4 with Active Noise Cancellation are dust, sweat, and water resistant for non-water sports and exercise. Products including charging case ...",
+    "position": 4
+   },
+   {
+    "title": "À propos de la résistance à la transpiration et à l'eau ...",
+    "link": "https://support.apple.com/fr-afri/105046",
+    "snippet": "Les AirPods Pro 1 sont résistants à l'eau et à la transpiration dans le cadre d'entraînements et de sports non aquatiques, et sont conformes à l ...",
+    "date": "18 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "About splash, water and dust resistance of iPhone 7 and later",
+    "link": "https://support.apple.com/en-in/108039",
+    "snippet": "AirPods Pro 3 ... To dry your iPhone, tap it gently against your hand with the Lightning or USB-C connector facing down to remove excess liquid.",
+    "date": "17 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "Información sobre la resistencia al agua y al sudor de ...",
+    "link": "https://support.apple.com/es-lamr/105046",
+    "snippet": "Los AirPods y el estuche de carga de estos modelos son resistentes al sudor y al agua para practicar deportes no acuáticos y hacer ejercicio, y ...",
+    "date": "24 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "AirPods 3 - Caractéristiques techniques",
+    "link": "https://support.apple.com/fr-fr/111863",
+    "snippet": "Classés IPX4, les AirPods 3 sont résistants à la transpiration et à l'eau pour le sport et les activités non aquatiques. La résistance à la transpiration et à l ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

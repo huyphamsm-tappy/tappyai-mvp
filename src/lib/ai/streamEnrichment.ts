@@ -24,6 +24,7 @@ import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
+import { shieldSupported, pageGroundedNames } from './guardEvidence'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
@@ -2323,7 +2324,14 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('plan_trip_facts', itemized, tripped)
     if (dated) gt('travel_ungiven_date', tripped, dated.text)
     const planMask = maskPlanBody(dated ? dated.text : tripped)
-    const enriched = planMask.text
+    /**
+     * Phase 8 M4 — EVIDENCE PROVENANCE BEFORE THE FACTUAL GUARDS. A sentence whose every value is stated by the page it cites
+     * (or by fresh task evidence) is held out of the heuristic guards below (money … unsupported_claim) and restored unchanged
+     * after them; everything else is judged exactly as before. Inert without `guardEvidence` (every non-agent turn). See guardEvidence.ts.
+     */
+    const evShield = shieldSupported(planMask.text, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean) })
+    gt('evidence_citation', planMask.text, evShield.text)
+    const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -2601,13 +2609,16 @@ export function applyPlaceEnrichmentStreamFilter(
     if (unsupported.rewritten.length > 0) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unsupported_claim', rewritten: unsupported.rewritten }))
     // Principle 7 (owner 2026-09-29): a plan the user budgeted shows the split as code-written arithmetic,
     // added AFTER the prose guards so no price guard reads the user's own total ÷ people as a claim.
-    const budgeted = appendPlanBudgetMath(planMask.restore(unsupported.text), collector?.userTexts ?? [userText], lang).text
+    const evRestored = evShield.restore(unsupported.text)
+    if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
+    const budgeted = appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
     // The "còn N lựa chọn" line is COUNTED here, not left to the model (replay 2026-09-29: the model
     // dropped it on every pick): N = candidates the search returned − the ones this reply names.
     // The pick sentence in the approved "**Mình chọn: X**" form (normalised by code; the model often
     // writes "Mình gợi ý **X**" — replay 2026-09-29).
-    gt('plan_budget_math', planMask.restore(unsupported.text), budgeted)
+    gt('evidence_restore', unsupported.text, evRestored)
+    gt('plan_budget_math', planMask.restore(evRestored), budgeted)
     const consultPickTurn = ['pick', 'more', 'reject', 'compare'].includes(collector?.consultTurn ?? '')
     // Candidates = the card set (placesRecommendations — presearch rows reach it; latestPlaces does not,
     // because presearch frames are prefixed outside this filter), then the model's own rows, then products.
@@ -2918,6 +2929,8 @@ export function applyPlaceEnrichmentStreamFilter(
         ...places.map(p => p.name || ''),
         ...productRecords.map(r => r.title || ''),
         ...(seed?.heldCandidates ?? []).map(c => c.name),
+        // Phase 8 M4: a venue a page read this turn names is retrieved, not invented.
+        ...pageGroundedNames(scaffoldStripped, collector?.guardEvidence),
       ],
       lang,
       // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check

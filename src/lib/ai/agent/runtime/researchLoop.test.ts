@@ -128,3 +128,56 @@ describe('M3 · evidence in the task (M2): persisted, re-used, flagged after new
     expect(taskContextLines(b.task, [], new Date()).join('\n')).toContain('đọc TRƯỚC khi đổi ràng buộc')
   })
 })
+
+describe('M4 · the runtime hands the settle-path guards their provenance', () => {
+  const box = (): TaskBox => ({ task: createTask(conv, new Date()), history: [], conversationId: conv, persisted: true, turn: { userText: 'pin bao lâu', previousReply: null, cards: [] }, extract: async () => ({ new_task: false, task_type: null, goal: null, set_constraints: [], remove_constraints: [], set_preferences: [], add_entities: [], selected_items: null, status: null }) })
+  it('sources with their bounded extract (this turn only), the conflicts, and the task evidence AS IT WAS at the start of the turn', async () => {
+    const b = box()
+    const seen: Array<import('@/lib/ai/guardEvidence').GuardEvidence> = []
+    const run = (script: RuntimeStep[], searches: Array<Record<string, unknown>>) => {
+      const trace = new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' })
+      const r = startAgentRuntimeTurn({
+        routeTools: { web_search: { description: 'web', parameters: undefined, execute: async () => searches.shift() ?? { results: [] } } },
+        context: { system: 'S', data: null }, serperTurnCredits: 12, messages: [{ role: 'user', content: 'pin bao lâu' }], lang: 'vi',
+        deadlineAt: Date.now() + 85_000, finalRole: 'agent', maxTokens: 800, canConfirmActions: false, onPendingAction: () => {}, sanitizeQuery: q => ({ query: q, cut: [] }), trace,
+        taskBox: b, research: { fetchPage: async (u: string) => page(u) }, onGuardEvidence: ev => { seen.push(ev) },
+        callModel: async () => script.shift() ?? step('Xong.'),
+      })
+      vi.spyOn(console, 'log').mockImplementation(() => {})
+      return r.toDataStreamResponse().text()
+    }
+    await run([step('', [['web_search', { queries: ['x'], read: 2, focus: 'battery listening hours', kind: 'spec' }]]), step('Apple ghi tối đa 6 giờ [S1].')], [results(REVIEW, APPLE)])
+    expect(seen).toHaveLength(1)
+    expect(seen[0].sources.map(s => s.host).sort()).toEqual(['apple.com', 'some-blog.example'])
+    expect(seen[0].sources.find(s => s.host === 'apple.com')!.passages.join(' ')).toContain('Up to 6 hours of listening time')
+    expect(seen[0].conflicts.length).toBe(1)
+    expect(seen[0].carried).toEqual([]) // nothing carried on the first turn — this turn's refs are not "carried"
+    expect(seen[0].userText).toBe('pin bao lâu')
+    // Next turn, no research: the guards get the refs the PREVIOUS turn stored, with the signature they were stored under.
+    await run([step('Pin tối đa 6 giờ.')], [])
+    expect(seen[1].sources).toEqual([])
+    expect(seen[1].carried.map(c => c.host).sort()).toEqual(['apple.com', 'some-blog.example'])
+    expect(seen[1].constraintsSig).toBe(seen[1].carried[0].constraints_sig)
+  })
+  it('an ask turn hands nothing (there is no answer to judge)', async () => {
+    const seen: unknown[] = []
+    const trace = new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' })
+    const r = startAgentRuntimeTurn({
+      routeTools: {}, context: { system: 'S', data: null }, serperTurnCredits: 12, messages: [{ role: 'user', content: 'x' }], lang: 'vi',
+      deadlineAt: Date.now() + 85_000, finalRole: 'agent', maxTokens: 800, canConfirmActions: false, onPendingAction: () => {}, sanitizeQuery: q => ({ query: q, cut: [] }), trace,
+      onGuardEvidence: ev => { seen.push(ev) }, callModel: async () => step('', [['ask_user', { question: 'Bạn ở đâu?', choices: [] }]]),
+    })
+    vi.spyOn(console, 'log').mockImplementation(() => {})
+    await r.toDataStreamResponse().text()
+    expect(seen).toEqual([])
+  })
+})
+
+describe('M4 · citation integrity when no page could be read', () => {
+  it('a [S#] marker with no source behind it never reaches the user (M4 eval RS-E1 run 2)', async () => {
+    const t = turn([step('', [['read_page', { urls: ['https://dichvucong.gov.vn/ho-chieu'], focus: 'lệ phí' }]]), step('Lệ phí 200.000 đồng khi nộp trực tiếp. [S1]')], { userText: 'lệ phí hộ chiếu https://dichvucong.gov.vn/ho-chieu' })
+    const text = await t.text()
+    expect(text).not.toMatch(/\[S\d/)
+    expect(text).toContain('200.000 đồng')
+  })
+})

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "lệ phí cấp hộ chiếu online 2026 90. Thông tư 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:50:54.421Z",
+ "body": {
+  "searchParameters": {
+   "q": "lệ phí cấp hộ chiếu online 2026 90. Thông tư 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "1. Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chip điện tử và hộ chiếu không gắn chip điện tử) ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "📕📕 MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/cathungyen/posts/-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y/122251399514292680/",
+    "snippet": "TỪ 15/8/2026: MIỄN, GIẢM NHIỀU KHOẢN PHÍ, LỆ PHÍ KHI THỰC HIỆN DỊCH VỤ CÔNG TRỰC TUYẾN Từ ngày 15/8/2026, Nghị quyết số 66.22/2026/NQ ...",
+    "position": 3
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Đề xuất giảm 10% lệ phí cấp hộ chiếu online",
+    "link": "https://tapchicongthuong.vn/de-xuat-giam-10--le-phi-cap-ho-chieu-online-107045.htm",
+    "snippet": "Dự thảo Thông tư của Bộ Tài chính đề xuất giảm 10% lệ phí cấp hộ chiếu online từ ngày 01/01/2024 - 31/12/2025.",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về phí, lệ phí khi làm thủ tục cấp hộ chiếu trực ...",
+    "link": "https://pbgdplthainguyen.gov.vn/news/gioi-thieu-noi-dung-van-ban-phap-luat-moi/quy-dinh-moi-ve-phi-le-phi-khi-lam-thu-tuc-cap-ho-chieu-truc-tuyen-663.html",
+    "snippet": "Công dân Việt Nam nộp hồ sơ đề nghị cấp hộ chiếu theo hình thức trực tuyến thì mức lệ phí quy định: - Kể từ ngày 01/01/2024 đến hết ngày 31/12/ ...",
+    "date": "18 thg 10, 2023",
+    "position": 6
+   },
+   {
+    "title": "Giảm 50% lệ phí làm hộ chiếu đến hết ngày 31/12/2025 ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=256856",
+    "snippet": "Trường hợp cấp hộ chiếu. Mức lệ phí ưu đãi đến 31/12/2025. Mức lệ phí từ 01/01/2026 ; Cấp mới, cấp lại. 100.000 VNĐ/lần. 200.000 VNĐ/lần ; Cấp lại do bị hỏng/mất ...",
+    "position": 7
+   },
+   {
+    "title": "Lệ phí làm hộ chiếu hết bao nhiêu tiền 2026?",
+    "link": "https://aztax.com.vn/lam-ho-chieu-het-bao-nhieu-tien/",
+    "snippet": "Từ ngày 01/01/2024 đến 31/12/2025, lệ phí là 90% mức thu quy định trong Thông tư 25/2021/TT-BTC. Cấp mới: 180.000 VND/lần. Cấp lại do hỏng hoặc ...",
+    "date": "30 thg 7, 2024",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

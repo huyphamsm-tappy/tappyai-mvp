@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu online lần đầu căn cước ảnh chân dung giấy tờ cần chuẩn bị Cục xuất nhập cảnh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:20:16.986Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu online lần đầu căn cước ảnh chân dung giấy tờ cần chuẩn bị Cục xuất nhập cảnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử từ lần thứ hai hoặc lần ...",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn quy chuẩn ảnh - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=41",
+    "snippet": "Hướng dẫn quy chuẩn ảnh 4x6 của thủ tục Cấp hộ phiếu phổ thông · Ảnh do quý vị sử dụng khi đăng ký hồ sơ sẽ được in trên hộ chiếu. · - Ảnh mới chụp (không quá 6 ...",
+    "position": 3
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu: Hướng dẫn làm trực tiếp và online",
+    "link": "https://luatvietnam.vn/tin-phap-luat/thu-tuc-lam-ho-chieu-230-18795-article.html",
+    "snippet": "- Bản chụp Chứng minh nhân dân/Căn cước công dân nếu có sự thay đổi thông tin về nhân thân so với thông tin trong hộ chiếu được cấp lần gần nhất ...",
+    "date": "5 thg 8, 2025",
+    "position": 4
+   },
+   {
+    "title": "Thủ tục làm hộ chiếu tại Hà Nội",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t82-thu-tuc-lam-ho-chieu-tai-ha-noi.htm",
+    "snippet": "... chiếu các giấy tờ gốc tại cơ quan Quản lý xuất nhập cảnh. - Tờ khai xin cấp hộ chiếu in ra từ bản online. - Thẻ căn cước công dân (Để đối chiếu).",
+    "date": "15 thg 12, 2023",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online (passport online), nhận tại ...",
+    "link": "https://quephong.nghean.gov.vn/tin-noi-bat/huong-dan-lam-ho-chieu-online-passport-online-nhan-tai-nha-633365",
+    "snippet": "Giấy tờ cần chuẩn bị khi làm passport online. Khi làm passport online, bạn cần chuẩn bị trước các hồ sơ giấy tờ sau: 01 ảnh chân dung và 01 ảnh ...",
+    "date": "19 thg 4, 2024",
+    "position": 6
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Chứng minh nhân dân hoặc Thẻ căn cước công dân hoặc hộ chiếu còn giá trị sử dụng (nếu có, xuất trình khi nộp hồ sơ để cơ quan Quản lý xuất nhập cảnh kiểm tra, ...",
+    "position": 7
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:52:03.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_2__9_15_1_3_1.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3ZRWBTkhG9LRL0Yxi7rlPxd8XapQiGm233-K2AnrmNA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025-ch-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_2__9_15_1_3_1.png&tbnid=AH32wmRs2B9LzM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025-ch-cu-dep.html&docid=Bhym5yGNHfSdgM&w=1200&h=1200",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M4 15 M4 16GB/512GB | Chính hãng, giá tốt",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/macbook_air_m4_slide_ff0abbf769.jpg",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTK8AdAymwr_21XkVZgJT8MJE1RmSwxH_FfKLAk7DKSw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-15-m4-2025-10cpu-10gpu-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_m4_slide_ff0abbf769.jpg&tbnid=Ljd5zKEK4CsX2M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-15-m4-2025-10cpu-10gpu-16gb-512gb&docid=DEIgrCODd-J5jM&w=828&h=466",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_3__7_26_1_3_1.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjuCdJ1rT4_NyXintFa5IudCUgFtOYduAprEttSDestQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025-ch-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_3__7_26_1_3_1.png&tbnid=6d6iAp9UAGvV4M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025-ch-cu-dep.html&docid=Bhym5yGNHfSdgM&w=1200&h=1200",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M4 2025 15 inch 10CPU 10GPU (16GB - 256GB) - Chính hãng Apple  Việt Nam",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/67/macbook-air-m4-2025-15-inch-10cpu-10gpu-16gb-256gb-anh-6.webp",
+    "imageWidth": 1080,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDeYtqZfIGDdOjWv__zfQZBZAbVn6dRkdPkKwyIP-BYg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-air-m4-2025-15-inch-10cpu-10gpu-16gb-256gb?srsltid=AU7gw4VIJXoiTPa1M8vR3gzP5TRvV6xGRwz313H3fFJau39jG9QS7qNO",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F67%2Fmacbook-air-m4-2025-15-inch-10cpu-10gpu-16gb-256gb-anh-6.webp&tbnid=7d3X7Hx_lCzTYM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-air-m4-2025-15-inch-10cpu-10gpu-16gb-256gb%3Fsrsltid%3DAU7gw4VIJXoiTPa1M8vR3gzP5TRvV6xGRwz313H3fFJau39jG9QS7qNO&docid=mCiSX4vAjZwNKM&w=1080&h=1080",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air 15-inch 2025 M4 10CPU 10GPU 16GB RAM 512GB SSD chính hãng –  Smartzone",
+    "imageUrl": "https://product.hstatic.net/200000785683/product/mba13-m4-midnight-gallery1-202503_copy_9c083e5a85d743f9b4e4b853b8014fa3_large.jpg",
+    "imageWidth": 480,
+    "imageHeight": 480,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8t4eWQyL2UIA0fpFDm2IZzn8bmMw_UH4Ihn9OJpciVQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Smartzone",
+    "domain": "smartzone.vn",
+    "link": "https://smartzone.vn/products/macbook-air-15-inch-2025-m4-10cpu-10gpu-16gb-ram-512gb-ssd?srsltid=AU7gw4WT-nnG8kiSLPww9EbkNRLkrZTgQzpm7_JSyN-xGmr8Ysd8JCw8",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000785683%2Fproduct%2Fmba13-m4-midnight-gallery1-202503_copy_9c083e5a85d743f9b4e4b853b8014fa3_large.jpg&tbnid=eTvjciL__NlFbM&imgrefurl=https%3A%2F%2Fsmartzone.vn%2Fproducts%2Fmacbook-air-15-inch-2025-m4-10cpu-10gpu-16gb-ram-512gb-ssd%3Fsrsltid%3DAU7gw4WT-nnG8kiSLPww9EbkNRLkrZTgQzpm7_JSyN-xGmr8Ysd8JCw8&docid=EbuqfwxI-0lNxM&w=480&h=480",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB 512GB | Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_4__1_3.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-hTqJAXswFaT-4RtL3SCHIlCQQcn2aMCIXclET_LhVA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/apple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_4__1_3.png&tbnid=ftzTNx40UHfiqM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fapple-macbook-air-15-m4-10cpu-10gpu-16gb-512gb-2025.html&docid=5tM1xUMAOT-oKM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Laptop Apple MacBook Air M4 15 inch 2025 apple M4 10CPU 10GPU 16GB 512",
+    "imageUrl": "https://product.hstatic.net/1000296652/product/mc01-2_3e3c25de3a38440cbe1b3d405c8196aa.png",
+    "imageWidth": 667,
+    "imageHeight": 374,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFCmxowZbiGy9_TP0HK-FF4j3xGZ6AWRjJadUs53PhkA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Mai Phương Computer",
+    "domain": "maiphuong.vn",
+    "link": "https://maiphuong.vn/products/macbook-air-m4-15-inch-2025-apple-m4-10cpu-10gpu-16gb-512gb-15-3-3k?srsltid=AU7gw4UXF201LVPOLx0eoUrvBj1VT1W-C0-lz-2hXDA0b-VUfBYqLxGK",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F1000296652%2Fproduct%2Fmc01-2_3e3c25de3a38440cbe1b3d405c8196aa.png&tbnid=NnE8KJLpYY_4PM&imgrefurl=https%3A%2F%2Fmaiphuong.vn%2Fproducts%2Fmacbook-air-m4-15-inch-2025-apple-m4-10cpu-10gpu-16gb-512gb-15-3-3k%3Fsrsltid%3DAU7gw4UXF201LVPOLx0eoUrvBj1VT1W-C0-lz-2hXDA0b-VUfBYqLxGK&docid=NJDPvXySy-hNVM&w=667&h=374",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M4 15\" 10CPU 10GPU 16GB 1TGB 2025",
+    "imageUrl": "https://bizweb.dktcdn.net/100/176/601/products/apple-macbook-air-lineup-c5abff38-3b60-4731-8f12-12f88ff2a8fd.png?v=1741247453490",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXQmgVlTfjr631z1cpGfcpZXmLQlty61RdFHompKE5nQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Táo Vàng Mobile",
+    "domain": "taovang.vn",
+    "link": "https://taovang.vn/macbook-book-air-m4-15-10cpu-10gpu-16gb-512gb-2025",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F176%2F601%2Fproducts%2Fapple-macbook-air-lineup-c5abff38-3b60-4731-8f12-12f88ff2a8fd.png%3Fv%3D1741247453490&tbnid=KwW5loT52mHNCM&imgrefurl=https%3A%2F%2Ftaovang.vn%2Fmacbook-book-air-m4-15-10cpu-10gpu-16gb-512gb-2025&docid=VsTWx1lUYnO6JM&w=1280&h=720",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

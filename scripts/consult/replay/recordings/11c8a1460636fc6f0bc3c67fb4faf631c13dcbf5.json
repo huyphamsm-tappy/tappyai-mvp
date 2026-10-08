@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông Thông tư lệ phí xuất nhập cảnh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:16:51.573Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông Thông tư lệ phí xuất nhập cảnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tuyên Quang - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/tuyenquang/Pages/vbpq-toanvan.aspx?ItemID=12176&Keyword=",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Bộ Tài Chính - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/botaichinh/Pages/vbpq-toanvan.aspx?ItemID=19774",
+    "snippet": "3. Mức thu lệ phí xuất nhập cảnh được quy định cụ thể tại Biểu mức thu lệ phí ban hành kèm theo Thông tư này. Lệ phí xuất nhập cảnh thu bằng tiền đồng Việt Nam ...",
+    "position": 2
+   },
+   {
+    "title": "Hệ thống quy phạm pháp luật đang còn hiệu lực trong lĩnh ...",
+    "link": "https://phapdien.moj.gov.vn/qt/tintuc/Pages/nghien-cuu-trao-doi.aspx?ItemID=102",
+    "snippet": "Điều kiện được cấp thị thực: Có hộ chiếu hoặc giấy tờ có giá trị đi lại quốc tế; Có cơ quan, tổ chức, cá nhân tại Việt Nam mời, bảo lãnh, trừ trường hợp quy ...",
+    "position": 3
+   },
+   {
+    "title": "Hệ thống các quy phạm pháp luật do các cơ quan nhà nước ở ...",
+    "link": "https://phapdien.moj.gov.vn/UserControls/News/pFormPrint.aspx?UrlListProcess=/qt/tintuc/Lists/NghienCuuTraoDoi&ListId=&SiteId=&ItemID=107&OptionLogo=0&SiteRootID=",
+    "snippet": "Hộ chiếu ngoại giao, hộ chiếu công vụ còn giá trị dưới 1 năm thì được gia hạn một lần, tối đa không quá 3 năm; khi hết hạn thì làm thủ tục cấp ...",
+    "date": "25 thg 6, 2018",
+    "position": 4
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/sonla/Pages/vanban.aspx?year=1951",
+    "snippet": "Dữ liệu cá nhân cơ bản: Họ, chữ đệm và tên khai sinh, tên gọi khác (nếu có). Ngày, tháng, năm sinh; ngày, tháng, năm chết hoặc mất tích. Giới tính. Nơi sinh, ...",
+    "position": 5
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 6
+   },
+   {
+    "title": "Chi tiết văn bản",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-2.002038.html",
+    "snippet": "- Trong thời hạn 20 ngày, kể từ ngày nhận được văn bản đề xuất của Chủ tịch Ủy ban nhân dân cấp tỉnh, Bộ Tư pháp có trách nhiệm kiểm tra lại hồ sơ, nếu xét thấy ...",
+    "position": 7
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-kem-theo-qd-630-btp-ve-cong-bo-tthc-20260427110904-25e8b9eb-019dcd2062537de0be16872851ba69d6.pdf",
+    "snippet": "PHẦN II. NỘI DUNG CỤ THỂ CỦA TỪNG THỦ TỤC HÀNH. CHÍNH ĐƯỢC SỬA ĐỔI, BỔ SUNG TRONG LĨNH VỰC THI HÀNH ÁN. DÂN SỰ THUỘC PHẠM VI CHỨC NĂNG QUẢN LÝ NHÀ NƯỚC CỦA.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

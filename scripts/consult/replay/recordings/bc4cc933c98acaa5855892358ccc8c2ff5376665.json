@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:51:29.429Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"NHÀ HÀNG NGON\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover NK Viet Kitchen: A Vietnamese Gem in Hollywood",
+    "link": "https://www.tiktok.com/@treatyoselfeverywhere/video/7503929972520701214",
+    "snippet": "This new restaurant in South Florida is a true gem Name: NK Viet Kitchen- Cơm Gà Ninh Kiều 3373 Sheridan St, Hollywood, FL 33021 # ...",
+    "position": 1
+   },
+   {
+    "title": "Viet Kitchen. The newest Vietnamese restaurant in Grand ...",
+    "link": "https://www.tiktok.com/@eatgr/video/7652023618104200461",
+    "snippet": "323 Likes, TikTok video from EatGR (@eatgr): “Viet Kitchen. The newest Vietnamese restaurant in Grand Rapids.",
+    "position": 2
+   },
+   {
+    "title": "Video sponsored by @Viet Kitchen Lakewood One of my ...",
+    "link": "https://www.tiktok.com/@erika.taste.test/video/7580219334304304414",
+    "snippet": "11101 Pacific Hwy SW Suite 1, Lakewood, WA 98499 LET'S EAT! . Video sponsored by @Viet Kitchen Lakewood One of my favorite Vietnamese ...",
+    "position": 3
+   },
+   {
+    "title": "🍤🍜 JAM VIET KITCHEN 🍜🍤 is a delicious modern style ...",
+    "link": "https://www.tiktok.com/@chrristiinnee/video/7678845896053886239",
+    "snippet": "JAM VIET KITCHEN is a delicious modern style Vietnamese restaurant that you definitely need to check out! Think creative cocktails ...",
+    "position": 4
+   },
+   {
+    "title": "The Timeless Joy of Pho Pours at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@mr.gaoviet/video/7609564445445999902",
+    "snippet": "If you're a pho enthusiast or simply someone who appreciates good food, visiting Gao Viet Kitchen is a must. With its inviting atmosphere and a ...",
+    "position": 5
+   },
+   {
+    "title": "Mr. Gao GAO VIET KITCHEN (Vietnamese Food) 📍 1900 ...",
+    "link": "https://www.tiktok.com/@foodiesushiqueen/video/7589887970518240543",
+    "snippet": "Gao GAO VIET KITCHEN (Vietnamese Food) 1900 Irving St, San Francisco, CA 94122 #foodiesushiqueen #vietnamesefood #bunrieu #noodle #noodles # ...",
+    "position": 6
+   },
+   {
+    "title": "Discovering Viet Kitchen and Tea House",
+    "link": "https://www.tiktok.com/@considerthefork/video/7611345315840494862",
+    "snippet": "Viet Kitchen and Tea House has quickly become a beloved spot for food enthusiasts looking for authentic Vietnamese cuisine.",
+    "position": 7
+   },
+   {
+    "title": "Delicious Vietnamese Food at Viet Kitchen Fast Food",
+    "link": "https://www.tiktok.com/@veeeeevee/video/7649929238891613471",
+    "snippet": "Experience the taste of authentic Vietnamese cuisine at Viet Kitchen Fast Food, a spot renowned for serving delicious and quick meals.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

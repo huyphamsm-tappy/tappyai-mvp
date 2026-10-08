@@ -138,7 +138,20 @@ export class EvidenceLedger {
     const c = classifySource(doc.canonicalUrl || doc.url, doc)
     const s: Source = { id: `S${this.sources.length + 1}`, url: doc.url, canonicalUrl: doc.canonicalUrl, title: doc.title || doc.siteName || hostOf(doc.url), host: doc.host || hostOf(doc.url), retrievedAt, sourceType: c.type, basis: c.basis, reliabilityNote: reliabilityNote(c.type, lang), publishedAt: doc.publishedAt }
     this.sources.push(s)
+    // M4: the bounded extract (and the publication date the model was shown) stays with the turn (never persisted) so the settle-path guards can check what a cited sentence states.
+    this.extracts.set(s.id, [doc.title, doc.description, doc.publishedAt ? `published ${doc.publishedAt.slice(0, 10)}` : '', ...doc.headings, ...doc.passages, ...doc.structured.map(f => [f.name, f.price && `${f.price} ${f.currency ?? ''}`, f.availability, f.openingHours, f.address, f.rating !== undefined ? `${f.rating}${f.ratingCount !== undefined ? ` (${f.ratingCount} reviews)` : ''}` : ''].filter(Boolean).join(' · '))].filter((x): x is string => typeof x === 'string' && x.trim().length > 0))
     return s
+  }
+
+  /** M4: per source, the text of its bounded extract (this turn only). */
+  private readonly extracts = new Map<string, string[]>()
+
+  /** M4: what the settle-path guards read (guardEvidence.ts): each source with its extract, and the conflicts with their sides. */
+  guardView(): { sources: Array<{ id: string; host: string; sourceType: SourceType; passages: string[] }>; conflicts: Array<{ attribute: string; sides: Array<{ value: string; sourceId: string; reliability: string }> }> } {
+    return {
+      sources: this.sources.map(s => ({ id: s.id, host: s.host, sourceType: s.sourceType, passages: this.extracts.get(s.id) ?? [] })),
+      conflicts: this.items.filter(i => i.type === 'CONFLICT' && i.sides?.length).map(i => ({ attribute: i.attribute, sides: i.sides!.map(x => ({ value: x.value, sourceId: x.sourceId, reliability: x.reliability })) })),
+    }
   }
 
   /** Adds Luna's claims for one source (classified here) and the page's structured facts; returns what was added and any new conflicts. */

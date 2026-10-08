@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Máy Tính Xách Tay Apple 2025 Apple Macbook Air 15 M4 Chip 512Gb Ssd\" OR \"APPLE Macbook Pro 13\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:21:25.795Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Máy Tính Xách Tay Apple 2025 Apple Macbook Air 15 M4 Chip 512Gb Ssd\" OR \"APPLE Macbook Pro 13\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Apple Macbook Neo 13 Inch · 2020 Refurbished Apple Macbook Air 13.3-Inch M1, 8GB - 16GB Ram, 128GB - 1TB SSD (Good) · 2020 Refurbished Apple Macbook Air 13.3-Inch ...",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Everyday Use Laptop",
+    "link": "https://www.tiktok.com/@phoneplacekenya/video/7628692759058107655",
+    "snippet": "The Apple MacBook Neo 13-inch is simple, clean, and built for everyday use. For KES 105,000, you get a premium MacBook with a sharp display, ...",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Powerful & Lightweight",
+    "link": "https://www.tiktok.com/@abed_tahan/video/7631836350374825232",
+    "snippet": "Apple MacBook Neo 13-inch: Powerful & Lightweight. The highly anticipated Apple MacBook Neo has arrived, boasting a blend of power and portability. This new ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Pro 13 - TikTok Shop",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-pro-13",
+    "snippet": "Refurbished Apple MacBook Pro 13\" MWP72LL/A (Mid-2020) w/ Touch Bar i5-10th Gen 16GB/1TB All Colors - Excellent with 1 Year Warranty by BITB. $639.00.",
+    "position": 4
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch 2026 Blush",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-2026-blush",
+    "snippet": "36.8M posts. Discover videos related to Apple Macbook Neo 13 Inch 2026 Blush on TikTok. See more videos about Apple Macbook Neo Blush, ...",
+    "date": "28 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Pre-loved Apple MacBook Pro 13\" A2159 — 6-Month ...",
+    "link": "https://www.tiktok.com/@cash.crusaders.station/video/7647113223145065749",
+    "snippet": "Pre-loved Apple MacBook Pro 13\" (A2159) — Overview Apple MacBook Pro 13\" (A2159) with a 256GB SSD and Intel Core i5 processor is available ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Pro 2020 M1 — Apple MacBook Pro 13",
+    "link": "https://www.tiktok.com/@hassan_laptopworld/video/7685451734403042578",
+    "snippet": "Apple MacBook Pro 13\". This listing describes a MacBook Pro 2020 with the Apple M1 chip. The device is a 13-inch Retina ...",
+    "date": "MacBook Pro 2020 M1",
+    "position": 7
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch with A18 Pro Chip 512gb8gb ...",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-with-a18-pro-chip-512gb8gb-silver",
+    "snippet": "Apple Macbook Neo 13 Inch with A18 Pro Chip 512gb8gb Silver. Unbox the Silver MacBook Neo 13-inch with A18 Pro chip. Discover its ...",
+    "date": "24 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

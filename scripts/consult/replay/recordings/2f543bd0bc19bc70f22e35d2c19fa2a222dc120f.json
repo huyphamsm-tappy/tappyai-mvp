@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"28/2026/TT-BTC\" \"200.000\" hộ chiếu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:29.241Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"28/2026/TT-BTC\" \"200.000\" hộ chiếu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Quy định phí, lệ phí xuất nhập ...",
+    "link": "https://luatvietnam.vn/thue/thong-tu-28-2026-tt-btc-quy-dinh-phi-le-phi-xuat-nhap-canh-tai-viet-nam-430424-d1.html",
+    "snippet": "Thông tư 28/2026/TT-BTC quy định mức thu, chế ... Ví dụ, lệ phí cấp mới hộ chiếu là 200.000 đồng, cấp lại do hỏng hoặc mất là 400.000 đồng.",
+    "date": "31 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Lệ phí cấp hộ chiếu năm ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/108810/thong-tu-28-2026-tt-btc-le-phi-cap-ho-chieu-nam-2026-moi-nhat",
+    "snippet": "... 28/2026/TT-BTC, cụ thể như sau: - Cấp mới: 200.000 đồng/lần cấp. - Cấp lại do bị hỏng hoặc bị mất: 400.000 đồng/lần cấp. - Gia hạn hộ chiếu ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Quy định mới về thu phí, lệ phí xuất nhập cảnh",
+    "link": "https://www.facebook.com/qlxnctphcm/posts/quy-%C4%91%E1%BB%8Bnh-m%E1%BB%9Bi-v%E1%BB%81-thu-ph%C3%AD-l%E1%BB%87-ph%C3%AD-xu%E1%BA%A5t-nh%E1%BA%ADp-c%E1%BA%A3nh-th%C3%B4ng-t%C6%B0-n%C3%A0y-quy-%C4%91%E1%BB%8Bnh-ng%C6%B0%E1%BB%9Di-n%E1%BB%99p-ph/972685138608157/",
+    "snippet": "... 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong ... hộ chiếu: 200.000 đồng/lần cấp. ✨️Cấp lại hộ chiếu (do bị hỏng ...",
+    "position": 3
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "(Chinhphu.vn) - Thông tư số 28/2026/TT-BTC của Bộ trưởng Bộ Tài ... 200.000. b. Cấp lại do bị hỏng hoặc bị mất. 400.000. c. Gia hạn hộ chiếu ...",
+    "date": "1 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Thủ tục Cấp hộ chiếu phổ thông ở trong nước",
+    "link": "https://congan.cantho.gov.vn/thu-tuc-hanh-chinh/thutuc/thu-tuc-cap-ho-chieu-pho-thong-o-trong-nuoc-3.html",
+    "snippet": "- 200.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 400.000đ/hộ chiếu (Thông tư số 28/2026/TT-BTC ngày 27/3/2026 của Bộ Tài chính). 7 ...",
+    "position": 5
+   },
+   {
+    "title": "Quy định mức thu phí và lệ phí trong lĩnh vực xuất nhập ...",
+    "link": "https://doanhnhan.congly.vn/quy-dinh-muc-thu-phi-va-le-phi-trong-linh-vuc-xuat-nhap-canh-co-hieu-luc-tu-hom-nay-01-4-2026.html",
+    "snippet": "Bộ Tài chính đã ban hành Thông tư số 28/2026/TT-BTC ... Với người Việt Nam, lệ phí cấp mới hộ chiếu được thống nhất ở mức 200.000 đồng/lần.",
+    "date": "1 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước cho công dân Việt ...",
+    "link": "https://congan.ninhbinh.gov.vn/tthc/quan-ly-xuat-nhap-canh/cap-ho-chieu-pho-thong-thuc-hien-tai-cong-an-cap-tinh-94.html",
+    "snippet": "- 200.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 400.000đ/hộ chiếu (Thông tư số 28/2026/TT-BTC ngày 27/3/2026 của Bộ Tài chính).",
+    "position": 7
+   },
+   {
+    "title": "Lưu ý quan trọng từ cơ quan Công an đến toàn bộ người ...",
+    "link": "https://cafef.vn/luu-y-quan-trong-tu-co-quan-cong-an-den-toan-bo-nguoi-dan-dang-lam-ho-chieu-188260930223340061.chn",
+    "snippet": "... 28 2026 TT-BTC sửa đổi, bổ sung bởi Thông tư 81/2026/TT-BTC ... - Lệ phí cấp mới hộ chiếu: 200.000 đồng/lần cấp;. - Lệ phí cấp lại hộ ...",
+    "date": "7 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

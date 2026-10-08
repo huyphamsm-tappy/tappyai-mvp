@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí hộ chiếu 160. Thông tư 2025 2026 Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:47:51.522Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí hộ chiếu 160. Thông tư 2025 2026 Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 39/2026/TT-BTC by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/f99e2670-5a79-11f1-8574-8198831d333f",
+    "snippet": "Miễn phí, lệ phí áp dụng tại cảng, bến thủy nội địa đối với các trường hợp sau: 1. Phương tiện thuộc Bộ Quốc phòng và Bộ Công an sử dụng vào mục đích quốc ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 110/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-110-2026-tt-btc-bai-bo-toan-bo-mot-so-thong-tu-va-quyet-dinh-cua-bo-truong-bo-tai-chinh-trong-linh-vuc-thue--6dffdb60-96fe-11f1-a462-39f794837d6c",
+    "snippet": "Tra cứu Thông tư 110/2026/TT-BTC, Thông tư số 110/2026/TT-BTC Bãi bỏ toàn bộ một số Thông tư và Quyết định của Bộ trưởng Bộ Tài chính trong lĩnh vực thuế.",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 94/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-94-2026-tt-btc-quy-dinh-ve-quan-ly-tuan-thu-quan-ly-rui-ro-trong-quan-ly-thue--17bc0d00-8038-11f1-a487-f7a1eeeb1960",
+    "snippet": "Chính sách được xây dựng trên cơ sở Luật Bảo vệ dữ liệu cá nhân số 91/2025/QH15 ngày 26/6/2025 cùng các quy định pháp luật khác có liên quan của Việt Nam.",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 36/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-36-2026-tt-btc-huong-dan-ve-viec-quan-ly-su-dung-chi-phi-va-dinh-muc-cho-hoat-dong-quy-hoach--136f4e20-58e6-11f1-b256-6f38e5696f07",
+    "snippet": "Thông tư này quy định về việc quản lý, sử dụng chi phí cho hoạt động quy hoạch đối với quy hoạch cấp quốc gia, quy hoạch vùng, quy hoạch tỉnh, quy hoạch chi ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 43/2026/TT-BTC by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-43-2026-tt-btc-sua-doi-bo-sung-mot-so-dieu-cua-thong-tu-so-202-2014-tt-btc-ngay-22-12-2014-cua-bo-truong-bo-tai-chinh-ve-huong-dan-phuong-phap-lap-va-trinh-bay-bao-cao-tai-chinh-hop-nhat--47601590-5d67-11f1-a35b-19c0a2cc5fb5",
+    "snippet": "+ Giá trị TSCĐ, BĐSĐT và các tài sản dài hạn khác được thanh lý, nhượng bán nhưng chưa thu được tiền trong kỳ;. + Khoản chi phí phi tiền tệ liên ...",
+    "date": "22 thg 12, 2014",
+    "position": 5
+   },
+   {
+    "title": "Quyết định 65/2026/QĐ-UBND của UBND Tỉnh Thái Nguyên",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/quyet-dinh-so-65-2026-qd-ubnd-ban-hanh-quy-dinh-dinh-muc-kinh-te-ky-thuat-trong-quan-ly-khai-thac-cong-trinh-thuy-loi-tren-dia-ban-tinh-thai-nguyen--8acfad70-6df4-11f1-9e87-d77b3bfc1116",
+    "snippet": "Quyết định số 65/2026/QĐ-UBND Ban hành Quy định định mức kinh tế - kỹ thuật trong quản lý, khai thác công trình thủy lợi trên địa bàn tỉnh Thái Nguyên.",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 64/2025/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-nham-ho-tro-cho-doanh-nghiep-nguoi-dan--179085",
+    "snippet": "Bằng 50% mức thu lệ phí quy định tại điểm b Mục 1 Biểu mức thu lệ phí tại khoản 1 Điều 4 Thông tư số 150/2016/TT-BTC. 2. a) Phí thẩm định kinh doanh hàng hóa, ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư 09/2026/TT-BNV của Bộ Nội vụ",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-09-2026-tt-bnv-sua-doi-bo-sung-mot-so-dieu-cua-thong-tu-so-21-2021-tt-bldtbxh-ngay-15-thang-12-nam-2021-cua-bo-truong-bo-lao-dong-thuong-binh-va-xa-hoi-quy-dinh-chi-tiet-mot-so-dieu-cua-luat-nguoi-lao-dong-viet-nam-di-lam-viec-o-nuoc-ngoai-theo-hop-dong--0cda40f0-5446-11f1-a238-7b6efe7665d0",
+    "snippet": "Bên nước ngoài tiếp nhận lao động cung cấp miễn phí, đầy đủ dụng cụ bảo hộ lao động cho người lao động và đảm bảo nơi làm việc an toàn và vệ sinh lao động.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

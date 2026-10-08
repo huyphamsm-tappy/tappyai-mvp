@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"lệ phí cấp hộ chiếu\" \"2026\" \"miễn\" \"Thông tư 28/2026/TT-BTC\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:24.471Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"lệ phí cấp hộ chiếu\" \"2026\" \"miễn\" \"Thông tư 28/2026/TT-BTC\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Tra cứu Thông tư 28/2026/TT-BTC, Thông tư 28/2026/TT-BTC Quy định mức ... Các trường hợp được miễn lệ phí cấp hộ chiếu. a) Người Việt Nam ở nước ngoài ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

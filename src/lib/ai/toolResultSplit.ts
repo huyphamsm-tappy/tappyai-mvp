@@ -187,6 +187,10 @@ export interface EnrichmentCollector {
   guardTrace?: (stage: string, before: string, after: string) => void
   /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */
   citationSources?: Array<{ id: string; host: string; url: string }>
+  /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
+  guardEvidence?: import('./guardEvidence').GuardEvidence
+  /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */
+  evidenceTrace?: (summary: Record<string, unknown>) => void
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */
