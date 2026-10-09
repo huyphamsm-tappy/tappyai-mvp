@@ -269,9 +269,16 @@ export function recordResearch(task: AgentTask, done: ReadonlyArray<{ name: stri
   let searches = [...task.research_state.searches]
   for (const e of done) {
     if (e.outcome !== 'ok' || !SEARCH_TOOLS.has(e.name)) continue
-    const q = cleanTaskText(e.args.query ?? e.args.destination ?? e.args.location ?? e.args.movieTitle ?? [e.args.origin, e.args.destination].filter(Boolean).join(' → '), TASK_CAPS.value)
-    searches = searches.filter(s => !(s.tool === e.name && s.query === q))
-    searches.push({ tool: e.name, query: q, results: Math.max(0, Math.min(1000, e.results | 0)), turn: task.turns, at })
+    // One entry per query the tool actually received. `web_search` takes `queries` (1–3, run in parallel); reading only `query` stored an
+    // empty string for it, so Luna could not see what it had already looked up. `results` is the whole call's count (a call returns one merged list).
+    const raw: unknown[] = Array.isArray(e.args.queries) && e.args.queries.length
+      ? e.args.queries.slice(0, 3)
+      : [e.args.query ?? e.args.destination ?? e.args.location ?? e.args.movieTitle ?? [e.args.origin, e.args.destination].filter(Boolean).join(' → ')]
+    const named = [...new Set(raw.map(r => cleanTaskText(r, TASK_CAPS.value)).filter(Boolean))]
+    for (const q of named.length ? named : ['']) {
+      searches = searches.filter(s => !(s.tool === e.name && s.query === q))
+      searches.push({ tool: e.name, query: q, results: Math.max(0, Math.min(1000, e.results | 0)), turn: task.turns, at })
+    }
   }
   if (searches.length === task.research_state.searches.length && searches.every((s, i) => s === task.research_state.searches[i])) return task
   return { ...task, research_state: { ...task.research_state, searches: searches.slice(-TASK_CAPS.searches) }, updated_at: at }

@@ -136,6 +136,37 @@ describe('M2 · research state and pending question', () => {
     expect(t.research_state.searches).toEqual([expect.objectContaining({ tool: 'search_places', query: 'nhà hàng quận 1 máy lạnh', results: 5 })])
   })
 
+  it('web_search records the queries it RECEIVED (`queries`), one entry each — never an empty string (Fix B)', () => {
+    let t = createTask(conv, NOW)
+    t = recordResearch(t, [{ name: 'web_search', args: { queries: ['giá iphone 16 pro max', 'iphone 16 pro max site:apple.com'], read: 1 }, outcome: 'ok', results: 8 }], NOW)
+    expect(t.research_state.searches.map(s => s.query)).toEqual(['giá iphone 16 pro max', 'iphone 16 pro max site:apple.com'])
+    expect(t.research_state.searches.every(s => s.tool === 'web_search' && s.query !== '')).toBe(true)
+    // single query, legacy `query` shape still works
+    t = recordResearch(t, [{ name: 'web_search', args: { query: 'thời tiết đà lạt' }, outcome: 'ok', results: 3 }], later(1))
+    expect(t.research_state.searches.at(-1)?.query).toBe('thời tiết đà lạt')
+  })
+
+  it('the same query twice in one turn is one entry; two different queries are NOT merged (Fix B)', () => {
+    let t = createTask(conv, NOW)
+    t = recordResearch(t, [
+      { name: 'web_search', args: { queries: ['quán bún bò huế quận 1', 'quán bún bò huế quận 1'] }, outcome: 'ok', results: 5 },
+      { name: 'web_search', args: { queries: ['quán bún bò huế quận 3'] }, outcome: 'ok', results: 4 },
+      { name: 'web_search', args: { queries: ['quán bún bò huế quận 1'] }, outcome: 'ok', results: 6 },
+    ], NOW)
+    const qs = t.research_state.searches.map(s => s.query)
+    expect(qs.filter(q => q === 'quán bún bò huế quận 1')).toHaveLength(1)
+    expect(qs).toContain('quán bún bò huế quận 3')
+    expect(t.research_state.searches.find(s => s.query === 'quán bún bò huế quận 1')?.results).toBe(6)
+  })
+
+  it('a follow-up turn is told WHICH queries were already run (Fix B: evidence reuse)', () => {
+    let t = recordResearch(createTask(conv, NOW), [{ name: 'web_search', args: { queries: ['giá vé tàu hà nội sài gòn'] }, outcome: 'ok', results: 5 }], NOW)
+    t = finishTurn(t, { asked: null, now: NOW })
+    const lines = taskContextLines(t, [], later(5)).join('\n')
+    expect(lines).toContain('web_search "giá vé tàu hà nội sài gòn"')
+    expect(lines).not.toContain('web_search ""')
+  })
+
   it('research survives later deltas', () => {
     let t = recordResearch(createTask(conv, NOW), [{ name: 'web_search', args: { query: 'macbook pro m3 lập trình' }, outcome: 'ok', results: 6 }], NOW)
     t = apply(t, { set_constraints: [{ key: 'ngan_sach', value: '25 triệu' }], add_findings: ['M3 Pro 18GB đủ cho Docker'] }).task
