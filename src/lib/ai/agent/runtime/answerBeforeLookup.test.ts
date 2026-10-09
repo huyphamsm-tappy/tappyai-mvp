@@ -74,6 +74,9 @@ describe('answerFirst.ts — pure parts', () => {
   it('composeFinal: prefaces first, then the final text; a preface the final text already contains is not shown twice; nothing else is dropped', () => {
     expect(composeFinal([CRITERIA], 'Sau tra cứu: A và B.')).toBe(`${CRITERIA}\n\nSau tra cứu: A và B.`)
     expect(composeFinal([CRITERIA], `${CRITERIA}\n\nSau tra cứu: A và B.`)).toBe(`${CRITERIA}\n\nSau tra cứu: A và B.`)
+    // a preface the model repeated INSIDE its final text keeps the final's own order and wording (it is not hoisted to the front)
+    const inside = `Sau tra cứu: A và B.\n\n${CRITERIA}\n\nKết luận: chọn A.`
+    expect(composeFinal([CRITERIA], inside)).toBe(inside)
     expect(composeFinal([], 'Chỉ cuối.')).toBe('Chỉ cuối.')
     expect(composeFinal(['Một.', 'Hai.'], '')).toBe('Một.\n\nHai.')
   })
