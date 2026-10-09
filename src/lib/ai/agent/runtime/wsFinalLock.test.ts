@@ -17,11 +17,16 @@ describe('WS2 final lock · the No-Fabrication Gate is deterministic integrity, 
   it('runs on the agent runtime only, after the specialised guards and before the M4 restore / code-written lines', () => {
     const at = SE.indexOf('const gate = collector?.semanticRanking')
     expect(at).toBeGreaterThan(SE.indexOf('const unsupported = (hadPlaceSearch'))
-    expect(at).toBeLessThan(SE.indexOf('const evRestored = evShield.restore(gate ? gate.text : unsupported.text)'))
+    // Phase 8 UAT-10: the entity-name check runs right after the gate (same evidence), still before the M4 restore / code-written lines.
+    const entity = SE.indexOf('const entityGuard = collector?.semanticRanking')
+    expect(entity).toBeGreaterThan(at)
+    expect(entity).toBeLessThan(SE.indexOf('const evRestored = evShield.restore(entityGuard ? entityGuard.text : afterGate)'))
     expect(SE.indexOf('const evRestored')).toBeLessThan(SE.indexOf('appendPlanBudgetMath(planMask.restore(evRestored)'))
   })
   it('model memory is not evidence: the gate\'s evidence is tool results, pages, the DATA context, earlier replies and the user', () => {
-    expect(SE).toMatch(/corpus: \[\.\.\.gateCorpus, \.\.\.\(collector\.gateContext \?\? \[\]\)/)
+    // one evidence list, shared by the gate and the entity-name check
+    expect(SE).toMatch(/const gateEvidenceCorpus: string\[\] = collector\?\.semanticRanking\s*\? \[\.\.\.gateCorpus, \.\.\.\(collector\.gateContext \?\? \[\]\)/)
+    expect(SE).toMatch(/corpus: gateEvidenceCorpus,/)
     expect(GATE).toMatch(/FABRICATED/)
   })
 })

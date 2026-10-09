@@ -66,7 +66,9 @@ describe('answerFirst.ts — pure parts', () => {
     expect(n).toContain('web_search("pin camera điện thoại 2026")')
     expect(n).toMatch(/TUYỆT ĐỐI không nêu tên sản phẩm/)
     expect(n).toContain(NOTHING_YET)
-    expect(prefaceNote('vi')).toMatch(/Đừng lặp lại/)
+    expect(prefaceNote('vi')).toMatch(/Đừng giải thích hay liệt kê lại các tiêu chí đó/)
+    expect(prefaceNote('vi', ['Tiêu chí A.'])).toContain('Tiêu chí A.')
+    expect(checkNote([], 'vi')).toMatch(/KHÔNG đặt câu hỏi nào trong phần này/)
     expect(checkNote([], 'en')).toMatch(/Do NOT name specific products/)
   })
   it('composeFinal: prefaces first, then the final text; a preface the final text already contains is not shown twice; nothing else is dropped', () => {
@@ -92,7 +94,8 @@ describe('loop — UAT-10 shape: lookup-only first step with no text', () => {
     // the next model step reads its own preface in the history and is told not to repeat it
     const second = t.modelSeen[1]
     expect(JSON.stringify(second.messages)).toContain('Tiêu chí nên cân')
-    expect(second.system).toContain('Đừng lặp lại nó')
+    expect(second.system).toContain('ĐÃ đọc phần tư vấn')
+    expect(second.system).toContain(CRITERIA) // the user's already-shown text is quoted to the post-lookup step
   })
 
   it('the check says NOTHING_YET → the lookup goes on, nothing is prepended, and the run records that it was checked', async () => {

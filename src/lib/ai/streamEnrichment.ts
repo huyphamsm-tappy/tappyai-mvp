@@ -31,6 +31,7 @@ import { noFabricationGate } from './noFabricationGate'
 import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
+import { groundEntityNames } from './entityNameGuard'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
 import { ensureAdviceFloor } from './consultative/adviceFloor'
@@ -2699,9 +2700,12 @@ export function applyPlaceEnrichmentStreamFilter(
      * be derived from it, be disclosed as unverified, or be a labelled planning estimate — otherwise it is FABRICATED and its sentence
      * goes, with one line saying what could not be verified. See noFabricationGate.ts.
      */
+    const gateEvidenceCorpus: string[] = collector?.semanticRanking
+      ? [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)]
+      : []
     const gate = collector?.semanticRanking
       ? noFabricationGate(unsupported.text, {
-        corpus: [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)],
+        corpus: gateEvidenceCorpus,
         userTexts: collector.userTexts ?? [userText],
         tools: gateTools,
         conflicts: collector.guardEvidence?.conflicts ?? [],
@@ -2715,7 +2719,18 @@ export function applyPlaceEnrichmentStreamFilter(
       try { collector?.claimsTrace?.(summary) } catch { /* trace only */ }
     }
     if (gate) gt('no_fabrication', unsupported.text, gate.text)
-    const evRestored = evShield.restore(gate ? gate.text : unsupported.text)
+    /**
+     * Phase 8 UAT-10 — ENTITY NAME GROUNDING (entityNameGuard.ts): a bold model name that none of the turn's evidence (tool results, pages,
+     * the context Luna read, earlier replies, the user's words) contains is un-bolded and disclosed, never presented as a verified option.
+     * Only on a turn that had tool results; the name stays in the text (advice is not deleted).
+     */
+    const afterGate = gate ? gate.text : unsupported.text
+    const entityGuard = collector?.semanticRanking && gateCorpus.length > 0
+      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang)
+      : null
+    if (entityGuard && entityGuard.ungrounded.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'entity_name', checked: entityGuard.checked, ungrounded: entityGuard.ungrounded.length }))
+    if (entityGuard) gt('entity_name', afterGate, entityGuard.text)
+    const evRestored = evShield.restore(entityGuard ? entityGuard.text : afterGate)
     if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
     const budgeted = appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).

@@ -170,7 +170,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     const noteReason = reason === 'time_budget' ? 'time_budget' : 'tool_budget'
     const note = !final && input.stepNote ? input.stepNote({ round, toolEvents }) : null
     if (note) T.add('budget', { round, decision: 'research_nudge' })
-    const base = prefaces.length ? input.system + prefaceNote(input.lang) : input.system
+    const base = prefaces.length ? input.system + prefaceNote(input.lang, prefaces) : input.system
     const system = final ? base + finalStepNote(noteReason, input.lang, unchecked) : note ? base + note : base
     const t0 = now()
     let step: RuntimeStep
