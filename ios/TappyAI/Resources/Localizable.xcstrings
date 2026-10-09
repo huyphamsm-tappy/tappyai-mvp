@@ -18272,6 +18272,125 @@
         }
       }
     },
+    "auth.terms.agree": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I agree to the Terms of Service and the Community Guidelines."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tôi đồng ý với Điều khoản sử dụng và Quy tắc cộng đồng."
+          }
+        }
+      }
+    },
+    "auth.terms.linkTerms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read the Terms of Service"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đọc Điều khoản sử dụng"
+          }
+        }
+      }
+    },
+    "auth.terms.linkGuidelines": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Community Guidelines"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quy tắc cộng đồng"
+          }
+        }
+      }
+    },
+    "auth.terms.zeroTolerance": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI has no tolerance for objectionable content or abusive users. Content can be reported and accounts blocked; violating content is removed and offending accounts may be restricted or removed."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI không chấp nhận nội dung phản cảm hay người dùng có hành vi lạm dụng. Bạn có thể báo cáo nội dung và chặn tài khoản; nội dung vi phạm sẽ bị gỡ và tài khoản vi phạm có thể bị hạn chế hoặc xoá."
+          }
+        }
+      }
+    },
+    "auth.terms.required": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please agree to the Terms of Service to continue."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vui lòng đồng ý với Điều khoản sử dụng để tiếp tục."
+          }
+        }
+      }
+    },
+    "auth.terms.checked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agreed"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã đồng ý"
+          }
+        }
+      }
+    },
+    "auth.terms.unchecked": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not agreed"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa đồng ý"
+          }
+        }
+      }
+    },
     "upload.error.incomplete": {
       "extractionState": "manual",
       "localizations": {

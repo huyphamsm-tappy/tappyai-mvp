@@ -55,6 +55,8 @@ struct AuthFlowView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 header
+                // App Review 1.2: agree to the Terms before ANY sign-in method; every method also refuses without it.
+                AuthTermsConsentView(agreed: $vm.termsAgreed)
                 if vm.appleEnabled {
                     SignInWithAppleButton(.continue) { request in
                         request.requestedScopes = [.fullName, .email]
@@ -70,6 +72,8 @@ struct AuthFlowView: View {
                     .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
                     .frame(height: 48)
                     .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                    .disabled(!vm.termsAgreed)   // Apple's sheet cannot be cancelled after it opens: keep it shut until the Terms are agreed
+                    .opacity(vm.termsAgreed ? 1 : 0.5)
                     .accessibilityIdentifier("auth-apple")
                 }
                 // Google and Zalo are two equal-weight choices (web `/login`, Android): white surface, hairline

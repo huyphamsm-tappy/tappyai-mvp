@@ -16,6 +16,8 @@ final class AuthViewModel: AppObservableObject {
     @AppPublished var isWorking = false
     @AppPublished var errorMessage: String?
     @AppPublished var showRegister = false
+    /// App Review 1.2: the agreement to the Terms, required before ANY sign-in path (see `AuthTermsGate`).
+    @AppPublished var termsAgreed: Bool
     @AppPublished var providerState: ProviderState = .loading
     @AppPublished var enabledProviders: [String] = []
     /// Sign in with Apple is shown only when the server enables it (`AppleSignIn.isEnabled`).
@@ -26,11 +28,22 @@ final class AuthViewModel: AppObservableObject {
     private let repo: AuthRepository
     private let config: AppConfigService
     private let onAuthenticated: () -> Void
+    private let consent: TermsConsent
 
-    init(repo: AuthRepository, config: AppConfigService, onAuthenticated: @escaping () -> Void) {
+    init(repo: AuthRepository, config: AppConfigService, consent: TermsConsent = TermsConsent(),
+         onAuthenticated: @escaping () -> Void) {
         self.repo = repo
         self.config = config
+        self.consent = consent
+        self.termsAgreed = AuthTermsGate.initiallyAgreed(consent: consent)
         self.onAuthenticated = onAuthenticated
+    }
+
+    /// Every method below asks this first. A refusal says why on the login screen and does nothing else.
+    private func termsAllowSignIn() -> Bool {
+        if AuthTermsGate.allow(agreed: termsAgreed, consent: consent) { return true }
+        errorMessage = NSLocalizedString("auth.terms.required", comment: "")
+        return false
     }
 
     func loadProviders() async {
@@ -51,21 +64,25 @@ final class AuthViewModel: AppObservableObject {
     var codeValid: Bool { AuthValidation.isValidOTP(code) }
 
     func signInWithPassword() async {
+        guard termsAllowSignIn() else { return }
         guard passwordSignInValid else { errorMessage = NSLocalizedString("auth.error.invalidCredentials", comment: ""); return }
         await run { try await self.repo.signIn(email: self.email, password: self.password); self.onAuthenticated() }
     }
 
     func sendOTP() async {
+        guard termsAllowSignIn() else { return }
         guard emailValid else { errorMessage = NSLocalizedString("auth.error.invalidEmail", comment: ""); return }
         await run { try await self.repo.sendEmailOTP(email: self.email); self.mode = .otpCode }
     }
 
     func verifyOTP() async {
+        guard termsAllowSignIn() else { return }
         guard codeValid else { errorMessage = NSLocalizedString("auth.error.otpLength", comment: ""); return }
         await run { try await self.repo.verifyEmailOTP(email: self.email, code: self.code); self.onAuthenticated() }
     }
 
     func continueWithGoogle() async {
+        guard termsAllowSignIn() else { return }
         await run { try await self.repo.signInWithGoogle(); self.onAuthenticated() }
     }
 
@@ -73,6 +90,7 @@ final class AuthViewModel: AppObservableObject {
     /// supports it, the flow ends on a web page or a refused callback: say so in one plain line, never leave
     /// the screen stuck, and leave Google / email untouched.
     func continueWithZalo() async {
+        guard termsAllowSignIn() else { return }
         isWorking = true; errorMessage = nil
         defer { isWorking = false }
         do {
@@ -105,6 +123,8 @@ final class AuthViewModel: AppObservableObject {
             errorMessage = ErrorPresenter.present(.unexpected(message: error.localizedDescription)).message
             return
         }
+        // The button is disabled until the box is ticked; this refuses a credential that arrives without it.
+        guard termsAllowSignIn() else { return }
         guard let identityToken, let token = String(data: identityToken, encoding: .utf8), let nonce else {
             errorMessage = ErrorPresenter.present(.unexpected(message: "apple identity token missing")).message
             return
