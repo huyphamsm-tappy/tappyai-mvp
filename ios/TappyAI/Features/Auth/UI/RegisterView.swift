@@ -72,10 +72,11 @@ struct RegisterView: View {
                 TappyTextField(titleKey: "Email", text: $vm.email)
                     .keyboardType(.emailAddress).textInputAutocapitalization(.never).autocorrectionDisabled()
                 TappyTextField(titleKey: "auth.password", text: $vm.password, isSecure: true)
-                AuthTermsConsentView(agreed: $vm.termsAgreed)
+                AuthTermsConsentView(agreed: $vm.termsAgreed, idPrefix: "register")
                 Button(NSLocalizedString("auth.signUp", comment: "")) { Task { await vm.submit() } }
                     .buttonStyle(.tappy(.primary))
                     .disabled(!vm.valid || !vm.termsAgreed)
+                    .accessibilityIdentifier("register-submit")
                 if let error = vm.errorMessage {
                     Text(error).font(TappyFont.footnote).foregroundStyle(TappyColor.danger)
                 }

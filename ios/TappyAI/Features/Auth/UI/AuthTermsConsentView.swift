@@ -6,7 +6,12 @@ struct AuthTermsConsentView: View {
     @Binding var agreed: Bool
     /// A sign-in was refused because the box is unticked: say so right here, inside the visible viewport.
     var showRequired = false
+    /// Accessibility-identifier prefix: the login and the registration sheet can be on screen at once.
+    var idPrefix = "auth"
     @State private var showTerms = false
+
+    /// The published Community Guidelines (the same page Settings opens).
+    static let guidelinesURL = TappyShare.canonicalOrigin + "/community-guidelines"
 
     var body: some View {
         VStack(alignment: .leading, spacing: Spacing.xs) {
@@ -23,7 +28,7 @@ struct AuthTermsConsentView: View {
                 }
             }
             .buttonStyle(.plain)
-            .accessibilityIdentifier("auth-terms-checkbox")
+            .accessibilityIdentifier("\(idPrefix)-terms-checkbox")
             .accessibilityValue(Text(LocalizedStringKey(agreed ? "auth.terms.checked" : "auth.terms.unchecked")))
 
             if showRequired && !agreed {
@@ -32,15 +37,15 @@ struct AuthTermsConsentView: View {
                     .foregroundStyle(TappyColor.danger)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.leading, 22 + Spacing.xs)
-                    .accessibilityIdentifier("auth-terms-error")
+                    .accessibilityIdentifier("\(idPrefix)-terms-error")
             }
 
             HStack(spacing: Spacing.md) {
                 Button { showTerms = true } label: { Text("auth.terms.linkTerms") }
-                    .accessibilityIdentifier("auth-terms-link")
-                if let url = URL(string: TappyShare.canonicalOrigin + "/community-guidelines") {
+                    .accessibilityIdentifier("\(idPrefix)-terms-link")
+                if let url = URL(string: Self.guidelinesURL) {
                     Link(destination: url) { Text("auth.terms.linkGuidelines") }
-                        .accessibilityIdentifier("auth-guidelines-link")
+                        .accessibilityIdentifier("\(idPrefix)-guidelines-link")
                 }
             }
             .font(TappyFont.footnote.weight(.semibold))
@@ -58,6 +63,7 @@ struct AuthTermsConsentView: View {
                     .toolbar {
                         ToolbarItem(placement: .cancellationAction) {
                             Button(NSLocalizedString("common.close", comment: "")) { showTerms = false }
+                                .accessibilityIdentifier("\(idPrefix)-terms-close")
                         }
                     }
             }

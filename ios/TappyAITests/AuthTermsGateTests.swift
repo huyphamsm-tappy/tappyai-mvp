@@ -48,6 +48,12 @@ final class AuthTermsGateTests: XCTestCase {
         XCTAssertTrue(AuthTermsGate.initiallyAgreed(consent: consent()))
     }
 
+    func testTheTermsLinkPointsAtThePublishedTermsPage() {
+        // The in-app Terms sheet is a web view of this exact URL (LegalPageView); a typo here would show Apple a wrong page.
+        XCTAssertEqual(LegalDocument.terms.url.absoluteString, "https://www.tappyai.com/terms")
+        XCTAssertEqual(AuthTermsConsentView.guidelinesURL, "https://www.tappyai.com/community-guidelines")
+    }
+
     func testEverySignInSurfaceCarriesTheGate() throws {
         // Source-level guard against a new sign-in path that forgets the gate (the view models are not
         // constructible without a live AuthRepository, so this reads the files like the other parity guards).

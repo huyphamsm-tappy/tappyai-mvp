@@ -805,6 +805,48 @@ final class ScreenshotTests: XCTestCase {
         shot("24-login-terms-agreed")
     }
 
+    /// App Review 1.2: the Terms link on the login opens the in-app Terms sheet (a web view of the published /terms) and it closes again.
+    /// What the page itself says is NOT asserted here (it loads from production); the URL is pinned in AuthTermsGateTests.
+    func testLoginTermsLinkOpensTheTermsSheetAndCloses() {
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let link = any(app, "auth-terms-link")
+        XCTAssertTrue(link.waitForExistence(timeout: 60), "Terms link on login")
+        link.tap()
+        let close = any(app, "auth-terms-close")
+        XCTAssertTrue(close.waitForExistence(timeout: 20), "the Terms sheet opened")
+        shot("25-login-terms-sheet")
+        close.tap()
+        XCTAssertTrue(any(app, "auth-terms-checkbox").waitForExistence(timeout: 20), "back on the login screen")
+    }
+
+    /// App Review 1.2: registration carries the same agreement. The form here is empty, so the button is disabled for that reason too;
+    /// this proves the checkbox, both links and the submit control are on the registration screen and the box ticks.
+    /// It does NOT prove the box alone gates a valid form (the source-level guard in AuthTermsGateTests covers `submit()`).
+    func testRegistrationShowsTheTermsAgreement() {
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let create = any(app, "auth-create-account")
+        XCTAssertTrue(create.waitForExistence(timeout: 60), "Create account on login")
+        create.tap()
+        let terms = any(app, "register-terms-checkbox")
+        XCTAssertTrue(terms.waitForExistence(timeout: 30), "Terms checkbox on registration")
+        let start = (terms.value as? String) ?? ""
+        if start.contains("Đã đồng ý") || start.contains("Agreed") { terms.tap() }
+        XCTAssertTrue(any(app, "register-terms-link").exists, "Terms link on registration")
+        XCTAssertTrue(any(app, "register-guidelines-link").exists, "Guidelines link on registration")
+        XCTAssertFalse(any(app, "register-submit").isEnabled, "sign-up is disabled before agreement")
+        shot("26-register-terms-unticked")
+        terms.tap()
+        let value = (terms.value as? String) ?? ""
+        XCTAssertTrue(value.contains("Đã đồng ý") || value.contains("Agreed"), "ticked, got: \(value)")
+        shot("27-register-terms-ticked")
+    }
+
     private func zaloAttack(mode: String, shotName: String) {
         setStub(["zalo": mode])
         let app = launch(route: "hub")
