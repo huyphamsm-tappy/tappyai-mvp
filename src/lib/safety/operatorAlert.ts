@@ -14,8 +14,12 @@ import { emitNotification, type EmitNotificationInput } from '@/lib/notification
 //    the queue still hold the report.
 // 🚨 INERT UNTIL CONFIGURED. With no recipients it does nothing, so shipping this changes no behaviour until the owner names
 //    the reviewers (`MODERATION_ALERT_USER_IDS`, falling back to the digest's `MODERATION_DIGEST_USER_IDS`).
-// THROTTLED. At most one alert of each kind per recipient per 15 minutes, so a flood of reports does not become a flood of
-//    pushes; the queue and the digest carry the rest.
+// THROTTLED, BUT NEVER FOR AN URGENT CASE. Routine alerts: at most one of each kind per recipient per 15 minutes, so a flood of
+//    reports does not become a flood of pushes (the queue and the digest carry the rest). An URGENT report (severe reason) is never
+//    throttled and also goes to the BACKUP reviewers at once, so a routine alert just before it cannot hide it and it does not
+//    depend on one person.
+// ROUTING. Primary = MODERATION_ALERT_USER_IDS (falls back to the digest list); backup = MODERATION_BACKUP_USER_IDS. More than one
+//    primary is allowed: every named reviewer is alerted, the queue is shared, and the first to decide closes it.
 
 export type OperatorAlertKind = 'report' | 'block'
 
@@ -26,7 +30,18 @@ export function alertRecipients(env: Record<string, string | undefined> = proces
   return [...new Set(raw.split(',').map((s) => s.trim()).filter(Boolean))]
 }
 
-export function alertNotice(kind: OperatorAlertKind): { title: string; body: string } {
+export function backupRecipients(primary: string[] = alertRecipients(), env: Record<string, string | undefined> = process.env): string[] {
+  const raw = env.MODERATION_BACKUP_USER_IDS || ''
+  return [...new Set(raw.split(',').map((s) => s.trim()).filter(Boolean))].filter((id) => !primary.includes(id))
+}
+
+/** Reasons that carry the 24 h target (the same severe set the queue gives priority 3): see 20261001d and 20261009. */
+const URGENT_REASONS: ReadonlySet<string> = new Set(['child_safety', 'self_harm', 'violence', 'sexual', 'inappropriate', 'sensitive'])
+export function isUrgentReason(reason: unknown): boolean {
+  return typeof reason === 'string' && URGENT_REASONS.has(reason)
+}
+
+export function alertNotice(kind: OperatorAlertKind, urgent = false): { title: string; body: string } {
   if (kind === 'block') {
     return {
       title: 'Có người dùng vừa chặn một tài khoản · A user blocked an account',
@@ -35,7 +50,7 @@ export function alertNotice(kind: OperatorAlertKind): { title: string; body: str
     }
   }
   return {
-    title: 'Có báo cáo mới · New report',
+    title: urgent ? 'KHẨN · URGENT — Có báo cáo mới · New report' : 'Có báo cáo mới · New report',
     body: 'Có một báo cáo mới đang chờ xem xét. Mở /admin/moderation. Mục tiêu xử lý nhóm nghiêm trọng: 24 giờ.\n' +
       'A new report is waiting for review. Open /admin/moderation. Target for severe groups: 24 h.',
   }
@@ -43,6 +58,10 @@ export function alertNotice(kind: OperatorAlertKind): { title: string; body: str
 
 export interface OperatorAlertDeps {
   recipients?: string[]
+  /** Backup reviewers: alerted as well, immediately, when the case is urgent. */
+  backups?: string[]
+  /** A severe report: never throttled, and the backups are told at once. */
+  urgent?: boolean
   emit?: (input: EmitNotificationInput) => Promise<{ id: string | null }>
   /** Whether this recipient already got an alert of this kind inside the window. A failed read counts as "no". */
   recentlyAlerted?: (userId: string, kind: OperatorAlertKind, sinceIso: string) => Promise<boolean>
@@ -65,19 +84,21 @@ export interface OperatorAlertResult { recipients: number; sent: number; skipped
 export async function alertModerators(kind: OperatorAlertKind, deps: OperatorAlertDeps = {}): Promise<OperatorAlertResult> {
   const result: OperatorAlertResult = { recipients: 0, sent: 0, skipped: 0, failed: 0 }
   try {
-    const recipients = deps.recipients ?? alertRecipients()
+    const primary = deps.recipients ?? alertRecipients()
+    const urgent = deps.urgent === true
+    const recipients = urgent ? [...primary, ...(deps.backups ?? backupRecipients(primary))] : primary
     result.recipients = recipients.length
     if (recipients.length === 0) return result
     const emit = deps.emit ?? emitNotification
     const recently = deps.recentlyAlerted ?? defaultRecentlyAlerted
     const since = new Date((deps.now?.() ?? Date.now()) - ALERT_WINDOW_MS).toISOString()
-    const note = alertNotice(kind)
+    const note = alertNotice(kind, urgent)
     for (const userId of recipients) {
       try {
-        if (await recently(userId, kind, since)) { result.skipped++; continue }
+        if (!urgent && await recently(userId, kind, since)) { result.skipped++; continue }
         const r = await emit({
           userId, type: 'system', category: 'system', title: note.title, body: note.body,
-          entityUrl: '/admin/moderation', data: { kind: 'moderation_alert', alert: kind },
+          entityUrl: '/admin/moderation', data: { kind: 'moderation_alert', alert: kind, ...(urgent ? { urgent: true } : {}) },
         })
         if (r.id) result.sent++; else result.failed++
       } catch {

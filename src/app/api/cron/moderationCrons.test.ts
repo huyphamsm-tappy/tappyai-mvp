@@ -43,6 +43,20 @@ describe('moderation crons', () => {
     expect(JSON.stringify(n)).not.toMatch(/reported_by|reason|target/)
   })
 
+  it('escalation: something overdue or about to be overdue also goes to the BACKUP reviewers; a calm queue does not', async () => {
+    process.env.MODERATION_BACKUP_USER_IDS = 'b1, u1'                 // u1 is also primary: it must not be told twice
+    h.rows = [{ priority: 3, created_at: ago(14) }]                  // urgent, 14 h old: not overdue yet, but overdue before the next 12-hourly run
+    const risky = await (await call(DIGEST)).json()
+    expect(risky).toMatchObject({ sent: 2, escalated: 1, backups: 1, counts: { open: 1, at_risk: 1, overdue: 0 } })
+    const esc = h.emit.mock.calls.map((c) => c[0] as { userId: string; title: string; data: { kind: string } }).filter((n) => n.data.kind === 'moderation_escalation')
+    expect(esc.map((n) => n.userId)).toEqual(['b1'])
+    expect(esc[0].title).toMatch(/ESCALATION/)
+    h.emit.mockClear()
+    h.rows = [{ priority: 3, created_at: ago(2) }, { priority: 1, created_at: ago(30) }]   // fresh urgent, routine 30 h old (72 h target)
+    expect(await (await call(DIGEST)).json()).toMatchObject({ sent: 2, escalated: 0, counts: { at_risk: 0, overdue: 0 } })
+    delete process.env.MODERATION_BACKUP_USER_IDS
+  })
+
   it('digest with no recipients configured sends nobody (and says so)', async () => {
     delete process.env.MODERATION_DIGEST_USER_IDS; h.rows = [{ priority: 1, created_at: ago(1) }]
     expect(await (await call(DIGEST)).json()).toMatchObject({ sent: 0, recipients: 0 })

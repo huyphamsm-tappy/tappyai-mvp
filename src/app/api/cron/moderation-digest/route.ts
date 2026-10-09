@@ -3,7 +3,8 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
 import { emitNotification } from '@/lib/notifications/emit'
 import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
-import { isOverdue, digestNotice } from '@/lib/safety/moderationDecisions'
+import { isOverdue, isAtRisk, digestNotice } from '@/lib/safety/moderationDecisions'
+import { alertRecipients, backupRecipients } from '@/lib/safety/operatorAlert'
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -21,7 +22,8 @@ export async function GET(req: Request) {
   if (!moderationAdminEnabled()) return new NextResponse(null, { status: 404 })
   if (!isAuthorizedCronRequest(req)) return NextResponse.json({ error: 'unauthorized' }, { status: 401 })
 
-  const recipients = (process.env.MODERATION_DIGEST_USER_IDS ?? '').split(',').map((s) => s.trim()).filter(Boolean)
+  const recipients = alertRecipients()
+  const backups = backupRecipients(recipients)
   const admin = createAdminClient()
   const now = new Date()
   const { data, error } = await admin.from('moderation_queue').select('priority, created_at').in('status', ['pending', 'in_review']).limit(5000)
@@ -33,6 +35,7 @@ export async function GET(req: Request) {
     new_24h: open.filter((r) => new Date(r.created_at).getTime() > dayAgo).length,
     urgent: open.filter((r) => r.priority >= 3).length,
     overdue: open.filter((r) => isOverdue(r.priority, r.created_at, now)).length,
+    at_risk: open.filter((r) => isAtRisk(r.priority, r.created_at, now)).length,
   }
   // Nothing waiting and nothing new: stay quiet (no daily noise).
   if (counts.open === 0) return NextResponse.json({ ok: true, sent: 0, counts })
@@ -43,5 +46,15 @@ export async function GET(req: Request) {
     const r = await emitNotification({ userId, type: 'system', category: 'system', title: note.title, body: note.body, entityUrl: '/admin/moderation', data: { kind: 'moderation_digest', ...counts } })
     if (r.id) sent++
   }
-  return NextResponse.json({ ok: true, sent, recipients: recipients.length, counts })
+  // ESCALATION: something is overdue, or will be before the next run (this cron runs every 12 h) → the backup reviewers are told too,
+  // so a report does not depend on the primary reviewer alone. Counts only, like the digest.
+  let escalated = 0
+  if (counts.overdue + counts.at_risk > 0) {
+    for (const userId of backups) {
+      const r = await emitNotification({ userId, type: 'system', category: 'system', title: `LEO THANG · ESCALATION — ${note.title}`, body: note.body, entityUrl: '/admin/moderation', data: { kind: 'moderation_escalation', ...counts } })
+      if (r.id) escalated++
+    }
+  }
+  if (recipients.length > 0 && sent === 0) console.error('[moderation-digest] no digest delivered to', recipients.length, 'recipient(s)')
+  return NextResponse.json({ ok: true, sent, escalated, recipients: recipients.length, backups: backups.length, counts })
 }

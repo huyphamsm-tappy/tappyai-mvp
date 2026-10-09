@@ -5,7 +5,7 @@ import { serverMessage } from '@/lib/i18n/serverMessages'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { canonicalReportReason } from '@/lib/reviews/reportReasons'
 import { createHash } from 'crypto'
-import { alertModerators } from '@/lib/safety/operatorAlert'
+import { alertModerators, isUrgentReason } from '@/lib/safety/operatorAlert'
 
 // F-031 — the content-report channel for user-generated content.
 //
@@ -58,6 +58,6 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   }
 
   // The report is stored. Ping the reviewers (content-free, best effort, never throws).
-  await alertModerators('report')
+  await alertModerators('report', { urgent: isUrgentReason(canonical) })
   return NextResponse.json({ ok: true, reported: true })
 }

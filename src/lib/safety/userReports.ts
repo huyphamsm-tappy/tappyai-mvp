@@ -7,7 +7,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { isUserReportReason } from '@/lib/reviews/reportReasons'
 import { UUID_RE, reportsEnabled } from '@/lib/safety/userBlocks'
-import { alertModerators } from '@/lib/safety/operatorAlert'
+import { alertModerators, isUrgentReason } from '@/lib/safety/operatorAlert'
 
 // Reports of comments and users (owner 01/10; migration 20261001b_user_reports.sql). Same contract as the post report
 // (POST /api/reviews/{id}/report): body {reason}, 200 {ok, reported, alreadyReported?}, 400 invalid_reason, 401, 403 anonymous.
@@ -74,6 +74,6 @@ export async function handleReport(req: NextRequest, targetType: ReportTarget, t
     return NextResponse.json({ error: 'report_failed', message: serverMessage('server.error', locale) }, { status: 500 })
   }
   // The report is stored. Ping the reviewers (content-free, best effort, never throws).
-  await alertModerators('report')
+  await alertModerators('report', { urgent: isUrgentReason(reason) })
   return done()
 }

@@ -32,9 +32,9 @@ SELECT to_regprocedure('safety_private.blocked_ids()')            IS NOT NULL AS
        to_regprocedure('public.user_report_to_queue()')           IS NOT NULL AS user_report_to_queue,
        to_regprocedure('public.fn_ingest_moderation_reports()')   IS NOT NULL AS fn_ingest_moderation_reports;
 
-\echo '== 5. triggers (expect user_report_to_queue, moderation_decisions_guard, moderation_appeals_guard, refuse_banned_identity)'
+\echo '== 5. triggers (expect content_report_to_queue [20261009], user_report_to_queue, moderation_decisions_guard, moderation_appeals_guard, refuse_banned_identity)'
 SELECT tgname, tgrelid::regclass AS on_table FROM pg_trigger
- WHERE NOT tgisinternal AND tgname IN ('user_report_to_queue','moderation_decisions_guard','moderation_appeals_guard','refuse_banned_identity') ORDER BY 1;
+ WHERE NOT tgisinternal AND tgname IN ('content_report_to_queue','user_report_to_queue','moderation_decisions_guard','moderation_appeals_guard','refuse_banned_identity') ORDER BY 1;
 
 \echo '== 6. migration ledger (this table may not exist if migrations were applied by hand: an error here is fine)'
 SELECT version, name FROM supabase_migrations.schema_migrations WHERE version >= '20260817' ORDER BY 1;

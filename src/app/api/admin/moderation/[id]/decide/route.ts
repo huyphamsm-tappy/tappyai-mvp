@@ -166,11 +166,24 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     ).eq('id', item.id)
     if (closeError) { console.error('[admin][moderation][decide] queue update failed:', closeError.message); return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
 
+    // DEDUPLICATION: every other open report on the SAME target is covered by this decision (the content is handled / the account
+    // actioned), so it is closed WITH the evidence — its resolution names this queue item — instead of waiting for a second review
+    // and turning "overdue". Only after a real decision (resolved); a dismissal or a hold never closes the others. A failure here is
+    // logged and never undoes the decision: the siblings simply stay open for the reviewer.
+    let siblingsClosed = 0
+    if (closed === 'resolved') {
+      const sib = await admin.from('moderation_queue').update(
+        { status: 'resolved', resolved_by: user.id, resolved_at: nowIso, resolution: `Covered by the decision on the same target (queue ${item.id}): ${body.reason}`, updated_at: nowIso },
+      ).eq('target_type', item.target_type).eq('target_id', item.target_id).in('status', ['pending', 'in_review']).neq('id', item.id).select('id')
+      if (sib.error) console.error('[admin][moderation][decide] sibling close failed:', sib.error.message)
+      else siblingsClosed = sib.data?.length ?? 0
+    }
+
     writeAuditLog({
       actorId: user.id, actorEmail: user.email ?? '—', actorRole,
       action: `moderation.${ACTION_FOR[outcome]}`, targetType: item.target_type, targetId: item.target_id,
       // The decision, the rule and the reason. NOT the reported content, nothing about the reporter.
-      metadata: { queue_id: item.id, outcome: outcome, rule_group: body.rule_group ?? null, severity: body.severity ?? null, decision_id: decisionId, restrict_days: body.restrict_days ?? null, ...(sessionsRevoked === null ? {} : { sessions_revoked: sessionsRevoked }) },
+      metadata: { queue_id: item.id, siblings_closed: siblingsClosed, outcome: outcome, rule_group: body.rule_group ?? null, severity: body.severity ?? null, decision_id: decisionId, restrict_days: body.restrict_days ?? null, ...(sessionsRevoked === null ? {} : { sessions_revoked: sessionsRevoked }) },
       req,
     })
 

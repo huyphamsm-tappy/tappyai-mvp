@@ -469,6 +469,10 @@ describe('C8 — the drain is wired as a daily cron', () => {
     //   a counts-only summary of the moderation queue (open / new / urgent / overdue). It is the safety net behind the per-report alert,
     //   so a report cannot sit unseen for a day. Double-gated by CRON_SECRET and MODERATION_ADMIN_ENABLED (404 while off); it reads only
     //   moderation_queue priority and timestamps, and notifies staff named in MODERATION_DIGEST_USER_IDS — never an end user.
-    expect(vercelJson.crons.length).toBe(16)
+    //
+    // 16 -> 17 on 2026-10-09 (App Review 1.2, owner): the same `/api/cron/moderation-digest` a second time a day (13:00 UTC = 20:00 VN), so it
+    //   runs every 12 h. The escalation to the backup reviewers fires for reports that will be overdue BEFORE the next run; with one
+    //   run a day an urgent report could pass 24 h unnoticed. Hobby allows daily jobs only, so this is two daily entries, not an hourly one.
+    expect(vercelJson.crons.length).toBe(17)
   })
 })

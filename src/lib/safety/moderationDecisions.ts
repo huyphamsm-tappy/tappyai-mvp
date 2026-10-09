@@ -83,6 +83,17 @@ export function isOverdue(priority: number, createdAt: string, now: Date = new D
   return hours > (priority >= 3 ? 24 : 72)
 }
 
+/**
+ * Escalation lead: the digest runs twice a day (every 12 h), so a report that will be overdue BEFORE the next run must be raised
+ * NOW. At risk = past (target − 12 h) and not yet overdue.
+ */
+export const ESCALATION_LEAD_HOURS = 12
+export function isAtRisk(priority: number, createdAt: string, now: Date = new Date()): boolean {
+  const hours = (now.getTime() - new Date(createdAt).getTime()) / 3_600_000
+  const target = priority >= 3 ? 24 : 72
+  return hours > target - ESCALATION_LEAD_HOURS && hours <= target
+}
+
 export const penaltyText = (outcome: LedgerOutcome, restrictDays: number | null, lang: 'vi' | 'en'): string => {
   if (lang === 'vi') {
     return { no_violation: 'Không vi phạm', warning: 'Cảnh cáo (không ảnh hưởng tài khoản)', content_removed: 'Nội dung bị gỡ và 1 strike',
@@ -131,12 +142,13 @@ export function noticeFor(n: NoticeInput): { title: string; body: string; entity
 
 export const GROUP_PRIORITY = (g: RuleGroupId) => RULE_GROUPS[g].priority
 
-export interface DigestCounts { open: number; new_24h: number; urgent: number; overdue: number }
+export interface DigestCounts { open: number; new_24h: number; urgent: number; overdue: number; at_risk: number }
 /** The daily summary for the reviewers: counts only, never a report, a reporter or content. */
 export function digestNotice(c: DigestCounts): { title: string; body: string } {
   return {
-    title: c.overdue > 0 ? 'Có báo cáo quá hạn · Overdue reports' : 'Hàng chờ kiểm duyệt · Moderation queue',
-    body: `Hàng chờ kiểm duyệt: ${c.open} đang chờ, ${c.new_24h} mới trong 24 giờ, ${c.urgent} khẩn, ${c.overdue} quá hạn. Mở /admin/moderation.
-Moderation queue: ${c.open} waiting, ${c.new_24h} new in 24 h, ${c.urgent} urgent, ${c.overdue} overdue. Open /admin/moderation.`,
+    title: c.overdue > 0 ? 'Có báo cáo quá hạn · Overdue reports'
+      : c.at_risk > 0 ? 'Báo cáo sắp quá hạn · Reports nearly due' : 'Hàng chờ kiểm duyệt · Moderation queue',
+    body: `Hàng chờ kiểm duyệt: ${c.open} đang chờ, ${c.new_24h} mới trong 24 giờ, ${c.urgent} khẩn, ${c.at_risk} sắp quá hạn, ${c.overdue} quá hạn. Mở /admin/moderation.
+Moderation queue: ${c.open} waiting, ${c.new_24h} new in 24 h, ${c.urgent} urgent, ${c.at_risk} nearly due, ${c.overdue} overdue. Open /admin/moderation.`,
   }
 }

@@ -23,6 +23,8 @@ const h = vi.hoisted(() => ({
   decision: null as Record<string, unknown> | null,
   appeal: null as Record<string, unknown> | null,
   ledgerInserted: false,
+  siblings: [] as Array<{ id: string }>,
+  siblingError: null as null | { message: string },
 }))
 
 vi.mock('@/lib/admin/rbac', async (orig) => ({ ...((await orig()) as Record<string, unknown>), isSameOrigin: () => true }))
@@ -56,7 +58,15 @@ vi.mock('@/lib/supabase/admin', () => ({
         if (table === 'moderation_decisions' && !h.ledgerError) h.ledgerInserted = true
         return Object.assign(Promise.resolve(done), { select: () => ({ maybeSingle: async () => ({ data: h.ledgerError ? null : { id: 'dec-new' }, error: h.ledgerError }) }) })
       }
-      b.update = (value: unknown) => { h.ops.push({ table, op: 'update', value }); return { eq: () => Object.assign(Promise.resolve({ data: null, error: null }), { eq: () => Promise.resolve({ data: null, error: null }) }) } }
+      b.update = (value: unknown) => {
+        h.ops.push({ table, op: 'update', value })
+        // item update: .eq(id) awaited; sibling update: .eq().eq().in().neq().select() awaited (the deduplication, returns the closed ids)
+        const c = Object.assign(Promise.resolve({ data: null, error: null }), {} as Record<string, unknown>)
+        const self = () => c
+        c.eq = self; c.in = self; c.neq = self
+        c.select = () => Promise.resolve({ data: h.siblings, error: h.siblingError })
+        return c
+      }
       b.delete = () => { h.ops.push({ table, op: 'delete' }); return { eq: () => Promise.resolve({ data: null, error: null }) } }
       return b
     },
@@ -90,7 +100,7 @@ describe('moderation desk routes', () => {
     h.guard.mockResolvedValue(null)
     h.revoke.mockResolvedValue({ revoked: 2 })
     h.emit.mockResolvedValue({ id: 'n1' })
-    h.target = target(); h.strikes = []; h.ledgerError = null; h.ops = []; h.decision = null; h.appeal = null; hh.ledgerInserted = false
+    h.target = target(); h.strikes = []; h.ledgerError = null; h.ops = []; h.decision = null; h.appeal = null; hh.ledgerInserted = false; h.siblings = []; h.siblingError = null
     h.queueItem = { id: QID, status: 'pending', target_type: 'comment', target_id: TARGET }
   })
   afterEach(() => { if (prev === undefined) delete process.env.MODERATION_ADMIN_ENABLED; else process.env.MODERATION_ADMIN_ENABLED = prev })
@@ -221,6 +231,38 @@ describe('moderation desk routes', () => {
     expect(h.ops).toEqual([])
     h.queueItem = { id: QID, status: 'pending', target_type: 'review', target_id: TARGET }
     expect((await legacy('dismiss')).status).toBe(200)
+  })
+
+  it('deduplication: a real decision closes the other open reports on the SAME target, with the evidence in their resolution', async () => {
+    h.siblings = [{ id: 's1' }, { id: 's2' }]
+    const r = await decide({ outcome: 'warning', rule_group: 'spam', reason: REASON })
+    expect(r.status).toBe(200)
+    const updates = h.ops.filter((o) => o.table === 'moderation_queue' && o.op === 'update').map((o) => o.value as Record<string, unknown>)
+    expect(updates).toHaveLength(2)                                   // the item, then its siblings
+    expect(updates[1]).toMatchObject({ status: 'resolved', resolved_by: ACTOR })
+    expect(String(updates[1].resolution)).toContain(QID)               // evidence: which decision covered them
+    expect(String(updates[1].resolution)).toContain(REASON)
+    const entry = h.audit.mock.calls[0][0] as { metadata: Record<string, unknown> }
+    expect(entry.metadata.siblings_closed).toBe(2)
+  })
+
+  it('a dismissal or a hold never closes the other reports', async () => {
+    h.siblings = [{ id: 's1' }]
+    await decide({ outcome: 'no_violation', reason: REASON })
+    expect(h.ops.filter((o) => o.table === 'moderation_queue' && o.op === 'update')).toHaveLength(1)
+    h.ops = []; hh.ledgerInserted = false
+    h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { ...(h.queueItem as object), target_type: 'review' }   // a hold hides a POST only
+    expect((await decide({ outcome: 'hold', reason: REASON })).status).toBe(200)
+    expect(h.ops.filter((o) => o.table === 'moderation_queue' && o.op === 'update')).toHaveLength(1)
+  })
+
+  it('a failure closing the siblings never undoes the decision', async () => {
+    const err = vi.spyOn(console, 'error').mockImplementation(() => {})
+    h.siblingError = { message: 'db down' }
+    const r = await decide({ outcome: 'warning', rule_group: 'spam', reason: REASON })
+    expect(r.status).toBe(200)
+    expect(((h.audit.mock.calls[0][0]) as { metadata: Record<string, unknown> }).metadata.siblings_closed).toBe(0)
+    err.mockRestore()
   })
 
   it('the audit entry names the decision and the rule — never the reported text or the reporter', async () => {

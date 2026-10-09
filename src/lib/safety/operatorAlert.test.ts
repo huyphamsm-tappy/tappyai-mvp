@@ -6,7 +6,7 @@ import { describe, it, expect, vi } from 'vitest'
 vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => { throw new Error('the admin client must not be touched here') } }))
 vi.mock('@/lib/notifications/emit', () => ({ emitNotification: async () => { throw new Error('emit must not be called here') } }))
 
-import { alertModerators, alertNotice, alertRecipients, ALERT_WINDOW_MS } from './operatorAlert'
+import { alertModerators, alertNotice, alertRecipients, backupRecipients, isUrgentReason, ALERT_WINDOW_MS } from './operatorAlert'
 
 const ids = ['11111111-1111-4111-8111-111111111111', '22222222-2222-4222-8222-222222222222']
 
@@ -17,6 +17,43 @@ describe('alertRecipients', () => {
   it('prefers MODERATION_ALERT_USER_IDS, falls back to the digest list, trims and de-duplicates', () => {
     expect(alertRecipients({ MODERATION_ALERT_USER_IDS: ` ${ids[0]} , ${ids[0]},${ids[1]} `, MODERATION_DIGEST_USER_IDS: 'x' })).toEqual(ids)
     expect(alertRecipients({ MODERATION_DIGEST_USER_IDS: ids[1] })).toEqual([ids[1]])
+  })
+})
+
+describe('backupRecipients / isUrgentReason', () => {
+  it('backups come from MODERATION_BACKUP_USER_IDS and never repeat a primary', () => {
+    expect(backupRecipients(ids, {})).toEqual([])
+    expect(backupRecipients([ids[0]], { MODERATION_BACKUP_USER_IDS: `${ids[0]}, ${ids[1]}` })).toEqual([ids[1]])
+  })
+  it('severe reasons are urgent; routine ones and junk are not', () => {
+    for (const r of ['child_safety', 'self_harm', 'violence', 'sexual', 'inappropriate', 'sensitive']) expect(isUrgentReason(r)).toBe(true)
+    for (const r of ['spam', 'copyright', 'other', 'harassment', '', null, undefined, 3]) expect(isUrgentReason(r)).toBe(false)
+  })
+})
+
+describe('urgent alerts', () => {
+  const backup = '33333333-3333-4333-8333-333333333333'
+  it('an urgent report is never throttled and reaches the backup reviewer at once', async () => {
+    const emit = vi.fn(async (_input: unknown) => ({ id: 'n' }))
+    const recently = vi.fn(async () => true)                            // everybody was "just alerted"
+    const r = await alertModerators('report', { recipients: ids, backups: [backup], urgent: true, emit, recentlyAlerted: recently })
+    expect(r).toEqual({ recipients: 3, sent: 3, skipped: 0, failed: 0 })
+    expect(recently).not.toHaveBeenCalled()
+    const sent = emit.mock.calls.map((c) => c[0] as { userId: string; title: string; data: Record<string, unknown> })
+    expect(sent.map((s) => s.userId)).toEqual([...ids, backup])
+    expect(sent[0].title).toMatch(/KHẨN|URGENT/)
+    expect(sent[0].data).toEqual({ kind: 'moderation_alert', alert: 'report', urgent: true })
+  })
+  it('a routine report goes to the primary reviewers only, and is still throttled', async () => {
+    const emit = vi.fn(async (_input: unknown) => ({ id: 'n' }))
+    const r = await alertModerators('report', { recipients: ids, backups: [backup], emit, recentlyAlerted: async () => true })
+    expect(r).toEqual({ recipients: 2, sent: 0, skipped: 2, failed: 0 })
+    expect(emit).not.toHaveBeenCalled()
+  })
+  it('several primary reviewers are each alerted (the queue is shared; the first to decide closes the item)', async () => {
+    const emit = vi.fn(async (_input: unknown) => ({ id: 'n' }))
+    const r = await alertModerators('report', { recipients: ids, emit, recentlyAlerted: async () => false })
+    expect(r.sent).toBe(2)
   })
 })
 
