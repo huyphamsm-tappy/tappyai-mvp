@@ -55,3 +55,9 @@ No Android/iOS file and no production resource was touched; handoff = the "Closi
 
 ## 4. Verification state of this worktree (HEAD `000d248`)
 tsc clean; eslint 0 errors (47 pre-existing warnings); full vitest (default timeouts) **18,471 passed · 0 failed · 84 skipped · 1 todo of 18,556**. Mutation harnesses re-run sequentially on the final code: M6 11/11, M7 13/13, WS-final 20/20, WS2 24/24 caught; the UAT-10 defect harness 12/12; the freshness harness 14/15 (the 15th, F11 timestamps-as-evidence, was a mis-written mutation and was re-run corrected: caught); the first answer-first harness is now partly stale (M7/M9 strings changed, M8 superseded) — its intents are covered by the UAT-10 defect harness. `m4_mutate` is a stale harness (M1/M2 patterns gone since `6b7d958`, M3 survived) — pre-existing, unrelated.
+
+## 5. Owner decisions of 2026-10-09 and the result (appended)
+- **UAT-10 live turn (approved, one, cap 8 credits): executed → FAIL on the lookup-scope criterion.** Report: `artifacts/phase8/uat/uat10-e2e-defects-fixed-2026-10-09/REPORT.md`. 5 model calls, 3 tool calls (1 executed, 2 refused), 7 Serper requests sent / 7 refused by the ceiling, **estimated 8 · provider-reported 8 · ledger 8 · Activity Log NOT reconciled**. The three earlier defects did not recur; one `search_products` call spent the whole ceiling on card enrichment. No second turn.
+- 3-Cards incident: the legacy 3-hotel-card contract is unchanged; trace request in `THREE-CARDS-TRACE-REQUEST.md`.
+- Shop-info sequencing and commercial data access: unchanged / deferred (capability register in the closure matrix).
+- Per-WP verdicts, evidence and blockers: `PHASE8-CLOSURE-MATRIX.md` (supersedes §2 of this file where they differ).
