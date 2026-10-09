@@ -6,6 +6,7 @@ import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -3157,7 +3158,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const convMessages = [
             ...trimmedMessages.map((m: { role: string; content: unknown }) => ({
               role: m.role,
-              content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+              // Task 02: with p8_cost_memory_text an image part's base64 no longer goes into the prompt as text.
+              content: memoryMessageText(m.content),
             })),
             { role: 'assistant', content: text },
           ]

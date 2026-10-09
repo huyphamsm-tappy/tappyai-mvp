@@ -124,11 +124,13 @@ describe('through the real provider layers: webSearch is stamped with the oldest
   })
   it('an in-process (L1) hit of serperSearch reports the ORIGINAL fetch time, not "now"', async () => {
     const first = await withRetrievalClock(() => serperSearch('giá iphone 16 trả góp'))
-    await new Promise(r => setTimeout(r, 25))
+    await new Promise(r => setTimeout(r, 80))
     const second = await withRetrievalClock(() => serperSearch('giá iphone 16 trả góp'))
     expect(serperCalls).toBe(1)
     expect(first.retrievedAt).not.toBeNull()
-    expect(second.retrievedAt).toBe(first.retrievedAt)
+    // the stored time and the stamped time are two Date.now() reads of the same fetch (a ms apart under load);
+    // what matters is that the hit does NOT report the later "now" (80 ms after the fetch)
+    expect(Math.abs(Date.parse(second.retrievedAt!) - Date.parse(first.retrievedAt!))).toBeLessThan(20)
   })
   it('serperPlaces: an L2 hit carries its stored time', async () => {
     const at = ago(30)
