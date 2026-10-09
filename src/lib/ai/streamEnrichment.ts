@@ -1089,7 +1089,10 @@ function visibleRest(
  * path below and for `renderedFoldNames` (the photo selection), so they cannot drift.
  */
 function cardFold(recs: Recommendation[], text: string): { named: Recommendation[]; picked: Recommendation[]; headers: ReturnType<typeof proseHeaders>; allNames: string[] } {
-  const folded = normName(text)
+  // A [TAPPY_PLAN] body is the plan's own deliverable (its items already carry their photos inside the JSON). A venue named THERE is
+  // part of the itinerary, not a pick the reply made — letting it count turned every Make Plan turn into "the reply named these places"
+  // and built a decision card from the plan's data (reproduced offline, makePlanCards.test.ts). Only the prose around the block names.
+  const folded = normName(text.replace(/\[TAPPY_PLAN\][\s\S]*?(?:\[\/TAPPY_PLAN\]|$)/g, ' '))
   const headers = proseHeaders(folded)
   const allNames = recs.map(r => r.entity.identity.name)
   const named = recs
@@ -2245,7 +2248,10 @@ export function applyPlaceEnrichmentStreamFilter(
     // COST (2026-09-29): the lookup is skipped only when every card above the fold already
     // carries a verified TikTok review — there is nothing left for it to attribute. Otherwise the
     // ONE batched request for the fold is unchanged (one credit whether it names one venue or three).
-    if (resolveTikTok && recsForCard.length > 0 && !pickedRecs.every(hasVerifiedTikTok)) {
+    // A finished plan asks for nothing more: the review-link lookup attributes TikTok posts to CARD venues, and a plan turn's deliverable
+    // is the [TAPPY_PLAN] block, so no extra provider request is sent after it (Phase 8 orchestration fix D).
+    const planDelivered = mainText.includes('[TAPPY_PLAN]')
+    if (resolveTikTok && !planDelivered && recsForCard.length > 0 && !pickedRecs.every(hasVerifiedTikTok)) {
       try {
         const cardNames = pickedRecs
           .map(r => r.entity.identity.name)
