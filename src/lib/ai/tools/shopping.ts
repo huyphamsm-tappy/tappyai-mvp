@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch, serperShopping, fetchPlacePhotosByName } from './common'
+import { withRetrievedAt } from './retrievalClock'
 import { filterShoppingResults } from './shoppingValidity'
 import { parseProductSpecs, parseVndPrice } from '@/lib/ai/productSpecs'
 import { messages } from '@/lib/ai/messages'
@@ -60,7 +61,7 @@ async function merchantProductRows(query: string): Promise<Array<{ title: string
   return out
 }
 
-export async function searchProducts(query: string, lang = 'vi') {
+async function searchProductsImpl(query: string, lang = 'vi') {
   const cacheKey = productsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -272,3 +273,6 @@ export async function searchProducts(query: string, lang = 'vi') {
   setCache(cacheKey, result, 15 * 60 * 1000) // cache 15 phut
   return result
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function searchProducts(...args: Parameters<typeof searchProductsImpl>): ReturnType<typeof searchProductsImpl> { return withRetrievedAt(() => searchProductsImpl(...args)) }

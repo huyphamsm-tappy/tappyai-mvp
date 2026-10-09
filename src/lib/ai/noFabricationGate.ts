@@ -26,6 +26,7 @@ import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
 import { parsePriceBand, amountWithinBand, type PriceBand } from '@/lib/recommendation/priceBand'
 import { availabilityPolarity, clockTimes } from './agent/runtime/claimConflict'
 import { isTitleCaseName, allocationContext, withoutLineLabel } from './snippetPriceGuard'
+import { vnClock } from './freshness'
 
 export type ClaimState = 'FACT' | 'INFERENCE' | 'UNKNOWN' | 'CONFLICT' | 'FABRICATED'
 export type ClaimCategory = 'price' | 'market' | 'hours' | 'rating' | 'review_count' | 'availability' | 'policy' | 'dosage' | 'distance' | 'booking_status'
@@ -42,6 +43,12 @@ export interface GateEvidence {
   /** Price figures read only from OLD pages (page date > 180 days before the read) and from fresh ones (ledger price evidence). */
   stalePrices?: readonly number[]
   freshPrices?: readonly number[]
+  /**
+   * Prices that only come from tool rows whose freshness is STALE or UNKNOWN (freshness.ts: older than the max age of their kind of data,
+   * or no usable `retrieved_at`). Said as "now" without a time qualifier they stay in the reply — it is not cut — but ONE note says when
+   * they were fetched (or that nobody knows) and that they may have changed.
+   */
+  agedPrices?: ReadonlyArray<{ amount: number; at: string | null }>
 }
 
 export interface GateClaim { category: ClaimCategory; state: ClaimState; value: string }
@@ -77,7 +84,9 @@ export function buildIndex(ev: GateEvidence): Index {
   for (const raw of ev.corpus) {
     const t = raw.length > 200_000 ? raw.slice(0, 200_000) : raw
     // JSON escapes (à…) are decoded where present, so Vietnamese text in tool results reads as text.
-    const text = t.includes('\\u') ? t.replace(/\\u([0-9a-fA-F]{4})/g, (_m, h: string) => String.fromCharCode(parseInt(h, 16))) : t
+    const decoded = t.includes('\\u') ? t.replace(/\\u([0-9a-fA-F]{4})/g, (_m, h: string) => String.fromCharCode(parseInt(h, 16))) : t
+    // Freshness metadata describes the data, it is not data: a timestamp's digits must never "support" a figure the reply states.
+    const text = decoded.replace(/"retrieved_at"\s*:\s*"[^"]*"/g, '"retrieved_at":""').replace(/"freshness"\s*:\s*\{[^{}]*\}/g, '"freshness":{}')
     nums.push(...numbersOf(text))
     for (const c of extractMoneyClaims(text)) { money.push(c.lo); if (c.hi !== c.lo) money.push(c.hi) }
     for (const m of text.matchAll(/"(?:price_range_text|price_range|priceRange|price_level_text)"\s*:\s*"([^"]{2,40})"/g)) { const b = parsePriceBand(m[1]); if (b) bands.push(b) }
@@ -343,6 +352,7 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
   const doomed = new Set<number>()
   const fabricatedCats = new Set<ClaimCategory>()
   const conflictNotes: string[] = []
+  const agedAt = new Set<string>() // fetch times of prices said as current from stale/unknown-time rows ('' = nobody knows when)
   // Values the reply may compute from: the user's, and the evidence's (money amounts and plain figures ≥ 1.000 from structured rows).
   const knownMoney = [...new Set([...ix.userMoney, ...ix.money.slice(0, 40), ...ix.nums.filter(n => n >= 1000).slice(0, 40)])]
   const factors = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, ...ix.user.filter(n => n > 0 && n <= 1000)]
@@ -387,6 +397,10 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
       if (staleOnly) { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category); counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
       if (supported(c, ix, ev)) {
         state = 'FACT'
+        // A price that only STALE / UNKNOWN-time rows state, said as current: kept, with ONE note (never cut, never silently "now").
+        if (isMoney && ev.agedPrices?.length && !STALE_QUALIFIER.test(sent) && near(c.lo!, ev.agedPrices.map(x => x.amount), 0.005, 1) && !near(c.lo!, ev.freshPrices ?? [], 0.005, 1) && !near(c.lo!, ix.userMoney, 0, 1)) {
+          agedAt.add(ev.agedPrices.find(x => near(c.lo!, [x.amount], 0.005, 1))?.at ?? '')
+        }
         const side = (ev.conflicts ?? []).find(cf => cf.sides.some(x => c.nums.some(v => near(v, numbersOf(x.value), 0.001, 0.01))))
         if (side) {
           const others = side.sides.filter(x => !c.nums.some(v => near(v, numbersOf(x.value), 0.001, 0.01)))
@@ -410,7 +424,7 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
     }
     if (bad) doomed.add(i)
   })
-  if (!doomed.size && !conflictNotes.length) return { text, claims, removedSentences: 0, noteAdded: false, counts }
+  if (!doomed.size && !conflictNotes.length && !agedAt.size) return { text, claims, removedSentences: 0, noteAdded: false, counts }
   let out = spans.map(([a, b], i) => doomed.has(i) ? '' : text.slice(a, b)).join('')
   out = out.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
   const en = o.lang === 'en'
@@ -425,6 +439,13 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
       : `Mình chưa xác minh được ${what.join(', ')} ${looked ? 'từ nguồn đã tra' : '(chưa có nguồn tra cứu cho số liệu này)'}, nên không nêu con số.`)
   }
   if (wrongMath && !fabricatedCats.size) lines.push(en ? 'I removed a calculated figure that did not check out against its own formula.' : 'Mình đã bỏ một kết quả tính không khớp với chính công thức của nó.')
+  if (agedAt.size) {
+    const stamped = [...agedAt].filter(Boolean).map(vnClock).filter(Boolean)
+    const someUnknown = agedAt.has('')
+    lines.push(en
+      ? `Note: the prices above ${stamped.length ? `were fetched at ${stamped.join(' / ')}` : 'have no known fetch time'}${someUnknown && stamped.length ? ' (one source has no known time)' : ''}, so they may have changed — check before deciding.`
+      : `Lưu ý: ${stamped.length ? `giá ở trên lấy từ kết quả tra lúc ${stamped.join(' / ')}` : 'chưa rõ giá ở trên được lấy lúc nào'}${someUnknown && stamped.length ? ' (một nguồn không rõ thời điểm)' : ''}, có thể đã thay đổi — nên kiểm tra lại trước khi quyết định.`)
+  }
   if (conflictNotes.length) lines.push(en ? `Note: sources disagree here (${conflictNotes.slice(0, 2).join('; ')}) — check before deciding.` : `Lưu ý: các nguồn ghi khác nhau ở điểm này (${conflictNotes.slice(0, 2).join('; ')}) — nên kiểm tra lại trước khi quyết định.`)
   if (lines.length) {
     // Before the machine blocks the reply carries ([FOLLOWUPS], [CTA_BUTTONS], plan / shopping markers), never inside or after them.

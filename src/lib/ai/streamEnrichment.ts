@@ -32,6 +32,7 @@ import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { groundEntityNames } from './entityNameGuard'
+import { classifyFramePrices } from './freshness'
 import { applyTripBudgetEstimate, dropEmptyModelBudget } from './tripBudgetEstimate'
 import { adviceEnabled, adviceApplies } from './consultative/adviceBlock'
 import { ensureAdviceFloor } from './consultative/adviceFloor'
@@ -1611,6 +1612,9 @@ export function applyPlaceEnrichmentStreamFilter(
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
   // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
   const gateCorpus: string[] = []
+  // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
+  const agedFramePrices: Array<{ amount: number; at: string | null }> = []
+  const freshFramePrices: number[] = []
   const gateTools: string[] = []
   const productRecords: EvidenceRecord[] = [] // C3-B.10: structured evidence, price included
   let latestPlaces: PlaceLike[] = []
@@ -2710,7 +2714,8 @@ export function applyPlaceEnrichmentStreamFilter(
         tools: gateTools,
         conflicts: collector.guardEvidence?.conflicts ?? [],
         stalePrices: collector.guardEvidence?.stalePrices ?? [],
-        freshPrices: collector.guardEvidence?.freshPrices ?? [],
+        freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
+        agedPrices: agedFramePrices,
       }, { lang })
       : null
     if (gate && (gate.claims.length || gate.removedSentences)) {
@@ -3663,6 +3668,7 @@ export function applyPlaceEnrichmentStreamFilter(
           for (const u of extractUrls(line)) allowUrl(u)
           // WS2 final: every tool result of an agent turn is evidence the No-Fabrication Gate may check a claim against (bounded).
           if (collector?.semanticRanking && gateCorpus.length < 120) gateCorpus.push(line.slice(2, 2 + 120_000))
+          if (collector?.semanticRanking && agedFramePrices.length + freshFramePrices.length < 800) { const fp = classifyFramePrices(line.slice(2)); agedFramePrices.push(...fp.aged); freshFramePrices.push(...fp.fresh) }
           try {
             const res = JSON.parse(line.slice(2)) as {
               toolCallId?: string

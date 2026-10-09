@@ -120,6 +120,27 @@ export async function serperCacheGet<T>(
   variant?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<T[] | null> {
+  const hit = await serperCacheGetMeta<T>(endpoint, query, area, variant, env)
+  return hit ? hit.rows : null
+}
+
+/**
+ * Stored value format. v3 (Phase 8 freshness): `{ v: 3, at: <ISO fetch time>, rows: [...] }`, so a shared hit says WHEN its rows were
+ * fetched. Older entries are a bare JSON array (no time): they still read as hits, with `at: null` = "time unknown". A reader that only
+ * knows the bare array (an older deploy) treats a v3 entry as a miss — it costs one call, never a wrong answer.
+ */
+export const SERPER_CACHE_FORMAT = 3
+
+export interface SharedCacheHit<T> { rows: T[]; at: string | null }
+
+/** Shared-cache read with the fetch time (null when the entry predates v3). Same rules as `serperCacheGet`. */
+export async function serperCacheGetMeta<T>(
+  endpoint: SerperCachedEndpoint,
+  query: string,
+  area: SerperCacheArea,
+  variant?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<SharedCacheHit<T> | null> {
   if (!CACHEABLE.has(endpoint) || !query.trim()) return null
   // POST-CREDIT: with no store configured (a UAT launcher strips the KV variables on purpose) EVERY read is a miss — counted, so a
   // cold cache is reported as 'L2 not configured' and never mistaken for fresh data or a low hit rate.
@@ -128,7 +149,12 @@ export async function serperCacheGet<T>(
     const raw = await kvCommand(['GET', serperSharedCacheKey(endpoint, query, area, variant, env)], env)
     if (typeof raw !== 'string' || !raw) return null
     const parsed: unknown = JSON.parse(raw)
-    return Array.isArray(parsed) && parsed.length > 0 ? (parsed as T[]) : null
+    if (Array.isArray(parsed)) return parsed.length > 0 ? { rows: parsed as T[], at: null } : null
+    const env3 = parsed as { v?: unknown; at?: unknown; rows?: unknown } | null
+    if (env3 && env3.v === SERPER_CACHE_FORMAT && Array.isArray(env3.rows) && env3.rows.length > 0) {
+      return { rows: env3.rows as T[], at: typeof env3.at === 'string' && Number.isFinite(Date.parse(env3.at)) ? env3.at : null }
+    }
+    return null
   } catch {
     return null
   }
@@ -151,7 +177,7 @@ export async function serperCacheSet(
   try {
     const v2 = serperCacheV2Enabled(env)
     // v2 shares only cleaned public text: an injected title/snippet never reaches another user's turn raw (serperUntrusted.ts).
-    const json = JSON.stringify(v2 ? sanitizeSerperJson(value).body : value)
+    const json = JSON.stringify({ v: SERPER_CACHE_FORMAT, at: new Date().toISOString(), rows: v2 ? sanitizeSerperJson(value).body : value })
     if (new TextEncoder().encode(json).length > SERPER_CACHE_MAX_BYTES) return
     const ttl = v2 ? serperTtlV2(endpoint, query, env) : serperCacheTtlSeconds(env)
     await kvCommand(['SET', serperSharedCacheKey(endpoint, query, area, variant, env), json, 'EX', String(ttl)], env)
