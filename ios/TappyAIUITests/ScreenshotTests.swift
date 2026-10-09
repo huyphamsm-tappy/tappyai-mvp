@@ -770,6 +770,9 @@ final class ScreenshotTests: XCTestCase {
         signIn.tap()
         let terms = any(app, "auth-terms-checkbox")
         XCTAssertTrue(terms.waitForExistence(timeout: 60), "Terms checkbox on login")
+        // Start from "not agreed" whatever an earlier test left on the device.
+        let startValue = (terms.value as? String) ?? ""
+        if startValue.contains("Đã đồng ý") || startValue.contains("Agreed") { terms.tap() }
         XCTAssertTrue(any(app, "auth-terms-link").exists, "link to the Terms")
         XCTAssertTrue(any(app, "auth-guidelines-link").exists, "link to the Community Guidelines")
         let google = any(app, "auth-google")
@@ -798,7 +801,9 @@ final class ScreenshotTests: XCTestCase {
         // App Review 1.2: no sign-in method starts before the Terms are agreed.
         let terms = any(app, "auth-terms-checkbox")
         XCTAssertTrue(terms.waitForExistence(timeout: 30), "Terms checkbox on login")
-        terms.tap()
+        // The agreement is remembered on the device, so an earlier test may have left the box ticked: tick only if it is not.
+        let ticked = ((terms.value as? String) ?? "").contains("Đã đồng ý") || ((terms.value as? String) ?? "").contains("Agreed")
+        if !ticked { terms.tap() }
         zalo.tap()
         confirmWebAuthPrompt()
         let error = any(app, "auth-error")
