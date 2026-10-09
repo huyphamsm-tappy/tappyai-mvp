@@ -71,7 +71,11 @@ const EVIDENCE_ABSENCE =
  * fact. A sentence carrying one of these asserts nothing about any candidate.
  */
 const REQUIREMENT_FRAMING =
-  /\bban (uu tien|can|muon|thich|yeu cau|thuong xuyen)|vi ban\b|theo yeu cau|ban dang tim|(yeu cau|nhu cau|tieu chi|mong muon|uu tien|ngan sach) cua ban|\byou (want|need|prefer|asked|care)\b|since you\b|because you\b|your (requirement|priority|preference|need|criteri)/
+  /\bban (uu tien|can|muon|thich|yeu cau|thuong xuyen)|vi ban\b|theo yeu cau|ban dang tim|(yeu cau|nhu cau|tieu chi|mong muon|uu tien|ngan sach) cua ban|\byou (want|need|prefer|asked|care)\b|since you\b|because you\b|your (requirement|priority|preference|need|criteri)|\btieu chi\b|\btieu chuan (chon|danh gia)\b|\bnen can(?: nhac)?\b|\bcan can nhac\b|\byeu to can (xem|can nhac)\b|\bcriteria\b|\bwhat to look for\b/
+// POST-CREDIT (UAT-10 r4, 09/10): the CRITERIA sentence "**Tiêu chí nên cân:** pin khi dùng thực tế…, ảnh/video và zoom, thời gian hỗ trợ
+// phần mềm" lists what to evaluate — it asserts nothing about the product named earlier, yet the carried subject made its clauses
+// battery / camera claims and the cut left "ảnh/video và zoom, thời gian hỗ trợ phần mềm". Criteria wording frames the list like a
+// requirement (carried across clauses until a clause names a candidate, which re-anchors the sentence as before).
 
 /**
  * Phrasing that tells the user WHAT TO CHECK rather than stating what the product has. Phase 7
