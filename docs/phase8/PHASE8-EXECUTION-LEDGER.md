@@ -61,3 +61,9 @@ tsc clean; eslint 0 errors (47 pre-existing warnings); full vitest (default time
 - 3-Cards incident: the legacy 3-hotel-card contract is unchanged; trace request in `THREE-CARDS-TRACE-REQUEST.md`.
 - Shop-info sequencing and commercial data access: unchanged / deferred (capability register in the closure matrix).
 - Per-WP verdicts, evidence and blockers: `PHASE8-CLOSURE-MATRIX.md` (supersedes §2 of this file where they differ).
+
+## 6. Third round (owner decisions after UAT-10) — appended
+- **Product-card enrichment policy: IMPLEMENTED offline** (`89fbea5`): purchase links opt-in via `purchase_links`; advice/criteria/comparison = one `/shopping` request (worst case 3 credits); links mode capped after a 4-credit verification reserve (worst case 14 = 6 required + 8 optional); per-call log `tappyai_product_enrichment`; shopping/place labels follow Luna's ranking (none or low confidence = nothing crowned). Regression-tested with a mocked provider only; **no live request was made**; UAT-10 stays FAIL until a new explicit approval and a new live turn.
+- **C1–C3 / SEC9 integration: STOPPED at preflight** — conflicts and missing prerequisites; exact blockers and options in `WP05-SEC9-INTEGRATION-PREFLIGHT.md`. Nothing cherry-picked, no migration improvised.
+- **3 Cards**: contract unchanged; trace request in `THREE-CARDS-TRACE-REQUEST.md`; BLOCKED on the trace.
+- WP-01 / WP-06 / WP-09 stay BLOCKED; required resources are listed per item in `PHASE8-CLOSURE-MATRIX.md`.
