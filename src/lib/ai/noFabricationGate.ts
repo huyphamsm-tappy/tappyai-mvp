@@ -74,7 +74,39 @@ export function numbersOf(text: string): number[] {
 
 // ── the evidence index ─────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-interface Index { nums: number[]; money: number[]; bands: PriceBand[]; times: Set<number>; positive: boolean; negative: boolean; user: number[]; userMoney: number[] }
+interface Index { nums: number[]; money: number[]; bands: PriceBand[]; times: Set<number>; positive: boolean; negative: boolean; user: number[]; userMoney: number[]; variantRows: VariantRow[] }
+
+// ── variant pairing ──────────────────────────────────────────────────────────────
+// A price belongs to the VARIANT its row names ("iPhone 17 Pro Max 256GB" ₫33.690.000). A figure that is real for one capacity must not
+// be said for another ("512GB giá 33.690.000đ"): the figure is in the evidence, the pairing is not. Narrow by design: one capacity and one
+// amount in the sentence, rows that name a capacity in their title.
+interface VariantRow { caps: Set<string>; prices: number[] }
+/** "256GB" / "1 TB" → gigabytes as a string (1TB = 1024). */
+export function capacityTokens(text: string): string[] {
+  return [...new Set([...text.matchAll(/(?<![\d.,])(\d{1,4})\s?(gb|tb)(?![\p{L}\d])/giu)].map(m => String(Number(m[1]) * (m[2].toLowerCase() === 'tb' ? 1024 : 1))))]
+}
+function collectVariantRows(node: unknown, out: VariantRow[], depth = 0): void {
+  if (depth > 6 || out.length > 400 || !node || typeof node !== 'object') return
+  if (Array.isArray(node)) { for (const x of node.slice(0, 200)) collectVariantRows(x, out, depth + 1); return }
+  const o = node as Record<string, unknown>
+  const title = typeof o.title === 'string' ? o.title : typeof o.name === 'string' ? o.name : null
+  if (title) {
+    const caps = capacityTokens(title)
+    const prices: number[] = []
+    for (const [k, v] of Object.entries(o)) if (/price/i.test(k) && (typeof v === 'string' || typeof v === 'number')) for (const c of extractMoneyClaims(String(v))) prices.push(c.lo)
+    if (prices.length) out.push({ caps: new Set(caps), prices })
+  }
+  for (const v of Object.values(o)) if (v && typeof v === 'object') collectVariantRows(v, out, depth + 1)
+}
+/** True when the sentence names ONE capacity and ONE amount, the evidence prices that amount only on rows naming a different capacity. */
+export function variantPriceMismatch(sentence: string, amount: number, rows: readonly VariantRow[]): boolean {
+  const caps = capacityTokens(sentence)
+  if (caps.length !== 1) return false
+  const priced = rows.filter(r => r.prices.some(p => Math.abs(p - amount) <= Math.max(1, 0.005 * amount)))
+  if (!priced.length || priced.some(r => r.caps.size === 0)) return false
+  return !priced.some(r => r.caps.has(caps[0]))
+}
+
 
 const STRUCT_TIME = /(\d{1,2}):(\d{2})/g
 export function buildIndex(ev: GateEvidence): Index {
@@ -98,7 +130,13 @@ export function buildIndex(ev: GateEvidence): Index {
   }
   const user = ev.userTexts.flatMap(numbersOf)
   const userMoney = ev.userTexts.flatMap(u => extractMoneyClaims(u).flatMap(c => [c.lo, c.hi]))
-  return { nums, money, bands, times, positive, negative, user, userMoney }
+  const variantRows: VariantRow[] = []
+  for (const raw of ev.corpus) {
+    const t = raw.length > 200_000 ? '' : raw.trim()
+    if (t[0] !== '{' && t[0] !== '[') continue
+    try { collectVariantRows(JSON.parse(t), variantRows) } catch { /* not JSON: no pairing opinion */ }
+  }
+  return { nums, money, bands, times, positive, negative, user, userMoney, variantRows }
 }
 
 const near = (v: number, xs: readonly number[], rel = 0.02, abs = 0) => xs.some(x => Math.abs(v - x) <= Math.max(abs, rel * Math.max(Math.abs(v), Math.abs(x))))
@@ -392,6 +430,8 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
       if (isMoney && math.wrong.some(w => near(w, [c.lo!], 0.002, 1)) && !math.checked.some(w => near(w, [c.lo!], 0.002, 1))) {
         state = 'FABRICATED'; bad = true; wrongMath = true; counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue
       }
+      // A real figure paired with the wrong VARIANT (the 256GB price said for 512GB) is not a fact about that variant.
+      if (c.category === 'price' && c.lo !== undefined && raw.filter(r => r.category === 'price').length === 1 && variantPriceMismatch(sent, c.lo, ix.variantRows)) { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category); counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
       // A figure only an OLD page states, presented as current (no time qualifier), is not a current fact.
       const staleOnly = (c.category === 'price' || c.category === 'market') && c.lo !== undefined && !!ev.stalePrices?.length && near(c.lo, ev.stalePrices, 0.005, 1) && !near(c.lo, ev.freshPrices ?? [], 0.005, 1) && !STALE_QUALIFIER.test(sent)
       if (staleOnly) { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category); counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
