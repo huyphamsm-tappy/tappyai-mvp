@@ -263,34 +263,7 @@ describe('POST-UAT B3 · settle path: the turn-2 envelope is still the user\'s a
   })
 })
 
-import { askUserTool } from './controlTools'
-describe('POST-CREDIT · UAT-10 root cause: the canonical "ask" example no longer covers "needs given, budget missing"', () => {
-  it('system prompt and ask_user description both say: needs stated + only budget missing → answer first, ask budget at the end', () => {
-    expect(AGENT_SYSTEM_V2).toMatch(/chỉ thiếu ngân sách nhưng đã nêu nhu cầu thì KHÔNG hỏi trước/)
-    expect(AGENT_SYSTEM_V2).not.toMatch(/mua đồ đắt tiền mà chưa biết nhu cầu\/ngân sách/)
-    const desc = String((askUserTool() as unknown as { description: string }).description)
-    expect(desc).toMatch(/đã nêu nhu cầu mà chỉ thiếu ngân sách thì không hỏi trước/)
-    expect(desc).not.toMatch(/chưa rõ nhu cầu\/ngân sách/)
-  })
-})
-
-describe('POST-CREDIT · UAT-10 second cause: "compare two (unnamed) models" → pick through a lookup, do not ask names first', () => {
-  it('prompt + ask_user description', () => {
-    expect(AGENT_SYSTEM_V2).toMatch(/so sánh \/ chọn N lựa chọn .* mà CHƯA nêu tên → không hỏi tên trước/)
-    // Orchestration fix C: LOOKUP is conditional — context/evidence first, ask when a result-changing detail is missing, look up only for a
-    // specific fact the evidence lacks, never to rephrase the answer just given.
-    expect(AGENT_SYSTEM_V2).toMatch(/Xét ngữ cảnh, ràng buộc và nguồn đã có trước/)
-    expect(AGENT_SYSTEM_V2).toMatch(/thiếu thứ làm ĐỔI HẲN cách chọn \(dùng để làm gì\) thì ask_user trước khi tra/)
-    expect(AGENT_SYSTEM_V2).toMatch(/Chỉ TRA CỨU khi cần xác minh một dữ kiện cụ thể/)
-    expect(AGENT_SYSTEM_V2).toMatch(/không lấy tên, giá hay thông số từ trí nhớ/)
-    expect(AGENT_SYSTEM_V2).toMatch(/không tra lại chỉ để diễn đạt lại câu vừa trả lời/)
-    // the old unconditional wording is gone
-    expect(AGENT_SYSTEM_V2).not.toMatch(/tự chọn ứng viên tiêu biểu bằng TRA CỨU/)
-    const desc = String((askUserTool() as unknown as { description: string }).description)
-    expect(desc).toMatch(/so sánh \/ chọn N lựa chọn mà chưa nêu tên \(đừng hỏi tên; chỉ hỏi khi thiếu thứ làm đổi hẳn cách chọn/)
-    expect(desc).not.toMatch(/tự chọn ứng viên bằng tra cứu rồi so sánh/)
-  })
-})
+// The ask-vs-answer rules for UAT-10 (one decision order, no contradicting ask triggers) are locked in askFirstDecisions.test.ts.
 
 import { guardSpecClaimsInText } from '@/lib/ai/consultative/specGuard'
 describe('POST-CREDIT · spec guard: a criteria sentence is not a product claim (UAT-10 r4, final-code run)', () => {
