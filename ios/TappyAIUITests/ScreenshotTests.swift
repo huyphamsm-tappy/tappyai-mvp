@@ -778,15 +778,30 @@ final class ScreenshotTests: XCTestCase {
         let google = any(app, "auth-google")
         XCTAssertTrue(google.waitForExistence(timeout: 30), "Google button")
         google.tap()
-        let error = any(app, "auth-error")
+        // The refusal sits beside the checkbox, INSIDE the visible window: no scrolling needed to see it.
+        let error = any(app, "auth-terms-error")
         XCTAssertTrue(error.waitForExistence(timeout: 30), "refusal shown")
         XCTAssertTrue(error.label.contains("Điều khoản") || error.label.contains("Terms of Service"),
                       "the Terms-required message, got: \(error.label)")
-        XCTAssertTrue(any(app, "auth-guest").exists, "still on login")
+        let window = app.windows.firstMatch.frame
+        XCTAssertTrue(window.contains(error.frame), "the refusal is inside the viewport: \(error.frame) vs \(window)")
+        XCTAssertTrue(error.isHittable, "the refusal is on screen, not scrolled out of view")
+        XCTAssertTrue(error.frame.maxY <= terms.frame.maxY + 120, "the refusal is next to the checkbox")
+        XCTAssertFalse(any(app, "auth-error").exists, "one message only, not a second one at the bottom")
+        XCTAssertTrue(any(app, "auth-guest").exists, "still on the login screen as a guest")
         shot("23-login-terms-required")
+        // Zalo is refused the same way, before any web prompt opens.
+        let zalo = any(app, "auth-zalo")
+        if zalo.exists {
+            zalo.tap()
+            XCTAssertTrue(error.waitForExistence(timeout: 10), "Zalo refused with the same visible line")
+            XCTAssertTrue(window.contains(error.frame) && error.isHittable)
+            XCTAssertTrue(any(app, "auth-guest").exists, "still on the login screen as a guest")
+        }
         terms.tap()
         let value = (terms.value as? String) ?? ""
         XCTAssertTrue(value.contains("Đã đồng ý") || value.contains("Agreed"), "ticked, got: \(value)")
+        XCTAssertFalse(any(app, "auth-terms-error").exists, "the refusal goes away once the box is ticked")
         shot("24-login-terms-agreed")
     }
 

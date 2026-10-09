@@ -18,6 +18,10 @@ final class AuthViewModel: AppObservableObject {
     @AppPublished var showRegister = false
     /// App Review 1.2: the agreement to the Terms, required before ANY sign-in path (see `AuthTermsGate`).
     @AppPublished var termsAgreed: Bool
+    /// A sign-in was refused for want of the agreement. The line is shown BESIDE the checkbox (the bottom of this
+    /// scrolling screen is off the visible viewport), and goes away as soon as the box is ticked.
+    @AppPublished var termsRequiredShown = false
+    var termsRefusalVisible: Bool { termsRequiredShown && !termsAgreed }
     @AppPublished var providerState: ProviderState = .loading
     @AppPublished var enabledProviders: [String] = []
     /// Sign in with Apple is shown only when the server enables it (`AppleSignIn.isEnabled`).
@@ -39,10 +43,14 @@ final class AuthViewModel: AppObservableObject {
         self.onAuthenticated = onAuthenticated
     }
 
-    /// Every method below asks this first. A refusal says why on the login screen and does nothing else.
+    /// Every method below asks this first. A refusal says why next to the Terms checkbox and does nothing else.
     private func termsAllowSignIn() -> Bool {
-        if AuthTermsGate.allow(agreed: termsAgreed, consent: consent) { return true }
-        errorMessage = NSLocalizedString("auth.terms.required", comment: "")
+        if AuthTermsGate.allow(agreed: termsAgreed, consent: consent) {
+            termsRequiredShown = false
+            return true
+        }
+        errorMessage = nil          // one message, beside the checkbox: not a second one at the bottom
+        termsRequiredShown = true
         return false
     }
 

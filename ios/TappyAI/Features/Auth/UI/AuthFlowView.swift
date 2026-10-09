@@ -56,7 +56,7 @@ struct AuthFlowView: View {
             VStack(alignment: .leading, spacing: Spacing.md) {
                 header
                 // App Review 1.2: agree to the Terms before ANY sign-in method; every method also refuses without it.
-                AuthTermsConsentView(agreed: $vm.termsAgreed)
+                AuthTermsConsentView(agreed: $vm.termsAgreed, showRequired: vm.termsRefusalVisible)
                 if vm.appleEnabled {
                     SignInWithAppleButton(.continue) { request in
                         request.requestedScopes = [.fullName, .email]
