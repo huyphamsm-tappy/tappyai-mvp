@@ -22,7 +22,10 @@ final class AuthRepository {
 
     /// Deep-link scheme + Google redirect (survey §5.1). Register these in Info.plist + Supabase allow-list (D4).
     private let callbackScheme = "tappyai"
-    private let googleRedirect = URL(string: "tappyai://auth/callback")!
+    /// 🚨 Must be one of the URLs in Supabase → Authentication → URL Configuration → Redirect URLs. Anything else is silently
+    /// replaced by the Site URL (https://www.tappyai.com): the in-app browser then lands on the website Home page and never
+    /// returns to the app (TestFlight build 154). The allow-listed native URL is `tappyai://auth-callback` (Android uses it too).
+    private let googleRedirect = AuthCallbackURL.googleRedirect
 
     init(auth: AuthService, anon: AnonymousSessionService, gate: ProfileGateService,
          onboarding: OnboardingService, zalo: ZaloAuthController, webAuth: WebAuthenticator,

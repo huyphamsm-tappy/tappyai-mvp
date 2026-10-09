@@ -122,6 +122,10 @@ enum AuthCallbackPolicy {
 
 /// Reads the parts of a `tappyai://auth/callback` URL that sign-in cares about.
 enum AuthCallbackURL {
+    /// Where Supabase sends the browser after Google. MUST match an entry in the project's Redirect URLs allow-list
+    /// (see docs/ios/SUPABASE-REDIRECT-ALLOWLIST.md); the Android app uses the same value.
+    static let googleRedirect = URL(string: "tappyai://auth-callback")!
+
     /// The echoed state: `state` in the fragment (token callbacks) or the query (code callbacks) —
     /// the same contract as Android (ANDROID-REQUESTS R24 / IOS-REQUESTS I6).
     static func appState(in url: URL) -> String? {

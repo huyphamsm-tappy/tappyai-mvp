@@ -176,6 +176,50 @@ final class AuthCallbackStateTests: XCTestCase {
             URL(string: "tappyai://auth/callback?code=abc#access_token=A&refresh_token=R")!))
     }
 
+    // MARK: Google redirect (TestFlight 154: the browser landed on the website Home page instead of returning to the app)
+
+    func testGoogleRedirectIsTheAllowListedNativeCallback() {
+        // Supabase replaces any redirect that is not in its allow-list by the Site URL (the website Home page). The allow-listed
+        // native entry is `tappyai://auth-callback` (hyphen) — the same one Android uses. The slash form was NOT in the list.
+        let url = AuthCallbackURL.googleRedirect
+        XCTAssertEqual(url.absoluteString, "tappyai://auth-callback")
+        XCTAssertEqual(url.scheme, "tappyai")
+        XCTAssertEqual(url.host, "auth-callback")
+        XCTAssertTrue(AuthCallbackURL.isAuthCallback(url), "the app recognises its own redirect as a sign-in callback")
+        XCTAssertNil(DeepLinkHandler().target(for: url.absoluteString + "?code=abc"), "and never treats it as a navigation target")
+    }
+
+    func testTheCodeCallbackOnTheGoogleRedirectIsAccepted() throws {
+        let callback = URL(string: AuthCallbackURL.googleRedirect.absoluteString + "?code=abc")!
+        XCTAssertEqual(try AuthCallbackPolicy.google(callback), .pkceCode)
+        XCTAssertEqual(AuthCallbackURL.code(in: callback), "abc")
+    }
+
+    func testTheWebsiteHomePageIsNeverASignInCallback() {
+        // What the person saw on build 154: Supabase's fallback to the Site URL. It has no code and is not the app's scheme.
+        for home in ["https://www.tappyai.com", "https://www.tappyai.com/", "https://tappyai.com/?code=abc"] {
+            let url = URL(string: home)!
+            XCTAssertFalse(AuthCallbackURL.isAuthCallback(url), home)
+        }
+        XCTAssertThrowsError(try AuthCallbackPolicy.google(URL(string: "https://www.tappyai.com/")!))
+    }
+
+    func testTheAppRegistersTheSchemeTheRedirectUses() throws {
+        let plist = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("TappyAI/Resources/Info.plist")
+        let text = try String(contentsOf: plist, encoding: .utf8)
+        XCTAssertTrue(text.contains("<key>CFBundleURLSchemes</key>"))
+        XCTAssertTrue(text.contains("<string>\(AuthCallbackURL.googleRedirect.scheme ?? "?")</string>"), "the URL scheme is registered in Info.plist")
+    }
+
+    func testGoogleSignInUsesTheSharedRedirectNotALiteral() throws {
+        let repo = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+            .appendingPathComponent("TappyAI/Features/Auth/AuthRepository.swift")
+        let text = try String(contentsOf: repo, encoding: .utf8)
+        XCTAssertTrue(text.contains("googleRedirect = AuthCallbackURL.googleRedirect"), "one source of truth for the redirect")
+        XCTAssertFalse(text.contains("URL(string: \"tappyai://auth/callback\")"), "the slash form must not come back")
+    }
+
     // MARK: Links from outside the app
 
     func testAuthCallbacksAreNeverDeepLinkTargets() {
