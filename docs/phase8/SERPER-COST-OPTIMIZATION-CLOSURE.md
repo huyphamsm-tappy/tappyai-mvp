@@ -21,6 +21,7 @@
 | `agent/runtime/toolState.ts` | Product provider runs in its own cancellation scope; a timeout cancels what it has not sent |
 | `agent/runtime/index.ts` | `serper_ledger` budget event in the run trace |
 | `tools/serperCostControl.test.ts` (new, 21 tests) | Mock-only proofs |
+| *(post-commit, `e001afe`)* `tools/serperAbortDedup.test.ts` (13 tests) + fixes in `common.ts`, `serperClient.ts`, `serperMeter.ts`, `serperPlaces.ts`, `toolState.ts` | See §12 |
 
 ## 2. Credit model — before / after
 
@@ -87,10 +88,10 @@
 
 ## 5. Timeout, cancellation, fallback
 
-- A tool timeout aborts its scope: requests not yet sent are never sent; the one in flight is aborted. An abort is **not** a refund: a request that was sent keeps its reservation, because the provider may have processed it.
+- A tool timeout aborts its scope: requests not yet sent are never sent; the one in flight is aborted. An abort is **not** a refund: a request that was sent keeps its reservation, because the provider may have processed it. *(Corrected after the post-commit review, see §12-A: at `c1bcfb8` the runtime's own cancellation did not reach these requests; fixed in `e001afe`.)*
 - Account-level failures (400 with "credit", 401, 402, 403) halt the whole turn scope, so the parallel requests that have not started are never sent. A plain 400 (bad parameters) does not halt. Outside a turn / tool scope (the legacy path) nothing is halted, so legacy behaviour is unchanged.
 - A failed leader is never shared or cached: the next call asks again.
-- A follower of a cancelled leader sees "no result" (as on a miss) and never spends extra.
+- ~~A follower of a cancelled leader sees "no result" (as on a miss) and never spends extra.~~ *(Corrected, see §12-B: at `c1bcfb8` this took the shared result away from callers that were not cancelled; since `e001afe` cancellation is per caller.)*
 - Not unit-tested: the narrow case of a request cancelled between the admit and the send (the before-admit case is tested).
 
 ## 6. Quality — evidence
@@ -108,11 +109,13 @@
 
 ## 7. Gates (final source, fingerprint `2cb55bc228d4`, untracked tests `0095389190b7` at gate time)
 
-- **`npx vitest run`:** 18,356 passed, **4 failed** (1,101 files).
-  - **Three route tests** (`agent.route`, `agentRuntime.route`, `agentTask.route`) time out at 5 s on one test each. **The identical failure reproduces on baseline `6b7d958`** in a detached worktree (same tests, same ~5.5 s), so it is not caused by this change; they run real non-Serper network lookups (no Serper key exists in the test env) that are slower today. With `--testTimeout=60000` all 48 tests of these files pass.
-  - **`controlBytes`** is a load timeout; it passes alone and with the longer timeout.
-  - I did not exclude any test and do not report the suite as green.
-- **After the full run:** one test file gained two dedup tests (21 tests total) and one assertion; `tsc` and ESLint were re-run on it, and the file passes. The source files are unchanged.
+- **`npx vitest run`:** 18,356 passed, **4 failed** (1,101 files). **The suite was not green.**
+  - **Three route tests** (`agent.route`, `agentRuntime.route`, `agentTask.route`) time out at the 5 s default on one test each. *Correction (post-commit review): when first written this section said the failure reproduced on baseline, but only `agentRuntime.route` had been re-run there. All three have since been run on baseline `6b7d958` in a separate detached worktree, twice each (default timeout): each fails 2 / 2 with the same test and ~5.0 s, so they are not caused by `c1bcfb8`.*
+  - **Why they are slow.** They call `html.duckduckgo.com` (the free `web_search` fallback), not `google.serper.dev`: with `fetch` blocked and logged in the baseline worktree, the files contacted only DuckDuckGo (1–2 requests each) and then passed in 3.4–4.0 s in total (11/11, 25/25, 9/9). With `--testTimeout=60000` all 48 tests of the three files pass on the current source too. No Serper key exists in the test environment.
+  - **`controlBytes`** timed out in the full run only (load). It passes alone on baseline `6b7d958` and on the current source, so it does **not** reproduce on baseline; it is a load timeout and nothing more can be claimed.
+  - No test was excluded.
+- **After the full run:** one test file gained two dedup tests (21 tests in `serperCostControl.test.ts`) and one assertion; `tsc` and ESLint were re-run on it, and the file passes. The source files are unchanged.
+- **Where each result comes from.** *Mock tests:* every Serper behaviour in this document (cost model, ledger, budgets, halting, dedup, cache counters, fan-out) is proven on a stubbed `fetch`. *Baseline runs:* the route-test timeouts above. *Not verified with real requests:* the actual credit cost of any endpoint or `num`, the `credits` field matching the Activity Log, the shared (L2) cache, and any hit rate. Nothing here claims real cost or L2 behaviour.
 - **`tsc --noEmit`:** clean. **ESLint on changed files:** 0 errors, 0 warnings.
 - **Architecture locks:** part of the full suite (one runtime, one fallback call, no retry loop) — passed.
 - **Mutations (run alone, never alongside a test or build):**
@@ -165,3 +168,22 @@ Total ≈ 33 (+1 optional); the cap leaves ~7 credits of slack.
 ## 11. Confirmations
 
 No live Serper request was sent (the only provider the tests touch is a stubbed `fetch`); no production, Android or iOS change; no push, merge or deploy; no source file outside this task was edited or staged.
+
+## 12. Post-commit review and fixes (added after `c1bcfb8`)
+
+A review of `c1bcfb8` found three defects inside it. They were reproduced with a temporary probe (stubbed `fetch`) and fixed in the separate code commit **`e001afe`**. The original sections above are kept; the statements they corrected are marked.
+
+| # | Defect in `c1bcfb8` | Fix in `e001afe` |
+|---|---|---|
+| A | The product-provider scope's own signal shadowed the runtime's, so a runtime cancellation (earlier than the wrapper's 8 s limit) no longer reached the requests inside `search_products`: a later request was still sent | The runtime signal is linked into the scope. After a runtime cancellation no request is started and no fallback search is launched (`fallbackState: skipped_cancelled`). A request already sent keeps its reservation; only an unsent one is released |
+| B | A follower of a cancelled leader received `null` although it was not cancelled | Per-caller cancellation: a cancelled caller leaves at once with its own cancelled value, the others get the real shared result, the shared request is aborted only when no caller is left, and a late caller starts a fresh request |
+| C | A network error (`fetch failed`) was labelled `timeout` | Ledger outcomes `timeout` / `aborted` / `network_error` / `http_error` / `account_error`; the credit estimate does not depend on the label (every attempted request is estimated at the model price) |
+
+- **Tests:** 13 new tests in `serperAbortDedup.test.ts` (stubbed `fetch` that honours `signal`). Run against `c1bcfb8` (C part removed) 5 of the A/B tests fail; on `e001afe` all pass.
+- **Mutations:** 11 of 12 caught. The survivor (B6, "a settled shared request stays in the map") is an equivalent mutation: the guard that refuses to join a request everyone left already prevents the observable effect.
+- **Gates:** `tsc` clean; ESLint 0 problems on the changed files; full suite 18,371 passed with the same four timeouts as above (no new failure).
+- **Still open — not fixed in `e001afe`:**
+  - **D** an identical `/shopping` request is re-sent when the first one times out or is aborted (up to 2 + 2 credits; pre-existing);
+  - **E** the shop-info enrichment is now sequential, which can add up to ~6 s of latency when a product is found in the organic fallback (a credit/latency trade-off for the owner);
+  - **F** cached rows carry no `retrieved_at`, so a cached price can be shown as current for up to 15 min (L1), 6 h (L2 v2) or 24 h (L2 v1). **This is a freshness blocker for any feature that presents price data as current information and must be resolved before such a release.** A proposal that touches the tool-result contract is kept separate (not part of `e001afe`).
+- **Not tested:** a request cancelled between the budget reservation and the send (the before-reservation case is tested). Still no live Serper request has been made: cost, `/images` price and L2 remain unverified.
