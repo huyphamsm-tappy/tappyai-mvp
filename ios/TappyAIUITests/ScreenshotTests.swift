@@ -847,6 +847,41 @@ final class ScreenshotTests: XCTestCase {
         shot("27-register-terms-ticked")
     }
 
+    /// App Review 1.2: a COMPLETE, valid registration form is still refused until the Terms are agreed. Nothing is submitted
+    /// (the button is only observed, never tapped), so no account is created anywhere.
+    func testFilledRegistrationFormStaysDisabledUntilTheTermsAreAgreed() {
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let create = any(app, "auth-create-account")
+        XCTAssertTrue(create.waitForExistence(timeout: 60), "Create account on login")
+        create.tap()
+        let terms = any(app, "register-terms-checkbox")
+        XCTAssertTrue(terms.waitForExistence(timeout: 30), "Terms checkbox on registration")
+        let start = (terms.value as? String) ?? ""
+        if start.contains("Đã đồng ý") || start.contains("Agreed") { terms.tap() }   // start from "not agreed"
+
+        for (id, text) in [("register-name", "Terms Gate"), ("register-email", "terms.gate@example.invalid"), ("register-password", "Abcdef12")] {
+            let field = any(app, id)
+            XCTAssertTrue(field.waitForExistence(timeout: 20), "\(id) exists")
+            field.tap()
+            field.typeText(text)
+        }
+        let submit = any(app, "register-submit")
+        XCTAssertTrue(submit.exists, "sign-up button")
+        XCTAssertFalse(submit.isEnabled, "a valid form is still refused before the Terms are agreed")
+        shot("28-register-filled-not-agreed")
+
+        if !terms.isHittable { app.swipeUp() }
+        XCTAssertTrue(terms.isHittable, "the checkbox can be reached with the keyboard up")
+        terms.tap()
+        let value = (terms.value as? String) ?? ""
+        XCTAssertTrue(value.contains("Đã đồng ý") || value.contains("Agreed"), "ticked, got: \(value)")
+        XCTAssertTrue(submit.isEnabled, "the same valid form is accepted once the Terms are agreed")
+        shot("29-register-filled-agreed")
+    }
+
     private func zaloAttack(mode: String, shotName: String) {
         setStub(["zalo": mode])
         let app = launch(route: "hub")

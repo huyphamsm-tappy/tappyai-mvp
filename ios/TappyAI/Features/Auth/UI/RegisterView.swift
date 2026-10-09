@@ -69,9 +69,12 @@ struct RegisterView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Spacing.sm) {
                 TappyTextField(titleKey: "account.fullName", text: $vm.fullName)
+                    .accessibilityIdentifier("register-name")
                 TappyTextField(titleKey: "Email", text: $vm.email)
                     .keyboardType(.emailAddress).textInputAutocapitalization(.never).autocorrectionDisabled()
+                    .accessibilityIdentifier("register-email")
                 TappyTextField(titleKey: "auth.password", text: $vm.password, isSecure: true)
+                    .accessibilityIdentifier("register-password")
                 AuthTermsConsentView(agreed: $vm.termsAgreed, idPrefix: "register")
                 Button(NSLocalizedString("auth.signUp", comment: "")) { Task { await vm.submit() } }
                     .buttonStyle(.tappy(.primary))
