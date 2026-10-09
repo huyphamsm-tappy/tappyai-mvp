@@ -69,10 +69,15 @@ final class UserSearchViewModel: AppObservableObject {
 struct UserSearchView: View {
     @AppStateObject private var vm: UserSearchViewModel
     @AppEnvironmentState private var router: AppRouter
+    @ObservedObject private var safety: SafetyStore
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: UserSearchViewModel(service: ReviewsService(api: deps.api)))
+        _safety = ObservedObject(wrappedValue: deps.safety)
     }
+
+    /// App Review 1.2: people the person has blocked drop out of the list the moment they are blocked.
+    private var shownResults: [UserSearchResult] { safety.visible(vm.results) { $0.id } }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -120,7 +125,7 @@ struct UserSearchView: View {
             .padding(.top, 40)
             Spacer()
         case .loaded:
-            if vm.results.isEmpty {
+            if shownResults.isEmpty {
                 TappyEmptyState(systemImage: "person.slash", title: "search.noResults")
                     .padding(.top, 40)
                 Spacer()
@@ -132,7 +137,7 @@ struct UserSearchView: View {
                 //
                 // `UserProfileView` now exists and carries the user's id, so the tap goes where
                 // the row says it goes.
-                List(vm.results) { user in
+                List(shownResults) { user in
                     PersonRow(
                         person: user,
                         busy: vm.busyIds.contains(user.id),

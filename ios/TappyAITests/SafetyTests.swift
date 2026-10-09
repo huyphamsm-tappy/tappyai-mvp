@@ -150,6 +150,41 @@ final class SafetyTests: XCTestCase {
         XCTAssertEqual(store.visible(comments) { $0.1 }.count, 4)
     }
 
+    func testABlockedPersonLeavesProfileDetailSearchAndFollowListsAtOnce() async {
+        // The same store answers every surface; nothing waits for a refetch.
+        struct Person { let id: String }
+        let api = RoutingAPI()
+        let store = makeStore(api)
+        let people = [Person(id: "u1"), Person(id: "u9"), Person(id: "u3")]
+        XCTAssertFalse(store.isBlocked("u9"), "profile / post detail show their content before the block")
+        let blocked = await store.block("u9")
+        XCTAssertTrue(blocked)
+        XCTAssertTrue(store.isBlocked("u9"), "the profile and the post detail switch to the blocked notice")
+        XCTAssertEqual(store.visible(people) { $0.id }.map(\.id), ["u1", "u3"], "search results and follower / following lists")
+        _ = await store.unblock("u9")
+        XCTAssertFalse(store.isBlocked("u9"))
+        XCTAssertEqual(store.visible(people) { $0.id }.count, 3)
+    }
+
+    func testEveryPersonAndContentScreenConsultsTheBlockList() throws {
+        // Source-level guard: a screen that lists or shows another person's content must ask the store, so a new
+        // surface cannot quietly bring a blocked person back until the next fetch. Reads the files like the other parity guards.
+        let ios = URL(fileURLWithPath: #filePath).deletingLastPathComponent().deletingLastPathComponent()
+        let ui = ios.appendingPathComponent("TappyAI/Features/Reviews/UI")
+        let expectations: [(String, String)] = [
+            ("UserProfileView.swift", "safety.isBlocked(vm.userId)"),
+            ("ReviewDetailView.swift", "safety.isBlocked(review.userId)"),
+            ("UserSearchView.swift", "safety.visible(vm.results)"),
+            ("SocialView.swift", "safety.visible(vm.lists"),
+            ("ReviewCommentSheet.swift", "safety.visible(comments)"),
+            ("ReviewsFeedView.swift", "dropAuthors(safety.blockedIds)"),
+        ]
+        for (file, needle) in expectations {
+            let text = try String(contentsOf: ui.appendingPathComponent(file), encoding: .utf8)
+            XCTAssertTrue(text.contains(needle), "\(file) must apply the block list (\(needle))")
+        }
+    }
+
     func testAFailedBlockChangesNothing() async {
         let api = RoutingAPI(); api.failure = AppError.network(status: 500, code: nil)
         let store = makeStore(api)

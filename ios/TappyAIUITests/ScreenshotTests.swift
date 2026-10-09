@@ -104,6 +104,28 @@ final class ScreenshotTests: XCTestCase {
         confirm.tap()
         expectation(for: NSPredicate(format: "exists == false"), evaluatedWith: any(app, "safety-block"))
         waitForExpectations(timeout: 20)   // the sheet closes once the block took effect
+        // App Review 1.2: the blocked person's profile is replaced AT ONCE (no refetch, no navigation).
+        XCTAssertTrue(any(app, "blocked-unavailable").waitForExistence(timeout: 10), "the blocked profile shows the notice")
+        shot("64-safety-profile-blocked")
+    }
+
+    /// App Review 1.2: blocking the author of the post you are looking at hides that post at once.
+    func testBlockingFromAPostHidesThePostAtOnce() {
+        setStub(["p8": "on"])
+        let app = launch(route: "safety-review", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let menu = any(app, "review-safety")
+        XCTAssertTrue(menu.waitForExistence(timeout: 40), "⋯ on someone else's post")
+        XCTAssertFalse(any(app, "blocked-unavailable").exists, "the post is shown before the block")
+        menu.tap()
+        let block = any(app, "safety-block")
+        XCTAssertTrue(block.waitForExistence(timeout: 20), "block control in the sheet")
+        block.tap()
+        let confirm = app.alerts.buttons["Chặn"]
+        XCTAssertTrue(confirm.waitForExistence(timeout: 10), "block confirmation")
+        confirm.tap()
+        XCTAssertTrue(any(app, "blocked-unavailable").waitForExistence(timeout: 20), "the blocked author's post is replaced at once")
+        XCTAssertFalse(any(app, "review-safety").exists, "no post controls are left on screen")
+        shot("65-safety-post-blocked")
     }
 
     func testSafetyReportFromAPostAndItsComments() {

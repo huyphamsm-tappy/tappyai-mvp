@@ -63,7 +63,13 @@ struct ReviewDetailView: View {
 
             case .loaded:
                 if let review = vm.review {
-                    post(review)
+                    // App Review 1.2: a post by someone the person has blocked is hidden at once, not on the next fetch.
+                    if safety.isBlocked(review.userId) {
+                        TappyEmptyState(systemImage: "hand.raised.fill", title: "safety.blockedContent.title", message: "safety.blockedContent.message")
+                    .accessibilityIdentifier("blocked-unavailable")
+                    } else {
+                        post(review)
+                    }
                 }
             }
 

@@ -62,7 +62,13 @@ struct UserProfileView: View {
                 }
 
             case .loaded:
-                loaded
+                // App Review 1.2: blocking this person (from the ⋯ on this very screen, or elsewhere) hides their profile at once.
+                if safety.isBlocked(vm.userId) {
+                    TappyEmptyState(systemImage: "hand.raised.fill", title: "safety.blockedContent.title", message: "safety.blockedContent.message")
+                    .accessibilityIdentifier("blocked-unavailable")
+                } else {
+                    loaded
+                }
             }
         }
         .navigationTitle(Text("userProfile.title"))

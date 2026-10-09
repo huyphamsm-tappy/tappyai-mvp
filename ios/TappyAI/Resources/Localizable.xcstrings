@@ -18391,6 +18391,40 @@
         }
       }
     },
+    "safety.blockedContent.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You blocked this person"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã chặn người này"
+          }
+        }
+      }
+    },
+    "safety.blockedContent.message": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Their posts and comments are hidden. You can unblock them in Settings → Blocked accounts."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bài đăng và bình luận của họ đã bị ẩn. Bạn có thể bỏ chặn trong Cài đặt → Tài khoản đã chặn."
+          }
+        }
+      }
+    },
     "upload.error.incomplete": {
       "extractionState": "manual",
       "localizations": {

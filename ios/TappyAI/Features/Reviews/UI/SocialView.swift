@@ -73,9 +73,11 @@ final class SocialViewModel: AppObservableObject {
 struct SocialView: View {
     @AppStateObject private var vm: SocialViewModel
     @AppEnvironmentState private var router: AppRouter
+    @ObservedObject private var safety: SafetyStore
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: SocialViewModel(api: deps.api))
+        _safety = ObservedObject(wrappedValue: deps.safety)
     }
 
     var body: some View {
@@ -138,7 +140,8 @@ struct SocialView: View {
             .padding(.top, 40)
             Spacer()
         case .loaded:
-            let people = vm.lists[vm.tab] ?? []
+            // App Review 1.2: a blocked person leaves these lists at once.
+            let people = safety.visible(vm.lists[vm.tab] ?? []) { $0.id }
             if people.isEmpty {
                 TappyEmptyState(systemImage: "person.2", title: LocalizedStringKey(vm.tab.emptyKey),
                                 actionTitle: "social.findPeople", action: findPeople)
