@@ -16,7 +16,7 @@
 // finds nothing usable either, the state stays a failure and the price is UNKNOWN: the model is told so, and the No-Fabrication Gate
 // (noFabricationGate.ts) removes any price the reply states without evidence.
 
-import { withSerperToolScope } from '@/lib/ai/tools/serperToolBudget'
+import { currentSerperSignal, withSerperToolScope } from '@/lib/ai/tools/serperToolBudget'
 
 export type ToolState = 'SUCCESS' | 'EMPTY' | 'TIMEOUT' | 'ERROR' | 'UNAVAILABLE'
 
@@ -95,7 +95,7 @@ export const PRODUCT_PROVIDER_TIMEOUT_MS = 8_000
 export const PRODUCT_TOOL_BUDGET_MS = 14_000
 const FALLBACK_MIN_MS = 2_500
 
-export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { lang: string; timeoutMs?: number; budgetMs?: number; now?: () => number; onFallback?: (d: { state: ToolState; fallbackState: ToolState | 'none' | 'skipped_deadline'; usability?: DataUsability }) => void }): Exec {
+export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { lang: string; timeoutMs?: number; budgetMs?: number; now?: () => number; onFallback?: (d: { state: ToolState; fallbackState: ToolState | 'none' | 'skipped_deadline' | 'skipped_cancelled'; usability?: DataUsability }) => void }): Exec {
   return async (args, ctx) => {
     const now = o.now ?? Date.now
     const started = now()
@@ -107,6 +107,14 @@ export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { 
     // search_products kept spending in the background while the fallback search started on top of it. (A request already sent may still
     // be billed: an abort is not a refund, and the reservation is not released.)
     const ac = new AbortController()
+    // POST-COMMIT REVIEW A: the nested scope's signal is the NEAREST one, so it would SHADOW the runtime's (currentSerperSignal returns
+    // the nearest scope's signal) and a runtime cancellation would no longer reach the requests inside. The runtime's signal is therefore
+    // linked into this scope's controller: whichever fires first cancels the requests that have not been sent.
+    const runtimeSignal = currentSerperSignal()
+    if (runtimeSignal) {
+      if (runtimeSignal.aborted) ac.abort()
+      else runtimeSignal.addEventListener('abort', () => ac.abort(), { once: true })
+    }
     try {
       value = await Promise.race([
         withSerperToolScope(Number.MAX_SAFE_INTEGER, ac.signal, async () => await primary(args, ctx)).then(r => r.value),
@@ -124,6 +132,11 @@ export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { 
     const tagged = (v: unknown) => v && typeof v === 'object' && !Array.isArray(v) ? { ...(v as Record<string, unknown>), data_usability: usability } : v
     if (!needsFallback || !webSearch) {
       if (needsFallback) o.onFallback?.({ state, fallbackState: 'none', usability })
+      return withToolState(tagged(value), state, o.lang)
+    }
+    // The runtime cancelled this operation: no fallback search is started on its behalf (it is not "no data", it is "stopped").
+    if (runtimeSignal?.aborted) {
+      o.onFallback?.({ state, fallbackState: 'skipped_cancelled', usability })
       return withToolState(tagged(value), state, o.lang)
     }
     // Bounded by the deadline: the fallback runs only with enough of the tool's budget left, and never past it.

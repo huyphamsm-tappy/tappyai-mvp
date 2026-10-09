@@ -94,6 +94,19 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
 export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling = ''; alerted.storeDown = '' }
 
 /**
+ * What a REJECTED request was, kept apart in the ledger: our own time limit (`timeout`), a cancellation (`aborted`), anything else that
+ * stopped it before an answer (`network_error`: DNS, reset, `fetch failed`). The credit estimate does not depend on this label.
+ */
+export function classifyThrown(e: unknown): 'timeout' | 'aborted' | 'network_error' {
+  if (e instanceof Error) {
+    if (e.name === 'AbortError') return 'aborted'
+    if (e.message === 'timeout') return 'timeout'
+    if (/abort/i.test(e.message)) return 'aborted'
+  }
+  return 'network_error'
+}
+
+/**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
  */
@@ -123,18 +136,19 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
     ])
   } catch (e) {
-    const aborted = e instanceof Error && (e.name === 'AbortError' || /abort/i.test(e.message))
-    recordSerperOutcome(endpoint, aborted ? 'aborted' : 'timeout')
+    recordSerperOutcome(endpoint, classifyThrown(e))
     throw e
   }
   if (!res.ok) {
-    recordSerperOutcome(endpoint, 'http_error')
     // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
     // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
-    if (res.status === 401 || res.status === 402 || res.status === 403) haltSerperScope(`http_${res.status}`)
+    let account: string | null = null
+    if (res.status === 401 || res.status === 402 || res.status === 403) account = `http_${res.status}`
     else if (res.status === 400) {
-      try { if (/credit/i.test(await res.clone().text())) haltSerperScope('http_400_credits') } catch { /* classification only */ }
+      try { if (/credit/i.test(await res.clone().text())) account = 'http_400_credits' } catch { /* classification only */ }
     }
+    recordSerperOutcome(endpoint, account ? 'account_error' : 'http_error')
+    if (account) haltSerperScope(account)
     return res
   }
   // Search data is untrusted (owner 30/09): URLs and planted instructions leave its free-text fields before any tool

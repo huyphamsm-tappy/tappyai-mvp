@@ -2,6 +2,7 @@ import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { serperPost } from './serperClient'
 import { serperCacheGet, serperCacheSet } from './serperCache'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
+import { currentSerperSignal, withSerperToolScope } from './serperToolBudget'
 import { messages } from '@/lib/ai/messages'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
 
@@ -55,12 +56,57 @@ export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Pr
 /**
  * ONE paid Serper request per effective request, however many callers want it at the same moment (POST-CREDIT cost control). The key
  * must carry EVERY parameter that changes the answer (endpoint, normalised query, count variant, area) — callers build it from the same
- * parts as their cache keys. Followers share the leader's result; the entry is removed the moment it settles (success OR failure), so
- * an error or a timeout is never handed to later callers. A follower never spends: if the leader's scope was cancelled the follower
- * sees "no result" exactly as it would on a miss.
+ * parts as their cache keys.
+ *
+ * CANCELLATION IS PER CALLER (post-commit review B). The shared request runs in a scope that carries the FLIGHT's own signal, not the
+ * first caller's:
+ *   · a caller whose own signal aborts leaves at once with `cancelled` (null / []) — independently of the others;
+ *   · the callers still interested keep waiting and receive the real result of the shared request;
+ *   · the underlying request is aborted only when NO caller is left (or by its own time limit inside serperPost);
+ *   · a caller that arrives after everyone left starts a fresh request instead of joining a cancelled one.
+ * The reservation stays with the scope chain that started the request (it is the one that sent it); a follower never spends. The entry
+ * is removed the moment the request settles, so an error or a timeout is never handed to later callers.
  */
-export function serperFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
-  return withSingleFlight(`serper:${key}`, fn)
+interface Flight { p: Promise<unknown>; ac: AbortController; waiters: number }
+const flights = new Map<string, Flight>()
+
+export function serperFlight<T>(key: string, fn: () => Promise<T>, cancelled: T): Promise<T> {
+  const mine = currentSerperSignal()
+  if (mine?.aborted) return Promise.resolve(cancelled) // this caller is already cancelled: it neither starts nor joins a request
+  const k = `serper:${key}`
+  let f = flights.get(k)
+  if (f && f.ac.signal.aborted) f = undefined // the previous interested callers all left: that request is being cancelled, do not join it
+  if (!f) {
+    const ac = new AbortController()
+    const created: Flight = { ac, waiters: 0, p: Promise.resolve() }
+    // The request runs in a nested scope that carries the FLIGHT's signal; the caps of the starting scope chain still apply (limit ∞ here).
+    created.p = withSerperToolScope(Number.MAX_SAFE_INTEGER, ac.signal, fn)
+      .then(r => r.value)
+      .finally(() => { if (flights.get(k) === created) flights.delete(k) })
+    flights.set(k, created)
+    f = created
+  } else {
+    console.log(JSON.stringify({ type: 'tappyai_serper_single_flight_join', key: k.slice(0, 60) }))
+  }
+  const flight = f
+  flight.waiters++
+  return new Promise<T>((resolve, reject) => {
+    let left = false
+    const leave = () => {
+      if (left) return false
+      left = true
+      mine?.removeEventListener('abort', onAbort)
+      flight.waiters--
+      if (flight.waiters <= 0) flight.ac.abort() // nobody needs the request any more
+      return true
+    }
+    const onAbort = () => { if (leave()) resolve(cancelled) }
+    mine?.addEventListener('abort', onAbort, { once: true })
+    flight.p.then(
+      v => { if (leave()) resolve(v as T) },
+      err => { if (leave()) reject(err) },
+    )
+  })
 }
 
 /** Test seam: how many requests are in flight. Never used by production code. */
@@ -334,7 +380,7 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
       console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
       return []
     }
-  })
+  }, [] as string[])
 }
 
 // ===== DEFERRED PHOTO RESOLUTION (B7-A) =====
@@ -439,7 +485,7 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
-  return serperFlight(`search:${searchCacheKey}`, () => serperSearchPaid(query, searchCacheKey, apiKey))
+  return serperFlight(`search:${searchCacheKey}`, () => serperSearchPaid(query, searchCacheKey, apiKey), null)
 }
 
 async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
@@ -537,7 +583,7 @@ export interface ShoppingRecord {
 export async function serperShopping(query: string, num = 20): Promise<ShoppingRecord[] | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
-  return serperFlight(`shopping:n${num}:${cacheKeyPart(query)}`, () => serperShoppingPaid(query, num, apiKey))
+  return serperFlight(`shopping:n${num}:${cacheKeyPart(query)}`, () => serperShoppingPaid(query, num, apiKey), null)
 }
 
 async function serperShoppingPaid(query: string, num: number, apiKey: string): Promise<ShoppingRecord[] | null> {

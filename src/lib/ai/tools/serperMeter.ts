@@ -43,18 +43,26 @@ export const SERPER_CREDITS: Record<SerperEndpoint, number> = { maps: SERPER_COS
 /**
  * Request ledger — what actually happened, kept apart so an attempt is never reported as money spent:
  *   attempted  a request was sent (counts, whatever came back — a client timeout may still have been billed);
- *   ok / http_error / timeout / aborted  outcomes (aborted = the runtime cancelled it mid-flight);
+ *   outcomes, one per attempted request:
+ *     ok             the provider answered 2xx;
+ *     http_error     the provider answered a non-2xx that is about THIS request (5xx, bad parameters, rate limit …);
+ *     account_error  the provider refused for the ACCOUNT (out of credits, bad key, forbidden) — the turn is halted after it;
+ *     timeout        OUR time limit for the request ran out (the provider may still have processed it);
+ *     aborted        the runtime / the last interested caller cancelled it mid-flight;
+ *     network_error  the request failed before an answer (DNS, reset, `fetch failed`) — not a timeout, not a cancellation;
+ *   Credits are NOT derived from the outcome: every attempted request is estimated at the model's price (a network error or a
+ *   timeout may or may not have been billed — it is never assumed free).
  *   refused    the budget / ceiling / cancellation stopped it BEFORE sending (no request, no credits);
  *   reported   credits the provider said it charged in the response body (only for responses we could read);
  *   reconciled credits matched against the provider's Activity Log — ALWAYS 0 here: only the owner can reconcile.
  */
-export interface SerperLedgerRow { attempted: number; ok: number; http_error: number; timeout: number; aborted: number; refused: number; reported: number; reportedResponses: number }
-const emptyRow = (): SerperLedgerRow => ({ attempted: 0, ok: 0, http_error: 0, timeout: 0, aborted: 0, refused: 0, reported: 0, reportedResponses: 0 })
+export interface SerperLedgerRow { attempted: number; ok: number; http_error: number; account_error: number; network_error: number; timeout: number; aborted: number; refused: number; reported: number; reportedResponses: number }
+const emptyRow = (): SerperLedgerRow => ({ attempted: 0, ok: 0, http_error: 0, account_error: 0, network_error: 0, timeout: 0, aborted: 0, refused: 0, reported: 0, reportedResponses: 0 })
 const ledger: Record<SerperEndpoint, SerperLedgerRow> = { maps: emptyRow(), search: emptyRow(), shopping: emptyRow(), images: emptyRow() }
 const l1Hits: Record<SerperEndpoint, number> = { maps: 0, search: 0, shopping: 0, images: 0 }
 const bypass = { l2_not_configured: 0 }
 
-export type SerperOutcome = 'ok' | 'http_error' | 'timeout' | 'aborted'
+export type SerperOutcome = 'ok' | 'http_error' | 'account_error' | 'network_error' | 'timeout' | 'aborted'
 export function recordSerperOutcome(endpoint: SerperEndpoint, outcome: SerperOutcome, reportedCredits?: number): void {
   ledger[endpoint][outcome]++
   if (typeof reportedCredits === 'number' && Number.isFinite(reportedCredits) && reportedCredits >= 0) { ledger[endpoint].reported += reportedCredits; ledger[endpoint].reportedResponses++ }

@@ -123,7 +123,7 @@ export async function serperPlaces(
   if (!apiKey || !query.trim()) return null
 
   // One in-flight /maps request per (query, area, retry mode): the price retry changes the result, so it is part of the key.
-  return serperFlight(`maps:${cacheKey}:${opts.priceRetry === false ? 'p0' : 'p1'}`, () => serperPlacesPaid(query, ll, opts, cacheKey, apiKey))
+  return serperFlight(`maps:${cacheKey}:${opts.priceRetry === false ? 'p0' : 'p1'}`, () => serperPlacesPaid(query, ll, opts, cacheKey, apiKey), null)
 }
 
 async function serperPlacesPaid(
