@@ -89,4 +89,27 @@ describe('Make Plan turn — the plan block is the deliverable (tool calls and C
       expect(r.places.some(p => p.cleared)).toBe(false)
     }
   })
+
+  it('FRAME SEQUENCE: a plan turn = [preliminary, cleared] (no stray final card frame); a discovery turn = [preliminary, final] — in both modes', async () => {
+    for (const agent of [false, true]) {
+      const plan = await run({ agent, prose: PROSE, text: ASK })
+      const shapePlan = plan.places.map(p => (p.cleared ? 'cleared' : p.preliminary ? 'preliminary' : 'final'))
+      if (agent) expect(shapePlan, 'plan agent').toEqual(['preliminary', 'cleared'])
+      else expect(shapePlan, 'plan legacy (approved engine card block kept)').toEqual(['preliminary', 'final'])
+      const disc = await run({ agent, prose: DISCOVERY, text: FIND })
+      expect(disc.places.map(p => (p.cleared ? 'cleared' : p.preliminary ? 'preliminary' : 'final')), `discovery agent=${agent}`).toEqual(['preliminary', 'final'])
+    }
+  })
+
+  it('the plan block stays one valid [TAPPY_PLAN] JSON and the later guards (entity-name check, freshness note) write nothing inside it', async () => {
+    for (const agent of [false, true]) {
+      const r = await run({ agent, prose: [PROSE, 'Nếu thích máy ảnh thì **Sony A7 IV** hợp.'].join('\n\n'), text: ASK })
+      const m = r.text.match(/\[TAPPY_PLAN\]([\s\S]*?)\[\/TAPPY_PLAN\]/)
+      expect(m, `agent=${agent}`).not.toBeNull()
+      expect(() => JSON.parse(m![1])).not.toThrow()
+      expect(JSON.parse(m![1]).type).toBe('evening')
+      expect(m![1]).not.toContain('chưa thấy tên này')
+      expect(m![1]).not.toContain('Lưu ý:')
+    }
+  })
 })
