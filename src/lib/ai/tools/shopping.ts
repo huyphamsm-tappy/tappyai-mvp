@@ -7,6 +7,8 @@ import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
 import { productIdentityMatch } from '@/lib/links/productIdentity'
 import { providerOwning } from '@/lib/ccp'
 import { getProvider } from '@/lib/ccp/registry'
+import { CARDS_SHOWN } from '@/lib/ai/cardCounts'
+import { serperHaltedReason } from './serperToolBudget'
 
 /**
  * A marketplace / retailer PRODUCT page (never a search, category or shop page), per host. The
@@ -21,6 +23,13 @@ const PRODUCT_PAGE: Array<[RegExp, RegExp]> = [
 ]
 const MERCHANT_SITES = ['cellphones.com.vn', 'shopee.vn', 'lazada.vn', 'tiki.vn']
 const MAX_MERCHANT_ROWS = 6
+/**
+ * /images lookups one product search may spend on rows with no photo of their own. Evidence for the number: the decision card shows
+ * CARDS_SHOWN (3) products and Luna recommends at most 3, so a photo is only ever read for the top rows; the old code spent one call per
+ * merchant row (≤ 6) and per organic row (≤ 8) and the ranking then dropped most of them. The /images cost is UNVERIFIED (serperMeter),
+ * and the per-tool budget still refuses any call beyond what is left.
+ */
+export const MAX_PRODUCT_IMAGE_LOOKUPS = CARDS_SHOWN
 
 function isMerchantProductPage(link: string): boolean {
   try {
@@ -127,8 +136,15 @@ export async function searchProducts(query: string, lang = 'vi') {
         s.link = m.link
       }
       const unclaimed = merchantRows.filter(m => !claimed.has(m.link) && !shoppingRows.some(s => s.link === m.link))
+      // POST-CREDIT cost control: a merchant row's photo first comes from a Shopping row that is the SAME product (identity both ways —
+      // the photo is then certainly the right object, and it costs nothing); only a row with no such photo may spend an /images call,
+      // and only for the rows the UI can show (CARDS_SHOWN) — not one call per intermediate row that the ranking then drops.
+      const borrowedPhoto = (m: { title: string }): string | undefined => shoppingRows.find(s => s.photo_url
+        && productIdentityMatch(s.title, m.title) === 'match' && productIdentityMatch(m.title, s.title) !== 'mismatch')?.photo_url
+      const needLookup = new Set(unclaimed.filter(m => !borrowedPhoto(m)).slice(0, MAX_PRODUCT_IMAGE_LOOKUPS).map(m => m.link))
       const withPhotos = await Promise.all(unclaimed.map(async m => {
-        const photos = await fetchPlacePhotosByName(m.link, m.title, 1, 'shopping').catch(() => [] as string[])
+        const borrowed = borrowedPhoto(m)
+        const photos = borrowed ? [borrowed] : needLookup.has(m.link) ? await fetchPlacePhotosByName(m.link, m.title, 1, 'shopping').catch(() => [] as string[]) : []
         return { ...m, ...parseProductSpecs(m.title), ...(photos.length > 0 ? { photo_url: photos[0] } : {}) }
       }))
       const search_results = [...shoppingRows, ...withPhotos]
@@ -153,14 +169,22 @@ export async function searchProducts(query: string, lang = 'vi') {
     // queries below are kept unchanged as the fallback and as the source of the
     // shop-info/direct-link enrichment the prompt rules already depend on —
     // removing them would change shipped behaviour beyond this task's scope.
-    const [shoppingRecords, searchResultsRaw, directResults, shopInfoResults] = await Promise.all([
+    // POST-CREDIT cost control (09/10): an ACCOUNT-level failure on the first /shopping call (no credits, bad key) halted this turn's
+    // Serper scope — the organic requests below would only be received and refused. Nothing more is sent; the answer says "no product
+    // data / provider error" (and is not cached).
+    const haltedBy = serperHaltedReason()
+    if (haltedBy) return { note: messages.shopping.fallbackNote(lang, query), links, product_data: 'none', provider_status: 'error', halted: haltedBy }
+    const [shoppingRecords, searchResultsRaw, directResults] = await Promise.all([
       // Not re-asked when the provider has already said "no listings" — see
       // `structuredAnsweredEmpty`. An empty array here is what that answer was.
       structuredAnsweredEmpty ? Promise.resolve([] as Awaited<ReturnType<typeof serperShopping>>) : serperShopping(query),
       serperSearch(query + ' gia Shopee Tiki Lazada'),
       serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
-      serperSearch(query + ' shop website địa chỉ facebook'),
     ])
+    // The shop-info query ("địa chỉ facebook") is ENRICHMENT of a product that was found — asked only when something was found,
+    // never as a third parallel request in a search that returned nothing (it used to be sent every time).
+    const foundSomething = (shoppingRecords?.length ?? 0) > 0 || (searchResultsRaw?.length ?? 0) > 0 || (directResults?.length ?? 0) > 0
+    const shopInfoResults = foundSomething ? await serperSearch(query + ' shop website địa chỉ facebook') : null
 
     // Uu tien cac link CU THE den 1 san pham (khong phai trang tim kiem) tren Shopee/Tiki/Lazada
     const directProductLinks = (directResults || []).filter(r => {

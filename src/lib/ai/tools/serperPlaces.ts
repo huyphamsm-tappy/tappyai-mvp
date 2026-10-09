@@ -1,8 +1,8 @@
-import { getCache, setCache, sanitizeUrlForMarkdown } from './common'
+import { getCache, setCache, sanitizeUrlForMarkdown, serperFlight } from './common'
 import { serperPost } from './serperClient'
 import { serperPlacesCacheKey } from './cacheKeys'
 import { serperCacheGet, serperCacheSet } from './serperCache'
-import { recordSerperCacheHit } from './serperMeter'
+import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
 
 // ── SERPER /maps — THE STRUCTURED PLACE SOURCE ───────────────────────────────
 //
@@ -117,11 +117,22 @@ export async function serperPlaces(
 ): Promise<SerperPlaceRecord[] | null> {
   const cacheKey = serperPlacesCacheKey(query, ll ?? null)
   const cached = getCache(cacheKey)
-  if (Array.isArray(cached) && cached.length > 0) return cached as SerperPlaceRecord[]
+  if (Array.isArray(cached) && cached.length > 0) { recordSerperL1Hit('maps'); return cached as SerperPlaceRecord[] }
 
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !query.trim()) return null
 
+  // One in-flight /maps request per (query, area, retry mode): the price retry changes the result, so it is part of the key.
+  return serperFlight(`maps:${cacheKey}:${opts.priceRetry === false ? 'p0' : 'p1'}`, () => serperPlacesPaid(query, ll, opts, cacheKey, apiKey))
+}
+
+async function serperPlacesPaid(
+  query: string,
+  ll: { lat: number; lng: number; zoom?: number } | null | undefined,
+  opts: { priceRetry?: boolean },
+  cacheKey: string,
+  apiKey: string,
+): Promise<SerperPlaceRecord[] | null> {
   // L2: the shared 24 h cache (serperCache.ts) — owner-requested TTL; see the Maps/Serper terms
   // caveat there and in the header above (hard EX TTL, nothing persisted beyond it). Keyed on the
   // ORIGINAL query + `ll` (2-decimal area); the price retry below never changes the key.

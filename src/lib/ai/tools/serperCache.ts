@@ -33,6 +33,7 @@
 // owner's decision on persisting imagery. Only 'search' | 'shopping' | 'maps' are accepted.
 
 import { createHash } from 'node:crypto'
+import { recordSerperL2Bypass } from './serperMeter'
 import { cacheKeyPart } from './cacheKeys'
 import { isDistributedStoreConfigured, namespacedKey } from '@/lib/security/distributedRateLimit'
 import { sanitizeSerperJson } from './serperUntrusted'
@@ -119,7 +120,10 @@ export async function serperCacheGet<T>(
   variant?: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<T[] | null> {
-  if (!CACHEABLE.has(endpoint) || !query.trim() || !isDistributedStoreConfigured(env)) return null
+  if (!CACHEABLE.has(endpoint) || !query.trim()) return null
+  // POST-CREDIT: with no store configured (a UAT launcher strips the KV variables on purpose) EVERY read is a miss — counted, so a
+  // cold cache is reported as 'L2 not configured' and never mistaken for fresh data or a low hit rate.
+  if (!isDistributedStoreConfigured(env)) { recordSerperL2Bypass(); return null }
   try {
     const raw = await kvCommand(['GET', serperSharedCacheKey(endpoint, query, area, variant, env)], env)
     if (typeof raw !== 'string' || !raw) return null

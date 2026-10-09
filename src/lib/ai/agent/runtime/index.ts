@@ -11,6 +11,7 @@
 import type { CoreMessage } from 'ai'
 import { AI } from '@/lib/ai/llm'
 import type { ModelRole } from '@/lib/ai/llm/types'
+import { serperLedgerSnapshot, serperLedgerDelta } from '@/lib/ai/tools/serperMeter'
 import { withSerperTurnBudget, withSerperToolScope } from '@/lib/ai/tools/serperToolBudget'
 import { searchingFrame } from '@/lib/recommendation/progressAnnotation'
 import { redactForTrace, guardToolOutput } from '../guards'
@@ -172,6 +173,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     const onOuterAbort = () => trackerCtrl.abort()
     i.signal?.addEventListener('abort', onOuterAbort, { once: true })
     const tracking = box ? trackTask({ task: box.task, userText: box.turn.userText, previousReply: box.turn.previousReply, cards: box.turn.cards, lang: i.lang, signal: trackerCtrl.signal, extract: box.extract }) : null
+    const ledgerAtStart = serperLedgerSnapshot()
     const turn = await withSerperTurnBudget(i.serperTurnCredits, () => runAgentRuntime({
       system,
       messages,
@@ -227,6 +229,14 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       },
     }))
     const run = turn.value
+    // Serper request ledger of this turn — attempts, outcomes, provider-reported credits, cache hits and L2 status, kept apart (an
+    // attempt is not money spent; `reconciled` is always 0 until the owner matches it to the Activity Log). The ledger is process-wide,
+    // so under concurrent turns this is an upper bound for the turn.
+    try {
+      const d = serperLedgerDelta(ledgerAtStart)
+      const att = (Object.values(d.endpoints) as Array<{ attempted: number }>).reduce((n, r) => n + r.attempted, 0)
+      if (att || d.l1Hits || d.l2Bypass) i.trace.add('budget', { decision: 'serper_ledger', endpoints: Object.fromEntries(Object.entries(d.endpoints).filter(([, r]) => r.attempted || r.refused)), estimated_billable: d.estimatedBillable, estimated_unknown_basis: d.estimatedUnknownBasis, provider_reported: d.reported, reconciled: d.reconciled, l1_hits: d.l1Hits, cache_l2: d.l2Bypass ? 'not_configured' : 'configured_or_unused', l2_bypass_reads: d.l2Bypass })
+    } catch { /* trace only */ }
     // M3: [S#] markers checked against the pages actually read; the enrichment site builds the links (or a short sources line). Never on an ask.
     // POST-UAT B6: an article a tool returned whole (travel_editorial / news) and the reply restates gets its own [S#] → real link.
     const editorial = run.status !== 'asked' ? editorialItemsIn([...lastResults.values()]) : []

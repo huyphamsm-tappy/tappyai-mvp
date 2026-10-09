@@ -16,6 +16,8 @@
 // finds nothing usable either, the state stays a failure and the price is UNKNOWN: the model is told so, and the No-Fabrication Gate
 // (noFabricationGate.ts) removes any price the reply states without evidence.
 
+import { withSerperToolScope } from '@/lib/ai/tools/serperToolBudget'
+
 export type ToolState = 'SUCCESS' | 'EMPTY' | 'TIMEOUT' | 'ERROR' | 'UNAVAILABLE'
 
 const ROW_KEYS = ['results', 'places', 'hotels', 'products', 'shopping_results', 'search_results', 'articles', 'events', 'pages']
@@ -100,13 +102,19 @@ export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { 
     const timeoutMs = o.timeoutMs ?? PRODUCT_PROVIDER_TIMEOUT_MS
     let state: ToolState
     let value: unknown
+    // POST-CREDIT cost control: the provider call runs in its own cancellation scope. When its time is up the signal is aborted, so the
+    // requests it has NOT yet sent (organic searches, image lookups) are never sent and the in-flight one is aborted — before, a timed-out
+    // search_products kept spending in the background while the fallback search started on top of it. (A request already sent may still
+    // be billed: an abort is not a refund, and the reservation is not released.)
+    const ac = new AbortController()
     try {
       value = await Promise.race([
-        Promise.resolve(primary(args, ctx)),
+        withSerperToolScope(Number.MAX_SAFE_INTEGER, ac.signal, async () => await primary(args, ctx)).then(r => r.value),
         new Promise((_, rej) => setTimeout(() => rej(new Error('provider_timeout')), timeoutMs)),
       ])
       state = toolStateOf('ok', value)
     } catch (e) {
+      if (e instanceof Error && e.message === 'provider_timeout') ac.abort()
       state = e instanceof Error && e.message === 'provider_timeout' ? 'TIMEOUT' : 'ERROR'
       value = { error: state === 'TIMEOUT' ? 'provider_timeout' : 'provider_error' }
     }

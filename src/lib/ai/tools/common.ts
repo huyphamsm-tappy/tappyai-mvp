@@ -1,9 +1,9 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { serperPost } from './serperClient'
 import { serperCacheGet, serperCacheSet } from './serperCache'
-import { recordSerperCacheHit } from './serperMeter'
+import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
 import { messages } from '@/lib/ai/messages'
-import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
+import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
 type CacheEntry = { data: unknown; expires: number }
@@ -50,6 +50,17 @@ export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Pr
   } finally {
     inFlight.delete(key)
   }
+}
+
+/**
+ * ONE paid Serper request per effective request, however many callers want it at the same moment (POST-CREDIT cost control). The key
+ * must carry EVERY parameter that changes the answer (endpoint, normalised query, count variant, area) — callers build it from the same
+ * parts as their cache keys. Followers share the leader's result; the entry is removed the moment it settles (success OR failure), so
+ * an error or a timeout is never handed to later callers. A follower never spends: if the leader's scope was cancelled the follower
+ * sees "no result" exactly as it would on a miss.
+ */
+export function serperFlight<T>(key: string, fn: () => Promise<T>): Promise<T> {
+  return withSingleFlight(`serper:${key}`, fn)
 }
 
 /** Test seam: how many requests are in flight. Never used by production code. */
@@ -296,31 +307,34 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
    */
   const photoCacheKey = placePhotosCacheKey(placeName, max, context)
   const cachedPhotos = getCache(photoCacheKey)
-  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) return cachedPhotos as string[]
+  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) { recordSerperL1Hit('images'); return cachedPhotos as string[] }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
     return []
   }
-  try {
-    const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
-    if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
-    if (!(resp as Response).ok) {
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
+  // One in-flight /images request per (name, count, context). Images stay OUT of the shared L2 cache (owner decision, unchanged).
+  return serperFlight(`images:${photoCacheKey}`, async (): Promise<string[]> => {
+    try {
+      const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
+      if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
+      if (!(resp as Response).ok) {
+        console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
+        return []
+      }
+      const data = await (resp as Response).json()
+      const images = data?.images as SerperImage[] | undefined
+      const photoUris = pickEmbeddableImageUrls(images, max, context)
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
+      // 15 minutes, matching the products cache: long enough that a conversation
+      // and its follow-ups pay once, short enough that these stay live URLs.
+      if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
+      return photoUris
+    } catch (e) {
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
       return []
     }
-    const data = await (resp as Response).json()
-    const images = data?.images as SerperImage[] | undefined
-    const photoUris = pickEmbeddableImageUrls(images, max, context)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
-    // 15 minutes, matching the products cache: long enough that a conversation
-    // and its follow-ups pay once, short enough that these stay live URLs.
-    if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
-    return photoUris
-  } catch (e) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
-    return []
-  }
+  })
 }
 
 // ===== DEFERRED PHOTO RESOLUTION (B7-A) =====
@@ -420,10 +434,15 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   const searchCacheKey = serperSearchCacheKey(query)
   const cachedSearch = getCache(searchCacheKey)
   if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
+    recordSerperL1Hit('search')
     return cachedSearch as Array<{ title: string; link: string; snippet: string }>
   }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  return serperFlight(`search:${searchCacheKey}`, () => serperSearchPaid(query, searchCacheKey, apiKey))
+}
+
+async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
   // L2: the shared 24 h cache (serperCache.ts). Fails open — a miss or a store outage falls
   // through to the paid call below.
   const shared = await serperCacheGet<{ title: string; link: string; snippet: string }>('search', query, null)
@@ -518,6 +537,10 @@ export interface ShoppingRecord {
 export async function serperShopping(query: string, num = 20): Promise<ShoppingRecord[] | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  return serperFlight(`shopping:n${num}:${cacheKeyPart(query)}`, () => serperShoppingPaid(query, num, apiKey))
+}
+
+async function serperShoppingPaid(query: string, num: number, apiKey: string): Promise<ShoppingRecord[] | null> {
   // Shared 24 h cache (serperCache.ts), keyed on the query AND `num` — a 12-row answer must not
   // serve a caller that paid for 20. Fails open.
   const variant = `n${num}`

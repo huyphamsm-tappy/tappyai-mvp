@@ -10,7 +10,7 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-interface Scope { limit: number; spent: number; refused: number; parent: Scope | null; signal?: AbortSignal }
+interface Scope { limit: number; spent: number; refused: number; parent: Scope | null; signal?: AbortSignal; halted?: string }
 const store = new AsyncLocalStorage<Scope>()
 
 async function within<T>(limit: number, fn: () => Promise<T>): Promise<{ value: T; spent: number; refused: number }> {
@@ -50,11 +50,38 @@ export function sharedSerperBudget(limit: number): { run<T>(fn: () => Promise<T>
   return { run: fn => store.run(scope, fn), spent: () => scope.spent }
 }
 
+/**
+ * An ACCOUNT-LEVEL failure (no credits left, bad key, forbidden) is not a property of one request: every further request of this
+ * turn would be refused the same way, yet each one is a request the provider receives. The whole scope chain is halted — the
+ * parallel requests that have not started yet are never sent. Returns false outside any scope (nothing to halt).
+ */
+export function haltSerperScope(reason: string): boolean {
+  const s = store.getStore() ?? null
+  if (!s) return false
+  for (let c: Scope | null = s; c; c = c.parent) if (!c.halted) c.halted = reason
+  return true
+}
+
+/** The reason the current scope chain was halted, if it was. */
+export function serperHaltedReason(): string | null {
+  for (let s = store.getStore() ?? null; s; s = s.parent) if (s.halted) return s.halted
+  return null
+}
+
+/**
+ * Gives back a reservation for a request that was reserved but NEVER SENT (cancelled between admit and send). A request that was
+ * sent is never released — a client timeout or abort does not prove the provider did not receive and bill it.
+ */
+export function releaseToolBudget(credits: number): void {
+  for (let s = store.getStore() ?? null; s; s = s.parent) s.spent = Math.max(0, s.spent - credits)
+}
+
 /** Called by serperAdmit before the daily ceiling. false = refuse this call (a cap on this call's scope chain is spent). */
 export function admitWithinToolBudget(credits: number): boolean {
   const chain: Scope[] = []
   for (let s = store.getStore() ?? null; s; s = s.parent) chain.push(s)
   if (chain.length === 0) return true
+  if (chain.some(s => s.halted)) { chain[0].refused++; return false }
   if (chain.some(s => s.spent + credits > s.limit)) { chain[0].refused++; return false }
   for (const s of chain) s.spent += credits
   return true
