@@ -160,6 +160,13 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     } satisfies RuntimeStep
   })
 
+  // Answer-before-lookup check (answerFirst.ts): one text-only Luna call, no tools. Not wired when a model seam replaces the step (tests).
+  const answerFirstModel: NonNullable<Parameters<typeof runAgentRuntime>[0]['answerFirstModel']> = async o => {
+    const r = await AI.step({ role: 'agent', systemShared: AGENT_SYSTEM_V2, system: o.system, messages: o.messages, maxTokens: 700, abortSignal: o.signal })
+    const usd = Number(((r.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost?.usd) ?? 0)
+    return { text: r.text ?? '', promptTokens: r.usage?.promptTokens, completionTokens: r.usage?.completionTokens, usd }
+  }
+
   // M4: the task's carried evidence as this turn found it (the tracker may replace the task after the reply).
   const carriedAtStart = box ? [...(box.task.research_state.evidence ?? [])] : []
   const sigAtStart = box ? taskConstraintsSig(box.task) : null
@@ -180,6 +187,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       tools,
       schemas,
       callModel,
+      ...(i.callModel ? {} : { answerFirstModel }),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,

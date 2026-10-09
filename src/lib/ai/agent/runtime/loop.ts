@@ -28,6 +28,7 @@ import { RUNTIME_LIMITS, type RuntimeLimits } from './limits'
 import { ASK_USER, UPDATE_TASK, CONTROL_TOOLS, parseAskUser, renderAsk, type AskUser } from './controlTools'
 import { toolInputHash, traceQuery, resultCount, type AgentRunTrace } from './trace'
 import { toolStateOf, withToolState } from './toolState'
+import { checkApplies, checkNote, composeFinal, parseCheck, prefaceNote } from './answerFirst'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -73,6 +74,12 @@ export interface RuntimeInput {
    * call; `refused` answers the model with a structured result and executes nothing.
    */
   resolveCall?: (call: { toolName: string; args: Record<string, unknown> }) => null | { toolName: string; args: Record<string, unknown> } | { refused: string; result: Record<string, unknown> }
+  /**
+   * Answer-before-lookup check (answerFirst.ts). Runs at most ONCE per turn: when the first tool step is lookup-only research with no
+   * text, this text-only Luna call is asked to write the part of the request that stable knowledge already answers (or NOTHING_YET).
+   * Absent (tests, model seams) → the check is not run and the run records `answerFirst: 'not_checked'`.
+   */
+  answerFirstModel?: (o: { system: string; messages: CoreMessage[]; signal: AbortSignal }) => Promise<{ text: string; usd?: number; promptTokens?: number; completionTokens?: number }>
 }
 
 export interface RuntimeRun {
@@ -84,6 +91,12 @@ export interface RuntimeRun {
   modelCalls: number
   toolCalls: number
   ask: AskUser | null
+  /**
+   * What happened to the advice that can be given before a lookup: `provided` (the check wrote it), `with_step` (the model wrote it next
+   * to its tool call / ask), `nothing_yet` (the check found nothing answerable yet), `failed` (the check errored; the lookup went on),
+   * `not_checked` (a lookup-only first step with no text and no check available), `n/a` (no such situation).
+   */
+  answerFirst: 'provided' | 'with_step' | 'nothing_yet' | 'failed' | 'not_checked' | 'n/a'
 }
 
 const stable = (v: unknown): string => {
@@ -128,12 +141,15 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
   let modelCalls = 0
   let forceFinal: RuntimeStop | null = null
   let taskUpdates = 0
+  // Text the model wrote next to a lookup / an ask, or the check wrote before a lookup: kept and shown BEFORE the rest of the answer.
+  const prefaces: string[] = []
+  let answerFirst: RuntimeRun['answerFirst'] = 'n/a'
 
   const done = (text: string, status: RuntimeStatus, stopReason: RuntimeStop, ask: AskUser | null = null): RuntimeRun => {
     T.status = status
     T.stopReason = stopReason
     T.counters.toolCalls = toolCalls
-    return { text: text.trim() || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask }
+    return { text: composeFinal(prefaces, text) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
   for (let round = 1; round <= L.maxModelRounds; round++) {
@@ -154,7 +170,8 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     const noteReason = reason === 'time_budget' ? 'time_budget' : 'tool_budget'
     const note = !final && input.stepNote ? input.stepNote({ round, toolEvents }) : null
     if (note) T.add('budget', { round, decision: 'research_nudge' })
-    const system = final ? input.system + finalStepNote(noteReason, input.lang, unchecked) : note ? input.system + note : input.system
+    const base = prefaces.length ? input.system + prefaceNote(input.lang) : input.system
+    const system = final ? base + finalStepNote(noteReason, input.lang, unchecked) : note ? base + note : base
     const t0 = now()
     let step: RuntimeStep
     try {
@@ -210,6 +227,8 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       const ask = parseAskUser(stripWhy(askCall.args))
       const others = calls.filter(c => c !== askCall && c.toolName !== UPDATE_TASK).map(c => c.toolName)
       if (ask) {
+        // Advice written in the same step as the question is not thrown away: it comes first, the question closes the reply.
+        if (step.text.trim()) { prefaces.push(step.text); answerFirst = 'with_step' }
         if (others.length) T.add('budget', { round, decision: 'ask_preempts_tools', dropped: others })
         T.add('ask', { round, choices: ask.choices.length, chars: ask.question.length })
         return done(renderAsk(ask), 'asked', 'asked', ask)
@@ -230,10 +249,39 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       continue
     }
 
+    // ANSWER BEFORE LOOKUP (answerFirst.ts). Text next to the tool call is kept (it used to be dropped from the final answer). A
+    // lookup-only research step with no text gets ONE check, so a request with an answerable part is answered before the lookup.
+    if (step.text.trim()) {
+      prefaces.push(step.text)
+      if (answerFirst === 'n/a') answerFirst = 'with_step'
+    } else if (answerFirst === 'n/a' && prefaces.length === 0 && toolCalls === 0) {
+      const names = toolCallsThisStep.map(tc => { const r = input.resolveCall?.({ toolName: tc.toolName, args: stripWhy(tc.args) }); return r && 'toolName' in r ? r.toolName : tc.toolName })
+      if (checkApplies(names)) {
+        const left = input.deadlineAt - now()
+        if (!input.answerFirstModel) answerFirst = 'not_checked'
+        else if (left > L.finalReserveMs + 6_000) {
+          const c0 = now()
+          try {
+            modelCalls++
+            const r = await cancellable(signal => input.answerFirstModel!({ system: input.system + checkNote(toolCallsThisStep, input.lang), messages, signal }), Math.min(L.stepTimeoutMs, left - L.finalReserveMs - 2_000), input.signal)
+            const kept = parseCheck(r.text)
+            T.modelRound({ round, final: false, ms: now() - c0, decision: 'answer_first_check', toolCalls: 0, promptTokens: r.promptTokens, completionTokens: r.completionTokens, usd: r.usd })
+            if (kept) { prefaces.push(kept); answerFirst = 'provided' } else answerFirst = 'nothing_yet'
+            T.add('answer_first', { round, outcome: answerFirst, chars: kept ? kept.length : 0, ms: now() - c0 })
+          } catch (e) {
+            if (input.signal?.aborted) return done('', 'aborted', 'aborted')
+            answerFirst = 'failed'
+            T.counters.errors++
+            T.add('error', { round, scope: 'answer_first', message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+          }
+        }
+      }
+    }
+
     messages.push({
       role: 'assistant',
       content: [
-        ...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : []),
+        ...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : prefaces.length && answerFirst === 'provided' ? [{ type: 'text' as const, text: prefaces[prefaces.length - 1] }] : []),
         ...taskCallParts(),
         ...toolCallsThisStep.map(tc => ({ type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: stripWhy(tc.args) })),
       ],
