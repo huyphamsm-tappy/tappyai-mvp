@@ -99,7 +99,8 @@ export function applyRankingToRecs(recs: readonly Recommendation[], c: RankingCo
   for (const p of c.picks) {
     const i = matchPick(p.name, names)
     if (i < 0 || out.includes(recs[i])) { unmatched++; continue }
-    const first = out.length === 0
+    // A LOW-confidence ranking orders the cards but crowns none: a label must not claim more than Luna's own confidence (and its prose) does.
+    const first = out.length === 0 && c.confidence !== 'low'
     const why = qualitative(p.why)
     const trade = qualitative(p.tradeoff)
     const reasons: RecommendationReason[] = first && why ? [{ attribute: 'rationale', evidence: why }] : []
@@ -123,15 +124,27 @@ export function applyRankingToShoppingMarker(marker: string, c: RankingContract)
   for (const p of c.picks) {
     const i = matchPick(p.name, names)
     if (i < 0 || ordered.includes(view.entities[i])) { unmatched++; continue }
-    ordered.push({ ...view.entities[i], recommended: ordered.length === 0 })
+    ordered.push({ ...view.entities[i], recommended: ordered.length === 0 && c.confidence !== 'low' })
   }
   if (!ordered.length) return { marker, applied: false, matched: 0, unmatched }
   const first = c.picks.find(p => matchPick(p.name, names) >= 0)!
   const why = qualitative(first.why), trade = qualitative(first.tradeoff)
   const next: SynthesisView = {
     ...view,
-    entities: ordered.map(e => ({ ...e, recommended: e === ordered[0] })),
-    recommendation: { entityKey: ordered[0].key, seller: null, reasons: why ? [{ attribute: 'rationale', evidence: why }] : [], tradeOff: trade ? { attribute: 'tradeoff', evidence: trade } : null, conditional: false },
+    entities: ordered.map(e => ({ ...e, recommended: e === ordered[0] && c.confidence !== 'low' })),
+    recommendation: c.confidence === 'low' ? null : { entityKey: ordered[0].key, seller: null, reasons: why ? [{ attribute: 'rationale', evidence: why }] : [], tradeOff: trade ? { attribute: 'tradeoff', evidence: trade } : null, conditional: false },
   }
   return { marker: renderShoppingMarker(next), applied: true, matched: ordered.length, unmatched }
+}
+
+/**
+ * The shopping card WITHOUT a crowned option: no entity is `recommended`, no recommendation block. Used when the agent runtime has no
+ * ranking of Luna's to carry (no block, none matching, or the decision record absent) — the engine's own pick is not Luna's decision, and
+ * the label "NÊN CHỌN" must not appear next to a reply that says it cannot conclude (UAT-10, 2026-10-09). A marker that does not parse
+ * is returned unchanged.
+ */
+export function withoutRecommendation(marker: string): string {
+  const { view } = parseShoppingMarker(marker)
+  if (!view) return marker
+  return renderShoppingMarker({ ...view, entities: view.entities.map(e => ({ ...e, recommended: false })), recommendation: null })
 }

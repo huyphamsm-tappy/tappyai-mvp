@@ -61,15 +61,18 @@ async function merchantProductRows(query: string): Promise<Array<{ title: string
   return out
 }
 
-async function searchProductsImpl(query: string, lang = 'vi') {
-  const cacheKey = productsCacheKey(query, lang)
+async function searchProductsImpl(query: string, lang = 'vi', opts: { merchantLinks?: boolean } = {}) {
+  // Enrichment policy (enrichmentPolicy.ts): without links this is the evidence request only — no merchant-page search, no photo
+  // lookups, no marketplace/direct-link or shop-info searches. A link-less result is cached under its own key.
+  const wantLinks = opts.merchantLinks !== false
+  const cacheKey = productsCacheKey(query, lang) + (wantLinks ? '' : ':nolinks')
   const cached = getCache(cacheKey)
   if (cached) return cached
 
   // The marketplaces' own SEARCH pages, from the CCP registry (owner decision 14 Sep 2026): the
   // model may cite them as "xem thêm lựa chọn"; verified product handoffs ride the rows as
   // `commerce_links` when the platform is enabled.
-  const links = buildShoppingLinks(query)
+  const links = wantLinks ? buildShoppingLinks(query) : [] // marketplace search-page links are purchase links too: none without purchase intent
 
   let result: unknown
   /**
@@ -106,7 +109,7 @@ async function searchProductsImpl(query: string, lang = 'vi') {
     // Only when /shopping HAS listings: a "no listings" answer falls through to the organic path below,
     // which already searches the marketplaces — a merchant query there would be a second paid search.
     const rows = await serperShopping(query, 20)
-    const merchantRows = rows && rows.length > 0 ? await merchantProductRows(query) : []
+    const merchantRows = rows && rows.length > 0 && wantLinks ? await merchantProductRows(query) : []
     if (rows && rows.length > 0) {
       const shoppingRows = (rows ?? []).map(r => {
         const specs = parseProductSpecs(r.title)
@@ -180,12 +183,12 @@ async function searchProductsImpl(query: string, lang = 'vi') {
       // `structuredAnsweredEmpty`. An empty array here is what that answer was.
       structuredAnsweredEmpty ? Promise.resolve([] as Awaited<ReturnType<typeof serperShopping>>) : serperShopping(query),
       serperSearch(query + ' gia Shopee Tiki Lazada'),
-      serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)'),
+      wantLinks ? serperSearch(query + ' (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)') : Promise.resolve(null),
     ])
     // The shop-info query ("địa chỉ facebook") is ENRICHMENT of a product that was found — asked only when something was found,
     // never as a third parallel request in a search that returned nothing (it used to be sent every time).
     const foundSomething = (shoppingRecords?.length ?? 0) > 0 || (searchResultsRaw?.length ?? 0) > 0 || (directResults?.length ?? 0) > 0
-    const shopInfoResults = foundSomething ? await serperSearch(query + ' shop website địa chỉ facebook') : null
+    const shopInfoResults = foundSomething && wantLinks ? await serperSearch(query + ' shop website địa chỉ facebook') : null
 
     // Uu tien cac link CU THE den 1 san pham (khong phai trang tim kiem) tren Shopee/Tiki/Lazada
     const directProductLinks = (directResults || []).filter(r => {

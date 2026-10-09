@@ -156,7 +156,7 @@ const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/
 const MAX_LINKS_PER_ROW = 2
 /** Shopping (14 Sep 2026): one handoff per provider — Shopee, TikTok Shop, Lazada, DMX, CellphoneS side by side. */
 const MAX_SHOPPING_LINKS_PER_ROW = 5
-const MAX_SHOPPING_QUERIES = 8
+export const MAX_SHOPPING_QUERIES = 8
 const MAX_LINKS_PER_PROVIDER = 1
 const MAX_EXPERIENCE_ROWS = 2
 const DEFAULT_ADULTS = 2

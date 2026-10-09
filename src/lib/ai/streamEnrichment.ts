@@ -28,7 +28,7 @@ import { shieldSupported, pageGroundedNames } from './guardEvidence'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
-import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
+import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker, withoutRecommendation } from './agent/runtime/rankingContract'
 import { parseShoppingMarker } from './consultative/synthesisView'
 import { footerRemaining, CARDS_SHOWN as CARD_FOLD_SHOWN } from './cardCounts'
 import { groundEntityNames } from './entityNameGuard'
@@ -2083,6 +2083,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // WS2: no valid inline block, and the turn has candidates → the decision is RECORDED from the final answer (one structured Luna
       // call, validated by code — decisionRecord.ts). The answer is the decision; this is its machine-readable form.
       let contract = ex.contract
+      let shoppingRanked = false // Luna's ranking reached the shopping card (otherwise the card is shown without a crowned option)
       const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
       if (!contract && collector.recordDecision && candidateNames.length) {
         const rec = await collector.recordDecision(mainText, candidateNames)
@@ -2097,9 +2098,12 @@ export function applyPlaceEnrichmentStreamFilter(
         }
         if (collector.shoppingMarker) {
           const s = applyRankingToShoppingMarker(collector.shoppingMarker, contract)
-          if (s.applied) { collector.shoppingMarker = s.marker ?? undefined; lunaRanked = true; Object.assign(rt, { shopping: s.marker ? s.matched : 0, shopping_unmatched: s.unmatched }) } else rt.shopping = 'unmatched_kept'
+          if (s.applied) { collector.shoppingMarker = s.marker ?? undefined; lunaRanked = true; shoppingRanked = true; Object.assign(rt, { shopping: s.marker ? s.matched : 0, shopping_unmatched: s.unmatched }) } else rt.shopping = 'unmatched_kept'
         }
       }
+      // UAT-10 (2026-10-09): the engine's own pick is not Luna's decision. With no ranking of Luna's on the card, nothing is crowned — "NÊN CHỌN"
+      // must never sit next to a reply that says it cannot conclude.
+      if (collector.shoppingMarker && !shoppingRanked) { collector.shoppingMarker = withoutRecommendation(collector.shoppingMarker); Object.assign(rt, { shopping_label: 'withheld_no_ranking' }) }
       try { collector.rankingTrace?.(rt) } catch { /* trace only */ }
     }
     const places = resolvePlaces()

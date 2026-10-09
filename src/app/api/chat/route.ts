@@ -38,7 +38,8 @@ import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSum
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
-import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
+import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining } from '@/lib/ai/tools/serperToolBudget'
+import { productEnrichmentFor, optionalEnrichmentBudget, worstCaseSearchProductsCredits } from '@/lib/ai/tools/enrichmentPolicy'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
 import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
@@ -2438,12 +2439,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       ...(locationIntent !== 'offline' ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
-        execute: async ({ query }) => {
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
+        execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
+          // Enrichment policy (enrichmentPolicy.ts): the Agent Runtime fetches purchase links only when Luna declared purchase intent.
+          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })
+          const enrichmentBefore = serperSnapshot()
           const stored = productsOverride
           productsOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_products', step: 'from_chat_state', rows: stored.length }))
-          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang)
+          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang, { merchantLinks: enrichmentMode === 'links' })
           const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           // Kept for "xem thêm" / "bác": the RANKED rows, shortlist first — not the raw search (replay SHOP-3: the raw
@@ -2453,7 +2457,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const keepRows = shortRaw.length >= 2 ? [...shortRaw, ...(Array.isArray(rankedRows) ? rankedRows.filter(r => !shortRaw.includes(r)) : [])] : rankedRows
           if (!stored && Array.isArray(keepRows) && keepRows.length) lastProductsForState = { query, rows: compactProducts(keepRows) }
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // Vendor-link searches (up to two products × several marketplaces) are OPTIONAL: none without purchase intent; with it they may only
+          // spend what is left after a reserve kept for the verification the answer still needs (never the whole turn budget).
+          const optionalBudget = enrichmentMode === 'links' ? (agentV2 ? optionalEnrichmentBudget(turnCreditsRemaining()) : Number.POSITIVE_INFINITY) : 0
+          if (optionalBudget > 0) {
+            if (Number.isFinite(optionalBudget)) await withSerperToolBudget(optionalBudget, async () => { await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts }) })
+            else await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          }
+          if (agentV2) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.

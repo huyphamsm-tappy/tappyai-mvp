@@ -93,3 +93,11 @@ export function turnCreditsSpent(): number {
   while (s?.parent) s = s.parent
   return s?.spent ?? 0
 }
+
+/** Credits still available in the current TURN scope (turn limit − spent); Infinity outside a turn scope. */
+export function turnCreditsRemaining(): number {
+  let s = store.getStore() ?? null
+  if (!s) return Number.POSITIVE_INFINITY
+  while (s.parent) s = s.parent
+  return Math.max(0, s.limit - s.spent)
+}
