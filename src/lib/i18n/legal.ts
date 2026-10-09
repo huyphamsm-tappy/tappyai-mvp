@@ -131,6 +131,8 @@ export const en: Record<string, string> = {
   'legal.terms.s4.p1':
     'You agree not to use TappyAI for unlawful or harmful purposes, or in any way that infringes the rights of others.',
   'legal.terms.s4.p2': 'Posts, comments, profiles and messages must follow our Community Guidelines. Content that breaks them can be removed, and accounts can be restricted or locked after a review. If we act against your content or account you will be told why and can appeal once.',
+  'legal.terms.s4.p3':
+    'TappyAI has zero tolerance for objectionable content and abusive users. You must not post content that is hateful, harassing, violent, sexual, endangers or exploits children, promotes self-harm, or is otherwise unlawful, and you must not abuse other users. You can report any post, comment or user, and block any user. We review every report, the most serious first with a target of 24 hours, remove content that breaks the rules, and restrict or remove the accounts responsible.',
   'legal.terms.s4.link': 'Community Guidelines',
   'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 
@@ -380,6 +382,8 @@ export const vi: Record<string, string> = {
   'legal.terms.s4.p1':
     'Bạn đồng ý không sử dụng TappyAI cho mục đích bất hợp pháp, gây hại hoặc vi phạm quyền của người khác.',
   'legal.terms.s4.p2': 'Bài đăng, bình luận, hồ sơ và tin nhắn phải tuân theo Quy tắc cộng đồng của chúng tôi. Nội dung vi phạm có thể bị gỡ, và tài khoản có thể bị hạn chế hoặc khoá sau khi được xem xét. Nếu chúng tôi xử lý nội dung hoặc tài khoản của bạn, bạn được thông báo lý do và được kháng nghị một lần.',
+  'legal.terms.s4.p3':
+    'TappyAI không khoan nhượng với nội dung phản cảm và người dùng có hành vi lạm dụng. Bạn không được đăng nội dung thù ghét, quấy rối, bạo lực, khiêu dâm, gây nguy hiểm hoặc bóc lột trẻ em, cổ xúy tự hại hay vi phạm pháp luật, và không được lạm dụng người dùng khác. Bạn có thể báo cáo mọi bài đăng, bình luận hay người dùng và chặn bất kỳ người dùng nào. Chúng tôi xem xét mọi báo cáo, báo cáo nghiêm trọng nhất được xử lý trước với mục tiêu 24 giờ, gỡ nội dung vi phạm và hạn chế hoặc xoá tài khoản chịu trách nhiệm.',
   'legal.terms.s4.link': 'Quy tắc cộng đồng',
   'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 

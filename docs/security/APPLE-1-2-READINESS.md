@@ -61,3 +61,16 @@ Production migrations and RLS; the flags; that a reviewer receives the push; the
 3. ⋯ → Block B → confirm → B's clips and comments leave the feed at once; Settings → Blocked accounts lists B.
 4. Settings → Community guidelines, Contact (support@tappyai.com).
 Attach the video to App Review Information notes with who reviews reports and the 24 h commitment.
+
+## Policy wording that must be live before the recording (found on the live pages 09/10)
+- `/terms` §4 has no explicit zero-tolerance sentence. This branch adds `legal.terms.s4.p3` (EN + VI) with a pinned test. **It states a 24 h target publicly: the owner must approve that wording** before it is merged and deployed.
+- `/community-guidelines` shows the banner "Proposed text, October 2026 — awaiting the product owner's approval." The owner must either approve the text (the effective line then changes) or publish the full canonical document by setting `COMMUNITY_GUIDELINES_EFFECTIVE_DATE`, `LEGAL_OPERATOR_NAME` and `LEGAL_ADDRESS` (real facts only; never invented). Until then Apple's reviewer sees an unapproved draft.
+
+## Proposed App Review Information notes (fill the bracketed parts only after they are true)
+> Guideline 1.2 — what changed in this build ([build number]):
+> 1. **Terms before sign-in.** The login and registration screens show a required checkbox: "I agree to the Terms of Service and the Community Guidelines", with links to both and a zero-tolerance statement. Every sign-in method (email, Google, Zalo, Sign in with Apple) is refused until it is ticked; a red message appears beside the box.
+> 2. **Report.** Every post, comment and profile has a ⋯ menu → Report with a reason; the report is stored and queued for moderators with a priority; the reporter gets a confirmation (or an error, never a false confirmation).
+> 3. **Block.** ⋯ → Block asks for confirmation; the blocked user's posts and comments disappear from the blocker's feed immediately and stay hidden server-side (database row-level security). Settings → Blocked accounts lists and undoes blocks.
+> 4. **Moderation.** Reports reach a moderation queue and the moderators are notified by push at once ([primary reviewer] primary, [backup] backup); severe reports (violence, sexual content, self-harm, child safety) target 24 hours and are escalated to the backup if still open. Reviewers remove content and restrict or ban accounts; every decision is recorded.
+> 5. **Contact.** Settings → Community guidelines and Contact (support@tappyai.com).
+> The attached screen recording was captured on a physical iPhone and shows the flows above.
