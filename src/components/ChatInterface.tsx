@@ -558,7 +558,56 @@ function linkChip(url: string, label: string): string {
   return `<a href="${sameSiteClickHref(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
 }
 
+// ── POST-UAT B1 (UAT-01 raw ``` fences, UAT-08 raw table pipes, 2026-10-09): code blocks, inline code and GFM tables ──────────
+// Code is lifted out FIRST (before bold balancing, link chips, images) into private-use placeholders and put back LAST, escaped:
+// nothing inside a code block is ever turned into a link, bold or an image, and no raw HTML from the model is ever interpreted.
+// A fence still open at the end of the text (mid-stream) renders as code until it closes — never as a stray "```".
+const CODE_MARK = (n: number) => `${n}`
+const CODE_MARK_RE = /(\d+)/g
+function liftCode(content: string): { text: string; blocks: string[] } {
+  const blocks: string[] = []
+  const put = (html: string) => { blocks.push(html); return CODE_MARK(blocks.length - 1) }
+  let text = content.replace(/(^|\n)[ \t]*```[ \t]*([\w#+.-]{0,20})[^\n]*\n([\s\S]*?)(?:\n[ \t]*```[ \t]*(?=\n|$)|$(?![\s\S]))/g, (_m, pre: string, lang: string, body: string) => {
+    const label = lang ? `<div class="text-[11px] uppercase tracking-wide text-gray-400 dark:text-gray-500 px-3 pt-2">${escapeHtml(lang)}</div>` : ''
+    return `${pre}${put(`<div class="my-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 overflow-hidden" data-md="code">${label}<pre class="m-0 px-3 py-2 overflow-x-auto text-[13px] leading-relaxed whitespace-pre"><code${lang ? ` data-lang="${escapeHtml(lang)}"` : ''}>${escapeHtml(body.replace(/\n$/, ''))}</code></pre></div>`)}`
+  })
+  // inline `code` (single backticks, one line)
+  text = text.replace(/`([^`\n]{1,200})`/g, (_m, c: string) => put(`<code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-[0.92em]">${escapeHtml(c)}</code>`))
+  return { text, blocks }
+}
+const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)+\|?\s*$/
+const cellsOf = (row: string) => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim())
+/** GFM tables → a scrollable <table> on ONE line (the message body is pre-wrap: newlines inside the markup would render). */
+function renderTables(escaped: string): string {
+  const lines = escaped.split('\n')
+  const out: string[] = []
+  for (let i = 0; i < lines.length; i++) {
+    if (i + 1 < lines.length && /\|/.test(lines[i]) && TABLE_SEP.test(lines[i + 1])) {
+      const head = cellsOf(lines[i])
+      const align = cellsOf(lines[i + 1]).map(c => /^:-+:$/.test(c) ? 'center' : /-:$/.test(c) ? 'right' : 'left')
+      const rows: string[][] = []
+      let j = i + 2
+      while (j < lines.length && /\|/.test(lines[j]) && lines[j].trim()) { rows.push(cellsOf(lines[j])); j++ }
+      const td = (c: string, k: number, tag: 'th' | 'td') => `<${tag} class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700${tag === 'th' ? ' font-semibold bg-gray-50 dark:bg-gray-800/60' : ''}" style="text-align:${align[k] ?? 'left'}">${c}</${tag}>`
+      out.push(`<div class="my-2 overflow-x-auto max-w-full" data-md="table"><table class="text-[13px] border-collapse min-w-full"><thead><tr>${head.map((c, k) => td(c, k, 'th')).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${head.map((_, k) => td(r[k] ?? '', k, 'td')).join('')}</tr>`).join('')}</tbody></table></div>`)
+      i = j - 1
+      continue
+    }
+    out.push(lines[i])
+  }
+  return out.join('\n')
+}
+
 export function formatMessage(content: string) {
+  const lifted = liftCode(content)
+  return formatMessageBody(lifted.text)
+    .replace(CODE_MARK_RE, (_m, n: string) => lifted.blocks[Number(n)] ?? '')
+    // The body is pre-wrap: a newline next to a BLOCK (code / table) would paint an empty line above and below it.
+    .replace(/\n+(<div class="my-2[^"]*"[^>]*data-md="(?:code|table)")/g, '$1')
+    .replace(/(<\/(?:pre|table)><\/div>)\n+/g, '$1')
+}
+
+function formatMessageBody(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
@@ -576,7 +625,7 @@ export function formatMessage(content: string) {
     .replace(/(^|[^!])\[([^\]\n]*)\]\((https?:\/\/[^\s)]+)\)/g, (m, pre: string, label: string, url: string) => isImageUrl(url) ? `${pre}![${label}](${url})` : m)
     // A bare image URL on its own is a photo too.
     .replace(/(^|\s)(https?:\/\/[^\s<)\]]+)/g, (m, pre: string, url: string) => isImageUrl(url) ? `${pre}![](${url})` : m)
-  const withImages = escapeHtml(normalized).replace(
+  const withImages = renderTables(escapeHtml(normalized)).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]

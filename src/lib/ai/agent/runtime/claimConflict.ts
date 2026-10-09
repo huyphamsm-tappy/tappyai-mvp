@@ -32,10 +32,11 @@ export function hedged(text: string): boolean { const t = text.normalize('NFC').
 export function clockTimes(text: string): number[] {
   const f = fold(text)
   const out: number[] = []
-  for (const m of f.matchAll(/(?<![\d.,])(\d{1,2})\s*(?::|gio|h|g)\s*([0-5]\d)?(?!\d)\s*(sang|trua|chieu|toi|dem|am|pm)?/g)) {
-    let h = Number(m[1]); const mm = Number(m[2] ?? 0)
+  // POST-UAT (UAT-13 post-fix run): a colon needs its minutes — "**Ngày 1:** Đến nơi, nhận phòng" is a day label, not 1:00.
+  for (const m of f.matchAll(/(?<![\d.,])(\d{1,2})(?:\s*:\s*([0-5]\d)|\s*(?:gio|h|g)\s*([0-5]\d)?)(?!\d)\s*(sang|trua|chieu|toi|dem|am|pm)?/g)) {
+    let h = Number(m[1]); const mm = Number(m[2] ?? m[3] ?? 0)
     if (h > 24) continue
-    const part = m[3]
+    const part = m[4]
     if ((part === 'chieu' || part === 'toi' || part === 'pm') && h < 12) h += 12
     if (part === 'dem' && h >= 6 && h < 12) h += 12
     out.push(h * 60 + mm)

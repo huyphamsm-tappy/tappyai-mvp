@@ -25,6 +25,7 @@
 import { extractMoneyClaims, sentenceSpans } from './moneyGuard'
 import { parsePriceBand, amountWithinBand, type PriceBand } from '@/lib/recommendation/priceBand'
 import { availabilityPolarity, clockTimes } from './agent/runtime/claimConflict'
+import { isTitleCaseName, allocationContext, withoutLineLabel } from './snippetPriceGuard'
 
 export type ClaimState = 'FACT' | 'INFERENCE' | 'UNKNOWN' | 'CONFLICT' | 'FABRICATED'
 export type ClaimCategory = 'price' | 'market' | 'hours' | 'rating' | 'review_count' | 'availability' | 'policy' | 'dosage' | 'distance' | 'booking_status'
@@ -95,7 +96,7 @@ const near = (v: number, xs: readonly number[], rel = 0.02, abs = 0) => xs.some(
 
 // ── claim extraction ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-const MARKET_CTX = /(?<!\p{L})(tỷ giá|ty gia|ngoại tệ|giá vàng|gia vang|vàng sjc|vang sjc|cổ phiếu|co phieu|chứng khoán|chung khoan|vn-?index|bitcoin|btc|eth|crypto|tiền điện tử|lãi suất|lai suat|lạm phát|lam phat|cổ tức|co tuc|thuế|thue|phí|phi|lệ phí|le phi|tăng trưởng|tang truong|doanh thu|lợi nhuận|loi nhuan|gdp|interest rate|exchange rate|stock|share price|inflation|dividend|fee|tax|revenue|apr|apy)(?!\p{L})/iu
+const MARKET_CTX = /(?<!\p{L})(tỷ giá|ty gia|ngoại tệ|giá vàng|gia vang|vàng sjc|vang sjc|cổ phiếu|co phieu|chứng khoán|chung khoan|vn-?index|bitcoin|btc|eth|crypto|tiền điện tử|lãi suất|lai suat|lạm phát|lam phat|cổ tức|co tuc|thuế|thue|(?<!chi\s)phí|(?<!chi\s)phi|lệ phí|le phi|tăng trưởng|tang truong|doanh thu|lợi nhuận|loi nhuan|gdp|interest rate|exchange rate|stock|share price|inflation|dividend|fee|tax|revenue|apr|apy)(?!\p{L})/iu
 const HOURS_CTX = /(?<!\p{L})(mở cửa|mo cua|đóng cửa|dong cua|mở đến|mo den|mở từ|mo tu|giờ mở|gio mo|hoạt động|hoat dong|khởi hành|khoi hanh|cất cánh|cat canh|hạ cánh|ha canh|xuất phát|xuat phat|chạy lúc|suất chiếu|suat chieu|giờ chạy|gio chay|check-?in|check-?out|nhận phòng|trả phòng|open|opens|close|closes|until|depart|departs|departure|arrive|showtime)(?!\p{L})/iu
 const RATING_RE = /(\d[.,]\d|\d)\s*(?:⭐|★|\/\s*5(?!\d)|sao(?!\p{L})|stars?(?!\p{L}))|(?:điểm|diem|rating|đánh giá|danh gia)\s*(?:trung bình\s*)?(\d[.,]\d)(?!\d)/giu
 // "hơn 3.000 đánh giá" / "trên 1.000" / "gần 500": a qualified count is a BOUND, not an exact figure.
@@ -124,6 +125,13 @@ const STALE_QUALIFIER = /(?<!\p{L})(năm|tháng)\s*\d|20\d{2}|(?<!\p{L})(cũ|tr�
 const DISCLOSED = /(?<!\p{L})(chưa|không)\s+(?:\S+\s+){0,3}?(xác minh|xác nhận|kiểm chứng|chắc chắn|kiểm tra được)|có thể đã (?:thay đổi|khác)|theo (?:thông tin|dữ liệu) cũ|theo trí nhớ|không phải (?:giá|số liệu) hiện tại|not (?:yet )?(?:verified|confirmed)|unverified|may have changed|from memory/iu
 const PLANNING = /(?<!\p{L})(ngân sách|ngan sach|dự trù|du tru|ước tính|uoc tinh|ước chừng|chi phí dự kiến|tổng chi phí|chi tiêu|budget|estimate|estimated)(?!\p{L})/iu
 const ESTIMATE = /(?<!\p{L})(khoảng|tầm|chừng|ước tính|dự trù|around|about|roughly)(?!\p{L})/iu
+const SPLIT_FRAME = /(?<!\p{L})(phân bổ|phan bo|chia (?:tiền|ngân sách|chi phí|vốn|như sau)|vốn (?:lưu động|dự phòng|vận hành)|quỹ (?:dự phòng|vận hành|lưu động)|khoản dự phòng|để riêng|giữ lại|dự trù|du tru|dự toán|ước tính|uoc tinh|dự kiến|khoản chi|hạng mục|cost breakdown|allocation|estimated costs?)(?!\p{L})/iu
+const BUDGET_HEADER = /(?<!\p{L})(?:ngân sách|ngan sach|budget|vốn|chi phí)(?!\p{L})[^\n]*:\s*(?:\*\*)?\s*$/iu
+/** A sentence that names a place / product: "ở Phở Hòa", "tại Highlands", a bold Title-Case name (not a bold label or amount). */
+function namesAPlace(sentence: string): boolean {
+  if (/(?<!\p{L})(?:ở|tại|quán|nhà hàng|khách sạn|at)\s+\p{Lu}\p{Ll}*\s+\p{Lu}/u.test(sentence)) return true
+  return [...sentence.matchAll(/\*\*([^*\n]{2,80})\*\*/g)].some(m => isTitleCaseName(m[1]))
+}
 
 interface Raw { category: ClaimCategory; value: string; nums: number[]; lo?: number; hi?: number; polarity?: 'positive' | 'negative' | null; bound?: 'lower' | 'approx' }
 
@@ -134,8 +142,11 @@ export function claimsIn(sentence: string): Raw[] {
   const market = MARKET_CTX.test(s)
   for (const c of extractMoneyClaims(s)) out.push({ category: market ? 'market' : 'price', value: c.raw, nums: [c.lo, c.hi], lo: c.lo, hi: c.hi })
   if (market) for (const m of s.matchAll(/(\d+(?:[.,]\d+)?)\s?%/g)) out.push({ category: 'market', value: m[0], nums: [Number(m[1].replace(',', '.'))] })
-  if (HOURS_CTX.test(s)) {
-    const ts = [...new Set(clockTimes(s))]
+  // POST-UAT (UAT-25 post-fix run): an itinerary SLOT label ("- **10:30–12:00:** Đi bộ … hoạt động miễn phí") is Luna's schedule
+  // for the user, not a venue's opening hours — its times are not hours claims. Times elsewhere in the sentence still are.
+  const hoursText = s.replace(/^\s*(?:[-*•+]|\d{1,2}[.)])?\s*\**\s*\d{1,2}[:h]\d{2}\s*(?:[–-]\s*\d{1,2}[:h]\d{2})?\s*:?\s*\**\s*:?/, '')
+  if (HOURS_CTX.test(hoursText)) {
+    const ts = [...new Set(clockTimes(hoursText))]
     if (ts.length) out.push({ category: 'hours', value: ts.map(t => `${Math.floor(t / 60)}:${String(t % 60).padStart(2, '0')}`).join(','), nums: ts })
   }
   for (const m of s.matchAll(RATING_RE)) { const v = Number((m[1] ?? m[2]).replace(',', '.')); if (v > 0 && v <= 5) out.push({ category: 'rating', value: m[0], nums: [v] }) }
@@ -183,14 +194,127 @@ function userGiven(c: Raw, ix: Index): boolean {
   return c.nums.every(v => near(v, ix.user, 0, 0.001))
 }
 
-/** Money derived from known values: a ± b, a × n, a ÷ n (n 2–12 or a user number), a × p % — the reply's own arithmetic. */
-function derived(v: number, known: readonly number[], factors: readonly number[]): boolean {
-  const ks = known.slice(0, 80)
+/**
+ * Money derived from known values: a ± b, a × n, a ÷ n (n 2–12 or a user number), a × p %, a × (1 ± p %) — the reply's own arithmetic.
+ * Post-UAT B2 (UAT-07, measured 2026-10-09): `known` now also carries the values the reply ITSELF already derived in earlier sentences
+ * (the gate walks the reply in order), so "lãi 5 triệu" → "tổng 100 triệu + 5 triệu = 105 triệu" is a chain, not a fabricated price.
+ * Post-UAT mutation P5 (measured): the percentage forms used EVERY generic factor 2–12, so any figure within 2 % of "budget × n %"
+ * passed ("85.000đ" ≈ 12 % of 700k with no 12 % anywhere). Percent forms now use only `pcts` — percentages the user or the sentence
+ * actually states; × / ÷ keep the generic factors (per person, per day, multiples).
+ */
+const GENERIC_FACTORS = new Set([2, 3, 4, 5, 6, 7, 8, 9, 10, 12])
+function derived(v: number, known: readonly number[], factors: readonly number[], pcts: readonly number[] = []): boolean {
+  const ks = known.slice(0, 120)
   for (const a of ks) {
-    for (const n of factors) if (near(v, [a * n], 0.02, 1) || (n !== 0 && near(v, [a / n], 0.02, 1)) || (n > 0 && n <= 100 && near(v, [a * n / 100], 0.02, 1))) return true
+    // Generic × / ÷ (2–12) at 1 %: real per-person / per-day splits round well inside it ("1 triệu / 3 ≈ 333.000"), a coincidence does
+    // not ("85.000đ" vs 1 triệu / 12 = 83.333 is 2 %). Factors the user stated keep 2 %.
+    for (const n of factors) {
+      const tol = GENERIC_FACTORS.has(n) && !pcts.includes(n) ? 0.01 : 0.02
+      if (near(v, [a * n], tol, 1) || (n !== 0 && near(v, [a / n], tol, 1))) return true
+    }
+    for (const n of pcts) if (n > 0 && n <= 100 && (near(v, [a * n / 100], 0.02, 1) || near(v, [a * (100 + n) / 100], 0.005, 1) || near(v, [a * (100 - n) / 100], 0.005, 1))) return true
     for (const b of ks) if (a !== b && (near(v, [a + b], 0.02, 1) || near(v, [Math.abs(a - b)], 0.02, 1))) return true
   }
   return false
+}
+
+// ── deterministic arithmetic: "100 triệu × 5% × 12/12 = 5 triệu", "100 triệu × (1 + 5%)^2 ≈ 110,25 triệu" ─────────────────────────
+
+const UNIT_MULT: Array<[RegExp, number]> = [[/^(?:tỷ|tỉ|ty|billion|bn)/iu, 1e9], [/^(?:triệu|trieu|tr(?!\p{L})|million|m(?!\p{L}))/iu, 1e6], [/^(?:nghìn|nghin|ngàn|ngan|k(?!\p{L})|thousand)/iu, 1e3]]
+
+/** A tiny recursive-descent evaluator over + − × ÷ ^ ( ) with VN number formats, money units and %. Returns null on anything else. */
+export function evalExpression(src: string): number | null {
+  const s = src.replace(/[−–]/g, '-').replace(/[×x✕*]/g, '*').replace(/[÷:]/g, '/').replace(/\s+/g, ' ').trim()
+  let i = 0
+  const ws = () => { while (s[i] === ' ') i++ }
+  const num = (): number | null => {
+    ws()
+    const m = /^(\d{1,3}(?:[.,]\d{3})+(?![.,]?\d)|\d+(?:[.,]\d+)?)/.exec(s.slice(i))
+    if (!m) return null
+    i += m[0].length
+    let v = /^\d{1,3}([.,]\d{3})+$/.test(m[0]) ? Number(m[0].replace(/[.,]/g, '')) : Number(m[0].replace(',', '.'))
+    ws()
+    for (const [re, k] of UNIT_MULT) { const u = re.exec(s.slice(i)); if (u) { v *= k; i += u[0].length; break } }
+    ws()
+    if (s[i] === '%') { v /= 100; i++ }
+    ws()
+    // "đồng", "VND", "₫", "đ", "/năm", "/tháng" after an operand are labels, not operators.
+    const lab = /^(?:đồng|dong|vnd|vnđ|₫|đ(?!\p{L}))/iu.exec(s.slice(i)); if (lab) i += lab[0].length
+    const per = /^\/\s*(?:năm|nam|tháng|thang|year|month|người|nguoi|ngày|ngay)(?!\p{L})/iu.exec(s.slice(i)); if (per) i += per[0].length
+    return v
+  }
+  const atom = (): number | null => {
+    ws()
+    if (s[i] === '(') { i++; const v = sum(); ws(); if (s[i] !== ')') return null; i++; return v }
+    return num()
+  }
+  const pow = (): number | null => {
+    const b = atom(); if (b === null) return null
+    ws()
+    if (s[i] === '^') { i++; const e = atom(); if (e === null || e > 1000) return null; return Math.pow(b, e) }
+    return b
+  }
+  const prod = (): number | null => {
+    let v = pow(); if (v === null) return null
+    for (;;) {
+      ws()
+      const op = s[i]
+      if (op !== '*' && op !== '/') return v
+      i++
+      const r = pow(); if (r === null) return null
+      v = op === '*' ? v * r : r === 0 ? NaN : v / r
+    }
+  }
+  function sum(): number | null {
+    let v = prod(); if (v === null) return null
+    for (;;) {
+      ws()
+      const op = s[i]
+      if (op !== '+' && op !== '-') return v
+      i++
+      const r = prod(); if (r === null) return null
+      v = op === '+' ? v + r : v - r
+    }
+  }
+  const v = sum()
+  ws()
+  return v !== null && i === s.length && Number.isFinite(v) ? v : null
+}
+
+/**
+ * The arithmetic a sentence shows: each "<expression> = <result>" chain, evaluated. `checked` = results the expression supports;
+ * `wrong` = results it contradicts (a wrong sum is not made true by being written as a sum). Only expressions with an operator count.
+ */
+export function arithmeticIn(sentence: string): { checked: number[]; wrong: number[] } {
+  const checked: number[] = [], wrong: number[] = []
+  const plain = sentence.replace(/\*\*/g, '').replace(/[≈]/g, '=')
+  const parts = plain.split('=')
+  if (parts.length < 2) return { checked, wrong }
+  for (let k = 0; k + 1 < parts.length; k++) {
+    // left: the LONGEST suffix of the segment that parses as an expression with an operator (starts at a digit or "(");
+    // right: the leading number (+ unit) of the next segment.
+    const seg = parts[k].replace(/\s+$/, '')
+    let lv: number | null = null
+    for (let p = 0; p < seg.length && lv === null; p++) {
+      if (!/[\d(]/.test(seg[p]) || (p > 0 && /[\d.,]/.test(seg[p - 1]))) continue
+      const tail = seg.slice(p)
+      if (!/[+\-−–×x✕*/÷^%]/.test(tail.replace(/\d{1,3}(?:[.,]\d{3})+/g, '0'))) continue
+      lv = evalExpression(tail)
+    }
+    // A LABELLED sum ("ăn uống 410.000đ + cà phê 100.000đ + đi lại 200.000đ = 910.000đ"): a pure "+" chain whose terms are money
+    // amounts with words between them — the amounts after the line's label (last ":") are summed.
+    if (lv === null && /\+/.test(seg) && !/[×✕*÷^]|\d\s*\/\s*\d/.test(seg)) {
+      const terms = seg.slice(seg.lastIndexOf(':') + 1).split('+')
+      const amounts = terms.map(t => extractMoneyClaims(t))
+      if (terms.length >= 2 && amounts.every(a => a.length === 1 && a[0].lo === a[0].hi)) lv = amounts.reduce((s, a) => s + a[0].lo, 0)
+    }
+    const rightM = /^\s*((?:\d{1,3}(?:[.,]\d{3})+(?![.,]?\d)|\d+(?:[.,]\d+)?)\s*(?:tỷ|tỉ|triệu|trieu|tr(?!\p{L})|nghìn|ngàn|k(?!\p{L}))?)/iu.exec(parts[k + 1])
+    const rv = rightM ? evalExpression(rightM[1]) : null
+    if (lv === null || rv === null) continue
+    if (Math.abs(lv - rv) <= Math.max(1, 0.006 * Math.abs(lv))) checked.push(rv)
+    else wrong.push(rv)
+  }
+  return { checked, wrong }
 }
 
 const CATEGORY_WORDS: Record<ClaimCategory, { vi: string; en: string }> = {
@@ -223,16 +347,41 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
   const knownMoney = [...new Set([...ix.userMoney, ...ix.money.slice(0, 40), ...ix.nums.filter(n => n >= 1000).slice(0, 40)])]
   const factors = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, ...ix.user.filter(n => n > 0 && n <= 1000)]
   const replyNums = numbersOf(text)
+  let wrongMath = false
   spans.forEach(([a, b], i) => {
     const sent = text.slice(a, b)
     if (!sent.trim() || /⁣|\[\/?(?:TAPPY_[A-Z]+|FOLLOWUPS|CTA_BUTTONS)\]/.test(sent)) return
     if (/\?\s*$/.test(sent.trim())) return // a question asserts nothing
     const raw = claimsIn(sent)
     if (!raw.length) return
+    // B2: the sentence's own shown arithmetic, evaluated by code (Luna's arithmetic is not trusted, it is checked).
+    const math = arithmeticIn(sent)
+    // An allocation line states its share ("Ăn uống: 6 triệu (60%)"): the share is a factor for that line only.
+    const sentFactors = [...factors, ...[...sent.matchAll(/(\d+(?:[.,]\d+)?)\s?%/g)].map(m => Number(m[1].replace(',', '.'))).filter(n => n > 0 && n <= 100)]
+    // Percent forms only with a STATED percentage: the user's numbers ≤ 100 (rates, discounts) and the sentence's own "N %".
+    const sentPcts = [...new Set([...ix.user.filter(n => n > 0 && n <= 100), ...sentFactors.slice(factors.length)])]
+    // A list item under a planning lead-in ("Gợi ý chia ngân sách 10 triệu:") inherits its planning frame (same block, no blank line).
+    let planningFrame = PLANNING.test(sent)
+    for (let j = i - 1; !planningFrame && j >= 0 && !/\n\s*\n/.test(text.slice(spans[j][1], a)); j--) if (PLANNING.test(text.slice(spans[j][0], spans[j][1]))) planningFrame = true
+    // POST-UAT B3: the allocation allowance needs a SPLIT frame (a split / estimate word, or a budget header line ending ":") and no
+    // place named earlier in the block — "Giá 100-200k/người rất hợp budget" after "Mình chọn **X**" is X's price, not a split.
+    // Read per LINE (the splitter cuts "- **16:00–17:00:** Cà phê:" at the colon) — the same context the snippet guard uses.
+    const actx = allocationContext(text, a + (sent.length - sent.trimStart().length), namesAPlace)
+    const splitFrame = SPLIT_FRAME.test(sent) || actx.framed || (actx.slot && ix.userMoney.length > 0)
+    // a place named in a list item's / slot's own line is that line's subject
+    const ownPlace = namesAPlace(sent) || ((actx.item || actx.slot) && namesAPlace(withoutLineLabel(actx.line)))
+    const disclosedAllowance = DISCLOSED.test(sent) && SPLIT_FRAME.test(sent)
+    // an explicit category breakdown whose own arithmetic checks ("ăn uống 410k + cà phê 100k + … = 910k") is a split, not a venue's price
+    const blockPlace = actx.venueAbove && !actx.item && !actx.slot && !disclosedAllowance && !math.checked.length
     let bad = false
     for (const c of raw) {
       let state: ClaimState
-      if (userGiven(c, ix)) continue
+      if (userGiven(c, ix)) { if (c.lo !== undefined) knownMoney.push(c.lo, c.hi!); continue }
+      const isMoney = (c.category === 'price' || c.category === 'market') && c.lo !== undefined
+      // A result the sentence's own expression contradicts is a wrong calculation, never a fact (even if the figure appears elsewhere).
+      if (isMoney && math.wrong.some(w => near(w, [c.lo!], 0.002, 1)) && !math.checked.some(w => near(w, [c.lo!], 0.002, 1))) {
+        state = 'FABRICATED'; bad = true; wrongMath = true; counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue
+      }
       // A figure only an OLD page states, presented as current (no time qualifier), is not a current fact.
       const staleOnly = (c.category === 'price' || c.category === 'market') && c.lo !== undefined && !!ev.stalePrices?.length && near(c.lo, ev.stalePrices, 0.005, 1) && !near(c.lo, ev.freshPrices ?? [], 0.005, 1) && !STALE_QUALIFIER.test(sent)
       if (staleOnly) { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category); counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
@@ -246,11 +395,16 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
             conflictNotes.push(`${c.value.trim()} / ${others.map(x => x.value.trim()).join(' / ')}`)
           }
         }
-      } else if ((c.category === 'price' || c.category === 'market') && c.lo !== undefined && derived(c.lo, knownMoney, factors) && derived(c.hi!, knownMoney, factors)) state = 'INFERENCE'
-      else if (c.category === 'market' && c.lo === undefined && /%/.test(c.value) && knownMoney.length >= 2) state = 'INFERENCE'
+      } else if (isMoney && (math.checked.some(w => near(w, [c.lo!], 0.002, 1)) || (derived(c.lo!, knownMoney, sentFactors, sentPcts) && derived(c.hi!, knownMoney, sentFactors, sentPcts)))) state = 'INFERENCE'
+      else if (c.category === 'market' && c.lo === undefined && /%/.test(c.value) && (knownMoney.length >= 2 || near(c.nums[0], ix.user, 0, 0.001))) state = 'INFERENCE'
       else if (DISCLOSED.test(sent)) state = 'UNKNOWN'
-      else if (c.category === 'price' && PLANNING.test(sent) && ESTIMATE.test(sent)) state = 'INFERENCE'
+      else if (c.category === 'price' && planningFrame && ESTIMATE.test(sent)) state = 'INFERENCE'
+      // POST-UAT B3: an item of a split of the USER'S envelope ("- Ăn sáng: 40.000đ" under "Chia ngân sách 700k:") is a planning
+      // allowance, not a merchant price — when it names no place and stays within the envelope. A place-named line stays judged.
+      else if (c.category === 'price' && splitFrame && !blockPlace && ix.userMoney.length > 0 && c.hi! <= Math.max(...ix.userMoney) * 1.05 && !ownPlace && !near(c.lo!, ix.userMoney, 0, 1)) state = 'INFERENCE'
       else { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category) }
+      // A supported / derived amount is a value the next sentences may compute from (chained arithmetic).
+      if ((state === 'FACT' || state === 'INFERENCE' || state === 'CONFLICT') && isMoney) knownMoney.push(c.lo!, c.hi!)
       counts[state]++
       claims.push({ category: c.category, state, value: c.value.slice(0, 60) })
     }
@@ -264,8 +418,13 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
   if (fabricatedCats.size) {
     const what = [...fabricatedCats].map(c => CATEGORY_WORDS[c][en ? 'en' : 'vi'])
     const already = out.split(/(?<=[.!?…])\s+|\n+/).some(x => DISCLOSED.test(x))
-    if (!already || fabricatedCats.has('dosage') || fabricatedCats.has('booking_status')) lines.push(en ? `I could not verify ${what.join(', ')} from the sources checked, so I am not stating a figure.` : `Mình chưa xác minh được ${what.join(', ')} từ nguồn đã tra, nên không nêu con số.`)
+    // B2: "from the sources checked" is only true when something was looked up this turn.
+    const looked = ev.tools.length > 0
+    if (!already || fabricatedCats.has('dosage') || fabricatedCats.has('booking_status')) lines.push(en
+      ? `I could not verify ${what.join(', ')} ${looked ? 'from the sources checked' : '(nothing was looked up for it)'}, so I am not stating a figure.`
+      : `Mình chưa xác minh được ${what.join(', ')} ${looked ? 'từ nguồn đã tra' : '(chưa có nguồn tra cứu cho số liệu này)'}, nên không nêu con số.`)
   }
+  if (wrongMath && !fabricatedCats.size) lines.push(en ? 'I removed a calculated figure that did not check out against its own formula.' : 'Mình đã bỏ một kết quả tính không khớp với chính công thức của nó.')
   if (conflictNotes.length) lines.push(en ? `Note: sources disagree here (${conflictNotes.slice(0, 2).join('; ')}) — check before deciding.` : `Lưu ý: các nguồn ghi khác nhau ở điểm này (${conflictNotes.slice(0, 2).join('; ')}) — nên kiểm tra lại trước khi quyết định.`)
   if (lines.length) {
     // Before the machine blocks the reply carries ([FOLLOWUPS], [CTA_BUTTONS], plan / shopping markers), never inside or after them.

@@ -179,14 +179,24 @@ const ORDERING_SEARCH_FRAMING_RE = /(có thể tìm|co the tim|kiểm tra|kiem t
  *
  * A question is never a claim: "Bạn muốn đặt online hay ăn tại quán?" asks.
  */
-export function isOrderingClaim(sentence: string): boolean {
+/** POST-UAT (UAT-09 post-fix run): a COST CATEGORY ("phí giao hàng", "phí nền tảng đặt món") names an expense, not a venue that delivers. */
+const COST_CATEGORY_RE = /(?<!\p{L})(?:phí|phi|chi phí|chi phi|tiền|tien|fee|cost of)\s+(?:giao hàng|giao hang|ship|vận chuyển|van chuyen|nền tảng|nen tang|đặt món|dat mon|delivery)(?!\p{L})/giu
+const COST_LIST_RE = /(?<!\p{L})(?:chi phí|chi phi|khoản chi|khoan chi|các khoản|cac khoan|vốn|von|costs?|expenses?)(?!\p{L})[^.!?\n]{0,40}(?<!\p{L})(?:gồm|gom|bao gồm|bao gom|như|nhu|include|includes|including)(?!\p{L})/iu
+export function isOrderingClaim(raw: string): boolean {
+  const sentence = raw.replace(COST_CATEGORY_RE, ' ')
   if (!ORDERING_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (ORDERING_POSSESSION_RE.test(sentence)) return true
   if (CAPABILITY_NEGATION_RE.test(sentence)) return false
   if (USER_WISH_RE.test(sentence)) return false
+  // POST-UAT (UAT-09 final run): a sentence LISTING COSTS ("Chi phí vận hành tháng gồm thuê mặt bằng, lương, …, giao hàng, phí thanh
+  // toán") names expense categories; with no possession wording (checked above) it says nothing about what a venue offers.
+  if (COST_LIST_RE.test(sentence)) return false
+  // POST-UAT (UAT-25 post-fix run): advice to the USER ("nhớ xem giá trước khi gọi món") says nothing about what the venue offers.
+  if (ADVICE_BEFORE_ORDER_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
+const ADVICE_BEFORE_ORDER_RE = /(?<!\p{L})(?:trước khi|truoc khi|before)\s+(?:gọi món|goi mon|đặt món|dat mon|đặt bàn|dat ban|đặt|dat|order(?:ing)?|book(?:ing)?)(?!\p{L})/iu
 
 /**
  * A turn that retrieved NOTHING cannot back a claim that a venue takes orders (UAT 2026-09-28: after
@@ -265,7 +275,14 @@ const TICKET_SALE_POSSESSION_RE = /(có bán vé|co ban ve|bán vé online|ban v
  * (`https://cinestar.com.vn/`) and a search page are NOT that — see
  * `isDirectTicketUrl` — which is the distinction the whole rule exists to make.
  */
-export function isTicketSaleClaim(sentence: string): boolean {
+/**
+ * POST-UAT (UAT-25 post-fix run): "điểm tham quan có vé" / "hoạt động có vé" is an ATTRIBUTE — a ticketed (paid-admission) kind of
+ * place or activity — not a claim that a venue has tickets on sale. "…chọn điểm tham quan có vé, hãy bớt một lượt cà phê" and "không
+ * cần thêm hoạt động có vé" were cut as ticket-sale claims.
+ */
+const TICKETED_ATTRIBUTE_RE = /(?<!\p{L})(?:điểm tham quan|diem tham quan|hoạt động|hoat dong|địa điểm|dia diem|điểm|diem|nơi|noi|khu|trò chơi|tro choi|attractions?|activit(?:y|ies))\s+(?:có vé|co ve|thu phí|thu phi|ticketed)(?!\p{L})/giu
+export function isTicketSaleClaim(raw: string): boolean {
+  const sentence = raw.replace(TICKETED_ATTRIBUTE_RE, ' ')
   if (!TICKET_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (TICKET_AVAILABILITY_RE.test(sentence)) return false // handled by the stricter rule

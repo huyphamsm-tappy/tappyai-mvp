@@ -26,7 +26,7 @@ import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames } from './guardEvidence'
 import { stripSellerNames } from './agent/runtime/sourceType'
-import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers } from './citationIntegrity'
+import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
 import { extractRanking, applyRankingToRecs, applyRankingToShoppingMarker } from './agent/runtime/rankingContract'
 import { parseShoppingMarker } from './consultative/synthesisView'
@@ -1756,6 +1756,8 @@ export function applyPlaceEnrichmentStreamFilter(
   // search), and whether the turn's preliminary fold + "found" progress already went out.
   let lastPlaceRows: number | null = null
   let preliminarySent = false
+  // POST-UAT B5: whether a preliminary CARD frame actually went out (the decision must retract it when it has no card).
+  let preliminaryCardsSent = false
   /**
    * Defaults to `not_run` and only moves when a place tool result actually arrives, so a
    * recall turn or a non-place conversation is left exactly as it was before this existed.
@@ -2500,8 +2502,11 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('travel', specGuarded, travelGuarded)
     const ticketGuarded = ticketUnitGuarded ? ticketUnitGuarded.text : travelGuarded
     gt('ticket_unit', travelGuarded, ticketGuarded)
+    // POST-UAT B3 (UAT-25 t3/t4, post-fix run): on agent turns the user's numbers are the whole conversation's — "giảm ngân sách xuống
+    // 700.000" (turn 2) is still the envelope at "bỏ điểm đến thứ hai" (turn 3). The No-Fabrication Gate already reads every user message.
+    const snippetUserText = collector?.agentMode && collector.userTexts?.length ? collector.userTexts.join('\n') : userText
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardSnippetPricesInText(ticketGuarded, snippetPrices, userText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      ? guardSnippetPricesInText(ticketGuarded, snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
     const foodGuarded0 = snippetGuardResult ? snippetGuardResult.text : ticketGuarded
     // Release gate (UAT-15): a comparative proximity claim about the pick must be backed by the rows' own distances (see proximityClaim.ts).
@@ -2834,7 +2839,8 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('pick_sentence', budgeted, placeGuarded)
     const answeredFirst = (hadPlaceSearch || travelIntent) ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
     if (answeredFirst.moved) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'answer_first', step: answeredFirst.moved }))
-    const clarifiedBase = guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow').text
+    // POST-UAT B7: on agent turns a requested information checklist ("mình cần biết:" + list) is one question unit.
+    const clarifiedBase = guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
     /**
      * Consultative V1 (flag): three prose guards, in this order, on prose only.
      *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
@@ -3300,8 +3306,11 @@ export function applyPlaceEnrichmentStreamFilter(
       // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
       // sources line. Here, inside the grounded prose, so the TikTok fold and the grounding detector downstream see the final text.
       // WS2 final (Bug 2): on agent turns (buffered — nothing has been released yet) a list marker a guard left without its item goes.
-      const listed = collector?.agentMode ? dropBareListMarkers(final) : { text: final, removed: 0 }
-      if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_list_marker', removed: listed.removed }))
+      const bare = collector?.agentMode ? dropBareListMarkers(final) : { text: final, removed: 0 }
+      if (bare.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'bare_list_marker', removed: bare.removed }))
+      // POST-UAT B3: a lead-in whose items a guard removed ("…như sau:" with nothing after it) goes too (agent turns only).
+      const listed = collector?.agentMode ? dropOrphanLeadIns(bare.text) : bare
+      if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphan_lead_in', removed: listed.removed }))
       if (!collector?.citationSources?.length) return listed.text
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
       const integrity = enforceCitationIntegrity(listed.text)
@@ -3510,6 +3519,17 @@ export function applyPlaceEnrichmentStreamFilter(
     // few candidates. No card is the honest answer there, and the prose then keeps
     // its injected links because nothing else is going to carry them.
     if (placesView) controller.enqueue(encoder.encode('8:' + JSON.stringify([placesView]) + '\n'))
+    /**
+     * POST-UAT B5 (UAT-13 / 15 / 21 / 24 / 25, 2026-10-09): THE PRELIMINARY SET OUTLIVED THE DECISION. The engine's unranked rows go
+     * out at the tool result (`preliminary`) so the card area fills while Luna writes; when Luna then decided NONE of them fits (or the
+     * turn ended with no card for any other reason), nothing replaced that frame and the client kept painting "Tất cả (8)" — eight
+     * OpenStreetMap rows under a question about one museum's hours. The decision now always closes the preliminary: no card ⇒ an
+     * explicit `cleared` frame, and the client drops the view. A turn that never sent a preliminary sends nothing (unchanged).
+     */
+    else if (preliminaryCardsSent) {
+      controller.enqueue(encoder.encode('8:' + JSON.stringify([{ kind: 'tappy.places.v1', v: 1, items: [], cleared: true }]) + '\n'))
+      console.log(JSON.stringify({ type: 'tappyai_cards_cleared', reason: lunaRanked ? 'luna_none' : 'no_decision_card' }))
+    }
   }
 
   const transform = new TransformStream<any, any>({
@@ -3879,6 +3899,7 @@ export function applyPlaceEnrichmentStreamFilter(
               : null
             if (early) {
               controller.enqueue(encoder.encode('8:' + JSON.stringify([early]) + '\n'))
+              preliminaryCardsSent = true
               console.log(JSON.stringify({ type: 'tappyai_cards_preliminary', items: early.items.length, card1: early.items[0]?.name ?? null, rows: lastPlaceRows }))
             }
           }

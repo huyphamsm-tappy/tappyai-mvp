@@ -224,14 +224,26 @@ export async function searchProducts(query: string, lang = 'vi') {
         note: messages.shopping.priceDisclaimer(lang)
       }
     } else {
+      /**
+       * POST-UAT B4 (UAT-11/12/23, 2026-10-09): THE MARKETPLACE SEARCH LINKS ARE NOT PRODUCT DATA. With Serper out of credits every
+       * call above returned null, and this branch answered `{ note, links, shop_info_results: [] }` — no row key the state classifier
+       * knew, so it read SUCCESS and the product fallback never ran. The result now says what it is: no product data, and whether
+       * the provider FAILED (every call null: timeout / non-2xx / no key) or genuinely answered "nothing". Neither is cached: a
+       * failure must not become 15 minutes of "no products", and an empty answer is cheap to ask again.
+       */
+      // The organic searches are the broad check; when both failed nothing was really asked (a /shopping "no listings" alone is not enough).
+      const providerFailed = searchResultsRaw === null && directResults === null
       result = {
         note: messages.shopping.fallbackNote(lang, query),
         links,
         shop_info_results: shopInfoResults || [],
+        product_data: 'none',
+        provider_status: providerFailed ? 'error' : 'empty',
       }
+      return result
     }
   } catch {
-    result = { note: messages.shopping.fallbackNote(lang, query), links }
+    return { note: messages.shopping.fallbackNote(lang, query), links, product_data: 'none', provider_status: 'error' }
   }
   setCache(cacheKey, result, 15 * 60 * 1000) // cache 15 phut
   return result

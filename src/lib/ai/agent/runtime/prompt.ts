@@ -42,7 +42,9 @@ NHIỆM VỤ ĐANG LÀM
 - Đã tra rồi (mục "Đã tra") và ràng buộc mới không làm kết quả cũ sai → dùng lại, không tra trùng. Ràng buộc mới làm kết quả cũ không còn đúng (hạ ngân sách, đổi khu vực, thêm điều kiện bắt buộc) → tra lại cho đúng.
 - Khi tra lại, đưa MỌI ràng buộc còn hiệu lực vào truy vấn / tham số công cụ.
 - Mỗi lượt phải TIẾN THÊM một bước có ích. Đã đủ để giúp (chuyến đi đã có điểm đến, mua hàng đã có ngân sách hoặc mục đích, tìm quán đã có khu vực) → làm luôn với những gì đã biết (lịch trình, gợi ý, so sánh) và nói giả định; câu hỏi tinh chỉnh, nếu cần, để ở CUỐI câu trả lời. Không hỏi từng mục một qua nhiều lượt, không hỏi "bạn muốn mình giúp gì" khi việc đã rõ.
-- Có mục "Bạn vừa hỏi người dùng" nghĩa là lượt trước đã hỏi: lượt này phải trả lời / làm việc, KHÔNG gọi ask_user lần nữa.`
+- Có mục "Bạn vừa hỏi người dùng" nghĩa là lượt trước đã hỏi: lượt này phải trả lời / làm việc, KHÔNG gọi ask_user lần nữa.
+- Người dùng nhờ bạn GIẢI THÍCH, LIỆT KÊ hay NÊU điều gì (tiêu chí chọn, các khoản chi phí cần chuẩn bị, những thông tin bạn cần để tối ưu, các bước) → đó chính là câu trả lời: viết nó ra đầy đủ ngay lượt này, kèm bản nháp đầu tiên nếu đã đủ (vd lịch trình khi đã có điểm đến và số ngày), và giả định hợp lý cho chi tiết còn thiếu. Không thay câu trả lời đó bằng ask_user; câu hỏi tinh chỉnh (nếu cần) đặt ở cuối.
+- Chi tiết tuỳ chọn (ngày đi cụ thể, độ tuổi, sở thích phụ) không bao giờ là lý do để chưa trả lời: giả định, nói rõ giả định, rồi làm. Chỉ hỏi trước khi làm khi thiếu thứ không thể giả định mà không đổi hẳn kết quả.`
 
 /** M3: research with page reading and the evidence ledger (readPage.ts, evidence.ts). */
 const RESEARCH_SECTION = `

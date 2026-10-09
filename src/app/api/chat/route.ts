@@ -2859,7 +2859,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (agentOn) enrichment.agentMode = true
   // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
-  if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => agentRunTrace.guard(stage, before, after)
+  if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
+    agentRunTrace.guard(stage, before, after)
+    // POST-UAT diagnostics (local UAT only, opt-in): which sentences a guard removed — reply text, so never in production.
+    if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && process.env.NODE_ENV !== 'production') {
+      try {
+        const removed = before.split(/(?<=[.!?…:])\s+|\n+/).map(s => s.trim()).filter(s => s && !after.includes(s)).slice(0, 12)
+        if (removed.length) console.log(JSON.stringify({ type: 'tappyai_uat_guard_diff', stage, removed }))
+      } catch { /* diagnostics only */ }
+    }
+  }
   // Phase 8 M4: the reply's provenance verdicts (counts and closed reasons only).
   if (agentRunTrace) enrichment.evidenceTrace = summary => agentRunTrace.add('evidence_guard', summary)
   // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.

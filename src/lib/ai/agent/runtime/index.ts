@@ -28,6 +28,7 @@ import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evide
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
 import { withProductFallback } from './toolState'
+import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
@@ -114,7 +115,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     // WS2 final: a failed product provider falls back ONCE to a public-web price search (bounded, inside the same tool call); a failure
     // that the fallback cannot cover stays a failure — the price is UNKNOWN, never filled from memory (toolState.ts).
     const sp = tools.search_products
-    if (sp?.execute) tools.search_products = { ...sp, execute: withProductFallback(sp.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'search_products', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState }) }) } as never
+    if (sp?.execute) tools.search_products = { ...sp, execute: withProductFallback(sp.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'search_products', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState, ...(d.usability ? { usability: d.usability } : {}) }) }) } as never
   }
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
   // M6: a small core every round; deferred tools by this turn's capability hints / the task's last tools; the rest through use_tool.
@@ -227,15 +228,25 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     }))
     const run = turn.value
     // M3: [S#] markers checked against the pages actually read; the enrichment site builds the links (or a short sources line). Never on an ask.
+    // POST-UAT B6: an article a tool returned whole (travel_editorial / news) and the reply restates gets its own [S#] → real link.
+    const editorial = run.status !== 'asked' ? editorialItemsIn([...lastResults.values()]) : []
     if (ledger.sources.length && run.status !== 'asked') {
       const c = planCitations(run.text, ledger.sources)
-      run.text = c.text
-      i.trace.citations = c.cited || Math.min(3, ledger.sources.length)
-      try { i.onCitationSources?.(c.sources) } catch { /* presentation only */ }
-    } else if (run.status !== 'asked' && /\[S\d/.test(run.text)) {
+      const ed = attributeEditorial(c.text, editorial, ledger.sources.length + 1)
+      run.text = ed.text
+      i.trace.citations = (c.cited + ed.links.length) || Math.min(3, ledger.sources.length)
+      try { i.onCitationSources?.([...c.sources, ...ed.links]) } catch { /* presentation only */ }
+    } else if (run.status !== 'asked') {
       // M4 citation integrity: no page was read (all failed / none opened) — a [S#] marker would point at nothing (M4 eval RS-E1 run 2).
-      run.text = planCitations(run.text, []).text
+      const base = /\[S\d/.test(run.text) ? planCitations(run.text, []).text : run.text
+      const ed = attributeEditorial(base, editorial, 1)
+      run.text = ed.text
+      if (ed.links.length) {
+        i.trace.citations = ed.links.length
+        try { i.onCitationSources?.(ed.links) } catch { /* presentation only */ }
+      }
     }
+    if (editorial.length) i.trace.add('evidence', { decision: 'editorial_attribution', articles: editorial.length, cited: (run.text.match(/\[S\d+\]/g) ?? []).length })
     if (run.status !== 'asked' && (ledger.sources.length || carriedAtStart.length)) {
       try {
         const view = ledger.guardView()

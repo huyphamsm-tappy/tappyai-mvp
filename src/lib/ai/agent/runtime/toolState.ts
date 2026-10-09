@@ -32,6 +32,8 @@ export function toolStateOf(outcome: 'ok' | 'timeout' | 'error' | string, result
   const err = typeof r.error === 'string' ? r.error : typeof r.refused === 'string' ? r.refused : ''
   if (err) return /timeout/i.test(err) ? 'TIMEOUT' : UNAVAILABLE_RE.test(err) ? 'UNAVAILABLE' : 'ERROR'
   if (typeof r.place_search_status === 'string' && /budget|exhaust|quota/i.test(r.place_search_status)) return 'UNAVAILABLE'
+  // POST-UAT B4: a product lookup that says it holds no product data (only the marketplaces' SEARCH links) is never SUCCESS.
+  if (r.product_data === 'none') return r.provider_status === 'error' ? 'ERROR' : 'EMPTY'
   const lists = ROW_KEYS.filter(k => Array.isArray(r[k]))
   const noRows = lists.length > 0 && lists.every(k => (r[k] as unknown[]).length === 0)
   // A provider that FAILED and returned no rows is an ERROR, never an EMPTY "no result".
@@ -60,6 +62,24 @@ export function withToolState(result: unknown, state: ToolState, lang: string): 
   return { tool_state: state, value: result, ...(note ? { state_note: note } : {}) }
 }
 
+/**
+ * POST-UAT B4 — how usable a search_products result is for a product question (metadata beside the unchanged public state):
+ *   usable   at least one product row with a title and a price (a priced Shopping row or offer);
+ *   partial  product rows, none priced (names / merchant pages only — enough for discovery, not for a current-price answer);
+ *   none     no product row at all (marketplace SEARCH links, shop-info snippets and notes are not product data).
+ */
+export type DataUsability = 'usable' | 'partial' | 'none'
+export function productDataUsability(result: unknown): DataUsability {
+  if (!result || typeof result !== 'object' || Array.isArray(result)) return 'none'
+  const r = result as Record<string, unknown>
+  if (r.product_data === 'none') return 'none'
+  const rows = ['shopping_results', 'search_results', 'products'].flatMap(k => Array.isArray(r[k]) ? (r[k] as unknown[]) : [])
+    .filter((x): x is Record<string, unknown> => !!x && typeof x === 'object' && typeof (x as Record<string, unknown>).title === 'string')
+  if (!rows.length) return 'none'
+  const priced = rows.some(x => typeof x.price_vnd === 'number' || typeof x.price === 'number' || (typeof x.price === 'string' && /\d/.test(x.price)))
+  return priced ? 'usable' : 'partial'
+}
+
 type Exec = (args: Record<string, unknown>, ctx: { toolCallId: string; messages: unknown[] }) => unknown
 
 /** The product provider's own time inside the tool budget (the fallback needs the rest). */
@@ -69,8 +89,14 @@ export const PRODUCT_PROVIDER_TIMEOUT_MS = 8_000
  * search_products with a bounded public-web fallback. On TIMEOUT / ERROR / UNAVAILABLE of the provider: ONE price search (the research
  * web_search, opening the best page) for the same query. The result says what happened, in states, and carries the fallback's evidence.
  */
-export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { lang: string; timeoutMs?: number; onFallback?: (d: { state: ToolState; fallbackState: ToolState | 'none' }) => void }): Exec {
+/** The whole tool's time inside the runtime's per-tool timeout (15 s): the fallback gets what the provider left, minus a margin. */
+export const PRODUCT_TOOL_BUDGET_MS = 14_000
+const FALLBACK_MIN_MS = 2_500
+
+export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { lang: string; timeoutMs?: number; budgetMs?: number; now?: () => number; onFallback?: (d: { state: ToolState; fallbackState: ToolState | 'none' | 'skipped_deadline'; usability?: DataUsability }) => void }): Exec {
   return async (args, ctx) => {
+    const now = o.now ?? Date.now
+    const started = now()
     const timeoutMs = o.timeoutMs ?? PRODUCT_PROVIDER_TIMEOUT_MS
     let state: ToolState
     let value: unknown
@@ -84,24 +110,45 @@ export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { 
       state = e instanceof Error && e.message === 'provider_timeout' ? 'TIMEOUT' : 'ERROR'
       value = { error: state === 'TIMEOUT' ? 'provider_timeout' : 'provider_error' }
     }
-    if (state === 'SUCCESS' || state === 'EMPTY' || !webSearch) {
-      if (state !== 'SUCCESS' && state !== 'EMPTY') o.onFallback?.({ state, fallbackState: 'none' })
-      return withToolState(value, state, o.lang)
+    const usability: DataUsability = state === 'SUCCESS' ? productDataUsability(value) : 'none'
+    // POST-UAT B4: PARTIAL product data (rows, none priced) does not suppress the fallback; usable data and a genuine EMPTY do.
+    const needsFallback = state === 'TIMEOUT' || state === 'ERROR' || state === 'UNAVAILABLE' || (state === 'SUCCESS' && usability === 'partial')
+    const tagged = (v: unknown) => v && typeof v === 'object' && !Array.isArray(v) ? { ...(v as Record<string, unknown>), data_usability: usability } : v
+    if (!needsFallback || !webSearch) {
+      if (needsFallback) o.onFallback?.({ state, fallbackState: 'none', usability })
+      return withToolState(tagged(value), state, o.lang)
+    }
+    // Bounded by the deadline: the fallback runs only with enough of the tool's budget left, and never past it.
+    const left = (o.budgetMs ?? PRODUCT_TOOL_BUDGET_MS) - (now() - started)
+    if (left < FALLBACK_MIN_MS) {
+      o.onFallback?.({ state, fallbackState: 'skipped_deadline', usability })
+      return withToolState(tagged(value), state, o.lang)
     }
     const query = typeof args.query === 'string' ? args.query : ''
     let fb: unknown = null
     let fbState: ToolState = 'ERROR'
     try {
-      fb = await webSearch({ queries: [`${query} giá`], read: 1, focus: `giá ${query}`, kind: 'price' }, ctx)
+      const searchOnce = async () => await webSearch({ queries: [`${query} giá`], read: 1, focus: `giá ${query}`, kind: 'price' }, ctx)
+      fb = await Promise.race([
+        searchOnce(),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('fallback_timeout')), left)),
+      ])
       fbState = toolStateOf('ok', fb)
-    } catch { fbState = 'ERROR' }
-    o.onFallback?.({ state, fallbackState: fbState })
+    } catch (e) { fbState = e instanceof Error && e.message === 'fallback_timeout' ? 'TIMEOUT' : 'ERROR' }
+    o.onFallback?.({ state, fallbackState: fbState, usability })
     const en = o.lang === 'en'
+    const fallback = { tool: 'web_search', tool_state: fbState, ...(fb && typeof fb === 'object' ? fb as Record<string, unknown> : {}) }
+    if (state === 'SUCCESS') {
+      // Partial provider rows are kept (real names / pages); the fallback adds the price evidence they lack.
+      return withToolState({ ...(value as Record<string, unknown>), data_usability: usability, fallback,
+        fallback_note: en ? 'The product rows carry no price; the fallback is a public-web price search. A price neither states is UNKNOWN.' : 'Các dòng sản phẩm không có giá; phần fallback là tra giá trên web công khai. Giá không có ở đâu thì CHƯA XÁC MINH.' }, state, o.lang)
+    }
     return {
       tool_state: state,
       provider: 'search_products',
+      data_usability: usability,
       state_note: toolStateNote(state, o.lang),
-      fallback: { tool: 'web_search', tool_state: fbState, ...(fb && typeof fb === 'object' ? fb as Record<string, unknown> : {}) },
+      fallback,
       note: fbState === 'SUCCESS'
         ? (en ? 'The product provider failed; these are public-web results for the same query. Use only what they state (cite pages as [S#]); a price they do not state is UNKNOWN.' : 'Nguồn sản phẩm lỗi; đây là kết quả web công khai cho cùng truy vấn. Chỉ dùng điều chúng ghi (trích trang bằng [S#]); giá không có trong đó là CHƯA XÁC MINH.')
         : (en ? 'Neither the product provider nor the public-web fallback returned data: the current price is NOT verified — say so; do not estimate it from memory.' : 'Cả nguồn sản phẩm lẫn tra cứu web dự phòng đều không có dữ liệu: giá hiện tại CHƯA XÁC MINH — nói rõ; không ước từ trí nhớ.'),

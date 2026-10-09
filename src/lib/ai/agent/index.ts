@@ -87,6 +87,8 @@ export type SubResultSink = (toolName: string, args: Record<string, unknown>, re
 
 /** Serper credits each part of the travel bundle may spend (3 parts × 3 = 9, the travel turn's tool budget). */
 export const TRIP_PART_CREDITS = 3
+/** POST-UAT B8: each part's own deadline, inside the runtime's 15 s per-tool timeout (the bundle answers before the loop cancels it). */
+export const TRIP_PART_TIMEOUT_MS = 11_000
 
 /**
  * ONE agent-level invocation for a trip plan's independent reads — hotels, sights, local food at the destination — fetched in PARALLEL through the
@@ -108,16 +110,43 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
         ['search_places', { query: `điểm tham quan nổi tiếng ${dest}`, location: dest, type: 'attraction' }],
         ['search_places', { query: `${extra ? `${extra} ` : ''}quán đặc sản ngon ${dest}`.trim(), location: dest, type: 'restaurant' }],
       ]
+      /**
+       * POST-UAT B8 (UAT-25, 2026-10-09): ONE SLOW PART LOST ALL THREE. `Promise.all` waited for the slowest part; with Serper out of
+       * credits one part hung past the runtime's 15 s tool timeout, the loop cancelled the whole call, and the parts that HAD finished
+       * (the sights, the food rows) were thrown away with it — the plan then had no data and no Make Plan card. Each part now has its own
+       * deadline inside the tool's budget: a part that misses it is reported as TIMEOUT (never as "none"), the others are returned and
+       * emitted as before, and a part that finishes late is dropped (never emitted after the tool has answered).
+       */
+      let closed = false
       const results = await Promise.all(parts.map(async ([name, args], k) => {
         const t = base[name]
-        if (!t?.execute) return { error: 'unavailable' }
+        if (!t?.execute) return { tool_state: 'UNAVAILABLE', error: 'unavailable' }
+        let timer: ReturnType<typeof setTimeout> | undefined
         try {
-          const r = await withSerperToolBudget(TRIP_PART_CREDITS, () => Promise.resolve(t.execute!(args, { toolCallId: `trip_${k}`, messages: [] })))
+          const r = await Promise.race([
+            withSerperToolBudget(TRIP_PART_CREDITS, () => Promise.resolve(t.execute!(args, { toolCallId: `trip_${k}`, messages: [] }))),
+            new Promise<never>((_, rej) => { timer = setTimeout(() => rej(new Error('part_timeout')), TRIP_PART_TIMEOUT_MS) }),
+          ])
+          if (closed) return { tool_state: 'TIMEOUT', error: 'part_timeout' }
           sink(name, args, r.value)
           return r.value
-        } catch { return { error: 'tool_failed' } }
+        } catch (e) {
+          return e instanceof Error && e.message === 'part_timeout' ? { tool_state: 'TIMEOUT', error: 'part_timeout' } : { tool_state: 'ERROR', error: 'tool_failed' }
+        } finally { clearTimeout(timer) }
       }))
-      return { destination: dest, hotels: results[0], attractions: results[1], food: results[2], note: 'Dữ liệu cho kế hoạch: chỉ dùng tên/giá/giờ có trong đây; phần không có ghi "chưa có thông tin".' }
+      closed = true
+      const missing = (['hotels', 'attractions', 'food'] as const).filter((_, k) => {
+        const r = results[k] as Record<string, unknown> | undefined
+        return !r || typeof r.error === 'string'
+      })
+      // All three failed: the bundle itself failed (TIMEOUT when every part ran out of time) — a failure is not an empty plan.
+      const allTimedOut = results.every(r => (r as Record<string, unknown>)?.error === 'part_timeout')
+      return {
+        ...(missing.length === parts.length ? { error: allTimedOut ? 'parts_timeout' : 'parts_failed' } : {}),
+        destination: dest, hotels: results[0], attractions: results[1], food: results[2],
+        note: 'Dữ liệu cho kế hoạch: chỉ dùng tên/giá/giờ có trong đây; phần không có ghi "chưa có thông tin".',
+        ...(missing.length ? { parts_missing: missing, parts_note: 'Một số phần không trả về kịp (lỗi/hết giờ ≠ không có). Vẫn lập kế hoạch đầy đủ bằng phần đã có và giả định nêu rõ; phần thiếu ghi "chưa có thông tin", không điền từ trí nhớ.' } : {}),
+      }
     },
   })
 }

@@ -43,7 +43,7 @@ export function updateTaskTool() {
 
 export function askUserTool() {
   return tool({
-    description: 'Hỏi lại người dùng MỘT câu ngắn khi thiếu thông tin làm ĐỔI HẲN kết quả và không thể giả định hợp lý (vd mua đồ đắt tiền chưa rõ nhu cầu/ngân sách, đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi có thể giả định và trả lời, khi người dùng đã nêu các lựa chọn cụ thể để so sánh (so sánh rồi nói ai hợp cái nào), hay khi đã có điểm đến cho kế hoạch. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").',
+    description: 'Hỏi lại người dùng MỘT câu ngắn khi thiếu thông tin làm ĐỔI HẲN kết quả và không thể giả định hợp lý (vd mua đồ đắt tiền chưa rõ nhu cầu/ngân sách, đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi có thể giả định và trả lời, khi người dùng đã nêu các lựa chọn cụ thể để so sánh (so sánh rồi nói ai hợp cái nào), khi đã có điểm đến cho kế hoạch, hay khi người dùng nhờ GIẢI THÍCH / LIỆT KÊ / NÊU (tiêu chí chọn, các khoản chi phí, thông tin cần biết, các bước) — điều đó trả lời được ngay với giả định nêu rõ, câu hỏi tinh chỉnh để cuối câu trả lời. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").',
     parameters: z.object({
       question: z.string().describe('Câu hỏi, đúng giọng Tappy (xưng mình, gọi bạn), một câu'),
       choices: z.array(z.string()).optional().describe('2–4 lựa chọn bấm nhanh, mỗi lựa chọn ≤ 6 từ (tuỳ chọn)'),
