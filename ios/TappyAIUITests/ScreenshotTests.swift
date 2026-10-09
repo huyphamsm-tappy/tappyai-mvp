@@ -761,6 +761,32 @@ final class ScreenshotTests: XCTestCase {
         shot("22-mob1-external-link")
     }
 
+    /// App Review 1.2: the login screen carries the Terms agreement; a method tapped before it is ticked is refused
+    /// with a plain line and the person stays on the login screen as a guest.
+    func testLoginRefusesWithoutAgreeingToTheTerms() {
+        let app = launch(route: "hub")
+        let signIn = any(app, "profile-guest-signin")
+        XCTAssertTrue(signIn.waitForExistence(timeout: 30))
+        signIn.tap()
+        let terms = any(app, "auth-terms-checkbox")
+        XCTAssertTrue(terms.waitForExistence(timeout: 60), "Terms checkbox on login")
+        XCTAssertTrue(any(app, "auth-terms-link").exists, "link to the Terms")
+        XCTAssertTrue(any(app, "auth-guidelines-link").exists, "link to the Community Guidelines")
+        let google = any(app, "auth-google")
+        XCTAssertTrue(google.waitForExistence(timeout: 30), "Google button")
+        google.tap()
+        let error = any(app, "auth-error")
+        XCTAssertTrue(error.waitForExistence(timeout: 30), "refusal shown")
+        XCTAssertTrue(error.label.contains("Điều khoản") || error.label.contains("Terms of Service"),
+                      "the Terms-required message, got: \(error.label)")
+        XCTAssertTrue(any(app, "auth-guest").exists, "still on login")
+        shot("23-login-terms-required")
+        terms.tap()
+        let value = (terms.value as? String) ?? ""
+        XCTAssertTrue(value.contains("Đã đồng ý") || value.contains("Agreed"), "ticked, got: \(value)")
+        shot("24-login-terms-agreed")
+    }
+
     private func zaloAttack(mode: String, shotName: String) {
         setStub(["zalo": mode])
         let app = launch(route: "hub")
@@ -769,6 +795,10 @@ final class ScreenshotTests: XCTestCase {
         signIn.tap()
         let zalo = any(app, "auth-zalo")
         XCTAssertTrue(zalo.waitForExistence(timeout: 60), "Zalo button on login")
+        // App Review 1.2: no sign-in method starts before the Terms are agreed.
+        let terms = any(app, "auth-terms-checkbox")
+        XCTAssertTrue(terms.waitForExistence(timeout: 30), "Terms checkbox on login")
+        terms.tap()
         zalo.tap()
         confirmWebAuthPrompt()
         let error = any(app, "auth-error")
