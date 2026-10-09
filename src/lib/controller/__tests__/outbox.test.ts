@@ -464,6 +464,11 @@ describe('C8 — the drain is wired as a daily cron', () => {
     // 14 -> 15 on 2026-10-04 (Phase 7 closeout CP5): `/api/cron/subscriptions-expire` marks ended web plans `expired` once a day
     //   (00:00 VN). Double-gated by CRON_SECRET and SUBSCRIPTIONS_ENABLED; access never depended on it (the entitlement rule already
     //   treats a past current_period_end as unpaid); it notifies nobody.
-    expect(vercelJson.crons.length).toBe(15)
+    //
+    // 15 -> 16 on 2026-10-09 (App Review 1.2 remediation, owner): `/api/cron/moderation-digest` (daily, 08:00 VN) sends the reviewers
+    //   a counts-only summary of the moderation queue (open / new / urgent / overdue). It is the safety net behind the per-report alert,
+    //   so a report cannot sit unseen for a day. Double-gated by CRON_SECRET and MODERATION_ADMIN_ENABLED (404 while off); it reads only
+    //   moderation_queue priority and timestamps, and notifies staff named in MODERATION_DIGEST_USER_IDS — never an end user.
+    expect(vercelJson.crons.length).toBe(16)
   })
 })

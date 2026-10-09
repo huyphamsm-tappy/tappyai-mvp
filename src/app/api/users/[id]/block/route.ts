@@ -6,6 +6,7 @@ import { rateLimit } from '@/lib/security/rateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { userBlocksEnabled, UUID_RE } from '@/lib/safety/userBlocks'
+import { alertModerators } from '@/lib/safety/operatorAlert'
 
 // POST   /api/users/[id]/block — block a user.
 // DELETE /api/users/[id]/block — unblock.
@@ -60,6 +61,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     // The block stands (RLS already hides both sides); a stale follow row is cosmetic.
     console.error('[user-block] follow cleanup failed:', e instanceof Error ? e.message : e)
   }
+  // Apple 1.2: a block reaches the developer / moderators. Content-free (no pair), best effort, throttled; never throws.
+  await alertModerators('block')
   return ok(true)
 }
 
