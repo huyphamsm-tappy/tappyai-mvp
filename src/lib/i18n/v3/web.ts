@@ -304,6 +304,8 @@ export const vi: Record<string, string> = {
   'v3.msg.groupName': 'Tên nhóm (không bắt buộc)',
   'v3.msg.signIn': 'Đăng nhập để nhắn tin',
   'v3.msg.error': 'Không tải được tin nhắn. Vui lòng thử lại.',
+  'v3.msg.retry': 'Thử lại',
+  'v3.msg.loadOlder': 'Tải tin nhắn cũ hơn',
   'v3.msg.sendError': 'Không gửi được tin nhắn.',
   'v3.msg.close': 'Đóng',
 
@@ -1010,6 +1012,8 @@ export const en: Record<string, string> = {
   'v3.msg.groupName': 'Group name (optional)',
   'v3.msg.signIn': 'Sign in to send messages',
   'v3.msg.error': 'Could not load messages. Please try again.',
+  'v3.msg.retry': 'Try again',
+  'v3.msg.loadOlder': 'Load older messages',
   'v3.msg.sendError': 'Message could not be sent.',
   'v3.msg.close': 'Close',
 
