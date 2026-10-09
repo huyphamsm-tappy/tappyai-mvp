@@ -87,7 +87,9 @@ describe('C32 — user search never navigates to the wrong person', () => {
 
   it('still renders the results it found', () => {
     // Removing the wrong destination must not have removed the feature.
-    expect(code(SEARCH)).toMatch(/List\(vm\.results\)/)
+    // The list renders the search results minus anyone the person has blocked (App Review 1.2): still the results, filtered.
+    expect(code(SEARCH)).toMatch(/List\(shownResults\)/)
+    expect(code(SEARCH)).toMatch(/shownResults[^\n]*safety\.visible\(vm\.results\)/)
   })
 })
 
