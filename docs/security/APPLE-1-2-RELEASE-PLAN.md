@@ -14,14 +14,15 @@ has nobody to reach (it only repeats the digest to the primary). Do not grant a 
 - Caveat: read-only is enforced by the session setting, not by the database role. The SQL file is the safeguard: review it before running.
 - Pending only on: Docker engine up + permission for exactly `bash scripts/release/apply-migration.sh --check scripts/release/sql/apple-1-2-probe.sql`.
 
-## 1a. OBSERVED on production, 2026-10-10 04:02 UTC (full evidence: `APPLE-1-2-PROBE-RESULT-2026-10-10.md`)
-Present: `content_reports`, `moderation_queue`, `moderation_actions` (RLS on), `chat_blocks` (RLS on), `fn_ingest_moderation_reports`.
-**Missing: `user_blocks` + RLS + `safety_private.*` (0 block policies), `user_reports` + trigger, `moderation_decisions`, `moderation_appeals`,
-`banned_identities`, and the post-report trigger. No migration ledger table exists (applied by hand).**
-So the migrations to apply are exactly: **20261001, 20261001b, 20261001d, 20261001e, 20261009** (in that order). 20260817 and 20260821 are already
-there; 20260930 (insert check) is **not proven either way**; the chat tables exist. Prerequisites those five need (reviews, review_comments,
-review_likes, user_follows, notifications, profiles, account_status, audit_log) are inferred, not probed: run `apple-1-2-probe-editor-2.sql` first.
-Until they are applied, enabling any of the three flags would point the apps at routes whose tables do not exist.
+## 1a. OBSERVED on production, 2026-10-10 (three read-only catalog queries in the Supabase SQL Editor; evidence in `APPLE-1-2-PROBE-RESULT-2026-10-10.md`)
+Present: `content_reports`, `moderation_queue`, `moderation_actions` (RLS on), `chat_blocks` (RLS on), `fn_ingest_moderation_reports`, and all eight tables the new
+migrations need (reviews, review_comments, review_likes, user_follows, notifications, profiles, account_status, audit_log).
+**Missing: `user_blocks` + RLS + `safety_private.*` (0 block policies), `user_reports` + trigger, `moderation_decisions`, `moderation_appeals`, `banned_identities`,
+the post-report trigger. And 20260930 is NOT applied: `content_reports` still has `WITH CHECK (true)` (any signed-in user can insert arbitrary rows through the API).**
+No migration ledger table exists (applied by hand).
+**Minimal set: 20260930, 20261001, 20261001b, 20261001d, 20261009, in that order.** **20261001e is DEFERRED**: no application code uses `banned_identities`, and it
+puts triggers on Supabase's `auth.users` (sign-up/e-mail change/delete): the riskiest file, not needed for Apple.
+Until the set is applied, enabling any of the three flags would point the apps at routes whose tables do not exist.
 
 ## 1. What the probe output decides
 | Probe section | If it shows | Means | Action |
@@ -43,13 +44,28 @@ Until they are applied, enabling any of the three flags would point the apps at 
 
 ## 3. Migrations (each needs the owner's explicit authorization; the release policy marks 20260930 onward AFTER-SMOKE, i.e. after §2 and its smoke)
 1. **Backup first:** `scripts/release/backup-prod.ps1` → `CHECKS-PASSED.json`; no backup, no migration.
-2. Apply only what §1a shows missing (today: 20261001, 20261001b, 20261001d, 20261001e, 20261009), one file at a time, in this order, each with
+2. Apply the minimal set (today: 20260930, 20261001, 20261001b, 20261001d, 20261009; **not** 20261001e), one file at a time, in this order, each with
    `bash scripts/release/apply-migration.sh <file> --i-have-a-valid-backup <dir> --after-smoke-passed`:
-   `20260817` → `20260821` → `20260930` → `20261001` → `20261001b` → `20261001d` → `20261001e` → **`20261009_content_reports_to_queue`**.
+   
    If the wrapper answers UNLISTED/SKIP/DEFER/VERIFY-ONLY for a file, stop and report: never force it (a pre-20260913 file is most likely already on production).
 3. After each: re-run the probe; the matching section must flip to `t` / expected counts.
 4. Risk: `20261001` adds RLS predicates to `reviews`, `review_comments`, `notifications` (hot tables). Measure feed latency after it.
 5. Rollback: `supabase/migrations/rollback/<same name>_rollback.sql` in reverse order (`--rollback`); restore from the backup only as a last resort.
+
+## 3a. Migration review (each file and rollback read in full, 10/10)
+Order, dependencies and rollback were also exercised on a real PostgreSQL with the production baseline: `supabase/tests/apple_1_2_release_order.test.ts`
+(apply the set in order, run the repo's own probe SQL, roll back in reverse, require an identical schema fingerprint, re-apply). It proves the SQL and the order;
+it does not prove production's data, load or locks.
+| File | What it does | Data impact | Lock / load | Rollback | Stop if |
+|---|---|---|---|---|---|
+| 20260930 | replaces the content_reports INSERT policy (reporter pinned to the caller, defaults enforced), narrows INSERT column privileges | none | policy + grant on a small table, brief | restores `WITH CHECK (true)` | any other client inserts extra columns into `content_reports` (the post-report route inserts exactly the allowed ones) |
+| 20261001 | new `user_blocks` + private schema/functions; RESTRICTIVE policies on `user_follows`, `review_comments`, `review_likes`, `reviews`, `notifications`; **a new DELETE policy: the owner of a post can delete comments on it (active at once, not behind a flag)** | none to existing rows | CREATE/DROP POLICY takes ShareUpdateExclusive per PostgreSQL's policy code (reads/writes continue; not measured on production); one transaction, short. After it, every authenticated read of `reviews`/`review_comments` evaluates a block sub-select once per statement (measured on synthetic 300k-row data in docs/security/USER-BLOCKS-MEASURE.json, not on production) | drops policies, functions, schema, table (blocks made meanwhile are lost; `chat_blocks` untouched) | feed p95 grows > 50 ms or any 5xx on the feed |
+| 20261001b | new `user_reports` (no existing data touched) | none | new table | drops table (reports lost) | — |
+| 20261001d | new `moderation_decisions`, `moderation_appeals` (append-only guards), report→queue trigger, snapshot purge function; widens `user_reports` reason check | none | new objects only; the ALTER is on the still-empty `user_reports` | drops ledger + appeals (**export first if any decision exists**) | the `moderation_type` / `moderation_status` enums lack the values it casts (they come from 20260821, present) |
+| 20261009 | trigger: a post report enters `moderation_queue` at filing with a priority; the daily ingest stays a backstop (unique source index) | none | trigger on a small table | drops trigger + function; queued rows stay | `uq_modq_source` missing (not probed): duplicates possible, not harmful |
+| 20261001e (DEFERRED) | banned-identity hashes + triggers BEFORE INSERT / UPDATE OF email / DELETE on `auth.users` | one random pepper row | CREATE TRIGGER on `auth.users` takes SHARE ROW EXCLUSIVE: it waits behind running writes and, while waiting, queues new sign-ins/updates. If ever applied: add `SET LOCAL lock_timeout = '3s'` first, at low traffic | drops triggers, functions, tables | any sign-up or sign-in error |
+Gaps I could not close from here: production row counts, load, and whether some client inserts into `content_reports` outside the route.
+After EACH file: re-run the probe (dashboard SQL Editor or wrapper); expected sections must flip; a failed file rolls back by itself (single transaction).
 
 ## 4. Environment and flags (each needs authorization; read at build, so redeploy after)
 | Variable | Value | Needs |
@@ -93,3 +109,17 @@ Setup: owner account A signed out; test account B with one harmless post; screen
 | 9 | Settings → Blocked accounts | B listed; open B's profile via search → shows "You blocked this person" |
 | 10 | (If authorized) Safari → /admin/moderation | the report is in the queue with its priority; the blocked/reported content is not shown beyond what the reviewer needs |
 Do not edit the video. If a step fails, stop and report; do not re-take around it.
+
+## 9. Step by step, with a stop rule and a check after each (each production step needs its own authorization)
+| # | Step | Verify afterwards | STOP and roll back / hold if |
+|---|---|---|---|
+| 0 | Re-run probes 1–3 in the SQL Editor right before starting | same as `APPLE-1-2-PROBE-RESULT-2026-10-10.md` | anything differs from it |
+| 1 | Merge `sec/apple-1-2-moderation-release` → `main`, deploy | `/api/version` = new SHA; `/`, `/login` 200; `/api/config` flags unchanged (false) | any 5xx, a flag appears on |
+| 2 | `backup-prod.ps1` | `CHECKS-PASSED.json` written | any check fails: no migration |
+| 3 | Apply 20260930 | probe 3: `applied: true`; post a report from the app's legacy menu still works (401 unauth proves the route only) | reports start failing for signed-in users |
+| 4 | Apply 20261001 | probe 1: 9 tables… `user_blocks` t, `block_policy_count` 10, functions t; feed loads for a signed-in test account; latency within +50 ms | any feed error or latency regression → rollback 20261001 |
+| 5 | Apply 20261001b | `user_reports` t | — |
+| 6 | Apply 20261001d | `moderation_decisions`, `moderation_appeals` t; triggers `user_report_to_queue`, guards present | — |
+| 7 | Apply 20261009 | trigger `content_report_to_queue` present | — |
+| 8 | Set env vars (alert/digest ids = the owner), then the three flags one at a time, redeploy after each | `/api/config` shows each flag; unauthenticated `GET /api/users/blocks` = 401; the owner opens `/admin/moderation` | a route 5xx → remove that flag, redeploy |
+| 9 | One controlled test (needs separate authorization): test account B posts, A reports and blocks | queue row with priority; push received; B's post gone from A's feed; ledger row after a decision | any step fails → stop, do not record |
