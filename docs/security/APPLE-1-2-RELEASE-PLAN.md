@@ -176,7 +176,7 @@ One file each, in this order, each with its own authorization.
 - Evidence level: `apple_1_2_release_order.test.ts` proves apply → rollback returns the schema (tables, policies, triggers, functions, indexes, constraints, grants) to an identical fingerprint on a real PostgreSQL. It does not prove data recovery. The only recovery of PRE-EXISTING data is the dump from step 2, whose restore on production has never been exercised.
 
 ### Not part of this plan
-`20261001e` (triggers on `auth.users`); publishing the policies; App Store Connect; any build upload. If 20261001e is ever wanted: add `SET LOCAL lock_timeout = '3s'` first and apply at low traffic.
+`20261001e` (triggers on `auth.users`). It stays in the repository and in `supabase/MIGRATION_ORDER.txt` (it was already there); `apply-migration.sh` applies exactly the one file it is given, so it runs only if someone names it. Do not name it. Also not part of this plan: publishing the policies; App Store Connect; any build upload. If 20261001e is ever wanted: add `SET LOCAL lock_timeout = '3s'` first and apply at low traffic.
 
 ## 10. Approval sheet — one line per production operation (nothing is done without your explicit yes to that line)
 | # | Operation | What it reads / writes in production | What you should observe afterwards |
