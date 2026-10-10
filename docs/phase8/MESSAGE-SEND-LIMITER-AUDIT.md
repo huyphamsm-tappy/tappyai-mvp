@@ -53,3 +53,24 @@ So the economic exposure of the send route is **database writes**, and — only 
 1. Keep per-instance (A), or move to a shared limit (B or C)?
 2. If shared: is a degraded (per-instance) window during an outage acceptable (C)?
 3. Is a per-minute number other than 60 wanted for groups (fan-out) versus direct threads?
+
+## 6. Addendum (third checkpoint): the trade-off in numbers — the send path is still UNCHANGED
+`N` = warm instances serving the route (production value **UNVERIFIED**; a per-instance map is only shared by requests that land on the same instance). Limit 60 / minute / user / instance.
+
+| N | effective ceiling, one user, per minute | per hour | worst fan-out per minute if the notification flag is on and the user posts to a 49-recipient group (one notification write per recipient per message; pushes are further reduced by the collapse throttle if it is ever built) |
+|---|---|---|---|
+| 1 | 60 | 3,600 | 2,940 |
+| 5 | 300 | 18,000 | 14,700 |
+| 20 | 1,200 | 72,000 | 58,800 |
+| 50 | 3,000 | 180,000 | 147,000 |
+
+| | Per-instance (today) | Shared, fail closed | Shared, fail open to in-process |
+|---|---|---|---|
+| Abuse ceiling, store healthy | `60 × N` per minute | 60 per minute | 60 per minute |
+| Abuse ceiling, store down | `60 × N` | **0 (all sends refused)** | `60 × N` (today's) |
+| Share of legitimate sends that fail during a store outage of length D | 0 % | **100 % for D** (platform-wide, database healthy) | 0 % |
+| What the user sees | nothing | Web: the generic "could not send" error, draft kept; mobile clients not examined | nothing |
+| Fixed by | – | recovery of the store | recovery of the store |
+| Needs | nothing | route change | route change **plus** a new per-call fail-open option on the shared helper (default stays closed so the paid-provider routes are unaffected) |
+
+Reading: with the notification flag **off** (default) the abuse the limiter prevents is database inserts — cheap; per-instance is adequate and a shared fail-closed limiter would trade a bounded, cheap risk for a total-outage risk. With the flag **on**, the fan-out column is the real exposure, and the right fix is the collapse (which bounds *pushes*) plus, if wanted, a shared limit with fail-open. **No change is made to the send path, its limiter, or the send API.** Evidence still needed: E6 (flag value, instance counts, events above 60 messages/minute).

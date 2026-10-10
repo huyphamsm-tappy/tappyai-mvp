@@ -1,6 +1,6 @@
 # SEC4 slice 4 — `translate` and `scan`: cost-based PROPOSAL (2026-10-10)
 
-Status: **proposal only. Nothing in `src/app/api/translate` or `src/app/api/scan` was changed, and no limit below is implemented.** Every number in §3–§4 is a *recommendation derived from stated assumptions*; the assumptions are listed in §6 and the owner supplies the budget. Baseline `4bfb3d4`. Production KV configuration and runtime wiring remain **UNVERIFIED**.
+Status: **proposal only (cost-sensitivity at $1/$5/$10 per day: `SEC4-TRANSLATE-SCAN-SENSITIVITY.md`). Nothing in `src/app/api/translate` or `src/app/api/scan` was changed, and no limit below is implemented.** Every number in §3–§4 is a *recommendation derived from stated assumptions*; the assumptions are listed in §6 and the owner supplies the budget. Baseline `4bfb3d4`. Production KV configuration and runtime wiring remain **UNVERIFIED**.
 
 ## 1. Current behaviour (read from the code)
 | | `POST /api/translate` | `POST /api/scan` |

@@ -45,3 +45,21 @@ Evidence gathered for the decision (all in-repository; production traffic is not
 **Evidence that would close the risk:** the Vercel request log count of `POST /api/memory` for the last 30 days before release (and its user-agents), or a one-release observation window after deploy showing zero hits.
 
 **Web handoff note for the separate application phase (do not act on it in the Web-only task):** `docs/ios/04_API_CONTRACT.md` §2.3 and its endpoint table describe `GET/POST /api/memory` with "POST writes/updates". That text is stale for two reasons — `POST` was an LLM extraction (not a write) and is now disabled (404), and the endpoint that writes memory is `PATCH`. The iOS client never called `POST`. The document should be reconciled in the application phase, together with any iOS API documentation that lists the method. **Not edited here:** iOS code and iOS API documentation are outside this task's authorisation.
+
+## 5. The exact evidence that would resolve the external-caller risk (third checkpoint) — NOT collected; the risk stays OPEN
+The 404 (`016b996`) is preserved and nothing was changed. The risk is closed only by **production request logs** showing no caller; nothing in the repository can show it.
+
+**What must be true to call it closed:** zero `POST /api/memory` requests from real clients in a window of **at least 30 days that ends at the moment of the check** (any status code: before the 404 deployed a caller would have received 200/401, after it 404), plus the deployment date of `016b996` to know which statuses to expect.
+
+**Queries (to be run by someone with production log access; they were not run here):**
+1. Vercel CLI (installed 54.18.2; flags below are those printed by `vercel logs --help`, no network used to read them):
+   ```bash
+   vercel logs --environment production --since 30d --query "/api/memory" --limit 1000 --json > memory-logs.jsonl
+   ```
+   `--since` is documented with relative forms such as `1h` / `30m`; if `30d` is rejected use an ISO timestamp (`--since 2026-09-10T00:00:00Z`). Then keep only POSTs. The JSON field names are not verified here — read the first line of `memory-logs.jsonl` and filter on its path and method fields, e.g. with `jq 'select(.path=="/api/memory" and .method=="POST")'` after correcting the field names.
+2. Vercel dashboard → the project → **Logs** → time range *Last 30 days* (or custom) → filter **Path** `/api/memory` and **Method** `POST`; repeat with *Status* `404` to see the post-change hits. Group by day and by User-Agent.
+3. Read-only sanity check on the count of legitimate traffic: the same filter with Method `GET` (the Tappy-knows page and the mobile clients use it) should be non-zero; if both are zero the retention window or the filter is wrong, not proof of absence.
+
+**Hard limit on this evidence:** Vercel runtime-log retention depends on the plan and is short on lower tiers (the project's own notes say there is no Pro plan; the plan in force is **UNVERIFIED**). If the retained window is shorter than 30 days, the 30-day statement **cannot be made** from Vercel logs; options (each needs an owner decision): a log drain / external log store for one release, or a one-line structured log in the 404 handler (no body, no user id) and an observation window of one release. Neither was added.
+
+**What a non-zero result means:** list the User-Agents and IPs of the hits; a stale Web bundle looks like the app's own origin and a browser UA; a mobile build or script looks different. Restoring the old handler is *not* the response — it would need the owner's limiter and payload numbers (option B in §2).

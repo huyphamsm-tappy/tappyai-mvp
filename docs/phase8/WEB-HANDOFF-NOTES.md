@@ -7,7 +7,7 @@ Scope: Web only. Android/iOS code and workstream C untouched. No push, merge, de
 |---|---|---|
 | iOS API documentation lists `GET/POST /api/memory` ("POST writes/updates") | `docs/ios/04_API_CONTRACT.md` §2.3 and endpoint table | reconcile: POST was an LLM extraction and is now 404; memory is written with `PATCH`. iOS client never called POST. Not edited (iOS docs are outside this task) |
 | Native clients and the `message` notification type | Android/iOS | the collapse (and the flag `MESSAGE_NOTIFICATIONS_ENABLED`) must stay off until both handle the type |
-| Stripe routes | Android/iOS trees contain no reference to `/api/stripe/checkout` or `/portal` (searched, nothing edited); owner to confirm no shipped build calls them before any 404 | see `SEC4-ROUTE-MATRIX.md` (2026-10-10 section) |
+| Stripe routes (contract + proposal: `STRIPE-ROUTES-REVIEW.md`) | Android/iOS trees contain no reference to `/api/stripe/checkout` or `/portal` (searched, nothing edited); owner to confirm no shipped build calls them before any 404 | see `SEC4-ROUTE-MATRIX.md` (2026-10-10 section) |
 
 ## 2. Still BLOCKED (unchanged; no work done)
 * **SF8** and **E2** — pending explicit policy decisions (`SF8-AUDIT-LOG-PRIVILEGE-DEPENDENCY-AUDIT.md`, `E2-USER-EVENTS-WRITER-AUDIT.md`).
@@ -22,7 +22,7 @@ Scope: Web only. Android/iOS code and workstream C untouched. No push, merge, de
 | E2 | Request counts, 429 counts and `X-RateLimit-Reason` split per route (`translate`, `scan`, `voice/tts`, `reviews/upload`, `profile`, `group/[id]/avatar`, like/follow/comments, admin campaign) for ≥ 7 days after release | calibrating limits; spotting CGNAT false positives | Vercel logs (`tappyai_rate_limit` line has no key) |
 | E3 | Provider usage for `translate` and `scan`: input/output/image tokens, model actually served, reasoning effort; env `LLM_PROVIDER`, `LLM_SMART_MODEL`, `LLM_VISION_MODEL`, `LLM_*_REASONING` | the cost table in `SEC4-TRANSLATE-SCAN-PROPOSAL.md` | provider dashboard + Vercel env listing (names and values by an authorised person) |
 | E4 | `SUBSCRIPTIONS_ENABLED` value in Production and Preview; whether `STRIPE_SECRET_KEY` is valid; any non-zero traffic to `/api/stripe/*` | whether the Stripe routes are live, and whether 404-ing them is safe | env listing + 30 days of request logs |
-| E5 | 30-day count of `POST /api/memory` and its user agents | closing the residual risk of the 404 | Vercel logs |
+| E5 | 30-day count of `POST /api/memory` and its user agents (exact queries and the retention caveat: `MEMORY-POST-AUDIT.md` §5) | closing the residual risk of the 404 — **still open** | Vercel logs, or a log drain if retention is shorter than 30 days |
 | E6 | `MESSAGE_NOTIFICATIONS_ENABLED` value; peak warm instances; messages per user per minute > 60 events | send-limiter decision; collapse urgency | env listing; logs |
 | E7 | Production `notifications` table size, existence of any `type='message'` rows, policies, role `statement_timeout`s (queries in `MESSENGER-COLLAPSE-MIGRATION-REVIEW-PACKAGE.md` §6) | any collapse migration | read-only SQL by the owner |
 | E8 | Migration `20261018` pre-check results and window | applying it | `MIGRATION-20261018-DEPLOYMENT-REVIEW.md` |

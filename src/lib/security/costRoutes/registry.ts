@@ -1,6 +1,10 @@
 // SEC4 coverage ratchet — the declarations (docs/phase8/SEC4-ROUTE-MATRIX.md). Test-time data only: no route imports this file, and declaring a limiter here
 // does not install one. `limiters` must equal what the scanner finds in the route SOURCE, so a declaration cannot drift from the code in either direction.
 //
+// 🚨 WHAT THIS DOES NOT PROVE. `covered` means the scanner found a limiter CALL in the route file (comments and bare imports do not count). It does not prove the call runs before the
+// provider call, on every HTTP method, with the right key, or that its result is honoured; those are asserted only by each route's own limiter.test.ts. The cost-signal list is also
+// finite (see docs/phase8/SEC4-ROUTE-MATRIX.md, 2026-10-10 section, for routes that reach other outside services). Do not read a green ratchet as production coverage.
+//
 // Groups governed by rule instead of by entry: every cost-bearing `admin/**` route must call `distributedRateLimit` (exceptions below); every cost-bearing
 // `cron/**` route must check the cron secret.
 //
