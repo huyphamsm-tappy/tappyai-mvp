@@ -136,3 +136,21 @@ Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `pro
 **Operational note:** unlike the paid-provider routes these three are *social* actions: while the shared store is configured but unavailable, liking, following and commenting would answer 429 for everyone. That is the same fail-closed semantics as slice 2 and is flagged as an owner decision (a fail-open-to-in-process variant would be the alternative for abuse-only limits; it needs its own helper and tests and is **not** implemented here).
 
 **Acceptance criteria:** (1) the limit-plus-one request is 429 before any database access or notification; (2) another user is unaffected; (3) the budget is shared across two instances; (4) the window is a minute (still refused at 30 s, admitted after 60 s); (5) store down → 429 `store_unavailable`, no database access, recovers; (6) no store configured → in-process fallback with the same number; (7) signed-out → 401 and anonymous → refused **without spending** (order unchanged; for follow, self-follow 400 spends nothing); (8) comments keep their exact limit, key and message; (9) mutations (limit, key, window, in-process again, missing await) are caught; (10) the ratchet moves the three routes to `covered` and the budget falls by three.
+
+
+---
+## Slice 5c — `PATCH /api/admin/marketing/campaigns/[id]` (contract and acceptance criteria, written BEFORE the change)
+
+| | |
+|---|---|
+| Current contract | `GET` reads one campaign (permission `MARKETING_CAMPAIGNS_READ`); `PATCH` edits a **draft** (permission `MARKETING_CAMPAIGNS_UPDATE`, same-origin check, zod body, 404/409/422 as today, audit log). There is no DELETE. The send path is `/activate`, which is limited. |
+| Resource cost | database write + audit row per edit; no provider call. It is the only admin route in the cost scan without a shared limiter, so it is the one exception recorded in the ratchet. |
+| Authentication | `requirePermission` (operator session) — unchanged. |
+| Limiter today | **none** (its siblings use `distributedRateLimit`: create 60 per hour, activate 3 per day, dry-run 30 per hour, per admin id) |
+| Limit | **60 per hour per admin on `PATCH`, key `admin:marketing:campaign:update:<admin id>`** — the same numbers as the sibling `create` (a proposal; there was no previous limit). `GET` is read-only and, like the sibling list route, is **not** limited. |
+| Position | after the permission and same-origin checks, before the body is parsed and before any database access (the sibling `create` does the same) |
+| Limiter | `distributedRateLimit` directly (admin = **fail closed when no store is configured or it does not answer**, as every other admin route; this is the C10 contract, not the public-route semantics) |
+| Refusal | the sibling's shape: `adminError('RATE_LIMITED', …, 429, { 'Retry-After' })` plus `X-RateLimit-Reason` (`limit_exceeded` / `store_unavailable`) and one `tappyai_rate_limit` log line; no key is logged |
+| Store failure | **429 with reason `store_unavailable`** (operators cannot edit until the store answers — the accepted C10 trade-off) |
+
+**Acceptance criteria:** (1) the 61st edit in an hour is 429 with `Retry-After`, before the body is parsed or the database read; (2) another admin is unaffected; (3) shared across instances; (4) the window is an hour; (5) store down **or not configured** → 429 `store_unavailable`, nothing written, recovers; (6) permission failure → the existing 401/403 and spends nothing; cross-origin → 403 and spends nothing; (7) the existing campaign route tests pass unchanged; (8) mutations caught; (9) the ratchet drops its admin exception for this route (`ADMIN_EXCEPTIONS` becomes empty) and the budget falls by one.
