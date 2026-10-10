@@ -271,6 +271,18 @@ describe('Safety menu wiring at the other call sites (source locks — the menu 
     expect(s).toContain("report={{ target: 'review', id: reviewId }} user={{ id: review.user_id, name: review.profiles?.full_name }}")
     expect(src('src/app/reviews/[id]/page.tsx')).toContain('viewerId={viewerId}')
   })
+  it('feedShared comment drawer: only another person comment, only when signed in', () => {
+    const s = src('src/app/reviews/feedShared.tsx')
+    expect(s).toContain("import { SafetyMenu } from '@/components/safety/SafetyMenu'")
+    expect(s).toContain('{me && c.user_id !== me && (')
+    expect(s).toContain("report={{ target: 'comment', id: c.id }} user={{ id: c.user_id, name: c.profiles?.full_name }}")
+  })
+  it('clip stage (Explore, shared and profile clip viewers): the creator of a clip that is not mine, signed in; a block removes the clip', () => {
+    const s = src('src/app/reviews/clipStage.tsx')
+    expect(s).toContain('{!isMe && me && (')
+    expect(s).toContain("report={{ target: 'review', id: r.id }} user={{ id: r.user_id, name: r.profiles?.full_name }} onBlockedChange={b => { if (b) onRemoved() }}")
+    expect(s).toContain('onClick={e => e.stopPropagation()}') // opening the menu must not open or pause the clip
+  })
   it('ProfileTab: only on someone else profile, signed in; a block un-follows locally', () => {
     const s = src('src/app/reviews/ProfileTab.tsx')
     expect(s).toContain('{!isOwnProfile && viewerId && (')
