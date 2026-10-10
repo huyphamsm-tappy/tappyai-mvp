@@ -1,6 +1,6 @@
 # Messenger → Inbox: collapsing unread message notifications per thread — PROPOSAL (not implemented)
 
-Status: **PROPOSAL for owner decision. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
+Status: **PROPOSAL v2 (2026-10-10) — the five open semantics are resolved below with recommended defaults; the owner approved the DIRECTION (one unread row per recipient and thread); implementation waits for explicit approval of §7. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
 
 ## 1. What exists today (verified)
 - A send (`POST /api/messaging/threads/[id]/messages`) stores the row, then `notifyThreadRecipients` calls `emitNotification` **once per other participant per message** (`type 'message'`, `category 'social'`, title = sender name, fixed body, `data {threadId, kind}`, `entityUrl` = `/profile/notifications?tab=messages&thread=<id>`). Only when the flag is exactly `'true'`.
@@ -41,6 +41,38 @@ Status: **PROPOSAL for owner decision. No behaviour change was made.** Web-only 
 
 ## 6. Decisions needed
 Push throttle window (N); whether the title carries the count ("3 tin nhắn mới" — needs localisation: the producer composes Vietnamese server-side today); whether read-by-opening-thread is acceptable as the only implicit read; whether collapsed rows older than X days are pruned.
+
+---
+# 7. Resolved semantics and recommended defaults (v2 — supersedes §2–§5 where they differ)
+
+**D1 — When does opening a thread mark the notification read?** *Recommended:* only **after the newest page of messages has loaded successfully** in the thread view, and then by the existing `POST …/threads/[id]/read` (no new request field). Server side, that endpoint marks the thread's unread message notification read **only if its `lastMessageAt` ≤ the cursor it just wrote** (cursor = the database `now()` inside the same locked section). So a failed history load never marks anything read, and a message that arrived after the cursor keeps (or re-opens) an unread row. (Web change: `ThreadView` calls `markThreadRead` after the first-page fetch resolves, not at mount — it is unconditional at mount today.)
+
+**D2 — Serialisation of concurrent sends and read/send races.** *Recommended:* one **transaction-scoped advisory lock per (recipient, thread)** (`pg_advisory_xact_lock(hashtextextended(user_id || ':' || thread_id, 0))`) taken at the start of BOTH `emit_message_notification(...)` and `mark_thread_notifications_read(...)`. Inside the lock: the emit function recomputes state from the source of truth, the read function advances the cursor and then marks. Result: any two operations on the same (recipient, thread) are totally ordered; there is no read-modify-write in application code. The partial unique index (unread message row per user+thread) remains as the backstop. Race outcomes are defined: *send-then-read* → the row is marked read because `lastMessageAt ≤ cursor`; *read-then-send* → the send creates a new row (`count = 1`); a message whose transaction started before the read but commits after it is covered because emit **re-reads the cursor under the lock** and inserts the row already-read (or not at all) when the message is older than the cursor.
+
+**D3 — Push throttle window and deduplication key.** *Recommended:* **10 minutes per (recipient, thread)**: the first message of an unread row pushes; further messages in the same row push at most once per 10 minutes (the function returns `should_push`, computed under the lock from `data.lastPushAt`). **Deduplication key = `message:<threadId>`**, passed as the transport collapse key (FCM `collapse_key`, APNs `apns-collapse-id`, Web Push `Topic`) so devices replace rather than stack. Owner may change the window; the mechanism does not depend on the number.
+
+**D4 — Is the unread count in the title or payload?** *Recommended:* **payload only**: `data.count` (and `data.lastMessageAt`, `data.lastMessageId`). The server-composed title/body never carry a number (the producer composes Vietnamese only today — a number in the string would be a localisation defect). Web renders "(N)" from `data.count` in the user's locale. A later push after the throttle uses the same fixed generic sentence.
+
+**D5 — Failures and retries must not lose notifications.** *Recommended:* (a) the count is **derived**, not incremented: `count = number of messages in the thread from others with created_at > the recipient's cursor`, computed in the emit function — so a retried emit for the same message cannot double count and a failed emit is repaired by the next one; (b) the send path stays non-throwing and awaits the emit once, with one bounded inline retry on a transient error; failures are logged with the recipient/thread ids (no content); (c) an optional reconciliation sweep (cron) can create the missing row for threads with unread messages and no unread notification — deferred, not needed for correctness of the semantics above; (d) the send API contract is untouched; idempotency of the send itself remains the separate design task below.
+
+**Out of this proposal:** the send request, block rules, anonymous refusal, the flag semantics (stays exact `'true'`, OFF by default; Android/iOS still do not handle the type), Messenger read history.
+
+## 7b. Acceptance tests (replace §5; all must exist and pass before merge — real Postgres for 1–8)
+1. 5 sequential messages to one recipient → 1 unread row, `count = 5` (derived), `should_push` true once.
+2. Open the thread (cursor advanced) → row read; the next message → a NEW row `count = 1`.
+3. 20 concurrent emits for one (recipient, thread) → exactly 1 unread row, `count = 20`, exactly 1 `should_push`.
+4. Retry: emit called twice for the same message → `count` unchanged the second time.
+5. Read racing a send, **both interleavings forced** with the advisory lock in a controlled order: final `(read_at, count)` is consistent with the cursor in each.
+6. A message older than the cursor (started before, committed after the read) → no unread row is created.
+7. Two recipients of a group and two threads are independent; the sender never gets a row.
+8. A refused send (RLS / block) creates and changes nothing; flag OFF → no function call, no row.
+9. Push throttle: second message within 10 min → `should_push` false; after 10 min (injected clock) → true; collapse key = `message:<threadId>`.
+10. Web: `ThreadView` does not call the read endpoint when the first page fails; calls it once after success (component tests).
+11. Web: an UPDATE event on an unread row refetches and the badge still counts 1; "mark all read" clears every collapsed row.
+12. Privacy: no message text in any column; rollback (drop function + index) restores today's behaviour exactly (test compares function and row behaviour).
+
+## 7c. Approval requested
+The recommended defaults D1–D5 above, the 10-minute window, and the web change to `ThreadView` ordering. Until approved: no migration, no function, no route change.
 
 ---
 # Send idempotency — separate DESIGN TASK (not part of this slice; NOT implemented)
