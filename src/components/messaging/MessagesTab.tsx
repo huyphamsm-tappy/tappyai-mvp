@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Plus, MessageCircle, Loader2 } from 'lucide-react'
 import { useMessages } from './MessagesProvider'
@@ -23,10 +23,19 @@ import NewMessageSheet from './NewMessageSheet'
  * step — the same state that highlights a row on desktop is what replaces the
  * screen on mobile.
  */
-export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
+export default function MessagesTab({ signedIn, initialThreadId }: { signedIn: boolean; initialThreadId?: string }) {
   const { t } = useTranslation()
   const { threads, loading, error, meId, refetch } = useMessages()
   const [retrying, setRetrying] = useState(false)
+
+  /**
+   * Open a conversation by id. The list is re-read FIRST: a thread that was just created is not in `threads` yet, and the
+   * "a thread that disappeared" guard below would clear the selection at once, so the new conversation never opened.
+   */
+  const openThread = useCallback(async (id: string) => {
+    await refetch()
+    setActiveId(id)
+  }, [refetch])
   const [activeId, setActiveId] = useState<string | null>(null)
   const [composing, setComposing] = useState(false)
 
@@ -37,6 +46,13 @@ export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
   useEffect(() => {
     if (activeId && !threads.some(thread => thread.id === activeId) && !loading) setActiveId(null)
   }, [activeId, threads, loading])
+
+  const opened = useRef(false)
+  useEffect(() => {
+    if (!signedIn || !initialThreadId || opened.current) return
+    opened.current = true
+    void openThread(initialThreadId)
+  }, [signedIn, initialThreadId, openThread])
 
   if (!signedIn) {
     return (
@@ -127,7 +143,7 @@ export default function MessagesTab({ signedIn }: { signedIn: boolean }) {
           onClose={() => setComposing(false)}
           onStarted={threadId => {
             setComposing(false)
-            setActiveId(threadId)
+            void openThread(threadId)
           }}
         />
       )}

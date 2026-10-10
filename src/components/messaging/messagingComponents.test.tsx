@@ -20,7 +20,7 @@ vi.mock('./MessagesProvider', () => ({
     subscribeToIncoming: (fn: (m: unknown) => void) => { incoming.push(fn); return () => { incoming = incoming.filter(f => f !== fn) } },
   }),
 }))
-vi.mock('./NewMessageSheet', () => ({ __esModule: true, default: () => <div data-testid="new-sheet" /> }))
+vi.mock('./NewMessageSheet', () => ({ __esModule: true, default: ({ onStarted }: { onStarted: (id: string) => void }) => <button data-testid="new-sheet" onClick={() => onStarted('t1')} /> }))
 
 import ThreadView from './ThreadView'
 import MessagesTab from './MessagesTab'
@@ -175,5 +175,51 @@ describe('MessagesTab · conversation list', () => {
     render(<MessagesTab signedIn={false} />)
     expect(screen.queryByRole('button', { name: 'Thử lại' })).toBeNull()
     expect(refetch).not.toHaveBeenCalled()
+  })
+})
+
+describe('MessagesTab · opening a conversation', () => {
+  it('a thread that is NOT in the list yet (just created) is opened once the list has been re-read — it used to be cleared at once', async () => {
+    store = { threads: [], unreadTotal: 0, loading: false, error: false }
+    refetch.mockImplementation(async () => { store = { ...store, threads: [THREAD] } })
+    fetchMock.mockResolvedValue(json({ messages: [msg(1)], hasMore: false }))
+    render(<MessagesTab signedIn />)
+    // the "new message" button of the list opens the (faked) sheet, which reports the thread it started
+    fireEvent.click(screen.getByRole('button', { name: /tin nhắn mới|new message/i }))
+    fireEvent.click(await screen.findByTestId('new-sheet'))
+    await waitFor(() => expect(bodies()).toEqual(['tin 1']))
+    expect(refetch).toHaveBeenCalled()
+    refetch.mockImplementation(async () => {})
+  })
+
+  it('initialThreadId (the profile Message button, ?thread=<id>) opens that conversation after the list is read, once', async () => {
+    store = { threads: [], unreadTotal: 0, loading: false, error: false }
+    refetch.mockImplementation(async () => { store = { ...store, threads: [THREAD] } })
+    fetchMock.mockResolvedValue(json({ messages: [msg(2)], hasMore: false }))
+    const { rerender } = render(<MessagesTab signedIn initialThreadId="t1" />)
+    await waitFor(() => expect(bodies()).toEqual(['tin 2']))
+    const reads = refetch.mock.calls.length
+    rerender(<MessagesTab signedIn initialThreadId="t1" />)
+    expect(refetch.mock.calls.length).toBe(reads) // not re-opened on every render
+    refetch.mockImplementation(async () => {})
+  })
+
+  it('an unknown / foreign thread id opens nothing (the guard clears it) and does not break the list', async () => {
+    store = { threads: [THREAD], unreadTotal: 0, loading: false, error: false }
+    render(<MessagesTab signedIn initialThreadId="not-mine" />)
+    await waitFor(() => expect(refetch).toHaveBeenCalled())
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByRole('textbox')).toBeNull()
+  })
+
+  it('signed out: initialThreadId is ignored', () => {
+    render(<MessagesTab signedIn={false} initialThreadId="t1" />)
+    expect(refetch).not.toHaveBeenCalled()
+  })
+
+  it('LOCK: the Inbox page hands the ?thread= parameter to the Messages tab', () => {
+    const src = readFileSync('src/app/(app)/profile/notifications/NotificationsView.tsx', 'utf8')
+    expect(src).toContain("useSearchParams()?.get('thread')")
+    expect(src).toContain('<MessagesTab signedIn={!!user} initialThreadId={requestedThread} />')
   })
 })
