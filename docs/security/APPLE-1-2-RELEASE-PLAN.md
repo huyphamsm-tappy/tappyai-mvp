@@ -14,6 +14,15 @@ has nobody to reach (it only repeats the digest to the primary). Do not grant a 
 - Caveat: read-only is enforced by the session setting, not by the database role. The SQL file is the safeguard: review it before running.
 - Pending only on: Docker engine up + permission for exactly `bash scripts/release/apply-migration.sh --check scripts/release/sql/apple-1-2-probe.sql`.
 
+## 1a. OBSERVED on production, 2026-10-10 04:02 UTC (full evidence: `APPLE-1-2-PROBE-RESULT-2026-10-10.md`)
+Present: `content_reports`, `moderation_queue`, `moderation_actions` (RLS on), `chat_blocks` (RLS on), `fn_ingest_moderation_reports`.
+**Missing: `user_blocks` + RLS + `safety_private.*` (0 block policies), `user_reports` + trigger, `moderation_decisions`, `moderation_appeals`,
+`banned_identities`, and the post-report trigger. No migration ledger table exists (applied by hand).**
+So the migrations to apply are exactly: **20261001, 20261001b, 20261001d, 20261001e, 20261009** (in that order). 20260817 and 20260821 are already
+there; 20260930 (insert check) is **not proven either way**; the chat tables exist. Prerequisites those five need (reviews, review_comments,
+review_likes, user_follows, notifications, profiles, account_status, audit_log) are inferred, not probed: run `apple-1-2-probe-editor-2.sql` first.
+Until they are applied, enabling any of the three flags would point the apps at routes whose tables do not exist.
+
 ## 1. What the probe output decides
 | Probe section | If it shows | Means | Action |
 |---|---|---|---|
@@ -34,7 +43,7 @@ has nobody to reach (it only repeats the digest to the primary). Do not grant a 
 
 ## 3. Migrations (each needs the owner's explicit authorization; the release policy marks 20260930 onward AFTER-SMOKE, i.e. after §2 and its smoke)
 1. **Backup first:** `scripts/release/backup-prod.ps1` → `CHECKS-PASSED.json`; no backup, no migration.
-2. Apply only what §1 shows missing, one file at a time, in this order, each with
+2. Apply only what §1a shows missing (today: 20261001, 20261001b, 20261001d, 20261001e, 20261009), one file at a time, in this order, each with
    `bash scripts/release/apply-migration.sh <file> --i-have-a-valid-backup <dir> --after-smoke-passed`:
    `20260817` → `20260821` → `20260930` → `20261001` → `20261001b` → `20261001d` → `20261001e` → **`20261009_content_reports_to_queue`**.
    If the wrapper answers UNLISTED/SKIP/DEFER/VERIFY-ONLY for a file, stop and report: never force it (a pre-20260913 file is most likely already on production).
