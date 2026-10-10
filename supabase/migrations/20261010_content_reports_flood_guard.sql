@@ -12,7 +12,8 @@
 --      (the filing role has no SELECT on the table); an index keeps it cheap.
 --   2. `reason` must be one of the seven canonical reasons, and `policy_id` at most 80 characters, for NEW rows only (NOT VALID: existing rows are
 --      not scanned or rejected, so this cannot fail on old data).
--- Not a race-free quota (count-then-insert): a burst can overshoot by a few. It is a flood guard, not accounting.
+-- Concurrency: reports from the SAME reporter are serialized by an advisory lock (see the function), so the ceiling of 10 holds exactly under a burst;
+-- reports from different reporters do not wait for each other. The lock is held until the inserting transaction ends (a single INSERT: milliseconds).
 --
 -- DEPENDS ON: 20260817 (content_reports). Works with or without 20260930, but is meant to follow it.
 -- GATE: applied to production ONLY under explicit Owner authorization, after the pg_dump. Inert for anyone filing fewer than 10 reports in 10 minutes.
@@ -26,6 +27,10 @@ CREATE OR REPLACE FUNCTION public.content_report_flood_guard() RETURNS trigger L
 DECLARE
   v_recent integer;
 BEGIN
+  -- One reporter at a time: a transaction-level advisory lock keyed on the opaque reporter id, held until this transaction ends. Without it, three
+  -- transactions that each see 9 committed reports all pass (measured in supabase/tests/content_reports_flood_guard_concurrency.test.ts: 12 rows).
+  -- With it, the second report WAITS for the first to commit, then counts it. Other reporters hash to other keys and never wait for this one.
+  PERFORM pg_advisory_xact_lock(hashtextextended('content_report:' || NEW.reporter_source_id, 0));
   SELECT count(*) INTO v_recent
     FROM public.content_reports c
    WHERE c.reporter_source_id = NEW.reporter_source_id

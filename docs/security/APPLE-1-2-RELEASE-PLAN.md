@@ -63,7 +63,7 @@ it does not prove production's data, load or locks.
 | 20261001b | new `user_reports` (no existing data touched) | none | new table | drops table (reports lost) | — |
 | 20261001d | new `moderation_decisions`, `moderation_appeals` (append-only guards), report→queue trigger, snapshot purge function; widens `user_reports` reason check | none | new objects only; the ALTER is on the still-empty `user_reports` | drops ledger + appeals (**export first if any decision exists**) | the `moderation_type` / `moderation_status` enums lack the values it casts (they come from 20260821, present) |
 | 20261009 | trigger: a post report enters `moderation_queue` at filing with a priority; the daily ingest stays a backstop (unique source index) | none | trigger on a small table | drops trigger + function; queued rows stay | `uq_modq_source` missing (not probed): duplicates possible, not harmful |
-| 20261010 | per-reporter flood guard on `content_reports` (BEFORE INSERT: refuses the 11th report in 10 minutes, SQLSTATE 53400, which the route answers with 429); `reason` must be one of the seven canonical values and `policy_id` at most 80 characters, for NEW rows only (NOT VALID); one index | none (the constraints are NOT VALID: old rows are not scanned) | trigger and index on a small table; the count uses `content_reports_reporter_recent_idx` (plan checked on a real PostgreSQL) | drops trigger, function, constraints and index; rows stay | the route does not map 53400 (it does since this commit) |
+| 20261010 | per-reporter flood guard on `content_reports` (BEFORE INSERT: refuses the 11th report in 10 minutes, SQLSTATE 53400, which the route answers with 429; concurrent reports from one reporter are serialized by an advisory lock: a 25-way burst ends at exactly 10, measured with real concurrent connections); `reason` must be one of the seven canonical values and `policy_id` at most 80 characters, for NEW rows only (NOT VALID); one index | none (the constraints are NOT VALID: old rows are not scanned) | trigger and index on a small table; the count uses `content_reports_reporter_recent_idx` (plan checked on a real PostgreSQL) | drops trigger, function, constraints and index; rows stay | the route does not map 53400 (it does since this commit) |
 | 20261001e (DEFERRED) | banned-identity hashes + triggers BEFORE INSERT / UPDATE OF email / DELETE on `auth.users` | one random pepper row | CREATE TRIGGER on `auth.users` takes SHARE ROW EXCLUSIVE: it waits behind running writes and, while waiting, queues new sign-ins/updates. If ever applied: add `SET LOCAL lock_timeout = '3s'` first, at low traffic | drops triggers, functions, tables | any sign-up or sign-in error |
 Gaps I could not close from here: production row counts, load, and whether some client inserts into `content_reports` outside the route.
 After EACH file: re-run the probe (dashboard SQL Editor or wrapper); expected sections must flip; a failed file rolls back by itself (single transaction).
@@ -122,12 +122,16 @@ Re-run probes 1–4 (`scripts/release/sql/apple-1-2-probe-editor.sql`, `-2`, `-3
 - **Stop if:** a deploy error, any 5xx on `/` or `/login`, or a flag turns on by itself.
 - **Recover:** redeploy the previous deployment (`f9f2b12`) from the Vercel dashboard. Nothing in the database has changed yet.
 
-### Step 2 — Backup
-- **Before:** the production password file exists on the machine that runs it (only you can create it, RELEASE-PLAN §3b); Docker engine up.
-- **Change:** `scripts/release/backup-prod.ps1` (lead-run, not Claude).
-- **Verify:** `CHECKS-PASSED.json` is written and the dump hash re-verifies.
-- **Stop if:** any check fails: no migration is applied without it.
-- **Recover:** n/a (a read-only dump).
+### Step 2 — Backup (what it reads and writes, how it is protected, how it is proven)
+- **Who creates the credential files: you, not Claude.** `D:\TappyAI-backups\pghost.txt` = the Session-pooler host only (dashboard → Connect → Session pooler, port 5432). `D:\TappyAI-backups\pgpass` (no extension) = one line `<host>:5432:postgres:postgres.fwznnobrdctuskgrvuik:<password>`; use the existing database password, do NOT reset it (a reset is a separate production change); escape `:` and `\` inside it; keep it outside OneDrive/Dropbox and outside any git folder; delete it, and `pghost.txt`, after the release is stable (RELEASE-PLAN-2026-09-29 §(b), §(f)). The scripts validate the file's shape without printing it and copy it to a 0600 file inside a throw-away container.
+- **What touches production:** `backup-prod.ps1` opens a connection through the pooler and runs `pg_dump` (reads every table it can read, including user data; **no write to production**). Everything it writes is local: `D:\TappyAI-backups\prod-<stamp>\` (`prod.dump`, `pg_dump.log`, `toc.txt`, `counts-prod.txt`, `SHA256.txt`, `CHECKS-PASSED.json`). The dump holds personal data: treat the folder as confidential, never commit or sync it, and write a delete-after date.
+- **How it is proven (DEPLOY-CHECKLIST §0.3):** (a) `pg_dump.log` ends with `exit=0` and has no error lines; (b) the file is not schema-sized; (c) `pg_restore --list` shows `TABLE DATA` for the tables the migrations touch; (d) with `-RestoreCheck`, the dump is restored into a throw-away LOCAL container and row counts are compared. `CHECKS-PASSED.json` is written only if all pass, and `apply-migration.sh` refuses without it (and refuses a stale or altered dump).
+- **What this does NOT prove:** that restoring onto production works. The checklist itself says none of the restore commands has ever been run against production. (d) proves the dump loads into a scratch database, nothing more. Supabase Free has no automatic backups, so this dump is the only data recovery. `auth` and `storage` must never be restored over production.
+- **Before:** the two files exist (you made them); Docker engine up; you say "pgpass ready".
+- **Change:** `scripts/release/backup-prod.ps1 -RestoreCheck` (lead-run, not Claude).
+- **Verify:** `CHECKS-PASSED.json` exists; `SHA256.txt` re-verifies; the scratch-restore counts match.
+- **Stop if:** any check fails, the dump is unexpectedly small, or `pgpass` is rejected: no migration is applied.
+- **Recover:** n/a for the backup itself (it only reads).
 
 ### Step 3 — 20260930 (close the open insert policy)
 - **Before:** probe 3 shows `policy_is_still_check_true: true`; no client other than the post-report route inserts into `content_reports`.
@@ -165,5 +169,30 @@ One file each, in this order, each with its own authorization.
 - **Stop if:** any of those does not happen: do not record the video.
 - **Recover:** close the test report as "no violation"; unblock B in Settings → Blocked accounts.
 
+### What a rollback does and does not recover (read from the SQL; the tests prove the SCHEMA returns, not data)
+- None of the six apply files executes DML when it is applied (checked by reading them: the only INSERT/UPDATE statements sit inside trigger and function bodies, which run later, when a report is filed or the purge function is called). They create new tables, triggers, functions and policies, replace one policy, and add `NOT VALID` checks. So applying them does not alter or delete pre-existing production data.
+- A rollback removes the objects. Data created AFTER the apply, in the new tables, is lost with them: blocks (`user_blocks`), comment/user reports (`user_reports`), decisions and appeals (`moderation_decisions`, `moderation_appeals`: export first). Post reports and queue rows stay (they live in tables that already existed).
+- The rollback of 20261001d also runs `UPDATE user_reports SET reason = 'other' WHERE reason = 'child_safety'`: it reclassifies reports. That is the only data-changing statement among the six rollbacks.
+- Evidence level: `apple_1_2_release_order.test.ts` proves apply → rollback returns the schema (tables, policies, triggers, functions, indexes, constraints, grants) to an identical fingerprint on a real PostgreSQL. It does not prove data recovery. The only recovery of PRE-EXISTING data is the dump from step 2, whose restore on production has never been exercised.
+
 ### Not part of this plan
 `20261001e` (triggers on `auth.users`); publishing the policies; App Store Connect; any build upload. If 20261001e is ever wanted: add `SET LOCAL lock_timeout = '3s'` first and apply at low traffic.
+
+## 10. Approval sheet — one line per production operation (nothing is done without your explicit yes to that line)
+| # | Operation | What it reads / writes in production | What you should observe afterwards |
+|---|---|---|---|
+| A1 | Merge `sec/apple-1-2-moderation-release` into `main`, deploy | writes: a new deployment and two cron entries; no database change; every new route is inert (404) | new SHA at `/api/version`; `/`, `/login` 200; `/api/config` flags still false; Vercel lists the digest cron twice |
+| A2 | You create `pghost.txt` + `pgpass`; run `backup-prod.ps1 -RestoreCheck` | reads: the whole database through the pooler; writes: local files only | `CHECKS-PASSED.json`; scratch-restore counts match; no error lines |
+| A3 | Apply 20260930 | writes: replaces one policy and narrows column privileges on `content_reports` | probe: policy no longer `true`; a signed-in post report still succeeds |
+| A4 | Apply 20261001 | writes: new table, schema, functions; policies on `reviews`, `review_comments`, `review_likes`, `user_follows`, `notifications`; also lets a post's owner delete comments on it | probe: 10 block policies, functions present; Explore and post pages load; response time within +50 ms of the value you noted |
+| A5 | Apply 20261001b | writes: new table `user_reports` | probe: table present |
+| A6 | Apply 20261001d | writes: new tables `moderation_decisions`, `moderation_appeals`, guard triggers, report-to-queue trigger | probe: tables and 3 triggers present |
+| A7 | Apply 20261009 | writes: a trigger on `content_reports` | probe: trigger present |
+| A8 | Apply 20261010 | writes: a trigger, an index, two NOT VALID checks on `content_reports` | probe: trigger present; both constraints present, `convalidated = false` |
+| A9 | Set `MODERATION_ALERT_USER_IDS`, `MODERATION_DIGEST_USER_IDS` (your id), redeploy | writes: two Vercel variables, one deployment | none visible yet (alerts have no trigger without the flags) |
+| A10 | `USER_BLOCKS_ENABLED=true`, redeploy | writes: one variable, one deployment | `/api/config` `userBlocks: true`; unauthenticated `GET /api/users/blocks` = 401 |
+| A11 | `REPORTS_ENABLED=true`, redeploy | writes: one variable, one deployment | `/api/config` `reports: true` |
+| A12 | `MODERATION_ADMIN_ENABLED=true`, redeploy | writes: one variable, one deployment | `/api/config` `moderationNotices: true`; `/admin/moderation` opens for you; digest cron answers 200 when called by Vercel |
+| A13 | Smoke tests (read only) | reads: public endpoints, probes in the SQL Editor | every check in §5 passes |
+| A14 | One controlled test with a test account B | writes: one post, one report, one block, one queue row, one decision (separate authorization) | queue row with priority; push received; B's post leaves A's feed at once; ledger row after your decision |
+Not requested here: 20261001e, publishing the policies, any App Store Connect action, any build upload.
