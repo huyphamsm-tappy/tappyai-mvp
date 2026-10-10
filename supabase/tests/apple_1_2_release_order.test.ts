@@ -2,11 +2,11 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { loadProdSchema, readRepo, startBlocksDb, type BlocksDb } from './userBlocksHarness'
 
 // App Review 1.2 release order, on a real PostgreSQL with the production baseline schema:
-//   apply 20260930 → 20261001 → 20261001b → 20261001d → 20261009 (the minimal set the 10/10 production probe showed missing),
+//   apply 20260930 → 20261001 → 20261001b → 20261001d → 20261009 → 20261010 (the minimal set the 10/10 production probe showed missing, plus the flood guard),
 //   run the ACTUAL read-only probes from the repo against it, then roll back in reverse and require the schema to return to where it started.
 // 20261001e (banned identities, triggers on auth.users) is deliberately NOT in this set: no application code uses it.
 
-const FILES = ['20260930_content_reports_insert_check', '20261001_user_blocks', '20261001b_user_reports', '20261001d_moderation_standards', '20261009_content_reports_to_queue']
+const FILES = ['20260930_content_reports_insert_check', '20261001_user_blocks', '20261001b_user_reports', '20261001d_moderation_standards', '20261009_content_reports_to_queue', '20261010_content_reports_flood_guard']
 const apply = (name: string) => readRepo(`supabase/migrations/${name}.sql`)
 const undo = (name: string) => readRepo(`supabase/migrations/rollback/${name}_rollback.sql`)
 /** The statement of a probe file: its non-comment lines. */
@@ -24,6 +24,8 @@ const FINGERPRINT = `
     'functions', (SELECT jsonb_agg(n.nspname || '.' || p.proname ORDER BY n.nspname, p.proname) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace
                    WHERE n.nspname IN ('public', 'safety_private')),
     'schemas', (SELECT coalesce(jsonb_agg(nspname), '[]'::jsonb) FROM pg_namespace WHERE nspname = 'safety_private'),
+    'indexes', (SELECT jsonb_agg(indexname ORDER BY indexname) FROM pg_indexes WHERE schemaname = 'public' AND tablename IN ('content_reports', 'moderation_queue', 'user_reports')),
+    'constraints', (SELECT jsonb_agg(conrelid::regclass::text || '.' || conname || '.' || convalidated::text ORDER BY conrelid::regclass::text, conname) FROM pg_constraint WHERE connamespace = 'public'::regnamespace),
     'content_reports_grants', (SELECT jsonb_agg(grantee || ':' || privilege_type ORDER BY grantee, privilege_type) FROM information_schema.role_table_grants
                                 WHERE table_schema = 'public' AND table_name = 'content_reports')
   ) AS fp`

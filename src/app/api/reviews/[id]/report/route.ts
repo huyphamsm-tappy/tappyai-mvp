@@ -53,6 +53,10 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     if (code === '23503') {
       return NextResponse.json({ error: 'not_found', message: serverMessage('server.notFound', requestLocale(req)) }, { status: 404 })
     }
+    // 20261010: the same reporter filed 10 reports in 10 minutes. A flood guard, not an error: say "slow down".
+    if (code === '53400') {
+      return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
+    }
     console.error('[reviews/report]', code ?? 'error')
     return NextResponse.json({ error: 'report_failed', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
   }
