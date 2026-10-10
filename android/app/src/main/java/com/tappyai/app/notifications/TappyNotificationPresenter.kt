@@ -40,7 +40,7 @@ class TappyNotificationPresenter(private val context: Context) {
 
         val channelId = TappyNotificationChannels.channelFor(kind, preferences.identitySoundEnabled)
         val notification = NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setSmallIcon(R.drawable.ic_stat_notification)
             .setContentTitle(title ?: context.getString(R.string.app_name))
             .setContentText(body.orEmpty())
             .setStyle(NotificationCompat.BigTextStyle().bigText(body.orEmpty()))
