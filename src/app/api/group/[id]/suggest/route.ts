@@ -1,6 +1,7 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { AI } from '@/lib/ai/llm'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
@@ -17,9 +18,8 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (anonRefusal) return anonRefusal
 
   // Per-user cap on this paid LLM call (creator-only, but still uncapped otherwise).
-  if (!(await publicRateLimit(`group-suggest:${user.id}`, 5, 60_000)).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
-  }
+  const rl = await publicRateLimit(`group-suggest:${user.id}`, 5, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'group_suggest')
 
   const { data: group, error: groupError } = await supabase
     .from('groups')

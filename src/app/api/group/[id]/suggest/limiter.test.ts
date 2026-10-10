@@ -38,6 +38,7 @@ describe('shared store configured', () => {
     const res = await call(post)
     expect(limited(res)).toBe(true)
     expect((await res.json()).error).toBe('rate_limit')
+    expect(res.headers.get('X-RateLimit-Reason')).toBe('limit_exceeded') // a quota breach, not an outage
     expect(h.dbReads).toBe(5) // the 6th never reached the database
     expect(h.llm).toBe(0)
   })
@@ -78,6 +79,7 @@ describe('shared store configured', () => {
     store.failNext('throw')
     const res = await call(post)
     expect(limited(res)).toBe(true)
+    expect(res.headers.get('X-RateLimit-Reason')).toBe('store_unavailable') // an infrastructure failure, told apart from a breach
     expect(h.dbReads).toBe(0); expect(h.llm).toBe(0)
     store.failNext('malformed')
     expect(limited(await call(post))).toBe(true)

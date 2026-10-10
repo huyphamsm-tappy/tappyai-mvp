@@ -25,6 +25,8 @@ export interface SharedLimiterContract {
 }
 
 const refused = (r: Response) => r.status === 429
+/** The structured refusal lines the helper logged (type `tappyai_rate_limit`), parsed. */
+const refusalLogs = (spy: { mock: { calls: unknown[][] } }) => spy.mock.calls.map((c) => { try { return JSON.parse(String(c[0])) } catch { return null } }).filter((x) => x && x.type === 'tappyai_rate_limit')
 const admittedBy = (r: Response) => r.status !== 429
 
 export function describeSharedLimiterContract(c: SharedLimiterContract): void {
@@ -40,15 +42,24 @@ export function describeSharedLimiterContract(c: SharedLimiterContract): void {
     beforeEach(() => { c.actAs(caller); c.resetSideEffects(); vi.useFakeTimers({ toFake: ['Date'] }); vi.setSystemTime(new Date('2026-10-10T03:00:00Z')) })
     afterEach(() => { vi.useRealTimers(); resetLimiterEnv() })
 
-    it('admits exactly the limit per caller, then answers 429 rate_limit before the route does any work', async () => {
+    it('admits exactly the limit per caller, then answers 429 rate_limit before the route does any work — and says it is a QUOTA breach (header + one log line, no key)', async () => {
       configureSharedStore()
       const post = await fresh()
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
       for (let i = 0; i < c.limit; i++) expect(admittedBy(await call(post)), `request ${i + 1}`).toBe(true)
+      expect(refusalLogs(warn)).toHaveLength(0) // admissions are silent
       c.resetSideEffects()
       const res = await call(post)
       expect(refused(res)).toBe(true)
       expect((await res.json()).error).toBe('rate_limit')
       expect(c.sideEffects()).toBe(0)
+      expect(res.headers.get('X-RateLimit-Reason')).toBe('limit_exceeded')
+      expect(Number(res.headers.get('Retry-After'))).toBeGreaterThan(0)
+      const logs = refusalLogs(warn)
+      expect(logs).toHaveLength(1)
+      expect(logs[0]).toMatchObject({ scope: 'distributed', reason: 'limit_exceeded' })
+      expect(JSON.stringify(logs[0])).not.toContain(caller) // the key carries a user id: it is never logged
+      warn.mockRestore()
     })
 
     it('keying: a different caller has their own bucket', async () => {
@@ -83,24 +94,35 @@ export function describeSharedLimiterContract(c: SharedLimiterContract): void {
       expect(admittedBy(await call(post))).toBe(true)
     })
 
-    it('store configured but not answering → FAIL CLOSED (429, no side effect); recovers when the store answers again', async () => {
+    it('store configured but not answering → FAIL CLOSED (429, no side effect) and reported as an INFRASTRUCTURE failure (header + log reason store_unavailable, not a quota breach); recovers when the store answers again', async () => {
       const store = configureSharedStore()
       const post = await fresh()
+      const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
       store.failNext('throw')
       c.resetSideEffects()
-      expect(refused(await call(post))).toBe(true)
+      const down = await call(post)
+      expect(refused(down)).toBe(true)
       expect(c.sideEffects()).toBe(0)
+      expect(down.headers.get('X-RateLimit-Reason')).toBe('store_unavailable')
       store.failNext('malformed')
-      expect(refused(await call(post))).toBe(true)
+      const garbled = await call(post)
+      expect(refused(garbled)).toBe(true)
+      expect(garbled.headers.get('X-RateLimit-Reason')).toBe('store_unavailable')
+      const logs = refusalLogs(warn)
+      expect(logs.map((l) => l.reason)).toEqual(['store_unavailable', 'store_unavailable'])
+      expect(logs.every((l) => l.scope === 'distributed')).toBe(true)
       store.failNext(null)
       expect(admittedBy(await call(post))).toBe(true)
+      warn.mockRestore()
     })
 
-    it('no store configured → the in-process limiter with the same limit (per instance — the weakness the shared store removes)', async () => {
+    it('no store configured → the in-process limiter with the same limit (per instance — the weakness the shared store removes); a refusal there is a quota breach, never "store unavailable"', async () => {
       configureNoStore()
       const post = await fresh()
       for (let i = 0; i < c.limit; i++) expect(admittedBy(await call(post))).toBe(true)
-      expect(refused(await call(post))).toBe(true)
+      const res = await call(post)
+      expect(refused(res)).toBe(true)
+      expect(res.headers.get('X-RateLimit-Reason')).toBe('limit_exceeded')
       const other = await fresh()
       expect(admittedBy(await call(other))).toBe(true)
     })

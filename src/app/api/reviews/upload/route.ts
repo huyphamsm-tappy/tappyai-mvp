@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { isUploadServiceUnavailable } from '@/lib/media/uploadAvailability'
 import { NextRequest, NextResponse } from 'next/server'
 import { getMediaProvider, putMedia } from '@/lib/media'
@@ -40,12 +41,8 @@ export async function POST(req: NextRequest) {
   if (ageRefusal) return ageRefusal
 
   // SEC4 slice 2e: the shared per-day limiter (it used to be a private per-instance Map that reset at UTC midnight; the day now ends at Vietnam midnight like every other daily cap).
-  if (!(await publicDailyRateLimit(`reviews-upload:${user.id}`, MAX_UPLOADS_PER_DAY)).ok) {
-    return NextResponse.json(
-      { error: 'rate_limit', message: serverMessage('rate.uploadLimit', requestLocale(req), { n: MAX_UPLOADS_PER_DAY }) },
-      { status: 429 }
-    )
-  }
+  const rl = await publicDailyRateLimit(`reviews-upload:${user.id}`, MAX_UPLOADS_PER_DAY)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'reviews_upload_daily', serverMessage('rate.uploadLimit', requestLocale(req), { n: MAX_UPLOADS_PER_DAY }))
 
   let formData: FormData
   try {

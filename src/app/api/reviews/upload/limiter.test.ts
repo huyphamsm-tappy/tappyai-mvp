@@ -38,6 +38,7 @@ describe('POST /api/reviews/upload — daily cap on the shared limiter', () => {
     const res = await call(post)
     expect(refused(res)).toBe(true)
     expect((await res.json()).error).toBe('rate_limit')
+    expect(res.headers.get('X-RateLimit-Reason')).toBe('limit_exceeded')
     expect(h.bodyReads).toBe(0)
   })
 
@@ -75,7 +76,9 @@ describe('POST /api/reviews/upload — daily cap on the shared limiter', () => {
     const store = configureSharedStore()
     const post = await fresh()
     store.failNext('throw')
-    expect(refused(await call(post))).toBe(true)
+    const down = await call(post)
+    expect(refused(down)).toBe(true)
+    expect(down.headers.get('X-RateLimit-Reason')).toBe('store_unavailable')
     store.failNext('malformed')
     expect(refused(await call(post))).toBe(true)
     expect(h.bodyReads).toBe(0)
