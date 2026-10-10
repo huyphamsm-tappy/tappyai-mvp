@@ -14,13 +14,13 @@ has nobody to reach (it only repeats the digest to the primary). Do not grant a 
 - Caveat: read-only is enforced by the session setting, not by the database role. The SQL file is the safeguard: review it before running.
 - Pending only on: Docker engine up + permission for exactly `bash scripts/release/apply-migration.sh --check scripts/release/sql/apple-1-2-probe.sql`.
 
-## 1a. OBSERVED on production, 2026-10-10 (three read-only catalog queries in the Supabase SQL Editor; evidence in `APPLE-1-2-PROBE-RESULT-2026-10-10.md`)
+## 1a. OBSERVED on production, 2026-10-10 (four read-only catalog queries in the Supabase SQL Editor; evidence in `APPLE-1-2-PROBE-RESULT-2026-10-10.md`)
 Present: `content_reports`, `moderation_queue`, `moderation_actions` (RLS on), `chat_blocks` (RLS on), `fn_ingest_moderation_reports`, and all eight tables the new
 migrations need (reviews, review_comments, review_likes, user_follows, notifications, profiles, account_status, audit_log).
 **Missing: `user_blocks` + RLS + `safety_private.*` (0 block policies), `user_reports` + trigger, `moderation_decisions`, `moderation_appeals`, `banned_identities`,
 the post-report trigger. And 20260930 is NOT applied: `content_reports` still has `WITH CHECK (true)` (any signed-in user can insert arbitrary rows through the API).**
 No migration ledger table exists (applied by hand).
-**Minimal set: 20260930, 20261001, 20261001b, 20261001d, 20261009, in that order.** **20261001e is DEFERRED**: no application code uses `banned_identities`, and it
+**Minimal set (6 files), in this order: 20260930, 20261001, 20261001b, 20261001d, 20261009, 20261010.** (20261010 is the flood guard, added 10/10 because 20260930 pins WHO may report but not HOW MANY.) **20261001e is DEFERRED**: no application code uses `banned_identities`, and it
 puts triggers on Supabase's `auth.users` (sign-up/e-mail change/delete): the riskiest file, not needed for Apple.
 Until the set is applied, enabling any of the three flags would point the apps at routes whose tables do not exist.
 
@@ -44,7 +44,7 @@ Until the set is applied, enabling any of the three flags would point the apps a
 
 ## 3. Migrations (each needs the owner's explicit authorization; the release policy marks 20260930 onward AFTER-SMOKE, i.e. after §2 and its smoke)
 1. **Backup first:** `scripts/release/backup-prod.ps1` → `CHECKS-PASSED.json`; no backup, no migration.
-2. Apply the minimal set (today: 20260930, 20261001, 20261001b, 20261001d, 20261009; **not** 20261001e), one file at a time, in this order, each with
+2. Apply the minimal set (today: 20260930, 20261001, 20261001b, 20261001d, 20261009, 20261010; **not** 20261001e), one file at a time, in this order, each with
    `bash scripts/release/apply-migration.sh <file> --i-have-a-valid-backup <dir> --after-smoke-passed`:
    
    If the wrapper answers UNLISTED/SKIP/DEFER/VERIFY-ONLY for a file, stop and report: never force it (a pre-20260913 file is most likely already on production).
@@ -63,6 +63,7 @@ it does not prove production's data, load or locks.
 | 20261001b | new `user_reports` (no existing data touched) | none | new table | drops table (reports lost) | — |
 | 20261001d | new `moderation_decisions`, `moderation_appeals` (append-only guards), report→queue trigger, snapshot purge function; widens `user_reports` reason check | none | new objects only; the ALTER is on the still-empty `user_reports` | drops ledger + appeals (**export first if any decision exists**) | the `moderation_type` / `moderation_status` enums lack the values it casts (they come from 20260821, present) |
 | 20261009 | trigger: a post report enters `moderation_queue` at filing with a priority; the daily ingest stays a backstop (unique source index) | none | trigger on a small table | drops trigger + function; queued rows stay | `uq_modq_source` missing (not probed): duplicates possible, not harmful |
+| 20261010 | per-reporter flood guard on `content_reports` (BEFORE INSERT: refuses the 11th report in 10 minutes, SQLSTATE 53400, which the route answers with 429); `reason` must be one of the seven canonical values and `policy_id` at most 80 characters, for NEW rows only (NOT VALID); one index | none (the constraints are NOT VALID: old rows are not scanned) | trigger and index on a small table; the count uses `content_reports_reporter_recent_idx` (plan checked on a real PostgreSQL) | drops trigger, function, constraints and index; rows stay | the route does not map 53400 (it does since this commit) |
 | 20261001e (DEFERRED) | banned-identity hashes + triggers BEFORE INSERT / UPDATE OF email / DELETE on `auth.users` | one random pepper row | CREATE TRIGGER on `auth.users` takes SHARE ROW EXCLUSIVE: it waits behind running writes and, while waiting, queues new sign-ins/updates. If ever applied: add `SET LOCAL lock_timeout = '3s'` first, at low traffic | drops triggers, functions, tables | any sign-up or sign-in error |
 Gaps I could not close from here: production row counts, load, and whether some client inserts into `content_reports` outside the route.
 After EACH file: re-run the probe (dashboard SQL Editor or wrapper); expected sections must flip; a failed file rolls back by itself (single transaction).
@@ -110,16 +111,59 @@ Setup: owner account A signed out; test account B with one harmless post; screen
 | 10 | (If authorized) Safari → /admin/moderation | the report is in the queue with its priority; the blocked/reported content is not shown beyond what the reviewer needs |
 Do not edit the video. If a step fails, stop and report; do not re-take around it.
 
-## 9. Step by step, with a stop rule and a check after each (each production step needs its own authorization)
-| # | Step | Verify afterwards | STOP and roll back / hold if |
-|---|---|---|---|
-| 0 | Re-run probes 1–3 in the SQL Editor right before starting | same as `APPLE-1-2-PROBE-RESULT-2026-10-10.md` | anything differs from it |
-| 1 | Merge `sec/apple-1-2-moderation-release` → `main`, deploy | `/api/version` = new SHA; `/`, `/login` 200; `/api/config` flags unchanged (false) | any 5xx, a flag appears on |
-| 2 | `backup-prod.ps1` | `CHECKS-PASSED.json` written | any check fails: no migration |
-| 3 | Apply 20260930 | probe 3: `applied: true`; post a report from the app's legacy menu still works (401 unauth proves the route only) | reports start failing for signed-in users |
-| 4 | Apply 20261001 | probe 1: 9 tables… `user_blocks` t, `block_policy_count` 10, functions t; feed loads for a signed-in test account; latency within +50 ms | any feed error or latency regression → rollback 20261001 |
-| 5 | Apply 20261001b | `user_reports` t | — |
-| 6 | Apply 20261001d | `moderation_decisions`, `moderation_appeals` t; triggers `user_report_to_queue`, guards present | — |
-| 7 | Apply 20261009 | trigger `content_report_to_queue` present | — |
-| 8 | Set env vars (alert/digest ids = the owner), then the three flags one at a time, redeploy after each | `/api/config` shows each flag; unauthenticated `GET /api/users/blocks` = 401; the owner opens `/admin/moderation` | a route 5xx → remove that flag, redeploy |
-| 9 | One controlled test (needs separate authorization): test account B posts, A reports and blocks | queue row with priority; push received; B's post gone from A's feed; ledger row after a decision | any step fails → stop, do not record |
+## 9. Step by step — each production step needs your own authorization; nothing below runs by itself
+Facts used: production serves `f9f2b12`; flags false (public `/api/config`); the probes of 10/10 (see `APPLE-1-2-PROBE-RESULT-2026-10-10.md`).
+Re-run probes 1–4 (`scripts/release/sql/apple-1-2-probe-editor.sql`, `-2`, `-3`) in the SQL Editor immediately before step 1; if any answer differs from the record, stop and re-plan.
+
+### Step 1 — Ship the code, inert
+- **Before:** CI green on `sec/apple-1-2-moderation-release` (Architecture Guard, Regression Gate); the Terms commit `663699a` is NOT on this branch.
+- **Change:** merge that branch into `main` (fast-forward over `f9f2b12` as of 10/10); Vercel deploys. Registers two digest crons.
+- **Verify:** `/api/version` = the new SHA; `/`, `/login`, `/reviews` answer 200; `/api/config` `p8.*` still all false; Vercel → Cron Jobs lists `moderation-digest` twice.
+- **Stop if:** a deploy error, any 5xx on `/` or `/login`, or a flag turns on by itself.
+- **Recover:** redeploy the previous deployment (`f9f2b12`) from the Vercel dashboard. Nothing in the database has changed yet.
+
+### Step 2 — Backup
+- **Before:** the production password file exists on the machine that runs it (only you can create it, RELEASE-PLAN §3b); Docker engine up.
+- **Change:** `scripts/release/backup-prod.ps1` (lead-run, not Claude).
+- **Verify:** `CHECKS-PASSED.json` is written and the dump hash re-verifies.
+- **Stop if:** any check fails: no migration is applied without it.
+- **Recover:** n/a (a read-only dump).
+
+### Step 3 — 20260930 (close the open insert policy)
+- **Before:** probe 3 shows `policy_is_still_check_true: true`; no client other than the post-report route inserts into `content_reports`.
+- **Change:** `bash scripts/release/apply-migration.sh supabase/migrations/20260930_content_reports_insert_check.sql --i-have-a-valid-backup <backup-dir> --after-smoke-passed`
+- **Verify:** probe 3 → `insert_check_20260930_applied: true`; one post report from a signed-in test account still returns "sent" (part of the controlled test, step 10).
+- **Stop if:** reports from signed-in users start failing (route 500 / `report_failed`).
+- **Recover:** `supabase/migrations/rollback/20260930_content_reports_insert_check_rollback.sql` (reopens the old policy).
+
+### Step 4 — 20261001 (blocks: the one that touches hot tables)
+- **Before:** probe 1 shows `user_blocks` false and `block_policy_count` 0; the prerequisite tables (probe 2) all true; a low-traffic hour; step 3 verified; the feed API's response time noted beforehand.
+- **Change:** apply `20261001_user_blocks.sql` the same way. (This also activates, regardless of flags, the policy that lets a post's owner delete comments on that post.)
+- **Verify:** probe 1 → `user_blocks` t, `block_policy_count` 10, `blocked_ids` t, `review_author_blocked` t; a signed-in test account loads Explore and a post detail normally; compare the feed's response time with the value noted before.
+- **Stop if:** any feed, comment or notification error, or the feed's response time rises by more than 50 ms (the threshold is a decision, not a measurement of production).
+- **Recover:** `.../rollback/20261001_user_blocks_rollback.sql` (blocks made in the meantime are lost; `chat_blocks` is untouched).
+
+### Steps 5–8 — 20261001b, 20261001d, 20261009, 20261010
+One file each, in this order, each with its own authorization.
+- **Before (each):** the previous step verified; the probe shows this file's objects missing.
+- **Change (each):** `apply-migration.sh <file> --i-have-a-valid-backup <backup-dir> --after-smoke-passed`.
+- **Verify:** 20261001b → `user_reports` t. 20261001d → `moderation_decisions` and `moderation_appeals` t; triggers `user_report_to_queue`, `moderation_decisions_guard`, `moderation_appeals_guard`. 20261009 → trigger `content_report_to_queue`. 20261010 → trigger `content_report_flood_guard`; constraints `content_reports_reason_check` and `content_reports_policy_id_len` present with `convalidated = false`.
+- **Stop if:** the wrapper refuses (UNLISTED / SKIP / DEFER: do not force) or the file's own transaction errors (it rolls itself back).
+- **Recover:** that file's rollback, in reverse order (1010, 1009, 1001d, 1001b). Rolling back 1001d drops the ledger: export decisions first if any exist.
+
+### Step 9 — Environment variables, then the flags (read at build: redeploy after each change)
+- **Before:** steps 3–8 verified by probe; you are the named reviewer (you accepted the 24 h duty); no backup reviewer (leave `MODERATION_BACKUP_USER_IDS` unset).
+- **Change, in this order:** `MODERATION_ALERT_USER_IDS` and `MODERATION_DIGEST_USER_IDS` = your TappyAI user id → redeploy; `USER_BLOCKS_ENABLED=true` → redeploy; `REPORTS_ENABLED=true` → redeploy; `MODERATION_ADMIN_ENABLED=true` → redeploy.
+- **Verify after each flag:** `/api/config` shows it true; an unauthenticated `GET /api/users/blocks` answers 401 (it was 404); after the last one you open `/admin/moderation` and see the desk and its stats.
+- **Stop if:** a route answers 5xx or the desk fails to load.
+- **Recover:** remove that variable in Vercel and redeploy (the route answers 404 again). The database objects can stay.
+
+### Step 10 — One controlled test (separate authorization; it creates real rows)
+- **Before:** step 9 verified; a test account B you control with one harmless post; you (A) signed in on the iPhone.
+- **Change:** A reports B's post (with a severe reason, to exercise the urgent path), then blocks B.
+- **Verify:** a queue row exists with its priority (desk); you received the push; B's post left A's feed at once; after you decide on the report, a decision row exists and any duplicate reports are closed.
+- **Stop if:** any of those does not happen: do not record the video.
+- **Recover:** close the test report as "no violation"; unblock B in Settings → Blocked accounts.
+
+### Not part of this plan
+`20261001e` (triggers on `auth.users`); publishing the policies; App Store Connect; any build upload. If 20261001e is ever wanted: add `SET LOCAL lock_timeout = '3s'` first and apply at low traffic.

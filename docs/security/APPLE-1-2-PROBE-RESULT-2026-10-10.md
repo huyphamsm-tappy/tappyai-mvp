@@ -52,3 +52,10 @@ The four missing migrations (and 20261009) must be applied first; see `APPLE-1-2
 Prerequisite tables: all eight exist (`reviews`, `review_comments`, `review_likes`, `user_follows`, `notifications`, `profiles`, `account_status`, `audit_log`).
 `content_reports` has one policy, "Users can file a content report : INSERT", and its check is still `true` (the third query: `policy_is_still_check_true: true`,
 `insert_check_20260930_applied: false`) → **20260930 is NOT applied.**
+
+## Addendum 2 — fourth query (`apple-1-2-probe-editor-3.sql`, same method; definitions only)
+- `moderation_queue` has `uq_modq_source` (UNIQUE on `metadata->>'source_table'` and `metadata->>'source_id'`): the queue's duplicate protection is present, so the post-report
+  trigger and the daily ingest cannot double-queue a report. It also has `idx_modq_status`, `idx_modq_target` and the primary key.
+- `content_reports`: columns `id, content_id, reporter_source_id, reason, policy_id, verification_state, status, created_at`; UNIQUE (content_id, reporter_source_id, reason);
+  FK `content_id` to `reviews(id)` ON DELETE CASCADE; a `status` check; **no check on `reason`** (free text today).
+- Enums: `moderation_type` = review_report, comment_report, user_report, music_report, ai_flag; `moderation_status` = pending, in_review, resolved, dismissed. The values 20261001d and 20261009 cast to exist.
