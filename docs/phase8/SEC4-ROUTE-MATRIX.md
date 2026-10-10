@@ -115,3 +115,24 @@ Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `pro
 | GET / PATCH / other methods | unchanged (no storage write) | n/a |
 
 **Acceptance criteria:** (1) the 11th upload within an hour is 429 before the body is read; (2) a different user is unaffected; (3) the budget is shared across two instances; (4) the window is an hour (still refused at 30 min, admitted after 60); (5) store configured but down → 429 with reason `store_unavailable`, no body read, recovers; (6) no store configured → in-process fallback with the same limit; (7) existing validation, anonymous refusal, creator check and order of checks are unchanged (the existing route tests pass untouched); (8) mutations (limit, key, window, limiter removed, check moved after the body read) are caught; (9) the ratchet registry moves both routes from `known-gap` to `covered` and the budget falls by two.
+
+
+---
+## Slice 5b — push-per-action routes: `POST /api/reviews/[id]/like`, `POST /api/users/[id]/follow`, `POST /api/reviews/[id]/comments` (contract and acceptance criteria, written BEFORE the change)
+
+**Out of this slice, on the owner's instruction:** `POST /api/messaging/threads/[id]/messages` (the send limiter) — its behaviour is not changed here; its fail-open-or-per-instance question stays an owner decision in the collapse proposal (§7d).
+
+| | `reviews/[id]/like` | `users/[id]/follow` | `reviews/[id]/comments` (POST) |
+|---|---|---|---|
+| Contract today | toggle (insert, delete on 23505); on a successful insert: a push to the review owner and a possible milestone push | toggle follow/unfollow; a push to the target on follow | inserts a comment (suspension check first) and pushes to the review owner |
+| Resource cost | database write + push dispatch per action (no per-send fee); the abuse is notification spam against one person | same | same |
+| Authentication | session (401); anonymous refused (B17) | session; anonymous refused; self-follow 400 | session; anonymous refused (B17) |
+| Limiter today | **none** | **none** | in-process `rateLimit(comment:<user>, 10, 60 s)` |
+| Limit | **60 per minute per user** (`like:<user id>`) — a proposal, no previous limit existed | **30 per minute per user** (`follow:<user id>`) — a proposal | **10 per minute per user, key `comment:<user id>` — UNCHANGED**; only the limiter becomes the shared one |
+| Why these numbers | a fast scroller double-tapping likes stays well under 60/min; rapid like/unlike toggling to spam the owner's inbox does not | following 30 accounts a minute is above any real use | preserves the existing limit and copy (`comment.tooFast`) |
+| Position | after the anonymous refusal (and after the self-follow 400), before any database write | same | exactly where the current check is |
+| Refusal | the existing-style 429 `rate_limit` body + `X-RateLimit-Reason` + `Retry-After` + one `tappyai_rate_limit` log line | same | same, with the existing `comment.tooFast` message |
+| Store failure | shared store configured but down → **429 with reason `store_unavailable`** (fail closed, consistent with the other migrated routes); no store configured → in-process fallback | same | same |
+**Operational note:** unlike the paid-provider routes these three are *social* actions: while the shared store is configured but unavailable, liking, following and commenting would answer 429 for everyone. That is the same fail-closed semantics as slice 2 and is flagged as an owner decision (a fail-open-to-in-process variant would be the alternative for abuse-only limits; it needs its own helper and tests and is **not** implemented here).
+
+**Acceptance criteria:** (1) the limit-plus-one request is 429 before any database access or notification; (2) another user is unaffected; (3) the budget is shared across two instances; (4) the window is a minute (still refused at 30 s, admitted after 60 s); (5) store down → 429 `store_unavailable`, no database access, recovers; (6) no store configured → in-process fallback with the same number; (7) signed-out → 401 and anonymous → refused **without spending** (order unchanged; for follow, self-follow 400 spends nothing); (8) comments keep their exact limit, key and message; (9) mutations (limit, key, window, in-process again, missing await) are caught; (10) the ratchet moves the three routes to `covered` and the budget falls by three.
