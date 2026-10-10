@@ -24,3 +24,12 @@ Status: **audit only. The route is NOT closed, limited or changed.** No quota va
 | **D. Leave as is** | nothing | unbounded input, one LLM call per request, any session | none | – | – |
 
 **Recommendation (not a decision): A** — no client uses the route, it removes the exposure completely without inventing quota values, and it is the cheapest to reverse. B is the right choice only if the owner wants the endpoint kept for a future caller.
+
+## 3. Resolution (2026-10-10) — dependencies checked, POST disabled
+Evidence gathered for the decision (all in-repository; production traffic is not visible from here):
+- **Route exports:** `GET`, `POST`, `PATCH`, `DELETE`. **Callers:** Web — none for POST; Android `MemoryApi` — `GET`, `PATCH`, `DELETE`; iOS `ChatService` (`GET`) and `ProfileService` (`PATCH`, `DELETE`). `git log --all -S` over `ios/` and `android/` finds **no commit that ever added a POST to `/api/memory`**. The UAT evidence script `docs/uat/evidence/f093-2026-09-25/live_memory.mjs` uses `GET`/`PATCH`.
+- **Documented external integration:** `docs/ios/04_API_CONTRACT.md` §2.3 and its endpoint table list `GET/POST /api/memory` ("POST writes/updates"). That description is **stale** — the real `POST` was an LLM extraction and the writing endpoint is `PATCH` — and the iOS client it documents never called POST. Other documents (`FINAL_ARCHITECTURE`, `AI_Personalization_Architecture`, the 2026-09-30 security audit's route table) merely list the method. **That iOS document was NOT edited** (it lives in the mobile documentation; the correction is a follow-up for the application phase). No other integration, SDK or webhook references POST.
+- **Cannot be ruled out from here:** an external caller outside the repository, or a very old cached Web bundle, hitting production. Disabling answers a harmless 404 to such a caller.
+- **Authentication paths:** unchanged for the supported methods (`GET`: any session, `null` when none; `PATCH`/`DELETE`: 401 when none).
+
+**Change made (`016b996`):** `POST` now answers **404 with an empty body before any authentication, memory read, model call or write**, and the module no longer imports the extraction function. `GET`/`PATCH`/`DELETE` are byte-for-byte unchanged. Tests: POST cannot reach the LLM, extraction, memory store or session lookup for a signed-in, anonymous or signed-out caller, an empty body, a 2000-message body or malformed JSON; the supported methods behave as before; restoring the old POST fails 3 of 3 tests. **Reversal** needs the owner's limiter and payload numbers (option B above).

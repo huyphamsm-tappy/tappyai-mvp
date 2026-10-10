@@ -1,6 +1,6 @@
 # Messenger → Inbox: collapsing unread message notifications per thread — PROPOSAL (not implemented)
 
-Status: **PROPOSAL v2.1 (2026-10-10, store-down semantics added in §7d) — the five open semantics are resolved below with recommended defaults; the owner approved the DIRECTION (one unread row per recipient and thread); implementation waits for explicit approval of §7. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
+Status: **PROPOSAL v2.2 (2026-10-10; store-down semantics §7d; DB-level acceptance criteria verified in a spike §7e — still NOT implemented) — the five open semantics are resolved below with recommended defaults; the owner approved the DIRECTION (one unread row per recipient and thread); implementation waits for explicit approval of §7. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
 
 ## 1. What exists today (verified)
 - A send (`POST /api/messaging/threads/[id]/messages`) stores the row, then `notifyThreadRecipients` calls `emitNotification` **once per other participant per message** (`type 'message'`, `category 'social'`, title = sender name, fixed body, `data {threadId, kind}`, `entityUrl` = `/profile/notifications?tab=messages&thread=<id>`). Only when the flag is exactly `'true'`.
@@ -99,6 +99,33 @@ The recommended defaults D1–D5 above, the 10-minute window, and the web change
 17. Failure injection never produces two unread rows for one (recipient, thread) (property test over random interleavings with random failures).
 
 **Approval (adds to §7c):** F3 as the failure policy, the 2 s / 3 s bounds, and whether the message-send limiter (SEC4 slice 5) is fail-open or per-instance.
+
+## 7e. Verification status — database-level acceptance criteria are now tested in a SPIKE (2026-10-10)
+
+`supabase/tests/notification_collapse_spike.test.ts` (18 tests with the port suite; **a test-only spike, not a migration; nothing ships from it; nothing was applied anywhere**) builds the minimal schema inline (`chat_messages`, `chat_reads`, `notifications`), the partial unique index and the two functions this proposal describes, on a **real embedded PostgreSQL with real concurrent connections**. It proves, and 7 of 7 mutations of the SQL are caught (no lock in emit, no lock in read, increment instead of derived count, cursor not honoured, throttle ignored, read marking rows newer than the cursor, unique index removed):
+
+| Acceptance test (§7b / §7d) | Spike test | Result |
+|---|---|---|
+| 1 five messages → one unread row, count 5, one push | `1 ·` | pass |
+| 2 read → next message opens a NEW row (count 1), history kept | `2 ·` | pass |
+| 3 20 concurrent emits → one unread row, count 20, exactly one push (20 separate connections) | `3 ·` | pass |
+| 4 retry of the same message changes nothing (derived count) | `4 ·` | pass |
+| 5 read racing a send, **both orders forced** with the advisory lock held in an open transaction: send→read marks read; read→send opens a new row; the waiter really waits (`pending` for 250 ms) | `5a`, `5b` | pass |
+| 6 a message older than the cursor creates no row — including one emitted after the read | `6`, `6b` | pass |
+| 7 recipients/threads independent; the recipient's own messages are not counted | `7 ·` | pass |
+| 9 push throttle with an injected clock: pushes at 0 s, not at 60 s / 599 s, again at 600 s, not at 601 s, again at 1500 s | `9 ·` | pass |
+| unique index is the backstop; a read row does not block a new unread row | `the unique index …` | pass |
+| 13 lock timeout → degraded insert keeps exactly one unread row, never pushes; the next successful emit repairs the count (3 messages → 3) | `13 + 14 ·` | pass |
+| 15 the path touches no KV store (the SQL contains none) | `15 ·` | pass (structural) |
+| 16 `lock_timeout` bounds the wait: 55P03 within 2 s while the lock is held | `16 ·` | pass |
+| 17 property run: 6 connections × 40 random operations (send, emit, read, emit with a 30 ms lock timeout): no unexpected error, never two unread rows, counts converge to the exact derived value | `17 ·` | pass |
+
+**Findings recorded by the spike (for the review of the real migration):**
+1. **Timestamp-cursor edge, consistent with today's Messenger:** a message whose `created_at` is earlier than the reader's cursor but which was committed after the read is treated as read by the emit (no row). That is exactly how the existing unread derivation (`created_at > cursor`) already behaves, so the notification never disagrees with the Messenger's unread badge — but it means such a message is also not shown as unread there. Not introduced by this proposal; to be kept in mind when the cursor semantics are next reviewed.
+2. **The degraded path leaves a stale count until the next success** (test 13 + 14): by design (§7d F3) — the pointer exists, the number is repaired by the next emit.
+3. The lock key is `hashtextextended(user ‖ ':' ‖ thread, 0)` — a 64-bit hash; a collision would only make two unrelated (recipient, thread) pairs wait on each other (never a correctness problem). To be noted in the migration.
+
+**Still NOT verified (and why this remains a proposal):** acceptance tests 8 (flag/route behaviour), 10 and 11 (Web read ordering, realtime UPDATE handling, "mark all read") and 12 (rollback, privacy columns) need the real migration, the route change and component tests; the production schema, RLS and grants; Android/iOS handling of the `message` type; and any production behaviour. The send API is unchanged.
 
 ---
 # Send idempotency — separate DESIGN TASK (not part of this slice; NOT implemented)

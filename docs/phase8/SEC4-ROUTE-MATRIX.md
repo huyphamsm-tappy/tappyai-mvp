@@ -154,3 +154,21 @@ Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `pro
 | Store failure | **429 with reason `store_unavailable`** (operators cannot edit until the store answers — the accepted C10 trade-off) |
 
 **Acceptance criteria:** (1) the 61st edit in an hour is 429 with `Retry-After`, before the body is parsed or the database read; (2) another admin is unaffected; (3) shared across instances; (4) the window is an hour; (5) store down **or not configured** → 429 `store_unavailable`, nothing written, recovers; (6) permission failure → the existing 401/403 and spends nothing; cross-origin → 403 and spends nothing; (7) the existing campaign route tests pass unchanged; (8) mutations caught; (9) the ratchet drops its admin exception for this route (`ADMIN_EXCEPTIONS` becomes empty) and the budget falls by one.
+
+
+---
+## State after slices 3, 5a, 5b, 5c and the refusal-reason work (2026-10-10)
+
+| Slice | Routes | Result | Commits |
+|---|---|---|---|
+| 3 | `memory` POST | **disabled (404 before any work)** after the dependency check in `MEMORY-POST-AUDIT.md` §3 | `016b996` |
+| refusal reason | all shared-limiter routes | refusals say **why**: `reason` on `distributedRateLimit`/`publicRateLimit` results (`limit_exceeded` / `store_unavailable`), one helper `rateLimitedResponse` (429 contract unchanged, `X-RateLimit-Reason`, `Retry-After`, one `tappyai_rate_limit` log line with limit, scope and reason, never the key); a store answer that is neither "admitted" nor "rejected" now counts as `store_unavailable` | `7570304` |
+| 5a | `profile` (avatar/cover), `group/[id]/avatar` | 10/hour per user each (documented proposal) | `f49a7b1` |
+| 5b | `reviews/[id]/like` 60/min, `users/[id]/follow` 30/min (proposals), `reviews/[id]/comments` 10/min **unchanged** | shared limiter | `cb5fd7f` |
+| 5c | `admin/marketing/campaigns/[id]` PATCH | `distributedRateLimit`, 60/hour per admin, fail closed; admin exception removed | `c7f14f3` |
+
+**Infrastructure failure vs genuine quota breach (what is and is not distinguished):** in the logs/metrics (`tappyai_rate_limit` lines: count `reason = store_unavailable` for an outage, `limit_exceeded` for usage) and in a response header (`X-RateLimit-Reason`). **The HTTP status is deliberately still 429** for both, because the existing clients (Web, Android, iOS) already handle 429 and a different status for the outage would change a contract they depend on; moving an outage to 503 is a client-contract decision for the application phase and is listed as an owner decision.
+
+**Ratchet:** known-gap budget **5**: `translate`, `scan` (slice 4 — **needs the owner's burst and global-ceiling numbers; none were invented**), `stripe/checkout`, `stripe/portal` (dormant while the subscriptions flag is on), `messaging/threads/[id]/messages` (the send limiter — **not changed on the owner's instruction**; fail-open vs per-instance is decided in the collapse proposal §7d). `ADMIN_EXCEPTIONS` is empty.
+
+**Still UNVERIFIED (no production evidence):** that `KV_REST_API_*` is configured in Production now; which path any route takes at runtime; the live behaviour and 429 rate of every limiter; whether a WAF/CDN limits outside the repository. **SEC4 production coverage is NOT claimed.** What is proven is the behaviour of each limiter in tests (limit, keying, cross-instance sharing, window, store failure, no-store fallback, reason reporting) and the ratchet that stops a new cost route shipping undeclared.
