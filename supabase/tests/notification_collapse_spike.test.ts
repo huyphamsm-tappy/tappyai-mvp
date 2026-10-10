@@ -20,7 +20,7 @@ const PORT = 54355
 const DB = 'collapsespike'
 
 const SPIKE_SQL = `
-CREATE TABLE chat_messages  (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), thread_id uuid NOT NULL, sender_id uuid NOT NULL, created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE chat_messages  (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), thread_id uuid NOT NULL, sender_id uuid NULL, created_at timestamptz NOT NULL DEFAULT now());
 CREATE TABLE chat_reads     (user_id uuid NOT NULL, thread_id uuid NOT NULL, last_read_at timestamptz NOT NULL, PRIMARY KEY (user_id, thread_id));
 CREATE TABLE notifications  (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL, type text NOT NULL, data jsonb NOT NULL DEFAULT '{}', read_at timestamptz, created_at timestamptz NOT NULL DEFAULT now());
 
@@ -34,9 +34,11 @@ DECLARE v_cursor timestamptz; v_count int; v_id uuid; v_last_push timestamptz; v
 BEGIN
   PERFORM pg_advisory_xact_lock(hashtextextended(p_user::text || ':' || p_thread::text, 0));          -- D2: serialise per (recipient, thread)
   SELECT last_read_at INTO v_cursor FROM chat_reads WHERE user_id = p_user AND thread_id = p_thread; -- re-read the cursor UNDER the lock
+  UPDATE notifications SET read_at = p_now                                                           -- SELF-HEAL: a cursor moved by someone else (direct chat_reads write) must not leave a stale unread row
+   WHERE user_id = p_user AND type = 'message' AND read_at IS NULL AND data->>'threadId' = p_thread::text AND v_cursor IS NOT NULL AND (data->>'lastMessageAt')::timestamptz <= v_cursor;
   IF v_cursor IS NOT NULL AND p_message_at <= v_cursor THEN RETURN; END IF;                          -- the message is covered by the cursor: nothing to point at
   SELECT count(*) INTO v_count FROM chat_messages                                                    -- D5: DERIVED count, never incremented
-   WHERE thread_id = p_thread AND sender_id <> p_user AND created_at > COALESCE(v_cursor, '-infinity');
+   WHERE thread_id = p_thread AND sender_id IS DISTINCT FROM p_user AND created_at > COALESCE(v_cursor, '-infinity');
   SELECT n.id, (n.data->>'lastPushAt')::timestamptz INTO v_id, v_last_push FROM notifications n
    WHERE n.user_id = p_user AND n.type = 'message' AND n.data->>'threadId' = p_thread::text AND n.read_at IS NULL;
   IF v_id IS NULL THEN
@@ -295,5 +297,54 @@ describe('collapse spike · concurrency (several real connections)', () => {
       expect((await unread(R, thread))).toHaveLength(1)
     }
     for (const c of conns) { await c.end(); clients.splice(clients.indexOf(c), 1) }
+  })
+})
+
+// ── Added 2026-10-10 (second continuation): differences between this spike and the REAL Web/production shape that can be checked at database level ──────────────────────────────────
+describe('collapse spike · real-shape differences (docs/phase8/MESSENGER-COLLAPSE-MIGRATION-REVIEW-PACKAGE.md §2)', () => {
+  it('18a · a message whose sender was deleted (sender_id NULL, ON DELETE SET NULL in the real table) is still counted; `<>` would silently drop it', async () => {
+    await reset()
+    const a = await sendMessage(main, T1, S, iso(1)); await emit(main, R, T1, a, iso(1))
+    const n = await main.query(`INSERT INTO chat_messages (thread_id, sender_id, created_at) VALUES ($1, NULL, $2) RETURNING created_at::text AS at`, [T1, iso(2)])
+    const e = await emit(main, R, T1, n.rows[0].at, iso(2))
+    expect(e[0].unread_count).toBe(2)
+  })
+
+  it('18b · SELF-HEAL: the cursor is moved by something other than the read function (the real chat_reads RLS lets a client write its own cursor) → the stale unread row is read at the next emit and a NEW row opens', async () => {
+    await reset()
+    const a = await sendMessage(main, T1, S, iso(1)); await emit(main, R, T1, a, iso(1))
+    await main.query(`INSERT INTO chat_reads (user_id, thread_id, last_read_at) VALUES ($1, $2, $3)`, [R, T1, iso(5)]) // direct cursor write, bypassing mark_thread_notifications_read
+    expect(await unread()).toHaveLength(1)                                                                          // stale until something heals it
+    const b = await sendMessage(main, T1, S, iso(9)); const e = await emit(main, R, T1, b, iso(9))
+    expect(e[0]).toMatchObject({ unread_count: 1, should_push: true })
+    const all = await rows()
+    expect(all).toHaveLength(2)
+    expect(all.filter((r) => r.read_at === null)).toHaveLength(1)
+    expect((await unread())[0].count).toBe(1)
+  })
+
+  it('18c · CHARACTERISATION (owner decision D7): "mark all read" in the Inbox flips notifications.read_at but does NOT move the chat cursor → the next message reopens a row whose derived count includes the messages the user just dismissed', async () => {
+    await reset()
+    for (let i = 1; i <= 3; i++) { const at = await sendMessage(main, T1, S, iso(i)); await emit(main, R, T1, at, iso(i)) }
+    await main.query(`UPDATE notifications SET read_at = now() WHERE user_id = $1`, [R])                              // what POST /api/notifications/read does today
+    const at = await sendMessage(main, T1, S, iso(10)); const e = await emit(main, R, T1, at, iso(10))
+    expect(e[0].unread_count).toBe(4)                                                                               // 3 dismissed + 1 new: consistent with the Messenger badge, surprising for the Inbox
+  })
+})
+
+describe('collapse spike · function-level lock_timeout (the form the migration would use)', () => {
+  it('19 · `SET lock_timeout` as a FUNCTION ATTRIBUTE bounds the wait inside a plain statement (no client-side SET LOCAL): 55P03 within the bound, and the setting does not leak to the session', async () => {
+    await reset()
+    await main.query(`CREATE OR REPLACE FUNCTION emit_bounded(p_user uuid, p_thread uuid, p_at timestamptz, p_now timestamptz) RETURNS TABLE (notification_id uuid, unread_count int, should_push boolean) LANGUAGE plpgsql SET lock_timeout = '300ms' AS $f$ BEGIN RETURN QUERY SELECT * FROM emit_message_notification(p_user, p_thread, p_at, p_now); END $f$`)
+    const at = await sendMessage(main, T1, S, iso(1))
+    const holder = await newClient(); const caller = await newClient()
+    await holder.query('BEGIN'); await emit(holder, R, T1, at, iso(2))                     // holder keeps the (recipient, thread) lock
+    const t0 = Date.now()
+    await expect(caller.query(`SELECT * FROM emit_bounded($1, $2, $3::timestamptz, $4::timestamptz)`, [R, T1, at, iso(3)])).rejects.toMatchObject({ code: '55P03' })
+    const waited = Date.now() - t0
+    expect(waited).toBeGreaterThanOrEqual(250); expect(waited).toBeLessThan(2_000)
+    expect((await caller.query('SHOW lock_timeout')).rows[0].lock_timeout).toBe('0')     // restored after the function: no leak
+    await holder.query('COMMIT')
+    expect((await caller.query(`SELECT * FROM emit_bounded($1, $2, $3::timestamptz, $4::timestamptz)`, [R, T1, at, iso(4)])).rows).toHaveLength(1) // and it works once the lock is free
   })
 })
