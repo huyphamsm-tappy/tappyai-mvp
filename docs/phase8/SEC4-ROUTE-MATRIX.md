@@ -43,9 +43,9 @@ Why not one blanket policy: the tiers differ in who the caller is (anonymous IP 
 - AC1 a detected cost route with no entry fails the test with a message that names the route and the signals found;
 - AC2 an entry whose route no longer exists fails (no stale declarations);
 - AC3 the declared `limiters` must equal the limiter patterns actually present in the route source (so adding or removing a limiter forces a declaration update — the ratchet works in both directions);
-- AC4 `covered` requires at least one of D / P / Q (or C for cron); `known-gap` may only list L / local / none; `exempt` requires a `note` of ≥ 40 characters;
+- AC4 `covered` requires at least one of D / P / Q (or C for cron); `known-gap` must name the missing control (note ≥ 20 characters) and the slice that closes it (2..6); `exempt` requires a reason of ≥ 40 characters;
 - AC5 the number of `known-gap` entries is pinned (`KNOWN_GAP_BUDGET`); raising it requires editing the test, which review sees; lowering it is the way a gap is closed;
-- AC6 mutation checks: adding a fake cost route file, removing a declaration, changing a declared limiter, and adding a known-gap each make the suite fail (proved in the slice's test report);
+- AC6 mutation checks: a fake cost route file, a removed declaration, a declared limiter the code lacks, a gap relabelled, and a gap added without a budget change each make the suite fail (5/5 caught on the real tree; the rules themselves are also tested on a fixture tree);
 - AC7 **no runtime behaviour change**: no route, limiter, config or migration file is modified; Android/iOS untouched.
 Limits of the heuristic (stated, not hidden): a route that reaches a provider only through a symbol this scan does not recognise, or deeper than 3 imports, is not detected; and a module that merely *contains* a cost function counts as a signal, hence the explicit exemptions. The patterns list is part of the test so it is reviewed like code.
 
