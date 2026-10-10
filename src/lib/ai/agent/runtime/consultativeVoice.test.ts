@@ -66,6 +66,11 @@ describe('the static system message', () => {
     expect(added).not.toMatch(/giữ (?:trong )?phạm vi|xoay quanh|chỉ (?:tư vấn|trả lời|hỗ trợ)|ngoài (?:phạm vi|lĩnh vực)|năm lĩnh vực|5 lĩnh vực/i)
     expect(on.split('\n')[0]).not.toMatch(/ăn uống|mua sắm|du lịch|giải trí|spa/i) // the persona line names no domain list
     expect(CONSULT_PRINCIPLES).toContain('mọi loại câu hỏi')
+    // realtime: look up before saying; short source; "chưa xác minh được"; links are built by the system, never by the model
+    expect(CONSULT_PRINCIPLES).toMatch(/tra bằng công cụ trước rồi mới nói, không trả lời từ trí nhớ/)
+    expect(CONSULT_PRINCIPLES).toMatch(/chưa xác minh được/)
+    expect(CONSULT_PRINCIPLES).toMatch(/Bạn không tự viết link: link do hệ thống dựng/)
+    expect(CONSULT_PRINCIPLES).toMatch(/chỉ nói đã kèm link khi kết quả công cụ thật sự có link/)
     expect(CONSULT_PRINCIPLES).toMatch(/hiểu biết chung/)
     expect(CONSULT_PRINCIPLES).toMatch(/không bịa giá, giờ, khoảng cách hay sự kiện/)
   })
