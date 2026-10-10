@@ -67,3 +67,32 @@ Each behaviour slice: acceptance criteria written first, route-level tests with 
 - Live values of `CHAT_IP_BURST_PER_MINUTE`, `PRO_DAILY_CHAT_CAP`, `SERPER_DAILY_CREDIT_CEILING`, `CRON_SECRET`, `SUBSCRIPTIONS_ENABLED`.
 - WAF/CDN limiting outside the repository; vendor spend; lambda fan-out factor.
 These stay BLOCKED until read-only production evidence is provided; no claim of runtime wiring is made.
+
+
+---
+## Update — slice 2 complete; routes grouped by cost and operational behaviour (2026-10-10, `5c9a1b3`)
+
+**Slice 2 (in-process → shared limiter), five independent commits:** `group/[id]/suggest` (`c392300`), `explore/process` (`1a53cb8`), `upload/video` (`e659383`), `voice/tts` (`5ad2b89` + `3e3afc7`), `reviews/upload` (`5c9a1b3`). Each keeps its previous limit and key (`group-suggest:<user>` 5/min, `explore-process:<user>` 20/min, `upload-video:<user>` 30/min, `voice-tts:<user>` 30/min, `reviews-upload:<user>` 10/day) and now calls `publicRateLimit` / `publicDailyRateLimit`. The ratchet budget fell **17 → 12**. **No new limit value was invented.** One behaviour change, documented and pinned by a test: `reviews/upload`'s day now ends at **Vietnam midnight** (it was a per-instance `Map` that reset at UTC midnight, 07:00 Vietnam time).
+
+**What the new limiter does (verified by five route-level suites and a mutation check per route):**
+- *limit exceeded* → the route's existing `429 rate_limit` body, before the route does any work (no database read, model call, synthesis or storage write);
+- *keying* → per user id; another user has an independent bucket;
+- *shared* → two module graphs (two lambdas) sharing one store exhaust one budget; with no store configured the counter is per instance (as before);
+- *window* → still refused at half the window, admitted again after it; the daily cap follows the Vietnam date;
+- *store failure* → when a store is configured but does not answer (throws or answers garbage) the request is **refused (fail closed)** and the route recovers as soon as the store answers; when **no** store is configured it falls back to the in-process limiter (never worse than before).
+
+**Operational consequence to accept knowingly:** while the shared store is configured but unavailable, these five features (group suggestions, explore content processing, video upload authorisation, text-to-speech, review photo upload) answer 429 for every user. That is the trade-off the public LLM routes already carry (owner decision D2 in `publicRateLimit.ts`) and the reason a missing cap is not silently granted during an incident. **Production KV configuration and the live behaviour of these routes remain UNVERIFIED** (the code comment that production has `KV_REST_API_*` is from an earlier date; there is no current evidence).
+
+### Routes grouped by cost class and operational behaviour (current state)
+| Group | Routes | Cost / behaviour | State |
+|---|---|---|---|
+| G1 user-keyed provider calls (LLM, TTS) | `chat`, `group/[id]/suggest`, `explore/process`, `voice/tts` | per-call provider spend; signed-in users; refusal is user-visible and recoverable | shared limiter (chat layered); **done** |
+| G2 user-keyed storage authorisation / writes | `upload/video`, `reviews/upload` (done); `profile`, `group/[id]/avatar` (**gap, slice 5**) | storage + image processing, size-capped; abuse = storage churn | 2 of 4 done |
+| G3 anonymous, IP-keyed LLM / lookups | `translate`, `scan` (daily-only: **gap, slice 4**); `viet-content`, `scam-shield/*` (burst + daily) | per-call LLM / vision / Web Risk; IP rotation multiplies caps; no global ceiling | 4 covered, 2 gaps |
+| G4 LLM with no limiter, no caller | `memory` POST | unbounded input per call | **gap, slice 3 — decision table in `MEMORY-POST-AUDIT.md`** |
+| G5 push-per-action (spam vector, no per-send fee) | `reviews/[id]/like`, `users/[id]/follow` (none), `reviews/[id]/comments`, `messaging/…/messages` (in-process) | push dispatch | gaps, slice 5 |
+| G6 payments, dormant | `stripe/checkout`, `stripe/portal` | 404 while `subscriptionsEnabled()`; no Web caller | gap, slice 5 (low) |
+| G7 operators | `admin/**` (35 of 36 shared-limited), `admin/marketing/campaigns/[id]` | fail closed | 1 gap, slice 6 |
+| G8 cron / exempt | `cron/**`, `notifications/backfill`; false positives and the inbound webhook | secret-gated / no provider call | declared |
+
+Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `profile`, `group/[id]/avatar`, `reviews/[id]/like`, `users/[id]/follow`, `reviews/[id]/comments`, `messaging/…/messages`, `stripe/checkout`, `stripe/portal`, `admin/marketing/campaigns/[id]`).
