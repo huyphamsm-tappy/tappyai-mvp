@@ -2,7 +2,8 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { rateLimit, clientIp } from '@/lib/security/rateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { detectLang } from '@/lib/ai/intent'
 import { getTtsProvider, ttsMetricsSnapshot } from '@/lib/voice/tts/service'
 import { TtsNotConfiguredError, TtsSynthesisError } from '@/lib/voice/tts/googleTts'
@@ -39,7 +40,7 @@ export async function POST(req: NextRequest) {
   const { user } = await getRequestUser(req)
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-  if (!rateLimit(`voice-tts:${user.id}`, 30, 60_000).ok) {
+  if (!(await publicRateLimit(`voice-tts:${user.id}`, 30, 60_000)).ok) {
     return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
   }
 

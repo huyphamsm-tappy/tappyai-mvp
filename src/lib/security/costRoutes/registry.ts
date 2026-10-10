@@ -12,7 +12,7 @@ import type { CostRouteDecl } from './scan'
 export const ADMIN_EXCEPTIONS: readonly string[] = ['admin/marketing/campaigns/[id]']
 
 /** The number of known-gap entries below. It may only go down. */
-export const KNOWN_GAP_BUDGET = 14
+export const KNOWN_GAP_BUDGET = 13
 
 export const COST_ROUTES: readonly CostRouteDecl[] = [
   // ── covered ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -25,11 +25,11 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'group/[id]/suggest', cost: 'LLM', limiters: ['public'], key: 'user, 5/min (shared store; in-process only when no store is configured; closed when configured but down)', status: 'covered', note: 'slice 2a: publicRateLimit with the previous limit and key' },
   { route: 'explore/process', cost: 'LLM content processing', limiters: ['public'], key: 'user, 20/min', status: 'covered', note: 'slice 2b: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
   { route: 'upload/video', cost: 'signed upload URL minting', limiters: ['public'], key: 'user, 30/min', status: 'covered', note: 'slice 2c: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
+  { route: 'voice/tts', cost: 'Google TTS (per character, <= 2000 chars per call)', limiters: ['public'], key: 'user, 30/min', status: 'covered', note: 'slice 2d: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
   { route: 'notifications/backfill', cost: 'push fan-out', limiters: ['cron'], key: 'CRON_SECRET bearer', status: 'covered', note: 'not user-reachable; closed when the secret is unset' },
 
   // ── known gaps (each names the missing control and the slice that closes it) ────────────────────────────────────────────────────────────
   { route: 'memory', cost: 'LLM (memory extraction on caller-supplied messages); no Web caller', limiters: [], key: '—', status: 'known-gap', note: 'no limiter at all on an LLM-calling POST; close the endpoint or limit it', slice: 3 },
-  { route: 'voice/tts', cost: 'Google TTS (per character, <= 2000 chars per call)', limiters: ['inprocess'], key: 'user 30/min (per instance)', status: 'known-gap', note: 'in-process only; needs the shared limiter and a daily ceiling', slice: 2 },
   { route: 'reviews/upload', cost: 'image processing + storage write', limiters: ['local'], key: 'user 10/day (in-file, per instance)', status: 'known-gap', note: 'local in-file counter; needs the shared limiter', slice: 2 },
   { route: 'translate', cost: 'LLM', limiters: ['public'], key: 'ip 30/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
   { route: 'scan', cost: 'vision LLM', limiters: ['public'], key: 'ip 20/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
