@@ -52,8 +52,11 @@ describe('moderation crons', () => {
     expect(esc.map((n) => n.userId)).toEqual(['b1'])
     expect(esc[0].title).toMatch(/ESCALATION/)
     h.emit.mockClear()
-    h.rows = [{ priority: 3, created_at: ago(2) }, { priority: 1, created_at: ago(30) }]   // fresh urgent, routine 30 h old (72 h target)
+    h.rows = [{ priority: 3, created_at: ago(2) }, { priority: 1, created_at: ago(10) }]   // both fresh (24 h target for every report)
     expect(await (await call(DIGEST)).json()).toMatchObject({ sent: 2, escalated: 0, counts: { at_risk: 0, overdue: 0 } })
+    h.emit.mockClear()
+    h.rows = [{ priority: 1, created_at: ago(30) }]                                       // a ROUTINE report 30 h old is overdue too (Apple 1.2: 24 h for all)
+    expect(await (await call(DIGEST)).json()).toMatchObject({ sent: 2, escalated: 1, counts: { overdue: 1 } })
     delete process.env.MODERATION_BACKUP_USER_IDS
   })
 

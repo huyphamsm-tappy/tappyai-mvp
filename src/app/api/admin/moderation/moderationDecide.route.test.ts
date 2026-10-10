@@ -25,6 +25,17 @@ const h = vi.hoisted(() => ({
   ledgerInserted: false,
   siblings: [] as Array<{ id: string }>,
   siblingError: null as null | { message: string },
+  // reviews: the state the hide reads, how many conditional updates match (one entry per attempt; the last repeats), errors
+  reviewState: 'PUBLISHED' as string | null,
+  reviewMatches: [1] as number[],
+  reviewsError: null as null | { message: string },
+  provError: null as null | { message: string },
+  actionRows: [] as Array<Record<string, unknown>>, // hide_content records written so far (persist across attempts)
+  standing: [] as Array<{ id: string }>,           // other decisions on the same post (removal / restriction / lock)
+  reversedAppeals: [] as Array<{ decision_id: string }>,
+  otherHolds: [] as Array<{ id: string }>,         // other reports on the same post that are on hold
+  heldReadError: null as null | { message: string },
+  neqs: [] as Array<[string, string, unknown]>,     // .neq(col, value) filters seen, per table
 }))
 
 vi.mock('@/lib/admin/rbac', async (orig) => ({ ...((await orig()) as Record<string, unknown>), isSameOrigin: () => true }))
@@ -46,16 +57,23 @@ vi.mock('@/lib/supabase/admin', () => ({
       const b: Record<string, unknown> = {}
       const chain = () => b
       b.select = chain; b.eq = chain; b.in = chain; b.neq = chain; b.filter = chain; b.order = chain; b.limit = chain
+      b.neq = (col: string, v: unknown) => { h.neqs.push([table, col, v]); return b }
       b.maybeSingle = async () => {
         if (table === 'moderation_queue') return { data: h.queueItem, error: null }
         if (table === 'moderation_decisions') return { data: h.ledgerInserted ? { id: 'dec-new' } : h.decision ?? h.prevDecision, error: null }
         if (table === 'moderation_appeals') return { data: h.appeal, error: null }
+        if (table === 'reviews') return { data: { publication_state: h.reviewState }, error: null }
         return { data: null, error: null }
       }
+      b.then = (res: (v: unknown) => unknown) => Promise.resolve({
+        data: table === 'moderation_actions' ? h.actionRows : table === 'moderation_decisions' ? h.standing : table === 'moderation_appeals' ? h.reversedAppeals : table === 'moderation_queue' ? h.otherHolds : null,
+        error: (table === 'moderation_decisions' || table === 'moderation_queue') ? h.heldReadError : null,
+      }).then(res)
       b.insert = (value: unknown) => {
         h.ops.push({ table, op: 'insert', value })
-        const done = { data: null, error: table === 'moderation_decisions' ? h.ledgerError : null }
+        const done = { data: null, error: table === 'moderation_decisions' ? h.ledgerError : table === 'moderation_actions' && (value as { action?: string }).action === 'hide_content' ? h.provError : null }
         if (table === 'moderation_decisions' && !h.ledgerError) h.ledgerInserted = true
+        if (table === 'moderation_actions' && (value as { action?: string }).action === 'hide_content' && !h.provError) h.actionRows.push(value as Record<string, unknown>)
         return Object.assign(Promise.resolve(done), { select: () => ({ maybeSingle: async () => ({ data: h.ledgerError ? null : { id: 'dec-new' }, error: h.ledgerError }) }) })
       }
       b.update = (value: unknown) => {
@@ -63,8 +81,15 @@ vi.mock('@/lib/supabase/admin', () => ({
         // item update: .eq(id) awaited; sibling update: .eq().eq().in().neq().select() awaited (the deduplication, returns the closed ids)
         const c = Object.assign(Promise.resolve({ data: null, error: null }), {} as Record<string, unknown>)
         const self = () => c
-        c.eq = self; c.in = self; c.neq = self
-        c.select = () => Promise.resolve({ data: h.siblings, error: h.siblingError })
+        c.eq = self; c.in = self; c.neq = self; c.is = self
+        c.select = () => {
+          if (table === 'reviews') {
+            const n = h.reviewMatches.length > 1 ? (h.reviewMatches.shift() as number) : h.reviewMatches[0]
+            if (!h.reviewsError && n > 0) h.reviewState = (value as { publication_state: string }).publication_state
+            return Promise.resolve({ data: h.reviewsError ? null : Array.from({ length: n }, () => ({ id: 'rv' })), error: h.reviewsError })
+          }
+          return Promise.resolve({ data: h.siblings, error: h.siblingError })
+        }
         return c
       }
       b.delete = () => { h.ops.push({ table, op: 'delete' }); return { eq: () => Promise.resolve({ data: null, error: null }) } }
@@ -102,6 +127,7 @@ describe('moderation desk routes', () => {
     h.emit.mockResolvedValue({ id: 'n1' })
     h.target = target(); h.strikes = []; h.ledgerError = null; h.ops = []; h.decision = null; h.appeal = null; hh.ledgerInserted = false; h.siblings = []; h.siblingError = null
     h.queueItem = { id: QID, status: 'pending', target_type: 'comment', target_id: TARGET }
+    h.reviewState = 'PUBLISHED'; h.reviewMatches = [1]; h.reviewsError = null; h.provError = null; h.actionRows = []; h.standing = []; h.reversedAppeals = []; h.otherHolds = []; h.heldReadError = null; h.neqs = []
   })
   afterEach(() => { if (prev === undefined) delete process.env.MODERATION_ADMIN_ENABLED; else process.env.MODERATION_ADMIN_ENABLED = prev })
 
@@ -139,6 +165,54 @@ describe('moderation desk routes', () => {
     expect(ledger()).toBeUndefined()
     expect(queueUpdate()).toMatchObject({ status: 'dismissed' })
     expect(h.suspendUser).not.toHaveBeenCalled(); expect(h.banUser).not.toHaveBeenCalled(); expect(h.emit).not.toHaveBeenCalled()
+  })
+
+  describe('dismissing a held report (no_violation) never republishes a post that moderation still keeps hidden', () => {
+    const heldPost = () => { h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { id: QID, status: 'in_review', target_type: 'review', target_id: TARGET } }
+    const restores = () => h.ops.filter((o) => o.table === 'reviews' && o.op === 'update').map((o) => o.value)
+
+    it('nothing else keeps it hidden: the held post comes back, as before', async () => {
+      heldPost()
+      const r = await decide({ outcome: 'no_violation', reason: REASON })
+      expect(r.status).toBe(200)
+      expect(restores()).toEqual([{ publication_state: 'PUBLISHED' }])
+      expect((await r.json()).data.post_kept_hidden).toBeUndefined()
+      expect(h.neqs).toContainEqual(['moderation_queue', 'id', QID]) // this report's own hold is not "another" hold
+    })
+
+    it('another decision on the same post still stands (a lock, a restriction, a removal): the post STAYS hidden; the report is still dismissed', async () => {
+      heldPost(); h.standing = [{ id: 'dec-ban' }]
+      const r = await decide({ outcome: 'no_violation', reason: REASON })
+      expect(r.status).toBe(200)
+      expect(restores()).toEqual([])
+      expect((await r.json()).data.post_kept_hidden).toBe(true)
+      expect(queueUpdate()).toMatchObject({ status: 'dismissed' })
+    })
+
+    it('that other decision was reversed on appeal: it no longer keeps the post hidden', async () => {
+      heldPost(); h.standing = [{ id: 'dec-ban' }]; h.reversedAppeals = [{ decision_id: 'dec-ban' }]
+      expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(200)
+      expect(restores()).toEqual([{ publication_state: 'PUBLISHED' }])
+    })
+
+    it('another report on the same post is still on hold: the post STAYS hidden', async () => {
+      heldPost(); h.otherHolds = [{ id: 'other-held-report' }]
+      const r = await decide({ outcome: 'no_violation', reason: REASON })
+      expect(restores()).toEqual([])
+      expect((await r.json()).data.post_kept_hidden).toBe(true)
+    })
+
+    it('if that check cannot be read: 500, the post and the report are left exactly as they were', async () => {
+      heldPost(); h.heldReadError = { message: 'boom' }
+      expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(500)
+      expect(restores()).toEqual([]); expect(queueUpdate()).toBeUndefined()
+    })
+
+    it('a report that was NOT on hold never touches the post', async () => {
+      h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { id: QID, status: 'pending', target_type: 'review', target_id: TARGET }
+      expect((await decide({ outcome: 'no_violation', reason: REASON })).status).toBe(200)
+      expect(restores()).toEqual([])
+    })
   })
 
   it('hold hides a POST only, keeps the item open (in_review), no ledger row, no notice', async () => {
@@ -193,6 +267,100 @@ describe('moderation desk routes', () => {
     h.ops = []; hh.ledgerInserted = false; h.banUser.mockClear()
     h.strikes = Array.from({ length: 4 }, (_, i) => ({ id: `s${i}`, rule_group: 'spam', feature: 'comment', severity: 1, strike_expires_at: null }))
     expect((await decide({ outcome: 'ban', rule_group: 'harassment', reason: REASON })).status).toBe(200)
+  })
+
+  const hideRows = () => h.ops.filter((o) => o.table === 'moderation_actions' && (o.value as { action?: string }).action === 'hide_content').map((o) => o.value as { queue_id: string; notes: string; target_content_id: string })
+  const reviewUpdates = () => h.ops.filter((o) => o.table === 'reviews' && o.op === 'update').map((o) => o.value)
+  const postTarget = () => { h.target = target({ kind: 'review', feature: 'post' }); h.queueItem = { ...(h.queueItem as object), target_type: 'review' } }
+  const opsOf = (table: string, op: string) => h.ops.filter((o) => o.table === table && o.op === op)
+
+  it('restrict and ban on a reported POST record the starting state FIRST, then hide it; the ledger and the rest are unchanged', async () => {
+    postTarget()
+    expect((await decide({ outcome: 'restrict', rule_group: 'spam', restrict_days: 7, reason: REASON })).status).toBe(200)
+    expect(reviewUpdates()).toEqual([{ publication_state: 'RESTRICTED' }])
+    expect(hideRows()).toHaveLength(1)
+    expect(JSON.parse(hideRows()[0].notes)).toEqual({ tappy_hide_provenance: 1, decision_id: 'dec-new', before: 'PUBLISHED', after: 'RESTRICTED' })
+    expect(hideRows()[0]).toMatchObject({ queue_id: QID, target_content_id: TARGET })
+    // the record comes BEFORE the hide
+    const order = h.ops.filter((o) => (o.table === 'moderation_actions' && (o.value as { action?: string }).action === 'hide_content') || o.table === 'reviews').map((o) => o.table)
+    expect(order).toEqual(['moderation_actions', 'reviews'])
+    expect(h.suspendUser).toHaveBeenCalledWith(expect.anything(), SUBJECT, 'in-168h')
+    expect(ledger()).toMatchObject({ outcome: 'restricted', content_type: 'review', content_id: TARGET, restrict_days: 7, strike: true, content_snapshot: null })
+
+    h.ops = []; hh.ledgerInserted = false; h.reviewState = null; h.actionRows = [] // a legacy row from before the gate: visible
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(reviewUpdates()).toEqual([{ publication_state: 'RESTRICTED' }])
+    expect(JSON.parse(hideRows()[0].notes)).toMatchObject({ before: null, after: 'RESTRICTED' })
+    expect(h.banUser).toHaveBeenCalled(); expect(h.revoke).toHaveBeenCalledWith(expect.anything(), SUBJECT)
+    expect(ledger()).toMatchObject({ outcome: 'banned', content_type: 'review', content_id: TARGET, severity: 3, strike_expires_at: null })
+
+    // a comment target: the account action happens, no post is touched, nothing is recorded as a hide
+    h.ops = []; hh.ledgerInserted = false; h.target = target()
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(reviewUpdates()).toEqual([]); expect(hideRows()).toHaveLength(0)
+  })
+
+  it('a post ALREADY restricted (safety gate, a hold) is not touched and no record is written — on the first attempt AND on a retry; the account action still happens', async () => {
+    postTarget(); h.reviewState = 'RESTRICTED'
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(reviewUpdates()).toEqual([]); expect(hideRows()).toHaveLength(0)
+    expect(h.banUser).toHaveBeenCalled()
+    // the retry of that same decision (ledger row exists) must not "complete" a record it never had
+    h.ops = []; hh.ledgerInserted = false; h.ledgerError = { code: '23505' }; h.banUser.mockClear()
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(reviewUpdates()).toEqual([]); expect(hideRows()).toHaveLength(0); expect(h.actionRows).toHaveLength(0)
+    // not visible before (held by the gate for review): hidden by this decision but recorded as NOT visible before
+    h.ops = []; hh.ledgerInserted = false; h.ledgerError = null; h.banUser.mockClear(); h.reviewState = 'UNDER_REVIEW'
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(JSON.parse(hideRows()[0].notes)).toMatchObject({ before: 'UNDER_REVIEW' })
+  })
+
+  it('the record is written, the hide itself fails: 500, account untouched; the retry reuses the record (no second one), finishes the hide and the decision', async () => {
+    postTarget()
+    h.reviewsError = { message: 'boom' }
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(500)
+    expect(opsOf('moderation_decisions', 'insert')).toHaveLength(1)
+    expect(hideRows()).toHaveLength(1)
+    expect(h.banUser).not.toHaveBeenCalled(); expect(h.revoke).not.toHaveBeenCalled()
+    expect(opsOf('moderation_queue', 'update')).toHaveLength(0) // still pending: it stays in the queue, the digest and the desk
+    expect(h.emit).not.toHaveBeenCalled(); expect(h.audit).not.toHaveBeenCalled()
+    // retry: the database answers 23505 for the same queue item; the hide now works
+    h.reviewsError = null; h.ops = []; h.ledgerError = { code: '23505' }
+    const r2 = await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })
+    expect(r2.status).toBe(200)
+    expect((await r2.json()).data.decision_id).toBe('dec-new') // the row attempt 1 wrote: no second strike
+    expect(hideRows()).toHaveLength(0)                            // NO second record
+    expect(h.actionRows).toHaveLength(1)                          // exactly the one from attempt 1
+    expect(reviewUpdates()).toEqual([{ publication_state: 'RESTRICTED' }])
+    expect(h.banUser).toHaveBeenCalledTimes(1); expect(h.revoke).toHaveBeenCalledTimes(1)
+    expect(queueUpdate()).toMatchObject({ status: 'resolved' }); expect(h.emit).toHaveBeenCalledTimes(1)
+  })
+
+  it('the hide LANDED but the request died later (the ban failed): the retry finds the record, sees the post restricted, writes no second record and completes the ban', async () => {
+    postTarget()
+    h.banUser.mockRejectedValueOnce(new Error('db down'))
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(500)
+    expect(h.reviewState).toBe('RESTRICTED'); expect(h.actionRows).toHaveLength(1)
+    h.ops = []; h.ledgerError = { code: '23505' }
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(h.actionRows).toHaveLength(1); expect(reviewUpdates()).toEqual([]) // nothing re-hidden, nothing re-recorded
+    expect(h.banUser).toHaveBeenCalledTimes(2)
+    expect(JSON.parse((h.actionRows[0] as { notes: string }).notes)).toMatchObject({ decision_id: 'dec-new', before: 'PUBLISHED', after: 'RESTRICTED' })
+  })
+
+  it('a record that cannot be written stops the decision BEFORE the post or the account are touched', async () => {
+    postTarget(); h.provError = { message: 'boom' }
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(500)
+    expect(reviewUpdates()).toEqual([]); expect(h.banUser).not.toHaveBeenCalled(); expect(h.revoke).not.toHaveBeenCalled()
+  })
+
+  it('the state changes between the read and the write: it reads again; if it never settles nothing is done to the account (500)', async () => {
+    postTarget(); h.reviewMatches = [0, 1]
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(200)
+    expect(h.actionRows).toHaveLength(1) // the same starting state: still one record
+    h.ops = []; hh.ledgerInserted = false; h.banUser.mockClear(); h.revoke.mockClear(); h.reviewMatches = [0]; h.reviewState = 'PUBLISHED'; h.actionRows = []
+    expect((await decide({ outcome: 'ban', rule_group: 'child_safety', reason: REASON })).status).toBe(500)
+    expect(h.banUser).not.toHaveBeenCalled(); expect(h.revoke).not.toHaveBeenCalled()
   })
 
   it('the rule caps the penalty: spam can never be a ban, impersonation never above severity 2', async () => {

@@ -77,10 +77,17 @@ export function reporterStatus(queueStatus: string | null | undefined): Reporter
 export const withinAppealWindow = (createdAt: string, now: Date = new Date()): boolean =>
   now.getTime() - new Date(createdAt).getTime() <= LADDER.appealWindowDays * 86_400_000
 
-/** A report overdue against its group's target (priority 3 = 24 h; everything else 72 h). */
-export function isOverdue(priority: number, createdAt: string, now: Date = new Date()): boolean {
+/**
+ * Apple Guideline 1.2: objectionable-content reports are acted on within 24 hours. EVERY report is therefore tracked at 24 h, whatever its
+ * priority — the priority only decides the ORDER of the queue. (The reporter picks the reason that sets the priority; a serious report
+ * filed under a routine reason must not get a longer clock.)
+ */
+export const REPORT_TARGET_HOURS = 24
+
+/** A report older than the 24 h target. `priority` is kept in the signature for the callers; it no longer changes the clock. */
+export function isOverdue(_priority: number, createdAt: string, now: Date = new Date()): boolean {
   const hours = (now.getTime() - new Date(createdAt).getTime()) / 3_600_000
-  return hours > (priority >= 3 ? 24 : 72)
+  return hours > REPORT_TARGET_HOURS
 }
 
 /**
@@ -88,10 +95,9 @@ export function isOverdue(priority: number, createdAt: string, now: Date = new D
  * NOW. At risk = past (target − 12 h) and not yet overdue.
  */
 export const ESCALATION_LEAD_HOURS = 12
-export function isAtRisk(priority: number, createdAt: string, now: Date = new Date()): boolean {
+export function isAtRisk(_priority: number, createdAt: string, now: Date = new Date()): boolean {
   const hours = (now.getTime() - new Date(createdAt).getTime()) / 3_600_000
-  const target = priority >= 3 ? 24 : 72
-  return hours > target - ESCALATION_LEAD_HOURS && hours <= target
+  return hours > REPORT_TARGET_HOURS - ESCALATION_LEAD_HOURS && hours <= REPORT_TARGET_HOURS
 }
 
 export const penaltyText = (outcome: LedgerOutcome, restrictDays: number | null, lang: 'vi' | 'en'): string => {

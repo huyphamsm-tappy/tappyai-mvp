@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { LADDER, RULE_GROUPS, RULE_GROUP_IDS, REPORT_REASON_PRIORITY, countsAsStrike, strikeExpiry, suggestPenalty, withinGroupMax, LEDGER_OUTCOME } from './communityRules'
 import { communityEn, communityVi } from '@/lib/i18n/communityGuidelines'
-import { reporterStatus, isOverdue, noticeFor, withinAppealWindow } from './moderationDecisions'
+import { reporterStatus, isOverdue, isAtRisk, REPORT_TARGET_HOURS, noticeFor, withinAppealWindow } from './moderationDecisions'
 
 const sql = (rel: string) => readFileSync(join(__dirname, '..', '..', '..', rel), 'utf8')
 const D = sql('supabase/migrations/20261001d_moderation_standards.sql')
@@ -86,9 +86,21 @@ describe('small helpers', () => {
   it('the reporter sees only four states', () => {
     expect(['pending', 'in_review', 'resolved', 'dismissed', undefined].map(reporterStatus)).toEqual(['received', 'in_review', 'actioned', 'no_violation', 'received'])
   })
-  it('overdue: urgent after 24 h, the rest after 72 h', () => {
+  it('overdue: EVERY report after 24 h (Apple 1.2), whatever its priority', () => {
     const now = new Date('2026-10-04T00:00:00Z')
-    expect(isOverdue(3, '2026-10-02T23:00:00Z', now)).toBe(true); expect(isOverdue(1, '2026-10-02T23:00:00Z', now)).toBe(false); expect(isOverdue(1, '2026-09-30T00:00:00Z', now)).toBe(true)
+    const at = (h: number, m = 0) => new Date(now.getTime() - h * 3_600_000 - m * 60_000).toISOString()
+    for (const priority of [0, 1, 2, 3]) {
+      expect(isOverdue(priority, at(24), now)).toBe(false)     // exactly 24 h: not yet
+      expect(isOverdue(priority, at(24, 1), now)).toBe(true)   // 24 h 1 min: overdue, even for a routine report
+      expect(isOverdue(priority, at(2), now)).toBe(false)
+    }
+    // at risk = in the last 12 h before the 24 h target
+    expect(isAtRisk(1, at(12), now)).toBe(false); expect(isAtRisk(1, at(12, 1), now)).toBe(true)
+    expect(isAtRisk(1, at(24), now)).toBe(true); expect(isAtRisk(1, at(24, 1), now)).toBe(false)
+    expect(REPORT_TARGET_HOURS).toBe(24)
+  })
+  it('every rule group prints and tracks the same 24 h target (no group is promised a longer clock)', () => {
+    for (const g of Object.values(RULE_GROUPS)) expect(g.targetHours).toBe(REPORT_TARGET_HOURS)
   })
   it('the appeal window is 30 days', () => {
     expect(withinAppealWindow('2026-09-10T00:00:00Z', new Date('2026-10-01T00:00:00Z'))).toBe(true)
