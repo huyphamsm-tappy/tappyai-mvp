@@ -34,7 +34,7 @@ describe('Terms §4 — zero tolerance for objectionable content and abusive use
     expect(clauses[0]).toMatch(/not a finding that a rule was broken/)
     expect(clauses[0]).toMatch(/review every report within 24 hours/)
     expect(clauses[0]).toMatch(/target, not a guarantee/)
-    expect(clauses[0]).not.toMatch(/72 hours|48 hours|artificial intelligence|AI/i)
+    expect(clauses[0]).not.toMatch(/72 hours|48 hours|artificial intelligence|\bAI\b/i)
   })
   it('Vietnamese says the same', () => {
     expect(clauses[1]).toMatch(/không khoan nhượng với nội dung phản cảm và người dùng có hành vi lạm dụng/)
@@ -43,7 +43,7 @@ describe('Terms §4 — zero tolerance for objectionable content and abusive use
     expect(clauses[1]).toMatch(/không phải kết luận/)
     expect(clauses[1]).toMatch(/mọi báo cáo trong vòng 24 giờ/)
     expect(clauses[1]).toMatch(/không phải cam kết tuyệt đối/)
-    expect(clauses[1]).not.toMatch(/72 giờ|48 giờ|AI/)
+    expect(clauses[1]).not.toMatch(/72 giờ|48 giờ|\bAI\b/)
   })
   it('the Terms effective date is the publication date (no invented past date)', () => {
     expect(legal).toContain("'legal.terms.effective': 'Effective Date: 10 October 2026'")

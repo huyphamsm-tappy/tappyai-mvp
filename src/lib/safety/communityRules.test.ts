@@ -61,7 +61,7 @@ describe('the ladder — proposals, never automatic', () => {
     for (const t of [communityVi, communityEn]) {
       expect(t['legal.community.effective']).not.toMatch(/chờ chủ sản phẩm duyệt|awaiting|Proposed|Bản đề xuất/i)
       expect(t['legal.community.ladder.note']).not.toMatch(/đề xuất|proposal|Proposed|Mốc/i)
-      expect(t['legal.community.ladder.note']).not.toMatch(/[35] (strike|active strikes)/i)
+      expect(t['legal.community.ladder.note']).not.toMatch(/\b[35] (strike|active strikes)/i)
     }
     expect(communityEn['legal.community.effective']).toBe('Effective Date: 10 October 2026')
     expect(communityVi['legal.community.effective']).toBe('Ngày hiệu lực: 10 tháng 10 năm 2026')
