@@ -47,6 +47,8 @@ import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/run
 import type { AgentTurnInput } from '@/lib/ai/agent'
 import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
+import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
+import { agentSystemV2For, consultMemoryLines } from '@/lib/ai/agent/runtime/consultativeVoice'
 import { conversationIdOf, loadTask, mergeForSave, taskContextLines, validStoredTask } from '@/lib/ai/agent/runtime/task'
 import type { TaskBox } from '@/lib/ai/agent/runtime'
 import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM } from '@/lib/ai/agent'
@@ -384,6 +386,9 @@ export async function POST(req: Request) {
   const agentOn = tappyAgentEnabled() && !hasImage && !clipRef
   // Phase 8 (TAPPY_AGENT=2): the new agent runtime. Shares every agent-path step below; differs only where marked `agentV2`.
   const agentV2 = agentOn && agentRuntimeV2Enabled()
+  // CONSULTATIVE_IN_AGENT (default OFF, TAPPY_AGENT=2 only): consultative voice + advice principles in the agent prompt, memory / preferences
+  // as fenced DATA (runtime/consultativeVoice.ts). Off = every line it guards below is skipped and the request is unchanged.
+  const consultativeAgent = agentV2 && consultativeInAgentEnabled()
   const consultOn = consultV2Enabled() && !hasImage && !clipRef
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
@@ -2951,7 +2956,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
     const context = agentContext({
       now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
-      state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
+      state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
     // WS2 final: what the No-Fabrication Gate may accept as given this turn — the DATA context Luna read (card facts, task evidence,
     // follow-up state), the user's saved memory, and the conversation's earlier replies (each passed the gate when it was shown).
@@ -2979,7 +2984,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result
@@ -2989,7 +2994,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // PHIÊN LUNA safety: every reply under the flag is checked for a prompt echo / secret shape before it leaves.
   // STATIC prompt text only — the per-turn prompt carries product/place names a normal reply repeats (final none 30/09:
   // 3 shopping replies naming a 12-word product title were replaced).
-  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
+  console.log(JSON.stringify({ type: 'tappyai_turn_path', path: agentV2 ? 'agent_v2' : agentOn ? 'agent_v1' : consult ? 'consult' : 'legacy', consultative_in_agent: consultativeAgent }))
+  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), ...(consultativeAgent ? [agentSystemV2For(true)] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
   // A Luna PLAN turn with tools (non-trip) gets ONE search (owner: at most one targeted extra search). Replay 30/09

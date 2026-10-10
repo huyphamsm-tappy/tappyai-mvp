@@ -33,7 +33,9 @@ import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
-import { AGENT_SYSTEM_V2 } from './prompt'
+import { createHash } from 'node:crypto'
+import { agentSystemV2For } from './consultativeVoice'
+import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import type { AgentRunTrace } from './trace'
 import type { GuardEvidence } from '@/lib/ai/guardEvidence'
 
@@ -76,6 +78,8 @@ export const TRACKER_GRACE_MS = 6_000
 
 export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   trace: AgentRunTrace
+  /** CONSULTATIVE_IN_AGENT (default OFF): the voice block + advice principles in the static system message (consultativeVoice.ts). */
+  consultative?: boolean
   taskBox?: TaskBox
   /** Test seam: replace the model step. */
   callModel?: Parameters<typeof runAgentRuntime>[0]['callModel']
@@ -131,6 +135,21 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   const box = i.taskBox
   if (box) i.trace.taskId = box.task.task_id
   const system = i.context.system + (i.lang === 'en' ? AGENT_SYSTEM_EN_NOTE : '')
+  // The static system message of this run: AGENT_SYSTEM_V2 itself unless the consultative flag is on (consultativeVoice.ts).
+  const sharedPrompt = agentSystemV2For(i.consultative === true)
+  // Per-turn evidence of what actually reaches the model (metadata only: lengths, short hashes, booleans — never prompt or user text).
+  {
+    const sha = (s: string) => createHash('sha256').update(s).digest('hex').slice(0, 12)
+    const block = (s: string) => ({ chars: s.length, sha: sha(s) })
+    const data = i.context.data ?? ''
+    const blocks = {
+      type: 'tappyai_agent_prompt_blocks', path: 'agent_v2', consultative_in_agent: i.consultative === true,
+      system_static: block(sharedPrompt), system_dynamic: block(system), data: block(data),
+      voice_in_system: sharedPrompt.includes(STYLE_LUNA6_BLOCK), memory_in_system: sharedPrompt.includes('Trí nhớ —') || system.includes('Trí nhớ —'),
+      memory_in_data: data.includes('Trí nhớ —'),
+    }
+    console.log(JSON.stringify(blocks))
+  }
   const messages: CoreMessage[] = (() => {
     if (!i.context.data) return i.messages
     const at = i.messages.map(m => m.role).lastIndexOf('user')
@@ -142,7 +161,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     const role: ModelRole = o.final ? i.finalRole : 'agent'
     const r = await AI.step({
       role,
-      systemShared: AGENT_SYSTEM_V2,
+      systemShared: sharedPrompt,
       system: o.system,
       messages: o.messages,
       tools: (o.tools && Object.keys(o.tools).length ? o.tools : undefined) as never,
@@ -162,7 +181,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
 
   // Answer-before-lookup check (answerFirst.ts): one text-only Luna call, no tools. Not wired when a model seam replaces the step (tests).
   const answerFirstModel: NonNullable<Parameters<typeof runAgentRuntime>[0]['answerFirstModel']> = async o => {
-    const r = await AI.step({ role: 'agent', systemShared: AGENT_SYSTEM_V2, system: o.system, messages: o.messages, maxTokens: 700, abortSignal: o.signal })
+    const r = await AI.step({ role: 'agent', systemShared: sharedPrompt, system: o.system, messages: o.messages, maxTokens: 700, abortSignal: o.signal })
     const usd = Number(((r.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost?.usd) ?? 0)
     return { text: r.text ?? '', promptTokens: r.usage?.promptTokens, completionTokens: r.usage?.completionTokens, usd }
   }
