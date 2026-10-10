@@ -32,6 +32,8 @@ const isUuid = (x: unknown) => typeof x === 'string' && /^[0-9a-f-]{36}$/.test(x
 const SIGNATURES = `SELECT p.proname, pg_get_function_identity_arguments(p.oid) AS args, pg_get_function_result(p.oid) AS result, p.prosecdef, p.provolatile, p.proconfig, p.proacl::text AS acl
   FROM pg_proc p WHERE p.pronamespace='public'::regnamespace AND p.proname IN ('chat_can_reach','chat_thread_blocked','chat_create_group') ORDER BY p.proname`
 let sigBefore: unknown[]
+const DEFS = `SELECT p.proname, pg_get_functiondef(p.oid) AS def FROM pg_proc p WHERE p.pronamespace='public'::regnamespace AND p.proname IN ('chat_can_reach','chat_thread_blocked','chat_create_group') ORDER BY p.proname`
+let defsBefore: unknown[]
 
 beforeAll(async () => {
   t = await startBlocksDb(54931, 'chatuserblocks', [])
@@ -41,6 +43,7 @@ beforeAll(async () => {
   for (const [a, b] of [[ALICE, BOB], [ALICE, CAROL], [BOB, CAROL]]) await t.db.query(`INSERT INTO public.user_follows (follower_id, following_id) VALUES ($1,$2), ($2,$1)`, [a, b])
   await t.db.query(USER_BLOCKS)
   sigBefore = (await t.db.query(SIGNATURES)).rows
+  defsBefore = (await t.db.query(DEFS)).rows
   await t.db.query(MIGRATION)
 }, 240_000)
 afterAll(async () => { await t?.stop() })
@@ -141,6 +144,39 @@ describe('rollback', () => {
     expect(await startDirect(CAROL, BOB)).toBe('22023')
     await unblockChatOnly(BOB, CAROL)
     expect((await t.db.query(SIGNATURES)).rows).toEqual(sigBefore)
+    // the BODIES are restored verbatim (not just the behaviour the cases above exercise)
+    expect((await t.db.query(DEFS)).rows).toEqual(defsBefore)
     await t.db.query(MIGRATION) // and it re-applies
+    expect((await t.db.query(DEFS)).rows).not.toEqual(defsBefore)
+  })
+})
+
+describe('migration ordering, dependencies and block-policy interaction', () => {
+  const manifest = readRepo('supabase/MIGRATION_ORDER.txt').split(/\r?\n/).map((l) => l.trim()).filter((l) => l.endsWith('.sql')).map((l) => l.split('/').pop()!)
+  const at = (name: string) => manifest.indexOf(name)
+  it('is listed once, after every migration it depends on (chat tables and functions, the user_blocks helper) and after the previous last migration', () => {
+    const me = at('20261018_chat_honours_user_blocks.sql')
+    expect(me).toBeGreaterThan(-1)
+    expect(manifest.filter((n) => n === '20261018_chat_honours_user_blocks.sql')).toHaveLength(1)
+    for (const dep of ['20260905_chat_messaging_phase1.sql', '20260906_phase6_messenger_reachability.sql', '20261001_user_blocks.sql']) {
+      expect(at(dep), dep).toBeGreaterThan(-1)
+      expect(at(dep), dep).toBeLessThan(me)
+    }
+    expect(at('20261017_p7_pip_trial_any_source.sql')).toBeLessThan(me)
+  })
+  it('the reverse block lookup is index-backed (user_blocks_blocked_idx), so the new check does not add a scan to every message insert', async () => {
+    const r = await t.db.query(`SELECT indexname FROM pg_indexes WHERE schemaname='public' AND tablename='user_blocks' ORDER BY indexname`)
+    expect(r.rows.map((x: { indexname: string }) => x.indexname)).toEqual(expect.arrayContaining(['user_blocks_blocked_idx', 'user_blocks_pkey']))
+  })
+  it('the send policy still delegates to chat_thread_blocked (this migration changes the function, never the policy), and the helper is not callable by anon', async () => {
+    const p = await t.db.query(`SELECT with_check FROM pg_policies WHERE schemaname='public' AND tablename='chat_messages' AND cmd='INSERT'`)
+    expect(p.rows.some((x: { with_check: string }) => /chat_thread_blocked/.test(x.with_check))).toBe(true)
+    expect(await t.exec('anon', `SELECT safety_private.blocked_ids()`, null)).toBe('42501')
+  })
+  it('with the block table empty (USER_BLOCKS_ENABLED never turned on) the new functions answer exactly like the old ones', async () => {
+    await t.db.query('DELETE FROM public.user_blocks')
+    await t.db.query('DELETE FROM public.chat_blocks')
+    expect(isUuid(await startDirect(ALICE, BOB))).toBe(true)
+    expect(isUuid(await createGroup(ALICE, [BOB, CAROL]))).toBe(true)
   })
 })

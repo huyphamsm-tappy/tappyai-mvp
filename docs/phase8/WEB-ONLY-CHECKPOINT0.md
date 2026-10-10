@@ -132,3 +132,28 @@ SEC4 (production wiring of every cost route not proven by code) · SF8 (`service
 ### Test-runner investigation: `controlBytes` and `mergeGuard`
 - **Reproduced and load-related.** Alone: controlBytes 7 ms / 165 ms / **2.1 s** (the repository scan), mergeGuard 1.0–3.0 s per test. With the CPU saturated (12 busy loops on 12 cores) the same files: 6 of 13 tests failed — all `mergeGuard` tests, with `Error: Test timed out in 5000ms.` (observed durations 5.0–7.0 s; assertions never reached); controlBytes took 3.3 s (limit 5 s). In the full runs of this session the same two files failed intermittently (3 of 4 runs) and passed alone (2 of 2, each time).
 - **Cause:** both spawn child processes / read the whole tree and run under vitest's default 5 s timeout while the full runner saturates the machine. **Change (`5b58698`):** `vi.setConfig({ testTimeout: 30_000 })` in the two files only; no assertion changed. Re-run under the same synthetic load: 13/13 pass (slowest 10.7 s).
+
+---
+## Checkpoint 2 (2026-10-10, from `17d4aac`)
+
+| Item | Result | Document / commit |
+|---|---|---|
+| SEC4 route matrix, ratchet design, slice plan | **DONE as documents**; production wiring BLOCKED | `SEC4-ROUTE-MATRIX.md` |
+| SEC4 slice 1: coverage ratchet (tests only, no runtime change) | **DONE** — 13 tests, 5/5 mutations caught, known-gap budget 17 | `4b5d25f`, `src/lib/security/costRoutes/*` |
+| Messenger notification collapse | proposal v2 with D1–D5 defaults and 12 acceptance tests; **not implemented, awaiting approval** | `MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md` (§7) |
+| SF8 | **BLOCKED** — privilege/dependency audit done (no code path needs UPDATE/DELETE on `audit_log`; production function owner and live grants UNKNOWN) | `SF8-AUDIT-LOG-PRIVILEGE-DEPENDENCY-AUDIT.md` |
+| E2 | **BLOCKED** — writer/policy/consumer audit done; the approved list is the owner's | `E2-USER-EVENTS-WRITER-AUDIT.md` |
+| Migration `20261018` | verified in tests (17), rollback body-exact, ordering and policy interaction checked; **unapplied**; window proposal written | `MIGRATION-20261018-DEPLOYMENT-REVIEW.md` |
+| 8C / 8D / 8E | **BLOCKED** — branch inspected, evidence below | this section |
+| Realtime Translation / OpenAI Ads | **BLOCKED** — no source specification exists | unchanged |
+| Messenger media (`48decc4`) | separate audit, **not started** | unchanged |
+
+### 8C / 8D / 8E — `origin/preview/deals-promo-polish` versus the tracked mockups (read-only)
+- **The branch adds nothing beyond HEAD:** its tip `0ebeae7` ("feat(deals): promo polish — discount badge, countdown, voucher copy", 2026-07-24, Huy Phạm) is an ancestor of both HEAD and `origin/main`; `git log origin/main..origin/preview/deals-promo-polish` is empty and `git cherry -v HEAD …` prints nothing. It touches the Deals page, `partnerDeals`/`countdown`/`schema`, one i18n file and the admin deals routes (9 files, +242/−44): a discount badge from `metadata.promotion`, a countdown ("Còn N ngày" / "🔥 Sắp hết hạn"), a copy-able voucher chip. No Home, recommendation or marketplace-promotions code; no commit, doc or comment mentions 8C/8D/8E, "recommendation tile", "marketplace promotions" or "sponsored".
+- **Web Deals already follows the Deals mockup (`…05_37_58 PM`)** in `(app)/deals/DealsView.tsx`: hero "Hỏi Tappy trước khi mua" / "Hỏi Tappy ngay" (`v3.deals.heroTitle/heroCta`), "Khám phá deal theo sàn" source chips (`v3.deals.bySource`), `DealCard` with a `discountLabel` badge, an Ask-Tappy button and "Lấy deal" (`v3.deals.get`).
+- **Evidence for / against each candidate tile (mapping NOT decided):**
+  - **8C "first recommendation tile" (mockup Home `…05_07_31 PM`, "Gợi ý dành cho bạn")** — for: `HomeV3.tsx:635–700` section `for-you` (tiles with art, category badge, emoji, title → `/chat?q=`); `(app)/recommendations/page.tsx` renders real place cards with an Ask-Tappy CTA. Against: the Home section's heading is "Hỏi Tappy thử" (`v3.home.forYouTitle`), its content is prompt suggestions with no photo/price/rating.
+  - **8D "Deal tile" (second Home `…05_48_13 PM`, "Ưu đãi hôm nay", −30 % badge, "Xem deal")** — for: `DealCard` (`DealsView.tsx:~439`) with the badge. Against: the button is "Lấy deal", not "Xem deal"; the API has no original price; `bannerImage` is deliberately not rendered; Web Home has no deal section.
+  - **8E "marketplace promotions tile" (Deals mockup, marketplace cards "Hỏi Tappy về deal" / "Lấy deal")** — for: the same `DealCard` and the source chips; `deals.partnersTitle`. Against: `marketplace/MarketplaceReserved.tsx` is a "not open yet" placeholder; `isFeatured` is deliberately absent from the Web `DealsView`, so there is no "Deal nổi bật" section.
+  - Strings **not found anywhere in `src`**: "Gợi ý dành cho bạn", "Ưu đãi hôm nay", "Xem deal", "Video gợi ý", "Hỏi Tappy về deal".
+- **`PHASE7-CLOSEOUT.md` rows 8C–8E / §C item 5:** "No such tile row exists on Web Home V3 (owner-locked) or Explore. This looks like the Android Home design … Needs the owner to name the Web screen before anything is built." Home is owner-locked at `a9d0afa` (`docs/growth/HOME_FOOTER_DECISION.md`). Filling 8C–8E on Web would mean adding rows to the locked Home or changing the `for-you` heading — an owner decision. **Nothing was implemented.**
