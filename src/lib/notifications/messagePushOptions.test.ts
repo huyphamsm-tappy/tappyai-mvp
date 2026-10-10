@@ -43,7 +43,7 @@ describe('CHARACTERISATION · today\'s shared send path (changing these is part 
   const sendNotification = h.sendNotification
   beforeEach(() => { sendNotification.mockClear(); process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY = keys.publicKey; process.env.VAPID_PRIVATE_KEY = keys.privateKey })
   vi.mock('web-push', async (orig) => {
-    const real = await orig<typeof import('web-push')>()
+    const real = (await orig<typeof import('web-push')>()) as unknown as { default: typeof webpush }
     return { default: { ...real.default, sendNotification: (...a: unknown[]) => h.sendNotification(...a) } }
   })
   vi.mock('@/lib/supabase/admin', () => ({
