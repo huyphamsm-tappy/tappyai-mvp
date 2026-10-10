@@ -228,8 +228,8 @@ describe('flag ON — secrets never reach a provider query or the logs (route le
 
 describe('hardening D — one hard Serper budget per agent turn (tools + card photos)', () => {
   // Phase 8 M1 (lock change, docs/phase8/M1-REPORT.md §D): was `planningIntent === 'trip' ? 10 : 8` alone. TAPPY_AGENT=1 keeps exactly that;
-  // TAPPY_AGENT=2 takes the Phase 8 ceilings (12, 15 for travel research) from runtime/limits.ts.
-  it('route wiring: TAPPY_AGENT=1 8 normal / 10 travel; TAPPY_AGENT=2 12 / 15; the photo lookup gets only what the tools left', async () => {
+  // TAPPY_AGENT=2 takes the Phase 8 ceilings (8, 10 for a travel plan since 10/10/2026; was 12 / 15) from runtime/limits.ts.
+  it('route wiring: TAPPY_AGENT=1 8 normal / 10 travel; TAPPY_AGENT=2 reads the ceilings from runtime/limits.ts (8 / 10); the photo lookup gets only what the tools left', async () => {
     const { readFileSync } = await import('node:fs')
     const src = readFileSync('src/app/api/chat/route.ts', 'utf8')
     expect(src).toContain("const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8")

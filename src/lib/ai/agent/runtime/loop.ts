@@ -7,7 +7,7 @@
 // budgets and feeds back. It may iterate — search, read the result, search again — until it answers or a ceiling forces the final
 // step, which has NO tools and is told which parts could not be checked.
 //
-// Ceilings (limits.ts): model rounds ≤ 6 · tool calls ≤ 8 · Serper ≤ 12/15 (enforced in serperAdmit by the turn scope the caller
+// Ceilings (limits.ts): model rounds ≤ 6 · tool calls ≤ 8 · Serper ≤ 8/10 (enforced in serperAdmit by the turn scope the caller
 // opens) · overall deadline (85 s from the start of the request).
 //
 // Cancellation: every model step and every tool invocation runs under its OWN AbortController. On a timeout the controller is aborted

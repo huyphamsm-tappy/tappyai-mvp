@@ -129,9 +129,12 @@ describe('M1 · hard ceilings', () => {
     expect(run.text).toMatch(/Xin lỗi/)
   })
 
-  it('Serper ceilings: 12 normal, 15 travel research', () => {
-    expect(serperCeiling(false)).toBe(12)
-    expect(serperCeiling(true)).toBe(15)
+  it('Serper ceilings: 8 normal, 10 travel plan (owner decision 10/10/2026; was 12 / 15)', () => {
+    expect(serperCeiling(false)).toBe(8)
+    expect(serperCeiling(true)).toBe(10)
+    // The one-tool cap and the trip bundle (3 parts x 3 credits) must still fit the travel ceiling, leaving the after-loop photo lookup 1.
+    expect(RUNTIME_LIMITS.serperCreditsPerTool).toBeLessThanOrEqual(serperCeiling(false))
+    expect(3 * 3).toBeLessThanOrEqual(serperCeiling(true))
     expect(RUNTIME_LIMITS.deadlineMs).toBe(85_000)
   })
 })

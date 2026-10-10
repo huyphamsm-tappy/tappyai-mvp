@@ -115,7 +115,7 @@ describe('TAPPY_AGENT=2 — the Phase 8 runtime', () => {
     expect(h.state.extractCalls).toBe(1)
     expect(body).toContain('Phở bò dùng xương bò')
     expect(traces).toHaveLength(1)
-    expect(traces[0]).toMatchObject({ flag: 'TAPPY_AGENT=2', status: 'answered', final_output_type: 'text', model_role: 'agent', limits: { serper: 12, deadline_ms: 85_000 } })
+    expect(traces[0]).toMatchObject({ flag: 'TAPPY_AGENT=2', status: 'answered', final_output_type: 'text', model_role: 'agent', limits: { serper: 8, deadline_ms: 85_000 } })
   })
 
   it('ask_user: the reply is the question + quick-reply chips; nothing is searched; output type "ask"', async () => {

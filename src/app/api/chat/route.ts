@@ -2856,7 +2856,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentPendingAction: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null | undefined
   let agentExecuted: string[] = []
   // Hardening D: hard Serper budget per agent turn (tools + card photos together).
-  // Phase 8 runtime: 12 credits, 15 for travel research (hard ceilings, runtime/limits.ts).
+  // Phase 8 runtime: 8 credits, 10 for a travel plan (hard ceilings, runtime/limits.ts — the one place they are set).
   const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8
   let agentSerperSpent = 0
   // The after-loop lookups (card photos + TikTok review search) share ONE scope holding what the tools left (created on first use, after the loop).
