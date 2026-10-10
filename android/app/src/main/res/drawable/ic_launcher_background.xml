@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Adaptive-icon background: the blue field of the official TappyAI otter app icon
-     (android/store/icon-512.png), sampled from its edges, so the inset artwork reads as one
-     tile on every launcher mask. -->
+<!-- Adaptive-icon background: plain white. The approved TappyAI logo (see
+     android/store/LAUNCHER-ICON.md) is a transparent-background artwork presented on white, so the
+     background layer supplies the field and the logo is not recoloured or re-composited. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <gradient
-        android:angle="315"
-        android:centerColor="#0A7AF6"
-        android:endColor="#0041C4"
-        android:startColor="#2EA6FD"
-        android:type="linear" />
+    <solid android:color="#FFFFFF" />
 </shape>
