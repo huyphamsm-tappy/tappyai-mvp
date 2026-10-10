@@ -151,6 +151,25 @@ describe('SafetyMenu · what is drawn', () => {
   })
 })
 
+describe('SafetyMenu · keyboard', () => {
+  it('Escape closes the open menu and returns the focus to its button', async () => {
+    render(<SafetyMenu report={{ target: 'review', id: 'r1' }} />)
+    const button = await screen.findByLabelText('safety.more')
+    fireEvent.click(button)
+    expect(screen.getByRole('menu')).toBeTruthy()
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(screen.queryByRole('menu')).toBeNull()
+    expect(document.activeElement).toBe(button)
+  })
+  it('other keys and a click inside the menu area do not close it', async () => {
+    render(<SafetyMenu report={{ target: 'review', id: 'r1' }} />)
+    fireEvent.click(await screen.findByLabelText('safety.more'))
+    fireEvent.keyDown(document, { key: 'a' })
+    fireEvent.mouseDown(screen.getByRole('menu'))
+    expect(screen.getByRole('menu')).toBeTruthy()
+  })
+})
+
 describe('SafetyMenu · report flow', () => {
   const open = async () => {
     render(<SafetyMenu report={{ target: 'comment', id: 'c1' }} user={{ id: 'u1', name: 'Lan' }} />)
@@ -273,6 +292,14 @@ describe('SafetyMenu · block flow', () => {
 })
 
 describe('copy', () => {
+  it('every literal safety.* key the three components use exists in BOTH languages (a missing key would show the raw key to the user)', async () => {
+    const { readFileSync } = await import('node:fs')
+    const files = ['SafetyMenu.tsx', 'ReportDialog.tsx', 'SafetyModal.tsx'].map(n => readFileSync(`src/components/safety/${n}`, 'utf8'))
+    const keys = new Set(files.flatMap(src => [...src.matchAll(/'(safety.[A-Za-z]+(?:.[A-Za-z_]+)?)'/g)].map(m => m[1])))
+    expect(keys.size).toBeGreaterThan(15)
+    for (const k of keys) { expect(safetyVi[k], `vi ${k}`).toBeTruthy(); expect(safetyEn[k], `en ${k}`).toBeTruthy() }
+  })
+
   it('vi and en carry exactly the same keys, every reason and title the UI asks for exists, and {name} survives translation', () => {
     expect(Object.keys(safetyVi).sort()).toEqual(Object.keys(safetyEn).sort())
     for (const r of REPORT_REASONS) expect(safetyVi[`safety.reason.${r}`], r).toBeTruthy()

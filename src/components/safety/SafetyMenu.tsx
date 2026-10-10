@@ -38,6 +38,7 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
   const [blockFailed, setBlockFailed] = useState(false)
   const [notice, setNotice] = useState<string | null>(null)
   const menuRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
   const canReport = !!report && (report.target === 'review' || flags.reports)
   const canBlock = flags.userBlocks && !!user
@@ -53,8 +54,11 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
   useEffect(() => {
     if (!open) return
     const close = (e: MouseEvent) => { if (!menuRef.current?.contains(e.target as Node)) setOpen(false) }
+    // Escape closes the menu and puts the focus back on its button (keyboard users would otherwise lose their place).
+    const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') { setOpen(false); buttonRef.current?.focus() } }
     document.addEventListener('mousedown', close)
-    return () => document.removeEventListener('mousedown', close)
+    document.addEventListener('keydown', esc)
+    return () => { document.removeEventListener('mousedown', close); document.removeEventListener('keydown', esc) }
   }, [open])
 
   useEffect(() => {
@@ -87,7 +91,7 @@ export function SafetyMenu({ report, user, onBlockedChange, className, tone = 'd
 
   return (
     <div ref={menuRef} className={`relative ${className ?? ''}`} data-testid="safety-menu">
-      <button type="button" aria-label={t('safety.more')} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`rounded-full p-1.5 ${iconClass}`}>
+      <button ref={buttonRef} type="button" aria-label={t('safety.more')} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((v) => !v)} className={`rounded-full p-1.5 ${iconClass}`}>
         <MoreHorizontal size={18} />
       </button>
       {notice && <span role="status" className="absolute right-0 top-full z-30 mt-1 whitespace-nowrap rounded-lg bg-gray-900 px-2.5 py-1 text-xs text-white">{notice}</span>}
