@@ -130,7 +130,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   const selection = selectTools(tools, { texts: userTexts, recentTools: lastTurnTools })
   const proxy = proxyToolSchema(tools, selection.catalog, i.lang)
   const exposedTools = Object.fromEntries(selection.exposed.map(n => [n, tools[n]]))
-  const schemas = { ...toModelSchemas(exposedTools), ...(proxy ? { [USE_TOOL]: proxy } : {}), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool() } as never) : {}) }
+  const schemas = { ...toModelSchemas(exposedTools), ...(proxy ? { [USE_TOOL]: proxy } : {}), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool({ consultative: i.consultative === true }) } as never) : {}) }
   i.trace.add('tools', { exposed: selection.exposed, preselected: selection.preselected, deferred: selection.catalog.length, schemas: Object.keys(schemas).length })
   const box = i.taskBox
   if (box) i.trace.taskId = box.task.task_id

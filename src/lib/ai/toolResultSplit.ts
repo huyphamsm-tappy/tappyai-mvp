@@ -203,6 +203,12 @@ export interface EnrichmentCollector {
   evidenceTrace?: (summary: Record<string, unknown>) => void
   /** Phase 8 M5 (TAPPY_AGENT=2): Luna ranks; its [TAPPY_RANK] line orders the cards (agent/runtime/rankingContract.ts). */
   semanticRanking?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set only when the flag is on AND the turn is a trip-plan turn): the plan is the whole answer. No
+   * ranking line / decision recorder, no standalone venue cards after it, and no card photos fetched for them (the plan's own items keep
+   * their photos). Absent = the pre-flag behaviour, byte for byte.
+   */
+  planTurn?: boolean
   /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
   rankingTrace?: (summary: Record<string, unknown>) => void
   setConsultBrief(on: boolean): void

@@ -41,9 +41,15 @@ export function updateTaskTool() {
   })
 }
 
-export function askUserTool() {
+/**
+ * CONSULTATIVE_IN_AGENT (default OFF): the same action, described for a consultant who asks when the missing piece would change the whole
+ * answer or plan — not only when no answer is possible. The default description above is unchanged byte for byte when the flag is off.
+ */
+export const ASK_USER_DESCRIPTION_CONSULT = 'Hỏi lại người dùng bằng MỘT câu ngắn (có thể gộp tối đa 2 điều quan trọng nhất) khi thiếu một thông tin mà thiếu nó thì câu trả lời hoặc kế hoạch sẽ đổi hẳn (vd đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch còn thiếu điều làm đổi hẳn lịch trình như số người, thời gian, ngân sách hay kiểu chuyến đi, cần mua nhưng chưa nói gì về loại hay nhu cầu). Nói tự nhiên như người với người, không hỏi điều đã biết từ hội thoại hoặc trí nhớ. Gọi MỘT MÌNH, trước khi tìm kiếm hay lập kế hoạch. KHÔNG dùng khi người dùng nhờ GIẢI THÍCH / LIỆT KÊ / NÊU / SO SÁNH / CHỌN và đã nêu ưu tiên hay nhu cầu: trả lời phần đó trước (kèm giả định nêu rõ); thông tin chỉ để tinh chỉnh thì đặt MỘT câu hỏi ở cuối câu trả lời, không dùng công cụ này. Cũng không dùng khi người dùng đã nói cứ làm đi / tùy bạn, hay trả lời thiếu cho câu bạn vừa hỏi: lúc đó giả định, nêu giả định và làm. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").'
+
+export function askUserTool(opts: { consultative?: boolean } = {}) {
   return tool({
-    description: 'Hỏi lại người dùng MỘT câu ngắn CHỈ khi thiếu một thông tin mà không có nó thì không thể đưa ra phần trả lời nào có ích (vd đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến, cần mua nhưng chưa nói gì về loại hay nhu cầu). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi người dùng nhờ GIẢI THÍCH / LIỆT KÊ / NÊU / SO SÁNH / CHỌN và đã nêu ưu tiên hay nhu cầu: trả lời phần đó trước (kèm giả định nêu rõ); thông tin chỉ để tinh chỉnh (hệ điều hành, hãng, ngân sách, mẫu đang cân nhắc, tên các lựa chọn) thì đặt MỘT câu hỏi ở cuối câu trả lời, không dùng công cụ này. Cũng không dùng khi có thể giả định và trả lời, khi đã nêu các lựa chọn cụ thể để so sánh, hay khi đã có điểm đến cho kế hoạch. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").',
+    description: opts.consultative ? ASK_USER_DESCRIPTION_CONSULT : 'Hỏi lại người dùng MỘT câu ngắn CHỈ khi thiếu một thông tin mà không có nó thì không thể đưa ra phần trả lời nào có ích (vd đặt chỗ chưa rõ nơi/giờ, kế hoạch du lịch chưa có điểm đến, cần mua nhưng chưa nói gì về loại hay nhu cầu). Gọi MỘT MÌNH, trước khi tìm kiếm. KHÔNG dùng khi người dùng nhờ GIẢI THÍCH / LIỆT KÊ / NÊU / SO SÁNH / CHỌN và đã nêu ưu tiên hay nhu cầu: trả lời phần đó trước (kèm giả định nêu rõ); thông tin chỉ để tinh chỉnh (hệ điều hành, hãng, ngân sách, mẫu đang cân nhắc, tên các lựa chọn) thì đặt MỘT câu hỏi ở cuối câu trả lời, không dùng công cụ này. Cũng không dùng khi có thể giả định và trả lời, khi đã nêu các lựa chọn cụ thể để so sánh, hay khi đã có điểm đến cho kế hoạch. Không hỏi nếu lượt trước đã hỏi (mục "Bạn vừa hỏi người dùng").',
     parameters: z.object({
       question: z.string().describe('Câu hỏi, đúng giọng Tappy (xưng mình, gọi bạn), một câu'),
       choices: z.array(z.string()).optional().describe('2–4 lựa chọn bấm nhanh, mỗi lựa chọn ≤ 6 từ (tuỳ chọn)'),

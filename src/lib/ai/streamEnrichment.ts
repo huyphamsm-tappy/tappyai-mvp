@@ -2083,9 +2083,15 @@ export function applyPlaceEnrichmentStreamFilter(
       // WS2: no valid inline block, and the turn has candidates → the decision is RECORDED from the final answer (one structured Luna
       // call, validated by code — decisionRecord.ts). The answer is the decision; this is its machine-readable form.
       let contract = ex.contract
+      // CONSULTATIVE_IN_AGENT (collector.planTurn, only set under the flag on a trip-plan turn): the plan is the whole answer. The venues in it
+      // are the itinerary, not a recommendation — ranking them (inline line or the recorder, which reads the reply WITH the plan) turned a plan
+      // into "plan + three Luna-ranked venue cards" and cost one extra model call (UAT 10/10, Đà Lạt 3 ngày, ranking via=structured cards=3).
+      // The ranking line is still stripped above; only its effect and the recorder are skipped. Flag off: unchanged.
+      const planOwnsAnswer = collector.planTurn === true
+      if (planOwnsAnswer) { contract = null; rt.block = 'skipped_plan'; rt.via = null }
       let shoppingRanked = false // Luna's ranking reached the shopping card (otherwise the card is shown without a crowned option)
       const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
-      if (!contract && collector.recordDecision && candidateNames.length) {
+      if (!planOwnsAnswer && !contract && collector.recordDecision && candidateNames.length) {
         const rec = await collector.recordDecision(mainText, candidateNames)
         Object.assign(rt, { recorder_ms: rec.ms, recorder_usd: rec.usd, ...(rec.error ? { recorder_error: rec.error } : {}) })
         if (rec.contract) { contract = rec.contract; rt.block = 'ok'; rt.via = 'structured' }
@@ -2111,11 +2117,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // B7-A: photos are fetched HERE, not inside the tool, because only here do we
     // know which places the reply actually named. The tool used to resolve the
     // top 8 blind while the injector used at most 3.
-    if (resolvePhotos) {
+    // planTurn: photos are only worth fetching for the items of a [TAPPY_PLAN] block; a plain-text plan has no card or item to show them in.
+    if (resolvePhotos && !(collector?.planTurn && !mainText.includes('[TAPPY_PLAN]'))) {
       try {
         // The cards the client will actually render above the fold (see `renderedFoldNames`).
         // M5: under Luna's ranking the fold IS its ranked list (no re-derivation from the prose order).
-        const cardNames = lunaRanked ? lunaFold() : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
+        // planTurn: no standalone cards will render, so no card photos are fetched for them (the plan's own items still get theirs below).
+        const cardNames = collector?.planTurn ? [] : lunaRanked ? lunaFold() : renderedFoldNames(collector?.placesRecommendations ?? [], mainText, collector?.consultBrief === true)
         const needed = selectPlacesNeedingEnrichment(places, mainText, { cardNames })
         if (needed.length > 0) {
           const photos = await resolvePhotos(needed)
@@ -2254,6 +2262,8 @@ export function applyPlaceEnrichmentStreamFilter(
       recsForCard = namedRecs
       namedOnlyCards = namedRecs.map(r => r.entity.identity.name).filter((n): n is string => !!n)
     }
+    // planTurn (CONSULTATIVE_IN_AGENT): the plan carries its own places — no standalone venue cards after it, even for names the prose repeats.
+    if (collector?.planTurn) { recsForCard = []; namedOnlyCards = [] }
     // COST (2026-09-29): the lookup is skipped only when every card above the fold already
     // carries a verified TikTok review — there is nothing left for it to attribute. Otherwise the
     // ONE batched request for the fold is unchanged (one credit whether it names one venue or three).
@@ -2331,7 +2341,8 @@ export function applyPlaceEnrichmentStreamFilter(
      * iPhone question, directly above a card showing the same products. The
      * shopping marker is the shopping card's existence, so it counts here too.
      */
-    const decisionCardRenders = !!placesView || !!collector?.shoppingMarker
+    // planTurn: the plan is what renders and owns the places' photos / links — no loose per-venue link blocks are injected into its prose.
+    const decisionCardRenders = !!placesView || !!collector?.shoppingMarker || collector?.planTurn === true
     const cardOwnsEnrichment = decisionCardRenders && collector?.rendersDecisionCard === true
     const injectedProse = cardOwnsEnrichment ? mainText : injectPlaceEnrichment(places, mainText, lang, { placement: mediaPlacementV2Enabled() ? 'v2' : 'v1' })
     // A3 (owner 2026-10-02): images appear ONLY inside cards. A web turn with no card at all (a wrong-model shopping result, a hotel

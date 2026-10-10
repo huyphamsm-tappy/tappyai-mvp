@@ -1,11 +1,13 @@
 // @vitest-environment node
 import { describe, it, expect, vi, afterEach } from 'vitest'
+import { writeFileSync } from 'node:fs'
 import { AGENT_SYSTEM_V2 } from './prompt'
 import { agentSystemV2For, consultMemoryLines, CONSULT_PRINCIPLES } from './consultativeVoice'
 import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
 import { splitPickSentence } from '@/lib/ai/consultative/luna'
 import { agentContext } from '../prompt'
+import { askUserTool, ASK_USER_DESCRIPTION_CONSULT } from './controlTools'
 import { startAgentRuntimeTurn } from './index'
 import { AgentRunTrace } from './trace'
 import type { UserMemory } from '@/lib/memory/memoryService'
@@ -39,12 +41,12 @@ describe('the static system message', () => {
     const on = agentSystemV2For(true)
     expect(on.endsWith(CONSULT_PRINCIPLES + STYLE_LUNA6_BLOCK)).toBe(true)
     expect(on).toBe(agentSystemV2For(true)) // constant for a flag value → the provider's cached prefix holds across turns
-    expect(on.indexOf('CÁCH TƯ VẤN')).toBeGreaterThan(on.indexOf('CHỌN VÀ XẾP HẠNG'))
+    expect(on.indexOf('CÁCH TƯ VẤN (ưu tiên')).toBeGreaterThan(on.indexOf('CHỌN VÀ XẾP HẠNG'))
   })
 
   it('flag ON: the "assumption → answer → one closing question" mould and the canned tip phrases are gone', () => {
     const on = agentSystemV2For(true)
-    for (const gone of ['trợ lý đời sống', 'ăn uống, vui chơi, phim, mua sắm, du lịch, giá cả, thời tiết, tin tức', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
+    for (const gone of ['CHỈ khi thiếu một thông tin mà KHÔNG có nó thì không thể đưa ra phần trả lời nào có ích', 'chỉ hỏi ngày đi ở cuối', 'đã có điểm đến → lập thẳng', 'đã có điểm đến → lập lịch trình ngay', 'kế hoạch du lịch chưa có điểm đến, cần mua', '(chuyến đi đã có điểm đến,', '(vd lịch trình khi đã có điểm đến và số ngày)', 'trợ lý đời sống', 'ăn uống, vui chơi, phim, mua sắm, du lịch, giá cả, thời tiết, tin tức', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
       expect(on, gone).not.toContain(gone)
       expect(AGENT_SYSTEM_V2, `${gone} was in the base`).toContain(gone)
     }
@@ -52,7 +54,8 @@ describe('the static system message', () => {
 
   it('flag ON: every fact / evidence / action / ranking / presentation section is byte-identical to the base (no guard text is touched)', () => {
     const on = agentSystemV2For(true)
-    const kept = ['SỰ THẬT (bắt buộc)', 'HÀNH ĐỘNG CÓ TÁC ĐỘNG', 'TRÌNH BÀY', 'NGHIÊN CỨU VÀ BẰNG CHỨNG', 'CHỌN VÀ XẾP HẠNG']
+    // 'TRÌNH BÀY' is not in this list on purpose: its trip-plan bullet is one of the planning passages the flag replaces (checked in the PLANNING test).
+    const kept = ['SỰ THẬT (bắt buộc)', 'HÀNH ĐỘNG CÓ TÁC ĐỘNG', 'NGHIÊN CỨU VÀ BẰNG CHỨNG', 'CHỌN VÀ XẾP HẠNG']
     const paras = AGENT_SYSTEM_V2.split('\n\n').filter(p => kept.includes(p.split('\n')[0].trim()))
     expect(paras.map(p => p.split('\n')[0].trim()).sort()).toEqual([...kept].sort())
     for (const p of paras) expect(on, p.split('\n')[0]).toContain(p)
@@ -73,6 +76,39 @@ describe('the static system message', () => {
     expect(CONSULT_PRINCIPLES).toMatch(/chỉ nói đã kèm link khi kết quả công cụ thật sự có link/)
     expect(CONSULT_PRINCIPLES).toMatch(/hiểu biết chung/)
     expect(CONSULT_PRINCIPLES).toMatch(/không bịa giá, giờ, khoảng cách hay sự kiện/)
+  })
+
+  it('PLANNING: the final prompt asks first when something would change the whole plan, builds at once when it can, never twice — and keeps no instruction that says the opposite', () => {
+    const on = agentSystemV2For(true)
+    const lines = on.split('\n').filter(l => /kế hoạch|lịch trình|get_trip_data|ask_user/i.test(l))
+    // Evidence helper (off by default): PRINT_PLAN_PROMPT=<file> writes the plan-related instructions of the final prompt to that file.
+    if (process.env.PRINT_PLAN_PROMPT) writeFileSync(process.env.PRINT_PLAN_PROMPT, '--- PLAN INSTRUCTIONS THE MODEL RECEIVES (flag on) ---\n' + lines.join('\n') + '\n--- END ---')
+    // the new principle
+    expect(CONSULT_PRINCIPLES).toMatch(/Trước khi gọi công cụ lập kế hoạch, tự hỏi còn thiếu điều gì mà thiếu nó thì kế hoạch đổi hẳn/)
+    expect(CONSULT_PRINCIPLES).toMatch(/hỏi trước, chỉ 1–2 điều quan trọng nhất/)
+    expect(CONSULT_PRINCIPLES).toMatch(/không hỏi điều đã biết từ hội thoại hay từ trí nhớ/)
+    expect(CONSULT_PRINCIPLES).toMatch(/lượt đó chưa gọi công cụ lập kế hoạch/)
+    expect(CONSULT_PRINCIPLES).toMatch(/lập luôn, nêu ngắn gọn các giả định đã dùng và không hỏi lần hai/)
+    expect(CONSULT_PRINCIPLES).toMatch(/nếu họ chỉ hỏi gợi ý thì chỉ gợi ý/)
+    expect(CONSULT_PRINCIPLES).toMatch(/không kèm thêm danh sách địa điểm trùng lặp/)
+    // the old instructions it replaces are gone (see the `gone` list above) and the remaining plan lines point at the new rule
+    expect(on).toContain('Thiếu thông tin làm đổi hẳn kế hoạch thì làm theo mục CÁCH TƯ VẤN bên dưới: hỏi trước, chưa gọi công cụ.')
+    expect(on).toContain('đã đủ thông tin để lập kế hoạch → lập luôn')
+    // contracts that must survive: one get_trip_data call, destination from the user's words, the [TAPPY_PLAN] format
+    expect(on).toContain('Chỉ gọi get_trip_data MỘT lần')
+    expect(on).toContain('vị trí GPS KHÔNG phải điểm đến')
+    expect(on).toContain('[TAPPY_PLAN]')
+    expect(lines.length).toBeGreaterThan(4)
+  })
+
+  it('ask_user: with the flag its description allows asking when the missing piece changes the whole plan; without it the description is the original, unchanged', () => {
+    const on = String((askUserTool({ consultative: true }) as unknown as { description: string }).description)
+    const off = String((askUserTool() as unknown as { description: string }).description)
+    expect(on).toBe(ASK_USER_DESCRIPTION_CONSULT)
+    expect(on).toContain('thiếu nó thì câu trả lời hoặc kế hoạch sẽ đổi hẳn')
+    expect(on).not.toContain('hay khi đã có điểm đến cho kế hoạch')
+    expect(off).toContain('hay khi đã có điểm đến cho kế hoạch')
+    expect(String((askUserTool({}) as unknown as { description: string }).description)).toBe(off)
   })
 
   it('the principles and the voice block hold no fixed sentence to copy and no user data', () => {
