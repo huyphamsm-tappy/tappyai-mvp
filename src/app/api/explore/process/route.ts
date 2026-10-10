@@ -3,7 +3,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { NextRequest, NextResponse } from 'next/server'
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
   const ageRefusal = await refuseIneligible(req, supabase)
   if (ageRefusal) return ageRefusal
 
-  if (!rateLimit(`explore-process:${user.id}`, 20, 60_000).ok) {
+  if (!(await publicRateLimit(`explore-process:${user.id}`, 20, 60_000)).ok) {
     return NextResponse.json(
       { error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) },
       { status: 429 },
