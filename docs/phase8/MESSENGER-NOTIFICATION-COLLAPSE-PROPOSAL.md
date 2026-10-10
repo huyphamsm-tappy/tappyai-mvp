@@ -1,6 +1,6 @@
 # Messenger → Inbox: collapsing unread message notifications per thread — PROPOSAL (not implemented)
 
-Status: **PROPOSAL v2 (2026-10-10) — the five open semantics are resolved below with recommended defaults; the owner approved the DIRECTION (one unread row per recipient and thread); implementation waits for explicit approval of §7. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
+Status: **PROPOSAL v2.1 (2026-10-10, store-down semantics added in §7d) — the five open semantics are resolved below with recommended defaults; the owner approved the DIRECTION (one unread row per recipient and thread); implementation waits for explicit approval of §7. No behaviour change was made.** Web-only phase; `MESSAGE_NOTIFICATIONS_ENABLED` stays OFF (Android/iOS do not handle the `message` type), so the shape can still change before anyone depends on it. Baseline: `p8/agent-runtime` after `220d251`.
 
 ## 1. What exists today (verified)
 - A send (`POST /api/messaging/threads/[id]/messages`) stores the row, then `notifyThreadRecipients` calls `emitNotification` **once per other participant per message** (`type 'message'`, `category 'social'`, title = sender name, fixed body, `data {threadId, kind}`, `entityUrl` = `/profile/notifications?tab=messages&thread=<id>`). Only when the flag is exactly `'true'`.
@@ -73,6 +73,32 @@ Push throttle window (N); whether the title carries the count ("3 tin nhắn m�
 
 ## 7c. Approval requested
 The recommended defaults D1–D5 above, the 10-minute window, and the web change to `ThreadView` ordering. Until approved: no migration, no function, no route change.
+
+## 7d. Store-down semantics (D6) — resolved before implementation (2026-10-10)
+
+**Which "store"?** Two different stores are in play and they must not be confused. (1) **Postgres** is the *only* store the collapse needs: the dedupe row, the per-(recipient, thread) lock, the derived count and the push throttle timestamp (`data.lastPushAt`) all live there. (2) **The shared KV** (Upstash) is the rate-limiter store. **Recommendation: the collapse and the push throttle must not depend on KV at all** — a KV outage then cannot duplicate, lose or storm notifications.
+
+**What can fail, and the recommended behaviour** (the send itself is already stored; the notification is a pointer and the Messenger shows unread from the read cursor, so a missing notification never hides a message):
+
+| Failure | Duplicate pushes | Lost notifications | Database load | Verdict |
+|---|---|---|---|---|
+| F1 *fail-open to today's behaviour* (insert a row and push per message when the collapse function errors) | **High** (exactly the problem being fixed, at the worst moment) | none | highest (one insert + one dispatch per message) | rejected |
+| F2 *fail-closed, silent* (no row, no push) | none | the pointer for that message (repaired by the next message's derived count; the Messenger still shows the unread) | lowest | acceptable only as the last resort |
+| **F3 *degrade* (recommended)**: if the function errors or times out, attempt ONE plain `INSERT … ON CONFLICT DO NOTHING` on the partial unique index (no lock, no count change) and **never push from the degraded path**; if that also fails, fall to F2 | none (the unique index forbids a second unread row; the push only fires from the success path) | none in the usual case (the row exists, its count is repaired by the next success); the push for that message is skipped | bounded: one cheap statement | **recommended** |
+| F4 *outbox + worker retry* | none | none | extra table, worker, monitoring | defer; only if F3's residual loss proves unacceptable |
+
+**Bounds that keep the load predictable:** the function runs with `SET LOCAL lock_timeout = '2s'` and `statement_timeout = '3s'` (a stuck lock fails fast instead of piling up request handlers); **at most one bounded retry** inline; no background retry loop. The failure is logged with recipient/thread ids only (no content) and counted.
+
+**Dependency on the message-send rate limiter (slice 5 of the SEC4 plan):** `messaging/threads/[id]/messages` is still on the in-process limiter. If it is later moved to the shared limiter with the *fail-closed* semantics used for the paid-provider routes, a KV outage would make **sending a message** answer 429 — the Messenger itself would go down because of a cache outage. Recommendation: for this route use the **fail-open-to-in-process** variant (a spam/abuse limit, not a spend limit) or leave it per-instance; this is an owner decision recorded here so slice 5 does not make it by accident.
+
+**Added acceptance tests (extend §7b):**
+13. Function raises (injected lock timeout) → the degraded insert creates exactly one unread row, **no push**, `count` repaired by the next successful emit.
+14. Function **and** degraded insert fail → the send still returns 200, no row, no push, one log line; the next message creates the row.
+15. KV unavailable (limiter store failing) → emit, collapse and throttle behave identically (no KV call is made on this path).
+16. `lock_timeout` is enforced: a held lock makes the emit return within the bound instead of hanging the request.
+17. Failure injection never produces two unread rows for one (recipient, thread) (property test over random interleavings with random failures).
+
+**Approval (adds to §7c):** F3 as the failure policy, the 2 s / 3 s bounds, and whether the message-send limiter (SEC4 slice 5) is fail-open or per-instance.
 
 ---
 # Send idempotency — separate DESIGN TASK (not part of this slice; NOT implemented)
