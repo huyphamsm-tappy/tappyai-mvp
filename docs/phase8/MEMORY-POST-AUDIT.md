@@ -33,3 +33,15 @@ Evidence gathered for the decision (all in-repository; production traffic is not
 - **Authentication paths:** unchanged for the supported methods (`GET`: any session, `null` when none; `PATCH`/`DELETE`: 401 when none).
 
 **Change made (`016b996`):** `POST` now answers **404 with an empty body before any authentication, memory read, model call or write**, and the module no longer imports the extraction function. `GET`/`PATCH`/`DELETE` are byte-for-byte unchanged. Tests: POST cannot reach the LLM, extraction, memory store or session lookup for a signed-in, anonymous or signed-out caller, an empty body, a 2000-message body or malformed JSON; the supported methods behave as before; restoring the old POST fails 3 of 3 tests. **Reversal** needs the owner's limiter and payload numbers (option B above).
+
+## 4. Residual risk and Web handoff (2026-10-10, second continuation)
+**Kept as implemented:** `POST /api/memory` answers 404 with an empty body before any work (`016b996`); `GET` / `PATCH` / `DELETE` are unchanged. Nothing in this section changes code.
+
+**Residual risk (not ruled out):**
+1. An **external caller outside this repository** (a script, a partner, a very old mobile build) that relied on `POST` would now receive a 404 instead of an LLM extraction. Repository evidence shows no such caller; production access logs for `POST /api/memory` over a long window are **not available here**, so the absence is unproven.
+2. A **stale cached Web bundle** from before the duplicate client call was removed could still send the request. The effect is the intended one (no second extraction; the real extraction runs server-side in `/api/chat`'s `onFinish`); the visible symptom would be a failed background request, not a user-facing error.
+3. The 404 is silent by design (no log line, so a probe cannot be used to amplify logging). Consequence: the *only* way to learn whether anything still calls it is the platform's request logs.
+
+**Evidence that would close the risk:** the Vercel request log count of `POST /api/memory` for the last 30 days before release (and its user-agents), or a one-release observation window after deploy showing zero hits.
+
+**Web handoff note for the separate application phase (do not act on it in the Web-only task):** `docs/ios/04_API_CONTRACT.md` §2.3 and its endpoint table describe `GET/POST /api/memory` with "POST writes/updates". That text is stale for two reasons — `POST` was an LLM extraction (not a write) and is now disabled (404), and the endpoint that writes memory is `PATCH`. The iOS client never called `POST`. The document should be reconciled in the application phase, together with any iOS API documentation that lists the method. **Not edited here:** iOS code and iOS API documentation are outside this task's authorisation.

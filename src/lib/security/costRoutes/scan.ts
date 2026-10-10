@@ -37,17 +37,26 @@ export const COST_SIGNALS: ReadonlyArray<readonly [string, RegExp]> = [
   ['places', /places\.googleapis\.com|\bfetchPlacePhoto\b/],
 ]
 
-/** Limiter patterns — read from the ROUTE source only. */
+/**
+ * Limiter patterns — read from the ROUTE source only, with comments removed (`stripComments`) and as CALLS (`name(`), not as bare words. A limiter that is only
+ * imported, or only mentioned in a comment, does not count (2026-10-10: before this, `// publicRateLimit` or an unused import satisfied the ratchet).
+ * Still a heuristic: it proves a limiter is CALLED somewhere in the route file, not that it runs before the provider call, on every method, or that its result is honoured.
+ */
 export const LIMITER_PATTERNS: ReadonlyArray<readonly [LimiterKind, RegExp]> = [
-  ['distributed', /\b(distributedRateLimit|sharedRateLimit)\b/],
-  ['public', /\b(publicRateLimit|publicDailyRateLimit)\b/],
-  ['quota', /\b(consumeAiQuestion|consumeAiQuota)\b/],
+  ['distributed', /\b(distributedRateLimit|sharedRateLimit)\s*\(/],
+  ['public', /\b(publicRateLimit|publicDailyRateLimit)\s*\(/],
+  ['quota', /\b(consumeAiQuestion|consumeAiQuota)\s*\(/],
   ['inprocess', /\brateLimit\s*\(/],
   ['local', /\bcheckRL\s*\(/],
   ['cron', /\bcronAuth\b|CRON_SECRET/],
 ]
 
 export const SCAN_DEPTH = 3
+
+/** Removes block and line comments (a `//` that follows `:` or a quote is kept: URLs inside strings). Heuristic, used for limiter detection only. */
+export function stripComments(source: string): string {
+  return source.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:'"`\\])\/\/.*$/gm, '$1')
+}
 
 export interface RouteScan { route: string; signals: string[]; limiters: LimiterKind[] }
 
@@ -90,7 +99,7 @@ export function scanRoutes(srcRoot: string): RouteScan[] {
     const route = r.slice(apiRoot.length + 1).replace(/\\/g, '/').replace(/\/route\.ts$/, '')
     const signals = new Set<string>()
     for (const f of closure(r)) for (const [name, re] of COST_SIGNALS) if (re.test(read(f))) signals.add(name)
-    const source = read(r)
+    const source = stripComments(read(r))
     return { route, signals: [...signals].sort(), limiters: LIMITER_PATTERNS.filter(([, re]) => re.test(source)).map(([k]) => k).sort() as LimiterKind[] }
   }).sort((a, b) => a.route.localeCompare(b.route))
 }

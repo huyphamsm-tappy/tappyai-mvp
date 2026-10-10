@@ -53,7 +53,7 @@ const decl = (o: Partial<CostRouteDecl> & { route: string }): CostRouteDecl => (
 const reg = (entries: CostRouteDecl[], extra: Partial<RegistryInput> = {}): RegistryInput => ({ entries, adminExceptions: [], knownGapBudget: entries.filter((e) => e.status === 'known-gap').length, ...extra })
 
 const LLM_ROUTE = "import { AI } from '@/lib/ai/llm'\nexport async function POST() { await AI.generate({}) }\n"
-const LIMITED = "import { distributedRateLimit } from '@/lib/security/distributedRateLimit'\n" + LLM_ROUTE
+const LIMITED = "import { distributedRateLimit } from '@/lib/security/distributedRateLimit'\nexport async function POST() { await distributedRateLimit('k', 1, 1); await AI.generate({}) }\nimport { AI } from '@/lib/ai/llm'\n"
 
 describe('the rules (AC1–AC6) on a fixture tree', () => {
   it('detection follows imports: a route that reaches the LLM through a service file is cost-bearing', () => {
@@ -122,6 +122,19 @@ describe('the rules (AC1–AC6) on a fixture tree', () => {
     expect(checkRegistry(scan, reg([gap('a'), gap('b')], { knownGapBudget: 1 })).some((p) => p.startsWith('AC5') && p.includes('exceed'))).toBe(true)
     expect(checkRegistry(scan, reg([gap('a'), decl({ route: 'b', status: 'exempt', note: 'e'.repeat(50) })], { knownGapBudget: 2 })).some((p) => p.startsWith('AC5') && p.includes('lower'))).toBe(true)
     expect(checkRegistry(scan, reg([gap('a'), gap('b')]))).toEqual([])
+  })
+
+  it('a limiter that is only IMPORTED, or only named in a COMMENT, is not a limiter (2026-10-10: `chat` had claimed one through a comment)', () => {
+    const importOnly = "import { distributedRateLimit } from '@/lib/security/distributedRateLimit'\n" + LLM_ROUTE
+    const commentOnly = '// guarded by publicRateLimit(...) and distributedRateLimit(...)\n/* publicDailyRateLimit( */\n' + LLM_ROUTE
+    const urlInString = "const u = 'https://x.test/a'; const k = await publicRateLimit('k', 1, 1)\n" + LLM_ROUTE // `//` after `:` is a URL, not a comment: the call on the same line still counts
+    const scan = scanRoutes(fixture({ 'app/api/a/route.ts': importOnly, 'app/api/b/route.ts': commentOnly, 'app/api/c/route.ts': urlInString }))
+    expect(scan.find((s) => s.route === 'a')!.limiters).toEqual([])
+    expect(scan.find((s) => s.route === 'b')!.limiters).toEqual([])
+    expect(scan.find((s) => s.route === 'c')!.limiters).toEqual(['public'])
+    // and the rule reacts: a declaration that claims the limiter for a comment-only route is now an AC3 problem
+    const problems = checkRegistry(scan, reg([decl({ route: 'b', limiters: ['distributed'] })]))
+    expect(problems.some((p) => p.startsWith('AC3') && p.includes("'b'"))).toBe(true)
   })
 
   it('an admin exception must also be a known gap', () => {
