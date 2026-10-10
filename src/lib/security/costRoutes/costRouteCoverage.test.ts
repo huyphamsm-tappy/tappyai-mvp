@@ -31,7 +31,7 @@ describe('the real route tree matches the declarations', () => {
   })
   it('every known gap names a closing slice and the matrix document describes each slice', () => {
     const slices = new Set(COST_ROUTES.filter((e) => e.status === 'known-gap').map((e) => e.slice))
-    expect([...slices].sort()).toEqual([4, 5, 6]) // slices 2 (shared limiter) and 3 (memory POST disabled) are complete
+    expect([...slices].sort()).toEqual([4, 5]) // slices 2, 3, 5a-c are complete: left are translate/scan (4) and the Stripe routes + the message-send limiter (5)
   })
 })
 

@@ -9,10 +9,10 @@
 
 import type { CostRouteDecl } from './scan'
 
-export const ADMIN_EXCEPTIONS: readonly string[] = ['admin/marketing/campaigns/[id]']
+export const ADMIN_EXCEPTIONS: readonly string[] = [] // slice 5c closed the last one (admin/marketing/campaigns/[id])
 
 /** The number of known-gap entries below. It may only go down. */
-export const KNOWN_GAP_BUDGET = 6
+export const KNOWN_GAP_BUDGET = 5
 
 export const COST_ROUTES: readonly CostRouteDecl[] = [
   // ── covered ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -40,7 +40,6 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'messaging/threads/[id]/messages', cost: 'push dispatch per message (flag off by default)', limiters: ['inprocess'], key: 'user 60/min (per instance)', status: 'known-gap', note: 'in-process only; notification collapse is a separate proposal', slice: 5 },
   { route: 'stripe/checkout', cost: 'Stripe API call; 404 while subscriptionsEnabled()', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; dormant while the SePay/VietQR flag is on (production flag state unverified)', slice: 5 },
   { route: 'stripe/portal', cost: 'Stripe API call; 404 while subscriptionsEnabled()', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; dormant while the SePay/VietQR flag is on (production flag state unverified)', slice: 5 },
-  { route: 'admin/marketing/campaigns/[id]', cost: 'campaign state change (the send path is /activate, which is limited)', limiters: [], key: '—', status: 'known-gap', note: 'the only admin route without distributedRateLimit; its siblings have it', slice: 6 },
 
   // ── exempt: detected by the heuristic but no provider call happens on this path ────────────────────────────────────────────────────────
   { route: 'memory', cost: 'none: POST (the LLM extraction) answers 404 before any work; GET / PATCH / DELETE read and write the own memory of the caller', limiters: [], key: '—', status: 'exempt', note: 'POST /api/memory is disabled (slice 3, docs/phase8/MEMORY-POST-AUDIT.md); the scan still sees the extraction function because memoryService co-locates it, but no route code calls it' },
