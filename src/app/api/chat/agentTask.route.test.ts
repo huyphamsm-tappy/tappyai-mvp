@@ -247,6 +247,30 @@ describe('scope, integrity and flag isolation', () => {
     expect((await stored(a.id))!.task_id).toBe(ta!.task_id)
   })
 
+  it('the answer to a clarifying question: the SAME chatSessionId loads the task + history and ask_user is withheld; a CHANGED id (the old web remount defect) loads nothing and ask_user is offered again', async () => {
+    const ask = () => {
+      h.state.deltas = [delta({ task_type: 'travel_planning', goal: 'Lập kế hoạch đi Huế' })]
+      h.state.steps = [{ text: '', toolCalls: [call('ask_user', { question: 'Bạn đi Huế mấy ngày', choices: ['2 ngày', '3 ngày'] })] }]
+    }
+    const answer = () => { h.state.stepCalls = []; h.state.deltas = [delta({})]; h.state.steps = [{ text: 'Mình lên lịch 3 ngày nhé.', toolCalls: [] }] }
+    const toolsOf = () => Object.keys((h.state.stepCalls[0] as { tools: Record<string, unknown> }).tools)
+    const dataOf = () => dataBlockOf(h.state.stepCalls[0])
+
+    const same = { id: sid(), messages: [] as Array<{ role: string; content: string }> }
+    ask(); await say(same, 'Lập kế hoạch đi Huế cho mình')
+    answer(); const kept = await say(same, '3 ngày')
+    expect(dataOf()).toContain('Bạn vừa hỏi người dùng: "Bạn đi Huế mấy ngày?"')
+    expect(toolsOf()).not.toContain('ask_user')
+    expect(kept.trace.events.find(e => e.kind === 'task')).toMatchObject({ decision: 'loaded' })
+
+    const changed = { id: sid(), messages: [] as Array<{ role: string; content: string }> }
+    ask(); await say(changed, 'Lập kế hoạch đi Huế cho mình')
+    answer(); const lost = await say({ ...changed, id: sid(), messages: changed.messages }, '3 ngày')
+    expect(dataOf()).not.toContain('Bạn vừa hỏi người dùng')
+    expect(toolsOf()).toContain('ask_user')
+    expect(lost.trace.events.find(e => e.kind === 'task')).toMatchObject({ decision: 'created' })
+  })
+
   it('a client cannot substitute a task: task_id / task fields in the body are ignored', async () => {
     const c = { id: sid(), messages: [] as Array<{ role: string; content: string }> }
     h.state.deltas = [delta({ goal: 'Việc thật' })]
