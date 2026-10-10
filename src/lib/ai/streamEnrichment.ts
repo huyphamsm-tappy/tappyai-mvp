@@ -1610,6 +1610,9 @@ export function applyPlaceEnrichmentStreamFilter(
   let mainText = '' // assistant text buffered AFTER a place-search tool call
   const toolNameByCallId = new Map<string, string>()
   const productQueries: string[] = []   // C3-B.10: what search_products was asked for
+  // CONSULTATIVE_IN_AGENT trip-plan turn: the destination the plan's tool calls were made for (get_trip_data.destination, else the first place tool's
+  // location) — the plan card keeps only retrieved places whose address names it (planItemGuard). Stays null when the flag is off.
+  let planDestination: string | null = null
   // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
   const gateCorpus: string[] = []
   // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
@@ -2385,9 +2388,9 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }))
+      }), { destination: collector?.planTurn ? planDestination : null })
       : null
-    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
+    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
     // prose guards below cut SENTENCES and CLAUSES — hours ("mở cửa 10:00-21:00"), prices, formats —
     // and they ran over the [TAPPY_PLAN] JSON too: a cut took "lễ tân mở cửa 24/7, check-in từ
@@ -2731,7 +2734,7 @@ export function applyPlaceEnrichmentStreamFilter(
         stalePrices: collector.guardEvidence?.stalePrices ?? [],
         freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
         agedPrices: agedFramePrices,
-      }, { lang })
+      }, { lang, illustrations: collector?.consultative === true })
       : null
     if (gate && (gate.claims.length || gate.removedSentences)) {
       const summary = { claims: gate.claims.length, ...gate.counts, removed_sentences: gate.removedSentences, note_added: gate.noteAdded, categories: [...new Set(gate.claims.map(c => c.category))], fabricated: gate.claims.filter(c => c.state === 'FABRICATED').map(c => c.category) }
@@ -2746,7 +2749,7 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const afterGate = gate ? gate.text : unsupported.text
     const entityGuard = collector?.semanticRanking && gateCorpus.length > 0
-      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang)
+      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang, { skipAmounts: collector.consultative === true })
       : null
     if (entityGuard && entityGuard.ungrounded.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'entity_name', checked: entityGuard.checked, ungrounded: entityGuard.ungrounded.length }))
     if (entityGuard) gt('entity_name', afterGate, entityGuard.text)
@@ -3084,7 +3087,12 @@ export function applyPlaceEnrichmentStreamFilter(
       // The turn's retrieval verdict. Without it the gate cannot tell "nothing to check
       // against because nothing was retrieved" from "nothing to check against because this
       // is a recall turn" — and it stood down for both.
-      { placeSearch: placeSearchStatus, cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined },
+      {
+        placeSearch: placeSearchStatus,
+        cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined,
+        // CONSULTATIVE_IN_AGENT: a plan answered in text has no card at all (planTurn clears the standalone cards), so no line may point at one.
+        ...(collector?.planTurn && !scaffoldStripped.includes('[TAPPY_PLAN]') ? { noCardLine: true } : {}),
+      },
     )
     // Phase 7: the guards above may have removed the sentence an injected photo/link block was
     // placed under. A block with no owner named beside it goes too — never an image without its
@@ -3643,9 +3651,13 @@ export function applyPlaceEnrichmentStreamFilter(
           }
         } else if (line.startsWith('9:')) {
           try {
-            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string } }
+            const call = JSON.parse(line.slice(2)) as { toolCallId?: string; toolName?: string; args?: { query?: string; destination?: string; location?: string } }
             if (call.toolCallId && call.toolName) toolNameByCallId.set(call.toolCallId, call.toolName)
             anyToolCalled = true
+            if (collector?.planTurn) {
+              const d = call.toolName === 'get_trip_data' ? call.args?.destination : call.toolName && PLACE_TOOLS.has(call.toolName) ? call.args?.location : undefined
+              if (typeof d === 'string' && d.trim() && (call.toolName === 'get_trip_data' || !planDestination)) planDestination = d.trim().slice(0, 60)
+            }
             if (call.toolName && PLACE_TOOLS.has(call.toolName)) {
               // The pre-tool segment is now COMPLETE, so its final sentence is a real sentence end
               // and may be released — the usual "the last one might still be arriving" caution no

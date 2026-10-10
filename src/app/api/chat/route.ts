@@ -2892,6 +2892,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (agentV2) enrichment.semanticRanking = true
   // CONSULTATIVE_IN_AGENT: on a trip-plan turn the plan is the whole answer (no ranking call, no standalone venue cards after it).
   if (consultativeAgent && planningIntent === 'trip') enrichment.planTurn = true
+  // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
+  if (consultativeAgent) enrichment.consultative = true
   if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
   if (agentRunTrace) enrichment.claimsTrace = summary => agentRunTrace.add('claims', summary)
   // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.

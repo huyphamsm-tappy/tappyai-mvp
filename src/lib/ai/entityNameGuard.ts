@@ -54,13 +54,31 @@ export interface EntityGuardResult { text: string; ungrounded: string[]; checked
 
 const DISCLOSURE = (lang: string) => (lang === 'en' ? '(not found in the sources I checked)' : '(mình chưa thấy tên này trong nguồn đã tra)')
 
-export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi'): EntityGuardResult {
+// ── CONSULTATIVE_IN_AGENT (`skipAmounts`): a bold amount / quantity phrase is not a name ─────────────────────────────────────────
+//
+// 🚨 Measured (UAT 2026-10-10): "**4 triệu cho hai người**" and "**3 triệu đồng/lượng**" were labelled "(mình chưa thấy tên này trong nguồn đã
+// tra)". `looksLikeModelName` only rules out a run made ONLY of digits and unit words (`w.every(digit || UNIT)`); the words "cho", "hai",
+// "đồng", "lượng", "đêm" are in no unit list, so a number + unit + one ordinary word passed as "a model name with a digit". An amount or
+// quantity phrase (a number followed by a money / quantity word, or any money amount inside the run) names nothing and is left alone; a
+// proper name that the evidence lacks ("**Galaxy S26 Ultra**") is still labelled.
+const QUANTITY_WORD = new Set(['trieu', 'ty', 'ti', 'nghin', 'ngan', 'k', 'tr', 'dong', 'vnd', 'usd', 'nguoi', 'ngay', 'dem', 'thang', 'nam', 'tuan', 'gio', 'phut', 'luong', 'chi', 'cay', 'kg', 'g', 'km', 'm', 'lit', 'phan', 'suat', 'lan', 'khach', 'phong'])
+const MONEY_AMOUNT = /\d[\d.,]*\s?(?:tr|k|triệu|tỷ|tỉ|nghìn|ngàn|đồng|vnđ|vnd|usd|₫|đ)(?![\p{L}\d])/iu
+/** True when a bold run is an amount or a quantity ("4 triệu cho hai người", "3 triệu đồng/lượng", "2 ngày 1 đêm"), not a name. */
+export function isAmountPhrase(bold: string): boolean {
+  const w = words(bold)
+  if (w.length === 0) return false
+  if (/^\d+$/.test(w[0]) && w.length > 1 && QUANTITY_WORD.has(w[1])) return true
+  return MONEY_AMOUNT.test(bold)
+}
+
+export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi', opts: { skipAmounts?: boolean } = {}): EntityGuardResult {
   if (!text || ev.corpus.length === 0) return { text, ungrounded: [], checked: 0 }
   const hay = ` ${words([...ev.corpus.map(decode), ...ev.userTexts].join('\n').slice(0, 2_000_000)).join(' ')} `
   const ungrounded: string[] = []
   let checked = 0
   const out = text.replace(/\*\*([^*\n]{3,80})\*\*/g, (whole, inner: string) => {
     if (!looksLikeModelName(inner)) return whole
+    if (opts.skipAmounts && isAmountPhrase(inner)) return whole
     checked++
     const shown = inner.trim().replace(/[.,;]+$/, '')
     if (nameVariants(shown).some(v => hay.includes(` ${v} `))) return whole

@@ -180,6 +180,27 @@ function namesAPlace(sentence: string): boolean {
   return [...sentence.matchAll(/\*\*([^*\n]{2,80})\*\*/g)].some(m => isTitleCaseName(m[1]))
 }
 
+// ── CONSULTATIVE_IN_AGENT (`illustrations`): a WORKED EXAMPLE is not a claim about the world ─────────────────────────────────────
+//
+// 🚨 Measured (UAT 2026-10-10, "giải thích lãi đơn và lãi kép"): the reply's example — "Ví dụ gửi 10 triệu, lãi 10%/năm: … sau năm đầu có
+// 11 triệu; năm sau … 12,1 triệu" — was judged line by line: 10 triệu / 11 triệu / 12,1 triệu are in no evidence and not the user's, so each
+// was FABRICATED, three sentences were cut and the reply ended "Mình chưa xác minh được giá …, nên không nêu con số." A hypothetical
+// the speaker defines is not a fact that needs a source. So, under the flag, a money / rate claim is let through (as INFERENCE) only when ALL hold:
+//   · the sentence, or one before it in the same block (a list item sits under its lead-in), is introduced as an illustration
+//     (ví dụ / giả sử / chẳng hạn / for example …);
+//   · the frame is a calculation (lãi, vốn, gốc, gửi, vay, đầu tư, trả góp, N%/năm, sau N năm …) — not a price of a thing;
+//   · nothing in the frame says "now" (hôm nay / hiện tại / mới nhất …) and the sentence names no place or product.
+// A real price stated without a source ("Vé Bà Nà hôm nay 900.000đ", "Giá phở 50.000đ") is none of these and is judged exactly as before.
+const ILLUSTRATION = /(?<!\p{L})(?:ví dụ|vi du|chẳng hạn|chang han|giả sử|gia su|giả định|ví như|for example|for instance|e\.g\.|suppose|imagine)(?!\p{L})/iu
+const CURRENT_WORD = /(?<!\p{L})(?:hôm nay|hom nay|hiện tại|hien tai|hiện nay|hien nay|bây giờ|hiện giờ|mới nhất|moi nhat|năm nay|tháng này|today|currently|right now|latest)(?!\p{L})/iu
+const CALC_FRAME = /(?<!\p{L})(?:lãi|vốn|gốc|gửi|vay|đầu tư|tiết kiệm|trả góp|tích lũy)(?!\p{L})|\d\s?%\s*\/\s*(?:năm|tháng|kỳ)|sau\s+\d+\s*(?:năm|tháng|kỳ)|interest|principal|compound/iu
+function inIllustration(text: string, spans: ReadonlyArray<readonly [number, number]>, i: number): boolean {
+  const frame: string[] = [text.slice(spans[i][0], spans[i][1])]
+  for (let j = i - 1; j >= 0 && frame.length < 5 && !/\n\s*\n/.test(text.slice(spans[j][1], spans[j + 1][0])); j--) frame.push(text.slice(spans[j][0], spans[j][1]))
+  const joined = frame.join(' ')
+  return ILLUSTRATION.test(joined) && CALC_FRAME.test(joined) && !CURRENT_WORD.test(joined) && !namesAPlace(frame[0])
+}
+
 interface Raw { category: ClaimCategory; value: string; nums: number[]; lo?: number; hi?: number; polarity?: 'positive' | 'negative' | null; bound?: 'lower' | 'approx' }
 
 /** The checkable claims of one sentence (URLs and markdown link targets removed first). */
@@ -381,7 +402,7 @@ const CATEGORY_WORDS: Record<ClaimCategory, { vi: string; en: string }> = {
  * The gate. `text` = the reply prose after the specialised guards (M4-supported sentences arrive as opaque tokens and are skipped;
  * machine blocks are skipped). Returns the gated text and the per-claim classification (for the trace).
  */
-export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: string } = {}): GateResult {
+export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: string; illustrations?: boolean } = {}): GateResult {
   const counts: Record<ClaimState, number> = { FACT: 0, INFERENCE: 0, UNKNOWN: 0, CONFLICT: 0, FABRICATED: 0 }
   const claims: GateClaim[] = []
   if (!/\d|còn|hết|đang mở|đã đặt|đặt thành công|bữa sáng|hủy|huỷ|hoàn tiền|bảo hành|đổi trả|in stock|sold out|confirmed|breakfast|cancel|refund|warranty/i.test(text)) return { text, claims, removedSentences: 0, noteAdded: false, counts }
@@ -422,9 +443,12 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
     // an explicit category breakdown whose own arithmetic checks ("ăn uống 410k + cà phê 100k + … = 910k") is a split, not a venue's price
     const blockPlace = actx.venueAbove && !actx.item && !actx.slot && !disclosedAllowance && !math.checked.length
     let bad = false
+    const illustrative = o.illustrations === true && inIllustration(text, spans, i)
     for (const c of raw) {
       let state: ClaimState
       if (userGiven(c, ix)) { if (c.lo !== undefined) knownMoney.push(c.lo, c.hi!); continue }
+      // CONSULTATIVE_IN_AGENT: a figure inside a worked calculation example is the example's own, not a claim to source (see `inIllustration`).
+      if (illustrative && (c.category === 'price' || c.category === 'market')) { state = 'INFERENCE'; counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
       const isMoney = (c.category === 'price' || c.category === 'market') && c.lo !== undefined
       // A result the sentence's own expression contradicts is a wrong calculation, never a fact (even if the figure appears elsewhere).
       if (isMoney && math.wrong.some(w => near(w, [c.lo!], 0.002, 1)) && !math.checked.some(w => near(w, [c.lo!], 0.002, 1))) {

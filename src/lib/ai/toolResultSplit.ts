@@ -209,6 +209,12 @@ export interface EnrichmentCollector {
    * their photos). Absent = the pre-flag behaviour, byte for byte.
    */
   planTurn?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set whenever the flag is on, on every turn): the four settle-path precision fixes that only apply under
+   * the flag — worked examples are not facts (noFabricationGate), amount phrases are not names (entityNameGuard), a plan card holds only
+   * places of the plan's destination (planItemGuard), and no "see the card below" line without a card (groundingGate). Absent = unchanged.
+   */
+  consultative?: boolean
   /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
   rankingTrace?: (summary: Record<string, unknown>) => void
   setConsultBrief(on: boolean): void

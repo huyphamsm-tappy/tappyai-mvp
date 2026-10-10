@@ -217,6 +217,8 @@ export interface GroundingGateOptions {
    * is that no option in the results was a close enough match. Undefined = unknown = as before.
    */
   cardRenders?: boolean
+  /** CONSULTATIVE_IN_AGENT: no card of any kind accompanies this reply (a text plan) — write no "the options are on the card" / "no match" line when rows were retrieved. */
+  noCardLine?: boolean
 }
 
 export function suppressUngroundedVenues(
@@ -347,8 +349,13 @@ export function suppressUngroundedVenues(
   // but the tool DID return venues, "found nothing" contradicts the card rendered right under
   // it. The truthful line is then that the verified places are on the card — the not-found
   // line is kept for the case it was written for: retrieval came back empty.
-  const fallback = knownNorm.length > 0 ? (opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
-  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${fallback}`.trim() : withoutLeadIn
+  //
+  // 🚨 CONSULTATIVE_IN_AGENT (`noCardLine`, 2026-10-10 UAT): a trip plan answered in TEXT renders no card at all (the standalone cards are cleared
+  // for a plan turn), but `cardRenders` was read off the retrieved recommendations — so the reply ended "Những lựa chọn mình xác minh được cho yêu
+  // cầu này nằm ở thẻ bên dưới." under nothing. With `noCardLine` and rows retrieved, the line is simply not written (an empty retrieval keeps
+  // its own not-found line, which points at nothing).
+  const fallback = knownNorm.length > 0 ? (opts.noCardLine ? '' : opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
+  const body = groundedRemain === 0 ? (fallback ? `${withoutLeadIn}\n\n${fallback}` : withoutLeadIn).trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
 
