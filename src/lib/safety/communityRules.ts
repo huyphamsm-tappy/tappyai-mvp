@@ -44,15 +44,15 @@ export interface RuleGroup {
 }
 
 export const RULE_GROUPS: Readonly<Record<RuleGroupId, RuleGroup>> = {
-  spam:              { id: 'spam',              defaultSeverity: 1, maxSeverity: 2, maxPenalty: 'restrict', targetHours: 72, priority: 1 },
-  harassment:        { id: 'harassment',        defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 48, priority: 2 },
-  hate:              { id: 'hate',              defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 48, priority: 2 },
+  spam:              { id: 'spam',              defaultSeverity: 1, maxSeverity: 2, maxPenalty: 'restrict', targetHours: 24, priority: 1 },
+  harassment:        { id: 'harassment',        defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 2 },
+  hate:              { id: 'hate',              defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 2 },
   sexual:            { id: 'sexual',            defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 3 },
   violence_selfharm: { id: 'violence_selfharm', defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 3 },
-  scam_misinfo:      { id: 'scam_misinfo',      defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 48, priority: 2 },
-  impersonation:     { id: 'impersonation',     defaultSeverity: 2, maxSeverity: 2, maxPenalty: 'restrict', targetHours: 48, priority: 2 },
-  ip_privacy:        { id: 'ip_privacy',        defaultSeverity: 1, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 48, priority: 2 },
-  illegal_goods:     { id: 'illegal_goods',     defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 48, priority: 2 },
+  scam_misinfo:      { id: 'scam_misinfo',      defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 2 },
+  impersonation:     { id: 'impersonation',     defaultSeverity: 2, maxSeverity: 2, maxPenalty: 'restrict', targetHours: 24, priority: 2 },
+  ip_privacy:        { id: 'ip_privacy',        defaultSeverity: 1, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 2 },
+  illegal_goods:     { id: 'illegal_goods',     defaultSeverity: 2, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 2 },
   child_safety:      { id: 'child_safety',      defaultSeverity: 3, maxSeverity: 3, maxPenalty: 'ban',      targetHours: 24, priority: 3 },
 }
 

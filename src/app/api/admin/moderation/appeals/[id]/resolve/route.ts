@@ -20,11 +20,43 @@ import { publicationStateFor } from '@/lib/admin/moderation/moderationService'
 import { unsuspendUser, unbanUser } from '@/lib/admin/users/accountStatusAdmin'
 import { emitNotification } from '@/lib/notifications/emit'
 import { moderationAdminEnabled } from '@/lib/safety/userBlocks'
+import { parseHideProvenance, postStillHeldByOthers, wasVisibleBeforeHide, type HideProvenance } from '@/lib/safety/postHideProvenance'
 import { AppealResolveSchema, isUuid } from '../../../schema'
 
 export const dynamic = 'force-dynamic'
 
 interface DecisionRow { id: string; queue_id: string | null; subject_user_id: string | null; reviewer_id: string | null; outcome: string; restrict_days: number | null; content_type: string | null; content_id: string | null; content_snapshot: { review_id?: string; body?: string; created_at?: string; parent_comment_id?: string | null } | null; created_at: string }
+
+/**
+ * True only if the post was republished by this call. Fail closed on every uncertainty:
+ *  1. the decide route recorded, BEFORE it hid the post, that THIS decision (and this queue item) was about to hide it from a visible
+ *     state (PUBLISHED, or a legacy NULL), and every record of this decision says so — a hold, the safety gate, or a decision from before
+ *     this record existed leave no such row. The safety gate only evaluates a post once, when it is created (reviews/route.ts POST), so it
+ *     cannot restrict a post that a decision has already hidden; every other writer of RESTRICTED leaves an action row or a ledger row;
+ *  2. no other `hide_content` action on the post at all (an independent hide, a hold, a legacy hide);
+ *  3. no other decision on the post (content removed, restriction, lock) that is not itself reversed on appeal;
+ *  4. no open report on the post that a reviewer put on hold (`in_review` is set only by the decide route's hold);
+ *  5. the update itself is conditional on the post still being RESTRICTED, and its result is checked — nothing changed = nothing restored.
+ */
+async function restorePostHiddenByThisDecision(admin: ReturnType<typeof createAdminClient>, d: DecisionRow): Promise<boolean> {
+  if (!d.queue_id || !d.content_id) return false
+  const acts = await admin.from('moderation_actions').select('id, queue_id, created_at, notes').eq('target_content_id', d.content_id).eq('action', 'hide_content')
+  if (acts.error) throw new Error('actions read failed')
+  const rows = (acts.data ?? []) as Array<{ id: string; queue_id: string | null; created_at: string; notes: string | null }>
+  // every record this decision wrote about this post (the decide route writes one per distinct starting state it met)
+  const mine = rows.filter((a) => a.queue_id === d.queue_id && parseHideProvenance(a.notes)?.decision_id === d.id)
+  const proofs = mine.map((a) => parseHideProvenance(a.notes) as HideProvenance)
+  if (proofs.length === 0 || !proofs.every((p) => p.after === publicationStateFor('hide') && wasVisibleBeforeHide(p))) return false
+  // ANY other hide on the post, whenever it was recorded — a hold, a legacy hide, another decision's — keeps it hidden. Time is not used:
+  // a hold recorded just before this decision's own record (a race) must block as surely as one recorded after.
+  if (rows.some((a) => !mine.includes(a))) return false
+
+  if (await postStillHeldByOthers(admin, d.content_id, { queueId: d.queue_id, decisionId: d.id })) return false
+
+  const upd = await admin.from('reviews').update({ publication_state: publicationStateFor('restore') }).eq('id', d.content_id).eq('publication_state', publicationStateFor('hide')).select('id')
+  if (upd.error) throw new Error('restore failed')
+  return (upd.data ?? []).length > 0
+}
 
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   if (!moderationAdminEnabled()) return new Response(null, { status: 404 })
@@ -95,6 +127,11 @@ export async function POST(req: Request, { params }: { params: { id: string } })
           } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
         } else if (d.outcome === 'restricted') restored.restriction_lifted = false
         else restored.ban_lifted = false
+      }
+      // The POST a restriction or lock hid (decide route, F1). Republished ONLY on proof that THIS decision took it from a visible state to
+      // RESTRICTED; every doubt keeps it hidden. `restored.content` says what happened: true = republished, false = left hidden.
+      if ((d.outcome === 'banned' || d.outcome === 'restricted') && d.content_type === 'review') {
+        try { restored.content = await restorePostHiddenByThisDecision(admin, d) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
       }
       await admin.from('moderation_actions').insert({
         queue_id: d.queue_id, action: d.outcome === 'banned' ? 'restore_user' : d.outcome === 'restricted' ? 'unsuspend_user' : 'restore_content', actor_id: user.id,

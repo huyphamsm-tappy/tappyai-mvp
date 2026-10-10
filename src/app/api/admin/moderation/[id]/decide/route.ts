@@ -13,6 +13,7 @@
 //
 // Permission follows the outcome, as the existing resolve route does: dismiss, hide/warn, delete (a comment), suspend, ban.
 
+import { hideProvenanceNotes, parseHideProvenance, postStillHeldByOthers, type HideProvenance } from '@/lib/safety/postHideProvenance'
 import { adminError, adminErrorResponse, isSameOrigin } from '@/lib/admin/rbac'
 import { requirePermission, requireAdminIdentity, PERMISSIONS } from '@/lib/admin/permissions'
 import type { PermissionId } from '@/lib/admin/permissions/types'
@@ -80,6 +81,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     const nowIso = new Date().toISOString()
     let decisionId: string | null = null
     let sessionsRevoked: boolean | null = null
+    let postKeptHidden = false
 
     // ── no violation / hold: no ledger row ──
     if (outcome === 'no_violation' || outcome === 'hold') {
@@ -88,8 +90,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         const { error } = await admin.from('reviews').update({ publication_state: publicationStateFor('hide') }).eq('id', item.target_id)
         if (error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
       } else if (item.status === 'in_review' && target.kind === 'review' && target.exists) {
-        // a post held while it waited, and the verdict is "no violation": it comes back
-        await admin.from('reviews').update({ publication_state: publicationStateFor('restore') }).eq('id', item.target_id)
+        // a post held while it waited, and the verdict is "no violation": it comes back — UNLESS another decision on the same post still
+        // stands (a removal, a restriction, a lock) or another report on it is on hold: dismissing THIS report is not a verdict on those.
+        let keptHidden: boolean
+        try { keptHidden = await postStillHeldByOthers(admin, item.target_id, { queueId: item.id }) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
+        if (!keptHidden) await admin.from('reviews').update({ publication_state: publicationStateFor('restore') }).eq('id', item.target_id)
+        else postKeptHidden = true
       }
     } else {
       // ── a penalty or a warning: a rule group is required ──
@@ -135,6 +141,46 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         if (!decisionId) { console.error('[admin][moderation][decide] ledger insert failed:', (ins.error as { code?: string }).code); return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
       } else decisionId = (ins.data as { id: string } | null)?.id ?? null
 
+      // A restriction or a ban acts on the account; a reported POST must not stay public beside it (Apple 1.2: remove the offending content).
+      // The hide is the same one «remove» makes, but it is CONDITIONAL on the state just read, and the state it starts from is RECORDED
+      // FIRST (a `hide_content` action carrying this decision's id and the state before — see postHideProvenance.ts). Recording first means
+      // there is no window in which the post is hidden and the evidence is missing: if any later step fails, the retry finds the record,
+      // does not write a second one, and finishes the hide. A post that is ALREADY restricted when this decision looks at it (safety gate,
+      // a hold) gets no record, so a later appeal can never republish it. A later successful appeal may republish the post only on
+      // the record plus the checks in the appeals route. Done before the account action: a failure leaves the account untouched.
+      // A comment target is unchanged.
+      const hideReportedPost = async () => {
+        if (target.kind !== 'review') return null
+        if (!decisionId) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+        const hidden = publicationStateFor('hide')
+        const earlier = await admin.from('moderation_actions').select('notes').eq('queue_id', item.id).eq('target_content_id', item.target_id).eq('action', 'hide_content')
+        if (earlier.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+        const recordedBefore = ((earlier.data ?? []) as Array<{ notes: string | null }>)
+          .map((a) => parseHideProvenance(a.notes)).filter((p): p is HideProvenance => p !== null && p.decision_id === decisionId).map((p) => p.before)
+        for (let attempt = 0; attempt < 2; attempt++) {
+          const cur = await admin.from('reviews').select('publication_state').eq('id', item.target_id).maybeSingle()
+          if (cur.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+          const before = (cur.data as { publication_state: string | null } | null)?.publication_state ?? null
+          // already restricted: by the gate, a hold, or an earlier attempt of THIS decision (whose record, if any, already stands).
+          // The state alone proves nothing about who did it, so nothing is claimed here.
+          if (before === hidden) return null
+          if (!recordedBefore.includes(before)) {
+            const { error: provError } = await admin.from('moderation_actions').insert({
+              queue_id: item.id, action: 'hide_content', actor_id: user.id, target_user_id: target.subjectId, target_content_id: item.target_id,
+              reason: body.reason, notes: hideProvenanceNotes({ decision_id: decisionId, before, after: hidden }),
+            })
+            if (provError) { console.error('[admin][moderation][decide] hide provenance insert failed:', provError.message); return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
+            recordedBefore.push(before)
+          }
+          const base = admin.from('reviews').update({ publication_state: hidden }).eq('id', item.target_id)
+          const upd = await (before === null ? base.is('publication_state', null) : base.eq('publication_state', before)).select('id')
+          if (upd.error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
+          if (upd.data && upd.data.length > 0) return null
+          // nothing matched: the state changed between the read and the write — read again
+        }
+        return adminError('INTERNAL_ERROR', 'Operation failed', 500) // the post kept changing state: do not act on the account while it may still be public
+      }
+
       // the effect, through the existing helpers
       if (outcome === 'remove') {
         if (target.kind === 'review') {
@@ -145,8 +191,12 @@ export async function POST(req: Request, { params }: { params: { id: string } })
           if (error) return adminError('INTERNAL_ERROR', 'Operation failed', 500)
         }
       } else if (outcome === 'restrict') {
+        const hideFailed = await hideReportedPost()
+        if (hideFailed) return hideFailed
         try { await suspendUser(admin, target.subjectId, suspensionExpiry((body.restrict_days as number) * 24)) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
       } else if (outcome === 'ban') {
+        const hideFailed = await hideReportedPost()
+        if (hideFailed) return hideFailed
         try { await banUser(admin, target.subjectId, body.reason) } catch { return adminError('INTERNAL_ERROR', 'Operation failed', 500) }
         sessionsRevoked = revocationSucceeded(await revokeAllSessions(admin, target.subjectId))
       }
@@ -195,7 +245,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
       const res = await emitNotification({ userId: target.subjectId, type: 'system', category: 'system', title: n.title, body: n.body, entityUrl: n.entityUrl, data: { decisionId, kind: 'moderation_decision' } })
       notified = res.id !== null
     }
-    return Response.json({ data: { id: item.id, status: closed, decision_id: decisionId, outcome: outcome, subject_notified: notified, ...(sessionsRevoked === null ? {} : { session_revocation_pending: !sessionsRevoked }) } })
+    return Response.json({ data: { id: item.id, status: closed, decision_id: decisionId, outcome: outcome, subject_notified: notified, ...(postKeptHidden ? { post_kept_hidden: true } : {}), ...(sessionsRevoked === null ? {} : { session_revocation_pending: !sessionsRevoked }) } })
   } catch (err) {
     return adminErrorResponse(err)
   }
