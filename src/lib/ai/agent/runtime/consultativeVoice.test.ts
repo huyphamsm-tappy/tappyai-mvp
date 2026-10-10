@@ -95,8 +95,18 @@ describe('the static system message', () => {
     expect(CONSULT_PRINCIPLES).toMatch(/nếu họ chỉ hỏi gợi ý thì chỉ gợi ý/)
     expect(CONSULT_PRINCIPLES).toMatch(/không kèm thêm danh sách địa điểm trùng lặp/)
     // the old instructions it replaces are gone (see the `gone` list above) and the remaining plan lines point at the new rule
-    expect(on).toContain('Thiếu thông tin làm đổi hẳn kế hoạch thì làm theo mục CÁCH TƯ VẤN bên dưới: hỏi trước, chưa gọi công cụ.')
+    // a missing departure date no longer means "say Ngày 1/2/3 and ask last": build from the known span or a stated assumption
+    expect(on).toContain('Thiếu ngày đi cụ thể thì lập theo số ngày hoặc khoảng thời gian đã biết (hoặc một giả định hợp lý) và nói rõ giả định đó')
+    expect(on).toContain('chỉ khi thời điểm làm đổi hẳn kế hoạch (mùa, dịp lễ, thời tiết) mới làm theo mục CÁCH TƯ VẤN bên dưới: hỏi trước, chưa gọi công cụ.')
+    expect(on).not.toContain('chưa biết ngày thì để Ngày 1/2/3')
     expect(on).toContain('đã đủ thông tin để lập kế hoạch → lập luôn')
+    // fully specified request → build; a missing detail that does not change the plan (e.g. the starting point) → stated assumption
+    expect(CONSULT_PRINCIPLES).toMatch(/Yêu cầu đã nêu đủ điểm đến, thời gian, số người và ngân sách thì lập luôn, đừng hỏi thêm/)
+    expect(CONSULT_PRINCIPLES).toMatch(/không làm đổi hẳn kế hoạch \(ví dụ nơi xuất phát/)
+    // not one fixed opening mould; the STYLE_LUNA6 samples are declared illustrations (its own text stays byte-for-byte)
+    expect(CONSULT_PRINCIPLES).toMatch(/Đừng mở các câu trả lời bằng cùng một khuôn/)
+    expect(CONSULT_PRINCIPLES).toMatch(/chỉ là minh họa, không phải mẫu phải theo/)
+    expect(on).toContain(STYLE_LUNA6_BLOCK)
     // contracts that must survive: one get_trip_data call, destination from the user's words, the [TAPPY_PLAN] format
     expect(on).toContain('Chỉ gọi get_trip_data MỘT lần')
     expect(on).toContain('vị trí GPS KHÔNG phải điểm đến')
