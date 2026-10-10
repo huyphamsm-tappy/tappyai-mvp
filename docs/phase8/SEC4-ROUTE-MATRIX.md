@@ -96,3 +96,22 @@ These stay BLOCKED until read-only production evidence is provided; no claim of 
 | G8 cron / exempt | `cron/**`, `notifications/backfill`; false positives and the inbound webhook | secret-gated / no provider call | declared |
 
 Remaining ratchet budget: **12** known gaps (`memory`, `translate`, `scan`, `profile`, `group/[id]/avatar`, `reviews/[id]/like`, `users/[id]/follow`, `reviews/[id]/comments`, `messaging/…/messages`, `stripe/checkout`, `stripe/portal`, `admin/marketing/campaigns/[id]`).
+
+
+---
+## Slice 5a — `POST /api/profile` and `POST /api/group/[id]/avatar` (contract and acceptance criteria, written BEFORE the change)
+
+| | `POST /api/profile` (avatar or cover) | `POST /api/group/[id]/avatar` |
+|---|---|---|
+| Current contract | multipart `avatar` (≤ 3 MB) or `cover` (≤ `MAX_PHOTO_SIZE_MB`); magic-byte check, EXIF strip, `putMedia` under `avatars/` or the cover prefix; 401/400/413-style errors as today | multipart `avatar` (≤ 3 MB), creator only (403 otherwise), magic-byte check, `putMedia`, row update as the caller |
+| Resource cost | storage write + server-side image decode/strip (CPU), size-capped; abuse = storage churn and CPU | same |
+| Authentication | `getRequestUser` (401); anonymous sessions: the cover path refuses them (B17), the avatar path is deliberately open (`handle_new_user` skips anonymous) | `getRequestUser` (401), anonymous refused (B17), creator check (403) |
+| Limiter today | **none** | **none** |
+| Limit (NOT derived from an existing limit — there is none; owner-adjustable) | **10 uploads per hour per user, avatar and cover together** (`profile-photo:<user id>`) | **10 uploads per hour per user** (`group-avatar:<user id>`) |
+| Why these numbers | an avatar/cover is changed rarely; 10/hour tolerates crop mistakes and retries and bounds worst-case churn to 240 stored objects per user per day; both are size-capped, so this is abuse containment, not a spend control. The numbers are a proposal, stated here so review can change them | same |
+| Where the check sits | after authentication and **before the multipart body is read** (so a refused request does no parsing, decoding or storage) | after the creator check (a non-creator gets 403 and spends nothing) and before the body is read |
+| Limiter | `publicRateLimit` + `rateLimitedResponse` (shared store when configured; in-process only when none is configured; fail closed when configured but down) | same |
+| Refusal | the existing 429 `rate_limit` contract + `X-RateLimit-Reason` (`limit_exceeded` / `store_unavailable`) + one `tappyai_rate_limit` log line | same |
+| GET / PATCH / other methods | unchanged (no storage write) | n/a |
+
+**Acceptance criteria:** (1) the 11th upload within an hour is 429 before the body is read; (2) a different user is unaffected; (3) the budget is shared across two instances; (4) the window is an hour (still refused at 30 min, admitted after 60); (5) store configured but down → 429 with reason `store_unavailable`, no body read, recovers; (6) no store configured → in-process fallback with the same limit; (7) existing validation, anonymous refusal, creator check and order of checks are unchanged (the existing route tests pass untouched); (8) mutations (limit, key, window, limiter removed, check moved after the body read) are caught; (9) the ratchet registry moves both routes from `known-gap` to `covered` and the budget falls by two.
