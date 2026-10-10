@@ -90,7 +90,8 @@ describe('the route is the language contract', () => {
   it('requires authentication and rate-limits per user', () => {
     const src = route()
     expect(src).toContain('getRequestUser')
-    expect(src).toMatch(/rateLimit\(`voice-tts:\$\{user\.id\}`/)
+    // SEC4 slice 2d: the shared limiter (`publicRateLimit`); same key (the user), same position.
+    expect(src).toMatch(/publicRateLimit\(`voice-tts:\$\{user\.id\}`/)
   })
 
   it('bounds the billable text length', () => {
