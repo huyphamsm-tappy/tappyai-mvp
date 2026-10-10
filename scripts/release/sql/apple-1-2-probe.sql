@@ -5,7 +5,7 @@
 -- Prints structure and COUNTS only: no report text, no user ids, no emails.
 -- Paste the whole output back; "expect" lines say what a fully applied chain looks like.
 
-\echo '== 1. tables (expect t on all 8; f = that migration is NOT on prod)'
+\echo '== 1. tables (expect t on all 9; f = that migration is NOT on prod)'
 SELECT to_regclass('public.content_reports')      IS NOT NULL AS content_reports,       -- 20260817 (+20260930 insert check)
        to_regclass('public.moderation_queue')     IS NOT NULL AS moderation_queue,      -- 20260821
        to_regclass('public.moderation_actions')   IS NOT NULL AS moderation_actions,    -- 20260821
@@ -13,7 +13,8 @@ SELECT to_regclass('public.content_reports')      IS NOT NULL AS content_reports
        to_regclass('public.user_reports')         IS NOT NULL AS user_reports,          -- 20261001b
        to_regclass('public.moderation_decisions') IS NOT NULL AS moderation_decisions,  -- 20261001d
        to_regclass('public.moderation_appeals')   IS NOT NULL AS moderation_appeals,    -- 20261001d
-       to_regclass('public.banned_identities')    IS NOT NULL AS banned_identities;     -- 20261001e
+       to_regclass('public.banned_identities')    IS NOT NULL AS banned_identities,     -- 20261001e
+       to_regclass('public.chat_blocks')          IS NOT NULL AS chat_blocks;           -- chat Phase 6: POST /api/users/[id]/block writes it too (a missing table = every block fails)
 
 \echo '== 2. row level security (expect t on every row)'
 SELECT c.relname, c.relrowsecurity AS rls_enabled
