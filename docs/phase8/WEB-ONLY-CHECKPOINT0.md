@@ -79,3 +79,32 @@ Rule applied: where the source document does not exist, that part stops (no repl
 ### Second document / mockup search (2026-10-10) — result
 - **8C / 8D / 8E: still BLOCKED.** `PHASE7-CLOSEOUT.md` (row 8, §C item 5) states there is no such tile row on Web Home V3 (owner-locked) or Explore, that it "looks like the Android Home design", and that the owner must name the Web screen. No other document defines them. The V3 mockups directory (`V3-Mockup.png/`, 28 files, per an early-September memory note) is **not on disk any more** (searched D:/Claude, D:/TappyAI-backups, Downloads, Documents, Desktop, every worktree to depth 6); only `Downloads/TappyAI-V3.zip` (5 KB, too small to hold it) and unrelated ask-card/voice mockups exist. Candidate Web surfaces, NOT matched to 8C–8E and not to be guessed: `HomeV3.tsx` (owner-locked), `(app)/recommendations`, `(app)/deals/DealsView.tsx`, `(app)/marketplace/MarketplaceReserved.tsx`. **Owner action: name the Web screen or supply the mockup file.**
 - **Realtime Translation (D2) / OpenAI Ads (D3): no design document exists anywhere searched** (only the backlog stubs B-TR-1 / B-ADS-1 and the paid-vs-organic note). **Owner action: supply the documents or confirm the stubs are the scope.** No implementation started.
+
+---
+## Checkpoint 1 result (2026-10-10) — Web-only, `p8/agent-runtime`
+
+| Slice | Commit | Status | Evidence |
+|---|---|---|---|
+| Chat honours `user_blocks` (DB) | `f43d2de` | **DONE (local; migration `20261018` NOT applied anywhere)** | `chat_honours_user_blocks.test.ts` 13 on the prod-schema snapshot, 6 fail on the old bodies; neighbouring chat/user_blocks suites 153 pass |
+| Messenger Web: load older, list/history retry, component tests | `1ee7704` | DONE | 12 → 36 component tests; found+fixed a refetch loop (history effect depended on `t()`) |
+| Messenger Web: profile Message button, Inbox `?thread=`, new conversations open | `9614736` | DONE | 9 profile tests + 5 MessagesTab tests; the `?thread=` deep link the notification already produced was previously ignored (dead parameter) and a just-created thread was cleared by the "thread disappeared" guard |
+| Notification trace + flag + route tests | `946d0cf` | DONE as tests; **no behaviour change** | see "Notification findings" below |
+| Safety UI: i18n | `ecb0941` | DONE | `safety.ts`, vi/en parity test |
+| Safety UI: client + SafetyMenu + ReportDialog | `817fe59` | DONE (flags OFF by default in prod) | 20 tests; reports use the existing per-target routes; no `/api/reports`, no `reports` table, no migration |
+| Safety UI: call sites | `367fcc1`, `1ad6a2a` | DONE | ThreadView (1:1), ReviewCommentButton, ReviewDetailView (+page `viewerId`), ProfileTab, **PublicProfileView (not in 3ec26a0 — the Explore visitor profile of this line)**, feedShared comment drawer, clipStage (the relocated ExploreStage hunk). NOT ported: creator-deletes-comments, account deletion, sanctions, discoverability, message/track reports |
+
+### Notification findings (traced creation → realtime → display)
+- Creation: only `POST /api/messaging/threads/[id]/messages` → `notifyThreadRecipients` → one `emitNotification` per OTHER participant (`type:'message'`, fixed body, ids only). Gated by `MESSAGE_NOTIFICATIONS_ENABLED === 'true'` (exact string; read in the route and again in the producer; unset / '1' / 'TRUE' = OFF). Shipped OFF on purpose: Android and iOS do not handle the `message` type yet — enabling it is a cross-platform release decision, **not** done here. With the flag OFF no roster is read and no row is written; the Messenger's own realtime channel is how a user learns of a message.
+- Delivery/display: `NotificationProvider` re-reads the list on any realtime event (replace, not append), so realtime echo cannot render a row twice. `inbox.ts` groups only like/follow/comment; `message` rows are listed individually.
+- **Not duplicates (valid distinct events):** each message is one notification per recipient; a group notifies each member once.
+- **Real duplicate risks, NOT changed (need an owner decision / contract change):** (1) a burst of N messages in one thread makes N Inbox rows and N pushes — collapsing "unread message notifications per thread" is a product policy; (2) the send has no idempotency key, so a client retry after a timeout whose first attempt succeeded stores the message twice (and notifies twice) — fixing it needs a new request field, i.e. an API contract change. Both are listed as owner decisions.
+- Fixed incidentally: the notification deep link `/profile/notifications?tab=messages&thread=<id>` is now honoured by the Inbox (it was a dead parameter).
+
+### Blockers unchanged
+SEC4 (production wiring of every cost route not proven by code) · SF8 (`service_role` direct access to `audit_log`: owner must define; no privilege change made) · E2 (allowed `user_events` event types/sources undefined) · 8C/8D/8E (screens unidentified; mockup directory no longer on disk) · Realtime Translation and OpenAI Ads (no design document exists) · WP-01 (no production read access) · WP-03/WP-09 and the application parts of WP-06/WP-10 (DEFERRED TO APPLICATION) · Workstream C (OUT OF SCOPE; no code).
+
+### Risks and compatibility
+- `20261018_chat_honours_user_blocks.sql` changes function BODIES only (same signatures/ACL/error codes): Android/iOS need no change, but behaviour changes server-side for them too — a `user_blocks`-only pair can no longer start/continue chat, and **group creation now refuses members who are in a block pair with the creator** (assumption recorded above).
+- Safety UI is inert in production until `REPORTS_ENABLED` / `USER_BLOCKS_ENABLED` are turned on (owner decision; not touched). Blocking has global effects (hides content both ways, closes chat) — the confirm dialog states them.
+- The shared `/reviews` surfaces gained a "…" menu when the flags are on; review/clip reports that the feed already offered are unchanged.
+- Translation keys added in vi/en only (the only locales that exist).
