@@ -47,3 +47,8 @@ this PC. **Not a migration, not a write.** Side effect: the dashboard may keep a
 ## Consequence
 Turning on `USER_BLOCKS_ENABLED`, `REPORTS_ENABLED` or `MODERATION_ADMIN_ENABLED` today would send the apps to routes whose tables do not exist.
 The four missing migrations (and 20261009) must be applied first; see `APPLE-1-2-RELEASE-PLAN.md`.
+
+## Addendum — second and third queries (same session, same method)
+Prerequisite tables: all eight exist (`reviews`, `review_comments`, `review_likes`, `user_follows`, `notifications`, `profiles`, `account_status`, `audit_log`).
+`content_reports` has one policy, "Users can file a content report : INSERT", and its check is still `true` (the third query: `policy_is_still_check_true: true`,
+`insert_check_20260930_applied: false`) → **20260930 is NOT applied.**
