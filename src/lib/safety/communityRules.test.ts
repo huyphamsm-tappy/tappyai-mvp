@@ -57,11 +57,21 @@ describe('the ladder — proposals, never automatic', () => {
     expect(withinGroupMax('child_safety', 'ban')).toBe(true)
   })
 
-  it('proposals are labelled: the page says so until the owner approves', () => {
-    expect(communityVi['legal.community.effective']).toMatch(/chờ chủ sản phẩm duyệt/)
-    expect(communityEn['legal.community.effective']).toMatch(/awaiting the product owner/)
-    expect(communityVi['legal.community.ladder.note']).toMatch(/Đề xuất, chờ chủ sản phẩm duyệt/)
-    expect(communityVi['legal.community.ladder.note']).toContain(String(LADDER.banAtStrikes))
+  it('published wording: a dated effective line, no "awaiting approval" banner, no strike thresholds, 24 h for every report, no report-status promise', () => {
+    for (const t of [communityVi, communityEn]) {
+      expect(t['legal.community.effective']).not.toMatch(/chờ chủ sản phẩm duyệt|awaiting|Proposed|Bản đề xuất/i)
+      expect(t['legal.community.ladder.note']).not.toMatch(/đề xuất|proposal|Proposed|Mốc/i)
+      expect(t['legal.community.ladder.note']).not.toMatch(/[35] (strike|active strikes)/i)
+    }
+    expect(communityEn['legal.community.effective']).toBe('Effective Date: 10 October 2026')
+    expect(communityVi['legal.community.effective']).toBe('Ngày hiệu lực: 10 tháng 10 năm 2026')
+    expect(communityEn['legal.community.reports.b1']).toMatch(/request for review, not a finding/)
+    expect(communityVi['legal.community.reports.b1']).toMatch(/không phải kết luận/)
+    expect(communityEn['legal.community.reports.b4']).toMatch(/Every report has a target of 24 hours/)
+    expect(communityVi['legal.community.reports.b4']).toMatch(/Mọi báo cáo có mục tiêu .* 24 giờ/)
+    expect(JSON.stringify([communityEn, communityVi])).not.toMatch(/48 hours|72 hours|48 giờ|72 giờ|received, in review|đã nhận, đang xem xét/)
+    expect(communityEn['legal.community.appeal.p1']).toMatch(/by email/); expect(communityEn['legal.community.appeal.p1']).not.toMatch(/Violation notices/)
+    expect(communityVi['legal.community.appeal.p1']).toMatch(/qua email/)
   })
 })
 

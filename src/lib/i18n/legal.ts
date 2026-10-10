@@ -114,7 +114,7 @@ export const en: Record<string, string> = {
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Terms of Service',
-  'legal.terms.effective': 'Effective Date: August 2026',
+  'legal.terms.effective': 'Effective Date: 10 October 2026',
 
   'legal.terms.s1.heading': '1. Introduction',
   'legal.terms.s1.p1':
@@ -131,6 +131,8 @@ export const en: Record<string, string> = {
   'legal.terms.s4.p1':
     'You agree not to use TappyAI for unlawful or harmful purposes, or in any way that infringes the rights of others.',
   'legal.terms.s4.p2': 'Posts, comments, profiles and messages must follow our Community Guidelines. Content that breaks them can be removed, and accounts can be restricted or locked after a review. If we act against your content or account you will be told why and can appeal once.',
+  'legal.terms.s4.p3':
+    'TappyAI has zero tolerance for objectionable content and abusive users. You must not post content that is hateful, harassing, violent, sexual, endangers or exploits children, promotes self-harm, or is otherwise unlawful, and you must not abuse other users. You can report any post, comment or user, and block any user. A report asks us to review the content; it is not a finding that a rule was broken. We aim to review every report within 24 hours; this is a target, not a guarantee. We remove content that breaks the rules and restrict or remove the accounts responsible.',
   'legal.terms.s4.link': 'Community Guidelines',
   'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 
@@ -363,7 +365,7 @@ export const vi: Record<string, string> = {
 
   // ------------------------------------------------------------------ terms
   'legal.terms.title': 'Điều khoản dịch vụ',
-  'legal.terms.effective': 'Ngày hiệu lực: Tháng 8 năm 2026',
+  'legal.terms.effective': 'Ngày hiệu lực: 10 tháng 10 năm 2026',
 
   'legal.terms.s1.heading': '1. Giới thiệu',
   'legal.terms.s1.p1':
@@ -380,6 +382,8 @@ export const vi: Record<string, string> = {
   'legal.terms.s4.p1':
     'Bạn đồng ý không sử dụng TappyAI cho mục đích bất hợp pháp, gây hại hoặc vi phạm quyền của người khác.',
   'legal.terms.s4.p2': 'Bài đăng, bình luận, hồ sơ và tin nhắn phải tuân theo Quy tắc cộng đồng của chúng tôi. Nội dung vi phạm có thể bị gỡ, và tài khoản có thể bị hạn chế hoặc khoá sau khi được xem xét. Nếu chúng tôi xử lý nội dung hoặc tài khoản của bạn, bạn được thông báo lý do và được kháng nghị một lần.',
+  'legal.terms.s4.p3':
+    'TappyAI không khoan nhượng với nội dung phản cảm và người dùng có hành vi lạm dụng. Bạn không được đăng nội dung thù ghét, quấy rối, bạo lực, khiêu dâm, gây nguy hiểm hoặc bóc lột trẻ em, cổ xúy tự hại hay vi phạm pháp luật, và không được lạm dụng người dùng khác. Bạn có thể báo cáo mọi bài đăng, bình luận hay người dùng và chặn bất kỳ người dùng nào. Báo cáo là yêu cầu chúng tôi xem xét nội dung, không phải kết luận rằng quy tắc đã bị vi phạm. Chúng tôi đặt mục tiêu xem xét mọi báo cáo trong vòng 24 giờ; đây là mục tiêu, không phải cam kết tuyệt đối. Chúng tôi gỡ nội dung vi phạm và hạn chế hoặc xoá tài khoản chịu trách nhiệm.',
   'legal.terms.s4.link': 'Quy tắc cộng đồng',
   'legal.terms.s4.linkText': 'tappyai.com/community-guidelines',
 
