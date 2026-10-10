@@ -12,7 +12,7 @@ import type { CostRouteDecl } from './scan'
 export const ADMIN_EXCEPTIONS: readonly string[] = ['admin/marketing/campaigns/[id]']
 
 /** The number of known-gap entries below. It may only go down. */
-export const KNOWN_GAP_BUDGET = 12
+export const KNOWN_GAP_BUDGET = 11
 
 export const COST_ROUTES: readonly CostRouteDecl[] = [
   // ── covered ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -30,7 +30,6 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'notifications/backfill', cost: 'push fan-out', limiters: ['cron'], key: 'CRON_SECRET bearer', status: 'covered', note: 'not user-reachable; closed when the secret is unset' },
 
   // ── known gaps (each names the missing control and the slice that closes it) ────────────────────────────────────────────────────────────
-  { route: 'memory', cost: 'LLM (memory extraction on caller-supplied messages); no Web caller', limiters: [], key: '—', status: 'known-gap', note: 'no limiter at all on an LLM-calling POST; close the endpoint or limit it', slice: 3 },
   { route: 'translate', cost: 'LLM', limiters: ['public'], key: 'ip 30/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
   { route: 'scan', cost: 'vision LLM', limiters: ['public'], key: 'ip 20/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
   { route: 'profile', cost: 'storage write + server-side image processing (size-capped)', limiters: [], key: '—', status: 'known-gap', note: 'no limiter on a storage-writing route', slice: 5 },
@@ -44,6 +43,7 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'admin/marketing/campaigns/[id]', cost: 'campaign state change (the send path is /activate, which is limited)', limiters: [], key: '—', status: 'known-gap', note: 'the only admin route without distributedRateLimit; its siblings have it', slice: 6 },
 
   // ── exempt: detected by the heuristic but no provider call happens on this path ────────────────────────────────────────────────────────
+  { route: 'memory', cost: 'none: POST (the LLM extraction) answers 404 before any work; GET / PATCH / DELETE read and write the own memory of the caller', limiters: [], key: '—', status: 'exempt', note: 'POST /api/memory is disabled (slice 3, docs/phase8/MEMORY-POST-AUDIT.md); the scan still sees the extraction function because memoryService co-locates it, but no route code calls it' },
   { route: 'onboarding', cost: 'none on this path', limiters: [], key: '—', status: 'exempt', note: 'imports memoryService only for updateMemory; the LLM function in that module (extractMemoryFromConversation) is not called here' },
   { route: 'recommendations', cost: 'none on this path', limiters: [], key: '—', status: 'exempt', note: 'imports memoryService/contextBuilder for reads; no LLM call is made by this route' },
   { route: 'suggested-prompts', cost: 'none on this path', limiters: [], key: '—', status: 'exempt', note: 'reads memory and demographics only; the LLM function of memoryService is not called' },
