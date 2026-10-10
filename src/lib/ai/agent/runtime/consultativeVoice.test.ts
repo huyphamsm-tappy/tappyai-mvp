@@ -136,6 +136,10 @@ describe('the static system message', () => {
     expect(sys).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu khác hẳn nhau; nơi xuất phát, chi phí đi lại, phương tiện và sở thích nhỏ thì không đủ để hỏi trước')
     expect(sys).not.toMatch(/\(điểm đến, số người, thời gian, ngân sách/)
     expect(CONSULT_PRINCIPLES).toContain('còn nơi xuất phát, chi phí đi lại, phương tiện, chỗ ở cụ thể và sở thích nhỏ thì KHÔNG đủ để hỏi trước')
+    // live (10/10 18:00): "3 ngày 2 đêm cuối tháng 11 … 2 người … tổng 4 triệu" was still asked "ngày nào cuối tháng 11?" — a number of days or a
+    // month/season IS the time span, and a budget next to a head count is the group's total
+    expect(on).toContain('Khoảng thời gian chỉ cần số ngày hoặc một tháng/mùa: KHÔNG hỏi ngày cụ thể; ngân sách đi kèm số người hiểu là tổng cho cả nhóm (nêu giả định)')
+    expect(CONSULT_PRINCIPLES).toContain('Đã nêu số ngày hoặc một tháng/mùa thì không hỏi ngày cụ thể; ngân sách đi kèm số người hiểu là tổng cho cả nhóm.')
     // no domain is named as the only thing Tappy answers; the voice block's venue/dish examples are declared illustrations
     expect(on).not.toMatch(/chỉ (hỗ trợ|phục vụ|trả lời)/i)
     expect(CONSULT_PRINCIPLES).toContain('các ví dụ về quán hay món trong đó chỉ để minh họa và không giới hạn lĩnh vực nào')
