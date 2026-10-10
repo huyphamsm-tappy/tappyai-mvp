@@ -12,7 +12,7 @@ import type { CostRouteDecl } from './scan'
 export const ADMIN_EXCEPTIONS: readonly string[] = ['admin/marketing/campaigns/[id]']
 
 /** The number of known-gap entries below. It may only go down. */
-export const KNOWN_GAP_BUDGET = 9
+export const KNOWN_GAP_BUDGET = 6
 
 export const COST_ROUTES: readonly CostRouteDecl[] = [
   // ── covered ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -29,14 +29,14 @@ export const COST_ROUTES: readonly CostRouteDecl[] = [
   { route: 'reviews/upload', cost: 'image processing + storage write', limiters: ['public'], key: 'user, 10/day (VN day)', status: 'covered', note: 'slice 2e: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
   { route: 'profile', cost: 'storage write + server-side image processing (size-capped)', limiters: ['public'], key: 'user, 10/hour (avatar + cover)', status: 'covered', note: 'slice 5a: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
   { route: 'group/[id]/avatar', cost: 'storage write + image processing', limiters: ['public'], key: 'user, 10/hour', status: 'covered', note: 'slice 5a: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
+  { route: 'reviews/[id]/like', cost: 'push dispatch per action', limiters: ['public'], key: 'user, 60/min', status: 'covered', note: 'slice 5b: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
+  { route: 'users/[id]/follow', cost: 'push dispatch per action', limiters: ['public'], key: 'user, 30/min', status: 'covered', note: 'slice 5b: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
+  { route: 'reviews/[id]/comments', cost: 'push dispatch per comment', limiters: ['public'], key: 'user, 10/min (unchanged limit and key)', status: 'covered', note: 'slice 5b: publicRateLimit with the previous limit and key (shared store when configured, in-process only when none is configured, closed when configured but down)' },
   { route: 'notifications/backfill', cost: 'push fan-out', limiters: ['cron'], key: 'CRON_SECRET bearer', status: 'covered', note: 'not user-reachable; closed when the secret is unset' },
 
   // ── known gaps (each names the missing control and the slice that closes it) ────────────────────────────────────────────────────────────
   { route: 'translate', cost: 'LLM', limiters: ['public'], key: 'ip 30/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
   { route: 'scan', cost: 'vision LLM', limiters: ['public'], key: 'ip 20/day', status: 'known-gap', note: 'daily-per-IP only: no burst cap and no global ceiling', slice: 4 },
-  { route: 'reviews/[id]/like', cost: 'push dispatch per action', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; spam vector rather than spend', slice: 5 },
-  { route: 'users/[id]/follow', cost: 'push dispatch per action', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; spam vector rather than spend', slice: 5 },
-  { route: 'reviews/[id]/comments', cost: 'push dispatch per comment', limiters: ['inprocess'], key: 'user 10/min (per instance)', status: 'known-gap', note: 'in-process only; spam vector rather than spend', slice: 5 },
   { route: 'messaging/threads/[id]/messages', cost: 'push dispatch per message (flag off by default)', limiters: ['inprocess'], key: 'user 60/min (per instance)', status: 'known-gap', note: 'in-process only; notification collapse is a separate proposal', slice: 5 },
   { route: 'stripe/checkout', cost: 'Stripe API call; 404 while subscriptionsEnabled()', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; dormant while the SePay/VietQR flag is on (production flag state unverified)', slice: 5 },
   { route: 'stripe/portal', cost: 'Stripe API call; 404 while subscriptionsEnabled()', limiters: [], key: '—', status: 'known-gap', note: 'no limiter; dormant while the SePay/VietQR flag is on (production flag state unverified)', slice: 5 },

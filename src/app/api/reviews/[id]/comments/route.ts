@@ -1,7 +1,8 @@
 import { createClient } from '@/lib/supabase/server'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { createAdminClient } from '@/lib/supabase/admin'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { searchParam } from '@/lib/http/searchParams'
@@ -110,9 +111,9 @@ export async function POST(
 
   // Burst cap: each comment inserts a row AND fires a push to the review owner,
   // so an uncapped POST is a spam vector against that owner.
-  if (!rateLimit(`comment:${user.id}`, 10, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('comment.tooFast', requestLocale(req)) }, { status: 429 })
-  }
+  // SEC4 slice 5b: the shared limiter, same limit (10 per minute), same key and same copy as before.
+  const rl = await publicRateLimit(`comment:${user.id}`, 10, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'review_comment', serverMessage('comment.tooFast', requestLocale(req)))
 
   // Module 08 §4 — a suspended account cannot comment.
   const restriction = await getAccountRestriction(supabase, user.id)

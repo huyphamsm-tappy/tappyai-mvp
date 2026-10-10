@@ -17,7 +17,8 @@ describe('the real route tree matches the declarations', () => {
   it('sanity: the scan sees the routes and the cost signals it is supposed to see', () => {
     expect(scan.length).toBeGreaterThan(150)
     expect(scan.find((s) => s.route === 'chat')!.signals).toEqual(expect.arrayContaining(['llm', 'serper']))
-    expect(scan.find((s) => s.route === 'reviews/[id]/comments')!.limiters).toEqual(['inprocess']) // still on the in-process limiter (slice 5)
+    expect(scan.find((s) => s.route === 'messaging/threads/[id]/messages')!.limiters).toEqual(['inprocess']) // the send limiter: deliberately NOT changed (owner decision pending)
+    expect(scan.find((s) => s.route === 'reviews/[id]/comments')!.limiters).toEqual(['public']) // slice 5b
     expect(scan.find((s) => s.route === 'voice/tts')!.limiters).toEqual(['public']) // migrated in slice 2d
     expect(scan.find((s) => s.route === 'memory')!.limiters).toEqual([])
   })
