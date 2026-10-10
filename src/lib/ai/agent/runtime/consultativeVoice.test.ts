@@ -124,6 +124,24 @@ describe('the static system message', () => {
     expect(String((askUserTool({}) as unknown as { description: string }).description)).toBe(off)
   })
 
+  it('ask_user (flag on): only a missing destination / time span / two very different readings justify asking; budget, starting point, travel cost, vehicle and small tastes do not', () => {
+    const on = ASK_USER_DESCRIPTION_CONSULT
+    expect(on).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu khác hẳn nhau')
+    expect(on).toContain('Nơi xuất phát, chi phí đi lại, phương tiện, chỗ ở cụ thể và sở thích nhỏ KHÔNG đủ để hỏi trước: dùng giả định hợp lý, nêu ngắn rồi làm')
+    // the old open-ended criterion is gone: no budget in the "changes the whole itinerary" list, no trailing ellipsis list
+    expect(on).not.toMatch(/số người, thời gian, ngân sách/)
+    expect(on).not.toContain('…')
+    // the same criterion in the system prompt and in the principles (so the model never sees two different rules)
+    const sys = agentSystemV2For(true)
+    expect(sys).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu khác hẳn nhau; nơi xuất phát, chi phí đi lại, phương tiện và sở thích nhỏ thì không đủ để hỏi trước')
+    expect(sys).not.toMatch(/\(điểm đến, số người, thời gian, ngân sách/)
+    expect(CONSULT_PRINCIPLES).toContain('còn nơi xuất phát, chi phí đi lại, phương tiện, chỗ ở cụ thể và sở thích nhỏ thì KHÔNG đủ để hỏi trước')
+    // no domain is named as the only thing Tappy answers; the voice block's venue/dish examples are declared illustrations
+    expect(on).not.toMatch(/chỉ (hỗ trợ|phục vụ|trả lời)/i)
+    expect(CONSULT_PRINCIPLES).toContain('các ví dụ về quán hay món trong đó chỉ để minh họa và không giới hạn lĩnh vực nào')
+    expect(sys).not.toContain('trợ lý đời sống cho người Việt: ăn uống')
+  })
+
   it('the principles and the voice block hold no fixed sentence to copy and no user data', () => {
     expect(CONSULT_PRINCIPLES).not.toMatch(/["“”]/) // no quoted template sentence
     expect(CONSULT_PRINCIPLES).not.toContain('Trí nhớ —')
