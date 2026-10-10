@@ -84,18 +84,29 @@ describe('A · the runtime\'s cancellation reaches the requests inside search_pr
 // ── B ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 describe('B · dedup: one caller\'s cancellation never takes the shared result away from the others', () => {
   it('the leader is cancelled, a follower is not: the leader leaves at once with null, the follower gets the REAL result, ONE request, ledger ok', async () => {
-    stubFetch({ delayMs: 60 })
+    // TIMING IS RELATIVE, NOT ABSOLUTE (2026-10-10). The old assertion `leader exit < 50 ms from the start` measured two OS timers (a 5 ms sleep and a 15 ms abort timer, both rounded up to
+    // the ~16 ms platform tick) against a 60 ms stub, and failed ~1 run in 10 on timer noise while the cancellation itself was correct (leader leaves in the SAME tick as the abort: 0 ms in 240/240
+    // probe iterations; see docs/phase8/SERPER-ABORT-DEDUP-FLAKE-INVESTIGATION.md). What the test names is a RELATION: the leader's exit depends on its own abort, not on the shared request.
+    // So the shared request is made slow (SHARED_MS) and the test asserts (a) the leader left within a small fraction of it AFTER its own abort, and (b) it left long BEFORE the follower
+    // got the shared result. A leader that waited for the shared request (or cancelled late) fails both by a wide margin; scheduler noise of tens of ms cannot.
+    const SHARED_MS = 600
+    stubFetch({ delayMs: SHARED_MS })
     const q = uq('shared')
     const a = new AbortController()
     const before = serperLedgerSnapshot()
-    const t0 = Date.now()
-    const leader = withSerperToolScope(8, a.signal, async () => { const v = await serperSearch(q); return { v, at: Date.now() - t0 } })
+    let abortedAt = 0
+    const leader = withSerperToolScope(8, a.signal, async () => { const v = await serperSearch(q); return { v, doneAt: Date.now() } })
     await sleep(5)
     const follower = serperSearch(q) // another turn, no cancellation
-    setTimeout(() => a.abort(), 15)
+    setTimeout(() => { abortedAt = Date.now(); a.abort() }, 15)
     const l = (await leader).value
     const f = await follower
-    expect(l.v).toBeNull(); expect(l.at).toBeLessThan(50) // independent and immediate
+    const followerDoneAt = Date.now()
+    expect(l.v).toBeNull()
+    // (a) left right after its OWN abort. Measured from the abort callback to the leader's return — one tick apart, 0 ms in 240/240 probe iterations, so 60 ms is a wide noise margin that is NOT
+    //     tied to any OS timer; a cancellation more than ~60 ms late (or one that waits for the shared result, >= ~SHARED_MS) fails.
+    expect(l.doneAt - abortedAt).toBeLessThan(60)
+    expect(followerDoneAt - l.doneAt).toBeGreaterThan(SHARED_MS * 0.4) // (b) and long before the shared result reached the follower
     expect(f).toEqual([expect.objectContaining({ title: 'Kết quả' })])
     expect(sent).toBe(1)
     expect(serperLedgerDelta(before).endpoints.search).toMatchObject({ attempted: 1, ok: 1, aborted: 0 })

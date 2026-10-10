@@ -22,3 +22,10 @@ Keep the 50 ms intent but test the relation instead of the clock, e.g. (a) recor
 
 ## Not concluded
 This characterises the machine used here (Windows, 12 cores). It does not prove the absence of any other nondeterminism in the Serper tests, and the `npm test` outcome of any single run remains evidence of that run only.
+
+## Resolution (2026-10-10, owner-authorised follow-up)
+The absolute assertion was replaced by a RELATIVE one in test B1 only (`serperAbortDedup.test.ts`); **no Serper runtime code was changed** (the mutation experiments below were applied to a working copy and restored byte-for-byte; `git diff` on `common.ts` is empty).
+- **New assertion:** the shared request is slow (600 ms); (a) the leader returns within **60 ms of its OWN abort callback** (the quantity measured 0 ms in 240/240 probe iterations — no OS timer is involved in it) and (b) it returns **more than 40 % of the shared delay before the follower receives the shared result**. All other assertions (null leader, follower gets the real result, one request, ledger) are unchanged.
+- **Reliability:** 25/25 whole-file runs pass normally and 25/25 with the CPU saturated (12 busy loops on 12 cores). The previous assertion failed ~1 in 10 normally and 2 in 10 under load.
+- **Detects the regressions it names (mutations of `serperFlight` in `common.ts`, each CAUGHT):** leader cancels 80 ms late, 100 ms late, 400 ms late; leader ignores its abort and waits for the shared result; the shared request is aborted for the follower too. A cancellation up to ~60 ms late would pass — stated, not hidden: below that the quantity cannot be separated from a garbage-collection pause by a wall-clock test.
+- **Limit:** it still uses wall-clock time (a relation between two timestamps, with margins of an order of magnitude over the observed noise), not a deterministic fake clock; the Serper layer uses real timers and `AbortSignal`, so a fully deterministic version would need to change how the layer is tested, not just the assertion.
