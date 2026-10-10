@@ -44,7 +44,7 @@ describe('the static system message', () => {
 
   it('flag ON: the "assumption → answer → one closing question" mould and the canned tip phrases are gone', () => {
     const on = agentSystemV2For(true)
-    for (const gone of ['trợ lý đời sống', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
+    for (const gone of ['trợ lý đời sống', 'ăn uống, vui chơi, phim, mua sắm, du lịch, giá cả, thời tiết, tin tức', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
       expect(on, gone).not.toContain(gone)
       expect(AGENT_SYSTEM_V2, `${gone} was in the base`).toContain(gone)
     }
@@ -58,6 +58,16 @@ describe('the static system message', () => {
     for (const p of paras) expect(on, p.split('\n')[0]).toContain(p)
     // machine contracts the cards / plan / citations rely on
     for (const marker of ['[TAPPY_RANK]', '[TAPPY_PLAN]', '[FOLLOWUPS]', '(**Tên**)', 'ask_user', 'request_action', '[S1]', 'tool_state']) expect(on, marker).toContain(marker)
+  })
+
+  it('nothing in what this flag adds ties Tappy to a list of domains or limits what it answers (owner 10/10: Tappy answers every kind of question)', () => {
+    const on = agentSystemV2For(true)
+    const added = on.slice(on.indexOf('Bạn là Tappy'), on.indexOf('Bạn là Tappy') + 140) + CONSULT_PRINCIPLES
+    expect(added).not.toMatch(/giữ (?:trong )?phạm vi|xoay quanh|chỉ (?:tư vấn|trả lời|hỗ trợ)|ngoài (?:phạm vi|lĩnh vực)|năm lĩnh vực|5 lĩnh vực/i)
+    expect(on.split('\n')[0]).not.toMatch(/ăn uống|mua sắm|du lịch|giải trí|spa/i) // the persona line names no domain list
+    expect(CONSULT_PRINCIPLES).toContain('mọi loại câu hỏi')
+    expect(CONSULT_PRINCIPLES).toMatch(/hiểu biết chung/)
+    expect(CONSULT_PRINCIPLES).toMatch(/không bịa giá, giờ, khoảng cách hay sự kiện/)
   })
 
   it('the principles and the voice block hold no fixed sentence to copy and no user data', () => {
