@@ -89,6 +89,9 @@ describe('the static system message', () => {
     expect(CONSULT_PRINCIPLES).toMatch(/không hỏi điều đã biết từ hội thoại hay từ trí nhớ/)
     expect(CONSULT_PRINCIPLES).toMatch(/lượt đó chưa gọi công cụ lập kế hoạch/)
     expect(CONSULT_PRINCIPLES).toMatch(/lập luôn, nêu ngắn gọn các giả định đã dùng và không hỏi lần hai/)
+    // the server-side task is not carried from the first message to the second in the real UI (measured), so the model must also read the history
+    expect(CONSULT_PRINCIPLES).toMatch(/Nhìn lại lịch sử cuộc trò chuyện: nếu lượt ngay trước bạn đã hỏi làm rõ/)
+    expect(ASK_USER_DESCRIPTION_CONSULT).toMatch(/nhìn cả lịch sử cuộc trò chuyện/)
     expect(CONSULT_PRINCIPLES).toMatch(/nếu họ chỉ hỏi gợi ý thì chỉ gợi ý/)
     expect(CONSULT_PRINCIPLES).toMatch(/không kèm thêm danh sách địa điểm trùng lặp/)
     // the old instructions it replaces are gone (see the `gone` list above) and the remaining plan lines point at the new rule
