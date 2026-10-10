@@ -1,6 +1,8 @@
 # Messenger notification collapse — migration REVIEW PACKAGE (2026-10-10)
 
 Status: **review material for a separate owner decision. Nothing is implemented, no migration file exists under `supabase/migrations/`, nothing was applied anywhere, and the send API, the send limiter and the feature flag are unchanged.** The SQL in §5 is a *draft embedded in this document*; it is not executable from the repository. Baseline `4bfb3d4` + this checkpoint. Production schema, grants, flag value and KV: **UNVERIFIED** (no production access).
+
+**Third checkpoint (2026-10-10): D3/D5/D7–D10 resolved as recommendations (§8); the draft SQL moved to `docs/phase8/drafts/messenger-collapse/` (v3) and is tested verbatim by `supabase/tests/notification_collapse_draft.test.ts`; still no migration, nothing applied.**
 Companion documents: `MESSENGER-NOTIFICATION-COLLAPSE-PROPOSAL.md` (semantics D1–D6, v2.2), `supabase/tests/notification_collapse_spike.test.ts` (real-Postgres spike, 19 tests), `MESSAGE-SEND-LIMITER-AUDIT.md`.
 
 ## 1. Spike versus the real Web route and the real schema
@@ -43,6 +45,25 @@ Spike totals: 19 tests in `notification_collapse_spike.test.ts`; earlier 7/7 mut
 | P6 | latency: group of 49 → 49 RPCs + 49 push dispatches inside the request (today the same fan-out runs inline) | measured on a deployment | measurement only; not claimed |
 | P7 | native contract: Android/iOS do not handle `message` (why the flag is off) | out of scope | owner/application phase |
 
+## 3b. Status after the third checkpoint (what is now proven, and where)
+Draft SQL (v3) lives in `docs/phase8/drafts/messenger-collapse/` (outside `supabase/migrations/`); `supabase/tests/notification_collapse_draft.test.ts` loads it **verbatim** into a real embedded PostgreSQL with a production-**shaped** fixture (roles, `auth.uid()`, the exact `notifications` columns and RLS, nullable `sender_id`, `'-infinity'` cursor default, a simplified block policy). 19 tests; 10 SQL mutations caught.
+
+| # | Criterion | Status |
+|---|---|---|
+| P1 (partly) | roles/grants: `authenticated`/`anon` cannot execute emit (42501), `service_role` can; anon cannot execute the mark functions; no `auth.uid()` or non-participant → 42501 | **proven on the fixture**; *not* through PostgREST and *not* against Supabase's real default privileges |
+| P2 | RESTRICTIVE block policy vs a collapsed row's actor | **proven on a simplified stand-in policy**; the real `safety_private.blocked_ids()` is not exercised |
+| P3 | account-deletion cleanup of rows whose actor was deleted | **proven on the fixture** (the cleanup is simulated with its `DELETE … WHERE actor_id`): the next emit reopens one row with the full derived count |
+| P4 | read-route clock | **characterised** (`collapseReadiness.test.ts`: lambda clock, plain upsert, no monotonic guard; mutation caught). The *fix* (DB clock + GREATEST) is proven in SQL (`mark_thread_read`, cursor never regresses) but the route still has to call it |
+| P5 | push options | **proven against the real `web-push` library** (`messagePushOptions.test.ts`): topic validity, the first design rejected; today's send path and service worker characterised (no options, no `tag`) |
+| 8 / 8b | flag off → no call; send returns 200 when the producer fails | already covered by `messageNotificationRoute.test.ts`; the **new** route shape (RPC with `created_at`) is not written because the route is not changed |
+| 10 | read only after the first page loaded | **characterised** (`threadViewReadOrder.test.tsx`: today it marks at mount and after a failed load; mutation caught). The approved ordering test replaces it |
+| 11 | collapsed-row UPDATE refetch / "mark all read" in the Inbox component | **not written** (needs the route change first) |
+| 12 | rollback / privacy | **proven on the fixture**: rollback script drops exactly the 3 functions + index, keeps rows, draft re-applies idempotently; no message text in any column |
+| P6, P7 | latency on a deployment; native handling of the `message` type | **not measurable here / out of scope** |
+| – | `PostgREST` transaction semantics, pooler behaviour, production `statement_timeout`s | **UNVERIFIED** |
+
+Known limits of the draft (documented, not fixed): a recipient may `UPDATE` their own row's `data`, and `(data->>'lastPushAt')::timestamptz` / `lastMessageAt` casts would then raise for that row (self-inflicted; emit fails into the degraded path F3, mark-all ignores a non-uuid `threadId` — tested); the push is dispatched **after** the database commit, so a push that fails after `should_push = true` has already recorded `lastPushAt` and the next push for that thread waits for the window (at-most-once per window; a failed-push compensation is not designed).
+
 ## 4. Failure-mode analysis (design as in proposal §7d, F3)
 | Failure | Effect | Bounded by | Recovery |
 |---|---|---|---|
@@ -58,68 +79,8 @@ Spike totals: 19 tests in `notification_collapse_spike.test.ts`; earlier 7/7 mut
 | Clock skew (lambda vs DB) | cursor ahead/behind → message counted as read / unread wrongly | route must pass DB time (call the function) | route change (P4) |
 | Rollback needed | — | §7 | functions dropped; open `message` rows remain as plain unread rows (readable, never collapsed again); flag off first |
 
-## 5. Draft migration (REVIEW ONLY — not applied, not in `supabase/migrations/`)
-```sql
--- DRAFT 20261019_messenger_notification_collapse.sql  (name/number are placeholders)
--- Requires: public.notifications (20260725), public.chat_reads/chat_messages (20260905). Independent of 20261018 (no shared objects).
-
-CREATE UNIQUE INDEX IF NOT EXISTS notifications_unread_message_uidx
-  ON public.notifications (user_id, (data->>'threadId'))
-  WHERE type = 'message' AND read_at IS NULL;
-
-CREATE OR REPLACE FUNCTION public.emit_message_notification(
-  p_user uuid, p_thread uuid, p_message_at timestamptz,
-  p_actor uuid, p_title text, p_body text, p_entity_url text, p_image_url text,
-  p_push_window interval DEFAULT interval '10 minutes')
-RETURNS TABLE (notification_id uuid, unread_count int, should_push boolean)
-LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp SET lock_timeout = '2s' SET statement_timeout = '3s'
-AS $$
-DECLARE v_cursor timestamptz; v_count int; v_id uuid; v_last_push timestamptz; v_push boolean := false; v_now timestamptz := now();
-BEGIN
-  PERFORM pg_advisory_xact_lock(hashtextextended(p_user::text || ':' || p_thread::text, 0));
-  SELECT last_read_at INTO v_cursor FROM public.chat_reads WHERE user_id = p_user AND thread_id = p_thread;
-  UPDATE public.notifications SET read_at = v_now                         -- self-heal (spike 18b)
-   WHERE user_id = p_user AND type = 'message' AND read_at IS NULL AND data->>'threadId' = p_thread::text
-     AND v_cursor IS NOT NULL AND (data->>'lastMessageAt')::timestamptz <= v_cursor;
-  IF v_cursor IS NOT NULL AND p_message_at <= v_cursor THEN RETURN; END IF;
-  SELECT count(*) INTO v_count FROM public.chat_messages
-   WHERE thread_id = p_thread AND sender_id IS DISTINCT FROM p_user AND created_at > COALESCE(v_cursor, '-infinity');
-  SELECT n.id, (n.data->>'lastPushAt')::timestamptz INTO v_id, v_last_push FROM public.notifications n
-   WHERE n.user_id = p_user AND n.type = 'message' AND n.data->>'threadId' = p_thread::text AND n.read_at IS NULL;
-  IF v_id IS NULL THEN
-    v_push := true;
-    INSERT INTO public.notifications (user_id, type, category, title, body, actor_id, entity_url, image_url, data, created_at)
-    VALUES (p_user, 'message', 'social', p_title, p_body, p_actor, p_entity_url, p_image_url,
-            jsonb_build_object('threadId', p_thread::text, 'kind', 'message', 'count', v_count, 'lastMessageAt', p_message_at, 'lastPushAt', v_now), v_now)
-    RETURNING id INTO v_id;
-  ELSE
-    v_push := v_last_push IS NULL OR v_now - v_last_push >= p_push_window;
-    UPDATE public.notifications SET created_at = v_now,   -- OWNER DECISION D9: bump created_at (re-sorts the Inbox) vs a new updated_at column
-           data = data || jsonb_build_object('count', v_count, 'lastMessageAt', p_message_at) || CASE WHEN v_push THEN jsonb_build_object('lastPushAt', v_now) ELSE '{}'::jsonb END
-     WHERE id = v_id;
-  END IF;
-  RETURN QUERY SELECT v_id, v_count, v_push;
-END $$;
-REVOKE ALL ON FUNCTION public.emit_message_notification(uuid,uuid,timestamptz,uuid,text,text,text,text,interval) FROM PUBLIC, anon, authenticated;
-GRANT EXECUTE ON FUNCTION public.emit_message_notification(uuid,uuid,timestamptz,uuid,text,text,text,text,interval) TO service_role;
-
-CREATE OR REPLACE FUNCTION public.mark_thread_notifications_read(p_thread uuid) RETURNS int
-LANGUAGE plpgsql SECURITY DEFINER SET search_path = public, pg_temp SET lock_timeout = '2s'
-AS $$
-DECLARE v_user uuid := auth.uid(); v_now timestamptz := now(); v_n int;
-BEGIN
-  IF v_user IS NULL OR NOT public.chat_is_participant(p_thread) THEN RETURN 0; END IF;     -- same refusal shape as RLS (route answers 404)
-  PERFORM pg_advisory_xact_lock(hashtextextended(v_user::text || ':' || p_thread::text, 0));
-  INSERT INTO public.chat_reads (thread_id, user_id, last_read_at) VALUES (p_thread, v_user, v_now)
-    ON CONFLICT (thread_id, user_id) DO UPDATE SET last_read_at = GREATEST(public.chat_reads.last_read_at, EXCLUDED.last_read_at);
-  UPDATE public.notifications SET read_at = v_now
-   WHERE user_id = v_user AND type = 'message' AND read_at IS NULL AND data->>'threadId' = p_thread::text AND (data->>'lastMessageAt')::timestamptz <= v_now;
-  GET DIAGNOSTICS v_n = ROW_COUNT; RETURN v_n;
-END $$;
-REVOKE ALL ON FUNCTION public.mark_thread_notifications_read(uuid) FROM PUBLIC, anon;
-GRANT EXECUTE ON FUNCTION public.mark_thread_notifications_read(uuid) TO authenticated;
-```
-Differences from the spike that are **not yet tested** (so they would be part of the migration's own test, §3 P1): `SECURITY DEFINER` + role grants, `auth.uid()` / `chat_is_participant` use, the extra NOT NULL columns, `statement_timeout` as a function attribute, and the `p_actor` semantics (D8). The draft passes no clock parameter: the spike's injected clock exists for tests only; the real tests would need an injectable time source (a wrapper or a GUC) — part of the work, not solved here.
+## 5. Draft migration — moved out of this document (2026-10-10, third checkpoint)
+The SQL is no longer pasted here, so it cannot drift from what is tested: **`docs/phase8/drafts/messenger-collapse/20261019_messenger_notification_collapse.DRAFT.sql`** (v3: unique index; `emit_message_notification` — service_role only; `mark_thread_read` — authenticated, database clock; `mark_notifications_read` — authenticated, moves the chat cursors) and its rollback **`…ROLLBACK.DRAFT.sql`**. Both are **drafts outside `supabase/migrations/`**; the number and name are placeholders; nothing was applied. Differences from the v2 draft that was here: attribution parameters (`p_actor`, `p_title`, `p_image_url`), monotonic update by newest message, `created_at` follows the newest message, `firstMessageAt`, the self-heal, `IS DISTINCT FROM`, a guard for a vanished message (`count = 0` → no row), a recipient-read race guard (`UPDATE … WHERE read_at IS NULL`, new row if it was read meanwhile), `SET statement_timeout`/`lock_timeout` as function attributes, a sorted lock order for multi-thread mark-all, and the optional `p_now` (service_role only; exists for tests, the route will not pass it).
 
 ## 6. Pre-checks (read-only; to be run by the owner against each database before any apply)
 ```sql
@@ -138,22 +99,21 @@ SELECT policyname, permissive, cmd FROM pg_policies WHERE tablename = 'notificat
 SELECT rolname, rolconfig FROM pg_roles WHERE rolname IN ('authenticated','service_role','anon');
 ```
 
-## 7. Rollback (draft)
-```sql
-DROP FUNCTION IF EXISTS public.mark_thread_notifications_read(uuid);
-DROP FUNCTION IF EXISTS public.emit_message_notification(uuid,uuid,timestamptz,uuid,text,text,text,text,interval);
-DROP INDEX IF EXISTS public.notifications_unread_message_uidx;
-```
-Order of operations at rollback: (1) set `MESSAGE_NOTIFICATIONS_ENABLED` off (or deploy the route that no longer calls the RPCs), (2) run the drops. Rows already written stay valid ordinary notifications (type `message`, `data.count` stale and ignored). No data migration is required either way. Deployment order for a future apply: migration first (nothing calls it), then the route/read changes behind the existing flag, then — only when Web, Android and iOS all handle the type — the flag.
+## 7. Rollback
+`docs/phase8/drafts/messenger-collapse/20261019_messenger_notification_collapse.ROLLBACK.DRAFT.sql` (draft; tested: drops exactly the three functions and the index, keeps every row, and the draft re-applies cleanly). Order at rollback: (1) set `MESSAGE_NOTIFICATIONS_ENABLED` off or deploy the route that no longer calls the functions, (2) run the script. Rows already written stay valid ordinary notifications (`data.count` stale and ignored); no data migration in either direction. Deployment order for a future apply: migration first (nothing calls it), then the route/read changes behind the existing flag, then — only when Web, Android and iOS all handle the type — the flag.
 
-## 8. Corrections and additions to the proposal (v2.2 → needs v2.3 if approved)
-1. **D3 collapse key:** `message:<threadId>` is not a valid Web Push `Topic`; use a ≤32-char base64url hash (§1).
-2. **D5 count:** derived count must use `IS DISTINCT FROM` (nullable sender) — tested.
-3. **D1/D2 stale rows:** add the self-heal at emit — tested.
-4. **D7 (new): "mark all read" semantics.** Options: (a) leave as is (count reopens, consistent with Messenger); (b) make `POST /api/notifications/read` also advance the chat cursor for thread-message rows it clears (route change, then both surfaces agree); (c) make a dismissed notification reset the derived count baseline (needs a stored baseline; adds state).
-5. **D8 (new): `actor_id` of a collapsed row** in a group (first sender today). Interaction with the RESTRICTIVE block policy and account-deletion cleanup (P2/P3). Options: first sender / latest sender (update `actor_id`+`title` each emit) / null actor for group rows.
-6. **D9 (new): `created_at` bump** vs a new `updated_at` column (the latter changes the shared `notifications` contract Android/iOS read).
-7. **D10 (new): read-route clock.** Move the cursor write into the function (database clock, `GREATEST`) — recommended — or leave the lambda clock.
+## 8. D3, D5, D7–D10 — RESOLVED as recommendations for the owner's approval of the design (nothing implemented)
+"Resolved" means each question now has one specific design, with its consequences and the test that proves it (SQL on the fixture unless stated). The owner still approves or changes it; a different answer changes the draft and its tests, not the architecture.
+
+| # | Question | Resolution | Consequence / what it costs | Proof |
+|---|---|---|---|---|
+| D3 | push collapse key | **Web Push only.** `Topic` = first 32 chars of `base64url(sha256('tappyai:message-topic:'+threadId))` (the first design `message:<threadId>` makes `web-push` throw); `TTL` 86 400 s; `Urgency` normal. A shown notification is replaced by a service-worker `tag` (`message:<threadId>`, with `renotify` off); the database throttle (10 min per recipient+thread, state in Postgres) is the primary volume control. FCM / APNs untouched (native clients do not handle the type) | `send.ts` is shared: add an **optional** third-argument carrier, unchanged when absent; `public/push-sw.js` gains an optional `tag`. Topic only helps while the device is offline; push is dispatched after the commit, so a failed push after `should_push` waits out the window | `messagePushOptions.test.ts` (real library) |
+| D5 | sender is NULL (deleted account) | counted (`IS DISTINCT FROM`); its notification has `actor_id NULL` and the fallback title `TappyAI` | the row has no avatar/name for that moment | draft suite, nullable-sender test (mutation caught) |
+| D7 | "mark all read" | **Reading a message notification reads the thread**: `mark_notifications_read(ids)` sets `read_at` *and* moves the chat cursor (database clock, `GREATEST`) under the same per-(user,thread) lock, threads in sorted order (no deadlock); other types and rows with a malformed `threadId` are read plainly. The next message opens a row with count 1 | `POST /api/notifications/read` must call the RPC (route change; edge runtime stays). Marking one collapsed row by id also clears that thread's Messenger badge — intended: the row *is* the thread's unread pointer | draft suite: mark-all, by-id, other user's ids, tampered row, race vs emit (mutation caught) |
+| D8 | sender attribution of a collapsed row | **the sender of the newest message** (actor, title, image follow it); an out-of-order or retried older emit never regresses it and never pushes. The count includes everyone else's messages | a blocked actor hides the row (RESTRICTIVE policy) until a newer message from someone else re-attributes it; if the newest sender's account is deleted the cleanup removes the row and the next emit reopens it (count from the cursor) | draft suite: attribution, out-of-order, block, deletion cleanup |
+| D9 | `created_at` vs `updated_at` | **bump `created_at` to the newest message's time**; keep `data.firstMessageAt`. A separate `updated_at` is rejected: the Inbox orders by `created_at` through PostgREST, so a new column would need a generated sort column or a view and a contract change for Android/iOS | `created_at` of a `message` row is no longer a creation time. Searched the repository: no consumer treats it as immutable for this type (Inbox ordering; backfill rows are `skipPush`; the retention cron prunes marketing deliveries). Android/iOS DTOs: **not examined** | draft suite: created_at follows the newest message (mutation caught) |
+| D10 | read-route clock | **database clock**: the read route calls `mark_thread_read(thread)` (DB `now()`, `GREATEST`, participant check → 42501 → the existing 404). The route no longer sends a timestamp | route change. A client can still write its own `chat_reads` row (RLS) — a stale unread row is then healed at the next emit; a future-dated cursor is self-inflicted. Tightening the `chat_reads` policies is **not** part of this design | draft suite: DB clock, cursor never regresses, authorisation; `collapseReadiness.test.ts` characterises today |
+| F3 | failure policy | unchanged from proposal §7d: bounded `lock_timeout` 2 s / `statement_timeout` 3 s as function attributes, one bounded inline retry, then ONE plain `INSERT … ON CONFLICT DO NOTHING` on the unique index that never pushes; the send always returns 200 | – | draft suite: lock bound (55P03 within ~2 s, no setting leak), degraded insert keeps one row and the next emit repairs the count; property run |
 
 ## 9. What would have to be true before this can be implemented
-Owner approval of D1–D10; the unapplied-migration process (pre-checks run per database, deployment window, rollback script reviewed); tests P1–P5 and 8/8b/10/11 written; Android/iOS handling of the `message` type (separate phase) before the flag is ever turned on. None of this has been done.
+Owner approval of the resolutions above; the unapplied-migration process (pre-checks in §6 run per database, deployment window, rollback reviewed); route changes (send passes `created_at` and uses the RPC; read route calls `mark_thread_read`; `/api/notifications/read` calls `mark_notifications_read`; `ThreadView` marks read after the first page) with the tests listed in §3b rewritten from characterisation to behaviour; `send.ts` / service-worker options; Android/iOS handling of the `message` type before the flag is ever turned on. None of this has been done.
