@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 export default function ThreadView({
   thread,
@@ -192,6 +193,10 @@ export default function ThreadView({
             </p>
           )}
         </div>
+        {/* WP-06 — report / block the other person of a 1:1 thread. A block closes the thread server-side (chat_thread_blocked, 20261018); leaving the view is the client's part. */}
+        {thread.kind !== 'group' && other && (
+          <SafetyMenu className="ml-auto" report={{ target: 'user', id: other.userId }} user={{ id: other.userId, name: title }} onBlockedChange={(b) => { if (b) onBack() }} />
+        )}
       </div>
 
       {/* ── Messages ── */}

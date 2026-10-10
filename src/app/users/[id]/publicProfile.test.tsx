@@ -394,6 +394,65 @@ describe('VISITOR — Message (opens a direct conversation through the existing 
   })
 })
 
+// ════════════════════════════════════════════════════════════�
+describe('VISITOR — Safety menu (report / block this person, WP-06)', () => {
+  const stubConfig = (p8: Record<string, boolean> | null) => {
+    const base = (globalThis as any).fetch
+    vi.stubGlobal('fetch', vi.fn(async (url: any, opts?: any) => {
+      if (String(url) === '/api/config') return { ok: true, status: 200, json: async () => (p8 ? { p8 } : {}) } as any
+      if (String(url) === '/api/users/blocks') return { ok: true, status: 200, json: async () => ({ blocks: [] }) } as any
+      return base(url, opts)
+    }))
+  }
+  const resetSafety = async () => { const m = await import('@/lib/safety/useSafetyFlags'); m.__resetSafetyFlags(); const c = await import('@/lib/safety/safetyClient'); c.__resetSafetyClient() }
+  beforeEach(resetSafety)
+
+  it('a signed-in visitor sees the menu when the flags are on, and it is wired to THIS person', async () => {
+    stubFetch({ reviews: [] })
+    stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    fireEvent.click(await screen.findByLabelText('safety.more'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'safety.report' }))
+    fireEvent.click(await screen.findByLabelText('safety.reason.spam'))
+    fireEvent.click(screen.getByTestId('report-submit'))
+    await waitFor(() => expect(called('POST', '/api/users/' + AUTHOR + '/report')).toBe(true))
+  })
+
+  it('flags off, signed out and the owner own profile: no menu at all', async () => {
+    stubFetch({ reviews: [] }); stubConfig({ reports: false, userBlocks: false })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+    cleanup()
+    await resetSafety()
+    stubFetch({ reviews: [] }); stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={null} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+    cleanup()
+    await resetSafety()
+    stubFetch({ profile: { is_self: true }, reviews: [] }); stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={OWNER} onBack={() => {}} />)
+    await screen.findByText('v3.publicProfile.edit')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+  })
+
+  it('blocking the person un-follows them locally (the server removes the follow; the button must not still say Following)', async () => {
+    stubFetch({ profile: { is_following: true }, reviews: [] })
+    stubConfig({ reports: false, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.following')
+    fireEvent.click(await screen.findByLabelText('safety.more'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'safety.block' }))
+    fireEvent.click(await screen.findByTestId('block-confirm-button'))
+    await waitFor(() => expect(called('POST', '/api/users/' + AUTHOR + '/block')).toBe(true))
+    await waitFor(() => expect(screen.getByText('reviews.follow')).toBeTruthy())
+  })
+})
+
 // ═════════════════════════════════════════════════════════════════════════════
 describe('OWNER — the same page with the owner\'s own activity unlocked', () => {
   const ownerFixtures = () => {

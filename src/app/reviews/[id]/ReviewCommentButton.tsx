@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from '@/components/media/SafeImage'
 import { Loader2, MessageCircle, X, Trash2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 interface CommentProfile { full_name: string | null; avatar_url: string | null }
 interface Comment {
@@ -186,6 +187,10 @@ export default function ReviewCommentButton({
           <button onClick={() => del(c.id)} aria-label="Xóa bình luận" className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
             <Trash2 size={14} />
           </button>
+        )}
+        {/* WP-06 — report someone else's comment / block its author (signed-in only; the menu draws nothing while its flags are off). */}
+        {me && c.user_id !== me && (
+          <SafetyMenu className="flex-shrink-0 self-start" report={{ target: 'comment', id: c.id }} user={{ id: c.user_id, name: c.profiles?.full_name }} />
         )}
       </div>
     )

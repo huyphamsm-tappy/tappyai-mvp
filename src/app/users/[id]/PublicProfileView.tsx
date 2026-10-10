@@ -55,6 +55,7 @@ import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
 import { isShareOnlyName, type Review } from '@/app/reviews/feedShared'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 import { rejectCoverFile, uploadCover, removeCover, CoverRequestError } from '@/lib/profile/cover'
 import { uploadErrorKey } from '@/lib/profile/uploadError'
 import { loadLiked, loadSaved, loadHidden } from './ownerCollections'
@@ -432,6 +433,10 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
                       {messageBusy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <MessageCircle size={15} aria-hidden="true" />}
                       {t('v3.publicProfile.message')}
                     </button>
+                    {/* WP-06 — report / block this person (signed-in visitors; draws nothing while the flags are off). */}
+                    {viewerId && (
+                      <SafetyMenu tone="onMedia" report={{ target: 'user', id: userId }} user={{ id: userId, name: profile.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }} />
+                    )}
                     </>
                   )}
                 </div>

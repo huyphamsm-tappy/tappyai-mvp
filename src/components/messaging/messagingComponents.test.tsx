@@ -20,6 +20,12 @@ vi.mock('./MessagesProvider', () => ({
     subscribeToIncoming: (fn: (m: unknown) => void) => { incoming.push(fn); return () => { incoming = incoming.filter(f => f !== fn) } },
   }),
 }))
+// The real menu fetches /api/config on mount (its own tests live in src/components/safety); here it is a stub that exposes its props.
+vi.mock('@/components/safety/SafetyMenu', () => ({
+  SafetyMenu: (p: { report?: { target: string; id: string }; user?: { id: string; name?: string | null }; onBlockedChange?: (b: boolean) => void }) => (
+    <button data-testid="safety-stub" data-target={p.report?.target} data-report-id={p.report?.id} data-user-id={p.user?.id} data-user-name={p.user?.name ?? ''} onClick={() => p.onBlockedChange?.(true)} />
+  ),
+}))
 vi.mock('./NewMessageSheet', () => ({ __esModule: true, default: ({ onStarted }: { onStarted: (id: string) => void }) => <button data-testid="new-sheet" onClick={() => onStarted('t1')} /> }))
 
 import ThreadView from './ThreadView'
@@ -221,5 +227,53 @@ describe('MessagesTab · opening a conversation', () => {
     const src = readFileSync('src/app/(app)/profile/notifications/NotificationsView.tsx', 'utf8')
     expect(src).toContain("useSearchParams()?.get('thread')")
     expect(src).toContain('<MessagesTab signedIn={!!user} initialThreadId={requestedThread} />')
+  })
+})
+
+describe('ThreadView · Safety menu (WP-06)', () => {
+  it('a 1:1 thread offers report/block for the OTHER person, named by the thread title', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [msg(1)], hasMore: false }))
+    render(<ThreadView thread={THREAD} onBack={() => {}} />)
+    const stub = await screen.findByTestId('safety-stub')
+    expect(stub.getAttribute('data-target')).toBe('user')
+    expect(stub.getAttribute('data-report-id')).toBe('u2')
+    expect(stub.getAttribute('data-user-id')).toBe('u2')
+    expect(stub.getAttribute('data-user-name')).toBeTruthy()
+  })
+
+  it('a group thread offers none (there is no single "other person")', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+    render(<ThreadView thread={{ ...(THREAD as object), kind: 'group' } as never} onBack={() => {}} />)
+    await waitFor(() => expect(screen.getByRole('textbox')).toBeTruthy())
+    expect(screen.queryByTestId('safety-stub')).toBeNull()
+  })
+
+  it('after a block the view leaves the thread (the server already closes it); an unblock would not', async () => {
+    fetchMock.mockResolvedValueOnce(json({ messages: [], hasMore: false }))
+    const onBack = vi.fn()
+    render(<ThreadView thread={THREAD} onBack={onBack} />)
+    fireEvent.click(await screen.findByTestId('safety-stub')) // the stub reports onBlockedChange(true)
+    expect(onBack).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('Safety menu wiring at the other call sites (source locks — the menu itself is tested in src/components/safety)', () => {
+  const src = (p: string) => readFileSync(p, 'utf8')
+  it('ReviewCommentButton: only another person comment, only when signed in', () => {
+    const s = src('src/app/reviews/[id]/ReviewCommentButton.tsx')
+    expect(s).toContain("import { SafetyMenu } from '@/components/safety/SafetyMenu'")
+    expect(s).toContain("{me && c.user_id !== me && (")
+    expect(s).toContain("report={{ target: 'comment', id: c.id }} user={{ id: c.user_id, name: c.profiles?.full_name }}")
+  })
+  it('ReviewDetailView: only a signed-in viewer who is not the author; the page passes the viewer', () => {
+    const s = src('src/app/reviews/[id]/ReviewDetailView.tsx')
+    expect(s).toContain("{viewerId && viewerId !== review.user_id && (")
+    expect(s).toContain("report={{ target: 'review', id: reviewId }} user={{ id: review.user_id, name: review.profiles?.full_name }}")
+    expect(src('src/app/reviews/[id]/page.tsx')).toContain('viewerId={viewerId}')
+  })
+  it('ProfileTab: only on someone else profile, signed in; a block un-follows locally', () => {
+    const s = src('src/app/reviews/ProfileTab.tsx')
+    expect(s).toContain('{!isOwnProfile && viewerId && (')
+    expect(s).toContain("report={{ target: 'user', id: userId }} user={{ id: userId, name: profile?.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }}")
   })
 })
