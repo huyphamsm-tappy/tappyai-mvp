@@ -18,12 +18,20 @@ export const isLoginWallUrl = (url: unknown): boolean => {
  */
 export function dropLoginWallRows<T>(result: T, listKey: 'results' | 'search_results' = 'results'): T {
   const r = result as unknown as Record<string, unknown> | null
-  if (!r || typeof r !== 'object' || !Array.isArray(r[listKey])) return result
-  const rows = r[listKey] as unknown[]
-  const kept = rows.filter(row => !(row && typeof row === 'object' && (isLoginWallUrl((row as { link?: unknown }).link) || isLoginWallUrl((row as { url?: unknown }).url))))
-  if (kept.length !== rows.length) {
-    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'login_wall_rows', listKey, dropped: rows.length - kept.length, kept: kept.length }))
-    return { ...r, [listKey]: kept, ...(typeof r.count === 'number' ? { count: kept.length } : {}) } as unknown as T
+  if (!r || typeof r !== 'object') return result
+  const wall = (row: unknown) => !!row && typeof row === 'object' && (isLoginWallUrl((row as { link?: unknown }).link) || isLoginWallUrl((row as { url?: unknown }).url))
+  let out: Record<string, unknown> = r
+  let dropped = 0
+  // The rows, and the marketplace search LINKS the tool lists beside them (the model reads both: "xem ở Shopee" came from there, live 2026-10-11).
+  for (const key of [listKey, 'links'] as const) {
+    const list = out[key]
+    if (!Array.isArray(list)) continue
+    const kept = list.filter(row => !wall(row))
+    if (kept.length === list.length) continue
+    dropped += list.length - kept.length
+    out = { ...out, [key]: kept, ...(key === listKey && typeof r.count === 'number' ? { count: kept.length } : {}) }
   }
-  return result
+  if (!dropped) return result
+  console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'login_wall_rows', listKey, dropped }))
+  return out as unknown as T
 }
