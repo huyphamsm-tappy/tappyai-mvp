@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Bella Merry",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:46:42.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bella Merry",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "BELLA MERRY HOTEL - APARTMENT (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá  - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2a/a1/2e/b8/bella-merry-hotel-co.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQTg_yhAwrNWwH-QF4vpwG7VMNnaH4dkRNhIlgKv5NbQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d23521934-Reviews-Bella_Merry_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2a%2Fa1%2F2e%2Fb8%2Fbella-merry-hotel-co.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=vtZUC8HhSGhiVM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d23521934-Reviews-Bella_Merry_Hotel-Da_Nang.html&docid=RdC9alLq61lACM&w=900&h=500",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Bella Merry (Bella Merry Hotel) Đà Nẵng, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/property/60259709/0/4512504b09d432d41cf98f921209d663.jpeg?va=1&ce=0&s=414x232",
+    "imageWidth": 126,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwpTAGqF3n9_gyLbC5StZBEf9KVrUJIWf1UmkvlPcC&s=10",
+    "thumbnailWidth": 126,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bella-merry-hotel-and-spa/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F60259709%2F0%2F4512504b09d432d41cf98f921209d663.jpeg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=e86m5YdJ6ViyOM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbella-merry-hotel-and-spa%2Fhotel%2Fda-nang-vn.html&docid=mpUVmTQgSrXwmM&w=126&h=232",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Bella Merry ở Đà Nẵng | Giá mới nhất và ưu đãi hấp dẫn 2026 -  Klook Việt Nam",
+    "imageUrl": "https://res.klook.com/klook-hotel/image/upload/w_750,c_fill,q_85/s10akd/0202y12000au0kpdkC31B.jpg",
+    "imageWidth": 750,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxBbtU_6VsQ5fzOmiyVD3ieuzFIbmmspR7q-2CBcWveA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Klook",
+    "domain": "www.klook.com",
+    "link": "https://www.klook.com/vi/hotels/detail/967204-bella-merry-hotel--apartment/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fres.klook.com%2Fklook-hotel%2Fimage%2Fupload%2Fw_750%2Cc_fill%2Cq_85%2Fs10akd%2F0202y12000au0kpdkC31B.jpg&tbnid=hQJ10YMk_DaOwM&imgrefurl=https%3A%2F%2Fwww.klook.com%2Fvi%2Fhotels%2Fdetail%2F967204-bella-merry-hotel--apartment%2F&docid=eTKNUMOfNjYAyM&w=750&h=500",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Bella Merry (Bella Merry Hotel) Đà Nẵng, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/30125137/-1/f402d7feac9f21ad0165d54cbe5c90c1.jpg?va=1&ce=0&s=414x232",
+    "imageWidth": 126,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqoBOsDV7sA2u2_Jls1MrOTPs0mY2dsdIJ4z0Jc00V&s=10",
+    "thumbnailWidth": 126,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bella-merry-hotel-and-spa/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F30125137%2F-1%2Ff402d7feac9f21ad0165d54cbe5c90c1.jpg%3Fva%3D1%26ce%3D0%26s%3D414x232&tbnid=-qhopP_Hcxkf0M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbella-merry-hotel-and-spa%2Fhotel%2Fda-nang-vn.html&docid=mpUVmTQgSrXwmM&w=126&h=232",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Bella Merry (Bella Merry Hotel) Đà Nẵng, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/434301000.jpg?k=05c3e204572644f838252020aa842c9db169aea9400c8609e3eb1584da1ff610&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnwDFQukWOCirpgV7DKrdXhU3SUmwbq4zGJ96lleC5lw&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bella-merry-hotel-and-spa/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F434301000.jpg%3Fk%3D05c3e204572644f838252020aa842c9db169aea9400c8609e3eb1584da1ff610%26o%3D&tbnid=VS0fNDy-pLjTHM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbella-merry-hotel-and-spa%2Fhotel%2Fda-nang-vn.html&docid=mpUVmTQgSrXwmM&w=500&h=333",
+    "position": 5
+   },
+   {
+    "title": "Bella Merry Hotel and Apartment - 100M To The My Khe Beach, Đà Nẵng (cập  nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/557899545.jpg?k=2667489c319bdf6604a6d95e54f230be0ffc793347548b2f6505c33be0cf5770&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCxDe4F6t9atteIINAnpbv6WJxSK0v3myVcoVVzlfnSw&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bella-merry-and-spa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F557899545.jpg%3Fk%3D2667489c319bdf6604a6d95e54f230be0ffc793347548b2f6505c33be0cf5770%26o%3D&tbnid=czry22pPzuAkTM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbella-merry-and-spa.vi.html&docid=kwKnR4dkkXcjVM&w=1024&h=768",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Bella Merry (Bella Merry Hotel) Đà Nẵng, Việt Nam: Agoda.com có  giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/296510825.jpg?k=4aadbb8ba00d03bfe4f7a9fab4ec2038f88f6c3537b1d8b5be85505db9191e51&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfEZJT0j4mlMfFcJfEF6m4YUvbR_kzc7qWKS_n_BRRyw&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/bella-merry-hotel-and-spa/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F296510825.jpg%3Fk%3D4aadbb8ba00d03bfe4f7a9fab4ec2038f88f6c3537b1d8b5be85505db9191e51%26o%3D&tbnid=INcN62mCLAdpuM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fbella-merry-hotel-and-spa%2Fhotel%2Fda-nang-vn.html&docid=mpUVmTQgSrXwmM&w=500&h=333",
+    "position": 7
+   },
+   {
+    "title": "Bella Merry Hotel and Apartment - 100M To The My Khe Beach, Đà Nẵng (cập  nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/329015305.jpg?k=d4d61fd429e6968b76373b7270f3967ebfd329ccc4118015d038c5fe81e6a766&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMIAwdEIc6N8dVM7lhtbHwZ6Ypbada49SHAvdX347OWw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/bella-merry-and-spa.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F329015305.jpg%3Fk%3Dd4d61fd429e6968b76373b7270f3967ebfd329ccc4118015d038c5fe81e6a766%26o%3D&tbnid=fkAFdVEzOJ4TmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fbella-merry-and-spa.vi.html&docid=kwKnR4dkkXcjVM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

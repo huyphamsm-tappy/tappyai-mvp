@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sea Near Me Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng mỗi đêm, cuối tuần 10-11/10/2026 site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:47.602Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sea Near Me Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng mỗi đêm, cuối tuần 10-11/10/2026 site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

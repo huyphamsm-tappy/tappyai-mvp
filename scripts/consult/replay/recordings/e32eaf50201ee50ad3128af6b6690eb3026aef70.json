@@ -1,0 +1,53 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianheritage.net vé tham quan phố cổ Hội An 80. giờ 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:29.503Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianheritage.net vé tham quan phố cổ Hội An 80. giờ 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đô thị cổ Hội An",
+    "link": "https://hoianheritage.net/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/thap-mo-dai-su-pho-bao-chua-chuc-thanh-hoi-an-1354.html",
+    "snippet": "Khi tham quan, chiêm bái Tổ đình Chúc Thánh (số 104 Tôn Đức Thắng), bên cạnh những kiến trúc chính như tam quan cũ, chính điện, nhà Tổ, ...",
+    "date": "17 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "Bài học thực tiễn về công tác bảo tồn Di sản ... - Đô thị cổ Hội An",
+    "link": "https://hoianheritage.net/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/bai-hoc-thuc-tien-ve-cong-tac-bao-ton-di-san-van-hoa-the-gioi-do-thi-co-hoi-an-1317.html",
+    "snippet": "Hội An là một địa chỉ - Di sản văn hóa, nơi duy nhất của khu vực Đông Nam Á được bảo tồn hầu như nguyên vẹn tính chân xác - tính nguyên mẫu ...",
+    "date": "27 thg 10, 2025",
+    "position": 2
+   },
+   {
+    "title": "BẢO TỒN DI SẢN",
+    "link": "https://hoianheritage.net/uploads/download/files/thong-tin-bao-ton-2.2026.pdf",
+    "snippet": "Khu phố cổ, thành phố Hội An giao cho. Trung tâm Quản lý Bảo tồn Di sản Văn hóa Hội An trước đây tham mưu và cấp phép để đảm bảo cho hoạt động kiểm tra, giám ...",
+    "position": 3
+   },
+   {
+    "title": "Kiến trúc cổ các hội quán của người Hoa ở Hội An (Quảng Nam)",
+    "link": "https://hoianheritage.net/vi/trao-doi-chuyen-nganh/chuyen-de-nghien-cuu-trao-doi/kien-truc-co-cac-hoi-quan-cua-nguoi-hoa-o-hoi-an-quang-nam-735.html",
+    "snippet": "Hội quán Trung Hoa: tọa lạc số 64 đường Trần Phú, phường Minh An, thành phố Hội An, trước mặt là đường Hoàng Văn Thụ dẫn thẳng ra sông Hoài, nằm ...",
+    "date": "10 thg 10, 2018",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

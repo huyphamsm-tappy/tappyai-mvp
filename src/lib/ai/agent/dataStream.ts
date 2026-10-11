@@ -40,7 +40,7 @@ export function belowAnswerFrame(items: readonly BelowAnswerItem[]): string {
   return items.length ? `8:${JSON.stringify([{ kind: 'tappy.sponsored.v1', items }])}\n` : ''
 }
 
-export function agentStreamResult(start: (emit: (line: string) => void) => Promise<AgentRun>, onFinish?: (o: { usage: { promptTokens: number; completionTokens: number; totalTokens: number }; finishReason: string; text: string; steps: Array<{ providerMetadata?: Record<string, unknown>; usage?: { promptTokens: number; completionTokens: number }; toolCalls: unknown[]; toolResults: unknown[]; text: string }> }) => unknown): AgentStreamResult {
+export function agentStreamResult(start: (emit: (line: string) => void) => Promise<Pick<AgentRun, 'text' | 'steps'>>, onFinish?: (o: { usage: { promptTokens: number; completionTokens: number; totalTokens: number }; finishReason: string; text: string; steps: Array<{ providerMetadata?: Record<string, unknown>; usage?: { promptTokens: number; completionTokens: number }; toolCalls: unknown[]; toolResults: unknown[]; text: string }> }) => unknown): AgentStreamResult {
   let resolveSteps!: (s: Awaited<AgentStreamResult['steps']>) => void
   let resolveText!: (t: string) => void
   const steps = new Promise<Awaited<AgentStreamResult['steps']>>(r => { resolveSteps = r })
@@ -50,7 +50,7 @@ export function agentStreamResult(start: (emit: (line: string) => void) => Promi
   const make = () => new ReadableStream<Uint8Array>({
     async start(controller) {
       const emit = (line: string) => { try { controller.enqueue(enc.encode(line.endsWith('\n') ? line : `${line}\n`)) } catch { /* closed */ } }
-      let run: AgentRun | null = null
+      let run: Pick<AgentRun, 'text' | 'steps'> | null = null
       try {
         run = await start(emit)
       } catch (e) {

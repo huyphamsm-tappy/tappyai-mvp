@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Minh Trường Hotel 2 - Khách sạn ven biển Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:26.906Z",
+ "body": {
+  "searchParameters": {
+   "q": "Minh Trường Hotel 2 - Khách sạn ven biển Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/4625789071463497281006995280280079382614867n-1729674396.jpg",
+    "imageWidth": 1536,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP3Ot88-fGqAVEkZqrIBI1z5WbBSGJZsRyey7ta10-2w&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F4625789071463497281006995280280079382614867n-1729674396.jpg&tbnid=VPRV-awoba_BiM&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=1536&h=2048",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/45972919417081324299858816285531547096612709n-1728804732.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbNTa2PGLvhCyBhNR5pmq1y0js5CGnGmRpH3vDJkBWAA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F45972919417081324299858816285531547096612709n-1728804732.jpg&tbnid=hvA-HHF6jxlHjM&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=2048&h=1536",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/4611943454937745734788656352670299384044520n-1728804732.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgmXLlOZyyfestbQu9s8cgxZkuh7wLEs6ardidnqYNCA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F4611943454937745734788656352670299384044520n-1728804732.jpg&tbnid=ClKF5wQlJf2vbM&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=2048&h=1536",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/461548609268552687507852906858764721450145001n-1728804733.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnc-7yPFfy5ZeQSt6kCJFxiMu-xQEx9eCq6m8AiKaUOA&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F461548609268552687507852906858764721450145001n-1728804733.jpg&tbnid=IUjk3w09O1zy9M&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=2048&h=1536",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/4603160068347685287713045303741789374032010n-1728804734.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfCNc23nUWy-P46Owig32vGEyAXN2Ah9aTNbkekARX8Q&s=10",
+    "thumbnailWidth": 515,
+    "thumbnailHeight": 388,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F4603160068347685287713045303741789374032010n-1728804734.jpg&tbnid=k9yNL77D-YVYtM&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=2048&h=1536",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn ven biển Nguyễn Tất Thành giá rẻ Đà Nẵng - Minh Trường Hotel 2",
+    "imageUrl": "https://minhtruonghotel.vn/data/hotel/default/4594462144980748629884024392405482434129506n-1728804732.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQwL74vfAiTZdhUufTQIjWWreX-cyleyP0h14kDR4zIg&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Minh Trường Hotel",
+    "domain": "minhtruonghotel.vn",
+    "link": "https://minhtruonghotel.vn/minh-truong-2-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtruonghotel.vn%2Fdata%2Fhotel%2Fdefault%2F4594462144980748629884024392405482434129506n-1728804732.jpg&tbnid=eU8qyT6xczofDM&imgrefurl=https%3A%2F%2Fminhtruonghotel.vn%2Fminh-truong-2-hotel.html&docid=94PpmuoxvmdLTM&w=2048&h=1536",
+    "position": 6
+   },
+   {
+    "title": "Minh Trường Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/412537505.jpg?k=4f760d48c2ffaff23f9b3b27accf3efe69357246a8c505c602a09cd05cca9ea3&o=",
+    "imageWidth": 576,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSn-LyKRhMVEhuAy0E_7jJPsvWVUPhqZQPQxFDIlwJKJA&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/nha-nghi-minh-truong-thanh-khe.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F412537505.jpg%3Fk%3D4f760d48c2ffaff23f9b3b27accf3efe69357246a8c505c602a09cd05cca9ea3%26o%3D&tbnid=a7hYjSaVuQatpM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fnha-nghi-minh-truong-thanh-khe.vi.html&docid=b1Ve8GNPVAUH7M&w=576&h=768",
+    "position": 7
+   },
+   {
+    "title": "Minh Truong 2 Hotel Da Nang, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/Ixf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw/hotel/asset/10030850-e86cd67ce245b026e18ec3c7be4fbb06.jpeg?_src=imagekit&tr=c-at_max,fo-auto,h-203,q-80,w-300",
+    "imageWidth": 300,
+    "imageHeight": 203,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBs_Uu_cWU1hAwAxVXfd9q5xd0KkvfPgizxLkzcW4xAw&s=10",
+    "thumbnailWidth": 300,
+    "thumbnailHeight": 202,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/minh-truong-2-hotel-da-nang-3000010030850",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FIxf4aptF5N2Qdfmh4fGGYhTN274kJXuNMkUAzpL5HuD9jzSxIGG5kZNhhHY-p7nw%2Fhotel%2Fasset%2F10030850-e86cd67ce245b026e18ec3c7be4fbb06.jpeg%3F_src%3Dimagekit%26tr%3Dc-at_max%2Cfo-auto%2Ch-203%2Cq-80%2Cw-300&tbnid=NjS4tAmUxpFAhM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fminh-truong-2-hotel-da-nang-3000010030850&docid=i9LVW-hCDbS6fM&w=300&h=203",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

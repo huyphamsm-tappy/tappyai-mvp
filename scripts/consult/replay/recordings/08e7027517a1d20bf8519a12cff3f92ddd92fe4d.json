@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html hộ chiếu 200. cấp lại 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:25.488Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html hộ chiếu 200. cấp lại 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

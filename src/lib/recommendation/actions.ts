@@ -3,6 +3,7 @@ import { buildSpaLinks } from '@/lib/platformLinks/spa'
 import { buildEntertainmentLinks } from '@/lib/platformLinks/entertainment'
 import { reviewActionsForPlace, type ReviewAction } from '@/lib/ai/consultative/reviewAction'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
 import { actionKindFor, urlKindFor, isCommerceLinkRow, isSearchFallbackRow, requiresMerchantLogin, providerOwning, type CommerceLinkRow } from '@/lib/ccp'
 import { linkDepthClass } from '@/lib/commerce/linkDepth'
 import { outboundLinkFacts, isDeepEnough, reportOutboundLink } from '@/lib/commerce/outboundLink'
@@ -362,6 +363,21 @@ function withoutShadowedFallbacks(actions: Action[], fallbackLinkIds: ReadonlySe
   return out
 }
 
+/**
+ * The Google Maps "directions" URL of a verified row (Maps URLs API, no key): destination = the row's own `name, address` text; the
+ * `destination_place_id` is added only when the row carries a Google-style place id. A row with neither an address nor a place id gives
+ * null — a bare name could land on a different place of the same name, so no button is better than a wrong one.
+ */
+export function directionsUrl(name: string, address?: string, placeId?: string): string | null {
+  const n = name.trim()
+  const a = (address ?? '').trim()
+  const pid = (placeId ?? '').trim()
+  const googleId = /^ChIJ[A-Za-z0-9_-]{16,}$/.test(pid) ? pid : ''
+  if (!n || (!a && !googleId)) return null
+  const dest = [n, a].filter(Boolean).join(', ').slice(0, 300)
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(dest)}${googleId ? `&destination_place_id=${encodeURIComponent(googleId)}` : ''}`
+}
+
 /** Maps a `ReviewAction.kind` onto whether the URL is content or a place to look. */
 const REVIEW_IS_SEARCH = new Set(['youtube_search_fallback'])
 
@@ -500,6 +516,9 @@ export function buildActions(
 
   // ── Universal ─────────────────────────────────────────────────────────────
   out.push(action('maps', src.maps_link, domain, { urlKind: 'direct' }))
+  // CONSULTATIVE_IN_AGENT (flag on only): a "Directions" button — the Google Maps URLs API (https://www.google.com/maps/dir/?api=1&destination=…),
+  // built HERE from the row's own name + address (+ place_id when it is a real Google place id). No model text, no new provider, no key.
+  if (consultativeInAgentEnabled()) out.push(action('directions', directionsUrl(name, src.address, src.place_id), domain, { urlKind: 'direct' }))
   out.push(action('website', src.website_uri, domain, { urlKind: 'direct' }))
   if (src.phone) out.push(action('call', `tel:${src.phone.replace(/[^\d+]/g, '')}`, domain, { urlKind: 'direct' }))
 

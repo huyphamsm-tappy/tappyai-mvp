@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Việt Nam\" OR \"Phở Phú Vương\" OR \"PHỞ HÀ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:23:17.721Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Việt Nam\" OR \"Phở Phú Vương\" OR \"PHỞ HÀ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover the Best Pho in Saigon at Phở Phú Vương",
+    "link": "https://www.tiktok.com/@yourglobalfoodiebff/video/7593572173218843934",
+    "snippet": "Located at 339 Le Van Sy, Ward 1, Tan Binh District, Ho Chi Minh City, Phở Phú Vương stands out as a top contender for the best pho in Saigon ...",
+    "position": 1
+   },
+   {
+    "title": "Bí quyết nước dùng chuẩn phở Hà Nội ở Mỹ",
+    "link": "https://www.tiktok.com/@dongchuildaypho/video/7652787348253461778",
+    "snippet": "Video TikTok từ ĐÔNG CHUIL – DẠY PHỞ VIỆT NAM (@dongchuildaypho): \"Công thức phở ngon từ phở Hà Nội tại California: hầm xương 24h, ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Việt Nam ngon khó cưỡng | Phở Cần Thơ",
+    "link": "https://www.tiktok.com/@happyinvn/video/7678602526194797844",
+    "snippet": "Phở Cần Thơ: Phở Việt Nam ngon khó cưỡng Lead Phở Cần Thơ được mô tả là “ngonnnn lắm” — một lời khuyên mạnh mẽ nên thử. Bát phở ở Cần Thơ ...",
+    "position": 3
+   },
+   {
+    "title": "Phở Việt Nam by Võ Quốc: Menu mới tiện lợi",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7630761633479986449",
+    "snippet": "Khám phá giao diện menu mới của Phở Việt Nam by Võ Quốc, tiết kiệm. @phovietnambyvoquoc.",
+    "position": 4
+   },
+   {
+    "title": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2",
+    "link": "https://www.tiktok.com/@tuantudo86/video/7693090789445930260",
+    "snippet": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2 | Menu quá hay & đáng học hỏi #tuantudo #quannhautudo #phobotudo #laucuadongtudo #nuongtudo #vtmgr # ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Việt Nam: Hướng dẫn và gợi ý món phở ngon",
+    "link": "https://www.tiktok.com/@saigonspringroll/video/7681533386514582797",
+    "snippet": "Kết bài Phở Việt Nam có nhiều biến thể phù hợp mọi khẩu vị: từ phở bò truyền thống đến phở cuốn và phở bò wagyu cao cấp. Khi tìm quán, chú ý ...",
+    "position": 6
+   },
+   {
+    "title": "Cách làm giấm tỏi chấm phở như Phở Việt Nam by Võ Quốc",
+    "link": "https://www.tiktok.com/@voquoc_chef/video/7693135818281520402",
+    "snippet": "Nhiều thực khách đến Phở Việt Nam by Võ Quốc ăn phở rất mê giấm tỏi ở quán, và công thức này được giới thiệu để làm giấm tỏi vừa dễ vừa ngon.",
+    "position": 7
+   },
+   {
+    "title": "Phở Việt Nam (@phovietnam.homemade)",
+    "link": "https://www.tiktok.com/@phovietnam.homemade",
+    "snippet": "66 Trần Quốc Toản, q3 14 Phạm Hồng Thái, Q1 S36-1 Bùi Bằng Đoàn, Hưng Vượng 2 q7 · #CapCut PHỞ VIỆT NAM PHỤC VỤ XUYÊN TẾT tại 66 Trần Quốc Toản và 14 · PHỞ VIỆT ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

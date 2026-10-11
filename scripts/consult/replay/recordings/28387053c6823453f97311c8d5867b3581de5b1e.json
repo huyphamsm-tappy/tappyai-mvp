@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Anio Boutique Hotel Hoian",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:36.107Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anio Boutique Hotel Hoian",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Anio Boutique Hotel Hoi An – Thông tin đầy đủ",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/7027885/-1/fe86b32005fd0f8efd25baacb2c6deff.jpg?va=1&ca=9&ce=1&s=414x232&ar=16x9",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKl-0jrMFVgmgBj-1AH3RoeAERerwLOPdvIoKpg7_DIw&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/anio-boutique-hotel-hoi-an/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F7027885%2F-1%2Ffe86b32005fd0f8efd25baacb2c6deff.jpg%3Fva%3D1%26ca%3D9%26ce%3D1%26s%3D414x232%26ar%3D16x9&tbnid=2iwutrU0KLhoFM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fanio-boutique-hotel-hoi-an%2Fhotel%2Fhoi-an-vn.html&docid=MYtixCd3vDLJCM&w=414&h=232",
+    "position": 1
+   },
+   {
+    "title": "Anio Boutique Hotel Hoian, Hội An (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/225829372.jpg?k=a56a6dd62b26dff57c2cbe920cc965407684b3c6c0aeccec53b8d36d55fcbad2&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxZgxJSPo3gfGJWpObgDaCAEe5uhSOPVGKgIjBqrjEoA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/anio-boutique-hoian.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F225829372.jpg%3Fk%3Da56a6dd62b26dff57c2cbe920cc965407684b3c6c0aeccec53b8d36d55fcbad2%26o%3D&tbnid=3_gAibkGUHk3DM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fanio-boutique-hoian.vi.html&docid=GAvmnL2G1WqXeM&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "ANIO BOUTIQUE HOTEL HOI AN (Hội An) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/19/49/a2/89/anio-boutique-hotel-hoi.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvxs8nhxl0SHrWm9lyYqg3Vp8qufWkC5-Yvwa0wZI1hQ&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298082-d17465052-Reviews-Anio_Boutique_Hotel_Hoi_An-Hoi_An_Quang_Nam_Province.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F19%2F49%2Fa2%2F89%2Fanio-boutique-hotel-hoi.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=K70Rsl9plqHyxM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298082-d17465052-Reviews-Anio_Boutique_Hotel_Hoi_An-Hoi_An_Quang_Nam_Province.html&docid=WF_s9-QyCk9b1M&w=900&h=500",
+    "position": 3
+   },
+   {
+    "title": "Anio Boutique Hotel Hoi An - Luxury Hotel in Hoi An, Vietnam",
+    "imageUrl": "https://anioboutiquehotelhoian.com/wp-content/uploads/2019/11/Rooftop-2-Bedroom-Suite-thumbnail.jpg",
+    "imageWidth": 511,
+    "imageHeight": 300,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUq9L2BRGE5vMK8Hb3Y7oVLG233XUksySZegltm5uySg&s=10",
+    "thumbnailWidth": 511,
+    "thumbnailHeight": 299,
+    "source": "anioboutiquehotelhoian.com",
+    "domain": "anioboutiquehotelhoian.com",
+    "link": "https://anioboutiquehotelhoian.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fanioboutiquehotelhoian.com%2Fwp-content%2Fuploads%2F2019%2F11%2FRooftop-2-Bedroom-Suite-thumbnail.jpg&tbnid=XhODSaThKo5SNM&imgrefurl=https%3A%2F%2Fanioboutiquehotelhoian.com%2F&docid=ZOWFsLgeDwlXQM&w=511&h=300",
+    "position": 4
+   },
+   {
+    "title": "Anio Boutique Hotel Hoi An, Hoi An | 2026 Updated Prices, Deals",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/7027885/0/73969fd6d4218d1987f4e3f1c1da9189.jpeg?va=1&s=414x232",
+    "imageWidth": 309,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGGhzUWT-OXgYJGPyZGucEeFTJwR4mZdQjwgvkDZtV6Q&s",
+    "thumbnailWidth": 259,
+    "thumbnailHeight": 194,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/anio-boutique-hotel-hoi-an/hotel/hoi-an-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F7027885%2F0%2F73969fd6d4218d1987f4e3f1c1da9189.jpeg%3Fva%3D1%26s%3D414x232&tbnid=kK4EsFOaOh_8mM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fanio-boutique-hotel-hoi-an%2Fhotel%2Fhoi-an-vn.html&docid=DX3a5v0V0Wb66M&w=309&h=232",
+    "position": 5
+   },
+   {
+    "title": "Anio Boutique Hotel Hoian, Hội An (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/225830449.jpg?k=d57b5c6dd2ccbf3f308dd82a44f362f9ecb358fa48a88261b1f99d238146f972&o=",
+    "imageWidth": 1024,
+    "imageHeight": 695,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWcw6Y_2_OziJCxO8j0vjlF4bI7o-XA2dMrbdt6mAnrQ&s=10",
+    "thumbnailWidth": 672,
+    "thumbnailHeight": 456,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/anio-boutique-hoian.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F225830449.jpg%3Fk%3Dd57b5c6dd2ccbf3f308dd82a44f362f9ecb358fa48a88261b1f99d238146f972%26o%3D&tbnid=CEhSWLOsNjfeiM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fanio-boutique-hoian.vi.html&docid=GAvmnL2G1WqXeM&w=1024&h=695",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Anio Boutique Hotel Hội An - Ưu đãi khi đặt online",
+    "imageUrl": "https://hellotrip.vn/wp-content/uploads/2021/09/khach-san-anio-boutique-hotel-hoi-an-94553-1024x683.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCOYz3HqVKGIX6OA8h71-vshtzONpLufatycIy3C0uJQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Hello Trip",
+    "domain": "hellotrip.vn",
+    "link": "https://hellotrip.vn/khach-san/khach-san-anio-boutique-hotel-hoi-an/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fhellotrip.vn%2Fwp-content%2Fuploads%2F2021%2F09%2Fkhach-san-anio-boutique-hotel-hoi-an-94553-1024x683.jpg&tbnid=4PYTURNANG_ViM&imgrefurl=https%3A%2F%2Fhellotrip.vn%2Fkhach-san%2Fkhach-san-anio-boutique-hotel-hoi-an%2F&docid=gHK21snY1gwocM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Anio Boutique Hội An giá tốt 2026 - Eholiday.vn",
+    "imageUrl": "https://eholiday.vn/wp-content/uploads/2022/07/Anio-Boutique-Hotel-Hoi-An-be-boi.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLAGw6C-N9E5ekJYufoYNbByr-cdw7Dm9UkK2uflU4-w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Eholiday",
+    "domain": "eholiday.vn",
+    "link": "https://eholiday.vn/khach-san-anio-boutique-hoi-an/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Feholiday.vn%2Fwp-content%2Fuploads%2F2022%2F07%2FAnio-Boutique-Hotel-Hoi-An-be-boi.jpg&tbnid=v9LYqBgB6N-WpM&imgrefurl=https%3A%2F%2Feholiday.vn%2Fkhach-san-anio-boutique-hoi-an%2F&docid=MH9oAEv8YsJwQM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

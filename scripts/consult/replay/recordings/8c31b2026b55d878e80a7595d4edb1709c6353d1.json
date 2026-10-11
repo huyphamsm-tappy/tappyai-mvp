@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MSI Katana 15 B13VFK-676VN site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:53.464Z",
+ "body": {
+  "searchParameters": {
+   "q": "MSI Katana 15 B13VFK-676VN site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI Gaming Katana 15 B13VFK-676VN i7 13620H/ ...",
+    "link": "https://www.lazada.vn/products/laptop-msi-gaming-katana-15-b13vfk-676vn-i7-13620h16gb1tbgeforce-rtx-4060-8gb156fhdwin11-balo-i2277338755.html?srsltid=AU7gw4WVe4TbDyECBSdcfJs1rLKTJI9EpNzsnFBah1hLYdye5Euz0Mji",
+    "snippet": "MSI Gaming Katana 15 B13VFK-676VN là chiếc laptop chơi game khởi đầu cho thế hệ mới 2023 với CPU Intel Core i7 13620H và card đồ họa RTX 4060.",
+    "position": 1
+   },
+   {
+    "title": "MSI Laptop Gaming Katana 15 B13VFK-676VN|i7-13620H",
+    "link": "https://www.lazada.vn/products/msi-laptop-gaming-katana-15-b13vfk-676vni7-13620hrtx-4060ddr5-16gb1tb-ssd156-fhd144hz-i2223661090.html?srsltid=AU7gw4Wqwxnnc-SsvqXY7gVwGRFfYNGlyIGEr3NXEBLNDrKbURe3AOgJ",
+    "snippet": "LazMall MSI Laptop Gaming Katana 15 B13VFK-676VN|i7-13620H|RTX 4060|DDR5 16GB|1TB SSD|15.6\" FHD,144Hz ; Trả góp. Trả góp trong 6 tháng, chỉ với 6.165.000 ₫ mỗi ...",
+    "position": 2
+   },
+   {
+    "title": "LAPTOP MSI GAMING KATANA 15 (B13VFK-676VN) ...",
+    "link": "https://www.lazada.vn/products/laptop-msi-gaming-katana-15-b13vfk676vn-i7-13620h16gb1tb-ssdrtx4060-8gb156fhd-144hzwin11en-i2374210366.html?srsltid=AU7gw4WsLO_LDVsLWX0BhAYyWlg63VI_Ev8VaCeRTDeCWxOb3h1Egcu-",
+    "snippet": "LAPTOP MSI GAMING KATANA 15 (B13VFK-676VN) (I7 13620H/16GB/.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

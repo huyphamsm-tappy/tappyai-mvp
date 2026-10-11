@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Samsung Galaxy S24 8GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:25.173Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 8GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Samsung Galaxy S24 512GB - Trợ giá thu cũ, giảm giá SỐC",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/1867870036.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb6Myw9Qj2JXdBBoNZKcc-Xsdz0FIJ5TH-2GM9CWfqYw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/samsung-galaxy-s24-5g-8gb-512gb-pid326818.html?srsltid=AU7gw4UGHfW0bjJoNfLjXLPVmLjyCCJTCLZ4GC_UZGoS78MsvY8UXg6J",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F1867870036.jpeg&tbnid=SUOMIm3PKxqCtM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fsamsung-galaxy-s24-5g-8gb-512gb-pid326818.html%3Fsrsltid%3DAU7gw4UGHfW0bjJoNfLjXLPVmLjyCCJTCLZ4GC_UZGoS78MsvY8UXg6J&docid=cdFnqIiqX9bABM&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Đặt trước Galaxy S24 (8/512GB) chính hãng, ưu đãi lớn 5 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s24_22__1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtFQlLcNZS2TvyZPtjBOHLfpcj-1C0F-NItkStXnNj4A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung-galaxy-s24_22__1.png&tbnid=72drcdbz12SEgM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-512gb.html&docid=EzCZEsg0QKEDtM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "samsung galaxy S24 512GB giảm đến 3 triệu. mua trả chậm 0% lãi suất",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/307171/samsung-galaxy-s24-violet-thumbnew-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfRq_jQeyMnY7_aMhOdYuqPUJjKArQyDBmv2ddcA3Ylg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd/samsung-galaxy-s24-5g",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F307171%2Fsamsung-galaxy-s24-violet-thumbnew-600x600.jpg&tbnid=nwbMpyo3p3Hf5M&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd%2Fsamsung-galaxy-s24-5g&docid=Z1H5EDD-wUNu_M&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 8GB 512GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung_galaxy_s24_256gb_-_3_1_1_1.png",
+    "imageWidth": 678,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPmaOhbNJGtlN1BoecirrQf7Z2nvkIm0qQ77lwJjgZ5A&s=10",
+    "thumbnailWidth": 614,
+    "thumbnailHeight": 325,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-512gb-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung_galaxy_s24_256gb_-_3_1_1_1.png&tbnid=oAxfyYzDdmkEbM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-512gb-cu-dep.html&docid=MPcITiEolSaNtM&w=678&h=358",
+    "position": 4
+   },
+   {
+    "title": "Đặt trước Galaxy S24 (8/512GB) chính hãng, ưu đãi lớn 5 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/s/a/samsung-galaxy-s24_20_.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKqoqkkGaSXsOUF0JLe3BWF7cQpLEf7azSUZYXn6p6XQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fs%2Fa%2Fsamsung-galaxy-s24_20_.png&tbnid=OEbbxvHITSJeaM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fsamsung-galaxy-s24-512gb.html&docid=EzCZEsg0QKEDtM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "samsung galaxy S24 512GB giảm đến 3 triệu. mua trả chậm 0% lãi suất",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/307171/Slider/samsung-galaxy-s24-5g-thumb-yotube-1020x570.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWlBWC3z5h1WuOUihCu12uYQVLbQwzE1YUXJiu6h5bxQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd/samsung-galaxy-s24-5g",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F307171%2FSlider%2Fsamsung-galaxy-s24-5g-thumb-yotube-1020x570.jpg&tbnid=ZlR32aW3snMHSM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd%2Fsamsung-galaxy-s24-5g&docid=Z1H5EDD-wUNu_M&w=1020&h=570",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S25 FE 5G 512GB chính hãng, trả chậm 0% lãi suất",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/342564/samsung-galaxy-s25-fe-black-1-638938986634142467.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0QYl-7H5KBqG0tk5nY1p0Tr4WVmRwi4cRX4y5YcoIPQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd/samsung-galaxy-s25-fe-5g-8gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F42%2F342564%2Fsamsung-galaxy-s25-fe-black-1-638938986634142467.jpg&tbnid=HntlVqUXDfDSyM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd%2Fsamsung-galaxy-s25-fe-5g-8gb-512gb&docid=LO4DjbA01pFIxM&w=1020&h=680",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 5G (8GB - 512GB) Chính Hãng Chip Exynos 2400",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/59/samsung-galaxy-s24-viettablet_s9fc-xm.jpg",
+    "imageWidth": 560,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNYUnV-4Pm8IXEA9HWSS6RdpBIk5Del2G4_nR8QF7V_Q&s",
+    "thumbnailWidth": 217,
+    "thumbnailHeight": 232,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/samsung-galaxy-s24-5g-8gb-512gb?srsltid=AU7gw4Xqf0S2iEP420WiM6viabJKnBx2KjigSjudpPhi3BGoxLLD4Bw7",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F59%2Fsamsung-galaxy-s24-viettablet_s9fc-xm.jpg&tbnid=ECW7LL5PW4JPxM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fsamsung-galaxy-s24-5g-8gb-512gb%3Fsrsltid%3DAU7gw4Xqf0S2iEP420WiM6viabJKnBx2KjigSjudpPhi3BGoxLLD4Bw7&docid=sAA1nESycjqyFM&w=560&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

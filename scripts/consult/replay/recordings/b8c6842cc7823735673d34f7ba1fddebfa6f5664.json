@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:26:55.591Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth True Wireless Huawei Freebuds SE 4 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "huawei freebuds se 4 anc earbuds l up 50db maximum full- ...",
+    "link": "https://shop.tiktok.com/vn/k/huawei-freebuds-se-4-anc-earbuds-l-up-50db-maximum-full-range-depth-l-50h-long-battery-life-l-ip54",
+    "snippet": "Kết quả cho \"huawei freebuds se 4 anc earbuds l up 50db maximum full-range depth l 50h long battery life l ip54\" ; 4.6. 2824 sold · 678.140. ₫990.000 ; 4.8. 287 ...",
+    "position": 1
+   },
+   {
+    "title": "huawei freebuds se4",
+    "link": "https://shop.tiktok.com/vn/k/huawei-freebuds-se4",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên Đến 50 Giờ | Chống Ồn Chủ Động Đa Chế Độ ANC | Thiết Kế Nhỏ Gọn.",
+    "position": 2
+   },
+   {
+    "title": "Vỏ Tai Nghe Bluetooth HUAWEI FreeBuds SE 2",
+    "link": "https://shop.tiktok.com/vn/k/vo-tai-nghe-bluetooth-huawei-freebuds-se-2",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên Đến 50 Giờ | Chống Ồn Chủ Động Đa Chế Độ ANC | Thiết Kế Nhỏ Gọn.",
+    "position": 3
+   },
+   {
+    "title": "huawei freebuds - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/huawei-freebuds",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên ...",
+    "position": 4
+   },
+   {
+    "title": "huawei freebuds se2",
+    "link": "https://shop.tiktok.com/vn/k/huawei-freebuds-se2",
+    "snippet": "4. 10 sold. ₫294.000. ₫400.000. Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc ...",
+    "position": 5
+   },
+   {
+    "title": "HUAWEI FreeBuds SE 2 isle blue",
+    "link": "https://shop.tiktok.com/vn/k/huawei-freebuds-se-2-isle-blue",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên Đến 50 Giờ | Chống Ồn Chủ Động Đa Chế Độ ANC | Thiết Kế Nhỏ Gọn.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe freebuds se 3",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-freebuds-se-3",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên Đến 50 Giờ | Chống Ồn Chủ Động Đa Chế Độ ANC | Thiết Kế Nhỏ Gọn.",
+    "position": 7
+   },
+   {
+    "title": "HuaweiFreeBudsSE3 - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/huaweifreebudsse3",
+    "snippet": "Tai Nghe | Bluetooth HUAWEI FreeBuds SE 4 ANC | Sạc Nhanh & Thời Lượng Sử Dụng Lên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

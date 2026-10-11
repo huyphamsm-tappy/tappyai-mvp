@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư lệ phí xuất nhập cảnh",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:16:14.895Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 thông tư lệ phí xuất nhập cảnh",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 1
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/vanphongchinhphu/Pages/vbpq-toanvan.aspx?dvid=329&ItemID=17000&Keyword=",
+    "snippet": "Thông tư số 04/2026/TT-NHNN Hướng dẫn một số nội dung về hoạt động bảo hiểm tiền gửi · Thông tư 24/2026/TT-BCT Quy định Quy tắc xuất xứ hàng hóa trong Hiệp ...",
+    "position": 2
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/22-qc-12449-xe-lexus-01266-yen-01a0aa2493b77b4aa4a79a134238e53a.pdf",
+    "snippet": "Xe đã qua sử dụng, số ki lô mét xe đã chạy thể hiện trên đồng hồ của xe: 255.244 km, tình trạng xe: không hoạt động.",
+    "date": "21 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-kem-theo-qd-630-btp-ve-cong-bo-tthc-20260427110904-25e8b9eb-019dcd2062537de0be16872851ba69d6.pdf",
+    "snippet": "PHẦN II. NỘI DUNG CỤ THỂ CỦA TỪNG THỦ TỤC HÀNH. CHÍNH ĐƯỢC SỬA ĐỔI, BỔ SUNG TRONG LĨNH VỰC THI HÀNH ÁN. DÂN SỰ THUỘC PHẠM VI CHỨC NĂNG QUẢN LÝ NHÀ NƯỚC CỦA.",
+    "position": 4
+   },
+   {
+    "title": "Bộ Tư pháp tái cấu trúc thủ tục nhập quốc tịch Việt Nam dựa ...",
+    "link": "https://dx.moj.gov.vn/portal/tin-tuc/chi-tiet/bo-tu-phap-tai-cau-truc-thu-tuc-nhap-quoc-tich-viet-nam-dua-tren-du-lieu-so-tmgtdvc27e.html",
+    "snippet": "Mức lệ phí nhập quốc tịch được quy định là 3.000.000 đồng/hồ sơ, áp dụng chính sách miễn lệ phí đối với người có công lao đặc biệt hoặc người ...",
+    "date": "2 ngày trước",
+    "position": 5
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/1-qc-13438-01a0d2ca2587787c88cf4815bc634c0a.pdf",
+    "snippet": "đấu giá phải xuất trình CCCD (bản chính) hoặc Hộ chiếu để kiểm tra. Trường hợp đăng ký thay phải có giấy ủy quyền hợp lệ. Điều 7. Thời gian ...",
+    "date": "22 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Quy định mới về áp dụng biện pháp bảo đảm thi hành án của ...",
+    "link": "https://thads.moj.gov.vn/portal/tin-tuc/chi-tiet/quy-inh-moi-ve-ap-dung-bien-phap-bao-am-thi-hanh-an-cua-luat-thi-hanh-an-dan-su-2025-va-nghi-inh-so-1522026n-cp-th4k914b0d.html",
+    "snippet": "Thứ sáu, Luật THADS 2025 và Nghị định số 152/2026/NĐ-CP đã bổ sung các trường hợp không thực hiện phong tỏa đối với các tài khoản, bao gồm: Quỹ ...",
+    "date": "24 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "THÔNG BÁO Về Thông báo bán đấu giá tài sản ( Lần 03 ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/kv4-tb2669-01a0fbd6f02c7ade905e70d55da61a10.pdf",
+    "snippet": "Người trúng đấu giá phải nộp các khoản thuế, phí, lệ phí theo quy định. ... ✓ Căn cước công dân/Căn cước/hộ chiếu; ngày cấp; nơi cấp. ✓ Tải lên ...",
+    "date": "6 ngày trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

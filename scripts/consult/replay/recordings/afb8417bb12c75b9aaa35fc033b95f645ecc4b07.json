@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 Pro 256GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:09:00.393Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 Pro 256GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 256GB Chính hãng VN/A ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-256gb-chinh-hang-vna-viettel-store-i2416456721.html?srsltid=AU7gw4UZ4sbGNVyvfPS0SHX2Nr_bd7uO8-RB4QLC-DJNuRCvtIjtupuJ",
+    "snippet": "Apple iPhone 15 256GB Chính hãng với CPU A16 Bionic mạnh mẽ, hệ điều hành iOS 17 mới nhất. Trang bị camera Dual chụp ảnh chuyên nghiệp, màn hình OLED Full ...",
+    "position": 1
+   },
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 Plus 256GB Chính hãng ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-plus-256gb-chinh-hang-vna-viettel-store-i2416366952.html?srsltid=AU7gw4WoXDiBmA7EUE5DMXGYYdA8AkM-_kp5a8VzeimZV3avvWumpnut",
+    "snippet": "LazMall [Trả góp 0%] Apple iPhone 15 Plus 256GB Chính hãng VN/A [Viettel Store] ; Trả góp. Trả góp trong 6 tháng, chỉ với 4.915.000 ₫ mỗi tháng. ; Giao hàng.",
+    "position": 2
+   },
+   {
+    "title": "Apple iPhone 17 256GB Chính hãng",
+    "link": "https://www.lazada.vn/products/apple-iphone-17-256gb-chinh-hang-i3210930411.html?srsltid=AU7gw4VzHLEX9cOB7YDnAfzBLRsD-OmBd_GEZtJMehtJbzt8-I7W8IR2",
+    "snippet": "[Trả góp 0%] Apple iPhone 15 128GB Chính hãng VN/A [. 18.690.000 ₫ · Apple iPhone 17 Pro Max 256GB Chính hãng. 38.490.000 ₫ · Apple iPhone 17 Pro 512GB Chính ...",
+    "position": 3
+   },
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 128GB Chính hãng ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-128gb-chinh-hang-vna-viettel-store-i2416589184.html?srsltid=AU7gw4Wp9vpXWs5vei_2Rf-UKIcPwqG0GWO3t00RyxbdE_BrPb6EHfHJ",
+    "snippet": "Apple iPhone 15 128GB chính hãng, màn hình OLED 6.1 inch Full HD 4,7inch, chống nước, tích hợp Face ID. Chip Apple A16 Bionic mạnh mẽ, hỗ trợ 2 camera chất ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Plus 128GB Chính Hãng VN/A",
+    "link": "https://www.lazada.vn/products/iphone-15-plus-128gb-chinh-hang-vna-i2418353002.html?srsltid=AU7gw4WJSKvjPWm9Iv3TTx4F_8T5csNZ3EFM4Ap0sdoX_KFPSBWDv-AG",
+    "snippet": "Mô tả sản phẩm. iPhone 15 Plus 128GB Chính Hãng VN/A. Bảo hành: 12 tháng. Sản phẩm gồm: máy + dây sạc USB-C. iPhone 15 Plus chính thức ra mắt tại sự kiện ...",
+    "position": 5
+   },
+   {
+    "title": "Apple iPhone 17 Pro Max 256GB Chính hãng",
+    "link": "https://www.lazada.vn/products/apple-iphone-17-pro-max-256gb-chinh-hang-i3210774617.html?srsltid=AU7gw4XIIK3HnYwjxB7dTxbgJzddNzAcWHxREYEkBLhG6tloDqHQopBH",
+    "snippet": "iPhone 17 Pro Max được trang bị màn hình Super Retina XDR lớn tới 6,9 inch, mang lại trải nghiệm hiển thị sống động và chân thực. Màn hình này hỗ trợ độ phân ...",
+    "position": 6
+   },
+   {
+    "title": "iPhone 17 Pro 256GB Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i3189356186.html?srsltid=AU7gw4WaS8llUX7XqF0NXwD0iWGH5liDlVWfHYAV0reLIXi0uc6RtMWd",
+    "snippet": "iPhone 17 Pro 256GB Chính Hãng VN/A - smartphone cao cấp với màn hình Touchscreen, hệ điều hành iOS ấn tượng. Đa dạng màu sắc như Deep Blue, Cosmic Orange, ...",
+    "position": 7
+   },
+   {
+    "title": "Mainboard/Bo Mạch Chủ iPhone 15 Pro Max/Plus Đã Mở ...",
+    "link": "https://www.lazada.vn/products/mainboardbo-mach-chu-iphone-15-pro-maxplus-da-mo-khoa-sim-thay-the-da-duoc-kiem-tra-day-du-khong-ho-tro-face-id-tuong-thich-voi-iphone-cua-apple-i13407423049.html?srsltid=AU7gw4Uiw5bZw2if7z880sA3xtuYpBrrQF8qkd_pq3OVI5eYWXkHpqXJ",
+    "snippet": "Với bảng logic iCloud sạch sẽ, bo mạch chủ này hỗ trợ cập nhật iOS, giữ cho thiết bị của bạn luôn cập nhật các tính năng và bản vá bảo mật mới nhất.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

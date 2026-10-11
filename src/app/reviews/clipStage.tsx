@@ -14,6 +14,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { isShareOnlyName, ago, type Review } from './feedShared'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent, type AskTappyPlaceSurface } from '@/lib/explore/clipVenueEvidence'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 // ── THE shared clip stage (B3, 2026-10-02) ──────────────────────────────────
 //
@@ -563,6 +564,12 @@ function StageCard({
               )}
               {!isMe && r.is_following && (
                 <span className="v3-xp-follow" data-on="true" data-xp-following>{t('reviews.following')}</span>
+              )}
+              {/* WP-06 — report this clip / block its creator (signed-in; draws nothing while the flags are off). A block removes the clip from the stage. */}
+              {!isMe && me && (
+                <span className="relative z-10" onClick={e => e.stopPropagation()}>
+                  <SafetyMenu tone="onMedia" report={{ target: 'review', id: r.id }} user={{ id: r.user_id, name: r.profiles?.full_name }} onBlockedChange={b => { if (b) onRemoved() }} />
+                </span>
               )}
               {isMe && (
                 <span className="relative">

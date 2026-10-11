@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pro3 Hổ Vằn 1563E site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:17:03.184Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pro3 Hổ Vằn 1563E site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "airpod hổ vằn",
+    "link": "https://shop.tiktok.com/vn/k/airpod-ho-van",
+    "snippet": "Tai Nghe Bluetooth Hổ Vằn 1563E P.ro3 | 40dB – Pin 8H – ENC Gọi Rõ – Tặng Sạc 5W + Ốp + Bút VS | BH 6 Tháng. 4.9. 497 sold. ₫850.000. Tai Nghe Bluetooth Hổ ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn Pro3 Chip 1563E,( Bản Cao Cấp ) Chống Ồn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735888940293654105",
+    "snippet": "Tai Nghe Hổ Vằn Pro3 1563E Bản Cao Cấp . Với chip 1563E, bạn sẽ tận hưởng âm thanh rõ ràng, sống động. Sản phẩm tích hợp công nghệ ANC, giúp giảm ồn hiệu ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn HV.PRO3 Chip 1563E, | Tặng Ốp + Cáp ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vo-op-tai-nghe-ap4-silicone-trong-co-moc-khoa-bao-ve-dep/1731214095114471024",
+    "snippet": "Bass căng: Mang lại âm thanh mạnh mẽ. Âm thanh không gian thực, cử chỉ đầu gật đầu nhận cuộc gọi/ lắc đầu từ chối.",
+    "rating": 4.7,
+    "ratingCount": 51,
+    "position": 3
+   },
+   {
+    "title": "airpods 3 hổ vằn 8h",
+    "link": "https://shop.tiktok.com/vn/k/airpods-3-ho-van-8h",
+    "snippet": "Tai Nghe Hổ Vằn PRO3 1563E, Bản Cao Cấp Golden Buds UF 2026, Ultra Bass, Có Popup, Chống ...",
+    "position": 4
+   },
+   {
+    "title": "Esr airpods pro 3",
+    "link": "https://shop.tiktok.com/vn/k/esr-airpods-pro-3",
+    "snippet": "Tai Nghe Hổ Vằn Pro3 1563E, Chống Ồn Chủ Động 40ĐB, Cảm Biến Hồng Ngoại, Cảm Ứng Lực ...",
+    "position": 5
+   },
+   {
+    "title": "airpods pro 2 hổ vằn",
+    "link": "https://shop.tiktok.com/vn/k/airpods-pro-2-ho-van",
+    "snippet": "Tai Nghe Hổ Vằn PRO3 1563E, Bản Cao Cấp Golden Buds UF 2026, Ultra Bass, Có Popup, Chống ...",
+    "position": 6
+   },
+   {
+    "title": "airpod pro3 助听器",
+    "link": "https://shop.tiktok.com/vn/k/zhu-ting-qi",
+    "snippet": "AirPodos Pro 3 Tai Nghe Gen 3 Bản Hổ Vằn 1562E Chuẩn Rep 1:1 - Âm Thanh Không Gian Thật, Mở Nắp Hiện Pop-up, Pin Siêu Trâu · AirPodos Pro 3 Tai Nghe Gen 3 Bản Hổ ...",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Hổ Vằn HV.PRO3 Chip 1563E, | Tặng Ốp + Cáp Nạp",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-ho-van-hv-pro2-mic-enc-pin-lau/1729715443775015536",
+    "snippet": "PRO3 mang đến giải pháp âm thanh hoàn hảo. Với chip 1563E, bạn sẽ tận hưởng âm thanh rõ ràng. Sản phẩm đi kèm ốp và cáp nạp, tiện lợi cho sử dụng. Bảo hành 6 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat? lệ phí cấp hộ chiếu Thông tư 25/2021/TT-BTC hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:15.536Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat? lệ phí cấp hộ chiếu Thông tư 25/2021/TT-BTC hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

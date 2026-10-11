@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 thông số chính thức màn hình chip camera pin USB-C",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:11:13.953Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 thông số chính thức màn hình chip camera pin USB-C",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "Màn Hình. Màn hình Super Retina XDR. Màn hình toàn phần OLED 6,1 inch (theo đường chéo). Độ phân giải 2556x1179 pixel với mật độ điểm ảnh 460 ppi.",
+    "position": 1
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Các tính năng Thông Suốt cũng giúp bạn trả lời cuộc gọi hoặc tin nhắn từ iPhone ngay trên máy Mac. Bạn thậm chí còn có thể sao chép hình ảnh, video hoặc văn bản ...",
+    "position": 2
+   },
+   {
+    "title": "Apple ra mắt iPhone 15 và iPhone 15 Plus",
+    "link": "https://www.apple.com/vn/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/",
+    "snippet": "iPhone 15 hỗ trợ đầu ra video HDR 4K ở tốc độ 60 fps bằng Bộ Tiếp Hợp Nhiều Cổng USB‑C Digital AV cho phép người dùng kết nối với màn hình HDMI, ...",
+    "date": "13 thg 9, 2023",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 thông số kỹ thuật chi tiết: Đánh giá máy sau 3 năm",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/iphone-15-thong-so-ky-thuat-chi-tiet-213017",
+    "snippet": "Kích thước. 147,6 x 71,6 x 7,8 mm. Trọng lượng ; Công nghệ. Super Retina XDR OLED. Kích thước ; Chip xử lý. Apple A16 Bionic. CPU ; Camera chính. 48 MP, f/1.6.",
+    "position": 4
+   },
+   {
+    "title": "Apple chính thức ra mắt iPhone 15 với cổng sạc USB-C",
+    "link": "https://nhandan.vn/apple-chinh-thuc-ra-mat-iphone-15-voi-cong-sac-usb-c-post772154.html",
+    "snippet": "Apple chính thức ra mắt iPhone 15 với cổng sạc USB-C · Cuộc cách mạng cổng sạc USB-C · Kính tiềm vọng, vỏ titan và chip A17.",
+    "date": "12 thg 9, 2023",
+    "position": 5
+   },
+   {
+    "title": "Cấu hình iPhone 15: Sử dụng chip gì, hiệu năng ra sao?",
+    "link": "https://cellphones.com.vn/sforum/cau-hinh-iphone-15",
+    "snippet": "Màn hình, OLED 6.1 inches, Super Retina, 60Hz, 2,000 nits ; Cấu hình, Apple A16 Bionic (4nm) ; RAM, 6GB ; Bộ nhớ trong, 128GB - 256GB - 512GB.",
+    "date": "28 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "Siêu phẩm iPhone 15 series lộ diện với camera 48MP xịn ...",
+    "link": "https://baodanang.vn/sieu-pham-iphone-15-series-lo-dien-voi-camera-48mp-xin-so-khung-titanium-va-cong-usb-c-moi-3293191.html",
+    "snippet": "Siêu phẩm iPhone 15 series lộ diện với camera 48MP xịn sò, khung Titanium và cổng USB-C mới ... Loạt sản phẩm mà Apple giới thiệu tại sự kiện mùa ...",
+    "date": "13 thg 9, 2023",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15: Thiết kế đẹp, màn hình nét, nhiều màu, sạc USB",
+    "link": "https://pisenvietnam.vn/tin-tuc/iphone-15-usbc-thiet-ke-dep-man-hinh-net-nhieu-mau-gia-mem-665.html",
+    "snippet": "Chip điều khiển màn hình OLED trên iPhone 15 Series được nhà Apple sản xuất trên tiến trình 28nm thay vì tiến trình 40nm như trên iPhone 14 Series tiền nhiệm.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

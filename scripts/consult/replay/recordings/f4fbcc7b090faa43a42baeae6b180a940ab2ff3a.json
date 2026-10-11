@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu online hồ sơ lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:17:34.619Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu online hồ sơ lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/",
+    "snippet": "Đối với những hộ chiếu cấp trước ngày 01/7/2025 thông tin về nơi sinh của công dân trong hộ chiếu sẽ thể hiện theo tên của tỉnh thành (cũ) trước khi thực ...",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "Hồ sơ bao gồm: - Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; - 02 ảnh cỡ 4cm x 6cm, phông nền trắng, mặt nhìn thẳng, đầu để trần, không đeo kính màu",
+    "position": 2
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/adf.task-flow?_id=task-flow-tkdt&_document=/WEB-INF/task-flow-tkdt.xml",
+    "snippet": "1. Họ và tên · 2. Giới tính · 3. Sinh ngày. Đủ ngày, tháng, năm sinh. Nơi sinh (theo giấy khai sinh). Chọn nơi sinh · 4. Số ĐDCN/CMND. Ngày cấp. Nơi cấp. Chọn nơi ...",
+    "position": 3
+   },
+   {
+    "title": "Vietnam evisa - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/trang-chu-ttdt",
+    "snippet": "Phí cấp thị thực điện tử được nộp qua cổng thanh toán điện tử do Cục Quản lý xuất nhập cảnh quy định. Phí cấp thị thực điện tử và phí thanh toán ...",
+    "date": "11 thg 11, 2024",
+    "position": 4
+   },
+   {
+    "title": "Tổ chức bảo lãnh người nước ngoài",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/en_US/web/guest/huong-dan-dvbl-xdnc",
+    "snippet": "Bước 1: Nhập thông tin công văn đề nghị xét duyệt, kiểm tra nhân sự người nước ngoài nhập cảnh (theo Mẫu NA2) và nhận mã hồ sơ điện tử. Bước 2: In công văn đề ...",
+    "position": 5
+   },
+   {
+    "title": "NNN khai đề nghị cấp TTDT - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/web/guest/khai-thi-thuc-dien-tu/cap-thi-thuc-dien-tu",
+    "snippet": "Bước 1: Nhập thông tin đề nghị cấp thị thực điện tử: Nạp ảnh trang nhân thân hộ chiếu và ảnh mặt chân dung. Bước 2: Nộp phí cấp thị thực điện tử. - 25 USD",
+    "position": 6
+   },
+   {
+    "title": "DV bảo lãnh - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/web/guest/dv-bao-lanh",
+    "snippet": "Bước 1: Sử dụng tài khoản được cấp để đăng nhập vào mục khai và gửi hồ sơ đề nghị cấp thị thực điện tử. Bước 2: Nhập thông tin của người nước ngoài đề nghị ...",
+    "position": 7
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "Hồ Chí Minh. - Địa chỉ: 333-335-337 đường Nguyễn Trãi, Q1, TP. Hồ Chí Minh. - Điện thoại: 02839202300. - Số điện thoại giải đáp thủ tục xuất nhập cảnh của công ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai Nghe Chụp Tai JBL Tune 680NC\" OR \"tai nghe Bluetooth chụp tai JBL Tune 530BT\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:53:31.791Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai Nghe Chụp Tai JBL Tune 680NC\" OR \"tai nghe Bluetooth chụp tai JBL Tune 530BT\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "jbl earbuds on tiktok shop",
+    "link": "https://shop.tiktok.com/vn/k/jbl-earbuds-on-tiktok-shop",
+    "snippet": "Tai nghe Bluetooth chụp tai JBL Tune 530BT - Chính hãng. 0 sold. ₫1.540.000. ₫1.990.000 ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

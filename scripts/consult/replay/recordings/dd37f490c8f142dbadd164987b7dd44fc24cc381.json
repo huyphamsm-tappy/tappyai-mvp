@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tinker Box\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:23:45.255Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tinker Box\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tinker Box (@tinkerboxofficial)",
+    "link": "https://www.tiktok.com/@tinkerboxofficial",
+    "snippet": "Tinker Box (@tinkerboxofficial) on TikTok | 352 Likes. \"Tinker isn't jewelry. It's therapy.” SHOP NOW✨️.Watch the latest video from Tinker Box ...",
+    "position": 1
+   },
+   {
+    "title": "Tinker Box Signs for Classroom — DIY Teacher Labels",
+    "link": "https://www.tiktok.com/@miss.bavers/video/7680589396915014934",
+    "snippet": "Practical ideas for Tinker Box signs - Label by activity: “Loose Parts,” “Construction,” “Art Materials,” “STEM Challenges.” - Include simple ...",
+    "position": 2
+   },
+   {
+    "title": "Tinker Adventure In The Box (@tinkerbox.d1)",
+    "link": "https://www.tiktok.com/@tinkerbox.d1",
+    "snippet": "Tinker Adventure In The Box (@tinkerbox.d1) on TikTok | 104 Likes. 74 Followers. Tinker Box | Tinker Workshop 10/2 Nguyễn Thị Minh Khai, Đa Kao, Quận 1.",
+    "position": 3
+   },
+   {
+    "title": "Snoopy Tinker Box: Ideal Storage Solution",
+    "link": "https://www.tiktok.com/@nighthavencreations/video/7601954099805916429",
+    "snippet": "Discover the Snoopy tinker box for storing small items, a perfect gift for any occasion. @nighthavencreations.",
+    "position": 4
+   },
+   {
+    "title": "Exciting Tinker Box Goodies for Kids",
+    "link": "https://www.tiktok.com/@trinketboxchulavista/video/7643151546607209742",
+    "snippet": "Today, we're unveiling some exciting treasures from our Tinker Box collection that are sure to delight both kids and collectors! As we open up this special ...",
+    "position": 5
+   },
+   {
+    "title": "Khu Vui Chơi Gỗ Cho Bé Cực Hấp Dẫn tại Tinker Box",
+    "link": "https://www.tiktok.com/@haichi121/video/7356563424060476690",
+    "snippet": "Khám phá Khu Vui Chơi Gỗ Độc Đáo “Tinker Box” – Thiên Đường Sáng Tạo Cho Bé! Mẹ Hana vừa giới thiệu một địa điểm vui chơi hoàn toàn bằng ...",
+    "position": 6
+   },
+   {
+    "title": "Tinker Box Bakersfield",
+    "link": "https://www.tiktok.com/discover/tinker-box-bakersfield",
+    "snippet": "1.4M posts. Discover videos related to Tinker Box Bakersfield on TikTok. See more videos about Fun Box Bakersfield, Tinker Box Game App Store, ...",
+    "position": 7
+   },
+   {
+    "title": "tinker box",
+    "link": "https://shop.tiktok.com/us/k/tinker-box",
+    "snippet": "If you're looking for an efficient way to organize your workspace or craft area, a tinker box is the perfect solution.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

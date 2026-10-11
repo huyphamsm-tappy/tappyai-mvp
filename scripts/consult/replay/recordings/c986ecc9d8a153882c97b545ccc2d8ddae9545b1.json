@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi Central\" OR \"NHÀ HÀNG NGON\" OR \"Cơm Niêu Chú Chen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:45.063Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi Central\" OR \"NHÀ HÀNG NGON\" OR \"Cơm Niêu Chú Chen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Niêu Chú Chen (@comnieuchuchen)",
+    "link": "https://www.tiktok.com/@comnieuchuchen",
+    "snippet": "Cơm Niêu Chú Chen (@comnieuchuchen) trên TikTok |288 Lượt thích.56 Follower.TRỌN VỊ TÌNH THÂN - NÂNG TẦM CƠM VIỆT.Xem video mới nhất từ Cơm Niêu Chú Chen ...",
+    "position": 1
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "### 1. Nhà hàng ngon, giá rẻ tại Tà Xùa Việc tìm được một nhà hàng vừa ngon miệng vừa có mức giá hợp lý không phải lúc nào cũng dễ dàng, đặc ...",
+    "position": 2
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 3
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng ngon ở Hà Khẩu",
+    "link": "https://www.tiktok.com/@huymenmen90/video/7673843159897476370",
+    "snippet": "25 Lượt thích,Video TikTok từ Huy Mèn Mén (@huymenmen90): \"Nhà hàng ngon ở Hà Khẩu\".原創音樂 - 五音璇玑.",
+    "position": 6
+   },
+   {
+    "title": "Bò Xào Tiêu Đen Chuẩn Vị Nhà Hàng - Ngon & Khỏe",
+    "link": "https://www.tiktok.com/@amthuctrunghoa888/video/7683549771700882709",
+    "snippet": "Bò Xào Tiêu Đen Chuẩn Vị Nhà Hàng - Ngon & Khỏe. Hôm nay chúng ta sẽ cùng vào bếp làm món bò xào tiêu đen, một món ăn được cả nhà yêu thích ...",
+    "position": 7
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

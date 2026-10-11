@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch } from './common'
+import { withRetrievedAt } from './retrievalClock'
 import { normalizeVN } from '@/lib/ai/intent'
 import { createClient } from '@/lib/supabase/server'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
@@ -23,7 +24,7 @@ import { serperMapsQuery } from './serperLocation'
 import { placesProvider } from './placesProvider'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
 
-export async function getNews(query: string, lang = 'vi') {
+async function getNewsImpl(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -971,7 +972,7 @@ async function searchPlacesUncached(
  * caching it under the Google key meant a single 403 poisoned that query for thirty minutes — so
  * the first request after quota recovered still got the fallback. Failures are never cached at all.
  */
-export async function searchPlaces(
+async function searchPlacesImpl(
   query: string, location?: string, type?: string, lang = 'vi',
   locationBias?: { lat: number; lng: number } | null,
   budget?: PlacesBudget,
@@ -1029,3 +1030,9 @@ export async function searchPlaces(
     return result
   })
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function searchPlaces(...args: Parameters<typeof searchPlacesImpl>): ReturnType<typeof searchPlacesImpl> { return withRetrievedAt(() => searchPlacesImpl(...args)) }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getNews(...args: Parameters<typeof getNewsImpl>): ReturnType<typeof getNewsImpl> { return withRetrievedAt(() => getNewsImpl(...args)) }

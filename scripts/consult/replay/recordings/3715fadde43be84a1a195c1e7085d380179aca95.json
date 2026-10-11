@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cao lầu Dì Hát 55 năm\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:19:46.070Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cao lầu Dì Hát 55 năm\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mì Quảng Cao Lầu Dì Hát 55 năm Hội An",
+    "link": "https://www.tiktok.com/@duyenhoian/video/7639991652991470855",
+    "snippet": "Quán: Mì Quảng Cao Lầu Dì Hát 55 năm (tên quán ghi rõ 55 năm) Địa chỉ: 4 Thái Phiên, Hội An Tóm tắt nhanh Ăn tại Mì Quảng Cao Lầu Dì Hát ...",
+    "position": 1
+   },
+   {
+    "title": "Cao lầu Bá Lễ - Hội An",
+    "link": "https://www.tiktok.com/@nguyenquangdungdirector/video/7531692283389873426",
+    "snippet": "Quán: Mì Quảng Cao Lầu Dì Hát 55 năm (tên quán ghi rõ 55 năm) Địa chỉ: 4 Thái Phiên, Hội An Tóm tắt nhanh Ăn tại Mì Quảng Cao Lầu Dì Hát thấy ...",
+    "position": 2
+   },
+   {
+    "title": "Như lời bài hát, tao vẫn muôn…. #xuhuongtiktok # ...",
+    "link": "https://www.tiktok.com/@nchp.892001/video/7665690249577630996",
+    "snippet": "Những điểm nổi bật - Tên quán: Mì Quảng Cao Lầu Dì Hát 55 năm, nhấn mạnh lịch sử 55 năm. - Vị trí: 4 Thái Phiên, thuận tiện để tìm khi tham quan Hội An. - Nước ...",
+    "position": 3
+   },
+   {
+    "title": "Cao Lầu Hội An và Đà Nẵng: Nơi nào ngon hơn?",
+    "link": "https://www.tiktok.com/@iedinhhang/video/7500637620062506241",
+    "snippet": "Cao lầu Dì Hát 55 năm: Ngã 3 Thái Phiên - Nguyễn Huệ, Hội An. 2025-5-5Trả lời. Đã thích bởi nhà sáng tạo. 153. Xem thêm câu trả lời khác (8).",
+    "position": 4
+   },
+   {
+    "title": "Có 500đ nhạc vô món quê sang chảnh châu âu liền. Đố ai biết ...",
+    "link": "https://www.tiktok.com/@liimiinh/video/7662641230446103826",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 5
+   },
+   {
+    "title": "Ngày 55: Ăn chè tại chợ Me quán \"Mai Phương Hiền\"... ...",
+    "link": "https://www.tiktok.com/@huyenhonho1989/video/7672315557135305992",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 6
+   },
+   {
+    "title": "almaayala - sonido original",
+    "link": "https://www.tiktok.com/music/sonido-original-7446227907116485407",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 7
+   },
+   {
+    "title": "WELL OF SALVATION MINISTRIES - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7649078702630521608",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn vé tham quan Hội An mức giá 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:04:07.621Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn vé tham quan Hội An mức giá 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội An lọt Top 51 điểm đến đẹp nhất thế giới năm 2026",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-lot-top-51-diem-den-dep-nhat-the-gioi-nam-2026-3035.hwh",
+    "snippet": "Trong danh sách Top 51 điểm đến đẹp nhất thế giới năm 2026 do Time Out công bố, Hội An tiếp tục được xướng tên như một trong những điểm đến ...",
+    "date": "19 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Thành phố cổ kính của Việt Nam đứng đầu bảng xếp hạng du ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/thanh-pho-co-kinh-cua-viet-nam-dung-dau-bang-xep-hang-du-lich-the-gioi-3041.hwh",
+    "snippet": "... Hội An (18/03/2026); Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026); Lãnh đạo thành phố ...",
+    "date": "16 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "“Phủ sóng” vinh danh thương hiệu du lịch - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/phu-song-vinh-danh-thuong-hieu-du-lich-3037.hwh",
+    "snippet": "Chuỗi danh hiệu quốc tế trong những tháng đầu năm 2026 phản ánh một bước chuyển rõ rệt trong việc định vị thương hiệu du lịch Đà Nẵng - Hội An.",
+    "date": "25 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hội An khẳng định vị thế số 1 trong làn sóng “du lịch chậm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-khang-dinh-vi-the-so-1-trong-lan-song-du-lich-cham-chau-a-3043.hwh",
+    "snippet": "Danh sách của Agoda cho thấy một bức tranh thú vị khi đặt Hội An cạnh các điểm đến như: Ubud, Kyoto, Galle, Luang Prabang, Chiang Mai và Kerala.",
+    "date": "23 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tuần lễ Sáng tạo Hội An 2026 khép lại",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Le-hoi-su-kien/tuan-le-sang-tao-hoi-an-2026-khep-lai-3060.hwh",
+    "snippet": "Một số hoạt động tham quan, triển lãm và trải nghiệm tiếp tục phục vụ công chúng đến hết ngày 02/9. Với chủ đề “Hành trình chạm Di sản, chạm ...",
+    "date": "8 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "sản phẩm - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/tag/s%E1%BA%A3n-ph%E1%BA%A9m",
+    "snippet": "Sáng 21/3, tại bãi Cồn Bắp, tổ dân phố Thanh Nam, phường Hội An diễn ra “Ngày hội bắp nếp Cẩm Nam - Hội An 2026”. Sự kiện không chỉ thúc đẩy công tác bảo tồn, ...",
+    "position": 6
+   },
+   {
+    "title": "Du lịch biển đảo - Thế mạnh hướng tới Du lịch Xanh ở Quảng ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/du-lich-bien-dao-the-manh-huong-toi-du-lich-xanh-o-quang-nam-2604.hwh",
+    "snippet": "Hai đại diện của Việt Nam nằm trong danh sách 10 bãi biển đẹp nhất châu Á năm 2024 của Tripadvisor là bãi biển An Bàng (Hội An, Quảng Nam), xếp ...",
+    "date": "27 thg 2, 2024",
+    "position": 7
+   },
+   {
+    "title": "Tìm kiếm - tỷ lệ - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/seek/q=t%E1%BB%B7+l%E1%BB%87&m=news",
+    "snippet": "Tìm và lấy những gì bạn muốn! · Thành phố cổ kính của Việt Nam đứng đầu bảng xếp hạng du lịch thế giới · Hội An vào top 7 điểm đến xuất sắc nhất châu Á 2026 trên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

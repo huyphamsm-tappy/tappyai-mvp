@@ -1,0 +1,623 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "lớp tiếng Anh giao tiếp người lớn 30 phút mỗi ngày linh hoạt Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:03:10.485Z",
+ "body": {
+  "searchParameters": {
+   "q": "lớp tiếng Anh giao tiếp người lớn 30 phút mỗi ngày linh hoạt Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Tiếng Anh Giao Tiếp | Anh Ngữ Ms Hoa - Đường 3/2, Quận 10, Tp HCM",
+    "address": "350 Đường Ba Tháng Hai, Phường 12, Quận 10, HCM, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771087,
+    "longitude": 106.673178,
+    "rating": 4.8,
+    "ratingCount": 66,
+    "type": "Trung tâm giáo dục",
+    "types": [
+     "Trung tâm giáo dục"
+    ],
+    "website": "http://mshoagiaotiep.com/",
+    "phoneNumber": "+84 28 6657 5760",
+    "openingHours": {
+     "Thứ Năm": "08:00–20:30",
+     "Thứ Sáu": "08:00–20:30",
+     "Thứ Bảy": "08:00–20:30",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–20:30",
+     "Thứ Ba": "08:00–20:30",
+     "Thứ Tư": "08:00–20:30"
+    },
+    "bookingLinks": [
+     "https://mshoagiaotiep.com/dang-ky-tu-van.html"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Qi2m8L8QxJAPl7f5duNC38j8TDz_BAW5j97dkUvL2ZBKhMPb7E8At45x2tHTjizpxRX5gJsBt0bbkxmcii72WauuSM2yi1o_i07jd6Y-7nmM0mAL6rRWlZfjOus2eWb6tm9Q7w",
+    "cid": "8079740079934098709",
+    "fid": "0x31752f5acdf651f9:0x702100cb5df54d15",
+    "placeId": "ChIJ-VH2zVovdTERFU31XcsAIXA"
+   },
+   {
+    "position": 2,
+    "title": "Tiếng Anh Nghe Nói - Bình Thạnh",
+    "address": "128 Điện Biên Phủ, Gia Định, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.795733799999999,
+    "longitude": 106.703228,
+    "rating": 4.6,
+    "ratingCount": 61,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://tienganhnghenoi.vn/",
+    "phoneNumber": "+84 906 942 066",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–19:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "https://tienganhnghenoi.vn/dat-lich-test/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TutLm2m49hqUJWfd0kgwwkYeP3fZwc6ZxzZcjeJjpJhmqzVPkZHkRRRvL6WypyXAeKO6vM6sfXlhl7vGQ_3p1OD4QcjnMMld5k8ELG01QFv2oHYEN08zfIFjezAaRRqZPu8gdL",
+    "cid": "6849390901001082485",
+    "fid": "0x317529c06844dc0d:0x5f0decbc1df65675",
+    "placeId": "ChIJDdxEaMApdTERdVb2HbzsDV8"
+   },
+   {
+    "position": 3,
+    "title": "PTE Helper",
+    "address": "Điện Biên Phủ/440 Phường Vườn Lài, Vườn Lài, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7730999,
+    "longitude": 106.6793167,
+    "rating": 4.9,
+    "ratingCount": 448,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh",
+     "Trường luyện thi",
+     "Tổ chức giáo dục",
+     "Trung tâm giáo dục"
+    ],
+    "website": "https://ptehelper.com.au/",
+    "phoneNumber": "+84 345 939 566",
+    "openingHours": {
+     "Thứ Năm": "08:45–17:30",
+     "Thứ Sáu": "08:45–17:30",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:45–17:30",
+     "Thứ Ba": "08:45–17:30",
+     "Thứ Tư": "08:45–17:30"
+    },
+    "bookingLinks": [
+     "https://ptehelper.com.au/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Ta0GYzerCN24G02lvGtJC606pzchq2SxNC7QPy_8UnSJQE4ph78Ss605KAz51azTk8O2FBnT5QVOou_9zT-ynDfkdXLcJQvIzMqHb_kmua5QV01xkFcV7z7HMfu0aLyXtouZRJ",
+    "cid": "3595493490588674903",
+    "fid": "0x31752f3084e7673d:0x31e5c247aac46b57",
+    "placeId": "ChIJPWfnhDAvdTERV2vEqkfC5TE"
+   },
+   {
+    "position": 4,
+    "title": "Tiếng Anh Nghe-Nói",
+    "address": "468/20 Nguyễn Tri Phương, Vườn Lài, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7664192,
+    "longitude": 106.66796219999999,
+    "rating": 4.8,
+    "ratingCount": 148,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://tienganhnghenoi.vn/",
+    "phoneNumber": "+84 906 680 616",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–19:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "bookingLinks": [
+     "https://tienganhnghenoi.vn/dat-lich-test/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QZ0T9DDuzLjsulUBEyucYoXSjYbhJrmKHJsH8dD_wAp6O9bvRYbHe7srszVfekxkenWcS1Aj4BJICP3zDjY6_UllHdR9TlS08gTHU6RiJYwTdIEMFz3Gg14BAspZZAazSwdDCJ",
+    "cid": "11422597227721358066",
+    "fid": "0x31752ee6ff8f866d:0x9e8537a8bab17af2",
+    "placeId": "ChIJbYaP_-YudTER8nqxuqg3hZ4"
+   },
+   {
+    "position": 5,
+    "title": "TESOL TOEIC IELTS - ANH NGỮ TTH Phú Nhuận",
+    "address": "93/37 Đ. Nguyễn Đình Chiểu, Đức Nhuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8041907,
+    "longitude": 106.6823288,
+    "rating": 4.9,
+    "ratingCount": 105,
+    "type": "Trung tâm luyện thi",
+    "types": [
+     "Trung tâm luyện thi"
+    ],
+    "website": "http://www.tuhocanhvan.com/",
+    "phoneNumber": "+84 938 305 363",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QkkgBLq4rQOMtST0qUtp6BlkoGr86t0bXG_Z0BNQr8GvmGOwIR6rbA1h34lONW_wJfIhB5Bx7at-3-4ae6Th3-OqIs-R_916IdPYcvILcgySuy2BBxkg1rz7U_eHvMcUxQ-mp8iOQik1Fw",
+    "cid": "3613418848070618364",
+    "fid": "0x317528d9621ac7d9:0x3225714c2ff34cfc",
+    "placeId": "ChIJ2ccaYtkodTER_EzzL0xxJTI"
+   },
+   {
+    "position": 6,
+    "title": "Trung tâm Anh ngữ Việt Đỉnh (IELTS Vietop)",
+    "address": "70 Đ. Hoa Cúc, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.798340099999999,
+    "longitude": 106.6894018,
+    "rating": 4.9,
+    "ratingCount": 537,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://vietop.edu.vn/",
+    "phoneNumber": "+84 1800 646746",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:30",
+     "Thứ Sáu": "08:00–21:30",
+     "Thứ Bảy": "08:00–21:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–21:30",
+     "Thứ Ba": "08:00–21:30",
+     "Thứ Tư": "08:00–21:30"
+    },
+    "bookingLinks": [
+     "https://vietop.edu.vn/dat-hen/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T-lNcRi6TB1n_7P8A7jPuUgjUZtyj3ZLmaxNeBCiqDSYLvue7D95MVsP8bnu5NarOTt9UrxN0IPE2yfrDg7nKh85GGSQd3qp9MnDShobJkOIFzo3Kt0RO7MhMV68gD7NyWhWDcYQ",
+    "cid": "15422028872278132094",
+    "fid": "0x317528d01fe551bb:0xd6060d8cc7f4c57e",
+    "placeId": "ChIJu1HlH9AodTERfsX0x4wNBtY"
+   },
+   {
+    "position": 7,
+    "title": "Simple English",
+    "address": "Tòa nhà GIC Tower, 89 Đ. Vạn Kiếp, Gia Định, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.799249,
+    "longitude": 106.693708,
+    "rating": 5,
+    "ratingCount": 250,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://simpleenglish.com.vn/",
+    "phoneNumber": "+84 971 500 765",
+    "openingHours": {
+     "Thứ Năm": "08:30–21:30",
+     "Thứ Sáu": "08:30–21:30",
+     "Thứ Bảy": "08:30–21:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:30–21:30",
+     "Thứ Ba": "08:30–21:30",
+     "Thứ Tư": "08:30–21:30"
+    },
+    "bookingLinks": [
+     "https://simpleenglish.com.vn/online-course"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TvbZLZ2dMisVt_3XykK6sJWUkk9o5HjIoIJUMMNywNsq_h8S6Kdz2Pu8ZGYDiadkNPHIZLrexhwdJ2TFeHQ6UYA1E3a2KbuAKKd3IFj-lbzKQuphdzqSkjBa5G22kTsGgTTflw",
+    "cid": "598467029942888857",
+    "fid": "0x31752986d84eb1fb:0x84e2e97c9876999",
+    "placeId": "ChIJ-7FO2IYpdTERmWmHyZcuTgg"
+   },
+   {
+    "position": 8,
+    "title": "Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng",
+    "address": "609 3 Tháng 2, Diên Hồng, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7663412,
+    "longitude": 106.6649765,
+    "rating": 5,
+    "ratingCount": 662,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://simpleenglish.com.vn/",
+    "phoneNumber": "+84 971 500 765",
+    "openingHours": {
+     "Thứ Năm": "09:00–12:00, 14:00–21:00",
+     "Thứ Sáu": "09:00–12:00, 14:00–21:00",
+     "Thứ Bảy": "09:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "09:00–12:00, 14:00–21:00",
+     "Thứ Ba": "09:00–12:00, 14:00–21:00",
+     "Thứ Tư": "09:00–12:00, 14:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q0s26NJ_tFcH8DmfwAtKFJ6dmr46784nGy2qp1fvt4ZBS9ND9nytEOp-MtrM-rpqXPWpxfbYPSUiZ8u1luQBax91IVK7lKjNS_HdAEa2bxFugurM799DpfZMTGCGVHC7Pha2sxkCDmmVA",
+    "cid": "13859937632515005642",
+    "fid": "0x31752faf92ab573d:0xc05863d7fb201cca",
+    "placeId": "ChIJPVerkq8vdTERyhwg-9djWMA"
+   },
+   {
+    "position": 9,
+    "title": "Trung Tâm Giáo Dục Nghề Nghiệp Phát Tiến",
+    "address": "23 Cù Lao, Cầu Kiệu, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7963898,
+    "longitude": 106.68835469999999,
+    "rating": 5,
+    "ratingCount": 1066,
+    "type": "Văn phòng công ty",
+    "types": [
+     "Văn phòng công ty",
+     "Trường đào tạo lấy bằng lái xe",
+     "Trung tâm đào tạo"
+    ],
+    "website": "https://truongdaotaolaixehcm.com/",
+    "phoneNumber": "+84 902 430 787",
+    "openingHours": {
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–11:30",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00",
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SgR3Xvsi4sPbsaIK0LHIy2a6hvmcOPGXk0BA_sDCHiP13G156I6GFWdj_yTe7aus2wr4SbYge9cy30WRef6Y_BACXhjqwzI-j4VrNWmOVxkdstPcPBTWLDhxvDjs8JpogjLsnR_Q",
+    "cid": "10153818347656042581",
+    "fid": "0x31336f1be4f7ef53:0x8ce99bfd6de1d855",
+    "placeId": "ChIJU-_35BtvMzERVdjhbf2b6Yw"
+   },
+   {
+    "position": 10,
+    "title": "Lighthouse English Club",
+    "address": "337/37 Đường Nguyễn Đình Chiểu, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771792,
+    "longitude": 106.6848942,
+    "rating": 5,
+    "ratingCount": 2,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://www.clubtienganh.com/",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rna1YFDs2pFpUj_pcSa-nC_GElBPZtX-35fu1YaQ_ceJ2DuZZPtFJbP8jOd0Gtca2OXMUOQcZEE-AKFpAvQQYHVYMzqhsTh3fDcFLpHPtpNA9sqaxCkIfhs8B1J8Iyh-K9Cc2fmA",
+    "cid": "14847069901868635009",
+    "fid": "0x31752f20772a784b:0xce0b6369a0461381",
+    "placeId": "ChIJS3gqdyAvdTERgRNGoGljC84"
+   },
+   {
+    "position": 11,
+    "title": "Câu Lạc Bộ Tiếng Anh Buddies Club",
+    "address": "198 Võ Thị Sáu, Xuân Hòa, Hồ Chí Minh 71400, Việt Nam",
+    "latitude": 10.7839984,
+    "longitude": 106.68804949999999,
+    "rating": 4.6,
+    "ratingCount": 11,
+    "type": "Câu lạc bộ",
+    "types": [
+     "Câu lạc bộ"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=61567880319120",
+    "phoneNumber": "+84 925 151 439",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RoGyGictc2_6IPwf-sRthkwh-1yQyFE81ssMvrlui3tlVqrNTzjCVtSJI-ZU0C1UNcqd9pqFGmPq6DfLx4ZRKmr_Dbmwd1qnanfZlfbPIfCouUoh1aBEcC4r0PU69Kvx33yT93nv_rNUUO",
+    "cid": "14297289515020400607",
+    "fid": "0x31752f003a48957d:0xc66a2d1049b537df",
+    "placeId": "ChIJfZVIOgAvdTER3ze1SRAtasY"
+   },
+   {
+    "position": 12,
+    "title": "Trung Tâm Luyện Thi Ielts - Res CMT8",
+    "address": "Cách Mạng Tháng Tám/131 Bàn Cờ, Phường, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7737733,
+    "longitude": 106.688547,
+    "rating": 4.6,
+    "ratingCount": 208,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://res.edu.vn/",
+    "phoneNumber": "+84 979 043 610",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:30",
+     "Thứ Sáu": "08:00–21:30",
+     "Thứ Bảy": "08:00–21:30",
+     "Chủ Nhật": "08:00–21:30",
+     "Thứ Hai": "08:00–21:30",
+     "Thứ Ba": "08:00–21:30",
+     "Thứ Tư": "08:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q8qufyK7DAD5Yh4kD2DwXEmwARUuKdlTC39TrIzFa9BvADnLOFfil6d6S9BPeprgfr3oRuLuZwKC6AlOBkcr0PksewjtHQieLV6GeADvBmDtJylBrkrbr1vBD0Z2R65cYvHIsr",
+    "cid": "14302891255797813430",
+    "fid": "0x31752f2db4b38407:0xc67e13d132de90b6",
+    "placeId": "ChIJB4SztC0vdTERtpDeMtETfsY"
+   },
+   {
+    "position": 13,
+    "title": "Trung tâm luyện thi IELTS DOL Đình Lực quận 10",
+    "address": "Hẻm 458/14 3 Tháng 2, Q.10, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.769078,
+    "longitude": 106.6679427,
+    "rating": 4.9,
+    "ratingCount": 1838,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://www.dolenglish.vn/",
+    "phoneNumber": "+84 1800 969639",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SukHaTk6hvGBDc3QLhzRi59riDuXRZbulRwp5piarp5kfx98HlRBhd0AzzOebm3OFDM2D2IEOCjoN_D7SZU_vhiOe7gaEWL5CQFKlErjxzv6r8--i-Blk6qX-84qLJ7GdXFKa8jkX2SnNj",
+    "cid": "17325871514060227961",
+    "fid": "0x31752f2fb52ce30b:0xf071dc587b9e8579",
+    "placeId": "ChIJC-MstS8vdTEReYWee1jccfA"
+   },
+   {
+    "position": 14,
+    "title": "Wall Street English Lê Quý Đôn",
+    "address": "21 Lê Quý Đôn, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.780916399999999,
+    "longitude": 106.6908565,
+    "rating": 4.4,
+    "ratingCount": 379,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh",
+     "Trường ngoại ngữ"
+    ],
+    "website": "https://wallstreetenglish.edu.vn/trung-tam-tieng-anh/le-quy-don?utm_source=Google_Organic&utm_medium=Local_Search&utm_campaign=LQD",
+    "phoneNumber": "+84 1800 646448",
+    "openingHours": {
+     "Thứ Năm": "12:00–21:00",
+     "Thứ Sáu": "12:00–21:00",
+     "Thứ Bảy": "11:00–20:00",
+     "Chủ Nhật": "11:00–20:00",
+     "Thứ Hai": "12:00–21:00",
+     "Thứ Ba": "12:00–21:00",
+     "Thứ Tư": "12:00–21:00"
+    },
+    "bookingLinks": [
+     "https://wallstreetenglish.edu.vn/test-tieng-anh/tim-khoa-hoc-phu-hop"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q0B3k6vnKVBuWX2ipg1jLYPZf2t1HwWaR9QZ-rB_EeR9PedHZi9DbCWzf_rG6IiILi_pJPlgcgQaKmr3Q2LcvBkeEDyUpyrj1uCf_WbwkWOhTzYlZTe84oCXtvMRwOdcY520jpxQ",
+    "cid": "3486958127274453042",
+    "fid": "0x31752f3057f261ab:0x306429f12adae832",
+    "placeId": "ChIJq2HyVzAvdTERMujaKvEpZDA"
+   },
+   {
+    "position": 15,
+    "title": "Axcela Vietnam - Tiếng Anh Cho Người Đi Làm",
+    "address": "Lầu 14, HM Town, 412 Nguyễn Thị Minh Khai, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771158999999999,
+    "longitude": 106.6865409,
+    "rating": 5,
+    "ratingCount": 25,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh"
+    ],
+    "website": "https://axcelavietnam.com/",
+    "phoneNumber": "+84 28 7302 2888",
+    "openingHours": {
+     "Thứ Năm": "09:00–18:00",
+     "Thứ Sáu": "09:00–18:00",
+     "Thứ Bảy": "09:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "09:00–18:00",
+     "Thứ Ba": "09:00–18:00",
+     "Thứ Tư": "09:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RWsiewUaIJxcftVFCCzHaaPjMNCopV6zHMaJhmhsnRs3eQf6d1GgHwHzU82tST19qMKS7RNWS9fa1TUMleWXFhyOrsreOYnNFc_rgzf4tBBx0xJuRd11OFDMLAMLF_Z0AiQcTCFQ",
+    "cid": "8475822895175050812",
+    "fid": "0x31752f33afdba7af:0x75a02c042e08263c",
+    "placeId": "ChIJr6fbrzMvdTERPCYILgQsoHU"
+   },
+   {
+    "position": 16,
+    "title": "ELSA Speak - Ứng Dụng Học Tiếng Anh",
+    "address": "140B Đ. Nguyễn Văn Trỗi, Phú Nhuận, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.798374899999999,
+    "longitude": 106.67126169999999,
+    "rating": 4.2,
+    "ratingCount": 98,
+    "type": "Văn phòng công ty",
+    "types": [
+     "Văn phòng công ty"
+    ],
+    "website": "https://vn.elsaspeak.com/",
+    "phoneNumber": "+84 1900 633413",
+    "openingHours": {
+     "Thứ Năm": "08:00–17:30",
+     "Thứ Sáu": "08:00–17:30",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–17:30",
+     "Thứ Ba": "08:00–17:30",
+     "Thứ Tư": "08:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SrSaGwSSQM5vZ6G5G8_8VWQSYQzOS8GDCpCozcugZcYPlUmQXfltjJTi5tgeFYYU1QmuzW95VaYlWYTJGepdE8JEYT5KDbxPJWrNmW0hNz_mW3HSb6gghwq67nhwxyS__0DbUllFHvLkrx",
+    "cid": "2288921148287246680",
+    "fid": "0x317527f34e64f961:0x1fc3e1a83a8a6158",
+    "placeId": "ChIJYflkTvMndTERWGGKOqjhwx8"
+   },
+   {
+    "position": 17,
+    "title": "Ngoại Ngữ Khoa Trí",
+    "address": "283/80 Cách Mạng Tháng Tám, Hòa Hưng, Hồ Chí Minh 72410, Việt Nam",
+    "latitude": 10.777365699999999,
+    "longitude": 106.6783676,
+    "rating": 4.8,
+    "ratingCount": 22,
+    "type": "Trung tâm giáo dục",
+    "types": [
+     "Trung tâm giáo dục"
+    ],
+    "website": "http://www.ngoaingukhoatri.com/",
+    "phoneNumber": "+84 28 3868 0176",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–17:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R2G2Gq1uCU8xB8Kxpip_9JFnCC34aS39wmrcB3rf_j91xmeHL4luPtNpSfqa6TXaVlCF-i8Si2ag3nhAwP3w8Eq4jUsxcwkl5zJHTqJlH7PkSeMKTja57q7rtvDyc5yxvZ7dAb",
+    "cid": "15609064060581035909",
+    "fid": "0x31752f332b056eaf:0xd89e89100f3fbf85",
+    "placeId": "ChIJr24FKzMvdTERhb8_DxCJntg"
+   },
+   {
+    "position": 18,
+    "title": "Coffee Talk English",
+    "address": "367 Cách Mạng Tháng Tám, Hòa Hưng, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7799366,
+    "longitude": 106.6771528,
+    "rating": 4.7,
+    "ratingCount": 373,
+    "type": "Trường dạy tiếng Anh",
+    "types": [
+     "Trường dạy tiếng Anh",
+     "Câu lạc bộ trò chơi cờ bàn"
+    ],
+    "website": "https://www.facebook.com/coffeetalkenglish.hcmc",
+    "phoneNumber": "+84 906 513 582",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:00",
+     "Thứ Sáu": "10:00–21:00",
+     "Thứ Bảy": "10:00–21:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "10:00–21:00",
+     "Thứ Ba": "10:00–21:00",
+     "Thứ Tư": "10:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SxY_dZ_kHLm5Q76kIgDW6KjyACDQXWg_a7YXbj5KGf_OU3aNgfVVSUg3tniZfA1N5e9iqpFYRYCskUiK2k7RztBAVEoxa2huLmK0LR9AjUffb9Q9daGlM0pmeUPui1yGAGo-f1KA",
+    "cid": "10607945482651615166",
+    "fid": "0x31752f02a5a09b0b:0x9336fe369228bfbe",
+    "placeId": "ChIJC5ugpQIvdTERvr8okjb-NpM"
+   },
+   {
+    "position": 19,
+    "title": "IDECAF - Viện Trao đổi Văn hóa với Pháp",
+    "address": "31 Thái Văn Lung, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7799935,
+    "longitude": 106.7034805,
+    "rating": 4.6,
+    "ratingCount": 1777,
+    "type": "Trường ngoại ngữ",
+    "types": [
+     "Trường ngoại ngữ",
+     "Công ty quản lý sự kiện",
+     "Trung tâm văn hoá"
+    ],
+    "website": "http://www.idecaf.gov.vn/",
+    "phoneNumber": "+84 28 3829 5451",
+    "openingHours": {
+     "Thứ Năm": "07:30–17:00",
+     "Thứ Sáu": "07:30–17:00",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "07:30–17:00",
+     "Thứ Ba": "07:30–17:00",
+     "Thứ Tư": "07:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Rf3H40lvp2fQL5-_J7AxhmfpfADBIeTH-xfU_KCTrHbuo6Q-pYc5XVOp5CCTQHEKLauOYx7VpdXoad3-p4c794LUO6vx_rUGLoslrkBViMvAGVLSrA1jlOG-nVnmju9aVqzEaI",
+    "cid": "12089475492682243662",
+    "fid": "0x31752f48edcfc0dd:0xa7c671e8661d9e4e",
+    "placeId": "ChIJ3cDP7UgvdTERTp4dZuhxxqc"
+   },
+   {
+    "position": 20,
+    "title": "Cấp cứu dữ liệu",
+    "address": "182A Đ. Hoàng Văn Thụ, Đức Nhuận, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7997289,
+    "longitude": 106.675348,
+    "rating": 4.4,
+    "ratingCount": 143,
+    "type": "Dịch vụ khôi phục dữ liệu",
+    "types": [
+     "Dịch vụ khôi phục dữ liệu",
+     "Tư vấn viên máy tính",
+     "Dịch vụ sửa chữa máy tính",
+     "Dịch vụ bảo mật máy tính",
+     "Trường đào tạo máy tính",
+     "Dịch vụ cấp cứu thú y",
+     "Dịch vụ sửa chữa điện thoại",
+     "Công ty phần mềm"
+    ],
+    "website": "http://www.capcuudulieu.com/",
+    "phoneNumber": "+84 28 3844 2008",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SMv3LXuWkZhy-aW3UILw56h_vObJcrwag_olSgIq4iqPgbHBfYKefnK7flwJwSbhhhAaM_pBREahimkGlAWdb3pau0NFY4YOiK94l2AgQPsBW-aW-BrNATvzIC0EUu__zSzIt41Q",
+    "cid": "3837316153564589725",
+    "fid": "0x317529baa42b0a1f:0x3540e2b5f015ee9d",
+    "placeId": "ChIJHworpLopdTERne4V8LXiQDU"
+   }
+  ],
+  "credits": 3
+ }
+}

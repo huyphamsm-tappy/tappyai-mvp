@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"MEAT & MEET\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:20:57.519Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"MEAT & MEET\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

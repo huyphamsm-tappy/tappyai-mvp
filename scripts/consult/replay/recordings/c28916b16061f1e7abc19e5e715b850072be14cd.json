@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá MacBook Pro M4 16GB 512GB Việt Nam chính hãng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:15:00.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá MacBook Pro M4 16GB 512GB Việt Nam chính hãng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "snippet": "Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam-Bạc. Bạc 38.590.000₫ · Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB",
+    "link": "https://hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb?srsltid=AU7gw4X1nLD7BhwRVvZRsZmHx3Onvb2-9t1BoSB21JZ5_9qynD5Nj7m3",
+    "snippet": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB - Chính hãng Apple Việt Nam ; 14\" M4 (16GB/512GB). 36.890.000 ₫ ; 14\" M4 (16GB/1TB). 43.990.000 ₫ ; 14\" M4 Pro (24GB/ ...",
+    "rating": 4.6,
+    "ratingCount": 24,
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 14 M4 2024 10CPU/10GPU/16GB/512GB",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-pro-m4-14-2024-10cpu-10gpu-16gb-512b",
+    "snippet": "Mua Apple MacBook Pro M4 2024 14 inch 16GB/512B chip Apple M4 siêu mạnh mẽ, pin trâu 24H cùng màn hình siêu rực rỡ. Lên đời giá hấp dẫn, thẩm định tại nhà, ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro M4 14 inch 16GB/512GB | Chính Hãng, Giá tốt",
+    "link": "https://didongviet.vn/apple-macbook-imac/macbook-pro-m4-14-inch-16gb-512gb.html",
+    "snippet": "1. Giá MacBook Pro M4 2024 14-inch 16GB/512GB Chính Hãng tại Di Động Việt bao nhiêu? ; MacBook Pro M4 2024 14-inch 16GB/512GB. 38.690.000 đ. 38.690.000 đ. $1,599.",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 10 CPU 10 GPU 16GB 512GB",
+    "link": "https://24hstore.vn/macbook-pro-2024/macbook-pro-14-inch-2024-m4-10-cpu-10-gpu-16gb-512gb-p11227?srsltid=AU7gw4VJY6d5kIJDwGnqYznh42MuIW69p4lMy-B47kGzJtVC7abqos38",
+    "snippet": "MacBook Pro 14 inch 2024 M4 10 CPU 10 GPU 16GB/512GB | Chính hãng Apple Việt Nam ; 16GB/512GB 36.390.000đ ; 16GB/1TB 42.290.000đ ; 24GB/1TB 47.090.000đ.",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro M4 14 inch 16GB/512GB - Chính hãng VN",
+    "link": "https://minhtuanmobile.com/macbook-pro-m4-14-inch-16gb-512gb-chinh-hang-vn/",
+    "snippet": "MacBook Pro M4 14 inch 10GPU 10CPU 16GB/512GB - Chính hãng VN ; 16GB - 512GB 39,990,000đ ; 16GB - 1TB 44,990,000đ ; 24GB -1TB 49,990,000đ.",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá chi tiết Macbook Pro M4 Pro sau 9 tháng",
+    "link": "https://www.youtube.com/watch?v=27R5tv0r2H4",
+    "snippet": "... Việt Nam trên Group Facebook cùng Vật Vờ Studio https://www.facebook.com/share/g/16qXQKTXF2/?mibextid=wwXIfr ▻ Tham gia làm hội viên Vinh ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB ...",
+    "link": "https://surfacecity.vn/macbook-pro-m4-14-inch-10-core-cpu-10-core-gpu-16gb-ram-512gb-chinh-hang-apple-viet-nam?srsltid=AU7gw4XI897AdVnvvyH4wsjSKxAdayZW1B8RRDdOpdIeBzbaihVze3i2",
+    "snippet": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB RAM 512GB Chính hãng Apple Việt Nam ; Hà Nội: Số 16 Yên Lãng, Quận Đống Đa, TP. Hà Nội. ; TP.HCM: Số 118 Đào ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Axcela Vietnam\" OR \"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Ryan English\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:49.271Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Axcela Vietnam\" OR \"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Ryan English\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ryan English (@ryanenglish.info)",
+    "link": "https://www.tiktok.com/@ryanenglish.info",
+    "snippet": "Ryan English (@ryanenglish.info) trên TikTok |75.3K Lượt thích.12.8K Follower.Tiếng Anh Giao Tiếp - Offline [I.B trực tiếp để admin hỗ trợ nhanh hơn].",
+    "position": 1
+   },
+   {
+    "title": "1 phút trả lời 10 câu hay được hỏi tại Ryan English",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7686063996977532181",
+    "snippet": "Video dài 1 phút trình bày 10 câu hay được hỏi tại Ryan English. Nội dung video tập trung vào giao tiếp tiếng Anh và liên quan đến các chủ ...",
+    "position": 2
+   },
+   {
+    "title": "Khai giảng lớp Tiếng Anh giao tiếp tại Ryan English",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7679068184934173972",
+    "snippet": "50 Lượt thích,Video TikTok từ Ryan English (@ryanenglish.info): \"Đăng ký ngay khóa Tiếng Anh giao tiếp tại Ryan English: luyện nói, phản xạ, ...",
+    "position": 3
+   },
+   {
+    "title": "lý do học Tiếng Anh mãi mà không nói được #ryanenglish ...",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7690538893745179924",
+    "snippet": "774 Lượt thích,Video TikTok từ Ryan English (@ryanenglish.info): \"lý do học Tiếng Anh mãi mà không nói được #ryanenglish #tienganhgiaotiep ...",
+    "position": 4
+   },
+   {
+    "title": "Học viên mất gốc tại Ryan có nói tiếng Anh hay không?",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7689408381957770517",
+    "snippet": "Video tập trung vào chủ đề học viên mất gốc và kỹ năng nói tiếng Anh trong bối cảnh Ryan English, đồng thời nhắc đến tiếng Anh giao tiếp và ...",
+    "position": 5
+   },
+   {
+    "title": "Used Paperback (Soft Cover) - The Paris Housekeeper by ...",
+    "link": "https://shop.tiktok.com/us/pdp/the-paris-housekeeper-by-renee-ryan-paperback-novel-wwii-story/1731895851762553546",
+    "snippet": "Used Paperback (Soft Cover) - The Paris Housekeeper by Renee Ryan - English Literature Genre Novel with Bravery and Resilience, Powerful and Moving Story, Love- ...",
+    "position": 6
+   },
+   {
+    "title": "Tiếng Anh giao tiếp: đi học thử tại Ryan English (POV)",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7652269305849007368",
+    "snippet": "POV: đi học thử Tiếng Anh giao tiếp tại Ryan English Lead Người xem được mời theo dõi trải nghiệm đi học thử một buổi Tiếng Anh giao tiếp ...",
+    "position": 7
+   },
+   {
+    "title": "Series phản xạ Tiếng Anh cùng Ryan P1",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7673870660535438612",
+    "snippet": "20 Lượt thích,Video TikTok từ Ryan English (@ryanenglish.info): \"Series phản xạ Tiếng Anh cùng Ryan P1 - 13 mẫu câu giao tiếp thông dụng cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông mức thu cấp mới cấp lại",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:44.873Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông mức thu cấp mới cấp lại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư liên tịch 71/TTLB by Bộ Nội vụ",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-lien-tich-so-71-ttlb-quy-dinh-ve-thu-le-phi-cap-ho-chieu-cac-loai-giay-to-chung-nhan-tai-viet-nam-cho-nguoi-nuoc-ngoai-va-cong-dan-viet-nam-nhap-canh-xuat-canh-va-cu-tru--11411",
+    "snippet": "Thông tư liên tịch số 71/TTLB Quy định về thu lệ phí cấp hộ chiếu, các loại giấy tờ chứng nhận tại Việt Nam cho người nước ngoài và công dân Việt Nam nhập cảnh, ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 74/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-74-2026-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-nang-luong-nguyen-tu--165ac560-713c-11f1-a2d9-abf44845dfbd",
+    "snippet": "Thông tư số 74/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực năng lượng nguyên tử. Còn hiệu lực. Ngày có hiệu lực:10/08/2026.",
+    "position": 3
+   },
+   {
+    "title": "Nghị quyết 05/2026/NQ-HĐND của HĐND Tỉnh Vĩnh Long",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/nghi-quyet-so-05-2026-nq-hdnd-ban-hanh-quy-dinh-muc-thu-che-do-thu-nop-quan-ly-va-su-dung-cac-khoan-phi-le-phi-ve-dat-dai-tren-dia-ban-tinh-vinh-long--fbcb0290-652f-11f1-ac47-f3ae1d2e7ddf",
+    "snippet": "Nghị quyết số 05/2026/NQ-HĐND Ban hành Quy định mức thu, chế độ thu, nộp, quản lý và sử dụng các khoản phí, lệ phí về đất đai trên địa bàn tỉnh Vĩnh Long · NGHỊ ...",
+    "position": 4
+   },
+   {
+    "title": "Thỏa thuận Không số của Chính phủ nước ...",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thoa-thuan-khong-so--12982",
+    "snippet": "Thời hạn lưu trú được gia hạn tại nước cư trú tối đa hai lần, mỗi lần là 30 ngày. Lệ phí cấp hoặc gia hạn thị thực thống nhất hai bên là 20 USD/thị thực, thu ...",
+    "position": 5
+   },
+   {
+    "title": "Thông tư 64/2025/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-nham-ho-tro-cho-doanh-nghiep-nguoi-dan--179085",
+    "snippet": "Bằng 50% mức thu phí quy định tại khoản 1 Điều 4 Thông tư số 33/2018/TT-BTC ngày 30 tháng 3 năm 2018 của Bộ trưởng Bộ Tài chính quy định mức thu, chế độ thu, ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 264/2016/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-264-2016-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-quan-ly-va-su-dung-phi-le-phi-trong-linh-vuc-ngoai-giao-ap-dung-tai-cac-co-quan-dai-dien-viet-nam-o-nuoc-ngoai--119137",
+    "snippet": "THÔNG TƯ. Quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí, lệ phí trong lĩnh vực ngoại giao áp dụng tại các Cơ quan đại diện Việt Nam ở nước ngoài.",
+    "position": 7
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.vn/",
+    "snippet": "Thông tư số 76/2026/TT-BXD Ban hành định mức chi phí, lợi nhuận áp dụng cho dịch vụ sự nghiệp công bảo đảm an toàn hàng hải sử dụng ngân sách nhà nước từ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

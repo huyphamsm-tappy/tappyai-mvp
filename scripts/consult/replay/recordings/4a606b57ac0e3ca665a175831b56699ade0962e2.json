@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bếp Mẹ Ỉn - Lê Thánh Tôn\" OR \"Bếp Mẹ Ỉn - Nguyễn Thái Bình\" OR \"Xóm Chợ Cũ Restaurant\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:19:30.444Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bếp Mẹ Ỉn - Lê Thánh Tôn\" OR \"Bếp Mẹ Ỉn - Nguyễn Thái Bình\" OR \"Xóm Chợ Cũ Restaurant\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Ẩm Thực Việt Tại Bếp Mẹ Ỉn Nguyễn Thái Bình",
+    "link": "https://www.tiktok.com/@luuquangminhpro/video/7556535506918575367",
+    "snippet": "Khám phá các món ăn ngon và độc đáo tại Bếp Mẹ Ỉn Nguyễn Thái Bình. Hãy ghé thăm để trải nghiệm ẩm thực Việt tuyệt vời! #bepmein #review # ...",
+    "position": 1
+   },
+   {
+    "title": "Bếp Mẹ Ỉn Nguyễn Thái Bình đa dạng món Việt ngon! ...",
+    "link": "https://www.tiktok.com/@luuquangminhpro/video/7556613361161473287",
+    "snippet": "467 Lượt thích,Video TikTok từ Lưu Quang Minh (@luuquangminhpro): \"Bếp Mẹ Ỉn Nguyễn Thái Bình đa dạng món Việt ngon!",
+    "position": 2
+   },
+   {
+    "title": "a meal for 4 from just $6 AUD?! 🤯 only in vietnam 🇻🇳 spent ...",
+    "link": "https://www.tiktok.com/@shertoh/video/7651443405213502738",
+    "snippet": "... Bếp Mẹ Ỉn - Lê Thánh Tôn ✔️ Bò Né Bà Nũi ✔️ Phở Miến Gà Kỳ Đồng ✔️ Pizza 4P's save this list for your next HCM trip #hochiminhcity ...",
+    "position": 3
+   },
+   {
+    "title": "bep me in in ho chi minh is a michelin bib gourmand ...",
+    "link": "https://www.tiktok.com/@foodventuresbysig/video/7685319778289945874",
+    "snippet": "... a michelin bib gourmand restaurant hiding in an. @foodventuresbysig · original sound - foodventuresbysig · Bếp Mẹ Ỉn - Lê Thánh Tôn · author · 9.",
+    "position": 4
+   },
+   {
+    "title": "trying another Vietnamese dish called Bánh Xèo and it ...",
+    "link": "https://www.tiktok.com/@ivncdrck/video/7686116291849063688",
+    "snippet": "... dish called Bánh Xèo and it didn't disappoint, i could. @Ivan Manila · original sound - Ivan Manila · Bếp Mẹ Ỉn - Lê Thánh Tôn · author. 5 · 2.",
+    "position": 5
+   },
+   {
+    "title": "ไม่แปลกใจทำไมคนแนะนำร้านนี้ 📍 Bếp Mẹ Ỉn – Lê Thánh Tôn",
+    "link": "https://www.tiktok.com/@yykhemmanth/video/7649348168886406418",
+    "snippet": "@ยาย่าที่ไม่ใช่อุรัสยา. ไม่แปลกใจทำไมคนแนะนำร้านนี้ Bếp Mẹ Ỉn – Lê Thánh Tôn #yykhemmanath #ยาย่าที่ ...",
+    "position": 6
+   },
+   {
+    "title": "now we get why this place gets so much love 🥵 So many ...",
+    "link": "https://www.tiktok.com/@eatwithhendri/video/7687925081674140949",
+    "snippet": "... why this place gets so much love So many people recommended it. @Hendri The Foodie · Honey in Transit · Bếp Mẹ Ỉn - Lê Thánh Tôn · author.",
+    "position": 7
+   },
+   {
+    "title": "Bếp Mẹ Ỉn Ho Chi Minh: Must-Eat Prawn Spring Rolls & ...",
+    "link": "https://www.tiktok.com/@pale.nerves/video/7654565188535897362",
+    "snippet": "... Bếp Mẹ Ỉn Lê Thánh Tôn. Đây là bản tóm tắt nội dung do AI tạo và không nhằm mục đích cung cấp ngữ cảnh thực tế. Nếu bạn cho rằng tóm tắt có ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cầu Rồng\" OR \"Ngũ Hành Sơn\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:43.547Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cầu Rồng\" OR \"Ngũ Hành Sơn\" OR \"Bảo tàng 3D Art In Paradise\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lưu Ý Quan Trọng Khi Xem Cầu Rồng Phun Lửa",
+    "link": "https://www.tiktok.com/@insightdanang/video/7691603474605264148",
+    "snippet": "* **Ngày diễn:** Chỉ có vào thứ Bảy và Chủ Nhật. * **Địa điểm:** Cầu Rồng, nối liền hai quận Hải Châu và Sơn Trà. ### Kinh Nghiệm Xem Cầu Rồng ...",
+    "position": 1
+   },
+   {
+    "title": "Photobooth Cầu Rồng Đà Nẵng - Góc chụp đẹp cùng Trịnh ...",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7639577986999536903",
+    "snippet": "Không gian nhỏ gọn, trang trí bắt mắt, phù hợp chụp đơn hoặc nhóm. Gợi ý góc chụp: - Chụp ngang mặt cầu để lấy bối cảnh Cầu Rồng làm phông nền.",
+    "position": 2
+   },
+   {
+    "title": "Photobooth Cầu Rồng Đà Nẵng",
+    "link": "https://www.tiktok.com/@ptbbaochidanang/video/7675296200626670868",
+    "snippet": "Tọa lạc trên vỉa hè, sát bờ sông và ngay dưới chân Cầu Rồng biểu tượng, nơi đây mang đến một không gian chụp ảnh mới lạ và ấn tượng. Điểm đặc ...",
+    "position": 3
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng Lạ Lùng & Tour Ngắm Cầu",
+    "link": "https://www.tiktok.com/@hii_twn/video/7679766311987072276",
+    "snippet": "Cầu Rồng Đà Nẵng mang đến một vẻ ngoài thật lạ lẫm, thu hút sự chú ý của nhiều người. Bạn có thể trải nghiệm vẻ đẹp độc đáo này bằng cách ...",
+    "position": 4
+   },
+   {
+    "title": "Dân chơi sợ gì mưa rơi - Photobooth Cầu Rồng Đà Nẵng",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7684569376325995797",
+    "snippet": "Cầu Rồng thường phun lửa theo lịch trình, tạo nền hậu cảnh ấn tượng cho ảnh và video. - Tình huống thời tiết: Mưa không ngăn được nhóm người vui ...",
+    "position": 5
+   },
+   {
+    "title": "Các cây cầu nổi tiếng ở Đà Nẵng — Top 1 Cầu Rồng",
+    "link": "https://vt.tiktok.com/ZSbmjduuE/",
+    "snippet": "Thành phố được gọi là \"Thành phố của những cây cầu\" nhờ nhiều công trình kiến trúc cầu nổi bật. Trong đó, Cầu Rồng được xếp hạng Top 1 về mức độ ...",
+    "position": 6
+   },
+   {
+    "title": "Cầu Rồng Đà Nẵng Phun Lửa Lúc Mấy Giờ? Lịch Trình & ...",
+    "link": "https://www.tiktok.com/@nhungdanang43/video/7507491855471283478",
+    "snippet": "Cầu Rồng Phun Lửa Lúc Mấy Giờ và Vào Những Ngày Nào? Cầu Rồng sẽ thực hiện màn trình diễn phun lửa và nước vào lúc **21 giờ hàng đêm**. Tuy ...",
+    "position": 7
+   },
+   {
+    "title": "Cầu Rồng phun lửa ngày 2/9 tại Đà Nẵng - Lễ Quốc Khánh ...",
+    "link": "https://www.tiktok.com/@ptbdanang/video/7678998547689164052",
+    "snippet": "Thời gian và địa điểm: - Sự kiện diễn ra vào ngày 2/9 tại Cầu Rồng, bắc ngang sông Hàn, trung tâm thành phố Đà Nẵng. - Thường bắt đầu vào buổi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

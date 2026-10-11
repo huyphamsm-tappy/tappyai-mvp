@@ -1,0 +1,137 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Danang Center",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:22:08.683Z",
+ "body": {
+  "searchParameters": {
+   "q": "Danang Center",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Lối đi nào cho Dự án Đà Nẵng Center? | Tin nhanh chứng khoán",
+    "imageUrl": "https://image.tinnhanhchungkhoan.vn/w660/Uploaded/2026/wpxlcdjwi/2023_12_28/loi-di-nao-cho-du-an-da-nang-center1703581697-9589.jpg",
+    "imageWidth": 660,
+    "imageHeight": 441,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyRcTEEVOZa877SHM8ebtUKXIZncvvuTbi3sPDBFPiDw&s=10",
+    "thumbnailWidth": 660,
+    "thumbnailHeight": 440,
+    "source": "Đầu tư chứng khoán",
+    "domain": "www.tinnhanhchungkhoan.vn",
+    "link": "https://www.tinnhanhchungkhoan.vn/loi-di-nao-cho-du-an-da-nang-center-post336755.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.tinnhanhchungkhoan.vn%2Fw660%2FUploaded%2F2026%2Fwpxlcdjwi%2F2023_12_28%2Floi-di-nao-cho-du-an-da-nang-center1703581697-9589.jpg&tbnid=GNvMDsBhM2Um0M&imgrefurl=https%3A%2F%2Fwww.tinnhanhchungkhoan.vn%2Floi-di-nao-cho-du-an-da-nang-center-post336755.html&docid=tEiT4kXJHpx9_M&w=660&h=441",
+    "position": 1
+   },
+   {
+    "title": "The Da Nang City Administrative Center - Cổng thông tin du lịch thành phố Đà  Nẵng",
+    "imageUrl": "https://danangfantasticity.com/wp-content/uploads/2024/07/trung-tam-hanh-chinh-thanh-pho-da-nang.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 1080,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSdww2lpYWl4nYxkImkLAwLia1HiywUmSJbE2q4nYA8sA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Danang Fantasticity",
+    "domain": "danangfantasticity.com",
+    "link": "https://danangfantasticity.com/the-da-nang-city-administrative-center",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdanangfantasticity.com%2Fwp-content%2Fuploads%2F2024%2F07%2Ftrung-tam-hanh-chinh-thanh-pho-da-nang.jpg&tbnid=__dFufFB9BG-HM&imgrefurl=https%3A%2F%2Fdanangfantasticity.com%2Fthe-da-nang-city-administrative-center&docid=JMfiq0NAxHVAWM&w=1920&h=1080",
+    "position": 2
+   },
+   {
+    "title": "Danang City Center Map - Cổng thông tin du lịch thành phố Đà Nẵng",
+    "imageUrl": "https://danangfantasticity.com/wp-content/uploads/2022/08/tourist-map-danang-scaled.jpg",
+    "imageWidth": 2560,
+    "imageHeight": 1792,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNeh9txg3Fw28zadTphkikBLD7tB0LBnJeVJsfS3hLEQ&s=10",
+    "thumbnailWidth": 534,
+    "thumbnailHeight": 374,
+    "source": "Danang Fantasticity",
+    "domain": "danangfantasticity.com",
+    "link": "https://danangfantasticity.com/danang-city-center-map",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdanangfantasticity.com%2Fwp-content%2Fuploads%2F2022%2F08%2Ftourist-map-danang-scaled.jpg&tbnid=IrbptCxBs95VnM&imgrefurl=https%3A%2F%2Fdanangfantasticity.com%2Fdanang-city-center-map&docid=Id2Uzjcb1XVWfM&w=2560&h=1792",
+    "position": 3
+   },
+   {
+    "title": "Visit Da Nang City Centre: 2026 Da Nang City Centre, Da Nang Travel Guide |  Expedia",
+    "imageUrl": "https://images.trvl-media.com/place/6203096/954c75c7-78e3-4004-a5c6-1322d4f5a80d.jpg",
+    "imageWidth": 3840,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH3fjivT2AxRzjEd558I5lnUHJ8xc1-WhY78OXUL0ANA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com",
+    "link": "https://www.expedia.com/Da-Nang-Da-Nang-City-Centre.dx6203096",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Fplace%2F6203096%2F954c75c7-78e3-4004-a5c6-1322d4f5a80d.jpg&tbnid=32QvBSpJaxewPM&imgrefurl=https%3A%2F%2Fwww.expedia.com%2FDa-Nang-Da-Nang-City-Centre.dx6203096&docid=wYhLbppEcqFjAM&w=3840&h=2560",
+    "creator": "saiko3p",
+    "position": 4
+   },
+   {
+    "title": "Must-do Da Nang: An insider list | Vietnam Tourism",
+    "imageUrl": "https://vietnam.travel/sites/default/files/inline-images/top%20things%20to%20do%20in%20danang-4.jpg",
+    "imageWidth": 870,
+    "imageHeight": 580,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv_Bg1y3MNW4jxHR6he5ZMjtdA66-ZFjq0MX6lX5r75Q&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Vietnam Tourism",
+    "domain": "vietnam.travel",
+    "link": "https://vietnam.travel/things-to-do/must-do-da-nang-an-insider-list",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvietnam.travel%2Fsites%2Fdefault%2Ffiles%2Finline-images%2Ftop%2520things%2520to%2520do%2520in%2520danang-4.jpg&tbnid=0GZVrd8UFPJPLM&imgrefurl=https%3A%2F%2Fvietnam.travel%2Fthings-to-do%2Fmust-do-da-nang-an-insider-list&docid=pYoEmXe93cQKaM&w=870&h=580",
+    "position": 5
+   },
+   {
+    "title": "Da Nang Visitor Center: Where you can ask for any help during the trip –  VinWonders",
+    "imageUrl": "https://static.vinwonders.com/production/da-nang-visitor-center-06.jpg",
+    "imageWidth": 841,
+    "imageHeight": 671,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnD8jlVhVwke468irlkA2aRHlQWuQ36xCJ4R1f6HL0NQ&s=10",
+    "thumbnailWidth": 620,
+    "thumbnailHeight": 494,
+    "source": "VinWonders",
+    "domain": "vinwonders.com",
+    "link": "https://vinwonders.com/en/wonderpedia/news/da-nang-visitor-center-where-you-can-ask-for-any-help-during-the-trip/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic.vinwonders.com%2Fproduction%2Fda-nang-visitor-center-06.jpg&tbnid=kkWSkTEKWnVqqM&imgrefurl=https%3A%2F%2Fvinwonders.com%2Fen%2Fwonderpedia%2Fnews%2Fda-nang-visitor-center-where-you-can-ask-for-any-help-during-the-trip%2F&docid=-JkBw1TiHiqykM&w=841&h=671",
+    "position": 6
+   },
+   {
+    "title": "Da Nang - An Evolving City in Central Vietnam",
+    "imageUrl": "https://vietnamdiscovery.com/wp-content/uploads/thumbnail/Things-to-do-in-Da-nang-canivalvn.com_-pg6c3bmx4yr99ss7ghuyh05v7vc77ovo9bq42vw918.jpg",
+    "imageWidth": 1095,
+    "imageHeight": 742,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQqcIr8gqg3dUMWa6E5Z6a6gYmC5lRo1JP1pUe0R8L5fg&s=10",
+    "thumbnailWidth": 672,
+    "thumbnailHeight": 456,
+    "source": "Vietnam Discovery",
+    "domain": "vietnamdiscovery.com",
+    "link": "https://vietnamdiscovery.com/da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvietnamdiscovery.com%2Fwp-content%2Fuploads%2Fthumbnail%2FThings-to-do-in-Da-nang-canivalvn.com_-pg6c3bmx4yr99ss7ghuyh05v7vc77ovo9bq42vw918.jpg&tbnid=IPM4YKLihM8_vM&imgrefurl=https%3A%2F%2Fvietnamdiscovery.com%2Fda-nang%2F&docid=Qqne2EcoBsbcnM&w=1095&h=742",
+    "position": 7
+   },
+   {
+    "title": "Nhận xét về Khách sạn Đà Nẵng Center, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/14000000/13070000/13069500/13069469/86465a3f.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 866,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLYtONcb8HjCjYyajv9eHgrRYGU_o4Hmxj00jL3c71Vw&s=10",
+    "thumbnailWidth": 364,
+    "thumbnailHeight": 549,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Da-Nang-Center-Hotel.h13069469.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F14000000%2F13070000%2F13069500%2F13069469%2F86465a3f.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=QhB3t37yuibwcM&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Da-Nang-Center-Hotel.h13069469.Thong-tin-khach-san&docid=lW885EvVNAHXXM&w=575&h=866",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

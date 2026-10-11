@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 16 Pro\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:04.548Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 16 Pro\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "snippet": "iPhone 16 Pro có thiết kế titan nhẹ và cứng cáp, kích thước màn hình, 6.3 inches - Mua điện thoại iP 16 Pro giá dao động từ 18 triệu.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "iPhone 16 Pro 256GB | Chính hãng VN/A ; Chipset. Apple A18 Pro ; Bộ nhớ trong. 256 GB ; Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện ; GPU.",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro cũ chính hãng, giá tốt, nhiều màu",
+    "link": "https://cellphones.com.vn/hang-cu/iphone/iphone-16/16-pro.html",
+    "snippet": "iPhone 16 Pro cũ mang đến hiệu năng vượt trội với chip A18 Pro và màn hình ProMotion 120Hz, là một lựa chọn cao cấp với mức giá tiết kiệm hơn máy mới. Hệ thống ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn khắc phục iPhone 16 không gõ được tiếng Việt",
+    "link": "https://cellphones.com.vn/sforum/huong-dan-khac-phuc-iphone-16-khong-go-duoc-tieng-viet",
+    "snippet": "iPhone 16 Pro có thiết kế titan nhẹ và cứng cáp, với màn hình Super Retina XDR 6,3 inch lớn hơn, mang đến vẻ đẹp tuyệt vời. Điều Khiển Camera cho phép bạn truy ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "snippet": "Điện thoại iPhone 16 Pro Max 256GB ; Dung lượng RAM. 8 GB ; Bộ nhớ trong. 256 GB ; Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất ; GPU. GPU 6 lõi ...",
+    "rating": 4.9,
+    "ratingCount": 368,
+    "position": 5
+   },
+   {
+    "title": "6 tính năng giúp dòng iPhone 16 có tính bảo mật cực cao",
+    "link": "https://cellphones.com.vn/sforum/tinh-nang-an-toan-dong-iphone-16",
+    "snippet": "Xem thêm. Xem chi tiết. Thẻ: AppleApple iPhone 16Apple iPhone 16 PlusApple iPhone 16 ProApple iPhone 16 Pro MaxApple iPhone 16 Series. danh-gia-bai-viet.",
+    "rating": 4,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "So sánh iPhone 16 Pro Max vs iPhone 16 Pro: Mua máy nào",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-iphone-16-pro-max-vs-iphone-16-pro",
+    "snippet": "iPhone 16 Pro Max có thiết kế titan nhẹ và bền bỉ, với màn hình Super Retina XDR 6,9 inch lớn hơn. Tính năng Điều Khiển Camera cho phép truy cập ...",
+    "date": "12 thg 9, 2025",
+    "position": 7
+   },
+   {
+    "title": "Review iPhone 16 Pro: Camera control có thực sự cần thiết?",
+    "link": "https://cellphones.com.vn/sforum/review-iphone-16-pro",
+    "snippet": "Nút \"Camera Control\" trên iPhone 16 Pro không đơn thuần là một nút chụp hình thông thường mà nó tích hợp nhiều chức năng giúp người dùng ...",
+    "date": "16 thg 9, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

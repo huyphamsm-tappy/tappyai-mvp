@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Samsung Galaxy Buds Core site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:31.082Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Samsung Galaxy Buds Core site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-Samsung-Galaxy-Buds-Core-Ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-ANC-H%C3%A0ng-ch%C3%ADnh-h%C3%A3ng-i.1068306860.25772117569",
+    "snippet": "Mua Tai nghe Bluetooth Samsung Galaxy Buds Core - Chống ồn chủ động ANC - Hàng chính hãng giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 280,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds Core ANC, pin 35 giờ",
+    "link": "https://shopee.vn/list/tai%20nghe/samsung/galaxy%20buds%20core",
+    "snippet": "Tai nghe Samsung Galaxy Buds Core với ANC, Bluetooth 5.4 và pin tới 35 giờ; đàm thoại rõ nhờ 3 mic, kháng bụi nước IP54. Mua chính hãng trên Shopee ngay.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Samsung SM-R410N ...",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-True-Wireless-Samsung-SM-R410N-Galaxy-Buds-Core-Bluetooth-v5.4-Ch%E1%BB%91ng-%E1%BB%93n-B%E1%BA%A3o-h%C3%A0nh-1-n%C4%83m-i.149821932.53404156581",
+    "snippet": "Tai nghe Bluetooth True Wireless Samsung SM-R410N Galaxy Buds Core | Bluetooth v5.4 | Chống ồn | Bảo hành 1 năm. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 39,
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Bluetooth Samsung Galaxy Buds Core Chống Ồn ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Samsung-Galaxy-Buds-Core-Ch%E1%BB%91ng-%E1%BB%92n-Ch%E1%BB%A7-%C4%90%E1%BB%99ng-ANC-Pin-35H-i.1448040705.41517775224",
+    "snippet": "Tai Nghe Bluetooth Samsung Galaxy Buds Core Chống Ồn Chủ Động ANC Pin 35H. outline grey truck icon. Không hỗ trợ. Galaxy Center Vietnam. Online 14 phút trước.",
+    "rating": 4.9,
+    "ratingCount": 27,
+    "position": 4
+   },
+   {
+    "title": "HÀNG CÓ SẴN Samsung Galaxy Buds Core (SM-R410) ...",
+    "link": "https://shopee.vn/H%C3%80NG-C%C3%93-S%E1%BA%B4N-Samsung-Galaxy-Buds-Core-(SM-R410)-Bluetooth-5.4-Kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-B%E1%BA%A3o-h%C3%A0nh-ch%C3%ADnh-h%C3%A3ng-c%EF%BF%BD%EF%BF%BD%E1%BB%A7a-Samsung-i.1676788193.48862067028?extraParams=%7B%22display_model_id%22%3A421046821798%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "HÀNG CÓ SẴN Samsung Galaxy Buds Core (SM-R410) Bluetooth 5.4 | Khử tiếng ồn chủ động | Bảo hành chính hãng của Samsung ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "position": 5
+   },
+   {
+    "title": "KÍCH T7,8] Tai nghe Bluetooth Samsung Galaxy Buds Core",
+    "link": "https://shopee.vn/-H%E1%BB%8EA-T%E1%BB%90C-K%C3%8DCH-T7-8-Tai-nghe-Bluetooth-Samsung-Galaxy-Buds-Core-BH-12-TH%C3%81NG-CH%C3%8DNH-H%C3%83NG-SSVN-i.1490645773.40018615496",
+    "snippet": "Mua [HỎA TỐC - KÍCH T7,8] Tai nghe Bluetooth Samsung Galaxy Buds Core - BH 12 THÁNG - CHÍNH HÃNG SSVN giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Samsung Galaxy Buds Core",
+    "link": "https://shopee.vn/Tai-Nghe-Samsung-Galaxy-Buds-Core-i.65589552.43214045637",
+    "snippet": "2 phân loại có sẵn. 821.950₫. final price indicator. Giá Sau Voucher. fbs-logo-vn. mall inline badge. Tai Nghe Samsung Galaxy Buds Core.",
+    "rating": 4.8,
+    "ratingCount": 1124,
+    "position": 7
+   },
+   {
+    "title": "Thích Hợp Cho Samsung Galaxy Buds Core Tai Nghe Bluetooth ...",
+    "link": "https://shopee.vn/Th%C3%ADch-H%E1%BB%A3p-Cho-Samsung-Galaxy-Buds-Core-Tai-Nghe-Bluetooth-Kh%C3%B4ng-D%C3%A2y-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-M%C3%A0u-Tr%C6%A1n-Si%C3%AAu-M%E1%BB%8Fng-Silicon-%C4%90%E1%BB%99c-%C4%90%C3%A1o-%C4%90%C6%A1n-Gi%E1%BA%A3n-S%C3%A1ng-T%E1%BA%A1o-Ch%E1%BB%91ng-S%E1%BB%91c-Samsung-Galaxy-Buds-Core-Tai-Nghe-V%E1%BB%8F-M%E1%BB%81m-Tren-i.1845196600.52063037808?extraParams=%7B%22display_model_id%22%3A406130204238%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Thích Hợp Cho Samsung Galaxy Buds Core Tai Nghe Bluetooth Không Dây Vỏ Bảo Vệ Màu Trơn Siêu Mỏng Silicon Độc Đáo Đơn Giản Sáng Tạo Chống Sốc Samsung Galaxy Buds ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

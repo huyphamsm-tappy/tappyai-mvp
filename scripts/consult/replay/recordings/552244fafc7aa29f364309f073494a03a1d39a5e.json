@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"Thông tư 64/2025/TT-BTC\" hộ chiếu lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:59.174Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"Thông tư 64/2025/TT-BTC\" hộ chiếu lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/155962",
+    "snippet": "Giảm phí thẩm định theo thông tư 64/2025/TT-BTC ngày 30/6/2025, mức thu phí thẩm định là 150.000.000 (đồng)*50%=75.000.000 đồng. - Cách 2: Tính theo nội ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

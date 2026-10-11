@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 battery life up to hours ANC charging case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:10:25.454Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 battery life up to hours ANC charging case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case.",
+    "position": 1
+   },
+   {
+    "title": "Airpods Pro 2nd gen case battery drain",
+    "link": "https://discussions.apple.com/thread/254459124",
+    "snippet": "Hello everyone, I have recently got AirPods pro 2nd generation and I believe I am experiencing case battery drain issues to some extent. I used the ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Up to 8 hours of listening time on a single charge with Active Noise Cancellation enabled (up to 7.5 hours with Spatial Audio and Head Tracking enabled) · Up to ...",
+    "position": 3
+   },
+   {
+    "title": "Airpod Pro Gen 2 battery life issue",
+    "link": "https://discussions.apple.com/thread/255231805",
+    "snippet": "I have tracked usage of them over the last couple of weeks or so and starting from 100% charge I get about 12-14 hours over the course of a week ...",
+    "date": "27 thg 10, 2023",
+    "position": 4
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/",
+    "snippet": "8 hrsUp to 8 hours of battery life on one charge with Active Noise Cancellation. Up to 22 hours of battery life with charging case and Active Noise Cancellation.",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 2 case is draining battery wi…",
+    "link": "https://discussions.apple.com/thread/254318802",
+    "snippet": "Hi, \n\nBattery on my AirPods Pro 2 case is draining 20 - 25 % a day without using the AirPods. I have the latest firmware. Is anyone else having ...",
+    "position": 6
+   },
+   {
+    "title": "Charge your AirPods",
+    "link": "https://support.apple.com/en-us/119912",
+    "snippet": "Charge your AirPods. Learn how to charge your AirPods and how to check the charge status. How to charge your AirPods. Charge your case.",
+    "date": "17 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 3",
+    "link": "https://www.apple.com/airpods-pro/",
+    "snippet": "Up to 5 hours of battery life on one charge with Active Noise Cancellation. Voice Isolation, Hey Siri, and Siri Interactions. Compare all AirPods models ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

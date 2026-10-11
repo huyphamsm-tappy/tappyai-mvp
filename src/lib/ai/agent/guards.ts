@@ -68,7 +68,7 @@ export function guardToolInput(name: string, args: Record<string, unknown>, o: {
 }
 
 /** Instruction-like payloads beyond the Serper door markers: fake role headers, chat-template tokens, tool/policy talk. */
-const ROLE_OR_TEMPLATE = /(?:^|\n|\s)(?:system|developer|assistant)\s*[:：]|<\|[a-z_]+\|>|\[\/?INST\]|###\s*(?:instruction|system)|\b(?:new|updated)\s+(?:instructions?|policy|system prompt)\b|\b(?:call|invoke|use)\s+(?:the\s+)?(?:tool|function)\s+\w+|\b(?:send|reveal|print|show)\s+(?:the\s+|your\s+)?(?:api\s*key|secret|token|password|system prompt)\b|\btransfer\s+(?:money|funds)\b|chuyển\s+(?:tiền|khoản)\s+(?:vào|tới|đến)/i
+const ROLE_OR_TEMPLATE = /(?:^|\n|\s)(?:system|developer|assistant)\s*[:：]|<\|[a-z_]+\|>|\[\/?INST\]|###\s*(?:instruction|system)|\b(?:new|updated)\s+(?:instructions?|policy|system prompt)\b|\b(?:call|invoke|use)\s+(?:the\s+)?(?:tool|function)\s+\w+|\b(?:send|reveal|print|show)\s+(?:the\s+|your\s+)?(?:api\s*key|secret|token|password|system prompt)\b|\btransfer\s+(?:money|funds)\b|chuyển\s+(?:tiền|khoản)\s+(?:vào|tới|đến)|\b(?:developer|jailbreak|god|dan|admin)\s+mode\b|\b(?:disable|bypass|override|turn\s+off)\s+(?:the\s+|all\s+|your\s+)?(?:guards?|guardrails?|safety\s+(?:rules?|filters?|polic(?:y|ies))|content\s+filters?)\b|\bmark\s+(?:every|all|each)\s+(?:claims?|facts?|numbers?)\b/i
 const URL_IN_TEXT = /!?\[[^\]]*\]\([^)]*\)|https?:\/\/\S+|\bwww\.\S+/gi
 export const isInstructionLike = (s: string): boolean => !!marked(s) || ROLE_OR_TEMPLATE.test(s)
 

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:01.022Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrdXDhBixVFzQGv7mogmxdaqwA8eRb0HYp3yVkRcpPDQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro_1.png&tbnid=_CADXAU12aUi7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/a-663697.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS63hB96ns4CJwgN_5KkDONLhsw6ix5OvwUiA6U7TqPpQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fa-663697.jpg&tbnid=2Iq-a4pnbfyAeM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=1200&h=675",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-2.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShUS5kV5DfQZM_ET-0oMQakP7gD0ZYFk6YP4zIUE0Oow&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-2.png&tbnid=d8_xina0lptnaM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-3.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8HefQWOvscJ7D6IXMrOtVF0DGXsLje7vSFPn_2A9aZg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-3.png&tbnid=53ElLRJX9uUn7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/a-100921.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbW1bSCo6bcMiNaqgVF87_xKXqJZi9-XtuHODCDj-hw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fa-100921.jpg&tbnid=-OvmkcsG-MQsuM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=1200&h=675",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-6.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC1u0nfNeRKY9L5R84EKJB6zVDFSK7PzqPl9HtdjkYSQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-6.png&tbnid=VkVIpyyR8qjB2M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-5.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQicHiugWYvCcNiYc44PM2aHXjxHQu5kq1cs86pV_HAJg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-5.png&tbnid=1w79bTQNOL4n0M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-10.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAPACcnWYl3avDzb_nMsTCLsXKzmwBWcgZBMDQgC7G4A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-10.png&tbnid=4sIhvwvn9_Y-bM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro.html&docid=BK-K5mPvr9tDfM&w=358&h=358",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

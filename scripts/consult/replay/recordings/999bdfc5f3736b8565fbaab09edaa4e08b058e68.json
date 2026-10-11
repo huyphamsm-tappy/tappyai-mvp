@@ -1,0 +1,310 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ chống nước IPX4 Sony WH-CH720N chạy bộ chống nước",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:42:53.958Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC tai nghe chạy bộ chống nước IPX4 Sony WH-CH720N chạy bộ chống nước",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Anker Tai nghe Bluetooth Soundcore Liberty 4 NC",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=Anker+Soundcore+Liberty+4+NC+tai+nghe+ch%E1%BA%A1y+b%E1%BB%99+ch%E1%BB%91ng+n%C6%B0%E1%BB%9Bc+IPX4+Sony+WH-CH720N+ch%E1%BA%A1y+b%E1%BB%99+ch%E1%BB%91ng+n%C6%B0%E1%BB%9Bc&prds=localAnnotatedOfferId:1,catalogid:6782285249686714207,gpcid:17003970224311560104,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQF-BNTidN5vTA1uufLP6aFnpmvzH878uVPbvv5Bd4zNjkdY1w7kD9ql0kUyuzYn2fmTUbgYCaPoFlVqYLP9ywTSnlmQ6bljxsZjOGKpGhtowu5AzqNwHSbUw",
+    "productId": "6782285249686714207",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth SoundCore Liberty 4 Pro - A3954",
+    "source": "anker.vn",
+    "price": "2.850.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTUk9emvEVtizVFSO9XdYQCfwd8RCu43i6Y2Z611drhBIKTIjgHue8TtuGO_MoYdy8BRMR8xYOO5JCjlk4FhLj1l3QsbLDXIqi5rb9oBtk",
+    "rating": 4.5,
+    "ratingCount": 21,
+    "productId": "8208946958804539977",
+    "position": 2
+   },
+   {
+    "title": "Liberty 4 NC | Tai nghe khử tiếng ồn True-Wireless",
+    "source": "soundcore NA",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQ07FOJ5RTytpj5a7AqhT1jU8hrenWAi6mwxbRNUT_w3jvrbCFFsYDguNCAgB24UUIsVda4MXKjd9PW0pgBCjGvhELBL_yCa0gaBBNZIJ-BSYwQdkx95JV3",
+    "productId": "7892953274011020717",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 NC (Bluetooth v5.3, 10H, AI 6 Mic, Hi-Res Audio, Adaptive ANC 2.0, BassUp , IPX4, Support App, Google Fast",
+    "source": "Promax Studio",
+    "price": "1.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTriDX2WVof7Sc19YbWupKrZ2D1C5kLn69yEbSmKZK0BCuO6pJIVKLA3EBdtebLL22Enq8Glrhehuv22HZssS_TAxWgMEFewbqX7no3BIOJiDf1-eq1x9XX",
+    "rating": 4.7,
+    "ratingCount": 15,
+    "productId": "9316858416281000506",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe không dây Anker Soundcore Liberty 4 Pro",
+    "source": "Fptshop.com.vn",
+    "price": "3.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQHf2neqiGdz0mAjld5aA49OgkguvVEpl1vteW3OAy-R1om1NtJJWIJy1HlW3fiVIujDg7_lDOmxot-ODDqefpjh94DgFz88iGMSKyVXCYBobAXIJMOlmH3",
+    "productId": "6459669127998127924",
+    "position": 5
+   },
+   {
+    "title": "Anker A3947 - Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC, chống ồn cao cấp, pin 50h, hires, bluetooth 5.3",
+    "source": "AnkerVietNam.vn",
+    "price": "1.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQnKFLms-RU3IW7JDB_Z_IQuiuohElSn1SVPyVeHDWsp6WioVvXRpsw58hD65cHQ7cbDoRjsMRClljuWmnky6GNE_8bJf4f96kAa-dQMoli8p3U2ucrfQJElg",
+    "productId": "12243424087210888168",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore Liberty 4 NC A3947 - Hàng chính hãng - Xanh Nhạt",
+    "source": "tiki.vn",
+    "price": "1.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTLZqTD5bUAVhdICnD9OsH9I-MujMDIJYikNhyKrtbKfLKD2jr0GfGa4rdXH94RQw9HWP9Zf4TOCjxwQLvt-q1-SUQGrcpj_VBPOBdkmyr6uJ9MSoFqlg-o",
+    "productId": "3215922198355590178",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 NC - Hồng",
+    "source": "chube.vn",
+    "price": "1.452.680 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTSopQuPO_EKeh8Mlt0IpfOETj1wVf0q89yi9uP0H62BQ6lIad0W-lhdmUBnFVxgzeNwUt61Ltw6hDplycnoPvRpAqFd6UnikdbPLvpsL5Tod_dQ4sPWaNo",
+    "productId": "9990649709167611314",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe bluetooth soundcore Liberty 4 Pro",
+    "source": "namlinh.vn",
+    "price": "2.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTSpg_vsJVehPDvHS5oOiBp9TdEnrY5QXtI7uU3PVj9EkciXwZhUoFu0QBnFkMcCeBFFvyjaDG9L-p146oPTrAezd7VkkhGAHOVEMk4l09j-BJ6sKK8tWEjIA",
+    "rating": 4.4,
+    "ratingCount": 27,
+    "productId": "7756208903780468382",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC A3947, chống ồn cao cấp, pin 50h, hires, bluetooth 5.3",
+    "source": "Công ty TNHH Kỹ Thuật Số Gia Phúc",
+    "price": "1.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSGEB8L48YF4uuP9u2NkWQIPO6SK8ZbfK6wFwmiCLlGlHRWAenp0wntJaWkOPN1RkGqXJn1hE1BT8V31nF6HWiaToxX7IDogHeedTDgTQt7AyPr6c8_j0DWXw",
+    "rating": 4.8,
+    "ratingCount": 255,
+    "productId": "4408941289753397147",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe không dây TWS SOUNDCORE Liberty 4 NC Blue (A3947H31)",
+    "source": "Thành Nhân TNC",
+    "price": "1.439.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS9Ukax8GPR7hhd7FIYe7aUyoaHuxLrqG3WsluZNW1kt0gsv5XDd930bRQM0ryzn6Xcma6qBegCyWRc6UHufZcV5EG3TXvVPjVIjvZ7pfYNLgeCEO1MXDQQ",
+    "rating": 4.8,
+    "ratingCount": 255,
+    "productId": "4689121158464638735",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe không dây Anker Soundcore Liberty 4 Pro - A3954",
+    "source": "ndtl.vn",
+    "price": "2.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcScwAD5q7mS7ovT4y3c8kdW7Nrr_sf3ovMhI8mjIPmSIaVRJTGImlsumhXyKl9dQ-yHk_Ay7uHFYy1pFkLxyrr7OwPVPHGqMutxYx_Xm40l4V2j1WjKpW9v",
+    "rating": 4.6,
+    "ratingCount": 170,
+    "productId": "2776290907934203793",
+    "position": 12
+   },
+   {
+    "title": "Tai Nghe Anker Soundcore Liberty 4 NC (Pink)-A3947",
+    "source": "rulehitech.com",
+    "price": "1.250.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR5ZfMC924WQZ4SxhEV7Z30IggatqAGawZFIfE71f0nUhRiI1FZFJwVDt57gA9mzpM2GqXgYRx82ZaHZlIvzEw9UsTnwmw1-ytascjuzuK8Q1qyQwiW9m3y6Q",
+    "productId": "5364832066722034787",
+    "position": 13
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 Pro (Bluetooth v5.3, 10H, Hi-Res Audio, AI 6 Mic, ACAA, Adaptive ANC 3.0, IP55, Support App, Google Fast",
+    "source": "Promax Studio",
+    "price": "2.935.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTck-3kCEmbjUuKrfYGxxV2Je-2CgK69262U39fGsV8rv3Rui4uJ8UWIBfjWA4YEcBXjWFEESoGnX76QHs1ZhqITo8tuG9t9UE0dF2h0XNt5IKcOE1bZpUFuA",
+    "productId": "4749114018582937276",
+    "position": 14
+   },
+   {
+    "title": "TAI NGHE ANKER 4 NC",
+    "source": "oreka.vn",
+    "price": "1.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSMjbMQtzmCJddlOc5cBkWnNs-IL9k9rusdBOpIayoV4dDfl1wx-tv4gBy7znlfuW08tJcjfpJBa7xInxh_5UyS5scov6Rp8oE_uV0aoDW6",
+    "productId": "8737389442612827365",
+    "position": 15
+   },
+   {
+    "title": "Soundcore by Anker Liberty 4 NC True-Wireless Noise Cancelling Earbuds, 98.5% Noise Reduction to Ears and Environment, Hi-Res Sound, 50H Battery, Wire",
+    "source": "Microless.com",
+    "price": "1.716.465 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRD5Y66trDg20R-YUwr8D2Ec2jxl6B8Bq8ajxcQRm0akRLl-l-nt2ZHBmq58uILzqnT-jI34RmWswu61Y7LKARlK-qR8KDeemD50OKOaEMBxLPM-8Ajsh1I",
+    "productId": "14751765462617330566",
+    "position": 16
+   },
+   {
+    "title": "Tai nghe không dây TWS SOUNDCORE Liberty 4 NC White (A3947H21)",
+    "source": "Thành Nhân TNC",
+    "price": "1.439.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSLVSRhxCKdCC32j_-MxxbgTngYGHCKnb_k7jh3nLTeDfWLrD_8eosPY6j0soyBS09l3SOUDZ8jLb_lmtjqOFh2vi1FnfSGcAYbSdjvykXjq1VksdCZJ7wO",
+    "productId": "11814444855368643743",
+    "position": 17
+   },
+   {
+    "title": "Hộp sạc Liberty 4 NC - Đen",
+    "source": "soundcore NA",
+    "price": "912.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRu5lOiC3YG1saNK2ZKFlEblTgN3ZkXYZcCU_vicwJmxxuk8OJDEL_RfnsTFsveBbDX14xTOmVDIOZtqFNJzW0S5Ei_yayY57E3z63fMVKIU_-sLEXPplR9zg",
+    "rating": 5,
+    "ratingCount": 3,
+    "productId": "17719434272160577702",
+    "position": 18
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 NC (Bluetooth v5.3, 10H, Hi-Res Audio) - WHITE - TechMall Distribution by GEEKTEK JSC - Trung tâm phân phối",
+    "source": "TechMall Vietnam Distribution",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSJUE8xfGeOwslGPRUaQiojZX_dgZNTd9VcvgVBfI84k91fL3u1nDWW6tftijSXO3aaC3086OTGBakHsWhNkuhBC6f1FrSkrXTK9h_wnoSABAWX_UCYT6De",
+    "rating": 4.7,
+    "ratingCount": 15,
+    "productId": "14005347022028927522",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe không dây TWS SOUNDCORE Liberty 4 NC Pink (A3947H51)",
+    "source": "Thành Nhân TNC",
+    "price": "1.439.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT3N1uAqymRlFpGj5WrJBNK0HM18rdxPGvUj34Jgd11koM03xM8jRCMe1bLBqa2DNshgioFLWbdAYUNbKeHQK8_BDSmAVHiozEkXWpbL9E2K37n1TioRCEnRw",
+    "productId": "13844672920255176024",
+    "position": 20
+   },
+   {
+    "title": "سماعة أنكر ساوندكور ليبرتي ٤ إن سي، محرك ١١ مم مصمم خصيصًا، مدة تشغيل تصل إلى ١٠ ساعات، بلوتوث ٥.٣، خاصية إلغاء الضوضاء النشطة، ٦ ميكروفونات مع خوارزم",
+    "source": "Microless.com",
+    "price": "1.507.292 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQvy42L68iyrK_Pc1JXwpLvGcBlHNTheASZ3fgmfNWuYyrlQ_nTi3dXW_D4w3B7p6QjwfM0LXABRoFKc3HxfUyslikdVOloBoVqDtsXbO_0aSRaQNQLs0NH",
+    "productId": "3696173460194009786",
+    "position": 21
+   },
+   {
+    "title": "Tai nghe thay thế trái và phải Liberty 4 NC - Xanh navy",
+    "source": "soundcore NA",
+    "price": "1.774.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSByN28M6m-PbNg2mfYchnpwJ6u2XUhLdZ2nO7SpsF5q2glnpOChQHwIze2INk4wXxezCT45RacjLlq9bsy6To15fzAHQPzmPvdnGlnF88kkOMxB_CNjKKM",
+    "productId": "3120582830432332964",
+    "position": 22
+   },
+   {
+    "title": "Tai nghe không dây TWS SOUNDCORE Liberty 4 NC Blue Sky (A3947H61)",
+    "source": "Thành Nhân TNC",
+    "price": "1.439.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRhYxrGOZvvHI0n2BL4m7BiZJs5tl3s_M2T-R916OgjqUOjSh7MTn95adWJMXyBGCXlYRPLqfw3IVAoV8s9eVzSB4SY4xER1oEmK_xXh0aseY_8gxRhIChGDA",
+    "productId": "12516975238751558090",
+    "position": 23
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 NC (Bluetooth v5.3, 10H, Hi-Res Audio) - PINK - TechMall Distribution by GEEKTEK JSC - Trung tâm phân phối",
+    "source": "TechMall Vietnam Distribution",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRLX9RutMm_yL5h7Mu2cW2-AGKgZclyo1g84MCCZERM9WSHZ0hUBzLYeqnKtRwtbyzXHrkWKNCdFwzHhQV5HbtZj2gG2dweObDYbVOy_jrcma2_Wnk3jOyq",
+    "productId": "3322896526299209594",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe thay thế trái phải Liberty 4 NC - Nhung đen",
+    "source": "soundcore NA",
+    "price": "1.774.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTh9e4UcwYXrK5MH3yvlwNvB-w2DRv5mO8yW6OVADJpSiLbOt5Jbtw1OD7gtBDV-5rOA7BZX_04WvJyWvho2DK8Js04-FGl6vzoiWVhh4uG3B5EuI31Y7Ik",
+    "productId": "6978982604789535599",
+    "position": 25
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 Pro (Bluetooth v5.3, 10H, Hi-Res Audio) - WHITE - TechMall Distribution by GEEKTEK JSC - Trung tâm phân",
+    "source": "TechMall Vietnam Distribution",
+    "price": "3.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSOftqHlchwpE3z10Px5W6m77gj2sNZ1nYIzGrk7n-Y45-cvKXKlw5UqQLGBZXWAnWJG7fSqX3yK5HLeredO07Fdw5YNr2UslgleqNpAqEG91g9KeODsCUG",
+    "rating": 4.4,
+    "ratingCount": 60,
+    "productId": "6452913706477401604",
+    "position": 26
+   },
+   {
+    "title": "Hộp sạc Liberty 4 NC- Trắng",
+    "source": "soundcore NA",
+    "price": "912.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ3vl3m7FCLFEtEBOZxpZS2TiY_dbfqNpkAXqxwLch0QVeEagiCsmkkOfqed7vxhW4SXkIriO2lfGgqsA9QzgvkEtU3Ytf56BUxPAPTRI75vMbsDunEztjN",
+    "productId": "8369224869159689791",
+    "position": 27
+   },
+   {
+    "title": "Tai nghe bluetooth Open-Ear Soundcore V40i",
+    "source": "namlinh.vn",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTbUc32f1uJn-ULSjmKJQO90JssBTKazbbjwwW-gPkLYMlJRMotMrDUGPm-BIU69FaXFOTOaI-14wKcRvFEgOsVCazUcWLagOTAKGnTUSqlKTC7HtkgBASeyA",
+    "rating": 4.7,
+    "ratingCount": 321,
+    "productId": "16528155689039098997",
+    "position": 28
+   },
+   {
+    "title": "Tai nghe thay thế trái và phải Liberty 4 NC - Trắng trong",
+    "source": "soundcore NA",
+    "price": "1.774.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTVzSEWDb9QZWN2zR73DqU8DLw6ZmiNt24MM1wK9VKEfexPw92fOCfKyv168qsMj59vozdqCoGPv8ik-8HT_vzIVBeuf8dWJ3w5-9y0aqheGxviUCje6GBd",
+    "productId": "1554646561848557608",
+    "position": 29
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore Liberty 4 NC A3947 - Hàng chính hãng - Màu trắng",
+    "source": "tiki.vn",
+    "price": "1.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSlnIT0EHMdgaOpxB2ER2DIjnZ15XyycAIRp3LEJ6AkhEiLEUtuyhiCpOi_Hl-dNp7xF3vu4yFsHFV31BV3IrJnT1npafwMEdbjcatmjGJa0TK7F-zfyW8SlA",
+    "productId": "7906171149822653407",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe thay thế trái và phải Liberty 4 NC - Hồng Pastel",
+    "source": "soundcore NA",
+    "price": "1.774.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQjriQN86HMENFNh7RktwbkLymgaJIdAcz_-N7MOnGBEt6RtnkuFbecJ40_LCqeMrMkKqRngXOvp_4cJCikIIiZXo27FbXcakgYy29Ig6Hh2M09CB91wyql",
+    "productId": "9842090291251727540",
+    "position": 31
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 NC (Bluetooth v5.3, 10H, Hi-Res Audio) - BLUE - TechMall Distribution by GEEKTEK JSC - Trung tâm phân phối",
+    "source": "TechMall Vietnam Distribution",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSdlQFVYq8-mvLfeiwwm3-NjwENJfl_yyDgbGPH2PN9YBdvwGGO0HCpMDLbUpcE-QZPt7FOfjlq2aLAAr2YSg_8LWxWcp1YJLDMcifVi3CHL17aEoiZPGqfyA",
+    "productId": "535471985910845169",
+    "position": 32
+   },
+   {
+    "title": "Tai Nghe Không Dây TWS SOUNDCORE Liberty 4 Pro (Bluetooth v5.3, 10H, Hi-Res Audio) - BLACK - TechMall Distribution by GEEKTEK JSC - Trung tâm phân",
+    "source": "TechMall Vietnam Distribution",
+    "price": "3.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ_VHNScNJPD2nYv96jURjsa-kabl-Bjo-TkMaiwu354cGCWFVitdRXiutZCRnsJRG4i5HL6NBZ0AOPM8uBwUuUcgqlhldO2WXTU04PZGNd1AHDBwiZuHBsRw",
+    "productId": "7442456246541233393",
+    "position": 33
+   }
+  ],
+  "credits": 2
+ }
+}

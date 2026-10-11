@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air 15 inch M2 8GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:32:41.540Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air 15 inch M2 8GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kết quả cho \"Macbook air m2 8 136\"",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m2-8-136",
+    "snippet": "Khám phá Macbook air m2 8 136 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 1
+   },
+   {
+    "title": "Tương thích với MacBook Air 15 inch (Model A3241/A3114 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/mieng-dan-laptop-4-trong-1-cho-macbook-air-13-inch-2025-2024/1733103860491978573",
+    "snippet": "Nếu bạn không chắc về mẫu MacBook của mình, hãy kiểm tra dưới đáy thiết bị xem mẫu có phải là A3240/A3113/A2681/A2941 hay không. Ngoài ra, các mẫu A3114 và ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "tablet android 2025 philippines",
+    "link": "https://shop.tiktok.com/vn/k/tablet-android-2025-philippines",
+    "snippet": "Khám phá tablet android 2025 philippines mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 3
+   },
+   {
+    "title": "Keycap xuyên led vân Topographic 4.0 gradient nhựa pbt ...",
+    "link": "https://shop.tiktok.com/vn/pdp/keycap-full-size-gradient-pbt-cho-ban-phim-co-thiet-ke-dep/1731524342359557367",
+    "snippet": "Mua Keycap xuyên led vân Topographic 4.0 gradient nhựa pbt FULL SIZE nút cho bàn phím cơ trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ ...",
+    "position": 4
+   },
+   {
+    "title": "Máy Chiếu Android Thông Minh, Monoz Ray, Thiết Kế Mới ...",
+    "link": "https://shop.tiktok.com/vn/pdp/may-chieu-android-minh-y8-mini-8000-lumens-1080p-4k/1731445781502986557",
+    "snippet": "Máy chiếu WIFI X1 tích hợp YouTube, Netflix, hỗ trợ tải xuống APP. Với chức năng Bluetooth và WIFI Điện thoại di động và máy chiếu được kết nối với cùng một ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

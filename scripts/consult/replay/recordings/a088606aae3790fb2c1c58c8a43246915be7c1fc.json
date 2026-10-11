@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 giá bán Việt Nam bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:22.897Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 giá bán Việt Nam bảo hành (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "snippet": "... bảo hành Samsung Care+. 1.299.000đ. Chi tiết. Gói 1 năm bảo hành Samsung Care+. 2.029.000đ. Chi tiết. Gói 2 năm bảo hành Samsung Care+. 3.399.000đ. Chi tiết.",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "snippet": "Trả góp 0% ; Hiệu năng. 4.9/5. (45 đánh giá) ; Thời lượng pin. 4.9/5. (45 đánh giá) ; Chất lượng camera. 4.9/5. (45 đánh giá) ; Giá sản phẩm. 29.450.000đ 25.290.",
+    "rating": 4.9,
+    "ratingCount": 59,
+    "position": 2
+   },
+   {
+    "title": "Giá Samsung Galaxy S24 series cập nhật mới, ưu đãi sốc",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s/s24-series.html",
+    "snippet": "Mức giá của dòng máy này như sau: Samsung Galaxy S24 tiêu chuẩn: khởi điểm từ 22.990.000đ. Samsung Galaxy S24 Plus 256GB - 512GB: khởi điểm từ 26.990.000đ. Giá ...",
+    "position": 3
+   },
+   {
+    "title": "Samsung S24 Ultra cũ như mới, chính hãng, giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/hang-cu/samsung/galaxy-s/s24-series.html",
+    "snippet": "Samsung Galaxy S24 Ultra 12GB 256GB - Cũ Trầy Xước · 16.190.000đ. 29.450.000đ. Giảm 45%. Smember giảm đến 162.000đ. S-Student giảm thêm 700.000đ ; Samsung Galaxy ...",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 8GB 512GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-512gb.html",
+    "snippet": "Dạ sản phẩm SAMSUNG GALAXY S24 8GB 512GB TÍM (S921) - Giá thời điểm hiện tại 21.490.000đ. Khu vực miền Bắc. Hiện sản phẩm chưa có sẵn tại chi nhánh Hải Phòng ạ.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "Gói 2 năm Samsung Care+ cho Samsung S24 Series | Giá rẻ",
+    "link": "https://cellphones.com.vn/dich-vu-samsung-care-plus-2-nam-galaxy-s24-series.html",
+    "snippet": "Dịch vụ Samsung Care Plus 2 năm Galaxy S24 Series là gói bảo hành mở rộng 2 năm bảo hành tai nạn rơi vỡ và vào nước với giá trị bảo vệ lên đến 2 lần giá niêm ...",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S chính hãng | Nhiều dòng giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s.html",
+    "snippet": "Bảng giá điện thoại Samsung S Series mới 10/2026? ; Samsung Galaxy S26 5G 12GB 256GB. 22.990.000đ. 22.490.000đ ; Samsung Galaxy S24 Ultra 12GB 256GB. 25.290.000đ.",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 8GB 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-cu-dep.html",
+    "snippet": "Samsung Galaxy S24 8GB 256GB - Cũ Đẹp ; HSSV, Giáo viên đến 489.500đ ; Smember Giảm thêm đến 98.000đ ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 9.790.000đ ; Danh sách ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe pin chống ồn 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:02:45.400Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe pin chống ồn 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Thời lượng pin lên đến 22 giờ với hộp sạc và bật tính năng Chủ Động Khử Tiếng Ồn. Thời gian nghe lên đến 30 giờ với hộp sạc. Thời lượng pin lên đến 20 ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Apple giới thiệu AirPods 4 hoàn toàn mới với âm thanh và ...",
+    "link": "https://www.apple.com/vn/newsroom/2024/09/apple-introduces-all-new-airpods-4-with-industry-defining-audio-and-design/",
+    "snippet": "Dòng sản phẩm AirPods mới có thiết kế mới và tính năng Chủ Động Khử Tiếng Ồn cho AirPods 4, cùng một loạt các lựa chọn màu mới đa dạng cho ...",
+    "date": "10 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "AirPods 5 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-5/specs/",
+    "snippet": "Thời lượng pin lên đến 4 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn · Thời lượng pin lên đến 6 giờ với một lần sạc khi tắt kiểm soát tiếng ồn.",
+    "position": 5
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống mồ hôi và chống nước khi tập thể dục và chơi các thể thao không ở dưới nước, đạt chuẩn IPX4. Khả ...",
+    "date": "22 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "Mua AirPods 5",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-5",
+    "snippet": "Hộp Sạc Không Dây có thời lượng pin lên đến 22 giờ khi bật Chủ Động Khử Tiếng Ồn. ... Ngoài ra, bạn có thể sạc lại pin cho hộp sạc bằng bộ sạc Apple Watch hoặc bộ ...",
+    "position": 7
+   },
+   {
+    "title": "Ưu Đãi Tiết Kiệm Cho Ngành Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/store",
+    "snippet": "Học sinh/sinh viên và nhà giáo đủ điều kiện sẽ tiết kiệm được tối đa đến 10% khi sử dụng gói hỗ trợ bảo hành AppleCare+ cho Mac hoặc iPad.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

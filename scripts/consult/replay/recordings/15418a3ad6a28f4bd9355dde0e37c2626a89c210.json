@@ -1,0 +1,55 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu trực tuyến hồ sơ cần giấy tờ lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:32.711Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu trực tuyến hồ sơ cần giấy tờ lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; - 02 ảnh cỡ 4cm x 6cm, phông nền trắng, mặt nhìn thẳng, đầu để trần, không đeo kính màu (chụp ảnh tại ...",
+    "position": 1
+   },
+   {
+    "title": "Vietnam evisa - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/trang-chu-ttdt",
+    "snippet": "Phí cấp thị thực điện tử được nộp qua cổng thanh toán điện tử do Cục Quản lý xuất nhập cảnh quy định. Phí cấp thị thực điện tử và phí thanh toán ...",
+    "date": "11 thg 11, 2024",
+    "position": 2
+   },
+   {
+    "title": "Tổ chức bảo lãnh người nước ngoài",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/en_US/web/guest/huong-dan-dvbl-xdnc",
+    "snippet": "Bước 1: Nhập thông tin công văn đề nghị xét duyệt, kiểm tra nhân sự người nước ngoài nhập cảnh (theo Mẫu NA2) và nhận mã hồ sơ điện tử. Bước 2: In công văn đề ...",
+    "position": 3
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "Riêng Thứ 7 tiếp khách vào buổi sáng. Giờ tiếp khách: - Buổi sáng: từ 08h00 – 11h30 - Buổi chiều: từ 13h30 – 16h00. Ghi chú: Trường hợp quý ...",
+    "position": 4
+   },
+   {
+    "title": "Tra cứu tính trạng hồ sơ và download Thị thực điện tử",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/vi_VN/web/guest/tra-cuu-ho-so",
+    "snippet": "Tra cứu tính trạng hồ sơ và download Thị thực điện tử. Mã hồ sơ điện tử: Email: Ngày sinh: refreshCaptcha. Chữ để nhận dạng. Mã xác nhận. Tìm kiếm. Họ tên:.",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

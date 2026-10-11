@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Hòa Pasteur\" OR \"Phở Việt Nam\" OR \"Pasteur Street Craft Beer Hoàng Sa\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:17:39.188Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Hòa Pasteur\" OR \"Phở Việt Nam\" OR \"Pasteur Street Craft Beer Hoàng Sa\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Hòa Pasteur Ho Chi Minh — second-time pho ...",
+    "link": "https://www.tiktok.com/@theres.food.at.home/video/7687032965754408205",
+    "snippet": "The video documents a visit to Phở Hòa Pasteur in Ho Chi Minh, Vietnam, where the creator tried pho for only the second time and described ...",
+    "position": 1
+   },
+   {
+    "title": "Pho in Vietnam: Best Phở Hòa Pasteur Review",
+    "link": "https://www.tiktok.com/@rushdytiblani_/video/7673461730302758165",
+    "snippet": "Where and when to go Phở Hòa Pasteur is located on Pasteur Street in Ho Chi Minh City and is popular during meal times. Expect a bustling ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Hòa Pasteur: Authentic Vietnamese Pho in Ho Chi ...",
+    "link": "https://www.tiktok.com/@sgadventurousduo/video/7619325653887814932",
+    "snippet": "... Likes, TikTok video from Sgadventurousduo (@sgadventurousduo): “Discover the highly-rated Phở Hòa Pasteur ... ĐÔNG CHUIL – DẠY PHỞ VIỆT NAM. 8987.",
+    "position": 3
+   },
+   {
+    "title": "Phở Hòa Pasteur — Saigon's iconic phở spot",
+    "link": "https://www.tiktok.com/@traveling.beancou/video/7685849144375741709",
+    "snippet": "Phở Hòa Pasteur is an old-school Saigon phở spot in Ho Chi Minh City that has been doing the same thing for decades.",
+    "position": 4
+   },
+   {
+    "title": "We tried the famous Phở Hòa Pasteur and it did not ...",
+    "link": "https://www.tiktok.com/@seanandjoo/video/7517836457839430920",
+    "snippet": "2287 Likes, TikTok video from seanandjoo (@seanandjoo): “We tried the famous Phở Hòa Pasteur and it did not dissapoint.",
+    "position": 5
+   },
+   {
+    "title": "POV Đứng Bếp tại Phở Việt Nam - Phở Việt Nam by Võ Quốc",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7686443306141666581",
+    "snippet": "POV: Đứng bếp tại Phở Việt Nam by Võ Quốc Mạch video ghi lại góc nhìn trực tiếp từ khu vực chế biến tại quán Phở Việt Nam của Võ Quốc.",
+    "position": 6
+   },
+   {
+    "title": "Michelin Bib Gourmand pho in a stone bowl",
+    "link": "https://www.tiktok.com/@jonathanchoione/video/7663192219330825486",
+    "snippet": "Phở Việt Nam at 66 Trần Quốc Toản in Xuân Hòa, Ho Chi Minh is a Michelin Bib Gourmand–recognized pho spot known for visible, ...",
+    "position": 7
+   },
+   {
+    "title": "Cách làm giấm tỏi chấm phở như Phở Việt Nam by Võ Quốc",
+    "link": "https://www.tiktok.com/@voquoc_chef/video/7693135818281520402",
+    "snippet": "Cách làm giấm tỏi chấm phở như Phở Việt Nam by Võ Quốc. Nhiều thực khách đến Phở Việt Nam by Võ Quốc ăn phở rất mê giấm tỏi ở quán, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

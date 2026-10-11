@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thegioididong.com iPhone 16 Pro 256GB chính hãng giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:17:43.318Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thegioididong.com iPhone 16 Pro 256GB chính hãng giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) - Giá tốt, thu cũ trợ giá đến 2 ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb",
+    "snippet": "iPhone 16 Pro 256GB chính hãng, giá tốt, thu cũ trợ giá đến 2 triệu, giảm giá các sản phẩm Apple mua kèm, đặc biệt giảm đến 500k khi mua kèm ...",
+    "date": "10 thg 9, 2024",
+    "position": 1
+   },
+   {
+    "title": "Giá iPhone 16 series ưu đãi hấp dẫn, sẵn hàng, góp 0%",
+    "link": "https://www.thegioididong.com/dtdd-apple-iphone-16-series",
+    "snippet": "Giá iPhone 16 chính hãng VN/A dao động từ 16,19 triệu đến gần 44 triệu đồng ... iPhone 16 Pro 256GB, 31.990.000đ. iPhone 16 Pro 1TB, 43.990.000đ. Bảng giá ...",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro Max giá tốt, giảm đến 4.2tr, BH 1 năm",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-max",
+    "snippet": "iPhone 16 Pro Max 256GB giá tốt, giảm ngay 4tr, thu cũ trợ giá đến 2tr, bảo hành chính hãng 1 năm, trả chậm 0% lãi suất, hư gì đổi nấy 12 tháng. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại iPhone - Apple giá rẻ, chính hãng, mua trả góp 0%",
+    "link": "https://www.thegioididong.com/dtdd-apple-iphone",
+    "snippet": "iPhone giá bao nhiêu? Giá các dòng iPhone chính hãng tại Thế Giới Di Động dao động từ khoảng 11,7 triệu đồng cho đến hơn 60 triệu đồng tùy thuộc vào đời máy ...",
+    "position": 4
+   },
+   {
+    "title": "Điện thoại iPhone 16 Pro 128GB | Giá tốt, trả chậm 0% lãi ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro",
+    "snippet": "Mua điện thoại iPhone 16 Pro 128GB chính hãng, giá tốt chỉ từ 28.99 triệu ... iPhone 16 Pro 256GB. 1.099 USD. 31.990.000đ. iPhone 16 Pro 512GB. 1.299 USD.",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 256GB chính hãng VN/A, giá rẻ, bảo hành 1 năm",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-256gb",
+    "snippet": "Mua điện thoại iPhone 16 256GB chính hãng Apple, giá tốt, có trả chậm 0% lãi suất, giảm giá sản phẩm Apple khác khi mua kèm, hư gì đổi nấy 12 tháng.",
+    "position": 6
+   },
+   {
+    "title": "Mua Điện thoại iPhone 16 Pro Max 256GB cũ, rẻ hơn từ 30 ...",
+    "link": "https://www.thegioididong.com/may-doi-tra/dtdd/iphone-16-pro-max?pid=329149&isimei=1",
+    "snippet": "Điện thoại iPhone 16 Pro Max 256GB White Titanium. 26.000.000₫ -24%. Bảo hành: Chính hãng đến 19/11/2026. Giá sản phẩm mới: 33.990.000₫. Tiết kiệm: 7.990.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Bảng giá iPhone 16/Plus/Pro/Pro Max mới nhất tại Thế ...",
+    "link": "https://www.thegioididong.com/hoi-dap/bang-gia-iphone-16-plus-pro-pro-max-chinh-thuc-1570362",
+    "snippet": "256 GB, Apple A18 6 nhân, 6.7\", Chính 48 MP & Phụ 12 MP, 27 giờ, 20 W. iPhone 16 Pro Max 256GB. 33.990.000₫. -7%. 31.590.000₫. 4.9. 8 GB, 256 GB, Apple A18 Pro ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

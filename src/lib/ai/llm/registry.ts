@@ -40,7 +40,7 @@ function modelOverridesFromEnv(): ModelOverrides {
 // can be overridden with LLM_LUNA_MODEL (all roles) or LLM_<ROLE>_MODEL for consult / intent / plan.
 function lunaOverridesFromEnv(): Partial<Record<ModelRole, string>> {
   const all = process.env.LLM_LUNA_MODEL
-  const roles: ModelRole[] = ['fast', 'smart', 'planning', 'vision', 'consult', 'intent', 'plan']
+  const roles: ModelRole[] = ['fast', 'smart', 'planning', 'vision', 'consult', 'intent', 'plan', 'agent']
   const out: Partial<Record<ModelRole, string>> = {}
   for (const r of roles) out[r] = (r === 'consult' || r === 'intent' || r === 'plan' ? process.env[`LLM_${r.toUpperCase()}_MODEL`] : undefined) ?? all
   return out
@@ -125,6 +125,9 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
   // A reasoning plan thinks before its first part. 25 s, not 30: replay 30/09 a medium trip plan hit 30 s twice and the
   // fallback then ended at 50–53 s. Low effort (the default now) measured max 20 s for the whole plan.
   if (role === 'plan') return { firstPartMs: 25000, generateMs: 30000 }
+  // Phase 8 runtime step (TAPPY_AGENT=2): a tool-choosing step or the final answer. 25 s, then the primary is ABORTED before the one
+  // retry (fallback.ts abortPrimaryOnTimeout) — the timed-out request never keeps running or billing beside the retry.
+  if (role === 'agent') return { firstPartMs: 25000, generateMs: 25000 }
   if (role === 'consult' || role === 'intent') return { firstPartMs: 8000, generateMs: 8000 }
   // fast / smart / planning / vision: a long single-shot answer (Viết content, translate, scam analysis) is not cut short.
   return { firstPartMs: 15000, generateMs: 40000 }
@@ -140,7 +143,7 @@ export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {
   const retry = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
   const claudeAdapter = haikuFallbackEnabled() ? (defaultProviderId() === 'claude' ? getProvider() : (claudeProvider ??= createClaudeProvider(modelOverridesFromEnv()))) : null
   const claude = claudeAdapter?.isConfigured() ? claudeAdapter.model(role) : null
-  return withFallback(primary, claude ?? retry, { ...waitsFor(role), label: role, fallbackKind: claude ? 'haiku' : 'luna_retry' })
+  return withFallback(primary, claude ?? retry, { ...waitsFor(role), label: role, fallbackKind: claude ? 'haiku' : 'luna_retry', abortPrimaryOnTimeout: role === 'agent' })
 }
 
 let claudeProvider: AIProvider | null = null

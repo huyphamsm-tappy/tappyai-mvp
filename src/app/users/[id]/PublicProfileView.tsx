@@ -46,7 +46,7 @@ import Link from 'next/link'
 import Image from '@/components/media/SafeImage'
 import {
   ArrowLeft, Grid3X3, Share2, Heart, Bookmark, EyeOff, Eye, Loader2, AlertCircle, UserPlus, Check, Pencil,
-  ImagePlus, Trash2, Bell, UserRound, Lock,
+  ImagePlus, Trash2, Bell, UserRound, Lock, MessageCircle,
 } from 'lucide-react'
 import V3Shell from '@/components/v3/V3Shell'
 import { useNotifications } from '@/components/NotificationProvider'
@@ -55,6 +55,7 @@ import { createClient } from '@/lib/supabase/client'
 import LinkPoster from '@/components/LinkPoster'
 import { ClipViewer } from '@/app/reviews/ProfileTab'
 import { isShareOnlyName, type Review } from '@/app/reviews/feedShared'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 import { rejectCoverFile, uploadCover, removeCover, CoverRequestError } from '@/lib/profile/cover'
 import { uploadErrorKey } from '@/lib/profile/uploadError'
 import { loadLiked, loadSaved, loadHidden } from './ownerCollections'
@@ -98,6 +99,8 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
   const [loadError, setLoadError] = useState(false)
   const [following, setFollowing] = useState(false)
   const [followBusy, setFollowBusy] = useState(false)
+  const [messageBusy, setMessageBusy] = useState(false)
+  const [messageError, setMessageError] = useState(false)
   const [tab, setTab] = useState<Tab>('posts')
   const [collections, setCollections] = useState<Record<PrivateTab, Collection>>({ liked: IDLE, saved: IDLE, hidden: IDLE })
   const [viewerStart, setViewerStart] = useState<number | null>(null)
@@ -184,6 +187,31 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
       setProfile(p => p ? { ...p, follower_count: Math.max(0, p.follower_count + (next ? -1 : 1)) } : p)
     } finally {
       setFollowBusy(false)
+    }
+  }
+
+  // ── Message: the existing start-direct endpoint (it deduplicates per pair, so an existing conversation is simply reopened) ───
+  // Signed out / anonymous session → login, exactly like Follow. A refusal (400) is deliberately ONE sentence: "blocked", "not allowed to
+  // reach you" and "no such account" are indistinguishable by design, and this page must not make them distinguishable again.
+  const handleMessage = async () => {
+    if (isOwn || messageBusy) return
+    if (!viewerId) { window.location.href = '/login?returnTo=' + encodeURIComponent(`/users/${userId}`); return }
+    setMessageBusy(true)
+    setMessageError(false)
+    try {
+      const res = await fetch('/api/messaging/threads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind: 'direct', userId }),
+      })
+      if (res.status === 401 || res.status === 403) { window.location.href = '/login?returnTo=' + encodeURIComponent(`/users/${userId}`); return }
+      const data = await res.json().catch(() => null)
+      if (!res.ok || typeof data?.threadId !== 'string' || !data.threadId) throw new Error('message_failed')
+      window.location.href = '/profile/notifications?thread=' + encodeURIComponent(data.threadId)
+    } catch {
+      setMessageError(true)
+    } finally {
+      setMessageBusy(false)
     }
   }
 
@@ -396,12 +424,23 @@ export default function PublicProfileView({ userId, viewer, onBack }: { userId: 
                       <Pencil size={15} aria-hidden="true" />{t('v3.publicProfile.edit')}
                     </Link>
                   ) : (
+                    <>
                     <button type="button" onClick={handleFollow} disabled={followBusy} className="v3-pp-btn" data-on={following ? 'true' : 'false'} data-pp-follow aria-pressed={following}>
                       {followBusy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : following ? <Check size={15} aria-hidden="true" /> : <UserPlus size={15} aria-hidden="true" />}
                       {following ? t('reviews.following') : t('reviews.follow')}
                     </button>
+                    <button type="button" onClick={handleMessage} disabled={messageBusy} className="v3-pp-btn" data-pp-message>
+                      {messageBusy ? <Loader2 size={15} className="animate-spin" aria-hidden="true" /> : <MessageCircle size={15} aria-hidden="true" />}
+                      {t('v3.publicProfile.message')}
+                    </button>
+                    {/* WP-06 — report / block this person (signed-in visitors; draws nothing while the flags are off). */}
+                    {viewerId && (
+                      <SafetyMenu tone="onMedia" report={{ target: 'user', id: userId }} user={{ id: userId, name: profile.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }} />
+                    )}
+                    </>
                   )}
                 </div>
+                {messageError && <p role="alert" className="v3-pp-bio" data-pp-message-error>{t('v3.publicProfile.messageError')}</p>}
               </section>
 
               {/* ── Sections: public for everyone; the owner also gets their private activity. ── */}

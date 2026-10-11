@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Polvcdg -P050-X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:06:03.013Z",
+ "body": {
+  "searchParameters": {
+   "q": "Polvcdg -P050-X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Polvcdg -X6 IPX8 Tai nghe Bluetooth không dây dẫn ...",
+    "link": "https://shopee.vn/Polvcdg-X6-IPX8-Tai-nghe-Bluetooth-kh%C3%B4ng-d%C3%A2y-d%E1%BA%ABn-x%C6%B0%C6%A1ng-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-32G-B%C3%A0i-t%E1%BA%ADp-5.3-Tai-nghe-kh%C3%B4ng-d%C3%A2y-m%C3%B3c-tai-b%C6%A1i-i.1067715921.27151258565",
+    "snippet": "Polvcdg -X6 IPX8 Tai nghe Bluetooth không dây dẫn xương chống nước 32G Bài tập 5.3 Tai nghe không dây móc tai bơi ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "rating": 4.9,
+    "ratingCount": 21,
+    "position": 1
+   },
+   {
+    "title": "#microbluetooth giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/microbluetooth-tag",
+    "snippet": "Tai nghe Bluetooth J08 Tai nghe nhạc HiFi Tai nghe không dây Tai nghe không thấm nước thể thao Tai nghe có micrô HD. 65.000₫. 152.308₫. -57%. rating-star ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

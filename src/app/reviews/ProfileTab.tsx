@@ -20,6 +20,7 @@ import LinkPoster from '@/components/LinkPoster'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { Post, CommentDrawer, ShareModal, isShareOnlyName, type Review } from './feedShared'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 /* ─── Swipeable clip viewer — opens from the profile grid with the SAME UX as
    the main feed: swipe/arrow between clips, single-tap pause, double-tap like,
@@ -375,6 +376,10 @@ export function ProfileTab({ userId, viewerId, showBackButton, onBack, variant =
             }`}>
             {followBusy ? <Loader2 size={15} className="animate-spin mx-auto" /> : following ? t('reviews.following') : t('reviews.follow')}
           </button>
+        )}
+        {/* WP-06 — report / block this person. Draws nothing while the flags are off or when nobody is signed in. */}
+        {!isOwnProfile && viewerId && (
+          <SafetyMenu tone="onMedia" report={{ target: 'user', id: userId }} user={{ id: userId, name: profile?.full_name }} onBlockedChange={(b) => { if (b) setFollowing(false) }} />
         )}
         </div>
       </div>

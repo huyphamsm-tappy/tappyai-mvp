@@ -119,6 +119,8 @@ export interface PlanItemGuardResult {
   text: string; matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number
   /** c40 T6: stops moved to their row's opening time / stops whose out-of-hours time was cleared. */
   timesMoved: number; timesCleared: number
+  /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
+  outOfArea?: number
 }
 
 /** c40 T6 — see the header: a venue stop's time must fall inside its row's hours, or be moved / cleared. */
@@ -144,7 +146,29 @@ function fitTimesToHours(items: Item[], placeOf: Map<Item, PlanPlace>, res: { ti
   })
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): PlanItemGuardResult {
+// ── CONSULTATIVE_IN_AGENT: a plan card holds only places of the plan's destination ──────────────
+//
+// 🚨 Measured (UAT, 2026-10-10, "đi Cát Bà 3 ngày 2 đêm"): the card showed "BELGO LE NGO CAT" and "Ticos Coffee Bàu Cát" — Hồ Chí Minh
+// venues the maps search returned for the words "Cát…". `guardPlanItems` only asked "was this place retrieved this turn?" (place_id, then
+// name) — a retrieved place of another city passed. With a destination, the retrieved pool is cut to the places whose OWN address names
+// that destination (folded, whole words); a place with no address cannot be checked, so it is left out rather than guessed. Nothing is
+// fetched: only the address the row already carries is read. No destination (flag off, or none known) = the pool is untouched.
+
+/** The destination as a folded phrase ("Đảo Cát Bà" → "cat ba"), or '' when there is nothing usable to compare. */
+export function destinationKey(destination: string | null | undefined): string {
+  if (typeof destination !== 'string') return ''
+  const key = fold(destination).replace(/^(?:dao|quan dao|thanh pho|tp|thi xa|huyen|tinh)\s+/, '')
+  return key.length >= 3 ? key : ''
+}
+
+/** True when the address names the destination as whole words. No address = cannot tell = false. */
+export function addressInDestination(address: unknown, key: string): boolean {
+  if (!key) return true
+  if (typeof address !== 'string' || !address.trim()) return false
+  return ` ${fold(address)} `.includes(` ${key} `)
+}
+
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -153,7 +177,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
   try { plan = JSON.parse(fullText.slice(start + OPEN.length, end).trim()) } catch { return none }
   if (!plan || !Array.isArray(plan.days)) return none
 
-  const pool = places.filter(p => typeof p?.name === 'string' && p.name.trim())
+  const named = places.filter(p => typeof p?.name === 'string' && p.name.trim())
+  // CONSULTATIVE_IN_AGENT (destination given only then): the pool is the retrieved places that belong to the plan's destination.
+  const destKey = destinationKey(opts.destination)
+  const pool = destKey ? named.filter(p => addressInDestination(p.address, destKey)) : named
+  const outOfArea = named.length - pool.length
   const byPlaceId = new Map(pool.filter(p => typeof p.place_id === 'string' && p.place_id).map(p => [p.place_id as string, p]))
   const used = new Set<PlanPlace>()
   const findByName = (name: string): PlanPlace | undefined => {
@@ -216,5 +244,5 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[]): 
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
   }
-  return { text: fullText.slice(0, start) + OPEN + '\n' + JSON.stringify(plan) + '\n' + fullText.slice(end), ...res }
+  return { text: fullText.slice(0, start) + OPEN + '\n' + JSON.stringify(plan) + '\n' + fullText.slice(end), ...res, ...(destKey ? { outOfArea } : {}) }
 }

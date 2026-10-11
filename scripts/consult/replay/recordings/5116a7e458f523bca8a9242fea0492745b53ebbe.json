@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy tính Apple MacBook Pro 14 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:47.380Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy tính Apple MacBook Pro 14 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Pro-14-inch-M5-10-core-CPU-10-core-GPU-16GB-memory-1TB-SSD-s%E1%BA%A1c-70W-USB-C-i.88201679.51051989889",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 core GPU, 16GB memory, 1TB SSD, sạc 70W USB-C giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 4.4,
+    "ratingCount": 22,
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Pro-14-inch-M5-10-core-CPU-10-core-GPU-24GB-memory-1TB-SSD-s%E1%BA%A1c-70W-USB-C-Power-i.88201679.51151999009",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 core GPU, 24GB memory, 1TB SSD, sạc 70W USB-C Power giá tốt. Mua hàng qua mạng uy tín, ...",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "position": 2
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Pro 14 inch M2 Pro 2023 (10 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Pro-14-inch-M2-Pro-2023-(10-CPU-16-GPU-16GB-512GB)-i.88201679.20682664843",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Pro 14 inch M2 Pro 2023 (10 CPU - 16 GPU - 16GB - 512GB) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "macbook pro - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook/pro",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm macbook pro chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 4
+   },
+   {
+    "title": "Túi lót máy tính xách tay Ngang thẳng Chèn bảo vệ Túi lưu trữ ...",
+    "link": "https://shopee.vn/T%C3%BAi-l%C3%B3t-m%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Ngang-th%E1%BA%B3ng-Ch%C3%A8n-b%E1%BA%A3o-v%E1%BB%87-T%C3%BAi-l%C6%B0u-tr%E1%BB%AF-nh%E1%BA%B9-Th%C3%ADch-h%E1%BB%A3p-cho-Apple-Macbook-pro-14-16-air-13.3-Dell-HP-Ly-h%E1%BB%A3p-m%C3%A1y-t%C3%ADnh-i.1603579797.43267708267",
+    "snippet": "Túi lót máy tính xách tay Ngang thẳng Chèn bảo vệ Túi lưu trữ nhẹ Thích hợp cho Apple Macbook pro 14 16 air 13.3 Dell HP Ly hợp máy tính.",
+    "position": 5
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Pro-M5-Pro-14-inch-(15-core-CPU-16-core-GPU-24GB-RAM)-i.469040198.43479918586",
+    "snippet": "Máy tính xách tay Apple MacBook Pro M5 Pro 14 inch (15 core CPU | 16 core GPU | 24GB RAM). 1/11. 2 phân loại có sẵn. 80.290.000₫-81.990.000₫.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "laptop+apple giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=laptop%2Bapple",
+    "snippet": "Pin máy tính xách tay A2519 MỚI cho Apple MacBook Pro 14\" A2442 M1 Phiên bản 2021. 1.490.000₫. rating-star 4.8 Đánh giá shop. location-icon Thành phố Hà Nội.",
+    "position": 7
+   },
+   {
+    "title": "mac mini - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/mac%20mini",
+    "snippet": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/. custom-overlay. flag-label Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

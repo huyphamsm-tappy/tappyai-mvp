@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/airpods/compare AirPods Pro 2 thời gian nghe 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:51.740Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/airpods/compare AirPods Pro 2 thời gian nghe 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khi tắt tính năng Kiểm Soát Tiếng Ồn, thời gian nghe lên đến 6 giờ. Thử nghiệm được thực hiện bằng cách xả toàn bộ pin AirPods khi phát âm thanh cho đến khi ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

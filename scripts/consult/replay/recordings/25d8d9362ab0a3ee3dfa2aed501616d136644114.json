@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng Michelin dưới 50.000 VND một người món ăn giá rẻ Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:00.905Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng Michelin dưới 50.000 VND một người món ăn giá rẻ Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "NHÀ HÀNG VIỆT NAM ĐƯỢC MICHELIN VINH DANH ...",
+    "link": "https://www.youtube.com/watch?v=3w4Toc5ub-Q",
+    "snippet": "Chi nhánh Thảo Điền: 32 Đường 11, Phường An Khánh, TP. HCM · Chi nhánh Tao Đàn: 34 Đường Võ Văn Tần, Phường Xuân Hoà, TP. HCM.",
+    "position": 1
+   },
+   {
+    "title": "Cỗ làng 2,5 triệu đồng trong nhà hàng Michelin TP HCM",
+    "link": "https://vnexpress.net/co-lang-2-5-trieu-dong-trong-nha-hang-michelin-tp-hcm-4819988.html",
+    "snippet": "Nhà hàng Miên trên đường Đặng Dung phục vụ các món Việt với số lượng từ 6 - 20 món theo kiểu tasing menu (thực đơn nếm thử). Nhà hàng vào danh ...",
+    "date": "3 thg 12, 2024",
+    "position": 2
+   },
+   {
+    "title": "Những nhà hàng Michelin ở Việt Nam không thể bỏ lỡ",
+    "link": "https://www.vietjetair.com/vi/pages/nhung-nha-hang-michelin-o-viet-nam-khong-the-bo-lo-1723425963866",
+    "snippet": "La Maison 1888 là nhà hàng đầu tiên và duy nhất tại Đà Nẵng được gắn sao Michelin. Tại đây, thực khách có thể vừa thưởng thức các món ăn Pháp với thực đơn thay ...",
+    "position": 3
+   },
+   {
+    "title": "Top 30+ quán ăn Quận 1 ngon nức tiếng Sài thành",
+    "link": "https://zalopay.vn/quan-an-quan-1-2328",
+    "snippet": "Giá dao động: 50.000 VNĐ/món. Là một trong những quán ăn Quận 1 được nhiều người yêu thích, bánh mì chảo Dì Nữ mang đến bữa sáng nóng hổi và ...",
+    "date": "5 thg 9, 2025",
+    "position": 4
+   },
+   {
+    "title": "Ăn Gì Ở Quận 1? Gợi Ý 23 Quán Ăn Quận 1 Giá Rẻ",
+    "link": "https://vincom.com.vn/trend/an-gi-o-quan-1",
+    "snippet": "Top quán ăn, nhà hàng ngon quận 1 nhất định phải thử · Basta Hiro - Ẩm thực Ý trứ danh ở Vincom Center Đồng Khởi · Chang Kang Kung – Hải Sản Khói · Chilli Thái - ...",
+    "position": 5
+   },
+   {
+    "title": "Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ ...",
+    "link": "https://www.youtube.com/watch?v=AvS9oprIc4s",
+    "snippet": "Địa chỉ : Top Những Quán Ăn Núp Hẻm Ngon Rẻ ở Sài Gòn, Thổ Địa Chỉ Đường Mới Biết 1. GÀ NƯỚNG CHÚ THÀNH (10H -22H) 00:00 110/39 SỐ 30, ...",
+    "position": 6
+   },
+   {
+    "title": "Ho Chi Minh City Affordable MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/us/en/ho-chi-minh/ho-chi-minh_2978179/restaurants/affordable",
+    "snippet": "Find all Affordable Restaurants - the MICHELIN Guide Ho Chi Minh City. MICHELIN inspector reviews and insights.",
+    "position": 7
+   },
+   {
+    "title": "9+ nhà hàng 5 sao Quận 1 sang trọng, dịch vụ đẳng cấp",
+    "link": "https://www.greensm.com/vn-vi/news/nha-hang-5-sao-quan-1",
+    "snippet": "Địa chỉ: 36 Hồ Tùng Mậu, Bến Nghé, Quận 1, TP.HCM · Thời gian hoạt động: 11:00 – 14:00, 17:00 – 23:00 · Mức giá tham khảo: 1.000.000 – 2.500.000 ...",
+    "date": "9 thg 1, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

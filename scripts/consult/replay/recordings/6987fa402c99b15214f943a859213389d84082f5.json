@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn gia đình phù hợp trẻ em Đà Nẵng món Việt Đà Nẵng gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:18:08.215Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn gia đình phù hợp trẻ em Đà Nẵng món Việt Đà Nẵng gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 8 Nhà Hàng Việt Nam Tại Đà Nẵng Mà Bạn Nên Thử",
+    "link": "https://grandmercuredanang.com/vi/kham-pha/nha-hang-viet-nam-da-nang/",
+    "snippet": "Grand Mercure Danang · Veranda Vietnamese – Khám Phá Tinh Hoa Ẩm Thực Việt · Nhà Bếp Xưa · Ngon Thị Hoa · Trúc Lâm Viên · Đông Dương · Madame Lân · Nhà hàng Mr.Anh.",
+    "position": 1
+   },
+   {
+    "title": "Top 50 quán ăn ngon Đà Nẵng ngon - bổ - rẻ, siêu đông ...",
+    "link": "https://zalopay.vn/quan-an-ngon-da-nang-5286",
+    "snippet": "Khám phá 50 quán ăn ngon Đà Nẵng siêu đông khách: Bún chả cá Ông Tạ, Bánh cuốn Tiến Hưng, Bún mắm Vân, Mít trộn Bà Già, Bánh tráng kẹp Dì ...",
+    "date": "5 thg 5, 2025",
+    "position": 2
+   },
+   {
+    "title": "Top 7 Nhà Hàng Phù Hợp Cho Gia Đình Tại Đà Nẵng",
+    "link": "https://www.pullman-danang.com/vi/kham-pha/am-thuc/nha-hang-gia-dinh-danang/",
+    "snippet": "Bảng tổng hợp nhà hàng cho gia đình tại Đà Nẵng · 1. Nhà Hàng Epice – Pullman Da Nang Beach Resort · 2. The Square – Novotel Danang Premier Han River · 3. La Rive ...",
+    "position": 3
+   },
+   {
+    "title": "7 quán cơm gia đình Đà Nẵng ngon như mẹ nấu",
+    "link": "https://havilandhouse.com/com-gia-dinh-da-nang",
+    "snippet": "7 quán cơm gia đình Đà Nẵng ngon như mẹ nấu · 1. Bếp của Ngoại · 2. Tiệm Ăn Chợ Lớn · 3. Cơm Nhà Linh · 4. An Nam Quán · 5. Cơm Nhà Vui · 6. Bếp Hên ...",
+    "date": "27 thg 1, 2026",
+    "position": 4
+   },
+   {
+    "title": "Bếp Ngon Việt- Vietnamese Cuisine, Đà Nẵng - Tripadvisor",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g298085-d33358200-Reviews-B_p_Ngon_Vi_t_Vietnamese_Cuisine-Da_Nang.html",
+    "snippet": "Bếp Ngon Việt- Vietnamese Cuisine, Đà Nẵng: Xem 10 đánh giá không thiên vị về Bếp Ngon Việt- Vietnamese Cuisine, được xếp hạng 4.6 trên 5 trên Tripadvisor ...",
+    "rating": 4.6,
+    "ratingCount": 10,
+    "position": 5
+   },
+   {
+    "title": "Quán cơm gia đình ngon nhất và đông nhất Đà Nẵng là đây nè ...",
+    "link": "https://www.facebook.com/voquocmnvn/posts/qu%C3%A1n-c%C6%A1m-gia-%C4%91%C3%ACnh-ngon-nh%E1%BA%A5t-v%C3%A0-%C4%91%C3%B4ng-nh%E1%BA%A5t-%C4%91%C3%A0-n%E1%BA%B5ng-l%C3%A0-%C4%91%C3%A2y-n%C3%A8-c%E1%BA%A3-nh%C3%A0-ch%C3%BAc-m%E1%BB%ABng-c%C3%B4-h/4175687922746247/",
+    "snippet": "Quán cơm gia đình ngon nhất và đông nhất Đà Nẵng là đây nè cả nhà. Chúc mừng cô học trò của tui. Thầy rất tự hào về emmm.",
+    "position": 6
+   },
+   {
+    "title": "Top 40 món ăn và quán ăn vặt Đà Nẵng hấp dẫn nhất 2026",
+    "link": "https://www.traveloka.com/vi-vn/explore/destination/an-vat-da-nang/1002577",
+    "snippet": "Quán Dì Huê là địa chỉ ăn vặt Đà Nẵng ngon được nhiều bạn trẻ yêu thích nhờ hương vị dân dã và đậm đà. Món bột lọc chiên giòn rụm, nhân tôm thịt thơm lừng chấm ...",
+    "position": 7
+   },
+   {
+    "title": "Top 25 quán ăn ngon Đà Nẵng bạn không nên bỏ lỡ",
+    "link": "https://www.ivivu.com/blog/2012/10/20-quan-an-ngon-nuc-tieng-cua-du-lich-da-nang/",
+    "snippet": "Nằm cạnh bãi biển Mỹ Khê tuyệt đẹp, nhà hàng hải sản Gành Bàng là quán ăn ngon Đà Nẵng được nhiều du khách và người dân địa phương yêu thích.",
+    "date": "11 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

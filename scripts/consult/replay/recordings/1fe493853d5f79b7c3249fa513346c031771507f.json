@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Quê Dượng Bầu\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:39:00.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Quê Dượng Bầu\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cơm Quê Dượng Bầu (@comque.duongbau)",
+    "link": "https://www.tiktok.com/@comque.duongbau",
+    "snippet": "Quán Cơm Quê Dượng Bầu 40E Ngô Đức Kế, phường Sài Gòn, HCM Đặt bàn: 0765.371.893 @Dượng Bầu review ( Kênh Review ) · My từng đeo đuổi ai chưa ? · Video trình ...",
+    "position": 1
+   },
+   {
+    "title": "Vì sao cơm quê dượng bầu luôn nói giá món ăn? Giải thích",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7508993207955492104",
+    "snippet": "Cơm quê dượng bầu là quán cơm quen thuộc ở trung tâm Quận 1, nổi tiếng với món ăn mang phong vị cơm quê. Tuy nhiên nhiều người khi xem video ...",
+    "position": 2
+   },
+   {
+    "title": "Review Cơm Quê Dượng Bầu: cơm quê, rau sạch Sài Gòn",
+    "link": "https://www.tiktok.com/@barretdailly/video/7683936129359351060",
+    "snippet": "Lead Bài viết tổng hợp cảm nhận khi review Cơm Quê Dượng Bầu cùng @kaiphg, tập trung vào các món đặc trưng: cơm quê, rau sạch, thịt kho tiêu ...",
+    "position": 3
+   },
+   {
+    "title": "Cơm Quê Dượng Bầu: Món Trứng Chiên Hành 0k Từ 3/6 ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7511179892155829511",
+    "snippet": "Cơm Quê Dượng Bầu: Món Trứng Chiên Hành Miễn Phí Dành Cho Khách Hàng Từ ngày 3/6 đến 12/6, quán Cơm Quê Dượng Bầu đang tổ chức một chương ...",
+    "position": 4
+   },
+   {
+    "title": "Huỳnh My cầm 100 triệu đi ăn Cơm Quê Dượng Bầu",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7685336327990037778",
+    "snippet": "Nội dung có yếu tố review về Cơm Quê Dượng Bầu, bao gồm tham chiếu đến món ốc bươu nhồi thịt và các trải nghiệm cơm quê. Hashtag kèm theo video ...",
+    "position": 5
+   },
+   {
+    "title": "Mâm cơm 200k ở Cơm Quê Dượng Bầu liệu có xứng đáng ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7659738877925526792",
+    "snippet": "Mâm cơm 200k ở Cơm Quê Dượng Bầu liệu có xứng đáng? #comqueduongbau Luộc Cua Thịt Bao Nhiêu Phút Là ChínBầu Có Ăn Được Đọt Nhãn Lồng KhôngCơm ...",
+    "position": 6
+   },
+   {
+    "title": "Cô xin gửi lời xin lỗi #comqueduongbau #metik",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7510941883489619208",
+    "snippet": "378.5K Lượt thích,17.7K Bình luận.Video TikTok từ Quán Cơm Quê Dượng Bầu (@comque.duongbau): \"Cô xin gửi lời xin lỗi #comqueduongbau #metik\" ...",
+    "position": 7
+   },
+   {
+    "title": "Bữa cơm 200k ở Cơm Quê Dượng Bầu có hợp lý?",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7660498757431151890",
+    "snippet": "Thực đơn và món tiêu biểu Quán Cơm Quê Dượng Bầu phục vụ thực đơn cơm quê truyền thống. Món được nhắc đến nhiều là gà kho gừng — vị mặn ngọt, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

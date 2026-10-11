@@ -1,0 +1,593 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "đặc sản Đà Nẵng mì Quảng bánh tráng cuốn thịt heo món địa phương Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:17:47.378Z",
+ "body": {
+  "searchParameters": {
+   "q": "đặc sản Đà Nẵng mì Quảng bánh tráng cuốn thịt heo món địa phương Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đặc sản Đà Nẵng - Mỳ Quảng - Bánh Xèo - Bánh Tráng Thịt Heo - Nem Lụi - Cơm Bắc",
+    "address": "225A Nguyễn Văn Thoại, Tổ 48, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0560026,
+    "longitude": 108.2448532,
+    "rating": 3.8,
+    "ratingCount": 256,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/dacsandanangnamhien/",
+    "phoneNumber": "+84 969 369 908",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:30",
+     "Thứ Sáu": "07:00–22:30",
+     "Thứ Bảy": "07:00–22:30",
+     "Chủ Nhật": "07:00–22:30",
+     "Thứ Hai": "07:00–22:30",
+     "Thứ Ba": "07:00–22:30",
+     "Thứ Tư": "07:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN7z9N_oXZH9MZqt2poM0i2aVPVXroDEV8cybiQWfjcHHqvMlxKS7UDd9OkymfMphmHOsRYftJUb0VN1-mdxMPALv9TvIfQfjh6U8oJ8WBpqEUf_ix-hdn22IFnY8-Y2I05E1uuTGwa51qA",
+    "cid": "14980306273267267682",
+    "fid": "0x314217000b836fb7:0xcfe4bd2fbca6b862",
+    "placeId": "ChIJt2-DCwAXQjERYrimvC-95M8"
+   },
+   {
+    "position": 2,
+    "title": "Mì Quảng Đà Nẵng - Mỳ Quảng Bà Mua - Đặc Sản Đà Nẵng",
+    "address": "231 Đống Đa, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0754403,
+    "longitude": 108.2153677,
+    "rating": 3.9,
+    "ratingCount": 305,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì"
+    ],
+    "website": "http://myquangbamua.com/",
+    "phoneNumber": "+84 985 000 075",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdFS1KcLCLLW_BB1UmD3irE-lIu9HrTlCxI3R_BjzxHH0EdCAHBcCKdzkWtSSuAl5HZ6xafLL3knFMhj937bcuC8cdwkSGNGvgiwSDIVyld9Fe1Lj4Z5TJIMfiauKSJAjAQIcYG",
+    "cid": "13962565705902010185",
+    "fid": "0x314218384eb67d83:0xc1c4ff885d572f49",
+    "placeId": "ChIJg322TjgYQjERSS9XXYj_xME"
+   },
+   {
+    "position": 3,
+    "title": "Mì Quảng Bếp Quê - Đặc Sản Đà Nẵng",
+    "address": "46 Nguyễn Hữu Thọ, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.048085,
+    "longitude": 108.209305,
+    "rating": 4.3,
+    "ratingCount": 56,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì"
+    ],
+    "phoneNumber": "+84 905 207 566",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdKvXLlxhpt2tDB8OZllZ0V_wDSy6CqQS2Th-xyya8ugyJe0PP-_FCKu2ISKqa3ouHu3qxuV7GxQsrMtd1ijrsoZsbHlBtJ7PrxeEt51XTNUAK58oWRadNSl-dyBW153hYdUpEANdi_hBSx",
+    "cid": "9331966936993526218",
+    "fid": "0x3142190003f33637:0x8181ce7c7f3071ca",
+    "placeId": "ChIJNzbzAwAZQjERynEwf3zOgYE"
+   },
+   {
+    "position": 4,
+    "title": "Mỳ Quảng Bà Cẩm - Địa chỉ ăn mỳ quảng, bánh tráng thịt heo, lẩu cua đồng ngon chất lượng tại Đà Nẵng",
+    "address": "462 Đ. 2 Tháng 9, Hòa Cường, Đà Nẵng, Việt Nam",
+    "latitude": 16.0360974,
+    "longitude": 108.22373359999999,
+    "rating": 4.1,
+    "ratingCount": 85,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100063752762788",
+    "phoneNumber": "+84 901 139 555",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLd9LusD6jw_pHSvNb21TEXaPAMIYFzAv8SUx0S4wt6qpYBVgpyJBVNiqctmBaE9314he5rXIBT5S6zDDdu1UFWXVLyWyQ73fDeilMrburT2Kjd05s9USvefLi6jSE1sMI0g2j8",
+    "cid": "9979237555780158573",
+    "fid": "0x314219b00269f571:0x8a7d5faf4983846d",
+    "placeId": "ChIJcfVpArAZQjERbYSDSa9ffYo"
+   },
+   {
+    "position": 5,
+    "title": "Mì Quảng Ếch bếp Trang",
+    "address": "441 Ông Ích Khiêm, Hải Châu, Đà Nẵng 55000, Việt Nam",
+    "latitude": 16.062838199999998,
+    "longitude": 108.2160468,
+    "rating": 4.4,
+    "ratingCount": 3239,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán mì"
+    ],
+    "website": "https://www.facebook.com/miquangechbeptrangdanang",
+    "phoneNumber": "+84 766 771 772",
+    "openingHours": {
+     "Thứ Năm": "06:30–22:15",
+     "Thứ Sáu": "06:30–22:15",
+     "Thứ Bảy": "06:30–22:15",
+     "Chủ Nhật": "06:30–22:15",
+     "Thứ Hai": "06:30–22:15",
+     "Thứ Ba": "06:30–22:15",
+     "Thứ Tư": "06:30–22:15"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/xoGs90aE4DA?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNPpIzQpgEjdC2YJUA9Zppx3a7OK0EkZOqLo18Q3KtAJvRVUC0bpPzafvl47H3KbH_sGPW95RNuLU8g_nRBR0Z5WTqWwMCsDmvm9PWV6S1e1mghSMehWnLqW9suc0mXtbLSadH7YmXx47FB",
+    "cid": "8932224750166665094",
+    "fid": "0x314219caeead191d:0x7bf5a315d7a2e786",
+    "placeId": "ChIJHRmt7soZQjERhuei1xWj9Xs"
+   },
+   {
+    "position": 6,
+    "title": "Mỳ Quảng Quê Xưa",
+    "address": "165 Núi Thành, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.046879999999998,
+    "longitude": 108.2212191,
+    "rating": 4.2,
+    "ratingCount": 1881,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 919 950 677",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:30",
+     "Thứ Sáu": "06:00–22:30",
+     "Thứ Bảy": "06:00–22:30",
+     "Chủ Nhật": "06:00–22:30",
+     "Thứ Hai": "06:00–22:30",
+     "Thứ Ba": "06:00–22:30",
+     "Thứ Tư": "06:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOHNy-UIUO8YMw-n_Pabl2tpAvas7BDOSdIXpizdOrLjbElLgXhaBWfZDOBT0hj5QJc1l4al33UwF9PxKlhcIaTlm1OOUQxvvpi88sbA9JhIund4UiALfRYnEObrm1kkFps9Q7CQMZb0fgw",
+    "cid": "3333294961981821083",
+    "fid": "0x314219c3f6aa5647:0x2e423e1b7c86909b",
+    "placeId": "ChIJR1aq9sMZQjERm5CGfBs-Qi4"
+   },
+   {
+    "position": 7,
+    "title": "Bánh Tráng Cuốn Thịt Heo Bà Hường",
+    "address": "460 Đ. 2 Tháng 9, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.036180299999998,
+    "longitude": 108.2237454,
+    "rating": 4.2,
+    "ratingCount": 134,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 796 765 793",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMCoeEYxuOs4OgWcJk_W9Q2nsk5K9YIQ6-QxM-p0ks3CrWQAEQrR1cDqfmAiZlQ8e2WilAYoSizVGwjd-xz6jH7t3A1WfM05pAqJklQmaExK_GS8QvLgDXUQmlcPFy3XFHAMp0wvXSz8ow",
+    "cid": "6731173655093393578",
+    "fid": "0x314219e8cf95f719:0x5d69eec6a94f38aa",
+    "placeId": "ChIJGfeVz-gZQjERqjhPqcbuaV0"
+   },
+   {
+    "position": 8,
+    "title": "Mỳ Quảng - Bánh Tráng Thịt Heo Quê Xưa",
+    "address": "283 Hải Phòng, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.070777,
+    "longitude": 108.20914119999999,
+    "rating": 4.3,
+    "ratingCount": 261,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Quán mì"
+    ],
+    "website": "https://sites.google.com/view/myquangquexua",
+    "phoneNumber": "+84 236 3227 577",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe4MAO2jFFk0lRaTcDPgj2rSyr-xi5U0HKVvIXpbtpys_1TYSqqkIB7KAtS9Rbg-xW5_HL0nOZS6BIfdlPIt0G_dSccPXLR078JTkQL2Vm7ZxeWm8bfwTHCKDVN1m7nYq_j695oIA",
+    "cid": "8837830684432012735",
+    "fid": "0x3142184bff408f15:0x7aa6482ec29e15bf",
+    "placeId": "ChIJFY9A_0sYQjERvxWewi5Ipno"
+   },
+   {
+    "position": 9,
+    "title": "Quán Cô Hồng - Đặc Sản Đà Nẵng",
+    "address": "103 Nguyễn Văn Thoại, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0543959,
+    "longitude": 108.2393137,
+    "rating": 4.5,
+    "ratingCount": 2807,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://www.quancohong.com/",
+    "phoneNumber": "+84 905 935 755",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://order.ipos.vn/menu?pos_parent=BRAND-JTWU&pos_id=60559"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLef42GctETIMuUmYtpxS-72MRB1cz11P7x9P6fUK1p-hlwC8ArFfVsmJj0xr2CLLcFIFSzo1P4TKE2KC8sAXW9BXDHzjLz6HYnb194Nvd8irUzGedrckvS3RSTuhjhJ4ci3-seY",
+    "cid": "7125493191301868430",
+    "fid": "0x3142172a308c2623:0x62e2d64e15032b8e",
+    "placeId": "ChIJIyaMMCoXQjERjisDFU7W4mI"
+   },
+   {
+    "position": 10,
+    "title": "Món Quảng",
+    "address": "44 Lê Đình Dương, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0612375,
+    "longitude": 108.2212813,
+    "rating": 4.2,
+    "ratingCount": 187,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì"
+    ],
+    "website": "https://monquang.com.vn/",
+    "phoneNumber": "+84 985 000 075",
+    "openingHours": {
+     "Thứ Năm": "06:00–23:00",
+     "Thứ Sáu": "06:00–23:00",
+     "Thứ Bảy": "06:00–23:00",
+     "Chủ Nhật": "06:00–23:00",
+     "Thứ Hai": "06:00–23:00",
+     "Thứ Ba": "06:00–23:00",
+     "Thứ Tư": "06:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPiZOLzp_vx-SHEEPwvisVX5XpLqUaToYWF11QqGoqZeonBmIoVsq3eJnW7fd9Smi5XVEPAr4Eorm7DENKK_dmvpI3h_3frdIr526xBFks4F_okL8qtNYPm8cgOiCNyXTHXQRBRzQ",
+    "cid": "6926105280178966171",
+    "fid": "0x314219cc89f5a2ab:0x601e780e66064e9b",
+    "placeId": "ChIJq6L1icwZQjERm04GZg54HmA"
+   },
+   {
+    "position": 11,
+    "title": "Quán Mậu - Bánh Tráng Cuốn Thịt Heo",
+    "address": "47 Đỗ Thúc Tịnh, Phường, Cẩm Lệ, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0265266,
+    "longitude": 108.2097701,
+    "rating": 4.1,
+    "ratingCount": 952,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 344 599 706",
+    "openingHours": {
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMcGdeCbQxUvsVRK2uYtQ7PCPgtTOBI5sjt6Oe3fHFidlemc9zIDFBWGixz6obqASViYOumMg9pgBs9uHHixSIpo9Bzq80EJbFkEvyba91b0rYTWMT5NCWrhvo2ILpxAe3Zh4HQ",
+    "cid": "7215494173451660188",
+    "fid": "0x3142198c62eb4391:0x642295b8af7cab9c",
+    "placeId": "ChIJkUPrYowZQjERnKt8r7iVImQ"
+   },
+   {
+    "position": 12,
+    "title": "Mỳ Quảng Bà Mua - 95A Nguyễn Tri Phương",
+    "address": "95A Nguyễn Tri Phương, Thanh Khê, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0565752,
+    "longitude": 108.208438,
+    "rating": 3.8,
+    "ratingCount": 1737,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì",
+     "Nhà hàng chuyên phục vụ bữa sáng",
+     "Cửa hàng bán đồ ăn nấu sẵn",
+     "Nhà hàng"
+    ],
+    "website": "https://myquangbamua.com.vn/",
+    "phoneNumber": "+84 905 005 773",
+    "openingHours": {
+     "Thứ Năm": "06:00–21:30",
+     "Thứ Sáu": "06:00–21:30",
+     "Thứ Bảy": "06:00–21:30",
+     "Chủ Nhật": "06:00–21:30",
+     "Thứ Hai": "06:00–21:30",
+     "Thứ Ba": "06:00–21:30",
+     "Thứ Tư": "06:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXXkSIuEYyTgOWwFTbWcSTE2D2obHn3xEkigNi0FElarvrGaSASuu4JDgvohv7z1PaocRHOQzt3xtg2Fmh4jf3Lo3-D7qMW806fAmQwoI4Sq04pOk0bvA2F50luvt3yX4T4OPj",
+    "cid": "11306935562333865881",
+    "fid": "0x314219b12230e1d9:0x9cea4dfcbb244799",
+    "placeId": "ChIJ2eEwIrEZQjERmUcku_xN6pw"
+   },
+   {
+    "position": 13,
+    "title": "Quán Cô Hồng - Gỏi Cá Nam Ô",
+    "address": "38 Lê Hồng Phong, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0640133,
+    "longitude": 108.2219878,
+    "rating": 4.5,
+    "ratingCount": 1203,
+    "type": "Nhà hàng món cá",
+    "types": [
+     "Nhà hàng món cá"
+    ],
+    "website": "http://quancohong.com/",
+    "phoneNumber": "+84 905 935 755",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOufWU2ZaPw566Go6M9v0xoW5tZMN1C7fTyqVkWqnq09SRvf6wn26cBb7vi3A6cifLIjH79sOIxdfvEEWDNLMRmAliJgBFG9ptv_8EkgYJI1RpCpv_bJmvC0P_tGnEqnU_Ar9cT",
+    "cid": "8835530716961936907",
+    "fid": "0x314219cbdea6b543:0x7a9e1c5fda91960b",
+    "placeId": "ChIJQ7Wm3ssZQjERC5aR2l8cnno"
+   },
+   {
+    "position": 14,
+    "title": "Bánh tráng thịt heo Quán Cốm Đại Lộc",
+    "address": "103 Trưng Nữ Vương, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.057787299999998,
+    "longitude": 108.220816,
+    "rating": 4.7,
+    "ratingCount": 697,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 911 982 717",
+    "openingHours": {
+     "Thứ Năm": "06:30–21:00",
+     "Thứ Sáu": "06:30–21:00",
+     "Thứ Bảy": "06:30–21:00",
+     "Chủ Nhật": "06:30–21:00",
+     "Thứ Hai": "06:30–21:00",
+     "Thứ Ba": "06:30–21:00",
+     "Thứ Tư": "06:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPpk7syuHWI8WTdXXXqZWm-8iClACSZO2wfMuKlTYxOQf0Iuw14uvWmfx43d0BYUsxdOIvP_wWQCSPLy95LgljtcRtErdPvHFx-FoFcSvJgt8CnQADqnOCuWWH8tgXfv3OvekuOuPgmm1Wq",
+    "cid": "15277076547843998620",
+    "fid": "0x31421900439c58d9:0xd403142dc8b1439c",
+    "placeId": "ChIJ2VicQwAZQjERnEOxyC0UA9Q"
+   },
+   {
+    "position": 15,
+    "title": "Bánh tráng thịt heo Bà Hường",
+    "address": "126 Duy Tân, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0512153,
+    "longitude": 108.20812049999999,
+    "rating": 4.2,
+    "ratingCount": 211,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 983 550 959",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOKBY3G8P4djz_ESwpG1bnkb8NZ_q45TsSQhgbYrxix04X_UwV2Rh8-sWPzt7KX1X2XQCAHVDKk6l_AfJWZJ9gr0gLN4eLiOS3_AeqJNYBfsdzhs5yW4f45IqizOZo_WcEXVrAd",
+    "cid": "2599219818995457915",
+    "fid": "0x3142192954fcbf37:0x241248a774611f7b",
+    "placeId": "ChIJN7_8VCkZQjERex9hdKdIEiQ"
+   },
+   {
+    "position": 16,
+    "title": "Mì Quảng Bếp Củi Cu Đông Vlog",
+    "address": "100 Hồ Nghinh, An Hải, Đà Nẵng 50000, Việt Nam",
+    "latitude": 16.074798899999998,
+    "longitude": 108.2427361,
+    "rating": 4.5,
+    "ratingCount": 418,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì"
+    ],
+    "website": "https://www.facebook.com/share/1AjGDtGati/?mibextid=wwXIfr",
+    "phoneNumber": "+84 913 927 779",
+    "openingHours": {
+     "Thứ Năm": "06:00–21:00",
+     "Thứ Sáu": "06:00–21:00",
+     "Thứ Bảy": "06:00–21:00",
+     "Chủ Nhật": "06:00–21:00",
+     "Thứ Hai": "06:00–21:00",
+     "Thứ Ba": "06:00–21:00",
+     "Thứ Tư": "06:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMFfPaUzIVb1rQiMsIGgQKq3evr1QrlhLTm4G3HjFzy2PkRIWskHBaSIS7l88qwN9WIATPSRGEVjPIm_5MOQczFSz9X7cIefTH1wxWg2ZvxOfbO9tooBvSqAzJHnzGgF3XT4HRkg4AvfJY",
+    "cid": "9133481315447136236",
+    "fid": "0x314217003a6ae429:0x7ec0a4dd79e4dfec",
+    "placeId": "ChIJKeRqOgAXQjER7N_ked2kwH4"
+   },
+   {
+    "position": 17,
+    "title": "Quán Mậu Con",
+    "address": "215 Trưng Nữ Vương, Hòa Cường, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0536378,
+    "longitude": 108.2190967,
+    "rating": 4.3,
+    "ratingCount": 753,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 934 720 722",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–21:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLemFCv_X7C3WJsIE4RFof1ULz5wGzJ34hchWttRRLKk_jRlmMo_KP5w2tr4Tev6h_8hylq4lBnI3CTpvO7DDP5XorouIGGyYZxTnv5oIyh36qQvJPNO70ysr9CA2I-Y3dZGMgsG",
+    "cid": "2888871357009530807",
+    "fid": "0x314219c8b074a443:0x281755317c5a8fb7",
+    "placeId": "ChIJQ6R0sMgZQjERt49afDFVFyg"
+   },
+   {
+    "position": 18,
+    "title": "Bánh Tráng Thịt Heo Đại Lộc 2",
+    "address": "124 Huỳnh Thúc Kháng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0586853,
+    "longitude": 108.21808829999999,
+    "rating": 4.2,
+    "ratingCount": 438,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "https://www.foody.vn/da-nang/dai-loc-2-banh-trang-thit-heo-mi-quang-huynh-thuc-khang",
+    "phoneNumber": "+84 766 697 279",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOxRY0-Q4CfZ4PyDKJCtxVnhc8TXTqFHAt3OL3AGHcwyDQ6y9kko5PBT6ClM6znSGui4P9OAIOvawWszvFOp-ubJpO117QTCEZrXq7T3YyEsvCpqMy0sNo2u4uVJS27E0ukqZnW",
+    "cid": "11091693339233504996",
+    "fid": "0x314219cbdf5e8999:0x99ed9c5362944ee4",
+    "placeId": "ChIJmYle38sZQjER5E6UYlOc7Zk"
+   },
+   {
+    "position": 19,
+    "title": "Mỳ Quảng Bà Mua - 40 Ngũ Hành Sơn",
+    "address": "40 Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.051740199999998,
+    "longitude": 108.2372551,
+    "rating": 3.7,
+    "ratingCount": 1061,
+    "type": "Quán mì",
+    "types": [
+     "Quán mì"
+    ],
+    "website": "http://myquangbamua.com.vn/",
+    "phoneNumber": "+84 905 005 773",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPUMaXsmOuQDiOGCYR_CxP3v8zV4HpyE65OcANwhW72bpkLrQoaCnV5bdVONwqzoqlJEPzkraETKScoxcwONyNIetuGsQbCldT1vsYxfLbVBZWMKLKccC9XV2xu24JlUHUXk9Y",
+    "cid": "6706172988471689851",
+    "fid": "0x314219d7ff7bcd7b:0x5d111ccd5c2cc27b",
+    "placeId": "ChIJe817_9cZQjERe8IsXM0cEV0"
+   },
+   {
+    "position": 20,
+    "title": "Mỳ Quảng Bà Mua",
+    "address": "19 Trần Bình Trọng, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.065978899999998,
+    "longitude": 108.21915949999999,
+    "rating": 3.8,
+    "ratingCount": 1098,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "http://www.myquangbamua.com/",
+    "phoneNumber": "+84 985 000 075",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOx1rtWsyqaOn0FF0TIl_UyYgCa1sCmHzfXQqMLBTY8khxcUuPRNeZksSLQHGWs6HDVTsO-7fOUrQ7goqe7dO7EQ0oC_QthMkPmg6ZkKQtwDvxwrRz2NiPFxacVwJFlf1v0LSGU",
+    "cid": "4314573436742138581",
+    "fid": "0x314218349a542d71:0x3be071ae5e59fad5",
+    "placeId": "ChIJcS1UmjQYQjER1fpZXq5x4Ds"
+   }
+  ],
+  "credits": 3
+ }
+}

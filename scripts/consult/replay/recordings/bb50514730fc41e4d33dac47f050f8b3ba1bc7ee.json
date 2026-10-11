@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mây Nướng\" OR \"Hàng Dương Quán Quận 1\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:05:08.970Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mây Nướng\" OR \"Hàng Dương Quán Quận 1\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán đồ nướng ngon gần Cầu Ông Lãnh, Q1",
+    "link": "https://www.tiktok.com/@didauangi.vn/video/7651215691877534997",
+    "snippet": "Mấy bạn thích ăn đồ nướng thì có thể thử quán Mây Nướng tại khu Đề Thám, gần Cầu Ông Lãnh (Quận 1). Đây là gợi ý ăn uống phù hợp cho buổi ...",
+    "position": 1
+   },
+   {
+    "title": "Hành trình xây dựng của \"MÂY NƯỚNG\"",
+    "link": "https://www.tiktok.com/@chuquanlembem/video/7634486982109826312",
+    "snippet": "Mây Nướng không chỉ là một nhà hàng, mà còn là một hành trình xây dựng độc đáo, nơi mà ẩm thực và thiết kế gặp gỡ để tạo ra trải nghiệm độc ...",
+    "position": 2
+   },
+   {
+    "title": "Đọt mây nướng — Thưởng thức món ăn nhiều gai",
+    "link": "https://www.tiktok.com/@vochonganba99/video/7690021349548395828",
+    "snippet": "Đọt mây nướng là chủ đề chính của video. Video giới thiệu đọt mây đã được nướng và mô tả là một món ăn \"nhiều gai\" được thưởng thức trong ...",
+    "position": 3
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 4
+   },
+   {
+    "title": "Menu Mây Nướng Quận 1 – Quán nướng view đẹp, giá ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7647889192063864085",
+    "snippet": "Lead Mây Nướng Quận 1 là tiệm nướng mới với không gian đẹp, menu vừa túi tiền và hiện đang có chương trình tặng món.",
+    "position": 5
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 7
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

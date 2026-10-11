@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Luật Doanh nghiệp 2020 Điều 47 vốn điều lệ công ty TNHH hai thành viên Điều 75 một thành viên vốn điều lệ góp 90 ngày",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:39.281Z",
+ "body": {
+  "searchParameters": {
+   "q": "Luật Doanh nghiệp 2020 Điều 47 vốn điều lệ công ty TNHH hai thành viên Điều 75 một thành viên vốn điều lệ góp 90 ngày",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Luật Doanh nghiệp 2020, số 59/2020/QH14",
+    "link": "https://luatvietnam.vn/doanh-nghiep/luat-doanh-nghiep-2020-so-59-2020-qh14-186272-d1.html",
+    "snippet": "Vốn điều lệ là tổng giá trị tài sản do các thành viên công ty, chủ sở hữu công ty đã góp hoặc cam kết góp khi thành lập công ty trách nhiệm hữu ...",
+    "date": "8 thg 7, 2020",
+    "position": 1
+   },
+   {
+    "title": "Trường hợp được tăng, giảm vốn điều lệ công ty theo quy ...",
+    "link": "https://www.dhtaxlaw.com.vn/truong-hop-duoc-tang-giam-von-dieu-le-cong-ty-theo-quy-dinh-moi-nhat",
+    "snippet": "Vốn điều lệ là một yếu tố quan trọng quyết định quy mô và mức độ cam kết trách nhiệm của doanh nghiệp trong hoạt động kinh doanh.",
+    "position": 2
+   },
+   {
+    "title": "Căn cứ về việc đăng ký vốn điều lệ và phải góp đủ",
+    "link": "https://www.facebook.com/baocaothue/posts/c%C4%83n-c%E1%BB%A9-v%E1%BB%81-vi%E1%BB%87c-%C4%91%C4%83ng-k%C3%BD-v%E1%BB%91n-%C4%91i%E1%BB%81u-l%E1%BB%87-v%C3%A0-ph%E1%BA%A3i-g%C3%B3p-%C4%91%E1%BB%A7lu%E1%BA%ADt-doanh-nghi%E1%BB%87p-2020-lu%E1%BA%ADt-s%E1%BB%91-/1496231015882031/",
+    "snippet": "* Công ty TNHH 2 thành viên trở lên: Điều 47 quy định vốn điều lệ ... * Công ty TNHH 1 thành viên: Điều 75 cũng quy định chủ sở hữu ...",
+    "position": 3
+   },
+   {
+    "title": "Thủ tục tăng, giảm vốn điều lệ đối với công ty TNHH 2 thành ...",
+    "link": "https://phapluatdoanhnghiep.vn/thu-tuc-tang-giam-von-dieu-le-doi-voi-cong-ty-tnhh-2-thanh-vien-tro-len/",
+    "snippet": "– Thành viên phải góp vốn cho công ty đủ và đúng loại tài sản đã cam kết khi đăng ký thành lập doanh nghiệp trong thời hạn 90 ngày kể từ ngày ...",
+    "date": "26 thg 1, 2026",
+    "position": 4
+   },
+   {
+    "title": "Cấp Giấy chứng nhận phần vốn góp đối với công ty TNHH ...",
+    "link": "https://thuvienphapluat.vn/phap-luat-doanh-nghiep/cong-viec-phap-ly/cap-giay-chung-nhan-phan-von-gop-doi-voi-cong-ty-tnhh-hai-thanh-vien-tro-len-124.html",
+    "snippet": "Theo khoản 5 Điều 47 Luật Doanh nghiệp 2020, việc cấp Giấy chứng nhận phần vốn góp cho thành viên của công ty TNHH hai thành viên trở lên được quy định như sau:.",
+    "position": 5
+   },
+   {
+    "title": "THAY ĐỔI VỐN ĐIỀU LỆ CÔNG TY TNHH 02 THÀNH ...",
+    "link": "https://luatduyhung.com/thay-doi-von-dieu-le-cong-ty-tnhh-02-thanh-vien-tro-len-tien-hanh-nhu-the-nao/",
+    "snippet": "Căn cứ Điều 47 Luật doanh nghiệp 2020 quy định: “1. Vốn điều lệ của công ty trách nhiệm hữu hạn hai thành viên trở lên khi đăng ký thành lập ...",
+    "date": "22 thg 5, 2025",
+    "position": 6
+   },
+   {
+    "title": "Luật Doanh nghiệp nước Cộng hòa xã hội chủ nghĩa Việt ...",
+    "link": "https://vi.wikisource.org/wiki/Lu%E1%BA%ADt_Doanh_nghi%E1%BB%87p_n%C6%B0%E1%BB%9Bc_C%E1%BB%99ng_h%C3%B2a_x%C3%A3_h%E1%BB%99i_ch%E1%BB%A7_ngh%C4%A9a_Vi%E1%BB%87t_Nam_2020/Ch%C6%B0%C6%A1ng_III",
+    "snippet": "Điều 47. Góp vốn thành lập công ty và cấp giấy chứng nhận phần vốn góp. 1. Vốn điều lệ của công ty trách nhiệm hữu hạn hai thành viên trở lên khi đăng ký thành ...",
+    "position": 7
+   },
+   {
+    "title": "Điều 47 luật doanh nghiệp 2020 - META Law Firm",
+    "link": "https://tuvandoanhnghiepmetalaw.vn/dieu-47-luat-doanh-nghiep-2020/",
+    "snippet": "Bên cạnh đó, Điều 47 cũng quy định về thời điểm xác lập tư cách thành viên và việc cấp giấy chứng nhận phần vốn góp nhằm ghi nhận quyền sở hữu ...",
+    "date": "17 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

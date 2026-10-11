@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Sea Near Me Hotel Danang",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:53.334Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sea Near Me Hotel Danang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Sea Near Me Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/535110720.jpg?k=e1531eb503546e74f43cc9038512bd8588da1b64b6071a4242c3e9886ec2dbc9&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzLzPQm9huRhLEUaXfBkTCPMNR1m3bL3OsM0hAfSqBkg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sea-near-me-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F535110720.jpg%3Fk%3De1531eb503546e74f43cc9038512bd8588da1b64b6071a4242c3e9886ec2dbc9%26o%3D&tbnid=ZQsOnaCEHSnXOM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsea-near-me-danang.vi.html&docid=ZrIpBFofyUXd7M&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "Giới thiệu - Sea Near Me Hotel Da Nang",
+    "imageUrl": "https://cdn.seanearme.com/wp-content/uploads/2025/04/seanearme-com-18-scaled.jpg",
+    "imageWidth": 1235,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTg2ejss4CYuThyXn-hDc4ENmCXy3Gwo2_8zftOiXCMdA&s=10",
+    "thumbnailWidth": 384,
+    "thumbnailHeight": 797,
+    "source": "Sea Near Me Hotel Da Nang",
+    "domain": "seanearme.com",
+    "link": "https://seanearme.com/gioi-thieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.seanearme.com%2Fwp-content%2Fuploads%2F2025%2F04%2Fseanearme-com-18-scaled.jpg&tbnid=bdKxki2JEiri4M&imgrefurl=https%3A%2F%2Fseanearme.com%2Fgioi-thieu%2F&docid=k6Ln7C7Pt7LsMM&w=1235&h=2560",
+    "position": 2
+   },
+   {
+    "title": "Homepage - Sea Near Me Hotel Da Nang",
+    "imageUrl": "https://cdn.seanearme.com/wp-content/themes/yootheme/cache/ce/DHP1819-scaled-ce3f5dee.jpeg?strip=all&lossy=1&resize=548%2C336&ssl=1",
+    "imageWidth": 548,
+    "imageHeight": 336,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYUYPmwLAhXzoqGxQDgmnMkUc5U1n0d5JhYWwUufZRWQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 336,
+    "source": "Sea Near Me Hotel Da Nang",
+    "domain": "seanearme.com",
+    "link": "https://seanearme.com/en/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.seanearme.com%2Fwp-content%2Fthemes%2Fyootheme%2Fcache%2Fce%2FDHP1819-scaled-ce3f5dee.jpeg%3Fstrip%3Dall%26lossy%3D1%26resize%3D548%252C336%26ssl%3D1&tbnid=7quzTSZaswLJvM&imgrefurl=https%3A%2F%2Fseanearme.com%2Fen%2F&docid=OYn9scEXOrI-nM&w=548&h=336",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Sea Near Me Đà Nẵng (Sea Near Me Hotel Danang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/533661639.jpg?k=29f325d43c3826363ae26b383844abbd24329797b1179eec83eb7821ac5d1828&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvy7iUm-hxflyPrYlliGAIttdyzrlNYtxce4kSUG7Xcg&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/sea-near-me-hotel-danang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F533661639.jpg%3Fk%3D29f325d43c3826363ae26b383844abbd24329797b1179eec83eb7821ac5d1828%26o%3D&tbnid=Z_0JZ_Oi4-Z_3M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fsea-near-me-hotel-danang%2Fhotel%2Fda-nang-vn.html&docid=0ivfE6f4LoeFRM&w=375&h=500",
+    "position": 4
+   },
+   {
+    "title": "Giới thiệu - Sea Near Me Hotel Da Nang",
+    "imageUrl": "https://cdn.seanearme.com/wp-content/themes/yootheme/cache/a7/seanearme-com-27-a7fc40d7.jpeg?strip=all&lossy=1&resize=1920%2C1280&ssl=1",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH8mMfo9xrKNgH62r4rCCM7F1x81K7A5orw5pD6z8BZQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Sea Near Me Hotel Da Nang",
+    "domain": "seanearme.com",
+    "link": "https://seanearme.com/gioi-thieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.seanearme.com%2Fwp-content%2Fthemes%2Fyootheme%2Fcache%2Fa7%2Fseanearme-com-27-a7fc40d7.jpeg%3Fstrip%3Dall%26lossy%3D1%26resize%3D1920%252C1280%26ssl%3D1&tbnid=pnFcRe0a8w3lIM&imgrefurl=https%3A%2F%2Fseanearme.com%2Fgioi-thieu%2F&docid=k6Ln7C7Pt7LsMM&w=1920&h=1280",
+    "position": 5
+   },
+   {
+    "title": "Sea Near Me Hotel Danang, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/535109969.jpg?k=78088f7e78aa49761e4ba8d0dc7c49a27b4cc265e933ba8d0d8366065f495593&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOnV4dGaj5clP8kX1jveGo3BJHJvXneth2u1EpoHsggA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/sea-near-me-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F535109969.jpg%3Fk%3D78088f7e78aa49761e4ba8d0dc7c49a27b4cc265e933ba8d0d8366065f495593%26o%3D&tbnid=Hb0hS1lFlUHx8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fsea-near-me-danang.vi.html&docid=ZrIpBFofyUXd7M&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "Sea Near Me Hotel Danang | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122139721862227782",
+    "imageWidth": 1536,
+    "imageHeight": 2048,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSahzQq-Kx8A9_wxNxjryGepmGH6dMdk-ghkdyffozb4Q&s=10",
+    "thumbnailWidth": 387,
+    "thumbnailHeight": 516,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/seanearme/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122139721862227782&tbnid=DLYrdli1FnloDM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fseanearme%2F&docid=CjjgciukapOqfM&w=1536&h=2048",
+    "position": 7
+   },
+   {
+    "title": "Homepage - Sea Near Me Hotel Da Nang",
+    "imageUrl": "https://cdn.seanearme.com/wp-content/themes/yootheme/cache/5b/seanearme-com-11-scaled-5b3add5f.jpeg?strip=all&lossy=1&resize=384%2C280&ssl=1",
+    "imageWidth": 384,
+    "imageHeight": 280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSm2IsOv61WBFBdfGLOaAwgsHo9PF2A2OtLeX9oU5_tBg&s=10",
+    "thumbnailWidth": 384,
+    "thumbnailHeight": 279,
+    "source": "Sea Near Me Hotel Da Nang",
+    "domain": "seanearme.com",
+    "link": "https://seanearme.com/en/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.seanearme.com%2Fwp-content%2Fthemes%2Fyootheme%2Fcache%2F5b%2Fseanearme-com-11-scaled-5b3add5f.jpeg%3Fstrip%3Dall%26lossy%3D1%26resize%3D384%252C280%26ssl%3D1&tbnid=wWmoaLyxFsDCcM&imgrefurl=https%3A%2F%2Fseanearme.com%2Fen%2F&docid=OYn9scEXOrI-nM&w=384&h=280",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

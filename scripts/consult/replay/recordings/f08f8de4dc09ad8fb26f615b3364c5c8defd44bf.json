@@ -1,0 +1,37 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn Hội An phố cổ thời gian tham quan ban ngày buổi tối vé kiểm soát 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:59:05.561Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn Hội An phố cổ thời gian tham quan ban ngày buổi tối vé kiểm soát 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội An khẳng định vị thế số 1 trong làn sóng “du lịch chậm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-khang-dinh-vi-the-so-1-trong-lan-song-du-lich-cham-chau-a-3043.hwh",
+    "snippet": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026). Cẩm nang du lịch Hội An. Lễ hội · Điểm ...",
+    "date": "23 thg 4, 2026",
+    "position": 1
+   },
+   {
+    "title": "phản ánh - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/tag/ph%E1%BA%A3n-%C3%A1nh",
+    "snippet": "Sáng 16.9, Trung tâm VHTT & TTTH TP Hội An đã tổ chức buổi thảo luận chuyên đề “Giải pháp nâng cao hiệu quả hoạt động hướng dẫn tham quan khu phố cổ Hội An”.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

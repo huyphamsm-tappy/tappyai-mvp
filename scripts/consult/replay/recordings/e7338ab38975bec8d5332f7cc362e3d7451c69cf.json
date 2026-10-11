@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/newsroom AirPods Pro 2 up to 30 hours listening time charging case 6 hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:10:35.510Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/newsroom AirPods Pro 2 up to 30 hours listening time charging case 6 hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Introducing the next generation of AirPods",
+    "link": "https://www.apple.com/newsroom/2021/10/introducing-the-next-generation-of-airpods/",
+    "snippet": "The extended battery life enables up to six hours of listening time1 and up to 30 hours of total listening time with the convenient charging ...",
+    "date": "18 thg 10, 2021",
+    "position": 1
+   },
+   {
+    "title": "Apple announces the next generation of AirPods Pro",
+    "link": "https://www.apple.com/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Using the case for four additional charges, users can enjoy up to 30 hours of total listening time with Active Noise Cancellation — a full six ...",
+    "date": "7 thg 9, 2022",
+    "position": 2
+   },
+   {
+    "title": "Apple upgrades AirPods Pro (2nd generation) with USB‐C ...",
+    "link": "https://www.apple.com/newsroom/2023/09/apple-upgrades-airpods-pro-2nd-generation-with-usb-c-charging/",
+    "snippet": "AirPods Pro (2nd generation) with MagSafe Charging Case (USB‑C) will enable Lossless Audio with ultra-low latency to deliver the perfect true ...",
+    "date": "12 thg 9, 2023",
+    "position": 3
+   },
+   {
+    "title": "Apple introduces AirPods 4 and a hearing health ...",
+    "link": "https://www.apple.com/newsroom/2024/09/apple-introduces-airpods-4-and-a-hearing-health-experience-with-airpods-pro-2/",
+    "snippet": "With incredible sound quality, up to 24-hour battery life with the charging case, and an iconic design, the original AirPods offered wireless ...",
+    "date": "9 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "Get ready to experience iPhone 18 Pro, the new ...",
+    "link": "https://www.apple.com/newsroom/2026/09/get-ready-to-experience-iphone-18-pro-the-new-apple-watch-lineup-and-airpods-5/",
+    "snippet": "AirPods 5 with Wireless Charging Case feature longer battery life9 and a force sensor with volume swipe — a first for the open-ear form factor — ...",
+    "date": "11 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Apple Watch Ultra and next-generation AirPods Pro ...",
+    "link": "https://www.apple.com/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "Customers can even personalize the charging case with their individual Memoji. AirPods Pro (2nd generation) are shown in their charging case.",
+    "date": "22 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "Apple debuts iPhone 18 Pro and iPhone 18 Pro Max",
+    "link": "https://www.apple.com/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "snippet": "On iPhone 18 Pro Max, five minutes of wired charging provides around seven hours of video playback, and based on a new battery usage model that ...",
+    "date": "9 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Introducing Apple Watch Series 12, with the all-new Health ...",
+    "link": "https://www.apple.com/newsroom/2026/09/introducing-apple-watch-series-12-with-the-all-new-health-sensing-system/",
+    "snippet": "Apple Watch Series 12 also offers faster charging: Just 15 minutes now gets up to 12 hours of additional battery life — 50 percent more than the ...",
+    "date": "9 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

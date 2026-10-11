@@ -1,0 +1,64 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:42.839Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Flashcard MỞ RỘNG CÂU giúp bé diễn đạt tốt hơn (Phần 2)",
+    "link": "https://shop.tiktok.com/vn/pdp/1733532477270951384",
+    "snippet": "Bộ gồm 24 thẻ tranh khổ A5, in giấy ảnh dày, cán bóng, chống nước bền đẹp. • Có móc cài cơ động – tiện lợi cho việc lật, treo, mang đi học hay dạy nhóm.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Vòng Cổ Trái Tim, Chữ Cái Tiếng Anh Dành Cho Nữ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vong-co-trai-tim-chu-cai-tieng-anh-day-chuyen-xuong-%C4%91on-lon-thoi-trang-%C4%91a-nang/1733092234366584816",
+    "snippet": "Nó chống xỉn màu, thích hợp để đeo lâu dài. Rất thích hợp cho những phụ nữ theo đuổi phong cách thời trang, muốn mình trở nên nổi bật giữa đám đông.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Đai massage bụng Miuna, chườm ấm ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734833645590644210?source=anchor",
+    "snippet": "Ghế tựa lưng công thái học Miuna, chỉnh dáng ngồi cho mẹ bỉm, hỗ trợ giảm đau mỏi lưng và gù lưng khi chăm con.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Máy Massage Cổ Vai Gáy N7 Master Mô Phỏng Bàn Tay ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734434130051957854",
+    "snippet": "Máy massa nhỏ gọn, sử dụng cực thư giãn, nhấn êm như tay người, cộng thêm có đèn hồng ngoại ấm ấm rất dễ chịu. Ai làm văn phòng hay mỏi vai gáy thì xài là ...",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "position": 4
+   },
+   {
+    "title": "Mạch điều khiển quạt từ xa 12V - 24V Sử dụng cho động ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734765154715862304",
+    "snippet": "** Khuyến nghị: Nếu dùng động cơ 775 thì nên chọn loại 775 60W công suất thấp, không nên dùng loại 150W và các động cơ có chổi than tốc độ quay thấp.",
+    "rating": 4.6,
+    "ratingCount": 9,
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

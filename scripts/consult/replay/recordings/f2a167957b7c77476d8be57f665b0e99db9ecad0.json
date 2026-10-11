@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 15 Pro 128GB\" OR \"iPhone 15 128GB (Chính Hãng VN/A)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:24:30.990Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 15 Pro 128GB\" OR \"iPhone 15 128GB (Chính Hãng VN/A)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 Pro 128GB Quốc Tế Mỹ - Hơn 11 Triệu",
+    "link": "https://www.tiktok.com/@hungrombantao/video/7690794967001763092",
+    "snippet": "iPhone 15 Pro 128GB Quốc Tế Mỹ - Hơn 11 Triệu. Chiếc iPhone 15 Pro dung lượng 128GB, bản quốc tế Mỹ, có giá hơn 11 triệu đồng. Máy màu đen, có ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Pro 128GB Zin Full Chỉ 15 Triệu | Thanh Sang ...",
+    "link": "https://www.tiktok.com/@sang16042/video/7691147168396119303",
+    "snippet": "iPhone 15 Pro 128GB Zin Full Chỉ 15 Triệu | Thanh Sang Mobile. Bạn đang tìm kiếm một chiếc iPhone 15 Pro 128GB với mức giá cực kỳ hấp dẫn?",
+    "position": 2
+   },
+   {
+    "title": "App 8878102 📱 iPhone 15 Pro 128GB te koop ✨ Geen ...",
+    "link": "https://www.tiktok.com/@enchantedtrade/video/7688473322295790856",
+    "snippet": "IPhone 15 Pro 128GB Ex Digimap — ringkasan penawaran - Unit: IPhone 15 Pro 128GB, kondisi mulus 100%. - Baterai Health (BH): 86%. - Kamera ...",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 Pro 128GB JV for Sale — 145k (Black) / 150k ...",
+    "link": "https://www.tiktok.com/@brands_hub_rwp/video/7653459169009224981",
+    "snippet": "Closing iPhone 15 Pro 128GB JV — excellent condition, Apple warranty, 100% battery health. Black 145k, White 150k. Contact 03338421748 to buy or ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Pro 128GB for R12,500",
+    "link": "https://www.tiktok.com/@glamourshop_54/video/7670072461467077909",
+    "snippet": "iPhone 15 Pro 128GB – R12 500 ✨ Premium Condition Pro Camera System ⚡ A17 Pro Chip Excellent Battery Performance FREE Charger ...",
+    "position": 5
+   },
+   {
+    "title": "iPhone 15 Pro 128GB for Sale - Gh5500",
+    "link": "https://www.tiktok.com/@felix.ishop09/video/7686925331864751378",
+    "snippet": "iPhone 15 pro Storage:128gig Price:Gh5500 Swap allowed Shop pickup Deliveries nationwide #fyp. iPhone 15 Pro 128GB for Sale - Gh5500.",
+    "position": 6
+   },
+   {
+    "title": "Refurbished iPhone 15 Pro 128GB Fully Unlocked",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-iphone-15-pro-128gb-fully-unlocked-very-good-cond/1732186417608626360",
+    "snippet": "This refurbished iPhone 15 Pro 128GB is in VERY GOOD condition and fully unlocked, offering a reliable and versatile device for your needs. Safety & compliance.",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 Pro 128GB Natural Titanium — Physical SIM, 79 ...",
+    "link": "https://www.tiktok.com/@dephantomrepairs/video/7689885243179945236",
+    "snippet": "iPhone 15 Pro – 128GB ✨ Natural Titanium Physical SIM Version Battery Health: 79% ✓ Backglass Replaced $3599.99 Perfect option ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

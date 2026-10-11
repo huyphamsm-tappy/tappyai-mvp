@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 USB-C chính hãng Việt Nam giá Apple VN Shopee Tiki (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:12:43.264Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 USB-C chính hãng Việt Nam giá Apple VN Shopee Tiki (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe apple type c - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/apple/type%20c",
+    "snippet": "Tai nghe AirPods Pro 3 USB-C Chính hãng. custom-overlay. flag-label Tai nghe AirPods Pro 3 USB-C Chính hãng. 7.690.000₫. 8.990.000₫. -14%. rating-star 4.9.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A) ; Trọng lượng. Tai Nghe: 5,55 gram. Hộp Sạc + Tai Nghe: 43,99 gram.",
+    "date": "10 thg 9, 2025",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Sale Hàng Hiệu Giảm Đến 50% | 100% Hàng Chính Hãng",
+    "link": "https://shopee.vn/m/tram-ty-uu-dai-29-03",
+    "snippet": "Deal Hot Hàng Hiệu Giảm Đến 50%. Săn sale hàng hiệu 100% Hàng Chính Hãng. Ưu đãi voucher hoàn đến 1 triệu xu. Hàng hiệu sale linh đình. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "cp s?c iphone giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=cp%20s%3Fc%20iphone",
+    "snippet": "290.500 · 415.000₫. -30% ; 1.419.000 · 1.690.000₫. -16%. voucher-icon ; 680.000 · 850.000₫. -20% ; 620.000 · 842.000₫. -26% ; 230.900 · 481.800₫. -52%. voucher-icon.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe iphone - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/tai%20nghe/iphone",
+    "snippet": "Mua online tai nghe iphone chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 10. Miễn phí vận chuyển. Mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "Eurosun - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/eurosun",
+    "snippet": "Tai nghe AirPods Pro 3 USB-C Chính hãng. custom-overlay. flag-label Tai nghe AirPods Pro 3 USB-C Chính hãng. 7.690.000₫. 8.990.000₫. -14%. rating-star 4.9.",
+    "position": 6
+   },
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone-0925",
+    "snippet": "custom-overlay. -34% · 4.109.000 ; custom-overlay. -34% · 10.660.000 ; custom-overlay. -23% · 15.439.000 ; custom-overlay · 23.090.000 ; custom-overlay. -14% · 10.868.",
+    "position": 7
+   },
+   {
+    "title": "Săn Hàng Hiệu Giảm Đến 50%",
+    "link": "https://shopee.vn/m/tram-ty-uu-dai-03-03",
+    "snippet": "Mừng siêu hội mua sắm. Săn deal hàng hiệu giảm đến 50% cùng voucher hấp dẫn giảm giá lên đến 50%. Đón chờ siêu sale đặc biệt Thứ ba hằng tuần vào khung giờ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

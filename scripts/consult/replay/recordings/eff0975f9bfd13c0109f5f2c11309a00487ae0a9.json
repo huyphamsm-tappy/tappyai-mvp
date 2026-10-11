@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Niêu Chú Chen\" OR \"Quán Bụi Central\" OR \"Quán Bụi Original\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:30:05.105Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Niêu Chú Chen\" OR \"Quán Bụi Central\" OR \"Quán Bụi Original\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Niêu Chú Chen (@comnieuchuchen)",
+    "link": "https://www.tiktok.com/@comnieuchuchen",
+    "snippet": "Cơm Niêu Chú Chen (@comnieuchuchen) trên TikTok |288 Lượt thích.56 Follower.TRỌN VỊ TÌNH THÂN - NÂNG TẦM CƠM VIỆT.Xem video mới nhất từ Cơm Niêu Chú Chen ...",
+    "position": 1
+   },
+   {
+    "title": "full bàn từ bàn trưa",
+    "link": "https://www.tiktok.com/@comnieuchuchen/photo/7493406616990092562?lang=he-IL",
+    "snippet": "full bàn từ bàn trưa · recommend-cover. Cơm Niêu Chú Chen. 48 · recommend-cover. Cơm Niêu Chú Chen. 12 · recommend-cover. Cơm Niêu Chú Chen. 49.",
+    "position": 2
+   },
+   {
+    "title": "Nhà hàng Việt Nam đậm đà hương vị Việt #foodtiktok ...",
+    "link": "https://www.tiktok.com/@mutchut/video/7528644270949944583",
+    "snippet": "... hương vị Việt #foodtiktok #saigonfood #foodtoursaigon #. @Đi dạo Sài Gòn với tui nha · nhạc nền - Đi Ăn Thôi · Quán Bụi Original · author. 647.",
+    "position": 3
+   },
+   {
+    "title": "full bàn từ bàn trưa",
+    "link": "https://www.tiktok.com/@comnieuchuchen/photo/7493406616990092562?lang=bg",
+    "snippet": "full bàn từ bàn trưa · recommend-cover. Cơm Niêu Chú Chen. 48 · recommend-cover. Cơm Niêu Chú Chen. 12 · recommend-cover. Cơm Niêu Chú Chen. 49.",
+    "position": 4
+   },
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 5
+   },
+   {
+    "title": "꽌부이 가든 #quanbuigarden #vietnam #korea #actor # ...",
+    "link": "https://www.tiktok.com/@actorkimhan/video/7676351947728882965",
+    "snippet": "... #actor #kimhan. 꽌부이 가든 #quanbuigarden #vietnam #korea #actor #kimhan. @ actorkimhan · What a beautiful day · Quán Bụi Original · author.",
+    "position": 6
+   },
+   {
+    "title": "Trả lời @fankocuong để tui chỉ mọi người cách thôi miên ...",
+    "link": "https://www.tiktok.com/@teeholic_official/video/7075012400453405979",
+    "snippet": "... để tui chỉ mọi người cách thôi miên đối phương nha. @Teeholic Saigon · nhạc nền - Nhà Này Đông Con · Quán Bụi Original · author · 7298.",
+    "position": 7
+   },
+   {
+    "title": "Duy",
+    "link": "https://www.tiktok.com/@dy1jckvayf94/video/7018519947039018266",
+    "snippet": ". Cộng đồng video toàn cầu · Mở ứng dụng.. @Duy · nhạc nền - Dunghoangpham · Quán Bụi Original · author. 3 · 0.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

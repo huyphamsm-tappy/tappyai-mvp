@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng món Việt giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:08:33.183Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng món Việt giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Giá dao động: 100.000 – 300.000 VNĐ/người. Nếu bạn muốn trải nghiệm sự đa dạng của ẩm thực truyền thống Trung Quốc thì San Fu Lou chắc chắn ...",
+    "date": "30 thg 9, 2025",
+    "position": 1
+   },
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 2
+   },
+   {
+    "title": "TOP 20+ Nhà Hàng Quận 1 Ngon, Chất Lượng, Giá Rẻ Và ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-quan-1",
+    "snippet": "Thực đơn nhà hàng gồm có các món như: Thịt kho mắm ruốc, cơm cháy thịt bằm, thịt kho cà pháo, cá mối chiên sả,...Giá cả ở đây cũng rất bình ...",
+    "date": "29 thg 4, 2022",
+    "position": 3
+   },
+   {
+    "title": "Gợi ý những quán ăn ngon và rẻ : r/saigon",
+    "link": "https://www.reddit.com/r/saigon/comments/16xoqrb/cheap_food_recommendations/?tl=vi",
+    "snippet": "Bánh mì giá lúc nào cũng tầm 15.000đ - 40.000đ, phở thì 50.000đ - 100.000đ, hai món ngon nhất rồi. Nếu mà không vô quán, thấy đồ ăn giá trên ...",
+    "position": 4
+   },
+   {
+    "title": "YouTube",
+    "link": "https://www.youtube.com/watch?v=fNRD7Sp4pEk",
+    "snippet": "Share your videos with friends, family, and the world.",
+    "position": 5
+   },
+   {
+    "title": "50+ quán ăn GIA ĐÌNH TPHCM ngon nổi tiếng nhất 2026",
+    "link": "https://pasgo.vn/kham-pha/ho-chi-minh/kham-pha-10-quan-an-gia-dinh-ngon-re-hut-khach-nhat-o-tphcm-219",
+    "snippet": "Nếu bạn đang tìm quán ăn gia đình HCM với không gian gần gũi và món ăn đậm vị Việt, Cơm Niêu Cuội là lựa chọn được nhiều thực khách yêu thích.",
+    "date": "24 thg 6, 2026",
+    "rating": 4.8,
+    "ratingCount": 187,
+    "position": 6
+   },
+   {
+    "title": "Vô vàn món ngon đậm đà hương vị quê nhà với 15 nhà hàng ...",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/vo-van-mon-ngon-dam-da-huong-vi-que-nha-voi-15-nha-hang-viet-nam-quan-1-1300744",
+    "snippet": "Địa chỉ:160 Pasteur, phường Bến Nghé,quận 1, TP. HCM. ... Ưu điểm: Thực đơn đa dạng, giá cả hợp lý. Nhược điểm: Chỗ để xe khá xa quán.",
+    "position": 7
+   },
+   {
+    "title": "5 nhà hàng Việt ở Sài Gòn ngon “chuẩn cơm mẹ nấu\"",
+    "link": "https://www.traveloka.com/vi-vn/explore/activities/nha-hang-mon-viet-o-sai-gon/58826",
+    "snippet": "Địa chỉ: Lầu 4, 158 Bis Pasteur, Phường Bến Nghé, Quận 1. · Thời gian hoạt động: 11:00 – 22:00 · Giá trung bình: 150.000 VND / người.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

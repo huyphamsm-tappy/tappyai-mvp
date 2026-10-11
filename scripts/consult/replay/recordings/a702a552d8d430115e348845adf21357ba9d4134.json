@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Lavencos biển Mỹ Khê Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:28.711Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Lavencos biển Mỹ Khê Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Lavencos Đà Nẵng: Vị trí, tiện ích, review, giá bán và kinh  nghiệm đặt phòng",
+    "imageUrl": "https://phetravel.com/thumbnails/products/large/uploads/khach-san-6.webp",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpQerfLV3N9c713fBf5QV4fzbl-zo--EgMScFzyBShWA&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/khach-san-lavencos-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphetravel.com%2Fthumbnails%2Fproducts%2Flarge%2Fuploads%2Fkhach-san-6.webp&tbnid=mRWl-N7U6dEK6M&imgrefurl=https%3A%2F%2Fphetravel.com%2Fkhach-san-lavencos-da-nang&docid=7T0F_PkHrYm9TM&w=800&h=500",
+    "position": 1
+   },
+   {
+    "title": "Lavencos Hotel Da Nang Sea View - Free Swimming Pool & Sauna, Đà Nẵng (cập  nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/521237791.jpg?k=839e23d3d39f0cec1f45ef9f75cbb3e1287615b7ef7dddfaed7ca206ff6dafd8&o=",
+    "imageWidth": 512,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuyTIRExMLvtAf9CHvWYAGBpTpurOZVaYyIbJZL-oLDg&s=10",
+    "thumbnailWidth": 452,
+    "thumbnailHeight": 678,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/khach-san-lavencos-da-nang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F521237791.jpg%3Fk%3D839e23d3d39f0cec1f45ef9f75cbb3e1287615b7ef7dddfaed7ca206ff6dafd8%26o%3D&tbnid=n8QIH8ZrFupGWM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fkhach-san-lavencos-da-nang.vi.html&docid=-s6rQkn_ebhgyM&w=512&h=768",
+    "position": 2
+   },
+   {
+    "title": "LAVENCOS HOTEL (My An) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/23/59/d3/80/lavencos-hotel.jpg",
+    "imageWidth": 550,
+    "imageHeight": 367,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjlZbVuSxW7aN6LbToupakjgPMhAoVcKkB3P341OsZLA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g15296807-d23998948-Reviews-Lavencos_Hotel-My_An_Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F23%2F59%2Fd3%2F80%2Flavencos-hotel.jpg&tbnid=QfY8Bx52sfjTfM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g15296807-d23998948-Reviews-Lavencos_Hotel-My_An_Da_Nang.html&docid=zmJlcqsQ3hvfGM&w=550&h=367",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn biển Mỹ Khê Lavencos Hotel Đà Nẵng  (@KhachSanBienMyKheLavencosHotel) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=983110977204844",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBOyV-BUW9-wcWjDIFpy5qL4zq8cbQr98qjbpowtDWVA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/KhachSanBienMyKheLavencosHotel/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D983110977204844&tbnid=glAZLzF3BTyuNM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FKhachSanBienMyKheLavencosHotel%2F&docid=XA8YVc7oG7SQBM&w=2048&h=1365",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Lavencos Đà Nẵng: Vị trí, tiện ích, review, giá bán và kinh  nghiệm đặt phòng",
+    "imageUrl": "https://phetravel.com/thumbnails/products/large/uploads/khach-san-lavencos-da-nang14.jpg.webp",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9JlGPPALfSfo4vyi98iy-1m3uJvqI-ZgLVduAyn3qXw&s=10",
+    "thumbnailWidth": 565,
+    "thumbnailHeight": 353,
+    "source": "Phê travel",
+    "domain": "phetravel.com",
+    "link": "https://phetravel.com/khach-san-lavencos-da-nang",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphetravel.com%2Fthumbnails%2Fproducts%2Flarge%2Fuploads%2Fkhach-san-lavencos-da-nang14.jpg.webp&tbnid=E6QoVGvXbeY8wM&imgrefurl=https%3A%2F%2Fphetravel.com%2Fkhach-san-lavencos-da-nang&docid=7T0F_PkHrYm9TM&w=800&h=500",
+    "position": 5
+   },
+   {
+    "title": "Điều gì khiến Lavencos Hotel Đà Nẵng hút khách quanh năm",
+    "imageUrl": "https://afamilycdn.com/150157425591193600/2022/9/21/image003-16637488759571289004135-1663755333323-16637553334421483526371.png",
+    "imageWidth": 640,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUPjSWMQtzAAFEZgzZExrxFVr72w-VvE9Gq8WaFCAoXw&s=10",
+    "thumbnailWidth": 639,
+    "thumbnailHeight": 400,
+    "source": "aFamily",
+    "domain": "afamily.vn",
+    "link": "https://afamily.vn/dieu-gi-khien-lavencos-hotel-da-nang-hut-khach-quanh-nam-20220921171500237.chn",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fafamilycdn.com%2F150157425591193600%2F2022%2F9%2F21%2Fimage003-16637488759571289004135-1663755333323-16637553334421483526371.png&tbnid=Zm0Ebd8uoJEcvM&imgrefurl=https%3A%2F%2Fafamily.vn%2Fdieu-gi-khien-lavencos-hotel-da-nang-hut-khach-quanh-nam-20220921171500237.chn&docid=Kma79jpSj5YlVM&w=640&h=400",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Lavencos Đà Nẵng (Lavencos Hotel DaNang) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/610889688.jpg?k=df0277c7e1789d08e27f1af5ad7277b63a0a82eaeb65433695e18313decbfd14&o=",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSyH3VH-M5fjkzyQVFx6pJ62XviNra_vAHp-NnARMDP_A&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/lavencos-hotel-danang-khach-s-n-lavencos-da-n-ng/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F610889688.jpg%3Fk%3Ddf0277c7e1789d08e27f1af5ad7277b63a0a82eaeb65433695e18313decbfd14%26o%3D&tbnid=55LdoW2NwPuWRM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Flavencos-hotel-danang-khach-s-n-lavencos-da-n-ng%2Fhotel%2Fda-nang-vn.html&docid=uReEdW5WgWjTXM&w=500&h=333",
+    "position": 7
+   },
+   {
+    "title": "Nhận xét về Lavencos Hotel Đà Nẵng, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/77000000/76420000/76416400/76416311/e3b76acd.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 863,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvp5Jvr3i_M6VrGbnulfh1LHrFJUVIO-pKvZPVv9-JSA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Lavencos-Hotel-Da-Nang.h76416311.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F77000000%2F76420000%2F76416400%2F76416311%2Fe3b76acd.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=KQJvoz2JgPP62M&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Lavencos-Hotel-Da-Nang.h76416311.Thong-tin-khach-san&docid=gK0UhskAi-_XxM&w=863&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

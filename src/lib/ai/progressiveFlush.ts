@@ -117,7 +117,7 @@ export function alignReleasedPrefix(settled: string, released: string): number |
  * 0 means "release nothing yet". The result never decreases as `accumulated` grows, so a caller
  * can simply track how much it has already sent.
  */
-export function safeFlushPoint(accumulated: string, segmentComplete = false): number {
+export function safeFlushPoint(accumulated: string, segmentComplete = false, holdCitations = false): number {
   if (!accumulated) return 0
 
   // Where the money claims are. One pass over the whole text: cheap, and it is the same reading
@@ -142,6 +142,10 @@ export function safeFlushPoint(accumulated: string, segmentComplete = false): nu
     // ...and at the first sentence carrying a claim the PLACE guard could remove.
     // Evidence-blind on purpose: see `mayRedactPlaceClaim`.
     if (mayRedactPlaceClaim(accumulated.slice(start, end))) break
+    // CONSULTATIVE_IN_AGENT (`holdCitations`): a sentence carrying a [S#] source marker is NOT released. The settled text turns the marker
+    // into a markdown link, so the released bytes would no longer be a prefix of it: the final send then repeated the whole reply (measured
+    // live, 2026-10-11, passport answer: repeated paragraphs, and a link cut mid-label at the end of the reply).
+    if (holdCitations && /\[S\d{1,2}(?:\s*,\s*S\d{1,2})*\]/.test(accumulated.slice(start, end))) break
     // 🚨 A LINK SPAN END IS NOT A SENTENCE END. `sentenceSpans` keeps a markdown link / bare URL as
     // its own span, so a sentence with an inline link arrives here in three pieces. Measured live
     // (C3 run 20, 2026-09-20): "Bạn có thể vào **[trang CGV](…)** để xem … giá vé (thường từ

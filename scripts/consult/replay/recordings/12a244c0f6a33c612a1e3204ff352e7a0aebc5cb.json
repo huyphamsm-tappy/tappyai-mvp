@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sony Tai nghe không dây WH-CH520\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai nghe Asus Rog Cetra True\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:05:16.284Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sony Tai nghe không dây WH-CH520\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai nghe Asus Rog Cetra True\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "ASUS ROG CETRA: True Wireless Earbuds Unboxing",
+    "link": "https://www.tiktok.com/@dr3amfearless/video/7503199153879567632",
+    "snippet": "Vũng Tàu ship tận nhà trong nội ô. Tai nghe ASUS ROG Cetra True Wireless bán giá rẻ. Khám phá tai nghe ASUS ROG Cetra True Wireless siêu lướt, giá 3.350k.",
+    "position": 1
+   },
+   {
+    "title": "ROG Cetra True Wireless SpeedNova",
+    "link": "https://www.tiktok.com/@digitalifemx/video/7533336244374293765",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless bán giá rẻ. Khám phá tai nghe ASUS ROG Cetra True Wireless siêu lướt, giá 3.350k. Gọi ngay để nhận máy ...",
+    "position": 2
+   },
+   {
+    "title": "Asus Rog Cetra True Wireless Speednova Gaming Earbuds",
+    "link": "https://www.tiktok.com/discover/asus-rog-cetra-true-wireless-speednova-gaming-earbuds",
+    "snippet": "33631w ago. lakmobile. Lakmobile. Tai nghe ASUS ROG Cetra True Wireless SpeedNova. Open box BH 3/2026. Tai nghe siêu lướt xài cực ít. Giá : 3.350k Fullbox đủ đồ ...",
+    "position": 3
+   },
+   {
+    "title": "lamkimobile",
+    "link": "https://www.tiktok.com/tag/lamkimobile",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe · ඔයාලාත් කරලා බලන්න #lakimobile #Samsung #theteddyhouse ...",
+    "position": 4
+   },
+   {
+    "title": "Thay Pin Tai Nghe Bluetooth JBL Live Pro Khi 1 Bên ...",
+    "link": "https://www.tiktok.com/@diytuan/video/7383986703955938561",
+    "snippet": "Mình có con Tai nghe Asus ROG Cetra True Wireless hư bên phải sửa đc kh ad. 2025-3-23Trả lời. Đã thích bởi nhà sáng tạo. 1. Tuan d.i.y · Tác giả.",
+    "position": 5
+   },
+   {
+    "title": "Samsung Z Fold 5 256Gb Mỹ Bản Mỹ 1 sim vl + 1esim Máy zin ...",
+    "link": "https://www.tiktok.com/@lakmobile/photo/7434345783496805640?image_index=3",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe siêu lướt xài cực ít Giá : 3.350k Fullbox đủ đồ zin Call : 0935 917 917 -052 88 ...",
+    "position": 6
+   },
+   {
+    "title": "Mua Huawei Pura 80 Ultra Mới Chất Lượng Tại Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@lakmobile/photo/7565713001014168850",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe siêu lướt xài cực ít Giá : 3.350k Fullbox đủ đồ zin Call : 0935 917 917 -052 88 ...",
+    "position": 7
+   },
+   {
+    "title": "Vivo X100s 12/256Gb xanh Máy new nguyên seal Camera cực ...",
+    "link": "https://www.tiktok.com/@lakmobile/photo/7379825505303874834",
+    "snippet": "Tai nghe ASUS ROG Cetra True Wireless SpeedNova Open box BH 3/2026 Tai nghe siêu lướt xài cực ít Giá : 3.350k Fullbox đủ đồ zin Call : 0935 917 917 -052 88 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

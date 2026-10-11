@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Naii Specialty Coffee\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:10:46.618Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Naii Specialty Coffee\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Oromia Coffee & Lounge Phan Kế Bính",
+    "link": "https://www.tiktok.com/@oromialounge/video/7640121714239671572",
+    "snippet": "Không gian và vị trí Oromia Coffee & Lounge nằm trên đường Phan Kế Bính, khu Tân Định — một điểm thuận tiện để tản bộ và dừng chân. Quán tận ...",
+    "position": 1
+   },
+   {
+    "title": "Oromia Coffee & Lounge Trung Thu decor Quận 1",
+    "link": "https://www.tiktok.com/@bacxiuneee_/photo/7674859476037405972?image_index=3",
+    "snippet": "Oromia Coffee & Lounge Trung Thu decor Quận 1. Ảnh chụp không gian Trung Thu lấp lánh đèn lồng, thưởng thức trà sen nóng tại Oromia Coffee & ...",
+    "position": 2
+   },
+   {
+    "title": "Oromia Coffee & Lounge, Hồ Chí Minh",
+    "link": "https://www.tiktok.com/@saotroimuaha/photo/7660872572594097415",
+    "snippet": "Khẩu phần ăn khá ít, giá khá nhỉnh do nằm ở trung tâm, không gian oke để làm việc. Oromia Coffee & Lounge, Hồ Chí Minh. Oromia Coffee & Lounge ở ...",
+    "position": 3
+   },
+   {
+    "title": "Trải nghiệm tại Oromia Coffee & Lounge",
+    "link": "https://www.tiktok.com/@chuxihaydi/video/7631583504001764615",
+    "snippet": "Nếu bạn đang tìm kiếm một quán cà phê đẹp và yên tĩnh ở Sài Gòn, Oromia Coffee & Lounge chắc chắn là một gợi ý tuyệt vời. Quán nằm ở quận 1, ...",
+    "position": 4
+   },
+   {
+    "title": "Oromia Coffee (@oromialounge)",
+    "link": "https://www.tiktok.com/@oromialounge",
+    "snippet": "Oromia Coffee · @oromialounge · Facebook: Oromia Coffee & Lounge Instagram: @oromia.lounge.",
+    "position": 5
+   },
+   {
+    "title": "Oromia Coffee & Lounge: \"Xứ sở màu nhiệm\" giữa lòng ...",
+    "link": "https://www.tiktok.com/@oromialounge/photo/7628626700154178836?image_index=3&lang=cs-CZ",
+    "snippet": "Oromia Coffee & Lounge: \"Xứ sở màu nhiệm\" giữa lòng Sài Gòn. Khám phá không gian mới tại Oromia Coffee & Lounge ở Sài Gòn với những cây nấm ...",
+    "position": 6
+   },
+   {
+    "title": "Oromia Coffee & Lounge - Phan Kế Bính, Quận 1, Hồ Chí ...",
+    "link": "https://www.tiktok.com/@saotroimuaha/photo/7660872572594097415?image_index=6",
+    "snippet": "Khẩu phần ăn khá ít, giá khá nhỉnh do nằm ở trung tâm, không gian oke để làm việc. Oromia Coffee & Lounge - Phan Kế Bính, Quận 1, Hồ Chí Minh.",
+    "position": 7
+   },
+   {
+    "title": "Oromia In Wonderland ❄️🎁🎄 “Step into ...",
+    "link": "https://www.tiktok.com/@oromialounge/video/7565490808078535954",
+    "snippet": "... Oromia Coffee & Lounge /85 Phan Kế Bính, p Tân Định, TP HCM/ Đặt bàn / Tư vấn: 0908 861 136. Oromia In Wonderland ❄️ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

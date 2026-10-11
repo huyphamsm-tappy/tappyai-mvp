@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MEAT & MEET\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:31:18.630Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MEAT & MEET\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "MEAT & MEET KOREAN BBQ CONTAINER Vui lòng đặt bàn qua hotline các chi nhánh. meatandmeet.com.vn/vi/lien-he/ · Khám phá buffet nướng Hàn Quốc 219k tại Meat ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Chỉ với 189.000 VNĐ/người, bạn có thể thưởng thức một bàn thịt nướng siêu hời. Ưu đãi đặc biệt này áp dụng duy nhất tại chi nhánh MEAT & MEET Lê ...",
+    "position": 2
+   },
+   {
+    "title": "Thưởng thức combo và buffet tại Meat & Meet",
+    "link": "https://www.tiktok.com/@dian.dichoi/video/7592248645739728135",
+    "snippet": "Khám phá combo beef tuyệt ngon với ưu đãi buffet hấp dẫn tại Meat & Meet! Đừng bỏ lỡ trải nghiệm ẩm thực tuyệt vời này! #MeatandMeet. Đây là bản ...",
+    "position": 3
+   },
+   {
+    "title": "Khám Phá Meat & Meet BBQ Quận 7: Đẳng Cấp Nướng",
+    "link": "https://www.tiktok.com/@anvyfood/video/7589956904709901575",
+    "snippet": "Khám Phá Meat & Meet BBQ Quận 7: Đẳng Cấp Nướng. Tìm hiểu về chất lượng thịt và trải nghiệm buffet ấn tượng tại Meat & Meet BBQ. Rủ bạn bè ...",
+    "position": 4
+   },
+   {
+    "title": "#bbq #nhahangthitnuong #meatandmeet #buffet #fyp",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7691538030405946676",
+    "snippet": "Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \" ... MEAT & MEET - Crescent Mall Korean Restaurant · author · 11 · 0.",
+    "position": 5
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Video tập trung vào trải nghiệm Buffet BBQ tại Meat & Meet. Người nói cho biết có “quá trời kỷ niệm” ở Meat & Meet, nên mỗi lần quay lại ăn ...",
+    "position": 6
+   },
+   {
+    "title": "Meat and Meet",
+    "link": "https://www.tiktok.com/discover/meat-and-meet",
+    "snippet": "MEAT & MEET Buffet thịt nướng Hàn Quốc tui iuuuu ✨ #mukbang #saigonangi ... Khám phá quán buffet Meat & Meet với đa dạng món ngon và giá chỉ 179k/người.",
+    "position": 7
+   },
+   {
+    "title": "Review Meat & Meet Vincom Đồng Khởi: Buffet 189k Có Gì ...",
+    "link": "https://www.tiktok.com/@hi.vidayyy/video/7489313174953479430",
+    "snippet": "Review Meat & Meet: Buffet Thịt Nướng & Đồ Chiên Chỉ 189k Tại Vincom Đồng Khởi Có muôn hình vạn trạng lý do để đi ăn thịt nướng, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

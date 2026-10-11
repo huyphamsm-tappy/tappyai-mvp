@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congbobanan.toaan.gov.vn OR site:vanban.chinhphu.vn \"Thông tư 63/2023/TT-BTC\" hộ chiếu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:57:07.185Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congbobanan.toaan.gov.vn OR site:vanban.chinhphu.vn \"Thông tư 63/2023/TT-BTC\" hộ chiếu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

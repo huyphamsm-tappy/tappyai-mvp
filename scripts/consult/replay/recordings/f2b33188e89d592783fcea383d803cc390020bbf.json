@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "GRAND HOTEL du LAC Boutique Saigon",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:20:24.930Z",
+ "body": {
+  "searchParameters": {
+   "q": "GRAND HOTEL du LAC Boutique Saigon",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Grand Hotel du LAC Boutique Saigon, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/115000000/114930000/114925200/114925117/bcc7a7e0.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 575,
+    "imageHeight": 767,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2AHt8677s9xi9ODj37ycuvKmKq5H01orhN9f-IyLYWA&s=10",
+    "thumbnailWidth": 386,
+    "thumbnailHeight": 518,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3678603744/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F115000000%2F114930000%2F114925200%2F114925117%2Fbcc7a7e0.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=YJK1i8wIvRalBM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3678603744%2F&docid=7sv2mFXRteD5YM&w=575&h=767",
+    "position": 1
+   },
+   {
+    "title": "GRAND HOTEL du LAC Boutique Saigon Hồ Chí Minh, Việt Nam: Agoda.com có giá  rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/709227805.jpg?k=46aa4e9fbf0cfbb1aad52fafa83c763b6494425af866b85f78b04b031dfc0b06&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDAfErCgYxe65Ll8ycF859YwNHkbNypTuXv0toMx_yfQ&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/grand-hotel-du-lac-boutique-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F709227805.jpg%3Fk%3D46aa4e9fbf0cfbb1aad52fafa83c763b6494425af866b85f78b04b031dfc0b06%26o%3D&tbnid=ynAYsn77qtoH4M&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgrand-hotel-du-lac-boutique-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=O-8pnkDDnTnOiM&w=375&h=500",
+    "position": 2
+   },
+   {
+    "title": "GRAND HOTEL du LAC Boutique Saigon, TP. Hồ Chí Minh (giá cập nhật)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/709237014.jpg?k=0e409ecaed176478d5a3780accb1b1d884b95f54380c0c2724a7d82386e9283b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM-A9q87MMlHIGHvM7fUnWFyHDYT4XZGxDHchJqMkWmg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/grand-du-lac-boutique-saigon-quan-11.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F709237014.jpg%3Fk%3D0e409ecaed176478d5a3780accb1b1d884b95f54380c0c2724a7d82386e9283b%26o%3D&tbnid=5D0c_D046pYubM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgrand-du-lac-boutique-saigon-quan-11.vi.html&docid=P2GmuQSk_OlglM&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "GRAND HOTEL du LAC Boutique Saigon, TP. Hồ Chí Minh (giá cập nhật)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/709222466.jpg?k=3288e4bf4569adaab15756b38059c396779e1290d6bc92de50c9c6a49a026d57&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4NF4nRhty9G5yHs81BnlUyxJ_HVAoXJ-7Cwp7AfMJFg&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/grand-du-lac-boutique-saigon-quan-11.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F709222466.jpg%3Fk%3D3288e4bf4569adaab15756b38059c396779e1290d6bc92de50c9c6a49a026d57%26o%3D&tbnid=afs5089HCRWXeM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgrand-du-lac-boutique-saigon-quan-11.vi.html&docid=P2GmuQSk_OlglM&w=1024&h=768",
+    "position": 4
+   },
+   {
+    "title": "GRAND HOTEL du LAC Boutique Saigon Hồ Chí Minh, Việt Nam: Agoda.com có giá  rẻ nhất",
+    "imageUrl": "https://pix10.agoda.net/property/74172396/0/8fb7fddd3a0eb476bca7f01a2e8e276b.jpeg?va=1&ce=2&s=414x232",
+    "imageWidth": 310,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPhCVp3vXlL7xn0YPdZrQhjhr7Xgk27rg6BUvBVvr2ow&s=10",
+    "thumbnailWidth": 310,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/grand-hotel-du-lac-boutique-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F74172396%2F0%2F8fb7fddd3a0eb476bca7f01a2e8e276b.jpeg%3Fva%3D1%26ce%3D2%26s%3D414x232&tbnid=mngRNTy7xNpyLM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgrand-hotel-du-lac-boutique-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=O-8pnkDDnTnOiM&w=310&h=232",
+    "position": 5
+   },
+   {
+    "title": "GRAND HOTEL du LAC Boutique Saigon Hồ Chí Minh, Việt Nam: Agoda.com có giá  rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/709237138.jpg?k=d5d4a6a9449105724895e31e745c33e5e4393d92c133134218cefa6ee4153a6d&o=",
+    "imageWidth": 500,
+    "imageHeight": 341,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTsIaCJyxAfkbKLQtou0dBBLf3r6RSiigWNVDxMdU2zw&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 341,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/grand-hotel-du-lac-boutique-saigon/hotel/ho-chi-minh-city-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F709237138.jpg%3Fk%3Dd5d4a6a9449105724895e31e745c33e5e4393d92c133134218cefa6ee4153a6d%26o%3D&tbnid=FfxzXh2Y7Y-XtM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fgrand-hotel-du-lac-boutique-saigon%2Fhotel%2Fho-chi-minh-city-vn.html&docid=O-8pnkDDnTnOiM&w=500&h=341",
+    "position": 6
+   },
+   {
+    "title": "GRAND HÔTEL du LAC Boutique Saigon | Ho Chi Minh City",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122182713458857391",
+    "imageWidth": 2048,
+    "imageHeight": 1152,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfsGnMA3wOl-9PwSQ0OsxozSwoA8flhoJ6zNPJG6DaVQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/GrandHotelduLacSaigon/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122182713458857391&tbnid=VGltJGjUKGV4_M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FGrandHotelduLacSaigon%2F&docid=RRqJfcUWsr66zM&w=2048&h=1152",
+    "position": 7
+   },
+   {
+    "title": "Grand Hotel du LAC Boutique Saigon, Thành phố Hồ Chí Minh | Hotels.com",
+    "imageUrl": "https://images.trvl-media.com/lodging/115000000/114930000/114925200/114925117/84f23ef8.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 767,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbU5P2w0Z1tmGo4i4cTWWq9lkN6astSqzhAuxKEcVRBA&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "hotels",
+    "domain": "vi.hotels.com",
+    "link": "https://vi.hotels.com/ho3678603744/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F115000000%2F114930000%2F114925200%2F114925117%2F84f23ef8.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=2O9cd-4JoL3LLM&imgrefurl=https%3A%2F%2Fvi.hotels.com%2Fho3678603744%2F&docid=7sv2mFXRteD5YM&w=767&h=575",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

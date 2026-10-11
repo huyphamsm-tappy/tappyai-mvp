@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 giá Việt Nam Apple Store",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:42:29.274Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 giá Việt Nam Apple Store",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods - Apple (VN)",
+    "link": "https://www.apple.com/vn/airpods/",
+    "snippet": "So sánh các phiên bản AirPods ; AirPods 5 · 3.799.000đ ; AirPods 5 Hộp Sạc Không Dây · 4.299.000đ ; AirPods Pro 3 · 6.799.000đ ; AirPods Max 2 · 14.999.000đ.",
+    "position": 1
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "AirPods Pro 3 với tính năng cảm biến nhịp tim trong khi tập luyện và Chủ Động Khử Tiếng Ồn tai bạn chưa từng nghe. Miễn phí vận chuyển và khắc hình khi mua ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3",
+    "link": "https://www.apple.com/vn/airpods-pro/",
+    "snippet": "AirPods Pro 2. 1 6.799.000đ Mua AirPods Pro 3, 8 Hiệu năng âm thanh Âm thanh của công nghệ đỉnh cao. FaceTime hàng tuần với gia đình. Ứng Dụng Apple Store Khám",
+    "position": 3
+   },
+   {
+    "title": "Apple nâng cấp AirPods Pro (thế hệ thứ 2) với tính năng ...",
+    "link": "https://www.apple.com/vn/newsroom/2023/09/apple-upgrades-airpods-pro-2nd-generation-with-usb-c-charging/",
+    "snippet": "AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB‐C) sẽ sớm được bán với giá 6.199.000đ trên trang apple.com/vn/store và trong ứng dụng Apple ...",
+    "date": "13 thg 9, 2023",
+    "position": 4
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Ngắm nhìn cận cảnh. ... AirPods Max được thiết kế để mang lại sự thoải mái vượt trội, tạo ra lớp cách âm tối ưu, giúp bạn đắm chìm hoàn toàn trong từng thanh âm.",
+    "position": 5
+   },
+   {
+    "title": "Nút Tai Nghe AirPods Pro 2 - 2 bộ (Lớn)",
+    "link": "https://www.apple.com/vn/shop/product/mwu43za/a/n%C3%BAt-tai-nghe-airpods-pro-2-2-b%E1%BB%99-l%E1%BB%9Bn",
+    "snippet": "AirPods Pro 2 - 2 bộ (Lớn) 269.000đ. AirPods Pro 2 - 2 bộ (Lớn) 269.000đ Siêu Nhỏ Nhỏ Thông Tin. Apple Store iCloud.com",
+    "position": 6
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/?modelList=airpods-2nd-gen,airpods-3rd-gen-lightning",
+    "snippet": "AirPods 5 và AirPods Pro 3 đạt mức IP57 và AirPods Pro 2 đạt mức IP54 theo tiêu chuẩn IEC 60529. Khả năng chống bụi, chống mồ hôi và chống nước không phải ...",
+    "position": 7
+   },
+   {
+    "title": "Cửa Hàng Trực Tuyến của Apple - Apple (VN)",
+    "link": "https://www.apple.com/vn/store",
+    "snippet": "Từ 35.599.000đhoặc 1.449.000đ/thángmỗi. AirPods Pro Tặng 3 tháng sử dụng Apple Music miễn phí. Bỏng 6.380.000đ",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

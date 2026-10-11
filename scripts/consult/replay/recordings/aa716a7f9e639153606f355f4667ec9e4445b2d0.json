@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:07.602Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt  Nam",
+    "imageUrl": "https://img.youtube.com/vi/ZmQSna5xlE8/maxresdefault.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTld_0sb-M1v15HEQvjovZ_-EZKWPsR9BA3TlD_110GmA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimg.youtube.com%2Fvi%2FZmQSna5xlE8%2Fmaxresdefault.jpg&tbnid=YO2CUZXWdeQDjM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html&docid=gxNgchip8w0JxM&w=1280&h=720",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU (16GB - 512GB) Chính Hãng",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/76/macbook-air-m5-13inch-1.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR86NQm656TnKRZU2zSxDOjjWR8KTRumNhjglhQ8Ie_3g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/macbook-air-m5-13-inch-10-cpu-8-gpu-16gb-512gb?srsltid=AU7gw4XMaXVc_F5v8aJsq5WVro_jDHY5RoY8gl52w3Kf7YGmt4yNXuiy",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F76%2Fmacbook-air-m5-13inch-1.png&tbnid=2LmdhiGK49WGYM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fmacbook-air-m5-13-inch-10-cpu-8-gpu-16gb-512gb%3Fsrsltid%3DAU7gw4XMaXVc_F5v8aJsq5WVro_jDHY5RoY8gl52w3Kf7YGmt4yNXuiy&docid=t1BsAJQL2BWWTM&w=800&h=800",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/8GPU/16GB/512GB",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/macbook_air_13_m5_starlight_1_bfd6f1c5ed.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsBBWAgm6SNbwL0T8Lart3bVaidAZkYNO2Pyi8w1vxMQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2Fmacbook_air_13_m5_starlight_1_bfd6f1c5ed.png&tbnid=Ft0H7XTz9ZCRUM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb&docid=U_KIVshcy8TZPM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt  Nam",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/macbook/Air/M5/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb-2.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSh7qhlWtHuuXlhMr16N_yP5bmbPN-b_ZaWJ73Zzs4mjw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2Fmacbook%2FAir%2FM5%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb-2.jpg&tbnid=N-l_YKCteO-RyM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html&docid=gxNgchip8w0JxM&w=1200&h=675",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/8GPU/16GB/512GB",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/512x0/filters:format(webp):quality(75)/macbook_air_13_m5_starlight_2_ba7e99abeb.png",
+    "imageWidth": 512,
+    "imageHeight": 512,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRuT7687HNTa5aEtUWKocfZR4_nSOCbC6nJSOaRpeGkg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F512x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_13_m5_starlight_2_ba7e99abeb.png&tbnid=KDXjT57lWPEMbM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb&docid=U_KIVshcy8TZPM&w=512&h=512",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/macbook/Air/M5/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb-7.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTarXlt7pRIQauyRsvcQZSnhcaClj-HoXPhVFLDR-KRNQ&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2Fmacbook%2FAir%2FM5%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb-7.jpg&tbnid=HmrNc22LjaAyMM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html&docid=gxNgchip8w0JxM&w=1200&h=675",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_13_17_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_NC1nO_XnONMnx-BtSekzhZU1LTpg42BdIRjA6c_AsQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_13_17_1.png&tbnid=VNOtTm18PZWodM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html&docid=gxNgchip8w0JxM&w=358&h=358",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M5 mới 2026, giá từ 29.9TR, thu cũ trợ giá 2TR",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/macbook_air_15_relay_slide_1_89f987e429.jpg",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf8hiXF7ukvfyf9ntr72-9oHtOFapz3brxENKxXOzSFg&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fmacbook_air_15_relay_slide_1_89f987e429.jpg&tbnid=I2TcY71H25qY2M&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-air-13-m5-2026-10cpu-8gpu-16gb-512gb&docid=U_KIVshcy8TZPM&w=828&h=466",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

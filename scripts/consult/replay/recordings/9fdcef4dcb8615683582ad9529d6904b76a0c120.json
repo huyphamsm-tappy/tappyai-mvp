@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Phở Hòa Pasteur giờ mở cửa hôm nay",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:10.460Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phở Hòa Pasteur giờ mở cửa hôm nay",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Hòa - Pasteur ở TP. HCM",
+    "link": "https://www.foody.vn/ho-chi-minh/pho-hoa-pasteur",
+    "snippet": "5.9. Đánh giá. 6.6. Vị trí. 6.1. Giá cả. 5.8. Chất lượng. 5.6. Phục vụ. 5.4. Không gian. Đang mở cửa. 05:00 - 23:30. Liên hệ. Liên hệ. 02838297943. Ảnh & Video.",
+    "position": 1
+   },
+   {
+    "title": "Phở Hòa Pasteur, quán Michelin mang ẩm thực Việt vươn ...",
+    "link": "https://mia.vn/cam-nang-du-lich/pho-hoa-pasteur-sai-gon-16043",
+    "snippet": "Địa chỉ: 60C Pasteur, Phường 8, Quận 3, Thành phố Hồ Chí Minh. Giờ mở cửa: 5h30 - 22h30. Dù được nấu theo phong cách của người miền Bắc hay ...",
+    "date": "31 thg 3, 2025",
+    "position": 2
+   },
+   {
+    "title": "Phở Hòa Pasteur - Hồ Chí Minh - Tripadvisor",
+    "link": "https://www.tripadvisor.com.vn/Restaurant_Review-g293925-d1232846-Reviews-Pho_Hoa_Pasteur-Ho_Chi_Minh_City.html",
+    "snippet": "Cửa hàng bán thức ăn mang về. Dịch vụ bàn. Phục vụ đồ uống có cồn. Cải thiện hồ sơ này. Đang mở cửa. 06:00 – 22:30. Liên hệ. Gọi, email. Địa điểm. 260C Pasteur ...",
+    "rating": 4.3,
+    "ratingCount": 1153,
+    "position": 3
+   },
+   {
+    "title": "PHỞ HOÀ PASTEUR danh tiếng hơn nửa thế kỷ, bây giờ chất ...",
+    "link": "https://www.youtube.com/watch?v=7B_od_4AcIo&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "snippet": "Phở Hoà ở địa chỉ 260C Pasteur, quận 3, TPHCM ra đời từ năm 1968, cho đến nay đã 57 năm. Quán phở rất nổi tiếng, luôn đông khách tấp nập.",
+    "position": 4
+   },
+   {
+    "title": "Cầm 100.000 đồng thưởng thức phở Hòa Pasteur được ...",
+    "link": "https://vtcnews.vn/cam-100-000-dong-thuong-thuc-pho-hoa-pasteur-duoc-michelin-de-xuat-ar898474.html",
+    "snippet": "Mỗi ngày, phở Hòa Pasteur bán từ 5h30 - 22h30. Món được nhiều thực khách ưa chuộng là phở nạm, gầu, vè. Tô thường có giá 90.000 đồng, tô đặc ...",
+    "date": "27 thg 9, 2024",
+    "position": 5
+   },
+   {
+    "title": "Qua laị ăn thử quán phở bán hơn 50 năm nay ở trung tâm ...",
+    "link": "https://www.facebook.com/groups/anginhi/posts/25702614499344303/",
+    "snippet": "Gửi xe ngay vỉa hè trước quán xe máy 5k, ô tô 20 hay 30k gì đó. Chất lượng phở Mình ghé hôm CN, cỡ hơn 8h sáng xíu mà kín bán và hết gầu, nên ăn ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Hòa Pasteur — Tô Phở Vỉa Hè Quận 3",
+    "link": "https://vnguide.vn/restaurant/pho-hoa-pasteur",
+    "snippet": "Thông tin thực tế · Địa chỉ: 260C Pasteur, Phường 8, Quận 3, TP.HCM · Giờ mở cửa: Sáng sớm đến đêm muộn (nhiều ca trong ngày) · Món: Phở bò các kiểu — tái, chín, ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Hòa Pasteur vắng mặt trong Michelin Guide 2025",
+    "link": "https://thanhnien.vn/pho-hoa-pasteur-vang-mat-trong-michelin-guide-2025-quan-noi-tieng-gio-ra-sao-185250606131332613.htm",
+    "snippet": "Phở Hòa Pasteur vắng mặt trong Michelin Guide 2025: Quán nổi tiếng giờ ra sao? · Quán vẫn đông đúc khách · Hơn nửa thế kỷ phở Hòa Pasteur · Tin ...",
+    "date": "7 thg 6, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

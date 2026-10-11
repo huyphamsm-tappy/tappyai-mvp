@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ngũ Hành Sơn\" OR \"Tượng Cá Chép Hóa Rồng\" OR \"Bảo tàng Điêu khắc Chăm Đà Nẵng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:16:26.685Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ngũ Hành Sơn\" OR \"Tượng Cá Chép Hóa Rồng\" OR \"Bảo tàng Điêu khắc Chăm Đà Nẵng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tham Quan Ngũ Hành Sơn Đà Nẵng: Động Âm Phủ & 5 Núi",
+    "link": "https://www.tiktok.com/@mc.hienvinh/video/7535008488053902610",
+    "snippet": "Ngũ Hành Sơn ở Đà Nẵng là một trong những điểm tham quan nổi tiếng với cảnh quan hang động, núi đá và suối nước tự nhiên.",
+    "position": 1
+   },
+   {
+    "title": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn ...",
+    "link": "https://www.tiktok.com/@quydisan/video/7569891646616177940",
+    "snippet": "Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh và văn hóa dân tộc #disanvietnam #proudvietnam. Ngũ Hành Sơn – bản giao hưởng của đá, tâm linh ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn Tại Đà Nẵng",
+    "link": "https://www.tiktok.com/@klook_vietnam/video/7488187032158637330",
+    "snippet": "Ngũ Hành Sơn không chỉ nổi tiếng với Thuỷ Sơn tuyệt đẹp cùng nhiều điểm tham quan linh thiêng. Mà 4 ngọn núi còn lại như Kim Sơn, Hoả Sơn, ...",
+    "position": 3
+   },
+   {
+    "title": "Ngũ Hành Sơn: Khám Phá Những Điều Kỳ Diệu",
+    "link": "https://www.tiktok.com/@dichuachualanh/video/7507997823179377927",
+    "snippet": "#Buddhismfacts ✍ Bạn có biết… Sáu ngọn núi thiêng giữa lòng Đà Nẵng – nơi được gọi là Ngũ Hành Sơn từng chìm dưới đại dương.",
+    "position": 4
+   },
+   {
+    "title": "Đề cử Ngũ Hành Sơn thành Di sản Thế giới hỗn hợp",
+    "link": "https://www.tiktok.com/@enews.trending/video/7690770118795742471",
+    "snippet": "Đà Nẵng sẽ nộp đề cử danh thắng Ngũ Hành Sơn trở thành Di sản Thế giới hỗn hợp. Đây là thông tin rằng chính quyền Đà Nẵng sẽ tiến hành nộp ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Ngũ Hành Sơn: Chốn Tịnh Tâm Đà Nẵng",
+    "link": "https://www.tiktok.com/@quioidithoi/video/7515787471498546440",
+    "snippet": "“Ngũ Hành Sơn – không chỉ là núi đá. Là chốn tịnh tâm, nơi người ta trở về với chính mình.” Một buổi sáng leo núi. Gió biển. Chuông chùa. Hơi ...",
+    "position": 6
+   },
+   {
+    "title": "Khám phá Ngũ Hành Sơn (Phần 3): Động Âm Phủ ở Đà ...",
+    "link": "https://www.tiktok.com/@danangtravel24/video/7620308280773987604",
+    "snippet": "Khám phá Ngũ Hành Sơn (Phần 3): Động Âm Phủ ở Đà Nẵng #dulichdanang #danangtravel #nguhanhson #dulichtamlinh #dulich · Nhà Ma Âm Phủ Đà Nẵng.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Động Hoa Nghiêm Tại Ngũ Hành Sơn, Đà Nẵng",
+    "link": "https://www.tiktok.com/@mandikhapvietnam/video/7498025138261183751",
+    "snippet": "Khám phá vẻ đẹp động Hoa Nghiêm ở Ngũ Hành Sơn, Đà Nẵng. Trải. @Mẫn | Đi khắp Việt Nam.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

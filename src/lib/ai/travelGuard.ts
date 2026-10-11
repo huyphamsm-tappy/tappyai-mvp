@@ -93,6 +93,9 @@ function userEchoStandsHere(
   const span = sentenceSpans(text).find(([a, b]) => c.start >= a && c.start < b)
   const sentence = span ? text.slice(span[0], span[1]) : text
   if (!ATTRIBUTES_PRICE.test(sentence)) return true
+  // WS2 final: the user's own budget inside a sentence that says the price is NOT known ("chưa có giá xác nhận …, không đủ để biết chỗ
+  // nào nằm trong tầm 1 triệu") is their figure restated, not a price claim (measured WS-A1: the honest clause was cut).
+  if (/(?<!\p{L})(chưa|không)\s+(?:\S+\s+){0,3}?(xác minh|xác nhận|có giá|đủ để biết|rõ|biết)|not (?:verified|confirmed|known)|cannot tell/iu.test(sentence)) return true
   return FRAMED_AS_BUDGET.test(sentence)
 }
 
@@ -118,7 +121,7 @@ const SHOW_CTX = /(?:^|\s)(?:suất|suat|chiếu|chieu|screening|showtimes?|show
 // No trailing \b after a Vietnamese noun — JS \b treats "ỗ" as a non-word char,
 // so "còn 3 chỗ\b" never matches (the same Unicode-boundary trap the money guard
 // documents). A leading (^|\s) keeps "con" from firing inside another word.
-const AVAIL_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|(?:^|\s)(?:hết|het)\s+(?:vé|ve|phòng|phong|chỗ|cho)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)|(?:sold\s*out|fully\s*booked|còn trống|con trong|hết chỗ|het cho)/iu
+export const AVAIL_RE = /(?:^|\s)(?:còn|con)\s+\d+\s*(?:chỗ|cho|vé|ve|ghế|ghe|phòng|phong)|(?:^|\s)(?:hết|het)\s+(?:vé|ve|phòng|phong|chỗ|cho)|\d+\s*(?:seats?|rooms?)\s+(?:left|available|remaining)|(?:sold\s*out|fully\s*booked|còn trống|con trong|hết chỗ|het cho)/iu
 
 /** Sentence spans. The schedule/availability patterns require a flight verb or an
  *  explicit availability phrase, so a URL's digits can't masquerade as a claim. */
@@ -165,7 +168,7 @@ export function scheduleTimesIn(text: string): string[] {
  * stays; anything else is still fail-closed. Availability has no source and is always removed.
  * Writes nothing new; if removal would empty the reply, leaves it.
  */
-function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX): { text: string; removed: number } {
+function redactScheduleAvailability(text: string, evidenceTimes: readonly string[] = [], ctx: RegExp = DEPART_CTX): { text: string; removed: number; removedTexts: string[] } {
   const spans = sentenceSpans(text)
   const doomed = new Set<number>()
   const known = new Set(evidenceTimes)
@@ -174,12 +177,45 @@ function redactScheduleAvailability(text: string, evidenceTimes: readonly string
     const sched = TIME_RE.test(s) && ctx.test(s) && !(known.size > 0 && scheduleTimesIn(s).every(t => known.has(t)))
     if (sched || AVAIL_RE.test(s)) doomed.add(i)
   })
-  if (doomed.size === 0) return { text, removed: 0 }
+  if (doomed.size === 0) return { text, removed: 0, removedTexts: [] }
   const kept = spans.filter((_, i) => !doomed.has(i)).map(([a, b]) => text.slice(a, b)).join('')
   const tidy = kept.replace(/[ \t]{2,}/g, ' ').replace(/\s+([.,;])/g, '$1').replace(/\n{3,}/g, '\n\n').trim()
   // If we'd leave nothing, keep the original — a monetary redaction / the prompt
   // fallback handles the "whole reply was the fabrication" case without emptiness.
-  return /\p{L}/u.test(tidy) ? { text: tidy, removed: doomed.size } : { text, removed: 0 }
+  return /\p{L}/u.test(tidy) ? { text: tidy, removed: doomed.size, removedTexts: spans.filter((_, i) => doomed.has(i)).map(([a, b]) => text.slice(a, b)) } : { text, removed: 0, removedTexts: [] }
+}
+
+/**
+ * WS2 final (Bug 1) — WHAT was cut decides how the cut is disclosed. Measured: on hotel-only turns the notice read "Giờ chạy và giá vé
+ * cụ thể…" (departure times and fares) under a reply about room prices. The removed sentences are classified (lodging · transport ·
+ * both / unclear), and money vs schedule / availability, so the notice names exactly the part that is not confirmed.
+ */
+const LODGING_RE = /(?<!\p{L})(khách sạn|khach san|phòng|phong|đêm|dem|nhận phòng|trả phòng|resort|homestay|villa|hostel|hotel|room|night|check-?in|check-?out|lưu trú|luu tru)(?!\p{L})/iu
+const TRANSPORT_RE = /(?<!\p{L})(vé máy bay|ve may bay|chuyến bay|chuyen bay|máy bay|may bay|bay|hãng|hang bay|tàu|tau|xe khách|xe khach|xe buýt|xe buyt|limousine|giờ chạy|gio chay|khởi hành|khoi hanh|chuyến|chuyen|flight|airline|train|bus|coach|ferry|departure|departs|fare|vé xe|ve xe|vé tàu|ve tau)(?!\p{L})/iu
+export type TravelCutTopic = 'lodging' | 'transport' | 'mixed'
+export function travelCutTopic(removed: readonly string[]): TravelCutTopic {
+  const all = removed.join(' ')
+  const lodging = LODGING_RE.test(all), transport = TRANSPORT_RE.test(all)
+  return lodging && !transport ? 'lodging' : transport && !lodging ? 'transport' : 'mixed'
+}
+/** The disclosure for what was cut — or null when the reply already says, in its own words, that this part is not confirmed. */
+export function travelCutNotice(o: { topic: TravelCutTopic; money: boolean; schedule: boolean; lang?: string; ticketUnit?: boolean; remaining: string }): string | null {
+  const en = o.lang === 'en'
+  // Luna already disclosed it ("giá phòng theo ngày chưa xác minh được"): its own honest sentence stands, no second, code-written one.
+  const disclosed = /(?<!\p{L})(chưa|không)\s+(?:\S+\s+){0,3}?(xác minh|xác nhận|kiểm chứng|kiểm tra được|có giá|có dữ liệu|có thông tin)|not (?:yet )?(?:verified|confirmed)|could not (?:verify|confirm)|unverified/iu
+  const sentences = o.remaining.split(/(?<=[.!?…])\s+|\n+/)
+  const topicRe = o.topic === 'lodging' ? LODGING_RE : o.topic === 'transport' ? TRANSPORT_RE : null
+  if (sentences.some(x => disclosed.test(x) && (!topicRe || topicRe.test(x)) && (!o.money || /(?<!\p{L})(giá|gia|price|fare|phí)(?!\p{L})/iu.test(x) || o.schedule))) return null
+  if (o.ticketUnit) return en ? 'Exact showtimes and ticket prices are not confirmed by a fetched source — check them on the venue or ticket page.' : 'Suất chiếu và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang rạp hoặc trang bán vé.'
+  if (o.topic === 'lodging') {
+    const what = o.money && o.schedule ? (en ? 'Room prices and availability for your dates are' : 'Giá phòng và tình trạng phòng theo ngày') : o.money ? (en ? 'Room prices for your dates are' : 'Giá phòng theo ngày') : (en ? 'Room availability for your dates is' : 'Tình trạng phòng theo ngày')
+    return en ? `${what} not confirmed by a fetched source — check them on the booking page.` : `${what} mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt phòng.`
+  }
+  if (o.topic === 'transport') {
+    const what = o.money && o.schedule ? (en ? 'Exact times and fares here are' : 'Giờ chạy và giá vé cụ thể') : o.money ? (en ? 'Exact fares here are' : 'Giá vé cụ thể') : (en ? 'Exact times and seat availability here are' : 'Giờ chạy và tình trạng chỗ cụ thể')
+    return en ? `${what} not confirmed by a fetched source — check them on the booking page.` : `${what} mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.`
+  }
+  return en ? 'Exact prices, times and availability here are not confirmed by a fetched source — check them on the booking page.' : 'Giá, giờ và tình trạng chỗ cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt chỗ.'
 }
 
 /**
@@ -204,6 +240,8 @@ export function guardTravelClaimsInText(
 
   // 1) Money claims — fail-closed: keep only what a live fare (or the user) backs.
   const claims = extractMoneyClaims(out)
+  const cutTexts: string[] = []
+  let moneyCut = false
   if (claims.length > 0) {
     const userClaims = extractMoneyClaims(userText || '')
     const judged: MoneyClaim[] = claims.map(c => ({
@@ -212,24 +250,24 @@ export function guardTravelClaimsInText(
       verdict: (tracesToLiveFare(c, fares) || userEchoStandsHere(c, userClaims, out, fares)) ? 'VERIFIED' : 'UNVERIFIED',
     }))
     const bad = judged.filter(j => j.verdict !== 'VERIFIED').length
-    if (bad > 0) { out = redactUnsupportedClaims(out, judged); redacted += bad }
+    if (bad > 0) {
+      const spans = sentenceSpans(out)
+      for (const j of judged) if (j.verdict !== 'VERIFIED') { const sp = spans.find(([a, b]) => j.start >= a && j.start < b); if (sp) cutTexts.push(out.slice(sp[0], sp[1])) }
+      moneyCut = true
+      out = redactUnsupportedClaims(out, judged); redacted += bad
+    }
   }
 
   // 2) Schedule/availability — we have no live source for either, so any specific
   //    assertion on a travel turn is unverifiable and removed.
   const sa = redactScheduleAvailability(out, opts.evidenceTimes ?? [], ticketUnit ? SHOW_CTX : DEPART_CTX)
   out = sa.text; redacted += sa.removed
+  cutTexts.push(...sa.removedTexts)
 
   // C1: what was cut is said, once, with where to look — never left as a silent gap.
   if (redacted > 0) {
-    const hedge = ticketUnit
-      ? (opts.lang === 'en'
-        ? 'Exact showtimes and ticket prices are not confirmed by a fetched source — check them on the venue or ticket page.'
-        : 'Suất chiếu và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang rạp hoặc trang bán vé.')
-      : (opts.lang === 'en'
-        ? 'Exact times and fares here are not confirmed by a fetched source — check them on the booking page.'
-        : 'Giờ chạy và giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.')
-    if (!out.includes(hedge)) {
+    const hedge = travelCutNotice({ topic: travelCutTopic(cutTexts), money: moneyCut, schedule: sa.removed > 0, lang: opts.lang, ticketUnit, remaining: out })
+    if (hedge && !out.includes(hedge)) {
       const markerAt = (() => { let end = out.length; for (const m of ['[CTA_BUTTONS]', '[FOLLOWUPS]', '[TAPPY_PLAN]', '[TAPPY_SHOPPING]', '[TAPPY_PLACES]']) { const i = out.indexOf(m); if (i !== -1 && i < end) end = i } return end })()
       const head = out.slice(0, markerAt).replace(/\s+$/, '')
       const tail = out.slice(markerAt)

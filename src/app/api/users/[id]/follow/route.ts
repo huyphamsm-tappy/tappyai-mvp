@@ -1,4 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
 import { rebuildProfile } from '@/lib/preferences/profileCache'
@@ -17,6 +19,10 @@ export async function POST(
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
   if (user.id === params.id) return NextResponse.json({ error: 'follow_self', message: serverMessage('social.followSelf', requestLocale(req)) }, { status: 400 })
+
+  // SEC4 slice 5b: a toggle that pushes to the target had no limiter. 30 per minute per user (a proposal; no previous limit existed).
+  const rl = await publicRateLimit(`follow:${user.id}`, 30, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'user_follow')
 
   const targetId = params.id
 

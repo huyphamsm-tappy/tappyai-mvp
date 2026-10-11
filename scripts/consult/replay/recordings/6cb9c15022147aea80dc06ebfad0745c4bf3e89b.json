@@ -1,0 +1,365 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "laptop tốt đáng mua 2026 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:46.028Z",
+ "body": {
+  "searchParameters": {
+   "q": "laptop tốt đáng mua 2026 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU (16GB - 512GB) | Chính hãng Apple Việt Nam",
+    "source": "Viettablet",
+    "price": "27.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQJbpUUCj3DbdSLMxK2qwhd4Gr0Tgfbn5pdTHz5bdXcL9LnRjIDOzhnfx0V280QeSePLNNEmUbMAnIxbG6oAdg2frZFmtsPnx6pWjSR0lNcSUjCPWwpcZDbpg",
+    "productId": "12064298131941527612",
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN",
+    "source": "Hugotech.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:11268571074306587528,gpcid:18061814000262277741,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "29.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRMg5k4LRjEHcCNMdwTCvBIf-f4VRzg-BI1M9GNSkRXrm_bsOP7GgdqcB2vetXKmGM3TX_tc3AGb1uG-OtGyFRvKZHz6aU7uqZdhik8s7iKqhu4WfABhlPb",
+    "rating": 4.6,
+    "ratingCount": 35,
+    "productId": "11268571074306587528",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Air 13 inch",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:10697054500960307846,gpcid:8602998232814770163,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "33.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR17kyLvq25n9SennWV4tZKoreg0VbabASu_qrM1I0eZyKe4KRnwUo-6pMXAX2d6MhFKYc_-3StbRqWeTYK5a1COczkmplttN5lmK4vVMd88MX4_0D057MVTg",
+    "productId": "10697054500960307846",
+    "position": 3
+   },
+   {
+    "title": "Redmi Book Pro 16 2026 (Ultra 5-325| 24GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "32.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcT_N9KbQz4nNOVufkn9lr0vycI-JbGAirBZI9xXop_kITUguWFzB-1DopaSEAYI22X_aG6umka72KYcB1W9Q4V24Pu-hVFscSGIMsYfsemzfUCaLMoPPaWbow",
+    "productId": "11527537723816724955",
+    "position": 4
+   },
+   {
+    "title": "ThinkPad T14s 2 in 1 - 2026",
+    "source": "Mac24h",
+    "price": "33.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQBee4QvTkLsgrOU1g5_3eF9BwW96c8t5-xnBcl6yLeJJi0M6mPM_HpoYYXjHeaGkMlWrOV3NmP5XpliLkHA4aWjcLJvGWc3XkPrRTmZbnddu6AaogBRhrb",
+    "rating": 4.6,
+    "ratingCount": 5,
+    "productId": "972305800475216975",
+    "position": 5
+   },
+   {
+    "title": "MACBOOK AIR 13 INCH M5 - 2026",
+    "source": "macvn.com.vn",
+    "price": "30.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS0bWMKffrUtwzGkSj_pW9Fqn17fMRWMmKYYqhZ6yEf-_3Hi5SJNBDhC48dcyyObUtkyuq1L0TeDvwJ_rRJTXc7glKGjJ1jf411rH-9VFuEh_Cv1e6hccbW",
+    "productId": "17867140049060346940",
+    "position": 6
+   },
+   {
+    "title": "Laptop Lenovo Lecoo Air 14 N140A 2026 Intel Core 5-315 12GB RAM 512GB SSD 14 inch FHD Windows 11 Màu Bạc",
+    "source": "laptop kim anh",
+    "price": "17.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR1nRAsbwGXbx_D5_-di1AsRNSbb0I4esgaO0mIFSBHCqF20rOkS6lnt-kJbiL6Ya81ayNeWnbZiHZ0lOWtzFTIiWbeeGV0u7a2S15xB5iGuKpq1esOUlec",
+    "productId": "8475486658502244609",
+    "position": 7
+   },
+   {
+    "title": "[Like new] Acer Nitro V ANV15-41-R1JY - AMD Ryzen 5 6600H Nvidia RTX 3050 15.6 inch FHD 165Hz",
+    "source": "LaptopK1",
+    "price": "19.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQVfI_xb69ABVnJgsbhySf7yUUUjksXYRETThArrfDCLL7qTcCRM3vo3KqfVEUfzhY-sgTQ9bA67KyFxJKxqHxVtar9SXx9uB-swbOjWV5hX6MGDfzXdf61wA",
+    "productId": "1160590919700822690",
+    "position": 8
+   },
+   {
+    "title": "Laptop Gigabyte AORUS MASTER 16 6XJM4VNE64SH (Ryzen 9 9955HX3D | GeForce RTX 5070Ti 12GB | 32GB | 1TB | 16' WQXGA OLED 240Hz | Win 11) -Hàng Chính",
+    "source": "Hangchinhhieu.vn",
+    "price": "84.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSRxtzNrgVdsLEV_Jpehyc3F3ynMczjOKKufhaXXy-o9M1UOqqFc8IYIeb8NVl9FSc-oMDfFu70Z51rdPkwpGjUTpqeG3AfstIU48SxPKj7KqBSrNUIRAXt",
+    "productId": "6872607845151916300",
+    "position": 9
+   },
+   {
+    "title": "MacBook Neo 2026 chip A18 Pro, RAM 8GB, SSD 256GB, chính hãng",
+    "source": "Surfaceviet.vn",
+    "price": "19.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRBKuW1S8HhZ-giYxSndE8TzMLDgnBFIldPtIxrVW43NTpRYyMOxn34smGMUNnDg3drHbJcK0mrHezzpNNyigOdcSUEh6BRGmWdqdCieYvBe2CBmm4MHz8GHA",
+    "productId": "16503987954491033171",
+    "position": 10
+   },
+   {
+    "title": "MacBook Air 13 M5 2026 10CPU/10GPU/16GB/512GB/70W",
+    "source": "Fptshop.com.vn",
+    "price": "35.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSATeA84oke5DP96Mjo7HoV5kVcJaB9o8J2OmrtzN6GauPq3ceEcpFdmYWYprrzT-iiw4mEq5f43YAWPYq1W8eSX4OfOluXXop_vKlQje_nTeqdpTcphNzM",
+    "productId": "17168301959252280806",
+    "position": 11
+   },
+   {
+    "title": "MacBook Neo 2026 8GB/512GB",
+    "source": "Hoàng Hà Mobile",
+    "price": "21.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQcosFGnRkw0GPITAB5W55XHGvAznKOmKSzfF0Ew3KLCPXPQ97pMXO8CiYJ2T6MSgt9P7Ok0AgIWUqOC8pg3Eaagw5K6ePWFCjhLy_J6sMV6SglvsnQQmPIaA",
+    "productId": "3049077818349362007",
+    "position": 12
+   },
+   {
+    "title": "[Like new] Laptop Asus Vivobook Pro 14X OLED M7400 - R9 5900HX RAM 16GB RTX3050Ti 2.8K OLED",
+    "source": "LaptopK1",
+    "price": "17.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTuG8-Qi9BhPdLQwa4NQeTxP8Tot0VW4w9Kl5HnctOHQ3m6iO-wnW5FXq1szbiQ4OXYKmWfiLnUiJ_o4Q83E7jJlg6Gzb_X8quCNFeXlvCTOkxi0RdUc9po5w",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "9648092220660608733",
+    "position": 13
+   },
+   {
+    "title": "MacBook Neo 2026 Apple A18 PRO 8GB RAM 256GB SSD – NEW",
+    "source": "MacOne",
+    "price": "18.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQR-a1L41PVYoO-T6sA16ll238LZ4xyKptWySJzOBf_yT8q_vRBv3fiJYOFA1CD7yjZmZ7GVzXTu9S6onh62TmEP_0NVNTXAejEKl-b8FOEp75j9Dk7eLsJ2TQ",
+    "productId": "8737339989767562554",
+    "position": 14
+   },
+   {
+    "title": "Traveler's Choice_Balo laptop 14in Ely",
+    "source": "House Of Luggage",
+    "price": "1.260.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQZz40Op3LQGLlFevtw1LDO9O8-IFinuSzDuKOE9B8Qy5l3OXvQgqSvfZC1e9uVdc59VAQN6eBRFa6hqbO1D0xYePetWSmg-tx0mA2yDZF7uPb4dPxAxCgi9Q",
+    "productId": "8701015972539499427",
+    "position": 15
+   },
+   {
+    "title": "Redmi Book Pro 16 2025 (Ultra 5/Ultra 7| 32GB RAM| 1TB SSD)",
+    "source": "SAZO",
+    "price": "26.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSp253fSCpAZ7sqoamZbPczZIO2AKSUBHkBRClHKUPd68U3N1Ldo3ZxFXmsX2m6PJpYDZs8Uzi0FVVOpdgVri0YK2N5gMJl1zXyHC1wvbY-w6fGE_2u6zSZ",
+    "rating": 4.9,
+    "ratingCount": 17,
+    "productId": "16847531508841477870",
+    "position": 16
+   },
+   {
+    "title": "MacBook Neo 2026 chip A18 Pro, RAM 8GB, SSD 512GB kèm touchID, chính hãng",
+    "source": "Surfaceviet.vn",
+    "price": "21.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTt4ljCd-c8fKtjAnXgFhtkihpEmLCKKHYjpPnxuEJCMlEfe02_QjP4uC0HDvzi5uXOx0RpmH9KOtlmGVQfuIvynkId-8jNn9KM-KAjrqI5s6JmNRzDMnm0AA",
+    "productId": "1175918063709606359",
+    "position": 17
+   },
+   {
+    "title": "MacBook Neo 13\" 2026 (Chính hãng)",
+    "source": "zshop.vn",
+    "price": "18.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRyudp7E2avF0FduzuMvEGvqYYSnLiJfZLqWwK-j2ZP0NNWLEQJGGszv_a66wc5gPYo1mZQOzGRhQnQXitIVa6S6mjYi689",
+    "productId": "15816772930898842762",
+    "position": 18
+   },
+   {
+    "title": "Túi xách C6-POCKET Laptop",
+    "source": "Chautfifth",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:16040240882802552370,gpcid:4486799351917063734,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.595.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTlg89u5ZwpoxVC7S__oRGfawswW1PsTCzziNC0q-n5XKxj2eDKonKp7ysx_YLE4AQ-tzOqDvoS7CIsyyswRrd8tsvG2ghc9BDYq75z8Fm9pt2UcT-IkfgmlQ",
+    "rating": 5,
+    "ratingCount": 19,
+    "productId": "16040240882802552370",
+    "position": 19
+   },
+   {
+    "title": "Xgear - Laptop Gaming MSI Stealth 16 AI+ B3WF 007VN (Ultra 9 386H | RTX 5060 | 32GB | 1TB | 16 inch QHD+ 240Hz) -Gói Quà Tặng",
+    "source": "Xgear",
+    "price": "73.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTZKssI67krvVC3_yIu59WJz2atPZ2kxWtlj91NxgUO3b3pI_bAaFy6iZAXTuNJwMnE2H7lnq6ELoYdPfZaCu2graJ9G0DLLs2hncb4tlfHJzt17XemO13f",
+    "productId": "10330745844257043283",
+    "position": 20
+   },
+   {
+    "title": "Địa Chỉ Thu Mua Máy Tính Cũ Giá Cao Tại Hà Nội -Mua Laptop Cũ Giá Cao",
+    "source": "Máy Tính Trần Anh",
+    "price": "10.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRmfOKtwSX-bnzSoCs4L1V2lDX2Q0VesEqrU7liJ_5kRaM9bqNnuNUnjwrur8TD6Mw91h7GJIVkOUYRV6DuWJOFgfmlFLHnRCIMLqpLKQUh",
+    "productId": "5619723756122006855",
+    "position": 21
+   },
+   {
+    "title": "Túi tote Laptop 16 inch Targus TBA65 Xám nhạt",
+    "source": "Thế Giới Di Động",
+    "price": "1.225.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSoxZnYVRAXVyrqhjGkeIxBoA0tSTZhENywsiS8FCT_OPlkorUvtbQ1mcU7kJmscqI-dOFl7JOebODBw3fyXh-1QRC0JQm7dZbiGytpNMqbck1HVAXF7zW2qw",
+    "productId": "11970663903126410172",
+    "position": 22
+   },
+   {
+    "title": "TÚI LAPTOP NAM JORREN",
+    "source": "Aldo VN",
+    "link": "https://www.google.com/search?ibp=oshop&q=laptop+t%E1%BB%91t+%C4%91%C3%A1ng+mua+2026+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:12868315003459281864,gpcid:352927555019584607,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTRFPabuElpdG3-0SsMzioKsXTARInrLvocZzvaKSleFRra7v0Wf4-xifsHslY3siYq41ll9xL8sxvsSVMjBdu9glncKy2aYFb42hlpRoM8suoCelq6BQ--BA",
+    "productId": "12868315003459281864",
+    "position": 23
+   },
+   {
+    "title": "MacBook Neo A18 Pro 13 inch 2026 6CPU 5GPU 8GB 512GB Touch ID",
+    "source": "minhtuanmobile.com",
+    "price": "20.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTFYbdd-_l84d2L8Ac67HCLjT9PprUlAWd7z7Uow-epOBRlv0c5SxS_gsjJTPkWmfkRmk8OCjKhwJ9wv_gBThI98BmkDvDYX57_0iX2lobzbSdd_a0rTAkYNA",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "productId": "4447817675461157409",
+    "position": 24
+   },
+   {
+    "title": "Macbook Air M5 13 inch 10-core CPU 8-core GPU RAM 16GB SSD 512GB",
+    "source": "Surfaceviet.vn",
+    "price": "34.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTc_bJmP0vvORKu8O2Uhr1wSlqjf7MdUsq6UySqWylgPtACA893Gcdvz6kz4OWB6FG4yZhmm2MLO2OP-jkvwHwz2ZW7DpEBFw18-GZtFz66rquwnqi6kLhb",
+    "productId": "2077022218925078423",
+    "position": 25
+   },
+   {
+    "title": "Khay Laptop MEKING M11-109a kèm khay chuột - Giá bao gồm thuế / Tiêu chuẩn",
+    "source": "Yến Tâm Camera",
+    "price": "880.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT41KQ9TfrjKI4vl0TvGyvKOX7ghg7FCZsyo1zFFlnCMkhk_2QDTG78oVQEvk5iIzd_4dKxsGcu0cnK_4UO7MWldYfgzfGi",
+    "productId": "2170614603582311567",
+    "position": 26
+   },
+   {
+    "title": "Túi tote laptop 15in Rhiann 2",
+    "source": "Samsonite Việt Nam",
+    "price": "4.760.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRX5OcZMKZyZSMD4qwQlQG-vkhxUefVActmeVkP1HHuKoB4B1lKF5aAzOeTNcBepNFc5lcZBf7srEnunWQMC1922wJUFwO8EB7-FP0CVNf1vwsLWFcZL0T2",
+    "productId": "8508141344679056017",
+    "position": 27
+   },
+   {
+    "title": "Balo Laptop Mũi Cà Mau Xanh",
+    "source": "Mũi Cà Mau - Công ty Máy tính",
+    "price": "139.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSCtieLwyQ1H_ICTrpkHoL1bj-oasyM2ohqLM2lJZFED6ObB59nineFPk-ytF1eSIoZy4mTgQCS4l76fzUQI8ME7I-C_PxMHyE0AUc02tAkdO8TOuXmpB-MOg",
+    "productId": "3219897075683783077",
+    "position": 28
+   },
+   {
+    "title": "Túi đựng laptop, túi xách công sở, siêu mỏng nhẹ, dung tích lớn, thiết kế thời trang thanh lịch - 299 Xanh biển",
+    "source": "zongvietnam.com",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQvk7Io41VmEtNKzq8sD7s42-paBApqLzZoZHvOl5Piehx0SpzjT5mauC2E1x17reVoMWqHQpCxIBLRrZLrRa9bcs3SyEe29mDn3s9wgwhUTVXnw6gj20c8Yw",
+    "productId": "8212025575048723733",
+    "position": 29
+   },
+   {
+    "title": "Laptop Asus Vivobook S14 M3407GA-SF030W Ryzen AI 7 445/16GB/512GB/14\" OLED/Win11",
+    "source": "Fptshop.com.vn",
+    "price": "27.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTeE2eyF0KPo994IBVVBoe2V_A9vDilN-Xw-IJJxiT3USkdha-gAjkbig6u3TJhPBMVVnIxP69gezqY5NRh0GOeqIf-Lrpv2q4Kdc9rwMtwgE2XIPraXV6T",
+    "productId": "971681032317447556",
+    "position": 30
+   },
+   {
+    "title": "Macbook Pro M1 13 inch Cũ -Hàng 95%",
+    "source": "Tinh Tế Mobile",
+    "price": "11.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSSo1r8xuIsqs5ehnk5v6ag_tvy9iaB5WnLLkNNoMm0DDapacXm_GVfgMCaM8wajN79zSY_EIJPGJmoHyNl13H9LwsuVUUzNKSmhnX5zwgU_ZCn0SdXSIBYXQ",
+    "productId": "180327390110402239",
+    "position": 31
+   },
+   {
+    "title": "Macbook Air M5 13.6 inch 10-core CPU 10-core GPU RAM 16GB SSD 1TB",
+    "source": "Surfaceviet.vn",
+    "price": "42.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQz3TTwgzfe1sIXbCRdt8nurO_IduUGASfGCrGW2kbA43uvO-kk-PeJ6VzffyGLtWRyqIDcxhckzjhU_0xccRUIWQi0LAGqOuTW5uVyIEyYUNo8XM3q7bx-xQ",
+    "productId": "15316533746169762323",
+    "position": 32
+   },
+   {
+    "title": "Sắp giảm giá | Túi Xách Tay Nam Da Bò Dáng Đứng Công Sở Đựng Laptop Màu Đen",
+    "source": "188.com.vn",
+    "price": "1.560.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRaUmeqGbvEU5rVq7EmxUVjrk6sQc7ncyZXhs4gr4rCqlCdyHlSY0Cyy9YiAfSosFeFNQyLIunaiOaqvRzPWmXsA8JlvZlPOy55brNWYn-cmlpJHFXRQPvD",
+    "productId": "1584986386292493834",
+    "position": 33
+   },
+   {
+    "title": "Túi Đựng Dụng Cụ Và Laptop Vải Dệt Bag 1 Holoex - Nhập Khẩu Từ Đức",
+    "source": "Phú Thái Tech",
+    "price": "3.898.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQoUQ2JwDDd78qpNBroxPsjKF-TMEf6jHGpEbUk50yma0rC6Uxzos_s4eD_3uX-Kcl2O9NzpdqKM9N3Bp3KpwDe568ieomf4uw3c_Z5hCs0_POJb5PA-L1cbg",
+    "productId": "2508241757634994167",
+    "position": 34
+   },
+   {
+    "title": "MacBook Pro 16 inch M5 Max 36GB 2TB CPU 18 lõi, GPU 32 lõi – Chính hãng VN",
+    "source": "TheTekCoffee",
+    "price": "116.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRnlDvXoTbYlEKbghXSripIKI7zyviU6Id5bDxUmCsANTJSO2OKsgTASkpPWY6c-0BdannwY7usotU1G1m24qDUyfbs1ONdr48lSuYTQFI",
+    "rating": 4.8,
+    "ratingCount": 248,
+    "productId": "14583912817769821958",
+    "position": 35
+   },
+   {
+    "title": "Túi xách laptop vintage vải sáp da bò – SQUARE VI Tím",
+    "source": "zongvietnam.com",
+    "price": "738.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR31yhXZOMtFGJl5l85-pxpHM61OnwVfvwKrbbtjVc265XW2YNNiK6Rn5FGceTpXAWRIDKt8U8jvXTjP7R8VwjhKcak4KEDjeI6ZGuEP0Y",
+    "productId": "11759214937726428348",
+    "position": 36
+   },
+   {
+    "title": "Macbook Air M5 13.6 inch 10-core CPU 10-core GPU RAM 24GB SSD 1TB",
+    "source": "Surfaceviet.vn",
+    "price": "47.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSS-Uwz6Mk5U2Bk7lnx-EarNWCsj9DVTTkA6rr-2bVUajYHKZS7P7R8VtU4syESTvC45zmzPO8_FWyJyDAkp7qxWTACwSjAcKTZJw1XHbwtrC09sT2wM_71",
+    "productId": "11994823354093690176",
+    "position": 37
+   },
+   {
+    "title": "ACE. Tokyo_Balo laptop 14in Gadgetable Heather 2 15/20L",
+    "source": "House Of Luggage",
+    "price": "5.360.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSGS6tiyu8vjwPPubeg5T0Fia177AIbVHNeAn-VDB-jsUSny-THFin9GnOw4xG4oSsWUc9wGRUDkMlsx8-wdmVn8CuuVBpEhoKqMSHMrdFKavxoj0iTVnj1",
+    "productId": "10448096831355734388",
+    "position": 38
+   },
+   {
+    "title": "ThinkPad T1g 2026",
+    "source": "Mac24h",
+    "price": "79.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRzvpxDczs8ryYGUg2Y2NC3jbWcRH8jEwJIFH-Kp3ttyFLkyZHWVS7f8BKJ65cHITKm9ylcvnJOR8vWIrLX5I-3l7CoVNy_sJTqemPHjobDTxBp100n5o8d",
+    "rating": 4,
+    "ratingCount": 5,
+    "productId": "5705782033135457962",
+    "position": 39
+   },
+   {
+    "title": "Laptop",
+    "source": "Thế Giới Di Động",
+    "price": "42.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSHM_dM9O4K3bZLShQnwf9NSwqCxQ4ydRrN6Gh4FJ_nGwgE1UIQVMPB7DBivrQ6QhNcW-i2eKYkRLUGJMFsGo2HbuYTu7f3vIU6rNfzr8dQyB_upgspXOpm",
+    "productId": "15349297593283066472",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

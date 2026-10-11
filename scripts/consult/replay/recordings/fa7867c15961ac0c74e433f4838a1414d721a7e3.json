@@ -1,0 +1,390 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn tốt Sony WH-1000XM5 Bose QuietComfort Ultra Apple AirPods Pro",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:06.396Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn tốt Sony WH-1000XM5 Bose QuietComfort Ultra Apple AirPods Pro",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Sony Tai nghe không dây chống Ồn WH-1000XM5 cao cấp",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:16864155713509914155,gpcid:11726664398501807381,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQu4C6Fq-jY_d4Vzlf5iaj000KlJyq_h9ugiRW6NNPlVcL8xQcmu1gqdCr99RrxE0J6Nol3JQY9K3Y4nIrn2Qsq8OXvBM7F-U8wOnCTnC5oz6WvtrnStUMOpg",
+    "productId": "16864155713509914155",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bose Quietcomfort Ultra",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:4412996866102029438,gpcid:5914059237801924898,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "8.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSUFQAx05I3-wJsCgmgMthsGSFgcvC9AyFyVJvUXDJ66e1ymmRvLvo4oJ4OepMJKOBYP6NiNpX_8C84v9EZdumxDuPeswSXexP7aShctYsKtVQFDgAhyt22",
+    "productId": "4412996866102029438",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-1000XM5",
+    "source": "CellphoneS",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSoWorhvbEOzAM7Y97H4eGWEVyEeIf2zQ9uhRZnmwTWCsXcKinIJFpfM6KvJmacQWef-pwaXIaQ2OJC_aOec9E_WiZyEGXHqGC2ej_H7jZNCdYKwu-wiN658w",
+    "productId": "14650805013284957398",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5",
+    "source": "Oneway Mobile",
+    "price": "5.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQr-sLT_7ETtIcDanpcf7u5iyLd2eI-LQcIgcgDEXXfSV33gqK4gnn1puUdxYRQc72FUYh_28hemgPWbJKErajOK6TA4OvKH0wvBZFOWocIAyiobGz3m5c7",
+    "productId": "10334165813310916847",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH1000XM5 Hồng",
+    "source": "Thế Giới Di Động",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSg5F6Tt9xwm5Vx3-sXZfGStDrMJSczAuLRQyASQnhoN-uKuJ1geha-bambzVDMoIw5Ca3-wjJ9_fddxvdFUX7OEn5clfNohmNvwDbZ6zrJWSPP3z8owx_AtZk",
+    "rating": 5,
+    "ratingCount": 22,
+    "productId": "11105106651197054684",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai Sony WH1000XM5",
+    "source": "Điện Máy Chợ Lớn",
+    "price": "6.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ4b9v9hcz0QiW1gk0sh8P_6V_LiBFZ65MVqhq1w_9OgCukKcw7cPda6YS8O_3BTJ5lscSBB3uWNSLEMQ4530BjMLkuzelSCqeI3TYoMw_fW79bnqa5mnp1",
+    "rating": 4.7,
+    "ratingCount": 208,
+    "productId": "7512451679007732710",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM6",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:17838419204121885557,gpcid:16337411903393755079,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRajmcgEBGfZv7uJALSZ6TmGYwPxjZZd2BzdKPODTd2_ETbpflmYF4NDsd_1rjLL8I4bdgKu8H7KgUHxIaPUQZVuLiLu-Zca6tqj_mn4qPilMLGb7WLdqU",
+    "productId": "17838419204121885557",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Chống ồn không dây WF-1000XM5",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:3322970527466943324,gpcid:14197784344127044721,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSARUET34wDs0_o29NybYu7Z_DEYC1AfoT8TIR_X-T5SZ576mGT_a4iLxprLaA8h0CP6BL03ZQ07PZK9PLUc2tSCGfswFzN-n0o80E723IsAdjDLlkzs3ecrA",
+    "productId": "3322970527466943324",
+    "position": 8
+   },
+   {
+    "title": "Tai nghe Bose QuietComfort Ultra Headphones",
+    "source": "Antien.vn",
+    "price": "7.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSNKE0kutEQLjwmGtdGoVSckhDMziqRSbH4Oq9ninuGAzNlWDXIoCG0Mh56EFyg09CfKoRJN0LI4hyyRocd-AopeRd0hypPq8FDbZP0an0cRuNPPHZEe_Q9",
+    "rating": 4.8,
+    "ratingCount": 28,
+    "productId": "8543000045488975491",
+    "position": 9
+   },
+   {
+    "title": "Tai Nghe Sony WH-1000XM5 (Chụp Tai, Chống Ồn, Pin 40 Giờ, Bluetooth 5.2)",
+    "source": "HDRadio.vn",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTk2vkvRcH8UQhdWz7bgePZ3mqxHC2taH8Ds9-DgFC5H42rmZdS5MvTwYEXJ1beAbX0taA2Ruei2-TFzyYg4sGFctBPad0um8g78I575Pf384nqj3QfGV7qsQ",
+    "productId": "9699595882880653650",
+    "position": 10
+   },
+   {
+    "title": "Tai Nghe Sony WH-1000XM5",
+    "source": "minmobile.com.vn",
+    "price": "3.500.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQIjmToZobsJ4gDZqlRPKKxiIHNP_soFOhBy1RdMpx3sAxr7Cb85WWamyly3-PgTS4xLrkshr3_Q4xE7iRB-OMQ29iirLfjyn_dpPEeQ2RDh0BEFjOhKjtB",
+    "productId": "15833984043778041870",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe không dây TWS Sony WF-1000XM5/PCE",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:11437545591292469550,gpcid:906517877401907048,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRdB2yXOhyV-Gq8tva37_NxlP7m6vSRjAFe8EhOGv76lBgwqDncNIwZ-KuSm0IZle5syALcAR3bIW6vy7JEfhaS7kvmKLWJBM2hum5ujouiEJUlYlEgrS944g",
+    "rating": 4.8,
+    "ratingCount": 406,
+    "productId": "11437545591292469550",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-1000XM5/PME",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:13127014286083544157,gpcid:18300117563638507903,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.480.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTSvRuSL-GRdJEjDYWaRcIZWajM0IDajxQ9nuv72uRAgpmLo5O4tWCmZuhcCbQYh1narwRjYzjgDb2Zqfwh44fFU74N9zYJweGPoLMd-tn-rt3Y8EOTSNN1",
+    "rating": 4.5,
+    "ratingCount": 252,
+    "productId": "13127014286083544157",
+    "position": 13
+   },
+   {
+    "title": "Bose QuietComfort Ultra Headphones - Tai nghe Bluetooth chụp tai chống ồn, pin 24h",
+    "source": "Bose by Saigon HD",
+    "price": "10.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTFNdGuu_MNj2sVBiglufWZDy4uhHSKSZfvakxpvCcluPYI7e7x_Wc4kktBY1Pmr48UmltdvusrAJ2lhFux5KgF4m79kaJzV0w6dwuD1UoQWMIcfUBMkTxk_A",
+    "productId": "14178810389131507530",
+    "position": 14
+   },
+   {
+    "title": "Apple AirPods Max",
+    "source": "lapvip.com.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:13182905592690222580,gpcid:7707716887929943500,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "12.199.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRxB-0EEJwsxJdoZeF7i-w0-3vF5HiYF-lk9wsuIKrSImWhO_pf1wlvXJ0HgF2yC661yqn8v1xTICS2RxtjzaQlK8PsqPkE8lpLhrRbRU2-7ngkd42q0M74",
+    "productId": "13182905592690222580",
+    "position": 15
+   },
+   {
+    "title": "Tai nghe over-ear không dây chống ồn Sony WH 1000XM5 -Hàng Chính Hãng",
+    "source": "PhuQuangKTS",
+    "price": "6.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS5Dbmr4E2kjW5FIAwGDvasTJhPC6m0yiprperyySopJzuLxC8JPlwSJ5Y-D233fnmwVopFEVzAfsEnaExkpkt81eL45zM1lZM4lxSAxrI",
+    "productId": "1607723524249667427",
+    "position": 16
+   },
+   {
+    "title": "Apple Airpods Max - Xám Bạc",
+    "source": "xoanstore.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:10246507306005017644,gpcid:7110110242186080692,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQx0OPadiZFTrsSz2K_gPDd6CrQgqyKb8tpNnEvxF_3PpmtoGMGzilU2Uy5yzJ9GYA7mE2HdeBhfRWzTJ_Zq3VYdOhfvhDe9sZJGUpHCDg",
+    "productId": "10246507306005017644",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe Sony WH-1000XM5 kết nối không dây chống ồn -Bạc",
+    "source": "Sáng Tao ICT",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSt-x7YJH9CWDpiRxPNX7e9ZGh1Cd0GhL3w-U6n6FRwUA-XYOvcVeqk7X0xGhNmvvlvdWtAn9yEUHkPuwU-byAvBrLQoU4W95iWXv7CnpYxBxCmimbpxpoL",
+    "productId": "10189626454016452716",
+    "position": 18
+   },
+   {
+    "title": "Tai nghe Chống ồn Sony WH-1000XM5",
+    "source": "dienmaytructuyen.vn",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSKt__VNX3qe5In9-ef3ZsKu0_6IjCfHq7I72d0Ej96dkKvySZmFeYcjZ4ObEKn5zWJ1MWuiPQu4tKBChKHt0Dej_tXa9EP1xDm_aiOrdKhZJYbFovs6RX7",
+    "productId": "13047767572687301837",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe Bose QuietComfort Headphones phiên bản giới hạn",
+    "source": "Digiworld Hà Nội",
+    "price": "5.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTCSuEDvlPe8Sxvm32wEfCEW2wRvT8K6SlO2HU5tIX4wLbFGOCV8NU9YB9G1G0Yvo58f4dyz16n4rjmg-5lyaU9EoVsnWJBI9kJPyBDlhppoNA3mp7umuwiB08",
+    "productId": "1497820464698476445",
+    "position": 20
+   },
+   {
+    "title": "Tai nghe không dây TWS Sony WF-1000XM5/SCE",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:16767400486373804538,gpcid:13970553252209352869,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTHWsXkPrucCWBkBI-mgRkKvli4zfUSojOpjzCdeAPsTPL60KXgZZ96-EP_V5lfnO0ctA5c384icA8jaBFIkBDxd_UmyE-9DSfsZN3d7-oCuu7mgzpN6DZsvQ",
+    "rating": 4.4,
+    "ratingCount": 424,
+    "productId": "16767400486373804538",
+    "position": 21
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Chống Ồn Chủ Động Sony WH-1000XM5. Bluetooth Không Dây - Giao Nhanh 2H - Xanh Bóng Đêm",
+    "source": "cuongphan.vn",
+    "price": "6.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRBqo30p-kVx1ZrLQ6aMW5GyyUw6kpFK6c3i-3xiHHfkAquE0P3mSwfEec0TaPL9psq7IAvh7kJntRFgTAxsjTH9UanTDLndK1PIJ7g8yKIapGNKTnOv3XQ",
+    "rating": 4.7,
+    "ratingCount": 208,
+    "productId": "4250270330977990488",
+    "position": 22
+   },
+   {
+    "title": "Tai Nghe Sony WH 1000XM5 Wireless Noise Cancelling ( Black ) -Hàng chính hãng",
+    "source": "PhuQuangKTS",
+    "price": "6.930.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSQYHGIV_dCcb79dfoZIQpfGZc0a0FCSyeuv6NihdzQZeti14fV-imCAd0YJLXe7bYeJ6hfanJopHd0AWBLJCYrrYVucq-Bv9Mo7sA3QCk",
+    "rating": 5,
+    "ratingCount": 18,
+    "productId": "12359051741543514247",
+    "position": 23
+   },
+   {
+    "title": "Tai nghe không dây Sony WH-1000XM5 (Màu Hồng)",
+    "source": "Hacom.vn",
+    "price": "5.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRi-n-CYcLrgjsXGme-n4UHz_n-s4hG8-xWwgTzJvW2eiuOUsvfyq0PrCu3X6Uj75Z29vnnIn0L4ddZyAYyf0GOCm_g0IYD_2G_Av6cQfnh4IVDp3nxWD-u",
+    "productId": "14928422172412477863",
+    "position": 24
+   },
+   {
+    "title": "WH1000XM5 + My Sony Care 12T",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:11580126575261507893,gpcid:4733974893802095669,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.890.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRqh0nxz2bgAqa60U7k9ZTUWcWFpJFozkjoWvhvi7ma6UCsOwSL0yq8bNt1p0etPjm1nH7LH_v3EwBtJ7M38iFdCsO-HYKpKddoquJ0I3N1r7Rmqoa7P1qu",
+    "productId": "11580126575261507893",
+    "position": 25
+   },
+   {
+    "title": "Tai nghe không dây Sony WH-1000XM5 WH1000XM5/PME (Hồng khói)",
+    "source": "Hugotech.vn",
+    "price": "7.844.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT6CO1ls2KwdbcH8koJc9uFCtyS5JnePJ_tqllt6VWWCZOdDgAqNXPvpBvcniI2Ndm4ayL_bG7lCP8fQ-zXfhyC8grjuHKP1X0T8ofGr4gkAyAi4E9ECeSVXw",
+    "productId": "7784297911650055313",
+    "position": 26
+   },
+   {
+    "title": "TAI NGHE BOSE QUIETCOMFORT HEADPHONES",
+    "source": "1 - saigonhd.com",
+    "price": "7.349.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTb-fCYgNuEoHoSWA1fWdQuuWhhzxm0Jr6FL2j-ArgJtA-vYzNLzvz-uB3RMT7tlfccjRnpTlvgvVvGqVGAoRCTQfrxKh4r1Q81HpFMHQeBt7DwWrx1tKak",
+    "rating": 5,
+    "ratingCount": 24,
+    "productId": "16939156897622094705",
+    "position": 27
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-1000XM6",
+    "source": "CellphoneS",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRlME3Nm5qUQ8u3PhwtkhkGnl-EQa7nAEuJcDFvaaARfjot3uy_4Ebell--zS5ackj7oLCf0sCkLf9c9I807dXjPg2pf971JurnWFv7GLeXwkEplBdlOFlHGw",
+    "rating": 4.5,
+    "ratingCount": 166,
+    "productId": "14057602526607893780",
+    "position": 28
+   },
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-1000XM5/LME",
+    "source": "Công Ty Cổ Phần Pico Retail",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:17217432158767688068,gpcid:3848386219909241601,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "7.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQukDBwEybd8PL0y-2GKePMPaK50jicfebtd1VJhFqB17rq58PIGHtUf3MLQQeitpoz1dOLBcKmECDmQ8Ipg36A_qCzIdU0aZeLbikw8YtsmWBbol6dLYyE",
+    "productId": "17217432158767688068",
+    "position": 29
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chụp Tai Sony WH-1000XM5 Hi-Res Noise Canceling - Hàng Chính Hãng",
+    "source": "tiki.vn",
+    "price": "7.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRXkWmIH54Czi1N0xaKLH2Lb_2AIV7TQBeVyotS-9cO0ZDG5usWFKEIMYpkV5LqyMVJcGXekWuR3AImqol7DJ7bZDVAF_yw1dDi773BAW8",
+    "productId": "14982579425127762471",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe chụp tai Sony WH-1000XM5",
+    "source": "Dương Long - duonglong.vn",
+    "price": "7.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ2z9VZrZMjJ5mL1M1PDaXO7uUAWo8e8N9J8MEGrQpSIxYVbjk_yhcxr5tqOtVkIGgt_W40TiERW9N9oeDkRXezUYFfBvs5aicyGWLSnt4upD85MxO544Ug",
+    "rating": 4.7,
+    "ratingCount": 208,
+    "productId": "10989555576300674725",
+    "position": 31
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH1000XM5",
+    "source": "Techgrocery",
+    "price": "6.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSCk8ine-oRJZ9qypZLxUhAucE6bLC5nHsMOj7wcDhLawbXnoPUlKMR01DHIkwQS6fD2PLjI_adk6xKRD4NBHs15zAmp7W_o_deaAqvIgoDftV1EEPj17N8",
+    "productId": "5621051102661369804",
+    "position": 32
+   },
+   {
+    "title": "Tai nghe Sony Wf-1000Xm5",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:8882983292292506057,gpcid:1413561823000604915,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "5.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQBGkVtkSFdWjxf-phbmiaNki59NTHq_MxlS35SM7rYE9XGxG2UnEeva-pdq-gphcR6ByEo11h9xaJiGZZmFv2J0Ecu_J7RGBh6aou-klhbt4419XedkbiM",
+    "productId": "8882983292292506057",
+    "position": 33
+   },
+   {
+    "title": "Tai nghe chống ồn Apple AirPods Max",
+    "source": "Reseller.com.vn",
+    "price": "8.650.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR0dGeWucEV1kX-rHuIUEo1h95NU4OGqFbuD2J_8EWJQ_fRvAkEvusnpvTW-NWzqI0oW8F_hzOQ5J7DPn88unCPxwICwkZQyqsfDpzE1CJlzcn0E3GPaYTjEw",
+    "rating": 3.6,
+    "ratingCount": 7,
+    "productId": "12030032226322707367",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe Bluetooth choàng đầu Sony WH-1000XM5",
+    "source": "Fptshop.com.vn",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRHk12lyVI0KVYV0Sp57Cq7R8sRJZfXW--YWAxzCPn2k0nSZcstgWdz-PclSD5_9uipN6_NHU-Pq4Fg2fnsn-pLNFYKxgtGNNi_Vvd6w8xtagIzKRxQ2v1Evw",
+    "rating": 4.7,
+    "ratingCount": 208,
+    "productId": "14573241903456444626",
+    "position": 35
+   },
+   {
+    "title": "Tai nghe chụp tai Bose QuietComfort Headphones - Đen",
+    "source": "Happy Phone",
+    "price": "7.309.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSz4ewNI-hvCqdLOlgNJinEg1doWTC1iMLvu-w702gCSQjM1DAl14eNV-supCNBM04w3hMbZ3vdH3hf48xnPBVHDebyVupByOlq7nU6OPP6wcbU1XYIRxooAA",
+    "rating": 4.8,
+    "ratingCount": 28,
+    "productId": "11227600022931372719",
+    "position": 36
+   },
+   {
+    "title": "Tai nghe Airpods Max chính hãng giá rẻ, trả góp 0% lãi suất",
+    "source": "XTmobile",
+    "price": "11.199.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQocnmA7QlBFosbKxzaf_3BlUCLZXPjCnYigsypY3bIWjy6PZU7lddKWIEzkfFZseIFHnydHSdrrTYbR1V___onP4oaPrqBXD6BpzIHtRNaUhhTtoCfPaDN3w",
+    "rating": 3.6,
+    "ratingCount": 7,
+    "productId": "11247073473949629298",
+    "position": 37
+   },
+   {
+    "title": "WH1000XM5 + My Sony Care 6T",
+    "source": "Sony Store Online",
+    "price": "7.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTYYtA24TKMNxN6928THbHoWT-sGEfu-y7p09ehXtfKZDA962wnSAdn-wQO-91nwjNCSECbc_7k6Vwttmri8SDiY_b7X7lgXyRPL-STot7hnMrZviKIEUf0AA",
+    "productId": "4002778007374578158",
+    "position": 38
+   },
+   {
+    "title": "Apple AirPods 5",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+t%E1%BB%91t+Sony+WH-1000XM5+Bose+QuietComfort+Ultra+Apple+AirPods+Pro&prds=localAnnotatedOfferId:1,catalogid:13980282665969538863,gpcid:10278670683326769562,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT04ytlIsVVlR4LHnL7tvzE-1BC7rDeWg8favWTryCjbcB3EEufDcVFSsAnQiWQVTWzlWeWkPUW3RfP258LHEQ9zd0zVBLVyNYYZz1faxBVzqRMpP6iD5zM5A",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "13980282665969538863",
+    "position": 39
+   },
+   {
+    "title": "Tai Nghe Bose Quietcomfort Headphone - Green",
+    "source": "HaLoShop",
+    "price": "5.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS1jwQtTsWGD-YCn4ryQROxpH2E9HEyZG7nhwT_VCN5D_twk06A3iSJylPVBaPWrbXtgYAXrmzQGGQKtRmjf5NK_12dzRluDzw1LoJuvw32vvYcVdVcb96B",
+    "productId": "3573185334803141663",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

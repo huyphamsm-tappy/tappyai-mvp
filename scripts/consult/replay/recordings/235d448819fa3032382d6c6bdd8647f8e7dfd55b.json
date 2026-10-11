@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:05.639Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Tai nghe Bluetooth Soundcore Liberty 4 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth Anker soundcore Liberty 4 Pro, Chống ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Anker-soundcore-Liberty-4-Pro-Ch%E1%BB%91ng-%E1%BB%92n-Ch%E1%BB%A7-%C4%90%E1%BB%99ng-M%C3%A0n-H%C3%ACnh-C%E1%BA%A3m-%E1%BB%A8ng-S%E1%BA%A1c-Nhanh-i.1202889678.40822379843",
+    "snippet": "Mua Tai Nghe Bluetooth Anker soundcore Liberty 4 Pro, Chống Ồn Chủ Động, Màn Hình Cảm Ứng, Sạc Nhanh giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe nhét tai không dây bluetooth Soundcore Anker ...",
+    "link": "https://shopee.vn/Tai-nghe-nh%C3%A9t-tai-kh%C3%B4ng-d%C3%A2y-bluetooth-Soundcore-Anker-Liberty-4-m%C3%A3-A3953-kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-%C3%A2m-thanh-ch%E1%BA%A5t-l%C6%B0%E1%BB%A3ng-cao-Hires-i.2849999.20266601895",
+    "snippet": "Tai nghe nhét tai không dây bluetooth Soundcore Anker Liberty 4 mã A3953 khử tiếng ồn âm thanh chất lượng cao Hires. outline grey truck icon. Không hỗ trợ.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 ...",
+    "link": "https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-Bluetooth-Anker-Soundcore-Liberty-4-NC-A3947-ch%E1%BB%91ng-%E1%BB%93n-cao-c%E1%BA%A5p-pin-50h-hires-bluetooth-5.3-i.2849999.16695187363",
+    "snippet": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC A3947 chống ồn cao cấp, pin 50h, hires, bluetooth 5.3. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.8,
+    "ratingCount": 18,
+    "position": 3
+   },
+   {
+    "title": "Anker soundcore Tai nghe bluetooth Liberty 4 Pro chống ...",
+    "link": "https://shopee.vn/Anker-soundcore-Tai-nghe-bluetooth-Liberty-4-Pro-ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-%C4%91i%E1%BB%81u-khi%E1%BB%83n-nhanh-qua-m%C3%A0n-h%C3%ACnh-c%E1%BA%A3m-%E1%BB%A9ng-A3954-i.264864376.25541186403",
+    "snippet": "Anker soundcore Tai nghe bluetooth Liberty 4 Pro chống ồn chủ động, điều khiển nhanh qua màn hình cảm ứng A3954. outline grey truck icon. Không hỗ trợ.",
+    "rating": 4.7,
+    "ratingCount": 59,
+    "position": 4
+   },
+   {
+    "title": "Tai nghe bluetooth Anker soundcore Liberty 4 NC chống ...",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-Anker-soundcore-Liberty-4-NC-ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-t%E1%BB%9Bi-98.5-%C3%A2m-thanh-Hi-Res-th%E1%BB%9Di-l%C6%B0%E1%BB%A3ng-ph%C3%A1t-t%E1%BB%9Bi-50H-i.1202889678.51002214561",
+    "snippet": "Tai nghe bluetooth Anker soundcore Liberty 4 NC chống ồn chủ động tới 98.5%, âm thanh Hi-Res, thời lượng phát tới 50H.",
+    "position": 5
+   },
+   {
+    "title": "Soundcore liberty 5 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/anker/soundcore%20liberty%205",
+    "snippet": "Tai nghe kẹp tai dạng mở Anker soundcore C50i, bass mạnh, gọi AI rõ nét, pin lâu tới. 1.255.000₫. 1.690.000₫. -26%. voucher-icon. Rẻ Vô Địch.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC ...",
+    "link": "https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-Bluetooth-Anker-Soundcore-Liberty-4-NC-A3947-i.1008563599.26736620173",
+    "snippet": "Mua Tai nghe không dây Bluetooth Anker Soundcore Liberty 4 NC A3947 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 7
+   },
+   {
+    "title": "Vỏ silicon mềm 3D cho bé cho Anker Soundcore Liberty 4 ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-silicon-m%E1%BB%81m-3D-cho-b%C3%A9-cho-Anker-Soundcore-Liberty-4-NC-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-Tai-nghe-kh%C3%B4ng-d%C3%A2y-Bluetooth-V%E1%BB%8F-s%E1%BA%A1c-ng%C4%83n-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-i.543584939.25161420112",
+    "snippet": "Vỏ silicon mềm 3D cho bé cho Anker Soundcore Liberty 4 NC Vỏ bảo vệ Tai nghe không dây Bluetooth Vỏ sạc ngăn Vỏ bảo vệ ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "rating": 4.7,
+    "ratingCount": 75,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

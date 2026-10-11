@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook 25 triệu lập trình RAM 16GB MacBook Air M2 M3 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:32.844Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook 25 triệu lập trình RAM 16GB MacBook Air M2 M3 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Nhu cầu sử dụng. Mỏng nhẹ; Đồ họa - Kỹ thuật; Cao cấp - Sang trọng; Laptop sáng tạo nội dung; Học tập - Văn phòng ; Tác vụ sử dụng. Đồ hoạ 3D, chỉnh sửa video",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "Sức mạnh xử lý hàng đầu trên chip Apple M3 - Cân tốt mọi tác vụ từ đồ hoạ đến lập trình; Màn hình Liquid Retina 13,6 inch - Màu sắc hiển thị rực rỡ, sắc nét ...",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 3
+   },
+   {
+    "title": "Build cấu hình MacBook CTO cho lập trình viên và phát ...",
+    "link": "https://cellphones.com.vn/sforum/build-cau-hinh-macbook-cto-cho-lap-trinh-vien",
+    "snippet": "Chip: Apple M3 Max với 16-core CPU, 30-core GPU (nâng từ 11 Core CPU mặc định) · RAM: 64GB (tăng từ 36GB mặc định) · Ổ cứng: 2TB SSD (tăng từ 1TB ...",
+    "date": "15 thg 8, 2024",
+    "position": 4
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Máy thực hiện hiệu quả các tính toán chỉnh sửa hình ảnh hay lập trình chuyên sâu, giúp hoàn thành công việc nhanh chóng mà không cần tốn nhiều thời gian.",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 16GB - 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-512gb.html",
+    "snippet": "Macbook Air 13 inch 2024 16GB 512GB đảm bảo hiệu suất mạnh mẽ với chip Apple M3 8 nhân mới ra mắt đầu năm 2024, cùng với RAM 16GB và ổ cứng SSD 512GB. Màn hình ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 6
+   },
+   {
+    "title": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop ...",
+    "link": "https://cellphones.com.vn/sforum/tai-chinh-duoi-25-trieu-sinh-vien-nen-chon-laptop-windows-hay-macbook",
+    "snippet": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop Windows hay MacBook? · MacBook Air M1 2020 (8GB/256GB) · MacBook Air M2 (2022) · Laptop Lenovo Yoga Slim 6 ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Kiến trúc chip M2 giúp tối ưu hóa hiệu suất trên mỗi watt điện, giúp máy cũ duy trì độ mát mẻ ngay cả khi làm việc cường độ cao. Đây là lựa chọn lý tưởng cho ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

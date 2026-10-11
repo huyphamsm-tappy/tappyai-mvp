@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Café Slow\" OR \"mỗi ngày cà phê\" OR \"Work'in Saigon Cafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:11:36.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Café Slow\" OR \"mỗi ngày cà phê\" OR \"Work'in Saigon Cafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn. Quán cà phê có không gian đèn vàng ấm cúng, dễ chịu với các món bánh và nước uống ngon. Quán còn ...",
+    "position": 1
+   },
+   {
+    "title": "📍Café Slow Hội An A work-friendly cafe hidden in Tra Que ...",
+    "link": "https://www.tiktok.com/@bybellenotbell/photo/7683872405680409874",
+    "snippet": "Café Slow Hội An A work-friendly cafe hidden in Tra Que Village, a peaceful vegetable village in Hoi An. #vietnam #hoian #traquevillage ...",
+    "position": 2
+   },
+   {
+    "title": "Timorina Café: Slow Mornings With Good Coffee",
+    "link": "https://www.tiktok.com/@timorinacaffee.id/photo/7649589710683196679",
+    "snippet": "Slow mornings, good coffee, and timeless moments. Welcome to Timorina Café. Timorina Café: Slow Mornings With Good Coffee. Enjoy slow mornings filled with good ...",
+    "position": 3
+   },
+   {
+    "title": "Bistro 25 Café: Slow Moments, Pastries & Connection",
+    "link": "https://www.tiktok.com/@bistro_24hr/video/7679037801416936725",
+    "snippet": "Bistro 25 Café: Slow Moments, Pastries & Connection. Lead Bistro 25 Café is described as more than just a place to eat — it's a space for ...",
+    "position": 4
+   },
+   {
+    "title": "Café Slow: Nơi An Yên Giữa Thiên Nhiên và Kiến Trúc",
+    "link": "https://www.tiktok.com/@dicaphe.dn/video/7292975577462590738",
+    "snippet": "Café Slow: Nơi An Yên Giữa Thiên Nhiên và Kiến Trúc. Khám phá Café Slow, quán cà phê đẹp ở Hội An nơi hòa quyện thiên nhiên và kiến trúc ...",
+    "position": 5
+   },
+   {
+    "title": "Mỗi ngày cà phê hạt Arabica American Black #caphe ...",
+    "link": "https://www.tiktok.com/@phuongthao890/video/7571810546371153170",
+    "snippet": "Mỗi ngày cà phê hạt Arabica American Black #caphe #coffee #cafe #coffeetiktok #caphemangdi ; Thập cẩm. 687.4K ; Will in Vietnam . 657.7K.",
+    "position": 6
+   },
+   {
+    "title": "Luôn tay luôn chân mỗi ngày - Cà phê tươi take away Biên ...",
+    "link": "https://www.tiktok.com/@xuongcaphe/video/7644424111346748689",
+    "snippet": "Luôn tay luôn chân mỗi ngày - Cà phê tươi take away Biên Hòa. Lead Luôn tay luôn chân mỗi ngày — câu nói tóm gọn nhịp sống nhanh quanh quán ...",
+    "position": 7
+   },
+   {
+    "title": "College Town Café Slow Season: No Business for 3 Months",
+    "link": "https://www.tiktok.com/@honeydcafe/video/7653259942715018509",
+    "snippet": "College Town Café Slow Season: No Business for 3 Months. That time of the year again: no business until school starts in 3 months. For a cafe located in a ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us/111851 \"30 hours\" AirPods Pro 2 listening charging case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:06:27.662Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us/111851 \"30 hours\" AirPods Pro 2 listening charging case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "... Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case. Up to 30 hours of listening time5. 5 minutes in the case provides around 1 hour of ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

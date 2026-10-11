@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Samsung Galaxy S24 Plus 12GB 256GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:21.377Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Samsung Galaxy S24 Plus 12GB 256GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "snippet": "Tên sản phẩm. Giá bán. Giá thu cũ lên đời ; Samsung Galaxy S24 Plus 12GB 256GB. 16.590.000đ. 15.590.000đ ; Samsung Galaxy S24 Plus 12GB 512GB. 18.990.000đ. 17.990 ...",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus-cu-dep.html",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB - Cũ Đẹp ; Lên đời chỉ từ 10.464.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Giá sản phẩm. 18.650.000đ 12.590.000đ ; Lưu ý · Giá ...",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus-cu-tray-xuoc.html",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB - Cũ Trầy Xước ; HSSV, Giáo viên đến 594.500đ ; Smember Giảm thêm đến 119.000đ ; Trả góp 0% ; Giá sản phẩm. 18.650.000đ 11.890.",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB 256GB - Đã Kích Hoạt",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus-cu-da-kich-hoat.html",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB - Đã Kích Hoạt ; Lên đời chỉ từ 11.454.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Giá sản phẩm. 18.650.000đ 13.590.000đ ; Lưu ý ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Xiaomi 17T vs Samsung Galaxy S24 Plus",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-xiaomi-17t-vs-samsung-galaxy-s24-plus",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB. 16.590.000đ18.650.000đ. HSSV chỉ còn 16.090.000đSmember giảm thêm ...",
+    "date": "10 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hotsale tuần 2 tháng 1: Galaxy S24 Plus giảm ...",
+    "link": "https://cellphones.com.vn/sforum/hotsale-tuan-2-thang-1-2026",
+    "snippet": "Samsung Galaxy S24 Plus 12GB 256GB. 15.490.000đ18.650.000đ. HSSV chỉ còn 14.990.000đSmember giảm thêm ...",
+    "date": "11 thg 1, 2026",
+    "position": 6
+   },
+   {
+    "title": "So sánh Samsung Galaxy S21 Plus 5G 256GB - Đã kích hoạt ...",
+    "link": "https://cellphones.com.vn/so-sanh/samsung-galaxy-s21-plus-256gb-da-kich-hoat-online-vs-mieng-dan-camera-samsung-galaxy-s21-plus-zeelot",
+    "snippet": "... Samsung Galaxy S24 Plus 12GB 256GB - Cũ Trầy Xước. Giá niêm yết: 18.650.000. Giá khuyến mãi: 11.890.000. + ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 Plus 12GB 256GB và PC CPS ...",
+    "link": "https://cellphones.com.vn/so-sanh/samsung-galaxy-s24-plus-vs-pc-cps-gaming-g5-amd",
+    "snippet": "So Sánh Samsung Galaxy S24 Plus 12GB 256GB và PC CPS Gaming G5 - AMD ; Kích thước màn hình. 6.7 inches ; Công nghệ màn hình. Dynamic AMOLED 2X ; Camera sau. Camera ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

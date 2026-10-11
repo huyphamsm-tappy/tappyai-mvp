@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple official Activation Lock Mac erase before sell check Mac battery cycle count maximum cycle count MacBook Air M1",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:21:49.232Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple official Activation Lock Mac erase before sell check Mac battery cycle count maximum cycle count MacBook Air M1",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "How can I get the battery cycle count of …",
+    "link": "https://discussions.apple.com/thread/253627274",
+    "snippet": "I am trying to sell my MacBook Air M1 and a potential buyer would like to know the battery cycle count. But I already factory reset the device.",
+    "date": "3 thg 2, 2022",
+    "position": 2
+   },
+   {
+    "title": "Inspecting a Used MacBook Before Buying: 10 Decisive ...",
+    "link": "https://www.ithope.cz/en/blog/kontrola-pouziteho-macbooku-pred-koupi-10-bodu/",
+    "snippet": "Apple specifies a maximum cycle count of 1,000 for the MacBook Air (M1, 2020). Up to roughly 400 cycles, the battery should still have ...",
+    "date": "30 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "How To Check Battery Health and Cycle Count on Macbook ...",
+    "link": "https://www.youtube.com/watch?v=GvMzdReN0f8&xstg=CAMSBhUD-7L2Hw%3D%3D",
+    "snippet": "In this video you will learn how to check the battery health and battery cycle count on your Macbook Air and Macbook Pro.",
+    "position": 4
+   },
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-vn/102541",
+    "snippet": "With Activation Lock, your Apple Account password or device passcode is required before anyone can turn off Find My, erase your Mac, or ...",
+    "date": "5 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Meaning & When to Worry | MBM - MacBook Battery Cycle Count",
+    "link": "https://macbookbatterymonitor.com/blog/macbook-battery-cycle-count",
+    "snippet": "To check your MacBook battery cycle count, hold Option, click the Apple menu, choose System Information, and look under Hardware → Power → ...",
+    "date": "23 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "MacBook Serial Number Check: Avoid Icloud & MDM Locks!",
+    "link": "https://www.tiktok.com/@ogabasseyy/video/7647254945602751765",
+    "snippet": "When considering a used MacBook, checking the physical condition is only part of the process. A used MacBook could be iCloud locked, activation ...",
+    "position": 7
+   },
+   {
+    "title": "What Is MacBook Battery Cycle Count? How to Check It ...",
+    "link": "https://makaiteetum.com/en/macbook-battery-cycle-count-check-before-sell/",
+    "snippet": "For macOS Sonoma or newer: Go to System Settings → Battery → Click the info “i” icon to view the maximum capacity and battery status.",
+    "date": "12 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

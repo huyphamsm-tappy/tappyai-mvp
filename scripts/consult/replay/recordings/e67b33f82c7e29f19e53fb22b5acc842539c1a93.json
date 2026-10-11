@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Samsung Galaxy Buds Core site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:34.252Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Samsung Galaxy Buds Core site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "samsung galaxy buds core หูฟังไร้สาย ตัดเสียงรบกวน แบตอึด [เลือก ...",
+    "link": "https://shop.tiktok.com/vn/k/samsung-galaxy-buds-core-hufang-airsay-tad-esiyngrbkwn-aebt-oued-elueok-si-aid-by-bb-beyond-d-box",
+    "snippet": "Kết quả cho \"samsung galaxy buds core หูฟังไร้สาย ตัดเสียงรบกวน แบตอึด [เลือกสีได้] by bb beyond d-box\". Tai Nghe Không Dây Samsung Galaxy Buds Core SM-R410 ...",
+    "position": 1
+   },
+   {
+    "title": "galaxy buds core case 2025",
+    "link": "https://shop.tiktok.com/vn/k/galaxy-buds-core-case-2025",
+    "snippet": "Kết quả cho \"galaxy buds core case 2025\". Tai nghe Bluetooth Samsung Galaxy Buds Core Bảo hành 12 tháng Chính hãng. Deal. 3. 18 sold. ₫1.239.999. ₫1.390.000 ...",
+    "position": 2
+   },
+   {
+    "title": "tai nghe galaxy buds core nút nguồn",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-galaxy-buds-core-nut-nguon",
+    "snippet": "Khám phá tai nghe galaxy buds core nút nguồn mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 3
+   },
+   {
+    "title": "tai nghe samsunh buds core",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-samsunh-buds-core",
+    "snippet": "[Quà tặng duy nhất màu độc quyền] Tai nghe Samsung Galaxy Buds4 Pro · 4.3. 352 sold · 6.432.599. ₫6.840.000 ; Tai nghe Samsung Galaxy Buds4 · 4.9. 353 sold · 3.970.",
+    "position": 4
+   },
+   {
+    "title": "tai nghe buds core có app hỗ trợ",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-buds-core-co-app-ho-tro",
+    "snippet": "Tai nghe Samsung Galaxy Buds4 Pro, Tai nghe Bluetooth thích ứng không dây - Hàng Chính Hãng Nghe Nhạc Earphone - BH 12 tháng. Deal. 24 sold. ₫7.989.999.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth thông minh Samsung Galaxy Buds core",
+    "link": "https://shop.tiktok.com/vn/pdp/1734435273974907945",
+    "snippet": "Tai nghe Bluetooth thông minh Samsung Galaxy Buds core - Chống ồn chủ động ANC - Hàng chính hãng ; Giới thiệu. Liên hệ với chúng tôiNghề nghiệpLiên kết ; Hỗ trợ ...",
+    "position": 6
+   },
+   {
+    "title": "tai nghe bluetooth samsung galaxy buds core-đen",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-bluetooth-samsung-galaxy-buds-core-den",
+    "snippet": "Khám phá tai nghe bluetooth samsung galaxy buds core-đen mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản ...",
+    "position": 7
+   },
+   {
+    "title": "tai nghe samsung galaxy buds 3 fe",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-samsung-galaxy-buds-3-fe",
+    "snippet": "tai nghe galaxy Buds 3 Pro - Âm thanh hay - Bass căng - pin khoẻ. 4.3. 596 sold ; Tai Nghe | HUAWEI FreeBuds SE 3 | 42 Giờ Phát Nhạc | Nhẹ Và Nhỏ Gọn | Sạc Nhanh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -16,11 +16,11 @@
 // alert as `scope`). Counting is by credits AS BILLED (`SERPER_CREDITS`), added BEFORE the call
 // so a burst cannot slip past the ceiling between the read and the write.
 
-import { recordSerperCall, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
+import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
-import { admitWithinToolBudget } from './serperToolBudget'
+import { admitWithinToolBudget, currentSerperSignal, haltSerperScope, releaseToolBudget, serperHaltedReason } from './serperToolBudget'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
@@ -60,7 +60,8 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
   const credits = SERPER_CREDITS[endpoint]
   // Bounded agent: the per-tool-invocation cap (serperToolBudget.ts) — inert outside an agent tool call.
   if (!admitWithinToolBudget(credits)) {
-    console.log(JSON.stringify({ type: 'tappyai_serper_tool_budget', endpoint, refused: true }))
+    console.log(JSON.stringify({ type: 'tappyai_serper_tool_budget', endpoint, refused: true, credits, ...(serperHaltedReason() ? { halted: serperHaltedReason() } : {}) }))
+    recordSerperRefused(endpoint)
     return false
   }
   const { count, scope } = await incrDailyCounter(SERPER_CEILING_KEY, credits, env)
@@ -73,6 +74,9 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
     console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_ceiling_store_down', note: 'counting per instance until the store answers; per-instance outage ceiling applies', count, ceiling, dailyCeiling: serperDailyCeiling(env) }))
   }
   if (count > ceiling) {
+    // Reserved on the turn / tool scope above but never sent: nothing can be billed, so the reservation goes back.
+    releaseToolBudget(credits)
+    recordSerperRefused(endpoint)
     if (alerted.ceiling !== today) {
       alerted.ceiling = today
       console.error(JSON.stringify({ type: 'tappyai_alert', alert: 'serper_daily_ceiling', endpoint, count, ceiling, scope, action: 'refusing further Serper calls today' }))
@@ -90,27 +94,74 @@ export async function serperAdmit(endpoint: SerperEndpoint, env: NodeJS.ProcessE
 export function __resetSerperAlerts(): void { alerted.warn = ''; alerted.ceiling = ''; alerted.storeDown = '' }
 
 /**
+ * What a REJECTED request was, kept apart in the ledger: our own time limit (`timeout`), a cancellation (`aborted`), anything else that
+ * stopped it before an answer (`network_error`: DNS, reset, `fetch failed`). The credit estimate does not depend on this label.
+ */
+export function classifyThrown(e: unknown): 'timeout' | 'aborted' | 'network_error' {
+  if (e instanceof Error) {
+    if (e.name === 'AbortError') return 'aborted'
+    if (e.message === 'timeout') return 'timeout'
+    if (/abort/i.test(e.message)) return 'aborted'
+  }
+  return 'network_error'
+}
+
+/**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
  */
 export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
+  // Phase 8 runtime: a cancelled tool invocation sends nothing more (no credit spent) and its in-flight request is aborted.
+  const signal = currentSerperSignal()
+  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_admit' })); recordSerperRefused(endpoint); return null }
   if (!(await serperAdmit(endpoint))) return null
+  if (signal?.aborted) {
+    // Reserved, never sent — the one case where a reservation may be given back.
+    releaseToolBudget(SERPER_CREDITS[endpoint])
+    recordSerperRefused(endpoint)
+    console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' }))
+    return null
+  }
+  // From here on the request is SENT: a timeout / abort below does NOT release the reservation (the provider may have processed it).
   recordSerperCall(endpoint)
-  const res = await Promise.race([
-    fetch(`https://google.serper.dev/${endpoint}`, {
-      method: 'POST',
-      headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    }),
-    new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
-  ])
+  let res: Response
+  try {
+    res = await Promise.race([
+      fetch(`https://google.serper.dev/${endpoint}`, {
+        method: 'POST',
+        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        ...(signal ? { signal } : {}),
+      }),
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
+    ])
+  } catch (e) {
+    recordSerperOutcome(endpoint, classifyThrown(e))
+    throw e
+  }
+  if (!res.ok) {
+    // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
+    // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
+    let account: string | null = null
+    if (res.status === 401 || res.status === 402 || res.status === 403) account = `http_${res.status}`
+    else if (res.status === 400) {
+      try { if (/credit/i.test(await res.clone().text())) account = 'http_400_credits' } catch { /* classification only */ }
+    }
+    recordSerperOutcome(endpoint, account ? 'account_error' : 'http_error')
+    if (account) haltSerperScope(account)
+    return res
+  }
   // Search data is untrusted (owner 30/09): URLs and planted instructions leave its free-text fields before any tool
   // reads them — always, not only under CONSULT_LUNA (serperUntrusted.ts). An unchanged answer is returned as is.
-  if (!res.ok) return res
+  let recorded = false
   try {
-    const cleaned = sanitizeSerperJson(await res.clone().json())
+    const raw = await res.clone().json()
+    // The provider states what it charged for this response (`credits`) — recorded beside the estimate, never used as a refund.
+    recorded = true
+    recordSerperOutcome(endpoint, 'ok', typeof (raw as { credits?: unknown })?.credits === 'number' ? (raw as { credits: number }).credits : undefined)
+    const cleaned = sanitizeSerperJson(raw)
     if (cleaned.changed === 0) return res
     console.log(JSON.stringify({ type: 'tappyai_serper_untrusted_cleaned', endpoint, fields: cleaned.changed }))
     return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
-  } catch { return res }
+  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); return res }
 }

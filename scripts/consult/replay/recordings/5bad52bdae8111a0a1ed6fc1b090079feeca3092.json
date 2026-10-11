@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 giá cũ Việt Nam 8GB 256GB cửa hàng thu cũ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:16:01.771Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 giá cũ Việt Nam 8GB 256GB cửa hàng thu cũ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thu mua Macbook cũ giá cao - đổi Macbook mới uy tín",
+    "link": "https://cellphones.com.vn/thu-cu-doi-moi/trade-in-macbook",
+    "snippet": "Thu cũ đổi mới Macbook chính hãng, bảng giá rõ ràng, ưu đãi thành viên đến 1Tr. Thu mua Macbook cũ giá cao. Trade in uy tín tại TPHCM, Hà Nội.",
+    "position": 1
+   },
+   {
+    "title": "Thu Mua MacBook Cũ Giá Cao TPHCM Bảng Giá 10/2026",
+    "link": "https://qmacstore.com/dich-vu/thu-mua-macbook-cu?srsltid=AU7gw4Wf2awOMbcNx4Ek_ErB2oyHoBXp-Fp4cXAeGZnGIaewOJdvpK9f",
+    "snippet": "Thu mua MacBook Air M1. 13″ 2020 M1 8GB 256GB10.000.000 VND; 13″ 2020 M1 8GB 512GB11.000.000 VND; 13″ 2020 M1 16GB 256GB11.500.000 VND; 13\" 2020 M1 16GB 512GB ...",
+    "position": 2
+   },
+   {
+    "title": "Mua MacBook cũ GIÁ RẺ - Hà Nội",
+    "link": "https://onewaymobile.vn/macbook-cu",
+    "snippet": "MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 8GB - 256GB - 99% · 13.790.000đ 14.190.000đ ; MacBook Pro 13 inch 2020 M1 8CPU/8GPU - RAM 8GB - 256GB - 99% · 14.890.",
+    "position": 3
+   },
+   {
+    "title": "Bảng giá thu mua Macbook cũ giá cao toàn quốc",
+    "link": "https://2handland.com/thu-mua-macbook",
+    "snippet": "MACMINI M1 16GB 512GB 2020 (Z12P), 15.300.000, 14.200.000 ; Macbook Air M1 256GB 2020 ( MGN63 - MGN93 - MGND3 ), 14.800.000, 12.700.000 ; Macbook ...",
+    "date": "13 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 Cũ - Like New 99% Bảo hành ...",
+    "link": "https://macone.vn/tag/macbook-air-m1-cu/?srsltid=AU7gw4W4tz3mnu_AXC0zh2GBUSd0toEHxeAzwK9Ef5qr6D5sZH9liq1P",
+    "snippet": "Macbook Air M1 Cũ ; Apple M1 8GB RAM 256GB SSD – Like New. 15.400.000₫ ; Apple M1 8GB RAM 512GB SSD – Like New. 16.800.000₫ ; Apple M1 16GB RAM 256GB SSD – 98%.",
+    "position": 5
+   },
+   {
+    "title": "Thu cũ, đổi mới lên đời MacBook Air M1 13\" 8GB/256GB",
+    "link": "https://hoanghamobile.com/thu-cu-doi-moi?id=831&srsltid=AU7gw4XIUnwcxmQK9DYmroKACoOxZp2TUO7NJ1ct_pk1ln0Zcpm5KihZ",
+    "snippet": "Thu cũ, đổi mới lên đời MacBook Air M1 13\" 8GB/256GB · Định giá nhanh · Trả góp 0% · Hỗ Trợ 1900.2091 · Bảo mật thông tin.",
+    "position": 6
+   },
+   {
+    "title": "THU MACBOOK CŨ ĐỔI MACBOOK MỚI KHÔNG LO BÙ TIỀN ...",
+    "link": "https://www.facebook.com/CellphoneSVietnam/videos/-thu-macbook-c%C5%A9-%C4%91%E1%BB%95i-macbook-m%E1%BB%9Bi-kh%C3%B4ng-lo-b%C3%B9-ti%E1%BB%81n-tr%E1%BB%A3-gi%C3%A1-%C4%91%E1%BA%BFn-2-tri%E1%BB%87u-khi-thu-c%C5%A9-/1323549081956756/",
+    "snippet": "Em bán Macbook Pro 14inch M1 Pro Gray. Cấu hình: M1 Pro / Ram 32GB / SSD 512GB. ✓ Ngoại hình mời anh em xem ảnh đánh giá. ✓ Máy chuẩn, ...",
+    "position": 7
+   },
+   {
+    "title": "Thu mua Macbook Air, Pro M1 cũ giá cao tại TPHCM",
+    "link": "https://tuannguyenmobile.com/thu-mua-macbook-m1/?srsltid=AU7gw4WCcs7IkozYTJlqO8Bl3AcJ-DSKP29b-8JvI-hMszJrDK4XwOoO",
+    "snippet": "MacBook Air 13 M1 (8CPU-7GPU) 8GB 256GB, 10.000.000 đ, 14.500.000 đ. MacBook ... Địa chỉ thu mua Macbook M1 tại TPHCM. Cửa hàng Tuấn Nguyễn Mobile. Địa Chỉ ...",
+    "rating": 5,
+    "ratingCount": 21,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

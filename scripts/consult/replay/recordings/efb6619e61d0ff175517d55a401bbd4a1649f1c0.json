@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nguyên Lý Kế Toán\" OR \"Tủ lạnh Samsung Inverter 236 lít RT22M4032BU/SV\" OR \"Tủ lạnh Samsung Inverter 256 lít RT25M4032BU/SV\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:17.851Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nguyên Lý Kế Toán\" OR \"Tủ lạnh Samsung Inverter 236 lít RT22M4032BU/SV\" OR \"Tủ lạnh Samsung Inverter 256 lít RT25M4032BU/SV\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ôn thi Nguyên lý kế toán theo Thông tư 99: Tài sản, Nợ, Vốn",
+    "link": "https://www.tiktok.com/@anh.the.time/video/7620501988882566417",
+    "snippet": "Nguyên lý kế toán là môn nền tảng giúp sinh viên hiểu cách ghi nhận, phân loại và phản ánh các nghiệp vụ kinh tế trong doanh nghiệp.",
+    "position": 1
+   },
+   {
+    "title": "Nguyên Lý Kế Toán",
+    "link": "https://www.tiktok.com/@hieuveketoan/photo/7686805005357141268",
+    "snippet": "Nguyên Lý Kế Toán. Mọi người thấy hay thì cho em xin 1 like và bình luận để kênh đỡ flop với ạ. Keywords: nguyên lý kế toán,kế toán,viral video.",
+    "position": 2
+   },
+   {
+    "title": "Sách Nguyên Lý Kế Toán Ứng Dụng: Dành cho người mới ...",
+    "link": "https://www.tiktok.com/@ketoanleanh/video/7647770815215275284",
+    "snippet": "Cuốn sách Nguyên Lý Kế Toán Ứng Dụng được đánh giá là phù hợp cho những người mới bắt đầu học kế toán. Nội dung sách bắt đầu từ bản chất kế ...",
+    "position": 3
+   },
+   {
+    "title": "Nguyên lý kế toán: Phương pháp xuất kho dễ hiểu",
+    "link": "https://www.tiktok.com/@sinhvienoi/video/7443804659820678418",
+    "snippet": "Nguyên lý kế toán: Phương pháp xuất kho dễ hiểu. Khám phá nguyên lý kế toán và các phương pháp xuất kho. Hãy cùng học lý thuyết và thực hành ...",
+    "position": 4
+   },
+   {
+    "title": "Công thức Nguyên lý Kế toán cho sinh viên ôn thi",
+    "link": "https://www.tiktok.com/@letqavn/photo/7638495808484117778",
+    "snippet": "Công thức Nguyên lý Kế toán cho sinh viên ôn thi. Tổng hợp các công thức Nguyên lý Kế toán quan trọng giúp sinh viên ôn tập hiệu quả. Lưu ngay để chuẩn bị cho ...",
+    "position": 5
+   },
+   {
+    "title": "Cách vẽ tài khoản chữ T trong nguyên lý kế toán và tính số ...",
+    "link": "https://www.tiktok.com/@sinhvienoi/video/7447526903809887506",
+    "snippet": "Bài tập phản ánh lên tài khoản chữ T là dạng bài nhiều sinh viên thường bỏ qua khi thi nguyên lý kế toán. Tuy nhiên, đây là phần cơ bản giúp ...",
+    "position": 6
+   },
+   {
+    "title": "Nguyên lý kế toán: Phân biệt tài khoản 133 và 3331",
+    "link": "https://www.tiktok.com/@sinhvienoi/video/7444172275026365704",
+    "snippet": "Nguyên lý kế toán: Phân biệt tài khoản 133 và 3331. Khám phá nguyên lý kế toán và phân biệt tài khoản 133, 3331 trong ngành tài chính doanh ...",
+    "position": 7
+   },
+   {
+    "title": "Nguyên lý kế toán: Hiểu rõ NỢ-CÓ",
+    "link": "https://www.tiktok.com/@sinhvienoi/video/7443471769438145810",
+    "snippet": "Nguyên lý kế toán: Hiểu rõ NỢ-CÓ. Khám phá khái niệm NỢ-CÓ trong nguyên lý kế toán để nắm vững kiến thức. Tìm hiểu cách áp dụng hiệu quả ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

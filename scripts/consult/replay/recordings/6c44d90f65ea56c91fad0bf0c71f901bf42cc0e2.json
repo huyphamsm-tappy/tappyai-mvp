@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Cambridge English free speaking activities learners",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:34:23.473Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cambridge English free speaking activities learners",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activities for Learners | Learning English",
+    "link": "https://www.cambridgeenglish.org/learning-english/activities-for-learners/",
+    "snippet": "Learn English with our free online listening, grammar, vocabulary and reading activities. Practise your English and get ready for your Cambridge English exam.",
+    "position": 1
+   },
+   {
+    "title": "Speak & Improve",
+    "link": "https://speakandimprove.com/",
+    "snippet": "It's free! · Choose to practise a speaking skill or practise taking a complete test. · Answer the questions and receive an automatic grade in seconds. · Listen to ...",
+    "position": 2
+   },
+   {
+    "title": "Learning English",
+    "link": "https://www.cambridgeenglish.org/learning-english/",
+    "snippet": "Free activities for young learners. Search for free activities to help children practise their reading and writing, listening or speaking skills.",
+    "position": 3
+   },
+   {
+    "title": "Speaking | LearnEnglish Teens",
+    "link": "https://learnenglishteens.britishcouncil.org/skills/speaking",
+    "snippet": "Here you can find activities to practise your speaking skills. You can improve your speaking by noticing the language we use in different situations and ...",
+    "position": 4
+   },
+   {
+    "title": "Cambridge speaking test practice activities for students",
+    "link": "https://www.facebook.com/groups/teachingenglishtochildren/posts/10159717899894687/",
+    "snippet": "FREE tips to help you prepare for your Cambridge English exam. Check out our daily activities that encourage you to practise your English in ...",
+    "position": 5
+   },
+   {
+    "title": "Activities for children",
+    "link": "https://www.cambridgeenglish.org/learning-english/parents-and-children/activities-for-children/",
+    "snippet": "Start exploring our free learning activities for children. These activities help children practise their reading, writing, listening and speaking skills.",
+    "position": 6
+   },
+   {
+    "title": "Speaking Unplugged: 30 Activities for One-to-One Classes",
+    "link": "https://www.oxfordtefl.com/wp-content/uploads/2015/03/SpeakingUnplugged-30Activities.pdf",
+    "snippet": "By collaborating with your learners in these activities, you provide a language model and a model of how to interact when conversing in English. If you do this ...",
+    "position": 7
+   },
+   {
+    "title": "Use of English PRO - Cambridge English Exams B1, B2, C1, C2",
+    "link": "https://useofenglishpro.com/",
+    "snippet": "Cambridge English Exam Preparation. Practice Use of English, Reading, Listening, and more for B1 Preliminary, B2 First, C1 Advanced & C2 Proficiency exams.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

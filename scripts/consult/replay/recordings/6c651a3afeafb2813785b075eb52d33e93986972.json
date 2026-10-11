@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Pro 14\" sai gon site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:21:12.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Pro 14\" sai gon site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "MacBook Pro 14 M5 10CPU 10GPU 24GB 1TB | Chính hãng Apple Việt Nam. Trả góp 0%. : 57.990.000đ. 60.490.000đ. Giảm 4%.",
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro 14 M5 10CPU 10GPU 24GB 1TB | Chính hãng Apple Việt Nam. 57.990.000đ. 55.990.000đ ; MacBook Pro M5 Pro 16 inch 2026 18CPU 20GPU 24GB 1TB | Chính hãng ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "MacBook Pro 14 M5 10CPU 10GPU 32GB 1TB Nano Sạc 70W - Chính hãng Đã kích hoạt. Trả góp 0%. : 63.290.000đ. 70.190.000đ. Giảm 10%.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "snippet": "MacBook Pro 14 inch M4 16GB 512GB với RAM 16GB và có thể nâng lên đến 32GB cùng băng thông đến 120GB/s giúp máy Mac Pro M4 đạt hiệu năng vượt trội, xử lý đa ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-pro-24gb-512gb.html",
+    "snippet": "MacBook Pro 14 M4 Pro 12CPU 16GPU 24GB 512GB được trang bị con chip M4 Pro mạnh mẽ kết hợp cùng thanh RAM 24GB và ổ cứng SSD dung lượng 512GB tốc độ cao. Bên ...",
+    "rating": 4.8,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Macbook Pro M4 (Pro, Max) 2024 | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro/macbook-pro-2024.html",
+    "snippet": "MacBook Pro 14 M4 Max 14CPU 32GPU 36GB 1TB | Chính hãng Apple Việt Nam. 79.990.000đ. 77.990.000đ ; MacBook Pro 14 M4 Pro 14CPU 20GPU 24GB 1TB | Chính hãng Apple ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Pro 14 inch M3 Max sau 3 năm ra mắt",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-pro-14-inch-m3-max-sau-3-nam",
+    "snippet": "MacBook Pro 14 inch M3 Max sau 3 năm ra mắt: Vị thế \"trùm cuối\" hay đã đuối sức trước M5 Series? · Ngoại hình vẫn hợp thời nhưng cần bảo quản kỹ.",
+    "date": "25 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Dán màn hình Macbook Pro, Air | Giá rẻ, bảo hành uy tín",
+    "link": "https://cellphones.com.vn/phu-kien/dan-man-hinh/dan-bao-ve-macbook.html",
+    "snippet": "MacBook Neo 13 inch · Macbook Pro 16 (M5) · Macbook Pro 16 (M4) · Macbook Pro 16 (M3) · Macbook Pro 16 (M2) · Macbook Pro 16 (M1) · Macbook Pro 14 (M5) · Macbook Pro ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"CHAY GARDEN Nguyễn Thị Minh Khai\" OR \"Ẩm Thực Chay Tuệ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:56:44.657Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"CHAY GARDEN Nguyễn Thị Minh Khai\" OR \"Ẩm Thực Chay Tuệ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Món chay ngon tại Hoàng Văn Thụ",
+    "link": "https://www.tiktok.com/@tuancolereview/video/7677073660942863634",
+    "snippet": "Ẩm Thực Chay Tuệ - Kiệt tác các món ăn Chay ngon giữa lòng thành phố ✨ Địa Chỉ: 186-188, Hoàng Văn Thụ, P. Đức Nhuận, Hồ Chí Mình. # ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Ẩm Thực Chay Tuệ (@amthucchaytue)",
+    "link": "https://www.tiktok.com/@amthucchaytue",
+    "snippet": "Nhà Hàng Ẩm Thực Chay Tuệ · @amthucchaytue · Các chi nhánh Ẩm Thực Chay Tuệ 162 Trần Hưng Đạo- Q1 L3 - Sài Gòn Marina IFC- Q1 186-188 Hoàng Văn Thụ, P. Đức Nhuận ...",
+    "position": 2
+   },
+   {
+    "title": "Ẩm Thực Chay Tuệ Garden (@chaytuegardenq7)",
+    "link": "https://www.tiktok.com/@chaytuegardenq7",
+    "snippet": "Ẩm Thực Chay Tuệ Garden (@chaytuegardenq7) trên TikTok |57.5K Lượt thích.4405 Follower.101 Nguyễn Bính , p.Tân Hưng Mọi người liên hệ qua fb để đặt bàn nhé.",
+    "position": 3
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 4
+   },
+   {
+    "title": "Ẩm Thực Chay Tuệ — không gian sang, yên tĩnh, món ...",
+    "link": "https://www.tiktok.com/@binhprincess/video/7646283342190546184",
+    "snippet": "không gian sang, yên tĩnh, món chay lên rất chỉn chu. Ở đây có buffet trưa 249k khoảng 50 món, còn buffet 399k thì đã hơn ...",
+    "date": "Ẩm Thực Chay Tuệ",
+    "position": 5
+   },
+   {
+    "title": "Nhà hàng Ẩm Thực Chay Tuệ Q1: Quán chay thanh tịnh ở ...",
+    "link": "https://www.tiktok.com/@khanhnamla/video/7656075361922354452",
+    "snippet": "Ẩm Thực Chay Tuệ tại Trần Hưng Đạo (Q1, TP. HCM) là điểm hẹn dành cho những yêu thích ẩm thực chay và không gian thanh tịnh giữa lòng Sài ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 7
+   },
+   {
+    "title": "BẠN CÓ HẸN VỚI TUỆ'S DAY THÁNG 5 - ĐÊM TIỆC CỦA MỸ VỊ ...",
+    "link": "https://www.tiktok.com/@amthucchaytue/video/7643624035523267847",
+    "snippet": "Video TikTok từ Nhà Hàng Ẩm Thực Chay Tuệ (@amthucchaytue): \"BẠN CÓ HẸN VỚI TUỆ'S DAY THÁNG 5 - ĐÊM TIỆC CỦA MỸ VỊ & NGHỆ THUẬT TẠI TUỆ BIÊN HÒA ⏳ Thời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

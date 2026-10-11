@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông thông tư 2026 Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:57:01.351Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông thông tư 2026 Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Biểu mức thu lệ phí cấp hộ chiếu, giấy thông hành ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/bieu-muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-moi-nhat-2026-de-xuat-303559-217179.html",
+    "snippet": "Theo đó, tại biểu mức thu phí, lệ phí được ban hành kèm theo Dự thảo Thông tư đã đề xuất mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép ...",
+    "date": "21 thg 12, 2025",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Lệ phí cấp hộ chiếu năm ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/108810/thong-tu-28-2026-tt-btc-le-phi-cap-ho-chieu-nam-2026-moi-nhat",
+    "snippet": "Tại Thông tư 28/2026/TT-BTC về mức thu phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam đã quy định lệ phí cấp hộ ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn cách làm hộ chiếu phổ thông trong nước cấp ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/huong-dan-cach-lam-ho-chieu-pho-thong-trong-nuoc-cap-tinh-nam-2026-online-tren-cong-dich-vu-cong-bc-363823-277834.html",
+    "snippet": "Tham khảo bài viết dưới đây hướng dẫn cách làm hộ chiếu phổ thông trong nước cấp tỉnh năm 2026 online trên Cổng Dịch vụ công Bộ Công an.",
+    "date": "10 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/tu-van-phap-luat/97284/muc-le-phi-lam-ho-chieu-nam-2025-va-nam-2026",
+    "snippet": "Theo đó, nhằm hỗ trợ người dân, Bộ Tài chính đã quyết định giảm 50% lệ phí khi làm hộ chiếu (áp dụng từ ngày 01/7/2025 đến hết ngày 31/12/2026).",
+    "date": "28 thg 10, 2025",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn đăng ký làm hộ chiếu phổ thông trên Dịch vụ ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/huong-dan-dang-ky-lam-ho-chieu-pho-thong-tren-dich-vu-cong-cua-bo-cong-an-822872-224983.html",
+    "snippet": "Hướng dẫn đăng ký làm hộ chiếu phổ thông trên Dịch vụ công? · Lệ phí cấp hộ chiếu 2026 là bao nhiêu? · Hộ chiếu phổ thông có thời hạn bao lâu?",
+    "date": "17 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu gắn chip điện tử năm 2026 mới nhất là ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/le-phi-cap-ho-chieu-gan-chip-dien-tu-nam-2026-moi-nhat-la-bao-nhieu-nhung-truong-hop-nao-duoc-mien-l-20979.html",
+    "snippet": "Lệ phí cấp hộ chiếu gắn chip điện tử năm 2026 mới nhất là bao nhiêu? Những trường hợp nào được miễn lệ phí cấp hộ chiếu theo Thông tư 28/2026?",
+    "date": "2 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "6 trường hợp miễn lệ phí cấp hộ chiếu, giấy thông hành ...",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/6-truong-hop-mien-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-khi-co-vneid-muc-do-2-la--138101569.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu, giấy thông hành và giấy phép xuất cảnh quy định tại mục I Biểu mức thu phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh ...",
+    "date": "19 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

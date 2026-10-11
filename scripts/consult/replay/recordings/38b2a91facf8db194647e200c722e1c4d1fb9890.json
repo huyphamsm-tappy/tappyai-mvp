@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Thịt Nướng Cô Lợi Hội An\" OR \"Quán Ăn Tuấn Lợi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:08:41.535Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Thịt Nướng Cô Lợi Hội An\" OR \"Quán Ăn Tuấn Lợi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thịt Nướng Cô Lợi Hội An - Review đồ nướng, địa chỉ & cảm nhận",
+    "link": "https://www.tiktok.com/@voden.thichanngon/video/7587403070015950100",
+    "snippet": "Thịt Nướng CÔ LỢI ở HỘI AN #vợđen #vợchồngnhàđen #reviewanngon #vợđenthichanngon. Thịt Nướng Cô Lợi Hội An - Review đồ nướng, địa chỉ & cảm nhận. Lead Thịt ...",
+    "position": 1
+   },
+   {
+    "title": "Thịt nướng Cô Lợi Hội An review ngon",
+    "link": "https://www.tiktok.com/@tran.phuocdai/video/7608540389288463636",
+    "snippet": "Thịt nướng Cô Lợi Hội An — đánh giá ngắn gọn và trọng tâm Lead Thịt nướng Cô Lợi Hội An được nhắc đến trong mô tả kèm thẻ #híutxinchao ...",
+    "position": 2
+   },
+   {
+    "title": "Thịt nướng Cô Lợi bên cạnh Phêla.. thịt ướp ngọt ...",
+    "link": "https://www.tiktok.com/@voden.thichanngon/video/7609260371177671957",
+    "snippet": "thịt ướp ngọt ngọt, thấm,. @voden.thichanngon · nhạc nền - Trần Đáng 4747 _Ringtones · Thịt Nướng Cô Lợi Hội An Restaurant · author. 99 · 9.",
+    "position": 3
+   },
+   {
+    "title": "Thịt Nướng Cô Lợi Hội An",
+    "link": "https://www.tiktok.com/discover/th%E1%BB%8Bt-n%C6%B0%E1%BB%9Bng-c%C3%B4-l%E1%BB%A3i-h%E1%BB%99i-an",
+    "snippet": "Thịt Nướng Cô Lợi Hội An. Khám phá các video liên quan đến Thịt Nướng Cô Lợi Hội An trên TikTok. Cập nhật lần cuối 2026-07-27.",
+    "date": "27 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Bánh Ướt Thịt Xiên Nướng Cô Lợi - Đặc Sản Hội An",
+    "link": "https://www.tiktok.com/@vitquayminhphatct65/video/7687085863980911892",
+    "snippet": "... Xiên Nướng Cô Lợi, một đặc sản ẩm thực. @VỊT QUAY MINH PHÁT CẦN THƠ · Liên Khúc Ngày Xưa Em Nói · Thịt Nướng Cô Lợi Hội An Restaurant · author.",
+    "position": 5
+   },
+   {
+    "title": "HOI AN FOOD REC (if you want the full experience!) I'm so ...",
+    "link": "https://www.tiktok.com/@livs.table/video/7672312572724530453",
+    "snippet": "Highly recommend! Thịt Nướng Cô Lợi Hội An #hoian #vietnamrec #ThịtNướng #foodierec #streetfood.",
+    "position": 6
+   },
+   {
+    "title": "Khám Phá Bánh Ướt Thịt Nướng Cô Lợi Tại Hội An",
+    "link": "https://www.tiktok.com/@dibang02chan/video/7267484146031676673",
+    "snippet": "Quán này tui tới ăn cả 2 lượt đấy, cháu tui ở 2 ngày là cả 2 ngày đòi đi ăn quán thịt nướng nè. . . Bánh ướt thịt nướng Cô Lợi, Hội An. # ...",
+    "position": 7
+   },
+   {
+    "title": "Muốn ăn lại thịt nướng quá #thitxiennuongcoloi #hoian ...",
+    "link": "https://www.tiktok.com/@diancungcin/video/7676820059557252372",
+    "snippet": "... thịt nướng quá #thitxiennuongcoloi #hoian#danang#doanhoian#diancungcin. @Hôm nay Cin ăn gì? galaxy · Thịt Nướng Cô Lợi Hội An Restaurant.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

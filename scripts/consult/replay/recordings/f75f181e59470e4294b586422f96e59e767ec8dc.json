@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple Macbook Pro 16 inch 2021\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:09.644Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple Macbook Pro 16 inch 2021\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple MacBook Pro 16-Inch 2021 M1 Pro",
+    "link": "https://www.tiktok.com/@macbyfaizan/photo/7689097460366511361",
+    "snippet": "2021 Apple MacBook Pro 16-inch with M1 Pro chip, 10-Core CPU, 16-Core GPU, 16GB RAM, 512GB SSD. Keywords: Apple MacBook Pro 16-Inch 2021,MacBook ...",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Pro 16-inch (2021) M1 Pro 512GB SSD",
+    "link": "https://www.tiktok.com/@iconnectstore1/video/7600091058290183442",
+    "snippet": "Apple MacBook Pro 16-inch (2021) M1 Pro 512GB SSD. The Apple 2021 MacBook Pro, featuring a 16.2-inch display and the powerful M1 Pro chip, is ...",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Pro 16-inch (2021) – M1 Max Chip with 10-Core ...",
+    "link": "https://www.tiktok.com/@trunknet/video/7572207187276074252",
+    "snippet": "Apple MacBook Pro 16-inch (2021) – M1 Max Chip with 10-Core CPU and 24-Core GPU, 64GB Unified Memory, 1TB SSD, Liquid Retina XDR Display, macOS, ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Pro 16-inch 2021 Review with M1 Max Chip",
+    "link": "https://www.tiktok.com/@homeoflaptopuk/photo/7454700632566451462",
+    "snippet": "Apple MacBook Pro 16-inch 2021 Review with M1 Max Chip. Discover the impressive features of the Apple MacBook Pro 16-inch 2021 model. Learn ...",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Pro 16-inch (2021) A2485 Apple M1 ...",
+    "link": "https://www.tiktok.com/@trunknet/photo/7670090961879420180?image_index=3&lang=bn-IN",
+    "snippet": "Apple MacBook Pro 16-inch (2021) A2485 Apple M1 Pro Chip 32GB Unified Memory 512GB SSD Liquid Retina XDR Display Processor: Apple M1 Pro ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 16-inch (2021) M1 Pro - 512GB SSD",
+    "link": "https://www.tiktok.com/@leocomputers_/photo/7674958562233208085",
+    "snippet": "Explore the Apple MacBook Pro 16-inch (2021) A2485 with M1 Pro chip, 16-core GPU, 16GB RAM, and 512GB SSD. Features a 16.2-inch Liquid Retina ...",
+    "position": 6
+   },
+   {
+    "title": "applemacbookprom1max",
+    "link": "https://www.tiktok.com/tag/applemacbookprom1max",
+    "snippet": "Apple MacBook Pro 16-inch (2021) – M1 Max Chip with 10- · Refurbished Apple MacBook Pro 13.3” Looking for a reliable laptop that can handle work · What did I ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro 16inch 2021 M1 Pro | 32GB RAM, 512GB SSD",
+    "link": "https://www.tiktok.com/@thespstore3/video/7678642339169963284",
+    "snippet": "... Apple MacBook Pro 16-inch 2021 specs, M1 Pro chip laptop deal, 16-inch MacBook Pro 2021 for $1079, MacBook Pro 2021 M1 Pro 32GB, buy MacBook ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

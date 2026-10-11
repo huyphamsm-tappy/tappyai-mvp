@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook ngân sách khoảng 25 triệu MacBook Air M-series chính hãng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:42:12.640Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook ngân sách khoảng 25 triệu MacBook Air M-series chính hãng Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "MacBook Air giá bao nhiêu tiền? ; Apple MacBook Air M2 2024 8CPU 8GPU 16GB 256GB I Chính hãng Apple Việt Nam. 18.590.000đ. 16.590.000đ ; MacBook Air M5 15 inch ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025.html",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB | Chính hãng Apple Việt Nam · Giảm đến 1 triệu đồng cho đơn hàng từ 10 triệu đồng · Giảm ngay 600K cho đơn hàng ...",
+    "rating": 4.9,
+    "ratingCount": 19,
+    "position": 3
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Mua Macbook Air cũ giá rẻ - Trợ giá lên đời 2 triệu, giảm HSSV 10% tối đa 500k, giảm 1% cho Smember, BH 12 tháng. Mua ngay Macbook Air cũ tại đây.",
+    "position": 4
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "Mua laptop Macbook Pro chính hãng Apple giá rẻ - Góp 0% trả trước 0Đ, Phụ phí 0Đ, có thu cũ lên đời, giao nhanh 2h. Mua Mac book Pro tại đây.",
+    "position": 5
+   },
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Với ngân sách dưới 10 triệu, bạn hoàn toàn có thể sở hữu một chiếc MacBook cũ chất lượng, đặc biệt nếu chọn đúng dòng và kiểm tra kỹ lưỡng trước khi mua. Một số ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 giá rẻ, trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng. Mua online Mac Air 13 inch M5 nhận voucher giảm 500K!",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 7
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Tư vấn chọn MacBook phù hợp cho sinh viên theo từng phân khúc giá và nhu cầu. Gợi ý 5 mẫu MacBook đáng mua nhất năm 2025.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

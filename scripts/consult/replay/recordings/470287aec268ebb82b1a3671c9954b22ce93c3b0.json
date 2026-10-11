@@ -1,0 +1,296 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán cà phê có chỗ đậu ô tô Hoff Coffee Brewers by BeanHop Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:49:22.684Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán cà phê có chỗ đậu ô tô Hoff Coffee Brewers by BeanHop Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdkvWo3HKR0C7O9ysIEkXtKPbFEzvi4k6CfnzzBHCIjk825T3rVUEZWE5SZ6WB7RRU1sRgJjIp9JlU5nYQ5gDTMDnAgzNkGmb4NBiB7Yegg5Y4pngRWLOx_jj8YVSkzNhH1w4LE",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   },
+   {
+    "position": 2,
+    "title": "Hoff Specialty Coffee by BeanHop - Võ Thị Sáu",
+    "address": "170A Võ Thị Sáu, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7862828,
+    "longitude": 106.69019639999999,
+    "rating": 4.6,
+    "ratingCount": 419,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 384 819 893",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30",
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMHdDtJinBgXsdX_ZBC5L1Kvvv3zlSK5e1WcKJZFfNsvo-BqX7SSt_CHEaTsu7OnZ3Z_pjdeJEsqv8kUkpR0mSznXfMOwMbf4rvUP9hg-O24KEDqzFzRECQktojQ5FFtvF6k3DKrbZAT4m1",
+    "cid": "5240743604988030442",
+    "fid": "0x31752f007d948fb3:0x48badc8ac6362dea",
+    "placeId": "ChIJs4-UfQAvdTER6i02xorcukg"
+   },
+   {
+    "position": 3,
+    "title": "Every Half Coffee Roasters - Hồ Con Rùa",
+    "address": "10 Công trường Quốc Tế, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.783154999999999,
+    "longitude": 106.6957168,
+    "rating": 4.9,
+    "ratingCount": 518,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "http://everyhalf.vn/",
+    "phoneNumber": "+84 838 999 026",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPQRKX26-le6S6beW7wNDPnxacsbG2bbKCrVJcy9GK6JInDn17liel-Jttq9efJjpys7xeikpEK6ClpaRExsyH-yomQhZQJWEDyr8ceWkRRwI1iVEBvoufX5sz4x1f2gfKmmHCbI2Yt7fz0",
+    "cid": "11019734369026139895",
+    "fid": "0x31752fe85c25d13d:0x98edf60608f766f7",
+    "placeId": "ChIJPdElXOgvdTER92b3CAb27Zg"
+   },
+   {
+    "position": 4,
+    "title": "ABOUT LIFE COFFEE BREWERS HCM",
+    "address": "151B Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7831291,
+    "longitude": 106.6970509,
+    "rating": 4.7,
+    "ratingCount": 949,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Tiệm bánh",
+     "Cơ sở rang cà phê",
+     "Quầy cà phê",
+     "Quán cà phê espresso"
+    ],
+    "website": "https://aboutlife.pages.dev/",
+    "phoneNumber": "+84 903 981 236",
+    "openingHours": {
+     "Thứ Năm": "07:30–18:00",
+     "Thứ Sáu": "07:30–18:00",
+     "Thứ Bảy": "08:00–18:00",
+     "Chủ Nhật": "08:00–18:00",
+     "Thứ Hai": "07:30–18:00",
+     "Thứ Ba": "07:30–18:00",
+     "Thứ Tư": "07:30–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdCxuk36rKSiasPahwQell5St5PlCDmkkN4MzyujR3kOSDTv1hCtsF8_Wjfy6fTYcXomcPAQfxeigoYQ4vZzBEBvmh5-bOhhxbMJhmYBXKS_Pq26MF18etOmhQnt3wCt3STNORCIw",
+    "cid": "13678913063748117559",
+    "fid": "0x31752f6ba73fdf3b:0xbdd542f51e282437",
+    "placeId": "ChIJO98_p2svdTERNyQoHvVC1b0"
+   },
+   {
+    "position": 5,
+    "title": "Beanthere Cafe - Hồ Hảo Hớn",
+    "address": "42 Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7620124,
+    "longitude": 106.6923935,
+    "rating": 4.4,
+    "ratingCount": 1066,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/nowherebutbeanthere",
+    "phoneNumber": "+84 987 168 584",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "bookingLinks": [
+     "https://m.me/nowherebutbeanthere"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN3TXBFpkqfY-ulrO39i7Hj4wnPrbTRbVAuPXFvg7x95JuFZSHW0lX291_rZ0aNXp1EM5dp8eIY-mXVmFSbStVcXIchLGkc_pXkhsodmZSpP4xQCVLMXDNo_tyjKPyM2RnJxeg",
+    "cid": "16791271258647014704",
+    "fid": "0x31752f4cbdd5c65b:0xe906943eeae1ad30",
+    "placeId": "ChIJW8bVvUwvdTERMK3h6j6UBuk"
+   },
+   {
+    "position": 6,
+    "title": "Hot Beans Coffee & Cuisine",
+    "address": "2A2 Chu Mạnh Trinh, Sài Gòn, Hồ Chí Minh 71006, Việt Nam",
+    "latitude": 10.7816269,
+    "longitude": 106.7052203,
+    "rating": 4.8,
+    "ratingCount": 681,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Quán cà phê"
+    ],
+    "website": "http://www.hotbeans.coffee/",
+    "phoneNumber": "+84 862 999 178",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "07:30–22:00",
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00"
+    },
+    "bookingLinks": [
+     "https://www.hotbeans.coffee/reservations"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdMFktRzMveD9qDd-vbHPbnq9MFpNB_Tk7pRUgJ262R8IsFPZNy4U76wdA5YUP9icA3bevgdvwo7w0Obz_R57wifp4JBLkEew6BA_Js4Xby8kG1xyxt2dJpVCUgXeRXAPvPCihj-A",
+    "cid": "7269620373274446541",
+    "fid": "0x31752f617a9974bf:0x64e2e136a0f74acd",
+    "placeId": "ChIJv3SZemEvdTERzUr3oDbh4mQ"
+   },
+   {
+    "position": 7,
+    "title": "Mellow Beans Cafe",
+    "address": "1 Công trường Quốc Tế, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7819401,
+    "longitude": 106.695869,
+    "rating": 4.4,
+    "ratingCount": 519,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 772 036 886",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "07:30–22:00",
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc3qgKL1K2xJumpLuFSnC7cAyFB-j3RDCEZGauYXDtgnnWh4plCGil-ACS4Plt7NuuEDKhwHr4xknxwU8BzoNyPbEWhNC4N2Mj2Ou-HU6-QMUmDqwOkpjXrvudLVFd0h_XIYjcTLV0RQaj-",
+    "cid": "1838561999981569386",
+    "fid": "0x31752f005fc9870b:0x1983e265da6ee56a",
+    "placeId": "ChIJC4fJXwAvdTERauVu2mXigxk"
+   },
+   {
+    "position": 8,
+    "title": "Soo Kafe Bến Thành",
+    "address": "35 Phan Chu Trinh, Bến Thành, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.772407999999999,
+    "longitude": 106.6972096,
+    "rating": 4.6,
+    "ratingCount": 2029,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 899 312 386",
+    "openingHours": {
+     "Thứ Năm": "08:00–23:00",
+     "Thứ Sáu": "08:00–23:00",
+     "Thứ Bảy": "08:00–23:00",
+     "Chủ Nhật": "08:00–23:00",
+     "Thứ Hai": "08:00–23:00",
+     "Thứ Ba": "08:00–23:00",
+     "Thứ Tư": "08:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfIVI7lPWxzgYHP66rna9ZQWaGEYBZV2A480pvRZkYSpPAEj6pLsUH3bTMHdGLpUbHcha6yEeqU-08mETOw6WnmIiJmXE62HyNCZT68I22UO4B9X1eq1MotRWVDO4MWVyB3FT8",
+    "cid": "16210604624372407733",
+    "fid": "0x31752f3f2ecd492d:0xe0f7a304b6059db5",
+    "placeId": "ChIJLUnNLj8vdTERtZ0FtgSj9-A"
+   },
+   {
+    "position": 9,
+    "title": "The Coffee Bean & Tea Leaf Han Thuyen",
+    "address": "27 Đ. Hàn Thuyên, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7786315,
+    "longitude": 106.69808669999999,
+    "rating": 4.1,
+    "ratingCount": 2125,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 889 050 010",
+    "description": "Chuỗi quán cà phê phục vụ nhiều loại đồ uống, trong đó có các món đá xay đặc trưng.",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcxBfdR9a0MW4N7lnyil0Wi5biLPehaj3bps_CAMMpmx-Rmts1_NPbyw8t4uJwYNFlkcaJU4Ugm7sKbQ_JuEXKyoIdjXRKVCczEfndR6vlDqa2hpgIO9Ni61fx-vTOrkgRvOEJ1",
+    "cid": "16615999824505578171",
+    "fid": "0x31752f48ea53caf5:0xe697e3ce179ba2bb",
+    "placeId": "ChIJ9cpT6kgvdTERu6KbF87jl-Y"
+   }
+  ],
+  "credits": 3
+ }
+}

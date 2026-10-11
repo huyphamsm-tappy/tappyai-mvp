@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Thông tư 64/2025/TT-BTC phụ lục hộ chiếu phổ thông mức thu 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:52.572Z",
+ "body": {
+  "searchParameters": {
+   "q": "Thông tư 64/2025/TT-BTC phụ lục hộ chiếu phổ thông mức thu 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Thủ tục cấp hộ chiếu phổ thông ở trong nước",
+    "link": "https://lsvn.vn/thu-tuc-cap-ho-chieu-pho-thong-o-trong-nuoc-a175844.html",
+    "snippet": "Lệ phí: 100.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 200.000đ/hộ chiếu (Thông tư số 64/2025/TT-BTC ngày 30/6/2025 của ...",
+    "date": "7 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Miễn lệ phí làm hộ chiếu từ 15/8/2026: điều kiện & mức miễn",
+    "link": "https://infotravel-hochieuonline.com/mien-le-phi-lam-ho-chieu-tu-15-8-2026/",
+    "snippet": "Từ 15/8/2026 đến 28/2/2027, người có VNeID mức 2, tích hợp đủ thông tin và nộp hồ sơ online được miễn lệ phí cấp hộ chiếu.",
+    "date": "11 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Phụ lục II",
+    "link": "https://bcp.cdnchinhphu.vn/334894974524682240/2026/7/13/66-22-2026-nq-cp-09072026-signed-trang-3-1783936569917810866520.pdf",
+    "snippet": "giảm 50% theo Thông. Lệ phí cấp hộ từ 64/2025/TT-BTC giấy | đến hết 31/12/2026, hành, | mức gốc theo Thông tư giấy phép xuất | 28/2026/TT-BTC):.",
+    "date": "13 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Giảm 50% nhiều loại phí và lệ phí từ 01/7/2025 đến hết 31 ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/giam-50-nhieu-loai-phi-va-le-phi-tu-01-7-2025-den-het-31-12-2026-186-102767-article.html",
+    "snippet": "Giảm 50% nhiều loại phí và lệ phí từ 01/7/2025 đến hết 31/12/2026 nêu tại Thông tư 64/2025/TT-BTC ban hành ngày 30/6/2025.",
+    "date": "1 thg 7, 2025",
+    "position": 5
+   },
+   {
+    "title": "✅MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU CHO CÔNG DÂN ...",
+    "link": "https://www.facebook.com/conganquanghai/posts/mi%E1%BB%85n-100-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-cho-c%C3%B4ng-d%C3%A2n-t%C3%ADch-h%E1%BB%A3p-%C4%91%E1%BB%A7-gi%E1%BA%A5y-t%E1%BB%9D-tr%C3%AAn-%E1%BB%A9ng-d%E1%BB%A5ng-vnei/1565625198913268/",
+    "snippet": "✓Điều kiện để được miễn lệ phí: 1. Có tài khoản định danh điện tử mức độ 2; 2. Hoàn thành việc tích hợp thành công thông tin hộ chiếu và 05 ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 64/2025/TT-BTC quy định mức thu, miễn một số ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/toan-van-thong-tu-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-11925070116332603.htm",
+    "snippet": "Bộ Tài chính ban hành Thông tư 64/2025/TT-BTC ngày 30/6/2025 quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, ...",
+    "date": "8 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "Những điểm mới về thu phí và lệ phí xuất nhập cảnh chính ...",
+    "link": "https://congan.angiang.gov.vn/nhung-diem-moi-ve-thu-phi-va-le-phi-xuat-nhap-canh-chinh-thuc-co-hieu-luc-tu-ngay-0142026",
+    "snippet": "Những điểm mới về thu phí và lệ phí xuất nhập cảnh chính thức có hiệu lực từ ngày 01/4/2026 ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "8 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

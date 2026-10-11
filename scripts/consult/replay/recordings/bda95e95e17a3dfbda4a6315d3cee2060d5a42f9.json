@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"Thông tư 63/2023/TT-BTC\" hộ chiếu 2026 lệ phí 200.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:25.412Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"Thông tư 63/2023/TT-BTC\" hộ chiếu 2026 lệ phí 200.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dim Tu Tac\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:38:11.389Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dim Tu Tac\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dim Tu Tac Restaurant (@dimtutacrestaurant)",
+    "link": "https://www.tiktok.com/@dimtutacrestaurant",
+    "snippet": "Dim Tu Tac Restaurant · @dimtutacrestaurant · 好粵菜 Good Cantonese Food Awarded the Bib Gourmand in the MICHELIN Guide 2023-2024.",
+    "position": 1
+   },
+   {
+    "title": "khám phá menu \"CEO choice\" của Dim Tu Tac. #pikalaca # ...",
+    "link": "https://www.tiktok.com/@pika_laca/video/7692773759274503444",
+    "snippet": "1287 Lượt thích,28 Bình luận.Video TikTok từ Pika La Cà (@pika_laca): \"khám phá menu \"CEO choice\" của Dim Tu Tac. #pikalaca #dimtutac\".dim tu",
+    "position": 2
+   },
+   {
+    "title": "Dim Tu Tac: Top 5 Món Ngon Phải Thử Khi Ghé Tiệm",
+    "link": "https://www.tiktok.com/@dimtutacrestaurant/video/7680546223421476117",
+    "snippet": "Top 5: Vịt quay Bắc Kinh da giòn rụm, óng ánh. Lớp da thơm phức cuốn cùng bánh pía và hành ớt, chấm cùng sốt thần thánh của Dim Tu Tac, ngon ...",
+    "position": 3
+   },
+   {
+    "title": "A new chapter has officially begun. Thank you to everyone ...",
+    "link": "https://www.tiktok.com/@dimtutacrestaurant/video/7665974674483989781",
+    "snippet": "A new chapter has officially begun. Thank you to everyone who visited and helped fill the first days at Dim Tu Tac Topaz City with warmth ...",
+    "position": 4
+   },
+   {
+    "title": "Dim Tu Tac Review",
+    "link": "https://www.tiktok.com/discover/dim-tu-tac-review",
+    "snippet": "Dim Tu Tac Review: Menu, Signature Dishes & Set Menu. Dim Tu Tac is a restaurant known for its unique fusion of Vietnamese and Cantonese cuisine ...",
+    "date": "21 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Dim Tu Tac: Review dimsum Cantonese ngon nhất gần bạn",
+    "link": "https://www.tiktok.com/@dimtutacrestaurant/video/7665587006453370133",
+    "snippet": "Dim Tu Tac - điểm ăn dimsum chuẩn Cantonese đáng thử Nếu muốn trải nghiệm dimsum chuẩn vị Quảng Đông, Dim Tu Tac là gợi ý phù hợp.",
+    "position": 6
+   },
+   {
+    "title": "Dim Tu Tac nhà hàng Trung Hoa #monhoa #chinafood ...",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7375787388892613889",
+    "snippet": "Dim Tu Tac nhà hàng Trung Hoa #monhoa #chinafood #ductanbinh #ancungtiktok #dimtutac #saigonangi Dim Tu Tac ReviewDim Tu TacNhà Hàng Trung ...",
+    "position": 7
+   },
+   {
+    "title": "Dim Tu Tac CEO Choice Menu: 16 Must-Try Cantonese ...",
+    "link": "https://www.tiktok.com/@dimtutacrestaurant/video/7661888936389725460",
+    "snippet": "Month in the making, 16 dishes worth discovering. This is Dim Tu Tac CEO Choice menu. #ancungtiktok #dimtutac #cantonesefood #nhahanghoa #Dimsum.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

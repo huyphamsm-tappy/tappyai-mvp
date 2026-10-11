@@ -1,0 +1,383 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Sony Anker Soundcore Xiaomi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:43:45.608Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chủ động ANC dưới 3 triệu Sony Anker Soundcore Xiaomi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "source": "anker.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:3035039747973889472,gpcid:3148761671866178032,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSdmmXN1eErgFO6tCFO73QNvBf_aaT84J03ICV3hfiaL0k0Y4PNvrc_pmno_IILsBkmuF9niFkFkndkI7xHF5vaRsneYOrgbnKGW-U0HoLo8AobYxbvKW_nfg",
+    "rating": 4.7,
+    "ratingCount": 321,
+    "productId": "3035039747973889472",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp Tai Sony WH-CH720N",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:17355758935316592975,gpcid:12497064220288536128,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTvKRTWiXTo3hz8FfCL4o9Qz7eMwOB-Ic77g9U-5dJ_tDTLHEhKgG0d5tX8qSUEUwF9RvdYzymMwab4TEsKBJ_EeMyOGLJY",
+    "productId": "17355758935316592975",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore R50i NC - A3959",
+    "source": "anker.vn",
+    "price": "450.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTBaroIA_L8C9J7u_tIVCDsmAg90UKaKBkITSZlvzjVt8JHtFfq0CKPyWQl13AAu0ue9wjcE1fcOxNfUKk9EVaMyihfpnF6Wu_atPTY1uZf3Eapk2d_vYzq",
+    "rating": 4.9,
+    "ratingCount": 133,
+    "productId": "7447328382244993075",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore C50i - D1101 (Kiểu Gài Tai Linh Hoạt, Siêu Êm)",
+    "source": "anker.vn",
+    "price": "1.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR-nA5NnpNZK0iABT7sSAtr4mwKVg8E-TfM1pWCNDS_-CTqYfVsTY3iXJq7juLlPM-qCcPG6iLI0olxV-o70oAUfkp3Ayba0HprQJSravJ8CfGbqxYZmHgu_qM",
+    "rating": 4.9,
+    "ratingCount": 65,
+    "productId": "16683449147293650843",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore K20i - A3994",
+    "source": "anker.vn",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSgbWk2sTlIgyLv34aEtpWMFX_RJN08w78VuAxG1mfWrqZ8CECKKNwXarYjlY--7wVP81Ludt6DZxnU3vqcNfzIL4h5CUq9nxmh5o_b0YE",
+    "productId": "15514105179540694284",
+    "position": 5
+   },
+   {
+    "title": "Sony Tai nghe nhét Tai chơi game chống ồn không dây đích thực INZONE Buds",
+    "source": "Sony Store Online",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:3632240691121261619,gpcid:8781180726346287617,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRRZIRVlhCp9X4kZwQsXzZ6oqcQIW05tSy14W5oQDcOMMk2VfCtLYQ2N8MFnWhxPJm7OmX14v7K9FEwqcBQ4fO6FzQarzZVoA",
+    "rating": 4.4,
+    "ratingCount": 955,
+    "productId": "3632240691121261619",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore R50i - A3949",
+    "source": "anker.vn",
+    "price": "350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQzufqR3yekEVCajYXJ9A94PjrT3cUSdXK_2mTfsxVqxXyi6jYb22rt4WsRF9pAqBNldRLpTyQH-QZMUowIAvPRoyP_f38VzIiDHIGFSM2-xS6cRgae57BE",
+    "productId": "9609247756371723981",
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore R60i NC - D1202",
+    "source": "anker.vn",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTecXZVjYYmKHt8TJv3gfbv-5kyR5_2IcBfVrkMLM1nu5Ei0mVlW11La3xgWVppkhcm8EPVNQbJ3RO8tnnqPsWZ8pw85dob4vBItx7d-MAYabsPfpXLgIxv",
+    "productId": "4463864916870027009",
+    "position": 8
+   },
+   {
+    "title": "Túi ngủ trẻ em Tai Nghe Soundcore Sleep A30",
+    "source": "anker.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:10333682655876379557,gpcid:11047740426315645584,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQLKrKpEZM5YwUa_0JGxA8Na6z34TdT4I5_9qe8HmZH83EhDIm2dW_ynhF1lShAsZXS9SYouvvFEShXEL-jY0pDz23_SLJcDsDSYASVJ2g6J_TqyZMs3Uuy",
+    "rating": 4.4,
+    "ratingCount": 835,
+    "productId": "10333682655876379557",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore R50i A3949",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:1472911344403385319,gpcid:863943364031670969,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "410.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQpdRJBVsLFewr4QLGWOrYNWaCWOsBJJG-N_ZOp_By-yib4LETu_BBVcLMLQUD6GRzIy0b_f19gA5ZaMQCt0aq6yS-xBbpKrFDinMGF1b5C8oJrdGu3IDsw",
+    "productId": "1472911344403385319",
+    "position": 10
+   },
+   {
+    "title": "Soundcore Tai nghe không dây Soundcore Tự do 5 TWS Bluetooth 5.4 Tai nghe khử tiếng ồn ANC3.0 thích ứng 6 mic AI giảm cuộc gọi Bass LDAC Âm thanh Hi-R",
+    "source": "META.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:8459385508344146150,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTuSAGaQcDCd3Of2vjafNT8v6f020Xf6EolvZW_7CEdc954BExfckSEb7mJYagflao6mO688FyVPAOqK0cJ8PHPpZrIuwfHhBNCNzVI3ztpUyapAYo_5m0W",
+    "productId": "8459385508344146150",
+    "position": 11
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS Anker Soundcore R60i NC",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:4375454195377256112,gpcid:5909379011765849277,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSH3rK-0zc-m0aN0XtKOoaXMiPxlrnVTtO9JvDBE5iZ0uG9qlAHucY-Ote43JuimjntXhMD0kPPby0MAhDI0MhzsRQzR1uV9MVHwaAKHpt2c21dWlx2o_mk_g",
+    "productId": "4375454195377256112",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore K20i",
+    "source": "Anker Vietnam Official Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:612870541743541698,gpcid:17331970060946010268,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "285.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTcHH889Qks75sZkT2CuyY37M7ng-Bff9OgUrrhV8GrFOUi6wn5s2KDU4BnfoFw64Qy4d4ZNsWqby1TFCu5EP2wqqNRuMY_S8hQQFq7DF7zdXPVi7Sn2gHuXc4",
+    "productId": "612870541743541698",
+    "position": 13
+   },
+   {
+    "title": "Anker Tai nghe Bluetooth Soundcore Liberty 4 NC",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:6782285249686714207,gpcid:17003970224311560104,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.450.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTWw46-Miiwc4UNydau0WCFqcuiTVpt3poe64nB0vphKFRuSvTNB4Hpc2oKbh9tkggDDQBIzJEPNs_-oRIKru5v9UhLCOE6925SRHblbOpj3d73yQHuxhgcDr0",
+    "productId": "6782285249686714207",
+    "position": 14
+   },
+   {
+    "title": "Tai nghe bluetooth khử ồn soundcore R60i NC",
+    "source": "META.vn",
+    "price": "760.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS3JXlfiN17sBmh9CgOAMEXyXOynHrO1wMb7dDrP0iMnJd2uNcueZ2IUGhK1aPBH2jGF2iIKrXB2E3u8AheaUzhaX1vML9L0CuJT_GxumHDbW5Bg0X2q4br",
+    "productId": "8701887293129443050",
+    "position": 15
+   },
+   {
+    "title": "Q20i | Tai nghe khử tiếng ồn chủ động lai",
+    "source": "soundcore NA",
+    "price": "1.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRQAi24EzxNB84g1tMsFUI2GfgrS_KZyMGDslQ-CSeze5jZzw6cZIEWugIs5B3tAY8xaj8QxZYNEcjshorImn-DoG9WATESpKnMVqDM8XikhEKFF1DIOUXexg",
+    "productId": "1684881767427542237",
+    "position": 16
+   },
+   {
+    "title": "Anker Tai nghe Bluetooth Soundcore Space One",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:13550734389373577992,gpcid:3682387893513465150,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.520.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQFk7fx4EA993H8S966-dFUTPCNfLBqz7_kxWNrxL5uTnKZ15oAcRl7blAiIigYquhhMIQ1QZe4ysKdUGvQkg8mxTxSM99jWXe6bmYUMezFzELchjqH0pkDxw",
+    "productId": "13550734389373577992",
+    "position": 17
+   },
+   {
+    "title": "Tai nghe Bluetooth chống ồn chủ động Anker soundcore Q20i A3004 thời lượng nghe đến 60h, có Hi-Res, ANC, BH18TH",
+    "source": "Shopee",
+    "price": "1.494.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSy_91ki4vsL2qzbj0Fi1SFhlXY9YGcI5hw4b-rvk3yWqM0UBbuK-ogxfqdgNeb3JPkZwWddTZJQHlgXO1HxLA1CK73NVko-WpowesiDtElBxfs2BOa6WAu",
+    "rating": 4.9,
+    "ratingCount": 236,
+    "productId": "1101719368138738965",
+    "position": 18
+   },
+   {
+    "title": "Tai nghe Bluetooth Open-Ear Soundcore AeroClip (A3288)",
+    "source": "META.vn",
+    "price": "2.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ9sC7WGsBj5_Va_aH5IjBO0QkBRXReB44ttf-twLfM0LxPSd51sK3TBLiyVRabo3h-jhFQ7t1mCOIFFhK-4ylCvp4xYmNlWDSmCCFV4BIlt5r8e-EcBhn96w",
+    "productId": "7692380577517013040",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore C50i",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:6488980335045529425,gpcid:9062866904942090884,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQGSpSc2MsiVVpFTQmoIVq0OS9sz_xqkRlwIM1c0PSmBuJwpZGN1e-wjdRjFI_JYSDvokNZAAc_aL0r74HtU-avQpayYE-3kGQCkVCTttWL1ia3NI2QHnrFVA",
+    "productId": "6488980335045529425",
+    "position": 20
+   },
+   {
+    "title": "Tai nghe bluetooth ANC Soundcore R60i NC / R50i NC | Hires Audio | Chống ồn đến 52dB | Pin 50h | Phiên dịch",
+    "source": "Shopee",
+    "price": "799.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRtdEXTr2TGR2gVK262OOnbR-2Ic14kAQZrbO0MwmOgL8DkqSOa7FV_ApUvrZFiH0PIbtciXJcvmDGO44LQMF27sc3Gls5VOiF4IHSK8uVFCqtrZmu2hrQefw",
+    "productId": "11186882105138948390",
+    "position": 21
+   },
+   {
+    "title": "Tai nghe bluetooth Open-Ear Soundcore C50i",
+    "source": "META.vn",
+    "price": "990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR96ofga0bREycqu5L2yL8vse4XJqDB6SpEjhMmWndaEaUF7RtdHXbwxyrRs7zM8O2Vpfo1-e19jPgd7P-BpXLwu7OxbgdulTF1XG0ra4lL4yqTl5WtBRfr",
+    "productId": "14748660486780542122",
+    "position": 22
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless soundcore K20i Đen",
+    "source": "Thế Giới Di Động",
+    "price": "250.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRhvwaSGlReJE5XLpF9MRD5q2JZiL6I_lo_mjRlH-HU2GMYrUOpfepK7OgDZiUYHujPiNYwVF6Vxq8xsuN8TIpuMF-du8V7975QObSUYWvBbgucdpJZD97ZHJA",
+    "rating": 4.7,
+    "ratingCount": 407,
+    "productId": "9214710994272087871",
+    "position": 23
+   },
+   {
+    "title": "Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:5912543140912279423,gpcid:5615292302685123606,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.000.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTeZNU8Ik0NEv34Aqs2Vt7V7GSWd5NIW6y4BM7anpGaUoDnFGkxn1521uMhgCjP6Mo0WlrkJ-I853yfg7SaXAL9hVLM6ZPNVstxj1ppN8mSOLUEhdFvyCnAMg",
+    "rating": 4.7,
+    "ratingCount": 137,
+    "productId": "5912543140912279423",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe bluetooth soundcore Liberty 5 ANC 3.0 | Pin 48 giờ | Kháng bụi, nước IP55 | Tích hợp phiên dịch",
+    "source": "Shopee",
+    "price": "2.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRO_9GmOU__zh7TjojmNG2bkEMTopMQssLMhN-y5YeDP-a1NEZP_TXlYcmhJUMqot6hFcdJ2OVeyQTtGuIjTglK63mYKoPWzUgRorbzNsrqQd0-PVTuxbd3",
+    "rating": 4.8,
+    "ratingCount": 168,
+    "productId": "1110396378103304902",
+    "position": 25
+   },
+   {
+    "title": "Liberty 4 NC | Tai nghe khử tiếng ồn True-Wireless",
+    "source": "soundcore NA",
+    "price": "2.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTi2PhR2lG09Q_wZxlukNdgtCY9dFuJ9KvlFjKYg-2m5RSHzqYeWibcSeMiWX1Auq0-CpVVaM6Q2QWrVreoujmENBG_R9HT7rfwwCzxFPeOfSCvG4PyNPOq",
+    "productId": "7892953274011020717",
+    "position": 26
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Anker Soundcore P41i",
+    "source": "META.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:7285220328569294936,gpcid:3464913518437850427,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTIyIGnm8zZB7BxO3JGSHDb9-pl0JNaRMkTe_-ZJr20FznjG8Y1hWbQ5gb4evGBncHSuP_j63kgfCvd35g_zU2mrXNnSaBtyPBtrhTA9dGaqR1pVV_yYbwl",
+    "productId": "7285220328569294936",
+    "position": 27
+   },
+   {
+    "title": "Tai Nghe Bluetooth Khử ồn Soundcore R60i NC (P31i) By Anker | Chống ồn ANC | Hires Audio | Dịch thuật AI | Pin 50h",
+    "source": "Shopee",
+    "price": "890.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRhgIbA3xJT_8YYhjpzVq3NwbrX-H8amz9_jaafk6ET6_9ZI_mM1nis-B1Uw5__jB08NFOFNVq4xYPBFWUB3I_IN2lT2D6ZrITeEkcgDZk78dBb3Bizvap5vBA",
+    "productId": "8991519608248359991",
+    "position": 28
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp tai soundcore H30i",
+    "source": "Điện máy XANH",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQZy1dModjVjQBUt-z9wFchpcI1_cAxxIlfQfjJmqZ5elGA3X5XU4N3XNzZX9uiI7ExENrYxB8q2lCYTwwpRLQLFxv3d_zEqcZOSEkn20mFg2RtvTtoaJRUz6M",
+    "rating": 4.8,
+    "ratingCount": 169,
+    "productId": "8802854926371695044",
+    "position": 29
+   },
+   {
+    "title": "Tai nghe không dây chụp tai Anker Soundcore H30i",
+    "source": "Xiaomi Store",
+    "price": "579.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSTuMNYdiOqVdgMuWa0pCdWePVO0hi9Ae1ZBOmY0w1OGUrjbUbmmRrxo9670-0gbLK2PrAp2W4zQEY3iXwK_hsYSmce2qMIHp8n6diOl8MvfPE0RYZrGR9V",
+    "productId": "12672405699463546326",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe Bluetooth Anker Soundcore R60i NC Chống Ồn Chủ Động ANC, Hi-Res Audio, LDAC, Pin 50H (Bảo Hành 18 Tháng)",
+    "source": "Shopee",
+    "price": "725.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSc26QHigtJFrPaZTIZvsSEQEAe3xlOQVmLad96pKNrpJN7WKSRtazJfpcdcGmap9ue19uzUrWRi8xd-netpqbzFqhcsdH6zOF8r2fhVEXaV-XY1wbeCx_JdY0",
+    "productId": "13217549107409596348",
+    "position": 31
+   },
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-1000XM6",
+    "source": "CellphoneS",
+    "price": "9.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTc1BuSlBS_UfCPbhYMbmwiCxFhkKXXAhH1-5BkniGRM9kG2GGGT20IMJoUb3O36yDeYSwFJksJ-CBgwy1O7tpr7W7aQ0ZNxeSJZ_R_sVbDdOzRKIanz4bM4g",
+    "rating": 4.5,
+    "ratingCount": 166,
+    "productId": "14057602526607893780",
+    "position": 32
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp tai soundcore H30i Đen",
+    "source": "Thế Giới Di Động",
+    "price": "290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTAjas2eD5O4I81q-e3kJf5vV_llFXlW2jIjFeEeeux76YmFWwKRfHtVXtPoZlIUJW7qpilrp1MYU6B1MRIQKOgogctK9t7kegKOw1PqD-PXEDxcly-2xwTw60",
+    "productId": "8240761551516996234",
+    "position": 33
+   },
+   {
+    "title": "Tai nghe khử tiếng ồn chủ động ANC ENC Cuộc gọi đánh dấu kép Thích hợp cho tai nghe Bluetooth không dây Apple 15 Tai nghe Xiaomi thể thao",
+    "source": "shopee.vn",
+    "price": "600.265 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSmTsmbiDX8yBkJ20Z2ml4x-tPSN0qmZtXMABsuOKb_BGi-G7iqLMF2cBLowB38RAOSdsr_h-ddi3A8DZP-IM9tok5Yk7mzAPAq-ZggnUp04oh5qSo0nEGn",
+    "productId": "14280918262609347829",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore AeroFit 2",
+    "source": "Fptshop.com.vn",
+    "price": "2.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSPUn_shEfO8Szotzlu-MeMbiW9hwCIG8RIzzzKNYLt9YGnlDGS9UsXgvqBURa7ICB2XkB0wLLImjIuYGS4yBif4aXQJ8g6VbPsCIR4GqsXblSWxF5EmTwF5w",
+    "productId": "11589794442180704237",
+    "position": 35
+   },
+   {
+    "title": "Tai nghe không dây TWS Anker Soundcore AeroFit 2",
+    "source": "Anker Vietnam Official Store",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ch%E1%BB%A7+%C4%91%E1%BB%99ng+ANC+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+Sony+Anker+Soundcore+Xiaomi&prds=localAnnotatedOfferId:1,catalogid:934580854396425948,gpcid:4916308654693520248,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.571.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRauCAr15TIQsEMRUzz5qGbLeZ-RyeDTIW0DyYNCS6K0XHAaqCFUcRm7Lag5THrYGLxISrmynnZL5zqv_bjpYazoS0qY71rYpizm-26sUKjNwEmzZxrSMT3",
+    "productId": "934580854396425948",
+    "position": 36
+   },
+   {
+    "title": "[ ] Tai nghe không dây chụp tai Sony | Chống ồn ANC 3.0 | Gấp siêu gọn sạc siêu nhan",
+    "source": "Shopee",
+    "price": "432.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSUoIA_PC45FeOIhMImGLAvvxUtBk61kPpacllpZaqPVM3AEgwFYDmBUAQjo9gg--BSVrAFMqzQT6Oj-JUgS3ms-N01VexGBxmGYOpYFLdqdniC2wkIJN2z",
+    "productId": "6383690428584148084",
+    "position": 37
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless soundcore R50i NC A3959 Trắng",
+    "source": "Thế Giới Di Động",
+    "price": "390.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRuk1GPdLyiuJjUKl-sWy3KggRL4zS42aClROMEbRASfxBsmwe3jgMYyUkRUuxBBAS6vsFd2CoDsWKiA0jt_zoHMJxPpsmT_fUvV5IoPS5hfh5ZLGpmpSoPvLM",
+    "productId": "17406047007640182591",
+    "position": 38
+   },
+   {
+    "title": "Tai Nghe Bluetooth Pro 3 ANC - Giảm Ồn Chủ Động ~40dB, Âm Thanh Rõ Nét, Sạc Type-C, Thiết Kế Nhỏ Gọn, Phù Hợp với Android & iOS",
+    "source": "Chiaki.vn",
+    "price": "419.999 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQEuFPwJlz5IC5gVH-sZRyLbw8esyIC3YqFloXsDz4tGIher59l0l3t3J7QjCPxgTDIjYELl7XgN8cdw9z8_NRJoINUmWzLXwF9uRI5Oyg",
+    "productId": "9760401757419077255",
+    "position": 39
+   },
+   {
+    "title": "[Mới ra mắt] Tai nghe bluetooth ANC Soundcore R60i NC | Hires Audio | Chống ồn đến 52dB | Pin 50h | Phiên dịch - D1202",
+    "source": "Shopee",
+    "price": "997.440 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSTPSjk9BY8y4dr18GyJMPdkrwwx1-mEQ4l7p_HFlWjkDmGjg5t0S19tnWUuZseFApUpPv9XYKjqbwXbzOKo7g_4fckk4FPTP3zwpAaCu8-k8y733V_u9EQ",
+    "rating": 4.9,
+    "ratingCount": 114,
+    "productId": "7683242203972629487",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

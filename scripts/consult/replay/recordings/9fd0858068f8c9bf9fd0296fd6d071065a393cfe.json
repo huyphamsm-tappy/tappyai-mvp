@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 thông số camera 48MP A16 pin Apple Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:01:58.635Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 thông số camera 48MP A16 pin Apple Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "Camera Chính 48MP: 26 mm, khẩu độ ƒ/1.6, chống rung quang học dịch chuyển cảm biến, Focus Pixels 100%, hỗ trợ ảnh có độ phân giải siêu cao (24MP và 48MP).",
+    "position": 1
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Các tính năng Thông Suốt cũng giúp bạn trả lời cuộc gọi hoặc tin nhắn từ iPhone ngay trên máy Mac. Bạn thậm chí còn có thể sao chép hình ảnh, video hoặc văn bản ...",
+    "position": 2
+   },
+   {
+    "title": "Siêu phẩm iPhone 15 series lộ diện với camera 48MP xịn ...",
+    "link": "https://baodanang.vn/sieu-pham-iphone-15-series-lo-dien-voi-camera-48mp-xin-so-khung-titanium-va-cong-usb-c-moi-3293191.html",
+    "snippet": "Giờ đây camera những chiếc iPhone 15 bản thường cũng đã được nâng lên độ phân giải 48MP, cho hình ảnh sắc nét và chất lượng hơn rất nhiều. Ngoài ...",
+    "date": "13 thg 9, 2023",
+    "position": 3
+   },
+   {
+    "title": "So sánh iPhone 16 và iPhone 15: Liệu có gì khác biệt giữa ...",
+    "link": "https://www.thegioididong.com/tin-tuc/so-sanh-iphone-16-va-iphone-15-lieu-co-gi-khac-biet-giua-2-the-he-1569987",
+    "snippet": "... iPhone 15 được trang bị con chip Apple A16 Bionic. Thông số kỹ thuật ... Trong khi đó trên iPhone 15 được trang bị camera chính 48 MP ...",
+    "date": "12 thg 9, 2024",
+    "position": 4
+   },
+   {
+    "title": "Cấu hình iPhone 15 chi tiết: Có còn đáng mua trong năm ...",
+    "link": "https://didongviet.vn/dchannel/cau-hinh-iphone-15/",
+    "snippet": "Cấu hình iPhone 15 được định hình bởi vi xử lý Apple A16 Bionic (tiến trình 4nm), RAM 6GB, màn hình Super Retina XDR 6.1 inch độ sáng 2.000 nits ...",
+    "date": "16 thg 4, 2026",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 5
+   },
+   {
+    "title": "Apple iPhone 15 Thông số Công nghệ A16 Bionic",
+    "link": "https://www.facebook.com/fb-answers/apple-iphone-15-tech-specs-a16-bionic/?locale=vi_VN",
+    "snippet": "iPhone 15 chạy trên con chip Apple A16 Bionic với màn hình Super Retina XDR 6.1 inch và camera chính 48MP. Có giá khoảng ₱42.990 cho 128GB trong một số ...",
+    "position": 6
+   },
+   {
+    "title": "iPhone 15 thường 128GB chính hãng VN/A, giá tốt T10/2026",
+    "link": "https://cellphones.com.vn/iphone-15.html",
+    "snippet": "iPhone 15 thường được trang bị màn hình Dynamic Island 6.1 inch với công nghệ Super Retina XDR mang đến trải nghiệm hiển thị sống động vượt trội. iPhone 15 ...",
+    "rating": 4.9,
+    "ratingCount": 102,
+    "position": 7
+   },
+   {
+    "title": "Apple ra mắt iPhone 15 và iPhone 15 Plus",
+    "link": "https://www.apple.com/vn/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/",
+    "snippet": "iPhone 15 và iPhone 15 Plus có thiết kế tuyệt đẹp và bền bỉ, Dynamic Island, camera Chính 48MP mạnh mẽ, và chip A16 Bionic. CUPERTINO ...",
+    "date": "13 thg 9, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com MacBook kiểm tra Activation Lock Find My serial number battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:51:58.165Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com MacBook kiểm tra Activation Lock Find My serial number battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Understand your iPhone battery usage and health",
+    "link": "https://support.apple.com/guide/iphone/understand-iphone-battery-usage-health-iphd453d043a/ios",
+    "snippet": "View additional battery information for today and previous days: Tap Battery, tap View All Battery Usage, tap a day, then scroll down. Tap an app to view more ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

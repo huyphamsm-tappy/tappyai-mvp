@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Bibli Library Café chỗ đậu ô tô bãi đỗ xe Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:11.977Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bibli Library Café chỗ đậu ô tô bãi đỗ xe Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.76198,106.6897271,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Bibli Library Café",
+    "address": "42/5 Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.76198,
+    "longitude": 106.692302,
+    "rating": 4.6,
+    "ratingCount": 618,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 768 864 134",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNUJjR7i0f5fS6_gremDUYFdGiukR-VZHNxur6pNy5OfpPKBdIAan2V9TjLZSJKiKWuv3OvQtYT6T_x2VzsudE0VMfN1D7Ag4pGnkWKWzZSt1b_u7v8MnHKWS7gMpF-aYAlc8acFoUUeu5R",
+    "cid": "17770018566245163496",
+    "fid": "0x31752f371faf942d:0xf69bc9bc8523a1e8",
+    "placeId": "ChIJLZSvHzcvdTER6KEjhbzJm_Y"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -28,6 +28,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { loginPathFor, currentDestination } from '@/lib/auth/returnTo'
 import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { isShareOnlyPlaceName, reviewShareTitle } from '@/lib/share/reviewShareTitle'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 import { postCardOf } from '@/lib/share/contentCards'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
 import { ReviewMusicCredit } from './ReviewMusicCard'
@@ -237,6 +238,10 @@ export function CommentDrawer({ review, me, onClose, onAdded, onNavigate }: {
           <button onClick={() => del(c.id)} aria-label={t('reviews.commentDelete')} className="flex-shrink-0 self-start p-1 -mr-1 text-gray-500 hover:text-red-400 transition-colors">
             <Trash2 size={14} />
           </button>
+        )}
+        {/* WP-06 — report someone else's comment / block its author (signed-in only; draws nothing while the flags are off). */}
+        {me && c.user_id !== me && (
+          <SafetyMenu className="flex-shrink-0 self-start" report={{ target: 'comment', id: c.id }} user={{ id: c.user_id, name: c.profiles?.full_name }} />
         )}
       </div>
     )

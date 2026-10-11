@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:15:13.559Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ngon Restaurant Garden Grove CA",
+    "link": "https://www.tiktok.com/@rainaiscrazy/video/7597616189896002846",
+    "snippet": "Ngon in Garden Grove, CA@Hanoi Ngon #rainaiscrazy. Ngon Restaurant Garden Grove CA – Nhà Hàng Ngon Tại Garden Grove. Ngon Restaurant tại Garden ...",
+    "position": 1
+   },
+   {
+    "title": "Nhà Hàng Ngon Houston",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-h%C3%A0ng-ngon-houston",
+    "snippet": "3.9M posts. Discover videos related to Nhà Hàng Ngon Houston on TikTok. See more videos about El Paisano Restaurante Houston, Món Ngon ...",
+    "date": "7 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Nhà hàng Đài Loan Sơn Hải Lầu: Ngon và Đẳng Cấp",
+    "link": "https://www.tiktok.com/@angimayoi/video/7613376699547307272",
+    "snippet": "... Nhà Hàng Ngon Qua ĐờiMón Ăn Ngon Hàng NgàyNhà Hàng Chay Giác NgộNhà HàngNhà Hàng Hương CauĐồ ĂnChụp Hình Đi Ăn Nhà Hàng Sang Chảnh. Nhà hàng ...",
+    "position": 3
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Quá Ngon 2025: Tinh Hoa Ẩm Thực Việt",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7606566770865949972",
+    "snippet": "Keywords: tinh hoa ẩm thực Việt, Nhà Hàng Quá Ngon 2025, ẩm thực Việt Nam độc đáo, khám phá ẩm thực Việt, nhà hàng ngon ở Việt Nam, du lịch ...",
+    "position": 5
+   },
+   {
+    "title": "Review Nhà Hàng Sen Quê Vinh: Không Gian Đẹp, Đồ Ăn ...",
+    "link": "https://www.tiktok.com/@ngocanh_ancathegioi/video/7372211722150628616",
+    "snippet": "... Nhà Hàng NgonNhà Hàng Hồng Hạnh Quảng NinhNhà Hàng Hương Sen Vĩnh LongNhà Hàng Hùng Hồng Thiên CầmCơm Quê Thánh Gióng VinhChủ Nhà Hàng Ngon ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng Bếp Cô Thắm Quận 7 — Review đồ ăn, món ngon",
+    "link": "https://www.tiktok.com/@phucphungphinh203/video/7668296179398003986",
+    "snippet": "... thanh gốc - Phúc Phúng Phính · Nhà hàng Bếp Cô Thắm I Cô Thắm restaurant I Nhà hàng ngon Lý Phục Man I Nhà hàng ngon gần khu chiết suất · author.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

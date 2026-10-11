@@ -1,0 +1,85 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Apple iPhone 15 Samsung Galaxy S24 giá Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:49:54.620Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 Samsung Galaxy S24 giá Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Điện thoại Samsung Galaxy A15 8GB/128GB",
+    "source": "Viettablet",
+    "link": "https://www.google.com/search?ibp=oshop&q=Apple+a+iPhone+a+15+a+Samsung+a+Galaxy+a+S24+a+gi%C3%A1+a+Vi%E1%BB%87t+a+Nam&prds=localAnnotatedOfferId:1,catalogid:14794212746320829249,gpcid:8119735045034967743,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "3.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR6w6ws0hLxq0nGfb7w0-5kpf6qHlRZKy_nhmoayEK9f30CqSaH-Pfv8IJt1dyy5KVr_nGU_SBPtAHaa7Hp_LD536e9GDZWGpL2qgpNxzTs5Ht1gm1IyP3qvg",
+    "productId": "14794212746320829249",
+    "position": 1
+   },
+   {
+    "title": "Samsung Galaxy A15 5G (8GB - 256GB) Chính Hãng",
+    "source": "Viettablet",
+    "price": "4.799.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTTUY3hjX_DCY8UQ4HEDdhe6TJ5YCjwYjSqPGRU0Ba71cr5qh0DMOF6mbg7K4EQ9ojIAuTfYs1kgnXHbkQhbh_ECfvSK4SIrLg3lohFeWSRQd6Erxfs5H_l",
+    "productId": "8767942695517905974",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy A15 5G",
+    "source": "Trọng Phú Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=Apple+a+iPhone+a+15+a+Samsung+a+Galaxy+a+S24+a+gi%C3%A1+a+Vi%E1%BB%87t+a+Nam&prds=localAnnotatedOfferId:1,catalogid:1201975181484509305,gpcid:14155018447372539991,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQmAn6y7QJDPd7ZrX-SJtnHwUbu_EPhopAAUysLZiWVuQ4JaNMM7gIvYV2A4AvA-hYEPm1eqjU2XV_ZGvUQexA3GuzHGcvy4RaTQx1pB-l_h12cBnka_-v8RYs",
+    "productId": "1201975181484509305",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy A15 4G (8GB - 128GB) Chính Hãng",
+    "source": "Viettablet",
+    "price": "3.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR6w6ws0hLxq0nGfb7w0-5kpf6qHlRZKy_nhmoayEK9f30CqSaH-Pfv8IJt1dyy5KVr_nGU_SBPtAHaa7Hp_LD536e9GDZWGpL2qgpNxzTs5Ht1gm1IyP3qvg",
+    "productId": "1983273519410437243",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy A15 5G Mới 256g - Xanh nhạt / 8G/256Gb",
+    "source": "Trọng Phú Mobile",
+    "price": "4.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSyqjs5gcHuKBhxIEHbLz37tO3XJlp-NGc2Xvmkzmqw4LrB62O-7g_T_wzzfZ_DZhRlj0tmdDbIFyoH4X8FSu0sFqFSTJzK6SHJR7Y0MaY",
+    "rating": 4.8,
+    "ratingCount": 203,
+    "productId": "2175466360450082308",
+    "position": 5
+   },
+   {
+    "title": "Vĩnh Hoàng - Điện thoại Samsung Galaxy A15 5G 6GB 256GB -Xanh",
+    "source": "vinhhoang.com",
+    "price": "5.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTyPeHo401iFjeQ58a8qSkqL-eb-JHo465ADdnmma86P5uyjc0e_k03W7VXoWw5R6wc9YcwwzM0M7tpLXPzlsLGMBR2_DsQgB78UCSaFXcR4-GQr3LeQlRm",
+    "productId": "959043811510151436",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy A15 (8GB-256GB) Cũ",
+    "source": "Bạch Long Store",
+    "price": "3.850.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRJf97izeNwKFrY_9U8ni0rwax_YK0sXstJsLUglA6G7kYPxB-t-AQqGvxZvwMGs-yeagsZRUBPDkzb_oMnrvh3uIM-QoNcclvov-rmNtFm",
+    "productId": "8367257367172734757",
+    "position": 7
+   }
+  ],
+  "credits": 2
+ }
+}

@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 giá bán Việt Nam gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:16.051Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 giá bán Việt Nam gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua Airpod 2 Cao Su Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/airpod-2-cao-su/?srsltid=AU7gw4XinvxX4yELHKHYS_7J6mxOBLftHrD-r-uKW7mwO2kjf8t3OK4k",
+    "snippet": "( MỚI 2024 ) Tai nghe Bluetooth Ultrapods Pro TWS Tai nghe không dây chơi game - Không có độ trễ Âm trầm HIFI để chơi game. ₫61,380. Voucher save 51%.",
+    "rating": 4.9,
+    "ratingCount": 705,
+    "position": 1
+   },
+   {
+    "title": "Airpod pro 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/airpod/pro/2",
+    "snippet": "Mua online airpod pro 2 chất lượng, mới nhất, giảm tới 50% tại Shopee Việt Nam. Khuyến mãi tháng 10. Miễn phí vận chuyển. Mua ngay!",
+    "position": 2
+   },
+   {
+    "title": "Mua Apple Airpods Pro 2 Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/apple-airpods-pro-2/?page=2&srsltid=AU7gw4UonKNjZfASRPSTDaDc5GeOI243phUQ5t0X_tNUuUudG0tLoemy",
+    "snippet": "₫6,290,000. 7% Off. 5.0 ; ₫2,990,000. 15% Off. 4.9 ; ₫85,000. 26% Off. 5.0 ; ₫59,000. 26% Off. 4.7 ; ₫92,820. 26% Off. 5.0 ...",
+    "rating": 4.7,
+    "ratingCount": 5468,
+    "position": 3
+   },
+   {
+    "title": "Dùng vẫn quá ngon, đáng mua hơn cả AirPods Pro 3?",
+    "link": "https://www.youtube.com/watch?v=hUfwBGkrZ3A&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "snippet": "Review AirPods Pro 2 trong 2026: Giờ dùng vẫn quá ngon, giá rẻ mà tốt hơn Pro 3? ▻ Nếu anh em đang có nhu cầu sửa điện thoại, tablet, ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 2022 | Giảm chạm đáy, trả góp 0%",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-airpods-pro-2022",
+    "snippet": "Mua online tai nghe AirPods Pro Gen 2 (2022)chính hãng Apple nhận ưu đãi lớn: Giá tốt hơn, trợ giá lên đời, giao tận nơi miễn phí. Mua ngay tại FPTShop!",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 2 mới ra đã có hàng nhái 350.000 đồng",
+    "link": "https://vnexpress.net/airpods-pro-2-moi-ra-da-co-hang-nhai-350-000-dong-4518641.html",
+    "snippet": "Các mẫu tai nghe có ngoại hình giống hệt AirPods Pro 2, có thể kết nối iPhone đang được chào bán với giá chỉ vài trăm nghìn đồng.",
+    "date": "3 thg 10, 2022",
+    "position": 6
+   },
+   {
+    "title": "Mua Tai Nghe Bluetooth Airpod Pro Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/tai-nghe-bluetooth-airpod-pro/?srsltid=AU7gw4XSk8o4CvxMXsnyRrLtJOowDUlbka1PfjKFrdz6cmZ311lzuiT2",
+    "snippet": "Tai nghe Bluetooth không dây AirPods Pro60 chống ồn, mic HiFi Stereo, chống nước, sạc USB. Thiết kế thể thao, thời lượng pin 6-7 giờ, phù hợp cho người dùng ...",
+    "rating": 4.7,
+    "ratingCount": 5399,
+    "position": 7
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "AirPods Pro Và Môi Trường · 100% sợi gỗ nguyên sinh đến từ các khu rừng được quản lý có trách nhiệm · Bao bì được làm từ 90% hoặc hơn từ sợi.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

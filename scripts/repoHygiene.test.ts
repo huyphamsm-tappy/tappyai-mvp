@@ -24,7 +24,18 @@ describe('no scratch files are committed', () => {
   })
   it('the replay recording set does not grow by accident (a deliberate addition raises this number in the same commit)', () => {
     const n = tracked.filter(f => f.startsWith('scripts/consult/replay/recordings/')).length
-    expect(n).toBeLessThanOrEqual(2008)
+    // 2008 → 2068 (Phase 8 M0, eb3d32a): the 60 Serper recordings of the agent-eval baseline (scripts/agent-eval), added deliberately.
+    // 2068 → 2135 (Phase 8 M1): the 67 recordings of the TAPPY_AGENT=2 eval runs (scripts/agent-eval), added deliberately.
+    // 2135 → 2371 (Phase 8 M2): the 236 recordings of the M2 follow-up / regression eval runs (scripts/agent-eval), added deliberately.
+    // 2371 → 2542 (Phase 8 M3): the recordings of the M3 research / regression eval runs (scripts/agent-eval), added deliberately.
+    // 2542 → 2678 (Phase 8 M3 latency pass): the recordings of the latency-pass research / regression eval runs, added deliberately.
+    // 2678 → 2868 (Phase 8 M4): the recordings of the M4 evidence-guard research / regression eval runs, added deliberately.
+    // 2868 → 3179 (Phase 8 M5): the recordings of the M5 semantic-ranking / research / regression eval runs, added deliberately.
+    // 3179 → 3465 (Phase 8 M6): the recordings of the M6 tool-registry A/B and M3 / M5 / regression eval runs, added deliberately.
+    // 3465 → 3886 (Phase 8 M7): the recordings of the M7 final eval gate (full scenario set, regression / research / ranking), added deliberately.
+    // 3886 → 4252 (Phase 8 WS2 research intelligence): the recordings of the WS2 eval runs (new price / link / source scenarios + full regression), added deliberately.
+    // 4252 → 4332 (Phase 8 WS2 final reliability closure): the recordings of the No-Fabrication / repeated-run evals, added deliberately.
+    expect(n).toBeLessThanOrEqual(4332)
   })
 })
 

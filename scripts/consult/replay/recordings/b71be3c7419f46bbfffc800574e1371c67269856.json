@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Madame Lam\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:01:01.571Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Madame Lam\" OR \"Nhà hàng chay Phương Mai\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 2
+   },
+   {
+    "title": "Madame Lam: Nhà hàng Việt Nam đương đại tại Thảo Điền",
+    "link": "https://www.tiktok.com/@chang.jany/video/7413191150837730567",
+    "snippet": "Khám phá Madame Lam, nhà hàng Michelin 2023-2024 với thực đơn ẩm thực Việt tinh tế. Đừng bỏ lỡ deal hấp dẫn trên Grab! #madamelam # ...",
+    "position": 3
+   },
+   {
+    "title": "Menu Mới Ocean Elegance Từ Madame Lam",
+    "link": "https://www.tiktok.com/@chang.jany/video/7547206437504552200",
+    "snippet": "Đợt này Madame Lam có menu mới Ocean Elegence kết hợp tôm hùm Mỹ kết hợp với nguyên liệu Việt Nam truyền thống, tạo nên một dấu ấn mới lạ và ...",
+    "position": 4
+   },
+   {
+    "title": "Madame Lam: Ẩm thực Việt đương đại tại Sài Gòn",
+    "link": "https://www.tiktok.com/@theochanhenry/photo/7686463291320831239",
+    "snippet": "Phục vụ | 9.0/10 Điểm mình đánh giá cao ở Madame Lam là nhân viên khá lịch sự, nhiệt tình và chăm bàn tốt. Không gian | 9.0/10 Không gian ...",
+    "position": 5
+   },
+   {
+    "title": "Michelin Series: Madame Lam Restaurant in Ho Chi Minh",
+    "link": "https://www.tiktok.com/@maya_reco/video/7541329963736206600",
+    "snippet": "MICHELIN SERIES _ MADAME LAM RESTAURANT @madamelamamthucduongdai Madame Lam Restaurant 10 Đ. Trần Ngọc Diện, Thảo Điền, Thủ Đức, Hồ Chí ...",
+    "position": 6
+   },
+   {
+    "title": "âm thanh gốc - Nhà Hàng Chay Phương Mai",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Nh%C3%A0-H%C3%A0ng-Chay-Ph%C6%B0%C6%A1ng-Mai-7666888284526365456",
+    "snippet": "Bài hát âm thanh gốc - Nhà Hàng Chay Phương Mai do Nhà Hàng Chay Phương Mai sáng tác. Xem video mới nhất về âm thanh gốc - Nhà Hàng Chay Phương Mai trên ...",
+    "position": 7
+   },
+   {
+    "title": "Thực đơn không phải để “cố định”, mà để kể chuyện về ...",
+    "link": "https://www.tiktok.com/@travelsig.vn/video/7610606514314693909",
+    "snippet": "Thực đơn không phải để “cố định”, mà để kể chuyện về mùa. Ở Madame Lam, mỗi món ăn là khoảnh khắc nguyên liệu chín muồi nhất được đặt lên bàn, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

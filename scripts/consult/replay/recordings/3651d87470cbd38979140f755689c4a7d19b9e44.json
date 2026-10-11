@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC IPX4 running official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:16:55.240Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC IPX4 running official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Anker Soundcore Liberty 4 NC | Giá rẻ 10/2026",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-liberty-4.html",
+    "snippet": "Anker Soundcore Liberty 4 được chế tác từ vật liệu bền bỉ, chịu được tác động của mưa và nắng. Không bị bạc màu, biến dạng hay ảnh hưởng chất lượng âm thanh dù ...",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe tối ưu tốt nhất cho TRẢI NGHIỆM NGHE CÁ NHÂN: ...",
+    "link": "https://www.youtube.com/watch?v=1hWMz1SEx50",
+    "snippet": "Tai nghe tối ưu TỐT NHẤT cho TRẢI NGHIỆM NGHE CÁ NHÂN:Soundcore Liberty 4 NC by Anker ✓ Anh em muốn mua tham khảo nhé: ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe anker soundcore liberty 4 nc",
+    "link": "https://shopee.vn/list/tai%20nghe/anker/soundcore%20liberty%204%20nc",
+    "snippet": "Các sản phẩm tai nghe anker soundcore liberty 4 nc chính hãng được bán tại Shopee với giá ưu đãi hấp dẫn. Bạn còn có thể áp dụng các mã giảm giá, mã hoàn xu và ...",
+    "position": 3
+   },
+   {
+    "title": "Anker Soundcore Liberty 4 NC - Tai nghe chinh hãng",
+    "link": "https://tainghechinhhang.vn/shop/anker-soundcore-liberty-4-nc/?srsltid=AU7gw4WioXY7VQdsarGRSdVNbDMAh9iVwqDwFcU08r-kOqIXWlb7gwhV",
+    "snippet": "Kết nối đa thiết bị: Cho phép kết nối cùng lúc 2 thiết bị (Multipoint) qua Bluetooth 5.3. Kháng nước: Chuẩn IPX4 chống mồ hôi và tia nước nhẹ.",
+    "position": 4
+   },
+   {
+    "title": "Review nhanh vui vẻ về Anker Soundcore Liberty 4NC",
+    "link": "https://www.facebook.com/groups/cuongtruewireless/posts/2045034459620169/",
+    "snippet": "Trang bị công nghệ như chống ồn ANC, thời lượng pin 9H, chất âm chuẩn Hi-res Audio và thậm chí có tính năng đo nhịp tim. Anker Soundcore Liberty ...",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth SoundCore Liberty 4 NC - A3947",
+    "link": "https://anker.vn/products/tai-nghe-bluetooth-soundcore-liberty-4-nc-a3947?srsltid=AU7gw4WbvQ19QyVxPjoNGxDAgA7SY7SbWhfae2E3fgsDE8pH7L3G-SuL",
+    "snippet": "Chỉ số chống nước IPX4 áp dụng cho tai nghe, không áp dụng cho hộp sạc. Không sử dụng trong môi trường có nước áp lực cao (mưa lớn, tắm vòi sen, bơi lội...).",
+    "rating": 4.8,
+    "ratingCount": 255,
+    "position": 6
+   },
+   {
+    "title": "Best ANC Earbuds for Commuting: Liberty 4 NC vs. ...",
+    "link": "https://www.soundcore.com/blogs/earbuds/liberty-4-nc-vs-liberty-4-pro",
+    "snippet": "The Liberty 4 NC includes an IPX4 rating for sweat and light rain resistance, a practical addition for walkers or cyclists. It also supports ...",
+    "date": "6 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "My Real Soundcore Liberty 4 NC Review - No Youtube Bulls",
+    "link": "https://www.reddit.com/r/anker/comments/14n0rh1/my_real_soundcore_liberty_4_nc_review_no_youtube/",
+    "snippet": "Anker Soundcore denied my request for a refund. So I'm changing my review to say that the earbuds suck, the customer service sucks and anyone ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

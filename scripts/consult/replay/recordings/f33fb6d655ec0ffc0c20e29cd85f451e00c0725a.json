@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Khách sạn Green Eco Đà Lạt",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:01:33.420Z",
+ "body": {
+  "searchParameters": {
+   "q": "Khách sạn Green Eco Đà Lạt",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "GREENECO DA LAT HOTEL - Khách sạn Green Eco Đà Lạt, Đà Lạt (cập nhật giá  năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/446160805.jpg?k=7e5f1ccb7aae60138dd8fda39bc816efb9418cd447902bc68e557079a587408f&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMdnpsLDcg1rvARzwGgmWSXm-GagYKGO4-K_K9qeYSMA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/greeneco-dalat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F446160805.jpg%3Fk%3D7e5f1ccb7aae60138dd8fda39bc816efb9418cd447902bc68e557079a587408f%26o%3D&tbnid=oSFrpFZHH6eCZM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgreeneco-dalat.vi.html&docid=iMMQpGn6VjimpM&w=1024&h=768",
+    "position": 1
+   },
+   {
+    "title": "Giới thiệu - GreenEco Đà Lạt Hotel",
+    "imageUrl": "https://greenecodalat.com.vn/wp-content/uploads/2023/12/chon1.jpg",
+    "imageWidth": 1920,
+    "imageHeight": 2560,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPhGSSXydXz6FZWPhCeYhmeve5g7dAkoz9SDFM-JAh5w&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "GreenEco Đà Lạt Hotel",
+    "domain": "greenecodalat.com.vn",
+    "link": "https://greenecodalat.com.vn/gioi-thieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fwp-content%2Fuploads%2F2023%2F12%2Fchon1.jpg&tbnid=7Kh45CLtPaeKBM&imgrefurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fgioi-thieu%2F&docid=OZBHZsc0-BJA0M&w=1920&h=2560",
+    "position": 2
+   },
+   {
+    "title": "Giới thiệu - GreenEco Đà Lạt Hotel",
+    "imageUrl": "https://greenecodalat.com.vn/wp-content/uploads/2023/12/greeneco1-780x1040.jpg",
+    "imageWidth": 780,
+    "imageHeight": 1040,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBF4cwZTpIaaaZG-lfq0muT7q8EbTW7HnPbkSfuhWs7A&s=10",
+    "thumbnailWidth": 480,
+    "thumbnailHeight": 640,
+    "source": "GreenEco Đà Lạt Hotel",
+    "domain": "greenecodalat.com.vn",
+    "link": "https://greenecodalat.com.vn/gioi-thieu/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fwp-content%2Fuploads%2F2023%2F12%2Fgreeneco1-780x1040.jpg&tbnid=b38R3wUCO8VBZM&imgrefurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fgioi-thieu%2F&docid=OZBHZsc0-BJA0M&w=780&h=1040",
+    "position": 3
+   },
+   {
+    "title": "GREENECO DA LAT HOTEL - Khách sạn Green Eco Đà Lạt, Đà Lạt (cập nhật giá  năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/673344347.jpg?k=49a2b039a602395b95cb0078c481a70ffa57ef853bacd73378676ce03a6e6448&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOPXyeTLvOqWYRRIvCg-TmUe8QCX5HCQgPZN059OKbDQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/greeneco-dalat.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F673344347.jpg%3Fk%3D49a2b039a602395b95cb0078c481a70ffa57ef853bacd73378676ce03a6e6448%26o%3D&tbnid=LiA_QkZbJ6FxmM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fgreeneco-dalat.vi.html&docid=iMMQpGn6VjimpM&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn xanh GreenEco nằm gần trung tâm thành phố Đà Lạt - GreenEco Đà  Lạt Hotel",
+    "imageUrl": "https://greenecodalat.com.vn/wp-content/uploads/2023/12/468600464.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6gBCi5NNw45XHY5icw25fTyb8axsP5w8zgGlxu2ubgA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "GreenEco Đà Lạt Hotel",
+    "domain": "greenecodalat.com.vn",
+    "link": "https://greenecodalat.com.vn/khach-san-xanh-green-eco-nam-gan-trung-tam-thanh-pho-da-lat/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fwp-content%2Fuploads%2F2023%2F12%2F468600464.jpg&tbnid=MUMiTM6Q-zgnpM&imgrefurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fkhach-san-xanh-green-eco-nam-gan-trung-tam-thanh-pho-da-lat%2F&docid=KD2LGyvoZ9DuHM&w=1024&h=768",
+    "position": 5
+   },
+   {
+    "title": "Green Eco Đà Lạt Hotel - Khách sạn Tại Lâm Giá Từ 700k | Ohdidi",
+    "imageUrl": "https://ohdidi.vn//uploads/static/HOMES/da-lat/ecogarrden-dalat/414963120.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3YryNMhrllxTGEfMf5bMgYhGCCwAVvZgsy-5yoRfnIA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Ohdidi",
+    "domain": "ohdidi.vn",
+    "link": "https://ohdidi.vn/hotel/green-eco-da-lat-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fohdidi.vn%2F%2Fuploads%2Fstatic%2FHOMES%2Fda-lat%2Fecogarrden-dalat%2F414963120.jpg&tbnid=7OivKBem8ren0M&imgrefurl=https%3A%2F%2Fohdidi.vn%2Fhotel%2Fgreen-eco-da-lat-hotel&docid=Iu4PNjyRwyfTbM&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "Green Eco Đà Lạt Hotel - Khách sạn Tại Lâm Giá Từ 700k | Ohdidi",
+    "imageUrl": "https://ohdidi.vn//uploads/static/HOMES/da-lat/ecogarrden-dalat/414952215.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQpUcEz4dZ6vob5IUg-ZSQShP9iBOX5fFLRdKoYK_qFoA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Ohdidi",
+    "domain": "ohdidi.vn",
+    "link": "https://ohdidi.vn/hotel/green-eco-da-lat-hotel",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fohdidi.vn%2F%2Fuploads%2Fstatic%2FHOMES%2Fda-lat%2Fecogarrden-dalat%2F414952215.jpg&tbnid=iP6_nCISkj2GTM&imgrefurl=https%3A%2F%2Fohdidi.vn%2Fhotel%2Fgreen-eco-da-lat-hotel&docid=Iu4PNjyRwyfTbM&w=1024&h=683",
+    "position": 7
+   },
+   {
+    "title": "Home - GreenEco Đà Lạt Hotel",
+    "imageUrl": "https://greenecodalat.com.vn/wp-content/uploads/2023/11/Ground-Deluxe1-1200x800.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0Z9peyaCbeeP4YwSv5mGN-1gPuwzi43G3P7az1X4kXw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "greenecodalat.com.vn",
+    "domain": "greenecodalat.com.vn",
+    "link": "https://greenecodalat.com.vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgreenecodalat.com.vn%2Fwp-content%2Fuploads%2F2023%2F11%2FGround-Deluxe1-1200x800.jpg&tbnid=0j9O3c49SLAbbM&imgrefurl=https%3A%2F%2Fgreenecodalat.com.vn%2F&docid=F443HBXNi42_0M&w=1200&h=800",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

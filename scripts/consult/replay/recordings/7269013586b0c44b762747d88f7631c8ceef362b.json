@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "kiểm tra pin MacBook Air M1 pin zin 100% báo cáo kiểm định trái ngược số chu kỳ pin tình trạng battery health Apple diagnostics",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:04:05.274Z",
+ "body": {
+  "searchParameters": {
+   "q": "kiểm tra pin MacBook Air M1 pin zin 100% báo cáo kiểm định trái ngược số chu kỳ pin tình trạng battery health Apple diagnostics",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Xác định số chu kỳ sạc của pin trên máy tính xách tay Mac",
+    "link": "https://support.apple.com/vi-vn/102888",
+    "snippet": "Tìm số chu kỳ sạc của pin · Giữ phím Option và bấm vào menu Apple , sau đó chọn Thông tin hệ thống. · Trong mục Phần cứng trên cửa sổ Thông tin hệ thống, chọn ...",
+    "position": 1
+   },
+   {
+    "title": "Cách kiểm tra số lần sạc pin và độ chai pin trên Macbook ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-pin-chai-tren-macbook-nhanh-nhat-1226190",
+    "snippet": "Để kiểm tra nhanh tình trạng pin, bạn nhấn giữ phím Option (Alt) đồng thời kích chuột vào biểu tượng pin trên thanh menu và xem trạng thái của ...",
+    "date": "21 thg 2, 2023",
+    "position": 2
+   },
+   {
+    "title": "Cách kiểm tra tình trạng pin của Macbook Air 2017",
+    "link": "https://www.reddit.com/r/macbook/comments/uosjhb/how_to_check_battery_health_of_macbook_air_2017/?tl=vi",
+    "snippet": "Chào bạn, tôi vừa thay pin laptop xong, vì pin chỉ dùng được khoảng 3 tiếng và tôi nhận được những cảnh báo rằng pin ...",
+    "position": 3
+   },
+   {
+    "title": "Cách kiểm tra tình trạng pin của Macbook",
+    "link": "https://www.youtube.com/watch?v=glp9GKm7rpM",
+    "snippet": "Cách kiểm tra dung lượng pin còn lại của Macbook | Kiểm tra nguồn vào thực tế của củ sạc Apple Kiểm tra % pin còn lại Kiểm tra tình trạng ...",
+    "position": 4
+   },
+   {
+    "title": "Top 5 phần mềm kiểm tra pin MacBook chính xác nhất",
+    "link": "https://ufotech.vn/phan-mem-kiem-tra-pin-macbook/",
+    "snippet": "Chỉ với một thao tác click chuột, bạn có thể xem ngay tình trạng sức khỏe pin (Battery Health), số chu kỳ sạc đã tiêu hao và nhiệt độ hiện tại.",
+    "date": "7 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Macbook Pro M1 Pro pin 100% chỉ dùng 3-4h có bình ...",
+    "link": "https://www.facebook.com/groups/hoinguoidungmacbook/posts/4446269468937394/",
+    "snippet": "Em đang xài Macbook Pro M1 Pro, mà sao em thấy 100% pin xài chỉ được trong khoảng 3-4h là hết, em chỉ lướt web thôi, thì kh biết pin em có ...",
+    "position": 6
+   },
+   {
+    "title": "Kiểm tra độ chai pin MacBook chuẩn xác nhất",
+    "link": "https://dienthoaivui.com.vn/cach-kiem-tra-pin-macbook-co-bi-chai-hay-khong",
+    "snippet": "Để xem thông tin về pin, bạn cần thực hiện các bước sau: Bước 1: Nhấn tổ hợp phím Command + Space, hộp thoại tìm kiếm sẽ hiện ra và bạn nhập ...",
+    "date": "23 thg 4, 2024",
+    "position": 7
+   },
+   {
+    "title": "Bạn luôn quan tâm đến thời lượng và sức khỏe pin của máy ...",
+    "link": "https://www.facebook.com/topzone.vn/videos/b%E1%BA%A1n-%C4%91%C3%A3-bi%E1%BA%BFt-c%C3%A1ch-ki%E1%BB%83m-tra-s%E1%BB%91-l%E1%BA%A7n-s%E1%BA%A1c-v%C3%A0-s%E1%BB%AD-d%E1%BB%A5ng-macbook-%C4%91%C3%BAng-c%C3%A1ch-ch%C6%B0a/482158046949102/",
+    "snippet": "Đừng lo ở video này TopZone sẽ hướng dẫn các bạn cách xem số lần sạc và sử dụng pin Macbook đúng cách giúp pin có tuổi thọ cao hơn. Hãy cùng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

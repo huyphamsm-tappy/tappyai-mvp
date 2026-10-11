@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:14:01.755Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/macbook/macbook-pro/M4/macbook-pro-14-inch-m4-16gb-512gb-2.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQc7rGH4LvolPyVO-27_qWOWiB2MgSAZ2wUf9fvFmsCyQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2Fmacbook%2Fmacbook-pro%2FM4%2Fmacbook-pro-14-inch-m4-16gb-512gb-2.jpg&tbnid=pD_q3YNkyY8FCM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-pro-14-inch-m4-16gb-512gb.html&docid=1w0u0JhtcA8QvM&w=810&h=456",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14 inch 2024 M4 (10CPU,10GPU) 24GB/512GB",
+    "imageUrl": "https://tinphatapple.vn/wp-content/uploads/2024/11/macbook-pro-14-inch-2024-m4-10cpu10gpu-16gb-512gb-4083.jpg",
+    "imageWidth": 1059,
+    "imageHeight": 595,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlcdQDc9BEFRWXnAVDknVmWUHKMHpgv5E1w22r5zNeZw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "tinphatapple.vn",
+    "domain": "tinphatapple.vn",
+    "link": "https://tinphatapple.vn/macbook-pro-14-inch-2024-m4-10cpu10gpu-24gb-512gb/?srsltid=AU7gw4XYZEmHXLAwqmEM5DdcYeuDkN0N458VneU6T4Mt_UT1o103e6AA",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftinphatapple.vn%2Fwp-content%2Fuploads%2F2024%2F11%2Fmacbook-pro-14-inch-2024-m4-10cpu10gpu-16gb-512gb-4083.jpg&tbnid=BtuwR9MwBYhhJM&imgrefurl=https%3A%2F%2Ftinphatapple.vn%2Fmacbook-pro-14-inch-2024-m4-10cpu10gpu-24gb-512gb%2F%3Fsrsltid%3DAU7gw4XYZEmHXLAwqmEM5DdcYeuDkN0N458VneU6T4Mt_UT1o103e6AA&docid=YZHI8yRSI3uvSM&w=1059&h=595",
+    "position": 2
+   },
+   {
+    "title": "Macbook Pro 14 inch M4 10 CPU / 10 GPU / 16Gb RAM / 512Gb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/1-2527c045-9f44-464c-bedf-423403ce99c9-e08db393-19ab-4fcd-b884-f12536b158a1.png?v=1747046345503",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSB5OnY3-w-8AXHBviM75waOSjyCPQ8JPSu-CvqJ_W8g&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-pro-14-inch-m4-10-cpu-10-gpu-16gb-ram-512gb-likenew?srsltid=AU7gw4WQvgP00pOewZ3uHF7mXodEPtrY5Wqj7_irnJv4zqA9Fp9ktCad",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F1-2527c045-9f44-464c-bedf-423403ce99c9-e08db393-19ab-4fcd-b884-f12536b158a1.png%3Fv%3D1747046345503&tbnid=Fy6lQcupL4xXSM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-pro-14-inch-m4-10-cpu-10-gpu-16gb-ram-512gb-likenew%3Fsrsltid%3DAU7gw4WQvgP00pOewZ3uHF7mXodEPtrY5Wqj7_irnJv4zqA9Fp9ktCad&docid=3wz5wTfMJTA1MM&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/t/e/text_ng_n_1__6_135_1_1.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScebPmrr7mVwIOCxDw9t0mvrYmbFFqWzVAv3F4EMi12w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Ft%2Fe%2Ftext_ng_n_1__6_135_1_1.png&tbnid=SG0R5mYAcbxPNM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-pro-14-inch-m4-16gb-512gb-cu-dep.html&docid=WN5SDqwcnY86QM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14 inch 2024 M4 10CPU/10GPU/16GB/512GB Silver SA/A (Mới) - Á  Châu Mobile",
+    "imageUrl": "https://achaumobile.com/wp-content/uploads/2023/11/mbp14-silver-gallery2-202310.jpg.webp",
+    "imageWidth": 1664,
+    "imageHeight": 1664,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbYV07UO0Dkdl9ahVorqUaskShLqrw524b0z8Bd3KRng&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Á Châu Mobile",
+    "domain": "achaumobile.com",
+    "link": "https://achaumobile.com/san-pham/macbook-pro-14-inch-2024-m4-10cpu-10gpu-16gb-512gb-silver-sa-a-moi/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fachaumobile.com%2Fwp-content%2Fuploads%2F2023%2F11%2Fmbp14-silver-gallery2-202310.jpg.webp&tbnid=KaKNHWzhd0y-EM&imgrefurl=https%3A%2F%2Fachaumobile.com%2Fsan-pham%2Fmacbook-pro-14-inch-2024-m4-10cpu-10gpu-16gb-512gb-silver-sa-a-moi%2F&docid=FNZu-nLEQzhK0M&w=1664&h=1664",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook_4__7.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8xFi3K0V7KiwgqOeg224L0i4f9cKz7AM3YShDCmG7vw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook_4__7.png&tbnid=Cnsx9bqggGsARM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-pro-14-inch-m4-16gb-512gb.html&docid=1w0u0JhtcA8QvM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "MacBook Pro 14 M4 2024 10CPU/10GPU/16GB/512GB Nano chính hãng, giá rẻ",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/800x0/macbook_pro_14_m4_2024_10cpu10gpu16gb512b_nano_1_aee90c0c51.jpg",
+    "imageWidth": 800,
+    "imageHeight": 533,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7m-ggaM-kpiMiKHmFfUkmhkD45pIcv-GteqauAQ3qQA&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/may-tinh-xach-tay/macbook-pro-14-m4-2024-10cpu-10gpu-16gb-512b-nano",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F800x0%2Fmacbook_pro_14_m4_2024_10cpu10gpu16gb512b_nano_1_aee90c0c51.jpg&tbnid=EV2VVXrBlqhpYM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fmay-tinh-xach-tay%2Fmacbook-pro-14-m4-2024-10cpu-10gpu-16gb-512b-nano&docid=LSvRCTsFcxq1PM&w=800&h=533",
+    "position": 7
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB - 512GB",
+    "imageUrl": "https://product.hstatic.net/200000680839/product/5_c8afce2cdf4e4b489b66f33e3244f62f.jpg",
+    "imageWidth": 941,
+    "imageHeight": 862,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvNOwRsLCdPUyFdH9yqUeUHWh_xAIMeRSggpu-dOxz-w&s",
+    "thumbnailWidth": 235,
+    "thumbnailHeight": 215,
+    "source": "THẾ GIỚI MÁY TÍNH | COMPUTER WORLD",
+    "domain": "thegioimaytinh.net.vn",
+    "link": "https://thegioimaytinh.net.vn/products/macbook-pro-14-m4-10cpu-10gpu-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000680839%2Fproduct%2F5_c8afce2cdf4e4b489b66f33e3244f62f.jpg&tbnid=Xh_Y_rMV7PDYBM&imgrefurl=https%3A%2F%2Fthegioimaytinh.net.vn%2Fproducts%2Fmacbook-pro-14-m4-10cpu-10gpu-16gb-512gb&docid=8fbVGnFHwmaWzM&w=941&h=862",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

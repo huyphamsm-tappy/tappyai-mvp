@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2 đồng thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:15:00.891Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu phổ thông 2 đồng thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tuyên Quang - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/tuyenquang/Pages/vbpq-toanvan.aspx?ItemID=12176&Keyword=",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Bộ Văn hóa - Thể thao và Du lịch - VBPL - MoJ.gov.vn - Bộ tư pháp",
+    "link": "https://vbpl.moj.gov.vn/bovanhoathethao/Pages/vbpq-toanvan.aspx?ItemID=15550&Keyword=",
+    "snippet": "Niêm yết hoặc thông báo công khai mức thu lệ phí tại địa điểm thu. Khi thu tiền phải lập và cấp biên lai thu cho đối tượng nộp lệ phí theo quy định hiện hành.",
+    "position": 2
+   },
+   {
+    "title": "Bộ Tài Chính - VBPL - Moj.gov.vn - Bộ Tư pháp",
+    "link": "https://vbpl.moj.gov.vn/botaichinh/Pages/vbpq-toanvan.aspx?ItemID=19774",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá ...",
+    "position": 3
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Đối với thi sát hạch lái xe ô tô hạng B1, B2, C, D, E, F lần lượt lý thuyết 100.000 đồng/lần (tăng 10.000 đồng); thực hành trong hình 350.000 ...",
+    "date": "1 thg 8, 2023",
+    "position": 4
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/sonla/Pages/vanban.aspx?year=1951",
+    "snippet": "65/2026/TT-BCT. Ngày ban hành:01/10/2026. Thông tư số 65/2026/TT-BCT Quy định chi tiết một số điều và biện pháp thi hành Nghị định số 365/2026/NĐ-CP ngày 23 ...",
+    "position": 5
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/1-qc-13438-01a0d2ca2587787c88cf4815bc634c0a.pdf",
+    "snippet": "05 ngày làm việc đối với động sản kể từ ngày được thông báo hợp lệ. Trong thời hạn 05 ngày làm việc kể từ ngày hết thời hạn ưu tiên mà người ...",
+    "date": "22 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Hà Nội, ngày 27 tháng 11 năm 2013 Căn cứ Pháp lệnh Phí và ...",
+    "link": "https://vbpl.moj.gov.vn/FileData/TW/Lists/vbpq/Attachments/37834/VanBanGoc_174-2013-TT-BTC_174-2013-TT-BTC.pdf",
+    "snippet": "Căn cứ Pháp lệnh Phí và Lệ phí số 38/2001/PL-UBTVQH10 ngày. 28/8/2001;. Căn cứ Nghị định số 57/2002/NĐ-CP ngày 03/6/2002 của Chính phủ.",
+    "date": "27 thg 11, 2013",
+    "position": 7
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH MIỀN ĐÔNG",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-bdg-so-117-05-ngay-18-8-2026-ba-tinh-01a0224881547cf8943822713758f6b6.pdf",
+    "snippet": "Quyền sử dụng đất, quyền sở hữu nhà ở và tài sản gắn liền với đất có diện tích. 1005,6m2 (đất trồng cây lâu năm), thửa đất số 120, ...",
+    "date": "18 thg 8, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

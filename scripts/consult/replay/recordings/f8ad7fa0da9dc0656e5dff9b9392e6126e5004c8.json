@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Nhất Vị\" OR \"Phở Hùng\" OR \"Phở Phú Vương\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:07:04.799Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Nhất Vị\" OR \"Phở Hùng\" OR \"Phở Phú Vương\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Phở Hùng Hàng Đẫy Tại Thành Công",
+    "link": "https://www.tiktok.com/@u40.an.gi/video/7587737343382113556",
+    "snippet": "Quán bán tại nhà nên giá rổ cực hợp lý. Phở Hùng Hàng Đẫy, 116B1 Thành Công, Giảng Võ, Hà Nội #phobo #ancungtiktok #hanoifood #foodreview ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Hùng Cường: Món Phở Gân Bò Viên Đặc Sắc",
+    "link": "https://www.tiktok.com/@ngockhoo/video/7676715047023807752",
+    "snippet": "Phở Hùng Cường mang đến trải nghiệm ẩm thực độc đáo với món phở gân bò viên hấp dẫn. Món ăn này nổi bật với sự kết hợp tinh tế giữa gân bò ...",
+    "position": 2
+   },
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 3
+   },
+   {
+    "title": "Discover the Best Pho in Saigon at Phở Phú Vương",
+    "link": "https://www.tiktok.com/@yourglobalfoodiebff/video/7593572173218843934",
+    "snippet": "Located at 339 Le Van Sy, Ward 1, Tan Binh District, Ho Chi Minh City, Phở Phú Vương stands out as a top contender for the best pho in Saigon ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon ...",
+    "link": "https://www.tiktok.com/@nguanonhauda.bm/video/7532087159700884744",
+    "snippet": "67 Lượt thích,Video TikTok từ Ngựa non háu đá (@nguanonhauda.bm): \"Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon #nguyenminhthubm ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Hùng Ngân 8: Trải Nghiệm Tô Phở Hoàn Hảo",
+    "link": "https://www.tiktok.com/@phohungngancs_8/video/7661466073111252240",
+    "snippet": "Tọa lạc tại khu vực Tân Phú, Sài Gòn, Phở Hùng Ngân 8 tự hào mang đến hương vị phở truyền thống đậm đà, quyến rũ. Chúng tôi cam kết sử dụng ...",
+    "position": 6
+   },
+   {
+    "title": "Bạn hẹn hò với trai bán phở — Phở Nhất Vị Quận 1",
+    "link": "https://www.tiktok.com/@phonhatvi.vn/video/7676279262017555733",
+    "snippet": "Thương hiệu và địa điểm được ghi nhận: Phở Nhất Vị, Nguyễn Đình Chiểu, Quận 1. Trải nghiệm ẩm thực Tập trung vào bát phở — hương vị, nước dùng ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Phú Vương: Quán Nhất Đường Lê Văn Sỹ",
+    "link": "https://www.tiktok.com/@thenguyen_kitchen/video/7195898111053581594",
+    "snippet": "trên con đường lê văn sỹ. thì đây phải nói là tiệm phở đông khách nhất. và phở phú vương chính là nơi mà ông chú đang nhắc đến. nơi đây khách ra ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

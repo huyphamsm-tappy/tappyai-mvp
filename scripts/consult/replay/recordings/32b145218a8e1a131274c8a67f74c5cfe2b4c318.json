@@ -1,0 +1,47 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Novotel Danang Premier Han River, Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:14:39.226Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Novotel Danang Premier Han River, Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0774119,108.2210558,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Khách sạn Novotel Đà Nẵng",
+    "address": "36 Bạch Đằng, Street, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.077411899999998,
+    "longitude": 108.2236307,
+    "rating": 4.6,
+    "ratingCount": 8771,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://all.accor.com/lien_externe.svlt?goto=fiche_hotel&code_hotel=8287&merchantid=seo-maps-VN-8287&sourceid=aw-cen&utm_medium=seo%20maps&utm_source=google%20Maps&utm_campaign=seo%20maps",
+    "phoneNumber": "+84 236 3929 999",
+    "description": "Phòng ở ấm cúng nằm trong khách sạn hiện đại với không gian hướng sông có bể bơi ngoài trời, nhà hàng sành điệu và 2 quầy bar.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMxZCxb_BxSqvoxltnEZCSsokOxbGGPGG5uhG9J2POt3460j72d1AUW5X5-1XsDdLXh0NcbyS8QAnPBqszgOBSnJp3pnitS-inuV2bINtoz85w2uBlBpFXNU-_Kl1w3XNszpPw",
+    "cid": "15361143490531047477",
+    "fid": "0x3142183afab4a42d:0xd52dbe9e28e83835",
+    "placeId": "ChIJLaS0-joYQjERNTjoKJ6-LdU"
+   }
+  ],
+  "credits": 3
+ }
+}

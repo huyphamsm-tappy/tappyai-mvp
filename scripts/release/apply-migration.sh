@@ -46,7 +46,7 @@ policy_of() {
     20260928b_revoke_increment_deal_click_public.sql|20260928c_review_comments_publication_boundary.sql|\
     20260930_content_reports_insert_check.sql|20260930b_review_interactions_bounds.sql|\
     20261001_user_blocks.sql|20261001b_user_reports.sql|20261001d_moderation_standards.sql|\
-    20261001e_banned_identity_hash.sql|20261005_account_deletion_cleanup.sql)
+    20261001e_banned_identity_hash.sql|20261005_account_deletion_cleanup.sql|20261018_chat_honours_user_blocks.sql)
       echo AFTER-SMOKE ;;
     20260913_g1_growth_foundation.sql|20260913_plan_shares.sql|20260915_profile_public_presentation.sql|\
     20260915b_review_likes_private.sql|20260918_g1b_share_ancestry.sql|20260920100000_commerce_providers.sql|\
@@ -56,7 +56,7 @@ policy_of() {
     20260921_user_events_shopping_search_event.sql|20260922_groups_avatar_url.sql|\
     20260925b_decision_evidence_sweep.sql|20260925d_audit_log_pii_retention.sql|d3-one-off-sweep.sql|\
     20260929130000_commerce_click_attributions.sql|20260929140000_commerce_click_attributions_r21.sql|\
-    20261001c_commerce_providers_cinemas.sql|\
+    20261001c_commerce_providers_cinemas.sql|20261005_p8_cost_indexes.sql|\
     20260924_p8_subscriptions_plan_model.sql|20261011_p8_payments.sql|20261015_p8_subscriptions.sql|20261016_p7_pip_one_time.sql|20261017_p7_pip_trial_any_source.sql)
       echo APPLY ;;
     *) echo UNLISTED ;;

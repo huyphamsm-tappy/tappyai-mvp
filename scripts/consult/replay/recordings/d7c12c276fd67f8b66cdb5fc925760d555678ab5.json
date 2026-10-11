@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:44:00.519Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-6_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSC1u0nfNeRKY9L5R84EKJB6zVDFSK7PzqPl9HtdjkYSQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-6_1.png&tbnid=VkVIpyyR8qjB2M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-256gb.html&docid=rLDz4BYhKBtgaM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-plus-1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LEdBHmquKhTrVVpnXA8D7hxHNyRzk2VG5fKJhhN69w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-plus-1_1.png&tbnid=7wLZ2ajUWXXGeM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-256gb.html&docid=rLDz4BYhKBtgaM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A), Giá Rẻ, Góp 0%, Thu Cũ Giảm 4 Triệu",
+    "imageUrl": "https://24hstore.vn/images/products/2024/09/12/large/iPhone-16-pro-256gb.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7vhuE7w0Mto-lkM6Y3fPV9G6USlsRLBd-bmyOG6LRQQ&s=10",
+    "thumbnailWidth": 400,
+    "thumbnailHeight": 400,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/iphone-16-pro/iphone-16-pro-256gb-p10941?srsltid=AU7gw4XBVtxXd_MbzcUmNkIdHqXysHHOd54arGfhl-O6Pq35qnWnHG3X",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2024%2F09%2F12%2Flarge%2FiPhone-16-pro-256gb.jpg&tbnid=pRqkZ2W3toDTSM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fiphone-16-pro%2Fiphone-16-pro-256gb-p10941%3Fsrsltid%3DAU7gw4XBVtxXd_MbzcUmNkIdHqXysHHOd54arGfhl-O6Pq35qnWnHG3X&docid=uLuUkEoO38q47M&w=400&h=400",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Chính Hãng Nguyên Seal, Bảng Giá 2026",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/63/apple-iphone-16-pro-viettablet.jpg",
+    "imageWidth": 560,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuju4wXVkNGwEJGx2d2WCL8rE7Rnj6xyjuaaoCBT7LEA&s",
+    "thumbnailWidth": 217,
+    "thumbnailHeight": 232,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/iphone-16-pro-256gb?srsltid=AU7gw4Uf6VuUfdzorhytU3sPpcu8iqm36bW879Qn8gw0cmqDjCdTQgtl",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F63%2Fapple-iphone-16-pro-viettablet.jpg&tbnid=YOlW5f1SefOzrM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fiphone-16-pro-256gb%3Fsrsltid%3DAU7gw4Uf6VuUfdzorhytU3sPpcu8iqm36bW879Qn8gw0cmqDjCdTQgtl&docid=UuB6NnSR-q6n6M&w=560&h=600",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-10_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAPACcnWYl3avDzb_nMsTCLsXKzmwBWcgZBMDQgC7G4A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-10_1.png&tbnid=4sIhvwvn9_Y-bM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-256gb.html&docid=rLDz4BYhKBtgaM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A), Giá Rẻ, Góp 0%, Thu Cũ Giảm 4 Triệu",
+    "imageUrl": "https://24hstore.vn/images/products/2024/09/12/large/iphone-16-ppro-nb-256gb_1726109904.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTK17soa54xubXaadO2moEEs_Xq_3sxgHOWpOVg7Fxj5A&s=10",
+    "thumbnailWidth": 400,
+    "thumbnailHeight": 400,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/iphone-16-pro/iphone-16-pro-256gb-p10941?srsltid=AU7gw4XTto-tKdmh6_H401VSlxtZLhMe6EJd5pUKFqmg-BrUtYEpy1iq",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2024%2F09%2F12%2Flarge%2Fiphone-16-ppro-nb-256gb_1726109904.jpg&tbnid=cRMmtUuY6Fr1ZM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fiphone-16-pro%2Fiphone-16-pro-256gb-p10941%3Fsrsltid%3DAU7gw4XTto-tKdmh6_H401VSlxtZLhMe6EJd5pUKFqmg-BrUtYEpy1iq&docid=uLuUkEoO38q47M&w=400&h=400",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro 256GB VN/A | Ưu đãi đến 7.3tr, trả góp 0%",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/848552295.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTysnGgsFvvPeJjYv2Ow__Z1D65Sw0Mv1GjReIt-ru7oQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-16-pro-256gb-pid339624.html?srsltid=AU7gw4XRdDoyyzqgyPiXgpXKiMRF_A-wGyolZH2pqSAO-ofQrnvjELVT",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F848552295.jpeg&tbnid=ASlZhBulx1iFUM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fiphone-16-pro-256gb-pid339624.html%3Fsrsltid%3DAU7gw4XRdDoyyzqgyPiXgpXKiMRF_A-wGyolZH2pqSAO-ofQrnvjELVT&docid=-RqIgTc6KiptiM&w=500&h=500",
+    "position": 7
+   },
+   {
+    "title": "Apple iPhone 16 Pro 256GB 99%",
+    "imageUrl": "https://bachlongstore.vn/vnt_upload/product/10_2025/532532532253.png",
+    "imageWidth": 750,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT214jTXzxp-7NfWz6Z0xT5tcpz_RYGKuJPw3uCMuAWkw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bạch Long Store",
+    "domain": "bachlongstore.vn",
+    "link": "https://bachlongstore.vn/apple-iphone-16-pro-256gb-99-.html?srsltid=AU7gw4UJjsPKAzn_NMgM8E2YHovOE2unAisGjnQs_-qkehq-ho1l41fN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbachlongstore.vn%2Fvnt_upload%2Fproduct%2F10_2025%2F532532532253.png&tbnid=6Zt864sBXgZBdM&imgrefurl=https%3A%2F%2Fbachlongstore.vn%2Fapple-iphone-16-pro-256gb-99-.html%3Fsrsltid%3DAU7gw4UJjsPKAzn_NMgM8E2YHovOE2unAisGjnQs_-qkehq-ho1l41fN&docid=GI3B7KMMoxvYdM&w=750&h=750",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

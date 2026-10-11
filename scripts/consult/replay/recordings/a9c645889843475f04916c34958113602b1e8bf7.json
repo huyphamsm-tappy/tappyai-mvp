@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us Mac Activation Lock erase Mac before buying used Mac MDM check",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:47:12.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us Mac Activation Lock erase Mac before buying used Mac MDM check",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-us/102541",
+    "snippet": "Even if you erase your Mac remotely, Activation Lock can continue to deter others from reactivating your Mac without your permission. All you ...",
+    "date": "5 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "What to do before you sell, give away, trade in, or recycle ...",
+    "link": "https://support.apple.com/en-us/102773",
+    "snippet": "1. Sign out of iTunes · 2. Sign out of iCloud · 3. Sign out of iMessage · 4. Optional: Rename or unpair Bluetooth accessories · 5. Erase your Mac ...",
+    "date": "14 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Activation Lock for iPhone and iPad",
+    "link": "https://support.apple.com/en-us/108794",
+    "snippet": "Activation Lock helps you keep your device secure, even if it's in the wrong hands, and can improve your chances of recovering it. Even if you erase your device ...",
+    "position": 3
+   },
+   {
+    "title": "About Activation Lock on your Apple Watch",
+    "link": "https://support.apple.com/en-us/102573",
+    "snippet": "Even if you erase your device remotely, Activation Lock can continue to keep anyone from reactivating your device without your permission. All you need to do is ...",
+    "position": 4
+   },
+   {
+    "title": "How to remove Activation Lock",
+    "link": "https://support.apple.com/en-us/108934",
+    "snippet": "Start a support request. If you need help removing Activation Lock, and have proof of purchase documentation, you can start an Activation Lock ...",
+    "date": "27 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "If you forgot your Mac login password",
+    "link": "https://support.apple.com/en-us/102633",
+    "snippet": "When asked to select a user you know the password for, choose Erase Mac from the Recovery Assistant menu in the menu bar. In the window that ...",
+    "date": "22 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Prepare your Mac laptop for trade in",
+    "link": "https://support.apple.com/en-us/108061",
+    "snippet": "Back up your Mac laptop and erase all content and settings to prepare your device for trade in and to protect your personal information. Pack ...",
+    "date": "21 thg 5, 2026",
+    "position": 7
+   },
+   {
+    "title": "Erase your Mac and reset it to factory settings",
+    "link": "https://support.apple.com/en-us/102664",
+    "snippet": "Erase your Mac and reset it to factory settings. Use the Erase All Content and Settings feature to quickly and securely erase all of your ...",
+    "date": "14 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

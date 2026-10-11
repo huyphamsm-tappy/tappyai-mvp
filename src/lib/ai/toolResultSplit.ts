@@ -183,6 +183,42 @@ export interface EnrichmentCollector {
   consultBrief?: boolean
   /** TAPPY_AGENT: the turn was decided by the bounded agent (no consult turn) — claim guards that used to key on a consult pick turn still run. */
   agentMode?: boolean
+  /** Phase 8 (TAPPY_AGENT=2) run trace: called with every settle-path stage that CHANGED the reply text (observation only). */
+  guardTrace?: (stage: string, before: string, after: string) => void
+  /** Phase 8 M3 (TAPPY_AGENT=2): pages the agent read this turn — [S#] markers become source links at the enrichment site (citeSources). */
+  /** WS2 link contract: url, label, title, source_type (class), action_type — the pages the agent read this turn. */
+  /**
+   * WS2 (TAPPY_AGENT=2): records the recommendation decision of the final answer when Luna wrote no valid [TAPPY_RANK] block
+   * (agent/runtime/decisionRecord.ts). Absent on every other path.
+   */
+  /** WS2 final: the DATA context Luna was given this turn (card facts, task evidence) and earlier replies — evidence for the gate. */
+  gateContext?: string[]
+  /** WS2 final: the No-Fabrication Gate's per-turn claim summary, for the run trace. */
+  claimsTrace?: (summary: Record<string, unknown>) => void
+  recordDecision?: (answer: string, candidates: string[]) => Promise<{ contract: import('./agent/runtime/rankingContract').RankingContract | null; ms: number; usd: number; error?: string }>
+  citationSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
+  /** CONSULTATIVE_IN_AGENT: search-result links held (no page was read) and shown only if a guard cut every figure and the one "chưa xác minh" sentence is added at settle. */
+  unverifiedSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
+  /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
+  guardEvidence?: import('./guardEvidence').GuardEvidence
+  /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */
+  evidenceTrace?: (summary: Record<string, unknown>) => void
+  /** Phase 8 M5 (TAPPY_AGENT=2): Luna ranks; its [TAPPY_RANK] line orders the cards (agent/runtime/rankingContract.ts). */
+  semanticRanking?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set only when the flag is on AND the turn is a trip-plan turn): the plan is the whole answer. No
+   * ranking line / decision recorder, no standalone venue cards after it, and no card photos fetched for them (the plan's own items keep
+   * their photos). Absent = the pre-flag behaviour, byte for byte.
+   */
+  planTurn?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (default OFF; set whenever the flag is on, on every turn): the four settle-path precision fixes that only apply under
+   * the flag — worked examples are not facts (noFabricationGate), amount phrases are not names (entityNameGuard), a plan card holds only
+   * places of the plan's destination (planItemGuard), and no "see the card below" line without a card (groundingGate). Absent = unchanged.
+   */
+  consultative?: boolean
+  /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
+  rankingTrace?: (summary: Record<string, unknown>) => void
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */

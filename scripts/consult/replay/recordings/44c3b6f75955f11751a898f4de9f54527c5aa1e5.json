@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Air 13 inch\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:01:16.956Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Air 13 inch\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple MacBook Neo 13-inch: Powerful & Lightweight",
+    "link": "https://www.tiktok.com/@abed_tahan/video/7631836350374825232",
+    "snippet": "Apple MacBook Neo 13-inch: Powerful & Lightweight. The highly anticipated Apple MacBook Neo has arrived, boasting a blend of power and portability. This new ...",
+    "position": 1
+   },
+   {
+    "title": "Apple Macbook Air 13 Inch Laptop Apple M4 Chip Case",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-air-13-inch-laptop-apple-m4-chip-case",
+    "snippet": "Check out Apple Macbook Air 13 Inch Laptop Apple M4 Chip Case selection on TikTok Shop and get free shipping on eligible items. Discover trending items and ...",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Everyday Use Laptop",
+    "link": "https://www.tiktok.com/@phoneplacekenya/video/7628692759058107655",
+    "snippet": "The Apple MacBook Neo 13-inch is simple, clean, and built for everyday use. For KES 105,000, you get a premium MacBook with a sharp display, ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Neo (13-inch, A18 Pro)",
+    "link": "https://shop.tiktok.com/my/pdp/1734982376212890946",
+    "snippet": "Product Review of Apple MacBook Neo (13-inch, A18 Pro) from N. Item: Citrus, 512GB with Touch ID. 2026-07-12.",
+    "position": 4
+   },
+   {
+    "title": "Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue",
+    "link": "https://www.tiktok.com/discover/apple-macbook-air-13-inch-m4-midnight-vs-sky-blue",
+    "snippet": "11.3M posts. Discover videos related to Apple Macbook Air 13 Inch M4 Midnight Vs Sky Blue on TikTok. See more videos about Macbook Air 13 ...",
+    "date": "28 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13-inch Laptop Built for Apple Intelligence",
+    "link": "https://shop.tiktok.com/us/pdp/apple-macbook-air-13-inch-mit-m4-chip-24gb-ram-2tb-ssd/1731858183882576292",
+    "snippet": "Apple - MacBook Air 13-inch Laptop Built for Apple Intelligence – M4 Chip (Brand New)Brand new, sealed in original Apple packaging with a full 1-year ...",
+    "position": 6
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch 2026 Blush",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-2026-blush",
+    "snippet": "36.8M posts. Discover videos related to Apple Macbook Neo 13 Inch 2026 Blush on TikTok. See more videos about Apple Macbook Neo Blush, ...",
+    "date": "28 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air 13-inch M4",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m4-papan-kekal-ringan/1731071684011394539",
+    "snippet": "Apple MacBook Air 13-inch M4. 7 / 11. Apple MacBook Air 13-inch M4. 8 / 11. Apple MacBook Air 13-inch M4. 9 / 11. Sky Blue. 10 / 11. RM4,499.00. Apple MacBook ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

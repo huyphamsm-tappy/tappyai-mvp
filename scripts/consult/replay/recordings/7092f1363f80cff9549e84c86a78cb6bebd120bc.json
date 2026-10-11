@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn lệ phí cấp hộ chiếu phổ thông cấp mới 200.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:20.382Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn lệ phí cấp hộ chiếu phổ thông cấp mới 200.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với trường ...",
+    "position": 1
+   },
+   {
+    "title": "Trẻ em dưới 14 tuổi khi làm thủ tục cấp hộ chiếu có cần phải ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19735&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp ...",
+    "position": 2
+   },
+   {
+    "title": "Trường hợp người đề nghị cấp hộ chiếu không đến nhận kết ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19736&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp ...",
+    "position": 3
+   },
+   {
+    "title": "Trong trường hợp việc đề nghị cấp hộ chiếu được ủy thác cho ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19727&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp ...",
+    "position": 4
+   },
+   {
+    "title": "Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777B41350CAAE063490AA8C07866",
+    "snippet": "Kiến nghị về việc: Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn chíp điện tử ở trong nước (thực hiện tại cấp tỉnh).",
+    "position": 5
+   },
+   {
+    "title": "Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777B801E0CAAE063490AA8C07866",
+    "snippet": "... lệ phí nhà nước 200.000 VNĐ có biên lai theo file đính kèm. Theo kết quả tra cứu thì hộ chiếu của tôi đã được trả về từ ngày 03/11/2022. Tuy nhiên tôi chưa ...",
+    "position": 6
+   },
+   {
+    "title": "Kiến nghị về việc: Thu lệ phí làm Hộ Chiếu lần 02",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777B9E510CAAE063490AA8C07866",
+    "snippet": "Ngày 15/04/2023 tôi có đăng ký làm Hộ Chiếu phổ thông trên cổng dịch vụ công Bộ Công An (đăng ký làm tại cấp tỉnh) và có thanh toán lệ phí trực tuyến theo ...",
+    "position": 7
+   },
+   {
+    "title": "Không có tiêu đề",
+    "link": "https://dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=2131",
+    "snippet": "What code is in the image? ... Your support ID is: 844787498766633242 .",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

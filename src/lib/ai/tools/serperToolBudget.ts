@@ -10,7 +10,7 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 
-interface Scope { limit: number; spent: number; refused: number; parent: Scope | null }
+interface Scope { limit: number; spent: number; refused: number; parent: Scope | null; signal?: AbortSignal; halted?: string }
 const store = new AsyncLocalStorage<Scope>()
 
 async function within<T>(limit: number, fn: () => Promise<T>): Promise<{ value: T; spent: number; refused: number }> {
@@ -21,6 +21,23 @@ async function within<T>(limit: number, fn: () => Promise<T>): Promise<{ value: 
 
 /** One agent tool invocation: its own cap, nested inside the turn's cap. */
 export const withSerperToolBudget = within
+
+/**
+ * Phase 8 runtime (TAPPY_AGENT=2): a tool invocation's cap PLUS its cancellation signal. When the runtime times a tool out it aborts
+ * the signal: serperPost refuses every further request of that invocation and aborts the in-flight fetch, so a timed-out tool stops
+ * spending Serper credits. Only the Phase 8 runtime sets a signal; every other caller is unchanged.
+ */
+export async function withSerperToolScope<T>(limit: number, signal: AbortSignal, fn: () => Promise<T>): Promise<{ value: T; spent: number; refused: number }> {
+  const scope: Scope = { limit, spent: 0, refused: 0, parent: store.getStore() ?? null, signal }
+  const value = await store.run(scope, fn)
+  return { value, spent: scope.spent, refused: scope.refused }
+}
+
+/** The nearest cancellation signal of the current scope chain (undefined outside a Phase 8 tool scope). */
+export function currentSerperSignal(): AbortSignal | undefined {
+  for (let s = store.getStore() ?? null; s; s = s.parent) if (s.signal) return s.signal
+  return undefined
+}
 /** The whole agent turn. */
 export const withSerperTurnBudget = within
 
@@ -33,11 +50,38 @@ export function sharedSerperBudget(limit: number): { run<T>(fn: () => Promise<T>
   return { run: fn => store.run(scope, fn), spent: () => scope.spent }
 }
 
+/**
+ * An ACCOUNT-LEVEL failure (no credits left, bad key, forbidden) is not a property of one request: every further request of this
+ * turn would be refused the same way, yet each one is a request the provider receives. The whole scope chain is halted — the
+ * parallel requests that have not started yet are never sent. Returns false outside any scope (nothing to halt).
+ */
+export function haltSerperScope(reason: string): boolean {
+  const s = store.getStore() ?? null
+  if (!s) return false
+  for (let c: Scope | null = s; c; c = c.parent) if (!c.halted) c.halted = reason
+  return true
+}
+
+/** The reason the current scope chain was halted, if it was. */
+export function serperHaltedReason(): string | null {
+  for (let s = store.getStore() ?? null; s; s = s.parent) if (s.halted) return s.halted
+  return null
+}
+
+/**
+ * Gives back a reservation for a request that was reserved but NEVER SENT (cancelled between admit and send). A request that was
+ * sent is never released — a client timeout or abort does not prove the provider did not receive and bill it.
+ */
+export function releaseToolBudget(credits: number): void {
+  for (let s = store.getStore() ?? null; s; s = s.parent) s.spent = Math.max(0, s.spent - credits)
+}
+
 /** Called by serperAdmit before the daily ceiling. false = refuse this call (a cap on this call's scope chain is spent). */
 export function admitWithinToolBudget(credits: number): boolean {
   const chain: Scope[] = []
   for (let s = store.getStore() ?? null; s; s = s.parent) chain.push(s)
   if (chain.length === 0) return true
+  if (chain.some(s => s.halted)) { chain[0].refused++; return false }
   if (chain.some(s => s.spent + credits > s.limit)) { chain[0].refused++; return false }
   for (const s of chain) s.spent += credits
   return true
@@ -48,4 +92,12 @@ export function turnCreditsSpent(): number {
   let s = store.getStore() ?? null
   while (s?.parent) s = s.parent
   return s?.spent ?? 0
+}
+
+/** Credits still available in the current TURN scope (turn limit − spent); Infinity outside a turn scope. */
+export function turnCreditsRemaining(): number {
+  let s = store.getStore() ?? null
+  if (!s) return Number.POSITIVE_INFINITY
+  while (s.parent) s = s.parent
+  return Math.max(0, s.limit - s.spent)
 }

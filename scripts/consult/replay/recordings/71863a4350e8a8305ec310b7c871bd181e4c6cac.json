@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"M Hotel Da Nang\" OR \"Hanami Hotel Danang\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:19:28.184Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"M Hotel Da Nang\" OR \"Hanami Hotel Danang\" OR \"Bluzen Hotel Danang (Khách sạn Bluzen Đà Nẵng)\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Experiencia en M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@callumhirst_/video/7547007596809424150",
+    "snippet": "Location: M Hotel, Da Nang City, Vietnam If you're searching for the best hotels in Da Nang or want a modern stay next to Da Nang Beach, M ...",
+    "position": 1
+   },
+   {
+    "title": "Experience Luxury at M Hotel Da Nang, Vietnam",
+    "link": "https://www.tiktok.com/@byhavy/video/7450867727973010731",
+    "snippet": "Keywords: M Hotel Da Nang, Luxury hotel in Vietnam, Hotel breakfast buffet, Vietnam travel destinations, Stunning views in Da Nang, Best ...",
+    "position": 2
+   },
+   {
+    "title": "M Hotel Da Nang sea view rooms & 28th-floor infinity pool",
+    "link": "https://www.tiktok.com/@mochibumm/video/7656047436506402068",
+    "snippet": "Located at 286 Võ Nguyên Giáp in Ngũ Hành Sơn, the property checks every box for a relaxed, convenient beach escape. Why choose M Hotel Da Nang ...",
+    "position": 3
+   },
+   {
+    "title": "M Hotel Da Nang 4* #wayworldtravel #vietnam #danang #travel",
+    "link": "https://www.tiktok.com/@wayworldtravel/video/7655699338194193665",
+    "snippet": "TikTok video from Wayworld Travel (@wayworldtravel): “Vietnam - M Hotel Da Nang 4* #wayworldtravel #vietnam #danang #travel”. original sound - Wayworld ...",
+    "position": 4
+   },
+   {
+    "title": "M Hotel Da Nang: A Really Sad Moment in Vietnam 🇻🇳",
+    "link": "https://www.tiktok.com/@didiqatar/video/7691608466590272775",
+    "snippet": "What exactly happened at the M Hotel Da Nang to cause such a reaction? The video leaves the full story open to interpretation, prompting viewers ...",
+    "position": 5
+   },
+   {
+    "title": "M Hotel Da Nang: A Nighttime Paradise",
+    "link": "https://www.tiktok.com/@mhoteldanang/video/7491982726556388615",
+    "snippet": "M Hotel Da Nang: A Nighttime Paradise. Explore the enchanting atmosphere of M Hotel Da Nang by night. Experience stunning views and vibrant ...",
+    "position": 6
+   },
+   {
+    "title": "Discover M Hotel Da Nang: A Luxurious Haven",
+    "link": "https://www.tiktok.com/@pointfootage/video/7469809813174684960",
+    "snippet": "Experience the beauty of M Hotel Da Nang! With breathtaking views and luxurious amenities, it's a perfect spot for your next getaway. @M Hotel ...",
+    "position": 7
+   },
+   {
+    "title": "Current Stay M Hotel Da Nang",
+    "link": "https://www.tiktok.com/discover/current-stay-m-hotel-da-nang",
+    "snippet": "M Hotel Đà Nẵng mang phong cách phủ xanh độc đáo, kết hợp hồ bơi vô cực hướng thẳng bán đảo Sơn Trà – điểm check-in không thể bỏ lỡ tại ...",
+    "date": "22 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

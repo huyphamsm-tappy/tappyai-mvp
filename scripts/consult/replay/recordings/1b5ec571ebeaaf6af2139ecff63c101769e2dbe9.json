@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Soundcore Liberty 4 NC running fit workout review",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:52.847Z",
+ "body": {
+  "searchParameters": {
+   "q": "Soundcore Liberty 4 NC running fit workout review",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "My Real Soundcore Liberty 4 NC Review - No Youtube Bulls",
+    "link": "https://www.reddit.com/r/anker/comments/14n0rh1/my_real_soundcore_liberty_4_nc_review_no_youtube/",
+    "snippet": "I'm overall pretty happy with them - great noise cancelling, sound is really good and customization is great through the app. Very good value ...",
+    "position": 1
+   },
+   {
+    "title": "What's The Catch? Great ANC, Great Features, but... ...",
+    "link": "https://www.youtube.com/watch?v=OUrAxCvAA0Q",
+    "snippet": "Comments ; $99 BUD OF THE YEAR Soundcore Liberty 4 NC Review. Picky Audio · 142K views ; 2025 Earbuds Awards - Unexpected Winners! Mike O'Brien ...",
+    "position": 2
+   },
+   {
+    "title": "One month later 🤔 Soundcore Liberty 5 vs Liberty 4 NC vs ...",
+    "link": "https://www.loudnwireless.com/blog/one-month-later-soundcore-liberty-5-vs-liberty-4-nc-vs-4-pro-review",
+    "snippet": "The Liberty 5 does have some on-paper improvements versus the Liberty 4 NC and 4 Pro like Bluetooth 5.4, slightly longer battery endurance in ...",
+    "date": "18 thg 6, 2025",
+    "position": 3
+   },
+   {
+    "title": "Anker Soundcore Liberty 4 NC review",
+    "link": "https://www.soundguys.com/anker-soundcore-liberty-4-nc-review-100100/",
+    "snippet": "With an IPX4 rating, long battery life, and good ANC, these are worth a go. You might not want to go for a run with them, but otherwise they're ...",
+    "date": "4 thg 10, 2023",
+    "position": 4
+   },
+   {
+    "title": "Anker Soundcore Liberty 4 True Wireless Review",
+    "link": "https://www.rtings.com/headphones/reviews/anker/soundcore-liberty-4-true-wireless",
+    "snippet": "The Anker Soundcore Liberty 4 are decent for commute and travel. These buds are comfortable, well-built, and lightweight. They're also small ...",
+    "date": "23 thg 12, 2022",
+    "position": 5
+   },
+   {
+    "title": "Soundcore Liberty 4 NC Review [Still WORTH IT in 2026?]",
+    "link": "https://recordingnow.com/blog/soundcore-liberty-4-nc-review/",
+    "snippet": "My HONEST Soundcore Liberty 4 NC review with comparisons vs EarFun Air Pro 4+, AirPods Pro 2, AirPods Pro 3, AirPods 4 ANC, and Beats Studio Buds Plus.",
+    "position": 6
+   },
+   {
+    "title": "Soundcore Liberty 4 NC Review: BEST ANC earbuds under ...",
+    "link": "https://www.youtube.com/watch?v=ZlYMoFkGxLc",
+    "snippet": "Shrink the Noise with soundcore Liberty 4 NC. For the US: Enjoy $20 off! Get Prime Day savings early.",
+    "position": 7
+   },
+   {
+    "title": "Soundcore Liberty 4 NC review: Test versus ALL competitors",
+    "link": "https://www.scarbir.com/tws/soundcore-liberty-4-nc-review",
+    "snippet": "The Liberty 4 NC has up to 4 hours longer battery life and a more comfortable fit than the Sony. Both have excellent call qualities and ...",
+    "date": "7 thg 7, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

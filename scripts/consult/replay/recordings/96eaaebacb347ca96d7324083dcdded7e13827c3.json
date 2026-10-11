@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giờ tham quan phố cổ Hội An vé chính thức 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:25:20.352Z",
+ "body": {
+  "searchParameters": {
+   "q": "giờ tham quan phố cổ Hội An vé chính thức 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bảng giá vé tham quan phố cổ Hội An 2026",
+    "link": "https://webdulichhoian.com/bang-gia-ve-tham-quan-pho-co-hoi-an.html",
+    "snippet": "Hội An hàng ngày từ 19h00 – 20h30. Giá vé dành cho khách Việt Nam: 80.000đ/người. Miễn phí. Trẻ em từ 1m – 1m4: 50.000đ/người.",
+    "position": 1
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Không gian phố bộ về đêm đem lại nhiều hoạt động giải trí bổ sung hoàn toàn miễn phí từ 19h00 - 20h30. Du khách dạo phố có thể tự do hòa mình vào các trò chơi ...",
+    "position": 2
+   },
+   {
+    "title": "Cập nhật giá vé tham quan Phố cổ Hội An cho khách trong ...",
+    "link": "https://sovaba.travel/blog/bai-viet-cap-nhat-gia-ve-tham-quan-pho-co-hoi-an",
+    "snippet": "5. Giờ mở cửa Phố cổ Hội An và thời gian sử dụng vé · Giờ mở cửa chung: Từ 7h sáng đến 21h30 tối (một số điểm như Chùa Cầu mở đến 22h vào dịp lễ hội). · Giờ bán ...",
+    "position": 3
+   },
+   {
+    "title": "Phố cổ Hội An Đà Nẵng: Hướng dẫn du lịch chi tiết và ...",
+    "link": "https://pystravel.vn/tin/17567-pho-co-hoi-an-da-nang.html?srsltid=AU7gw4USpj-js1ZeG3AXDRq8nKassD2EAj8_zIvbRZ-Uvs-C7XDW6WiY",
+    "snippet": "- Giờ mở cửa: Mở cửa tự do cả ngày. Một số cơ sở làng nghề đón khách từ 8h00 - 17h00. - Giá vé: + Làng gốm Thanh Hà: 35.000 VNĐ/người lớn ...",
+    "position": 4
+   },
+   {
+    "title": "Du lịch Hội An: Vé tham quan và tour Hội An 2026",
+    "link": "https://www.traveloka.com/vi-vn/activities/vietnam/city/hoi-an-10010308",
+    "snippet": "Thời gian mở cửa: từ 9:00 - 19:40 hằng ngày (Đến 21:20 đối với T7 và CN). Giá vé: Khoảng 602.389 VND/khách. Miễn phí dịch vụ xe buýt trung chuyển đi và về từ ...",
+    "position": 5
+   },
+   {
+    "title": "Giá vé phố cổ Hội An mới 2026: Mua ở đâu, bao nhiêu tiền?",
+    "link": "https://ohdidi.vn/blog/kinh-nghiem-du-lich/gia-ve-pho-co-hoi-an",
+    "snippet": "vào lúc 10h15 và 15h15 hằng ngày, đồng thời tham gia các trò chơi dân ường phố diễn ra từ 19h00 – 20h30, góp phần mang đến trải nghiệm văn hóa ...",
+    "date": "22 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Phố cổ Hội An 2026-2027: Cẩm nang cho du khách ghé ...",
+    "link": "https://lasiestaresorts.com/vi/pho-co-hoi-an.html",
+    "snippet": "Vé tham quan Phố cổ Hội An (cập nhật 2026-2027) Thời điểm lý tưởng để tham quan Phố cổ Hội An Cách di chuyển đến Phố cổ Hội An",
+    "position": 7
+   },
+   {
+    "title": "Chính thức: Áp dụng mức phí tham quan mới tại Hội An, Mỹ ...",
+    "link": "https://www.facebook.com/baodanangonline/posts/ch%C3%ADnh-th%E1%BB%A9c-%C3%A1p-d%E1%BB%A5ng-m%E1%BB%A9c-ph%C3%AD-tham-quan-m%E1%BB%9Bi-t%E1%BA%A1i-h%E1%BB%99i-an-m%E1%BB%B9-s%C6%A1n-v%C3%A0-c%C3%A1c-th%C3%A1p-c%E1%BB%95-t%E1%BB%AB-ng%C3%A0/1265366275450592/",
+    "snippet": "Chính thức: Áp dụng mức phí tham quan mới tại Hội An, Mỹ Sơn và các tháp cổ từ ngày 21 ... HĐND thành phố Đà Nẵng vừa ban hành Nghị quyết 02/2026/ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

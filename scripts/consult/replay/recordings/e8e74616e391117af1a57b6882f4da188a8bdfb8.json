@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Work'in Saigon Cafe\" OR \"Cooku’s nest café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:42.631Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Work'in Saigon Cafe\" OR \"Cooku’s nest café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "cookunestcafe",
+    "link": "https://www.tiktok.com/tag/cookunestcafe?lang=cs-CZ",
+    "snippet": "☕️ Cooku's nest café od uživatele Neji se skladbou original sound - Neji's VLog | Solo · #caphequan3 #caphesaigon #cookunestcafe #cookunest #capheacoustic ...",
+    "position": 1
+   },
+   {
+    "title": "Ngày Này Năm Ấy #cookunest",
+    "link": "https://www.tiktok.com/@cookunest/video/7643023292286553365",
+    "snippet": "Cộng đồng video toàn cầu · Mở ứng dụng. Ngày Này Năm Ấy #cookunest. Ngày Này Năm Ấy #cookunest. @COOKU NEST · original sound - COOKU NEST · Cooku's nest café.",
+    "position": 2
+   },
+   {
+    "title": "Suy 🥀 #cookunest",
+    "link": "https://www.tiktok.com/@cookunest/video/7668618677134069013",
+    "snippet": "Cộng đồng video toàn cầu · Mở ứng dụng. Suy #cookunest. Suy #cookunest. @COOKU NEST · original sound - COOKU NEST · Cooku's nest café · author · 50 · 1.",
+    "position": 3
+   },
+   {
+    "title": "Vội Vàng - Đình Thuỵ Cooku Nest, 31.05.2026 # ...",
+    "link": "https://www.tiktok.com/@fancam4kcuadinhthuy/video/7646435460415261959",
+    "snippet": "... Nest, 31.05.2026 #huanguyendinhthuy #hndthuy #. @gửi thương nhớ vào gió mây · âm thanh gốc - Xin lỗi vì chẳng thể tốt hơn · Cooku's nest café · author · 88 · 0.",
+    "position": 4
+   },
+   {
+    "title": "Tìm nhau trong bao nhung nhớ sao nghe nhói đau 🎶 #cookunest",
+    "link": "https://www.tiktok.com/@cookunest/video/7667810344123026709",
+    "snippet": "... nghe nhói đau #cookunest. Tìm nhau trong bao nhung nhớ sao nghe nhói đau #cookunest. @COOKU NEST · original sound - COOKU NEST · Cooku's nest café.",
+    "position": 5
+   },
+   {
+    "title": "Quán cafe workspace siêu êm ngay trung tâm Sài Gòn",
+    "link": "https://www.tiktok.com/@hifasne/video/7673532851240865045",
+    "snippet": "... workspace yên tĩnh, view đẹp ở quận 3 — không gian làm. @Fas Đi Cà Phê · âm thanh gốc - Fas Đi Cà Phê · Work'in Saigon Cafe · author. 642 · 9.",
+    "position": 6
+   },
+   {
+    "title": "กาแฟ Live Band ที่ โฮจิมินห์: ประสบการณ์เสียงดนตรี",
+    "link": "https://www.tiktok.com/@mchoanglam_0/video/7621576390504090901",
+    "snippet": "... เที่ยวเวียดนาม. ค้นพบกาแฟ Live Band ที่โฮจิมินห์ ที่จะทำให้การเที่ยว. @เที่ยวเวียดนามกับวอน · Snowfall (Slowed) · Cooku's nest café · author.",
+    "position": 7
+   },
+   {
+    "title": "Work in Jungle Cafe Quận 7 — Quán cafe ẩn mình view ...",
+    "link": "https://www.tiktok.com/@hifasne/video/7659799024614083860",
+    "snippet": "Cái này là Work'in Saigon Cafe chứ kh phati Work'in Jungle Cafe nha. 7-8Trả lời. 12. Xem thêm câu trả lời khác (9). Marcus666. xin địa chỉ. 7-10 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

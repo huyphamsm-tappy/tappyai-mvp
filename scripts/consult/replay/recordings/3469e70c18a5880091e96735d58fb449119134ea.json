@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khu Vui chơi Trẻ em\" OR \"Rio kidzone\" OR \"Dream Kids Vạn Hạnh Mall\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:31:35.812Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khu Vui chơi Trẻ em\" OR \"Rio kidzone\" OR \"Dream Kids Vạn Hạnh Mall\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Theo Win wa Rio#kidzone chơi nghen, chỗ vui mà rẻ nữa ...",
+    "link": "https://www.tiktok.com/@lucie_hong/video/7618967347289738516",
+    "snippet": "Theo Win wa Rio#kidzone chơi nghen, chỗ vui mà rẻ nữa, có cả trong nhà và ngoài trời !!! #reviewchobe #khuvuichoi #kidscafe #EmbeWin Quán Cà Phê ...",
+    "position": 1
+   },
+   {
+    "title": "Đi đâu cho bé chơi “đã cái nư”? → Dream Kids – Vạn ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7621831028214074645",
+    "snippet": "→ Dream Kids – Vạn Hạnh Mall Nhớ đọc pass “Mom Tuyền” Giảm 50 ... Khu Vui Chơi Trẻ Em Long Xuyên · Khu Vui Chơi Trẻ Em Quận 12. Đi đâu ...",
+    "position": 2
+   },
+   {
+    "title": "Khu vui chơi cho bé Rio Kidzone Bình Thạnh",
+    "link": "https://www.tiktok.com/@hienmuoi093/video/7613432480057576724",
+    "snippet": "Khu vui chơi cho bé Rio Kidzone Bình Thạnh. @Hiền Muội. Khu vui chơi cho bé Rio Kidzone Bình Thạnh. Rio kidzone - khu vui chơi trẻ em · author.",
+    "position": 3
+   },
+   {
+    "title": "Khu vui chơi trẻ em mới tại Thủ Đức",
+    "link": "https://www.tiktok.com/@beli.review/video/7665678483355438344",
+    "snippet": "Lead Khu vui chơi trẻ em mới toanh tại Thủ Đức vừa khai trương — ba mẹ được khuyến khích dắt bé đến chơi. Video/clip giới thiệu ngắn gọn địa ...",
+    "position": 4
+   },
+   {
+    "title": "Khu vui chơi trẻ em Mỡ Miu",
+    "link": "https://www.tiktok.com/@memomiu/video/7629279182979075348",
+    "snippet": "Khu vui chơi trẻ em Mỡ Miu. Mỡ Miu đi chơi tại khu vui chơi trẻ em. Xem clip để biết thêm chi tiết về hoạt động vui chơi hấp dẫn. #cafekid ...",
+    "position": 5
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Rạch Giá | TikTok",
+    "link": "https://www.tiktok.com/discover/khu-vui-ch%C6%A1i-tr%E1%BA%BB-em-r%E1%BA%A1ch-gi%C3%A1",
+    "snippet": "2.5M bài đăng. Hãy khám phá video liên quan đến Khu Vui Chơi Trẻ Em Rạch Giá trên TikTok. Xem thêm video về Khu Vui Chơi Trẻ Em, ...",
+    "date": "31 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "Rio Kidzone: Khu vui chơi trẻ em ở Bình Thạnh",
+    "link": "https://www.tiktok.com/@tydaily8/photo/7682066052016000277",
+    "snippet": "Rio Kidzone: Khu vui chơi trẻ em ở Bình Thạnh. Ba mẹ Bình Thạnh ơi, ghé Rio Kidzone 351 Nơ Trang Long để bé vui chơi cả ngày với nhiều trò ...",
+    "position": 7
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa",
+    "link": "https://www.tiktok.com/@thanhphong68m1/video/7605818101921336596",
+    "snippet": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa. Khám phá khu vui chơi tuyệt vời dành cho trẻ em tại Gia Hân Hậu Nghĩa Đức Hòa. Vui vẻ, náo nhiệt và an ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

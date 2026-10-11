@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Mỹ Khê Beach Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:30:31.243Z",
+ "body": {
+  "searchParameters": {
+   "q": "Mỹ Khê Beach Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Mỹ Khê beach hotel, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/property/91667354/0/cb3f749d63e83ad06095a6f222ffacf7.jpeg?ce=3&s=414x232",
+    "imageWidth": 317,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWqRxDYt-NwtqFMuL2g4Pp6SsTcafZzS_eQ9_VNe99_A&s=10",
+    "thumbnailWidth": 317,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/my-khe-hotel-1/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2Fproperty%2F91667354%2F0%2Fcb3f749d63e83ad06095a6f222ffacf7.jpeg%3Fce%3D3%26s%3D414x232&tbnid=r1jGDzeWUFcPlM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fmy-khe-hotel-1%2Fhotel%2Fda-nang-vn.html&docid=FaM7iJMMzdNx9M&w=317&h=232",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Mỹ Khê Beach Hotel – Khách sạn biển Đà Nẵng",
+    "imageUrl": "http://mykhebeachhotel.com/upload/hinhanh/3-4994.png",
+    "imageWidth": 4269,
+    "imageHeight": 1797,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb6waU6F79rHBg_YarYKSgIOsOkpZ3Vh5lOXE34_8HJw&s=10",
+    "thumbnailWidth": 691,
+    "thumbnailHeight": 289,
+    "source": "mykhebeachhotel.com",
+    "domain": "mykhebeachhotel.com",
+    "link": "https://mykhebeachhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmykhebeachhotel.com%2Fupload%2Fhinhanh%2F3-4994.png&tbnid=9QnmiFD7p1zlJM&imgrefurl=https%3A%2F%2Fmykhebeachhotel.com%2F&docid=28VplgbfmvEvfM&w=4269&h=1797",
+    "position": 2
+   },
+   {
+    "title": "My Khe Beach Hotel | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=1203354951946309",
+    "imageWidth": 1290,
+    "imageHeight": 1542,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx9Lf9fHs5f__85NzxhVmByLAw7iRD-psOshWZ6WdFfQ&s=10",
+    "thumbnailWidth": 408,
+    "thumbnailHeight": 490,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/mykhehoteldn/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D1203354951946309&tbnid=O8GrsmwXbFaRMM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fmykhehoteldn%2F%3Flocale%3Dvi_VN&docid=ckG9AQd0KUbgcM&w=1290&h=1542",
+    "position": 3
+   },
+   {
+    "title": "My Khe beach apartment hotel, 2 bedrooms, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/214438209.jpg?k=505d0f0948dcc226b1d5394d5a4645fb2ffd7c71a1415cb9c92c1c84966920be&o=",
+    "imageWidth": 1024,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmaVf4MaCcLpmrzMX0KL-u2dvrwXE4YhmS1xhtxBxHZQ&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/my-khe-beach-apartment-2-bedrooms.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F214438209.jpg%3Fk%3D505d0f0948dcc226b1d5394d5a4645fb2ffd7c71a1415cb9c92c1c84966920be%26o%3D&tbnid=nUF7Wqufq7DnNM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmy-khe-beach-apartment-2-bedrooms.vi.html&docid=wau43r8smOFfuM&w=1024&h=575",
+    "position": 4
+   },
+   {
+    "title": "Top 10 khách sạn bãi biển Mỹ Khê xứng đáng để bạn trải nghiệm",
+    "imageUrl": "https://nhuminhplazahotel.com/wp-content/uploads/2023/06/khach-san-bai-bien-my-khe-2.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmvORGVZmC5NekP6v4ThPSlSni1hbPeHGus6Yjj2i-1Q&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Nhu Minh Plaza Danang Hotel",
+    "domain": "nhuminhplazahotel.com",
+    "link": "https://nhuminhplazahotel.com/danang-travel/top-10-khach-san-bai-bien-my-khe-xung-dang-de-ban-trai-nghiem/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fwp-content%2Fuploads%2F2023%2F06%2Fkhach-san-bai-bien-my-khe-2.jpg&tbnid=wse3BzpkWjIUlM&imgrefurl=https%3A%2F%2Fnhuminhplazahotel.com%2Fdanang-travel%2Ftop-10-khach-san-bai-bien-my-khe-xung-dang-de-ban-trai-nghiem%2F&docid=nult18ZlKjgeYM&w=1200&h=900",
+    "position": 5
+   },
+   {
+    "title": "Nhận xét về Mỹ Khê 2 Hotel Đà Nẵng, ưu đãi & hình ảnh 2026 - Expedia",
+    "imageUrl": "https://images.trvl-media.com/lodging/39000000/38970000/38968000/38967995/db57e90b.jpg?impolicy=resizecrop&rw=575&rh=575&ra=fill",
+    "imageWidth": 647,
+    "imageHeight": 575,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ-kOz9S3kmVWJJcVRWuFauasgbbqxnS6HqATVly0JD2Q&s=10",
+    "thumbnailWidth": 473,
+    "thumbnailHeight": 422,
+    "source": "Expedia",
+    "domain": "www.expedia.com.vn",
+    "link": "https://www.expedia.com.vn/Da-Nang-Khach-San-Khach-San-My-Khe-2.h38967995.Thong-tin-khach-san",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimages.trvl-media.com%2Flodging%2F39000000%2F38970000%2F38968000%2F38967995%2Fdb57e90b.jpg%3Fimpolicy%3Dresizecrop%26rw%3D575%26rh%3D575%26ra%3Dfill&tbnid=kWifZ9czcNqo5M&imgrefurl=https%3A%2F%2Fwww.expedia.com.vn%2FDa-Nang-Khach-San-Khach-San-My-Khe-2.h38967995.Thong-tin-khach-san&docid=QykwJK9v7sszqM&w=647&h=575",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Mỹ Khê Beach Hotel – Khách sạn biển Đà Nẵng",
+    "imageUrl": "http://mykhebeachhotel.com/upload/hinhanh/2-8466.png",
+    "imageWidth": 4269,
+    "imageHeight": 1797,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKQa2GliadEZix4GMwriSo51CQ_NDpUVA_KWTUGhD2iQ&s=10",
+    "thumbnailWidth": 691,
+    "thumbnailHeight": 289,
+    "source": "mykhebeachhotel.com",
+    "domain": "mykhebeachhotel.com",
+    "link": "https://mykhebeachhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmykhebeachhotel.com%2Fupload%2Fhinhanh%2F2-8466.png&tbnid=GBVXDAvaPXB4sM&imgrefurl=https%3A%2F%2Fmykhebeachhotel.com%2F&docid=28VplgbfmvEvfM&w=4269&h=1797",
+    "position": 7
+   },
+   {
+    "title": "KHÁCH SẠN BÃI BIỂN MỸ KHÊ (Đà Nẵng) - Đánh giá Khách sạn - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/4f/3d/7e/ava-hotel-apartment.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSpoMM1xI6mKmW621tx4mByCvyupMsghjOTPx322vWDw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d609548-Reviews-My_Khe_Beach_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F16%2F4f%2F3d%2F7e%2Fava-hotel-apartment.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=B09HNSLbYVYC9M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d609548-Reviews-My_Khe_Beach_Hotel-Da_Nang.html&docid=J527Ocmr5FGwXM&w=900&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

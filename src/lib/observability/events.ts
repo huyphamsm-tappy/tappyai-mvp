@@ -306,8 +306,45 @@ export interface CommerceHandoffEvent {
   platform?: string
 }
 
+/**
+ * Phase 8 agent runtime (TAPPY_AGENT=2): one summary per agent run. Counters and closed vocabularies only — the full per-round
+ * trace (queries, tool names, guard stages) stays in the runtime's console line `tappyai_agent_run_trace`; this record is what may
+ * reach Cloud Logging. `traceId` is a random UUID per run (joins the two), `sessionHash` a truncated sha256 — neither resolves to a person.
+ */
+export interface AgentRunEvent {
+  type: 'tappyai_agent_run'
+  traceId: string
+  sessionHash?: string
+  /** answered | asked | answered_after_tool_budget | answered_after_time_budget | model_error | aborted */
+  agentStatus: string
+  /** model_answered | asked | tool_budget | round_budget | time_budget | model_error | aborted */
+  stopReason: string
+  /** text | ask | cards | plan */
+  outputType: string
+  providerId: string
+  modelRole: string
+  modelRounds: number
+  toolCalls: number
+  serperCredits: number
+  serperLimit: number
+  timeouts: number
+  retries: number
+  budgetRefusals: number
+  errors: number
+  guardChanges: number
+  promptTokens: number
+  completionTokens: number
+  costMicroUsd: number
+  elapsedMs: number
+  /** M3 research counters. */
+  pageReads?: number
+  evidenceItems?: number
+  conflicts?: number
+}
+
 export type ObservabilityEvent =
   | UsageEvent
+  | AgentRunEvent
   | TtsRequestEvent
   | TtsMetricsEvent
   | TtsFailureEvent
@@ -332,6 +369,7 @@ export type ObservabilityEvent =
  */
 const SEVERITY: Record<ObservabilityEvent['type'], EventSeverity> = {
   tappyai_usage: 'INFO',
+  tappyai_agent_run: 'INFO',
   tts_request: 'INFO',
   tts_metrics: 'INFO',
   tts_failure: 'ERROR',
@@ -391,6 +429,11 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   'linkId', 'depth', 'guestDepth', 'authenticatedDepth', 'authRequiredAt', 'paramsPreserved', 'paramsDropped',
   'trackingPresent', 'trackingNetwork', 'expiresAt', 'confidence', 'linkDigest',
   'method', 'ms',
+  // Phase 8 agent run summary (AgentRunEvent): ids are a random per-run UUID; everything else counters / closed vocabularies.
+  'traceId', 'agentStatus', 'stopReason', 'outputType', 'modelRounds', 'serperCredits', 'serperLimit', 'timeouts', 'retries',
+  'budgetRefusals', 'guardChanges', 'costMicroUsd',
+  // Phase 8 M3 research counters (numbers only).
+  'pageReads', 'evidenceItems', 'conflicts',
 ])
 
 /**

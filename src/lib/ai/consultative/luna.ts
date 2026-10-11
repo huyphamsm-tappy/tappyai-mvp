@@ -17,6 +17,7 @@ import type { CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
 import { adviceEnabled } from './adviceBlock'
+import { consultativeInAgentEnabled } from './consultativeAgentFlag'
 
 /**
  * Owner 30/09 (URGENT, Anthropic out of credit): the Luna flags default ON with the default provider (GPT-6 Luna).
@@ -409,6 +410,9 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
  * Structure only: no word is added or removed, so no guard is bypassed (the reason is still judged on its own).
  */
 export function splitPickSentence(text: string): string {
+  // CONSULTATIVE_IN_AGENT (TAPPY_AGENT=2 only, default OFF): the agent's own wording stands — no "**Mình chọn: X**." mould. A decoration
+  // of the sentence, not a fact guard; every fact guard still judges the reason as written. Flag off: unchanged.
+  if (consultativeInAgentEnabled()) return text
   // Luna bolds its own count ("Mình còn **34 lựa chọn** nữa") — unbolded so the server's count line replaces it, not doubles it.
   text = text.replace(/([Cc]òn(?:\s+khoảng)?\s+)\*\*(\d+)(\s+lựa chọn)?\*\*/g, '$1$2$3')
   // "**Mình chọn: chưa thể …**" is not a pick (replay 30/09 TRAVEL-2 t2): plain text, so no later turn takes it for a name.

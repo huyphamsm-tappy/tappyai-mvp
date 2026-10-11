@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 Plus 12GB 256GB site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:20.806Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 Plus 12GB 256GB site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "samsung s25 ultra มีสีอะไรบ้าง",
+    "link": "https://shop.tiktok.com/vn/k/samsung-s25-ultra-mi-si-oaair-bang",
+    "snippet": "Samsung Galaxy S25 Ultra 5G 12GB 256GB. Free shipping. Samsung Galaxy S25 Ultra 5G 12GB 256GB. 1 sold. ₫33.380.000 ...",
+    "position": 1
+   },
+   {
+    "title": "ai samsung s25 ultra",
+    "link": "https://shop.tiktok.com/vn/k/ai-samsung-s25-ultra",
+    "snippet": "Điện thoại Samsung Galaxy S25 Ultra 5G 12GB 256GB. 30 sold · 27.000.000. ₫33.380.000 ; Samsung Galaxy S25 Ultra 12GB/256GB chính hãnġ. 17 sold · 26.190.000. ₫ ...",
+    "position": 2
+   },
+   {
+    "title": "Samsung S25 ultra mini",
+    "link": "https://shop.tiktok.com/vn/k/samsung-s25-ultra-mini",
+    "snippet": "Samsung Galaxy S25 Ultra 12GB/256GB chính hãnġ. 17 sold. ₫26.190.000. ₫36.990.000. Samsung Galaxy S25 Ultra 12GB/256GB chính hãnġ. 17 sold. ₫26.190.000.",
+    "position": 3
+   },
+   {
+    "title": "Samsung เอส 24 Ultra",
+    "link": "https://shop.tiktok.com/vn/k/samsung-eos-24-ultra",
+    "snippet": "Samsung Galaxy S25 Ultra 12GB/256GB chính hãnġ. 17 sold. ₫26.190.000. ₫36.990.000 ...",
+    "position": 4
+   },
+   {
+    "title": "s25 ultra samsung มีสีอะไรบ้าง",
+    "link": "https://shop.tiktok.com/vn/k/s25-ultra-samsung-mi-si-oaair-bang",
+    "snippet": "Điện thoại Samsung Galaxy S25 Ultra 5G 12GB | 256GB. Màn hình 6.9\" 120Hz - Snapdragon 8 Elite - 5000mAh | BH 24 tháng Phone Sim · 27 sold · 24.965.000 ; Ốp dẻo ...",
+    "position": 5
+   },
+   {
+    "title": "s25 ultraของแท้",
+    "link": "https://shop.tiktok.com/vn/k/s25-ultra-khongaeth",
+    "snippet": "Samsung Galaxy S25 Ultra 12GB 256GB Chính hãng [Viettel Store]. Flash sale. 32 sold. ₫25.690.000.",
+    "position": 6
+   },
+   {
+    "title": "Ultra s25 white",
+    "link": "https://shop.tiktok.com/vn/k/ultra-s25-white",
+    "snippet": "Samsung Galaxy S25 Ultra 12GB/256GB chính hãnġ. 17 sold. ₫26.190.000. ₫36.990.000 ...",
+    "position": 7
+   },
+   {
+    "title": "s25 ultra pro mode",
+    "link": "https://shop.tiktok.com/vn/k/s25-ultra-pro-mode",
+    "snippet": "Điện thoại Samsung Galaxy S25 Ultra 5G 12GB 256GB. 30 sold. ₫27.000.000. ₫33.380.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

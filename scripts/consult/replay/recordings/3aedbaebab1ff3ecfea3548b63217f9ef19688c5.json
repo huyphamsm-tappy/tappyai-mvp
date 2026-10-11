@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Phở Hòa Pasteur Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:39:36.328Z",
+ "body": {
+  "searchParameters": {
+   "q": "Phở Hòa Pasteur Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7866905,106.6866878,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Phở Hòa Pasteur",
+    "address": "260C Pasteur, Phường, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.786690499999999,
+    "longitude": 106.6892627,
+    "rating": 4.2,
+    "ratingCount": 6179,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Quán mì"
+    ],
+    "phoneNumber": "+84 28 3829 7943",
+    "openingHours": {
+     "Thứ Năm": "05:30–22:30",
+     "Thứ Sáu": "05:30–22:30",
+     "Thứ Bảy": "05:30–22:30",
+     "Chủ Nhật": "05:30–22:30",
+     "Thứ Hai": "05:30–22:30",
+     "Thứ Ba": "05:30–22:30",
+     "Thứ Tư": "05:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNoJVBXLP4am87FcgiWFMBTLWWoNyUXDzhie2FR2t3JqHPRKAi5m6E52s7YvrZo1rMjLxzT0--HlSHp9KWNjtYH2knHMABws7vy-jEPI-M4pc_LWVf8JZXAoNVnoOA0EvmyykXatXK0S26v",
+    "cid": "15021671463455039530",
+    "fid": "0x31752f26344ef6ef:0xd077b29b97dc202a",
+    "placeId": "ChIJ7_ZONCYvdTERKiDcl5uyd9A"
+   }
+  ],
+  "credits": 3
+ }
+}

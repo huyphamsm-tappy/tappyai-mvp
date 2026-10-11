@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 Không Nhét Tai IPX5 Pin 8H Type C Chạy Bộ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:19:01.101Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 Không Nhét Tai IPX5 Pin 8H Type C Chạy Bộ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Baseus Bass BH1 NC | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-khong-day-baseus-bass-bh1-nc.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC ; Thông số kỹ thuật · Chống ồn môi trường ENC Chống ồn chủ động ANC Hi-Res Audio Hi-Res Audio Wireless SuperBass ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Chụp Tai Baseus Bass BH1 NC. chính hãng",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-chup-tai-baseus-bass-bh1-nc",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC ; Thời gian sử dụng: Khoảng 80 giờ (tắt ANC, âm lượng 50%) ; Thời gian sạc tai nghe: 1.5 giờ ; Cổng sạc: Type-C.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC Lite",
+    "link": "https://www.dienmayxanh.com/tai-nghe/tai-nghe-bluetooth-chup-tai-baseus-bass-bh1-nc-lite?srsltid=AU7gw4W4kcY9dlWv6Dc0xLJ5bFjHbWfm_9NcMe1sru_0lC5rTSNeWDVa",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Baseus Bass BH1 NC Lite giá rẻ, chính hãng, âm thanh chất lượng cao. Giao hàng tận nơi.",
+    "rating": 5,
+    "ratingCount": 19,
+    "position": 3
+   },
+   {
+    "title": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp ...",
+    "link": "https://www.facebook.com/groups/1875244252740003/posts/4489893027941766/",
+    "snippet": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC nguyên seal.",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 ...",
+    "link": "https://shopee.vn/Tai-Nghe-D%E1%BA%ABn-Truy%E1%BB%81n-X%C6%B0%C6%A1ng-BRIDIO-X3-Bluetooth-6.0-Kh%C3%B4ng-Nh%C3%A9t-Tai-IPX5-Pin-8H-Type-C-Ch%E1%BA%A1y-B%E1%BB%99-i.831612451.28723372164",
+    "snippet": "Mua Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 Không Nhét Tai IPX5 Pin 8H Type C Chạy Bộ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.8,
+    "ratingCount": 27,
+    "position": 5
+   },
+   {
+    "title": "Quên tai nghe bluetooth chụp tai baseus bass bh1 nc đi ...",
+    "link": "https://www.youtube.com/watch?v=eNssAhMbnOY",
+    "snippet": "Quên tai nghe bluetooth chụp tai baseus bass bh1 nc đi, Top 5 này xịn hơn! · Comments.",
+    "position": 6
+   },
+   {
+    "title": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp ...",
+    "link": "https://www.facebook.com/groups/105522646909475/posts/2285692758892442/",
+    "snippet": "Dọn mặt bằng bán nhanh Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC nguyên seal chính hãng.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth 🎧 BRIDIO",
+    "link": "https://www.youtube.com/shorts/aNm3AMNmS5I",
+    "snippet": "Tai Nghe Dẫn Truyền Xương BRIDIO X3 Bluetooth 6.0 Không Nhét Tai IPX5 Pin 8H Type. 1 product. @coixedich. Subscribe. Tai nghe Bluetooth ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

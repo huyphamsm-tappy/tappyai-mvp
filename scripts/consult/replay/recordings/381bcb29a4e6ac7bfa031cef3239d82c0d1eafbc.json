@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"bluetooth cao cấp chống ồn ANC, Pin 6h-8h, Đàm Thoại 2\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:26.230Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"bluetooth cao cấp chống ồn ANC, Pin 6h-8h, Đàm Thoại 2\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

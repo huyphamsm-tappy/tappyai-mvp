@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn \"hộ chiếu\" \"100.000 đồng\" lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:57:05.452Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn \"hộ chiếu\" \"100.000 đồng\" lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/611799",
+    "snippet": "... hộ chiếu hoặc hộ chiếu nước ngoài hoặc các giấy tờ có giá trị thay thế hộ ... 100.000 đồng/lần (Thông tư số 47/2019/TT-BTC). - Miễn lệ phí đối với ...",
+    "position": 1
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://isa.mof.gov.vn/hoidapcstc/home/cthoidap/149134",
+    "snippet": "Vậy xin cho chúng tôi hỏi thuế, phí, lệ phí ... 100.000 đồng. Khi người mua đặt hàng, người mua ... hộ chiếu hoặc giấy tờ xuất nhập cảnh và quốc tịch ...",
+    "position": 2
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/514479",
+    "snippet": "Căn cước công dân hoặc hộ chiếu hoặc hộ chiếu nước ngoài hoặc các giấy tờ có ... 100.000 đồng/lần (Thông tư số 47/2019/TT-BTC). - Miễn lệ phí đối với ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

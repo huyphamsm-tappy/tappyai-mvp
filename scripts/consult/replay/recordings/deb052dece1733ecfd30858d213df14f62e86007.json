@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "làm hộ chiếu online giấy tờ cần chuẩn bị lệ phí cấp hộ chiếu trực tuyến Việt Nam 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:32:32.475Z",
+ "body": {
+  "searchParameters": {
+   "q": "làm hộ chiếu online giấy tờ cần chuẩn bị lệ phí cấp hộ chiếu trực tuyến Việt Nam 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước (mẫu TK01 dành cho người từ 14 tuổi trở lên; mẫu TK01a dành cho người chưa đủ 14 tuổi) ban hành kèm theo ...",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử từ lần thứ hai hoặc lần ...",
+    "position": 2
+   },
+   {
+    "title": "Toàn Bộ Quy Trình Làm Hộ Chiếu Online Và Trực Tiếp 2026",
+    "link": "https://fisc.com.vn/lam-ho-chieu/",
+    "snippet": "Lệ phí làm hộ chiếu ; Cấp lại do hết hạn, 200.000 ; Cấp lại do bị mất hoặc hư hỏng, 400.000 ; Sửa đổi thông tin, 50.000 ; Trẻ em dưới 9 tuổi cấp chung hộ chiếu với ...",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online mới nhất 2026",
+    "link": "https://tuoitre.vn/video/huong-dan-lam-ho-chieu-online-moi-nhat-2026-195008.htm",
+    "snippet": "- Hộ chiếu phổ thông đã được cấp trước đó (nếu có). Trong trường hợp làm thủ tục đổi hoặc gia hạn, cần cung cấp ảnh chụp trang thông tin của hộ ...",
+    "date": "12 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Để được miễn lệ phí, công dân phải tích hợp thành công thông tin hộ chiếu và 05 loại thông tin, giấy tờ cơ bản theo Phụ lục I của Nghị quyết ...",
+    "date": "18 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn cách làm hộ chiếu (passport) online tại nhà ...",
+    "link": "https://luattinminh.vn/huong-dan-cach-lam-ho-chieu-passport-online",
+    "snippet": "IV. Làm hộ chiếu online cần những gì? Hồ sơ làm hộ chiếu (passport) online · Bản sao giấy khai sinh hoặc trích lục khai sinh. · Tờ khai xin cấp hộ chiếu phổ thông ...",
+    "position": 6
+   },
+   {
+    "title": "Làm hộ chiếu cần những giấy tờ gì trong năm 2026?",
+    "link": "https://aztax.com.vn/lam-ho-chieu-can-nhung-giay-to-gi/",
+    "snippet": "01 tờ khai xin cấp hộ chiếu TK01 theo mẫu quy định · 02 ảnh chân dung 4x6cm, phong nền trắng, mặt nhìn thẳng, đầu để trần, không đeo kính màu ...",
+    "date": "28 thg 12, 2025",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn về dịch vụ công trực tuyến Cấp hộ chiếu phổ ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=42",
+    "snippet": "1. Đối tượng áp dụng: công dân Việt Nam có thể thực hiện dịch vụ công trực tuyến cấp hộ chiếu phổ thông nếu đủ các điều kiện sau: · 2. · 3. · 4. · 5. · 6. · 7. · 8.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

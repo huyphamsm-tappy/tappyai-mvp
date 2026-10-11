@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"KHÁCH SẠN MỸ KHÊ 2\" OR \"Grand Sea Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:28:54.397Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury Đà Nẵng\" OR \"KHÁCH SẠN MỸ KHÊ 2\" OR \"Grand Sea Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng: Đáng giá không?",
+    "link": "https://www.tiktok.com/@wikidulich.com/video/7527881669731159314",
+    "snippet": "Khách sạn Mường Thanh Luxury Đà Nẵng – nghe tên là thấy \"chanh sả\", nhưng liệu trải nghiệm thực tế có tương xứng với kỳ vọng? ... #danang # ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@muongthanhhospitality/video/7268295488397511941",
+    "snippet": "Video TikTok từ Mường Thanh Hospitality (@muongthanhhospitality): \"Khách sạn Mường Thanh Luxury Đà Nẵng có những góc check-in tuyệt đẹp.",
+    "position": 2
+   },
+   {
+    "title": "Căn hộ & Khách sạn Mỹ Khê 2: Dòng tiền 180 triệu/tháng, ...",
+    "link": "https://www.tiktok.com/@nhadat_danang43/video/7665687745557220628",
+    "snippet": "CĂN HỘ & KHÁCH SẠN MỸ KHÊ 2 – DÒNG TIỀN 180 TRIỆU/THÁNG ✨ Sản phẩm đầu tư hiếm, vị trí đẹp gần biển Mỹ Khê, khai thác ổn định. Diện tích: 4 ...",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Mường Thanh Luxury Đà Nẵng có gì #DaNang ...",
+    "link": "https://www.tiktok.com/@maitructhanh1/video/7391360870858722578",
+    "snippet": "141 Lượt thích,Video TikTok từ Thanh Bánh Bèo (@maitructhanh1): \"Khách sạn Mường Thanh Luxury Đà Nẵng có gì #DaNang #bienmykhe ...",
+    "position": 4
+   },
+   {
+    "title": "YEP WITH GRAND SEA HOTEL 🥰🥰🥰#CapCut #hotel #foteam # ...",
+    "link": "https://www.tiktok.com/@hanyi_10/video/7461422925602721042",
+    "snippet": "Video TikTok từ Alice trông rất zô tryy (@hanyi_10): \"YEP WITH GRAND SEA HOTEL #CapCut #hotel #foteam #technical\".",
+    "position": 5
+   },
+   {
+    "title": "Chiếc clip review chất lượng về khách sạn @Mường ...",
+    "link": "https://www.tiktok.com/@muongthanhhospitality/video/7269409491844631813",
+    "snippet": "hạng phòng Cao nhất của khách sạn Mường Thanh Luxury. Đà Nẵng căn này siêu rộng. nằm ở tầng 37 và xung quanh toàn là kính. nhìn Ra biển hết luôn ...",
+    "position": 6
+   },
+   {
+    "title": "Sáng nay thức dậy tại Khách Sạn Mường Thanh Luxury Đà Nẵng",
+    "link": "https://www.tiktok.com/@nguyetbanhbeo98_nick_phu/video/7670015364952001810",
+    "snippet": "Sáng nay thức dậy tại Khách Sạn Mường Thanh Luxury Đà Nẵng ; Đà Lạt ReView Travel. 920 ; 42 DALAT HOTEL - APARTMENT. 89 ; HAI MƯƠI HOTEL CẦU GIẤY. 9116 ; Queen ...",
+    "position": 7
+   },
+   {
+    "title": "Một góc nhỏ của Khách Sạn Mường Thanh Luxury Đà ...",
+    "link": "https://www.tiktok.com/@tritamtourguide/video/7678866043980238088",
+    "snippet": "Một góc nhỏ của Khách Sạn Mường Thanh Luxury Đà Nẵng buổi sớm mai! Xa xa là bãi biển Mỹ Khê 1 trong 6 bãi biển đẹp nhất hành tin do tờ báo ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

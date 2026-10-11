@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sea Near Me Hotel Danang\" OR \"Taiyo Hotel & Apartment\" OR \"Dylan Hotel Danang\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:54.899Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sea Near Me Hotel Danang\" OR \"Taiyo Hotel & Apartment\" OR \"Dylan Hotel Danang\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "massa mang váy vậy được không #massage ...",
+    "link": "https://www.tiktok.com/@massage_0876904095_zl/video/7671950486169193748",
+    "snippet": "... homespa #xuhuong. @massa khoẻ (0876,904,095). Nội dung quảng bá. âm thanh gốc - massa khoẻ (0876,904,095) · Dylan Hotel Danang · author · 164.",
+    "position": 1
+   },
+   {
+    "title": "MS AT HOME, AT HOTEL, AT MOTEL AND ...",
+    "link": "https://www.tiktok.com/@zl0909457134/video/7692619833778752789",
+    "snippet": "... MS AT HOME, AT HOTEL, AT MOTEL AND AT APARTMENT #MassageDaNang #DaNang. @MS ĐÀ NẴNG · âm thanh gốc - Chilly711 · Dylan Hotel Danang · author. 6.",
+    "position": 2
+   },
+   {
+    "title": "DỊCH VỤ TẬN NƠI ĐÀ NẴNG MS AT HOME, AT HOTEL, ...",
+    "link": "https://www.tiktok.com/@zl0909457134/video/7689677292016160020",
+    "snippet": "... DỊCH VỤ TẬN NƠI ĐÀ NẴNG MS AT HOME, AT HOTEL, AT MOTEL AND. @MS ĐÀ NẴNG · âm thanh gốc - NDX SOUNDCLOUD · Dylan Hotel Danang.",
+    "position": 3
+   },
+   {
+    "title": "massa mang váy vậy được không #massage ...",
+    "link": "https://www.tiktok.com/@massage_tannha/video/7671950486169193748",
+    "snippet": "... massageathome #homespa #xuhuong. @user52116975004. Nội dung quảng bá. âm thanh gốc - massa khoẻ (0876,904,095) · Dylan Hotel Danang · author.",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

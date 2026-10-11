@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-vn/111851 AirPods Pro 2 IPX4 charging case water resistant",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:48:19.139Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-vn/111851 AirPods Pro 2 IPX4 charging case water resistant",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-vn/111851",
+    "snippet": "AirPods Pro and charging case are sweat and water resistant for non-water sports and exercise. AirPods Pro and charging case were tested under controlled ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

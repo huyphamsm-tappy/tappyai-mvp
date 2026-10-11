@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:30:15.457Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 1
+   },
+   {
+    "title": "QUÁN BỤI & STIICKY THAI Toàn món ăn ngon! #quanbui ...",
+    "link": "https://www.tiktok.com/@diancungneenha/video/7676785732567977236",
+    "snippet": "3157 Lượt thích,29 Bình luận.Video TikTok từ Đi ăn cùng Nee nha ￼ (@diancungneenha): \"QUÁN BỤI & STIICKY THAI Toàn món ăn ngon!",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 3
+   },
+   {
+    "title": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh",
+    "link": "https://www.tiktok.com/@mrhi1905/video/7594436856524197127",
+    "snippet": "Quán Bụi Phố: Lẩu, Nướng, và Ốc Ngon Tại Tây Ninh. Khám phá Quán Bụi Phố với lẩu cá tằm, ốc, và món nướng ngon miệng. Giá cả hợp lý và phục ...",
+    "position": 4
+   },
+   {
+    "title": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++",
+    "link": "https://www.tiktok.com/@quanbui_group/video/7303400928680447250",
+    "snippet": "Combo ăn sáng Việt tại Quán Bụi Sài Gòn chỉ 99k++. Trải nghiệm combo ăn sáng tuyệt vời tại Quán Bụi Sài Gòn với không gian thoải mái và món ăn ...",
+    "position": 5
+   },
+   {
+    "title": "Phong cách quán bụi bặm vỉa hè chill nhất",
+    "link": "https://www.tiktok.com/@tuannuocep1996/video/7603231109345807636",
+    "snippet": "Phong cách quán bụi bặm vỉa hè chill nhất. Khám phá phong cách quán vỉa hè với thức uống thú vị. Chịu không? #xuhuongtiktok #nuocepnguyenchat ...",
+    "position": 6
+   },
+   {
+    "title": "Review Quán Bụi: Ẩm Thực Việt Tại Quận 1 Sài Gòn",
+    "link": "https://www.tiktok.com/@ryan.di.tum.lum/video/7274894315871046930",
+    "snippet": "quán bụi nằm ở ngay Quận một Hồ Chí Minh. bạn nào hay đi cà phê casino. ngoài Nhật Bản á. thì quán này nằm ngay trong con đường. sát vách ...",
+    "position": 7
+   },
+   {
+    "title": "Review Quán Bụi Mai Phương Thuý: Có Quá Đắt Không?",
+    "link": "https://www.tiktok.com/@thanhdat.food/video/7035445272918428930",
+    "snippet": "Quán Bụi nằm tại một địa điểm thuận lợi, mang đến không gian ấm cúng và đậm chất riêng, phù hợp cho những buổi gặp gỡ thân mật hoặc một bữa ăn ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

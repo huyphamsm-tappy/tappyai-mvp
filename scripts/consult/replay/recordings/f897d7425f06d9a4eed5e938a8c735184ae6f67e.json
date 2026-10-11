@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "TOP 11 tai nghe chống ồn dưới 2 triệu chơi game tốt 2024",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:03:04.140Z",
+ "body": {
+  "searchParameters": {
+   "q": "TOP 11 tai nghe chống ồn dưới 2 triệu chơi game tốt 2024",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TOP 4 Gaming gear siêu đỉnh nhà CORSAIR",
+    "imageUrl": "https://i.ytimg.com/vi/r__82jRD3Oc/maxresdefault.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiovefVBylnv7B73VWvAYNL2_8-mntyRTo1OTFFsrC8A&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/game-app/top-12-tai-nghe-chong-on-duoi-2-trieu-choi-game-tot-nhat-2022-1411329",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.ytimg.com%2Fvi%2Fr__82jRD3Oc%2Fmaxresdefault.jpg&tbnid=On0yiGObOZJT_M&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fgame-app%2Ftop-12-tai-nghe-chong-on-duoi-2-trieu-choi-game-tot-nhat-2022-1411329&docid=VwuXlobdLNZrlM&w=1280&h=720",
+    "position": 1
+   },
+   {
+    "title": "TOP 10 tai nghe earbud dưới 2 triệu chơi game tốt 2024",
+    "imageUrl": "https://i.ytimg.com/vi/YKRQnugBddU/mqdefault.jpg",
+    "imageWidth": 320,
+    "imageHeight": 180,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPivf7bNhJFKBvKd00NxNa4Rf5SFHGw8Ewnb13LhBD0Q&s=10",
+    "thumbnailWidth": 320,
+    "thumbnailHeight": 180,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/game-app/top-15-tai-nghe-earbud-duoi-2-trieu-choi-game-tot-nhat-2022-1410086",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fi.ytimg.com%2Fvi%2FYKRQnugBddU%2Fmqdefault.jpg&tbnid=uT8DVoQEiHm3FM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fgame-app%2Ftop-15-tai-nghe-earbud-duoi-2-trieu-choi-game-tot-nhat-2022-1410086&docid=BG7NMqNsTRQmJM&w=320&h=180",
+    "position": 2
+   },
+   {
+    "title": "TOP 12 tai nghe chụp tai chống ồn chơi game tốt 2024",
+    "imageUrl": "https://cdn.tgdd.vn/2023/07/campaign/tainghechuptaichongonchoigame-800x450-640x360.jpg",
+    "imageWidth": 640,
+    "imageHeight": 360,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJHSD3b_hGCaxGoLtlbSj6o56VdKTWIx92mOF51tEe7A&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/game-app/top-14-tai-nghe-chup-tai-chong-on-choi-game-tot-nhat-2022-1410284",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2F2023%2F07%2Fcampaign%2Ftainghechuptaichongonchoigame-800x450-640x360.jpg&tbnid=nZhWy3mxPu-NDM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fgame-app%2Ftop-14-tai-nghe-chup-tai-chong-on-choi-game-tot-nhat-2022-1410284&docid=1JFuUfXrS94F9M&w=640&h=360",
+    "position": 3
+   },
+   {
+    "title": "Top 10 tai nghe tốt dưới 2 triệu đáng mua nhất hiện nay | GEARVN",
+    "imageUrl": "https://cdn.hstatic.net/files/200000722513/article/top-tai-nghe-duoi-2-trieu-dang-mua-thumb_125a46c86b9941e1b7c9f0a5b748182a.jpg",
+    "imageWidth": 1054,
+    "imageHeight": 605,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQI23xxNrYz09L9bnX1jBjPjKImUgymfdgK5Sdbq65Lw&s",
+    "thumbnailWidth": 296,
+    "thumbnailHeight": 170,
+    "source": "GEARVN",
+    "domain": "gearvn.com",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-tot-duoi-2-trieu?srsltid=AU7gw4UxBmCr85o2x_-mvwyokiQ-UUYgGqdXZ3KQmsXiuCIQkdG18xON",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Ffiles%2F200000722513%2Farticle%2Ftop-tai-nghe-duoi-2-trieu-dang-mua-thumb_125a46c86b9941e1b7c9f0a5b748182a.jpg&tbnid=VMSdG3Cywox64M&imgrefurl=https%3A%2F%2Fgearvn.com%2Fblogs%2Fdanh-gia-tu-van%2Ftop-tai-nghe-tot-duoi-2-trieu%3Fsrsltid%3DAU7gw4UxBmCr85o2x_-mvwyokiQ-UUYgGqdXZ3KQmsXiuCIQkdG18xON&docid=KoncLQtG2DAk0M&w=1054&h=605",
+    "position": 4
+   },
+   {
+    "title": "Top 10 tai nghe tốt dưới 2 triệu đáng mua nhất hiện nay | GEARVN",
+    "imageUrl": "https://cdn.hstatic.net/200000722513/file/top-tai-nghe-duoi-2-trieu-dang-mua-1_065b4d36f2ee49d1a2fee28fe0c50896.jpg",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQveNNt5ydA84S3hOXuH4hGmbHPA-9zCRrFIYUZQIT6dw&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "GEARVN",
+    "domain": "gearvn.com",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-tot-duoi-2-trieu?srsltid=AU7gw4UbatTHUNOK5_9mVYBZZXGepDt_i9HMzgsWMH9E3EJ23cIy-Eaa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2F200000722513%2Ffile%2Ftop-tai-nghe-duoi-2-trieu-dang-mua-1_065b4d36f2ee49d1a2fee28fe0c50896.jpg&tbnid=3wfvD613F_SLiM&imgrefurl=https%3A%2F%2Fgearvn.com%2Fblogs%2Fdanh-gia-tu-van%2Ftop-tai-nghe-tot-duoi-2-trieu%3Fsrsltid%3DAU7gw4UbatTHUNOK5_9mVYBZZXGepDt_i9HMzgsWMH9E3EJ23cIy-Eaa&docid=KoncLQtG2DAk0M&w=800&h=500",
+    "position": 5
+   },
+   {
+    "title": "TOP 10 tai nghe tầm giá 2 triệu tốt, đáng mua tại TGDĐ - Thegioididong.com",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/54/210048/tai-nghe-chup-tai-gaming-logitech-g-pro-den-14-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrBnFLxLkptcm1eTokUpkSHs741AhPxay1v5bVDm0AdA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/hoi-dap/top-10-tai-nghe-tam-gia-2-trieu-tot-dang-mua-nhat-1504526",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F54%2F210048%2Ftai-nghe-chup-tai-gaming-logitech-g-pro-den-14-600x600.jpg&tbnid=ZoO7VdqlUkdUNM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fhoi-dap%2Ftop-10-tai-nghe-tam-gia-2-trieu-tot-dang-mua-nhat-1504526&docid=XghOdT6TLa0CQM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "Top 10 tai nghe tốt dưới 2 triệu đáng mua nhất hiện nay | GEARVN",
+    "imageUrl": "https://cdn.hstatic.net/200000722513/file/top-tai-nghe-duoi-2-trieu-dang-mua-2_2e0fe02036b743d88d293688b9caf943.jpg",
+    "imageWidth": 800,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCvF7JBaX9lZd-6Kpe71Su6WLhXY6K6FED-WUUAO-apA&s",
+    "thumbnailWidth": 284,
+    "thumbnailHeight": 177,
+    "source": "GEARVN",
+    "domain": "gearvn.com",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-tot-duoi-2-trieu?srsltid=AU7gw4WJGVNtuPiJrPczKU8W5pjSDA7s_W1IdN4FC93SyNNG1R1pKDqG",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2F200000722513%2Ffile%2Ftop-tai-nghe-duoi-2-trieu-dang-mua-2_2e0fe02036b743d88d293688b9caf943.jpg&tbnid=ogEGuPMptK7iPM&imgrefurl=https%3A%2F%2Fgearvn.com%2Fblogs%2Fdanh-gia-tu-van%2Ftop-tai-nghe-tot-duoi-2-trieu%3Fsrsltid%3DAU7gw4WJGVNtuPiJrPczKU8W5pjSDA7s_W1IdN4FC93SyNNG1R1pKDqG&docid=KoncLQtG2DAk0M&w=800&h=500",
+    "position": 7
+   },
+   {
+    "title": "Top 10 tai nghe gaming tốt nhất hiện nay: Chơi game cực đã | GEARVN",
+    "imageUrl": "https://cdn.hstatic.net/files/200000722513/article/top-tai-nghe-gaming-tot-thumb_5874b8c476cb4429bb89bf6903b101c7.jpg",
+    "imageWidth": 1054,
+    "imageHeight": 605,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTND5XHUmdQbpEtrlF2retMGiBYS3qwx18DOcB_jkI8FA&s",
+    "thumbnailWidth": 296,
+    "thumbnailHeight": 170,
+    "source": "GEARVN",
+    "domain": "gearvn.com",
+    "link": "https://gearvn.com/blogs/danh-gia-tu-van/top-tai-nghe-gaming-tot?srsltid=AU7gw4WNy5e-xIqDK78CKU_CuMiGbbnRBd_ncduwRPTaEiy5FSHFqhyd",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Ffiles%2F200000722513%2Farticle%2Ftop-tai-nghe-gaming-tot-thumb_5874b8c476cb4429bb89bf6903b101c7.jpg&tbnid=h3u9_Wiu6Z-6tM&imgrefurl=https%3A%2F%2Fgearvn.com%2Fblogs%2Fdanh-gia-tu-van%2Ftop-tai-nghe-gaming-tot%3Fsrsltid%3DAU7gw4WNy5e-xIqDK78CKU_CuMiGbbnRBd_ncduwRPTaEiy5FSHFqhyd&docid=IahJSPQwOIClUM&w=1054&h=605",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

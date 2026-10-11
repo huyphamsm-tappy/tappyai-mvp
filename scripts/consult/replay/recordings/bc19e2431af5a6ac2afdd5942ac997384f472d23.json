@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "chuyến đi 20–23/11/2026, 2 người lớn và  quán đặc sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:33:14.857Z",
+ "body": {
+  "searchParameters": {
+   "q": "chuyến đi 20–23/11/2026, 2 người lớn và  quán đặc sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0794257,108.2268875,17.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đặc Sản Ngon Đà Nẵng - Đặc Sản Làm Quà shop online",
+    "address": "171 P. Đức Chính, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0810019,
+    "longitude": 108.23967359999999,
+    "rating": 4.5,
+    "ratingCount": 41,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản"
+    ],
+    "website": "https://dacsanngondanang.com/",
+    "phoneNumber": "+84 987 428 428",
+    "openingHours": {
+     "Thứ Năm": "06:30–22:30",
+     "Thứ Sáu": "06:30–22:30",
+     "Thứ Bảy": "06:30–22:30",
+     "Chủ Nhật": "06:30–22:30",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "06:30–22:30",
+     "Thứ Tư": "06:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWksSSdXl99MGKfyxLTdGfbuwZO1YpEWFWGszBiw8HIvW92UyGKDgKoVnacWcT-CMnhd_xbxpBNSgAYJ9yfBq6Pheo5ELZENjvpiQ768NEXNvH3t0oHNdAyTxIpoUsAJu1zE7-kZNQ",
+    "cid": "3915797310732470034",
+    "fid": "0x314217451b1890bb:0x3657b4e846a38712",
+    "placeId": "ChIJu5AYG0UXQjEREoejRui0VzY"
+   },
+   {
+    "position": 2,
+    "title": "POSEIDON Cruise",
+    "address": "Bến Du Thuyền Sông Hàn, Phường Thạch Thang, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0778496,
+    "longitude": 108.22440119999999,
+    "rating": 3.3,
+    "ratingCount": 233,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/tourdulichdanangvip",
+    "phoneNumber": "+84 967 957 239",
+    "openingHours": {
+     "Thứ Năm": "08:30–23:00",
+     "Thứ Sáu": "08:30–23:00",
+     "Thứ Bảy": "08:30–23:00",
+     "Chủ Nhật": "08:30–23:00",
+     "Thứ Hai": "08:30–23:00",
+     "Thứ Ba": "08:30–23:00",
+     "Thứ Tư": "08:30–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlURBVrMk54OBh3XifyOzGLbdBi4exIKcbJI8etbhYjAG-gO5JzkmjhlscWf1BxD-DgYcDYVAVedcAEXUEYQiG7mbNT0-aYhnAlVWBFAwggJ8jhQ5Rtso1vjX_0rnymQnPZAsVH",
+    "cid": "12965206205062471243",
+    "fid": "0x314219073ebbc7cf:0xb3edaa59d4705e4b",
+    "placeId": "ChIJz8e7PgcZQjERS15w1Fmq7bM"
+   }
+  ],
+  "credits": 3
+ }
+}

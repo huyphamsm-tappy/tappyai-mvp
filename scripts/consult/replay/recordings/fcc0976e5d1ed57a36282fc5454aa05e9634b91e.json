@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Máy tính Apple MacBook Pro 14 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:49.410Z",
+ "body": {
+  "searchParameters": {
+   "q": "Máy tính Apple MacBook Pro 14 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook m4 pro",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-m4-pro",
+    "snippet": "Khám phá Apple Macbook m4 pro mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 1
+   },
+   {
+    "title": "macbook pro m3 16gb",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-m3-16gb",
+    "snippet": "Khám phá macbook pro m3 16gb mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 2
+   },
+   {
+    "title": "Macbook pro 13 i15 311",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-13-i15-311",
+    "snippet": "Khám phá Macbook pro 13 i15 311 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 3
+   },
+   {
+    "title": "macbook pro 16 inch",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-16-inch",
+    "snippet": "The MacBook Pro 16 inch combines a stunning Retina display with powerful processors for demanding creative work.",
+    "position": 4
+   },
+   {
+    "title": "Macbook neo apple singapore",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-apple-singapore",
+    "snippet": "Khám phá Macbook neo apple singapore mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 5
+   },
+   {
+    "title": "Macbook air m1 13 inch laptop keyboard case",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m1-13-inch-laptop-keyboard-case",
+    "snippet": "Ốp Mac Air M1 M2 Pro 13-16inch - Nhựa Dẻo Trong Suốt Kèm Phủ Phím Bảo Vệ Laptop Chống Trầy Xước Dễ Lắp Đặt - Case Mac Trinhmacstore.",
+    "position": 6
+   },
+   {
+    "title": "Apple macbook vday",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-vday",
+    "snippet": "Khám phá Apple macbook vday mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 7
+   },
+   {
+    "title": "bag untuk macbook air",
+    "link": "https://shop.tiktok.com/vn/k/bag-untuk-macbook-air",
+    "snippet": "[PK]Túi Bao da Macbook Pro-Air/Laptop 13.3/14/15/16 inch chất liệu Da PU Mềm kết hợp làm giá đỡ. Bag laptop.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

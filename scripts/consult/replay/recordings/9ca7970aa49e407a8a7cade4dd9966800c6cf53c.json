@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 15 Pro 128GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:34:20.327Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 15 Pro 128GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 Pro 128GB | Chính hãng VN/A",
+    "link": "https://cellphones.com.vn/iphone-15-pro.html",
+    "snippet": "iPhone 15 Pro 128GB: Từ ~22.790.000đ (mới) hoặc ~15.800.000đ (cũ). iPhone 15 Pro 256GB: Từ ~17.290.000đ - 18.390.000đ (cũ). iPhone 15 Pro 512GB: ~27.000.000đ ...",
+    "rating": 4.8,
+    "ratingCount": 22,
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Pro 128GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-128gb-cu-dep.html",
+    "snippet": "iPhone 15 Pro 128GB - Cũ Đẹp ; Smember Giảm thêm đến 184.000đ ; Lên đời chỉ từ 16.206.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Giá sản phẩm. 28.990.000đ 18.390.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 Pro 128GB - Cũ Trầy Xước | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-128gb-cu-tray-xuoc.html",
+    "snippet": "iPhone 15 Pro 128GB - Cũ Trầy Xước ; Trả góp 0% ; Giá sản phẩm. 28.990.000đ 17.390.000đ ; Lưu ý · Giá thu mua áp dụng cho dung lượng pin >= 90% & số lần sạc ít hơn ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 Pro 128GB - Cũ Xước Cấn | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-pro-128gb-cu-xuoc-can.html",
+    "snippet": "iPhone 15 Pro 128GB cũ xước cấn sở hữu chip A17 Pro mạnh mẽ, màn hình Super Retina XDR 6.1 inch, khung titan bền nhẹ và Face ID bảo mật an toàn. Máy hỗ trợ kết ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Pro có bao nhiêu màu? Màu nào \"Pro\" nhất?",
+    "link": "https://cellphones.com.vn/sforum/iphone-15-pro-co-bao-nhieu-mau-mau-nao-pro-nhat",
+    "snippet": "iPhone 15 Pro 128GB | Chính hãng VN/A-Titan Đen. Titan Đen22.990.000đ. iPhone 15 Pro 128GB | Chính hãng VN/A-Titan Xanh. Titan Xanh22.990.000đ. Đăng ký nhận bản ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh iPhone 17 vs iPhone 15 Pro: Có đáng để lên đời?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-iphone-17-vs-15-pro",
+    "snippet": "iPhone 15 Pro 128GB | Chính hãng VN/A-Titan Đen. Titan Đen22.990.000đ. iPhone 15 Pro 128GB | Chính hãng VN/A-Titan Xanh. Titan Xanh22.990.000đ. Đăng ký nhận bản ...",
+    "position": 6
+   },
+   {
+    "title": "iPhone 15 Pro 128GB | Chính hãng (VN/A) - Đã Kích Hoạt",
+    "link": "https://cellphones.com.vn/iphone-15-pro-128gb-chinh-hang-da-kich-hoat.html",
+    "snippet": "iPhone 15 Pro 128GB VN/A đã kích hoạt được trang bị màn hình Super Retina XDR 6.1 inch, cùng tần số quét cao 120Hz, kết hợp với chip A17 Pro mạnh mẽ. Camera ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "5 tính năng trên iPhone 15 mà điện thoại Android cần học hỏi",
+    "link": "https://cellphones.com.vn/sforum/5-tinh-nang-tren-iphone-15-ma-dien-thoai-android-can-hoc-hoi",
+    "snippet": "Thiết kế camera tứ lăng kính ; iPhone 15 Plus 128GB | Chính hãng VN/A. 17.690.000đ ; iPhone 15 Pro 128GB | Chính hãng VN/A. 22.990.000đ ; iPhone 15 ...",
+    "date": "27 thg 9, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

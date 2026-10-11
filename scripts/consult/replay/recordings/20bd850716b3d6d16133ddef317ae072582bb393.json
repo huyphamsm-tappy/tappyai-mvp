@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Zalosea Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:45:18.542Z",
+ "body": {
+  "searchParameters": {
+   "q": "Zalosea Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Zalo Sea Đà Nẵng (@khachsandanang24) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100067304670591",
+    "imageWidth": 769,
+    "imageHeight": 769,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMFPQWXt6Wfx-_4OB5l0OAKvNfJQT2ndclMp2HovZ8Sg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khachsandanang24/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100067304670591&tbnid=At-z7AM6bdfe3M&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhachsandanang24%2F%3Flocale%3Dvi_VN&docid=vgQmm66HEvcl7M&w=769&h=769",
+    "position": 1
+   },
+   {
+    "title": "Zalo Sea Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/04/30/large/vietgoing_zwx2308013298.webp",
+    "imageWidth": 1196,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo6g-tg1BwzoFz5dKKQvIDv8h0pp2HaH5Hqvj1kaL8eA&s=10",
+    "thumbnailWidth": 545,
+    "thumbnailHeight": 366,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/3430-zalo-sea-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F04%2F30%2Flarge%2Fvietgoing_zwx2308013298.webp&tbnid=QzjHY36Kxdo-CM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F3430-zalo-sea-hotel-da-nang.html&docid=2eJmPU_NuLpJqM&w=1196&h=800",
+    "position": 2
+   },
+   {
+    "title": "KHÁCH SẠN ZALO SEA ĐÀ NẴNG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0e/a6/e1/e6/zalo-sea-hotel-da-nang.jpg?w=800&h=800&s=1",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkUFuievbD420WL8K1gnmL-D9_EfQe2SxLg1Wq95H_mQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12118099-Reviews-Zalo_Sea_Hotel_Da_Nang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F0e%2Fa6%2Fe1%2Fe6%2Fzalo-sea-hotel-da-nang.jpg%3Fw%3D800%26h%3D800%26s%3D1&tbnid=pkjRD4PuNfrAUM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12118099-Reviews-Zalo_Sea_Hotel_Da_Nang-Da_Nang.html&docid=wyVI8NqSkuvCrM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "Khách sạn Zalosea, Giá giảm 30%, Ảnh & Review chân thật",
+    "imageUrl": "https://ik.imagekit.io/tvlk/apr-asset/TzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg=/lodging/18000000/17730000/17729900/17729815/33fc73b3_z.jpg?tr=q-80,c-at_max,w-740,h-500&_src=imagekit",
+    "imageWidth": 740,
+    "imageHeight": 426,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSY5Hhlsrga2j_YHhIOmr0YjAGc8NAirABTLkgpQ4mdkA&s",
+    "thumbnailWidth": 296,
+    "thumbnailHeight": 170,
+    "source": "Traveloka",
+    "domain": "www.traveloka.com",
+    "link": "https://www.traveloka.com/vi-vn/hotel/vietnam/zalosea-hotel-9000003365075",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fik.imagekit.io%2Ftvlk%2Fapr-asset%2FTzEv3ZUmG4-4Dz22hvmO9NUDzw1DGCIdWl4oPtKumOg%3D%2Flodging%2F18000000%2F17730000%2F17729900%2F17729815%2F33fc73b3_z.jpg%3Ftr%3Dq-80%2Cc-at_max%2Cw-740%2Ch-500%26_src%3Dimagekit&tbnid=-Nf8I3oWLCVTxM&imgrefurl=https%3A%2F%2Fwww.traveloka.com%2Fvi-vn%2Fhotel%2Fvietnam%2Fzalosea-hotel-9000003365075&docid=P93Kpwscs39MGM&w=740&h=426",
+    "position": 4
+   },
+   {
+    "title": "Zalo Sea Hotel Đà Nẵng giá mới nhất - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/01/72/medium/vietgoing_hrs2203116351.webp",
+    "imageWidth": 810,
+    "imageHeight": 455,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZP_FSZOE8vapE3DWgga3BHUD55PWatpDgn_9RaBA1BA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/3430-zalo-sea-hotel-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F01%2F72%2Fmedium%2Fvietgoing_hrs2203116351.webp&tbnid=mJRWjYZYf2E2IM&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F3430-zalo-sea-hotel-da-nang.html&docid=2eJmPU_NuLpJqM&w=810&h=455",
+    "position": 5
+   },
+   {
+    "title": "KHÁCH SẠN ZALO SEA ĐÀ NẴNG (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/0e/35/04/74/getlstd-property-photo.jpg",
+    "imageWidth": 550,
+    "imageHeight": 304,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz6tFU7RLaZ5sPDzaHw7RmKHlPjXOA1ShydTPGzrV6GQ&s=10",
+    "thumbnailWidth": 550,
+    "thumbnailHeight": 304,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d12118099-Reviews-Zalo_Sea_Hotel_Da_Nang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F0e%2F35%2F04%2F74%2Fgetlstd-property-photo.jpg&tbnid=DQzbw0fYFcSF0M&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d12118099-Reviews-Zalo_Sea_Hotel_Da_Nang-Da_Nang.html&docid=wyVI8NqSkuvCrM&w=550&h=304",
+    "position": 6
+   },
+   {
+    "title": "Khách sạn Zalo Sea Đà Nẵng (@khachsandanang24) • Facebook",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=3097068747212628",
+    "imageWidth": 2048,
+    "imageHeight": 1150,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSW2a6n5fKXrtBnmrNUhxY9oAEKiirWh2IXgMrzRgPS1Q&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/khachsandanang24/?locale=vi_VN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D3097068747212628&tbnid=FWXMg-x3WqduNM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fkhachsandanang24%2F%3Flocale%3Dvi_VN&docid=vgQmm66HEvcl7M&w=2048&h=1150",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn Zalo Sea - www.lisumi.vn",
+    "imageUrl": "https://www.lisumi.vn/wp-content/uploads/2023/05/z4351717369348_5842409d476774005cfa0c9f503dc817.jpg",
+    "imageWidth": 250,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRcz78TKhlkqKQ2r65woLW7JrLa6IsqjPUFJPrOdzbySQ&s=10",
+    "thumbnailWidth": 250,
+    "thumbnailHeight": 333,
+    "source": "Công Ty Cổ Phần Thang Máy Lisumi",
+    "domain": "www.lisumi.vn",
+    "link": "https://www.lisumi.vn/khach-san-zalo-sea/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.lisumi.vn%2Fwp-content%2Fuploads%2F2023%2F05%2Fz4351717369348_5842409d476774005cfa0c9f503dc817.jpg&tbnid=ZYaJgebLLLQneM&imgrefurl=https%3A%2F%2Fwww.lisumi.vn%2Fkhach-san-zalo-sea%2F&docid=P6Wve-x1VQQorM&w=250&h=333",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:38.175Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Baseus Tai nghe Bluetooth TWS Baseus Eli Sport 2 -Đen\" OR \"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Baseus Tai nghe Không Dây TWS Baseus Inspire XP1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

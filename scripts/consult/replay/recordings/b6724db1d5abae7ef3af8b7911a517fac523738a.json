@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Nhất Vị\" OR \"Phở Ông Cát Gia Truyền Since 1988\" OR \"Phở Hùng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:32:54.894Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Nhất Vị\" OR \"Phở Ông Cát Gia Truyền Since 1988\" OR \"Phở Hùng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Phở Hùng Hàng Đẫy Tại Thành Công",
+    "link": "https://www.tiktok.com/@u40.an.gi/video/7587737343382113556",
+    "snippet": "Quán bán tại nhà nên giá rổ cực hợp lý. Phở Hùng Hàng Đẫy, 116B1 Thành Công, Giảng Võ, Hà Nội #phobo #ancungtiktok #hanoifood #foodreview ...",
+    "position": 1
+   },
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn hẹn hò với trai bán phở — Phở Nhất Vị Quận 1",
+    "link": "https://www.tiktok.com/@phonhatvi.vn/video/7676279262017555733",
+    "snippet": "Thương hiệu và địa điểm được ghi nhận: Phở Nhất Vị, Nguyễn Đình Chiểu, Quận 1. Trải nghiệm ẩm thực Tập trung vào bát phở — hương vị, nước dùng ...",
+    "position": 3
+   },
+   {
+    "title": "Quán phở ngon buổi tối ở Nguyễn Công Trứ",
+    "link": "https://www.tiktok.com/@pika_laca/video/7647397967455882517",
+    "snippet": "Series 100 quán Phở Ngon tại Sài Gòn — Phở Nhất Vị Tóm tắt Phở Nhất Vị là một trong những quán phở nổi bật trong chuỗi phở ngon ở Sài Gòn, ...",
+    "position": 4
+   },
+   {
+    "title": "Phở trộn đặc biệt 📍Phở Nhất Vị",
+    "link": "https://www.tiktok.com/@davoslingoagain/video/7565860280723328264",
+    "snippet": "1854 Lượt thích,153 Bình luận.Video TikTok từ Not Davo's Lingo (@davoslingoagain): \"Phở trộn đặc biệt Phở Nhất Vị\".original sound - Not ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Hùng Cường: Món Phở Gân Bò Viên Đặc Sắc",
+    "link": "https://www.tiktok.com/@ngockhoo/video/7676715047023807752",
+    "snippet": "Phở Hùng Cường mang đến trải nghiệm ẩm thực độc đáo với món phở gân bò viên hấp dẫn. Món ăn này nổi bật với sự kết hợp tinh tế giữa gân bò ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Nhất Vị (@phonhatvi.vn)",
+    "link": "https://www.tiktok.com/@phonhatvi.vn",
+    "snippet": "Phở Nhất Vị (@phonhatvi.vn) trên TikTok |10.7K Lượt thích.59.2K Follower.“Nhất Vị - Độc Đáo và Tinh Tế”, cam kết chất lượng.Xem video phổ biến của Phở Nhất ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon ...",
+    "link": "https://www.tiktok.com/@nguanonhauda.bm/video/7532087159700884744",
+    "snippet": "67 Lượt thích,Video TikTok từ Ngựa non háu đá (@nguanonhauda.bm): \"Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon #nguyenminhthubm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

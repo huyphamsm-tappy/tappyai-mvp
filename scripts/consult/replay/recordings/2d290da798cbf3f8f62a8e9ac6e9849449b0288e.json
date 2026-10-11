@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:06.763Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình không MacBook Air 13 inch gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua Macbook Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/macbook/?page=100&srsltid=AU7gw4V47sONVQO1g4V7rOCiMPgIFI9z_emGRjYgRhNvmwc65fAC5dBF",
+    "snippet": "Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng. ₫33,999,000. 6% Off. 5.0·12 ...",
+    "rating": 4.9,
+    "ratingCount": 1479,
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook trên các sàn thương mại điện tử, khuyến ...",
+    "link": "https://kenh14.vn/mua-macbook-tren-cac-san-thuong-mai-dien-tu-khuyen-mai-giam-nhieu-nhung-co-re-hon-tai-cac-cua-hang-ban-le-20210226105148137.chn",
+    "snippet": "Tham khảo tại hệ thống các sàn thương mại điện tử lớn, MacBook Air 13 inch chạy chip cũ sẽ được giảm giá sâu từ 23% - 26% với khoảng giá 22,9 ...",
+    "date": "26 thg 2, 2021",
+    "position": 2
+   },
+   {
+    "title": "THANH LÝ Macbook White ĐỜI TỐNG giá 1 TRIỆU thì có ai ...",
+    "link": "https://www.youtube.com/watch?v=A_9t7DOaYhk",
+    "snippet": "Anh em đăng ký kênh này: https://t.me/clubmuare (mình up sản phẩm lên Shopee Lazada sẽ thông báo ở kênh đó cho anh em biết để mua nhanh nhé) ...",
+    "position": 3
+   },
+   {
+    "title": "Top 5 MacBook đáng tiền nhất 2025-2026: Bí quyết chọn ...",
+    "link": "https://macone.vn/tin-tuc/macbook-dang-xuong-tien-nhat/?srsltid=AU7gw4XRV_fcTBhDRXoo-WTf27wEJGl4tpxqGk9kthCshlHq09ZL19BZ",
+    "snippet": "Với mức giá chỉ khoảng 13.400.000đ cho bản Like New, đây là lựa chọn duy nhất để trải nghiệm macOS mượt mà nếu ví bạn đang “mỏng”. ... Lời ...",
+    "date": "15 thg 12, 2025",
+    "position": 4
+   },
+   {
+    "title": "Gợi ý các dòng MacBook cho sinh viên",
+    "link": "https://shopee.vn/blog/macbook-cho-sinh-vien/",
+    "snippet": "MacBook Air M5 13 inch. Chip, Apple M5. CPU, 10 lõi. GPU, 8 / 10 lõi. RAM, 16GB / 24GB / 32GB. SSD, 512GB / 1TB / 2TB / 4TB. Màn hình, Liquid ...",
+    "date": "16 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn ...",
+    "link": "https://www.facebook.com/Mac24h/videos/macbook-air-13-inch-apple-m1-like-new-fullboxt%E1%BA%A7m-gi%C3%A1-h%C6%A1n-10-tri%E1%BB%87u-cho-%C4%91a-d%E1%BA%A1ng-nh/1228533325419511/",
+    "snippet": "MacBook Air 13 inch Apple M1 - Like New FullBox Tầm giá hơn 10 triệu - cho đa dạng nhu cầu từ thiết kế - học tập - văn phòng ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook | Laptop Apple giá tốt, giảm 10 triệu, góp 0%",
+    "link": "https://www.thegioididong.com/laptop-apple-macbook",
+    "snippet": "Apple MacBook chính hãng, giá tốt, giảm đến 10 triệu, HSSV giảm thêm đến 400K, trả chậm 0% lãi suất - trả trước 0đ. Máy Mac hiệu năng cao, pin 24h.",
+    "position": 7
+   },
+   {
+    "title": "Mua Macbook Air M1 2020 Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/macbook-air-m1-2020/?srsltid=AU7gw4UrXwM0IE2ZfyGUb2b2OToRpQh-8XbSdm4LYjE-aVnaFv7aC3FC",
+    "snippet": "Macbook Air M1 2020 là dòng laptop cao cấp đến từ thương hiệu Apple, nổi bật với thiết kế siêu mỏng nhẹ, chip M1 mạnh mẽ và thời lượng pin ấn tượng. Sản phẩm ...",
+    "rating": 4.8,
+    "ratingCount": 707,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

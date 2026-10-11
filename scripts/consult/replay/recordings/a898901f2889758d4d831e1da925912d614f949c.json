@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com MacBook Air M1 check Activation Lock Find My erase before buying used Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:33:23.010Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com MacBook Air M1 check Activation Lock Find My erase before buying used Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-us/102541",
+    "snippet": "With Activation Lock, your Apple Account password or device passcode is required before anyone can turn off Find My, erase your Mac, or ...",
+    "date": "5 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Turn off Find My on your devices and items",
+    "link": "https://support.apple.com/guide/icloud/remove-devices-and-items-from-find-my-mmdc23b125f6/icloud",
+    "snippet": "When you turn off Find My on your Mac, Activation Lock is automatically removed. On your Mac, choose Apple menu > System Settings, then click your name at the ...",
+    "position": 2
+   },
+   {
+    "title": "Erase a device in Find My on Mac",
+    "link": "https://support.apple.com/guide/findmy-mac/erase-a-device-fmmbe7bb71f4/mac",
+    "snippet": "Activation Lock remains on to protect your device. To turn it off, remove the device from Find My. If you erase a device that had iOS 15, iPadOS 15, or ...",
+    "position": 3
+   },
+   {
+    "title": "If your Mac has been lost or stolen",
+    "link": "https://support.apple.com/en-au/102481",
+    "snippet": "Sign in to icloud.com/find, then select your Mac from the Devices menu. · Enter the passcode that you created when you locked it with Find My on ...",
+    "date": "17 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Prepare your Mac laptop for trade in",
+    "link": "https://support.apple.com/en-us/108061",
+    "snippet": "Before you ship your Mac laptop. Back up your Mac laptop and erase all ... Place your MacBook Air or MacBook Pro between the padded flaps.",
+    "date": "21 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "Activation Lock on Apple devices",
+    "link": "https://support.apple.com/guide/deployment/activation-lock-depf4ab94ef1/web",
+    "snippet": "You can use a device management service to allow Activation Lock on a supervised device.",
+    "date": "29 thg 7, 2024",
+    "position": 6
+   },
+   {
+    "title": "What to do before you sell, give away or trade in your ...",
+    "link": "https://support.apple.com/en-au/109511",
+    "snippet": "Remove your personal information from your old device · Open the Settings app. · Tap [your name]. · Scroll down and tap Sign Out. · Choose Erase ...",
+    "date": "12 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "What to do before you sell, give away, trade in, or recycle ...",
+    "link": "https://support.apple.com/en-ca/102773",
+    "snippet": "What to do before you sell, give away, trade in, or recycle your Mac. Reset your Mac to factory settings to prepare it for the new owner.",
+    "date": "14 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,419 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "khách sạn Hội An",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@15.8801,108.338,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:30.087Z",
+ "body": {
+  "searchParameters": {
+   "q": "khách sạn Hội An",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@15.8801,108.338,14z",
+   "engine": "google"
+  },
+  "ll": "@15.8800916,108.3379997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoi An Memories Resort & Spa",
+    "address": "Cồn Hến, Hội An, Đà Nẵng 564040, Việt Nam",
+    "latitude": 15.8754738,
+    "longitude": 108.33754619999999,
+    "rating": 4.7,
+    "ratingCount": 2537,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng",
+     "Căn hộ nghỉ dưỡng cho thuê",
+     "Khách sạn"
+    ],
+    "website": "https://hoianmemoriesresort.com/",
+    "phoneNumber": "+84 235 3866 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM6KHbVyyQF9DXgmdn2PY01lI-VO25OWtDbZt-LHmsibHrc-DGM3K5tXlHPcFP_1uBQS2YBHxB79B2a0XSbsbYQMCA3Bhuck_Yl3B4-nCclQN3YSQXWZgHb97pfIyYgkP_G2KjJ",
+    "cid": "4363893922866957902",
+    "fid": "0x31420c2b4f0dca39:0x3c8faa66e5f88e4e",
+    "placeId": "ChIJOcoNTysMQjERTo745Waqjzw"
+   },
+   {
+    "position": 2,
+    "title": "La Charm Hoi An Hotel - Peaceful Boutique In Old Town",
+    "address": "64 Đào Duy Từ, Hội An, Đà Nẵng 51000, Việt Nam",
+    "latitude": 15.877111,
+    "longitude": 108.32049699999999,
+    "rating": 4.8,
+    "ratingCount": 1287,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://lacharmhoianhotel.com/",
+    "phoneNumber": "+84 919 685 179",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN6U4XSrUsTwcyq-w-nf2Xollk-9F-U3zQnzmec8DXLxlTXWgsXpmCwsM44x1KTlAaYX7y-o2IrwEQ2Z84tWWM5gd6mjJZcASKfICeXSN3Rc32_wCMtvRuZ96l2oqwS7zsnQPcMS3gVbM2p",
+    "cid": "4877988556185735241",
+    "fid": "0x31420e62d3f6abaf:0x43b218bf45df1049",
+    "placeId": "ChIJr6v202IOQjERSRDfRb8YskM"
+   },
+   {
+    "position": 3,
+    "title": "Hoi An Reverie Villas",
+    "address": "257 Hai Mươi Tám tháng Ba, Hội An Tây, Đà Nẵng 560000, Việt Nam",
+    "latitude": 15.8800267,
+    "longitude": 108.30553909999999,
+    "rating": 4.1,
+    "ratingCount": 362,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.facebook.com/hoianreverie/",
+    "phoneNumber": "+84 235 3864 657",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOCC-W1desMQ8_xYboheAXiI3ly5zuMccG3gJ-XNW7woJDZDbJVsPbYYfch5E3xYXy-Vb-pNYrdTQOFZ0LnRTOyT2pKEv_xKjxggf4SRONdPMmKhU1KY6pQJh2ijM7H35TvG6YI",
+    "cid": "3543167425111514306",
+    "fid": "0x31420e5dadfe53ed:0x312bdc002981dcc2",
+    "placeId": "ChIJ7VP-rV0OQjERwtyBKQDcKzE"
+   },
+   {
+    "position": 4,
+    "title": "Nolia Hoi An formerly Soluna D'annam Hoi An",
+    "address": "02 Cầu, Hói Muống, Hội An Đông, Đà Nẵng 560000, Việt Nam",
+    "latitude": 15.878524299999999,
+    "longitude": 108.3416541,
+    "rating": 4.9,
+    "ratingCount": 192,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://noliahoian.com/",
+    "phoneNumber": "+84 235 6336 777",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNzjYMiWFaVfliyDCA4g6GvewID79rR-Fc-5fUc43n67rCwM06bpK6-w3FocQsI1-S1Y4vZ4CzSoaQGqsBFF9RL1gSohPx1sN4qT0BFNg51VyN5DQ0Eea0Hn9GdyEtCg0a36h8mBDONBd11",
+    "cid": "6746072654852656918",
+    "fid": "0x31420d9a794c446b:0x5d9edd565d780f16",
+    "placeId": "ChIJa0RMeZoNQjERFg94XVbdnl0"
+   },
+   {
+    "position": 5,
+    "title": "Soléa Boutique Hoi An",
+    "address": "56 Nguyễn Phúc Tần, An Hội, Hội An, Đà Nẵng, Việt Nam",
+    "latitude": 15.875225299999999,
+    "longitude": 108.32497289999999,
+    "rating": 4.9,
+    "ratingCount": 106,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://soleahoian.com/",
+    "phoneNumber": "+84 988 475 056",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOUoMojbRowsokx2j3D1maZiySVbpquFiYEpQQN9sb-qOFz7fsE634qNG8P-_8r2TkuKxw0VkxBjzIZrbhJkD2qQuHOC02PAe1ayQK5XudZjVCMW7v3p3gaaKWON10eY1X5cPIf916HuHAs",
+    "cid": "5947760542420656383",
+    "fid": "0x31420fd901113217:0x528ab0b3641160ff",
+    "placeId": "ChIJFzIRAdkPQjER_2ARZLOwilI"
+   },
+   {
+    "position": 6,
+    "title": "Anio Boutique Hotel Hoian",
+    "address": "03 Lê Đình Thám, Hội An Đông, Đà Nẵng, Việt Nam",
+    "latitude": 15.8893968,
+    "longitude": 108.3295899,
+    "rating": 4.9,
+    "ratingCount": 2171,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://anioboutiquehotelhoian.com/",
+    "phoneNumber": "+84 235 3925 555",
+    "description": "Khách sạn trang nhã có phòng ở thoáng mát, nhà hàng hiện đại, spa và hồ bơi ngoài trời.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMNqfP7F97t1nT1u3QpSfo14uk_Ah588FLVywPX6UHmsVjflInC0WjERawiN3RmfbZIBP0uq2ZrSOBT5s-m23mdYKf46Bc_o1Rtugt_MBGTAIPe53mSb74KAH4EYnYZ6v5PscBjtOp4ujct",
+    "cid": "3032419316857126836",
+    "fid": "0x31420e768a52a175:0x2a15514d5f4d3fb4",
+    "placeId": "ChIJdaFSinYOQjERtD9NX01RFSo"
+   },
+   {
+    "position": 7,
+    "title": "Victoria Hoi An Beach Resort and Spa",
+    "address": "Beach, Âu Cơ, Street, Hội An Đông, Đà Nẵng 840511, Việt Nam",
+    "latitude": 15.895643199999999,
+    "longitude": 108.36980299999999,
+    "rating": 4.6,
+    "ratingCount": 2022,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "https://www.victoriahotels.asia/en/victoria-hoi-an-beach-resort/",
+    "phoneNumber": "+84 235 3927 040",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMOxkUwffrWASOEGuqI3pJeWX5OfSYEdIWk7AaeZiP-E9R-4HVgoRNuNz9o9pYBJj3kY1YE1VlRf4So7ZoLhb6EtIfjBdPuyLCt6csd5XkzW5ZOFtLgvJiMeMgWIv5x9YpidzEagg",
+    "cid": "10102593603860792966",
+    "fid": "0x31420d9835e31da1:0x8c339f5b5c418686",
+    "placeId": "ChIJoR3jNZgNQjERhoZBXFufM4w"
+   },
+   {
+    "position": 8,
+    "title": "Hoi An Historic Hotel",
+    "address": "10 Trần Hưng Đạo, Hội An, Đà Nẵng 51306, Việt Nam",
+    "latitude": 15.88049,
+    "longitude": 108.3307507,
+    "rating": 4.5,
+    "ratingCount": 2761,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://www.hoianhistorichotel.com.vn/",
+    "phoneNumber": "+84 235 3861 445",
+    "description": "Khách sạn ấm cúng có nhà hàng ngoài trời, bể bơi, sân tennis và xe đưa đón ra bãi biển miễn phí.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPKO8zvm0ZMq9z9vCChvw45W7qDrOYapkbliFY146R85CLDPm2mh7ajrJ1LWQ09pfw9yxcUzFPWNUtBks9xTBvUrpdfN3LIUQUx6XoKnJdC1i_IuIAAYTOKCdPvr222yHbSNF2t",
+    "cid": "6032483662090159996",
+    "fid": "0x31420e78c96c258f:0x53b7afede03b477c",
+    "placeId": "ChIJjyVsyXgOQjERfEc74O2vt1M"
+   },
+   {
+    "position": 9,
+    "title": "Lumi Hoi An Hotel",
+    "address": "278/7 Lý Thường Kiệt, Str, Hội An Tây, Đà Nẵng, Việt Nam",
+    "latitude": 15.8837064,
+    "longitude": 108.3292713,
+    "rating": 5,
+    "ratingCount": 345,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lumihotel.com.vn/",
+    "phoneNumber": "+84 235 3767 979",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNTsLHS4jdzE53sK9tzVncUm4tp3JUnyRBQPBaL3yJAZfGfXVsZFcnriHZh-nv3w40X6X7SKeggef0h9EugUescs_htlEV4OcDQrRltO2zJs9L1vXSBAkABBknq0S4pnrshhumB1sKK3kzG",
+    "cid": "14674715432972453356",
+    "fid": "0x31420f2df7d06e6b:0xcba70fefb24405ec",
+    "placeId": "ChIJa27Q9y0PQjER7AVEsu8Pp8s"
+   },
+   {
+    "position": 10,
+    "title": "Mường Thanh Holiday Hoi An Hotel",
+    "address": "Khu Ô 9 Âu Cơ, KĐT Phước Trạch - Phước Hải, Hội An Đông, Đà Nẵng, Việt Nam",
+    "latitude": 15.8927248,
+    "longitude": 108.372016,
+    "rating": 4.3,
+    "ratingCount": 1603,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Hội họp",
+     "Nhà hàng"
+    ],
+    "website": "https://holidayhoian.muongthanh.com/",
+    "phoneNumber": "+84 235 3666 999",
+    "description": "Khách sạn sang trọng, có nhà hàng, quầy bar, khu spa và phòng ốc tinh tế. Một số phòng nhìn ra sông.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOYfZ78wPaOuCGXtVxlF0eTwRmVujtQONoLBmgrkY5ijdwrZDQrbMVJgu8AK0pxXoztMZu-tbzbL5HLlQN_bTX0N5uZX2soh42gm5euGd3YvP2YtncuBOce8Ta19QziSO8Cw3QJsQ",
+    "cid": "15784889750554172795",
+    "fid": "0x31420da278163339:0xdb0f3198a07c5d7b",
+    "placeId": "ChIJOTMWeKINQjERe118oJgxD9s"
+   },
+   {
+    "position": 11,
+    "title": "Soleil by Soluna | A Charming Touch of Hoi An's Heritage, formerly Hoi An Babylon Riverside Hotel & Spa",
+    "address": "01 Cầu, Hói Muống, Hội An Đông, Đà Nẵng 50000, Việt Nam",
+    "latitude": 15.878434899999998,
+    "longitude": 108.341706,
+    "rating": 4.9,
+    "ratingCount": 840,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 235 6336 777",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPo8AhJH8s04O5ec_U-amTfnBMSVZ0wsRNcuQonJwJwl0SZhZ6GFQYq3fsPrecJdXXfG6iRVCOc_l1koBDi8TOYTq3r4fzsNb2tz5sN3k8fcrHE1atTXmpLpjLgMGGV-trP02tWhVKmMTKD",
+    "cid": "9161205080470966409",
+    "fid": "0x31420d28d73b93cd:0x7f23237b87f9d089",
+    "placeId": "ChIJzZM71ygNQjERidD5h3sjI38"
+   },
+   {
+    "position": 12,
+    "title": "Lantern Boutique Hoi An",
+    "address": "330 Cửa Đại, khối Sơn Phô 2, Hội An Đông, Đà Nẵng 51314, Việt Nam",
+    "latitude": 15.885144599999999,
+    "longitude": 108.34919359999999,
+    "rating": 4.8,
+    "ratingCount": 966,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://lanternboutiquehoian.com/",
+    "phoneNumber": "+84 235 3923 357",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfnTIPFlfbxe3qp68QQh3dYIlIP07bw7SQTZiLCDjfKylMvJ9AVCGUT7ub5CLqbOyymrs7BIL3T7s3kir4mrULRcUEVqLYrOOl22zDN41xVGXT0DAOb9kuv5LMdVqWIS_5bQTnJu8SbEOA",
+    "cid": "9968576906271627991",
+    "fid": "0x31420d0a978151eb:0x8a577fe1667b9ad7",
+    "placeId": "ChIJ61GBlwoNQjER15p7ZuF_V4o"
+   },
+   {
+    "position": 13,
+    "title": "Bellerive Hoi An Resort & Spa",
+    "address": "33 Lê Đại Hành, Hội An Đông, Đà Nẵng, Việt Nam",
+    "latitude": 15.8890239,
+    "longitude": 108.3754769,
+    "rating": 4.8,
+    "ratingCount": 1362,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://bellerivehoian.com/",
+    "phoneNumber": "+84 235 3928 888",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM4ecBfLhse4EJvhcRNIvzO4AsWecQObmhLAOQe0v7A4u52QvLjzBOwyNfnc-opkpEx3TarRiNpA1W2eICOly8P-lNvhAiPwj1CzxKmky2vmu3CIMNhWOCXMfOZYWZmciVdCyQM",
+    "cid": "1368074022318049616",
+    "fid": "0x31420da82bee6809:0x12fc60132eb50950",
+    "placeId": "ChIJCWjuK6gNQjERUAm1LhNg_BI"
+   },
+   {
+    "position": 14,
+    "title": "Moire Hoi An, Vignette Collection",
+    "address": "Xuyen Trung Block, Hội An, Đà Nẵng, Việt Nam",
+    "latitude": 15.874748199999999,
+    "longitude": 108.3328995,
+    "rating": 4.9,
+    "ratingCount": 1363,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn",
+     "Trung tâm hội thảo",
+     "Health resort",
+     "Spa mát xa",
+     "Spa",
+     "Địa điểm tổ chức lễ cưới",
+     "Khách sạn chăm sóc sức khỏe"
+    ],
+    "website": "https://www.ihg.com/vignettecollection/hotels/us/en/hoi-an/dadho/hoteldetail?cm_mmc=GoogleMaps-_-LX-_-VN-_-DADHO",
+    "phoneNumber": "+84 235 7307 999",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNCbw5ODE89GguDxTNnfdd1GVA44tWilDxLTjpqPiBy-LnPDvkc5xmxEeW-YMWUItnsgUjhj6Z0sBTIiHbWVF6lMvFUj95xehg7yKvExt98V44ed1u4icEiYk2XC_I-ZoWHm8m1g0EI4zmW",
+    "cid": "9455764375276524666",
+    "fid": "0x31420f177dea5ab3:0x83399f99bc26947a",
+    "placeId": "ChIJs1rqfRcPQjERepQmvJmfOYM"
+   },
+   {
+    "position": 15,
+    "title": "Hoi An Beach Resort",
+    "address": "1 Cửa Đại, Hội An Đông, Đà Nẵng 51315, Việt Nam",
+    "latitude": 15.8964836,
+    "longitude": 108.3671864,
+    "rating": 4.3,
+    "ratingCount": 2632,
+    "type": "Khách sạn nghỉ dưỡng",
+    "types": [
+     "Khách sạn nghỉ dưỡng"
+    ],
+    "website": "http://www.hoianbeachresort.com.vn/",
+    "phoneNumber": "+84 235 3927 011",
+    "description": "Khu nghỉ dưỡng bình dị có phòng ở ấm cúng, khu spa, 2 nhà hàng và bữa sáng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMyYxXI-1b5Oi-VhwX7dFEvOeTBgIdQPZArMSSjeIRFBC899sDyLB1VE9lXgv8l_SeSKmL4Z4vUPFga7OEGaYdiM1v08Iwp5SDiTbTVkz8DA8SJenjgoXeEGiz-XnbS0uCxRo--NA",
+    "cid": "712636942159852413",
+    "fid": "0x31420d970efaa355:0x9e3cb85ef42337d",
+    "placeId": "ChIJVaP6DpcNQjERfTNC74XL4wk"
+   },
+   {
+    "position": 16,
+    "title": "Son Hoi An Boutique Hotel & Spa",
+    "address": "114/4 Đào Duy Từ, Hội An, Đà Nẵng 510000, Việt Nam",
+    "latitude": 15.8775178,
+    "longitude": 108.3189893,
+    "rating": 4.5,
+    "ratingCount": 542,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://sonhoianhotel.com/",
+    "phoneNumber": "+84 235 3950 111",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOczF8cy5iSmuh7e1FmJuKYuf3jpBFamH4jEZFeVANy--WGdZiTXTifG_sPk02yT364Xx27lRbQZNDe0twJpmm0OuM65LfGuC8JeBcOFpQzFE0eNsb1pabzIJq27ecMyTeROIqw",
+    "cid": "1863068131089176316",
+    "fid": "0x31420fd0124893dd:0x19daf29821ebd6fc",
+    "placeId": "ChIJ3ZNIEtAPQjER_NbrIZjy2hk"
+   },
+   {
+    "position": 17,
+    "title": "Hoi An Vi Khoa Villa",
+    "address": "11 Đào Duy Từ, Hội An, Đà Nẵng 51000, Việt Nam",
+    "latitude": 15.8769622,
+    "longitude": 108.32245119999999,
+    "rating": 4.5,
+    "ratingCount": 466,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "phoneNumber": "+84 934 721 891",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMMPv0Wr0ptT_8w9AlQ2YiGZ5l98ST2fbumrI1tFjiolkPF3FAmZnyQHihBHWkKuM8Jj77mFPal8xjfGlUDyFvT5BpyOFcu9sVOvRBatsHGO9MFbaoQnxipxzpGj2-oadJBhvX0xw",
+    "cid": "630545515165473198",
+    "fid": "0x31420e7d1f5a5e45:0x8c025ce262759ae",
+    "placeId": "ChIJRV5aH30OQjERrlknJs4lwAg"
+   },
+   {
+    "position": 18,
+    "title": "Anantara Hoi An Resort",
+    "address": "1 Đường Phạm Hồng Thái, Street, Hội An, Đà Nẵng, Việt Nam",
+    "latitude": 15.877222,
+    "longitude": 108.33690299999999,
+    "rating": 4.7,
+    "ratingCount": 1288,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "https://www.anantara.com/hoi-an?utm_source=google_gmb&utm_medium=organic_search&utm_term=HoiAn&utm_content=Home&utm_campaign=local-gmb",
+    "phoneNumber": "+84 235 3914 555",
+    "description": "Khách sạn cao cấp ven sông có phòng ở sang trọng, nhà hàng, khu spa, bể bơi và cầu tàu riêng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmO1PqqRgHfBGNxOw5rB2aubg3GZQy7Djdf1xC9bF0WX9-0FucBzU96B8_3CI02PLrjUET6-FQJY7OKi9MkaLDFm3mTjP1TTBMh0Fr3S74Cv_IDvMlRBsOsDfoHfyQhnkgFh4Iq5OutbnXpt",
+    "cid": "11151355367840793611",
+    "fid": "0x31420dd44606dd4d:0x9ac1929fe84bc40b",
+    "placeId": "ChIJTd0GRtQNQjERC8RL6J-SwZo"
+   },
+   {
+    "position": 19,
+    "title": "Hoi An Hostel",
+    "address": "29 Đào Duy Từ, Hội An, Đà Nẵng 53000, Việt Nam",
+    "latitude": 15.8767754,
+    "longitude": 108.32088139999999,
+    "rating": 4.6,
+    "ratingCount": 138,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMYxM4RkoTyRcwbORFW-DRcKbwYC0Yh7-OZIGLJNPJ-U7iwfL3z7pxqVqOT_3hn8-o6fZAjbBCeKufNcHLMghWWsRawP7XmOnzjCp5XsH8B0Jy-DUU42Hon-sRM50CIfhKiAYzztwgZKwE8",
+    "cid": "14085057576222278875",
+    "fid": "0x31420fd074f52227:0xc3782d3d5fa744db",
+    "placeId": "ChIJJyL1dNAPQjER20SnXz0teMM"
+   },
+   {
+    "position": 20,
+    "title": "Hoi An Riverside Villas & Apartments",
+    "address": "251 Trần Nhân Tông, Hội An Đông, Đà Nẵng, Việt Nam",
+    "latitude": 15.8762061,
+    "longitude": 108.34938749999999,
+    "rating": 4.8,
+    "ratingCount": 398,
+    "type": "Khách sạn",
+    "types": [
+     "Khách sạn"
+    ],
+    "website": "http://hoianriversidevillas.com/",
+    "phoneNumber": "+84 913 772 659",
+    "description": "Khách sạn cao cấp có phòng ở ấm cúng, quầy bar, bể bơi ngoài trời, khu spa và 2 nhà hàng.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOmOIRSRlfPBtxBrVkEI-qI2cD9CRJv1EyRUW4xXiG0jjXwJValCW4Dwe2Y7hwV3HYbDLvlHqV0Yaf4Na75ziUnGn_6KkvgRj8PqUQyeq9z0NdKOvvWPNtE_df6vH9wU3es7tsgMA",
+    "cid": "5462146863423362027",
+    "fid": "0x31420d3abbe93ed1:0x4bcd71a1f15d13eb",
+    "placeId": "ChIJ0T7puzoNQjER6xNd8aFxzUs"
+   }
+  ],
+  "credits": 3
+ }
+}

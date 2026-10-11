@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 giá bán Việt Nam shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:15.764Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 giá bán Việt Nam shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội Tai Nghe AirPods Việt Nam",
+    "link": "https://www.facebook.com/groups/utcshop/?locale=vi_VN",
+    "snippet": "Public Góc bán E Em Sale ・ bán airpods pro 2 Type C ・ giá salee chỉ 3trX ・ ☎️ Hotline : 0778613333 ( Call/Zalo/Sms)",
+    "position": 1
+   },
+   {
+    "title": "❤️‍🔥 AIRPODS PRO 2: HUYỀN THOẠI GIÁ HỜI",
+    "link": "https://www.facebook.com/CellphoneSVietnam/posts/%EF%B8%8F-airpods-pro-2-huy%E1%BB%81n-tho%E1%BA%A1i-gi%C3%A1-h%E1%BB%9Di-c%C6%A1-h%E1%BB%99i-cu%E1%BB%91i-cho-anh-em-ch%E1%BB%91t-ngay-k%E1%BA%BBo-l%E1%BB%A1-%C4%91%C3%A2y-/1390152456471177/",
+    "snippet": "Airpods Pro2. Giá tốt chỉ từ 3.xxx. Apple Việt Nam Nhận hàng. Airpod pro 2 type-c likenew : 3.400.000 Airpod pro 2 type-c newseal.: 4.150.000 ...",
+    "position": 2
+   },
+   {
+    "title": "Hội tai nghe AirPods 4 - Airpods pro 2 - Airpods pro 3",
+    "link": "https://www.facebook.com/groups/airpods3/",
+    "snippet": "⚡️ Airpods pro 2 bản Type C body likenew néttt!! Giá chỉ 3trX bé • Hàng chính hãng 100% • Pin khoẻ 5h • Hỗ trợ thu cũ đổi mới • Bảo hành 1 ...",
+    "position": 3
+   },
+   {
+    "title": "AirPods Pro 2 VN/A - Nghe nhạc, đàm thoại, giải trí trọn vẹn ...",
+    "link": "https://www.facebook.com/minhtuanmobilesg/posts/airpods-pro-2-vna-nghe-nh%E1%BA%A1c-%C4%91%C3%A0m-tho%E1%BA%A1i-gi%E1%BA%A3i-tr%C3%AD-tr%E1%BB%8Dn-v%E1%BA%B9n-cho-n%C4%83m-m%E1%BB%9Biv%E1%BB%9Bi-thi%E1%BA%BFt-k%E1%BA%BF-/722304636555901/",
+    "snippet": "Âm thanh đột phá. Chỉ từ 5.634. 000đ khi thanh toán qua VNPAY-QR ✓ Trả góp 0% ✓ Tặng phiếu mua hàng 1.000.000đ cho Apple Watch Ultra 2 ...",
+    "position": 4
+   },
+   {
+    "title": "Có shop nào có airpod pro 2 k ạ và có thu mua lại pro 1 k ạ",
+    "link": "https://www.facebook.com/groups/131942476971113/posts/3838010223030968/",
+    "snippet": "Chuyên Apple Chính Hãng Duy Minh Store ⚫️ Address: 74/23 Trần Cao Vân , Đà Nẵng ⚫️ Open / Close : 8Am - 8Pm ⚫️ Hotline : 0906546584 1d Relevant ...",
+    "position": 5
+   },
+   {
+    "title": "Hội Tai Nghe Airpods 4/3/2/1/Pro1-2 Việt Nam",
+    "link": "https://www.facebook.com/groups/2102935596563686/",
+    "snippet": "Hàng đẹp 99% keng , đầy đủ hộp phụ kiện! AirPods Pro 2 (99% Fullbox): Chỉ 3.trX AirPods Pro 3 (99% Fullbox): Chỉ 4.trX ⚡ Cam kết hàng chính hãng, phát ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 2023 USB-C | Giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c.html",
+    "snippet": "Airpods Pro 2 được bán chính hãng với giá trên thị trường là 6.190.000 đồng. Chính hãng Apple Việt Nam 4.990.000đ",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 7
+   },
+   {
+    "title": "Nhóm Mua & Bán AirPods chính hãng🇻🇳",
+    "link": "https://www.facebook.com/groups/2714817295467360/",
+    "snippet": "#Airpodss 2 :1tr1 ・ ọn Địa chỉ 163 Nguyễn Xí P26. Public AirPods 2 Likenew Fullbox Likenew 98% Máy chức ・ ☎️ 0937.45.22.17. Bình Dương 🛵 Giao AirPods tận",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

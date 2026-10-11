@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Bluetooth True Wireless SoundPeats T3 Pro\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:45.982Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Bluetooth True Wireless SoundPeats T3 Pro\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Results for \"tai nghe bluetooth true wireless soundpeats t3 pro\"",
+    "link": "https://shop.tiktok.com/sg/k/tai-nghe-bluetooth-true-wireless-soundpeats-t3-pro",
+    "snippet": "Results for \"tai nghe bluetooth true wireless soundpeats t3 pro\". 【24-hour shipping+free shipping+COD】True Wireless Bluetooth 5.3 Earphones. Free shipping ...",
+    "position": 1
+   },
+   {
+    "title": "Mua tai nghe Bluetooth True Wireless SoundPEATS T3 Pro ...",
+    "link": "https://www.tiktok.com/@ph_o.o/video/7647545421052546324",
+    "snippet": "20 Lượt thích,Video TikTok từ Thích Thì Mua ◡̈ (@ph_o.o): \"Mua tai nghe Bluetooth True Wireless SoundPEATS T3 Pro ở giỏ hàng Chống ồn ...",
+    "position": 2
+   },
+   {
+    "title": "app chính thức của tai nghe soundpeats t3 pro",
+    "link": "https://shop.tiktok.com/vn/k/app-chinh-thuc-cua-tai-nghe-soundpeats-t3-pro",
+    "snippet": "tai nghe bluetooth true wireless soundpeats t3 pro anc · เคสsoundpeats t3 pro. Hạng mục liên quan. Tai nghe trong & Tai nghe · Loa · Phụ kiện âm thanh & video.",
+    "position": 3
+   },
+   {
+    "title": "tai nghe bluetooth true wireless soundpeats t3 pro anc",
+    "link": "https://shop.tiktok.com/my/k/tai-nghe-bluetooth-true-wireless-soundpeats-t3-pro-anc",
+    "snippet": "Terokai tai nghe bluetooth true wireless soundpeats t3 pro anc terkini pada TikTok Shop dan nikmati penghantaran percuma! Beli-belah koleksi eksklusif dan ...",
+    "position": 4
+   },
+   {
+    "title": "tai nghe true wireless soundpeats h3 ldac aptx lossless",
+    "link": "https://shop.tiktok.com/sg/k/tai-nghe-true-wireless-soundpeats-h3-ldac-aptx-lossless-3-driver-ba-dynamic-bluetooth-54",
+    "snippet": "tai nghe bluetooth true wireless soundpeats h3 ốp · tai nghe bluetooth true wireless soundpeats t3 pro anc · tai nghe bluetooth true wireless soundpeats t3 pro.",
+    "position": 5
+   },
+   {
+    "title": "tai nghe bluetooth true wireless samsung galaxy buds 3 fe r420n",
+    "link": "https://shop.tiktok.com/sg/k/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-3-fe-r420n",
+    "snippet": "tai nghe bluetooth true wireless soundpeats t3 pro. Related Categories. Headphones, Earphones & Accessories · Mobile Phones · Audio & Video Accessories · TikTok ...",
+    "position": 6
+   },
+   {
+    "title": "tai nghe bluetooth true wireless soundpeats t3 pro",
+    "link": "https://shop.tiktok.com/my/k/tai-nghe-bluetooth-true-wireless-soundpeats-t3-pro",
+    "snippet": "Hasil untuk \"tai nghe bluetooth true wireless soundpeats t3 pro\" ; 5. 38 sold · 49.00. RM179.00 ; 4.6. 74 sold · 79.00. RM199.00 ; 0 sold · 29.00 ...",
+    "position": 7
+   },
+   {
+    "title": "tai nghe bluetooth true wireless soundpeats h3 ốp",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-bluetooth-true-wireless-soundpeats-h3-op",
+    "snippet": "tai nghe bluetooth true wireless soundpeats t3 pro · tai nghe bluetooth true wireless soundpeats t3 pro anc · หูฟังบลูทูธ soundpeats t3 · bluetooth true ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

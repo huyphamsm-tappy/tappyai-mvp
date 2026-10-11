@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An vé tham quan phố cổ giá vé 2026 chính thức giờ tham quan phố cổ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:06:41.297Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An vé tham quan phố cổ giá vé 2026 chính thức giờ tham quan phố cổ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách được dạo bước trong không gian chung của Khu phố cổ Hội An, nơi những con đường nhỏ rợp bóng đèn ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Vé tham quan Phố cổ Hội An mới nhất. Cập nhật chi tiết bảng giá và ưu đãi chiết khấu giá rẻ hơn độc quyền khi đặt qua đại lý Phan Văn Travel từ Đà Nẵng.",
+    "position": 2
+   },
+   {
+    "title": "Cập nhật giá vé tham quan Phố cổ Hội An cho khách trong ...",
+    "link": "https://sovaba.travel/blog/bai-viet-cap-nhat-gia-ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Cập nhật giá vé tham quan phố cổ Hội An 2026 mới nhất: 80.000đ (khách Việt Nam), 120.000đ (khách quốc tế). Hướng dẫn mua vé, danh sách di tích, ...",
+    "position": 3
+   },
+   {
+    "title": "Bảng giá vé tham quan phố cổ Hội An 2026",
+    "link": "https://webdulichhoian.com/bang-gia-ve-tham-quan-pho-co-hoi-an.html",
+    "snippet": "Giá vé tham quan tại đây là: 35.000đ/khách và được tặng 1 sản phẩm gốm. Làng rau Trà Quế: Là địa điểm thu hút rất nhiều du khách quốc tế đến trải nghiệm cách ...",
+    "position": 4
+   },
+   {
+    "title": "Vé Tham Quan Phố Cổ Hội An",
+    "link": "https://www.klook.com/vi/activity/72346-hoi-an-ancient-town-attractions-adminssion-ticket/",
+    "snippet": "Trọn vẹn một ngày khám phá các điểm du lịch Hội An nổi tiếng với vé tham quan Phố cổ Hội An, Làng gốm Thanh Hà và Làng rau Trà Quế kèm ưu đãi trên Klook ...",
+    "rating": 4,
+    "ratingCount": 691,
+    "position": 5
+   },
+   {
+    "title": "️ Mua vé tham quan – Trọn vẹn trải nghiệm khám phá Khu ...",
+    "link": "https://www.facebook.com/vanphongHDTQthanhphoHoiAn/posts/%EF%B8%8F-mua-v%C3%A9-tham-quan-tr%E1%BB%8Dn-v%E1%BA%B9n-tr%E1%BA%A3i-nghi%E1%BB%87m-kh%C3%A1m-ph%C3%A1-khu-ph%E1%BB%91-c%E1%BB%95-h%E1%BB%99i-an-%EF%B8%8Fd%E1%BA%A1o-b%C6%B0%E1%BB%9Bc-gi%E1%BB%AF/1159141956249027/",
+    "snippet": "Vé tham quan được bán tại các quầy vé đặt tại các lối chính dẫn vào khu phố cổ. Hội An đang đón chờ bạn. Hãy mua vé ngay hôm nay để không ...",
+    "position": 6
+   },
+   {
+    "title": "Có cần mua vé vào phố cổ Hội An không? - Holdall",
+    "link": "https://holdall.vn/ve-vao-pho-co-hoi-an",
+    "snippet": "Đối tượng được miễn, giảm vé tham quan. Hội An áp dụng chính sách miễn vé hoặc giảm giá cho một số đối tượng đặc biệt. Cụ thể, người dân địa ...",
+    "date": "11 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "Hội An tăng cường quản lý hoạt động tham quan khu phố cổ",
+    "link": "https://nhandan.vn/tu-ngay-155-bat-dau-thu-phi-tham-quan-pho-co-hoi-an-post752196.html",
+    "snippet": "Mức giá tham quan 120.000 đồng/vé (dành cho khách quốc tế) và 80.000 đồng/vé (dành cho khách nội địa). Thời gian hoạt động bán vé tham quan khu ...",
+    "date": "11 thg 5, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Taiyo Hotel & Apartment",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:47:50.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "Taiyo Hotel & Apartment",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "TAIYO HOTEL & APARTMENT (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá -  Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2b/b9/44/52/caption.jpg?w=500&h=400&s=1",
+    "imageWidth": 500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2hVY48VejbLKC9JEj9aHS1FXKol2p0CtKZZs5w0VDdw&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 400,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d27466300-Reviews-Taiyo_Hotel_Apartment-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F2b%2Fb9%2F44%2F52%2Fcaption.jpg%3Fw%3D500%26h%3D400%26s%3D1&tbnid=8PL6aTGEo5GZjM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d27466300-Reviews-Taiyo_Hotel_Apartment-Da_Nang.html&docid=FAkHLooLincSWM&w=500&h=400",
+    "position": 1
+   },
+   {
+    "title": "Taiyo Hotel & Apartment Đà Nẵng | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100090142305900",
+    "imageWidth": 1125,
+    "imageHeight": 1125,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR04XIMYhVWn5T7Jj2DjaId1gfmzfGo9i4s5l4ObgHpRg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/TaiyoHotelApartment/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100090142305900&tbnid=EHU2iC8IK7cjQM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FTaiyoHotelApartment%2F&docid=JyEHDQb_aYVOVM&w=1125&h=1125",
+    "position": 2
+   },
+   {
+    "title": "Taiyo Hotel & Apartment, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/496886189.jpg?k=42ce3712dafe473e7aedb7a3277a74299bad1d4301b071a3c86dd763797a0063&o=",
+    "imageWidth": 1024,
+    "imageHeight": 705,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9rQt9lq2sxShXGf_EeMf25ip-s1C4JmXfBF_EL-yiuA&s=10",
+    "thumbnailWidth": 667,
+    "thumbnailHeight": 458,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/taiyo-amp-apartment.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F496886189.jpg%3Fk%3D42ce3712dafe473e7aedb7a3277a74299bad1d4301b071a3c86dd763797a0063%26o%3D&tbnid=flCYQaYIb3cubM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftaiyo-amp-apartment.vi.html&docid=3KPdpmpWgKDq8M&w=1024&h=705",
+    "position": 3
+   },
+   {
+    "title": "Taiyo Hotel & Apartment Đà Nẵng | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=788118640869539",
+    "imageWidth": 1080,
+    "imageHeight": 1350,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS98u_jxdC-Ai5G0nEypTCwn7SVnBVwJwkBLiPoHfLc9A&s=10",
+    "thumbnailWidth": 399,
+    "thumbnailHeight": 501,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/TaiyoHotelApartment/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D788118640869539&tbnid=sEJ6MRxRReySzM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2FTaiyoHotelApartment%2F&docid=JyEHDQb_aYVOVM&w=1080&h=1350",
+    "position": 4
+   },
+   {
+    "title": "TAIYO HOTEL & APARTMENT | ⋆⋆⋆⋆ | DA NANG, VIETNAM | SEASON DEALS FROM $40",
+    "imageUrl": "https://apt-taiyo-1.danang-hotels.com/data/Pics/OriginalPhoto/15219/1521938/1521938968/taiyo-hotel-apartment-da-nang-pic-5.JPEG",
+    "imageWidth": 2000,
+    "imageHeight": 1247,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuYZXKyFbe00gReEiqmXBn-uPOOHuFyxTiTXfipzt_lw&s=10",
+    "thumbnailWidth": 701,
+    "thumbnailHeight": 436,
+    "source": "Da Nang",
+    "domain": "apt-taiyo-1.danang-hotels.com",
+    "link": "https://apt-taiyo-1.danang-hotels.com/en/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fapt-taiyo-1.danang-hotels.com%2Fdata%2FPics%2FOriginalPhoto%2F15219%2F1521938%2F1521938968%2Ftaiyo-hotel-apartment-da-nang-pic-5.JPEG&tbnid=pZ31GIq_7yw0FM&imgrefurl=https%3A%2F%2Fapt-taiyo-1.danang-hotels.com%2Fen%2F&docid=QgdV-k1KkWPK1M&w=2000&h=1247",
+    "position": 5
+   },
+   {
+    "title": "Taiyo Hotel & Apartment, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/523972812.jpg?k=137f73ee710c2677e6dd68828769518c7b62ed9883e76a0555a59669441338d8&o=",
+    "imageWidth": 1024,
+    "imageHeight": 656,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNzAFSmhvMGtRmBbPf8a4B2bjBqxTT8wxrUfbZn-alZA&s=10",
+    "thumbnailWidth": 692,
+    "thumbnailHeight": 442,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/taiyo-amp-apartment.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F523972812.jpg%3Fk%3D137f73ee710c2677e6dd68828769518c7b62ed9883e76a0555a59669441338d8%26o%3D&tbnid=hZA6iLIQNow6hM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Ftaiyo-amp-apartment.vi.html&docid=3KPdpmpWgKDq8M&w=1024&h=656",
+    "position": 6
+   },
+   {
+    "title": "Thông tin về Taiyo Hotel & Apartment (Information Taiyo Hotel & Apartment)  - Taiyotourist - Đại lý vé máy bay chính hãng - Taiyo ticket",
+    "imageUrl": "http://taiyotourist.vn/wp-content/uploads/2025/07/z6859251387012_925bc9ac6b032821775e2d191cb2b63b.webp",
+    "imageWidth": 1600,
+    "imageHeight": 1033,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQHiQ_7p2t3OJjCWW7ePVxKh93S_kXxQ6EU5O2rOeiNg&s=10",
+    "thumbnailWidth": 688,
+    "thumbnailHeight": 445,
+    "source": "Taiyotourist",
+    "domain": "taiyotourist.vn",
+    "link": "https://taiyotourist.vn/thong-tin-ve-taiyo-hotel-apartment-information-taiyo-hotel-apartment/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Ftaiyotourist.vn%2Fwp-content%2Fuploads%2F2025%2F07%2Fz6859251387012_925bc9ac6b032821775e2d191cb2b63b.webp&tbnid=JWsqsqjuzahrnM&imgrefurl=https%3A%2F%2Ftaiyotourist.vn%2Fthong-tin-ve-taiyo-hotel-apartment-information-taiyo-hotel-apartment%2F&docid=NR-gu3TEVvS2lM&w=1600&h=1033",
+    "position": 7
+   },
+   {
+    "title": "Khách sạn & Căn hộ Taiyo (Taiyo Hotel & Apartment) Đà Nẵng, Việt Nam:  Agoda.com có giá rẻ nhất",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/909259275.jpg?k=90cca7864ec7548b5e4c594197eb1a0cad5497189862dd623072dffc7c6973b6&o=",
+    "imageWidth": 369,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR38smmKVmRPZvI1ia2xptORAGmwjsJ8c9vfIwxnxb4g&s=10",
+    "thumbnailWidth": 369,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/taiyo-hotel-apartment/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F909259275.jpg%3Fk%3D90cca7864ec7548b5e4c594197eb1a0cad5497189862dd623072dffc7c6973b6%26o%3D&tbnid=R1NiTipfpIKqwM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Ftaiyo-hotel-apartment%2Fhotel%2Fda-nang-vn.html&docid=U9bZNLcA5MvYKM&w=369&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

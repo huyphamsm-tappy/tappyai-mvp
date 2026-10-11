@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 technical specifications battery cycle count check used Mac activation lock",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:38:01.683Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 technical specifications battery cycle count check used Mac activation lock",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "How To Check Battery Health and Cycle Count on Macbook ...",
+    "link": "https://www.youtube.com/watch?v=GvMzdReN0f8&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "In this video you will learn how to check the battery health and battery cycle count on your Macbook Air and Macbook Pro.",
+    "position": 2
+   },
+   {
+    "title": "Inspecting a Used MacBook Before Buying: 10 Decisive ...",
+    "link": "https://www.ithope.cz/en/blog/kontrola-pouziteho-macbooku-pred-koupi-10-bodu/",
+    "snippet": "First, identify the exact model and serial number, then check the battery cycle count and condition, followed by the Activation Lock status.",
+    "date": "30 thg 8, 2026",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M1 maximum capacity dropped t…",
+    "link": "https://discussions.apple.com/thread/256368270",
+    "snippet": "I bought a MacBook Air M1 three weeks ago, and the device was very clean and like new. The maximum capacity was at 100% and the cycle count was 18. Now, ...",
+    "date": "7 ngày trước",
+    "position": 4
+   },
+   {
+    "title": "Expert Guide: How to Inspect a Used MacBook for Battery ...",
+    "link": "https://world.taobao.com/lang/en-us/shopping-guide/2040183985669144576.htm",
+    "snippet": "Learn how to inspect a used MacBook by verifying battery cycle counts via System Report, checking warranty transferability, ensuring iCloud ...",
+    "date": "25 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "How to check MacBook battery health and the exact ...",
+    "link": "https://www.vietnam.vn/en/cach-kiem-tra-do-chai-pin-macbook-va-so-lan-sac-chinh-xac-don-gian",
+    "snippet": "To check the number of charge cycles and battery degradation on your MacBook, go to the Apple logo > About this Mac > System Report > Power.",
+    "date": "24 thg 8, 2023",
+    "position": 6
+   },
+   {
+    "title": "Mac Battery Cycle Count Checker - Juicy",
+    "link": "https://getjuicy.app/tools/mac-battery-cycle-count",
+    "snippet": "See how many charge cycles your MacBook has used, how many Apple rates it for, and how many months of healthy battery you have left. Runs 100% in your browser, ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air M1 2020 cycle count and battery health tips",
+    "link": "https://www.facebook.com/groups/macbookm1users/posts/602566781225242/",
+    "snippet": "pwede rin not lower than 20% then icharge to full. 4y · 1 like. Honey ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

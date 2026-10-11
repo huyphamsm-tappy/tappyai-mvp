@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn \"lệ phí\" \"Cấp hộ chiếu phổ thông ở trong nước\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:37:01.679Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn \"lệ phí\" \"Cấp hộ chiếu phổ thông ở trong nước\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp trung ương). LĨNH ... lệ phí cho cán bộ thu lệ phí. Cán bộ thu lệ phí thu tiền, giao biên lai thu ...",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ ... lệ phí cho cán bộ thu lệ phí, cán bộ thu lệ phí thu tiền, giao biên lai thu ...",
+    "position": 2
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=35582",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các ... lệ phí cho cán bộ thu lệ phí. Cán bộ thu lệ phí thu tiền, giao biên lai thu ...",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ Cấp hộ chiếu phổ thông có gắn chíp ... - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35572",
+    "snippet": "... lệ phí cho cán bộ thu lệ phí, cán bộ thu lệ phí thu tiền, giao biên lai thu ... cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công ...",
+    "position": 4
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26691",
+    "snippet": "... lệ phí cho cán bộ thu lệ phí. Cán bộ thu lệ phí thu tiền, giao biên lai thu ... cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công ...",
+    "position": 5
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=35613",
+    "snippet": "Có thể khai tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước qua các ... lệ phí cho cán bộ thu lệ phí. Cán bộ thu lệ phí thu tiền, giao biên lai thu ...",
+    "position": 6
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=26270",
+    "snippet": "... cấp hộ chiếu phổ thông ở trong nước qua các cổng cung cấp dịch vụ công ... lệ phí cho cán bộ thu lệ phí. Cán bộ thu lệ phí thu tiền, giao biên lai thu ...",
+    "position": 7
+   },
+   {
+    "title": "Phiếu hướng dẫn thực hiện thủ tục - Dịch vụ công - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/block/phieu-huong-dan/thu-tuc/29497",
+    "snippet": "Tờ khai đề nghị cấp hộ chiếu phổ thông ở trong nước (mẫu TK01 dành cho người ... Bản sao: 0. Lệ phí. Không. Yêu cầu điều kiện thực hiện. Không thuộc các ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

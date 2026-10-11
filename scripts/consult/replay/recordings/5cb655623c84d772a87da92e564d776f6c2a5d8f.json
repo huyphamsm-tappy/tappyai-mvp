@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe true wireless chống ồn ANC chạy bộ dưới 3 triệu IPX4 Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:29.378Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe true wireless chống ồn ANC chạy bộ dưới 3 triệu IPX4 Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 1
+   },
+   {
+    "title": "TOP 10+ Tai nghe Bluetooth màu đen, pin trâu, giá tốt",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-bluetooth-mau-den",
+    "snippet": "JBL Tune 770NC cân bằng giữa pin dài, ANC và thiết kế gập gọn. Với thời lượng lên đến 70 giờ khi không dùng chống ồn, sản phẩm phù hợp người ít ...",
+    "date": "27 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo. Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 3
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 4
+   },
+   {
+    "title": "tai nghe funcl giá tốt Tháng 9, 2026 Tai nghe nhét tai",
+    "link": "https://shopee.vn/search?category=11036132&keyword=tai%20nghe%20funcl&page=0&sortBy=relevancy&subcategory=11036143",
+    "snippet": "Tai nghe không dây Bluetooth 5.3 Goojodoq có tính năng điều khiển cảm ứng, âm trầm và thời lượng pin cực dài Kênh đôi. 125.000₫. 208.000₫.",
+    "position": 5
+   },
+   {
+    "title": "Top 99+ Tai nghe bluetooth, không dây giá dưới 1 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-1-trieu",
+    "snippet": "Tính năng. Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC ; Cổng kết nối. 3.5mm",
+    "position": 6
+   },
+   {
+    "title": "Top 9 tai nghe Bluetooth tốt được tín đồ công nghệ yêu thích",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-tot/",
+    "snippet": "Tai nghe Bluetooth 5.2 Gaming P30 P36 TWS là sản phẩm tai nghe earbuds giá thành rẻ, phù hợp với nhiều đối tượng, đặc biệt là các bạn game thủ.",
+    "date": "25 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe nhét tai Bluetooth V5.3 không dây Mcdodo ANC ...",
+    "link": "https://shopee.vn/Tai-nghe-nh%C3%A9t-tai-Bluetooth-V5.3-kh%C3%B4ng-d%C3%A2y-Mcdodo-ANC-ENCTWS-c%C3%B3-m%C3%A0n-h%C3%ACnh-k%E1%BB%B9-thu%E1%BA%ADt-s%E1%BB%91-Tai-nghe-%C3%A2m-thanh-n%E1%BB%95i-HP-330-C%E1%BA%A3m-%E1%BB%A9ng-th%C3%B4ng-minh-Tai-nghe-kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-IPX4-i.192877339.25227439688",
+    "snippet": "Tai nghe nhét tai Bluetooth V5.3 không dây Mcdodo ANC + ENCTWS có màn hình kỹ thuật số Tai nghe âm thanh nổi HP-330 / Cảm ứng thông minh / Tai nghe khử tiếng ồn ...",
+    "rating": 4.8,
+    "ratingCount": 24,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

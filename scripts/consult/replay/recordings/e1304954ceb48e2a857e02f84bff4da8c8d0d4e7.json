@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn lệ phí hộ chiếu phổ thông Thông tư Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:08:17.196Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn lệ phí hộ chiếu phổ thông Thông tư Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế ...",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=182515",
+    "snippet": "Thông tư số 157/2015/TT-BTC của Bộ Tài chính: Quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư số 66/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=84925",
+    "snippet": "1. Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất cảnh, quá cảnh ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư số 97/2011/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=151483",
+    "snippet": "“Mức thu lệ phí xuất nhập cảnh được quy định cụ thể tại Biểu mức thu lệ phí ban hành kèm theo Thông tư này, đơn vị tính là 01 quyển hộ chiếu, 01 thị thực, 01 ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư số 88/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=32620",
+    "snippet": "THÔNG TƯ. Sửa đổi, bổ sung Thông tư số 37/2003/TT-BTC ngày 24/4/2003 của Bộ Tài chính. quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu, thị thực.",
+    "position": 4
+   },
+   {
+    "title": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214418",
+    "snippet": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân.",
+    "position": 5
+   },
+   {
+    "title": "Thông tư số 113/2009/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=87805",
+    "snippet": "THÔNG TƯ. Sửa đổi, bổ sung Thông tư số 66/2009/TT-BTC ngày 30/3/2009 về quy định. chế độ thu, nộp, quản lý và sử dụng lệ phí cấp hộ chiếu, thị thực, giấy tờ.",
+    "position": 6
+   },
+   {
+    "title": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=208496",
+    "snippet": "Thông tư số 55/2023/TT-BTC của Bộ Tài chính: Quy định quản lý, sử dụng và quyết toán kinh phí sự nghiệp từ nguồn ngân sách nhà nước thực hiện các chương ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư số 102/2012/TT-BTC của Bộ Tài chính",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=163560",
+    "snippet": "vii) Lệ phí visa, lệ phí cấp hộ chiếu: Thanh toán theo phiếu thu hợp pháp của cơ quan lãnh sự trong và ngoài nước;. viii) Tiền đóng góp tham gia (tham dự) hội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

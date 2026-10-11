@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:55.770Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu phổ thông 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-cap-ho-chieu-nam-2026-bao-nhieu-tien-138082025.html",
+    "snippet": "1. Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chíp điện tử và hộ chiếu không gắn chíp điện tử) ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc ...",
+    "date": "2 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Lệ phí cấp hộ chiếu năm ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/108810/thong-tu-28-2026-tt-btc-le-phi-cap-ho-chieu-nam-2026-moi-nhat",
+    "snippet": "- Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân sự: 100.000 đồng/lần cấp. Lưu ý, các trường hợp được ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Biểu mức thu lệ phí cấp hộ chiếu, giấy thông hành ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/bieu-muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-moi-nhat-2026-de-xuat-303559-217179.html",
+    "snippet": "Lệ phí cấp giấy phép xuất cảnh được giảm 50% đến hết năm 2026? · 200.000 đồng/lần cấp · 100.000 đồng/lần cấp · 10.000 đồng/lần cấp · 5.000 đồng/lần ...",
+    "date": "21 thg 12, 2025",
+    "position": 3
+   },
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 4
+   },
+   {
+    "title": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chinh-thuc-giam-50-le-phi-cap-ho-chieu-den-het-2026-theo-thong-tu-642025-209665.html",
+    "snippet": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 theo Thông tư 64/2025? ; Cấp mới. 100.000 ; Cấp lại do bị hỏng hoặc bị mất. 200.000 ; Cấp giấy ...",
+    "date": "15 thg 8, 2025",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn làm passport online mới nhất hiện nay? Lệ phí ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/huong-dan-lam-passport-online-moi-nhat-hien-nay-le-phi-cap-passport-online-la-bao-nhieu-640470-214966.html",
+    "snippet": "Thủ tục. Mức thu ; Cấp mới. 100.000 ; Cấp lại do bị hỏng hoặc bị mất. 200.000 ; Cấp giấy xác nhận yếu tố nhân sự. 50.000 ...",
+    "date": "15 thg 11, 2025",
+    "position": 6
+   },
+   {
+    "title": "Người Việt Nam được miễn lệ phí cấp hộ chiếu trong ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/nguoi-viet-nam-duoc-mien-le-phi-cap-ho-chieu-trong-nhung-truong-hop-nao-817347-218149.html",
+    "snippet": "a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia hạn hộ chiếu (ngoại giao, công vụ). 100.000 ; d. Cấp giấy xác nhận nhân ...",
+    "date": "5 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu gắn chip điện tử năm 2026 mới nhất là ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/le-phi-cap-ho-chieu-gan-chip-dien-tu-nam-2026-moi-nhat-la-bao-nhieu-nhung-truong-hop-nao-duoc-mien-l-20979.html",
+    "snippet": "Lệ phí cấp hộ chiếu gắn chip điện tử năm 2026 mới nhất là bao nhiêu? ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia ...",
+    "date": "2 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn lệ phí cấp hộ chiếu trực tuyến thông tư 2024",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:09:42.283Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn lệ phí cấp hộ chiếu trực tuyến thông tư 2024",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/bogiaoducdaotao/Pages/vanban.aspx?year=1960",
+    "snippet": "Dữ liệu cá nhân cơ bản: Họ, chữ đệm và tên khai sinh, tên gọi khác (nếu có). Ngày, tháng, năm sinh; ngày, tháng, năm chết hoặc mất tích. Giới tính. Nơi sinh, ...",
+    "position": 1
+   },
+   {
+    "title": "Chi tiết văn bản",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-2.002363.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 2
+   },
+   {
+    "title": "Căn cứ Bộ Luật Dân sự đã được Quốc hội Nước Cộng hòa xã ...",
+    "link": "https://dgts.moj.gov.vn/common/download?name=Quy%20che%20dang.pdf&path=TDNVd01TOWlkSEJrWjNSekwyWnBiR1Z6WDNWd2JHOWhaQzh5TURJMk1EWXhPUzlEVkZKZk5EUXhPRGd3TWpNMk5ESTVNRGN5T0RnMk9TNWtZWFE3VkhWbElFcDFiaUF5TXlBd09Eb3dNem8xTmlCSlExUWdNakF5Tmc9PQ%3D%3D",
+    "snippet": "QUY CHẾ CUỘC ĐẤU GIÁ. Tài sản: Quyền sử dụng đất thuộc Thửa đất số 277, tờ bản đồ số 7, diện tích. 167m², đất ở tại nông thôn 100m², ...",
+    "date": "29 thg 5, 2023",
+    "position": 3
+   },
+   {
+    "title": "CÔNG TY ĐẤU GIÁ HỢP DANH QUỐC GIA VIỆT NAM",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/thong-bao-quy-che-52-1-2026-01a08a6f3e427462a4c0129b38e0ba9e.pdf",
+    "snippet": "thanh toán các chi phí thực tế, hợp lý đã phát sinh từ việc cưỡng chế thi hành án, tổ chức đấu giá thì được nhận lại tài sản thi hành án.",
+    "date": "10 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "Untitled - Đấu giá tài sản",
+    "link": "https://dgts.moj.gov.vn/du-lieu-dau-gia-truc-tuyen/thong-bao-lua-chon/3188/tep/12162",
+    "snippet": "-. Chi phí đấu giá tài sản (chi phí thông báo, niêm yết tài sản; chi phí sử dụng Hệ thống đấu giá trực tuyến ...) ... nghề đấu giá, Căn cước công ...",
+    "date": "24 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Thủ tục đăng ký nhận cha, mẹ, con",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-1.001022.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 6
+   },
+   {
+    "title": "Căn cứ Bản án, Quyết định số 02/2024/QĐST-DS ngày ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-so-3279-kv13-ngay-26-5-2026-ve-viec-ban-dau-gia-tai-san-ba-noi-pdf-4-019e64d0e2f974baad15acdf16aee10e.pdf",
+    "snippet": "+ Đối với hình thức đăng ký gián tiếp: Người đăng ký tham gia đấu giá tài sản truy cập vào Trang thông tin điện tử đấu giá trực tuyến (Địa chỉ ...",
+    "date": "26 thg 5, 2026",
+    "position": 7
+   },
+   {
+    "title": "Quy chế đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/quy-che-dau-gia-tai-san-lan-1-vu-chung-ly-01a0d2bf46eb75b7b2a5e4da3fa7b975.pdf",
+    "snippet": "đăng ký tham gia đấu giá trực tuyến trên Trang thông tin điện tử đấu giá trực tuyến: ... - Số căn cước công dân/hộ chiếu; ngày cấp; nơi cấp.",
+    "date": "22 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro 14 sai gon site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:21:12.123Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 sai gon site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dán màn hình CƯỜNG LỰC 9H MacBook Pro 13 inch",
+    "link": "https://h5.lazada.vn/products/dan-man-hinh-cuong-luc-9h-macbook-pro-13-inch-14-inch-16-inch-m2-m3-air-m2-13-inch-15-inch-nano-deo-trong-suot-i2364814263.html",
+    "snippet": "_ Chống trầy xước và chống bám bụi cực kì tốt (Màn hình laptop do lực hút tĩnh điện nên thường hít bụi từ môi trường bên ngoài cực nhiều, lâu dần bụi sẽ vào cả ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Ốp Trong Suốt JRC Cho MacBook Air 13.6 M2/M3/M4/M5 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13444703392.html?srsltid=AU7gw4V8mIfpwcfcb-Yohmi-Fe71Cu98kyM6ygqbZlfmNsAV_I2REn6j",
+    "snippet": "- Chất liệu: Nhựa Polycarbonate (PC). - Màu sắc: Trong suốt. - Cấu tạo: Gồm 2 phần riêng biệt cho mặt trên và mặt dưới MacBook.",
+    "position": 2
+   },
+   {
+    "title": "Ốp Laptop Siêu Mỏng Màu Vàng Cam Dành Cho MacBook Neo ...",
+    "link": "https://www.lazada.vn/products/pdp-i13435955783.html?srsltid=AU7gw4UexhaZEF5CeEYXhJHnJIbiA1OgrVMKW2oyS4PVHydrFSfH-eaI",
+    "snippet": "Ốp Laptop Siêu Mỏng Màu Vàng Cam Dành Cho MacBook Neo 13 A18 Pro Chip Model A3404 - Vỏ Nhựa Chống Nước Bảo Vệ MacBook Dành Cho Cả Nam Và Nữ.",
+    "position": 3
+   },
+   {
+    "title": "INOXTO L Chống bụi Khăn lau Mềm mại Sợi nhỏ Bọc bàn phím ...",
+    "link": "https://www.lazada.vn/products/pdp-i13461427548.html?srsltid=AU7gw4XJmyw2rONupBv51Bl_nfeZWhAST2EECKWyBM9zar7m5hmLMqik",
+    "snippet": "Chất liệu: Vải sợi nhỏ · Tính năng: Thân thiện với môi trường · Mẫu máy tính tương thích: Phù hợp với MacBook Pro 13/14/15/16 inch · khoảng 290X195mm (dành cho ...",
+    "position": 4
+   },
+   {
+    "title": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch",
+    "link": "https://h5.lazada.vn/products/dan-ppf-man-hinh-mat-lung-mat-de-macbook-pro-13-inch-14-inch-16-inch-m2-m2-pro-m2-max-air-m2-13-inch-15-inch-i2364779871-s11490845569.html",
+    "snippet": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch/ 14 inch/ 16 inch (M2, M2 Pro, M2 Max)/ Air (M2) 13 inch/ 15 inch ... Giảm 11.000 ₫ phí vận chuyển cho một ...",
+    "position": 5
+   },
+   {
+    "title": "Túi Đựng Máy Tính Xách Tay Đa Năng Cho Xiaomi Lenovo Dell ...",
+    "link": "https://www.lazada.vn/products/danycase-tui-dung-may-tinh-xach-tay-da-nang-cho-xiaomi-lenovo-dell-macbook-airpro-retina-131415156-inch-vo-thiet-ke-da-nang-bang-vai-polyester-i13431884186.html?srsltid=AU7gw4UjAzGg8pnaoTSiGlWwUSJB5kk6ofw8PqVAxahkU0DE-LYdEJ6d",
+    "snippet": "Chất liệu chất lượng cao Được chế tạo từ polyester bền, chiếc túi đựng máy tính xách tay này có khả năng bảo vệ chống trầy xước và mài mòn hàng ngày.",
+    "position": 6
+   },
+   {
+    "title": "Dán PPF Macbook Pro M1 Pro 2021 14 inch / 16 inch ...",
+    "link": "https://www.lazada.vn/products/dan-ppf-macbook-pro-m1-pro-2021-14-inch-16-inch-a2442-a2485-loai-trong-nham-danh-cho-man-hinh-mat-lung-mat-de-i2364839466.html?srsltid=AU7gw4Ub9q2Z1ieTxvbdlxSiLDUC01tvZhsnotNTBw47xTW1v7OG1DKM",
+    "snippet": "Dán PPF Macbook Pro M1 Pro 2021 14 inch / 16 inch A2442 A2485 loại trong, nhám dành cho màn hình, mặt lưng, mặt đế ; Dịch vụ · 15 Ngày Trả Hàng Miễn Phí. Áp dụng ...",
+    "position": 7
+   },
+   {
+    "title": "ADG Sợi nhỏ Khăn lau Mềm mại Chống bụi Bọc bàn phím Chăm ...",
+    "link": "https://www.lazada.vn/products/pdp-i13463670531.html?srsltid=AU7gw4Uo_El1mVcPlV_K_z4qSY84ThwABhAPcKMQ1FnGX0CaSdolCuSI",
+    "snippet": "Đặc điểm nổi bật · khoảng 340X225mm (dành cho MacBook Pro 15/16'') · khoảng 290X195mm (dành cho MacBook Pro 13/14'') · Kích thước: · Chất liệu: Vải sợi nhỏ · Màu sắc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

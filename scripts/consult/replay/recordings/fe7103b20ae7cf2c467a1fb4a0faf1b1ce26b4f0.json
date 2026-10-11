@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "xe khách Sài Gòn Đà Nẵng site:vexere.com/vi-VN",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:56:40.902Z",
+ "body": {
+  "searchParameters": {
+   "q": "xe khách Sài Gòn Đà Nẵng site:vexere.com/vi-VN",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đặt vé xe từ Sài Gòn đi Đà Nẵng 23 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-sai-gon-di-da-nang-129t1151.html",
+    "snippet": "Số điện thoại đặt mua vé xe Sài Gòn Đà Nẵng: 1900 888684. 2. Xe Hoàng Long Limousine khởi hành tại Bến xe An Sương (Bến xe An Sương) ...",
+    "rating": 4.1,
+    "ratingCount": 27451,
+    "position": 1
+   },
+   {
+    "title": "Đặt vé xe từ Quận 12 - Sài Gòn đi Đà Nẵng 9 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-quan-12-sai-gon-di-da-nang-2329t1151.html",
+    "snippet": "Số điện thoại đặt mua vé xe Quận 12 - Sài Gòn Đà Nẵng: 1900 888684. 3. Xe Minh Phương (MP Bus) khởi hành tại 720 Quốc lộ 1A, P. Thạnh Lộc, ...",
+    "rating": 4.2,
+    "ratingCount": 8185,
+    "position": 2
+   },
+   {
+    "title": "Đặt vé xe từ Đà Nẵng đi Sài Gòn 17 hãng xe",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tu-da-nang-di-sai-gon-115t1291.html",
+    "snippet": "Hiện tại, theo cập nhật mới nhất của Vexere.com, giá vé xe khách đi Sài Gòn từ Đà Nẵng có mức giá dao động từ 450000 đồng - 1030000 đồng. Trong đó, nhà xe Tân ...",
+    "rating": 4,
+    "ratingCount": 16804,
+    "position": 3
+   },
+   {
+    "title": "Đặt vé xe Đình Nhân đi Đà Nẵng từ Sài Gòn giá tốt nhất",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-dinh-nhan-tu-sai-gon-di-da-nang-129t1151-11192.html",
+    "snippet": "Nhà xe Đình Nhân sẽ bắt đầu xuất phát ở Sài Gòn lúc 19:00 tại Sài Gòn và dự kiến sẽ trả khách ở Đà Nẵng sau 18.2 giờ. Hiện tại Vexere.com đang áp dụng ...",
+    "rating": 3.8,
+    "ratingCount": 904,
+    "position": 4
+   },
+   {
+    "title": "Đặt vé xe giường nằm đi Đà Nẵng từ Sài Gòn giá tốt nhất",
+    "link": "https://vexere.com/vi-VN/ve-xe-giuong-nam-tu-sai-gon-di-da-nang-129t1151.html",
+    "snippet": "Tuyến đường Sài Gòn - Đà Nẵng dài khoảng 882 km. Trung bình mỗi ngày có khoảng 106 chuyến Xe giường nằm đi Đà Nẵng từ Sài Gòn trên Vexere.com bắt đầu từ 05:00 ...",
+    "rating": 4.1,
+    "ratingCount": 27696,
+    "position": 5
+   },
+   {
+    "title": "Vé xe Phi Hiệp từ Sài Gòn đi Đà Nẵng: 3 chuyến mỗi ngày",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-phi-hiep-tu-sai-gon-di-da-nang-129t1151-11112.html",
+    "snippet": "Với 195 đánh giá với điểm trung bình là 4.3/5 xe Phi Hiệp được đánh giá là xe khách có chất lượng Trung bình tuyến Sài Gòn đi Đà Nẵng dựa trên trải nghiệm của ...",
+    "rating": 4.3,
+    "ratingCount": 195,
+    "position": 6
+   },
+   {
+    "title": "Đặt vé xe Đình Nhân đi Sài Gòn từ Đà Nẵng giá tốt nhất",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-dinh-nhan-tu-da-nang-di-sai-gon-115t1291-11192.html",
+    "snippet": "Lịch trình chi tiết các xe Đình Nhân Đi Sài Gòn từ Đà Nẵng ; Chiều dài tuyến đường. 1137 km ; Thời gian di chuyển. 16.3 giờ ; Giá vé xe Đình Nhân đi Sài Gòn trung ...",
+    "rating": 4,
+    "ratingCount": 909,
+    "position": 7
+   },
+   {
+    "title": "Vé xe Tân Hiệp từ Đà Nẵng đi Sài Gòn: 3 chuyến mỗi ngày",
+    "link": "https://vexere.com/vi-VN/ve-xe-khach-tan-hiep-tu-da-nang-di-sai-gon-115t1291-45427.html",
+    "snippet": "Với 197 đánh giá với điểm trung bình là 4.2/5 xe Tân Hiệp được đánh giá là xe khách có chất lượng Trung bình tuyến Đà Nẵng đi Sài Gòn dựa trên trải nghiệm của ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

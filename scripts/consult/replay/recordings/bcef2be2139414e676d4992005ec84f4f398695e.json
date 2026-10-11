@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple AirPods Pro 2 technical specifications listening time 6 hours charging case 30 hours ANC Apple",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:52.205Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple AirPods Pro 2 technical specifications listening time 6 hours charging case 30 hours ANC Apple",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "showingResultsFor": "Apple AirPods Pro 2 technical specifications listening time 6 hours charging case 30 hours AND Apple"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Up to 24 hours of listening time with Active Noise Cancellation enabled · 5 minutes in the case provides around 1 hour of listening time ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-vn/111851",
+    "snippet": "Up to 6 hours of listening time with a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled)4. AirPods Pro with MagSafe Charging Case.",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 with MagSafe Charging Case (USB-C)",
+    "link": "https://support.apple.com/en-vn/111834",
+    "snippet": "Up to 6 hours of listening time on a single charge (up to 5.5 hours with Spatial Audio and Head Tracking enabled) · Up to 4 hours of Lossless Audio listening ...",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-2nd-gen,airpods-pro",
+    "snippet": "More than 24 hours of listening time with charging case. Up to 30 hours of listening time with charging case and Active Noise Cancellation. Lightning ...",
+    "position": 4
+   },
+   {
+    "title": "Apple AirPods Pro 2 Specs: Features, Comfort & More",
+    "link": "https://ozlosleep.com/blogs/news/apple-airpods-pro-2-specs",
+    "snippet": "The earbuds alone offer up to 6 hours of listening with ANC on, dropping to 5.5 hours with Spatial Audio and head tracking active. Talk time ...",
+    "date": "2 thg 4, 2025",
+    "position": 5
+   },
+   {
+    "title": "AirPods (2nd generation) - Technical Specifications",
+    "link": "https://www.apple.com/eg/airpods-2nd-generation/specs/",
+    "snippet": "Up to 5 hours of listening time with a single charge; Up to 3 ... 15 minutes in the case provides up to 3 hours listening time or up to 2 hours talk time.",
+    "position": 6
+   },
+   {
+    "title": "AirPods Pro 2 Features and Specs | PDF | Ios | I Phone",
+    "link": "https://www.scribd.com/document/662907000/AirPods-Pro-2nd-generation-Apple",
+    "snippet": "It has up to 6 hours of listening time per charge and up to 30 hours with the charging case. The MagSafe charging case is also water and sweat resistant and ...",
+    "position": 7
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/in/airpods/compare/?modelList=airpods-2nd-gen,airpods-pro",
+    "snippet": "More than 24 hours of listening time with charging case. Up to 30 hours of listening time with charging case and Active Noise Cancellation. Lightning ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn lệ phí cấp hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:05:10.474Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn lệ phí cấp hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chi tiết - Kho bạc Nhà nước",
+    "link": "https://vst.mof.gov.vn/webcenter/portal/dvc_kbnn/r/m/gytthc4/ttdvc_chitiet?dDocName=BTC206624&dID=23832",
+    "snippet": "Lệ phí cấp giấy phép xuất cảnh là 200.000 đồng; cấp công hàm xin thị thực nhập cảnh nước đến là 10.000 đồng; cấp công hàm xin thị thực quá cảnh ...",
+    "date": "13 thg 10, 2015",
+    "position": 1
+   },
+   {
+    "title": "Cổng TTĐT Kho Bạc Nhà Nước VN - Cổng thông tin điện tử Kho bạc ...",
+    "link": "https://vst.mof.gov.vn/webcenter/portal/kbnn/r/o/ttsk/hdkbnn/hdkbnn_chitiet?dDocName=BTC341126&dID=60640",
+    "snippet": "Cụ thể như, l ệ phí Cấp hộ chiếu, thị thực và phí xử lý hồ sơ cấp Giấy miễn thị thực từ 15 đến 150USD/1quyển hộ chiếu, 30USD cấp mới 1 bản giấy thông hành; 15 – ...",
+    "position": 2
+   },
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam-lan-2",
+    "snippet": "Địa chỉ: số 28 phố Trần Hưng Đạo, phường Cửa Nam, thành phố Hà Nội. Điện thoại Cổng thông tin điện tử: (84-24)2220.2828-2888. Fax: (84-24)2220.8091. Email: ...",
+    "position": 3
+   },
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Theo đó, công dân được miễn lệ phí cấp hộ chiếu phổ thông trong nước. Các trường hợp cấp giấy thông hành cũng thuộc diện miễn, gồm giấy thông ...",
+    "date": "24 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/116954",
+    "snippet": "Căn cứ quy định nêu trên, tổ chức thu lệ phí (lệ phí đăng ký cư trú) phải nộp 100% lệ phí thu được vào NSNN (ngân sách địa phương), nguồn chi phí trang trải cho ...",
+    "position": 5
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/157075",
+    "snippet": "Phí Chứng thực, lệ phí hộ tịch tại cấp xã là do cơ quan nào thu? II. Việc Trung tâm Phục vụ hành chính công được mở tài khoản tại Kho bạc Nhà nước nơi giao dịch ...",
+    "position": 6
+   },
+   {
+    "title": "Văn bản quy phạm pháp luật ngành tài chính",
+    "link": "https://vbpq.mof.gov.vn/GetByEditor?contentType=legaldocument_vbhn&idOrg=3",
+    "snippet": "08/VBHN-BTC · Quy định mức thu, chế độ thu, nộp, quản lý và sử dụng lệ phí đăng ký doanh nghiệp, đăng ký hộ kinh doanh và phí cung cấp thông tin doanh nghiệp.",
+    "position": 7
+   },
+   {
+    "title": "Tự do - Hạnh phúc Số: 44/2023/ IT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179454",
+    "snippet": "lực của Băng bảo hộ. 207/2016/TT-BTC. 21 Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem AB. Bằng 80% mức thu lệ phí quy định tại ...",
+    "date": "29 thg 6, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

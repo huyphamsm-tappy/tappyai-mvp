@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:24.803Z",
+ "body": {
+  "searchParameters": {
+   "q": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus-256gb-color-pink-image_3_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaNsOeOANzEjSuWm7QPYFZlI3tGzY1OerYPCfwEFQpgQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-15-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-15-plus-256gb-color-pink-image_3_1.png&tbnid=_fKJ86ilSLOVFM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-15-plus.html&docid=FX7M5aUY-T6EvM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Plus 128GB - Chính hãng, giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/2023_9_13_638302007166386978_1_iPhone_15_Plus_Lineup_Screen__WWEN.jpg",
+    "imageWidth": 828,
+    "imageHeight": 552,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTT88YazRw4YZGkN8Nd3Oy5WDNoJEwl5AjhXz9LmT-Mdw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-15-plus",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2023_9_13_638302007166386978_1_iPhone_15_Plus_Lineup_Screen__WWEN.jpg&tbnid=MOwd7ghCGV89HM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fdien-thoai%2Fiphone-15-plus&docid=46jexn-pqg3pyM&w=828&h=552",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 Plus 128GB - Giá giảm SỐC, trả góp 0%",
+    "imageUrl": "https://cdn1.viettelstore.vn/Images/Product/ProductImage/143097929.jpeg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTdQWfoj5qGPrDD6FBKg4t7jCNv9rHJuGq0ZaaF8Y3OlA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Viettel Store",
+    "domain": "viettelstore.vn",
+    "link": "https://viettelstore.vn/dien-thoai/iphone-15-plus-pid317057.html?srsltid=AU7gw4XlD7FE_n6Y8iM-8XuyS18zXlpP58sleiaWg-k1_svspwItsrf8",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn1.viettelstore.vn%2FImages%2FProduct%2FProductImage%2F143097929.jpeg&tbnid=NxtwrzH7aDEffM&imgrefurl=https%3A%2F%2Fviettelstore.vn%2Fdien-thoai%2Fiphone-15-plus-pid317057.html%3Fsrsltid%3DAU7gw4XlD7FE_n6Y8iM-8XuyS18zXlpP58sleiaWg-k1_svspwItsrf8&docid=Wnk0XxMJEdRt-M&w=500&h=500",
+    "position": 3
+   },
+   {
+    "title": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng T10/2026",
+    "imageUrl": "https://media-asset.cellphones.com.vn/dashboard-v2/uploads/content-uploads/a-691457.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOYSh-gtXFmAtEg1Na8ed757YTgUy_EudGm8aP4bz1ew&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-15-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-asset.cellphones.com.vn%2Fdashboard-v2%2Fuploads%2Fcontent-uploads%2Fa-691457.jpg&tbnid=Y5CbGQYX5UEa3M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-15-plus.html&docid=FX7M5aUY-T6EvM&w=810&h=456",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Plus 128GB | Giá tốt, giảm 3,5 triệu, có mua trả chậm 0% lãi suất",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/42/303891/iphone-15-plus-den-1-639175617590283101.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGqcJolkLoFY_vtFaydXddBD716IC-hy1fUSV017Vlaw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Điện máy XANH",
+    "domain": "www.dienmayxanh.com",
+    "link": "https://www.dienmayxanh.com/dien-thoai/iphone-15-plus?srsltid=AU7gw4UqwYy3vchSi1RbglXHlT8Z3aPdQzB3zy0xINkGzMo1QjgMNOYa",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Ftgdd%2FProducts%2FImages%2F42%2F303891%2Fiphone-15-plus-den-1-639175617590283101.jpg&tbnid=rym3z1KKAt1JsM&imgrefurl=https%3A%2F%2Fwww.dienmayxanh.com%2Fdien-thoai%2Fiphone-15-plus%3Fsrsltid%3DAU7gw4UqwYy3vchSi1RbglXHlT8Z3aPdQzB3zy0xINkGzMo1QjgMNOYa&docid=kZI1CtCHjSL4PM&w=1020&h=680",
+    "position": 5
+   },
+   {
+    "title": "iPhone 15 Plus 128GB Quốc Tế (Cũ 99% - LL/A)",
+    "imageUrl": "https://cdn.phuckhangmobile.com/image/iphone-15plus-phuckhangmobile2025-32927j.jpg",
+    "imageWidth": 900,
+    "imageHeight": 900,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVGDQybjjRXlAo1_WAOQaTMyDMoZk_fcXKvTCEF-0BBA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Phúc Khang Mobile",
+    "domain": "phuckhangmobile.com",
+    "link": "https://phuckhangmobile.com/iphone-15-plus-128gb-quoc-te-likenew-98-ll-a-6907.html?srsltid=AU7gw4WZY9qLPpJQA5r-nlsoezHS-LGm7he2ymSoPp7M9lEuMLE3Uqji",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.phuckhangmobile.com%2Fimage%2Fiphone-15plus-phuckhangmobile2025-32927j.jpg&tbnid=vtor2sscBJpbhM&imgrefurl=https%3A%2F%2Fphuckhangmobile.com%2Fiphone-15-plus-128gb-quoc-te-likenew-98-ll-a-6907.html%3Fsrsltid%3DAU7gw4WZY9qLPpJQA5r-nlsoezHS-LGm7he2ymSoPp7M9lEuMLE3Uqji&docid=3cSXO8jqxcBG1M&w=900&h=900",
+    "position": 6
+   },
+   {
+    "title": "Điện thoại iPhone 15 Plus 128GB giá rẻ, chính hãng T10/2026",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-plus-series-image-02.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgxBCrBYkV7Lbw0XF_Dl4xhJGkG2J-0cQ5vsTcO48dcw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-15-plus.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-15-plus-series-image-02.png&tbnid=UgIPgkKMBtcY2M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-15-plus.html&docid=FX7M5aUY-T6EvM&w=358&h=358",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15 Plus 128GB - Chính hãng, giá rẻ, trả góp 0%",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/2023_9_13_638302007395640706_VN_iPhone_15_Plus_Pink_PDP_Image_Position-1B_Pink_Color.jpg",
+    "imageWidth": 828,
+    "imageHeight": 552,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTErbZPmO5XlbtMegSx9XOx4TiT1-E6xyjv4RkBp-9oGg&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-15-plus",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2023_9_13_638302007395640706_VN_iPhone_15_Plus_Pink_PDP_Image_Position-1B_Pink_Color.jpg&tbnid=68QPCDZ7EhHBpM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fdien-thoai%2Fiphone-15-plus&docid=46jexn-pqg3pyM&w=828&h=552",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

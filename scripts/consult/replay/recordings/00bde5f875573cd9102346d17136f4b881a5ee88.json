@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb giá MacBook Pro M4 16GB 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:47.880Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb giá MacBook Pro M4 16GB 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "snippet": "Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | Chính hãng Apple Việt Nam-Bạc. Bạc 38.590.000₫ · Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB | ...",
+    "rating": 5,
+    "ratingCount": 8,
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB - Cũ Đẹp",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb-cu-dep.html",
+    "snippet": "HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 356.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 39.990.000đ 35.590.000đ.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb-cu-tray-xuoc.html",
+    "snippet": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB - Cũ Trầy Xước ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 341.000đ ; Giá sản phẩm. 39.990.000đ 34.090.000đ.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb-cu-ch-da-kich-hoat.html",
+    "snippet": "Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB - Chính hãng Đã kích hoạt-Đen. Đen 37.990.000₫ · Flash Sale MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB - Chính ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

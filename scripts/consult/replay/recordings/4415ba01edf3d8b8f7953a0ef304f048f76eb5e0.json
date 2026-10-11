@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến thành phần hồ sơ lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:31.363Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn cấp hộ chiếu phổ thông trong nước trực tuyến thành phần hồ sơ lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 1
+   },
+   {
+    "title": "Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=247400",
+    "snippet": "Cổng Dịch vụ công Quốc gia hỗ trợ thông tin, đăng ký thủ tục hành chính như đổi giấy phép lái xe, nộp thuế điện tử, thông báo khuyến mại, cấp lại thẻ BHYT, ...",
+    "position": 2
+   },
+   {
+    "title": "Không có tiêu đề",
+    "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "What code is in the image? ... Your support ID is: 844787499019953750 .",
+    "position": 3
+   },
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với trường ...",
+    "position": 4
+   },
+   {
+    "title": "Cấp TRỄ hộ chiếu phổ thông trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=486431DEC4E2C083E063560AA8C0F7E1",
+    "snippet": "Hồ sơ: G01.867.108-251222-00034 Tôi có nộp hồ sơ online xin cấp hộ chiếu phổ thông trong nước tại Phòng Quản lý XNC-Công an tỉnh Quảng Ngãi.",
+    "position": 5
+   },
+   {
+    "title": "Kiến nghị về việc: Phản ánh về thời gian xử lý hồ sơ hộ chiếu",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=4D3D9EF325FE40DEE063540AA8C0F6BA",
+    "snippet": "Kính gửi: Cơ quan xử lý hồ sơ Cổng Dịch vụ công Tôi tên là: ĐIỀN THÁI TÚ Số điện thoại: 0396066118 Số căn cước công dân: 094206001272 Tôi đã nộp hồ sơ trực ...",
+    "position": 6
+   },
+   {
+    "title": "Không thực hiện thanh toán trực tuyến trên hệ thống Cổng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=4CBDBEE44728ED19E063540AA8C0BBC9",
+    "snippet": "Dưới đây là các nguyên nhân phổ biến nhất và cách kiểm tra: 1️⃣ Hồ sơ hoặc thủ tục chưa hỗ trợ thanh toán online Không phải tất cả thủ tục hành chính đều ...",
+    "position": 7
+   },
+   {
+    "title": "Thủ tục cấp Giấy xác nhận tình trạng hôn nhân",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=6807",
+    "snippet": "Hình thức nộp, Thời hạn giải quyết, Phí, lệ phí, Mô tả. Trực tiếp, 03 ngày làm việc; trường hợp phải xác minh thì thời hạn giải quyết không quá 23 ngày.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

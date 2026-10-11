@@ -1,6 +1,6 @@
 import { vnToday } from '@/lib/config/product'
 import { dailyRateLimit, rateLimit } from './rateLimit'
-import { distributedRateLimit, isDistributedStoreConfigured } from './distributedRateLimit'
+import { distributedRateLimit, isDistributedStoreConfigured, type RateLimitRefusal } from './distributedRateLimit'
 
 // ── P1-5: rate limiting for PUBLIC, unauthenticated LLM endpoints ────────────
 //
@@ -43,6 +43,8 @@ export interface PublicRateLimitResult {
   retryAfter: number
   /** Which limiter answered. Diagnostics only — never branch on it. */
   scope: 'distributed' | 'instance'
+  /** Present when refused: a genuine quota breach, or the configured shared store did not answer (fail closed). */
+  reason?: RateLimitRefusal
 }
 
 /**
@@ -59,11 +61,11 @@ export async function publicRateLimit(
 ): Promise<PublicRateLimitResult> {
   if (!isDistributedStoreConfigured()) {
     const local = rateLimit(key, limit, windowMs)
-    return { ok: local.ok, retryAfter: local.retryAfter, scope: 'instance' }
+    return { ok: local.ok, retryAfter: local.retryAfter, scope: 'instance', ...(local.ok ? {} : { reason: 'limit_exceeded' as const }) }
   }
   // Fail-closed on a store failure is inherited from distributedRateLimit, deliberately.
   const shared = await distributedRateLimit(key, limit, windowMs)
-  return { ok: shared.ok, retryAfter: shared.retryAfter, scope: 'distributed' }
+  return { ok: shared.ok, retryAfter: shared.retryAfter, scope: 'distributed', ...(shared.ok ? {} : { reason: shared.reason ?? 'limit_exceeded' }) }
 }
 
 /**
@@ -85,8 +87,8 @@ export async function publicDailyRateLimit(
     const local = dailyRateLimit(key, limit)
     // The in-process daily limiter reports no retry hint, and the routes render a "tomorrow"
     // sentence rather than a countdown. Reported as 0 rather than invented.
-    return { ok: local.ok, retryAfter: 0, scope: 'instance' }
+    return { ok: local.ok, retryAfter: 0, scope: 'instance', ...(local.ok ? {} : { reason: 'limit_exceeded' as const }) }
   }
   const shared = await distributedRateLimit(`${key}:${vnToday()}`, limit, ONE_DAY_MS)
-  return { ok: shared.ok, retryAfter: shared.retryAfter, scope: 'distributed' }
+  return { ok: shared.ok, retryAfter: shared.retryAfter, scope: 'distributed', ...(shared.ok ? {} : { reason: shared.reason ?? 'limit_exceeded' }) }
 }

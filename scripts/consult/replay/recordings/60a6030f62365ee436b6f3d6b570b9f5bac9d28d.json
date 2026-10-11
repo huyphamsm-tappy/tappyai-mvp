@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us/111851 AirPods Pro 2 \"Up to 6 hours\" \"30 hours\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:18:23.360Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us/111851 AirPods Pro 2 \"Up to 6 hours\" \"30 hours\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

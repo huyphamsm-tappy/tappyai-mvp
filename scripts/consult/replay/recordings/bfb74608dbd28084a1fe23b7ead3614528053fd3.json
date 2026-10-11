@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Chụp Tai DR90 - Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin 30H site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:09.271Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Chụp Tai DR90 - Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin 30H site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

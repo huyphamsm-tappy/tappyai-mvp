@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC đeo chạy bộ chống mồ hôi dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:20:07.083Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC đeo chạy bộ chống mồ hôi dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo. Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 1
+   },
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Havit Space NC01H là mẫu tai nghe Bluetooth over-ear nổi bật nhờ sự cân bằng giữa thời lượng pin, khả năng chống ồn và thiết kế bền bỉ. Với pin ...",
+    "date": "20 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Top 7 tai nghe bluetooth thể thao tốt cho dân tập luyện",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-the-thao-tot/",
+    "snippet": "Jabra Elite Active 65t trang bị tính năng tự động bật/tắt khi đeo/tháo ra khỏi tai khá tiện lợi. Sản phẩm phù hợp cho dân thể thao các môn đi bộ ...",
+    "date": "21 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "XIAOYOU | Tai Nghe Bluetooth Thể Thao Không Dây Chống Nước",
+    "link": "https://www.lazada.vn/product-reviews/?item_id=3219781837&srsltid=AU7gw4VG0wJgP7GaJ-vhIZWGth0dc_mruwtATi4F4NNwHtEfmS9EBRrn",
+    "snippet": "Sản phẩm tuyệt vời, mình đã thử nghe một chút và thấy rất hài lòng, chế độ bơi bằng mp3 thật sự rất phù hợp với mình. Hữu ích (0).",
+    "position": 4
+   },
+   {
+    "title": "tai nghe bluetooth - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth",
+    "snippet": "Khả năng kháng nước: Nếu bạn thường xuyên đeo tai nghe đi chạy bộ, hãy chọn các dòng có chuẩn chống nước từ IPX4 trở lên để bảo vệ mạch điện tử khỏi mồ hôi và ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Thiết bị thường đạt chuẩn IP từ IPX4 đến IPX8, giúp hạn chế hư hỏng khi gặp mưa, mồ hôi hoặc thậm chí ngâm nước ngắn hạn. Nhờ đó, tai nghe không chỉ hỗ trợ giải ...",
+    "position": 6
+   },
+   {
+    "title": "Top 9 tai nghe Bluetooth tốt được tín đồ công nghệ yêu thích",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-tot/",
+    "snippet": "Havit Space NC01H sở hữu thiết kế over-ear với form ôm trọn tai, mang lại cảm giác cách âm tự nhiên và thoải mái khi sử dụng lâu. Phần đệm tai ...",
+    "date": "25 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chống ồn chủ động anc - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/ch%E1%BB%91ng%20%E1%BB%93n%20ch%E1%BB%A7%20%C4%91%E1%BB%99ng%20anc",
+    "snippet": "Tai nghe Bluetooth không dây GOOJODOQ có chức năng giảm tiếng ồn dịch thuật và phiên âm AI tiên tiến. 133.600₫. 168.000₫. -20%. voucher-icon. #ShopThinhHanh.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

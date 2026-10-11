@@ -251,6 +251,208 @@ describe('FOLLOW — the existing system', () => {
   })
 })
 
+// ════════════════════════════════════════════════════════════�
+describe('VISITOR — Message (opens a direct conversation through the existing endpoint)', () => {
+  const navigations: string[] = []
+  const stubThreads = (reply: { status: number; body?: unknown } | 'network') => {
+    const base = (globalThis as any).fetch
+    vi.stubGlobal('fetch', vi.fn(async (url: any, opts?: any) => {
+      if (String(url) === '/api/messaging/threads') {
+        calls.push({ method: opts?.method ?? 'GET', url: String(url), body: opts?.body })
+        if (reply === 'network') throw new TypeError('network down')
+        return { ok: reply.status < 400, status: reply.status, json: async () => reply.body ?? {} } as any
+      }
+      return base(url, opts)
+    }))
+  }
+  beforeEach(() => {
+    navigations.length = 0
+    Object.defineProperty(window, 'location', { value: { get href() { return '' }, set href(v: string) { navigations.push(v) } }, writable: true, configurable: true })
+  })
+  const messageBtn = () => document.querySelector('[data-pp-message]') as HTMLButtonElement | null
+
+  it('a visitor sees Message beside Follow; the owner does not', async () => {
+    stubFetch({ reviews: [] })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    expect(messageBtn()).toBeTruthy()
+    cleanup()
+    stubFetch({ profile: { is_self: true }, reviews: [] })
+    render(<PublicProfileView userId={AUTHOR} viewer={OWNER} onBack={() => {}} />)
+    await screen.findByText('v3.publicProfile.edit')
+    expect(messageBtn()).toBeNull()
+  })
+
+  it('click → POST /api/messaging/threads {kind:"direct", userId} → the Inbox opens on the returned thread', async () => {
+    stubFetch({ reviews: [] })
+    stubThreads({ status: 200, body: { threadId: 'T-1' } })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    await waitFor(() => expect(navigations).toEqual(['/profile/notifications?thread=T-1']))
+    const post = calls.find(c => c.url === '/api/messaging/threads')!
+    expect(post.method).toBe('POST')
+    expect(JSON.parse(post.body)).toEqual({ kind: 'direct', userId: AUTHOR })
+  })
+
+  it('an EXISTING conversation: the endpoint answers with the same thread id (the pair is deduplicated server-side) and the Inbox opens it', async () => {
+    stubFetch({ reviews: [] })
+    stubThreads({ status: 200, body: { threadId: 'T-EXISTING' } })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    await waitFor(() => expect(navigations).toEqual(['/profile/notifications?thread=T-EXISTING']))
+  })
+
+  it('signed out: sent to login with the profile as the return path, and NO request is made', async () => {
+    stubFetch({ reviews: [] })
+    stubThreads({ status: 200, body: { threadId: 'x' } })
+    render(<PublicProfileView userId={AUTHOR} viewer={null} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    expect(navigations).toEqual(['/login?returnTo=' + encodeURIComponent(`/users/${AUTHOR}`)])
+    expect(calls.some(c => c.url === '/api/messaging/threads')).toBe(false)
+  })
+
+  it('401 / 403 (expired or anonymous session) also routes to login', async () => {
+    for (const status of [401, 403]) {
+      navigations.length = 0
+      stubFetch({ reviews: [] })
+      stubThreads({ status, body: { error: 'forbidden' } })
+      render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+      await screen.findByText('reviews.follow')
+      fireEvent.click(messageBtn()!)
+      await waitFor(() => expect(navigations).toEqual(['/login?returnTo=' + encodeURIComponent(`/users/${AUTHOR}`)]))
+      cleanup()
+    }
+  })
+
+  it('a refusal (400: blocked, not reachable or no such account — indistinguishable by design) shows ONE neutral sentence, does not navigate, and the button works again', async () => {
+    stubFetch({ reviews: [] })
+    stubThreads({ status: 400, body: { error: 'invalid_input' } })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    const alert = await screen.findByRole('alert')
+    expect(alert.textContent).toBe('v3.publicProfile.messageError')
+    expect(navigations).toEqual([])
+    await waitFor(() => expect(messageBtn()!.disabled).toBe(false))
+  })
+
+  it('a server error and a network failure show the same sentence and never navigate', async () => {
+    for (const reply of [{ status: 500, body: {} }, 'network' as const]) {
+      stubFetch({ reviews: [] })
+      stubThreads(reply)
+      render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+      await screen.findByText('reviews.follow')
+      fireEvent.click(messageBtn()!)
+      expect((await screen.findByRole('alert')).textContent).toBe('v3.publicProfile.messageError')
+      expect(navigations).toEqual([])
+      cleanup()
+    }
+  })
+
+  it('a 200 without a thread id is a failure, not a navigation to "undefined"', async () => {
+    stubFetch({ reviews: [] })
+    stubThreads({ status: 200, body: {} })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    await screen.findByRole('alert')
+    expect(navigations).toEqual([])
+  })
+
+  it('a double click sends ONE request (the button is busy while the first is in flight)', async () => {
+    stubFetch({ reviews: [] })
+    let release: (v: unknown) => void = () => {}
+    const gate = new Promise(r => { release = r })
+    const base = (globalThis as any).fetch
+    vi.stubGlobal('fetch', vi.fn(async (url: any, opts?: any) => {
+      if (String(url) === '/api/messaging/threads') { calls.push({ method: 'POST', url: String(url) }); await gate; return { ok: true, status: 200, json: async () => ({ threadId: 'T-2' }) } as any }
+      return base(url, opts)
+    }))
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    fireEvent.click(messageBtn()!)
+    fireEvent.click(messageBtn()!)
+    release(null)
+    await waitFor(() => expect(navigations).toEqual(['/profile/notifications?thread=T-2']))
+    expect(calls.filter(c => c.url === '/api/messaging/threads').length).toBe(1)
+  })
+
+  it('a profile that does not exist (the identity request fails) offers no Message button and makes no messaging request', async () => {
+    calls.length = 0
+    vi.stubGlobal('fetch', vi.fn(async (url: any) => {
+      calls.push({ method: 'GET', url: String(url) })
+      return { ok: false, status: 404, json: async () => ({ error: 'not_found' }) } as any
+    }))
+    render(<PublicProfileView userId="ghost" viewer={VISITOR} onBack={() => {}} />)
+    await waitFor(() => expect(document.querySelector('[data-pp-back]')).toBeTruthy())
+    await new Promise(r => setTimeout(r, 30))
+    expect(messageBtn()).toBeNull()
+    expect(calls.some(c => c.url === '/api/messaging/threads')).toBe(false)
+  })
+})
+
+// ════════════════════════════════════════════════════════════�
+describe('VISITOR — Safety menu (report / block this person, WP-06)', () => {
+  const stubConfig = (p8: Record<string, boolean> | null) => {
+    const base = (globalThis as any).fetch
+    vi.stubGlobal('fetch', vi.fn(async (url: any, opts?: any) => {
+      if (String(url) === '/api/config') return { ok: true, status: 200, json: async () => (p8 ? { p8 } : {}) } as any
+      if (String(url) === '/api/users/blocks') return { ok: true, status: 200, json: async () => ({ blocks: [] }) } as any
+      return base(url, opts)
+    }))
+  }
+  const resetSafety = async () => { const m = await import('@/lib/safety/useSafetyFlags'); m.__resetSafetyFlags(); const c = await import('@/lib/safety/safetyClient'); c.__resetSafetyClient() }
+  beforeEach(resetSafety)
+
+  it('a signed-in visitor sees the menu when the flags are on, and it is wired to THIS person', async () => {
+    stubFetch({ reviews: [] })
+    stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    fireEvent.click(await screen.findByLabelText('safety.more'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'safety.report' }))
+    fireEvent.click(await screen.findByLabelText('safety.reason.spam'))
+    fireEvent.click(screen.getByTestId('report-submit'))
+    await waitFor(() => expect(called('POST', '/api/users/' + AUTHOR + '/report')).toBe(true))
+  })
+
+  it('flags off, signed out and the owner own profile: no menu at all', async () => {
+    stubFetch({ reviews: [] }); stubConfig({ reports: false, userBlocks: false })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+    cleanup()
+    await resetSafety()
+    stubFetch({ reviews: [] }); stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={null} onBack={() => {}} />)
+    await screen.findByText('reviews.follow')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+    cleanup()
+    await resetSafety()
+    stubFetch({ profile: { is_self: true }, reviews: [] }); stubConfig({ reports: true, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={OWNER} onBack={() => {}} />)
+    await screen.findByText('v3.publicProfile.edit')
+    await new Promise(r => setTimeout(r, 20))
+    expect(screen.queryByTestId('safety-menu')).toBeNull()
+  })
+
+  it('blocking the person un-follows them locally (the server removes the follow; the button must not still say Following)', async () => {
+    stubFetch({ profile: { is_following: true }, reviews: [] })
+    stubConfig({ reports: false, userBlocks: true })
+    render(<PublicProfileView userId={AUTHOR} viewer={VISITOR} onBack={() => {}} />)
+    await screen.findByText('reviews.following')
+    fireEvent.click(await screen.findByLabelText('safety.more'))
+    fireEvent.click(screen.getByRole('menuitem', { name: 'safety.block' }))
+    fireEvent.click(await screen.findByTestId('block-confirm-button'))
+    await waitFor(() => expect(called('POST', '/api/users/' + AUTHOR + '/block')).toBe(true))
+    await waitFor(() => expect(screen.getByText('reviews.follow')).toBeTruthy())
+  })
+})
+
 // ═════════════════════════════════════════════════════════════════════════════
 describe('OWNER — the same page with the owner\'s own activity unlocked', () => {
   const ownerFixtures = () => {

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"mỗi ngày cà phê\" OR \"Barista Collective\" OR \"Café Slow\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:19:36.181Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"mỗi ngày cà phê\" OR \"Barista Collective\" OR \"Café Slow\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "📍Barista Collective - Địa điểm cafe vừa chill, vừa ấm cúng ...",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/video/7686455602507222290",
+    "snippet": "26 Lượt thích,Video TikTok từ Daily Café (@dailycafe.hcmc): \" Barista Collective - Địa điểm cafe vừa chill, vừa ấm cúng, vừa có mèo siêu ...",
+    "position": 1
+   },
+   {
+    "title": "Barista Collective",
+    "link": "https://www.tiktok.com/discover/barista-collective",
+    "snippet": "Khám phá Barista Collective tại Sài Gòn! Quán cà phê độc đáo với không gian ấm cúng, cà phê thơm ngon và những chú mèo dễ thương.",
+    "date": "20 thg 7, 2026",
+    "position": 2
+   },
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh",
+    "link": "https://www.tiktok.com/@overexploring/video/7654961807534132502",
+    "snippet": "A café perfect for cat lovers in Vietnam. Barista Collective, 191 Đ. Trần Văn Đang, Quận 3, Hồ Chí Minh 700000. #vietnam #hochiminh #fyp # ...",
+    "position": 3
+   },
+   {
+    "title": "Barista Collective (@baristacollective)",
+    "link": "https://www.tiktok.com/@baristacollective",
+    "snippet": "Barista Collective (@baristacollective) trên TikTok |14.2K Lượt thích.946 Follower.“We serve coffee beans from all over the world in one coffee cup for ...",
+    "position": 4
+   },
+   {
+    "title": "Barista Collective - có cà phê, có mèo, có chill ☕️ #dailyvlog # ...",
+    "link": "https://www.tiktok.com/@thioiii215/video/7528280173062524168",
+    "snippet": "Barista Collective - có cà phê, có mèo, có chill ☕️ #dailyvlog #vlog #cafe #saigonchill #viral #fyp #learnontiktok ; mymydienn. Quán có máy lạnh không ạ. 2025- ...",
+    "position": 5
+   },
+   {
+    "title": "Barista Collective: Top Cafe in Lê Văn Sỹ",
+    "link": "https://www.tiktok.com/@didauvaychau/video/7309858438232673537",
+    "snippet": "Barista Collective: Top Cafe in Lê Văn Sỹ. Discover Barista Collective in Lê Văn Sỹ for cozy vibes, festive decor, and excellent coffee!",
+    "position": 6
+   },
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh — Review & Location",
+    "link": "https://www.tiktok.com/@pints.with.locals/video/7654961807534132502",
+    "snippet": "Lead Barista Collective is a cat-friendly café located at 191 Đ. Trần Văn Đang, Quận 3, Ho Chi Minh 700000. Ideal for cat lovers visiting Saigon, ...",
+    "position": 7
+   },
+   {
+    "title": "Gợi Ý Quán Cafe Đẹp Ở Sài Gòn - Barista Collective",
+    "link": "https://www.tiktok.com/@jaynioi/video/7437449279976803592",
+    "snippet": "Gợi Ý Quán Cafe Đẹp Ở Sài Gòn - Barista Collective. Khám phá quán cafe ấm cúng và xinh xắn tại Quán quen núp hẻm Lê Văn Sỹ, một địa điểm lý ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

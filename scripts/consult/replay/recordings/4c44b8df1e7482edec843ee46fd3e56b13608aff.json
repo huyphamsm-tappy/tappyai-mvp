@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:46:21.670Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ dưới 12 triệu pin tốt (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "MacBook Air M1 13 inch 2020 (cũ). Apple M1. Từ 12.290.000 – 14.290.000. MacBook Air M2 2022 (cũ). Apple M2. Từ 15.590.000. MacBook Air M3 13 inch 2024. Apple M3.",
+    "position": 1
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "MacBook Air M1: 12 triệu liệu có đáng? Intel Core i3 thế hệ thứ 10, RAM 8GB và SSD 256GB, 10 triệu cho một chiếc MacBook cũ thường chỉ bằng 30-50% so với giá g ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Ổ cứng. 256GB; 512GB ; Tình trạng máy. Trầy xước; Xước cấn; Cũ đẹp; Đã kích hoạt ; Độ phân giải. Retina; 2K (Quad HD); 3K ; Dung lượng RAM. 8GB; 16GB; 24GB ; CPU.",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Tích hợp Apple Intelligence ứng dụng AI hiệu quả 2.5. Thiết kế Fan-less vận hành êm ái 2.6. Thời lượng pin cao, lên đến 18 tiếng đồng hồ 2.7. Sử dụng hệ điều ...",
+    "position": 5
+   },
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) | Giá rẻ, giảm sốc 2024",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 I Chính hãng Apple Việt Nam ; Giá hàng mới: 22.990.000 ; Trả góp 0% ; Thời lượng pin. 5/5. (21 đánh giá) ; Hiệu năng. 5/5. (21 đánh ...",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 cũ",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air/m1.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành · 16.790.000đ. 22.990.000đ. Giảm 27% ; Apple MacBook Air M1 256GB 2020 - Cũ xước cấn · 12.290.000đ. 22.990.",
+    "position": 7
+   },
+   {
+    "title": "Top 6 mẫu Macbook màu hồng đẹp được chị em ưa chuộng",
+    "link": "https://cellphones.com.vn/sforum/macbook-mau-hong",
+    "snippet": "MacBook Air M1, MacBook (12 inch) 2017 … tốt cho học. MacBook Air M1 có tốc độ nhanh hơn, thời lượng pin lâu hơn và chạy vô cùng êm. PIN: Theo",
+    "rating": 3,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

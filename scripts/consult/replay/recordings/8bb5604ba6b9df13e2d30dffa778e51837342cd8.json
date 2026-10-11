@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu online 2026 180.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:29:31.725Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn lệ phí cấp hộ chiếu online 2026 180.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/tu-van-phap-luat/97284/muc-le-phi-lam-ho-chieu-nam-2025-va-nam-2026",
+    "snippet": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026 ; a. Cấp mới. 100.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 200.000 ; c. Cấp giấy xác nhận yếu tố nhân ...",
+    "date": "28 thg 10, 2025",
+    "position": 1
+   },
+   {
+    "title": "Lệ phí cấp thị thực từ 1/4/2026 bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-cap-thi-thuc-tu-142026-bao-nhieu-tien-138085583.html",
+    "snippet": "a. Loại có giá trị không quá 90 ngày. 50 USD/chiếc ; b. Loại có giá trị trên 90 ngày đến 180 ngày. 95 USD/chiếc ; c. Loại có giá trị trên 180 ngày ...",
+    "date": "2 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Biểu mức phí cấp thị thực và các giấy tờ khác có giá trị xuất ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/109060/bieu-muc-phi-cap-thi-thuc-va-cac-giay-to-khac-co-gia-tri-xuat-nhap-canh-cu-tru-cho-nguoi-nuoc-ngoai",
+    "snippet": "a. Loại có giá trị không quá 90 ngày. 50 USD/chiếc ; b. Loại có giá trị trên 90 ngày đến 180 ngày. 95 USD/chiếc ; c. Loại có giá trị trên 180 ngày ...",
+    "date": "3 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "Phí, lệ phí xuất nhập cảnh tại Việt Nam từ 1/4/2026 là bao ...",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/phi-le-phi-xuat-nhap-canh-tai-viet-nam-tu-142026-la-bao-nhieu-138085586.html",
+    "snippet": "(đồng/lần cấp). 1. Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chip điện tử và hộ chiếu không gắn chip điện tử). a. Cấp mới. 200.000. b. Cấp lại ...",
+    "date": "1 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC mức thu nộp phí lệ phí lĩnh vực ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-28-2026-TT-BTC-muc-thu-nop-phi-le-phi-linh-vuc-xuat-canh-nhap-canh-cu-tru-tai-Viet-Nam-699533.aspx",
+    "snippet": "Các trường hợp được miễn phí lệ phí xuất nhập cảnh tại Việt Nam từ 01/4/2026 ; b. Loại có giá trị trên 90 ngày đến 180 ngày. 95 USD/chiếc ; c.",
+    "date": "27 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "Lệ phí làm hộ chiếu năm 2024 là bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-lam-ho-chieu-nam-2024-la-bao-nhieu-tien-138020158.html",
+    "snippet": "Do mức thu lệ phí làm hộ chiếu theo hình thức trực tuyến hiện nay sẽ bằng bằng 90% mức thu lệ phí làm hộ chiếu được quy định dưới đây: Đối với ...",
+    "date": "28 thg 5, 2024",
+    "position": 6
+   },
+   {
+    "title": "Hộ chiếu Việt Nam xếp vị trí bao nhiêu trên thế giới?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/ho-chieu-viet-nam-xep-vi-tri-bao-nhieu-tren-the-gioi-138013703.html",
+    "snippet": "Mức thu phí đối với cá nhân đăng ký làm passport online là bao nhiêu? Hỏi đáp Pháp luật Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền? Hỏi đáp ...",
+    "date": "15 thg 11, 2023",
+    "position": 7
+   },
+   {
+    "title": "Mức lệ phí cấp thị thực Việt Nam cho người nước ngoài ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/muc-le-phi-cap-thi-thuc-viet-nam-cho-nguoi-nuoc-ngoai-hien-nay-la-bao-nhieu-207928-181632.html",
+    "snippet": "1. Cấp thị thực có giá trị một lần. 25 USD/chiếc ; 2. Cấp thị thực có giá trị nhiều lần ; a. Loại có giá trị không quá 90 ngày. 50 USD/chiếc ; b.",
+    "date": "24 thg 10, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

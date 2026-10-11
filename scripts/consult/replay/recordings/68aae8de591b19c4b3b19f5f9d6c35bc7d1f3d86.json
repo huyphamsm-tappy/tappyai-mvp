@@ -1,0 +1,46 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 256GB 2020 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:54.689Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 256GB 2020 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 13 i5 20GHz 2016",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-13-i5-20ghz-2016",
+    "snippet": "Khám phá MacBook Pro 13 i5 20GHz 2016 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 1
+   },
+   {
+    "title": "Miếng dán màn hình Mac Pro 13inch 2016 - 2020, M1, M2",
+    "link": "https://shop.tiktok.com/vn/pdp/mieng-dan-man-hinh-mac-pro-13-inch-2016-2022-chat-luong-cao/1730291465920875221",
+    "snippet": "Bạn có thể thay thế miếng dán Mac khi miếng dán đã bị trầy xước, bị bẩn không vệ sinh được! Miếng dán màn hình Mac Pro 13inch 2016 - 2020, M1, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Miếng dán màn hình Innostyle Diamond Guard 6-IN-1 Skin ...",
+    "link": "https://shop.tiktok.com/vn/pdp/mieng-dan-man-hinh-innostyle-diamond-guard-6-in-1-cho-macbook-air-13-bao-ve-toan-dien-chong-tray-xuo/1733296099249194380",
+    "snippet": "Với các lớp bảo vệ liền mạch với chất liệu lớp alumium (nhôm) cao cấp để phù hợp với màu sắc chính xác của MacBook, bảo vệ chống lại bụi bẩn, chống lại bụi bẩn, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanami Residence & Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm, cuối tuần 10–11/10/2026; không đề xuất Hanami Hotel Danang site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:37:36.614Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanami Residence & Hotel\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm, cuối tuần 10–11/10/2026; không đề xuất Hanami Hotel Danang site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

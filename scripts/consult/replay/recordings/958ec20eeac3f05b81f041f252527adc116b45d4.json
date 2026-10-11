@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MEAT & MEET\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:03:26.943Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MEAT & MEET\" OR \"Hoang Yen Buffet Premier\" OR \"Chài Village\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buffet Tôm Hùm Không Giới Hạn tại Chài Village - Quận 1",
+    "link": "https://www.tiktok.com/@ngocduy_diachianuong/video/7650442125921750292",
+    "snippet": "Chài Village, tọa lạc tại Lầu 5, số 99 Nguyễn Huệ, Quận 1, mang đến trải nghiệm buffet tôm hùm không giới hạn với mức giá hấp dẫn, ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village - Ăn thả ga ở Phố Đi Bộ ...",
+    "link": "https://www.tiktok.com/@dangtumlum20/video/7664213216897273108",
+    "snippet": "Giới thiệu nhanh Ăn buffet tôm hùm thả ga tại Chài Village, ngay trên Phố Đi Bộ Nguyễn Huệ — lựa chọn lý tưởng cho ai muốn thưởng thức hải sản ...",
+    "position": 2
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Video tập trung vào trải nghiệm Buffet BBQ tại Meat & Meet. Người nói cho biết có “quá trời kỷ niệm” ở Meat & Meet, nên mỗi lần quay lại ăn ...",
+    "position": 3
+   },
+   {
+    "title": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga ...",
+    "link": "https://www.tiktok.com/@sonrakhe/video/7642641884971683092",
+    "snippet": "Buffet tôm hùm Chài Village ở 99 Nguyễn Huệ — ăn thả ga, view Saigon Tóm tắt nhanh Chài Village phục vụ buffet tôm hùm không giới hạn, còn ...",
+    "position": 4
+   },
+   {
+    "title": "Buffet Tôm Hùm Tại Chài Village - Trải Nghiệm Ẩm Thực Mới",
+    "link": "https://www.tiktok.com/@ancungdaune/video/7444156152851483912",
+    "snippet": "Khám phá buffet tôm hùm tại Chài Village, nơi mang đến trải nghiệm ẩm thực phong phú. Đừng bỏ qua đánh giá ẩm thực ngon! #ancungdaune # ...",
+    "position": 5
+   },
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "MEAT & MEET KOREAN BBQ CONTAINER Vui lòng đặt bàn qua hotline các chi nhánh · Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai ...",
+    "position": 6
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Chỉ với 189.000 VNĐ/người, bạn có thể thưởng thức một bàn thịt nướng siêu hời. Ưu đãi đặc biệt này áp dụng duy nhất tại chi nhánh MEAT & MEET Lê ...",
+    "position": 7
+   },
+   {
+    "title": "Chài Village buffet — Chài Village dining guide",
+    "link": "https://www.tiktok.com/@duyhaydi86/video/7662599116760927518",
+    "snippet": "Lead Chài Village buffet highlights what visitors most want to know: buffet options, what to expect at the venue, and practical tips for planning a visit to ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

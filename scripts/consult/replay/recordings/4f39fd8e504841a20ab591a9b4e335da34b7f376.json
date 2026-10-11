@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Café Slow\" OR \"Tiệm cà phê Cư Xá 30\" OR \"Work'in Saigon Cafe\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:52:56.697Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Café Slow\" OR \"Tiệm cà phê Cư Xá 30\" OR \"Work'in Saigon Cafe\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Random morning at Lô B 🌿☕️ 📍Tiệm Cà Phê Cư Xá 30",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7686370545201368327",
+    "snippet": "Random morning at Lô B ☕️ Tiệm Cà Phê Cư Xá 30 - CN2: 74/34 Thạch Thị Thanh Phường Tân Định Quận 1 ⏰ Giờ mở cửa: 7:30AM - 10:00PM ...",
+    "position": 1
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30 (@cuxa.30)",
+    "link": "https://www.tiktok.com/@cuxa.30",
+    "snippet": "Tiệm Cà Phê Cư Xá 30 · @cuxa.30 · IG:@tiemcaphecuxa30 FB:TiệmCàPhêCưXá30 Xá Nhiệm: 30/1F Ngô Thời Nhiệm,Q.3 Xá Thanh: 74/34 Thạch Thị Thanh, Q1 🕰️ 7:30-22: ...",
+    "position": 2
+   },
+   {
+    "title": "Xin có tờ khăn giấy thôi mà ta nói nó cực…. #vuontre30 ...",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7687231766377155847",
+    "snippet": "46 Lượt thích,Video TikTok từ Tiệm Cà Phê Cư Xá 30 (@cuxa.30): \"Xin có tờ khăn giấy thôi mà ta nói nó cực…",
+    "position": 3
+   },
+   {
+    "title": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/photo/7682365643185868052",
+    "snippet": "Café Slow - Quán cà phê ẩn mình ở Sài Gòn. Quán cà phê có không gian đèn vàng ấm cúng, dễ chịu với các món bánh và nước uống ngon. Quán còn ...",
+    "position": 4
+   },
+   {
+    "title": "Hiếm hoi cuối tuần thời tiết êm dịu để đi cà phê chill ...",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7687110033657695506",
+    "snippet": "Hiếm hoi cuối tuần thời tiết êm dịu để đi cà phê chill chill ☕️ Tiệm Cà Phê Cư Xá 30 - CN1: 30/1F Ngô Thời Nhiệm Phường Võ Thị Sáu ...",
+    "position": 5
+   },
+   {
+    "title": "Trải Nghiệm Cà Phê Tuyệt Vời Tại Tiệm Cà Phê Cư Xá 30",
+    "link": "https://www.tiktok.com/@phtrquanh/photo/7550598403059764498",
+    "snippet": "Tiệm Cà Phê Cư Xá 30, 30/1F Ngô Thời Nhiệm, Quận 3 #phtrqanh ... Khám phá tiệm cà phê Cư Xá 30 ở Quận 3 với không gian thư giãn và ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30: Quán cafe cũ kỹ ở Sài Gòn",
+    "link": "https://www.tiktok.com/@trungthao252/photo/7664573945068260629",
+    "snippet": "Khám phá Tiệm Cà Phê Cư Xá 30, một quán cafe nhỏ, cũ kỹ đầy chất riêng tại hẻm 74/34 Thạch Thị Thanh, Tân Định, Quận 1, TP.HCM. Keywords: Tiệm ...",
+    "position": 7
+   },
+   {
+    "title": "Bistro 25 Café: Slow Moments, Pastries & Connection",
+    "link": "https://www.tiktok.com/@bistro_24hr/video/7679037801416936725",
+    "snippet": "Bistro 25 Café: Slow Moments, Pastries & Connection. Lead Bistro 25 Café is described as more than just a place to eat — it's a space for ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

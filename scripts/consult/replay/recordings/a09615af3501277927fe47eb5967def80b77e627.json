@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "không dây choàng đầu Sony WH-CH720N site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:38:57.049Z",
+ "body": {
+  "searchParameters": {
+   "q": "không dây choàng đầu Sony WH-CH720N site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe không dây choàng đầu Sony WH-CH720N",
+    "link": "https://shopee.vn/Tai-nghe-kh%C3%B4ng-d%C3%A2y-cho%C3%A0ng-%C4%91%E1%BA%A7u-Sony-WH-CH720N-B%E1%BA%A3o-h%C3%A0nh-12-th%C3%A1ng-i.469040198.53803563679",
+    "snippet": "Mua Tai nghe không dây choàng đầu Sony WH-CH720N - Bảo hành 12 tháng giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe không dây sony wh-ch720n - Giá Tốt, Sale Tháng ...",
+    "link": "https://shopee.vn/list/tai%20nghe/kh%C3%B4ng%20d%C3%A2y/sony%20wh-ch720n",
+    "snippet": "Thích hợp cho hộp đựng tai nghe SONY WH-CH710N Tai nghe ch720n ch710n Tai nghe Giảm tiếng ồn không dây Vỏ băng đô Bluetooth Phụ kiện bảo vệ. 248.256₫.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe không dây chụp tai sony - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/sony/kh%C3%B4ng%20d%C3%A2y%20ch%E1%BB%A5p%20tai",
+    "snippet": "Đặc biệt, tai nghe không dây chụp tai sony sẽ luôn được tìm thấy dễ dàng với mức giá ưu đãi cùng với đa dạng kiểu dáng, màu sắc độc đáo. Là một kênh mua sắm ...",
+    "position": 3
+   },
+   {
+    "title": "Sony wf1000xm4 - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/sony/wf1000xm4",
+    "snippet": "[Giao hàng sau lễ] Tai nghe choàng đầu không dây thời trang Sony WH. custom ... Tai nghe Sony không dây có công nghệ chống ồn WH-CH720N. custom-overlay.",
+    "position": 4
+   },
+   {
+    "title": "sony wh xb700 giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=sony%20wh%20xb700",
+    "snippet": "Mua sony wh xb700 giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 5
+   },
+   {
+    "title": "sony mdr-xb550ap giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=sony%20mdr-xb550ap",
+    "snippet": "Mua sony mdr-xb550ap giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "Headphone logitech - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/headphone/logitech",
+    "snippet": "Tai Nghe Chụp Tai Không Dây Chống Ồn Chủ Động Sony WH-1000XM5 | Hàng. custom ... Tai nghe chống ồn Sony WH-CH720N. custom-overlay. flag-label Tai nghe ...",
+    "position": 7
+   },
+   {
+    "title": "samson sr850 giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=samson%20sr850",
+    "snippet": "Tai nghe bluetooth chụp tai Sony WH-1000XM6 Model mới, chống ồn hàng đầu ... Tai nghe Hi-Res Sony WH-1000XM6 Không Dây Chống Ồn Chính Hãng Bảo. custom ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

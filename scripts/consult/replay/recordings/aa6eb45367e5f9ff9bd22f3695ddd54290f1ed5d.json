@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 USB-C giá chính hãng CellphoneS FPT Shop Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:42:29.009Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 USB-C giá chính hãng CellphoneS FPT Shop Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe AirPods Pro 2023 (USB-C) | Giá rẻ, giao nhanh 1H",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-airpods-pro-2023-usb-c",
+    "snippet": "Tai nghe AirPods Pro 2 2023 USB-C âm thanh đậm chất và tràn ngập sự sống động. Mua tại FPT Shop với giá tốt nhất, ưu đãi trả góp 0%, giao nhanh trong 1H.",
+    "rating": 4.9,
+    "ratingCount": 27,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 2022 | Giảm chạm đáy, trả góp 0%",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe-airpods-pro-2022",
+    "snippet": "Tai nghe Apple AirPods Pro 2022 · Thông tin vận chuyển · Nâng tầm chất âm cùng chip H2 · Tận hưởng âm thanh có độ trung thực cao · Lọc giọng nói, tối ưu đàm thoại.",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe AirPods 2 giá rẻ | Tặng đến 3 tháng Apple Music",
+    "link": "https://cellphones.com.vn/apple-airpods-2.html",
+    "snippet": "Như có thể thấy, hiện tại Airpod 2 chỉ còn giá khoảng 2.95 triệu đồng. Với nhiều đợt ưu đãi khác nhau của CellphoneS, giá còn có thể thấp hơn nữa. Bạn hoàn toàn ...",
+    "rating": 4.9,
+    "ratingCount": 85,
+    "position": 3
+   },
+   {
+    "title": "So sánh AirPods 4 và AirPods Pro 2: Hai thế hệ nối tiếp ...",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-airpods-4-va-airpods-pro-2-195433",
+    "snippet": "Tại FPT Shop, phiên bản tai nghe Apple AirPods Pro 2 hiện đang có mức giá ưu đãi là 4.990.000 VNĐ còn tai nghe Apple AirPods 4 là 3.090.000 VNĐ. Mức chênh lệch ...",
+    "position": 4
+   },
+   {
+    "title": "Chọn Tai Nghe Phù Hợp Nhất Cho Bạn! Apple ra mắt AirPods ...",
+    "link": "https://www.facebook.com/FPTShophochiminh/videos/airpods-4-airpods-pro-2-ch%E1%BB%8Dn-tai-nghe-ph%C3%B9-h%E1%BB%A3p-nh%E1%BA%A5t-cho-b%E1%BA%A1napple-ra-m%E1%BA%AFt-airpods-4/1810049253123192/",
+    "snippet": "... AirPods 4 – Nhẹ | FPT Shop (Fptshop.com.vn). Log in · Video · FPT Shop ... Apple ra mắt AirPods 4 và AirPods Pro 2 với nhiều nâng cấp đáng giá.",
+    "position": 5
+   },
+   {
+    "title": "So sánh AirPods Pro 3 và Pro 2: Đánh giá chi tiết sự khác ...",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-airpods-pro-3-va-pro-2-209959",
+    "snippet": "Khả năng chống nước và chống bụi cũng là điểm nâng cấp đáng giá trên AirPods Pro 3 khi đạt chuẩn IP57 cho cả tai nghe lẫn hộp sạc, giúp thiết bị chống bụi tốt ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Apple Airpods | Giá rẻ, trả góp 0%, giao liền 1H",
+    "link": "https://fptshop.com.vn/phu-kien/tai-nghe/apple",
+    "snippet": "Mua tai nghe Apple Airpods, tai nghe Apple bluetooth, có dây, chụp tai chính hãng, hỗ trợ trả góp 0%, giá giảm hấp dẫn tại FPT Shop.",
+    "position": 7
+   },
+   {
+    "title": "Đây mới là sản phẩm đáng mua nhất trong sự kiện Apple vừa rồi",
+    "link": "https://www.facebook.com/tanmotcu93/posts/%C4%91%C3%A2y-m%E1%BB%9Bi-l%C3%A0-s%E1%BA%A3n-ph%E1%BA%A9m-%C4%91%C3%A1ng-mua-nh%E1%BA%A5t-trong-s%E1%BB%B1-ki%E1%BB%87n-apple-v%E1%BB%ABa-r%E1%BB%93i-airpods-5-t1c-airp/10227757156872943/",
+    "snippet": "AirPods 5 CHÍNH THỨC MỞ BÁN TẠI FPT SHOP Mua ngay https://fptshop ... Tai nghe AirPods Max 2 USB-C Chính hãng | Shopee Việt Nam. 0 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

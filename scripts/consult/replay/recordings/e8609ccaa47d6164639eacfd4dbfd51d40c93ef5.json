@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn Thông tư lệ phí hộ chiếu 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:14:12.490Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn Thông tư lệ phí hộ chiếu 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam-lan-2",
+    "snippet": "... Thông tư quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam (lần 2) 19/12/2025 01:52:10. Đề ...",
+    "position": 1
+   },
+   {
+    "title": "Chi tiết - Cổng thông tin điện tử Kho bạc Nhà nước",
+    "link": "https://vst.mof.gov.vn/webcenter/portal/dvc_kbnn/r/m/gytthc4/ttdvc_chitiet?dDocName=BTC206624&dID=23832",
+    "snippet": "Lệ phí chuyển ngang giá trị thị thực, tạm trú còn giá trị từ hộ chiếu cũ sang hộ chiếu mới giảm từ 15 USD còn 5 USD; cấp thẻ tạm trú có giá trị ...",
+    "date": "13 thg 10, 2015",
+    "position": 2
+   },
+   {
+    "title": "Miễn, giảm nhiều khoản phí, lệ phí nhằm phát triển công ...",
+    "link": "https://www.mof.gov.vn/tin-tuc-tai-chinh/tin-chinh-sach-tai-chinh/mien-giam-nhieu-khoan-phi-le-phi-nham-phat-trien-cong-dan-so",
+    "snippet": "Theo Thông tư số 177/2026/TT-BTC, giảm 10% mức thu lệ phí trước bạ với nhà, đất nhận chuyển nhượng khi đăng ký quyền sở hữu, quyền sử dụng đất ...",
+    "date": "6 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Chính sách này được đưa ra tại Thông tư số 117/2026/TT-BTC ngày 14/8/2026 của Bộ Tài chính quy định miễn, giảm một số khoản phí, lệ phí để triển ...",
+    "date": "24 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Phụ lục BIỂU M ỨC THU LỆ PHÍ CẤP HỘ CHIẾU, THỊ ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/9878",
+    "snippet": "... Thông tư số 66/2009/TT-BTC . ngày 30 tháng 03 năm 2009 của Bộ Tài chính). I. Mức thu đối với công dân Việt Nam. TT. Tên lệ phí. Mức thu. (Đồng). 1 Hộ chiếu: + ...",
+    "position": 5
+   },
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-che-do-cong-tac-phi-di-cong-tac-ngan-han-o-nuoc-ngoai-do-ngan-sach-nha-nuoc-bao-dam-kinh-phi",
+    "snippet": "Chếđộcông tác phí theo quy định tại Thông tư nàylà khoản chi phí đảm bảo cho cán bộ, công chức, viên chức, người lao động và các cá nhân có liên ...",
+    "date": "28 thg 7, 2025",
+    "position": 6
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/155962",
+    "snippet": "Giảm phí thẩm định theo thông tư 64/2025/TT-BTC ngày 30/6/2025, mức thu phí thẩm định là 150.000.000 (đồng)*50%=75.000.000 đồng. - Cách 2: Tính theo nội dung ...",
+    "position": 7
+   },
+   {
+    "title": "In tin tức - Cổng thông tin điện tử Kho bạc Nhà nước - Bộ Tài chính",
+    "link": "https://vst.mof.gov.vn/webcenter/portal/kbnn/r/print?dDocName=BTC341794",
+    "snippet": "Mới đây, Bộ Tài chính ban hành Thông tư số 100/2011/TT-BTC quy định việc quản lý, sử dụng số thu lệ phí xuất nhập cảnh phải nộp Ngân sách nhà nước để thực ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 chính hãng USB-C Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:42:22.082Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 chính hãng USB-C Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 2023 USB-C | Giá rẻ, góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-2-usb-c.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 2 2023 USB-C | Chính hãng Apple Việt Nam ; Micro. Có ; Phương thức điều khiển. Cảm ứng chạm ; Giá sản phẩm. 6.190.000đ 4.990.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Apple Airpods, Earpod | Giá rẻ 10/2026, Góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple.html",
+    "snippet": "Tai nghe Apple EarPods Lightning MWTY3ZA/A | Chính hãng Apple Việt Nam. 510.000đ ; Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A).",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Apple Airpods Pro chính hãng | Giá sốc 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple/airpods-pro.html",
+    "snippet": "Mua tai nghe Apple Airpods Pro giá rẻ - Trả góp 0%, Không phụ phí, Không trả trước, thu cũ đổi mới, giao nhanh 2h. Mua ngay Airpod Pro tại đây.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe ...",
+    "link": "https://shopee.vn/Tai-nghe-AirPods-Pro-(th%E1%BA%BF-h%E1%BB%87-th%E1%BB%A9-2)-v%E1%BB%9Bi-H%E1%BB%99p-S%E1%BA%A1c-MagSafe-(USB-C)-i.88201679.21693729352",
+    "snippet": "Mua Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB-C) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "rating": 4.9,
+    "ratingCount": 2309,
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn cách sử dụng AirPods Pro 2 đơn giản chi tiết",
+    "link": "https://cellphones.com.vn/sforum/cach-su-dung-airpods-pro-2",
+    "snippet": "Hướng dẫn kết nối, thiết lập AirPods Pro 2 lần đầu và các thao tác điều khiển cơ bản giúp bạn sử dụng tai nghe hiệu quả, nhanh chóng, ...",
+    "date": "3 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "Apple ra mắt AirPods Pro 2 với hộp sạc USB-C mới, giá ...",
+    "link": "https://cellphones.com.vn/sforum/apple-ra-mat-airpods-pro-2",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 2022 | Chính hãng Apple Việt Nam. 5.090.000đ6.190 ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Apple AirPods 4 và AirPods Pro 2: Có gì khác biệt?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-apple-airpods-4-va-airpods-pro-2",
+    "snippet": "AirPods rẻ nhất trong dòng sản phẩm này là AirPods 4, có giá 3.49 triệu đồng. AirPods 4 có chức năng chống ồn chủ động có giá 4.79 triệu đồng tại Việt Nam.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "snippet": "Khử tiếng ồn hiệu quả gấp 2 lần AirPods Pro 2 và 4 lần so với AirPods Pro. Cảm biến nhịp tim hỗ trợ theo dõi sức khỏe khi tập luyện.",
+    "date": "10 thg 9, 2025",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

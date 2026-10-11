@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"NHÀ HÀNG NGON\" OR \"Cơm Ngon Hà Nội\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:35:10.744Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"NHÀ HÀNG NGON\" OR \"Cơm Ngon Hà Nội\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 5 nhà hàng ngon ở Irvine 2026 — review ăn uống ...",
+    "link": "https://www.tiktok.com/@tuilathitkho/video/7641428220532870420",
+    "snippet": "Lead Tổng hợp Top 5 nhà hàng ngon ở Irvine: lựa chọn dễ tìm cho người muốn ăn ngon, thử món Mỹ và Á, kèm nhận xét cơ bản về món ăn, ...",
+    "position": 1
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé!",
+    "link": "https://www.tiktok.com/@congnhanvanphongvn/video/7622290966287813908",
+    "snippet": "Quán Cơm Ngon Hà Nội: Thiếu Sót Lớn Nếu Chưa Ghé! Khám phá quán cơm 'chất lượng' tại Hà Nội mà bạn không thể bỏ lỡ. Ăn ngon, bổ, rẻ cho công ...",
+    "position": 2
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "### 1. Nhà hàng ngon, giá rẻ tại Tà Xùa Việc tìm được một nhà hàng vừa ngon miệng vừa có mức giá hợp lý không phải lúc nào cũng dễ dàng, đặc ...",
+    "position": 3
+   },
+   {
+    "title": "Ngon Restaurant Garden Grove CA",
+    "link": "https://www.tiktok.com/@rainaiscrazy/video/7597616189896002846",
+    "snippet": "Ngon in Garden Grove, CA@Hanoi Ngon #rainaiscrazy. Ngon Restaurant Garden Grove CA – Nhà Hàng Ngon Tại Garden Grove. Ngon Restaurant tại Garden ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Ngon Houston",
+    "link": "https://www.tiktok.com/discover/nh%C3%A0-h%C3%A0ng-ngon-houston",
+    "snippet": "3.9M posts. Discover videos related to Nhà Hàng Ngon Houston on TikTok. See more videos about El Paisano Restaurante Houston, Món Ngon ...",
+    "date": "7 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay!",
+    "link": "https://www.tiktok.com/@thodiahanois/video/7618816599063006485",
+    "snippet": "Quán Cơm Ngon Hà Nội: Mê Cơm Lưu Lại Ngay! Khám phá ngay danh sách các quán cơm ngon tại Hà Nội dành cho team mê cơm. Lưu lại địa chỉ để ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

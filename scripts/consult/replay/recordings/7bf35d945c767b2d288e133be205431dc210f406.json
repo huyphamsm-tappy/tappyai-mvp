@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pin AirPods Pro 2 dùng được bao lâu theo Apple? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:52.362Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pin AirPods Pro 2 dùng được bao lâu theo Apple? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods sạc bao lâu thì đầy? Cách kiểm tra thời lượng pin",
+    "link": "https://cellphones.com.vn/sforum/airpods-sac-bao-lau-thi-day",
+    "snippet": "Vậy nên sạc AirPods trong bao lâu mới hiệu quả? Theo khuyến cáo từ nhà sản xuất, bạn chỉ cần sạc đầy trong khoảng 2 tiếng. Việc sạc pin AirPods ...",
+    "date": "2 thg 7, 2024",
+    "position": 1
+   },
+   {
+    "title": "AirPods bị chai pin: Nguyên nhân và cách khắc phục hiệu ...",
+    "link": "https://cellphones.com.vn/sforum/airpods-bi-chai-pin",
+    "snippet": "Cách khắc phục AirPods bị chai pin hiệu quả · Reset lại AirPods về cài đặt gốc · Cập nhật firmware mới nhất cho AirPods · Vệ sinh các điểm tiếp xúc ...",
+    "date": "20 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Tạo sao một bên tai nghe AirPods nhanh hết pin? Cách xử lý",
+    "link": "https://cellphones.com.vn/sforum/mot-ben-tai-nghe-airpods-nhanh-het-pin",
+    "snippet": "Reset AirPods: Sau khi đặt AirPods vào hộp sạc, bạn mở nắp, đồng thời nhấn giữ nút tròn trên hộp khoảng chừng 15 giây cho đến khi đèn nháy màu cam sau đó chuyển ...",
+    "position": 3
+   },
+   {
+    "title": "So sánh AirPods Pro 3 vs AirPods Pro 2: Khác biệt là gì?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-airpods-pro-3-vs-airpods-pro-2",
+    "snippet": "Công nghệ Spatial Audio cá nhân hóa tạo ra trải nghiệm âm thanh vòm sống động. Thời lượng pin của AirPods Pro 2 lên đến 6 giờ nghe nhạc cho mỗi lần sạc và tổng ...",
+    "position": 4
+   },
+   {
+    "title": "Sạc AirPods trong bao lâu? Tổng quan về các dòng AirPods",
+    "link": "https://tiki.vn/blog/sac-airpods-trong-bao-lau/",
+    "snippet": "Sẽ mất khoảng 45 phút để sạc đầy pin cho chiếc AirPods 2. Tuy nhiên, chỉ cần mất khoảng 15 phút đầu để sạc, bạn có thể sử dụng tai nghe này ...",
+    "date": "20 thg 4, 2023",
+    "position": 5
+   },
+   {
+    "title": "Nhìn lại AirPods Pro sau gần 1 năm sử dụng",
+    "link": "https://cellphones.com.vn/sforum/nhin-lai-airpods-pro-sau-gan-1-nam-su-dung-duoc-gi-mat-gi-va-can-luu-y-gi-truoc-khi-mua-tai-nghe-nay",
+    "snippet": "Có nhiều sự lựa chọn màu sắc hơn: bao gồm trắng, đen và đỏ. · Giá bán mềm hơn: giá bán lẻ chỉ nhỉnh hơn một chút so với AirPods 2 · Thời lượng pin tai nghe tốt ...",
+    "position": 6
+   },
+   {
+    "title": "AirPods định vị được không? AirPods định vị được bao xa?",
+    "link": "https://cellphones.com.vn/sforum/airpods-dinh-vi-duoc-bao-xa",
+    "snippet": "AirPods định vị được bao xa? Hướng dẫn cách bật và sử dụng định vị AirPods trên iPhone, iPad, Mac nhanh chóng, chính xác.",
+    "date": "20 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "Cách kết nối AirPods với iPhone và các thiết bị khác từ A",
+    "link": "https://cellphones.com.vn/sforum/huong-dan-su-dung-airpods-pro-chi-tiet-tu-a-den-z-ma-ban-nen-biet",
+    "snippet": "AirPods Pro/1/2/3: Mở nắp hộp đựng và nhấn giữ nút thiết lập phía sau hộp đến khi đèn LED nhấp nháy trắng để kích hoạt chế độ ghép đôi. · AirPods 4: Mở nắp hộp ...",
+    "rating": 3,
+    "ratingCount": 4,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

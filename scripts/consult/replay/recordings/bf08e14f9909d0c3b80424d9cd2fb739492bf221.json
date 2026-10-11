@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Samsung Galaxy Buds Core site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:31.666Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Samsung Galaxy Buds Core site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy Buds Core Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i3207488417.html?srsltid=AU7gw4Ws8T3IGS8hVX2x26zJaC9FK4wtBKoprkheyJ5UkSk1nHSvQ-Is",
+    "snippet": "Với chuẩn kháng nước IP54, tai nghe Bluetooth Samsung Galaxy Buds Core có thể hoạt động ổn định trong điều kiện mồ hôi hay bụi nhẹ. Tính năng này giúp bảo vệ ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core Bảo hành ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-samsung-galaxy-buds-core-bao-hanh-12-thang-chinh-hang-i3231787231.html?srsltid=AU7gw4Uq59I1bYrIq-nY3685Zw2KMkKdrdMfGbziCPAy3ndMros80kxi",
+    "snippet": "Samsung Galaxy Buds Core được trang bị hệ thống giải mã âm thanh tiên tiến, hỗ trợ nhiều định dạng codec phổ biến và cao cấp để đáp ứng nhu cầu thưởng thức nhạc ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Samsung Galaxy Buds ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-core-sm-r410n-hang-chinh-hang-cong-nghe-anc-dung-luong-pin-35h-ho-tro-galaxy-ai-i3200037062.html?srsltid=AU7gw4WtX5pTH0dHfdZQ-cWxxOh4t0NA491rYCGkqPhy3z67Sgb_pvF0",
+    "snippet": "Tai nghe Bluetooth True Wireless Samsung Galaxy Buds Core với công nghệ ANC chống ồn chủ động, thời lượng pin lên đến 35 giờ. Thiết kế nhỏ gọn, ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds Core. Chống ồn chủ động ...",
+    "link": "https://h5.lazada.vn/products/sieu-sale-thang-7-20h-6-97-tai-nghe-samsung-galaxy-buds-core-chong-on-chu-dong-anc-thoi-luong-pin-den-35h-chat-am-manh-me-i3178066716-s15124000912.html",
+    "snippet": "Tai nghe Samsung Galaxy Buds Core với công nghệ chống ồn chủ động ANC, thời lượng pin lên đến 35 giờ. Thiết kế hiện đại, chất âm mạnh mẽ, ...",
+    "rating": 5,
+    "ratingCount": 246,
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-samsung-galaxy-buds-core-chong-on-chu-dong-anc-hang-chinh-hang-i13355346707-s116819540769.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4W_V_BKSLwszq7wTNBFfsZf6oIgL7az0MeFn0iJlZzCekboDYzU",
+    "snippet": "Việc kết nối Galaxy Buds Core với các thiết bị của bạn vô cùng nhanh chóng và đơn giản. Chỉ cần bật Bluetooth, mở hộp sạc và tai nghe sẽ tự động đồng bộ.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds Core. Chống ồn chủ động ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-samsung-galaxy-buds-core-chong-on-chu-dong-anc-thoi-luong-pin-den-35h-chat-am-manh-me-i3178066716.html?srsltid=AU7gw4W1Btw-hWlFPJf-bw3v4x94iyUgxyoVEVyYhNJddiPv8jMp1B-o",
+    "snippet": "Tai nghe Samsung Galaxy Buds Core với công nghệ chống ồn chủ động ANC, thời lượng pin lên đến 35 giờ. Thiết kế hiện đại, chất âm mạnh mẽ, ...",
+    "rating": 4.9,
+    "ratingCount": 276,
+    "position": 6
+   },
+   {
+    "title": "𝓢amsung Galaxy Buds Core R410 tai nghe bluetooth ...",
+    "link": "https://www.lazada.vn/products/amsung-galaxy-buds-core-r410-tai-nghe-bluetooth-khong-day-i3293324580.html?srsltid=AU7gw4VFqfHb9VWcGOmxZzNo0WyyqpN69SofDZ96EQQw_yhCIojEHeC6",
+    "snippet": "Samsung Galaxy Buds Core R410 tai nghe bluetooth không dây ... Miễn phí vận chuyển khi mua từ 348.154 ₫ sản phẩm của Powderblue . Vận chuyển từ nước ngoài.",
+    "rating": 4.9,
+    "ratingCount": 10,
+    "position": 7
+   },
+   {
+    "title": "Phù hợp với Samsung Galaxy Buds 2 Pro Live FE 3 4 Core 2025 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13428070474.html?srsltid=AU7gw4WuD95wmi6s8VogThlCGFQCQD-iJmSw7AWm5qxVbswI5eVqm5Lu",
+    "snippet": "172.470 ₫254.000 ₫-32%. Phù hợp với Samsung Galaxy Buds 2 Pro Live FE 3 4 Core 2025, hộp đựng tai nghe bluetooth chống rơi/rơm gắn kèm tai nghe bluetooth.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

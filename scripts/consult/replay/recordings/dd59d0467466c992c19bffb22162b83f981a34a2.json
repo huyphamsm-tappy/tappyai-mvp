@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom/2022/09 apple AirPods Pro 2 lên tới 6 giờ 30 giờ hộp sạc",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:18:43.683Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom/2022/09 apple AirPods Pro 2 lên tới 6 giờ 30 giờ hộp sạc",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   },
+   {
+    "title": "iOS 16 ra mắt ngay hôm nay",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/ios-16-is-available-today/",
+    "snippet": "Giờ đây, người dùng có thể đặt lịch gửi email từ trước hoặc hủy gửi trước khi tin nhắn đó vào hộp thư đến của người nhận.2 Người dùng còn có ...",
+    "date": "12 thg 9, 2022",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "8/10/2026 giá xăng dầu kỳ điều hành mới giá RON 95 E5 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:32.726Z",
+ "body": {
+  "searchParameters": {
+   "q": "8/10/2026 giá xăng dầu kỳ điều hành mới giá RON 95 E5 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Dự báo giá xăng có thể tăng trong kỳ điều hành giá chiều ...",
+    "link": "https://laodong.vn/thi-truong/du-bao-gia-xang-co-the-tang-trong-ky-dieu-hanh-gia-chieu-nay-1779445.ldo",
+    "snippet": "- Xăng E5 RON92: không cao hơn 26.569 đồng/lít, thấp hơn xăng E10 RON95-III 620 đồng/lít. - Xăng E10 RON95-III: không cao hơn 27.189 đồng/lít. - ...",
+    "date": "7 giờ trước",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8.10.2026: Xăng E10 chiều nay ...",
+    "link": "https://www.facebook.com/thanhnien/posts/gi%C3%A1-x%C4%83ng-d%E1%BA%A7u-h%C3%B4m-nay-8102026-x%C4%83ng-e10-chi%E1%BB%81u-nay-t%C4%83ng-bao-nhi%C3%AAu-%C4%91%E1%BB%93ng-m%E1%BB%99t-l%C3%ADt/1609705014529148/",
+    "snippet": "- Giá dầu diesel 0.05S từ 23h30 ngày 2/4 cũng tăng 5.380 đồng/lít, giá bán mới là 40.820 đồng/lít; - Dầu hỏa tăng 6.860 đồng/lít giá bán là ...",
+    "position": 2
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/10/2026: Dầu diesel đã hạ, E5 ...",
+    "link": "https://ngoisao.vn/theo-dong-su-kien/kien-thuc/gia-xang-dau-hom-nay-8-10-2026-dau-diesel-da-ha-e5-ron-92-va-e10-ron-95-cach-day-hon-7000-dong-d493431.html",
+    "snippet": "Giá xăng dầu hôm nay 8/10/2026: Dầu diesel đã hạ, E5 RON 92 và E10 RON 95 cách đáy hơn 7.000 đồng ; Xăng E10 RON 95-III, 27.180 đồng/lít, +100 ...",
+    "date": "9 giờ trước",
+    "position": 3
+   },
+   {
+    "title": "Giá xăng dầu hôm nay bao nhiêu 1 lít mới nhất?",
+    "link": "https://topi.vn/gia-xang-dau-hom-nay.html",
+    "snippet": "1. Bảng giá xăng dầu Petrolimex mới nhất ; Xăng E10 RON 95-V · 28.180, 28.740 ; Xăng E10 RON 95-III, 27.180, 27.720 ; Xăng E5 RON 92-II, 26.560, 27.090 ; DO 0,001S-V ...",
+    "position": 4
+   },
+   {
+    "title": "Tin giá xăng dầu",
+    "link": "https://www.pvoil.com.vn/tin-gia-xang-dau",
+    "snippet": "... giá điều chỉnh (tăng/giảm) (Đồng/lít thực tế). 1, Xăng E10 RON 95-III, 27.180 đ, +100. 2, Xăng E5 RON 92-II, 26.560 đ, +170. 3, Dầu DO 0,05S-II, 29.710 đ, -780.",
+    "position": 5
+   },
+   {
+    "title": "Giá xăng dầu đồng loạt tăng mạnh từ 15h ngày 20/8/2026 ...",
+    "link": "https://www.facebook.com/LuatVietnam.vn/posts/gi%C3%A1-x%C4%83ng-d%E1%BA%A7u-%C4%91%E1%BB%93ng-lo%E1%BA%A1t-t%C4%83ng-m%E1%BA%A1nh-t%E1%BB%AB-15h-ng%C3%A0y-2082026luatvietnam-luatvietnamvn-th/1609482990964924/",
+    "snippet": "Chính thức giá xăng dầu ở Việt Nam lập đỉnh cao nhất lịch sử từ trước đến nay và phá vỡ mốc lịch sử năm 2022 khi chiến tranh Nga - Ukraina xảy ...",
+    "position": 6
+   },
+   {
+    "title": "Giá xăng dầu hôm nay các loại RON 95 ...",
+    "link": "https://bbw.vn/gia-xang-dau",
+    "snippet": "Giá xăng dầu hôm nay, kỳ điều hành mới nhất, Biến động giá xăng dầu các loại ... Dầu diesel giảm gần 1.000 đồng/lít, xăng E5 còn 21.330 đồng trong kỳ điều chỉnh ...",
+    "position": 7
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/10: Brent quanh 101 USD, chờ ...",
+    "link": "https://baolaocai.vn/gia-xang-dau-hom-nay-810-brent-quanh-101-usd-cho-gia-moi-luc-15h-post911365.html",
+    "snippet": "Giá bán tối đa phổ biến sau kỳ điều hành này là 26.569 đồng/lít với E5 RON92, 27.189 đồng/lít với E10 RON95-III và 29.717 đồng/lít đối với ...",
+    "date": "9 giờ trước",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

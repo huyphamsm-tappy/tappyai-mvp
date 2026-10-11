@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Nguyên Lý Kế Toán site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:10.600Z",
+ "body": {
+  "searchParameters": {
+   "q": "Nguyên Lý Kế Toán site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sách - Nguyên Lý Kế Toán ( Tái Bản Lần 9 )",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-nguyen-ly-ke-toan-tai-ban-lan-9-tai-lieu-hoc-tap/1729801708619598273",
+    "snippet": "Nội dung cơ bản của môn Nguyên Lý Kế Toán bao gồm việc trình bày và giải thích đối tượng của kế toán, các phương pháp kế toán được sử dụng để thu thập, xử lý, ...",
+    "position": 1
+   },
+   {
+    "title": "Nguyên Lý Kế Toán - Trần Văn Thuận ( Dùng Cho Các ...",
+    "link": "https://shop.tiktok.com/vn/pdp/nguyen-ly-ke-toan-tran-van-thuan-sach-giao-trinh-ke-toan/1729599977179220503",
+    "snippet": "Nội dung cơ bản của môn Nguyên lý kế toán bao gồm việc trình bày và giải thích đối tượng của kế toán, các phương pháp kế toán được sử dụng để thu thập, xử lý, ...",
+    "rating": 4.5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "Sách - 405 Tình Huống Kế Toán Tài Chính - Hướng Dẫn Thực ...",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-tinh-huong-ke-toan-tai-chinh-huong-dan-thuc-hanh-bai-tap/1729801955020212673",
+    "snippet": "Lời giới thiệu:Thông tin kế toán có ý nghĩa hết sức quan trọng đối với công tác quản lý của bản thân doanh nghiệp, cũng như cho các đối tượng khác ở bên ...",
+    "position": 3
+   },
+   {
+    "title": "Đọc hiểu bản chất của các con số trong báo cáo tài chính",
+    "link": "https://shop.tiktok.com/vn/pdp/1735456476948236115",
+    "snippet": "“Kế toán bằng hình ảnh” là một trong những cuốn sách hiếm hoi biến một lĩnh vực vốn được xem là khô khan, nhiều thuật ngữ và khó tiếp cận như kế toán tài ...",
+    "position": 4
+   },
+   {
+    "title": "Combo 2 cuốn \"Đọc vị\" mọi số liệu kinh doanh: Kế toán bằng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735589897747007315",
+    "snippet": "· Hiểu nguyên lý doanh thu, chi phí và lợi nhuận· Đọc hiểu bảng cân đối kế toán và báo cáo tài chính· Kiểm soát công nợ, tồn kho và dòng tiền· Hiểu cách ...",
+    "position": 5
+   },
+   {
+    "title": "Sách - Quản Trị Đầu Tư Nhà Hàng Khách Sạn",
+    "link": "https://shop.tiktok.com/vn/pdp/sach-quan-tri-%C4%91au-tu-nha-hang-khach-san-nha-sach-kinh-te-phan-tich-thi-truong-phuong-phap-kinh-/1729802242898823617",
+    "snippet": "Combo - Nguyên Lý Kế Toán + Bài Tập & Câu Hỏi Trắc Nghiệm Nguyên Lý Kế Toán + Bảng Hệ ...",
+    "position": 6
+   },
+   {
+    "title": "Combo 2 cuốn kiểm soát dòng tiền: Kế toán bằng hình ảnh ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735589813988329299",
+    "snippet": "Mua Combo 2 cuốn kiểm soát dòng tiền: Kế toán bằng hình ảnh + Kinh tế học đời sống trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Sách-Nguyên Lý Thiết Kế Cấu Tạo Các Công Trình Kiến Trúc",
+    "link": "https://shop.tiktok.com/vn/pdp/1729603372077254781",
+    "snippet": "Mua Sách-Nguyên Lý Thiết Kế Cấu Tạo Các Công Trình Kiến Trúc trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

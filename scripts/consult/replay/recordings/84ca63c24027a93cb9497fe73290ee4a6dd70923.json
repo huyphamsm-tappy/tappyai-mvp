@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods 5 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:11.571Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods 5 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vỏ Cho Airpods 5 4 Pro 3 2 1 Công Tắc Sáng Tạo Trò Chơi ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-Cho-Airpods-5-4-Pro-3-2-1-C%C3%B4ng-T%E1%BA%AFc-S%C3%A1ng-T%E1%BA%A1o-Tr%C3%B2-Ch%C6%A1i-Thi%E1%BA%BFt-K%E1%BA%BF-B%E1%BA%A3ng-%C4%90i%E1%BB%81u-Khi%E1%BB%83n-M%C3%A0u-S%E1%BA%AFc-T%C6%B0%C6%A1ng-Ph%E1%BA%A3n-TPU-M%E1%BB%81m-V%E1%BB%8F-Tai-Nghe-Ch%E1%BB%91ng-S%E1%BB%91c-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-Tai-Nghe-C%C3%B3-Kh%C3%B3a-D%C3%A2y-%C4%90eo-i.357739621.27421950835?extraParams=%7B%22display_model_id%22%3A178631334618%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Vỏ Cho Airpods 5 4 Pro 3 2 1 Công Tắc Sáng Tạo Trò Chơi Thiết Kế Bảng Điều Khiển Màu Sắc Tương Phản TPU Mềm Vỏ Tai Nghe Chống Sốc Tai Nghe Không Dây Vỏ Bảo Vệ ...",
+    "rating": 4.8,
+    "ratingCount": 1288,
+    "position": 1
+   },
+   {
+    "title": "Airpods 5 Vỏ tai nghe Airpod ALDER FLASH chất bóng có ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-tai-nghe-Airpod-ALDER-FLASH-ch%E1%BA%A5t-b%C3%B3ng-c%C3%B3-khoen-treo-m%C3%B3c-kho%C3%A1-i.1156036549.25906377959",
+    "snippet": "Mua Airpods 5 Vỏ tai nghe Airpod ALDER FLASH chất bóng có khoen treo móc khoá giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.8,
+    "ratingCount": 33,
+    "position": 2
+   },
+   {
+    "title": "Dành Cho Airpods 5 4 Pro 3 2 1 Sweet 3D Nơ Đỏ Trang Trí ...",
+    "link": "https://shopee.vn/D%C3%A0nh-Cho-Airpods-5-4-Pro-3-2-1-Sweet-3D-N%C6%A1-%C4%90%E1%BB%8F-Trang-Tr%C3%AD-Hello-Kitty-H%C3%ACnh-M%C3%A8o-M%E1%BB%81m-TPU-Ch%E1%BB%91ng-S%E1%BB%91c-Tai-Nghe-C%C3%B3-V%C3%B2ng-Kh%C3%B3a-Ch%E1%BB%91ng-M%E1%BA%A5t-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-i.357739621.41813288059?extraParams=%7B%22display_model_id%22%3A296104692837%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Dành Cho Airpods 5 4 Pro 3 2 1 Sweet 3D Nơ Đỏ Trang Trí Hello Kitty Hình Mèo Mềm TPU Chống Sốc Tai Nghe Có Vòng Khóa Chống Mất Tai Nghe Không Dây Vỏ Bảo Vệ.",
+    "rating": 4.8,
+    "ratingCount": 674,
+    "position": 3
+   },
+   {
+    "title": "Ốp lưng Black Grey Spiderman AirPods 5 ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-Black-Grey-Spiderman-AirPods-5-AirPods-Pro3-V%E1%BB%8F-tai-nghe-ch%E1%BB%91ng-s%E1%BB%91c-cho-AirPods-Pro3-5-Pro2-4-4-(ANC)-Pro-3-i.1429798358.50850600350",
+    "snippet": "Mua Ốp lưng Black Grey Spiderman AirPods 5 AirPods Pro3 Vỏ tai nghe chống sốc cho AirPods Pro3 5 Pro2 4 / 4 (ANC) Pro 3 giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 4
+   },
+   {
+    "title": "Mặt Đơn Giản Miffy Cho AirPods 5 Ốp Lưng ...",
+    "link": "https://shopee.vn/M%E1%BA%B7t-%C4%90%C6%A1n-Gi%E1%BA%A3n-Miffy-Cho-AirPods-5-%E1%BB%90p-L%C6%B0ng-AirPods-Pro3-Ch%E1%BB%91ng-S%E1%BB%91c-Matte-Tai-Nghe-C%C3%B3-D%C3%A2y-Th%E1%BB%9Di-Trang-Cho-AirPods-5-Pro3-4-4-(ANC)-Pro2-3-Pro-2-1-i.1429798358.47303891766",
+    "snippet": "Mặt Đơn Giản Miffy Cho AirPods 5 Ốp Lưng AirPods Pro3 Chống Sốc Matte Tai Nghe Có Dây Thời Trang Cho AirPods 5 Pro3 4 / 4 (ANC) Pro2 3 Pro 2 / 1.",
+    "rating": 4.3,
+    "ratingCount": 6,
+    "position": 5
+   },
+   {
+    "title": "Airpods Pro Mạ Tĩnh Điện Kèm Dây Treo Vải Bện Kai.N ...",
+    "link": "https://shopee.vn/%E1%BB%90p-Case-Airpods-5-Airpod-Pro-3-Airpods-4-Airpods-Pro-2-Airpods-Pro-M%E1%BA%A1-T%C4%A9nh-%C4%90i%E1%BB%87n-K%C3%A8m-D%C3%A2y-Treo-V%E1%BA%A3i-B%E1%BB%87n-Kai.N-Chrome-i.1369459149.41529819619",
+    "snippet": "Ốp Case Airpods 5/ Airpod Pro 3/ Airpods 4/ Airpods Pro 2/ Airpods Pro Mạ Tĩnh Điện Kèm Dây Treo Vải Bện Kai.N Chrome. 1/12. 3 phân loại có sẵn. 199.000₫.",
+    "rating": 4.4,
+    "ratingCount": 5,
+    "position": 6
+   },
+   {
+    "title": "Dành cho Airpods 5 4 Pro 3 2 1 Thiết kế cạnh sóng dễ ...",
+    "link": "https://shopee.vn/D%C3%A0nh-cho-Airpods-5-4-Pro-3-2-1-Thi%E1%BA%BFt-k%E1%BA%BF-c%E1%BA%A1nh-s%C3%B3ng-d%E1%BB%85-th%C6%B0%C6%A1ng-%E2%80%8CChiikawa-H%E1%BB%8Da-Ti%E1%BA%BFt-Ho%E1%BA%A1t-H%C3%ACnh-TPU-M%E1%BB%81m-Ch%E1%BB%91ng-S%E1%BB%91c-Tai-Nghe-C%C3%B3-M%E1%BA%B7t-D%C3%A2y-Chuy%E1%BB%81n-Ch%E1%BB%91ng-M%E1%BA%A5t-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-Tai-Nghe-V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-i.357739621.28638491655?extraParams=%7B%22display_model_id%22%3A157884719322%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Dành cho Airpods 5 4 Pro 3 2 1 Thiết kế cạnh sóng dễ thương ‌Chiikawa Họa Tiết Hoạt Hình TPU Mềm Chống Sốc Tai Nghe Có Mặt Dây Chuyền Chống Mất Tai Nghe Không ...",
+    "rating": 4.9,
+    "ratingCount": 110,
+    "position": 7
+   },
+   {
+    "title": "Vỏ cứng vải thật sang trọng cho AirPods 5 4 3 2 1 & ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-c%E1%BB%A9ng-v%E1%BA%A3i-th%E1%BA%ADt-sang-tr%E1%BB%8Dng-cho-Airpods-4-3-2-1-Airpods-Pro-2-V%E1%BB%8F-tai-nghe-tr%E1%BB%8Dn-g%C3%B3i-%C4%91%E1%BA%A7y-m%C3%A0u-s%E1%BA%AFc-v%E1%BB%9Bi-Carabiner-i.1044874048.25588588415",
+    "snippet": "Vỏ cứng vải thật sang trọng cho AirPods 5 4 3 2 1 & AirPods Pro 2, Vỏ tai nghe trọn gói đầy màu sắc với Carabiner ... Tặng Voucher 15.000₫ nếu đơn giao sau thời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

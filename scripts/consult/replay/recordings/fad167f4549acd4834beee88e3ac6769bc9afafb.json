@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air 13 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:59.352Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air 13 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch M5",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-air-13-inch-m5-hang-chinh-hang-i13334273827-s116519872394.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng ... Trả góp trong 12 tháng, chỉ với 2.833.250 ₫ mỗi tháng.",
+    "position": 1
+   },
+   {
+    "title": "Bảo Vệ Màn Hình Trong Suốt cho MacBook Air 13 inch",
+    "link": "https://www.lazada.vn/products/smartdevil-bao-ve-man-hinh-trong-suot-cho-macbook-air-13-inch-i3301822406-s116184328572.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4UzcjAdAua21HMOeMk1rXHGSIcDxF32T1wtJpj-W3LH_P9Zt8_K",
+    "snippet": "LazMall SmartDevil | Bảo Vệ Màn Hình Trong Suốt cho MacBook Air 13 inch · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 2
+   },
+   {
+    "title": "Ốp Laptop Mềm TPU Cho Macbook Air 13 M1 M2 & ...",
+    "link": "https://www.lazada.vn/products/tpu-mem-laptop-cho-macbook-air-13-m1m2-macbook-pro-14-chip-air-136-unisex-phong-cach-doanh-nhan-chac-chan-bao-da-co-khoa-cai-i2434571582.html?srsltid=AU7gw4UIoVXE730qTz4GDsOpPpebpzuVMks9altxxou5PAJ7RarnSkzZ",
+    "snippet": "Ốp Laptop Mềm TPU Cho Macbook Air 13 M1 M2 & Macbook Pro 14 Chip Air 13.6, Phong Cách Doanh Nhân Unisex, Có Khóa Cài ; Thông số. Loại Laptop,Kích thước laptop, ...",
+    "rating": 4.9,
+    "ratingCount": 150,
+    "position": 3
+   },
+   {
+    "title": "Ốp Lưng Cứng Chống Nước, Tương Thích Với MacBook Air 13 ...",
+    "link": "https://www.lazada.vn/products/p-bo-v-cng-cp-chng-sc-cho-macbook-air-13-inch-m5-m4-m3-m2-v-pro-131416-inch--v-my-tnh-xch-tay-bng-nha-dng-c-cho-c-nam-v-n-i13437897407.html?srsltid=AU7gw4VLuwD-NEOoPffNGPhyx_kuvKSnusVqP2kw6798HmPa1n0UhNE4",
+    "snippet": "Ốp Lưng Cứng Chống Nước, Tương Thích Với MacBook Air 13 Inch M5 M4 M3 M2 Và Pro 13/14/16 Inch - Vỏ Bảo Vệ Laptop Bằng Nhựa · Global Merch Park · Gợi ý cho bạn.",
+    "position": 4
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 13 inch M5",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-air-13-inch-m5-hang-chinh-hang-saa-i13334273827-s116519872393.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Air 13 inch M5 - Hàng Chính Hãng SA/A · 100% chính hãng · 30 ngày miễn phí trả hàng · Hóa đơn 1 năm.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Laptop Siêu Mỏng Cho MacBook Air 13 15.3 13.6 M4 M2 M3 ...",
+    "link": "https://www.lazada.vn/products/op-laptop-sieu-mong-cho-macbook-air-13153136-va-pro-13m114216162-vo-bao-ve-pvc-phong-cach-doanh-nhan-unisex-i3100468328-s14859256978.html?srsltid=AU7gw4UtqbYI7dzWqbAUIaVI32itkVy-RXutKS_ecnfyM7dNhIqt_Wbc",
+    "snippet": "Được thiết kế cho các mẫu MacBook Air 13 15.3 13.6 và MacBook Pro 13 14.2 16.2 16, đảm bảo vừa vặn hoàn hảo với thiết bị của bạn.",
+    "position": 6
+   },
+   {
+    "title": "Msvii | Túi đựng laptop với Apple Macbook Air 13 có chân đế độ ...",
+    "link": "https://www.lazada.vn/products/msvii-tui-dung-laptop-voi-apple-macbook-air-13-co-chan-de-do-day-15mm-khong-tu-tinh-i13340526464.html?srsltid=AU7gw4XV8NdsR81RlnVVNmoOxvQuyHYc35l9utTF9nL5J0-PAQabBXF4",
+    "snippet": "Khuyến mãi giảm 214.500 ₫. 251.500 ₫466.000 ₫-46%. LazMall Msvii | Túi đựng laptop với Apple Macbook Air 13 có chân đế độ dày 15mm không từ tính. 5(19).",
+    "position": 7
+   },
+   {
+    "title": "Miếng Dán Màn Hình Mềm HD Cho MacBook Air 13 Inch ...",
+    "link": "https://www.lazada.vn/products/mieng-dan-man-hinh-mem-hd-cho-macbook-air-13-inch-m1-m2-pro-bao-ve-may-tinh-xach-tay-trong-suot-tuong-thich-voi-cac-mau-11-14-15-16-inch-i3021364092.html?srsltid=AU7gw4WPh4N--obIsDZMhS_L5VLAt1RsXXldJB26VjN-AS1kO2c3aCwb",
+    "snippet": "Với độ phản xạ chỉ 1,1%, miếng bảo vệ màn hình này giảm thiểu độ chói, mang lại trải nghiệm xem thoải mái. Siêu rõ ràng và phản chiếu thấp.",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

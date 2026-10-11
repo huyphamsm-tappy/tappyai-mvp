@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB, Tai Nghe A4 1571AM site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:36.632Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hổ Vằn Louda 1571AM / 1563E Chống Ồn ANC 45DB, Tai Nghe A4 1571AM site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

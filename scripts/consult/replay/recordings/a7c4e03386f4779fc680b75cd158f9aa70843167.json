@@ -1,0 +1,364 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "iPhone 16 Pro 256GB chính hãng CellphoneS giá",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:18.360Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB chính hãng CellphoneS giá",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Apple iPhone 16 Pro 256GB",
+    "source": "Viettablet",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+16+Pro+256GB+ch%C3%ADnh+h%C3%A3ng+CellphoneS+gi%C3%A1&prds=localAnnotatedOfferId:1,catalogid:15508116717064024573,gpcid:6316456913447556684,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS14LlEj6BE2T5vvBD4kYC5-6qRJDLYbvPqge5ci2cZWVYT7fIxbsx2anZyOaTOOyqKlfAPTo8BbJCuUSW2jG0ym-YneED31h5qF7W0v--IKezIAqkXeRzUMg",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "15508116717064024573",
+    "position": 1
+   },
+   {
+    "title": "Apple iPhone 16 Pro",
+    "source": "XTmobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+16+Pro+256GB+ch%C3%ADnh+h%C3%A3ng+CellphoneS+gi%C3%A1&prds=localAnnotatedOfferId:1,catalogid:12625521606153218072,gpcid:10943350843658421229,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "19.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR0v6k_tTPbrjX1pRfdKJ8PsM1WEHkhiAB133MN5jw0Sk9LqMlbLaMRMd5AAnTzsSYq8MkFY7n5HoCYGgyWNe1_jfN-wuUAsMdPmd_-YDb-O9yd-i_NZhw1",
+    "productId": "12625521606153218072",
+    "position": 2
+   },
+   {
+    "title": "【Giá Tốt】 iPhone 16 Pro 256GB Quốc Tế - Bảo Hành 12 Tháng",
+    "source": "Phúc Khang Mobile",
+    "price": "18.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTjgm8c8yWGQrRYWgFsLPiUjYpbtWmmtx_Z4V4WquDKBV3d7EEBDl2QGItBeHx_dA_4yO_lyNcHb2pkw89tOCmB2jxcyFXQSbINhehkWU-S6TpEHw2a-BN2",
+    "productId": "1739648879497962950",
+    "position": 3
+   },
+   {
+    "title": "IPhone 16 Pro chính hãng Việt Nam VN/A 99% Trắng 256GB - Hồ Chí Minh",
+    "source": "Điện Thoại Hay",
+    "price": "23.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSDNrl2qBxe1KlCsJD_jUfsr5XdGUVNecUMGkfMfaX3exrY3t6kKupERS1xIgd_GQjUD3pki-5DYogUBLvdVwDp9PPGBUc-FRQW0Ij5vefTX0JEo7lPIF2bgg",
+    "productId": "17616193420079923295",
+    "position": 4
+   },
+   {
+    "title": "Apple Điện thoại iPhone 16 Pro Max 256GB",
+    "source": "Đức Huy Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+16+Pro+256GB+ch%C3%ADnh+h%C3%A3ng+CellphoneS+gi%C3%A1&prds=localAnnotatedOfferId:1,catalogid:12421478875529502428,gpcid:10203939040444751495,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "31.299.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSStF-YcTAio2_TliNl1DaeRWwb72f7j80BI4tXOxgowwZvZNdF0ZJk0zfb1W2U65Fjread0k62MMd9yC6EIabT-Cgh2aB5REcgAi2jX0Wo1g4D3MA5pz7V",
+    "rating": 4.2,
+    "ratingCount": 348,
+    "productId": "12421478875529502428",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) Máy Mới | Chính Hãng | BH 12 tháng",
+    "source": "XTmobile",
+    "price": "27.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSWciD9jmHb5KUJIuU4awrbvX2cVorfDEWRpQC2ax_YhXp5xF4K4AArqwNiUh_WT1rsU1h1wqk9qAZ5UE0ijTbrrxEQh4AhPH8Psu98lMwYN7W6cTtJGPg6",
+    "productId": "8365919989840792834",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Máy Mới · Nguyên Tem · Nguyên Kiện · Đầy Đủ Màu Titan Tự Nhiên",
+    "source": "Trần Phú Mobile",
+    "price": "26.700.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRaVij24PkwgJndrM-EDCU_BDzoF-iy-6jopysNrcniU4uAw22stArYYOUCD31f5n9NZQoupNtfW5WXnhL94m5ELJ9p_1w6ZaUi4NwPzG5hjRzeZtjwujIXPA",
+    "productId": "10643370784388200730",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ Đẹp 99% - Không Zin Tặng Máy",
+    "source": "clickbuy.com.vn",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRV7TL94S1SM68SvZfepybf4PdxP5gTiBtENnXu6Wi7vJEUv4xBk8DxiG8wFijWptHLsBgxsqJqvO54EHRiYRYRT5uRXEPP8a0FlZGKOS4ayr_8nroi7dWh",
+    "productId": "11178022204489948770",
+    "position": 8
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Chính Hãng 99% - Titan Trắng",
+    "source": "Bạch Long Mobile",
+    "price": "21.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTW-AA7rbf7VIzExK66ikaE8Tzr_QasKMkgoVRpV5rPMn-R49tsL_OdcEW37Pq9JWjRFJk3khW8ioeqcRg3JiezrzjF0-K7Vcty_g6BR6AbLO3mXtWzr8wTHA",
+    "productId": "6133917418264751135",
+    "position": 9
+   },
+   {
+    "title": "[46 Ngày Dùng Thử] iPhone 16 Pro 256GB Cũ - Lỗi là Đổi | Tặng 36 tháng Bảo Hành Pin",
+    "source": "24hStore",
+    "price": "20.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQP-mF9DuO2dLtIV3eVMeJJaD1J-dwyyYnasmWvQobsFiCIUt8NIyFyU1bR5HZBpZnoXmABp73-j2ufXTn0YU3tCYkKbwmwx9HIYY4q-peCpJe_UeYe16tZ",
+    "productId": "850070860257650383",
+    "position": 10
+   },
+   {
+    "title": "【Siêu Rẻ】iPhone 16 Pro 256GB Cũ 99%",
+    "source": "Điện Thoại Giá Kho",
+    "price": "20.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQsvVemi3fIUmqy9GCexBq-VQz8JtPprpWaNoYVKT0-PbamhliAlyS4pX31viKmTPillBTKJFbg9AxDTj5IBQRh70HVtegP8HwcHJHKBYpPoPGTtrLFf0n8fw",
+    "productId": "8442876728896868338",
+    "position": 11
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Nguyên Seal Mới 100% - Pad",
+    "source": "PAD Store",
+    "price": "28.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQTF-z-ViVkD80zgk905_dRlVwqO7KAYjyTtyiumedDwj8kuPpljai7ExmnMPIlRZ1w05IBKFHw4Dn4VXL7zmtR-Y0znQStdneIbfKdbp-st6BfbvLpCXKmPw",
+    "productId": "15500343653885109890",
+    "position": 12
+   },
+   {
+    "title": "iPhone 16 Pro 256GB cũ likenew | Bảo hành 6 tháng",
+    "source": "XTmobile",
+    "price": "20.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR0v6k_tTPbrjX1pRfdKJ8PsM1WEHkhiAB133MN5jw0Sk9LqMlbLaMRMd5AAnTzsSYq8MkFY7n5HoCYGgyWNe1_jfN-wuUAsMdPmd_-YDb-O9yd-i_NZhw1",
+    "productId": "4321580950621926630",
+    "position": 13
+   },
+   {
+    "title": "iPhone 16 Pro 256GB - Chính Hãng VN/A Mới Nguyên Seal",
+    "source": "Viettablet",
+    "price": "26.599.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS8lAbK8pNmTr8eYOP-JruT6YoqpbyoYQuSZBBTHasOPsfpQ0odySIyoyYge__9aZ4ANqa-AICN5xZ5z-L9VDhjs7MT9aFoWgckut8P057MmagM1gebnA7b",
+    "productId": "8224953621614762885",
+    "position": 14
+   },
+   {
+    "title": "Điện thoại Apple iPhone 16 Pro 256GB - Likenew",
+    "source": "Oneway Mobile",
+    "price": "20.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSDnGGZ7acnN13tZHtlzSRwRbxf5yMnqT0pfeSI-XxwAtylqh-I116L4DxzVDqvOR2PY9vhgNcelJ6Iyc9ylqx0gQdC80BC4ZHz3a5JaaHflsSR54Os121V",
+    "productId": "637966700169490801",
+    "position": 15
+   },
+   {
+    "title": "【Giá Tốt】 iPhone 16 256GB Quốc Tế - Bảo Hành 12 Tháng",
+    "source": "Phúc Khang Mobile",
+    "price": "14.350.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcT7lAiMuPheB4tAHq1I15vjnIeVaSXHIbYvy9_y8ev_gO15DxtKv5FMfDGeaxFvMqnR3AnIrtJyo3O6dv3AR8Zi2hqz0W4Twed2k52Xt5jXdZJJz2wRjiZmrQ",
+    "productId": "10519816435244564257",
+    "position": 16
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Quốc Tế giá rẻ | Thu cũ lên đời",
+    "source": "XTmobile",
+    "price": "27.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRs0mGLrjEU8dtLwd-DzUYCYxnU_kXgAWvMqP-p-T9bnVvNXiAACBS3wR1c9dLLqEOHj6Q6SxxMDQXbjzqpElNGd0oQKq4w3_DupWkKuNi4Bf-15jPZt-UgMA",
+    "productId": "12254289032290711016",
+    "position": 17
+   },
+   {
+    "title": "iPhone 16 256GB Chính Hãng VN/A",
+    "source": "Đức Huy Mobile",
+    "price": "21.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQtBPO0oEztYHf6ZCwR9njTbQtM_yjya3ZOWILGGPqG3uSN8qMyY_lRkUNHoTbqmFa_w_bQ2RjBT3e_SMgXwgFtzXCuN0mwXrxBDNjNWjJ9rEs74SE4h9_z9g",
+    "productId": "6589366270532900045",
+    "position": 18
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ 95% -Titan Tự nhiên",
+    "source": "Tinh Tế Mobile",
+    "price": "18.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRUbCMsmNEIp6I0Q7bvYYu0HSXraWyICbcGfsEgxxZUz0_qiU7sACvdadYYGyseOHASf5x4OHl90OvdLYBPfkNNTwXVfyE2-qs4u589_H61cK6Q_O_E3APhfw",
+    "productId": "18035366319452463775",
+    "position": 19
+   },
+   {
+    "title": "iPhone 16 Pro 256GB | Chính hãng VN/A - Truemart",
+    "source": "Truesmart.com.vn",
+    "price": "27.150.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRzB3geC3D_pJAJKWKtUhQ_X9CAX5p4Qa0Koci5t4_K50npsPV9wUbDCwi0R8bcgz-hBejKXz53CoSNONQXLJe6dUYzFyS5DwCOFRKszAL7uzsuom20HmrB1w",
+    "rating": 5,
+    "ratingCount": 2,
+    "productId": "801830328723794741",
+    "position": 20
+   },
+   {
+    "title": "Điện thoại Apple iPhone 16 Pro Max 256GB Titan Đen",
+    "source": "Điện thoại Vui",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+16+Pro+256GB+ch%C3%ADnh+h%C3%A3ng+CellphoneS+gi%C3%A1&prds=localAnnotatedOfferId:1,catalogid:7046905142348265783,gpcid:2309098535906897737,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "25.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQmFStnwB6H71u8C8aCW4D9nEqfgR-_CbeMkbEXAjwq70syRCuX67Ea2whZxs_H79lWIDEIf1jd3oEf5as4xdsRfDQLssL0ri9hOFY1Lbg",
+    "rating": 4.8,
+    "ratingCount": 165,
+    "productId": "7046905142348265783",
+    "position": 21
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Chính Hãng VN -Titan Tự Nhiên",
+    "source": "pgluxury.com",
+    "price": "28.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT-h0tPMRccdIdKC49wjAJ8wv3VeEj9KWEmSQoi2iPlZ44uOsVqjaF6Zf-SihJgJuvFxkQ5X7swWNQ8gjVygFWyxmHcmEqpXSXRJFintYqe-9a-vt1MWRM",
+    "productId": "4530920655971550950",
+    "position": 22
+   },
+   {
+    "title": "iPhone 16 256GB - Chính Hãng Cũ Like New",
+    "source": "Viettablet",
+    "price": "14.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRtcF6Ii7dTnh0XikvfZs10RzGE5JYkfCDCtDfTP3D-LjMe8YolvkMgkm_m3EDEaTjgiXSl9BR8CUqatqzi3-8ph3Q_zxIP2iwAHNU8Xg6jD4-WBMrErEXO",
+    "productId": "418608984553574367",
+    "position": 23
+   },
+   {
+    "title": "iPhone 16 Pro 256GB - Nhiều Màu - Chính Hãng Việt Nam -White Titanium",
+    "source": "Vender.vn",
+    "price": "27.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTo-OdjtHqSp9iiwKkM9zCgkLK8kMfn1iSVExnrCUwUKZanbugxrNm8ZPDd8TxtqoLRjnThSX0B7BjRyMMIACWYh91SztaX6xQN2HGAr-vQOugq-ta7Tv8SmQ",
+    "productId": "18334872105798078554",
+    "position": 24
+   },
+   {
+    "title": "IPhone 16 chính hãng Việt Nam VN/A 99% Trắng 256GB - Hồ Chí Minh",
+    "source": "Điện Thoại Hay",
+    "price": "17.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTtI1a2_9ft765WFYoIN3-OR0uKqxn34Zq22hLW2pYS4kI3yjyvtFAmRR5kGQ3rc7G-xZ7HyJcO9-m6MHazCe44KK15Xw691Tk5UJM85m22KBJtxRsYLoIyFA",
+    "productId": "18433598349849045552",
+    "position": 25
+   },
+   {
+    "title": "[46 Ngày Dùng Thử] iPhone 16 Pro Max 256GB Cũ - Lỗi là Đổi | Tặng 36 tháng Bảo Hành Pin",
+    "source": "24hStore",
+    "price": "22.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRA6b4pJzFJvSvzRdzJe9GvwAKaDopO2qqkdD7CxNwnzhdfmKVv7UZnVYD91aYjY4-waf_PeiFoLJs9RQvS6yTjNX4BCZ-DA4gqnoJx31yjsYtpYsvPJOej",
+    "productId": "2121044308690098100",
+    "position": 26
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ Đẹp Chính Hãng Cao Cấp",
+    "source": "Truesmart.com.vn",
+    "price": "19.750.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTkbmT0JxQ3mN5EYueX3md10UB2rMvvs27jPbs3O_PrCOxLWx7pzhY6W3ub6uavlVwScIPq6Ag2zMf75-Z2nBFSmcTYKD1i9A",
+    "rating": 4.7,
+    "ratingCount": 911,
+    "productId": "4592619994668336760",
+    "position": 27
+   },
+   {
+    "title": "iPhone 16 Pro 256GB – Like New",
+    "source": "TechOne Hà Nội",
+    "price": "20.390.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcScuhn2psLpKVONUHkfxG2d7QH5mxtw29G9lg3-44UIz7zCVo-LOJoWtdJ3QZ-U8AkbG-9CVUOHQAdGimUkC2xOuW1UZo56jcmCCDtwTgYfkVwAy8LUGKHf",
+    "productId": "16893333268807646688",
+    "position": 28
+   },
+   {
+    "title": "iPhone 16 Pro 256Gb | Chính hãng Apple (VNA/ZPA/ZAA/LLA...)",
+    "source": "HPC Luxury",
+    "price": "28.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR4ui49x06x-2oj72Rchi_uEXMyqFN2dXgSx_GyD30rZ84Ge4Mw2hVuoKBWx0zwdejlPpA4jnVVUdsprO10LVA9dmCpeawJocPSNRO1z0o",
+    "productId": "16629087608814280546",
+    "position": 29
+   },
+   {
+    "title": "iPhone 16 Pro 256Gb (Mới 100%)",
+    "source": "Hà Nội",
+    "price": "26.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS60HWW44h4mKRPuY85k_1cHzAefFMW6abqmjdBJuKYXlAgb9DPCz4bZAGlq377bpzx50FFFXK6Q1frO_hebzts_BwkEfiI_5rVdlnSMDb0mikVf1IbledEmg",
+    "productId": "11017913681788162550",
+    "position": 30
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB (VN/A) | Thu cũ 90% | Bảo hành 12 tháng",
+    "source": "XTmobile",
+    "price": "29.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTKFhsZqK0M1k_B80VDYqm-EB0APuunuM54SMfPOhfYb5mBB4Mugi9yOA8Zm9cYTJyMR14b9p-pQR3gHOee61OotgdHrI8kq-LnhAvcXWbOza0jPeISCzoB",
+    "productId": "13550471208414317317",
+    "position": 31
+   },
+   {
+    "title": "iPhone 16 Plus 256GB - Chính Hãng Cũ Like New",
+    "source": "Viettablet",
+    "price": "17.999.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTP4wXbW53PU88l7K_1ieB6cdMCQOVfjqMiINrVmoBFQHw2fyobjdtxrRJRaEJJ4bbAwuNHqDOLk3t2Pij2DlKtkfH2QGwSZFyX7p3ZnZADdKe0fLhACI4q2Q",
+    "productId": "8353406446401707451",
+    "position": 32
+   },
+   {
+    "title": "Điện thoại Apple iPhone 16 Pro Max 256GB VN/A",
+    "source": "Oneway Mobile",
+    "price": "30.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRN5aygI300AaoGKT5K8m0lQqkUjVk7vU-vdj7x3Qhv44AgypNXSLo1oNq7oh9YHgiI1WLYTJCm2jaufjcK8ftB6rJl1AKsBZ3TON0WMJhf_Tvdrvo8BT0Z",
+    "productId": "15138843394688397899",
+    "position": 33
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB - Cũ đẹp",
+    "source": "minhtuanmobile.com",
+    "price": "25.790.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTB0cZgXNIgBtdjR-u4ZfIFZWniZ7Hpv4E6qtykNGaHnAJf87SYSQ4i5tG8sar33G_dTDQ1W9mQgm73oz8jn9_Q2p-5cYF5Xh8VWrZkm8X6JmEj4ZrUYmg9rQ",
+    "productId": "6223662205378966037",
+    "position": 34
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A Mới 100%)",
+    "source": "Tinh Tế Mobile",
+    "price": "28.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRZxDdabbyczjobBjDP4_-eZ-p12cru_NJfp6bZeL6m_smEMyXLK2wVWdZJGaFMYkw5pG48fM1LXEDGyQcfp7xKVAx8ODnS5o22v02eyECDbCMNP4-9OF2n",
+    "productId": "4573220999838061927",
+    "position": 35
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Likenew 99% (Pin zin 100%)",
+    "source": "MobileWorld.com.vn",
+    "price": "23.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTMcNFQEz8q3K0mAGScftlTopaEjKrgxgL4cGWDfrcGBsqU7o5pV1_OylYEuHWEhV2a30af3vw1s6vttnOItNjJTZdnKkXzKH-_SWoM1SntHQOY80Wc_a-l",
+    "productId": "13155718300568984720",
+    "position": 36
+   },
+   {
+    "title": "iPhone 16 Pro 256GB cũ đẹp 99%",
+    "source": "Didongmoi.vn",
+    "price": "18.590.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTIj_d7ceB4DbDqqhmIVSIyzHAd6x1AzqcOjek3y2IZqtV74e6fmSawhFHguQuLv9mvkJi8TVE-ikgdBimgFYoVMvDvrEzRZ1JEhuNw6g1jRzwqGMNaAu67GQ",
+    "productId": "17332374793384000566",
+    "position": 37
+   },
+   {
+    "title": "Apple iPhone 16 Plus 256GB",
+    "source": "Oneway Mobile",
+    "link": "https://www.google.com/search?ibp=oshop&q=iPhone+16+Pro+256GB+ch%C3%ADnh+h%C3%A3ng+CellphoneS+gi%C3%A1&prds=localAnnotatedOfferId:1,catalogid:1164788995557288813,gpcid:2829927320383126433,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "26.690.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTrv2aJBXnPVptPARMQaaSvb0DMb7p35ZMID0cVW4okxMjnjKozzmBCW1H84CHHOryHqxX4LOOXSKx-Sa5aqN-Wg78eHh1GrK5YL9NjYTa4WvZs-3ERpjMI",
+    "rating": 4.7,
+    "ratingCount": 17,
+    "productId": "1164788995557288813",
+    "position": 38
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ - Trắng / B: Vỏ máy và kính có trầy xước nhiều, Pin 72-82%",
+    "source": "xoanstore.vn",
+    "price": "21.090.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQKIS8gz-PA6I78l9VNexdmz4kKkszSX1bX_NVTMZV1ZM-vCGNSPKnCHkcSfh0ISL9Yjb0oymuiieon1Y8e8pSXYffLDGHLl0tytjkm0He8bce2_8eUZP8kxQ",
+    "productId": "17933909473133942271",
+    "position": 39
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB Máy Mới · Nguyên Tem · Nguyên Kiện · Đầy Đủ Màu Titan Trắng",
+    "source": "Trang Thiên Long Mobile",
+    "price": "28.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTAtdkb0Jx1vwhLm4unSn1um9m94HTHyzSBQ7PWQMcHTOyGlQxxSzpOTTZWPQk0SAfRocrQ2eMMFki5uwM42uL7vdTYWVlTAD3uNOPPUH4jBnYrw_PVgZ4",
+    "rating": 3,
+    "ratingCount": 4,
+    "productId": "2829673954391540188",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

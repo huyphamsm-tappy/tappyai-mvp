@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Neo 13 inch\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Apple MacBook Air\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:03:52.450Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Neo 13 inch\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" OR \"Apple MacBook Air\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686275604391529741",
+    "snippet": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 8GB 256GB Space ... Apple MacBook Air A1466 (2017) – Disponible ✨ Léger ...",
+    "position": 1
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7683162012251098381",
+    "snippet": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020) 8GB RAM 128GB ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 2
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Apple Macbook Neo 13 Inch · 2020 Refurbished Apple Macbook Air 13.3-Inch M1, 8GB - 16GB Ram, 128GB - 1TB SSD (Good) · 2020 Refurbished Apple Macbook Air 13.3-Inch ...",
+    "position": 3
+   },
+   {
+    "title": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686587010311523598",
+    "snippet": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB SSD Wi-Fi Space ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 4
+   },
+   {
+    "title": "Unboxing My New Apple MacBook Air",
+    "link": "https://www.tiktok.com/@bethanylearmont/video/7607604170346007838",
+    "snippet": "Unboxing new tech is always an exciting experience, and today I have the pleasure of unboxing my new Apple MacBook Air .",
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Air 13-inch M4",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m4-papan-kekal-ringan/1731071684011394539",
+    "snippet": "Beli Apple MacBook Air 13-inch M4 pada TikTok Shop. Temukan harga hebat bagi dan dapatkan penghantaran percuma bagi item yang layak.",
+    "position": 6
+   },
+   {
+    "title": "School với Apple: MacBook Air M5 & iPad Air M3 Review",
+    "link": "https://www.tiktok.com/@migahsokiuuu/video/7682398103047130386",
+    "snippet": "Back to School với Apple: MacBook Air M5 & iPad Air M3 Review. Lead oaii đã qua bao mùa Back to School cùng Apple rồi — video này tóm tắt trải ...",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air (13-inch, M2)",
+    "link": "https://shop.tiktok.com/my/pdp/apple-macbook-air-13-inci-m2-chip-bateri-tahan-lama-layar-retina/1729606174846191083",
+    "snippet": "Beli Apple MacBook Air (13-inch, M2) pada TikTok Shop. Temukan harga hebat bagi dan dapatkan penghantaran percuma bagi item yang layak.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com MacBook battery cycle count maximum capacity check",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:07:41.880Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com MacBook battery cycle count maximum capacity check",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-us/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of the System ...",
+    "position": 1
+   },
+   {
+    "title": "If you see battery 'Service Recommended' on your Mac ...",
+    "link": "https://support.apple.com/en-us/108376",
+    "snippet": "From the Apple menu , choose System Settings (or System Preferences). · Click Battery. · Find the information shown for Battery Health: Normal: ...",
+    "date": "11 thg 5, 2026",
+    "position": 2
+   },
+   {
+    "title": "Check the condition of your Mac laptop's battery",
+    "link": "https://support.apple.com/guide/mac-help/check-the-condition-of-your-computers-battery-mh20865/mac",
+    "snippet": "To view your battery's condition, choose Apple menu > System Settings, then click Battery in the sidebar. (You may need to scroll down.).",
+    "position": 3
+   },
+   {
+    "title": "How to check battery health and history on your iPad",
+    "link": "https://support.apple.com/en-us/117759",
+    "snippet": "Find out how to check battery health, the date of manufacturing and first use, and the cycle count of the battery in your iPad.",
+    "date": "2 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "iPhone battery and performance",
+    "link": "https://support.apple.com/en-us/101575",
+    "snippet": "Maximum battery capacity measures the device battery capacity relative to when it was new. A battery will have lower capacity as the battery ...",
+    "date": "1 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "About battery health management in Mac laptops with ...",
+    "link": "https://support.apple.com/en-us/102589",
+    "snippet": "A normal battery is designed to retain up to 80% of its original capacity at its maximum cycle count when operating under normal conditions.",
+    "date": "14 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "About the battery and performance of iPhone 11 and later",
+    "link": "https://support.apple.com/en-us/106348",
+    "snippet": "Open the Settings app, then tap Battery. Tap Battery Health. The Battery Health screen, showing battery health, maximum capacity, cylcle count, ...",
+    "date": "5 thg 12, 2025",
+    "position": 7
+   },
+   {
+    "title": "About Optimized Battery Charging and Charge Limit on Mac",
+    "link": "https://support.apple.com/en-us/102338",
+    "snippet": "From the Apple menu , choose System Settings. · Click Battery in the sidebar. · Click the info button next to Charging (or Battery Health).",
+    "date": "6 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

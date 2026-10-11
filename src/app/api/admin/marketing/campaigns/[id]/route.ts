@@ -6,6 +6,8 @@ import { writeAuditLog } from '@/lib/admin/audit'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getCampaign, updateDraft } from '@/lib/marketing/campaignStore'
 import { isEditable } from '@/lib/marketing/campaignLifecycle'
+import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { logRateLimitRefusal } from '@/lib/security/rateLimitResponse'
 
 // GET   /api/admin/marketing/campaigns/[id]   read one
 // PATCH /api/admin/marketing/campaigns/[id]   edit a DRAFT
@@ -35,6 +37,10 @@ const PatchSchema = z.object({
 
 type Params = { params: Promise<{ id: string }> }
 
+// SEC4 slice 5c: PATCH was the one admin route without the shared limiter. Same numbers as the sibling `create` (60 per hour per admin); GET is read-only and, like the sibling list, unlimited.
+const UPDATE_LIMIT = 60
+const UPDATE_WINDOW_MS = 60 * 60 * 1000
+
 export async function GET(req: Request, { params }: Params) {
   try {
     await requirePermission(req, PERMISSIONS.MARKETING_CAMPAIGNS_READ)
@@ -54,6 +60,16 @@ export async function PATCH(req: Request, { params }: Params) {
   try {
     const { user, actor } = await requirePermission(req, PERMISSIONS.MARKETING_CAMPAIGNS_UPDATE)
     if (!isSameOrigin(req)) return adminError('FORBIDDEN', 'Cross-origin request denied', 403)
+
+    // Admin semantics (C10): FAIL CLOSED — no store configured, or a store that does not answer, refuses the edit. Checked before the body is parsed or the database read.
+    const rl = await distributedRateLimit(`admin:marketing:campaign:update:${user.id}`, UPDATE_LIMIT, UPDATE_WINDOW_MS)
+    if (!rl.ok) {
+      logRateLimitRefusal('admin_campaign_update', { ...rl, scope: 'distributed' })
+      return adminError('RATE_LIMITED', 'Too many campaign edits', 429, {
+        'Retry-After': String(rl.retryAfter),
+        'X-RateLimit-Reason': rl.reason ?? 'limit_exceeded',
+      })
+    }
 
     const { id } = await params
     const parsed = PatchSchema.safeParse(await req.json().catch(() => null))

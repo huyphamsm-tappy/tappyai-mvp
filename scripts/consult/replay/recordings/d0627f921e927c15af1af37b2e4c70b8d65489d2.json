@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn \"200.000\" \"hộ chiếu\" lệ phí cấp trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:40:41.160Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn \"200.000\" \"hộ chiếu\" lệ phí cấp trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với trường ...",
+    "position": 1
+   },
+   {
+    "title": "Trường hợp người đề nghị cấp hộ chiếu không đến nhận kết ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19736&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp ...",
+    "position": 2
+   },
+   {
+    "title": "Trẻ em dưới 14 tuổi khi làm thủ tục cấp hộ chiếu có cần phải ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19735&row_limit=1",
+    "snippet": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng, trường hợp người dân muốn cấp hộ chiếu sớm thì có phải nộp thêm phí hay không? Điều kiện để được cấp ...",
+    "position": 3
+   },
+   {
+    "title": "Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777B801E0CAAE063490AA8C07866",
+    "snippet": "... lệ phí nhà nước 200.000 VNĐ có biên lai theo file đính kèm. Theo kết quả tra cứu thì hộ chiếu của tôi đã được trả về từ ngày 03/11/2022. Tuy nhiên tôi chưa ...",
+    "position": 4
+   },
+   {
+    "title": "Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777AC8820CAAE063490AA8C07866",
+    "snippet": "... online vào ngày 15/2/2023. Mặc dù tôi đã thanh toán 200.000đ tiền lệ phí cấp hộ chiếu, tuy nhiên tới bây giờ 25/3/2023 tôi vẫn chưa nhận được hộ chiếu. Tôi ...",
+    "position": 5
+   },
+   {
+    "title": "Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông trong nước ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777B456C0CAAE063490AA8C07866",
+    "snippet": "Xin chào các anh Công an tỉnh Đăk Nông ạ ! Em đã nộp hồ sơ và thanh toán lệ phí 200.000 đồng cũng được tầm nửa tháng rồi mà vẫn chưa có hộ chiếu.",
+    "position": 6
+   },
+   {
+    "title": "Cấp Phiếu lý lịch tư pháp cho công dân Việt Nam, người nước ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-hanh-chinh.html?ma_thu_tuc=2.000488",
+    "snippet": "Cách thức thực hiện ; Trực tiếp, 15 Ngày, Phí: 100.000 ĐồngXem chi tiết; Phí: 200.000 ĐồngXem chi tiết ; Trực tuyến, 10 Ngày, Phí: 100.000 ĐồngXem chi tiết; Phí: ...",
+    "position": 7
+   },
+   {
+    "title": "Kiến nghị về việc: Trễ hẹn cấp hộ chiếu online hơn nửa tháng",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=2D7B777BB73C0CAAE063490AA8C07866",
+    "snippet": "Tôi đã nộp hồ sơ làm hộ chiếu online cấp lần đầu ngày 21/03/2023, mã hồ sơ G01.903.000.000-230321-0056, tài khoản nộp: 082300001463, đã thanh toán phí 200.000 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

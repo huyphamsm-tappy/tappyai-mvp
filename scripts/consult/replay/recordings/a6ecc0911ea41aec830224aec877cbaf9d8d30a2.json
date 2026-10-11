@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianheritage.danang.gov.vn giá vé tham quan Hội An 80.000 2026 thời gian phố đi bộ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:55:18.734Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianheritage.danang.gov.vn giá vé tham quan Hội An 80.000 2026 thời gian phố đi bộ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Những thông tin cần biết về vé tham quan Đô thị cổ Hội An",
+    "link": "https://hoianheritage.danang.gov.vn/vi/news/Tin-tuc-su-kien/thong-bao-ve-hoat-dong-tham-quan-khu-pho-co-hoi-an-1711.html",
+    "snippet": "Quyền lợi của du khách - Với vé có mệnh giá 80.000 VNĐ: + Tham quan cảnh quan chung Khu phố cổ + Tham quan 01 điểm di tích Chùa Cầu hoặc ...",
+    "date": "26 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "Tìm giải pháp chống thất thoát vé tham quan phố cổ Hội An",
+    "link": "https://hoianheritage.danang.gov.vn/vi/bao-chi/bao-chi-ve-di-san/tim-giai-phap-chong-that-thoat-ve-tham-quan-pho-co-hoi-an-492.html",
+    "snippet": "Qua nhiều lần điều chỉnh, từ năm 2012 đến nay, giá vé được giữ ổn định ở mức lần lượt 80.000 đồng/vé/4 công trình văn hóa và 120.000 đồng/vé/6 ...",
+    "date": "5 thg 5, 2026",
+    "position": 2
+   },
+   {
+    "title": "giá trị di sản văn hóa thế giới đô thị cổ hội an trong",
+    "link": "https://hoianheritage.danang.gov.vn/uploads/download/files/so-2-2025.pdf",
+    "snippet": "Khai trương không gian phố đi bộ đường Phan Châu Trinh. Ảnh: Trung tâm ... Tổng lượt khách mua vé tham quan các điểm du lịch của Hội An ước đạt 1,8 ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

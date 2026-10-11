@@ -1,5 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
-import { rateLimit } from '@/lib/security/rateLimit'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { NextRequest, NextResponse } from 'next/server'
 import {
   createUploadSessionResponse,
@@ -45,9 +46,8 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
   // Cap upload authorization per user (each response authorizes one direct PUT).
-  if (!rateLimit(`upload-video:${user.id}`, 30, 60_000).ok) {
-    return NextResponse.json({ error: 'rate_limit', message: serverMessage('rate.tooFast', requestLocale(req)) }, { status: 429 })
-  }
+  const rl = await publicRateLimit(`upload-video:${user.id}`, 30, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'upload_video')
 
   let body: unknown
   try {

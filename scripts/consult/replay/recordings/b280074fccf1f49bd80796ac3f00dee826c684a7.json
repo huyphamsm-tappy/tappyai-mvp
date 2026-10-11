@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro (thế hệ thứ 2) thông số kỹ thuật thời gian nghe 6 giờ hộp sạc",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:17:00.944Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro (thế hệ thứ 2) thông số kỹ thuật thời gian nghe 6 giờ hộp sạc",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 24 giờ khi bật tính năng Chủ Động Khử Tiếng Ồn · 5 phút để trong hộp sạc có thể tăng thời gian nghe khoảng 1 giờ ...",
+    "position": 2
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Được gắn vào một thân máy nhẹ và nhỏ gọn, sức mạnh của chip H2 mới cung cấp trải nghiệm âm thanh vượt trội và loại bỏ tiếng ồn gấp đôi so với ...",
+    "date": "7 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "iPhone 14 - Anker - Sạc & Bộ Tiếp Hợp Nguồn - Tất Cả Phụ ...",
+    "link": "https://www.apple.com/vn/shop/accessories/all/chargers-adapters/iphone-14-anker",
+    "snippet": "... AirPods · Phụ Kiện. Liên Kết Nhanh. Tình Trạng Đơn Hàng · Apple Trade In · Tài Chính · Ưu Đãi Dành Cho Sinh Viên Đại Học. Mua Tại Cửa Hàng Đặc Biệt. Giáo Dục ...",
+    "position": 4
+   },
+   {
+    "title": "Cáp Bện USB-C sang USB-C của Beats (1.5 m / 5 ft) – Hồng ...",
+    "link": "https://www.apple.com/vn/shop/product/mk8p4zp/a/c%C3%A1p-b%E1%BB%87n-usb-c-sang-usb-c-c%E1%BB%A7a-beats-15-m-5-ft-h%E1%BB%93ng-s%C3%A1ng",
+    "snippet": "Cáp hỗ trợ sạc nhanh lên đến 60 watt và có thể truyền dữ liệu ở tốc độ USB 2.0. Để sạc nhanh và hiệu quả, hãy kết nối cáp USB-C với bộ tiếp hợp nguồn USB-C ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Nay được trang bị chip H2, AirPods Max 2 giúp bạn chìm đắm sâu hơn vào thế giới âm thanh nhờ giảm được nhiều tiếng ồn không mong muốn hơn, Chủ Động Khử Tiếng Ồn ...",
+    "position": 6
+   },
+   {
+    "title": "Giới thiệu AirPods Pro 3 với trải nghiệm âm thanh đỉnh cao",
+    "link": "https://www.apple.com/vn/newsroom/2025/09/airpods-pro-3-introduce-the-ultimate-audio-experience/",
+    "snippet": "Thời gian có hàng sẽ sớm được cập nhật. AirPods Pro 3 có mức giá khởi điểm từ 6.799.000đ. Để sử dụng đầy đủ các tính năng, hãy sử dụng AirPods ...",
+    "date": "10 thg 9, 2025",
+    "position": 7
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "Được trang bị chip H2 mới, AirPods Pro (2nd generation) mở khóa hiệu suất âm thanh đột phá, bao gồm những cải thiện đáng kể cho chế độ Khử tiếng ...",
+    "date": "22 thg 9, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

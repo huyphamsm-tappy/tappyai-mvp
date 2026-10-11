@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Laptop MacBook Pro M1 2020 13 inch 256GB MYDA2SA/A Bạc\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:18:20.468Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Laptop MacBook Pro M1 2020 13 inch 256GB MYDA2SA/A Bạc\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

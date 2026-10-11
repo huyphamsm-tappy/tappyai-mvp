@@ -1,0 +1,64 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hàng cũ Apple MacBook Air M1 256GB 2020 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:55.527Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hàng cũ Apple MacBook Air M1 256GB 2020 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/pdp-i1040858590.html?srsltid=AU7gw4XIPhcT-SiC-GFYTo5l6xQk3Ty3pPLt_OOaFd5ci8ejrPIzN15R",
+    "snippet": "Chip M1 tạo ra một cú nhảy vọt về hiệu năng máy học, CPU và GPU · Tăng thời gian sử dụng với thời lượng pin lên đến 18 giờ1 · CPU 8 lõi cho hiệu năng nhanh hơn ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 2020 13.3 inch M1- Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/macbook-air-2020-133-inch-m1-hang-chinh-hang-i1040858590.html?srsltid=AU7gw4VKk4DDYsIh_O9dxItl23_6IILSXJG3OCoSIS0UVXB7Oe1a-FBN",
+    "snippet": "Thông số. Thương hiệu,Loạt thẻ đồ họa,Loại bộ xử lý ; Trả góp. Trả góp trong 6 tháng, chỉ với 2.998.333 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí Minh, Phường ...",
+    "position": 2
+   },
+   {
+    "title": "Phụ kiện Apple USB-C TO LIGHTNING CABLE (1 M) Chính ...",
+    "link": "https://www.lazada.vn/products/phu-kien-apple-usb-c-to-lightning-cable-1-m-chinh-hang-fea-viettel-store-i1836597961.html?srsltid=AU7gw4UaufvGeLIb7gb_pgCaXRssY1aTVQVSdFie2fRqBlgWitO2tpWL",
+    "snippet": "Apple iPhone Air 1TB Chính hãng. 37.690.000 ₫ · Apple iPhone Air 256GB ... MacBook Air (M2, 2022), MacBook Air (M1, 2020), MacBook Air (Retina, 13 inch, 2020).",
+    "rating": 4.9,
+    "ratingCount": 48,
+    "position": 3
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch",
+    "link": "https://www.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-i13335434012.html?srsltid=AU7gw4UtOic_mR51mn8svgCd7KqBYWJVAfmUl4QAxmLwsRKnm8JTv3LW",
+    "snippet": "Thông số. Thương hiệu,Loạt thẻ đồ họa,Tốc độ khung hình màn hình ; Trả góp. Trả góp trong 12 tháng, chỉ với 1.499.917 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 4
+   },
+   {
+    "title": "Củ Sạc Nhanh Nexode 45W GaN II UGREEN 90573 ( 2 x ...",
+    "link": "https://www.lazada.vn/products/cu-sac-nhanh-nexode-45w-gan-ii-ugreen-90573-2-x-usb-c-chinh-hang-i2944440631.html?srsltid=AU7gw4XwssjMpRyS1KxVBuUZ1e5WBH4m_m9enTaxhfzHFuA8tPLgT15i",
+    "snippet": "Mô tả sản phẩm. Bảo hành 12 tháng. Cổng sạc: 2 cổng USB-C . Phân phối năng lượng thông minh (Power Delivery – PD). Công suất tối đa: 45W .",
+    "position": 5
+   },
+   {
+    "title": "Decal dán tường vân gỗ trắng giá rẻ chống thấm Giấy ...",
+    "link": "https://www.lazada.vn/products/decal-dan-tuong-van-go-trang-gia-re-chong-tham-giay-dan-tuong-van-go-mau-trang-gia-re-trang-tri-nha-cua-sang-trong-trang-tri-phong-khach-phong-ngu-phong-an-dan-tuong-quan-cafe-nha-hang-cua-hang-lam-phong-nen-chup-hinh-i1235844781.html?srsltid=AU7gw4VNjtfnLFJTciwfpvpzrdkxU72ZVDvuj4eIipJnH8Kr_KC4eS3v",
+    "snippet": "+Khi gắn một miếng dán hãy bóc ra từ góc và dán nó trong khi từ từ bỏ lớp lót. Trong quá trình dán bạn hãy sử dụng gạt dán hoặc dùng một miếng vải mềm để miết ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

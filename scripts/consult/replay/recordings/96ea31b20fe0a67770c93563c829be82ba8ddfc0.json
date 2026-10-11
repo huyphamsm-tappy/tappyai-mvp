@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam shop website địa chỉ facebook",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:37:14.743Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam shop website địa chỉ facebook",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đánh giá Sony WH-CH720N tiết kiệm 4 triệu so với ...",
+    "link": "https://www.youtube.com/watch?v=UJ34v2rvzNw",
+    "snippet": "Mình đã lọt top đề cử Reviewer của năm. Nếu các bạn yêu thích mình có thể bình chọn cho mình ở đây nhé: ...",
+    "position": 1
+   },
+   {
+    "title": "Sony WH-CH720N là một trong những mẫu tai nghe chụp ...",
+    "link": "https://www.facebook.com/amztechdn/videos/sony-wh-ch720n-l%C3%A0-m%E1%BB%99t-trong-nh%E1%BB%AFng-m%E1%BA%ABu-tai-nghe-ch%E1%BB%A5p-tai-ch%E1%BB%91ng-%E1%BB%93n-c%C3%B3-pp-hi%E1%BB%87u-n%C4%83ng/1046403581073911/",
+    "snippet": "Sony WH-CH720N là một trong những mẫu tai nghe chụp tai chống ồn có p/p (hiệu năng trên giá thành) tốt nhất phân khúc.",
+    "position": 2
+   },
+   {
+    "title": "Sony WH-CH720N Review: Is It Worth It at $75?",
+    "link": "https://www.youtube.com/watch?v=KlHPXUuYp2w&vl=vi",
+    "snippet": "So sánh tai nghe SONY WH CH720N vs ANKER Soundcore Space One. Cuộc chiến giữa chất âm 1 triệu 8. Hưng RV•6.2K views · 20:07 · Go to channel ...",
+    "position": 3
+   },
+   {
+    "title": "Trên tay tai nghe không dây Sony WH-CH720N",
+    "link": "https://www.mainguyen.vn/tin-tuc/san-pham-moi/tren-tay-tai-nghe-khong-day-sony-wh-ch720n-phien-ban-gia-mem-cua-wh-1000xm5?srsltid=AU7gw4Ub0nu3d0lZisNVPqG3UgnrtZ-p2yuFIlN_fgNWpJ8avyQynLr-",
+    "snippet": "Tai nghe WH-CH720N sử dụng các nút bám cứng để điều khiển tính năng thay vì chạm vuốt cảm ứng như trên mẫu WH-1000XM5, một chi tiết nữa để bạn ...",
+    "date": "11 thg 4, 2023",
+    "position": 4
+   },
+   {
+    "title": "Sony WH CH720N có đáng mua để nghe acoustic trên ...",
+    "link": "https://www.facebook.com/groups/SmartVozer/posts/4210455412511085/",
+    "snippet": "Tầm 2tr thì e thấy ok. Chất âm thì vẫn nhiều bass như truyền thống của Sony. Pin ok, tầm 30 tiếng nghe. Điểm trừ là nhựa hơi mỏng, chống ồn ...",
+    "position": 5
+   },
+   {
+    "title": "Review tai nghe SONY WH-CH720N: Tầm này giá còn 2 CỦ là ...",
+    "link": "https://www.facebook.com/hoanghamobilecom/videos/review-tai-nghe-sony-wh-ch720n-t%E1%BA%A7m-n%C3%A0y-gi%C3%A1-c%C3%B2n-2-c%E1%BB%A7-l%C3%A0-qu%C3%A1-%C4%91%E1%BA%B9p-s%C4%83n-ngay-httpshhm/4406137146369077/",
+    "snippet": "Review tai nghe SONY WH-CH720N: Tầm này giá còn 2 CỦ là QUÁ ĐẸP >> Săn ngay: https://hhmb.net/sony-wh-ch720n-tt #fyp #hoanghamobile ...",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Sony Chống ồn không dây WH-CH720N/LCE ...",
+    "link": "https://pico.vn/tai-nghe-chong-on-khong-day-wh-ch720nlce-mau-xanh-duong-52-bh-12-thang-WHCH720NLCE",
+    "snippet": "Thông số kỹ thuật ; Thương hiệuSONY ; Cổng sạcType-C ; Thao tác điều khiểnĐiều chỉnh âm lượngChuyển bài Trả lời cuộc gọi ; Thời lượng pinDùng 50 giờ - Sạc 3.5 giờ.",
+    "rating": 4.6,
+    "ratingCount": 11339,
+    "position": 7
+   },
+   {
+    "title": "Sony WH-CH720N Thiết kế siêu nhẹ, âm thanh chuẩn Sony",
+    "link": "https://vua2hand.com/tin-tuc/sony-whch720n-thiet-ke-sieu-nhe-am-thanh-chuan-sony.html",
+    "snippet": "Sony WH-CH720N Thiết kế siêu nhẹ, âm thanh chuẩn Sony · 1. Thiết kế: Siêu nhẹ nhưng hơi \"nhựa\" · 2. Khả năng Chống ồn (ANC): Bất ngờ trong tầm giá · 3. Chất lượng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

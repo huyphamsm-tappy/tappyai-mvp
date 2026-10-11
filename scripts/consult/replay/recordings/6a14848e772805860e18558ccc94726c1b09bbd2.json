@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"WESET ENGLISH CENTER\" OR \"Ryan English\" OR \"TDP IELTS\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:53:53.161Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"WESET ENGLISH CENTER\" OR \"Ryan English\" OR \"TDP IELTS\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "WESET ENGLISH CENTER (@wesetenglishcenter)",
+    "link": "https://www.tiktok.com/@wesetenglishcenter",
+    "snippet": "WESET ENGLISH CENTER (@wesetenglishcenter) on TikTok | 639.3K Likes. 55.8K Followers. WESET ENGLISH CENTER Đồng hành cùng thế hệ trẻ vươn ra biển lớn.",
+    "position": 1
+   },
+   {
+    "title": "WESET English Center: Lừa Đảo Hay Trung Tâm Uy Tín?",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7650122281666006293",
+    "snippet": "Những nghi vấn về trung tâm Anh ngữ WESET đang gây xôn xao cộng đồng mạng. Nhiều người tìm kiếm thông tin với câu hỏi 'WESET English Center ...",
+    "position": 2
+   },
+   {
+    "title": "Tiếng Anh Junior tại WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7687985946335235335",
+    "snippet": "Tiếng Anh Junior tại WESET English Center. Học viên nhí tại WESET Junior có những trải nghiệm học tập vui vẻ và bổ ích. Các em được học từ mới, ...",
+    "position": 3
+   },
+   {
+    "title": "WESET x IDP Đánh giá Năng lực IELTS",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7686327301511859474",
+    "snippet": "Video TikTok từ WESET ENGLISH CENTER (@wesetenglishcenter): \"WESET và IDP đã tổ chức buổi kiểm tra trình độ thí sinh để đánh giá năng lực ...",
+    "position": 4
+   },
+   {
+    "title": "Tiếng Anh giao tiếp: đi học thử tại Ryan English (POV)",
+    "link": "https://www.tiktok.com/@ryanenglish.info/video/7652269305849007368",
+    "snippet": "POV: đi học thử Tiếng Anh giao tiếp tại Ryan English Lead Người xem được mời theo dõi trải nghiệm đi học thử một buổi Tiếng Anh giao tiếp ...",
+    "position": 5
+   },
+   {
+    "title": "Top 5 món đồ đáng tiền nhất từ WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7667894712115711233",
+    "snippet": "Trong danh sách những món đồ đáng tiền nhất, chúng tôi tại WESET English Center đã tổng hợp những vật dụng mang lại giá trị thực sự.",
+    "position": 6
+   },
+   {
+    "title": "Ngọc Hiếu's Journey to Global Citizen with WESET English",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7676436117532593415",
+    "snippet": "Discover Ngọc Hiếu's inspiring journey of self-improvement through English with WESET. Learn how. @WESET ENGLISH CENTER.",
+    "position": 7
+   },
+   {
+    "title": "Minh Trí's Review of WESET English Center",
+    "link": "https://www.tiktok.com/@wesetenglishcenter/video/7621549254468783381",
+    "snippet": "In this article, we delve into Minh Trí's review of the WESET English Center. Known for its innovative teaching methods and effective ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

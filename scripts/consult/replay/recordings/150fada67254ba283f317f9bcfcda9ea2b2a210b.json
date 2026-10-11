@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:53.723Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

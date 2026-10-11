@@ -1,0 +1,612 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quiet cafe coworking workspace laptop power outlets stable Wi-Fi Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:13:33.405Z",
+ "body": {
+  "searchParameters": {
+   "q": "quiet cafe coworking workspace laptop power outlets stable Wi-Fi Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "SPACEP - Working & Study Space",
+    "address": "17A Đặng Trần Côn, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.772549699999999,
+    "longitude": 106.6939038,
+    "rating": 4.9,
+    "ratingCount": 291,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê",
+     "Thư viện",
+     "Trung tâm nghiên cứu"
+    ],
+    "website": "https://spacepthestudyhub.netlify.app/",
+    "phoneNumber": "+84 964 392 531",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "bookingLinks": [
+     "https://spacepthestudyhub.netlify.app/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmebSqElhNazydSAhNap_Ig3Me-OzHIUR88b9QFnlBBeajCUnZJ_Svq2ON6OQB2UDsWCxbUKIucV9jJv85YmTivGyK_gXT1KZAdwkqU2iiKkOEvpQ5VXGJoAiNFL7xif8WTdwgqpIANfBXp",
+    "cid": "1046278445822926942",
+    "fid": "0x31752f955846783f:0xe8520b3fb6c605e",
+    "placeId": "ChIJP3hGWJUvdTERXmBs-7MghQ4"
+   },
+   {
+    "position": 2,
+    "title": "GEEK Hub Nguyen Dinh Chieu",
+    "address": "27b/9 Đường Nguyễn Đình Chiểu, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.787451599999999,
+    "longitude": 106.6993206,
+    "rating": 4.5,
+    "ratingCount": 302,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Đại lý cho thuê văn phòng"
+    ],
+    "website": "http://geekhub.vn/",
+    "phoneNumber": "+84 28 2200 8683",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlEaY7bc9sVpW2tRpvfRyH338bPX-Y1HyN6vRTEoHsxkWS7_w3dt9nD57zL5TZIXvlnsBApxXGND_K-3ZTFBklUbmUYpXdhpUFnpYOIYdGA18ozxI7_M6WaGKYzodzi1ECyuJTW",
+    "cid": "11135049055463399445",
+    "fid": "0x31752f3565d22c2b:0x9a87a41eb371e015",
+    "placeId": "ChIJKyzSZTUvdTERFeBxsx6kh5o"
+   },
+   {
+    "position": 3,
+    "title": "WorkFlow Quận 3 - Working Space & Café",
+    "address": "195/3 Hai Bà Trưng, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7860643,
+    "longitude": 106.69390729999999,
+    "rating": 4.5,
+    "ratingCount": 433,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê"
+    ],
+    "website": "https://www.workflow.com.vn/",
+    "phoneNumber": "+84 869 955 570",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnGlwF74bAcVR67Jcs0Bn1fYghAJ6-EE7WDS9qeDMvZlOQ1pouCInBiMeL_Lh36OPaJeqYPgMQ4NarB0Ou1Yaq_zSWRD7_ACYkdSozvmu1o05u-d5-xkIHCBzYfGtdCH2nynEvjbvhwxPXq",
+    "cid": "1011267597805569721",
+    "fid": "0x31752ff45bb99c23:0xe08be85b41046b9",
+    "placeId": "ChIJI5y5W_QvdTERuUYQtIW-CA4"
+   },
+   {
+    "position": 4,
+    "title": "WORK X Coworking Space & Coffee",
+    "address": "182 Điện Biên Phủ, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7846162,
+    "longitude": 106.6917,
+    "rating": 5,
+    "ratingCount": 201,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê internet"
+    ],
+    "website": "https://zalo.me/s/3965477744052205961/",
+    "phoneNumber": "+84 939 601 079",
+    "openingHours": {
+     "Thứ Năm": "08:00–22:00",
+     "Thứ Sáu": "08:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "08:00–22:00",
+     "Thứ Ba": "08:00–22:00",
+     "Thứ Tư": "08:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.workx.com.vn/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlWKj2KnWaHRJzqFG07WKnvPO_URG_tZD6BlUTiZzYRM1y-WyK1W7bSV0CSHTiy-8BsJ1bFqV2-GF4xGMy_saEgO8HQqpcvO-NvcPLamchrVl1RMRkzAj_OXV1xQA662ckxdVDiGeMtLWZF",
+    "cid": "18142420889503734046",
+    "fid": "0x31752f00621c6d67:0xfbc6d3ad247f191e",
+    "placeId": "ChIJZ20cYgAvdTERHhl_JK3Txvs"
+   },
+   {
+    "position": 5,
+    "title": "TINI COWORKING",
+    "address": "152 Võ Văn Kiệt, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7651044,
+    "longitude": 106.6992621,
+    "rating": 4.8,
+    "ratingCount": 207,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://tinicoworking.com/",
+    "phoneNumber": "+84 965 678 910",
+    "openingHours": {
+     "Thứ Năm": "08:00–18:00",
+     "Thứ Sáu": "08:00–18:00",
+     "Thứ Bảy": "08:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–18:00",
+     "Thứ Ba": "08:00–18:00",
+     "Thứ Tư": "08:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWne_4gx91AuxfrzwNaI3LIcpE84PoxdpzgKJXFyO7lxElhZOvaAev6tgDByR9z__Po8MBXwLpQedSgiZiGLgW8TWKOsugltMfTp89V0aPpwjYBIGsWIq-YoZfxV0Jj5pH2d3iA",
+    "cid": "5371310672464745208",
+    "fid": "0x31752f3ba73ec72d:0x4a8aba99228692f8",
+    "placeId": "ChIJLcc-pzsvdTER-JKGIpm6iko"
+   },
+   {
+    "position": 6,
+    "title": "WorkFlow Thảo Điền - Working Space & Cafe",
+    "address": "39 Nguyễn Duy Hiệu, An Khánh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8030218,
+    "longitude": 106.736589,
+    "rating": 4.7,
+    "ratingCount": 323,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 944 886 060",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–18:00",
+     "Chủ Nhật": "07:30–18:00",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlhL9T8Q2ZdBiW3Lafm_Hd01epi-cKtrpsINg-5U26yNzR8bZnuPB0gTUqLYhsBIs72Qb0zTS4Y5cjKAUFM_5bQ5v3ENPo_vSnTX6pGkmCn0nDISwEsxCDHBrs-JzsRMmUWp4Aq",
+    "cid": "7018606771125604301",
+    "fid": "0x8668bf445c1afb91:0x616719ac1317cfcd",
+    "placeId": "ChIJkfsaXES_aIYRzc8XE6wZZ2E"
+   },
+   {
+    "position": 7,
+    "title": "GEEK Hub Huynh Van Banh",
+    "address": "244/31 Hẻm 244 Huỳnh Văn Bánh, Phú Nhuận, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7926859,
+    "longitude": 106.675175,
+    "rating": 4.4,
+    "ratingCount": 229,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "http://geekhub.vn/",
+    "phoneNumber": "+84 28 2200 8683",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnZi1YfCRHkCPrHVHEsNK0ogAnCsJ9XzJ6CZuqlhaQ5w_Ya0DzuCmxgtHxYAV3KjOKX1rQbIh2H0b2DJ7O5i0lWLCZvb8X4n-25ssFHZeJL-XU2POfg9Z3hAKJYtm1cwMKDnq-39A",
+    "cid": "17632845677911537994",
+    "fid": "0x317528d40515a889:0xf4b473b8a332f94a",
+    "placeId": "ChIJiagVBdQodTERSvkyo7hztPQ"
+   },
+   {
+    "position": 8,
+    "title": "QSpace",
+    "address": "30/11C Mạc Đĩnh Chi, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.785905,
+    "longitude": 106.69842179999999,
+    "rating": 4.8,
+    "ratingCount": 18,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://www.qspace.io/",
+    "phoneNumber": "+84 28 2215 6788",
+    "openingHours": {
+     "Thứ Năm": "09:00–18:30",
+     "Thứ Sáu": "09:00–18:30",
+     "Thứ Bảy": "09:00–16:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "09:00–18:30",
+     "Thứ Ba": "09:00–18:30",
+     "Thứ Tư": "09:00–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlTVEeVXH9a9-UD_YiZq4KyeWc3TVv8BRKTto9krIpqUzfA-CcfuUx2eHAq3z7XmjVpD_5bcubBnpvbKmdrvpDLN1tDL_GnAHOQ-ehuhD43tHjPpC8Lr6I42lfMzjZS89xWkJNp",
+    "cid": "15599356000022493264",
+    "fid": "0x31752f359e0dc813:0xd87c0ba21232f850",
+    "placeId": "ChIJE8gNnjUvdTERUPgyEqILfNg"
+   },
+   {
+    "position": 9,
+    "title": "beyond – Creative Co Working Space",
+    "address": "5F., Saigon Finance Center Bldg, 9 Đinh Tiên Hoàng, Sài Gòn, Hồ Chí Minh 71007, Việt Nam",
+    "latitude": 10.7877166,
+    "longitude": 106.70012399999999,
+    "rating": 5,
+    "ratingCount": 36,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://beyond-vn.com/",
+    "phoneNumber": "+84 28 6275 8850",
+    "openingHours": {
+     "Thứ Năm": "08:30–19:00",
+     "Thứ Sáu": "08:30–19:00",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:30–19:00",
+     "Thứ Ba": "08:30–19:00",
+     "Thứ Tư": "08:30–19:00"
+    },
+    "bookingLinks": [
+     "https://beyond-vn.com/bookings"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWncoSSPfJYGAmDCBenrrWNXO83722jqFDTcAV78M2Zzg9mO-g1RBRHltgv2y__nCJUtnHiMYPV78PRfbXw8E3z6L_IjZr3EJiawVaY1mGjxczz6wglTqn6rS429X38EwP_KgxbnvE2EHHbA",
+    "cid": "8283954958167661831",
+    "fid": "0x31752fcc1d657fe1:0x72f68524e8eb5d07",
+    "placeId": "ChIJ4X9lHcwvdTERB13r6CSF9nI"
+   },
+   {
+    "position": 10,
+    "title": "The Workshop Coffee",
+    "address": "27 Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7734764,
+    "longitude": 106.7056037,
+    "rating": 4.4,
+    "ratingCount": 4139,
+    "priceLevel": "100-200 N ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Nhà hàng chuyên phục vụ bữa nửa buổi"
+    ],
+    "website": "http://www.facebook.com/the.workshop.coffee",
+    "phoneNumber": "+84 28 3824 6801",
+    "description": "Địa điểm nổi tiếng phục vụ espresso, cà phê lạnh, cà phê kiểu pour-over và bữa sáng trong không gian thoải mái.",
+    "openingHours": {
+     "Thứ Năm": "08:00–20:30",
+     "Thứ Sáu": "08:00–20:30",
+     "Thứ Bảy": "08:00–20:30",
+     "Chủ Nhật": "08:00–20:30",
+     "Thứ Hai": "08:00–20:30",
+     "Thứ Ba": "08:00–20:30",
+     "Thứ Tư": "08:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmsYN6FMyyoK5Q6trJQAx5X0mCTkdi-2bte4gKZhY7zy9ELIgGUCVN6QpownTbWrbtdtH3szROF19heQpQQ66teP2hRak5Bjy7mYOJMWwTnsLw3raMq9FPoOYiXKALKxXqr8X1A",
+    "cid": "8864834756804505306",
+    "fid": "0x31752f46a0eb2777:0x7b06383e4fde6eda",
+    "placeId": "ChIJdyfroEYvdTER2m7eTz44Bns"
+   },
+   {
+    "position": 11,
+    "title": "The Sentry Z",
+    "address": "25A/1 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7879568,
+    "longitude": 106.70411849999999,
+    "rating": 4.3,
+    "ratingCount": 29,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://thesentry.com.vn/",
+    "phoneNumber": "+84 969 067 845",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Đóng cửa",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnnBpeEYRM82JO28_YJEcvKIWGkJX5E2bI2BmMsKlWFkbNBjZBnQXmF6KGF3Ne-11jrBfdVOTTbseumynzlz6ItQeQivo4UxwlhZfksq74-S0qWeqqQT5kRj8hl0nbPkSLJJwHZ2w",
+    "cid": "11867301928322896473",
+    "fid": "0x31752f6e5767a3e3:0xa4b1203a67fe9259",
+    "placeId": "ChIJ46NnV24vdTERWZL-ZzogsaQ"
+   },
+   {
+    "position": 12,
+    "title": "The Sentry C",
+    "address": "15 Lê Thánh Tôn, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.780417,
+    "longitude": 106.7054074,
+    "rating": 4.3,
+    "ratingCount": 63,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "http://thesentry.com.vn/",
+    "phoneNumber": "+84 969 067 845",
+    "openingHours": {
+     "Thứ Năm": "08:00–18:00",
+     "Thứ Sáu": "08:00–18:00",
+     "Thứ Bảy": "08:00–12:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–18:00",
+     "Thứ Ba": "08:00–18:00",
+     "Thứ Tư": "08:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkn13ZcmNlVdoLb0UYMH--tGKcAjEWe9f2UckBmHGZ3vNoFsvzQGK7ULVF8XY2ckZ8kdQndSnbmPz3hfd74Noq4eKH_DUqr0Lu43HzB3MHG6yAxC4hkigXWRkyE2-NeVQHiYxQ",
+    "cid": "17630724582540324141",
+    "fid": "0x31752f1738d93d85:0xf4acea98a3102d2d",
+    "placeId": "ChIJhT3ZOBcvdTERLS0Qo5jqrPQ"
+   },
+   {
+    "position": 13,
+    "title": "WORKMODE CAFE - Coffee, Tea and Workspace",
+    "address": "23Bis Nguyễn Khắc Nhu, Cầu Ông Lãnh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7625955,
+    "longitude": 106.6935286,
+    "rating": 4.6,
+    "ratingCount": 155,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/workmode.cafe/",
+    "phoneNumber": "+84 789 830 992",
+    "openingHours": {
+     "Thứ Năm": "07:30–23:00",
+     "Thứ Sáu": "07:30–23:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "07:30–23:00",
+     "Thứ Ba": "07:30–23:00",
+     "Thứ Tư": "07:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlyc3yXQXTUr-6pePq4DKdy_W6AK144L-kKlGRhqksptRRcQxbg7BE-DLrPDok6aL88mwlG8vwzR7mQsDmHtUYp0zhp698iRfIFy7tn6Umc3CERr-_K_mox7p0yexQRPUpNicjHYWPXQ7ZL",
+    "cid": "8980853644498570596",
+    "fid": "0x31752f42dc919223:0x7ca266ce9c1c0d64",
+    "placeId": "ChIJI5KR3EIvdTERZA0cnM5monw"
+   },
+   {
+    "position": 14,
+    "title": "Le Blanc. Coffee & Spaces",
+    "address": "Tân Vĩnh/83 Khánh Hội, Ward, Khánh Hội, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7590462,
+    "longitude": 106.7005125,
+    "rating": 4.5,
+    "ratingCount": 406,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.leblancspaces.com/",
+    "phoneNumber": "+84 903 360 385",
+    "openingHours": {
+     "Thứ Năm": "07:00–23:00",
+     "Thứ Sáu": "07:00–23:00",
+     "Thứ Bảy": "07:00–23:00",
+     "Chủ Nhật": "07:00–23:00",
+     "Thứ Hai": "07:00–23:00",
+     "Thứ Ba": "07:00–23:00",
+     "Thứ Tư": "07:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmEGFCECYXpCjLX67aud054dG4b11DhRk4K2K_ZXyjn13x1pvRnRrTCRFMMRFROdiy1xXsRrU7FzPArwmyjyOTuNcoSYmi3uNxmx0Z9QgRXwSIVlce9dBEEJQXrkLyEuR-qBaUt",
+    "cid": "5433463934334002281",
+    "fid": "0x31752f431f303b0b:0x4b678aa919dfe469",
+    "placeId": "ChIJCzswH0MvdTERaeTfGamKZ0s"
+   },
+   {
+    "position": 15,
+    "title": "Whisfee Café",
+    "address": "14 Tôn Thất Đạm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7696408,
+    "longitude": 106.7040756,
+    "rating": 4.8,
+    "ratingCount": 333,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Quán cà phê nghệ thuật"
+    ],
+    "phoneNumber": "+84 356 725 601",
+    "openingHours": {
+     "Thứ Năm": "09:00–23:00",
+     "Thứ Sáu": "09:00–23:00",
+     "Thứ Bảy": "09:00–23:00",
+     "Chủ Nhật": "09:00–23:00",
+     "Thứ Hai": "09:00–23:00",
+     "Thứ Ba": "09:00–23:00",
+     "Thứ Tư": "09:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmjAQHI3YgVEHP28B66YGHA9b4ZmxYNZ8hXns_DQ4CwFSWJhwkqGkxPNnKz5kxuNs5j3igfGpuLiEiDn-PCef5raqF3fPy5Udw7Vht73j4XSGzt9wdj_hG68SnLBPwiUP7TKdPbuA",
+    "cid": "949532506158106307",
+    "fid": "0x31752f1be3303f0f:0xd2d6ac8943d86c3",
+    "placeId": "ChIJDz8w4xsvdTERw4Y9lMhqLQ0"
+   },
+   {
+    "position": 16,
+    "title": "BTG Coworking",
+    "address": "342/2 Võ Văn Kiệt, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7607106,
+    "longitude": 106.69470059999999,
+    "rating": 4.8,
+    "ratingCount": 57,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://btgcoworking.com/",
+    "phoneNumber": "+84 903 318 101",
+    "openingHours": {
+     "Thứ Năm": "08:00–17:30",
+     "Thứ Sáu": "08:00–17:30",
+     "Thứ Bảy": "08:00–17:30",
+     "Chủ Nhật": "08:00–17:30",
+     "Thứ Hai": "08:00–17:30",
+     "Thứ Ba": "08:00–17:30",
+     "Thứ Tư": "08:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlR-mgffnZFvBdAqBD2V2rszLjofV8T1guUq2o0ZzZJUBAsSnF_rv2ODiSWT0_VeDSyJ1RCcxepRlx2DOMnGkPUIduwrRUon9zgbrrOV3e9sstCzt9_WL-ZOqYl-aDBKj0YePZz6EzfrUQ",
+    "cid": "14444404038480859154",
+    "fid": "0x31752fc8331fa361:0xc874d4f179de9012",
+    "placeId": "ChIJYaMfM8gvdTEREpDeefHUdMg"
+   },
+   {
+    "position": 17,
+    "title": "SOUTH GROUND Co.working & Cafe - Phạm Ngọc Thạch",
+    "address": "62 Đường Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7861061,
+    "longitude": 106.6922644,
+    "rating": 4.7,
+    "ratingCount": 671,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ",
+     "Quán cà phê",
+     "Nơi tổ chức sự kiện"
+    ],
+    "website": "https://southground.vn/",
+    "phoneNumber": "+84 28 8891 0706",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnEzH5TqBU6zf7e5E44Y2-P5Eg14mB8nAAASwMDSUvKcahaqRa0aOTSKWLBJX9qR46-e-CDnSZONu6ZodODR3xt-zhVW76vJKXVTQXtbBw7JdO0mlQznqsvW5r2hA9CsP-WtGv6",
+    "cid": "466516388502891155",
+    "fid": "0x31752f11791e29bd:0x679662f029cea93",
+    "placeId": "ChIJvSkeeREvdTERk-qcAi9meQY"
+   },
+   {
+    "position": 18,
+    "title": "ThiBa Space",
+    "address": "13 Nguyễn Văn Thủ, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.792133699999999,
+    "longitude": 106.7013149,
+    "rating": 4.4,
+    "ratingCount": 263,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "website": "https://www.facebook.com/ThiBaSpace",
+    "phoneNumber": "+84 773 112 752",
+    "openingHours": {
+     "Thứ Năm": "07:00–03:00",
+     "Thứ Sáu": "07:00–03:00",
+     "Thứ Bảy": "07:00–03:00",
+     "Chủ Nhật": "07:00–03:00",
+     "Thứ Hai": "07:00–03:00",
+     "Thứ Ba": "07:00–03:00",
+     "Thứ Tư": "07:00–03:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWki4EvR8zZjr7A3KjEaWbR04vZ5nbagdUeNdQHDs0meK3tdyPDpMCb9QlVOL69QiL-T6OA4a_LqHRKKftBMSHcGddVfK3dmxOdlpfwiNYAzvFVdC5ACkwJeaEqTxqyAW8cdgh_0L3TTpqBq",
+    "cid": "15872001628029850134",
+    "fid": "0x31752fcf5f9eb321:0xdc44ad6321241216",
+    "placeId": "ChIJIbOeX88vdTERFhIkIWOtRNw"
+   },
+   {
+    "position": 19,
+    "title": "The Workstation Coffee",
+    "address": "449 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.8017589,
+    "longitude": 106.7135357,
+    "rating": 4.2,
+    "ratingCount": 869,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 909 586 449",
+    "openingHours": {
+     "Thứ Năm": "07:00–00:00",
+     "Thứ Sáu": "07:00–00:00",
+     "Thứ Bảy": "07:00–00:00",
+     "Chủ Nhật": "07:00–00:00",
+     "Thứ Hai": "07:00–00:00",
+     "Thứ Ba": "07:00–00:00",
+     "Thứ Tư": "07:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWm0B2-zbr5fUhZf4E_9f71OrPoZIaCP_eLXj-yB6Szn9eAuG53XgM23b2AndjeLK7hr95JZ40B8U_39EuV7q-ibFO6EeaEug2JKz-kNQpDyJ6LUM66fCiUEkFYNHXQ9kjteed2xrA",
+    "cid": "12941679883115413853",
+    "fid": "0x317529fc17be080b:0xb39a154925e9c15d",
+    "placeId": "ChIJCwi-F_wpdTERXcHpJUkVmrM"
+   },
+   {
+    "position": 20,
+    "title": "C-Space Coworking Office",
+    "address": "62 Võ Văn Tần, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7767425,
+    "longitude": 106.6902641,
+    "rating": 4.9,
+    "ratingCount": 183,
+    "type": "Không gian làm việc chia sẻ",
+    "types": [
+     "Không gian làm việc chia sẻ"
+    ],
+    "website": "https://www.facebook.com/cspace62/",
+    "phoneNumber": "+84 945 909 397",
+    "openingHours": {
+     "Thứ Năm": "08:00–18:00",
+     "Thứ Sáu": "08:00–18:00",
+     "Thứ Bảy": "08:00–18:00",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "08:00–18:00",
+     "Thứ Ba": "08:00–18:00",
+     "Thứ Tư": "08:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl5vRIS7P28R6n4EBbkEXtSs1ovn83V15vV6pHeJa7xFfVPv5isMKRe53mtYGqnQR2IpuPa3cj_pNdv9drok4cRJcmF45z9JWxkbizyVG6EmHLwEIp6IYkacMKRYnfYOdP8kpUG",
+    "cid": "1194660457829589533",
+    "fid": "0x31752ff181a0948b:0x1094495b5823621d",
+    "placeId": "ChIJi5SggfEvdTERHWIjWFtJlBA"
+   }
+  ],
+  "credits": 3
+ }
+}

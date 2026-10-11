@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth True Wireless SoundPeats T3 Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:23.728Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth True Wireless SoundPeats T3 Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial ...",
+    "link": "https://shopee.vn/Tai-nghe-True-Wireless-SoundPEATS-T3-Pro-ANC-Spatial-Audio-Bluetooth-5.4-i.313873802.26568553304",
+    "snippet": "Mua Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth 5.4 giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 3749,
+    "position": 1
+   },
+   {
+    "title": "Soundpeats t3 pro - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/tai%20nghe/soundpeats/t3%20pro",
+    "snippet": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth 5.4450.000₫ · 2. Tai Nghe True Wireless Soundpeats T3 Pro / Q3 Pro | ANC | Kết nối 2 ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe True Wireless Soundpeats T3 Pro / Q3 Pro | ANC",
+    "link": "https://shopee.vn/Tai-Nghe-True-Wireless-Soundpeats-Q3-Pro-%28BT-6.0%29-T3-Pro-%28BT-5.4%29-ANC-K%E1%BA%BFt-n%E1%BB%91i-2-thi%E1%BA%BFt-b%E1%BB%8B-i.1268211601.29968967600",
+    "snippet": "Mua Tai Nghe True Wireless Soundpeats T3 Pro / Q3 Pro | ANC | Kết nối 2 thiết bị giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 589,
+    "position": 3
+   },
+   {
+    "title": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial ...",
+    "link": "https://shopee.vn/Tai-nghe-True-Wireless-SoundPEATS-T3-Pro-ANC-Spatial-Audio-Bluetooth-5.4-K%E1%BA%BFt-n%E1%BB%91i-app-Soundpeats-i.679380758.50951670003",
+    "snippet": "Mua Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth 5.4, Kết nối app Soundpeats giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 15,
+    "position": 4
+   },
+   {
+    "title": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio ...",
+    "link": "https://sv.shopee.vn/web/@uqh6yg0lmc/video/zkXIoKKjCACB7rRiAAAAAA==",
+    "snippet": "uqh6yg0lmc. coverImg. 408,270.00$. -41%. 4.910k+ sold. Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth 5.4. Buy Now.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless SoundPeats T3 Pro",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-True-Wireless-SoundPeats-T3-Pro-i.1578842540.43011562232",
+    "snippet": "Tai nghe Bluetooth True Wireless SoundPeats T3 Pro. 1/9. 390.000₫. Tai nghe Bluetooth True Wireless SoundPeats T3 Pro.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial ...",
+    "link": "https://sv.shopee.vn/web/@sandal_crossxinh78/video/toXoFFUrCABh_XEyAAAAAA==",
+    "snippet": "350 lượt xem, 1 lượt thích, 0 bình luận. Shopee Video Việt Nam đăng bởi sandal_crossxinh78: Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth",
+    "position": 7
+   },
+   {
+    "title": "SOUNDPEATS OFFICIAL STORE - Shopee Mall Online",
+    "link": "https://shopee.vn/soundpeats_official_store",
+    "snippet": "Tai nghe True Wireless SoundPEATS T3 Pro ANC Spatial Audio Bluetooth 5.4. 690.000₫. 4 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

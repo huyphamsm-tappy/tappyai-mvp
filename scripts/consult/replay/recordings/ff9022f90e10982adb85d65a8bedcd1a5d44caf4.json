@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn thời gian tham quan phố cổ Hội An 9:00 21:00 vé tham quan giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:01.583Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn thời gian tham quan phố cổ Hội An 9:00 21:00 vé tham quan giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "\"Giao lưu văn hóa Hội An-Nhật Bản” lần thứ 17, 2019 ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Le-hoi-su-kien/giao-luu-van-hoa-hoi-an-nhat-ban-lan-thu-17-2019-festival-to-lua-tho-cam-viet-nam-the-gioi-2019-1814.hwh",
+    "snippet": "09:00-21:30, Không gian văn hóa Việt Nam-Nhật Bản, Đường Nguyễn Thị Minh Khai ; Tour tham quan“Dấu xưa Nhật Bản”, Khu Phố cổ, các di tích Nhật ...",
+    "date": "31 thg 7, 2019",
+    "position": 1
+   },
+   {
+    "title": "Rue piétonne - La vieille ville de Hoi An - Hoi An World Heritage",
+    "link": "http://www.hoianworldheritage.org.vn/fr/news/Hoi-An-en-general/Rue-pietonne-199.hwh",
+    "snippet": "Hotline: (+84) 8 43 42 8888 … ville de Hoi An - Hoi An World Heritage. Le matin: 8:00 – 11:00;l'après- – 11:00;l' après-midi: 14 :00– 16:30, Le ...",
+    "date": "13 thg 1, 2015",
+    "position": 2
+   },
+   {
+    "title": "スケジュール“2019年度第17回￥ホイアン日本文化交流祭り”",
+    "link": "http://www.hoianworldheritage.org.vn/ja/news/ri-yibento/sukezyu-ru-2019-hoyian-ri-234.hwh",
+    "snippet": "木曜日 - 25/07/2019 05:02 ・ ステージ アンホイ彫刻園 ・ 定期的な活動(2019/8/9-11) 09:00-21:30. Nguyễn Thị Minh Khai通り “中世日本人の遺跡”ツア ...",
+    "date": "25 thg 7, 2019",
+    "position": 3
+   },
+   {
+    "title": "徒歩街のルート - ホイアン世界文化遺産",
+    "link": "http://www.hoianworldheritage.org.vn/ja/news/Gaiyo/noru-to-154.hwh",
+    "snippet": "- 午前：9:00‐11:00 - 午後と夜： 15：00 – 22：00 (夏) と15：00 – 21：30 (冬) 現在のような実施時間帯は妥当だと評価されています。夕方、特別に夏 ...",
+    "date": "12 thg 1, 2015",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

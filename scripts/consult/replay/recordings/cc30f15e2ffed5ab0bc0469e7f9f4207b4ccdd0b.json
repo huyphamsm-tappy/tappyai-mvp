@@ -1,0 +1,199 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "lịch trình du lịch 20–23/11/2026, khách  quán đặc sản ngon Đà Nẵng Da Nang",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@16.0544,108.2022,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:20:04.472Z",
+ "body": {
+  "searchParameters": {
+   "q": "lịch trình du lịch 20–23/11/2026, khách  quán đặc sản ngon Đà Nẵng Da Nang",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@16.0544,108.2022,14z",
+   "engine": "google"
+  },
+  "ll": "@16.0543915,108.2021997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Đà Nẵng Food Tour 2026",
+    "address": "196 Võ Nguyên Giáp, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0703156,
+    "longitude": 108.24555099999999,
+    "rating": 4.5,
+    "ratingCount": 2,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOvnmvzI1FxPSS2ablnhEWPj2A70PFGjwFUVwPLToYhei_x2rgmFg6EvUrwZ9j2xGcJdwRnJgCveGed8Tfx__ypXM54tYSCjQdZ37SChurqIWn0dDI6PP4jU2WjIDaAlMkJJqUhKF9XYLk",
+    "cid": "16348035319506503719",
+    "fid": "0x3142170074909c33:0xe2dfe381eab98827",
+    "placeId": "ChIJM5yQdAAXQjERJ4i56oHj3-I"
+   },
+   {
+    "position": 2,
+    "title": "Đặc Sản Ngon Đà Nẵng - Đặc Sản Làm Quà shop online",
+    "address": "171 P. Đức Chính, An Hải, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0810019,
+    "longitude": 108.23967359999999,
+    "rating": 4.5,
+    "ratingCount": 41,
+    "type": "Cửa hàng bán thực phẩm đặc sản",
+    "types": [
+     "Cửa hàng bán thực phẩm đặc sản"
+    ],
+    "website": "https://dacsanngondanang.com/",
+    "phoneNumber": "+84 987 428 428",
+    "openingHours": {
+     "Thứ Năm": "06:30–22:30",
+     "Thứ Sáu": "06:30–22:30",
+     "Thứ Bảy": "06:30–22:30",
+     "Chủ Nhật": "06:30–22:30",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "06:30–22:30",
+     "Thứ Tư": "06:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLc1IjStQHJjInQF1sBXqhYxriHK8sMQeWzKVUuxKZcEvW7qpBrrzI1ZeBmcP0BsZQDxexKf4ySN-SAr2TUEZGs3aOD9aLmIl4ifvlvfdA-t6Zpj6ijkDiENl6Og5SYAXyDqW4rS8A",
+    "cid": "3915797310732470034",
+    "fid": "0x314217451b1890bb:0x3657b4e846a38712",
+    "placeId": "ChIJu5AYG0UXQjEREoejRui0VzY"
+   },
+   {
+    "position": 3,
+    "title": "Công ty Du lịch Bản Địa Đà Nẵng",
+    "address": "30 Đ. Đào Tấn, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0572673,
+    "longitude": 108.22151889999999,
+    "rating": 5,
+    "ratingCount": 11,
+    "type": "Nhà điều hành du lịch",
+    "types": [
+     "Nhà điều hành du lịch",
+     "Đại lý du lịch tham quan",
+     "Trung tâm thông tin du lịch"
+    ],
+    "website": "https://mytour.danang.vn/",
+    "phoneNumber": "+84 818 433 579",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNXIdlAp8v1lyVjQr5EdNT25jJFRqicXeWC1c7YDiULA8GCupMC_dWyR_qZnQqtP4gQXyHvwKse-UxdLOnkNPaC88nXrN1OPIuemRV_M97rs_wtRJtHx_fCS0moqDyu7yilSjRmoeCkBMI",
+    "cid": "14002912477811630774",
+    "fid": "0x314219ee23ed6619:0xc25456b53cd8e2b6",
+    "placeId": "ChIJGWbtI-4ZQjERtuLYPLVWVMI"
+   },
+   {
+    "position": 4,
+    "title": "Đà Nẵng Food Tour",
+    "address": "4 Trần Quốc Toản, Hải Châu, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0661013,
+    "longitude": 108.22436189999999,
+    "rating": 4.6,
+    "ratingCount": 115,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Nhà điều hành du lịch"
+    ],
+    "website": "http://danangfoodtour.com/",
+    "phoneNumber": "+84 787 796 006",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMdxC6k067fewIj6KwzUpMUwouELuSX3ujOXXaeir6-oqp0qAg1yv4JBIiWMI_Sd5xcEZs6EQ72o3XzMTmt0XUjqvV-l1hRj_2erFC5lIEQgvyD7wVsgvRG6GoOOmh8t3YJf3-W",
+    "cid": "16283078399283292555",
+    "fid": "0x314218211e40911f:0xe1f91d885f1de98b",
+    "placeId": "ChIJH5FAHiEYQjERi-kdX4gd-eE"
+   },
+   {
+    "position": 5,
+    "title": "Công ty Du lịch Đà Nẵng DANAGO | Cơ sở 2",
+    "address": "128 Hồ Xuân Hương, Ngũ Hành Sơn, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0403161,
+    "longitude": 108.247941,
+    "rating": 5,
+    "ratingCount": 85,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch"
+    ],
+    "website": "https://danago.com.vn/",
+    "phoneNumber": "+84 947 888 404",
+    "openingHours": {
+     "Thứ Năm": "07:30–17:00",
+     "Thứ Sáu": "07:30–17:00",
+     "Thứ Bảy": "07:30–11:30",
+     "Chủ Nhật": "Đóng cửa",
+     "Thứ Hai": "07:30–17:00",
+     "Thứ Ba": "07:30–17:00",
+     "Thứ Tư": "07:30–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLckM0nZUm5KG6dlJJduO4FD0bMIIWl3TIJcmYmVz5J7NZA1Lpt6be6ASqZOrKwpmnXK-rdAMILINJCowR1AMFTT0Uh-tfjdTEo-U4Ci-lTMqTchheeCs89DdZu4zaYbr25v8fdKvsHtyWt6",
+    "cid": "17390752891663946117",
+    "fid": "0x3142175d390c4369:0xf1585d9d643a1185",
+    "placeId": "ChIJaUMMOV0XQjERhRE6ZJ1dWPE"
+   },
+   {
+    "position": 6,
+    "title": "Du lịch AGOTourist - Đà Nẵng",
+    "address": "89 Thanh Tịnh, Hòa Khánh, Đà Nẵng 550000, Việt Nam",
+    "latitude": 16.0605463,
+    "longitude": 108.17103019999999,
+    "rating": 5,
+    "ratingCount": 38,
+    "type": "Đại lý du lịch",
+    "types": [
+     "Đại lý du lịch"
+    ],
+    "website": "http://agotourist.com/",
+    "phoneNumber": "+84 965 968 151",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:30",
+     "Thứ Sáu": "07:00–21:30",
+     "Thứ Bảy": "07:00–21:30",
+     "Chủ Nhật": "07:00–21:30",
+     "Thứ Hai": "07:00–21:30",
+     "Thứ Ba": "07:00–21:30",
+     "Thứ Tư": "07:00–21:30"
+    },
+    "bookingLinks": [
+     "http://agotourist.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPTLPMHwBKE8TbiJOOHoBpZS1DwjdVq9YlRTVWSuQhIFm8O7Bd9JyLgDDYcsMiXdSZCeWSET0hU_umUp0wPHGwdKT_aK05pzLFAGmMFgMX0PnUZ_HIdpWpYT651nNFA7HJGZFMl",
+    "cid": "6417994837684188460",
+    "fid": "0x314218e1c6cb89a5:0x59114c4d0674f52c",
+    "placeId": "ChIJpYnLxuEYQjERLPV0Bk1MEVk"
+   }
+  ],
+  "credits": 3
+ }
+}

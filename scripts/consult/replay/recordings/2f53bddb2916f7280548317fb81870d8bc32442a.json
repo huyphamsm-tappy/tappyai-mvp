@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHU VUI CHƠI TRẺ EM BIGFUN\" OR \"Dream Kids Vạn Hạnh Mall\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:49:26.328Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHU VUI CHƠI TRẺ EM BIGFUN\" OR \"Dream Kids Vạn Hạnh Mall\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đi đâu cho bé chơi “đã cái nư”? → Dream Kids – Vạn ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7621831028214074645",
+    "snippet": "→ Dream Kids – Vạn Hạnh Mall Nhớ đọc pass “Mom Tuyền” Giảm 50% vé luôn đó (28/3–15/4) #Dreamkids #Vanhanhmall #khuvuichoi #khuvuichoisg.",
+    "position": 1
+   },
+   {
+    "title": "Dream Kids Vạn Hạnh Mall: Giảm 50% vé vào cổng",
+    "link": "https://www.tiktok.com/@dreamkids.svh/photo/7527535134313172242",
+    "snippet": "Dream Kids Vạn Hạnh Mall: Giảm 50% vé vào cổng. Ưu đãi Back to School tại Dream Kids Vạn Hạnh Mall: Giảm 50% vé vào cổng từ 04/08 - 10/08/2025.",
+    "position": 2
+   },
+   {
+    "title": "Dream Kids: Khu vui chơi cho bé tại Tầng B1 Vạn Hạnh Mall",
+    "link": "https://www.tiktok.com/@nhasonicdidaudo28/video/7665305283052211476",
+    "snippet": "khu vui chơi cho bé, Dream Kids Vạn Hạnh Mall, khu vui chơi trẻ em, địa điểm vui chơi TPHCM, khu vui chơi liên hoàn, trò chơi vận động cho ...",
+    "position": 3
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Bigfun Tại Vincom Plaza Rạch Giá",
+    "link": "https://www.tiktok.com/@thureview.chill/video/7583176038142807316",
+    "snippet": "Khám phá khu vui chơi trẻ em Bigfun với giá vé chỉ 50k! Trải nghiệm những điều thú vị tại Rạch Giá. #thureviewchill #rachgia #angiang # ...",
+    "position": 4
+   },
+   {
+    "title": "Dream Kids tại Vạn Hạnh Mall: Điểm chơi mới cho trẻ",
+    "link": "https://www.tiktok.com/@nhacuaembebo/video/7627373687422913810",
+    "snippet": "Keywords: Dream Kids Vạn Hạnh Mall, khu vui chơi mới, hoạt động cuối tuần cho trẻ em, giải trí gia đình, Vạn Hạnh Mall, điểm đến cho trẻ nhỏ, khu vui chơi ...",
+    "position": 5
+   },
+   {
+    "title": "👑 Queen Energy — оригинальный звук",
+    "link": "https://www.tiktok.com/music/%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B2%D1%83%D0%BA-7657630227618679572",
+    "snippet": "Dream Kids – Vạn Hạnh Mall cho bé vui chơi. |. Vidrios Blindados TXL: Seguridad sin Modificar. |. خوست - د درې شپیته لکه وارې ځانګړې وړاندیزونه. |. cara- ...",
+    "position": 6
+   },
+   {
+    "title": "드림키즈 어린이집",
+    "link": "https://www.tiktok.com/discover/%EB%93%9C%EB%A6%BC%ED%82%A4%EC%A6%88-%EC%96%B4%EB%A6%B0%EC%9D%B4%EC%A7%91",
+    "snippet": "Khu vui chơi Dream Kids Vạn Hạnh Mall – Giá 100k ngày thường. Gợi ý khu vui chơi Dream Kids tại Tầng B1 Vạn Hạnh Mall: hoạt động, ...",
+    "date": "21 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Kgomotso🖤 - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7629094298566953748",
+    "snippet": "সমাজ কি আমাকে মানবে? |. Skud Buồn Của Skud Liên Quân Mobile. |. Dream Kids – Vạn Hạnh Mall cho bé vui chơi. |. هايبر: الأجانب الذين استغلوا ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

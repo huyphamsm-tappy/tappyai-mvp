@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hanah Hotel\" Đà Lạt site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:58:05.057Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hanah Hotel\" Đà Lạt site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hanah Hotel Dalat - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-132852190/hanah-hotel-dalat/",
+    "snippet": "Giờ nhận phòng tại Hanah Hotel Dalat bắt đầu từ 14:00, và giờ trả phòng là 12:00. Hanah Hotel Dalat có phục vụ bữa sáng không?",
+    "position": 1
+   },
+   {
+    "title": "Hanah Hotel - Giá cả và Ưu đãi 2026, Đà Lạt",
+    "link": "https://vn.trip.com/hotels/dalat-hotel-detail-134867256/hanah-hotel/",
+    "snippet": "Giờ nhận phòng tại Hanah Hotel bắt đầu từ 14:00, và giờ trả phòng là 12:00. Hanah Hotel có hồ bơi không? Không, Hanah Hotel ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

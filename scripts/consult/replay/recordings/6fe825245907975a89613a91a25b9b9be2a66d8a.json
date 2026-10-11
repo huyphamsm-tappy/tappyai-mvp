@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn/vi/news \"Giá vé Việt Nam\" \"80.000\" phố cổ Hội An 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:46:03.380Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn/vi/news \"Giá vé Việt Nam\" \"80.000\" phố cổ Hội An 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

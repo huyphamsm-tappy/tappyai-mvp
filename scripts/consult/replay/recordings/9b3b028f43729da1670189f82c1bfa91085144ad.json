@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Every Half Coffee Roasters\" OR \"Tiệm Lưu Coffee\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:20:21.376Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Every Half Coffee Roasters\" OR \"Tiệm Lưu Coffee\" OR \"Oromia Coffee & Lounge\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Every Half Coffee Roasters (@everyhalfcoffeeroasters)",
+    "link": "https://www.tiktok.com/@everyhalfcoffeeroasters",
+    "snippet": "Every Half Coffee Roasters (@everyhalfcoffeeroasters) on TikTok | 7779 Likes. 2041 Followers. Unexpectedly interesting coffee roasters from Vietnam .",
+    "position": 1
+   },
+   {
+    "title": "POV- Last order of the day ☕️ @Every Half Coffee ...",
+    "link": "https://www.tiktok.com/@connordoescoffee/video/7528451576428596502",
+    "snippet": "2910 Lượt thích,29 Bình luận.Video TikTok từ Connor Russell (@connordoescoffee): \"POV- Last order of the day ☕️ @Every Half Coffee Roasters ...",
+    "position": 2
+   },
+   {
+    "title": "Every Half Coffee Roasters: Unannounced Vietnam ...",
+    "link": "https://www.tiktok.com/@martinmarforiandanar/video/7633588957464284436",
+    "snippet": "Walked into Every Half Coffee Roasters like regular customers. No reservation. Unannounced. That's the method: strip away the hype, test both ...",
+    "position": 3
+   },
+   {
+    "title": "Every Half Coffee Roasters: Cà Phê Sữa Ngon Nhất",
+    "link": "https://www.tiktok.com/@libravnam/video/7574043679522917653",
+    "snippet": "Every Half Coffee Roasters: Cà Phê Sữa Ngon Nhất. Khám phá Every Half Coffee với cà phê sữa hấp dẫn và vị trí thuận lợi. Đến ngay Park 4, 208 ...",
+    "position": 4
+   },
+   {
+    "title": "📍☕️ @Every Half Coffee Roasters Particularly in love with ...",
+    "link": "https://www.tiktok.com/@cylovesfrogs/video/7688048657190391071",
+    "snippet": "☕️ @Every Half Coffee Roasters Particularly in love with their melon series, and their espresso tonic is also delicious! Ended up coming ...",
+    "position": 5
+   },
+   {
+    "title": "Oromia Coffee & Lounge Phan Kế Bính",
+    "link": "https://www.tiktok.com/@oromialounge/video/7640121714239671572",
+    "snippet": "Không gian và vị trí Oromia Coffee & Lounge nằm trên đường Phan Kế Bính, khu Tân Định — một điểm thuận tiện để tản bộ và dừng chân. Quán tận ...",
+    "position": 6
+   },
+   {
+    "title": "Every Half Coffee Roasters: A Must-Visit Spot",
+    "link": "https://www.tiktok.com/@huan_doan/video/7643749238475689224",
+    "snippet": "Every Half Coffee Roasters is a spot you have to check out. This place is seriously cool and offers a fantastic coffee experience.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Chi Nhánh Mới Của Every Half Coffee Roasters",
+    "link": "https://www.tiktok.com/@caf_sip/video/7582447634925833493",
+    "snippet": "Every Half Coffee Roasters | Chi nhánh mới của Every Half đẹp xỉuu #cafesaigon #fyp #acs_D3 #coffeelife #coffee. Khám Phá Chi Nhánh Mới Của ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:32:44.244Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoff Coffee Brewers by BeanHop\" OR \"Bâng Khuâng Café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán Cà Phê Bâng Khuâng - Bồi Hồi Ha Tại Chung Cư Q1",
+    "link": "https://www.tiktok.com/@dicafehong.sgn/video/7368080059535461648",
+    "snippet": "... giúp - TikTok. Khám phá quán cà phê Bâng Khuâng nằm trong chung cư cổ ở trung tâm quận. @Đi Cafe Hông? Bâng Khuâng · Bâng Khuâng Café · author.",
+    "position": 1
+   },
+   {
+    "title": "Cà Phê Bâng Khuâng: Quán Cafe Giá Rẻ Tại Quận 1",
+    "link": "https://www.tiktok.com/@saugiolam.20h/photo/7640452571890666772",
+    "snippet": "Tên quán: Bâng Khuâng Café Giá: Nước rẻ (ly cà phê sữa 30k) Địa điểm: 9 Thái Văn Lung, Sài Gòn, Hồ Chí Minh Không gian: hợp gu mình, khoong ...",
+    "position": 2
+   },
+   {
+    "title": "Cà phê ẩn mình nghe nắng mưa — review hidden cafe Sài ...",
+    "link": "https://www.tiktok.com/@cafe_khumnee/video/7672653397597867285",
+    "snippet": "... Review quán: chiếc cafe ẩn, không gian chill để nghe nắng mưa ở Sài. @Cafe Khum Nè · nhạc nền - Quỳnh Hoa · Bâng Khuâng Café · author. 1406 · 7.",
+    "position": 3
+   },
+   {
+    "title": "Sau Giờ Làm (@saugiolam.20h)",
+    "link": "https://www.tiktok.com/@saugiolam.20h",
+    "snippet": "Bạn sẽ là chính bạn Sau Giờ Làm. Chúng tôi không đi chill, chúng tôi đổi cảnh để làm việc #dalat #. 440 · Tên quán: Bâng Khuâng Café Giá: Nước rẻ (ly cà phê ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

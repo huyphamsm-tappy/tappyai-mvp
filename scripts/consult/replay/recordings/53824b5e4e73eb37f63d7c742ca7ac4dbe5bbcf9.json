@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "thời điểm tham quan phố cổ Hội An buổi sáng buổi tối lưu ý vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:04:46.222Z",
+ "body": {
+  "searchParameters": {
+   "q": "thời điểm tham quan phố cổ Hội An buổi sáng buổi tối lưu ý vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phố cổ Hội An: giá vé, giờ mở cửa, kinh nghiệm tham quan ...",
+    "link": "https://danangbest.com/pho-co-hoi-an-tinh-hoa-van-hoa-xu-quang.html",
+    "snippet": "Nên đi phố cổ Hội An vào buổi sáng hay buổi tối? Buổi sáng sớm (7:00–9:00) lý tưởng để tham quan di tích và chụp ảnh kiến trúc khi ít khách.",
+    "date": "18 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Lịch Trình Đi Phố Cổ Hội An Chi Tiết Cho Người Đi Lần Đầu",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/lich-trinh-di-pho-co-hoi-an-chi-tiet-cho-nguoi-di-lan-dau",
+    "snippet": "Thời điểm lý tưởng nhất để tham quan Hội An là từ tháng 2 đến tháng 8. Đây là giai đoạn thời tiết miền Trung khá khô ráo, ít mưa và thuận tiện ...",
+    "date": "7 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "Phố cổ hội an thì nên đi ban ngày hay buổi tối hả mọi người",
+    "link": "https://www.facebook.com/groups/2292208260990538/posts/2730039320540761/",
+    "snippet": "Lavila Hội An. Nên buổi sáng thì đi sớm 6h , chiều tối 19h30. · ThanhLoan Phạm. Chụp ảnh nên đi tầm sáng sớm 5g nhé!!! · Quang Phan Minh. Nếu đi ...",
+    "position": 3
+   },
+   {
+    "title": "Cẩm Nang Du Lịch Hội An Về Đêm - Bảng Giá Và Tour ...",
+    "link": "https://phanvantravel.com/hoi-an-ve-dem",
+    "snippet": "Thời điểm. Khung giờ. Ghi chú. Phố đi bộ cấm xe (ngày thường). 15:00 - 21:30 ; Hạng vé Show Ký Ức Hội An. Giá niêm yết (VNĐ/Khách). Giá độc quyền của Phan Văn ...",
+    "position": 4
+   },
+   {
+    "title": "Có nên dành một ngày để khám phá phố cổ Hội An?",
+    "link": "https://tourdulichgiare.com.vn/co-nen-danh-mot-ngay-de-kham-pha-pho-co-hoi-an/",
+    "snippet": "Thường thì khách sẽ chọn đi vào buổi sáng, hoặc đi vào buổi chiều chứ không phải đi cả ngày. Nếu vậy thì sẽ không có nhiều chỗ chơi, rất dễ mất sức và cuối ngày ...",
+    "position": 5
+   },
+   {
+    "title": "5 trải nghiệm phố cổ Hội An về đêm hiếm có ở nơi khác",
+    "link": "https://nestahotel.com.vn/blog/pho-co-hoi-an-ve-dem/",
+    "snippet": "Khám phá 5 trải nghiệm độc đáo tại phố cổ Hội An về đêm từ thả hoa đăng, ngắm đèn lồng, đi thuyền mộc, chơi bài chòi đến thưởng thức ẩm thực và nghỉ dưỡng.",
+    "position": 6
+   },
+   {
+    "title": "Du lịch Hội An 1 ngày - Lịch trình khám phá chi tiết từ A-Z",
+    "link": "https://vinpearl.com/vi/goi-y-cac-lich-trinh-du-lich-hoi-an-1-ngay-cho-ban-tham-khao",
+    "snippet": "3.2.1. Buổi sáng: Ăn mì Quảng - Chụp ảnh ở Ngôi nhà hoa giấy - Vui chơi ở VinWonders Nam Hội An · 3.2.2. Buổi trưa: Nghỉ ngơi ăn uống ở ...",
+    "date": "30 thg 1, 2024",
+    "rating": 5,
+    "ratingCount": 999,
+    "position": 7
+   },
+   {
+    "title": "Du lịch Hội An có gì chơi ban đêm? Gợi ý 8 trải nghiệm đặc ...",
+    "link": "https://www.ivivu.com/blog/2026/04/du-lich-hoi-an-co-gi-choi-ban-dem-goi-y-8-trai-nghiem-khong-the-bo-lo/",
+    "snippet": "Buổi tối cũng là thời điểm lý tưởng để khám phá ẩm thực Hội An với các món ngon như cao lầu, mì Quảng, bánh mì, chè… Đặt ngay tour xe máy ...",
+    "date": "1 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

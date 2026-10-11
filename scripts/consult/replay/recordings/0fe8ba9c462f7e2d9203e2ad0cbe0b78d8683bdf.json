@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hàng cũ Apple MacBook Air M1 256GB 2020 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:28:34.628Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hàng cũ Apple MacBook Air M1 256GB 2020 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook m1 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook/m1",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm macbook m1 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ các ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M1 - Sản Phẩm Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/laptop/macbook/air%20m1",
+    "snippet": "Đa dạng sản phẩm macbook laptop air m1 có sẵn, bạn có thể dễ dàng tìm kiếm tại các cửa hàng uy tín trong nước và ngoài nước. Nhanh tay săn ngay deal hời giá tốt ...",
+    "position": 2
+   },
+   {
+    "title": "macbook air - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook%20air",
+    "snippet": "Mua sắm tại Shopee Việt Nam ngay hôm nay để có cơ hội sở hữu sản phẩm macbook air chất lượng, giá ưu đãi và freeship. Hãy chọn Shopee để thỏa thích mua sắm hàng ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook air m5 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/macbook%20air/m5",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm macbook air m5 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính hãng từ ...",
+    "position": 4
+   },
+   {
+    "title": "mac mini - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/mac%20mini",
+    "snippet": "Bạn muốn mua online các sản phẩm mac mini chính hãng với nhiều ưu đãi hấp dẫn? Còn chần chờ gì mà không truy cập Shopee Việt Nam ngay hôm nay!",
+    "position": 5
+   },
+   {
+    "title": "SẠC INLOGY, Cửa hàng trực tuyến",
+    "link": "https://shopee.vn/inlogy",
+    "snippet": "Sạc máy tính Pro / Air zin INLOGY, Sạc nhanh 30W,61W, 87W, 97W thích hợp cho các dòng máy Type C, M1, M2 đời 2017 - 2020. 200.000₫. rating-star 4.7. 360 đã bán.",
+    "position": 6
+   },
+   {
+    "title": "[2026] Top 10+ laptop cho học sinh sinh viên nên mua hiện ...",
+    "link": "https://shopee.vn/blog/laptop-cho-hoc-sinh-sinh-vien/",
+    "snippet": "Mỏng nhẹ (< 1.4kg), pin lâu. Chip Core i3/i5, RAM 8GB–16GB, SSD 256GB. ... Chip khỏe (i5/i7, Ryzen 5/7, M-series), RAM từ 16GB, SSD 512GB. ... Màn ...",
+    "date": "29 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "macbook air giá tốt Tháng 7, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=macbook%20air&page=4",
+    "snippet": "Mua macbook air giao tận nơi Voucher Shopee giảm đến 50%. Miễn phí vận chuyển và đổi trả dễ dàng. Thanh toán bảo mật. Đặt mua ngay!",
+    "rating": 4.9,
+    "ratingCount": 96,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

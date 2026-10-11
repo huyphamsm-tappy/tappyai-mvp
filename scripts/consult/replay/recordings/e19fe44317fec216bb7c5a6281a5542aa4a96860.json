@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook ngân sách khoảng 25 triệu Việt Nam gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:32:35.115Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook ngân sách khoảng 25 triệu Việt Nam gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[VIDEO] Sách giáo khoa loạn giá trên sàn thương mại điện ...",
+    "link": "https://baomoi.com/video-sach-giao-khoa-loan-gia-tren-san-thuong-mai-dien-tu-doanh-thu-7-ty-dong-c56058107.epi",
+    "snippet": "Sách giáo khoa bán trên Shopee, TikTok Shop, Lazada và Tiki thu về 7 tỷ đồng, trong đó có nhiều sách bị thổi giá gấp 6 lần so với giá niêm yết.",
+    "date": "16 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mua Macbook Giá Tốt, Giao Nhanh",
+    "link": "https://www.lazada.vn/tag/macbook/?page=102&srsltid=AU7gw4X6gUUZt13vJ4k6-McpUagIS9jJs37lm-v8tqH1Rx6rCxAYGA3p",
+    "snippet": "Mua macbook chất lượng cao với giá ưu đãi, freeship toàn quốc chỉ từ 0Đ và tận hưởng tới 6 tầng giảm giá hấp dẫn. Khuyến mãi mỗi ngày, mua ngay macbook tại ...",
+    "rating": 4.9,
+    "ratingCount": 4532,
+    "position": 2
+   },
+   {
+    "title": "Người Việt Nam tiêu 1.600 tỷ/ngày trên Shopee, TikTok ...",
+    "link": "https://znews.vn/nguoi-viet-nam-tieu-1600-tyngay-tren-shopee-tiktok-shop-lazada-post1647026.html",
+    "snippet": "Trong 3 tháng đầu năm, doanh số 4 sàn thương mại điện tử lớn gồm Shopee, Lazada, TikTok Shop và Tiki tăng gần 47% lên 148.600 tỷ đồng, ...",
+    "date": "27 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "KHÔNG SỢ PHỐT - Mở hộp iPad 2018 giá 7tr trên TIKI",
+    "link": "https://www.youtube.com/watch?v=HsUITIMEYhk",
+    "snippet": "Sau vụ phốt của chiếc Xiaomi Mi 8 ở trên shopee, hôm nay mình liều lĩnh mua tiếp 1 chiếc Ipad 2018 với giá cũng 7 triệu trên Tiki.",
+    "position": 4
+   },
+   {
+    "title": "Người Việt chi 32.000 tỷ đồng mua hàng trên Shopee ...",
+    "link": "https://www.bigseller.com/blog/articleDetails/ng%C6%B0%E1%BB%9Di-vi%E1%BB%87t-chi-32.000-t%E1%BB%B7-%C4%91%E1%BB%93ng-mua-h%C3%A0ng-tr%C3%AAn-shopee-lazada-tiktok-tiki.1164.htm",
+    "snippet": "Tổng giá trị giao dịch trên Shopee, Lazada, TikTok Shop và Tiki tháng 11 là hơn 31.915 tỷ đồng, trong đó hai phần ba được \"chốt\" tại Shopee.",
+    "date": "2 thg 1, 2024",
+    "position": 5
+   },
+   {
+    "title": "Từng là giấc mơ kỳ lân tỷ đô, Tiki giờ được định giá chỉ bằng ...",
+    "link": "https://www.facebook.com/CafeF/posts/t%E1%BB%ABng-l%C3%A0-gi%E1%BA%A5c-m%C6%A1-k%E1%BB%B3-l%C3%A2n-t%E1%BB%B7-%C4%91%C3%B4-tiki-gi%E1%BB%9D-%C4%91%C6%B0%E1%BB%A3c-%C4%91%E1%BB%8Bnh-gi%C3%A1-ch%E1%BB%89-b%E1%BA%B1ng-m%E1%BB%99t-c%C4%83n-bi%E1%BB%87t-th%E1%BB%B1-t%C3%A2/1153146020172889/",
+    "snippet": "Đặc biệt gian hàng Tiki trading do Q&C của Tiki khá tốt và đảm bảo được tính chính hãng. Như iPhone, Macbook, Ps5, Tv mình đều mua trên này.",
+    "position": 6
+   },
+   {
+    "title": "Người Việt chi 1.150 tỷ đồng mua điện thoại trên Shopee ...",
+    "link": "https://mekongasean.vn/nguoi-viet-chi-1150-ty-dong-mua-dien-thoai-tren-shopee-lazada-va-tiki-3812.html",
+    "snippet": "Theo kết quả khảo sát của công ty phân tích dữ liệu thương mại điện tử YouNet ECI, trong tháng 9/2023, người dùng Việt Nam đã chi 1.150 tỷ ...",
+    "date": "20 thg 10, 2023",
+    "position": 7
+   },
+   {
+    "title": "Macbook - Laptop Chính Hãng, Giá Tốt, Đảm Bảo",
+    "link": "https://shopee.vn/list/macbook",
+    "snippet": "Macbook - Thương hiệu máy tính laptop hàng đầu hiện nay. Sản phẩm Macbook của Apple được đánh giá cao về hiệu năng sử dụng và thiết kế tinh tế của nó.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

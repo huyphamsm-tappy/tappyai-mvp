@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Gói 2 năm Samsung Care+ cho Samsung S24 Series",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:24.684Z",
+ "body": {
+  "searchParameters": {
+   "q": "Gói 2 năm Samsung Care+ cho Samsung S24 Series",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tặng gói bảo hành Samsung Care+ cho chủ sở hữu Galaxy 24 Series",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_2_23_638443063798766896_nf_1200x628.png",
+    "imageWidth": 1920,
+    "imageHeight": 1004,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQTUy_zKJY-vqA86IwPWK8pDt0UJ0c8hQ3RF6PPJDwDw&s",
+    "thumbnailWidth": 311,
+    "thumbnailHeight": 162,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/tin-tuc/tin-khuyen-mai/tang-goi-bao-hanh-samsung-care-danh-cho-chu-so-huu-dien-thoai-galaxy-24-series-176776",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F1920x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2F2024_2_23_638443063798766896_nf_1200x628.png&tbnid=TDnRj5OdJS0qBM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Ftin-tuc%2Ftin-khuyen-mai%2Ftang-goi-bao-hanh-samsung-care-danh-cho-chu-so-huu-dien-thoai-galaxy-24-series-176776&docid=y5Mjd-IYpJKvbM&w=1920&h=1004",
+    "position": 1
+   },
+   {
+    "title": "Gói 2 năm Samsung Care+ cho Samsung S24 Series | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/phu-kien/Samsung-Care/dien-thoai/Samsung-S/dich-vu-samsung-care-plus-2-nam-galaxy-s24-series-2.png",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGU_2KgOry9Qx76rqc2c2F0NHlutCLJ0wuWIZW1EDs4A&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dich-vu-samsung-care-plus-2-nam-galaxy-s24-series.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Fphu-kien%2FSamsung-Care%2Fdien-thoai%2FSamsung-S%2Fdich-vu-samsung-care-plus-2-nam-galaxy-s24-series-2.png&tbnid=2YpkxWRjvu5mwM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdich-vu-samsung-care-plus-2-nam-galaxy-s24-series.html&docid=eKkLjkABpviU3M&w=810&h=456",
+    "position": 2
+   },
+   {
+    "title": "Gói 2 năm Samsung Care+ cho Samsung S24 Series | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/phu-kien/Samsung-Care/dien-thoai/Samsung-S/dich-vu-samsung-care-plus-2-nam-galaxy-s24-series-1.png",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCB3Dk0h50mLZZvT0QiotIn3MbwrDKQZb7SdPGRFftHw&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dich-vu-samsung-care-plus-2-nam-galaxy-s24-series.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Fphu-kien%2FSamsung-Care%2Fdien-thoai%2FSamsung-S%2Fdich-vu-samsung-care-plus-2-nam-galaxy-s24-series-1.png&tbnid=ynkmZilWwkAGCM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdich-vu-samsung-care-plus-2-nam-galaxy-s24-series.html&docid=eKkLjkABpviU3M&w=810&h=456",
+    "position": 3
+   },
+   {
+    "title": "Gói 2 năm Samsung Care+ cho Samsung S25 Series | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dich-vu-samsung-care-plus-galaxy-s25-series-2-nam_1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRu72QL0RsMVV7B9ok0sFR0Syg9qUy2HxPnCDtZHHqPEA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dich-vu-samsung-care-plus-galaxy-s25-series-2-nam.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fd%2Fi%2Fdich-vu-samsung-care-plus-galaxy-s25-series-2-nam_1_1.png&tbnid=gG2UOR198Pn40M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdich-vu-samsung-care-plus-galaxy-s25-series-2-nam.html&docid=53-dqkR2NOQLRM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "Sở hữu ngay Galaxy S24 Series với ưu đãi trả góp 0% và bảo hành 1 năm  Samsung Care+",
+    "imageUrl": "https://tintuc.dienthoaigiakho.vn/wp-content/uploads/2024/01/mua-galaxy-s24-tai-dien-thoai-gia-kho.jpg",
+    "imageWidth": 800,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSsNlx_fB28lIukPRu-CPStGgZN4v6T0ekC71LTf7yoLg&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 414,
+    "source": "Dienthoaigiakho",
+    "domain": "dienthoaigiakho.vn",
+    "link": "https://dienthoaigiakho.vn/tin-cong-nghe/uu-dai-dat-truoc-samsung-galaxy-s24/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Ftintuc.dienthoaigiakho.vn%2Fwp-content%2Fuploads%2F2024%2F01%2Fmua-galaxy-s24-tai-dien-thoai-gia-kho.jpg&tbnid=UdiKZYdU0j2P1M&imgrefurl=https%3A%2F%2Fdienthoaigiakho.vn%2Ftin-cong-nghe%2Fuu-dai-dat-truoc-samsung-galaxy-s24%2F&docid=rtYzkit2iFU_ZM&w=800&h=450",
+    "position": 5
+   },
+   {
+    "title": "Gói 2 năm Samsung Care+ cho Samsung S24 FE | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/phu-kien/Samsung-Care/dien-thoai/Samsung-S/Dich-vu-samsung-care-plus-galaxy-s24-fe-2-nam-1.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK5Mcukm1kgXuqAwA5-dYrQM6g929vlHlWkqqmYkwqQQ&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dich-vu-samsung-care-plus-galaxy-s24-fe-2-nam.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Fphu-kien%2FSamsung-Care%2Fdien-thoai%2FSamsung-S%2FDich-vu-samsung-care-plus-galaxy-s24-fe-2-nam-1.jpg&tbnid=8-KKbXCziSCBHM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdich-vu-samsung-care-plus-galaxy-s24-fe-2-nam.html&docid=uB-vH1_EBE5NiM&w=810&h=456",
+    "position": 6
+   },
+   {
+    "title": "Samsung Care+: Lựa chọn hàng đầu khi mua các thiết bị Galaxy",
+    "imageUrl": "https://genz.com.vn/wp-content/uploads/2024/02/samsung-care-plus-04.jpg",
+    "imageWidth": 750,
+    "imageHeight": 537,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSqcVzurIKy7aiMLTxXwWrlecPPc3P-GOCfjqHru1ZwNw&s=10",
+    "thumbnailWidth": 654,
+    "thumbnailHeight": 468,
+    "source": "GenZ Việt",
+    "domain": "genz.com.vn",
+    "link": "https://genz.com.vn/samsung-care-plus-lua-chon-khi-mua-cac-thiet-bi-galaxy/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgenz.com.vn%2Fwp-content%2Fuploads%2F2024%2F02%2Fsamsung-care-plus-04.jpg&tbnid=duIQrG4zuryzwM&imgrefurl=https%3A%2F%2Fgenz.com.vn%2Fsamsung-care-plus-lua-chon-khi-mua-cac-thiet-bi-galaxy%2F&docid=Ll3gVuvW8ILUXM&w=750&h=537",
+    "position": 7
+   },
+   {
+    "title": "Ưu đãi gói dịch vụ Samsung Care+ 1 năm cho Galaxy S24 series và S24 FE",
+    "imageUrl": "https://cdnv2.tgdd.vn/mwg-static/common/News/1570415/tgdd-galaxy-s24-fe-55.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 720,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBN4GUi5VDuIoIDYi90fqeB0pKM6CeTKnynW4TgvGyDw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/tin-tuc/samsung-care-1-nam-cho-galaxy-s24-series-va-s24-fe-1570415",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdnv2.tgdd.vn%2Fmwg-static%2Fcommon%2FNews%2F1570415%2Ftgdd-galaxy-s24-fe-55.jpg&tbnid=_6QYcNoH7XLRoM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Ftin-tuc%2Fsamsung-care-1-nam-cho-galaxy-s24-series-va-s24-fe-1570415&docid=T70Ywpdt35MegM&w=1280&h=720",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

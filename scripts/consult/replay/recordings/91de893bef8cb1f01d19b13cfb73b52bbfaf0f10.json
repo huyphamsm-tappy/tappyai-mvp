@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung công bố Galaxy S24 bản thường có pin dung lượng bao nhiêu mAh? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:19.012Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung công bố Galaxy S24 bản thường có pin dung lượng bao nhiêu mAh? (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tổng hợp loạt nâng cấp sáng giá của Galaxy S24 Series ...",
+    "link": "https://cellphones.com.vn/sforum/tong-hop-cac-nang-cap-cua-galaxy-s24-series",
+    "snippet": "Galaxy S24 được trang bị dung lượng pin 4000 mAh, nhiều hơn 100 mAh so với S23.",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Dung lượng pin S24 Ultra bao nhiêu mAh? Dùng được ...",
+    "link": "https://cellphones.com.vn/sforum/dung-luong-pin-s24-ultra",
+    "snippet": "Samsung công bố, dung lượng pin của Samsung S24 Ultra là 5.000 mAh (typical), thuộc nhóm pin lớn trong phân khúc smartphone cao cấp.",
+    "date": "25 thg 3, 2026",
+    "position": 2
+   },
+   {
+    "title": "Galaxy S24/S24+: Quà công nghệ 8/3 khiến nàng si mê ...",
+    "link": "https://cellphones.com.vn/sforum/galaxy-s24-s24-qua-cong-nghe-8-3-khien-nang-si-me-dan-dau-xu-the-voi-galaxy-ai",
+    "snippet": "Galaxy S24 hay viên pin lớn 4,900mAh của Galaxy S24+ mang đến thời lượng sử dụng cả ngày dài.",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "snippet": "Với viên pin dung lượng 5.000mAh, Samsung Galaxy S24 Ultra đảm bảo thời lượng sử các nhu cầu từ công việc đến giải trí. Dung lượng pin 5.000mAh. Dung lượng RAM ...",
+    "rating": 4.9,
+    "ratingCount": 59,
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus chính hãng, giá giảm đến 2 triệu",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-plus.html",
+    "snippet": "Dung lượng pin Samsung S24 Plus bao nhiêu mAh? Điện thoại Samsung Galaxy S24 Plus có viên pin dung lượng lớn 4.900 mAh - tăng 200 mAh so với S23 Plus.",
+    "rating": 5,
+    "ratingCount": 17,
+    "position": 5
+   },
+   {
+    "title": "Công nghệ khiến smartphone Trung Quốc vượt mặt ...",
+    "link": "https://cellphones.com.vn/sforum/pin-silicon-carbon-cong-nghe-pin-dot-pha-moi",
+    "snippet": "Tiêu chuẩn dung lượng pin 5,000mAh. Samsung Galaxy S24 Ultra (Li-Ion 5,000mAh), Có thể là từ 6,000mAh hoặc 6,500mAh.",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá chi tiết Samsung Galaxy S24 Plus | Sforum",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-samsung-galaxy-s24-plus",
+    "snippet": "Về pin, Galaxy S24 Plus được trang bị viên pin có dung lượng 4900 mAh.",
+    "date": "5 thg 4, 2024",
+    "position": 7
+   },
+   {
+    "title": "Đánh giá Samsung S24 Ultra sau khi cập nhật One UI 7",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-samsung-s24-ultra-oneui-7",
+    "snippet": "Samsung Galaxy S24 Ultra ・ tính năng AI, hiệu năng và pin có biến động ・ pin và hiệu năng có khác biệt ・ độ tăng và pin giảm. Galaxy S24 Ultra đạt 4,705 điể ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

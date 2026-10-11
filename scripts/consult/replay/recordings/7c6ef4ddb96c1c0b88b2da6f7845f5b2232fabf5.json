@@ -1,0 +1,38 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:danangfantasticity.com Hoi An Ancient Town tickets 2026 09:00 17:30 pedestrian hours",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:29.412Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:danangfantasticity.com Hoi An Ancient Town tickets 2026 09:00 17:30 pedestrian hours",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hoi An Ancient Town Entrance Tickets – A Journey to ...",
+    "link": "https://danangfantasticity.com/ru/discovery/hoi-an-ancient-town-entrance-tickets-2026",
+    "snippet": "On Phan Chau Trinh Street, pedestrian hours are from 17:30 to 21:30 in summer and 17:30 to 21:00 in winter. During these periods, visitors can ...",
+    "date": "6 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hoi An Named Among the World's Top 100 Walking Cities ...",
+    "link": "https://danangfantasticity.com/news/hoi-an-named-among-the-worlds-top-100-walking-cities-for-2026",
+    "snippet": "... Hoi An designates specific hours for pedestrian and non-motorized traffic. In the Ancient Town, this applies from 09:00 to 21:30 in summer ...",
+    "date": "30 thg 4, 2026",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

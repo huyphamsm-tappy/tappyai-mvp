@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra MacBook đã qua sử dụng Activation Lock cycle count serial number",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:56:12.477Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra MacBook đã qua sử dụng Activation Lock cycle count serial number",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4XEpPWPD6ZqySUL_uYGtjdh_FYj0JCiF63htwqAL4rvNGcR9lgV",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 1
+   },
+   {
+    "title": "Tìm tên kiểu máy và số sê-ri của máy Mac",
+    "link": "https://support.apple.com/vi-vn/102767",
+    "snippet": "Từ menu Apple ở góc màn hình, hãy chọn Giới thiệu về máy Mac này. Cửa sổ mở ra sẽ hiển thị hình ảnh của máy Mac, theo sau là tên kiểu máy. Ví dụ dưới đây ...",
+    "position": 2
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4UzUVMCnOUBqzBjDEG1botYUeWLnrrLJAYNNX91nQcdMibrXjMX",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn kiểm tra MacBook cũ, test máy chi tiết trước khi mua.",
+    "link": "https://thumacbook.com/huong-dan-kiem-tra-macbook-cu-test-may-chi-tiet-truoc-khi-mua/",
+    "snippet": "Bước quan trọng nhất để kiểm tra máy có iCloud ẩn hay không là reset máy về cài đặt gốc. Vào menu Apple → System Settings → General → Transfer or Reset → ...",
+    "position": 4
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua ĐƠN GIẢN ...",
+    "link": "https://24hstore.vn/huong-dan-ky-thuat/cach-kiem-tra-macbook-cu-n9230?srsltid=AU7gw4WaCHCooeeSJLRsiksd7pGNa5vF0qAYCG2DeawMnngoDIyc_fXu",
+    "snippet": "Cách kiểm tra pin MacBook cũ đơn giản bằng cách: Nhấn chọn logo Apple > Thông tin Hệ thống (System Information) > Nguồn điện (Power) trên thanh ...",
+    "date": "31 thg 5, 2025",
+    "position": 5
+   },
+   {
+    "title": "13 Bước Kiểm Tra MacBook Cũ Chuẩn: Tránh Bị \"Lừa\" Khi ...",
+    "link": "https://www.youtube.com/watch?v=aB2T5BHFF6I",
+    "snippet": "Bạn đang có ý định mua một chiếc MacBook cũ (Like New) để tiết kiệm chi phí nhưng lo lắng về chất lượng? Đừng bỏ lỡ video này!",
+    "position": 6
+   },
+   {
+    "title": "Check serial MacBook chính xác để biết máy có chính hãng",
+    "link": "https://clickbuy.com.vn/check-serial-macbook.html?srsltid=AU7gw4UY2t7mrbND-9gQZ8NTOMcHLa0KMuUCkObyQnD_TTQt3BnXRZO0",
+    "snippet": "Truy cập: https://appleid.apple.com. Đăng nhập tài khoản đã sử dụng trên MacBook. Cuộn xuống phần Thiết bị, chọn đúng MacBook cần tra. Tại đây ...",
+    "date": "19 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm kiểm tra MacBook Pro cũ chuẩn nhất cho ...",
+    "link": "https://1pro.vn/bai-viet/kinh-nghiem-kiem-tra-macbook-pro-cu/?srsltid=AU7gw4XFcovW4UaoFZhvuhfB8wmmgdDS6UwdK3qDtBhl6vjZSvKlDHFM",
+    "snippet": "Để kiểm tra, bạn vào Logo Apple > Giới thiệu về máy Mac này > Báo cáo hệ thống > Nguồn điện. Tại đây, hãy chú ý đến thông số “Số lượng chu kỳ” ( ...",
+    "date": "27 thg 11, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air 15 inch M2 8GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:10:43.403Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air 15 inch M2 8GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 15 inch (2023) M2 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-15-inch-(2023)-M2-Chip-8GB-512GB-(K%C3%A8m-s%E1%BA%A1c-70W)-i.88201679.22774823099",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 15 inch (2023) M2 Chip 8GB, 512GB (Kèm sạc 70W) giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 1
+   },
+   {
+    "title": "MacBook Air 15 inch M2 (8GB RAM | 512GB SSD)",
+    "link": "https://shopee.vn/MacBook-Air-15-inch-M2-(8GB-RAM-512GB-SSD)-i.288286284.29851758921",
+    "snippet": "MacBook Air 15 inch M2 (8GB RAM | 512GB SSD). 1/9. Đã bán hết. 45.990.000₫. mall inline badge. MacBook Air 15 inch M2 (8GB RAM | 512GB SSD).",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air 15 inch M2 (8GB RAM | 256GB SSD)",
+    "link": "https://shopee.vn/MacBook-Air-15-inch-M2-(8GB-RAM-256GB-SSD)-i.288286284.25131675710",
+    "snippet": "MacBook Air 15 inch M2 (8GB RAM | 256GB SSD). 1/9. Đã bán hết. 35.990.000₫. mall inline badge. MacBook Air 15 inch M2 (8GB RAM | 256GB SSD).",
+    "position": 3
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 15 inch (2023) M2 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-15-inch-(2023)-M2-Chip-8GB-256GB-i.88201679.21391172101",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 15 inch (2023) M2 Chip 8GB, 256GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 4
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air 15 inch, M5, 16GB ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-15-inch-M5-16GB-ram-10-core-CPU-10-core-GPU-512GB-i.88201679.54758284069",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air 15 inch, M5, 16GB ram, 10-core CPU, 10-core GPU, 512GB giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 4.9,
+    "ratingCount": 18,
+    "position": 5
+   },
+   {
+    "title": "Tấm dán Trackpad cho MacBook Air (15-inch, M2, 2023) ...",
+    "link": "https://shopee.vn/T%E1%BA%A5m-d%C3%A1n-Trackpad-cho-MacBook-Air-(15-inch-M2-2023)-A2941-(nhi%E1%BB%81u-m%E1%BA%ABu)-Custom-mi%E1%BA%BFng-d%C3%A1n-Touchpad-theo-y%C3%AAu-c%E1%BA%A7u-i.456562016.53007178850",
+    "snippet": "Mua Tấm dán Trackpad cho MacBook Air (15-inch, M2, 2023) A2941 (nhiều mẫu) | Custom miếng dán Touchpad theo yêu cầu giá tốt. Mua hàng qua mạng uy tín, ...",
+    "position": 6
+   },
+   {
+    "title": "Ốp lưng pha lê cứng màu nguyên bản siêu mỏng tự nhiên ...",
+    "link": "https://shopee.vn/%E1%BB%90p-l%C6%B0ng-pha-l%C3%AA-c%E1%BB%A9ng-m%C3%A0u-nguy%C3%AAn-b%E1%BA%A3n-si%C3%AAu-m%E1%BB%8Fng-t%E1%BB%B1-nhi%C3%AAn-cho-2025-Macbook-Air-M4-M1-M2-M3-13-15-inch-A3113-A3114-A2179-A3240-Pro-13-14-16-inch-Retina-13-V%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-Phim-m%C3%A0n-h%C3%ACnh-i.586918470.26130258332",
+    "snippet": "Mua Ốp lưng pha lê cứng màu nguyên bản siêu mỏng tự nhiên cho 2025 Macbook Air M4 M1 M2 M3 13 15 inch A3113 A3114 A2179 A3240 Pro 13 14 16 inch Retina 13 Vỏ bảo",
+    "rating": 4.8,
+    "ratingCount": 4499,
+    "position": 7
+   },
+   {
+    "title": "Macbook air m2 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/macbook/air%20m2",
+    "snippet": "Mua online macbook air m2 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

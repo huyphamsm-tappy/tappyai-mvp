@@ -1,0 +1,140 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Diamond Sea Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:30:32.979Z",
+ "body": {
+  "searchParameters": {
+   "q": "Diamond Sea Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Diamond Sea Hotel, Vũng Tàu (giá cập nhật)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/541013320.jpg?k=5b9ad0c6adb63ce90238aaf945abec014b5901367ffc7e0fffada99e58571a96&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ065DZxu_lNCBxxjVL4D7-rq_B2AcqxVc7Qp6VD4WPBw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/diamond-sea-vung-tau.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F541013320.jpg%3Fk%3D5b9ad0c6adb63ce90238aaf945abec014b5901367ffc7e0fffada99e58571a96%26o%3D&tbnid=TGPJSJGnkqGHLM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdiamond-sea-vung-tau.vi.html&docid=4OvDyFclKqJfpM&w=1024&h=683",
+    "position": 1
+   },
+   {
+    "title": "DIAMOND SEA HOTEL (Đà Nẵng) - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://media-cdn.tripadvisor.com/media/photo-s/28/47/3a/f6/diamond-sea-hotel.jpg",
+    "imageWidth": 550,
+    "imageHeight": 366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgOk4yYShB4kS3wFFtHEpsMV4A_WhdiaePJYLP8zZUIA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g298085-d7787047-Reviews-Diamond_Sea_Hotel-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmedia-cdn.tripadvisor.com%2Fmedia%2Fphoto-s%2F28%2F47%2F3a%2Ff6%2Fdiamond-sea-hotel.jpg&tbnid=ZktOhi-VK2AtOM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g298085-d7787047-Reviews-Diamond_Sea_Hotel-Da_Nang.html&docid=vFTqNi1Gh__92M&w=550&h=366",
+    "position": 2
+   },
+   {
+    "title": "LÝ DO VÌ SAO NÊN CHỌN DIAMOND SEA HOTEL CHO CHUYẾN DU LỊCH TẠI ĐÀ NẴNG",
+    "imageUrl": "https://diamondseahotel.com/UploadFile/CHI02073-Edit-Edit-3.jpg",
+    "imageWidth": 5141,
+    "imageHeight": 6217,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUdySllhl2lyTUiSKnJLaGIsCgddrJuskb5qi9Sifk2g&s=10",
+    "thumbnailWidth": 407,
+    "thumbnailHeight": 491,
+    "source": "Diamond Sea Hotel",
+    "domain": "diamondseahotel.com",
+    "link": "https://diamondseahotel.com/vi/tin-tuc/tin-tuc-khach-san/ly-do-vi-sao-nen-cho-n-diamond-sea-hotel-cho-chuye-n-du-li-ch-ta-i-da-na-ng?srsltid=AU7gw4WPrZND03twPMjFIXnSWRGeoFLDBAZMqLdUlaDxjsGOhlb8YBt2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiamondseahotel.com%2FUploadFile%2FCHI02073-Edit-Edit-3.jpg&tbnid=p0W0WCE0jlO9eM&imgrefurl=https%3A%2F%2Fdiamondseahotel.com%2Fvi%2Ftin-tuc%2Ftin-tuc-khach-san%2Fly-do-vi-sao-nen-cho-n-diamond-sea-hotel-cho-chuye-n-du-li-ch-ta-i-da-na-ng%3Fsrsltid%3DAU7gw4WPrZND03twPMjFIXnSWRGeoFLDBAZMqLdUlaDxjsGOhlb8YBt2&docid=CbBZaIdqnXJLwM&w=5141&h=6217",
+    "position": 3
+   },
+   {
+    "title": "Diamond Sea Hotel | Khách Sạn Diamond Sea Đà Nẵng",
+    "imageUrl": "https://diamondseahotel.com/UploadFile/Gallery/Our-hotel/our-hotel-slide3.webp",
+    "imageWidth": 1920,
+    "imageHeight": 1280,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSo_PwOkmUG9J3733Y3uDOiBmPd9HfPzYThUPor_IEHVA&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Diamond Sea Hotel",
+    "domain": "diamondseahotel.com",
+    "link": "https://diamondseahotel.com/vi?srsltid=AU7gw4XhiDypm6SYp7t_mB_TUZmbZjPfF6SmxLqRV18oA0XpCwSqi9i2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiamondseahotel.com%2FUploadFile%2FGallery%2FOur-hotel%2Four-hotel-slide3.webp&tbnid=k5D5o8eUBHGo1M&imgrefurl=https%3A%2F%2Fdiamondseahotel.com%2Fvi%3Fsrsltid%3DAU7gw4XhiDypm6SYp7t_mB_TUZmbZjPfF6SmxLqRV18oA0XpCwSqi9i2&docid=F6M28yfcTatKJM&w=1920&h=1280",
+    "position": 4
+   },
+   {
+    "title": "Diamond Sea Hotel, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/431409528.jpg?k=81510aa30234aa5f17ffb7a57b9f8455c3cfee7bd1c2a988defa32d0a560dbf1&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVT0-TZum58On4jO8eTjaeS3mK9e2tFxfERAgqPBaqgw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/diamond-sea.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F431409528.jpg%3Fk%3D81510aa30234aa5f17ffb7a57b9f8455c3cfee7bd1c2a988defa32d0a560dbf1%26o%3D&tbnid=yQ9kl0z5dAqUaM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fdiamond-sea.vi.html&docid=Y7H7B8IFz1yU7M&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Diamond Sea Hotel Quảng Bình - Quảng Bình Travel - Tour Quảng  Bình chuyên nghiệp",
+    "imageUrl": "https://quangbinhtravel.vn/wp-content/uploads/2026/05/diamon-sea-quangbinh.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1536,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhIiSWirg5M0WHdtqcUcqdEhXsjIzdOOGGeBA7iHkEqA&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Quảng Bình Travel",
+    "domain": "quangbinhtravel.vn",
+    "link": "https://quangbinhtravel.vn/hotel/diamond-sea-hotel-quang-binh",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fquangbinhtravel.vn%2Fwp-content%2Fuploads%2F2026%2F05%2Fdiamon-sea-quangbinh.jpg&tbnid=TqK_FhNrzYQuWM&imgrefurl=https%3A%2F%2Fquangbinhtravel.vn%2Fhotel%2Fdiamond-sea-hotel-quang-binh&docid=RO0rcxQSKitQpM&w=2048&h=1536",
+    "position": 6
+   },
+   {
+    "title": "Diamond Sea Hotel | Khách Sạn Diamond Sea Đà Nẵng",
+    "imageUrl": "https://diamondseahotel.com/UploadFile/Gallery/Rooms/Superior-twin/sup-twin1.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1365,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQs7WO-J4pbaDdzix8RrCBcjyDMp-iq5pR3IZdpxBKo_A&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Diamond Sea Hotel",
+    "domain": "diamondseahotel.com",
+    "link": "https://diamondseahotel.com/vi?srsltid=AU7gw4W9lthfkjBYiTIac0GIlbypiO5CL1k6lbX_cNJTKVANSdvlq7QN",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiamondseahotel.com%2FUploadFile%2FGallery%2FRooms%2FSuperior-twin%2Fsup-twin1.jpg&tbnid=YP-ks4L3T2sI0M&imgrefurl=https%3A%2F%2Fdiamondseahotel.com%2Fvi%3Fsrsltid%3DAU7gw4W9lthfkjBYiTIac0GIlbypiO5CL1k6lbX_cNJTKVANSdvlq7QN&docid=F6M28yfcTatKJM&w=2048&h=1365",
+    "copyright": "0383305909",
+    "creator": "Ha Phong",
+    "position": 7
+   },
+   {
+    "title": "Diamond Sea Hotel | Khách Sạn Diamond Sea Đà Nẵng",
+    "imageUrl": "https://diamondseahotel.com/UploadFile/Gallery/Rooms/Premier-double/ocean-double1.jpg",
+    "imageWidth": 2048,
+    "imageHeight": 1366,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjydwXB4PqUD8-kxT46VhGdx612OAghXIhWlSqAW4hXw&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Diamond Sea Hotel",
+    "domain": "diamondseahotel.com",
+    "link": "https://diamondseahotel.com/vi?srsltid=AU7gw4UKy3HzKuyWNUS0tBSu0xytuRbbC7S1k03CEYEWNbSt4zMXSJZ-",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdiamondseahotel.com%2FUploadFile%2FGallery%2FRooms%2FPremier-double%2Focean-double1.jpg&tbnid=H1XMerbNIxlH-M&imgrefurl=https%3A%2F%2Fdiamondseahotel.com%2Fvi%3Fsrsltid%3DAU7gw4UKy3HzKuyWNUS0tBSu0xytuRbbC7S1k03CEYEWNbSt4zMXSJZ-&docid=F6M28yfcTatKJM&w=2048&h=1366",
+    "copyright": "0383305909",
+    "creator": "Ha Phong",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

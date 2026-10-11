@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com Mac turn off Find My Activation Lock erase Mac before sell buy used",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:07:41.712Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com Mac turn off Find My Activation Lock erase Mac before sell buy used",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-us/102541",
+    "snippet": "How to disable Activation Lock on Mac · Go to www.iCloud.com/find. · Sign in to your Apple Account. · Select the Mac that you want to remove from ...",
+    "date": "5 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Turn off Find My on your devices and items",
+    "link": "https://support.apple.com/guide/icloud/remove-devices-and-items-from-find-my-mmdc23b125f6/icloud",
+    "snippet": "Turn off Find My on your devices and items. Before you sell, give away, trade in, or service a device, you should turn off Find My.",
+    "position": 2
+   },
+   {
+    "title": "Remove a device from Find My on Mac",
+    "link": "https://support.apple.com/guide/findmy-mac/remove-a-device-fmm251eff839/mac",
+    "snippet": "Before you sell, give away, or trade in a device, you should remove Activation Lock so the device is no longer associated with your Apple Account. Go to the ...",
+    "position": 3
+   },
+   {
+    "title": "Remove a device from Find Devices on iCloud.com",
+    "link": "https://support.apple.com/guide/icloud/remove-a-device-mmfc0eeddd/icloud",
+    "snippet": "Use Find Devices on iCloud.com to temporarily remove a device from your list of devices or remove Activation Lock on a device you gave away or sold.",
+    "position": 4
+   },
+   {
+    "title": "How to remove Activation Lock",
+    "link": "https://support.apple.com/en-us/108934",
+    "snippet": "Go to icloud.com/find. · Sign in to your Apple Account. · Select the device that you want to remove from iCloud. · Click Remove This Device.",
+    "date": "27 thg 5, 2026",
+    "position": 5
+   },
+   {
+    "title": "What to do before you sell, give away, or trade in your ...",
+    "link": "https://support.apple.com/en-us/109511",
+    "snippet": "Remove your personal information from your old device · Open the Settings app. · Tap [your name]. · Scroll down and tap Sign Out. · Choose Erase ...",
+    "date": "29 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "About Activation Lock on your Apple Watch",
+    "link": "https://support.apple.com/en-us/102573",
+    "snippet": "Turn off Find My on your device. ... Before you send your Apple Watch in for service, sell it, or give it away, you should turn off Activation Lock.",
+    "position": 7
+   },
+   {
+    "title": "Turn off Activation Lock in Apple Business",
+    "link": "https://support.apple.com/guide/business/turn-off-activation-lock-axm812df1dd8/web",
+    "snippet": "In Apple Business, sign in with a user whose role has permissions to remove Activation Lock from devices. · In your browser, choose Devices > ...",
+    "date": "14 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

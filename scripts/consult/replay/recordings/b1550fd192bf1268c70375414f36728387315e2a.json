@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Anker Soundcore Liberty 4 NC chạy bộ chống nước IPX4 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:14:45.295Z",
+ "body": {
+  "searchParameters": {
+   "q": "Anker Soundcore Liberty 4 NC chạy bộ chống nước IPX4 (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Soundcore liberty 4 pro - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/anker/soundcore%20liberty%204%20pro",
+    "snippet": "flag-label Tai nghe bluetooth Anker soundcore R60i NC, chống ồn 52dB, âm ... chống nước IPX4, âm thanh 360 độ. 990.000₫. 1.290.000₫. -23%. Rẻ Vô Địch.",
+    "position": 1
+   },
+   {
+    "title": "tai nghe không dây anker - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe%20kh%C3%B4ng%20d%C3%A2y/anker",
+    "snippet": "Tai nghe bluetooth Anker soundcore R50i, thời lượng phát tới 30H, nghe gọi rõ ràng và âm trầm cao, chống nước IPX5. 415.768₫. 599.000₫. -31%. voucher-icon.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 3
+   },
+   {
+    "title": "jbl tune 230nc giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=jbl%20tune%20230nc",
+    "snippet": "Tai nghe bluetooth Anker soundcore Liberty 4 NC chống ồn chủ động tới 98.5%, ... chống nước IPX4 kết nối đa điểm. 2.344.220₫. 2.686.500₫. -13%. voucher-icon. Rẻ ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth Anker Soundcore Spirit Pro",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-anker-soundcore-spirit-pro.html",
+    "snippet": "... Tai nghe không dây chống ồn Anker Soundcore Liberty 4 NC (A3947). Trả góp 0%. : 1.215.000đ. 2.390.000đ. Giảm 49%. 2 Giờ.",
+    "position": 5
+   },
+   {
+    "title": "bud - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/bud",
+    "snippet": "flag-label Tai nghe bluetooth Anker soundcore R60i NC, chống ồn 52dB, âm ... chống nước IPX4, âm thanh 360 độ. 990.000₫. 1.290.000₫. -23%. rating-star 4.9.",
+    "position": 6
+   },
+   {
+    "title": "q3 pro giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=q3%20pro",
+    "snippet": "Tai nghe bluetooth Anker soundcore R50i, thời lượng phát tới 30H, nghe gọi rõ ràng và âm trầm cao, chống nước IPX5. 369.000₫. 599.000₫. -38%. voucher-icon.",
+    "position": 7
+   },
+   {
+    "title": "Redmi buds 4 lite - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/redmi%20buds%204%20lite",
+    "snippet": "flag-label Tai nghe bluetooth Anker soundcore R50i NC, chống ồn chủ động ... Chống nước IPX4 - Bluetooth 5.4 - 5 chế độ EQ. 514.000₫. 690.000₫. -26%. Rẻ Vô ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

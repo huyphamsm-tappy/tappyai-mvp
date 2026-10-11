@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook khoảng 25 triệu lập trình (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:15:46.205Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook khoảng 25 triệu lập trình (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 3 Laptop Ultrabook đáng mua nhất phân khúc 25 triệu",
+    "link": "https://cellphones.com.vn/sforum/top-3-laptop-ultrabook-25-trieu",
+    "snippet": "Ở tầm giá khoảng 25 triệu, MacBook Neo 13 nổi bật ở sự nhỏ gọn, pin tốt và trải nghiệm macOS gọn gàng. ASUS ExpertBook P1 lại thực dụng hơn ...",
+    "date": "22 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 3
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "1. Từ 20 triệu: MacBook Neo - Tân binh đáng chú ý nhất của Apple trong năm 2026 · 2. Từ 30 triệu: MacBook Air M5 13 inch - Kích thước nhỏ, hiệu năng mạnh · 3. Từ ...",
+    "position": 4
+   },
+   {
+    "title": "Laptop dưới 25 triệu | Hiệu năng mạnh mẽ, cấu hình ấn ...",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-20-25-trieu",
+    "snippet": "Laptop dưới 25 triệu chính hãng, thiết kế ấn tượng, cấu hình mạnh mẽ, hiệu năng nổi bật, bảo hành uy tín. Mua ngay laptop 25 triệu trả góp 0%",
+    "position": 5
+   },
+   {
+    "title": "Top 10 laptop lập trình chất lượng, đáng mua nhất 2026",
+    "link": "https://cellphones.com.vn/sforum/laptop-cho-lap-trinh-vien",
+    "snippet": "Danh sách laptop lập trình đáng mua · Laptop Acer Aspire Lite Gen 2 AL14-52M · Laptop HP 250 G9 · Laptop ASUS VivoBook 15 M1502NAQ · Laptop Acer Aspire Lite 15 AL15 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Nên chọn MacBook hay laptop Windows cho ngành học ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-va-windows-laptop-theo-nganh-hoc",
+    "snippet": "MacBook có pin dùng liên tục 10 - 18 tiếng, đáp ứng tốt nhu cầu học tập và làm việc di động. Bên cạnh đó, sự đồng bộ trong hệ sinh thái Apple ...",
+    "date": "20 thg 8, 2025",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 7
+   },
+   {
+    "title": "Sinh viên kiến trúc ra trường có 30 triệu nên mua laptop gì?",
+    "link": "https://cellphones.com.vn/sforum/top-4-laptop-kien-truc-30-trieu",
+    "snippet": "MacBook Air M4 15 inch là trường hợp ngoại lệ duy nhất trong danh sách laptop dành cho sinh viên kiến trúc tầm khoảng 30 triệu mà mình muốn nhấn ...",
+    "date": "19 thg 11, 2025",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

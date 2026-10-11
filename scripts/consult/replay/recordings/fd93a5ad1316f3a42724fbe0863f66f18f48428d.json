@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:44.178Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Macbook chính hãng, trả góp 0% 12 tháng, phụ phí 0Đ, trả trước 0Đ, giảm thêm 500K HSSV. Mua ngay laptop Apple giá rẻ, trợ giá lên đời 2 triệu.",
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB ...",
+    "link": "https://cellphones.com.vn/macbook-neo-13-a18-pro-6-cpu-5-gpu-8gb-512gb.html",
+    "snippet": "Mua ngay MacBook Neo 13 inch A18 Pro 2026 6CPU 5GPU 8GB 512GB Touch ID giá rẻ - Hỗ trợ trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng, giao hàng tận nơi ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 3
+   },
+   {
+    "title": "Tổng hợp các dòng MacBook từ trước tới hiện nay",
+    "link": "https://cellphones.com.vn/sforum/cac-dong-macbook",
+    "snippet": "Bài viết này sẽ tổng hợp chi tiết tất cả các dòng MacBook, lịch sử ra mắt, sự khác biệt giữa các dòng giúp bạn có cái nhìn toàn diện để chọn sản phẩm phù ...",
+    "position": 4
+   },
+   {
+    "title": "5 cách thu nhỏ, phóng to màn hình MacBook siêu dễ",
+    "link": "https://cellphones.com.vn/sforum/phong-to-man-hinh-macbook",
+    "snippet": "Để phóng to, hãy nhấn tổ hợp Option + Command + = nhằm mở rộng kích thước hiển thị. Thu nhỏ, phóng to màn hình Macbook bằng ...",
+    "position": 5
+   },
+   {
+    "title": "Nguyên nhân và cách phục đơn giản khi MacBook bị sai giờ",
+    "link": "https://cellphones.com.vn/sforum/macbook-bi-sai-gio",
+    "snippet": "Cách khắc phục lỗi MacBook bị sai giờ · Bật chế độ cập nhật thời gian tự động · Kiểm tra kết nối mạng · Kiểm tra múi giờ · Bật dịch vụ định vị · Sử dụng đúng ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 giá rẻ, trả góp 0%, đổi mới 30 ngày, bảo hành chính hãng. Mua online Mac Air 13 inch M5 nhận voucher giảm 500K!",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 7
+   },
+   {
+    "title": "Macbook bị mất tiếng - Hướng dẫn cách khắc phục hiệu quả",
+    "link": "https://cellphones.com.vn/sforum/cach-khac-phuc-macbook-bi-mat-tieng-nhanh-chong-hieu-qua",
+    "snippet": "Hướng dẫn cách khắc phục Macbook bị mất tiếng · Kiểm tra cài đặt Volume & Headphones · Kiểm tra cài đặt âm thanh · Khôi phục cài đặt NVRAM/PRAM · Cập nhật phần ...",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

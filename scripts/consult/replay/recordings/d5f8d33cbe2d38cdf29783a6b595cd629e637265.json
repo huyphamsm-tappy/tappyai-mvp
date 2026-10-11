@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "quán ăn địa phương giá vừa phải ít khách du lịch món Hội An Hội An gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:48:53.976Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn địa phương giá vừa phải ít khách du lịch món Hội An Hội An gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "17 quán ăn ngon ở Hội An từ sáng đến đêm không thể bỏ ...",
+    "link": "https://vinwonders.com/vi/wonderpedia/news/quan-an-hoi-an-ngon/",
+    "snippet": "Cơm Tấm Hội An – Phở Sơn là địa chỉ quen thuộc dành cho những tín đồ ẩm thực khi tìm kiếm quán ăn Hội An ngon. Quán nổi bật với món cơm tấm được chế biến tỉ mỉ, ...",
+    "position": 1
+   },
+   {
+    "title": "Top 18 quán ăn ngon ở Hội An mang đến trải nghiệm ẩm ...",
+    "link": "https://www.ivivu.com/blog/2023/03/top-18-quan-an-ngon-o-hoi-an-mang-den-trai-nghiem-am-thuc-nhu-nguoi-dia-phuong/",
+    "snippet": "1. Cơm gà bà Buội ... Một trong những quán ăn ngon ở Hội An mà bạn không nên bỏ qua là quán Cơm gà bà Buội, đây là quán cơm gà nổi tiếng lâu đời ở ...",
+    "date": "15 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "Kính hội, Sắp tới mình sẽ ở Hội An 1 tuần, và mình muốn hỏi",
+    "link": "https://www.facebook.com/groups/anginhi/posts/1501676183198139/",
+    "snippet": "Cơ bản là rất ngon giá lại rẻ. Quán Diệp Nữ ở Đầu Cồn, Cẩm Nam. Từ quán nhìn sang bên phố cổ Hội An luôn, mát rượi ra, nên thơ trữ tình lắm ...",
+    "position": 3
+   },
+   {
+    "title": "Lần đầu đi Hội An nhất định phải thử 4 quán nổi tiếng này nha ...",
+    "link": "https://www.facebook.com/nhandian/posts/l%E1%BA%A7n-%C4%91%E1%BA%A7u-%C4%91i-h%E1%BB%99i-an-nh%E1%BA%A5t-%C4%91%E1%BB%8Bnh-ph%E1%BA%A3i-th%E1%BB%AD-4-qu%C3%A1n-n%E1%BB%95i-ti%E1%BA%BFng-n%C3%A0y-nha-kh%C3%A1ch-l%C3%BAc-n%C3%A0o-c%C5%A9ng/997570599455072/",
+    "snippet": "Huy Nguyễn. Bánh mì Phượng, cơm gà Buội, Mót đã trải nghiệm và rất thích · Tun Nguyen. Thanh Tuyền chưa đc ăn bánh mỳ madam khanh. · Đặng Linh ...",
+    "position": 4
+   },
+   {
+    "title": "Bỏ túi kinh nghiệm ăn vặt Hội An ngon rẻ cho chuyến đi đáng ...",
+    "link": "https://visitdanang.travel/vi/bo-tui-kinh-nghiem-an-vat-hoi-an-ngon-re-cho-chuyen-di-dang-nho-9159",
+    "snippet": "Du khách có thể thử từ các món chè, các thức bánh đặc sản đến những món nước độc đáo. Danh sách dưới đây sẽ gợi ý những món ăn vặt ở Hội An nổi tiếng, địa chỉ ...",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Hội An 2021 - kinh nghiệm ăn uống ngon bổ rẻ",
+    "link": "https://www.youtube.com/watch?v=YxgCYLhAQlM",
+    "snippet": "Du lịch Hội An nhất định phải bỏ túi những món ngon đặc sản và những quán ăn nổi tiếng mà Blog Travel Việt chia sẻ ngay sau đây để thưởng ...",
+    "position": 6
+   },
+   {
+    "title": "Top 19 quán ăn ngon ở Hội An không thể bỏ qua",
+    "link": "https://hoianmemoriesresort.com/quan-an-ngon-o-hoi-an.html",
+    "snippet": "Cao lầu Bà Bé là một quán ăn bình dân ở Hội An với thực đơn chính bao gồm các món cao lầu, mì quảng, các món phở, thịt nướng,… Đặc biệt, món cao lầu luôn là món ...",
+    "position": 7
+   },
+   {
+    "title": "Review 10 nhà hàng ở Hội An giá rẻ được nhiều du khách ...",
+    "link": "https://dulichvietdu.com.vn/nha-hang-o-hoi-an-gia-re/",
+    "snippet": "Nhà hàng Bông Hồng Trắng Hội An · Nhà hàng Tam Tam Cafe Hội An · Nhà hàng Hội An Tú Anh · Nhà hàng Bazar Hội An · Bếp 1919 – nhà hàng ở Hội An giá ...",
+    "date": "7 thg 11, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple Apple 2024 Macbook Pro Laptop Với M4 Pro\" sai gon site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:21.666Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple Apple 2024 Macbook Pro Laptop Với M4 Pro\" sai gon site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

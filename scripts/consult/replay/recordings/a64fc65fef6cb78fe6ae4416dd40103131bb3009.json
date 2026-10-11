@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:danangfantasticity.com/kham-pha/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-2026 giờ 9:00 21:30 Hội An 2026 vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:04:18.051Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:danangfantasticity.com/kham-pha/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-2026 giờ 9:00 21:30 Hội An 2026 vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:02:43.203Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-huy-tieng-on-chong-on-cho-hoc-tap-ngay-cong-nghiep-i13421399591.html?srsltid=AU7gw4VQZ0UI8nlmZEYl2fWx_R6GlLVOVx_dZiRCjsFIOT7IHQDZ5Itg",
+    "snippet": "Tai Nghe Hủy Tiếng Ồn Chống Ồn Cho Học Tập Ngáy Công Nghiệp ; Tai Nghe Hủy Âm Siêu Hiệu Quả. 69.000 ₫ ; Moldex Earplugs Chống Ồn Ngủ Chuyên Nghiệp Đồ Dùng Bảo Hộ ...",
+    "position": 1
+   },
+   {
+    "title": "SHZTGM Công nghiệp head-gắn tiếng ồn hủy bỏ earmuffs hiệu ...",
+    "link": "https://www.lazada.vn/products/pdp-i13428370690.html?srsltid=AU7gw4WlhCPCNHB0sFS5mqFxlh_AiwlQYTXPv-W3JeUT7PglE-jYV3Ok",
+    "snippet": "1. Giảm tiếng ồn: Chức năng chính của nút bịt tai giảm tiếng ồn là giảm tiếng ồn bên ngoài, để bạn có thể duy trì thính giác rõ ràng và tâm trạng tốt trong môi ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Hủy Tiếng Ồn Cấp Công Nghiệp Cho Ngủ & Học",
+    "link": "https://www.lazada.vn/products/lingting-tai-nghe-huy-tieng-on-cap-cong-nghiep-cho-ngu-hoc-i13353781208.html?srsltid=AU7gw4WbPnCKj6eYz4guYlANGRZee2d_Jm56sjdrivLXhgEha9Hm_qpD",
+    "snippet": "LazMall LINGTING | Tai Nghe Hủy Tiếng Ồn Cấp Công Nghiệp Cho Ngủ & Học · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Hủy Tiếng Ồn Cho Ngủ Học Tập Làm Việc Bảo Vệ",
+    "link": "https://www.lazada.vn/products/honeywell-tai-nghe-huy-tieng-on-cho-ngu-hoc-tap-lam-viec-bao-ve-i13314865940-s116186406626.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VIxugwIlbDQheT5t1TS1D6ytsabpPSY3Erik5YkiALSjcok2s-",
+    "snippet": "Được thiết kế để sử dụng chuyên nghiệp, những chiếc bịt tai này của Honeywell giúp giảm tiếng ồn hiệu quả, mang lại môi trường ngủ yên bình.",
+    "position": 4
+   },
+   {
+    "title": "3M | Tai Nghe Hủy Tiếng Ồn Cho Ngủ và Học Tập",
+    "link": "https://h5.lazada.vn/products/3m-tai-nghe-huy-tieng-on-cho-ngu-va-hoc-tap-i3317526926-s16202648832.html",
+    "snippet": "1.511.000 ₫ · 3M | Bông Tai Hủy Tiếng Ồn. 194.000 ₫ · 3M | Bông Tai Kháng Ồn Chống Nước để Học Tập và Sử Dụng Công Nghiệp. 145.000 ₫. Ưu đãi từ ShopXem tất cả ...",
+    "position": 5
+   },
+   {
+    "title": "Đầu Tai Giảm Ồn cho Công Nghiệp",
+    "link": "https://www.lazada.vn/products/dau-tai-giam-on-cho-cong-nghiep-i13421375400.html?srsltid=AU7gw4U5Hr67Zh5-bdj2EUt2_YsUnxkBWrEzN4tzTtvUvokbmEiyY-tG",
+    "snippet": "3M | Bông Tai Hủy Tiếng Có Dây. 221.000 ₫ · Nút Tai Chống Ồn Để Ngủ. 72.000 ₫ · 3M | Tai Nghe Chống Ồn Hai Lớp Cho Ngủ Học Tập. 93.000 ₫ · Tai Nghe Giảm Âm ...",
+    "position": 6
+   },
+   {
+    "title": "3M | Tai Nghe Giảm Tiếng Ồn và Giảm Tiếng Ngáy",
+    "link": "https://www.lazada.vn/products/3m-tai-nghe-giam-tieng-on-va-giam-tieng-ngay-i13420891668-s117159943367.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4XX66r2lkHgnOqHKOr54upeVLejXpDqZxCVBN9d4TlV--QosbSm",
+    "snippet": "LazMall 3M | Tai Nghe Giảm Tiếng Ồn và Giảm Tiếng Ngáy · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 7
+   },
+   {
+    "title": "3M | Bông Tai Cách Âm Dùng Để Ngủ và Công Nghiệp",
+    "link": "https://www.lazada.vn/products/pdp-i13422398446.html?srsltid=AU7gw4Xih2kCs3X_NsEPXMo81F7YcaX-uK0rOE8jwsg9ZYOavcvjc5qH",
+    "snippet": "Tai Nghe Giảm Âm Chống Ngáy Khi Ngủ. 222.000 ₫ ; Tai Nghe Hủy Tiếng Ồn cho Sinh Viên Học Tập và Ngủ. 224.000 ₫ ; Nút Tai Chống Ồn Để Ngủ. 72.000 ₫ ; Bông Tai Hủy ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

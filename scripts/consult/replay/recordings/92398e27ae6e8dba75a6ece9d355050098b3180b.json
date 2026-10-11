@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro 13 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:25.229Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro 13 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mô Hình Máy Tính Xách Tay Macbook pro 13 Inch Màu ...",
+    "link": "https://www.lazada.vn/products/mo-hinh-may-tinh-xach-tay-macbook-pro-13-inch-mau-xam-mo-hinh-ban-lam-viec-do-trang-tri-do-choi-tinh-do-choi-mo-hinh-i3279103258.html?srsltid=AU7gw4VIMRYwJE8hzVbOtyuhY1ak-yvNbYiYZeC_zMhPCEWb07EyKI3F",
+    "snippet": "Mô Hình Máy Tính Xách Tay Macbook pro 13 Inch Màu Xám Mô Hình Bàn Làm Việc Đồ Trang Trí Đồ Chơi Tĩnh Đồ Chơi Mô Hình. Tuỳ chọn sản phẩm.",
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng Laptop Da PU Cho MacBook Air 13/MacBook Pro 13 ...",
+    "link": "https://www.lazada.vn/products/op-lung-laptop-da-pu-cho-macbook-air-13macbook-pro-1314162-day-cung-tuong-thich-voi-cac-model-m1m2m3m4-i2991790441.html?srsltid=AU7gw4UcbIKi4OYKUYXZpL53va6IsMBMufmvdzxjUP3NuhG6pMkJEXIb",
+    "snippet": "Được chế tạo từ da PVC và PU cao cấp, chiếc ốp này mang lại độ bền và cảm giác cao cấp. Khả năng tương thích. Được thiết kế dành riêng cho nhiều mẫu ...",
+    "position": 2
+   },
+   {
+    "title": "Dán màn hình CƯỜNG LỰC 9H MacBook Pro 13 inch",
+    "link": "https://h5.lazada.vn/products/dan-man-hinh-cuong-luc-9h-macbook-pro-13-inch-14-inch-16-inch-m2-m3-air-m2-13-inch-15-inch-nano-deo-trong-suot-i2364814263.html",
+    "snippet": "_ Chống trầy xước và chống bám bụi cực kì tốt (Màn hình laptop do lực hút tĩnh điện nên thường hít bụi từ môi trường bên ngoài cực nhiều, lâu dần bụi sẽ vào cả ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 3
+   },
+   {
+    "title": "Ốp Laptop Siêu Mỏng Cho MacBook Air 13 15.3 13.6 M4 ...",
+    "link": "https://www.lazada.vn/products/op-laptop-sieu-mong-cho-macbook-air-13153136-va-pro-13m114216162-tuong-thich-voi-m4m2m3-vo-bao-ve-phong-cach-doanh-nhan-chat-lieu-pvc-i3100468328.html?srsltid=AU7gw4VeX8P-LFWFQUp_-SBp7wG5ITs-r3xgSpilOOAi_acZwylQgiXK",
+    "snippet": "Được thiết kế cho các mẫu MacBook Air 13 15.3 13.6 và MacBook Pro 13 14.2 16.2 16, đảm bảo vừa vặn hoàn hảo với thiết bị của bạn.",
+    "position": 4
+   },
+   {
+    "title": "Bàn Phím MacBook Pro 13-Inch A1278",
+    "link": "https://www.lazada.vn/products/ban-phim-macbook-pro-13-inch-a1278-i1964965308.html?srsltid=AU7gw4V8esWhY2rdrQknSB03tAjhrimTHYqUCRxSZiaoYO2h-Ru48zLU",
+    "snippet": "Tuỳ chọn sản phẩm. Đen,UK Layout. Bàn Phím MacBook Pro 13-Inch A1278. Thông số. Loại công tắc bàn phím,Loại kết nối,Loại Bảo Hành.",
+    "position": 5
+   },
+   {
+    "title": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch",
+    "link": "https://h5.lazada.vn/products/dan-ppf-man-hinh-mat-lung-mat-de-macbook-pro-13-inch-14-inch-16-inch-m2-m2-pro-m2-max-air-m2-13-inch-15-inch-i2364779871-s11490845569.html",
+    "snippet": "Dán PPF màn hình, mặt lưng, mặt đế MacBook Pro 13 inch/ 14 inch/ 16 inch (M2, M2 Pro, M2 Max)/ Air (M2) 13 inch/ 15 inch ... Giảm 11.000 ₫ phí vận chuyển cho một ...",
+    "position": 6
+   },
+   {
+    "title": "【Be worth】 MTT Laptop Case For Macbook Pro 13 M1 M2 A2338 ...",
+    "link": "https://www.lazada.vn/products/pdp-i3011765604.html?srsltid=AU7gw4XGYMeuAm2UjkyruwHx-CdSrnUL3CV42ijS715rcP3cp6pxTG14",
+    "snippet": "Package: Yes · Model Number: Case For Macbook Air Pro Retina 11 12 13 15 16 inch Funda · Applicable Models: MacBook Pro 13,MacBook Pro 15,MacBook Air 13,MacBook ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp Laptop Mềm TPU Cho Macbook Air 13 M1 M2 & ...",
+    "link": "https://www.lazada.vn/products/tpu-mem-laptop-cho-macbook-air-13-m1m2-macbook-pro-14-chip-air-136-unisex-phong-cach-doanh-nhan-chac-chan-bao-da-co-khoa-cai-i2434571582.html?srsltid=AU7gw4V971N7EXdNbuf1nzz62JAE5fcR_YD8szfBIiTpbZJAD2LVlBFa",
+    "snippet": "Được thiết kế để phù hợp với nhiều mẫu MacBook bao gồm Air 13 M1 M2, Pro 14 và Pro 13, đảm bảo vừa khít và an toàn cho thiết bị của bạn. Khóa ...",
+    "rating": 4.9,
+    "ratingCount": 150,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

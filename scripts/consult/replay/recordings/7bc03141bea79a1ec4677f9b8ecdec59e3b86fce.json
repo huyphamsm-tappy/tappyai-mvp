@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro M4 14 inch giá Việt Nam Apple official 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:42.363Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 14 inch giá Việt Nam Apple official 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua MacBook Pro",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-pro",
+    "snippet": "Hãy tùy ý điều chỉnh. Từ 54.999.000đ hoặc 2.239.000đ/thángmỗi tháng ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Pro 14 M4 10CPU 10GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-pro-14-inch-m4-16gb-512gb.html",
+    "snippet": "Loại card đồ họa. 10 lõi. Neural Engine 16 lõi. Dung lượng RAM. 16GB. Ổ cứng. 512GB. Kích thước màn hình. 14.2 inches. Công nghệ màn hình.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro (14 inch, M4, 2024) - Thông số kỹ thuật",
+    "link": "https://translate.google.com/translate?u=https://support.apple.com/en-us/121552&hl=vi&sl=en&tl=vi&client=srp",
+    "snippet": "CPU 10 nhân với 4 nhân hiệu năng cao và 6 nhân tiết kiệm năng lượng. · GPU 10 nhân · Dò tia tăng tốc phần cứng · Bộ xử lý thần kinh 16 lõi · Băng thông bộ nhớ 120GB ...Charging and Expansion · SDXC card slot · HDMI port · 3.5 mm headphone jack · MagSafe 3 port · Three Thunderbolt 4 (USB-C) ports with support for: · Charging.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro M4 14 inch (2025) – Laptop hiệu năng AI ...",
+    "link": "https://lapvip.vn/macbook-pro-m4-14inch?srsltid=AU7gw4VwI4J8JMnbEOV2t70-pDiitFrp9TaA4jB0GqhgpWPUVb4SiSVL",
+    "snippet": "Gọi miễn phí 0852.66.67.68 ; CẤU HÌNH. Apple M4 Max 16‑core CPU, 40‑core GPU, 64GB RAM, 1TB SSD 94.990.000 đ 97.890.000 đ sale ; LAPVIP cam kết : Bảo hành 12 ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Macbook Pro M4 14-inch 10-core CPU 10-core GPU 16GB ...",
+    "link": "https://surfacecity.vn/macbook-pro-m4-14-inch-10-core-cpu-10-core-gpu-16gb-ram-512gb-chinh-hang-apple-viet-nam?srsltid=AU7gw4UCtlgznUBD8R7TvuT5jrH9_6Xo31Zu5IQYbJ3vnIt5cZjuqYdr",
+    "snippet": "MacBook Pro M4 14-inch là laptop cao cấp với thiết kế nhôm nguyên khối, hiệu năng mạnh mẽ từ chip M4 và màn hình Retina XDR sắc nét, lý tưởng cho công việc.",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB",
+    "link": "https://hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb?srsltid=AU7gw4Ue4X0PrOgjwgI4aaYg5turPClxdHk1IV9ISpvIDV2sfueI1uRJ",
+    "snippet": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB - Chính hãng Apple Việt Nam ; 14\" M4 (16GB/512GB). 36.890.000 ₫ ; 14\" M4 (16GB/1TB). 43.990.000 ₫ ; 14\" M4 Pro (24GB/ ...",
+    "rating": 4.6,
+    "ratingCount": 24,
+    "position": 6
+   },
+   {
+    "title": "MacBook Pro M4 14\" Review: SO WELL-ROUNDED for ...",
+    "link": "https://www.youtube.com/watch?v=3DAgoPNfHwA",
+    "snippet": "Và MacBook Pro M4 14 inch sẽ là một trong những lựa chọn tốt nhất mình có thể giới thiệu cho mọi người trong năm nay. Chi tiết xin mời xem ...",
+    "position": 7
+   },
+   {
+    "title": "Apple ra mắt MacBook Pro M4: Bản tiêu chuẩn đã có RAM ...",
+    "link": "https://www.xtmobile.vn/ra-mat-macbook-pro-m4",
+    "snippet": "Giá bán của MacBook Pro M4. Tại thị trường Việt Nam, MacBook Pro M4 có giá khởi điểm từ 39.999.000đ cho bản tiêu chuẩn với chip M4, 16GB RAM ...",
+    "date": "31 thg 10, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

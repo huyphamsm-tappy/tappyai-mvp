@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiếng Anh Nghe Nói\" OR \"Axcela Vietnam\" OR \"Tiếng Anh cho người đi làm\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:13:13.554Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiếng Anh Nghe Nói\" OR \"Axcela Vietnam\" OR \"Tiếng Anh cho người đi làm\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Học tiếng Anh cho người đi làm như thế nào ...",
+    "link": "https://www.tiktok.com/@minhlc.daily/video/7492429594730007816",
+    "snippet": "35.8K Lượt thích,899 Bình luận.Video TikTok từ Công Minh Daily (@minhlc.daily): \"Học tiếng Anh cho người đi làm như thế nào?",
+    "position": 1
+   },
+   {
+    "title": "🤝 Tiếng Anh Nghe Nói - Hơn một thập kỷ hình thành và ...",
+    "link": "https://www.tiktok.com/@tienganhnghenoi/video/7658219760328412437",
+    "snippet": "... Tiếng Anh Nghe Nói - Hơn một thập kỷ hình thành và phát triển Không học sách, chỉ thực hành giao tiếp \".original sound - Tiếng Anh Nghe Nói.",
+    "position": 2
+   },
+   {
+    "title": "Giáo viên Tiếng Anh Nghe Nói: Độ Có Tâm Thế Nào?",
+    "link": "https://www.tiktok.com/@tienganhnghenoi/video/7471603760247098642",
+    "snippet": "Giáo viên Tiếng Anh Nghe Nói: Độ Có Tâm Thế Nào? Khám phá độ có tâm của giáo viên Tiếng Anh Nghe Nói, những điều thú vị trong công việc giảng ...",
+    "position": 3
+   },
+   {
+    "title": "Có 1 cái sao chia c?",
+    "link": "https://www.tiktok.com/@tienganhnghenoi/video/7681591868513127698",
+    "snippet": "Video TikTok từ Tiếng Anh Nghe Nói (@tienganhnghenoi): \"Có 1 cái sao chia c?\".“C gửi 2 em muốn uống gì uống nha” original sound - 7VS.",
+    "position": 4
+   },
+   {
+    "title": "“Liệu tiếng Anh lưu loát có thật sự nằm ở số lượng buổi học?",
+    "link": "https://www.tiktok.com/@tienganhnghenoi/video/7683490325083507986",
+    "snippet": "Video TikTok từ Tiếng Anh Nghe Nói (@tienganhnghenoi): \"“Liệu tiếng Anh lưu loát có thật sự nằm ở số lượng buổi học?\".âm thanh gốc - Tiếng ...",
+    "position": 5
+   },
+   {
+    "title": "Tiếng Anh Nghe Nói (@tienganhnghenoi)",
+    "link": "https://www.tiktok.com/@tienganhnghenoi",
+    "snippet": "Tiếng Anh Nghe Nói (@tienganhnghenoi) trên TikTok |2.7M Lượt thích.408.9K Follower.Không Học Sách - Chỉ Thực Hành - 100% GVNN - Since 2013.",
+    "position": 6
+   },
+   {
+    "title": "Cống hiến hết mình, view hết hồn 😬",
+    "link": "https://www.tiktok.com/@tienganhnghenoi/video/7691287979913973000",
+    "snippet": "Video TikTok từ Tiếng Anh Nghe Nói (@tienganhnghenoi): \"Cống hiến hết mình, view hết hồn \".âm thanh gốc - Tiếng Anh Nghe Nói.",
+    "position": 7
+   },
+   {
+    "title": "Lớp học tiếng anh cho người đi làm #hoctienganh ...",
+    "link": "https://www.tiktok.com/@thang.accent/video/7674621452674600213",
+    "snippet": "22 Lượt thích,Video TikTok từ Thầy Thắng Accent (@thang.accent): \"Lớp học tiếng anh cho người đi làm #hoctienganh #tienganhonline ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Madame Lam\" OR \"MEAT & MEET\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:10:29.219Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xóm Chợ Cũ Restaurant\" OR \"Madame Lam\" OR \"MEAT & MEET\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai trương chi nhánh Meat & Meet Parc Mall, buffet BBQ thịt nướng.",
+    "position": 1
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Video tập trung vào trải nghiệm Buffet BBQ tại Meat & Meet. Người nói cho biết có “quá trời kỷ niệm” ở Meat & Meet, nên mỗi lần quay lại ăn ...",
+    "position": 2
+   },
+   {
+    "title": "Best BBQ Buffet Near Me: Estella Meat & Meet Restaurant ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7682613595800161556",
+    "snippet": "What Estella BBQ Buffet Offers Estella's Meat & Meet appears as a buffet-style nhahang thit nuong (Vietnamese grilled meat restaurant) focusing ...",
+    "position": 3
+   },
+   {
+    "title": "Buffet Thịt Nướng MEAT & MEET Lê Thị Riêng Chỉ 189k",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7690787994650807572",
+    "snippet": "Chỉ với 189.000 VNĐ/người, bạn có thể thưởng thức một bàn thịt nướng siêu hời. Ưu đãi đặc biệt này áp dụng duy nhất tại chi nhánh MEAT & MEET Lê ...",
+    "position": 4
+   },
+   {
+    "title": "Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet 😋 ...",
+    "link": "https://www.tiktok.com/@didauanngon/video/7685607116152786197",
+    "snippet": "205 Lượt thích,Video TikTok từ Đi Đâu Ăn Ngon (@didauanngon): \"Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet #meatandmeet #bbq ...",
+    "position": 5
+   },
+   {
+    "title": "Delicious BBQ with a Top View at Meat & Meet",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7666312092827274517",
+    "snippet": "Discover delicious grilled meat at Meat & Meet, offering a stunning top-tier view. Perfect for all meat lovers looking for a great dining ...",
+    "position": 6
+   },
+   {
+    "title": "Khoan đi Meat & Meet nếu bạn chưa biết đến ưu đãi này ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7685963691564469524",
+    "snippet": "Khoan đi Meat & Meet nếu bạn chưa biết đến ưu đãi này nha #bbq. @MEAT & MEET BBQ · âm thanh gốc - MEAT & MEET BBQ · Meat & Meet BBQ - Estella.",
+    "position": 7
+   },
+   {
+    "title": "Buffet Meat & Meet Estella 249k: Săn Quà & Ăn Nướng ...",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7679348119674424597",
+    "snippet": "Không chỉ có đồ nướng, Meat & Meet còn có một quầy lai đồ chiên cực kỳ hấp dẫn với nhiều món như gà sốt, gà rán, mì xào, cơm nấm, và cả tokbokki ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

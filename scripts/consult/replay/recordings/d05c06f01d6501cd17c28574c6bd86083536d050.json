@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Tai nghe bluetooth soundcore R50iNC (P30i) chống ồn ANC",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:53:27.068Z",
+ "body": {
+  "searchParameters": {
+   "q": "Tai nghe bluetooth soundcore R50iNC (P30i) chống ồn ANC",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Tai nghe bluetooth soundcore R50iNC (P30i) chống ồn ANC | Chống nước và bụi  IP54 | 40 giờ phát nhạc - Lazada | Lazada Việt Nam",
+    "imageUrl": "https://vn-test-11.slatic.net/p/6bd680e40e22716e3e26debd786d14cc.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUbOOmwV1AZYkbKP36H20bcV3csRGcv9HpclAZ5C5GFw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-soundcore-r50inc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac-i2741956624.html?srsltid=AU7gw4VuAnpTvHm1l7fjP76VkZyQY7bWM-zdspYGQnYSVKlP2BPSt86K",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvn-test-11.slatic.net%2Fp%2F6bd680e40e22716e3e26debd786d14cc.jpg&tbnid=xmuLG4shfLa75M&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Ftai-nghe-bluetooth-soundcore-r50inc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac-i2741956624.html%3Fsrsltid%3DAU7gw4VuAnpTvHm1l7fjP76VkZyQY7bWM-zdspYGQnYSVKlP2BPSt86K&docid=Ngb3BAyX60wn2M&w=1500&h=1500",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe bluetooth Soundcore R50i NC (P30i) chống ồn ANC | Chống nước và  bụi IP54 | 40 giờ phát nhạc - A3959",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m2rxe88wdp6i2a",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3OhZ0mLxYo4Pg9ZGZYufV2OcwxZj-ElKM0LVBWv2p0Q&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-Soundcore-R50i-NC-(P30i)-ch%E1%BB%91ng-%E1%BB%93n-ANC-Ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-v%C3%A0-b%E1%BB%A5i-IP54-40-gi%E1%BB%9D-ph%C3%A1t-nh%E1%BA%A1c-A3959-i.65304483.26618054229",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ras8-m2rxe88wdp6i2a&tbnid=zzvkjOG-r5BkmM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTai-nghe-bluetooth-Soundcore-R50i-NC-(P30i)-ch%25E1%25BB%2591ng-%25E1%25BB%2593n-ANC-Ch%25E1%25BB%2591ng-n%25C6%25B0%25E1%25BB%259Bc-v%25C3%25A0-b%25E1%25BB%25A5i-IP54-40-gi%25E1%25BB%259D-ph%25C3%25A1t-nh%25E1%25BA%25A1c-A3959-i.65304483.26618054229&docid=eUGZqEdVDjeoiM&w=1024&h=1024",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe bluetooth soundcore R50iNC (P30i) chống ồn ANC | Chống nước và bụi  IP54 | 40 giờ phát nhạc - Lazada | Lazada Việt Nam",
+    "imageUrl": "https://vn-test-11.slatic.net/p/31b033300d958c92aec554bb3d190dee.jpg",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgxZtp9RPy_0gd-3Bz5Zycp-GUq2pa_LemsuuJWJVkaw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Lazada",
+    "domain": "www.lazada.vn",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-soundcore-r50inc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac-i2741956624.html?srsltid=AU7gw4UzFTp9bA063i69DE2fbYFXRF-KBKBl-0CGhqnENxZUSB-Ahrro",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fvn-test-11.slatic.net%2Fp%2F31b033300d958c92aec554bb3d190dee.jpg&tbnid=m-vJHgrEzH-VTM&imgrefurl=https%3A%2F%2Fwww.lazada.vn%2Fproducts%2Ftai-nghe-bluetooth-soundcore-r50inc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac-i2741956624.html%3Fsrsltid%3DAU7gw4UzFTp9bA063i69DE2fbYFXRF-KBKBl-0CGhqnENxZUSB-Ahrro&docid=Ngb3BAyX60wn2M&w=1500&h=1500",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Bluetooth Soundcore R50i NC (P30i) chống ồn ANC, chống nước và bụi  IP54, pin 40 giờ - A3959",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m36ktz50pt4s32",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRFo3ROi3MaFtuoSxV41dWYc175twQDGSKFYwprZvfMzw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Tai-nghe-Bluetooth-Soundcore-R50i-NC-(P30i)-ch%E1%BB%91ng-%E1%BB%93n-ANC-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-v%C3%A0-b%E1%BB%A5i-IP54-pin-40-gi%E1%BB%9D-A3959-i.2849999.28569106666",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ras8-m36ktz50pt4s32&tbnid=HyZT__RcapLTFM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTai-nghe-Bluetooth-Soundcore-R50i-NC-(P30i)-ch%25E1%25BB%2591ng-%25E1%25BB%2593n-ANC-ch%25E1%25BB%2591ng-n%25C6%25B0%25E1%25BB%259Bc-v%25C3%25A0-b%25E1%25BB%25A5i-IP54-pin-40-gi%25E1%25BB%259D-A3959-i.2849999.28569106666&docid=b7JHdGNCZAMuhM&w=1024&h=1024",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Bluetooth Soundcore R50i NC - A3959",
+    "imageUrl": "https://cdn.hstatic.net/products/1000153276/soundcore_a3959_6_34a90b80a634482ba339f73b62c404c3.png",
+    "imageWidth": 1500,
+    "imageHeight": 1500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBXgeAHboDDM6l0wEdpYMN_5qKLuLaCaHIZ1cW_gMBew&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Anker.vn",
+    "domain": "anker.vn",
+    "link": "https://anker.vn/products/tai-nghe-bluetooth-soundcore-r50i-nc-a3959-by-anker?srsltid=AU7gw4UW_cGSciB-8Wz9jPxqYJkk1qVObfO9o8TpXxodBfpE0uaWMDF1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000153276%2Fsoundcore_a3959_6_34a90b80a634482ba339f73b62c404c3.png&tbnid=-oRpYZpXLhYmpM&imgrefurl=https%3A%2F%2Fanker.vn%2Fproducts%2Ftai-nghe-bluetooth-soundcore-r50i-nc-a3959-by-anker%3Fsrsltid%3DAU7gw4UW_cGSciB-8Wz9jPxqYJkk1qVObfO9o8TpXxodBfpE0uaWMDF1&docid=ZH3PibtMHL4NBM&w=1500&h=1500",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe bluetooth soundcore R50i NC (P30i) chống ồn ANC | Chống nước và  bụi IP54 | 40 giờ phát nhạc",
+    "imageUrl": "https://adcomputer.vn/wp-content/uploads/2024/11/main-3-3.jpg",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlShUZKHthGZY7Jh2WO7ouSwRa_y_yQFCU6uPWcifR4Q&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "ADComputer",
+    "domain": "adcomputer.vn",
+    "link": "https://adcomputer.vn/tai-nghe-bluetooth-soundcore-r50i-nc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fadcomputer.vn%2Fwp-content%2Fuploads%2F2024%2F11%2Fmain-3-3.jpg&tbnid=btoGacDSf8DWoM&imgrefurl=https%3A%2F%2Fadcomputer.vn%2Ftai-nghe-bluetooth-soundcore-r50i-nc-p30i-chong-on-anc-chong-nuoc-va-bui-ip54-40-gio-phat-nhac%2F&docid=7eHGUPj_0doDlM&w=1024&h=1024",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe bluetooth Soundcore R50i NC (P30i) chống ồn ANC | Chống nước và  bụi IP54 | 40 giờ phát nhạc - A3959 | Shopee Việt Nam",
+    "imageUrl": "https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m2rxe89qtceeb1",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUN0_kVhtc2Ymu00BahBQA1VzeLnO-hyiBou1NqBgh7w&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Shopee",
+    "domain": "shopee.vn",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-Soundcore-R50i-NC-(P30i)-ch%E1%BB%91ng-%E1%BB%93n-ANC-Ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-v%C3%A0-b%E1%BB%A5i-IP54-40-gi%E1%BB%9D-ph%C3%A1t-nh%E1%BA%A1c-A3959-i.65304483.26618054229",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdown-vn.img.susercontent.com%2Ffile%2Fvn-11134207-7ras8-m2rxe89qtceeb1&tbnid=ZMyDUQogrihClM&imgrefurl=https%3A%2F%2Fshopee.vn%2FTai-nghe-bluetooth-Soundcore-R50i-NC-(P30i)-ch%25E1%25BB%2591ng-%25E1%25BB%2593n-ANC-Ch%25E1%25BB%2591ng-n%25C6%25B0%25E1%25BB%259Bc-v%25C3%25A0-b%25E1%25BB%25A5i-IP54-40-gi%25E1%25BB%259D-ph%25C3%25A1t-nh%25E1%25BA%25A1c-A3959-i.65304483.26618054229&docid=eUGZqEdVDjeoiM&w=1024&h=1024",
+    "position": 7
+   },
+   {
+    "title": "soundcore r50 inc oe bases b1 pro - TikTok Shop Vietnam",
+    "imageUrl": "https://p16-oec-sg.ibyteimg.com/tos-alisg-i-aphluv4xwc-sg/d3911c3e257347b7a2e4f53588bbb662~tplv-aphluv4xwc-crop-webp:1200:1200.webp?dr=15592&t=555f072d&ps=933b5bde&shp=8dbd94bf&shcp=948674b7&idc=my2&from=2378011839",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSek67OKB3M2WrfMo3NUEhpsgtWTAICrlbSTTdZyYO3fg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "TikTok Shop",
+    "domain": "shop.tiktok.com",
+    "link": "https://shop.tiktok.com/vn/k/soundcore-r50-inc-oe-bases-b1-pro",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fp16-oec-sg.ibyteimg.com%2Ftos-alisg-i-aphluv4xwc-sg%2Fd3911c3e257347b7a2e4f53588bbb662~tplv-aphluv4xwc-crop-webp%3A1200%3A1200.webp%3Fdr%3D15592%26t%3D555f072d%26ps%3D933b5bde%26shp%3D8dbd94bf%26shcp%3D948674b7%26idc%3Dmy2%26from%3D2378011839&tbnid=uWaMe9A4OnbeUM&imgrefurl=https%3A%2F%2Fshop.tiktok.com%2Fvn%2Fk%2Fsoundcore-r50-inc-oe-bases-b1-pro&docid=GTlgxr-vUsaVlM&w=1200&h=1200",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

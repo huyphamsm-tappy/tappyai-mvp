@@ -71,6 +71,9 @@ const TRIP_QUESTION = /(?<!\p{L})(?:ngày nào|hôm nào|khi nào|lúc nào|th�
 const withoutUrls = (s: string) => s.replace(/\]\([^)]*\)/g, ']').replace(/https?:\/\/\S+/g, ' ')
 
 function hasCalendarDate(s: string): boolean {
+  // POST-UAT B6 (UAT-13 post-fix run): a sentence the code has bound to a source ("… tạm dừng từ 8/10 … [S1].") states the SOURCE's
+  // date — a news fact with its link — not a travel date assumed for the user. [S#] markers exist only for sources actually returned.
+  if (/\[S\d{1,2}(?:\s*,\s*S\d{1,2})*\]/.test(s)) return false
   return CAL_DATE.test(withoutUrls(s).replace(OPEN_ALL_DAY, ''))
 }
 

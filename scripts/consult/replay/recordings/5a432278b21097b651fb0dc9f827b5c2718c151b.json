@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng, khách sạn gần biển, khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:30.191Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Mường Thanh Luxury\" Đà Nẵng, khách sạn gần biển, khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Hồ Phước Lý, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-h-phc-l/hotels-c1356m31714749/",
+    "snippet": "Khách sạn Mường Thanh Luxury Sông Hàn Các khách sạn gần Hồ Phước Lý. Khách ... Tọa lạc tại trung tâm Thành phố Đà Nẵng, Khách sạn Mường Thanh Luxury ...",
+    "position": 1
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Kỳ Bắc, Việt Nam",
+    "link": "https://vn.trip.com/hotels/ky-bac-hotels-list-458825/",
+    "snippet": "... tối rất đẹp.\" 1 đêm 255.380₫. Đặt ngay. Khách sạn Mường Thanh Luxury Xuân Thành. 8,4 (25 đánh giá). Khách sạn Mường Thanh Luxury Xuân Thành. Thôn ...",
+    "position": 2
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chung cư Hoàng Anh Gia Lai",
+    "link": "https://vn.trip.com/hotels/da-nang-chung-cu-hoang-anh-gia-lai/hotels-c1356m13092540/",
+    "snippet": "Tiện nghi phòng bao gồm điện thoại, cùng bàn và nước đóng chai miễn phí. Từ. 298.392₫. /đêm. Khách sạn Mường Thanh Luxury Sông Hàn.",
+    "position": 3
+   },
+   {
+    "title": "Các khách sạn ở gần Công viên Hòa Cường Bắc, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-cng-vin-khu-tp-th-ho-cng/hotels-c1356m29490809/",
+    "snippet": "Nằm ở Đà Nẵng, cách Bãi biển Xuân Thiều chưa đến 1 km, Mikazuki Villas ... Tọa lạc tại trung tâm Thành phố Đà Nẵng, Khách sạn Mường Thanh Luxury Sông ...",
+    "position": 4
+   },
+   {
+    "title": "Các khách sạn nổi tiếng ở gần Chợ đêm Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-danang-night-market/hotels-c1356m23136554/",
+    "snippet": "Khách sạn bãi biển này cách Sông Hàn 1,1 mi (1,7 km) và cách Cầu Rồng ... Khách sạn Mường Thanh Luxury Đà Nẵng (từ 1.293.911₫) là những khách sạn sang ...",
+    "position": 5
+   },
+   {
+    "title": "Quảng trường Nguyễn Văn Thoại - Khách sạn tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-qung-trng-nguyn-vn-thoi/hotels-c1356m31940281/",
+    "snippet": "Khách sạn cách Công viên Biển Đông 1,9 km và cách Cầu Rồng 2,9 km. Hãy ... Khách sạn Mường Thanh Luxury Đà Nẵng (từ 1.294.965₫),TMS Hotel Da Nang Beach ...",
+    "position": 6
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Cẩm Xuyên, Việt Nam",
+    "link": "https://vn.trip.com/hotels/cam-xuyen-district-hotels-list-454652/",
+    "snippet": "1 đêm 1.853.443₫. Đặt ngay. Khách sạn Mường Thanh Luxury Xuân Thành. 8,4 (25 đánh giá). Khách sạn Mường Thanh Luxury Xuân Thành. Thôn Thành Vân ...",
+    "position": 7
+   },
+   {
+    "title": "Đặt khách sạn giá rẻ & chỗ ở, giảm giá 50%",
+    "link": "https://vn.trip.com/hotels/",
+    "snippet": "Khách sạn Mường Thanh Luxury Viễn Triều ở Nha Trang, cách Chợ đêm Nha Trang và Bãi Dương 15 phút lái xe. Khách sạn 5 sao này cách Bãi biển Vinpearl 10 mi (16,1 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

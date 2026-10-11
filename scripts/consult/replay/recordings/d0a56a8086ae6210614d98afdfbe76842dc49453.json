@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple Macbook Air M3 13 inch 2024 8CPU\" OR \"APPLE Macbook Pro 13\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:02:14.576Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple Macbook Air M3 13 inch 2024 8CPU\" OR \"APPLE Macbook Pro 13\" OR \"Máy Tính Xách Tay Apple Apple Macbook Neo 13-Inch Mới\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook Pro 13 - TikTok Shop",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-pro-13",
+    "snippet": "Refurbished Apple MacBook Pro 13\" MWP72LL/A (Mid-2020) w/ Touch Bar i5-10th Gen 16GB/1TB All Colors - Excellent with 1 Year Warranty by BITB. $639.00.",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Pro 13” (M1, 2020) Specifications * Model",
+    "link": "https://www.tiktok.com/@aklaptopstore/video/7684297664199970056",
+    "snippet": "Apple MacBook Pro 13” (M1, 2020) Specifications * Model: Apple * Processor: Apple M1 Chip (8-Core CPU, 8-Core GPU) * RAM: 8GB Unified Memory ...",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Pro 13-inch: Space Gray Laptop Specs",
+    "link": "https://www.tiktok.com/@gadgetfinds.ken/photo/7661796550271634708",
+    "snippet": "Explore the Apple MacBook Pro 13-inch with Intel i5, 8GB RAM, and more! Perfect for all your professional needs! #fyppppppppppppppppppppppp.",
+    "position": 3
+   },
+   {
+    "title": "Pre-loved Apple MacBook Pro 13\" A2159 — 6-Month ...",
+    "link": "https://www.tiktok.com/@cash.crusaders.station/video/7647113223145065749",
+    "snippet": "Pre-loved Apple MacBook Pro 13\" (A2159) — Overview Apple MacBook Pro 13\" (A2159) with a 256GB SSD and Intel Core i5 processor is available ...",
+    "position": 4
+   },
+   {
+    "title": "Apple Macbook Pro 13'' A1706 2017 13 Inch I5 7th Gen Gray",
+    "link": "https://www.tiktok.com/discover/apple-macbook-pro-13%E2%80%99%E2%80%99-a1706-2017-13-inch-i5-7th-gen-gray",
+    "snippet": "Apple MacBook Pro 13” 2017 i5 2.3GHz 8GB RAM 256GB SSD – MAC CODE: MP310 Listing Price: $310 + negotiable. ... This MacBook Pro is clean, fully ...",
+    "date": "17 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 2020 M1 — Apple MacBook Pro 13",
+    "link": "https://www.tiktok.com/@hassan_laptopworld/video/7685451734403042578",
+    "snippet": "Apple MacBook Pro 13\". This listing describes a MacBook Pro 2020 with the Apple M1 chip. The device is a 13-inch Retina ...",
+    "date": "MacBook Pro 2020 M1",
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Pro 13-inch (A2159) at Cash Crusaders",
+    "link": "https://www.tiktok.com/@cashcrusadersmimosa/photo/7689405156282141973",
+    "snippet": "Get a 2019 Apple MacBook Pro 13-inch (A2159) with Retina Display and Intel Core i5 processor for R7,999.90. Includes a 6-month repair warranty ...",
+    "position": 7
+   },
+   {
+    "title": "Refurbished Apple MacBook Pro 13\" MWP72LL/A (Mid-2020) w/ ...",
+    "link": "https://www.tiktok.com/shop/pdp/1732457542113268165",
+    "snippet": "Refurbished Apple MacBook Pro 13\"✨ Model: MWP72LL/A (Mid-2020) ✨ Features: Touch Bar, i7-10th Gen, 16GB RAM, 1TB SSD ✨ Condition: Good ✨ Warranty: 1 Year ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

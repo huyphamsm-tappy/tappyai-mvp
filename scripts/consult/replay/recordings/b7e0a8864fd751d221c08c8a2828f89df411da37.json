@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:moj.gov.vn Thông tư lệ phí cấp hộ chiếu phổ thông 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:46:20.437Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:moj.gov.vn Thông tư lệ phí cấp hộ chiếu phổ thông 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.moj.gov.vn/sonla/Pages/vanban.aspx?year=1951",
+    "snippet": "Thông tư 08/2026/TT-NHNN Sửa đổi, bổ sung điểm a khoản 4 Điều 20 Thông tư số 22/2019/TT-NHNN quy định các giới hạn, tỷ lệ bảo đảm an toàn trong hoạt động ...",
+    "position": 1
+   },
+   {
+    "title": "Những quy định đáng chú ý có hiệu lực từ tháng 8",
+    "link": "https://htpldn.moj.gov.vn/Pages/chi-tiet-tin.aspx?ItemID=86&l=Vanbanchinhsachmoi",
+    "snippet": "Được đăng ký xe tại nơi tạm trú Kể từ ngày 15/8, người dân được đăng ký xe mô tô tại nơi tạm trú, công an cấp xã theo Thông tư số 24/2023 của Bộ ...",
+    "date": "1 thg 8, 2023",
+    "position": 2
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-kem-theo-qd-630-btp-ve-cong-bo-tthc-20260427110904-25e8b9eb-019dcd2062537de0be16872851ba69d6.pdf",
+    "snippet": "hoặc thông báo về việc từ chối thi hành án theo yêu cầu. Phí, Lệ phí (nếu có): Thực hiện theo Điều 4, 5 và 6 Thông tư số. 216/2016/TT-BTC ngày 10/11/2016 của ...",
+    "position": 3
+   },
+   {
+    "title": "Thủ tục đăng ký nhận cha, mẹ, con",
+    "link": "https://moj.gov.vn/portal/thu-tuc-hanh-chinh/chi-tiet-1.001022.html",
+    "snippet": "Thông tư số 281/2016/TT-BTC. quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí khai thác, sử dụng thông tin trong cơ sở dữ liệu hộ tịch, phí xác nhận có ...",
+    "position": 4
+   },
+   {
+    "title": "PHỤ LỤC THỦ TỤC HÀNH CHÍNH ĐƯỢC SỬA ĐỔI, BỔ ...",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/5-pl-1787627316430-01a06b91538f7499a5520b5afba61de9.pdf",
+    "snippet": "Phí, Lệ phí (nếu có): Thực hiện theo Điều 5 và 6 Thông tư số. 72/2026/TT ... - Thông tư số 06/2026/TT-BTP ngày 16/5/2026 của Bộ trưởng Bộ Tư pháp hướng ...",
+    "position": 5
+   },
+   {
+    "title": "THÔNG BÁO PHÁT HÀNH BIÊN LAI",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/tb-phat-hanh-bien-lai-019f1b90107a712683a84fe80c65b8bd.pdf",
+    "snippet": "(Ban hành kèm theo Thông tư số 06/2026/TT-BTP ... Tên loại thuế, phí, lệ phí, án phí tòa án: Họ và tên người nộp tiền: Mã số thuế: CCCD/Hộ chiếu:.",
+    "date": "1 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/nv2-qcdg-7946-2026-019f7ec8e09f751a911b933b0e1de891.pdf",
+    "snippet": "hành án dân sự để tổ chức cho người tham gia đấu giá xem tài sản đấu giá hoặc mẫu tài sản, giấy tờ về quyền sở hữu, quyền sử dụng tài sản và ...",
+    "date": "20 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "thành phố hồ chí minh trung tâm dịch vụ đấu giá tài sản",
+    "link": "https://portalmedia.moj.gov.vn/api/v1/files/quy-che-so-12997-ngay-16-9-2026-01a0c2f81afd7f1c8f1775b46c56216b.pdf",
+    "snippet": "đồng (đã bao gồm VAT) và kinh phí bảo trí. Số tiền còn lại của giá trị hợp đồng chưa thanh toán là 61.434.709 đồng (đã bao gồm VAT). Khoản tiền này sẽ được.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

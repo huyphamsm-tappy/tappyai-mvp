@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 Pro 256GB - Cũ Đẹp",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:21.356Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB - Cũ Đẹp",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "iPhone 16 Pro Max 256GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-16-pro-max_3_1_1.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNdIGKJgxDy-rLk6hGgCa4bSMwTe6Tyzc4hSDQYN9ktw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max256gb-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max_3_1_1.png&tbnid=UEFaWlRs9-yomM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max256gb-cu-dep.html&docid=sRKo9DDFJZUNtM&w=600&h=600",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 series Chính hãng | Cũ đẹp - ShopDunk",
+    "imageUrl": "https://shopdunk.com/images/thumbs/0038224_iphone-16-pro-256gb-cu-dep-du-hoppk.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSFomH_t43tkumNGdVGZHp8rpHt0Vz5p88EAQJhpvN5A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "ShopDunk",
+    "domain": "shopdunk.com",
+    "link": "https://shopdunk.com/iphone-16-pro-256gb-cu-%C4%91ep-%C4%91u-h%C3%B4ppk",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fshopdunk.com%2Fimages%2Fthumbs%2F0038224_iphone-16-pro-256gb-cu-dep-du-hoppk.png&tbnid=eoRfXcgpaQaF9M&imgrefurl=https%3A%2F%2Fshopdunk.com%2Fiphone-16-pro-256gb-cu-%25C4%2591ep-%25C4%2591u-h%25C3%25B4ppk&docid=V4I15qPaozljhM&w=650&h=650",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB - Cũ Đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/p/h/photo_2024-10-02_13-59-00_1_1_1.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmgyeOY3RED7jbw4VJxa3--WstJ2-ou82fzpIkSVYwRw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max256gb-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fp%2Fh%2Fphoto_2024-10-02_13-59-00_1_1_1.jpg&tbnid=Fu1a_a4KqTZKLM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max256gb-cu-dep.html&docid=sRKo9DDFJZUNtM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng VN/A - Cũ đẹp",
+    "imageUrl": "https://minhtuanmobile.com/uploads/products/250520015602-iphone-16-pro-256-cu.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTbvWoSMf_HTRKqJogPzqvHXtUVBsUxF8eEVV1dVCxyQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Minh Tuấn Mobile",
+    "domain": "minhtuanmobile.com",
+    "link": "https://minhtuanmobile.com/iphone-16-pro-256gb-cu-dep/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtuanmobile.com%2Fuploads%2Fproducts%2F250520015602-iphone-16-pro-256-cu.jpg&tbnid=A8zjfNHDtneGBM&imgrefurl=https%3A%2F%2Fminhtuanmobile.com%2Fiphone-16-pro-256gb-cu-dep%2F&docid=NDCWKvIpQqkTmM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro 256GB Cũ Đẹp, Like New 99%, Giá Rẻ, Chính Hãng",
+    "imageUrl": "https://24hstore.vn/images/products/2026/03/04/large/iphone-16-pro-cu-98-256gb.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-auQFqoIZ0ia4SenhOOzFkiDlnxEL5IHe3dsAz46WAA&s=10",
+    "thumbnailWidth": 400,
+    "thumbnailHeight": 400,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/iphone-16-pro-cu/iphone-16-pro-256gb-cu-p11311?srsltid=AU7gw4U58pChCdAzZLKJcago3H8iI4236lEV5FYf4KwJ_T2qMYG9fjJy",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2026%2F03%2F04%2Flarge%2Fiphone-16-pro-cu-98-256gb.jpg&tbnid=L2DE7OdWS_xGJM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fiphone-16-pro-cu%2Fiphone-16-pro-256gb-cu-p11311%3Fsrsltid%3DAU7gw4U58pChCdAzZLKJcago3H8iI4236lEV5FYf4KwJ_T2qMYG9fjJy&docid=Ps2bZHGOL3j6XM&w=400&h=400",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng VN/A - Cũ đẹp",
+    "imageUrl": "https://minhtuanmobile.com/uploads/products/250520015619-iphone-16-pro-256-cu.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlWauR5dPar9Os0PlAQDzN1IsX3WQ2IcMYVK21n_kQIQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Minh Tuấn Mobile",
+    "domain": "minhtuanmobile.com",
+    "link": "https://minhtuanmobile.com/iphone-16-pro-256gb-cu-dep/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fminhtuanmobile.com%2Fuploads%2Fproducts%2F250520015619-iphone-16-pro-256-cu.jpg&tbnid=L8u6YZfeKzgoTM&imgrefurl=https%3A%2F%2Fminhtuanmobile.com%2Fiphone-16-pro-256gb-cu-dep%2F&docid=NDCWKvIpQqkTmM&w=600&h=600",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro 256GB - Chính Hãng Cũ Like New",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/69/iphone-16-pro-cu-1_3fff-a9.jpg",
+    "imageWidth": 1560,
+    "imageHeight": 1040,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYN993Jas6Ki1_o5XA25lRMOxdotzt3l9GpcioQqkjRQ&s=10",
+    "thumbnailWidth": 547,
+    "thumbnailHeight": 365,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/iphone-16-pro-256gb-cu?srsltid=AU7gw4XI8vyWyPOFr0trmRhJUH_ScKt9GOdUPsEzRBttOpo5bpkaAcPC",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F69%2Fiphone-16-pro-cu-1_3fff-a9.jpg&tbnid=dMx4OH3rEIxgkM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fiphone-16-pro-256gb-cu%3Fsrsltid%3DAU7gw4XI8vyWyPOFr0trmRhJUH_ScKt9GOdUPsEzRBttOpo5bpkaAcPC&docid=n88uFZBqk9qzaM&w=1560&h=1040",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro 256GB 2 Sim - Cũ đẹp | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/i/p/iphone-16-pro-2_1_3.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBQMa6GsJmy4KzNCmkhN3veTCH0SdrALFPIYdgvZmg8Q&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb-2-sim-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-2_1_3.png&tbnid=91pnuNMw5aynfM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-256gb-2-sim-cu-dep.html&docid=xIJcHcSAPqVjuM&w=600&h=600",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

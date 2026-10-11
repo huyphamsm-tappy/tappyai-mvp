@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"tai nghe Bluetooth chụp tai JBL Tune 530BT\" OR \"REDMI Buds 8 Lite\" OR \"Tai nghe chụp Tai Gaming Sony INZONE H3\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:09.220Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"tai nghe Bluetooth chụp tai JBL Tune 530BT\" OR \"REDMI Buds 8 Lite\" OR \"Tai nghe chụp Tai Gaming Sony INZONE H3\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "REDMI Buds 8 Lite - Tai nghe dưới 800k nghe còn hay hơn ... - TikTok",
+    "link": "https://www.tiktok.com/@genzviet/video/7597761026171424008",
+    "snippet": "REDMI Buds 8 Lite - Tai nghe dưới 800k nghe còn hay hơn tai nghe vài. @GenZ Việt · nhạc nền - ...",
+    "date": "21 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "Đánh giá tai nghe REDMI Buds 8 Lite với âm thanh tuyệt vời - TikTok",
+    "link": "https://www.tiktok.com/@xmacademy/video/7600271914258468114",
+    "snippet": "59 Lượt thích,Video TikTok từ XM Academy (@xmacademy): \"Khám phá chất lượng âm thanh chi tiết của REDMI Buds 8 Lite trong bài đánh giá này!",
+    "date": "27 thg 1, 2026",
+    "position": 2
+   },
+   {
+    "title": "xiaomi redmi buds 8 lite - TikTok Shop Vietnam",
+    "link": "https://shop.tiktok.com/vn/k/xiaomi-redmi-buds-8-lite",
+    "snippet": "xiaomi redmi buds 8 lite ; 4.5. 104 sold · 890.000. ₫1.170.000 ; 19 sold · 690.900. ₫765.000 ; 4.7. 729 sold · 590.399. ₫1.290.000 ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Xiaomi Redmi Buds 8 Lite – Đánh giá & tính năng chính",
+    "link": "https://www.tiktok.com/@dinhduchieu87/video/7655488139808607496",
+    "snippet": "Video TikTok từ Đinh Đức Hiểu (@dinhduchieu87): \"Tổng quan tai nghe Xiaomi Redmi Buds 8 Lite: thiết kế, chất âm, pin và kết nối Bluetooth.",
+    "date": "25 thg 6, 2026",
+    "position": 4
+   },
+   {
+    "title": "Cách Kết Lối Tai Nghe Redmi Buds 8 Lite Với App Xaomi | TikTok",
+    "link": "https://www.tiktok.com/discover/c%C3%A1ch-k%E1%BA%BFt-l%E1%BB%91i-tai-nghe-redmi-buds-8-lite-v%E1%BB%9Bi-app-xaomi",
+    "snippet": "Khám phá cách kết nối tai nghe Redmi Buds 8 Lite với smartphone Xiaomi dễ dàng và nhanh chóng. Tận hưởng âm thanh tuyệt vời ngay hôm nay!",
+    "date": "31 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Redmi Buds 8 Lite, chất âm trong treo chi tiết bas ...",
+    "link": "https://www.tiktok.com/@dinhduchieu87/video/7688540294324735239",
+    "snippet": "35 Lượt thích,Video TikTok từ Đinh Đức Hiểu (@dinhduchieu87): \"Tai nghe Bluetooth Redmi Buds 8 Lite, chất âm trong treo chi tiết bas sâu và ...",
+    "date": "22 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Fone de Ouvido Bluetooth Redmi Buds 8 Lite Xiaomi - TikTok",
+    "link": "https://www.tiktok.com/@marcellomessi/video/7681128812754603285",
+    "snippet": "Vídeo do TikTok de Marcello Messi (@marcellomessi): \"Fone de Ouvido Bluetooth Redmi Buds 8 Lite Xiaomi\".som original - Marcello Messi.",
+    "date": "2 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Unboxing tai nghe Redmi Buds 8 Lite #xiaomi #unbox ... - TikTok",
+    "link": "https://www.tiktok.com/@xiaomistore.vn/video/7599190463425350932",
+    "snippet": "78 Lượt thích,Video TikTok từ Mi Store Vietnam (@xiaomistore.vn): \"Unboxing tai nghe Redmi Buds 8 Lite #xiaomi #unbox #tainghe #redmi\".nhạc ...",
+    "date": "24 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
