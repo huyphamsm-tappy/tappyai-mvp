@@ -104,13 +104,18 @@ const contentTokens = (s: string) => new Set(norm(s).split(' ').filter(t => t.le
 const jaccard = (a: Set<string>, b: Set<string>) => { let i = 0; for (const t of a) if (b.has(t)) i++; return i / (a.size + b.size - i || 1) }
 
 /** Sentences of the final text that merely echo (near-verbatim: token overlap ≥ 0.75, ≥ 6 words) a sentence the preface already said. */
-function withoutEchoes(final: string, prefaces: readonly string[]): string {
-  const seen = prefaces.flatMap(p => p.split('\n').flatMap(l => (STRUCTURAL.test(l) ? [] : splitSentences(l)))).map(contentTokens).filter(t => t.size >= 6)
-  if (!seen.length) return final
+function withoutEchoes(final: string, prefaces: readonly string[], contained = false): string {
+  const seenAll = prefaces.flatMap(p => p.split('\n').flatMap(l => (STRUCTURAL.test(l) ? [] : splitSentences(l)))).map(contentTokens)
+  const seen = seenAll.filter(t => t.size >= 6)
+  // CONSULTATIVE_IN_AGENT (`contained`): a SHORT final sentence whose content words (≥ 60 %) all sit inside one preface sentence only restates it
+  // ("Đúng tên là Snow Crash của Neal Stephenson." after "À, bạn đang nói tới Snow Crash của Neal Stephenson — tiểu thuyết …"): it goes, the preface
+  // sentence (which says more) stays. Live 2026-10-11: two model calls (answer-first + final) both opened with the same answer.
+  const containedIn = (t: Set<string>) => contained && t.size >= 4 && seenAll.some(p => p.size >= t.size && (() => { let h = 0; for (const w of t) if (p.has(w)) h++; return h / t.size >= 0.6 })())
+  if (!seen.length && !(contained && seenAll.length)) return final
   return final.split('\n').map(line => {
     if (STRUCTURAL.test(line)) return line
     const lead = line.match(/^\s*(?:[-*•+]|\d{1,2}[.)])?\s*/)?.[0] ?? ''
-    const kept = splitSentences(line.slice(lead.length)).filter(s => { const t = contentTokens(s); return t.size < 6 || !seen.some(p => jaccard(t, p) >= 0.75) })
+    const kept = splitSentences(line.slice(lead.length)).filter(s => { const t = contentTokens(s); return !containedIn(t) && (t.size < 6 || !seen.some(p => jaccard(t, p) >= 0.75)) })
     return kept.length ? lead + kept.join(' ') : ''
   }).join('\n').replace(/\n{3,}/g, '\n\n').trim()
 }
@@ -151,14 +156,24 @@ export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[],
   }).join('\n\n')).filter(p => p.trim())
 }
 
-export function composeFinal(prefaces: readonly string[], final: string, o: { dedupeParaphrase?: boolean } = {}): string {
-  const cleaned = (o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]).map(p => withoutQuestions(p, { keepWhole: o.dedupeParaphrase === true })).filter(Boolean)
+/** A final text that goes on from the preface ("Nhưng mình cần đính chính: …") reads as the same answer: it is joined with a space, not a paragraph break. */
+const GOES_ON = /^[\s*_"'“‘(]*(?:nhưng|tuy nhiên|tuy vậy|còn|và|song|however|but)(?![\p{L}\p{N}])/iu
+
+export function composeFinal(prefaces: readonly string[], final: string, o: { dedupeParaphrase?: boolean; trace?: (stage: string, value: unknown) => void } = {}): string {
+  const dedupedP = o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]
+  o.trace?.('after_paraphrase_dedupe', dedupedP)
+  const cleaned = dedupedP.map(p => withoutQuestions(p, { keepWhole: o.dedupeParaphrase === true })).filter(Boolean)
+  o.trace?.('after_without_questions', cleaned)
   const body0 = (final ?? '').trim()
   const nBody = norm(body0)
   const keep = cleaned.filter(p => {
     const key = norm(p).slice(0, 80)
     return !(key.length >= 24 && nBody.includes(key))
   })
-  const body = withoutEchoes(body0, keep)
+  o.trace?.('keep', keep)
+  const body = withoutEchoes(body0, keep, o.dedupeParaphrase === true)
+  o.trace?.('body', body)
+  // one preface paragraph + a final that continues it (after restated sentences were dropped) = ONE paragraph
+  if (o.dedupeParaphrase && keep.length === 1 && body && !/\n/.test(keep[0]) && GOES_ON.test(body)) return `${keep[0]} ${body}`
   return [...keep, body].filter(Boolean).join('\n\n')
 }
