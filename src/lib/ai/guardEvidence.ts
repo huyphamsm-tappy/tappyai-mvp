@@ -69,6 +69,8 @@ export interface SentenceJudgement {
   misattributed?: boolean
   /** The marker citing this sentence was removed: every sentence it covers is misattributed. */
   markersDropped?: boolean
+  /** CONSULTATIVE_IN_AGENT (`cutUnsourcedMoney`): cited, and a money amount of the sentence is stated by NO page read this turn (any unit). */
+  unsourcedMoney?: boolean
   note?: string
 }
 
@@ -210,7 +212,7 @@ export function freshCarried(ev: Pick<GuardEvidence, 'carried' | 'constraintsSig
 // ── judging ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /** `today`: the system clock's day/month. When set, a dd/mm (or dd/mm/yyyy) naming exactly that day is the model framing "hôm nay (11/10)", not a claim the page must repeat. Any other date is judged as before. */
-export interface JudgeOptions { lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
+export interface JudgeOptions { cutUnsourcedMoney?: boolean; lang?: string;knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
 
 /** Today's day/month/year in Vietnam time (the server clock may be UTC). */
 export function vnToday(now: Date = new Date()): { day: number; month: number; year: number } {
@@ -254,7 +256,11 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
       const coveredByCited = () => qs.every(q => cited.some(c => (names.length && !names.some(n => ownSite(n, c.s.host)) ? c.ix.filter(p => names.some(n => nameIn(n, p))) : c.ix).some(p => statedIn(q, p)))) && (!cue || all.some(p => p.fold.includes(fold(cue))))
       if (!coveredByCited()) {
         const misattributed = qs.some(q => !numberAnywhere(q, all))
-        return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'MODEL_KNOWLEDGE' as const, reason: names.length && coveredByUnscoped(qs, all, cue) ? 'value_not_with_entity' : 'cited_value_not_in_source', ...(misattributed ? { misattributed: true } : {}) } }
+        // Live 2026-10-11 (petrol): the shield only LABELS an unsupported sentence; the other guards decide. With the flag a cited money amount that
+        // no page of the turn states at all is not left to them: the sentence goes and the one "chưa xác minh" line + source buttons replace it.
+        const everyPage = [...byId.values()].flatMap(c => c.ix)
+        const unsourcedMoney = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage))
+        return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'MODEL_KNOWLEDGE' as const, reason: names.length && coveredByUnscoped(qs, all, cue) ? 'value_not_with_entity' : 'cited_value_not_in_source', ...(misattributed ? { misattributed: true } : {}), ...(unsourcedMoney ? { unsourcedMoney: true } : {}) } }
       }
       // Provenance affects validation: a source weak for this kind of fact supports only an attributed sentence.
       const kind = kindOf(qs)
@@ -341,6 +347,7 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
   const edits: Array<{ start: number; end: number; text: string }> = []
   for (const [src, g] of groups) {
     if (!g.members.every(m => m.j.misattributed)) continue
+    if (g.members.some(m => m.j.unsourcedMoney)) continue // the sentence is cut whole below (its marker goes with it)
     for (const m of g.members) m.j.markersDropped = true
     report.markersDropped++
     edits.push({ start: src, end: g.end, text: text.slice(src, g.end).replace(MARKER_RE, '') })
@@ -353,6 +360,7 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
     else if (j.verdict === 'CONTRADICTED') report.contradicted++
     else if (j.verdict === 'INVALID') report.invalid++
     else report.unknown++
+    if (j.unsourcedMoney) { edits.push({ start: s.start, end: s.start + s.body.length, text: '' }); report.reasons.unsourced_money_cut = (report.reasons.unsourced_money_cut ?? 0) + 1 }
     if (j.verdict === 'SUPPORTED' || j.verdict === 'CONTRADICTED') {
       // Body without its leading whitespace and its sentence end / trailing whitespace (those stay in the text).
       const lead = s.body.match(/^\s*/)![0].length

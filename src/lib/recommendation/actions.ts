@@ -148,6 +148,18 @@ function namesTheVenue(url: string): boolean {
   } catch { return false }
 }
 
+/**
+ * CONSULTATIVE_IN_AGENT (flag on only): hosts that resell or aggregate tickets — they are never a venue's OWN website. A card whose provider
+ * "website" is one of them showed it under the label "Website" (Nhà hát Lớn → ticket-stations.com, live 2026-10-11): the button is dropped
+ * instead (no official site is known; the Maps and directions buttons stay). Flag off: unchanged.
+ */
+const TICKET_RESELLER_HOST = /(^|\.)(ticket-stations\.com|viagogo\.[a-z.]+|stubhub\.[a-z.]+|seatgeek\.com|vivid-?seats\.com|tickpick\.com)$/i
+export function venueSite(uri: string | undefined | null): string | undefined {
+  if (!uri) return undefined
+  if (!consultativeInAgentEnabled()) return uri
+  try { return TICKET_RESELLER_HOST.test(new URL(uri).hostname) ? undefined : uri } catch { return uri }
+}
+
 /** OTA hosts whose own deep page IS the booking. */
 const OTA_HOST = /(^|\.)(booking\.com|agoda\.[a-z.]+)$/i
 
@@ -472,8 +484,8 @@ export function buildActions(
 
   // ── Platform links — spa and entertainment: website + maps, nothing more ───
   const platformLinks = src.platform_links ?? (
-    name && domain === 'spa' ? buildSpaLinks(name, src.website_uri, src.maps_link)
-      : name && domain === 'entertainment' ? buildEntertainmentLinks(name, src.website_uri, src.maps_link)
+    name && domain === 'spa' ? buildSpaLinks(name, venueSite(src.website_uri), src.maps_link)
+      : name && domain === 'entertainment' ? buildEntertainmentLinks(name, venueSite(src.website_uri), src.maps_link)
         : []
   )
   for (const l of platformLinks) {
@@ -511,7 +523,7 @@ export function buildActions(
     reportOutboundLink(rowLink, facts, { domain })
     if (isDeepEnough(facts)) out.push(action(rowKind, rowLink, domain, { urlKind: 'direct' }))
   } else {
-    out.push(action(rowKind, rowLink, domain, { urlKind: 'direct' }))
+    out.push(action(rowKind, rowKind === 'website' ? venueSite(rowLink) : rowLink, domain, { urlKind: 'direct' }))
   }
 
   // ── Universal ─────────────────────────────────────────────────────────────
@@ -519,7 +531,7 @@ export function buildActions(
   // CONSULTATIVE_IN_AGENT (flag on only): a "Directions" button — the Google Maps URLs API (https://www.google.com/maps/dir/?api=1&destination=…),
   // built HERE from the row's own name + address (+ place_id when it is a real Google place id). No model text, no new provider, no key.
   if (consultativeInAgentEnabled()) out.push(action('directions', directionsUrl(name, src.address, src.place_id), domain, { urlKind: 'direct' }))
-  out.push(action('website', src.website_uri, domain, { urlKind: 'direct' }))
+  out.push(action('website', venueSite(src.website_uri), domain, { urlKind: 'direct' }))
   if (src.phone) out.push(action('call', `tel:${src.phone.replace(/[^\d+]/g, '')}`, domain, { urlKind: 'direct' }))
 
   // ── Reviews — the ladder, with its `attributed` flag intact ────────────────
