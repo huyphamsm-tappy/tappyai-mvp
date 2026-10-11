@@ -102,13 +102,18 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
       interests: z.string().optional().describe('Điều người dùng đã nói là họ thích cho chuyến đi này (vd hải sản, biển, leo núi, nghỉ dưỡng), nếu có'),
       why: z.string().max(160).optional(),
     }),
-    execute: async ({ destination, interests }) => {
+    execute: async ({ destination, interests, skipPlaces }: { destination: string; interests?: string; skipPlaces?: boolean }) => {
       const dest = destination.trim().slice(0, 60)
       const extra = (interests ?? '').trim().slice(0, 40)
+      // `skipPlaces` (CONSULTATIVE_IN_AGENT, set by the runtime for a destination the city table does not know): the two map searches would be
+      // centred on Ho Chi Minh City (food.ts defaultCentre) and return rows from the wrong province, so they are not made; the runtime fetches
+      // the landmarks from the web instead (tripLandmarks.ts).
       const parts: Array<[string, Record<string, unknown>]> = [
         ['get_hotel_prices', { location: dest }],
-        ['search_places', { query: `điểm tham quan nổi tiếng ${dest}`, location: dest, type: 'attraction' }],
-        ['search_places', { query: `${extra ? `${extra} ` : ''}quán đặc sản ngon ${dest}`.trim(), location: dest, type: 'restaurant' }],
+        ...(skipPlaces ? [] : [
+          ['search_places', { query: `điểm tham quan nổi tiếng ${dest}`, location: dest, type: 'attraction' }],
+          ['search_places', { query: `${extra ? `${extra} ` : ''}quán đặc sản ngon ${dest}`.trim(), location: dest, type: 'restaurant' }],
+        ] as Array<[string, Record<string, unknown>]>),
       ]
       /**
        * POST-UAT B8 (UAT-25, 2026-10-09): ONE SLOW PART LOST ALL THREE. `Promise.all` waited for the slowest part; with Serper out of
@@ -135,15 +140,17 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
         } finally { clearTimeout(timer) }
       }))
       closed = true
-      const missing = (['hotels', 'attractions', 'food'] as const).filter((_, k) => {
+      const names = skipPlaces ? (['hotels'] as const) : (['hotels', 'attractions', 'food'] as const)
+      const missing = names.filter((_, k) => {
         const r = results[k] as Record<string, unknown> | undefined
         return !r || typeof r.error === 'string'
       })
+      const skippedNote = { results: [], note: 'Bản đồ không định vị được điểm đến này nên không tra địa điểm trên bản đồ; địa danh nằm ở mục landmarks_web (trang web đã đọc).' }
       // All three failed: the bundle itself failed (TIMEOUT when every part ran out of time) — a failure is not an empty plan.
       const allTimedOut = results.every(r => (r as Record<string, unknown>)?.error === 'part_timeout')
       return {
         ...(missing.length === parts.length ? { error: allTimedOut ? 'parts_timeout' : 'parts_failed' } : {}),
-        destination: dest, hotels: results[0], attractions: results[1], food: results[2],
+        destination: dest, hotels: results[0], attractions: skipPlaces ? skippedNote : results[1], food: skipPlaces ? skippedNote : results[2],
         note: 'Dữ liệu cho kế hoạch: chỉ dùng tên/giá/giờ có trong đây; phần không có ghi "chưa có thông tin".',
         ...(missing.length ? { parts_missing: missing, parts_note: 'Một số phần không trả về kịp (lỗi/hết giờ ≠ không có). Vẫn lập kế hoạch đầy đủ bằng phần đã có và giả định nêu rõ; phần thiếu ghi "chưa có thông tin", không điền từ trí nhớ.' } : {}),
       }

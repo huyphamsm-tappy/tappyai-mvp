@@ -31,6 +31,7 @@ import { researchSearchTool } from './researchSearch'
 import { withProductFallback, withNewsFallback } from './toolState'
 import { askVerdict, askGateEnabled } from './askGate'
 import { withTripSearchName } from './tripDestination'
+import { withTripLandmarks } from './tripLandmarks'
 import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
@@ -127,7 +128,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     // CONSULTATIVE_IN_AGENT: a news topic the three RSS feeds do not cover falls back ONCE to a public-web news search in the same call.
     // …and the trip-data lookup is made for the place name only ("Lý Sơn", not "Lý Sơn, Quảng Ngãi"; tripDestination.ts).
     const gt = tools.get_trip_data
-    if (i.consultative === true && gt?.execute) tools.get_trip_data = { ...gt, execute: withTripSearchName(gt.execute as never) } as never
+    // A destination the city table does not know gets its landmarks from the web instead of a map centred on Ho Chi Minh City (tripLandmarks.ts).
+    if (i.consultative === true && gt?.execute) tools.get_trip_data = { ...gt, execute: withTripLandmarks(withTripSearchName(gt.execute as never), (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'get_trip_data', fallback: 'web_landmarks', ok: d.ok }) }) } as never
     const gn = tools.get_news
     if (i.consultative === true && gn?.execute) tools.get_news = { ...gn, execute: withNewsFallback(gn.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'get_news', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState }) }) } as never
   }
