@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import { dedupeCaveats } from './caveatDedupe'
+import { detectPlanningIntent } from './intent'
 import { composeFinal, withoutQuestions, withoutParaphrasedPrefaceParagraphs } from './agent/runtime/answerFirst'
 import { agentSystemV2For, CONSULT_PRINCIPLES_R19 } from './agent/runtime/consultativeVoice'
 import { AGENT_SYSTEM_V2 } from './agent/runtime/prompt'
@@ -49,6 +50,15 @@ describe('preface paragraph restated by an uncited final paragraph', () => {
   })
   it('an unrelated final paragraph keeps the preface', () => {
     expect(withoutParaphrasedPrefaceParagraphs([p], 'Hôm nay trời Nha Trang nắng đẹp, nhiệt độ khoảng ba mươi độ, thích hợp đi biển vào buổi sáng sớm và chiều muộn.')).toEqual([p])
+  })
+})
+
+describe('trip named over two turns (live 2026-10-11: plan cut to its first sentence, venue cards instead)', () => {
+  const a = 'cuối tuần sau tui muốn đi du lịch có gợi ý gì ko'
+  const b = 'chưa biết đi đâu, dẫn con ghệ đi theo tầm 3 ngày'
+  it('neither text alone reads as a trip, the two together do', () => {
+    expect(detectPlanningIntent(b)).toBeNull()
+    expect(detectPlanningIntent(`${a} \n ${b}`)).toBe('trip')
   })
 })
 
