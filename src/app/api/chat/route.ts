@@ -2898,7 +2898,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
   if (agentV2) enrichment.semanticRanking = true
   // CONSULTATIVE_IN_AGENT: on a trip-plan turn the plan is the whole answer (no ranking call, no standalone venue cards after it).
-  if (consultativeAgent && planningIntent === 'trip') enrichment.planTurn = true
+  // The trip may have been named an earlier turn ("cuối tuần sau muốn đi du lịch" … then "tầm 3 ngày"): the last 3 user texts decide, not only the last.
+  const consultTripThread = consultativeAgent && (planningIntent === 'trip' || lunaUserTexts.slice(-3).some((t: string) => detectPlanningIntent(t) === 'trip'))
+  if (consultTripThread) enrichment.planTurn = true
   // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
   if (consultativeAgent) enrichment.consultative = true
   if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
@@ -2967,7 +2969,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
     const context = agentContext({
       stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
-      now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
+      now: new Date(), userText: consultativeAgent ? lunaUserTexts.slice(-3).join(' \n ') : lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
       state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
     // WS2 final: what the No-Fabrication Gate may accept as given this turn — the DATA context Luna read (card facts, task evidence,
@@ -2984,7 +2986,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       deadlineAt: startTime + Math.min(TURN_DEADLINE_MS - 25_000, 85_000),
       signal: req.signal,
       finalRole: planningIntent === 'trip' ? 'plan' : 'consult',
-      maxTokens: planningIntent ? 4096 : 1500,
+      // CONSULTATIVE_IN_AGENT: a full day-by-day plan with flights / stay / budget does not fit 4096 tokens (days 2–3 ended after two items).
+      maxTokens: consultTripThread ? 7000 : planningIntent ? 4096 : 1500,
       // Serper per TURN, all agent tools together: 8 normal / 10 travel plan. The card-photo lookup after the loop spends only what is left.
       serperTurnCredits: agentSerperLimit,
       onSerperSpent: n => { agentSerperSpent = n },
@@ -2996,7 +2999,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onUnverifiedSources: s => { enrichment.unverifiedSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onUnverifiedSources: s => { enrichment.unverifiedSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' || consultTripThread ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result

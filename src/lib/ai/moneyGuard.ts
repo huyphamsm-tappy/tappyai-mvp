@@ -20,6 +20,8 @@ export type ClaimVerdict = 'VERIFIED' | 'UNVERIFIED' | 'ACCESSORY' | 'AMBIGUOUS'
 export interface MoneyGuardOptions {
   /** Agent runtime only: a price in a sentence naming exactly one seller is judged against THAT seller's own listing. */
   sellerAttribution?: boolean
+  /** CONSULTATIVE_IN_AGENT: a comma between two digits ("1,7 lít") is a decimal point, not a clause delimiter in the clause cut. */
+  decimalSafe?: boolean
 }
 
 /** The sentence around a position (the same bounds the attribution uses). */
@@ -454,6 +456,8 @@ export function sentenceSpans(text: string): Array<[number, number]> {
  * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
 const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
+// Same, but a comma flanked by digits on both sides ("1,7 lít", "1,200,000") is part of the number (flag CONSULTATIVE_IN_AGENT).
+const CLAUSE_DELIM_DECIMAL = /(?<!\d),|,(?!\d)|[;:()]|\s[—–-]\s/g
 // F-092 (2026-09-25): "với" / "with" are NOT here. Sentence-initial they are a PREPOSITION opening a
 // complete sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …"), and stripping them ate
 // the next sentence's first word. Only true conjunctions dangle off a removed sentence.
@@ -483,7 +487,7 @@ export function lastClauseOf(s: string): string {
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
  */
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = ''): string | null {
+function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
@@ -497,7 +501,7 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
   // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
   let a = 0, b = Math.max(stop, end), bDelim = ''
-  for (const m of sentence.matchAll(CLAUSE_DELIM)) {
+  for (const m of sentence.matchAll(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)) {
     const i = m.index!
     if (i < at) a = i
     else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
@@ -578,6 +582,8 @@ export interface RedactOptions {
    * price guard uses it; its clause cuts produced the headless fragments the golden set measured.
    */
   wholeSentence?: boolean
+  /** See MoneyGuardOptions.decimalSafe. */
+  decimalSafe?: boolean
 }
 
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
@@ -621,7 +627,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
     if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
     for (const c of inSentence) {
-      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a), opts.decimalSafe === true)
       if (cut === null) { dropped = true; return '' }
       sentence = cut // claims are processed from the end, so earlier offsets are unaffected
     }
@@ -661,5 +667,5 @@ export function guardMoneyClaimsInText(
   const claims = judgeMoneyClaims(text, records, entities, opts)
   const unsupported = claims.filter(c => c.verdict !== 'VERIFIED')
   if (unsupported.length === 0) return { text, claims, enforced: true }
-  return { text: redactUnsupportedClaims(text, claims), claims, enforced: true }
+  return { text: redactUnsupportedClaims(text, claims, opts.decimalSafe ? { decimalSafe: true } : {}), claims, enforced: true }
 }

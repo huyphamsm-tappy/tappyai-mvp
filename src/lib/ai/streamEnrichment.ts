@@ -76,6 +76,7 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
+import { dedupeCaveats } from './caveatDedupe'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -2445,7 +2446,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
     // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
     const guardedRaw = collector?.semanticRanking
-      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true })
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(collector?.consultative === true ? { decimalSafe: true } : {}) })
       : guardMoneyClaimsInText(enriched, productRecords, productQueries)
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
@@ -3513,7 +3514,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // F-043 risk-first backstop (buffered path). The live path runs the same function on the
     // finish frame. Fixed text only; see `riskBackstop.ts`.
     gt('fallback_narration_tidy', gated.text, groundedProse)
-    const ctaOwnedProseBase = riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    // CONSULTATIVE_IN_AGENT: several emitters (the model, the figure line, the gate) can each say "not verified"; the reply keeps the first.
+    const ctaOwnedProseBase = collector?.consultative === true ? dedupeCaveats(riskBackstopped(serverCta ? stripModelCta(prose) : prose)) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
     gt('risk_backstop', serverCta ? stripModelCta(prose) : prose, ctaOwnedProseBase)
     // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
     // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.
@@ -3553,7 +3555,9 @@ export function applyPlaceEnrichmentStreamFilter(
       : ''
     // Phase 7 2B/2C: a flight / film fact no approved source returns is said to be unverified for exactly the dimension the user asked
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
-    const fareLead = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
+    const fareLead0 = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
+    // CONSULTATIVE_IN_AGENT: the lead is dropped when the prose already carries a "not verified" sentence (the lead would be its twin).
+    const fareLead = fareLead0 && collector?.consultative === true && dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length ? '' : fareLead0
     const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
     finalReplyText = finalText

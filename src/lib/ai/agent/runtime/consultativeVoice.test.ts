@@ -2,7 +2,7 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
 import { writeFileSync } from 'node:fs'
 import { AGENT_SYSTEM_V2 } from './prompt'
-import { agentSystemV2For, consultMemoryLines, CONSULT_PRINCIPLES } from './consultativeVoice'
+import { agentSystemV2For, consultMemoryLines, CONSULT_PRINCIPLES, CONSULT_PRINCIPLES_R19 } from './consultativeVoice'
 import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
 import { splitPickSentence } from '@/lib/ai/consultative/luna'
@@ -39,7 +39,7 @@ describe('the static system message', () => {
 
   it('flag ON: the voice block and the principles come AFTER the unchanged static body, in the same static message', () => {
     const on = agentSystemV2For(true)
-    expect(on.endsWith(CONSULT_PRINCIPLES + STYLE_LUNA6_BLOCK)).toBe(true)
+    expect(on.endsWith(CONSULT_PRINCIPLES + CONSULT_PRINCIPLES_R19 + STYLE_LUNA6_BLOCK)).toBe(true)
     expect(on).toBe(agentSystemV2For(true)) // constant for a flag value → the provider's cached prefix holds across turns
     expect(on.indexOf('CÁCH TƯ VẤN (ưu tiên')).toBeGreaterThan(on.indexOf('CHỌN VÀ XẾP HẠNG'))
   })
