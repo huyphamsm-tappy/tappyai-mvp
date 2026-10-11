@@ -141,7 +141,14 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   // One set per turn (the tool list is part of the cached prompt prefix). See toolRegistry.ts.
   const userTexts = i.messages.filter(m => m.role === 'user').slice(-2).map(m => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '')
   const lastTurnTools = (() => { const s = i.taskBox?.task.research_state.searches ?? []; const t = Math.max(-1, ...s.map(x => x.turn)); return s.filter(x => x.turn === t).map(x => x.tool) })()
-  const selection = selectTools(tools, { texts: userTexts, recentTools: lastTurnTools })
+  // CONSULTATIVE_IN_AGENT (prompt cache): the tool list is the FIRST part of the cached prefix, and it was chosen from the LAST TWO user messages — a
+  // hint word in message 1 ("xe buýt") dropped out of the window at message 3, the list changed, and the whole prefix was re-written (measured live
+  // 2026-10-11: cache read 11,050 tokens on turn 2, 0 on turn 3 of one conversation). With the flag the hints come from every user message the
+  // request carries (the history is already trimmed), so a conversation's tool list only GROWS and the prefix stays stable.
+  const hintTexts = i.consultative === true
+    ? i.messages.filter(m => m.role === 'user').map(m => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '')
+    : userTexts
+  const selection = selectTools(tools, { texts: hintTexts, recentTools: lastTurnTools })
   const proxy = proxyToolSchema(tools, selection.catalog, i.lang)
   const exposedTools = Object.fromEntries(selection.exposed.map(n => [n, tools[n]]))
   const schemas = { ...toModelSchemas(exposedTools), ...(proxy ? { [USE_TOOL]: proxy } : {}), ...(askAllowed(i.taskBox) ? toModelSchemas({ [ASK_USER]: askUserTool({ consultative: i.consultative === true }) } as never) : {}) }

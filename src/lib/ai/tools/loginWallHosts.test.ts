@@ -25,6 +25,12 @@ describe('login-wall rows (flag on: product rows on Shopee are not offered)', ()
     expect(out.count).toBe(2)
     expect(JSON.stringify(ROWS)).toBe(before)
   })
+  it('the marketplace search LINKS listed beside the rows lose the Shopee entry too', () => {
+    const r = { search_results: [{ title: 'a', link: 'https://www.lazada.vn/x' }], links: [{ name: 'Shopee', url: 'https://shopee.vn/search?keyword=x' }, { name: 'Lazada', url: 'https://www.lazada.vn/catalog/?q=x' }] }
+    const out = dropLoginWallRows(r, 'search_results')
+    expect(out.links.map(l => l.name)).toEqual(['Lazada'])
+    expect(r.links).toHaveLength(2) // the original is untouched
+  })
   it('nothing to drop: the same object comes back', () => {
     const clean = { count: 1, search_results: [{ title: 'a', link: 'https://www.lazada.vn/x' }] }
     expect(dropLoginWallRows(clean, 'search_results')).toBe(clean)
