@@ -76,7 +76,7 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
-import { admitsUnverified, dedupeCaveats } from './caveatDedupe'
+import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
 import { stripClosingInvite } from './closingInvite'
 import { appendPlanBudget, vndAmountsIn } from './planBudget'
@@ -3529,7 +3529,7 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('fallback_narration_tidy', gated.text, groundedProse)
     // CONSULTATIVE_IN_AGENT: several emitters (the model, the figure line, the gate) can each say "not verified"; the reply keeps the first.
     // …and the generic closing invitation ("Nếu bạn thích mình có thể gợi ý thêm") is dropped (closingInvite.ts).
-    const ctaOwnedProseBase = collector?.consultative === true ? stripClosingInvite(dedupeCaveats(riskBackstopped(serverCta ? stripModelCta(prose) : prose))) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    const ctaOwnedProseBase = collector?.consultative === true ? stripClosingInvite(dedupeCaveats(stripOrphanSourceLabels(riskBackstopped(serverCta ? stripModelCta(prose) : prose)))) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
     gt('risk_backstop', serverCta ? stripModelCta(prose) : prose, ctaOwnedProseBase)
     // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
     // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.

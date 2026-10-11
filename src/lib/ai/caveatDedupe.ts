@@ -42,6 +42,16 @@ function dedupeProse(text: string): string {
   }).join('\n').replace(/\n{3,}/g, '\n\n')
 }
 
+/**
+ * A source name the model wrote in square brackets inside parentheses — "[S2] ([The Guardian])" — with no link behind it. The citation step turns "[S2]" into a
+ * source button and leaves "([The Guardian])" as stray text (Round 21 trace, Snow Crash turn 1: "… một cuốn ([en.wikipedia.org](…)). ([The Guardian]) Zuckerberg …").
+ * A markdown link "([x](url))" is untouched (a "(" follows the "]"), and so is "[S2]".
+ */
+export function stripOrphanSourceLabels(text: string): string {
+  if (!text || !text.includes('([')) return text
+  return text.replace(/[ \t]*\(\[(?!S?\d{1,2}\])[^\]\[\n()]{2,50}\](?!\()\)/g, '').replace(/\(\s*\)/g, '').replace(/[ \t]{2,}/g, ' ')
+}
+
 /** The reply with repeated plain caveat sentences removed (first one stays). Machine blocks are passed through untouched. */
 export function dedupeCaveats(text: string): string {
   if (!text || !CAVEAT.test(text)) return text

@@ -428,7 +428,12 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     for (const pl of planned) {
       const event: ToolEvent = { round, name: pl.name, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)
-      auditTrace('tool_result', 'tool_result', { round, tool: pl.name, outcome: pl.outcome, ms: event.ms })
+      // (audit-only, masked) the call and what the tool returned — snippets vs page text can be told apart by the field names in the JSON
+      if (auditTraceOn()) {
+        let res = ''
+        try { res = JSON.stringify(pl.result) ?? '' } catch { res = '[unserialisable]' }
+        auditTrace('tool_result', 'tool_result', { round, tool: pl.name, outcome: pl.outcome, ms: event.ms, args: JSON.stringify(pl.args ?? {}).slice(0, 600), result: res.slice(0, 24000) })
+      }
       // WS2 final: every result carries ONE explicit state (SUCCESS · EMPTY · TIMEOUT · ERROR · UNAVAILABLE) — a failure is never evidence.
       const state = toolStateOf(pl.outcome, pl.result)
       pl.result = withToolState(pl.result, state, input.lang)
