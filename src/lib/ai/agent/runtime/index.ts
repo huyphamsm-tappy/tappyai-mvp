@@ -38,7 +38,8 @@ import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { createHash } from 'node:crypto'
 import { agentSystemV2For } from './consultativeVoice'
-import { unreadableSourceLinks, noPageReadNote } from './unreadableSources'
+import { unreadableSourceLinks, noPageReadNote, noFigureReadNote, PRICE_INTENT } from './unreadableSources'
+import { extractMoneyClaims } from '@/lib/ai/moneyGuard'
 import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import type { AgentRunTrace } from './trace'
 import type { GuardEvidence } from '@/lib/ai/guardEvidence'
@@ -147,6 +148,17 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   i.trace.add('tools', { exposed: selection.exposed, preselected: selection.preselected, deferred: selection.catalog.length, schemas: Object.keys(schemas).length })
   const box = i.taskBox
   if (box) i.trace.taskId = box.task.task_id
+  // CONSULTATIVE_IN_AGENT: after a search, one more official page when none could be read, or when the pages read state no figure for a price / rate
+  // question (unreadableSources.ts). Reads are free of Serper credits; the budget and deadline are the turn's own.
+  const consultResearchNote = (toolEvents: readonly { name: string; outcome: string }[]): string | null => {
+    const readPageCalls = toolEvents.filter(e => e.name === READ_PAGE).length
+    const first = noPageReadNote({ webSearchOk: toolEvents.filter(e => e.name === 'web_search' && e.outcome === 'ok').length, readPageCalls, pagesRead: ledger.sources.length }, i.lang)
+    if (first) return first
+    const asked = (userTexts[userTexts.length - 1] ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+    if (!PRICE_INTENT.test(` ${asked} `) || !ledger.sources.length) return null
+    const withMoney = ledger.guardView().sources.filter(s => extractMoneyClaims(s.passages.join(' \n ')).length > 0).length
+    return noFigureReadNote({ priceIntent: true, pagesRead: ledger.sources.length, pagesWithMoney: withMoney, readPageCalls }, i.lang)
+  }
   const system = i.context.system + (i.lang === 'en' ? AGENT_SYSTEM_EN_NOTE : '')
   // The static system message of this run: AGENT_SYSTEM_V2 itself unless the consultative flag is on (consultativeVoice.ts).
   const sharedPrompt = agentSystemV2For(i.consultative === true)
@@ -265,7 +277,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         return { view: taskView(r.task), applied: r.applied, rejected: r.rejected }
       }) : undefined,
       // Latency pass: after two research calls, a reminder that six rounds is a ceiling, not a workflow (Luna still decides).
-      stepNote: ({ toolEvents }) => (i.consultative === true ? noPageReadNote({ webSearchOk: toolEvents.filter(e => e.name === 'web_search' && e.outcome === 'ok').length, readPageCalls: toolEvents.filter(e => e.name === READ_PAGE).length, pagesRead: ledger.sources.length }, i.lang) : null) ?? (toolEvents.filter(e => (e.name === 'web_search' || e.name === READ_PAGE) && e.outcome === 'ok').length >= 2
+      stepNote: ({ toolEvents }) => (i.consultative === true ? consultResearchNote(toolEvents) : null) ?? (toolEvents.filter(e => (e.name === 'web_search' || e.name === READ_PAGE) && e.outcome === 'ok').length >= 2
         ? (i.lang === 'en' ? '\n\nYou have already researched twice this turn. Answer now from the evidence you have, unless one specific key point is still missing.' : '\n\nLượt này đã tra cứu 2 lần. Trả lời ngay từ bằng chứng đã có, trừ khi còn thiếu đúng một điểm then chốt.')
         : null),
       runTool: async (name, signal, fn) => {
