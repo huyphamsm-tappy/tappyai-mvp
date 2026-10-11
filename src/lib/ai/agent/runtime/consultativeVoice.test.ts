@@ -135,20 +135,22 @@ describe('the static system message', () => {
 
   it('ask_user (flag on): only a missing destination / time span / two very different readings justify asking; budget, starting point, travel cost, vehicle and small tastes do not', () => {
     const on = ASK_USER_DESCRIPTION_CONSULT
-    expect(on).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu khác hẳn nhau')
+    expect(on).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu cho ra hai kết quả hoàn toàn khác nhau mà không suy ra được từ ngữ cảnh')
+    // live (round 9): "cuối tháng 12" was asked "năm nào — 2026 hay 2027?" and "4 triệu cho cả hai hay mỗi người?" — trivial readings are not a reason to ask
+    expect(on).toContain('tháng chưa nói năm thì hiểu là lần gần nhất sắp tới, KHÔNG hỏi năm')
     expect(on).toContain('Nơi xuất phát, chi phí đi lại, phương tiện, chỗ ở cụ thể và sở thích nhỏ KHÔNG đủ để hỏi trước: dùng giả định hợp lý, nêu ngắn rồi làm')
     // the old open-ended criterion is gone: no budget in the "changes the whole itinerary" list, no trailing ellipsis list
     expect(on).not.toMatch(/số người, thời gian, ngân sách/)
     expect(on).not.toContain('…')
     // the same criterion in the system prompt and in the principles (so the model never sees two different rules)
     const sys = agentSystemV2For(true)
-    expect(sys).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu khác hẳn nhau; nơi xuất phát, chi phí đi lại, phương tiện và sở thích nhỏ thì không đủ để hỏi trước')
+    expect(sys).toContain('kế hoạch còn thiếu điểm đến hoặc khoảng thời gian, hay yêu cầu có hai cách hiểu cho ra hai kết quả hoàn toàn khác nhau mà không suy ra được từ ngữ cảnh; nơi xuất phát, chi phí đi lại, phương tiện và sở thích nhỏ thì không đủ để hỏi trước')
     expect(sys).not.toMatch(/\(điểm đến, số người, thời gian, ngân sách/)
     expect(CONSULT_PRINCIPLES).toContain('còn nơi xuất phát, chi phí đi lại, phương tiện, chỗ ở cụ thể và sở thích nhỏ thì KHÔNG đủ để hỏi trước')
     // live (10/10 18:00): "3 ngày 2 đêm cuối tháng 11 … 2 người … tổng 4 triệu" was still asked "ngày nào cuối tháng 11?" — a number of days or a
     // month/season IS the time span, and a budget next to a head count is the group's total
-    expect(on).toContain('Khoảng thời gian chỉ cần số ngày hoặc một tháng/mùa: KHÔNG hỏi ngày cụ thể; ngân sách đi kèm số người hiểu là tổng cho cả nhóm (nêu giả định)')
-    expect(CONSULT_PRINCIPLES).toContain('Đã nêu số ngày hoặc một tháng/mùa thì không hỏi ngày cụ thể; ngân sách đi kèm số người hiểu là tổng cho cả nhóm.')
+    expect(on).toContain('Khoảng thời gian chỉ cần số ngày hoặc một tháng/mùa: KHÔNG hỏi ngày cụ thể; tháng chưa nói năm thì hiểu là lần gần nhất sắp tới, KHÔNG hỏi năm; ngân sách đi kèm số người hiểu là tổng cho cả nhóm (nêu giả định)')
+    expect(CONSULT_PRINCIPLES).toContain('Đã nêu số ngày hoặc một tháng/mùa thì không hỏi ngày cụ thể; tháng chưa nói năm thì hiểu là lần gần nhất sắp tới và không hỏi năm; ngân sách đi kèm số người hiểu là tổng cho cả nhóm.')
     // no domain is named as the only thing Tappy answers; the voice block's venue/dish examples are declared illustrations
     expect(on).not.toMatch(/chỉ (hỗ trợ|phục vụ|trả lời)/i)
     expect(CONSULT_PRINCIPLES).toContain('các ví dụ về quán hay món trong đó chỉ để minh họa và không giới hạn lĩnh vực nào')
