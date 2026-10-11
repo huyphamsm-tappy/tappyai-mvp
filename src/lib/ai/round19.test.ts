@@ -4,6 +4,7 @@ import { dedupeCaveats } from './caveatDedupe'
 import { detectPlanningIntent } from './intent'
 import { askVerdict } from './agent/runtime/askGate'
 import { guardPlanItems } from './planItemGuard'
+import { repairPlanBlock } from './planJsonRepair'
 import { guardPlanTripFacts } from './planTripFactsGuard'
 import { composeFinal, withoutQuestions, withoutParaphrasedPrefaceParagraphs } from './agent/runtime/answerFirst'
 import { agentSystemV2For, CONSULT_PRINCIPLES_R19 } from './agent/runtime/consultativeVoice'
@@ -113,6 +114,27 @@ describe('plan guards: a complete trip (flag on) vs the old rules (control)', ()
     expect(on.text).toContain('17/10')
     const off = guardPlanTripFacts(t, ['cuối tuần sau muốn đi du lịch'])
     expect(off.stopsDropped).toBeGreaterThan(0)
+  })
+})
+
+describe('plan JSON with one closing brace too many (live Nha Trang plan: no card at all)', () => {
+  const body = '{"type":"trip","title":"Nha Trang","days":[{"label":"Ngày 1","items":[{"time":"07:00","category":"transport","name":"TP.HCM → Nha Trang"}]}],"cost_breakdown":{"Vé":"chưa có giá"}},"local_tips":[{"text":"a, } b","basis":"general"}],"share_text":"x"}'
+  const text = `Lead.\n\n[TAPPY_PLAN]${body}[/TAPPY_PLAN]\n\nTail.`
+  it('flag on: balanced, the whole plan survives (tips, share text, a brace inside a string)', () => {
+    const r = repairPlanBlock(text, { balance: true })
+    expect(r.repaired).toBe(true)
+    const p = JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]')))
+    expect(p.days[0].items).toHaveLength(1)
+    expect(p.local_tips[0].text).toBe('a, } b')
+    expect(p.share_text).toBe('x')
+    expect(p.cost_breakdown['Vé']).toBe('chưa có giá')
+  })
+  it('flag off (control): left unchanged, as before', () => {
+    expect(repairPlanBlock(text).repaired).toBe(false)
+  })
+  it('a valid plan is never touched', () => {
+    const ok = `[TAPPY_PLAN]{"a":[1,{"b":"}"}]}[/TAPPY_PLAN]`
+    expect(repairPlanBlock(ok, { balance: true }).repaired).toBe(false)
   })
 })
 
