@@ -110,6 +110,23 @@ describe('plan guards: a complete trip (flag on) vs the old rules (control)', ()
     expect(ho.description).not.toMatch(/\d/)
     expect(r.sightsKept).toBe(1)
   })
+  it('flag on: the check-out hotel stop is the SAME hotel as the first stay (one trip, one hotel)', () => {
+    const hotels = [
+      { name: 'Dalat Palace', address: '2 Trần Phú, Đà Lạt', place_types: ['khách sạn'] },
+      { name: 'Colline Dalat', address: '10 Phan Bội Châu, Đà Lạt', place_types: ['khách sạn'] },
+    ]
+    const p = { type: 'trip', days: [
+      { label: 'Ngày 1', items: [{ time: '09:00', category: 'hotel', name: 'Dalat Palace', description: '' }] },
+      { label: 'Ngày 3', items: [{ time: '11:00', category: 'hotel', name: 'Trả phòng, gửi hành lý', description: 'Trả phòng' }] },
+    ] }
+    const text = `[TAPPY_PLAN]${JSON.stringify(p)}[/TAPPY_PLAN]`
+    const on = guardPlanItems(text, hotels, { destination: 'Đà Lạt', keepSights: true })
+    const names = JSON.parse(on.text.slice(12, on.text.indexOf('[/TAPPY_PLAN]'))).days.map((d: { items: Array<{ name: string }> }) => d.items[0].name)
+    expect(names).toEqual(['Dalat Palace', 'Dalat Palace'])
+    const off = guardPlanItems(text, hotels, { destination: 'Đà Lạt' })
+    const offNames = JSON.parse(off.text.slice(12, off.text.indexOf('[/TAPPY_PLAN]'))).days.map((d: { items: Array<{ name: string }> }) => d.items[0].name)
+    expect(offNames[1]).toBe('Colline Dalat')
+  })
   it('flag off (control): an unmatched sight is dropped as before', () => {
     const r = guardPlanItems(plan(items), places, { destination: 'Đà Lạt' })
     expect(r.text).not.toContain('Hồ Xuân Hương')
