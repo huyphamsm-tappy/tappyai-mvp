@@ -176,7 +176,7 @@ export function addressInDestination(address: unknown, key: string): boolean {
 function mealSlot(item: Item): Item {
   const at = minutesOf(item.time)
   const name = at === null ? 'Bữa ăn gần chỗ ở' : at < 10 * 60 + 30 ? 'Ăn sáng gần chỗ ở' : at < 15 * 60 ? 'Ăn trưa gần chỗ ở' : 'Ăn tối gần chỗ ở'
-  const out: Item = { time: typeof item.time === 'string' ? item.time : '', emoji: '🍽️', category: 'rest', name, description: 'Chọn một quán ăn chay gần chỗ ở khi tới nơi.' }
+  const out: Item = { time: typeof item.time === 'string' ? item.time : '', emoji: '🍽️', category: 'rest', name, description: 'Chọn một quán gần chỗ ở khi tới nơi; hỏi trước món có hợp với bạn không.' }
   return out
 }
 
@@ -250,8 +250,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         res.matched++
       } else {
         // An invented venue ("Quán bar/lounge Quận 1"): an unused retrieved place of the same kind, or nothing.
+        // CONSULTATIVE_IN_AGENT: a meal the model did not name (or named wrongly) is NEVER swapped for "the next unused restaurant of the pool" — the pool holds
+        // whatever the search returned, vegetarian or not (live Round 22: a vegetarian plan showed "Hải Sản Hạnh Xuân", "Cơm Gà Hà", "Quán Bò Nướng Lạc Cảnh").
+        // It stays a plain meal slot; a venue only appears when the model named it and the tools returned it.
+        if (opts.keepSights && (kind === 'food' || kind === 'cafe')) { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
         place = pool.find(p => !used.has(p) && [...kindsOf(p)].some(k => COMPATIBLE[kind].includes(k)))
-        if (!place && opts.keepSights && (kind === 'food' || kind === 'cafe')) { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
         if (!place) { res.dropped++; continue }
         res.replaced++
         item.name = place.name

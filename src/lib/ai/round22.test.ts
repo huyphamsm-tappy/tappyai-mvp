@@ -62,6 +62,57 @@ describe('Nha Trang day 3 and day 2 (Round 21 trace), flag on', () => {
   })
 })
 
+// ── Nha Trang, Round 22 live #3 (chat 6c29f12d…, SHA 564579c): the model wrote unnamed meals ("Bữa trưa chay gần trung tâm" …) and `plan_items` swapped
+//    all 7 for unused pool restaurants — a vegetarian plan showed "Hải Sản Hạnh Xuân", "Cơm Gà Hà", "Quán Bò Nướng Lạc Cảnh". The plan below is the model's own (trace).
+const MODEL_PLAN_UNNAMED = {"type":"trip","people":2,"days":[{"label":"Ngày 1","items":[{"time":"07:00","category":"transport","name":"Di chuyển TP.HCM → Nha Trang"},{"time":"09:00","category":"hotel","name":"Khách sạn Panama Nha Trang"},{"time":"11:30","category":"food","name":"Bữa trưa chay gần trung tâm"},{"time":"15:30","category":"attraction","name":"Bãi biển Trần Phú"},{"time":"18:00","category":"food","name":"Bữa tối chay"},{"time":"20:00","category":"entertainment","name":"Quảng trường 2 Tháng 4 và Tháp Trầm Hương"}]},{"label":"Ngày 2","items":[{"time":"08:00","category":"food","name":"Bữa sáng chay"},{"time":"09:30","category":"attraction","name":"Tháp Bà Ponagar"},{"time":"11:30","category":"food","name":"Bữa trưa chay khu Bắc Nha Trang"},{"time":"14:00","category":"rest","name":"Nghỉ tại khách sạn"},{"time":"16:00","category":"attraction","name":"Chùa Long Sơn"},{"time":"18:00","category":"food","name":"Bữa tối chay"},{"time":"20:00","category":"entertainment","name":"Dạo khu ven biển Trần Phú"}]},{"label":"Ngày 3","items":[{"time":"08:00","category":"food","name":"Bữa sáng chay"},{"time":"09:30","category":"attraction","name":"Chợ Đầm"},{"time":"11:30","category":"hotel","name":"Trả phòng, lấy hành lý"},{"time":"12:00","category":"food","name":"Bữa trưa chay gần trung tâm"},{"time":"14:00","category":"transport","name":"Di chuyển Nha Trang → TP.HCM"}]}]}
+// what the search returned: a hotel and restaurants of every kind — NOT only vegetarian
+const MIXED_POOL = [
+  { name: 'Khách sạn Panama Nha Trang', address: '39 Hùng Vương, Nha Trang', place_types: ['khách sạn'] },
+  { name: 'Hải Sản Hạnh Xuân - Nha Trang', address: '1 Trần Phú, Nha Trang', place_types: ['nhà hàng hải sản'] },
+  { name: 'Cơm Gà Hà', address: '75 Ngô Gia Tự, Nha Trang', place_types: ['quán cơm gà'] },
+  { name: 'Quán Bò Nướng Lạc Cảnh', address: '77 Nguyễn Bỉnh Khiêm, Nha Trang', place_types: ['nhà hàng bò nướng'] },
+  { name: 'Chè Cứu Đói', address: '40A Đức Kế, Nha Trang', place_types: ['quán chè'] },
+  { name: 'Món Ăn Ngon', address: '2 Lê Lợi, Nha Trang', place_types: ['nhà hàng'] },
+]
+describe('unnamed meals are never swapped for a random retrieved restaurant (live Round 22 #3)', () => {
+  const meals = (text: string) => daysOf(text).flatMap(d => d.items).filter(i => /bữa|ăn /i.test(i.name) || i.category === 'food')
+  it('flag on: every meal stays a plain slot; no pool restaurant name appears anywhere; sights, hotel, check-out and return leg are intact', () => {
+    const r = guardPlanItems(wrap(MODEL_PLAN_UNNAMED), MIXED_POOL, { destination: 'Nha Trang', keepSights: true })
+    const days = daysOf(r.text)
+    const names = days.flatMap(d => d.items.map(i => i.name))
+    for (const bad of ['Hải Sản Hạnh Xuân - Nha Trang', 'Cơm Gà Hà', 'Quán Bò Nướng Lạc Cảnh', 'Chè Cứu Đói', 'Món Ăn Ngon']) expect(names, bad).not.toContain(bad)
+    expect(r.mealSlots).toBe(7)
+    expect(r.replaced).toBe(0)
+    const count = (n: string) => meals(r.text).filter(i => i.name === n).length
+    expect([count('Ăn sáng gần chỗ ở'), count('Ăn trưa gần chỗ ở'), count('Ăn tối gần chỗ ở')]).toEqual([2, 3, 2])
+    for (const m of meals(r.text)) { expect(m.category).toBe('rest'); expect(m.address).toBeUndefined(); expect(m.place_id).toBeUndefined() }
+    // day 3 has its breakfast AND lunch; the evenings are the named places the model wrote
+    expect(days[2].items.filter(i => i.category === 'rest').map(i => i.name)).toEqual(['Ăn sáng gần chỗ ở', 'Ăn trưa gần chỗ ở'])
+    expect(days[0].items.at(-1)?.name).toBe('Quảng trường 2 Tháng 4 và Tháp Trầm Hương')
+    expect(days[1].items.at(-1)?.name).toBe('Dạo khu ven biển Trần Phú')
+    expect(days[0].items.find(i => i.category === 'hotel')?.name).toBe('Khách sạn Panama Nha Trang')
+    expect(days[2].items.find(i => i.category === 'hotel')?.name).toBe('Khách sạn Panama Nha Trang')
+    expect(days[2].items.at(-1)?.name).toMatch(/Nha Trang → TP\.HCM/)
+  })
+  it('the fallback description does not claim "chay" (the plan may not be vegetarian)', () => {
+    const r = guardPlanItems(wrap(MODEL_PLAN_UNNAMED), MIXED_POOL, { destination: 'Nha Trang', keepSights: true })
+    const d = JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]'))).days[0].items.find((i: { category: string }) => i.category === 'rest')
+    expect(d.description).not.toMatch(/chay/i)
+  })
+  it('flag off (control, the old behaviour the live run hit): the unnamed meals ARE swapped for pool restaurants', () => {
+    const r = guardPlanItems(wrap(MODEL_PLAN_UNNAMED), MIXED_POOL, { destination: 'Nha Trang' })
+    const names = daysOf(r.text).flatMap(d => d.items.map(i => i.name))
+    expect(names).toContain('Hải Sản Hạnh Xuân - Nha Trang')
+    expect(r.replaced).toBeGreaterThan(0)
+  })
+  it('a meal the model NAMED and the tools returned still becomes that venue (flag on)', () => {
+    const named = { type: 'trip', days: [{ label: 'Ngày 1', items: [{ time: '12:00', category: 'food', name: 'Cơm Gà Hà' }] }] }
+    const r = guardPlanItems(wrap(named), MIXED_POOL, { destination: 'Nha Trang', keepSights: true })
+    expect(daysOf(r.text)[0].items[0].name).toBe('Cơm Gà Hà')
+    expect(r.matched).toBe(1)
+  })
+})
+
 describe('budget when get_trip_data returns no price', () => {
   const withLines = { ...MODEL_PLAN, budget_lines: [
     { item: 'Khách sạn 2 đêm', per: 'room_night', unit_amount: 900_000, label: 'estimate', basis: 'tự ước' },
