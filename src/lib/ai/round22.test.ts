@@ -56,6 +56,10 @@ describe('Nha Trang day 3 and day 2 (Round 21 trace), flag on', () => {
     expect(agentSystemV2For(true)).toContain('"thư giãn ở khu trung tâm"')
     expect(agentSystemV2For(false)).not.toContain('NÊU TÊN một nơi')
   })
+  it('the prompt (flag on) says a multi-day plan after get_trip_data is the [TAPPY_PLAN] card, not written-out days (live Round 22: prose plan, no card); flag off unchanged', () => {
+    expect(agentSystemV2For(true)).toContain('PHẢI là khối [TAPPY_PLAN]')
+    expect(agentSystemV2For(false)).not.toContain('PHẢI là khối [TAPPY_PLAN]')
+  })
 })
 
 describe('budget when get_trip_data returns no price', () => {
