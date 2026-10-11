@@ -29,6 +29,7 @@ import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evide
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
 import { withProductFallback, withNewsFallback } from './toolState'
+import { askRefusal } from './askGate'
 import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
@@ -211,6 +212,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       schemas,
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
+      // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
+      ...(i.consultative === true ? { refuseAsk: (a: { question: string }) => askRefusal(typeof lastUser?.content === 'string' ? lastUser.content : Array.isArray(lastUser?.content) ? (lastUser.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '', a.question, i.lang) } : {}),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,

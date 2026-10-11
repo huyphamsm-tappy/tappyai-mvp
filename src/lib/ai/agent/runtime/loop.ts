@@ -81,6 +81,11 @@ export interface RuntimeInput {
    * Absent (tests, model seams) → the check is not run and the run records `answerFirst: 'not_checked'`.
    */
   answerFirstModel?: (o: { system: string; messages: CoreMessage[]; signal: AbortSignal }) => Promise<{ text: string; usd?: number; promptTokens?: number; completionTokens?: number }>
+  /**
+   * CONSULTATIVE_IN_AGENT (askGate.ts): a note when this question must not be asked first (null = ask it). The model reads the note as the result
+   * of its ask_user call and goes on; at most two refusals per turn, so a later question is always shown. Absent → every question is shown.
+   */
+  refuseAsk?: (a: AskUser) => string | null
 }
 
 export interface RuntimeRun {
@@ -145,6 +150,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
   // Text the model wrote next to a lookup / an ask, or the check wrote before a lookup: kept and shown BEFORE the rest of the answer.
   const prefaces: string[] = []
   let answerFirst: RuntimeRun['answerFirst'] = 'n/a'
+  let askRefusals = 0
 
   const done = (text: string, status: RuntimeStatus, stopReason: RuntimeStop, ask: AskUser | null = null): RuntimeRun => {
     T.status = status
@@ -227,6 +233,14 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     if (askCall) {
       const ask = parseAskUser(stripWhy(askCall.args))
       const others = calls.filter(c => c !== askCall && c.toolName !== UPDATE_TASK).map(c => c.toolName)
+      const refusal = ask && input.refuseAsk && askRefusals < 2 && others.length === 0 ? input.refuseAsk(ask) : null
+      if (ask && refusal) {
+        askRefusals++
+        T.add('ask', { round, decision: 'refused', refusals: askRefusals })
+        messages.push({ role: 'assistant', content: [...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : []), ...taskCallParts(), { type: 'tool-call' as const, toolCallId: askCall.toolCallId, toolName: askCall.toolName, args: stripWhy(askCall.args) }] })
+        messages.push({ role: 'tool', content: [...taskParts(), { type: 'tool-result' as const, toolCallId: askCall.toolCallId, toolName: askCall.toolName, result: { refused: true, note: refusal } }] })
+        continue
+      }
       if (ask) {
         // Advice written in the same step as the question is not thrown away: it comes first, the question closes the reply.
         if (step.text.trim()) { prefaces.push(step.text); answerFirst = 'with_step' }
