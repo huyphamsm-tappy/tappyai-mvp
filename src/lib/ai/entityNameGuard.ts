@@ -74,10 +74,27 @@ export function isAmountPhrase(bold: string): boolean {
   const rest = fold(bold).replace(/\d[\d.,]*/g, ' ').split(/[^a-z]+/).filter(Boolean)
   return rest.length > 0 && rest.length < w.length && rest.every(x => QUANTITY_WORD.has(x) || AMOUNT_FILLER.has(x))
 }
-const AMOUNT_FILLER = new Set(['cho', 'khoang', 'hon', 'gan', 'duoi', 'tren', 'moi', 'tu', 'den', 'toi', 'va', 'hai', 'ba', 'bon', 'khoang', 'tuong', 'duong', 'lam', 'viec'])
+/** The language of a REPLY's prose: 'vi' (three or more words with Vietnamese letters), 'en' (none, and common English words), else null. */
+const EN_REPLY_WORDS = new Set(['the', 'and', 'to', 'of', 'is', 'are', 'for', 'you', 'with', 'that', 'this', 'can', 'be', 'it', 'on', 'in', 'a', 'if', 'but', 'would', 'because', 'before', 'your'])
+function replyLanguage(prose: string): 'vi' | 'en' | null {
+  const ws = prose.split(/\s+/).filter(w => /\p{L}/u.test(w))
+  if (ws.length < 8) return null
+  const viWords = ws.filter(w => /[ăâđêôơưàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ]/iu.test(w)).length
+  if (viWords >= 3) return 'vi'
+  const en = ws.filter(w => EN_REPLY_WORDS.has(w.toLowerCase().replace(/[^a-z]/g, ''))).length
+  return viWords === 0 && en >= 3 ? 'en' : null
+}
 
-export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi', opts: { skipAmounts?: boolean } = {}): EntityGuardResult {
+const AMOUNT_FILLER =new Set(['cho', 'khoang', 'hon', 'gan', 'duoi', 'tren', 'moi', 'tu', 'den', 'toi', 'va', 'hai', 'ba', 'bon', 'khoang', 'tuong', 'duong', 'lam', 'viec'])
+
+export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi', opts: { skipAmounts?: boolean; labelFromText?: boolean } = {}): EntityGuardResult {
   if (!text || ev.corpus.length === 0) return { text, ungrounded: [], checked: 0 }
+  // CONSULTATIVE_IN_AGENT: the label is written in the language of the REPLY, not of the UI setting (an English answer got "(mình chưa thấy tên này…)", live
+  // 2026-10-11). Only a confident English / Vietnamese reading of the prose (names and figures removed) changes it; anything else keeps `lang`.
+  if (opts.labelFromText) {
+    const seen = replyLanguage(text.replace(/\*\*[^*\n]*\*\*|https?:\/\/\S+|\[[^\]\n]*\]\([^)]*\)/g, ' '))
+    if (seen === 'en' || seen === 'vi') lang = seen
+  }
   const hay = ` ${words([...ev.corpus.map(decode), ...ev.userTexts].join('\n').slice(0, 2_000_000)).join(' ')} `
   const ungrounded: string[] = []
   let checked = 0

@@ -11,6 +11,7 @@
 import { tool } from 'ai'
 import { z } from 'zod'
 import { cutSecrets } from '../guards'
+import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
 
 export const ASK_USER = 'ask_user'
 /**
@@ -67,7 +68,9 @@ export function parseAskUser(args: Record<string, unknown> | undefined): AskUser
   if (q.length < 3) return null
   const raw = Array.isArray(args?.choices) ? args!.choices : []
   const choices = [...new Set(raw.filter((c): c is string => typeof c === 'string').map(c => clean(c.replace(/[|]/g, ' '), 60)).filter(c => c.length > 0))].slice(0, 4)
-  return { question: /[?？]$/.test(q) ? q : `${q}?`, choices: choices.length >= 2 ? choices : [] }
+  // CONSULTATIVE_IN_AGENT: a question the model ended with "." / "…" / "!" became "…nhiều.?" (live 2026-10-11); the sentence end is replaced by "?".
+  const closed = /[?？]$/.test(q) ? q : `${consultativeInAgentEnabled() ? q.replace(/[.…!。]+$/u, '') : q}?`
+  return { question: closed, choices: choices.length >= 2 ? choices : [] }
 }
 
 /** The reply text of an ask turn: the question, then the choices as quick-reply chips (existing FOLLOWUPS contract). */

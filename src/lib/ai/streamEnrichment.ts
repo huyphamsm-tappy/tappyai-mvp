@@ -2434,7 +2434,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
     // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
     const todayVn = collector?.consultative ? vnToday() : undefined
-    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
@@ -2752,6 +2752,20 @@ export function applyPlaceEnrichmentStreamFilter(
       try { collector?.claimsTrace?.(summary) } catch { /* trace only */ }
     }
     if (gate) gt('no_fabrication', unsupported.text, gate.text)
+    // Audit servers only (TAPPY_UAT_GUARD_DIFF=1, same switch as `gt`): WHERE each price figure of the reply is stated — which tool result, which
+    // read page, which earlier reply. Public web text, ≤ 140 chars around the figure; never in production.
+    if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && collector?.consultative && gateEvidenceCorpus.length) {
+      try {
+        const figs = [...new Set(unsupported.text.match(/\d{1,3}(?:[.,]\d{3})+/g) ?? [])].slice(0, 6)
+        const around = (s: string, f: string) => { const i = s.indexOf(f); return i < 0 ? null : s.slice(Math.max(0, i - 70), i + f.length + 70).replace(/\s+/g, ' ') }
+        const labelled: Array<[string, string]> = [
+          ...gateCorpus.map((s, i): [string, string] => [`tool_result_${i}`, s]),
+          ...(collector.gateContext ?? []).map((s, i): [string, string] => [`context_${i}`, s]),
+          ...(collector.guardEvidence?.sources ?? []).map((s): [string, string] => [`page_${s.id}_${s.host}`, s.passages.join('\n')]),
+        ]
+        console.log(JSON.stringify({ type: 'tappyai_uat_figure_probe', figs: figs.map(f => ({ f, found: labelled.flatMap(([k, s]) => { const c = around(s, f); return c ? [{ in: k, ctx: c }] : [] }).slice(0, 4) })) }))
+      } catch { /* diagnostics only */ }
+    }
     /**
      * Phase 8 UAT-10 — ENTITY NAME GROUNDING (entityNameGuard.ts): a bold model name that none of the turn's evidence (tool results, pages,
      * the context Luna read, earlier replies, the user's words) contains is un-bolded and disclosed, never presented as a verified option.
@@ -2759,7 +2773,7 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     const afterGate = gate ? gate.text : unsupported.text
     const entityGuard = collector?.semanticRanking && gateCorpus.length > 0
-      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang, { skipAmounts: collector.consultative === true })
+      ? groundEntityNames(afterGate, { corpus: gateEvidenceCorpus, userTexts: collector.userTexts ?? [userText] }, lang, { skipAmounts: collector.consultative === true, labelFromText: collector.consultative === true })
       : null
     if (entityGuard && entityGuard.ungrounded.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'entity_name', checked: entityGuard.checked, ungrounded: entityGuard.ungrounded.length }))
     if (entityGuard) gt('entity_name', afterGate, entityGuard.text)
