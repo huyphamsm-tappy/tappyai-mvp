@@ -243,7 +243,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       ...(i.consultative === true ? { dedupeParaphrase: true, parallelAnswerFirst: true } : {}),
       // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
       ...(i.consultative === true && askGateMode() === 'shadow' ? { askGateShadow: true } : {}),
-      ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
+      ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang, userTexts.slice(-3).join(' \n ')) } : {}),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,

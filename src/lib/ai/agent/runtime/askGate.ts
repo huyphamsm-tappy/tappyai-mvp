@@ -27,7 +27,7 @@ const YEAR_OR_DAY_Q = /(?:^| )nam (?:nao|khac|2\d{3})|(?:^| )20\d\d(?: |$)|ngay 
 const OPEN_DESTINATION = /(?:^| )(?:chua biet|khong biet|chua ro|chua quyet|phan van|dang phan van)(?: \S+){0,3} (?:di|den) (?:dau|noi nao)|(?:^| )(?:di )?dau cung duoc|(?:^| )noi nao cung duoc|(?:^| )(?:goi y|de xuat) (?:cho minh )?(?:diem den|noi (?:de )?di)/
 const CHOOSE_OR_COMPARE = /(?:^| )(?:chon giup|chon gium|chon ho|giup minh chon|giup toi chon|nen chon|nen di|so sanh|which (?:one )?should|help me choose|compare)(?: |$)|(?:^| )hay (?:la )?(?!khong)\S+/
 
-export type AskGateKind = 'plan_full_info' | 'directions_origin'
+export type AskGateKind = 'plan_full_info' | 'directions_origin' | 'trip_open'
 export interface AskGateVerdict { kind: AskGateKind; note: string }
 
 /**
@@ -47,9 +47,17 @@ export function askRefusal(userText: string, question: string, lang: string): st
   return askVerdict(userText, question, lang)?.note ?? null
 }
 
-export function askVerdict(userText: string, question: string, lang: string): AskGateVerdict | null {
+/** An open-ended "somewhere to travel" ask: trip wording ("du lịch", "đi chơi xa", "nghỉ dưỡng") — a destination or length may be missing. */
+const TRAVEL_OPEN = /(?:^| )(?:du lich|di choi xa|di nghi|nghi duong|di tron|getaway|vacation|trip)(?: |$)|(?:^| )(?:chua biet|khong biet) (?:di|den) (?:dau|noi nao)/
+const TRIP_OPEN_NOTE_VI = 'Không hỏi lại: người dùng đã nói muốn đi chơi/du lịch và nhờ gợi ý hoặc chưa quyết. Nếu chưa có cả điểm đến lẫn số ngày: nêu 2–3 điểm đến hợp (theo thời gian, mùa, đi từ TP.HCM, ngân sách), chọn MỘT kèm lý do, nói ngắn giả định. Nếu đã có thời gian và số người (kể cả "chưa biết đi đâu"): chọn luôn một điểm đến hợp và lập đầy đủ kế hoạch theo từng ngày, nêu giả định. Một dòng về phương án khác; không kết bằng lời mời hay câu hỏi.'
+const TRIP_OPEN_NOTE_EN = 'Do not ask: the user wants a trip and asked for suggestions or has not decided. With neither destination nor length: name 2–3 fitting destinations (timing, season, from the likely origin, budget), pick ONE with a reason and state the assumptions briefly. With timing and party known (even "not sure where"): pick a fitting destination and build the full day-by-day plan with stated assumptions. One line about an alternative; no closing invitation or question.'
+
+export function askVerdict(userText: string, question: string, lang: string, recentTripText?: string): AskGateVerdict | null {
   const u = ` ${fold(userText)} `
   const q = ` ${fold(question)} `
+  // CONSULTATIVE_IN_AGENT round 19: an open "where should I travel" ask is answered with a chosen destination, not a question back (live 2026-10-11:
+  // "cuối tuần sau tui muốn đi du lịch có gợi ý gì ko" → "bạn muốn đi mấy ngày…?"). `recentTripText` = the last few user texts together.
+  if (recentTripText !== undefined && TRAVEL_OPEN.test(` ${fold(recentTripText)} `)) return { kind: 'trip_open', note: lang === 'en' ? TRIP_OPEN_NOTE_EN : TRIP_OPEN_NOTE_VI }
   const planKnown = PLAN_REQUEST.test(u) && DURATION.test(u) && PARTY_OR_BUDGET.test(u) && !OPEN_DESTINATION.test(u) && !CHOOSE_OR_COMPARE.test(u)
   const dir = DIRECTIONS.test(u)
   // A request that states destination, length, party and budget is complete: ANY question is refused (live 2026-10-11: after origin and year

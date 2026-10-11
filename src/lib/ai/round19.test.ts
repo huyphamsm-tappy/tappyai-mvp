@@ -2,6 +2,7 @@
 import { describe, it, expect } from 'vitest'
 import { dedupeCaveats } from './caveatDedupe'
 import { detectPlanningIntent } from './intent'
+import { askVerdict } from './agent/runtime/askGate'
 import { composeFinal, withoutQuestions, withoutParaphrasedPrefaceParagraphs } from './agent/runtime/answerFirst'
 import { agentSystemV2For, CONSULT_PRINCIPLES_R19 } from './agent/runtime/consultativeVoice'
 import { AGENT_SYSTEM_V2 } from './agent/runtime/prompt'
@@ -59,6 +60,21 @@ describe('trip named over two turns (live 2026-10-11: plan cut to its first sent
   it('neither text alone reads as a trip, the two together do', () => {
     expect(detectPlanningIntent(b)).toBeNull()
     expect(detectPlanningIntent(`${a} \n ${b}`)).toBe('trip')
+  })
+})
+
+describe('ask gate: an open travel ask is not answered with a question', () => {
+  const q = 'Bạn muốn đi mấy ngày, hay để mình chọn một chuyến ngắn hợp cuối tuần?'
+  const a = 'cuối tuần sau tui muốn đi du lịch có gợi ý gì ko'
+  it('refused when the trip wording is in the recent texts', () => {
+    expect(askVerdict(a, q, 'vi', a)?.kind).toBe('trip_open')
+    expect(askVerdict('chưa biết đi đâu, dẫn con ghệ đi tầm 3 ngày', 'Bạn đi từ đâu?', 'vi', `${a} \n chưa biết đi đâu`)?.kind).toBe('trip_open')
+  })
+  it('without the extra argument (flag off / old callers) nothing changes', () => {
+    expect(askVerdict(a, q, 'vi')).toBeNull()
+  })
+  it('a non-travel conversation is never gated by it', () => {
+    expect(askVerdict('mua tai nghe', 'Ngân sách bao nhiêu?', 'vi', 'mua tai nghe')).toBeNull()
   })
 })
 
