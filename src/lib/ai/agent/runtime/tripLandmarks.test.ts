@@ -21,7 +21,7 @@ describe('withTripLandmarks', () => {
   })
   it('unmapped destination: map searches skipped, ONE web search, landmarks attached with a citation note', async () => {
     const primary = vi.fn(async () => trip)
-    const web = vi.fn(async () => ({ results: [{ title: 'Cổng Tò Vò', link: 'https://example.vn/to-vo' }] }))
+    const web = vi.fn(async (_a: Record<string, unknown>, _c?: unknown) => ({ results: [{ title: 'Cổng Tò Vò', link: 'https://example.vn/to-vo' }] }))
     const r = await withTripLandmarks(primary, web, { lang: 'vi' })({ destination: 'Lý Sơn' }, {}) as Record<string, unknown>
     expect(primary).toHaveBeenCalledWith({ destination: 'Lý Sơn', skipPlaces: true }, {})
     expect(web).toHaveBeenCalledTimes(1)
