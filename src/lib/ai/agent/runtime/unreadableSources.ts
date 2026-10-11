@@ -14,8 +14,10 @@ const DISCLOSES = /(?<!\p{L})(?:chưa|không)\s+(?:\S+\s+){0,3}?(?:xác minh|xá
 interface Row { link?: unknown; title?: unknown }
 
 /** Up to `max` source links from this turn's web_search results, for a reply that admits it could not verify. [] otherwise. */
-export function unreadableSourceLinks(results: readonly unknown[], reply: string, max = 2): SourceLink[] {
-  if (!DISCLOSES.test(reply) || /\[S\d/.test(reply)) return []
+export function unreadableSourceLinks(results: readonly unknown[], reply: string, max = 2, force = false): SourceLink[] {
+  // `force`: the links are returned whatever the model wrote — they are only HELD (collector.unverifiedSources) and shown by the settle step when
+  // a guard cut every figure and the one "chưa xác minh" sentence was added there (streamEnrichment.ts, unverifiedFigure.ts).
+  if (!force && (!DISCLOSES.test(reply) || /\[S\d/.test(reply))) return []
   const out: SourceLink[] = []
   const seenHosts = new Set<string>()
   for (const r of results) {

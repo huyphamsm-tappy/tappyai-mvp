@@ -197,6 +197,8 @@ export interface EnrichmentCollector {
   claimsTrace?: (summary: Record<string, unknown>) => void
   recordDecision?: (answer: string, candidates: string[]) => Promise<{ contract: import('./agent/runtime/rankingContract').RankingContract | null; ms: number; usd: number; error?: string }>
   citationSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
+  /** CONSULTATIVE_IN_AGENT: search-result links held (no page was read) and shown only if a guard cut every figure and the one "chưa xác minh" sentence is added at settle. */
+  unverifiedSources?: Array<{ id: string; host: string; url: string; label?: string; title?: string; source_type?: string; action_type?: string }>
   /** Phase 8 M4 (TAPPY_AGENT=2): page / task provenance for the settle-path guards (guardEvidence.ts). Absent = guards as before. */
   guardEvidence?: import('./guardEvidence').GuardEvidence
   /** Phase 8 M4: the provenance verdicts of the reply (counts only, no text) for the run trace. */

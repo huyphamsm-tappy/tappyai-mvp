@@ -1,6 +1,6 @@
 // @vitest-environment node
-import { describe, it, expect } from 'vitest'
-import { askRefusal, askVerdict, askGateEnabled } from './askGate'
+import { describe, it, expect, vi } from 'vitest'
+import { askRefusal, askVerdict, askGateEnabled, askGateMode } from './askGate'
 import { runAgentRuntime, type RuntimeInput, type RuntimeStep } from './loop'
 import { AgentRunTrace } from './trace'
 import { ASK_USER } from './controlTools'
@@ -80,6 +80,33 @@ function run(script: RuntimeStep[], refuse: boolean) {
   }
   return runAgentRuntime(input).then(r => ({ r, seen }))
 }
+
+describe('CONSULT_ASK_GATE modes', () => {
+  it('block (default / anything else), shadow, off', () => {
+    expect(askGateMode({})).toBe('block')
+    expect(askGateMode({ CONSULT_ASK_GATE: 'block' })).toBe('block')
+    expect(askGateMode({ CONSULT_ASK_GATE: ' Shadow ' })).toBe('shadow')
+    for (const v of ['off', '0', 'false', 'NO']) expect(askGateMode({ CONSULT_ASK_GATE: v })).toBe('off')
+    expect(askGateEnabled({ CONSULT_ASK_GATE: 'shadow' })).toBe(true)
+  })
+  it('shadow: the question the gate would refuse is SHOWN, and only the kind is logged', async () => {
+    const logs: string[] = []
+    const spy = vi.spyOn(console, 'log').mockImplementation((m: unknown) => { logs.push(String(m)) })
+    const input: RuntimeInput = {
+      system: 'SYS', messages: [{ role: 'user', content: PLAN }], tools: {}, schemas: { [ASK_USER]: {} },
+      callModel: async () => step('', [[ASK_USER, { question: 'Bạn xuất phát từ đâu?' }]]),
+      deadlineAt: Date.now() + 85_000, lang: 'vi', trace: new AgentRunTrace({ messageCount: 1, provider: 'mock', serperLimit: 12, deadlineMs: 85_000, flag: 'TAPPY_AGENT=2' }),
+      refuseAsk: a => askVerdict(PLAN, a.question, 'vi'), askGateShadow: true,
+    }
+    const r = await runAgentRuntime(input)
+    spy.mockRestore()
+    expect(r.status).toBe('asked')
+    expect(r.ask?.question).toMatch(/xuất phát/)
+    const line = logs.find(l => l.includes('tappyai_ask_gate'))!
+    expect(JSON.parse(line)).toEqual({ type: 'tappyai_ask_gate', decision: 'would_refuse', kind: 'plan_full_info' })
+    expect(line).not.toMatch(/xuất phát|Lý Sơn/) // no user words, no question
+  })
+})
 
 describe('loop — a refused ask continues the turn', () => {
   it('flag on: the refused question is not shown; the model gets the note and answers', async () => {

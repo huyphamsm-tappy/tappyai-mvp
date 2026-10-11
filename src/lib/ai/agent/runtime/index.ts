@@ -29,7 +29,7 @@ import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evide
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
 import { withProductFallback, withNewsFallback } from './toolState'
-import { askVerdict, askGateEnabled } from './askGate'
+import { askVerdict, askGateEnabled, askGateMode } from './askGate'
 import { withTripSearchName } from './tripDestination'
 import { withTripLandmarks } from './tripLandmarks'
 import { editorialItemsIn, attributeEditorial } from './editorialSources'
@@ -91,6 +91,8 @@ export interface RuntimeTurnInput extends Omit<AgentTurnInput, 'callModel'> {
   research?: { fetchPage?: (url: string, signal?: AbortSignal) => Promise<PageFetchResult> }
   /** M3: the pages read this turn, for the enrichment site to turn [S#] markers into source links (streamEnrichment citeSources). */
   onCitationSources?: (sources: SourceLink[]) => void
+  /** CONSULTATIVE_IN_AGENT: search-result links held for the "chưa xác minh" sentence a guard may force at settle time (shown only then). */
+  onUnverifiedSources?: (sources: SourceLink[]) => void
   /**
    * M4: the provenance the settle-path guards judge the reply against (guardEvidence.ts): this turn's sources with their extracts, the
    * ledger's conflicts, and the task's evidence references as they were at the START of the turn (with that constraint signature).
@@ -221,6 +223,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
       ...(i.consultative === true ? { dedupeParaphrase: true } : {}),
       // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
+      ...(i.consultative === true && askGateMode() === 'shadow' ? { askGateShadow: true } : {}),
       ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
@@ -303,6 +306,11 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         if (srcs.length) {
           i.trace.add('evidence', { decision: 'unreadable_sources_offered', links: srcs.length })
           try { i.onCitationSources?.(srcs) } catch { /* presentation only */ }
+        } else {
+          // The reply did not admit it — but a guard may still cut every figure of it at settle time, and the one "chưa xác minh" sentence added
+          // there needs a source button. The links are only HELD; nothing is shown unless that sentence is (streamEnrichment.ts).
+          const held = unreadableSourceLinks([...lastResults.values()], run.text, 2, true)
+          if (held.length) try { i.onUnverifiedSources?.(held) } catch { /* presentation only */ }
         }
       }
     }

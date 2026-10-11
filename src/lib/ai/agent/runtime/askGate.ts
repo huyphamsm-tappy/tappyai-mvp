@@ -30,8 +30,17 @@ const CHOOSE_OR_COMPARE = /(?:^| )(?:chon giup|chon gium|chon ho|giup minh chon|
 export type AskGateKind = 'plan_full_info' | 'directions_origin'
 export interface AskGateVerdict { kind: AskGateKind; note: string }
 
-/** Emergency switch: CONSULT_ASK_GATE=off|0|false turns the gate off at once (the flag itself is unchanged). */
-export const askGateEnabled = (env: Record<string, string | undefined> = process.env): boolean => !/^(?:off|0|false|no)$/i.test((env.CONSULT_ASK_GATE ?? '').trim())
+/**
+ * CONSULT_ASK_GATE: `block` (default — unset or any other value), `shadow` (never blocks; logs every question the gate WOULD have blocked, kind
+ * only), `off` / `0` / `false` / `no` (the gate does nothing at once; the flag itself is unchanged).
+ */
+export type AskGateMode = 'block' | 'shadow' | 'off'
+export const askGateMode = (env: Record<string, string | undefined> = process.env): AskGateMode => {
+  const v = (env.CONSULT_ASK_GATE ?? '').trim().toLowerCase()
+  return /^(?:off|0|false|no)$/.test(v) ? 'off' : v === 'shadow' ? 'shadow' : 'block'
+}
+/** Kept for callers that only ask "is the gate doing anything" (block or shadow). */
+export const askGateEnabled = (env: Record<string, string | undefined> = process.env): boolean => askGateMode(env) !== 'off'
 
 /** A verdict for the model when the question must not be asked first (null = let it through). */
 export function askRefusal(userText: string, question: string, lang: string): string | null {

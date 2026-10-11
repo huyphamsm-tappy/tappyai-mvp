@@ -219,6 +219,8 @@ export interface GroundingGateOptions {
   cardRenders?: boolean
   /** CONSULTATIVE_IN_AGENT: no card of any kind accompanies this reply (a text plan) — write no "the options are on the card" / "no match" line when rows were retrieved. */
   noCardLine?: boolean
+  /** CONSULTATIVE_IN_AGENT: a bold "Ngày N …" line is a plan day heading, not a venue (live log samples: day headings cut as "ungrounded venues"). */
+  dayHeadings?: boolean
 }
 
 export function suppressUngroundedVenues(
@@ -268,7 +270,8 @@ export function suppressUngroundedVenues(
     // UNMATCHED bold is judged by the presentation shape — and a bold that is not presented as a
     // venue is prose: it still ends the block before it and is never cut.
     const grounded = isGrounded(normalizeHeading(m[1]), knownNorm)
-    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && !isVenueHeading(m[1], restOfLine, nextLine) })
+    const dayHeading = opts.dayHeadings === true && /^(?:ngay|day|buoi)\s*\d/.test(normalizeHeading(m[1]))
+    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && (dayHeading || !isVenueHeading(m[1], restOfLine, nextLine)) })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }

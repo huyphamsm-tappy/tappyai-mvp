@@ -2992,7 +2992,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onFinish: onFinish as never,
     }
     return agentRunTrace
-      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onUnverifiedSources: s => { enrichment.unverifiedSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' ? 'plan' : 'agent' })
       : startAgentTurn(turnInput)
   }
   let result
@@ -3406,6 +3406,9 @@ ${completionInstruction(lang)}` },
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
+  // CONSULTATIVE_IN_AGENT: ask the web client to reveal the (already settled) reply progressively — display only. Emergency off: CONSULT_REVEAL=off
+  // on the server (read per request); a user can also opt out on the client (localStorage tappy_reveal=off, or reduced motion).
+  if (consultativeAgent && !/^(?:off|0|false|no)$/i.test((process.env.CONSULT_REVEAL ?? '').trim())) finalResponse.headers.set('x-tappy-reveal', '1')
 
   // Phase-0: emit the single tappyai_usage record once the LAST byte has left, so
   // a buffered turn's client-emit side (TTUA, enrichment tail, true total) rides

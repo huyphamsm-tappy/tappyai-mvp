@@ -87,6 +87,7 @@ import { withCompactedHistory } from '@/lib/chat/requestHistory'
 import { withCutWatch } from '@/lib/chat/streamCut'
 import { stripRemainingFooter } from '@/lib/chat/footerLine'
 import { useChatSessionId } from '@/lib/chat/useChatSessionId'
+import { useFinishReveal } from '@/lib/chat/useFinishReveal'
 import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
 import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
@@ -945,6 +946,8 @@ export default function ChatInterface({
   // can name the result they act on.
   const pendingResultIdRef = useRef<string | null>(null)
   const resultIdsRef = useRef<Map<string, string>>(new Map())
+  // CONSULTATIVE_IN_AGENT: the server asked (x-tappy-reveal) for the settled reply to be revealed progressively — display only (lib/chat/useFinishReveal).
+  const [revealMode, setRevealMode] = useState(false)
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     /**
@@ -972,6 +975,7 @@ export default function ChatInterface({
       ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {
+      setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
@@ -1082,6 +1086,7 @@ export default function ChatInterface({
     ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
+  const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealMode, markdownSafeRevealEnd)
 
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
@@ -1692,7 +1697,8 @@ export default function ChatInterface({
                 // the marker from what's shown; when this is a shopping decision,
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
-                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
+                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text
+                  : isLastMessage && finishReveal.revealing ? parsePlacesMarker(parseShoppingMarker(finishReveal.text).text).text : text
                 const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }

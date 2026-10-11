@@ -2891,10 +2891,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // Answer first, ask after (owner 2026-09-28; c40 P2): a question BEFORE the answer on a searched
     // turn moves to the end (or goes, when the reply already ends asking).
     gt('pick_sentence', budgeted, placeGuarded)
-    const answeredFirst = (hadPlaceSearch || travelIntent) ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
+    // CONSULTATIVE_IN_AGENT: these two are voice-shaping, not fact guards (they move or drop the model's own questions) — the model decides how to
+    // ask, and askGate.ts is the only rule about WHEN. Off under the flag; unchanged (byte for byte) without it. See docs/phase8/POST-MODEL-FILTERS.md.
+    if (collector?.consultative) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'filters_disabled_by_flag', filters: ['answer_first', 'clarification'] }))
+    const answeredFirst = (hadPlaceSearch || travelIntent) && !collector?.consultative ? answerFirst(placeGuarded) : { text: placeGuarded, moved: null }
     if (answeredFirst.moved) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'answer_first', step: answeredFirst.moved }))
     // POST-UAT B7: on agent turns a requested information checklist ("mình cần biết:" + list) is one question unit.
-    const clarifiedBase = guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
+    const clarifiedBase = collector?.consultative ? answeredFirst.text : guardClarifications(answeredFirst.text, collector?.clarificationPolicy ?? 'allow', { checklist: collector?.agentMode === true }).text
     /**
      * Consultative V1 (flag): three prose guards, in this order, on prose only.
      *   search-claim  — "mình đã kiểm tra / tìm lại" on a turn that ran no tool.
@@ -3102,6 +3105,7 @@ export function applyPlaceEnrichmentStreamFilter(
         cardRenders: collector ? !!(collector.placesRecommendations?.length || collector.shoppingMarker) : undefined,
         // CONSULTATIVE_IN_AGENT: a plan answered in text has no card at all (planTurn clears the standalone cards), so no line may point at one.
         ...(collector?.planTurn && !scaffoldStripped.includes('[TAPPY_PLAN]') ? { noCardLine: true } : {}),
+        ...(collector?.consultative ? { dayHeadings: true } : {}),
       },
     )
     // Phase 7: the guards above may have removed the sentence an injected photo/link block was
@@ -3373,7 +3377,14 @@ export function applyPlaceEnrichmentStreamFilter(
       // CONSULTATIVE_IN_AGENT: the guards cut EVERY figure the draft stated → one honest sentence instead of silence (the citation step below adds the source).
       const figLine = collector?.consultative && collector.agentMode && !collector.consultTurn ? withUnverifiedFigureLine(mainText, listed.text, lang) : { text: listed.text, added: false }
       if (figLine.added) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unverified_figure_line' }))
-      if (!collector?.citationSources?.length) return figLine.text
+      if (!collector?.citationSources?.length) {
+        // No page was read: the forced sentence still gets its source buttons — the search results the tool returned (held, never shown otherwise).
+        if (figLine.added && collector?.unverifiedSources?.length) {
+          const held = collector.unverifiedSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host))
+          return citeSources(figLine.text, held, allowedUrls, lang)
+        }
+        return figLine.text
+      }
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
       const integrity = enforceCitationIntegrity(figLine.text)
       if (integrity.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity.removed }))

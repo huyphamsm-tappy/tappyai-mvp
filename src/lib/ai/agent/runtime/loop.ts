@@ -86,6 +86,8 @@ export interface RuntimeInput {
    * of its ask_user call and goes on; at most two refusals per turn, so a later question is always shown. Absent → every question is shown.
    */
   refuseAsk?: (a: AskUser) => string | { note: string; kind: string } | null
+  /** CONSULT_ASK_GATE=shadow: the gate only logs what it would refuse (askGate.ts); every question is shown. */
+  askGateShadow?: boolean
   /** CONSULTATIVE_IN_AGENT: a preface paragraph the researched answer restates in other words is dropped (answerFirst.ts). */
   dedupeParaphrase?: boolean
 }
@@ -241,7 +243,12 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       const others = calls.filter(c => c !== askCall && c.toolName !== UPDATE_TASK).map(c => c.toolName)
       const verdict = ask && input.refuseAsk && askRefusals < 2 && others.length === 0 ? input.refuseAsk(ask) : null
       const refusal = typeof verdict === 'string' ? verdict : verdict?.note ?? null
-      if (ask && refusal) {
+      // SHADOW mode (CONSULT_ASK_GATE=shadow): the question is shown as the model asked it; only the fact that the gate WOULD have refused it is logged.
+      if (ask && refusal && input.askGateShadow) {
+        const kind = typeof verdict === 'object' && verdict ? verdict.kind : 'unspecified'
+        T.add('ask', { round, decision: 'would_refuse', kind })
+        console.log(JSON.stringify({ type: 'tappyai_ask_gate', decision: 'would_refuse', kind }))
+      } else if (ask && refusal) {
         askRefusals++
         const kind = typeof verdict === 'object' && verdict ? verdict.kind : 'unspecified'
         T.add('ask', { round, decision: 'refused', refusals: askRefusals, kind })
