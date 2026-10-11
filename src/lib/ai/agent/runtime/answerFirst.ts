@@ -76,14 +76,25 @@ const endsWithQuestion = (s: string) => /[?？]["')\]*_]*\s*$/.test(s.replace(/\
  * A preface never carries a question: the single closing question belongs to the end of the answer. A question sentence is dropped; a
  * sentence of the form "statement; question?" keeps its statement. (Nothing else is touched.)
  */
-export function withoutQuestions(text: string): string {
+// A sentence that continues the one before it ("Còn 'hiện ứng dụng được bao nhiêu'…"): without its predecessor it dangles.
+const CONTINUATION = /^[\s*_"'“‘(]*(?:còn|và|nhưng|thì|vậy thì|hay là|tức là|nghĩa là|and|but|so|then)(?![\p{L}\p{N}])/iu
+
+/**
+ * `keepWhole` (CONSULTATIVE_IN_AGENT): a dropped question takes the continuation sentence right after it (it started "Còn …", "Và …") along,
+ * so no opener is left without its first half (live 2026-10-11, Tesla: "Còn 'hiện ứng dụng được bao nhiêu'…").
+ */
+export function withoutQuestions(text: string, o: { keepWhole?: boolean } = {}): string {
   return text.split('\n').map(line => {
     if (STRUCTURAL.test(line)) return line
     const kept: string[] = []
+    let droppedQuestion = false
     for (const s of splitSentences(line)) {
+      if (o.keepWhole && droppedQuestion && CONTINUATION.test(s)) { continue }
+      droppedQuestion = false
       if (!endsWithQuestion(s)) { kept.push(s); continue }
+      droppedQuestion = true
       const semi = s.lastIndexOf(';')
-      if (semi > 0) { const head = s.slice(0, semi).trim(); if (head.length >= 12) kept.push(`${head}.`) }
+      if (semi > 0) { const head = s.slice(0, semi).trim(); if (head.length >= 12) { kept.push(`${head}.`); droppedQuestion = false } }
     }
     return kept.join(' ')
   }).join('\n').replace(/\n{3,}/g, '\n\n').trim()
@@ -122,19 +133,20 @@ const figuresOf = (s: string): Set<string> => new Set([...norm(s).matchAll(/(?<!
 export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[], final: string): string[] {
   // Second signal (passport, live 2026-10-11, "8 ngày làm việc" said twice at only 42 % word overlap): a lower overlap (≥ 35 %) counts when the
   // two paragraphs state the SAME quantity. An unrelated paragraph reached 30 % without sharing one.
-  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p && (/\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p))).map(p => ({ t: contentTokens(p), q: figuresOf(p) })).filter(f => f.t.size >= 12)
+  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p).map(p => ({ t: contentTokens(p), q: figuresOf(p), cited: /\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p) })).filter(f => f.t.size >= 12)
   if (!finals.length) return [...prefaces]
   return prefaces.map(pref => pref.split(/\n{2,}/).filter(par => {
     if (STRUCTURAL.test(par)) return true
     const t = contentTokens(par)
     if (t.size < 12) return true
     const q = figuresOf(par)
-    return !finals.some(f => { let hit = 0; for (const w of t) if (f.t.has(w)) hit++; const r = hit / t.size; return r >= 0.6 || (r >= 0.35 && [...q].some(x => f.q.has(x))) })
+    // An uncited / unhedged final paragraph counts only for a near-restatement (≥ 75 %: Snow Crash 2026-10-11, caveat in both calls).
+    return !finals.some(f => { let hit = 0; for (const w of t) if (f.t.has(w)) hit++; const r = hit / t.size; return f.cited ? (r >= 0.6 || (r >= 0.35 && [...q].some(x => f.q.has(x)))) : r >= 0.75 })
   }).join('\n\n')).filter(p => p.trim())
 }
 
 export function composeFinal(prefaces: readonly string[], final: string, o: { dedupeParaphrase?: boolean } = {}): string {
-  const cleaned = (o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]).map(p => withoutQuestions(p)).filter(Boolean)
+  const cleaned = (o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]).map(p => withoutQuestions(p, { keepWhole: o.dedupeParaphrase === true })).filter(Boolean)
   const body0 = (final ?? '').trim()
   const nBody = norm(body0)
   const keep = cleaned.filter(p => {
