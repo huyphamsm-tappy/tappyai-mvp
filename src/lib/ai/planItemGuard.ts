@@ -121,6 +121,8 @@ export interface PlanItemGuardResult {
   timesMoved: number; timesCleared: number
   /** Sights kept by name from the model's general knowledge (flag on only). */
   sightsKept?: number
+  /** Meals left as a plain "near the stay" slot because no unused retrieved venue was left for them (flag on only). */
+  mealSlots?: number
   /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
   outOfArea?: number
 }
@@ -170,6 +172,14 @@ export function addressInDestination(address: unknown, key: string): boolean {
   return ` ${fold(address)} `.includes(` ${key} `)
 }
 
+/** A meal with no venue the tools can vouch for: a plain slot (category `rest`, nothing invented), named by its time of day. */
+function mealSlot(item: Item): Item {
+  const at = minutesOf(item.time)
+  const name = at === null ? 'Bữa ăn gần chỗ ở' : at < 10 * 60 + 30 ? 'Ăn sáng gần chỗ ở' : at < 15 * 60 ? 'Ăn trưa gần chỗ ở' : 'Ăn tối gần chỗ ở'
+  const out: Item = { time: typeof item.time === 'string' ? item.time : '', emoji: '🍽️', category: 'rest', name, description: 'Chọn một quán ăn chay gần chỗ ở khi tới nơi.' }
+  return out
+}
+
 export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
@@ -192,7 +202,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
 
@@ -219,7 +229,10 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       let place: PlanPlace | undefined = (checkout && stayPlace) ? stayPlace : (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
       if (checkout && stayPlace && typeof item.name === 'string') { item.name = stayPlace.name; for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f] }
       if (place && opts.keepSights && used.has(place) && kind !== 'hotel') {
-        // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two.
+        // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two. A MEAL slot is not
+        // dropped (Round 21 trace: day 3 lost its breakfast and lunch because both restaurants were already used on days 1–2 and the day ended after
+        // the check-out): it stays as a plain "meal near the stay" slot with no venue named.
+        if (kind === 'food' || kind === 'cafe') { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
         res.dropped++; continue
       }
       if (!place && opts.keepSights && (kind === 'attraction' || kind === 'entertainment') && typeof item.name === 'string' && item.name.trim()) {
@@ -238,6 +251,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       } else {
         // An invented venue ("Quán bar/lounge Quận 1"): an unused retrieved place of the same kind, or nothing.
         place = pool.find(p => !used.has(p) && [...kindsOf(p)].some(k => COMPATIBLE[kind].includes(k)))
+        if (!place && opts.keepSights && (kind === 'food' || kind === 'cafe')) { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
         if (!place) { res.dropped++; continue }
         res.replaced++
         item.name = place.name
@@ -262,7 +276,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     day.items = kept
     fitTimesToHours(kept, placeOf, res)
   }
-  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
+  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
