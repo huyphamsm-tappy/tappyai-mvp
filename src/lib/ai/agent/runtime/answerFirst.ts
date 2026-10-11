@@ -130,18 +130,24 @@ function withoutEchoes(final: string, prefaces: readonly string[]): string {
 /** The quantities a paragraph states ("8 ngày", "28.250 đồng"): a number and the word after it, folded. */
 const figuresOf = (s: string): Set<string> => new Set([...norm(s).matchAll(/(?<![\p{L}\d])(\d+(?: \d+)*) (\p{L}{2,})/gu)].map(m => `${m[1]} ${m[2]}`))
 
+/** "I found no evidence / source for that" in its common Vietnamese and English shapes. */
+const NOT_FOUND = /chưa (?:thấy|tìm thấy|có (?:bằng chứng|nguồn|dữ liệu)|xác minh|kiểm chứng|xác nhận)|không (?:thấy|tìm thấy) (?:bằng chứng|nguồn)|(?:no|not) (?:evidence|reliable source)|could(?:n't| not) find/iu
+
 export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[], final: string): string[] {
   // Second signal (passport, live 2026-10-11, "8 ngày làm việc" said twice at only 42 % word overlap): a lower overlap (≥ 35 %) counts when the
   // two paragraphs state the SAME quantity. An unrelated paragraph reached 30 % without sharing one.
-  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p).map(p => ({ t: contentTokens(p), q: figuresOf(p), cited: /\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p) })).filter(f => f.t.size >= 12)
+  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p).map(p => ({ t: contentTokens(p), q: figuresOf(p), cited: /\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p), says: NOT_FOUND.test(p) })).filter(f => f.t.size >= 12)
   if (!finals.length) return [...prefaces]
   return prefaces.map(pref => pref.split(/\n{2,}/).filter(par => {
     if (STRUCTURAL.test(par)) return true
     const t = contentTokens(par)
     if (t.size < 12) return true
     const q = figuresOf(par)
+    const says = NOT_FOUND.test(par)
     // An uncited / unhedged final paragraph counts only for a near-restatement (≥ 75 %: Snow Crash 2026-10-11, caveat in both calls).
-    return !finals.some(f => { let hit = 0; for (const w of t) if (f.t.has(w)) hit++; const r = hit / t.size; return f.cited ? (r >= 0.6 || (r >= 0.35 && [...q].some(x => f.q.has(x)))) : r >= 0.75 })
+    // Third signal (Snow Crash again, live 2026-10-11: "chưa thấy bằng chứng … cùng đọc" in the preface AND "chưa tìm thấy nguồn … cùng đọc" after the
+    // lookup, ~35 % word overlap, neither cited): both paragraphs say "no evidence found" and share ≥ 30 % of the preface's words.
+    return !finals.some(f => { let hit = 0; for (const w of t) if (f.t.has(w)) hit++; const r = hit / t.size; return (says && f.says && r >= 0.3) || (f.cited ? (r >= 0.6 || (r >= 0.35 && [...q].some(x => f.q.has(x)))) : r >= 0.75) })
   }).join('\n\n')).filter(p => p.trim())
 }
 
