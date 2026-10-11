@@ -99,7 +99,7 @@ export function tripDataTool(base: Record<string, RouteTool>, sink: SubResultSin
     description: 'Gói dữ liệu cho KẾ HOẠCH DU LỊCH ở MỘT điểm đến: khách sạn + điểm tham quan + quán đặc sản, tra song song trong MỘT lần gọi. Chỉ gọi khi kế hoạch cần khách sạn / quán / điểm tham quan CỤ THỂ, giá hoặc giờ mở cửa; lịch trình tổng quát thì lập thẳng, không cần gọi. Vé máy bay: gọi get_flight_prices riêng khi người dùng hỏi vé.',
     parameters: z.object({
       destination: z.string().describe('Điểm đến, vd Đà Nẵng'),
-      interests: z.string().optional().describe('Sở thích ăn uống / vui chơi người dùng đã nói (vd hải sản, biển), nếu có'),
+      interests: z.string().optional().describe('Điều người dùng đã nói là họ thích cho chuyến đi này (vd hải sản, biển, leo núi, nghỉ dưỡng), nếu có'),
       why: z.string().max(160).optional(),
     }),
     execute: async ({ destination, interests }) => {

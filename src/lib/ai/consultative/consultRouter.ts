@@ -141,6 +141,10 @@ export function detectAreas(raw: string): { domains: ConsultDomain[]; conflict: 
 
 const KNOWLEDGE = /\b(?:an toan (?:khong|ko)|co (?:mua|lanh|nong|ret|dong|dep|dat|tot) (?:khong|ko)|mua nao (?:dep|dep nhat|nen di|di)|thang nao (?:dep|nen di)|can chuan bi gi|chuan bi nhung gi|can (?:xem|luu y|biet|kiem tra|chu y) (?:gi|nhung gi)|can may ngay|mat may ngay|la gi|co tot (?:khong|ko)|co hai (?:khong|ko)|dac san\b.*\b(?:an gi|co gi|la gi|mua gi)|co nen\b.*\b(?:khong|ko)|is it safe|when is the best time|what to pack)\b/
 const GREETING = /^(?:xin chao|chao|chao ban|chao tappy|hi|hello|hey|alo|a lo|yo|cam on|cam on ban|thanks|thank you|thank|ok|oke|okay|okie|uh|u|um|vang|da|tuyet|hay qua|good|nice|bye|tam biet)(?:\s+(?:nhe|nha|nhieu|ban|tappy|a|ah|nhe ban|you|so much|lam|qua))*[\s!.?~]*$/
+// NOT a scope of Tappy (owner principle 11/10: Tappy answers every kind of question). This only tells the LEGACY consult router (the path
+// with no agent) that a no-domain request such as "viết code" has no data vertical to route to, so it becomes a plain chat turn — answered,
+// never refused. On the agent path (TAPPY_AGENT=1/2, which includes CONSULTATIVE_IN_AGENT) the router's decision is not used
+// (`consult = agentOn ? null` in api/chat/route.ts), so this regex has no effect there.
 const OUT_OF_SCOPE = /\b(?:viet code|lap trinh|code (?:python|java|js)|debug|giai (?:bai|toan|phuong trinh)|bai tap|dich (?:sang|giup|cau)|translate|luat|phap ly|hop dong|thue|chung khoan|co phieu|bitcoin|crypto|chan doan|benh gi|thuoc gi|viet (?:email|van|thu|bai))\b/
 
 // ── Slots ──────────────────────────────────────────────────────────────────────────────────────

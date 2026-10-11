@@ -44,9 +44,18 @@ describe('the static system message', () => {
     expect(on.indexOf('CÁCH TƯ VẤN (ưu tiên')).toBeGreaterThan(on.indexOf('CHỌN VÀ XẾP HẠNG'))
   })
 
+  it('BOTH flag states: the opening line names no domain list as the scope — it lists tools, and says every kind of question is answered (owner principle 11/10)', () => {
+    for (const sys of [AGENT_SYSTEM_V2, agentSystemV2For(true)]) {
+      expect(sys).not.toContain('trợ lý đời sống')
+      expect(sys).not.toContain('ăn uống, vui chơi, phim, mua sắm, du lịch, giá cả, thời tiết, tin tức')
+      expect(sys).toContain('trả lời mọi loại câu hỏi và tư vấn như một người tư vấn thật')
+      expect(sys).toContain('Công cụ là cách lấy dữ liệu khi cần, không phải giới hạn của những gì bạn trả lời')
+    }
+  })
+
   it('flag ON: the "assumption → answer → one closing question" mould and the canned tip phrases are gone', () => {
     const on = agentSystemV2For(true)
-    for (const gone of ['CHỈ khi thiếu một thông tin mà KHÔNG có nó thì không thể đưa ra phần trả lời nào có ích', 'chỉ hỏi ngày đi ở cuối', 'đã có điểm đến → lập thẳng', 'đã có điểm đến → lập lịch trình ngay', 'kế hoạch du lịch chưa có điểm đến, cần mua', '(chuyến đi đã có điểm đến,', '(vd lịch trình khi đã có điểm đến và số ngày)', 'trợ lý đời sống', 'ăn uống, vui chơi, phim, mua sắm, du lịch, giá cả, thời tiết, tin tức', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
+    for (const gone of ['CHỈ khi thiếu một thông tin mà KHÔNG có nó thì không thể đưa ra phần trả lời nào có ích', 'chỉ hỏi ngày đi ở cuối', 'đã có điểm đến → lập thẳng', 'đã có điểm đến → lập lịch trình ngay', 'kế hoạch du lịch chưa có điểm đến, cần mua', '(chuyến đi đã có điểm đến,', '(vd lịch trình khi đã có điểm đến và số ngày)', 'nói ngắn giả định đó', 'có thể kết bằng MỘT câu tinh chỉnh', 'rồi mới hỏi một câu tinh chỉnh', 'nói rõ giả định, rồi làm', '(3) Kết bằng tối đa MỘT câu hỏi', 'Một mẹo thực tế là…', 'Thường tiện hơn nếu…']) {
       expect(on, gone).not.toContain(gone)
       expect(AGENT_SYSTEM_V2, `${gone} was in the base`).toContain(gone)
     }
@@ -144,6 +153,28 @@ describe('the static system message', () => {
     expect(on).not.toMatch(/chỉ (hỗ trợ|phục vụ|trả lời)/i)
     expect(CONSULT_PRINCIPLES).toContain('các ví dụ về quán hay món trong đó chỉ để minh họa và không giới hạn lĩnh vực nào')
     expect(sys).not.toContain('trợ lý đời sống cho người Việt: ăn uống')
+  })
+
+  it('ADVICE principles are topic-neutral and cover: a straight pick with reason and trade-off, one question at most, assumptions on a partial or whatever answer, real pushback, a human tone, and sensitive topics without refusing', () => {
+    const p = CONSULT_PRINCIPLES
+    // neutral: the context line names no venue; the any-topic bullet says tools are not the scope and forbids steering to places
+    expect(p).toMatch(/Hiểu hoàn cảnh trước khi khuyên: .*bất kể chủ đề là gì/)
+    expect(p).not.toMatch(/ngân sách, thời gian, khu vực, sở thích, người đi cùng/)
+    expect(p).toContain('Công cụ dữ liệu riêng chỉ để lấy thông tin khi cần, không phải giới hạn của câu trả lời')
+    expect(p).toContain('đừng chuyển hướng người dùng sang quán, địa điểm hay mua sắm khi họ không hỏi')
+    // a straight pick with reason and the main trade-off, for any topic
+    expect(p).toMatch(/chốt MỘT hướng đi .*lý do .*đánh đổi chính/)
+    expect(p).toContain('có chính kiến rõ ràng, không liệt kê ưu nhược điểm rồi để người dùng tự quyết')
+    // ask at most one thing, never what is known
+    expect(p).toMatch(/một câu hỏi, gộp nhiều nhất 2 điều quan trọng nhất, không hỏi lại điều đã biết/)
+    // partial answer / whatever → advise at once; pushback is weighed, not obeyed or resisted blindly
+    expect(p).toContain('tùy bạn (ở mọi chủ đề): tư vấn luôn, nêu giả định ngắn, không hỏi lần hai')
+    expect(p).toContain('nếu lập luận của bạn vẫn đứng vững thì giữ ý')
+    expect(p).toContain('Không đồng ý cho xong chuyện, cũng không bám cứng')
+    // sensitive topics: useful general-knowledge advice, one natural limit sentence, refer when serious, no lecture, no refusal
+    expect(p).toMatch(/Chủ đề nhạy cảm \(sức khỏe, pháp lý, tiền bạc, tâm lý\): vẫn cho thông tin và lời khuyên hữu ích/)
+    expect(p).toContain('không lên lớp và không từ chối trả lời')
+    expect(p).toContain('Giọng gần gũi như một người bạn hiểu chuyện')
   })
 
   it('the principles and the voice block hold no fixed sentence to copy and no user data', () => {

@@ -35,6 +35,7 @@ import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { createHash } from 'node:crypto'
 import { agentSystemV2For } from './consultativeVoice'
+import { unreadableSourceLinks } from './unreadableSources'
 import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import type { AgentRunTrace } from './trace'
 import type { GuardEvidence } from '@/lib/ai/guardEvidence'
@@ -113,7 +114,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
   if (Object.keys(tools).length) {
     // One page reader per turn (shared page budget, de-duplication, failure memo). web_search = several queries in parallel + the best
     // pages opened in the same call; read_page = 1–3 given pages in parallel. Evidence is deterministic (no per-page model call).
-    const reader = createPageReader({ ledger, allowed: u => readable.has(normUrl(u)), trace: i.trace, lang: i.lang, maxReads: RUNTIME_LIMITS.maxPageReads, ...(i.research ?? {}) })
+    const reader = createPageReader({ ledger, allowed: u => readable.has(normUrl(u)), trace: i.trace, lang: i.lang, maxReads: i.consultative === true ? RUNTIME_LIMITS.maxPageReadsConsult : RUNTIME_LIMITS.maxPageReads, ...(i.research ?? {}) })
     const ws = tools.web_search
     if (ws?.execute) tools.web_search = researchSearchTool({ base: ws.execute as never, reader, allow, lang: i.lang }) as never
     tools[READ_PAGE] = readPageTool(reader) as never
@@ -281,6 +282,14 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       if (ed.links.length) {
         i.trace.citations = ed.links.length
         try { i.onCitationSources?.(ed.links) } catch { /* presentation only */ }
+      } else if (i.consultative === true) {
+        // CONSULTATIVE_IN_AGENT: no page could be read and the reply says it could not verify → the search results the tool returned become
+        // the source buttons ("Nguồn: host"), so the user can open the page themselves. Only after an admitted non-verification (unreadableSources.ts).
+        const srcs = unreadableSourceLinks([...lastResults.values()], run.text)
+        if (srcs.length) {
+          i.trace.add('evidence', { decision: 'unreadable_sources_offered', links: srcs.length })
+          try { i.onCitationSources?.(srcs) } catch { /* presentation only */ }
+        }
       }
     }
     if (editorial.length) i.trace.add('evidence', { decision: 'editorial_attribution', articles: editorial.length, cited: (run.text.match(/\[S\d+\]/g) ?? []).length })

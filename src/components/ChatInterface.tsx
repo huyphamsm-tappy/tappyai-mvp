@@ -118,7 +118,7 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   entertainment: ['Rạp chiếu phim IMAX?', 'Quán karaoke bao phòng?', 'Bar rooftop view đẹp?'],
   travel: ['Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu', 'Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu'],
   spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
-  general: ['🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Ăn gì ngon hôm nay gần đây?'],
+  general: ['Mình đang phân vân giữa hai lời mời làm việc, giúp mình cân nhắc nhé', 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu'],
 }
 
 // English mirror of QUICK_PROMPTS — picked by the active locale. Vietnamese
@@ -129,7 +129,7 @@ const QUICK_PROMPTS_EN: Record<string, string[]> = {
   entertainment: ['IMAX movie theaters?', 'Karaoke places with private rooms?', 'Rooftop bars with a great view?'],
   travel: ['Đà Nẵng itinerary, 3 days, 2 people, 5M budget', 'Phú Quốc itinerary, 4 days, 2 people, 8M budget', 'Hội An weekend itinerary, 2 days, 3M budget'],
   spa: ['Affordable massage spas?', 'Good gel nail salons?', 'Trusted skincare centers?'],
-  general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
+  general: ["I'm torn between two job offers — help me weigh them", 'Explain compound interest with an easy example', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget'],
 }
 
 type CTAButton = import('@/lib/structuredContent/parseCta').CTAButton
@@ -1260,7 +1260,8 @@ export default function ChatInterface({
   const handleNearbySearch = useCallback(() => {
     const send = () => {
       posthog.capture('nearby_search_clicked')
-      append({ role: 'user', content: 'Gợi ý quán ăn và địa điểm vui chơi gần mình nhé' })
+      // The "📍 Nearby" chip is a place-search TOOL button — what it asks for is the place search, not a statement of Tappy's scope.
+      append({ role: 'user', content: 'Gợi ý vài địa điểm hay ở gần mình nhé' })
     }
 
     if (userLocation) { send(); return }
@@ -2039,6 +2040,23 @@ export default function ChatInterface({
         )}
         {/* Action chips */}
         <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
+          {/* Not a scope: Tappy answers any topic. These two lead the bar so the place/trip tools below are not the whole story. */}
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'advice_chip' }); setInput(t('chat.chipAdvicePrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipAdvice')}
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'explain_chip' }); setInput(t('chat.chipExplainPrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipExplain')}
+          </button>
           <button
             type="button"
             onClick={handleNearbySearch}

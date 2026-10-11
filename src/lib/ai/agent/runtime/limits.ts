@@ -29,6 +29,13 @@ export const RUNTIME_LIMITS = {
   maxTaskUpdates: 3,
   /** M3: pages read_page may open per turn (each is also one of the tool calls). */
   maxPageReads: 4,
+  /**
+   * CONSULTATIVE_IN_AGENT (flag on only): pages one turn may open when the answer must be verified on official pages (several sources of a
+   * fresh fact, a rate/price/schedule/regulation). Same 8 tool calls, same 85 s deadline, same SSRF / size / 8 s-per-page limits, no Serper credit
+   * (a page read is a plain HTTPS fetch). Reads of one call run in parallel, so the extra reads cost one more tool round (~3–8 s), never more
+   * than the deadline allows.
+   */
+  maxPageReadsConsult: 6,
 } as const
 
 export type RuntimeLimits = { -readonly [K in keyof typeof RUNTIME_LIMITS]: number }
