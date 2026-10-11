@@ -89,6 +89,8 @@ export interface RuntimeInput {
   refuseAsk?: (a: AskUser) => string | { note: string; kind: string } | null
   /** CONSULT_ASK_GATE=shadow: the gate only logs what it would refuse (askGate.ts); every question is shown. */
   askGateShadow?: boolean
+  /** CONSULTATIVE_IN_AGENT: no answer-first check on a verification / exact-number turn (the lookup is the answer). */
+  skipAnswerFirst?: boolean
   /** CONSULTATIVE_IN_AGENT: a preface paragraph the researched answer restates in other words is dropped (answerFirst.ts). */
   dedupeParaphrase?: boolean
   /** CONSULTATIVE_IN_AGENT: the answer-before-lookup check runs concurrently with the lookup instead of before it (same output, less waiting). */
@@ -298,7 +300,12 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       if (answerFirst === 'n/a') answerFirst = 'with_step'
     } else if (answerFirst === 'n/a' && prefaces.length === 0 && toolCalls === 0) {
       const names = toolCallsThisStep.map(tc => { const r = input.resolveCall?.({ toolName: tc.toolName, args: stripWhy(tc.args) }); return r && 'toolName' in r ? r.toolName : tc.toolName })
-      if (checkApplies(names)) {
+      if (checkApplies(names) && input.skipAnswerFirst === true) {
+        // CONSULTATIVE_IN_AGENT: a "nghe nói … đúng không" / "bao nhiêu" turn is answered ONCE, from the lookup (a no-tools guess written before it
+        // contradicted the researched answer: live Snow Crash 2026-10-11).
+        answerFirst = 'nothing_yet'
+        T.add('answer_first', { round, outcome: 'skipped_verify_turn', chars: 0, ms: 0 })
+      } else if (checkApplies(names)) {
         const left = input.deadlineAt - now()
         if (!input.answerFirstModel) answerFirst = 'not_checked'
         else if (left > L.finalReserveMs + 6_000) {

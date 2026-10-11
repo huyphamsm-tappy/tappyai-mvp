@@ -156,6 +156,15 @@ export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[],
   }).join('\n\n')).filter(p => p.trim())
 }
 
+/**
+ * A turn that asks to VERIFY a claim ("nghe nói … đúng không", "có thật không") or for an exact figure ("bao nhiêu", "mấy …"): the lookup IS the answer,
+ * so no answer-first guess is written before it (flag only).
+ */
+export function isVerifyTurn(text: string): boolean {
+  const f = ` ${(text ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `
+  return /(?: )(?:nghe noi|co that|co dung|that khong|dung (?:ko|khong|k|chu|hong|hok)|bao nhieu|may (?:nguoi|cai|lan|nam|nuoc))(?: )/.test(f)
+}
+
 /** A final text that goes on from the preface ("Nhưng mình cần đính chính: …") reads as the same answer: it is joined with a space, not a paragraph break. */
 const GOES_ON = /^[\s*_"'“‘(]*(?:nhưng|tuy nhiên|tuy vậy|còn|và|song|however|but)(?![\p{L}\p{N}])/iu
 

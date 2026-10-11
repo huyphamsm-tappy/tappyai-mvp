@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
-import { composeFinal } from './agent/runtime/answerFirst'
+import { composeFinal, isVerifyTurn } from './agent/runtime/answerFirst'
 
 // Snow Crash, turn 2, live 2026-10-11 on 3018 (audit trace, verbatim): TWO model calls each answered — the answer-first check wrote
 // "À, bạn đang nói tới Snow Crash…" and the final step wrote "Đúng tên là Snow Crash…". composeFinal joined them as two paragraphs.
@@ -9,6 +9,19 @@ const PREFACE_ONE = 'À, bạn đang nói tới **Snow Crash** của Neal Stephe
 const FINAL = 'Đúng tên là **Snow Crash** của Neal Stephenson. Nhưng mình cần đính chính: cuốn này được nhắc đến như tác phẩm khai sinh khái niệm “Metaverse”, chứ mình chưa có nguồn đáng tin xác nhận Mark Zuckerberg và Bill Gates cùng thích hoặc cùng đọc nó. Có thể bạn đang nhớ lẫn với **Seveneves** — Bill Gates từng giới thiệu tiểu thuyết khoa học viễn tưởng này của chính Neal Stephenson, nhưng điều đó không xác nhận Mark cũng đọc cuốn ấy.'
 
 const paragraphs = (s: string) => s.split(/\n{2,}/).filter(Boolean)
+
+describe('verify / exact-number turns skip the answer-first guess', () => {
+  it.each([
+    'nghe nói Mark của meta và billgate thêm 1 vài người nữa cùng sở thích đọc 1 cuốn tiểu thuyết đúng ko',
+    'vậy tesla có bao nhiêu sáng kiến và hiện đã ứng dụng được bao nhiêu cái rồi',
+    'có thật không vậy',
+  ])('yes: %s', t => expect(isVerifyTurn(t)).toBe(true))
+  it.each([
+    'cuối tuần sau tui muốn đi du lịch có gợi ý gì ko',
+    'lên kế hoạch đi Nha Trang đi đôi, ăn chay, 3 ngày 2 đêm cuối tuần sau',
+    'cuốn tiểu thuyết nói về tưởng tượng của tương lai, hình như tên snow gì đó',
+  ])('no: %s', t => expect(isVerifyTurn(t)).toBe(false))
+})
 
 describe('Snow Crash: one answer, not two', () => {
   it('flag off (control): the two answers are joined as two paragraphs', () => {
