@@ -19,7 +19,7 @@ import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbacke
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
-import { directionsAppendix } from './directionsAppendix'
+import { directionsAppendix, productSearchAppendix } from './directionsAppendix'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
@@ -3481,6 +3481,12 @@ export function applyPlaceEnrichmentStreamFilter(
     if (collector?.consultative && !collector.appendix && groundedRecs.length === 0) {
       const d = directionsAppendix({ userText: (collector.userTexts ?? [userText]).slice(-1)[0] ?? userText, rows: places as ReadonlyArray<{ name?: string; address?: string; place_id?: string }>, lang })
       if (d) { collector.setAppendix(d); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'directions_appendix', links: d.links.length })) }
+    }
+    // CONSULTATIVE_IN_AGENT: a product answer with prices but no shopping card and no purchase link (round 9: the deep merchant links were refused as
+    // shallow Google redirects) → one marketplace SEARCH link per registry marketplace for the keyword the model searched (productSearchAppendix).
+    if (collector?.consultative && !collector.appendix && productQueries.length > 0) {
+      const p = productSearchAppendix({ userText: (collector.userTexts ?? [userText]).slice(-1)[0] ?? userText, searchedQuery: productQueries[0], cardCarriesLinks: !!collector.shoppingMarker, lang })
+      if (p) { collector.setAppendix(p); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'product_search_appendix', links: p.links.length })) }
     }
     const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
     const ctaOwnedProse = collector?.appendix

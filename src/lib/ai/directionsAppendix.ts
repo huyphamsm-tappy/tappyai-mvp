@@ -11,11 +11,28 @@
 // The URL is the Google Maps URLs API (https only, no key); the model never writes it, and it says "mình đã kèm link" only if this block exists.
 
 import { directionsUrl } from '@/lib/recommendation/actions'
+import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
 
-const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+const fold =(s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 
 /** The user asks HOW TO GET to a place (not for the place's hours, price or reviews). */
 const DIRECTIONS_INTENT = /(?:^| )(?:chi duong|chi giup duong|duong di(?: toi| den)?|di (?:toi|den) .* (?:nhu the nao|bang cach nao|the nao)|tim duong|dan duong|how (?:do i|to) get to|directions? to|route to|navigate to)(?: |$)/
+
+/** The user asks where to BUY something or for a price/link. */
+const BUY_INTENT = /(?:^| )(?:mua|link|o dau|gia|gia tham khao|bao nhieu|where to buy|buy|price)(?: |$)/
+
+/**
+ * A product answer that carries prices but no purchase link / shopping card: one search link per marketplace for the keyword the model SEARCHED
+ * (the same CCP-registry templates the A3 block uses — https search URLs built here, never by the model). null when a card carries the links
+ * already, when nothing was searched, or when the user did not ask where to buy / what it costs.
+ */
+export function productSearchAppendix(o: { userText: string; searchedQuery: string | null | undefined; cardCarriesLinks: boolean; lang?: string }): { text: string; links: Array<{ name: string; url: string }> } | null {
+  const q = (o.searchedQuery ?? '').replace(/\s+/g, ' ').trim().slice(0, 80)
+  if (o.cardCarriesLinks || q.length < 3 || !BUY_INTENT.test(` ${fold(o.userText)} `)) return null
+  const links = buildShoppingLinks(q).filter(l => /^https:\/\//i.test(l.url)).slice(0, 3)
+  if (!links.length) return null
+  return { text: o.lang === 'en' ? 'Search this product on the marketplaces:' : 'Tìm sản phẩm này trên các sàn:', links }
+}
 
 export interface DirectionsRow { name?: string; address?: string; place_id?: string }
 

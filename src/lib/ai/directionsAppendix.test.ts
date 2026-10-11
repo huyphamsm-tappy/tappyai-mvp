@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
-import { directionsAppendix } from './directionsAppendix'
+import { directionsAppendix, productSearchAppendix } from './directionsAppendix'
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
 
@@ -64,5 +64,41 @@ describe('through the stream filter', () => {
     const out = await run(false)
     expect(out).not.toContain('Chỉ đường:')
     expect(out).not.toContain('maps/dir')
+  })
+})
+
+describe('product answer without a card: marketplace SEARCH links (code-built)', () => {
+  it('pure: only when the user asked where to buy / the price, something was searched, and no card carries links', () => {
+    const a = productSearchAppendix({ userText: 'Tìm giúp mình tai nghe Sony WH-1000XM5, giá khoảng bao nhiêu và xem mua ở đâu?', searchedQuery: 'Sony WH-1000XM5 tai nghe', cardCarriesLinks: false })
+    expect(a?.text).toBe('Tìm sản phẩm này trên các sàn:')
+    expect(a!.links.length).toBeGreaterThan(0)
+    for (const l of a!.links) { expect(l.url).toMatch(/^https:\/\//); expect(l.url).toContain(encodeURIComponent('Sony WH-1000XM5 tai nghe')); expect(l.url).not.toMatch(/^(grab|shopee|momo):/) }
+    expect(productSearchAppendix({ userText: 'Tìm giúp mình tai nghe Sony', searchedQuery: 'Sony', cardCarriesLinks: false })).toBeNull() // query too short
+    expect(productSearchAppendix({ userText: 'Mình hay nghe nhạc buổi tối', searchedQuery: 'tai nghe sony', cardCarriesLinks: false })).toBeNull() // no buy / price intent
+    expect(productSearchAppendix({ userText: 'xem mua ở đâu?', searchedQuery: 'tai nghe sony', cardCarriesLinks: true })).toBeNull() // a card already carries the links
+    expect(productSearchAppendix({ userText: 'xem mua ở đâu?', searchedQuery: null, cardCarriesLinks: false })).toBeNull()
+  })
+
+  const ASK = 'Tìm giúp mình tai nghe Sony WH-1000XM5, giá khoảng bao nhiêu và xem mua ở đâu?'
+  async function run(flag: boolean) {
+    const collector = createEnrichmentCollector(ASK)
+    collector.agentMode = true; collector.semanticRanking = true
+    if (flag) collector.consultative = true
+    const frames = [
+      '9:{"toolCallId":"t1","toolName":"search_products","args":{"query":"Sony WH-1000XM5 tai nghe"}}',
+      'a:' + JSON.stringify({ toolCallId: 't1', result: { source: 'serper_shopping', results: [] } }),
+      '0:' + JSON.stringify('Giá tham khảo khoảng 6,49 triệu đồng; nhớ kiểm tra bảo hành trước khi mua.'),
+      'd:{"finishReason":"stop"}',
+    ]
+    const res = applyPlaceEnrichmentStreamFilter(new Response(frames.join('\n') + '\n'), 'vi', collector, (async () => new Map()) as never, undefined, undefined, false, ASK, true, (async () => ({ perPlace: new Map(), batch: null })) as never, 'Quận 1')
+    const lines = (await new Response(res.body).text()).split('\n').filter(Boolean)
+    return lines.filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+  }
+
+  it('flag ON: the reply ends with the search-link block; flag OFF: nothing is added (control)', async () => {
+    const on = await run(true)
+    expect(on).toContain('Tìm sản phẩm này trên các sàn:')
+    expect(on).toMatch(/\]\(https:\/\/[^)]*Sony%20WH-1000XM5%20tai%20nghe/)
+    expect(await run(false)).not.toContain('Tìm sản phẩm này trên các sàn')
   })
 })
