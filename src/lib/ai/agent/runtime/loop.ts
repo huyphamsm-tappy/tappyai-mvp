@@ -30,6 +30,7 @@ import { toolInputHash, traceQuery, resultCount, type AgentRunTrace } from './tr
 import { toolStateOf, withToolState } from './toolState'
 import { withFreshness } from '../../freshness'
 import { checkApplies, checkNote, composeFinal, parseCheck, prefaceNote } from './answerFirst'
+import { auditTrace } from '../../auditTrace'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -166,6 +167,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
       try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'compose', prefaces, final: text, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) })) } catch { /* diagnostics only */ }
     }
+    auditTrace('compose', 'compose', { prefaces: [...prefaces], final: text, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }), status })
     return { text: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
@@ -204,7 +206,9 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       return done('', 'model_error', timedOut ? 'time_budget' : 'model_error')
     }
     steps.push(step)
-    const meta = (step.providerMetadata?.tappy ?? {}) as { cost?: { usd?: number }; fellBack?: boolean; primaryAborted?: boolean; fallbackReason?: string }
+    // Audit-only trace (auditTrace.ts, off by default): what this model step wrote, whole, before anything touches it.
+    auditTrace('model_step', 'snapshot', { round, step: steps.length, final, modelId: step.modelId ?? null, finish: step.finishReason ?? null, tools: (step.toolCalls ?? []).map(c => c.toolName), text: step.text ?? '' })
+    const meta =(step.providerMetadata?.tappy ?? {}) as { cost?: { usd?: number }; fellBack?: boolean; primaryAborted?: boolean; fallbackReason?: string }
     const calls = final ? [] : step.toolCalls
     const askCall = calls.find(c => c.toolName === ASK_USER)
     const decision = final ? 'final_answer' : askCall ? 'ask' : calls.length ? 'tools' : step.text.trim() ? 'answer' : 'empty'
@@ -414,6 +418,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     for (const pl of planned) {
       const event: ToolEvent = { round, name: pl.name, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)
+      auditTrace('tool_result', 'tool_result', { round, tool: pl.name, outcome: pl.outcome, ms: event.ms })
       // WS2 final: every result carries ONE explicit state (SUCCESS · EMPTY · TIMEOUT · ERROR · UNAVAILABLE) — a failure is never evidence.
       const state = toolStateOf(pl.outcome, pl.result)
       pl.result = withToolState(pl.result, state, input.lang)

@@ -45,6 +45,7 @@ import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
 import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
 import type { AgentTurnInput } from '@/lib/ai/agent'
+import { auditTrace } from '@/lib/ai/auditTrace'
 import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
 import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
@@ -2885,6 +2886,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
     agentRunTrace.guard(stage, before, after)
+    auditTrace('guard', 'guard', { stage, before, after })
     // Local UAT only, opt-in (never in production): the VERBATIM text before and after each stage that changed the reply.
     if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
       try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'guard', stage, before, after })) } catch { /* diagnostics only */ }
