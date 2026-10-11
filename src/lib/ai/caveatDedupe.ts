@@ -10,6 +10,9 @@ const BLOCKS = /\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g
 const CAVEAT = /(?<!\p{L})(?:chưa|không)\s+(?:\S+\s+){0,3}?(?:xác minh|xác nhận|kiểm chứng|kiểm tra được|có (?:dữ liệu|giá|số|thông tin))|(?:could not|couldn't|cannot|can't|unable to|no)\s+(?:\S+\s+){0,2}?(?:verify|confirm|data|price)|(?:not|n't)\s+(?:been\s+)?verif/iu
 const MAX_CAVEAT_LEN = 160
 
+/** The text already admits something is not verified / has no data (any sentence length). */
+export const admitsUnverified = (text: string): boolean => CAVEAT.test(text.replace(BLOCKS, ' '))
+
 const fold = (s: string) => s.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
 const tokens = (s: string) => new Set(fold(s).split(' ').filter(t => t.length > 1))
 const jaccard = (a: Set<string>, b: Set<string>) => { let i = 0; for (const t of a) if (b.has(t)) i++; return i / (a.size + b.size - i || 1) }

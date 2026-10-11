@@ -76,7 +76,7 @@ import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
-import { dedupeCaveats } from './caveatDedupe'
+import { admitsUnverified, dedupeCaveats } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
 import { stripClosingInvite } from './closingInvite'
 import { appendPlanBudget, vndAmountsIn } from './planBudget'
@@ -3571,7 +3571,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // (fare, flight times, flight status, showtime, ticket price) — the system's sentence leads unless the reply already says it.
     const fareLead0 = verificationLead({ flight: flightFareUnverified, movie: movieFactsUnverified, userText, prose: ctaOwnedProse, lang })
     // CONSULTATIVE_IN_AGENT: the lead is dropped when the prose already carries a "not verified" sentence (the lead would be its twin).
-    const fareLead = fareLead0 && collector?.consultative === true && dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length ? '' : fareLead0
+    // (audit trace, Snow Crash / flight turn 2026-10-11: the model's own "Chưa xác minh được giá vé …" and the code lead "Giá vé hiện chưa xác minh được …" stood
+    // back to back — the lead's `alreadySaid` wants "giá" BEFORE "chưa xác minh" and the model's sentence is > 160 characters, so neither dedupe saw it.)
+    const fareLead = fareLead0 && collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length) ? '' : fareLead0
     const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
     finalReplyText = finalText

@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
 import { composeFinal, isVerifyTurn } from './agent/runtime/answerFirst'
+import { admitsUnverified } from './caveatDedupe'
 
 // Snow Crash, turn 2, live 2026-10-11 on 3018 (audit trace, verbatim): TWO model calls each answered — the answer-first check wrote
 // "À, bạn đang nói tới Snow Crash…" and the final step wrote "Đúng tên là Snow Crash…". composeFinal joined them as two paragraphs.
@@ -9,6 +10,17 @@ const PREFACE_ONE = 'À, bạn đang nói tới **Snow Crash** của Neal Stephe
 const FINAL = 'Đúng tên là **Snow Crash** của Neal Stephenson. Nhưng mình cần đính chính: cuốn này được nhắc đến như tác phẩm khai sinh khái niệm “Metaverse”, chứ mình chưa có nguồn đáng tin xác nhận Mark Zuckerberg và Bill Gates cùng thích hoặc cùng đọc nó. Có thể bạn đang nhớ lẫn với **Seveneves** — Bill Gates từng giới thiệu tiểu thuyết khoa học viễn tưởng này của chính Neal Stephenson, nhưng điều đó không xác nhận Mark cũng đọc cuốn ấy.'
 
 const paragraphs = (s: string) => s.split(/\n{2,}/).filter(Boolean)
+
+describe('flight turn: the model already admitted it, so the code lead is not added (audit trace 2026-10-11)', () => {
+  const model = 'Chưa xác minh được giá vé khứ hồi cho 2 người, chặng TP.HCM – Nha Trang, đi 17/10 và về 19/10/2026; giờ bay và tình trạng chuyến cũng chưa xác minh. Bạn có thể xem giá theo ngày ở các nút bên dưới.'
+  it('a long model sentence that opens with "Chưa xác minh được giá vé" counts as the admission', () => {
+    expect(admitsUnverified(model)).toBe(true)
+    expect(admitsUnverified('Vé khứ hồi từ 1.200.000đ (Vexere, tra 11/10).')).toBe(false)
+  })
+  it('machine blocks are not read as prose', () => {
+    expect(admitsUnverified('[TAPPY_PLAN]{"a":"chưa xác minh được"}[/TAPPY_PLAN] Xong.')).toBe(false)
+  })
+})
 
 describe('verify / exact-number turns skip the answer-first guess', () => {
   it.each([
