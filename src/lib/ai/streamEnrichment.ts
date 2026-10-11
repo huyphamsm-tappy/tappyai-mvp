@@ -3626,7 +3626,7 @@ export function applyPlaceEnrichmentStreamFilter(
             // A5-P1: release the part that the guard provably cannot touch, instead of making the
             // user wait for the whole reply. Only before a place tool — see `progressive`.
             if (progressive && !placeToolSeen) {
-              const point = egressPoint(safeFlushPoint(mainText))
+              const point = egressPoint(safeFlushPoint(mainText, false, !!collector?.consultative))
               if (point > flushedText.length) {
                 const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                 flushedText = mainText.slice(0, point)
@@ -3683,7 +3683,7 @@ export function applyPlaceEnrichmentStreamFilter(
               // longer applies. Without this the common "one opening sentence, then the tool" shape
               // released nothing and the user still stared at ~13.6s of blank screen.
               if (progressive && !placeToolSeen) {
-                const point = egressPoint(safeFlushPoint(mainText, true))
+                const point = egressPoint(safeFlushPoint(mainText, true, !!collector?.consultative))
                 if (point > flushedText.length) {
                   const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                   flushedText = mainText.slice(0, point)
