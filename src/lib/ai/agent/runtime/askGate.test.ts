@@ -16,8 +16,12 @@ describe('askRefusal — never ask first what the owner rule says is assumed', (
   it('directions without an origin: where-from / vehicle questions are refused', () => {
     expect(askRefusal('Chỉ đường giúp mình tới Nhà thờ Đức Bà', 'Bạn xuất phát từ đâu và đi bằng gì?', 'vi')).toMatch(/vị trí hiện tại/)
   })
-  it('other questions pass: a missing destination / length / party, or a plan request that lacks them', () => {
-    expect(askRefusal(PLAN, 'Bạn thích nghỉ dưỡng hay khám phá?', 'vi')).toBeNull()
+  it('full-info plan: ANY question is refused (live: after origin and year, "cuối tháng 12 hay mùa biển êm hơn?" was asked)', () => {
+    expect(askRefusal(PLAN, 'Cuối tháng 12 biển động, bạn muốn giữ đúng thời điểm hay chuyển mùa biển êm hơn?', 'vi')).toMatch(/nói rõ ngay trong kế hoạch/)
+    expect(askRefusal(PLAN, 'Bạn thích nghỉ dưỡng hay khám phá?', 'vi')).toMatch(/Không hỏi câu này/)
+  })
+  it('other questions pass: a missing destination, or a plan request that lacks length / party / budget', () => {
+    expect(askRefusal('Lập kế hoạch 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu', 'Bạn muốn đi đâu?', 'vi')).toBeNull() // the destination is what is missing
     expect(askRefusal('Lập kế hoạch đi chơi giúp mình', 'Bạn muốn đi đâu?', 'vi')).toBeNull()
     expect(askRefusal('Lập kế hoạch đi Đà Lạt giúp mình', 'Bạn xuất phát từ đâu?', 'vi')).toBeNull() // no length / party / budget stated: not a full-info request
     expect(askRefusal('Mình đang phân vân quá', 'Bạn xuất phát từ đâu?', 'vi')).toBeNull()
@@ -59,7 +63,7 @@ describe('loop — a refused ask continues the turn', () => {
     expect(r.status).toBe('asked')
   })
   it('a question that is not gated is shown at once', async () => {
-    const { r } = await run([step('', [[ASK_USER, { question: 'Bạn thích nghỉ dưỡng hay khám phá?' }]])], true)
+    const { r } = await run([step('', [[ASK_USER, { question: 'Bạn muốn đi đâu?' }]])], true)
     expect(r.status).toBe('asked')
   })
 })

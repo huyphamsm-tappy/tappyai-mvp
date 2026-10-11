@@ -24,9 +24,13 @@ export function askRefusal(userText: string, question: string, lang: string): st
   const q = ` ${fold(question)} `
   const planKnown = PLAN_REQUEST.test(u) && DURATION.test(u) && PARTY_OR_BUDGET.test(u)
   const dir = DIRECTIONS.test(u)
-  const topic = (planKnown && (ORIGIN_OR_VEHICLE_Q.test(q) || YEAR_OR_DAY_Q.test(q))) || (dir && ORIGIN_OR_VEHICLE_Q.test(q))
+  // A request that states destination, length, party and budget is complete: ANY question is refused (live 2026-10-11: after origin and year
+  // were refused the model asked "cuối tháng 12 hay mùa biển êm hơn" — a risk to say inside the plan, not a reason to hold the plan back).
+  // Directions: only where-from / vehicle.
+  const aboutDestination = /di dau|den dau|diem den|noi nao|vung nao|tinh nao|where (?:do you|would you) want to go|which destination/.test(q)
+  const topic = (planKnown && !aboutDestination) || (dir && ORIGIN_OR_VEHICLE_Q.test(q))
   if (!topic) return null
   return lang === 'en'
-    ? 'Do not ask this: the request already has what the plan needs. Assume the nearest coming date for a month without a year, assume a sensible way to get there from the main hub, say each assumption in one short line, and answer now. Invite the user to give the starting point or exact date at the END to adjust.'
-    : 'Không hỏi câu này: yêu cầu đã đủ để làm. Tháng chưa nói năm thì lấy lần gần nhất sắp tới; chưa biết xuất phát hay phương tiện thì giả định hợp lý (vd từ đầu mối giao thông chính), nêu mỗi giả định trong một dòng ngắn rồi làm luôn. Chỉ mời người dùng cho biết nơi xuất phát hoặc ngày cụ thể ở CUỐI câu trả lời để chỉnh lại. Với chỉ đường: dùng vị trí hiện tại của người dùng.'
+    ? 'Do not ask this: the request already has what the plan needs. Assume the nearest coming date for a month without a year, assume a sensible way to get there from the main hub, say each assumption in one short line, and answer now. If the timing is risky (rough sea, weather, holidays) say so inside the plan and offer the alternative there. Invite the user to give the starting point or exact date at the END to adjust.'
+    : 'Không hỏi câu này: yêu cầu đã đủ để làm. Tháng chưa nói năm thì lấy lần gần nhất sắp tới; chưa biết xuất phát hay phương tiện thì giả định hợp lý (vd từ đầu mối giao thông chính), nêu mỗi giả định trong một dòng ngắn rồi làm luôn. Nếu thời điểm có rủi ro (biển động, thời tiết, dịp lễ) thì nói rõ ngay trong kế hoạch và nêu phương án thay thế ở đó. Chỉ mời người dùng cho biết nơi xuất phát hoặc ngày cụ thể ở CUỐI câu trả lời để chỉnh lại. Với chỉ đường: dùng vị trí hiện tại của người dùng.'
 }
