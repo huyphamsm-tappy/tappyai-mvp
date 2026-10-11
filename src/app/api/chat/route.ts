@@ -67,6 +67,7 @@ import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
 import { commerceActorHash } from '@/lib/ccp'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
@@ -2454,7 +2455,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           productsOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_products', step: 'from_chat_state', rows: stored.length }))
           const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang, { merchantLinks: enrichmentMode === 'links' })
-          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          const filteredAll = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          // CONSULTATIVE_IN_AGENT: no product row whose link ends on a login wall (Shopee product pages, checked logged-out) — loginWallHosts.ts.
+          const filtered = consultativeAgent ? dropLoginWallRows(filteredAll, 'search_results') : filteredAll
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           // Kept for "xem thêm" / "bác": the RANKED rows, shortlist first — not the raw search (replay SHOP-3: the raw
           // rows held chargers and laptop stands the ranker had set aside, and "xem thêm" reached exactly those).
