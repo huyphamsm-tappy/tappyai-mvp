@@ -19,6 +19,7 @@ import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbacke
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
 import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { directionsAppendix } from './directionsAppendix'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
@@ -3475,6 +3476,12 @@ export function applyPlaceEnrichmentStreamFilter(
     gt('risk_backstop', serverCta ? stripModelCta(prose) : prose, ctaOwnedProseBase)
     // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
     // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.
+    // CONSULTATIVE_IN_AGENT: "chỉ đường tới <a place the turn retrieved>" with no place card → the same Directions link as the card button, code-built
+    // (directionsAppendix.ts). First appendix wins, so the A3 block keeps priority; only when the user asked for directions and the row is verified.
+    if (collector?.consultative && !collector.appendix && groundedRecs.length === 0) {
+      const d = directionsAppendix({ userText: (collector.userTexts ?? [userText]).slice(-1)[0] ?? userText, rows: places as ReadonlyArray<{ name?: string; address?: string; place_id?: string }>, lang })
+      if (d) { collector.setAppendix(d); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'directions_appendix', links: d.links.length })) }
+    }
     const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
     const ctaOwnedProse = collector?.appendix
       ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
