@@ -77,6 +77,9 @@ import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import { dedupeCaveats } from './caveatDedupe'
+import { auditTrace } from './auditTrace'
+import { stripClosingInvite } from './closingInvite'
+import { appendPlanBudget, vndAmountsIn } from './planBudget'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
 
 // The AI SDK data-stream protocol used by streamText().toDataStreamResponse():
@@ -1720,6 +1723,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const gt = (stage: string, before: string, after: string): void => { if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } } }
   // Local UAT only, opt-in (TAPPY_UAT_STREAM_TRACE=1, never in production): the VERBATIM model chunks that arrive and the frames that leave.
   const uatTrace = (ev: string, text: string): void => {
+    // Audit-only structured trace (auditTrace.ts): delta = model text arriving, final = the frame that leaves the server.
+    auditTrace(ev, ev === 'chunk_in' ? 'delta' : 'final', { text })
     if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
       try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev, text })) } catch { /* diagnostics only */ }
     }
@@ -2781,7 +2786,14 @@ export function applyPlaceEnrichmentStreamFilter(
     if (entityGuard) gt('entity_name', afterGate, entityGuard.text)
     const evRestored = evShield.restore(entityGuard ? entityGuard.text : afterGate)
     if (collector?.evidenceTrace && evShield.report.sentences) { try { collector.evidenceTrace({ ...evShield.report }) } catch { /* trace only */ } }
-    const budgeted = appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
+    const budgeted0 = appendPlanBudgetMath(planMask.restore(evRestored), collector?.userTexts ?? [userText], lang).text
+    // CONSULTATIVE_IN_AGENT: the model's `budget_lines` (unit prices) become the labelled whole-party budget, computed here (planBudget.ts).
+    const budgeted = collector?.consultative === true && budgeted0.includes('[TAPPY_PLAN]')
+      ? appendPlanBudget(budgeted0, [
+        ...[...planPriceEvidenceFromRows(latestPlaces as Record<string, unknown>[], snippetPricesByEntity).values()].flat(),
+        ...gateEvidenceCorpus.flatMap(vndAmountsIn),
+      ], vnToday(), lang).text
+      : budgeted0
     // Consult V2: the server's buttons replace whatever [FOLLOWUPS] the model wrote (web reads the FIRST block).
     // The "còn N lựa chọn" line is COUNTED here, not left to the model (replay 2026-09-29: the model
     // dropped it on every pick): N = candidates the search returned − the ones this reply names.
@@ -3516,7 +3528,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // finish frame. Fixed text only; see `riskBackstop.ts`.
     gt('fallback_narration_tidy', gated.text, groundedProse)
     // CONSULTATIVE_IN_AGENT: several emitters (the model, the figure line, the gate) can each say "not verified"; the reply keeps the first.
-    const ctaOwnedProseBase = collector?.consultative === true ? dedupeCaveats(riskBackstopped(serverCta ? stripModelCta(prose) : prose)) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
+    // …and the generic closing invitation ("Nếu bạn thích mình có thể gợi ý thêm") is dropped (closingInvite.ts).
+    const ctaOwnedProseBase = collector?.consultative === true ? stripClosingInvite(dedupeCaveats(riskBackstopped(serverCta ? stripModelCta(prose) : prose))) : riskBackstopped(serverCta ? stripModelCta(prose) : prose)
     gt('risk_backstop', serverCta ? stripModelCta(prose) : prose, ctaOwnedProseBase)
     // A3 (2026-10-02): the code-built block of the «only another model found» turn (wrongModel.ts): its sentence, then one search link per marketplace
     // (hosts and grammars from the CCP registry via buildShoppingLinks), each line through the sanitiser and the label escaper like every other site.
