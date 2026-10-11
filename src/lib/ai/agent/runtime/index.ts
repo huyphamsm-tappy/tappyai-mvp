@@ -213,7 +213,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
-      ...(i.consultative === true ? { refuseAsk: (a: { question: string }) => askRefusal(typeof lastUser?.content === 'string' ? lastUser.content : Array.isArray(lastUser?.content) ? (lastUser.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : '', a.question, i.lang) } : {}),
+      ...(i.consultative === true ? { refuseAsk: (a: { question: string }) => askRefusal(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,

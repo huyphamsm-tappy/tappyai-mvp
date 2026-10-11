@@ -27,7 +27,8 @@ export function askRefusal(userText: string, question: string, lang: string): st
   // A request that states destination, length, party and budget is complete: ANY question is refused (live 2026-10-11: after origin and year
   // were refused the model asked "cuối tháng 12 hay mùa biển êm hơn" — a risk to say inside the plan, not a reason to hold the plan back).
   // Directions: only where-from / vehicle.
-  const aboutDestination = /di dau|den dau|diem den|noi nao|vung nao|tinh nao|where (?:do you|would you) want to go|which destination/.test(q)
+  // asking WHERE to go (the destination is what is missing) is never refused; "đổi điểm đến nếu biển xấu" is a different question
+  const aboutDestination = /(?:^| )(?:di dau|den dau|di noi nao|noi nao|vung nao|tinh nao|diem den (?:nao|cua ban|la gi))(?: |$)|where (?:do you|would you) want to go|which destination/.test(q)
   const topic = (planKnown && !aboutDestination) || (dir && ORIGIN_OR_VEHICLE_Q.test(q))
   if (!topic) return null
   return lang === 'en'

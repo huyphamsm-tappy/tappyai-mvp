@@ -19,6 +19,8 @@ describe('askRefusal — never ask first what the owner rule says is assumed', (
   it('full-info plan: ANY question is refused (live: after origin and year, "cuối tháng 12 hay mùa biển êm hơn?" was asked)', () => {
     expect(askRefusal(PLAN, 'Cuối tháng 12 biển động, bạn muốn giữ đúng thời điểm hay chuyển mùa biển êm hơn?', 'vi')).toMatch(/nói rõ ngay trong kế hoạch/)
     expect(askRefusal(PLAN, 'Bạn thích nghỉ dưỡng hay khám phá?', 'vi')).toMatch(/Không hỏi câu này/)
+    // the exact question asked live (it contains "điểm đến" but asks about the weather risk, not about where to go)
+    expect(askRefusal(PLAN, 'Cuối tháng 12 biển Lý Sơn có thể động, ảnh hưởng chuyến tàu và lịch đi biển; bạn muốn mình lập theo hướng ưu tiên ngắm cảnh trong điều kiện thời tiết bất định, hay có thể đổi điểm đến nếu biển xấu?', 'vi')).toMatch(/Không hỏi câu này/)
   })
   it('other questions pass: a missing destination, or a plan request that lacks length / party / budget', () => {
     expect(askRefusal('Lập kế hoạch 3 ngày 2 đêm cho 2 người, ngân sách 6 triệu', 'Bạn muốn đi đâu?', 'vi')).toBeNull() // the destination is what is missing
