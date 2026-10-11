@@ -2397,7 +2397,7 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }), { destination: collector?.planTurn ? planDestination : null })
+      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true ? { keepSights: true } : {}) })
       : null
     if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
@@ -2410,12 +2410,13 @@ export function applyPlaceEnrichmentStreamFilter(
     // TRIP FACTS (owner 2026-09-28, B4): a trip plan never states a date, a departure city or an
     // inter-city leg the user did not give — the reply asks for them instead (planTripFactsGuard).
     const itemized = planItems ? planItems.text : tipped
-    const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText]) : null
+    const tripFacts = itemized.includes('[TAPPY_PLAN]') ? guardPlanTripFacts(itemized, collector?.userTexts ?? [userText], collector?.consultative === true ? { assumeLegs: true } : {}) : null
     if (tripFacts && (tripFacts.labelsCleaned || tripFacts.stopsDropped || tripFacts.sentencesDropped || tripFacts.daysTrimmed)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_trip_facts', missing: tripFacts.missing, labels_cleaned: tripFacts.labelsCleaned, stops_dropped: tripFacts.stopsDropped, sentences_dropped: tripFacts.sentencesDropped, days_trimmed: tripFacts.daysTrimmed ?? 0 }))
     // A travel turn never states a travel DATE the user did not give (c40 O8: 'giả sử … hôm nay (28/9)'
     // while the fare links searched 05/10) — planTripFactsGuard.guardUngivenTravelDate.
     const tripped = tripFacts ? tripFacts.text : itemized
-    const dated = travelIntent ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
+    // CONSULTATIVE_IN_AGENT: the date in the reply is the system calendar's resolution of "cuối tuần sau" etc. (an assumption the reply states), not an invented one.
+    const dated = travelIntent && collector?.consultative !== true ? guardUngivenTravelDate(tripped, collector?.userTexts ?? [userText]) : null
     if (dated?.dropped) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'travel_ungiven_date', dropped: dated.dropped }))
     gt('enrichment_inject', mainText, enrichedProse)
     gt('plan_repair', enrichedProse, planRepair.text)

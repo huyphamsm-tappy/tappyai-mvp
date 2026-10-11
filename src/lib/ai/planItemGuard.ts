@@ -119,6 +119,8 @@ export interface PlanItemGuardResult {
   text: string; matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number
   /** c40 T6: stops moved to their row's opening time / stops whose out-of-hours time was cleared. */
   timesMoved: number; timesCleared: number
+  /** Sights kept by name from the model's general knowledge (flag on only). */
+  sightsKept?: number
   /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
   outOfArea?: number
 }
@@ -168,7 +170,7 @@ export function addressInDestination(address: unknown, key: string): boolean {
   return ` ${fold(address)} `.includes(` ${key} `)
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null } = {}): PlanItemGuardResult {
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -190,7 +192,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
 
   for (const day of plan.days) {
@@ -211,6 +213,21 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         continue
       }
       let place = (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
+      if (place && opts.keepSights && used.has(place) && kind !== 'hotel') {
+        // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two.
+        res.dropped++; continue
+      }
+      if (!place && opts.keepSights && (kind === 'attraction' || kind === 'entertainment') && typeof item.name === 'string' && item.name.trim()) {
+        // CONSULTATIVE_IN_AGENT: a well-known sight named from the model's own knowledge when the tools returned too few places. Kept by NAME only:
+        // no price, link, place id or address survives, and a description carrying a figure (hours, price) is replaced by a plain note.
+        item.price = typeof item.price === 'string' && /chưa có giá|miễn phí|free/i.test(item.price) ? item.price : ''
+        for (const f of ['address', 'maps_link', 'place_id', 'photo_url', 'booking_link']) delete item[f]
+        delete item.booking_links
+        if (typeof item.description === 'string' && /\d/.test(item.description)) item.description = 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+        res.sightsKept = (res.sightsKept ?? 0) + 1
+        kept.push(item)
+        continue
+      }
       if (place) {
         res.matched++
       } else {
@@ -239,7 +256,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     day.items = kept
     fitTimesToHours(kept, placeOf, res)
   }
-  if (!res.matched && !res.replaced && !res.dropped && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
+  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
