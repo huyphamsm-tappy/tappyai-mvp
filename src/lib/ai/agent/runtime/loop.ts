@@ -30,7 +30,7 @@ import { toolInputHash, traceQuery, resultCount, type AgentRunTrace } from './tr
 import { toolStateOf, withToolState } from './toolState'
 import { withFreshness } from '../../freshness'
 import { checkApplies, checkNote, composeFinal, parseCheck, prefaceNote } from './answerFirst'
-import { auditTrace } from '../../auditTrace'
+import { auditTrace, auditTraceOn } from '../../auditTrace'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -167,7 +167,10 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
       try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'compose', prefaces, final: text, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) })) } catch { /* diagnostics only */ }
     }
-    auditTrace('compose', 'compose', { prefaces: [...prefaces], final: text, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }), status })
+    // (audit-only) the compose steps one by one, so a cut / repeat can be placed in the join itself
+    const stages: Record<string, unknown> = {}
+    const composedForTrace = auditTraceOn() ? composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase, trace: (stage, value) => { stages[stage] = value } }) : ''
+    auditTrace('compose', 'compose', { prefaces: [...prefaces], final: text, composed: composedForTrace, stage_lens: Object.fromEntries(Object.entries(stages).map(([k, v]) => [k, Array.isArray(v) ? v.map(x => String(x).length) : String(v).length])), status })
     return { text: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
