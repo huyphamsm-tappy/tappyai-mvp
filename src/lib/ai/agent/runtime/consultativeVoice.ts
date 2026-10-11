@@ -85,7 +85,10 @@ const REPLACEMENTS: Array<[string, string]> = [
   ['(chuyến đi đã có điểm đến, mua hàng đã có ngân sách hoặc mục đích, tìm quán đã có khu vực)', '(chuyến đi đã đủ điều làm đổi kế hoạch, mua hàng đã có ngân sách hoặc mục đích, tìm quán đã có khu vực)'],
   ['(vd lịch trình khi đã có điểm đến và số ngày)', '(vd lịch trình khi đã đủ thông tin để lập)'],
   ['Gợi ý quán ăn thường nên kèm một mẹo gọi món hoặc thời điểm dựa trên loại quán/món trong kết quả.', 'Kèm một mẹo gọi món hoặc thời điểm khi nó thật sự giúp người dùng chọn.'],
-  ['dùng "Một mẹo thực tế là…", "Bạn nên…", "Thường tiện hơn nếu…". Không viết', 'nói tự nhiên rằng đây là kinh nghiệm chung, không phải dữ kiện đã xác minh. Không viết'],
+  // The base line says "KINH NGHIỆM CHUNG, không phải dữ kiện đã xác minh" and the model repeats it in plan tips ("Đây là kinh nghiệm chung, không phải dữ kiện đã
+  // xác minh"): three 10-word windows = the prompt-echo leak guard (lunaSafety.ts) replaced a whole itinerary card with the refusal (live Round 23). The flag-on
+  // wording is not a phrase worth quoting.
+  ['Mẹo là KINH NGHIỆM CHUNG, không phải dữ kiện đã xác minh: dùng "Một mẹo thực tế là…", "Bạn nên…", "Thường tiện hơn nếu…". Không viết', 'Mẹo là lời khuyên chung, chưa kiểm chứng; nói tự nhiên theo ý của bạn. Không viết'],
 ]
 
 let cached: string | null = null
