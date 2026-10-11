@@ -48,12 +48,17 @@ export function checkNote(calls: ReadonlyArray<Pick<AgentToolCall, 'toolName' | 
 }
 
 /** Appended on every later step once a preface exists: it is kept and shown first, so the answer after the lookup must not restate it. */
-export function prefaceNote(lang: string, shown: readonly string[] = []): string {
+export function prefaceNote(lang: string, shown: readonly string[] = [], noRestate = false): string {
   const quoted = shown.map(s => s.trim()).filter(Boolean).join('\n\n').slice(0, 1800)
+  // CONSULTATIVE_IN_AGENT (`dedupeParaphrase`): passport, live 2026-10-11 — the answer after the lookup repeated the documents, where to submit and the
+  // "not verified" caveat the reader had just seen (two model calls joined, no guard involved). The instruction is explicit about those three kinds.
+  const strict = !noRestate ? '' : lang === 'en'
+    ? '\n\nDo not repeat the documents, the place to submit, the steps or the "not verified" caveat already shown above, not even in other words. Write only what the lookup ADDED or CHANGED (a confirmed source, a corrected rule, a figure) and, if something above could not be confirmed, say that ONCE in a single sentence. Do not refer to "the earlier part" by quoting figures that are not in the text shown above.'
+    : '\n\nĐừng nhắc lại hồ sơ, nơi nộp, các bước hay câu "chưa xác minh" đã hiển thị ở trên, kể cả bằng lời khác. Chỉ viết điều tra cứu BỔ SUNG hoặc SỬA (nguồn đã xác nhận, quy định chính xác hơn, con số) và, nếu có điều ở trên chưa xác nhận được, nói đúng MỘT lần trong một câu. Đừng nhắc "phần trước" bằng cách trích con số không có trong văn bản đã hiển thị ở trên.'
   const tail = quoted
     ? (lang === 'en' ? `\n\nAlready shown to the user, verbatim:\n"""\n${quoted}\n"""` : `\n\nĐã hiển thị cho người dùng, nguyên văn:\n"""\n${quoted}\n"""`)
     : ''
-  return prefaceCore(lang) + tail
+  return prefaceCore(lang) + tail + strict
 }
 
 function prefaceCore(lang: string): string {
