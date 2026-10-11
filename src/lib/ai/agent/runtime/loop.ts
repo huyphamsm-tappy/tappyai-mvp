@@ -85,7 +85,7 @@ export interface RuntimeInput {
    * CONSULTATIVE_IN_AGENT (askGate.ts): a note when this question must not be asked first (null = ask it). The model reads the note as the result
    * of its ask_user call and goes on; at most two refusals per turn, so a later question is always shown. Absent → every question is shown.
    */
-  refuseAsk?: (a: AskUser) => string | null
+  refuseAsk?: (a: AskUser) => string | { note: string; kind: string } | null
 }
 
 export interface RuntimeRun {
@@ -156,6 +156,10 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     T.status = status
     T.stopReason = stopReason
     T.counters.toolCalls = toolCalls
+    // Local UAT only, opt-in (never in production): what the runtime composed from the prefaces and the final step.
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'compose', prefaces, final: text, composed: composeFinal(prefaces, text) })) } catch { /* diagnostics only */ }
+    }
     return { text: composeFinal(prefaces, text) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
@@ -233,10 +237,14 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     if (askCall) {
       const ask = parseAskUser(stripWhy(askCall.args))
       const others = calls.filter(c => c !== askCall && c.toolName !== UPDATE_TASK).map(c => c.toolName)
-      const refusal = ask && input.refuseAsk && askRefusals < 2 && others.length === 0 ? input.refuseAsk(ask) : null
+      const verdict = ask && input.refuseAsk && askRefusals < 2 && others.length === 0 ? input.refuseAsk(ask) : null
+      const refusal = typeof verdict === 'string' ? verdict : verdict?.note ?? null
       if (ask && refusal) {
         askRefusals++
-        T.add('ask', { round, decision: 'refused', refusals: askRefusals })
+        const kind = typeof verdict === 'object' && verdict ? verdict.kind : 'unspecified'
+        T.add('ask', { round, decision: 'refused', refusals: askRefusals, kind })
+        // the condition TYPE only — never the user's words or the question
+        console.log(JSON.stringify({ type: 'tappyai_ask_gate', decision: 'refused', kind, refusals: askRefusals }))
         messages.push({ role: 'assistant', content: [...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : []), ...taskCallParts(), { type: 'tool-call' as const, toolCallId: askCall.toolCallId, toolName: askCall.toolName, args: stripWhy(askCall.args) }] })
         messages.push({ role: 'tool', content: [...taskParts(), { type: 'tool-result' as const, toolCallId: askCall.toolCallId, toolName: askCall.toolName, result: { refused: true, note: refusal } }] })
         continue

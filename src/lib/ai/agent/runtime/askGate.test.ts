@@ -1,11 +1,46 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
-import { askRefusal } from './askGate'
+import { askRefusal, askVerdict, askGateEnabled } from './askGate'
 import { runAgentRuntime, type RuntimeInput, type RuntimeStep } from './loop'
 import { AgentRunTrace } from './trace'
 import { ASK_USER } from './controlTools'
 
 const PLAN = 'Mình muốn đi Lý Sơn 3 ngày 2 đêm vào cuối tháng 12, đi 2 người (mình và bạn gái), ngân sách khoảng 6 triệu cả hai người, thích biển. Lập kế hoạch giúp mình nhé.'
+
+describe('askGate — every case where a real question must NOT be gated', () => {
+  const FULL = '3 ngày 2 đêm, 2 người, ngân sách 6 triệu. Lập kế hoạch giúp mình.'
+  it('two destinations to choose between (A hay B / chọn giúp / so sánh)', () => {
+    expect(askVerdict(`Mình muốn đi biển, Phú Quốc hay Nha Trang, giúp mình chọn. ${FULL}`, 'Bạn thích nơi yên tĩnh hay sôi động?', 'vi')).toBeNull()
+    expect(askVerdict(`Phú Quốc hay Nha Trang? ${FULL}`, 'Bạn ưu tiên điều gì?', 'vi')).toBeNull()
+    expect(askVerdict(`So sánh Đà Lạt và Sa Pa giúp mình. ${FULL}`, 'Bạn thích lạnh đến mức nào?', 'vi')).toBeNull()
+  })
+  it('destination undecided ("chưa biết đi đâu", "đi đâu cũng được")', () => {
+    expect(askVerdict(`Mình chưa biết đi đâu. ${FULL}`, 'Bạn thích biển hay núi?', 'vi')).toBeNull()
+    expect(askVerdict(`Đi đâu cũng được. ${FULL}`, 'Bạn thích khí hậu nào?', 'vi')).toBeNull()
+    expect(askVerdict(`Gợi ý cho mình điểm đến. ${FULL}`, 'Bạn muốn đi đâu?', 'vi')).toBeNull()
+  })
+  it('a question asking where to go is never gated, even on a full-info request', () => {
+    expect(askVerdict(PLAN, 'Bạn muốn đi đâu?', 'vi')).toBeNull()
+  })
+  it('no plan request / not enough stated → not gated (date unclear, no length, no party)', () => {
+    expect(askVerdict('Mình muốn đi du lịch nhưng chưa biết đi đâu', 'Bạn thích biển hay núi?', 'vi')).toBeNull()
+    expect(askVerdict('Lập kế hoạch đi Đà Lạt', 'Bạn đi mấy ngày?', 'vi')).toBeNull()
+    expect(askVerdict('Giá vé máy bay đi Đà Nẵng ngày nào rẻ nhất?', 'Bạn đi ngày nào?', 'vi')).toBeNull()
+    expect(askVerdict('Mình có hai offer, nên chọn cái nào?', 'Bạn xuất phát từ đâu?', 'vi')).toBeNull()
+  })
+  it('the user asks back / a directions request that asks nothing about origin is not gated', () => {
+    expect(askVerdict('Chỉ đường tới Chợ Bến Thành', 'Bạn muốn đến cổng nào của chợ?', 'vi')).toBeNull()
+  })
+  it('verdict carries only a condition kind', () => {
+    expect(askVerdict(PLAN, 'Bạn xuất phát từ đâu?', 'vi')?.kind).toBe('plan_full_info')
+    expect(askVerdict('Chỉ đường tới Chợ Bến Thành', 'Bạn xuất phát từ đâu?', 'vi')?.kind).toBe('directions_origin')
+  })
+  it('emergency switch: CONSULT_ASK_GATE=off|0|false disables, unset/other enables', () => {
+    expect(askGateEnabled({})).toBe(true)
+    expect(askGateEnabled({ CONSULT_ASK_GATE: 'on' })).toBe(true)
+    for (const v of ['off', '0', 'false', ' OFF ']) expect(askGateEnabled({ CONSULT_ASK_GATE: v })).toBe(false)
+  })
+})
 
 describe('askRefusal — never ask first what the owner rule says is assumed', () => {
   it('full-info plan: origin, vehicle, year and exact-day questions are refused', () => {

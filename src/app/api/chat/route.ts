@@ -2878,6 +2878,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
   if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
     agentRunTrace.guard(stage, before, after)
+    // Local UAT only, opt-in (never in production): the VERBATIM text before and after each stage that changed the reply.
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'guard', stage, before, after })) } catch { /* diagnostics only */ }
+    }
     // POST-UAT diagnostics (local UAT only, opt-in): which sentences a guard removed — reply text, so never in production.
     if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && process.env.NODE_ENV !== 'production') {
       try {

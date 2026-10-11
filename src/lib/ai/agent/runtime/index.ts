@@ -29,7 +29,7 @@ import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evide
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
 import { withProductFallback, withNewsFallback } from './toolState'
-import { askRefusal } from './askGate'
+import { askVerdict, askGateEnabled } from './askGate'
 import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
@@ -213,7 +213,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
-      ...(i.consultative === true ? { refuseAsk: (a: { question: string }) => askRefusal(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
+      // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
+      ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,

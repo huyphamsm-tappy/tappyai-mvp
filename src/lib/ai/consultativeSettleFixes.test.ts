@@ -107,6 +107,16 @@ describe('2 · no-fabrication gate: worked examples', () => {
     }
   })
 
+  it('FIX: a comparison computed FROM the example figures (133,8 − 130 = 3,8) is kept; one that is not computed from them is still cut', () => {
+    const base = 'Ví dụ gửi 100 triệu, lãi suất 6%/năm trong 5 năm:\n- Lãi đơn: 100 triệu × (1 + 6% × 5) = 130 triệu.\n- Lãi kép: 100 triệu × (1 + 6%)^5 ≈ 133,8 triệu.\n\n'
+    const ok = noFabricationGate(`${base}Sau 5 năm, lãi kép nhiều hơn khoảng 3,8 triệu.`, EV, { lang: 'vi', illustrations: true })
+    expect(ok.text).toContain('3,8 triệu')
+    expect(ok.noteAdded).toBe(false)
+    const bad = noFabricationGate(`${base}Sau 5 năm, lãi kép nhiều hơn khoảng 9 triệu.`, EV, { lang: 'vi', illustrations: true })
+    expect(bad.text).not.toContain('9 triệu')
+    expect(bad.noteAdded).toBe(true)
+  })
+
   it('NOT loosened: a current rate stated as fact inside a calculation-looking sentence is still judged', () => {
     const r = noFabricationGate('Ví dụ lãi suất tiết kiệm hiện nay là 6,5%/năm ở mọi ngân hàng.', EV, { lang: 'vi', illustrations: true })
     expect(r.removedSentences).toBeGreaterThan(0)
@@ -119,8 +129,9 @@ const NAME_TEXT = 'Với **4 triệu cho hai người** thì vừa; vàng đang 
 
 describe('3 · entity-name guard: amounts are not names', () => {
   it('the helper: amounts and quantities yes, names no', () => {
-    for (const a of ['4 triệu cho hai người', '3 triệu đồng/lượng', '2 ngày 1 đêm', '10 triệu']) expect(isAmountPhrase(a), a).toBe(true)
-    for (const n of ['Galaxy S26 Ultra', 'iPhone 18 Pro Max', 'WH-1000XM5']) expect(isAmountPhrase(n), n).toBe(false)
+    // live 2026-10-11 (gold): a decimal-comma quantity "3,45 chỉ" was labelled as a name
+    for (const a of ['4 triệu cho hai người', '3 triệu đồng/lượng', '2 ngày 1 đêm', '10 triệu', '3,45 chỉ', 'khoảng 3,46 chỉ', '1,5 lượng', 'gần 50 triệu']) expect(isAmountPhrase(a), a).toBe(true)
+    for (const n of ['Galaxy S26 Ultra', 'iPhone 18 Pro Max', 'WH-1000XM5', 'SJC 9999', 'Nhẫn Tròn 9999', 'Pixel 9 Pro']) expect(isAmountPhrase(n), n).toBe(false)
   })
 
   it('OLD: the amount phrases are labelled "(mình chưa thấy tên này trong nguồn đã tra)" — the defect', () => {

@@ -448,7 +448,9 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
       let state: ClaimState
       if (userGiven(c, ix)) { if (c.lo !== undefined) knownMoney.push(c.lo, c.hi!); continue }
       // CONSULTATIVE_IN_AGENT: a figure inside a worked calculation example is the example's own, not a claim to source (see `inIllustration`).
-      if (illustrative && (c.category === 'price' || c.category === 'market')) { state = 'INFERENCE'; counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
+      // …and it is a value the next sentences may compute from: "130 triệu" and "133,8 triệu" in the example make "nhiều hơn 3,8 triệu" a
+      // derived figure (live 2026-10-11: that comparison sentence was cut and the note said "chưa xác minh giá hiện tại").
+      if (illustrative && (c.category === 'price' || c.category === 'market')) { state = 'INFERENCE'; if (c.lo !== undefined) knownMoney.push(c.lo, c.hi!); counts[state]++; claims.push({ category: c.category, state, value: c.value.slice(0, 60) }); continue }
       const isMoney = (c.category === 'price' || c.category === 'market') && c.lo !== undefined
       // A result the sentence's own expression contradicts is a wrong calculation, never a fact (even if the figure appears elsewhere).
       if (isMoney && math.wrong.some(w => near(w, [c.lo!], 0.002, 1)) && !math.checked.some(w => near(w, [c.lo!], 0.002, 1))) {

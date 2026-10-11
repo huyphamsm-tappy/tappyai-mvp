@@ -68,8 +68,13 @@ export function isAmountPhrase(bold: string): boolean {
   const w = words(bold)
   if (w.length === 0) return false
   if (/^\d+$/.test(w[0]) && w.length > 1 && QUANTITY_WORD.has(w[1])) return true
-  return MONEY_AMOUNT.test(bold)
+  if (MONEY_AMOUNT.test(bold)) return true
+  // Live 2026-10-11: "**3,45 chỉ**" (a decimal comma splits into "3" "45" "chi") was labelled as a name. A run whose words, once the numbers are
+  // taken out, are all quantity / filler words ("3,45 chỉ", "khoảng 50 triệu", "2 ngày 1 đêm") names nothing.
+  const rest = fold(bold).replace(/\d[\d.,]*/g, ' ').split(/[^a-z]+/).filter(Boolean)
+  return rest.length > 0 && rest.length < w.length && rest.every(x => QUANTITY_WORD.has(x) || AMOUNT_FILLER.has(x))
 }
+const AMOUNT_FILLER = new Set(['cho', 'khoang', 'hon', 'gan', 'duoi', 'tren', 'moi', 'tu', 'den', 'toi', 'va', 'hai', 'ba', 'bon', 'khoang', 'tuong', 'duong'])
 
 export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi', opts: { skipAmounts?: boolean } = {}): EntityGuardResult {
   if (!text || ev.corpus.length === 0) return { text, ungrounded: [], checked: 0 }

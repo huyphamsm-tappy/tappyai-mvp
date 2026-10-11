@@ -1717,6 +1717,12 @@ export function applyPlaceEnrichmentStreamFilter(
   if (collector?.agentMode) bufferMode = true
   // Phase 8 (TAPPY_AGENT=2): every text change a settle-path stage makes goes to the run trace — observation only, never alters the text.
   const gt = (stage: string, before: string, after: string): void => { if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } } }
+  // Local UAT only, opt-in (TAPPY_UAT_STREAM_TRACE=1, never in production): the VERBATIM model chunks that arrive and the frames that leave.
+  const uatTrace = (ev: string, text: string): void => {
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev, text })) } catch { /* diagnostics only */ }
+    }
+  }
   /**
    * 🚨 A TICKET QUESTION MUST BE GUARDED EVEN WHEN NO PLACE TOOL RUNS.
    *
@@ -3569,6 +3575,7 @@ export function applyPlaceEnrichmentStreamFilter(
       console.warn(JSON.stringify({ type: 'tappyai_guard', guard: 'progressive_flush', kind: 'released_prefix_mismatch', released_chars: flushedSent.length, settled_chars: outText.length }))
     }
     const send = releasedEnd === null ? outText : outText.slice(releasedEnd)
+    uatTrace('final_out', send)
     if (send) controller.enqueue(encoder.encode('0:' + JSON.stringify(send) + '\n'))
 
     /**
@@ -3623,6 +3630,7 @@ export function applyPlaceEnrichmentStreamFilter(
             awaitingPostToolText = false
             try {
               const delta = JSON.parse(line.slice(2)) as string
+              uatTrace('chunk_in', delta)
               mainText += delta
               assistantSoFar += delta
             } catch { /* skip malformed */ }
@@ -3634,6 +3642,7 @@ export function applyPlaceEnrichmentStreamFilter(
                 const slice = unemphasizeLinks(egressSlice(mainText.slice(flushedText.length, point)))
                 flushedText = mainText.slice(0, point)
                 flushedSent += slice
+                uatTrace('flush_out', slice)
                 controller.enqueue(encoder.encode('0:' + JSON.stringify(slice) + '\n'))
               }
             }
