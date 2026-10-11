@@ -18,7 +18,7 @@ import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } 
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
-import { guardPlanItems, type PlanPlace } from './planItemGuard'
+import { guardPlanItems, wantsVegetarian, type PlanPlace } from './planItemGuard'
 import { directionsAppendix, productSearchAppendix } from './directionsAppendix'
 import { guardPlanTripFacts, guardUngivenTravelDate } from './planTripFactsGuard'
 import { repairPlanBlock } from './planJsonRepair'
@@ -2402,9 +2402,9 @@ export function applyPlaceEnrichmentStreamFilter(
       ? guardPlanItems(tipped, latestPlaces.map(p => {
         const c = places.find(q => (q.name || '').trim().toLowerCase() === (p.name || '').trim().toLowerCase()) as { commerce_links?: PlanPlace['commerce_links'] } | undefined
         return { ...(p as PlanPlace), ...(c?.commerce_links ? { commerce_links: c.commerce_links } : {}) }
-      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true ? { keepSights: true } : {}) })
+      }), { destination: collector?.planTurn ? planDestination : null, ...(collector?.consultative === true ? { keepSights: true, vegetarian: wantsVegetarian(collector?.userTexts ?? [userText]) } : {}) })
       : null
-    if (planItems && (planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared }))
+    if (planItems && (planItems.mealSlots || planItems.replaced || planItems.dropped || planItems.linksSet || planItems.linksRemoved || planItems.timesMoved || planItems.timesCleared || planItems.outOfArea)) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_items', out_of_area: planItems.outOfArea ?? 0, matched: planItems.matched, replaced: planItems.replaced, dropped: planItems.dropped, links_set: planItems.linksSet, links_removed: planItems.linksRemoved, times_moved: planItems.timesMoved, times_cleared: planItems.timesCleared, ...(planItems.mealSlots ? { meal_slots: planItems.mealSlots, veg_slots: planItems.vegSlots ?? 0 } : {}) }))
     // 🚨 UAT 2026-09-28 (live, uat @ 062c7ec: every "Đà Nẵng 3 ngày 2 đêm" plan card broken). The
     // prose guards below cut SENTENCES and CLAUSES — hours ("mở cửa 10:00-21:00"), prices, formats —
     // and they ran over the [TAPPY_PLAN] JSON too: a cut took "lễ tân mở cửa 24/7, check-in từ
