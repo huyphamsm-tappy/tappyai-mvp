@@ -2445,7 +2445,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
     // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
     const guardedRaw = collector?.semanticRanking
-      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true })
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(collector?.consultative === true ? { decimalSafe: true } : {}) })
       : guardMoneyClaimsInText(enriched, productRecords, productQueries)
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
