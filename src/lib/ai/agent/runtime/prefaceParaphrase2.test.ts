@@ -20,9 +20,9 @@ describe('passport, second live run: what the join does today', () => {
     const out = composeFinal([PREFACE], FINAL)
     expect(out.split(/\n{2,}/)).toHaveLength(6)
   })
-  it('MEASURED LIMIT: word overlap between these paragraphs is below both thresholds, so the deterministic dedupe keeps them (no safe rule drops them)', () => {
+  it('round 19: word overlap stays below the old thresholds, so the documents / place paragraphs are kept; only the preface paragraph that says "not verified" goes (the answer says it once, with its source)', () => {
     const kept = withoutParaphrasedPrefaceParagraphs([PREFACE], FINAL)
-    expect(kept.join('\n\n')).toBe(PREFACE)
+    expect(kept.join('\n\n')).toBe(PREFACE.split('\n\n').slice(0, 2).join('\n\n'))
   })
   it('the instruction to the model: flag on adds "do not repeat documents / place / caveat"; flag off is byte-identical to before', () => {
     const off = prefaceNote('vi', [PREFACE])

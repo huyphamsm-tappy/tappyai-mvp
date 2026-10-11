@@ -52,6 +52,13 @@ describe('preface paragraph restated by an uncited final paragraph', () => {
   it('near-restatement is dropped (flag path)', () => {
     expect(withoutParaphrasedPrefaceParagraphs([p], f)).toEqual([])
   })
+  it('live Snow Crash pair: two "no evidence found" paragraphs about the same claim collapse to the later one', () => {
+    const pre = 'Mình chưa thấy bằng chứng đáng tin rằng Mark Zuckerberg và Bill Gates cùng đọc cuốn này; có thể bạn đang nhớ nhầm với một nhận xét khác về ảnh hưởng của sách lên ý tưởng metaverse.'
+    const fin = 'Đúng cuốn bạn nhớ là Snow Crash của Neal Stephenson. Bill Gates từng viết rằng ông đã đọc cuốn này; còn mình chưa tìm thấy nguồn đáng tin xác nhận Mark Zuckerberg cũng đọc nó hoặc có một nhóm người nổi tiếng cùng đọc. Có thể bạn nhớ chuyện Snow Crash gắn với khái niệm metaverse, chứ không phải họ cùng đọc sách.'
+    expect(withoutParaphrasedPrefaceParagraphs([pre], fin)).toEqual([])
+    // control: a preface that says something else about the topic stays
+    expect(withoutParaphrasedPrefaceParagraphs(['Snow Crash là tiểu thuyết khoa học viễn tưởng năm 1992 của Neal Stephenson, nơi thế giới ảo song song với đời thực và một loại virus lan qua cả hai.'], fin)).toHaveLength(1)
+  })
   it('an unrelated final paragraph keeps the preface', () => {
     expect(withoutParaphrasedPrefaceParagraphs([p], 'Hôm nay trời Nha Trang nắng đẹp, nhiệt độ khoảng ba mươi độ, thích hợp đi biển vào buổi sáng sớm và chiều muộn.')).toEqual([p])
   })
