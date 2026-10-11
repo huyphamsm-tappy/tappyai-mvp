@@ -104,6 +104,9 @@ describe('the static system message', () => {
     // directions without an origin: never ask where from / by what; the link starts from the current location
     expect(ASK_USER_DESCRIPTION_CONSULT).toMatch(/chỉ đường tới một nơi mà không nói xuất phát: KHÔNG hỏi xuất phát hay phương tiện/)
     expect(askUserTool({ consultative: false }).description).not.toMatch(/chỉ đường/)
+    // origin is never a reason to ask first, even for a far destination or an island (live 2026-10-11: Lý Sơn asked "xuất phát từ đâu")
+    expect(ASK_USER_DESCRIPTION_CONSULT).toMatch(/cả khi điểm đến xa hay là đảo.*KHÔNG hỏi trước/)
+    expect(CONSULT_PRINCIPLES).toMatch(/Nơi xuất phát không bao giờ là lý do để hỏi trước, kể cả khi điểm đến xa hay là đảo/)
     expect(CONSULT_PRINCIPLES).toMatch(/nếu họ chỉ hỏi gợi ý thì chỉ gợi ý/)
     expect(CONSULT_PRINCIPLES).toMatch(/không kèm thêm danh sách địa điểm trùng lặp/)
     // the old instructions it replaces are gone (see the `gone` list above) and the remaining plan lines point at the new rule
