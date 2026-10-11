@@ -51,3 +51,32 @@ describe('progressive flush never releases a sentence carrying a [S#] marker (fl
     expect(out.match(/Làm hộ chiếu phổ thông lần đầu khá gọn/g)!.length).toBeGreaterThan(1)
   })
 })
+
+describe('a Shopee page is not offered as a source button (it is a login wall without a session)', () => {
+  const SHOPEE = 'https://shopee.vn/list/noi-chien/philips/hd9200'
+  const DMX = 'https://www.dienmayxanh.com/noi-chien-khong-dau/philips-hd9200-90'
+  async function runShop(flag: boolean) {
+    const ask = 'Nồi chiên Philips HD9200 mua ở đâu, giá sao?'
+    const collector = createEnrichmentCollector(ask)
+    collector.agentMode = true
+    if (flag) collector.consultative = true
+    collector.citationSources = [{ id: 'S1', host: 'shopee.vn', url: SHOPEE }, { id: 'S2', host: 'dienmayxanh.com', url: DMX }]
+    const frames = [
+      '9:{"toolCallId":"t1","toolName":"web_search","args":{"queries":["x"]}}',
+      'a:' + JSON.stringify({ toolCallId: 't1', result: { results: [{ title: 'a', link: SHOPEE }, { title: 'b', link: DMX }] } }),
+      '0:' + JSON.stringify('Máy này bán ở Điện máy Xanh với mô tả đầy đủ [S2]. Shopee cũng có bài đăng về máy này [S1].'),
+      'd:{"finishReason":"stop"}',
+    ]
+    const res = applyPlaceEnrichmentStreamFilter(new Response(frames.join('\n') + '\n'), 'vi', collector, (async () => new Map()) as never, undefined, undefined, false, ask, true, (async () => ({ perPlace: new Map(), batch: null })) as never)
+    const lines = (await new Response(res.body).text()).split('\n').filter(Boolean)
+    return lines.filter(l => l.startsWith('0:')).map(l => JSON.parse(l.slice(2)) as string).join('')
+  }
+  it('flag ON: no shopee link, the other source stays', async () => {
+    const out = await runShop(true)
+    expect(out).not.toMatch(/shopee\.vn\//)
+    expect(out).toContain('(https://www.dienmayxanh.com/noi-chien-khong-dau/philips-hd9200-90)')
+  })
+  it('CONTROL — flag OFF: the shopee link is attached as before', async () => {
+    expect(await runShop(false)).toContain('https://shopee.vn/list/noi-chien/philips/hd9200')
+  })
+})

@@ -3371,7 +3371,10 @@ export function applyPlaceEnrichmentStreamFilter(
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
       const integrity = enforceCitationIntegrity(figLine.text)
       if (integrity.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity.removed }))
-      return citeSources(integrity.text, collector.citationSources, allowedUrls, lang)
+      // CONSULTATIVE_IN_AGENT: a Shopee page the agent read is not offered as a source button — opened without a login it is a "Login Required" page
+      // (checked 2026-10-11 in a browser with no session). The facts it gave were still read; only the button is dropped.
+      const buttonSources = collector.consultative ? collector.citationSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host) && !/^https?:\/\/(?:[^/]*\.)?shopee\./i.test(s.url)) : collector.citationSources
+      return citeSources(integrity.text, buttonSources, allowedUrls, lang)
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
       // V1 backstop: the pick is the FIRST sentence of the body; the model's text follows. The same
