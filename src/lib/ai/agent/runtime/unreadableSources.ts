@@ -14,6 +14,21 @@ const DISCLOSES = /(?<!\p{L})(?:chưa|không)\s+(?:\S+\s+){0,3}?(?:xác minh|xá
 interface Row { link?: unknown; title?: unknown }
 
 /**
+ * CONSULTATIVE_IN_AGENT step note, second case (live 2026-10-11, petrol, run 2): the page that WAS read is a topic list (vnexpress "chủ đề giá
+ * xăng dầu": article titles, no figure). A price / rate question whose pages state no money figure at all, with read_page not yet tried: open ONE
+ * dated article from a different host before answering. Same cost rules as above (a read is not a Serper credit).
+ */
+export function noFigureReadNote(s: { priceIntent: boolean; pagesRead: number; pagesWithMoney: number; readPageCalls: number }, lang: string): string | null {
+  if (!s.priceIntent || s.pagesRead < 1 || s.pagesWithMoney > 0 || s.readPageCalls > 0) return null
+  return lang === 'en'
+    ? '\n\nThe page(s) you read state no figure (they look like topic lists). Open ONE dated article page that states the figure with read_page, from a host you have not read, before answering; if none states it, say the figure is not verified.'
+    : '\n\nCác trang đã đọc không nêu con số nào (có vẻ là trang danh sách chủ đề). Mở thêm MỘT trang bài viết có ngày và nêu con số bằng read_page, từ host chưa đọc, rồi mới trả lời; nếu không trang nào nêu thì nói số đó chưa xác minh.'
+}
+
+/** A question about a price / rate / amount (folded, no diacritics). */
+export const PRICE_INTENT = /(?:^| )(?:gia|ty gia|bao nhieu tien|chi phi|price|rate|cost|how much)(?: |$)/
+
+/**
  * CONSULTATIVE_IN_AGENT step note: a web search ran, NO page could be read (timeout / network error / blocked) and read_page has not been tried:
  * ask for ONE more official page before answering. A page read is a plain HTTPS fetch — no Serper credit, same page budget and deadline. Live
  * 2026-10-11 (petrol): the two pages web_search opened both failed (one timed out at 7.4 s, one network error), the model answered on the spot,
