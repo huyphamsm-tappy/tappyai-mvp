@@ -212,7 +212,7 @@ export function freshCarried(ev: Pick<GuardEvidence, 'carried' | 'constraintsSig
 // ── judging ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /** `today`: the system clock's day/month. When set, a dd/mm (or dd/mm/yyyy) naming exactly that day is the model framing "hôm nay (11/10)", not a claim the page must repeat. Any other date is judged as before. */
-export interface JudgeOptions { cutUnsourcedMoney?: boolean; lang?: string;knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
+export interface JudgeOptions { cutUnsourcedMoney?: boolean; retrievedTexts?: readonly string[]; lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
 
 /** Today's day/month/year in Vietnam time (the server clock may be UTC). */
 export function vnToday(now: Date = new Date()): { day: number; month: number; year: number } {
@@ -259,7 +259,10 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
         // Live 2026-10-11 (petrol): the shield only LABELS an unsupported sentence; the other guards decide. With the flag a cited money amount that
         // no page of the turn states at all is not left to them: the sentence goes and the one "chưa xác minh" line + source buttons replace it.
         const everyPage = [...byId.values()].flatMap(c => c.ix)
-        const unsourcedMoney = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage))
+        // …and not in any other retrieved text of the turn (search snippets, tool rows): the read pages hold only 8 extracted passages, so a price the
+        // retailer's SNIPPET states (live 2026-10-11, Philips kettle) is sourced, just not by the page's passages. Only a figure stated nowhere is cut.
+        const retrieved = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage)) ? index((o.retrievedTexts ?? []).slice(0, 120)) : []
+        const unsourcedMoney = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage) && !numberAnywhere(q, retrieved))
         return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'MODEL_KNOWLEDGE' as const, reason: names.length && coveredByUnscoped(qs, all, cue) ? 'value_not_with_entity' : 'cited_value_not_in_source', ...(misattributed ? { misattributed: true } : {}), ...(unsourcedMoney ? { unsourcedMoney: true } : {}) } }
       }
       // Provenance affects validation: a source weak for this kind of fact supports only an attributed sentence.
