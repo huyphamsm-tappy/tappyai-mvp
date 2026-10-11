@@ -209,7 +209,24 @@ export function freshCarried(ev: Pick<GuardEvidence, 'carried' | 'constraintsSig
 
 // ── judging ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-export interface JudgeOptions { lang?: string; knownNames?: readonly string[] }
+/** `today`: the system clock's day/month. When set, a dd/mm (or dd/mm/yyyy) naming exactly that day is the model framing "hôm nay (11/10)", not a claim the page must repeat. Any other date is judged as before. */
+export interface JudgeOptions { lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
+
+/** Today's day/month/year in Vietnam time (the server clock may be UTC). */
+export function vnToday(now: Date = new Date()): { day: number; month: number; year: number } {
+  const p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Ho_Chi_Minh', day: 'numeric', month: 'numeric', year: 'numeric' }).formatToParts(now)
+  const n = (t: string) => Number(p.find(x => x.type === t)?.value)
+  return { day: n('day'), month: n('month'), year: n('year') }
+}
+
+/** Blanks today's date (system-clock framing) out of a sentence before its values are extracted. */
+export function withoutTodayDate(body: string, t: { day: number; month: number; year?: number }): string {
+  return body.replace(/(?<![\d/.])(\d{1,2})\/(\d{1,2})(?:\/(\d{2,4}))?(?![\d/])/g, (m, d: string, mo: string, y?: string) => {
+    if (Number(d) !== t.day || Number(mo) !== t.month) return m
+    if (y !== undefined && t.year !== undefined && Number(y) !== t.year && Number(y) !== t.year % 100) return m
+    return ' '.repeat(m.length)
+  })
+}
 
 export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {}): Array<Sent & { j: SentenceJudgement }> {
   const byId = new Map(ev.sources.map(s => [s.id, { s, ix: index(s.passages) }]))
@@ -218,7 +235,7 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
   const replyQs = quantitiesIn(text)
   const known = o.knownNames ?? []
   return sentencesOf(text).map(sent => {
-    const qs = quantitiesIn(sent.body)
+    const qs = quantitiesIn(o.today ? withoutTodayDate(sent.body, o.today) : sent.body)
     const cue = sent.body.match(new RegExp(AVAIL_RE.source, 'iu'))?.[0]?.trim() ?? null
     const ids = sent.ids.filter(id => byId.has(id))
     const base = { values: qs.length, sourceIds: ids }

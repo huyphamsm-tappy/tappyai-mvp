@@ -29,7 +29,12 @@ const BUY_INTENT = /(?:^| )(?:mua|link|o dau|gia|gia tham khao|bao nhieu|where t
 export function productSearchAppendix(o: { userText: string; searchedQuery: string | null | undefined; cardCarriesLinks: boolean; lang?: string }): { text: string; links: Array<{ name: string; url: string }> } | null {
   const q = (o.searchedQuery ?? '').replace(/\s+/g, ' ').trim().slice(0, 80)
   if (o.cardCarriesLinks || q.length < 3 || !BUY_INTENT.test(` ${fold(o.userText)} `)) return null
-  const links = buildShoppingLinks(q).filter(l => /^https:\/\//i.test(l.url)).slice(0, 3)
+  // Shopee's search page sends a visitor who is not logged in to a "Login Required" page (checked 2026-10-11, in a browser with no session), so it is
+  // never attached; Lazada's search and Google Shopping open without login.
+  const links = [
+    ...buildShoppingLinks(q).filter(l => /^https:\/\//i.test(l.url) && !/(?:^|\.)shopee\./i.test(new URL(l.url).hostname)),
+    { name: 'Google Mua sắm', url: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(q)}` },
+  ].slice(0, 3)
   if (!links.length) return null
   return { text: o.lang === 'en' ? 'Search this product on the marketplaces:' : 'Tìm sản phẩm này trên các sàn:', links }
 }
@@ -46,7 +51,9 @@ export function directionsAppendix(o: { userText: string; rows: readonly Directi
     if (!` ${u} `.includes(` ${fold(r.name!)} `)) continue
     const url = directionsUrl(r.name!, r.address, r.place_id)
     if (!url) continue
-    return { text: en ? 'Directions:' : 'Chỉ đường:', links: [{ name: en ? `Directions to ${r.name} (Google Maps)` : `Chỉ đường tới ${r.name} (Google Maps)`, url }] }
+    // No origin in the message → Google Maps starts from the device's current location; say so once instead of asking where from.
+    const fromHere = !/(?:^| )tu .+ (?:di )?(?:toi|den)(?: |$)|(?:^| )(?:dang o|minh o|dang dung o|from) |(?:^| )from .+ to /.test(` ${u} `)
+    return { text: en ? (fromHere ? 'Directions (from your current location):' : 'Directions:') : (fromHere ? 'Chỉ đường (từ vị trí hiện tại của bạn):' : 'Chỉ đường:'), links: [{ name: en ? `Directions to ${r.name} (Google Maps)` : `Chỉ đường tới ${r.name} (Google Maps)`, url }] }
   }
   return null
 }

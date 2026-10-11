@@ -28,7 +28,7 @@ import { resultCount } from './trace'
 import { EvidenceLedger, normUrl, planCitations, type SourceLink } from './evidence'
 import { createPageReader, readPageTool, urlsIn, urlsInText, READ_PAGE } from './readPage'
 import { researchSearchTool } from './researchSearch'
-import { withProductFallback } from './toolState'
+import { withProductFallback, withNewsFallback } from './toolState'
 import { editorialItemsIn, attributeEditorial } from './editorialSources'
 import { selectTools, proxyToolSchema, resolveUseTool, USE_TOOL } from './toolRegistry'
 import { attachEvidence, taskConstraintsSig } from './task'
@@ -122,6 +122,9 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
     // that the fallback cannot cover stays a failure — the price is UNKNOWN, never filled from memory (toolState.ts).
     const sp = tools.search_products
     if (sp?.execute) tools.search_products = { ...sp, execute: withProductFallback(sp.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'search_products', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState, ...(d.usability ? { usability: d.usability } : {}) }) }) } as never
+    // CONSULTATIVE_IN_AGENT: a news topic the three RSS feeds do not cover falls back ONCE to a public-web news search in the same call.
+    const gn = tools.get_news
+    if (i.consultative === true && gn?.execute) tools.get_news = { ...gn, execute: withNewsFallback(gn.execute as never, (tools.web_search?.execute as never) ?? null, { lang: i.lang, onFallback: d => i.trace.add('fallback', { tool: 'get_news', state: d.state, fallback: 'web_search', fallback_state: d.fallbackState }) }) } as never
   }
   // The control action is offered on every non-final step, even on a plan-only turn that gets no retrieval tool.
   // M6: a small core every round; deferred tools by this turn's capability hints / the task's last tools; the rest through use_tool.

@@ -25,7 +25,8 @@ import { repairPlanBlock } from './planJsonRepair'
 import { appendConsultPlanCost, appendPlanBudgetMath, partyCount, perPersonBudget } from './planBudgetMath'
 import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
-import { shieldSupported, pageGroundedNames } from './guardEvidence'
+import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
+import { withUnverifiedFigureLine } from './unverifiedFigure'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -2425,7 +2426,9 @@ export function applyPlaceEnrichmentStreamFilter(
     // WS2 citation integrity, step 1 (agent turns that read pages): a marker after a full stop is bound INTO its sentence before any
     // guard runs, so removing the sentence removes its citation (citationIntegrity.ts).
     const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
-    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean) })
+    // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
+    const todayVn = collector?.consultative ? vnToday() : undefined
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
@@ -3361,9 +3364,12 @@ export function applyPlaceEnrichmentStreamFilter(
       // POST-UAT B3: a lead-in whose items a guard removed ("…như sau:" with nothing after it) goes too (agent turns only).
       const listed = collector?.agentMode ? dropOrphanLeadIns(bare.text) : bare
       if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphan_lead_in', removed: listed.removed }))
-      if (!collector?.citationSources?.length) return listed.text
+      // CONSULTATIVE_IN_AGENT: the guards cut EVERY figure the draft stated → one honest sentence instead of silence (the citation step below adds the source).
+      const figLine = collector?.consultative && collector.agentMode && !collector.consultTurn ? withUnverifiedFigureLine(mainText, listed.text, lang) : { text: listed.text, added: false }
+      if (figLine.added) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unverified_figure_line' }))
+      if (!collector?.citationSources?.length) return figLine.text
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
-      const integrity = enforceCitationIntegrity(listed.text)
+      const integrity = enforceCitationIntegrity(figLine.text)
       if (integrity.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'citation_integrity', removed: integrity.removed }))
       return citeSources(integrity.text, collector.citationSources, allowedUrls, lang)
     })(settleMarkdown((() => {

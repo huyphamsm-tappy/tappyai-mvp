@@ -9,6 +9,27 @@ import { createEnrichmentCollector } from './toolResultSplit'
 
 const CHURCH = { name: 'Nhà thờ Đức Bà Sài Gòn', address: '01 Công xã Paris, Bến Nghé, Quận 1, TP.HCM', place_id: 'ChIJN1t_tDeuEmsRUsoyG83frY4' }
 
+describe('no origin given: the link starts from the current location and the text says so (never asks)', () => {
+  it('no origin → "từ vị trí hiện tại của bạn"; a stated origin → plain label', () => {
+    const none = directionsAppendix({ userText: 'Chỉ đường giúp mình tới Nhà thờ Đức Bà Sài Gòn', rows: [CHURCH] })
+    expect(none?.text).toBe('Chỉ đường (từ vị trí hiện tại của bạn):')
+    expect(new URL(none!.links[0].url).searchParams.get('origin')).toBeNull() // Google Maps then starts from the device's location
+    expect(directionsAppendix({ userText: 'Từ Quận 3 chỉ đường tới Nhà thờ Đức Bà Sài Gòn', rows: [CHURCH] })?.text).toBe('Chỉ đường:')
+    expect(directionsAppendix({ userText: 'Chỉ đường tới Nhà thờ Đức Bà Sài Gòn', rows: [CHURCH], lang: 'en' })?.text).toBe('Directions (from your current location):')
+  })
+})
+
+describe('product search links: nothing that needs a login', () => {
+  it('Shopee (search page = Login Required without a session) is never attached; Lazada and Google Shopping are', () => {
+    const a = productSearchAppendix({ userText: 'Máy lọc nước Kangaroo giá bao nhiêu, mua ở đâu?', searchedQuery: 'máy lọc nước Kangaroo', cardCarriesLinks: false })
+    const hosts = a!.links.map(l => new URL(l.url).hostname)
+    expect(hosts.some(h => /shopee/i.test(h))).toBe(false)
+    expect(hosts).toContain('www.lazada.vn')
+    expect(hosts).toContain('www.google.com')
+    expect(a!.links.every(l => l.url.startsWith('https://'))).toBe(true)
+  })
+})
+
 describe('directionsAppendix (pure)', () => {
   it('a directions request naming a retrieved row gives ONE https Google Maps directions link built from that row', () => {
     const d = directionsAppendix({ userText: 'Mình đang ở Quận 3. Chỉ đường giúp mình tới Nhà thờ Đức Bà Sài Gòn nhé', rows: [CHURCH, { name: 'Bưu điện Trung tâm', address: '2 Công xã Paris, Quận 1' }] })

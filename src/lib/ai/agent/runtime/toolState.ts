@@ -176,3 +176,51 @@ export function withProductFallback(primary: Exec, webSearch: Exec | null, o: { 
     }
   }
 }
+
+/**
+ * CONSULTATIVE_IN_AGENT: get_news reads three fixed RSS feeds and matches by keyword, so a topic outside their latest items comes back
+ * EMPTY. The topic is then searched on the public web in the same call (the research web_search: it opens the best news pages, shares the
+ * turn's page budget and Serper ceiling). One fallback, bounded by the tool's time; a failure of both stays an EMPTY / failure state.
+ */
+export function withNewsFallback(primary: Exec, webSearch: Exec | null, o: { lang: string; budgetMs?: number; now?: () => number; onFallback?: (d: { state: ToolState; fallbackState: ToolState | 'none' | 'skipped_deadline' }) => void }): Exec {
+  return async (args, ctx) => {
+    const now = o.now ?? Date.now
+    const started = now()
+    let value: unknown
+    let state: ToolState
+    try {
+      value = await primary(args, ctx)
+      state = toolStateOf('ok', value)
+    } catch (e) {
+      value = { error: e instanceof Error ? e.message : 'news_error' }
+      state = 'ERROR'
+    }
+    if (state === 'SUCCESS' || !webSearch) return withToolState(value, state, o.lang)
+    const left = (o.budgetMs ?? PRODUCT_TOOL_BUDGET_MS) - (now() - started)
+    if (left < FALLBACK_MIN_MS) {
+      o.onFallback?.({ state, fallbackState: 'skipped_deadline' })
+      return withToolState(value, state, o.lang)
+    }
+    const topic = typeof args.query === 'string' ? args.query : ''
+    let fb: unknown = null
+    let fbState: ToolState = 'ERROR'
+    try {
+      fb = await Promise.race([
+        webSearch({ queries: [`${topic} tin tức mới nhất`], read: 2, focus: topic, kind: 'other' }, ctx),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('fallback_timeout')), left)),
+      ])
+      fbState = toolStateOf('ok', fb)
+    } catch (e) { fbState = e instanceof Error && e.message === 'fallback_timeout' ? 'TIMEOUT' : 'ERROR' }
+    o.onFallback?.({ state, fallbackState: fbState })
+    const en = o.lang === 'en'
+    const base = value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : {}
+    return {
+      ...base,
+      tool_state: fbState === 'SUCCESS' ? 'SUCCESS' : state,
+      fallback: { tool: 'web_search', tool_state: fbState, ...(fb && typeof fb === 'object' ? fb as Record<string, unknown> : {}) },
+      note: fbState === 'SUCCESS'
+        ? (en ? 'The news feeds had nothing on this topic; these are public-web results for it. Use only what the pages state (cite them as [S#]); say the date a page gives.' : 'Các báo trong nguồn tin không có bài về chủ đề này; đây là kết quả web công khai. Chỉ dùng điều trang ghi (trích bằng [S#]) và nêu ngày bài nếu trang có.')
+        : (en ? 'Neither the news feeds nor a public-web search returned anything on this topic: say you found no recent reports; do not invent any.' : 'Cả nguồn tin lẫn tra cứu web đều không có gì về chủ đề này: nói là chưa tìm thấy tin gần đây; không bịa tin.'),
+    }
+  }
+}
