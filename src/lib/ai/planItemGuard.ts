@@ -91,6 +91,30 @@ export interface PlanPlace extends ActionSource {
   photo_urls?: string[]
   /** The provider's hours for the day of the search (c40 T6). */
   opening_hours?: unknown
+  /** Row fields some providers carry (OSM `diet:*`, `cuisine`); read only by `hasVegetarianBasis`. */
+  cuisine?: unknown
+  vegetarian?: unknown
+  vegan?: unknown
+}
+
+// ── CONSULTATIVE_IN_AGENT: a vegetarian request keeps a restaurant only on DATA that says it is vegetarian ───────────────────────────────
+//
+// Round 22 live (chat 313d2cfb…): "Lẩu Chay Hương Xuân" was kept for a vegetarian plan; its row says `place_types: ["Quán ăn nhỏ"]` — only the NAME says "Chay".
+// A name is a first hint, never the proof. The venue stays a venue only when its own row carries a vegetarian category (`place_types`: "Nhà hàng cho người ăn chay",
+// "Vegetarian restaurant", …), a `vegetarian` / `vegan` flag or a vegetarian `cuisine`. A source page confirming it is NOT accepted here (no page text + URL
+// is carried to this guard): such a venue becomes the plain "Ăn … gần chỗ ở" slot.
+
+/** Does the user's thread ask for vegetarian food? Matches "ăn chay", "đồ/món/quán/nhà hàng chay", "thuần chay", vegetarian/vegan/veggie — never "chạy" (to run). */
+export function wantsVegetarian(userTexts: readonly string[]): boolean {
+  return userTexts.some(t => typeof t === 'string' && /(?<![\p{L}])(?:ăn chay|đồ chay|món chay|quán chay|nhà hàng chay|thuần chay|an chay|do chay|mon chay|quan chay|nha hang chay|thuan chay|vegetarian|vegan|veggie)(?![\p{L}])/iu.test(t))
+}
+
+/** The row's own data says vegetarian (category, flag or cuisine). The venue's NAME alone does not count. */
+export function hasVegetarianBasis(p: PlanPlace): boolean {
+  if (p.vegetarian === true || p.vegan === true) return true
+  const types = (Array.isArray(p.place_types) ? p.place_types.filter((t): t is string => typeof t === 'string') : []).map(fold).join(' | ')
+  if (/(?:^|[ |])(?:nha hang cho nguoi an chay|nguoi an chay|nha hang chay|quan chay|com chay|an chay|vegetarian|vegan|thuan chay)(?:$|[ |])/.test(types)) return true
+  return typeof p.cuisine === 'string' && /vegetarian|vegan|chay/.test(fold(p.cuisine))
 }
 
 function kindsOf(p: PlanPlace): Set<Kind> {
@@ -123,6 +147,8 @@ export interface PlanItemGuardResult {
   sightsKept?: number
   /** Meals left as a plain "near the stay" slot because no unused retrieved venue was left for them (flag on only). */
   mealSlots?: number
+  /** Of those, restaurants of a vegetarian request whose row carries no vegetarian data (flag on only). */
+  vegSlots?: number
   /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
   outOfArea?: number
 }
@@ -180,7 +206,7 @@ function mealSlot(item: Item): Item {
   return out
 }
 
-export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean } = {}): PlanItemGuardResult {
+export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -202,7 +228,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
 
@@ -228,6 +254,10 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       const checkout = opts.keepSights === true && kind === 'hotel' && /trả phòng|check-?out/i.test(`${item.name ?? ''} ${item.description ?? ''}`)
       let place: PlanPlace | undefined = (checkout && stayPlace) ? stayPlace : (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
       if (checkout && stayPlace && typeof item.name === 'string') { item.name = stayPlace.name; for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f] }
+      // A vegetarian request: a restaurant whose row carries no vegetarian data is not kept as a venue (see `hasVegetarianBasis`); it becomes the plain meal slot.
+      if (place && opts.keepSights && opts.vegetarian && kind === 'food' && !hasVegetarianBasis(place)) {
+        kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; res.vegSlots = (res.vegSlots ?? 0) + 1; continue
+      }
       if (place && opts.keepSights && used.has(place) && kind !== 'hotel') {
         // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two. A MEAL slot is not
         // dropped (Round 21 trace: day 3 lost its breakfast and lunch because both restaurants were already used on days 1–2 and the day ended after

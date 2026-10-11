@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { describe, it, expect } from 'vitest'
-import { guardPlanItems } from './planItemGuard'
+import { guardPlanItems, hasVegetarianBasis, wantsVegetarian } from './planItemGuard'
 import { guardPlanTripFacts } from './planTripFactsGuard'
 import { appendPlanBudget } from './planBudget'
 import { stripOrphanSourceLabels, dedupeCaveats } from './caveatDedupe'
@@ -110,6 +110,58 @@ describe('unnamed meals are never swapped for a random retrieved restaurant (liv
     const r = guardPlanItems(wrap(named), MIXED_POOL, { destination: 'Nha Trang', keepSights: true })
     expect(daysOf(r.text)[0].items[0].name).toBe('Cơm Gà Hà')
     expect(r.matched).toBe(1)
+  })
+})
+
+// ── Round 22 final: vegetarian basis. Data = the REAL rows of get_trip_data (audit trace, Round 22 live #1, chat 313d2cfb…, SHA cdad2db) and the model's own plan ──
+const VEG = ['Nhà hàng cho người ăn chay']
+const REAL_POOL = [
+  { name: 'Seaside', address: '70 Đống Đa, Nha Trang, Khánh Hòa 650000', place_types: ['Khách sạn'] },
+  { name: 'Nhà Hàng Chay Bụt Việt - Nha Trang', address: '74-76 Đống Đa, Nha Trang', place_types: VEG },
+  { name: 'Quán thuần chay Thong Dong', address: '15/25 Nguyễn Thiện Thuật, Nha Trang', place_types: VEG },
+  { name: 'Nhà Hàng Chay Tuệ Nguyên - Nha Trang', address: '12C Đ. 23 Tháng 10, Tây Nha Trang', place_types: VEG },
+  { name: 'Yên Nhà Hàng Chay & Yoga Nha Trang', address: '46/9 Đ. Lê Thánh Tôn, Nha Trang', place_types: VEG },
+  { name: 'Lẩu Chay Hương Xuân', address: '60D Trần Nhật Duật, Nha Trang, Khánh Hòa 57128', place_types: ['Quán ăn nhỏ'] },
+  { name: 'Araham - Nhà hàng chay', address: '35 Gò Găng, Tây Nha Trang', place_types: VEG },
+]
+const LIVE_PLAN = {"type":"trip","people":2,"days":[{"label":"Ngày 1","items":[{"time":"07:00","category":"transport","name":"Di chuyển TP.HCM → Nha Trang"},{"time":"09:00","category":"hotel","name":"Nhận phòng hoặc gửi hành lý"},{"time":"11:30","category":"food","name":"Nhà Hàng Chay Bụt Việt - Nha Trang"},{"time":"14:00","category":"attraction","name":"Tháp Bà Ponagar"},{"time":"17:00","category":"rest","name":"Nghỉ ngơi tại khách sạn"},{"time":"18:30","category":"food","name":"Quán thuần chay Thong Dong"},{"time":"20:00","category":"entertainment","name":"Quảng trường 2/4 và Tháp Trầm Hương"}]},{"label":"Ngày 2","items":[{"time":"08:00","category":"food","name":"Nhà Hàng Chay Tuệ Nguyên - Nha Trang"},{"time":"09:30","category":"attraction","name":"Chùa Long Sơn"},{"time":"11:30","category":"food","name":"Yên Nhà Hàng Chay & Yoga Nha Trang"},{"time":"13:00","category":"rest","name":"Nghỉ trưa"},{"time":"15:30","category":"attraction","name":"Bảo Tàng Hải Dương Học"},{"time":"18:30","category":"food","name":"Lẩu Chay Hương Xuân"},{"time":"20:00","category":"entertainment","name":"Công viên Bạch Đằng"}]},{"label":"Ngày 3","items":[{"time":"08:00","category":"food","name":"Araham - Nhà hàng chay"},{"time":"09:30","category":"hotel","name":"Trả phòng, gửi hành lý"},{"time":"10:30","category":"attraction","name":"Bãi biển Nha Trang"},{"time":"12:00","category":"food","name":"Nhà Hàng Chay Bụt Việt - Nha Trang"},{"time":"13:30","category":"transport","name":"Lấy hành lý và ra bến xe"},{"time":"15:00","category":"transport","name":"Di chuyển Nha Trang → TP.HCM"}]}]}
+describe('vegetarian request: a restaurant stays a venue only on vegetarian DATA (Round 22 live, "Lẩu Chay Hương Xuân")', () => {
+  const run = (o: { keepSights?: boolean; vegetarian?: boolean }) => guardPlanItems(wrap(LIVE_PLAN), REAL_POOL, { destination: 'Nha Trang', ...o })
+  const foodNames = (t: string) => daysOf(t).flatMap(d => d.items).filter(i => i.category === 'food').map(i => i.name)
+  it('flag on + vegetarian request: the five restaurants with a vegetarian category stay; the name-only one becomes the plain meal slot', () => {
+    const r = run({ keepSights: true, vegetarian: true })
+    const days = daysOf(r.text)
+    expect(foodNames(r.text).sort()).toEqual(['Araham - Nhà hàng chay', 'Nhà Hàng Chay Tuệ Nguyên - Nha Trang', 'Nhà Hàng Chay Bụt Việt - Nha Trang', 'Quán thuần chay Thong Dong', 'Yên Nhà Hàng Chay & Yoga Nha Trang'].sort())
+    expect(JSON.stringify(days)).not.toContain('Lẩu Chay Hương Xuân')
+    expect(days[1].items.at(-2)).toMatchObject({ category: 'rest', name: 'Ăn tối gần chỗ ở', time: '18:30' })
+    expect(days[1].items.at(-1)?.name).toBe('Công viên Bạch Đằng')
+    expect(r.vegSlots).toBe(1)
+    // day 3 keeps its breakfast venue and the lunch (a repeat of day 1's restaurant) is the plain slot; check-out at the same hotel; return leg
+    expect(days[2].items.map(i => i.name)).toEqual(['Araham - Nhà hàng chay', 'Seaside', 'Bãi biển Nha Trang', 'Ăn trưa gần chỗ ở', 'Lấy hành lý và ra bến xe', 'Di chuyển Nha Trang → TP.HCM'])
+  })
+  it('flag on, NOT a vegetarian request: the same restaurant is NOT replaced for that reason', () => {
+    const r = run({ keepSights: true, vegetarian: false })
+    expect(foodNames(r.text)).toContain('Lẩu Chay Hương Xuân')
+    expect(r.vegSlots).toBeUndefined()
+  })
+  it('flag off (keepSights absent): behaviour as before, even when the request is vegetarian', () => {
+    const r = run({ vegetarian: true })
+    expect(foodNames(r.text)).toContain('Lẩu Chay Hương Xuân')
+    expect(r.vegSlots).toBeUndefined()
+  })
+  it('hasVegetarianBasis: category / flag / cuisine count; the NAME alone never does', () => {
+    expect(hasVegetarianBasis({ name: 'Lẩu Chay Hương Xuân', place_types: ['Quán ăn nhỏ'] })).toBe(false)
+    expect(hasVegetarianBasis({ name: 'Veggie Garden', place_types: ['Nhà hàng'] })).toBe(false)
+    expect(hasVegetarianBasis({ name: 'Vegetarian House' })).toBe(false)
+    expect(hasVegetarianBasis({ name: 'X', place_types: ['Nhà hàng cho người ăn chay'] })).toBe(true)
+    expect(hasVegetarianBasis({ name: 'X', place_types: ['Vegetarian restaurant'] })).toBe(true)
+    expect(hasVegetarianBasis({ name: 'X', vegetarian: true })).toBe(true)
+    expect(hasVegetarianBasis({ name: 'X', cuisine: 'vegetarian;asian' })).toBe(true)
+    expect(hasVegetarianBasis({ name: 'X', place_types: ['Quán ăn nhỏ', 'Nhà hàng hải sản'] })).toBe(false)
+  })
+  it('wantsVegetarian: "ăn chay" and friends yes; "chạy bộ", "chạy xe" and other topics no', () => {
+    for (const y of ['lên kế hoạch đi Nha Trang đi đôi, ăn chay, 3 ngày', 'tìm quán chay ở Quận 1', 'toi an chay truong', 'thuần chay', 'vegetarian options please']) expect(wantsVegetarian([y]), y).toBe(true)
+    for (const n of ['đi chạy bộ buổi sáng', 'xe chạy nhanh', 'kế hoạch Đà Lạt 3 ngày', 'ăn hải sản ở Nha Trang']) expect(wantsVegetarian([n]), n).toBe(false)
   })
 })
 
