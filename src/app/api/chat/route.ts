@@ -447,9 +447,13 @@ export async function POST(req: Request) {
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
+  // CONSULTATIVE_IN_AGENT: the trip may be spread over turns ("… muốn đi du lịch có gợi ý gì ko" then "chưa biết đi đâu, … tầm 3 ngày"): neither text alone
+  // reads as a trip, so the last 3 user texts together decide. Without this the plan was cut to its first sentence and venue cards stood in for it (live 2026-10-11).
+  const consultThreadTrip = consultativeAgent && !consult && ownPlanningIntent === null && inheritedPlanningIntent === null
+    && detectPlanningIntent(subjectUserTexts.slice(-3).join(' \n ')) === 'trip' ? 'trip' as const : null
   const planningIntent = consult
     ? (consult.turn === 'plan' && consult.domains[0] === 'travel' ? 'trip' as const : null)
-    : ownPlanningIntent ?? inheritedPlanningIntent
+    : ownPlanningIntent ?? inheritedPlanningIntent ?? consultThreadTrip
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
@@ -2898,8 +2902,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
   if (agentV2) enrichment.semanticRanking = true
   // CONSULTATIVE_IN_AGENT: on a trip-plan turn the plan is the whole answer (no ranking call, no standalone venue cards after it).
-  // The trip may have been named an earlier turn ("cuối tuần sau muốn đi du lịch" … then "tầm 3 ngày"): the last 3 user texts decide, not only the last.
-  const consultTripThread = consultativeAgent && (planningIntent === 'trip' || lunaUserTexts.slice(-3).some((t: string) => detectPlanningIntent(t) === 'trip'))
+  const consultTripThread = consultativeAgent && planningIntent === 'trip'
   if (consultTripThread) enrichment.planTurn = true
   // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
   if (consultativeAgent) enrichment.consultative = true
