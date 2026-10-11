@@ -2378,7 +2378,7 @@ export function applyPlaceEnrichmentStreamFilter(
       userAmounts: extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi]),
     }
     // R15: a plan body whose JSON does not parse (measured `{time":"10:00"`) is repaired before any plan guard.
-    const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse) : { text: enrichedProse, repaired: false }
+    const planRepair = enrichedProse.includes('[TAPPY_PLAN]') ? repairPlanBlock(enrichedProse, collector?.consultative === true ? { balance: true } : {}) : { text: enrichedProse, repaired: false }
     if (planRepair.repaired) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'plan_json_repaired', repaired: 1 }))
     const pricedPlan = planRepair.text.includes('[TAPPY_PLAN]')
       ? guardPlanPrices(planRepair.text, planEvidence, lang).text
