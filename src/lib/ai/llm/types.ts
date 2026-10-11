@@ -58,6 +58,11 @@ export interface AIGenerateOptions {
    * pays the +25% write premium on that prefix and never reads it back.
    */
   cacheHistory?: boolean
+  /**
+   * The call is made by the Phase 8 agent runtime (src/lib/ai/agent/runtime). Only read by the registry under AGENT_MODEL=haiku55,
+   * where it routes the runtime's non-`agent` role (its final `plan` step) to the agent model too. No effect otherwise.
+   */
+  agentRuntime?: boolean
 }
 
 export interface AIStreamOptions extends AIGenerateOptions {

@@ -1,6 +1,7 @@
 import { generateObject, generateText, streamText, type CoreMessage } from 'ai'
 import type { z } from 'zod'
-import { getProvider, modelForRole, roleServing } from './registry'
+import { decoratorFor, getProvider, modelForRole, roleServing, usesAnthropicAgentModel } from './registry'
+import type { ModelRole } from './types'
 import { repairToolCall } from './toolCallRepair'
 import type { AIGenerateOptions, AIStepOptions, AIStreamOptions, AIVisionOptions } from './types'
 
@@ -21,15 +22,21 @@ import type { AIGenerateOptions, AIStepOptions, AIStreamOptions, AIVisionOptions
  * the model, but they reach the provider as two separately addressable
  * segments — which is what lets an adapter treat the stable one differently
  * from the request-shaped one. Splitting is inert for providers that don't. */
-function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[]; cacheHistory?: boolean }): CoreMessage[] {
+function buildMessages(opts: { systemShared?: string; system?: string; prompt?: string; messages?: CoreMessage[]; cacheHistory?: boolean }, call?: { role: ModelRole; agentRuntime?: boolean }): CoreMessage[] {
   const messages: CoreMessage[] = []
   if (opts.systemShared) messages.push({ role: 'system', content: opts.systemShared })
   if (opts.system) messages.push({ role: 'system', content: opts.system })
   if (opts.messages) messages.push(...opts.messages)
   if (opts.prompt) messages.push({ role: 'user', content: opts.prompt })
+  // AGENT_MODEL=haiku55: an agent-runtime call is shaped for the model that serves it (registry.decoratorFor); every other
+  // call — and every call with the flag unset — gets the default provider's shaping, as before.
+  if (call && usesAnthropicAgentModel(call.role, call)) return decoratorFor(call.role, call)!(messages, { cacheHistory: opts.cacheHistory })
   const provider = getProvider()
   return provider.decorateMessages ? provider.decorateMessages(messages, { cacheHistory: opts.cacheHistory }) : messages
 }
+
+/** AGENT_MODEL=haiku55: no SDK-level retry on the Anthropic agent model (a failed paid call is not repeated). undefined = SDK default. */
+const retriesFor = (role: ModelRole, agentRuntime?: boolean): number | undefined => (usesAnthropicAgentModel(role, { agentRuntime }) ? 0 : undefined)
 
 export const AI = {
   /** Which provider is active (telemetry/debug only — never branch on this). */
@@ -60,9 +67,11 @@ export const AI = {
    * (arguments validated against the schema, shape mistakes repaired) and runs nothing — the agent executes them under its budget.
    */
   step(opts: AIStepOptions) {
+    const role = opts.role ?? 'consult'
     return generateText({
-      model: modelForRole(opts.role ?? 'consult'),
-      messages: buildMessages(opts),
+      model: modelForRole(role, { agentRuntime: opts.agentRuntime }),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
       maxTokens: opts.maxTokens,
       maxSteps: 1,
       tools: opts.tools,
@@ -97,12 +106,14 @@ export const AI = {
    * available, tool mode otherwise). Throws when the output does not validate — callers fail open.
    */
   extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string; abortSignal?: AbortSignal }) {
+    const role = opts.role ?? 'intent'
     return generateObject({
       abortSignal: opts.abortSignal,
-      model: modelForRole(opts.role ?? 'intent', { structured: true }),
+      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime }),
       schema: opts.schema,
       schemaName: opts.schemaName,
-      messages: buildMessages(opts),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
     })

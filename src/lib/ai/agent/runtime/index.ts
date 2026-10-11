@@ -200,6 +200,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       parallelTools: true,
       maxTokens: i.maxTokens,
       abortSignal: o.signal,
+      // AGENT_MODEL=haiku55: the final trip step (role `plan`) is the runtime's too. No effect with the flag unset.
+      agentRuntime: true,
     })
     return {
       text: r.text ?? '',

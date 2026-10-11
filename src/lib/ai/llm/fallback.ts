@@ -17,8 +17,8 @@ export interface FallbackOptions {
   /** No generate result within this many ms → fallback (default: firstPartMs). */
   generateMs?: number
   label: string
-  /** What the fallback is, for the log line: a Luna retry or the Claude model. */
-  fallbackKind?: 'luna_retry' | 'haiku'
+  /** What the fallback is, for the log line: a Luna retry, the Claude model, or Luna behind the Haiku 5.5 agent model. */
+  fallbackKind?: 'luna_retry' | 'haiku' | 'luna'
   /**
    * Phase 8 (role `agent`): the primary generate runs under its OWN AbortController (linked to the caller's signal). On a timeout or
    * failure it is ABORTED before the retry starts, so the original request never keeps running — and billing — beside the retry.

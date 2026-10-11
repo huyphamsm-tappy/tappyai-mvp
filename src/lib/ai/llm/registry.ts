@@ -1,8 +1,8 @@
 import type { AIProvider } from './provider'
 import type { ModelOverrides, ProviderId } from './types'
-import type { LanguageModelV1 } from 'ai'
+import type { CoreMessage, LanguageModelV1 } from 'ai'
 import type { ModelRole } from './types'
-import { createClaudeProvider } from './providers/claude'
+import { AGENT_MODEL_KEY_NAME, anthropicConfigured, claudeDecorateMessages, createClaudeProvider, createHaiku55AgentModel } from './providers/claude'
 import { createOpenAIProvider } from './providers/openai'
 import { withFallback } from './fallback'
 
@@ -104,6 +104,7 @@ function routedTo(role: ModelRole): 'openai' | null {
 
 /** Which vendor + effort serves a role right now (telemetry only — never branch business logic on it). */
 export function roleServing(role: ModelRole): { provider: string; effort: string | null } {
+  if (servesAgentModel(role) && agentModelChoice() === 'haiku55' && anthropicConfigured()) return { provider: 'anthropic', effort: 'thinking_off' }
   if (routedTo(role) === 'openai') return { provider: 'openai', effort: openaiProvider!.effort(role as RoutedRole) }
   return { provider: getProvider().id, effort: null }
 }
@@ -137,7 +138,13 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
  * The model for a role. A fresh routed model per call (the adapter keeps a per-call usage sink on it).
  * `structured` asks for the vendor's strict JSON-schema mode where it has one.
  */
-export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {}): LanguageModelV1 {
+export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean } = {}): LanguageModelV1 {
+  if (servesAgentModel(role, opts) && agentModelChoice() === 'haiku55') return agentModel(role, opts)
+  return defaultModelForRole(role, opts)
+}
+
+/** The model a role gets with AGENT_MODEL unset — exactly the pre-flag resolution. */
+function defaultModelForRole(role: ModelRole, opts: { structured?: boolean } = {}): LanguageModelV1 {
   if (routedTo(role) !== 'openai') return getProvider().model(role)
   const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
   const retry = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
@@ -147,6 +154,70 @@ export function modelForRole(role: ModelRole, opts: { structured?: boolean } = {
 }
 
 let claudeProvider: AIProvider | null = null
+
+// ── Agent runtime model choice (owner 2026-10-11) ───────────────────────────────────────────────────────────────────
+//   AGENT_MODEL=luna (default; unset or any other value) — every call resolves exactly as before.
+//   AGENT_MODEL=haiku55 — the agent runtime's calls go to Claude Haiku 5.5 (providers/claude.ts createHaiku55AgentModel):
+//     every role-`agent` call (steps, answer-before-lookup check, task tracker, decision record) and the runtime's final
+//     step when it runs as role `plan` (marked `agentRuntime` by the runtime). Prompt, tools, guards: unchanged.
+//   AGENT_MODEL_FALLBACK=luna — an Anthropic call that fails (error, quota, timeout) is answered once by Luna. Unset: no
+//     fallback and no retry — the failure surfaces and the runtime ends the turn with its short error line.
+// A missing Anthropic key under haiku55 is logged by NAME (`tappyai_agent_model_config`) and then behaves like a
+// failed call (Luna with the fallback flag, the error line without it). The key itself is never read here.
+export type AgentModelChoice = 'luna' | 'haiku55'
+
+export function agentModelChoice(env: Record<string, string | undefined> = process.env): AgentModelChoice {
+  return (env.AGENT_MODEL ?? '').trim().toLowerCase() === 'haiku55' ? 'haiku55' : 'luna'
+}
+
+export function agentModelFallbackToLuna(env: Record<string, string | undefined> = process.env): boolean {
+  return (env.AGENT_MODEL_FALLBACK ?? '').trim().toLowerCase() === 'luna'
+}
+
+/** Whether a call belongs to the agent runtime: role `agent`, or a runtime call that says so (its final `plan` step). */
+function servesAgentModel(role: ModelRole, opts: { agentRuntime?: boolean } = {}): boolean {
+  return role === 'agent' || opts.agentRuntime === true
+}
+
+/** True when this call will be served by the Anthropic agent model (ai.ts: cache breakpoints and no SDK retry). */
+export function usesAnthropicAgentModel(role: ModelRole, opts: { agentRuntime?: boolean } = {}): boolean {
+  return servesAgentModel(role, opts) && agentModelChoice() === 'haiku55'
+}
+
+/** The message decorator for a call: Anthropic cache breakpoints on the agent model, the default provider's otherwise. */
+export function decoratorFor(role: ModelRole, opts: { agentRuntime?: boolean } = {}): ((m: CoreMessage[], o?: { cacheHistory?: boolean }) => CoreMessage[]) | undefined {
+  if (usesAnthropicAgentModel(role, opts)) return claudeDecorateMessages
+  const p = getProvider()
+  return p.decorateMessages ? (m, o) => p.decorateMessages!(m, o) : undefined
+}
+
+/** A model whose every call fails with a fixed, key-free message (haiku55 without its key, no fallback). */
+function unconfiguredModel(like: LanguageModelV1): LanguageModelV1 {
+  const fail = () => Promise.reject(new Error(`agent_model_unconfigured: set ${AGENT_MODEL_KEY_NAME} (AGENT_MODEL=haiku55)`))
+  return { ...like, specificationVersion: 'v1', provider: 'anthropic.messages', modelId: 'unconfigured', supportsImageUrls: like.supportsImageUrls, doGenerate: fail, doStream: fail }
+}
+
+/** Exported for tests: the agent model from its parts. `haiku` / `luna` are factories so nothing is built that is not used. */
+export function buildAgentModel(d: { configured: boolean; fallbackToLuna: boolean; haiku: () => LanguageModelV1; luna: () => LanguageModelV1; waits: { firstPartMs: number; generateMs: number }; label: string }): LanguageModelV1 {
+  if (!d.configured) {
+    console.warn(JSON.stringify({ type: 'tappyai_agent_model_config', agent_model: 'haiku55', missing: AGENT_MODEL_KEY_NAME, fallback: d.fallbackToLuna ? 'luna' : null }))
+    return d.fallbackToLuna ? d.luna() : unconfiguredModel(d.luna())
+  }
+  const haiku = d.haiku()
+  if (!d.fallbackToLuna) return haiku
+  return withFallback(haiku, d.luna(), { ...d.waits, label: d.label, fallbackKind: 'luna', abortPrimaryOnTimeout: true })
+}
+
+function agentModel(role: ModelRole, opts: { structured?: boolean }): LanguageModelV1 {
+  return buildAgentModel({
+    configured: anthropicConfigured(),
+    fallbackToLuna: agentModelFallbackToLuna(),
+    haiku: () => createHaiku55AgentModel({ label: role }),
+    luna: () => defaultModelForRole(role, opts),
+    waits: waitsFor(role),
+    label: role,
+  })
+}
 
 /** Test hook: forget the routed provider so env changes take effect. */
 export function resetRoutingForTests(): void { openaiProvider = null; provider = null; claudeProvider = null }
