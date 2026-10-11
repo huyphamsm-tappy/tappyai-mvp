@@ -103,7 +103,7 @@ const LABEL_VI: Record<BudgetLabel, string> = { checked: 'đã tra', estimate: '
 export function renderBudget(res: BudgetResult, c: BudgetContext): string {
   const head = `💰 Ngân sách cho ${c.people} người, cả chuyến ${c.days} ngày:`
   const lines = res.rows.map(x => (x.lo === null
-    ? `- ${x.item}: chưa có dữ liệu [${LABEL_VI.none}]`
+    ? `- ${x.item}: ${LABEL_VI.none}`
     : `- ${x.item}: ${money(x.lo, x.hi as number)} = ${x.how} [${LABEL_VI[x.label]}]`))
   const total = res.counted === 0
     ? '- Tổng: chưa tính được vì chưa khoản nào có nguồn.'

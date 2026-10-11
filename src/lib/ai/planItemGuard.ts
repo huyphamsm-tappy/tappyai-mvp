@@ -194,6 +194,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
   }
   const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
+  let stayPlace: PlanPlace | null = null
 
   for (const day of plan.days) {
     if (!Array.isArray(day?.items)) continue
@@ -212,7 +213,11 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         kept.push(item)
         continue
       }
-      let place = (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
+      // CONSULTATIVE_IN_AGENT: one trip, one hotel — a "trả phòng / check-out" hotel stop is the SAME hotel as the first stay (live 2026-10-11: check-in
+      // at Dalat Palace on day 1, check-out at Colline Dalat on day 3).
+      const checkout = opts.keepSights === true && kind === 'hotel' && /trả phòng|check-?out/i.test(`${item.name ?? ''} ${item.description ?? ''}`)
+      let place: PlanPlace | undefined = (checkout && stayPlace) ? stayPlace : (typeof item.place_id === 'string' && byPlaceId.get(item.place_id)) || findByName(String(item.name ?? ''))
+      if (checkout && stayPlace && typeof item.name === 'string') { item.name = stayPlace.name; for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f] }
       if (place && opts.keepSights && used.has(place) && kind !== 'hotel') {
         // CONSULTATIVE_IN_AGENT: the same venue twice in one plan (Quảng trường Lâm Viên afternoon AND evening) is one stop, not two.
         res.dropped++; continue
@@ -241,6 +246,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         for (const f of ['address', 'maps_link', 'place_id', 'photo_url']) delete item[f]
       }
       used.add(place)
+      if (opts.keepSights && kind === 'hotel' && !checkout && !stayPlace) stayPlace = place
       placeOf.set(item, place)
       if (place.address && !item.address) item.address = place.address
       if (place.maps_link) item.maps_link = place.maps_link
