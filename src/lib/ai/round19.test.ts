@@ -3,6 +3,8 @@ import { describe, it, expect } from 'vitest'
 import { dedupeCaveats } from './caveatDedupe'
 import { detectPlanningIntent } from './intent'
 import { askVerdict } from './agent/runtime/askGate'
+import { guardPlanItems } from './planItemGuard'
+import { guardPlanTripFacts } from './planTripFactsGuard'
 import { composeFinal, withoutQuestions, withoutParaphrasedPrefaceParagraphs } from './agent/runtime/answerFirst'
 import { agentSystemV2For, CONSULT_PRINCIPLES_R19 } from './agent/runtime/consultativeVoice'
 import { AGENT_SYSTEM_V2 } from './agent/runtime/prompt'
@@ -75,6 +77,42 @@ describe('ask gate: an open travel ask is not answered with a question', () => {
   })
   it('a non-travel conversation is never gated by it', () => {
     expect(askVerdict('mua tai nghe', 'Ngân sách bao nhiêu?', 'vi', 'mua tai nghe')).toBeNull()
+  })
+})
+
+describe('plan guards: a complete trip (flag on) vs the old rules (control)', () => {
+  const plan = (items: unknown[]) => `x [TAPPY_PLAN]${JSON.stringify({ type: 'trip', title: 'Đà Lạt 3 ngày (Thứ bảy 17/10)', days: [{ label: 'Ngày 1 (17/10)', items }] })}[/TAPPY_PLAN]`
+  const items = [
+    { time: '07:00', category: 'transport', name: 'Xe khách TP.HCM – Đà Lạt', description: 'Xe khách khởi hành từ TP.HCM, ước tính 7 giờ' },
+    { time: '15:00', category: 'attraction', name: 'Hồ Xuân Hương', description: 'Dạo hồ, mở cửa 24/7', price: '50.000đ', maps_link: 'https://x', place_id: 'p1' },
+    { time: '17:00', category: 'attraction', name: 'Quảng trường Lâm Viên', description: 'Ngắm hoàng hôn' },
+  ]
+  const places = [{ name: 'Quảng trường Lâm Viên', address: 'Xuân Hương - Đà Lạt', place_types: ['quảng trường'] }]
+
+  it('flag on: a famous sight is kept by name only (no price, link, figure); duplicates of one venue go', () => {
+    const r = guardPlanItems(plan([...items, { time: '19:00', category: 'attraction', name: 'Quảng trường Lâm Viên', description: 'Đi dạo tối' }]), places, { destination: 'Đà Lạt', keepSights: true })
+    const p = JSON.parse(r.text.slice(r.text.indexOf('[TAPPY_PLAN]') + 12, r.text.indexOf('[/TAPPY_PLAN]')))
+    const names = p.days[0].items.map((i: { name: string }) => i.name)
+    expect(names).toEqual(['Xe khách TP.HCM – Đà Lạt', 'Hồ Xuân Hương', 'Quảng trường Lâm Viên'])
+    const ho = p.days[0].items[1]
+    expect(ho.price).toBe('')
+    expect(ho.maps_link).toBeUndefined()
+    expect(ho.place_id).toBeUndefined()
+    expect(ho.description).not.toMatch(/\d/)
+    expect(r.sightsKept).toBe(1)
+  })
+  it('flag off (control): an unmatched sight is dropped as before', () => {
+    const r = guardPlanItems(plan(items), places, { destination: 'Đà Lạt' })
+    expect(r.text).not.toContain('Hồ Xuân Hương')
+  })
+  it('flag on: the outbound leg, the date label and the departure city stay; flag off they are cut', () => {
+    const t = plan(items)
+    const on = guardPlanTripFacts(t, ['cuối tuần sau muốn đi du lịch'], { assumeLegs: true })
+    expect(on.stopsDropped).toBe(0)
+    expect(on.text).toContain('Xe khách TP.HCM')
+    expect(on.text).toContain('17/10')
+    const off = guardPlanTripFacts(t, ['cuối tuần sau muốn đi du lịch'])
+    expect(off.stopsDropped).toBeGreaterThan(0)
   })
 })
 
