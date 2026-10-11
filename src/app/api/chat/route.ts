@@ -2966,6 +2966,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const facts = cardEv.facts
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
     const context = agentContext({
+      stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
       now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
       state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
