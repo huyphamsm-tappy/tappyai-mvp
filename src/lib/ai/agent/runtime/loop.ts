@@ -31,6 +31,7 @@ import { toolStateOf, withToolState } from './toolState'
 import { withFreshness } from '../../freshness'
 import { checkApplies, checkNote, composeFinal, parseCheck, prefaceNote } from './answerFirst'
 import { auditTrace, auditTraceOn } from '../../auditTrace'
+import { needsCard, validCard, cardRetryNote, lastUserText } from './cardRetry'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -95,6 +96,8 @@ export interface RuntimeInput {
   dedupeParaphrase?: boolean
   /** CONSULTATIVE_IN_AGENT: the answer-before-lookup check runs concurrently with the lookup instead of before it (same output, less waiting). */
   parallelAnswerFirst?: boolean
+  /** CONSULTATIVE_IN_AGENT: a multi-day plan answered as plain text after get_trip_data gets ONE extra no-tools model call to produce the card (cardRetry.ts). */
+  cardRetry?: boolean
 }
 
 export interface RuntimeRun {
@@ -176,6 +179,30 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     return { text: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
+  // CONSULTATIVE_IN_AGENT (cardRetry.ts): the final text answer of a multi-day plan that skipped the [TAPPY_PLAN] card. At most ONE extra model call, no tools
+  // offered, any tool call in its reply ignored, never repeated; no valid card / failure / no time → the text answer is kept (fallback) and the outcome logged.
+  let cardRetried = false
+  const finishAnswer = async (text: string, status: RuntimeStatus, stop: RuntimeStop): Promise<RuntimeRun> => {
+    if (input.cardRetry !== true || cardRetried || !needsCard({ userText: lastUserText(input.messages), toolEvents, text })) return done(text, status, stop)
+    cardRetried = true
+    const log = (outcome: string, extra: Record<string, unknown> = {}) => { try { console.log(JSON.stringify({ type: 'tappyai_card_retry', outcome, ...extra })) } catch { /* log only */ } }
+    const left = input.deadlineAt - now()
+    if (left < L.minStepMs + 2_000 || input.signal?.aborted) { log('skipped_no_time', { time_left_ms: left }); return done(text, status, stop) }
+    try {
+      modelCalls++
+      const retryMessages: CoreMessage[] = [...messages, { role: 'assistant', content: text }, { role: 'user', content: input.lang === 'en' ? 'Now the card, please.' : 'Giờ làm thẻ lịch trình nhé.' }]
+      const t0 = now()
+      const step2 = await cancellable(signal => input.callModel({ system: input.system + cardRetryNote(input.lang), messages: retryMessages, tools: undefined, final: true, signal }), Math.min(L.stepTimeoutMs, left - 1_000), input.signal)
+      steps.push(step2)
+      auditTrace('card_retry', 'snapshot', { ms: now() - t0, tools_ignored: (step2.toolCalls ?? []).map(c => c.toolName), text: step2.text ?? '' })
+      if (validCard(step2.text ?? '')) { log('ok', { ms: now() - t0, ignored_tool_calls: (step2.toolCalls ?? []).length }); return done(step2.text, status, stop) }
+      log('invalid_card', { ms: now() - t0, ignored_tool_calls: (step2.toolCalls ?? []).length })
+    } catch (e) {
+      log('error', { message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+    }
+    return done(text, status, stop)
+  }
+
   for (let round = 1; round <= L.maxModelRounds; round++) {
     if (input.signal?.aborted) return done('', 'aborted', 'aborted')
     const timeLeft = input.deadlineAt - now()
@@ -221,7 +248,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
 
     if (final) {
       const status: RuntimeStatus = reason === 'time_budget' ? 'answered_after_time_budget' : reason === 'tool_budget' ? 'answered_after_tool_budget' : reason === 'round_budget' ? 'answered_after_round_budget' : 'answered'
-      return done(step.text, status, reason === 'model_error' || reason === null ? 'model_answered' : reason)
+      return finishAnswer(step.text, status, reason === 'model_error' || reason === null ? 'model_answered' : reason)
     }
 
     // TASK (M2): Luna's update_task deltas are applied FIRST (deterministic merge in task.ts), whatever else the step does — an ask or
@@ -282,7 +309,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     const toolCallsThisStep = calls.filter(c => !CONTROL_TOOLS.has(c.toolName))
     let pendingCheck: Promise<{ aborted: boolean }> | null = null
     if (toolCallsThisStep.length === 0) {
-      if (step.text.trim()) return done(step.text, 'answered', 'model_answered')
+      if (step.text.trim()) return finishAnswer(step.text, 'answered', 'model_answered')
       // Only a task update this step: feed its result back; the answer (or a lookup) comes next round.
       if (taskCalls.length) {
         messages.push({ role: 'assistant', content: taskCallParts() })
