@@ -104,8 +104,26 @@ function withoutEchoes(final: string, prefaces: readonly string[]): string {
  * near-verbatim echoes of the prefaces removed. A preface the final text already contains (the model repeated itself) is not shown
  * twice. A PARAPHRASE of the same advice is not detected here (no deterministic test exists); that is the instruction's job.
  */
-export function composeFinal(prefaces: readonly string[], final: string): string {
-  const cleaned = prefaces.map(p => withoutQuestions(p)).filter(Boolean)
+/**
+ * CONSULTATIVE_IN_AGENT (`dedupeParaphrase`): a preface PARAGRAPH whose content the research answer restates in other words is dropped, so the
+ * reader gets the researched version once. Measured live (passport, 2026-10-11): the pre-lookup advice said "nộp tại cấp tỉnh … 8 ngày làm
+ * việc" and the answer after the lookup said the same in new words (and then called the 8 days unverified). Deliberately narrow: a preface
+ * paragraph of ≥ 12 content words, ≥ 60 % of whose words occur in ONE paragraph of the final text that is ≥ 12 words and either cites a source
+ * ([S#]) or says it could not verify. Preface text is never dropped because of an unsourced, unrelated or short final paragraph.
+ */
+export function withoutParaphrasedPrefaceParagraphs(prefaces: readonly string[], final: string): string[] {
+  const finals = final.split(/\n{2,}/).map(p => p.trim()).filter(p => p && (/\[S\d/.test(p) || /chưa (?:được )?(?:xác minh|kiểm)/i.test(p))).map(p => contentTokens(p)).filter(t => t.size >= 12)
+  if (!finals.length) return [...prefaces]
+  return prefaces.map(pref => pref.split(/\n{2,}/).filter(par => {
+    if (STRUCTURAL.test(par)) return true
+    const t = contentTokens(par)
+    if (t.size < 12) return true
+    return !finals.some(f => { let hit = 0; for (const w of t) if (f.has(w)) hit++; return hit / t.size >= 0.6 })
+  }).join('\n\n')).filter(p => p.trim())
+}
+
+export function composeFinal(prefaces: readonly string[], final: string, o: { dedupeParaphrase?: boolean } = {}): string {
+  const cleaned = (o.dedupeParaphrase ? withoutParaphrasedPrefaceParagraphs(prefaces, final ?? '') : [...prefaces]).map(p => withoutQuestions(p)).filter(Boolean)
   const body0 = (final ?? '').trim()
   const nBody = norm(body0)
   const keep = cleaned.filter(p => {

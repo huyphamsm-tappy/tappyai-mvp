@@ -86,6 +86,8 @@ export interface RuntimeInput {
    * of its ask_user call and goes on; at most two refusals per turn, so a later question is always shown. Absent → every question is shown.
    */
   refuseAsk?: (a: AskUser) => string | { note: string; kind: string } | null
+  /** CONSULTATIVE_IN_AGENT: a preface paragraph the researched answer restates in other words is dropped (answerFirst.ts). */
+  dedupeParaphrase?: boolean
 }
 
 export interface RuntimeRun {
@@ -158,9 +160,9 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     T.counters.toolCalls = toolCalls
     // Local UAT only, opt-in (never in production): what the runtime composed from the prefaces and the final step.
     if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
-      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'compose', prefaces, final: text, composed: composeFinal(prefaces, text) })) } catch { /* diagnostics only */ }
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'compose', prefaces, final: text, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) })) } catch { /* diagnostics only */ }
     }
-    return { text: composeFinal(prefaces, text) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
+    return { text: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) || FALLBACK(input.lang), status, stopReason, steps, toolEvents, modelCalls, toolCalls, ask, answerFirst }
   }
 
   for (let round = 1; round <= L.maxModelRounds; round++) {

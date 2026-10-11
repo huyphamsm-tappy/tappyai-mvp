@@ -67,8 +67,14 @@ function sentences(prose: string): string[] {
   // A URL is ONE token: its dots and its «?» are not sentence ends. Split there and the tail of «…/catalog/?q=kính%20cường%20lực» becomes a
   // «sentence» that the next link with the same keyword (Shopee, then Lazada) «repeats» — the second link was cut in the middle
   // (A3, 2026-10-02: «- [Lazada](https://www.lazada.vn/catalog/?» followed by the buttons).
+  // A whole markdown link is one unit too: its LABEL is usually a host ("[vpcp.dichvucong.gov.vn](…)") whose dots are not sentence ends either.
+  // Split inside the label, the tail "vn](https://…))." of the second citation of the same page equalled the first one's and was dropped as a
+  // repeated sentence, leaving "([vpcp.dichvucong.gov." in the reply (passport answer, 2026-10-11 — the server's final text was complete, per
+  // the verbatim stream trace).
   const urls: string[] = []
-  const masked = prose.replace(/https?:\/\/[^\s)\]]+/g, u => `\u0001${urls.push(u) - 1}\u0002`)
+  const masked = prose
+    .replace(/\[[^\]\n]*\]\(https?:\/\/[^\s)]+\)/g, u => `\u0001${urls.push(u) - 1}\u0002`)
+    .replace(/https?:\/\/[^\s)\]]+/g, u => `\u0001${urls.push(u) - 1}\u0002`)
   return splitSentences(masked).map(p => p.replace(/\u0001(\d+)\u0002/g, (_m, i: string) => urls[Number(i)]))
 }
 

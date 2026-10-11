@@ -23,6 +23,13 @@ describe('the repeat guard never cuts inside a URL', () => {
     expect(out).toBe(TEXT)
     expect(out).toContain(`(https://www.lazada.vn/catalog/?q=${KW})`)
   })
+  it('a host-labelled link cited twice survives whole both times (passport answer, 2026-10-11: the second was cut at "gov.")', () => {
+    const U = 'https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456'
+    const t = `Có thể nộp trực tiếp hoặc trực tuyến qua cổng dịch vụ công ([vpcp.dichvucong.gov.vn](${U})).\n\nẢnh hồ sơ là ảnh mới chụp trong 6 tháng, cỡ 4×6 cm, nhìn thẳng, không đeo kính; nền trắng ([vpcp.dichvucong.gov.vn](${U})). Danh sách thành phần hồ sơ chi tiết chưa hiển thị đầy đủ.`
+    const out = cleanRepeats(t)
+    expect(out).toBe(t)
+    expect(out.match(/\(\[vpcp\.dichvucong\.gov\.vn\]/g)).toHaveLength(2)
+  })
   it('a real repeated sentence is still dropped', () => {
     const t = 'Mình chọn quán này vì gần bạn và đánh giá cao.\n\nMình chọn quán này vì gần bạn và đánh giá cao.'
     expect(dedupeSentences(t).match(/Mình chọn quán này/g)).toHaveLength(1)

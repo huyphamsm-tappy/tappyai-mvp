@@ -219,6 +219,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
+      ...(i.consultative === true ? { dedupeParaphrase: true } : {}),
       // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
       ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
       deadlineAt: i.deadlineAt,
