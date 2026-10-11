@@ -11,7 +11,7 @@ const PAGE: GuardSource = {
 }
 const OTHER: GuardSource = { id: 'S2', host: 'petrolimex.com.vn', sourceType: 'official', passages: ['Dầu diesel 0,05S giá 19.800 đồng một lít.'] }
 const ev = (sources: GuardSource[]): GuardEvidence => ({ sources, conflicts: [], carried: [], constraintsSig: null, userText: '' })
-const run = (text: string, sources: GuardSource[], on: boolean) => { const s = shieldSupported(text, ev(sources), { cutUnsourcedMoney: on }); return { out: s.restore(s.text), report: s.report } }
+const run = (text: string, sources: GuardSource[], on: boolean, retrievedTexts: string[] = []) => { const s = shieldSupported(text, ev(sources), { cutUnsourcedMoney: on, retrievedTexts }); return { out: s.restore(s.text), report: s.report } }
 
 describe('a cited money amount no page states is cut (flag on)', () => {
   const FAKE = 'Hôm nay xăng RON 95 giá 31.500 đồng/lít [S1]. Giá có thể khác theo khu vực.'
@@ -30,6 +30,11 @@ describe('a cited money amount no page states is cut (flag on)', () => {
   it('the amount is in ANOTHER read page than the cited one → kept (that is a misattribution the marker rule handles, not a made-up figure)', () => {
     const { out } = run('Dầu diesel giá 19.800 đồng/lít [S1].', [PAGE, OTHER], true)
     expect(out).toContain('19.800')
+  })
+  it('the amount is in no read page but a retrieved SEARCH SNIPPET states it → kept (Philips kettle, live 2026-10-11: the page holds only 8 passages)', () => {
+    const text = 'Philips HD9350 giá 895.000 đồng tại Điện Máy Xanh [S1].'
+    expect(run(text, [PAGE], true, ['Ấm đun siêu tốc Philips HD9350/90 1.7 lít - 895.000đ - Điện máy XANH']).out).toContain('895.000')
+    expect(run(text, [PAGE], true, ['Ấm Philips HD9350 giá liên hệ']).out).not.toContain('895.000') // no snippet states it → cut
   })
   it('CONTROL — flag off: the made-up amount is NOT cut here (labelled only, as before)', () => {
     const { out } = run(FAKE, [PAGE, OTHER], false)
