@@ -69,6 +69,9 @@ export function isAmountPhrase(bold: string): boolean {
   if (w.length === 0) return false
   if (/^\d+$/.test(w[0]) && w.length > 1 && QUANTITY_WORD.has(w[1])) return true
   if (MONEY_AMOUNT.test(bold)) return true
+  // Live 2026-10-11 (Tesla): "**116 bằng sáng chế cơ bản**" and "**125 phát minh**" were labelled as names. A number followed only by lower-case words
+  // counts something ("116 bằng sáng chế", "2 phòng ngủ"); a proper name starts with a capital or a letter ("Galaxy S26", "3 Sao Vàng").
+  if (/^\s*\d[\d.,]*\s+\p{Ll}[\p{Ll}\s]*$/u.test(bold)) return true
   // Live 2026-10-11: "**3,45 chỉ**" (a decimal comma splits into "3" "45" "chi") was labelled as a name. A run whose words, once the numbers are
   // taken out, are all quantity / filler words ("3,45 chỉ", "khoảng 50 triệu", "2 ngày 1 đêm") names nothing.
   const rest = fold(bold).replace(/\d[\d.,]*/g, ' ').split(/[^a-z]+/).filter(Boolean)

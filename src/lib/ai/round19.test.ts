@@ -5,6 +5,7 @@ import { detectPlanningIntent } from './intent'
 import { askVerdict } from './agent/runtime/askGate'
 import { guardPlanItems } from './planItemGuard'
 import { repairPlanBlock } from './planJsonRepair'
+import { isAmountPhrase } from './entityNameGuard'
 import { guardPlanTripFacts } from './planTripFactsGuard'
 import { composeFinal, withoutQuestions, withoutParaphrasedPrefaceParagraphs } from './agent/runtime/answerFirst'
 import { agentSystemV2For, CONSULT_PRINCIPLES_R19 } from './agent/runtime/consultativeVoice'
@@ -142,6 +143,13 @@ describe('plan JSON with one closing brace too many (live Nha Trang plan: no car
   it('a valid plan is never touched', () => {
     const ok = `[TAPPY_PLAN]{"a":[1,{"b":"}"}]}[/TAPPY_PLAN]`
     expect(repairPlanBlock(ok, { balance: true }).repaired).toBe(false)
+  })
+})
+
+describe('entity label: a counted noun is not a name (live Tesla: "116 bằng sáng chế cơ bản" labelled)', () => {
+  it('quantity phrases are left alone; proper names are still checked', () => {
+    for (const a of ['116 bằng sáng chế cơ bản', '125 phát minh', '2 phòng ngủ']) expect(isAmountPhrase(a), a).toBe(true)
+    for (const n of ['Galaxy S26 Ultra', '3 Sao Vàng', 'iPhone 18 Pro Max', 'Pixel 9 Pro']) expect(isAmountPhrase(n), n).toBe(false)
   })
 })
 
