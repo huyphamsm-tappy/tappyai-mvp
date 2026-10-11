@@ -90,6 +90,8 @@ export interface RuntimeInput {
   askGateShadow?: boolean
   /** CONSULTATIVE_IN_AGENT: a preface paragraph the researched answer restates in other words is dropped (answerFirst.ts). */
   dedupeParaphrase?: boolean
+  /** CONSULTATIVE_IN_AGENT: the answer-before-lookup check runs concurrently with the lookup instead of before it (same output, less waiting). */
+  parallelAnswerFirst?: boolean
 }
 
 export interface RuntimeRun {
@@ -269,6 +271,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       T.counters.errors++
     }
     const toolCallsThisStep = calls.filter(c => !CONTROL_TOOLS.has(c.toolName))
+    let pendingCheck: Promise<{ aborted: boolean }> | null = null
     if (toolCallsThisStep.length === 0) {
       if (step.text.trim()) return done(step.text, 'answered', 'model_answered')
       // Only a task update this step: feed its result back; the answer (or a lookup) comes next round.
@@ -293,24 +296,32 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
         if (!input.answerFirstModel) answerFirst = 'not_checked'
         else if (left > L.finalReserveMs + 6_000) {
           const c0 = now()
-          try {
-            modelCalls++
-            const r = await cancellable(signal => input.answerFirstModel!({ system: input.system + checkNote(toolCallsThisStep, input.lang), messages, signal }), Math.min(L.stepTimeoutMs, left - L.finalReserveMs - 2_000), input.signal)
-            const kept = parseCheck(r.text)
-            T.modelRound({ round, final: false, ms: now() - c0, decision: 'answer_first_check', toolCalls: 0, promptTokens: r.promptTokens, completionTokens: r.completionTokens, usd: r.usd })
-            if (kept) { prefaces.push(kept); answerFirst = 'provided' } else answerFirst = 'nothing_yet'
-            T.add('answer_first', { round, outcome: answerFirst, chars: kept ? kept.length : 0, ms: now() - c0 })
-          } catch (e) {
-            if (input.signal?.aborted) return done('', 'aborted', 'aborted')
-            answerFirst = 'failed'
-            T.counters.errors++
-            T.add('error', { round, scope: 'answer_first', message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+          const snapshot = [...messages] // the check reads the conversation as it is NOW (before this step's assistant message)
+          modelCalls++
+          const runCheck = async (): Promise<{ aborted: boolean }> => {
+            try {
+              const r = await cancellable(signal => input.answerFirstModel!({ system: input.system + checkNote(toolCallsThisStep, input.lang), messages: input.parallelAnswerFirst ? snapshot : messages, signal }), Math.min(L.stepTimeoutMs, left - L.finalReserveMs - 2_000), input.signal)
+              const kept = parseCheck(r.text)
+              T.modelRound({ round, final: false, ms: now() - c0, decision: 'answer_first_check', toolCalls: 0, promptTokens: r.promptTokens, completionTokens: r.completionTokens, usd: r.usd })
+              if (kept) { prefaces.push(kept); answerFirst = 'provided' } else answerFirst = 'nothing_yet'
+              T.add('answer_first', { round, outcome: answerFirst, chars: kept ? kept.length : 0, ms: now() - c0 })
+            } catch (e) {
+              if (input.signal?.aborted) return { aborted: true }
+              answerFirst = 'failed'
+              T.counters.errors++
+              T.add('error', { round, scope: 'answer_first', message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+            }
+            return { aborted: false }
           }
+          // CONSULTATIVE_IN_AGENT (`parallelAnswerFirst`): the check runs WHILE the lookup runs (same result, same text, ~2–3 s less wait); the
+          // assistant message that carries its text is added once both are done. Without it: the check first, then the lookup, as before.
+          if (input.parallelAnswerFirst) pendingCheck = runCheck()
+          else if ((await runCheck()).aborted) return done('', 'aborted', 'aborted')
         }
       }
     }
 
-    messages.push({
+    const pushAssistant = () => messages.push({
       role: 'assistant',
       content: [
         ...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : prefaces.length && answerFirst === 'provided' ? [{ type: 'text' as const, text: prefaces[prefaces.length - 1] }] : []),
@@ -318,6 +329,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
         ...toolCallsThisStep.map(tc => ({ type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: stripWhy(tc.args) })),
       ],
     })
+    if (!pendingCheck) pushAssistant()
 
     // Phase 1 (sequential, deterministic): input guard, budgets, dedupe, allow-list.
     // `name` = the tool that runs (a resolved proxy call runs as its real tool); `tc` stays the model's own call (history, ids).
@@ -392,6 +404,10 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     const runnable = planned.filter(pl => pl.outcome === 'ok')
     await Promise.all(runnable.filter(pl => !RUNTIME_SEQUENTIAL_TOOLS.has(pl.name)).map(execute))
     for (const pl of runnable.filter(pl => RUNTIME_SEQUENTIAL_TOOLS.has(pl.name))) await execute(pl)
+    if (pendingCheck) {
+      if ((await pendingCheck).aborted) return done('', 'aborted', 'aborted')
+      pushAssistant()
+    }
 
     // Phase 3 (model order): output guard, events, client frames, the model's tool message.
     const parts: Array<{ type: 'tool-result'; toolCallId: string; toolName: string; result: unknown }> = [...taskParts()]

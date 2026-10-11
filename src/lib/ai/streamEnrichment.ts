@@ -3375,7 +3375,8 @@ export function applyPlaceEnrichmentStreamFilter(
       const listed = collector?.agentMode ? dropOrphanLeadIns(bare.text) : bare
       if (listed.removed) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'orphan_lead_in', removed: listed.removed }))
       // CONSULTATIVE_IN_AGENT: the guards cut EVERY figure the draft stated → one honest sentence instead of silence (the citation step below adds the source).
-      const figLine = collector?.consultative && collector.agentMode && !collector.consultTurn ? withUnverifiedFigureLine(mainText, listed.text, lang) : { text: listed.text, added: false }
+      // (Not when a product / place card carries the prices: "chưa xác minh số này" next to a card full of prices contradicts it — live 2026-10-11, kettle.)
+      const figLine = collector?.consultative && collector.agentMode && !collector.consultTurn && !collector.shoppingMarker && !collector.placesRecommendations?.length ? withUnverifiedFigureLine(mainText, listed.text, lang) : { text: listed.text, added: false }
       if (figLine.added) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unverified_figure_line' }))
       if (!collector?.citationSources?.length) {
         // No page was read: the forced sentence still gets its source buttons — the search results the tool returned (held, never shown otherwise).

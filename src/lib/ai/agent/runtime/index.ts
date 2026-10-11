@@ -38,7 +38,7 @@ import { attachEvidence, taskConstraintsSig } from './task'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
 import { createHash } from 'node:crypto'
 import { agentSystemV2For } from './consultativeVoice'
-import { unreadableSourceLinks } from './unreadableSources'
+import { unreadableSourceLinks, noPageReadNote } from './unreadableSources'
 import { STYLE_LUNA6_BLOCK } from '@/lib/ai/consultative/styleLuna6'
 import type { AgentRunTrace } from './trace'
 import type { GuardEvidence } from '@/lib/ai/guardEvidence'
@@ -221,7 +221,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
-      ...(i.consultative === true ? { dedupeParaphrase: true } : {}),
+      ...(i.consultative === true ? { dedupeParaphrase: true, parallelAnswerFirst: true } : {}),
       // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
       ...(i.consultative === true && askGateMode() === 'shadow' ? { askGateShadow: true } : {}),
       ...(i.consultative === true && askGateEnabled() ? { refuseAsk: (a: { question: string }) => askVerdict(box?.turn.userText || userTexts[userTexts.length - 1] || '', a.question, i.lang) } : {}),
@@ -265,9 +265,9 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
         return { view: taskView(r.task), applied: r.applied, rejected: r.rejected }
       }) : undefined,
       // Latency pass: after two research calls, a reminder that six rounds is a ceiling, not a workflow (Luna still decides).
-      stepNote: ({ toolEvents }) => toolEvents.filter(e => (e.name === 'web_search' || e.name === READ_PAGE) && e.outcome === 'ok').length >= 2
+      stepNote: ({ toolEvents }) => (i.consultative === true ? noPageReadNote({ webSearchOk: toolEvents.filter(e => e.name === 'web_search' && e.outcome === 'ok').length, readPageCalls: toolEvents.filter(e => e.name === READ_PAGE).length, pagesRead: ledger.sources.length }, i.lang) : null) ?? (toolEvents.filter(e => (e.name === 'web_search' || e.name === READ_PAGE) && e.outcome === 'ok').length >= 2
         ? (i.lang === 'en' ? '\n\nYou have already researched twice this turn. Answer now from the evidence you have, unless one specific key point is still missing.' : '\n\nLượt này đã tra cứu 2 lần. Trả lời ngay từ bằng chứng đã có, trừ khi còn thiếu đúng một điểm then chốt.')
-        : null,
+        : null),
       runTool: async (name, signal, fn) => {
         const r = await withSerperToolScope(name === 'get_trip_data' ? TRIP_PART_CREDITS * 3 : RUNTIME_LIMITS.serperCreditsPerTool, signal, fn)
         return { value: r.value, credits: r.spent }

@@ -9,13 +9,11 @@ const PREFACE = [
 const FINAL = 'Theo Cổng Dịch vụ công Quốc gia, lần đầu bạn nộp tại **Cơ quan Quản lý xuất nhập cảnh Công an cấp tỉnh** nơi thường trú hoặc tạm trú; nếu có CCCD, có thể nộp tại cơ quan cấp tỉnh nơi thuận tiện. Có thể nộp trực tiếp hoặc trực tuyến qua cổng dịch vụ công. [S1]\n\nKhi nộp trực tiếp, mang **CCCD/Thẻ căn cước** để xuất trình. Ảnh hồ sơ là ảnh mới chụp trong 6 tháng, cỡ 4×6 cm, nhìn thẳng, đầu để trần, rõ mặt và hai tai, không đeo kính; nền trắng. [S1] Danh sách thành phần hồ sơ chi tiết trên trang chính thức chưa hiển thị đầy đủ ở dữ liệu mình xác minh được, nên bạn nên kiểm tra mục thủ tục trên cổng trước khi đi.\n\n**Thời gian:** thông tin 8 ngày làm việc mình nêu trước đó chưa được xác minh rõ từ nội dung trang chính thức đã đọc; hãy xem thời hạn trên giấy hẹn hoặc cổng dịch vụ công khi nộp.'
 
 describe('a preface paragraph the researched answer restates is dropped (flag on)', () => {
-  it('the live passport case: the "Nộp hồ sơ" paragraph (61 % of its words in a sourced final paragraph) goes; the rest stays', () => {
+  it('the live passport case: "Nộp hồ sơ" (61 % overlap) and "Thời hạn" (42 % overlap but the SAME quantity "8 ngày") go; the unrelated first paragraph stays', () => {
     const out = composeFinal(PREFACE, FINAL, { dedupeParaphrase: true })
     expect(out).toContain('Hồ sơ lần đầu') // not echoed by any sourced / unverified final paragraph
     expect(out).not.toContain('**Nộp hồ sơ:**')
-    // KNOWN LIMIT (reported, not hidden): the "Thời hạn" paragraph overlaps its twin only 42 % — an unrelated paragraph reaches 30 %, so no
-    // threshold separates them safely; it stays.
-    expect(out).toContain('**Thời hạn giải quyết theo quy định:**')
+    expect(out).not.toContain('**Thời hạn giải quyết theo quy định:**')
     expect(out).toContain('Theo Cổng Dịch vụ công Quốc gia') // the researched paragraphs are all kept
     expect(out).toContain('**Thời gian:**')
   })

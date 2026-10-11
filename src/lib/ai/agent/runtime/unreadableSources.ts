@@ -13,6 +13,19 @@ const DISCLOSES = /(?<!\p{L})(?:chưa|không)\s+(?:\S+\s+){0,3}?(?:xác minh|xá
 
 interface Row { link?: unknown; title?: unknown }
 
+/**
+ * CONSULTATIVE_IN_AGENT step note: a web search ran, NO page could be read (timeout / network error / blocked) and read_page has not been tried:
+ * ask for ONE more official page before answering. A page read is a plain HTTPS fetch — no Serper credit, same page budget and deadline. Live
+ * 2026-10-11 (petrol): the two pages web_search opened both failed (one timed out at 7.4 s, one network error), the model answered on the spot,
+ * and the reply could only say "chưa xác minh". null in every other situation.
+ */
+export function noPageReadNote(s: { webSearchOk: number; readPageCalls: number; pagesRead: number }, lang: string): string | null {
+  if (s.webSearchOk < 1 || s.readPageCalls > 0 || s.pagesRead > 0) return null
+  return lang === 'en'
+    ? '\n\nNo page could be read yet. For a figure that changes daily (a price, a rate, the news), open ONE more official page with read_page before answering: a different host from the ones that failed, preferably a dated article rather than a topic list. If it cannot be read either, say the figure is not verified.'
+    : '\n\nChưa đọc được trang nào. Với số liệu đổi hằng ngày (giá, tỉ giá, tin tức), mở thêm MỘT trang chính thống khác bằng read_page trước khi trả lời: host khác với host đã lỗi, ưu tiên trang bài viết có ngày hơn trang danh sách chủ đề. Nếu vẫn không đọc được thì nói số đó chưa xác minh.'
+}
+
 /** Up to `max` source links from this turn's web_search results, for a reply that admits it could not verify. [] otherwise. */
 export function unreadableSourceLinks(results: readonly unknown[], reply: string, max = 2, force = false): SourceLink[] {
   // `force`: the links are returned whatever the model wrote — they are only HELD (collector.unverifiedSources) and shown by the settle step when
