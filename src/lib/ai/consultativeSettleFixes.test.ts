@@ -130,7 +130,7 @@ const NAME_TEXT = 'Với **4 triệu cho hai người** thì vừa; vàng đang 
 describe('3 · entity-name guard: amounts are not names', () => {
   it('the helper: amounts and quantities yes, names no', () => {
     // live 2026-10-11 (gold): a decimal-comma quantity "3,45 chỉ" was labelled as a name
-    for (const a of ['4 triệu cho hai người', '3 triệu đồng/lượng', '2 ngày 1 đêm', '10 triệu', '3,45 chỉ', 'khoảng 3,46 chỉ', '1,5 lượng', 'gần 50 triệu']) expect(isAmountPhrase(a), a).toBe(true)
+    for (const a of ['4 triệu cho hai người', '3 triệu đồng/lượng', '2 ngày 1 đêm', '10 triệu', '3,45 chỉ', 'khoảng 3,46 chỉ', '1,5 lượng', 'gần 50 triệu', '8 ngày làm việc', '15 ngày làm việc']) expect(isAmountPhrase(a), a).toBe(true)
     for (const n of ['Galaxy S26 Ultra', 'iPhone 18 Pro Max', 'WH-1000XM5', 'SJC 9999', 'Nhẫn Tròn 9999', 'Pixel 9 Pro']) expect(isAmountPhrase(n), n).toBe(false)
   })
 

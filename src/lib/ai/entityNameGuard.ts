@@ -74,7 +74,7 @@ export function isAmountPhrase(bold: string): boolean {
   const rest = fold(bold).replace(/\d[\d.,]*/g, ' ').split(/[^a-z]+/).filter(Boolean)
   return rest.length > 0 && rest.length < w.length && rest.every(x => QUANTITY_WORD.has(x) || AMOUNT_FILLER.has(x))
 }
-const AMOUNT_FILLER = new Set(['cho', 'khoang', 'hon', 'gan', 'duoi', 'tren', 'moi', 'tu', 'den', 'toi', 'va', 'hai', 'ba', 'bon', 'khoang', 'tuong', 'duong'])
+const AMOUNT_FILLER = new Set(['cho', 'khoang', 'hon', 'gan', 'duoi', 'tren', 'moi', 'tu', 'den', 'toi', 'va', 'hai', 'ba', 'bon', 'khoang', 'tuong', 'duong', 'lam', 'viec'])
 
 export function groundEntityNames(text: string, ev: EntityEvidence, lang = 'vi', opts: { skipAmounts?: boolean } = {}): EntityGuardResult {
   if (!text || ev.corpus.length === 0) return { text, ungrounded: [], checked: 0 }
