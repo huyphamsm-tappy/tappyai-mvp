@@ -27,6 +27,7 @@ import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
 import { withUnverifiedFigureLine } from './unverifiedFigure'
+import { planPriceSources, collectSearchRows, type TextRow } from './consultative/priceProvenance'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -1519,7 +1520,24 @@ function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Reco
  * through the sanitisers on the line that builds the link. Markers naming no such source are removed.
  */
 export function citeSources(text: string, sources: ReadonlyArray<{ id: string; host: string; url: string }>, allowed: ReadonlySet<string>, lang: string): string {
-  const ok = new Map(sources.filter(s => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))).map(s => [s.id, s]))
+  return citeSourcesDetailed(text, sources, allowed, lang).text
+}
+
+/**
+ * Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): the same step, with the two things the reply's FIGURES decide when no marker survived.
+ *   `fallback`     the pages the "Nguồn:" line may name instead of every page read (those whose own passages state a figure of the reply);
+ *   `searchLinks`  search results whose own text states a figure no page states — shown as "Giá theo kết quả tìm kiếm của …", never as a verified page price.
+ * Without `opts` the behaviour is exactly the former one.
+ */
+export function citeSourcesDetailed(
+  text: string,
+  sources: ReadonlyArray<{ id: string; host: string; url: string }>,
+  allowed: ReadonlySet<string>,
+  lang: string,
+  opts?: { fallback?: ReadonlyArray<{ id: string; host: string; url: string }>; searchLinks?: ReadonlyArray<{ id: string; host: string; url: string }> },
+): { text: string; used: boolean } {
+  const eligible = (s: { url: string }) => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))
+  const ok = new Map(sources.filter(eligible).map(s => [s.id, s]))
   const link = (s: { host: string; url: string }) => `[${escapeMarkdownLabel(s.host)}](${sanitizeUrlForMarkdown(s.url)})`
   let used = 0
   let out = text.replace(/\s?\[(S\d{1,2}(?:\s*,\s*S\d{1,2})*)\]/g, (_m, ids: string) => {
@@ -1528,13 +1546,26 @@ export function citeSources(text: string, sources: ReadonlyArray<{ id: string; h
     used++
     return ` (${ls.map(link).join(', ')})`
   })
-  if (!used && ok.size) {
+  const en = /^en/i.test(lang)
+  if (!used && !opts && ok.size) {
     const list = [...ok.values()].slice(0, 3).map(link).join(' · ')
     const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
-    const line = `${/^en/i.test(lang) ? 'Sources' : 'Nguồn'}: ${list}`
+    const line = `${en ? 'Sources' : 'Nguồn'}: ${list}`
     out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${line}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${line}\n\n${out.slice(at)}`
+  } else if (!used && opts) {
+    const pages = (opts.fallback ?? []).filter(eligible).slice(0, 3)
+    const found = (opts.searchLinks ?? []).filter(eligible).slice(0, 3)
+    const lines = [
+      ...(pages.length ? [`${en ? 'Sources' : 'Nguồn'}: ${pages.map(link).join(' · ')}`] : []),
+      ...(found.length ? [`${en ? 'Prices as listed in the search results of' : 'Giá theo kết quả tìm kiếm của'}: ${found.map(link).join(' · ')}`] : []),
+    ]
+    if (lines.length) {
+      const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
+      const block = lines.join('\n\n')
+      out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${block}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${block}\n\n${out.slice(at)}`
+    }
   }
-  return out
+  return { text: out, used: used > 0 }
 }
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
@@ -1622,6 +1653,8 @@ export function applyPlaceEnrichmentStreamFilter(
   let planDestination: string | null = null
   // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
   const gateCorpus: string[] = []
+  // Round 32 (CONSULTATIVE_IN_AGENT): the search results (title + snippet + link) the tools returned this turn — the evidence a price may be tied back to (priceProvenance.ts).
+  const searchRows: TextRow[] = []
   // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
   const agedFramePrices: Array<{ amount: number; at: string | null }> = []
   const freshFramePrices: number[] = []
@@ -3425,6 +3458,14 @@ export function applyPlaceEnrichmentStreamFilter(
           const held = collector.unverifiedSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host))
           return citeSources(figLine.text, held, allowedUrls, lang)
         }
+        // Round 32 (CONSULTATIVE_IN_AGENT): no page was read, but a figure the reply states may be one a SEARCH RESULT states: that result's own link, labelled as such.
+        if (collector?.consultative === true && collector.agentMode && !collector.shoppingMarker && !collector.placesRecommendations?.length) {
+          const plan = planPriceSources(figLine.text, [], searchRows)
+          if (plan.figures.length && plan.searchRows.length) {
+            console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: 0, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+            return citeSourcesDetailed(figLine.text, [], allowedUrls, lang, { fallback: [], searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) }).text
+          }
+        }
         return figLine.text
       }
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
@@ -3433,6 +3474,19 @@ export function applyPlaceEnrichmentStreamFilter(
       // CONSULTATIVE_IN_AGENT: a Shopee page the agent read is not offered as a source button — opened without a login it is a "Login Required" page
       // (checked 2026-10-11 in a browser with no session). The facts it gave were still read; only the button is dropped.
       const buttonSources = collector.consultative ? collector.citationSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host) && !/^https?:\/\/(?:[^/]*\.)?shopee\./i.test(s.url)) : collector.citationSources
+      // Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): when no marker survives, the "Nguồn:" line names only the pages whose own passages state a figure of the
+      // reply, and a figure only a search result states gets that result's link ("Giá theo kết quả tìm kiếm của …"). Live 2026-10-12: two snippet prices, source
+      // button = the page that stated neither. A figure nothing states gets no source (the guards above decide the sentence; a source is never invented for it).
+      if (collector.consultative === true && collector.agentMode) {
+        const ev = collector.guardEvidence?.sources ?? []
+        const pages = buttonSources.map(s => ({ ...s, passages: ev.find(g => g.id === s.id)?.passages ?? [] }))
+        const plan = planPriceSources(integrity.text, pages, searchRows)
+        if (plan.figures.length) {
+          const cited = citeSourcesDetailed(integrity.text, buttonSources, allowedUrls, lang, { fallback: plan.pageSources, searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) })
+          if (!cited.used) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: plan.pageSources.length, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+          return cited.text
+        }
+      }
       return citeSources(integrity.text, buttonSources, allowedUrls, lang)
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
@@ -3805,6 +3859,7 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
             if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
             if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }
