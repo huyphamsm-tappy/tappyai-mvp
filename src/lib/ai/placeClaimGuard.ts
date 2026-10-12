@@ -633,6 +633,24 @@ function trimStandsAlone(headRemoved: boolean, survivorNames: string | null): bo
 }
 
 /**
+ * DIAGNOSTIC ONLY (Round 37), off unless PLACE_CLAIM_DIAG=1: which claim rule really matched a sentence, what the sentence was before the guard touched it, what is left, and why it
+ * was trimmed or removed. A trim is counted in neither `sentences_removed` nor `reasons`, so the standard guard line cannot say which rule cut a clause. This writes ONE console line
+ * and decides nothing: the guard's output is the same with the variable on or off. The line carries the model's own sentence, so it belongs in the audit environment only.
+ */
+function placeClaimDiagOn(): boolean {
+  return process.env.PLACE_CLAIM_DIAG === '1'
+}
+function placeClaimDiag(sentence: string, offenders: readonly RegExp[], decision: 'clause_trim' | 'sentence_removed', why: string, after: string | null): void {
+  const names: Array<[RegExp, string]> = [[QUALITY_RE, 'QUALITY_RE'], [POPULARITY_RE, 'POPULARITY_RE'], [ORDERING_RE, 'ORDERING_RE'], [TICKET_RE, 'TICKET_RE'], [TICKET_AVAILABILITY_RE, 'TICKET_AVAILABILITY_RE']]
+  const bare = sentence.replace(/\*\*[^*\n]+\*\*/g, ' ')
+  console.log(JSON.stringify({
+    type: 'tappyai_guard', guard: 'place_claim_diag', decision, why,
+    offenders: offenders.map(re => ({ regex: names.find(([r]) => r === re)?.[1] ?? 'OTHER', matched: re.exec(bare)?.[0] ?? null })),
+    before: sentence, after,
+  }))
+}
+
+/**
  * Remove sentences whose rating or distance claim the retrieval does not support.
  *
  * Writes nothing: every character of the output came from the input. If removal
@@ -899,6 +917,7 @@ export function guardPlaceClaimsInText(
         && (namedBefore === null || survivorNames === namedBefore)
         && trimStandsAlone(trim.headRemoved, survivorNames)) {
         trimmed.set(i, trim.text)
+        if (placeClaimDiagOn()) placeClaimDiag(s, violated, 'clause_trim', trim.headRemoved ? 'head_clause_removed_survivor_names_a_place' : 'offending_clauses_removed', trim.text)
         // 🚨 A TRIM IS NOT A VERDICT ON THE REST OF THE SENTENCE. Returning here let
         // "Quán này 3.1 sao, hơn 99.999 đánh giá, giao hàng tận nơi." keep its invented
         // rating and count once the delivery clause was cut (measured in the G1b
@@ -906,6 +925,7 @@ export function guardPlaceClaimsInText(
         // doomed sentence wins over its trim in `render`.
         prose = proseOnly(trim.text)
       } else {
+        if (placeClaimDiagOn()) placeClaimDiag(s, violated, 'sentence_removed', trim === null ? 'no_clause_trim_possible' : (namedBefore !== null && survivorNames !== namedBefore) ? 'trim_would_lose_the_place_name' : 'trim_head_removed_survivor_names_no_place', null)
         doomed.add(i)
         reasonOf.set(i, reasonForRegex(violated[0]))
         if (namedBefore === null) stats.unattributable_claims++
