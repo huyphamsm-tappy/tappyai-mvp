@@ -3617,27 +3617,30 @@ export function applyPlaceEnrichmentStreamFilter(
       if (p) { collector.setAppendix(p); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'product_search_appendix', links: p.links.length })) }
     }
     const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
-    const ctaOwnedProseRaw = collector?.appendix
-      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
-      : ctaOwnedProseBase
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
-    // Round 32 (CONSULTATIVE_IN_AGENT): the reply may only point at prices and buttons the FINAL output has — after the card decision, the appendix and the system links.
+    // Round 32 (CONSULTATIVE_IN_AGENT): the reply may only point at prices and buttons the FINAL output has — after the card decision, the appendix and the system links —
+    // and a coach reply names operators and kinds of fare for what the rows show. Identity (the same string) without the flag.
     // Live 2026-10-12 (hotel): "các mức tham khảo đi kèm …" and "nút đặt phòng bên dưới" after the engine's cards were cleared and the tool had returned no price at all.
-    const offerChecked = collector?.consultative === true && collector.agentMode
-      ? dropUnbackedOfferClaims(ctaOwnedProseRaw, {
-        hasPriceData: figuresIn(ctaOwnedProseRaw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
-        hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(ctaOwnedProseRaw),
+    const shapeFinalProse = (raw: string): string => {
+      if (!(collector?.consultative === true && collector.agentMode)) return raw
+      const offerChecked = dropUnbackedOfferClaims(raw, {
+        hasPriceData: figuresIn(raw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
+        hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(raw),
         lang,
       })
-      : null
-    if (offerChecked?.removed.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unbacked_offer_claim', removed: offerChecked.removed.map(r => r.kind) }))
-    const ctaOwnedProseOffer = offerChecked?.removed.length ? offerChecked.text : ctaOwnedProseRaw
-    gt('unbacked_offer_claim', ctaOwnedProseRaw, ctaOwnedProseOffer)
-    // Round 32 (CONSULTATIVE_IN_AGENT, coach): "tùy nhà xe" only when the rows name two operators; a range whose ends are different kinds of price is written as two named figures.
-    const coachShaped = collector?.consultative === true && collector.agentMode && coachRows.length > 0 ? shapeCoachReply(ctaOwnedProseOffer, coachRows, lang) : null
-    if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
-    const ctaOwnedProse = coachShaped?.changes.length ? coachShaped.text : ctaOwnedProseOffer
-    gt('coach_fares', ctaOwnedProseOffer, ctaOwnedProse)
+      if (offerChecked.removed.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unbacked_offer_claim', removed: offerChecked.removed.map(r => r.kind) }))
+      const afterOffer = offerChecked.removed.length ? offerChecked.text : raw
+      gt('unbacked_offer_claim', raw, afterOffer)
+      // coach: "tùy nhà xe" only when the rows name two operators; a range whose ends are different kinds of price is written as two named figures.
+      const coachShaped = coachRows.length > 0 ? shapeCoachReply(afterOffer, coachRows, lang) : null
+      if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
+      const shaped = coachShaped?.changes.length ? coachShaped.text : afterOffer
+      gt('coach_fares', afterOffer, shaped)
+      return shaped
+    }
+    const ctaOwnedProse = shapeFinalProse(collector?.appendix
+      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
+      : ctaOwnedProseBase)
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
      * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
