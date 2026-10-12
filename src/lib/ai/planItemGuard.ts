@@ -147,6 +147,8 @@ export interface PlanItemGuardResult {
   sightsKept?: number
   /** Meals left as a plain "near the stay" slot because no unused retrieved venue was left for them (flag on only). */
   mealSlots?: number
+  /** Check-in / check-out stops with no hotel row to point at, kept as plain stops (flag on only). */
+  genericStays?: number
   /** Of those, restaurants of a vegetarian request whose row carries no vegetarian data (flag on only). */
   vegSlots?: number
   /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
@@ -206,6 +208,33 @@ function mealSlot(item: Item): Item {
   return out
 }
 
+const GENERIC_STAY = /nhận phòng|trả phòng|check-?in|check-?out|gửi hành lý|lấy hành lý/i
+const HOTEL_WORD = /khách sạn|hotel|resort|homestay|villa|hostel|nhà nghỉ|motel/i
+
+// ── CONSULTATIVE_IN_AGENT: a sight's description claims only what its own row supports ───────────────────────────────────────────────────
+//
+// Round 23 live: "Tháp Trầm Hương" (row: place_types "Điểm thu hút khách du lịch" + "Công viên", address "…, Quảng trường, Nha Trang", hours "Mở cửa cả ngày") was
+// described as "Ghé khu quảng trường ven biển" — "ven biển" is in no field of the row. A scene / setting claim (seaside, river bank, plaza, park, walking street,
+// mountain foot) that the row's name, address or categories do not carry is replaced by a neutral description built from the row (its categories, its hours).
+const SCENE_CLAIMS: Array<[RegExp, RegExp]> = [
+  [/\b(?:ven bien|bo bien|bai bien|view bien|ngam bien|sat bien)\b/, /\b(?:bien|beach|bai)\b/],
+  [/\bquang truong\b/, /\b(?:quang truong|plaza|square)\b/],
+  [/\bpho di bo\b/, /\b(?:pho di bo|walking)\b/],
+  [/\b(?:ven song|bo song|view song)\b/, /\b(?:song|river)\b/],
+  [/\bcong vien\b/, /\b(?:cong vien|park|vuon)\b/],
+  [/\b(?:chan nui|tren nui|view nui)\b/, /\b(?:nui|mountain)\b/],
+]
+/** The description unchanged, or the neutral one when it makes a scene claim the row does not support. */
+export function groundedSightDescription(description: unknown, place: PlanPlace): unknown {
+  if (typeof description !== 'string' || !description.trim()) return description
+  const said = fold(description)
+  const types = (Array.isArray(place.place_types) ? place.place_types.filter((t): t is string => typeof t === 'string' && t.trim() !== '') : [])
+  const rowText = fold([place.name ?? '', typeof place.address === 'string' ? place.address : '', ...types].join(' '))
+  if (!SCENE_CLAIMS.some(([claim, support]) => claim.test(said) && !support.test(rowText))) return description
+  const hours = typeof place.opening_hours === 'string' ? place.opening_hours.trim() : ''
+  return `${types.length ? types.slice(0, 2).join(', ') : 'Điểm tham quan'}${hours ? `; theo dữ liệu tra cứu: ${hours}` : ''}.`
+}
+
 export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean } = {}): PlanItemGuardResult {
   const none = { text: fullText, matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const start = fullText.indexOf(OPEN)
@@ -228,7 +257,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
 
@@ -272,12 +301,16 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         for (const f of ['address', 'maps_link', 'place_id', 'photo_url', 'booking_link']) delete item[f]
         delete item.booking_links
         if (typeof item.description === 'string' && /\d/.test(item.description)) item.description = 'Điểm nổi tiếng (gợi ý từ kiến thức chung); giờ mở cửa và giá cần kiểm tra lại.'
+        // Marked as what it is: a suggestion from general knowledge, not checked against the tools' data.
+        if (typeof item.description === 'string' && !/chưa kiểm chứng|kiến thức chung/i.test(item.description)) item.description = `${item.description.trim()} (gợi ý chưa kiểm chứng)`.trim()
+        else if (typeof item.description !== 'string' || !item.description.trim()) item.description = 'Điểm nổi tiếng (gợi ý chưa kiểm chứng).'
         res.sightsKept = (res.sightsKept ?? 0) + 1
         kept.push(item)
         continue
       }
       if (place) {
         res.matched++
+        if (opts.keepSights && (kind === 'attraction' || kind === 'entertainment')) item.description = groundedSightDescription(item.description, place)
       } else {
         // An invented venue ("Quán bar/lounge Quận 1"): an unused retrieved place of the same kind, or nothing.
         // CONSULTATIVE_IN_AGENT: a meal the model did not name (or named wrongly) is NEVER swapped for "the next unused restaurant of the pool" — the pool holds
@@ -285,6 +318,15 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
         // It stays a plain meal slot; a venue only appears when the model named it and the tools returned it.
         if (opts.keepSights && (kind === 'food' || kind === 'cafe')) { kept.push(mealSlot(item)); res.mealSlots = (res.mealSlots ?? 0) + 1; continue }
         place = pool.find(p => !used.has(p) && [...kindsOf(p)].some(k => COMPATIBLE[kind].includes(k)))
+        if (!place && opts.keepSights && kind === 'hotel' && GENERIC_STAY.test(String(item.name ?? '')) && !HOTEL_WORD.test(String(item.name ?? ''))) {
+          // CONSULTATIVE_IN_AGENT: "Gửi hành lý / nhận phòng", "Trả phòng" with no hotel row to point at is the stop itself, not an invented hotel: kept as a plain stop
+          // (Round 24 trace: the check-in and the check-out vanished from the card, so day 3 lost its check-out).
+          for (const f of ['address', 'maps_link', 'place_id', 'photo_url', 'booking_link', 'booking_links']) delete item[f]
+          item.category = 'rest'; item.price = ''
+          res.genericStays = (res.genericStays ?? 0) + 1
+          kept.push(item)
+          continue
+        }
         if (!place) { res.dropped++; continue }
         res.replaced++
         item.name = place.name
@@ -309,7 +351,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     day.items = kept
     fitTimesToHours(kept, placeOf, res)
   }
-  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
+  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.genericStays && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
