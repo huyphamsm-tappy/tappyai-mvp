@@ -219,6 +219,11 @@ export interface EnrichmentCollector {
   consultative?: boolean
   /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
   rankingTrace?: (summary: Record<string, unknown>) => void
+  /**
+   * CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): the correlation id of this turn's card-path diagnostics. Absent everywhere else, and then
+   * every card-path trace call is a no-op.
+   */
+  diagTurnId?: string
   setConsultBrief(on: boolean): void
   setConsultShown(names: string[]): void
   /** PHIÊN LUNA: the reply is checked for a prompt echo / secret shape before it leaves (lunaSafety.ts). */

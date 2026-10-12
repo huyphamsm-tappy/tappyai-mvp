@@ -48,18 +48,24 @@ const clean = (v: unknown, max: number): string | null => {
  * Code's validation of a recorded decision: picks must name a candidate of this turn and that candidate must be named in the answer;
  * duplicates dropped; at most MAX_PICKS. `none` stands as recorded (it removes no data — it only means no card is recommended).
  */
-export function validateDecision(d: RecordedDecision, candidates: readonly string[], answer: string): RankingContract {
+export type PickVerdict = { pick: string; status: 'matched' | 'no_candidate_matches' | 'duplicate' | 'not_named_in_answer' | 'over_max_picks' | 'recorded_none'; candidate?: string }
+
+/** `report` (diagnostics only, CONSULTATIVE_IN_AGENT card-path trace): one verdict per recorded pick. Passing it changes nothing about the result. */
+export function validateDecision(d: RecordedDecision, candidates: readonly string[], answer: string, report?: PickVerdict[]): RankingContract {
   const said = fold(answer)
   const picks: RankedPick[] = []
   const used = new Set<number>()
+  if (d.none) for (const p of d.picks) report?.push({ pick: p.name, status: 'recorded_none' })
   if (!d.none) for (const p of d.picks) {
+    if (picks.length >= MAX_PICKS) { report?.push({ pick: p.name, status: 'over_max_picks' }); continue }
     const i = matchPick(p.name, candidates)
-    if (i < 0 || used.has(i)) continue
+    if (i < 0) { report?.push({ pick: p.name, status: 'no_candidate_matches' }); continue }
+    if (used.has(i)) { report?.push({ pick: p.name, status: 'duplicate', candidate: candidates[i] }); continue }
     const named = fold(candidates[i])
-    if (!named || !said.includes(named) && !said.includes(fold(p.name))) continue
+    if (!named || !said.includes(named) && !said.includes(fold(p.name))) { report?.push({ pick: p.name, status: 'not_named_in_answer', candidate: candidates[i] }); continue }
     used.add(i)
     picks.push({ name: candidates[i], why: clean(p.why, 160), tradeoff: clean(p.tradeoff, 160), fits: null, refs: [] })
-    if (picks.length >= MAX_PICKS) break
+    report?.push({ pick: p.name, status: 'matched', candidate: candidates[i] })
   }
   return { picks, none: d.none || picks.length === 0, confidence: d.confidence }
 }
@@ -78,10 +84,14 @@ export async function recordDecision(i: {
   candidates: readonly string[]
   signal?: AbortSignal
   extract?: (o: { system: string; prompt: string; signal?: AbortSignal }) => Promise<RecordedDecision>
+  /** Diagnostics only (CONSULTATIVE_IN_AGENT card-path trace, cardPathTrace.ts): called with what the recorder received, returned and how each pick was judged. Never alters the result. */
+  diag?: (e: Record<string, unknown>) => void
 }): Promise<DecisionRecordResult> {
   const t0 = Date.now()
-  const cands = [...new Set(i.candidates.map(c => c.trim()).filter(Boolean))].slice(0, 12)
+  const uniq = [...new Set(i.candidates.map(c => c.trim()).filter(Boolean))]
+  const cands = uniq.slice(0, 12)
   if (!cands.length || !i.answer.trim()) return { contract: null, ms: 0, usd: 0, error: 'nothing_to_record' }
+  try { i.diag?.({ stage: 'recorder_input', candidates_total: uniq.length, sent_count: cands.length, sent: cands, cut: uniq.slice(12), answer_chars: i.answer.length, answer_truncated: i.answer.length > 4000 }) } catch { /* diagnostics only */ }
   let usd = 0
   try {
     const prompt = [DATA_OPEN, 'DANH SÁCH ỨNG VIÊN:', ...cands.map((c, k) => `${k + 1}. ${c.slice(0, 120)}`), '', 'CÂU TRẢ LỜI ĐÃ VIẾT:', i.answer.slice(0, 4000), DATA_CLOSE].join('\n')
@@ -91,7 +101,10 @@ export async function recordDecision(i: {
       return r.object
     })
     const d = DecisionSchema.parse(await run({ system: SYSTEM, prompt, signal: i.signal }))
-    return { contract: validateDecision(d, cands, i.answer), ms: Date.now() - t0, usd }
+    const report: PickVerdict[] | undefined = i.diag ? [] : undefined
+    const contract = validateDecision(d, cands, i.answer, report)
+    if (i.diag) try { i.diag({ stage: 'recorder_output', picks: d.picks.map(p => p.name), none: d.none, confidence: d.confidence }); i.diag({ stage: 'recorder_validation', verdicts: report, kept: contract.picks.map(p => p.name), none: contract.none }) } catch { /* diagnostics only */ }
+    return { contract, ms: Date.now() - t0, usd }
   } catch (e) {
     return { contract: null, ms: Date.now() - t0, usd, error: String(e instanceof Error ? e.message : e).slice(0, 120) }
   }
