@@ -12,6 +12,7 @@
 
 import { extractMoneyClaims } from '../moneyGuard'
 import type { TextRow } from './priceProvenance'
+import { dropUnsupportedVariance, varianceSupport } from './operatorVariance'
 
 const fold = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 
@@ -59,14 +60,6 @@ export function operatorsIn(rows: readonly TextRow[]): Set<string> {
   return found
 }
 
-/** Removes "tùy nhà xe" / "depending on the operator" (keeping what follows, e.g. "tùy loại xe"). */
-export function dropOperatorVariance(text: string): string {
-  return text
-    .replace(/(\s*,\s*)?(?<![\p{L}])(tùy|tuỳ)\s+(?:theo\s+)?(?:nhà xe|hãng xe|nhà vận tải)(?![\p{L}])(\s+và\s+|\s*,\s*|\s*\/\s*)?/giu, (_m, comma: string | undefined, tuy: string, conj: string | undefined) => conj ? `${comma ?? ''} ${tuy} ` : '')
-    .replace(/(\s*,\s*)?\bdepending on (?:the )?(?:bus )?(?:operator|company|carrier)s?(\s+and\s+)?/gi, (_m, comma: string | undefined, and: string | undefined) => and ? `${comma ?? ''} depending on ` : '')
-    .replace(/ {2,}/g, ' ')
-}
-
 const fmt = (n: number): string => `${n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`
 function label(kind: FareKind, host: string, lang: string): string {
   const en = lang === 'en'
@@ -98,9 +91,10 @@ export interface CoachShape { text: string; changes: Array<'operator_variance' |
 export function shapeCoachReply(text: string, rows: readonly TextRow[], lang: string): CoachShape {
   const changes: CoachShape['changes'] = []
   let out = text
-  if (rows.length && operatorsIn(rows).size < 2) {
-    const next = dropOperatorVariance(out)
-    if (next !== out) { out = next; changes.push('operator_variance') }
+  if (rows.length) {
+    // Round 33: by MEANING and by what the rows support (operators, vehicle types, times) — see operatorVariance.ts
+    const v = dropUnsupportedVariance(out, varianceSupport(rows, operatorsIn(rows).size), lang)
+    if (v.removed.length) { out = v.text; changes.push('operator_variance') }
   }
   const facts = fareFactsOf(rows)
   if (facts.length) {

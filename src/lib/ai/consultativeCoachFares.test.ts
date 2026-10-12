@@ -11,7 +11,7 @@ vi.mock('@/lib/ai/tools/common', async orig => ({
 
 import { applyPlaceEnrichmentStreamFilter } from './streamEnrichment'
 import { createEnrichmentCollector } from './toolResultSplit'
-import { operatorsIn, fareFactsOf, dropOperatorVariance, shapeCoachReply } from './consultative/coachFares'
+import { operatorsIn, fareFactsOf, shapeCoachReply } from './consultative/coachFares'
 import { getTransportOptions } from './tools/travel'
 import { transportCacheKey } from './tools/cacheKeys'
 
@@ -43,13 +43,6 @@ describe('coachFares (pure)', () => {
     expect(f.find(x => x.amount === 165000)?.kind).toBe('from')
     expect(fareFactsOf([{ host: 'a.example', url: 'https://a.example/', text: 'Giá vé 250.000đ' }])[0].kind).toBe('plain')
   })
-  it.each([
-    ['Giá khoảng 400.000đ, tùy nhà xe và loại xe.', 'Giá khoảng 400.000đ, tùy loại xe.'],
-    ['Giá khoảng 400.000đ, tùy nhà xe.', 'Giá khoảng 400.000đ.'],
-    ['Giá khoảng 400.000đ tùy theo hãng xe và giờ chạy.', 'Giá khoảng 400.000đ tùy giờ chạy.'],
-    ['About 400,000đ, depending on the operator and seat type.', 'About 400,000đ, depending on seat type.'],
-    ['Giá khoảng 400.000đ, tùy loại ghế.', 'Giá khoảng 400.000đ, tùy loại ghế.'],
-  ])('dropOperatorVariance: %s', (a, b) => expect(dropOperatorVariance(a)).toBe(b))
 })
 
 describe('shapeCoachReply', () => {
@@ -57,7 +50,7 @@ describe('shapeCoachReply', () => {
     const r = shapeCoachReply(LIVE, toRows(ROWS), 'vi')
     expect(r.changes.sort()).toEqual(['mixed_range', 'operator_variance'])
     expect(r.text).not.toMatch(/tùy nhà xe/)
-    expect(r.text).toContain('tùy loại xe')
+    expect(r.text).not.toMatch(/tùy/) // these rows name no vehicle types either (Round 33: "loại xe" needs the rows' support too)
     expect(r.text).not.toContain('350.000–410.000')
     expect(r.text).toContain('350.000đ/chiều (giá ưu đãi nêu trong bài của futabus.vn, không ghi ngày)')
     expect(r.text).toContain('410.000đ/chiều (giá "từ" ở vexere.com, chưa theo ngày)')
