@@ -78,6 +78,7 @@ import type { Hard } from './consultative/situationFrame'
 import { guardProseShape } from './consultative/proseShape'
 import { admitsUnverified, dedupeCaveats, stripOrphanSourceLabels } from './caveatDedupe'
 import { auditTrace } from './auditTrace'
+import { cardPathTrace } from './cardPathTrace'
 import { stripClosingInvite } from './closingInvite'
 import { appendPlanBudget, vndAmountsIn } from './planBudget'
 import type { Recommendation } from '@/lib/recommendation/recommendation'
@@ -2109,6 +2110,8 @@ export function applyPlaceEnrichmentStreamFilter(
       let shoppingRanked = false // Luna's ranking reached the shopping card (otherwise the card is shown without a crowned option)
       const candidateNames = [...(collector.placesRecommendations ?? []).map(r => r.entity.identity.name ?? ''), ...(collector.shoppingMarker ? (parseShoppingMarker(collector.shoppingMarker).view?.entities ?? []).map(e => e.name ?? e.config ?? '') : [])].filter(Boolean)
       if (!planOwnsAnswer && !contract && collector.recordDecision && candidateNames.length) {
+        // Card-path diagnostics (flag + audit trace only; cardPathTrace.ts): every candidate the settle path offers the recorder, with its card id.
+        cardPathTrace(collector.diagTurnId, 'recorder_candidates', { count: candidateNames.length, list: (collector.placesRecommendations ?? []).slice(0, 60).map(r => ({ id: r.entity.id, name: r.entity.identity.name ?? null })) })
         const rec = await collector.recordDecision(mainText, candidateNames)
         Object.assign(rt, { recorder_ms: rec.ms, recorder_usd: rec.usd, ...(rec.error ? { recorder_error: rec.error } : {}) })
         if (rec.contract) { contract = rec.contract; rt.block = 'ok'; rt.via = 'structured' }
@@ -2117,6 +2120,15 @@ export function applyPlaceEnrichmentStreamFilter(
         Object.assign(rt, { picks: contract.picks.length, none: contract.none, confidence: contract.confidence })
         if (collector.placesRecommendations?.length) {
           const a = applyRankingToRecs(collector.placesRecommendations, contract)
+          if (collector.diagTurnId) {
+            const before = collector.placesRecommendations
+            const idOf = (n: string) => { const r = before.find(x => (x.entity.identity.name ?? '') === n); return r ? r.entity.id : null }
+            cardPathTrace(collector.diagTurnId, 'ranking_applied', {
+              via: rt.via ?? null, none: contract.none, picks: contract.picks.map(p => ({ name: p.name, card_id: idOf(p.name) })),
+              cards_before: before.slice(0, 60).map(r => r.entity.id), cards_after: a ? a.items.map(r => r.entity.id) : null,
+              matched: a?.matched ?? 0, unmatched: a?.unmatched ?? contract.picks.length, outcome: a ? 'ranked' : 'unmatched_named_order_kept',
+            })
+          }
           if (a) { collector.placesRecommendations = a.items; lunaRanked = true; Object.assign(rt, { cards: a.items.length, unmatched: a.unmatched }) } else rt.cards = 'unmatched_named_order_kept'
         }
         if (collector.shoppingMarker) {
@@ -2334,6 +2346,7 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       : null)
     // UAT traceability (2026-09-19): the names are venue names from the provider rows, never user data.
+    if (placesView && collector?.diagTurnId) cardPathTrace(collector.diagTurnId, 'final_cards', { ids: recsForCard.map(r => r.entity.id), visible: placesRenderOrder(placesView).visible.map(v => v.name ?? null), shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, emphasis: aligned.outcome })
     if (placesView) console.log(JSON.stringify({ type: 'tappyai_cards', shown: placesView.shown ?? null, picked: placesView.picked?.length ?? 0, items: placesView.items.length, named_in_prose: namedInProse, pick_unmatched: pickUnmatched, emphasis: aligned.outcome, card1: placesRenderOrder(placesView).visible[0]?.name ?? null, model_pick: namedRecs[0]?.entity.identity.name ?? null, engine_pick: enginePickName }))
 
     /**

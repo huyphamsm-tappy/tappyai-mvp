@@ -45,7 +45,8 @@ import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
 import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
 import type { AgentTurnInput } from '@/lib/ai/agent'
-import { auditTrace } from '@/lib/ai/auditTrace'
+import { auditTrace, auditTraceOn } from '@/lib/ai/auditTrace'
+import { cardPathTrace, briefRows } from '@/lib/ai/cardPathTrace'
 import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
 import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
@@ -2426,8 +2427,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
           turnPlaceLocation = location
+          const builtRecs = placeRecommendations(result, location, pickContext(pick))
           enrichment.setPlacesRecommendations(
-            placeRecommendations(result, location, pickContext(pick)),
+            builtRecs,
             producerSubject('search_places', (result as Record<string, unknown>)._tappy_place_domain),
           )
           // The map destination the provider itself returned for this search.
@@ -2439,9 +2441,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // enrichment (photos, links) off the FULL row set — trimming first starved the collector
           // of photos and the late resolver bought five /images calls per turn (measured). See
           // `modelPayload.ts`.
-          return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
+          const modelView = trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
             : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+          // CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): which rows the provider returned, which the MODEL reads, which became card candidates.
+          if (enrichment.diagTurnId) {
+            const foldName = (s: unknown) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+            const fullRows = briefRows((result as { results?: unknown }).results, 60)
+            const seenByModel = briefRows((modelView as { results?: unknown } | null)?.results, 60)
+            const recNames = new Set(builtRecs.map(r => foldName(r.entity.identity.name)))
+            cardPathTrace(enrichment.diagTurnId, 'rows_and_recs', {
+              provider_rows: fullRows.length, provider_row_list: fullRows,
+              model_rows: seenByModel.length, model_row_list: seenByModel,
+              recs: builtRecs.length, rec_list: builtRecs.slice(0, 60).map(r => ({ id: r.entity.id, name: r.entity.identity.name ?? null })),
+              rows_without_rec: fullRows.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+              model_rows_without_rec: seenByModel.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+            })
+          }
+          return modelView
         }
       }) }),
       get_news: tool({
@@ -2908,12 +2925,15 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (consultTripThread) enrichment.planTurn = true
   // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
   if (consultativeAgent) enrichment.consultative = true
+  // CONSULTATIVE_IN_AGENT + audit trace only: one id that ties this turn's card-path diagnostics together (cardPathTrace.ts). Never set otherwise.
+  if (consultativeAgent && auditTraceOn()) { enrichment.diagTurnId = randomUUID().slice(0, 8); cardPathTrace(enrichment.diagTurnId, 'turn', { agent_trace_id: agentRunTrace?.traceId ?? null }) }
   if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
   if (agentRunTrace) enrichment.claimsTrace = summary => agentRunTrace.add('claims', summary)
   // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.
   // Its cost is the turn's cost (same trace counter as every other Luna call); bounded by its own short timeout.
   if (agentV2) enrichment.recordDecision = async (answer, candidates) => {
-    const r = await recordDecision({ answer, candidates, signal: AbortSignal.timeout(DECISION_RECORD_TIMEOUT_MS) })
+    const diagTurn = enrichment.diagTurnId
+    const r = await recordDecision({ answer, candidates, signal: AbortSignal.timeout(DECISION_RECORD_TIMEOUT_MS), ...(diagTurn ? { diag: e => cardPathTrace(diagTurn, String(e.stage ?? 'recorder'), e) } : {}) })
     if (agentRunTrace) agentRunTrace.counters.usd += r.usd
     return r
   }
@@ -2972,6 +2992,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cardEv = cardEvidence(cards, rows, { now: new Date(), verifiedAt: chatState?.candidates?.at ?? null })
     const facts = cardEv.facts
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
+    // CONSULTATIVE_IN_AGENT + audit trace only: did remembered-preference lines reach the data block, and does one mention walking (counts / booleans, never the text).
+    if (enrichment.diagTurnId) { const ml = consultMemoryLines(existingMemory, storedPrefs); cardPathTrace(enrichment.diagTurnId, 'memory_context', { memory_lines: ml.length, mentions_walking: ml.some(l => /đi bộ/i.test(l)) }) }
     const context = agentContext({
       stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
       now: new Date(), userText: consultativeAgent ? lunaUserTexts.slice(-3).join(' \n ') : lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
