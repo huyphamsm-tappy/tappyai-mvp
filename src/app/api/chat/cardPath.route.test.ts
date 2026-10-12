@@ -80,7 +80,8 @@ const ANSWER = 'Tối nay ở TP.HCM, nếu muốn xõa mà không phải đi b�
 async function turn() {
   const logs: string[] = []
   const log = vi.spyOn(console, 'log').mockImplementation((...a: unknown[]) => { logs.push(String(a[0])) })
-  const body = await post([{ role: 'user', content: 'nay có gì dzui ko' }])
+  // Round 28: "nay có gì dzui ko" is a vague opener the discovery gate now asks about first (no search); the card path needs a request that names what it wants.
+  const body = await post([{ role: 'user', content: 'tối nay tìm chỗ chơi bida hoặc xem kịch' }])
   log.mockRestore()
   const cp = logs.filter(l => l.includes('"ev":"card_path"')).map(l => JSON.parse(l) as Record<string, any>)
   const cards = (() => {

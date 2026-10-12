@@ -29,6 +29,8 @@ export interface AgentTurnInput {
   routeTools: Record<string, RouteTool> | undefined
   /** A plan-only turn: the model gets no tools (no retrieval, no cards). Set by the route from the user's own words. */
   noRetrieval?: boolean
+  /** CONSULTATIVE_IN_AGENT (discoveryGate.ts): a vague discovery question — ask first, run no lookup; the runtime also blocks any tool the model proposes anyway. */
+  discoveryAsk?: boolean
   /** Trusted context (system) + untrusted app-state DATA block (sent as a user-role message), from agentContext(). */
   context: { system: string; data: string | null }
   /** Serper credits the agent's tools may spend in this turn, all tools together (8 normal / 10 travel minus the photo reserve). */

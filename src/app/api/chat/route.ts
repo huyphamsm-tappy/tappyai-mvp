@@ -47,6 +47,7 @@ import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/run
 import type { AgentTurnInput } from '@/lib/ai/agent'
 import { auditTrace, auditTraceOn } from '@/lib/ai/auditTrace'
 import { cardPathTrace, briefRows } from '@/lib/ai/cardPathTrace'
+import { discoveryGate } from '@/lib/ai/agent/runtime/discoveryGate'
 import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
 import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
 import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
@@ -719,6 +720,10 @@ export async function POST(req: Request) {
   const planOnlyTurn = agentOn && !agentV2 && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
   // Counts only — never the user's words.
   if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, plan_only: planOnlyTurn, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
+  // CONSULTATIVE_IN_AGENT (discoveryGate.ts): a vague discovery question ("nay có gì dzui ko pa") is asked about BEFORE any lookup — no retrieval tool is offered this turn and the
+  // runtime blocks any the model proposes anyway; after two questions with no activity it searches with the assumption said out loud. Counts only in the log, never the user's words.
+  const discovery = consultativeAgent && agentV2 ? discoveryGate({ userTexts: plannerUserTexts, hasGps: !!userLocation, planningIntent, lang }) : null
+  if (discovery) console.log(JSON.stringify({ type: 'tappyai_discovery_gate', action: discovery.action, kind: discovery.kind, thread_turns: discovery.threadTurns, has_gps: !!userLocation }))
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
   let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null || cannedMovie !== null || plannerAsk !== null
@@ -2995,6 +3000,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // CONSULTATIVE_IN_AGENT + audit trace only: did remembered-preference lines reach the data block, and does one mention walking (counts / booleans, never the text).
     if (enrichment.diagTurnId) { const ml = consultMemoryLines(existingMemory, storedPrefs); cardPathTrace(enrichment.diagTurnId, 'memory_context', { memory_lines: ml.length, mentions_walking: ml.some(l => /đi bộ/i.test(l)) }) }
     const context = agentContext({
+      ...(discovery ? { turnNote: discovery.note } : {}),
       stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
       now: new Date(), userText: consultativeAgent ? lunaUserTexts.slice(-3).join(' \n ') : lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
       state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
@@ -3006,7 +3012,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const ownWords = lunaUserTexts.join(' ')
     const turnInput: AgentTurnInput = {
       routeTools: tools as never,
-      noRetrieval: planOnlyTurn,
+      noRetrieval: planOnlyTurn || discovery?.action === 'ask',
+      ...(discovery?.action === 'ask' ? { discoveryAsk: true } : {}),
       context,
       messages: modelMessages as never,
       lang,

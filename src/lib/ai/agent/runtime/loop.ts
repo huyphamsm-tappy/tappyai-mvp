@@ -92,6 +92,14 @@ export interface RuntimeInput {
   askGateShadow?: boolean
   /** CONSULTATIVE_IN_AGENT: no answer-first check on a verification / exact-number turn (the lookup is the answer). */
   skipAnswerFirst?: boolean
+  /**
+   * CONSULTATIVE_IN_AGENT (discoveryGate.ts): this turn must ask the user what they want BEFORE any lookup. No tool is offered; if the model proposes one anyway, EVERY such
+   * call (search, news, weather, … anything that is not a control action) is blocked, nothing is executed, the model is told to ask, and after two such rounds the next step is
+   * the final tool-less one. Absent → no effect.
+   */
+  blockRetrieval?: boolean
+  /** CONSULTATIVE_IN_AGENT + audit trace: one `tool_status` event per tool call and state — proposed (the model asked), then executed (it ran) or blocked (it never ran). */
+  toolStatusTrace?: boolean
   /** CONSULTATIVE_IN_AGENT: a preface paragraph the researched answer restates in other words is dropped (answerFirst.ts). */
   dedupeParaphrase?: boolean
   /** CONSULTATIVE_IN_AGENT: the answer-before-lookup check runs concurrently with the lookup instead of before it (same output, less waiting). */
@@ -158,6 +166,9 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
   let toolCalls = 0
   let modelCalls = 0
   let forceFinal: RuntimeStop | null = null
+  let blockedRetrievalRounds = 0
+  // (audit trace, CONSULTATIVE_IN_AGENT only) which state each tool call reached; auditTrace() itself is a no-op unless the trace is on
+  const statusTrace = (round: number, tool: string, status: 'proposed' | 'executed' | 'blocked', extra: Record<string, unknown> = {}) => { if (input.toolStatusTrace) auditTrace('tool_status', 'tool_call', { round, tool, status, ...extra }) }
   let taskUpdates = 0
   // Text the model wrote next to a lookup / an ask, or the check wrote before a lookup: kept and shown BEFORE the rest of the answer.
   const prefaces: string[] = []
@@ -307,6 +318,22 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
       T.counters.errors++
     }
     const toolCallsThisStep = calls.filter(c => !CONTROL_TOOLS.has(c.toolName))
+    // CONSULTATIVE_IN_AGENT (discoveryGate.ts): a turn that must ask first runs NO lookup. Everything the model proposes is recorded as proposed → blocked and answered with
+    // the instruction to ask; no answer-first check, no budget spent, nothing executed.
+    if (input.blockRetrieval && toolCallsThisStep.length) {
+      blockedRetrievalRounds++
+      const note = input.lang === 'en' ? 'Not allowed this turn: the user must first say what they want. Do not call any tool. Ask ONE short question instead.' : 'Lượt này chưa được tra cứu: người dùng cần nói họ muốn gì trước. Không gọi công cụ nào. Hãy hỏi MỘT câu ngắn.'
+      for (const tc of toolCallsThisStep) {
+        statusTrace(round, tc.toolName, 'proposed')
+        statusTrace(round, tc.toolName, 'blocked', { reason: 'clarify_first' })
+        T.add('tool_call', { round, tool: tc.toolName, admitted: false, outcome_planned: 'blocked', gate: 'clarify_first' })
+        toolEvents.push({ round, name: tc.toolName, args: {}, why: null, ms: 0, outcome: 'blocked' })
+      }
+      messages.push({ role: 'assistant', content: [...(step.text.trim() ? [{ type: 'text' as const, text: step.text }] : []), ...taskCallParts(), ...toolCallsThisStep.map(tc => ({ type: 'tool-call' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, args: stripWhy(tc.args) }))] })
+      messages.push({ role: 'tool', content: [...taskParts(), ...toolCallsThisStep.map(tc => ({ type: 'tool-result' as const, toolCallId: tc.toolCallId, toolName: tc.toolName, result: { blocked: true, note } }))] })
+      if (blockedRetrievalRounds >= 2) forceFinal = 'tool_budget'
+      continue
+    }
     let pendingCheck: Promise<{ aborted: boolean }> | null = null
     if (toolCallsThisStep.length === 0) {
       if (step.text.trim()) return finishAnswer(step.text, 'answered', 'model_answered')
@@ -415,6 +442,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
         pl.args = input.prepareArgs ? input.prepareArgs(name, args) : args
       }
       T.add('tool_call', { round, tool: name, ...(pl.via ? { via: pl.via } : {}), ...(resolved && 'refused' in resolved ? { refused: resolved.refused } : {}), admitted: pl.outcome === 'ok', outcome_planned: pl.outcome, input_hash: toolInputHash(name, pl.args), query: traceQuery(pl.args), why: why ? why.slice(0, 80) : null })
+      statusTrace(round, name, 'proposed', { ...(pl.via ? { via: pl.via } : {}), planned: pl.outcome })
       planned.push(pl)
     }
 
@@ -455,6 +483,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     for (const pl of planned) {
       const event: ToolEvent = { round, name: pl.name, args: pl.args, why: pl.why, ms: now() - pl.started, outcome: pl.outcome, ...(pl.error ? { error: pl.error } : {}) }
       toolEvents.push(event)
+      statusTrace(round, pl.name, pl.outcome === 'ok' || pl.outcome === 'timeout' || pl.outcome === 'error' ? 'executed' : 'blocked', { outcome: pl.outcome })
       // (audit-only, masked) the call and what the tool returned — snippets vs page text can be told apart by the field names in the JSON
       if (auditTraceOn()) {
         let res = ''
