@@ -149,6 +149,8 @@ export interface PlanItemGuardResult {
   mealSlots?: number
   /** Check-in / check-out stops with no hotel row to point at, kept as plain stops (flag on only). */
   genericStays?: number
+  /** Sights of the turn's own results added to a thin return day (flag on only). */
+  returnDayFilled?: number
   /** Of those, restaurants of a vegetarian request whose row carries no vegetarian data (flag on only). */
   vegSlots?: number
   /** Retrieved places left out of the pool because their address does not name the plan's destination (flag on only; 0 otherwise). */
@@ -231,8 +233,32 @@ export function groundedSightDescription(description: unknown, place: PlanPlace)
   const types = (Array.isArray(place.place_types) ? place.place_types.filter((t): t is string => typeof t === 'string' && t.trim() !== '') : [])
   const rowText = fold([place.name ?? '', typeof place.address === 'string' ? place.address : '', ...types].join(' '))
   if (!SCENE_CLAIMS.some(([claim, support]) => claim.test(said) && !support.test(rowText))) return description
+  return neutralSightDescription(place)
+}
+
+/** What the row itself says about a sight: its categories and its hours. No scene, no distance, no price. */
+function neutralSightDescription(place: PlanPlace, prefix = ''): string {
+  const types = (Array.isArray(place.place_types) ? place.place_types.filter((t): t is string => typeof t === 'string' && t.trim() !== '') : [])
   const hours = typeof place.opening_hours === 'string' ? place.opening_hours.trim() : ''
-  return `${types.length ? types.slice(0, 2).join(', ') : 'Điểm tham quan'}${hours ? `; theo dữ liệu tra cứu: ${hours}` : ''}.`
+  return `${prefix}${types.length ? types.slice(0, 2).join(', ') : 'Điểm tham quan'}${hours ? `; theo dữ liệu tra cứu: ${hours}` : ''}.`
+}
+
+// ── CONSULTATIVE_IN_AGENT: a thin return day is topped up from the turn's own results ─────────────────────────────────────────────────────
+//
+// Round 25 live: day 3 had 4 stops (breakfast, one sight, check-out, the way home). The model wrote 4 (the guard dropped none) although the prompt asks for 1–2 more, and the
+// turn's own results held attractions the plan had not used. With fewer than FULL_DAY stops, up to 2 retrieved SIGHTS of the destination that no other stop uses are added
+// before the check-out / the way home: name, address, link and photo from the row, a description built from the row only. Not added: anything on an island or cable car
+// (a boat trip does not fit a morning before check-out), an amusement park (a full-day venue), hotels, restaurants. Nothing is searched or invented; no candidate = no change.
+const FULL_DAY = 5
+const OFFSHORE = /\b(?:dao|hon|cap treo)\b/
+const FULL_DAY_VENUE = /\b(?:cong vien giai tri|khu vui choi|vinwonders)\b/
+function isInlandSight(p: PlanPlace): boolean {
+  const types = fold((Array.isArray(p.place_types) ? p.place_types.filter((t): t is string => typeof t === 'string') : []).join(' | '))
+  const kinds = kindsOf(p)
+  if ([...kinds].some(k => k !== 'attraction')) return false
+  if (!kinds.has('attraction') && !types.includes('diem thu hut khach du lich')) return false
+  const where = fold(`${p.name ?? ''} ${typeof p.address === 'string' ? p.address : ''}`)
+  return !OFFSHORE.test(where) && !FULL_DAY_VENUE.test(`${where} ${types}`)
 }
 
 export function guardPlanItems(fullText: string, places: readonly PlanPlace[], opts: { destination?: string | null; keepSights?: boolean; vegetarian?: boolean } = {}): PlanItemGuardResult {
@@ -257,7 +283,7 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
     return pool.find(p => fold(p.name!) === key)
       ?? pool.find(p => { const n = fold(p.name!); return n.length >= 6 && key.length >= 6 && (n.includes(key) || key.includes(n)) })
   }
-  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
+  const res: { matched: number; replaced: number; dropped: number; linksSet: number; linksRemoved: number; timesMoved: number; timesCleared: number; sightsKept?: number; mealSlots?: number; vegSlots?: number; genericStays?: number; returnDayFilled?: number } = { matched: 0, replaced: 0, dropped: 0, linksSet: 0, linksRemoved: 0, timesMoved: 0, timesCleared: 0 }
   const placeOf = new Map<Item, PlanPlace>()
   let stayPlace: PlanPlace | null = null
 
@@ -348,10 +374,41 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       else if (hadLink) { delete item.booking_link; res.linksRemoved++ }
       kept.push(item)
     }
+    // CONSULTATIVE_IN_AGENT: the return day of a multi-day plan with fewer than FULL_DAY stops (see isInlandSight).
+    if (opts.keepSights && plan.days.length >= 2 && day === plan.days[plan.days.length - 1] && kept.length < FULL_DAY) {
+      let anchor = kept.findIndex((it, i) => i > 0 && (/^(?:hotel|transport)$/i.test(String(it.category ?? '')) || GENERIC_STAY.test(String(it.name ?? ''))))
+      if (anchor > 0) {
+        const taken = new Set(plan.days.flatMap(d => (d?.items ?? []).map(it => fold(String(it?.name ?? '')))).concat(kept.map(it => fold(String(it.name ?? '')))))
+        const candidates = pool.filter(p => !used.has(p) && !taken.has(fold(p.name!)) && isInlandSight(p)).slice(0, Math.min(2, FULL_DAY - kept.length))
+        const beforeCheckout = kept[anchor].category === 'transport' ? 'Trước khi về' : 'Trước khi trả phòng'
+        for (const p of candidates) {
+          const prev = minutesOf(kept[anchor - 1].time), next = minutesOf(kept[anchor].time)
+          let time = beforeCheckout
+          if (prev !== null && next !== null) {
+            // Clock times on both sides: only a gap of 2 h or more takes another stop (never squeezed in, never a time the plan cannot hold).
+            if (next - prev < 120) break
+            time = clock(Math.round((prev + 60) / 30) * 30)
+          }
+          const item: Item = { time, emoji: '📍', category: 'attraction', name: p.name, description: neutralSightDescription(p, 'Gợi ý thêm từ kết quả tra cứu: '), price: '' }
+          if (p.address) item.address = p.address
+          if (p.maps_link) item.maps_link = p.maps_link
+          if (p.place_id) item.place_id = p.place_id
+          const photo = p.photo_urls?.[0] ?? p.photo_url
+          if (photo) item.photo_url = photo
+          const url = bookingUrlFor(p, 'attraction')
+          if (url) { item.booking_link = url; res.linksSet++ }
+          kept.splice(anchor, 0, item)
+          placeOf.set(item, p)
+          used.add(p)
+          res.returnDayFilled = (res.returnDayFilled ?? 0) + 1
+          anchor++ // the check-out / the way home moved one place down; the next stop goes right before it again
+        }
+      }
+    }
     day.items = kept
     fitTimesToHours(kept, placeOf, res)
   }
-  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.genericStays && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
+  if (!res.matched && !res.replaced && !res.dropped && !res.sightsKept && !res.mealSlots && !res.genericStays && !res.returnDayFilled && !res.linksSet && !res.linksRemoved && !res.timesMoved && !res.timesCleared) {
     // Markdown may still have been stripped — re-serialise only when something visible changed.
     const again = JSON.stringify(plan)
     if (again === JSON.stringify(JSON.parse(fullText.slice(start + OPEN.length, end).trim()))) return none
