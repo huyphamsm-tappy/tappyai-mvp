@@ -32,6 +32,7 @@ import { withFreshness } from '../../freshness'
 import { checkApplies, checkNote, composeFinal, parseCheck, prefaceNote } from './answerFirst'
 import { auditTrace, auditTraceOn } from '../../auditTrace'
 import { needsCard, validCard, cardRetryNote, lastUserText } from './cardRetry'
+import { isThinPreface, needsContent, isThin, contentRetryNote } from './contentFloor'
 
 export type RuntimeStatus = 'answered' | 'asked' | 'answered_after_tool_budget' | 'answered_after_round_budget' | 'answered_after_time_budget' | 'model_error' | 'aborted'
 export type RuntimeStop = 'model_answered' | 'asked' | 'tool_budget' | 'round_budget' | 'time_budget' | 'model_error' | 'aborted'
@@ -106,6 +107,8 @@ export interface RuntimeInput {
   parallelAnswerFirst?: boolean
   /** CONSULTATIVE_IN_AGENT: a multi-day plan answered as plain text after get_trip_data gets ONE extra no-tools model call to produce the card (cardRetry.ts). */
   cardRetry?: boolean
+  /** CONSULTATIVE_IN_AGENT (contentFloor.ts): an acknowledgement-only text next to a lookup is not kept as a "preface"; a "biết X không" turn or the answer to our clarification that still ends thin gets ONE extra no-tools model call for the content. */
+  contentRetry?: boolean
 }
 
 export interface RuntimeRun {
@@ -193,7 +196,34 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
   // CONSULTATIVE_IN_AGENT (cardRetry.ts): the final text answer of a multi-day plan that skipped the [TAPPY_PLAN] card. At most ONE extra model call, no tools
   // offered, any tool call in its reply ignored, never repeated; no valid card / failure / no time → the text answer is kept (fallback) and the outcome logged.
   let cardRetried = false
+  let contentRetried = false
   const finishAnswer = async (text: string, status: RuntimeStatus, stop: RuntimeStop): Promise<RuntimeRun> => {
+    // Round 30 (CONSULTATIVE_IN_AGENT, contentFloor.ts): what the user would read is thin although they asked "biết X không" or answered our clarification → ONE no-tools retry for the content.
+    if (input.contentRetry === true && !contentRetried && needsContent({ messages: input.messages, composed: composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase }) })) {
+      contentRetried = true
+      const left = input.deadlineAt - now()
+      const log = (outcome: string, extra: Record<string, unknown> = {}) => { try { console.log(JSON.stringify({ type: 'tappyai_content_retry', outcome, ...extra })) } catch { /* log only */ } }
+      if (left < L.minStepMs + 2_000 || input.signal?.aborted) log('skipped_no_time', { time_left_ms: left })
+      else {
+        try {
+          modelCalls++
+          const t0 = now()
+          const shown = composeFinal(prefaces, text, { dedupeParaphrase: input.dedupeParaphrase })
+          const retryMessages: CoreMessage[] = [...messages, { role: 'assistant', content: shown || '…' }, { role: 'user', content: input.lang === 'en' ? 'Please say more.' : 'Nói rõ hơn nhé.' }]
+          const step2 = await cancellable(signal => input.callModel({ system: input.system + contentRetryNote(input.lang), messages: retryMessages, tools: undefined, final: true, signal }), Math.min(L.stepTimeoutMs, left - 1_000), input.signal)
+          steps.push(step2)
+          auditTrace('content_retry', 'snapshot', { ms: now() - t0, tools_ignored: (step2.toolCalls ?? []).map(c => c.toolName), text: step2.text ?? '' })
+          const better = (step2.text ?? '').trim()
+          if (better && !isThin(better)) { log('ok', { ms: now() - t0, chars: better.length }); return finishAnswer2(better, status, stop) }
+          log('still_thin', { ms: now() - t0, chars: better.length })
+        } catch (e) {
+          log('error', { message: String(e instanceof Error ? e.message : e).slice(0, 120) })
+        }
+      }
+    }
+    return finishAnswer2(text, status, stop)
+  }
+  const finishAnswer2 = async (text: string, status: RuntimeStatus, stop: RuntimeStop): Promise<RuntimeRun> => {
     if (input.cardRetry !== true || cardRetried || !needsCard({ userText: lastUserText(input.messages), toolEvents, text })) return done(text, status, stop)
     cardRetried = true
     const log = (outcome: string, extra: Record<string, unknown> = {}) => { try { console.log(JSON.stringify({ type: 'tappyai_card_retry', outcome, ...extra })) } catch { /* log only */ } }
@@ -350,8 +380,14 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
     // ANSWER BEFORE LOOKUP (answerFirst.ts). Text next to the tool call is kept (it used to be dropped from the final answer). A
     // lookup-only research step with no text gets ONE check, so a request with an answerable part is answered before the lookup.
     if (step.text.trim()) {
-      prefaces.push(step.text)
-      if (answerFirst === 'n/a') answerFirst = 'with_step'
+      if (input.contentRetry === true && isThinPreface(step.text)) {
+        // Round 30 (contentFloor.ts): an acknowledgement ("À, Nikola Tesla chứ gì.") is not advice the user has "already read": it must not make the answer after the lookup skip its content.
+        T.add('answer_first', { round, outcome: 'thin_preface_dropped', chars: step.text.length })
+        if (answerFirst === 'n/a') answerFirst = 'nothing_yet'
+      } else {
+        prefaces.push(step.text)
+        if (answerFirst === 'n/a') answerFirst = 'with_step'
+      }
     } else if (answerFirst === 'n/a' && prefaces.length === 0 && toolCalls === 0) {
       const names = toolCallsThisStep.map(tc => { const r = input.resolveCall?.({ toolName: tc.toolName, args: stripWhy(tc.args) }); return r && 'toolName' in r ? r.toolName : tc.toolName })
       if (checkApplies(names) && input.skipAnswerFirst === true) {
@@ -371,7 +407,7 @@ export async function runAgentRuntime(input: RuntimeInput): Promise<RuntimeRun> 
               const r = await cancellable(signal => input.answerFirstModel!({ system: input.system + checkNote(toolCallsThisStep, input.lang), messages: input.parallelAnswerFirst ? snapshot : messages, signal }), Math.min(L.stepTimeoutMs, left - L.finalReserveMs - 2_000), input.signal)
               const kept = parseCheck(r.text)
               T.modelRound({ round, final: false, ms: now() - c0, decision: 'answer_first_check', toolCalls: 0, promptTokens: r.promptTokens, completionTokens: r.completionTokens, usd: r.usd })
-              if (kept) { prefaces.push(kept); answerFirst = 'provided' } else answerFirst = 'nothing_yet'
+              if (kept && !(input.contentRetry === true && isThinPreface(kept))) { prefaces.push(kept); answerFirst = 'provided' } else answerFirst = 'nothing_yet'
               T.add('answer_first', { round, outcome: answerFirst, chars: kept ? kept.length : 0, ms: now() - c0 })
             } catch (e) {
               if (input.signal?.aborted) return { aborted: true }
