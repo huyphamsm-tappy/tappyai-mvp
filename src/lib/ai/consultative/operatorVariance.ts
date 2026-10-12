@@ -9,6 +9,7 @@
 // What goes is the clause that makes the claim (or just the phrase, when the clause carries a figure); what the rows support is kept. Nothing is written in its place. Pure.
 
 import type { TextRow } from './priceProvenance'
+import { extractMoneyClaims } from '../moneyGuard'
 
 const fold = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 
@@ -19,12 +20,31 @@ const TIME_FARE = /(?:gio chay|khung gio|cao diem|dip le|ngay le|\btet\b|cuoi tu
 
 /** What the coach rows support. `operatorCount` is the number of distinct operators they name (coachFares.operatorsIn). */
 export function varianceSupport(rows: readonly TextRow[], operatorCount: number): VarianceSupport {
-  const folded = rows.map(r => fold(r.text))
-  const f = folded.join(' \n ')
-  const vehicleKinds = VEHICLE_TERMS.filter(re => re.test(f)).length
-  // vehicle types count as supported when the rows name at least two kinds AND a row that states a fare also names a kind (the fare is stated next to the type)
-  const priced = folded.some(t => /\d[\d.,]*\s?(?:d|vnd|k|nghin|trieu|tr)\b/.test(t) && VEHICLE_TERMS.some(re => re.test(t)))
-  return { operators: operatorCount >= 2, vehicle: vehicleKinds >= 2 && priced, time: TIME_FARE.test(f) }
+  // Vehicle types: supported only when the rows show DIFFERENT fares for different types (a type next to its own amount: "giường nằm 450.000đ … limousine 650.000đ").
+  // Round 33 live case: one row lists "Xe giường nằm & Limousine VIP" beside ONE "từ 165.000đ" — types named, no fare differing by type → not supported.
+  const pairs: Array<{ kind: number; amount: number }> = []
+  for (const r of rows) {
+    const f = fold(r.text)
+    if (f.length !== r.text.length) continue // positions would not map back to the money claims
+    const claims = extractMoneyClaims(r.text).filter(c => c.currency === 'VND')
+    VEHICLE_TERMS.forEach((re, kind) => {
+      for (const m of f.matchAll(new RegExp(re.source, 'g'))) {
+        let best: { d: number; amount: number } | null = null
+        for (const c of claims) {
+          const d = c.start >= m.index! ? c.start - (m.index! + m[0].length) : m.index! - c.end
+          if (d > 45) continue
+          const between = c.start >= m.index! ? f.slice(m.index! + m[0].length, c.start) : f.slice(c.end, m.index!)
+          if (/[.!?]\s/.test(between)) continue // another sentence: not this type's fare
+          if (!best || d < best.d) best = { d, amount: Math.round(c.lo) }
+        }
+        if (best) pairs.push({ kind, amount: best.amount })
+      }
+    })
+  }
+  const vehicle = pairs.some(a => pairs.some(b => a.kind !== b.kind && a.amount !== b.amount))
+  // Time: a row that speaks of time-dependent fares AND states a fare.
+  const time = rows.some(r => TIME_FARE.test(fold(r.text)) && extractMoneyClaims(r.text).some(c => c.currency === 'VND'))
+  return { operators: operatorCount >= 2, vehicle, time }
 }
 
 // ── vocabulary (folded, Vietnamese; English is matched on lower-case text) ──────────────────────────────────────────────────────────────────────────────────────────
@@ -37,7 +57,7 @@ const GLUE = '(?:theo|giua|vao|tung|moi|cac)'
 const VARY_VI = new RegExp(`(?<![a-z])${CUE}(?:\\s+${GLUE})*\\s+${OBJ}(?:\\s*(?:,|/|va|hoac)\\s*(?:${GLUE}\\s+)*${OBJ})*(?![a-z])`, 'g')
 const EACH_VI = /(?<![a-z])moi\s+(?:hang xe|nha xe|hang)\s+(?:mot|co)\s+(?:muc\s+)?gia(?![a-z])/g
 const OP_EN = '(?:bus\\s+)?(?:operators?|compan(?:y|ies)|carriers?|bus\\s+lines?)'
-const VEH_EN = '(?:(?:seat|bus|vehicle|ticket)\\s+types?|class(?:es)?)'
+const VEH_EN = '(?:(?:seat|bus|vehicle|ticket|cabin|fare)\\s+(?:types?|class(?:es)?)|class(?:es)?)'
 const TIME_EN = '(?:time of (?:day|travel)|departure times?|dates?|seasons?|time)'
 const OBJ_EN = `(?:${OP_EN}|${VEH_EN}|${TIME_EN})`
 const VARY_EN = new RegExp(`\\b(?:varies|vary|varying|differs|differ|depends|depending|dependent)\\s+(?:on|by|with|between|across|upon)\\s+(?:the\\s+|each\\s+)?${OBJ_EN}(?:\\s*(?:,|/|and|or)\\s*(?:the\\s+)?${OBJ_EN})*`, 'gi')

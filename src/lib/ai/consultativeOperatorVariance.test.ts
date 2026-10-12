@@ -13,16 +13,24 @@ const R_ONE = [
   row('futabus.vn', 'FUTA Bus Lines Đặt vé xe Phương Trang đi liên tỉnh trực tuyến. Số điện thoại tổng đài đặt vé xe phương trang: 1900 6067.'),
   row('vexere.com', 'Vé xe Phương Trang từ Sài Gòn đi Quy Nhơn - Bình Định Với giá vé chỉ từ 410000 đ. Mỗi ngày nhà xe Phương Trang có 29 chuyến xe đi Sài Gòn đi Quy Nhơn - Bình Định.'),
 ]
-const R_VEH = [...R_ONE, row('redbus.vn', 'Xe Phương Trang | Đặt Vé Online Đặt vé xe Phương Trang (FUTA Bus Lines) online tại redBus. Giá vé từ 165.000đ, 92 tuyến. Xe giường nằm & Limousine VIP — chọn ghế, trả online ...')]
+// types LISTED beside ONE fare (the live redbus row): not support
+const R_LISTED = [...R_ONE, row('redbus.vn', 'Xe Phương Trang | Đặt Vé Online Đặt vé xe Phương Trang (FUTA Bus Lines) online tại redBus. Giá vé từ 165.000đ, 92 tuyến. Xe giường nằm & Limousine VIP — chọn ghế, trả online ...')]
+// two types, two DIFFERENT fares: support
+const R_VEH = [...R_ONE, row('a.example', 'Xe giường nằm Phương Trang TP.HCM đi Quy Nhơn giá 450.000đ một chiều.'), row('b.example', 'Xe limousine Phương Trang TP.HCM đi Quy Nhơn giá 650.000đ một chiều.')]
 const R_MULTI = [...R_ONE, row('example.vn', 'Nhà xe Thành Bưởi TP.HCM đi Quy Nhơn từ 380.000đ, nhà xe Hoàng Long cũng có chuyến.')]
-const R_TIME = [...R_ONE, row('example.vn', 'Giá vé xe khách tăng vào dịp lễ và cuối tuần, khung giờ cao điểm.')]
+const R_TIME = [...R_ONE, row('example.vn', 'Giá vé xe khách từ 380.000đ, tăng vào dịp lễ và cuối tuần, khung giờ cao điểm.')]
 const sup = (rows: typeof R_ONE) => varianceSupport(rows, operatorsIn(rows).size)
 const drop = (text: string, rows = R_ONE, lang = 'vi') => dropUnsupportedVariance(text, sup(rows), lang)
 const PRE = 'Vé xe từ 410.000 đồng. '
 
 describe('support is read from the rows', () => {
   it('one operator, no vehicle types, no time-dependent fares', () => { expect(sup(R_ONE)).toEqual({ operators: false, vehicle: false, time: false }) })
-  it('vehicle types stated next to a fare', () => { expect(sup(R_VEH)).toMatchObject({ operators: false, vehicle: true }) })
+  it('two vehicle types with two different fares', () => { expect(sup(R_VEH)).toMatchObject({ operators: false, vehicle: true }) })
+  it('vehicle types LISTED beside one fare (the live redbus row) are not support', () => { expect(sup(R_LISTED).vehicle).toBe(false) })
+  it('the same type with two fares, or two types with the same fare, are not support either', () => {
+    expect(sup([row('a.example', 'Xe giường nằm giá 450.000đ, xe giường nằm giá 500.000đ.')]).vehicle).toBe(false)
+    expect(sup([row('a.example', 'Xe giường nằm và limousine cùng giá 450.000đ.')]).vehicle).toBe(false)
+  })
   it('two operators', () => { expect(sup(R_MULTI).operators).toBe(true) })
   it('time-dependent fares', () => { expect(sup(R_TIME).time).toBe(true) })
 })
