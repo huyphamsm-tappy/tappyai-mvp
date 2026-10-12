@@ -2491,7 +2491,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
     // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
     const todayVn = collector?.consultative ? vnToday() : undefined
-    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and

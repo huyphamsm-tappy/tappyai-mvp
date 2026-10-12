@@ -89,7 +89,11 @@ const WORD_UNIT: Record<string, string> = { sao: 'stars', star: 'stars', stars: 
 const blank = (s: string, a: number, b: number) => s.slice(0, a) + ' '.repeat(Math.max(0, b - a)) + s.slice(b)
 
 /** The checkable values of a text: money (VND / USD amounts), clock times, numbers with their unit class or next word, model ids. */
-export function quantitiesIn(text: string): Q[] {
+export function quantitiesIn(text: string, canonMoney = false): Q[] {
+  // Round 33 (CONSULTATIVE_IN_AGENT, `canonMoney`): a VND amount written in a scaled form ("2,01 triệu") is computed as 2.01 × 1 000 000 in floating point
+  // (2 009 999.999…) and then compared with `===` against the same amount written in full ("2.010.000đ"). Only the REPRESENTATION is normalised — to a whole number of đồng,
+  // for VND only (a USD amount keeps its cents). The amount itself is never changed: 2,01 triệu ≡ 2.010.000đ, 2,01 triệu ≢ 2.050.000đ.
+  const money = (v: number, currency?: string): number => canonMoney && currency === 'VND' ? Math.round(v) : v
   let s = text
     .replace(/!?\[[^\]]*\]\([^)]*\)/g, m => ' '.repeat(m.length))
     .replace(/https?:\/\/\S+/g, m => ' '.repeat(m.length))
@@ -98,8 +102,8 @@ export function quantitiesIn(text: string): Q[] {
     .replace(/^(\s*)\d{1,2}[.)](?=\s)/gm, (m, sp: string) => sp + ' '.repeat(m.length - sp.length))
   const out: Q[] = []
   for (const c of extractMoneyClaims(s)) {
-    out.push({ kind: 'money', value: c.lo, unit: 'money', currency: c.currency, invalid: !(c.lo > 0) || c.hi < c.lo })
-    if (c.hi !== c.lo) out.push({ kind: 'money', value: c.hi, unit: 'money', currency: c.currency })
+    out.push({ kind: 'money', value: money(c.lo, c.currency), unit: 'money', currency: c.currency, invalid: !(c.lo > 0) || c.hi < c.lo })
+    if (c.hi !== c.lo) out.push({ kind: 'money', value: money(c.hi, c.currency), unit: 'money', currency: c.currency })
     s = blank(s, c.start, c.end)
   }
   const times = /(?<![\d.,:])(\d{1,2})(?:\s*(?:h|giờ|gio)(?:\s*(\d{2}))?(?![\p{L}\d])|:(\d{2})(?!\d))/giu
@@ -133,7 +137,7 @@ export function quantitiesIn(text: string): Q[] {
 }
 
 interface Indexed { fold: string; qs: Q[] }
-const index = (passages: readonly string[]): Indexed[] => passages.filter(p => typeof p === 'string' && p.trim()).map(p => ({ fold: fold(p), qs: quantitiesIn(p) }))
+const index = (passages: readonly string[], canonMoney = false): Indexed[] => passages.filter(p => typeof p === 'string' && p.trim()).map(p => ({ fold: fold(p), qs: quantitiesIn(p, canonMoney) }))
 
 /** Is quantity q stated in this passage? Strict: same money amount, same clock time, same number with the same unit / next word. */
 function statedIn(q: Q, p: Indexed): boolean {
@@ -212,7 +216,7 @@ export function freshCarried(ev: Pick<GuardEvidence, 'carried' | 'constraintsSig
 // ── judging ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /** `today`: the system clock's day/month. When set, a dd/mm (or dd/mm/yyyy) naming exactly that day is the model framing "hôm nay (11/10)", not a claim the page must repeat. Any other date is judged as before. */
-export interface JudgeOptions { cutUnsourcedMoney?: boolean; retrievedTexts?: readonly string[]; lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
+export interface JudgeOptions { cutUnsourcedMoney?: boolean; /** Round 33 (flag only): compare VND amounts as whole đồng (see `quantitiesIn`). */ canonMoney?: boolean; retrievedTexts?: readonly string[]; lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
 
 /** Today's day/month/year in Vietnam time (the server clock may be UTC). */
 export function vnToday(now: Date = new Date()): { day: number; month: number; year: number } {
@@ -231,13 +235,14 @@ export function withoutTodayDate(body: string, t: { day: number; month: number; 
 }
 
 export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {}): Array<Sent & { j: SentenceJudgement }> {
-  const byId = new Map(ev.sources.map(s => [s.id, { s, ix: index(s.passages) }]))
-  const carried = freshCarried(ev).map(r => ({ r, ix: index([`${r.title} ${r.claims.filter(c => c.type === 'FACT').map(c => c.value).join(' · ')}`]) }))
-  const userIx = index([ev.userText])
-  const replyQs = quantitiesIn(text)
+  const canon = o.canonMoney === true
+  const byId = new Map(ev.sources.map(s => [s.id, { s, ix: index(s.passages, canon) }]))
+  const carried = freshCarried(ev).map(r => ({ r, ix: index([`${r.title} ${r.claims.filter(c => c.type === 'FACT').map(c => c.value).join(' · ')}`], canon) }))
+  const userIx = index([ev.userText], canon)
+  const replyQs = quantitiesIn(text, canon)
   const known = o.knownNames ?? []
   return sentencesOf(text).map(sent => {
-    const qs = quantitiesIn(o.today ? withoutTodayDate(sent.body, o.today) : sent.body)
+    const qs = quantitiesIn(o.today ? withoutTodayDate(sent.body, o.today) : sent.body, canon)
     const cue = sent.body.match(new RegExp(AVAIL_RE.source, 'iu'))?.[0]?.trim() ?? null
     const ids = sent.ids.filter(id => byId.has(id))
     const base = { values: qs.length, sourceIds: ids }
@@ -261,7 +266,7 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
         const everyPage = [...byId.values()].flatMap(c => c.ix)
         // …and not in any other retrieved text of the turn (search snippets, tool rows): the read pages hold only 8 extracted passages, so a price the
         // retailer's SNIPPET states (live 2026-10-11, Philips kettle) is sourced, just not by the page's passages. Only a figure stated nowhere is cut.
-        const retrieved = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage)) ? index((o.retrievedTexts ?? []).slice(0, 120)) : []
+        const retrieved = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage)) ? index((o.retrievedTexts ?? []).slice(0, 120), canon) : []
         const unsourcedMoney = o.cutUnsourcedMoney === true && qs.some(q => q.kind === 'money' && !numberAnywhere(q, everyPage) && !numberAnywhere(q, retrieved))
         return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'MODEL_KNOWLEDGE' as const, reason: names.length && coveredByUnscoped(qs, all, cue) ? 'value_not_with_entity' : 'cited_value_not_in_source', ...(misattributed ? { misattributed: true } : {}), ...(unsourcedMoney ? { unsourcedMoney: true } : {}) } }
       }
@@ -269,7 +274,7 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
       const kind = kindOf(qs)
       const strong = cited.filter(c => reliabilityFor(c.s.sourceType, kind) !== 'low')
       if (!strong.length && !ATTRIBUTION.test(sent.body)) return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'PAGE_EVIDENCE' as const, reason: 'weak_source_unattributed' } }
-      const note = contradiction(qs, ids, ev, text, replyQs, o.lang ?? 'vi')
+      const note = contradiction(qs, ids, ev, text, replyQs, o.lang ?? 'vi', canon)
       return { ...sent, j: { ...base, verdict: note ? 'CONTRADICTED' as const : 'SUPPORTED' as const, provenance: 'PAGE_EVIDENCE' as const, reason: note ? 'undisclosed_conflict' : 'stated_by_cited_source', ...(note ? { note } : {}) } }
     }
     if (carried.length && coveredBy(carried.flatMap(c => c.ix))) return { ...sent, j: { ...base, verdict: 'SUPPORTED' as const, provenance: 'TASK_STATE' as const, reason: 'fresh_task_evidence' } }
@@ -283,10 +288,10 @@ const coveredByUnscoped = (qs: readonly Q[], ps: readonly Indexed[], cue: string
  * An undisclosed numeric conflict: a ledger CONFLICT whose side from a cited source carries one of this sentence's values, and whose
  * other side (another source, a different value of the same unit) the reply never mentions. Returns the note, or null.
  */
-function contradiction(qs: readonly Q[], ids: readonly string[], ev: GuardEvidence, reply: string, replyQs: readonly Q[], lang: string): string | null {
+function contradiction(qs: readonly Q[], ids: readonly string[], ev: GuardEvidence, reply: string, replyQs: readonly Q[], lang: string, canonMoney = false): string | null {
   const mine = new Set(qs.map(q => q.value))
   for (const c of ev.conflicts) {
-    const sides = c.sides.map(s => ({ ...s, q: quantitiesIn(s.value) })).filter(s => s.value.length <= 60 && s.q.length > 0)
+    const sides = c.sides.map(s => ({ ...s, q: quantitiesIn(s.value, canonMoney) })).filter(s => s.value.length <= 60 && s.q.length > 0)
     if (!sides.some(s => ids.includes(s.sourceId) && s.q.some(q => mine.has(q.value)))) continue
     const other = sides.find(s => !ids.includes(s.sourceId) && !s.q.some(q => mine.has(q.value)) && qs.some(q => unitClass(q) === unitClass(s.q[0])))
     if (!other) continue
