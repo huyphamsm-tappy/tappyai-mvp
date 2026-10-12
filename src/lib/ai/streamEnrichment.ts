@@ -29,6 +29,7 @@ import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
 import { withUnverifiedFigureLine } from './unverifiedFigure'
 import { planPriceSources, collectSearchRows, figuresIn, type TextRow } from './consultative/priceProvenance'
 import { dropUnbackedOfferClaims, hasPressableLink, viewHasPrice } from './consultative/offerClaims'
+import { shapeCoachReply } from './consultative/coachFares'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -1656,6 +1657,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const gateCorpus: string[] = []
   // Round 32 (CONSULTATIVE_IN_AGENT): the search results (title + snippet + link) the tools returned this turn — the evidence a price may be tied back to (priceProvenance.ts).
   const searchRows: TextRow[] = []
+  // …and the coach (bus) search results of get_transport_options alone: what a coach reply may say about operators and kinds of fare (coachFares.ts).
+  const coachRows: TextRow[] = []
   // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
   const agedFramePrices: Array<{ amount: number; at: string | null }> = []
   const freshFramePrices: number[] = []
@@ -3628,8 +3631,13 @@ export function applyPlaceEnrichmentStreamFilter(
       })
       : null
     if (offerChecked?.removed.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unbacked_offer_claim', removed: offerChecked.removed.map(r => r.kind) }))
-    const ctaOwnedProse = offerChecked?.removed.length ? offerChecked.text : ctaOwnedProseRaw
-    gt('unbacked_offer_claim', ctaOwnedProseRaw, ctaOwnedProse)
+    const ctaOwnedProseOffer = offerChecked?.removed.length ? offerChecked.text : ctaOwnedProseRaw
+    gt('unbacked_offer_claim', ctaOwnedProseRaw, ctaOwnedProseOffer)
+    // Round 32 (CONSULTATIVE_IN_AGENT, coach): "tùy nhà xe" only when the rows name two operators; a range whose ends are different kinds of price is written as two named figures.
+    const coachShaped = collector?.consultative === true && collector.agentMode && coachRows.length > 0 ? shapeCoachReply(ctaOwnedProseOffer, coachRows, lang) : null
+    if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
+    const ctaOwnedProse = coachShaped?.changes.length ? coachShaped.text : ctaOwnedProseOffer
+    gt('coach_fares', ctaOwnedProseOffer, ctaOwnedProse)
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
      * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
@@ -3873,6 +3881,7 @@ export function applyPlaceEnrichmentStreamFilter(
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
             if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
+            if (collector?.consultative === true && collector.agentMode && toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
             if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
             if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }
