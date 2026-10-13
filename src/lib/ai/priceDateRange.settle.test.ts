@@ -95,7 +95,9 @@ describe('PRICE-DATE-01 — an undated "từ" price told as the price of the tra
       const out = await settle(QB, busFrames(BUS, text), flag, { travel: true })
       record('pd_ctl_unsourced', { flag, out })
       expect(out).not.toContain('520.000') // cut, both flags (must stay cut)
-      expect(out).toContain('có giá /chiều.') // TODAY: the cut leaves "có giá /chiều." behind — a separate defect, recorded, NOT in this round's scope
+      // Pre-fix (53b0e80): the cut left "…có giá /chiều." behind (PRICE-CUT-RESIDUE-01). Commit 3a: the sentence goes whole, the travel notice stays.
+      expect(out).not.toContain('/chiều')
+      expect(out).toBe(flag ? 'Giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm.' : 'Giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.')
     })
   }
 })
@@ -210,14 +212,18 @@ describe('PRICE-CUT-RESIDUE-01 — the step that cuts the unsourced fare, called
     const r = guardTravelClaimsInText(S, [350000, 410000], QB, { lang: 'vi' })
     const { extractMoneyClaims } = await import('./moneyGuard')
     record('residue_travel_guard', { out: r.text, redacted: r.redacted, claims: extractMoneyClaims(S).map(c => ({ raw: S.slice(c.start, c.end), start: c.start, end: c.end, kind: c.kind })) })
-    expect(r.text).toContain('có giá /chiều.') // TODAY: the residue is made here
+    // Pre-fix: "…có giá /chiều.\n\n<notice>". Commit 3a (travelGuard opts in to noAmountOnlyFallback): the notice alone.
+    expect(r.text).toBe('Giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.')
+    expect(r.redacted).toBe(1)
   })
-  it('the shared redaction (moneyGuard.redactUnsupportedClaims) on a one-sentence reply: path (3) "only the amounts go"', async () => {
+  it('the shared redaction (moneyGuard.redactUnsupportedClaims) on a one-sentence reply: path (3) "only the amounts go" — DEFAULT unchanged (RS-3, not this commit)', async () => {
     const { redactUnsupportedClaims, extractMoneyClaims } = await import('./moneyGuard')
     const t = 'Phòng đôi có giá 1.500.000đ/đêm.'
-    const out = redactUnsupportedClaims(t, extractMoneyClaims(t).map(c => ({ ...c, verdict: 'UNVERIFIED' })) as never)
+    const bad = extractMoneyClaims(t).map(c => ({ ...c, verdict: 'UNVERIFIED' })) as never
+    const out = redactUnsupportedClaims(t, bad)
     record('residue_redact_path3', { out })
-    expect(out).toBe('Phòng đôi có giá /đêm.') // TODAY
+    expect(out).toBe('Phòng đôi có giá /đêm.') // default (every caller but travelGuard): unchanged
+    expect(redactUnsupportedClaims(t, bad, { noAmountOnlyFallback: true })).toBe('') // the opt-in: no amount-only step; the caller writes its notice
   })
 })
 
@@ -264,5 +270,42 @@ describe('RANGE-27-33 — the deciding guard, called directly', () => {
     record('rg_direct_on', { report: r.report, text: r.text })
     expect(r.report.reasons?.unsourced_money_cut).toBe(1)
     expect(r.text).not.toContain('26,99')
+  })
+})
+
+// ── S5 (commit 3a) ── a travel sentence with a VERIFIED fare and an unverified one: the verified fare always stays, the unverified part goes, no residue.
+// Strings = price-allowlist-3a.md (gọi thẳng), approved by Huy 13/10. S5h3: the direct path only — settle still loses 387.000 (TG-VERIFIED-LOSS-PRE-01, OPEN).
+describe('S5 — travelGuard cuts around a verified fare (commit 3a)', () => {
+  const NL = 'Giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.'
+  const Qf = 'vé máy bay TP.HCM Đà Nẵng ngày 24/10/2026 giá bao nhiêu'
+  const cases: Array<[string, string, number[], string]> = [
+    ['S5a', 'Vietjet 387.000 VND, nhưng cũng có chuyến chỉ 99.000 VND.', [387000], 'Vietjet 387.000 VND.'],
+    ['S5b', 'Có chuyến chỉ 99.000 VND, còn Vietjet 387.000 VND.', [387000], 'Vietjet 387.000 VND.'],
+    ['S5c', 'Vietjet 387.000 VND hoặc chuyến khác chỉ 99.000 VND.', [387000], 'Vietjet 387.000 VND.'],
+    ['S5d', 'Vietjet 387.000 VND, Bamboo 412.000 VND, nhưng có chuyến chỉ 99.000 VND.', [387000, 412000], 'Vietjet 387.000 VND, Bamboo 412.000 VND.'],
+    ['S5h1', 'Vietjet 387.000 VND một chiều hoặc chuyến khác chỉ 99.000 VND.', [387000], 'Vietjet 387.000 VND một chiều.'],
+    ['S5h2a', 'Vietjet 387.000 VND một chiều hoặc khứ hồi, nhưng có chuyến chỉ 99.000 VND.', [387000], 'Vietjet 387.000 VND một chiều hoặc khứ hồi.'],
+    ['S5h2b', 'Vietjet 387.000 VND một chiều hoặc khứ hồi nhưng có chuyến chỉ 99.000 VND.', [387000], 'Vietjet 387.000 VND một chiều hoặc khứ hồi.'],
+    ['S5h3', 'Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.', [387000], 'Đặt qua app hoặc website, Vietjet 387.000 VND.'],
+    ['S5m1', 'Vietjet 387.000 VND nhưng Bamboo 412.000 VND hoặc chuyến khác chỉ 99.000 VND.', [387000, 412000], 'Vietjet 387.000 VND nhưng Bamboo 412.000 VND.'],
+    ['S5m2', 'Vietjet 387.000 VND hoặc chuyến chỉ 99.000 VND nhưng Bamboo 412.000 VND.', [387000, 412000], 'Vietjet 387.000 VND nhưng Bamboo 412.000 VND.'],
+  ]
+  for (const [id, text, fares, kept] of cases) {
+    it(`${id}: keeps the verified fare, drops the unverified part`, async () => {
+      const { guardTravelClaimsInText } = await import('./travelGuard')
+      const r = guardTravelClaimsInText(text, fares, Qf, { lang: 'vi' })
+      expect(r).toEqual({ text: `${kept}\n\n${NL}`, redacted: 1, enforced: true })
+    })
+  }
+  it('S5e1 / S5e2: no verified fare → the sentence goes whole; only a verified fare → unchanged', async () => {
+    const { guardTravelClaimsInText } = await import('./travelGuard')
+    expect(guardTravelClaimsInText('Vé máy bay chặng này có giá 99.000 VND một chiều.', [387000], Qf, { lang: 'vi' })).toEqual({ text: NL, redacted: 1, enforced: true })
+    expect(guardTravelClaimsInText('Vietjet 387.000 VND một chiều.', [387000], Qf, { lang: 'vi' })).toEqual({ text: 'Vietjet 387.000 VND một chiều.', redacted: 0, enforced: true })
+  })
+  it('other callers (option off) keep the former path: the clause cut takes the verified amount in S5h3', async () => {
+    const { redactUnsupportedClaims, extractMoneyClaims } = await import('./moneyGuard')
+    const t = 'Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.'
+    const judged = extractMoneyClaims(t).map(c => ({ ...c, entity: null, verdict: t.slice(c.start, c.end).startsWith('387') ? 'VERIFIED' : 'UNVERIFIED' })) as never
+    expect(redactUnsupportedClaims(t, judged)).toBe('Đặt qua app hoặc website.')
   })
 })
