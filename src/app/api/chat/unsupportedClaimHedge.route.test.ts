@@ -7,9 +7,8 @@
  *   model wrote  : "Chỗ đầu tiên được nhắc là **Nhà Hàng Au Tresor**, nhưng mình chưa xác minh được quán có chỗ đậu xe máy không. Tốt nhất bạn gọi hỏi quán trước khi chạy qua; …"
  *   user read    : "Chỗ đầu tiên được nhắc là **Nhà Hàng Au Tresor**, nhưng mình chưa xác minh được quán mình chưa xác nhận được có chỗ đậu xe. Tốt nhất bạn gọi …"
  * RECONSTRUCTED (not verbatim): the conversation context (a food thread so that the place guards run, as in the live chat) and the absence of the live tool results.
- * Phase 2 (narrow fix, flag only): with CONSULTATIVE_IN_AGENT=1 the exact phrase "chưa xác minh" is a hedge for R4 (unsupportedClaimGuard.ts CHUA_XAC_MINH_*; `consultative` passed from
- * streamEnrichment.ts). Phase 1 had this file RED (the env-1 reproduction passed and the desired-behaviour test was `it.fails`); the same file is now GREEN for env 1, while env 0 still
- * asserts the OLD garble: the flag-off defect is NOT fixed and stays in the backlog. Each case prints one `CASE {…}` line.
+ * Round 41 phase 2 made the exact phrase "chưa xác minh" a hedge for R4 with CONSULTATIVE_IN_AGENT=1 only; Round 42 commit 1 makes it a hedge on BOTH paths (flag off too), so the
+ * env-0 reproduction now asserts the fixed text. Each case prints one `CASE {…}` line.
  */
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
@@ -91,12 +90,14 @@ const MODEL_ORIGINAL = HEAD + 'mình chưa xác minh được quán có chỗ đ
 const USER_READ_LIVE = HEAD + 'mình chưa xác minh được quán mình chưa xác nhận được có chỗ đậu xe.' + TAIL
 
 describe('Round 40 case 8, through the full route', () => {
-  it('env 0 (flag OFF): the OLD defect is still there — "chưa xác minh được quán có chỗ đậu xe máy không" is rewritten into the live garble, exactly the text the user read (NOT fixed)', async () => {
+  it('env 0 (flag OFF, Round 42 commit 1): the already-hedged sentence reaches the user untouched, no rewrite logged (until d9c8925 it became the live garble USER_READ_LIVE)', async () => {
     const r = await run(MODEL_ORIGINAL, '0')
-    record('case8_model_original', '0', MODEL_ORIGINAL, r, 'flag off: defect unchanged (garble)')
+    record('case8_model_original', '0', MODEL_ORIGINAL, r, 'flag off: fixed (unchanged)')
     expect(r.path).toBe(false)
-    expect(r.guard?.rewritten).toEqual(['service'])
-    expect(r.final).toBe(USER_READ_LIVE)
+    expect(r.placeRan).toBe(true)
+    expect(r.guard).toBeNull()
+    expect(r.final).toBe(MODEL_ORIGINAL)
+    expect(r.final).not.toBe(USER_READ_LIVE)
   }, 60000)
   it('env 1 (CONSULTATIVE_IN_AGENT): the already-hedged sentence reaches the user untouched, no rewrite logged (was RED in phase 1)', async () => {
     const r = await run(MODEL_ORIGINAL, '1')
@@ -145,16 +146,87 @@ describe('controls: other wordings in the same frame (route, env 1; the "xác mi
   }, 60000)
 })
 
+// ── Round 42, step 1 (tests only; the product code is NOT touched in this step). `it.fails` = the DESIRED behaviour, RED today. The sentence frame is the case-8 frame.
+// "chưa kiểm chứng được" is the same kind of hedge as "chưa xác minh được": today R4 rewrites it into the same double-hedge garble, flag off AND on.
+const KIEM_CHUNG_FRAMES: Array<[string, string]> = [
+  ['chưa kiểm chứng được …có … không', frame('mình chưa kiểm chứng được quán có chỗ đậu xe máy không.')],
+  ['chưa kiểm chứng …có …', frame('mình chưa kiểm chứng quán có chỗ đậu xe máy.')],
+]
+describe('Round 42 step 1 — "chưa kiểm chứng (được)" (route, env 0 and env 1)', () => {
+  for (const flag of ['0', '1'] as const) {
+    for (const [name, text] of KIEM_CHUNG_FRAMES) {
+      it(`REPRODUCTION env ${flag}: ${name} is rewritten (today)`, async () => {
+        const r = await run(text, flag)
+        record('r42_' + name, flag, text, r, 'today: rewritten')
+        expect(r.path).toBe(flag === '1')
+        expect(r.guard?.rewritten).toEqual(['service'])
+        expect(r.final).not.toBe(text)
+        expect(r.final).toContain('mình chưa xác nhận được có chỗ đậu xe') // the double-hedge garble
+      }, 60000)
+      it.fails(`DESIRED env ${flag}: ${name} reaches the user untouched`, async () => {
+        const r = await run(text, flag)
+        expect(r.final).toBe(text)
+      }, 60000)
+    }
+  }
+})
+describe('Round 42 commit 1 — "chưa xác minh (được)" with the flag OFF (red in step 1, green now)', () => {
+  it('env 0: "chưa xác minh được quán có chỗ đậu xe máy không" reaches the user untouched', async () => {
+    const r = await run(MODEL_ORIGINAL, '0')
+    expect(r.guard).toBeNull()
+    expect(r.final).toBe(MODEL_ORIGINAL)
+  }, 60000)
+  it('env 0: "chưa xác minh quán có chỗ đậu xe máy" (no "được") reaches the user untouched', async () => {
+    const t = frame('mình chưa xác minh quán có chỗ đậu xe máy.')
+    const r = await run(t, '0')
+    record('r42_chua_xac_minh_no_duoc', '0', t, r, 'flag off: unchanged')
+    expect(r.guard).toBeNull()
+    expect(r.final).toBe(t)
+  }, 60000)
+})
+// controls with the flag OFF: what must NOT change (same expectations as the env-1 controls, except the two "xác minh/kiểm chứng" hedges which are the subject)
+const CONTROLS_OFF: Array<[string, string, 'unchanged' | 'rewritten']> = [
+  ['chưa rõ', frame('mình chưa rõ quán có chỗ đậu xe máy không.'), 'unchanged'],
+  ['mình không chắc', frame('mình không chắc quán có chỗ đậu xe máy không.'), 'unchanged'],
+  ['chưa xác nhận được', frame('mình chưa xác nhận được quán có chỗ đậu xe máy không.'), 'unchanged'],
+  ['đã xác minh + khẳng định', frame('mình đã xác minh quán có chỗ đậu xe máy.'), 'rewritten'],
+  ['đang xác minh + khẳng định (không "xem")', frame('mình đang xác minh quán có chỗ đậu xe máy.'), 'rewritten'],
+  ['đã kiểm chứng + khẳng định', frame('mình đã kiểm chứng quán có chỗ đậu xe máy.'), 'rewritten'],
+  ['đang kiểm chứng + khẳng định (không "xem")', frame('mình đang kiểm chứng quán có chỗ đậu xe máy.'), 'rewritten'],
+  ['không xác minh được (không "chưa")', frame('mình không xác minh được quán có chỗ đậu xe máy.'), 'rewritten'],
+  ['khẳng định không rào', frame('quán có chỗ đậu xe máy rộng rãi.'), 'rewritten'],
+  ['chưa xác minh ở câu TRƯỚC không che khẳng định ở câu SAU', HEAD + 'mình chưa xác minh giờ mở cửa. Quán có chỗ đậu xe máy rộng rãi.' + TAIL, 'rewritten'],
+]
+describe('Round 42 step 1 — controls with the flag OFF (route, env 0)', () => {
+  for (const [name, text, expected] of CONTROLS_OFF) {
+    it(`${name}`, async () => {
+      const r = await run(text, '0')
+      const changed = r.final !== text
+      record('r42_control_off_' + name, '0', text, r, changed ? 'REWRITTEN' : 'UNCHANGED')
+      expect(r.path).toBe(false)
+      expect(changed ? 'rewritten' : 'unchanged').toBe(expected)
+    }, 60000)
+  }
+})
+
 // supplement (direct calls, NOT the evidence of the fix — the route cases above are): the price-ceiling rule R2 reads CONDITIONAL_RE unchanged, so "chưa xác minh" does not change it with the flag on
-describe('R2 (price ceiling) is untouched by the flag', () => {
-  it('"chưa xác minh được giá dưới 80k" gives the same text with consultative true and false', async () => {
+describe('R2 (price ceiling) is untouched by the R4 hedge phrases', () => {
+  // The exact outputs of 6eec9e9 / 4929174 / d9c8925 (harness r42pre-*: tools.r42_direct_r2_*); R2 reads CONDITIONAL_RE, never the R4-only phrases.
+  it('"chưa xác minh được giá dưới 80k" is still rewritten by R2 exactly as before', async () => {
     const { guardUnsupportedClaims } = await import('@/lib/ai/unsupportedClaimGuard')
     const ev = { venues: [{ name: 'Quán Lệ Xanh', band: { lo: 1000, hi: 100000 } as never, texts: [] }], sharedTexts: [], userTexts: ['quán dưới 80k'] }
     const t = 'Quán Lệ Xanh chưa xác minh được giá dưới 80k.'
-    const off = guardUnsupportedClaims(t, { ...ev, consultative: false })
-    const on = guardUnsupportedClaims(t, { ...ev, consultative: true })
-    console.log('CASE ' + JSON.stringify({ name: 'r2_unchanged_by_flag', before_guard: t, flag_false: off.text, flag_true: on.text }))
-    expect(on.text).toBe(off.text)
-    expect(on.rewritten).toEqual(off.rewritten)
+    const r = guardUnsupportedClaims(t, ev)
+    console.log('CASE ' + JSON.stringify({ name: 'r2_chua_xac_minh', before_guard: t, after_guard: r.text, rewritten: r.rewritten }))
+    expect(r.text).toBe('Quán Lệ Xanh chưa xác minh được giá tham khảo tới 100k (chưa chắc dưới 80k).')
+    expect(r.rewritten).toEqual(['price_ceiling'])
+  })
+  it('"chưa kiểm chứng được giá dưới 80k" is still left alone by R2 exactly as before (the word "kiem" is in R2\'s own skip list)', async () => {
+    const { guardUnsupportedClaims } = await import('@/lib/ai/unsupportedClaimGuard')
+    const ev = { venues: [{ name: 'Quán Lệ Xanh', band: { lo: 1000, hi: 100000 } as never, texts: [] }], sharedTexts: [], userTexts: ['quán dưới 80k'] }
+    const t = 'Quán Lệ Xanh chưa kiểm chứng được giá dưới 80k.'
+    const r = guardUnsupportedClaims(t, ev)
+    expect(r.text).toBe(t)
+    expect(r.rewritten).toEqual([])
   })
 })
