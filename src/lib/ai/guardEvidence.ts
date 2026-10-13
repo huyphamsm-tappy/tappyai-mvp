@@ -368,7 +368,13 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
     else if (j.verdict === 'CONTRADICTED') report.contradicted++
     else if (j.verdict === 'INVALID') report.invalid++
     else report.unknown++
-    if (j.unsourcedMoney) { edits.push({ start: s.start, end: s.start + s.body.length, text: '' }); report.reasons.unsourced_money_cut = (report.reasons.unsourced_money_cut ?? 0) + 1 }
+    if (j.unsourcedMoney) {
+      // Round 42 round 3 (PRICE-CUT-RESIDUE-01): a cut sentence that opened the text or a line takes the spaces/tabs the next sentence starts with — never " Giá còn…".
+      const end = s.start + s.body.length
+      const atLineStart = s.start === 0 || text[s.start - 1] === '\n'
+      edits.push({ start: s.start, end: atLineStart ? end + (text.slice(end).match(/^[ \t]+/)?.[0].length ?? 0) : end, text: '' })
+      report.reasons.unsourced_money_cut = (report.reasons.unsourced_money_cut ?? 0) + 1
+    }
     if (j.verdict === 'SUPPORTED' || j.verdict === 'CONTRADICTED') {
       // Body without its leading whitespace and its sentence end / trailing whitespace (those stay in the text).
       const lead = s.body.match(/^\s*/)![0].length
