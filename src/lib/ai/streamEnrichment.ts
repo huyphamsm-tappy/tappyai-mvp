@@ -29,7 +29,7 @@ import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
 import { withUnverifiedFigureLine } from './unverifiedFigure'
 import { planPriceSources, collectSearchRows, figuresIn, type TextRow } from './consultative/priceProvenance'
 import { dropUnbackedOfferClaims, hasPressableLink, viewHasPrice } from './consultative/offerClaims'
-import { shapeCoachReply } from './consultative/coachFares'
+import { shapeCoachReply, labelUndatedFareDates } from './consultative/coachFares'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -3621,8 +3621,16 @@ export function applyPlaceEnrichmentStreamFilter(
     // Round 32 (CONSULTATIVE_IN_AGENT): the reply may only point at prices and buttons the FINAL output has — after the card decision, the appendix and the system links —
     // and a coach reply names operators and kinds of fare for what the rows show. Identity (the same string) without the flag.
     // Live 2026-10-12 (hotel): "các mức tham khảo đi kèm …" and "nút đặt phòng bên dưới" after the engine's cards were cleared and the tool had returned no price at all.
+    // Round 42 round 3 (PRICE-DATE-01, both flags): a "từ" coach fare no row dates, tied to a date in the reply, is labelled and followed by one
+    // "not verified for that date" sentence (coachFares.labelUndatedFareDates). Identity without coach rows.
+    const dateChecked = (text: string): string => {
+      const r = labelUndatedFareDates(text, coachRows, lang)
+      if (r.labelled) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fare_date', labelled: r.labelled }))
+      gt('coach_fare_date', text, r.text)
+      return r.text
+    }
     const shapeFinalProse = (raw: string): string => {
-      if (!(collector?.consultative === true && collector.agentMode)) return raw
+      if (!(collector?.consultative === true && collector.agentMode)) return dateChecked(raw)
       const offerChecked = dropUnbackedOfferClaims(raw, {
         hasPriceData: figuresIn(raw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
         hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(raw),
@@ -3636,7 +3644,7 @@ export function applyPlaceEnrichmentStreamFilter(
       if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
       const shaped = coachShaped?.changes.length ? coachShaped.text : afterOffer
       gt('coach_fares', afterOffer, shaped)
-      return shaped
+      return dateChecked(shaped)
     }
     const ctaOwnedProse = shapeFinalProse(collector?.appendix
       ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
@@ -3884,7 +3892,8 @@ export function applyPlaceEnrichmentStreamFilter(
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
             if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
-            if (collector?.consultative === true && collector.agentMode && toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
+            // Round 42 round 3: coach rows are read on both flags (PRICE-DATE-01 runs on both); the flag-only steps still check the flag themselves.
+            if (toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
             if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
             if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }
