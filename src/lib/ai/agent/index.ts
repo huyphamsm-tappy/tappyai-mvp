@@ -48,6 +48,8 @@ export interface AgentTurnInput {
   sanitizeQuery: (q: string) => { query: string; cut: string[] }
   /** The code-resolved date of the user's relative-day words; overrides a model-written travel date. */
   codeDate?: string
+  /** LOC-CHIP-01: the request carried a valid current location (hasValidCurrentLocation). The "searching places around you" chip needs it. */
+  hasCurrentLocation?: boolean
   onFinish?: Parameters<typeof agentStreamResult>[1]
   /** Serper credits the agent's tools spent this turn (the card-photo lookup afterwards gets only what is left of the turn budget). */
   onSerperSpent?: (credits: number) => void
@@ -233,7 +235,8 @@ export function startAgentTurn(i: AgentTurnInput): AgentStreamResult {
       deadlineAt: i.deadlineAt,
       signal: i.signal,
       lang: i.lang,
-      onToolStart: () => { if (!progressSent) { progressSent = true; emit(searchingFrame(i.lang)) } },
+      // LOC-CHIP-01: "Đang tìm chỗ quanh bạn…" only for a place search around a real current location.
+      onToolStart: call => { if (!progressSent && call.toolName === 'search_places' && i.hasCurrentLocation === true) { progressSent = true; emit(searchingFrame(i.lang)) } },
       onToolResult: (call, result, event) => {
         lastResults.set(`${event.round}:${call.toolName}`, result)
         if (call.toolName === 'get_trip_data' && event.outcome === 'ok') return // its parts already went out as their own frames

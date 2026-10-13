@@ -252,7 +252,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       lang: i.lang,
       trace: i.trace,
       disallowedTools: SIDE_EFFECT_TOOLS,
-      onToolStart: () => { if (!progressSent) { progressSent = true; emit(searchingFrame(i.lang)) } },
+      // LOC-CHIP-01: "Đang tìm chỗ quanh bạn…" only for a place search around a real current location.
+      onToolStart: call => { if (!progressSent && call.toolName === 'search_places' && i.hasCurrentLocation === true) { progressSent = true; emit(searchingFrame(i.lang)) } },
       onToolResult: (call, result, event) => {
         lastResults.set(`${event.round}:${call.toolName}`, result)
         if (call.toolName !== READ_PAGE) for (const u of urlsIn(result)) allow(u)

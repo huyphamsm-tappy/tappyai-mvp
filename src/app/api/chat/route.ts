@@ -113,7 +113,7 @@ import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, 
 import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
 import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
-import { isNearMeRequest } from '@/lib/location/currentLocation'
+import { isNearMeRequest, hasValidCurrentLocation } from '@/lib/location/currentLocation'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
@@ -3039,6 +3039,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       onState: p => { agentStatePatch = p },
       sanitizeQuery: q => sanitizeSearchQuery(q, { privateTexts, ownWords }),
       codeDate: codeResolvedDate(lastText, new Date(), chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date())),
+      hasCurrentLocation: hasValidCurrentLocation(userLocation),
       onFinish: onFinish as never,
     }
     return agentRunTrace
@@ -3600,7 +3601,7 @@ ${completionInstruction(lang)}` },
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }
   if (willPresearch) {
-    return new Response(deferredBody(searchingFrame(lang), finishTurn), {
+    return new Response(deferredBody(hasValidCurrentLocation(userLocation) ? searchingFrame(lang) : '', finishTurn), {
       status: 200,
       headers: { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', 'Connection': 'keep-alive', 'X-Decision-Evidence-Id': evidenceId },
     })

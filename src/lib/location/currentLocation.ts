@@ -24,6 +24,16 @@ export function isNearMeRequest(text: string): boolean {
   return NEAR_ME.test(fold(text || ''))
 }
 
+/**
+ * Round 42 (LOC-CHIP-01 / LOC-DEFAULT-HCM-01): the ONE definition of "the device sent a usable current location" — finite coordinates in range.
+ * A place the user names is not a current location; only the fix the request carries counts.
+ */
+export function hasValidCurrentLocation(loc: { lat?: unknown; lng?: unknown } | null | undefined): boolean {
+  if (!loc) return false
+  const { lat, lng } = loc
+  return typeof lat === 'number' && typeof lng === 'number' && Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180
+}
+
 /** Stores a fix taken now and marks it as this tab session's. */
 export function saveSessionFix(loc: StoredLocation): void {
   try {
