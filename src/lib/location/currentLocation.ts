@@ -16,12 +16,16 @@ const STORE_KEY = 'tappy_location'
 const SESSION_KEY = 'tappy_location_session'
 
 // Fixed list (allowlist C). Deliberately NOT "gần đây" (also "lately"), "gần chợ …", "xung quanh <place>", "gần nhà".
-const NEAR_ME = /(?:^|[^a-z0-9])(?:gan toi|gan minh|gan cho toi|gan cho minh|quanh day|xung quanh day|near me|nearby|around here)(?![a-z0-9])/
+// Round 42 (Huy, khối thực thi 1 A.4): + gan tui, near here, around me.
+const NEAR_ME = /(?:^|[^a-z0-9])(?:gan toi|gan minh|gan cho toi|gan cho minh|quanh day|xung quanh day|near me|nearby|around here|gan tui|near here|around me)(?![a-z0-9])/
+// Round 42 (A.4): "quanh tôi / xung quanh tôi / quanh mình" are matched WITH their tone marks — without them "quanh minh" is also
+// "quanh Minh (Khai)", a place, and "quanh toi" is also "quanh tối" (around tonight).
+const NEAR_ME_MARKED = /(?:^|[^\p{L}\p{N}])(?:quanh tôi|xung quanh tôi|quanh mình)(?![\p{L}\p{N}])/u
 
 const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase()
 
 export function isNearMeRequest(text: string): boolean {
-  return NEAR_ME.test(fold(text || ''))
+  return NEAR_ME.test(fold(text || '')) || NEAR_ME_MARKED.test((text || '').normalize('NFC').toLowerCase())
 }
 
 /**
