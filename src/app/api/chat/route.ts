@@ -112,6 +112,8 @@ import { closesLate } from '@/lib/ai/consultative/hardConstraints'
 import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, collapseClarifyTurns, turnStartsNewConsultation, turnDomain } from '@/lib/ai/consultative/actionability'
 import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
+import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
+import { isNearMeRequest } from '@/lib/location/currentLocation'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
@@ -2311,6 +2313,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
+          // Round 42 (D1): "gần tôi" with no current location and no place named anywhere — do not search around a default
+          // centre (TP.HCM); tell the model the location is missing so it asks, with the clarification it already has.
+          if (!placesOverride && !userLocation && !statedArea && isNearMeRequest(lastText)
+            && !cityInText(lastText) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !cityInText(query) && !statedDistrict(query)) {
+            console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
+            return { error: 'no_current_location', note: 'Chưa lấy được vị trí hiện tại của người dùng (thiết bị không gửi vị trí). Không đoán khu vực, không tìm quanh một thành phố mặc định. Hãy nói rõ là chưa lấy được vị trí hiện tại và hỏi người dùng đang ở khu vực nào (hoặc nhờ họ nhập địa điểm / bật vị trí).' }
+          }
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = placesOverride
             ? [{ source: 'chat_state', count: placesOverride.results.length, location: placesOverride.location ?? location ?? '', results: placesOverride.results }, [] as Awaited<ReturnType<typeof travelEditorialFor>>] as const
