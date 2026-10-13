@@ -2776,6 +2776,7 @@ export function applyPlaceEnrichmentStreamFilter(
         sharedTexts: placeTexts,
         userTexts: [...(collector?.userTexts ?? [userText])],
         distancesKm: placeDistancesKm,
+        consultative: collector?.consultative === true,
       })
       : { text: districtGuard.text, rewritten: [] as string[] }
     gt('unsupported_claim', districtGuard.text, unsupported.text)
