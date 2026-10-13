@@ -86,7 +86,7 @@ describe('route level — the live coach case', () => {
     process.env.CONSULTATIVE_IN_AGENT = '1'
     const out = await turn(LIVE_ROWS, LIVE_TEXT)
     expect(out).not.toMatch(/thay đổi theo|nhà xe và loại xe|loại xe/)
-    expect(out).toContain('Vé xe khách TP.HCM–Quy Nhơn ngày **24/10/2026** đang được niêm yết **từ 410.000đ/chiều** trên Vexere. tra cứu ngày 12/10/2026.')
+    expect(out).toContain('Vé xe khách TP.HCM–Quy Nhơn ngày **24/10/2026** đang được niêm yết **từ 410.000đ/chiều** (giá "từ" ở vexere.com, chưa theo ngày) trên Vexere. Mình chưa xác minh được mức giá này có áp dụng cho ngày 24/10/2026 hay không. tra cứu ngày 12/10/2026.') // PRICE-DATE-01 (commit 1): date label + sentence, = allowlist D6
     expect(out).toContain(`Giá theo kết quả tìm kiếm của: [vexere.com](${U})`)
     // (the partner link is added by the signed-link commerce step, which needs the affiliate secrets: absent in tests, present live — see the live trace)
     // reads as finished prose, line by line: no dangling punctuation, no doubled horizontal spaces (the blank line before the source line is legitimate)
