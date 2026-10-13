@@ -60,7 +60,8 @@ export function operatorsIn(rows: readonly TextRow[]): Set<string> {
   return found
 }
 
-const fmt = (n: number): string => `${n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}đ`
+// COACH-SPLIT-EN-01: an English reply keeps English digit grouping (350,000đ); Vietnamese keeps 350.000đ. The value never changes.
+const fmt = (n: number, lang = 'vi'): string => `${n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, lang === 'en' ? ',' : '.')}đ`
 function label(kind: FareKind, host: string, lang: string): string {
   const en = lang === 'en'
   if (kind === 'promo') return en ? `promotional price in an article on ${host}, no date` : `giá ưu đãi nêu trong bài của ${host}, không ghi ngày`
@@ -117,8 +118,9 @@ export function splitCoachRanges(text: string, rows: readonly TextRow[], lang: s
       if (lo.some(a => hi.some(b => b.row === a.row))) continue // one source states both ends: a range it made itself
       const fa = lo[0], fb = hi[0]
       const tail = /^\s*\/\s*\p{L}+/u.exec(out.slice(s.end))?.[0] ?? ''
-      const head = /(?:từ|tu)\s+$/iu.exec(out.slice(0, s.start))?.[0] ?? ''
-      const piece = `${fmt(s.lo)}${tail.trim()} (${label(fa.kind, fa.host, lang)}) ${lang === 'en' ? 'and' : 'và'} ${fmt(s.hi)}${tail.trim()} (${label(fb.kind, fb.host, lang)})`
+      // "từ" right before the range goes with it; in English "from" does too (COACH-SPLIT-EN-01: "From X and Y" read as a "from" price)
+      const head = (lang === 'en' ? /(?:từ|tu|(?<![\p{L}\p{N}])from)\s+$/iu : /(?:từ|tu)\s+$/iu).exec(out.slice(0, s.start))?.[0] ?? ''
+      const piece = `${fmt(s.lo, lang)}${tail.trim()} (${label(fa.kind, fa.host, lang)}) ${lang === 'en' ? 'and' : 'và'} ${fmt(s.hi, lang)}${tail.trim()} (${label(fb.kind, fb.host, lang)})`
       out = `${out.slice(0, s.start - head.length)}${piece}${out.slice(s.end + tail.length)}`
       if (!changes.includes('mixed_range')) changes.push('mixed_range')
     }
