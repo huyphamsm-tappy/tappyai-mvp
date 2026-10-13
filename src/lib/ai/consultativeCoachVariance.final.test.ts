@@ -65,7 +65,7 @@ describe('DROPPED: variation by vehicle type the rows do not support (one fare, 
   it('LIVE round 2 — the model wrote "theo nhà xe và loại xe"; the redbus row lists "Xe giường nằm & Limousine VIP" beside ONE fare → the whole clause goes', async () => {
     const input = 'Vé xe khách TP.HCM–Quy Nhơn ngày **24/10/2026** đang được niêm yết **từ 410.000đ/chiều** trên Vexere; giá thực tế thay đổi theo nhà xe và loại xe. tra cứu ngày 12/10/2026.'
     const out = await final(LIVE_ROWS, input, { flag: true })
-    expect(out).toBe('Vé xe khách TP.HCM–Quy Nhơn ngày **24/10/2026** đang được niêm yết **từ 410.000đ/chiều** trên Vexere. tra cứu ngày 12/10/2026.' + SRC_LINE)
+    expect(out).toBe('Vé xe khách TP.HCM–Quy Nhơn ngày **24/10/2026** đang được niêm yết **từ 410.000đ/chiều** (giá "từ" ở vexere.com, chưa theo ngày) trên Vexere. Mình chưa xác minh được mức giá này có áp dụng cho ngày 24/10/2026 hay không. tra cứu ngày 12/10/2026.' + SRC_LINE) // PRICE-DATE-01 (commit 1): date label + sentence, = allowlist D6
     readable(out)
     expect(out).toContain('**từ 410.000đ/chiều**') // the price is unchanged
     expect(out).toContain(`](${U})`) // so is the source link
