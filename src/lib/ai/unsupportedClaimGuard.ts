@@ -66,8 +66,10 @@ const CONDITIONAL_RE = /(?:^|[\s*_(])(?:neu|khi|hoi|xem|goi|kiem tra|chua (?:duo
 // Round 41 (Round 40 case 8, live): "mình chưa xác minh được quán có chỗ đậu xe máy không" was rewritten into "…xác minh được quán mình chưa xác nhận được có chỗ đậu xe" because neither list above
 // knows the phrase "chưa xác minh". Read by R4 ONLY, flag on and off (Round 42; Round 41 had it flag-on only). The phrase is exact: "xác minh" alone is NOT a hedge ("đã xác minh quán có …" and
 // "đang xác minh quán có …" are still claims), and R2 (price ceiling) keeps reading CONDITIONAL_RE unchanged.
-const CHUA_XAC_MINH_CONDITIONAL = /(?:^|[\s*_(])chua xac minh(?=\s)/
-const CHUA_XAC_MINH_SAME_CLAUSE = /(?:^|[\s*_(])chua xac minh(?=\s)[^,;.!?\n]{0,90}$/
+// Round 42 commit 2: the exact phrase "chưa kiểm chứng" (also "chưa kiểm chứng được") is the same hedge — R4 rewrote it into the same garble on both paths. Same rules: exact
+// phrase, R4 only; "đã/đang kiểm chứng quán có …" are still claims.
+const UNVERIFIED_PHRASE_CONDITIONAL = /(?:^|[\s*_(])chua (?:xac minh|kiem chung)(?=\s)/
+const UNVERIFIED_PHRASE_SAME_CLAUSE = /(?:^|[\s*_(])chua (?:xac minh|kiem chung)(?=\s)[^,;.!?\n]{0,90}$/
 /**
  * An indirect question, not a claim: "rạp NÀO có phòng IMAX" (measured round 6, golden T2 t2 — R4
  * turned "kết quả không xác nhận rõ rạp nào có phòng IMAX" into "rạp nào mình chưa xác nhận được có …").
@@ -185,11 +187,11 @@ export function guardUnsupportedClaims(text: string, ev: ClaimEvidence): Unsuppo
         // …only within the claim's own sentence: a hedge in the sentence BEFORE says nothing about this one.
         const sentenceTail = (w: string) => w.slice(Math.max(w.lastIndexOf('. '), w.lastIndexOf('! '), w.lastIndexOf('? '), w.lastIndexOf('; '), w.lastIndexOf('\n')) + 1)
         if (CONDITIONAL_RE.test(sentenceTail(f.slice(Math.max(0, start - 40), start)))) continue
-        if (CHUA_XAC_MINH_CONDITIONAL.test(sentenceTail(f.slice(Math.max(0, start - 40), start)))) continue
+        if (UNVERIFIED_PHRASE_CONDITIONAL.test(sentenceTail(f.slice(Math.max(0, start - 40), start)))) continue
         // A long venue name pushes the model's own hedge past 40 chars ("chưa có thông tin xác nhận QUÁN NHẬU NĂM ZUI có phòng
         // riêng", UAT Luna 01/10 FOOD-3 t3): a hedge verb with NO clause break before the claim still hedges it.
         if (HEDGE_SAME_CLAUSE.test(sentenceTail(f.slice(Math.max(0, start - 110), start)))) continue
-        if (CHUA_XAC_MINH_SAME_CLAUSE.test(sentenceTail(f.slice(Math.max(0, start - 110), start)))) continue
+        if (UNVERIFIED_PHRASE_SAME_CLAUSE.test(sentenceTail(f.slice(Math.max(0, start - 110), start)))) continue
         if (WHICH_BEFORE_RE.test(f.slice(0, verbStart))) continue
         // "cũng có X" → "mình chưa xác nhận được có X" (not "cũng mình chưa …").
         if (f.slice(Math.max(0, start - 5), start) === 'cung ') start -= 5

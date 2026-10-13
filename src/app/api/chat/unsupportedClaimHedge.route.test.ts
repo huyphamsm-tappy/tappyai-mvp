@@ -124,7 +124,8 @@ const CONTROLS: Array<[string, string, 'unchanged' | 'rewritten']> = [
   ['chưa xác minh (no "được") — the exact phrase, hedge (phase 2)', frame('mình chưa xác minh quán có chỗ đậu xe máy.'), 'unchanged'],
   ['chưa xác minh in an EARLIER sentence does not hedge a LATER unhedged claim', HEAD + 'mình chưa xác minh giờ mở cửa. Quán có chỗ đậu xe máy rộng rãi.' + TAIL, 'rewritten'],
   ['không xác minh được (no "chưa") — not the phrase, still a claim', frame('mình không xác minh được quán có chỗ đậu xe máy.'), 'rewritten'],
-  ['chưa kiểm chứng được (another wording — OUT of scope, still handled as before)', frame('mình chưa kiểm chứng được quán có chỗ đậu xe máy.'), 'rewritten'],
+  // Round 41 had this as out of scope ("rewritten"); Round 42 commit 2 (approved by Huy) makes the exact phrase a hedge
+  ['chưa kiểm chứng được (Round 42 commit 2: now a hedge)', frame('mình chưa kiểm chứng được quán có chỗ đậu xe máy.'), 'unchanged'],
 ]
 describe('controls: other wordings in the same frame (route, env 1; the "xác minh" rows are the phase-2 boundary)', () => {
   for (const [name, text, expected] of CONTROLS) {
@@ -152,20 +153,18 @@ const KIEM_CHUNG_FRAMES: Array<[string, string]> = [
   ['chưa kiểm chứng được …có … không', frame('mình chưa kiểm chứng được quán có chỗ đậu xe máy không.')],
   ['chưa kiểm chứng …có …', frame('mình chưa kiểm chứng quán có chỗ đậu xe máy.')],
 ]
-describe('Round 42 step 1 — "chưa kiểm chứng (được)" (route, env 0 and env 1)', () => {
+// Round 42 commit 2: red in step 1 (rewritten into "…quán mình chưa xác nhận được có chỗ đậu xe" on both paths), green now.
+describe('Round 42 commit 2 — "chưa kiểm chứng (được)" (route, env 0 and env 1)', () => {
   for (const flag of ['0', '1'] as const) {
     for (const [name, text] of KIEM_CHUNG_FRAMES) {
-      it(`REPRODUCTION env ${flag}: ${name} is rewritten (today)`, async () => {
+      it(`env ${flag}: ${name} reaches the user untouched, no rewrite logged`, async () => {
         const r = await run(text, flag)
-        record('r42_' + name, flag, text, r, 'today: rewritten')
+        record('r42_' + name, flag, text, r, 'fixed: unchanged')
         expect(r.path).toBe(flag === '1')
-        expect(r.guard?.rewritten).toEqual(['service'])
-        expect(r.final).not.toBe(text)
-        expect(r.final).toContain('mình chưa xác nhận được có chỗ đậu xe') // the double-hedge garble
-      }, 60000)
-      it.fails(`DESIRED env ${flag}: ${name} reaches the user untouched`, async () => {
-        const r = await run(text, flag)
+        expect(r.placeRan).toBe(true)
+        expect(r.guard).toBeNull()
         expect(r.final).toBe(text)
+        expect(r.final).not.toContain('mình chưa xác nhận được có chỗ đậu xe')
       }, 60000)
     }
   }
