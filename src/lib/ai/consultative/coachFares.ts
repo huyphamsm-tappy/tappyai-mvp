@@ -6,8 +6,8 @@
 //
 // What the data decides (any operator, any route; the only fixed list is of operator NAMES, to count how many distinct ones the rows name):
 //   · "tùy nhà xe" / "depending on the operator" is kept only when the rows name at least two distinct operators;
-//   · a range whose two ends are different KINDS of price (promotion in an article · "từ" price · plain) and that no single row states as a range is written as two figures,
-//     each with its kind and host. A range one source states, or whose ends are the same kind, is left alone.
+//   · a range whose two ends no single row states as a range is written as two figures, each with its kind and host (Round 42 round 3: whatever the
+//     kinds of the two ends, and on both flags — see `splitCoachRanges`). A range one source states is left alone.
 // Pure: no model, no I/O; text is only ever rewritten around figures the rows really state.
 
 import { extractMoneyClaims, sentenceSpans } from '../moneyGuard'
@@ -87,7 +87,7 @@ function rangesIn(text: string): Span[] {
 
 export interface CoachShape { text: string; changes: Array<'operator_variance' | 'mixed_range'> }
 
-/** Applies both rules to a coach reply. `rows` are the coach (bus) search results of the turn. */
+/** Applies both rules to a coach reply (flag ON). `rows` are the coach (bus) search results of the turn. */
 export function shapeCoachReply(text: string, rows: readonly TextRow[], lang: string): CoachShape {
   const changes: CoachShape['changes'] = []
   let out = text
@@ -96,6 +96,18 @@ export function shapeCoachReply(text: string, rows: readonly TextRow[], lang: st
     const v = dropUnsupportedVariance(out, varianceSupport(rows, operatorsIn(rows).size), lang)
     if (v.removed.length) { out = v.text; changes.push('operator_variance') }
   }
+  const split = splitCoachRanges(out, rows, lang)
+  return { text: split.text, changes: [...changes, ...split.changes] }
+}
+
+/**
+ * The range step alone — Round 42 round 3, RANGE-27-33 rule R-C (Huy 2026-10-13): runs on BOTH flags (R-C1; the operator rule above stays flag-on),
+ * and a range whose two ends two different rows state is written as two named figures even when both ends are the same kind of price (R-C2).
+ * A range one row states end to end is still left alone.
+ */
+export function splitCoachRanges(text: string, rows: readonly TextRow[], lang: string): CoachShape {
+  const changes: CoachShape['changes'] = []
+  let out = text
   const facts = fareFactsOf(rows)
   if (facts.length) {
     const spans = rangesIn(out).sort((a, b) => b.start - a.start) // right to left: offsets stay valid
@@ -103,7 +115,6 @@ export function shapeCoachReply(text: string, rows: readonly TextRow[], lang: st
       const lo = facts.filter(f => f.amount === s.lo), hi = facts.filter(f => f.amount === s.hi)
       if (!lo.length || !hi.length) continue
       if (lo.some(a => hi.some(b => b.row === a.row))) continue // one source states both ends: a range it made itself
-      if (lo.some(a => hi.some(b => b.kind === a.kind))) continue // same kind of price at both ends
       const fa = lo[0], fb = hi[0]
       const tail = /^\s*\/\s*\p{L}+/u.exec(out.slice(s.end))?.[0] ?? ''
       const head = /(?:từ|tu)\s+$/iu.exec(out.slice(0, s.start))?.[0] ?? ''

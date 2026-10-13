@@ -29,7 +29,8 @@ import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
 import { withUnverifiedFigureLine } from './unverifiedFigure'
 import { planPriceSources, collectSearchRows, figuresIn, type TextRow } from './consultative/priceProvenance'
 import { dropUnbackedOfferClaims, hasPressableLink, viewHasPrice } from './consultative/offerClaims'
-import { shapeCoachReply, labelUndatedFareDates } from './consultative/coachFares'
+import { shapeCoachReply, splitCoachRanges, labelUndatedFareDates } from './consultative/coachFares'
+import { cutUnbackedRanges } from './consultative/rangeEvidence'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -1659,6 +1660,8 @@ export function applyPlaceEnrichmentStreamFilter(
   const searchRows: TextRow[] = []
   // …and the coach (bus) search results of get_transport_options alone: what a coach reply may say about operators and kinds of fare (coachFares.ts).
   const coachRows: TextRow[] = []
+  // Round 42 round 3 (RANGE-27-33, rule R-B, both flags): the search results of the turn, read whatever the flag — the rows a price range must be stated by (rangeEvidence.ts).
+  const rangeRows: TextRow[] = []
   // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
   const agedFramePrices: Array<{ amount: number; at: string | null }> = []
   const freshFramePrices: number[] = []
@@ -2488,7 +2491,35 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     // WS2 citation integrity, step 1 (agent turns that read pages): a marker after a full stop is bound INTO its sentence before any
     // guard runs, so removing the sentence removes its citation (citationIntegrity.ts).
-    const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    const citeBoundRaw = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    // Round 42 round 3 (RANGE-27-33, rule R-B, both flags; turns without coach rows — a coach range is R-C's, in shapeFinalProse): a VND range no single row
+    // of the turn states loses only the part that carries it, when a safe cut keeps the sentence's other amounts; no safe cut ⇒ the sentence is not touched.
+    // Rows = the turn's search results + the passages of the pages it read. See rangeEvidence.ts.
+    const rangeEvRows = [...rangeRows.map(r => r.text), ...(collector?.guardEvidence?.sources ?? []).flatMap(s => s.passages)]
+    const rangeCut = coachRows.length === 0 && rangeEvRows.length > 0
+      ? cutUnbackedRanges(citeBoundRaw, {
+        rows: rangeEvRows,
+        hosts: [...rangeRows.map(r => r.host), ...(collector?.guardEvidence?.sources ?? []).map(s => s.host)],
+        consultative: collector?.consultative === true,
+        lang,
+        looked: gateTools.length > 0,
+        // flag OFF: the No-Fabrication Gate, called as a pure function on the sentence alone, with the evidence it will see below
+        gateDrops: collector?.semanticRanking
+          ? (sentence: string) => noFabricationGate(sentence, {
+            corpus: [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)],
+            userTexts: collector.userTexts ?? [userText],
+            tools: gateTools,
+            conflicts: collector.guardEvidence?.conflicts ?? [],
+            stalePrices: collector.guardEvidence?.stalePrices ?? [],
+            freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
+            agedPrices: agedFramePrices,
+          }, { lang, illustrations: collector?.consultative === true }).removedSentences > 0
+          : undefined,
+      })
+      : null
+    if (rangeCut?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'range_evidence', changes: rangeCut.changes }))
+    const citeBound = rangeCut?.changes.length ? rangeCut.text : citeBoundRaw
+    gt('range_evidence', citeBoundRaw, citeBound)
     // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
     const todayVn = collector?.consultative ? vnToday() : undefined
     const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
@@ -3630,7 +3661,14 @@ export function applyPlaceEnrichmentStreamFilter(
       return r.text
     }
     const shapeFinalProse = (raw: string): string => {
-      if (!(collector?.consultative === true && collector.agentMode)) return dateChecked(raw)
+      if (!(collector?.consultative === true && collector.agentMode)) {
+        // Round 42 round 3 (RANGE-27-33, rule R-C1, Huy 2026-10-13): the coach range step runs on this path too; the operator rule stays flag-on only.
+        const split = coachRows.length > 0 ? splitCoachRanges(raw, coachRows, lang) : null
+        if (split?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: split.changes }))
+        const splitText = split?.changes.length ? split.text : raw
+        gt('coach_fares', raw, splitText)
+        return dateChecked(splitText)
+      }
       const offerChecked = dropUnbackedOfferClaims(raw, {
         hasPriceData: figuresIn(raw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
         hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(raw),
@@ -3892,6 +3930,7 @@ export function applyPlaceEnrichmentStreamFilter(
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
             if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
+            collectSearchRows(res.result, rangeRows)
             // Round 42 round 3: coach rows are read on both flags (PRICE-DATE-01 runs on both); the flag-only steps still check the flag themselves.
             if (toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles

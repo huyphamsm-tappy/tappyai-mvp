@@ -123,12 +123,12 @@ describe('KEPT: variation by vehicle type the rows support (two types, two diffe
     readable(out)
     log('kept_two_types_two_fares', input, out, 'KEPT (giường nằm 450.000đ vs limousine 650.000đ in the rows)')
   })
-  it('English: "Price varies by seat type" stays', async () => {
+  it('English: "Price varies by seat type" stays; the two-row range is written as two named figures (Round 42 vòng 3, R-C2)', async () => {
     const input = 'From 450,000đ to 650,000đ. Price varies by seat type.'
     const out = await final(TYPED_ROWS as never, input, { flag: true, lang: 'en' })
     expect(out).toContain('Price varies by seat type.')
-    expect(out).toContain('450,000đ')
-    expect(out).toContain('650,000đ')
+    expect(out).toMatch(/450[.,]000đ \(price listed on a\.example\)/)
+    expect(out).toMatch(/650[.,]000đ \(price listed on b\.example\)/)
     readable(out)
     log('kept_english_two_types', input, out, 'KEPT')
   })

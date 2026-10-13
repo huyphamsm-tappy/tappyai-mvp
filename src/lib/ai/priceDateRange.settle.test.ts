@@ -122,21 +122,14 @@ const LIVE_RANGE = 'Khoảng 27–33 triệu đồng: shop-b niêm yết 26,99 t
 describe('RANGE-27-33 — a range the model made, one end stated by no source', () => {
   for (const flag of [false, true]) {
     const env = flag ? 'ON' : 'OFF'
-    it(`TODAY flag ${env}: the live sentence — record what the user reads (range, sourced figures)`, async () => {
+    it(`COMMIT 2 flag ${env}: the live sentence — the head clause carrying the range goes, both sourced figures stay (allowlist 2E-8, G1 / G2)`, async () => {
       const out = await settle(QM, macFrames(LIVE_RANGE), flag, { prep: page })
       record('rg_live', { flag, out, has_33: /33 triệu|27–33/.test(out), has_2699: out.includes('26,99'), has_325: out.includes('32,5') })
-      if (flag) {
-        // ON: the range is cut — with the WHOLE sentence, so the two sourced figures go too; a leading space is left behind
-        expect(out).not.toMatch(/27–33|33 triệu/)
-        expect(out).not.toContain('26,99')
-        expect(out).not.toContain('32,5')
-        expect(out.startsWith(' Giá còn tùy tình trạng máy.')).toBe(true)
-      } else {
-        // OFF: the whole sentence, the model's range included, reaches the user unchanged (see the direct gate calls below for why)
-        expect(out.startsWith('Khoảng 27–33 triệu đồng: shop-b niêm yết 26,99 triệu, còn shop-c ghi máy likenew 32,5 triệu.')).toBe(true)
-      }
+      expect(out.startsWith('Shop-b niêm yết 26,99 triệu, còn shop-c ghi máy likenew 32,5 triệu. Giá còn tùy tình trạng máy.')).toBe(true)
+      expect(out).not.toMatch(/27–33|33 triệu/)
+      expect(out).not.toMatch(/Mình chưa xác minh được (?:số này|giá hiện tại)/)
     })
-    it.fails(`PROPOSED flag ${env}: the unsourced range is still gone AND the two sourced figures (26,99 triệu at shop-b, 32,5 triệu at shop-c) still reach the user`, async () => {
+    it(`PROPOSED flag ${env}: the unsourced range is still gone AND the two sourced figures (26,99 triệu at shop-b, 32,5 triệu at shop-c) still reach the user`, async () => {
       const out = await settle(QM, macFrames(LIVE_RANGE), flag, { prep: page })
       expect(out).not.toMatch(/27–33|33 triệu/)
       expect(out).toContain('26,99 triệu')

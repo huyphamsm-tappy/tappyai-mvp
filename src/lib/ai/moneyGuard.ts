@@ -487,7 +487,7 @@ export function lastClauseOf(s: string): string {
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
  */
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
+export function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)

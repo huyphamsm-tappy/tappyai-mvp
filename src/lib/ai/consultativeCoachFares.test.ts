@@ -60,11 +60,13 @@ describe('shapeCoachReply', () => {
     const more = toRows([...ROWS, { title: 'Nhà xe Thành Bưởi', link: 'https://example.vn/thanh-buoi', snippet: 'Vé xe Thành Bưởi đi Quy Nhơn.' }])
     expect(shapeCoachReply('Giá từ 410.000đ, tùy nhà xe.', more, 'vi').text).toBe('Giá từ 410.000đ, tùy nhà xe.')
   })
-  it('a range one source states, or whose ends are the same kind, is left alone', () => {
+  it('a range one source states is left alone; a range whose ends come from two different rows is split, even when both ends are the same kind', () => {
     const one = [{ host: 'a.example', url: 'https://a.example/', text: 'Vé xe từ 300.000 - 450.000đ tùy chặng' }]
     expect(shapeCoachReply('Giá 300.000–450.000đ.', one, 'vi').changes).not.toContain('mixed_range')
     const same = [{ host: 'a.example', url: 'https://a.example/', text: 'Vé xe giá 300.000đ' }, { host: 'b.example', url: 'https://b.example/', text: 'Vé xe giá 450.000đ' }]
-    expect(shapeCoachReply('Giá 300.000–450.000đ.', same, 'vi').changes).not.toContain('mixed_range')
+    const r = shapeCoachReply('Giá 300.000–450.000đ.', same, 'vi')
+    expect(r.changes).toContain('mixed_range')
+    expect(r.text).toBe('Giá 300.000đ (giá nêu ở a.example) và 450.000đ (giá nêu ở b.example).')
   })
   it('"từ A đến B" is the same gluing as "A–B"', () => {
     const r = shapeCoachReply('Giá từ 350.000đ đến 410.000đ.', toRows(ROWS), 'vi')
@@ -127,9 +129,10 @@ describe('settle step — coach reply (flag on)', () => {
     expect(out).toContain('(giá ưu đãi nêu trong bài của futabus.vn, không ghi ngày)')
     expect(out).toContain('(giá "từ" ở vexere.com, chưa theo ngày)')
   })
-  it('CONTROL — flag off: the reply is left exactly as the model wrote it', async () => {
+  it('flag off (Round 42 vòng 3, R-C1): the glued range is written as two named figures too; "tùy nhà xe" stays (the operator rule is flag-on only)', async () => {
     const out = await run(LIVE, false)
     expect(out).toMatch(/tùy nhà xe/)
-    expect(out).toContain('350.000–410.000')
+    expect(out).not.toContain('350.000–410.000')
+    expect(out).toContain('350.000đ/chiều (giá ưu đãi nêu trong bài của futabus.vn, không ghi ngày) và 410.000đ/chiều (giá "từ" ở vexere.com, chưa theo ngày)')
   })
 })
