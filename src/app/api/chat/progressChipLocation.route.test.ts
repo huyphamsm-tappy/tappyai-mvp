@@ -65,7 +65,7 @@ const bus = [
   { text: '', toolCalls: [{ toolCallId: 'c1', toolName: 'get_transport_options', args: { origin: 'TP.HCM', destination: 'Quy Nhơn', mode: 'intercity', date: '2026-10-24' } }] },
   { text: 'Vé xe khách TP.HCM–Quy Nhơn mình chưa tìm được giá đúng ngày.', toolCalls: [] },
 ]
-async function turn(userText: string, steps: typeof bus, userLocation: unknown, flag: '0' | '1') {
+async function turn(userText: string, steps: Array<{ text: string; toolCalls: Array<{ toolCallId: string; toolName: string; args: Record<string, unknown> }> }>, userLocation: unknown, flag: '0' | '1') {
   if (flag === '1') process.env.CONSULTATIVE_IN_AGENT = '1'; else delete process.env.CONSULTATIVE_IN_AGENT
   h.state.steps = JSON.parse(JSON.stringify(steps))
   h.state.maps = []
