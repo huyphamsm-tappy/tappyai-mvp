@@ -2,9 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { AI_DATA_CONSENT_VERSION } from '@/lib/ai/consent/aiDataConsent'
 
 // Group suggestions put each member's name, budget, food preferences, diet and area into the model prompt. A member's
-// details reach the model only if that member's account is ALLOWED: web-only accounts and guests (no account) keep the
-// existing behaviour; an account that has used iOS must have agreed to the current disclosure. A failed consent read
-// describes no account member (fail closed); guests are not accounts and are not affected.
+// details reach the model only if that member has an account that is ALLOWED: web-only accounts keep the existing
+// behaviour; an account that has used iOS must have agreed to the current disclosure. A guest (no account) is never
+// described. A failed consent read describes no account member (fail closed).
 
 const h = vi.hoisted(() => ({
   creatorId: 'creator',
@@ -71,7 +71,7 @@ describe('group suggestions — each member’s details follow that member’s a
     ]
   })
 
-  it('an agreeing iOS member and a guest are described; a refusing iOS member never reaches the model', async () => {
+  it('an agreeing iOS member is described; a refusing iOS member and a guest never reach the model', async () => {
     const res = await suggest()
     expect(res.status).toBe(200)
     expect(h.generate).toHaveBeenCalledTimes(1)
@@ -79,10 +79,10 @@ describe('group suggestions — each member’s details follow that member’s a
     expect(prompt).toContain('Linh_CREATOR')
     expect(prompt).toContain('111111')
     for (const secret of ['Minh_OTHER', '777777', 'buncha_OTHER', 'hai_san_OTHER', 'Hanoi_OTHER']) expect(prompt).not.toContain(secret)
-    // A guest is not an iOS account: no consent record, described as before.
-    expect(prompt).toContain('Hoa_GUEST')
+    // A guest has no account, so no consent can be recorded for it: never described.
+    for (const secret of ['Hoa_GUEST', '888888', 'lau_GUEST', 'Danang_GUEST']) expect(prompt).not.toContain(secret)
     expect(prompt).toContain('có 3 người')
-    expect(prompt).toContain('1 thành viên khác chưa chia sẻ')
+    expect(prompt).toContain('2 thành viên khác chưa chia sẻ')
   })
 
   it('an iOS member who has not answered the sheet is not described (never assumed agreed)', async () => {
@@ -114,20 +114,20 @@ describe('group suggestions — each member’s details follow that member’s a
     const prompt = h.generate.mock.calls[0][0].prompt
     expect(prompt).toContain('Linh_CREATOR')
     expect(prompt).toContain('Minh_OTHER')
-    expect(prompt).toContain('Hoa_GUEST')
-    expect(prompt).not.toContain('chưa chia sẻ')
+    // The guest is still never described; it is counted.
+    expect(prompt).not.toContain('Hoa_GUEST')
+    expect(prompt).toContain('1 thành viên khác chưa chia sẻ')
   })
 
-  it('if the consent read fails, no account member is described (fail closed) — even the creator; a guest is unaffected', async () => {
+  it('if the consent read fails, no account member is described (fail closed) — even the creator; a guest is still never described', async () => {
     h.consentThrows = true
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const res = await suggest()
     spy.mockRestore()
     expect(res.status).toBe(200)
     const prompt = h.generate.mock.calls[0][0].prompt
-    for (const secret of ['Linh_CREATOR', '111111', 'Minh_OTHER', '777777']) expect(prompt).not.toContain(secret)
-    expect(prompt).toContain('Hoa_GUEST')
-    expect(prompt).toContain('2 thành viên khác chưa chia sẻ')
+    for (const secret of ['Linh_CREATOR', '111111', 'Minh_OTHER', '777777', 'Hoa_GUEST', '888888']) expect(prompt).not.toContain(secret)
+    expect(prompt).toContain('3 thành viên khác chưa chia sẻ')
   })
 
   it('a non-owner still gets 403 and no model call', async () => {

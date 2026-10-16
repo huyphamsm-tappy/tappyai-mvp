@@ -42,14 +42,14 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     return NextResponse.json({ error: 'no_members', message: serverMessage('group.noMembers', requestLocale(req)) }, { status: 400 })
   }
 
-  // A member who uses an account on iOS is described only if THAT member agreed to the current AI disclosure (their own
-  // record; the creator's agreement does not cover anyone else). Web-only accounts and guests (no account, user_id NULL)
-  // have no iOS record and are described as before. An iOS member who has not agreed is counted but not described.
+  // Only members with an account are described, and only if the account may send its details to the AI: a web-only
+  // account, or an iOS account that agreed to the current disclosure (THAT member's own record; the creator's agreement
+  // does not cover anyone else). A guest (no account, user_id NULL) is never described. Every other member is counted.
   // The lookup uses the admin client: the creator's own scope cannot read other people's consent rows. If the lookup
   // fails, no account is treated as allowed (fail closed).
   const admin = createAdminClient()
   const agreed = await loadAllowedUserIds(admin, members.map(m => m.user_id as string | null).filter((id): id is string => !!id))
-  const described = members.filter(m => !m.user_id || agreed.has(m.user_id as string))
+  const described = members.filter(m => m.user_id && agreed.has(m.user_id as string))
   const undescribed = members.length - described.length
 
   const memberLines = described.map(m => `- ${m.name}: ngân sách ${m.budget}, thích ${m.food_preferences || 'không rõ'}, kiêng ${m.dietary_restrictions || 'không có'}, khu vực ${m.area}`)
