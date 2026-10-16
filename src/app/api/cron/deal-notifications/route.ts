@@ -5,6 +5,8 @@ import { getAllSubscribedUserIds } from '@/lib/notifications/send'
 import { emitNotification } from '@/lib/notifications/emit'
 import { getActiveDeals } from '@/lib/deals/partnerDeals'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
+import { loadAllowedUserIds } from '@/lib/ai/consent/aiDataConsent'
+import { DEAL_NUDGE_TITLE } from '@/lib/i18n/backgroundNotices'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -25,12 +27,16 @@ export async function GET(req: Request) {
       .map((d, i) => `${i + 1}. [${d.category}] ${d.title} — ${d.description ?? ''}`)
       .join('\n')
 
-    // Batch-fetch preferences for all subscribed users
+    // Preferences go to the AI only for users who agreed to it; the others get the deal itself, with no model.
     const supabase = createAdminClient()
-    const { data: prefs } = await supabase
-      .from('user_preferences')
-      .select('user_id, preferences, cuisine_likes')
-      .in('user_id', userIds)
+    const allowed = await loadAllowedUserIds(supabase, userIds)
+    const aiUserIds = userIds.filter(uid => allowed.has(uid))
+    const { data: prefs } = aiUserIds.length
+      ? await supabase
+          .from('user_preferences')
+          .select('user_id, preferences, cuisine_likes')
+          .in('user_id', aiUserIds)
+      : { data: [] }
 
     const prefByUser = new Map<string, string[]>()
     for (const p of prefs ?? []) {
@@ -43,6 +49,18 @@ export async function GET(req: Request) {
 
     const results = await Promise.allSettled(
       userIds.map(async (uid) => {
+        if (!allowed.has(uid)) {
+          // No AI: the first active deal as it is written, without the user's preferences.
+          await emitNotification({
+            userId: uid,
+            type: 'deal',
+            category: 'deal',
+            title: DEAL_NUDGE_TITLE,
+            body: `${deals[0]?.title} — ${deals[0]?.description ?? ''}`,
+            entityUrl: '/deals',
+          })
+          return
+        }
         const tags = prefByUser.get(uid) ?? []
         const prefStr = tags.length ? tags.join(', ') : 'mua sắm tổng quát'
 

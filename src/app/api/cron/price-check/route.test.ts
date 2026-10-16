@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { AI_DATA_CONSENT_VERSION } from '@/lib/ai/consent/aiDataConsent'
 
 // ── STEP 12 — Price Watch: current price vs target ─────────────────────────
 //
@@ -22,18 +23,28 @@ const h = vi.hoisted(() => {
     /** `profiles.language` rows for the watch owners in this run. */
     profiles: [] as Array<{ id: string; language: string | null }>,
     profilesThrow: false,
+    /** `ai_data_consent` rows (AI data consent) for the watch owners in this run. */
+    consent: [] as Array<Record<string, unknown>>,
   }
 
   const builder: Record<string, unknown> = {}
-  let mode: 'select' | 'update' | 'profiles' = 'select'
-  builder.from = (t: string) => { if (t === 'profiles') mode = 'profiles'; return builder }
-  builder.select = () => { if (mode !== 'profiles') mode = 'select'; return builder }
+  let mode: 'select' | 'update' | 'profiles' | 'consent' = 'select'
+  builder.from = (t: string) => {
+    if (t === 'profiles') mode = 'profiles'
+    else if (t === 'ai_data_consent') mode = 'consent'
+    return builder
+  }
+  builder.select = () => { if (mode !== 'profiles' && mode !== 'consent') mode = 'select'; return builder }
   builder.update = (row: Record<string, unknown>) => { mode = 'update'; state.updates.push(row); return builder }
   builder.eq = () => builder
   builder.in = () => builder
   builder.order = () => builder
   builder.limit = () => builder
   builder.then = (res: (v: unknown) => unknown, rej?: (e: unknown) => unknown) => {
+    if (mode === 'consent') {
+      mode = 'select'
+      return Promise.resolve({ data: state.consent, error: null }).then(res, rej)
+    }
     if (mode === 'profiles') {
       mode = 'select'
       // Must route through then(res, rej) — returning a bare rejected promise
@@ -83,6 +94,9 @@ beforeEach(() => {
   h.state.extracted = 'PRICE_VND: 4200000'
   h.state.profiles = []
   h.state.profilesThrow = false
+  // The owners of these tests have agreed to AI processing; the non-consent cases override this below.
+  // Default: the owner used iOS and agreed to the current disclosure. The tests below override it per account state.
+  h.state.consent = [{ user_id: 'u1', ios_used: true, granted: true, decision: 'agreed', version: AI_DATA_CONSENT_VERSION }]
   vi.stubGlobal('fetch', vi.fn(async () => new Response(
     JSON.stringify({ organic: h.state.serperOrganic }),
     { status: 200, headers: { 'Content-Type': 'application/json' } },
@@ -179,6 +193,54 @@ describe('PW-08 — current price vs target', () => {
 
 // ── STEP 13 — the push goes out in the user's stored language ─────────────
 //
+// AI data consent: without the owner's agreement a watch is not searched, no price is read and no alert is sent.
+// Nothing about the product leaves the server, and no alert is ever based on a guessed price.
+describe('price-check — AI data consent', () => {
+  it('a user who has not agreed: no search, no model, no alert, but the check time is recorded', async () => {
+    h.state.consent = [{ user_id: 'u1', ios_used: true, granted: false, decision: 'refused', version: AI_DATA_CONSENT_VERSION }]
+    h.state.watches = [watch({ target_price: 4_500_000, product_name: 'AirPods Pro 2' })]
+    const res = await GET(req('Bearer test-cron-secret'))
+    expect(res.status).toBe(200)
+    expect(h.generate).not.toHaveBeenCalled()
+    expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled()
+    expect(h.state.notifications).toHaveLength(0)
+    expect(h.state.updates.some(u => typeof u.last_checked === 'string')).toBe(true)
+    expect(h.state.updates.some(u => u.status === 'triggered' || 'current_price' in u)).toBe(false)
+  })
+
+  it('an iOS account that has not answered the sheet is blocked: no search, no model, no alert', async () => {
+    h.state.consent = [{ user_id: 'u1', ios_used: true, granted: null, decision: null, version: null }]
+    h.state.watches = [watch({ target_price: 4_500_000 })]
+    await GET(req('Bearer test-cron-secret'))
+    expect(h.generate).not.toHaveBeenCalled()
+    expect(vi.mocked(globalThis.fetch)).not.toHaveBeenCalled()
+    expect(h.state.notifications).toHaveLength(0)
+  })
+
+  it('a web-only account (no iOS record) keeps its price check exactly as before', async () => {
+    h.state.consent = []
+    h.state.watches = [watch({ target_price: 3_000_000 })]
+    await GET(req('Bearer test-cron-secret'))
+    expect(h.generate).toHaveBeenCalledTimes(1)
+    expect(h.state.notifications).toHaveLength(0) // 4.200.000 is above the 3.000.000 target: the model's answer decides
+  })
+
+  it('a withdrawn iOS account is blocked again at once', async () => {
+    h.state.consent = [{ user_id: 'u1', ios_used: true, granted: false, decision: 'withdrawn', version: AI_DATA_CONSENT_VERSION }]
+    h.state.watches = [watch({ target_price: 4_500_000 })]
+    await GET(req('Bearer test-cron-secret'))
+    expect(h.generate).not.toHaveBeenCalled()
+  })
+
+  it('a user who has agreed: the model reads the price, as before', async () => {
+    h.state.consent = [{ user_id: 'u1', ios_used: true, granted: true, decision: 'agreed', version: AI_DATA_CONSENT_VERSION }]
+    h.state.watches = [watch({ target_price: 4_500_000 })]
+    await GET(req('Bearer test-cron-secret'))
+    expect(h.generate).toHaveBeenCalledTimes(1)
+    expect(h.state.notifications).toHaveLength(1)
+  })
+})
+
 // Source: `profiles.language` (add_user_language_preference.sql), batch-read once
 // per cron run. NULL means "not set yet" and resolves to Vietnamese, so every
 // existing user keeps exactly today's push.
@@ -262,6 +324,10 @@ describe('the user-facing / internal boundary is deliberate', () => {
 describe('mixed-language batches are resolved per user', () => {
   it('two users with different preferences each get their own language', async () => {
     h.state.profiles = [{ id: 'u1', language: 'vi' }, { id: 'u2', language: 'en' }]
+    h.state.consent = [
+      { user_id: 'u1', ios_used: true, granted: true, decision: 'agreed', version: AI_DATA_CONSENT_VERSION },
+      { user_id: 'u2', ios_used: true, granted: true, decision: 'agreed', version: AI_DATA_CONSENT_VERSION },
+    ]
     h.state.watches = [
       watch({ id: 'w1', user_id: 'u1', target_price: 4_500_000 }),
       watch({ id: 'w2', user_id: 'u2', target_price: 4_500_000 }),

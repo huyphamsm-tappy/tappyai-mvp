@@ -7,6 +7,8 @@ import { emitNotification } from '@/lib/notifications/emit'
 import { getWeather } from '@/lib/ai/tools/weather'
 import { matchWeatherCityInText } from '@/lib/ai/tools/cacheKeys'
 import { isAuthorizedCronRequest } from '@/lib/security/cronAuth'
+import { loadAllowedUserIds } from '@/lib/ai/consent/aiDataConsent'
+import { MORNING_NUDGE_BODY, morningNudgeTitle } from '@/lib/i18n/backgroundNotices'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -80,15 +82,20 @@ export async function GET(req: Request) {
 
     const { dayName, isWeekend, isFriday } = getVietnamContext()
 
-    // Fetch preferences + memory for all subscribed users in parallel
+    // Personal data (preferences, memory, location) goes to the AI only for users who agreed to it. Everyone else
+    // gets the same notification without personal content (see the fallback below).
     const supabase = createAdminClient()
-    const [{ data: prefs }, memories] = await Promise.all([
-      supabase
-        .from('user_preferences')
-        .select('user_id, preferences, cuisine_likes')
-        .in('user_id', userIds),
-      getMemoryBatch(userIds, supabase),
-    ])
+    const allowed = await loadAllowedUserIds(supabase, userIds)
+    const aiUserIds = userIds.filter(uid => allowed.has(uid))
+
+    // Fetch preferences + memory for the consenting users only
+    const prefs = aiUserIds.length
+      ? (await supabase
+          .from('user_preferences')
+          .select('user_id, preferences, cuisine_likes')
+          .in('user_id', aiUserIds)).data
+      : []
+    const memories = aiUserIds.length ? await getMemoryBatch(aiUserIds, supabase) : new Map()
 
     const prefByUser = new Map<string, string[]>()
     for (const p of (prefs ?? []) as UserPrefRow[]) {
@@ -123,6 +130,18 @@ export async function GET(req: Request) {
 
     const results = await Promise.allSettled(
       userIds.map(async (uid) => {
+        if (!allowed.has(uid)) {
+          // No AI, no personal data: the same daily nudge with no location, weather or preferences.
+          await emitNotification({
+            userId: uid,
+            type: 'morning_brief',
+            category: 'explore',
+            title: morningNudgeTitle({ isFriday, isWeekend }),
+            body: MORNING_NUDGE_BODY,
+            entityUrl: '/',
+          })
+          return
+        }
         const tags = prefByUser.get(uid) ?? []
         const location = locationByUser.get(uid) || 'TP.HCM'
         const weather = weatherByLocation.get(location) || ''

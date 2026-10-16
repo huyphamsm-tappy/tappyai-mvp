@@ -40,6 +40,11 @@ policy_of() {
       echo VERIFY-ONLY ;;
     20260904_group_read_boundary.sql)
       echo AFTER-DEPLOY ;;
+    # AI-consent table for POST /api/ai-consent. Additive, and the code on production today never reads it. It goes
+    # BEFORE the web deploy: the new AI-route guard treats a consent read error as "not allowed", and a missing table
+    # may come back as PGRST205 (not 42P01), which would refuse every signed-in account until the table exists.
+    20261018_ai_data_consent.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\
