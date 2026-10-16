@@ -8,7 +8,7 @@ struct GroupDiningView: View {
 
     init(deps: AppDependencies) {
         _vm = AppStateObject(wrappedValue: GroupDiningViewModel(
-            service: GroupService(api: deps.api),
+            service: GroupService(api: deps.api, consent: deps.aiConsent),
             session: deps.session
         ))
     }

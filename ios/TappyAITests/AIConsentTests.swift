@@ -153,6 +153,90 @@ final class AIConsentTests: XCTestCase {
         XCTAssertEqual(vm.inputText, "Quan an ngon")
         XCTAssertTrue(vm.messages.isEmpty)
     }
+
+    // MARK: Disclosure v2 — every AI route the app uses is gated
+
+    func testExploreAndGroupSuggestAreGatedToo() {
+        let s = store()
+        XCTAssertTrue(s.blocks(path: "/api/explore/process"))
+        XCTAssertTrue(s.blocks(path: "/api/group/0b1c2d3e-4f50-6789-abcd-ef0123456789/suggest"))
+        // Not AI: other group routes and a route that only shares the prefix.
+        XCTAssertFalse(s.blocks(path: "/api/group/0b1c/join"))
+        XCTAssertFalse(s.blocks(path: "/api/group"))
+        XCTAssertFalse(s.blocks(path: "/api/group/0b1c"))
+        XCTAssertFalse(s.blocks(path: "/api/explore/oembed"))
+    }
+
+    func testEveryDecisionIsQueuedForTheServer() {
+        let s = store()
+        XCTAssertFalse(s.isPendingSync)
+        s.grant()
+        XCTAssertTrue(s.isPendingSync, "agreeing is sent to the server")
+        s.clearPendingSync()
+        s.withdraw()
+        XCTAssertTrue(s.isPendingSync, "withdrawing is sent to the server too")
+        XCTAssertFalse(s.currentDecision)
+    }
+
+    func testTheDisclosureVersionIsTwo() {
+        // Must equal the server's AI_DATA_CONSENT_VERSION (src/lib/ai/consent/aiDataConsent.ts).
+        XCTAssertEqual(AIConsentStore.disclosureVersion, 2)
+    }
+
+    func testGroupSuggestSendsNothingBeforeConsent() async {
+        let c = AIConsentCoordinator(store: store())
+        let api = MockAPIClient()
+        let service = GroupService(api: api, consent: c)
+        let task = Task { try await service.requestSuggestion(id: "g1") }
+        while !c.isPresenting { await Task.yield() }
+        c.later()
+        do { _ = try await task.value; XCTFail("must not suggest") } catch {
+            XCTAssertEqual(error as? AppError, AIConsentStore.blockedError)
+        }
+        XCTAssertTrue(api.sentEndpoints.isEmpty, "no member's details were sent")
+    }
+
+    func testExploreSendsNothingBeforeConsent() async {
+        let c = AIConsentCoordinator(store: store())
+        let api = MockAPIClient()
+        let service = CreateReviewService(api: api, consent: c)
+        let task = Task { try await service.processContent(thumbnailUrl: nil, caption: "pho ngon") }
+        while !c.isPresenting { await Task.yield() }
+        c.later()
+        do { _ = try await task.value; XCTFail("must not analyse") } catch {
+            XCTAssertEqual(error as? AppError, AIConsentStore.blockedError)
+        }
+        XCTAssertTrue(api.sentEndpoints.isEmpty)
+    }
+
+    func testAReviewWithAPhotoSendsNothingBeforeConsent() async {
+        let c = AIConsentCoordinator(store: store())
+        let api = MockAPIClient()
+        let service = CreateReviewService(api: api, consent: c)
+        let payload = CreateReviewPayload(
+            placeId: "p1", placeName: "Quan", placeAddress: "", rating: 5, body: "ngon",
+            photos: ["https://example.com/a.jpg"], contentType: "photo", mediaUrl: nil, thumbnail: nil,
+            sourceType: nil, sourceUrl: nil, hashtags: nil, music: nil, duration: nil)
+        let task = Task { try await service.createReview(payload: payload) }
+        while !c.isPresenting { await Task.yield() }
+        c.later()
+        do { _ = try await task.value; XCTFail("a photo must not leave before consent") } catch {
+            XCTAssertEqual(error as? AppError, AIConsentStore.blockedError)
+        }
+        XCTAssertTrue(api.sentEndpoints.isEmpty)
+    }
+
+    func testATextOnlyReviewIsNotHeldForConsent() async {
+        let c = AIConsentCoordinator(store: store())
+        let api = MockAPIClient()
+        let service = CreateReviewService(api: api, consent: c)
+        let payload = CreateReviewPayload(
+            placeId: "p1", placeName: "Quan", placeAddress: "", rating: 5, body: "ngon",
+            photos: nil, contentType: "text", mediaUrl: nil, thumbnail: nil,
+            sourceType: nil, sourceUrl: nil, hashtags: nil, music: nil, duration: nil)
+        _ = try? await service.createReview(payload: payload)
+        XCTAssertFalse(c.isPresenting, "a text-only review sends nothing to the model and asks nothing")
+    }
 }
 
 /// A streaming client that fails the test if the chat ever tries to stream.

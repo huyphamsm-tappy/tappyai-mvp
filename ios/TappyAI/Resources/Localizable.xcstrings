@@ -1084,8 +1084,8 @@
     },
     "ai.consent.what.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "The messages you type or say. When a feature needs it: your approximate location, a photo you choose to scan, or text you want translated." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bạn gõ hoặc nói. Khi tính năng cần đến: vị trí gần đúng, ảnh bạn chọn để quét, hoặc đoạn văn bạn muốn dịch." } }
+        "en": { "stringUnit": { "state": "translated", "value": "The messages you type or say, and what the assistant looks up for you (search results, places). Your profile name, city, age or age group, and gender, if you set them. Your saved preferences and the assistant's memory of you, which the AI model also updates from your chats. Your location (coordinates), only when you allow location sharing. Photos and text you send to Scan, Translate and Viết content. The photo and caption of a review you publish, checked for safety before publication when that check runs. For a group suggestion: the name, budget, food preferences, dietary restrictions and area of each group member who has agreed to this themselves; other members are only counted. With your agreement, background messages and price alerts." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bạn gõ hoặc nói, và những gì trợ lý tra cứu cho bạn (kết quả tìm kiếm, địa điểm). Tên, thành phố, tuổi hoặc nhóm tuổi và giới tính trong hồ sơ, nếu bạn đã điền. Sở thích đã lưu và bộ nhớ trợ lý nhớ về bạn (mô hình AI cũng cập nhật bộ nhớ này từ các cuộc trò chuyện). Vị trí (tọa độ), chỉ khi bạn cho phép chia sẻ vị trí. Ảnh và văn bản bạn gửi cho Scan, Dịch và Viết content. Ảnh và chú thích của bài review bạn đăng, được kiểm tra an toàn trước khi đăng khi bước kiểm tra đó chạy. Với gợi ý nhóm: tên, ngân sách, sở thích ăn uống, kiêng khem và khu vực của từng thành viên đã tự đồng ý; thành viên khác chỉ được tính là số người. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá." } }
       }
     },
     "ai.consent.who.title": {
@@ -1096,8 +1096,8 @@
     },
     "ai.consent.who.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Tappy's AI provider (OpenAI), through Tappy's servers." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nhà cung cấp AI của Tappy (OpenAI), thông qua máy chủ của Tappy." } }
+        "en": { "stringUnit": { "state": "translated", "value": "OpenAI (OpenAI OpCo, LLC), an AI provider, through TappyAI's servers. Search and maps (Google, Serper) receive search terms only." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "OpenAI (OpenAI OpCo, LLC), nhà cung cấp AI, thông qua máy chủ của TappyAI. Tìm kiếm và bản đồ (Google, Serper) chỉ nhận từ khóa tìm kiếm." } }
       }
     },
     "ai.consent.why.title": {
@@ -1108,8 +1108,8 @@
     },
     "ai.consent.why.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Only to write the answer, translation or content you asked for." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chỉ để tạo câu trả lời, bản dịch hoặc nội dung bạn yêu cầu." } }
+        "en": { "stringUnit": { "state": "translated", "value": "To answer you, translate, scan, write the content you asked for, check the safety of a review's photo before it is published, and suggest places for a group. With your agreement: morning, weekly and deal messages and price alerts." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Để trả lời bạn, dịch, quét, viết nội dung bạn yêu cầu, kiểm tra an toàn ảnh của bài review trước khi đăng, và gợi ý địa điểm cho nhóm. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá." } }
       }
     },
     "ai.consent.how.title": {
@@ -1120,8 +1120,8 @@
     },
     "ai.consent.how.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "It travels over an encrypted connection. How it is kept and deleted is described in the Privacy Policy." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung đi qua kết nối mã hoá. Cách lưu giữ và xoá được nêu trong Chính sách quyền riêng tư." } }
+        "en": { "stringUnit": { "state": "translated", "value": "Under OpenAI's terms, content sent through the API is used only to provide the service, comply with law, enforce its policies and prevent abuse, and is not used to train its models unless we opt in. OpenAI keeps abuse-monitoring logs for up to 30 days by default, unless the law requires longer. OpenAI must keep the data confidential, protect it with security measures, notify us of a personal data breach without undue delay, and delete it at our instruction when the contract ends. We cannot promise that OpenAI keeps no copy. The Privacy Policy has the details." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Theo điều khoản của OpenAI, nội dung gửi qua API chỉ được dùng để cung cấp dịch vụ, tuân thủ pháp luật, thực thi chính sách và ngăn lạm dụng, và không dùng để huấn luyện mô hình trừ khi chúng tôi chọn chia sẻ. OpenAI giữ nhật ký giám sát lạm dụng tối đa 30 ngày theo mặc định, trừ khi pháp luật yêu cầu lâu hơn. OpenAI phải giữ bí mật dữ liệu, bảo vệ bằng biện pháp bảo mật, thông báo vi phạm dữ liệu cá nhân không chậm trễ quá mức, và xóa theo chỉ dẫn của chúng tôi khi hợp đồng chấm dứt. Chúng tôi không thể cam kết OpenAI không giữ bản sao nào. Chi tiết nằm trong Chính sách quyền riêng tư." } }
       }
     },
     "ai.consent.later.title": {
@@ -1132,8 +1132,8 @@
     },
     "ai.consent.later.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Choose Not now and nothing is sent. Parts that need no AI still work, like Deals, Explore and exchange rates. You can change your mind in Settings → Share data with AI." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chọn «Để sau»: không có gì được gửi đi. Các phần không cần AI vẫn dùng được, như Ưu đãi, Khám phá, tỷ giá. Bạn đổi ý trong Cài đặt → «Chia sẻ dữ liệu với AI»." } }
+        "en": { "stringUnit": { "state": "translated", "value": "Choose Not now and nothing is sent. Parts that need no AI still work, like Deals, Explore and exchange rates. You can change your mind in Settings → Share data with AI. Once our servers receive the change, background messages and price alerts stop using your data." } },
+        "vi": { "stringUnit": { "state": "translated", "value": "Chọn «Để sau»: không có gì được gửi đi. Các phần không cần AI vẫn dùng được, như Ưu đãi, Khám phá, tỷ giá. Bạn đổi ý trong Cài đặt → «Chia sẻ dữ liệu với AI». Sau khi máy chủ nhận được thay đổi này, tin nhắn tự động và thông báo giá sẽ ngừng dùng dữ liệu của bạn." } }
       }
     },
     "ai.consent.privacy": {

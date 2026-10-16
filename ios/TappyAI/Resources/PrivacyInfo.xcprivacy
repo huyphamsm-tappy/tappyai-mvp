@@ -171,6 +171,21 @@
             </array>
         </dict>
 
+        <!-- Search history: search terms the assistant and the places search send to Google / Serper (and to the AI
+             model, when the person has agreed). Linked to the account; app functionality only. -->
+        <dict>
+            <key>NSPrivacyCollectedDataType</key>
+            <string>NSPrivacyCollectedDataTypeSearchHistory</string>
+            <key>NSPrivacyCollectedDataTypeLinked</key>
+            <true/>
+            <key>NSPrivacyCollectedDataTypeTracking</key>
+            <false/>
+            <key>NSPrivacyCollectedDataTypePurposes</key>
+            <array>
+                <string>NSPrivacyCollectedDataTypePurposeAppFunctionality</string>
+            </array>
+        </dict>
+
         <!-- Coarse location: the same nearby-places context; kept alongside precise. -->
         <dict>
             <key>NSPrivacyCollectedDataType</key>

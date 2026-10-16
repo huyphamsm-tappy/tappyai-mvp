@@ -11,7 +11,7 @@ struct GroupDetailView: View {
     init(deps: AppDependencies, groupId: String) {
         _vm = AppStateObject(wrappedValue: GroupDetailViewModel(
             groupId: groupId,
-            service: GroupService(api: deps.api),
+            service: GroupService(api: deps.api, consent: deps.aiConsent),
             session: deps.session
         ))
     }

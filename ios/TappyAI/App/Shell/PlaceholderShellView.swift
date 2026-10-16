@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 /// The application shell — the real navigation architecture (ADR-002): a 5-tab `TabView` with a
 /// `NavigationStack` per tab, driven by `AppRouter`. Future feature roots attach here.
@@ -67,6 +68,14 @@ struct PlaceholderShellView: View {
             }
         }
         .modifier(AIConsentSheet(consent: deps.aiConsent))
+        // Sends any AI-consent decision the server has not accepted yet (after sign-in, or after a failed send), and each
+        // new decision as it is made.
+        .task(id: session.state.isAuthenticated) {
+            await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated)
+        }
+        .onReceive(NotificationCenter.default.publisher(for: AIConsentStore.didChange)) { _ in
+            Task { await AIConsentSync.flush(api: deps.api, signedIn: session.state.isAuthenticated) }
+        }
         .fullScreenCover(isPresented: $router.showLogin) {
             AuthFlowView(repo: deps.authRepository, config: deps.configService) { router.loginFinished(signedIn: session.state.isAuthenticated) }
         }

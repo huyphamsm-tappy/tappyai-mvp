@@ -10,9 +10,11 @@ import Foundation
 /// a real account before offering the controls, and the server refuses regardless.
 struct GroupService: Sendable {
     private let api: APIClient
+    private let consent: AIConsentCoordinator?
 
-    init(api: APIClient) {
+    init(api: APIClient, consent: AIConsentCoordinator? = nil) {
         self.api = api
+        self.consent = consent
     }
 
     /// `POST /api/group` — create a room.
@@ -71,6 +73,9 @@ struct GroupService: Sendable {
     /// longer than the client default, and a client that gives up first bills for a suggestion
     /// nobody sees.
     func requestSuggestion(id: String) async throws -> GroupSuggestionResponse {
+        // App Review 5.1.2(i): the model reads the details of every member who has agreed to it themselves; the server
+        // omits the others. The creator still has to agree to their own details being sent.
+        if let consent, !(await consent.ensure()) { throw AIConsentStore.blockedError }
         let endpoint = Endpoint(
             path: "/api/group/\(id)/suggest",
             method: .post,

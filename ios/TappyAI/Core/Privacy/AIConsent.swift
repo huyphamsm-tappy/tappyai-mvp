@@ -8,11 +8,23 @@ import Foundation
 final class AIConsentStore: @unchecked Sendable {
     static let shared = AIConsentStore()
 
-    /// The routes that carry the person's content to the AI provider.
-    static let aiPaths = ["/api/chat", "/api/translate", "/api/scan", "/api/viet-content", "/api/scam-shield/analyze"]
+    /// Posted after every decision (agree or withdraw). The shell listens and sends the decision to the server.
+    static let didChange = Notification.Name("ai.consent.didChange")
+
+    /// The disclosure this build asks people to agree to. Bump it whenever the text or the data changes: everyone
+    /// who agreed to an older version is asked again (the key below changes with it). Must equal the server's
+    /// `AI_DATA_CONSENT_VERSION`. 2 = review photos, group members' own agreement, precise location, search results,
+    /// profile name/city/age/gender, OpenAI contract terms.
+    static let disclosureVersion = 2
+
+    /// The routes that carry the person's content to the AI provider. `/api/group/{id}/suggest` is matched by pattern
+    /// (see `isAIPath`), because its path contains the group id.
+    static let aiPaths = ["/api/chat", "/api/translate", "/api/scan", "/api/viet-content", "/api/scam-shield/analyze",
+                          "/api/explore/process"]
 
     private let defaults: UserDefaults
-    private let key = "ai.consent.v1"
+    private let key = "ai.consent.v2"
+    private let pendingKey = "ai.consent.v2.pendingSync"
     /// Unit tests of OTHER features run without it; the app (and its UI tests) always enforce.
     let enforced: Bool
 
@@ -23,12 +35,22 @@ final class AIConsentStore: @unchecked Sendable {
     }
 
     var isGranted: Bool { defaults.bool(forKey: key) }
-    func grant() { defaults.set(true, forKey: key) }
-    func withdraw() { defaults.removeObject(forKey: key) }
+
+    /// Every decision (agree or withdraw) is queued for the server (`AIConsentSync`), so the background messages
+    /// stop using the person's data when they withdraw. The queue is cleared only after the server accepts it.
+    var isPendingSync: Bool { defaults.bool(forKey: pendingKey) }
+    func grant() { defaults.set(true, forKey: key); defaults.set(true, forKey: pendingKey) }
+    func withdraw() { defaults.removeObject(forKey: key); defaults.set(true, forKey: pendingKey) }
+    func clearPendingSync() { defaults.set(false, forKey: pendingKey) }
+    /// The decision the server should hold: granted or withdrawn.
+    var currentDecision: Bool { isGranted }
 
     static func isAIPath(_ path: String) -> Bool {
         let clean = path.split(separator: "?", maxSplits: 1).first.map(String.init) ?? path
-        return aiPaths.contains { clean == $0 || clean.hasPrefix($0 + "/") }
+        if aiPaths.contains(where: { clean == $0 || clean.hasPrefix($0 + "/") }) { return true }
+        // POST /api/group/{id}/suggest — sends the members' details to the model.
+        let parts = clean.split(separator: "/", omittingEmptySubsequences: true)
+        return parts.count == 4 && parts[0] == "api" && parts[1] == "group" && parts[3] == "suggest"
     }
 
     /// True when a request to `path` must NOT leave the phone.
@@ -36,6 +58,32 @@ final class AIConsentStore: @unchecked Sendable {
 
     static var blockedError: AppError {
         .validation(message: NSLocalizedString("ai.consent.needed", comment: ""))
+    }
+}
+
+/// Sends the person's latest decision to the server (`POST /api/ai-consent`) so the background jobs honour it.
+/// With no decision waiting, it still records that this account uses the app (`granted: null`, a heartbeat that never
+/// overwrites a decision), so the server knows the account is an iOS account before the person has answered.
+/// Needs a signed-in account (an anonymous visitor has no background messages). A failed send stays pending and is
+/// retried on the next flush (sign-in, launch, the next change). A failed heartbeat is retried the same way; nothing
+/// is assumed about the person's agreement from it.
+enum AIConsentSync {
+    static func flush(api: APIClient, signedIn: Bool, store: AIConsentStore = .shared) async {
+        guard signedIn else { return }
+        let decided = store.isPendingSync
+        let granted: Any = decided ? store.currentDecision : NSNull()
+        guard let body = try? JSONSerialization.data(withJSONObject: [
+            "granted": granted,
+            "version": AIConsentStore.disclosureVersion,
+        ]) else { return }
+        // Not gated by AIConsentStore: recording a refusal or a withdrawal must always be possible.
+        let endpoint = Endpoint(path: "/api/ai-consent", method: .post, body: body, requiresAuth: true)
+        do {
+            _ = try await api.send(endpoint)
+            store.clearPendingSync()
+        } catch {
+            // Stays pending. The server keeps the last decision it accepted until this succeeds.
+        }
     }
 }
 
@@ -64,12 +112,14 @@ final class AIConsentCoordinator: AppObservableObject {
         }
     }
 
-    func agree() { store.grant(); granted = true; finish(true) }
+    func agree() { store.grant(); granted = true; finish(true); announce() }
 
     /// «Để sau»: nothing is sent, nothing is remembered — the next AI use asks again.
     func later() { finish(false) }
 
-    func withdraw() { store.withdraw(); granted = false }
+    func withdraw() { store.withdraw(); granted = false; announce() }
+
+    private func announce() { NotificationCenter.default.post(name: AIConsentStore.didChange, object: nil) }
 
     /// Settings: switching the setting on shows the same sheet.
     func requestFromSettings() { isPresenting = true }

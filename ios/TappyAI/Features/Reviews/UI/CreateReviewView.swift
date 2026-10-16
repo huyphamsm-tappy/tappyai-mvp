@@ -18,7 +18,7 @@ struct CreateReviewView: View {
         self.preselectedSoundId = preselectedSoundId
         self.prefilledPlaceId = prefilledPlaceId
         self.prefilledPlaceName = prefilledPlaceName
-        let service = CreateReviewService(api: deps.api)
+        let service = CreateReviewService(api: deps.api, consent: deps.aiConsent)
         _vm = AppStateObject(wrappedValue: CreateReviewViewModel(
             service: service, session: deps.session, config: deps.configService,
             prefilledPlaceId: prefilledPlaceId, prefilledPlaceName: prefilledPlaceName
