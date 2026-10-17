@@ -40,6 +40,11 @@ policy_of() {
       echo VERIFY-ONLY ;;
     20260904_group_read_boundary.sql)
       echo AFTER-DEPLOY ;;
+    # AI-consent table for POST /api/ai-consent (20261018) and its client-role REVOKE ALL (20261019). Additive / revoke-only,
+    # and the code on production before the consent branch never reads the table. Both go BEFORE the web deploy, so the
+    # endpoint can store iOS decisions from its first request and no client role ever holds the default grants.
+    20261018_ai_data_consent.sql|20261019_ai_data_consent_client_acl.sql)
+      echo APPLY ;;
     # H1 → M1 first, then the security-branch migrations in MIGRATION_ORDER.txt order (owner 30/09): 20260928b needs the
     # deal-click code (service role) on production; the others are code-independent but ride the same verified window.
     20260927_owner_update_column_privileges.sql|20260928_revoke_reviews_insert.sql|\

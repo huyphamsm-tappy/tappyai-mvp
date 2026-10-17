@@ -144,3 +144,5 @@ supabase/migrations/20261011_p8_payments.sql
 supabase/migrations/20261015_p8_subscriptions.sql
 supabase/migrations/20261016_p7_pip_one_time.sql
 supabase/migrations/20261017_p7_pip_trial_any_source.sql
+supabase/migrations/20261018_ai_data_consent.sql
+supabase/migrations/20261019_ai_data_consent_client_acl.sql

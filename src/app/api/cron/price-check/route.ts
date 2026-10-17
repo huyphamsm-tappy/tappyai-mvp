@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { AI } from '@/lib/ai/llm'
 import { serperPost } from '@/lib/ai/tools/serperClient'
+import { loadAllowedUserIds } from '@/lib/ai/consent/aiDataConsent'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { emitNotification } from '@/lib/notifications/emit'
 import { pw, normalizePwLang, type PwLang } from '@/lib/priceWatch/messages'
@@ -78,11 +79,22 @@ export async function GET(req: Request) {
     }
   } catch { /* every user falls back to 'vi' below */ }
 
+  // The watched product name goes to the AI only for users who agreed to it. Everyone else gets no price check and
+  // no alert (see the consent branch below).
+  const allowed = await loadAllowedUserIds(supabase, [...new Set((watches as Watch[]).map(w => w.user_id))])
+
   let triggered = 0
   let checked = 0
 
   const results = await Promise.allSettled(
     (watches as Watch[]).map(async (watch) => {
+      // No AI consent: the watch is not searched and no price is read, so the product name leaves the server for
+      // nothing. The check time is still recorded so the watch is not starved in the queue.
+      if (!allowed.has(watch.user_id)) {
+        await supabase.from('price_watches').update({ last_checked: new Date().toISOString() }).eq('id', watch.id)
+        return
+      }
+
       // Search for current price
       const searchResults = await searchCurrentPrice(watch.search_query)
       if (!searchResults.length) return
@@ -103,6 +115,7 @@ Trả lời ĐÚNG format (chỉ 1 dòng):
 PRICE_VND: [số nguyên bằng VND, ví dụ: 1950000] hoặc PRICE_VND: không rõ`,
       })
       const priceMatch = text.match(/PRICE_VND:\s*(\d+)/)
+      // Only a price the model actually read is used. An unclear answer means no alert, never a guessed one.
       const extractedPrice = priceMatch ? parseInt(priceMatch[1]) : null
 
       // Update last_checked and current_price
