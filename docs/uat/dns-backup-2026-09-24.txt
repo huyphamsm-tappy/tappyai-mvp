@@ -1,0 +1,54 @@
+DNS BACKUP — tappyai.com — 2026-09-24
+Chụp TRƯỚC khi thêm bản ghi cho uat.tappyai.com.
+
+Nguồn: Cloudflare API `GET /zones/{id}/dns_records` qua session dashboard của owner.
+Nhà cung cấp DNS: CLOUDFLARE (lia.ns.cloudflare.com, merlin.ns.cloudflare.com)
+Account: 80cb8687a0b387a7903e44bd5a15e40a
+Zone ID: 4bdac2f3… (rút gọn)
+TỔNG: 14 bản ghi
+
+─────────────────────────────────────────────────────────────────────────────
+# TYPE  | NAME                  | CONTENT                                      | PROXY   | PRIO
+─────────────────────────────────────────────────────────────────────────────
+ 1 A     | tappyai.com           | 76.76.21.21                                  | Proxied |
+ 2 CNAME | www                   | cname.vercel-dns.com                         | Proxied |
+ 3 CNAME | brevo1._domainkey     | b1.tappyai-com.dkim.brevo.com                | DNS only|
+ 4 CNAME | brevo2._domainkey     | b2.tappyai-com.dkim.brevo.com                | DNS only|
+ 5 CNAME | mail                  | mail-tappyai-com.brand.brevosend.com         | DNS only|
+ 6 CNAME | img.mail              | mail-tappyai-com.img.brand.brevosend.com     | DNS only|
+ 7 CNAME | r.mail                | mail-tappyai-com.r.brand.brevosend.com       | DNS only|
+ 8 MX    | tappyai.com           | route3.mx.cloudflare.net                     | DNS only| 4
+ 9 MX    | tappyai.com           | route2.mx.cloudflare.net                     | DNS only| 16
+10 MX    | tappyai.com           | route1.mx.cloudflare.net                     | DNS only| 49
+11 TXT   | tappyai.com           | "v=spf1 include:_spf.mx.cloudflare.net ~all"  | DNS only|
+12 TXT   | tappyai.com           | "brevo-code:36c21c05400ad1b848e18ec193a11281"| DNS only|
+13 TXT   | _dmarc                | "v=DMARC1; p=none; rua=mailto:rua@dmarc.brevo.com" | DNS only|
+14 TXT   | cf2024-1._domainkey   | [DKIM Cloudflare Email, 425 ký tự — KHÔNG ghi lại nội dung] | DNS only|
+─────────────────────────────────────────────────────────────────────────────
+
+GHI CHÚ VỀ TÍNH ĐẦY ĐỦ
+- 14/14 bản ghi đã liệt kê. Nội dung của #14 (DKIM Cloudflare Email) cố ý không
+  chép vào đây: nó là khoá công khai dài 425 ký tự, và tiện ích Chrome chặn việc
+  đọc nguyên văn. Nếu cần khôi phục, lấy lại bằng nút Export của Cloudflare.
+- Ảnh chụp công khai trước đó (qua 8.8.8.8) chỉ thấy được 11 bản ghi và KHÔNG thấy
+  đích thật của apex/www vì đang bật proxy. Bản này mới là bản đầy đủ:
+  · apex A -> 76.76.21.21 (Proxied)
+  · www CNAME -> cname.vercel-dns.com (Proxied)
+- CHƯA kiểm tra: Page Rules, Redirect Rules, Workers routes, cấu hình SSL/TLS.
+  Chúng không phải bản ghi DNS và không bị đợt thay đổi này đụng tới.
+
+NHÓM KHÔNG ĐƯỢC ĐỤNG
+- Email Brevo: #3,4,5,6,7 (DKIM + mail) và #8,9,10 (MX), #11 (SPF), #13 (DMARC), #14 (DKIM CF)
+- Production: #1 (apex) và #2 (www)
+
+THAY ĐỔI ĐÃ THỰC HIỆN TRONG ĐỢT NÀY — CHỈ THÊM MỚI, KHÔNG SỬA/XOÁ BẢN GHI CÓ SẴN
+Trạng thái HIỆN TẠI (sau cùng) của 2 bản ghi mới:
+15 A     | uat                   | 76.76.21.21 (Vercel)                         | DNS only|
+16 TXT   | uat                   | "zalo-platform-site-verification=HVAV9eNi…" (rút gọn) | DNS only|
+   Lịch sử: #15 ban đầu được thêm là CNAME → 0312a7cbcb1023bc.vercel-dns-017.com.
+   CNAME không được phép cùng tên với TXT, mà Zalo cần TXT tại `uat` → owner duyệt
+   đổi CHÍNH bản ghi #15 (do đợt này tạo) sang A 76.76.21.21, rồi thêm #16.
+   14 bản ghi có sẵn (#1–#14) đã kiểm tra lại theo id: không đổi.
+
+DỰ KIẾN (chưa làm — chờ VPS):
+17 A     | zalo-verify           | <IP VPS Việt Nam>                            | DNS only|
