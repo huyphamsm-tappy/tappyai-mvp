@@ -8,11 +8,18 @@ export async function GET(req: Request) {
     const { user, supabase } = await getRequestUser(req)
     if (!user) return NextResponse.json({ error: 'unauthorized', message: serverMessage('auth.required', requestLocale(req)) }, { status: 401 })
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from('user_preferences')
       .select('budget_level, cuisine_likes, dietary_restrictions, inferred_preferences, preferences, updated_at')
       .eq('user_id', user.id)
       .maybeSingle()
+
+    // A dropped `error` returned HTTP 200 with structured:null, which the client cannot tell
+    // apart from "no preferences saved yet"; saving from that empty form then overwrites real data.
+    if (error) {
+      console.error('[preferences] load failed:', error.message)
+      return NextResponse.json({ error: 'server_error', message: serverMessage('server.error', requestLocale(req)) }, { status: 500 })
+    }
 
     return NextResponse.json({
       preferences: Array.isArray(data?.preferences) ? data.preferences : [],

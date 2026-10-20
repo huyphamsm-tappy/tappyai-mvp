@@ -66,12 +66,20 @@ export default function PreferencesPage() {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [saveError, setSaveError] = useState(false)
+  // A FAILED load must be distinguishable from "nothing saved yet": both leave the form empty,
+  // but saving from an unloaded form upserts blanks over the user's real data.
+  const [loadError, setLoadError] = useState(false)
 
   useEffect(() => {
     // V3 — gender is read from the canonical profile contract, the same one
     // Android consumes, rather than from `auth.users.raw_user_meta_data`.
     Promise.all([
-      fetch('/api/preferences').then(r => r.json()),
+      fetch('/api/preferences').then(r => {
+        // fetch() only rejects on a network failure — a 401/500 resolves, and .json() on an
+        // error body yields {}, which would render as an empty form that looks saveable.
+        if (!r.ok) throw new Error('prefs_load_failed')
+        return r.json()
+      }),
       fetch('/api/profile').then(r => (r.ok ? r.json() : null)),
     ]).then(([{ preferences: prefs, structured }, profile]) => {
       if (structured) {
@@ -83,7 +91,7 @@ export default function PreferencesPage() {
       if (profile?.gender) setGender(profile.gender as Gender)
       if (profile?.genderSelfDescribe) setGenderSelfDescribe(profile.genderSelfDescribe)
     })
-    .catch(() => {})
+    .catch(() => setLoadError(true))
     .finally(() => setLoading(false))
   }, [])
 
@@ -105,6 +113,8 @@ export default function PreferencesPage() {
   }, [])
 
   const handleSave = async () => {
+    // Refuse to save from a form we never populated: PUT and POST write the whole row.
+    if (loadError) return
     setSaving(true)
     setSaveError(false)
     try {
@@ -146,6 +156,19 @@ export default function PreferencesPage() {
     return (
       <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24 flex items-center justify-center">
         <Loader2 className="animate-spin text-primary-400" size={32} />
+      </div>
+    )
+  }
+
+  // Never render the empty form after a failed load — it cannot be told apart from "nothing saved
+  // yet", and saving from it would overwrite the user's real preferences.
+  if (loadError) {
+    return (
+      <div className="min-h-dvh bg-gray-50 dark:bg-gray-950 pb-24 flex flex-col items-center justify-center gap-3 px-6">
+        <p className="text-sm text-gray-500 dark:text-gray-400 text-center">{t('pref.loadError')}</p>
+        <button onClick={() => window.location.reload()} className="text-sm font-semibold text-primary-500">
+          {t('pref.retry')}
+        </button>
       </div>
     )
   }
