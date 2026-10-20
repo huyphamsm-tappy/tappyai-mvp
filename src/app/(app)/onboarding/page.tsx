@@ -328,7 +328,8 @@ function OnboardingPageInner() {
                   </button>
                   <button
                     onClick={handleFinish}
-                    className="text-sm text-white/40 transition-colors hover:text-white/70"
+                    disabled={loading}
+                    className="text-sm text-white/40 transition-colors hover:text-white/70 disabled:opacity-40"
                   >
                     {t('common.skip')}
                   </button>
