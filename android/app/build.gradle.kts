@@ -443,6 +443,14 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    testOptions {
+        unitTests {
+            // Robolectric needs the merged Android resources/assets/manifest on the unit-test
+            // classpath to bring up a real Application + BitmapFactory sandbox.
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -517,6 +525,9 @@ dependencies {
     // Needed to drive a ViewModel under test: viewModelScope runs on Dispatchers.Main, which
     // has no Android looper in a unit test until setMain() replaces it.
     testImplementation(libs.kotlinx.coroutines.test)
+    // Robolectric runs the real android.graphics.BitmapFactory + ContentResolver on the JVM, so
+    // ScanViewModel's two-pass gallery decode can be exercised as a plain unit test (no device).
+    testImplementation(libs.robolectric)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
