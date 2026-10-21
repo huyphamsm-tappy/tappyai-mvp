@@ -154,6 +154,13 @@ export interface EnrichmentCollector {
   placesMapsUrl?: string
   setPlacesMapsUrl(url: string | undefined): void
   /**
+   * g' (closeout round 3, PROPOSAL): the FULL results the server's own tools built this turn, before any copy was trimmed or carved
+   * for the model. streamEnrichment grants their link fields under the same TOOL_URL_CONTRACT (tool + field path), so an action
+   * link the model copy carved out (maps_link, website_uri, booking_links ...) is still a verified grant. Bounded (24 results).
+   */
+  serverToolResults?: Array<{ toolName: string; result: unknown }>
+  addServerToolResult?(toolName: string, result: unknown): void
+  /**
    * True when THIS request will render the decision as a card.
    *
    * The per-place photo/link block below is injected into the reply text for
@@ -212,11 +219,44 @@ export interface EnrichmentCollector {
    */
   planTurn?: boolean
   /**
+   * Gate 2 F-A (A1, D-prov): the exact photo URLs the ROUTE wrote into a server-built [TAPPY_PLAN] block that travels inside the model
+   * stream (today only the evening plan, route.ts). The egress pass keeps a plan `photo_url` only when it is one of these; every other
+   * one is model-written and removed. Absent = no server-built block this turn, so no plan `photo_url` survives egress.
+   */
+  serverPlanPhotos?: ReadonlySet<string>
+  /**
    * CONSULTATIVE_IN_AGENT (default OFF; set whenever the flag is on, on every turn): the four settle-path precision fixes that only apply under
    * the flag — worked examples are not facts (noFabricationGate), amount phrases are not names (entityNameGuard), a plan card holds only
    * places of the plan's destination (planItemGuard), and no "see the card below" line without a card (groundingGate). Absent = unchanged.
    */
   consultative?: boolean
+  /**
+   * CONSULT_V3 (owner 17/10, consultV3.ts; only with `consultative`): the behaviour-shaping settle steps are skipped — the consultative_v1
+   * claim/atmosphere/shape cuts, the travel-claims cut and the "figures not verified" line — and a plan budget shows labelled estimates.
+   * Every security guard still runs. Absent = unchanged.
+   */
+  consultV3?: boolean
+  /**
+   * TAPPY_ANSWER_V4 (owner 19/10, only with `consultV3`): the QUALITY stages that delete or rewrite the model's sentences because a claim is
+   * not found in the turn's evidence run in SHADOW — they are computed and traced, and the text is kept (offline guard audit 19/10: 15 of 22
+   * removed sentences stated facts an independent same-day answer confirmed). Security, egress, leak, card and marker stages still run.
+   * A medicine dose with no source is the one claim still changed, at claim level (the drug stays, the figure becomes "see the label").
+   */
+  answerV4?: boolean
+  /**
+   * RETRIEVAL_V5 lần 2c (B3, only with `answerV4`): the settle-path stages state, they do not delete — a real conflict is written as the other
+   * source's value inside the sentence (never "các nguồn chưa khớp"), and an unverified figure gets ONE "(chưa xác minh)" at its sentence end
+   * (never between a number and its unit or inside a range).
+   */
+  retrievalV5?: boolean
+  /** TAPPY_ANSWER_V4: the model's understanding of the question (answerV4/understand.ts), when it settled before the settle path. */
+  understanding?: import('@/lib/ai/answerV4/understand').TurnUnderstanding
+  /** CONSULT_V3 task frame: the task the model declared this turn (taskFrame.ts) — place / shopping cards only for the kinds that use them. */
+  taskFrame?: import('@/lib/ai/agent/runtime/taskFrame').TaskFrame
+  /** CONSULT_V3: the previous assistant reply carried place facts (rating / distance / hours) — the place guard still runs on a follow-up. */
+  priorPlaceContext?: boolean
+  /** CONSULT_V3 layouts: the validated media block (news pictures / Wikipedia subject card) the runtime built; emitted as [TAPPY_MEDIA]. */
+  media?: import('@/lib/media/mediaHosts').MediaBlock
   /** Phase 8 M5: what the ranking line did (counts, closed values; no text) for the run trace. */
   rankingTrace?: (summary: Record<string, unknown>) => void
   /**
@@ -468,6 +508,10 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
       // First writer wins, like the recommendations above: one search per turn
       // owns the map link, and a later tool must not repoint it.
       if (url && !this.placesMapsUrl) this.placesMapsUrl = url
+    },
+    serverToolResults: [] as Array<{ toolName: string; result: unknown }>,
+    addServerToolResult(toolName: string, result: unknown) {
+      if (this.serverToolResults && this.serverToolResults.length < 24) this.serverToolResults.push({ toolName, result })
     },
     rendersDecisionCard: false,
     setRendersDecisionCard(on: boolean) { this.rendersDecisionCard = on },

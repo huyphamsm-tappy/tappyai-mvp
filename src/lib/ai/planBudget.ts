@@ -36,7 +36,21 @@ export interface BudgetLine {
 
 export interface BudgetContext { people: number; days: number; rooms?: number; today: { day: number; month: number }; lang?: string }
 
-export interface BudgetRow { item: string; label: BudgetLabel; how: string; lo: number | null; hi: number | null }
+/** `planned`: CONSULT_V3 only — a planning estimate no source stated, shown as "ước tính" (never as a checked or sourced price). */
+export interface BudgetRow { item: string; label: BudgetLabel; how: string; lo: number | null; hi: number | null; planned?: boolean }
+/**
+ * CONSULT_V3 (owner 17/10, decision B): a line whose amount no source states keeps the model's figure as a labelled PLANNING ESTIMATE
+ * ("ước tính", with the note that it is not a booking price) instead of "chưa có dữ liệu". Without it: unchanged.
+ */
+export interface BudgetOptions {
+  allowEstimates?: boolean
+  /**
+   * CONSULT_V3 (owner 17/10, UAT đợt A: "chia đúng 30 triệu như ChatGPT"): the total the USER stated for the trip. The planned budget is
+   * then an ALLOCATION of that total: what the lines leave becomes a "Dự phòng / nâng cấp" row so the table adds up to the user's figure,
+   * and lines that exceed it say by how much. Only with `allowEstimates`.
+   */
+  userTotal?: number | null
+}
 export interface BudgetResult { rows: BudgetRow[]; lo: number; hi: number; counted: number; left: string[] }
 
 const near = (v: number, pool: readonly number[]) => pool.some(p => Math.abs(v - p) <= Math.max(p * 0.05, 1000))
@@ -71,7 +85,7 @@ export function lineTotal(l: BudgetLine, c: BudgetContext): { lo: number; hi: nu
   }
 }
 
-export function computeBudget(lines: readonly BudgetLine[], pool: readonly number[], c: BudgetContext): BudgetResult {
+export function computeBudget(lines: readonly BudgetLine[], pool: readonly number[], c: BudgetContext, opts: BudgetOptions = {}): BudgetResult {
   const rows: BudgetRow[] = []
   const stamp = `${c.today.day}/${c.today.month}`
   for (const l of lines) {
@@ -83,6 +97,10 @@ export function computeBudget(lines: readonly BudgetLine[], pool: readonly numbe
     const t = lineTotal(l, c)
     // the amount must be one a source stated; otherwise the figure is dropped and the line says there is no data
     const sourced = !!r && !!t && claimed !== 'none' && near(r[0], pool) && near(r[1], pool)
+    if (!sourced && opts.allowEstimates === true && t) {
+      rows.push({ item, label: 'estimate', how: `${t.how} (ước tính)`, lo: t.lo, hi: t.hi, planned: true })
+      continue
+    }
     if (!sourced || !t) { rows.push({ item, label: 'none', how: 'chưa có dữ liệu', lo: null, hi: null }); continue }
     const how = `${t.how}${basis ? ` — ${basis}` : ''}${claimed === 'checked' ? `, tra ${stamp}` : ' (mức tham khảo, không phải giá đặt chỗ)'}`
     rows.push({ item, label: claimed, how, lo: t.lo, hi: t.hi })
@@ -100,7 +118,8 @@ export function computeBudget(lines: readonly BudgetLine[], pool: readonly numbe
 const LABEL_VI: Record<BudgetLabel, string> = { checked: 'đã tra', estimate: 'ước tính có nguồn', none: 'chưa có dữ liệu' }
 
 /** The budget block as plain lines (the chat renders bullets everywhere). */
-export function renderBudget(res: BudgetResult, c: BudgetContext): string {
+export function renderBudget(res: BudgetResult, c: BudgetContext, opts: BudgetOptions = {}): string {
+  if (opts.allowEstimates === true) return renderPlannedBudget(res, c, opts.userTotal ?? null)
   const head = `💰 Ngân sách cho ${c.people} người, cả chuyến ${c.days} ngày:`
   const lines = res.rows.map(x => (x.lo === null
     ? `- ${x.item}: ${LABEL_VI.none}`
@@ -112,10 +131,46 @@ export function renderBudget(res: BudgetResult, c: BudgetContext): string {
 }
 
 /**
+ * CONSULT_V3: the planning budget as a TABLE (the chat renders markdown tables) — every line with its figure and its label (đã tra /
+ * ước tính), and the total. With the user's own total it is an allocation of that total: the remainder is a "Dự phòng / nâng cấp" row
+ * (so the table adds up to the user's figure) or, when the lines exceed it, one sentence says by how much. One line says it is a planning
+ * estimate, not a booking price. A line no figure could be computed for says so; nothing is invented for it.
+ */
+function renderPlannedBudget(res: BudgetResult, c: BudgetContext, userTotal: number | null): string {
+  const tag = (x: BudgetRow) => (x.planned || x.label === 'estimate' ? 'ước tính' : LABEL_VI[x.label])
+  const cell = (s: string) => s.replace(/\|/g, '/').replace(/\s+/g, ' ').trim()
+  const rows = res.rows.map(x => (x.lo === null
+    ? `| ${cell(x.item)} | chưa có số | |`
+    : `| ${cell(x.item)} | ${money(x.lo, x.hi as number)} | ${tag(x)} |`))
+  const total = userTotal && userTotal > 0 ? userTotal : null
+  let extra: string[] = []
+  let sumLo = res.lo, sumHi = res.hi
+  let over = ''
+  if (total && res.counted > 0) {
+    if (res.hi < total) {
+      // what the lines leave of the user's own total: kept for the unexpected or an upgrade, so the table adds up to that total
+      const restLo = total - res.hi, restHi = total - res.lo
+      extra = [`| Dự phòng / nâng cấp | ${money(restLo, restHi)} | phần còn lại |`]
+      sumLo = total; sumHi = total
+    } else if (res.lo > total) over = `Các khoản trên vượt ngân sách ${vnd(total)} khoảng ${money(res.lo - total, res.hi - total)}; muốn vừa túi thì giảm hạng phòng hoặc bớt một hoạt động có phí.`
+  }
+  const head = total
+    ? `💰 Phân bổ ngân sách ${vnd(total)} cho ${c.people} người, ${c.days} ngày:`
+    : `💰 Ngân sách dự kiến cho ${c.people} người, ${c.days} ngày:`
+  const totalRow = res.counted === 0
+    ? '| Tổng | chưa tính được | |'
+    : `| Tổng | ${money(sumLo, sumHi)} | ${res.left.length ? `chưa gồm: ${cell(res.left.join(', '))}` : ''} |`
+  const note = res.rows.some(x => x.planned || x.label === 'estimate')
+    ? 'Số trong bảng là ngân sách ước tính để lên kế hoạch, chưa phải giá đặt chỗ; giá thật xem trên trang hãng hoặc trang đặt phòng trước khi đặt.'
+    : ''
+  return [head, '', '| Khoản | Số tiền | Ghi chú |', '|---|---|---|', ...rows, ...extra, totalRow, ...(over ? ['', over] : []), ...(note ? ['', note] : [])].join('\n')
+}
+
+/**
  * Reads `budget_lines` from the [TAPPY_PLAN] block, removes it from the JSON, and puts the computed budget right after the block.
  * No block / unparseable / no lines → unchanged.
  */
-export function appendPlanBudget(fullText: string, pool: readonly number[], today: { day: number; month: number }, lang = 'vi'): { text: string; added: boolean } {
+export function appendPlanBudget(fullText: string, pool: readonly number[], today: { day: number; month: number }, lang = 'vi', opts: BudgetOptions = {}): { text: string; added: boolean } {
   const none = { text: fullText, added: false }
   const start = fullText.indexOf(OPEN)
   const end = fullText.indexOf(CLOSE)
@@ -129,10 +184,10 @@ export function appendPlanBudget(fullText: string, pool: readonly number[], toda
   const people = typeof plan.people === 'number' && plan.people >= 1 && plan.people <= 60 ? Math.floor(plan.people) : 2
   const days = Array.isArray(plan.days) && plan.days.length >= 1 ? plan.days.length : 1
   const ctx: BudgetContext = { people, days, today, lang }
-  const res = computeBudget(plan.budget_lines as BudgetLine[], pool, ctx)
+  const res = computeBudget(plan.budget_lines as BudgetLine[], pool, ctx, opts)
   delete plan.budget_lines
   const head = fullText.slice(0, start) + OPEN + '\n' + JSON.stringify(plan) + '\n' + CLOSE
-  return { text: `${head}\n\n${renderBudget(res, ctx)}${fullText.slice(end + CLOSE.length)}`, added: true }
+  return { text: `${head}\n\n${renderBudget(res, ctx, opts)}${fullText.slice(end + CLOSE.length)}`, added: true }
 }
 
 /** Every VND amount a text states (for building the evidence pool from retrieved pages and snippets). */

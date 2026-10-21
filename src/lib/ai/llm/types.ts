@@ -147,6 +147,8 @@ export interface AIStepOptions extends AIGenerateOptions {
 
 export interface AIVisionOptions {
   role?: ModelRole
+  /** C2_REQUEST_BUDGET: see AIGenerateOptions.budgetKind. Default 'main'. */
+  budgetKind?: 'main' | 'aux' | 'guard'
   /** Base64 string, URL, or raw bytes — normalized by the AI SDK. */
   image: string | URL | Uint8Array | ArrayBuffer
   mimeType?: string

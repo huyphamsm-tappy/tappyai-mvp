@@ -216,7 +216,7 @@ export function freshCarried(ev: Pick<GuardEvidence, 'carried' | 'constraintsSig
 // ── judging ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
 /** `today`: the system clock's day/month. When set, a dd/mm (or dd/mm/yyyy) naming exactly that day is the model framing "hôm nay (11/10)", not a claim the page must repeat. Any other date is judged as before. */
-export interface JudgeOptions { cutUnsourcedMoney?: boolean; /** Round 33 (flag only): compare VND amounts as whole đồng (see `quantitiesIn`). */ canonMoney?: boolean; retrievedTexts?: readonly string[]; lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
+export interface JudgeOptions { /** RETRIEVAL_V5 lần 2c (B3): a real conflict is written as "(theo [S#]: value)" inside the sentence, never as a meta line. */ conflictInline?: boolean; /** RETRIEVAL_V5 lần 2c (B3): a misattributed marker becomes one "(chưa xác minh)". */ labelMisattributed?: boolean; cutUnsourcedMoney?: boolean; /** Round 33 (flag only): compare VND amounts as whole đồng (see `quantitiesIn`). */ canonMoney?: boolean; retrievedTexts?: readonly string[]; lang?: string; knownNames?: readonly string[]; today?: { day: number; month: number; year?: number } }
 
 /** Today's day/month/year in Vietnam time (the server clock may be UTC). */
 export function vnToday(now: Date = new Date()): { day: number; month: number; year: number } {
@@ -274,7 +274,7 @@ export function judgeText(text: string, ev: GuardEvidence, o: JudgeOptions = {})
       const kind = kindOf(qs)
       const strong = cited.filter(c => reliabilityFor(c.s.sourceType, kind) !== 'low')
       if (!strong.length && !ATTRIBUTION.test(sent.body)) return { ...sent, j: { ...base, verdict: 'UNKNOWN' as const, provenance: 'PAGE_EVIDENCE' as const, reason: 'weak_source_unattributed' } }
-      const note = contradiction(qs, ids, ev, text, replyQs, o.lang ?? 'vi', canon)
+      const note = contradiction(qs, ids, ev, text, replyQs, o.lang ?? 'vi', canon, o.conflictInline === true)
       return { ...sent, j: { ...base, verdict: note ? 'CONTRADICTED' as const : 'SUPPORTED' as const, provenance: 'PAGE_EVIDENCE' as const, reason: note ? 'undisclosed_conflict' : 'stated_by_cited_source', ...(note ? { note } : {}) } }
     }
     if (carried.length && coveredBy(carried.flatMap(c => c.ix))) return { ...sent, j: { ...base, verdict: 'SUPPORTED' as const, provenance: 'TASK_STATE' as const, reason: 'fresh_task_evidence' } }
@@ -288,7 +288,7 @@ const coveredByUnscoped = (qs: readonly Q[], ps: readonly Indexed[], cue: string
  * An undisclosed numeric conflict: a ledger CONFLICT whose side from a cited source carries one of this sentence's values, and whose
  * other side (another source, a different value of the same unit) the reply never mentions. Returns the note, or null.
  */
-function contradiction(qs: readonly Q[], ids: readonly string[], ev: GuardEvidence, reply: string, replyQs: readonly Q[], lang: string, canonMoney = false): string | null {
+function contradiction(qs: readonly Q[], ids: readonly string[], ev: GuardEvidence, reply: string, replyQs: readonly Q[], lang: string, canonMoney = false, inline = false): string | null {
   const mine = new Set(qs.map(q => q.value))
   for (const c of ev.conflicts) {
     const sides = c.sides.map(s => ({ ...s, q: quantitiesIn(s.value, canonMoney) })).filter(s => s.value.length <= 60 && s.q.length > 0)
@@ -297,6 +297,8 @@ function contradiction(qs: readonly Q[], ids: readonly string[], ev: GuardEviden
     if (!other) continue
     const disclosed = new RegExp(`\\[[^\\]]*\\b${other.sourceId}\\b[^\\]]*\\]`).test(reply) || other.q.some(oq => replyQs.some(rq => rq.value === oq.value))
     if (disclosed) continue
+    // RETRIEVAL_V5 lần 2c (B3): each side's value with its own source, no "the sources disagree" sentence
+    if (inline) return lang === 'en' ? `(per [${other.sourceId}]: ${other.value})` : `(theo [${other.sourceId}]: ${other.value})`
     return lang === 'en'
       ? `Note: another source [${other.sourceId}] states ${other.value} — the sources disagree, check before you rely on it.`
       : `Lưu ý: nguồn khác [${other.sourceId}] ghi ${other.value} — các nguồn chưa khớp, bạn kiểm tra lại trước khi dựa vào.`
@@ -358,7 +360,9 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
     if (g.members.some(m => m.j.unsourcedMoney)) continue // the sentence is cut whole below (its marker goes with it)
     for (const m of g.members) m.j.markersDropped = true
     report.markersDropped++
-    edits.push({ start: src, end: g.end, text: text.slice(src, g.end).replace(MARKER_RE, '') })
+    // RETRIEVAL_V5 lần 2c (B3): the marker of a page that does not state the figure still goes (no false source), and the figure says ONCE
+    // that it is not verified — the source does not vanish silently
+    edits.push({ start: src, end: g.end, text: text.slice(src, g.end).replace(MARKER_RE, o.labelMisattributed ? (o.lang === 'en' ? ' (unverified)' : ' (chưa xác minh)') : '') })
   }
   for (const s of judged) {
     const j = s.j
@@ -408,6 +412,8 @@ export function shieldSupported(text: string, ev: GuardEvidence | null | undefin
       }
       if (!r.includes(h.token)) { lost.push(h.note ? `${h.original}. ${h.note}` : h.original); continue }
       if (!h.note) { r = r.replace(h.token, () => h.original); continue }
+      // RETRIEVAL_V5 lần 2c (B3): a real conflict is stated as the other side's value with its source, INSIDE the sentence — no meta line
+      if (o.conflictInline) { r = r.replace(h.token, () => `${h.original} ${h.note}`); continue }
       // CONTRADICTED: the claim stays, the other source's value follows it (after the sentence end).
       const i = r.indexOf(h.token)
       const end = i + h.token.length + r.slice(i + h.token.length).match(/^[.!?…]*/)![0].length

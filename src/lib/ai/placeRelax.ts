@@ -98,21 +98,29 @@ export function safeInline(raw: string, max = 80): string {
   return String(raw ?? '').replace(/(?:https?:\/\/|www\.)\S*/gi, ' ').replace(/[\u0000-\u001f\u007f\[\]{}()<>`|]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max)
 }
 
-export interface NoResultInput { query: string; area?: string | null; lang: string }
+export interface NoResultInput { query: string | null; area?: string | null; lang: string }
 
 /**
  * The reply when nothing reliable was found after every relaxation: one honest sentence, the Maps
  * button, and reasonable next steps as chips. Never a question that repeats what the user said.
+ * Gate 2 S5, Q3 (PROPOSAL): no keyword -- `null`, or empty once made inline-safe (the route passes '' when the model's keyword was not
+ * the user's, EmptyResult keeps its type) → the sentence quotes no keyword and there is no Maps button; the chips stay.
  */
 export function noResultBlock(i: NoResultInput): string {
   const vi = i.lang !== 'en'
   const where = i.area ? safeInline(i.area, 60) : ''
-  const query = safeInline(i.query)
+  const chips = vi ? ['Tìm trên cả TP.HCM', 'Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Search the whole city', 'Try other keywords', 'Suggest places near me']
+  const query = i.query === null ? '' : safeInline(i.query)
+  if (!query) {
+    const plain = vi
+      ? `Mình chưa thấy kết quả đủ tin cậy${where ? ` ở ${where}` : ''} để gợi ý. Bạn có thể thử một trong các hướng bên dưới.`
+      : `I found nothing reliable enough to recommend${where ? ` in ${where}` : ''}. You can try one of the options below.`
+    return `\n\n${plain}\n\n[FOLLOWUPS]${chips.join('|')}[/FOLLOWUPS]`
+  }
   const sentence = vi
     ? `Mình đã tìm "${query}"${where ? ` ở ${where}` : ''} nhưng chưa thấy kết quả đủ tin cậy để gợi ý. Bạn có thể xem nhanh trên Google Maps, hoặc thử một trong các hướng bên dưới.`
     : `I searched for "${query}"${where ? ` in ${where}` : ''} but found nothing reliable enough to recommend. You can check Google Maps directly, or try one of the options below.`
   const cta = { buttons: [{ label: vi ? 'Tìm trên Google Maps' : 'Search on Google Maps', type: 'maps', url: mapsSearchUrl(query, where), primary: true }] }
-  const chips = vi ? ['Tìm trên cả TP.HCM', 'Đổi từ khóa khác', 'Gợi ý chỗ gần mình'] : ['Search the whole city', 'Try other keywords', 'Suggest places near me']
   return `\n\n${sentence}\n\n[CTA_BUTTONS]${JSON.stringify(cta)}[/CTA_BUTTONS]\n[FOLLOWUPS]${chips.join('|')}[/FOLLOWUPS]`
 }
 

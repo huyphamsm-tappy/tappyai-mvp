@@ -74,6 +74,11 @@ export const isInstructionLike = (s: string): boolean => !!marked(s) || ROLE_OR_
 
 function cleanText(key: string, v: string): string {
   let out = LINK_KEY.test(key) ? v : v.replace(URL_IN_TEXT, ' ')
+  // TAPPY_ANSWER_V4 page_content: line-structured (one table row / list item per line) — cleaned LINE BY LINE so one instruction-like sentence
+  // costs that sentence, not the whole page (a timetable has no sentence ends, it was one "sentence"), and the line breaks are kept.
+  if (LONG_TEXT_KEYS.has(key)) {
+    return out.split('\n').map(line => (isInstructionLike(line) ? line.split(/(?<=[.!?…])\s+/).filter(s => !isInstructionLike(s)).join(' ') : line).replace(/[ \t]{2,}/g, ' ').trim()).filter(Boolean).join('\n')
+  }
   if (isInstructionLike(out)) out = out.split(/(?<=[.!?…\n])\s+/).filter(sentence => !isInstructionLike(sentence)).join(' ')
   return out.replace(/\s{2,}/g, ' ').trim()
 }
@@ -96,24 +101,39 @@ function dropSensitive(v: unknown, stats: OutputGuardStats, depth = 0, key = '')
   return v
 }
 
-function forModelCopy(v: unknown, key: string, stats: OutputGuardStats, depth = 0, maxRows = 12, maxString = 1200): unknown {
+function forModelCopy(v: unknown, key: string, stats: OutputGuardStats, depth = 0, maxRows = 12, maxString = 1200, pageMax = PAGE_CONTENT_MAX): unknown {
   if (depth > 10) return undefined
   if (typeof v === 'string') {
     const c = cleanText(key, v)
     if (c !== v) stats.cleanedStrings++
-    if (c.length > maxString) { stats.truncated = true; return `${c.slice(0, maxString)}…` }
+    // TAPPY_ANSWER_V4: a page's picked content (readPage `page_content`) is one text with its own bound; every other string as before
+    const max = LONG_TEXT_KEYS.has(key) ? pageMax : maxString
+    if (c.length > max) { stats.truncated = true; return `${c.slice(0, max)}…` }
     return c
   }
   if (Array.isArray(v)) {
     if (v.length > maxRows) stats.truncated = true
-    return v.slice(0, maxRows).map(x => forModelCopy(x, key, stats, depth + 1, maxRows, maxString))
+    return v.slice(0, maxRows).map(x => forModelCopy(x, key, stats, depth + 1, maxRows, maxString, pageMax))
   }
-  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v as Record<string, unknown>).map(([k, x]) => [k, forModelCopy(x, k, stats, depth + 1, maxRows, maxString)]))
+  if (v && typeof v === 'object') return Object.fromEntries(Object.entries(v as Record<string, unknown>).map(([k, x]) => [k, forModelCopy(x, k, stats, depth + 1, maxRows, maxString, pageMax)]))
   return v
 }
 
 /** Max serialized size of what the model reads from one tool call. */
 export const MAX_TOOL_RESULT_CHARS = 24_000
+/**
+ * TAPPY_ANSWER_V4 lookup part 1: the content the structure-preserving page reader picked from ONE page (readPage `page_content`, present only
+ * on V4 turns). Cleaned like every string (instruction-like sentences, free-text URLs); bounded by its own size, and a result carrying it has
+ * a larger total so that three read pages are not collapsed to 5 rows × 400 characters. Too large even so → each page is shortened in
+ * proportion (PAGE_CONTENT_MIN each) before the generic fallback.
+ */
+export const PAGE_CONTENT_KEY = 'page_content'
+/** The hosted web search's brief (answerV4/hostedResearch `web_findings`): the same bound and line-by-line cleaning as a page's content. */
+export const FINDINGS_KEY = 'web_findings'
+const LONG_TEXT_KEYS = new Set([PAGE_CONTENT_KEY, FINDINGS_KEY])
+export const PAGE_CONTENT_MAX = 7_500
+export const PAGE_CONTENT_MIN = 2_500
+export const MAX_PAGE_RESULT_CHARS = 48_000
 
 /**
  * Tool OUTPUT guard. `forClient` = the result minus credential-like keys/values (cards, maps and links need the rest unchanged);
@@ -123,10 +143,18 @@ export function guardToolOutput(result: unknown): { forClient: unknown; forModel
   const stats: OutputGuardStats = { droppedKeys: 0, cleanedStrings: 0, truncated: false }
   const forClient = dropSensitive(result, stats)
   let model = forModelCopy(forClient, '', stats)
-  if (JSON.stringify(model ?? null).length > MAX_TOOL_RESULT_CHARS) {
+  const serialized = JSON.stringify(forClient ?? null)
+  const hasPage = serialized.includes(`"${PAGE_CONTENT_KEY}"`) || serialized.includes(`"${FINDINGS_KEY}"`)
+  const limit = hasPage ? MAX_PAGE_RESULT_CHARS : MAX_TOOL_RESULT_CHARS
+  if (hasPage && JSON.stringify(model ?? null).length > limit) {
+    // the pages are shortened in proportion first; the rest of the result is untouched
     stats.truncated = true
-    model = forModelCopy(forClient, '', stats, 0, 5, 400)
-    if (JSON.stringify(model ?? null).length > MAX_TOOL_RESULT_CHARS) model = { error: 'result_too_large', note: 'Kết quả quá lớn để đọc; nói rằng phần này chưa kiểm tra được.' }
+    model = forModelCopy(forClient, '', stats, 0, 12, 1200, PAGE_CONTENT_MIN)
+  }
+  if (JSON.stringify(model ?? null).length > limit) {
+    stats.truncated = true
+    model = forModelCopy(forClient, '', stats, 0, 5, 400, hasPage ? PAGE_CONTENT_MIN : 400)
+    if (JSON.stringify(model ?? null).length > limit) model = { error: 'result_too_large', note: 'Kết quả quá lớn để đọc; nói rằng phần này chưa kiểm tra được.' }
   }
   return { forClient, forModel: wrapToolResultAsData(model), stats }
 }

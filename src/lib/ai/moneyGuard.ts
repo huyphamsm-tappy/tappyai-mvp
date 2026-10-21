@@ -1,3 +1,5 @@
+import { foldedWords, namedInSegments } from './entityNameGuard'
+
 // ── Deterministic money-claim guard (C3-B.10) ────────────────────────────────
 //
 // Three phases of measurement established that the model asserts a price
@@ -22,7 +24,45 @@ export interface MoneyGuardOptions {
   sellerAttribution?: boolean
   /** CONSULTATIVE_IN_AGENT: a comma between two digits ("1,7 lít") is a decimal point, not a clause delimiter in the clause cut. */
   decimalSafe?: boolean
+  /**
+   * CONSULT_V3 (A/B eval 17/10). Measured on every shopping turn: "**Huawei FreeBuds SE 4 (ANC)** — khoảng **790.000đ**" was cut although the
+   * listing "Tai nghe Bluetooth True Wireless Huawei Freebuds SE 4 (ANC)" carries 790.000 — the claim is judged against the REQUEST ("tai nghe
+   * bluetooth"), and that listing reads as a variant (its "SE"); the user's own "tầm 15 triệu" echoed as "ngân sách khoảng 15 triệu đồng" was cut;
+   * the closing question's options "1. Dưới 1,5 triệu 2. 1,5–3 triệu" were cut to "1.2.3.". Three readings, each tighter than the request:
+   *   · `namedListing`: an amount in a line that NAMES a listing (its bold name's identifying tokens, or a model number of its title, occur
+   *     there) and equals that listing's own price (±2%) is verified by it;
+   *   · `userTexts`: an amount the user stated (a budget) is the user's, not a claim;
+   *   · `choiceOptions`: the numbered options under a closing question are what the user may answer, not prices of anything.
+   */
+  namedListing?: boolean
+  userTexts?: readonly string[]
+  choiceOptions?: boolean
 }
+
+/** The line around a position. */
+function lineAt(text: string, pos: number): string {
+  const a = text.lastIndexOf('\n', pos - 1) + 1
+  const b = text.indexOf('\n', pos)
+  return text.slice(a, b === -1 ? text.length : b)
+}
+
+/** [start, end) of every numbered option line under a line that ends with a question mark (bold or not). */
+export function closingChoiceSpans(text: string): Array<[number, number]> {
+  const spans: Array<[number, number]> = []
+  let at = 0, afterQuestion = false
+  for (const line of text.split('\n')) {
+    const end = at + line.length
+    if (/\?\s*(?:\*\*)?\s*$/.test(line)) afterQuestion = true
+    else if (afterQuestion && /^\s*\d{1,2}[.)]\s*\S/.test(line)) spans.push([at, end])
+    else if (line.trim()) afterQuestion = false
+    at = end + 1
+  }
+  return spans
+}
+
+/** Model-number tokens of a listing title: letters AND digits, not a quantity ("ey245310", "18mslvn", "a515" — not "5l", "256gb"). */
+const modelNumbers = (title: string): string[] =>
+  foldedWords(title).filter(t => /[a-z]/.test(t) && /\d/.test(t) && t.length >= 3 && !/^\d+(?:gb|tb|mb|mah|w|wh|v|hz|mm|cm|kg|g|l|ml|inch|in|k|tr|d|h|p|x|mp|lit)$/.test(t))
 
 /** The sentence around a position (the same bounds the attribution uses). */
 function sentenceAt(text: string, pos: number): string {
@@ -340,9 +380,29 @@ export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entiti
     const ok = (v: number) => own.some(p => withinTolerance(v, p))
     return ok(c.lo) && ok(c.hi) ? named[0] : null
   }
+  // CONSULT_V3 readings (see MoneyGuardOptions): checked first, each one only ever VERIFIES.
+  const userValues = (opts.userTexts ?? []).flatMap(t => extractMoneyClaims(t)).flatMap(u => [u.lo, u.hi])
+  const choiceSpans = opts.choiceOptions ? closingChoiceSpans(text) : []
+  const v3Reading = (c: Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>): MoneyClaim | null => {
+    if (choiceSpans.some(([a, b]) => c.start >= a && c.start < b)) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'closing question option' }
+    if (userValues.length > 0 && [c.lo, c.hi].every(v => userValues.some(u => withinTolerance(v, u)))) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'stated by the user' }
+    if (!opts.namedListing) return null
+    const line = lineAt(text, c.start)
+    const lineWords = foldedWords(line)
+    const bolds = [...line.matchAll(/\*\*([^*\n]{3,80})\*\*/g)].map(m => m[1]).filter(b => extractMoneyClaims(b).length === 0)
+    for (const r of records) {
+      const p = structuredPrice(r)
+      if (p === null || !withinTolerance(c.lo, p) || !withinTolerance(c.hi, p)) continue
+      const seg = [foldedWords(`${r.title ?? ''} ${r.source ?? ''}`)]
+      const byName = bolds.some(b => namedInSegments(b, seg) === true)
+      const byModel = modelNumbers(r.title ?? '').some(m => lineWords.includes(m))
+      if (byName || byModel) return { ...c, verdict: 'VERIFIED', entity: r.title ?? null, reason: 'the named listing\'s own price' }
+    }
+    return null
+  }
   const usable = entities.map(requestedEntity).filter(Boolean)
   if (usable.length === 0) {
-    return found.map(c => ({ ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'no requested entity available' }))
+    return found.map(c => v3Reading(c) ?? ({ ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'no requested entity available' }))
   }
 
   // Attribute each claim to an entity by the sentence it sits in. A
@@ -370,6 +430,8 @@ export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entiti
   }
 
   const first = found.map(c => {
+    const v3 = v3Reading(c)
+    if (v3) return v3
     const seller = bySeller(c)
     if (seller) return { ...c, verdict: 'VERIFIED' as const, entity: seller, reason: 'stated by the named seller\'s own listing' }
     const entity = attribute(c.start)

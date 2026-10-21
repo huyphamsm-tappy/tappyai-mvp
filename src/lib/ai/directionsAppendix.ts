@@ -11,7 +11,8 @@
 // The URL is the Google Maps URLs API (https only, no key); the model never writes it, and it says "mình đã kèm link" only if this block exists.
 
 import { directionsUrl } from '@/lib/recommendation/actions'
-import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
+import { marketplaceSearchTemplates } from '@/lib/ccp/adapters'
+import { searchEngineTemplates } from '@/lib/ccp/searchEngines'
 
 const fold =(s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
 
@@ -25,15 +26,18 @@ const BUY_INTENT = /(?:^| )(?:mua|link|o dau|gia|gia tham khao|bao nhieu|where t
  * A product answer that carries prices but no purchase link / shopping card: one search link per marketplace for the keyword the model SEARCHED
  * (the same CCP-registry templates the A3 block uses — https search URLs built here, never by the model). null when a card carries the links
  * already, when nothing was searched, or when the user did not ask where to buy / what it costs.
+ * Gate 2 S5 (PROPOSAL): the caller passes only a keyword the user gave (isUserDerived); every link is a registry template (marketplace list,
+ * or the search-engine list for Google Shopping, D-S5-4) and carries its `providerId`, so the stream records it as `server:search:<id>`.
  */
-export function productSearchAppendix(o: { userText: string; searchedQuery: string | null | undefined; cardCarriesLinks: boolean; lang?: string }): { text: string; links: Array<{ name: string; url: string }> } | null {
+export function productSearchAppendix(o: { userText: string; searchedQuery: string | null | undefined; cardCarriesLinks: boolean; lang?: string }): { text: string; links: Array<{ name: string; url: string; providerId: string }> } | null {
   const q = (o.searchedQuery ?? '').replace(/\s+/g, ' ').trim().slice(0, 80)
   if (o.cardCarriesLinks || q.length < 3 || !BUY_INTENT.test(` ${fold(o.userText)} `)) return null
   // Shopee's search page sends a visitor who is not logged in to a "Login Required" page (checked 2026-10-11, in a browser with no session), so it is
   // never attached; Lazada's search and Google Shopping open without login.
+  const fill = (t: { providerId: string; name: string; template: string }) => ({ providerId: t.providerId, name: t.name, url: t.template.replace('{q}', encodeURIComponent(q)) })
   const links = [
-    ...buildShoppingLinks(q).filter(l => /^https:\/\//i.test(l.url) && !/(?:^|\.)shopee\./i.test(new URL(l.url).hostname)),
-    { name: 'Google Mua sắm', url: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(q)}` },
+    ...marketplaceSearchTemplates().map(fill).filter(l => /^https:\/\//i.test(l.url) && !/(?:^|\.)shopee\./i.test(new URL(l.url).hostname)),
+    ...searchEngineTemplates().map(fill),
   ].slice(0, 3)
   if (!links.length) return null
   return { text: o.lang === 'en' ? 'Search this product on the marketplaces:' : 'Tìm sản phẩm này trên các sàn:', links }

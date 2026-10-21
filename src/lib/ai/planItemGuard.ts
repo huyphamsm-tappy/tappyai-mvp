@@ -19,6 +19,7 @@
 
 import { buildActions, type ActionSource } from '@/lib/recommendation/actions'
 import { isOpenNow } from './tools/serperPlaces'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── c40 T6 (UAT @ 2bd5c59, 2026-09-28): a stop scheduled while the venue is closed ────────────
 //
@@ -367,7 +368,8 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
       if (place.maps_link) item.maps_link = place.maps_link
       if (place.place_id) item.place_id = place.place_id
       const photo = place.photo_urls?.[0] ?? place.photo_url
-      if (photo && !item.photo_url) item.photo_url = photo
+      // Gate 2 N2 (D-N2, proposal): a plan photo is written only as a safe https URL.
+      if (photo && !item.photo_url && isSafeHttpsUrl(photo)) item.photo_url = photo
       delete item.booking_links
       const url = bookingUrlFor(place, kind)
       if (url) { if (item.booking_link !== url) res.linksSet++; item.booking_link = url }
@@ -394,7 +396,8 @@ export function guardPlanItems(fullText: string, places: readonly PlanPlace[], o
           if (p.maps_link) item.maps_link = p.maps_link
           if (p.place_id) item.place_id = p.place_id
           const photo = p.photo_urls?.[0] ?? p.photo_url
-          if (photo) item.photo_url = photo
+          // Gate 2 N2 (D-N2, proposal): same rule for a topped-up sight.
+          if (photo && isSafeHttpsUrl(photo)) item.photo_url = photo
           const url = bookingUrlFor(p, 'attraction')
           if (url) { item.booking_link = url; res.linksSet++ }
           kept.splice(anchor, 0, item)

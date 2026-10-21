@@ -53,7 +53,8 @@ export function dropOrphanLeadIns(text: string): { text: string; removed: number
   const lines = text.split('\n')
   const colonLead = (l: string) => /:\s*(?:\*\*)?\s*$/.test(l.trim())
   const announcesList = (l: string) => /(?<!\p{L})(như sau|sau đây|dưới đây|bao gồm|gồm|các khoản|cụ thể|as follows|below|the following)(?!\p{L})[^:\n]*:\s*(?:\*\*)?\s*$/iu.test(l.trim())
-  const heading = (l: string) => /^\s*#{1,4}\s+\S/.test(l) || /^\s*\*\*[^*\n]{2,80}\*\*\s*:?\s*$/.test(l)
+  // A bold line that ends in "?" is a question to the user ("**Ngân sách tối nay khoảng bao nhiêu?**"), not a section heading: it is never an orphan.
+  const heading = (l: string) => (/^\s*#{1,4}\s+\S/.test(l) || /^\s*\*\*[^*\n]{2,80}\*\*\s*:?\s*$/.test(l)) && !/[?？]\s*(?:\*\*)?\s*:?\s*$/.test(l.trim())
   // structure that answers an announcing lead-in: a list, a table, code, or section headings ("**1. Chi phí mở quán**", "## …")
   const listLike = (l: string) => /^\s*(?:[-*•+]|\d{1,2}[.)])\s|^\s*\||^\s*```|^\s*\*\*\s*\d{1,2}[.)]/.test(l) || (heading(l) && !colonLead(l))
   // a short label line ("**Chi phí:**", "Lưu ý:") — only such a line is dropped for being followed by another lead-in

@@ -169,6 +169,7 @@ const POLICY_KEYS: Array<[RegExp, RegExp]> = [
 const STALE_QUALIFIER = /(?<!\p{L})(năm|tháng)\s*\d|20\d{2}|(?<!\p{L})(cũ|trước đây|đã lâu|thời điểm đó|lúc đó|có thể đã thay đổi)(?!\p{L})|as of|in 20\d{2}|outdated/iu
 
 /** "chưa xác minh được giá phòng" / "not verified": the sentence discloses that its figure is not checked. */
+const AVAIL_ADMISSION_V3 = /(?<!\p{L})(?:chưa|không|chua|khong)\s+(?:thể\s+|the\s+|được\s+|duoc\s+)?(?:\S+\s+){0,2}?(?:kiểm tra|kiem tra|xác định|xac dinh|tra được|tra duoc|biết|biet|check)(?!\p{L})|\b(?:could not|couldn'?t|can'?t|cannot) (?:check|confirm|tell)\b/iu
 const DISCLOSED = /(?<!\p{L})(chưa|không)\s+(?:\S+\s+){0,3}?(xác minh|xác nhận|kiểm chứng|chắc chắn|kiểm tra được)|có thể đã (?:thay đổi|khác)|theo (?:thông tin|dữ liệu) cũ|theo trí nhớ|không phải (?:giá|số liệu) hiện tại|not (?:yet )?(?:verified|confirmed)|unverified|may have changed|from memory/iu
 const PLANNING = /(?<!\p{L})(ngân sách|ngan sach|dự trù|du tru|ước tính|uoc tinh|ước chừng|chi phí dự kiến|tổng chi phí|chi tiêu|budget|estimate|estimated)(?!\p{L})/iu
 const ESTIMATE = /(?<!\p{L})(khoảng|tầm|chừng|ước tính|dự trù|around|about|roughly)(?!\p{L})/iu
@@ -402,7 +403,7 @@ const CATEGORY_WORDS: Record<ClaimCategory, { vi: string; en: string }> = {
  * The gate. `text` = the reply prose after the specialised guards (M4-supported sentences arrive as opaque tokens and are skipped;
  * machine blocks are skipped). Returns the gated text and the per-claim classification (for the trace).
  */
-export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: string; illustrations?: boolean } = {}): GateResult {
+export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: string; illustrations?: boolean; quietAged?: boolean; labelEstimates?: boolean } = {}): GateResult {
   const counts: Record<ClaimState, number> = { FACT: 0, INFERENCE: 0, UNKNOWN: 0, CONFLICT: 0, FABRICATED: 0 }
   const claims: GateClaim[] = []
   if (!/\d|còn|hết|đang mở|đã đặt|đặt thành công|bữa sáng|hủy|huỷ|hoàn tiền|bảo hành|đổi trả|in stock|sold out|confirmed|breakfast|cancel|refund|warranty/i.test(text)) return { text, claims, removedSentences: 0, noteAdded: false, counts }
@@ -412,6 +413,7 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
   const fabricatedCats = new Set<ClaimCategory>()
   const conflictNotes: string[] = []
   const agedAt = new Set<string>() // fetch times of prices said as current from stale/unknown-time rows ('' = nobody knows when)
+  const labelled = new Map<number, string[]>() // CONSULT_V3 labelEstimates: sentence index → generic price values to mark "(ước tính)"
   // Values the reply may compute from: the user's, and the evidence's (money amounts and plain figures ≥ 1.000 from structured rows).
   const knownMoney = [...new Set([...ix.userMoney, ...ix.money.slice(0, 40), ...ix.nums.filter(n => n >= 1000).slice(0, 40)])]
   const factors = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, ...ix.user.filter(n => n > 0 && n <= 1000)]
@@ -478,10 +480,19 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
       } else if (isMoney && (math.checked.some(w => near(w, [c.lo!], 0.002, 1)) || (derived(c.lo!, knownMoney, sentFactors, sentPcts) && derived(c.hi!, knownMoney, sentFactors, sentPcts)))) state = 'INFERENCE'
       else if (c.category === 'market' && c.lo === undefined && /%/.test(c.value) && (knownMoney.length >= 2 || near(c.nums[0], ix.user, 0, 0.001))) state = 'INFERENCE'
       else if (DISCLOSED.test(sent)) state = 'UNKNOWN'
+      // CONSULT_V3 (UAT 17/10, "iPhone Duo"): "chưa thể kiểm tra cửa hàng … còn hàng" ADMITS it could not check availability — it states none.
+      else if (o.labelEstimates === true && c.category === 'availability' && AVAIL_ADMISSION_V3.test(sent)) state = 'UNKNOWN'
       else if (c.category === 'price' && planningFrame && ESTIMATE.test(sent)) state = 'INFERENCE'
       // POST-UAT B3: an item of a split of the USER'S envelope ("- Ăn sáng: 40.000đ" under "Chia ngân sách 700k:") is a planning
       // allowance, not a merchant price — when it names no place and stays within the envelope. A place-named line stays judged.
       else if (c.category === 'price' && splitFrame && !blockPlace && ix.userMoney.length > 0 && c.hi! <= Math.max(...ix.userMoney) * 1.05 && !ownPlace && !near(c.lo!, ix.userMoney, 0, 1)) state = 'INFERENCE'
+      // CONSULT_V3 (decision B; eval 17/10 rc-5/rc-6/rc-8: whole option lists were cut because each item carried a cost estimate): a GENERIC
+      // price — no place or product named in the sentence or above it — is kept as a labelled estimate ("(ước tính)" unless the sentence already
+      // says "khoảng / tầm / ước tính"). A price said of a named place / product with no source is still cut.
+      else if (o.labelEstimates === true && c.category === 'price' && c.lo !== undefined && !ownPlace && !blockPlace) {
+        state = 'INFERENCE'
+        if (!ESTIMATE.test(sent) && !PLANNING.test(sent)) labelled.set(i, [...(labelled.get(i) ?? []), c.value.trim()])
+      }
       else { state = 'FABRICATED'; bad = true; fabricatedCats.add(c.category) }
       // A supported / derived amount is a value the next sentences may compute from (chained arithmetic).
       if ((state === 'FACT' || state === 'INFERENCE' || state === 'CONFLICT') && isMoney) knownMoney.push(c.lo!, c.hi!)
@@ -490,8 +501,14 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
     }
     if (bad) doomed.add(i)
   })
-  if (!doomed.size && !conflictNotes.length && !agedAt.size) return { text, claims, removedSentences: 0, noteAdded: false, counts }
-  let out = spans.map(([a, b], i) => doomed.has(i) ? '' : text.slice(a, b)).join('')
+  if (!doomed.size && !conflictNotes.length && !agedAt.size && !labelled.size) return { text, claims, removedSentences: 0, noteAdded: false, counts }
+  const en0 = o.lang === 'en'
+  const markEstimate = (s: string, values: string[]): string => {
+    let out1 = s
+    for (const v of values) { const at = out1.indexOf(v); if (at >= 0) { out1 = `${out1.slice(0, at + v.length)} (${en0 ? 'estimate' : 'ước tính'})${out1.slice(at + v.length)}`; break } }
+    return out1
+  }
+  let out = spans.map(([a, b], i) => doomed.has(i) ? '' : labelled.has(i) ? markEstimate(text.slice(a, b), labelled.get(i)!) : text.slice(a, b)).join('')
   out = out.replace(/[ \t]{2,}/g, ' ').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim()
   const en = o.lang === 'en'
   const lines: string[] = []
@@ -500,12 +517,17 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
     const already = out.split(/(?<=[.!?…])\s+|\n+/).some(x => DISCLOSED.test(x))
     // B2: "from the sources checked" is only true when something was looked up this turn.
     const looked = ev.tools.length > 0
-    if (!already || fabricatedCats.has('dosage') || fabricatedCats.has('booking_status')) lines.push(en
-      ? `I could not verify ${what.join(', ')} ${looked ? 'from the sources checked' : '(nothing was looked up for it)'}, so I am not stating a figure.`
-      : `Mình chưa xác minh được ${what.join(', ')} ${looked ? 'từ nguồn đã tra' : '(chưa có nguồn tra cứu cho số liệu này)'}, nên không nêu con số.`)
+    // CONSULT_V3 (UAT 17/10): the bracketed "(chưa có nguồn tra cứu cho số liệu này)" read as leaked machine text — one plain sentence instead
+    if (!already || fabricatedCats.has('dosage') || fabricatedCats.has('booking_status')) lines.push(o.labelEstimates === true
+      ? (en ? `I don't have a reliable source for ${what.join(', ')} yet, so I'm not stating it.` : `Mình chưa có nguồn đáng tin cho ${what.join(', ')}, nên chưa nêu cụ thể.`)
+      : en
+        ? `I could not verify ${what.join(', ')} ${looked ? 'from the sources checked' : '(nothing was looked up for it)'}, so I am not stating a figure.`
+        : `Mình chưa xác minh được ${what.join(', ')} ${looked ? 'từ nguồn đã tra' : '(chưa có nguồn tra cứu cho số liệu này)'}, nên không nêu con số.`)
   }
   if (wrongMath && !fabricatedCats.size) lines.push(en ? 'I removed a calculated figure that did not check out against its own formula.' : 'Mình đã bỏ một kết quả tính không khớp với chính công thức của nó.')
-  if (agedAt.size) {
+  // CONSULT_V3 (owner 17/10, UAT đợt A): when the reply's sources are shown as links (`quietAged`), the generic "chưa rõ giá … lấy lúc nào"
+  // line is not added — the source chip says where the figure is from. The claim itself is judged exactly as before.
+  if (agedAt.size && !o.quietAged) {
     const stamped = [...agedAt].filter(Boolean).map(vnClock).filter(Boolean)
     const someUnknown = agedAt.has('')
     lines.push(en
@@ -515,9 +537,12 @@ export function noFabricationGate(text: string, ev: GateEvidence, o: { lang?: st
   if (conflictNotes.length) lines.push(en ? `Note: sources disagree here (${conflictNotes.slice(0, 2).join('; ')}) — check before deciding.` : `Lưu ý: các nguồn ghi khác nhau ở điểm này (${conflictNotes.slice(0, 2).join('; ')}) — nên kiểm tra lại trước khi quyết định.`)
   if (lines.length) {
     // Before the machine blocks the reply carries ([FOLLOWUPS], [CTA_BUTTONS], plan / shopping markers), never inside or after them.
-    const at = out.search(/\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z]+)\]/)
+    // CONSULT_V3 (UAT 17/10): also before the closing question and its numbered options — the note landed glued to option "4." otherwise.
+    const markerAt = out.search(/\[(?:FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z]+)\]/)
+    const questionAt = o.labelEstimates === true ? out.search(/(?:^|\n)[ \t]*\*\*[^*\n]+[?？]\*\*[ \t]*(?:\n[ \t]*\d{1,2}[.)][^\n]*)*[ \t]*(?=\n\s*\[|\s*$)/) : -1
+    const at = questionAt >= 0 && (markerAt < 0 || questionAt < markerAt) ? questionAt : markerAt
     const head = (at < 0 ? out : out.slice(0, at)).replace(/\s+$/, '')
-    const tail = at < 0 ? '' : out.slice(at)
+    const tail = at < 0 ? '' : out.slice(at).replace(/^\s+/, '')
     out = `${head}${head ? '\n\n' : ''}${lines.join(' ')}${tail ? `\n\n${tail}` : ''}`
   }
   return { text: out, claims, removedSentences: doomed.size, noteAdded: lines.length > 0, counts }

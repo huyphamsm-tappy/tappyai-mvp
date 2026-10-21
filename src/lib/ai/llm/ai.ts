@@ -152,7 +152,7 @@ export const AI = {
   /** Image + instruction → text (OCR, image analysis). */
   vision(opts: AIVisionOptions) {
     return generateText({
-      model: modelForRole(opts.role ?? 'vision'),
+      model: modelForRole(opts.role ?? 'vision', { budgetKind: opts.budgetKind }),
       messages: buildMessages({
         messages: [{
           role: 'user',
