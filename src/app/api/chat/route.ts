@@ -123,9 +123,9 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS,
 import { type ConsultDecision, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult, catalogueAsk } from '@/lib/ai/consultative/consultRouter'
 import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
-import { agentPromptVersion, consultV3Enabled } from '@/lib/ai/agent/runtime/consultV3'
+import { agentPromptVersion, consultV3Enabled, CONSULT_V3_SYSTEM } from '@/lib/ai/agent/runtime/consultV3'
 import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCredit } from '@/lib/ai/quota/clarifyCredit'
-import { carriedFromStoredCandidates, storedStates } from '@/lib/ai/consultative/serverCarried'
+import { carriedFromStoredCandidates, storedStates, shoppingPickPriceStoredFirst, shoppingRecordsStoredFirst } from '@/lib/ai/consultative/serverCarried'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
@@ -825,7 +825,8 @@ export async function POST(req: Request) {
     return texts.length && texts[texts.length - 1] === lastText ? texts : [...texts, lastText].filter(x => x.trim())
   })()
   // Phase 8: the runtime asks through Luna's ask_user action instead of this regex gate.
-  const plannerNeedsDest = agentOn && !agentV2 && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
+  // Q-03: while an action waits, the next turn reaches the agent; the planner's destination question must not take it over.
+  const plannerNeedsDest = agentOn && !agentV2 && !pendingWaiting && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
   const plannerAsk = plannerNeedsDest ? plannerDestinationQuestion(lastText, lang) : null
   // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
   // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
@@ -2018,7 +2019,7 @@ export async function POST(req: Request) {
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
   if (consult?.turn === 'plan') enrichment.setConsultPick(latestConsultPick(null))
   // Shopping plan: the "Tổng chi phí" line is computed from the chosen product's listed price (appendConsultPlanCost).
-  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = latestShoppingPickPrice(assistantTexts, latestConsultPick(null))
+  if (consult?.turn === 'plan' && consult.domains[0] === 'shopping') enrichment.consultPlanPrice = shoppingPickPriceStoredFirst(chatState, latestConsultPick(null), () => latestShoppingPickPrice(assistantTexts, latestConsultPick(null)))
   // Consult V2: after a pick the server offers the next steps (owner Phần 3.3).
   if (consult && (consult.turn === 'pick' || consult.turn === 'more' || consult.turn === 'reject' || consult.turn === 'compare')) enrichment.setConsultButtons(lang === 'en' ? ['See more', 'Plan it in detail'] : ['Xem thêm', 'Lên kế hoạch chi tiết'])
 
@@ -2394,7 +2395,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     : undefined
   // A shopping PLAN calls no tool: the newest card's prices are its money evidence, so the money guard is active and
   // an amount no source carries ("Giấy gói quà ~20.000đ", replay SHOP-2 level A) is removed, the product's own kept.
-  const shopPlanRecords = consult?.turn === 'plan' && consult.domains[0] === 'shopping' ? shoppingMarkerRecords(assistantTexts) : []
+  const shopPlanRecords = consult?.turn === 'plan' && consult.domains[0] === 'shopping' ? shoppingRecordsStoredFirst(chatState, () => shoppingMarkerRecords(assistantTexts)) : []
   // The requested entity the guard binds prices to: the product the conversation settled on, else the card's first.
   const shopPlanQuery = shopPlanRecords.length ? (latestConsultPick(null) ?? shopPlanRecords[0].title) : null
   const followSeed: TurnEvidence | undefined = followPlaceSeed ?? (shopPlanRecords.length ? { places: [], productRecords: shopPlanRecords, productQueries: shopPlanQuery ? [shopPlanQuery] : [] } : undefined)
@@ -3200,7 +3201,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // STATIC prompt text only — the per-turn prompt carries product/place names a normal reply repeats (final none 30/09:
   // 3 shopping replies naming a 12-word product title were replaced).
   console.log(JSON.stringify({ type: 'tappyai_turn_path', path: agentV2 ? 'agent_v2' : agentOn ? 'agent_v1' : consult ? 'consult' : 'legacy', consultative_in_agent: consultativeAgent }))
-  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), ...(consultativeAgent ? [agentSystemV2For(true)] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))], consultativeAgent ? { runs: true } : undefined))
+  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), ...(consultativeAgent ? [agentSystemV2For(true)] : []), ...(consultativeAgent && consultV3Enabled() ? [CONSULT_V3_SYSTEM] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))], consultativeAgent ? { runs: true } : undefined))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
   // A Luna PLAN turn with tools (non-trip) gets ONE search (owner: at most one targeted extra search). Replay 30/09

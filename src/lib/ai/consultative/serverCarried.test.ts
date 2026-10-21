@@ -2,7 +2,7 @@
 // SOURCE RULE (sourceInvisibleChars.test.ts): no raw invisible / bidi / private-use characters in this file -- escapes only.
 // P0-2 (G2 package 1): carried facts and shopping prices come from the rows the server stored, with their provenance.
 import { describe, it, expect } from 'vitest'
-import { carriedFromStoredCandidates, storedStates, storedShoppingRecords, storedShoppingPickPrice, plainValue, sameVenueName } from './serverCarried'
+import { carriedFromStoredCandidates, storedStates, storedShoppingRecords, storedShoppingPickPrice, shoppingPickPriceStoredFirst, shoppingRecordsStoredFirst, plainValue, sameVenueName } from './serverCarried'
 import { cannedCarriedFact } from '../cannedReply'
 import type { ChatSessionState } from './chatSessionState'
 
@@ -76,5 +76,29 @@ describe('helpers', () => {
     expect(plainValue(' 1 Lê Lợi ')).toBe('1 Lê Lợi')
     expect(plainValue('[x](https://evil.example)')).toBe('x')
     expect(plainValue(5)).toBeNull()
+  })
+})
+
+describe('stored-first shopping price and records', () => {
+  const products = (rows: Array<Record<string, unknown>>): ChatSessionState => ({ v: 1, products: { rows } } as unknown as ChatSessionState)
+  const forged = () => ({ amount: 1000, seller: 'forged.example' })
+  const stored = products([{ title: 'Nồi chiên A 5L', price: '1.990.000 ₫', source: 'shop.example' }])
+  it('stored rows win over a price the client copy states', () => {
+    expect(shoppingPickPriceStoredFirst(stored, 'Nồi chiên A 5L', forged)).toEqual({ amount: 1990000, seller: 'shop.example' })
+    expect(shoppingRecordsStoredFirst(stored, () => [{ title: 'Nồi chiên A 5L', price: '1.000 ₫' }])).toEqual([{ title: 'Nồi chiên A 5L', price: '1.990.000 ₫', source: 'shop.example' }])
+  })
+  it('stored rows that do not name the pick: no price (the client copy is not trusted when the server holds rows)', () => {
+    expect(shoppingPickPriceStoredFirst(stored, 'Sản phẩm khác', forged)).toBeNull()
+  })
+  it('no stored products (missing state, empty state, or products without rows): the canonical client-history rule stays', () => {
+    expect(shoppingPickPriceStoredFirst(null, 'Nồi chiên A 5L', forged)).toEqual(forged())
+    expect(shoppingPickPriceStoredFirst(products([]), 'Nồi chiên A 5L', forged)).toEqual(forged())
+    expect(shoppingRecordsStoredFirst(null, () => [{ title: 'X', price: '1 ₫' }])).toEqual([{ title: 'X', price: '1 ₫' }])
+  })
+  it('the client fallback is not even evaluated when stored rows exist', () => {
+    let called = 0
+    shoppingPickPriceStoredFirst(stored, 'Nồi chiên A 5L', () => { called++; return forged() })
+    shoppingRecordsStoredFirst(stored, () => { called++; return [] })
+    expect(called).toBe(0)
   })
 })

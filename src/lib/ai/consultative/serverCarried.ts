@@ -113,3 +113,19 @@ export function storedShoppingPickPrice(state: ChatSessionState | null | undefin
   }
   return null
 }
+
+const hasStoredProducts = (state: ChatSessionState | null | undefined): boolean => (state?.products?.rows?.length ?? 0) > 0
+
+/**
+ * The shopping pick's price, stored-first (P0-2). When the server stored this consultation's product rows they are the ONLY source — a
+ * price the client's copy of an earlier reply states is not trusted then, even if no stored row names the pick (the answer is then "no
+ * price", and the cost line is left out). Without stored rows the canonical rule stays: the client-history reader decides.
+ */
+export function shoppingPickPriceStoredFirst<T>(state: ChatSessionState | null | undefined, pickName: string | null | undefined, fromClientText: () => T): { amount: number; seller: string | null } | T | null {
+  return hasStoredProducts(state) ? storedShoppingPickPrice(state, pickName) : fromClientText()
+}
+
+/** The product records the plan guard reads, stored-first on the same rule as shoppingPickPriceStoredFirst. */
+export function shoppingRecordsStoredFirst<T>(state: ChatSessionState | null | undefined, fromClientText: () => T[]): Array<{ title: string; price: string; source?: string }> | T[] {
+  return hasStoredProducts(state) ? storedShoppingRecords(state) : fromClientText()
+}
