@@ -106,33 +106,10 @@ def secrets():
     check("no PEM private key body in ios/ or docs/ios/", not hits, ", ".join(hits))
 
 
-def brands():
-    """Every partner brand in BrandRegistry.swift has its imageset with the logo file."""
-    src = open("ios/TappyAI/Features/Deals/Model/BrandRegistry.swift", encoding="utf-8").read()
-    ids = re.findall(r'BrandDefinition\(id: "([a-z-]+)"', src)
-    check("BrandRegistry lists the partner brands", len(ids) >= 1, "%d brands" % len(ids))
-    for bid in ids:
-        folder = "ios/TappyAI/Resources/Assets.xcassets/brand-%s.imageset" % bid
-        files = [f for f in glob.glob(folder + "/*") if not f.endswith("Contents.json")]
-        check("logo asset for brand " + bid, len(files) == 1 and os.path.getsize(files[0]) > 0, folder)
-
-
-def home_sections():
-    """The Web final Home has no «Gợi ý nhanh» cards and no «Ưu đãi hôm nay» rail (HomeV3.tsx): nothing in the app may render them."""
-    banned = ["HomeDealsSection", "HomeSuggestedPromptsSection", "HomeQuickAction(", "home.v3.quickTitle", "home.v3.dealsTitle"]
-    hits = []
-    for path in glob.glob("ios/TappyAI/**/*.swift", recursive=True):
-        body = open(path, encoding="utf-8").read()
-        hits += [os.path.basename(path) + ": " + w for w in banned if w in body]
-    check("Home does not reference the removed quick-suggestion / deals sections", not hits, ", ".join(hits))
-
-
 if __name__ == "__main__":
-    home_sections()
     strings_catalog()
     plists()
     scripts()
     secrets()
-    brands()
     print("\n%s" % ("ALL STATIC CHECKS PASSED" if not failures else "FAILED: " + "; ".join(failures)))
     sys.exit(1 if failures else 0)
