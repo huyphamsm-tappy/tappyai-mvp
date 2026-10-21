@@ -159,6 +159,7 @@ fun ChatScreen(
     val publicShareEnabled by viewModel.publicShareEnabled.collectAsStateWithLifecycle()
     val isResponding by viewModel.isAssistantResponding.collectAsStateWithLifecycle()
     val streamCut by viewModel.streamCut.collectAsStateWithLifecycle()
+    val turnStatus by viewModel.turnStatus.collectAsStateWithLifecycle()
     val streamingText by viewModel.streamingText.collectAsStateWithLifecycle()
     val streamingHint by viewModel.streamingHint.collectAsStateWithLifecycle()
     val streamingPlaces by viewModel.streamingPlaces.collectAsStateWithLifecycle()
@@ -557,6 +558,22 @@ fun ChatScreen(
                                 leadingIcon = { Icon(Icons.Filled.Refresh, contentDescription = null, modifier = Modifier.size(16.dp)) },
                             )
                         }
+                    }
+                }
+                // The server's own end state for a reply that did not finish cleanly (tappy.turn_status.v1): one fixed
+                // line, never inserted into the answer (web `chat.turnIncomplete` / `chat.turnInterrupted`).
+                val endStatus = turnStatus
+                if (endStatus != null && !streamCut && !isResponding) {
+                    item(key = "turn-status") {
+                        Text(
+                            text = stringResource(
+                                if (endStatus == com.tappyai.app.chat.data.TurnStatusKind.Interrupted) R.string.chat_turn_interrupted
+                                else R.string.chat_turn_incomplete,
+                            ),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = TappySpacing.lg),
+                        )
                     }
                 }
             }

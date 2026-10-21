@@ -21,6 +21,7 @@ import com.tappyai.app.chat.data.ChatRepository
 import com.tappyai.app.chat.data.CommerceHandoffReporter
 import com.tappyai.core.analytics.AnalyticsProvider
 import com.tappyai.app.chat.data.ChatStreamEvent
+import com.tappyai.app.chat.data.TurnStatusKind
 import com.tappyai.app.chat.data.MessageFeedback
 import com.tappyai.app.chat.data.MessageFeedbackRepository
 import com.tappyai.app.chat.data.PublishedShare
@@ -128,6 +129,11 @@ class ChatViewModel @Inject constructor(
     // offers «answer again». Cleared as soon as a new turn starts. Web parity: ChatInterface `streamCut`.
     private val _streamCut = MutableStateFlow(false)
     val streamCut: StateFlow<Boolean> = _streamCut.asStateFlow()
+
+    // How the server says the last reply ended when it was not clean (tappy.turn_status.v1): the screen shows
+    // its own fixed line under the reply. Never part of the answer text; cleared when a new turn starts.
+    private val _turnStatus = MutableStateFlow<TurnStatusKind?>(null)
+    val turnStatus: StateFlow<TurnStatusKind?> = _turnStatus.asStateFlow()
 
     // The reply text revealed AS IT STREAMS (structured blocks stripped, image markdown KEPT — the
     // UI segments it live so photo galleries appear inline mid-stream, matching the committed
@@ -664,6 +670,7 @@ class ChatViewModel @Inject constructor(
         respondingJob = viewModelScope.launch {
             _isAssistantResponding.value = true
             _streamCut.value = false
+            _turnStatus.value = null
             _streamingText.value = ""
             _streamingHint.value = null
             _streamingPlaces.value = null
@@ -684,6 +691,8 @@ class ChatViewModel @Inject constructor(
                         is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
                         // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
                         ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
+                        // The server's own end state (incomplete / interrupted): a status line, never answer text.
+                        is ChatStreamEvent.TurnStatus -> { _turnStatus.value = event.status; return@collect }
                     }
                     reply.append(token)
                     // Surface the running text with structured blocks stripped but image markdown

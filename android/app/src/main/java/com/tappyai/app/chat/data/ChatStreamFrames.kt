@@ -26,6 +26,9 @@ object ChatStreamFrames {
     /** The progress annotation's kind (server `progressAnnotation.ts`, A1(b)). */
     const val PROGRESS_ANNOTATION_KIND = "tappy.progress.v1"
 
+    /** The turn's end-state annotation (server `progressAnnotation.ts`, C2 P2). */
+    const val TURN_STATUS_ANNOTATION_KIND = "tappy.turn_status.v1"
+
     private val json = Json { ignoreUnknownKeys = true; isLenient = true }
 
     /**
@@ -88,6 +91,15 @@ object ChatStreamFrames {
                             val text = obj["text"]?.jsonPrimitive?.contentOrNull.orEmpty()
                             val stage = obj["stage"]?.jsonPrimitive?.contentOrNull.orEmpty()
                             if (text.isNotBlank()) { event = ChatStreamEvent.Progress(stage, text); break }
+                        }
+                        TURN_STATUS_ANNOTATION_KIND -> {
+                            // An unknown status value is ignored, like web `readTurnStatus`.
+                            val status = when (obj["status"]?.jsonPrimitive?.contentOrNull) {
+                                "incomplete" -> TurnStatusKind.Incomplete
+                                "interrupted" -> TurnStatusKind.Interrupted
+                                else -> null
+                            }
+                            if (status != null) { event = ChatStreamEvent.TurnStatus(status); break }
                         }
                     }
                 }

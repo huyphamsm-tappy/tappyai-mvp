@@ -45,6 +45,16 @@ sealed interface ChatStreamEvent {
     data class Progress(val stage: String, val text: String) : ChatStreamEvent
 
     /**
+     * How the server says the turn ENDED when it did not end cleanly (`8:`, kind
+     * `tappy.turn_status.v1`, C2 P2): [TurnStatusKind.Incomplete] = the answer stops early,
+     * [TurnStatusKind.Interrupted] = a server/provider error broke it while streaming. The screen
+     * shows its own fixed line under the reply; the status is never text of the answer, and the
+     * client makes no billing claim (the server alone decides about a refund).
+     * Web parity: `progressAnnotation.ts` `readTurnStatus`.
+     */
+    data class TurnStatus(val status: TurnStatusKind) : ChatStreamEvent
+
+    /**
      * The body closed cleanly WITHOUT its finish frame (`d:`) or an error frame (`3:`) — a proxy or
      * function cut the reply half-way. The route always ends a data stream with one of the two, so the
      * text received is half an answer, not a normal one: the screen offers «answer again» (web parity:
@@ -52,6 +62,9 @@ sealed interface ChatStreamEvent {
      */
     data object Cut : ChatStreamEvent
 }
+
+/** The two end states `tappy.turn_status.v1` can carry; any other value is ignored by the reader. */
+enum class TurnStatusKind { Incomplete, Interrupted }
 
 interface ChatRepository {
     fun streamReply(messages: List<ChatMessage>, chatSessionId: String? = null): Flow<ChatStreamEvent>

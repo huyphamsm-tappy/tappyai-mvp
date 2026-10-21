@@ -109,6 +109,8 @@
     <string name="chat_action_regenerate">Tạo lại</string>
     <string name="chat_stream_cut">Câu trả lời bị ngắt giữa chừng. Bạn thử lại nhé?</string>
     <string name="chat_stream_cut_retry">Trả lời lại</string>
+    <string name="chat_turn_incomplete">Câu trả lời có thể chưa đầy đủ. Bạn hỏi tiếp để mình viết thêm nhé.</string>
+    <string name="chat_turn_interrupted">Câu trả lời bị gián đoạn giữa chừng. Phần trên là những gì đã nhận được — bạn có thể hỏi lại.</string>
     <string name="chat_ai_disclaimer">Tappy có thể mắc lỗi. Vui lòng kiểm tra lại thông tin quan trọng.</string>
     <string name="chat_action_more">Thêm</string>
     <string name="chat_more_copy_plaintext">Sao chép văn bản thuần</string>

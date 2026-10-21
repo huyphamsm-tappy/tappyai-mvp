@@ -110,6 +110,8 @@
     <string name="chat_action_regenerate">Regenerate</string>
     <string name="chat_stream_cut">The answer was cut off half-way. Try again?</string>
     <string name="chat_stream_cut_retry">Answer again</string>
+    <string name="chat_turn_incomplete">This answer may be incomplete. Ask a follow-up and I will continue.</string>
+    <string name="chat_turn_interrupted">This answer was interrupted. What is above is what arrived — you can ask again.</string>
     <string name="chat_ai_disclaimer">Tappy can make mistakes. Please double-check important information.</string>
     <string name="chat_action_more">More</string>
     <string name="chat_more_copy_plaintext">Copy plaintext</string>
