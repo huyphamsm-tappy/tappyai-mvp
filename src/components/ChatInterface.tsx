@@ -66,6 +66,10 @@ import ChoiceCard from '@/components/chat/ChoiceCard'
 import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
 import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
 import { NewsMediaGrid, EntityCard, EntityPanel } from '@/components/chat/MediaBlocks'
+import { ArticleAnswer, EntityRow, summaryOpening } from '@/components/chat/ArticleAnswer'
+import { readDocMedia, rememberDocMedia, recallDocMedia } from '@/lib/answerDoc/media'
+import { StreamedTextKeeper } from '@/lib/chat/streamedText'
+import { useLatencyMarks } from '@/lib/chat/useLatencyMarks'
 import VoiceOverlay from '@/components/chat/VoiceOverlay'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
@@ -536,6 +540,8 @@ export function sameSubjectName(a: string, b: string): boolean {
 }
 /** CONSULT_V3 UAT build only (inlined at build time): closing decision questions render as a choice card, citations group into one chip. */
 const CONSULT_V3_CHOICES = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
+/** TAPPY_ANSWER_V4 build flag (owner 19/10): answers laid out as an article (ArticleAnswer) with the server's item pictures and comparison cards. */
+const ANSWER_V4 = process.env.NEXT_PUBLIC_TAPPY_ANSWER_V4 === '1'
 /** A source chip whose label is just its own host ("vnexpress.net", the citation step's label) reads better as the outlet's name. */
 const labelIsOwnHost = (label: string, url: string) => {
   try { return label.trim().toLowerCase().replace(/^www\./, '') === new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '') } catch { return false }
@@ -997,6 +1003,12 @@ export default function ChatInterface({
   const resultIdsRef = useRef<Map<string, string>>(new Map())
   // CONSULTATIVE_IN_AGENT: the server asked (x-tappy-reveal) for the settled reply to be revealed progressively — display only (lib/chat/useFinishReveal).
   const [revealMode, setRevealMode] = useState(false)
+  // C2 P2 6.2 (lib/chat/streamedText, NEXT_PUBLIC_C2_KEEP_STREAMED_TEXT): when the reply being received first showed text, and — once per reply,
+  // at its finish — whether it is kept exactly as streamed. Flag off: keep() is always false (the default path is unchanged).
+  const streamKeeperRef = useRef<StreamedTextKeeper | null>(null)
+  if (!streamKeeperRef.current) streamKeeperRef.current = new StreamedTextKeeper()
+  // C2: browser-side latency marks (observation only, off unless NEXT_PUBLIC_C2_LATENCY_MARKS=1 / localStorage.tappy_latency=1). Set after useChat returns.
+  const latencyOnResponseRef = useRef<() => void>(() => {})
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     /**
@@ -1024,6 +1036,7 @@ export default function ChatInterface({
       ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {
+      latencyOnResponseRef.current()
       setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
@@ -1041,7 +1054,9 @@ export default function ChatInterface({
       // UAT3: one reply, not two. A reply that streamed the same answer twice (lib/chat/replyRepeat)
       // is collapsed to its last version — on screen and in what is saved. The server guard
       // (stepRepeatGuard) catches the multi-step shape; this catches a repeat inside one step.
-      const collapsed = typeof finished.content === 'string' ? cleanRepeats(finished.content) : finished.content
+      // C2 P2 6.2 (F-3 b): text the user already read while it streamed is kept exactly as received (flag on; off → cleaned as before).
+      const keepAsStreamed = streamKeeperRef.current!.keep(finished.id, Date.now())
+      const collapsed = typeof finished.content === 'string' && !keepAsStreamed ? cleanRepeats(finished.content) : finished.content
       const message = collapsed === finished.content ? finished : { ...finished, content: collapsed }
       if (message !== finished) setMessages(prev => prev.map(m => (m.id === finished.id ? message : m)))
       if (pendingResultIdRef.current) {
@@ -1135,7 +1150,13 @@ export default function ChatInterface({
     ? parseMediaBlocks(parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
-  const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealMode, markdownSafeRevealEnd)
+  // C2 P2 6.2: note when the reply being received first shows text (once per reply), and — flag on — never re-reveal a reply the user already
+  // read while it streamed (the finish reveal restarts from 0: it would hide what is on screen and type it again). Decided once, at the finish.
+  if (isLoading && lastMsg?.role === 'assistant' && lastAssistantRaw) streamKeeperRef.current.noteShown(lastMsg.id, Date.now())
+  const revealAllowed = revealMode && !(!isLoading && lastMsg?.role === 'assistant' && streamKeeperRef.current.keep(lastMsg.id, Date.now()))
+  const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealAllowed, markdownSafeRevealEnd)
+  // C2: what the user can actually read now = the reveal's prefix while it runs, else the (smoothed) streamed text.
+  latencyOnResponseRef.current = useLatencyMarks(finishReveal.revealing ? finishReveal.text : (isLoading ? smoothedLastText : lastAssistantRaw), isLoading, finishReveal.revealing).onResponse
 
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
@@ -1696,7 +1717,13 @@ export default function ChatInterface({
                 const { text: textAfterMedia, blocks: mediaBlocks } = parseMediaBlocks(textAfterPlaces)
                 const newsMedia = mediaBlocks.find(b => b.kind === 'news')
                 const entityMedia = mediaBlocks.find(b => b.kind === 'entity')
+                const entitiesMedia = mediaBlocks.find(b => b.kind === 'entities')
                 const { text, questions: askQuestions } = parseAsk(textAfterMedia)
+                // TAPPY_ANSWER_V4: the item pictures arrive as an ANNOTATION (never stored text — web images are live-only); kept for the tab's life
+                // across the save navigation, like the place card. Flag off: nothing is read.
+                const liveDocMedia = ANSWER_V4 ? readDocMedia(msg.annotations as unknown[] | undefined) : null
+                if (liveDocMedia) rememberDocMedia(msg.content, liveDocMedia)
+                const docImages = ANSWER_V4 ? (liveDocMedia ?? recallDocMedia(msg.content))?.items ?? [] : []
                 /**
                  * The place decision, from this message's ANNOTATIONS.
                  *
@@ -1769,12 +1796,27 @@ export default function ChatInterface({
                           const settled = !(isLoading && isLastMessage)
                           const entity = settled && entityMedia?.kind === 'entity' ? entityMedia.entity : null
                           const news = settled && newsMedia?.kind === 'news' ? newsMedia.items : null
-                          const [lead, rest] = entity || news ? splitLeadParagraph(shown) : [shown, '']
+                          const entities = settled && entitiesMedia?.kind === 'entities' ? entitiesMedia.entities : null
+                          const [lead, rest] = entity || news || entities ? splitLeadParagraph(shown) : [shown, '']
                           const onBodyClick = (e: React.MouseEvent<HTMLDivElement>) => {
                             const el = e.target as HTMLElement
                             if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { setEntityPanel(entity); return }
+                            const tapped = el.tagName === 'STRONG' ? entities?.find(x => sameSubjectName(el.textContent ?? '', x.name)) : undefined
+                            if (tapped) { setEntityPanel(tapped); return }
                             onMessageLinkClick(e)
                           }
+                          // TAPPY_ANSWER_V4 (build flag, off by default): the article layout — same text, same formatter, block typography and the
+                          // server's item pictures (an annotation, live-only).
+                          if (ANSWER_V4) return (
+                            <>
+                              <ArticleAnswer text={lead} images={docImages} format={formatMessage} onClick={onBodyClick}
+                                className={cn(isLoading && isLastMessage && 'streaming-cursor', (entity || entities) && '[&_strong]:cursor-pointer')} />
+                              {news && <NewsMediaGrid items={news} />}
+                              {entity && <EntityCard entity={{ ...entity, summary: summaryOpening(entity.summary, 300) }} onOpen={() => setEntityPanel(entity)} />}
+                              {entities && <EntityRow entities={entities} onOpen={x => setEntityPanel(x)} />}
+                              {rest && <ArticleAnswer text={rest} images={docImages} format={formatMessage} onClick={onBodyClick} className="mt-3" />}
+                            </>
+                          )
                           if (!entity && !news) return <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(shown) }} />
                           return (
                             <>
