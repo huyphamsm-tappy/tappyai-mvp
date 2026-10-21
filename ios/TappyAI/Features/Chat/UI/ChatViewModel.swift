@@ -14,6 +14,9 @@ final class ChatViewModel: AppObservableObject {
     /// How the last reply ended when it was not a clean finish (cut stream, server turn status, `3:` part).
     /// A line under the reply; never part of the answer text. Cleared when a new turn starts.
     @AppPublished var endNotice: ChatEndNotice? = nil
+    /// What the pipeline is doing right now, as the server wrote it (`tappy.progress.v1`); shown in the
+    /// thinking indicator until the answer starts. Never text of the answer, never persisted.
+    @AppPublished var progressHint: String? = nil
     @AppPublished var thinkHintIndex: Int = 0
     @AppPublished var activeTool: String? = nil
     @AppPublished var conversationId: String? = nil
@@ -552,6 +555,7 @@ final class ChatViewModel: AppObservableObject {
         isStreaming = true
         activeTool = nil
         endNotice = nil
+        progressHint = nil
         startThinkTimer()
 
         streamTask = Task { [weak self] in
@@ -606,6 +610,10 @@ final class ChatViewModel: AppObservableObject {
                     // The server's own end state (incomplete / interrupted): a status line, never answer text.
                     case .turnStatus(let status):
                         self.endNotice = status == .interrupted ? .interrupted : .incomplete
+
+                    // The server's sentence for the current stage: replaces the rotating generic hint.
+                    case .progress(_, let text):
+                        self.progressHint = text
 
                     case .done:
                         sawDone = true

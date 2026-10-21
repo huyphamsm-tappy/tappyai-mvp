@@ -22,6 +22,10 @@ enum StreamFrame: Equatable, Sendable {
     /// A message ANNOTATION (`8:`) of kind `tappy.turn_status.v1`: how the server says the turn ENDED when it
     /// did not end cleanly (C2 P2; web `readTurnStatus`). A status line under the reply, never answer text.
     case turnStatus(TurnStatusKind)
+    /// A message ANNOTATION (`8:`) of kind `tappy.progress.v1`: what the pipeline is doing right now, as a
+    /// sentence the server wrote in the turn's language (never the user's words). Shown in the thinking
+    /// indicator; never text, never persisted. Web parity: `progressAnnotation.ts` `readProgress`.
+    case progress(stage: String, text: String)
     case done
     case unknown(prefix: String, payload: Data)
 }
@@ -36,6 +40,8 @@ enum TurnStatusKind: String, Equatable, Sendable {
 
 /// The turn-status annotation's `kind` (server `progressAnnotation.ts`).
 let turnStatusAnnotationKind = "tappy.turn_status.v1"
+/// The progress annotation's `kind` (server `progressAnnotation.ts`, A1(b)).
+let progressAnnotationKind = "tappy.progress.v1"
 
 /// Pure, testable parser for a single already-framed line. The chunk→line buffering is handled by the
 /// transport (`URLSession.AsyncBytes.lines`); higher-level marker extraction ([TAPPY_PLAN] etc.) is a
@@ -67,6 +73,16 @@ enum DataStreamLineParser {
                    return TurnStatusKind(rawValue: raw)
                }).last {
                 return .turnStatus(status)
+            }
+            // The turn's progress sentence; the LATEST element wins, a blank text is not a frame.
+            if let items = (try? JSONSerialization.jsonObject(with: payload)) as? [[String: Any]],
+               let progress = items.compactMap({ item -> (String, String)? in
+                   guard (item["kind"] as? String) == progressAnnotationKind,
+                         let text = (item["text"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+                         !text.isEmpty else { return nil }
+                   return ((item["stage"] as? String) ?? "", text)
+               }).last {
+                return .progress(stage: progress.0, text: progress.1)
             }
             return .unknown(prefix: prefix, payload: payload)
         case "9": return .toolCall(payload)

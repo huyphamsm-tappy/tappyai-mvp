@@ -44,6 +44,29 @@ final class ChatEndStateTests: XCTestCase {
         guard case .places? = DataStreamLineParser.parse(line: line) else { return XCTFail("expected places") }
     }
 
+    // MARK: - Progress sentence (tappy.progress.v1)
+
+    private func progress(_ stage: String, _ text: String) -> String {
+        "8:[{\"kind\":\"tappy.progress.v1\",\"v\":1,\"stage\":\"\(stage)\",\"text\":\"\(text)\"}]"
+    }
+
+    func testProgressFramesCarryTheServersSentence() {
+        XCTAssertEqual(DataStreamLineParser.parse(line: progress("found", "Đã có 10 chỗ phù hợp — đang chọn cho bạn…")),
+                       .progress(stage: "found", text: "Đã có 10 chỗ phù hợp — đang chọn cho bạn…"))
+    }
+
+    func testABlankProgressSentenceIsNotAFrame() {
+        guard case .unknown? = DataStreamLineParser.parse(line: progress("writing", "  ")) else {
+            return XCTFail("a blank sentence must stay an unknown frame")
+        }
+    }
+
+    func testTheProgressSentenceReachesTheThinkingIndicatorAndNeverTheAnswer() async {
+        let vm = await chat([progress("writing", "Đang viết gợi ý…"), "0:\"Xin chào\"", "d:{\"finishReason\":\"stop\"}"])
+        XCTAssertEqual(vm.progressHint, "Đang viết gợi ý…")
+        XCTAssertEqual(vm.messages.last?.content, "Xin chào", "the progress sentence is never appended to the answer")
+    }
+
     // MARK: - View model
 
     func testACleanReplyHasNoNotice() async {

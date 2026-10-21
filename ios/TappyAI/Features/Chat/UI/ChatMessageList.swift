@@ -38,6 +38,8 @@ struct ChatMessageList: View {
     var onReviewAIConsent: () -> Void = {}
     /// How the last reply ended when it was not a clean finish (see `ChatEndNotice`); nil = clean.
     var endNotice: ChatEndNotice? = nil
+    /// The server's progress sentence for the thinking indicator (see `ThinkingIndicator.progressHint`).
+    var progressHint: String? = nil
     /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
     var planShare: PlanSharing? = nil
 
@@ -113,7 +115,8 @@ struct ChatMessageList: View {
                         ThinkingIndicator(
                             activeTool: activeTool,
                             thinkHintIndex: thinkHintIndex,
-                            locale: locale
+                            locale: locale,
+                            progressHint: progressHint
                         )
                     }
 
@@ -401,6 +404,9 @@ private struct ThinkingIndicator: View {
     let activeTool: String?
     let thinkHintIndex: Int
     let locale: String
+    /// The server's own sentence for what the pipeline is doing now (`tappy.progress.v1`), in the turn's
+    /// language. Shown in place of the rotating generic hint while it is set.
+    var progressHint: String? = nil
 
     private let thinkHintsVi = ["Tappy đang suy nghĩ…", "Đang tìm thông tin…", "Đang tổng hợp câu trả lời…"]
     private let thinkHintsEn = ["Tappy is thinking…", "Looking things up…", "Putting it together…"]
@@ -429,6 +435,7 @@ private struct ThinkingIndicator: View {
     }
 
     private var hintText: String {
+        if let progressHint { return progressHint }
         if let tool = activeTool, let hint = ToolHints.hint(for: tool, locale: locale) {
             return hint
         }
