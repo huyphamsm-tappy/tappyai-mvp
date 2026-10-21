@@ -57,6 +57,8 @@ export function blockKeys(block: LegalBlock): string[] {
       return block.keys
     case 'email':
       return [block.labelKey]
+    case 'link':
+      return [block.labelKey, block.key]
     case 'faq':
       return block.items.flatMap(({ q, a }) => [q, a])
     case 'links':
