@@ -181,6 +181,8 @@ data class ParsedAssistantReply(
     val places: List<PersistedPlace> = emptyList(),
     /** Consult V2 ASK questions (`[TAPPY_ASK]`), rendered as [AskCard]. Empty on every other turn. */
     val ask: List<AskQuestion> = emptyList(),
+    /** `[TAPPY_MEDIA]` news pictures / Wikipedia subject cards, already host-checked ([MediaBlocks]). Empty unless the server flags emit them. */
+    val media: List<MediaBlock> = emptyList(),
 )
 
 /**
@@ -211,6 +213,9 @@ object ChatResponseParser {
     // instead of swallowing the rest of the reply.
     private val PLAN_PARTIAL_RE = Regex("""\[TAPPY_PLAN\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val PLAN_STRIP_RE = Regex("""\[/?TAPPY_PLAN\]""", RegexOption.IGNORE_CASE)
+    // Control blocks the server removes before the client sees the text: closed, trailing partial, orphan tag.
+    private val MACHINE_BLOCK_RE = Regex("""\[TAPPY_(TASK|RANK)\][\s\S]*?\[/TAPPY_\1\]""", RegexOption.IGNORE_CASE)
+    private val MACHINE_PARTIAL_RE = Regex("""\[/?TAPPY_(TASK|RANK)\][\s\S]*$""", RegexOption.IGNORE_CASE)
     private val CTA_TAG_RE = Regex("""\[CTA_BUTTONS\]([\s\S]*?)\[/CTA_BUTTONS\]""", RegexOption.IGNORE_CASE)
     // D2 FIX (P4-02). The bare form is located by BRACE MATCHING (findMarkerJson), not by a regex.
     //
@@ -342,6 +347,15 @@ object ChatResponseParser {
         // ALWAYS stripped — complete, malformed, or still arriving mid-stream — so no raw JSON reads.
         val ask = AskBlock.parse(text)
         text = ask.text
+
+        // 0b. Server-only machine blocks the client never renders as text. `[TAPPY_MEDIA]` is parsed
+        // (host allow-lists re-checked in [MediaBlocks]); `[TAPPY_TASK]` and `[TAPPY_RANK]` are the
+        // model's own control lines, removed on the server and dropped here again as a backstop.
+        // ALWAYS stripped — closed, malformed, or still arriving.
+        val mediaParsed = MediaBlocks.parse(text)
+        text = mediaParsed.text
+        text = MACHINE_BLOCK_RE.replace(text, "")
+        text = MACHINE_PARTIAL_RE.replace(text, "").trimEnd()
 
         // 1. Trip/evening plan.
         val planMatch = PLAN_RE.find(text)
@@ -496,6 +510,7 @@ object ChatResponseParser {
             shopping = shopping,
             places = places,
             ask = ask.questions,
+            media = mediaParsed.blocks,
         )
     }
 
