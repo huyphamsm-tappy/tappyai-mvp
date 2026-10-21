@@ -76,7 +76,7 @@ export async function trackTask(i: TrackerInput): Promise<{ delta: TaskDelta | n
     const prompt = trackerPrompt(i)
     let usd = 0
     const run = i.extract ?? (async o => {
-      const r = await AI.extract({ role: 'agent', systemShared: SYSTEM, messages: [{ role: 'user', content: o.prompt }], schema: TaskDeltaSchema, schemaName: 'task_delta', maxTokens: 600, abortSignal: o.signal })
+      const r = await AI.extract({ role: 'agent', systemShared: SYSTEM, messages: [{ role: 'user', content: o.prompt }], schema: TaskDeltaSchema, schemaName: 'task_delta', maxTokens: 600, abortSignal: o.signal, budgetKind: 'aux' })
       usd = Number(((r.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost?.usd) ?? 0)
       return r.object
     })

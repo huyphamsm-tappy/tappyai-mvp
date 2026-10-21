@@ -96,7 +96,7 @@ export async function recordDecision(i: {
   try {
     const prompt = [DATA_OPEN, 'DANH SÁCH ỨNG VIÊN:', ...cands.map((c, k) => `${k + 1}. ${c.slice(0, 120)}`), '', 'CÂU TRẢ LỜI ĐÃ VIẾT:', i.answer.slice(0, 4000), DATA_CLOSE].join('\n')
     const run = i.extract ?? (async o => {
-      const r = await AI.extract({ role: 'agent', systemShared: SYSTEM, messages: [{ role: 'user', content: o.prompt }], schema: DecisionSchema, schemaName: 'recommendation_decision', maxTokens: 400, abortSignal: o.signal })
+      const r = await AI.extract({ role: 'agent', systemShared: SYSTEM, messages: [{ role: 'user', content: o.prompt }], schema: DecisionSchema, schemaName: 'recommendation_decision', maxTokens: 400, abortSignal: o.signal, budgetKind: 'aux' })
       usd = Number(((r.providerMetadata as { tappy?: { cost?: { usd?: number } } } | undefined)?.tappy?.cost?.usd) ?? 0)
       return r.object
     })

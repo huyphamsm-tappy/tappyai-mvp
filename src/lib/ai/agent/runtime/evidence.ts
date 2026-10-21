@@ -152,6 +152,14 @@ export class EvidenceLedger {
   readonly items: EvidenceItem[] = []
   private nextE = 1
 
+  /**
+   * RETRIEVAL_V5 lần 2c (B3, owner 20/10): a CONFLICT needs a named subject on both sides. The page-level candidates (candidateClaims) have
+   * no subject and the question itself as attribute, so every number on every page "disagreed" — measured Cổng 2 lần 2: u22 resolution
+   * number "57-NQ/TW" vs "2,6 tỉ đồng", u09 "49" vs savings rates, u26 a hotline "1900599997 đ", u08 a procedure code "1.004194"; two of them
+   * reached the reply as "các nguồn chưa khớp". Structured facts (a product / place name) still conflict as before. Off: unchanged.
+   */
+  constructor(private readonly o: { namedConflictsOnly?: boolean } = {}) {}
+
   sourceFor(url: string): Source | undefined {
     const k = normUrl(url)
     return this.sources.find(s => normUrl(s.url) === k || normUrl(s.canonicalUrl) === k)
@@ -228,6 +236,7 @@ export class EvidenceLedger {
     const out: EvidenceItem[] = []
     for (const n of fresh) {
       if (n.type === 'CONFLICT' || !n.value) continue
+      if (this.o.namedConflictsOnly && !n.subject.trim()) continue
       // WS2: two prices are compared like with like (variant, condition, price type — priceEvidence.pricesDisagree), never by first number.
       // WS2 final: every other kind is compared like with like as well (claimConflict.ts: hours, availability, durations, policy polarity,
       // numbers) — two wordings of one fact are not a conflict, a hedged or subjective claim never is.

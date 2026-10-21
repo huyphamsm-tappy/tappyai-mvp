@@ -12,7 +12,7 @@
 import { hostOf, classifySource, sourceClassOf } from './sourceType'
 import type { SourceLink } from './evidence'
 
-export interface EditorialItem { url: string; title: string; summary: string; source: string; publishedAt?: string }
+export interface EditorialItem { url: string; title: string; summary: string; source: string; publishedAt?: string; image?: string }
 
 const KEYS = new Set(['travel_editorial', 'articles', 'news', 'news_results', 'editorial'])
 
@@ -85,4 +85,80 @@ export function attributeEditorial(text: string, items: readonly EditorialItem[]
     links.push({ id: sid, url: it.url, label: it.source || hostOf(it.url), title: it.title.slice(0, 160), source_type: cls, action_type: 'SOURCE', host: hostOf(it.url) })
   }
   return { text: out, links }
+}
+
+// ── CONSULT_V3 (owner 17/10, UAT đợt A: "tin tức không dẫn nguồn") — the model cites a news article by a short id ───────────────
+//
+// Measured UAT đợt A (3030, 17/10): get_news returned 5 articles, the reply restated 4 of them in its own words, and the word-pair match
+// above attached none (`editorial_attribution cited:0`; the old build did the same). Under CONSULT_V3 each article a news tool returns
+// carries `cite: "N1"…` in the result the model reads; the model writes "[N2]" after the sentence that uses article 2, and the runtime
+// turns that marker into an [S#] the existing citation step links (the seventh markdown site: URL from this turn's tool result and its
+// grant, label = host). The URL never travels through the model; an id naming no article is removed. Off the flag nothing is tagged.
+
+const NEWS_KEYS = ['articles', 'news', 'news_results'] as const
+
+/** Tags each article of a news tool result with `cite: "N#"` (continuing `book`'s numbering) and records it in `book`. Returns a copy. */
+export function tagNewsArticles(value: unknown, book: EditorialItem[]): unknown {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return value
+  const r = value as Record<string, unknown>
+  let changed = false
+  const out: Record<string, unknown> = { ...r }
+  for (const k of NEWS_KEYS) {
+    const list = r[k]
+    if (!Array.isArray(list)) continue
+    out[k] = list.map(a => {
+      if (!a || typeof a !== 'object') return a
+      const o = a as Record<string, unknown>
+      const url = typeof o.url === 'string' ? o.url : typeof o.link === 'string' ? o.link : ''
+      if (!/^https?:\/\//i.test(url) || typeof o.title !== 'string' || !o.title.trim() || book.length >= 20) return a
+      const known = book.findIndex(b => b.url === url)
+      const n = known >= 0 ? known + 1 : book.push({ url, title: o.title, summary: [o.summary, o.snippet, o.description].find(x => typeof x === 'string') as string ?? '', source: typeof o.source === 'string' ? o.source : hostOf(url), ...(typeof o.publishedAt === 'string' ? { publishedAt: o.publishedAt } : typeof o.published === 'string' ? { publishedAt: o.published } : {}), ...(typeof o.image === 'string' ? { image: o.image } : {}) })
+      changed = true
+      // the article's picture stays server-side (the news layout uses it); the model reads the article without it
+      const { image: _image, ...shown } = o
+      return { ...shown, cite: `N${n}` }
+    })
+  }
+  return changed ? out : value
+}
+
+/**
+ * Turns the model's [N#] markers into [S#] markers (from `nextId`) with the article's SourceLink; one S id per article, an unknown id is
+ * removed. Pure.
+ */
+export function resolveNewsMarkers(text: string, book: readonly EditorialItem[], nextId: number): { text: string; links: SourceLink[] } {
+  const links: SourceLink[] = []
+  const idOf = new Map<number, string>()
+  let id = nextId
+  const out = text.replace(/\s?\[(N\d{1,2}(?:\s*,\s*N\d{1,2})*)\]/g, (_m, ids: string) => {
+    const keep: string[] = []
+    for (const raw of ids.split(/\s*,\s*/)) {
+      const n = Number(raw.slice(1))
+      const it = book[n - 1]
+      if (!it || id > 99) continue
+      let sid = idOf.get(n)
+      if (!sid) {
+        sid = `S${id++}`
+        idOf.set(n, sid)
+        const cls = sourceClassOf(classifySource(it.url), it.url)
+        links.push({ id: sid, url: it.url, label: it.source || hostOf(it.url), title: it.title.slice(0, 160), source_type: cls, action_type: 'SOURCE', host: hostOf(it.url) })
+      }
+      if (!keep.includes(sid)) keep.push(sid)
+    }
+    return keep.length ? ` [${keep.join(', ')}]` : ''
+  })
+  return { text: out, links }
+}
+
+/**
+ * CONSULT_V3 news layout: the pictures of the articles the reply CITED (in citation order), each with its own article link and outlet name.
+ * Only an article that is cited and carries a picture from its outlet's CDN (checked again by sanitizeMediaBlock) is shown. Pure.
+ */
+export function citedNewsMedia(book: readonly EditorialItem[], cited: readonly SourceLink[]): Array<{ src: string; href: string; label: string; title: string }> {
+  const out: Array<{ src: string; href: string; label: string; title: string }> = []
+  for (const l of cited) {
+    const it = book.find(b => b.url === l.url)
+    if (it?.image && !out.some(o => o.src === it.image)) out.push({ src: it.image, href: it.url, label: it.source || hostOf(it.url), title: it.title.slice(0, 160) })
+  }
+  return out.slice(0, 6)
 }

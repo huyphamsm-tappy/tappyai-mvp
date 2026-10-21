@@ -13,6 +13,7 @@
 import { createHash, randomUUID } from 'node:crypto'
 import { recordEvent } from '@/lib/observability'
 import { cutSecrets } from '../guards'
+import { currentMarks } from '@/lib/ai/latency/marks'
 
 export type TraceKind = 'model_round' | 'tool_call' | 'tool_result' | 'timeout' | 'retry' | 'budget' | 'guard' | 'ask' | 'task' | 'page_read' | 'evidence' | 'evidence_guard' | 'ranking' | 'tools' | 'fallback' | 'claims' | 'answer_first' | 'error' | 'final'
 export interface TraceEvent { seq: number; t: number; kind: TraceKind; [k: string]: unknown }
@@ -92,6 +93,12 @@ export class AgentRunTrace {
 
   add(kind: TraceKind, data: Record<string, unknown> = {}): void {
     try { this.events.push({ seq: this.events.length + 1, t: this.now() - this.started, kind, ...data }) } catch { /* trace only */ }
+    // C2 latency marks (observation only; null unless C2_LATENCY_MARKS=1): tool boundaries of this turn.
+    try {
+      const mk = currentMarks()
+      if (mk && kind === 'tool_call') mk.mark('tool_start', { tool: data.tool, round: data.round })
+      else if (mk && kind === 'tool_result') mk.mark('tool_end', { tool: data.tool, round: data.round, ok: data.outcome === 'ok', ms: data.ms })
+    } catch { /* marks only */ }
   }
 
   modelRound(d: { round: number; final: boolean; ms: number; decision: string; toolCalls: number; promptTokens?: number; completionTokens?: number; usd?: number; fellBack?: boolean; primaryAborted?: boolean; fallbackReason?: string; modelId?: string; finishReason?: string }): void {
@@ -101,6 +108,15 @@ export class AgentRunTrace {
     this.counters.usd += d.usd ?? 0
     if (d.modelId) this.model = d.modelId
     this.add('model_round', { round: d.round, final: d.final, ms: d.ms, decision: d.decision, tool_calls: d.toolCalls, tokens_in: d.promptTokens ?? 0, tokens_out: d.completionTokens ?? 0, usd: round7(d.usd ?? 0), finish: d.finishReason ?? null })
+    // C2 latency marks: the round's end is now; its start is `ms` earlier. `finish` is the provider's reason (stop | length | tool-calls | …).
+    try {
+      const mk = currentMarks()
+      if (mk) {
+        const end = Date.now() - mk.startedAt
+        mk.mark('model_round_start', { round: d.round }, Math.max(0, end - d.ms))
+        mk.mark('model_round_end', { round: d.round, finish: d.finishReason ?? null, tokens_out: d.completionTokens ?? null, decision: d.decision }, end)
+      }
+    } catch { /* marks only */ }
     if (d.fellBack) { this.counters.retries++; this.add('retry', { round: d.round, scope: 'model', primary_aborted: d.primaryAborted === true, reason: (d.fallbackReason ?? '').slice(0, 80) }) }
   }
 

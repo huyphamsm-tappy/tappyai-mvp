@@ -342,7 +342,7 @@ const ago = (iso: string, now: Date) => { const m = Math.max(0, Math.round((now.
 export function taskContextLines(t: AgentTask, history: readonly TaskSummary[], now: Date): string[] {
   const out: string[] = []
   const status = t.status === 'completed' ? ' (đã xong — tiếp tục thì cập nhật, việc khác hẳn thì new_task)' : t.status === 'abandoned' ? ' (đã bỏ)' : ''
-  out.push(t.goal ? `Nhiệm vụ đang làm (lượt ${t.turns}): ${t.goal} [${t.task_type}]${status}` : `Nhiệm vụ: mới (lượt ${t.turns}) — chưa có mục tiêu; đặt bằng update_task nếu đây là một việc cần nhiều lượt.`)
+  out.push(t.goal ? `Nhiệm vụ đang làm (lượt ${t.turns}): ${t.goal} [${t.task_type}]${status}` : `Nhiệm vụ: mới (lượt ${t.turns}) — chưa có mục tiêu.`)
   if (t.constraints.length) out.push(`Ràng buộc: ${t.constraints.map(c => `${c.key}: ${c.value}${c.hard ? ' (bắt buộc)' : ''}`).join(' · ')}`)
   if (t.preferences.length) out.push(`Ưu tiên: ${t.preferences.map(p => `${p.key}: ${p.value}`).join(' · ')}`)
   if (t.entities.length) out.push(`Đối tượng: ${t.entities.map(e => e.name).join(' · ')}`)

@@ -11,26 +11,41 @@
 //   · redirects: at most `maxRedirects`, each hop validated as above; a redirect to http from https is allowed only to a public host;
 //   · timeouts: connect, idle read, and a total deadline; the caller's signal aborts everything;
 //   · content type must be text-like (html / xhtml / plain / json / xml); anything else is refused before the body is read;
-//   · body capped at `maxBytes` (truncated, flagged); `Accept-Encoding: identity` — no decompression bombs;
+//   · body capped at `maxBytes` (truncated, flagged); `Accept-Encoding: identity` — no decompression bombs (RETRIEVAL_V5 decodeCompressed:
+//     a server that compresses anyway is decompressed with the cap on the decompressed bytes);
 //   · never throws: every failure is a typed result with a reason (no address in any message).
 
 import http from 'node:http'
 import https from 'node:https'
 import type { IncomingMessage } from 'node:http'
+import zlib from 'node:zlib'
 import { isAllowedDestinationAddress } from './addressPolicy'
 import { safeLookup } from './safeFetch'
 
 export type PageFailure =
   | 'invalid_url' | 'blocked_scheme' | 'blocked_credentials' | 'blocked_port' | 'blocked_host' | 'blocked_address'
   | 'too_many_redirects' | 'redirect_without_location' | 'http_error' | 'unsupported_content_type' | 'unsupported_encoding'
-  | 'connect_timeout' | 'read_timeout' | 'total_timeout' | 'aborted' | 'network_error'
+  | 'connect_timeout' | 'read_timeout' | 'total_timeout' | 'aborted' | 'network_error' | 'pdf_too_large'
 
 export type PageFetchResult =
-  | { ok: true; url: string; finalUrl: string; status: number; contentType: string; body: string; bytes: number; truncated: boolean; redirects: number; ms: number }
+  | { ok: true; url: string; finalUrl: string; status: number; contentType: string; body: string; bytes: number; truncated: boolean; redirects: number; ms: number; raw?: Uint8Array }
   | { ok: false; url: string; reason: PageFailure; status?: number; redirects: number; ms: number }
 
 export interface PageFetchOptions {
   maxBytes?: number
+  /**
+   * RETRIEVAL_V5: accept `application/pdf` too, its bytes kept raw (`raw`, `body` empty) up to this many bytes — a larger PDF is refused
+   * (`pdf_too_large`; a cut PDF cannot be parsed). Every other rule (hops, address policy, timeouts, identity encoding) is the same. Absent =
+   * a PDF is refused as before.
+   */
+  pdfMaxBytes?: number
+  /**
+   * RETRIEVAL_V5 (owner 20/10, lần 2 — khâu đọc): a body the server compressed although we asked for identity (gzip / deflate / br; measured:
+   * vneconomy.vn, baochinhphu.vn always send gzip) is decompressed as it streams, and the cap counts the DECOMPRESSED bytes (`maxBytes`, or
+   * `pdfMaxBytes` for a PDF) — a decompression bomb stops at the cap like any long page. Corrupt data / another encoding → `unsupported_encoding`.
+   * Absent = refused as before.
+   */
+  decodeCompressed?: boolean
   maxRedirects?: number
   connectTimeoutMs?: number
   readTimeoutMs?: number
@@ -62,10 +77,20 @@ export function validateHop(raw: string, o: { allowHttp: boolean } = { allowHttp
 /** One hop's raw outcome (transport level). Exported for tests that drive the hop loop without sockets. */
 export type HopResult =
   | { kind: 'redirect'; status: number; location: string | null }
-  | { kind: 'body'; status: number; contentType: string; body: string; bytes: number; truncated: boolean }
+  | { kind: 'body'; status: number; contentType: string; body: string; bytes: number; truncated: boolean; raw?: Buffer }
   | { kind: 'error'; reason: PageFailure; status?: number }
 
-export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number }) => Promise<HopResult>
+export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number; pdfMaxBytes?: number; decodeCompressed?: boolean }) => Promise<HopResult>
+
+const PDF_TYPE = /^application\/pdf\b/i
+
+/** The decompressor for a Content-Encoding we accept (RETRIEVAL_V5), or null (identity / absent: none needed; anything else: refused). */
+export function decoderFor(enc: string): (() => zlib.Gunzip | zlib.Inflate | zlib.BrotliDecompress) | null {
+  if (enc === 'gzip' || enc === 'x-gzip') return () => zlib.createGunzip()
+  if (enc === 'deflate') return () => zlib.createInflate()
+  if (enc === 'br') return () => zlib.createBrotliDecompress()
+  return null
+}
 
 /** The real transport: one request through the pinned resolver, no agent reuse, identity encoding, typed failures. */
 export const realHop: HopTransport = (url, o) => new Promise<HopResult>(resolve => {
@@ -91,21 +116,31 @@ export const realHop: HopTransport = (url, o) => new Promise<HopResult>(resolve 
       if (status >= 300 && status < 400) { res.resume(); return done({ kind: 'redirect', status, location: (res.headers.location as string | undefined) ?? null }) }
       if (status < 200 || status >= 300) { res.resume(); return done({ kind: 'error', reason: 'http_error', status }) }
       const contentType = String(res.headers['content-type'] ?? '')
-      if (!TEXT_TYPES.test(contentType.trim())) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_content_type', status }) }
+      const pdf = !!o.pdfMaxBytes && PDF_TYPE.test(contentType.trim())
+      if (!pdf && !TEXT_TYPES.test(contentType.trim())) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_content_type', status }) }
       // We ask for identity; a server that compresses anyway is refused (decompressing would bypass the byte cap — measured: binary
       // bodies labelled text/html reached the extractor).
+      // RETRIEVAL_V5 (decodeCompressed): gzip / deflate / br are decompressed as they stream and the caps count decompressed bytes.
       const enc = String(res.headers['content-encoding'] ?? '').trim().toLowerCase()
-      if (enc && enc !== 'identity') { res.destroy(); return done({ kind: 'error', reason: 'unsupported_encoding', status }) }
+      const decoder = enc && enc !== 'identity' ? (o.decodeCompressed ? decoderFor(enc) : null) : null
+      if (enc && enc !== 'identity' && !decoder) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_encoding', status }) }
       res.setTimeout(o.readTimeoutMs, () => { res.destroy(); done({ kind: 'error', reason: 'read_timeout', status }) })
+      const stream = decoder ? res.pipe(decoder()) : res
+      const stop = () => { res.destroy(); if (stream !== res) stream.destroy() }
       const chunks: Buffer[] = []
       let bytes = 0
-      res.on('data', (c: Buffer) => {
+      stream.on('data', (c: Buffer) => {
+        if (settled) return
         bytes += c.length
-        if (bytes > o.maxBytes) { chunks.push(c.subarray(0, Math.max(0, c.length - (bytes - o.maxBytes)))); res.destroy(); return done({ kind: 'body', status, contentType, body: Buffer.concat(chunks).toString('utf8'), bytes: o.maxBytes, truncated: true }) }
+        // a PDF over its cap is refused whole (a cut PDF has no cross-reference table — nothing to parse)
+        if (pdf && bytes > o.pdfMaxBytes!) { stop(); return done({ kind: 'error', reason: 'pdf_too_large', status }) }
+        if (!pdf && bytes > o.maxBytes) { chunks.push(c.subarray(0, Math.max(0, c.length - (bytes - o.maxBytes)))); stop(); return done({ kind: 'body', status, contentType, body: Buffer.concat(chunks).toString('utf8'), bytes: o.maxBytes, truncated: true }) }
         chunks.push(c)
       })
-      res.on('end', () => done({ kind: 'body', status, contentType, body: Buffer.concat(chunks).toString('utf8'), bytes, truncated: false }))
+      stream.on('end', () => done(pdf ? { kind: 'body', status, contentType, body: '', raw: Buffer.concat(chunks), bytes, truncated: false } : { kind: 'body', status, contentType, body: Buffer.concat(chunks).toString('utf8'), bytes, truncated: false }))
       res.on('error', () => done({ kind: 'error', reason: o.signal.aborted ? 'aborted' : 'network_error', status }))
+      // corrupt compressed data (or a body that claims an encoding it does not have)
+      if (stream !== res) stream.on('error', () => { res.destroy(); done({ kind: 'error', reason: o.signal.aborted ? 'aborted' : 'unsupported_encoding', status }) })
     })
   } catch { return done({ kind: 'error', reason: 'network_error' }) }
   connectTimer = setTimeout(() => { req.destroy(); done({ kind: 'error', reason: 'connect_timeout' }) }, o.connectTimeoutMs)
@@ -140,7 +175,7 @@ export async function fetchPublicPageReal(rawUrl: string, opts: PageFetchOptions
       if (ctrl.signal.aborted) return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : 'aborted', redirects, ms: Date.now() - t0 }
       const v = validateHop(current, { allowHttp: o.allowHttp })
       if ('reason' in v) return { ok: false, url: rawUrl, reason: v.reason, redirects, ms: Date.now() - t0 }
-      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs })
+      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs, ...(o.pdfMaxBytes ? { pdfMaxBytes: o.pdfMaxBytes } : {}), ...(o.decodeCompressed ? { decodeCompressed: true } : {}) })
       if (hop.kind === 'error') return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : hop.reason, ...(hop.status ? { status: hop.status } : {}), redirects, ms: Date.now() - t0 }
       if (hop.kind === 'redirect') {
         if (!hop.location) return { ok: false, url: rawUrl, reason: 'redirect_without_location', status: hop.status, redirects, ms: Date.now() - t0 }
@@ -148,7 +183,7 @@ export async function fetchPublicPageReal(rawUrl: string, opts: PageFetchOptions
         try { current = new URL(hop.location, v.url).toString() } catch { return { ok: false, url: rawUrl, reason: 'invalid_url', redirects, ms: Date.now() - t0 } }
         continue
       }
-      return { ok: true, url: rawUrl, finalUrl: v.url.toString(), status: hop.status, contentType: hop.contentType, body: hop.body, bytes: hop.bytes, truncated: hop.truncated, redirects, ms: Date.now() - t0 }
+      return { ok: true, url: rawUrl, finalUrl: v.url.toString(), status: hop.status, contentType: hop.contentType, body: hop.body, bytes: hop.bytes, truncated: hop.truncated, redirects, ms: Date.now() - t0, ...(hop.raw ? { raw: new Uint8Array(hop.raw) } : {}) }
     }
   } finally {
     clearTimeout(total)

@@ -140,7 +140,7 @@ export interface ToolSelection {
  * = the tools the task used on its previous turn. A tool absent from `tools` (the route did not offer it this turn) is neither exposed
  * nor listed. Unknown tools (no metadata) are exposed as before — never silently hidden.
  */
-export function selectTools(tools: Record<string, AnyTool>, o: { texts: readonly string[]; recentTools?: readonly string[] }): ToolSelection {
+export function selectTools(tools: Record<string, AnyTool>, o: { texts: readonly string[]; recentTools?: readonly string[]; all?: boolean }): ToolSelection {
   const hay = ` ${fold(o.texts.join(' \n '))} `
   const recent = new Set(o.recentTools ?? [])
   const exposed: string[] = []
@@ -149,7 +149,9 @@ export function selectTools(tools: Record<string, AnyTool>, o: { texts: readonly
   for (const name of Object.keys(tools)) {
     if (SIDE_EFFECT_TOOLS.has(name) || CONTROL_TOOLS.has(name) || name === USE_TOOL) continue
     const m = META.get(name)
-    if (!m || m.tier === 'core') { exposed.push(name); continue }
+    // TAPPY_ANSWER_V4: every retrieval tool is offered and the MODEL decides from the meaning of the message, in any language — no word-list
+    // hints deciding what it may see. The list is the same on every turn, so the cached prompt prefix is stable too.
+    if (!m || m.tier === 'core' || o.all) { exposed.push(name); continue }
     if (m.hints.some(h => hay.includes(h))) { exposed.push(name); preselected.push({ name, reason: 'hint' }); continue }
     if (recent.has(name)) { exposed.push(name); preselected.push({ name, reason: 'task' }); continue }
     catalog.push(name)
