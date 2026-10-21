@@ -1,5 +1,7 @@
 import { AI } from '@/lib/ai/llm'
 import { NextRequest, NextResponse } from 'next/server'
+import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { clientIp } from '@/lib/security/rateLimit'
 import { publicDailyRateLimit } from '@/lib/security/publicRateLimit'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -43,6 +45,14 @@ export async function POST(req: NextRequest) {
   if (!text) return NextResponse.json({ error: 'empty_text', message: serverMessage('voice.emptyText', requestLocale(req)) }, { status: 400 })
   if (text.length > 2000) return NextResponse.json({ error: 'too_long', message: serverMessage('translate.tooLong', locale) }, { status: 400 })
   const langName = LANG_NAMES[targetLang] || 'Vietnamese'
+
+  // App Review 5.1.2(i): a signed-in account that uses the iOS app sends its text to the AI provider only with a
+  // current agreement, whichever client calls. A signed-out caller has no account to check (see aiConsentGuard notes).
+  const { user } = await getRequestUser(req).catch(() => ({ user: null }))
+  if (user) {
+    const aiConsentRefusal = await refuseWithoutAiConsent(user.id, locale)
+    if (aiConsentRefusal) return aiConsentRefusal
+  }
 
   try {
     const { text: translation } = await AI.generate({

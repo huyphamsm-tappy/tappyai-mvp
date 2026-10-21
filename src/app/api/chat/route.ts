@@ -6,6 +6,7 @@ import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -414,6 +415,15 @@ export async function POST(req: Request) {
   const earlyChatState = consultOn && chatSessionId
     ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null)
     : null
+  // App Review 5.1.2(i): an account that uses the iOS app sends its content to the AI provider only with a current
+  // agreement. Checked before ANY model call in this request (the intent read below included), on the server, so a
+  // direct API call is held too. Web-only accounts are unaffected. An identity failure is handled where it is awaited
+  // (the age gate fails closed there), so a missing user here skips this check only.
+  const aiConsentUser = (await requestUserP.catch(() => null))?.user ?? null
+  if (aiConsentUser) {
+    const aiConsentRefusal = await refuseWithoutAiConsent(aiConsentUser.id, clientLocale)
+    if (aiConsentRefusal) return aiConsentRefusal
+  }
   const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang }) : null
   // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
   // stored consultation's area and slots, decided by code (no brain call).

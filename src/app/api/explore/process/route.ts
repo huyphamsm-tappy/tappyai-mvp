@@ -3,6 +3,7 @@ import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { refuseIneligible } from '@/lib/account/requireEligibleUser'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
+import { refuseWithoutAiConsent } from '@/lib/ai/consent/aiConsentGuard'
 import { publicRateLimit } from '@/lib/security/publicRateLimit'
 import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -57,6 +58,11 @@ export async function POST(req: NextRequest) {
 
   const rl = await publicRateLimit(`explore-process:${user.id}`, 20, 60_000)
   if (!rl.ok) return rateLimitedResponse(req, rl, 'explore_process')
+
+  // App Review 5.1.2(i): an account that uses the iOS app sends its caption and thumbnail to the AI provider only
+  // with a current agreement. Checked before processContent, which is the first AI call on this path.
+  const aiConsentRefusal = await refuseWithoutAiConsent(user.id, requestLocale(req))
+  if (aiConsentRefusal) return aiConsentRefusal
 
   let thumbnail_url = '', caption = '', title = ''
   try {
