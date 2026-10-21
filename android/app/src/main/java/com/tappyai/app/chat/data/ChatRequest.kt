@@ -22,6 +22,12 @@ data class ChatRequest(
      * once per chat and sent on every turn — see [com.tappyai.app.chat.ChatSessionId].
      */
     val chatSessionId: String? = null,
+    /**
+     * ADR-024: the key the server answered the conversation's last shopping turn with
+     * (`X-Decision-Evidence-Id`), echoed so a follow-up is grounded in the frozen listing facts.
+     * Null on every other turn (see [DecisionEvidenceKeys]).
+     */
+    val decisionEvidenceId: String? = null,
 )
 
 @Serializable

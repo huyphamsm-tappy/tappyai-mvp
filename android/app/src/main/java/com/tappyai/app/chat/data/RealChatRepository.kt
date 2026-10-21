@@ -44,6 +44,9 @@ class RealChatRepository @Inject constructor(
     private val location: ChatLocationSource,
 ) : ChatRepository {
 
+    /** ADR-024: the latest evidence key per chat session. Process-wide, bounded; never persisted. */
+    private val evidence = DecisionEvidenceStore()
+
     /** A visitor with no account: no session at all, or a Supabase anonymous session. */
     private fun isGuest(): Boolean {
         val token = tokenProvider.getAccessToken()
@@ -67,7 +70,14 @@ class RealChatRepository @Inject constructor(
         }
         // The device's last known position rides along when the user granted it (see
         // ChatLocationSource); a guest's 18+ declaration rides as a header (see GuestAgeStore).
-        val body = json.encodeToString(ChatRequest(dtoMessages, userLocation = location.lastKnown(), chatSessionId = chatSessionId?.takeIf(ChatSessionId::isValid)))
+        val sessionKey = chatSessionId?.takeIf(ChatSessionId::isValid)
+        val chatRequestBody = ChatRequest(
+            dtoMessages,
+            userLocation = location.lastKnown(),
+            chatSessionId = sessionKey,
+            decisionEvidenceId = evidence.get(sessionKey),
+        )
+        val body = json.encodeToString(ChatRequest.serializer(), chatRequestBody)
             .toRequestBody("application/json".toMediaType())
 
         val request = chatRequest(baseUrl, body, ageDeclared = if (isGuest()) guestAge.declared() else null)
@@ -90,6 +100,11 @@ class RealChatRepository @Inject constructor(
                 if (!response.isSuccessful) {
                     close(parseChatError(response.code, response.body?.string()))
                     return@launch
+                }
+
+                // ADR-024: the key for this conversation's NEXT shopping follow-up (a lookup key, never facts).
+                DecisionEvidenceKeys.fromHeader(response.header(DecisionEvidenceKeys.HEADER))?.let { key ->
+                    sessionKey?.let { evidence.put(it, key) }
                 }
 
                 val source = response.body?.source()
