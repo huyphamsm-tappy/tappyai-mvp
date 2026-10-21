@@ -69,6 +69,23 @@ function PhoneClipViewer({ posts, startIndex, me, onClose, onDelete }: { posts: 
     if (c) c.scrollTo({ top: startIndex * c.clientHeight, behavior: 'auto' })
   }, [startIndex])
 
+  // Deleting a clip shrinks `items` but never moves the scroll position, which is what
+  // `activeIndex` follows on scroll. If the removed clip was BEFORE the one in view, every later
+  // index shifts down by one while `activeIndex` and the physical scrollTop stay put — the wrong
+  // slide is then active (or none is, once activeIndex >= items.length), so the clip the user is
+  // looking at never plays: the black/frozen thumbnail. Clamp the index and re-snap the scroll so
+  // both agree again. Runs only when the count changes.
+  const prevLengthRef = useRef(items.length)
+  useEffect(() => {
+    if (items.length === prevLengthRef.current) return
+    prevLengthRef.current = items.length
+    const clamped = Math.min(activeIndex, Math.max(0, items.length - 1))
+    if (clamped !== activeIndex) setActiveIndex(clamped)
+    const c = containerRef.current
+    if (c) c.scrollTo({ top: clamped * c.clientHeight, behavior: 'auto' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items.length])
+
   // 🔑 The destination is the page we are ON, never a literal. This viewer is mounted by the
   // profile grid AND by `/reviews/[id]` — every share link and push notification lands there — so
   // a hardcoded `/reviews` meant: receive a link, tap the heart, sign in, and the clip is gone.
