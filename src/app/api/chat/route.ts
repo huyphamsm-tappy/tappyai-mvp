@@ -123,7 +123,9 @@ import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS,
 import { type ConsultDecision, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult, catalogueAsk } from '@/lib/ai/consultative/consultRouter'
 import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
-import { agentPromptVersion } from '@/lib/ai/agent/runtime/consultV3'
+import { agentPromptVersion, consultV3Enabled } from '@/lib/ai/agent/runtime/consultV3'
+import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCredit } from '@/lib/ai/quota/clarifyCredit'
+import { carriedFromStoredCandidates, storedStates } from '@/lib/ai/consultative/serverCarried'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
@@ -152,7 +154,7 @@ import { emptyResultStream } from '@/lib/ai/consultative/emptyResultStream'
 import { relaxEmptyPlaces, widenLocation } from '@/lib/ai/placeRelax'
 import { resolveReplyLanguage } from '@/lib/ai/replyLanguage'
 import type { CoreMessage } from 'ai'
-import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse } from '@/lib/ai/cannedReply'
+import { cannedChitchat, cannedCarriedFact, cannedDataStreamResponse, isAckOnly, isThanksOnly } from '@/lib/ai/cannedReply'
 
 // Owner decision 28 Sep 2026: 3-day plan turns measured 61–89 s locally, over the old 60 s cap. The
 // project runs on Fluid compute (verified read-only: fluid=true, default timeout 300 s), so 120 s needs no
@@ -468,7 +470,7 @@ export async function POST(req: Request) {
   const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
-  const consultRun = lunaRun ?? (!consultInvalid.reason && !agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
+  const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason
     ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, onInvalid: r => { consultInvalid.reason = `brain:${r}` } })
     : null)
   // P0-1 closeout: the SERVER fallback for an invalid model decision, when the rules themselves were not sure (a 'rule' decision is
@@ -637,6 +639,36 @@ export async function POST(req: Request) {
   // null for an exempt turn (canned / clarify) and for Pro (metered by the daily cap, not here).
   let quotaRefund: AiQuotaRefund | null = null
   let quotaRefunded = false
+  // ── CONSULT_V3 turn contract (clarifyCredit.ts) and Q-03 pending actions ────────────────────────────────────────────
+  // Every rule below is inert with CONSULT_V3 off: no credit is taken, issued or kept, and no "ok" is free. The stored chat state is read
+  // once here for both the pending-action rules and the carried facts (P0-2).
+  let clarifyIdentity: ReturnType<typeof aiQuotaIdentity> | null = null
+  let clarifyFree = false
+  const clarifyPriorAssistant = (() => {
+    const at = messages.map(m => m.role).lastIndexOf('user')
+    const prev = messages.slice(0, Math.max(0, at)).reverse().find(m => m.role === 'assistant')
+    if (!prev) return null
+    const c = (prev as { content?: unknown }).content
+    return typeof c === 'string' ? c : Array.isArray(c) ? c.map(p => (p && typeof p === 'object' && 'text' in p ? String((p as { text?: unknown }).text ?? '') : '')).join('') : null
+  })()
+  /** Called after the spend, on every metered turn. A direct answer to Tappy's last question is free: the credit is taken (one-shot). */
+  const clarifyFreeTurn = async (identity: ReturnType<typeof aiQuotaIdentity>): Promise<boolean> => {
+    if (!consultV3Enabled()) return false
+    clarifyIdentity = identity
+    const d = await takeClarifyCredit(identity, clarifyPriorAssistant, lastText)
+    console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'take', free: d.free, ...(d.free ? {} : { reason: d.reason }) }))
+    if (d.free) clarifyFree = true
+    return d.free
+  }
+  const storedEarly = earlyChatState ?? (chatSessionId && !consultOn ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null) : null)
+  // Q-01/Q-03: an "ok" answering Tappy's closing question is read in context only when the turn is certainly free (peek, read-only).
+  const ackAnswersTappy = consultV3Enabled() && intent === 'chitchat' && isAckOnly(lastText) && !!clarifyPriorAssistant && !!closingQuestion(clarifyPriorAssistant)
+    && await peekClarifyCredit(aiQuotaIdentity((await requestUserP.catch(() => null))?.user ?? null, clientIp(req)), clarifyPriorAssistant, lastText)
+  // Q-03 (owner 18/10): a pending side-effecting action is answered in the very next turn by the agent, never by a canned reply. Only a clear
+  // thanks right after the request ends the wait for free. An image / clip turn is never the free canned reply while an action waits.
+  const pendingWaiting = agentOn && !!storedEarly?.pendingAction
+  const pendingEndsByThanks = pendingWaiting && intent === 'chitchat' && isThanksOnly(lastText) && confirmationOf(lastText) === null
+  const pendingWithMedia = !!storedEarly?.pendingAction && (hasImage || !!clipRef)
   /**
    * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
    * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
@@ -645,14 +677,24 @@ export async function POST(req: Request) {
    * reuses this value, so "not charged" and "not modelled" can never disagree.
    */
   const cannedEarly: string | null = (() => {
-    if (intent === 'chitchat') return cannedChitchat(lastText, lang)
+    if (pendingWaiting && !pendingEndsByThanks) return null
+    if (pendingWithMedia) return null
+    if (intent === 'chitchat') return ackAnswersTappy ? null : cannedChitchat(lastText, lang)
     if (!consultativeV1Enabled() || clipContext || decisionStage === 'confirmation') return null
+    // Q-01: under the agent a carried-fact answer is never served, so it must not be free either (the model runs and is charged).
+    if (agentOn) return null
+    // P0-2: an image / clip turn is about what it shows, never a previous reply.
+    if (hasImage || clipRef) return null
     const priorVenues = priorVenuesIn(lastAssistantText)
     if (priorVenues.length === 0) return null
     const referenced = referencedVenues(resolveReferences(lastText, priorVenues))
     const facts = factsAsked(lastText)
-    if (referenced.some(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
-    return cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+    // P0-2: when the server stored the rows of this consultation, the facts come from THEM (never the client's copy). Without stored rows the
+    // canonical rule stays (owner 2026-09-18: a follow-up about a venue the previous reply stated is free).
+    const stored = carriedFromStoredCandidates(storedEarly, referenced)
+    const useStored = stored.carried.length > 0
+    if (referenced.some(v => facts.some(f => useStored ? !storedStates(stored.carried, v, f) : !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
+    return cannedCarriedFact(facts, referenced, useStored ? stored.carried : carriedFacts(lastAssistantText, priorVenues), lang, useStored ? stored.provenance : null)
   })()
   /**
    * Item 1 (owner decision 2026-09-19): a request too broad to advise on is answered with ONE
@@ -897,7 +939,10 @@ export async function POST(req: Request) {
         quotaMetered = true
       } else {
         const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req)))
-        if (!spend.ok) {
+        // CONSULT_V3 turn contract: decided AFTER the spend (R-3). A direct answer to Tappy's own question hands the unit back and passes even
+        // when the quota is spent. Called once per metered turn; the same turn never reaches the other spend sites.
+        const freeClarify = await clarifyFreeTurn(aiQuotaIdentity(user, clientIp(req)))
+        if (!spend.ok && !freeClarify) {
           return new Response(
             JSON.stringify({
               error: 'anon_limit_reached',
@@ -909,6 +954,7 @@ export async function POST(req: Request) {
         }
         quotaMetered = true
         quotaRefund = spend.refund
+        if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
     } else if (user) {
       // Module 08 §4 — a suspended account cannot use AI. Checked before memory,
@@ -1028,7 +1074,9 @@ export async function POST(req: Request) {
         quotaMetered = true
       } else {
         const spend = await consumeAiQuestion(aiQuotaIdentity(user, clientIp(req), quotaPlan))
-        if (!spend.ok) {
+        // CONSULT_V3 turn contract: after the spend (R-3); a direct answer to Tappy's question is free and passes when the quota is spent.
+        const freeClarify = await clarifyFreeTurn(aiQuotaIdentity(user, clientIp(req), quotaPlan))
+        if (!spend.ok && !freeClarify) {
           // A PAID plan that spent its 30 is not told to upgrade: its own code and sentence.
           const paid = quotaPlan !== 'free'
           return new Response(
@@ -1040,6 +1088,7 @@ export async function POST(req: Request) {
         }
         quotaMetered = true
         quotaRefund = spend.refund
+        if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
       }
       // A2: Pro was UNLIMITED — one paid account could run the model and Serper all day. A daily
       // ceiling far above any real use (PRO_DAILY_CHAT_CAP, default 300 model turns) bounds the
@@ -1169,7 +1218,9 @@ export async function POST(req: Request) {
   // previous cookie counter is gone — a counter the client carries is a counter the client resets.
   if (!quotaMetered) {
     const spend = quotaExempt ? { ok: true, refund: null } : await consumeAiQuestion(aiQuotaIdentity(null, clientIp(req)))
-    if (!spend.ok) {
+    // CONSULT_V3 turn contract: after the spend; an exempt (canned) turn never takes a credit.
+    const freeClarify = !quotaExempt && await clarifyFreeTurn(aiQuotaIdentity(null, clientIp(req)))
+    if (!spend.ok && !freeClarify) {
       return new Response(
         JSON.stringify({
           error: 'anon_limit_reached',
@@ -1180,6 +1231,7 @@ export async function POST(req: Request) {
       )
     }
     quotaRefund = spend.refund
+    if (freeClarify) { if (spend.ok) await refundAiQuestion(spend.refund); quotaRefund = null }
   }
 
   // ── G1-E: per-Zalo-identity daily cap ────────────────────────────────────
@@ -2254,6 +2306,12 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }) + '\n')
       } catch { /* audit only */ }
     }
+    // Q-03 (owner 18/10, R2 scope): the free thanks reply right after a confirmation request ends that request. Stored now, since a canned
+    // turn writes no state otherwise. Only the pending action changes.
+    if (pendingEndsByThanks && chatSessionId && commerceIdentityId) {
+      await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, { pendingAction: null }))
+      console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: chatState?.pendingAction?.tool ?? null, confirmed: false, superseded: true, via: 'canned' }))
+    }
     const cannedRes = cannedDataStreamResponse(canned, { 'X-Decision-Evidence-Id': evidenceId })
     if (!consult || !cannedRes.body) return cannedRes
     const brainIn = consultRun?.usage.promptTokens ?? 0, brainOut = consultRun?.usage.completionTokens ?? 0
@@ -3059,6 +3117,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           actionOutcome = actionOutcomeText('cancelled', pending.summary)
           console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: pending.tool, confirmed: false }))
         }
+      } else {
+        // Q-03 (owner 18/10): any other answer — another question, small talk, a changed request — ends the wait. A confirmation is valid only
+        // in the turn right after the request; "có" / "được" / "ok" later on is about something else, never this action.
+        agentPendingAction = null
+        console.log(JSON.stringify({ type: 'tappyai_agent_action', tool: pending.tool, confirmed: false, superseded: true }))
       }
     }
     const cards = chatState?.cards ?? []
@@ -3452,6 +3515,12 @@ ${completionInstruction(lang)}` },
     // `needProfile.domain` is already derived above and is task-scoped, so a follow-up that carries
     // no place word of its own is still recognised; nothing new is persisted.
   }, async (evidence) => {
+    // CONSULT_V3 turn contract: a CHARGED turn whose SENT reply ends with a question gives the user one free direct answer to it. A free
+    // turn issues none (chain cap); a canned or Pro turn is not metered, so it has no identity here; a refunded turn was not a charged question.
+    if (clarifyIdentity && !clarifyFree && !quotaExempt && !quotaRefunded && evidence.replyText) {
+      const issued = await issueClarifyCredit(clarifyIdentity, evidence.replyText)
+      console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'issue', issued: !!issued }))
+    }
     // A1(d): carry this turn's place search (args + the venues shown) under this turn's evidence id.
     const row = lastPlaceSearch ? { ...(turnEvidenceRow ?? loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } } : null
     // R14: the same row + the consult slots and the stated pick, under (owner, chatSessionId).
@@ -3469,7 +3538,8 @@ ${completionInstruction(lang)}` },
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
         ...(taskSave ?? {}),
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames, cardOrder: evidence.cardOrder,
-        ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : {}),
+        // Q-03: a turn the agent does not run (an image / clip turn) still ends a pending action's wait.
+        ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : chatState?.pendingAction ? { pendingAction: null } : {}),
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows), at: new Date().toISOString() } } : {}),
         ...(lastStayForState ? { stay: lastStayForState } : {}),
         ...(lastProductsForState ? { products: lastProductsForState } : {}),
