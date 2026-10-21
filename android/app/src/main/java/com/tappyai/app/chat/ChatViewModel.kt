@@ -135,6 +135,12 @@ class ChatViewModel @Inject constructor(
     private val _turnStatus = MutableStateFlow<TurnStatusKind?>(null)
     val turnStatus: StateFlow<TurnStatusKind?> = _turnStatus.asStateFlow()
 
+    // The reply being streamed right now, and the turn's live place decision, so that Stop — and a stream that
+    // breaks half-way — can KEEP what has already arrived (web: useChat stop() leaves the partial message). Owned by
+    // the job that set them: a finished or replaced job never clears a newer job's.
+    private var inFlightReply: StringBuilder? = null
+    private var inFlightPlaces: PlacesLiveView? = null
+
     // The reply text revealed AS IT STREAMS (structured blocks stripped, image markdown KEPT — the
     // UI segments it live so photo galleries appear inline mid-stream, matching the committed
     // message's segments). Empty until the first token arrives — the UI shows the thinking dots +
@@ -497,9 +503,16 @@ class ChatViewModel @Inject constructor(
     fun onFollowupSelected(followup: String) = sendUserMessage(followup)
 
     fun onStop() {
+        // Keep what has arrived (web useChat stop()): snapshot BEFORE the job is cancelled.
+        val partial = inFlightReply?.toString().orEmpty()
+        val partialPlaces = inFlightPlaces
         respondingJob?.cancel()
         respondingJob = null
         _isAssistantResponding.value = false
+        keepPartialReply(partial, partialPlaces)?.let { kept ->
+            _messages.update { it + kept }
+            viewModelScope.launch { persistConversation() }
+        }
     }
 
     /**
@@ -675,19 +688,21 @@ class ChatViewModel @Inject constructor(
             _streamingHint.value = null
             _streamingPlaces.value = null
 
+            val reply = StringBuilder()
+            // The turn's LIVE place decision, if the stream carried one. It arrives on its own
+            // `8:` frame, usually before the prose finishes, and is held here until the message
+            // is built — it is never appended to the text, which is why it cannot leak into the
+            // reply, into TTS, or into what gets persisted.
+            var livePlaces: PlacesLiveView? = null
+            inFlightReply = reply
+            inFlightPlaces = null
             try {
-                val reply = StringBuilder()
-                // The turn's LIVE place decision, if the stream carried one. It arrives on its own
-                // `8:` frame, usually before the prose finishes, and is held here until the message
-                // is built — it is never appended to the text, which is why it cannot leak into the
-                // reply, into TTS, or into what gets persisted.
-                var livePlaces: PlacesLiveView? = null
                 chatRepository.streamReply(history, chatSessionId).collect { event ->
                     val token = when (event) {
                         is ChatStreamEvent.Text -> event.delta
                         // The last place frame is the turn's view (the preliminary set is replaced
                         // by the decision); both are shown live as they arrive.
-                        is ChatStreamEvent.Places -> { livePlaces = event.view; _streamingPlaces.value = event.view; return@collect }
+                        is ChatStreamEvent.Places -> { livePlaces = event.view; inFlightPlaces = event.view; _streamingPlaces.value = event.view; return@collect }
                         is ChatStreamEvent.Progress -> { _streamingHint.value = event.text; return@collect }
                         // Last event of a reply that closed without `d:`/`3:`: the half answer stays, with an «answer again» notice.
                         ChatStreamEvent.Cut -> { _streamCut.value = true; return@collect }
@@ -741,6 +756,9 @@ class ChatViewModel @Inject constructor(
                 // User tapped Stop — suppress the indicator via onStop(); just rethrow.
                 throw e
             } catch (e: ChatException) {
+                // The stream broke AFTER some answer arrived (the `3:` error part): the part already shown stays,
+                // with the interrupted line — an error bubble would replace the answer the person has read.
+                if (e is ChatException.AiError && keepPartialAfterBreak(reply.toString(), livePlaces)) return@launch
                 // A refusal with a remedy renders as a bubble the user can act on (never a dead
                 // error line): sign in, or declare 18+ on this device. Everything else keeps the
                 // server's sentence as before.
@@ -762,6 +780,8 @@ class ChatViewModel @Inject constructor(
                 }
             } catch (e: Exception) {
                 logger.e(TAG, "Chat stream failed", e)
+                // A connection that dropped mid-answer: keep what arrived (see above).
+                if (keepPartialAfterBreak(reply.toString(), livePlaces)) return@launch
                 _messages.update { msgs ->
                     msgs + ChatMessage(
                         id = nextId++,
@@ -775,8 +795,26 @@ class ChatViewModel @Inject constructor(
                 _streamingText.value = ""
                 _streamingHint.value = null
                 _streamingPlaces.value = null
+                if (inFlightReply === reply) { inFlightReply = null; inFlightPlaces = null }
             }
         }
+    }
+
+    /** A kept partial reply as this turn's message (assigns its id), or null when nothing readable arrived. */
+    private fun keepPartialReply(rawReply: String, livePlaces: PlacesLiveView?): ChatMessage? =
+        partialAssistantMessage(nextId, rawReply, livePlaces)?.also { nextId++ }
+
+    /**
+     * The stream broke after some answer had arrived: keep it as the reply and say so with the server-style
+     * «interrupted» line instead of an error bubble. False (nothing kept) when no readable text arrived, so the
+     * ordinary error bubble applies. The server alone decides about a refund — no billing claim is made here.
+     */
+    private suspend fun keepPartialAfterBreak(rawReply: String, livePlaces: PlacesLiveView?): Boolean {
+        val kept = keepPartialReply(rawReply, livePlaces) ?: return false
+        _messages.update { it + kept }
+        _turnStatus.value = TurnStatusKind.Interrupted
+        persistConversation()
+        return true
     }
 
     /**
