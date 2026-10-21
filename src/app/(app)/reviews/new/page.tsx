@@ -384,6 +384,18 @@ export default function NewReviewPage() {
     if (areaFromAi) { setPlaceArea(''); setAreaFromAi(false) }
   }
 
+  /* ─── Session check for uploads ───
+     Every upload mints a server token that 401s for an anonymous or expired session. Without a
+     re-check, that 401 surfaces as "Lỗi tải video" — a dead end that reads as a broken uploader.
+     Re-validating here routes the user to login instead. The form itself is unchanged. */
+  const loginHref = () => `/login?returnTo=${encodeURIComponent('/reviews/new' + window.location.search)}`
+  const ensureSession = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) return true
+    router.replace(loginHref())
+    return false
+  }
+
   /* ─── Photo upload ─── */
   const handlePhotoSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
@@ -443,6 +455,8 @@ export default function NewReviewPage() {
       setError(t('reviewNew.videoTooLong')); return
     }
 
+    // Pre-upload: an expired or anonymous session goes to login rather than 401ing mid-upload.
+    if (!(await ensureSession())) return
     resetVideoState()
     setVideoDuration(duration) // keep the measured length for the original-sound track
 
@@ -554,7 +568,9 @@ export default function NewReviewPage() {
         setError(t('reviewNew.videoUploadUnavailable'))
       } else {
         vfail('video-upload', tVideo, e)
-        setError(t('reviewNew.videoUploadError'))
+        // The upload token 401s if the session died mid-upload. Re-checking auth tells that apart
+        // from a genuine upload failure: an expired session routes to login, not "Lỗi tải video".
+        if (await ensureSession()) setError(t('reviewNew.videoUploadError'))
       }
       resetVideoState()
     } finally {
