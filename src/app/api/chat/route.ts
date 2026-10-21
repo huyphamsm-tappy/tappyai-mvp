@@ -654,6 +654,9 @@ export async function POST(req: Request) {
   /** Called after the spend, on every metered turn. A direct answer to Tappy's last question is free: the credit is taken (one-shot). */
   const clarifyFreeTurn = async (identity: ReturnType<typeof aiQuotaIdentity>): Promise<boolean> => {
     if (!consultV3Enabled()) return false
+    // Q-03: while an action waits, the next turn is the agent's (a confirmation or a normal charged turn). Its question is not a clarify
+    // question, so no free answer is taken here and no credit is issued for the waiting turn.
+    if (storedEarly?.pendingAction && agentOn) return false
     clarifyIdentity = identity
     const d = await takeClarifyCredit(identity, clarifyPriorAssistant, lastText)
     console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'take', free: d.free, ...(d.free ? {} : { reason: d.reason }) }))
@@ -3517,7 +3520,8 @@ ${completionInstruction(lang)}` },
   }, async (evidence) => {
     // CONSULT_V3 turn contract: a CHARGED turn whose SENT reply ends with a question gives the user one free direct answer to it. A free
     // turn issues none (chain cap); a canned or Pro turn is not metered, so it has no identity here; a refunded turn was not a charged question.
-    if (clarifyIdentity && !clarifyFree && !quotaExempt && !quotaRefunded && evidence.replyText) {
+    // A turn that parks a pending action asks a confirmation, not a clarify question: no credit for it.
+    if (clarifyIdentity && !clarifyFree && !quotaExempt && !quotaRefunded && !agentPendingAction && evidence.replyText) {
       const issued = await issueClarifyCredit(clarifyIdentity, evidence.replyText)
       console.log(JSON.stringify({ type: 'tappyai_clarify_credit', step: 'issue', issued: !!issued }))
     }

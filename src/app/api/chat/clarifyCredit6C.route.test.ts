@@ -22,6 +22,7 @@ const h = vi.hoisted(() => {
     writes: [] as unknown[],
     signedIn: true,
     legacyModelCalls: 0,
+    stepThrows: false,
   }
   const builder = (): any => {
     const b: any = {
@@ -52,6 +53,7 @@ vi.mock('@/lib/ai/llm', () => ({
     stream: () => (h.state.legacyModelCalls++, { toDataStreamResponse: () => new Response('0:"old path"\nd:{"finishReason":"stop","usage":{"promptTokens":0,"completionTokens":0}}\n', { status: 200, headers: { 'Content-Type': 'text/plain' } }) }),
     step: (opts: Record<string, unknown>) => {
       h.state.stepCalls.push(opts)
+      if (h.state.stepThrows) return Promise.reject(new Error('scripted model failure'))
       const s = h.state.steps.shift() ?? { text: 'Mặc định.', toolCalls: [] }
       return Promise.resolve({ text: s.text, toolCalls: opts.tools ? s.toolCalls : [], finishReason: 'stop', usage: { promptTokens: 100, completionTokens: 20 }, providerMetadata: {} })
     },
@@ -92,7 +94,7 @@ const ASKED = 'Bạn đang ở khu vực nào để mình tìm chỗ gần bạn
 const ASK = 'Gợi ý giúp mình một quán cà phê yên tĩnh để làm việc'
 
 beforeEach(() => {
-  h.state.steps = []; h.state.stepCalls = []; h.state.writes = []; h.state.signedIn = true; h.state.legacyModelCalls = 0
+  h.state.steps = []; h.state.stepCalls = []; h.state.writes = []; h.state.signedIn = true; h.state.legacyModelCalls = 0; h.state.stepThrows = false
   __resetAiQuestionQuotaLocal(); __resetClarifyCreditLocal(); __resetChatSessionStore()
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
   for (const [k, v] of Object.entries({ TAPPY_AGENT: '2', CONSULTATIVE_IN_AGENT: '1', CONSULT_V2: '1', CONSULTATIVE_V1: '1' })) process.env[k] = v
@@ -157,5 +159,23 @@ describe('Batch 6C · free-clarify turn contract (route level, offline)', () => 
     expect(t3.takes.every(t => t.free !== true)).toBe(true)
     expect(t3.canned).toBe('chitchat')
     expect(await used()).toBe(afterCharged)
+  })
+
+  it('CONSULT_V3 ON: a free answer whose response FAILS is not charged, and its credit stays consumed (the store has no un-take)', async () => {
+    process.env.CONSULT_V3 = '1'
+    const sid = randomUUID()
+    h.state.steps = [{ text: ASKED, toolCalls: [] }]
+    await turn([U(ASK)], sid)
+    const afterCharged = await used()
+    h.state.stepThrows = true
+    const t2 = await turn([U(ASK), A(ASKED), U('Quận 3')], sid)
+    expect(t2.takes.some(t => t.free === true)).toBe(true)
+    expect(await used()).toBe(afterCharged)
+    // The credit is one-shot and was consumed by the failed turn: the same answer is charged on the next attempt.
+    h.state.stepThrows = false
+    h.state.steps = [{ text: 'Mình gợi ý vài quán ở Quận 3.', toolCalls: [] }]
+    const t3 = await turn([U(ASK), A(ASKED), U('Quận 3')], sid)
+    expect(t3.takes.every(t => t.free !== true)).toBe(true)
+    expect(await used()).toBe(afterCharged + 1)
   })
 })
