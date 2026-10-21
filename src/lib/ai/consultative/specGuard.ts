@@ -203,15 +203,56 @@ const EN_NOTE = 'The current source has no data on this specification.'
  * Returns the guarded text plus the list of blocked `"<candidate>:<attr>"`
  * claims, so callers can log or assert on exactly what was stopped.
  */
+/**
+ * CONSULT_V3 (`figuresOnly`, A/B eval 17/10). Measured on the weak shopping turns: "**Huawei FreeBuds SE 4 (ANC)**: lựa chọn TWS gọn nhẹ, có
+ * chống ồn chủ động" lost the product NAME with the "gọn nhẹ" clause; "Chưa xác minh được trọng lượng và pin của các mẫu" (an admission) was
+ * deleted; the closing option "1. Nhét tai nhỏ gọn" was emptied; comparison-table cells "Pin lớn hơn, sạc nhanh hơn" were cut. Under the
+ * flag the guard keeps its rule for the claims that can be fabricated as FACTS — a weight or a battery figure ("0.98kg", "pin 10 giờ",
+ * "5000mAh") — and lets general descriptions pass ("gọn nhẹ", "pin ổn"; owner decision B: estimates are allowed when they read as such).
+ * "chưa xác minh / chưa được xác nhận" is an admission, and the options under a closing question are never product claims.
+ */
+const FIGURE_PATTERNS: ReadonlyArray<[SpecAttr, RegExp]> = [
+  ['weight', /\d\s*(?:kg|gr?|gram|gam)\b|\b(?:nang|nhe|weighs?|weight)\s+(?:chi\s+|khoang\s+|tam\s+|about\s+|only\s+)?\d/],
+  ['battery', /\d+\s*mah\b|\b(?:pin|battery)\b[^.;,]{0,30}?\d+(?:[.,]\d+)?\s*(?:gio|tieng|h|hours?|ngay|days?)\b|\d+(?:[.,]\d+)?\s*(?:gio|tieng|hours?)\s+(?:su dung|dung|nghe|pin|playback|of battery)/],
+]
+const ADMISSION_V3 = /chua (duoc )?(xac minh|xac nhan|kiem chung|co so lieu)|khong (du|co) (so lieu|du lieu)/
+const CHOICE_LINE = /^\s*\d{1,2}[.)]\s*\S/
+
 export function guardSpecClaimsInText(
   text: string,
   candidates: SpecEvidence[],
+  opts: { figuresOnly?: boolean } = {},
 ): { text: string; removed: string[] } {
   const removed: string[] = []
   const input = String(text ?? '')
   if (!input.trim() || !Array.isArray(candidates) || candidates.length === 0) {
     return { text: input, removed }
   }
+  if (opts.figuresOnly) {
+    // the closing question's options are lifted out first and put back unchanged
+    const lines = input.split('\n')
+    const held = new Map<number, string>()
+    let afterQuestion = false
+    lines.forEach((l, i) => {
+      if (/\?\s*(?:\*\*)?\s*$/.test(l)) afterQuestion = true
+      else if (afterQuestion && CHOICE_LINE.test(l)) held.set(i, l)
+      else if (l.trim()) afterQuestion = false
+    })
+    const KEEP = String.fromCharCode(0xe002) // built at run time: no hidden character in the source
+    const masked = lines.map((l, i) => (held.has(i) ? `${KEEP}${i}${KEEP}` : l)).join('\n')
+    const r = guardSpecClaimsCore(masked, candidates, FIGURE_PATTERNS, ADMISSION_V3)
+    return { text: r.text.replace(new RegExp(`${KEEP}(\\d+)${KEEP}`, 'g'), (_m, i: string) => held.get(Number(i)) ?? ''), removed: r.removed }
+  }
+  return guardSpecClaimsCore(input, candidates, ATTR_PATTERNS, null)
+}
+
+function guardSpecClaimsCore(
+  input: string,
+  candidates: SpecEvidence[],
+  attrPatterns: ReadonlyArray<[SpecAttr, RegExp]>,
+  extraAdmission: RegExp | null,
+): { text: string; removed: string[] } {
+  const removed: string[] = []
 
   // Lift protected spans out so nothing inside them can be matched or rewritten,
   // then put them back byte-identical.
@@ -312,7 +353,7 @@ export function guardSpecClaimsInText(
     let anchored = false
     const inert = clauses.map(c => {
       const nc = norm(c)
-      const framed = REQUIREMENT_FRAMING.test(nc) || EVIDENCE_ABSENCE.test(nc)
+      const framed = REQUIREMENT_FRAMING.test(nc) || EVIDENCE_ABSENCE.test(nc) || (extraAdmission !== null && extraAdmission.test(nc))
       // Advice exempts ITS OWN clause only: "kiểm tra pin trước, máy này pin rất trâu" must
       // not let the instruction shield the assertion that follows it.
       const own = framed || ADVICE_FRAMING.test(nc)
@@ -332,7 +373,7 @@ export function guardSpecClaimsInText(
     const asserts = (re: RegExp) => clauses.some((c, i) => !inert[i] && re.test(norm(c)))
 
     const unsupported: SpecAttr[] = []
-    for (const [attr, re] of ATTR_PATTERNS) {
+    for (const [attr, re] of attrPatterns) {
       if (!asserts(re)) continue
       // A COMPARISON asserts the attribute of EVERY candidate it names, so all
       // of them must carry evidence. One-sided evidence cannot support
@@ -360,7 +401,7 @@ export function guardSpecClaimsInText(
     const kept = clauses.filter((clause, i) => {
       if (inert[i]) return true          // user framing / "no data" — never a claim
       const nc = norm(clause)
-      return !unsupported.some(attr => ATTR_PATTERNS.find(([a]) => a === attr)![1].test(nc))
+      return !unsupported.some(attr => attrPatterns.find(([a]) => a === attr)![1].test(nc))
     })
 
     if (kept.length === 0) return ''      // whole sentence was the claim

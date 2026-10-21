@@ -909,7 +909,33 @@ function toAsk(view: SlotView, lang: string, domains: ConsultDomain[]): ConsultD
   if (domains.length > 1) lead = en ? 'To plan the whole outing:' : 'Để lên trọn buổi cho bạn:'
   return { lead, questions: qs }
 }
-const joinQuery = (parts: string[]) => parts.map(p => p.trim()).filter(Boolean).filter((p, i, a) => a.indexOf(p) === i).join(' ').replace(/\s+/g, ' ').slice(0, 120)
+
+const CATALOGUE_DOMAINS: readonly ConsultDomain[] = ['food', 'shopping', 'travel', 'entertainment', 'spa']
+
+/**
+ * P0-1 trust boundary (G2 package 1): the ask card of a turn a MODEL decided (brain / intent call) is built from THIS catalogue only.
+ * The model contributes at most a domain and question ids; every word the user sees (lead, question, options, both languages) is the
+ * code-written text of `slotView` / `toAsk` / `domainAsk`. Free text from the model (lead, question, options) is never used. Ids the
+ * catalogue does not offer for this domain and state are dropped; none left -> the router's own order; nothing to ask -> no card.
+ */
+export function catalogueAsk(
+  model: { domains: readonly string[]; questionIds: readonly string[] },
+  stateText: string,
+  gps: boolean,
+  lang: string,
+): { ask: ConsultDecision['ask'] | undefined; source: 'catalogue_ids' | 'catalogue_order' | 'domain_question' | 'none'; unknownIds: number } {
+  const domains = model.domains.filter((d): d is ConsultDomain => CATALOGUE_DOMAINS.includes(d as ConsultDomain))
+  if (domains.length === 0) return { ask: domainAsk(lang), source: 'domain_question', unknownIds: model.questionIds.length }
+  const view = slotView(domains[0], stateText, gps)
+  const byId = new Map(view.missing.map(m => [m.id, m]))
+  const ids = [...new Set(model.questionIds)]
+  const chosen = ids.map(id => byId.get(id)).filter((m): m is Q => !!m)
+  const unknownIds = ids.filter(id => !byId.has(id)).length
+  const ordered = chosen.length ? [...chosen, ...view.missing.filter(m => !chosen.includes(m))] : view.missing
+  const ask = toAsk({ ...view, missing: ordered }, lang, domains)
+  return { ask, source: ask ? (chosen.length ? 'catalogue_ids' : 'catalogue_order') : 'none', unknownIds }
+}
+const joinQuery =(parts: string[]) => parts.map(p => p.trim()).filter(Boolean).filter((p, i, a) => a.indexOf(p) === i).join(' ').replace(/\s+/g, ' ').slice(0, 120)
 
 const REJECT_MOD: Array<[RegExp, string]> = [
   [/\bxa qua\b|\bqua xa\b|\btoo far\b/, 'gần hơn'], [/\b(?:mac|dat|dat do) qua\b|\bqua (?:mac|dat)\b|\btoo expensive\b/, 'giá rẻ'],

@@ -12,6 +12,19 @@ import { searchTemplates } from '@/lib/ccp/adapters'
 export type PlatformLink = { name: string; url: string }
 
 /**
+ * The GrabFood search URL for one restaurant: the registry's GrabFood search grammar filled with name + city (address when no city).
+ * The one definition the builder below and the URL grant contract (security/urlGrants.ts, order links) both use. Null without a template.
+ */
+export function grabFoodSearchUrl(placeName: string, address?: string, city?: string): string | null {
+  const parts = [placeName]
+  if (city) parts.push(city)
+  else if (address) parts.push(address)
+  const q = encodeURIComponent(parts.join(' '))
+  const grab = searchTemplates().find(t => t.providerId === 'grabfood')?.template
+  return grab ? grab.replace('{q}', q) : null
+}
+
+/**
  * Build per-restaurant search URLs for food delivery platforms.
  * Combines name + city for more accurate results than name alone.
  * Falls back to address when city is not available.
@@ -21,13 +34,9 @@ export function buildFoodOrderLinks(
   address?: string,
   city?: string
 ): PlatformLink[] {
-  const parts = [placeName]
-  if (city) parts.push(city)
-  else if (address) parts.push(address)
-  const q = encodeURIComponent(parts.join(' '))
-  const grab = searchTemplates().find(t => t.providerId === 'grabfood')?.template
+  const grab = grabFoodSearchUrl(placeName, address, city)
   return [
-    ...(grab ? [{ name: 'GrabFood', url: grab.replace('{q}', q) }] : []),
+    ...(grab ? [{ name: 'GrabFood', url: grab }] : []),
     { name: 'BeFood',     url: 'https://be.com.vn/' },
   ]
 }

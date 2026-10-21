@@ -45,6 +45,18 @@ const COPY = {
   },
 } as const
 
+/** "ok" / "oke" / "uh" … alone: an acknowledgement, which may be an answer to a question Tappy just asked (the route decides). */
+export function isAckOnly(text: string): boolean {
+  const t = fold(text)
+  return !!t && t.length <= 40 && ACK.test(t)
+}
+
+/** "cảm ơn" / "cảm ơn bạn nhé" / "thanks" … and nothing else: the one small-talk shape that may end a pending action for free (Q-03, R2 scope). */
+export function isThanksOnly(text: string): boolean {
+  const t = fold(text)
+  return !!t && t.length <= 40 && THANKS.test(t)
+}
+
 /** The canned reply for a pure greeting-class message, or null when the model is needed. */
 export function cannedChitchat(text: string, lang: string): string | null {
   const t = fold(text)
@@ -67,6 +79,8 @@ export function cannedCarriedFact(
   referenced: readonly PriorVenue[],
   carried: readonly CarriedFacts[],
   lang: string,
+  /** P0-2: where the facts come from (server-stored tool rows) — the tail names the search and its time instead of "found earlier". */
+  provenance?: { source: string; observedAt: string | null } | null,
 ): string | null {
   if (referenced.length !== 1 || facts.length === 0) return null
   const venue = referenced[0]
@@ -87,10 +101,21 @@ export function cannedCarriedFact(
       lines.push(lang === 'en' ? `**${venue.name}** — address: ${c.address}.` : `Địa chỉ **${venue.name}**: ${c.address}.`)
     }
   }
-  const tail = lang === 'en'
+  const tail = provenance ? provenanceTail(provenance.observedAt, lang) : lang === 'en'
     ? '(From the details I found earlier — worth a quick call before you go.)'
     : '(Theo thông tin mình tìm được ở lượt trước — nên gọi xác nhận trước khi đi nhé.)'
   return `${lines.join(' ')}\n\n${tail}`
+}
+
+/** "(Theo kết quả tra cứu địa điểm lúc 14:05 ngày 16/10 — …)": a dated statement, never a claim about now (Vietnam time). */
+function provenanceTail(observedAt: string | null, lang: string): string {
+  const t = observedAt ? new Date(observedAt) : null
+  const valid = !!t && !Number.isNaN(t.getTime())
+  const part = (o: Intl.DateTimeFormatOptions) => (valid ? new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Ho_Chi_Minh', ...o }).format(t!) : '')
+  const hm = part({ hour: '2-digit', minute: '2-digit', hour12: false })
+  const dm = part({ day: '2-digit', month: '2-digit' })
+  if (lang === 'en') return valid ? `(From the place search at ${hm} on ${dm} — worth a quick call before you go.)` : '(From an earlier place search — worth a quick call before you go.)'
+  return valid ? `(Theo kết quả tra cứu địa điểm lúc ${hm} ngày ${dm} — nên gọi xác nhận trước khi đi nhé.)` : '(Theo kết quả tra cứu địa điểm ở lượt trước — nên gọi xác nhận trước khi đi nhé.)'
 }
 
 /** The reply as the AI SDK data stream the clients parse: one text frame, then the finish frame. */

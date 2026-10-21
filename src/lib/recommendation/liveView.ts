@@ -3,6 +3,7 @@ import type { EntityDomain, EntityKind } from './entity'
 import type { Action } from './actions'
 import { resolveActionLabel } from './actionLabel'
 import { UNKNOWN } from '@/lib/ai/consultative/normalizedEvidence'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── The TRANSIENT view of a place decision ───────────────────────────────────
 //
@@ -296,7 +297,8 @@ function toLive(r: Recommendation, actionLimit: number): LivePlace {
   const hoursWeek = e.ext && typeof e.ext === 'object'
     ? (e.ext as { openingHoursWeek?: Record<string, string> }).openingHoursWeek
     : undefined
-  const image = e.images.primary && isHttpUrl(e.images.primary.url) ? e.images.primary.url : undefined
+  // Gate 2 N2 (R-2, proposal): an image needs a safe https URL (isHttpUrl, still used for links below, admits http:).
+  const image = e.images.primary && isSafeHttpsUrl(e.images.primary.url) ? e.images.primary.url : undefined
   const categories = e.attributes.categories?.filter(c => typeof c === 'string' && c.length > 0)
   // Only amenities the provider stated. `EntityAttributes` is sparse by design:
   // a missing key means "not stated", never "no", so absence stays absence.
@@ -491,7 +493,12 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
     const items = Array.isArray(candidate.items)
       ? candidate.items
         .filter(x => x && typeof x.name === 'string' && x.name)
-        .map(x => ({ ...x, actions: Array.isArray(x.actions) ? x.actions : [] }))
+        // Gate 2 N2 (R-3, proposal): a STORED card is read back here — the only path covering old messages on the web.
+        // Its image is kept only as a safe https URL; every other field is untouched.
+        .map(x => {
+          const { image, ...rest } = x
+          return { ...rest, ...(typeof image === 'string' && isSafeHttpsUrl(image) ? { image } : {}), actions: Array.isArray(x.actions) ? x.actions : [] }
+        })
       : []
     if (items.length === 0) continue
     view = {

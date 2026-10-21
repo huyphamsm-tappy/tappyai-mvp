@@ -1,5 +1,6 @@
 import { provenancedClaim, type SourceId } from '@/lib/ai/consultative/evidenceProvenance'
 import { cleanOtaTitle } from '@/lib/links/otaTitle'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { buildActions, type ActionSource } from './actions'
 import { capabilitiesOf } from './capabilities'
 import {
@@ -114,7 +115,8 @@ export function buildImages(
   const urls: string[] = []
   const push = (u: string | undefined) => {
     const v = (u ?? '').trim()
-    if (v.startsWith('http') && !urls.includes(v)) urls.push(v)
+    // Gate 2 N2 (R-5, proposal): only a safe https URL becomes an entity image (was: anything starting with "http").
+    if (isSafeHttpsUrl(v) && !urls.includes(v)) urls.push(v)
   }
   push(row.photo_url)
   for (const u of row.photo_urls ?? []) push(u)

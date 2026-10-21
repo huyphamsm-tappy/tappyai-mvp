@@ -5,6 +5,7 @@ import { buildSynthesisPayload, entityName } from './synthesis'
 // Types + the row guard only (src/lib/ccp/row has no server-only import); this module is client-bundled.
 import { COMMERCE_LINKS_KEY, isCommerceLinkRow, requiresMerchantLogin, type CommerceLinkRow } from '@/lib/ccp/row'
 import { resolveActionLabel } from '@/lib/recommendation/actionLabel'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 
 // ── Universal Plan — Phase 9: SYNTHESIS → CLIENT DISPLAY VIEW ────────────────
 //
@@ -239,7 +240,8 @@ function entityImage(e: Entity): string | null {
   for (const o of e.offers) {
     const raw = o.evidence.raw
     const url = raw.photo_url ?? raw.imageUrl
-    if (typeof url === 'string' && url.startsWith('http')) return url
+    // Gate 2 N2 (R-1, proposal): `startsWith('http')` admitted http: and any "http…" scheme; a cached row skips the source check.
+    if (typeof url === 'string' && isSafeHttpsUrl(url)) return url
   }
   return null
 }

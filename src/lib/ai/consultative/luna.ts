@@ -13,7 +13,7 @@
 // with CONSULT_LUNA on and no routing env, both roles run on the default model (isolates the prompt effect).
 
 import { z } from 'zod'
-import type { CoreMessage } from 'ai'
+import { NoObjectGeneratedError, type CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
 import { adviceEnabled } from './adviceBlock'
@@ -331,7 +331,7 @@ type Extract = (opts: { role: 'intent'; systemShared: string; messages: CoreMess
 export async function runLunaIntent(
   extract: Extract,
   messages: Array<{ role: string; content: unknown }>,
-  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number },
+  ctx: { hasGps: boolean; previousWasAsk: boolean; deterministicDomain?: ConsultDomain | null; userTexts: readonly string[]; storedNames?: string[]; timeoutMs?: number; onInvalid?: (reason: 'schema') => void },
 ): Promise<IntentRun | null> {
   const t0 = Date.now()
   let timer: ReturnType<typeof setTimeout> | undefined
@@ -356,7 +356,11 @@ export async function runLunaIntent(
       served: cost?.provider ? `${cost.provider}${cost.effort ? `:${cost.effort}` : ''}${(out.providerMetadata?.tappy as { fellBack?: boolean } | undefined)?.fellBack ? ':fallback' : ''}` : null,
     }
   } catch (e) {
-    console.warn(JSON.stringify({ type: 'tappyai_luna_intent_error', error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }))
+    // P0-1 closeout (owner decision 16/10): an answer that arrived but does not parse / match the schema is INVALID (the route answers
+    // with its own fallback, nothing of it is used); a provider error is a FAILURE (the guarded pipeline continues).
+    const invalid = NoObjectGeneratedError.isInstance(e)
+    console.warn(JSON.stringify({ type: 'tappyai_luna_intent_error', kind: invalid ? 'invalid_output' : 'failure', error: (e instanceof Error ? e.message : String(e)).slice(0, 200) }))
+    if (invalid) { try { ctx.onInvalid?.('schema') } catch { /* reporting only */ } }
     return null
   } finally { clearTimeout(timer) }
 }
