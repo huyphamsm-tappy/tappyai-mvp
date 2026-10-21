@@ -120,8 +120,8 @@ import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/mem
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
-import { runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
-import { routeConsult } from '@/lib/ai/consultative/consultRouter'
+import { type ConsultDecision, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
+import { routeConsult, catalogueAsk } from '@/lib/ai/consultative/consultRouter'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
@@ -446,8 +446,11 @@ export async function POST(req: Request) {
   const lunaSkipped = lunaOn && consultLunaFastEnabled() && skipLunaIntent(routed, earlyChatState?.domains, lastText)
   const lunaLastOwn = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').slice(-1)
   const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaLastOwn, { hasGps: !!userLocation, lang }).decision.known } } : null
+  // P0-1 closeout (owner decision 16/10): an intent / brain answer that ARRIVED but is invalid (free text, broken JSON, no valid turn,
+  // a domain outside the catalogue) is recorded here. A FAILED call (error, timeout, empty) is not: that turn continues as before.
+  const consultInvalid: { reason: string | null } = { reason: null }
   const lunaIntentRun = !agentOn && lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
-    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
+    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` } })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
   // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
@@ -457,14 +460,40 @@ export async function POST(req: Request) {
   // The turn type stays with the code router when it is sure (owner: Luna reads areas / goal / constraints / difficulty).
   const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
-  const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
-    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null })
+  // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
+  const consultRun = lunaRun ?? (!consultInvalid.reason && !agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
+    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, onInvalid: r => { consultInvalid.reason = `brain:${r}` } })
     : null)
+  // P0-1 closeout: the SERVER fallback for an invalid model decision, when the rules themselves were not sure (a 'rule' decision is
+  // code's own and stands). An ask card from the catalogue of the domain code reads, in the user's words; none -> the domain question.
+  // Nothing of the invalid answer is used.
+  const consultFallbackState = subjectUserTexts.slice(-5).join(' . ')
+  const consultDomainQuestion = (): ConsultDecision => ({ domains: [], turn: 'ask', known: {}, assumptions: [], ask: catalogueAsk({ domains: [], questionIds: [] }, consultFallbackState, !!userLocation, lang).ask })
+  const consultFallback: ConsultDecision | null = consultInvalid.reason && !consultRun && routed?.confidence !== 'rule' ? (() => {
+    const det = routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null
+    const built = det ? catalogueAsk({ domains: [det], questionIds: [] }, consultFallbackState, !!userLocation, lang) : null
+    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_decision_invalid', reason: consultInvalid.reason, fallback: built?.ask ? built.source : 'domain_question' }))
+    return built?.ask ? { domains: [det!], turn: 'ask' as const, known: {}, assumptions: [], ask: built.ask } : consultDomainQuestion()
+  })() : null
+  if (consultInvalid.reason && !consultFallback) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_decision_invalid', reason: consultInvalid.reason, fallback: 'rules_decision' }))
   // A4 (02/10): "lập kế hoạch …" is answered with the PLAN, not a hotel pick (planIntent.ts) — the ask card stays the first step.
-  const consultDecided = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  const consultDecidedRaw = consultRun?.decision ?? consultFallback ?? lunaSkipDecision ?? (routed ? routed.decision : null)
+  // P0-1 trust boundary (G2 package 1): an ask card whose text a MODEL wrote (brain JSON, or the intent call) is rebuilt from the router's
+  // code-written catalogue — the model keeps only its domain and question ids. The router's own card is code text and is left as is.
+  const consultDecided = (() => {
+    const d = consultDecidedRaw
+    if (!d || d.turn !== 'ask' || !d.ask || d.ask === routed?.decision.ask || d === consultFallback) return d
+    const built = catalogueAsk({ domains: d.domains, questionIds: d.ask.questions.map(q => q.id) }, subjectUserTexts.slice(-5).join(' . '), !!userLocation, lang)
+    console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_ask_catalogue', source: built.source, unknown_ids: built.unknownIds, model_questions: d.ask.questions.length }))
+    // Nothing the catalogue can ask -> no card (the same rule enforceConsultRules applies to a card with too few questions).
+    return built.ask ? { ...d, ask: built.ask } : { ...d, turn: 'pick' as const, ask: undefined }
+  })()
   const consultPlanPromoted = adviceEnabled() ? promoteTripPlan(consultDecided, messages, wasAskReply) : { decision: consultDecided, promoted: false }
   // chat2 A2: the ask card never asks what the request already says (area, or the request itself) and never fires for a local shop/repair request.
-  const consult = agentOn ? null : refineAsk((consultPlanPromoted.decision ? searchableAsPick(consultPlanPromoted.decision, subjectUserTexts, !!userLocation) : null) ?? consultPlanPromoted.decision, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) })
+  // P0-1 closeout: the server fallback stays a server answer. If the card steps turned it into a search turn, the domain question is
+  // asked instead (never a free model answer on an invalid decision).
+  const keepServerFallback = (c: ConsultDecision | null): ConsultDecision | null => consultFallback && c && (c.turn !== 'ask' || !c.ask) ? consultDomainQuestion() : c
+  const consult = agentOn ? null : keepServerFallback(refineAsk((consultPlanPromoted.decision ? searchableAsPick(consultPlanPromoted.decision, subjectUserTexts, !!userLocation) : null) ?? consultPlanPromoted.decision, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }))
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
