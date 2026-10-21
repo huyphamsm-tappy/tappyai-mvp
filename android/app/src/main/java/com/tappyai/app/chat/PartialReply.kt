@@ -29,6 +29,7 @@ internal fun partialAssistantMessage(id: Long, rawReply: String, livePlaces: Pla
         followups = parsed.followups,
         ask = parsed.ask,
         shopping = parsed.shopping,
+        media = parsed.media,
         places = parsed.places,
         livePlaces = livePlaces,
         placesView = livePlaces?.toShareView(),

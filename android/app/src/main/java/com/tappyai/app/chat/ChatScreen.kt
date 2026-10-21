@@ -404,6 +404,11 @@ fun ChatScreen(
                                     }
                                 }
                             }
+                            // CONSULT_V3 / ANSWER_V4 news pictures / subject cards: only validated blocks reach
+                            // here (MediaBlocks), only once the reply is complete. Empty on every default turn.
+                            if (!isResponding && message.media.isNotEmpty()) {
+                                MediaBlocksView(blocks = message.media)
+                            }
                             if (!isResponding && !message.isError) {
                                 Box(modifier = Modifier.fadeIn()) {
                                     MessageActionBar(

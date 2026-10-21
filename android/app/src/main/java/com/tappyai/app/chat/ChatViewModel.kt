@@ -334,6 +334,7 @@ class ChatViewModel @Inject constructor(
                                 followups = parsed?.followups ?: emptyList(),
                                 ask = parsed?.ask ?: emptyList(),
                                 shopping = parsed?.shopping,
+                                media = parsed?.media ?: emptyList(),
                                 places = parsed?.places ?: emptyList(),
                                 segments = parsed?.segments ?: emptyList(),
                                 raw = if (isUser) "" else stored.content,
@@ -739,6 +740,7 @@ class ChatViewModel @Inject constructor(
                         ask = parsed.ask,
                         // D1 — the decision the block carries, which Android used to discard.
                         shopping = parsed.shopping,
+                        media = parsed.media,
                         places = parsed.places,
                         livePlaces = livePlaces,
                         // Share parity (V3): the same `8:` decision projected for the share sheet.

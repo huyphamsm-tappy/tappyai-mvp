@@ -26,6 +26,9 @@ data class ChatMessage(
     // D1 — the shopping DECISION for this turn, when the reply carried one. Null on every other
     // turn. Android used to strip this block and render nothing, losing the whole decision.
     val shopping: ShoppingDecisionView? = null,
+    // `[TAPPY_MEDIA]` news pictures / Wikipedia subject cards of this turn, host-checked ([MediaBlocks]).
+    // Rides in the message text like the other blocks, so it is rebuilt from storage on reload.
+    val media: List<MediaBlock> = emptyList(),
     // The DURABLE place cards this turn carried, best first (see [PersistedPlace]). Unlike the
     // live places rail these ride in the message TEXT, so they are rebuilt from storage on reload.
     val places: List<PersistedPlace> = emptyList(),
