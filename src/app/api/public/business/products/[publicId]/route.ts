@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { apiError } from '@/lib/http/apiError'
 import { logBusinessError } from '@/lib/business/logging'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { clientIp } from '@/lib/security/rateLimit'
 import { ProductPublicIdSchema } from '@/lib/business/schema'
 import {
   findPublicMerchant,
@@ -36,7 +37,7 @@ export async function GET(req: Request, { params }: Params) {
   try {
     // Unauthenticated and world-reachable, so the limit is per IP. A 26-char
     // ULID is not searchable, but a miss-rate spike is still worth throttling.
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown'
+    const ip = clientIp(req)
     const rl = await distributedRateLimit(`business:public:product:${ip}`, 120, 60_000)
     if (!rl.ok) return apiError(req, 'rate_limited', 'rate.retryShortly', 429)
 

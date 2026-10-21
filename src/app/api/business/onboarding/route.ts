@@ -4,6 +4,7 @@ import { apiError } from '@/lib/http/apiError'
 import { logBusinessError } from '@/lib/business/logging'
 import { refuseAnonymousSocialWrite } from '@/lib/auth/socialWriteAccess'
 import { distributedRateLimit } from '@/lib/security/distributedRateLimit'
+import { clientIp as platformClientIp } from '@/lib/security/rateLimit'
 import { CreateMerchantSchema, MERCHANT_TERMS_VERSION } from '@/lib/business/schema'
 import {
   createMerchant,
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
       // them leaves a merchant with no acceptance record. Re-running onboarding
       // repairs that instead of reporting a conflict the user cannot act on.
       // The insert is a no-op when the acceptance already exists.
-      await recordTermsAcceptance(existing.id, MERCHANT_TERMS_VERSION, clientIp(req))
+      await recordTermsAcceptance(existing.id, MERCHANT_TERMS_VERSION, termsIp(req))
       return apiError(req, 'merchant_exists', 'business.merchantExists', 409)
     }
 
@@ -73,7 +74,7 @@ export async function POST(req: Request) {
       address: parsed.data.address,
       phone: parsed.data.phone,
       termsVersion: MERCHANT_TERMS_VERSION,
-      acceptedIp: clientIp(req),
+      acceptedIp: termsIp(req),
     })
 
     // Only the public id goes back. The internal UUID never leaves the server.
@@ -92,8 +93,9 @@ export async function POST(req: Request) {
  * does not supply one. Recorded because an acceptance without a time and a
  * source is weak evidence; nothing else reads it.
  */
-function clientIp(req: Request): string | null {
-  const forwarded = req.headers.get('x-forwarded-for')
-  if (forwarded) return forwarded.split(',')[0]!.trim() || null
-  return req.headers.get('x-real-ip')
+// The canonical client-IP reader (platform header first, then the nearest forwarded hop) — never the leftmost
+// x-forwarded-for entry, which the caller writes. 'unknown' means no trustworthy address: recorded as null.
+function termsIp(req: Request): string | null {
+  const ip = platformClientIp(req)
+  return ip === 'unknown' ? null : ip
 }
