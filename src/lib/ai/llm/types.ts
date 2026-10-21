@@ -63,6 +63,8 @@ export interface AIGenerateOptions {
    * where it routes the runtime's non-`agent` role (its final `plan` step) to the agent model too. No effect otherwise.
    */
   agentRuntime?: boolean
+  /** C2_REQUEST_BUDGET: who is calling ('aux' = may be skipped when the request budget is short; 'guard' = must fail closed). Default 'main'. */
+  budgetKind?: 'main' | 'aux' | 'guard'
   /**
    * How many times the SDK may re-send a failed request. `2` means up to three
    * attempts in total.
@@ -139,6 +141,8 @@ export interface AIStepOptions extends AIGenerateOptions {
   abortSignal?: AbortSignal
   /** Allow several read-only tool calls in one step (the loop runs them concurrently, each counted against the turn budget). */
   parallelTools?: boolean
+  /** C2_TOOL_ROUND_EFFORT: reasoning effort for THIS step only (honoured by the Responses adapter; other providers ignore it). */
+  effort?: ReasoningEffort
 }
 
 export interface AIVisionOptions {

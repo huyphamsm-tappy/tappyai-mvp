@@ -43,4 +43,10 @@ export interface CallCost {
   usd: number
   /** Set by the registry's fallback wrapper when the routed model failed and the default one answered. */
   fellBack?: boolean
+  /** PROTOTYPE (scratch, 18/10): which OpenAI API served this call. Absent = the Chat Completions path. */
+  api?: 'chat' | 'responses'
+  /** PROTOTYPE: the call returned no usable usage, so `usd` is a conservative estimate, not a measurement. */
+  costUnknown?: boolean
+  /** PROTOTYPE: encrypted reasoning items replayed into this request (store:false round-trips). */
+  replayedReasoningItems?: number
 }

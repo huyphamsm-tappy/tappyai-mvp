@@ -55,7 +55,7 @@ export const AI = {
   /** Single-shot text generation (no tools, no streaming). */
   generate(opts: AIGenerateOptions) {
     return generateText({
-      model: modelForRole(opts.role ?? 'fast'),
+      model: modelForRole(opts.role ?? 'fast', { budgetKind: opts.budgetKind }),
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
@@ -70,14 +70,14 @@ export const AI = {
   step(opts: AIStepOptions) {
     const role = opts.role ?? 'consult'
     return generateText({
-      model: modelForRole(role, { agentRuntime: opts.agentRuntime }),
+      model: modelForRole(role, { agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
       messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
       maxRetries: retriesFor(role, opts.agentRuntime),
       maxTokens: opts.maxTokens,
       maxSteps: 1,
       tools: opts.tools,
       abortSignal: opts.abortSignal,
-      ...(opts.parallelTools && opts.tools ? { providerOptions: { tappy: { parallelTools: true } } } : {}),
+      ...((opts.parallelTools && opts.tools) || opts.effort ? { providerOptions: { tappy: { ...(opts.parallelTools && opts.tools ? { parallelTools: true } : {}), ...(opts.effort ? { effort: opts.effort } : {}) } } } : {}),
       experimental_repairToolCall: repairToolCall as never,
     })
   },
@@ -86,7 +86,7 @@ export const AI = {
    * AI SDK stream result (use .toDataStreamResponse() for HTTP streaming). */
   stream(opts: AIStreamOptions) {
     return streamText({
-      model: modelForRole(opts.role ?? 'smart'),
+      model: modelForRole(opts.role ?? 'smart', { budgetKind: opts.budgetKind }),
       messages: buildMessages(opts),
       // Undefined leaves the SDK default in place, so every existing caller is unchanged; the chat route names it explicitly.
       maxRetries: opts.maxRetries,
@@ -112,7 +112,7 @@ export const AI = {
     const role = opts.role ?? 'intent'
     return generateObject({
       abortSignal: opts.abortSignal,
-      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime }),
+      model: modelForRole(role, { structured: true, agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
       schema: opts.schema,
       schemaName: opts.schemaName,
       messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),

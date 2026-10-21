@@ -5,6 +5,8 @@ import type { ModelRole } from './types'
 import { AGENT_MODEL_KEY_NAME, anthropicConfigured, claudeDecorateMessages, createClaudeProvider, createHaiku55AgentModel } from './providers/claude'
 import { createOpenAIProvider } from './providers/openai'
 import { withFallback } from './fallback'
+import { meteredModel } from '../budget/meteredModel'
+import type { BudgetKind } from '../budget/requestBudget'
 
 // ── Provider registry — the single place a provider is instantiated ─────────
 //
@@ -143,18 +145,21 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
  * The model for a role. A fresh routed model per call (the adapter keeps a per-call usage sink on it).
  * `structured` asks for the vendor's strict JSON-schema mode where it has one.
  */
-export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean } = {}): LanguageModelV1 {
-  if (servesAgentModel(role, opts) && agentModelChoice() === 'haiku55') return agentModel(role, opts)
-  return defaultModelForRole(role, opts)
+export function modelForRole(role: ModelRole, opts: { structured?: boolean; agentRuntime?: boolean; budgetKind?: BudgetKind } = {}): LanguageModelV1 {
+  // C2_REQUEST_BUDGET (budget/meteredModel.ts): every concrete upstream model is metered separately (primary, retry, fallback). Outside a
+  // request ledger, or with the flag unset, the meter calls straight through, so the resolution below is unchanged.
+  const kind: BudgetKind = opts.budgetKind ?? 'main'
+  if (servesAgentModel(role, opts) && agentModelChoice() === 'haiku55') return meteredModel(agentModel(role, opts), role, kind)
+  return defaultModelForRole(role, { structured: opts.structured }, kind)
 }
 
 /** The model a role gets with AGENT_MODEL unset — exactly the pre-flag resolution. */
-function defaultModelForRole(role: ModelRole, opts: { structured?: boolean } = {}): LanguageModelV1 {
-  if (routedTo(role) !== 'openai') return getProvider().model(role)
-  const primary = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
-  const retry = opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role)
+function defaultModelForRole(role: ModelRole, opts: { structured?: boolean } = {}, kind: BudgetKind = 'main'): LanguageModelV1 {
+  if (routedTo(role) !== 'openai') return meteredModel(getProvider().model(role), role, kind)
+  const primary = meteredModel(opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role), role, kind)
+  const retry = meteredModel(opts.structured ? openaiProvider!.structuredModel(role) : openaiProvider!.model(role), `${role}:retry`, kind)
   const claudeAdapter = haikuFallbackEnabled() ? (defaultProviderId() === 'claude' ? getProvider() : (claudeProvider ??= createClaudeProvider(modelOverridesFromEnv()))) : null
-  const claude = claudeAdapter?.isConfigured() ? claudeAdapter.model(role) : null
+  const claude = claudeAdapter?.isConfigured() ? meteredModel(claudeAdapter.model(role), `${role}:fallback`, kind) : null
   return withFallback(primary, claude ?? retry, { ...waitsFor(role), label: role, fallbackKind: claude ? 'haiku' : 'luna_retry', abortPrimaryOnTimeout: role === 'agent' })
 }
 
