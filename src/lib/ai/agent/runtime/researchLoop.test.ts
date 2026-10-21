@@ -8,6 +8,8 @@ import { createTask, conversationIdOf, taskContextLines, applyTaskDelta } from '
 import { __resetPageCache } from './readPage'
 import type { RuntimeStep } from './loop'
 import type { PageFetchResult } from '@/lib/security/safePageFetch'
+import { c2FlagsOff } from '@/test/c2FlagsOff'
+c2FlagsOff() // C2 P2: this suite tests the DEFAULT behaviour, also when a run sets the C2 flags globally (setup only, no assertion changed)
 
 const conv = conversationIdOf('55555555-5555-4555-8555-555555555555')
 const APPLE = 'https://www.apple.com/airpods-pro/specs/'

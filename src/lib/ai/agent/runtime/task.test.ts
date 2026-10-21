@@ -227,6 +227,11 @@ describe('M2 · compact context (not the task object, not the conversation)', ()
     expect(lines.join('\n').length).toBeLessThanOrEqual(900)
     expect(lines.join('\n')).not.toMatch(/task_id|conversation_id|[0-9a-f]{8}-[0-9a-f]{4}/)
   })
+  it('a new task names no tool the model does not have (eval 17/10 tp-2: the stale update_task hint was answered with "[SYSTEM] TASK UPDATE REQUIRED")', () => {
+    const lines = taskContextLines(createTask(conv, NOW), [], NOW).join('\n')
+    expect(lines).toContain('chưa có mục tiêu')
+    expect(lines).not.toMatch(/update_task|new_task/)
+  })
   it('the task schema has no field for message text (the conversation is never duplicated)', () => {
     expect(Object.keys(createTask(conv, NOW)).sort()).toEqual(['conversation_id', 'constraints', 'created_at', 'entities', 'goal', 'pending_question', 'preferences', 'research_state', 'rev', 'selected_items', 'status', 'task_id', 'task_type', 'turns', 'updated_at', 'v'].sort())
   })

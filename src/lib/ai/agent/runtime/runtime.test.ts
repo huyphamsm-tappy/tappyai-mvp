@@ -334,3 +334,47 @@ describe('latency pass · research nudge', () => {
     expect(h.trace.events.filter(e => e.kind === 'budget' && e.decision === 'research_nudge')).toHaveLength(1)
   })
 })
+
+describe('CONSULT_V3 · a trip of a stated length is planned, not asked about (A/B rerun 17/10, uat-4)', () => {
+  const PLAN = 'Mình giả định đi từ TP.HCM, bay sáng thứ Sáu.\n\nNgày 1: Kỳ Co, Eo Gió, tối hải sản.\nNgày 2: Hòn Khô, Ghềnh Ráng.\nNgày 3: chợ Đầm, bay về.\n\n**Bạn đi từ thành phố nào?**'
+  it('a question-only answer gets ONE no-tools retry; the plan is shown', async () => {
+    const h = harness([step('Bạn khởi hành từ thành phố nào để mình chốt cách đi?'), step(PLAN)], { taskFrameOn: true, messages: [{ role: 'user', content: 'đi quy nhơn 3 ngày 2 đêm với người yêu' }] })
+    const run = await runAgentRuntime(h.input)
+    expect(run.text).toBe(PLAN)
+    expect(h.calls).toEqual([{ final: false, hadTools: true }, { final: true, hadTools: false }])
+  })
+  it('a retry that still only asks is not taken; no stated length or flag off → no retry', async () => {
+    const still = harness([step('Bạn đi tháng mấy?'), step('Bạn đi từ đâu?')], { taskFrameOn: true, messages: [{ role: 'user', content: 'đà lạt 2N1Đ' }] })
+    expect((await runAgentRuntime(still.input)).text).toBe('Bạn đi tháng mấy?')
+    const vague = harness([step('Bạn đang ở thành phố nào?')], { taskFrameOn: true, messages: [{ role: 'user', content: 'cuối tuần đi đâu chơi' }] })
+    await runAgentRuntime(vague.input)
+    expect(vague.calls).toHaveLength(1)
+    const off = harness([step('Bạn khởi hành từ đâu?')], { messages: [{ role: 'user', content: 'đi quy nhơn 3 ngày 2 đêm' }] })
+    await runAgentRuntime(off.input)
+    expect(off.calls).toHaveLength(1)
+  })
+})
+
+describe('CONSULT_V3 A/B · final rewrite (measurement flag, default off)', () => {
+  it('off: the answer of the tool-offering step is final (one call)', async () => {
+    const h = harness([step('Bản nháp.')])
+    const run = await runAgentRuntime(h.input)
+    expect(run.text).toBe('Bản nháp.')
+    expect(h.calls).toEqual([{ final: false, hadTools: true }])
+  })
+  it('on: the answer is written once more with no tools by the final role; its text replaces the draft and its cost is a step', async () => {
+    const h = harness([step('Bản nháp.'), step('Bản viết lại đầy đủ.')], { finalRewrite: true })
+    const run = await runAgentRuntime(h.input)
+    expect(run.text).toBe('Bản viết lại đầy đủ.')
+    expect(h.calls).toEqual([{ final: false, hadTools: true }, { final: true, hadTools: false }])
+    expect(run.modelCalls).toBe(2)
+    expect(run.steps).toHaveLength(2)
+    expect(h.trace.events.filter(e => e.kind === 'model_round').map(e => e.decision)).toEqual(['answer', 'final_rewrite'])
+  })
+  it('on: an empty or failed rewrite keeps the draft', async () => {
+    const empty = harness([step('Bản nháp.'), step('   ')], { finalRewrite: true })
+    expect((await runAgentRuntime(empty.input)).text).toBe('Bản nháp.')
+    const failed = harness([step('Bản nháp.'), async () => { throw new Error('boom') }], { finalRewrite: true })
+    expect((await runAgentRuntime(failed.input)).text).toBe('Bản nháp.')
+  })
+})
