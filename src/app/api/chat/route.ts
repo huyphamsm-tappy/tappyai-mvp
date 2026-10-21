@@ -8,7 +8,6 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
 import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
-import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
 import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibility'
 import { readGuestAgeDeclaration, GUEST_AGE_DECLARATION_REQUIRED } from '@/lib/account/guestAgeDeclaration'
@@ -2363,7 +2362,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             // server's answer, joined by review_id. Same taxonomy and same table as
             // `/api/track`; fire-and-forget, and nothing here may fail the turn.
             try {
-              void createAdminClient()
+              // Least privilege: the caller's own client. RLS (user_events "Users manage own events")
+              // admits a row only when user_id = auth.uid(), so a guest (no user_id) writes nothing here
+              // rather than falling back to the service role.
+              if (clipUserId && evidenceDb) void evidenceDb
                 .from('user_events')
                 .upsert({
                   event_id: randomUUID(),
@@ -3246,10 +3248,16 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               return memory
             })()
             : extractedRaw
-          if (Object.keys(extracted).length > 0) {
-            // Write with the admin client (pinned user_id) so the upsert works
-            // under Bearer-token (native) auth — a fresh cookie client would
-            // have no session and RLS would silently drop the write.
+          if (Object.keys(extracted).length > 0 && evidenceDb) {
+            // ── Least privilege: the CALLER's client, not the service role ───
+            //
+            // `evidenceDb` is the REQUEST-SCOPED client `getRequestUser` already built. It carries the
+            // caller's session on both the cookie and the Bearer path, so it is not the sessionless
+            // client the old comment warned about. Under it RLS refuses a row that is not the caller's,
+            // even if updateMemory's user_id pinning were ever broken — a second layer, not the only one.
+            //
+            // Skipped rather than downgraded when there is no request client: falling back would either
+            // write with elevated privileges or with a sessionless client whose failure updateMemory swallows.
             await updateMemory(authedUserId, {
               location_base: extracted.location_base ?? existingMemory?.location_base ?? null,
               discovery_city: extracted.discovery_city ?? existingMemory?.discovery_city ?? null,
@@ -3259,7 +3267,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
               preferences: { ...(existingMemory?.preferences || {}), ...(extracted.preferences || {}) },
               budget: { ...(existingMemory?.budget || {}), ...(extracted.budget || {}) },
               history: extracted.history ?? existingMemory?.history ?? [],
-            }, createAdminClient())
+            }, evidenceDb)
           }
         } catch (e) {
           console.error('Memory extract/save error:', e)
@@ -3270,7 +3278,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         const topic = plainRequestTopic({ text: lastText, intent, isFirstReply })
         if (topic) {
           try {
-            await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, createAdminClient())
+            // Least privilege: the caller's own client (see the extraction write above). No client, no write.
+            if (evidenceDb) await updateMemory(authedUserId, { history: appendHistoryTopic(existingMemory, topic) }, evidenceDb)
           } catch (e) {
             console.error('Memory history save error:', e)
           }
@@ -3504,6 +3513,10 @@ ${completionInstruction(lang)}` },
       toolMs: toolMs > 0 ? toolMs : null,
       providerId: AI.providerId(),
       modelRole: role,
+      // Cost per FEATURE (P2). `intent` only distinguishes chitchat from tool, so a
+      // weather lookup and a laptop comparison — which differ by thousands of tokens
+      // and by whether the ranking pipeline runs at all — were the same bucket.
+      decisionDomain: needProfile.domain,
     }
 
     // Buffered for delivery by a LATER request's flushPending (see the top of this handler).

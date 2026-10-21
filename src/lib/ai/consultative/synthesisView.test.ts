@@ -36,6 +36,7 @@ const PICK: Pick = {
   runnerUp: { candidate: TIN_PHAT, leadsOn: { key: 'gia', detail: 'rẻ hơn', contribution: 0.1 } },
   conditional: false,
   unverified: [],
+  cannotVerify: [],
 }
 
 const SHORTLIST = [ZIN100, TIN_PHAT, LAM_PHONG, NGOC_NGUYEN]
@@ -111,7 +112,7 @@ describe('buildSynthesisView — faithful, additive projection', () => {
       attrs: {}, link: null,
       raw: { title: 'MacBook Pro 14 M1 32GB 512GB', ram_gb: 32, storage_gb: 512 }, // no `source`
     }
-    const pick: Pick = { candidate: noSeller, reasons: [{ key: 'rating', detail: 'x', contribution: 1 }], runnerUp: null, conditional: false, unverified: [] }
+    const pick: Pick = { candidate: noSeller, reasons: [{ key: 'rating', detail: 'x', contribution: 1 }], runnerUp: null, conditional: false, unverified: [], cannotVerify: [] }
     const v = buildSynthesisView(buildShoppingSynthesis([noSeller], pick, REQUEST))
     expect(v.recommendation).not.toBeNull()
     expect(v.recommendation!.seller).toBeNull()

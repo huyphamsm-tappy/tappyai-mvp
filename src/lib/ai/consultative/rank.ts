@@ -107,8 +107,21 @@ const BOOLEAN_ATTRS: ReadonlyArray<[string, keyof CandidateAttrs]> = [
   ['vegetarian', 'vegetarian'],
 ]
 
-/** Every attribute the ranker can score, for missing-evidence bookkeeping. */
-const SCOREABLE = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'eta', 'wifi', 'outdoor', 'vegetarian', 'cuisine', 'openNow', 'priceBand']
+/**
+ * Every attribute the ranker can score, for missing-evidence bookkeeping.
+ *
+ * EXPORTED because it is also the answer to a question the reply has to be able
+ * to ask: "can this criterion be checked at all?". `needProfile` happily records
+ * a `quiet`, `central` or `battery` priority, and none of those appears here —
+ * so before this was readable outside the ranker, a stated constraint the
+ * evidence layer cannot evaluate contributed nothing, was reported in neither
+ * `missing` nor `unverified`, and reached the model as silence. Silence is what
+ * a model fills in.
+ *
+ * `cuisine` scores through a `cuisine:<x>` priority, so callers must strip that
+ * prefix before looking a priority up here.
+ */
+export const SCOREABLE: readonly string[] = ['rating', 'reviewCount', 'distance', 'price', 'stars', 'eta', 'wifi', 'outdoor', 'vegetarian', 'cuisine', 'openNow', 'priceBand']
 
 function hasEvidenceFor(attrs: CandidateAttrs, key: string): boolean {
   switch (key) {

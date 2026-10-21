@@ -66,6 +66,24 @@ export interface UsageEvent {
   providerId: string
   /** Semantic role the route asked for: 'fast' | 'smart' | 'planning' | 'vision'. */
   modelRole: string
+  /**
+   * WHICH KIND OF DECISION this turn was: 'places' | 'hotel' | 'shopping' |
+   * 'transport', or null for anything that is not choosing something.
+   *
+   * Added because cost-per-FEATURE was the one attribution the cost model was
+   * asked for and could not compute. `intent` is only 'chitchat' | 'tool', so
+   * every weather lookup, news query, hotel search and product comparison
+   * collapsed into one bucket called "tool" — and those turns differ by
+   * thousands of tokens and by whether they run the ranking pipeline at all.
+   * Without this, "shopping got more expensive" is not a statement the data can
+   * make.
+   *
+   * A closed four-value vocabulary from `NeedProfile['domain']`, derived
+   * deterministically from the conversation. It is a CATEGORY, not content: it
+   * cannot carry a query, a place name, a product, or anything that resolves to
+   * a person, which is the bar every field on this type has to clear.
+   */
+  decisionDomain: string | null
   /** t0 → the model request being sent. Our own pre-flight work (auth, quota, prompt build). */
   preModelMs: number | null
   /** t0 → first text token back. null when the turn produced no text. */
@@ -416,6 +434,8 @@ export const ALLOWED_PAYLOAD_KEYS: ReadonlySet<string> = new Set([
   // P1-3 cost attribution: which adapter/role served the turn, and the latency marks that
   // separate provider time from our own. Numbers and closed vocabularies only.
   'modelRole', 'preModelMs', 'ttftMs', 'modelFinishMs', 'ttuaMs', 'postModelMs', 'toolMs',
+  // Cost per FEATURE. A four-value category, never a query or a place name.
+  'decisionDomain',
   // tts counters — charactersSynthesized and characters are COUNTS, never the characters themselves
   'requests', 'cacheHits', 'cacheMisses', 'charactersSynthesized', 'errors', 'totalLatencyMs',
   'characters', 'cacheHit',

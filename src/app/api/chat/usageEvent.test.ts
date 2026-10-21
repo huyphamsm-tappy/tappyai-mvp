@@ -37,6 +37,7 @@ const CHAT_TURN: UsageEvent = {
   elapsedMs: 12666,
   providerId: 'claude',
   modelRole: 'smart',
+  decisionDomain: 'shopping',
   preModelMs: 640,
   ttftMs: 1811,
   modelFinishMs: 11120,
@@ -51,6 +52,10 @@ const COST_FIELDS = [
   'cacheReadTokens', 'cacheCreationTokens',
   'llmCalls', 'toolCalls', 'memoryExtract',
   'providerId', 'modelRole',
+  // P2 — cost per FEATURE. Without it, `intent` ('chitchat' | 'tool') is the
+  // only breakdown available, and it puts a weather lookup and a laptop
+  // comparison in the same bucket at wildly different prices.
+  'decisionDomain',
 ] as const
 
 const ROUTE_SRC = readFileSync('src/app/api/chat/route.ts', 'utf8')

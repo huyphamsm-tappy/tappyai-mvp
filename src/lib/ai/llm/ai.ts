@@ -59,6 +59,7 @@ export const AI = {
       messages: buildMessages(opts),
       maxTokens: opts.maxTokens,
       temperature: opts.temperature,
+      maxRetries: opts.maxRetries,
     })
   },
 
@@ -87,6 +88,8 @@ export const AI = {
     return streamText({
       model: modelForRole(opts.role ?? 'smart'),
       messages: buildMessages(opts),
+      // Undefined leaves the SDK default in place, so every existing caller is unchanged; the chat route names it explicitly.
+      maxRetries: opts.maxRetries,
       maxTokens: opts.maxTokens,
       maxSteps: opts.maxSteps,
       tools: opts.tools,
