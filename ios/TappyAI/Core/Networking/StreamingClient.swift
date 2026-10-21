@@ -11,6 +11,9 @@ enum StreamFrame: Equatable, Sendable {
     /// `8:[…]` — message annotations; the `tappy.places.v1` recommendation rides here.
     case annotation(Data)
     case stepEnd
+    /// ADR-024. The `X-Decision-Evidence-Id` response header, surfaced as a frame so the caller can store it and
+    /// echo it back on the conversation's next turn. A lookup KEY only, never the evidence facts.
+    case decisionEvidenceId(String)
     /// A message ANNOTATION (`8:`) carrying the turn's live place decision.
     ///
     /// 🚨 THE STREAM WAS NEVER TEXT-ONLY — THIS FRAME WAS ARRIVING AND FALLING INTO `.unknown`.
@@ -36,6 +39,15 @@ enum TurnStatusKind: String, Equatable, Sendable {
     case incomplete
     /// A server / provider error broke the answer while it was streaming; the part shown stays.
     case interrupted
+}
+
+/// ADR-024 response header and its validation. A lookup key, never a fact: non-empty, trimmed, short.
+enum DecisionEvidenceHeader {
+    static let name = "X-Decision-Evidence-Id"
+    static func key(_ raw: String?) -> String? {
+        let trimmed = raw?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        return !trimmed.isEmpty && trimmed.count <= 64 ? trimmed : nil
+    }
 }
 
 /// The turn-status annotation's `kind` (server `progressAnnotation.ts`).
@@ -135,6 +147,12 @@ final class URLSessionStreamingClient: StreamingClient {
                             if body.count > 64 * 1024 { break }
                         }
                         throw URLSessionAPIClient.mapHTTP(status: http.statusCode, data: body)
+                    }
+                    // ADR-024: surface the decision-evidence key BEFORE the body streams, so the ViewModel has it stored
+                    // by the time the next turn is sent. A header the server does not set yields no frame.
+                    if let http = response as? HTTPURLResponse,
+                       let key = DecisionEvidenceHeader.key(http.value(forHTTPHeaderField: DecisionEvidenceHeader.name)) {
+                        continuation.yield(.decisionEvidenceId(key))
                     }
                     for try await line in bytes.lines {
                         try Task.checkCancellation()

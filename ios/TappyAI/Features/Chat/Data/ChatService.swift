@@ -178,7 +178,8 @@ final class ChatService: Sendable {
     func chatWithContext(messages: [MessagePayload], userPreferences: [String]?, responseStyle: String?,
                         userLocation: [String: Double]? = nil,
                         guestAgeDeclaration: String? = nil,
-                        chatSessionId: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
+                        chatSessionId: String? = nil,
+                        decisionEvidenceId: String? = nil) -> AsyncThrowingStream<StreamFrame, Error> {
         var bodyDict: [String: Any] = [
             "messages": messages.map { ["role": $0.role, "content": $0.content] }
         ]
@@ -194,6 +195,11 @@ final class ChatService: Sendable {
         // R14: one UUID per chat, sent on every turn (first turn and guests included).
         if let sid = chatSessionId, ChatSessionId.isValid(sid) {
             bodyDict["chatSessionId"] = sid
+        }
+        // ADR-024: the client echoes the KEY the server answered the last shopping turn with; the server looks the
+        // frozen listing facts up under the caller's own id. A malformed, expired or foreign key resolves to nothing.
+        if let key = decisionEvidenceId, !key.isEmpty {
+            bodyDict["decisionEvidenceId"] = key
         }
         guard let bodyData = try? JSONSerialization.data(withJSONObject: bodyDict) else {
             return AsyncThrowingStream { $0.finish(throwing: AppError.validation(message: "Failed to encode chat request")) }

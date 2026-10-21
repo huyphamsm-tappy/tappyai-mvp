@@ -70,6 +70,11 @@ final class ChatViewModel: AppObservableObject {
     /// arrives, and the chip would stay hidden for the rest of the session.
     @Published private(set) var hasLocationContext = false
     private var streamTask: Task<Void, Never>?
+    /// ADR-024. The latest decision-evidence key for THIS conversation, echoed on the next turn so a shopping
+    /// follow-up is grounded in the frozen listing facts. Instance-scoped: a new conversation gets a new view
+    /// model and therefore no key. Not persisted, so a reopened conversation starts without one until its next
+    /// shopping turn (see Phase L report).
+    private var decisionEvidenceId: String?
     private var thinkTimer: AnyCancellable?
     private var autoSendTask: Task<Void, Never>?
     private let log = AppLogger.chat
@@ -566,7 +571,8 @@ final class ChatViewModel: AppObservableObject {
                 responseStyle: nil,
                 userLocation: self.activeLocation,
                 guestAgeDeclaration: self.isGuest ? self.guestAge.declaration : nil,
-                chatSessionId: self.chatSessionId
+                chatSessionId: self.chatSessionId,
+                decisionEvidenceId: self.decisionEvidenceId
             )
 
             var streamReportedError = false
@@ -614,6 +620,10 @@ final class ChatViewModel: AppObservableObject {
                     // The server's sentence for the current stage: replaces the rotating generic hint.
                     case .progress(_, let text):
                         self.progressHint = text
+
+                    // ADR-024: store the key; the next turn echoes it. Never the evidence facts.
+                    case .decisionEvidenceId(let key):
+                        self.decisionEvidenceId = key
 
                     case .done:
                         sawDone = true
