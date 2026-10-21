@@ -7,6 +7,9 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import ShareMenu from '@/components/share/ShareMenu'
 import { buildPlanArtifact } from '@/lib/share/shareArtifact'
 import { withPlacePhotos, type PlacePhotoSource } from '@/lib/plans/share/planPhotos'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+
+const DAY_COVERS = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
 
 export interface PlanItem {
   time: string
@@ -78,6 +81,9 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
   const artifact = buildPlanArtifact(withPlacePhotos(plan, placePhotos), locale === 'en' ? 'en' : 'vi')
 
   const currentDay = plan.days[activeDay] ?? plan.days[0]
+  // CONSULT_V3 UAT build (NEXT_PUBLIC_CONSULT_V3, inlined at build): a cover photo for the day, like ChatGPT's itinerary — the first safe
+  // https photo among the day's own stops (server-matched place photos; no new image source, no new request).
+  const dayCover = DAY_COVERS ? currentDay?.items.map(it => it.photo_url).find((u): u is string => !!u && isSafeHttpsUrl(u)) ?? null : null
 
   return (
     <div className="mt-3 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden bg-white dark:bg-gray-900 shadow-sm">
@@ -125,6 +131,15 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
         </div>
       )}
 
+      {dayCover && (
+        <div className="relative">
+          <img src={dayCover} alt={currentDay?.label ?? ''} loading="lazy" onError={(e) => { e.currentTarget.parentElement!.style.display = 'none' }} className="w-full h-40 object-cover" />
+          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2 pt-8">
+            <span className="text-sm font-semibold text-white">{currentDay?.label}</span>
+          </div>
+        </div>
+      )}
+
       {/* ── Timeline ── */}
       <div className="divide-y divide-gray-50 dark:divide-gray-800/80">
         {currentDay?.items.map((item, i) => (
@@ -156,8 +171,10 @@ export default function TripPlanCard({ plan: rawPlan, placePhotos }: {
                 )}
               </div>
 
-              {/* Photo — server-matched representative image, right under the place */}
-              {item.photo_url && (
+              {/* Photo — server-matched representative image, right under the place. Gate 2 F-A (A3-2 a): a stored plan may carry a
+                  photo_url written before A1, so only a safe public https URL (urlGuard contract) is rendered. A risk reduction, not
+                  provenance: an https URL on any public host still renders. */}
+              {item.photo_url && item.photo_url !== dayCover && isSafeHttpsUrl(item.photo_url) && (
                 <img
                   src={item.photo_url}
                   alt={item.name}
