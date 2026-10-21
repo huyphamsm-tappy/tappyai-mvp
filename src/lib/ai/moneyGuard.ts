@@ -487,7 +487,7 @@ export function lastClauseOf(s: string): string {
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
  */
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
+export function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
@@ -566,6 +566,74 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   return rest + brk
 }
 
+/**
+ * Round 42 round 3 (commit 3a, PRICE-CUT-RESIDUE-01 / S5): the connectives a travel sentence turns on — the cut point
+ * when no clause delimiter separates a verified fare from an unverified one. Matched with the space before it, so
+ * the cut keeps the text before the space.
+ */
+const FARE_CONNECTIVE = /\s+(?:trong khi|trong lúc|còn|nhưng|tuy nhiên|khi đó|hoặc)(?![\p{L}\p{N}])/giu
+
+/**
+ * Round 42 round 3 (commit 3a; travelGuard only, through `noAmountOnlyFallback`): a sentence that states a VERIFIED
+ * amount next to an unverified one loses the part that carries the unverified amount and keeps every verified one —
+ * never the whole sentence, never only the number ("Vietjet 387.000 VND, nhưng cũng có chuyến chỉ." was the
+ * residue). Offsets are relative to the sentence; `verified` is sorted by start.
+ *
+ * - after a verified amount: cut from the clause delimiter before the unverified amount (2a), else from the nearest
+ *   connective before it (2c), else from the end of the verified amount — through the sentence's stop, which stays;
+ * - another verified amount follows: the cut ends before the next delimiter / connective (S5m2), so it stays;
+ * - before every verified amount: the head goes through the delimiter / connective after the unverified amount, the
+ *   leading connective with it, and the first letter takes its case back (2b).
+ *
+ * Returns null when no cut keeps every verified amount — the caller then takes its former path.
+ */
+function cutAroundVerified(sentenceWithBreak: string, verified: Array<[number, number]>, unverified: Array<[number, number]>, decimalSafe: boolean): string | null {
+  const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
+  const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
+  const stop = sentence.match(/[.!?…]+[\s"'”’]*$/u)?.index ?? sentence.length
+  const lead = sentence.match(/^\s*/)?.[0].length ?? 0
+  const spans = (re: RegExp) => [...sentence.matchAll(re)].map(m => [m.index!, m.index! + m[0].length] as [number, number])
+  const delims = spans(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)
+  const conns = spans(FARE_CONNECTIVE)
+  const within = (from: number, to: number) => (x: [number, number]) => x[0] >= from && x[1] <= to
+  // The first boundary after the unverified amount: [where a cut ending before it stops, where a head cut through it stops].
+  const firstAfter = (from: number, to: number): [number, number] | null => {
+    const d = delims.find(within(from, to)), c = conns.find(within(from, to))
+    if (d && (!c || d[0] <= c[0])) return [d[0], d[1]]
+    return c ? [c[0], c[1]] : null
+  }
+  const cuts: Array<[number, number]> = []
+  for (const [us, ue] of unverified) {
+    const prev = verified.filter(([, e]) => e <= us).pop()
+    const next = verified.find(([s]) => s >= ue)
+    if (prev) {
+      const d = delims.filter(within(prev[1], us)).pop()
+      const c = conns.filter(within(prev[1], us)).pop()
+      const from = d ? d[0] : c ? c[0] : prev[1]
+      const to = next ? (firstAfter(ue, next[0])?.[0] ?? ue) : stop
+      cuts.push([from, Math.max(to, ue)])
+    } else if (next) {
+      cuts.push([lead, firstAfter(ue, next[0])?.[1] ?? ue])
+    } else return null
+  }
+  cuts.sort((x, y) => x[0] - y[0])
+  const merged: Array<[number, number]> = []
+  for (const c of cuts) {
+    const last = merged[merged.length - 1]
+    if (last && c[0] <= last[1]) last[1] = Math.max(last[1], c[1]); else merged.push([c[0], c[1]])
+  }
+  if (merged.some(([f, t]) => verified.some(([s, e]) => s < t && e > f))) return null
+  let out = '', at = 0
+  for (const [f, t] of merged) { out += sentence.slice(at, f); at = t }
+  out += sentence.slice(at)
+  if (merged[0][0] <= lead) {
+    const head = sentence.slice(0, lead)
+    out = head + capitaliseFirst(out.slice(head.length).replace(/^\s+/, '').replace(LEADING_CONNECTIVE, ''))
+  }
+  if (!HAS_LETTER.test(out)) return null
+  return out + brk
+}
+
 /** The first letter after leading space, list bullets and emphasis is lower case. */
 function startsLower(s: string): boolean {
   return /^\p{Ll}/u.test(s.replace(/^[\s*_>#-]+/u, '').replace(/^[^\p{L}\p{N}]+/u, ''))
@@ -584,6 +652,12 @@ export interface RedactOptions {
   wholeSentence?: boolean
   /** See MoneyGuardOptions.decimalSafe. */
   decimalSafe?: boolean
+  /**
+   * Round 42 round 3 (PRICE-CUT-RESIDUE-01): no step (3) "only the amounts go" — a sentence that cannot lose just a clause goes whole, even when that
+   * leaves nothing — and a sentence that also states a VERIFIED amount is cut around it first (`cutAroundVerified`), so a verified amount never goes.
+   * Only for a caller that always writes its own notice after a cut (travelGuard); off = the former behaviour for every other caller.
+   */
+  noAmountOnlyFallback?: boolean
 }
 
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
@@ -626,6 +700,19 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     const lineStart = text.lastIndexOf('\n', a - 1) + 1
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
     if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
+    // Round 42 round 3 (commit 3a): with the opt-in, a sentence that also states a verified amount is cut around it BEFORE the clause path (1),
+    // whose cut can take the verified amount with the clause (S5h3) or drop the sentence whole (travelGuard.test.ts case 4).
+    if (opts.noAmountOnlyFallback) {
+      const verified = claims.filter(c => c.verdict === 'VERIFIED' && c.start >= a && c.start < b).sort((x, y) => x.start - y.start)
+      const kept = verified.length > 0
+        ? cutAroundVerified(raw, verified.map((c): [number, number] => [c.start - a, c.end - a]), [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a]), opts.decimalSafe === true)
+        : null
+      if (kept !== null) {
+        dropped = false
+        const trailing = kept.match(/[\n]+$/)?.[0] ?? ''
+        return stripConnective(kept.replace(/[\n]+$/, '')) + trailing
+      }
+    }
     for (const c of inSentence) {
       const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a), opts.decimalSafe === true)
       if (cut === null) { dropped = true; return '' }
@@ -638,6 +725,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
   })
   const proportional = tidy(pieces.join(''))
   if (HAS_LETTER.test(proportional)) return proportional
+  if (opts.noAmountOnlyFallback) return proportional
 
   // 3) removing the clauses would leave nothing — take only the amounts.
   let out = text

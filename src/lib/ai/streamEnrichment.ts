@@ -27,6 +27,10 @@ import { stripModelMediaInProse, dropEmptyMediaBlocks } from './modelMedia'
 import { insertBeforeMarkers } from './wrongModel'
 import { shieldSupported, pageGroundedNames, vnToday } from './guardEvidence'
 import { withUnverifiedFigureLine } from './unverifiedFigure'
+import { planPriceSources, collectSearchRows, figuresIn, type TextRow } from './consultative/priceProvenance'
+import { dropUnbackedOfferClaims, hasPressableLink, viewHasPrice } from './consultative/offerClaims'
+import { shapeCoachReply, splitCoachRanges, labelUndatedFareDates } from './consultative/coachFares'
+import { cutUnbackedRanges } from './consultative/rangeEvidence'
 import { stripSellerNames } from './agent/runtime/sourceType'
 import { bindCitationMarkers, enforceCitationIntegrity, dropBareListMarkers, dropOrphanLeadIns } from './citationIntegrity'
 import { noFabricationGate } from './noFabricationGate'
@@ -1519,7 +1523,24 @@ function withResolvedPhotos(recs: Recommendation[], resolved: PlaceLike[]): Reco
  * through the sanitisers on the line that builds the link. Markers naming no such source are removed.
  */
 export function citeSources(text: string, sources: ReadonlyArray<{ id: string; host: string; url: string }>, allowed: ReadonlySet<string>, lang: string): string {
-  const ok = new Map(sources.filter(s => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))).map(s => [s.id, s]))
+  return citeSourcesDetailed(text, sources, allowed, lang).text
+}
+
+/**
+ * Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): the same step, with the two things the reply's FIGURES decide when no marker survived.
+ *   `fallback`     the pages the "Nguồn:" line may name instead of every page read (those whose own passages state a figure of the reply);
+ *   `searchLinks`  search results whose own text states a figure no page states — shown as "Giá theo kết quả tìm kiếm của …", never as a verified page price.
+ * Without `opts` the behaviour is exactly the former one.
+ */
+export function citeSourcesDetailed(
+  text: string,
+  sources: ReadonlyArray<{ id: string; host: string; url: string }>,
+  allowed: ReadonlySet<string>,
+  lang: string,
+  opts?: { fallback?: ReadonlyArray<{ id: string; host: string; url: string }>; searchLinks?: ReadonlyArray<{ id: string; host: string; url: string }> },
+): { text: string; used: boolean } {
+  const eligible = (s: { url: string }) => /^https?:\/\//i.test(s.url) && allowed.has(normalizeUrl(s.url))
+  const ok = new Map(sources.filter(eligible).map(s => [s.id, s]))
   const link = (s: { host: string; url: string }) => `[${escapeMarkdownLabel(s.host)}](${sanitizeUrlForMarkdown(s.url)})`
   let used = 0
   let out = text.replace(/\s?\[(S\d{1,2}(?:\s*,\s*S\d{1,2})*)\]/g, (_m, ids: string) => {
@@ -1528,13 +1549,26 @@ export function citeSources(text: string, sources: ReadonlyArray<{ id: string; h
     used++
     return ` (${ls.map(link).join(', ')})`
   })
-  if (!used && ok.size) {
+  const en = /^en/i.test(lang)
+  if (!used && !opts && ok.size) {
     const list = [...ok.values()].slice(0, 3).map(link).join(' · ')
     const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
-    const line = `${/^en/i.test(lang) ? 'Sources' : 'Nguồn'}: ${list}`
+    const line = `${en ? 'Sources' : 'Nguồn'}: ${list}`
     out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${line}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${line}\n\n${out.slice(at)}`
+  } else if (!used && opts) {
+    const pages = (opts.fallback ?? []).filter(eligible).slice(0, 3)
+    const found = (opts.searchLinks ?? []).filter(eligible).slice(0, 3)
+    const lines = [
+      ...(pages.length ? [`${en ? 'Sources' : 'Nguồn'}: ${pages.map(link).join(' · ')}`] : []),
+      ...(found.length ? [`${en ? 'Prices as listed in the search results of' : 'Giá theo kết quả tìm kiếm của'}: ${found.map(link).join(' · ')}`] : []),
+    ]
+    if (lines.length) {
+      const at = out.search(/\[(?:FOLLOWUPS|TAPPY_PLAN|CTA_BUTTONS)\]/)
+      const block = lines.join('\n\n')
+      out = at < 0 ? `${out.replace(/\s+$/, '')}\n\n${block}` : `${out.slice(0, at).replace(/\s+$/, '')}\n\n${block}\n\n${out.slice(at)}`
+    }
   }
-  return out
+  return { text: out, used: used > 0 }
 }
 export function applyPlaceEnrichmentStreamFilter(
   response: Response,
@@ -1622,6 +1656,12 @@ export function applyPlaceEnrichmentStreamFilter(
   let planDestination: string | null = null
   // WS2 final: what the No-Fabrication Gate checks claims against (agent turns): raw tool results and the tools that ran.
   const gateCorpus: string[] = []
+  // Round 32 (CONSULTATIVE_IN_AGENT): the search results (title + snippet + link) the tools returned this turn — the evidence a price may be tied back to (priceProvenance.ts).
+  const searchRows: TextRow[] = []
+  // …and the coach (bus) search results of get_transport_options alone: what a coach reply may say about operators and kinds of fare (coachFares.ts).
+  const coachRows: TextRow[] = []
+  // Round 42 round 3 (RANGE-27-33, rule R-B, both flags): the search results of the turn, read whatever the flag — the rows a price range must be stated by (rangeEvidence.ts).
+  const rangeRows: TextRow[] = []
   // Freshness (freshness.ts): prices of tool rows by how fresh their source was; the gate keeps stale / unknown-time ones with a note.
   const agedFramePrices: Array<{ amount: number; at: string | null }> = []
   const freshFramePrices: number[] = []
@@ -2451,10 +2491,38 @@ export function applyPlaceEnrichmentStreamFilter(
      */
     // WS2 citation integrity, step 1 (agent turns that read pages): a marker after a full stop is bound INTO its sentence before any
     // guard runs, so removing the sentence removes its citation (citationIntegrity.ts).
-    const citeBound = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    const citeBoundRaw = collector?.citationSources?.length ? bindCitationMarkers(planMask.text) : planMask.text
+    // Round 42 round 3 (RANGE-27-33, rule R-B, both flags; turns without coach rows — a coach range is R-C's, in shapeFinalProse): a VND range no single row
+    // of the turn states loses only the part that carries it, when a safe cut keeps the sentence's other amounts; no safe cut ⇒ the sentence is not touched.
+    // Rows = the turn's search results + the passages of the pages it read. See rangeEvidence.ts.
+    const rangeEvRows = [...rangeRows.map(r => r.text), ...(collector?.guardEvidence?.sources ?? []).flatMap(s => s.passages)]
+    const rangeCut = coachRows.length === 0 && rangeEvRows.length > 0
+      ? cutUnbackedRanges(citeBoundRaw, {
+        rows: rangeEvRows,
+        hosts: [...rangeRows.map(r => r.host), ...(collector?.guardEvidence?.sources ?? []).map(s => s.host)],
+        consultative: collector?.consultative === true,
+        lang,
+        looked: gateTools.length > 0,
+        // flag OFF: the No-Fabrication Gate, called as a pure function on the sentence alone, with the evidence it will see below
+        gateDrops: collector?.semanticRanking
+          ? (sentence: string) => noFabricationGate(sentence, {
+            corpus: [...gateCorpus, ...(collector.gateContext ?? []), ...(collector.guardEvidence?.sources ?? []).map(s => s.passages.join('\n')), ...(collector.guardEvidence?.carried ?? []).map(r => `${r.title} ${r.claims.map(c => c.value).join(' · ')}`)],
+            userTexts: collector.userTexts ?? [userText],
+            tools: gateTools,
+            conflicts: collector.guardEvidence?.conflicts ?? [],
+            stalePrices: collector.guardEvidence?.stalePrices ?? [],
+            freshPrices: [...(collector.guardEvidence?.freshPrices ?? []), ...freshFramePrices],
+            agedPrices: agedFramePrices,
+          }, { lang, illustrations: collector?.consultative === true }).removedSentences > 0
+          : undefined,
+      })
+      : null
+    if (rangeCut?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'range_evidence', changes: rangeCut.changes }))
+    const citeBound = rangeCut?.changes.length ? rangeCut.text : citeBoundRaw
+    gt('range_evidence', citeBoundRaw, citeBound)
     // CONSULTATIVE_IN_AGENT: the system clock's date ("hôm nay (11/10)") is framing, not a claim the page must repeat. Any other date is judged as before.
     const todayVn = collector?.consultative ? vnToday() : undefined
-    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
+    const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
@@ -3425,6 +3493,14 @@ export function applyPlaceEnrichmentStreamFilter(
           const held = collector.unverifiedSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host))
           return citeSources(figLine.text, held, allowedUrls, lang)
         }
+        // Round 32 (CONSULTATIVE_IN_AGENT): no page was read, but a figure the reply states may be one a SEARCH RESULT states: that result's own link, labelled as such.
+        if (collector?.consultative === true && collector.agentMode && !collector.shoppingMarker && !collector.placesRecommendations?.length) {
+          const plan = planPriceSources(figLine.text, [], searchRows)
+          if (plan.figures.length && plan.searchRows.length) {
+            console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: 0, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+            return citeSourcesDetailed(figLine.text, [], allowedUrls, lang, { fallback: [], searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) }).text
+          }
+        }
         return figLine.text
       }
       // WS2 citation integrity, step 2: no orphan / duplicate marker reaches the link step.
@@ -3433,6 +3509,19 @@ export function applyPlaceEnrichmentStreamFilter(
       // CONSULTATIVE_IN_AGENT: a Shopee page the agent read is not offered as a source button — opened without a login it is a "Login Required" page
       // (checked 2026-10-11 in a browser with no session). The facts it gave were still read; only the button is dropped.
       const buttonSources = collector.consultative ? collector.citationSources.filter(s => !/(?:^|\.)shopee\./i.test(s.host) && !/^https?:\/\/(?:[^/]*\.)?shopee\./i.test(s.url)) : collector.citationSources
+      // Round 32 (CONSULTATIVE_IN_AGENT, price ↔ source): when no marker survives, the "Nguồn:" line names only the pages whose own passages state a figure of the
+      // reply, and a figure only a search result states gets that result's link ("Giá theo kết quả tìm kiếm của …"). Live 2026-10-12: two snippet prices, source
+      // button = the page that stated neither. A figure nothing states gets no source (the guards above decide the sentence; a source is never invented for it).
+      if (collector.consultative === true && collector.agentMode) {
+        const ev = collector.guardEvidence?.sources ?? []
+        const pages = buttonSources.map(s => ({ ...s, passages: ev.find(g => g.id === s.id)?.passages ?? [] }))
+        const plan = planPriceSources(integrity.text, pages, searchRows)
+        if (plan.figures.length) {
+          const cited = citeSourcesDetailed(integrity.text, buttonSources, allowedUrls, lang, { fallback: plan.pageSources, searchLinks: plan.searchRows.map((r, i) => ({ id: `P${i + 1}`, host: r.host, url: r.url })) })
+          if (!cited.used) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'price_source', pages: plan.pageSources.length, search_results: plan.searchRows.length, figures: plan.figures.length, unmatched: plan.unmatched.length }))
+          return cited.text
+        }
+      }
       return citeSources(integrity.text, buttonSources, allowedUrls, lang)
     })(settleMarkdown((() => {
       if (!fallback) return gated.text
@@ -3559,10 +3648,45 @@ export function applyPlaceEnrichmentStreamFilter(
       if (p) { collector.setAppendix(p); console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'product_search_appendix', links: p.links.length })) }
     }
     const appendixLines = collector?.appendix ? collector.appendix.links.map(l => `- [${escapeMarkdownLabel(l.name)}](${sanitizeUrlForMarkdown(l.url)})`) : []
-    const ctaOwnedProse = collector?.appendix
-      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
-      : ctaOwnedProseBase
     const ctaSuffix = serverCta ? `\n\n${serverCta}` : ''
+    // Round 32 (CONSULTATIVE_IN_AGENT): the reply may only point at prices and buttons the FINAL output has — after the card decision, the appendix and the system links —
+    // and a coach reply names operators and kinds of fare for what the rows show. Identity (the same string) without the flag.
+    // Live 2026-10-12 (hotel): "các mức tham khảo đi kèm …" and "nút đặt phòng bên dưới" after the engine's cards were cleared and the tool had returned no price at all.
+    // Round 42 round 3 (PRICE-DATE-01, both flags): a "từ" coach fare no row dates, tied to a date in the reply, is labelled and followed by one
+    // "not verified for that date" sentence (coachFares.labelUndatedFareDates). Identity without coach rows.
+    const dateChecked = (text: string): string => {
+      const r = labelUndatedFareDates(text, coachRows, lang)
+      if (r.labelled) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fare_date', labelled: r.labelled }))
+      gt('coach_fare_date', text, r.text)
+      return r.text
+    }
+    const shapeFinalProse = (raw: string): string => {
+      if (!(collector?.consultative === true && collector.agentMode)) {
+        // Round 42 round 3 (RANGE-27-33, rule R-C1, Huy 2026-10-13): the coach range step runs on this path too; the operator rule stays flag-on only.
+        const split = coachRows.length > 0 ? splitCoachRanges(raw, coachRows, lang) : null
+        if (split?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: split.changes }))
+        const splitText = split?.changes.length ? split.text : raw
+        gt('coach_fares', raw, splitText)
+        return dateChecked(splitText)
+      }
+      const offerChecked = dropUnbackedOfferClaims(raw, {
+        hasPriceData: figuresIn(raw.split('\n').filter(l => !/^\s*(?:nguồn|sources?)\b/i.test(l)).join('\n')).length > 0 || !!collector.shoppingMarker || viewHasPrice(placesView),
+        hasAction: appendixLines.length > 0 || systemLinks.length > 0 || !!collector.shoppingMarker || !!placesSuffix || !!ctaSuffix || !!placesView || hasPressableLink(raw),
+        lang,
+      })
+      if (offerChecked.removed.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'unbacked_offer_claim', removed: offerChecked.removed.map(r => r.kind) }))
+      const afterOffer = offerChecked.removed.length ? offerChecked.text : raw
+      gt('unbacked_offer_claim', raw, afterOffer)
+      // coach: "tùy nhà xe" only when the rows name two operators; a range whose ends are different kinds of price is written as two named figures.
+      const coachShaped = coachRows.length > 0 ? shapeCoachReply(afterOffer, coachRows, lang) : null
+      if (coachShaped?.changes.length) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'coach_fares', changes: coachShaped.changes }))
+      const shaped = coachShaped?.changes.length ? coachShaped.text : afterOffer
+      gt('coach_fares', afterOffer, shaped)
+      return dateChecked(shaped)
+    }
+    const ctaOwnedProse = shapeFinalProse(collector?.appendix
+      ? insertBeforeMarkers(ctaOwnedProseBase, [collector.appendix.text, appendixLines.join('\n')].filter(Boolean).join('\n\n'))
+      : ctaOwnedProseBase)
     /**
      * Route / event / film handoffs the platform resolved (`_tappy_commerce`) reach the user through
      * the prose — and the model does not always copy them (Final local live UAT, 14 Sep 2026: "đã
@@ -3805,6 +3929,10 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             const toolName = res.toolCallId ? toolNameByCallId.get(res.toolCallId) : undefined
+            if (collector?.consultative === true && collector.agentMode) collectSearchRows(res.result, searchRows)
+            collectSearchRows(res.result, rangeRows)
+            // Round 42 round 3: coach rows are read on both flags (PRICE-DATE-01 runs on both); the flag-only steps still check the flag themselves.
+            if (toolName === 'get_transport_options') collectSearchRows({ results: (res.result as { bus_search_results?: unknown } | undefined)?.bus_search_results }, coachRows)
             const filmList = (res.result as { _tappy_films?: { titles?: unknown } } | undefined)?._tappy_films?.titles
             if (toolName === 'get_flight_prices' && (res.result as { fare_status?: unknown } | undefined)?.fare_status === 'not_verified') flightFareUnverified = true
             if (toolName === 'get_movie_showtimes') { const m = (res.result as { _tappy_movie?: { showtimes?: unknown; ticketPrice?: unknown } } | undefined)?._tappy_movie; if (m && m.showtimes == null && m.ticketPrice == null) movieFactsUnverified = true }

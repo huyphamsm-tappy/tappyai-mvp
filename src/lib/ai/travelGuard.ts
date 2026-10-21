@@ -254,7 +254,8 @@ export function guardTravelClaimsInText(
       const spans = sentenceSpans(out)
       for (const j of judged) if (j.verdict !== 'VERIFIED') { const sp = spans.find(([a, b]) => j.start >= a && j.start < b); if (sp) cutTexts.push(out.slice(sp[0], sp[1])) }
       moneyCut = true
-      out = redactUnsupportedClaims(out, judged); redacted += bad
+      // Round 42 round 3 (PRICE-CUT-RESIDUE-01): never "…có giá /chiều." — a sentence that cannot lose just a clause goes whole; the notice below says what was cut.
+      out = redactUnsupportedClaims(out, judged, { noAmountOnlyFallback: true }); redacted += bad
     }
   }
 

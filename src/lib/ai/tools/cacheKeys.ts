@@ -231,6 +231,8 @@ export function transportCacheKey(
   destination: string,
   mode: string | undefined,
   lang: string,
+  /** Round 32 (CONSULTATIVE_IN_AGENT): the user's travel date when it goes into the search query; absent → the key is exactly the former one. */
+  dateForQuery?: string,
 ): string {
-  return `transport:${cacheKeyPart(origin)}:${cacheKeyPart(destination)}:${mode || 'auto'}:${lang}`
+  return `transport:${cacheKeyPart(origin)}:${cacheKeyPart(destination)}:${mode || 'auto'}:${lang}${dateForQuery ? `:d${dateForQuery}` : ''}`
 }

@@ -123,7 +123,7 @@ describe('A1(b): the first byte does not wait for the search', () => {
   it('route.ts wires it: a pre-search turn returns the deferred body with the evidence id header; every other turn runs the same closure directly', () => {
     const route = readFileSync('src/app/api/chat/route.ts', 'utf8')
     expect(route).toMatch(/const finishTurn = async \(\): Promise<Response> => \{/)
-    expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(searchingFrame\(lang\), finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
+    expect(route).toMatch(/if \(willPresearch\) \{\s*return new Response\(deferredBody\(hasValidCurrentLocation\(userLocation\) \? searchingFrame\(lang\) : '', finishTurn\), \{[^}]*'X-Decision-Evidence-Id': evidenceId/)
     expect(route).toMatch(/return finishTurn\(\)\s*\}\s*$/)
     expect(route).toMatch(/if \(willPresearch && preCall && !eveningSearches\) \{/)
   })

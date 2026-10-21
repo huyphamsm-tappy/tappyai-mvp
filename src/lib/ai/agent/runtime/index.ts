@@ -241,7 +241,7 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       callModel,
       ...(i.callModel ? {} : { answerFirstModel }),
       // CONSULTATIVE_IN_AGENT: origin / year / exact-day questions the owner's rule says are never asked first are refused (askGate.ts).
-      ...(i.consultative === true ? { dedupeParaphrase: true, parallelAnswerFirst: true, cardRetry: true, toolStatusTrace: true, skipAnswerFirst: isVerifyTurn(box?.turn.userText || userTexts[userTexts.length - 1] || '') } : {}),
+      ...(i.consultative === true ? { dedupeParaphrase: true, parallelAnswerFirst: true, cardRetry: true, contentRetry: true, toolStatusTrace: true, skipAnswerFirst: isVerifyTurn(box?.turn.userText || userTexts[userTexts.length - 1] || '') } : {}),
       // CONSULTATIVE_IN_AGENT (discoveryGate.ts): ask first — no lookup runs, whatever the model proposes.
       ...(i.consultative === true && i.discoveryAsk === true ? { blockRetrieval: true } : {}),
       // Off with the flag, and on its own by CONSULT_ASK_GATE=off (askGate.ts).
@@ -252,7 +252,8 @@ export function startAgentRuntimeTurn(i: RuntimeTurnInput): AgentStreamResult {
       lang: i.lang,
       trace: i.trace,
       disallowedTools: SIDE_EFFECT_TOOLS,
-      onToolStart: () => { if (!progressSent) { progressSent = true; emit(searchingFrame(i.lang)) } },
+      // LOC-CHIP-01: "Đang tìm chỗ quanh bạn…" only for a place search around a real current location.
+      onToolStart: call => { if (!progressSent && call.toolName === 'search_places' && i.hasCurrentLocation === true) { progressSent = true; emit(searchingFrame(i.lang)) } },
       onToolResult: (call, result, event) => {
         lastResults.set(`${event.round}:${call.toolName}`, result)
         if (call.toolName !== READ_PAGE) for (const u of urlsIn(result)) allow(u)

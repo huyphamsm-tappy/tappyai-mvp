@@ -78,6 +78,7 @@ import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
 import { requestedProviderOf } from '@/lib/ai/tools/commerceIntent'
 import { inputLocaleFor } from '@/lib/voice/config'
 import { readMicEnabled } from '@/lib/voice/micSetting'
+import { isNearMeRequest, readSessionFix, requestFreshFix } from '@/lib/location/currentLocation'
 import { TappyMascot } from '@/components/TappyMascot'
 import { getTappyPose } from '@/lib/TappyMascotState'
 import { track } from '@/lib/tracking/tracker'
@@ -847,11 +848,10 @@ export default function ChatInterface({
   // failed hydration on every reload of /chat/<id> (React #418/#423 on UAT: the server HTML is thrown away and the page re-rendered from scratch).
   // The stored location is applied right after mount instead; nothing sends before then.
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null)
+  // Round 42: only a fix taken in THIS tab session is the current location; one stored by an earlier session stays stored, unsent.
   useEffect(() => {
-    try {
-      const s = localStorage.getItem('tappy_location')
-      if (s) setUserLocation(JSON.parse(s) as UserLocation)
-    } catch { /* storage unavailable / corrupt */ }
+    const loc = readSessionFix()
+    if (loc) setUserLocation(loc)
   }, [])
 
   // User-chosen response style (Personalization — MFS 2.6). Set on /profile/tappy-knows,
@@ -1271,39 +1271,26 @@ export default function ChatInterface({
       append({ role: 'user', content: 'Gợi ý vài địa điểm hay ở gần mình nhé' })
     }
 
-    if (userLocation) { send(); return }
-
-    // Try localStorage first (set by LocationProvider but not yet in state)
-    try {
-      const stored = localStorage.getItem('tappy_location')
-      if (stored) {
-        const loc = JSON.parse(stored) as UserLocation
-        flushSync(() => setUserLocation(loc))
-        send(); return
-      }
-    } catch {}
-
-    // Request fresh GPS
+    // Round 42: always a NEW device fix (maximumAge 0). Refused / timed out → send WITHOUT a location (never an older fix); the server asks.
     if (!navigator.geolocation) { send(); return }
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const { latitude: lat, longitude: lng } = pos.coords
-        let address = ''
-        try {
-          const resp = await fetch(
-            `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json`,
-            { headers: { 'Accept-Language': 'vi', 'User-Agent': 'TappyAI/1.0 (huypham.sm@gmail.com)' } }
-          )
-          if (resp.ok) { const d = await resp.json(); address = (d?.display_name as string) || '' }
-        } catch {}
-        const loc: UserLocation = { lat, lng, address, ts: Date.now() }
-        localStorage.setItem('tappy_location', JSON.stringify(loc))
-        flushSync(() => setUserLocation(loc))
-        send()
-      },
-      () => send() // denied — send anyway
-    )
-  }, [userLocation, append])
+    void requestFreshFix().then((loc) => {
+      flushSync(() => setUserLocation(loc))
+      send()
+    })
+  }, [append])
+
+  // Round 42 (D2): a typed "gần tôi / quanh đây …" message asks for a fresh fix before it is sent, like the 📍 chip. Other messages send at once.
+  const freshFixPendingRef = useRef(false)
+  const submitWithCurrentLocation = useCallback((submit: () => void) => {
+    if (!isNearMeRequest(input) || !navigator.geolocation) { submit(); return }
+    if (freshFixPendingRef.current) return
+    freshFixPendingRef.current = true
+    void requestFreshFix().then((loc) => {
+      freshFixPendingRef.current = false
+      flushSync(() => setUserLocation(loc))
+      submit()
+    })
+  }, [input])
 
   // Read Aloud — audio synthesized server-side, so every platform hears the same Tappy voice.
   // The language of each reply is decided by the backend, not here.
@@ -1484,15 +1471,17 @@ export default function ChatInterface({
     cancelAutoSend() // a manual send supersedes any queued voice auto-send
     if (!input.trim() && !imageFile) return
     posthog.capture('chat_message_sent', { input_method: 'button', has_image: !!imageFile })
-    if (imageFile) {
-      const dt = new DataTransfer()
-      dt.items.add(imageFile)
-      handleSubmit(e, { experimental_attachments: dt.files })
-      clearImage()
-    } else {
-      handleSubmit(e)
-    }
-  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend])
+    submitWithCurrentLocation(() => {
+      if (imageFile) {
+        const dt = new DataTransfer()
+        dt.items.add(imageFile)
+        handleSubmit(e, { experimental_attachments: dt.files })
+        clearImage()
+      } else {
+        handleSubmit(e)
+      }
+    })
+  }, [input, imageFile, handleSubmit, clearImage, cancelAutoSend, submitWithCurrentLocation])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -1501,14 +1490,16 @@ export default function ChatInterface({
       if ((input.trim() || imageFile) && !isLoading) {
         posthog.capture('chat_message_sent', { input_method: 'keyboard', has_image: !!imageFile })
         const fakeForm = { preventDefault: () => {} } as React.FormEvent<HTMLFormElement>
-        if (imageFile) {
-          const dt = new DataTransfer()
-          dt.items.add(imageFile)
-          handleSubmit(fakeForm, { experimental_attachments: dt.files })
-          clearImage()
-        } else {
-          handleSubmit(fakeForm)
-        }
+        submitWithCurrentLocation(() => {
+          if (imageFile) {
+            const dt = new DataTransfer()
+            dt.items.add(imageFile)
+            handleSubmit(fakeForm, { experimental_attachments: dt.files })
+            clearImage()
+          } else {
+            handleSubmit(fakeForm)
+          }
+        })
       }
     }
   }

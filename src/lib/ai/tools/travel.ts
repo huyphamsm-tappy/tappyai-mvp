@@ -342,8 +342,10 @@ const RIDE_HAILING_APPS = [
 ]
 
 // mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
-async function getTransportOptionsImpl(origin: string, destination: string, mode?: string, lang = 'vi') {
-  const cacheKey = transportCacheKey(origin, destination, mode, lang)
+async function getTransportOptionsImpl(origin: string, destination: string, mode?: string, lang = 'vi', dateForQuery?: string) {
+  // Round 32 (CONSULTATIVE_IN_AGENT): the date the user named goes into the coach query — the SAME two requests, one of them worded with the day. Only a well-formed YYYY-MM-DD is used.
+  const dayText = dateForQuery && /^\d{4}-\d{2}-\d{2}$/.test(dateForQuery) ? `${dateForQuery.slice(8, 10)}/${dateForQuery.slice(5, 7)}/${dateForQuery.slice(0, 4)}` : ''
+  const cacheKey = transportCacheKey(origin, destination, mode, lang, dayText ? dateForQuery : undefined)
   const cached = getCache(cacheKey)
   if (cached) return cached
 
@@ -355,10 +357,11 @@ async function getTransportOptionsImpl(origin: string, destination: string, mode
     // (attachCommerceLinks → `vexere_link`); the railway has no route page to point at.
     void buildCoachLandingLink
     try {
-      const [busResults, trainResults] = await Promise.all([
-        serperSearch('ve xe khach tu ' + origin + ' di ' + destination + ' gia bao nhieu vexere futa phuong trang'),
-        serperSearch('ve tau ' + origin + ' ' + destination + ' duong sat viet nam gia'),
-      ])
+      const busQuery = 've xe khach tu ' + origin + ' di ' + destination + (dayText ? ' ngay ' + dayText : '') + ' gia bao nhieu vexere futa phuong trang'
+      const trainQuery = 've tau ' + origin + ' ' + destination + ' duong sat viet nam gia'
+      // Round 33: when the user's date went into the query (flag only), the two queries actually sent are logged — the proof that the day is in the request. No line without a date.
+      if (dayText) console.log(JSON.stringify({ type: 'tappyai_coach_query', queries: [busQuery, trainQuery] }))
+      const [busResults, trainResults] = await Promise.all([serperSearch(busQuery), serperSearch(trainQuery)])
       if ((busResults && busResults.length > 0) || (trainResults && trainResults.length > 0)) {
         result = {
           type: 'intercity',
