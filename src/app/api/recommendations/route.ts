@@ -3,6 +3,7 @@ import { getAgeEligibility, ageEligibilityCode } from '@/lib/account/ageEligibil
 import { buildAIContext } from '@/lib/ai/contextBuilder'
 import { publishableFilter } from '@/lib/safety/gate/publicationAccess'
 import { pickReviewImage } from '@/lib/recommendation/placeImage'
+import { isShareOnlyPlaceName } from '@/lib/share/reviewShareTitle'
 import { rankCandidates } from '@/lib/recommendation/recommendationEngine'
 import type { AIContextResult } from '@/types/aiContext'
 import type { CandidatePlace } from '@/types/recommendation'
@@ -14,9 +15,9 @@ export const dynamic = 'force-dynamic'
 
 // A "share-only" post (user posted a clip/photo without adding a place) carries
 // a sentinel place_name instead of a real one, so it must never be ranked as a
-// place. Covers the current value and the legacy no-diacritic one.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-const isShareOnlyPlace = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// place. The rule lives in ONE place (@/lib/share/reviewShareTitle), shared with
+// the feed and the detail page, so the three surfaces cannot disagree about it.
+const isShareOnlyPlace = isShareOnlyPlaceName
 
 // GET /api/recommendations — personalized "Gợi ý cho bạn".
 // Builds the user's AI context (from preference profile + memory) and ranks

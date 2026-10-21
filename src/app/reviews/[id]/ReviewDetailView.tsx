@@ -9,6 +9,7 @@ import ReviewLikeButton from './ReviewLikeButton'
 import ReviewSaveButton from './ReviewSaveButton'
 import ReviewShareButton from './ReviewShareButton'
 import { postCardOf } from '@/lib/share/contentCards'
+import { isShareOnlyPlaceName } from '@/lib/share/reviewShareTitle'
 import ReviewMusicCard from '../ReviewMusicCard'
 import VideoPlayer from '@/components/explore/VideoPlayer'
 import { useMusicTrack, getPreviewUrl } from '@/modules/music'
@@ -22,8 +23,8 @@ type Author = { full_name: string | null; avatar_url: string | null } | null
 
 // "Share-only" posts (a clip/photo with no place added) carry a sentinel
 // place_name — don't render it as a place title or a "go to <place>?" CTA.
-const SHARE_ONLY_NAMES = new Set(['Chia sẻ', 'Chia se'])
-const isShareOnlyName = (n?: string | null) => !n?.trim() || SHARE_ONLY_NAMES.has(n.trim())
+// The rule is the one in @/lib/share/reviewShareTitle (shared with the feed and the API).
+const isShareOnlyName = isShareOnlyPlaceName
 
 type Review = {
   id: string
