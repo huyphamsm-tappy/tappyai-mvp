@@ -312,7 +312,15 @@ enum ContentParser {
     /// what produced this bug: `[TAPPY_SHOPPING]` was added server-side and taught to the web
     /// only, and iOS rendered its JSON as message body. When the server gains a marker, it is
     /// added here.
-    static let markerNames = ["TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES", "TAPPY_ASK"]
+    ///
+    /// Phase K: `TAPPY_MEDIA` (news pictures / Wikipedia subject card, persisted with the message
+    /// behind CONSULT_V3 / TAPPY_ANSWER_V4) and the model's control lines `TAPPY_TASK` /
+    /// `TAPPY_RANK` (removed server-side, dropped here again as a backstop). Nothing renders
+    /// them yet; what matters is that their raw JSON never reaches a user.
+    static let markerNames = [
+        "TAPPY_PLAN", "CTA_BUTTONS", "FOLLOWUPS", "TAPPY_SHOPPING", "TAPPY_PLACES", "TAPPY_ASK",
+        "TAPPY_MEDIA", "TAPPY_TASK", "TAPPY_RANK",
+    ]
 
     /// Removes every marker block the decode steps did not consume.
     ///
