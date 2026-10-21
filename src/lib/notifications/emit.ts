@@ -17,6 +17,10 @@ export type NotificationType =
   | 'price'
   | 'broadcast'
   | 'system'
+  // Tappy Business: a merchant's shop received an order. Transactional — a
+  // merchant who misses it loses a sale — so it is category 'system', never
+  // 'marketing', and is exempt from frequency caps and opt-out by definition.
+  | 'business_order'
   /**
    * A Marketing campaign send (V2.2-2, contract M-4).
    *

@@ -52,6 +52,23 @@ const EXEMPT: Record<string, string> = {
   'age-declaration': 'guest 18+ self-declaration for the chat trial; sets an HttpOnly cookie, writes nothing server-side; 10/min per IP',
   'auth/claim-anonymous': 'the anonymous→account handoff; the anonymous token IS the credential',
 
+  // ── Tappy Business: the customer is a guest by design. ──
+  //
+  // A shopper who taps a product link from Facebook or Zalo has no Tappy
+  // account and is never asked for one — that is the whole premise of the
+  // capability (PHASE_0 §22). Refusing anonymous callers here would refuse
+  // every real customer.
+  //
+  // It is NOT unguarded. The route carries five controls the boundary helper
+  // does not provide: IP, per-product and keyed-phone rate limits, Turnstile,
+  // and a required Idempotency-Key. See docs/tappy-business/P2_1_ORDER_CREATION.md.
+  //
+  // 🚨 The MERCHANT side is the opposite and is not exempt: every mutating
+  // route under /api/business/ calls refuseAnonymousSocialWrite, because a shop
+  // belongs to a real account.
+  'public/business/orders':
+    'guest checkout — the customer has no account by design; rate-limited by IP, product and keyed phone, plus Turnstile and a required Idempotency-Key',
+
   // ── The product deliberately offers these to a visitor (see socialWriteAccess.ts). ──
   'chat': 'the anonymous tier IS chat — capped at ANON_LIFETIME_LIMIT per identity (five, once), server-side, from the shared AI question pool',
   'conversations': "the visitor's own chat history; claimed into the account on sign-in",

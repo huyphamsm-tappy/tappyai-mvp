@@ -159,6 +159,47 @@ const MESSAGES = {
   'group.suggestFailed': { vi: 'Lỗi tạo gợi ý, vui lòng thử lại', en: "Couldn't create suggestions — please try again" },
 
   // Bookings / preferences
+  // Tappy Business — merchant catalogue. Deliberately generic, like everything
+  // else here: none of these names a table, a column or an internal id.
+  'business.merchantRequired': {
+    vi: 'Bạn cần tạo gian hàng trước khi thực hiện thao tác này',
+    en: 'Set up your shop before doing that',
+  },
+  'business.merchantExists': {
+    vi: 'Tài khoản này đã có gian hàng',
+    en: 'This account already has a shop',
+  },
+  'business.merchantSuspended': {
+    vi: 'Gian hàng đang tạm ngưng. Vui lòng liên hệ hỗ trợ.',
+    en: 'This shop is suspended. Please contact support.',
+  },
+  'business.termsOutdated': {
+    vi: 'Điều khoản đã được cập nhật. Vui lòng tải lại trang và đồng ý lại.',
+    en: 'The terms have been updated. Please reload and accept them again.',
+  },
+  'business.productNotFound': { vi: 'Không tìm thấy sản phẩm', en: 'Product not found' },
+  // One answer for a malformed token, an unknown token and a deleted order.
+  // Telling them apart would confirm that a well-formed token is a real order.
+  'business.orderNotFound': {
+    vi: 'Không tìm thấy đơn hàng. Vui lòng kiểm tra lại đường dẫn.',
+    en: "We couldn't find that order. Please check the link.",
+  },
+  'business.productUnavailable': {
+    vi: 'Sản phẩm hiện không thể đặt. Vui lòng liên hệ shop.',
+    en: "This product can't be ordered right now. Please contact the shop.",
+  },
+  'business.invalidOptions': {
+    vi: 'Lựa chọn sản phẩm không hợp lệ. Vui lòng chọn lại.',
+    en: 'That product selection is not valid. Please choose again.',
+  },
+  'business.orderNotPending': {
+    vi: 'Đơn hàng đã được xử lý trước đó.',
+    en: 'This order has already been handled.',
+  },
+  'business.imageNotYours': {
+    vi: 'Ảnh không hợp lệ. Vui lòng tải ảnh lên lại.',
+    en: "That image isn't valid. Please upload it again.",
+  },
   'booking.createFailed': { vi: 'Không thể tạo booking', en: "Couldn't create the booking" },
   'preferences.saveFailed': { vi: 'Không thể lưu sở thích', en: "Couldn't save your preferences" },
 

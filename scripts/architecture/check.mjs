@@ -87,6 +87,51 @@ const CONTROLLER_ALLOWED_IMPORTS = /@\/(?:lib\/(?:admin|controller|security)\/|l
 // constant, so a permission no manifest declares cannot be referenced.
 const PERMISSION_REGISTRY = 'src/lib/admin/permissions/'
 
+// ── Tappy Business — the commerce data boundary ──────────────────────────────
+//
+// The nine tables below hold merchant catalogues and, in `business_orders`,
+// customers' real names, phone numbers and delivery addresses. All nine grant
+// privileges to `service_role` alone with RLS enabled and NO policies, which
+// means the database has no row-level opinion about who is asking: whatever the
+// application selects, it gets.
+//
+// So merchant isolation is entirely a property of the query, and a query that
+// forgets `merchant_id` returns another merchant's customers with no error. The
+// scoping lives in `src/lib/business/authz.ts`, but calling it was only ever a
+// convention — and a convention is not a boundary.
+//
+// This is the boundary: the table NAMES are reachable only from the data-access
+// layer, so a query written anywhere else in src/ fails CI. It is the same
+// shape as the messenger-table fence, and for the same reason — when a store
+// cannot defend itself, the fence goes around the name.
+//
+// The directory is `repositories/`, not the whole of `src/lib/business/`:
+// `authz.ts`, `ids.ts` and `money.ts` have no business reaching a table, and
+// allowing the parent directory would let a future file put a query beside the
+// authorization code that is supposed to gate it.
+const BUSINESS_DATA_LAYER = 'src/lib/business/repositories/'
+
+const BUSINESS_TABLES = [
+  'business_merchants',
+  'business_merchant_terms_acceptances',
+  'business_products',
+  'business_product_option_groups',
+  'business_product_option_values',
+  'business_orders',
+  'business_order_items',
+  'business_order_status_history',
+  'business_product_reports',
+]
+
+// Longest first. No current name is a prefix of another — `business_products`
+// needs the `s` that `business_product_option_groups` does not have — so today
+// this changes nothing. It is ordered anyway because the day someone adds
+// `business_order` beside `business_orders`, an unordered alternation would
+// match the short one first and quietly stop checking the long one.
+const BUSINESS_TABLE_ALTERNATION = [...BUSINESS_TABLES]
+  .sort((a, b) => b.length - a.length)
+  .join('|')
+
 // ── Rules ────────────────────────────────────────────────────────────────────
 // id/title show in the report; patterns run per source line (comments stripped);
 // allow = path prefixes exempt from the rule; hint = how to fix.
@@ -352,6 +397,24 @@ const RULES = [
     // Tests set/unset the publisher id as an env fixture; runtime reads stay in tracking/.
     exemptTests: true,
     hint: 'only src/lib/ccp/tracking/* may read affiliate credentials (mirrors no-vendor-api-keys for the AI layer). Gate on isAccesstradeConfigured() elsewhere.',
+  },
+
+  // ── Tappy Business — the commerce data boundary ────────────────────────────
+  {
+    id: 'no-business-tables-outside-data-layer',
+    title: 'Tappy Business tables reached outside the Business data layer',
+    patterns: [
+      // The Supabase call shape, named explicitly so the common violation
+      // reports against the line a reader expects.
+      new RegExp(`\\bfrom\\(\\s*['"\`](?:${BUSINESS_TABLE_ALTERNATION})['"\`]\\s*\\)`),
+      // And the table name in ANY string literal. Broader on purpose: a helper
+      // that builds the query one layer away, a `.rpc()` argument, or a raw SQL
+      // template would all slip past a call-shape-only pattern, and each of them
+      // reaches the same unguarded rows.
+      new RegExp(`['"\`](?:${BUSINESS_TABLE_ALTERNATION})['"\`]`),
+    ],
+    allow: [BUSINESS_DATA_LAYER],
+    hint: 'Business rows are reachable only from src/lib/business/repositories/. Add or extend a repository function there, taking MerchantContext as its first argument, and call that instead — the tables grant to service_role with RLS carrying no policies, so an unscoped query returns another merchant\'s customers with no error to notice. Prose in a comment is fine: comments are stripped before matching.',
   },
 ]
 

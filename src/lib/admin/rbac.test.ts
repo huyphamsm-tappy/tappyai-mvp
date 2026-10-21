@@ -72,7 +72,10 @@ describe('resolveActor', () => {
       roles: ['admin'],
       highestRole: 'admin',
       capabilities: [
-        'analytics.read', 'audit.read', 'commerce.deals', 'controller.dashboard',
+        'analytics.read', 'audit.read', 'commerce.deals',
+        // Tappy Business P0 (2026-09-08): the back-office view over merchants.
+        'commerce.merchants',
+        'controller.dashboard',
         // Marketing V1 (2026-08-29): admin holds all five.
         'marketing.analytics', 'marketing.audience', 'marketing.campaigns',
         'marketing.content', 'marketing.promotions',
