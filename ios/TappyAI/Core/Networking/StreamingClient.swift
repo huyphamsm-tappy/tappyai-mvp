@@ -19,9 +19,23 @@ enum StreamFrame: Equatable, Sendable {
     /// card in the browser and bare prose on the phone. Nothing about the server contract changes
     /// to read it — the frame was always there.
     case places(PlacesLiveView)
+    /// A message ANNOTATION (`8:`) of kind `tappy.turn_status.v1`: how the server says the turn ENDED when it
+    /// did not end cleanly (C2 P2; web `readTurnStatus`). A status line under the reply, never answer text.
+    case turnStatus(TurnStatusKind)
     case done
     case unknown(prefix: String, payload: Data)
 }
+
+/// The two end states `tappy.turn_status.v1` can carry; any other value is ignored by the reader.
+enum TurnStatusKind: String, Equatable, Sendable {
+    /// The answer stops early (cut after the one rescue, or the request budget / deadline ended it).
+    case incomplete
+    /// A server / provider error broke the answer while it was streaming; the part shown stays.
+    case interrupted
+}
+
+/// The turn-status annotation's `kind` (server `progressAnnotation.ts`).
+let turnStatusAnnotationKind = "tappy.turn_status.v1"
 
 /// Pure, testable parser for a single already-framed line. The chunk→line buffering is handled by the
 /// transport (`URLSession.AsyncBytes.lines`); higher-level marker extraction ([TAPPY_PLAN] etc.) is a
@@ -44,6 +58,15 @@ enum DataStreamLineParser {
             if let views = try? JSONDecoder().decode([PlacesLiveView].self, from: payload),
                let view = views.first(where: { $0.kind == placesAnnotationKind && !$0.items.isEmpty }) {
                 return .places(view)
+            }
+            // The turn's end state. A status value this version does not know is ignored (stays `.unknown`).
+            if let items = (try? JSONSerialization.jsonObject(with: payload)) as? [[String: Any]],
+               let status = items.compactMap({ item -> TurnStatusKind? in
+                   guard (item["kind"] as? String) == turnStatusAnnotationKind,
+                         let raw = item["status"] as? String else { return nil }
+                   return TurnStatusKind(rawValue: raw)
+               }).last {
+                return .turnStatus(status)
             }
             return .unknown(prefix: prefix, payload: payload)
         case "9": return .toolCall(payload)

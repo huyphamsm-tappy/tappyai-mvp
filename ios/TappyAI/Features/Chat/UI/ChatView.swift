@@ -74,6 +74,8 @@ struct ChatView: View {
                                                     correcting: vm.ageCorrecting),
                         onStartAgeCorrection: { vm.startAgeCorrection() },
                         onCancelAgeCorrection: { vm.cancelAgeCorrection() },
+                        onReviewAIConsent: { vm.reviewAIConsent() },
+                        endNotice: vm.endNotice,
                         planShare: vm.planShare
                     )
                 }

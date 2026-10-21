@@ -34,6 +34,10 @@ struct ChatMessageList: View {
     var ageBlocked = AgeBlockedState()
     var onStartAgeCorrection: () -> Void = {}
     var onCancelAgeCorrection: () -> Void = {}
+    /// `403 ai_consent_required` bubble: opens the AI-sharing consent sheet (see `ChatViewModel.reviewAIConsent`).
+    var onReviewAIConsent: () -> Void = {}
+    /// How the last reply ended when it was not a clean finish (see `ChatEndNotice`); nil = clean.
+    var endNotice: ChatEndNotice? = nil
     /// Publishes a plan for «Xem kế hoạch đầy đủ trên Tappy» on the plan card (nil = the button stays inert).
     var planShare: PlanSharing? = nil
 
@@ -127,8 +131,15 @@ struct ChatMessageList: View {
                             onEditDateOfBirth: onEditDateOfBirth,
                             ageBlocked: ageBlocked,
                             onStartAgeCorrection: onStartAgeCorrection,
-                            onCancelAgeCorrection: onCancelAgeCorrection
+                            onCancelAgeCorrection: onCancelAgeCorrection,
+                            onReviewAIConsent: onReviewAIConsent
                         )
+                    }
+
+                    // A reply that did not finish cleanly says so under itself (web `chat.streamCut` /
+                    // `chat.turnIncomplete` / `chat.turnInterrupted`); a cut reply also offers «answer again».
+                    if let endNotice, error == nil, !isStreaming {
+                        ChatEndNoticeView(notice: endNotice, onRegenerate: onRegenerate)
                     }
 
                     // Read-aloud notice. Deliberately NOT folded into ChatErrorBanner: that models
@@ -426,6 +437,37 @@ private struct ThinkingIndicator: View {
     }
 }
 
+// MARK: - End notice
+
+private struct ChatEndNoticeView: View {
+    let notice: ChatEndNotice
+    let onRegenerate: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: Spacing.xs) {
+            Text(LocalizedStringKey(notice.messageKey))
+                .font(.footnote)
+                .foregroundColor(.secondary)
+            if notice == .cut {
+                Button(action: onRegenerate) {
+                    HStack(spacing: Spacing.xxs) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.caption)
+                        Text("chat.streamCutRetry")
+                            .font(TappyFont.caption)
+                    }
+                }
+                .buttonStyle(.plain)
+                .foregroundColor(TappyColor.primary)
+                .accessibilityIdentifier("chat-stream-cut-retry")
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, Spacing.xs)
+        .accessibilityIdentifier("chat-end-notice")
+    }
+}
+
 // MARK: - Error Banner
 
 private struct ChatErrorBanner: View {
@@ -441,6 +483,7 @@ private struct ChatErrorBanner: View {
     let ageBlocked: AgeBlockedState
     let onStartAgeCorrection: () -> Void
     let onCancelAgeCorrection: () -> Void
+    let onReviewAIConsent: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: Spacing.xs) {
@@ -485,6 +528,36 @@ private struct ChatErrorBanner: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("chat-signin")
+                    }
+                    .padding(Spacing.sm)
+                    .background(TappyColor.primary.opacity(0.08))
+                    .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
+                case .planLimitReached(let message):
+                    // A paid plan that spent its day: the server's sentence, never «sign in» or «upgrade».
+                    Text(message ?? NSLocalizedString("chat.planLimitReached", comment: ""))
+                        .font(TappyFont.callout)
+                        .foregroundStyle(TappyColor.secondary)
+                        .padding(Spacing.sm)
+                        .background(TappyColor.secondary.opacity(0.08))
+                        .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+
+                case .aiConsentRequired(let message):
+                    VStack(alignment: .leading, spacing: Spacing.xs) {
+                        Text(message ?? NSLocalizedString("chat.error.aiConsentRequired", comment: ""))
+                            .font(TappyFont.callout)
+                            .foregroundStyle(TappyColor.textPrimary)
+                        Button(action: onReviewAIConsent) {
+                            Text("chat.error.reviewAIConsent")
+                                .font(TappyFont.caption)
+                                .foregroundStyle(.white)
+                                .padding(.horizontal, Spacing.sm)
+                                .padding(.vertical, Spacing.xs)
+                                .background(TappyColor.primary)
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.md, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("chat-review-ai-consent")
                     }
                     .padding(Spacing.sm)
                     .background(TappyColor.primary.opacity(0.08))

@@ -2577,6 +2577,118 @@
         }
       }
     },
+    "chat.streamCut": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The answer was cut off half-way. Try again?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Câu trả lời bị ngắt giữa chừng. Bạn thử lại nhé?"
+          }
+        }
+      }
+    },
+    "chat.streamCutRetry": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Answer again"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trả lời lại"
+          }
+        }
+      }
+    },
+    "chat.turnIncomplete": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This answer may be incomplete. Ask a follow-up and I will continue."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Câu trả lời có thể chưa đầy đủ. Bạn hỏi tiếp để mình viết thêm nhé."
+          }
+        }
+      }
+    },
+    "chat.turnInterrupted": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This answer was interrupted. What is above is what arrived — you can ask again."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Câu trả lời bị gián đoạn giữa chừng. Phần trên là những gì đã nhận được — bạn có thể hỏi lại."
+          }
+        }
+      }
+    },
+    "chat.planLimitReached": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You've used all of today's questions on your plan. See you again tomorrow!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết số câu hỏi hôm nay của gói hiện tại. Hẹn gặp lại bạn vào ngày mai nhé!"
+          }
+        }
+      }
+    },
+    "chat.error.aiConsentRequired": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agree to share data with AI in the TappyAI iPhone app to use this feature."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cần đồng ý chia sẻ dữ liệu với AI trong ứng dụng TappyAI trên iPhone để dùng tính năng này."
+          }
+        }
+      }
+    },
+    "chat.error.reviewAIConsent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review AI data sharing"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem lại chia sẻ dữ liệu với AI"
+          }
+        }
+      }
+    },
     "chat.error.anonLimit": {
       "extractionState": "manual",
       "localizations": {

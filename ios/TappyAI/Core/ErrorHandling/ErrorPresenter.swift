@@ -41,6 +41,10 @@ enum ErrorPresenter {
         switch reason {
         case .anonLimitReached: return L("error.auth.anonLimit", "Sign in to keep chatting with Tappy.")
         case .freeLimitReached: return L("error.auth.freeLimit", "You've reached today's limit. Come back tomorrow.")
+        case .planLimitReached(let message):
+            return message ?? L("error.auth.planLimit", "You've reached today's limit on your plan. Come back tomorrow.")
+        case .aiConsentRequired(let message):
+            return message ?? L("error.auth.aiConsent", "Agree to share data with AI in the TappyAI iPhone app to use this feature.")
         case .forbidden:        return L("error.auth.forbidden", "You don't have access to this.")
         default:                return L("error.auth.generic", "Please sign in to continue.")
         }

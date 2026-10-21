@@ -11,6 +11,9 @@ final class ChatViewModel: AppObservableObject {
     @AppPublished var isStreaming: Bool = false
     @AppPublished var isLoadingConversation: Bool = false
     @AppPublished var error: ChatError? = nil
+    /// How the last reply ended when it was not a clean finish (cut stream, server turn status, `3:` part).
+    /// A line under the reply; never part of the answer text. Cleared when a new turn starts.
+    @AppPublished var endNotice: ChatEndNotice? = nil
     @AppPublished var thinkHintIndex: Int = 0
     @AppPublished var activeTool: String? = nil
     @AppPublished var conversationId: String? = nil
@@ -351,6 +354,14 @@ final class ChatViewModel: AppObservableObject {
         startStreaming()
     }
 
+    // MARK: - AI-sharing agreement
+
+    /// «Review AI data sharing» on a `403 ai_consent_required` bubble: the same sheet as Settings. The
+    /// person's answer is recorded and synced by the consent store; nothing is resent from here.
+    func reviewAIConsent() {
+        consent?.requestFromSettings()
+    }
+
     // MARK: - Resume after login
 
     /// Whether the held message should be resent once the person has signed in: the turn stopped on a
@@ -540,6 +551,7 @@ final class ChatViewModel: AppObservableObject {
 
         isStreaming = true
         activeTool = nil
+        endNotice = nil
         startThinkTimer()
 
         streamTask = Task { [weak self] in
@@ -554,6 +566,7 @@ final class ChatViewModel: AppObservableObject {
             )
 
             var streamReportedError = false
+            var sawDone = false
             do {
                 for try await frame in stream {
                     guard !Task.isCancelled else { break }
@@ -590,8 +603,12 @@ final class ChatViewModel: AppObservableObject {
                     case .stepEnd:
                         self.activeTool = nil
 
+                    // The server's own end state (incomplete / interrupted): a status line, never answer text.
+                    case .turnStatus(let status):
+                        self.endNotice = status == .interrupted ? .interrupted : .incomplete
+
                     case .done:
-                        break
+                        sawDone = true
 
                     // The AI SDK data stream reports a failed turn as an `3:` error part on a 200 response. It was ignored, so a failed
                     // turn finished as an empty "complete" reply and the person saw no answer and no error.
@@ -609,6 +626,13 @@ final class ChatViewModel: AppObservableObject {
                 if !Task.isCancelled, Self.streamProducedNothing(content: self.messages[assistantIndex].content,
                                               hasPlaces: self.messages[assistantIndex].livePlaces != nil) {
                     throw AppError.streaming(reason: streamReportedError ? "server reported an error" : "empty reply")
+                }
+
+                // Half an answer, said so: a `3:` error part after some text, or a body that closed without its finish
+                // frame (web `streamCut.ts`). The server's own status, when it sent one, wins.
+                if !Task.isCancelled, self.endNotice == nil {
+                    if streamReportedError { self.endNotice = .interrupted }
+                    else if !sawDone { self.endNotice = .cut }
                 }
 
                 self.messages[assistantIndex].status = .complete
@@ -731,6 +755,10 @@ final class ChatViewModel: AppObservableObject {
             switch reason {
             case .anonLimitReached: return .anonLimitReached
             case .freeLimitReached: return .freeLimitReached
+            case .planLimitReached(let message): return .planLimitReached(message: message)
+            // The server holds no current AI-sharing agreement: not a sign-in problem (that would send a
+            // signed-in person to the login screen), the remedy is the consent sheet.
+            case .aiConsentRequired(let message): return .aiConsentRequired(message: message)
             case .ageGate(let code, let message):
                 switch AgeGateCode(rawValue: code) {
                 case .declarationRequired:
@@ -749,6 +777,27 @@ final class ChatViewModel: AppObservableObject {
     }
 }
 
+// MARK: - Reply end notice
+
+/// How a reply that did not finish cleanly ended. A fixed line under the reply, in the app's language, and
+/// never text of the answer; no billing claim is made (only the server decides about a refund).
+enum ChatEndNotice: Equatable, Sendable {
+    /// The body closed without its finish frame (`d:`): half an answer. Offers «answer again».
+    case cut
+    /// Server turn status `incomplete`: the answer may be missing its end.
+    case incomplete
+    /// Server turn status `interrupted`, or a `3:` error part after some text.
+    case interrupted
+
+    var messageKey: String {
+        switch self {
+        case .cut: return "chat.streamCut"
+        case .incomplete: return "chat.turnIncomplete"
+        case .interrupted: return "chat.turnInterrupted"
+        }
+    }
+}
+
 // MARK: - Chat error enum
 
 enum ChatError: Equatable, Sendable {
@@ -757,6 +806,10 @@ enum ChatError: Equatable, Sendable {
     case authRequired
     case anonLimitReached
     case freeLimitReached
+    /// 429 `plan_limit_reached` — a paid plan spent its daily questions; `message` is the server's sentence.
+    case planLimitReached(message: String?)
+    /// 403 `ai_consent_required` — no current AI-sharing agreement on the server; offers the consent sheet.
+    case aiConsentRequired(message: String?)
     /// 18+ gate — guest must state their age (inline year / "I am 18 or older").
     case ageDeclarationRequired(message: String?)
     /// 18+ gate — account has no date of birth; collect it and save via `PATCH /api/profile`.
@@ -774,7 +827,7 @@ enum ChatError: Equatable, Sendable {
     var isRetriable: Bool {
         switch self {
         case .generic, .offline: return true
-        case .authRequired, .anonLimitReached, .freeLimitReached,
+        case .authRequired, .anonLimitReached, .freeLimitReached, .planLimitReached, .aiConsentRequired,
              .ageDeclarationRequired, .ageVerificationRequired, .ageIneligible: return false
         }
     }

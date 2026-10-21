@@ -135,6 +135,10 @@ final class URLSessionAPIClient: APIClient {
         switch (status, code) {
         case (_, "anon_limit_reached"): return .authentication(reason: .anonLimitReached)
         case (_, "free_limit_reached"): return .authentication(reason: .freeLimitReached)
+        // A paid plan that spent its daily questions, and an account without a current AI-sharing
+        // agreement: each has its own server sentence and its own remedy (Phase K, web parity).
+        case (429, "plan_limit_reached"): return .authentication(reason: .planLimitReached(message: serverMessage(from: data)))
+        case (403, "ai_consent_required"): return .authentication(reason: .aiConsentRequired(message: serverMessage(from: data)))
         case (400, _): return .validation(message: errorMessage(from: data) ?? "Invalid request")
         case (401, _): return .authentication(reason: .unauthenticated)
         case (403, let code?) where AgeGateCode(rawValue: code) != nil:
@@ -147,7 +151,16 @@ final class URLSessionAPIClient: APIClient {
 
     static func isKnownLimit(status: Int, data: Data) -> Bool {
         let code = errorCode(from: data)
-        return code == "free_limit_reached" || code == "anon_limit_reached"
+        return code == "free_limit_reached" || code == "anon_limit_reached" || code == "plan_limit_reached"
+    }
+
+    /// The server's own `message` sentence (already in the request locale), or nil. Unlike
+    /// `errorMessage`, never falls back to the machine code in `error`.
+    private static func serverMessage(from data: Data) -> String? {
+        guard let obj = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let message = (obj["message"] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !message.isEmpty else { return nil }
+        return message
     }
 
     private static func errorCode(from data: Data) -> String? {
