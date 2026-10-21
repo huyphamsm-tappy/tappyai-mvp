@@ -82,6 +82,33 @@ export const AI = {
     })
   },
 
+  /**
+   * C2 P2 (C2_STREAM_DATASTREAM): ONE model step like `step`, but streamed — every text delta is handed to `onTextDelta` as it arrives. The
+   * resolved value has the fields the agent reads from `step` (text, toolCalls, finishReason, usage, providerMetadata, response). A terminal
+   * error part (a provider failure mid-stream) is thrown, so the caller sees the call fail exactly as a failed `step` would.
+   * Same model, retry policy, tool repair and cancellation as `step`.
+   */
+  async stepStream(opts: AIStepOptions & { onTextDelta: (delta: string) => void }) {
+    const role = opts.role ?? 'consult'
+    const r = streamText({
+      model: modelForRole(role, { agentRuntime: opts.agentRuntime, budgetKind: opts.budgetKind }),
+      messages: buildMessages(opts, { role, agentRuntime: opts.agentRuntime }),
+      maxRetries: retriesFor(role, opts.agentRuntime),
+      maxTokens: opts.maxTokens,
+      maxSteps: 1,
+      tools: opts.tools as never,
+      abortSignal: opts.abortSignal,
+      ...((opts.parallelTools && opts.tools) || opts.effort ? { providerOptions: { tappy: { ...(opts.parallelTools && opts.tools ? { parallelTools: true } : {}), ...(opts.effort ? { effort: opts.effort } : {}) } } } : {}),
+      experimental_repairToolCall: repairToolCall as never,
+    })
+    for await (const part of r.fullStream) {
+      if (part.type === 'text-delta' && part.textDelta) opts.onTextDelta(part.textDelta)
+      else if (part.type === 'error') throw part.error instanceof Error ? part.error : new Error(String(part.error))
+    }
+    const [text, toolCalls, finishReason, usage, providerMetadata, response] = await Promise.all([r.text, r.toolCalls, r.finishReason, r.usage, r.providerMetadata, r.response])
+    return { text, toolCalls, finishReason, usage, providerMetadata, response }
+  },
+
   /** Streaming generation with optional multi-step tool calling. Returns the
    * AI SDK stream result (use .toDataStreamResponse() for HTTP streaming). */
   stream(opts: AIStreamOptions) {
