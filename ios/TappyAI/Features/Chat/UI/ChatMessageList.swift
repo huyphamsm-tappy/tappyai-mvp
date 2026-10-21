@@ -94,6 +94,7 @@ struct ChatMessageList: View {
                                 placesShown: msg.livePlaces?.shown,
                                 followups: isLast && !isStreaming ? parsed.followups : [],
                                 ask: isLast && !isStreaming ? parsed.ask : [],
+                                media: parsed.media,
                                 isLastMessage: isLast,
                                 tts: tts,
                                 onRegenerate: isLast ? onRegenerate : nil,
@@ -236,6 +237,8 @@ private struct AssistantBubble: View {
     let followups: [String]
     /// The consult ASK questions of this (last) turn; empty otherwise.
     var ask: [AskQuestion] = []
+    /// The turn's news pictures / subject cards (`[TAPPY_MEDIA]`, already host-checked).
+    var media: [MediaBlock] = []
     let isLastMessage: Bool
     let tts: TTSManager
     var onRegenerate: (() -> Void)?
@@ -282,6 +285,12 @@ private struct AssistantBubble: View {
                 // is how partial JSON reached users in the first place.
                 if !places.isEmpty, !isStreaming {
                     PlaceCardsView(places: places, mapsSearchURL: placesMapsURL, shown: placesShown)
+                }
+
+                // News pictures / Wikipedia subject cards (CONSULT_V3 / ANSWER_V4): only validated blocks, only
+                // once the reply is complete. Empty on every default turn.
+                if !media.isEmpty, !isStreaming {
+                    MediaBlocksView(blocks: media)
                 }
 
                 if let shopping, !isStreaming {

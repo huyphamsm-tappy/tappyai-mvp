@@ -17,7 +17,9 @@ enum ContentParser {
         let content = MarkdownNormalize.normalizeReply(rawContent)
         // ASK first: it is a whole-turn question block with nothing else in it worth decoding.
         let askResult = AskBlock.parse(content)
-        let (textAfterPlan, plan, planJSON) = parsePlanBlock(askResult.text)
+        // `[TAPPY_MEDIA]` (news pictures / subject card): host-checked and removed before anything else reads the text.
+        let mediaResult = MediaBlocks.parse(askResult.text)
+        let (textAfterPlan, plan, planJSON) = parsePlanBlock(mediaResult.text)
         let (textAfterCta, buttons) = parseCTA(textAfterPlan)
         let (textAfterFollowups, followups) = parseFollowups(textAfterCta)
         // D1 — decode the shopping decision instead of discarding it. Decode and strip stay
@@ -41,7 +43,8 @@ enum ContentParser {
             shopping: shopping,
             planJSON: planJSON,
             places: places,
-            ask: askResult.questions
+            ask: askResult.questions,
+            media: mediaResult.blocks
         )
     }
 

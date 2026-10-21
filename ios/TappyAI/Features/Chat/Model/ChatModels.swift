@@ -82,6 +82,9 @@ struct ParsedContent: Equatable, Sendable {
     /// Consult ASK questions (`[TAPPY_ASK]`), shown as `AskCardView` on the last reply. Empty on
     /// every other turn.
     var ask: [AskQuestion] = []
+    /// `[TAPPY_MEDIA]` news pictures / Wikipedia subject cards, host-checked (`MediaBlocks`). Empty
+    /// unless the server flags (CONSULT_V3 / ANSWER_V4) emit them.
+    var media: [MediaBlock] = []
 }
 
 struct ParsedImage: Equatable, Sendable, Identifiable {

@@ -683,7 +683,7 @@ final class ChatViewModel: AppObservableObject {
         let p = ContentParser.parse(content)
         return p.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             && p.ctaButtons.isEmpty && p.plan == nil && p.followups.isEmpty && p.images.isEmpty
-            && p.shopping == nil && p.places.isEmpty && p.ask.isEmpty
+            && p.shopping == nil && p.places.isEmpty && p.ask.isEmpty && p.media.isEmpty
     }
 
     // MARK: - Think timer
