@@ -616,6 +616,11 @@ export default function NewReviewPage() {
     if (urlDebounceRef.current) clearTimeout(urlDebounceRef.current)
     const trimmed = val.trim()
     if (!trimmed) { lastResolvedUrlRef.current = ''; return }
+    // The source is a pure function of the text: set it now, not after the resolve debounce.
+    // Post is enabled as soon as the link is recognised, so a submit inside that window must save
+    // the right source_type (and the matching placeholder), not the previous one.
+    const detectedNow = detectSource(trimmed)
+    if (detectedNow) setSource_type(detectedNow)
     urlDebounceRef.current = setTimeout(() => { void resolveUrl(trimmed) }, URL_RESOLVE_DEBOUNCE_MS)
   }
 
