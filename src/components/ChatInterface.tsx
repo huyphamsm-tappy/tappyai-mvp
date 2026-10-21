@@ -7,12 +7,14 @@ import { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 import { flushSync } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain } from 'lucide-react'
+import { Send, Sparkles, Mic, Smile, Heart, X, Square, RotateCcw, Brain, Info } from 'lucide-react'
 import posthog from 'posthog-js'
 import { useServerTTS } from '@/hooks/useServerTTS'
 import MessageActionBar from '@/components/chat/MessageActionBar'
 import { cn, CATEGORIES, type CategoryId } from '@/lib/utils'
 import { inlineLinkTap } from '@/lib/recommendation/handoff'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { NEWS_SOURCE_LABELS } from '@/lib/chat/sourceLabels'
 import { parseRecheckHref, runRecheck } from '@/lib/providers/realtime/recheckLink'
 
 // "Kiểm tra giá & tình trạng" (web): a realtime offer Tappy holds carries a recheck link. The tap re-asks the provider through
@@ -60,6 +62,10 @@ import { parseCTA } from '@/lib/structuredContent/parseCta'
 import { parseFollowups } from '@/lib/structuredContent/parseFollowups'
 import { parseAsk } from '@/lib/structuredContent/parseAsk'
 import AskCard from '@/components/chat/AskCard'
+import ChoiceCard from '@/components/chat/ChoiceCard'
+import { parseChoiceTail, isOtherOption, otherPrefill } from '@/lib/structuredContent/parseChoices'
+import { parseMediaBlocks, type MediaEntity } from '@/lib/media/mediaHosts'
+import { NewsMediaGrid, EntityCard, EntityPanel } from '@/components/chat/MediaBlocks'
 import VoiceOverlay from '@/components/chat/VoiceOverlay'
 import { classifyOutboundAction, emitQuery, emitResultAction, hostOf } from '@/lib/analytics/g1Events'
 import ShoppingDecision from '@/components/chat/ShoppingDecision'
@@ -70,8 +76,9 @@ import { useOnlineStatus } from '@/hooks/useOnlineStatus'
 import { parseShoppingMarker } from '@/lib/ai/consultative/synthesisView'
 import { parsePlacesMarker } from '@/lib/recommendation/marker'
 import { readPlacesLiveView } from '@/lib/recommendation/liveView'
-import { readProgress } from '@/lib/recommendation/progressAnnotation'
+import { readProgress, readTurnStatus } from '@/lib/recommendation/progressAnnotation'
 import { rememberPlacesView, recallPlacesView } from '@/lib/recommendation/liveViewCache'
+import { rememberTurnStatus, recallTurnStatus } from '@/lib/recommendation/turnStatusCache'
 import PlaceDecision from '@/components/chat/PlaceDecision'
 import { useTranslation, getStoredLocale } from '@/lib/i18n/useTranslation'
 import { validateModelCtaButtons } from '@/lib/recommendation/ctaValidation'
@@ -516,6 +523,23 @@ export function isImageUrl(url: string): boolean {
   } catch { return false }
 }
 const looksLikeUrl = (s: string) => /^\s*(https?:\/\/|www\.)/i.test(s)
+/** CONSULT_V3 layouts: the answer's first paragraph and the rest (the media block goes between them, as ChatGPT places it). */
+export function splitLeadParagraph(text: string): [string, string] {
+  const i = text.search(/\n\s*\n/)
+  return i < 0 ? [text, ''] : [text.slice(0, i).trimEnd(), text.slice(i).replace(/^\s+/, '')]
+}
+/** The tapped bold text names the panel's subject (same words, case and accents ignored; "Elon Musk" ⊂ "Elon Reeve Musk" counts). */
+export function sameSubjectName(a: string, b: string): boolean {
+  const f = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+  const x = f(a), y = f(b)
+  return x.length >= 3 && y.length >= 3 && (x === y || y.includes(x) || x.includes(y))
+}
+/** CONSULT_V3 UAT build only (inlined at build time): closing decision questions render as a choice card, citations group into one chip. */
+const CONSULT_V3_CHOICES = process.env.NEXT_PUBLIC_CONSULT_V3 === '1'
+/** A source chip whose label is just its own host ("vnexpress.net", the citation step's label) reads better as the outlet's name. */
+const labelIsOwnHost = (label: string, url: string) => {
+  try { return label.trim().toLowerCase().replace(/^www\./, '') === new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '') } catch { return false }
+}
 const LINK_LABELS: Array<[RegExp, string]> = [
   [/(^|\.)(google\.[a-z.]+|goo\.gl|maps\.app\.goo\.gl)$/, 'Google Maps'],
   [/(^|\.)(facebook\.com|fb\.com|fb\.me)$/, 'Facebook'],
@@ -557,8 +581,8 @@ export function sameSiteClickHref(url: string): string {
   } catch { return url }
 }
 /** One link, one chip: never glued to its neighbour, never a raw URL. */
-function linkChip(url: string, label: string): string {
-  return `<a href="${sameSiteClickHref(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
+function linkChip(url: string, label: string, title?: string): string {
+  return `<a href="${sameSiteClickHref(url)}"${title ? ` title="${title.replace(/"/g, '&quot;').replace(/'/g, '&#39;')}"` : ''} target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
 }
 
 // ── POST-UAT B1 (UAT-01 raw ``` fences, UAT-08 raw table pipes, 2026-10-09): code blocks, inline code and GFM tables ──────────
@@ -633,13 +657,34 @@ function formatMessageBody(content: string) {
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
       if (imgs.length === 0) return block
-      const imgTags = imgs.map(([, alt, src]) =>
+      // Gate 2 N1/N2 (D-N3): the browser loads an image only from a safe https URL (no http:, internal host, private IP or userinfo) — covers
+      // stored messages written before the server-side checks. An unsafe one is dropped, never shown as a link. `src` is HTML-escaped here.
+      const safe = imgs.filter(([, , src]) => isSafeHttpsUrl(src.replace(/&amp;/g, '&')))
+      if (safe.length === 0) return '\n'
+      const imgTags = safe.map(([, alt, src]) =>
         `<img src="${src}" alt="${alt}" data-zoomable="true" style="width:200px;height:160px;object-fit:cover;border-radius:12px;flex-shrink:0;scroll-snap-align:start;cursor:zoom-in" loading="lazy" onerror="this.style.display='none'"/>`
       ).join('')
       return `\n<div style="display:flex;gap:8px;overflow-x:auto;margin:8px 0;padding-bottom:2px;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory">${imgTags}</div>\n`
     }
   )
-  return withImages
+  // CONSULT_V3 layouts: the citation step's " ([a](u1), [b](u2))" becomes ONE source chip "a +1" (title lists every source); a single cited
+  // source loses its brackets. Off the build flag: unchanged.
+  // A news host reads as its outlet's name (sourceLabels.ts); the grouped path only, so the default chips are unchanged.
+  const newsName = (url: string): string | null => {
+    try {
+      const host = new URL(url.replace(/&amp;/g, '&')).hostname.toLowerCase().replace(/^www\./, '')
+      return NEWS_SOURCE_LABELS.find(([re]) => re.test(host))?.[1] ?? null
+    } catch { return null }
+  }
+  const nice = (label: string, url: string) => newsName(url) ?? (looksLikeUrl(label) || labelIsOwnHost(label, url) ? linkLabelFor(url) : label)
+  const grouped = CONSULT_V3_CHOICES
+    ? withImages.replace(/\s?\((\[[^\]\n]+\]\(https?:\/\/[^\s)]+\)(?:\s*,\s*\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))*)\)/g, (_m, inner: string) => {
+      const links = [...inner.matchAll(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g)].map(m => ({ label: nice(m[1], m[2]), url: m[2] }))
+      const names = [...new Set(links.map(l => l.label))]
+      return ` ${linkChip(links[0].url, links.length > 1 ? `${links[0].label} +${links.length - 1}` : links[0].label, names.join(', '))}`
+    })
+    : withImages
+  return grouped
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label: string, url: string) => linkChip(url, looksLikeUrl(label) ? linkLabelFor(url) : label))
     // A bare URL is never printed: it becomes a chip named for where it goes ("Facebook", "Google Maps").
     // Only in TEXT, never inside a tag: a URL inside an attribute value (a photo's alt) became a nested <a> whose quote closed the attribute,
@@ -835,6 +880,8 @@ export default function ChatInterface({
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null)
   const [zoomedImage, setZoomedImage] = useState<string | null>(null)
+  // CONSULT_V3 layouts: the subject panel (Wikipedia summary) open over the chat, or none.
+  const [entityPanel, setEntityPanel] = useState<MediaEntity | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const recognitionRef = useRef<SpeechRecognition | null>(null)
   // The input text captured when dictation starts, so interim results append to
@@ -1085,7 +1132,7 @@ export default function ChatInterface({
   // out fluidly instead of jumping in bursts. Called unconditionally at the top
   // level (hooks rule); only the last streaming message uses the smoothed value.
   const lastAssistantRaw = lastMsg && lastMsg.role === 'assistant' && typeof lastMsg.content === 'string'
-    ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
+    ? parseMediaBlocks(parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
   const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealMode, markdownSafeRevealEnd)
@@ -1645,7 +1692,11 @@ export default function ChatInterface({
                 // is unconditional and independent of decode (fixture rule 1).
                 const { text: textAfterPlaces } = parsePlacesMarker(textAfterShopping)
                 // Consult ASK turn (owner 2026-09-29): questions with their own chips; stripped always.
-                const { text, questions: askQuestions } = parseAsk(textAfterPlaces)
+                // CONSULT_V3 layouts: the server's media block (news pictures / subject card); stripped always, rendered when valid.
+                const { text: textAfterMedia, blocks: mediaBlocks } = parseMediaBlocks(textAfterPlaces)
+                const newsMedia = mediaBlocks.find(b => b.kind === 'news')
+                const entityMedia = mediaBlocks.find(b => b.kind === 'entity')
+                const { text, questions: askQuestions } = parseAsk(textAfterMedia)
                 /**
                  * The place decision, from this message's ANNOTATIONS.
                  *
@@ -1698,12 +1749,42 @@ export default function ChatInterface({
                 // A3: «Còn N lựa chọn nữa» is shown only under a place card (the cards behind «Xem thêm N chỗ»). No card (a reloaded thread, whose card
                 // annotation is not stored) or a shopping decision (every product is already a card): the line would offer options that are not there.
                 const bodyText = placeView && !shopView ? bodyTextRaw : stripRemainingFooter(bodyTextRaw)
+                // CONSULT_V3 (build flag NEXT_PUBLIC_CONSULT_V3): the latest reply's closing decision question(s) with numbered options become a
+                // choice card (parseChoices.ts) — view only; older replies and streaming text stay prose.
+                const choice = CONSULT_V3_CHOICES && isLastMessage && !isLoading && !finishReveal.revealing && askQuestions.length === 0 ? parseChoiceTail(bodyText) : null
+                // C2 P2 layer 5: the server's END state of this turn (tappy.turn_status.v1: incomplete / interrupted), from the ANNOTATIONS — never
+                // from or into the text, so copy / TTS / the saved message never carry it. Kept across the save navigation like the card above.
+                const liveTurnStatus = readTurnStatus(msg.annotations as unknown[] | undefined)
+                if (liveTurnStatus) rememberTurnStatus(msg.content, liveTurnStatus)
+                const turnStatus = liveTurnStatus ?? recallTurnStatus(msg.content)
                 return (
                   <div key={msg.id} data-msg-id={msg.id} className="animate-slide-up flex gap-3">
                     <TappyAvatar category={category} active={isLoading && isLastMessage} searching={!!(isLoading && isLastMessage && activeTool)} />
                     <div className="flex-1 min-w-0">
                       <div className="text-base leading-[1.6] text-gray-800 dark:text-gray-100 pt-0.5">
-                        <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(bodyText) }} />
+                        {(() => {
+                          // CONSULT_V3 layouts: the news grid / subject card sit right after the answer's first paragraph (as ChatGPT places them);
+                          // tapping the subject's bold name opens the side panel. Without a media block: exactly the former single body.
+                          const shown = choice?.groups.length ? choice.text : bodyText
+                          const settled = !(isLoading && isLastMessage)
+                          const entity = settled && entityMedia?.kind === 'entity' ? entityMedia.entity : null
+                          const news = settled && newsMedia?.kind === 'news' ? newsMedia.items : null
+                          const [lead, rest] = entity || news ? splitLeadParagraph(shown) : [shown, '']
+                          const onBodyClick = (e: React.MouseEvent<HTMLDivElement>) => {
+                            const el = e.target as HTMLElement
+                            if (entity && el.tagName === 'STRONG' && sameSubjectName(el.textContent ?? '', entity.name)) { setEntityPanel(entity); return }
+                            onMessageLinkClick(e)
+                          }
+                          if (!entity && !news) return <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor')} onClick={onMessageLinkClick} dangerouslySetInnerHTML={{ __html: formatMessage(shown) }} />
+                          return (
+                            <>
+                              <div className={cn('message-content whitespace-pre-wrap', isLoading && isLastMessage && 'streaming-cursor', entity && '[&_strong]:cursor-pointer')} onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(lead) }} />
+                              {news && <NewsMediaGrid items={news} />}
+                              {entity && <EntityCard entity={entity} onOpen={() => setEntityPanel(entity)} />}
+                              {rest && <div className="message-content whitespace-pre-wrap" onClick={onBodyClick} dangerouslySetInnerHTML={{ __html: formatMessage(rest) }} />}
+                            </>
+                          )
+                        })()}
                       </div>
                       {plan && <TripPlanCard plan={plan} placePhotos={placeView?.items} />}
                       {shopView && (
@@ -1748,6 +1829,14 @@ export default function ChatInterface({
                           />
                         ) : null
                       })()}
+                      {/* C2 P2 layer 5: one fixed status line under a turn the server marked incomplete / interrupted — shown once the reply is
+                          done (and its reveal finished), client copy only (never the server's reason), never part of the answer text. */}
+                      {turnStatus && !(isLoading && isLastMessage) && !(isLastMessage && finishReveal.revealing) && (
+                        <p role="note" data-testid="turn-status" data-status={turnStatus.status} className="mt-2 flex items-start gap-1.5 text-xs leading-relaxed text-amber-700 dark:text-amber-300 animate-fade-in">
+                          <Info size={13} className="mt-0.5 shrink-0" aria-hidden="true" />
+                          <span>{t(turnStatus.status === 'incomplete' ? 'chat.turnIncomplete' : 'chat.turnInterrupted')}</span>
+                        </p>
+                      )}
                       {/* Action bar (copy/share/like/dislike/TTS/regenerate) — only
                           once the reply is done, fading in for a polished finish. */}
                       {!(isLoading && isLastMessage) && (
@@ -1845,6 +1934,9 @@ export default function ChatInterface({
                           model-authored chips, now introduced so they read as offered refinements
                           rather than as loose buttons under the answer. Shown only alongside a
                           decision, because that is the turn where refining means something. */}
+                      {choice && choice.groups.length > 0 && (
+                        <ChoiceCard groups={choice.groups} onSend={answer => append({ role: 'user', content: answer })} />
+                      )}
                       {askQuestions.length > 0 && isLastMessage && !isLoading && (
                         <AskCard questions={askQuestions} lang={locale} onSend={answer => append({ role: 'user', content: answer })} />
                       )}
@@ -1860,7 +1952,12 @@ export default function ChatInterface({
                             <button
                               key={i}
                               type="button"
-                              onClick={() => { posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f }) }}
+                              onClick={() => {
+                                // CONSULT_V3 (UAT 17/10): an "other" chip ("Nơi khác") is the start of the user's own answer, not an answer — it fills
+                                // the composer ("Nơi khác: ") and focuses it instead of sending a message the model can only ask about again.
+                                if (CONSULT_V3_CHOICES && isOtherOption(f)) { setInput(otherPrefill(f)); inputRef.current?.focus(); return }
+                                posthog.capture('followup_clicked'); emitResultAction({ action_type: 'follow_up_query', result_id: resultIdsRef.current.get(msg.id) }); append({ role: 'user', content: f })
+                              }}
                               style={{ animationDelay: `${i * 70}ms` }}
                               className="animate-pop-in inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                             >
@@ -2258,6 +2355,7 @@ export default function ChatInterface({
         </form>
         <AiDisclaimer className="mt-1.5" />
       </div>
+      {entityPanel && <EntityPanel entity={entityPanel} onClose={() => setEntityPanel(null)} />}
       {/* Image zoom lightbox — opens on click for any place photo or uploaded attachment */}
       {zoomedImage && (
         <div
