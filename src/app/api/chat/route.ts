@@ -122,6 +122,8 @@ import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { type ConsultDecision, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
 import { routeConsult, catalogueAsk } from '@/lib/ai/consultative/consultRouter'
+import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
+import { agentPromptVersion } from '@/lib/ai/agent/runtime/consultV3'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
 import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
@@ -405,6 +407,11 @@ export async function POST(req: Request) {
   // CONSULTATIVE_IN_AGENT (default OFF, TAPPY_AGENT=2 only): consultative voice + advice principles in the agent prompt, memory / preferences
   // as fenced DATA (runtime/consultativeVoice.ts). Off = every line it guards below is skipped and the request is unchanged.
   const consultativeAgent = agentV2 && consultativeInAgentEnabled()
+  // C2_REQUEST_BUDGET (default off): one token/time ledger for every model call of this request, ONLY when the turn runs the CONSULT_V3
+  // prompt; every other prompt keeps the legacy path. Classified by the same function the runtime picks its prompt with. Flag off: nothing.
+  const c2PromptVersion = agentV2 ? agentPromptVersion(consultativeAgent) : agentOn ? 'agent_v1' : 'legacy'
+  if (c2PromptVersion === 'consult_v3') startRequestBudget(startTime)
+  if (requestBudgetOn()) console.log(JSON.stringify({ type: 'tappyai_request_budget_scope', prompt_version: c2PromptVersion, ledger: !!currentBudget() }))
   const consultOn = consultV2Enabled() && !hasImage && !clipRef
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
