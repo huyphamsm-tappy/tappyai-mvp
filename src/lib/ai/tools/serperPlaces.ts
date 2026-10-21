@@ -1,5 +1,6 @@
 import { getCache, getCacheAt, setCache, sanitizeUrlForMarkdown, serperFlight } from './common'
 import { serperPost } from './serperClient'
+import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { serperPlacesCacheKey } from './cacheKeys'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval } from './retrievalClock'
@@ -227,7 +228,8 @@ async function fetchSerperMaps(apiKey: string, body: Record<string, unknown>): P
         const website = str(r.website)
         if (website) rec.website = sanitizeUrlForMarkdown(website)
         const thumb = str(r.thumbnailUrl)
-        if (thumb) rec.thumbnailUrl = sanitizeUrlForMarkdown(thumb)
+        // Gate 2 N1 (S-4, proposal): the place thumbnail is carried only as a safe https URL.
+        if (thumb && isSafeHttpsUrl(thumb)) rec.thumbnailUrl = sanitizeUrlForMarkdown(thumb)
         if (Array.isArray(r.bookingLinks)) {
           const links = (r.bookingLinks as unknown[])
             .map(l => (typeof l === 'string' ? l : (l as { link?: string })?.link))

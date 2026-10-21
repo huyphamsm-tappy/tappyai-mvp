@@ -197,7 +197,9 @@ export async function fetchOfficialWebsiteImage(websiteUri: string): Promise<str
     // redirects `example.com` → `www.example.com/en/` publishes relative og:image paths that mean
     // nothing against the original; the old code could not tell the difference because the HTTP
     // client swallowed the redirect chain.
-    return new URL(decoded, resp.finalUrl).toString()
+    // Gate 2 N1 (S-1, proposal): the resolved og:image is a third party's value — admitted only as a safe https URL.
+    const image = new URL(decoded, resp.finalUrl).toString()
+    return isSafeHttpsUrl(image) ? image : null
   } catch (e) {
     clearTimeout(tid)
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'website_image_failed', websiteUri: websiteUri.slice(0, 60), error: String(e).slice(0, 80) }))
@@ -330,7 +332,8 @@ function pickFromPool(pool: SerperImage[], max: number): string[] {
   const picked: string[] = []
   const seen = new Set<string>()
   const add = (url: string | undefined) => {
-    if (picked.length >= max || !url || seen.has(url)) return
+    // Gate 2 N1 (S-2, proposal): every pass below goes through here, so one check covers them all.
+    if (picked.length >= max || !url || seen.has(url) || !isSafeHttpsUrl(url)) return
     seen.add(url)
     picked.push(url)
   }
@@ -655,7 +658,8 @@ async function serperShoppingPaid(query: string, num: number, apiKey: string, fa
         // listing SAYS without ever ranking on it. See the note on ShoppingRecord.priceText.
         if (typeof r.price === 'string' && r.price) out.priceText = r.price
         if (typeof r.productId === 'string' && r.productId) out.productId = r.productId
-        if (typeof r.imageUrl === 'string' && r.imageUrl) out.imageUrl = sanitizeUrlForMarkdown(r.imageUrl)
+        // Gate 2 N1 (S-3, proposal): a listing photo is carried only as a safe https URL.
+        if (typeof r.imageUrl === 'string' && r.imageUrl && isSafeHttpsUrl(r.imageUrl)) out.imageUrl = sanitizeUrlForMarkdown(r.imageUrl)
         if (typeof r.rating === 'number' && r.rating >= 0 && r.rating <= 5) out.rating = r.rating
         if (typeof r.ratingCount === 'number' && r.ratingCount >= 0) out.ratingCount = r.ratingCount
         if (typeof r.position === 'number') out.position = r.position

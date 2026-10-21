@@ -6,22 +6,12 @@ import { messages } from '@/lib/ai/messages'
 import { productsCacheKey } from './cacheKeys'
 import { buildShoppingLinks } from '@/lib/platformLinks/shopping'
 import { productIdentityMatch } from '@/lib/links/productIdentity'
+import { isMerchantProductPage } from '@/lib/links/productPage'
 import { providerOwning } from '@/lib/ccp'
 import { getProvider } from '@/lib/ccp/registry'
 import { CARDS_SHOWN } from '@/lib/ai/cardCounts'
 import { serperHaltedReason } from './serperToolBudget'
 
-/**
- * A marketplace / retailer PRODUCT page (never a search, category or shop page), per host. The
- * patterns are the merchants' own URL grammar, measured 2026-09-28 on the UAT query.
- */
-const PRODUCT_PAGE: Array<[RegExp, RegExp]> = [
-  [/(^|\.)shopee\.vn$/, /-i\.\d+\.\d+/],
-  [/(^|\.)tiki\.vn$/, /-p\d+\.html/],
-  [/(^|\.)lazada\.vn$/, /^\/products\//],
-  // CellphoneS: a product is ONE slug (`/op-lung-iphone-17-pro-max-uag-….html`); `/phu-kien/…/uag.html` is a category.
-  [/(^|\.)cellphones\.com\.vn$/, /^\/[^/]+\.html$/],
-]
 const MERCHANT_SITES = ['cellphones.com.vn', 'shopee.vn', 'lazada.vn', 'tiki.vn']
 const MAX_MERCHANT_ROWS = 6
 /**
@@ -31,14 +21,6 @@ const MAX_MERCHANT_ROWS = 6
  * and the per-tool budget still refuses any call beyond what is left.
  */
 export const MAX_PRODUCT_IMAGE_LOOKUPS = CARDS_SHOWN
-
-function isMerchantProductPage(link: string): boolean {
-  try {
-    const u = new URL(link)
-    const host = u.hostname.toLowerCase()
-    return PRODUCT_PAGE.some(([h, p]) => h.test(host) && p.test(u.pathname))
-  } catch { return false }
-}
 
 const foldSeller = (s: string | undefined) => (s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '')
 function sameSeller(a: string | undefined, b: string | undefined): boolean {
