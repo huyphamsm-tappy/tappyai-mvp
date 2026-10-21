@@ -672,6 +672,20 @@ export async function POST(req: Request) {
   const pendingWaiting = agentOn && !!storedEarly?.pendingAction
   const pendingEndsByThanks = pendingWaiting && intent === 'chitchat' && isThanksOnly(lastText) && confirmationOf(lastText) === null
   const pendingWithMedia = !!storedEarly?.pendingAction && (hasImage || !!clipRef)
+  // P0-2: ONE carried-fact source for every reader of "what was already said about a venue". The server-stored rows of this consultation are
+  // used when they exist (values and the matching check); without stored rows the canonical client-history rule stays (owner 2026-09-18).
+  // The value and the check always come from the same source, so a fact is never read from one place and verified against the other.
+  const carriedFrom = (storedVenues: Parameters<typeof carriedFacts>[1], textVenues: Parameters<typeof carriedFacts>[1]) => {
+    const stored = carriedFromStoredCandidates(storedEarly, storedVenues)
+    const useStored = stored.carried.length > 0
+    return {
+      useStored,
+      carried: useStored ? stored.carried : carriedFacts(lastAssistantText, textVenues),
+      provenance: useStored ? stored.provenance : null,
+      known: (v: Parameters<typeof priorTextStates>[1], f: Parameters<typeof priorTextStates>[2]) =>
+        useStored ? storedStates(stored.carried, v, f) : priorTextStates(lastAssistantText, v, f, textVenues),
+    }
+  }
   /**
    * A turn the server answers WITHOUT a model (cost item 8: greetings / thanks, and a follow-up
    * asking hours / phone / address of ONE venue the previous reply already stated) costs $0 and is
@@ -694,10 +708,9 @@ export async function POST(req: Request) {
     const facts = factsAsked(lastText)
     // P0-2: when the server stored the rows of this consultation, the facts come from THEM (never the client's copy). Without stored rows the
     // canonical rule stays (owner 2026-09-18: a follow-up about a venue the previous reply stated is free).
-    const stored = carriedFromStoredCandidates(storedEarly, referenced)
-    const useStored = stored.carried.length > 0
-    if (referenced.some(v => facts.some(f => useStored ? !storedStates(stored.carried, v, f) : !priorTextStates(lastAssistantText, v, f, priorVenues)))) return null
-    return cannedCarriedFact(facts, referenced, useStored ? stored.carried : carriedFacts(lastAssistantText, priorVenues), lang, useStored ? stored.provenance : null)
+    const src = carriedFrom([...priorVenues, ...referenced.filter(v => !priorVenues.some(p => p.name === v.name))], priorVenues)
+    if (referenced.some(v => facts.some(f => !src.known(v, f)))) return null
+    return cannedCarriedFact(facts, referenced, src.carried, lang, src.provenance)
   })()
   /**
    * Item 1 (owner decision 2026-09-19): a request too broad to advise on is answered with ONE
@@ -2052,9 +2065,11 @@ export async function POST(req: Request) {
     const refs = resolveReferences(lastText, priorVenues)
     const referenced = referencedVenues(refs)
     const facts = factsAsked(lastText)
-    const refetch = referenced.filter(v => facts.some(f => !priorTextStates(lastAssistantText, v, f, priorVenues)))
+    // P0-2: the same carried-fact source as cannedEarly; the named re-fetch check reads the same source as the value it guards.
+    const src = carriedFrom([...priorVenues, ...referenced.filter(v => !priorVenues.some(p => p.name === v.name))], priorVenues)
+    const refetch = referenced.filter(v => facts.some(f => !src.known(v, f)))
     if (refetch.length === 0 && !clipContext) {
-      cannedFollowUp = cannedCarriedFact(facts, referenced, carriedFacts(lastAssistantText, priorVenues), lang)
+      cannedFollowUp = cannedCarriedFact(facts, referenced, src.carried, lang, src.provenance)
     }
     console.log(JSON.stringify({
       type: 'tappyai_consultative_v1', step: 'frame',
@@ -2067,9 +2082,10 @@ export async function POST(req: Request) {
     enrichment.setConsultativeV1({
       on: true, rendersCard: rendersDecisionCard, namedRefetch: refetch.map(v => v.name),
       referenced: referenced.map(v => v.name),
-      carried: carriedFacts(lastAssistantText, priorVenues), hardGaps: [], budgetGap: false,
+      // P0-2: the guards' evidence is the server-stored rows when they exist; the client's copy of the reply is evidence only without them.
+      carried: src.carried, hardGaps: [], budgetGap: false,
       budget: needProfile.budget,
-      priorTimes: scheduleTimesIn(lastAssistantText ?? ''),
+      priorTimes: src.useStored ? [] : scheduleTimesIn(lastAssistantText ?? ''),
     })
     const refetchLines = refetch.length > 0
       ? `\n- THIEU DU LIEU: user hoi ${facts.join('/')} cua ${refetch.map(v => `"${v.name}"`).join(', ')} ma luot truoc chua co. GOI search_places DUNG MOT LAN voi query = ten quan do (location = thanh pho da biet) roi tra loi tu dong ket qua co ten khop. Neu khong co dong nao khop: noi "minh khong tim thay", KHONG bia.`
