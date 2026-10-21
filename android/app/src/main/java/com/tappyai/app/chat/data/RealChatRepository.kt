@@ -232,6 +232,26 @@ internal const val CAPS_ANDROID = "ask"
 internal fun historyBody(role: String, text: String, raw: String): String =
     if (role == "assistant" && raw.isNotBlank()) raw else text
 
+/**
+ * A request body OkHttp must never silently REPLAY once it has started to send it.
+ *
+ * `POST /api/chat` is metered: the server takes one question from the quota the moment the request
+ * is accepted, before the model runs. The shared client has `retryOnConnectionFailure(true)`, and
+ * for an ordinary (repeatable) body OkHttp re-sends the request on a fresh connection when the
+ * first one breaks while waiting for the response. The first attempt may already have been
+ * accepted, so the person would be charged twice for one tap. A one-shot body is still sent
+ * normally — and still retried when the failure happened BEFORE any byte was sent (a stale pooled
+ * connection) — but never re-sent after the send started. The person's own «Retry» is the only
+ * second attempt. The server stays the authority on what counts; this only stops an invisible
+ * duplicate from reaching it.
+ */
+internal class OneShotBody(private val delegate: RequestBody) : RequestBody() {
+    override fun contentType() = delegate.contentType()
+    override fun contentLength() = delegate.contentLength()
+    override fun writeTo(sink: okio.BufferedSink) = delegate.writeTo(sink)
+    override fun isOneShot() = true
+}
+
 internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String? = null): Request = Request.Builder()
     .url("${baseUrl}api/chat")
     .header(SURFACE_HEADER, SURFACE_ANDROID)
@@ -239,7 +259,7 @@ internal fun chatRequest(baseUrl: String, body: RequestBody, ageDeclared: String
     // cannot tell an old build (no [TAPPY_ASK] parser → raw JSON) from this one; a capability can.
     .header(CAPS_HEADER, CAPS_ANDROID)
     .apply { if (!ageDeclared.isNullOrBlank()) header(GuestAgeStore.HEADER, ageDeclared) }
-    .post(body)
+    .post(OneShotBody(body))
     .build()
 
 /**
