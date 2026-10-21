@@ -23,6 +23,19 @@ import { serperPlaces, serperPlaceToRow } from './serperPlaces'
 import { serperMapsQuery } from './serperLocation'
 import { placesProvider } from './placesProvider'
 import { SERPER_PLACES_SOURCE } from '@/lib/recommendation/buildEntity'
+import { consultV3Enabled } from '@/lib/ai/consultV3Flag'
+import { isAllowedMediaImage } from '@/lib/media/mediaHosts'
+
+/**
+ * CONSULT_V3 layouts (owner 17/10): the article's own picture from the RSS item — the first <img src> in its description, else its
+ * <enclosure url>. Kept only when it is an https image on that outlet's CDN (mediaHosts.ts); the news layout shows it beside the cited
+ * article. Off the flag nothing is read.
+ */
+export function rssItemImage(item: string): string | null {
+  const raw = item.match(/<img[^>]+src=["']([^"']+)["']/i)?.[1] ?? item.match(/<enclosure[^>]+url=["']([^"']+)["']/i)?.[1] ?? null
+  const url = raw ? raw.replace(/&amp;/g, '&').trim() : null
+  return url && isAllowedMediaImage(url) ? url : null
+}
 
 async function getNewsImpl(query: string, lang = 'vi') {
   const cacheKey = newsCacheKey(query, lang)
@@ -37,7 +50,8 @@ async function getNewsImpl(query: string, lang = 'vi') {
   let result: unknown
   try {
     const queryTerms = query.toLowerCase().split(' ').filter(t => t.length > 2)
-    const articles: Array<{ title: string; description: string; link: string; source: string; published: string }> = []
+    const articles: Array<{ title: string; description: string; link: string; source: string; published: string; image?: string }> = []
+    const withImages = consultV3Enabled()
     await Promise.all(feeds.map(async feed => {
       try {
         const resp = await Promise.race([
@@ -55,7 +69,8 @@ async function getNewsImpl(query: string, lang = 'vi') {
           if (!title) continue
           const tl = title.toLowerCase(), dl = desc.toLowerCase()
           const matches = queryTerms.length === 0 || queryTerms.some(k => tl.includes(k) || dl.includes(k))
-          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang) })
+          const image = withImages ? rssItemImage(item) : null
+          if (matches) articles.push({ title, description: desc.slice(0, 200), link, source: feed.name, published: pub ? new Date(pub).toLocaleDateString(isVi(lang) ? 'vi-VN' : 'en-US') : messages.news.latest(lang), ...(image ? { image } : {}) })
         }
       } catch { /* skip feed */ }
     }))
@@ -413,11 +428,14 @@ export async function searchPlacesOSM(query: string, location?: string, type?: s
       // and `PlaceDecision` already renders the address line only when present,
       // so omitting it is what the rest of the pipeline expects.
       const addr = [tags['addr:housenumber'], tags['addr:street'], tags['addr:suburb']].filter(Boolean).join(' ') || tags['addr:full'] || null
+      const rowName = tags['name:vi'] || tags.name || ''
       return {
-        name: tags['name:vi'] || tags.name || '',
+        name: rowName,
         ...(addr ? { address: addr } : {}),
         phone: tags.phone || tags['contact:phone'] || null,
-        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : googleMapsUrl,
+        // Gate 2 S5, D-S5-7b (PROPOSAL): without coordinates, a Maps search for THIS row (its name + address, tool data) -- never the
+        // model's search query (googleMapsUrl), which the row's 'action' maps_link grant would otherwise publish.
+        maps_link: elat && elon ? 'https://www.google.com/maps?q=' + elat + ',' + elon : 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([rowName, addr].filter(Boolean).join(' ')),
         ...(cuisine ? { cuisine } : {}),
         ...(tags.opening_hours ? { opening_hours: tags.opening_hours } : {}),
         ...(website ? { website_uri: website } : {}),
@@ -864,10 +882,10 @@ async function searchPlacesUncached(
               return {
                 ...place,
                 ...(remoteDestination ? {} : {
+                  // Gate 2 S5, D-S5-3 (PROPOSAL): no `location` (the model's argument) -- the builder then uses the row's own address.
                   order_links: buildFoodOrderLinks(
                     place.name as string || '',
                     place.address as string | undefined,
-                    location
                   ),
                 }),
                 ...tiktokFields,
