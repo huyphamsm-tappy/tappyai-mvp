@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Michelin Guide Ho Chi Minh City Bib Gourmand Quận 1 restaurant 2025",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:52.025Z",
+ "body": {
+  "searchParameters": {
+   "q": "Michelin Guide Ho Chi Minh City Bib Gourmand Quận 1 restaurant 2025",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hồ Chí Minh Bib Gourmand MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/vn/en/ho-chi-minh/restaurants/bib-gourmand",
+    "snippet": "Hồ Chí Minh : 1-25 of 25 restaurants - Bib Gourmand · Mặn Mòi (An Khánh) · Chị Mơ · Hum Garden · Phở Phượng · Phở Chào · Chay Garden (Xuan Hoa) · Bếp Mẹ ỉn (Le Thanh ...",
+    "position": 1
+   },
+   {
+    "title": "Ho Chi Minh City MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/vn/en/ho-chi-minh/ho-chi-minh_2978179/restaurants",
+    "snippet": "Starred restaurants, Bib Gourmand and all the MICHELIN restaurants in Ho Chi Minh City on the MICHELIN Guide's official website. MICHELIN inspector reviews ...",
+    "position": 2
+   },
+   {
+    "title": "Top food spots in Saigon - Michelin's Bib Gourmand ...",
+    "link": "https://www.asiakingtravel.com/blog/top-food-spots-saigon-bib-gourmand-suggested.html",
+    "snippet": "The Michelin Guide has awarded the Bib Gourmand title to 24 restaurants in Ho Chi Minh City, where these humble eateries offer an impressive ...",
+    "date": "17 thg 2, 2025",
+    "position": 3
+   },
+   {
+    "title": "Sở du lịch Thành phố Hồ Chí Minh",
+    "link": "https://sodulich.hochiminhcity.gov.vn/Home/moduleId/564/id/6787/ma/HCCDN/controller/HanhChinhDuKhach/action/Detail",
+    "snippet": "Trong đó, 5 nhà hàng đạt Một Sao Michelin gồm Ănăn Saigon, Akuna Restaurant, The Royal Pavilion, CieL (mới) và Coco Dining (thăng hạng từ Michelin Selected), ...",
+    "position": 4
+   },
+   {
+    "title": "7 famous pho restaurants in Ho Chi Minh City to be ...",
+    "link": "https://www.vietnam.vn/en/7-quan-pho-noi-tieng-tp-hcm-duoc-michelin-vinh-danh-2025-co-quan-ruot-cua-ban-khong",
+    "snippet": "7 famous pho restaurants in Ho Chi Minh City to be honored by Michelin in 2025: Is one of your favorites? · 1. Pho Chao · 2. Pho Hoang · 3. Pho ...",
+    "date": "5 thg 6, 2025",
+    "position": 5
+   },
+   {
+    "title": "Ho Chi Minh City MICHELIN Restaurants",
+    "link": "https://guide.michelin.com/jp/en/ho-chi-minh/ho-chi-minh_2978179/restaurants",
+    "snippet": "Starred restaurants, Bib Gourmand and all the MICHELIN restaurants in Ho Chi Minh City on the MICHELIN Guide's official website.",
+    "position": 6
+   },
+   {
+    "title": "Những quán ăn, nhà hàng Michelin ở Sài Gòn nổi bật nhất",
+    "link": "https://vinwonders.com/vi/wonderpedia/news/nha-hang-michelin-o-sai-gon/",
+    "snippet": "Nhà hàng Michelin ở Sài Gòn đã ghi dấu ấn với ba địa điểm đạt sao Michelin, gồm Ănăn Saigon, Akuna và The Royal Pavilion. Trong đó, Ănăn Saigon ...",
+    "date": "24 thg 7, 2025",
+    "position": 7
+   },
+   {
+    "title": "Top Nhà Hàng, Quán Ăn Ở Hồ Chí Minh Được Michelin ...",
+    "link": "https://www.bonboncar.vn/blog/top-nha-hang-quan-an-o-ho-chi-minh-duoc-michelin-ung-cu-2025/",
+    "snippet": "Trong năm 2024, Hồ Chí Minh có 55 nhà hàng và quán ăn được Michelin ứng cử, bao gồm 3 nhà hàng đạt sao Michelin, 16 quán Bib Gourmand, và 38 địa ...",
+    "date": "15 thg 5, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

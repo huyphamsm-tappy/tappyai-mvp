@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Asus Rog Cetra True site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:05:09.457Z",
+ "body": {
+  "searchParameters": {
+   "q": "Asus Rog Cetra True site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Ốp Tai nghe gaming không dây ASUS ROG CETRA TRUE ...",
+    "link": "https://shopee.vn/%E1%BB%90p-Tai-nghe-gaming-kh%C3%B4ng-d%C3%A2y-ASUS-ROG-CETRA-TRUE-Wireless-Tai-nghe-gaming-kh%C3%B4ng-d%C3%A2y-ASUS-ROG-CETRA-TRUE-Wireless-%E1%BB%90p-ROG-Cetra-i.430825746.19985101852",
+    "snippet": "Ốp Tai nghe gaming không dây ASUS ROG CETRA TRUE Wireless Tai nghe gaming không dây ASUS ROG CETRA TRUE Wireless Ốp ROG Cetra ... Tặng Voucher 15.000₫ nếu đơn ...",
+    "rating": 4.7,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "for ASUS ROG Cetra True Wireless Case Silicone Soft ...",
+    "link": "https://shopee.vn/for-ASUS-ROG-Cetra-True-Wireless-Case-Silicone-Soft-Case-Suitable-for-ASUS-ROG-Cetra-True-Wireless-Shockproof-Protective-Sleeve-Cartoon-Astronaut-Pendant-Cute-Shark-Piggy-Keychain-i.294471834.47661601074",
+    "snippet": "for ASUS ROG Cetra True Wireless Case Silicone Soft Case Suitable for ASUS ROG Cetra True Wireless Shockproof Protective Sleeve Cartoon Astronaut Pendant ...",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth ASUS ROG Cetra True Wireless , new 100% ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-ASUS-ROG-Cetra-True-Wireless-new-100-gia%CC%81-re%CC%89-nh%C3%A2%CC%81t-thi%CC%A3-tr%C6%B0%C6%A1%CC%80ng-i.40180096.26323522967",
+    "snippet": "Mua Tai Nghe Bluetooth ASUS ROG Cetra True Wireless , new 100% , giá rẻ nhất thị trường giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Nút Bọc Đầu Tai Nghe Không Dây Bằng Silicon Cho asus ...",
+    "link": "https://shopee.vn/N%C3%BAt-B%E1%BB%8Dc-%C4%90%E1%BA%A7u-Tai-Nghe-Kh%C3%B4ng-D%C3%A2y-B%E1%BA%B1ng-Silicon-Cho-asus-rog-cetra-ASUS-ROG-CETRA-True-Wireless-v%E1%BB%8F-b%E1%BA%A3o-v%E1%BB%87-n%C3%BAt-tai-i.430825746.20085101677",
+    "snippet": "Nút Bọc Đầu Tai Nghe Không Dây Bằng Silicon Cho asus rog cetra ASUS ROG CETRA True Wireless vỏ bảo vệ nút tai ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian ...",
+    "rating": 4.3,
+    "ratingCount": 23,
+    "position": 4
+   },
+   {
+    "title": "for ASUS ROG Cetra True Wireless Case Cartoon Dinosaur ...",
+    "link": "https://shopee.vn/for-ASUS-ROG-Cetra-True-Wireless-Case-Cartoon-Dinosaur-Shiba-Inu-Cute-Piggy-Penguin-Silicone-Soft-Case-Suitable-for-ASUS-ROG-Cetra-True-Wireless-Protective-Sleeve-Lanyard-Pendant-i.294471834.53161582244",
+    "snippet": "Mua for ASUS ROG Cetra True Wireless Case Cartoon Dinosaur Shiba Inu Cute Piggy Penguin Silicone Soft Case Suitable for ASUS ROG Cetra True Wireless Protective",
+    "position": 5
+   },
+   {
+    "title": "for ASUS ROG Cetra True Wireless Case Cute Silicone Soft ...",
+    "link": "https://shopee.vn/product/294471834/50561536451?gads_t_sig=gqRjZGVrxHCFomtpsTE0MjUxOnRzc19zZGtfa2V5omt20QABpGFsZ2_SAAAAZKNkZWvAomN0xEAAAAAM_NxfHGgeczprZR4Q8tPoOfvwhbtN63JlB369xGJA1mbqBWuW2sVWxQjSJT_xT_mbG0_W5kumedB_GGTjqmNpcGhlcnRleHTEbgAAAAzR_MiagnYi9hz1JMhIrmNWvGRUXOZEO-UbgOiLCR-Geg2EW_zTs9_rY2kIrk6YQsuS3uPS0TpOGvfNuIQSXMOkTdcwnalPJeTu5mSN8zIJdgs0cU5HqZHntcm26OloyZ6mbpoj_t30AhUK",
+    "snippet": "Mua for ASUS ROG Cetra True Wireless Case Cute Silicone Soft Case Cartoon Bulldog Keychain Pendant Suitable for ASUS ROG Cetra True Wireless Shockproof Shell",
+    "position": 6
+   },
+   {
+    "title": "for ASUS ROG Cetra True Wireless Case Silicone Soft ...",
+    "link": "https://shopee.vn/for-ASUS-ROG-Cetra-True-Wireless-Case-Silicone-Soft-Case-Suitable-for-ASUS-ROG-Cetra-True-Wireless-Protective-Sleeve-Cute-Hamburger-French-Fries-Keychain-Cartoon-Metal-Pendant-i.294471834.51911585050",
+    "snippet": "for ASUS ROG Cetra True Wireless Case Silicone Soft Case Suitable for ASUS ROG Cetra True Wireless Protective Sleeve Cute Hamburger French Fries Keychain ...",
+    "rating": 4.8,
+    "ratingCount": 6010,
+    "position": 7
+   },
+   {
+    "title": "Ốp điện thoại sạc ASUS ROG Cetra True Wireless ...",
+    "link": "https://shopee.vn/%E1%BB%90p-%C4%91i%E1%BB%87n-tho%E1%BA%A1i-s%E1%BA%A1c-ASUS-ROG-Cetra-True-Wireless-SpeedNova-b%E1%BA%B1ng-silicon-m%E1%BB%81m-c%C3%B3-m%C3%B3c-i.870235978.29128475297",
+    "snippet": "Mua Ốp điện thoại sạc ASUS ROG Cetra True Wireless SpeedNova bằng silicon mềm có móc giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng ...",
+    "rating": 4.5,
+    "ratingCount": 8,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

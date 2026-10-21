@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn \"64/2025/TT-BTC\" hộ chiếu 2026 lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:08:24.859Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn \"64/2025/TT-BTC\" hộ chiếu 2026 lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức ...",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=214418",
+    "snippet": "Thông tư số 64/2025/TT-BTC của Bộ Tài chính: Quy định mức thu, miễn một số khoản phí, lệ phí nhằm hỗ trợ cho doanh nghiệp, người dân ; Ngày ban hành, 30-06-2025.",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

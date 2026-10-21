@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bâng Khuâng Café\" OR \"Bãi giữ xe ô tô\" OR \"Bãi Gửi Xe Phố Đi Bộ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:12:27.833Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bâng Khuâng Café\" OR \"Bãi giữ xe ô tô\" OR \"Bãi Gửi Xe Phố Đi Bộ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 5 Bãi Giữ Xe Ô Tô Uy Tín Tại Cần Thơ",
+    "link": "https://www.tiktok.com/@mmcoigicunghay/video/7521881109907459384",
+    "snippet": "Khám phá 5 bãi giữ xe ô tô uy tín tại Cần Thơ để đảm bảo an toàn cho xe của bạn qua đêm. Đừng bỏ lỡ! #maimedia #baigiuxeotocantho # ...",
+    "position": 1
+   },
+   {
+    "title": "Bãi giữ xe ô tô trên Quốc lộ 13 cũ",
+    "link": "https://www.tiktok.com/@dinhhuynh306/photo/7682628422295768341",
+    "snippet": "Bãi giữ xe ô tô trên Quốc lộ 13 cũ. Tìm hiểu các lựa chọn giữ xe ô tô tiện lợi dọc theo Quốc lộ 13 cũ. Keywords: giữ xe ô tô,Quốc lộ 13 cũ ...",
+    "position": 2
+   },
+   {
+    "title": "❣️ Bãi giữ xe ô tô-xe máy 24/24 quận 11 (Giáp ...",
+    "link": "https://www.tiktok.com/@lcatnguyen/video/7642196897335217426",
+    "snippet": "Bãi giữ xe ô tô-xe máy 24/24 quận 11 (Giáp các quận 6, quận Tân Phú, quận 11) - Tiện ích từ bãi xe ✓ Mái che nắng che mưa ✓ Ô cố định ...",
+    "position": 3
+   },
+   {
+    "title": "Bãi giữ xe ô tô Quận 8 - Bãi xe 24/7 mới hoàn thiện",
+    "link": "https://www.tiktok.com/@jessica.trinh3/video/7658538975149182229",
+    "snippet": "Giới thiệu Bãi giữ xe ô tô vừa hoàn thiện tại Quận 8 hoạt động 24/7 — tiện lợi cho người dân và khách đến sân Pick (pickleball) lân cận.",
+    "position": 4
+   },
+   {
+    "title": "Nhiều ô tô bị cháy rụi trong bãi giữ xe ô tô tại tỉnh Khánh H...",
+    "link": "https://www.tiktok.com/@tun70118/video/7664951641015061781",
+    "snippet": "Video TikTok từ Tun (@tun70118): \" Nhiều ô tô bị cháy rụi trong bãi giữ xe ô tô tại tỉnh Khánh Hòa.",
+    "position": 5
+   },
+   {
+    "title": "Bãi Giữ Xe Ô Tô Tại Quận 8",
+    "link": "https://www.tiktok.com/discover/b%C3%A3i-gi%E1%BB%AF-xe-%C3%B4-t%C3%B4-t%E1%BA%A1i-qu%E1%BA%ADn-8",
+    "snippet": "Bãi Giữ Xe Ô Tô Tại Quận 8. Tìm hiểu các địa điểm bãi giữ xe ô tô Quận 8, bao gồm chỗ gửi xe tại Phạm Hùng, gần BV Tâm Anh, lưu ý khi đậu xe ở Bến Bình Đông ...",
+    "position": 6
+   },
+   {
+    "title": "Làm Bãi Giữ Xe: Hướng Dẫn Chi Tiết và Chi Phí",
+    "link": "https://www.tiktok.com/@kinhdoanhbatdongsan/video/6960101708106157313",
+    "snippet": "Khám phá cách làm bãi giữ xe ô tô, từ thiết kế đến chi phí. @Phạm Xuân Tình.",
+    "position": 7
+   },
+   {
+    "title": "Lcatnguyen",
+    "link": "https://www.tiktok.com/@lcatnguyen/video/7679643940252880146",
+    "snippet": "❣️ Bãi giữ xe ô tô-xe máy 24/24 quận Gò Vấp (Phường Thông Tây Hội) Có giữ theo ngày, qua đêm - Có mái che nắng che mưa, nền cao -Giờ giấc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

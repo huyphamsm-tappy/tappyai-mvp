@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ giờ tham quan thời điểm tốt nhất lưu ý vé",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:32:27.420Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ giờ tham quan thời điểm tốt nhất lưu ý vé",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phố cổ Hội An: giá vé, giờ mở cửa, kinh nghiệm tham quan ...",
+    "link": "https://danangbest.com/pho-co-hoi-an-tinh-hoa-van-hoa-xu-quang.html",
+    "snippet": "Thời gian bán vé: Mùa hè 7h30 – 21h30; Mùa đông 7h30 – 21h00. Điểm mới siêu tiện 2026: Hội An đã áp dụng hệ thống quét mã QR để mua vé và check- ...",
+    "date": "18 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An Đà Nẵng: Hướng dẫn du lịch chi tiết và ...",
+    "link": "https://pystravel.vn/tin/17567-pho-co-hoi-an-da-nang.html?srsltid=AU7gw4VtUEj5EoBPwXFYqqL7AC-EOAABZUYmskNpSwAlSg0OoD4NX_Wg",
+    "snippet": "4.1 Mùa khô (từ tháng 1 đến tháng 8): Thời điểm lý tưởng để tham quan phố cổ Hội An ... Những lưu ý khi du lịch phố cổ Hội An. 7.1 Chọn thời gian đi phù hợp ...",
+    "position": 2
+   },
+   {
+    "title": "[ English Below ] Những thông tin cần biết về vé tham quan ...",
+    "link": "https://www.facebook.com/VisitHoiAn/posts/-english-below-nh%E1%BB%AFng-th%C3%B4ng-tin-c%E1%BA%A7n-bi%E1%BA%BFt-v%E1%BB%81-v%C3%A9-tham-quan-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an%C4%91%E1%BB%83-kh%C3%A1m-/956020783448194/",
+    "snippet": "Thử ngay bánh mì Phượng hoặc bánh mì Madam Khánh – được khách Tây lẫn ta tấm tắc khen ngon • 8h30 - 11h30: Dạo phố cổ Lúc này nắng còn dịu, bạn ...",
+    "position": 3
+   },
+   {
+    "title": "Phố cổ Hội An 2026-2027: Cẩm nang cho du khách ghé ...",
+    "link": "https://lasiestaresorts.com/vi/pho-co-hoi-an.html",
+    "snippet": "Thời điểm lý tưởng để tham quan Phố cổ Hội An ... Thời tiết đẹp nhất ở Hội An thường rơi vào khoảng tháng 2 đến tháng 4, khi trời nắng nhẹ, nhiệt độ dễ chịu và ít ...",
+    "position": 4
+   },
+   {
+    "title": "Phố Cổ Hội An Có Gì Thú Vị? Những Gợi Ý Khi Tham ...",
+    "link": "https://www.klook.com/vi/blog/pho-co-hoi-an/",
+    "snippet": "Buổi tối (sau 18h): Khi đèn lồng thắp sáng, phố cổ trở nên lung linh, huyền ảo và sống động với các hoạt động đường phố, nhạc nước. 3. Ở Phố cổ Hội An có dễ ...",
+    "position": 5
+   },
+   {
+    "title": "DU LỊCH HỘI AN và Khám phá Phố Cổ tuyệt đẹp bình yên vào ...",
+    "link": "https://www.youtube.com/watch?v=UCDpvFt-w1k",
+    "snippet": "Nếu để nói Du lịch Phố cổ Hội An đẹp nhất vào lúc nào, thì câu trả lời của chúng tôi đó là vào lúc sáng sớm. Thời điểm khách du lịch chưa đổ ...",
+    "position": 6
+   },
+   {
+    "title": "Cập nhật giá vé tham quan Phố cổ Hội An cho khách trong ...",
+    "link": "https://sovaba.travel/blog/bai-viet-cap-nhat-gia-ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Giờ mở cửa chung: Từ 7h sáng đến 21h30 tối (một số điểm như Chùa Cầu mở đến 22h vào dịp lễ hội). · Giờ bán vé: 7h30 - 21h30 hàng ngày, kể cả cuối tuần. · Thời ...",
+    "position": 7
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Hội An mùa nào đẹp? ... Khí hậu Hội An đan xen khí hậu giữa miền Nam và miền Bắc, rõ rệt mùa mưa và mùa khô. Mỗi mùa phố cổ lại có những nét đẹp riêng. Ba tháng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

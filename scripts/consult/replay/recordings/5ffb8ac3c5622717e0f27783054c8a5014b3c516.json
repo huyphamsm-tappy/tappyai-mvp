@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac trước khi mua máy cũ Activation Lock battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:33:23.950Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac trước khi mua máy cũ Activation Lock battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua chuẩn xác, kỹ ...",
+    "link": "https://www.thegioididong.com/hoi-dap/cach-kiem-tra-macbook-cu-truoc-khi-mua-chuan-xac-1533818",
+    "snippet": "Trong phần menu của Power sẽ hiển thị hai thông số liên quan đến pin của máy là Cycle Count và Battery Health. Nếu ở trong phần Battery ...",
+    "date": "10 thg 6, 2023",
+    "position": 1
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ trước khi mua ĐƠN GIẢN ...",
+    "link": "https://24hstore.vn/huong-dan-ky-thuat/cach-kiem-tra-macbook-cu-n9230?srsltid=AU7gw4VCBEzZUdhsMSs0mUxZrz478fmDFXpQehjAITTHebdHaJcAPIOw",
+    "snippet": "Cách kiểm tra pin MacBook cũ đơn giản bằng cách: Nhấn chọn logo Apple > Thông tin Hệ thống (System Information) > Nguồn điện (Power) trên thanh ...",
+    "date": "31 thg 5, 2025",
+    "position": 2
+   },
+   {
+    "title": "mua macbook cũ nên check số lần sạc pin hay thời gian sử ...",
+    "link": "https://voz.vn/t/mua-macbook-cu-nen-check-so-lan-sac-pin-hay-thoi-gian-su-dung-ssd.1262498/",
+    "snippet": "Ưu tiên SSD trước: Tải sẵn cái app check S.M.A.R.T (như Drive Health hoặc chạy lệnh smartctl trong Terminal). · Check Pin sau: Coi số lần sạc chỉ ...",
+    "date": "21 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "10 phút. Mua Macbook cũ thì check ngay cho mình những yếu ...",
+    "link": "https://www.facebook.com/thinkview.vn/videos/10-ph%C3%BAt-mua-macbook-c%C5%A9-th%C3%AC-check-ngay-cho-m%C3%ACnh-nh%E1%BB%AFng-y%E1%BA%BFu-t%E1%BB%91-n%C3%A0y-nha/1708083160468379/",
+    "snippet": "Có bị bong lớp chống chói và cao su viền màn hình hay không? Hãy kiểm tra thật kĩ nhá bởi vì đây là linh kiện đáng tiền nhất ở trên chiếc ...",
+    "position": 4
+   },
+   {
+    "title": "11 Cách kiểm tra Pin Macbook cũ đã qua sử dụng",
+    "link": "https://laptoptrieuphat.com/11-cach-kiem-tra-pin-macbook-cu-da-qua-su-dung/?srsltid=AU7gw4U5rQ_mjPXaT59ij2UBR2VOinnVRCEJqzEj8C7YAxfJzXEi_-TO",
+    "snippet": "Do đó, khi mua macbook cũ bạn nên kiểm tra chi tiết số lần sạc bằng cách nhấn và giữ nút About this Mac=>System Report =>Chọn mục Power. Trong ...",
+    "date": "9 thg 6, 2025",
+    "position": 5
+   },
+   {
+    "title": "13 Bước Kiểm Tra MacBook Cũ Chuẩn: Tránh Bị \"Lừa\" Khi ...",
+    "link": "https://www.youtube.com/watch?v=aB2T5BHFF6I&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "Bạn đang có ý định mua một chiếc MacBook cũ (Like New) để tiết kiệm chi phí nhưng lo lắng về chất lượng? Đừng bỏ lỡ video này!",
+    "position": 6
+   },
+   {
+    "title": "Kinh nghiệm chọn mua Macbook cũ và cách kiểm tra số ...",
+    "link": "https://laptopthanhnga.com/ai-amp;-ung-dung-cong-nghe/kinh-nghiem-chon-mua-macbook-cu-va-cach-kiem-tra-so-lan-sac-cycle-count-n183.html",
+    "snippet": "Tìm hiểu kinh nghiệm chọn mua MacBook cũ chuẩn xác, hướng dẫn xem số lần sạc (Cycle Count), đánh giá độ chai pin, kiểm tra linh kiện và ...",
+    "date": "sau 1 ngày nữa",
+    "position": 7
+   },
+   {
+    "title": "Những chi tiết nào mình phải kiểm tra trước khi mua ...",
+    "link": "https://www.reddit.com/r/mac/comments/z68yp5/which_details_i_must_check_before_buying_used/?tl=vi",
+    "snippet": "Chào, mình đang định mua Macbook Air M1 cũ trên chợ online (mình sẽ gặp người bán và xem máy trực tiếp) ở nước mình, nhưng chưa từng mua Mac cũ",
+    "date": "27 thg 11, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -34,13 +34,145 @@ import { normalizeVN } from './intent'
  * exemptions (v1 and G2): an exemption on one path only would leave the other open.
  */
 const COST_FRAME_RE = /\btong\b|\btotal\b|\buoc tinh\b|\bestimated?\b|\bestimate\b|\bchi phi\b|\bcost\b|\bspend\b|\bcon lai\b|\bcon du\b|\bremaining\b|\bhet\b/
-const BUDGET_FRAME_RE = /\bngan sach\b|\bbudget\b|\btam gia\b|\btrong khoang\b|\btoi da\b/
+// POST-UAT (UAT-25 post-fix run): the envelope stated as a CONSTRAINT ("giữ tổng chi khoảng 1 triệu", "không vượt 700k", "trong vòng
+// 1 triệu", "trần 700k") is the budget, not a claim of what things cost.
+const BUDGET_FRAME_RE = /\bngan sach\b|\bbudget\b|\btam gia\b|\btrong khoang\b|\btoi da\b|\bgiu (?:tong|chi|o muc|trong|duoi)\b|\bkhong vuot\b|\btrong vong\b|\bgioi han\b|\btran\b|\bvon\b/
 
 function framedAsCost(text: string, spans: Array<[number, number]>, pos: number): boolean {
   const span = spans.find(([a, b]) => pos >= a && pos < b)
   if (!span) return false
   const sentence = normalizeVN(text.slice(span[0], span[1]).toLowerCase())
-  return COST_FRAME_RE.test(sentence) && !BUDGET_FRAME_RE.test(sentence)
+  // POST-UAT (UAT-13 post-fix run): "…chưa thể khẳng định tổng chi phí sẽ nằm trong 4 triệu" DISCLOSES that the cost is unverified;
+  // the user's envelope in it is not presented as the cost.
+  return COST_FRAME_RE.test(sentence) && !BUDGET_FRAME_RE.test(sentence) && !DISCLOSES_RE.test(sentence)
+}
+const DISCLOSES_RE = /\b(?:chua|khong)\s+(?:the\s+)?(?:xac minh|xac nhan|khang dinh|kiem chung|chac chan|dam bao)\b|\bnot (?:yet )?(?:verified|confirmed)\b|\bunverified\b|\bcannot (?:confirm|guarantee)\b/
+
+/**
+ * POST-UAT B3 (measured 2026-10-09, UAT-09 t2 −468 chars, UAT-25 every turn): A BUDGET ALLOCATION IS NOT A VENUE PRICE.
+ *
+ * "Chia ngân sách tham khảo như sau:\n- Ăn sáng: 50.000đ\n- Ăn trưa: 150.000đ…" — on a place-intent turn this guard judged every
+ * line as an area price, found no snippet, and deleted the breakdown, leaving the lead-in with nothing after it. Those amounts are
+ * Luna's split of the USER'S envelope (or labelled operating-cost estimates), not a claim about what a merchant charges.
+ *
+ * Scope, not keywords: an amount is an ALLOCATION ITEM only when ALL hold —
+ *   · its own sentence names no venue (a named place's price is a merchant claim, judged as before);
+ *   · the sentence, or the lead-in line of its block (no blank line between), frames a plan / budget / estimate split;
+ *   · it is not presented as THE total cost (F-086: the envelope restated as "what the evening costs" stays judged) — unless it is
+ *     the sum of the block's own allocation items (a breakdown's subtotal);
+ *   · with a user budget known, it does not exceed it.
+ * Everything else — a venue's price, a total with no parts, a figure above the envelope — is judged exactly as before.
+ */
+// A SPLIT / ESTIMATE frame — not a mere mention: "rất hợp budget" after a venue's price is not a budget split (snippetPriceEvidence).
+const ALLOC_FRAME_RE = /\bphan bo\b|\bchia (?:tien|ngan sach|chi phi|von|nhu sau)\b|\bdu tru\b|\bdu toan\b|\buoc tinh\b|\bdu kien\b|\bchi phi (?:tham khao|du kien|uoc tinh|can chuan bi|ban dau|van hanh|co dinh|hang thang)\b|\bvon (?:ban dau|dau tu|khoi nghiep|luu dong|du phong|van hanh)\b|\bquy (?:du phong|van hanh|luu dong)\b|\bkhoan du phong\b|\bde rieng\b|\bgiu lai\b|\bkhoan chi\b|\bhang muc\b|\bcost breakdown\b|\ballocation\b|\bestimated? costs?\b/
+/** A header line that opens a budget list ("Với ngân sách 5 triệu, có thể chia:", "Ngân sách ăn trưa:") — it ends with ":". */
+const BUDGET_HEADER_RE = /(?:\bngan sach\b|\bbudget\b|\bvon\b|\bchi phi\b)[^\n]*:\s*(?:\*\*)?\s*$/
+const TOTAL_FRAME_RE = /\btong\b|\btotal\b|\bca toi\b|\bca ngay\b|\btat ca\b/
+
+/**
+ * A bold NAME in a sentence. The line's own leading label ("- **Ăn trưa:** 150k") is a category label, unless it is Title Case over
+ * ≥ 2 words ("**Cơm Tấm Ba Ghiền**:" is a proper name); a bold span that holds a figure is emphasis on the amount, not a name.
+ */
+function boldName(raw: string): boolean {
+  return [...raw.matchAll(/\*\*([^*\n]{2,80})\*\*/g)].some(m => isTitleCaseName(m[1]))
+}
+
+/**
+ * A proper name: ≥ 2 words that start with a letter, ≥ 2/3 of them capitalised ("Phở Lệ Quận 5", "Cơm Tấm Ba Ghiền", "Dinh Độc Lập").
+ * A category label ("Ăn trưa:", "Lưu ý") or a bolded amount ("khoảng 150k", "150.000đ") is not. Digits inside a name are fine.
+ */
+export function isTitleCaseName(s: string): boolean {
+  const words = s.replace(/:\s*$/, '').trim().split(/\s+/).filter(w => /^\p{L}/u.test(w))
+  return words.length >= 2 && words.filter(w => /^\p{Lu}/u.test(w)).length >= Math.ceil(words.length * 2 / 3)
+}
+
+const LIST_ITEM_RE = /^\s*(?:[-*•+]|\d{1,2}[.)])\s/
+/** An itinerary slot line: "- **07:30–08:30:** …", "- **Trưa:** …", "Đi lại và dự phòng: …" (folded). */
+const SLOT_RE = /^\s*(?:[-*•+]|\d{1,2}[.)])?\s*\**\s*(?:\d{1,2}[:h]\d{2}|sang\b|trua\b|chieu\b|toi\b|buoi (?:sang|trua|chieu|toi)|ngay \d|di lai|di chuyen|du phong|an (?:sang|trua|toi)|ca phe|nuoc uong|ve (?:tham quan|vao cong))/
+
+export interface AllocationContext {
+  /** The claim's own line (the splitter cuts lines at ":", so structure is read per LINE). */
+  line: string
+  /** The line is a list item. */
+  item: boolean
+  /** The line is an itinerary slot (time / meal / transport / reserve label). */
+  slot: boolean
+  /** The line, or a line above it in its block (a ":" header may sit across one blank line), frames a split / estimate / budget list. */
+  framed: boolean
+  /** A venue is named above in the block (paragraph anaphora); sibling list items are separate subjects and do not count. */
+  venueAbove: boolean
+}
+
+/** Line-based context of a money amount at `pos` — shared by the snippet guard and the No-Fabrication Gate (POST-UAT B3). */
+export function allocationContext(text: string, pos: number, namesVenue: (s: string) => boolean): AllocationContext {
+  const lines = text.split('\n')
+  let k = 0, at = 0
+  while (k < lines.length - 1 && at + lines[k].length < pos) { at += lines[k].length + 1; k++ }
+  const line = lines[k]
+  const item = LIST_ITEM_RE.test(line)
+  const f = (s: string) => normalizeVN(s.toLowerCase())
+  const frames = (s: string) => ALLOC_FRAME_RE.test(f(s)) || BUDGET_HEADER_RE.test(f(s).trim())
+  let framed = frames(line), venueAbove = false
+  for (let j = k - 1; j >= 0 && k - j <= 20; j--) {
+    const p = lines[j]
+    if (!p.trim()) {
+      // a blank line ends the block — unless the line above it is a ":" header that opens this list
+      const above = j > 0 ? lines[j - 1] : ''
+      if (!framed && /:\s*(?:\*\*)?\s*$/.test(above.trim()) && frames(above)) framed = true
+      break
+    }
+    if (!framed && frames(p)) framed = true
+    if (item && LIST_ITEM_RE.test(p)) continue
+    if (namesVenue(p) || boldName(p)) venueAbove = true
+  }
+  return { line, item, slot: SLOT_RE.test(f(line)), framed, venueAbove }
+}
+
+/** The line's own content without its leading label ("- **07:30–08:30:**", "- **Trưa:**", "1."). */
+export const withoutLineLabel = (line: string) => line.replace(/^\s*(?:[-*•+]|\d{1,2}[.)])?\s*(?:\*\*[^*\n]{1,40}\*\*\s*:?|[^:\n]{1,30}:)\s*/, '')
+
+export function allocationItems(
+  text: string,
+  spans: Array<[number, number]>,
+  claims: ReadonlyArray<{ start: number; lo: number; hi: number; currency: string }>,
+  namesVenue: (sentence: string) => boolean,
+  userText: string,
+): Set<number> {
+  const userAmounts = extractMoneyClaims(userText || '').flatMap(c => [c.lo, c.hi])
+  const userMax = Math.max(0, ...userAmounts)
+  const idxOf = (pos: number) => spans.findIndex(([a, b]) => pos >= a && pos < b)
+  const sentenceAt = (i: number) => normalizeVN(text.slice(spans[i][0], spans[i][1]).toLowerCase())
+  const items: Array<{ start: number; lo: number; hi: number; block: number; total: boolean }> = []
+  for (const c of claims) {
+    if (c.currency !== 'VND') continue
+    const i = idxOf(c.start)
+    if (i < 0) continue
+    const raw = text.slice(spans[i][0], spans[i][1])
+    const ctx = allocationContext(text, c.start, namesVenue)
+    // the place a list item / slot names in its own line is that line's subject
+    const own = ctx.item || ctx.slot ? `${raw}\n${ctx.line}` : raw
+    if (namesVenue(own) || boldName(ctx.item || ctx.slot ? `${raw}\n${withoutLineLabel(ctx.line)}` : raw)) continue
+    // An allowance that says the venues' prices are NOT verified ("giá các quán chưa xác nhận; dự trù 150–250 nghìn") is Luna's planning
+    // number, not a quote — the venue named above does not make it a merchant price.
+    const disclosedAllowance = DISCLOSES_RE.test(sentenceAt(i)) && ALLOC_FRAME_RE.test(sentenceAt(i))
+    if (ctx.venueAbove && !ctx.item && !ctx.slot && !disclosedAllowance) continue
+    // Framed as a split / estimate, OR an itinerary slot in a plan whose envelope the user gave.
+    if (!ctx.framed && !(ctx.slot && userMax > 0)) continue
+    if (userMax > 0 && c.hi > userMax * 1.05) continue
+    // The user's own amount is the ENVELOPE, never one of its parts: an echo stays with the F-086 echo rule.
+    if (userAmounts.some(u => Math.abs(u - c.lo) <= 1 || Math.abs(u - c.hi) <= 1)) continue
+    // the block id: the start of the paragraph the sentence is in
+    const block = text.lastIndexOf('\n\n', spans[i][0])
+    items.push({ start: c.start, lo: c.lo, hi: c.hi, block, total: TOTAL_FRAME_RE.test(sentenceAt(i)) })
+  }
+  const out = new Set<number>()
+  for (const it of items) {
+    if (!it.total) { out.add(it.start); continue }
+    const parts = items.filter(x => !x.total && x.block === it.block)
+    const lo = parts.reduce((s, x) => s + x.lo, 0), hi = parts.reduce((s, x) => s + x.hi, 0)
+    if (parts.length >= 2 && it.lo >= lo * 0.98 && it.hi <= hi * 1.02) out.add(it.start)
+  }
+  return out
 }
 
 // Snippets round loosely ("khoảng 50k", "45–55k"), so allow a wider match than
@@ -121,6 +253,8 @@ export interface SnippetPriceStats {
   lowercase_m_skipped: number
   attributed: number
   multi: number
+  /** POST-UAT B3: amounts kept as items of a budget / estimate split (no venue named; see allocationItems). */
+  allocation: number
 }
 
 export function guardSnippetPricesInText(
@@ -175,7 +309,11 @@ export function guardSnippetPricesInText(
     return null
   }
 
+  const allSpans = sentenceSpans(text)
+  const venueNamed = (s: string) => !!scope && (namedIn(s) !== null || placesNamedIn(proseOnly(s), scope.placeNames).length > 0)
+  const allocations = allocationItems(text, allSpans, claims, venueNamed, userText)
   const judged: MoneyClaim[] = claims.map(c => {
+    if (allocations.has(c.start)) return { ...c, entity: null, verdict: 'VERIFIED' as const }
     const userEcho = userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)
     if (userEcho && !framedAsCost(text, echoSpans, c.start)) return { ...c, entity: null, verdict: 'VERIFIED' as const }
 
@@ -220,7 +358,7 @@ export function guardSnippetPricesInText(
 /** "/người", "/phần"… after an amount: the unit of account, not a claim (owner remark 4). */
 const UNIT_OF_ACCOUNT_RE = /^\s*\/\s*(?:người|nguoi|phần|phan|tô|to|suất|suat|ly|khách|khach|món|mon|pax|person|pp)(?![\p{L}])/iu
 /** Words that only introduce a price. A clause whose residue is made of these (and nothing else) is price-only. */
-const CONNECTOR_TOKENS = new Set(['gia', 'voi', 'khoang', 'tam', 'chung', 'chi', 'tu', 'den', 'duoi', 'tren', 'ca', 'muc', 'moi', 'la', 'around', 'about', 'from', 'only', 'price', 'prices', 'at', 'roughly', 'approximately', 'per', 'vnd', 'd'])
+const CONNECTOR_TOKENS = new Set(['danh', 'du', 'tru', 'gia', 'voi', 'khoang', 'tam', 'chung', 'chi', 'tu', 'den', 'duoi', 'tren', 'ca', 'muc', 'moi', 'la', 'around', 'about', 'from', 'only', 'price', 'prices', 'at', 'roughly', 'approximately', 'per', 'vnd', 'd'])
 /** Where a price clause may START inside a sentence: punctuation, or the connector that introduces the price. */
 const CLAUSE_START_RE = /[,;:—–(]|\s-\s|\s(?:với|voi|và|va|giá|gia)(?=\s)/giu
 /** Where it ENDS: punctuation only — a connector after the price belongs to the NEXT clause (owner: any other content ⇒ whole sentence). */
@@ -318,6 +456,11 @@ function priceClauseSpan(sentence: string, s: number, e: number): [number, numbe
 function standsAlone(remainder: string, original: string): boolean {
   const r = tidy(remainder)
   if ((r.match(/\p{L}/gu) ?? []).length < 12) return false
+  // POST-UAT (UAT-25 t4 post-fix run): a plan LIST ITEM keeps its activity when only its unverified amount goes ("- **Trưa:** Ăn tại
+  // **Nhà Hàng Wrap&Roll**; dành khoảng 200.000đ" → the stop stays, the amount goes) — the item is structure, not a fragment.
+  // (it must still SAY something besides names and labels: "- **Cà Phê Muối Chú Long**" alone under "giá như sau:" is not a stop)
+  const activity = r.replace(/\*\*[^*\n]*\*\*/g, ' ').replace(/^\s*(?:[-*•+]|\d{1,2}[.)])\s*/, '')
+  if (/^\s*(?:[-*•+]|\d{1,2}[.)])\s/.test(original) && (activity.match(/\p{L}/gu) ?? []).length >= 8 && !DANGLING_END_RE.test(r) && (r.match(/\(/g) ?? []).length === (r.match(/\)/g) ?? []).length) return true
   if ((r.match(/\(/g) ?? []).length !== (r.match(/\)/g) ?? []).length) return false
   if (DANGLING_END_RE.test(r)) return false
   const body = r.replace(/^[\s*_>-]+/, '')
@@ -334,7 +477,7 @@ function guardSnippetPricesV2(
   scope: SnippetPriceScope | undefined,
   opts: SnippetPriceOptions,
 ): { text: string; redacted: number; stats: SnippetPriceStats } {
-  const stats: SnippetPriceStats = { claims: 0, user_echo: 0, user_echo_as_cost: 0, supported_by_band: 0, supported_by_snippet: 0, unsupported: 0, clause_cut: 0, sentences_removed: 0, lowercase_m_skipped: 0, attributed: 0, multi: 0 }
+  const stats: SnippetPriceStats = { claims: 0, user_echo: 0, user_echo_as_cost: 0, supported_by_band: 0, supported_by_snippet: 0, unsupported: 0, clause_cut: 0, sentences_removed: 0, lowercase_m_skipped: 0, attributed: 0, multi: 0, allocation: 0 }
   const { claims, lowercase_m_skipped } = extractMoneyClaimsDetailed(text)
   stats.lowercase_m_skipped = lowercase_m_skipped
   stats.claims = claims.length
@@ -387,7 +530,9 @@ function guardSnippetPricesV2(
     return null
   }
 
+  const allocations = allocationItems(text, spans, claims, s => namedIn(s) !== null || placesNamedIn(proseOnly(s), names).length > 0, userText)
   const judged: MoneyClaim[] = claims.map(c => {
+    if (allocations.has(c.start)) { stats.allocation++; return { ...c, entity: null, verdict: 'VERIFIED' as const } }
     if (userClaims.some(u => u.currency === c.currency && u.lo === c.lo && u.hi === c.hi)) {
       if (!framedAsCost(text, spans, c.start)) { stats.user_echo++; return { ...c, entity: null, verdict: 'VERIFIED' as const } }
       stats.user_echo_as_cost++

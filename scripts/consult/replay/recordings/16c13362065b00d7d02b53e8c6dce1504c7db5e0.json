@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Chụp Tai PG580 Wireless - Tai Nghe Gaming Không Dây ,Âm Thanh 360o Sống Động,Chống Ồn, Led RGB 7 Chế Độ,Pin 70h site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:25.518Z",
+ "body": {
+  "searchParameters": {
+   "q": "Chụp Tai PG580 Wireless - Tai Nghe Gaming Không Dây ,Âm Thanh 360o Sống Động,Chống Ồn, Led RGB 7 Chế Độ,Pin 70h site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nồi Chiên Không Dầu 6L MSKING MASUTO 1700W",
+    "link": "https://www.lazada.vn/products/noi-chien-khong-dau-6l-msking-masuto-1700w-12-chuong-trinh-naucong-nghe-phun-suongchin-nhanhdeu-2-mat-giu-huong-vi-i13395705256-s117034349351.html?srsltid=AU7gw4UfPQ06DZ7KCXVSzOz_ed1QoZ7rciVOf3IFOZQ4GlPE2HHhk468",
+    "snippet": "️Hiệu suất nấu nướng đỉnh cao với quạt ly tâm 11 cánh và đối lưu khí 360 độ và công nghệ rapid Air hiện đại. ️Bảng điều khiển điện tử 12 món cài đặt sẵn độ ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

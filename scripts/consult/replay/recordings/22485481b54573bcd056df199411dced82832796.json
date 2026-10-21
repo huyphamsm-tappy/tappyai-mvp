@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "KHÁCH SẠN MỸ KHÊ 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:46:41.290Z",
+ "body": {
+  "searchParameters": {
+   "q": "KHÁCH SẠN MỸ KHÊ 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Mỹ Khê 2 Đà Nẵng - Đặt phòng liền tay rinh ngay ưu đãi",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_346392/53982e2f270d71df584239771edddb6e.jpg",
+    "imageWidth": 850,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQQ1qMbnwAfqJA61nrQwcXXZtzFXyivelpPgS9RETUZA&s=10",
+    "thumbnailWidth": 615,
+    "thumbnailHeight": 325,
+    "source": "VietNam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/my-khe-2-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_346392%2F53982e2f270d71df584239771edddb6e.jpg&tbnid=9L8bwohxP59ZkM&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fmy-khe-2-da-nang.html&docid=KtqRab17Q1REnM&w=850&h=450",
+    "position": 1
+   },
+   {
+    "title": "My Khe 2 Da Nang Seafront | Da Nang",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=100088304216815",
+    "imageWidth": 958,
+    "imageHeight": 960,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQH8Wnbcq1l0M3M2Y1nD76CtVs6U45WjiliJ9Bm-Ajhvw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/p/My-Khe-2-Da-Nang-Seafront-100088304216815/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D100088304216815&tbnid=aivyvTRlRK_pXM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Fp%2FMy-Khe-2-Da-Nang-Seafront-100088304216815%2F&docid=EX80nIIv33t5tM&w=958&h=960",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Mỹ Khê 2 Đà Nẵng - Đặt phòng liền tay rinh ngay ưu đãi",
+    "imageUrl": "https://cdn2.vietnambooking.com/wp-content/uploads/hotel_pro/hotel_346392/9000703caae6882c7dd93e0b08dd0881.jpg",
+    "imageWidth": 850,
+    "imageHeight": 450,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSnGwCCr-Lc0N2Xv9k-wBeSqkyyYtf3Rye-6pxgYmhF1A&s=10",
+    "thumbnailWidth": 615,
+    "thumbnailHeight": 325,
+    "source": "VietNam Booking",
+    "domain": "www.vietnambooking.com",
+    "link": "https://www.vietnambooking.com/hotel/vietnam/my-khe-2-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.vietnambooking.com%2Fwp-content%2Fuploads%2Fhotel_pro%2Fhotel_346392%2F9000703caae6882c7dd93e0b08dd0881.jpg&tbnid=HgBXahrxh3TV7M&imgrefurl=https%3A%2F%2Fwww.vietnambooking.com%2Fhotel%2Fvietnam%2Fmy-khe-2-da-nang.html&docid=KtqRab17Q1REnM&w=850&h=450",
+    "position": 3
+   },
+   {
+    "title": "khách sạn Mỹ Khê 2 | Đà Nẵng - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/1603/14/khach-san-my-khe-2-4.jpg",
+    "imageWidth": 800,
+    "imageHeight": 599,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtYESm5HuoGmdkOfCdFzdj72kVqPeop2FrEqRR2aOrcQ&s=10",
+    "thumbnailWidth": 516,
+    "thumbnailHeight": 387,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.3059.khach-san-my-khe-2.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F1603%2F14%2Fkhach-san-my-khe-2-4.jpg&tbnid=dqA1Qb8EMFzNuM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.3059.khach-san-my-khe-2.html&docid=P5konQ2Hs36o_M&w=800&h=599",
+    "position": 4
+   },
+   {
+    "title": "Mỹ Khê 2 Đà Nẵng Seafront Hotel giá chỉ 550,000₫ - Vietgoing",
+    "imageUrl": "https://image.vietgoing.com/hotel/01/56/medium/vietgoing_ove2602026504.webp",
+    "imageWidth": 514,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScw3GDteMtpWqTP-jzWnxNTsgAh8fbYmP2vOUfKOF8ng&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 483,
+    "source": "Vietgoing",
+    "domain": "vietgoing.com",
+    "link": "https://vietgoing.com/hotel/3632-my-khe-2-da-nang-seafront-hotel.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fimage.vietgoing.com%2Fhotel%2F01%2F56%2Fmedium%2Fvietgoing_ove2602026504.webp&tbnid=Bgo_y1SobYYB7M&imgrefurl=https%3A%2F%2Fvietgoing.com%2Fhotel%2F3632-my-khe-2-da-nang-seafront-hotel.html&docid=pbL8w9SRDtmCOM&w=514&h=600",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Sun Thành Phố Đà Nẵng",
+    "imageUrl": "https://sunhotel.com.vn/wp-content/uploads/2025/10/anh-dai-dien-khach-san-my-khe-2-da-nang.jpg",
+    "imageWidth": 709,
+    "imageHeight": 482,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq5FgqIJjqYw30Bqe434cdGzUil1QMNTbnfr0JLfGwEQ&s=10",
+    "thumbnailWidth": 672,
+    "thumbnailHeight": 456,
+    "source": "Khách sạn Sun Thành Phố Đà Nẵng",
+    "domain": "sunhotel.com.vn",
+    "link": "https://sunhotel.com.vn/khach-san-my-khe-2-da-nang/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fsunhotel.com.vn%2Fwp-content%2Fuploads%2F2025%2F10%2Fanh-dai-dien-khach-san-my-khe-2-da-nang.jpg&tbnid=_ZtQDY-cVYh2gM&imgrefurl=https%3A%2F%2Fsunhotel.com.vn%2Fkhach-san-my-khe-2-da-nang%2F&docid=zjoBgUbZVtXetM&w=709&h=482",
+    "position": 6
+   },
+   {
+    "title": "Khách Sạn Mỹ Khê 2, Đà Nẵng - Trang web chính thức | Trang chủ",
+    "imageUrl": "http://mykhe2hoteldana.com/media/1140/about-us-my-khe-da-nang.jpg",
+    "imageWidth": 800,
+    "imageHeight": 632,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ85r1EnecLgdrVfKnOe-JLvUiiW9X-yyOBWQcCDvoZoQ&s=10",
+    "thumbnailWidth": 503,
+    "thumbnailHeight": 397,
+    "source": "My Khe II hotel",
+    "domain": "mykhe2hoteldana.com",
+    "link": "http://mykhe2hoteldana.com/vn/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fmykhe2hoteldana.com%2Fmedia%2F1140%2Fabout-us-my-khe-da-nang.jpg&tbnid=I0vFugmnlpx4yM&imgrefurl=http%3A%2F%2Fmykhe2hoteldana.com%2Fvn%2F&docid=TYZNOcbqDrfJ4M&w=800&h=632",
+    "position": 7
+   },
+   {
+    "title": "My Khe 2 Da Nang Seafront Hotel, Đà Nẵng (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/462065246.jpg?k=c4409113f9e279ee8d5bd2b954de92bbf0bde1425833063f34ddf696df90602b&o=",
+    "imageWidth": 1024,
+    "imageHeight": 347,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwI1Z8oCed9gkg7nLa6xlCHRwotz-PVwsNt8fP1InJ0w&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 249,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/my-khe-ii.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F462065246.jpg%3Fk%3Dc4409113f9e279ee8d5bd2b954de92bbf0bde1425833063f34ddf696df90602b%26o%3D&tbnid=dympEaP3fJEAXM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fmy-khe-ii.vi.html&docid=Hlo6e2Jk8Fa3EM&w=1024&h=347",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

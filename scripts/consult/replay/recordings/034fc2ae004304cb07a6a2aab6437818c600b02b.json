@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congan.gov.vn \"lệ phí cấp hộ chiếu\" \"01/4/2026\" 200.000 400.000 Thông tư 2026 Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:59.453Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congan.gov.vn \"lệ phí cấp hộ chiếu\" \"01/4/2026\" 200.000 400.000 Thông tư 2026 Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

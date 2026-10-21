@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam gia Shopee Tiki Lazada",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:37:14.385Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn chạy bộ dưới 3 triệu Sony WH-CH720N Soundcore Liberty 4 NC JBL Tune Beam gia Shopee Tiki Lazada",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đánh giá Sony WH-CH720N tiết kiệm 4 triệu so với ...",
+    "link": "https://www.youtube.com/watch?v=UJ34v2rvzNw&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "Comments · Trước Lúc Mất Bố Tôi Đưa 300 Nghìn Đô Rồi Nói:50 Năm Trước Khi Qua Mỹ Ông Có 1 Đời Vợ,Qua Tang Lễ... · So sánh tai nghe SONY WH CH720N ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe sony wh ch720n - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/sony/wh%20ch720n",
+    "snippet": "Các sản phẩm tai nghe sony wh ch720n chính hãng được bán tại Shopee với giá ưu đãi hấp dẫn. Bạn còn có thể áp dụng các mã giảm giá, mã hoàn xu và freeship để ...",
+    "position": 2
+   },
+   {
+    "title": "tai nghe sony wh ch720n- Giá Tốt & Ưu Đãi",
+    "link": "https://www.lazada.vn/tag/tai-nghe-sony-wh-ch720n/?srsltid=AU7gw4VI8ctlMF5yhT29cEIcSFvRQDlKoiQE7hfxgAhgNd6BB7yxhBpt",
+    "snippet": "Sony Wireless Headphones with Noise-Canceling Technology Wh-Ch720N. ₫2,199,000 ; Tai Nghe Bluetooh Sony WH-CH720N Chống Ồn. ₫1,890,000.",
+    "rating": 4.9,
+    "ratingCount": 1035,
+    "position": 3
+   },
+   {
+    "title": "Nên mua Sony WH CH720N hay Edifier ES850NB cho nhu ...",
+    "link": "https://www.facebook.com/groups/cuongtruewireless/posts/2038461760277439/",
+    "snippet": "CH-720N sau 2 năm. Thích: rất nhẹ, ôm đầu tốt, chạy bộ ko rớt, pin trâu. Connect dc 2 devices, switch qua lại khá mượt, lâu lâu bị ko tự ...",
+    "position": 4
+   },
+   {
+    "title": "tai nghe chống ồn sony - Giá Tốt, Sale Tháng 10, Freeship ...",
+    "link": "https://shopee.vn/list/tai%20nghe%20ch%E1%BB%91ng%20%E1%BB%93n/sony",
+    "snippet": "Tai nghe bluetooth Anker soundcore R50i NC, chống ồn chủ động thông minh, bass mạnh, pin 45H, chống nước IP54. 564.000₫. 729.000₫. -23%. voucher-icon.",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N",
+    "link": "https://www.topzone.vn/tai-nghe/tai-nghe-bluetooth-chup-tai-sony-wh-ch720n",
+    "snippet": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N ; Độ dài dây: 125 cm ; Tiện ích: Sạc nhanh Tương thích trợ lý ảo Micro chống ồn Hỗ trợ Google Fast Pair và Microsoft ...",
+    "position": 6
+   },
+   {
+    "title": "Sony WH-CH720N Review: Is It Worth It at $75?",
+    "link": "https://www.youtube.com/watch?v=KlHPXUuYp2w&vl=vi&xstg=CAMSBhUDze3xHw%3D%3D",
+    "snippet": "Đường dẫn mua SONY WH720N: https://s.shopee.vn/6L0GCuxsT5 ----------------------------------------------------------Hung ...",
+    "position": 7
+   },
+   {
+    "title": "Review tai nghe SONY WH-CH720N: Tầm này giá còn 2 CỦ là ...",
+    "link": "https://www.facebook.com/hoanghamobilecom/videos/review-tai-nghe-sony-wh-ch720n-t%E1%BA%A7m-n%C3%A0y-gi%C3%A1-c%C3%B2n-2-c%E1%BB%A7-l%C3%A0-qu%C3%A1-%C4%91%E1%BA%B9p-s%C4%83n-ngay-httpshhm/4406137146369077/",
+    "snippet": "Review tai nghe SONY WH-CH720N: Tầm này giá còn 2 CỦ là QUÁ ĐẸP >> Săn ngay: https://hhmb.net/sony-wh-ch720n-tt #fyp #hoanghamobile ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

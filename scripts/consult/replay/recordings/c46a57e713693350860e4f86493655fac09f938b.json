@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 giá Việt Nam hiện tại Samsung Galaxy S24 giá Việt Nam hiện tại",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:01:50.759Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 giá Việt Nam hiện tại Samsung Galaxy S24 giá Việt Nam hiện tại",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 or Galaxy S24?",
+    "link": "https://www.youtube.com/watch?v=9EvJzYStpiI",
+    "snippet": "... iPhone 15 cũ giá tốt: https://www.xtmobile.vn/iphone-15?utm_source=youtube&utm_medium=vatvostudio&utm_campaign=iphone-15-12-2024 ▻ Hoặc Galaxy ...",
+    "position": 1
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15",
+    "link": "https://www.chotot.com/kinh-nghiem/so-sanh-samsung-galaxy-s24-va-iphone-15.html",
+    "snippet": "iPhone 15 và Samsung S24 giá bán chênh lệch bao nhiêu? ; iPhone 15 128GB, 22,99 triệu, 10,08 triệu – 12,32 triệu ; iPhone 15 256GB, 25,99 triệu, 10,98 triệu – 13, ...",
+    "position": 2
+   },
+   {
+    "title": "Giá Samsung Galaxy S24 series cập nhật mới, ưu đãi sốc",
+    "link": "https://cellphones.com.vn/mobile/samsung/galaxy-s/s24-series.html",
+    "snippet": "Mức giá của dòng máy này như sau: Samsung Galaxy S24 tiêu chuẩn: khởi điểm từ 22.990.000đ. Samsung Galaxy S24 Plus 256GB - 512GB: khởi điểm từ 26.990.000đ. Giá ...",
+    "position": 3
+   },
+   {
+    "title": "Đây là chiếc Galaxy S24 rẻ nhất Việt Nam trong tháng 10 ...",
+    "link": "https://baomoi.com/day-la-chiec-galaxy-s24-re-nhat-viet-nam-trong-thang-10-gia-re-hon-iphone-14-nhung-hieu-nang-manh-ngang-ngua-iphone-15-c50387672.epi",
+    "snippet": "Chốt giảm sâu 6 triệu đồng đầu tháng 10, đây là chiếc Galaxy S24 rẻ nhất Việt Nam hiện nay, giá rẻ 'đe nẹt' đối thủ iPhone 14, iPhone 15.",
+    "date": "7 thg 10, 2024",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 vs. iPhone 15: Dòng nào mới là \" ...",
+    "link": "https://24hstore.vn/review-san-pham/samsung-galaxy-s24-vs-iphone-15-dong-nao-moi-la-trum-ai-n8311?srsltid=AU7gw4XGTZuaR0ietXb4hy5AUZm1Ree15PDFVneGojxGK1Xgt1dffnAF",
+    "snippet": "Phiên bản Galaxy S24 được Samsung trang bị một con chip mới mang tên Exynos 2400 for Galaxy, trong khi đó, iPhone 15 hoạt động với con chip A16 ...",
+    "date": "15 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Galaxy S24 Ultra tiếp tục giảm giá, rẻ hơn cả iPhone 15 Plus!",
+    "link": "https://www.youtube.com/watch?v=Ow2PO8I93jc",
+    "snippet": "... s24-ultra iPhone : https://clickbuy.com.vn/iphone?utm_source=duongde&utm_medium=ytb&utm_campaign=iphone Dương Dê - Đánh giá các sản phẩm ...",
+    "position": 6
+   },
+   {
+    "title": "Cập nhật bảng giá điện thoại Samsung tháng 10/2026",
+    "link": "https://www.xtmobile.vn/cap-nhat-bang-gia-dien-thoai-samsung",
+    "snippet": "Samsung Galaxy S24 Plus 5G (12GB|256GB) Hàn (Cũ LikeNew). 10.899.000đ ; Samsung Galaxy S24 Plus 5G (12GB|256GB) Mỹ (Cũ LikeNew). 11.599.000đ.",
+    "date": "7 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24, S24 Plus, S24 Ultra 5G Mới Cũ Giá Rẻ",
+    "link": "https://www.duchuymobile.com/samsung-galaxy-s24?srsltid=AU7gw4VWdnpHQ6YmOYjSfUQrcm2uy0Xn07sL__4HyZhf_h_5bRUINQJD",
+    "snippet": "Samsung Galaxy S24 Plus 5G (12GB | 256GB) Chính Hãng. 13.799.000 · Trả trước: 4.139.700 đ. Exynos 2400 4900mAh, 45W 6.7\" 2 Sim ; Samsung Galaxy S24 Ultra 5G (12GB ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

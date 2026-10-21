@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/vi-vn AirPods Pro (thế hệ thứ 2) thời gian nghe 6 giờ hộp sạc 30 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:31:51.399Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/vi-vn AirPods Pro (thế hệ thứ 2) thời gian nghe 6 giờ hộp sạc 30 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 với Hộp sạc MagSafe (USB-C)",
+    "link": "https://support.apple.com/vi-vn/111834",
+    "snippet": "... Pro 2 với Hộp Sạc Magsafe (USB-C)10. Thời gian nghe lên đến 30 giờ11. 5 phút để trong hộp sạc có thể tăng thời gian nghe khoảng 1 giờ12. Kết Nối. Công nghệ ...",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "AirPods Pro với Hộp Sạc MagSafe. Thời gian nghe lên đến 30 giờ5. 5 phút để trong hộp sạc có thể tăng thời gian nghe khoảng 1 giờ6. Kết Nối. Công nghệ không dây ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/125135",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 3
+   },
+   {
+    "title": "Giới thiệu về bản cập nhật vi chương trình cho AirPods",
+    "link": "https://support.apple.com/vi-vn/106340",
+    "snippet": "Bản cập nhật vi chương trình 8A356 bổ sung các tính năng và khả năng để hỗ trợ AirPods Pro 3 mới, bao gồm cảm biến nhịp tim trong khi tập luyện trong ứng dụng ...",
+    "position": 4
+   },
+   {
+    "title": "Sạc AirPods - Bộ phận hỗ trợ của Apple (VN)",
+    "link": "https://support.apple.com/vi-vn/119912",
+    "snippet": "Sạc AirPods. Tìm hiểu cách sạc AirPods và cách kiểm tra trạng thái sạc. Cách sạc AirPods. Sạc hộp sạc. Kiểm tra trạng thái sạc. Tìm hiểu về đèn trạng thái.",
+    "position": 5
+   },
+   {
+    "title": "AirPods 3 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111863",
+    "snippet": "Pin · AirPods. Thời gian nghe lên đến 6 giờ với một lần sạc (lên đến 5 giờ khi bật Âm Thanh Không Gian Cá Nhân Hóa) · AirPods với Hộp Sạc Lightning hoặc Hộp Sạc ...",
+    "position": 6
+   },
+   {
+    "title": "Khởi động lại, hủy ghép đôi hoặc đặt lại AirPods của bạn",
+    "link": "https://support.apple.com/vi-vn/guide/airpods/iph561965261/web",
+    "snippet": "AirPods 4 hay 5 hoặc AirPods Pro 3: Đặt AirPods vào trong hộp, đóng nắp, sau đó đợi 30 giây. Mở nắp, sau đó thực hiện ba thao tác chạm hai lần vào mặt trước của ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods 5 Hộp Sạc Không Dây - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/148760",
+    "snippet": "AirPods 5 Hộp Sạc Không Dây - Thông số kỹ thuật · Công Nghệ Âm Thanh · Siri AI · Cảm Biến · Chip · Điều Khiển · Chống Bụi, Chống Mồ Hôi và Chống Nước · Kích Thước Và ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

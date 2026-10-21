@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Apple AirPods Pro 2 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:12:46.810Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Apple AirPods Pro 2 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vỏ Bảo Vệ Hộp Sạc Tai Nghe Bluetooth Airpods pro 2 Apple ...",
+    "link": "https://shopee.vn/V%E1%BB%8F-B%E1%BA%A3o-V%E1%BB%87-H%E1%BB%99p-S%E1%BA%A1c-Tai-Nghe-Bluetooth-Airpods-pro-2-Apple-Airpods-1-2-3-rd-pro-B%E1%BA%B1ng-Da-Th%C3%AAu-H%E1%BB%8Da-Ti%E1%BA%BFt-Th%E1%BB%9Di-Trang-i.346210026.23165929854",
+    "snippet": "Vỏ Bảo Vệ Hộp Sạc Tai Nghe Bluetooth Airpods pro 2 Apple Airpods 1 2 3 rd pro Bằng Da Thêu Họa Tiết Thời Trang ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian ...",
+    "position": 1
+   },
+   {
+    "title": "Dành cho apple airpods pro 2 / airpod3 / airpod 2 Ốp lưng ...",
+    "link": "https://shopee.vn/D%C3%A0nh-cho-apple-airpods-pro-2-airpod3-airpod-2-%E1%BB%90p-l%C6%B0ng-Bluetooth-%C4%91%C6%A1n-gi%E1%BA%A3n-sang-tr%E1%BB%8Dng-V%E1%BB%8F-tai-nghe-airpod-pro-ph%E1%BB%A5-ki%E1%BB%87n-i.99616300.24380248218",
+    "snippet": "Dành cho apple airpods pro 2 / airpod3 / airpod 2 Ốp lưng Bluetooth đơn giản sang trọng Vỏ tai nghe airpod pro phụ kiện ... Tặng Voucher 15.000₫ nếu đơn giao sau ...",
+    "position": 2
+   },
+   {
+    "title": "Ins Trong Suốt Màu Hồng Lily Thiết Kế Tai Nghe Cho ...",
+    "link": "https://shopee.vn/Ins-Trong-Su%E1%BB%91t-M%C3%A0u-H%E1%BB%93ng-Lily-Thi%E1%BA%BFt-K%E1%BA%BF-Tai-Nghe-Cho-AirPods-Pro3-Apple-AirPods-Pro-Th%E1%BA%BF-H%E1%BB%87-Th%E1%BB%A9-3-AirPods-Pro2-V%E1%BB%8F-Tai-Nghe-Bluetooth-Apple-Th%E1%BA%BF-H%E1%BB%87-Th%E1%BB%A9-4-Th%E1%BA%BF-H%E1%BB%87-1-i.582210382.51110844918",
+    "snippet": "Ins Trong Suốt Màu Hồng Lily Thiết Kế Tai Nghe Cho AirPods Pro3 Apple AirPods Pro Thế Hệ Thứ 3 AirPods Pro2 Vỏ Tai Nghe Bluetooth Apple Thế Hệ Thứ 4 Thế Hệ 1.",
+    "position": 3
+   },
+   {
+    "title": "Ốp Bảo Vệ Nylon Chống Trầy Xước Cho Apple Airpods ...",
+    "link": "https://shopee.vn/%E1%BB%90p-B%E1%BA%A3o-V%E1%BB%87-Nylon-Ch%E1%BB%91ng-Tr%E1%BA%A7y-X%C6%B0%E1%BB%9Bc-Cho-Apple-Airpods-Pro-2-Tai-Nghe-T%C6%B0%C6%A1ng-Th%C3%ADch-Bluetooth-V%E1%BB%8F-Ch%E1%BB%91ng-M%C3%A0i-M%C3%B2n-Cho-Airpods-Pro-2-1-i.99616300.23109461185",
+    "snippet": "Mua Ốp Bảo Vệ Nylon Chống Trầy Xước Cho Apple Airpods Pro 2 Tai Nghe Tương Thích Bluetooth Vỏ Chống Mài Mòn Cho Airpods Pro 2 1 giá tốt.",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 4
+   },
+   {
+    "title": "Phụ kiện thay thế loa & lưới cho tai nghe Bluetooth Apple ...",
+    "link": "https://shopee.vn/Ph%E1%BB%A5-ki%E1%BB%87n-thay-th%E1%BA%BF-loa-l%C6%B0%E1%BB%9Bi-cho-tai-nghe-Bluetooth-Apple-AirPods-Pro-2-ch%C3%ADnh-h%C3%A3ng-i.1875604657.53013556818",
+    "snippet": "Phụ kiện thay thế loa & lưới cho tai nghe Bluetooth Apple AirPods Pro 2 chính hãng ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 5,
+    "ratingCount": 4,
+    "position": 5
+   },
+   {
+    "title": "Thắt nơ 3D Áp dụng cho vỏ tai nghe Bluetooth Apple",
+    "link": "https://shopee.vn/Th%E1%BA%AFt-n%C6%A1-3D-%C3%81p-d%E1%BB%A5ng-cho-v%E1%BB%8F-tai-nghe-Bluetooth-Apple-AirPods-4-AirPods-1-2-AirPods-Pro-2-AirPods-PRO-3-MWTB-i.1506094763.40930055724?extraParams=%7B%22display_model_id%22%3A350783031608%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Thắt nơ 3D Áp dụng cho vỏ tai nghe Bluetooth Apple: AirPods 4, AirPods 1 / 2, Pro 2, AirPods PRO 3 MWTB ... Tặng Voucher 15.000₫ nếu đơn giao sau thời gian trên.",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 6
+   },
+   {
+    "title": "Dành cho Apple Airpods Pro 2 Miếng đệm tai xốp nhớ",
+    "link": "https://shopee.vn/D%C3%A0nh-cho-Apple-Airpods-Pro-2-Mi%E1%BA%BFng-%C4%91%E1%BB%87m-tai-x%E1%BB%91p-nh%E1%BB%9B-Tai-nghe-Bluetooth-M%C5%A9-tai-Ph%E1%BB%A5-ki%E1%BB%87n-tai-nghe-thay-th%E1%BA%BF-V%E1%BB%8F-tai-kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-SML-%C4%90%E1%BA%A7u-tai-h%E1%BB%93i-ph%E1%BB%A5c-ch%E1%BA%ADm-m%E1%BB%81m-m%E1%BA%A1i-i.127261316.29069652354",
+    "snippet": "Mua 2 & giảm 5%. Dành cho Apple Airpods Pro 2 Miếng đệm tai xốp nhớ - Tai nghe Bluetooth Mũ tai - Phụ kiện tai nghe thay thế - Vỏ tai khử tiếng ồn SML - Đầu ...",
+    "rating": 4.8,
+    "ratingCount": 567128,
+    "position": 7
+   },
+   {
+    "title": "Ins Siêu Dễ Thương Họa Tiết Kẻ Sọc Hoạt Hình Dành Cho ...",
+    "link": "https://shopee.vn/Ins-Si%C3%AAu-D%E1%BB%85-Th%C6%B0%C6%A1ng-H%E1%BB%8Da-Ti%E1%BA%BFt-K%E1%BA%BB-S%E1%BB%8Dc-Ho%E1%BA%A1t-H%C3%ACnh-D%C3%A0nh-Cho-Apple-AirPods-1-2-3-4-Rd-Pro-2-M%E1%BA%B7t-D%C3%A2y-Chuy%E1%BB%81n-V%E1%BB%8F-M%E1%BB%81m-Cho-AirPods-Pro-2-Bluetooth-Tai-Nghe-S%E1%BA%A1c-H%E1%BB%99p-B%E1%BA%A3o-Qu%E1%BA%A3n-V%E1%BB%8F-Ch%E1%BB%91ng-R%C6%A1i-i.346210026.27653548419",
+    "snippet": "Ins Siêu Dễ Thương Họa Tiết Kẻ Sọc Hoạt Hình Dành Cho Apple AirPods 1 2 3 4 Rd Pro 2 Mặt Dây Chuyền Vỏ Mềm Cho AirPods Pro 2 Bluetooth Tai Nghe Sạc Hộp Bảo Quản ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

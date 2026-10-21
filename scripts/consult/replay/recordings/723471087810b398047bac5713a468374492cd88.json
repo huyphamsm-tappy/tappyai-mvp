@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ghé Coffee\" OR \"Hoff Coffee Brewers by BeanHop\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:36:44.403Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ghé Coffee\" OR \"Hoff Coffee Brewers by BeanHop\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Directions to Ghé Coffee on Mạc Thị Bưởi",
+    "link": "https://www.tiktok.com/@theghecoffee/video/7633990241296125204",
+    "snippet": "Start at the main intersection on Mạc Thị Bưởi and head east. Continue down the road for about two blocks until you see Ghé Coffee on your right. The café is ...",
+    "position": 1
+   },
+   {
+    "title": "#trendingcoffeeshop To start a new week",
+    "link": "https://www.tiktok.com/@theghecoffee/video/7664408205409144084",
+    "snippet": "Video TikTok từ Ghé Coffee (@theghecoffee): \"#trendingcoffeeshop To start a new week\".original sound - Ghé Coffee.",
+    "position": 2
+   },
+   {
+    "title": "Ghé Coffee LES CHAMPS: Khám Phá Hương Vị Đặc Biệt",
+    "link": "https://www.tiktok.com/@kimnganduchoareview/video/7549175876336831762",
+    "snippet": "427 Lượt thích,24 Bình luận.Video TikTok từ Ngân Review Đức Hoà (@kimnganduchoareview): \"Ghé Coffee LES CHAMPS để trải nghiệm hương vị café độc đáo.",
+    "position": 3
+   },
+   {
+    "title": "Không gian đà lạt sương khói được tái hiện tại tỉnh Phú Y...",
+    "link": "https://www.tiktok.com/@kientruchcong.com/video/7664949735924583698",
+    "snippet": "Ghé Coffee | Không gian đà lạt sương khói được tái hiện tại tỉnh Phú Yên. Quán cafe sân vườn phong cách mộc mạc vibe chill #kientruchcong # ...",
+    "position": 4
+   },
+   {
+    "title": "Se ri món lạ lùng mới mẻ của Ghé coffee😆",
+    "link": "https://www.tiktok.com/@ghecoffee21/video/7690859974653906184",
+    "snippet": "73 Lượt thích,Video TikTok từ GHÉ coffee (@ghecoffee21): \"Se ri món lạ lùng mới mẻ của Ghé coffee \".âm thanh gốc - GHÉ coffee.",
+    "position": 5
+   },
+   {
+    "title": "ủng hộ bé nha",
+    "link": "https://www.tiktok.com/@ghecoffee21/video/7691669310439263496",
+    "snippet": "25 Lượt thích,Video TikTok từ GHÉ coffee (@ghecoffee21): \"ủng hộ bé nha \".âm thanh gốc - GHÉ coffee.",
+    "position": 6
+   },
+   {
+    "title": "Ghé Coffee Heals Tìm Bình Yên Giữa Cuộc Sống Hối Hả",
+    "link": "https://www.tiktok.com/@coffee.heals/video/7537864644107586817",
+    "snippet": "Ghé Coffee Heals Tìm Bình Yên Giữa Cuộc Sống Hối Hả. Khám phá Coffee Heals, nơi tâm hồn được chữa lành giữa bộn bề cuộc sống. Đến đây để tìm ...",
+    "position": 7
+   },
+   {
+    "title": "Coffee Mie85: 100 Em Bán Rồi Ghé Coffee Thôi!",
+    "link": "https://www.tiktok.com/@miekute8386/video/7682193431011003668",
+    "snippet": "Quán hứa hẹn sẽ mang đến những trải nghiệm thú vị và đáng nhớ. Đừng bỏ lỡ cơ hội ghé Coffee Mie85 để cùng chung vui và khám phá những điều bất ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

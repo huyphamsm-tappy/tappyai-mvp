@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiếng Anh Nghe Nói\" OR \"Simple English\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:03:17.992Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiếng Anh Nghe Nói\" OR \"Simple English\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Learn Simple English with Grandpa and Grandma — Daily ...",
+    "link": "https://www.tiktok.com/@learning.english.daily1/video/7653481618182655262",
+    "snippet": "Lead This short lesson focuses on simple English vocabulary and a short daily-life phrase using grandpa and grandma.",
+    "position": 1
+   },
+   {
+    "title": "A Day Without a Smartphone – Simple English Listening (A2)",
+    "link": "https://www.tiktok.com/@learning.english1996/video/7679040396466343184",
+    "snippet": "A Day Without a Smartphone – Simple English Listening (A2) ... Lead This A2-level English listening practice explores what it feels like to spend ...",
+    "position": 2
+   },
+   {
+    "title": "Simple English (@simpleenglishcenter)",
+    "link": "https://www.tiktok.com/@simpleenglishcenter",
+    "snippet": "Simple English · @simpleenglishcenter · Khoá tiếng Anh giao tiếp ứng dụng cho người đi làm (Online & Q.10, Q.Bình Thạnh).",
+    "position": 3
+   },
+   {
+    "title": "How Are You? Simple English Listening Practice for Daily ...",
+    "link": "https://www.tiktok.com/@trucmayenglish/video/7675950419432066320",
+    "snippet": "How Are You? Simple English Listening Practice for Daily Conversation. Lead This short listening practice focuses on a common English greeting ...",
+    "position": 4
+   },
+   {
+    "title": "Simple English",
+    "link": "https://www.tiktok.com/discover/simple-english",
+    "snippet": "Learn simple English sentences for common problems. Use these phrases naturally in everyday conversations. Save this video and practice them ...",
+    "date": "28 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Expressing Frequency in English | Simple English",
+    "link": "https://www.tiktok.com/@thereal.ielts/video/7687904712666008839",
+    "snippet": "... simple english phrases. Đây là bản tóm tắt nội dung do AI tạo và không nhằm mục đích cung cấp ngữ cảnh thực tế. Nếu bạn cho rằng tóm tắt có ...",
+    "position": 6
+   },
+   {
+    "title": "Men's Large Size Business Casual Polo Shirt, Classic Simple ...",
+    "link": "https://shop.tiktok.com/us/pdp/1732214059538485859",
+    "snippet": "Men's Large Size Business Casual Polo Shirt, Classic Simple English Letter Print, Soft Breathable Fabric, Perfect for Home Leisure Outdoor Sports Gift.",
+    "position": 7
+   },
+   {
+    "title": "Simple English Conversation: Useful English for the ...",
+    "link": "https://www.tiktok.com/@1.easyenglish/video/7689101545924791554",
+    "snippet": "Simple English Conversation | Useful English for the Workplace Practice practical English you can use in the workplace! Learn natural phrases ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

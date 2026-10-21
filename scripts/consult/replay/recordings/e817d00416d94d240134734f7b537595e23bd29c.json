@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Barista Collective\" OR \"Café Slow\" OR \"Tiệm cà phê Cư Xá 30\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:38:31.483Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Barista Collective\" OR \"Café Slow\" OR \"Tiệm cà phê Cư Xá 30\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh",
+    "link": "https://www.tiktok.com/@overexploring/video/7654961807534132502",
+    "snippet": "A café perfect for cat lovers in Vietnam. Barista Collective, 191 Đ. Trần Văn Đang, Quận 3, Hồ Chí Minh 700000. #vietnam #hochiminh #fyp # ...",
+    "position": 1
+   },
+   {
+    "title": "📍Barista Collective - Địa điểm cafe vừa chill, vừa ấm cúng ...",
+    "link": "https://www.tiktok.com/@dailycafe.hcmc/video/7686455602507222290",
+    "snippet": "26 Lượt thích,Video TikTok từ Daily Café (@dailycafe.hcmc): \" Barista Collective - Địa điểm cafe vừa chill, vừa ấm cúng, vừa có mèo siêu ...",
+    "position": 2
+   },
+   {
+    "title": "Barista Collective",
+    "link": "https://www.tiktok.com/discover/barista-collective",
+    "snippet": "Khám phá Barista Collective tại Sài Gòn! Quán cà phê độc đáo với không gian ấm cúng, cà phê thơm ngon và những chú mèo dễ thương. Cập nhật lần ...",
+    "date": "20 thg 7, 2026",
+    "position": 3
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30 (@cuxa.30)",
+    "link": "https://www.tiktok.com/@cuxa.30",
+    "snippet": "Tiệm Cà Phê Cư Xá 30 · @cuxa.30 · IG:@tiemcaphecuxa30 FB:TiệmCàPhêCưXá30 Xá Nhiệm: 30/1F Ngô Thời Nhiệm,Q.3 Xá Thanh: 74/34 Thạch Thị Thanh, Q1 🕰️ 7:30-22: ...",
+    "position": 4
+   },
+   {
+    "title": "Random morning at Lô B 🌿☕️ 📍Tiệm Cà Phê Cư Xá 30",
+    "link": "https://www.tiktok.com/@cuxa.30/video/7686370545201368327",
+    "snippet": "Random morning at Lô B ☕️ Tiệm Cà Phê Cư Xá 30 - CN2: 74/34 Thạch Thị Thanh Phường Tân Định Quận 1 ⏰ Giờ mở cửa: 7:30AM - 10:00PM ...",
+    "position": 5
+   },
+   {
+    "title": "Barista Collective (@baristacollective)",
+    "link": "https://www.tiktok.com/@baristacollective",
+    "snippet": "Barista Collective (@baristacollective) trên TikTok |14.2K Lượt thích.946 Follower.“We serve coffee beans from all over the world in one coffee cup for ...",
+    "position": 6
+   },
+   {
+    "title": "Tiệm Cà Phê Cư Xá 30: Quán cafe cũ kỹ ở Sài Gòn",
+    "link": "https://www.tiktok.com/@trungthao252/photo/7664573945068260629",
+    "snippet": "Khám phá Tiệm Cà Phê Cư Xá 30, một quán cafe nhỏ, cũ kỹ đầy chất riêng tại hẻm 74/34 Thạch Thị Thanh, Tân Định, Quận 1, TP.HCM. Keywords: Tiệm ...",
+    "position": 7
+   },
+   {
+    "title": "Barista Collective Cat Cafe Ho Chi Minh — Review & Location",
+    "link": "https://www.tiktok.com/@pints.with.locals/video/7654961807534132502",
+    "snippet": "Lead Barista Collective is a cat-friendly café located at 191 Đ. Trần Văn Đang, Quận 3, Ho Chi Minh 700000. Ideal for cat lovers visiting Saigon, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

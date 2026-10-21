@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hoi An Memories Resort & Spa\" OR \"La Charm Hoi An Hotel\" OR \"Hoi An Reverie Villas\" Hội An site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:39.856Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hoi An Memories Resort & Spa\" OR \"La Charm Hoi An Hotel\" OR \"Hoi An Reverie Villas\" Hội An site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "✨ Hoi An Memories Resort & Spa – nơi lưu giữ những phút ...",
+    "link": "https://www.tiktok.com/@hoianmemoriesland/video/7652318271714233618",
+    "snippet": "Hoi An Memories Resort & Spa – nơi lưu giữ những phút giây nghỉ dưỡng đậm chất Faifo giữa lòng Hội An. Nằm giữa dòng sông Hoài thơ mộng, ...",
+    "position": 1
+   },
+   {
+    "title": "Hoi An Memories Resort & Spa, Hội An",
+    "link": "https://www.tiktok.com/@mctravel83/photo/7689690138569362706",
+    "snippet": "HOI AN MEMORIES RESORT & SPA Nằm giữa dòng sông Hoài Phòng & villa view sông thơ mộng 2 hồ bơi, có cả infinity pool Spa chill, ...",
+    "position": 2
+   },
+   {
+    "title": "Khám phá Hoi An Memories Resort & Spa trong hành trình ...",
+    "link": "https://www.tiktok.com/@hoianmemoriesland/video/7657497866214067474",
+    "snippet": "Khám phá Hoi An Memories Resort & Spa trong hành trình 2 ngày 1 đêm Chỉ cách phố cổ Hội An vài phút di chuyển, Hoi An Memories Resort & Spa mở ...",
+    "position": 3
+   },
+   {
+    "title": "Hoi an memories resort & spa",
+    "link": "https://www.tiktok.com/@thuyvekyuchoian/video/7662783938213137684",
+    "snippet": "Hoi An Memories Resort & Spa, nghỉ dưỡng Faifo ở Hội An, resort gần phố cổ Hội An, nghỉ dưỡng bên sông Hoài, trải nghiệm văn hóa Hội An, workshop thủ công ...",
+    "position": 4
+   },
+   {
+    "title": "Lễ 2/9 đi đâu tại Hội An - Tham quan Công Viên Ấn Tượng ...",
+    "link": "https://www.tiktok.com/@dicaphe.dn/video/7668183848085179668",
+    "snippet": "... Hoi An Memories Resort & Spa #dicaphedn #hoian #danang # ... Phố cổ Hội An – Vẻ đẹp cổ kính bên sông Hoài Phố cổ Hội An, nằm bên ...",
+    "position": 5
+   },
+   {
+    "title": "Um nó - Safí",
+    "link": "https://www.tiktok.com/@originalsafii/video/7685087605154745608",
+    "snippet": "Hoi An Memories Resort & Spa nằm giữa khung cảnh sông Hoài thơ mộng, tạo nên một góc Hội An mang phong vị Faifo thanh lịch. Khu nghỉ dưỡng được ...",
+    "position": 6
+   },
+   {
+    "title": "A day at Nostalgic Lagos. 🇳🇬🤍 | lagos nigeria",
+    "link": "https://www.tiktok.com/@iam_adeola18/video/7691797630275292437",
+    "snippet": "Hoi An Memories Resort & Spa nằm giữa khung cảnh sông Hoài thơ mộng, tạo nên một góc Hội An mang phong vị Faifo thanh lịch. Khu nghỉ dưỡng được ...",
+    "position": 7
+   },
+   {
+    "title": "La Charm Hotel and Spa in Hoi An: A Must-Stay Experience",
+    "link": "https://www.tiktok.com/@thatstezza/video/7297522261395852545",
+    "snippet": "... La Charm Hoi An Hotel and Spa trong mùa lễ hội này! ✨ Đến từ khắp nơi trên thế giới, mỗi khách hàng không chỉ là du khách, mà còn là ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

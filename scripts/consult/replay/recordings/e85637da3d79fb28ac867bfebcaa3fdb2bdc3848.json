@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Radisson\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:18:02.067Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Radisson\" Đà Nẵng, khách sạn yên tĩnh khoảng 1 triệu đồng/đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Các khách sạn ở gần Bãi tắm Phạm Văn Đồng, Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-bi-tm-phm-vn-ng/hotels-c1356m52249243/",
+    "snippet": "Phước Mỹ, Đà Nẵng | Cách Bãi tắm Phạm Văn Đồng 0.24KM. 9,2/10. Tuyệt Vời 291 đánh giá. Tọa lạc tại trung tâm Đà Nẵng, Khách sạn Radisson Đà Nẵng chỉ cách Bãi ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn The Yacht by DC",
+    "link": "https://vn.trip.com/hotels/halong-bay-hotel-detail-106096189/the-yacht-hotel-by-dc/review.html",
+    "snippet": "... khách cọc lại 1triệu khi đã thanh toán tiền phòng trước khi lưu trú. 1 ... khách du lịch, đánh giá khách sạn Radisson Blu Sao Paulo. Đề xuất cho bạn.",
+    "position": 2
+   },
+   {
+    "title": "Các đánh giá Wyndham Garden Grandworld Phú Quốc",
+    "link": "https://vn.trip.com/hotels/phu-quoc-island-hotel-detail-82246458/wyndham-garden-grandworld-phu-quoc/review.html",
+    "snippet": "Với giá hơn 70.000 won (khoảng 1,3 triệu VNĐ) mà tình trạng phòng thì khó tin. ... khách sạn Radisson Blu Elizabete Hotel, RigaĐánh giá Centara Ao Nang Beach ...",
+    "position": 3
+   },
+   {
+    "title": "Top 10 khách sạn tại Tô Châu, Trung Quốc",
+    "link": "https://vn.trip.com/hotels/suzhou-hotels-list-14/",
+    "snippet": "... động hòa quyện cùng sự tiện lợi tối đa cho mọi chuyến đi. Tuyến tàu ... Khách Sạn Radisson Ở Gurgaon · Khách Sạn Radisson Ở Cannes · Khách Sạn Fairfield ...",
+    "position": 4
+   },
+   {
+    "title": "Top khách sạn tốt nhất tại Tà Nung, Việt Nam",
+    "link": "https://vn.trip.com/hotels/ta-nung-hotels-list-456143/",
+    "snippet": "Soluna Dalat Hotel. So 14A duong Dong Da, Phuong Xuan Huong - Da Lat, Tinh Lam Dong, Viet Nam, Xuân Hương - Đà Lạt, Đà Lạt ... Khách Sạn Radisson Ở ...",
+    "position": 5
+   },
+   {
+    "title": "Top 10 khách sạn tại Hà Nội, Việt Nam",
+    "link": "https://vn.trip.com/hotels/hanoi-hotels-list-286/",
+    "snippet": "Vì ở xa các điểm tham quan nên chỗ ở khá yên tĩnh và không đông đúc.\" ... Khách Sạn Radisson Ở Belgrade · Các khách sạn ở Yên Mô. Tuyên Bố Miễn Trừ Trách ...",
+    "position": 6
+   }
+  ],
+  "credits": 1
+ }
+}

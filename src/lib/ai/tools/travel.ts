@@ -1,4 +1,5 @@
 import { getCache, setCache, serperSearch, webSearch, fetchPlacePhotosByName } from './common'
+import { withRetrievedAt } from './retrievalClock'
 import { normalizeVN } from '@/lib/ai/intent'
 import { cityInText, haversineKm } from './vietnamCities'
 import { LUXURY_KEYWORDS } from '@/lib/ai/budget'
@@ -104,7 +105,7 @@ export async function getFlightPrices(origin: string, destination: string, lang 
 }
 
 // ===== HOTEL PRICES: web search (Booking.com/Agoda snippets) + OSM hotel list (free, no API key) =====
-export async function getHotelPrices(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
+async function getHotelPricesImpl(location: string, checkIn?: string, checkOut?: string, maxBudgetVnd?: number, lang = 'vi') {
   const cacheKey = hotelsCacheKey(location, checkIn, checkOut, maxBudgetVnd, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -341,7 +342,7 @@ const RIDE_HAILING_APPS = [
 ]
 
 // mode: 'taxi' = uoc tinh gia trong thanh pho/quang duong ngan; khac (hoac khong co) = xe khach/tau lien tinh
-export async function getTransportOptions(origin: string, destination: string, mode?: string, lang = 'vi') {
+async function getTransportOptionsImpl(origin: string, destination: string, mode?: string, lang = 'vi') {
   const cacheKey = transportCacheKey(origin, destination, mode, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -431,3 +432,9 @@ export function routeInText(text: string): { origin: string; destination: string
   const codes = hits.sort((a, b) => a.at - b.at).map(h => h.code).filter((c, i, all) => all.indexOf(c) === i)
   return codes.length >= 2 ? { origin: codes[0], destination: codes[1] } : null
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getHotelPrices(...args: Parameters<typeof getHotelPricesImpl>): ReturnType<typeof getHotelPricesImpl> { return withRetrievedAt(() => getHotelPricesImpl(...args)) }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function getTransportOptions(...args: Parameters<typeof getTransportOptionsImpl>): ReturnType<typeof getTransportOptionsImpl> { return withRetrievedAt(() => getTransportOptionsImpl(...args)) }

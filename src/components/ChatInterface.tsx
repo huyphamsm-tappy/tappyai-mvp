@@ -87,6 +87,7 @@ import { withCompactedHistory } from '@/lib/chat/requestHistory'
 import { withCutWatch } from '@/lib/chat/streamCut'
 import { stripRemainingFooter } from '@/lib/chat/footerLine'
 import { useChatSessionId } from '@/lib/chat/useChatSessionId'
+import { useFinishReveal } from '@/lib/chat/useFinishReveal'
 import MessageBoundary, { Deferred } from '@/components/chat/MessageBoundary'
 import { useStickToBottom } from '@/components/chat/useStickToBottom'
 import { balanceBoldPerLine } from '@/lib/chat/markdownNormalize'
@@ -118,7 +119,7 @@ const QUICK_PROMPTS: Record<string, string[]> = {
   entertainment: ['Rạp chiếu phim IMAX?', 'Quán karaoke bao phòng?', 'Bar rooftop view đẹp?'],
   travel: ['Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Lịch trình Phú Quốc 4 ngày 2 người budget 8 triệu', 'Lịch trình Hội An 2 ngày cuối tuần budget 3 triệu'],
   spa: ['Spa massage giá bình dân?', 'Nail salon gel tốt?', 'Trung tâm dưỡng da uy tín?'],
-  general: ['🌙 Tối nay mình muốn spa + ăn tối ngon, 2 người budget 800k', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu', 'Ăn gì ngon hôm nay gần đây?'],
+  general: ['Mình đang phân vân giữa hai lời mời làm việc, giúp mình cân nhắc nhé', 'Giải thích giúp mình lãi kép là gì, cho ví dụ dễ hiểu', 'Lịch trình Đà Nẵng 3 ngày 2 người budget 5 triệu'],
 }
 
 // English mirror of QUICK_PROMPTS — picked by the active locale. Vietnamese
@@ -129,7 +130,7 @@ const QUICK_PROMPTS_EN: Record<string, string[]> = {
   entertainment: ['IMAX movie theaters?', 'Karaoke places with private rooms?', 'Rooftop bars with a great view?'],
   travel: ['Đà Nẵng itinerary, 3 days, 2 people, 5M budget', 'Phú Quốc itinerary, 4 days, 2 people, 8M budget', 'Hội An weekend itinerary, 2 days, 3M budget'],
   spa: ['Affordable massage spas?', 'Good gel nail salons?', 'Trusted skincare centers?'],
-  general: ['🌙 Tonight: a nice spa + dinner for 2, budget 800k', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget', "What's good to eat nearby today?"],
+  general: ["I'm torn between two job offers — help me weigh them", 'Explain compound interest with an easy example', 'Đà Nẵng itinerary, 3 days, 2 people, 5M budget'],
 }
 
 type CTAButton = import('@/lib/structuredContent/parseCta').CTAButton
@@ -559,7 +560,56 @@ function linkChip(url: string, label: string): string {
   return `<a href="${sameSiteClickHref(url)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center align-middle mx-0.5 my-0.5 px-2.5 py-0.5 rounded-full border border-primary-500/40 bg-primary-500/10 text-primary-600 dark:text-primary-300 text-[13px] font-medium no-underline hover:bg-primary-500/20 max-w-full truncate">${label}</a>`
 }
 
+// ── POST-UAT B1 (UAT-01 raw ``` fences, UAT-08 raw table pipes, 2026-10-09): code blocks, inline code and GFM tables ──────────
+// Code is lifted out FIRST (before bold balancing, link chips, images) into private-use placeholders and put back LAST, escaped:
+// nothing inside a code block is ever turned into a link, bold or an image, and no raw HTML from the model is ever interpreted.
+// A fence still open at the end of the text (mid-stream) renders as code until it closes — never as a stray "```".
+const CODE_MARK = (n: number) => `${n}`
+const CODE_MARK_RE = /(\d+)/g
+function liftCode(content: string): { text: string; blocks: string[] } {
+  const blocks: string[] = []
+  const put = (html: string) => { blocks.push(html); return CODE_MARK(blocks.length - 1) }
+  let text = content.replace(/(^|\n)[ \t]*```[ \t]*([\w#+.-]{0,20})[^\n]*\n([\s\S]*?)(?:\n[ \t]*```[ \t]*(?=\n|$)|$(?![\s\S]))/g, (_m, pre: string, lang: string, body: string) => {
+    const label = lang ? `<div class="text-[11px] uppercase tracking-wide text-gray-400 dark:text-gray-500 px-3 pt-2">${escapeHtml(lang)}</div>` : ''
+    return `${pre}${put(`<div class="my-2 rounded-xl bg-gray-100 dark:bg-gray-800/80 border border-gray-200 dark:border-gray-700 overflow-hidden" data-md="code">${label}<pre class="m-0 px-3 py-2 overflow-x-auto text-[13px] leading-relaxed whitespace-pre"><code${lang ? ` data-lang="${escapeHtml(lang)}"` : ''}>${escapeHtml(body.replace(/\n$/, ''))}</code></pre></div>`)}`
+  })
+  // inline `code` (single backticks, one line)
+  text = text.replace(/`([^`\n]{1,200})`/g, (_m, c: string) => put(`<code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-[0.92em]">${escapeHtml(c)}</code>`))
+  return { text, blocks }
+}
+const TABLE_SEP = /^\s*\|?\s*:?-{2,}:?\s*(?:\|\s*:?-{2,}:?\s*)+\|?\s*$/
+const cellsOf = (row: string) => row.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim())
+/** GFM tables → a scrollable <table> on ONE line (the message body is pre-wrap: newlines inside the markup would render). */
+function renderTables(escaped: string): string {
+  const lines = escaped.split('\n')
+  const out: string[] = []
+  for (let i = 0; i < lines.length; i++) {
+    if (i + 1 < lines.length && /\|/.test(lines[i]) && TABLE_SEP.test(lines[i + 1])) {
+      const head = cellsOf(lines[i])
+      const align = cellsOf(lines[i + 1]).map(c => /^:-+:$/.test(c) ? 'center' : /-:$/.test(c) ? 'right' : 'left')
+      const rows: string[][] = []
+      let j = i + 2
+      while (j < lines.length && /\|/.test(lines[j]) && lines[j].trim()) { rows.push(cellsOf(lines[j])); j++ }
+      const td = (c: string, k: number, tag: 'th' | 'td') => `<${tag} class="px-3 py-1.5 border-b border-gray-200 dark:border-gray-700${tag === 'th' ? ' font-semibold bg-gray-50 dark:bg-gray-800/60' : ''}" style="text-align:${align[k] ?? 'left'}">${c}</${tag}>`
+      out.push(`<div class="my-2 overflow-x-auto max-w-full" data-md="table"><table class="text-[13px] border-collapse min-w-full"><thead><tr>${head.map((c, k) => td(c, k, 'th')).join('')}</tr></thead><tbody>${rows.map(r => `<tr>${head.map((_, k) => td(r[k] ?? '', k, 'td')).join('')}</tr>`).join('')}</tbody></table></div>`)
+      i = j - 1
+      continue
+    }
+    out.push(lines[i])
+  }
+  return out.join('\n')
+}
+
 export function formatMessage(content: string) {
+  const lifted = liftCode(content)
+  return formatMessageBody(lifted.text)
+    .replace(CODE_MARK_RE, (_m, n: string) => lifted.blocks[Number(n)] ?? '')
+    // The body is pre-wrap: a newline next to a BLOCK (code / table) would paint an empty line above and below it.
+    .replace(/\n+(<div class="my-2[^"]*"[^>]*data-md="(?:code|table)")/g, '$1')
+    .replace(/(<\/(?:pre|table)><\/div>)\n+/g, '$1')
+}
+
+function formatMessageBody(content: string) {
   // Images first — render before link processing to avoid conflicts. Group any run of
   // consecutive image lines (a place's photo gallery) into one horizontally-scrollable
   // strip instead of stacking them vertically, so 3 photos swipe left/right like a carousel.
@@ -577,7 +627,7 @@ export function formatMessage(content: string) {
     .replace(/(^|[^!])\[([^\]\n]*)\]\((https?:\/\/[^\s)]+)\)/g, (m, pre: string, label: string, url: string) => isImageUrl(url) ? `${pre}![${label}](${url})` : m)
     // A bare image URL on its own is a photo too.
     .replace(/(^|\s)(https?:\/\/[^\s<)\]]+)/g, (m, pre: string, url: string) => isImageUrl(url) ? `${pre}![](${url})` : m)
-  const withImages = escapeHtml(normalized).replace(
+  const withImages = renderTables(escapeHtml(normalized)).replace(
     /(?:!\[[^\]]*\]\(https?:\/\/[^\s)]+\)[ \t]*\n?)+/g,
     (block) => {
       const imgs = [...block.matchAll(/!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g)]
@@ -898,6 +948,8 @@ export default function ChatInterface({
   // can name the result they act on.
   const pendingResultIdRef = useRef<string | null>(null)
   const resultIdsRef = useRef<Map<string, string>>(new Map())
+  // CONSULTATIVE_IN_AGENT: the server asked (x-tappy-reveal) for the settled reply to be revealed progressively — display only (lib/chat/useFinishReveal).
+  const [revealMode, setRevealMode] = useState(false)
   const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, append, reload, stop, error, setMessages } = useChat({
     api: '/api/chat',
     /**
@@ -925,6 +977,7 @@ export default function ChatInterface({
       ...(initialContext ? { context: initialContext } : {}),
     },
     onResponse: (response) => {
+      setRevealMode(response.headers.get('x-tappy-reveal') === '1')
       // Latest key wins — see the note on setEvidenceKey.
       const eid = response.headers.get('X-Decision-Evidence-Id')
       if (eid) setEvidenceKey(eid)
@@ -1035,6 +1088,7 @@ export default function ChatInterface({
     ? parsePlacesMarker(parseShoppingMarker(parseFollowups(parseCTA(parsePlan(lastMsg.content).text).text).text).text).text
     : ''
   const smoothedLastText = useSmoothText(lastAssistantRaw, isLoading && lastMsg?.role === 'assistant')
+  const finishReveal = useFinishReveal(lastAssistantRaw, isLoading, revealMode, markdownSafeRevealEnd)
 
   // Cancel a queued voice auto-send (grace window): used when the user edits the
   // text, taps "sửa", starts a new dictation, sends manually, or unmounts.
@@ -1213,7 +1267,8 @@ export default function ChatInterface({
   const handleNearbySearch = useCallback(() => {
     const send = () => {
       posthog.capture('nearby_search_clicked')
-      append({ role: 'user', content: 'Gợi ý quán ăn và địa điểm vui chơi gần mình nhé' })
+      // The "📍 Nearby" chip is a place-search TOOL button — what it asks for is the place search, not a statement of Tappy's scope.
+      append({ role: 'user', content: 'Gợi ý vài địa điểm hay ở gần mình nhé' })
     }
 
     if (userLocation) { send(); return }
@@ -1644,7 +1699,8 @@ export default function ChatInterface({
                 // the marker from what's shown; when this is a shopping decision,
                 // also strip the injected product-image flood (keeping the first as
                 // the hero) so the decision replaces the raw grid.
-                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text : text
+                const rawBody = isLoading && isLastMessage ? parsePlacesMarker(parseShoppingMarker(smoothedLastText).text).text
+                  : isLastMessage && finishReveal.revealing ? parsePlacesMarker(parseShoppingMarker(finishReveal.text).text).text : text
                 const { text: bodyTextRaw, firstImage: heroImage } = shopView
                   ? stripProductImages(rawBody)
                   : { text: rawBody, firstImage: null }
@@ -1992,6 +2048,23 @@ export default function ChatInterface({
         )}
         {/* Action chips */}
         <div className="max-w-container-content mx-auto w-full flex gap-2 mb-2 overflow-x-auto scrollbar-none">
+          {/* Not a scope: Tappy answers any topic. These two lead the bar so the place/trip tools below are not the whole story. */}
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'advice_chip' }); setInput(t('chat.chipAdvicePrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 border border-purple-200 dark:border-purple-800 hover:bg-purple-100 dark:hover:bg-purple-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipAdvice')}
+          </button>
+          <button
+            type="button"
+            disabled={isLoading}
+            onClick={() => { posthog.capture('chat_message_sent', { input_method: 'explain_chip' }); setInput(t('chat.chipExplainPrefill')) }}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-all disabled:opacity-40"
+          >
+            {t('chat.chipExplain')}
+          </button>
           <button
             type="button"
             onClick={handleNearbySearch}

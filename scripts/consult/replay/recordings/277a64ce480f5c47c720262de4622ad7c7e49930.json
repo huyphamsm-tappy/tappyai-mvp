@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 16 Pro 256GB chính hãng Thế Giới Di Động CellphoneS FPT Shop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:43:58.935Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB chính hãng Thế Giới Di Động CellphoneS FPT Shop (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "Hệ điều hành khi ra mắt. iOS 18. Chipset. Apple A18 Pro. Bộ nhớ trong. 256 GB. Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện.",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "snippet": "Máy mới 100% , chính hãng Apple Việt Nam. · 1 ĐỔI 1 trong 30 ngày nếu có lỗi phần cứng nhà sản xuất. · iPhone sử dụng iOS 18, Cáp Sạc USB‑C (1m), Tài liệu · Giá ...",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "snippet": "Hệ điều hành khi ra mắt. iOS 18. Chipset. Apple A18 Pro. Dung lượng RAM. 8 GB. Bộ nhớ trong. 256 GB. Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi ...",
+    "rating": 4.9,
+    "ratingCount": 368,
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 series giá tốt, trả góp 0% 12 tháng T10/2026",
+    "link": "https://cellphones.com.vn/mobile/apple/iphone-16.html",
+    "snippet": "Bảng giá iPhone 16 Pro Max: Phiên bản 256GB: khoảng 29.900.000 - 34.990.000 VNĐ. Phiên bản 512GB: khoảng 35.400.000 - 40.990.000 VNĐ. Phiên bản 1TB: khoảng ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max256gb-cu-dep.html",
+    "snippet": "Đặc điểm nổi bật · Màn hình Super Retina XDR 6,9 inch lớn hơn có viền mỏng hơn, đem đến cảm giác tuyệt vời khi cầm trên tay. · Điều khiển Camera - Chỉ cần trượt ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "snippet": "Hệ điều hành khi ra mắt. iOS 18. Chipset. Apple A18. Bộ nhớ trong. 256 GB. Loại CPU. CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi tiết kiệm điện.",
+    "rating": 4.9,
+    "ratingCount": 17,
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "snippet": "Camera trước. 12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels ; Hỗ trợ mạng. 5G ; Thẻ SIM. Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim ; Công nghệ NFC. Có.",
+    "rating": 4.9,
+    "ratingCount": 41,
+    "position": 7
+   },
+   {
+    "title": "iPhone 17 Pro Max 256GB | Chính hãng",
+    "link": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "snippet": "iPhone 17 Pro Max 256GB | Chính hãng ; Giá sản phẩm. 37.990.000đ 34.990.000đ ; Lưu ý · Giá thu mua áp dụng cho dung lượng pin >= 90% & số lần sạc ít hơn 400 lần ( ...",
+    "rating": 5,
+    "ratingCount": 41,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

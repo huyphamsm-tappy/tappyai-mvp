@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:13:57.115Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro M4 16GB RAM giá Việt Nam TP.HCM (site:shopee.vn OR site:tiki.vn OR site:lazada.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "25.9 Lương Về Sale To | Freeship 0Đ",
+    "link": "https://shopee.vn/m/25-luong-ve-sale-to",
+    "snippet": "Tưng bừng Shopee 25.9 lương về sale to. ShopeeVIP Triệu Phú Voucher - Giảm đến 50% mỗi ngày. SPayLater - Mua trước, trả sau 0% đến 6 kỳ. Shopee ngay!",
+    "position": 1
+   },
+   {
+    "title": "Shopee Tech Zone | Khuyến Mãi Đồ Điện Tử",
+    "link": "https://shopee.vn/m/shopee-tech-zone",
+    "snippet": "Máy tính xách tay Apple MacBook Air 13.6 inch, M5, 16GB ram, 10. custom ... Pro M4 11 inch | iPad Pro M4 13 inch. 8.690.000₫ · Tay đỡ Micro Maono BA20 Boom ...",
+    "position": 2
+   },
+   {
+    "title": "boox palma giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=boox%20palma",
+    "snippet": "8.800.000 · 8.803.000₫. -1% ; 10.790.000 · 12.790.000₫. -16% ; 1.565.000 ; 7.788.000 · 10.850.000₫. -28%. voucher-icon ; 8.390.000 · 9.000.000₫. -7%.",
+    "position": 3
+   },
+   {
+    "title": "Đón Chờ Siêu Sale 10.10 | Siêu Sale Thương Hiệu",
+    "link": "https://shopee.vn/m/1010",
+    "snippet": "Tưng bừng Shopee sale 10.10 ưu đãi cực chất. Voucher Xtra giảm đến 10 triệu đồng. Shopee chính hãng giảm đến 50%. Ưu đãi freeship 0Đ. Tham gia ngay!",
+    "position": 4
+   },
+   {
+    "title": "9.9 Ngày Hội Voucher | Ngày Siêu Mua Sắm",
+    "link": "https://shopee.vn/m/ngay-hoi-voucher",
+    "snippet": "Hàng ngàn hot deals và siêu voucher ngập tràn, giảm giá sốc, săn sale Shopee 9.9 ngay hôm nay! Siêu Hội Trăng Rằm - Trung Thu Tặng Voucher Giảm Đến 999.000Đ.",
+    "position": 5
+   },
+   {
+    "title": "Laptop pocket mini - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/laptop/pocket/mini",
+    "snippet": "[Bỏ túi] Laptop Pocket Onemix GPD bỏ túi mini 8 inch ram 8/16GB màn hình 2K cảm ứng 360 độ cực kỳ nhỏ gọn Like new. 9.470.000₫. rating-star 4.8.",
+    "position": 6
+   },
+   {
+    "title": "15.9 Sale Giữa Tháng | Siêu Rẻ - Chỉ Từ 1.000Đ",
+    "link": "https://shopee.vn/m/sale-giua-thang?uls_trackid=568pj3a300mb&utm_content=4BiSsj6nciCEjVhDuZjtBSjQjFef",
+    "snippet": "Tưng bừng Shopee 15.9 sale giữa tháng. Siêu rẻ - Chỉ từ 1.000Đ. ShopeeVIP Triệu Phú Voucher - Giảm đến 50% mỗi ngày. Freeship 0Đ. Shopee ngay!",
+    "position": 7
+   },
+   {
+    "title": "15.9 Sale Giữa Tháng | Siêu Rẻ - Chỉ Từ 1.000Đ",
+    "link": "https://shopee.vn/m/sale-giua-thang",
+    "snippet": "Tưng bừng Shopee 15.9 sale giữa tháng. Siêu rẻ - Chỉ từ 1.000Đ. ShopeeVIP Triệu Phú Voucher - Giảm đến 50% mỗi ngày. Freeship 0Đ. Shopee ngay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

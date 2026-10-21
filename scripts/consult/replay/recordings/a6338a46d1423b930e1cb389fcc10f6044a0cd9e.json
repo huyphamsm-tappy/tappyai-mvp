@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "2026 lệ phí cấp hộ chiếu phổ thông cấp mới 400000 cấp lại mất hỏng trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:02:34.708Z",
+ "body": {
+  "searchParameters": {
+   "q": "2026 lệ phí cấp hộ chiếu phổ thông cấp mới 400000 cấp lại mất hỏng trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chip điện tử và hộ chiếu không gắn chip điện tử). a. Cấp mới. 200.000. b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 2
+   },
+   {
+    "title": "Từ ngày 1/1/2026, người làm hộ chiếu qua hình thức trực ...",
+    "link": "https://www.facebook.com/tongdai1022/posts/t%E1%BB%AB-ng%C3%A0y-112026-ng%C6%B0%E1%BB%9Di-l%C3%A0m-h%E1%BB%99-chi%E1%BA%BFu-qua-h%C3%ACnh-th%E1%BB%A9c-tr%E1%BB%B1c-tuy%E1%BA%BFn-kh%C3%B4ng-%C4%91%C6%B0%E1%BB%A3c-gi%E1%BA%A3m-10-l%E1%BB%87/1162609196053572/",
+    "snippet": "THÔNG BÁO TĂNG PHÍ HỘ CHIẾU TỪ 1/1/2026 Từ ngày 1/1/2026, người dân làm hộ chiếu online không còn được giảm 10% lệ phí và sẽ áp dụng mức thu ...",
+    "position": 3
+   },
+   {
+    "title": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU ...",
+    "link": "https://www.facebook.com/xnctthue/posts/-mi%E1%BB%85n-100-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-khi-%C4%91%C3%A1p-%E1%BB%A9ng-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-tr%C3%AAn-vneidth%E1%BB%B1c-hi%E1%BB%87n-ngh%E1%BB%8B-/1494413036056480/",
+    "snippet": "MIỄN 100% LỆ PHÍ CẤP HỘ CHIẾU KHI ĐÁP ỨNG ĐỦ ĐIỀU KIỆN TRÊN VNeID Thực hiện Nghị quyết số 66.22/2026/NQ-CP ngày 09/7/2026 của Chính phủ về ...",
+    "position": 4
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "- Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân sự: 100.000 đồng/lần cấp. Lưu ý, các trường hợp được ...",
+    "date": "29 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với trường ...",
+    "position": 6
+   },
+   {
+    "title": "biểu mức thu phí, lệ phí cấp hộ chiếu đối với công dân ...",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncnn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Farticle-xncnn%2Flp-xncnn%2Fbmtp",
+    "snippet": "1. Lệ phí cấp hộ chiếu ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia hạn hộ chiếu. 100.000 ; d. Cấp giấy xác nhân yếu tố nhân sự.",
+    "position": 7
+   },
+   {
+    "title": "Tất tần tật thông tin làm hộ chiếu tại Hồ Chí Minh 2026 - Visana",
+    "link": "https://visana.vn/lam-ho-chieu-ho-chi-minh/",
+    "snippet": "Hạng mục, Lệ phí (VNĐ) ; Làm hộ chiếu mới, 100.000 ; Làm lại hộ chiếu do bị hỏng hoặc bị mất, 200.000 ; Làm lại hộ chiếu do hết hạn hoặc hết trang ...",
+    "date": "2 thg 7, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

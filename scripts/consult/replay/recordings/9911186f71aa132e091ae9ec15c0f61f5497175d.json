@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 cũ pin tốt dưới 12 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:09:01.562Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 cũ pin tốt dưới 12 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 1
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Dòng máy này thường đi kèm màn hình Retina sắc nét, hiệu năng mạnh mẽ với bộ vi xử lý Intel Core i5/i7, RAM 8GB và ổ SSD dù không thể nâng cấp nhưng bạn có thể ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook Air cũ giá rẻ | Trả góp 0%, 0Đ trả trước, phụ phí",
+    "link": "https://cellphones.com.vn/hang-cu/mac/macbook-air.html",
+    "snippet": "Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành · 16.790.000đ. 22.990.000đ. Giảm 27% ; MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB - Cũ Đẹp · 26.990.",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-dep.html",
+    "snippet": "Màn hình Retina 13.3 inch hiển thị hình ảnh sắc nét, màu sắc chân thực. 256GB ổ SSD cho khả năng lưu trữ linh hoạt, khởi động nhanh.",
+    "rating": 4.8,
+    "ratingCount": 5,
+    "position": 5
+   },
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) | Giá rẻ, giảm sốc 2024",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1.html",
+    "snippet": "Mua Macbook Air M1 (8GB/256GB) năm 2020 chính hãng - Giá rẻ, thu cũ đổi mới, bảo hành 12 tháng, trả góp 0%. Mua ngay Mac Air M1 tại đây.",
+    "rating": 4.9,
+    "ratingCount": 64,
+    "position": 6
+   },
+   {
+    "title": "Chỉ còn 19 triệu, chiếc MacBook 3 năm tuổi này vẫn quá ...",
+    "link": "https://cellphones.com.vn/sforum/chi-con-19-trieu-macbook-air-m1-2020-van-qua-hap-dan-trong-nam-2023",
+    "snippet": "Với mức giá chỉ khoảng 19 triệu đồng, MacBook Air M1 2020 chắc chắn là một chiếc laptop văn phòng tuyệt vời với hiệu năng mạnh mẽ, thời lượng ...",
+    "date": "30 thg 3, 2023",
+    "position": 7
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Tư vấn chọn MacBook phù hợp cho sinh viên theo từng phân khúc giá và nhu cầu. Gợi ý 5 mẫu MacBook đáng mua nhất năm 2025.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

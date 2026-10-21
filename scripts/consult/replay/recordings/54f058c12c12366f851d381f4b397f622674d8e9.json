@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ chống nước IPX4 dưới 3 triệu Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:36.607Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ chống nước IPX4 dưới 3 triệu Việt Nam (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe bluetooth chống ồn K68 chính hãng, kháng nước ...",
+    "link": "https://shopee.vn/Tai-nghe-bluetooth-ch%E1%BB%91ng-%E1%BB%93n-K68-ch%C3%ADnh-h%C3%A3ng-kh%C3%A1ng-n%C6%B0%E1%BB%9Bc-IPX4-bluetooth-v5.1-pin-6h-ch%E1%BB%91ng-%E1%BB%93n-ch%E1%BB%A7-%C4%91%E1%BB%99ng-ANC-bass-hay-i.546142695.20660366950",
+    "snippet": "Tai nghe bluetooth chống ồn K68 chính hãng, kháng nước IPX4 bluetooth v5.1, pin 6h, chống ồn chủ động ANC, bass hay. outline grey truck icon. Không hỗ trợ.",
+    "rating": 5,
+    "ratingCount": 13,
+    "position": 1
+   },
+   {
+    "title": "MINISO MS181 AI Dịch Tai Nghe Bluetooth v5.4 Chống ...",
+    "link": "https://shopee.vn/MINISO-MS181-AI-D%E1%BB%8Bch-Tai-Nghe-Bluetooth-v5.4-Ch%E1%BB%91ng-N%C6%B0%E1%BB%9Bc-Ipx4-Tai-Nghe-Treo-Tai-Nghe-HD-G%E1%BB%8Di-Th%C3%B4ng-Minh-anc-Kh%E1%BB%AD-Ti%E1%BA%BFng-%E1%BB%92n-Tu%E1%BB%95i-Th%E1%BB%8D-Pin-D%C3%A0i-i.1058886837.44218214717",
+    "snippet": "MINISO MS181 AI Dịch Tai Nghe Bluetooth v5.4 Chống Nước Ipx4 Tai Nghe Treo Tai Nghe HD Gọi Thông Minh anc Khử Tiếng Ồn Tuổi Thọ Pin Dài.",
+    "rating": 5,
+    "ratingCount": 10,
+    "position": 2
+   },
+   {
+    "title": "tai nghe funcl giá tốt Tháng 9, 2026 Tai nghe nhét tai",
+    "link": "https://shopee.vn/search?category=11036132&keyword=tai%20nghe%20funcl&page=0&sortBy=relevancy&subcategory=11036143",
+    "snippet": "flag-label Tai Nghe Bluetooth JBL Tune 230NC TWS - Pin 40 Giờ- Kháng Nước IPX4- Bluetooth 5.2-Chống Ồn ANC. BH 2 Năm. 298.000₫. 450.000₫. -34%. voucher-icon.",
+    "position": 3
+   },
+   {
+    "title": "tai nghe airpod 4 anc chống ồn, chip H2, không dây | Apple",
+    "link": "https://shopee.vn/list/tai%20nghe/airpod/4%20anc",
+    "snippet": "Thời lượng pin cung cấp lên đến 4 giờ nghe nhạc liên tục khi bật ANC và đạt tổng thời gian sử dụng lên đến 20 giờ khi kết hợp với hộp sạc trong cùng điều kiện.",
+    "position": 4
+   },
+   {
+    "title": "tai nghe nothing - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe/nothing",
+    "snippet": "Tai nghe Bluetooth CMF by Nothing Buds Pro 2, chống ồn chủ động, 6 micro, LDAC, pin lên đến 43h, tíc hợp ChatGPT. 2.147.750₫. 2.500.000₫.",
+    "position": 5
+   },
+   {
+    "title": "anc - Giá Tốt, Sale Tháng 08, Freeship 0Đ",
+    "link": "https://shopee.vn/list/anc",
+    "snippet": "Tai nghe Bluetooth chụp tai SKULLCANDY CRUSHER ANC 2 - BH 1 NĂM| Chống ồn ... Nước IPX4- Bluetooth 5.2-Chống Ồn ANC. BH 2 Năm308.000₫. Mua online các sản ...",
+    "position": 6
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 7
+   },
+   {
+    "title": "tai nghe bluetooth - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/tai%20nghe%20bluetooth",
+    "snippet": "JBL Signature Sound, chống ồn đa cấp độ, 6 micro đàm thoại. Âm bass uy lực, phù hợp với các dòng nhạc sôi động. Các loại tai nghe thay thế bạn có thể cân nhắc.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

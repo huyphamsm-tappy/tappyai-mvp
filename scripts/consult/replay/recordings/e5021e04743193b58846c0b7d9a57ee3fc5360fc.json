@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Thông tư 63/2023/TT-BTC\" hộ chiếu lệ phí 160.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:47:55.658Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Thông tư 63/2023/TT-BTC\" hộ chiếu lệ phí 160.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quy định về phí, lệ phí nhằm khuyến khích sử dụng dịch vụ công ...",
+    "link": "https://baocantho.com.vn/quy-dinh-ve-phi-le-phi-nham-khuyen-khich-su-dung-dich-vu-cong-truc-tuyen-a165673.html",
+    "snippet": "Bên cạnh đó, Thông tư 63/2023/TT-BTC cũng quy định giảm lệ phí cấp hộ chiếu khi nộp hồ sơ qua Cổng dịch vụ công trực tuyến, kể từ ngày 1-12-2023 đến hết ngày 31 ...",
+    "position": 1
+   },
+   {
+    "title": "Lệ phí làm hộ chiếu là bao nhiêu? [Cập nhật mới nhất]",
+    "link": "https://luatvietnam.vn/thue-phi-le-phi/le-phi-lam-ho-chieu-565-24841-article.html",
+    "snippet": "hộ chiếu · Phí-Lệ phí. Văn bản liên quan. Thông tư 63/2023/TT-BTC sửa đổi một số Thông tư về phí, lệ phí · Thông tư 25/2021/TT-BTC về lệ phí ...",
+    "date": "18 thg 5, 2024",
+    "position": 2
+   },
+   {
+    "title": "Từ 1/1/2026, lệ phí làm hộ chiếu tăng? 😱😱😱",
+    "link": "https://www.facebook.com/24hvisavn/posts/t%E1%BB%AB-112026-l%E1%BB%87-ph%C3%AD-l%C3%A0m-h%E1%BB%99-chi%E1%BA%BFu-t%C4%83ng/727108633767884/",
+    "snippet": "Theo Thông tư 63/2023/TT-BTC, từ ngày 1/1/2026 lệ phí làm hộ chiếu online sẽ có sự thay đổi. Hết hạn giảm lệ phí: Mức giảm 10% lệ phí làm hộ ...",
+    "position": 3
+   },
+   {
+    "title": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/tu-van-phap-luat/97284/muc-le-phi-lam-ho-chieu-nam-2025-va-nam-2026",
+    "snippet": "Mức lệ phí làm hộ chiếu năm 2025 và năm 2026 được quy định tại Thông tư 25/2021/TT-BTC (được sửa đổi bổ sung tại Thông tư 63/2023/TT-BTC và ...",
+    "date": "28 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "Từ 12/2023, giảm lệ phí khi làm bằng lái xe, hộ chiếu online",
+    "link": "https://www.vietnam.vn/tu-12-2023-giam-le-phi-khi-lam-bang-lai-xe-ho-chieu-online",
+    "snippet": "Ngày 16/10, Bộ Tài chính đã ban hành Thông tư 63/2023/TT-BTC sửa đổi, bổ sung một số điều của các Thông tư quy định về phí, lệ phí nhằm ...",
+    "date": "18 thg 10, 2023",
+    "position": 5
+   },
+   {
+    "title": "Năm 2024 quy định mức phí làm hộ chiếu và hộ chiếu online ...",
+    "link": "https://giadinh.suckhoedoisong.vn/nam-2024-quy-dinh-muc-phi-lam-ho-chieu-va-ho-chieu-online-thay-doi-nhu-the-nao-172240108105655241.htm",
+    "snippet": "... Thông tư 63/2023/TT-BTC của Bộ Tài Chính. Số TT. Nội dung. Mức thu. (Đồng/lần cấp). 1. Lệ phí cấp hộ chiếu (bao gồm hộ chiếu gắn chíp điện tử và ...",
+    "date": "8 thg 1, 2024",
+    "position": 6
+   },
+   {
+    "title": "Hướng dẫn thanh toán lệ phí cấp hộ chiếu online mới nhất ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/ho-tro-phap-luat/huong-dan-thanh-toan-le-phi-cap-ho-chieu-online-moi-nhat-2024-le-phi-cap-ho-chieu-2024-la-bao-nhieu-309993-141047.html",
+    "snippet": "Lệ phí cấp hộ chiếu 2024 online là bao nhiêu? Tại Điều 4 Thông tư 25/2021/TT-BTC được bổ sung bởi Điều 5 Thông tư 63/2023/TT-BTC có quy định ...",
+    "date": "25 thg 2, 2024",
+    "position": 7
+   },
+   {
+    "title": "UỶ BAN NHÂN DÂN HUYỆN DIỄN CHÂU CỘNG HÒA XÃ ...",
+    "link": "https://datafiles.nghean.gov.vn/nan-ubnd/4325/quantritintuc20246/B%E1%BB%99%20c%C3%A2u%20h%E1%BB%8Fi%20v%C3%A0%20%C4%91%E1%BB%81%20k%C3%BD%20ph%C3%A1t%20h%C3%A0nh638544058082323061638544683284263396.pdf",
+    "snippet": "Thông tư 63/2023/TT-BTC ngày 16/10/2023 của Bộ Tài chính. Câu 161: Khi thực hiện dịch vụ công trực tuyến toàn trình đổi giấy phép lái xe ...",
+    "date": "18 thg 6, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

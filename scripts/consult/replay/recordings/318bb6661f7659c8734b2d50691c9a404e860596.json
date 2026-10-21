@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple kiểm tra Mac MacBook Activation Lock Find My trước khi mua cũ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:50:40.068Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple kiểm tra Mac MacBook Activation Lock Find My trước khi mua cũ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook khóa iCloud (Activation Lock): cách xử lý đúng luật",
+    "link": "https://vnit.com.vn/bai-viet/mac-khoa-icloud-activation-lock-cach-xu-ly",
+    "snippet": "Cảnh báo khi mua MacBook cũ · Đăng xuất iCloud và tắt Find My ngay trước mặt Quý khách. · Thực hiện Erase All Content and Settings, rồi khởi động ...",
+    "date": "18 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cách Kiểm Tra iCloud iPhone Cũ Trước Khi Mua",
+    "link": "https://hoanghamobile.com/tin-tuc/cach-kiem-tra-icloud-iphone-cu/?srsltid=AU7gw4W2eJzcJOixMaqh4otBxDDGCyu2B7mhgAL8J2HigrQr4C2vUSz4",
+    "snippet": "Cách kiểm tra iCloud iPhone cũ trước khi mua để tránh dính Activation Lock: kiểm tra theo IMEI, đăng xuất iCloud. Hướng dẫn chi tiết tại Hoàng Hà Mobile.",
+    "position": 2
+   },
+   {
+    "title": "Cảnh báo anh em mua máy Mac cũ! | Viết bởi summon_rain",
+    "link": "https://tinhte.vn/thread/canh-bao-anh-em-mua-may-mac-cu.3680805/",
+    "snippet": "Cách chắc chắn 100% để kiểm tra Activation Lock - iCloud ẩn. Sau khi gọi lên Apple Support VN và chat với nhân viên của Apple, mình được ...",
+    "date": "12 thg 6, 2023",
+    "rating": 5,
+    "ratingCount": 23,
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn check iCloud MacBook bị dính không và cách ...",
+    "link": "https://cellphones.com.vn/sforum/check-icloud-macbook",
+    "snippet": "Kiểm tra thông qua iUnlocker. iUnlocker là một công cụ trực tuyến miễn phí giúp check iCloud MacBook có dính không một cách nhanh chóng và dễ dàng. iUnlocker ...",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Nếu máy Mac của bạn bị thất lạc hoặc mất cắp",
+    "link": "https://support.apple.com/vi-vn/102481",
+    "snippet": "Đăng nhập vào icloud.com/find, rồi chọn máy Mac từ menu Thiết bị. · Nhập mật mã bạn đã tạo khi khóa máy bằng tính năng Tìm trên máy Mac dùng chip Intel, không có ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook có Tìm của tôi từ chủ sở hữu trước : r/MacOS",
+    "link": "https://www.reddit.com/r/MacOS/comments/18kq6f5/macbook_has_find_my_from_a_previous_owner/?tl=vi",
+    "snippet": "Khi tôi mua MacBook đã qua sử dụng, tôi đã xóa mọi thứ bằng trình trợ lý xóa, để kiểm tra xem có Khóa kích hoạt hoặc MDM nào đang hoạt động trên ...",
+    "position": 6
+   },
+   {
+    "title": "Cách bật Find My trên iPhone cũ nhanh chóng, dễ làm",
+    "link": "https://dienthoaivui.com.vn/tin-tuc/cach-bat-find-my-iphone-tren-iphone-cu",
+    "snippet": "Cách bật Find My trên iPhone cũ là truy cập phần Tìm trong Tài khoản Apple và kích hoạt Tìm iPhone. Trước khi thực hiện, hãy đảm bảo iPhone ...",
+    "date": "6 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Các bác dùng mac cho e hỏi e mua macbook cũ lúc kiểm ...",
+    "link": "https://www.facebook.com/groups/APPLE.IOSGROUP/posts/28233202966263127/",
+    "snippet": "Nhưng khi e vào recovery thì lại hiện id chủ cũ. Mà nhắn họ thì họ đã kêu xoá rồi. Bên trong máy thì vẫn id củ mình vẫn hiện trong phần find my.",
+    "date": "8 thg 7, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

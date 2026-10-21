@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Ghé Coffee\" OR \"Bãi Gửi Xe Phố Đi Bộ\" OR \"Bãi giữ xe ô tô\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:18:40.638Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Ghé Coffee\" OR \"Bãi Gửi Xe Phố Đi Bộ\" OR \"Bãi giữ xe ô tô\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Directions to Ghé Coffee on Mạc Thị Bưởi",
+    "link": "https://www.tiktok.com/@theghecoffee/video/7633990241296125204",
+    "snippet": "Start at the main intersection on Mạc Thị Bưởi and head east. Continue down the road for about two blocks until you see Ghé Coffee on your right. The café is ...",
+    "position": 1
+   },
+   {
+    "title": "Ghé Coffee LES CHAMPS: Khám Phá Hương Vị Đặc Biệt",
+    "link": "https://www.tiktok.com/@kimnganduchoareview/video/7549175876336831762",
+    "snippet": "Ghé Coffee LES CHAMPS để trải nghiệm hương vị café độc đáo. Khám phá không. @Ngân Review Đức Hoà.",
+    "position": 2
+   },
+   {
+    "title": "Se ri món lạ lùng mới mẻ của Ghé coffee😆",
+    "link": "https://www.tiktok.com/@ghecoffee21/video/7690859974653906184",
+    "snippet": "73 Lượt thích,Video TikTok từ GHÉ coffee (@ghecoffee21): \"Se ri món lạ lùng mới mẻ của Ghé coffee \".âm thanh gốc - GHÉ coffee.",
+    "position": 3
+   },
+   {
+    "title": "#trendingcoffeeshop To start a new week",
+    "link": "https://www.tiktok.com/@theghecoffee/video/7664408205409144084",
+    "snippet": "Video TikTok từ Ghé Coffee (@theghecoffee): \"#trendingcoffeeshop To start a new week\".original sound - Ghé Coffee.",
+    "position": 4
+   },
+   {
+    "title": "Ghé Coffee: Tôn trọng khách hàng và minh bạch dịch vụ",
+    "link": "https://www.tiktok.com/@ghecoffeee/video/7675660227773517076",
+    "snippet": "#ghécoffee #174tôhiệu #trending #tiktok. Ghé Coffee: Tôn trọng khách hàng và minh bạch dịch vụ. Ghé tôn trọng và quý mến mọi khách đến quán. Mọi thông tin về ...",
+    "position": 5
+   },
+   {
+    "title": "ủng hộ bé nha",
+    "link": "https://www.tiktok.com/@ghecoffee21/video/7691669310439263496",
+    "snippet": "25 Lượt thích,Video TikTok từ GHÉ coffee (@ghecoffee21): \"ủng hộ bé nha \".âm thanh gốc - GHÉ coffee.",
+    "position": 6
+   },
+   {
+    "title": "Không gian đà lạt sương khói được tái hiện tại tỉnh Phú Y...",
+    "link": "https://www.tiktok.com/@kientruchcong.com/video/7664949735924583698",
+    "snippet": "Ghé Coffee | Không gian đà lạt sương khói được tái hiện tại tỉnh Phú Yên. Quán cafe sân vườn phong cách mộc mạc vibe chill #kientruchcong # ...",
+    "position": 7
+   },
+   {
+    "title": "Thứ 7 Chill cùng Ghé nho tại Ghé Coffee 174 Tô Hiệu",
+    "link": "https://www.tiktok.com/@ghecoffeee/video/7663722061382028565",
+    "snippet": "Kết luận & lời kêu gọi Nếu bạn muốn một buổi Thứ 7 thư giãn, Ghé Coffee ở 174 Tô Hiệu là gợi ý phù hợp để \"chill cùng Ghé nho\". Hãy ghé thăm, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

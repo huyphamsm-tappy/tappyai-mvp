@@ -1,0 +1,42 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông trong nước online lệ phí hồ sơ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:29:27.273Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn cấp hộ chiếu phổ thông trong nước online lệ phí hồ sơ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "HƯỚNG DẪN THỦ TỤC · 1. Hồ sơ bao gồm: - Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; · 2. Nơi nộp hồ sơ: · 3. Những trường hợp sau đây có thể đề nghị ...",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "I. Thông tin liên hệ. Website: https://hochieu.xuatnhapcanh.gov.vn. Email: contact@immigration.gov.vn. 1. Trụ sở tại Hà Nội. - Địa chỉ: 44-46 đường Trần Phú ...",
+    "position": 2
+   },
+   {
+    "title": "DANH SÁCH CÁC NƯỚC",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/documents/20181/117155/Vietnam-Evisa-nation-list-Vi.pdf/7611c905-0370-45e9-8080-cd0dec11df95",
+    "snippet": "- Bao gồm công dân mang hộ chiếu. Hồng Kông, hộ chiếu Ma Cao. - Không áp dụng với công dân mang hộ chiếu phổ thông điện tử. Trung Quốc. China. - Including Hong ...",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

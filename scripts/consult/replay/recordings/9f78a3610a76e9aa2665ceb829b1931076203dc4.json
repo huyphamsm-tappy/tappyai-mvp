@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro M1 Pro 16 inch 10 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:54.177Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro M1 Pro 16 inch 10 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "New Laptop Keycaps For Macbook Pro M1 Pro/Max Retina 14\\",
+    "link": "https://www.lazada.vn/products/pdp-i13450089314.html?srsltid=AU7gw4Ui0jijOga-RiF8AH8BbbzpmXd4Axnj5xPOBsuJJdGzBZylihsV",
+    "snippet": "New Laptop Keycaps For Macbook Pro M1 Pro/Max Retina 14\\ ; Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Nhận vào 9-14 thg 9. 32.700 ₫.",
+    "position": 1
+   },
+   {
+    "title": "Ốp lưng Supcase cho MacBook Pro 16 inch 2021-2024 phát ...",
+    "link": "https://www.lazada.vn/products/op-lung-supcase-cho-macbook-pro-16-inch-2021-2024-phat-hanh-unicorn-beetle-trong-suot-m4m3m2m1-promax-phu-kien-vo-trong-suot-mong-chong-tray-xuoc-cho-macbook-pro-16-kem-touch-id-i1733658063.html?srsltid=AU7gw4XWfWyrtjjMD7Yto1rjrkLIakrA_epflFP7L1mbGpDnABa58ZLN",
+    "snippet": "Ốp lưng Supcase trong suốt chống trầy xước cho MacBook Pro 16 inch 2021-2024, bảo vệ tối ưu với thiết kế chống sốc. Vỏ bảo vệ mỏng nhẹ, có Touch ID, ...",
+    "position": 2
+   },
+   {
+    "title": "Dán PPF Macbook Pro M1 Pro 2021 14 inch / 16 inch ...",
+    "link": "https://www.lazada.vn/products/dan-ppf-macbook-pro-m1-pro-2021-14-inch-16-inch-a2442-a2485-loai-trong-nham-danh-cho-man-hinh-mat-lung-mat-de-i2364839466.html?srsltid=AU7gw4XGuc2ivigIVoieCMOxSlXlV9gwcwI-ihbfloBU0NMw9Vd6Nm_T",
+    "snippet": "Giúp bảo vệ sơn của thiết bị lên đến 7-10 năm. Với ưu điểm của PPF là khả năng chống trầy và va đập cho máy hiệu quả, khả năng tự phục hồi các vết trầy xước ...",
+    "position": 3
+   },
+   {
+    "title": "【Free-delivery】 Laptop Case for Macbook Pro 13 inch ...",
+    "link": "https://www.lazada.vn/products/pdp-i3011982520.html?srsltid=AU7gw4W6I4_mktVz9LQJ-znVxmazoTYCgw9aWP0NI6vBiDqW5KtBhHge",
+    "snippet": "Mô tả sản phẩm · Style1:Matte Wine Red_A1706 A1989 A2159_7-inch · Style2:Matte Wine Red_Pro 14.2 M1 M2 M3_10-inch · Style3:Matte Wine Red_Pro 16.2 M1 M2 M3_9-inch ...",
+    "position": 4
+   },
+   {
+    "title": "【Hot ticket】 for Newest Macbook Pro 14 16 inch 2021 A2442 ...",
+    "link": "https://www.lazada.vn/products/hot-ticket-for-newest-macbook-pro-14-16-inch-2021-a2442-a2485-m1-pro-133-inch-2020-a2338-a2337-a2251-a2289-air-pro-13-15-inch-air-11-12-13-a2179-a2159-a1707-a1990-a1706-a1989case-hard-protect-free-keyboard-cover-i13388528406.html?srsltid=AU7gw4Us9UVQX4fMdRu63FBrrwlBIf7JDjMSEscfIx9iMksyCCCRAPbg",
+    "snippet": "User-focused design for better experience. Energy-saving and eco-friendly, ideal for sustainable living. Exquisite craftsmanship enhances overall texture ...",
+    "position": 5
+   },
+   {
+    "title": "【Be worth】 MTT Laptop Case For Macbook Pro 13 M1 M2 A2338 ...",
+    "link": "https://www.lazada.vn/products/pdp-i3011765604.html?srsltid=AU7gw4XQUXfvHFfDAfeQIXxWPmso6pEvwncnAFiUbkFfIYFlHRMEqmvs",
+    "snippet": "... ₫629.850 ₫-23%. 【Be worth】 MTT Laptop Case For Macbook Pro 13 M1 M2 A2338 Black Skeleton Cover For Macbook Pro Air 13 14 13.6 15 16 inch Funda A2337 A2681.",
+    "position": 6
+   },
+   {
+    "title": "【Trending】 Laptop Sleeve Bag for 2024 MacBook Air Pro Retina ...",
+    "link": "https://www.lazada.vn/products/trending-laptop-sleeve-bag-for-2024-macbook-air-pro-retina-11-12-133-14-15-16-inch-m1-m2-m3-notebook-case-i3011783587-s14506959175.html?from_gmc=1&fl_tag=1&srsltid=AU7gw4VfwBSr9CyQ8Jcb8S8lsEScTTHRHPuyjCGBWBLVIPKB37ow_sCg",
+    "snippet": "【Trending】 Laptop Sleeve Bag for 2024 MacBook Air Pro Retina 11 12 13.3 14 15 16 Inch M1 M2 M3 Notebook Case ... Style10:Black_MacBook Pro 16 inch_10-inch ...",
+    "position": 7
+   },
+   {
+    "title": "original】 MTT Laptop Case For Macbook Pro Air 13 14 15 16 ...",
+    "link": "https://www.lazada.vn/products/pdp-i3011836992.html?srsltid=AU7gw4WFjbukEl7_vn-f19wvM5jPDkJeP-gRWzamTzrcpK9Y3B5wrwjr",
+    "snippet": "【100%-original】 MTT Laptop Case For Macbook Pro Air 13 14 15 16 13.6 inch 2023 Cover For Macbook Pro 13 M1 M2 Chip Funda A2289 A2251 A2179 · Silver Prism · Gợi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "AirPods Pro 2 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:16:08.562Z",
+ "body": {
+  "searchParameters": {
+   "q": "AirPods Pro 2 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hộp Sạc Không Dây Bluetooth Cho AirPods 1/2/3 Pro 2/4",
+    "link": "https://www.lazada.vn/products/vo-bao-ve-airpods-thiet-ke-de-thuong-i13393810146.html?srsltid=AU7gw4VJEdV7m4-Tu7RxupSvNhMUs3-kYbdUm8Sgvh8Y_NhsbcwloY21",
+    "snippet": "LazMall Hộp Sạc Không Dây Bluetooth Cho AirPods 1/2/3 Pro 2/4 · 100% chính hãng · 30 ngày miễn phí trả hàng · Không áp dụng chính sách bảo hành.",
+    "position": 1
+   },
+   {
+    "title": "BAO DA AIRPODS PRO 2 NÚT BẤM - CHÍNH HÃNG ...",
+    "link": "https://www.lazada.vn/products/bao-da-airpods-pro-2-nut-bam-chinh-hang-khactencom-i2044734875.html?srsltid=AU7gw4UI0mFr0dClluK7ELOrYpKA0f0IYQ1_pVXjZmBk15qop3sotwKk",
+    "snippet": "Thiết kế tối giản với đường cắt góc bo tròn mềm mại ôm sát sản phẩm. Lớp da bò thô bên trong giúp làm sạch bề mặt hộp đựng tai nghe và tạo cảm giác thân thiện, ...",
+    "position": 2
+   },
+   {
+    "title": "Ốp Tai Nghe Silicon Mềm Kèm Dây Đeo Cho Apple ...",
+    "link": "https://h5.lazada.vn/products/op-tai-nghe-silicon-mem-kem-day-deo-cho-apple-airpods-321-pro-3pro-2-vo-bao-ve-tuong-thich-voi-air-pods-42024-i2465401714.html",
+    "snippet": "Được thiết kế dành riêng cho Apple Airpod 3, 2, 1, Pro 2 và Pro 3, đảm bảo chức năng hoàn hảo và liền mạch.",
+    "rating": 4.7,
+    "ratingCount": 120,
+    "position": 3
+   },
+   {
+    "title": "Túi Đựng Tai Nghe Bằng Da Mini Cho AirPods 4 & Pro 2, ...",
+    "link": "https://h5.lazada.vn/products/tui-dung-tai-nghe-bang-da-mini-cho-airpods-4-pro-2-tuong-thich-voi-samsung-galaxy-thiet-ke-day-ruy-bang-bao-bao-ve-i3087572132.html",
+    "snippet": "Được thiết kế để phù hợp với nhiều loại tai nghe không dây, bao gồm AirPods 4, AirPods Pro 2 và các mẫu Samsung Galaxy.",
+    "position": 4
+   },
+   {
+    "title": "Vỏ Silicon Siêu Mỏng Cho AirPods Pro 2 Hộp Đựng Tai ...",
+    "link": "https://h5.lazada.vn/products/vo-silicon-sieu-mong-cho-airpods-pro-2-hop-dung-tai-nghe-bluetooth-khong-day-bluetooth-vo-bao-ve-da-tach-roi-cho-apple-airpod-pro-2-i2615569179.html",
+    "snippet": "Vỏ silicon siêu mỏng mang đến lớp bảo vệ đẹp mắt cho AirPods Pro 2 của bạn, nâng cao tính thẩm mỹ mà không làm tăng thêm khối lượng. Cài đặt dễ dàng. Thiết ...",
+    "rating": 5,
+    "ratingCount": 29,
+    "position": 5
+   },
+   {
+    "title": "Vỏ Ốp Chủ Đề Phù Thủy Xấu Ác Cho AirPods Pro 2",
+    "link": "https://www.lazada.vn/products/vo-op-chu-de-phu-thuy-xau-ac-cho-airpods-pro-2-i13347720282.html?srsltid=AU7gw4VU0ZfaJ8LWDLcQd7_5lPkMtdR_VPZTqXUcdD2450noWOXH7LAy",
+    "snippet": "Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng và còn nguyên tem mạc, nguyên seal (nếu có). service. Không áp dụng chính sách bảo hành.",
+    "position": 6
+   },
+   {
+    "title": "Hagibis Bộ Bút Làm Sạch Tai Nghe Cho Airpods Pro 1 2 3 ...",
+    "link": "https://www.lazada.vn/products/hagibis-bo-but-lam-sach-tai-nghe-cho-airpods-pro-1-2-3-ban-chai-hop-dung-tai-nghe-bluetooth-dung-cu-lam-sach-cho-huawei-samsung-mi-i1911005617.html?srsltid=AU7gw4W7fZVWNRhtZRMCZ4jAsuqt-qoER9usJdbZ2p_amoaKFa2OGHA8",
+    "snippet": "Hagibis.",
+    "rating": 4.8,
+    "ratingCount": 132,
+    "position": 7
+   },
+   {
+    "title": "Vỏ Bảo Vệ Thiết Kế Mây Naruto cho AirPods Pro/2/4/5",
+    "link": "https://www.lazada.vn/products/vo-bao-ve-thiet-ke-may-naruto-cho-airpods-pro245-i13351987852.html?srsltid=AU7gw4Vp37parfZYg5j1GRUSReH1QXdYe4J5s8ypQLtK5gY_ACrhzAjO",
+    "snippet": "badge Vỏ Bảo Vệ Thiết Kế Mây Naruto cho AirPods Pro/2/4/5 ; Dịch vụ · 15 Ngày Trả Hàng Miễn Phí. Được trả hàng với lý do \"Không vừa ý\". Sản phẩm chưa qua sử dụng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

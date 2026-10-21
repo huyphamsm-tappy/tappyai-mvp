@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Năm Giờ Chiều\" OR \"Tiệm Ăn Siam\" OR \"Quán Bò Nướng Ngói và Lẩu Bò Cô Tư\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:35:55.645Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Năm Giờ Chiều\" OR \"Tiệm Ăn Siam\" OR \"Quán Bò Nướng Ngói và Lẩu Bò Cô Tư\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thai SiamPot - Tiệm Ăn Siam (@thaisiampot_tiemansiam)",
+    "link": "https://www.tiktok.com/@thaisiampot_tiemansiam",
+    "snippet": "THAI SIAMPOT - TIỆM ĂN SIAM 132 Cao Thắng (Q3.TpHCM) Món Thái Ngon, Giá Rẻ! Contact: 0932 609 858. Phát Hiện Quán Thái Siam Ngon Mà Rẻ Ngay Quận 3 ...",
+    "position": 1
+   },
+   {
+    "title": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát ...",
+    "link": "https://www.tiktok.com/@baobaolovefood/video/7642281876312296724",
+    "snippet": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát, nhẹ nhàng, món ngon dân dã thiệt là đã #reviewanngon ##ancungtiktok #sinhtoluamach # ...",
+    "position": 2
+   },
+   {
+    "title": "Ăn món Thái ở quận 3 hcm. Tiệm Ăn Siam #foodreview ...",
+    "link": "https://www.tiktok.com/@thichangian/video/7325473580530142472",
+    "snippet": "96 Lượt thích,Video TikTok từ Thích ăn gì ăn (@thichangian): \"Ăn món Thái ở quận 3 hcm. Tiệm Ăn Siam #foodreview #ancungtiktok #quan3angi ...",
+    "position": 3
+   },
+   {
+    "title": "Từ lai rai đến nướng và lẩu, muốn ăn gì Năm Giờ Chiều ...",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill/video/7640668729893784852",
+    "snippet": "26 Lượt thích,Video TikTok từ Năm Giờ Chiều (@namgiochieu_ngoichill): \"Từ lai rai đến nướng và lẩu, muốn ăn gì Năm Giờ Chiều cũng có nha ...",
+    "position": 4
+   },
+   {
+    "title": "Đi 2-3 người nên gọi Set nướng nào cho tiện 🤔 ...",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill/video/7675722179421801748",
+    "snippet": "Video TikTok từ Năm Giờ Chiều (@namgiochieu_ngoichill): \"Đi 2-3 người nên gọi Set nướng nào cho tiện #namgiochieu #nhauchill #saigon ...",
+    "position": 5
+   },
+   {
+    "title": "Năm Giờ Chiều — Ca Nô Lặng Lẽ Về Bờ ngày 17",
+    "link": "https://www.tiktok.com/@nhvnews/video/7677182667074407701",
+    "snippet": "Bản ghi mô tả khoảnh khắc ca nô cập bến vào giờ chiều và ý câu văn chủ đạo: 'phép màu vẫn chưa thể xuất hiện'. Keywords: Năm Giờ Chiều, ca nô ...",
+    "position": 6
+   },
+   {
+    "title": "Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi",
+    "link": "https://www.tiktok.com/@247h2n/video/7686737416270531861",
+    "snippet": "97 Lượt thích,Video TikTok từ 247 - H2N (@247h2n): \"Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi - Remix / Nhạc Chế Tổng Hợp / Nhạc chế ...",
+    "position": 7
+   },
+   {
+    "title": "Trả lời @D.NgOanhh🤍 Năm giờ chiều hôm nay đi sự kiện ...",
+    "link": "https://www.tiktok.com/@nguyenhien98386/video/7686089069826280724",
+    "snippet": "Trả lời @D.NgOanhh Năm giờ chiều hôm nay đi sự kiện hợp tác gà no nào mấy mom @Tui Bánh Mì đây #gluthatione_trắng_da_toàn_thân600mg # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

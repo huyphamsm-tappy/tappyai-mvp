@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Macbook Pro M1 Pro 16 inch 10\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:53.320Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Macbook Pro M1 Pro 16 inch 10\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Pro 16 inch 2021 (M1 Pro) - RAM 16GB / SSD 1TB",
+    "link": "https://cellphones.com.vn/macbook-pro-16-inch-2021-1tb.html",
+    "snippet": "Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 | Chính hãng Apple Việt Nam ; Giá sản phẩm. 70.990.000đ 57.990.000đ ; Danh sách Cookies. Việc từ chối một ...",
+    "position": 1
+   },
+   {
+    "title": "Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB ...",
+    "link": "https://cellphones.com.vn/macbook-pro-16-inch-2021-1tb-cu-tray-xuoc.html",
+    "snippet": "Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 cũ giá rẻ - Nguồn gốc rõ ràng, bảo hành 6-12 tháng, đổi mới 30 ngày, luôn xuất bán đầy đủ VAT.",
+    "position": 2
+   },
+   {
+    "title": "Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-pro-16-inch-2021-1tb-vs-laptop-msi-gaming-gs66-stealth-10ue-200vn/",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 | Chính hãng Apple Việt Nam và Laptop MSI ...",
+    "position": 3
+   },
+   {
+    "title": "So sánh Macbook Pro M1 Pro 16 inch 10 CPU",
+    "link": "https://cellphones.com.vn/so-sanh/macbook-pro-16-inch-2021-1tb-vs-mac-studio-2022",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 | Chính hãng Apple Việt Nam và Mac Studio ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Laptop MSI Creator Z16 A11UET-218VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-creator-z16-a11uet-218vn-vs-macbook-pro-16-inch-2021-1tb",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Laptop MSI Creator Z16 A11UET-218VN và Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Laptop Lenovo Legion 5 15ACH6 82JU00DFVN ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-lenovo-legion-5-15ach6-82ju00dfvn-vs-macbook-pro-16-inch-2021-1tb/",
+    "snippet": "So Sánh Laptop Lenovo Legion 5 15ACH6 82JU00DFVN và Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 | Chính hãng Apple Việt Nam ; Loại card đồ họa.",
+    "position": 6
+   },
+   {
+    "title": "So sánh Laptop MSI Creator Z16 A11UET 285VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-creator-z16-a11uet-285vn-vs-macbook-pro-16-inch-2021-1tb",
+    "snippet": "So sánh chi tiết về giá, cấu hình, ưu nhược điểm giữa: Laptop MSI Creator Z16 A11UET 285VN và Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Mac Studio 2022 M1 Max (10CPU - 24GPU - 32GB",
+    "link": "https://cellphones.com.vn/so-sanh/mac-studio-2022-vs-macbook-pro-16-inch-2021-1tb",
+    "snippet": "So Sánh Mac Studio 2022 M1 Max (10CPU - 24GPU - 32GB - 512GB) | Chính hãng Apple Việt Nam và Macbook Pro M1 Pro 16 inch 10 CPU - 16 GPU 16GB 1TB 2021 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:32:53.292Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/m/a/macbook-air-space-gray-select-201810_4_1_1_1_1_2.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvagywe3tmP4VNuiP76UQIaLYRhAHt_598VOvfYlDeSw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook-air-space-gray-select-201810_4_1_1_1_1_2.jpg&tbnid=jEEEi5xMqim_rM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=500&h=500",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0000_macbook-air-gallery1-20201110_geo_us_2_1_1_1_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHkxtuoP3SB3_II-E5-bXevAyUPGF8a1gYTHBqnyIv0A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0000_macbook-air-gallery1-20201110_geo_us_2_1_1_1_1.jpg&tbnid=wzQghohYb9YFPM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=500&h=500",
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/m/a/macbook-air-2020-m1-16gb-cu-tray-xuoc.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP2zGY55Qkufid36zOU7SUB4HOT-RNOigQ-4z48E3p5w&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.png&tbnid=N5IoHw4cSWBZ8M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn-media.sforum.vn/storage/app/media/thongvo/macbook-air-m1-len-m5-nhung-thay-doi-co-thuc-su-dang-gia/macbook-air-m1-len-m5-nhung-thay-doi-co-thuc-su-dang-gia-cover.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 675,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhwBZh-dLz06w-zm5HBv53F9zX95X_rokuHnyDVzKXWw&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn-media.sforum.vn%2Fstorage%2Fapp%2Fmedia%2Fthongvo%2Fmacbook-air-m1-len-m5-nhung-thay-doi-co-thuc-su-dang-gia%2Fmacbook-air-m1-len-m5-nhung-thay-doi-co-thuc-su-dang-gia-cover.jpg&tbnid=jdDFtinBB21nyM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=1200&h=675",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M1 13 inch 16GB 256GB 2020 - Cũ trầy xước chính hãng | Lấy liền",
+    "imageUrl": "https://cdni.dienthoaivui.com.vn/x,webp,q100/https://media-asset.dienthoaivui.com.vn/uploads/wp-content/uploads/images/products/215983/macbook-air-m1-13-inch-16gb-256gb-2020-cu-tray-xuoc-17582229999277.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVdCiE6dip4aP6AG9870PLaiYPFunhrQ-9Jd3-fXhwLg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện Thoại Vui",
+    "domain": "dienthoaivui.com.vn",
+    "link": "https://dienthoaivui.com.vn/macbook-air-m1-13-inch-16gb-256gb-2020-cu-tray-xuoc",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdni.dienthoaivui.com.vn%2Fx%2Cwebp%2Cq100%2Fhttps%3A%2F%2Fmedia-asset.dienthoaivui.com.vn%2Fuploads%2Fwp-content%2Fuploads%2Fimages%2Fproducts%2F215983%2Fmacbook-air-m1-13-inch-16gb-256gb-2020-cu-tray-xuoc-17582229999277.jpg&tbnid=9zLxXqwjSbLi_M&imgrefurl=https%3A%2F%2Fdienthoaivui.com.vn%2Fmacbook-air-m1-13-inch-16gb-256gb-2020-cu-tray-xuoc&docid=h7XC6wKvW0IdsM&w=500&h=500",
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0003_macbook-air-gallery4-20201110_2_1_1_1_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8FWHbshtzRZVeLpY8wCHiizwIGpxszHrcgNpKuFUaPg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0003_macbook-air-gallery4-20201110_2_1_1_1_1.jpg&tbnid=ZCskFjGTA2FzzM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=500&h=500",
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Trầy Xước | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0001_macbook-air-gallery2-20201110_2_1_1_1_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtK2q-1tEgXolPAh2OboNANJ1ZogUatQ8MS0Zhv0tkiQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-tray-xuoc.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0001_macbook-air-gallery2-20201110_2_1_1_1_1.jpg&tbnid=Y6wXRU97nnSk5M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-tray-xuoc.html&docid=lKADXdbS34qfpM&w=500&h=500",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air M1 16GB 256GB 2020 - Cũ Xước Cấn | Giá rẻ",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0003_dsc03720_3_1_1_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQi-qfABcvf5o9xbc_Pqp40lxpSfgmfTcvJ1RylxUNXgQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-16gb-cu-xuoc-can.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0003_dsc03720_3_1_1_1.jpg&tbnid=fztORhWZh4GiZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-16gb-cu-xuoc-can.html&docid=yL_D8XpOiuv66M&w=500&h=500",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

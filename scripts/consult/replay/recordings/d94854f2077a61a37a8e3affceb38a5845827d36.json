@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Quê Dượng Bầu\" OR \"MEAT & MEET\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:32:21.555Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Quê Dượng Bầu\" OR \"MEAT & MEET\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Vì sao cơm quê dượng bầu luôn nói giá món ăn? Giải thích",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7508993207955492104",
+    "snippet": "Cơm quê dượng bầu là quán cơm quen thuộc ở trung tâm Quận 1, nổi tiếng với món ăn mang phong vị cơm quê. Tuy nhiên nhiều người khi xem video ...",
+    "position": 1
+   },
+   {
+    "title": "Quán Cơm Quê Dượng Bầu (@comque.duongbau)",
+    "link": "https://www.tiktok.com/@comque.duongbau",
+    "snippet": "Quán Cơm Quê Dượng Bầu 40E Ngô Đức Kế, phường Sài Gòn, HCM Đặt bàn: 0765.371.893 @Dượng Bầu review ( Kênh Review ). KHÁCH THƯƠNG BẾP CƠM QUÊ DƯỢNG BẦU.",
+    "position": 2
+   },
+   {
+    "title": "Huỳnh My cầm 100 triệu đi ăn Cơm Quê Dượng Bầu",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7685336327990037778",
+    "snippet": "Nội dung có yếu tố review về Cơm Quê Dượng Bầu, bao gồm tham chiếu đến món ốc bươu nhồi thịt và các trải nghiệm cơm quê. Hashtag kèm theo video ...",
+    "position": 3
+   },
+   {
+    "title": "Review Cơm Quê Dượng Bầu: cơm quê, rau sạch Sài Gòn",
+    "link": "https://www.tiktok.com/@barretdailly/video/7683936129359351060",
+    "snippet": "Lead Bài viết tổng hợp cảm nhận khi review Cơm Quê Dượng Bầu cùng @kaiphg, tập trung vào các món đặc trưng: cơm quê, rau sạch, thịt kho tiêu ...",
+    "position": 4
+   },
+   {
+    "title": "Cô xin gửi lời xin lỗi #comqueduongbau #metik",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7510941883489619208",
+    "snippet": "378.5K Lượt thích,17.7K Bình luận.Video TikTok từ Quán Cơm Quê Dượng Bầu (@comque.duongbau): \"Cô xin gửi lời xin lỗi #comqueduongbau #metik\" ...",
+    "position": 5
+   },
+   {
+    "title": "Mâm cơm 200k ở Cơm Quê Dượng Bầu liệu có xứng đáng ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7659738877925526792",
+    "snippet": "Mâm cơm 200k ở Cơm Quê Dượng Bầu liệu có xứng đáng? #comqueduongbau Luộc Cua Thịt Bao Nhiêu Phút Là ChínBầu Có Ăn Được Đọt Nhãn Lồng KhôngCơm ...",
+    "position": 6
+   },
+   {
+    "title": "Cơm Quê Dượng Bầu: Món Trứng Chiên Hành 0k Từ 3/6 ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7511179892155829511",
+    "snippet": "Cơm Quê Dượng Bầu: Món Trứng Chiên Hành Miễn Phí Dành Cho Khách Hàng Từ ngày 3/6 đến 12/6, quán Cơm Quê Dượng Bầu đang tổ chức một chương ...",
+    "position": 7
+   },
+   {
+    "title": "Người nước ngoài ăn Cơm Quê Dượng Bầu ...",
+    "link": "https://www.tiktok.com/@comque.duongbau/video/7511675802694520082",
+    "snippet": "91.8K Lượt thích,4705 Bình luận.Video TikTok từ Quán Cơm Quê Dượng Bầu (@comque.duongbau): \"Người nước ngoài ăn Cơm Quê Dượng Bầu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

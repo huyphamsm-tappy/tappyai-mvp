@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:samsung.com/vn Galaxy S24 pin dung lượng 4000 mAh thông số kỹ thuật",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:58:38.313Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:samsung.com/vn Galaxy S24 pin dung lượng 4000 mAh thông số kỹ thuật",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Galaxy S24 (Online Exclusive) | SM-S921BLBCXXV",
+    "link": "https://www.samsung.com/vn/business/smartphones/galaxy-s/galaxy-s24-sapphire-blue-256gb-sm-s921blbcxxv/?srsltid=AU7gw4UcSt9wpHtxFx_CrIBokrwWFwAyq7mjbXIXZSMwWRwzPkXCFsW7",
+    "snippet": "Trọng lượng (g) 167. Pin. Thời gian phát lại Video (Giờ, Wireless) Lên tới 29; Dung lượng pin (mAh, Typical) 4000; Có thể tháo rời Không. Âm thanh và Video. Hỗ ...",
+    "position": 1
+   },
+   {
+    "title": "Tiến bước vào kỷ nguyên quyền năng AI mới cùng ...",
+    "link": "https://news.samsung.com/vn/tien-buoc-vao-ky-nguyen-quyen-nang-ai-moi-cung-samsung-galaxy-s24-series",
+    "snippet": "Dung lượng định mức (tối thiểu) là 3.880mAh cho Galaxy S24 và 4.755mAh cho Galaxy S24+. Tuổi thọ pin thực tế có thể khác nhau tùy thuộc vào môi ...",
+    "date": "18 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24, S24+, thanh toán trước giảm 1 triệu",
+    "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/?srsltid=AU7gw4V4Qy2kzDR7rdj_uXVSMpc5CjE2swLK3uzx_srDY3QYyIC5nS2_",
+    "snippet": "Tính theo đường chéo, màn hình của Samsung Galaxy S24 có kích thước 6.2\" theo hình chữ nhật đầy đủ và 6\" khi tính cả các góc bo tròn; còn màn hình của Galaxy ...",
+    "rating": 4.6,
+    "ratingCount": 1928,
+    "position": 3
+   },
+   {
+    "title": "Thông Số Camera & Tính Năng AI ...",
+    "link": "https://www.samsung.com/vn/smartphones/galaxy-s24/specs/?srsltid=AU7gw4W5Al1uWJbTY-7azvzW-nxn7oODuioJ-Xh10prvSZ1EuQObLwre",
+    "snippet": "Thời lượng pin: Galaxy S24 có dung lượng pin 4000mAh, có thể hoạt động lên tới 78 giờ nghe nhạc, hoặc 29 giờ xem video. Galaxy S24+ có dung lượng pin ...",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S25 series: Cánh tay đắc lực AI tiên ...",
+    "link": "https://news.samsung.com/vn/samsung-galaxy-s25-series-canh-tay-dac-luc-ai-tien-phong-thiet-lap-chuan-muc-moi-cho-dien-thoai-ai",
+    "snippet": "Thông số kỹ thuật · Màn hình, 6.2-inch FHD+* · Kích thước & Trọng lượng, 70.5 x 146.9 x 7.2mm, 162g (mmWave/Sub6) · Camera, Camera góc siêu rộng ...",
+    "date": "23 thg 1, 2025",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Dòng Samsung Galaxy S24 Mới",
+    "link": "https://www.samsung.com/vn/mobile/mobile-phone-buying-guide/the-new-samsung-galaxy-s24-series/?srsltid=AU7gw4WNxASdBh6dTlbgXrwneXU2b2NY_eVYNWwGuDTIRSVwTCI0WASk",
+    "snippet": "Samsung Galaxy S24 ; Video Camera. UHD 8K (7680 x 4320), 30fps ; Hệ Điều Hành. Android 14.0 ; RAM. 8 GB ; Dung Lượng. 256 GB / 512 GB ; Pin. 4000 mAh ...",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy Z Flip 6, thu cũ đổi mới hỗ trợ 3 triệu",
+    "link": "https://www.samsung.com/vn/smartphones/galaxy-z-flip6/?srsltid=AU7gw4UcdxW-5rXdNV7W4BtEP_BLWazYzoGUrPGOIamIWoxb5ympH7oc",
+    "snippet": "Galaxy Z Flip6 sở hữu pin với dung lượng 4000mAh sử dụng xuyên suốt ngày dài. Nghe nhạc lên đến 68 giờ hoặc xem video lên đến 23 giờ.",
+    "rating": 4.7,
+    "ratingCount": 1272,
+    "position": 7
+   },
+   {
+    "title": "Galaxy S24 Series: Khám phá trọn bộ tính năng mới nhất!",
+    "link": "https://www.samsung.com/vn/members/whats-new/galaxy-s24-series-discover-all-the-new-and-exciting-features/?srsltid=AU7gw4U2pp52Imy9Y-zT0nrne1NiKkhMhP0kVToHR0ipHGfzIaCeg-0H",
+    "snippet": "Với nền tảng di động Snapdragon® 8 Gen 3 dành cho Galaxy trên Galaxy S24 Ultra, kết hợp cùng Tần số quét thích ứng 1-120Hz trên cả ba mẫu Galaxy S24 giúp cân ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

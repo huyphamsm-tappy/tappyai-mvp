@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:*.gov.vn lệ phí cấp hộ chiếu phổ thông hiện nay 2026 cấp mới cấp lại Thông tư lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:32:46.579Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:*.gov.vn lệ phí cấp hộ chiếu phổ thông hiện nay 2026 cấp mới cấp lại Thông tư lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "160.000 đồng/hộ chiếu. Trường hợp cấp lại do bị hỏng hoặc bị mất: 320.000/hộ chiếu (Thông tư số 44/2023/TT-BTC ngày 29/6/2023 của Bộ Tài chính).",
+    "position": 1
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "- Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân sự: 100.000 đồng/lần cấp. Lưu ý, các trường hợp được ...",
+    "date": "29 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "biểu mức thu phí, lệ phí cấp hộ chiếu đối với công dân ...",
+    "link": "https://xnc-congan.hochiminhcity.gov.vn/wps/portal/xnc/Home/xncnn?1dmy&page=chitiet&urile=wcm%3Apath%3A%2Fxnc-cms%2Fxnc%2Farticle-xncnn%2Flp-xncnn%2Fbmtp",
+    "snippet": "BIỂU MỨC THU PHÍ, LỆ PHÍ CẤP HỘ CHIẾU ĐỐI VỚI CÔNG DÂN VIỆT NAM ; 1. Lệ phí cấp hộ chiếu ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia ...",
+    "position": 3
+   },
+   {
+    "title": "Áp dụng mức thu phí, lệ phí mới trong lĩnh vực xuất nhập ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=268107",
+    "snippet": "Cấp mới hộ chiếu: 200.000 đồng/lần cấp. ​Cấp lại hộ chiếu (do bị hỏng hoặc mất): 400.000 đồng/lần cấp. ​. Giấy thông hành biên giới Việt Nam - Campuchia ...",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước cho công dân Việt ...",
+    "link": "https://congan.ninhbinh.gov.vn/tthc/quan-ly-xuat-nhap-canh/cap-ho-chieu-pho-thong-thuc-hien-tai-cong-an-cap-tinh-94.html",
+    "snippet": "- 200.000đ/hộ chiếu; trường hợp cấp lại hộ chiếu do bị hỏng hoặc bị mất: 400.000đ/hộ chiếu (Thông tư số 28/2026/TT-BTC ngày 27/3/2026 của Bộ Tài chính). Thành ...",
+    "position": 5
+   },
+   {
+    "title": "Giảm 50% lệ phí làm hộ chiếu đến hết ngày 31/12/2025 ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=256856",
+    "snippet": "Trường hợp cấp hộ chiếu. Mức lệ phí ưu đãi đến 31/12/2025. Mức lệ phí từ 01/01/2026 ; Cấp mới, cấp lại. 100.000 VNĐ/lần. 200.000 VNĐ/lần ; Cấp lại do bị hỏng/mất ...",
+    "position": 6
+   },
+   {
+    "title": "Quy định mới về thu phí, lệ phí xuất nhập cảnh",
+    "link": "https://congan.nghean.gov.vn/thong-tin-chuyen-de/202604/quy-dinh-moi-ve-thu-phi-le-phi-xuat-nhap-canh-1056549/",
+    "snippet": "Quy định mới về thu phí, lệ phí xuất nhập cảnh ; c. Gia hạn hộ chiếu (ngoại giao, công vụ). 100.000 ; d. Cấp giấy xác nhận nhân sự. 100.000 ; 2. Lệ ...",
+    "date": "27 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "Triển khai tiếp nhận hồ sơ cấp hộ chiếu trên ứng dụng ...",
+    "link": "https://conganthanhhoa.gov.vn/de-an-06/trien-khai-tiep-nhan-ho-so-cap-ho-chieu-tren-ung-dung-vneid-tu-ngay-01-5-2026.html",
+    "snippet": "Ngày 28/4/2026, Cục Quản lý xuất nhập cảnh, Bộ Công an đã triển khai dịch vụ công cấp hộ chiếu phổ thông ở trong nước trên ứng dụng VNeID.",
+    "date": "14 thg 5, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

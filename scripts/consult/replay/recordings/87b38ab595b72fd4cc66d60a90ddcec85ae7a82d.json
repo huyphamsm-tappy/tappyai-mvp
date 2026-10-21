@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "phí rút tiền ATM khác ngân hàng Vietcombank hiện nay biểu phí chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:15.338Z",
+ "body": {
+  "searchParameters": {
+   "q": "phí rút tiền ATM khác ngân hàng Vietcombank hiện nay biểu phí chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật Biểu phí dịch vụ thẻ",
+    "link": "https://www.vietcombank.com.vn/vi-VN/KHCN/Truy-cap-nhanh/Tin-noi-bat/Articles/2026/01/14/Cap-nhat-bieu-phi-dich-vu-the-ghi-no",
+    "snippet": "Cập nhật Biểu phí dịch vụ thẻ ; 2, Phí rút tiền mặt tại ATM ngoài lãnh thổ Việt Nam. 3,64% số tiền giao dịch. (tối thiểu 45.454 VND/giao dịch) ; 3 ...",
+    "date": "14 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ ÁP DỤNG CHO KHÁCH HÀNG CÁ ...",
+    "link": "https://www.vietcombank.com.vn/upload/2018/01/27/BIEU-PHI-DICH-VU-AP-DUNG-CHO-KHCN-2018.pdf",
+    "snippet": "Miễn phí. Chi trả tiền mặt. - Người gửi thực hiện tại Vietcombank: Miễn phí. - Người gửi thực hiện tại ngân hàng khác: 0,03%; Tối thiểu 10.000.",
+    "date": "26 thg 1, 2018",
+    "position": 2
+   },
+   {
+    "title": "Phí rút tiền ATM khác ngân hàng là bao nhiêu?",
+    "link": "https://timo.vn/blogs/timo-debit-atm-napas/phi-rut-tien-atm-khac-ngan-hang-la-bao-nhieu/",
+    "snippet": "Phí rút tiền ATM khác ngân hàng hiện nay là bao nhiêu? ; Techcombank, VIB, Maritime, Vietcombank ; Phí rút tiền, 1100 – 9900 ₫, 3,300- 11000 ₫, 1,100- 3,300 ₫ ...",
+    "position": 3
+   },
+   {
+    "title": "Phí rút tiền ATM là bao nhiêu? Cập nhật phí ...",
+    "link": "https://cake.vn/tin-tuc/tai-chinh/phi-rut-tien-ATM-la-bao-nhieu",
+    "snippet": "Phí rút tiền ATM khác hệ thống (qua Napas) ... Mức phí này thường phổ biến trong khoảng là 3.300 VNĐ/giao dịch (đã bao gồm VAT). Tuy nhiên, một số ...",
+    "date": "30 thg 10, 2025",
+    "position": 4
+   },
+   {
+    "title": "BIỂU PHÍ DỊCH VỤ VÀ LÃI SUẤT THẺ ÁP DỤNG CHO ...",
+    "link": "https://portal.vietcombank.com.vn/content/personal/BieuPhi/Th%E1%BA%BB/Th%E1%BA%BB%20t%C3%ADn%20d%E1%BB%A5ng%20qu%E1%BB%91c%20t%E1%BA%BF/BIEU%20PHI%20THE%20TIN%20DUNG%20QUOC%20TE%20CHUNG/20200120%20Bieu%20phi%20the%20tong%20hop%20up%20web%20(bieu%20phi%20khong%20VAT).pdf",
+    "snippet": "5 Phí chuyển tiền liên ngân hàng qua thẻ. 5.1 Giao dịch giá trị dưới ... 13 Phí rút tiền mặt tại quầy ngoài hệ thống VCB. 3,64% số tiền giao dịch. III ...",
+    "position": 5
+   },
+   {
+    "title": "Phí rút tiền tại ATM là bao nhiêu? Cập nhật phí mới nhất ...",
+    "link": "https://www.mbbank.com.vn/chi-tiet/tin-mb/phi-rut-tien-tai-atm/7226",
+    "snippet": "Phí rút tiền tại ATM dao động từ 0 - 3.300 đồng nội địa, 3% - 4% quốc tế. Cập nhật mới nhất 2026, cách tính phí và mẹo tiết kiệm chi phí ...",
+    "date": "8 thg 5, 2026",
+    "position": 6
+   },
+   {
+    "title": "Phí Rút Tiền Vietcombank Cùng Và Khác Ngân Hàng Mới",
+    "link": "https://f88.vn/phi-rut-tien-vietcombank",
+    "snippet": "Mức phí là 0,003% (tối thiểu 20,000 VNĐ và tối đa 2,000,000 VNĐ). Áp dụng cho những khách hàng rút hoặc sử dụng tiền trong 2 ngày gần nhất sau ...",
+    "date": "28 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Quầy giao dịch, ATM, Ngân hàng số VCB Digibank, ...",
+    "link": "https://www.facebook.com/ilovevcb/posts/-vietcombank-gi%E1%BA%A3m-h%C3%A0ng-lo%E1%BA%A1t-c%C3%A1c-lo%E1%BA%A1i-ph%C3%AD-d%E1%BB%8Bch-v%E1%BB%A5-cho-kh%C3%A1ch-h%C3%A0ng-tr%C3%AAn-to%C3%A0n-b%E1%BB%99-c%C3%A1c/2067100230110746/",
+    "snippet": "Giảm đến 33% phí các Gói tài khoản, áp dụng cho các Gói tài khoản VCB Eco và VCB Plus. Giảm 17% phí rút tiền mặt tại ATM ngoài hệ thống ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

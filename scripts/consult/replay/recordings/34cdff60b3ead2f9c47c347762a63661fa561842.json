@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 IPX4 chống nước mồ hôi",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:46:00.897Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 IPX4 chống nước mồ hôi",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giới thiệu về khả năng chịu nước và mồ hôi của AirPods ...",
+    "link": "https://support.apple.com/vi-vn/105046",
+    "snippet": "AirPods và hộp sạc của các kiểu máy này có khả năng chịu được nước và mồ hôi khi tập thể dục và chơi thể thao không phải dưới nước, đồng thời đạt xếp hạng IPX4 ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "Khả năng chống bụi, chống mồ hôi và chống nước không phải là các điều kiện vĩnh viễn, và khả năng này có thể giảm do hao mòn thông thường. Không sạc pin khi bị ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111851",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống mồ hôi và chống nước, có thể sử dụng trong các môn thể thao và luyện tập không liên quan đến nước. AirPods Pro và hộp ...",
+    "position": 3
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống nước và mồ hôi dành cho việc tập luyện và thể thao không ở dưới nước, và đều đạt tiêu chuẩn IPX4.",
+    "date": "7 thg 9, 2022",
+    "position": 4
+   },
+   {
+    "title": "AirPods 2 - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111856",
+    "snippet": "Tai nghe cũng đạt chuẩn IPX4. Khả năng chống mồ hôi và chống nước không phải là điều kiện vĩnh viễn. Cần có bộ sạc MagSafe tương thích để sử dụng tính ...",
+    "position": 5
+   },
+   {
+    "title": "AirPods 3 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111863",
+    "snippet": "Chống Mồ Hôi Và Chống Nước2. Chống mồ hôi và chống nước (IPX4): AirPods và hộp sạc. Kích Thước Và Trọng Lượng 3. AirPods (Mỗi Bên). Cao: 30,79 mm. Rộng: 18,26 ...",
+    "position": 6
+   },
+   {
+    "title": "Powerbeats Pro 2 – Tai Nghe Hiệu Năng Cao – Cam Nóng ...",
+    "link": "https://www.apple.com/vn/shop/product/mx743za/a/powerbeats-pro-2-tai-nghe-hi%E1%BB%87u-n%C4%83ng-cao-cam-n%C3%B3ng-b%E1%BB%8Fng",
+    "snippet": "Cấu hình âm thanh cải tiến, tính năng khử tiếng ồn, Theo Dõi Nhịp Tim trong khi tập luyện và thời lượng pin ấn tượng có được đều là nhờ chip Apple H2 hiệu năng ...",
+    "position": 7
+   },
+   {
+    "title": "Giới thiệu về khả năng chịu được nước và mồ hôi của tai ...",
+    "link": "https://support.apple.com/vi-vn/101579",
+    "snippet": "Hộp sạc của Powerbeats Pro, Powerbeats Pro 2, Beats Studio Buds, Beats Studio Buds + và Beats Fit Pro không chống nước, chống mồ hôi, chịu được mồ hôi hay chịu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

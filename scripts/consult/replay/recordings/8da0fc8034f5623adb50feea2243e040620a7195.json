@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 technical specifications battery cycle count check activation lock",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:07:27.660Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 technical specifications battery cycle count check activation lock",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Hi, I have a MacBook Air early 2015 and s…",
+    "link": "https://discussions.apple.com/thread/253922576",
+    "snippet": "11-inch early 2015 MacBook Air batteries have a \"life\" of one thousand (1000) charge cycles. If you have exceeded 1000 cycles, maybe consider ...",
+    "date": "27 thg 5, 2022",
+    "position": 2
+   },
+   {
+    "title": "How To Check Battery Health and Cycle Count on Macbook ...",
+    "link": "https://www.youtube.com/watch?v=GvMzdReN0f8&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "snippet": "In this video you will learn how to check the battery health and battery cycle count on your Macbook Air and Macbook Pro.",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air (M1, 2020) - Tech Specs",
+    "link": "https://support.apple.com/en-vn/111883",
+    "snippet": "Battery and Power1. Up to 15 hours wireless web. Up to 18 hours Apple TV app movie playback. Built-in 49.9‑watt‑hour lithium‑polymer battery. 30W USB-C Power ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M1 2020 cycle count and battery health tips",
+    "link": "https://www.facebook.com/groups/macbookm1users/posts/602566781225242/",
+    "snippet": "What people are saying. Charging from 50 to 100 counts as 1 whole cycle, users share tips to maintain battery health.",
+    "position": 5
+   },
+   {
+    "title": "Check the battery cycle count on a portable Mac",
+    "link": "https://www.maintain.se/blog/check-the-battery-cycle-count-on-a-portable-mac/",
+    "snippet": "Under Hardware, select \"Power\" and look for \"Cycle Count\" under the \"Battery Information\" portion. The number shown is the cycle count of the current battery. A ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air M1 maximum capacity dropped t…",
+    "link": "https://discussions.apple.com/thread/256368270",
+    "snippet": "I bought a MacBook Air M1 three weeks ago, and the device was very clean and like new. The maximum capacity was at 100% and the cycle count was 18. Now, ...",
+    "date": "7 ngày trước",
+    "position": 7
+   },
+   {
+    "title": "Apple - MacBook Air M1 | Specs, reviews and EoL info",
+    "link": "https://invgate.com/itdb/macbook-air-m1",
+    "snippet": "The Apple MacBook Air M1 offers exceptional performance, silent operation, and impressive battery life in a sleek design.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

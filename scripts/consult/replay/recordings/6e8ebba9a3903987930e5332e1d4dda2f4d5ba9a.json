@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Air M3 15 inch 2024 8CPU 10GPU 16GB 256GB Sạc 35W site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:42.283Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M3 15 inch 2024 8CPU 10GPU 16GB 256GB Sạc 35W site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MSI Katana 15 B13VFK-676VN\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:33:53.543Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MSI Katana 15 B13VFK-676VN\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN | Giá rẻ, trả góp 0%",
+    "link": "https://cellphones.com.vn/laptop-msi-katana-15-b13vfk-676vn.html",
+    "snippet": "Đặc điểm nổi bật ... Laptop MSI Katana 15 B13VFK-676VN được tích hợp CPU Intel Core i7-13620H cộng thêm RTX 4060, RAM dung lượng 16GB chuẩn DDR5 và ổ cứng SSD lưu ...",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 1
+   },
+   {
+    "title": "Laptop MSI Katana | MSI Sword cấu hình khủng, hiệu năng ...",
+    "link": "https://cellphones.com.vn/laptop/msi/katana.html",
+    "snippet": "... Laptop MSI Katana 15 B13VFK-676VN. Sắp về hàng. Trả góp 0%. : 28.990.000đ. 30.990.000đ. Giảm 6%. Smember giảm đến 290.000đ. S-Student ...",
+    "position": 2
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN - Cũ Trầy Xước",
+    "link": "https://cellphones.com.vn/laptop-msi-katana-15-b13vfk-676vn-32gb-cu-tray-xuoc.html",
+    "snippet": "Laptop MSI Katana 15 B13VFK-676VN - Cũ Trầy Xước ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 186.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 18.590.",
+    "position": 3
+   },
+   {
+    "title": "So sánh Laptop MSI Katana 15 B13VFK-676VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-katana-15-b13vfk-676vn-vs-laptop-msi-gaming-gf63-10sc-804vn",
+    "snippet": "So Sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop MSI Gaming GF63 10SC 804VN ; Loại card đồ họa. NVIDIA GeForce RTX 4060, GDDR6 8GB. Nvidia Geforce GTX 1650 ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Laptop MSI Katana 15 B13VFK-676VN và ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-katana-15-b13vfk-676vn-vs-laptop-lenovo-ideapad-gaming-3-15ihu6-82k101b5vn",
+    "snippet": "So Sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop Lenovo Ideapad Gaming 3 15IHU6 82K101B5VN ; Loại card đồ họa. NVIDIA GeForce RTX 4060, GDDR6 8GB. NVIDIA ...",
+    "position": 5
+   },
+   {
+    "title": "So sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop Asus ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-katana-15-b13vfk-676vn-vs-laptop-asus-vivobook-x415ma-bv451w",
+    "snippet": "So Sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop Asus Vivobook X415MA-BV451W ; Loại card đồ họa. NVIDIA GeForce RTX 4060, GDDR6 8GB. Intel UHD Graphics ; Dung ...",
+    "position": 6
+   },
+   {
+    "title": "Laptop MSI Katana 15 B13VFK-676VN - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/laptop-msi-katana-15-b13vfk-676vn-cu-dep.html",
+    "snippet": "Laptop MSI Katana 15 B13VFK-676VN - Cũ Đẹp ; HSSV, Giáo viên đến 700.000đ ; Smember Giảm thêm đến 194.000đ ; Trả góp 0% ; Trả góp 0% ; Giá sản phẩm. 30.990.000đ ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop ASUS ...",
+    "link": "https://cellphones.com.vn/so-sanh/laptop-msi-katana-15-b13vfk-676vn-vs-laptop-asus-vivobook-15-x1502za-ej129w",
+    "snippet": "So Sánh Laptop MSI Katana 15 B13VFK-676VN và Laptop ASUS Vivobook 15 X1502ZA-EJ129W ; Loại card đồ họa. NVIDIA GeForce RTX 4060, GDDR6 8GB. Intel UHD Graphics.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site: mof.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 giảm lệ phí hộ chiếu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:18:33.885Z",
+ "body": {
+  "searchParameters": {
+   "q": "site: mof.gov.vn lệ phí cấp hộ chiếu trực tuyến 2026 giảm lệ phí hộ chiếu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 1
+   },
+   {
+    "title": "📕📕 MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG ...",
+    "link": "https://www.facebook.com/cathungyen/posts/-mi%E1%BB%85n-l%E1%BB%87-ph%C3%AD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-trong-n%C6%B0%E1%BB%9Bc-cho-c%C3%B4ng-d%C3%A2n-%C4%91%E1%BB%A7-%C4%91i%E1%BB%81u-ki%E1%BB%87n-t%E1%BB%AB-ng%C3%A0y/122251399514292680/",
+    "snippet": "MIỄN LỆ PHÍ CẤP HỘ CHIẾU PHỔ THÔNG TRONG NƯỚC CHO CÔNG DÂN ĐỦ ĐIỀU KIỆN TỪ NGÀY 15/8/2026 Từ ngày 15/8/2026 đến hết ngày 28/02/2027, ...",
+    "position": 2
+   },
+   {
+    "title": "Thủ tục cấp, sửa đổi, bổ sung Hộ chiếu Phổ thông",
+    "link": "https://vietnamembassy-usa.org/vi/lanhsu/thu-tuc-cap-doi-va-gia-han-ho-chieu-passport",
+    "snippet": "Bước 3: Nộp lệ phí và chờ nhận hộ chiếu qua bưu điện hoặc tại CQĐD. Thông tin liên hệ: Nộp hồ sơ trực tiếp tại Đại sứ quán: Thứ Hai: 9h30 - 12h00. Thứ Tư ...",
+    "position": 3
+   },
+   {
+    "title": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công ...",
+    "link": "https://congan.hungyen.gov.vn/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-cong-dan-du-dieu-kien-tu-ngay-1582026-c239385.html",
+    "snippet": "Miễn lệ phí cấp hộ chiếu phổ thông trong nước cho công dân đủ điều kiện từ ngày 15/8/2026 · Điều kiện để được miễn lệ phí cấp hộ chiếu · Người dân cần làm gì?",
+    "position": 4
+   },
+   {
+    "title": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong ...",
+    "link": "https://luatvietnam.vn/tin-van-ban-moi/mien-le-phi-cap-ho-chieu-pho-thong-trong-nuoc-cho-nguoi-co-vneid-muc-2-186-111583-article.html",
+    "snippet": "Từ 15/8/2026, miễn lệ phí cấp hộ chiếu phổ thông trong nước cho người có VNeID mức 2 · Ngày 14/8/2026, Bộ Tài chính ban hành Thông tư 117/2026/TT ...",
+    "date": "18 thg 8, 2026",
+    "position": 5
+   },
+   {
+    "title": "Applying for a Passport Online in 2026: Just a Few Clicks ...",
+    "link": "https://www.youtube.com/watch?v=URQ-DCcLfH8",
+    "snippet": "... lệ phí trực tuyến, hộ chiếu còn có thể được chuyển phát về tận nhà qua đường bưu điện, giúp tiết kiệm đáng kể thời gian và công sức đi lại ...",
+    "position": 6
+   },
+   {
+    "title": "Toàn Bộ Quy Trình Làm Hộ Chiếu Online Và Trực Tiếp 2026",
+    "link": "https://fisc.com.vn/lam-ho-chieu/",
+    "snippet": "Bước 1: Đăng nhập tài khoản · Bước 2: Lựa chọn trường hợp giải quyết cấp hộ chiếu · Bước 3: Khai thông tin hồ sơ · Bước 4: Thanh toán lệ phí · Bước 5: Nhận kết quả.",
+    "position": 7
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\" được quy định như sau: ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị ...",
+    "date": "1 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

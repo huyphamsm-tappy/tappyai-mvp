@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com Mac erase before selling Activation Lock turn off Find My Mac check battery cycle count Apple Diagnostics used Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:35:09.117Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com Mac erase before selling Activation Lock turn off Find My Mac check battery cycle count Apple Diagnostics used Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "If you see battery 'Service Recommended' on your Mac ...",
+    "link": "https://support.apple.com/en-us/108376",
+    "snippet": "\"Service Recommended\" in Battery settings means that your battery's ability to hold charge is less than when it was new, or it isn't functioning ...",
+    "date": "11 thg 5, 2026",
+    "position": 1
+   },
+   {
+    "title": "If your Mac doesn't start up all the way",
+    "link": "https://support.apple.com/en-gb/102675",
+    "snippet": "Find out what to do if your Mac starts up to Recovery Assistant, with a first-aid symbol (a cross in a circle) and the message that your Mac ...",
+    "date": "2 thg 10, 2025",
+    "position": 2
+   },
+   {
+    "title": "If your Mac battery won't charge",
+    "link": "https://support.apple.com/en-au/guide/mac-help/mh29198/mac",
+    "snippet": "If your Mac battery won't charge, check the software and hardware of your Mac, or get your Mac serviced.",
+    "position": 3
+   },
+   {
+    "title": "If your Mac doesn't turn on",
+    "link": "https://support.apple.com/en-ca/102623",
+    "snippet": "Check power connections. Make sure that your power cable is undamaged and plugged securely into your Mac and a working electrical outlet.",
+    "date": "2 thg 6, 2025",
+    "position": 4
+   },
+   {
+    "title": "Check battery health and usage on Apple Watch",
+    "link": "https://support.apple.com/guide/watch/check-battery-health-and-usage-apd24c6cb2dd/watchos",
+    "snippet": "You can monitor your Apple Watch battery in several ways: check the current battery level, view usage history and charging patterns, and assess overall battery ...",
+    "position": 5
+   },
+   {
+    "title": "If your Mac doesn't turn on",
+    "link": "https://support.apple.com/en-in/102623",
+    "snippet": "Check power connections. Make sure your power cable is undamaged and plugged securely into your Mac and a working electrical socket.",
+    "date": "2 thg 6, 2025",
+    "position": 6
+   },
+   {
+    "title": "Prepare your iPhone or iPad for a service appointment",
+    "link": "https://support.apple.com/en-gb/109519",
+    "snippet": "Before you bring in your iPhone or iPad for a service, follow these steps to help protect your personal information and save time on your repair ...",
+    "date": "16 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Get information about your iPod touch",
+    "link": "https://support.apple.com/guide/ipod-touch/get-information-about-your-ipod-touch-iph3dd5fc7e/ios",
+    "snippet": "On iPod touch, find storage information, battery usage, iOS version number, model number, serial number, warranty information, and more.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

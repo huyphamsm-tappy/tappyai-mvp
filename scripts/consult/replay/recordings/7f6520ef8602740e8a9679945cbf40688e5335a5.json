@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Neo 13 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:04.325Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Neo 13 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch",
+    "link": "https://www.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-i13335434012.html?srsltid=AU7gw4UUAs6gZVonG5-p4Txb0-8FSxoTTD21u8I92bv5UacWNUe09AbC",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính Hãng ... Trả góp trong 12 tháng, chỉ với 1.499.917 ₫ mỗi tháng. ... Miễn phí vận chuyển khi mua từ ...",
+    "rating": 5,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "Ốp Lưng Cứng Siêu Mỏng Cho MacBook Neo 13 Inch 2026 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13437941105.html?srsltid=AU7gw4UJi4pWkXKpB6geiMF7n1hvswZVrSmSXsUUOCAz6lem7h9slLMk",
+    "snippet": "Được thiết kế dành riêng cho MacBook Neo 13 inch 2026 Release Model A3404, đảm bảo sự phù hợp hoàn hảo và tích hợp liền mạch. Màu Indigo chân thực với thiết bị.",
+    "position": 2
+   },
+   {
+    "title": "Ốp Bảo Vệ Laptop Dẻo Dai Cho MacBook Neo 13 Inch 2026 ...",
+    "link": "https://www.lazada.vn/products/pdp-i13436783455.html?srsltid=AU7gw4WMb-iO5BDmVOK1pbZWyS3vW3-cvlGD094lUJhdTYeQDJV0RmxG",
+    "snippet": "Được thiết kế dành riêng cho MacBook Neo 13 inch với Chip A18 Pro, đảm bảo sự phù hợp hoàn hảo và tích hợp liền mạch. Bề mặt mờ chống trầy xước. Có lớp ...",
+    "position": 3
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính ...",
+    "link": "https://h5.lazada.vn/products/may-tinh-xach-tay-apple-macbook-neo-13-inch-hang-chinh-hang-saa-i13335434012-s116528200616.html",
+    "snippet": "LazMall Máy tính xách tay Apple MacBook Neo 13 inch - Hàng Chính Hãng SA/A · 100% chính hãng · 30 ngày miễn phí trả hàng · Hóa đơn 1 năm.",
+    "position": 4
+   },
+   {
+    "title": "Macbook Neo 13 Inch 2026 A3404 Chống Ánh Sáng Xanh ...",
+    "link": "https://www.lazada.vn/products/macbook-neo-13-inch-2026-a3404-chong-anh-sang-xanh-chong-choi-man-hinh-pet-mo-bao-ve-mat-bao-ve-mat-i13388906471.html?srsltid=AU7gw4VG5ah6MpemwP63oxHpdJqJPAT-d_jow7QCsero0-TtlGkzVXtg",
+    "snippet": "Có đặc tính chống ánh sáng xanh và chống chói, giảm mỏi mắt và tăng cường sự thoải mái khi sử dụng kéo dài.",
+    "position": 5
+   },
+   {
+    "title": "Ốp Lưng MacBook Neo 13 Inch Trong Suốt, Chống Xước, Chất ...",
+    "link": "https://www.lazada.vn/products/p-lng-macbook-neo-13-inch-trong-sut-chng-xc-cht-liu-silicon-dnh-cho-a3404-a18-pro-d-dng-gn-vo-bo-v-ton-din-i13436783457.html?srsltid=AU7gw4Uh0ul6u68_M2yoxW3-hx7A0X_G3z4n1VAqk4HTYzQiKb6cn1jc",
+    "snippet": "Được thiết kế dành riêng cho các mẫu MacBook Air 13 và MacBook Pro 13, đảm bảo sự phù hợp hoàn hảo và tích hợp liền mạch. Dễ sử dụng - Dễ dàng gắn vào.",
+    "position": 6
+   },
+   {
+    "title": "Ốp Laptop Siêu Mỏng Màu Vàng Cam Dành Cho MacBook Neo ...",
+    "link": "https://www.lazada.vn/products/pdp-i13435955783.html?srsltid=AU7gw4UFU0_S6yyLWJs2Xuzsnj33ZHOgf2TIwSRPWCGSb_39TwRQcCwZ",
+    "snippet": "Ốp Laptop Siêu Mỏng Màu Vàng Cam Dành Cho MacBook Neo 13 A18 Pro Chip Model A3404 - Vỏ Nhựa Chống Nước Bảo Vệ MacBook Dành Cho Cả Nam Và Nữ.",
+    "position": 7
+   },
+   {
+    "title": "Vỏ Máy Tính Xách Tay MacBook Neo 13 Inch 2026 Màu Sắc ...",
+    "link": "https://www.lazada.vn/products/v-my-tnh-xch-tay-macbook-neo-13-inch-2026-mu-sc-chnh-thc-ph-hp-vi-v-nha-cng-m-cho-a3404-phong-cch-gin-d-unisex-i13438356297.html?srsltid=AU7gw4W-1k9-0C33blwRjKNcQ75tSMoPNf-cFLVWGYYjbJ4lL5-3iyvn",
+    "snippet": "Được đúc để phù hợp với MacBook Neo 13 inch 2026, vỏ này có các đường cắt chính xác để truy cập liền mạch vào tất cả các cổng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

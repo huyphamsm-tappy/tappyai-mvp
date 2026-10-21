@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Neo 13 inch\" OR \"Apple Macbook Pro M1 Pro 16 inch 10 CPU\" OR \"Apple MacBook Air\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:51:57.867Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Neo 13 inch\" OR \"Apple Macbook Pro M1 Pro 16 inch 10 CPU\" OR \"Apple MacBook Air\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686587010311523598",
+    "snippet": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB SSD Wi-Fi Space ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 1
+   },
+   {
+    "title": "Apple Macbook Air M4 Accessories",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-air-m4-accessories",
+    "snippet": "Check out Apple Macbook Air M4 Accessories selection on TikTok Shop and get free shipping on eligible items. Discover trending items and exclusive ...",
+    "position": 2
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7683162012251098381",
+    "snippet": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020) 8GB RAM 128GB SSD Wi-Fi Silver (Excellent Condition) ; เสียงต้นฉบับ - Notebook Stationโน๊ต ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Apple Macbook Neo 13 Inch · 2020 Refurbished Apple Macbook Air 13.3-Inch M1, 8GB - 16GB Ram, 128GB - 1TB SSD (Good) · 2020 Refurbished Apple Macbook Air 13.3-Inch ...",
+    "position": 4
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7687972516337290510",
+    "snippet": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 8GB 256GB Space Gray (Excellent Condition). Refurbished Apple MacBook Air 2018 13\" ...",
+    "position": 5
+   },
+   {
+    "title": "How to Fix Message Setup Cannot Continue on Apple ...",
+    "link": "https://www.tiktok.com/discover/how-to-fix-message-setup-cannot-continue-on-apple-macbook-air",
+    "snippet": "How to Fix Message Setup Cannot Continue on Apple Macbook Air. Learn how to fix message setup issues on your MacBook Air with our easy ...",
+    "date": "10 thg 8, 2026",
+    "position": 6
+   },
+   {
+    "title": "2023 Refurbished Apple Macbook Air 15.3-Inch M2 8GB ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-macbook-air-15-3-inch-m2-8gb-24gb-ram-256gb-2tb-ssd/1732447734391607756",
+    "snippet": "Refurbished Apple Macbook Air 15.3-Inch M2 8GB-24GB RAM, 256GB-2TB SSD (Excellent) Powerful Performance·Equipped with an M2 8CPU 10 GPU processor.·Offers ...",
+    "position": 7
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 11\" MJVM2LL/A 2015 ...",
+    "link": "https://www.tiktok.com/@refresh.your.tech/video/7685818144912395534",
+    "snippet": "Refurbished Apple MacBook Air 11\" MJVM2LL/A 2015 128GB SSD Wi-Fi Silver (Good Condition) ; AirGeeksRc. 1561 ; Notebook Stationโน๊ตบุ๊คมือสอง. 988.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"lệ phí cấp hộ chiếu\" 2",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:20.863Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"lệ phí cấp hộ chiếu\" 2",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 26/TC-HCVX by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-so-26-tc-hcvx-ve-che-do-thu-tien-le-phi-cap-ho-chieu-cac-loai-giay-to-chung-nhan-cho-nguoi-nuoc-ngoai-va-cong-dan-viet-nam-nhap-canh-xuat-canh-va-cu-tru--10564",
+    "snippet": "Hướng dẫn bổ sung về chế độ thu tiền lệ phí cấp hộ chiếu các loại giấy tờ chứng nhận cho. người nước ngoài và công dân Việt Nam nhập cảnh, xuất cảnh và cư ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư liên tịch 71/TTLB by Bộ Nội vụ",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-lien-tich-so-71-ttlb-quy-dinh-ve-thu-le-phi-cap-ho-chieu-cac-loai-giay-to-chung-nhan-tai-viet-nam-cho-nguoi-nuoc-ngoai-va-cong-dan-viet-nam-nhap-canh-xuat-canh-va-cu-tru--11411",
+    "snippet": "Thông tư liên tịch số 71/TTLB Quy định về thu lệ phí cấp hộ chiếu, các loại giấy tờ chứng nhận tại Việt Nam cho người nước ngoài và công dân Việt Nam nhập cảnh, ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "a) Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, tem \"AB\";. b) Phí cấp thị thực và các giấy tờ khác có giá trị xuất cảnh, nhập cảnh, cư trú cho ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 88/2007/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-88-2007-tt-btc-sua-doi-bo-sung-thong-tu-so-37-2003-tt-btc-ngay-24-4-2003-cua-bo-tai-chinh-quy-dinh-che-do-thu-nop-va-quan-ly-su-dung-le-phi-cap-ho-chieu-thi-thuc-va-giay-to-ve-nhap-canh-xuat-canh-qua-canh-va-cu-tru-tai-viet-nam--25613",
+    "snippet": "... lệ phí cấp hộ chiếu, thị thực và giấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư trú tại Việt Nam. Xem toàn văn và hiệu lực.",
+    "date": "24 thg 4, 2003",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 25/2021/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-25-2021-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-quan-ly-va-su-dung-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam--150993",
+    "snippet": "2. Miễn lệ phí cấp hộ chiếu đối với: Người Việt Nam ở nước ngoài có quyết định trục xuất bằng văn bản của cơ quan có thẩm quyền nước sở tại nhưng không có ...",
+    "position": 5
+   },
+   {
+    "title": "Văn bản hợp nhất 52/VBHN-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/van-ban-hop-nhat-so-52-vbhn-btc-quy-dinh-che-do-thu-nop-quan-ly-va-su-dung-le-phi-cap-ho-chieu-thi-thuc-giay-to-ve-nhap-canh-xuat-canh-qua-canh-va-cu-tru-tai-viet-nam--111462",
+    "snippet": "Văn bản hợp nhất số 52/VBHN-BTC Quy định chế độ thu, nộp, quản lý và sử dụng lệ phí cấp hộ chiếu, thị thực, gỉấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 100/2011/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-100-2011-tt-btc-quy-dinh-viec-quan-ly-su-dung-so-thu-le-phi-xuat-nhap-canh-phai-nop-ngan-sach-nha-nuoc-de-thuc-hien-de-an-san-xuat-va-phat-hanh-ho-chieu-dien-tu-viet-nam--26775",
+    "snippet": "Thông tư này quy định đối với khoản lệ phí cấp hộ chiếu, thị thực và các loại giấy tờ cho người Việt Nam và người nước ngoài nhập cảnh, xuất ...",
+    "date": "7 thg 7, 2011",
+    "position": 7
+   },
+   {
+    "title": "Thông tư 219/2016/TT-BTC by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-so-219-2016-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-quan-ly-va-su-dung-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam--118526",
+    "snippet": "2. Thông tư này áp dụng đối với người nộp, tổ chức thu phí, lệ phí ... lệ phí cấp hộ chiếu, thị thực, giấy tờ về nhập cảnh, xuất cảnh, quá cảnh, cư ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

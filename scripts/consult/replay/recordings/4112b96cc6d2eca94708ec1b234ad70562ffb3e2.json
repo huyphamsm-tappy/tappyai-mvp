@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "hồ sơ cấp hộ chiếu phổ thông online công dân Việt Nam CCCD ảnh số điện thoại email giấy tờ lần đầu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:14:33.096Z",
+ "body": {
+  "searchParameters": {
+   "q": "hồ sơ cấp hộ chiếu phổ thông online công dân Việt Nam CCCD ảnh số điện thoại email giấy tờ lần đầu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thủ tục làm hộ chiếu phổ thông online",
+    "link": "https://www.xuatnhapcanh.com.vn/c11t80-thu-tuc-lam-ho-chieu-online.htm",
+    "snippet": "Thủ tục làm hộ chiếu online cấp độ 4 là làm hoàn toàn online, người làm hộ chiếu chỉ một lần duy nhất khai cấp hộ chiếu trực tuyến, thanh toán ...",
+    "date": "24 thg 12, 2024",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "1. Hồ sơ bao gồm: - Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; · 2. Nơi nộp hồ sơ: · 3. Những trường hợp sau đây có thể đề nghị cấp hộ chiếu lần đầu ...",
+    "position": 2
+   },
+   {
+    "title": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/videos/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-thao-t%C3%A1c-%C4%91%C4%83ng-k%C3%BD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-tr%C3%AAn-c%E1%BB%95ng-d%E1%BB%8Bch-v%E1%BB%A5-c%C3%B4ng-b%E1%BB%99-c%C3%B4ng/1273713433627241/",
+    "snippet": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ THÔNG TRÊN CỔNG DỊCH VỤ CÔNG BỘ CÔNG AN.",
+    "position": 3
+   },
+   {
+    "title": "Hướng dẫn làm hộ chiếu online (passport online), nhận tại ...",
+    "link": "https://quephong.nghean.gov.vn/tin-noi-bat/huong-dan-lam-ho-chieu-online-passport-online-nhan-tai-nha-633365",
+    "snippet": "Tuy nhiên, như đã nói ở trên, từ ngày 01/06/2022, công dân Việt Nam có thể thực hiện thủ tục làm hộ chiếu online hoàn toàn, và kết quả được gửi ...",
+    "date": "19 thg 4, 2024",
+    "position": 4
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh). Nộp hồ sơ. Đăng nhập tài khoản khai báo tạm trú. Tên đăng nhập. Mật khẩu. Tỉnh thành.",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn cấp hộ chiếu online làm tại nhà 2024 | Dịch vụ công",
+    "link": "https://www.youtube.com/watch?v=XsTpP73SaZw",
+    "snippet": "Dạ cho em hỏi là hiện em đang ở nước ngoài thì em có thể đăng kí online trước rồi khi có Hộ chiếu mới thì sẽ về Việt Nam lấy có được không ạ ...",
+    "position": 6
+   },
+   {
+    "title": "HƯỚNG DẪN THAO TÁC ĐĂNG KÝ CẤP HỘ CHIẾU PHỔ ...",
+    "link": "https://www.facebook.com/xuatnhapcanhhanoi/posts/h%C6%B0%E1%BB%9Bng-d%E1%BA%ABn-thao-t%C3%A1c-%C4%91%C4%83ng-k%C3%BD-c%E1%BA%A5p-h%E1%BB%99-chi%E1%BA%BFu-ph%E1%BB%95-th%C3%B4ng-tr%C3%AAn-c%E1%BB%95ng-d%E1%BB%8Bch-v%E1%BB%A5-c%C3%B4ng-b%E1%BB%99-c%C3%B4ng/765553852792615/",
+    "snippet": "Lưu ý hình thẻ phông nền trắng, định dạng đuôi ảnh là JPG, tải ảnh thành công tên ảnh sẽ hiện màu xanh. Sau đó nhập đầy đủ thông tin vào các ...",
+    "position": 7
+   },
+   {
+    "title": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ",
+    "link": "https://sonmai.quangngai.gov.vn/video-clip/truyen-thong-ve-cai-cach-hanh-chinh/huong-dan-dang-ky-thu-tuc-cap-ho-chieu-pho-thong-tai-nha.html",
+    "snippet": "Hướng dẫn đăng ký thủ tục Cấp hộ chiếu phổ thông TẠI NHÀ. Thứ hai, 12/01/2026, 14:16. Telegram LinkedIn Twitter / X WhatsApp Email Sao chép liên kết.",
+    "date": "12 thg 1, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

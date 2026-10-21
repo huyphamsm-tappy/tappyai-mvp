@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 thông số chính thức A16 camera USB-C",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:30:37.586Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 thông số chính thức A16 camera USB-C",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "Camera Chính 48MP: 26 mm, khẩu độ ƒ/1.6, chống rung quang học dịch chuyển cảm biến, Focus Pixels 100%, hỗ trợ ảnh có độ phân giải siêu cao (24MP và 48MP).",
+    "position": 1
+   },
+   {
+    "title": "Ấn tượng đầu tiên iPhone 15 Plus: Dynamic Island, chip ...",
+    "link": "https://www.thegioididong.com/tin-tuc/an-tuong-dau-tien-iphone-15-plus-1546716",
+    "snippet": "Kết hợp cùng vi xử lý hình ảnh tích hợp trong chip Apple A16 và điểm ảnh lớn hơn, máy hứa hẹn sẽ mang đến khả năng nhiếp ảnh rất tốt trong phân ...",
+    "date": "1 thg 1, 2023",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 thông số kỹ thuật chi tiết: Đánh giá máy sau 3 năm",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/iphone-15-thong-so-ky-thuat-chi-tiet-213017",
+    "snippet": "Cập nhật iPhone 15 thông số kỹ thuật chi tiết ; Kích thước. 147,6 x 71,6 x 7,8 mm. Trọng lượng ; Công nghệ. Super Retina XDR OLED. Kích thước ; Chip xử lý. Apple ...",
+    "position": 3
+   },
+   {
+    "title": "Siêu phẩm iPhone 15 series lộ diện với camera 48MP xịn ...",
+    "link": "https://baodanang.vn/sieu-pham-iphone-15-series-lo-dien-voi-camera-48mp-xin-so-khung-titanium-va-cong-usb-c-moi-3293191.html",
+    "snippet": "Siêu phẩm iPhone 15 series lộ diện với camera 48MP xịn sò, khung Titanium và cổng USB-C mới ... Loạt sản phẩm mà Apple giới thiệu tại sự kiện mùa ...",
+    "date": "13 thg 9, 2023",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 thông số kỹ thuật cập nhật mới theo Apple",
+    "link": "https://shopdunk.com/iphone-15-thong-so-ky-thuat",
+    "snippet": "1. Bảng thông số kỹ thuật iPhone 15 chi tiết · Camera góc rộng: cảm biến 48MP, khẩu độ f/1.6 · Camera góc siêu rộng: cảm biến 12MP, khẩu độ f/2.4.",
+    "date": "11 thg 9, 2023",
+    "position": 5
+   },
+   {
+    "title": "Cấu hình iPhone 15: Sử dụng chip gì, hiệu năng ra sao?",
+    "link": "https://cellphones.com.vn/sforum/cau-hinh-iphone-15",
+    "snippet": "Cấu hình, Apple A16 Bionic (4nm) ; RAM, 6GB ; Bộ nhớ trong, 128GB - 256GB - 512GB ; Camera sau, Camera chính 48MP Camera góc siêu rộng 12MP.",
+    "date": "28 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "TẤT TẦN TẬT VỀ IPHONE 15 SERIES - 4 PHIÊN BẢN, KHUNG ...",
+    "link": "https://www.youtube.com/watch?v=WP9_8FVipSQ&xstg=CAMSBhUD-7L2Hw%3D%3D",
+    "snippet": "Mua iPhone & iPad Giá Tốt Nhất Tại CellphoneS ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15: Thiết kế đẹp, màn hình nét, nhiều màu, sạc USB",
+    "link": "https://pisenvietnam.vn/tin-tuc/iphone-15-usbc-thiet-ke-dep-man-hinh-net-nhieu-mau-gia-mem-665.html",
+    "snippet": "1. Màu sắc mới nổi bật - hút mắt người nhìn · 2. Hoàn toàn thay thế 100% tai thỏ bằng Dynamic Island · 3. Sử dụng cổng USB-C hỗ trợ tốc độ sạc, truyền dữ liệu ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,66 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Apple 2024 Macbook Pro Laptop Với M4 Pro sai gon site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:41:21.134Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Apple 2024 Macbook Pro Laptop Với M4 Pro sai gon site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Case macbook air m4 - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/case%20macbook/air/m4",
+    "snippet": "Mua online case macbook air m4 chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 1
+   },
+   {
+    "title": "Mã Giảm Giá Chính Thức 10.10 | Siêu Sale Thương Hiệu",
+    "link": "https://shopee.vn/m/ma-giam-gia",
+    "snippet": "Tham gia Shopee sale 10.10 săn ưu đãi khủng. Voucher Xtra giảm đến 10 triệu đồng. Shopee chính hãng giảm đến 50%. Ưu đãi freeship 0Đ. Shopee ngay!",
+    "position": 2
+   },
+   {
+    "title": "Ví apple magsafe - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/v%C3%AD/apple%20magsafe",
+    "snippet": "Mua online ví apple magsafe chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 3
+   },
+   {
+    "title": "Samsung dex - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/samsung%20dex",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm samsung dex chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, các sản phẩm có sẵn và bạn dễ dàng tìm thấy ở các ...",
+    "position": 4
+   },
+   {
+    "title": "ốp máy tính bảng ipad - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20m%C3%A1y%20t%C3%ADnh%20b%E1%BA%A3ng/ipad",
+    "snippet": "Shopee cung cấp đầy đủ các sản phẩm ốp máy tính bảng ipad chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Bạn có thể thỏa thích tham khảo sản phẩm chính ...",
+    "position": 5
+   },
+   {
+    "title": "Máy tính bảng hanzhong h13 pro - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/m%C3%A1y%20t%C3%ADnh%20b%E1%BA%A3ng/hanzhong/h13%20pro",
+    "snippet": "Máy tính bảng H13 mới 2025 Máy tính bảng chính hãng 10.3 inch full HD, máy tính bảng có thể thực hiện cuộc gọi 4g/5g. 1.596.000₫. 3.560.000₫.",
+    "position": 6
+   },
+   {
+    "title": "Hdmi không dây - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/hdmi/kh%C3%B4ng%20d%C3%A2y",
+    "snippet": "Hub Type C to HDMI 4K 60Hz cho Macbook/iPad/Laptop/Điện thoại, Hub chuyển đổi type C sang HDMI, Cổng chuyển đổi Type C.",
+    "position": 7
+   }
+  ],
+  "credits": 1
+ }
+}

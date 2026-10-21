@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Sony WH-CH720N IP rating sweat running official",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:16:55.384Z",
+ "body": {
+  "searchParameters": {
+   "q": "Sony WH-CH720N IP rating sweat running official",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth chụp tai Sony WH-CH720N",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-ch720n.html",
+    "snippet": "Kích thước. Dài 26 cm - Rộng 20.8 cm - Cao 5.5 cm. Trọng lượng. 192g. Công nghệ âm thanh. Bộ xử lý tích hợp V1 codec SBC Chống ồn kỹ thuật số Công nghệ ENC ...",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 1
+   },
+   {
+    "title": "To prevent burning or malfunction due to getting wet",
+    "link": "https://helpguide.sony.net/mdr/2966/v1/en/contents/TP1000784812.html",
+    "snippet": "The headset is not waterproof. If water or foreign matter enters the headset, this can result in burnout or malfunction. Avoid situations such as the following ...",
+    "position": 2
+   },
+   {
+    "title": "WH-CH720N Wireless Noise Cancelling | Headphones",
+    "link": "https://www.sony.co.uk/headphones/products/wh-ch720n",
+    "snippet": "Enjoy all-day comfort without the noise. WH-CH720N. With noise-cancelling technology, a lightweight design and a long-lasting battery life you can enjoy ...",
+    "rating": 4.5,
+    "ratingCount": 3749,
+    "position": 3
+   },
+   {
+    "title": "Is CH720N sweat proof? : r/sony",
+    "link": "https://www.reddit.com/r/sony/comments/160c4qg/is_ch720n_sweat_proof/",
+    "snippet": "Wanted to know since I'll be using them for workout",
+    "position": 4
+   },
+   {
+    "title": "Sony WH-CH720N Review: Good Sound, Effective ANC ...",
+    "link": "https://counterpointresearch.com/en/insights/sony-wh-ch720n-review",
+    "snippet": "At just 192 gm, the WH-CH720N is Sony's lightest wireless noise-canceling headphone set. The weight is well-balanced and you hardly feel it, ...",
+    "date": "25 thg 6, 2023",
+    "position": 5
+   },
+   {
+    "title": "how do these fair in the gym? Could you spend an – Q&A",
+    "link": "https://www.bestbuy.com/site/questions/sony-whch720n-wireless-noise-cancelling-headphones-black/6533162/question/fcf29edb-0d47-3598-a198-f65253e8f677",
+    "snippet": "Our WH-CH720N wireless noise canceling headphones are not waterproof nor sweatproof. If spending an hour on a treadmill will make you sweat ...",
+    "date": "30 thg 11, 2023",
+    "position": 6
+   },
+   {
+    "title": "Sony WH-CH720N Black - Headphones",
+    "link": "https://www.coolblue.nl/en/product/923501/sony-wh-ch720n-black.html?srsltid=AU7gw4Wek_yF4RGmD8EZZPv25579SGWqzU21VYHcDgyS0FbzyXuV9aLi",
+    "snippet": "Customer rating 9.2/10. Insure your headphones. Coolblue takes care of ... Sweat earphones in hot weather. Read full review. Review by: PYF. Date: 30 August ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth Chụp Tai Sony WH-CH720N",
+    "link": "https://www.thegioididong.com/tai-nghe/tai-nghe-bluetooth-chup-tai-sony-wh-ch720n",
+    "snippet": "Tai nghe bluetooth chụp tai Sony WH-CH720N chính hãng, giá rẻ, giảm thêm đến 150K, góp 0%, giao nhanh, BH 12 tháng, gọn nhẹ, chống ồn, sạc nhanh, ...",
+    "rating": 4.9,
+    "ratingCount": 2949,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

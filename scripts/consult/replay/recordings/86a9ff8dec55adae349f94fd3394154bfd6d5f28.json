@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"TiMon quán ( Nhậu Bình Dân )\" OR \"Cao lầu Dì Hát 55 năm\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:09:43.985Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"TiMon quán ( Nhậu Bình Dân )\" OR \"Cao lầu Dì Hát 55 năm\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mì Quảng Cao Lầu Dì Hát 55 năm Hội An",
+    "link": "https://www.tiktok.com/@duyenhoian/video/7639991652991470855",
+    "snippet": "Quán: Mì Quảng Cao Lầu Dì Hát 55 năm (tên quán ghi rõ 55 năm) Địa chỉ: 4 Thái Phiên, Hội An Tóm tắt nhanh Ăn tại Mì Quảng Cao Lầu Dì Hát ...",
+    "position": 1
+   },
+   {
+    "title": "Cao lầu Bá Lễ - Hội An",
+    "link": "https://www.tiktok.com/@nguyenquangdungdirector/video/7531692283389873426",
+    "snippet": "Quán: Mì Quảng Cao Lầu Dì Hát 55 năm (tên quán ghi rõ 55 năm) Địa chỉ: 4 Thái Phiên, Hội An Tóm tắt nhanh Ăn tại Mì Quảng Cao Lầu Dì Hát thấy ...",
+    "position": 2
+   },
+   {
+    "title": "fl1p3hv2 — оригинальный звук",
+    "link": "https://www.tiktok.com/music/%D0%BE%D1%80%D0%B8%D0%B3%D0%B8%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D1%8B%D0%B9-%D0%B7%D0%B2%D1%83%D0%BA-7530235749250976528",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 3
+   },
+   {
+    "title": "DATA POULTRY FERME - son original",
+    "link": "https://www.tiktok.com/music/son-original-7627076735183375125",
+    "snippet": "Cao Lầu Dì Hát: 55 Năm Mì Quảng Đặc Sản Hội An. |. Praying Not to Stay Broke. |. best-deck-with-spear-goblin-arena-8. |. Été chaud en ville avec ma touffe de ...",
+    "position": 4
+   },
+   {
+    "title": "almaayala - sonido original",
+    "link": "https://www.tiktok.com/music/sonido-original-7446227907116485407",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 5
+   },
+   {
+    "title": "WELL OF SALVATION MINISTRIES - original sound",
+    "link": "https://www.tiktok.com/music/original-sound-7649078702630521608",
+    "snippet": "... Cao Lầu Dì Hát 55 năm 4 Thái Phiên, Hội An ăn chỗ này thấy ưng bụng nhất nè, tại nước dùng ngon, chắc mọi tinh tuý nằm ở nước dùng #hoianangi #hoianlocal ...",
+    "position": 6
+   },
+   {
+    "title": "Đang có mã 9.9.k 2 chai 520ml các bà tranh thủ nha ...",
+    "link": "https://www.tiktok.com/@topgiadoisong/video/7652301754154962196",
+    "snippet": "Quán giới thiệu tuổi nghề 55 năm, phục vụ Mì Quảng và Cao Lầu tại trung tâm Hội An. Những điểm nổi bật - Tên quán: Mì Quảng Cao Lầu Dì Hát 55 năm, nhấn mạnh ...",
+    "position": 7
+   },
+   {
+    "title": "Cao Lầu Hội An và Đà Nẵng: Nơi nào ngon hơn?",
+    "link": "https://www.tiktok.com/@iedinhhang/video/7500637620062506241",
+    "snippet": "Cao lầu Dì Hát 55 năm: Ngã 3 Thái Phiên - Nguyễn Huệ, Hội An. 2025-5-5Trả lời. Đã thích bởi nhà sáng tạo. 153. Xem thêm câu trả lời khác (8).",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

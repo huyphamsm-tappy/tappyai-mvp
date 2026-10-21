@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Apple MacBook Neo 13 inch\" OR \"APPLE Macbook Pro 13\" OR \"Apple MacBook Air\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:29.782Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Apple MacBook Neo 13 inch\" OR \"APPLE Macbook Pro 13\" OR \"Apple MacBook Air\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7686587010311523598",
+    "snippet": "Refurbished Apple MacBook Air MWTJ2LL/A 13\" 128GB SSD Wi-Fi Space ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 1
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Apple Macbook Neo 13 Inch · 2020 Refurbished Apple Macbook Air 13.3-Inch M1, 8GB - 16GB Ram, 128GB - 1TB SSD (Good) · 2020 Refurbished Apple Macbook Air 13.3-Inch ...",
+    "position": 2
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 2018 13\" Intel Core i5 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7687972516337290510",
+    "snippet": "Apple MacBook Air M2 15.3” — Güç, şıklık ve performans bir arada Öne çıkan özellikler - 15.3” Liquid Retina ekran: Geniş, net ve renk dengesi ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Air M4 Accessories",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-air-m4-accessories",
+    "snippet": "Check out Apple Macbook Air M4 Accessories selection on TikTok Shop and get free shipping on eligible items. Discover trending items and exclusive ...",
+    "position": 4
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020 ...",
+    "link": "https://www.tiktok.com/@refreshed.tech/video/7683162012251098381",
+    "snippet": "Refurbished Apple MacBook Air 13\" M1 MGN53LL/A (2020) 8GB RAM 128GB ... APPLE Macbook Air 13 (2025) M4 Ram16 SSD256 จอ13.6 ระดับ2k ...",
+    "position": 5
+   },
+   {
+    "title": "Refurbished Apple MacBook Air 11\" MJVM2LL/A 2015 ...",
+    "link": "https://www.tiktok.com/@refresh.your.tech/video/7685818144912395534",
+    "snippet": "Refurbished Apple MacBook Air 11\" MJVM2LL/A 2015 128GB SSD Wi-Fi Silver (Good Condition) ; AirGeeksRc. 1561 ; Notebook Stationโน๊ตบุ๊คมือสอง. 988.",
+    "position": 6
+   },
+   {
+    "title": "Refurbished Apple Macbook Air 13.3-Inch Intel Core i5, ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-macbook-air-13-3-intel-core-i5-8gb-16gb-ram/1730721996151296460",
+    "snippet": "Refurbished Apple Macbook Air 13.3-Inch Intel Core i5, 8GB-16GB Ram, 128GB-1.5TB SSD, All colors, (Excellent) ; Other dangerous goods or hazardous materials, No.",
+    "rating": 4.8,
+    "ratingCount": 1633,
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Air M5 laptop gaming - Radiance Computer",
+    "link": "https://www.tiktok.com/@radiancecomputer/video/7690096556011310342",
+    "snippet": "Apple MacBook Air M5 laptop gaming El tema principal es el Apple MacBook Air M5 y su relación con gaming, según la descripción proporcionada ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

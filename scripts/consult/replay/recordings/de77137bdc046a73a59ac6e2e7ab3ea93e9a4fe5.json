@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Buffet Gánh Khách Sạn Palace\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:38:40.555Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Buffet Gánh Khách Sạn Palace\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trải Nghiệm Buffet Gánh Tại Palace Hotel Saigon",
+    "link": "https://www.tiktok.com/@buffetganh/video/7626280060932132103",
+    "snippet": "67Bình luận. 202Lượt chia sẻ. buffetganh. Buffet Gánh. Buffet Gánh Khách Sạn Palace - Điểm hẹn lý tưởng cho du khách Dịp Tết Nguyên Đán Bính ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

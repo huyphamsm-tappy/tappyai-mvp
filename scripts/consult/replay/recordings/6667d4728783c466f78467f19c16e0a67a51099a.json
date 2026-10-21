@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Pizza 4P's giá món pizza pasta TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:53:57.499Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pizza 4P's giá món pizza pasta TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/",
+    "snippet": "Zucchini Basil Sauce Pizza. 198,000 vnd. Eggplant Pizza. 218,000 vnd. Margherita Pizza. 168,000 vnd. Pasta & Main Dishes ...",
+    "position": 1
+   },
+   {
+    "title": "Pizza 4P's",
+    "link": "https://www.facebook.com/Pizza4Ps/posts/seasonal-menua-deeper-connection-with-naturem%E1%BB%99t-k%E1%BA%BFt-n%E1%BB%91i-s%C3%A2u-s%E1%BA%AFc-v%E1%BB%9Bi-thi%C3%AAn-nhi%C3%AAn-/1078481357655949/",
+    "snippet": "Thực đơn theo mùa có mặt tại: ✨TP.HCM: Hai Bà Trưng, Xuân Thủy, Thủ Khoa Huân ✨Hà Nội: Bảo Khánh, Phan Kế Bính ☎️Hotline: 19006043 Đặt bàn ...",
+    "position": 2
+   },
+   {
+    "title": "Pizza 4P's Vincom: Menu, Bảng Giá và Khuyến Mãi Mới Nhất",
+    "link": "https://vincom.com.vn/brand/pizza-4ps",
+    "snippet": "Pizza 4P's Vincom với sự đa dạng của menu, là nơi lý tưởng cho các cặp đôi lựa chọn làm không gian hẹn hò. Mức giá của Pizza 4P's không quá cao, vừa túi tiền so ...",
+    "position": 3
+   },
+   {
+    "title": "Everything I ate at Pizza 4P's in Vietnam 🍕🍝 Is it worth the ...",
+    "link": "https://www.facebook.com/biteswithlily/videos/everything-i-ate-at-pizza-4ps-in-vietnam-is-it-worth-the-hypepizza4ps-pizza-ital/853990167516014/",
+    "snippet": "She tries and reviews several dishes, including a simple potato with ricotta cheese, a creative salmon sushi, a $14 crab pasta with a creamy ...",
+    "position": 4
+   },
+   {
+    "title": "Pizza 4P's Le Thanh Ton - Ho Chi Minh City Restaurants",
+    "link": "https://www.tripadvisor.com/Restaurant_Review-g293925-d2200413-Reviews-Pizza_4P_s_Le_Thanh_Ton-Ho_Chi_Minh_City.html",
+    "snippet": "Pizza 4P's Le Thanh Ton, Ho Chi Minh City: See 3064 unbiased reviews of Pizza 4P's Le Thanh Ton, rated 4.6 of 5 on Tripadvisor and ranked #144 of 5064 ...",
+    "rating": 4.6,
+    "ratingCount": 3064,
+    "position": 5
+   },
+   {
+    "title": "Pizza 4P's Full Menu Experience – Most Famous Vietnam ...",
+    "link": "https://www.youtube.com/watch?v=B2OBtNuMJFs",
+    "snippet": "In this video, I return to one of Vietnam's most popular pizza spots, Pizza 4P's, but with a twist – I'm not just here for the pizza!",
+    "position": 6
+   },
+   {
+    "title": "Menu",
+    "link": "https://pizza4ps.com/vn/menu/?lang=vietnamese",
+    "snippet": "Rau cải xoăn hữu cơ với phô mai Lactic nhà làm và các loại hạt ngào đường caramen mặn Salad. 112,000 vnd. Phô mai Burrata kèm thịt nguội và trái cây nhiệt ...",
+    "position": 7
+   },
+   {
+    "title": "Pizza 4P's Grand Menu Overview | PDF",
+    "link": "https://www.scribd.com/document/781332890/Pizza4Ps-Grand-Menu",
+    "snippet": "Pizza 4P's Grand Menu 1. Pizza 4P's Grand Menu 2. Pizza 4P's Grand Menu 3. Assorted House-made Cheese. Say Các loại phô mai nhà làm dairy nuts. 88,000 vnđ",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,381 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "Pin AirPods Pro 2 dùng được bao lâu theo Apple?",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:50.162Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pin AirPods Pro 2 dùng được bao lâu theo Apple?",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "Tai nghe Apple AirPods Pro 2 MTJV3LL/A",
+    "source": "xoanstore.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:14654904352796751784,gpcid:3896066944466806859,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "1.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRLQbWwbHLifa0chL9zdrTPjeEXxLSNjg9FiyxEx8_1PCdd_qeKWwnhDyJFh5smBnswLY1ncpG-8lYvZCH7NgjJG_GN45o5KsDuxmXaR896-E4UkspP79GJvw",
+    "productId": "14654904352796751784",
+    "position": 1
+   },
+   {
+    "title": "Apple Nút Tai Nghe AirPods Pro 2",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:11894982695929736504,gpcid:5786103651538705935,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "269.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQv7ZXGtcmHz2QX_kdDW9gkLNOvP_V61B15h6InloqBbPBPt8C8Sie51I_603QBw_G4OxYGfn6bJPoevNdMPKlIxwT8Lfgcria2Sudj4MkYqwfB_tYdwHe",
+    "productId": "11894982695929736504",
+    "position": 2
+   },
+   {
+    "title": "Apple Đầu Tai Nghe AirPods Pro 2",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:16608921365435002661,gpcid:8546959199833750036,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "332.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRc3iJQgriU7Xmr-JTfkHBxPbuSLuFp756cLMIHTYgU9FM708qxLq2EOiyfR1oLkrqv9vCgVr1OZ7LyE0p0t9fYOZg0ZWrxGKGn7_Xg5dKwyptJVh9KbTMh",
+    "productId": "16608921365435002661",
+    "position": 3
+   },
+   {
+    "title": "[Tuổi thọ Pin đơn 4-5 giờ] Pin thay thế cho tai nghe không dây thế hệ Airpods 1 2 A1722 A1523 A2031 A2031 25mAh",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:2434828508620909754,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "96.800 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRQeZxyO-R9YJB7SVJzeCBBenIMjuRQkYTTCI1STgxhgp1Yru-_WeaTEqndJgB6DJ-F_udv5w0VpAwVviXIWT2lho0u7F4JrzvEeZERHXSyk3D3GptPTvUF",
+    "rating": 5,
+    "ratingCount": 4,
+    "productId": "2434828508620909754",
+    "position": 4
+   },
+   {
+    "title": "Thay pin hộp sạc AirPods Pro 2 - lấy ngay chỉ sau 15 phút",
+    "source": "clickbuy.com.vn",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSc3eNCzzmaSOGGvX_VKSAvtQ3IjD2DietdO_Pzq6FZqHDUaZrnQZJIV8GME-gF7wKzt1CY1_8EfKoBxMC4si55HVJqd9xacQXboCmWQpE",
+    "productId": "2889249592555254367",
+    "position": 5
+   },
+   {
+    "title": "Apple Đầu Tai Nghe AirPods Pro 3",
+    "source": "Apple",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:6220218279708227528,gpcid:15263359629809232162,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "269.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSIDdlE0zBIrq1vDUgAIRXHIZjSgtRYyvPV6EPnF_yvAfvjzdLnFBRkKUM1haItMppvySj6AWVtSzNRLxc-f4or234IcIaQlcAiIi3pUQZf1TNNN8doFRqdoA",
+    "productId": "6220218279708227528",
+    "position": 6
+   },
+   {
+    "title": "Thay pin hộp sạc Apple Airpods 1 / 2",
+    "source": "minmobile.com.vn",
+    "price": "200.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQTfIb_QZrkxYWU4ublePm_WPrEk_0rwc2Zjo3osJZFP1cmiAM4TJAfjSQMP16y7F86ioEVLnpKPrwQ2ROS3Z6ahZeKCqANh6HK08SFJ0JIxNjNetW-XSOc",
+    "productId": "8793960318580853455",
+    "position": 7
+   },
+   {
+    "title": "Apple Hộp Sạc MagSafe dành cho AirPods Pro",
+    "source": "Care Center",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:9704270121310279688,gpcid:8731294844043477078,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTyYOhYuSY-Gno89AIJ1rmmyJoEBkGK8kpYvojHvDPUmXyPgEIVp-GIOTeGQUQdC5Y2U3LDDgPECEdzGEsJYRA6kX4C8djpSEO0azZj4Iz2BjLurAbWSPRk-g",
+    "rating": 4.2,
+    "ratingCount": 72,
+    "productId": "9704270121310279688",
+    "position": 8
+   },
+   {
+    "title": "Apple Tai nghe AirPods",
+    "source": "xoanstore.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:16101189591189091270,gpcid:4038827701299763328,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "2.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQcaAoCa4PygcqwDxpuX6O_EQkh-6c-j6Antt5-mQFMY07gODZLiFcXIOXcDgUFqe1wZZR-qHXDCIgxnqrxzB9GdXRD0M1j7N-KeUKYFvKA33qcisCO0fBr",
+    "productId": "16101189591189091270",
+    "position": 9
+   },
+   {
+    "title": "pin zin ap3-pro/pro2 cho a e kĩ thuật",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:7372269400263489170,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "120.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQs4NlA767-vFo083FsV7jJdKBGtwuAM4HWFkFt_uuNbSy7LLG_j2nSpoWUAT_E29vaRhgLERhJiBdD31LgeFJOEGYSIkJu7Ns-ci1Ic9oy",
+    "productId": "7372269400263489170",
+    "position": 10
+   },
+   {
+    "title": "Pin AirPods Pro (A2084, A2083)",
+    "source": "24htechcare.com",
+    "price": "340.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTsiKJH61iLFDO2PvwlyeyPnKX150z-veaNPOPselBIvs0kNOGn6xBIZ4QS_O-9PWvUmJv5Gxm6qN5esMhBvP8tQ6Kz2d_vwctljCVhy-zm9cfSZw4qwKOLpQ",
+    "productId": "5184128862734580513",
+    "position": 11
+   },
+   {
+    "title": "Thay pin tai nghe Airpods Pro 2 / 3 / 4",
+    "source": "minmobile.com.vn",
+    "price": "130.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQkOjrOKPu1DOZzzLdMMHOrorsvBKItTJSsP_-qFlg5etEz-DQQjBNlOzkYfh5lXv0sVrXgvF-sfr_ueQiUIaowpiCJDef5orj_fWDjeHmPBAsOFjGgaog",
+    "productId": "10035393786631497951",
+    "position": 12
+   },
+   {
+    "title": "Thích hợp cho thay thế pin sửa chữa tai nghe Bluetooth AirPods Pro2",
+    "source": "Shopee",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSYEUJVjqhizgU5zusl_tsrkVoBzSoDtOm-8tj9wGoWUMMAg5jm26MfBpMhG0tT3IFWMU6Rbd8OlarkuUY_2NabZWIMxPCuwzjPOnb4NnqS5u_7aOVWuC9vrW4",
+    "productId": "4566159386911362150",
+    "position": 13
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 MagSafe (USB‐C) ( 2023 ) -Airpods Pro 2 USB-C 2023",
+    "source": "apple8",
+    "price": "4.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcS7Y5iJaA_jCH0iPeiMHmLMITYP7B6hfBCT_IhcjJ2B0L2s_MPM1ja7cZYDqdeK-NFsF2U-LX-dz9zZzKo629RVFJX6SZl5anoOlF1vlaM9kM5qfIbAHx_8Ew",
+    "productId": "10701796729457249071",
+    "position": 14
+   },
+   {
+    "title": "Thay pin AirPods 2 - Sửa chữa uy tín, lấy ngay sau 15 phút",
+    "source": "clickbuy.com.vn",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSXNNRdSzJSZHoTHQ1eCxvi9RS-oyWchv66Zl6sS9zveT13i5PsoQglYd2Z0q3Q66RK9a6YCoD0ueeAxOPvC9lLROrSikMg9h7fGf-XxCETcIfjsirEc7LG",
+    "productId": "733820497188189403",
+    "position": 15
+   },
+   {
+    "title": "Thay pin tai nghe AirPods Pro 2",
+    "source": "Care Center",
+    "price": "850.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTFFfHrM3lCK7lT3ToIl9YRO1mVGhNkHaikjTjEbRl7Sr3f58C9DaUMYBsyBJh24WTINUEsupqj_Wipc7VIQYx5SVqWkb_v06ca3aUkWF8_XFhu90BUe5tY5Q",
+    "productId": "5556337333435090855",
+    "position": 16
+   },
+   {
+    "title": "Pin thay thế cho Airpod 1 & 2 (nghe liên tục 4h)",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:3014481795465108745,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "85.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSxSNRf7lGcFc-EIzMcy6XQJ0IGTUWQWplIcIgOf_f1UMqo9BT6q2H-FT_Qv12SgVGjLWNGeVkEPVewPDbf7I0-xtFgnoVRGuv6XpPuW7k_QTrrLp4WljaI7A",
+    "productId": "3014481795465108745",
+    "position": 17
+   },
+   {
+    "title": "Thay pin tai nghe Airpods 2",
+    "source": "minmobile.com.vn",
+    "price": "155.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQmj6xUaFsCIJNuwHDSBhhFnDMfra0EtUM2zQBjYfJM8maBqO8TcZ2kW_zJ0C_YmXo-6dNBrVyFXiKl88YNW2ZSobNiUckOr51sPfHkB8mP",
+    "productId": "7760527457781890260",
+    "position": 18
+   },
+   {
+    "title": "Pin cho tai airpod Chính Hãng / giá 1 tai - Airpod 2",
+    "source": "Trọng Phú Mobile",
+    "price": "278.070 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS8uPGsNQ93AxgDapqyYCfkRhGrt8UjQOISivNnDXUp8dPfesbTLsjOuAioTgIbBPK1E3ERKbfLGrIGY5tTIrc4GKOKT_zDC6uRji_hMjyeaOQMJVAsGg8_2A",
+    "productId": "16456810736910167970",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro Sạc Không Dây New Seal",
+    "source": "TechOne Hà Nội",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:12924207652874328849,gpcid:2209452977871672586,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRuaqdjFa1XG5KJX4vtXFTMhScKLKsFWkl9KuK9f7n6RQpa9WL4M80E0UTn9jkxqXMXoyijtobUScrIrXs4zNRDuHfPNE74REqbQx46qLzakYlOMYhArNwY",
+    "productId": "12924207652874328849",
+    "position": 20
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 MagSafe (USB‐C) ( 2023 )",
+    "source": "apple8",
+    "price": "4.399.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQDi1BqyWNr_OofoUpAV8vwI0MIBNWqLf0vsCS_o0oaCapOFSkkj4kCyBXrVEwFqmJU2k4Gn_rFKvdaOrG2_m_VYhGwiVQ9P4eKe0qeKBFT2nW_gSdHtgjzVg",
+    "productId": "12792952083505365791",
+    "position": 21
+   },
+   {
+    "title": "Pin Thay Thế Cho Tai Nghe AirPod 1 & AirPod 2",
+    "source": "Shopee",
+    "price": "84.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ-Jr4u-4kirDGR6E6Qzp1D7gZhlHTrU_lfkFgOjU8cQC9l8Pvy4E-cdejPKZjdhIU2_nsJek0fcJ9P6WGHZlegbsJisU6YTP1k4VXnsMU",
+    "rating": 4.9,
+    "ratingCount": 28,
+    "productId": "5220013617194327514",
+    "position": 22
+   },
+   {
+    "title": "Hộp sạc tai nghe Apple AirPods Pro 2",
+    "source": "HaLoShop",
+    "price": "1.600.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQp4K5w2YLADCdW4pbdoCzqWuAjOZXaQ0-9DrStP6vQEgoJqNNPVb4c9xEs_GoAeqGnYmhO0bx67MS3-ymCrDVinr46ls8redGmtJIbOvEpvP9C9Aqb5tk0mA",
+    "rating": 4.4,
+    "ratingCount": 10,
+    "productId": "2274436675239842019",
+    "position": 23
+   },
+   {
+    "title": "Pin tai nghe Airpods 1 / 2 chính hãng",
+    "source": "minmobile.com.vn",
+    "price": "125.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSxxvT1Bd9AZ_rRO3BRYKLKsCJAzYBPBTvm0IOq7mTISUsReIvjn_Y0TQpd9TEWoHtM_UzJFPEXpuHHZsSPYMjUxZEorDROuDjLsHROAx8vJl0Plw9kNS8W",
+    "productId": "14389844748180142884",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 với Hộp Sạc MagSafe (Type-C) - Chính Hãng VN/A",
+    "source": "clickbuy.com.vn",
+    "price": "5.290.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcQ3W57BkMkDsPzF2OZnQqYI5rl9qN0jDKeqlfiEhgbmgSxLxTjZkvtUbtCV_3xYJLPSvA14Uo-1bnfracij311ED-wf7LWiYy5tfnMWBwMwBMxyWVX0FnQd-Q",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "14978435814086119623",
+    "position": 25
+   },
+   {
+    "title": "Thay pin tai nghe AirPods Pro",
+    "source": "Care Center",
+    "price": "550.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRe4QYWcuAPZwq_ngoaYa9JNZnVTOQNEGr5j_11uVDMPhjJtHvjOtnVqwky8aYvVa5cU0VSniQaqlOZowGkifgmkxpsPwqrn35QgpAs0o-Ezb3fa2eaN8judw",
+    "productId": "10539254086939859558",
+    "position": 26
+   },
+   {
+    "title": "Pin Thay Cho Tai AirPods 2 & AirPods 1 - Thời Lượng Nghe Liên Tục 4-5H",
+    "source": "Shopee",
+    "price": "84.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTRHfOICBnkytV1ANdl4R3hnB0urxsaqNOGGbP6_AKWoKGOuZVTfACn3mBMRw-lp9Z3eCuAHWgVzH2tazmP-hqgGvFyA-IWWwdm52lD3qQga75ax-D9FXn0IQ",
+    "rating": 5,
+    "ratingCount": 6,
+    "productId": "7596097534903216506",
+    "position": 27
+   },
+   {
+    "title": "Airpods Pro 2 USB-C",
+    "source": "itamloan.vn",
+    "price": "4.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcT61Z1nKzeM-ASV8Gl9HBL3cNJd4j9y12UoCtsKtlX5zqUMtyb6N9c3oKD7-25kjXqE-3fJ1xdBrSv7Ib_F5nXroPIrVt5aLezVtItbx2T942mhKYKrFxg8lx0",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "275369345761378666",
+    "position": 28
+   },
+   {
+    "title": "Apple Airpods Pro 2 with MagSafe Charging Case",
+    "source": "MediaMart",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:14218111880125072843,gpcid:2395638331677304893,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "6.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTIZpXTMorYVzq4nF4Y8SHNLNULN7j-n6gcAb3bZY07qsMZuxCryPz4hqWz47i3ob-mJoNN-COT1NPQpP53cKvj8AGANg9M8d0Cnnb8rZoXZUrCYITlKAv6Lw",
+    "rating": 4.7,
+    "ratingCount": 661,
+    "productId": "14218111880125072843",
+    "position": 29
+   },
+   {
+    "title": "Tai nghe Bluetooth Apple AirPods Pro 2",
+    "source": "IMOBI.vn",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:14284785235002806804,gpcid:10294904266282636550,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "4.990.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcT4dD0rq45Xv3vio34ivB6QQqGQ_jWiVv97id0yyykUjxv9NeP-hXj8MPdQjeP5CsOIhudW84n5CffDH3hDROFYEGq2V57qgFV2Rl9Of13nDSBaoasM7l1ndw",
+    "productId": "14284785235002806804",
+    "position": 30
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chính Hãng AirPods Pro 1 / 2 / 3 Đuôi Cắm Tai Nghe Phụ Kiện Lắp Ráp Các Bộ Phận",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:6085001052957873724,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "49.500 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSUseCNfoNtAQgoYzZRIKkmn5myi2YGlspdAuji1ZTwLFDcgX_88Y7a0A_44ZIrhqrBA9egUvTlrSORxCPDrDMuILUgIL_AtGx-LijFaf5wNgHXsYEjzNnYFw",
+    "productId": "6085001052957873724",
+    "position": 31
+   },
+   {
+    "title": "Tai nghe AirPods Pro 2 (Type-C) -Chính hãng / USB-C",
+    "source": "Hoàng Phát 360",
+    "price": "4.900.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTvz23M5pNSK37Rh1QZt8MXfKC4EJrBrB43KBl_QPez4uarRQ6JBhxVAAQ1v8PID0QRN2HUJxgUeKZ4zslyaY8o6mPumUG9rNHJvWESuIBgTpugNWwt71PY",
+    "rating": 4.9,
+    "ratingCount": 432,
+    "productId": "3287429610952169265",
+    "position": 32
+   },
+   {
+    "title": "Thay pin tai nghe AirPods 2",
+    "source": "Care Center",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQDocywSs0htOXe803CnmJCiUZDkeUZlr-RcyY3yrreK-RdpPuBRIu4a32-6oy418vPMsdXX-TMgilc0UWh9ua2IAhAHi0-npQhCsTfshTEtTjI6jSs9-p-",
+    "productId": "16200290240289583931",
+    "position": 33
+   },
+   {
+    "title": "Tai nghe Airpods Pro 2 2023 chính hãng VN/A | Giá tốt",
+    "source": "XTmobile",
+    "price": "4.499.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSgmlo71bpQUrOARFJ-W4gCoTL6m_9ITVVoE3kDJFKfIZ2vIqdd4ItPJkudV_TBwWEF0AlzHKkBAepLVmbxtKUOHD7i9GhQXspZsX41PXnZ0IIHwUWkriA3VA",
+    "rating": 4.7,
+    "ratingCount": 416,
+    "productId": "12719326418412141280",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro Gen 2 MagSafe Charge (USB-C) Chính Hãng",
+    "source": "Đức Huy Mobile",
+    "price": "4.299.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSDiP575ByWAi6nSuE83eCS2tnvRJIlK05UKlEbmNncEi91oac6mjgyH4T1P7N5FFMJQGuMpEiwcwebxPX8HFTrbM-viXb-3ffS6BOK9x7ahw-pf0-Gwy1_",
+    "productId": "9201844771200063556",
+    "position": 35
+   },
+   {
+    "title": "Thích hợp cho AirPods Pro2 (A2931 / A2699 / A2698 / A3037 / A3048) Thay thế pin sửa chữa tai nghe Bluetooth",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=Pin+AirPods+Pro+2+d%C3%B9ng+%C4%91%C6%B0%E1%BB%A3c+bao+l%C3%A2u+theo+Apple%3F&prds=localAnnotatedOfferId:1,catalogid:6032888025700634816,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "495.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRox7rnkuEFXWs3xy9uNKVyRr2Xb_sbFtwyyUP4-iQ8gws0FRxfPey5uqMTWqlwT322Ne5P7-pf_MpkSReNKaX4e--rrUM0c8qNSI4kXutJhC0y9YFjVc4RksI",
+    "productId": "6032888025700634816",
+    "position": 36
+   },
+   {
+    "title": "Airpods Pro 2",
+    "source": "Mac24h",
+    "price": "4.550.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ1h44G61vk9aHNLlQNOYK7E3W_Dj7zuQsO8S5ROQd5Alon2JPcEd_48ShEFPcqoM0Qkwgyex8Nr8O8rcaj1HVeB58-Zu7OCowFKNJg_Ks2fsUnZasyahUb",
+    "productId": "14126010986697864965",
+    "position": 37
+   },
+   {
+    "title": "Pin AirPods 1 / 2",
+    "source": "Linh Kiện ĐTDĐ Tín Thành",
+    "price": "39.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTn34qkcjKwo3zUEoUwZg6zQKobTmB379h8GWwLZFQrLzY-909tL419Go1lZPmVfX2UVcX7ZJwVXooKMeKoUTw3597QKabdCBWeJZUD59xJvUHq5acEvBhGOg",
+    "productId": "5767140279564059734",
+    "position": 38
+   },
+   {
+    "title": "Tai nghe lẻ Apple AirPods Pro 2 Lightning- Tai bên phải",
+    "source": "HaLoShop",
+    "price": "2.200.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR2-Ft-8o-hnnK8jeg5DsQzB2SHHpue4XbHurmNCggQb-deOYAQeHvZYZ04N2JM__kq-HbGKT1q-T-LuSWq3efZCR6WYJ8uKc1RiiaaIfQUe22Kgp9h9qQB",
+    "rating": 4.8,
+    "ratingCount": 46,
+    "productId": "1961004828670968051",
+    "position": 39
+   },
+   {
+    "title": "Thay pin dock sạc AirPods Pro",
+    "source": "chamsocdidong.com",
+    "price": "500.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSbHe80h_8Ab7-StaWO_XynswTaJLyFXBhOaPwfGtvsRiFjV1H7SQ5rIZd2p5RorzqlTnCxxpJa1yAadlBwm2fmi_Qw8JYd2DY3VL9IdUWLGOori_4k6vicZA",
+    "productId": "682705643189133673",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

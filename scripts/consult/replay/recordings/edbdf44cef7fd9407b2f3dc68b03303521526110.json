@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:23.709Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlV8w6eLL2QVY8zAvF1Je1VHcrd_bTrVT0-ElqvBG8Fg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max_1.png&tbnid=_CADXAU12aUi7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max-512gb.html&docid=1q1orDTAyNFDEM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-3_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8HefQWOvscJ7D6IXMrOtVF0DGXsLje7vSFPn_2A9aZg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-3_1.png&tbnid=53ElLRJX9uUn7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max-512gb.html&docid=1q1orDTAyNFDEM&w=358&h=358",
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-10_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAPACcnWYl3avDzb_nMsTCLsXKzmwBWcgZBMDQgC7G4A&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-10_1.png&tbnid=4sIhvwvn9_Y-bM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max-512gb.html&docid=1q1orDTAyNFDEM&w=358&h=358",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-5_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQicHiugWYvCcNiYc44PM2aHXjxHQu5kq1cs86pV_HAJg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-5_1.png&tbnid=1w79bTQNOL4n0M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max-512gb.html&docid=1q1orDTAyNFDEM&w=358&h=358",
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max-9_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRo4bXanOl_rNe6DzVll5MN8RkNINLs5ZnDlELo-3RlUw&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fi%2Fp%2Fiphone-16-pro-max-9_1.png&tbnid=tXtl2KR-lbzgYM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fiphone-16-pro-max-512gb.html&docid=1q1orDTAyNFDEM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB Chính hãng Likenew",
+    "imageUrl": "https://uscom.com.vn/wp-content/uploads/2024/09/iPhone-16-Pro-Max-Trang.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFJPxTSODfHx9N2532U4NwLfTctwkwQvYhLLOVX7deGQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "USCOM Apple Store",
+    "domain": "uscom.com.vn",
+    "link": "https://uscom.com.vn/iphone-16-pro-max-512gb-chinh-hang-likenew?srsltid=AU7gw4UymwLnVaHdlopHzNPVm2Bn3FnUOVGzhbnzadkmsDCSCDp1FWQQ",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fuscom.com.vn%2Fwp-content%2Fuploads%2F2024%2F09%2FiPhone-16-Pro-Max-Trang.jpg&tbnid=70VJ_ILfaeBMhM&imgrefurl=https%3A%2F%2Fuscom.com.vn%2Fiphone-16-pro-max-512gb-chinh-hang-likenew%3Fsrsltid%3DAU7gw4UymwLnVaHdlopHzNPVm2Bn3FnUOVGzhbnzadkmsDCSCDp1FWQQ&docid=sZzT_p8X6nQWAM&w=500&h=500",
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB Chính hãng Likenew - USCOM Apple Store - Cung cấp  các sản phẩm chính hãng Apple: iPhone, iPad, Macbook, Phụ kiện giá rẻ toàn  quốc.",
+    "imageUrl": "https://uscom.com.vn/wp-content/uploads/2024/09/iPhone-16-Pro-Max-full-color.webp",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRomV0P18Fv5IrO2nAdtIyKBz0uh1hVEL8K_PtqUkt9yQ&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 500,
+    "source": "USCOM Apple Store",
+    "domain": "uscom.com.vn",
+    "link": "https://uscom.com.vn/iphone-16-pro-max-512gb-chinh-hang-likenew?srsltid=AU7gw4UMy1ZP7M9biwhhvVoF8euopiqi0iP1vpxeJEfUL45WiuNOxSkL",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fuscom.com.vn%2Fwp-content%2Fuploads%2F2024%2F09%2FiPhone-16-Pro-Max-full-color.webp&tbnid=p6v2S4cNq5N8fM&imgrefurl=https%3A%2F%2Fuscom.com.vn%2Fiphone-16-pro-max-512gb-chinh-hang-likenew%3Fsrsltid%3DAU7gw4UMy1ZP7M9biwhhvVoF8euopiqi0iP1vpxeJEfUL45WiuNOxSkL&docid=sZzT_p8X6nQWAM&w=500&h=500",
+    "position": 7
+   },
+   {
+    "title": "Apple iPhone 16 Pro 512GB 99%",
+    "imageUrl": "https://bachlongstore.vn/vnt_upload/product/10_2025/532532532253.png",
+    "imageWidth": 750,
+    "imageHeight": 750,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT214jTXzxp-7NfWz6Z0xT5tcpz_RYGKuJPw3uCMuAWkw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bạch Long Store",
+    "domain": "bachlongstore.vn",
+    "link": "https://bachlongstore.vn/apple-iphone-16-pro-512gb-99-.html?srsltid=AU7gw4Xo4gNx08yncK5idT224WyrKK0ZOtq-fTbWJrLCxAzXvXbTvgOZ",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbachlongstore.vn%2Fvnt_upload%2Fproduct%2F10_2025%2F532532532253.png&tbnid=6Zt864sBXgZBdM&imgrefurl=https%3A%2F%2Fbachlongstore.vn%2Fapple-iphone-16-pro-512gb-99-.html%3Fsrsltid%3DAU7gw4Xo4gNx08yncK5idT224WyrKK0ZOtq-fTbWJrLCxAzXvXbTvgOZ&docid=-LT6QlrTdyAuBM&w=750&h=750",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:petrolimex.com.vn 8/10/2026 điều chỉnh giá xăng dầu 15 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:53:32.530Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:petrolimex.com.vn 8/10/2026 điều chỉnh giá xăng dầu 15 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AYScripting - LOGIN",
+    "link": "https://egassync.petrolimex.com.vn/login.aspx?frm=on",
+    "snippet": "ENTERPRISE GAS STATION, About • Download • Thứ 5, ngày 8 tháng 10 năm 2026 © Piacom 2010-2012 ... Nhớ. Thông tin khác • Đổi mật khẩu • Ẩn tool, menu bars trên ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

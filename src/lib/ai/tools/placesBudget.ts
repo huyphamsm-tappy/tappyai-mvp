@@ -51,6 +51,13 @@ export interface PlacesBudget {
  */
 export const PLACES_BUDGET_PLANNING = 3
 export const PLACES_BUDGET_DEFAULT = 1
+/**
+ * Agent turns (TAPPY_AGENT=1 and =2): distinct Places intents one agent turn may retrieve. A PROVIDER SAFETY QUOTA owned here, with the
+ * other Places limits — not an orchestration budget. It used to be read from the Phase 7 loop's `AGENT_LIMITS.maxToolCalls` (also 3), so
+ * changing how many tool calls an agent turn may make would have silently changed the Google quota (Phase 8 WS2 audit). Same value: the
+ * agent may ask several different questions in one turn (food, then attractions, then a hotel), never the same one twice.
+ */
+export const PLACES_BUDGET_AGENT = 3
 
 /**
  * Normalizes an intent to what actually decides the result set.

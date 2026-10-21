@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Mockingbird Cafe\" OR \"CAFE NGƯỜI SÀI GÒN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:47:08.442Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Mockingbird Cafe\" OR \"CAFE NGƯỜI SÀI GÒN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover Local Flavors at Mockingbird Cafe in Long Beach ...",
+    "link": "https://www.tiktok.com/@mississippi_kween/video/7490987130953436447",
+    "snippet": "Discover Local Flavors at Mockingbird Cafe in Long Beach, MS. Join us on a food review of Mockingbird Cafe, highlighting the best dishes on the ...",
+    "position": 1
+   },
+   {
+    "title": "Mockingbird Cafe: Quán Cà Phê Chill Tại Q1",
+    "link": "https://www.tiktok.com/@h.happyclothing/video/7367750275056143624",
+    "snippet": "Mockingbird Cafe . Lầu 4 , 14 Tôn Thất Đạm , Q1 . Quán cafe view ngân hàng cực chill mà mọi người nên ghé thử . #outfitideas #xuhuong # ...",
+    "position": 2
+   },
+   {
+    "title": "Khám Phá Mockingbird Cafe: View Đẹp Tại Chung Cư Cũ",
+    "link": "https://www.tiktok.com/@bolonton_/video/7368711037194931477",
+    "snippet": "Khám Phá Mockingbird Cafe: View Đẹp Tại Chung Cư Cũ. Tận hưởng không gian yên bình tại Mockingbird Cafe, nơi ngắm ngân hàng đẹp lung linh cùng ...",
+    "position": 3
+   },
+   {
+    "title": "Visit Mockingbird Cafe for a Cozy Experience",
+    "link": "https://www.tiktok.com/@mocking.bird80/video/7604721834696690962",
+    "snippet": "Mockingbird Cafe, located conveniently near the bus park in Birgunj, offers a cozy atmosphere perfect for those looking to relax and unwind.",
+    "position": 4
+   },
+   {
+    "title": "Discover My Poetry Vending Machine at Mockingbird Cafe",
+    "link": "https://www.tiktok.com/@239studios/video/7638256526330776845",
+    "snippet": "So, whether you're a local or just passing through, make sure to check out my poetry vending machine at the Mockingbird Cafe and immerse ...",
+    "position": 5
+   },
+   {
+    "title": "Mockingbird Cafe (@mockingbird.thecafe)",
+    "link": "https://www.tiktok.com/@mockingbird.thecafe",
+    "snippet": "Mockingbird Cafe (@mockingbird.thecafe) on TikTok | @mockingbird.thecafe.Watch the latest video from Mockingbird Cafe (@mockingbird.thecafe).",
+    "position": 6
+   },
+   {
+    "title": "Review Mockingbird Cafe | Sài Gòn",
+    "link": "https://www.tiktok.com/@bacxiuneee_/video/7361448809219558673",
+    "snippet": "Tiệm Cafe với View Ban Công Siêu Xịn | Review Mockingbird Cafe | Sài Gòn ... Keywords: tiệm cafe chung cư cũ, view ban công, quán cafe quận 1, ...",
+    "position": 7
+   },
+   {
+    "title": "faveeee😍🙌🏽 - @Mockingbird Cafe - #coffee - #baystlouis - #ms",
+    "link": "https://www.tiktok.com/@lacycavalier/video/7658703266296958239",
+    "snippet": "38 Likes, TikTok video from Lacy Cavalier (@lacycavalier): “faveeee @Mockingbird Cafe #coffee #baystlouis #ms #gulfcoast”. coffee shop. fav coffee ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

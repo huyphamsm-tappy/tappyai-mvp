@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"AirPods Pro\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:11.240Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"AirPods Pro\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Apple Airpods Pro chính hãng | Giá sốc 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple/airpods-pro.html",
+    "snippet": "Airpods Pro – Tai nghe bluetooth với chất âm rõ cùng khả năng chống nước IPX4. Mẫu AirPods xuất hiện lần đầu vào năm 2016, sau nhiều nâng cấp về thiết kế ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Apple AirPods Pro 3 USB-C | Giá tốt, trả góp 0%",
+    "link": "https://cellphones.com.vn/apple-airpods-pro-3.html",
+    "snippet": "Tai nghe Bluetooth Apple AirPods Pro 3 2025 Type-C | Chính hãng (MFHP4ZP/A) ; Trọng lượng. Tai Nghe: 5,55 gram. Hộp Sạc + Tai Nghe: 43,99 gram.",
+    "date": "10 thg 9, 2025",
+    "rating": 4.9,
+    "ratingCount": 12,
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn cách sử dụng AirPods Pro 2 đơn giản chi tiết",
+    "link": "https://cellphones.com.vn/sforum/cach-su-dung-airpods-pro-2",
+    "snippet": "Tương tự AirPods Pro thế hệ đầu, AirPods Pro 2 sử dụng cảm biến lực ở thân tai nghe thay vì thao tác chạm/gõ như các dòng AirPods tiêu chuẩn cũ.",
+    "date": "3 thg 5, 2026",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe Apple Airpods, Earpod | Giá rẻ 10/2026, Góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/apple.html",
+    "snippet": "AirPods Pro (in-ear, chống ồn). AirPod Pro Series là dòng tai nghe nhét tai cao cấp, được trang bị công nghệ chủ động khử tiếng ồn mạnh mẽ hơn. Mẫu tai nghe ...",
+    "position": 4
+   },
+   {
+    "title": "So sánh Sony WF-1000XM6 vs AirPods Pro 3",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-sony-wf-1000xm6-vs-airpods-pro-3",
+    "snippet": "AirPods Pro 3 là tai nghe true wireless cao cấp mới nhất của Apple ở thời điểm hiện tại, được trình làng vào tháng 9/2025.",
+    "date": "7 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "Hộp đựng tai nghe Apple Airpods Pro 3 Ravaka Sparkle ...",
+    "link": "https://cellphones.com.vn/op-airpods-pro-3-ravaka-sparkle-transparent.html",
+    "snippet": "Ốp Airpods Pro 3 Ravaka Sparkle Transparent mang đến khả năng bảo vệ toàn diện và giữ trọn vẻ đẹp nguyên bản cho AirPods Pro 3 nhờ thiết kế trong suốt.",
+    "position": 6
+   },
+   {
+    "title": "So sánh Airpods Pro và Airpods Pro 2: Nên mua loại nào?",
+    "link": "https://cellphones.com.vn/sforum/airpods-pro-va-airpods-pro-2",
+    "snippet": "Khi so sánh AirPods Pro và AirPods Pro 2 về chip xử lý, điểm khác biệt dễ nhận thấy là thế hệ chip được Apple nâng cấp qua từng phiên bản.",
+    "date": "27 thg 4, 2026",
+    "position": 7
+   },
+   {
+    "title": "AirPods định vị được không? AirPods định vị được bao xa?",
+    "link": "https://cellphones.com.vn/sforum/airpods-dinh-vi-duoc-bao-xa",
+    "snippet": "Các mẫu Pro 2 và mới hơn còn hỗ trợ âm thanh định vị rõ ràng hơn, giúp tìm nhanh trong nhà hoặc không gian hẹp. AirPods Pro và AirPods Max có ...",
+    "date": "20 thg 4, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

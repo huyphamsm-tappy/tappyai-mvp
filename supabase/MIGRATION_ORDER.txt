@@ -138,6 +138,7 @@ supabase/migrations/20261001c_commerce_providers_cinemas.sql
 supabase/migrations/20261001d_moderation_standards.sql
 supabase/migrations/20261001e_banned_identity_hash.sql
 supabase/migrations/20261005_account_deletion_cleanup.sql
+supabase/migrations/20261005_p8_cost_indexes.sql
 supabase/migrations/20261009_content_reports_to_queue.sql
 supabase/migrations/20261010_content_reports_flood_guard.sql
 supabase/migrations/20261011_p8_payments.sql
@@ -145,4 +146,5 @@ supabase/migrations/20261015_p8_subscriptions.sql
 supabase/migrations/20261016_p7_pip_one_time.sql
 supabase/migrations/20261017_p7_pip_trial_any_source.sql
 supabase/migrations/20261018_ai_data_consent.sql
+supabase/migrations/20261018_chat_honours_user_blocks.sql
 supabase/migrations/20261019_ai_data_consent_client_acl.sql

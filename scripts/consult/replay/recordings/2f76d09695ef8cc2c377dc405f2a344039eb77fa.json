@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Inverter 236 lít RT22M4032BU/SV site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:11.995Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Inverter 236 lít RT22M4032BU/SV site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tủ lạnh samsung inverter - Giá Tốt, Miễn Phí Vận Chuyển, ...",
+    "link": "https://shopee.vn/list/t%E1%BB%A7%20l%E1%BA%A1nh/samsung/inverter",
+    "snippet": "Tủ lạnh Samsung Inverter 236 lít RT22M4032BU/SV [SHIP 0Đ HCM]5.710.000₫ · 5. ✔️ RT35CG5544B1/SV Tủ lạnh Samsung Inverter 345 lít RT35CG5544B1SV Hàng chính ...",
+    "position": 1
+   },
+   {
+    "title": "tủ điện nghệ an - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/t%E1%BB%A7%20%C4%91i%E1%BB%87n/ngh%E1%BB%87%20an",
+    "snippet": "Tủ lạnh Samsung Inverter 382L RT38CG6584B1SV – Làm lạnh nhanh, tiết kiệm điện [FREESHIP NGHỆ AN]11.214.000₫ · 6. Tủ lạnh Samsung Inverter 236L RT22M4032BU/SV ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

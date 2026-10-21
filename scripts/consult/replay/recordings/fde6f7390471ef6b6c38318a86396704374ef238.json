@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:thuvienphapluat.vn Thông tư lệ phí cấp hộ chiếu 2026 Bộ Tài chính",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:45.298Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:thuvienphapluat.vn Thông tư lệ phí cấp hộ chiếu 2026 Bộ Tài chính",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lệ phí làm passport online lần đầu năm 2026 là bao nhiêu ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/le-phi-lam-passport-online-lan-dau-nam-2026-la-bao-nhieu-huong-dan-nop-le-phi-online-tren-cong-dich-889167-277837.html",
+    "snippet": "Theo đó, từ ngày 01/07/2025 đến 31/12/2026 lệ phí cấp mới hộ chiếu sẽ được giảm xuống 50% so với mức lệ phí áp dụng trước đây còn 100.000 đồng.",
+    "date": "7 thg 7, 2026",
+    "position": 1
+   },
+   {
+    "title": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chinh-thuc-giam-50-le-phi-cap-ho-chieu-den-het-2026-theo-thong-tu-642025-209665.html",
+    "snippet": "Chính thức giảm 50% lệ phí cấp hộ chiếu đến hết 2026 theo Thông tư 64/2025? ; Cấp mới. 100.000 ; Cấp lại do bị hỏng hoặc bị mất. 200.000 ; Cấp giấy ...",
+    "date": "15 thg 8, 2025",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC mức thu nộp phí lệ phí lĩnh vực ...",
+    "link": "https://thuvienphapluat.vn/van-ban/Thue-Phi-Le-Phi/Thong-tu-28-2026-TT-BTC-muc-thu-nop-phi-le-phi-linh-vuc-xuat-canh-nhap-canh-cu-tru-tai-Viet-Nam-699533.aspx",
+    "snippet": "Thông tư 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam do ...",
+    "date": "27 thg 3, 2026",
+    "position": 3
+   },
+   {
+    "title": "Lệ phí cấp hộ chiếu năm 2026 bao nhiêu tiền?",
+    "link": "https://thuvienphapluat.vn/hoi-dap-phap-luat/le-phi-cap-ho-chieu-nam-2026-bao-nhieu-tien-138082025.html",
+    "snippet": "Như vậy, lệ phí cấp hộ chiếu năm 2026 (bao gồm hộ chiếu gắn chíp điện tử và hộ chiếu không gắn chíp điện tử) là: - Cấp mới: 100.000 đồng/lần cấp ...",
+    "date": "2 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Lệ phí cấp hộ chiếu năm ...",
+    "link": "https://thuvienphapluat.vn/chinh-sach-phap-luat-moi/vn/ho-tro-phap-luat/chinh-sach-moi/108810/thong-tu-28-2026-tt-btc-le-phi-cap-ho-chieu-nam-2026-moi-nhat",
+    "snippet": "Ngày 27/3/2026, Bộ trưởng Bộ Tài chính ban hành Thông tư 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, ...",
+    "date": "1 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Đề nghị cấp hộ chiếu lần đầu 2026 tại cơ quan nào ...",
+    "link": "https://thuvienphapluat.vn/phap-luat/de-nghi-cap-ho-chieu-lan-dau-2026-tai-co-quan-nao-huong-dan-de-nghi-cap-ho-chieu-lan-dau-online-392907-279664.html",
+    "snippet": "Như vậy, đến hết năm 2026, lệ phí cấp hộ chiếu lần đầu online sẽ là 100.000 đồng. ... Cách điền mẫu chỉ tiêu thống kê giám định tư pháp trong tố ...",
+    "date": "16 thg 7, 2026",
+    "position": 6
+   },
+   {
+    "title": "Phí làm hộ chiếu mới nhất là bao nhiêu?",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/phi-lam-ho-chieu-moi-nhat-la-bao-nhieu-lam-ho-chieu-mat-thoi-gian-bao-lau-489107-185305.html",
+    "snippet": "Tuy nhiên, từ ngày 01/01/2024 đến hết 31/12/2025, công dân Việt Nam làm hộ chiếu online sẽ được giảm 10% lệ phí theo Thông tư 63/2023/TT-BTC.",
+    "date": "13 thg 11, 2024",
+    "position": 7
+   },
+   {
+    "title": "Từ 01/7/2026, hộ chiếu phổ thông cấp theo thủ tục rút gọn ...",
+    "link": "https://thuvienphapluat.vn/banan/tin-tuc/tu-0172026-ho-chieu-pho-thong-cap-theo-thu-tuc-rut-gon-chi-co-gia-tri-su-dung-01-lan-ho-chieu-pho-th-21180.html",
+    "snippet": "a) Hộ chiếu phổ thông cấp cho người từ đủ 14 tuổi trở lên có thời hạn 10 năm và không được gia hạn;. b) Hộ chiếu phổ thông cấp cho người chưa đủ 14 tuổi có thời ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

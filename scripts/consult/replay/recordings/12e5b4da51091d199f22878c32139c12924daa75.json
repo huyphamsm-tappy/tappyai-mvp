@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Cafe sách Phương Nam Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:22:15.949Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cafe sách Phương Nam Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7805281,106.697397,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cafe sách Phương Nam",
+    "address": "07 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7805281,
+    "longitude": 106.6999719,
+    "rating": 4.1,
+    "ratingCount": 385,
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 915 050 940",
+    "openingHours": {
+     "Thứ Năm": "08:30–21:00",
+     "Thứ Sáu": "08:30–21:00",
+     "Thứ Bảy": "08:30–21:00",
+     "Chủ Nhật": "08:30–21:00",
+     "Thứ Hai": "08:30–21:00",
+     "Thứ Ba": "08:30–21:00",
+     "Thứ Tư": "08:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk3gZ0QOTRD8wotuPACUtn5uUz7LpGxbBsBzuxvDIzmNtlgRINOU3uUthgIGcEKT4CNWWa9KIAqF6l8CxOt7hL34fs8aix0QDf9iPeyo90M5PDoRgRhSOkzGYKt5zciXyUkonFpvuY3BoI",
+    "cid": "11099630539919045325",
+    "fid": "0x31752fb089cdc685:0x9a09cf2aedf3b2cd",
+    "placeId": "ChIJhcbNibAvdTERzbLz7SrPCZo"
+   }
+  ],
+  "credits": 3
+ }
+}

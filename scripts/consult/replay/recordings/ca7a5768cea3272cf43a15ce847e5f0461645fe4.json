@@ -1,0 +1,26 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Zalosea Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:13:49.001Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Zalosea Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "searchInformation": {
+   "didYouMean": "\"Zalo Sea Hotel\" site:tiktok.com"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

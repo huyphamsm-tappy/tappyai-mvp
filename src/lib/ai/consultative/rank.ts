@@ -391,7 +391,11 @@ function scoreOne(
  * Hard filters. A candidate is eliminated ONLY on evidence that contradicts a
  * stated requirement — never on the absence of evidence.
  */
-function hardFilter(c: Candidate, need: NeedProfile): 'budget' | 'mustHave' | 'avoid' | null {
+/**
+ * The deterministic HARD constraints of the ranker, on their own (Phase 8 M5): the agent runtime keeps this verdict and drops the
+ * weighted score — code removes what violates a stated hard constraint, Luna ranks what is left.
+ */
+export function hardFilter(c: Candidate, need: NeedProfile): 'budget' | 'mustHave' | 'avoid' | null {
   // Budget (owner Decision 3: FILTER, never demote). Requires a KNOWN price:
   // an unpriced candidate is not over budget, it is unmeasured.
   // Phase 3B (places): the price evidence of a place is its band bound, and ONLY a hard budget (dưới / không quá / tối đa / a range)

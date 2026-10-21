@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Air\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:36.434Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Air\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Laptop Macbook Air chính hãng Apple Việt Nam giá rẻ, có thu cũ. Trả góp 0% - Không phụ phí - Không trả trước. Mua ngay Mac Air tại CellphoneS.",
+    "position": 1
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "... Apple MacBook Air M1 256GB 2020 Đã kích hoạt bảo hành. Sắp về hàng. Trả góp 0%. : 16.790.000đ. 22.990.000đ. Giảm 27%.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB",
+    "link": "https://cellphones.com.vn/macbook-air-13-m5-10-cpu-8-gpu-16gb-512gb.html",
+    "snippet": "MacBook Air M5 13 inch 2026 10CPU 8GPU 16GB 512GB | Chính hãng Apple Việt Nam ; Dung lượng RAM. 16GB ; Ổ cứng. 512GB ; Công nghệ màn hình. Màn hình Liquid Retina",
+    "rating": 5,
+    "ratingCount": 12,
+    "position": 3
+   },
+   {
+    "title": "MacBook Neo và MacBook Air M2: Khác biệt gì đáng chú ý?",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-macbook-neo-va-macbook-air-m2",
+    "snippet": "MacBook Air M2 trang bị chip M2 mang thiết kế cốt lõi của một cỗ máy tính thực thụ. Băng thông rộng, nhiều làn PCIe và mức 16GB RAM tiêu chuẩn ...",
+    "date": "11 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Khám phá tính năng Camera thông suốt trên Macbook Air M4",
+    "link": "https://cellphones.com.vn/sforum/camera-thong-suot-tren-macbook-air-m4",
+    "snippet": "MacBook Air M4 13 inch được trang bị chip M4 mạnh mẽ, mang lại tốc độ và mượt mà cho mọi tác vụ từ đa nhiệm đến chơi game đồ họa cao. · Với thời lượng pin lên ...",
+    "position": 5
+   },
+   {
+    "title": "Apple nói rằng MacBook Air M3 là laptop tốt nhất cho AI ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-air-m3-lam-duoc-gi-voi-ai",
+    "snippet": "Khi ra mắt MacBook Air M3 thì công ty mới đề cập đến AI và cũng khẳng định luôn \"MacBook Air M3 là laptop cá nhân tốt nhất thế giới cho AI\".",
+    "position": 6
+   },
+   {
+    "title": "Đánh giá máy tính Apple MacBook Air 2020 có nên mua ...",
+    "link": "https://cellphones.com.vn/sforum/danh-gia-macbook-air-2020-chiec-macbook-air-tot-nhat-hoi-nhat-tu-truoc-den-nay",
+    "snippet": "Máy tính MacBook Air 2020 vừa được Apple ra mắt được đánh giá là máy tính xách tay đẹp, độ bền tốt cùng cấu hình hiệu năng cao, giá phải chăng.",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 lên M5: Những thay đổi có thực sự đáng ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-air-m1-len-doi-macbook-air-m5",
+    "snippet": "MacBook Air M1 sở hữu màn hình Retina 13.3 inch với độ phân giải 2,560 x 1,600 pixel, trong khi M5 nâng kích thước lên 13.6 inch và độ phân giải 2,560 x 1,664 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

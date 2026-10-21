@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MedlinePlus abdominal pain causes when to seek emergency care",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:54:19.526Z",
+ "body": {
+  "searchParameters": {
+   "q": "MedlinePlus abdominal pain causes when to seek emergency care",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Abdominal pain: MedlinePlus Medical Encyclopedia",
+    "link": "https://medlineplus.gov/ency/article/003120.htm",
+    "snippet": "The key is to know when you need to get medical care right away. ... Less serious causes of abdominal pain include: Constipation; Irritable ...",
+    "date": "13 thg 1, 2026",
+    "position": 1
+   },
+   {
+    "title": "Abdominal Pain",
+    "link": "https://medlineplus.gov/abdominalpain.html",
+    "snippet": "Get medical help immediately if: You have abdominal pain that is sudden and sharp; You also have pain in your chest, neck or shoulder; You're ...",
+    "date": "23 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "Abdominal pain - children under age 12",
+    "link": "https://medlineplus.gov/ency/article/007504.htm",
+    "snippet": "Abdominal pain that lasts 1 week or longer, even if it comes and goes. · Abdominal pain that does not improve in 24 hours. · A burning sensation ...",
+    "date": "1 thg 7, 2025",
+    "position": 3
+   },
+   {
+    "title": "Indigestion: MedlinePlus Medical Encyclopedia",
+    "link": "https://medlineplus.gov/ency/article/003260.htm",
+    "snippet": "When to Contact a Medical Professional · Your indigestion symptoms change noticeably. · Your symptoms last longer than a few days. · You have ...",
+    "date": "30 thg 1, 2025",
+    "position": 4
+   },
+   {
+    "title": "Underlying causes of abdominal pain",
+    "link": "https://www.healthdirect.gov.au/what-causes-abdominal-pain",
+    "snippet": "Abdominal pain has many causes, and may be short-term, long-term or come and goes. Sudden and severe abdominal pain is a medical emergency.",
+    "position": 5
+   },
+   {
+    "title": "When should I go to the ER for abdominal pain?",
+    "link": "https://www.mema.net/when-should-i-go-to-the-er-for-abdominal-pain/",
+    "snippet": "Most of the time, episodes of abdominal pain are not caused by a medical emergency. But they can still feel like one. Below are just some of the ...",
+    "date": "22 thg 7, 2022",
+    "position": 6
+   },
+   {
+    "title": "When Abdominal Pain Becomes an Emergency",
+    "link": "https://www.curasia.com/when-abdominal-pain-becomes-an-emergency-warning-signs/",
+    "snippet": "When to Go to the Emergency Room · Unbearable pain that disrupts daily activities · Pain with signs of internal bleeding (blood in vomit or stools) · Persistent ...",
+    "position": 7
+   },
+   {
+    "title": "When Should You Go to the ER for Stomach Pain?",
+    "link": "https://www.goodrx.com/health-topic/gastroenterology/er-stomach-abdominal-pain?srsltid=AU7gw4UnakuKfpQkTHqetfZ8DMlp2vfqpTIPCT07nbrYLsk58378yOXs",
+    "snippet": "If your stomach pain is severe, sudden, or accompanied by vomiting or chills, go to the ER right away. Learn which signs make stomach pain serious.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

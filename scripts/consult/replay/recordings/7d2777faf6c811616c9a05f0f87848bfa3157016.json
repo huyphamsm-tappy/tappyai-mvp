@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy Buds 3 Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:11:04.490Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy Buds 3 Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "เคส หูฟัง samsung buds 3 pro การตูน",
+    "link": "https://shop.tiktok.com/vn/k/ekhs-hufang-samsung-buds-3-pro-kar-tun",
+    "snippet": "Khám phá เคส หูฟัง samsung buds 3 pro การตูน mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Samsung Galaxy Buds 3 Pro chính hãnġ",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-samsung-galaxy-buds-3-pro-chinh-hang-ket-noi-bluetooth-5-4-khang-nuoc-ip57-thoi-gian-su-dun/1733348400998483838",
+    "snippet": "Tai nghe SamSung Galaxy Buds 3 Pro trang bị dải tần âm rộng từ 2.4GHz đến 2.48GHz và phạm vi kết nối lên đến ⑴⒪-⑴⑵ mét giúp đảm bảo kết nối ổn định hơn.",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "elago silicone hang case compatible for samsung galaxy buds 3 ...",
+    "link": "https://shop.tiktok.com/vn/k/elago-silicone-hang-case-compatible-for-samsung-galaxy-buds-3-and-buds-3-pro-case",
+    "snippet": "elago silicone hang case compatible for samsung galaxy buds 3 and buds 3 pro case. Ốp Lưng Silicon Dành Cho iPhone 15 Pro Max / iPhone 15 Pro, ELAGO Premium ...",
+    "position": 3
+   },
+   {
+    "title": "tai nghe samsung galaxy buds 3 fe",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-samsung-galaxy-buds-3-fe",
+    "snippet": "tai nghe galaxy Buds 3 Pro - Âm thanh hay - Bass căng - pin khoẻ. 4.3. 596 sold · 369.000 ; Tai Nghe | HUAWEI FreeBuds SE 3 | 42 Giờ Phát Nhạc | Nhẹ Và Nhỏ Gọn | ...",
+    "position": 4
+   },
+   {
+    "title": "Ốp Tai Nghe Trong Suốt, Dành Cho Samsung Galaxy Buds 3 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/op-tai-nghe-silicon-mem-trong-suot-cho-samsung-galaxy-buds-3-pro-vo-bao-ve-tuong-thich-thiet-ke-dep-mat/1731700900588914557",
+    "snippet": "Ốp Tai Nghe Trong Suốt, Dành Cho Samsung Galaxy Buds 3 Pro, Ốp Silicon Mềm, Vỏ Trong Suốt Cho Tai Nghe, Vỏ Bảo Vệ, Tương Thích Với Buds3 ; Thông tin pháp lý.",
+    "position": 5
+   },
+   {
+    "title": "case buds 3 pro",
+    "link": "https://shop.tiktok.com/vn/k/case-buds-3-pro",
+    "snippet": "Khám phá case buds 3 pro mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm nay.",
+    "position": 6
+   },
+   {
+    "title": "Vỏ Khóa Bảo Mật, Dành Cho Samsung Galaxy Buds 3 Pro ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1733179751369376909",
+    "snippet": "Thiết bị được áp dụng: Cho Samsung Galaxy Buds 3 / Galaxy Buds 3 Pro / Galaxy Buds 3 FE.2. Chất liệu: Sợi carbon TPU chất lượng cao, bảo vệ toàn thân.3. Dễ ...",
+    "position": 7
+   },
+   {
+    "title": "Vỏ tai nghe, Thích hợp cho Samsung Galaxy Buds 3 Pro ...",
+    "link": "https://shop.tiktok.com/vn/pdp/vo-tai-nghe-galaxy-buds-3-pro-vo-tu-tinh-carbon-co-moc-bao-ve-hoan-toan/1732037308772485393",
+    "snippet": "Mô tả sản phẩm · 1. Thiết bị được áp dụng: Cho Samsung Galaxy Buds 3 / Galaxy Buds 3 Pro. · 2. Chất liệu: Tpu + Hợp kim kẽm chất lượng cao, bảo vệ toàn thân.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

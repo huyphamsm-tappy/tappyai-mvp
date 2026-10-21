@@ -16,6 +16,25 @@
 export type ClaimVerdict = 'VERIFIED' | 'UNVERIFIED' | 'ACCESSORY' | 'AMBIGUOUS'
 
 /** One record as it arrives from the shopping tool. `price` is AUTHORITATIVE. */
+/** WS2: options of the money guard. Omitted = the shipped behaviour, byte-identical. */
+export interface MoneyGuardOptions {
+  /** Agent runtime only: a price in a sentence naming exactly one seller is judged against THAT seller's own listing. */
+  sellerAttribution?: boolean
+  /** CONSULTATIVE_IN_AGENT: a comma between two digits ("1,7 lít") is a decimal point, not a clause delimiter in the clause cut. */
+  decimalSafe?: boolean
+}
+
+/** The sentence around a position (the same bounds the attribution uses). */
+function sentenceAt(text: string, pos: number): string {
+  let start = 0
+  for (const m of text.slice(0, pos).matchAll(/[.!?;](?=\s)|\n/g)) start = m.index! + 1
+  let end = text.length
+  for (const ch of ['\n', '!', '?', ';']) { const i = text.indexOf(ch, pos); if (i !== -1 && i < end) end = i }
+  // A full stop ends the sentence; "4.190.000" and "truonggiang.vn" do not.
+  const dot = text.slice(pos).search(/\.(?=\s|$)/); if (dot !== -1 && pos + dot < end) end = pos + dot
+  return text.slice(start, end)
+}
+
 export interface EvidenceRecord {
   title?: string
   /** Structured price string, e.g. "6.490.000 ₫". Never parsed out of title/snippet. */
@@ -305,9 +324,22 @@ function judge(
  * `entities` are the product terms actually requested — in production the
  * search_products query arguments, one per tool call.
  */
-export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entities: string[]): MoneyClaim[] {
+export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entities: string[], opts: MoneyGuardOptions = {}): MoneyClaim[] {
   const found = extractMoneyClaims(text)
   if (found.length === 0) return []
+  // WS2 (agent runtime only): "**Viettablet** … khoảng 4,19 triệu" is a claim about THAT seller's listing, and it is verified by that
+  // listing's own structured price — whatever the request's wording (measured WS-K1: the query's "USB-C" made every listing a variant
+  // and three listing-backed seller prices were deleted). Only when exactly one seller is named and its own row carries the figure.
+  const bySeller = (c: Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>): string | null => {
+    if (!opts.sellerAttribution) return null
+    const s = strip(sentenceAt(text, c.start))
+    const sellers = [...new Set(records.map(r => (r.source ?? '').trim()).filter(x => strip(x).replace(/[^a-z0-9]/g, '').length >= 3))]
+    const named = sellers.filter(x => { const k = strip(x).replace(/[^a-z0-9.]/g, ''); return k.length >= 3 && s.replace(/[^a-z0-9.]/g, '').includes(k) })
+    if (named.length !== 1) return null
+    const own = records.filter(r => (r.source ?? '').trim() === named[0]).map(structuredPrice).filter((v): v is number => v !== null)
+    const ok = (v: number) => own.some(p => withinTolerance(v, p))
+    return ok(c.lo) && ok(c.hi) ? named[0] : null
+  }
   const usable = entities.map(requestedEntity).filter(Boolean)
   if (usable.length === 0) {
     return found.map(c => ({ ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'no requested entity available' }))
@@ -338,6 +370,8 @@ export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entiti
   }
 
   const first = found.map(c => {
+    const seller = bySeller(c)
+    if (seller) return { ...c, verdict: 'VERIFIED' as const, entity: seller, reason: 'stated by the named seller\'s own listing' }
     const entity = attribute(c.start)
     if (!entity) return { ...c, verdict: 'AMBIGUOUS' as const, entity: null, reason: 'attribution: 0 or >1 requested entity in sentence' }
     const j = judge(c, entity, records, [])
@@ -422,6 +456,8 @@ export function sentenceSpans(text: string): Array<[number, number]> {
  * character comes from the input; seams are tidied (a doubled delimiter, a leading connective).
  */
 const CLAUSE_DELIM = /[,;:()]|\s[—–-]\s/g
+// Same, but a comma flanked by digits on both sides ("1,7 lít", "1,200,000") is part of the number (flag CONSULTATIVE_IN_AGENT).
+const CLAUSE_DELIM_DECIMAL = /(?<!\d),|,(?!\d)|[;:()]|\s[—–-]\s/g
 // F-092 (2026-09-25): "với" / "with" are NOT here. Sentence-initial they are a PREPOSITION opening a
 // complete sentence ("Với hai bạn thì rất vui", "Với ngân sách 3 triệu, …"), and stripping them ate
 // the next sentence's first word. Only true conjunctions dangle off a removed sentence.
@@ -451,7 +487,7 @@ export function lastClauseOf(s: string): string {
  *   line, and `sentenceSpans` splits "**1. iPhone…**" after "1.", so the sentence alone sees an
  *   opening `**` its line already holds (golden post-f094 B1, measured with the pre-guard capture).
  */
-function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = ''): string | null {
+function removeClauseAround(sentenceWithBreak: string, at: number, end: number, linePrefix = '', decimalSafe = false): string | null {
   // The line break that closes a list line is structure, not clause: it always survives.
   const brk = sentenceWithBreak.match(/\n+$/)?.[0] ?? ''
   const sentence = sentenceWithBreak.slice(0, sentenceWithBreak.length - brk.length)
@@ -465,7 +501,7 @@ function removeClauseAround(sentenceWithBreak: string, at: number, end: number, 
   // Clause bounds inside this sentence: the delimiter before the amount (excluded from what
   // stays) and the delimiter after it (kept, so the remaining clauses still read as a list).
   let a = 0, b = Math.max(stop, end), bDelim = ''
-  for (const m of sentence.matchAll(CLAUSE_DELIM)) {
+  for (const m of sentence.matchAll(decimalSafe ? CLAUSE_DELIM_DECIMAL : CLAUSE_DELIM)) {
     const i = m.index!
     if (i < at) a = i
     else if (i >= end) { b = i + m[0].length; bDelim = m[0]; break }
@@ -546,6 +582,8 @@ export interface RedactOptions {
    * price guard uses it; its clause cuts produced the headless fragments the golden set measured.
    */
   wholeSentence?: boolean
+  /** See MoneyGuardOptions.decimalSafe. */
+  decimalSafe?: boolean
 }
 
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
@@ -589,7 +627,7 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
     const isListLine = /^\s*(?:\*\*)?\s*(?:[-*•+]|\d+[.)])\s/u.test(text.slice(lineStart, b))
     if (opts.wholeSentence && !isListLine) { dropped = true; return '' }
     for (const c of inSentence) {
-      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a))
+      const cut = removeClauseAround(sentence, c.start - a, c.end - a, text.slice(text.lastIndexOf('\n', a - 1) + 1, a), opts.decimalSafe === true)
       if (cut === null) { dropped = true; return '' }
       sentence = cut // claims are processed from the end, so earlier offsets are unaffected
     }
@@ -622,11 +660,12 @@ export function guardMoneyClaimsInText(
   text: string,
   records: EvidenceRecord[],
   entities: string[],
+  opts: MoneyGuardOptions = {},
 ): { text: string; claims: MoneyClaim[]; enforced: boolean } {
   const hasStructuredPrice = records.some(r => structuredPrice(r) !== null)
   if (!hasStructuredPrice) return { text, claims: [], enforced: false }
-  const claims = judgeMoneyClaims(text, records, entities)
+  const claims = judgeMoneyClaims(text, records, entities, opts)
   const unsupported = claims.filter(c => c.verdict !== 'VERIFIED')
   if (unsupported.length === 0) return { text, claims, enforced: true }
-  return { text: redactUnsupportedClaims(text, claims), claims, enforced: true }
+  return { text: redactUnsupportedClaims(text, claims, opts.decimalSafe ? { decimalSafe: true } : {}), claims, enforced: true }
 }

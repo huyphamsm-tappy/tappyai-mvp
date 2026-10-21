@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ibuprofen aspirin together interaction FDA aspirin ibuprofen timing low-dose aspirin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:54:42.445Z",
+ "body": {
+  "searchParameters": {
+   "q": "ibuprofen aspirin together interaction FDA aspirin ibuprofen timing low-dose aspirin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Concomitant Use of Ibuprofen and Aspirin",
+    "link": "https://www.fda.gov/media/76636/download",
+    "snippet": "• The timing of dosing of ibuprofen and low-dose aspirin is important for preserving the cardioprotective effect of aspirin. Recommendations ...",
+    "date": "8 thg 9, 2006",
+    "position": 1
+   },
+   {
+    "title": "Can You Safely Mix Aspirin and Ibuprofen?",
+    "link": "https://www.verywellhealth.com/can-i-take-aspirin-and-ibuprofen-together-1124016",
+    "snippet": "If you take low-dose aspirin, wait 30 minutes afterwards to take ibuprofen. Always talk to your provider before mixing ibuprofen and aspirin.",
+    "date": "5 thg 6, 2026",
+    "position": 2
+   },
+   {
+    "title": "US FDA warns about ibuprofen and aspirin interaction",
+    "link": "https://link.springer.com/article/10.2165/00128415-200611190-00003",
+    "snippet": "US FDA warns about ibuprofen and aspirin interaction. News item ... Combination drug therapy · Dental Pharmacology · Dosage compensation ...",
+    "date": "21 thg 1, 2013",
+    "position": 3
+   },
+   {
+    "title": "FDA Cautions on Mixing Ibuprofen and Aspirin",
+    "link": "https://www.patientcareonline.com/view/fda-cautions-mixing-ibuprofen-and-aspirin",
+    "snippet": "It said patients who are using ibuprofen for pain relief should do so at least 30 minutes after immediate-release aspirin taken for cardioprotective or stroke- ...",
+    "position": 4
+   },
+   {
+    "title": "Prediction of time-dependent interaction of aspirin with ...",
+    "link": "https://pubmed.ncbi.nlm.nih.gov/22122406/",
+    "snippet": "viết bởi K Awa · 2012 · Trích dẫn 54 bài viết — This study indicates that the antiplatelet effect of low-dose aspirin can be markedly reduced with combined use of ibuprofen, depending on the timing of ...",
+    "position": 5
+   },
+   {
+    "title": "Do Aspirin and Ibuprofen Interact?",
+    "link": "https://www.medscape.com/viewarticle/829422",
+    "snippet": "The FDA recommends that single-dose ibuprofen 400 mg should be taken over 8 hours before or at least 30 minutes after immediate-release aspirin.",
+    "date": "8 thg 8, 2014",
+    "position": 6
+   },
+   {
+    "title": "FDA Says Ibuprofen Interferes with Low-Dose Aspirin's ...",
+    "link": "https://clinician.nejm.org/fda-says-ibuprofen-interferes-low-dose-aspirin-s-antiplatelet-effect-JC200610040000001",
+    "snippet": "The FDA has concluded that taking ibuprofen concomitantly with immediate-release, low-dose aspirin could interfere with the aspirin's ...",
+    "date": "4 thg 10, 2006",
+    "position": 7
+   },
+   {
+    "title": "Drug Interaction Report - ibuprofen aspirin",
+    "link": "https://www.drugs.com/interactions-check.php?drug_list=243-0,1310-0&types[]=major&professional=1",
+    "snippet": "One study showed that the antiplatelet effect of enteric-coated low-dose aspirin is attenuated when ibuprofen 400 mg is dosed 2, 7, and 12 hours after aspirin.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

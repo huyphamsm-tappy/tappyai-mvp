@@ -1,0 +1,388 @@
+{
+ "url": "https://google.serper.dev/shopping",
+ "request": {
+  "q": "tai nghe chống ồn ANC thể thao chạy bộ dưới 3 triệu IPX5 Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 20
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:39:04.820Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC thể thao chạy bộ dưới 3 triệu IPX5 Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "shopping",
+   "num": 40,
+   "page": 1,
+   "engine": "google"
+  },
+  "shopping": [
+   {
+    "title": "ERAZER Tai nghe gaming không dây Lenovo ERAZER XT80Pro TWS bluetooth 5.4 Tai nghe 10mm Diaphragm Composite Âm thanh AAC Màn hình LED hiển thị kỹ thuật",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:5625147434838183691,gpcid:15597148007353044408,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "289.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSRwUS37cmlKaHAh-U1GzQQqUuGr8dGeW3TDocA2HD4iY_2Bi2HTbHOgGlOUfwXQxSjebGFcytF7EGaqhWYsJ5E659Ao85JDT33uWRbf-v-9VA8g2mOtjaG",
+    "productId": "5625147434838183691",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth Lenovo LE302 với chất lượng âm thanh HiFi chống nước IPX5 cho thể thao và tập thể dục",
+    "source": "Shopee",
+    "price": "254.320 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ5wy3LSJw35UmDXVmAAGECrhJOnW9OUKwcwJoho-WVeQ6wLhlh6tx6Pt_OhsibbSR-CIcncZKthTPYxgNsjFpqmPPakfy19D6X5Y2NNMdIdObeqw8piuAXxw",
+    "rating": 4.5,
+    "ratingCount": 162,
+    "productId": "11831930969983110314",
+    "position": 2
+   },
+   {
+    "title": "Tai Nghe Bluetooth Không Dây Y36 TWS - Tai Nghe Nhét Tai Chống Ồn, Âm Thanh HIFI, Thời Gian Chờ 25 Giờ, Chống Nước IPX5",
+    "source": "Chiaki.vn",
+    "price": "220.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcR-qu5c2UqrNQtfMGzqJluusVxsdejHB_57oYoypBhWdTICDxl9I0zH-8Byornwjn6vkHF_jMWM88pjrK4HZMDbHHHXb8vlShhTj1-aSG-7",
+    "productId": "6189942774342751877",
+    "position": 3
+   },
+   {
+    "title": "HTC NE60 Tai Nghe Phiên Dịch Bluetooth HIFI Gọi Chống Ồn Tai Nghe Không Dây Chống Ồn IPX5 Tai Nghe Thể Thao Chống Nước",
+    "source": "Shopee",
+    "price": "320.528 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRxYJHkP9xn4CtvLS-P5jFX520myWSUI2WNQsN2J4LRvhd5YFEBHtzCo1uHBhy-IzYQ-3TIqfZbwGU3tPpRvDlA-Xf_Gn_Z64-_tSAERbs6cv47eUu0EHpt",
+    "rating": 4.5,
+    "ratingCount": 8,
+    "productId": "16888467943232554360",
+    "position": 4
+   },
+   {
+    "title": "(CAO CẤP) Tai Nghe Bluetooth 5.0 Sound Pro F10, Chống Nước IPX7, Sạc Nhanh, 90h Nghe Nhạc, Tương Thích Cao -dc3860 -NÚT BẤM",
+    "source": "vinet.com.vn",
+    "price": "358.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR5ZZZ-B82DnuIIQzrgxH2Bbsxzag-VPsNYREYd-9DgKa5U3O_vQ7hDCnwzfA5y8h7lmXPU9FLp9WnnLNNbxmAc1II_iHf0U8uqw4uvzcoIiVsGaJqBWzBfjQ",
+    "productId": "7610898591075370117",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe dịch thuật AI HTC NE02 Tai mở Bluetooth 6.0 Dịch thời gian thực IPX5 Âm thanh HiFi chống nước Thiết kế thể thao & kinh doanh",
+    "source": "Shopee",
+    "price": "289.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRqnpj6b9I8Vae0YYPVoSPFGSDLYfU3XNFD5_jmCxWViwBj8Gizt-zI62ffp0XBmzu_PemTQiEqLwuBvsOo6tpTcwARIeQX_0GGSG2UUp8bdPur5lUXRFIvK-I",
+    "rating": 4.7,
+    "ratingCount": 54,
+    "productId": "15630846657823860172",
+    "position": 6
+   },
+   {
+    "title": "XUAN 8H Giờ Chơi Tai Nghe Thể Thao Tai Nghe Siêu Nhẹ Khử Tiếng Ồn Tay Miễn Phí Cho Chạy Bộ Đi Xe Đạp Đi Bộ Hàng Ngày VN",
+    "source": "Shopee",
+    "price": "76.230 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR0K2_p06ePTIwhCqmuEOK-Hw1U7tBbtouaCzvt3QATGdGaLHJGYP2I5QjOqocZgXbCIrp9W7bt507jUVvN3fGYZtJe1NlgQNJG48CfghQt-Lda29OrbHtz",
+    "productId": "11186515785734423125",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth thể thao Anker Soundcore V40i",
+    "source": "Fptshop.com.vn",
+    "price": "1.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRAA37t9hrAkrT4OIJH-LTktCLpFJq4wR7ufRdGP3W9UpAxBP2oROUvp3RSu4mJMwjTYuS4bYjRipcYK4-9ugSFLcbG-dxjRi_tKVjGG_MRtgrP3jm8y2foww",
+    "rating": 4.7,
+    "ratingCount": 321,
+    "productId": "3956967519928218678",
+    "position": 8
+   },
+   {
+    "title": "KY Tech Tai nghe nhét/ mở N72 HiFi, chống ồn thể thao, IPX5, titan công nghệ",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:2028070573049924346,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "149.600 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQLR7YIudVPoAejJwmB_3tjzKQGIdt5BbyJ_7JaVQBQA0X4IkWpB6bh8VcvpfOQmUsxar5Yf5fBuiIjQdJgyofjxEQTQY8nxZr4pphE0h2kidquDBFm6xOW",
+    "rating": 4.4,
+    "ratingCount": 27,
+    "productId": "2028070573049924346",
+    "position": 9
+   },
+   {
+    "title": "Tai nghe Bluetooth 5.4 UGREEN Max 5C - N35 pro chống ồn chủ động ANC 43DB Hi-Res LDAC kết nối 2 thiết bị kết nối app",
+    "source": "Shopee",
+    "price": "155.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcScvo_5DicVX3IYOrhTWuCx0fI9GpA8NmRhlXFcYhM7rYxHIkPSeWlI3bEc3sS3mSGR4itXlrAtHFi6i2d1hSyfyBx0WzYhJnRHm855BpG77FXaoznrgDn4",
+    "productId": "9850252544527785996",
+    "position": 10
+   },
+   {
+    "title": "Tai nghe Bluetooth Lenovo LE208 - Tai nghe chơi game IPX5, độ trễ thấp, âm thanh HIFI, thiết kế tiện dụng, sạc nhanh 30 giờ",
+    "source": "Chiaki.vn",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcR94M0q2643mxK1bSvrnepOoyM9rzyBQm0WYeIlVgEG0D-CKlVFfh31Ih4AtwkDW2euzFt9Oy_R-JUWziAgBeWczSNQMtozGIo4AaqfAwZoqmg3C8Npsdme",
+    "productId": "543979990470208415",
+    "position": 11
+   },
+   {
+    "title": "Tai Nghe Bluetooth TWS Thể Thao IPX5 Chống Nước Chống Mồ Hôi Bass Mạnh Tương Thích Nhiều Thiết Bị",
+    "source": "shopee.vn",
+    "price": "85.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQ0LQaT6u0ehQgRHhEg5rRsL1Hym9OqgLjruhA3fAVv8TI0yaNCJWt78YYvy34dc_nfSoIDCu4AxefGnOlqm8xRH_uC-9o4FrI4SPQ42jbp297kuX2Gmdjy",
+    "productId": "7867278924675632014",
+    "position": 12
+   },
+   {
+    "title": "Tai nghe không dây thể thaoTWS IPX5 Chống thấm nước Tai nghe Bluetooth âm trầm sâu mạnh mẽ Tương thích với tất cả các hệ thống di động",
+    "source": "shopee.vn",
+    "price": "90.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQsO-HFuzPo_D_B8m_WHuk1-8e3cecQJ0boMBhOo7fUVFPzvMh8miqO7O91sbFn_uiib2qX5T3n4fy_K1LL3X83ANBebd8rAncj7eXSmYHoiGWwFXhHuo5o",
+    "productId": "992242306898430768",
+    "position": 13
+   },
+   {
+    "title": "Tai nghe Fingertime ANC T17 chống ồn chủ động tích hợp xuyên âm",
+    "source": "Mobile Fun Việt Nam",
+    "price": "480.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQwM2VGDrnpodf472axy29-DOiPufBdtd8bF9Fa4gZnLkPXlc9NxJHYsNzOnf2SPF7DMMWnqVBNSTyp5vsBOGFE20MbfAvozRzq_c9JnvziJoqECSwcu2Ko",
+    "productId": "10093458189279609592",
+    "position": 14
+   },
+   {
+    "title": "Tai nghe Bluetooth dẫn truyền xương Bridio X13 IPX5 Tai nghe nhạc thể thao chống nước mở Tai chạy bộ không đau Tai",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:9780472132878379442,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "345.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcS15XNW3ZcmvCUkPELaYKaoeix8O61Wzc9mRueEyHHce-yseIeHBseCLi9jrdvAl5TcOAVgPsd2K4kr_8PGpGzMJR6yrIexpxOBLVtMNxKg",
+    "rating": 4.5,
+    "ratingCount": 334,
+    "productId": "9780472132878379442",
+    "position": 15
+   },
+   {
+    "title": "【BÁN CHẠY】Tai Nghe Bluetooth - Tai Nghe Xuyên Xương Thể Thao Chuyên Dụng Cho Nubia | Pin 12H, Hiển Thị PIN, Chống Nước IPX5, Đeo Tai Siêu Nhẹ | Giảm T",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:16697300091431810329,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "395.838 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcQf8LG7w9I_zF8F7h57XkwPERh2Esyi5nrenAhuNCSnQog_nn4li0MVuh1j6s0LyGNRbVUQzuDtJfX6G-YTXZ8kK9vrwaERMnKJ-Cy2QFk",
+    "rating": 5,
+    "ratingCount": 1,
+    "productId": "16697300091431810329",
+    "position": 16
+   },
+   {
+    "title": "Tai nghe Bluetooth V5.3 không dây X98 - Tai nghe thể thao chống ồn, màn hình LED, nhẹ 8g, âm thanh trong trẻo, thoải mái sử dụng lâu dài",
+    "source": "Chiaki.vn",
+    "price": "220.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRoPBSfhszVqc_D20UpSVtJqze16lDYhfRKwpMzpGBtEAxYilCwSe_QN2vaGzRSJAyel4qhkJ0ne6v54Ij16JUspf3B3ngi0N8wP18ZuJzcOWXeAFs1jPyD",
+    "productId": "12430504436403527104",
+    "position": 17
+   },
+   {
+    "title": "Lenovo LE302 IPX5 Tai nghe Bluetooth Chống nước HIFI Chất lượng âm thanh Thoải mái khi tập thể dục",
+    "source": "shopee.vn",
+    "price": "229.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcS8EZDtV5QwLWDuCd1zNW2XrqO39HbeAjgT0HgeTuEZcNQ9qOuNHz-bQal4v3YdxLRo33jnHQHN2BZIgXTNT7TiEPAwDNzQ",
+    "rating": 3.7,
+    "ratingCount": 3,
+    "productId": "7717513610469119501",
+    "position": 18
+   },
+   {
+    "title": "Tai Nghe Nhét Tai K69 Chống Nước IPX5 Kèm Phụ Kiện",
+    "source": "Shopee",
+    "price": "109.296 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcTdN-mEVoEBCo1g_7FEoOizd74Hci5YHSRC6tOZcDaq66NrSl6I4yOF3yzkVu5jauy3Q-RdLunXneoquC0Sq309TtZCtjBOkWjQaz6vKmpTlCzhyyW1r5nQ",
+    "rating": 4.4,
+    "ratingCount": 132,
+    "productId": "10231908792796546796",
+    "position": 19
+   },
+   {
+    "title": "Tai nghe Bluetooth nhét tai ANC Enger EG50TWS",
+    "source": "Fptshop.com.vn",
+    "price": "299.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQ8XZ5HaEPY3ewxOwcp3TaX-BGJK9yvmFTIU-GjlR4FhyDc61BKpYIl9S2T43wyATN06dqh96z-6oIvLAMZia2mQ2cP0cCm4rqIxHhcXs2hzh9Fm6CXhF7Hlg",
+    "productId": "7105913414798709170",
+    "position": 20
+   },
+   {
+    "title": "Baseus Tai nghe Không Dây TWS Bass BS2 Lite",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:9030195934277789115,gpcid:7205955921654229053,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "380.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcR7SUotYRoJ4erOxCINYRf_cg3MKuLUp9N280IMBB8PpO7om6Ys8ga567snFTCCKeQ9vwLoo1YmaZ71iYosFij1Xq-QIIdh0Vmahf2_F2Wg4Rs6LWaqJofy",
+    "productId": "9030195934277789115",
+    "position": 21
+   },
+   {
+    "title": "Tai nghe Bluetooth Lenovo LE302 IPX5 chống thấm nước chất lượng âm thanh HIFI thoải mái khi đeo trong khi tập thể dục",
+    "source": "Shopee",
+    "price": "280.720 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcReUhtqo1Y9VVOXgq2x-NTyshN7WWYTUQ8k4O82Nn9_XF_kRH7pnyTNrMiyEXl8W6EtvbKziH9j2hkI06d7FRsBBYI20EX6gMjat_fEIQyUyTRcUK4-oFuyPw",
+    "rating": 4.4,
+    "ratingCount": 28,
+    "productId": "2625936820004174274",
+    "position": 22
+   },
+   {
+    "title": "Tai Nghe Bluetooth SM10 Pro Không Dây - Âm Thanh HIFI, Chống Nước IPX7, Thời Gian Nghe Lên Đến 8 Giờ, Nút Cảm Ứng Thông Minh",
+    "source": "Chiaki.vn",
+    "price": "269.999 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSNXBZqJPkvKNxAQeCo3L4Fi8-HG3OoZiAcirjGkfuJH88F52re9ER28JTdp39jvwnqWJXLkCDaAFcNaMS4ZKYnKr3yF3Lzt-dWZHQO7sE",
+    "productId": "3414896258219476825",
+    "position": 23
+   },
+   {
+    "title": "Tai nghe Bluetooth Lenovo LE302 IPX5 Chống nước HIFI Chất lượng âm thanh Thoải mái khi tập thể dục",
+    "source": "Shopee",
+    "price": "254.320 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQO1Zdyng_ntxty55WVgpm5xF9Fuh2_pQfQdaS0SK_YlzKsoTXkakoCL0_JyDer0eqtlGsfDnYtwqtoLcx9X0uGxD0QAUxHWlI4ziBv7SVsWljvsHbuwGg8",
+    "productId": "14796219691490296989",
+    "position": 24
+   },
+   {
+    "title": "Tai nghe Bluetooth Q10 mới bộ tai nghe kép ENC tai nghe khử tiếng ồn có tuổi thọ pin dài và ngủ TWS chống nước",
+    "source": "Shopee",
+    "price": "258.333 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSGu2Qk2OZIhmrDsY2AhztvAbiPWq_0bxtOOEGjz0Lqmu4PBY7bxre5yaltD--jRxIf_nI5PIfU2afv1wHfFoBZvhgVIqNbtq-S_WA8w_tgVJJtWKk3jL3G",
+    "productId": "701176186192412174",
+    "position": 25
+   },
+   {
+    "title": "Tai nghe với kết nối không dây độ trễ thấp, công nghệ chống ồn chủ động (ANC), pin lên đến 27 giờ với hộp sạc không dây, chống nước chuẩn IPX4 và hỗ",
+    "source": "Nakio Computer",
+    "price": "2.190.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQgHzCeLkiYeQweJ6piNCH7iZTauaVagB6mboNX44Xb1m5uJrNl7oD8S1o_sfzhFgBE5tTl26qOcGkVOCnKbDvjyRBC8_0OUBYdMwS9mvumpI8M4_DDaTAoGw",
+    "productId": "4872053600302897576",
+    "position": 26
+   },
+   {
+    "title": "Tai nghe không dây dịch thuật AI HTC NE19 Bluetooth dịch thuật thời gian thực chất lượng âm thanh HiFi chống nước IPX5",
+    "source": "Shopee",
+    "price": "254.320 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTUx-AtdchKqVvdHjeeSD14zfnifLpAgpAz4THhh4OYDBWlVTKI0xisdV6qMEEOi6Xzbqb6HbC9uA5agmHsGkNbtfZ8-AnWmD_wX4-CAy2Lnq0uAf2B-BXQbg",
+    "rating": 4.6,
+    "ratingCount": 505,
+    "productId": "2500784970018431890",
+    "position": 27
+   },
+   {
+    "title": "Tai nghe không dây gaming Konfulon GT-01 chống ồn",
+    "source": "itsystems.vn",
+    "price": "300.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSL7I2EaXTsXIiVII5FtEm7FsZ25Q7VoALeL3eETcvmIO9bqGcILXCqmHKdBO-kkwV9scaY9ONxwvbpc35yJytJj6v1QGXYCqlZr3U0byOJUAyuX-tQxUmBTw",
+    "productId": "2228901693861793023",
+    "position": 28
+   },
+   {
+    "title": "HTC NE69 Tai Nghe Phiên Dịch AI Tai Nghe Ngủ Đa Năng Bluetooth 6.0, Âm Thanh Hi-Fi Cao Cấp Khử Tiếng Ồn ENC Hiệu ứng ánh sáng LED Chống Nước IPX5 Độ",
+    "source": "Shopee",
+    "price": "297.400 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSbxtnZxoxue2iRSTQ86kcw5eDiLMlcl8FeCw37llSJr2pztc0JsS-XHExuf5RpSuedjmUK4HcjL7y7ZjEk9VJqAghRpyr4LtqgIg8WEVkxYOCPTB_Sgfs67A",
+    "rating": 4.3,
+    "ratingCount": 15,
+    "productId": "15060057802019853821",
+    "position": 29
+   },
+   {
+    "title": "Tai Nghe Không Dây Kép Q10 Thời Trang True TWS - Chống Thấm Nước IPX5, Âm Thanh Stereo HIFI, Thời Gian Sử Dụng 8 Giờ, Phù Hợp Chơi Game và Thể Thao",
+    "source": "Chiaki.vn",
+    "price": "320.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcSewgP5ziYLlHfuTj60-z98duUhwU-pISnIOIAaoX-zDgGj0kuy2QLZezVlG4AtsnY0uNTqMIske47voOixBah0Zbf-rr0c9qshZ_xbw9lyA7YeVkfwT6nubcI",
+    "productId": "4244045140397075217",
+    "position": 30
+   },
+   {
+    "title": "Tai nghe Bluetooth SHINECON QH001, Không dây, Treo vành tai, OWS, ENC giảm tiếng ồn, Thể thao, IPX5, Chính Hãng - WOW",
+    "source": "Shopee",
+    "price": "650.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcRJ1AsfzuZeX2OnK0BC7yiPlassfNKI0aabWd38DSS5yEjDzMqVP_vvYZFkUIJEsTq4HXz1vfa57QYW20DB3NdvysAR-vtPqyhSRneal4KxMIL3Fch3UsoS",
+    "productId": "11689448042137969249",
+    "position": 31
+   },
+   {
+    "title": "Tai nghe Open-ear không dây TWS Havit OWSFIT 02A",
+    "source": "CellphoneS",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:6759344028749612247,gpcid:17181096028648356838,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "590.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcRSAMIz-gYY_J-D-IqZDVJbDCYdNJRYTebdGzPF1K1ws0Kazw1aY9ZlQZ4VpUZlOaugPXSUDAz1HNYqHcPhaCoipZnYBxG66kl9ZYoxXRddtDBcQsy4VWdv",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "productId": "6759344028749612247",
+    "position": 32
+   },
+   {
+    "title": "Tai nghe không dây Monster AC530 Bluetooth HIFI Chất lượng âm thanh 6.0 HD Cuộc gọi khử tiếng ồn Âm thanh nổi IPX5 Tai nghe thể thao chống nước có Mic",
+    "source": "Shopee",
+    "price": "393.900 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcSzPEUKSpLVyXbsogvp3CAZGjRAaQTtzILEjDfyP40QAior3hxkecAyTWM3iY-8_MfxQFCJpCM_yLjBjPZMSklxbyWIgXB89zx8unE7xG3-jDtuLLD2qFcAZKaW",
+    "productId": "1870810717169528611",
+    "position": 33
+   },
+   {
+    "title": "HTC NE10 Tai Nghe Phiên Dịch Thời Gian Thực 135 Ngôn Ngữ Bluetooth 6.0 Âm HiFi Loa 10mm Khử Ồn Cuộc Gọi HD IPX5",
+    "source": "Shopee",
+    "price": "392.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRaPA-mx9yRrVAI1DMgS1E550E_Nze-AFzcEyKF4_HOOWUt9OoaZx6j84sOAFU60cXuX2YPx64UnNRZhNXKhNGRE_wknEKEU2qxn5WKo3NRfWIBhq_ahLo8",
+    "rating": 4.7,
+    "ratingCount": 11,
+    "productId": "8483567664268610528",
+    "position": 34
+   },
+   {
+    "title": "Tai nghe dây trong suốt thiết kế tinh xảo POLVCDG D6T - Âm thanh tuyệt đỉnh - Mic đàm thoại siêu nhạy -dc3979 -XANH",
+    "source": "vinet.com.vn",
+    "price": "206.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRy49n9hLeDjvVWDQ0K30569o0lnxi010tlQ-oUHEXxpFNLzUV82SSeQmruRiGBqN_9_M9Dfo9aM7apgK1LzjS-ct06y1otrDlu6hhJG6Lh5HA-iH8hvMXiH4Y",
+    "productId": "6994914248045669892",
+    "position": 35
+   },
+   {
+    "title": "Tai Nghe Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025 - Chính Hãng PKT Phụ Kiện Tốt",
+    "source": "Shopee",
+    "link": "https://www.google.com/search?ibp=oshop&q=tai+nghe+ch%E1%BB%91ng+%E1%BB%93n+ANC+th%E1%BB%83+thao+ch%E1%BA%A1y+b%E1%BB%99+d%C6%B0%E1%BB%9Bi+3+tri%E1%BB%87u+IPX5+Vi%E1%BB%87t+Nam&prds=localAnnotatedOfferId:1,catalogid:14175758542517557209,pvo:2,pvt:hg&gl=vn&udm=28&pvorigin=2",
+    "price": "229.000 ₫",
+    "imageUrl": "https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcR_Z05a5-O-TATnXHQADhFvkVfGG-MqNrGvHN6oDmRUtk4S8joLvE7T53aoYXQAJYLllRuNY3E5u0KDFJ_iVXunm5UCqvAJ_6jTWUbxZ8E",
+    "rating": 4.8,
+    "ratingCount": 37,
+    "productId": "14175758542517557209",
+    "position": 36
+   },
+   {
+    "title": "Tai nghe Bluetooth không dây X91 OWS V5.3 chống nước IPX5 - Âm thanh HD, điều khiển cảm ứng thông minh, thời gian sử dụng 48 giờ",
+    "source": "Chiaki.vn",
+    "price": "230.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSoznhiWTGorrQDkQupDEc6aUCIEFsAuHA2fRvF3OLPJ42SjalY1xFzrJemeZbrkp9xDCTT3IV2Ku3ltEy_7DkzOfZQt1NW2gLlP6tbVIWPGMGtM7pgrLIDSQ",
+    "productId": "9722105720328137412",
+    "position": 37
+   },
+   {
+    "title": "Tai Nghe Bluetooth 1Hora ANC Tai Nghe Thể Thao Khử Tiếng Ồn - Trợ Lý AI 4 Mic Đàm Thoại Siêu Sạch",
+    "source": "Shopee",
+    "price": "329.000 ₫",
+    "imageUrl": "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSX2uhVvJpOQqyMISPf4nN2VQsBcirevQzL_kCvJn7XVmnYnfzSo8IuZkv4u9StUGVIOso2agyXv-SPUjI6iizwmaa9nWL4lSPsZEXASevDmpViuafkoPfOSZE",
+    "rating": 4.7,
+    "ratingCount": 48,
+    "productId": "14156793931167635175",
+    "position": 38
+   },
+   {
+    "title": "Tai nghe thể thao Anker Soundcore V40i - A3878, thiết kế trong suốt, chống nước IP55, trải nghiệm dễ chịu ấn tượng",
+    "source": "Tây Nam Tech",
+    "price": "1.490.000 ₫",
+    "imageUrl": "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQIbFJoSrTtO75Q4HXubtmLCIc8UR6WZQ7oiuAb0N9VggzkAtRKH1hgFxN1AYmxIe2susAIv7LaP9ocKO_ftCchvyEr2Xs_Ksis-PylKcCoEdswiBhY1QAq",
+    "rating": 4.7,
+    "ratingCount": 321,
+    "productId": "5266723512643281811",
+    "position": 39
+   },
+   {
+    "title": "HTC NE19 AI Tai nghe dịch thời gian thực Dịch 150 ngôn ngữ Tai nghe dịchAI OWS V6.0 nghe không dây Bluetooth IPX5 Thiết kế móc tai chống nước Tuổi thọ",
+    "source": "Shopee",
+    "price": "324.000 ₫",
+    "imageUrl": "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcTiSyUq7mIO7wHGkAr1vLTMnY8-B2eKGw96YCcSAjlnmEwBRGsvZr1Sw9jH9OAI8Vj7g_-1kwLJi_brcirtaluLxA4G-GHrFDMDsZvPwe2uH3k1k3uPXttUNg",
+    "rating": 4.6,
+    "ratingCount": 505,
+    "productId": "13478917203173083019",
+    "position": 40
+   }
+  ],
+  "credits": 2
+ }
+}

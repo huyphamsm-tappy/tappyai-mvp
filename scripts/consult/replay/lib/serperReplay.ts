@@ -62,6 +62,10 @@ export function recordingKey(url: string, body: string): string {
 /** Injection suite (owner 30/09, from PHIÊN LUNA): text planted into every Serper result served while set (recordings on disk untouched). */
 let injection: { field: 'title' | 'snippet' | 'both'; text: string } | null = null
 export function setSerperInjection(spec: { field: 'title' | 'snippet' | 'both'; text: string } | null): void { injection = spec }
+/** WS2 final (eval only): make chosen Serper endpoints ('/shopping', '/search' …) fail — 'error' = HTTP 504 now, 'timeout' = no answer for
+ *  20 s (or until the caller aborts), then 504. Tool-failure scenarios run against the real route with this. */
+let failure: { endpoints: string[]; mode: 'timeout' | 'error' } | null = null
+export function setSerperFailure(spec: { endpoints: string[]; mode: 'timeout' | 'error' } | null): void { failure = spec }
 function plant(body: unknown): unknown {
   if (!injection || !body || typeof body !== 'object') return body
   const out = JSON.parse(JSON.stringify(body)) as Record<string, unknown>
@@ -99,6 +103,11 @@ export function installReplayFetch(recordingsDir: string, opts: { record: boolea
     }
 
     if (host === 'google.serper.dev') {
+      if (failure && failure.endpoints.some(e => new URL(url).pathname.startsWith(e))) {
+        if (failure.mode === 'timeout') await new Promise<void>(resolve => { const t = setTimeout(resolve, 20_000); init?.signal?.addEventListener('abort', () => { clearTimeout(t); resolve() }, { once: true }) })
+        if (init?.signal?.aborted) throw new DOMException('aborted', 'AbortError')
+        return json({ message: 'Gateway Timeout' }, 504)
+      }
       const body = bodyOf(init)
       // PHIÊN LUNA cache study: every Serper request the route made, in order (REPLAY_SERPER_LOG, set per out dir).
       if (process.env.REPLAY_SERPER_LOG) { try { appendFileSync(process.env.REPLAY_SERPER_LOG, JSON.stringify({ conv: process.env.REPLAY_SERPER_CONV ?? null, url, body }) + '\n') } catch { /* study only */ } }

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "phim đang chiếu hôm nay moveek",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:29.526Z",
+ "body": {
+  "searchParameters": {
+   "q": "phim đang chiếu hôm nay moveek",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phim đang chiếu rạp | Lịch chiếu, Trailer",
+    "link": "https://moveek.com/dang-chieu/",
+    "snippet": "Trại Buôn Người · Scotty Giải Cứu Hoàng Thượng · Trái Tim Quái Thú · Út Lan 2 · Avengers: Hồi Kết - Phiên Bản Đặc Biệt · Quyết Cua Anh Này · Thần Sư Chung Quỳ: Linh ...",
+    "position": 1
+   },
+   {
+    "title": "Lịch chiếu phim rạp | Xem giá vé, review, mua vé nhanh",
+    "link": "https://moveek.com/lich-chieu/",
+    "snippet": "Lịch chiếu · Trại Buôn Người · Trái Tim Quái Thú · Quyết Cua Anh Này · Út Lan 2 · Avengers: Hồi Kết - Phiên Bản Đặc Biệt · Lên Hương · Pháo Hoa Lúc Bình Minh · Khóa ...",
+    "position": 2
+   },
+   {
+    "title": "Think Movies, Go Moveek | Mua vé, Lịch chiếu, Review phim ...",
+    "link": "https://moveek.com/",
+    "snippet": "Trại Buôn Người và 3 phim hành động Việt Nam vượt mốc 200 tỷ tại phòng vé · Review Quyết Cua Anh Này - Một bản remake duyên dáng, hài hước và đậm chất Thái.",
+    "position": 3
+   },
+   {
+    "title": "Rạp phim khu vực Hà Nội",
+    "link": "https://moveek.com/rap-khu-vuc/ha-noi/",
+    "snippet": "Beta Đông Anh. Xem lịch chiếu phim và Mua vé xem phim tại Beta Đông Anh. Moveek - Xem Lịch chiếu toàn quốc đầy đủ & tiện lợi nhất.",
+    "position": 4
+   },
+   {
+    "title": "Phim sắp chiếu | Mua vé, Lịch chiếu, Review phim, Giá vé",
+    "link": "https://moveek.com/sap-chieu/",
+    "snippet": "01/02 - 07/02 · Thám Tử Kiên 2: Lời Nguyền Hoàng Kim · Loạn Thế: Nghĩa Khí Anh Hùng · EM (Phim Tết 2027) · Cận Kề Cái Chết.",
+    "position": 5
+   },
+   {
+    "title": "Lịch chiếu phim CGV Cinemas – Giá vé & Ưu đãi mới nhất",
+    "link": "https://moveek.com/he-thong-rap/cgv-cineplex/",
+    "snippet": "Lịch chiếu CGV Cinemas mới nhất tại 85 rạp, cập nhật hằng ngày. Xem giá vé, suất chiếu, ưu đãi và đặt vé CGV Cinemas online nhanh chóng trên Moveek.",
+    "position": 6
+   },
+   {
+    "title": "Moveek - Phim Chiếu Rạp (@moveekvn)",
+    "link": "https://www.facebook.com/moveekvn/?locale=vi_VN",
+    "snippet": "Moveek - Phim Chiếu Rạp. Mua vé xem phim - Lịch chiếu tất cả rạp toàn quốc - Review tất cả phim đang chiếu ngoài rạp: https: //moveek.com/. Theo dõi ...",
+    "rating": 4.1,
+    "ratingCount": 78,
+    "position": 7
+   },
+   {
+    "title": "Beta Giải Phóng – Lịch chiếu & Giá vé hôm nay",
+    "link": "https://moveek.com/rap/beta-giai-phong",
+    "snippet": "Beta Giải Phóng – Rạp chiếu phim hiện đại tại Imperial Plaza, đặt vé dễ dàng trên Moveek Xem lịch chiếu phim Beta Giải Phóng mới nhất và mua vé xem phim ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

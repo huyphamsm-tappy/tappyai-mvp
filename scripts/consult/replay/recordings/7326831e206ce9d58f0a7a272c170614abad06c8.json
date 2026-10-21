@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm Lưu Coffee\" OR \"Every Half Coffee Roasters\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:24:11.676Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm Lưu Coffee\" OR \"Every Half Coffee Roasters\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Every Half Coffee Roasters (@everyhalfcoffeeroasters)",
+    "link": "https://www.tiktok.com/@everyhalfcoffeeroasters",
+    "snippet": "Every Half Coffee Roasters (@everyhalfcoffeeroasters) on TikTok | 7779 Likes. 2041 Followers. Unexpectedly interesting coffee roasters from Vietnam .",
+    "position": 1
+   },
+   {
+    "title": "POV- Last order of the day ☕️ @Every Half Coffee ...",
+    "link": "https://www.tiktok.com/@connordoescoffee/video/7528451576428596502",
+    "snippet": "2910 Lượt thích,29 Bình luận.Video TikTok từ Connor Russell (@connordoescoffee): \"POV- Last order of the day ☕️ @Every Half Coffee Roasters ...",
+    "position": 2
+   },
+   {
+    "title": "Every Half Coffee Roasters: Cà Phê Sữa Ngon Nhất",
+    "link": "https://www.tiktok.com/@libravnam/video/7574043679522917653",
+    "snippet": "Every Half Coffee Roasters: Cà Phê Sữa Ngon Nhất. Khám phá Every Half Coffee với cà phê sữa hấp dẫn và vị trí thuận lợi. Đến ngay Park 4, 208 ...",
+    "position": 3
+   },
+   {
+    "title": "Every Half Coffee Roasters: Unannounced Vietnam ...",
+    "link": "https://www.tiktok.com/@martinmarforiandanar/video/7633588957464284436",
+    "snippet": "Walking into Every Half Coffee Roasters unannounced, like regular customers, is the method to strip away the hype and test both coffee and ...",
+    "position": 4
+   },
+   {
+    "title": "Every Half Coffee Roasters: A New Gem in Saigon",
+    "link": "https://www.tiktok.com/@checkinsaigon.vn/video/7615089469481356562",
+    "snippet": "Every Half Coffee Roasters: A New Gem in Saigon. Discover Every Half Coffee Roasters in Ho Chi Minh City. Enjoy fantastic brews and a cozy ...",
+    "position": 5
+   },
+   {
+    "title": "📍☕️ @Every Half Coffee Roasters Particularly in love with ...",
+    "link": "https://www.tiktok.com/@cylovesfrogs/video/7688048657190391071",
+    "snippet": "☕️ @Every Half Coffee Roasters Particularly in love with their melon series, and their espresso tonic is also delicious! Ended up coming ...",
+    "position": 6
+   },
+   {
+    "title": "every half coffee roasters",
+    "link": "https://shop.tiktok.com/us/k/every-half-coffee-roasters",
+    "snippet": "Every Half Coffee Roasters is dedicated to providing coffee enthusiasts with exceptional coffee experiences.",
+    "position": 7
+   },
+   {
+    "title": "Every Half Coffee Roasters your coconut blossom ...",
+    "link": "https://www.tiktok.com/@ryan.oflaherty33/video/7609309371759103253",
+    "snippet": "@Every Half Coffee Roasters your coconut blossom coldbrew is next level! Great atmosphere and. @Ry ăn in Việt Nam · original sound · Every ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

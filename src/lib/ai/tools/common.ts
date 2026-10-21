@@ -1,12 +1,15 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
+import { withRetrievedAt } from './retrievalClock'
 import { serperPost } from './serperClient'
-import { serperCacheGet, serperCacheSet } from './serperCache'
-import { recordSerperCacheHit } from './serperMeter'
+import { serperCacheGetMeta, serperCacheSet } from './serperCache'
+import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
+import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
+import { currentSerperSignal, withSerperToolScope } from './serperToolBudget'
 import { messages } from '@/lib/ai/messages'
-import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey } from './cacheKeys'
+import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
 
 // ===== In-memory cache (theo Vercel instance, giam goi API lap lai cho cung 1 query) =====
-type CacheEntry = { data: unknown; expires: number }
+type CacheEntry = { data: unknown; expires: number; /** when the data was really fetched; null = not known (a row rebuilt from a legacy shared entry) */ at: number | null }
 const cache = new Map<string, CacheEntry>()
 
 export function getCache(key: string): unknown | null {
@@ -14,6 +17,12 @@ export function getCache(key: string): unknown | null {
   if (hit && hit.expires > Date.now()) return hit.data
   if (hit) cache.delete(key)
   return null
+}
+
+/** The real fetch time of an L1 entry (ms), `null` when unknown or absent. Does not touch expiry. */
+export function getCacheAt(key: string): number | null {
+  const hit = cache.get(key)
+  return hit && hit.expires > Date.now() ? hit.at : null
 }
 
 /**
@@ -52,6 +61,67 @@ export async function withSingleFlight<T>(key: string, fn: () => Promise<T>): Pr
   }
 }
 
+/**
+ * ONE paid Serper request per effective request, however many callers want it at the same moment (POST-CREDIT cost control). The key
+ * must carry EVERY parameter that changes the answer (endpoint, normalised query, count variant, area) — callers build it from the same
+ * parts as their cache keys.
+ *
+ * CANCELLATION IS PER CALLER (post-commit review B). The shared request runs in a scope that carries the FLIGHT's own signal, not the
+ * first caller's:
+ *   · a caller whose own signal aborts leaves at once with `cancelled` (null / []) — independently of the others;
+ *   · the callers still interested keep waiting and receive the real result of the shared request;
+ *   · the underlying request is aborted only when NO caller is left (or by its own time limit inside serperPost);
+ *   · a caller that arrives after everyone left starts a fresh request instead of joining a cancelled one.
+ * The reservation stays with the scope chain that started the request (it is the one that sent it); a follower never spends. The entry
+ * is removed the moment the request settles, so an error or a timeout is never handed to later callers.
+ */
+interface Flight { p: Promise<unknown>; ac: AbortController; waiters: number; /** when the shared request's rows were really fetched; replayed to EVERY caller so each tool result is stamped */ retrieval?: Retrieval }
+const flights = new Map<string, Flight>()
+
+export function serperFlight<T>(key: string, fn: () => Promise<T>, cancelled: T): Promise<T> {
+  const mine = currentSerperSignal()
+  if (mine?.aborted) return Promise.resolve(cancelled) // this caller is already cancelled: it neither starts nor joins a request
+  const k = `serper:${key}`
+  let f = flights.get(k)
+  if (f && f.ac.signal.aborted) f = undefined // the previous interested callers all left: that request is being cancelled, do not join it
+  if (!f) {
+    const ac = new AbortController()
+    const created: Flight = { ac, waiters: 0, p: Promise.resolve() }
+    // The request runs in a nested scope that carries the FLIGHT's signal; the caps of the starting scope chain still apply (limit ∞ here).
+    created.p = withSerperToolScope(Number.MAX_SAFE_INTEGER, ac.signal, async () => {
+      const r = await withRetrievalClock(fn)
+      created.retrieval = { retrievedAt: r.retrievedAt, unknown: r.unknown, sources: r.sources }
+      return r.value
+    })
+      .then(r => r.value)
+      .finally(() => { if (flights.get(k) === created) flights.delete(k) })
+    flights.set(k, created)
+    f = created
+  } else {
+    console.log(JSON.stringify({ type: 'tappyai_serper_single_flight_join', key: k.slice(0, 60) }))
+  }
+  const flight = f
+  flight.waiters++
+  return new Promise<T>((resolve, reject) => {
+    let left = false
+    const leave = () => {
+      if (left) return false
+      left = true
+      mine?.removeEventListener('abort', onAbort)
+      flight.waiters--
+      if (flight.waiters <= 0) flight.ac.abort() // nobody needs the request any more
+      return true
+    }
+    const onAbort = () => { if (leave()) resolve(cancelled) }
+    mine?.addEventListener('abort', onAbort, { once: true })
+    const replay = () => { const rt = flight.retrieval; if (!rt) return; if (rt.unknown) noteRetrieval(null); if (rt.retrievedAt) noteRetrieval(rt.retrievedAt) }
+    flight.p.then(
+      v => { if (leave()) { replay(); resolve(v as T) } },
+      err => { if (leave()) reject(err) },
+    )
+  })
+}
+
 /** Test seam: how many requests are in flight. Never used by production code. */
 export function inFlightCount(): number {
   return inFlight.size
@@ -68,14 +138,15 @@ export function inFlightCount(): number {
  */
 export function __clearToolCache(): void {
   cache.clear()
+  shoppingFailures.clear()
 }
 
-export function setCache(key: string, data: unknown, ttlMs: number) {
+export function setCache(key: string, data: unknown, ttlMs: number, at: number | null = Date.now()) {
   if (cache.size > 300) {
     const firstKey = cache.keys().next().value
     if (firstKey !== undefined) cache.delete(firstKey)
   }
-  cache.set(key, { data, expires: Date.now() + ttlMs })
+  cache.set(key, { data, expires: Date.now() + ttlMs, at })
 }
 
 // ===== OFFICIAL WEBSITE IMAGE (og:image) — live only, short timeout, never blocks =====
@@ -296,31 +367,34 @@ export async function fetchPlacePhotosByName(placeId: string, placeName: string,
    */
   const photoCacheKey = placePhotosCacheKey(placeName, max, context)
   const cachedPhotos = getCache(photoCacheKey)
-  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) return cachedPhotos as string[]
+  if (Array.isArray(cachedPhotos) && cachedPhotos.length > 0) { recordSerperL1Hit('images'); return cachedPhotos as string[] }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey || !placeName) {
     console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_skip', reason: !apiKey ? 'no_key' : 'no_name', placeId }))
     return []
   }
-  try {
-    const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
-    if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
-    if (!(resp as Response).ok) {
-      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
+  // One in-flight /images request per (name, count, context). Images stay OUT of the shared L2 cache (owner decision, unchanged).
+  return serperFlight(`images:${photoCacheKey}`, async (): Promise<string[]> => {
+    try {
+      const resp = await serperPost('images', apiKey, { q: placeName, gl: 'vn', hl: 'vi', num: 8 }, 4000)
+      if (!resp) return [] // A2: over today's Serper ceiling — no photo, the turn still answers
+      if (!(resp as Response).ok) {
+        console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_not_ok', status: (resp as Response).status, placeId }))
+        return []
+      }
+      const data = await (resp as Response).json()
+      const images = data?.images as SerperImage[] | undefined
+      const photoUris = pickEmbeddableImageUrls(images, max, context)
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
+      // 15 minutes, matching the products cache: long enough that a conversation
+      // and its follow-ups pay once, short enough that these stay live URLs.
+      if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
+      return photoUris
+    } catch (e) {
+      console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
       return []
     }
-    const data = await (resp as Response).json()
-    const images = data?.images as SerperImage[] | undefined
-    const photoUris = pickEmbeddableImageUrls(images, max, context)
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_result', placeId, placeName: placeName.slice(0, 40), imageCount: images?.length ?? 0, pickedCount: photoUris.length, chosenHost: photoUris[0] ? hostOf(photoUris[0]) : null }))
-    // 15 minutes, matching the products cache: long enough that a conversation
-    // and its follow-ups pay once, short enough that these stay live URLs.
-    if (photoUris.length > 0) setCache(photoCacheKey, photoUris, 15 * 60 * 1000)
-    return photoUris
-  } catch (e) {
-    console.log(JSON.stringify({ type: 'tappyai_photo_debug', step: 'serper_error', placeId, error: String(e).slice(0, 80) }))
-    return []
-  }
+  }, [] as string[])
 }
 
 // ===== DEFERRED PHOTO RESOLUTION (B7-A) =====
@@ -420,17 +494,25 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   const searchCacheKey = serperSearchCacheKey(query)
   const cachedSearch = getCache(searchCacheKey)
   if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
+    recordSerperL1Hit('search')
+    noteRetrieval(getCacheAt(searchCacheKey))
     return cachedSearch as Array<{ title: string; link: string; snippet: string }>
   }
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  return serperFlight(`search:${searchCacheKey}`, () => serperSearchPaid(query, searchCacheKey, apiKey), null)
+}
+
+async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
   // L2: the shared 24 h cache (serperCache.ts). Fails open — a miss or a store outage falls
   // through to the paid call below.
-  const shared = await serperCacheGet<{ title: string; link: string; snippet: string }>('search', query, null)
+  const shared = await serperCacheGetMeta<{ title: string; link: string; snippet: string }>('search', query, null)
   if (shared) {
     recordSerperCacheHit('search')
-    setCache(searchCacheKey, shared, 5 * 60 * 1000)
-    return shared
+    const sharedAt = shared.at ? Date.parse(shared.at) : null
+    setCache(searchCacheKey, shared.rows, 5 * 60 * 1000, sharedAt)
+    noteRetrieval(sharedAt)
+    return shared.rows
   }
   try {
     const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000)
@@ -447,6 +529,7 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
       setCache(searchCacheKey, results, 5 * 60 * 1000)
       await serperCacheSet('search', query, null, results)
     }
+    noteRetrieval(Date.now())
     return results
   } catch {
     return null
@@ -518,13 +601,30 @@ export interface ShoppingRecord {
 export async function serperShopping(query: string, num = 20): Promise<ShoppingRecord[] | null> {
   const apiKey = process.env.SERPER_API_KEY
   if (!apiKey) return null
+  const key = `shopping:n${num}:${cacheKeyPart(query)}`
+  // Serper review finding D: an identical request that just TIMED OUT / was cancelled may already be processed and billed — sending it
+  // again (searchProducts' structured path and its organic fallback both ask num=20) only doubled the credits and the wait.
+  const failedAt = shoppingFailures.get(key)
+  if (failedAt !== undefined && Date.now() - failedAt < SHOPPING_RESEND_BLOCK_MS) {
+    console.log(JSON.stringify({ type: 'tappyai_serper_resend_blocked', endpoint: 'shopping', ageMs: Date.now() - failedAt }))
+    return null
+  }
+  return serperFlight(key, () => serperShoppingPaid(query, num, apiKey, key), null)
+}
+
+/** Identical /shopping requests that failed by timeout / abort / network error → when (process-local, 30 s). A fast HTTP error is not recorded. */
+const SHOPPING_RESEND_BLOCK_MS = 30_000
+const shoppingFailures = new Map<string, number>()
+
+async function serperShoppingPaid(query: string, num: number, apiKey: string, failureKey: string): Promise<ShoppingRecord[] | null> {
   // Shared 24 h cache (serperCache.ts), keyed on the query AND `num` — a 12-row answer must not
   // serve a caller that paid for 20. Fails open.
   const variant = `n${num}`
-  const shared = await serperCacheGet<ShoppingRecord>('shopping', query, null, variant)
+  const shared = await serperCacheGetMeta<ShoppingRecord>('shopping', query, null, variant)
   if (shared) {
     recordSerperCacheHit('shopping')
-    return shared
+    noteRetrieval(shared.at)
+    return shared.rows
   }
   try {
     // `num` is a parameter (D3) rather than the old hardcoded 12: the consultative path asks
@@ -563,8 +663,13 @@ export async function serperShopping(query: string, num = 20): Promise<ShoppingR
       })
     // Only a non-empty, successful answer is shared (serperCacheSet also enforces it).
     if (records.length > 0) await serperCacheSet('shopping', query, null, records, variant)
+    noteRetrieval(Date.now())
     return records
   } catch {
+    // serperPost THROWS only for a timeout, a cancellation or a network error (a non-2xx answer returns a Response): the request may have
+    // been processed, so the identical one is not re-sent for a while.
+    if (shoppingFailures.size > 200) shoppingFailures.clear()
+    shoppingFailures.set(failureKey, Date.now())
     return null
   }
 }
@@ -606,7 +711,7 @@ export function parseSerperPriceVnd(value: unknown): number | null {
 }
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
-export async function webSearch(query: string, lang = 'vi') {
+async function webSearchImpl(query: string, lang = 'vi') {
   const cacheKey = webSearchCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -659,11 +764,16 @@ export async function webSearch(query: string, lang = 'vi') {
     }
 
     result = results.length === 0
-      ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl }
+      ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl, ...(serperResults === null ? { provider_status: 'error' } : {}) }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
   } catch {
-    result = { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl }
+    result = { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl, provider_status: 'error' }
   }
-  setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
+  // WS2 final: a provider FAILURE (Serper non-OK / over its ceiling / no key, and no fallback rows) is said as such — never an empty
+  // answer that reads like "nothing exists" (measured: an exhausted Serper account surfaced as EMPTY). A failure is not cached.
+  if ((result as { provider_status?: string }).provider_status !== 'error') setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result
 }
+
+/** Stamps `retrieved_at` (the oldest real fetch time of the rows used) on the result — see retrievalClock.ts. */
+export function webSearch(...args: Parameters<typeof webSearchImpl>): ReturnType<typeof webSearchImpl> { return withRetrievedAt(() => webSearchImpl(...args)) }

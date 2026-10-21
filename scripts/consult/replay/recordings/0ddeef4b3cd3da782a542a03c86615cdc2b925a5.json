@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Xiaomi Redmi Buds 6 Play\" OR \"[ 10.10 Giảm 50% ] Tai nghe bluetooth cao cấp chống ồn ANC\" OR \"Tai nghe Bluetooth True Wireless SoundPeats T3 Pro\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:58:30.863Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Xiaomi Redmi Buds 6 Play\" OR \"[ 10.10 Giảm 50% ] Tai nghe bluetooth cao cấp chống ồn ANC\" OR \"Tai nghe Bluetooth True Wireless SoundPeats T3 Pro\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Audifonos xiaomi redmi buds 6 play #VivaLaQuincena",
+    "link": "https://www.tiktok.com/@salamiricoo/video/7684016834693057810",
+    "snippet": "Audifonos xiaomi redmi buds 6 play #VivaLaQuincena. Audifonos xiaomi redmi buds 6 play #VivaLaQuincena. @Salami. El creador se lleva una ...",
+    "position": 1
+   },
+   {
+    "title": "tai nghe bluetooth true wireless xiaomi redmi buds 6 play",
+    "link": "https://shop.tiktok.com/vn/k/tai-nghe-bluetooth-true-wireless-xiaomi-redmi-buds-6-play",
+    "snippet": "Tai nghe Bluetooth True Wireless Xiaomi Redmi Buds 6 Play. 4.9. 45 sold · 390.000 ; Tai nghe Bluetooth Redmi Buds 6 Play Chính hãng [Viettel Store] · 4.7. 2807 ...",
+    "position": 2
+   },
+   {
+    "title": "Xiaomi Redmi Buds 6 Play Audífonos",
+    "link": "https://www.tiktok.com/@luissalast/video/7679637829688888597",
+    "snippet": "Xiaomi Redmi Buds 6 Play Audífonos. Xiaomi Redmi Buds 6 Play Audífonos. @Luis Salas. El creador se lleva una comisión. sonido original · TikTok ...",
+    "position": 3
+   },
+   {
+    "title": "Xiaomi Redmi Buds 6 Play #xiaomi #redmibuds6",
+    "link": "https://www.tiktok.com/@ifinds143/video/7682064006252694805",
+    "snippet": "TikTok video from iFinds (@ifinds143): “Xiaomi Redmi Buds 6 Play #xiaomi #redmibuds6”. original sound - JAYKAY.",
+    "position": 4
+   },
+   {
+    "title": "Results for \"tai nghe bluetooth true wireless soundpeats t3 pro\"",
+    "link": "https://shop.tiktok.com/sg/k/tai-nghe-bluetooth-true-wireless-soundpeats-t3-pro",
+    "snippet": "Explore the latest tai nghe bluetooth true wireless soundpeats t3 pro at TikTok Shop and enjoy free shipping! Shop exclusive collections and discover top ...",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 Play Version Có ...",
+    "link": "https://www.tiktok.com/@duongtuongdinh/video/7658272367726038293",
+    "snippet": "Tai Nghe Bluetooth Xiaomi Redmi Buds 6 Play Version Có Micro Giảm Tiếng ồn Nhét Tai, Bluetooth 5.4, thời gian dùng lên đến 36h kèm hộp sạc, ...",
+    "position": 6
+   },
+   {
+    "title": "[KOL] Tai nghe Bluetooth Xiaomi Redmi Buds 6 Play ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-xiaomi-redmi-buds-6-play-chat-luong-am-thanh-cao-pin-36-gio-chong-on-ai-thiet-ke-/1731714830418872050",
+    "snippet": "[KOL] Tai nghe Bluetooth Xiaomi Redmi Buds 6 Play BHR8773GL/BHR8776GL - Nghe nhạc chất lượng cao - Nhét Tai ( sản phẩm không có kèm sạc). Sold by Xiaomi Vietnam ...",
+    "rating": 4.7,
+    "ratingCount": 998,
+    "position": 7
+   },
+   {
+    "title": "Xiaomi Redmi Buds 6 Play Fone de Ouvido Bluetooth TWS ...",
+    "link": "https://www.tiktok.com/@gabrielvaneti/video/7686653752241081618",
+    "snippet": "Xiaomi Redmi Buds 6 Play Fone de Ouvido Bluetooth TWS 5.4 Som Imersivo Cancelamento de Ruído 2 Microfones Longa Duração Design Moderno e ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

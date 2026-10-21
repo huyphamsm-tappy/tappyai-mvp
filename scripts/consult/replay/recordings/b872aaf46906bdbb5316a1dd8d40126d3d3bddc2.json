@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth Samsung Galaxy Buds Core\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:19:31.420Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth Samsung Galaxy Buds Core\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC)",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-samsung-galaxy-buds-core.html",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core sở hữu công nghệ âm thanh không dây hiện đại, với chuẩn kết nối Bluetooth 5.4, cùng khả năng kháng nước IP54. Thời ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core - Cũ | Giá rẻ",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-samsung-galaxy-buds-core-cu.html",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core sở hữu công nghệ âm thanh không dây hiện đại, với chuẩn kết nối Bluetooth 5.4, cùng khả năng kháng nước IP54. Thời ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC)",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-samsung-galaxy-buds-core-da-kich-hoat.html",
+    "snippet": "Flash Sale Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC) - Đã kích hoạt-Trắng. Trắng 700.000₫ · Flash Sale Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC) ...",
+    "position": 3
+   },
+   {
+    "title": "Trước và sau khi dùng Galaxy Buds Core",
+    "link": "https://cellphones.com.vn/sforum/truoc-va-sau-khi-dung-galaxy-buds-core",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC). 990.000đ1.190.000đ. Smember giảm thêm ...",
+    "date": "26 thg 12, 2025",
+    "rating": 1,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Cũ và Tai nghe Bluetooth Samsung Galaxy Buds Live",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-bluetooth-samsung-galaxy-buds-cu-vs-samsung-galaxy-buds-live-da-kich-hoat-47776",
+    "snippet": "... Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC) - Đã kích hoạt. Giá niêm yết: 1.190.000. Giá khuyến ...",
+    "position": 5
+   },
+   {
+    "title": "Một ngày trải nghiệm Galaxy Buds Core: Giá “hạt dẻ”",
+    "link": "https://cellphones.com.vn/sforum/mot-ngay-trai-nghiem-galaxy-buds-core",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC). 990.000đ1.190.000đ. Smember giảm thêm ...",
+    "date": "22 thg 10, 2025",
+    "rating": 2.3,
+    "ratingCount": 3,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Samsung Galaxy Buds FE giá tốt | Nhiều ưu đãi",
+    "link": "https://cellphones.com.vn/samsung-galaxy-buds-fe.html",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC). Trả góp 0%. : 990.000đ ... Bluetooth Samsung Galaxy Buds Core (ANC). Trả góp 0%. : 990.000đ. 1.190.000đ.",
+    "rating": 4.7,
+    "ratingCount": 18,
+    "position": 7
+   },
+   {
+    "title": "Lý do giúp Galaxy Bubs Core là tai nghe “ngon – bổ – rẻ\"",
+    "link": "https://cellphones.com.vn/sforum/galaxy-buds-core-la-tai-nghe-ngon-bo-re",
+    "snippet": "Tai nghe Bluetooth Samsung Galaxy Buds Core (ANC). 990.000đ1.190.000đ. Smember giảm thêm ...",
+    "date": "28 thg 10, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

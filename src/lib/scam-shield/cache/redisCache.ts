@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto'
 import type { ProviderSignal } from '../types'
 import { CACHE_TTLS } from '../config'
+import { scamCacheRedisEnv } from '@/lib/p8/costWins'
 
 interface CacheClient {
   get(key: string): Promise<string | null>
@@ -12,9 +13,9 @@ let redis: CacheClient | null = null
 
 async function getRedis(): Promise<CacheClient | null> {
   if (redis) return redis
-  const url = process.env.UPSTASH_REDIS_REST_URL
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN
-  if (!url || !token) return null
+  const creds = scamCacheRedisEnv()
+  if (!creds) return null
+  const { url, token } = creds
   try {
     const { Redis } = await import('@upstash/redis')
     redis = new Redis({ url, token })

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá MacBook Air M1 cũ Việt Nam tháng 10 2026 8GB 256GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:54:48.776Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá MacBook Air M1 cũ Việt Nam tháng 10 2026 8GB 256GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "MacBook Neo 13 inch 2026 (Đã kích hoạt). Apple A18 Pro. Từ 17.090.000 – 19.390.000 ; MacBook Air M1 13 inch 2020 (cũ). Apple M1. Từ 12.290.000 – 14.290.000.",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M1 16GB/512GB Cũ Giá Rẻ - Trả Góp 0%",
+    "link": "https://tuannguyenmobile.com/macbook-air-m1-16gb-256gb-cu/?srsltid=AU7gw4XIWG7woZG5mGU44f0lHh3Gz0PQ52DxI8OC9LivoljvXxcqnaMs",
+    "snippet": "Macbook Air M1 16GB/256GB Cũ. 10.500.000₫ - 12.500.000₫. Giá Macbook Air M1 ... 32.430.000 VNĐ (chưa bao gồm thuế phí khi về Việt Nam). Macbook Air M1 cũ.",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M1 chính hãng T&T Center",
+    "link": "https://ttcenter.com.vn/macbook-air-m1?srsltid=AU7gw4WeLjou3gauOW3KWGoKRIS7pQ1RdcLzHiH4f_PUesddRhMe-Zan",
+    "snippet": "Sản Phẩm Siêu Rẻ. Macbook Air M1 | 8GB 256GB. 13.990.000đ. 17.290.000đ ; Sản Phẩm BH 12 Tháng. MacBook Air M1 | 16GB 256GB. 16.990.000đ. 21.990.000đ ; Sản Phẩm ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M1 CŨ năm 2026: Vẫn là \"vua\" phân khúc 12 triệu ...",
+    "link": "https://www.youtube.com/watch?v=hMFDlkwVM9w",
+    "snippet": "Bạn đang tìm kiếm một chiếc laptop ngon - bổ - rẻ trong tầm giá 12 triệu đồng vào năm 2026? Liệu chiếc MacBook Air M1 đã ra mắt 6 năm còn ...",
+    "position": 4
+   },
+   {
+    "title": "Bảng giá MacBook (Mới - Cũ) mới nhất 2026, cập nhật liên ...",
+    "link": "https://www.dienmayxanh.com/kinh-nghiem-hay/bang-gia-macbook-1539843?srsltid=AU7gw4XxcjGC8Jdir4QYQ73EWNbnv4FR-Vcy6NuNGRy79VKqFQ95wPIL",
+    "snippet": "Hình ảnh, Tên sản phẩm, Giá máy đổi trả ; Laptop Apple MacBook Air 15 inch M2 8GB/256GB Sạc 35W đã sử dụng, Từ 17.890.000₫ ; Laptop Apple MacBook ...",
+    "date": "1 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Apple Macbook Air Chính Hãng VN/A, Đủ Cũ Mới",
+    "link": "https://www.viettablet.com/apple-chinh-hang-vn/macbook/macbook-air?srsltid=AU7gw4XnbvBofZS54SWdA9VdLvvjX-10w_QiC7mV1bHsAu7OUWm3ISH0",
+    "snippet": "Giá Siêu Rẻ. MacBook Air M1 13 inch 2020 (8GB - 256GB) - Chính Hãng. 16.699.000 ; Giá SIÊU RẺ. MacBook Air M1 13 inch 2020 (8GB - 512GB) - Chính Hãng. 18.890.000 ...",
+    "position": 6
+   },
+   {
+    "title": "Mua MacBook cũ GIÁ RẺ - Hà Nội",
+    "link": "https://onewaymobile.vn/macbook-cu",
+    "snippet": "Chọn sản phẩm theo tiêu chí ; MacBook Air M1 13 inch 2020 8CPU/7GPU - RAM 8GB - 256GB - 99% · 13.790.000đ 14.190.000đ ; MacBook Pro 13 inch 2020 M1 8CPU/8GPU - RAM ...",
+    "position": 7
+   },
+   {
+    "title": "Macbook Air M1 Cũ - Like New 99% Bảo hành ...",
+    "link": "https://macone.vn/tag/macbook-air-m1-cu/?srsltid=AU7gw4VJs61xnOGlG8Yjvjan24xOojmh0lfacIg9oI0PZv1m21gAGwFW",
+    "snippet": "Macbook Air M1 Cũ ; Apple M1 8GB RAM 256GB SSD – Like New. 15.400.000₫ ; Apple M1 8GB RAM 512GB SSD – Like New. 16.800.000₫ ; Apple M1 16GB RAM 256GB SSD – 98%.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

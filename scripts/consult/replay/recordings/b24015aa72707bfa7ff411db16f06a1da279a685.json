@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Neo 13 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:57:04.732Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Neo 13 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Ra Mắt Macbook Neo",
+    "link": "https://shop.tiktok.com/vn/k/apple-ra-mat-macbook-neo",
+    "snippet": "Khám phá Apple Ra Mắt Macbook Neo mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 1
+   },
+   {
+    "title": "macbook neo có hàng chưa",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-co-hang-chua",
+    "snippet": "Khám phá macbook neo có hàng chưa mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 2
+   },
+   {
+    "title": "thực tế macbook neo",
+    "link": "https://shop.tiktok.com/vn/k/thuc-te-macbook-neo",
+    "snippet": "thực tế macbook neo ; MacBook Neo 13 8GB/256GB - Hàng chính hãng · 4.4. 182 sold · 18.790.000. ₫19.490.000 ; TÚI ĐEO CHÉO NAM – 4 NGĂN RỘNG, ĐỰNG VỪA iPAD, BỀN ĐẸP ...",
+    "position": 3
+   },
+   {
+    "title": "macbook cho sinh viên",
+    "link": "https://shop.tiktok.com/vn/k/macbook-cho-sinh-vien",
+    "snippet": "MacBook Neo 13 8GB/256GB - Hàng chính hãng. 4.4. 186 sold · 17.989.999. ₫19.490.000 ; MacBook Air M5 13 inch (10 core CPU| 10 core GPU| 16GB RAM| 1TB SSD) [ ...",
+    "position": 4
+   },
+   {
+    "title": "Macbook neo apple singapore",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-apple-singapore",
+    "snippet": "Khám phá Macbook neo apple singapore mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 5
+   },
+   {
+    "title": "macbook neo duy luân",
+    "link": "https://shop.tiktok.com/vn/k/macbook-neo-duy-luan",
+    "snippet": "Khám phá macbook neo duy luân mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 6
+   },
+   {
+    "title": "For Macbook Neo 13,6 inch Vỏ bảo vệ laptop,chống trầy xước ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1735056093886056025",
+    "snippet": "For Macbook Neo 13,6 inch Vỏ bảo vệ laptop,chống trầy xước, chống rơi, chống vân tay, chất liệu PVC cao cấp, vỏ bảo vệ For Macbook A3404.",
+    "position": 7
+   },
+   {
+    "title": "Áp dụng cho model 2026 MacBook Neo Keyboard Film năm A18 ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734805660960719942",
+    "snippet": "Chất lượng hoàn thiện: Bình thưởng Chất liệu: Silicone Lắp ráp: Phần ký hiệu in lên nhìn fake quá ko giữ đc độ hoàn thiện của bàn phím MacBook Giao hàng lâu.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -484,8 +484,10 @@ export function readPlacesLiveView(annotations: unknown[] | undefined | null): P
   let view: PlacesLiveView | null = null
   for (const a of annotations) {
     if (!a || typeof a !== 'object') continue
-    const candidate = a as Partial<PlacesLiveView>
+    const candidate = a as Partial<PlacesLiveView> & { cleared?: unknown }
     if (candidate.kind !== PLACES_ANNOTATION_KIND) continue
+    // POST-UAT B5: the decision said "no card" — an explicit `cleared` frame retracts the preliminary set sent before it.
+    if (candidate.cleared === true) { view = null; continue }
     const items = Array.isArray(candidate.items)
       ? candidate.items
         .filter(x => x && typeof x.name === 'string' && x.name)

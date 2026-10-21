@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Hanami Residence & Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:37:41.677Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hanami Residence & Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Hanami Residence - Self Check-in Accommodation, Đà Nẵng (cập nhật giá năm  2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max500/853335433.jpg?k=5a7a35e27861527981cae6ff2bd229a177efe53661b821799c3cc4596f338de5&o=&hp=1",
+    "imageWidth": 500,
+    "imageHeight": 333,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRa5SLeaP9GUj9z3HMBwDewRDaPRQHGubCUDHZyh-UFOg&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 333,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanami-residence.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F853335433.jpg%3Fk%3D5a7a35e27861527981cae6ff2bd229a177efe53661b821799c3cc4596f338de5%26o%3D%26hp%3D1&tbnid=OSSlRLf2RnJs5M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanami-residence.vi.html&docid=Z9DmR0aE2qwcvM&w=500&h=333",
+    "position": 1
+   },
+   {
+    "title": "Best Price on Hanami Residence - Self Check in Accommodation in Da Nang +  Reviews!",
+    "imageUrl": "https://pix7.agoda.net/hotelImages/87549271/0/1fd1f4815d754df79bc51529ce523076.png?va=1&ce=3&s=414x232&ar=16x9",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuNBauLkXk9dz6zwOezQPLjaQeCB7_TAYwh1Fu2cNFmg&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ca/hanami-residence/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix7.agoda.net%2FhotelImages%2F87549271%2F0%2F1fd1f4815d754df79bc51529ce523076.png%3Fva%3D1%26ce%3D3%26s%3D414x232%26ar%3D16x9&tbnid=l13I7Z-YaSyoBM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ca%2Fhanami-residence%2Fhotel%2Fda-nang-vn.html&docid=6JPA0sShrmhDiM&w=414&h=232",
+    "position": 2
+   },
+   {
+    "title": "Hanami Hotel Danang, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/4435798/0/8ce31ede75832da62ddb292c77513653.jpeg?ce=2&s=414x232",
+    "imageWidth": 348,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7GJD6Zwmd8DJ8T8VUTrSabDknlVwnmZ7UMbRFNnC-vw&s",
+    "thumbnailWidth": 275,
+    "thumbnailHeight": 183,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/hanami-hotel-danang_2/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F4435798%2F0%2F8ce31ede75832da62ddb292c77513653.jpeg%3Fce%3D2%26s%3D414x232&tbnid=RQLxXWNilw9BMM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhanami-hotel-danang_2%2Fhotel%2Fda-nang-vn.html&docid=2u7ESs-A3WcNQM&w=348&h=232",
+    "position": 3
+   },
+   {
+    "title": "Best Price on Hanami Residence - Self Check in Accommodation in Da Nang +  Reviews!",
+    "imageUrl": "https://pix7.agoda.net/hotelImages/87549271/0/1fd1f4815d754df79bc51529ce523076.png?va=1&ce=3&s=414x232",
+    "imageWidth": 154,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIiKAHIgzJHIi3niRSoZ1Rl7tJEI8qxvRbm36iCtSWcA&s",
+    "thumbnailWidth": 154,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/en-ca/hanami-residence/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix7.agoda.net%2FhotelImages%2F87549271%2F0%2F1fd1f4815d754df79bc51529ce523076.png%3Fva%3D1%26ce%3D3%26s%3D414x232&tbnid=L5NQv8epmEYhwM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fen-ca%2Fhanami-residence%2Fhotel%2Fda-nang-vn.html&docid=6JPA0sShrmhDiM&w=154&h=232",
+    "position": 4
+   },
+   {
+    "title": "Hanami Residence - Self Check-in Accommodation, Đà Nẵng (cập nhật giá năm  2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/854229648.jpg?k=4ca9d929ba272e71249a7891cd86e15503ab6569c16654bdc2f40bbd9263d8d4&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDVnMr1elabJ5L4BSH2uk0AzAGubvlzjwat_q0nGkrBQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanami-residence.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F854229648.jpg%3Fk%3D4ca9d929ba272e71249a7891cd86e15503ab6569c16654bdc2f40bbd9263d8d4%26o%3D&tbnid=iJ8ZNk0wGNDFSM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanami-residence.vi.html&docid=Z9DmR0aE2qwcvM&w=1024&h=683",
+    "position": 5
+   },
+   {
+    "title": "Hanami Residence - Self Check-in Accommodation, Đà Nẵng (cập nhật giá năm  2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/854229086.jpg?k=5447056d42a07f4cdfd475b54eeefe62e4c93d1d1b35966d69951a6a642f3304&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTRT8bqPMCUhONexljXMCnRUBxQnoOm2tO-Vj_NSIOVg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanami-residence.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F854229086.jpg%3Fk%3D5447056d42a07f4cdfd475b54eeefe62e4c93d1d1b35966d69951a6a642f3304%26o%3D&tbnid=WLRlzs6sDVr_jM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanami-residence.vi.html&docid=Z9DmR0aE2qwcvM&w=1024&h=683",
+    "position": 6
+   },
+   {
+    "title": "HANAMI HOTEL DANANG - Updated 2026 Reviews (Da Nang, Vietnam)",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/12/08/a0/75/getlstd-property-photo.jpg?w=500&h=400&s=1",
+    "imageWidth": 500,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6u4DUX8aDQqmo1lgWcC4TBc09zLSsbH-znM0UdRhkQA&s=10",
+    "thumbnailWidth": 499,
+    "thumbnailHeight": 400,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com",
+    "link": "https://www.tripadvisor.com/Hotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F12%2F08%2Fa0%2F75%2Fgetlstd-property-photo.jpg%3Fw%3D500%26h%3D400%26s%3D1&tbnid=OnbnhoLjpjv4KM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com%2FHotel_Review-g298085-d13454359-Reviews-Hanami_Hotel_Danang-Da_Nang.html&docid=J8FbJdMuP-WRLM&w=500&h=400",
+    "position": 7
+   },
+   {
+    "title": "Hanami Residence - Self Check-in Accommodation, Đà Nẵng (cập nhật giá năm  2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/916359462.jpg?k=c5b6aa4a5fedae90c59956f894ef6c4aa45b919db552fbebb7b6a329af38a4b2&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSulaJOsVVBGjMGmKPJf14cfoEEl07jN6WfSwdGJNRlvQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/hanami-residence.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F916359462.jpg%3Fk%3Dc5b6aa4a5fedae90c59956f894ef6c4aa45b919db552fbebb7b6a329af38a4b2%26o%3D&tbnid=CXknTWqR2rqfHM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Fhanami-residence.vi.html&docid=Z9DmR0aE2qwcvM&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

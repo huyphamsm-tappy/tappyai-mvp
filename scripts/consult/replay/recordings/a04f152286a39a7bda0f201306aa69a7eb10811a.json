@@ -1,0 +1,81 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:04:54.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 1
+   },
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Giá dao động: 100.000 – 300.000 VNĐ/người. Nếu bạn muốn trải nghiệm sự đa dạng của ẩm thực truyền thống Trung Quốc thì San Fu Lou chắc chắn ...",
+    "date": "30 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "NHÀ HÀNG FUSION THÍCH HỢP DẪN GIA ĐÌNH ĐI ĂN ...",
+    "link": "https://www.facebook.com/ansapsaigon/videos/nh%C3%A0-h%C3%A0ng-fusion-th%C3%ADch-h%E1%BB%A3p-d%E1%BA%ABn-gia-%C4%91%C3%ACnh-%C4%91i-%C4%83n-trung-thu-n%C3%A0y-ch%E1%BB%97-n%C3%A0y-m%E1%BB%9Bi-m%E1%BB%9F-nh%C6%B0ng-/858798675774958/",
+    "snippet": "À nhớ gọi Trà Mãng cầu ở đây cũng ngon lắm á ! Hi Ngói (Fusion Cuisine) 78 Nguyễn Đình Chiểu, Đa Kao, Quận 1 ⏱ 10h30-23h.",
+    "position": 3
+   },
+   {
+    "title": "TOP 20+ Nhà Hàng Quận 1 Ngon, Chất Lượng, Giá Rẻ Và ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-quan-1",
+    "snippet": "Giá tham khảo: 229.000đ - 349.000đ/người. King BBQ là một trong những chuỗi nhà hàng buffet không có quá xa lạ đối với mọi người. Món ăn ở King ...",
+    "date": "29 thg 4, 2022",
+    "position": 4
+   },
+   {
+    "title": "Những quán ăn ngon ở Quận 1, Sài Gòn được yêu thích nhất",
+    "link": "https://www.bestprice.vn/blog/diem-den-8/ho-chi-minh-3/nhung-quan-an-ngon-o-quan-1-sai-gon-duoc-yeu-thich-nhat_2-4077.html?srsltid=AU7gw4U_2-OLzgBuZf_rjf6002R_cIL8KUULFZCFdvZEjtDxiHTWgn2U",
+    "snippet": "... Điện thoại: 0283.837.6684; Giá tiền: 49.000 VNĐ – 329.000 VNĐ. Nhà hàng ngon quận 1, Sài Gòn. Nhà hàng Kimchi Kimchi phục vụ ẩm thực Hàn Quốc tại Quận 1. An Nam ...",
+    "position": 5
+   },
+   {
+    "title": "50+ quán ăn GIA ĐÌNH TPHCM ngon nổi tiếng nhất 2026",
+    "link": "https://pasgo.vn/kham-pha/ho-chi-minh/kham-pha-10-quan-an-gia-dinh-ngon-re-hut-khach-nhat-o-tphcm-219",
+    "snippet": "Bến Nghé, Quận 1; Loại hình: Gọi món Nhật Bản; Khoảng giá: 250.000 - 300.000 đ/người; Phù hợp: Ăn gia đình, sinh nhật, liên hoan văn phòng, hẹn ...",
+    "date": "24 thg 6, 2026",
+    "rating": 4.8,
+    "ratingCount": 187,
+    "position": 6
+   },
+   {
+    "title": "Top 12 nhà hàng sang trọng Quận 1 để gặp đối tác",
+    "link": "https://www.officesaigon.vn/top-nha-hang-sang-trong-de-gap-doi-tac.html",
+    "snippet": "1. Nhà hàng Phố 79 · 2. Nhà hàng Nhật Miyen Japanese Fusion Cuisine · 3. La Brasserie Buffet Restaurant · 4. The Log Restaurant · 5. SORAE Sushi ...",
+    "date": "4 thg 5, 2026",
+    "rating": 4.8,
+    "ratingCount": 13,
+    "position": 7
+   },
+   {
+    "title": "Gợi ý top 10 quán ăn gia đình quận 1 'đổi bữa' cuối tuần",
+    "link": "https://digiticket.vn/blog/quan-an-gia-dinh-quan-1/",
+    "snippet": "1. Nhà hàng Ngon Pasteur · 2. Quán ăn Gia Đình 79 · 3. Quán Bụi Ngô Văn Năm · 4. Quán ăn Ngon Sài Gòn Nam Kỳ Khởi Nghĩa · 5. Ân Nam Quán Nguyễn Bỉnh ...",
+    "date": "17 thg 1, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

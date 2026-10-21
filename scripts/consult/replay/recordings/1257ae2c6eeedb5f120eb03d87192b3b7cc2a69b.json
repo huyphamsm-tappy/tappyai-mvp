@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách sạn Novotel\" Novotel Danang Premier Han River site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:10.473Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách sạn Novotel\" Novotel Danang Premier Han River site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Novotel Danang Premier Han River Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-1963544/novotel-danang-premier-han-river/review.html",
+    "snippet": "... Novotel Danang Premier Han River đánh giá từ khách du lịch, đánh giá khách sạn Novotel Danang Premier Han River. Từ khóa tìm kiếm thịnh hành. Khám phá thêm.",
+    "position": 1
+   },
+   {
+    "title": "Khách sạn Novotel tại Đà Nẵng",
+    "link": "https://vn.trip.com/hotels/da-nang-novotel/hotels-c1356b5/",
+    "snippet": "Đặt khách sạn Novotel tại Đà Nẵng với giá từ 379.718₫ trên Trip.com. So sánh 1 chỗ nghỉ dựa trên vị trí, phòng ốc và đánh giá của khách.",
+    "position": 2
+   },
+   {
+    "title": "Incheon M Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/incheon-hotel-detail-6208368/incheon-m/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá Toyoko Inn Mikawa Anjo ...",
+    "position": 3
+   },
+   {
+    "title": "Villa MI Lola. Private Pool - 4 Bedrooms, 4 en Suite ...",
+    "link": "https://vn.trip.com/hotels/torrevieja-hotel-detail-130793741/villa-mi-lola-private-pool-4-bedrooms-4-en-suite-bathrooms-torrevieja/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá Radisson Blu Sao Paulo ...",
+    "position": 4
+   },
+   {
+    "title": "1 Min Walk to the Beach - PCB's Historic Log Cabin",
+    "link": "https://vn.trip.com/hotels/laguna-beach-1-hotel-detail-126775324/pcb-s-historic-log-cabin-beach-front-view-just-a-few-steps-to-the-beach/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá H Boutique Hotel Xplorer ...",
+    "position": 5
+   },
+   {
+    "title": "Seogwipo Common Stay Pension Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/seogwipo-hotel-detail-45731885/common-stay-jeju/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá Best Western Hotel Jena ...",
+    "position": 6
+   },
+   {
+    "title": "Các đánh giá Holiday Inn Express & Suites PRINCE ALBERT",
+    "link": "https://vn.trip.com/hotels/prince-albert-1-hotel-detail-114245631/holiday-inn-express-suites-prince-albert-south-by-ihg/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... khách sạn Novotel Danang Premier Han RiverĐánh giá Premiere Classe Liege ...",
+    "position": 7
+   },
+   {
+    "title": "Briggs Inn Surabaya Đánh giá của khách",
+    "link": "https://vn.trip.com/hotels/wonokromo-hotel-detail-114851479/briggs-inn-surabaya/review.html",
+    "snippet": "... Danang Premier Han River, Novotel Danang Premier Han River đánh giá của ... Khách Sạn Novotel Ở Thượng HảiKhách Sạn Echarm Ở Nghi TânKhách Sạn Best ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

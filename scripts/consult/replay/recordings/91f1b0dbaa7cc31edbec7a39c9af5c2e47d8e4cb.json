@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu Việt Nam MacBook Neo MacBook Air M-series 16GB RAM (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:01:30.388Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu Việt Nam MacBook Neo MacBook Air M-series 16GB RAM (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ chạy ...",
+    "position": 1
+   },
+   {
+    "title": "MacBook Neo 2026 giá rẻ, HSSV giảm ...",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-neo.html",
+    "snippet": "MacBook Neo: Sở hữu màu sắc trẻ trung, kích thước gọn nhẹ, giá bán tối ưu, rẻ hơn MacBook Air M5 đến 16.500.000đ. Với chip Apple A18 Pro (CPU 6 lõi, GPU 5 lõi), ...",
+    "position": 2
+   },
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB Sạc 70W | Chính hãng Apple Việt Nam. 25.890.000đ. 23.890.000đ ; MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook Pro chính hãng - Giá rẻ, lên đời trợ giá 2 triệu",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-pro.html",
+    "snippet": "MacBook Pro giá bao nhiêu tiền vào tháng 10/2026 ; MacBook Pro M5 Pro 16 inch 2026 18CPU 20GPU 24GB 1TB | Chính hãng Apple Việt Nam. 79.490.000đ. 77.490.000đ.",
+    "position": 4
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Ở tầm giá dưới 20 triệu, máy Macbook Neo chính là lựa chọn \"entry level\" cho phần lớn học sinh, sinh viên. Máy sử dụng chip A18 với CPU 6 nhân và GPU 5 nhân, ...",
+    "position": 5
+   },
+   {
+    "title": "MacBook cũ | Mac cũ uy tín, trả góp 0%, giảm đến 7 triệu",
+    "link": "https://cellphones.com.vn/hang-cu/mac.html",
+    "snippet": "Macbook cũ giá rẻ, giảm 2tr lên đời, HSSV giảm 700k, trả góp 0%, 0 phụ phí, 0 trả trước, bảo hành lên đến 6 tháng. Mua ngay Macbook cũ uy tín.",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-256gb.html",
+    "snippet": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W | Chính hãng Apple Việt Nam ; Trả góp 0% ; Thời lượng pin. 5/5. (2 đánh giá) ; Hiệu năng. 5/5. (2 đánh ...",
+    "rating": 4.3,
+    "ratingCount": 9,
+    "position": 7
+   },
+   {
+    "title": "Macbook M2 Series chính hãng | Giá rẻ 10/2026, góp 0%",
+    "link": "https://cellphones.com.vn/laptop/mac/m2-series.html",
+    "snippet": "Giá Macbook M2 bao nhiêu tiền? Giá Macbook M2 Series hiện đang dao động trong khoảng từ 24.29 triệu VNĐ đến 83.99 triệu VNĐ, tùy thuộc vào cấu hình và dung ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

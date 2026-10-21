@@ -53,3 +53,8 @@ export function readProgress(annotations: unknown[] | undefined | null): Progres
   }
   return latest
 }
+
+/** The "searching" progress frame as one data-stream line (`8:` annotation). Shared by the consult pre-search and the agent runtimes. */
+export function searchingFrame(lang: string): string {
+  return '8:' + JSON.stringify([buildProgressAnnotation('searching', lang)]) + '\n'
+}

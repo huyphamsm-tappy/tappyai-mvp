@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth chụp tai JBL Tune 530BT site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:21:54.490Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth chụp tai JBL Tune 530BT site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-bluetooth-jbl-tune-530bt-jblt530bt-hang-chinh-hang-cong-nghe-jbl-pure-bass-sound-ket-noi-bluetooth-on-dinh-thoi-luong-pin-len-den-57-gio-i13407188115-s117093902170.html?srsltid=AU7gw4Xgr__Qad7dPpv45i7CX06IMyFrD6r-5X-q-htJleO9q1_KA-nj",
+    "snippet": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT - Hàng chính hãng - Công nghệ JBL Pure Bass Sound, Kết nối Bluetooth ổn định, Thời lượng pin lên đến 57 giờ.",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Không Dây Bluetooth JBL TUNE 530BT Chụp Tai, Âm ...",
+    "link": "https://www.lazada.vn/products/pdp-i13443751547.html?srsltid=AU7gw4Uy7YberP17xj83Fxhrqjyei3pPnKlCX0iafIdqpTp2YmDOm53k",
+    "snippet": "JBL | Tai Nghe Không Dây Bluetooth JBL TUNE 530BT Chụp Tai, Âm Trầm Tinh Khiết, Thời Lượng Pin Dài, Có Thể Gập Gọn, Dành Cho Chơi Game Và Nghe Nhạc.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-bluetooth-jbl-tune-530bt-jblt530bt-hang-chinh-hang-cong-nghe-jbl-pure-bass-sound-ket-noi-bluetooth-on-dinh-thoi-luong-pin-len-den-57-gio-i13405655816.html?srsltid=AU7gw4W5BeBqgFzgk-NAKcZZggzbN6lBKEIJoEr9Rr6kqWDNPsZIImXq",
+    "snippet": "Tai nghe chụp tai Bluetooth JBL Tune 530BT JBLT530BT - Hàng chính hãng - Công nghệ JBL Pure Bass Sound, Kết nối Bluetooth ổn định, Thời lượng pin lên đến 57 giờ.",
+    "position": 3
+   },
+   {
+    "title": "Tai Nghe Không Dây JBL TUNE 530BT Chụp Tai Với Âm Trầm ...",
+    "link": "https://www.lazada.vn/products/jbl--tai-nghe-khng-dy-bluetooth-jbl-tune-530bt-chp-tai-m-trm-tinh-khit-thi-lng-pin-di-c-th-gp-gn-dnh-cho-chi-game-v-nghe-nhc-i13443751547.html?srsltid=AU7gw4XzFbtjUxB36hn6ngLvNkuKrwIlqyxaOT_YVnw5ZbRza4fLuhjd",
+    "snippet": "Chỉ nặng 152g, những chiếc tai nghe này rất nhẹ và thoải mái khi đeo trong thời gian dài, khiến chúng trở nên hoàn hảo để sử dụng cả ngày. Kết nối Bluetooth 6.0.",
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Bluetooth JBL Tune 530BT",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-jbl-tune-530bt-i13433016931.html?srsltid=AU7gw4XcV1jcFJvMF7ohdb0tBQ7ajsXXo9CUX5a7i-9U1cln7QOY0uIv",
+    "snippet": "Thiết kế chụp tai On-ear giúp tai nghe ôm vừa vặn, trọng lượng chỉ khoảng 152g, đồng thời có thể gập gọn để dễ dàng bỏ vào balo hoặc túi xách khi di chuyển.",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Chụp Tai Bluetooth JBL Tune 520BT",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-bluetooth-jbl-tune-520bt-hang-chinh-hang-i2423578053.html?srsltid=AU7gw4UqTnyG1dvoIivYjBKoa827oxagxB0P1iL_33cou7L3qC93Uv9d",
+    "snippet": "Kết nối không dây. Bass chất ngất ngây. JBL Tune 520BT sở hữu chất âm JBL Pure sound đầy uy lực cùng cổng kết nối Bluetooth 5.3 mang mọi âm thanh truyền vào tai ...",
+    "rating": 4.9,
+    "ratingCount": 288,
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe Chụp Tai JBL QUANTUM 250 - Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-jbl-quantum-250-hang-chinh-hang-i13342329349-s116623090944.html?laz_trackid=2:mm_150041245_51203493_2010303050:clk5ghhiq1jt6idn4rp0no&mkttid=clk5ghhiq1jt6idn4rp0no&srsltid=AU7gw4U1oBjYIAhiQZpiehkEOL_et4nm19uRCFsBZsaD2JMSleXoG4I7",
+    "snippet": "[MỚITai Nghe Chụp Tai Bluetooth JBL Tune 530BT - Hàng Chính Hãng - Chất âm. 1.890.000 ₫ · Tai nghe có dây nhét tai JBL QUANTUM 50C - Hàng Chính hãng. 995.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chụp tai JBL Quantum 100M2 - Hàng Chính hãng",
+    "link": "https://www.lazada.vn/products/tai-nghe-chup-tai-jbl-quantum-100m2-hang-chinh-hang-i2972891626.html?srsltid=AU7gw4UaPxfcnEjrKhFT90lIwgx7QJ_YvmgqB68aS2hAvpDqAQ0LIXNu",
+    "snippet": "Tai Bluetooth JBL Tune 530BT - Hàng Chính Hãng - Chất âm 1.290.000 ₫",
+    "rating": 5,
+    "ratingCount": 10,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

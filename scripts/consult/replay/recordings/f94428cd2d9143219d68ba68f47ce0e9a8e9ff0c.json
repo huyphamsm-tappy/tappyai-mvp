@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn \"lệ phí\" \"hộ chiếu\" 2 trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:29:31.286Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn \"lệ phí\" \"hộ chiếu\" 2 trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "Cán bộ thu lệ phí thu tiền, giao biên lai thu tiền cho người đề nghị cấp hộ chiếu phổ thông hoặc thông báo trên Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ ...",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "+ Trường hợp hồ sơ đã đầy đủ, hợp lệ thì cấp giấy hẹn trả kết quả cho người đề nghị cấp hộ chiếu phổ thông; yêu cầu nộp lệ phí cho cán bộ thu lệ phí, cán bộ thu ...",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn về dịch vụ công trực tuyến Cấp hộ chiếu phổ ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=42",
+    "snippet": "- Có khả năng thanh toán lệ phí trực tuyến. 2. Người đề nghị cấp hộ chiếu điền đầy đủ thông tin, gửi ảnh chân dung và giấy tờ liên quan theo quy định tại mục 2.",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ Cấp hộ chiếu phổ thông có gắn chíp ... - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35572",
+    "snippet": "+ Trường hợp hồ sơ đã đầy đủ, hợp lệ thì cấp giấy hẹn trả kết quả cho người đề nghị cấp hộ chiếu phổ thông; yêu cầu nộp lệ phí cho cán bộ thu lệ phí, cán bộ thu ...",
+    "position": 4
+   },
+   {
+    "title": "CỔNG DỊCH VỤ CÔNG TRỰC TUYẾN - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26691",
+    "snippet": "Cán bộ thu lệ phí thu tiền, giao biên lai thu tiền cho người đề nghị cấp hộ chiếu phổ thông hoặc thông báo trên Cổng dịch vụ công quốc gia hoặc Cổng dịch vụ ...",
+    "position": 5
+   },
+   {
+    "title": "Chi tiết thủ tục hành chính - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=35582",
+    "snippet": "Dịch vụ cung cấp thông tin trực tuyến Cấp hộ chiếu phổ thông có gắn chíp điện tử ở trong nước (thực hiện tại cấp tỉnh) ; Lệ phí. Không ; Phí. Theo quy định ; Căn ...",
+    "position": 6
+   },
+   {
+    "title": "Thủ tục cấp giấy phép xuất nhập cảnh cho người không ...",
+    "link": "https://dichvucong.bocongan.gov.vn/public/link-to/chi-tiet-thu-tuc?ma-thu-tuc=35999",
+    "snippet": "Quy định chế độ thu, nộp và quản lý sử dụng lệ phí cấp hộ chiếu,thị thực, giấy tờ về nhập cảnh, xuất cảnh, quá cảnh và cư trú tại Việt Nam Số: Thông tư 157/2015 ...",
+    "position": 7
+   },
+   {
+    "title": "Trình báo mất hộ chiếu phổ thông (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35714",
+    "snippet": "... hộ chiếu và thông báo về việc giải quyết đơn trình báo mất hộ chiếu cho người gửi đơn. Phí. Không. Lệ Phí. Không. Thành phần hồ sơ. Tên giấy tờ, Mẫu đơn, tờ ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

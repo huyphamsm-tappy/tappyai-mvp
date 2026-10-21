@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 \"30 giờ\" \"6 giờ\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:33:10.867Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 \"30 giờ\" \"6 giờ\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Pin Apple Watch",
+    "link": "https://www.apple.com/vn/watch/battery/",
+    "snippet": "... 6 giờ theo dõi giấc ngủ trong chu kỳ 24 giờ; mức sử dụng Apple Watch Series ... 30 giờ kết nối với iPhone qua Bluetooth trong chu kỳ 38 giờ. Thử nghiệm ...",
+    "position": 1
+   },
+   {
+    "title": "So sánh các phiên bản Apple Watch",
+    "link": "https://www.apple.com/vn/watch/compare/?modelList=watch-se-gen2,watch-series-6",
+    "snippet": "... 6 giờ theo dõi giấc ngủ trong chu kỳ 24 giờ; mức sử dụng Apple Watch Series ... 30 giờ kết nối với iPhone qua Bluetooth trong chu kỳ 38 giờ. Thử nghiệm ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

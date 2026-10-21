@@ -320,9 +320,10 @@ describe('U15 — a route that spends money is capped', () => {
     const src = code('explore/process')
     // The CALL, not the import — see `guarded`.
     expect(src).toMatch(/refuseAnonymousSocialWrite\s*\(req,\s*user\)/)
-    expect(src).toMatch(/rateLimit\(`explore-process:\$\{user\.id\}`/)
+    // SEC4 slice 2b: the limiter is the shared one (`publicRateLimit`); same key, same position.
+    expect(src).toMatch(/publicRateLimit\(`explore-process:\$\{user\.id\}`/)
     // And both must precede the spend.
     expect(src.indexOf('refuseAnonymousSocialWrite(')).toBeLessThan(src.indexOf('processContent('))
-    expect(src.indexOf('rateLimit(')).toBeLessThan(src.indexOf('processContent('))
+    expect(src.indexOf('publicRateLimit(')).toBeLessThan(src.indexOf('processContent('))
   })
 })

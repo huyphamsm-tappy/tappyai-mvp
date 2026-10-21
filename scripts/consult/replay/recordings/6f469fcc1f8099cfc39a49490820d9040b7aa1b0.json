@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Cơm Thố Xá Lị\" OR \"Cơm Niêu Chú Chen\" OR \"Quán Bụi\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:29:47.328Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Cơm Thố Xá Lị\" OR \"Cơm Niêu Chú Chen\" OR \"Quán Bụi\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Thố Xá Lị: Món Tiềm Siêu Ngon người Hoa ở Quận 1",
+    "link": "https://www.tiktok.com/@didauofficial/video/7312277488145566978",
+    "snippet": "cơm thố xá lị bán từ 10 giờ sáng đến khi hết món. nằm ở 76 xẹt 6 Tôn ... Khám phá vị ngon của cơm thố xá lị người Hoa tại Quận 1 với các.",
+    "position": 1
+   },
+   {
+    "title": "Review Cơm Thố Xá Lị (Mỹ Hương Cũ) Của Bà Long ...",
+    "link": "https://www.tiktok.com/@zhengzhaoxin/video/7555368064653593857",
+    "snippet": "Dưới đây là một số món được đánh giá cao: * **Cơm Thố Xá Lị:** Món chủ lực của quán, cơm nóng hổi được nấu trong thố đất, mang lại hương vị đặc ...",
+    "position": 2
+   },
+   {
+    "title": "Cơm Thố Xá Lị",
+    "link": "https://www.tiktok.com/discover/c%C6%A1m-th%E1%BB%91-x%C3%A1-l%E1%BB%8B",
+    "snippet": "Khám phá vị ngon của cơm thố xá lị người Hoa tại Quận 1 với các món tiềm siêu hấp dẫn. Một trải nghiệm ẩm thực đầy phong phú! 3735 Likes, 66 ...",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Cơm Niêu Chú Chen (@comnieuchuchen)",
+    "link": "https://www.tiktok.com/@comnieuchuchen",
+    "snippet": "Cơm Niêu Chú Chen (@comnieuchuchen) trên TikTok |288 Lượt thích.56 Follower.TRỌN VỊ TÌNH THÂN - NÂNG TẦM CƠM VIỆT.Xem video mới nhất từ Cơm Niêu Chú Chen ...",
+    "position": 4
+   },
+   {
+    "title": "Cơm Thố Xá Lị: Review Quán Cơm Tiềm Hoài Niệm Lâu ...",
+    "link": "https://www.tiktok.com/@diadiemanuong/video/7301993891496987905",
+    "snippet": "Tiệm cơm thố xá lị các món tiềm ĐẦY HOÀI NIỆM lâu năm nhất Sài Gòn #diadiemanuong #ancungtiktok #reviewanngon #comtho #nhungquananlaudoi # ...",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam",
+    "link": "https://www.tiktok.com/@nguyencongnuongw_/video/7535335656923335944",
+    "snippet": "Khám Phá Quán Bụi: Hương Vị Cơm Nhà Việt Nam. Trải nghiệm ẩm thực Việt Nam tại Quán Bụi, nơi mang đậm hương vị cơm nhà. Đừng bỏ lỡ! #review ...",
+    "position": 6
+   },
+   {
+    "title": "Quán Bụi Group (@quanbui_group)",
+    "link": "https://www.tiktok.com/@quanbui_group",
+    "snippet": "Những cảm nhận khách quan, chi tiết từ khách luôn là điều Quán Bụi trân · Bữa cơm tối chuẩn vị Việt tại Quán Bụi central #quanbuigroup #vietnamesefood # ...",
+    "position": 7
+   },
+   {
+    "title": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất",
+    "link": "https://www.tiktok.com/@tuanmanhnguyen3/video/7568854444671110418",
+    "snippet": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất. Khám phá Cơm thố Xá Lị với các món canh tiềm tuyệt hảo! Đến thử ngay hôm nay nhé ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,581 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "điểm tham quan nổi tiếng TP.HCM Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,12z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:20:18.685Z",
+ "body": {
+  "searchParameters": {
+   "q": "điểm tham quan nổi tiếng TP.HCM Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,12z",
+   "engine": "google"
+  },
+  "ll": "@10.7768062,106.7008955,12z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Thảo Cầm Viên Sài Gòn",
+    "address": "2 Nguyễn Bỉnh Khiêm, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.787334399999999,
+    "longitude": 106.70505659999999,
+    "rating": 4.3,
+    "ratingCount": 36954,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Vườn bách thú"
+    ],
+    "website": "https://s.shopee.vn/8V7uC7gWA0",
+    "phoneNumber": "+84 28 3829 1425",
+    "description": "Vườn thú mộc mạc có nhiều loại thú khác nhau, bao gồm cả hươu cao cổ, lạc đà, voi và rắn.",
+    "openingHours": {
+     "Thứ Năm": "07:00–18:30",
+     "Thứ Sáu": "07:00–18:30",
+     "Thứ Bảy": "07:00–18:30",
+     "Chủ Nhật": "07:00–18:30",
+     "Thứ Hai": "07:00–18:30",
+     "Thứ Ba": "07:00–18:30",
+     "Thứ Tư": "07:00–18:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOArmSUSONHtPOFuIKJG68WhTBaF7vAKtnQGx2jzpzRo1aoMYctC4wvk-c-XwUYsquBLnlMEwvKGOLuQ5KriG8Sk1VboP3JN1VCe7edSuNBnVmdhM7Lxb8hxfz74MzKYBL5IAgEUQ",
+    "cid": "5600618488004010382",
+    "fid": "0x31752f4b3330bcc7:0x4db964d76bf6e18e",
+    "placeId": "ChIJx7wwM0svdTERjuH2a9dkuU0"
+   },
+   {
+    "position": 2,
+    "title": "Dinh Độc Lập",
+    "address": "Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.776994199999999,
+    "longitude": 106.69530209999999,
+    "rating": 4.5,
+    "ratingCount": 48765,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Điểm mốc lịch sử",
+     "Bảo tàng"
+    ],
+    "website": "https://www.dinhdoclap.gov.vn/",
+    "phoneNumber": "+84 28 3822 3652",
+    "description": "Di tích lịch sử về chiến tranh Việt Nam cho phép tham quan văn phòng chính phủ, phòng chỉ huy và hiện vật.",
+    "openingHours": {
+     "Thứ Năm": "07:00–18:00",
+     "Thứ Sáu": "07:00–18:00",
+     "Thứ Bảy": "07:00–18:00",
+     "Chủ Nhật": "07:00–18:00",
+     "Thứ Hai": "07:00–18:00",
+     "Thứ Ba": "07:00–18:00",
+     "Thứ Tư": "07:00–18:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMI9i_kSqPqLOdbWtpstlmYUdHogAGCgAgR8hb7sx5Mch93JoHgnK-w1Sk51zXu9-Vq4WfYf10qEPkgPxk9DgK4FaFI2-tyKgJWcTn2G_wiiCO6Xs0NXuUBTor4JB0zjQev-i4",
+    "cid": "1695404177673260394",
+    "fid": "0x31752f385570472f:0x1787491df0ed8d6a",
+    "placeId": "ChIJL0dwVTgvdTERao3t8B1Jhxc"
+   },
+   {
+    "position": 3,
+    "title": "Bảo tàng Chứng tích Chiến tranh",
+    "address": "Phường 6, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7795106,
+    "longitude": 106.6920916,
+    "rating": 4.5,
+    "ratingCount": 41648,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Bảo tàng lịch sử địa phương",
+     "Bảo tàng",
+     "Bảo tàng chiến tranh"
+    ],
+    "website": "https://baotangchungtichchientranh.vn/",
+    "phoneNumber": "+84 28 3930 5587",
+    "description": "Bảo tàng tưởng niệm trưng bày các bức ảnh, vũ khí & vật phẩm khác từ các cuộc chiến tại Việt Nam & Đông Dương.",
+    "openingHours": {
+     "Thứ Năm": "07:30–17:30",
+     "Thứ Sáu": "07:30–17:30",
+     "Thứ Bảy": "07:30–17:30",
+     "Chủ Nhật": "07:30–17:30",
+     "Thứ Hai": "07:30–17:30",
+     "Thứ Ba": "07:30–17:30",
+     "Thứ Tư": "07:30–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNl0jd-P5bnYKfcrxMswJN0C4A7rQQHivgEu9oyH_h9K9o5ETIsMzqj7xB5LZanDBYPkgBgBRbdxqRmpMUSVJvwP834STbPDrUiLd7iH5hCnGLaxqKIs7P2FvK3C9DfZQLZJaks7ma3FyOK",
+    "cid": "8996304053010199722",
+    "fid": "0x31752f30a23708cf:0x7cd94adf2b1474aa",
+    "placeId": "ChIJzwg3ojAvdTERqnQUK99K2Xw"
+   },
+   {
+    "position": 4,
+    "title": "Đường sách Thành phố Hồ Chí Minh",
+    "address": "2 Đ. Nguyễn Văn Bình, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.780963,
+    "longitude": 106.7000734,
+    "rating": 4.6,
+    "ratingCount": 12861,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Hiệu sách"
+    ],
+    "website": "https://duongsachtphcm.com/",
+    "description": "Con phố đi bộ nhộn nhịp có các hiệu sách tiếng Việt và tiếng nước ngoài cùng địa điểm uống cà phê ngoài trời.",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMemoeO_CW8v9PXz66DYx8_U5TVY2xOCdpTrP7Suh_-w7Ad6C8C8tUjZsbZ9Ihm_Eb0dGjUkEnpYP3thEJ09R_TEhNhjEsYP6zsUoY5lojlnaFim1eX9ux7FQaHSxyhCtnsCP4IyA",
+    "cid": "18199100751481245008",
+    "fid": "0x31752f37d72fc64b:0xfc9031b5e3958d50",
+    "placeId": "ChIJS8Yv1zcvdTERUI2V47UxkPw"
+   },
+   {
+    "position": 5,
+    "title": "Nguyen Hue Walking Street",
+    "address": "QPF3+JF9, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7740408,
+    "longitude": 106.7037237,
+    "rating": 4.6,
+    "ratingCount": 254,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPKfrWf2CfJDCO3fMGfxm4Oo6MMfOgTFBln-ir89ApcqTupH06wI9L01cKBtKZ1YIZePdhROvsL4FX8BHwWzgJLaW51TLQeEX1EfEP5WEVD0fD-dsE3V2DZeekx7TxnGxPzEiSFU9KoB-Ur",
+    "cid": "6132188362022812283",
+    "fid": "0x31752f004235a877:0x5519e8d356277a7b",
+    "placeId": "ChIJd6g1QgAvdTERe3onVtPoGVU"
+   },
+   {
+    "position": 6,
+    "title": "Phố đi bộ Bùi Viện",
+    "address": "Bùi Viện Phạm Ngũ Lão, phường, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.767351,
+    "longitude": 106.69388359999999,
+    "rating": 4.3,
+    "ratingCount": 27575,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOi5azlVtRJ9MflrDwZEMIJUuFkpxb2SsineyWV3riYlGGQD0B20AKi0Cb1iDzn_OE1tPLQZ8tMtf4v-sd9vk3eQc1DO-xNcE6hNTxq6xGG2sfj9f8MFQoJfiDOZ3hPf3o052fOTMpAKxtb",
+    "cid": "17419937820716483494",
+    "fid": "0x31752f1605cbdc09:0xf1c00d273532c3a6",
+    "placeId": "ChIJCdzLBRYvdTERpsMyNScNwPE"
+   },
+   {
+    "position": 7,
+    "title": "Công Viên Nước Đầm Sen",
+    "address": "3 Hòa Bình, Bình Thới, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7686947,
+    "longitude": 106.6361507,
+    "rating": 4.3,
+    "ratingCount": 36043,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Công viên",
+     "Công viên nước"
+    ],
+    "website": "https://damsenwaterpark.com.vn/",
+    "phoneNumber": "+84 28 3858 8418",
+    "description": "Tổ hợp vui chơi giải trí cho gia đình với các hoạt động cưỡi ngựa, công viên nước, rạp chiếu phim & sở thú.",
+    "openingHours": {
+     "Thứ Năm": "09:00–17:30",
+     "Thứ Sáu": "09:00–17:30",
+     "Thứ Bảy": "09:00–17:30",
+     "Chủ Nhật": "08:30–17:30",
+     "Thứ Hai": "09:00–17:30",
+     "Thứ Ba": "09:00–17:30",
+     "Thứ Tư": "09:00–17:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNIkGQXLESTIMx4BLtyx9WzjUw49qJ1RV5HjBXDFwaoZBsh7BdjPmWwvUVt3NUTkNDItqzyfDryiQIsZTnJ-jbxM7Z6z3vl-y_MEHB3IGYS2gr6pb92xoR6HnPN1kE6tYq-dHUT",
+    "cid": "15688581395936079051",
+    "fid": "0x31752e9747f2686b:0xd9b909a86e926ccb",
+    "placeId": "ChIJa2jyR5cudTERy2ySbqgJudk"
+   },
+   {
+    "position": 8,
+    "title": "Bảo tàng Thành phố Hồ Chí Minh",
+    "address": "65 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7759182,
+    "longitude": 106.6996319,
+    "rating": 4.2,
+    "ratingCount": 3226,
+    "type": "Bảo tàng lịch sử địa phương",
+    "types": [
+     "Bảo tàng lịch sử địa phương",
+     "Bảo tàng lịch sử",
+     "Bảo tàng"
+    ],
+    "website": "https://hcmc-museum.edu.vn/",
+    "phoneNumber": "+84 28 3829 9741",
+    "openingHours": {
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00",
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPzufnpFhOOCi4L7maIwLOzIndGjIw4GvNg_VHFeBAPj24I6R4NiMRgKTwl_MRX6Id8_mKXqouENk3mj5wX0PdM4klQe3p3TBRh9eefNsp_fAW7v4FAGJt-4swbd0Yd0Y5gPwraHw",
+    "cid": "3299832101564296819",
+    "fid": "0x31752f7e127ee995:0x2dcb5bd0282bae73",
+    "placeId": "ChIJlel-En4vdTERc64rKNBbyy0"
+   },
+   {
+    "position": 9,
+    "title": "Chợ Bến Thành",
+    "address": "Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7725168,
+    "longitude": 106.6980208,
+    "rating": 4,
+    "ratingCount": 87409,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Điểm mốc văn hóa",
+     "Chợ"
+    ],
+    "description": "Chợ nổi tiếng để mua đồ thủ công, lưu niệm, quần áo & hàng hóa khác đồng thời thưởng thức ẩm thực địa phương.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmORBbFo0ZZzrTD540br0EfRYC6rG8LBZab_YDU7CHR_we2t9pKoo2gb0zu1XxOXhyaKjo9SqEdX4cp6tXxoZS-t9531LW3H2-Wc5XhfydJNMWfragCNsXdwWEkIjD7jd7rNFxRkeJcO82uE",
+    "cid": "10190288580948819760",
+    "fid": "0x31752f3f3129e64d:0x8d6b2d79522c7f30",
+    "placeId": "ChIJTeYpMT8vdTERMH8sUnkta40"
+   },
+   {
+    "position": 10,
+    "title": "Nhà hát Thành phố Hồ Chí Minh",
+    "address": "07 Công trường Lam Sơn, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.776612799999999,
+    "longitude": 106.7031715,
+    "rating": 4.6,
+    "ratingCount": 18047,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Nhà hát Opera"
+    ],
+    "website": "https://ticket-stations.com/a-o-show",
+    "description": "Nhà hát opera tinh xảo từ thời Pháp thuộc vào thế kỷ 19, nay là nơi biểu diễn ba lê và nhạc giao hưởng của thành phố.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPYEPxYabAE9ENw4gIavTzuz9h9xaPn3NM9OMPu9TTmm-DY7Xl9oOOZMUJ_pSh94dCCtl5wGyNyJtKE0S825wvB3vI0uPNPB3VUo-gihnjivd-bzW3Noe31ppCYmV6eq32k_B_W",
+    "cid": "6193911520574615099",
+    "fid": "0x31752f4649e7ca29:0x55f531b6120cae3b",
+    "placeId": "ChIJKcrnSUYvdTERO64MErYx9VU"
+   },
+   {
+    "position": 11,
+    "title": "Khu du lịch Văn Thánh",
+    "address": "48/10 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.798721299999999,
+    "longitude": 106.71656039999999,
+    "rating": 4.3,
+    "ratingCount": 5261,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://www.facebook.com/dulichvanthanh/",
+    "phoneNumber": "+84 901 889 705",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNsx6I2ZcfZOS04acZNnDiw1zlmQVcI2N2Hwp3kb4BqnZrE5TF16MP1cqUh15e5g-hNP3w8kYhT8eprc3x3d-rmuZJUFjTg3ki-OuAVd0-jDcNT39NRboXrPZYt2c_s4JFXRZ2A",
+    "cid": "11384850416856558268",
+    "fid": "0x3175295d0d47c057:0x9dff1d2275b16abc",
+    "placeId": "ChIJV8BHDV0pdTERvGqxdSId_50"
+   },
+   {
+    "position": 12,
+    "title": "Tượng Chủ tịch Hồ Chí Minh",
+    "address": "110 Nguyễn Huệ, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7760193,
+    "longitude": 106.70154889999999,
+    "rating": 4.7,
+    "ratingCount": 5319,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Tác phẩm điêu khắc"
+    ],
+    "website": "http://www.mapinfo.vn/",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPPiPf53GNW1rs3ybYNKBPgqWS7SFksSziGTcQgYirEcnBIwsBH_VfC0a_xcGXPVHXj7ZhKPb2B15qx62diMSpZS_3z_Trqs55ZVHuUpIhmYroPXcUhaWiN8KBHFG0yk2Nf4BNC",
+    "cid": "6726810555650312935",
+    "fid": "0x31752f47a31dba95:0x5d5a6e8f68e28ae7",
+    "placeId": "ChIJlbodo0cvdTER54riaI9uWl0"
+   },
+   {
+    "position": 13,
+    "title": "Công viên văn hóa Suối Tiên",
+    "address": "120 Song Hành Xa Lộ Hà Nội, Tăng Nhơn Phú, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.866186299999999,
+    "longitude": 106.8031678,
+    "rating": 4.3,
+    "ratingCount": 22925,
+    "type": "Công viên giải trí",
+    "types": [
+     "Công viên giải trí",
+     "Công viên"
+    ],
+    "website": "http://suoitien.com/",
+    "phoneNumber": "+84 28 3896 0260",
+    "description": "Công viên giải trí có nhiều tàu lượn và hoạt động vui chơi dưới nước nằm giữa các công trình Phật Giáo nổi bật.",
+    "openingHours": {
+     "Thứ Năm": "08:00–17:00",
+     "Thứ Sáu": "08:00–17:00",
+     "Thứ Bảy": "08:00–17:00",
+     "Chủ Nhật": "08:00–17:00",
+     "Thứ Hai": "08:00–17:00",
+     "Thứ Ba": "08:00–17:00",
+     "Thứ Tư": "08:00–17:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOfSutNgrLKFMV-rU6lo1y0Ri6Z4-tF5wpl8USEXtBpVNxu5qdKcprJ2WvSPn03UMAQfLdgfjHmlDwl900Ijb0r-G-6Rx_UGYuo6g8yN_5IXDgjLYnv0x7WFcpsyQj0XnJk0L6r",
+    "cid": "17289752153175166486",
+    "fid": "0x3175275bc75f790d:0xeff189fa708d0e16",
+    "placeId": "ChIJDXlfx1sndTERFg6NcPqJ8e8"
+   },
+   {
+    "position": 14,
+    "title": "Khu Du Lịch Bến Xưa",
+    "address": "39A Hà Huy Giáp, An Phú Đông, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8527195,
+    "longitude": 106.6773975,
+    "rating": 4.3,
+    "ratingCount": 1598,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch"
+    ],
+    "website": "https://benxua.vn/",
+    "phoneNumber": "+84 942 166 166",
+    "description": "Công viên rộng lớn ven sông có bể bơi, nhiều nhà hàng trong các tòa nhà kiểu cổ và hồ hoa súng.",
+    "openingHours": {
+     "Thứ Năm": "07:00–22:00",
+     "Thứ Sáu": "07:00–22:00",
+     "Thứ Bảy": "07:00–22:00",
+     "Chủ Nhật": "07:00–22:00",
+     "Thứ Hai": "07:00–22:00",
+     "Thứ Ba": "07:00–22:00",
+     "Thứ Tư": "07:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNiAMbz6V7rvyekhqgNpb9heV4lBkPCWcRgdvHedBexQ4t6y-6mgo-gVscKUHIsc2A2vw7WN8FwYxv7yzBZM5U_r_e26YJkKPlitWsK8xO_qGdi5qeHOKF1cRyMqVKdVPJaiFCTDg",
+    "cid": "255713947382682657",
+    "fid": "0x3175284af5c6aaab:0x38c7a7af5db9421",
+    "placeId": "ChIJq6rG9UoodTERIZTb9Xp6jAM"
+   },
+   {
+    "position": 15,
+    "title": "Công viên 23 tháng 9",
+    "address": "Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.768711399999999,
+    "longitude": 106.69234,
+    "rating": 4.4,
+    "ratingCount": 10498,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Công viên"
+    ],
+    "website": "https://congvien23thang9.com/",
+    "description": "Khoảng không gian xanh và lối đi bộ thư thái có nhiều cây xanh, sân chơi và hồ vịt.",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM06qBc7J-cHFejK8BMFOtckiGhUMuTDKj3nE9KNafeynzbR-fA9m2hnJb_BEBWDIAULGLBxQg8Wv2AsmGLcx5JDi_k4J6Z1gsYushCU7WWinyHUi5NKviZIfPMnsLTIcZla9g",
+    "cid": "16774375903398734205",
+    "fid": "0x31752f3efe0a86bb:0xe8ca8e027af4297d",
+    "placeId": "ChIJu4YK_j4vdTERfSn0egKOyug"
+   },
+   {
+    "position": 16,
+    "title": "Nhà thờ Đức Bà Sài Gòn",
+    "address": "01 Công trường Công xã Paris, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7797855,
+    "longitude": 106.6990189,
+    "rating": 4.4,
+    "ratingCount": 29177,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Vương cung thánh đường",
+     "Nhà thờ Công giáo",
+     "Nhà thờ chính tòa Công giáo"
+    ],
+    "phoneNumber": "+84 914 122 229",
+    "description": "Nhà thờ Công giáo được xây dựng bằng gạch Pháp vào những năm 1880 và có các tháp chuông Rô-măng cao 58m.",
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOr63OvTQ8mRp9lzOp4WJvGZLS8QjPqrx8RotFSu6l8ueAsDA28-SAezS-TSD6iMTxYMb3ZpIZubKsG298Ir8s0sdp08TWvAYCEPUtxBL9BGRaDaTxjVYlS6FN0CBr-zuJuZO7dkQ",
+    "cid": "16739696829681982277",
+    "fid": "0x31752f37e6d82451:0xe84f59936ced5b45",
+    "placeId": "ChIJUSTY5jcvdTERRVvtbJNZT-g"
+   },
+   {
+    "position": 17,
+    "title": "Bến Bạch Đằng",
+    "address": "2 Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7755799,
+    "longitude": 106.7071096,
+    "rating": 4.5,
+    "ratingCount": 10050,
+    "type": "Điểm mốc lịch sử",
+    "types": [
+     "Điểm mốc lịch sử"
+    ],
+    "website": "https://vi.wikipedia.org/wiki/B%E1%BA%BFn_B%E1%BA%A1ch_%C4%90%E1%BA%B1ng",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPik3Ff_nXDf-SRA3W7EAjPC_HTQp5bP7arqpVVfnNEr0ZXruyQYm8ahU_CratDogE7iTMKME5hgOmbI7J3LXSRyUui3yoZhHkf0w5rcA1NGW3wqd595h-xzrFGvhxzl0oFWrfPLQ",
+    "cid": "15871080084204990604",
+    "fid": "0x31752fd0bb720ac3:0xdc41673f7cd0b08c",
+    "placeId": "ChIJwwpyu9AvdTERjLDQfD9nQdw"
+   },
+   {
+    "position": 18,
+    "title": "Miếu Bà Thiên Hậu - Hội Quán Tuệ Thành",
+    "address": "710 Nguyễn Trãi, Chợ Lớn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7532496,
+    "longitude": 106.66117349999999,
+    "rating": 4.6,
+    "ratingCount": 3548,
+    "type": "Nơi thờ cúng",
+    "types": [
+     "Nơi thờ cúng",
+     "Điện thờ"
+    ],
+    "website": "http://facebook.com/ChuaBaThienHauChoLon",
+    "description": "Ngôi chùa thờ nữ thần biển từ thế kỷ 18 này có kiến ​​trúc Trung Hoa đầy màu sắc, trang trí công phu.",
+    "openingHours": {
+     "Thứ Năm": "06:00–17:30",
+     "Thứ Sáu": "06:00–17:30",
+     "Thứ Bảy": "06:00–17:30",
+     "Chủ Nhật": "06:00–17:30",
+     "Thứ Hai": "06:00–17:30",
+     "Thứ Ba": "06:00–17:30",
+     "Thứ Tư": "06:00–17:30"
+    },
+    "bookingLinks": [
+     "https://showroomxe.com.vn/",
+     "https://namsaigonford.com.vn/lien-he/",
+     "http://choray.vn/",
+     "https://www.instagram.com/vinfastsaigonofficial/",
+     "https://oto-vinfastsaigon.com/",
+     "https://zalo.me/0931132142"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmM-OdiT_UsPKTqYu6A8rt17kD2xQNxNwrTynOBOSdunkSYkAuJtbYNwVV1UXtXc7sMheJqjeJdTi4eB9RDwyxUjcaH2iftuVzgpbYL3FtFyiguDDmmf2-6zc5qrQPTJZIviD2aD",
+    "cid": "2624174615134138519",
+    "fid": "0x31752ef6d3f19853:0x246af0e8b3aaf097",
+    "placeId": "ChIJU5jx0_YudTERl_Cqs-jwaiQ"
+   },
+   {
+    "position": 19,
+    "title": "Công viên bờ sông",
+    "address": "Tôn Đức Thắng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774972199999999,
+    "longitude": 106.7064267,
+    "rating": 4.4,
+    "ratingCount": 8897,
+    "type": "Công viên",
+    "types": [
+     "Công viên"
+    ],
+    "description": "Công viên, chợ và khu giải trí bên bờ Sông Sài Gòn, có các chuyến đi thuyền và món ăn địa phương.",
+    "openingHours": {
+     "Thứ Năm": "09:00–19:00",
+     "Thứ Sáu": "09:00–19:00",
+     "Thứ Bảy": "09:00–19:00",
+     "Chủ Nhật": "09:00–17:00",
+     "Thứ Hai": "09:00–19:00",
+     "Thứ Ba": "09:00–19:00",
+     "Thứ Tư": "09:00–19:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOcGEqjsk00GDnSN6-sUNHxaA39HZQB3fiTCFpzLASsWKBAgcH8UOjEtWDOyQjwzlY3S78yvDZlUzu7US7l1ltXdZDr5IvRDgOzmUQJSi8_EdLfQcJVrdmZw4ZwSOO8QFQEqjZY",
+    "cid": "48057141929985483",
+    "fid": "0x31752f382eb056a9:0xaabbb749a845cb",
+    "placeId": "ChIJqVawLjgvdTERy0WoSbe7qgA"
+   },
+   {
+    "position": 20,
+    "title": "Thiên Đường Giải Trí Thỏ Trắng",
+    "address": "875 Cách Mạng Tháng Tám, Cư xá Bắc Hải, Hòa Hưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.785501499999999,
+    "longitude": 106.66605299999999,
+    "rating": 4.3,
+    "ratingCount": 8516,
+    "type": "Điểm thu hút khách du lịch",
+    "types": [
+     "Điểm thu hút khách du lịch",
+     "Công viên giải trí",
+     "Công viên",
+     "Công viên giải trí"
+    ],
+    "website": "https://www.facebook.com/GiaiTriThoTrang/?locale=vi_VN",
+    "phoneNumber": "+84 28 3977 1975",
+    "openingHours": {
+     "Thứ Năm": "14:00–22:00",
+     "Thứ Sáu": "14:00–22:00",
+     "Thứ Bảy": "08:00–22:00",
+     "Chủ Nhật": "08:00–22:00",
+     "Thứ Hai": "14:00–22:00",
+     "Thứ Ba": "14:00–22:00",
+     "Thứ Tư": "14:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMXZJfG31U8QOHouKrLuMOHNKCYVE2J3EYDH7_61TqDvLqe4jOUmasvDDb6IE17z2guzicyo1dGqsVRqdtXsLUYoF5bcbUkSKS6Ri_ZhnnPH-w5kWc5-5dhQOvQfASzfsu59cu1",
+    "cid": "3921190383296923444",
+    "fid": "0x31752ed1f53481f5:0x366adde0d5174734",
+    "placeId": "ChIJ9YE09dEudTERNEcX1eDdajY"
+   }
+  ],
+  "credits": 3
+ }
+}

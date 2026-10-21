@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 16 Pro 256GB chính hãng giá FPT Shop",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:43:55.901Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB chính hãng giá FPT Shop",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 Pro giá giảm đến 6 triệu, nhiều ưu đãi, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-pro",
+    "snippet": "Mua iPhone 16 Pro (128GB, 256GB, 512GB, 1TB) chính hãng, đủ màu sắc mới nhất, giá rẻ kèm ưu đãi, có trả góp 0%, 1 đổi 1 trong 12 tháng, bảo hành lên đến 2 ...",
+    "rating": 4.9,
+    "ratingCount": 23,
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 (Pro Max/Pro/Plus) giá giảm đến 4,5 triệu, góp 0%",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-series",
+    "snippet": "iPhone 16 Pro 256GB, 1099 USD, 31.990.000 đồng. iPhone 16 Pro 512GB, 1299 ... Mua iPhone 16 chính hãng tại FPT Shop có lợi thế gì? FPT Shop chính là địa ...",
+    "position": 2
+   },
+   {
+    "title": "Bảng giá iPhone 16 mới nhất 2026: Giảm mạnh đến 8 triệu ...",
+    "link": "https://fptshop.com.vn/tin-tuc/for-gamers/bang-gia-iphone-16-moi-nhat-2026-200061",
+    "snippet": "Cuối cùng, những ai là nhiếp ảnh gia, quay phim chuyên nghiệp hoặc muốn máy tốt nhất nên chọn iPhone 16 Pro Max 256GB với giá 32,99 triệu đồng tại FPT Shop. Đây ...",
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro Max giá tốt Th8/2026 | Giảm đến 8 triệu",
+    "link": "https://fptshop.com.vn/dien-thoai/iphone-16-pro-max",
+    "snippet": "Mua iPhone 16 Pro Max (256GB/512GB/1TB) chính hãng, giá tốt kèm ưu đãi giảm đến 8 triệu, thu cũ trợ giá 1 triệu tại FPT Shop. Trả góp 0%, đổi trả hàng trong ...",
+    "rating": 4.9,
+    "ratingCount": 83,
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max - Đỉnh cao trải nghiệm! 🔥 Giá ưu đãi ...",
+    "link": "https://www.facebook.com/FPTShopOnline/posts/iphone-16-pro-max-%C4%91%E1%BB%89nh-cao-tr%E1%BA%A3i-nghi%E1%BB%87m-gi%C3%A1-%C6%B0u-%C4%91%C3%A3i-h%E1%BA%A5p-d%E1%BA%ABn-ch%E1%BB%89-t%E1%BB%AB-34390000%C4%91-tr%E1%BA%A3-g/898857075715768/",
+    "snippet": "BẢNG GIÁ SIÊU HẤP DẪN: iPhone 16 Pro Max 256GB – Chỉ từ 30.490.000đ iPhone 16 Pro 128GB – Chỉ từ 24.990.000đ iPhone 16 Plus 128GB – Chỉ từ ...",
+    "position": 5
+   },
+   {
+    "title": "Apple chính hãng phân phối tại FPT Shop",
+    "link": "https://fptshop.com.vn/apple",
+    "snippet": "A19 Pro. tản nhiệt hơi. Hệ thống camera Pro. Trả góp 0%. 34.990.000đ-9%. 31.990.000đ. Giảm 3.000.000đ. iPhone 17 Pro 256GB. 256 GB; 512 GB; 1 TB.",
+    "position": 6
+   },
+   {
+    "title": "So sánh iPhone 16 Pro và iPhone 15 Pro: Có gì khác biệt?",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/so-sanh-iphone-16-pro-va-iphone-15-pro-157653",
+    "snippet": "Dù không tiết lộ dung lượng pin chính xác nhưng Apple cho biết iPhone 16 Pro có thời lượng sử dụng tốt hơn 4 giờ so với iPhone 15 Pro. Cụ thể, trong sự kiện ra ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro 256GB (VN/A) - Giá tốt, thu cũ trợ giá đến 2 ...",
+    "link": "https://www.thegioididong.com/dtdd/iphone-16-pro-256gb",
+    "snippet": "iPhone 16 Pro 256GB chính hãng, giá tốt, thu cũ trợ giá đến 2 triệu, giảm giá các sản phẩm Apple mua kèm, đặc biệt giảm đến 500k khi mua kèm ...",
+    "date": "10 thg 9, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

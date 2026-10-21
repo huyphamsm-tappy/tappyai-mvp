@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "https://shop-a.tappy-eval.test/macbook-pro-m4",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:54:29.202Z",
+ "body": {
+  "searchParameters": {
+   "q": "https://shop-a.tappy-eval.test/macbook-pro-m4",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro M4: Review & Recommendations",
+    "link": "https://www.youtube.com/watch?v=5rN6CEO31gM",
+    "snippet": "Get the best laptops at https://www.justjosh.tech/ Apple M4: Students, lights users, basic programming: Apple MacBook Pro 14 w/M4 ...",
+    "position": 1
+   },
+   {
+    "title": "Use Apple Diagnostics to test your Mac",
+    "link": "https://support.apple.com/en-us/102550",
+    "snippet": "Use Apple Diagnostics to test your Mac. If you think your Mac might have a hardware issue, you can use Apple Diagnostics to help determine ...",
+    "date": "19 thg 12, 2025",
+    "position": 2
+   },
+   {
+    "title": "M4 MacBook Air Review - 6 Months Later",
+    "link": "https://www.youtube.com/watch?v=7QY8xt2Qxmk",
+    "snippet": "Has the M4 MacBook Air been worth it over the past 6 Months and who should get one? We'll take you through the standout features, downsides, ...",
+    "position": 3
+   },
+   {
+    "title": "Testing All M4 SoC MacBook Pro, Which one is best for ...",
+    "link": "https://www.youtube.com/watch?v=AKLASWdcmEU",
+    "snippet": "Testing All M4 SoC MacBook Pro, Which one is best for Pro Photo/Video Workflow? Considering the price gap that expands $2400+. This test ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro M4 review: Everything you need to know",
+    "link": "https://www.backmarket.com/en-us/c/macbook/macbook-pro-m4-review?srsltid=AU7gw4U97Td5ONi1nzzQmUm02X9k1o_zw353uqyRPWUO7fN3LZQkyZyM",
+    "snippet": "Explore the MacBook Pro M4's superb performance, stunning display, and all-day battery — perfect for pros and creatives.",
+    "date": "22 thg 2, 2026",
+    "position": 5
+   },
+   {
+    "title": "Don't make a mistake! Watch this before you buy an M4 ...",
+    "link": "https://www.youtube.com/watch?v=0U5TPXBKUaY",
+    "snippet": "Before you buy the M4 MacBook Pro watch this and save money - the M1 Max Macs are STILL great! ➡️ Watch more Mac videos here: ...",
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Pro 16 inch Laptop Apple M4 Pro chip ...",
+    "link": "https://www.bestbuy.com/product/apple-macbook-pro-16-inch-laptop-apple-m4-pro-chip-built-for-apple-intelligence-24gb-memory-512gb-ssd-space-black/JJGCQ8HHY7",
+    "snippet": "Apple - MacBook Pro 16-inch Laptop - Apple M4 Pro chip Built for Apple Intelligence - 24GB Memory - 512GB SSD - Space Black ... $208.25/mo.",
+    "date": "1 thg 11, 2024",
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Pro M4 Review",
+    "link": "https://www.trustedreviews.com/reviews/apple-macbook-pro-m4",
+    "snippet": "How we test. Every laptop we review goes through a series of uniform checks designed to gauge key things including build quality, performance, ...",
+    "date": "10 thg 2, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

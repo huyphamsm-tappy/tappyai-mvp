@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Hòa Pasteur\" OR \"Phở Minh\" OR \"PHỞ HÀ\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:14:05.595Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Hòa Pasteur\" OR \"Phở Minh\" OR \"PHỞ HÀ\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Hòa Pasteur Ho Chi Minh — second-time pho ...",
+    "link": "https://www.tiktok.com/@theres.food.at.home/video/7687032965754408205",
+    "snippet": "The video documents a visit to Phở Hòa Pasteur in Ho Chi Minh, Vietnam, where the creator tried pho for only the second time and described ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Hòa Pasteur: Authentic Vietnamese Pho in Ho Chi ...",
+    "link": "https://www.tiktok.com/@sgadventurousduo/video/7619325653887814932",
+    "snippet": "Phở Hòa Pasteur, located at 260C Pasteur, Phường, Xuân Hòa, Hồ Chí Minh 70000, Vietnam, is a highly recommended destination for authentic ...",
+    "position": 2
+   },
+   {
+    "title": "Pho in Vietnam: Best Phở Hòa Pasteur Review",
+    "link": "https://www.tiktok.com/@rushdytiblani_/video/7673461730302758165",
+    "snippet": "Where and when to go Phở Hòa Pasteur is located on Pasteur Street in Ho Chi Minh City and is popular during meal times. Expect a bustling ...",
+    "position": 3
+   },
+   {
+    "title": "Lần đầu tiên thử phở Minh, thương hiệu Phở trên 80 năm ...",
+    "link": "https://www.tiktok.com/@titbeolaocai/video/7601382927036960001",
+    "snippet": "Lần đầu tiên thử phở Minh, thương hiệu Phở trên 80 năm của Sài Gòn. #trangathanh #learnontiktok #longervideos #titbeo #reviewanngon · Phở Đặc ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Quán Phở Minh Lịch Sử Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@nguyenquangdungdirector/video/7531692788358958354",
+    "snippet": "Tìm hiểu quán phở Minh với hương vị Sài Gòn xưa. Trải nghiệm không gian cổ điển và khám phá ẩm thực đường phố độc đáo! #phở #SàiGòn #ẩmthực. Đây ...",
+    "position": 5
+   },
+   {
+    "title": "Quán phở Minh: Hơn 80 năm hương vị Sài Gòn",
+    "link": "https://www.tiktok.com/@datdidaydo/video/7562409690131500306",
+    "snippet": "Quán phở Minh: Hơn 80 năm hương vị Sài Gòn. Khám phá quán phở Minh hơn 80 năm, điểm đến hấp dẫn cho tín đồ yêu thích phở tại Sài Gòn.",
+    "position": 6
+   },
+   {
+    "title": "We tried the famous Phở Hòa Pasteur and it did not ...",
+    "link": "https://www.tiktok.com/@seanandjoo/video/7517836457839430920",
+    "snippet": "2287 Likes, TikTok video from seanandjoo (@seanandjoo): “We tried the famous Phở Hòa Pasteur and it did not dissapoint.",
+    "position": 7
+   },
+   {
+    "title": "Phở Hà Nội: Cùng Quỳnh Nấu Món Ngon",
+    "link": "https://www.tiktok.com/@nghesinganquynh/video/7496428422290328850",
+    "snippet": "Phở Hà Nội: Cùng Quỳnh Nấu Món Ngon. Khám phá cách làm phở bò và phở cuốn Hà Nội ngon miệng với Quỳnh. Hãy vào bếp và trải nghiệm nhé! # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

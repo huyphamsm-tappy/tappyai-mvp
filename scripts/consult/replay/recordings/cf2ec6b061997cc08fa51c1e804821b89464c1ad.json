@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "[Mỏng hơn 30%, Không Khoảng Cách] Ốp Pha Lê Siêu ...",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:57:16.947Z",
+ "body": {
+  "searchParameters": {
+   "q": "[Mỏng hơn 30%, Không Khoảng Cách] Ốp Pha Lê Siêu ...",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Review Miếng Pad Peel Da Obagi và Cách Sử Dụng",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7688408191780048149&location=0&aid=1988",
+    "imageWidth": 1014,
+    "imageHeight": 1473,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjWCjhd8bpNzbh303Wx9WSYeXnx3xyPwQ9U-c1MtoE5Q&s=10",
+    "thumbnailWidth": 459,
+    "thumbnailHeight": 668,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@obagi.vietnam/video/7688408191780048149",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7688408191780048149%26location%3D0%26aid%3D1988&tbnid=NWaJnzDNxZNIpM&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40obagi.vietnam%2Fvideo%2F7688408191780048149&docid=YyZZMlyOSUou0M&w=1014&h=1473",
+    "position": 1
+   },
+   {
+    "title": "Giải pháp thi công ốp lát mới với gạch siêu mỏng - CafeLand.Vn",
+    "imageUrl": "https://static1.cafeland.vn/cafelandnew/hinh-anh/2022/11/07/191/image-20221107084158-1.png",
+    "imageWidth": 654,
+    "imageHeight": 521,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPw1KXrhy2m8NnZ6T1IRh6-bO0vmUB_wmro5WQZhWHdg&s=10",
+    "thumbnailWidth": 501,
+    "thumbnailHeight": 399,
+    "source": "Bất Động Sản CafeLand",
+    "domain": "cafeland.vn",
+    "link": "https://cafeland.vn/tin-tuc/giai-phap-thi-cong-op-lat-moi-voi-gach-sieu-mong-114900.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fstatic1.cafeland.vn%2Fcafelandnew%2Fhinh-anh%2F2022%2F11%2F07%2F191%2Fimage-20221107084158-1.png&tbnid=-PCYvO2NAVKNkM&imgrefurl=https%3A%2F%2Fcafeland.vn%2Ftin-tuc%2Fgiai-phap-thi-cong-op-lat-moi-voi-gach-sieu-mong-114900.html&docid=eo9GBiPgJao7wM&w=654&h=521",
+    "position": 2
+   },
+   {
+    "title": "Thanh nhôm uốn cong",
+    "imageUrl": "https://cdn.hstatic.net/products/200000072226/3_663b95ae5ab6472cb1b8ad2648bfcf29_master.png",
+    "imageWidth": 800,
+    "imageHeight": 800,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRyjXLaaSeQilF2_B14hL_wtMy2R8B7S3G_-ZlH76wW0A&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "LEDXanh",
+    "domain": "ledxanh.vn",
+    "link": "https://ledxanh.vn/products/thanh-nhom-uon-cong-size-20-30-50mm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F200000072226%2F3_663b95ae5ab6472cb1b8ad2648bfcf29_master.png&tbnid=JbGpsgur2_NdWM&imgrefurl=https%3A%2F%2Fledxanh.vn%2Fproducts%2Fthanh-nhom-uon-cong-size-20-30-50mm&docid=L9Fy-Q-lfpEtHM&w=800&h=800",
+    "position": 3
+   },
+   {
+    "title": "🌱 Làn da của bé mong manh hơn mẹ nghĩ 🌱 🤲🏻 Những năm đầu đời không chỉ  là giai đoạn phát triển về thể chất mà còn là khoảng thời gian",
+    "imageUrl": "https://lookaside.fbsbx.com/lookaside/crawler/media/?media_id=122255133998289450",
+    "imageWidth": 1400,
+    "imageHeight": 1400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSN8RrR33Yqu_r_XptjF_QmWEonrmVdVWbVUQ2_7e_vbw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Facebook",
+    "domain": "www.facebook.com",
+    "link": "https://www.facebook.com/tabimhoney/posts/-l%C3%A0n-da-c%E1%BB%A7a-b%C3%A9-mong-manh-h%C6%A1n-m%E1%BA%B9-ngh%C4%A9-nh%E1%BB%AFng-n%C4%83m-%C4%91%E1%BA%A7u-%C4%91%E1%BB%9Di-kh%C3%B4ng-ch%E1%BB%89-l%C3%A0-giai-%C4%91o%E1%BA%A1n-ph/122255134028289450/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Flookaside.fbsbx.com%2Flookaside%2Fcrawler%2Fmedia%2F%3Fmedia_id%3D122255133998289450&tbnid=CwoSlVZaHP1SOM&imgrefurl=https%3A%2F%2Fwww.facebook.com%2Ftabimhoney%2Fposts%2F-l%25C3%25A0n-da-c%25E1%25BB%25A7a-b%25C3%25A9-mong-manh-h%25C6%25A1n-m%25E1%25BA%25B9-ngh%25C4%25A9-nh%25E1%25BB%25AFng-n%25C4%2583m-%25C4%2591%25E1%25BA%25A7u-%25C4%2591%25E1%25BB%259Di-kh%25C3%25B4ng-ch%25E1%25BB%2589-l%25C3%25A0-giai-%25C4%2591o%25E1%25BA%25A1n-ph%2F122255134028289450%2F&docid=-Vxn4fSLAbtqjM&w=1400&h=1400",
+    "position": 4
+   },
+   {
+    "title": "Kinh Nghiệm Lắp Đặt Đèn Chùm Pha Lê Đúng Cách và An Toàn",
+    "imageUrl": "https://phale.com.vn/wp-content/uploads/2023/08/MARIA-TEREZIA-37-CE-.jpg",
+    "imageWidth": 700,
+    "imageHeight": 700,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiDrZHtXYIMwWEN_Vyl0ZPrz96AM4q6Qj_gyp37d2vrg&s=10",
+    "thumbnailWidth": 554,
+    "thumbnailHeight": 554,
+    "source": "Pha Lê Tiệp",
+    "domain": "phale.com.vn",
+    "link": "https://phale.com.vn/kinh-nghiem-lap-dat-den-chum-pha-le/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fphale.com.vn%2Fwp-content%2Fuploads%2F2023%2F08%2FMARIA-TEREZIA-37-CE-.jpg&tbnid=vdWI6C9W08XIrM&imgrefurl=https%3A%2F%2Fphale.com.vn%2Fkinh-nghiem-lap-dat-den-chum-pha-le%2F&docid=aQd1bnowRTsiYM&w=700&h=700",
+    "position": 5
+   },
+   {
+    "title": "Đèn Trang Trí Phòng Bếp & Nhà Ăn Đẹp | Giải Pháp Chiếu Sáng",
+    "imageUrl": "https://thegioianhsang.vn/application/upload/products/thumbs/den-tha-pha-le-hp-cn8149-10-10xe14-l1200mm.jpg",
+    "imageWidth": 350,
+    "imageHeight": 350,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkaCyLeuWPi45ah4ic6awACmXpcGcaBqn2sgWIPvIorA&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Thế Giới Ánh Sáng",
+    "domain": "thegioianhsang.vn",
+    "link": "https://thegioianhsang.vn/den-trang-tri-phong-an?srsltid=AU7gw4UfSuv5lG9mGJhAAtcf6UMddIN-x8AXn4djFDYLDuqvNEYVKNU4",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fthegioianhsang.vn%2Fapplication%2Fupload%2Fproducts%2Fthumbs%2Fden-tha-pha-le-hp-cn8149-10-10xe14-l1200mm.jpg&tbnid=cjcI_ehsB7uUHM&imgrefurl=https%3A%2F%2Fthegioianhsang.vn%2Fden-trang-tri-phong-an%3Fsrsltid%3DAU7gw4UfSuv5lG9mGJhAAtcf6UMddIN-x8AXn4djFDYLDuqvNEYVKNU4&docid=pgzQo1klY09NxM&w=350&h=350",
+    "position": 6
+   },
+   {
+    "title": "Đèn Trang Trí Phòng Bếp & Nhà Ăn Đẹp | Giải Pháp Chiếu Sáng",
+    "imageUrl": "https://thegioianhsang.vn/application/upload/products/thumbs/den-tha-pha-le-hp-cn8158-10-100w-l1000mm.jpg",
+    "imageWidth": 350,
+    "imageHeight": 350,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrFqUeQ8f7S4lrJjAROtyx01RQx7WbLzFuhez9udRDgQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Thế Giới Ánh Sáng",
+    "domain": "thegioianhsang.vn",
+    "link": "https://thegioianhsang.vn/den-trang-tri-phong-an?srsltid=AU7gw4W9dltaY0YU_TXDVFjNRNfcrhLDWTNNh8quONG5s5ZYz-Ldo6_j",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fthegioianhsang.vn%2Fapplication%2Fupload%2Fproducts%2Fthumbs%2Fden-tha-pha-le-hp-cn8158-10-100w-l1000mm.jpg&tbnid=6QZbhCLueqPrzM&imgrefurl=https%3A%2F%2Fthegioianhsang.vn%2Fden-trang-tri-phong-an%3Fsrsltid%3DAU7gw4W9dltaY0YU_TXDVFjNRNfcrhLDWTNNh8quONG5s5ZYz-Ldo6_j&docid=pgzQo1klY09NxM&w=350&h=350",
+    "position": 7
+   },
+   {
+    "title": "Highlight phủ bạc cho tóc bạc tự nhiên, nhẹ nhàng và sang",
+    "imageUrl": "https://www.tiktok.com/api/img/?itemId=7691233189100031250&location=0&aid=1988",
+    "imageWidth": 1054,
+    "imageHeight": 1920,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSslSKx9ss7rTIdMz6b1UwRt68NwbXVSAra2F0uYMQgkQ&s=10",
+    "thumbnailWidth": 410,
+    "thumbnailHeight": 748,
+    "source": "TikTok",
+    "domain": "www.tiktok.com",
+    "link": "https://www.tiktok.com/@hungsuatoc/video/7691233189100031250",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.tiktok.com%2Fapi%2Fimg%2F%3FitemId%3D7691233189100031250%26location%3D0%26aid%3D1988&tbnid=gz3i5NuUL7OU_M&imgrefurl=https%3A%2F%2Fwww.tiktok.com%2F%40hungsuatoc%2Fvideo%2F7691233189100031250&docid=zz1ZRiv1T7vzNM&w=1054&h=1920",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

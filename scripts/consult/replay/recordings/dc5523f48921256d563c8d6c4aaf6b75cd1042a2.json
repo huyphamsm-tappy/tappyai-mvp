@@ -1,0 +1,82 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Air M1 256GB 2020 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:39.468Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M1 256GB 2020 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM",
+    "link": "https://shopee.vn/MacBook-Air-M1-2020-(8-core-CPU-7-core-GPU-8GB-RAM-256GB-SSD)-i.288286284.5875315506",
+    "snippet": "Mua MacBook Air M1 2020 (8 core CPU| 7 core GPU| 8GB RAM| 256GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn ...",
+    "rating": 4.9,
+    "ratingCount": 910,
+    "position": 1
+   },
+   {
+    "title": "Máy tính xách tay Apple MacBook Air (2020) M1 Chip, 13.3 ...",
+    "link": "https://shopee.vn/M%C3%A1y-t%C3%ADnh-x%C3%A1ch-tay-Apple-MacBook-Air-(2020)-M1-Chip-13.3-inch-8GB-256GB-SSD-i.88201679.5873954476",
+    "snippet": "Mua Máy tính xách tay Apple MacBook Air (2020) M1 Chip, 13.3-inch, 8GB, 256GB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "rating": 4.9,
+    "ratingCount": 2761,
+    "position": 2
+   },
+   {
+    "title": "Apple MacBook Air (2020) M1 Chip, 13.3-inch, 16GB ...",
+    "link": "https://shopee.vn/Apple-MacBook-Air-(2020)-M1-Chip-13.3-inch-16GB-256GB-SSD-i.88201679.7495761580",
+    "snippet": "Mua Apple MacBook Air (2020) M1 Chip, 13.3-inch, 16GB, 256GB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 3
+   },
+   {
+    "title": "Apple MacBook Air (2020) M1 Chip, 13.3-inch, 16GB, 256GB SSD",
+    "link": "https://shopee.vn/Apple-MacBook-Air-(2020)-M1-Chip-13.3-inch-16GB-256GB-SSD-i.88201679.10542128441",
+    "snippet": "... Air (2020) M1 Chip, 13.3-inch, 16GB, 256GB SSD. 1/6. Đã bán hết. 33.990.000₫. mall inline badge. Apple MacBook Air (2020) M1 Chip, 13.3-inch, 16GB, 256GB SSD.",
+    "position": 4
+   },
+   {
+    "title": "Chip M1 | Ram 8GB | SSD 256GB | Màn Retina 13.3” | Pin Tốt",
+    "link": "https://shopee.vn/M.A.C-A.I.R-M1-2020-Chip-M1-Ram-8GB-SSD-256GB-M%C3%A0n-Retina-13.3%E2%80%9D-Pin-T%E1%BB%91t-93%E2%80%9397-FULLBOX-i.829234931.55104852666",
+    "snippet": "Mua M.A.C A.I.R M1 2020 | Chip M1 | Ram 8GB | SSD 256GB | Màn Retina 13.3” | Pin Tốt | 93–97% FULLBOX giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro 13 inch 2020 (M1| 8GB RAM| 256GB SSD)",
+    "link": "https://shopee.vn/MacBook-Pro-13-inch-2020-(M1-8GB-RAM-256GB-SSD)-i.288286284.7975316104",
+    "snippet": "Mua MacBook Pro 13 inch 2020 (M1| 8GB RAM| 256GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "rating": 5,
+    "ratingCount": 38,
+    "position": 6
+   },
+   {
+    "title": "MacBook Air 13 inch 2020 (M1| 8GB RAM| 512GB SSD)",
+    "link": "https://shopee.vn/MacBook-Air-13-inch-2020-(M1-8GB-RAM-512GB-SSD)-i.288286284.4275320716",
+    "snippet": "Mua MacBook Air 13 inch 2020 (M1| 8GB RAM| 512GB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền Giao ...",
+    "rating": 5,
+    "ratingCount": 3,
+    "position": 7
+   },
+   {
+    "title": "Apple MacBook Pro (2020) M1 Chip, 13.3 inch, 8GB ...",
+    "link": "https://shopee.vn/Apple-MacBook-Pro-(2020)-M1-Chip-13.3-inch-8GB-256GB-SSD-i.88201679.8407857496",
+    "snippet": "Mua Apple MacBook Pro (2020) M1 Chip, 13.3 inch, 8GB, 256GB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "rating": 4.9,
+    "ratingCount": 500,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

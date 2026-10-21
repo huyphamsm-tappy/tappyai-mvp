@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn MacBook Pro M4 giá Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:15:29.194Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn MacBook Pro M4 giá Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mua MacBook Pro",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-pro",
+    "snippet": "MacBook Pro mới đang chờ. ... Hãy tùy ý điều chỉnh. Từ 54.999.000đ hoặc 2.239.000đ/ ...",
+    "position": 1
+   },
+   {
+    "title": "Mua MacBook Pro - Giáo Dục",
+    "link": "https://www.apple.com/vn-edu/shop/buy-mac/macbook-pro",
+    "snippet": "Giới hạn sáu MacBook Pro 14” cho mỗi khách hàng. Từ 52.249.000đ.",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro mới trang bị dòng chip M4 và ...",
+    "link": "https://www.apple.com/vn/newsroom/2024/10/new-macbook-pro-features-m4-family-of-chips-and-apple-intelligence/",
+    "snippet": "MacBook Pro 14 inch với M4 có mức giá từ 39.999.000đ và 37.499 ... Hoặc gọi 1800 1192. Việt Nam. Bản quyền © Apple Inc. 2026 Bảo lưu mọi ...",
+    "date": "30 thg 10, 2024",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro - Apple (VN)",
+    "link": "https://www.apple.com/vn/macbook-pro/",
+    "snippet": "Tìm MacBook Pro phù hợp nhất với bạn với chip M5, M5 Pro hoặc M5 Max. Được thiết kế cho AI. Thời lượng pin lên đến 24 giờ. Màn hình Liquid Retina XDR.",
+    "position": 4
+   },
+   {
+    "title": "Mua MacBook Air",
+    "link": "https://www.apple.com/vn/shop/buy-mac/macbook-air",
+    "snippet": "Hãy tùy ý điều chỉnh. Từ 35.999.000đ hoặc 1.466.000đ/thángmỗi tháng ...",
+    "position": 5
+   },
+   {
+    "title": "Apple giới thiệu MacBook Air mới với chip M4 và có màu ...",
+    "link": "https://www.apple.com/vn/newsroom/2025/03/apple-introduces-the-new-macbook-air-with-the-m4-chip-and-a-sky-blue-color/",
+    "snippet": "MacBook Air 13 inch trang bị chip M4 có mức giá từ 26.999.000đ và 24.499.000đ dành cho lĩnh vực giáo dục, và MacBook Air 15 inch trang bị chip ...",
+    "date": "5 thg 3, 2025",
+    "position": 6
+   },
+   {
+    "title": "Apple ra mắt MacBook Pro 14 inch mới trang bị chip M5",
+    "link": "https://www.apple.com/vn/newsroom/2025/10/apple-unveils-new-14-inch-macbook-pro-powered-by-the-m5-chip/",
+    "snippet": "MacBook Pro 14 inch với chip M5 có giá khởi điểm từ 41.999.000đ và 39.549.000đ với ưu đãi giảm giá cho giáo dục, với hai lựa chọn màu đen không ...",
+    "date": "15 thg 10, 2025",
+    "position": 7
+   },
+   {
+    "title": "Giáo Dục - Sinh Viên Đại Học",
+    "link": "https://www.apple.com/vn/education/college-students/",
+    "snippet": "MacBook Pro 14” và 16”. Máy tính xách tay Mac tiên tiến nhất dành cho các ngành học đòi hỏi sức mạnh đồ họa và công suất khủng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

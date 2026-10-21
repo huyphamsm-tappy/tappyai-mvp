@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook Pro 14 sai gon site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:21:12.362Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Pro 14 sai gon site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "(KÈM TUA VÍT VÀ KEO) MÀN HÌNH DÀNH CHO SS A14",
+    "link": "https://shop.tiktok.com/vn/pdp/man-hinh-cho-macbook-pro-retina-13-inch-sac-nhanh-usb-c/1729774694948637449",
+    "snippet": "Mua (KÈM TUA VÍT VÀ KEO) MÀN HÌNH DÀNH CHO SS A14 trên TikTok Shop. Săn giá siêu hời cho và được freeship mặt hàng đủ điều kiện. Mua sắm ngay để nhận ưu đãi ...",
+    "position": 1
+   },
+   {
+    "title": "【Free Gift】UGREEN 25000mAh 200W Max USB C ...",
+    "link": "https://shop.tiktok.com/vn/pdp/pin-sac-du-phong-25000mah-pd-130w-sac-nhanh-cho-laptop-dien-thoai/1731601528422893357",
+    "snippet": "Sản phẩm khá đẹp, chắc chắn và gọn gàng. Được tặng kèm 1 dây sạc và 1 túi nhung. Đã sử dụng 3 ngày sạc cho Iphone 16 promax vẫn còn 46%.",
+    "rating": 4.6,
+    "ratingCount": 482,
+    "position": 2
+   },
+   {
+    "title": "[Củ 140W] Củ sạc nhanh Anker ZoLo 140W (4 cổng, GaN ...",
+    "link": "https://shop.tiktok.com/vn/pdp/cu-sac-nhanh-anker-zolo-140w-4-cong-gan-sac-4-thiet-bi/1729569694847371305",
+    "snippet": "Tổng công suất tối đa 140W: Dễ dàng sạc đồng thời laptop, điện thoại và các thiết bị khác mà không làm giảm hiệu suất. Tích hợp công nghệ sạc nhanh PD (Power ...",
+    "rating": 4.7,
+    "ratingCount": 479,
+    "position": 3
+   },
+   {
+    "title": "Sạc laptop Samsungg chân nhỏ 14V-3A Zin",
+    "link": "https://shop.tiktok.com/vn/pdp/sac-laptop-chan-nho-14v-3a-samsungg-chat-luong-%C4%91am-bao-giao-hang-toan-quoc/1731117406217866195",
+    "snippet": "Sản phẩm lỗi kỹ thuật thuộc các tiêu chí được bảo hành của Nhà sản xuất/ Nhà phân phối. Tem còn nguyên vẹn, không vào nước, bị va đập, rơi vỡ, móp méo, ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "Tai Nghe Airpod Đa Năng 8 in 1 Siêu Nhỏ Gọn Macbox",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-dung-cu-ve-sinh-da-nang-8-in-1-macbox-de-dang-ve-sinh-laptop-chat-lieu-abs-ben-thiet-ke-nho-gon/1729707402360032160",
+    "snippet": "Đa năng, có thể dễ dàng vệ sinh được nhiều loại thiết bị: máy tính, laptop, tai nghe, điện thoại, bàn phím... • Nhựa ABS cao cấp ...",
+    "rating": 4.8,
+    "ratingCount": 225,
+    "position": 5
+   },
+   {
+    "title": "Hộp đựng máy tính để bàn, túi tote mang theo, có đệm, ...",
+    "link": "https://shop.tiktok.com/vn/pdp/hop-%C4%91ung-may-tinh-%C4%91e-ban-oxford-tui-tote-%C4%91a-nang-ben-%C4%91ep/1731392040182384138",
+    "snippet": "Biểu đồ kích thước:55cmx4cmx39cm / 21,65 inchx1,57 inchx15,35 inchGói bao gồm:1 Hộp đựng máy tính để bànLưu ý:Vui lòng cho phép sai số nhỏ 1-2cm / 0,39-0,79 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Bộ vệ sinh Laptop, Macbook đa năng A&B Clear Bộ dụng ...",
+    "link": "https://shop.tiktok.com/vn/pdp/bo-ve-sinh-laptop-a-b-clear-an-toan-voi-cong-nghe-nano-de-su-dung/1729815861052410784",
+    "snippet": "Gồm 1 cây chổi để quét bụi bàn phím. ·. Gồm 1 lọ vệ sinh làm sạch diệt khuẩn, 1 lọ làm sạch cơ bản.",
+    "rating": 4.8,
+    "ratingCount": 4274,
+    "position": 7
+   },
+   {
+    "title": "Cáp USB 20 A sang RJ45 tốc độ cao, Xunyanb, cho Máy ...",
+    "link": "https://shop.tiktok.com/vn/pdp/cap-usb-2-0-a-sang-rj45-toc-%C4%91o-cao-danh-cho-may-quet-ls-series/1731839193457526666",
+    "snippet": "Thông số kỹ thuật:Được làm bằng vật liệu chất lượng cao, bền và sử dụng lâu dài.Dễ dàng cài đặt, cắm và chạy.Tương thích với các mẫu Motorola Symbol: LS1203 ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

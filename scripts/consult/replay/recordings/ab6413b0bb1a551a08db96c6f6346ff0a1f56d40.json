@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Hơi Béo Cà Phê\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:52:49.776Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Hơi Béo Cà Phê\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hơi Béo Cà Phê (@hoibeocoffee)",
+    "link": "https://www.tiktok.com/@hoibeocoffee",
+    "snippet": "Hơi Béo Cà Phê (@hoibeocoffee) trên TikTok |4646 Lượt thích.1433 Follower.Dormbed - Dormcafe 261/16 Trần Hưng Đạo, Cô Giang, Quận 1 ☎️ 0866 773 966.",
+    "position": 1
+   },
+   {
+    "title": "Hơi Béo Coffee Bed",
+    "link": "https://www.tiktok.com/discover/h%C6%A1i-b%C3%A9o-coffee-bed",
+    "snippet": "Khám phá các video liên quan đến Hơi Béo Coffee Bed trên TikTok. Cập nhật lần cuối 2026-08-24. hoibeocoffee. Hơi Béo Cà Phê ... Hơi Béo Cà Phê.",
+    "date": "24 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "saigon #coffee #cafe #books #dorm",
+    "link": "https://www.tiktok.com/@hoibeocoffee/video/7596353891155840264",
+    "snippet": "TikTok video from Hơi Béo Cà Phê (@hoibeocoffee): “#saigon #coffee #cafe #books #dorm. Delivery: Grab - Shopeefood : 261/16 Trần Hưng Đạo, ...",
+    "position": 3
+   },
+   {
+    "title": "Review Hơi Béo Cà Phê",
+    "link": "https://www.tiktok.com/discover/review-h%C6%A1i-b%C3%A9o-c%C3%A0-ph%C3%AA",
+    "snippet": "Hơi Béo Cà Phê là một quán cà phê nằm tại khu Thảo Điền, Quận 2, được đánh giá là có không gian yên tĩnh, phù hợp để làm việc. Quán có giá cả ...",
+    "date": "21 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "saigon #coffee #cafe #books #dorm",
+    "link": "https://www.tiktok.com/@hoibeocoffee/video/7595129158557076744",
+    "snippet": "346 Likes, TikTok video from Hơi Béo Cà Phê (@hoibeocoffee): “#saigon #coffee #cafe #books #dorm. Delivery: Grab - Shopeefood : 261/16 ...",
+    "position": 5
+   },
+   {
+    "title": "Hơi Béo Cà Phê",
+    "link": "https://www.tiktok.com/@hoibeocoffee/video/7657824041906097416",
+    "snippet": "TikTok video from Hơi Béo Cà Phê (@hoibeocoffee): “#saigon #coffee #cafe #books #dorm. Delivery: Grab - Shopeefood : 261/16 Trần Hưng Đạo, P Cô Giang, ...",
+    "position": 6
+   },
+   {
+    "title": "Hơi Béo Cà Phê Review",
+    "link": "https://www.tiktok.com/discover/h%C6%A1i-b%C3%A9o-c%C3%A0-ph%C3%AA-review",
+    "snippet": "Hơi Béo Cà Phê Review · Khám phá hương vị đặc trưng của cà phê béo tại Hà Nội và Sài Gòn. Xem ngay để không bỏ lỡ trải nghiệm tuyệt vời này!",
+    "position": 7
+   },
+   {
+    "title": "Cách Làm Cà Phê Kem Béo Ngon Tại Nhà",
+    "link": "https://www.tiktok.com/@hoiancornercoffee/video/7175750972931689755",
+    "snippet": "Cách Làm Kem Bằng Bột Béo · Cách Pha Kem Béo Như Highlands Coffee · Review Hơi Béo Cà Phê · Kem Celano Cà Phê Muối · Bánh Kem Hình Bò Sữa.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

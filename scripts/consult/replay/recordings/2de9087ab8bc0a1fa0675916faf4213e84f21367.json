@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro 13 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:59:25.965Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro 13 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook pro 13 i15 311",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-13-i15-311",
+    "snippet": "Khám phá Macbook pro 13 i15 311 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất hôm ...",
+    "position": 1
+   },
+   {
+    "title": "bag for macbook pro 13 inch",
+    "link": "https://shop.tiktok.com/vn/k/bag-for-macbook-pro-13-inch",
+    "snippet": "Khám phá bag for macbook pro 13 inch mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Pro 13 i5 20GHz 2016",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-13-i5-20ghz-2016",
+    "snippet": "Khám phá MacBook Pro 13 i5 20GHz 2016 mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 3
+   },
+   {
+    "title": "Macbook air m1 13 inch laptop keyboard case",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-m1-13-inch-laptop-keyboard-case",
+    "snippet": "Khám phá Macbook air m1 13 inch laptop keyboard case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air Retina 13 i5 16GHz",
+    "link": "https://shop.tiktok.com/vn/k/macbook-air-retina-13-i5-16ghz",
+    "snippet": "Khám phá MacBook Air Retina 13 i5 16GHz mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành ...",
+    "position": 5
+   },
+   {
+    "title": "case macbook pro 13 inch",
+    "link": "https://shop.tiktok.com/vn/k/case-macbook-pro-13-inch",
+    "snippet": "Khám phá case macbook pro 13 inch mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 6
+   },
+   {
+    "title": "Apple Macbook Pro Retina 13-inch 2015 ေရာင်",
+    "link": "https://shop.tiktok.com/vn/k/apple-macbook-pro-retina-13-inch-2015-eran",
+    "snippet": "Khám phá Apple Macbook Pro Retina 13-inch 2015 ေရာင် mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản ...",
+    "position": 7
+   },
+   {
+    "title": "macbook pro m1 13 inch case",
+    "link": "https://shop.tiktok.com/vn/k/macbook-pro-m1-13-inch-case",
+    "snippet": "Khám phá macbook pro m1 13 inch case mới nhất tại TikTok Shop và tận hưởng freeship! Mua sắm những bộ sưu tập độc quyền và khám phá sản phẩm thịnh hành nhất ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

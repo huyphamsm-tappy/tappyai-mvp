@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn tốt Sony WH-1000XM5 Bose QuietComfort Ultra Apple AirPods Pro (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:08.387Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn tốt Sony WH-1000XM5 Bose QuietComfort Ultra Apple AirPods Pro (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Sony WH-1000XM5 | Giá rẻ, có trả góp, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-sony-wh-1000xm5.html",
+    "snippet": "Kích thước. Dài 27.62 cm - Rộng 21.67 cm - Cao 7.59 cm ; Trọng lượng. 250 g ; Công nghệ âm thanh. SENSE ENGINE Bộ xử lý tích hợp V1 DSEE Extreme (Cơ chế tăng ...",
+    "rating": 5,
+    "ratingCount": 27,
+    "position": 1
+   },
+   {
+    "title": "sony headphones giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=sony%20headphones",
+    "snippet": "Tai Nghe Chụp Tai Không Dây Chống Ồn Chủ Động Sony WH-1000XM5 | Hàng. custom ... Tai nghe Bose QuietComfort Ultra Headphones| Immersive Audio| Pin 24H.",
+    "position": 2
+   },
+   {
+    "title": "bose 700 giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=bose%20700",
+    "snippet": "Tai Nghe Bơi Lội Truyền Âm Thanh Qua Xương SHOKZ OPENSWIM PRO S710 Bluetooth Kết Hợp · Tai Nghe Chụp Tai Không Dây Chống Ồn Chủ Động Sony WH-1000XM5 | Hàng · Tai ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Alpha Works Lite 500 · Chống ồn · Có mic đàm thoại · Điều khiển giọng nói · Sạc không dây · Xuyên âm · Có app phiên dịch · Chống ồn chủ ...",
+    "position": 4
+   },
+   {
+    "title": "Chế độ xuyên âm là gì? Các dòng tai nghe có ...",
+    "link": "https://cellphones.com.vn/sforum/che-do-xuyen-am-la-gi",
+    "snippet": "Trong khi đó, các dòng tai nghe của Sony như WF-1000XM5 lại ghi điểm bởi khả năng lọc gió hiệu quả, giúp âm thanh không bị lẫn tiếng nhiễu của ...",
+    "date": "3 thg 3, 2026",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Bose Ultra Earbuds 2 chính hãng, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-bose-quietcomfort-ultra-earbuds-2.html",
+    "snippet": "Công nghệ CustomTune điều chỉnh âm thanh cá nhân hóa cho trải nghiệm nghe tốt; Chống ồn hoàn hảo, giúp hoàn toàn đắm chìm trong âm nhạc mà không bị phân tâm ...",
+    "position": 6
+   },
+   {
+    "title": "So sánh Tai nghe Bluetooth chụp tai Sony WH-CH520 và ...",
+    "link": "https://cellphones.com.vn/so-sanh/tai-nghe-chup-tai-sony-wh-ch520-vs-tai-nghe-chup-tai-sony-wh-1000xm5",
+    "snippet": "Tắt chống ồn ANC: Dùng 40 giờ. Bật chống ồn ANC: Dùng 30 giờ. Phương thức điều khiển. Nút bấm vật lý. Cảm ứng chạm. Tính năng khác. Sạc nhanh. Chống ồn đàm ...",
+    "position": 7
+   },
+   {
+    "title": "Trên tay Sony ULT WEAR: Bản \"lite\" của 1000XM5, hệ over ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-sony-ult-wear",
+    "snippet": "Sony ULT WEAR hay Sony WH-ULT900N không chỉ là mẫu tai nghe over-ear có âm bass ấn tượng nhất phân khúc mà còn được trang bị nhiều tính ...",
+    "date": "7 thg 5, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

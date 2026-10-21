@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "MacBook Air M3 13 inch 2024 16GB - 512GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:35.090Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook Air M3 13 inch 2024 16GB - 512GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Macbook Air M3 13'6 inch 2024 - 8CPU-8GPU / Ram 16Gb / 512Gb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/44-05c44997-e9cd-427e-b496-352ea8b38bb9-0086a471-cbae-431d-8d64-63ed2c530e1c.png?v=1747046814523",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXX2A4e3FYKPuCU6yMk9WQAajD9znwqLur9dCg3nWwtg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-512gb-likenew?srsltid=AU7gw4Vcbq4JYwweQJF3VW5XvKmA3nNjkHdkh5mehVQGue-TMIV_s6Ym",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F44-05c44997-e9cd-427e-b496-352ea8b38bb9-0086a471-cbae-431d-8d64-63ed2c530e1c.png%3Fv%3D1747046814523&tbnid=YhS_RLwHO-ZbsM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-512gb-likenew%3Fsrsltid%3DAU7gw4Vcbq4JYwweQJF3VW5XvKmA3nNjkHdkh5mehVQGue-TMIV_s6Ym&docid=MNWs7-WVAUB57M&w=640&h=640",
+    "position": 1
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 16GB - 512GB",
+    "imageUrl": "https://product.hstatic.net/1000369156/product/385_e27970439642498a8b743142edb1e7c6.png",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwBSex1UjisXzQFLi2AlPrhMT0VASkE-93DYWJwx4OFQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Máy Tính Nguyên Thành Ninh Bình",
+    "domain": "maytinhnguyenthanh.com",
+    "link": "https://maytinhnguyenthanh.com/products/macbook-air-m3-13-inch-2024-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F1000369156%2Fproduct%2F385_e27970439642498a8b743142edb1e7c6.png&tbnid=vPx8Y5NyEBNC_M&imgrefurl=https%3A%2F%2Fmaytinhnguyenthanh.com%2Fproducts%2Fmacbook-air-m3-13-inch-2024-16gb-512gb&docid=xY22mzn_CXlCkM&w=1200&h=1200",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 16GB - 512GB chính hãng, giá tốt",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/322634/macbook-air-13-inch-m3-2024-512gb-1.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 680,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLVu1Yg24BRyfRz3yOWwzHfL4XzgkdKbsrk5ZS_vNnXA&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/macbook-air-13-inch-m3-2024-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F322634%2Fmacbook-air-13-inch-m3-2024-512gb-1.jpg&tbnid=z8q1m8sSlcQlhM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Fmacbook-air-13-inch-m3-2024-16gb-512gb&docid=g43URXfK5qfHpM&w=1020&h=680",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 16GB - 512GB chính hãng, giá tốt",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/322634/Slider/vi-vn-macbook-air-13-inch-m3-2024-16gb-512gb-slider-2.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB907prVbfyrNZlFAvv73Tn9XeEfSKkWSklUMptDnJxw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/macbook-air-13-inch-m3-2024-16gb-512gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F322634%2FSlider%2Fvi-vn-macbook-air-13-inch-m3-2024-16gb-512gb-slider-2.jpg&tbnid=4E4ZwebNVFNKEM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Fmacbook-air-13-inch-m3-2024-16gb-512gb&docid=g43URXfK5qfHpM&w=1020&h=570",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M3 13'6 inch 2024 - 8CPU-8GPU / Ram 16Gb / 512Gb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/1-c481216f-0ee7-4c0e-9e17-b44571f16a04-b2339843-ca68-47e2-a633-4277f59314ef-9ac16fd0-eb3e-4cbb-b3ba-95612849381a-5f7e6c0a-b491-43e8-8e6c-76b02b6db249.png?v=1747046814523",
+    "imageWidth": 768,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF2n2nl7mVIeZR0PcBJqncPc1FJ6ynHLWXPWFk5I-yZw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-512gb-likenew?srsltid=AU7gw4XGFBN31zazzYkbiq8YOeSBxMDM7dzh_xOmwiohgrNWkztz4Ul2",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F1-c481216f-0ee7-4c0e-9e17-b44571f16a04-b2339843-ca68-47e2-a633-4277f59314ef-9ac16fd0-eb3e-4cbb-b3ba-95612849381a-5f7e6c0a-b491-43e8-8e6c-76b02b6db249.png%3Fv%3D1747046814523&tbnid=WwjC-1hT5WslyM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-512gb-likenew%3Fsrsltid%3DAU7gw4XGFBN31zazzYkbiq8YOeSBxMDM7dzh_xOmwiohgrNWkztz4Ul2&docid=MNWs7-WVAUB57M&w=768&h=768",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M3 13 inch RAM 16GB 2024 | | Mac24h",
+    "imageUrl": "https://mac24h.vn/images/detailed/93/Macbook_air_m3_2024_MAC24H.png",
+    "imageWidth": 350,
+    "imageHeight": 212,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMt_8Uvhz6sA6NyRwqs6OzoBTCdKPyDwR7qkOaiDvMfg&s=10",
+    "thumbnailWidth": 350,
+    "thumbnailHeight": 212,
+    "source": "Mac24h",
+    "domain": "mac24h.vn",
+    "link": "https://mac24h.vn/macbook-air-m3-13-inch-2024.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fmac24h.vn%2Fimages%2Fdetailed%2F93%2FMacbook_air_m3_2024_MAC24H.png&tbnid=ekIf7sBGZLHAWM&imgrefurl=https%3A%2F%2Fmac24h.vn%2Fmacbook-air-m3-13-inch-2024.html&docid=x8TBPVSA0rqBwM&w=350&h=212",
+    "position": 6
+   },
+   {
+    "title": "Macbook Air M3 13 inch 2024 16GB - 512GB | Giá rẻ %, trả góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:100/plain/https://cellphones.com.vn/media/wysiwyg/laptop/macbook/Air/M3-2024/macbook-air-m3-13-inch-2024-16gb-512gb-sac-70w-1.jpg",
+    "imageWidth": 810,
+    "imageHeight": 456,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRE7SZAKFQXL_0-XL5zJCx-Xr0ge0HSfUK99uu1Dzetpg&s",
+    "thumbnailWidth": 299,
+    "thumbnailHeight": 168,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-m3-13-inch-2024-16gb-512gb-sac-70w.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A0%2Fq%3A100%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fwysiwyg%2Flaptop%2Fmacbook%2FAir%2FM3-2024%2Fmacbook-air-m3-13-inch-2024-16gb-512gb-sac-70w-1.jpg&tbnid=nZCPDg1J7w_x2M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-m3-13-inch-2024-16gb-512gb-sac-70w.html&docid=pz1UtIFCXWkuoM&w=810&h=456",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M3 16GB 512GB Giá Tốt 7 Ngày Dùng Thử Trả Góp 0%",
+    "imageUrl": "https://cdn.qmacstore.com/mba132024silver-1-640x640.webp",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYe4BnnyjKx7VqaP8-7MmsLnQ-wnuD0coUzUCX8y5ysA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "QMac Store",
+    "domain": "qmacstore.com",
+    "link": "https://qmacstore.com/macbook-air-13-inch-2024-m3-8c-cpu-10c-gpu-16gb-512gb.html?srsltid=AU7gw4WPYWlxX_XAgTsYxAuqdknp0u41JTe-zBfE28Xp_M5kyI2GnmWm",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.qmacstore.com%2Fmba132024silver-1-640x640.webp&tbnid=k3kWXVDxmglO3M&imgrefurl=https%3A%2F%2Fqmacstore.com%2Fmacbook-air-13-inch-2024-m3-8c-cpu-10c-gpu-16gb-512gb.html%3Fsrsltid%3DAU7gw4WPYWlxX_XAgTsYxAuqdknp0u41JTe-zBfE28Xp_M5kyI2GnmWm&docid=5UgfuACHNt3NqM&w=640&h=640",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

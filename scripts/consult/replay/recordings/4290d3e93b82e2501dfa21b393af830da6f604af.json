@@ -1,0 +1,627 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán ăn ngon dưới 200k một người món Việt, nướng, lẩu Quận 3 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7843,106.6844,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:10:06.931Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán ăn ngon dưới 200k một người món Việt, nướng, lẩu Quận 3 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7843,106.6844,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7842941,106.6843997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Tiệm Nướng Nhà Bird",
+    "address": "214 Trương Công Định, Tân Bình, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.793054399999999,
+    "longitude": 106.6398013,
+    "rating": 4.9,
+    "ratingCount": 4260,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "website": "https://www.facebook.com/tiemnuongnhabird",
+    "phoneNumber": "+84 392 030 360",
+    "openingHours": {
+     "Thứ Năm": "16:00–23:30",
+     "Thứ Sáu": "16:00–23:30",
+     "Thứ Bảy": "16:00–23:30",
+     "Chủ Nhật": "16:00–23:30",
+     "Thứ Hai": "16:00–23:30",
+     "Thứ Ba": "16:00–23:30",
+     "Thứ Tư": "16:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOFRmRJxlfTi9kQrFq5boF8eDomg434-Dm91JF5qvJw8riBjka-xT1MrbxdKuS1KiALa0GSohYZTX6qGKpbMcZbdWXHLGVmOeLtE9EV26yi_G-PB5bmUFnfyRrKvXWTkNF0Ka8HZBjRuSE",
+    "cid": "12743262340872006459",
+    "fid": "0x317529b4e0d308f3:0xb0d929951349eb3b",
+    "placeId": "ChIJ8wjT4LQpdTERO-tJE5Up2bA"
+   },
+   {
+    "position": 2,
+    "title": "Rakuen Hotpot",
+    "address": "483 Đ. Lê Văn Sỹ, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7899148,
+    "longitude": 106.6739614,
+    "rating": 4.8,
+    "ratingCount": 3516,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu"
+    ],
+    "website": "http://rakuen.com.vn/",
+    "phoneNumber": "+84 905 111 483",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:30",
+     "Thứ Sáu": "10:00–22:30",
+     "Thứ Bảy": "10:00–22:30",
+     "Chủ Nhật": "10:00–22:30",
+     "Thứ Hai": "10:00–22:30",
+     "Thứ Ba": "10:00–22:30",
+     "Thứ Tư": "10:00–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNwr0XkqtqCpE2WVLLuTRgQ1uI088UusKhzPNtS9lnx-ST8eEGx7wJQGqP7qfNJ0Ep2LtJvrR2vCUUvck_1Hc8USVpiywi7fOKHk7i05d2tn8ftoJQHcJLkkMm1D-zLGlinXn7cs1K_KqfP",
+    "cid": "1589410161888873906",
+    "fid": "0x31752f681e9033a9:0x160eb81f05c84db2",
+    "placeId": "ChIJqTOQHmgvdTERsk3IBR-4DhY"
+   },
+   {
+    "position": 3,
+    "title": "Bò Nướng Khói",
+    "address": "114 Đ. Đỗ Thị Lời, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7859993,
+    "longitude": 106.67152879999999,
+    "rating": 3.6,
+    "ratingCount": 282,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "phoneNumber": "+84 938 533 563",
+    "openingHours": {
+     "Thứ Năm": "15:30–23:30",
+     "Thứ Sáu": "15:30–23:30",
+     "Thứ Bảy": "15:30–23:30",
+     "Chủ Nhật": "15:30–23:30",
+     "Thứ Hai": "15:30–23:30",
+     "Thứ Ba": "15:30–23:30",
+     "Thứ Tư": "15:30–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmPNeBmLabEEWHAF7268lZA7j028VdOYlrXuJtO7TOlae1UOcTlP8FVXd0rIbnCqhvI0YmP7z3EJayGSFG4OYn4Ogm63schzZo7KEvVg3yGAZcG3lAtl0FI0zZ9krWIEknRUzs8f3A",
+    "cid": "6607957966719568128",
+    "fid": "0x31752f27b11b623f:0x5bb42ec2a1084900",
+    "placeId": "ChIJP2IbsScvdTERAEkIocIutFs"
+   },
+   {
+    "position": 4,
+    "title": "Mr Mlem Cơ sở 7 - Hệ thống Buffet Nướng Lẩu 139k- có mở đêm",
+    "address": "531 Điện Biên Phủ, Thạnh Mỹ Tây, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.800825999999999,
+    "longitude": 106.71595289999999,
+    "rating": 4.9,
+    "ratingCount": 3531,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "website": "https://www.facebook.com/mlem.mr/",
+    "phoneNumber": "+84 886 615 466",
+    "openingHours": {
+     "Thứ Năm": "17:00–00:00",
+     "Thứ Sáu": "17:00–00:00",
+     "Thứ Bảy": "17:00–00:00",
+     "Chủ Nhật": "17:00–00:00",
+     "Thứ Hai": "17:00–00:00",
+     "Thứ Ba": "17:00–00:00",
+     "Thứ Tư": "17:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcUDGdb2i4ZwatJLyrNPQvMUy7S-LtDVU3POjApgJoYtrt6iVmSIICRl4MAf1rJpwbIg_mFdD0usa7jxKGK4qf98wZGh3YnId6KIj_Lzy7-2CQQLd4hN-Hns0E4f9o34tQz48zA",
+    "cid": "1762546411885001036",
+    "fid": "0x3175294ac688977b:0x1875d29f8c8b794c",
+    "placeId": "ChIJe5eIxkopdTERTHmLjJ_SdRg"
+   },
+   {
+    "position": 5,
+    "title": "ĂnDeee WeeKend",
+    "address": "12 Đường số 49B, An Khánh, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.8023268,
+    "longitude": 106.7290501,
+    "rating": 4.2,
+    "ratingCount": 755,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "website": "https://www.facebook.com/andeeeweekend/",
+    "phoneNumber": "+84 343 138 188",
+    "openingHours": {
+     "Thứ Năm": "11:00–14:00, 16:30–23:30",
+     "Thứ Sáu": "11:00–14:00, 16:30–23:00",
+     "Thứ Bảy": "11:00–14:00, 16:30–23:00",
+     "Chủ Nhật": "11:00–14:00, 16:30–23:00",
+     "Thứ Hai": "11:00–14:00, 17:00–23:00",
+     "Thứ Ba": "11:00–14:00, 16:30–23:00",
+     "Thứ Tư": "11:00–14:00, 16:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLeWoTWznR-g3GodBFE-LoHHheJ0f_h69QFC9Elry9_EJFRYjQgxqF0AuTzUyJ8S88WNKq78WwoLSZI7j-k7h-TMA_zeWApQQsOlwmc6foGW27QsS3Pel7GQ8TQSycyaSYXsXZPKOA",
+    "cid": "12783362499360229046",
+    "fid": "0x31752719f14c4965:0xb167a076c96a86b6",
+    "placeId": "ChIJZUlM8RkndTERtoZqyXagZ7E"
+   },
+   {
+    "position": 6,
+    "title": "Tiệm Nướng NỌ",
+    "address": "728 Cách Mạng Tháng Tám, Tân Sơn Nhất, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.787862599999999,
+    "longitude": 106.6630917,
+    "rating": 4.9,
+    "ratingCount": 7192,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100090031130088",
+    "phoneNumber": "+84 777 677 728",
+    "openingHours": {
+     "Thứ Năm": "16:30–23:00",
+     "Thứ Sáu": "16:30–23:00",
+     "Thứ Bảy": "16:30–23:00",
+     "Chủ Nhật": "16:30–23:00",
+     "Thứ Hai": "16:30–23:00",
+     "Thứ Ba": "16:30–23:00",
+     "Thứ Tư": "16:30–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdNeN8P-ETt257O-j8J-yNd5ra2LR-ZHj-4Xu-0_ZkZG1f2CpqVx-7YeSCYDmgIKqbbkpqg5tVHkQq-goHzklQ-uHdWmh9rYwf7PEFrBO4hYR58LLxnetAwcXJEjOaTAuAKUeGEMj8rjICO",
+    "cid": "9448384969527876232",
+    "fid": "0x31752f080160affd:0x831f6811f1d95a88",
+    "placeId": "ChIJ_a9gAQgvdTERiFrZ8RFoH4M"
+   },
+   {
+    "position": 7,
+    "title": "Năm Giờ Chiều - Mồi ngon & Ngồi chill",
+    "address": "20/4 Đ. Kỳ Đồng, Nhiêu Lộc, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7828243,
+    "longitude": 106.6817773,
+    "rating": 4.8,
+    "ratingCount": 1310,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "website": "https://m.facebook.com/tiemnuongnhabinh/",
+    "phoneNumber": "+84 923 091 368",
+    "openingHours": {
+     "Thứ Năm": "16:00–23:00",
+     "Thứ Sáu": "16:00–23:00",
+     "Thứ Bảy": "16:00–23:00",
+     "Chủ Nhật": "16:00–23:00",
+     "Thứ Hai": "16:00–23:00",
+     "Thứ Ba": "16:00–23:00",
+     "Thứ Tư": "16:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMysAR5ah3N-xyCPPmtK4SDvfKrNXl6DvgKTCs12nKhaz0z_PfheuJhFd4PxN1WPhtQbItgeqshGCS4CKEZtrSNhQ8-EmvZSFUbtKcAC917AchmreMyAFImmdyz3LCrfF3e3YwKdw",
+    "cid": "10522419648102598435",
+    "fid": "0x31752fc8370e2413:0x920724eb76bf0723",
+    "placeId": "ChIJEyQON8gvdTERIwe_duskB5I"
+   },
+   {
+    "position": 8,
+    "title": "RAKUEN BBQ",
+    "address": "84 Đ. Bàu Cát, Tân Bình, Hồ Chí Minh 72112, Việt Nam",
+    "latitude": 10.7924135,
+    "longitude": 106.6421256,
+    "rating": 4.8,
+    "ratingCount": 4483,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng Hàn Quốc",
+    "types": [
+     "Nhà hàng món nướng Hàn Quốc",
+     "Nhà hàng"
+    ],
+    "website": "https://rakuen.com.vn/khuyen-mai-giam-20-gia-ve-buffet/",
+    "phoneNumber": "+84 868 354 740",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:30",
+     "Thứ Sáu": "10:30–22:30",
+     "Thứ Bảy": "10:30–22:30",
+     "Chủ Nhật": "10:30–22:30",
+     "Thứ Hai": "10:30–22:30",
+     "Thứ Ba": "10:30–22:30",
+     "Thứ Tư": "10:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmN15vx8h8NqbgmzZ7qN9b8EHqj-a2hsfbC0A_2e08GwEXDFO3EyiINtOtZIgmygPL9pzrr2MbM2V6pNakXd7ZReea78nKXYsv9Kp8WNrjZI2fddsyTyBlvvfZcDqeEZ6vmiXJX1dA",
+    "cid": "17370369165642707450",
+    "fid": "0x31752951651c37fb:0xf10ff2b9578831fa",
+    "placeId": "ChIJ-zccZVEpdTER-jGIV7nyD_E"
+   },
+   {
+    "position": 9,
+    "title": "Lil' Sago - Hotpot & more",
+    "address": "299 Võ Văn Tần, Quận 3, Hồ Chí Minh 72420, Việt Nam",
+    "latitude": 10.7718327,
+    "longitude": 106.6861081,
+    "rating": 4.7,
+    "ratingCount": 1721,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu",
+     "Nhà hàng châu Á",
+     "Nhà hàng gia đình",
+     "Giao đồ ăn"
+    ],
+    "website": "https://lilsago.vercel.app/index.html",
+    "phoneNumber": "+84 908 101 015",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://booking.ipos.vn/public/booking/a83e22f5-d7b3-4768-889f-9980a9f82cb8?source=IFRAME",
+     "https://www.messenger.com/t/1656549547911577/?ref=Booking"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfOoXoluVleYSWFjo2Ua8FOpK0IEkMO21ZyzFk18ttCXif6ACOswaSsMuzPYdIw_ySIYonTCS9IlpRalKX7HCZuc7zMokZp2dYZoEzXLECXFjTETVZz1hfKDaqsqwoLZvgjHxqk4w",
+    "cid": "7942097724113129478",
+    "fid": "0x31752f23117b2449:0x6e37ffcd11339006",
+    "placeId": "ChIJSSR7ESMvdTERBpAzEc3_N24"
+   },
+   {
+    "position": 10,
+    "title": "Tiệm Lẩu Nướng Má Hai",
+    "address": "200 Nguyễn Thượng Hiền, Bàn Cờ, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.774081899999999,
+    "longitude": 106.6841245,
+    "rating": 3.6,
+    "ratingCount": 505,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 932 828 189",
+    "openingHours": {
+     "Thứ Năm": "16:00–23:00",
+     "Thứ Sáu": "16:00–23:00",
+     "Thứ Bảy": "16:00–23:00",
+     "Chủ Nhật": "16:00–23:00",
+     "Thứ Hai": "16:00–23:00",
+     "Thứ Ba": "16:00–23:00",
+     "Thứ Tư": "16:00–23:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe3QY8ZNbUgkCjnkkjpQMvgxRuV_Oj-HOQw8oVIWSQ1eygA5RynChdVFAEM4W9AIgCyyWe7GCW1YJrOIeYjCoRYdzONRAIJxlcxX-l13pFVtP9vp8-2NQnDGYQDXxuGBpq-fkc",
+    "cid": "17104000661014396162",
+    "fid": "0x31752f7c1741f1e5:0xed5d9dfaf5cf3d02",
+    "placeId": "ChIJ5fFBF3wvdTERAj3P9fqdXe0"
+   },
+   {
+    "position": 11,
+    "title": "No.96 Món Ngon Hà Nội",
+    "address": "117 Võ Văn Tần, Xuân Hòa, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7757572,
+    "longitude": 106.6899584,
+    "rating": 4.4,
+    "ratingCount": 301,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 869 999 091",
+    "openingHours": {
+     "Thứ Năm": "10:00–01:00",
+     "Thứ Sáu": "10:00–01:30",
+     "Thứ Bảy": "10:00–01:00",
+     "Chủ Nhật": "10:00–01:00",
+     "Thứ Hai": "10:00–01:00",
+     "Thứ Ba": "10:00–01:00",
+     "Thứ Tư": "10:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfGBpiYp2GAw36E4niyn-0rNWrVw24TN2PIOy0tn2hWQiEt5Ols6yx8huhWrIpBRd56vpyA-WpWUXH0fRTfZ188RZIdu4CiaFqsUu_6B8MqAE8Ikeklj8bKRHuMEfSdlvHvVl08",
+    "cid": "9782143303545189986",
+    "fid": "0x31752f3b1f0e31e9:0x87c12781adc6f662",
+    "placeId": "ChIJ6TEOHzsvdTERYvbGrYEnwYc"
+   },
+   {
+    "position": 12,
+    "title": "Thế Giới Bò - Nướng, sốt & lẩu",
+    "address": "6 Đ. Vĩnh Khánh, Khánh Hội, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7640355,
+    "longitude": 106.70127839999999,
+    "rating": 4.8,
+    "ratingCount": 2037,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng",
+     "Món nướng"
+    ],
+    "phoneNumber": "+84 907 988 770",
+    "openingHours": {
+     "Thứ Năm": "14:30–00:30",
+     "Thứ Sáu": "14:30–00:30",
+     "Thứ Bảy": "14:30–00:30",
+     "Chủ Nhật": "14:30–00:30",
+     "Thứ Hai": "14:30–00:30",
+     "Thứ Ba": "14:30–00:30",
+     "Thứ Tư": "14:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcimdkg4sWvbkiwyLsvK5eYpGp0cKSyj7mdHmHQeSndFpvjp1_Yqfd4U8pfMbTgjPxuvRrNgrRR0T0TqC-AszjujjWCzOuUnqZEeBvbnrq4V_W6CgHLA04msDuzA9GxaccqfeXKsQ",
+    "cid": "1188366526622443808",
+    "fid": "0x31752faa336055a9:0x107ded0f4a4ba920",
+    "placeId": "ChIJqVVgM6ovdTERIKlLSg_tfRA"
+   },
+   {
+    "position": 13,
+    "title": "BROS KOREA 1980s (본점)",
+    "address": "47 Nguyễn Thị Diệu, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.774844199999999,
+    "longitude": 106.6877962,
+    "rating": 4.9,
+    "ratingCount": 48497,
+    "priceLevel": "300-500 N ₫",
+    "type": "Nhà hàng món nướng Hàn Quốc",
+    "types": [
+     "Nhà hàng món nướng Hàn Quốc",
+     "Khu vực nướng",
+     "Nhà hàng Hàn Quốc",
+     "Nhà hàng"
+    ],
+    "website": "https://www.broskorea1980s.com/",
+    "phoneNumber": "+84 28 3930 0999",
+    "description": "Nhà hàng nhộn nhịp có tường gạch lộ thiên và các món nướng kiểu Hàn Quốc truyền thống.",
+    "openingHours": {
+     "Thứ Năm": "11:00–23:00",
+     "Thứ Sáu": "11:00–23:00",
+     "Thứ Bảy": "11:00–23:00",
+     "Chủ Nhật": "11:00–23:00",
+     "Thứ Hai": "11:00–23:00",
+     "Thứ Ba": "11:00–23:00",
+     "Thứ Tư": "11:00–23:00"
+    },
+    "bookingLinks": [
+     "https://www.broskorea1980s.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfgMhOiXxGzohJ7XQYZX4g2xPyOtLEp9LRZrkTN1XLLXJzoTXjlIvLwZblVKPaDy4aIZxn7eSapyiSzaAE5MJo4tgphFXgxUNPv6lTvGjF4mc53vPI9aOA9r2jVNWadOh3SZChDvFlpEy8o",
+    "cid": "15114376348974717688",
+    "fid": "0x31752f825f13f627:0xd1c10d35c2341af8",
+    "placeId": "ChIJJ_YTX4IvdTER-Bo0wjUNwdE"
+   },
+   {
+    "position": 14,
+    "title": "YE SO BAN",
+    "address": "19A Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7689671,
+    "longitude": 106.68291699999999,
+    "rating": 4.6,
+    "ratingCount": 1251,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "website": "https://www.facebook.com/YE-SO-BAN-111952554271210",
+    "phoneNumber": "+84 28 3535 4399",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:00",
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00",
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOBzUNhqTmEltHe4oDvJOhk5w8lJx_5SwstIG2r7y93ibYN5qnMqevsCPKbG-qCMtk6kZ1vhXY7FVDA0OmQyCtAvnP5XJ2Fro8_4nZKG2QLBjRT9wZysw9sGCBwg8xuUiWR2Yc",
+    "cid": "15692041767565098053",
+    "fid": "0x31752f20d5548f4d:0xd9c554d8fc4f7c45",
+    "placeId": "ChIJTY9U1SAvdTERRXxP_NhUxdk"
+   },
+   {
+    "position": 15,
+    "title": "KHÈN - NƯỚNG SAPA 09 Thoại Ngọc Hầu",
+    "address": "9 Thoại Ngọc Hầu, Tân Phú, Hồ Chí Minh 100000, Việt Nam",
+    "latitude": 10.7842903,
+    "longitude": 106.6395309,
+    "rating": 5,
+    "ratingCount": 5122,
+    "priceLevel": "200-600 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://www.khen.vn/",
+    "phoneNumber": "+84 858 143 388",
+    "openingHours": {
+     "Thứ Năm": "16:00–00:00",
+     "Thứ Sáu": "16:00–00:00",
+     "Thứ Bảy": "16:00–00:00",
+     "Chủ Nhật": "16:00–00:00",
+     "Thứ Hai": "16:00–00:00",
+     "Thứ Ba": "16:00–00:00",
+     "Thứ Tư": "16:00–00:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=khennuongsapa2604vn&rwg_token=AE37R_jZRwfrBR6uYx26wHOW1ahXyMlwP_A07GQIlm8c8eOlUKzILEcmhB9ITJirziKWOQR54lOeRxJ6OoX67wydBFtUdJxDplT0riF_dsidVdcJrsTkEds%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/e7x94wwQsdk?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcXtfmtn8zzqvxqYUFaHC_5C3U8ue43aiQnJktMGZiauIKBy-LoOetbxRo9bpxnRlJ4d47CP9MLtPmrKMOABMx-R0wfmYaAijpSWGRoQ1OsNnsdXkI-TYVlbAlxG5zSQIzsGS4dxrvaAUHz",
+    "cid": "6000690826714632211",
+    "fid": "0x31752f94513391e5:0x5346bc838d455013",
+    "placeId": "ChIJ5ZEzUZQvdTERE1BFjYO8RlM"
+   },
+   {
+    "position": 16,
+    "title": "À Lôi BBQ- Buffet Nướng Sân Vườn Tân Phú",
+    "address": "787 Đ. Lũy Bán Bích, Phú Thọ Hòa, Hồ Chí Minh 72013, Việt Nam",
+    "latitude": 10.7849498,
+    "longitude": 106.6360127,
+    "rating": 4.6,
+    "ratingCount": 2184,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng",
+    "types": [
+     "Nhà hàng món nướng"
+    ],
+    "phoneNumber": "+84 933 049 490",
+    "openingHours": {
+     "Thứ Năm": "16:00–22:00",
+     "Thứ Sáu": "16:00–22:00",
+     "Thứ Bảy": "16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "16:00–22:00",
+     "Thứ Ba": "16:00–22:00",
+     "Thứ Tư": "16:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.facebook.com/aloi.bbq"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLcpVaL-b27O5fkdZuzCNnohjpwSLO_g519e6_QPnMuhlDI9ezOIt3WyA0ByT5XzBVBVysnTNaiMOKJL_ejzA72ZfAxqYjn3KoL952hWKqqXjTu2TedGr-lXXKTa2UpGTjLta4tjgw",
+    "cid": "18408586369866684105",
+    "fid": "0x31752f007ee68eb5:0xff786fc5410056c9",
+    "placeId": "ChIJtY7mfgAvdTERyVYAQcVveP8"
+   },
+   {
+    "position": 17,
+    "title": "CLOUD POT Cao Thắng",
+    "address": "59B Cao Thắng, Bàn Cờ, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7706438,
+    "longitude": 106.68120019999999,
+    "rating": 4.5,
+    "ratingCount": 2730,
+    "priceLevel": "200-500 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://cloudpot.com.vn/",
+    "phoneNumber": "+84 28 7309 3738",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/oA2erFahB2w?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLe-l8pgwGgSZ-5NmNihiLj3LgTL1xC6MQF4IGee1iuARpP0yI7obyURO5LuvkrDnDSW5k98eLxRUP-cNVzwxu8CbyUli-UPVihBT3uqp1LjA5JzWs59coI5bLSN8gmCA1QRzKz5",
+    "cid": "15534898016212585492",
+    "fid": "0x31752f218ffb4195:0xd7970b7036458c14",
+    "placeId": "ChIJlUH7jyEvdTERFIxFNnALl9c"
+   },
+   {
+    "position": 18,
+    "title": "Lẩu bò Thiên Kim quận 3",
+    "address": "Phường Nhiêu Lộc, Lô F, 552-588 F1 Cách Mạng Tháng Tám, Phường 11, Quận 3, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7878399,
+    "longitude": 106.6669774,
+    "rating": 4.2,
+    "ratingCount": 820,
+    "type": "Nhà hàng món lẩu",
+    "types": [
+     "Nhà hàng món lẩu",
+     "Món nướng"
+    ],
+    "website": "http://laubothienkim.com/",
+    "phoneNumber": "+84 909 918 331",
+    "openingHours": {
+     "Thứ Năm": "15:00–23:30",
+     "Thứ Sáu": "15:00–23:30",
+     "Thứ Bảy": "15:00–23:30",
+     "Chủ Nhật": "15:00–23:30",
+     "Thứ Hai": "15:00–23:30",
+     "Thứ Ba": "15:00–23:30",
+     "Thứ Tư": "15:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLfQcv52mbRUs_JT48hNNOJxdfVecsv0YVehgH25_s1lp7t0LG6H7u2KLpGcgFCMpQWK2dT-v-rFbN0PiwrE6nTkikfmfq-xRG5cyeIVtNYl7cdJjj4xalIG3gSfyY5kX1G6CqYV",
+    "cid": "12214050654383469352",
+    "fid": "0x31752ed25196e8e1:0xa981065b7b277328",
+    "placeId": "ChIJ4eiWUdIudTERKHMne1sGgak"
+   },
+   {
+    "position": 19,
+    "title": "Pachi Pachi Nướng Lẩu Nhật Bản",
+    "address": "52 Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.787369,
+    "longitude": 106.69692599999999,
+    "rating": 4.1,
+    "ratingCount": 796,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 28 6295 9294",
+    "openingHours": {
+     "Thứ Năm": "10:30–15:00, 17:00–22:00",
+     "Thứ Sáu": "10:30–15:00, 17:00–22:00",
+     "Thứ Bảy": "10:30–15:00, 17:00–22:00",
+     "Chủ Nhật": "10:30–15:00, 17:00–22:00",
+     "Thứ Hai": "10:30–15:00, 17:00–22:00",
+     "Thứ Ba": "10:30–15:00, 17:00–22:00",
+     "Thứ Tư": "10:30–15:00, 17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/AABkmLdQd6qYSfIx3a5xK1X1TibUWOVw4ZoR9fZJMO3TcwmU1VgLfbIiiRfXP0y1z9AdHXbf0SeFcC7LpWvzi-upIIi--UOO8WKb6RANasqECw0BvcHzYOor6pd6pGji6NVOFzVha8klCA",
+    "cid": "2473956365887729997",
+    "fid": "0x31752f3502498303:0x225542350a8df14d",
+    "placeId": "ChIJA4NJAjUvdTERTfGNCjVCVSI"
+   },
+   {
+    "position": 20,
+    "title": "Buffet Góc Nướng BBQ - Tân Phú",
+    "address": "155A Đ. Kênh Tân Hóa, Tân Phú, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7711803,
+    "longitude": 106.63571619999999,
+    "rating": 4.8,
+    "ratingCount": 1688,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng tiệc đứng",
+    "types": [
+     "Nhà hàng tiệc đứng"
+    ],
+    "phoneNumber": "+84 902 792 078",
+    "openingHours": {
+     "Thứ Năm": "17:00–22:00",
+     "Thứ Sáu": "17:00–22:00",
+     "Thứ Bảy": "16:00–22:00",
+     "Chủ Nhật": "16:00–22:00",
+     "Thứ Hai": "17:00–22:00",
+     "Thứ Ba": "17:00–22:00",
+     "Thứ Tư": "17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNJU0muAsHBuZUGuLlCwRmVRUL5ne19uUYMbjWe_P9M3xgjpgXVndG-WyZKy6X5BgqFELZsSB_e8Rh0uXQBSz0v8Jfmx230dbbnSUdyNaBttsnF3OhuVZbeD-KlY4CF0WNlsBZVxw",
+    "cid": "16644069867851780072",
+    "fid": "0x31752f3e12af77db:0xe6fb9d5c5a168fe8",
+    "placeId": "ChIJ23evEj4vdTER6I8WWlyd--Y"
+   }
+  ],
+  "credits": 3
+ }
+}

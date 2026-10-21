@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "CHÍNH HÃNG Tai nghe Bluetooth 2 Tai không dây giảm tiếng ồn ANC & ENC 2024 site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:34:01.890Z",
+ "body": {
+  "searchParameters": {
+   "q": "CHÍNH HÃNG Tai nghe Bluetooth 2 Tai không dây giảm tiếng ồn ANC & ENC 2024 site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Nhét Tai Không Dây T-M2 Bluetooth 5.4 ANC/ENC ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-5-4-tranyoo-t-m2-chong-on-da-nang/1730852147390286390",
+    "snippet": "Tai Nghe Nhét Tai Không Dây T-M2 Bluetooth 5.4 ANC/ENC TRANYOO Thế Hệ Mới Chống Ồn Kháng Nước IPX5 Chức Năng Nghe Gọi Chơi Game Thời Lượng Pin Lên Đến 7 Giờ ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Bluetooth, X68 TWS Chính Hãng, Không Dây 5.3, Điều ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-x68-tws-chinh-hang-chong-nuoc-ipx4-khu-on-dieu-khien-cam-ung/1731936632807195902",
+    "snippet": "Thông số kỹ thuật:Khử tiếng ồn: Khử tiếng ồn môi trường (ENC)Chuẩn Bluetooth: v5.3Tiêu chuẩn chống thấm nước: IPX4Dung lượng pin (mAh): 25mAhHệ số hình thức ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe không dây lenovo LE232 ANC với khử tiếng ồn, cuộc ...",
+    "link": "https://shop.tiktok.com/vn/pdp/1734967570201871533",
+    "snippet": "Tai nghe không dây lenovo LE232 ANC với khử tiếng ồn, cuộc gọi rõ nét và âm trầm sâu, tai nghe Bluetooth 6.0 với màn hình hiển thị pin LED, thời gian phát ...",
+    "position": 3
+   },
+   {
+    "title": "[7H Pin + ANC/ENC] Tai nghe Bluetooth v5.4 EQ22 Hoco",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-5-4-hoco-eq22-chong-on-am-thanh-cuc-manh/1732018802401511846?source=anchor",
+    "snippet": "Mua [7H Pin + ANC/ENC] Tai nghe Bluetooth v5.4 EQ22 Hoco - Tai nghe nhét tai pin trâu giành cho học sinh - sinh viên - Có mic đàm thoại - Tai nghe Chính ...",
+    "position": 4
+   },
+   {
+    "title": "NAPOD ] Tặng Kèm Ốp Phiên bản nâng cấp Tai nghe ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-napod-pro-chong-on-enc-anc-khang-nuoc-ipx6-eq-am-thanh-sac-khong-day/1730807709256878986",
+    "snippet": "Chống ồn chủ động (ANC): Tai nghe NAPOD PRO được trang bị công nghệ chống ồn chủ động, giúp giảm thiểu tiếng ồn xung quanh, mang lại trải nghiệm âm thanh tốt ...",
+    "rating": 4.9,
+    "ratingCount": 4226,
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth Pr0 Gen2 ANC [Bản Nâng Cấp] Chống Ồn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-pro-gen2-anc-chong-on-40db-pin-8-gio/1731126020359555576",
+    "snippet": "Tai Nghe Bluetooth Pr0 Gen2 ANC là một sản phẩm chất lượng cao với nhiều tính năng tiên tiến. Với khả năng chống ồn 40db và xuyên âm chủ động, sản phẩm giúp ...",
+    "position": 6
+   },
+   {
+    "title": "Tai Nghe TWS HAVIT LIFE NC01T, BT 5.4, 4 Mic ENC + ANC Hỗ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-tws-havit-life-nc01t-bt-5-4-4-mic-anc-dam-thoai-ro-rang/1731642333396568655",
+    "snippet": "Sản phẩm Chính hãng HAVITPhân phối trực tiếp độc quyền tại Việt Nam qua DizigearBảo hành 1 đổi 1 mới trong vòng 12 tháng (Đối với lỗi từ nhà sản xuất)HAVIT ...",
+    "position": 7
+   },
+   {
+    "title": "VANIR Tai nghe Bluetooth Chính Hãng Phiên bản nâng cấp Màn ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-vanir-a9-pro-chip-bluetooth-5-4-am-thanh-hi-fi-pin-lau-thiet-ke-thoi-trang/1731317398795946272",
+    "snippet": "Cuộc gọi siêu rõ với công nghệ chống ồn chủ động (ANC) Ngay cả trong môi trường ồn ào, bạn vẫn có thể tận hưởng chất lượng âm thanh cuộc gọi rõ ràng và sắc nét.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

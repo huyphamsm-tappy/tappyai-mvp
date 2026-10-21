@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chạy bộ chống ồn ANC dưới 3 triệu earbuds chống mồ hôi IPX (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:12.239Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chạy bộ chống ồn ANC dưới 3 triệu earbuds chống mồ hôi IPX (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Thiết kế nhỏ gọn, vừa vặn, tạo cảm giác thoải mái, không bị cộm khi đeo · Sử dụng công nghệ Quad Layer, giúp cân bằng 3 dải âm: bass – mid – treble, phát nhạc ...",
+    "position": 1
+   },
+   {
+    "title": "Top những tai nghe true wireless chống ồn chủ động, đáng ...",
+    "link": "https://cellphones.com.vn/sforum/tu-van-top-nhung-tai-nghe-true-wireless-chong-on-chu-dong-dang-lua-chon-nhat-dau-2020",
+    "snippet": "Ausounds AU-Stream ANC là sản phẩm của công ty khởi nghiệp Ausound, tai nghe với mức giá khá tốt chỉ từ 150 $ (khoảng hơn 3 triệu đồng). AU- ...",
+    "date": "4 thg 1, 2020",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe có bộ nhớ trong - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/c%C3%B3%20b%E1%BB%99%20nh%E1%BB%9B%20trong",
+    "snippet": "Tai Nghe Có Dây TRANYOO T-R12 R13 R14 Thiết Kế Nhét Tai Phù Hợp Nhu Cầu Văn Phòng, Học Tập, Giải Trí. 94.660₫. 172.500₫. -45%. voucher-icon. Rẻ Vô Địch.",
+    "position": 3
+   },
+   {
+    "title": "Top 10+ tai nghe nghe nhạc hay chất lượng bán chạy nhất ...",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-nghe-nhac-hay",
+    "snippet": "AirPods Pro Magsafe đáp ứng tiêu chuẩn chống nước và chống thấm mồ hôi, giúp bạn tận hưởng những hoạt động tập luyện mạnh mẽ. Tai nghe còn tích ...",
+    "date": "31 thg 5, 2023",
+    "position": 4
+   },
+   {
+    "title": "TWS Thinkplus Store - Shopee Mall Online",
+    "link": "https://shopee.vn/dnyaudio.vn?entryPoint=ShopByPDP",
+    "snippet": "HTC NE52 Tai Nghe AI Phiên Dịch bluetooth 6.0 IPX5 âm thanh qua xương tai chống thấm mồ hôi tốt Hợp Thoại Chỉ giảm tiếng ồn Có micro. 280.720₫.",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth Pro 3 ANC Bản Nâng Cấp",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Pro-3-ANC-B%E1%BA%A3n-N%C3%A2ng-C%E1%BA%A5p-Ch%E1%BB%91ng-%E1%BB%92n-T%E1%BB%91t-Bass-M%E1%BA%A1nh-Pin-Kh%E1%BB%A7ng-B%E1%BA%A3n-%C4%90%E1%BB%A7-i.372675547.47310859393",
+    "snippet": "Mua Tai Nghe Bluetooth Pro 3 ANC Bản Nâng Cấp | Chống Ồn Tốt, Bass Mạnh, Pin Khủng | Bản Đủ giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Có mic đàm thoại; Chống ồn; Điều khiển giọng nói; Xuyên âm; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Với khả năng chống mồ hôi, chống nước đạt tiêu chuẩn IPX4 đến IPX7, các thiết bị nghe thể thao đảm bảo độ bền và hiệu quả khi sử dụng trong môi trường khắc ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb 36.890.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:37:47.219Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb 36.890.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB",
+    "link": "https://hoanghamobile.com/laptop/macbook-pro-m4-14-inch-16gb-512gb?srsltid=AU7gw4WUVCEa1wsUzdFOQS0UBq0D2zWHiufTxifryMuIhrD65qRU9g8s",
+    "snippet": "MacBook Pro 14 inch M4 10CPU 10GPU 16GB/512GB - Chính hãng Apple Việt Nam. 36.890.000 ₫ 39.990.000 ₫. SKU: MW2U3SA. Trả góp 0% chỉ từ ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

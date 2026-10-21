@@ -1,0 +1,661 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng chay yên tĩnh máy lạnh dưới 300k Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:56:38.794Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng chay yên tĩnh máy lạnh dưới 300k Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Nhà hàng chay Phương Mai",
+    "address": "82/86F, Võ Thị Sáu, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7890657,
+    "longitude": 106.6921263,
+    "rating": 4.9,
+    "ratingCount": 3400,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng ăn chay",
+     "Nhà hàng",
+     "Nhà hàng món chay",
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://www.phuongmaivegan.com/",
+    "phoneNumber": "+84 888 339 257",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:30",
+     "Thứ Sáu": "09:00–21:30",
+     "Thứ Bảy": "09:00–21:30",
+     "Chủ Nhật": "09:00–21:30",
+     "Thứ Hai": "09:00–21:30",
+     "Thứ Ba": "09:00–21:30",
+     "Thứ Tư": "09:00–21:30"
+    },
+    "bookingLinks": [
+     "https://phuongmaivegan.com/",
+     "https://www.facebook.com/nhahang.chay.ngon.phuongmai.chay.quan",
+     "https://topgo.vn/ho-chi-minh/nha-hang-chay-phuong-mai/",
+     "https://pasgo.vn/nha-hang/phuong-mai-chay-quan-vo-thi-sau-623"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk_uQpvjfZi3XVL9xSher6spiQE6dipC0q7vBEqxVA7Cdr9el__lYBsMVsBthsJVWBR7IHCToyaUMvN9wjYC3tEs1IaG_wdVorUNdefeFfQD9G2setbEGceQlmxTi9Vo13uJylGsA",
+    "cid": "6354591245376837820",
+    "fid": "0x31752f33313de573:0x58300b11d17e58bc",
+    "placeId": "ChIJc-U9MTMvdTERvFh-0RELMFg"
+   },
+   {
+    "position": 2,
+    "title": "CHAY GARDEN Nguyễn Thị Minh Khai - Vegetarian Restaurant & Space",
+    "address": "20 Nguyễn Thị Minh Khai, P, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7851375,
+    "longitude": 106.6999919,
+    "rating": 4.8,
+    "ratingCount": 646,
+    "priceLevel": "200-500 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "https://chaygarden.vn/",
+    "phoneNumber": "+84 901 958 108",
+    "openingHours": {
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00",
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=chaygarden2607vn&rwg_token=AE37R_iv4gzizE3MblTwmI-jrQJG-2uMUOEUHdvlz_Tb9vSmCv9lQcnaPK7h3QmNtMVDg9WZ4UP1tAyYq7cLtNSr6QKCpuutooI40pDhARHv9j9nzAIIJTA%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/Q3gDF9xb16w?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnpzYtBAY7czjG0HKc-48rqM2E38F4qm37yrunqD_jzWvfKkcKbtJkNELNaqMwjsi4rjP5ZB53-OcRCiHmPyI8qmpas3c-nEuVyoyWPvSklpXtCXECO4BVHD3iVs1AxEwz_A3gWUtZxmRXD",
+    "cid": "14338084653353559565",
+    "fid": "0x31752ffb64ae97c9:0xc6fb1c069a9e660d",
+    "placeId": "ChIJyZeuZPsvdTERDWaemgYc-8Y"
+   },
+   {
+    "position": 3,
+    "title": "Ẩm Thực Chay Tuệ - Trần Hưng Đạo",
+    "address": "162 Trần Hưng Đạo, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.763779099999999,
+    "longitude": 106.6913661,
+    "rating": 4.9,
+    "ratingCount": 2084,
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng",
+     "Nhà hàng món chay"
+    ],
+    "website": "https://amthucchaytue.com/dat_ban",
+    "phoneNumber": "+84 949 911 162",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://amthucchaytue.com/dat_ban"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmB41BGsXT78bWueD8pE4RdjkD7a84zSqIetFgLQfNNzWO57uDQPObFt-BBf4aYDdkUmWwn6453jbR3cnBpDemdwHIT9UEehvo6JE6LqYW5jXUl8seA5k56zzqg-ju3PAnlNFVsfN4_yk20",
+    "cid": "7454586501970477326",
+    "fid": "0x31752f1d9ffd715d:0x677402ed6d5f410e",
+    "placeId": "ChIJXXH9nx0vdTERDkFfbe0CdGc"
+   },
+   {
+    "position": 4,
+    "title": "Nấm - Vegetarian Bistro",
+    "address": "67C Đinh Công Tráng, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7888741,
+    "longitude": 106.6916512,
+    "rating": 4.8,
+    "ratingCount": 1058,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng"
+    ],
+    "website": "https://namvegetarian.com/",
+    "phoneNumber": "+84 911 025 282",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://namvegetarian.com/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlhc7EWgeTOsTmSp5bnVbmyJzrFzRSy5hzdGRYjRa4Ig7YbDfIdlSur7Zl1wMYjwNn3NdgrYWysqrplfOmfhygJBLxWljSGkx0KDUAcDOUafTIGvqj4A3DNgwzNMXT9fJNzu8ziEO9ebPg",
+    "cid": "3583090339714103361",
+    "fid": "0x31752ffe37d3b463:0x31b9b1ae10caf841",
+    "placeId": "ChIJY7TTN_4vdTERQfjKEK6xuTE"
+   },
+   {
+    "position": 5,
+    "title": "Quán Chay Nhà",
+    "address": "19/14 Nguyễn Thị Minh Khai, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.784771,
+    "longitude": 106.70031309999999,
+    "rating": 4.6,
+    "ratingCount": 853,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay"
+    ],
+    "phoneNumber": "+84 986 731 625",
+    "openingHours": {
+     "Thứ Năm": "10:45–14:30, 16:30–21:00",
+     "Thứ Sáu": "10:45–14:30, 16:30–21:00",
+     "Thứ Bảy": "10:45–14:30, 16:30–21:00",
+     "Chủ Nhật": "10:45–14:30, 16:30–21:00",
+     "Thứ Hai": "10:45–14:30, 16:30–21:00",
+     "Thứ Ba": "10:45–14:30, 16:30–21:00",
+     "Thứ Tư": "10:45–14:30, 16:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkazrrvyRO3FWVi5Bn38_GXOHLlBUF_W4HtAj0-2DNylK5752ttXfF0AjJVVMVlCRnv2wkcpd1Nysjab_72IQmb6LFfx90aQXqe652DFT-KgwOijzmpEWwC__ar88LPFl4shK9m",
+    "cid": "7055678012372746010",
+    "fid": "0x31752f340692928b:0x61eacdc50902ff1a",
+    "placeId": "ChIJi5KSBjQvdTERGv8CCcXN6mE"
+   },
+   {
+    "position": 6,
+    "title": "Tuệ Minh Vegan Food & Drinks | Quán Chay Ngon Bình Thạnh",
+    "address": "76C-76D Phạm Viết Chánh, Thạnh Mỹ Tây, Hồ Chí Minh 72300, Việt Nam",
+    "latitude": 10.790118,
+    "longitude": 106.7112413,
+    "rating": 4.8,
+    "ratingCount": 369,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay",
+     "Nhà hàng ăn chay"
+    ],
+    "website": "http://tueminhvegan.com/",
+    "phoneNumber": "+84 988 169 314",
+    "openingHours": {
+     "Thứ Năm": "10:30–21:30",
+     "Thứ Sáu": "10:30–21:30",
+     "Thứ Bảy": "10:30–21:30",
+     "Chủ Nhật": "10:30–21:30",
+     "Thứ Hai": "10:30–21:30",
+     "Thứ Ba": "10:30–21:30",
+     "Thứ Tư": "10:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlQ22kd9Z9wJDbpAjsCFhip0RXLGlgqmQtxnGk6i3zVsjP6JT9rktJEdjJQq2ok6QvjHMHy6ESpoydBZcAIBjQsSWGYs_9DnUaWPfFMr6-uZxt2-tw1HFbyDDoyADLVOJQjBGk",
+    "cid": "15810644303426604060",
+    "fid": "0x317529007b12be85:0xdb6ab139bfcbcc1c",
+    "placeId": "ChIJhb4SewApdTERHMzLvzmxats"
+   },
+   {
+    "position": 7,
+    "title": "Nhà Hàng Chay Thiện Duyên",
+    "address": "505B Võ Nguyên Giáp, Bình Trưng, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.803157599999999,
+    "longitude": 106.75212099999999,
+    "rating": 4.5,
+    "ratingCount": 284,
+    "priceLevel": "1-200.000 ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay"
+    ],
+    "phoneNumber": "+84 28 6683 8999",
+    "openingHours": {
+     "Thứ Năm": "09:00–21:00",
+     "Thứ Sáu": "09:00–21:00",
+     "Thứ Bảy": "09:00–21:00",
+     "Chủ Nhật": "09:00–21:00",
+     "Thứ Hai": "09:00–21:00",
+     "Thứ Ba": "09:00–20:00",
+     "Thứ Tư": "09:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlauI7YUrPFXgW76P8sCOAFzql4KfYirpPYcz5dYIb_SLXQ6FQSiPB8Mtvb1aGmozEdJ_ehGJmJ9oI1ZYUmDFEPebPoWXVroGmEdgEdknOroRHiFK7h64iGONUar7izdVI_2ANR",
+    "cid": "13015682526990560862",
+    "fid": "0x317527f623e2f729:0xb4a0fe4c5a87ee5e",
+    "placeId": "ChIJKffiI_YndTERXu6HWkz-oLQ"
+   },
+   {
+    "position": 8,
+    "title": "CHAY GARDEN Xuân Thủy - Vegetarian Restaurant & Tea House",
+    "address": "52 Xuân Thủy, An Khánh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.8029541,
+    "longitude": 106.7312266,
+    "rating": 4.8,
+    "ratingCount": 1785,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng"
+    ],
+    "website": "https://chaygarden.com/",
+    "phoneNumber": "+84 901 835 388",
+    "openingHours": {
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00",
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=chaygardenxt2607vn&rwg_token=AE37R_jMw4aup_LVSGbooKDkxLuKuZcdA70FLnHs24pWbS6CJsq8kEC5WiK7UAga8S33xX3lT11En2zZngAvYp9CiEpcXcl18XI-gnmRX5fXaphzwrBQ3EE%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/k1gw8ybClN0?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkH653mfJppGhbpR9IftHWXz-Xhhu2MV1Ew2Brxxx-n-8pJjZZF7elDvnUb0kGbU0vvL5DvcZn4i1bbzQDwCFA0hud08xf3cZ_OUgzr4bY4s5tPzifslDqAjVY50dfA6JAENh87tgKXCU4",
+    "cid": "526142330362510001",
+    "fid": "0x317527baef2e86b7:0x74d3ba96e8dbab1",
+    "placeId": "ChIJt4Yu77ondTERsbqNbqk7TQc"
+   },
+   {
+    "position": 9,
+    "title": "Quán chay 103",
+    "address": "103 Nguyễn Thái Bình, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.768889099999999,
+    "longitude": 106.6994818,
+    "rating": 4.5,
+    "ratingCount": 467,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/quan-chay-103-nguyen-thai-binh",
+    "phoneNumber": "+84 28 3821 6854",
+    "openingHours": {
+     "Thứ Năm": "07:00–20:30",
+     "Thứ Sáu": "07:00–20:30",
+     "Thứ Bảy": "07:00–20:30",
+     "Chủ Nhật": "07:00–20:30",
+     "Thứ Hai": "07:00–20:30",
+     "Thứ Ba": "07:00–20:30",
+     "Thứ Tư": "07:00–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl3G6CD3ttL28u9niCBegWsF7JRL2OqcRfHDUbo_zovfYIHGa3aHy1re-6JnLyIGESMDWC22GSAy3hRd0g5wE-3BTH-jmRrMQS-2syTnO387xyeDKSzAgZl6qUv0YF27QPRZQPifw",
+    "cid": "10975954186147778243",
+    "fid": "0x31752f40785c0ba1:0x98526c2de04ccec3",
+    "placeId": "ChIJoQtceEAvdTERw85M4C1sUpg"
+   },
+   {
+    "position": 10,
+    "title": "Quán chay Lá | Vegetarian Restaurant",
+    "address": "66/10 Phạm Ngọc Thạch, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7864414,
+    "longitude": 106.69235649999999,
+    "rating": 4.6,
+    "ratingCount": 753,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "https://quanchay.la/",
+    "phoneNumber": "+84 862 449 949",
+    "openingHours": {
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "Đóng cửa",
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnhrENpO0Apd5xt4k0wI47x1lsAMCmgJaIrTWvU6kbbgbYMsJPWuiQr5ujaM8kRnyAbIDIV0j0fmmZkfBNx3HaLzuIx_5Nx9awiqSvI1_nsJJHSdHMadLdusKLwFbHMQ1mah6x4_21zUBs",
+    "cid": "18395381992755316934",
+    "fid": "0x31752f4e4d07f6c5:0xff498675a1cc48c6",
+    "placeId": "ChIJxfYHTU4vdTERxkjMoXWGSf8"
+   },
+   {
+    "position": 11,
+    "title": "CHAY GARDEN Võ Văn Tần - Vegetarian Restaurant & Coffee",
+    "address": "52 Võ Văn Tần, Xuân Hòa, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7781582,
+    "longitude": 106.69066,
+    "rating": 4.7,
+    "ratingCount": 2349,
+    "priceLevel": "100-500 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng ăn chay",
+     "Nhà hàng món chay"
+    ],
+    "website": "https://chaygarden.com/",
+    "phoneNumber": "+84 901 865 088",
+    "openingHours": {
+     "Thứ Năm": "10:30–21:00",
+     "Thứ Sáu": "10:30–21:00",
+     "Thứ Bảy": "10:30–21:00",
+     "Chủ Nhật": "10:30–21:00",
+     "Thứ Hai": "10:30–21:00",
+     "Thứ Ba": "10:30–21:00",
+     "Thứ Tư": "10:30–21:00"
+    },
+    "bookingLinks": [
+     "https://book.chope.co/booking?source=google_dining&rid=nhahangchaygarden2606vn&rwg_token=AE37R_iVgQ4bSFv2O7ZU67Tdwf1Z56y5aWMJnyJ8VH66oAdyJ9pcxOe3LFzZNAIdbiArHleDb4Y_V0rZBRhWvMC1GPk2OS7PvgiZ2drOWdJRc5GkmNQH6Wo%3D",
+     "https://www.google.com/maps/reserve/v/dine/c/8UsFOuJrmRg?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk9zY5DpQhc4R7d6YASYnZrsl6MGl3kKCWlMp1EuPy6zSo4c7af1lwm-fC3qCV313tu23LNVqF1iuaZZ_DJ6ZMX4HkGP00E-a46YN8lshA2DUuBgeK_yJzsditiI9ER0k1DzQ",
+    "cid": "9088839455595626290",
+    "fid": "0x31752fff8c8f8461:0x7e220b548354ff32",
+    "placeId": "ChIJYYSPjP8vdTERMv9Ug1QLIn4"
+   },
+   {
+    "position": 12,
+    "title": "Sala Buffet Chay",
+    "address": "16 Lê Quang Định, Bình Thạnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.803243199999999,
+    "longitude": 106.6985533,
+    "rating": 4.6,
+    "ratingCount": 349,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay"
+    ],
+    "phoneNumber": "+84 906 922 116",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmplUc6M5O7wfNPealMtF3xLjty6xSqO1n5g_sogdNl_nZ8-5CWbgERYrsoD8fHbxdr16edfMAzolTKPJrtP5CPz_tWHl71zhIrNfyqwPf47OBgQZqfZbpB-wCFq_5nA59Jps0m",
+    "cid": "4628546729541395845",
+    "fid": "0x317528c7737bb77b:0x403be6ba389c6585",
+    "placeId": "ChIJe7d7c8codTERhWWcOLrmO0A"
+   },
+   {
+    "position": 13,
+    "title": "Buffet Chay Cỏ Nội Vegetarian",
+    "address": "Khách sạn Bông Sen Sài Gòn, Tầng 7, 123 Đồng Khởi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.775088499999999,
+    "longitude": 106.70374539999999,
+    "rating": 4.6,
+    "ratingCount": 197,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay"
+    ],
+    "website": "https://www.bongsenhotel.com/vi/co-noi-vegetarian/",
+    "phoneNumber": "+84 902 184 195",
+    "openingHours": {
+     "Thứ Năm": "11:00–14:00",
+     "Thứ Sáu": "11:00–14:00",
+     "Thứ Bảy": "11:00–14:00",
+     "Chủ Nhật": "11:00–14:00",
+     "Thứ Hai": "11:00–14:00",
+     "Thứ Ba": "11:00–14:00",
+     "Thứ Tư": "11:00–14:00"
+    },
+    "bookingLinks": [
+     "https://www.google.com/maps/reserve/v/dine/c/8tpKYgtl-lA?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBqbYgtwomyuurBf7ygmGvuPpLfzPw1LcOOy7Mw-qEiOTUhjHPtSlTTbXHYppyJC94JU2WMnq2oG5np3pg_DicozpLIQEFkYD74sS8g5GWu_yngqb_zX0G3R509GqSeWTEE6Gc",
+    "cid": "17129076094281491211",
+    "fid": "0x31752f9f959154e7:0xedb6b3f43a48a30b",
+    "placeId": "ChIJ51SRlZ8vdTERC6NIOvSztu0"
+   },
+   {
+    "position": 14,
+    "title": "Nhà hàng chay Sân Mây Cafe",
+    "address": "10E Đ. Trần Nhật Duật, Quận 1, Hồ Chí Minh 71008, Việt Nam",
+    "latitude": 10.7944022,
+    "longitude": 106.6892912,
+    "rating": 4.3,
+    "ratingCount": 1079,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/profile.php?id=100064116785142",
+    "phoneNumber": "+84 28 3910 3939",
+    "openingHours": {
+     "Thứ Năm": "08:00–21:00",
+     "Thứ Sáu": "08:00–21:00",
+     "Thứ Bảy": "08:00–21:00",
+     "Chủ Nhật": "08:00–21:00",
+     "Thứ Hai": "08:00–21:00",
+     "Thứ Ba": "08:00–21:00",
+     "Thứ Tư": "08:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWml_90CMGOyYlRtkF0fOhlp49FK6wB9LBnV9u-w-6ai4GRsbyiwAsQZz-eoPVIJAE3qcjjWzTq4E8gD9fekjq6Xg-MRUZm35JyTbNUJKEU8-HZYjcN5m78wA3AMkYvYq35D_1JeHw",
+    "cid": "3046234055436785039",
+    "fid": "0x31752f351f00d393:0x2a4665bbd901d58f",
+    "placeId": "ChIJk9MAHzUvdTERj9UB2btlRio"
+   },
+   {
+    "position": 15,
+    "title": "Nhà hàng chay Vị Quê Kitchen Restaurant",
+    "address": "110 Sương Nguyệt Anh, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771598599999999,
+    "longitude": 106.6885602,
+    "rating": 4.7,
+    "ratingCount": 1330,
+    "priceLevel": "100-300 N ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay",
+     "Quán bar",
+     "Nhà cung cấp thực phẩm và đồ uống cho dịch vụ ăn uống",
+     "Nhà hàng",
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "https://www.viquekitchen.com/",
+    "phoneNumber": "+84 28 4455 4688",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://www.viquekitchen.com/book-table/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWk4HSiWoOMgw1FUQwipkwRqI2HqWv4ekFfJv27D0XGuZ9iwxPhQLOFJP75o-hSrsYQSntnXkiUI-ciTJhL3TClklv1dGKPeuhqr34czYTPK_3imOI1qOyAOcw61ESxCRJ7aNM4s",
+    "cid": "1629150800658172376",
+    "fid": "0x31752fe59e20471f:0x169be80586c609d8",
+    "placeId": "ChIJH0cgnuUvdTER2AnGhgXomxY"
+   },
+   {
+    "position": 16,
+    "title": "An Nhiên Nguyễn Văn Thủ",
+    "address": "126 Nguyễn Văn Thủ, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7883672,
+    "longitude": 106.69745019999999,
+    "rating": 4.2,
+    "ratingCount": 331,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay",
+     "Nhà hàng",
+     "Nhà hàng cho người ăn chay"
+    ],
+    "website": "http://launamchayannhien.com/",
+    "phoneNumber": "+84 28 3910 1129",
+    "openingHours": {
+     "Thứ Năm": "09:30–21:30",
+     "Thứ Sáu": "09:30–21:30",
+     "Thứ Bảy": "09:30–21:30",
+     "Chủ Nhật": "09:30–21:30",
+     "Thứ Hai": "09:30–21:30",
+     "Thứ Ba": "09:30–21:30",
+     "Thứ Tư": "09:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWl6gvUuCr4UTihWjajN0xVcrOORNFmHRR0pw5iA7QVjUxQM-MHGkWSiXQ53x4Q_qZMA9c0O4iIAdUZm8LfFCt_b5CffsI2V_mOy5o6Pwhb7_fHisgEagLxnxZcJyoA4IteZ2c84auvbolo",
+    "cid": "16496685931509433751",
+    "fid": "0x31752f35315c872d:0xe4f0007396cdc597",
+    "placeId": "ChIJLYdcMTUvdTERl8XNlnMA8OQ"
+   },
+   {
+    "position": 17,
+    "title": "Chay Quán Âm",
+    "address": "212/258, Nguyễn Văn Nguyễn, Tân Định, Hồ Chí Minh 71000, Việt Nam",
+    "latitude": 10.7939019,
+    "longitude": 106.68683229999999,
+    "rating": 4.6,
+    "ratingCount": 333,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng món chay",
+    "types": [
+     "Nhà hàng món chay"
+    ],
+    "phoneNumber": "+84 28 6292 3398",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:30",
+     "Thứ Sáu": "07:30–21:30",
+     "Thứ Bảy": "07:30–21:30",
+     "Chủ Nhật": "07:30–21:30",
+     "Thứ Hai": "07:30–21:30",
+     "Thứ Ba": "07:30–21:30",
+     "Thứ Tư": "07:30–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlf5uxO_bMQEflaInfUUZeQduXgL83oCbPErxGQZles29Be1jnYU08tieNHqUbk7O_6MOyqwWIOWNII-PRsk94R8gkIcolcUAkTmva8m0nA_I6wHcJOlJpVyzwlDdZg_ghBClac",
+    "cid": "1158631042928807123",
+    "fid": "0x317529f71eee1715:0x101448cb7b830cd3",
+    "placeId": "ChIJFRfuHvcpdTER0wyDe8tIFBA"
+   },
+   {
+    "position": 18,
+    "title": "Nhà hàng chay Phạm Nghiêm Trai - Bongensai",
+    "address": "49 Nguyễn Đăng Giai, An Khánh, Hồ Chí Minh 71107, Việt Nam",
+    "latitude": 10.802349,
+    "longitude": 106.73715969999999,
+    "rating": 4.8,
+    "ratingCount": 773,
+    "priceLevel": "200-500 N ₫",
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản",
+     "Cửa hàng đồ dùng Phật giáo",
+     "Bảo tàng",
+     "Phòng trà"
+    ],
+    "website": "https://www.phamnghiemtraishop.vn/",
+    "phoneNumber": "+84 787 688 582",
+    "openingHours": {
+     "Thứ Năm": "09:00–22:00",
+     "Thứ Sáu": "09:00–22:00",
+     "Thứ Bảy": "09:00–22:00",
+     "Chủ Nhật": "09:00–22:00",
+     "Thứ Hai": "09:00–22:00",
+     "Thứ Ba": "09:00–22:00",
+     "Thứ Tư": "09:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmPeeRHMyNMN_ytNq014f7z_s3tvcSsjGyD7LpgnfWXm93S7CpcsrnDNConSF516t1bqxnFrCdhBR4-xeyTJucHCm6gIUUnLxU7hjMUmho2lzxnqfC6zpICeJ8OyLs0bKhcXcmdNGa17h8",
+    "cid": "301111306954468875",
+    "fid": "0x3175271f0dc6ba31:0x42dc32368dfee0b",
+    "placeId": "ChIJMbrGDR8ndTERC-7faCPDLQQ"
+   },
+   {
+    "position": 19,
+    "title": "Nhà hàng chay Zen House (Zenhouse Cafe & Vegetarian Restaurant)",
+    "address": "60/2 Đ. Vân Côi, Tân Sơn Nhất, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.787906699999999,
+    "longitude": 106.65652259999999,
+    "rating": 4.8,
+    "ratingCount": 2310,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay",
+     "Quán cà phê",
+     "Nơi tổ chức sự kiện",
+     "Nhà hàng ăn chay",
+     "Trung tâm thiền",
+     "Nhà hàng món chay",
+     "Trung tâm nghỉ dưỡng yoga"
+    ],
+    "website": "https://zenhousevietnam.com/",
+    "phoneNumber": "+84 868 960 788",
+    "description": "Nhà hàng yên tĩnh này có sân hiên rợp bóng cây và phục vụ các món chay quốc tế.",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:00",
+     "Thứ Sáu": "07:30–22:00",
+     "Thứ Bảy": "07:30–22:00",
+     "Chủ Nhật": "07:30–22:00",
+     "Thứ Hai": "07:30–22:00",
+     "Thứ Ba": "07:30–22:00",
+     "Thứ Tư": "07:30–22:00"
+    },
+    "bookingLinks": [
+     "https://zenhousevietnam.com/lien-he/"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWneDM02FFhzlePx0Rr0x8xjbrfMyv-MrragKJOse3hNtMXXMvJAU0gLzIqVt9HHoDW783TKVl-qd7BAEGYsOB5SIldgmToPK2O6-YCjXOlc7JD_VGr8T92AiymwYfpVYwtFQLnx_w",
+    "cid": "4248685345202523627",
+    "fid": "0x31752ff5a3c8e763:0x3af65ccf9b344deb",
+    "placeId": "ChIJY-fIo_UvdTER6000m89c9jo"
+   },
+   {
+    "position": 20,
+    "title": "Quán Chay Chị Củ",
+    "address": "4/7, Trần Đình Xu, Cầu Ông Lãnh, Hồ Chí Minh 71009, Việt Nam",
+    "latitude": 10.7591428,
+    "longitude": 106.6921625,
+    "rating": 4.2,
+    "ratingCount": 600,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng cho người ăn chay",
+    "types": [
+     "Nhà hàng cho người ăn chay"
+    ],
+    "phoneNumber": "+84 908 951 727",
+    "openingHours": {
+     "Thứ Năm": "06:00–00:00",
+     "Thứ Sáu": "06:00–00:00",
+     "Thứ Bảy": "06:00–00:00",
+     "Chủ Nhật": "06:00–00:00",
+     "Thứ Hai": "06:00–00:00",
+     "Thứ Ba": "06:00–00:00",
+     "Thứ Tư": "06:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWnWzChyjmju1wGtFvdISxPst5swX2ya5D-xi9TL02S815JrN9NHml1n1yuHx-iE02Pt_1X2k1DeEKMFujSGpbGkxflMWz8KY8Q5SV-KS-k2-_lTXae2Lvkn-mFO1pScNUs82Js6",
+    "cid": "12061401023874963847",
+    "fid": "0x31752f11a180650d:0xa762b453c1999987",
+    "placeId": "ChIJDWWAoREvdTERh5mZwVO0Yqc"
+   }
+  ],
+  "credits": 3
+ }
+}

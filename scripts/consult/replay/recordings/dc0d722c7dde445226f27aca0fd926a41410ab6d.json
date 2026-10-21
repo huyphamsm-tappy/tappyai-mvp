@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"King House Villa Hotel\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:06:58.435Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"King House Villa Hotel\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "พิกัด : King house villa hotel (Danang) 🇻🇳 ทริคได้ราคาดี",
+    "link": "https://www.tiktok.com/@n.ppmint/video/7649066741695384839",
+    "snippet": "พิกัด : King house villa hotel (Danang) ทริคได้ราคาดี. @มิ้นท์แม่บอกให้ออกไปใช้ชีวิต.",
+    "position": 1
+   },
+   {
+    "title": "King House Villa Hotel Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/king-house-villa-hotel-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "Khám phá King House Villa Hotel tại Đà Nẵng - lựa chọn hoàn hảo cho chuyến du lịch của bạn!Xem thêm video về Bliss Luxury Hotel Đà Nẵng, Pama Boutique Hotel ...",
+    "position": 2
+   },
+   {
+    "title": "This is your sign to book a staycation at Dzire Guesthouse ...",
+    "link": "https://www.tiktok.com/@snemakay/video/7637552568134077717",
+    "snippet": "... King House Villa Hotel Đà NẵngMutangawandodzi Resort Venda Location Location. This is your sign to book a staycation at Dzire Guesthouse +27 ...",
+    "position": 3
+   },
+   {
+    "title": "Villa de Fedelia in Cherating: Seaview Rooms Starting at ...",
+    "link": "https://www.tiktok.com/@eishajamil1/video/7421005224220888328",
+    "snippet": "... King House Villa Hotel Đà NẵngHotel Riu Palace Tenerife BewertungenReset Penthouse Hotel Collection DiffuserLuxury Mediterranean VillaLuxury ...",
+    "position": 4
+   },
+   {
+    "title": "Ai sắp đến Đà Nẵng thì lưu lại nhá 📍AVA SENSE",
+    "link": "https://www.tiktok.com/@gocnhocuatui.dng/video/7653701674015690002",
+    "snippet": "King House Villa Hotel Đà Nẵng · Senza Grand Santana Hotel Antalya Turkey · Le Boutique Hotel Đà Nẵng Review · Pama Boutique Hotel Đà Nẵng.",
+    "position": 5
+   },
+   {
+    "title": "Biệt Thự Spa King House Đà Nẵng",
+    "link": "https://www.tiktok.com/discover/bi%E1%BB%87t-th%E1%BB%B1-spa-king-house-%C4%91%C3%A0-n%E1%BA%B5ng",
+    "snippet": "... King House Villa Hotel Đà Nẵng, Red House Spa Đà Nẵng, Gentleman Spa Đà Nẵng, Hà Anh Spa Đà Nẵng, Lingam Spa Đà Nẵng.",
+    "date": "3 ngày trước",
+    "position": 6
+   },
+   {
+    "title": "Kingshouse Hotel Glencoe: Best View in the Scottish ...",
+    "link": "https://www.tiktok.com/@theolivetreefamily/video/7373667366015651104",
+    "snippet": "... King House Villa Hotel Đà Nẵng. Kingshouse Hotel Glencoe: Best View in the Scottish Highlands. Kingshouse Hotel in Glencoe, PH49 4HY, sits in ...",
+    "position": 7
+   },
+   {
+    "title": "A must visit boutique villa in Haputale, Sri Lanka. Also a ...",
+    "link": "https://www.tiktok.com/@vidushiiiie/video/7646691953320414484",
+    "snippet": "Best Hotels for Honeymoon in Sri Lanka · King House Villa Hotel Đà Nẵng · Moon Villa Dubai · Royal Palms Beach Hotel Sri Lanka · 35 Pax Private ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

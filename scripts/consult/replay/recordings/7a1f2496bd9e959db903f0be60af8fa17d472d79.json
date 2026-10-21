@@ -1,0 +1,56 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:58:16.810Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7733236,106.7024615,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cơm Quê Dượng Bầu - Vietnamese Homecooked Cuisine",
+    "address": "Chung cư, 40E Ngô Đức Kế, Sài Gòn, Hồ Chí Minh 75000, Việt Nam",
+    "latitude": 10.7733236,
+    "longitude": 106.7050364,
+    "rating": 4.5,
+    "ratingCount": 2233,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam"
+    ],
+    "website": "http://www.comqueduongbau.com/",
+    "phoneNumber": "+84 765 371 893",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmOl-BFlJxMn9xOn080isdYYwSR8eEEzm0RfLGgpE-T2ClMHl4wz3xSLzwjxtHqkH0ajz1E2KRNZOk5QSj2T1HDw7WFuFWztTl45iwPhfULvmM-riScJKI8ZVw1syhTics3UBnrgeg",
+    "cid": "15089939659221729349",
+    "fid": "0x31752fb8746e1207:0xd16a3c2b8dfd8045",
+    "placeId": "ChIJBxJudLgvdTERRYD9jSs8atE"
+   }
+  ],
+  "credits": 3
+ }
+}

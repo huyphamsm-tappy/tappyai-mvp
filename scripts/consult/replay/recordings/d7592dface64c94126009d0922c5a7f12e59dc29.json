@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Việt Nam\" OR \"Phở Hùng\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:19:24.545Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Việt Nam\" OR \"Phở Hùng\" OR \"Phở Ông Cát Gia Truyền Since 1988\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 1
+   },
+   {
+    "title": "Khám Phá Quán Phở Hùng Hàng Đẫy Tại Thành Công",
+    "link": "https://www.tiktok.com/@u40.an.gi/video/7587737343382113556",
+    "snippet": "Gợi ý các bạn nên gọi thử bắp hoặc bắp lăn nhé. Quán bán tại nhà nên giá rổ cực hợp lý. Phở Hùng Hàng Đẫy, 116B1 Thành Công, Giảng Võ, Hà Nội # ...",
+    "position": 2
+   },
+   {
+    "title": "100 quán Phở ngon tại Sài Gòn (tập 34)",
+    "link": "https://www.tiktok.com/@pika_laca/video/7679404619818110228",
+    "snippet": "Tập 34 của series \"100 quán Phở ngon tại Sài Gòn\" tiếp tục giới thiệu quán phở đặc sắc trong hệ thống phở Việt Nam do Võ Quốc thực hiện.",
+    "position": 3
+   },
+   {
+    "title": "Phở Hùng Ngân 8 - Tân Phú",
+    "link": "https://www.tiktok.com/@phohungngancs_8/video/7684537402517458192",
+    "snippet": "Phở Hùng Ngân 8 - Tân Phú. Phở Hùng Ngân 8 is located in Tân Phú. Keywords: phở hùng ngân 8, phở hùng ngân tân phú. Đây là bản tóm tắt nội ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái",
+    "link": "https://www.tiktok.com/@vine.2905/video/7601361027833269522",
+    "snippet": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái. Khám phá quán phở nổi tiếng ngon tại Sài Gòn. Chất lượng tuyệt hảo, nước lèo thơm ngon, phục vụ đa ...",
+    "position": 5
+   },
+   {
+    "title": "POV Đứng Bếp tại Phở Việt Nam - Phở Việt Nam by Võ Quốc",
+    "link": "https://www.tiktok.com/@phovietnambyvoquoc/video/7686443306141666581",
+    "snippet": "POV: Đứng bếp tại Phở Việt Nam by Võ Quốc Mạch video ghi lại góc nhìn trực tiếp từ khu vực chế biến tại quán Phở Việt Nam của Võ Quốc.",
+    "position": 6
+   },
+   {
+    "title": "clip giới thiệu món phở Việt Nam",
+    "link": "https://www.tiktok.com/@mikko.huongxua/video/7690882321834134804",
+    "snippet": "Phở - clip giới thiệu món phở Việt Nam. Phở là chủ đề chính của video; video giới thiệu phở Việt Nam. Video sử dụng các hashtag #phovietnam, # ...",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Phở Hùng Râu - Đặc Sản Hấp Dẫn",
+    "link": "https://www.tiktok.com/@chefhungrau/video/7404828772857335058",
+    "snippet": "Khám Phá Phở Hùng Râu - Đặc Sản Hấp Dẫn. Tìm hiểu về phở Hùng Râu - món phở bò nổi tiếng. Khám phá hương vị độc đáo của phở tại đây ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

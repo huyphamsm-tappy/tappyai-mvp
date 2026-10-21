@@ -1,0 +1,83 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số màn hình camera pin Galaxy AI Samsung Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:45:40.003Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số màn hình camera pin Galaxy AI Samsung Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiến bước vào kỷ nguyên quyền năng AI mới cùng ...",
+    "link": "https://news.samsung.com/vn/tien-buoc-vao-ky-nguyen-quyen-nang-ai-moi-cung-samsung-galaxy-s24-series",
+    "snippet": "*Được đo theo đường chéo, kích thước màn hình của Galaxy S24 Ultra là 6,8 inch trên hình chữ nhật đầy đủ và 6,8 inch tính cả các góc được bo ...",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Đánh giá Galaxy S24 Ultra: AI tiện lợi, camera xịn sò, hiệu ...",
+    "link": "https://www.thegioididong.com/tin-tuc/danh-gia-galaxy-s24-ultra-1560290",
+    "snippet": "Trước khi đi vào chi tiết, mình sẽ điểm lại toàn bộ thông số cấu hình Galaxy S24 Ultra cho mọi người tham khảo nha! Màn hình: Kích thước 6.8 ...",
+    "date": "26 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 | S24+ : thêm nhiều AI và thay đổi thiết kế",
+    "link": "https://www.youtube.com/watch?v=25ygoCCYhIo",
+    "snippet": "Comments ; Phone Buying Advice: Is Samsung Overpricing the S24 FE? Dương Dê ; Đánh giá nhanh Samsung Galaxy S24 - trải nghiệm Galaxy AI. GenZ Viet ...",
+    "position": 3
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Hệ thống camera sau của Samsung Galaxy S24 bao gồm 4 ống kính: camera chính 50MP, camera góc siêu rộng 12MP, camera tele 10MP hỗ trợ zoom quang ...",
+    "date": "27 thg 12, 2023",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 – Wikipedia tiếng Việt",
+    "link": "https://vi.wikipedia.org/wiki/Samsung_Galaxy_S24",
+    "snippet": "Galaxy S24 có màn hình phẳng 6.2-inch (155 mm). hình phẳng 6.8-inch (173 mm). \"dynamic tone mapping\".",
+    "position": 5
+   },
+   {
+    "title": "Cấu Hình Samsung Galaxy S24: Màn 120Hz, Exynos 2400 ...",
+    "link": "https://didongviet.vn/dchannel/cau-hinh-samsung-galaxy-s24/",
+    "snippet": "Thông số cấu hình Samsung Galaxy S24 có gì HOT: Exynos 2400, pin 4000mAH · 3 Camera sau: Cảm biến chính 50 MP (f/1.8, OIS chống rung quang học), ...",
+    "date": "23 thg 11, 2023",
+    "rating": 4.9,
+    "ratingCount": 7,
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24 5G | Galaxy AI , Hiệu Năng Mạnh Mẽ",
+    "link": "https://shopdidong.vn/samsung-galaxy-s24-5g/?srsltid=AU7gw4XiY2e5vNMU_DOFV_lOxmDByE2LPIpiS9E1jv4ONHGu9QKU2J4g",
+    "snippet": "Samsung Galaxy S24 5G sở hữu Galaxy AI thông minh, màn hình Dynamic AMOLED 2X 120Hz, camera 50MP chuyên nghiệp, chip Snapdragon 8 Gen 3 hoặc Exynos 2400.",
+    "rating": 4.5,
+    "ratingCount": 37136,
+    "position": 7
+   },
+   {
+    "title": "Đánh giá Samsung Galaxy S24: Flagship Android nhỏ gọn ...",
+    "link": "https://tinhte.vn/thread/danh-gia-samsung-galaxy-s24-flagship-android-nho-gon-cuc-chat-luong-o-thoi-diem-hien-tai.3791734/",
+    "snippet": "Galaxy S24 sở hữu màn hình kích thước 6.2 inch kết hợp với đó là thiết kế vát phẳng ở mặt trước, mặt sau và bốn cạnh máy. hữu màn hình",
+    "date": "1 thg 6, 2024",
+    "rating": 4.5,
+    "ratingCount": 16,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

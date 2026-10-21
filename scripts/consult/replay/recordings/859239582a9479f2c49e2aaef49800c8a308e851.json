@@ -1,0 +1,582 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "quán phở ngon Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:32:51.306Z",
+ "body": {
+  "searchParameters": {
+   "q": "quán phở ngon Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Phở Phú Vương",
+    "address": "120 Nguyễn Thái Bình, Phường, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7682808,
+    "longitude": 106.6986019,
+    "rating": 4.3,
+    "ratingCount": 3020,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "website": "https://www.now.vn/ho-chi-minh/phu-vuong-quan-pho",
+    "phoneNumber": "+84 931 959 696",
+    "openingHours": {
+     "Thứ Năm": "06:00–22:00",
+     "Thứ Sáu": "06:00–22:00",
+     "Thứ Bảy": "06:00–22:00",
+     "Chủ Nhật": "06:00–22:00",
+     "Thứ Hai": "06:00–22:00",
+     "Thứ Ba": "06:00–22:00",
+     "Thứ Tư": "06:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QIJRazrHoZonmAYb6moho9swhWEoVvmqcYVBuHOCDRXCGpalyM5AbihRovNTugD0DJLK_47bN3ppcDpn3Hth32fcuRo0Np9IdmxLctlMe-2QRvKI5KoH18zf_IVa8_6P164kV9QChTiPY",
+    "cid": "908976305858328863",
+    "fid": "0x31752f3fe8f7e83d:0xc9d55225beeb91f",
+    "placeId": "ChIJPej36D8vdTERH7nuWyJVnQw"
+   },
+   {
+    "position": 2,
+    "title": "Phở Ông Cát Gia Truyền Since 1988",
+    "address": "201 Phạm Ngũ Lão, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.768487,
+    "longitude": 106.6930859,
+    "rating": 4.6,
+    "ratingCount": 623,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 843 444 546",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sg79zEZPfHhj17OYBPPOdxz87c565EhIhULdyCUGYzS2mi36aY5xoKhRxF0GpOElg-SzRrSgbDWzPiDhEPFzIhisyf3mbupRZIoaKmNac0vJujaBQNQra2wW9_xWlmIKg6YtdMVkZGYh6V",
+    "cid": "10025373026819297839",
+    "fid": "0x31752f53c8b37ffd:0x8b2147a6b458d22f",
+    "placeId": "ChIJ_X-zyFMvdTERL9JYtKZHIYs"
+   },
+   {
+    "position": 3,
+    "title": "Phở Dịu - Phở Bò & Phở Dê | Phở Ngon Quận 1 | Phở Ngon Phường Tân Định",
+    "address": "32 Nguyễn Bỉnh Khiêm, Quận 1, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7911424,
+    "longitude": 106.7008905,
+    "rating": 4.7,
+    "ratingCount": 75,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.facebook.com/PHOBOPHODEQUAN1?locale=vi_VN",
+    "phoneNumber": "+84 923 433 366",
+    "openingHours": {
+     "Thứ Năm": "06:00–23:30",
+     "Thứ Sáu": "06:00–23:30",
+     "Thứ Bảy": "06:00–23:30",
+     "Chủ Nhật": "06:00–23:30",
+     "Thứ Hai": "06:00–23:30",
+     "Thứ Ba": "06:00–23:30",
+     "Thứ Tư": "06:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RGjdbHWSJcZgq0KhqU9ihn6a1jdLSS_LWMkB_0Ng2xbtE3tQpFIFrpmNOQuT7Ql52Ct_wn2dJilbDSbdgkyPqDLG6I8tEiF2HJpgR9sbKI3UwoYpuWTTQ2Ca6nLK7d8_xiZqiJfB2ymwtX",
+    "cid": "3365100258503458345",
+    "fid": "0x3175294919bbc5d5:0x2eb33cdb25ac7e29",
+    "placeId": "ChIJ1cW7GUkpdTERKX6sJds8sy4"
+   },
+   {
+    "position": 4,
+    "title": "Phở Hùng",
+    "address": "241 - 243 Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7648891,
+    "longitude": 106.6877054,
+    "rating": 4.3,
+    "ratingCount": 4348,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.phohung.vn/",
+    "phoneNumber": "+84 28 3838 5089",
+    "openingHours": {
+     "Thứ Năm": "06:00–01:00",
+     "Thứ Sáu": "06:00–01:00",
+     "Thứ Bảy": "06:00–01:00",
+     "Chủ Nhật": "06:00–01:00",
+     "Thứ Hai": "06:00–01:00",
+     "Thứ Ba": "06:00–01:00",
+     "Thứ Tư": "06:00–01:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QvIqrcenwcUv99XvyFnFFJDIfcZGw8d43cF8zMi-13Q-2eLUSiFGEYQaZGVnrukVdWadeZbUblGPMJVA1-zU3lTtdvBBy3nYYtJvbLkCyjzztlhbh_7AthFL1Lcp61xjQIrEAk",
+    "cid": "15913313759659625096",
+    "fid": "0x31752f19d15e3a81:0xdcd7728d53d90a88",
+    "placeId": "ChIJgTpe0RkvdTERiArZU41y19w"
+   },
+   {
+    "position": 5,
+    "title": "Phở Nhất Vị - Nguyễn Thị Minh Khai",
+    "address": "149A Nguyễn Thị Minh Khai, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7709177,
+    "longitude": 106.68702599999999,
+    "rating": 4.9,
+    "ratingCount": 1133,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://phonhatvi.vn/",
+    "phoneNumber": "+84 862 600 339",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9ROUe2MtOCw6_9BEFjQ-V8ZuR6hkujNxPAI583aayHMufDTf7IWn1-9266tTkbvCFH7pjaPDbgWWt4cS3ydIvKiHZV3uiv8XGDKINe9ayuhXUVm0o4roCovVPr20AqTrkdvswtRTIM_j1PX",
+    "cid": "6767320232680193506",
+    "fid": "0x31752f595f8cb0d9:0x5dea59e596377de2",
+    "placeId": "ChIJ2bCMX1kvdTER4n03luVZ6l0"
+   },
+   {
+    "position": 6,
+    "title": "Quán Phở Con Bò Vàng",
+    "address": "203 Cô Giang, Quận 1, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7611852,
+    "longitude": 106.69278849999999,
+    "rating": 4.9,
+    "ratingCount": 460,
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 906 185 768",
+    "openingHours": {
+     "Thứ Năm": "06:00–20:00",
+     "Thứ Sáu": "06:00–20:00",
+     "Thứ Bảy": "06:00–20:00",
+     "Chủ Nhật": "06:00–14:00",
+     "Thứ Hai": "06:00–20:00",
+     "Thứ Ba": "06:00–20:00",
+     "Thứ Tư": "06:00–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RWwZga7i6gZVQzNM2de5EpBmPp_Tms5ze8lYQGqEKAjXky___mfyfEQXl1VcFsI0K3iD8S_hG9RI1GvzhZe1r9vxDtQR4JFIwKCjfvtEqS0NLUORBYbPGBaPPhfmKtcgvFNfkXoq-cPABA",
+    "cid": "18406884854982885045",
+    "fid": "0x31752f0068d8a849:0xff72644072c5beb5",
+    "placeId": "ChIJSajYaAAvdTERtb7FckBkcv8"
+   },
+   {
+    "position": 7,
+    "title": "Phở Cao Vân",
+    "address": "25 Mạc Đĩnh Chi, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.784743299999999,
+    "longitude": 106.6992982,
+    "rating": 4.2,
+    "ratingCount": 1216,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/pho-cao-van",
+    "phoneNumber": "+84 28 3822 0509",
+    "openingHours": {
+     "Thứ Năm": "05:30–22:00",
+     "Thứ Sáu": "05:30–22:00",
+     "Thứ Bảy": "05:30–22:00",
+     "Chủ Nhật": "05:30–22:00",
+     "Thứ Hai": "05:30–22:00",
+     "Thứ Ba": "05:30–22:00",
+     "Thứ Tư": "05:30–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QY7DCkVg1Yx0u6gB9Aq4W67MlrV-L5maJKmJoU-SQ0ZPqC5Da11R_ZBjkXuyU7UzepDgvlZH9JSc33b6HlX-n6NMXzyt4smHtA2zHeXsQPkGYmvUDCALw3kPhESstaa7kBbcM",
+    "cid": "6398210000077558661",
+    "fid": "0x31752f35f19a3ecd:0x58cb02188cf99385",
+    "placeId": "ChIJzT6a8TUvdTERhZP5jBgCy1g"
+   },
+   {
+    "position": 8,
+    "title": "Phở Phượng",
+    "address": "25 Hoàng Sa, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7919219,
+    "longitude": 106.70446679999999,
+    "rating": 4.2,
+    "ratingCount": 1160,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 28 3910 2422",
+    "openingHours": {
+     "Thứ Năm": "05:30–20:30",
+     "Thứ Sáu": "05:30–20:30",
+     "Thứ Bảy": "05:30–20:30",
+     "Chủ Nhật": "05:30–20:30",
+     "Thứ Hai": "05:30–14:00",
+     "Thứ Ba": "05:30–20:30",
+     "Thứ Tư": "05:30–20:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SxVqbrCMS2hXPgE1UwOEYIkIgPSwl5VGhZL6wIMYY8UwceC8H58s30wFYP3wi2av0kCz52AfHDNzNwVD-tZ7JSKfggszD71coX-VsRcTcnJAbU_sRoPddTkNcdAiahDh1JUjkvV_5lluMU",
+    "cid": "8953970143964097238",
+    "fid": "0x31752945b4a30467:0x7c42e467e06eead6",
+    "placeId": "ChIJZwSjtEUpdTER1upu4GfkQnw"
+   },
+   {
+    "position": 9,
+    "title": "PHỞ HÀ",
+    "address": "19 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.771965699999999,
+    "longitude": 106.7052281,
+    "rating": 4,
+    "ratingCount": 1057,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 333 135 797",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9REUE4xuGrDl_jpolGoq6zZKJQre7xKCr2sijsSAIyaz8CUrSd2hdKdppKM9RfQqBivNvj6wHCfpZhOAYVbUbmb5qXkJVWR0F6j-v9e4z1_PgrhDbkPltYyzogxLv0TTouOmao",
+    "cid": "9423037160852756111",
+    "fid": "0x31752f38e1a83783:0x82c55a5f55ef168f",
+    "placeId": "ChIJgzeo4TgvdTERjxbvVV9axYI"
+   },
+   {
+    "position": 10,
+    "title": "Phở Việt Nam- best pho in ho chi minh open 24/24h",
+    "address": "7B Tôn Thất Tùng, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7701525,
+    "longitude": 106.6884335,
+    "rating": 4.8,
+    "ratingCount": 3854,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng châu Á",
+     "Nhà hàng Việt Nam"
+    ],
+    "phoneNumber": "+84 917 655 979",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QwyeEVRGKLEjrxqNlwkv2Y6S8qA9RA3dkoeKYG_0TKVyyjaLTn7IgcTdT29NemWf8N9QvT4kaD4J_SgbfhojJf70OGscs_6uNEK_uZX0lRyXOUn2NRseP3rZxvoZzq7sbpsYFiPA30QDk",
+    "cid": "2523171450364710187",
+    "fid": "0x31752f00083fa2fd:0x23041b10d6654d2b",
+    "placeId": "ChIJ_aI_CAAvdTERK01l1hAbBCM"
+   },
+   {
+    "position": 11,
+    "title": "Phở Minh - Pasteur - Saigon",
+    "address": "63/6 Pasteur, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.774811,
+    "longitude": 106.700278,
+    "rating": 4.4,
+    "ratingCount": 852,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng chuyên phục vụ bữa sáng"
+    ],
+    "website": "https://www.facebook.com/share/1YcTGTwpai/?mibextid=wwXIfr",
+    "phoneNumber": "+84 942 221 945",
+    "openingHours": {
+     "Thứ Năm": "06:30–10:30",
+     "Thứ Sáu": "06:30–10:30",
+     "Thứ Bảy": "06:30–10:30",
+     "Chủ Nhật": "06:30–10:30",
+     "Thứ Hai": "06:30–10:30",
+     "Thứ Ba": "06:30–10:30",
+     "Thứ Tư": "06:30–10:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9RiztFruKaISVIefGqQK40lN9caKEOWlHMYhhyTxYlbDiD4CQn9ZxvJC4ZMkOwNeXPiaQDc-9nPFdqmt2D8s2hIC8vrBMHOQr_c1sriWKdT-MTeFIBUvyPGBMyA-wiXW7s8tjP0",
+    "cid": "17049522516850958243",
+    "fid": "0x31752f4764af0cbf:0xec9c126596ecdfa3",
+    "placeId": "ChIJvwyvZEcvdTERo9_slmUSnOw"
+   },
+   {
+    "position": 12,
+    "title": "Phở Hòa Pasteur",
+    "address": "260C Pasteur, Phường, Xuân Hòa, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.786690499999999,
+    "longitude": 106.6892627,
+    "rating": 4.2,
+    "ratingCount": 6176,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Quán mì"
+    ],
+    "phoneNumber": "+84 28 3829 7943",
+    "openingHours": {
+     "Thứ Năm": "05:30–22:30",
+     "Thứ Sáu": "05:30–22:30",
+     "Thứ Bảy": "05:30–22:30",
+     "Chủ Nhật": "05:30–22:30",
+     "Thứ Hai": "05:30–22:30",
+     "Thứ Ba": "05:30–22:30",
+     "Thứ Tư": "05:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Q0iNYUXyp59s71I72gwn9hSSjIYwKfZ8SThOO1ERwru4H6pwTDRMCsTATqXW4VMsA4Ad3m091DKB4cqLw8ck8TrDEm0nx9HoSXFuwhwa7ExUbsX6HIoWCIVkNnxKEpaiQ6fFXy",
+    "cid": "15021671463455039530",
+    "fid": "0x31752f26344ef6ef:0xd077b29b97dc202a",
+    "placeId": "ChIJ7_ZONCYvdTERKiDcl5uyd9A"
+   },
+   {
+    "position": 13,
+    "title": "Phở Lệ",
+    "address": "413 - 415 Nguyễn Trãi, An Đông, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7552959,
+    "longitude": 106.67351959999999,
+    "rating": 4.2,
+    "ratingCount": 6124,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở",
+     "Nhà hàng"
+    ],
+    "website": "http://www.phole.vn/",
+    "phoneNumber": "+84 28 3923 4008",
+    "openingHours": {
+     "Thứ Năm": "06:00–00:00",
+     "Thứ Sáu": "06:00–00:00",
+     "Thứ Bảy": "06:00–00:00",
+     "Chủ Nhật": "06:00–00:00",
+     "Thứ Hai": "06:00–00:00",
+     "Thứ Ba": "06:00–00:00",
+     "Thứ Tư": "06:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9R6ZrNtvqUpSL8NNSfSZswGqYobSD_jETbP2bNc53XmbumoZItxZI3pIQDTqEL1ksnNDcHxKjeP8qoL7YR5Zqqx-liQssM5j9lxqS1WHGVONwfHeG_0orSrJ0qpXQMxS3BDKx2muw",
+    "cid": "6788466980726782215",
+    "fid": "0x31752efd0082e183:0x5e357ac08bb03907",
+    "placeId": "ChIJg-GCAP0udTERBzmwi8B6NV4"
+   },
+   {
+    "position": 14,
+    "title": "Phở Hải Triều",
+    "address": "31 Đ. Hải Triều, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7716833,
+    "longitude": 106.70506239999999,
+    "rating": 4.1,
+    "ratingCount": 430,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 931 411 236",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9T1o6uoLxeSnikIVC832sHc7i6GrXBDi65quLnhb4S_Oh_oUb2Z7yPXY7VqqDMYa_9vR_B2DuwOSGlaMBhK0hT5l8BDxe0JvCNh6CFGrGFuePNYI-KyFPtYXUU9FH0iJHxX5Yy1bB-Bhlrs",
+    "cid": "11822607071897504484",
+    "fid": "0x31752f4144e8ae37:0xa412567e3778cae4",
+    "placeId": "ChIJN67oREEvdTER5Mp4N35WEqQ"
+   },
+   {
+    "position": 15,
+    "title": "Phở gia truyền Nam Định",
+    "address": "140B Nguyễn Cư Trinh, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.763669799999999,
+    "longitude": 106.6890646,
+    "rating": 4.2,
+    "ratingCount": 268,
+    "type": "Quán ăn nhỏ",
+    "types": [
+     "Quán ăn nhỏ"
+    ],
+    "phoneNumber": "+84 918 788 142",
+    "openingHours": {
+     "Thứ Năm": "06:00–00:00",
+     "Thứ Sáu": "06:00–00:00",
+     "Thứ Bảy": "06:00–00:00",
+     "Chủ Nhật": "06:00–00:00",
+     "Thứ Hai": "06:00–00:00",
+     "Thứ Ba": "06:00–00:00",
+     "Thứ Tư": "06:00–00:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SGSJNvG34X56zj_7BVRHt3LcFEaZjnmTK_OgOfK_dyAtIjXmqDSIAYNcRXSjurKp0vbFJhF5nqakaS7xE2ZHHIrBX0m_7r2KIHm5ry5swWwtD1JM6wXxD8S0oMpSeFYqMVPUis",
+    "cid": "17660897148248891241",
+    "fid": "0x31752f817b0d26c3:0xf5181c6288159f69",
+    "placeId": "ChIJwyYNe4EvdTERaZ8ViGIcGPU"
+   },
+   {
+    "position": 16,
+    "title": "Phở Vị",
+    "address": "102 Cống Quỳnh, Bến Thành, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7647494,
+    "longitude": 106.6906004,
+    "rating": 4.4,
+    "ratingCount": 290,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 977 682 795",
+    "openingHours": {
+     "Thứ Năm": "06:00–13:30, 17:00–21:30",
+     "Thứ Sáu": "06:00–13:30, 17:00–21:30",
+     "Thứ Bảy": "06:00–13:30, 17:00–21:30",
+     "Chủ Nhật": "06:00–13:30, 17:00–21:30",
+     "Thứ Hai": "06:00–13:30, 17:00–21:30",
+     "Thứ Ba": "06:00–13:30, 17:00–21:30",
+     "Thứ Tư": "06:00–13:30, 17:00–21:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9TzsJV5uH65Ypq0FKb7vNvpFbQSeXllc5K9LVKISV9T6jtkeQiS-RogEbb21pyK6HakHZg_sWfdp_jWms17aGA9tifvvEuYZJIqCDzaH-d0RsKVq3FKlS7E1gb30mJNdyIZywh-E4ainWo",
+    "cid": "7198172673985159318",
+    "fid": "0x31752f3fb0b08a91:0x63e50be8d0cf2096",
+    "placeId": "ChIJkYqwsD8vdTERliDP0OgL5WM"
+   },
+   {
+    "position": 17,
+    "title": "Phở Ngọc - Hồ Hảo Hớn",
+    "address": "30E Hồ Hảo Hớn, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7608781,
+    "longitude": 106.69317939999999,
+    "rating": 4.5,
+    "ratingCount": 675,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "phoneNumber": "+84 703 573 456",
+    "openingHours": {
+     "Thứ Năm": "05:30–10:30",
+     "Thứ Sáu": "05:30–10:30",
+     "Thứ Bảy": "05:30–10:30",
+     "Chủ Nhật": "05:30–10:30",
+     "Thứ Hai": "05:30–10:30",
+     "Thứ Ba": "05:30–10:30",
+     "Thứ Tư": "05:30–10:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QwtSksUiXTbS5ztPPMDNOFwl5egdeklf90EL6MzqCet9hyLUkxcEMjY5mHKd9q-vl5cIj8RcdmEVxefSx6NygWZgIkKJ7ZtTXqcXmxs5DDNzyTLnDO8g2IfhJAhoQERXTPhRCuyT9iTOvs",
+    "cid": "155221121760839695",
+    "fid": "0x31752f113e8499b1:0x22774c9b031480f",
+    "placeId": "ChIJsZmEPhEvdTERD0gxsMl0JwI"
+   },
+   {
+    "position": 18,
+    "title": "Phở HALAL Quận 1",
+    "address": "45 Nam Kỳ Khởi Nghĩa, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7699836,
+    "longitude": 106.7014762,
+    "rating": 4.7,
+    "ratingCount": 228,
+    "type": "Nhà hàng châu Á",
+    "types": [
+     "Nhà hàng châu Á"
+    ],
+    "phoneNumber": "+84 767 891 050",
+    "openingHours": {
+     "Thứ Năm": "07:00–21:00",
+     "Thứ Sáu": "07:00–21:00",
+     "Thứ Bảy": "07:00–21:00",
+     "Chủ Nhật": "07:00–21:00",
+     "Thứ Hai": "07:00–21:00",
+     "Thứ Ba": "07:00–21:00",
+     "Thứ Tư": "07:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9QLAM-8ewH55vFOp6C4Gfni4e6y5Zh6szFgFdBAveEEJknF7PX7h9ghBPq9-3vux0MHfUvMy5LcRcNpZSPfiTag0obJGa33Ld8rbB1YA7i82EhuXo6Zw2gwdyZ7j8cRVKP89kDdcMbCVrhH",
+    "cid": "5681245698470209201",
+    "fid": "0x31752f00450ab867:0x4ed7d6dcbb0866b1",
+    "placeId": "ChIJZ7gKRQAvdTERsWYIu9zW104"
+   },
+   {
+    "position": 19,
+    "title": "Phở Hiền",
+    "address": "15 Trần Nguyên Đán, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.792761299999999,
+    "longitude": 106.69348509999999,
+    "rating": 4.2,
+    "ratingCount": 1769,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.foody.vn/ho-chi-minh/pho-hien-tran-quang-khai",
+    "phoneNumber": "+84 28 3843 9119",
+    "openingHours": {
+     "Thứ Năm": "06:30–00:30",
+     "Thứ Sáu": "06:30–00:30",
+     "Thứ Bảy": "06:30–00:30",
+     "Chủ Nhật": "06:30–00:30",
+     "Thứ Hai": "06:30–00:30",
+     "Thứ Ba": "06:30–00:30",
+     "Thứ Tư": "06:30–00:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Sk4JmNb0xxG721g2wRhDz53rmdIkIZwZY24bgGZPjkJ8hFwIjbGKBetIgTjBxfEIrZzcylXny9hZi5DoEpTQBSMHSK2NyTqpbsTgkgpNEnPWAyQUrB3UC6c_tfEp46bs_cGTRMDA",
+    "cid": "5055036449489860416",
+    "fid": "0x317528cc7c0f91b3:0x462718de3a7eb740",
+    "placeId": "ChIJs5EPfMwodTERQLd-Ot4YJ0Y"
+   },
+   {
+    "position": 20,
+    "title": "Phở Hiền 1985 - Nguyễn trãi",
+    "address": "269A Nguyễn Trãi, Cầu Ông Lãnh, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.764154999999999,
+    "longitude": 106.687491,
+    "rating": 4.2,
+    "ratingCount": 704,
+    "type": "Nhà hàng phở",
+    "types": [
+     "Nhà hàng phở"
+    ],
+    "website": "https://www.facebook.com/phohien.nguyentrai",
+    "phoneNumber": "+84 28 3836 5305",
+    "openingHours": {
+     "Thứ Năm": "06:00–23:30",
+     "Thứ Sáu": "06:00–23:30",
+     "Thứ Bảy": "06:00–23:30",
+     "Chủ Nhật": "06:00–23:30",
+     "Thứ Hai": "06:00–23:30",
+     "Thứ Ba": "06:00–23:30",
+     "Thứ Tư": "06:00–23:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9SUZill_jilDlTCcFofHCireWbP4g3W3SAgOr5l2zgJm9B4qd8sDwMacnMrKeP-6hWi73yewfkmXNfOpz1Pvit7AxJc8aLk51Y3UDXP8nQI37s8oKh7D93yukameDk2Y89kMUkY",
+    "cid": "6405918578372630065",
+    "fid": "0x31752f19c2c34077:0x58e66501cbf9d631",
+    "placeId": "ChIJd0DDwhkvdTERMdb5ywFl5lg"
+   }
+  ],
+  "credits": 3
+ }
+}

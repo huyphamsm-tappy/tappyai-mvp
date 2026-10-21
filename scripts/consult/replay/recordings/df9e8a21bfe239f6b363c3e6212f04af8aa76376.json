@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Phú Vương\" OR \"Phở Nhất Vị\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:04.354Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Phú Vương\" OR \"Phở Nhất Vị\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Discover the Best Pho in Saigon at Phở Phú Vương",
+    "link": "https://www.tiktok.com/@yourglobalfoodiebff/video/7593572173218843934",
+    "snippet": "Located at 339 Le Van Sy, Ward 1, Tan Binh District, Ho Chi Minh City, Phở Phú Vương stands out as a top contender for the best pho in Saigon ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Phú Vương: Quán Nhất Đường Lê Văn Sỹ",
+    "link": "https://www.tiktok.com/@thenguyen_kitchen/video/7195898111053581594",
+    "snippet": "tin chắc đã một lần nghe đến cái quán này. trên con đường lê văn sỹ. thì đây phải nói là tiệm phở đông khách nhất. và phở phú vương chính là nơi ...",
+    "position": 2
+   },
+   {
+    "title": "Bạn hẹn hò với trai bán phở — Phở Nhất Vị Quận 1",
+    "link": "https://www.tiktok.com/@phonhatvi.vn/video/7676279262017555733",
+    "snippet": "Không gian và bối cảnh Phở Nhất Vị nằm ở Quận 1, phục vụ phở trong không gian đô thị Sài Gòn. Video cho thấy khung cảnh thân mật, phù hợp cho ...",
+    "position": 3
+   },
+   {
+    "title": "Quán phở ngon buổi tối ở Nguyễn Công Trứ",
+    "link": "https://www.tiktok.com/@pika_laca/video/7647397967455882517",
+    "snippet": "Series 100 quán Phở Ngon tại Sài Gòn — Phở Nhất Vị Tóm tắt Phở Nhất Vị là một trong những quán phở nổi bật trong chuỗi phở ngon ở Sài Gòn, ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Nhất Vị (@phonhatvi.vn)",
+    "link": "https://www.tiktok.com/@phonhatvi.vn",
+    "snippet": "Phở Nhất Vị (@phonhatvi.vn) trên TikTok |10.7K Lượt thích.59.2K Follower.“Nhất Vị - Độc Đáo và Tinh Tế”, cam kết chất lượng.Xem video phổ biến của Phở Nhất ...",
+    "position": 5
+   },
+   {
+    "title": "Phở Phú Vương (@phophuvuong)",
+    "link": "https://www.tiktok.com/@phophuvuong",
+    "snippet": "Phở là nguồn gốc HÀ NỘI Nấu theo phong vị SÀI GÒN Trung hòa lại là PHỞ PHÚ VƯƠNG 142-144 Nguyễn Trãi, Quận 5, TP.HCM · Hơn 30 năm giữ vị phở giữa lòng Sài ...",
+    "position": 6
+   },
+   {
+    "title": "Top Pho Place in Saigon: Phở Phú Vương Review",
+    "link": "https://www.tiktok.com/@chrisangi/video/7618767029931216159",
+    "snippet": "If you're looking for a top-notch pho experience in Saigon, look no further than Phở Phú Vương. Located at 120 Nguyễn Thái Bình in Quận 1, ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Phú Vương - Phở ngon kiểu miền Nam",
+    "link": "https://www.tiktok.com/@tranthang2110/photo/7663844983572598037",
+    "snippet": "Phở Phú Vương - Phở ngon kiểu miền Nam. Phở Phú Vương Quán ở Sài Gòn có nước lèo đậm đà, topping đa dạng, thịt hầm mềm. Điểm trừ là ít rau và thiếu khăn giấy ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

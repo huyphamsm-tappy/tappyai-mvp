@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai Nghe Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025\" OR \"Tai Nghe Không Dây KY5 / F9 / X55 / KY8 PRO Bluetooth Màn Hình LED Tai Nghe Tích Hợp Mic\" OR \"Tai nghe Bluetooth G9S / X55 / F9 / KY8 PRO Tai nghe thể thao giảm tiếng ồn chống nước chất lượng cao có Tai nghe Mic\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:22:28.428Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai Nghe Bluetooth Chống Ồn ANC Pin 8H Đầy Đủ Chức Năng Bản 2025\" OR \"Tai Nghe Không Dây KY5 / F9 / X55 / KY8 PRO Bluetooth Màn Hình LED Tai Nghe Tích Hợp Mic\" OR \"Tai nghe Bluetooth G9S / X55 / F9 / KY8 PRO Tai nghe thể thao giảm tiếng ồn chống nước chất lượng cao có Tai nghe Mic\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

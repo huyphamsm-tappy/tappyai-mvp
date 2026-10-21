@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:11:24.139Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tai nghe Bluetooth chụp Tai Baseus Bass BH1 NC\" OR \"Tai nghe Bluetooth thể thao Anker Soundcore V40i\" OR \"Tai Nghe Samsung Galaxy Buds 3 Pro Chính Hãng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

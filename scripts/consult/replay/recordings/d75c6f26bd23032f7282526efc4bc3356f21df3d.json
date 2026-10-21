@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xuatnhapcanh.gov.vn hộ chiếu online hồ sơ lệ phí cấp hộ chiếu phổ thông",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:31:30.340Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xuatnhapcanh.gov.vn hộ chiếu online hồ sơ lệ phí cấp hộ chiếu phổ thông",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trang chủ | Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/",
+    "snippet": "Tải tờ khai hộ chiếu, xác nhận nhân thân đăng ký offline. Tờ khai điện tử đề nghị cấp hộ chiếu. Đối với những hộ chiếu cấp trước ngày 01/7/2025 thông tin về ...",
+    "position": 1
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/faq.jspx",
+    "snippet": "- Khai 01 tờ khai đề nghị cấp hộ chiếu theo mẫu quy định; - 02 ảnh cỡ 4cm x 6cm, phông nền trắng, mặt nhìn thẳng, đầu để trần, không đeo kính màu (chụp ảnh tại ...",
+    "position": 2
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/adf.task-flow?_id=task-flow-tkdt&_document=/WEB-INF/task-flow-tkdt.xml",
+    "snippet": "1. Họ và tên · 2. Giới tính · 3. Sinh ngày. Đủ ngày, tháng, năm sinh. Nơi sinh (theo giấy khai sinh). Chọn nơi sinh · 4. Số ĐDCN/CMND. Ngày cấp. Nơi cấp. Chọn nơi ...",
+    "position": 3
+   },
+   {
+    "title": "Mẫu/Form X01",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/docs/FORM_TO_KHAI_X01.pdf",
+    "snippet": "Con dưới 9 tuổi đề nghị cấp chung hộ chiếu (nếu có):. Họ và tên (chữ in hoa). Nam Nữ. Sinh ngày tháng năm. Nơi sinh (tỉnh, TP). Tôi xin chịu trách nhiệm trước ...",
+    "position": 4
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/adf.task-flow?_id=task-flow-xnnt&_document=/WEB-INF/task-flow-xnnt.xml",
+    "snippet": "1. Họ và tên · 2. Giới tính · 3. Sinh ngày. Đủ ngày, tháng, năm sinh. Nơi sinh (tỉnh/thành phố). Chọn nơi sinh · 4. Số ĐDCN/CMND.",
+    "position": 5
+   },
+   {
+    "title": "Tờ khai điện tử đề nghị cấp hộ chiếu",
+    "link": "https://hochieu.xuatnhapcanh.gov.vn/faces/contact.jspx",
+    "snippet": "I. Thông tin liên hệ. Website: https://hochieu.xuatnhapcanh.gov.vn. Email: contact@immigration.gov.vn. 1. Trụ sở tại Hà Nội. - Địa chỉ: 44-46 đường Trần Phú ...",
+    "position": 6
+   },
+   {
+    "title": "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM Độc lập – Tự do",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/documents/20181/117155/ImmigrationLaw.pdf/895ea818-aabf-453f-9c1e-0ccfb8acfbec",
+    "snippet": "Giấy tờ xác định quốc tịch nước ngoài là loại giấy tờ do cơ quan có thẩm quyền của nước ngoài hoặc Liên hợp quốc cấp, gồm hộ chiếu hoặc giấy tờ có giá trị thay ...",
+    "position": 7
+   },
+   {
+    "title": "Tổ chức không có account - National portal on Immigration",
+    "link": "https://evisa.xuatnhapcanh.gov.vn/dvbl-khong-tai-khoan",
+    "snippet": "Mời, bảo lãnh nhập cảnh · Tra cứu hồ sơ · Thị thực điện tử · Mời, bảo lãnh nhập cảnh · Hỗ trợ · Đăng nhập. Dành cho cơ quan, tổ chức không đăng ký tài khoản ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

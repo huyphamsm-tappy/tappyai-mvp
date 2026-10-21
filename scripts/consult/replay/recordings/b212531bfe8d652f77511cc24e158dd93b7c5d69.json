@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Eden Ocean View Đà Nẵng",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:06:48.760Z",
+ "body": {
+  "searchParameters": {
+   "q": "Eden Ocean View Đà Nẵng",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Khách sạn Eden Đà Nẵng (Eden Hotel Danang) - Chudu24",
+    "imageUrl": "http://du-lich.chudu24.com/f/m/2306/07/khach-san-eden-ocean-view-da-nang-10.jpg",
+    "imageWidth": 1280,
+    "imageHeight": 779,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTkoUfmo_llY6X6rPvXHlPCZAGWCNrvMfbi4gWbbqQFTg&s=10",
+    "thumbnailWidth": 572,
+    "thumbnailHeight": 349,
+    "source": "Đặt Phòng Khách Sạn - Chudu24",
+    "domain": "khachsan.chudu24.com",
+    "link": "https://khachsan.chudu24.com/ks.5613.khach-san-eden-ocean-view-da-nang.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=http%3A%2F%2Fdu-lich.chudu24.com%2Ff%2Fm%2F2306%2F07%2Fkhach-san-eden-ocean-view-da-nang-10.jpg&tbnid=RNEukDjvd-UkSM&imgrefurl=https%3A%2F%2Fkhachsan.chudu24.com%2Fks.5613.khach-san-eden-ocean-view-da-nang.html&docid=6i-76dtQte4-eM&w=1280&h=779",
+    "position": 1
+   },
+   {
+    "title": "Eden Ocean View Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/225359606.jpg?k=d4349931214cdcf999dbca9fddb016cbacfa23c4e0d4b778d321887536d10520&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTu7G7EQuUSGjMMBWyAw9VhziPBlSNVBZ_ErPkm9-SEwQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/eden-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F225359606.jpg%3Fk%3Dd4349931214cdcf999dbca9fddb016cbacfa23c4e0d4b778d321887536d10520%26o%3D&tbnid=KfE4i4Z5Zerz6M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Feden-danang.vi.html&docid=JRyyx2brtexF3M&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Khách sạn Eden Ocean View Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/162810239.jpg?k=8d9a444266ddf1ce63a50cd4a81d004d316fdeaf1ef9875a693dacad5e31bc9e&o=",
+    "imageWidth": 298,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmwa4P9HnqQYRzS7Fqyz4L27F65nQIs0po_MMETKIuRw&s=10",
+    "thumbnailWidth": 298,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eden-hotel-danang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F162810239.jpg%3Fk%3D8d9a444266ddf1ce63a50cd4a81d004d316fdeaf1ef9875a693dacad5e31bc9e%26o%3D&tbnid=5hPomdohXiWLjM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feden-hotel-danang%2Fhotel%2Fda-nang-vn.html&docid=BL9iXpHuYqeUqM&w=298&h=500",
+    "position": 3
+   },
+   {
+    "title": "Eden Ocean View Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/225506834.jpg?k=5e68eeb789b69bc92d037b8addfcb97f21b1f68076b058d12716c5d05bb8fe47&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCJR8QE3j_5XKEs5aKwlIHO_8ppBg9kpfwUQHFJ7lRZg&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/eden-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F225506834.jpg%3Fk%3D5e68eeb789b69bc92d037b8addfcb97f21b1f68076b058d12716c5d05bb8fe47%26o%3D&tbnid=Gkfl_8NuYzVe4M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Feden-danang.vi.html&docid=JRyyx2brtexF3M&w=1024&h=683",
+    "position": 4
+   },
+   {
+    "title": "Khách sạn Eden Ocean View Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/233108392.jpg?k=ecc4013b6359cb47fc9de0a7d0aa13cfd9c2b3abd80f15b7dbaf995bced67af1&o=",
+    "imageWidth": 500,
+    "imageHeight": 332,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0kZbu7OGHlmFAvnZ9dUbmjS928PHQYp5tl81glFBzMA&s=10",
+    "thumbnailWidth": 500,
+    "thumbnailHeight": 331,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eden-hotel-danang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F233108392.jpg%3Fk%3Decc4013b6359cb47fc9de0a7d0aa13cfd9c2b3abd80f15b7dbaf995bced67af1%26o%3D&tbnid=4VQhxu5hs_ycDM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feden-hotel-danang%2Fhotel%2Fda-nang-vn.html&docid=BL9iXpHuYqeUqM&w=500&h=332",
+    "position": 5
+   },
+   {
+    "title": "Khách sạn Eden Ocean View Đà Nẵng, Phước Mỹ, Đà Nẵng",
+    "imageUrl": "https://q-xx.bstatic.com/xdata/images/hotel/max500/592796652.jpg?k=486e06aa16cf69b9756cb7974801d2aabb6c88d6fc431c1e321d91c3eca18af8&o=",
+    "imageWidth": 375,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTczQq4lGtBYKE-p9blpxMqBLj9lPqbCXEPfTnJb93ltQ&s=10",
+    "thumbnailWidth": 375,
+    "thumbnailHeight": 500,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/eden-hotel-danang/hotel/da-nang-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fq-xx.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax500%2F592796652.jpg%3Fk%3D486e06aa16cf69b9756cb7974801d2aabb6c88d6fc431c1e321d91c3eca18af8%26o%3D&tbnid=VbTrfbm1XldYKM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Feden-hotel-danang%2Fhotel%2Fda-nang-vn.html&docid=BL9iXpHuYqeUqM&w=375&h=500",
+    "position": 6
+   },
+   {
+    "title": "Eden Ocean View Hotel Da Nang Da Nang - Reviews, Photos & Offer",
+    "imageUrl": "https://gos3.ibcdn.com/71937d37-dba9-434f-bba7-f64058b0e515.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUWqve62y1QoUfc3CUmEiEDSmx6oAARrS4AtPbKbiFlw&s=10",
+    "thumbnailWidth": 489,
+    "thumbnailHeight": 408,
+    "source": "Goibibo",
+    "domain": "www.goibibo.com",
+    "link": "https://www.goibibo.com/hotels-international/eden-ocean-view-danang-hotel-in-da-nang-4806643205561207673/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fgos3.ibcdn.com%2F71937d37-dba9-434f-bba7-f64058b0e515.jpg&tbnid=fMkUNY8wfeibJM&imgrefurl=https%3A%2F%2Fwww.goibibo.com%2Fhotels-international%2Feden-ocean-view-danang-hotel-in-da-nang-4806643205561207673%2F&docid=tduREzHGCRgdFM&w=1200&h=1000",
+    "position": 7
+   },
+   {
+    "title": "Eden Ocean View Hotel Da Nang, Đà Nẵng (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/228284482.jpg?k=5f2ba7f08af849e733fe912fb406a4b8269cde98968f836d10ff345dd7839dcc&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRsZkjn0_TO2Pv_Xbu9e93AORftEbZgQPWMjUEmn4Vsw&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/vn/eden-danang.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F228284482.jpg%3Fk%3D5f2ba7f08af849e733fe912fb406a4b8269cde98968f836d10ff345dd7839dcc%26o%3D&tbnid=Bjf3TLRyX3gbcM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fvn%2Feden-danang.vi.html&docid=JRyyx2brtexF3M&w=1024&h=683",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

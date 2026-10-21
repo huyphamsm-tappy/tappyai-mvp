@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Hùng\" OR \"Phở Nhất Vị\" OR \"Phở Dịu\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:07:09.234Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Hùng\" OR \"Phở Nhất Vị\" OR \"Phở Dịu\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Phở Hùng Hàng Đẫy Tại Thành Công",
+    "link": "https://www.tiktok.com/@u40.an.gi/video/7587737343382113556",
+    "snippet": "Quán bán tại nhà nên giá rổ cực hợp lý. Phở Hùng Hàng Đẫy, 116B1 Thành Công, Giảng Võ, Hà Nội #phobo #ancungtiktok #hanoifood #foodreview ...",
+    "position": 1
+   },
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Hùng Cường: Món Phở Gân Bò Viên Đặc Sắc",
+    "link": "https://www.tiktok.com/@ngockhoo/video/7676715047023807752",
+    "snippet": "Phở Hùng Cường mang đến trải nghiệm ẩm thực độc đáo với món phở gân bò viên hấp dẫn. Món ăn này nổi bật với sự kết hợp tinh tế giữa gân bò ...",
+    "position": 3
+   },
+   {
+    "title": "Phở Nhất Vị: Món Độc Lạ Quận 7",
+    "link": "https://www.tiktok.com/@vochongthaokhanh/video/7627863541357301000",
+    "snippet": "Phở Nhất Vị: Món Độc Lạ Quận 7. Khám phá Phở Nhất Vị - quán phở độc lạ nhất Quận 7 với menu đa dạng, topping chất lượng. Thử phở bò Úc best ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Phở Hùng Râu - Đặc Sản Hấp Dẫn",
+    "link": "https://www.tiktok.com/@chefhungrau/video/7404828772857335058",
+    "snippet": "4786 Lượt thích,50 Bình luận.Video TikTok từ Hùng Râu Gà Ủ Muốii (@chefhungrau): \"Tìm hiểu về phở Hùng Râu - món phở bò nổi tiếng.",
+    "position": 5
+   },
+   {
+    "title": "Khám Phá Phở Nhất Vị Tại Quận 7",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7441116764349402376",
+    "snippet": "Nay qua quận 7 ăn phở nha mọi người, đây là phở Nhất Vị nằm trên đường Nguyễn Thị Thập nhé. #phở #phở_bò #ancungtiktok #quan7angi #ductanbinh # ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Hùng Ngân 8: Trải Nghiệm Tô Phở Hoàn Hảo",
+    "link": "https://www.tiktok.com/@phohungngancs_8/video/7661466073111252240",
+    "snippet": "Tọa lạc tại khu vực Tân Phú, Sài Gòn, Phở Hùng Ngân 8 tự hào mang đến hương vị phở truyền thống đậm đà, quyến rũ. Chúng tôi cam kết sử dụng ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Bát Đá & Phở Hùng: Khám Phá Hương Vị Đặc Sắc",
+    "link": "https://www.tiktok.com/@phohanoi8/video/7657150371164327176",
+    "snippet": "Tên gọi Phở Hùng gợi lên hình ảnh về một quán ăn uy tín, nơi thực khách có thể tìm thấy những tô phở chất lượng cao, với nước dùng ngọt thanh, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

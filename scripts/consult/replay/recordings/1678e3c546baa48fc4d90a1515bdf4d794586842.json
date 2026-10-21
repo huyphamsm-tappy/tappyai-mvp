@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"SPACEP - Working & Study Space\" OR \"GEEK Hub Nguyen Dinh Chieu\" OR \"TINI COWORKING\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:13:38.529Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"SPACEP - Working & Study Space\" OR \"GEEK Hub Nguyen Dinh Chieu\" OR \"TINI COWORKING\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "TINI Coworking",
+    "link": "https://www.tiktok.com/@tini.coworking",
+    "snippet": "[Office In The Garden] Văn phòng làm việc xanh · Một buổi chiều Giáng Sinh ấm áp đã diễn ra tại TINI COWORKING #tinicoworking # · Một buổi chiều nhẹ nhàng tại ...",
+    "position": 1
+   },
+   {
+    "title": "Work Date at TINI Coworking: A Productive Experience",
+    "link": "https://www.tiktok.com/@_vmisocutie_/video/7658258378367634696",
+    "snippet": "Located at 152 Võ Văn Kiệt, TINI Coworking stands out as a place where professionalism meets natural beauty, making it an excellent choice for those seeking a ...",
+    "position": 2
+   },
+   {
+    "title": "Không gian làm việc sáng tạo tại Tini Coworking",
+    "link": "https://www.tiktok.com/@sunnynhaquynh/video/7556221732797811986",
+    "snippet": "Không gian làm việc sáng tạo tại Tini Coworking. Khám phá không gian Tini Coworking, địa điểm làm việc lý tưởng cho freelancer và startups tại ...",
+    "position": 3
+   },
+   {
+    "title": "Một buổi chiều dịu nhẹ, những bàn tay lấm đất, những chậu cây ...",
+    "link": "https://www.tiktok.com/@tini.coworking/video/7512641081067031825",
+    "snippet": "tini.coworking. TINI COWORKING. Tại TINI COWORKING Hotdesk không chỉ là một chỗ ngồi. Bạn có đầy đủ tiện ích văn phòng: pantry, gym , phòng họp,... tất cả để ...",
+    "position": 4
+   },
+   {
+    "title": "Không gian làm việc xanh hiện đại tại TINI COWORKING",
+    "link": "https://www.tiktok.com/@anchoicungthu/video/7559227099328924935",
+    "snippet": "Không gian hiện đại, xanh mát cảm hứng làm việc mỗi ngày, chọn ngay TINI COWORKING #tinicoworking #coworking #coworkingspace #quan1 #lamviec.",
+    "position": 5
+   },
+   {
+    "title": "SPACEP - Không gian học tập hiện đại tại Quận 1",
+    "link": "https://www.tiktok.com/@spacep.thestudyhub/video/7579261210621676807",
+    "snippet": "Trải nghiệm SPACEP với không gian hiện đại. @spacep.thestudyhub · nhạc nền - spacep.thestudyhub · SPACEP - Working & Study Space · author. 25.",
+    "position": 6
+   },
+   {
+    "title": "Tini Co-Working Space: Văn Phòng Trọn Gói Tại Quận 1",
+    "link": "https://www.tiktok.com/@cyberreal.vn/video/7563188162424507668",
+    "snippet": "Văn phòng trọn gói co-working space quận 1. Tini coworking. Hãy cùng cyber real khám phá khồng gian làm việc có sẵn bàn ghế nhé# ...",
+    "position": 7
+   },
+   {
+    "title": "Flexible Event Space at GEEK Hub",
+    "link": "https://www.tiktok.com/@geekhubvn/video/7579237458303257877",
+    "snippet": "Situated in the heart of Ho Chi Minh City, GEEK Hub comprises two locations: - GEEK Hub Nguyen Dinh Chieu: 27B/9 Nguyen Dinh Chieu, Sai Gon Ward ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

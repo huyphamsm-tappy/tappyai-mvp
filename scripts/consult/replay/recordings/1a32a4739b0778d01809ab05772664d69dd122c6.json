@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng có máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:08:47.984Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng có máy lạnh giá dưới 300.000 đồng/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 1
+   },
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Giá dao động: 100.000 – 300.000 VNĐ/người. Nếu bạn muốn trải nghiệm sự đa dạng của ẩm thực truyền thống Trung Quốc thì San Fu Lou chắc chắn ...",
+    "date": "30 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "Top 12 nhà hàng sang trọng Quận 1 để gặp đối tác",
+    "link": "https://www.officesaigon.vn/top-nha-hang-sang-trong-de-gap-doi-tac.html",
+    "snippet": "1. Nhà hàng Phố 79 · 2. Nhà hàng Nhật Miyen Japanese Fusion Cuisine · 3. La Brasserie Buffet Restaurant · 4. The Log Restaurant · 5. SORAE Sushi ...",
+    "date": "4 thg 5, 2026",
+    "rating": 4.8,
+    "ratingCount": 13,
+    "position": 3
+   },
+   {
+    "title": "“Ăn Sập” 15 Nhà Hàng Thủ Đức Ven Sông Ngon, Nổi ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-thu-duc",
+    "snippet": "1. Hotpot Story - Buffet lẩu Hàn, Nhật, Thái · 2. Gogi House - Nhà hàng món nướng nổi tiếng Hàn Quốc · 3. King BBQ Buffet - Chuỗi buffet nướng Hàn Quốc nổi tiếng.",
+    "position": 4
+   },
+   {
+    "title": "Các cao nhân cho em xin vài địa chỉ quán chill ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/1997604801172660/",
+    "snippet": "Tiệm cơm Nam Sơn 211 Âu-cơ, P.5, Q.11, Sài-gòn Món nào cũng ngon, giá tương đối so với mặt bằng chung cơm Tàu Tổng cộng 562,000đ cho 2 người no ...",
+    "position": 5
+   },
+   {
+    "title": "Những quán ăn ngon ở Quận 1, Sài Gòn được yêu thích nhất",
+    "link": "https://www.bestprice.vn/blog/diem-den-8/ho-chi-minh-3/nhung-quan-an-ngon-o-quan-1-sai-gon-duoc-yeu-thich-nhat_2-4077.html?srsltid=AU7gw4XPg7Tdx9EgweeWn_z9q-lxvcCKvkpZ9PtN_OPjqtQBZ4o1k8t0",
+    "snippet": "An Nam Quán · Địa chỉ: Số 59 đường Nguyễn Bỉnh Khiêm, phường Đa Kao, quận 1, TP. Hồ Chí Minh · Thời gian: 10h00 - 23h45 · Điện thoại: 0283 910 0988 · Giá tiền: ...",
+    "position": 6
+   },
+   {
+    "title": "50+ quán ăn GIA ĐÌNH TPHCM ngon nổi tiếng nhất 2026",
+    "link": "https://pasgo.vn/kham-pha/ho-chi-minh/kham-pha-10-quan-an-gia-dinh-ngon-re-hut-khach-nhat-o-tphcm-219",
+    "snippet": "1. Đặt tiệc ăn gia đình ở Quận 1, TpHCM · 1.1 Matsuri Japanese Restaurant Nguyễn Huệ - Bữa tiệc ẩm thực Nhật Bản · 1.2 Bếp Thái Koh Yam - Đồ ăn ...",
+    "date": "24 thg 6, 2026",
+    "rating": 4.8,
+    "ratingCount": 187,
+    "position": 7
+   },
+   {
+    "title": "Nhà hàng ẩm thực view sông Sài Gòn đồ ăn ngon",
+    "link": "https://www.lemon8-app.com/dunobienhoa/7179683962921550338?region=vn",
+    "snippet": "Bạn có thể lựa chọn nhiều loại hình phục vụ phù hợp với nhu cầu: set menu cao cấp với các món ăn tinh tế, buffet từ thứ Hai đến thứ Năm với mức ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

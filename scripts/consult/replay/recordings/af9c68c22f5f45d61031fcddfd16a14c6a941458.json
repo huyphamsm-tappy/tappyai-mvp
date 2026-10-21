@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Nhà hàng chay Phương Mai\" OR \"Chill Thái\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:51:37.355Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Nhà hàng chay Phương Mai\" OR \"Chill Thái\" OR \"Hàng Dương Quán Quận 1\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Nhà Hàng Chay Phương Mai (@lan.calla)",
+    "link": "https://www.tiktok.com/@lan.calla",
+    "snippet": "Nhà Hàng Chay Phương Mai · @lan.calla · Hẻm 82 nhà số 86F Võ Thị Sáu, F. Tân Định (quận 1 cũ) Tp. HCM Hotline / Zalo: 0888.339.257.",
+    "position": 1
+   },
+   {
+    "title": "Nhà hàng chay Phương Mai: Điểm đến tuyệt vời cho thực ...",
+    "link": "https://www.tiktok.com/@xiathichanchaynek/video/7523829987942763794",
+    "snippet": "Có tuổi đời hơn 10 năm, nhà hàng chay Phương Mai đã không làm mình thất vọng từ không gian cho đến chất lượng món ăn, mê chỗ này lắm mấy ní ơi!",
+    "position": 2
+   },
+   {
+    "title": "Chill Thái Ẩm Thực Thái Lan Chuẩn Vị",
+    "link": "https://www.tiktok.com/@tuancorn.laca/video/7594446010664094996",
+    "snippet": "Khám phá món ăn Thái Lan chuẩn vị tại Chill Thái, ẩm thực hấp dẫn. @Tuấn Corn La Cà.",
+    "position": 3
+   },
+   {
+    "title": "Mookata chuẩn Thái tại Chill Thái (163 Cô Giang)",
+    "link": "https://www.tiktok.com/@1phut_saigon/video/7686036233746730248",
+    "snippet": "Keywords: Chill Thái 163 Cô Giang, Mookata chuẩn Thái, buffet Mookata 120 phút, buffet 249/người, quán mở 11h-22h, giờ đông 18h30-20h, không ...",
+    "position": 4
+   },
+   {
+    "title": "Chill Thái - Thai food (@chillthai_thaifood)",
+    "link": "https://www.tiktok.com/@chillthai_thaifood",
+    "snippet": "Chill Thái - Thai food (@chillthai_thaifood) trên TikTok |31.2K Lượt thích.4566 Follower.✨ MÓN THÁI NGON CHUẨN VỊ ☎️ 090 536 32 86.",
+    "position": 5
+   },
+   {
+    "title": "Chill Thái gợi ý khách thương “thời khoá biểu ẩm thực” cho ...",
+    "link": "https://www.tiktok.com/@chillthai_thaifood/video/7675586884885564680",
+    "snippet": "Chill Thái gợi ý khách thương “thời khoá biểu ẩm thực” cho cả tuần lao động hăng say! 🎖️ Lưu ngay \"thời khoá biểu\" này để không bỏ lỡ tuyệt ...",
+    "position": 6
+   },
+   {
+    "title": "âm thanh gốc - Nhà Hàng Chay Phương Mai",
+    "link": "https://www.tiktok.com/music/%C3%A2m-thanh-g%E1%BB%91c-Nh%C3%A0-H%C3%A0ng-Chay-Ph%C6%B0%C6%A1ng-Mai-7666888284526365456",
+    "snippet": "Bài hát âm thanh gốc - Nhà Hàng Chay Phương Mai do Nhà Hàng Chay Phương Mai sáng tác. Xem video mới nhất về âm thanh gốc - Nhà Hàng Chay Phương Mai trên ...",
+    "position": 7
+   },
+   {
+    "title": "... thẩm nhiênG...❤️ #nhahangchayphuongmai # ...",
+    "link": "https://www.tiktok.com/@lan.calla/video/7555731554866040072",
+    "snippet": "218 Lượt thích,Video TikTok từ Nhà Hàng Chay Phương Mai (@lan.calla): \"... thẩm nhiênG...❤️ #nhahangchayphuongmai #vegetarianrestaurant ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

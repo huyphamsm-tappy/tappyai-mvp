@@ -1,4 +1,6 @@
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { publicRateLimit } from '@/lib/security/publicRateLimit'
+import { rateLimitedResponse } from '@/lib/security/rateLimitResponse'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { NextRequest, NextResponse } from 'next/server'
 import { emitNotification } from '@/lib/notifications/emit'
@@ -18,6 +20,10 @@ export async function POST(
   // B17 — an anonymous session is authenticated but is not an account; social writes need one.
   const anonRefusal = refuseAnonymousSocialWrite(req, user)
   if (anonRefusal) return anonRefusal
+
+  // SEC4 slice 5b: a toggle that pushes to the review owner had no limiter. 60 per minute per user (a proposal; no previous limit existed).
+  const rl = await publicRateLimit(`like:${user.id}`, 60, 60_000)
+  if (!rl.ok) return rateLimitedResponse(req, rl, 'review_like')
 
   const reviewId = params.id
 

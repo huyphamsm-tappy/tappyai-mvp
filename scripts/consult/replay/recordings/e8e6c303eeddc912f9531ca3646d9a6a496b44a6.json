@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:*.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 cấp mới cấp lại Thông tư lệ phí",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:52.993Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:*.gov.vn lệ phí cấp hộ chiếu phổ thông 2026 cấp mới cấp lại Thông tư lệ phí",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Miễn thu phí thẩm định hồ sơ cấp Giấy chứng nhận quyền sử ...",
+    "link": "https://danang.gov.vn/w/mien-thu-phi-tham-dinh-ho-so-cap-giay-chung-nhan-quyen-su-dung-dat-khi-chuyen-doi-giay-to-do-sap-xep-don-vi-hanh-chinh",
+    "snippet": "HĐND thành phố ban hành Nghị quyết 10/2025/NQ-HĐND ngày 11-12-2025 quy định về việc miễn thu phí thẩm định hồ sơ cấp Giấy chứng nhận quyền sử dụng đất và lệ ...",
+    "position": 1
+   },
+   {
+    "title": "Hồ sơ dự thảo Quyết định ban hành Quy chế bảo vệ bí mật ...",
+    "link": "https://congan.hungyen.gov.vn/ho-so-du-thao-quyet-dinh-ban-hanh-quy-che-bao-ve-bi-mat-nha-nuoc-tren-dia-ban-tinh-hung-yen-c238625.html",
+    "snippet": "Hồ sơ dự thảo Quyết định ban hành Quy chế bảo vệ bí mật nhà nước trên địa bàn tỉnh Hưng Yên.",
+    "position": 2
+   },
+   {
+    "title": "Miễn 100% lệ phí cấp hộ chiếu cho công dân đáp ứng đủ ...",
+    "link": "https://conganthanhhoa.gov.vn/de-an-06/mien-100-le-phi-cap-ho-chieu-cho-cong-dan-dap-ung-du-dieu-kien-tren-vneid.html",
+    "snippet": "Theo quy định hiện hành, lệ phí cấp hộ chiếu đang được giảm 50% đến hết ngày 31/12/2026. Cụ thể, mức thu đối với trường hợp cấp mới là 100.000 ...",
+    "date": "14 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Thủ tục: Khôi phục giá trị sử dụng hộ chiếu phổ thông thực ...",
+    "link": "https://congan.tayninh.gov.vn/vi/thu-tuc-hanh-chinh/chi-tiet-207",
+    "snippet": "Khôi phục giá trị sử dụng hộ chiếu phổ thông thực hiện tại Công an cấp tỉnh. 2.1.1. Đối tượng áp dụng: Công dân Việt Nam được cấp hộ chiếu phổ thông đã bị ...",
+    "position": 4
+   },
+   {
+    "title": "Quy định mới về thu phí, lệ phí xuất nhập cảnh có hiệu lực ...",
+    "link": "https://congan.ninhbinh.gov.vn/quy-dinh-moi-ve-thu-phi-le-phi-xuat-nhap-canh-co-hieu-luc-tu-ngay-0142026",
+    "snippet": "Quy định mới về thu phí, lệ phí xuất nhập cảnh có hiệu lực từ ngày 01/4/2026. ; a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000.",
+    "date": "3 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "- Cấp lại do bị hỏng hoặc bị mất: 400.000 đồng/lần cấp. - Gia hạn hộ chiếu (ngoại giao, công vụ): 100.000 đồng/lần cấp. - Cấp giấy xác nhận nhân ...",
+    "date": "29 thg 9, 2026",
+    "position": 6
+   },
+   {
+    "title": "Áp dụng mức thu phí, lệ phí mới trong lĩnh vực xuất nhập ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=268107",
+    "snippet": "... thông hành: Cấp mới hộ chiếu: 200.000 đồng/lần cấp. ​Cấp lại hộ chiếu (do bị hỏng hoặc mất): 400.000 đồng/lần cấp. ​. Giấy thông hành biên giới Việt Nam ...",
+    "position": 7
+   },
+   {
+    "title": "NHẬP CẢNH, QUÁ CẢNH, CƯ TRÚ TẠI VIỆT NAM",
+    "link": "https://tphcm.gdt.gov.vn/wps/wcm/connect/TPHCM/site/news/cucthue/c03bc103-78a6-4cdb-b4a9-2dcbe9ef3ea1?presentationTemplate=Lib/pt_new_detail_print",
+    "snippet": "a. Cấp giấy phép xuất cảnh. 200.000 ; b. Cấp công hàm xin thị thực. 10.000 ; c. Cấp thẻ ABTC cho doanh nhân Việt Nam ; - Cấp mới. 840.000 ; - Cấp lại. 700.000.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

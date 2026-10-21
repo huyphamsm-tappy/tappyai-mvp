@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Axcela Vietnam\" OR \"TESOL TOEIC IELTS\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:23:03.192Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Trung tâm tiếng Anh Simple (Simple English) Quận 10\" OR \"Axcela Vietnam\" OR \"TESOL TOEIC IELTS\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Trung tâm tiếng Anh Simple (Simple English) Quận 10",
+    "link": "https://www.tiktok.com/place/Trung-t%C3%A2m-ti%E1%BA%BFng-Anh-Simple-Simple-English-21568226382904425?lang=ro-RO&language=ro-RO",
+    "snippet": "Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng. 648 videoclipuri. 609 Đ. 3 Tháng 2, Phường 8, Quận ...",
+    "date": "10 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "NHƯ NHỮNG VÌ TINH TÚ trong tiếng Anh là gì ...",
+    "link": "https://www.tiktok.com/@mshuyenphatam/video/7445219563333012754",
+    "snippet": "Huyền Phát Âm · nhạc nền - Ms. Huyền Phát Âm · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author.",
+    "position": 2
+   },
+   {
+    "title": "NÍN trong tiếng Anh là gì? Tìm hiểu ngay!",
+    "link": "https://www.tiktok.com/@luathoaquaa/video/7435522790742183176",
+    "snippet": "@Luật hoa quả · nhạc nền - Luật hoa quả · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author.",
+    "position": 3
+   },
+   {
+    "title": "Tràn Bộ Nhớ Tiếng Anh Học Từ Vựng Dễ Dàng",
+    "link": "https://www.tiktok.com/@mshuyenphatam/video/7442181488080129287",
+    "snippet": "Học từ vựng. @Ms. Huyền Phát Âm · nhạc nền - Ms. Huyền Phát Âm · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng.",
+    "position": 4
+   },
+   {
+    "title": "Để nói không chịu nỗi việc gì đó bằng \"CAN'T STAND ...",
+    "link": "https://www.tiktok.com/@sang.chloe/video/7343092223422041362",
+    "snippet": "nhạc nền - Sang.chloe (Simple English) · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author. 719.",
+    "position": 5
+   },
+   {
+    "title": "TÍNH TIỀN trong tiếng Anh thì dùng thế nào ta? Học với ...",
+    "link": "https://www.tiktok.com/@thaytrantrinhtuong/video/7351657770103442690",
+    "snippet": "@Tiếng Anh U30 · nhạc nền - Tiếng Anh U30 · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author.",
+    "position": 6
+   },
+   {
+    "title": "Cấu trúc 'Have/Has something done' trong tiếng Anh",
+    "link": "https://www.tiktok.com/@mshuyenphatam/video/7394337392628469008",
+    "snippet": "Huyền Phát Âm · nhạc nền - Ms. Huyền Phát Âm · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author.",
+    "position": 7
+   },
+   {
+    "title": "Từ vựng tiếng Anh về NGỦ TRƯA - Học cùng Mr. Luật",
+    "link": "https://www.tiktok.com/@luathoaquaa/video/7423281517339757832",
+    "snippet": "@Luật hoa quả · nhạc nền - Luật hoa quả · Trung tâm tiếng Anh Simple (Simple English) Quận 10 - Học tiếng Anh giao tiếp chất lượng · author.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

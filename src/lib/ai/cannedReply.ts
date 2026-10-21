@@ -28,20 +28,20 @@ const LAUGH = /^(haha|hehe|hihi)(\s+(ban|tappy|nhe|nha|a|oi))*\s*[!.,?~…]*$/
 
 const COPY = {
   vi: {
-    greeting: 'Chào bạn! Mình là Tappy 👋 Bạn muốn tìm quán ăn, spa, chỗ đi chơi, mua gì hay lên kế hoạch đi đâu? Cứ nói tự nhiên nhé.',
+    greeting: 'Chào bạn! Mình là Tappy 👋 Bạn cứ hỏi bất cứ điều gì: một quyết định đang phân vân, chuyện công việc hay học tập, tiền bạc, một kiến thức cần hiểu — hay tìm chỗ đi, mua gì, lên kế hoạch cho chuyến đi. Cứ nói tự nhiên nhé.',
     thanks: 'Không có gì! Cần gì cứ hỏi mình nhé 😊',
-    ack: 'Ok! Bạn cần mình tìm gì tiếp không?',
+    ack: 'Ok! Bạn cần mình giúp gì tiếp không?',
     bye: 'Tạm biệt, hẹn gặp lại bạn 👋',
-    laugh: '😄 Cần mình gợi ý gì không?',
-    chips: '[FOLLOWUPS]Tìm quán ăn gần đây|Lên kế hoạch cuối tuần|Gợi ý spa[/FOLLOWUPS]',
+    laugh: '😄 Cần mình giúp gì không?',
+    chips: '[FOLLOWUPS]Tư vấn một quyết định|Giải thích giúp mình một vấn đề|Lên kế hoạch cuối tuần[/FOLLOWUPS]',
   },
   en: {
-    greeting: "Hi! I'm Tappy 👋 Looking for a place to eat, a spa, something to do, something to buy, or a trip plan? Just ask.",
+    greeting: "Hi! I'm Tappy 👋 Ask me anything: a decision you're torn about, work or study, money, something you want explained — or finding a place, something to buy, a trip plan. Just say it naturally.",
     thanks: "You're welcome! Ask me anything else 😊",
-    ack: 'Ok! Anything else you want me to find?',
+    ack: 'Ok! Anything else I can help with?',
     bye: 'Bye, see you soon 👋',
-    laugh: '😄 Want a suggestion?',
-    chips: '[FOLLOWUPS]Food near me|Plan my weekend|Spa ideas[/FOLLOWUPS]',
+    laugh: '😄 Anything I can help with?',
+    chips: '[FOLLOWUPS]Help me decide something|Explain something to me|Plan my weekend[/FOLLOWUPS]',
   },
 } as const
 

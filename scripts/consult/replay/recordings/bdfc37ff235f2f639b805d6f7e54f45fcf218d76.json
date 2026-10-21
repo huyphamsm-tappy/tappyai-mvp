@@ -1,0 +1,52 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "dẫn truyền Tai đôi thể thao chống thấm nước để chạy bộ thể thao site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:34:01.926Z",
+ "body": {
+  "searchParameters": {
+   "q": "dẫn truyền Tai đôi thể thao chống thấm nước để chạy bộ thể thao site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai Nghe Bluetooth, Voice of Berlin, Màn Hình Hiển Thị Kỹ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-bluetooth-voice-of-berlin-chong-tham-nuoc-am-thanh-noi/1732926129960420653",
+    "snippet": "Tai Nghe Bluetooth, Voice of Berlin, Màn Hình Hiển Thị Kỹ Thuật Số Mới, Chống Thấm Nước, Âm Thanh Nổi Song Phương, Đeo Xương Tai, Không Dây, Thích Hợp Cho ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Máy lọc nước, máy lọc và bảo quản",
+    "link": "https://shop.tiktok.com/vn/c/water-filters-purifiers-storage/1000200",
+    "snippet": "Bộ 2 chai nước lớn dung tích 5 L/7,5 L (tương đương 3 gallon), phù hợp cho phòng tập thể dục, thể thao, du lịch, gia đình, cắm trại, leo núi và sử dụng tại nhà; ...",
+    "position": 2
+   },
+   {
+    "title": "KY66 Tai Nghe Kẹp Tai, Thiết kế cầu chữ C, Công nghệ ...",
+    "link": "https://shop.tiktok.com/vn/pdp/tai-nghe-kep-ky66-thiet-ke-cau-chu-c-am-thanh-hifi/1732088768424347902",
+    "snippet": "Bật điện thoại Bluetooth lên. ·. Nhấn nút ở mặt sau của hộp sạc để bật. Mở hộp sạc và Lấy chồi ra. Các chồi ...",
+    "rating": 4.5,
+    "ratingCount": 15285,
+    "position": 3
+   },
+   {
+    "title": "[COZII MART] Xe Tập Đi Có Nhạc Cho Bé – Thiết Kế An ...",
+    "link": "https://shop.tiktok.com/vn/pdp/xe-%C4%91ay-tap-%C4%91i-co-nhac-cho-be-thiet-ke-ben-an-toan/1731178057129036533",
+    "snippet": "ĐẶC ĐIỂM SẢN PHẨM:Xe tập đi có thiết kế vững chắc mang lại sự chắc chắn và an toàn hơn so với các loại dòng xe gập chân khác, bởi khi gặp chướng ngại vật ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

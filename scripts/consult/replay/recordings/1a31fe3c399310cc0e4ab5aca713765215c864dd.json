@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.bocongan.gov.vn lệ phí cấp hộ chiếu 2026 cấp trực tuyến",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:02:21.808Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.bocongan.gov.vn lệ phí cấp hộ chiếu 2026 cấp trực tuyến",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=29497",
+    "snippet": "* Người đề nghị cấp hộ chiếu phổ thông có thể yêu cầu nhận kết quả qua dịch vụ bưu chính và phải trả phí dịch vụ chuyển phát. * Thời gian tiếp nhận hồ sơ: Từ ...",
+    "position": 1
+   },
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26270",
+    "snippet": "160.000 đồng/hộ chiếu. Trường hợp cấp lại do bị hỏng hoặc bị mất: 320.000/hộ chiếu (Thông tư số 44/2023/TT-BTC ngày 29/6/2023 của Bộ Tài chính).",
+    "position": 2
+   },
+   {
+    "title": "Hướng dẫn về dịch vụ công trực tuyến Cấp hộ chiếu phổ ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=42",
+    "snippet": "- Có khả năng thanh toán lệ phí trực tuyến. 2. Người đề nghị cấp hộ chiếu điền đầy đủ thông tin, gửi ảnh chân dung và giấy tờ liên quan theo quy định tại mục 2.",
+    "position": 3
+   },
+   {
+    "title": "Trang chủ Cấp hộ chiếu phổ thông có gắn chíp ... - Dịch vụ công",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35572",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông có gắn chíp điện tử trực tiếp nộp hồ sơ vào giờ ...",
+    "position": 4
+   },
+   {
+    "title": "Trình báo mất hộ chiếu phổ thông (thực hiện tại cấp tỉnh)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=35714",
+    "snippet": "* Cán bộ tiếp nhận hồ sơ kiểm tra tính pháp lý và nội dung hồ sơ: + Nếu hồ sơ đầy đủ, hợp lệ thì tiếp nhận. + Nếu hồ sơ chưa hợp lệ thì hướng dẫn người bị mất ...",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn quy chuẩn ảnh - Dịch vụ công - Bộ Công an",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/tintuc/chitiet?matin=41",
+    "snippet": "Ảnh do quý vị sử dụng khi đăng ký hồ sơ sẽ được in trên hộ chiếu. · - Ảnh mới chụp (không quá 6 tháng); · - Tỉ lệ ảnh: rộng x dài = 4 x 6; · - Tỉ lệ diện tích ...",
+    "position": 6
+   },
+   {
+    "title": "Trình báo mất hộ chiếu phổ thông (thực hiện tại cấp trung ương)",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=26256",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Công dân Việt Nam bị mất hộ chiếu phổ thông ở trong nước thực hiện việc trình báo ...",
+    "position": 7
+   },
+   {
+    "title": "Cấp thẻ tạm trú cho người nước ngoài tại Việt Nam tại Công ...",
+    "link": "https://dichvucong.bocongan.gov.vn/bocongan/bothutuc/tthc?matt=52392",
+    "snippet": "Thẻ tạm trú có thời hạn không quá 02 năm: 145 USD/thẻ. Thẻ tạm trú có thời hạn từ trên 02 năm đến 05 năm: 155 USD/thẻ. Thẻ tạm trú có thời hạn từ trên 05 năm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

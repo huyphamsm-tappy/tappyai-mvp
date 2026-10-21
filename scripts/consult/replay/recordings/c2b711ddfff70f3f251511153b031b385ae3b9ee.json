@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Rakuen Hotpot\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:10:19.349Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Rakuen Hotpot\" OR \"Năm Giờ Chiều\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Buffet Lẩu Ngon Tại Rakuen Hotpot",
+    "link": "https://www.tiktok.com/@neooididau/video/7513553994774564104",
+    "snippet": "Buffet Lẩu Ngon Tại Rakuen Hotpot. Khám phá buffet lẩu tại Rakuen Hotpot với nhiều món ngon hấp dẫn. Đánh giá và trải nghiệm ẩm thực không ...",
+    "position": 1
+   },
+   {
+    "title": "Buffet Hấp Dẫn Tại Rakuen Hotpot Quận 3",
+    "link": "https://www.tiktok.com/@saigondulich/video/7208399771403291930",
+    "snippet": "Rakuen Hotpot, 483 Lê Văn Sỹ, phường 12, Quận 3, Tp Hồ Chí Minh. Giá buffet: 339k, 279k, 219k, 165k. Đồ ăn ngon, máy lạnh mát tê người ^^ 2 ...",
+    "position": 2
+   },
+   {
+    "title": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát ...",
+    "link": "https://www.tiktok.com/@baobaolovefood/video/7642281876312296724",
+    "snippet": "Năm giờ chiều rồi, tìm được một quán “núp hẻm” xanh mát, nhẹ nhàng, món ngon dân dã thiệt là đã #reviewanngon ##ancungtiktok #sinhtoluamach # ...",
+    "position": 3
+   },
+   {
+    "title": "Năm Giờ Chiều — Ca Nô Lặng Lẽ Về Bờ ngày 17",
+    "link": "https://www.tiktok.com/@nhvnews/video/7677182667074407701",
+    "snippet": "Bản ghi mô tả khoảnh khắc ca nô cập bến vào giờ chiều và ý câu văn chủ đạo: 'phép màu vẫn chưa thể xuất hiện'. Keywords: Năm Giờ Chiều, ca nô ...",
+    "position": 4
+   },
+   {
+    "title": "Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi",
+    "link": "https://www.tiktok.com/@247h2n/video/7686737416270531861",
+    "snippet": "Trả lời @hải lão đại Sau Năm Giờ Chiều / Ma Đề Ơi - Remix / Nhạc Chế Tổng Hợp / Nhạc chế hay / Nỗi Buồn 3 Con Số #madeoi #nhacche #hoabanglang # ...",
+    "position": 5
+   },
+   {
+    "title": "Đi 2-3 người nên gọi Set nướng nào cho tiện 🤔 ...",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill/video/7675722179421801748",
+    "snippet": "Video TikTok từ Năm Giờ Chiều (@namgiochieu_ngoichill): \"Đi 2-3 người nên gọi Set nướng nào cho tiện #namgiochieu #nhauchill #saigon ...",
+    "position": 6
+   },
+   {
+    "title": "Trả lời @D.NgOanhh🤍 Năm giờ chiều hôm nay đi sự kiện ...",
+    "link": "https://www.tiktok.com/@nguyenhien98386/video/7686089069826280724",
+    "snippet": "Trả lời @D.NgOanhh Năm giờ chiều hôm nay đi sự kiện hợp tác gà no nào mấy mom @Tui Bánh Mì đây #gluthatione_trắng_da_toàn_thân600mg # ...",
+    "position": 7
+   },
+   {
+    "title": "Năm Giờ Chiều (@namgiochieu_ngoichill)",
+    "link": "https://www.tiktok.com/@namgiochieu_ngoichill",
+    "snippet": "Năm Giờ Chiều (@namgiochieu_ngoichill) trên TikTok |Mồi ngon & Ngồi chill 20/4 Kỳ Đồng (Q3 cũ) Hotline đặt bàn: 092 309 1368.Xem video mới nhất từ Năm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

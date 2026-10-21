@@ -7,6 +7,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation'
 import { ArrowLeft, Send, Loader2, Users } from 'lucide-react'
 import { threadTitle, type ChatMessage, type ChatThreadSummary } from '@/lib/messaging/types'
 import { useMessages } from './MessagesProvider'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 export default function ThreadView({
   thread,
@@ -16,11 +17,23 @@ export default function ThreadView({
   onBack: () => void
 }) {
   const { t } = useTranslation()
+  // `t` is a NEW function on every render. Used as an effect dependency it re-ran the history fetch (and cleared the list) after every
+  // render of this component; the effect reads it through a ref so it depends on the thread and the retry key only.
+  const tRef = useRef(t)
+  tRef.current = t
   const { meId, markThreadRead, subscribeToIncoming, refetch } = useMessages()
 
   const [messages, setMessages] = useState<ChatMessage[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  // The first page of history could not be read (distinct from a failed SEND, which keeps the draft).
+  const [loadFailed, setLoadFailed] = useState(false)
+  const [reloadKey, setReloadKey] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
+  const [loadingOlder, setLoadingOlder] = useState(false)
+  const [olderFailed, setOlderFailed] = useState(false)
+  // Prepending older rows must neither jump to the bottom nor lose the reader's place.
+  const keepPosition = useRef<{ top: number; height: number } | null>(null)
   const [draft, setDraft] = useState('')
   const [sending, setSending] = useState(false)
 
@@ -41,17 +54,20 @@ export default function ThreadView({
     let cancelled = false
     setLoading(true)
     setError(null)
+    setLoadFailed(false)
+    setOlderFailed(false)
+    setHasMore(false)
     setMessages([])
     fetch(`/api/messaging/threads/${thread.id}/messages`)
       .then(async r => {
         if (!r.ok) throw new Error(String(r.status))
         return r.json()
       })
-      .then(d => { if (!cancelled) setMessages(d.messages ?? []) })
-      .catch(() => { if (!cancelled) setError(t('v3.msg.error')) })
+      .then(d => { if (!cancelled) { setMessages(d.messages ?? []); setHasMore(d.hasMore === true) } })
+      .catch(() => { if (!cancelled) { setError(tRef.current('v3.msg.error')); setLoadFailed(true) } })
       .finally(() => { if (!cancelled) setLoading(false) })
     return () => { cancelled = true }
-  }, [thread.id, t])
+  }, [thread.id, reloadKey])
 
   useEffect(() => {
     void markThreadRead(thread.id)
@@ -74,8 +90,41 @@ export default function ThreadView({
   }, [thread.id, meId, subscribeToIncoming, markThreadRead])
 
   useEffect(() => {
+    const keep = keepPosition.current
+    if (keep && scrollRef.current) {
+      // older rows were prepended: keep the message the reader was looking at where it was
+      keepPosition.current = null
+      scrollRef.current.scrollTop = keep.top + (scrollRef.current.scrollHeight - keep.height)
+      return
+    }
     bottomRef.current?.scrollIntoView({ block: 'end' })
   }, [messages.length])
+
+  /** One older page, cursor = the oldest message already shown. Ids already on screen are never added twice. */
+  const loadOlder = useCallback(async () => {
+    const oldest = messages[0]
+    if (!oldest || loadingOlder) return
+    setLoadingOlder(true)
+    setOlderFailed(false)
+    try {
+      const r = await fetch(`/api/messaging/threads/${thread.id}/messages?before=${encodeURIComponent(oldest.createdAt)}`)
+      if (!r.ok) throw new Error(String(r.status))
+      const d = await r.json()
+      const older: ChatMessage[] = d.messages ?? []
+      if (scrollRef.current) keepPosition.current = { top: scrollRef.current.scrollTop, height: scrollRef.current.scrollHeight }
+      setMessages(prev => {
+        const seen = new Set(prev.map(m => m.id))
+        const fresh = older.filter(m => !seen.has(m.id))
+        if (fresh.length === 0) keepPosition.current = null
+        return fresh.length ? [...fresh, ...prev] : prev
+      })
+      setHasMore(d.hasMore === true)
+    } catch {
+      setOlderFailed(true)
+    } finally {
+      setLoadingOlder(false)
+    }
+  }, [messages, loadingOlder, thread.id])
 
   const send = useCallback(async () => {
     const body = draft.trim()
@@ -144,6 +193,10 @@ export default function ThreadView({
             </p>
           )}
         </div>
+        {/* WP-06 — report / block the other person of a 1:1 thread. A block closes the thread server-side (chat_thread_blocked, 20261018); leaving the view is the client's part. */}
+        {thread.kind !== 'group' && other && (
+          <SafetyMenu className="ml-auto" report={{ target: 'user', id: other.userId }} user={{ id: other.userId, name: title }} onBlockedChange={(b) => { if (b) onBack() }} />
+        )}
       </div>
 
       {/* ── Messages ── */}
@@ -152,12 +205,38 @@ export default function ThreadView({
           <div className="flex justify-center py-8">
             <Loader2 size={22} className="animate-spin" style={{ color: 'var(--v3-accent)' }} />
           </div>
+        ) : loadFailed && messages.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 py-8">
+            <button
+              type="button"
+              onClick={() => setReloadKey(k => k + 1)}
+              className="min-h-[38px] rounded-xl px-4 text-[13px] font-semibold"
+              style={{ background: 'var(--v3-accent-fill)', color: 'var(--v3-on-accent)' }}
+            >
+              {t('v3.msg.retry')}
+            </button>
+          </div>
         ) : messages.length === 0 ? (
           <p className="py-8 text-center text-[13px]" style={{ color: 'var(--v3-fg-muted)' }}>
             {t('v3.msg.noMessages')}
           </p>
         ) : (
-          messages.map(message => {
+          <>
+          {hasMore && (
+            <div className="flex flex-col items-center gap-1 pb-2">
+              <button
+                type="button"
+                onClick={() => void loadOlder()}
+                disabled={loadingOlder}
+                className="min-h-[34px] rounded-xl px-3 text-[12.5px] font-semibold disabled:opacity-50"
+                style={{ color: 'var(--v3-accent)' }}
+              >
+                {loadingOlder ? <Loader2 size={16} className="animate-spin" /> : t('v3.msg.loadOlder')}
+              </button>
+              {olderFailed && <p role="alert" className="text-[12px]" style={{ color: 'var(--v3-rose)' }}>{t('v3.msg.error')}</p>}
+            </div>
+          )}
+          {messages.map(message => {
             const mine = message.senderId === meId
             return (
               <div key={message.id} className={`flex ${mine ? 'justify-end' : 'justify-start'}`}>
@@ -172,7 +251,8 @@ export default function ThreadView({
                 </div>
               </div>
             )
-          })
+          })}
+          </>
         )}
         <div ref={bottomRef} />
       </div>

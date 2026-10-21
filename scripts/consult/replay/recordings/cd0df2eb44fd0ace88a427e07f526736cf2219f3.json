@@ -1,0 +1,84 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 15 128GB\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:43.813Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 15 128GB\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 thường 128GB chính hãng VN/A, giá tốt T10/2026",
+    "link": "https://cellphones.com.vn/iphone-15.html",
+    "snippet": "iPhone 15 128GB | Chính hãng VN/A ; Lên đời chỉ từ 16.790.000đ ; Trợ giá đến 3.000.000đ ; Trả góp 0% ; Hiệu năng. 5/5. (56 đánh giá) ; Thời lượng pin. 4.9/5. (56 ...",
+    "rating": 4.9,
+    "ratingCount": 102,
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 128GB - Cũ Trầy Xước | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-cu-tray-xuoc.html",
+    "snippet": "iPhone 15 128GB cũ trầy xước sở hữu màn hình Super Retina XDR hiện đại với kích thước hiển thị đạt tới 6.1 inch, mang đến trải nghiệm hình ảnh rõ nét. Máy vẫn ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 128GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-cu-dep.html",
+    "snippet": "iPhone 15 128GB - Cũ Đẹp ; Lên đời chỉ từ 12.840.000đ ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 14.990.000đ ; Lưu ý · Giá thu mua áp dụng cho ...",
+    "rating": 5,
+    "ratingCount": 16,
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 128GB - Đã Kích Hoạt | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-chinh-hang-cu-da-kich-hoat.html",
+    "snippet": "iPhone 15 128GB đã kích hoạt chuẩn VN/A sở hữu màn hình Super Retina XDR 6.1 inch, với chip A16 Bionic, cùng viên pin có dung lượng lớn và sạc 20W. Thiết bị ...",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 viền gì? Chất liệu khung viền có gì đặc biệt?",
+    "link": "https://cellphones.com.vn/sforum/iphone-15-vien-gi",
+    "snippet": "Trả góp 0%. iPhone 15 128GB | Chính hãng VN/A. 19.990.000đ22.990.000đ. Smember giảm thêm 200.000đ. Khuyến mãi ...",
+    "date": "15 thg 7, 2026",
+    "position": 5
+   },
+   {
+    "title": "Cấu hình iPhone 15: Sử dụng chip gì, hiệu năng ra sao?",
+    "link": "https://cellphones.com.vn/sforum/cau-hinh-iphone-15",
+    "snippet": "iPhone 15 128GB | Chính hãng VN/A. 19.990.000đ22.990.000đ. Smember giảm thêm 200.000đ. Khuyến mãi hấp dẫn.",
+    "date": "28 thg 4, 2026",
+    "position": 6
+   },
+   {
+    "title": "iPhone 15 128GB - Cũ Xước Cấn | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-15-cu-xuoc-can.html",
+    "snippet": "iPhone 15 128GB - Cũ Xước Cấn ; Trợ giá đến 2.000.000đ ; Trả góp 0% ; Giá sản phẩm. 22.990.000đ 13.490.000đ ; Lưu ý · Giá thu mua áp dụng cho dung lượng pin >= 90% & ...",
+    "position": 7
+   },
+   {
+    "title": "So sánh iPhone 13 và iPhone 15: Apple mang đến khác ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-iphone-13-va-iphone-15",
+    "snippet": "So sánh Samsung Galaxy Z Fold7 vs iPhone 15 Pro Max: Siêu phẩm nào \"ngon\" hơn? Trả góp 0%. iPhone 15 128GB | Chính hãng VN/A.",
+    "rating": 1,
+    "ratingCount": 2,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

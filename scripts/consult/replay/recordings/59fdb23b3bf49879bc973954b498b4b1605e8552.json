@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn MacBook Air M1 thông số kỹ thuật kiểm tra máy cũ Activation Lock",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:14:08.163Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn MacBook Air M1 thông số kỹ thuật kiểm tra máy cũ Activation Lock",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "‎Ứng dụng PingOps: Uptime Monitor - App Store",
+    "link": "https://apps.apple.com/vn/app/pingops/id6764717534?l=vi",
+    "snippet": "Yêu cầu iOS 18.0 trở lên. iPhone. Yêu cầu iOS 18.0 trở lên. iPad. Yêu cầu iPadOS 18.0 trở lên. Máy Mac Yêu cầu macOS 15.0 trở lên và máy Mac có chip Apple M1 ...",
+    "position": 1
+   },
+   {
+    "title": "InfiniteX2P - Multitasking - App Store - Apple",
+    "link": "https://apps.apple.com/vn/app/infinitex2p-multitasking/id1641611945",
+    "snippet": "InfiniteX2P is the only app in the world that transforms your iPhone and iPad into a true desktop-class multitasking device — continuously evolving with ...",
+    "rating": 4,
+    "ratingCount": 2,
+    "position": 2
+   },
+   {
+    "title": "SnapTune for Intune - App Store - Apple",
+    "link": "https://apps.apple.com/vn/app/snaptune-for-intune/id6742466852",
+    "snippet": "Now with in-app PIM role activation, smarter device health insights, and a redesigned reports dashboard. Manage your Intune fleet from anywhere in seconds.",
+    "position": 3
+   },
+   {
+    "title": "Claudette Echo - App Store",
+    "link": "https://apps.apple.com/vn/app/claudette-echo/id6759467788",
+    "snippet": "talk to Claude Code while you walk, drive, or cook. Claudette is the only way to pair-program with AI using your voice. No keyboard needed.",
+    "date": "Voice coding",
+    "position": 4
+   },
+   {
+    "title": "‎Ứng dụng SnapTune for Intune - App Store",
+    "link": "https://apps.apple.com/vn/app/snaptune-for-intune/id6742466852?l=vi",
+    "snippet": "Yêu cầu iOS 16.4 trở lên. iPhone. Yêu cầu iOS 16.4 trở lên. iPad. Yêu cầu iPadOS 16.4 trở lên. Máy Mac Yêu cầu macOS 13.3 trở lên và máy Mac có chip Apple M1 ...",
+    "position": 5
+   },
+   {
+    "title": "‎Ứng dụng Claudette Echo - App Store",
+    "link": "https://apps.apple.com/vn/app/claudette-echo/id6759467788?l=vi",
+    "snippet": "Claudette Echo ; Độ tuổi. 00+. Tuổi ; Danh mục. Công Cụ Nhà Phát Triển ; Nhà phát triển. Olorin.ai LLC ; Ngôn ngữ. BN. + 9 ngôn ngữ ; Kích cỡ. 25,9. MB.",
+    "position": 6
+   },
+   {
+    "title": "Frostpunk 2 - App Store",
+    "link": "https://apps.apple.com/vn/app/frostpunk-2/id6477945288?mt=12",
+    "snippet": "Requires macOS 14.5 or later and a Mac with Apple M1 chip or later. Mac Requires macOS 14.5 or later and a Mac with Apple M1 chip or later. Languages.",
+    "position": 7
+   },
+   {
+    "title": "‎Ứng dụng Frostpunk 2 - App Store - Apple",
+    "link": "https://apps.apple.com/vn/app/frostpunk-2/id6477945288?l=vi",
+    "snippet": "Thông Tin. Nhà cung cấp. 11 bit studios s.a.. Kích cỡ. 15,6 GB. Danh mục. Chiến Thuật. Tương thích: Yêu cầu macOS 14.5 trở lên và máy Mac có chip Apple M1 trở ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

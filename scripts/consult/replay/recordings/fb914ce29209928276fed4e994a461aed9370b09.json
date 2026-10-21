@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com AirPods Pro 2 water resistance IPX4 charging case",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:44:48.915Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com AirPods Pro 2 water resistance IPX4 charging case",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "About the sweat and water resistance of AirPods Pro ...",
+    "link": "https://support.apple.com/en-us/105046",
+    "snippet": "The AirPods and charging case for these models are sweat and water resistant for non-water sports and exercise, and have a rating of IPX4 under ...",
+    "date": "17 thg 9, 2026",
+    "position": 1
+   },
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro and charging case were tested under controlled laboratory conditions, and have a rating of IPX4 under IEC standard 60529. Sweat and water resistance ...",
+    "position": 2
+   },
+   {
+    "title": "AirPods Pro 3 - Technical Specifications",
+    "link": "https://www.apple.com/airpods-pro/specs/",
+    "snippet": "Dust, Sweat, and Water Resistant. Dust, sweat, and water resistant (IP57): AirPods Pro and charging case. Size and Weight (Each).",
+    "position": 3
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/airpods/compare/?modelList=airpods-pro,airpods-3rd-gen-lightning",
+    "snippet": "AirPods (3rd generation) are sweat and water resistant for non-water sports and exercise, and they are IPX4 rated. Sweat and water resistance are not permanent ...",
+    "position": 4
+   },
+   {
+    "title": "Are AirPod pros waterproof",
+    "link": "https://discussions.apple.com/thread/255765784",
+    "snippet": "^^^ does anyone know?",
+    "date": "20 thg 9, 2024",
+    "position": 5
+   },
+   {
+    "title": "AirPods Pro 1 with Wireless Charging Case - Tech Specs",
+    "link": "https://support.apple.com/en-us/111861",
+    "snippet": "The Wireless Charging Case and MagSafe Charging Case for AirPods Pro are not sweat or water resistant. Size and weight vary by configuration and manufacturing ...",
+    "position": 6
+   },
+   {
+    "title": "Compare AirPods models",
+    "link": "https://www.apple.com/my/airpods/compare/?modelList=airpods-3rd-gen-lightning,airpods-pro",
+    "snippet": "AirPods (3rd generation) with Lightning Charging Case vs AirPods Pro 2 - Apple (MY) ... Sweat and water resistant (IPX4). Dust, sweat and water resistant ...",
+    "position": 7
+   },
+   {
+    "title": "Are AirPods 1st generation water reseistant",
+    "link": "https://discussions.apple.com/thread/253502908",
+    "snippet": "Are AirPods 1 water resistant",
+    "date": "26 thg 12, 2021",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

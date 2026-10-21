@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 battery cycle count maximum capacity support",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:33:22.931Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 battery cycle count maximum capacity support",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "How many battery cycles is your MBA M1 averaging per ...",
+    "link": "https://www.reddit.com/r/mac/comments/s6sw1l/how_many_battery_cycles_is_your_mba_m1_averaging/",
+    "snippet": "I bought my MBA M1 in December 2020 and it has a cycle count of 158 and maximum battery capacity of 96%. Going by this I'm pretty sure the 80% capacity ...",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air m1 battery reduced to 98%",
+    "link": "https://discussions.apple.com/thread/252841384",
+    "snippet": "I purchased my MacBook Air M1 2 months ago, I have completed 57 charge cycles and my battery health is reduced to 98% even though I have been charging it ...",
+    "date": "7 thg 6, 2021",
+    "position": 3
+   },
+   {
+    "title": "How to Check Battery Cycles Count, Health and ...",
+    "link": "https://www.youtube.com/watch?v=ljkUONYxpU4",
+    "snippet": "It is important to know the battery cycle count on Mac as it indirectly tells you how healthy your battery is. You can then get an idea of ...",
+    "position": 4
+   },
+   {
+    "title": "Battery Cycles & Battery Maximum Capacity…",
+    "link": "https://discussions.apple.com/thread/255019871",
+    "snippet": "I'm having this doubt for a long time. I've noticed that different macs with the same battery cycles having different maximum capacities.\n\nFor example, ...",
+    "date": "24 thg 7, 2023",
+    "position": 5
+   },
+   {
+    "title": "Is 406 cycle count good for M1 Mac air? I got my Macbook ...",
+    "link": "https://www.quora.com/Is-406-cycle-count-good-for-M1-Mac-air-I-got-my-Macbook-air-2-years-ago-and-I-use-it-a-lot-I-just-checked-the-cycle-count-is-406-and-the-battery-is-88-Should-I-be-worried-When-should-I-change-the-battery-and-what-to",
+    "snippet": "Is 406 cycle count good for M1 Mac air? I got my Macbook air 2 years ago and I use it a lot. I just checked the cycle count is 406 and the battery ...",
+    "position": 6
+   },
+   {
+    "title": "How To Check Battery Health and Cycle Count on Macbook ...",
+    "link": "https://www.youtube.com/watch?v=GvMzdReN0f8",
+    "snippet": "In this video you will learn how to check the battery health and battery cycle count on your Macbook Air and Macbook Pro.",
+    "position": 7
+   },
+   {
+    "title": "Is My MacBook Battery Health Good? Cycles, 80% Rule & ...",
+    "link": "https://turtlebar.app/guides/macbook-battery-health",
+    "snippet": "Most modern MacBook Air and MacBook Pro models are rated for 1,000 cycles and designed to retain up to 80% of original capacity at that rating. If you searched ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

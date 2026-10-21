@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn Luật Doanh nghiệp 2020 vốn điều lệ công ty TNHH không quy định mức tối thiểu ngành nghề vốn pháp định",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:55:33.038Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn Luật Doanh nghiệp 2020 vốn điều lệ công ty TNHH không quy định mức tối thiểu ngành nghề vốn pháp định",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Luật số 23/2012/QH13 của Quốc hội: LUẬT HỢP TÁC XÃ",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=164954",
+    "snippet": "Vốn góp tối thiểu là số vốn mà cá nhân, hộ gia đình, pháp nhân phải góp vào vốn điều lệ của hợp tác xã, liên hiệp hợp tác xã theo quy định của điều lệ hợp tác ...",
+    "position": 1
+   },
+   {
+    "title": "Luật số 47/2010/QH12 của Quốc hội - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/default.aspx?pageid=27160&docid=96074",
+    "snippet": "Tổ chức tín dụng, chi nhánh ngân hàng nước ngoài phải duy trì giá trị thực của vốn điều lệ hoặc vốn được cấp tối thiểu bằng mức vốn pháp định. 3. Ngân hàng Nhà ...",
+    "position": 2
+   },
+   {
+    "title": "TẤT CẢ VĂN BẢN - Hệ thống văn bản - Chính phủ",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1",
+    "snippet": "Quy định chi tiết một số điều và biện pháp thi hành Nghị định số 365/2026/NĐ-CP ngày 23 tháng 9 năm 2026 của Chính phủ về kinh doanh xuất, nhập khẩu gạo. 01 ...",
+    "position": 3
+   },
+   {
+    "title": "Luật số 60/2010/QH12 của Quốc hội: LUẬT KHOÁNG SẢN",
+    "link": "https://vanban.chinhphu.vn/?pageid=27160&docid=98639",
+    "snippet": "Luật này quy định việc điều tra cơ bản địa chất về khoáng sản; bảo vệ khoáng sản chưa khai thác; thăm dò, khai thác khoáng sản; quản lý nhà nước về khoáng sản ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

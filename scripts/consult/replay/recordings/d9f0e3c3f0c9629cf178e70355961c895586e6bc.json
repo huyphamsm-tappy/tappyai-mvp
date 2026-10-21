@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:11:02.825Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC dưới 3 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "99+ Tai nghe bluetooth giá rẻ dưới 2 triệu | Nên mua ngay",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-2-trieu",
+    "snippet": "Tai nghe Bluetooth True Wireless Anker Soundcore R60i NC · Tai nghe không dây JBL Wave Buds 2 · Tai nghe Sony không dây chống ồn WF-1000XM6 · Tai nghe Bluetooth ...",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe ANC chống ồn đỉnh cao, chính hãng, giá rẻ từ 300k",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-on-chu-dong-anc",
+    "snippet": "Tai nghe Bluetooth True Wireless Anker Soundcore R60i NC · Tai nghe không dây JBL Wave Buds 2 · Tai nghe Sony không dây chống ồn WF-1000XM6 · Tai nghe Bluetooth ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Tai nghe chụp tai giá bao nhiêu? ; Bose. Thường hơn 6 triệu đồng. Cao cấp ; Marshall. Từ khoảng 3 triệu đồng trở lên. Trung đến cao cấp ; Edifier. Trải dài từ 500 ...",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe giá rẻ dưới 5 triệu | Đa dạng mẫu mã, trả góp 0%",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-gia-duoi-5-trieu",
+    "snippet": "Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối. 3.5mm; Type C; Lightning; USB. Nhu cầu sử dụng. Chơi Game; Nghe nhạc sôi động; Luyện tập thể ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 5
+   },
+   {
+    "title": "Top 5 tai nghe chống ồn tốt nhất dưới 1 triệu mới 2026",
+    "link": "https://cellphones.com.vn/sforum/tai-nghe-chong-on-tot-nhat",
+    "snippet": "Tai nghe không dây Xiaomi Redmi Buds 3 · Tai nghe không dây Soundpeats Mini · Tai nghe chống ồn tốt nhất - OPPO Enco Buds 2 · Tai nghe không dây Earbuds Cowin Apex ...",
+    "rating": 2,
+    "ratingCount": 1,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Tai nghe Sony không dây chống ồn WF-1000XM6. Trả góp 0%. : 7.490.000đ. 8.300 ... Chống nước; Có app phiên dịch; Chống ồn chủ động ANC. Cổng kết nối. 3.5mm; Type C",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe JBL chính hãng, bass căng, chống ồn [GIẢM 45%]",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/jbl.html",
+    "snippet": "Có mic đàm thoại; Xuyên âm; Chống ồn; Chống nước; Chống ồn chủ động ANC; Sạc không dây ... Tai nghe Bluetooth True Wireless JBL Live Beam 3. 3.590.000đ. Tai nghe ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

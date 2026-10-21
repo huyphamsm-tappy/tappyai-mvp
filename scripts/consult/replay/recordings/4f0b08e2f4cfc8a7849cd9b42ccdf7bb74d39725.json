@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "giá xăng hôm nay Việt Nam kỳ điều hành giá xăng mới nhất 08/10/2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:23:38.074Z",
+ "body": {
+  "searchParameters": {
+   "q": "giá xăng hôm nay Việt Nam kỳ điều hành giá xăng mới nhất 08/10/2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Giá xăng dầu hôm nay 8/10: Chờ kỳ điều hành mới giữa ...",
+    "link": "https://thethao247.vn/63-gia-xang-dau-hom-nay-8-10-cho-ky-dieu-hanh-moi-giua-suc-ep-gia-dau-c123-d439235.html",
+    "snippet": "Giá xăng dầu trong nước hôm nay 8/10/2026 ; Xăng E10 RON 95-III, 27.180 đồng/lít, +100 đồng/lít ; Xăng E5 RON 92-II, 26.560 đồng/lít, +170 đồng/ ...",
+    "date": "5 giờ trước",
+    "position": 1
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8.10.2026: Xăng E10 chiều nay ...",
+    "link": "https://www.vietnam.vn/gia-xang-dau-hom-nay-8-10-2026-xang-e10-chieu-nay-tang-bao-nhieu-dong-mot-lit",
+    "snippet": "Sáng 8.10, giá xăng dầu giảm nhẹ, dầu Brent giảm 38 cent, tương đương 0,38%, về 100,2 USD/thùng; dầu WTI giảm 1,16 USD, tương đương 1,3%, xuống ...",
+    "date": "1 giờ trước",
+    "position": 2
+   },
+   {
+    "title": "Dự báo Giá Xăng Dầu hôm nay 08/10/2026",
+    "link": "https://chogia.vn/du-bao-gia-xang-dau-37804/",
+    "snippet": "Dự báo kỳ điều chỉnh ngày 08/10/2026 ; Xăng E10 RON95-IIIXăng sinh học E10 · 153.66 · Tăng 1.070đ ; Xăng E5 RON92-IIXăng sinh học E5 · 147.31 · Tăng 1.140đ ; Điêzen ...",
+    "position": 3
+   },
+   {
+    "title": "Chốt giá xăng dầu hôm nay từ 7h ngày 8/7/2026 được điều ...",
+    "link": "https://thuvienphapluat.vn/ma-so-thue/phap-luat-thue/chot-gia-xang-dau-hom-nay-tu-7h-ngay-872026-duoc-dieu-chinh-nhu-the-nao-227798.html",
+    "snippet": "Chốt giá xăng dầu hôm nay từ 7h ngày 8/7/2026 được điều chỉnh như thế nào? ; Điêzen 0,001S-V. 23.270. 23.730 ; Điêzen 0,05S-II. 21.170. 21.590 ; Dầu hỏa 2-K.",
+    "position": 4
+   },
+   {
+    "title": "Petrolimex điều chỉnh giá xăng dầu từ 15 giờ 30 phút ngày ...",
+    "link": "https://www.petrolimex.com.vn/ndi/thong-cao-bao-chi/petrolimex-dieu-chinh-gia-xang-dau-tu-15-gio-30-phut-ngay-08-4-2026.html",
+    "snippet": "Mức giá mới có hiệu lực từ thời điểm 15 giờ 30 phút ngày 08 tháng 4 năm 2026 cho đến kỳ điều hành giá xăng dầu tiếp theo của liên Bộ Công ...",
+    "date": "8 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Giá xăng dầu hôm nay các loại RON 95 ...",
+    "link": "https://bbw.vn/gia-xang-dau",
+    "snippet": "Giá xăng dầu hôm nay, kỳ điều hành mới nhất, Biến động giá xăng dầu các loại RON 95, RON 92, dầu DO, dầu hỏa ngày 8/10/2026, Phân Tích, báo cáo biến động ...",
+    "position": 6
+   },
+   {
+    "title": "Giá xăng dầu hôm nay 8/6: Bất ngờ bật tăng mạnh sau nhiều ...",
+    "link": "https://www.youtube.com/watch?v=U4yltR6S4a4",
+    "snippet": "Giá xăng dầu hôm nay 8/7, dầu thô thế giới bất ngờ răng giá rất mạnh trong mở phiên giao dịch đầu tuần mới. Với mức tăng trên 2 USD/thùng ...",
+    "position": 7
+   },
+   {
+    "title": "Giá xăng dầu hôm nay cập nhật mới nhất",
+    "link": "https://baomoi.com/tien-ich-gia-xang-dau.epi",
+    "snippet": "Giá Xăng dầu Ngày 08-10-2026 00:29 ; DO 0,05S Mức 2, 29,710 ; Xăng E10 RON 95 Mức 3, 27,180 ; Xăng E10 RON 95 Mức 5, 28,180 ; Xăng E5 RON 92 Mức 2, 26,560 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

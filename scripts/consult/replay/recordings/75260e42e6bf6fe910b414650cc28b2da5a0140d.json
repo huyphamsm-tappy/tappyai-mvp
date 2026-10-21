@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe nhạc mỗi lần sạc tổng thời gian hộp sạc",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:23:21.460Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe nhạc mỗi lần sạc tổng thời gian hộp sạc",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

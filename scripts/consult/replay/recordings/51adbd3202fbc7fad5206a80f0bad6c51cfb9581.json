@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Samsung Galaxy S24 5G\" OR \"Samsung Galaxy S24 Plus 12GB 256GB\" OR \"Samsung Galaxy S24 FE 5G 8GB 128GB\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:24.863Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Samsung Galaxy S24 5G\" OR \"Samsung Galaxy S24 Plus 12GB 256GB\" OR \"Samsung Galaxy S24 FE 5G 8GB 128GB\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 5G 256GB - Original Available",
+    "link": "https://www.tiktok.com/@olimpia_phones/video/7683081627219676423",
+    "snippet": "The Samsung Galaxy S24 5G, featuring 256GB of storage and 8GB of RAM, is now available. This model supports dual SIM functionality, offering flexibility for ...",
+    "position": 1
+   },
+   {
+    "title": "REFURBISHED Samsung Galaxy S24 5G US Version 128GB ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-samsung-galaxy-s24-5g-128gb-onyx-black-unlock-compatible/1732016790920008255",
+    "snippet": "Buy REFURBISHED Samsung Galaxy S24 5G US Version 128GB Onyx Black - Unlocked - Excellent on TikTok Shop. Discover great prices on and get free shipping on ...",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 5G in Marble Gray colorway",
+    "link": "https://www.tiktok.com/@playfuldroid/video/7372199302443093256",
+    "snippet": "The Samsung Galaxy S24 5G features a stunning Dynamic LTPO AMOLED 2X display and a powerful 50-megapixel camera system, capable of recording ...",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 5g S926b Ds 256gb Onyx Black",
+    "link": "https://www.tiktok.com/discover/samsung-galaxy-s24-5g-s926b-ds-256gb-onyx-black",
+    "snippet": "Samsung Galaxy S24 5G Open Box - Onyx Black, 256GB. Unbox a Samsung Galaxy S24 5G in Onyx Black. Open box condition, 8GB RAM/256GB storage, Snapdragon 8 Gen 3, ...",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 5G Hàn 8/256GB & 512GB",
+    "link": "https://www.tiktok.com/@dunglee_mobile/video/7687541316913351953",
+    "snippet": "Samsung Galaxy S24 5G phiên bản Hàn Quốc có thiết kế nhỏ gọn với màn hình 6.2 inch độ phân giải Full HD+ và tần số quét 120Hz, mang lại trải ...",
+    "position": 5
+   },
+   {
+    "title": "Bayani akan Samsung Galaxy S24 5G #CapCut #Hausa ...",
+    "link": "https://www.tiktok.com/@degereji/video/7688368537928355093",
+    "snippet": "3244 Likes, 90 Comments. TikTok video from Khalifah (@degereji): “Bayani akan Samsung Galaxy S24 5G #CapCut #Hausa #Tech”. original sound ...",
+    "position": 6
+   },
+   {
+    "title": "Refurbished Samsung Galaxy S24 5G (Unlocked) S921U ...",
+    "link": "https://shop.tiktok.com/us/pdp/samsung-galaxy-s24-5g-unlocked-12-month-warranty-free-shipping/1732412647866536475",
+    "snippet": "Refurbished Samsung Galaxy S24 5G (Unlocked) S921U Excellent Condition with Wireless Earbuds & 1 Year Warranty ; Accessories included, Charging Cable ; Safety & ...",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 5G 256GB - Exchange Possible",
+    "link": "https://www.tiktok.com/@ethiobestphone/photo/7683198962026695956",
+    "snippet": "Selling a Samsung Galaxy S24 5G with 256GB storage, 8GB RAM, Dual SIM, and a 4000mAh battery. Exchange is possible. Keywords: Samsung Galaxy S24 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

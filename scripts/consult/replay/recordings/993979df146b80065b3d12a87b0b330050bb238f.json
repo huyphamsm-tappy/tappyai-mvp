@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng món ăn giá bình dân dưới 300k/người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:20:22.968Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng món ăn giá bình dân dưới 300k/người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 1
+   },
+   {
+    "title": "Đặt bàn, đặt chỗ nhà hàng trực tuyến và nhận ưu đãi ở Hồ Chí ...",
+    "link": "https://pasgo.vn/ha-noi",
+    "snippet": "Mới nhất trên PasGo · Yakimono - Quang Trung · SSamjang - Nướng & Cuốn Chợ Hàn - Quang Trung · The Gu Teppanyaki & Hotpot - Trần Bình Trọng · Nhà hàng Tuấn Tú - Lý ...",
+    "position": 2
+   },
+   {
+    "title": "Top 25 Nhà Hàng Ngon Nổi Tiếng Nhất Ở Sài Gòn",
+    "link": "https://vincom.com.vn/trend/nha-hang",
+    "snippet": "Top 5 nhà hàng rẻ đẹp ở Sài Gòn thu hút nhiều thực khách · Wrap & Roll - Chuỗi nhà hàng giá bình dân · Nhà hàng Muse Dining & Grill · Nhà hàng Út Cà Mau - Nhà hàng ...",
+    "position": 3
+   },
+   {
+    "title": "Top 15+ nhà hàng Quận 1 ngon nổi tiếng nhất Sài Gòn",
+    "link": "https://zalopay.vn/nha-hang-ngon-o-quan-1-2337",
+    "snippet": "1. Nhà hàng món Nhật Sukiya · 2. MK Restaurant - Thương hiệu nổi tiếng đến từ Thái Lan · 3. El Gaucho - Nhà hàng steak phong cách Argentina · 4.",
+    "date": "14 thg 7, 2025",
+    "position": 4
+   },
+   {
+    "title": "Quán ăn ngon ở TP HCM cho gia đình giá khoảng 300k ...",
+    "link": "https://www.facebook.com/groups/riviu.official/posts/2752636434866289/",
+    "snippet": "Le Square Epicier Fin , Pizza 4p,Basta Hiro. Đồ Trung thì Hua Wu Lou ,Chi Dao Bao,Cửu Long. Đồ nướng thì Gyu Shige, Gogi,Hana. Đồ Thái Somthai, ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Cơm Trưa hơn 30 khay món ăn như buffet giá rẻ ...",
+    "link": "https://www.youtube.com/watch?v=Qa--FktR6VM",
+    "snippet": "Quán Cơm Trưa hơn 30 khay món ăn như buffet giá rẻ dành cho khách lao động ngay trung tâm Địa chỉ: 119 Yersin, Quận 1, TP.HCM, bán từ 9h ...",
+    "position": 6
+   },
+   {
+    "title": "35+ Quán Ăn Sài Gòn Ngon Gần Đây, Top Các Nhà Hàng ...",
+    "link": "https://www.nguyenkim.com/quan-an-ngon-sai-gon-NKND0712.b",
+    "snippet": "Cơm quê Mười khó là nhà hàng nổi tiếng của nghệ sĩ Trường Giang, quán nổi tiếng với các món ăn dân giã với các nguyên liệu tươi ngon mang đậm ...",
+    "date": "7 thg 7, 2022",
+    "position": 7
+   },
+   {
+    "title": "Foody.vn: Địa điểm ăn uống, ẩm thực, ăn gì ở đâu tại TP ...",
+    "link": "https://www.foody.vn/",
+    "snippet": "Mình đi ăn ở đây thì món ăn vị cũng được, kêu 3 món. Trứng cuộn, thịt ba chỉ nướng sốt đỏ và canh bò hầm. Món ăn tạm được, hợp khẩu vị mình nhưng đồ ăn nguội ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

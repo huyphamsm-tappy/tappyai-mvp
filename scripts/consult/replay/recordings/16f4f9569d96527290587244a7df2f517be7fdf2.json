@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Secret Garden\" OR \"Xóm Chợ Cũ Restaurant\" OR \"Chill Thái\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:31.787Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Secret Garden\" OR \"Xóm Chợ Cũ Restaurant\" OR \"Chill Thái\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "The Secret Garden Experience at Hidden Bar",
+    "link": "https://www.tiktok.com/@visitmusiccity/video/7621331793198845198",
+    "snippet": "The Secret Garden is blooming at Hidden Bar! Just imagine, an experience filled with candlelight, ivy-covered walls, and flowers blooming ...",
+    "position": 1
+   },
+   {
+    "title": "Celebrate Your Special Day at Secret Garden Restaurant",
+    "link": "https://www.tiktok.com/@secretgarden.bouddha/video/7661248247788260626",
+    "snippet": "At Secret Garden, we understand the importance of each celebration. From birthdays to anniversaries, our team is dedicated to providing ...",
+    "position": 2
+   },
+   {
+    "title": "Secret Garden Vietnamese Dishes at Ann Garden",
+    "link": "https://www.tiktok.com/@secretgardencatba/video/7601181989751819540",
+    "snippet": "From Garden to Table: Secret Garden Vietnamese Dishes at Ann Garden. Lead Every dish begins far from the kitchen. At Ann Garden, local hands ...",
+    "position": 3
+   },
+   {
+    "title": "Daura momo in the middle of city Secret garden restaurant ...",
+    "link": "https://www.tiktok.com/@secretgarden.bouddha/video/7686425303266250002",
+    "snippet": "Daura momo in the middle of city Secret garden restaurant and cafe Opposite to Bouddha gate 9851431877 #secretgarden #gardencafe # ...",
+    "position": 4
+   },
+   {
+    "title": "Secret Garden Macramé Tote Bag with Removable Pouch",
+    "link": "https://shop.tiktok.com/us/pdp/secret-garden-macrame-tote-bag-with-removable-pouch-handmade-organza-petals-lightweight-beach-tote-summer-adventure-essential/1732377982511518115",
+    "snippet": "Our personal fairytale: the Secret Garden Macramé Tote Bag is more than a macramé tote, it's a true summer tote bag designed for dreamy days and effortless ...",
+    "position": 5
+   },
+   {
+    "title": "Discovering the Secret Garden Café in Occoquan",
+    "link": "https://www.tiktok.com/@firetoga/video/7607593345312951583",
+    "snippet": "If you're looking for a delightful dining experience in Occoquan, the Secret Garden Café should be at the top of your list.",
+    "position": 6
+   },
+   {
+    "title": "Secret Garden event space in Yorba Linda",
+    "link": "https://www.tiktok.com/@discover.yorba.linda/video/7637668751646674207",
+    "snippet": "New event space now open in Yorba Linda: the Secret Garden behind Chic Revelations is accepting reservations. Located at Chic Revelations, ...",
+    "position": 7
+   },
+   {
+    "title": "Secret Garden Floral 4 Piece Comforter Set",
+    "link": "https://shop.tiktok.com/us/pdp/secret-garden-floral-4-piece-comforter-set-rich-tones-design/1732269066051358787",
+    "snippet": "Step into timeless beauty with the Secret Garden Collection by Rose Tree. The comforter showcases a stunning Jacobean floral print in rich tones of green, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

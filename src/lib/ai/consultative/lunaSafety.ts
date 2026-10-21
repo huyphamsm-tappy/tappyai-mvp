@@ -34,7 +34,14 @@ const TEMPLATE_WORDS = /\b(?:minh con \d+ lua chon|ban chon nhanh ben duoi|khong
  */
 const STRUCTURED_LINE = /\[(?:CTA_BUTTONS|FOLLOWUPS|TAPPY_[A-Z_]+)\]|https?:\/\/|"(?:type|url|label|kind)"\s*:|không phải quảng cáo trả tiền|khong phai quang cao tra tien/i
 
-export function buildLeakDetector(secrets: readonly string[]): (reply: string) => { leak: boolean; reason: string | null } {
+/**
+ * CONSULTATIVE_IN_AGENT (`runs`): the match is counted per RUN of consecutive matching windows, not per window. One repeated phrase of n words makes
+ * n - 9 overlapping windows, so a 14-word sentence a plan tip happened to repeat scored 5 hits and a valid 8,316-char itinerary card was replaced by the
+ * refusal (live Round 23, trace `prompt_echo`). A run is one passage of the prompt; ≥ 2 separate passages, or one passage of RUN_LONG words or more,
+ * is still a leak. Without `runs` the old per-window count (≥ 3 windows) is unchanged.
+ */
+const RUN_LONG = 30
+export function buildLeakDetector(secrets: readonly string[], opts?: { runs?: boolean }): (reply: string) => { leak: boolean; reason: string | null } {
   const set = new Set<string>()
   for (const s of secrets) {
     // Example sentences in the frames are meant to be imitated (replay 30/09 SPA-2 t2: a normal reply matched the spa example).
@@ -47,6 +54,13 @@ export function buildLeakDetector(secrets: readonly string[]): (reply: string) =
   return (reply: string) => {
     if (SECRET_SHAPE.some(re => re.test(reply))) return { leak: true, reason: 'secret_shape' }
     const w = words(reply)
+    if (opts?.runs) {
+      let runs = 0, len = 0
+      for (let i = 0; i + SHINGLE <= w.length; i++) {
+        if (set.has(w.slice(i, i + SHINGLE).join(' '))) { if (len === 0) runs++; len++; if (len + SHINGLE - 1 >= RUN_LONG) return { leak: true, reason: 'prompt_echo' } } else len = 0
+      }
+      return runs >= 2 ? { leak: true, reason: 'prompt_echo' } : { leak: false, reason: null }
+    }
     let hits = 0
     for (let i = 0; i + SHINGLE <= w.length; i++) if (set.has(w.slice(i, i + SHINGLE).join(' ')) && ++hits >= 3) return { leak: true, reason: 'prompt_echo' }
     return { leak: false, reason: null }

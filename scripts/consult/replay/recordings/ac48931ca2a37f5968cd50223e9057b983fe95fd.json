@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Quán Bụi Central\" OR \"Cơm Thố Xá Lị\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:27:28.162Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Quán Bụi Central\" OR \"Cơm Thố Xá Lị\" OR \"NHÀ HÀNG NGON\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cơm Thố Xá Lị: Món Tiềm Siêu Ngon người Hoa ở Quận 1",
+    "link": "https://www.tiktok.com/@didauofficial/video/7312277488145566978",
+    "snippet": "cơm thố xá lị bán từ 10 giờ sáng đến khi hết món. nằm ở 76 xẹt 6 Tôn ... Khám phá vị ngon của cơm thố xá lị người Hoa tại Quận 1 với các.",
+    "position": 1
+   },
+   {
+    "title": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất",
+    "link": "https://www.tiktok.com/@tuanmanhnguyen3/video/7568854444671110418",
+    "snippet": "Cơm thố Xá Lị - Món Canh Tiềm Người Hoa Ngon Nhất. Khám phá Cơm thố Xá Lị với các món canh tiềm tuyệt hảo! Đến thử ngay hôm nay nhé ...",
+    "position": 2
+   },
+   {
+    "title": "Đồ tiềm tiệm cơm thố Xá Lị - Đánh giá Nì Review",
+    "link": "https://www.tiktok.com/@niingan_review/video/7051481108751355138",
+    "snippet": "Đồ tiềm tiệm cơm thố Xá Lị là địa chỉ cực hot tại quận 1 mà bạn không thể bỏ qua. Ăn cơm thố xá lị ngon tuyệt vời cùng với #niingan. # ...",
+    "position": 3
+   },
+   {
+    "title": "Bật Mí 3 Nhà Hàng Ngon Ở Tà Xùa Giá Cả Phải Chăng",
+    "link": "https://www.tiktok.com/@truongdulich/video/7692090464362597640",
+    "snippet": "Nếu bạn đang phân vân không biết nên ăn ở đâu, hãy để chúng tôi bật mí cho bạn 3 nhà hàng ngon và giá cả phải chăng tại đây. ### 1. Nhà hàng ...",
+    "position": 4
+   },
+   {
+    "title": "Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM",
+    "link": "https://www.tiktok.com/@anchimihe/video/7121950658047135019",
+    "snippet": "Nhà Hàng Ngon | 160 Pasteur, Bến Nghé, Quận 1, Thành phố Hồ Chí Minh ... Nhà Hàng Ngon: Trải Nghiệm Ẩm Thực Tại TP.HCM. Khám phá Nhà ...",
+    "position": 5
+   },
+   {
+    "title": "Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây ...",
+    "link": "https://www.tiktok.com/@nhahangquangon/video/7669013753110859028",
+    "snippet": "39 Lượt thích,Video TikTok từ Nhà Hàng Quá Ngon (@nhahangquangon): \"Dấu hiệu nhận biết một nhà hàng ngon chuẩn vị là đây #nhahangquangon ...",
+    "position": 6
+   },
+   {
+    "title": "Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu ...",
+    "link": "https://www.tiktok.com/@anlychicago/video/7688405076607520014",
+    "snippet": "TikTok video from Ailey Ly (@anlychicago): “Đi ăn mì bò kho, một trong những nhà hàng ngon ở khu người Vietnam tại Chicago.",
+    "position": 7
+   },
+   {
+    "title": "Khám Phá Nhà Hàng Ngon Tại Hàm Nghi, Nam Từ Liêm",
+    "link": "https://www.tiktok.com/@trainghiemcungnga/video/7424493995121839378",
+    "snippet": "Gợi ý 1 nhà hàng ngon-chất khu Hàm Nghi- Nam Từ Liêm để ace đổi gió. Sắp 20/10 rồi lên lịch hẹn hò ngay thôiiii #comnieu #comnha #comque # ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

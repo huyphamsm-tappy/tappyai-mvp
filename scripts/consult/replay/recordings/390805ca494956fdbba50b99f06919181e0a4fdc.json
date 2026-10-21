@@ -1,0 +1,58 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 80. 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:47:43.414Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:hoianworldheritage.org.vn vé tham quan phố cổ Hội An 80. 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Hội An đông nghẹt khách dịp Tết: Trải nghiệm thực tế và lưu ý ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/hoi-an-dong-nghet-khach-dip-tet-trai-nghiem-thuc-te-va-luu-y-khi-tham-quan-pho-co-3024.hwh",
+    "snippet": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm về nguyên bản giữa lòng di sản (16/03/2026); Các hoạt động hưởng ứng Ngày Quốc tế ...",
+    "date": "23 thg 2, 2026",
+    "position": 1
+   },
+   {
+    "title": "trùng tu - Phố cổ Hội An - Di sản văn hóa thế giới",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/tag/tr%C3%B9ng-tu",
+    "snippet": "Giám đốc Trung tâm Văn hóa - Thể thao TP Hội An (tỉnh Quảng Nam) khẳng định, không hề có việc nhân viên của mình ép khách nước ngoài mua vé tham quan phố cổ mà ...",
+    "position": 2
+   },
+   {
+    "title": "Gìn giữ di sản cho thế hệ sau - Phố cổ Hội An",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Van-hoa-nghe-thuat/gin-giu-di-san-cho-the-he-sau-2501.hwh",
+    "snippet": "Khu phố cổ Hội An có đến hàng ngàn di tích, chủ yếu trong khu vực I với tổng cộng 1.130 di tích kiến trúc. Hơn 80% di tích thuộc sở hữu tư nhân ...",
+    "date": "4 thg 12, 2023",
+    "position": 3
+   },
+   {
+    "title": "Tổng kết 10 năm lớp tiếng Nhật Terakoya dành cho thiếu nhi ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Van-hoa-nghe-thuat/tong-ket-10-nam-lop-tieng-nhat-terakoya-danh-cho-thieu-nhi-hoi-an-3049.hwh",
+    "snippet": "Ngày 23.5, Trung tâm Bảo tồn Di sản văn hóa thế giới Hội An, TP. Đà Nẵng tổng kết 10 năm lớp tiếng Nhật Terakoya dành cho thiếu nhi Hội An.",
+    "date": "24 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "Phát huy giá trị các di sản văn hóa trong phát triển kinh tế",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Dat-va-nguoi-Hoi-An/phat-huy-gia-tri-cac-di-san-van-hoa-trong-phat-trien-kinh-te-xa-hoi-tinh-quang-nam-2883.hwh",
+    "snippet": "Nhiều sản phẩm du lịch độc đáo như Đêm phố cổ, Phố đi bộ, Phố không có tiếng động cơ xe máy, các khu chợ đêm cùng nhiều lễ hội, hoạt động văn ...",
+    "date": "7 thg 5, 2025",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

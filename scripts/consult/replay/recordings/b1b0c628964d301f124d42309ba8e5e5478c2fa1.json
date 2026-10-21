@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:dichvucong.gov.vn cấp hộ chiếu phổ thông trực tuyến hồ sơ lệ phí 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:09:34.873Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:dichvucong.gov.vn cấp hộ chiếu phổ thông trực tuyến hồ sơ lệ phí 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cấp hộ chiếu phổ thông ở trong nước (thực hiện tại cấp tỉnh)",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "Bước 1: Chuẩn bị hồ sơ theo quy định của pháp luật. Bước 2: Nộp hồ sơ * Người đề nghị cấp hộ chiếu phổ thông không gắn chíp điện tử trực tiếp nộp hồ sơ vào ...",
+    "position": 1
+   },
+   {
+    "title": "Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-tthc-thu-tuc-hanh-chinh-chi-tiet.html?ma_thu_tuc=247400",
+    "snippet": "Cổng Dịch vụ công Quốc gia hỗ trợ thông tin, đăng ký thủ tục hành chính như đổi giấy phép lái xe, nộp thuế điện tử, thông báo khuyến mại, cấp lại thẻ BHYT, ...",
+    "position": 2
+   },
+   {
+    "title": "Cổng Dịch vụ công Quốc gia",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=3C246505C4FE8B80E063550AA8C0C10F",
+    "snippet": "ngày 20/7/2027 tôi có nộp hồ sơ onlin để làm cấp phiếu lý lịch tư pháp và đã hẹn đến ngày 30/7/2025 trả kết quả nhưng đến nay quả nhưng qua tra cứu hồ sơ ...",
+    "position": 3
+   },
+   {
+    "title": "Hiện nay, lệ phí cấp 01 cuốn hộ chiếu là 200.000 đồng ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/home/dvc-chi-tiet-cau-hoi.html?id=19738&row_limit=1",
+    "snippet": "Theo quy định của Bộ Tài chính, lệ phí cấp hộ chiếu là: - 200.000 vnđ đối với trường hợp đề nghị cấp lần đầu hoặc cấp lại hộ chiếu; - 400.000 vnđ đối với trường ...",
+    "position": 4
+   },
+   {
+    "title": "hồ sơ g01.899.108-260330-02604 xin cấp hộ chiếu phổ thông ...",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=4F133BFF264BF935E063570AA8C0E469",
+    "snippet": "Mã số định danh cá nhân · Phản ánh kiến nghị về: Cấp hộ chiếu phổ thông không gắn chíp điện tử ở trong nước (thực hiện tại cấp tỉnh) · Hồ sơ không được tiếp nhận ...",
+    "position": 5
+   },
+   {
+    "title": "Đề nghị hỗ trợ huỷ hồ sơ cấp hộ chiếu phổ thông",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=4D8A9CB233E0DD03E063550AA8C054B6",
+    "snippet": "Ngày 04/3/2026 tôi có nộp hồ sơ đề nghị cấp hộ chiếu phổ thông trên cổng dịch vụ công Bộ Công An (để phục vụ kỳ học tại Lào theo chương trình của nhà trường ...",
+    "position": 6
+   },
+   {
+    "title": "Không có tiêu đề",
+    "link": "https://dichvucong.gov.vn/p/home/dvc-chi-tiet-thu-tuc-nganh-doc.html?ma_thu_tuc=1.001456",
+    "snippet": "What code is in the image? ... Your support ID is: 844787499019953750 .",
+    "position": 7
+   },
+   {
+    "title": "Tạm dừng cấp lại hộ chiếu nhưng không nói lý do",
+    "link": "https://vpcp.dichvucong.gov.vn/p/phananhkiennghi/pakn-detail.html?id=52B03CF42C25FF2CE063550AA8C094A7",
+    "snippet": "Tôi làm thủ tục Cấp hộ chiếu phổ thông trong nước (thực hiện tại cấp tỉnh _ TpHCM), trường hợp cấp lại hộ chiếu sắp hết hạn (Mã hồ sơ: ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

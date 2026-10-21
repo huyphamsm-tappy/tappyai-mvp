@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:03:45.380Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop ...",
+    "link": "https://cellphones.com.vn/sforum/tai-chinh-duoi-25-trieu-sinh-vien-nen-chon-laptop-windows-hay-macbook",
+    "snippet": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop Windows hay MacBook? · MacBook Air M1 2020 (8GB/256GB) · MacBook Air M2 (2022) · Laptop Lenovo Yoga Slim 6 ...",
+    "position": 1
+   },
+   {
+    "title": "Build cấu hình MacBook CTO cho lập trình viên và phát ...",
+    "link": "https://cellphones.com.vn/sforum/build-cau-hinh-macbook-cto-cho-lap-trinh-vien",
+    "snippet": "MacBook Pro 16-inch (M3 Max, 2023) - Tùy chọn cao cấp nhất · Chip: Apple M3 Max với 16-core CPU, 30-core GPU (nâng từ 11 Core CPU mặc định) · RAM: ...",
+    "date": "15 thg 8, 2024",
+    "position": 2
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "1. Từ 20 triệu: MacBook Neo - Tân binh đáng chú ý nhất của Apple trong năm 2026 · 2. Từ 30 triệu: MacBook Air M5 13 inch - Kích thước nhỏ, hiệu năng mạnh · 3. Từ ...",
+    "position": 3
+   },
+   {
+    "title": "Chỉ còn 19 triệu, chiếc MacBook 3 năm tuổi này vẫn quá ...",
+    "link": "https://cellphones.com.vn/sforum/chi-con-19-trieu-macbook-air-m1-2020-van-qua-hap-dan-trong-nam-2023",
+    "snippet": "1. Bộ xử lý Apple M1 vẫn quá mạnh mẽ · 2. Mát mẻ, yên tĩnh và thời lượng pin không đối thủ · 3. Màn hình xuất sắc · 4. Trackpad 'out trình' · 5. Bàn ...",
+    "date": "30 thg 3, 2023",
+    "position": 4
+   },
+   {
+    "title": "Nên chọn MacBook hay laptop Windows cho ngành học ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-va-windows-laptop-theo-nganh-hoc",
+    "snippet": "MacBook có pin dùng liên tục 10 - 18 tiếng, đáp ứng tốt nhu cầu học tập và làm việc di động. Bên cạnh đó, sự đồng bộ trong hệ sinh thái Apple ...",
+    "date": "20 thg 8, 2025",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "MacBook Air hay MacBook Pro: Đâu là lựa chọn hợp lý cho ...",
+    "link": "https://cellphones.com.vn/sforum/macbook-air-vs-macbook-pro-cho-sinh-vien",
+    "snippet": "MacBook Air có hiệu năng rất tốt cho nhu cầu học tập phổ thông. Máy xử lý mượt các tác vụ văn phòng, học online, làm slide, chỉnh sửa ảnh cơ bản, thậm chí lập ...",
+    "position": 6
+   },
+   {
+    "title": "MacBook cũ giá dưới 10 triệu: Liệu có đáng đầu tư?",
+    "link": "https://cellphones.com.vn/sforum/macbook-cu-gia-duoi-10-trieu-lieu-co-dang-dau-tu",
+    "snippet": "Với mức giá khoảng 9-10 triệu, MacBook Pro đáp ứng tốt hơn các tác vụ đa nhiệm hoặc xử lý đồ họa nhẹ. Chưa kể đến thiết kế không lỗi thời với thời gian, đây ...",
+    "position": 7
+   },
+   {
+    "title": "Laptop dưới 30 triệu | Thiết kế mỏng nhẹ, hiệu năng khủng",
+    "link": "https://cellphones.com.vn/bo-loc/laptop-tu-25-30-trieu",
+    "snippet": "Laptop dưới 30 triệu thiết kế sang trọng, tinh tế, được ứng dụng nhiều công nghệ hiện đại, vượt trội. Mua ngay laptop 30 triệu uy tín tại đây.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Khách Sạn Avatar Đà Nẵng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:49:59.322Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Khách Sạn Avatar Đà Nẵng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sốc❗️ Khách sạn 𝐀𝐯𝐚𝐭𝐚𝐫 Đ𝐚̀ 𝐍𝐚̆̃𝐧𝐠 𝟰⭐️ cách biển ...",
+    "link": "https://www.tiktok.com/@2bay.vn/video/7316820079981907201",
+    "snippet": "Sốc❗️ Khách sạn Avatar Đà Nẵng 4⭐️ cách biển Mỹ Khê chỉ 200m Giá phòng 01 đêm chỉ từ 3xxk /khách Đặc ...",
+    "position": 1
+   },
+   {
+    "title": "Tulaley nganiii 😬 #lobocafe #danangtrip2026",
+    "link": "https://www.tiktok.com/@toyo7888/video/7691930510368722196",
+    "snippet": "... danangtrip2026. Tulaley nganiii #lobocafe #danangtrip2026. @Toyo🏳️‍ · original sound - _lovey · Khách Sạn Avatar Đà Nẵng · author · 483.",
+    "position": 2
+   },
+   {
+    "title": "Shandy - XO.ivy",
+    "link": "https://www.tiktok.com/@niavel55/video/7618649362348002580",
+    "snippet": "Cộng đồng video toàn cầu · Mở ứng dụng. @Shandy. @XO.ivy · @Shandy · original sound · Khách Sạn Avatar Đà Nẵng · author · 10.",
+    "position": 3
+   },
+   {
+    "title": "越南峴港飯店 Khách Sạn Avatar Đà Nẵng 52USD1 Night",
+    "link": "https://www.tiktok.com/@user2594361561912/video/7686170274923957525",
+    "snippet": "越南峴港飯店 Khách Sạn Avatar Đà Nẵng 52USD1 Night. 越南峴港飯店 Khách Sạn Avatar Đà Nẵng 52USD1 Night. @小日本月配遊 · Clean Bubblegum Pop · Khách sạn Đà Nẵng.",
+    "position": 4
+   },
+   {
+    "title": "峴港boss",
+    "link": "https://www.tiktok.com/discover/%E5%B3%B4%E6%B8%AFboss",
+    "snippet": "Khách Sạn Avatar Đà Nẵng 52USD1 Night. Clean Bubblegum Pop - Suburbia Audio. 1獲讚數. 0評論. 0分享. 34 Likes, 11 Comments. TikTok video from 劉莒（Boss） (@.",
+    "position": 5
+   }
+  ],
+  "credits": 1
+ }
+}

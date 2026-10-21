@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"KHÁCH SẠN MỸ KHÊ 2\" Đà Nẵng, gần biển Mỹ Khê, 2 người, check-in 2026-10-10, check-out 2026-10-11, ngân sách khoảng 1.000.000 VND/đêm site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:39:23.425Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"KHÁCH SẠN MỸ KHÊ 2\" Đà Nẵng, gần biển Mỹ Khê, 2 người, check-in 2026-10-10, check-out 2026-10-11, ngân sách khoảng 1.000.000 VND/đêm site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

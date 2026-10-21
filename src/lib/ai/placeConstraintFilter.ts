@@ -73,6 +73,11 @@ export function parsePriceBand(text: unknown): { lo: number; hi: number | null }
 }
 
 const EXCLUDE_RESTAURANT_RE = /khong (?:phai |can )?nha hang|toan nha hang|nha hang (?:qua|het)|\bre tien\b|\bbinh dan\b|\bquan nho\b|\bvia he\b|\bre thoi\b|\bre re\b|\bcheap\b/
+/**
+ * Phase 8 M5 (TAPPY_AGENT=2): only an EXPLICIT exclusion is a hard constraint. "rẻ tiền / bình dân / quán nhỏ / cheap" is a soft wish —
+ * the agent weighs value and trade-offs itself ("I prefer cheap but can spend more if it's worth it"), so it never drops a row.
+ */
+const EXPLICIT_EXCLUDE_RESTAURANT_RE = /khong (?:phai |can )?nha hang|toan nha hang|nha hang (?:qua|het)/
 const EXCLUDE_DRINKING_RE = /khong (?:di |an |uong )?nhau|thoi (?:khong )?nhau|khong (?:uong )?bia|khong bar\b|het nhau|bo nhau/
 const OPEN_NOW_RE = /dang mo(?: cua)?|\bmo cua\b|bay gio|ngay bay gio|luc nay|\bopen now\b|\bright now\b/
 
@@ -104,10 +109,11 @@ export function detectPlaceConstraints(
   budget: Budget | null | undefined,
   earlierUserTexts: readonly string[] = [],
   now: Date = new Date(),
+  opts: { explicitOnly?: boolean } = {},
 ): PlaceConstraints {
   const t = normalizeVN(String(lastText ?? '').toLowerCase())
   const exclude: ExcludedVenueType[] = []
-  if (EXCLUDE_RESTAURANT_RE.test(t)) exclude.push('restaurant')
+  if ((opts.explicitOnly ? EXPLICIT_EXCLUDE_RESTAURANT_RE : EXCLUDE_RESTAURANT_RE).test(t)) exclude.push('restaurant')
   if (EXCLUDE_DRINKING_RE.test(t)) exclude.push('drinking')
   // "Now" outlives the turn that said it: "trưa nay ăn gì" → "rẻ tiền thôi" is still lunch today.
   // The nearest earlier turn is read only when this one names no time of its own.
@@ -120,7 +126,9 @@ export function detectPlaceConstraints(
   const district = statedDistrict(lastText)
     ?? earlierUserTexts.slice().reverse().map(x => statedDistrict(x)).find(d => d !== null)
     ?? null
-  return { budgetMax: budget && budget.max > 0 ? budget.max : null, exclude, openNow, district }
+  // M5 (explicitOnly): an "around" budget (khoảng / tầm) is a soft target, never a ceiling that drops rows.
+  const hardBudget = budget && budget.max > 0 && !(opts.explicitOnly && budget.type === 'around')
+  return { budgetMax: hardBudget ? budget.max : null, exclude, openNow, district }
 }
 
 /**

@@ -1,0 +1,54 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Pachi Pachi Nướng Lẩu Nhật Bản Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:23:09.710Z",
+ "body": {
+  "searchParameters": {
+   "q": "Pachi Pachi Nướng Lẩu Nhật Bản Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.787369,106.6943511,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Pachi Pachi Nướng Lẩu Nhật Bản",
+    "address": "52 Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.787369,
+    "longitude": 106.69692599999999,
+    "rating": 4.1,
+    "ratingCount": 796,
+    "type": "Nhà hàng Nhật Bản",
+    "types": [
+     "Nhà hàng Nhật Bản"
+    ],
+    "phoneNumber": "+84 28 6295 9294",
+    "openingHours": {
+     "Thứ Năm": "10:30–15:00, 17:00–22:00",
+     "Thứ Sáu": "10:30–15:00, 17:00–22:00",
+     "Thứ Bảy": "10:30–15:00, 17:00–22:00",
+     "Chủ Nhật": "10:30–15:00, 17:00–22:00",
+     "Thứ Hai": "10:30–15:00, 17:00–22:00",
+     "Thứ Ba": "10:30–15:00, 17:00–22:00",
+     "Thứ Tư": "10:30–15:00, 17:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNM1wNuG7fB5_BdQ8vS2nOn8a9oV5YO2pobD384vi6PkdlheLKVWEYX3eZFgKfgMOQXinhNPJLfBluD-fgjBSQ2yFg-oswsTMZiWGTa366uFR_r9TXgnaxbimFIRXmyuoO3aDL1",
+    "cid": "2473956365887729997",
+    "fid": "0x31752f3502498303:0x225542350a8df14d",
+    "placeId": "ChIJA4NJAjUvdTERTfGNCjVCVSI"
+   }
+  ],
+  "credits": 3
+ }
+}

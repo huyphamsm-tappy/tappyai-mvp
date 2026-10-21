@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn OR site:mof.gov.vn Thông tư 28/2026/TT-BTC lệ phí hộ chiếu phổ thông 200.",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:04:15.217Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn OR site:mof.gov.vn Thông tư 28/2026/TT-BTC lệ phí hộ chiếu phổ thông 200.",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Chính phủ - Hệ thống văn bản",
+    "link": "https://vanban.chinhphu.vn/he-thong-van-ban?classid=1&mode=1&typegroupid=6",
+    "snippet": "142/2026/TT-BTC 29/09/2026, 29/09/2026, Sửa đổi, bổ sung một số điều của các Thông tư quy định thủ tục hải quan đối với hàng hóa xuất khẩu, nhập khẩu, quá cảnh ...",
+    "position": 1
+   },
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/cong-khai-danh-muc-giao-dich",
+    "snippet": "Địa chỉ: số 28 phố Trần Hưng Đạo, phường Cửa Nam, thành phố Hà Nội. Điện thoại Cổng thông tin điện tử: (84-24)2220.2828-2888. Fax: (84-24)2220.8091. Email ...",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

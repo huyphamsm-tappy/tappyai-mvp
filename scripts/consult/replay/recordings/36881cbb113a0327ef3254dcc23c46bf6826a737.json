@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 15 128GB site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T02:37:43.753Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 15 128GB site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 128GB Chính hãng ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-128gb-chinh-hang-vna-viettel-store-i2416589184.html?srsltid=AU7gw4UICwzBW4zyzAjOQaB6IqlnrNGPjlS5OWldmlazSirk8QEWxUeR",
+    "snippet": "Apple iPhone 15 128GB chính hãng, màn hình OLED 6.1 inch Full HD 4,7inch, chống nước, tích hợp Face ID. Chip Apple A16 Bionic mạnh mẽ, hỗ trợ 2 camera chất ...",
+    "rating": 5,
+    "ratingCount": 7,
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 128GB Chính Hãng VN/A",
+    "link": "https://www.lazada.vn/products/iphone-15-128gb-chinh-hang-vna-i2418227476.html?srsltid=AU7gw4Xko5HKE3Y11x-tNM-xNWzkrrcU5cHkgSVSnlX7VdwHlxmERXqd",
+    "snippet": "Mô tả sản phẩm. iPhone 15 128GB Chính Hãng VN/A. Bảo hành: 12 tháng. Sản phẩm gồm: máy + dây sạc USB-C. iPhone 15 128GB được người dùng “săn ...",
+    "date": "15 thg 7, 2024",
+    "position": 2
+   },
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 Plus 128GB Chính hãng ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-plus-128gb-chinh-hang-vna-viettel-store-i2416386842.html?srsltid=AU7gw4Xpswf3iWKUXWjX4txik-FSlsT3-BkVskUOjZg6-sVQwARsHiGX",
+    "snippet": "Apple iPhone 15 Plus 128GB chính hãng VN/A với màn hình OLED 6.7 inch, chip A16 Bionic mạnh mẽ và camera kép ấn tượng. Hỗ trợ trả góp 0%, chống bụi/nước, ...",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 Plus 128GB Chính Hãng VN/A",
+    "link": "https://www.lazada.vn/products/iphone-15-plus-128gb-chinh-hang-vna-i2418353002.html?srsltid=AU7gw4UoUdjOCw1LtZPyH76selyi1wdU4zBhMB1Pl8SwXrHWUecNoYCn",
+    "snippet": "Mô tả sản phẩm. iPhone 15 Plus 128GB Chính Hãng VN/A. Bảo hành: 12 tháng. Sản phẩm gồm: máy + dây sạc USB-C. iPhone 15 Plus chính thức ra mắt tại sự kiện ...",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Plus - Hàng Chính Hãng",
+    "link": "https://www.lazada.vn/products/iphone-15-plus-hang-chinh-hang-i2417254495.html?srsltid=AU7gw4Ufcy7dEyr3fPzNazizDgSucm-OlDjkbSFZJ_NagZoNB-T8A37v",
+    "snippet": "iPhone 15 Plus - Hàng Chính Hãng VN/A với thiết kế kính pha màu bền bỉ, camera chính 48MP và tính năng Dynamic Island hiện đại. Chế độ bảo hành 12 tháng, ...",
+    "rating": 5,
+    "ratingCount": 571,
+    "position": 5
+   },
+   {
+    "title": "4 trong 1 128GB USB Pendrive ổ đĩa phát sáng cho Iphone ...",
+    "link": "https://www.lazada.vn/products/4-trong-1-128gb-usb-pendrive-o-dia-phat-sang-cho-iphone-15-pro-max-toc-do-cao-dien-thoai-ben-ngoai-o-dia-flash-cho-iphone-14-pro-max-bo-nho-the-luu-tru-anh-du-lieu-ben-ngoai-luu-tru-o-dia-thumb-cho-type-ciphoneipadandroidmay-tinh-xach-taypc-va-nhie-i2617298481.html?srsltid=AU7gw4X0I3vm--wMfmI71aZn4PzjZoEp6e_0vw-QF9h3YiB8G47rSXIS",
+    "snippet": "4 trong 1 128GB USB Pendrive ổ đĩa phát sáng cho Iphone 15 Pro Max, tốc độ cao điện thoại bên ngoài ổ đĩa flash cho Iphone 14 Pro Max, bộ nhớ thẻ Lưu Trữ Ảnh dữ ...",
+    "position": 6
+   },
+   {
+    "title": "[Trả góp 0%] Apple iPhone 15 256GB Chính hãng VN/A ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-apple-iphone-15-256gb-chinh-hang-vna-viettel-store-i2416456721.html?srsltid=AU7gw4XhP7IaJ-R88Wx6F0EztQRJEktKvrLwYKRHd_9UhLW9uy54UPza",
+    "snippet": "Thông số. Thương hiệu,Loại bộ xử lý,Dung lượng pin (mAh) ; Trả góp. Trả góp trong 6 tháng, chỉ với 3.815.000 ₫ mỗi tháng. ; Giao hàng. Thành phố Hồ Chí Minh, ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 128GB Chính Hãng (VN/A)",
+    "link": "https://www.lazada.vn/products/iphone-16-128gb-chinh-hang-vna-i2806208680.html?srsltid=AU7gw4WnPr6smyMYRH8WLAhxKMlan2hl-QnyBBE1eI13uWfWqUeh3TOd",
+    "snippet": "iPhone 15 128GB Chính Hãng VN/A. 20.120.000 ₫. iPhone 17e 256GB Chính Hãng ... - CHIP A18 SIÊU THÔNG MINH – A18 tiến xa hơn hai thế hệ so với chip A16 Bionic trên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

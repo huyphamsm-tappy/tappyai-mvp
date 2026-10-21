@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "ERAZER Tai nghe gaming không dây Lenovo ERAZER XT80Pro TWS bluetooth 5.4 Tai nghe 10mm site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:39:08.353Z",
+ "body": {
+  "searchParameters": {
+   "q": "ERAZER Tai nghe gaming không dây Lenovo ERAZER XT80Pro TWS bluetooth 5.4 Tai nghe 10mm site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lenovo ERAZER XT80 PRO AI Dịch 135 ngôn ngữ Tai ...",
+    "link": "https://shopee.vn/Lenovo-ERAZER-XT80-PRO-AI-D%E1%BB%8Bch-135-ng%C3%B4n-ng%E1%BB%AF-Tai-nghe-Bluetooth-5.4-ANC-Tai-nghe-d%E1%BB%8Bch-kh%E1%BB%AD-ti%E1%BA%BFng-%E1%BB%93n-th%C3%B4ng-minh-Ch%E1%BA%BF-%C4%91%E1%BB%99-tr%C3%B2-ch%C6%A1i-%C3%A2m-nh%E1%BA%A1c-Tai-nghe-kh%C3%B4ng-d%C3%A2y-c%C3%B3-%C4%91%E1%BB%99-tr%E1%BB%85-th%E1%BA%A5p-i.854443946.20242891975",
+    "snippet": "Lenovo ERAZER XT80 PRO AI Dịch 135 ngôn ngữ Tai nghe Bluetooth 5.4 ANC Tai nghe dịch khử tiếng ồn thông minh Chế độ trò chơi âm nhạc Tai nghe không dây có ...",
+    "rating": 4.7,
+    "ratingCount": 461,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

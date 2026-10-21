@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"28/2026/TT-BTC\" lệ phí cấp hộ chiếu mức thu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:29.037Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"28/2026/TT-BTC\" lệ phí cấp hộ chiếu mức thu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Áp dụng mức thu phí, lệ phí mới trong lĩnh vực xuất nhập ...",
+    "link": "https://congan.tayninh.gov.vn/vi/chi-tiet-tin-tuc?Id=268107",
+    "snippet": "Bộ Tài chính đã chính thức ban hành Thông tư số 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, ...",
+    "position": 1
+   },
+   {
+    "title": "Quy định mới về lệ phí cấp hộ chiếu năm 2026",
+    "link": "https://congan.khanhhoa.gov.vn/vi/quy-dinh-moi-ve-le-phi-cap-ho-chieu-nam-2026",
+    "snippet": "Ngày 27/3/2026, Bộ trưởng Bộ Tài chính ban hành Thông tư 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, ...",
+    "date": "29 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "Thông tư số 28/2026/TT-BTC của Bộ trưởng Bộ Tài chính trong đó quy định mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh, ...",
+    "date": "1 thg 4, 2026",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC: Quy định phí, lệ phí xuất nhập ...",
+    "link": "https://luatvietnam.vn/thue/thong-tu-28-2026-tt-btc-quy-dinh-phi-le-phi-xuat-nhap-canh-tai-viet-nam-430424-d1.html",
+    "snippet": "Thông tư 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam.",
+    "date": "31 thg 3, 2026",
+    "position": 4
+   },
+   {
+    "title": "Quy định mới về thu phí, lệ phí xuất nhập cảnh",
+    "link": "https://www.facebook.com/qlxnctphcm/posts/quy-%C4%91%E1%BB%8Bnh-m%E1%BB%9Bi-v%E1%BB%81-thu-ph%C3%AD-l%E1%BB%87-ph%C3%AD-xu%E1%BA%A5t-nh%E1%BA%ADp-c%E1%BA%A3nh-th%C3%B4ng-t%C6%B0-n%C3%A0y-quy-%C4%91%E1%BB%8Bnh-ng%C6%B0%E1%BB%9Di-n%E1%BB%99p-ph/972685138608157/",
+    "snippet": "... thức ban hành Thông tư số 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh và cư ...",
+    "position": 5
+   },
+   {
+    "title": "Quy định mới về chế độ thu phí và lệ phí xuất nhập cảnh",
+    "link": "https://thuehaiquan.tapchikinhtetaichinh.vn/quy-dinh-moi-ve-che-do-thu-phi-va-le-phi-xuat-nhap-canh-152358.html",
+    "snippet": "Bên cạnh đó, Thông tư số 28/2026/TT-BTC cũng cụ thể hóa các trường hợp miễn phí và lệ phí vì lý do đối ngoại, nhân đạo hoặc theo các điều ước ...",
+    "date": "31 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "NHẬP CẢNH, QUÁ CẢNH, CƯ TRÚ TẠI VIỆT NAM",
+    "link": "https://tphcm.gdt.gov.vn/wps/wcm/connect/TPHCM/site/news/cucthue/c03bc103-78a6-4cdb-b4a9-2dcbe9ef3ea1?presentationTemplate=Lib/pt_new_detail_print",
+    "snippet": "BIỂU MỨC THU PHÍ, LỆ PHÍ TRONG LĨNH VỰC XUẤT CẢNH,. NHẬP CẢNH, QUÁ CẢNH, CƯ TRÚ TẠI VIỆT NAM. (Kèm theo Thông tư số 28/2026/TT-BTC. Ngày 27 tháng 3 năm 2026 ...",
+    "position": 7
+   },
+   {
+    "title": "Quy định mới về mức thu phí, lệ phí trong lĩnh vực xuất ...",
+    "link": "https://congan.langson.gov.vn/pho-bien-giao-duc-phap-luat/68/quy-dinh-moi-ve-muc-thu-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam/14018.aspx",
+    "snippet": "Ngày 27/3/2026, Bộ trưởng Bộ Tài chính đã ký ban hành Thông tư số 28/2026/TT-BTC quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

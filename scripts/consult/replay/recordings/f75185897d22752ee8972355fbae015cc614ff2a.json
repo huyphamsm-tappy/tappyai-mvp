@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sushi Way Quận 3\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:52:39.668Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sushi Way Quận 3\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Sushi Way Quận 3",
+    "link": "https://www.tiktok.com/discover/sushi-way-qu%E1%BA%ADn-3",
+    "snippet": "Sushi Way Quận 3. Khám phá Shinoda Sushi tại 799 Hoàng Sa! Đừng bỏ lỡ trải nghiệm sushi tuyệt vời nhất tại Saigon. Cập nhật lần cuối 2026-08 ...",
+    "date": "3 thg 8, 2026",
+    "position": 1
+   },
+   {
+    "title": "Đánh giá Sushi Way của Hoshi Phan: Combo 500k",
+    "link": "https://www.tiktok.com/@homnayangi.schannel/video/7081499771935935770",
+    "snippet": "... Sushi Way Quận 3. Đánh giá Sushi Way của Hoshi Phan: Combo 500k. Explore the delightful world of sushi at **Sushi Way**, led by the renowned ...",
+    "position": 2
+   },
+   {
+    "title": "Ở Quận 10 có cái quán Sushi Sasimi ngon chấn động đậy ...",
+    "link": "https://www.tiktok.com/@_.ngoctai._/video/7631220651273014535",
+    "snippet": "Sushi Way Quận 3 · Oreo Sushi Roll with 10 Oreos · Kyoto Sushi Restaurant Jakarta · Oberhausen Xiao Sushi · Ryo Sushi Amsterdam. Ở Quận 10 có ...",
+    "position": 3
+   },
+   {
+    "title": "Sushi, shashimi ngon rẻ nhất Q7 chỉ từ 19 cành nè mí keo ...",
+    "link": "https://www.tiktok.com/@langthangsaigon59/video/7385542771429346578",
+    "snippet": "Sushi Way Quận 3 · Sushi Oberhausen · Halal 7 Eleven Sushi · Best Sushi Bruxelles · Sushi Quận 9 · Quán Sushi Ở Sóc Trăng · Sushi 7 Eleven in ...",
+    "position": 4
+   },
+   {
+    "title": "Món ngon quận 7 #ancungtiktok #foodtiktok #sayhihuy",
+    "link": "https://www.tiktok.com/@sayhihuy/video/7506459268736929042",
+    "snippet": "Sushi Way Quận 3 · Halal 7 Eleven Sushi. Món ngon quận 7 #ancungtiktok #foodtiktok #sayhihuy . Collage of food dishes from. @Nhật Huy | sayhihuy.",
+    "position": 5
+   },
+   {
+    "title": "Sushi Chay quá là ngon đi mấy bà ơi #saigonbeoreview ...",
+    "link": "https://www.tiktok.com/@saigonbeoreview/video/7429598696997702913",
+    "snippet": "... Sushi Way Quận 3Cách Bấm Máy Số Ở Quán Ăn SushiQuán Ăn Gần Ufm Quận 7Quán Sushi Ở Sóc TrăngQuán Sushi Thái NguyênRekomendasi Sushi 365 Plaza ...",
+    "position": 6
+   },
+   {
+    "title": "Nhà hàng ngay trung tâm quận 1 nhưng đánh giá 1 sao ...",
+    "link": "https://www.tiktok.com/@ly.thanhy/video/7613013118104374548",
+    "snippet": "Sushi Way Quận 3 · Sushi Maru Yang Enak · Genki Sushi Quận 1 Menu · Osaka Restaurant Omaha Sushi · Genki Sushi Takashimaya Quận 1 · Sango Sushi ...",
+    "position": 7
+   },
+   {
+    "title": "capcut #sushi",
+    "link": "https://www.tiktok.com/@cchu681/video/7680197992758021383",
+    "snippet": "Teacup After Rain - Bike Bell Whisper · Sabrura Sushi Norway · Sushi Way Aeroville · Safeway Sushi Friday · Sushi Way Review · Sushi Way Quận 3 · Sushi Train ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

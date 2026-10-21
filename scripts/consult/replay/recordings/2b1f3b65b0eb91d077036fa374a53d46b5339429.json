@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:congan.gov.vn \"15/8/2026\" \"hộ chiếu\" miễn lệ phí cấp hộ chiếu phổ thông đủ điều kiện",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:24:29.749Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:congan.gov.vn \"15/8/2026\" \"hộ chiếu\" miễn lệ phí cấp hộ chiếu phổ thông đủ điều kiện",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

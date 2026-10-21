@@ -1,0 +1,80 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn/newsroom AirPods Pro thế hệ thứ hai 6 giờ 30 giờ pin",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:14:52.296Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn/newsroom AirPods Pro thế hệ thứ hai 6 giờ 30 giờ pin",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Chất lượng âm thanh tuyệt đỉnh, công nghệ khử tiếng ồn chủ động tiên tiến, và nhiều tính năng mới giúp sử dụng thuận tiện hơn nữa.",
+    "date": "7 thg 9, 2022",
+    "position": 1
+   },
+   {
+    "title": "Giới thiệu AirPods Pro 3 với trải nghiệm âm thanh đỉnh cao",
+    "link": "https://www.apple.com/vn/newsroom/2025/09/airpods-pro-3-introduce-the-ultimate-audio-experience/",
+    "snippet": "AirPods Pro 3 được làm từ 40% vật liệu tái chế, bao gồm 100% coban tái chế trong pin và 65% nhựa tái chế trong vỏ. Thiết bị được sản xuất bằng ...",
+    "date": "10 thg 9, 2025",
+    "position": 2
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "Ngoài ra, chế độ cài đặt nguồn điện thấp mới có thể kéo dài thời lượng pin lên đến 60 giờ, rất lý tưởng để sử dụng nhiều ngày.2 Mặt đồng hồ ...",
+    "date": "22 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Hãy sẵn sàng khám phá iPhone, Apple Watch và AirPods ...",
+    "link": "https://www.apple.com/vn/newsroom/2025/09/get-ready-to-discover-the-next-generation-of-iphone-apple-watch-and-airpods/",
+    "snippet": "Lần đầu tiên, người dùng có thể sử dụng AirPods Pro 3 để đo nhịp tim trong khi tập luyện và theo dõi hơn 50 loại bài tập với trải nghiệm mới ...",
+    "date": "11 thg 9, 2025",
+    "position": 4
+   },
+   {
+    "title": "Apple ra mắt iPhone 18 Pro và iPhone 18 Pro Max",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/",
+    "snippet": "Dây Đeo Chéo sẽ được bán với giá 1.649.000đ với các màu đen, xanh navy, nâu xám, be cát, xanh ô-liu, xanh biếc, đỏ tía, đỏ burgundy và xám nhạt.",
+    "date": "10 thg 9, 2026",
+    "position": 5
+   },
+   {
+    "title": "Apple ra mắt AirPods Max 2",
+    "link": "https://www.apple.com/vn/newsroom/2026/03/apple-introduces-airpods-max-2-powered-by-h2/",
+    "snippet": "Với chip H2 và thuật toán âm thanh điện toán mới, AirPods Max 2 mang đến khả năng Chống Ồn Chủ Động hiệu quả hơn đến 1,5 lần so với thế hệ trước ...",
+    "date": "16 thg 3, 2026",
+    "position": 6
+   },
+   {
+    "title": "Apple ra mắt iPhone Duo",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-unveils-iphone-duo/",
+    "snippet": "Sự kết hợp giữa Apple silicon và các thuật toán cân bằng năng lượng cho phép pin hoạt động liền mạch như một, nhờ đó người dùng có thể xem video ...",
+    "date": "10 thg 9, 2026",
+    "position": 7
+   },
+   {
+    "title": "Apple ra mắt Apple Watch Ultra 4",
+    "link": "https://www.apple.com/vn/newsroom/2026/09/apple-unveils-apple-watch-ultra-4/",
+    "snippet": "Thử nghiệm thời lượng pin nhiều ngày bao gồm 630 lần xem giờ, 190 thông báo, 30 phút sử dụng ứng dụng, hai lần tập luyện 60 phút có phát nhạc từ ...",
+    "date": "10 thg 9, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

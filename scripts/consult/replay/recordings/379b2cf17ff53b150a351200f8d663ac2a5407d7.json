@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:54.954Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple magsafe 2 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/apple%20magsafe%202",
+    "snippet": "Bộ sạc không dây từ tính 2 trong 1 Cáp Type-C tích hợp cho Magsafe IPhone 17 16 15 14 13 12 Apple Watch 11 SE Airpods Pro Sạc nhanh. 646.800₫. rating-star 5.0.",
+    "position": 1
+   },
+   {
+    "title": "Ốp magsafe apple - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/%E1%BB%91p/magsafe%20apple",
+    "snippet": "... MagSafe Vỏ thời trang cho Apple AirPods Pro 2nd / 1st. 454.002₫. 665.280₫. -32 ... Sạc Không Dây Vỏ Từ Tính 16 Pro Max Có Hộp. 310.973₫.",
+    "position": 2
+   },
+   {
+    "title": "poD giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=,poD",
+    "snippet": "Đế sạc không dây 3 trong 1 có thể gập lại từ tính Đế sạc không dây nhanh Thích hợp cho iPhone / Apple Watch / AirPods. 274.963₫. 423.020₫. -35%. rating-star ...",
+    "position": 3
+   },
+   {
+    "title": "#AirPods giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/AirPods-tag",
+    "snippet": "Bộ núm Airpod Pro3/Pro2/Pro1 thiết kế chuẩn Auth - Nút/Mút · Dành cho vỏ AirPods Pro 3 / Vỏ AirPods pro / pro2 Vỏ hoạt hình 1 · for airpods 5 case headphone case, ...",
+    "position": 4
+   },
+   {
+    "title": ".pod giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=.pod",
+    "snippet": "Ốp bảo vệ sáng tạo, tùy chỉnh, chống rơi mới cho AirPods Pro 3 / AirPods 5 / 4 / 3 / AirPods Pro 2. 150.120₫. Mua 2 & giảm 5.000₫.",
+    "position": 5
+   },
+   {
+    "title": "aipot giá tốt Tháng 9, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=aipot",
+    "snippet": "Dành cho vỏ AirPods 4 / Vỏ AirPods pro / pro2 Vỏ hoạt hình 1 / 2 / 3 cho ... MagSafe Vỏ thời trang cho Apple AirPods Pro 2nd / 1st. 615.280₫. 665.280₫. -8 ...",
+    "position": 6
+   },
+   {
+    "title": "Shopee",
+    "link": "https://shopee.vn/collections/3917358?source=4",
+    "snippet": "Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB. Bán hết. flag-label Tai nghe AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB-C). 6.199.000 ...",
+    "position": 7
+   },
+   {
+    "title": "Ốp airpods 2 - Giá Tốt, Miễn Phí Vận Chuyển, Đủ Loại",
+    "link": "https://shopee.vn/list/%E1%BB%91p%20l%C6%B0ng/airpods/2",
+    "snippet": "Shopee cung cấp đầy đủ ốp airpods 2 chính hãng với nhiều mức giá ưu đãi vô cùng hấp dẫn. Đặc biệt, ốp airpods 2 sẽ luôn được tìm thấy dễ dàng với mức giá ưu đãi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

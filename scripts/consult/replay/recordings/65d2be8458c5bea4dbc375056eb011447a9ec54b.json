@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"Thông tư 28/2026/TT-BTC\" hộ chiếu lệ phí mức thu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:22:45.356Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"Thông tư 28/2026/TT-BTC\" hộ chiếu lệ phí mức thu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

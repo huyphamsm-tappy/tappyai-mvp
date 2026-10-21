@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 thông số chính thức màn hình camera pin cập nhật phần mềm",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:54:33.453Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 thông số chính thức màn hình camera pin cập nhật phần mềm",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tiến bước vào kỷ nguyên quyền năng AI mới cùng ...",
+    "link": "https://news.samsung.com/vn/tien-buoc-vao-ky-nguyen-quyen-nang-ai-moi-cung-samsung-galaxy-s24-series",
+    "snippet": "Bộ 4 ống kính Tele (Quad Tele System) của Galaxy S24 Ultra với zoom quang học 5x mới kết hợp cùng cảm biến 50MP nâng cấp hiệu năng chất lượng ...",
+    "date": "18 thg 1, 2024",
+    "position": 1
+   },
+   {
+    "title": "Galaxy S24: Thông số kỹ thuật, thiết kế, pin và hơn thế",
+    "link": "https://minhtuanmobile.com/tin-tuc/galaxy-s24-thong-so-ky-thuat-thiet-ke-pin-va-hon-the/",
+    "snippet": "Hệ thống camera sau của Samsung Galaxy S24 bao gồm 4 ống kính: camera chính 50MP, camera góc siêu rộng 12MP, camera tele 10MP hỗ trợ zoom quang ...",
+    "date": "27 thg 12, 2023",
+    "position": 2
+   },
+   {
+    "title": "Đánh giá Galaxy S24 Ultra: AI tiện lợi, camera xịn sò, hiệu ...",
+    "link": "https://www.thegioididong.com/tin-tuc/danh-gia-galaxy-s24-ultra-1560290",
+    "snippet": "Galaxy S24 Ultra nhận được bản cập nhật bổ sung tính năng điều chỉnh độ Sinh động cho màn hình (cập nhật: 24/02/2024). Theo thông tin do trang ...",
+    "date": "26 thg 1, 2024",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 5G ở thời điểm hiện tại có đáng mua?",
+    "link": "https://www.youtube.com/watch?v=Kj3rra_9S_Y",
+    "snippet": "Chúng ta sẽ có một thiết bị với thiết kế sang trọng, màn hình có chất lượng hiển thị đẹp, trải nghiệm phần mềm tốt cùng hệ thống camera đa ...",
+    "position": 4
+   },
+   {
+    "title": "Dòng Galaxy S24 sẽ hỗ trợ cập nhật Android đến 7 năm",
+    "link": "https://dienmaycholon.com/kinh-nghiem-mua-sam/dong-galaxy-s24-se-ho-tro-cap-nhat-android-den-7-nam-len-den-phien-ban-android-21",
+    "snippet": "Như vậy, Galaxy S24 có thể được cho phép cập nhật đến hệ điều hành Android 21, tức là đến năm 2031. Đây không chỉ đơn thuần là cập nhật phần mềm ...",
+    "date": "15 thg 11, 2024",
+    "position": 5
+   },
+   {
+    "title": "Đánh giá camera Samsung Galaxy S24 Series chi tiết từ A - Z",
+    "link": "https://viettelstore.vn/tin-tuc/danh-gia-camera-samsung-galaxy-s24-series-chi-tiet-tu-a-z?srsltid=AU7gw4VeJoovwIDQMBXUKgZOFBXey1cs-_YSOn_ER7aZfIUK31YbiZoy",
+    "snippet": "Galaxy S24 sở hữu hệ thống camera sau được nâng cấp với 3 ống kính bao gồm: Camera chính 50MP, cảm biến góc siêu rộng 12MP, camera tele 10MP hỗ ...",
+    "date": "1 thg 2, 2024",
+    "position": 6
+   },
+   {
+    "title": "Bản cập nhật phần mềm mới của Samsung Galaxy S24 ...",
+    "link": "https://nghenhinvietnam.vn/brand-apple/ban-cap-nhat-phan-mem-moi-cua-samsung-galaxy-s24-nham-giai-quyet-cac-van-de-ve-camera-nhung-van-con-do-mot-noi-lo",
+    "snippet": "Samsung đã bắt đầu tung ra bản cập nhật tháng 4 cho dòng Galaxy S24 nhằm khắc phục một số vấn đề về camera. Công ty đang cải thiện hình ảnh ...",
+    "date": "28 thg 3, 2024",
+    "position": 7
+   },
+   {
+    "title": "Samsung cam kết có bản cập nhật cải thiện chất lượng ...",
+    "link": "https://minmobile.net/samsung-cam-ket-co-ban-cap-nhat-cai-thien-chat-luong-camera-galaxy-s24?srsltid=AU7gw4WLKbsNX8Qc1UbJ3X6xV_OwlftMQmNTmpqjs7w0fX6dI4sj8bsD",
+    "snippet": "Cùng với các biện pháp giải quyết vấn đề trên camera của Samsung Galaxy S24, Samsung đã phát triển tính năng Bảo vệ Pin tiên tiến cho dòng điện ...",
+    "date": "15 thg 2, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

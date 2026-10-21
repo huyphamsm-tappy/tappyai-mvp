@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bibli Library Café\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:06:16.817Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bibli Library Café\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Bibli Library Cafe: Quán Cafe Sách Ở Sài Gòn",
+    "link": "https://www.tiktok.com/@saigondulich/video/7277762545304276242",
+    "snippet": "#cafe #saigon #Bibli #Library Quán cafe sách núp hẻm ở quận 1: Bibli Library Cafe, 42/5 Hồ Hảo Hớn, Quận 1, Tp.HCM. Giờ mở cửa: 8h - 22h.",
+    "position": 1
+   },
+   {
+    "title": "Discover Bibli Library Cafe in Saigon",
+    "link": "https://www.tiktok.com/@quynhdidaydikia/video/7603590607981890834",
+    "snippet": "The drinks at Bibli Library Cafe are nothing short of extraordinary. They offer a unique selection that you won't find anywhere else, making it ...",
+    "position": 2
+   },
+   {
+    "title": "Tham Quan Bibli Library Café Ngày Xuân",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/video/7602591992496885010",
+    "snippet": "Bibli Library Café • Inbox hoặc ☎️ gọi 0769900006 để giữ chỗ • 42/5 Hồ Hảo Hớn, P. Cầu Ông Lãnh, TP. HCM. Tham Quan Bibli Library ...",
+    "position": 3
+   },
+   {
+    "title": "Thăm BIBLI Library Café: Nơi Tâm Hồn Được Chữa Lành",
+    "link": "https://www.tiktok.com/@ton_social/video/7625901802776464660",
+    "snippet": "BIBLI Library Café là một điểm đến lý tưởng cho những ai đang tìm kiếm một không gian thư giãn và chữa lành. Với không khí yên bình, ...",
+    "position": 4
+   },
+   {
+    "title": "Trải Nghiệm 5 Giác Quan Tại Bibli Library Café",
+    "link": "https://www.tiktok.com/@esther.luver/video/7624773568496160020",
+    "snippet": "Cùng mình trải nghiệm 5 giác quan tại Bibli Library Café nha, đảm bảo mê hong lối về luon #biblilibrarycafe #caphequan1 #coffeesaigon # ...",
+    "position": 5
+   },
+   {
+    "title": "Thư Viện Cà Phê Cổ Điển Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/video/7635873955869429012",
+    "snippet": "Tại Bibli Library Café, hành trình khám phá thông điệp năm 2026 bắt đầu với 4 loại bánh thơm nức. Bạn có thể chọn món bánh mà mình yêu thích nhất và nhận câu ...",
+    "position": 6
+   },
+   {
+    "title": "Daily vibe tại Bibli ☕️ Đồ ăn đồ uống gì cũng okila hết, không ...",
+    "link": "https://www.tiktok.com/@bibli.library.cafe/video/7614046539748478215?lang=es-419",
+    "snippet": "... Bibli Library Café — 42/5 Hồ Hảo Hớn, P. Cầu Ông Lãnh, TP. HCM. Daily vibe tại Bibli ☕️ Đồ ăn đồ uống gì cũng okila hết, không gian. @Bibli Library Café.",
+    "position": 7
+   },
+   {
+    "title": "BIBLI LIBRARY CAFE - Phong Cách Harry Potter Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@khoasince2000/video/7362179882194947335",
+    "snippet": "“BIBLI LIBRARY CAFE - Nơi giao thoa của cà phê thư viện và thế giới huyền bí Harry Potter” #fyp #xuhuong #reviewcafe #coffeeholic #saigon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

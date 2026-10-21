@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Việt Nam\" OR \"Phở Hùng\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:06:05.659Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Việt Nam\" OR \"Phở Hùng\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khám Phá Quán Phở Hùng Hàng Đẫy Tại Thành Công",
+    "link": "https://www.tiktok.com/@u40.an.gi/video/7587737343382113556",
+    "snippet": "Quán bán tại nhà nên giá rổ cực hợp lý. Phở Hùng Hàng Đẫy, 116B1 Thành Công, Giảng Võ, Hà Nội #phobo #ancungtiktok #hanoifood #foodreview ...",
+    "position": 1
+   },
+   {
+    "title": "Tập 2 Trong Series 100 Quán Phở Ngon",
+    "link": "https://www.tiktok.com/@pika_laca/video/7601097197425478933",
+    "snippet": "Khám Phá Phở Hùng - Tập 2 Trong Series 100 Quán Phở Ngon. Chìm đắm trong hương vị Phở Hùng, một trong 100 quán phở ngon tại Sài Gòn! Trải ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái",
+    "link": "https://www.tiktok.com/@vine.2905/video/7601361027833269522",
+    "snippet": "Phở Việt Nam Ngon Đỉnh tại Phạm Hồng Thái. Khám phá quán phở nổi tiếng ngon tại Sài Gòn. Chất lượng tuyệt hảo, nước lèo thơm ngon, phục vụ đa ...",
+    "position": 3
+   },
+   {
+    "title": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2",
+    "link": "https://www.tiktok.com/@tuantudo86/video/7693090789445930260",
+    "snippet": "Đi ăn quán Phở Việt Nam ở Sài Gòn | Phần 2 | Menu quá hay & đáng học hỏi #tuantudo #quannhautudo #phobotudo #laucuadongtudo #nuongtudo #vtmgr # ...",
+    "position": 4
+   },
+   {
+    "title": "Phở Việt Nam: Xem Làm Bánh Phở Tươi Trực Tiếp",
+    "link": "https://www.tiktok.com/@taihoadatviet/video/7625124168417201416",
+    "snippet": "Phở Việt Nam: Xem Làm Bánh Phở Tươi Trực Tiếp. Trải nghiệm phở bò độc đáo tại Phở Việt Nam Gò Vấp, xem làm bánh phở tươi thủ công qua lớp kính.",
+    "position": 5
+   },
+   {
+    "title": "Phở Hùng Ngân 8: Trải Nghiệm Tô Phở Hoàn Hảo",
+    "link": "https://www.tiktok.com/@phohungngancs_8/video/7661466073111252240",
+    "snippet": "... Phở Hùng ... Keywords: phở hùng ngân 8, phở ngon, phở sài gòn, quán phở tân phú, phở đậm đà, hương vị phở, trải nghiệm phở, phở việt nam, đặc sản ...",
+    "position": 6
+   },
+   {
+    "title": "Phở Việt Nam: Hướng dẫn và gợi ý món phở ngon",
+    "link": "https://www.tiktok.com/@saigonspringroll/video/7681533386514582797",
+    "snippet": "tinh hoa ẩm thực đường phố và quán ăn — tập trung vào nước dùng trong, bánh phở mềm và thịt vừa chín.",
+    "date": "Lead Phở Việt Nam",
+    "position": 7
+   },
+   {
+    "title": "Cách làm giấm tỏi chấm phở như Phở Việt Nam by Võ Quốc",
+    "link": "https://www.tiktok.com/@voquoc_chef/video/7693135818281520402",
+    "snippet": "Nhiều thực khách đến Phở Việt Nam by Võ Quốc ăn phở rất mê giấm tỏi ở quán, và công thức này được giới thiệu để làm giấm tỏi vừa dễ vừa ngon.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -206,7 +206,9 @@ describe('serperPlaces through the shared cache', () => {
     expect(n).toBe(2)
     expect(out![0].priceLevel).toBe('₫₫')
     const stored = kv.get(serperSharedCacheKey('maps', 'quán ăn', HCM))
-    expect(JSON.parse(stored!.value)[0].priceLevel).toBe('₫₫')
+    // stored format v3: { v: 3, at: <fetch time>, rows: [...] } (freshness contract); older bare arrays still read as hits (see freshnessContract.test.ts)
+    expect(JSON.parse(stored!.value).rows[0].priceLevel).toBe('₫₫')
+    expect(JSON.parse(stored!.value)).toMatchObject({ v: 3, at: expect.any(String) })
     expect(kv.size).toBe(1)
   })
   it('KV failure → Serper still answers', async () => {

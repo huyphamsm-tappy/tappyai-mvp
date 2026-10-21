@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:36:00.872Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s24-fe_3__4_1_1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIST0KExoGdLpFmBzqQ9qWgackIyrPx0nDSq8Vot0HmA&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fd%2Fi%2Fdien-thoai-samsung-galaxy-s24-fe_3__4_1_1_1.png&tbnid=mf9Dj3ds6_NH7M&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdien-thoai-samsung-galaxy-s24-fe.html&docid=P_EzHSxSaTtIhM&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "SAMSUNG Galaxy S24 FE 5G (8GB | 128GB) Mỹ Mới fullbox",
+    "imageUrl": "https://cdn.hstatic.net/products/1000370129/s24_fe_x_m_topaz_3b97c7428ee046c7b1465f7b156a2767_master_e9825d04e759465692cdf06821a73823_master.jpg",
+    "imageWidth": 486,
+    "imageHeight": 506,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRl_VGD48Q0-hDUTCHByFsIJFG6xElUo9Ll5dRe0YD-4w&s",
+    "thumbnailWidth": 220,
+    "thumbnailHeight": 229,
+    "source": "Digiphone",
+    "domain": "digiphone.vn",
+    "link": "https://digiphone.vn/products/samsung-galaxy-s24-fe-5g-8gb-128gb-my-moi-fullbox?srsltid=AU7gw4UbCfrhVyD85T_uQcA4QPBVlxmVsToP5_SxwH8_VkqW91T6Us6h",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000370129%2Fs24_fe_x_m_topaz_3b97c7428ee046c7b1465f7b156a2767_master_e9825d04e759465692cdf06821a73823_master.jpg&tbnid=Jfe6wgP9aLj1cM&imgrefurl=https%3A%2F%2Fdigiphone.vn%2Fproducts%2Fsamsung-galaxy-s24-fe-5g-8gb-128gb-my-moi-fullbox%3Fsrsltid%3DAU7gw4UbCfrhVyD85T_uQcA4QPBVlxmVsToP5_SxwH8_VkqW91T6Us6h&docid=77YCc586WkoptM&w=486&h=506",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G 256GB mua trả chậm 0% lãi suất, BH 1 năm",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/329785/samsung-galaxy-s24-fe-8gb-256gb-thumb-600x600.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIYTxM9iDUNVkWaUSAGdHSwVN7glUyUfFB4Ynw74hvoA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/dtdd/samsung-galaxy-s24-fe-8gb-256gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F42%2F329785%2Fsamsung-galaxy-s24-fe-8gb-256gb-thumb-600x600.jpg&tbnid=hLIH2uo_eZIRxM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Fdtdd%2Fsamsung-galaxy-s24-fe-8gb-256gb&docid=LgOzQZSLjeCFKM&w=600&h=600",
+    "position": 3
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G (8GB - 128GB) Chính Hãng, Bảng Giá",
+    "imageUrl": "https://cdn.viettablet.com/images/detailed/61/samsung-galaxy-s24-fe-chinh-hang.jpg",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThaNl0CVbKlvjz6koiFay2Ga2VVTNLeTjASwIgDPx0fQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Viettablet",
+    "domain": "www.viettablet.com",
+    "link": "https://www.viettablet.com/samsung-galaxy-s24-fe?srsltid=AU7gw4UkPtgOlFdC09mAWkvs1U-IOA5XQxGA_Zrm1ir8SFGLN0DNiy_1",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.viettablet.com%2Fimages%2Fdetailed%2F61%2Fsamsung-galaxy-s24-fe-chinh-hang.jpg&tbnid=kxGX896PPwvkZM&imgrefurl=https%3A%2F%2Fwww.viettablet.com%2Fsamsung-galaxy-s24-fe%3Fsrsltid%3DAU7gw4UkPtgOlFdC09mAWkvs1U-IOA5XQxGA_Zrm1ir8SFGLN0DNiy_1&docid=P72AOSB3_opgeM&w=600&h=600",
+    "position": 4
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s24-fe_13_.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJkmhVtwOc1MxMk4sTM6VdNJ11Pm3DaDIevx5BHFcGNQ&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fd%2Fi%2Fdien-thoai-samsung-galaxy-s24-fe_13_.png&tbnid=fPzbfxGaRSTyPM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdien-thoai-samsung-galaxy-s24-fe.html&docid=P_EzHSxSaTtIhM&w=358&h=358",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 5G chính hãng, giá rẻ, góp 0%",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/d/i/dien-thoai-samsung-galaxy-s24-fe_6_.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQ8ofLf7F32YjK9V2k0EnoZVLJpH7vU0rNUn5VCPR3Bw&s=10",
+    "thumbnailWidth": 358,
+    "thumbnailHeight": 358,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/dien-thoai-samsung-galaxy-s24-fe.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A0%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fd%2Fi%2Fdien-thoai-samsung-galaxy-s24-fe_6_.png&tbnid=EvBnj_bpoM4iWM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fdien-thoai-samsung-galaxy-s24-fe.html&docid=P_EzHSxSaTtIhM&w=358&h=358",
+    "position": 6
+   },
+   {
+    "title": "Samsung Galaxy S24 FE 128GB chính hãng | Trả góp 0%",
+    "imageUrl": "https://cdn.xtmobile.vn/upload/products/01-2026/MdfNNIt0_samsung-galaxy-s24-fe-5g-8gb-128gb-cty-xtmobile.png",
+    "imageWidth": 600,
+    "imageHeight": 600,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_BCoQQTfr1tSkdiktf6pZqQxFOG07U4FDSShPCn51yQ&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "XTmobile",
+    "domain": "www.xtmobile.vn",
+    "link": "https://www.xtmobile.vn/samsung-galaxy-s24-fe-5g-8gb-128gb-cty",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.xtmobile.vn%2Fupload%2Fproducts%2F01-2026%2FMdfNNIt0_samsung-galaxy-s24-fe-5g-8gb-128gb-cty-xtmobile.png&tbnid=SoFwh4MEs5gLmM&imgrefurl=https%3A%2F%2Fwww.xtmobile.vn%2Fsamsung-galaxy-s24-fe-5g-8gb-128gb-cty&docid=DPLiHl8iV_TnOM&w=600&h=600",
+    "position": 7
+   },
+   {
+    "title": "Samsung Galaxy S24 FE | Giá rẻ, ưu đãi lên đời hấp dẫn",
+    "imageUrl": "https://cdn2.fptshop.com.vn/unsafe/828x0/filters:format(webp):quality(75)/samsung_galaxy_s24_fe_2_a126d26771.jpg",
+    "imageWidth": 828,
+    "imageHeight": 466,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRahxQqmVPXBUForC1QfVaR5GealLTJeOJCOLgvFzw-UA&s=10",
+    "thumbnailWidth": 597,
+    "thumbnailHeight": 335,
+    "source": "FPT Shop",
+    "domain": "fptshop.com.vn",
+    "link": "https://fptshop.com.vn/dien-thoai/samsung-galaxy-s24-fe",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.fptshop.com.vn%2Funsafe%2F828x0%2Ffilters%3Aformat(webp)%3Aquality(75)%2Fsamsung_galaxy_s24_fe_2_a126d26771.jpg&tbnid=Kz0K15rEBTC_HM&imgrefurl=https%3A%2F%2Ffptshop.com.vn%2Fdien-thoai%2Fsamsung-galaxy-s24-fe&docid=1h_e6yWNm4-39M&w=828&h=466",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

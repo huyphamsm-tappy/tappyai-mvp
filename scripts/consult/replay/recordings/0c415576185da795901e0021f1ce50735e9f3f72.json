@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:03:37.930Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth TWS Xiaomi Redmi Buds 6 site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Bluetooth True Wireless Xiaomi Redmi Buds 6 Lite",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-true-wireless-xiaomi-redmi-buds-6-lite-i1343741845.html?srsltid=AU7gw4WD20gI_dKeaVhGAGZXbuBdCsN28GN48Zp-wFaG1E5trpH1XkOS",
+    "snippet": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 Lite một sản phẩm hoàn hảo mang đến cho người dùng trải nghiệm âm thanh tuyệt vời với mức giá phải chăng. Với thiết ...",
+    "position": 1
+   },
+   {
+    "title": "Tai Nghe Không Dây Xiaomi Redmi Buds 6 Pro TWS ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-khong-day-xiaomi-redmi-buds-6-pro-tws-bluetooth-53-voi-kha-nang-khu-tieng-on-chu-dong-55db-thiet-ke-deo-trong-tai-danh-cho-dien-thoai-thong-minh-xiaomi-i3257085200.html?srsltid=AU7gw4WyP-hn-Sy21JNPu5649XuEb1SAAHUz7m1ttPFseirXz2XeFwkx",
+    "snippet": "Tai Nghe Không Dây Xiaomi Redmi Buds 6 Pro TWS Bluetooth 5.3 Với Khả Năng Khử Tiếng Ồn Chủ Động 55dB, Thiết Kế Đeo Trong Tai, Dành Cho Điện Thoại Thông Minh ...",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Xiaomi Redmi Buds 6 active - Tai nghe không dây",
+    "link": "https://www.lazada.vn/products/tai-nghe-xiaomi-redmi-buds-6-active-tai-nghe-khong-day-tai-nghe-tws-i2054892775.html?srsltid=AU7gw4UXIuHj3yne-HpMWwUbIJJNQ3d0P67Ot2Kz-01MkHLOozcmHrJz",
+    "snippet": "Phiên bản Bluetooth,Loại driver tai nghe,Tính năng tai nghe. Giao hàng. Thành phố Hồ Chí Minh, Phường Bến Thành. Giao tiêu chuẩn , Đảm bảo nhận vào 12-15 thg 6.",
+    "position": 3
+   },
+   {
+    "title": "Xiaomi | Tai Nghe Không Dây Xiaomi Redmi Buds 6 Active TWS ...",
+    "link": "https://www.lazada.vn/products/pdp-i13438597352.html?srsltid=AU7gw4Ve43o9x7PpWG03gdqTqZm8Rw3a9enB3uG8PQ1p2D4_xcqx60Gq",
+    "snippet": "LazMall Xiaomi | Tai Nghe Không Dây Xiaomi Redmi Buds 6 Active TWS Bluetooth 5.4 - Thời Lượng Pin 30 Giờ, 5 Chế Độ Điều Chỉnh Âm Thanh, Khử Tiếng Ồn Chủ Động.",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-tws-xiaomi-redmi-buds-6-i2972739410.html?srsltid=AU7gw4WZM038Re_yp48Hxw6tUpIkQrMTft1vXTywWulZuT3tg89xYZJ2",
+    "snippet": "LazMall Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 · 100% chính hãng · 30 ngày miễn phí trả hàng · Bảo hành của nhà sản xuất địa phương 1 năm.",
+    "position": 5
+   },
+   {
+    "title": "Tai Nghe Bluetooth Redmi Buds 6 Vitality Edition, Hỗ Trợ Khử ...",
+    "link": "https://www.lazada.vn/products/pdp-i13440737207.html?srsltid=AU7gw4V2ETrSHxF2ru1LievfvmqdLfrvIIDywkvfVfXLlDFXBrz546Ps",
+    "snippet": "Tận hưởng thời gian nghe kéo dài với thời lượng pin 30 giờ mạnh mẽ, hoàn hảo cho lối sống thường xuyên di chuyển.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Bluetooth True Wireless Xiaomi Redmi Buds 6 Lite",
+    "link": "https://www.lazada.vn/products/tai-nghe-bluetooth-true-wireless-xiaomi-redmi-buds-6-lite-i1343741845-s5523859217.html?srsltid=AU7gw4VZIsTdjvHo_Kdn8LzluxZzaltBdR13omH9uVBJiMqZaeJXSoE_",
+    "snippet": "Xiaomi. Tai nghe Bluetooth TWS Xiaomi Redmi Buds 6 Lite một sản phẩm hoàn hảo mang đến cho người dùng trải nghiệm âm thanh tuyệt vời với mức giá phải chăng.",
+    "rating": 4.9,
+    "ratingCount": 107,
+    "position": 7
+   },
+   {
+    "title": "Tai Nghe Xiaomi Redmi Buds 4 TWS Bluetooth 5.2 Mi True ...",
+    "link": "https://www.lazada.vn/products/tai-nghe-xiaomi-redmi-buds-4-tws-bluetooth-52-mi-true-wireless-khu-tieng-on-chu-dong-35db-cho-dien-thoai-thong-minh-xiaomi-11-12-i2311930750.html?srsltid=AU7gw4W_zoTTZJhL6pWEnKRDmix1Zx7RCU-uAj2JY7zpdlCa_Zzh6fDd",
+    "snippet": "Tai Nghe Xiaomi Redmi Buds 4 TWS Bluetooth 5.2 Mi True Wireless Khử Tiếng Ồn Chủ Động 35dB Cho Điện Thoại Thông Minh Xiaomi 11 12. Tuỳ chọn sản phẩm.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

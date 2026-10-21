@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"iPhone 15 Pro 256GB\" OR \"Apple iPhone 15 Pro Max 256GB\" OR \"Apple iPhone 15 128GB Black\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:09:08.258Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"iPhone 15 Pro 256GB\" OR \"Apple iPhone 15 Pro Max 256GB\" OR \"Apple iPhone 15 128GB Black\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Refurbished Apple iPhone 15 Pro Max 256GB Natural Titanium ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-apple-iphone-15-pro-max-256gb-natural-titanium/1732258448393933485",
+    "snippet": "Buy Refurbished Apple iPhone 15 Pro Max 256GB Natural Titanium (Unlocked) - Premium on TikTok Shop. Discover great prices on and get free shipping on ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone 15 Pro 256GB review: features, storage, and tips",
+    "link": "https://www.tiktok.com/@kylinksworld1/video/7664301115340557575",
+    "snippet": "Lead The iPhone 15 Pro 256GB delivers flagship performance with a substantial storage tier for photos, video, apps, and games.",
+    "position": 2
+   },
+   {
+    "title": "IPhone 15 pro 256gb",
+    "link": "https://www.tiktok.com/@ugootech/video/7685879612601158919",
+    "snippet": "57 Likes, TikTok video from ugootech (@ugootech): “IPhone 15 pro 256gb”. original sound - ugootech.",
+    "position": 3
+   },
+   {
+    "title": "iPhone 15 Pro 256GB Physical and eSIM",
+    "link": "https://www.tiktok.com/@qwerttech/video/7689150876224900372",
+    "snippet": "iPhone 15 Pro 256GB Physical and eSIM. This iPhone 15 Pro features 256GB of storage and supports both physical SIM cards and eSIM technology.",
+    "position": 4
+   },
+   {
+    "title": "iPhone 15 Pro 256GB for Sale — 81% Battery Health",
+    "link": "https://www.tiktok.com/@.mary.promobile/video/7682759508656934164",
+    "snippet": "Lead For sale: iPhone 15 Pro, 256GB storage, battery health reported at 81%. Seller contact: +99362179279. Details - Model: iPhone 15 Pro ...",
+    "position": 5
+   },
+   {
+    "title": "Apple iPhone 15 Pro 256GB for Sale",
+    "link": "https://www.tiktok.com/@nirusha.x/video/7678258703811808530",
+    "snippet": "Listing: Apple iPhone 15 Pro — 256GB - Price: 147,000/= - Contact: Call or WhatsApp 0760024765 - Location: Kurunegala Condition and features ...",
+    "position": 6
+   },
+   {
+    "title": "Refurbished Apple iPhone 15 Pro Max 256GB Unlocked ...",
+    "link": "https://shop.tiktok.com/us/pdp/refurbished-iphone-15-pro-max-256gb-unlocked-excellent-condition/1731394326819083044",
+    "snippet": "Refurbished Apple iPhone 15 Pro Max 256GB ... Apple iPhone 15 Pro 256GB Black Titanium Refurbished Unlocked Excellent Condition Fully Functional with Charging ...",
+    "position": 7
+   },
+   {
+    "title": "Apple iPhone 15 Pro 256GB Black Titanium Refurbished ...",
+    "link": "https://shop.tiktok.com/us/pdp/apple-iphone-15-pro-256gb-black-titanium-refurbished-unlock/1732159866683101988",
+    "snippet": "Refurbished Apple iPhone 15 Pro 256GBElevate your tech with this refurbished Apple iPhone 15 Pro Max, boasting 256GB storage in excellent condition.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

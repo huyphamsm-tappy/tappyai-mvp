@@ -1,0 +1,32 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Bluetooth Chụp Tai DR90 - Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin 30H site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:08.305Z",
+ "body": {
+  "searchParameters": {
+   "q": "Bluetooth Chụp Tai DR90 - Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin 30H site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin ...",
+    "link": "https://shopee.vn/Tai-Nghe-Bluetooth-Ch%E1%BB%A5p-Tai-DR90-Ch%E1%BB%91ng-%E1%BB%92n-%C3%82m-Thanh-HiFi-Bass-S%C3%A2u-Bluetooth-5.3-Pin-30H-Mic-HD-i.1133400775.24303473958",
+    "snippet": "Mua Tai Nghe Bluetooth Chụp Tai DR90 - Chống Ồn, Âm Thanh HiFi, Bass Sâu, Bluetooth 5.3, Pin 30H, Mic HD giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 16,
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

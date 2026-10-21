@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An vé tham quan phố cổ giá 80. chính thức Trung tâm quản lý bảo tồn di sản văn hóa",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:08:17.535Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An vé tham quan phố cổ giá 80. chính thức Trung tâm quản lý bảo tồn di sản văn hóa",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách được dạo bước trong không gian chung của Khu phố cổ Hội An, nơi những con đường nhỏ rợp bóng đèn ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "trung tâm bảo tồn di sản văn hóa thế giới hội an",
+    "link": "https://hoianheritage.net/",
+    "snippet": "Hội An là một trong những nơi còn lưu giữ, bảo tồn hệ thống di sản tư liệu Hán... Hội nghị “Đối thoại châu Á - Thái ...",
+    "position": 2
+   },
+   {
+    "title": "THÔNG TIN VỀ ĐỐI TƯỢNG MIỄN THU PHÍ THAM QUAN ...",
+    "link": "https://www.facebook.com/thanhphohoian.quangnam.vn/posts/-th%C3%B4ng-tin-v%E1%BB%81-%C4%91%E1%BB%91i-t%C6%B0%E1%BB%A3ng-mi%E1%BB%85n-thu-ph%C3%AD-tham-quan-t%E1%BA%A1i-%C4%91%C3%B4-th%E1%BB%8B-c%E1%BB%95-h%E1%BB%99i-an-theo-ngh%E1%BB%8B-qu/1398102752359813/",
+    "snippet": "- Với giá vé 80.000đ, du khách được tham quan tương ứng cảnh quan chung và 03 công trình văn hoá. Những điểm tham quan nổi bật bao gồm: - ...",
+    "position": 3
+   },
+   {
+    "title": "Bảo tồn toàn vẹn Khu phố cổ Hội An",
+    "link": "https://hoiancreativecity.com/vi/bao-ton-toan-ven-khu-pho-co-hoi-an",
+    "snippet": "Hội An có hơn 83% di tích thuộc sở hữu tập thể, tư nhân, ngoài phần nhà nước đầu tư, chương trình mục tiêu quốc gia từ năm 2000-2015 chúng tôi tập trung đầu tư ...",
+    "position": 4
+   },
+   {
+    "title": "Hội An có đánh mất mình từ việc bán vé tham quan?",
+    "link": "https://gialaitv.vn/hoi-an-co-danh-mat-minh-tu-viec-ban-ve-tham-quan/",
+    "snippet": "Theo Đề án về kiểm soát hoạt động bán vé, hướng dẫn tham quan khu phố cổ, kể từ ngày 15/5 tới đây, thành phố Hội An áp dụng giá vé 80 nghìn đồng ...",
+    "date": "5 thg 4, 2026",
+    "position": 5
+   },
+   {
+    "title": "Ra mắt hệ thống bán vé tham quan tự động tại Khu Di sản ...",
+    "link": "https://startupdanang.vn/ra-mat-he-thong-ban-ve-tham-quan-tu-dong-tai-khu-di-san-van-hoa-the-gioi-hoi-an",
+    "snippet": "Lễ hội Đổi mới sáng tạo Sơn Trà 2026 (Son Tra Innovation Fest 2026) sẽ diễn ra trong 2 ngày 03 và 04/10/2026 tại Wyndham Danang Golden Bay, số ...",
+    "date": "9 thg 2, 2026",
+    "position": 6
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Vé tham quan Phố cổ Hội An mới nhất. Cập nhật chi tiết bảng giá và ưu đãi chiết khấu giá rẻ hơn độc quyền khi đặt qua đại lý Phan Văn Travel từ Đà Nẵng.",
+    "position": 7
+   },
+   {
+    "title": "Hội An thắt chặt hoạt động hướng dẫn tham quan khu phố cổ",
+    "link": "https://baodanang.vn/hoi-an-that-chat-hoat-dong-huong-dan-tham-quan-khu-pho-co-can-nhac-phuong-an-kiem-soat-ve-tham-quan-3052641.html",
+    "snippet": "Từ năm 2012, giá vé tham quan khu phố cổ Hội An được giữ ổn định với mức 120 nghìn/vé cho khách quốc tế và 80 nghìn đồng/vé với khách nội địa.",
+    "date": "7 thg 4, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

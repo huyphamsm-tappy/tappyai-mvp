@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "MacBook lập trình khoảng 25 triệu RAM 16GB MacBook Air (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:55.567Z",
+ "body": {
+  "searchParameters": {
+   "q": "MacBook lập trình khoảng 25 triệu RAM 16GB MacBook Air (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Macbook Air M4 2025 | Chính hãng Apple, giảm đến 3 triệu",
+    "link": "https://cellphones.com.vn/bo-loc/macbook-air-m4",
+    "snippet": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB Sạc 70W | Chính hãng Apple Việt Nam. 25.890.000đ. 23.890.000đ ; MacBook Air M4 15 inch 2025 10CPU 10GPU 16GB ...",
+    "position": 1
+   },
+   {
+    "title": "Build cấu hình MacBook CTO cho lập trình viên và phát ...",
+    "link": "https://cellphones.com.vn/sforum/build-cau-hinh-macbook-cto-cho-lap-trinh-vien",
+    "snippet": "Với việc nâng cấp RAM từ 8GB lên 16GB, MacBook Air 13-inch (M2, 2022) trở thành lựa chọn lý tưởng cho lập trình viên có ngân sách hạn chế ...",
+    "date": "15 thg 8, 2024",
+    "position": 2
+   },
+   {
+    "title": "Macbook | Laptop Apple giá tốt, góp 0% 12T, giảm 5% HSSV",
+    "link": "https://cellphones.com.vn/laptop/mac.html",
+    "snippet": "Giá MacBook Air bao nhiêu? Giá MacBook Air phổ biến từ 34.69 triệu đến 60.99 triệu đồng tùy vào từng cấu hình cũng như dòng đời máy. Trong đó các thế hệ mớ ...",
+    "position": 3
+   },
+   {
+    "title": "Top 4 MacBook cho sinh viên theo từng phân khúc 2025",
+    "link": "https://cellphones.com.vn/sforum/macbook-cho-sinh-vien-theo-tung-phan-khuc",
+    "snippet": "Từ 30 triệu: MacBook Air M5 13 inch - Kích thước nhỏ, hiệu năng mạnh; 3 ... Điểm mặt cỗ máy chip AMD đa luồng, RAM 16GB cực ngon tầm 20 củ · Phùng Thanh ...",
+    "position": 4
+   },
+   {
+    "title": "MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB",
+    "link": "https://cellphones.com.vn/apple-macbook-air-13-m4-10cpu-8gpu-16gb-256gb-2025.html",
+    "snippet": "Loại card đồ họa. GPU 8 lõi. Neural Engine 16 lõi. Công nghệ dò tia tốc độ cao bằng phần cứng. Băng thông bộ nhớ 120GB/s ; Dung lượng RAM. 16GB ; Ổ cứng. 256GB.",
+    "rating": 4.9,
+    "ratingCount": 19,
+    "position": 5
+   },
+   {
+    "title": "Macbook Air | Chính hãng, thu cũ lên đời giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/laptop/mac/macbook-air.html",
+    "snippet": "Nhu cầu sử dụng. Mỏng nhẹ; Đồ họa - Kỹ thuật; Cao cấp - Sang trọng; Laptop sáng tạo nội dung; Học tập - Văn phòng ; Tác vụ sử dụng. Đồ hoạ 3D, chỉnh sửa video",
+    "position": 6
+   },
+   {
+    "title": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop ...",
+    "link": "https://cellphones.com.vn/sforum/tai-chinh-duoi-25-trieu-sinh-vien-nen-chon-laptop-windows-hay-macbook",
+    "snippet": "Tài chính dưới 25 triệu, sinh viên nên chọn laptop Windows hay MacBook? · MacBook Air M1 2020 (8GB/256GB) · MacBook Air M2 (2022) · Laptop Lenovo Yoga Slim 6 ...",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 16GB làm được gì sau 4 năm ra mắt",
+    "link": "https://cellphones.com.vn/sforum/macbook-air-m1-16gb-lam-duoc-gi-sau-4-nam",
+    "snippet": "MacBook Air M1 16GB thậm chí vẫn mang đến trải nghiệm tốt hơn nhiều mẫu laptop Windows trong tầm giá 20 - 30 triệu đồng ở thời điểm hiện tại nhờ ...",
+    "date": "18 thg 7, 2024",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

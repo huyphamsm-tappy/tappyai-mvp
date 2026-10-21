@@ -1,0 +1,44 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "KY Tech Tai nghe nhét/ mở N72 HiFi, chống ồn thể thao, IPX5 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:39:08.203Z",
+ "body": {
+  "searchParameters": {
+   "q": "KY Tech Tai nghe nhét/ mở N72 HiFi, chống ồn thể thao, IPX5 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "KY N72 Tai Nghe Dạng Mở, Tai nghe AI dịch đồng thời, Có ...",
+    "link": "https://shopee.vn/KY-N72-Tai-Nghe-D%E1%BA%A1ng-M%E1%BB%9F-Tai-nghe-AI-d%E1%BB%8Bch-%C4%91%E1%BB%93ng-th%E1%BB%9Di-C%C3%B3-th%E1%BB%83-d%E1%BB%8Bch-%C4%91%C6%B0%E1%BB%A3c-133-ng%C3%B4n-ng%E1%BB%AF-D%E1%BB%8Bch-tr%E1%BB%B1c-ti%E1%BA%BFp-khi-g%E1%BB%8Di-video-xem-phim-(hi%E1%BB%83n-th%E1%BB%8B-ch%E1%BB%AF)-%C3%82m-thanh-HiFi-Ch%E1%BA%A5t-li%E1%BB%87u-m%E1%BA%A3nh-d%E1%BA%BB-linh-ho%E1%BA%A1t-IPX5-ch%E1%BB%91ng-n%C6%B0%E1%BB%9Bc-ch%E1%BB%91ng-b%E1%BB%A5i-Bluetooth-6.0-%C4%90eo-nh%E1%BA%B9-kh%C3%B4ng-c%E1%BA%A3m-gi%C3%A1c-i.1156536330.55157447371",
+    "snippet": "KY N72 Tai Nghe Dạng Mở, Tai nghe AI dịch đồng thời, Có thể dịch được 133 ngôn ngữ, Dịch trực tiếp khi gọi video/xem phim (hiển thị chữ), Âm thanh HiFi, ...",
+    "rating": 4.8,
+    "ratingCount": 170,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe dịch thuật ngôn ngữ - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/d%E1%BB%8Bch%20thu%E1%BA%ADt%20ng%C3%B4n%20ng%E1%BB%AF",
+    "snippet": "... Chống ồn ENC Tai nghe không dây Chống nước IPX5 thể thao. 159.000₫. 240.000 ... nghe Bluetooth dịch OWS nhét mở IPX7 thể thao chống nước có micrô229.900₫.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe bluetooth gaming - Giá Tốt, Miễn Phí Vận Chuyển ...",
+    "link": "https://shopee.vn/list/tai%20nghe/bluetooth/gaming",
+    "snippet": "THLT-Tai Nghe Bluetooth Không Dây N72,Và Y19 - Chống Ồn Chủ Động, Âm Bass Mạnh Mẽ, Chuyên Gaming & Thể Thao. 75.555₫. 88.888₫. -15%. rating-star 5.0.",
+    "position": 3
+   }
+  ],
+  "credits": 1
+ }
+}

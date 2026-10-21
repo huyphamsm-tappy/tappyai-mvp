@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"Khu Vui chơi Trẻ em\" OR \"KHU VUI CHƠI TRẺ EM BIGFUN\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:20:56.618Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Dream Kids Vạn Hạnh Mall\" OR \"Khu Vui chơi Trẻ em\" OR \"KHU VUI CHƠI TRẺ EM BIGFUN\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Đi đâu cho bé chơi “đã cái nư”? → Dream Kids – Vạn ...",
+    "link": "https://www.tiktok.com/@nhamomtuyen/video/7621831028214074645",
+    "snippet": "→ Dream Kids – Vạn Hạnh Mall Nhớ đọc pass “Mom Tuyền” Giảm 50 ... Khu Vui Chơi Trẻ Em Long Xuyên · Khu Vui Chơi Trẻ Em Quận 12. Đi đâu ...",
+    "position": 1
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Rạch Giá | TikTok",
+    "link": "https://www.tiktok.com/discover/khu-vui-ch%C6%A1i-tr%E1%BA%BB-em-r%E1%BA%A1ch-gi%C3%A1",
+    "snippet": "2.5M bài đăng. Hãy khám phá video liên quan đến Khu Vui Chơi Trẻ Em Rạch Giá trên TikTok. Xem thêm video về Khu Vui Chơi Trẻ Em, ...",
+    "date": "31 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Khu vui chơi trẻ em mới tại Thủ Đức",
+    "link": "https://www.tiktok.com/@beli.review/video/7665678483355438344",
+    "snippet": "Lead Khu vui chơi trẻ em mới toanh tại Thủ Đức vừa khai trương — ba mẹ được khuyến khích dắt bé đến chơi. Video/clip giới thiệu ngắn gọn địa ...",
+    "position": 3
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa",
+    "link": "https://www.tiktok.com/@thanhphong68m1/video/7605818101921336596",
+    "snippet": "Khu Vui Chơi Trẻ Em Gia Hân Hậu Nghĩa. Khám phá khu vui chơi tuyệt vời dành cho trẻ em tại Gia Hân Hậu Nghĩa Đức Hòa. Vui vẻ, náo nhiệt và an ...",
+    "position": 4
+   },
+   {
+    "title": "Lần đầu tiên khu vui chơi trẻ em tại Cần Thơ mà ...",
+    "link": "https://www.tiktok.com/@trai.nghiem.cung.an/video/7688194922695953684",
+    "snippet": "Lần đầu tiên khu vui chơi trẻ em tại Cần Thơ mà đầu tư Kính Viễn Vọng hơn 100 củ! #cantho #trainghiemcungan #khuvuichoi #happykids #trungthu.",
+    "position": 5
+   },
+   {
+    "title": "Khu Vui Chơi Trẻ Em Thủ Đức Sea Wonder Hiệp Bình Mới",
+    "link": "https://www.tiktok.com/@vivucungtri/video/7633249088858852615",
+    "snippet": "Nếu bạn đang tìm khu vui chơi trẻ em ở Thủ Đức, khu vui chơi Sea Wonder Hiệp Bình là một lựa chọn đáng để tham khảo. Địa điểm này thường được ...",
+    "position": 6
+   },
+   {
+    "title": "Đặc sản của khu vui chơi trẻ em là gì?",
+    "link": "https://www.tiktok.com/@meem.soc/video/7665215157777206549",
+    "snippet": "Lead Đặc sản của khu vui chơi trẻ em thường là tập hợp các yếu tố giúp nơi đó khác biệt và thu hút gia đình: trò chơi đặc trưng, ...",
+    "position": 7
+   },
+   {
+    "title": "Khu vui chơi trẻ em tại Thường Tín rẻ dã man chỉ từ 50K 😍 ...",
+    "link": "https://www.tiktok.com/@green.park.vit.na/video/7637052544975523080",
+    "snippet": "Khu vui chơi trẻ em tại Thường Tín rẻ dã man chỉ từ 50K Sân vận động Phủ Thường, Thường Tín, HN #fyp #foryou #khuvuichoi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

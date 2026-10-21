@@ -1,0 +1,48 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn \"25/2021/TT-BTC\" hộ chiếu mức thu 200.000",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:51:28.889Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn \"25/2021/TT-BTC\" hộ chiếu mức thu 200.000",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 55/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-55-2023-tt-btc-quy-dinh-quan-ly-su-dung-va-quyet-toan-kinh-phi-su-nghiep-tu-nguon-ngan-sach-nha-nuoc-thuc-hien-cac-chuong-trinh-muc-tieu-quoc-gia-giai-doan-2021-2025--163732",
+    "snippet": "... mức chi thực hiện theo quy định tại Thông tư số 25/2021/TT-BTC ngày 07 tháng 4 năm 2021 của Bộ Tài chính quy định mức thu, chế độ thu, nộp, quản lý và sử ...",
+    "position": 1
+   },
+   {
+    "title": "Quyết định 11/2025/QĐ-UBND của UBND tỉnh Quảng Bình",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/quyet-dinh-so-11-2025-qd-ubnd-quy-dinh-muc-ho-tro-dao-tao-chuyen-doi-nghe-va-tim-kiem-viec-lam-cho-nguoi-co-dat-thu-hoi-tren-dia-ban-tinh-quang-binh--175423",
+    "snippet": "Lệ phí làm hộ chiếu theo mức quy định tại Thông tư số 25/2021/TT-BTC ngày 07/4/2021 của Bộ trưởng Bộ Tài chính quy định mức thu, chế độ thu, nộp quản lý và ...",
+    "position": 2
+   },
+   {
+    "title": "Quyết định 65/2024/QĐ-UBND của UBND Tỉnh Vĩnh Phúc",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/quyet-dinh-so-65-2024-qd-ubnd-quy-dinh-muc-ho-tro-giai-quyet-viec-lam-va-dao-tao-nghe-cho-ho-gia-dinh-ca-nhan-khi-nha-nuoc-thu-hoi-dat-tren-dia-ban-tinh-vinh-phuc--174549",
+    "snippet": "a) Lệ phí làm hộ chiếu theo mức quy định tại Thông tư số 25/2021/TT- BTC ngày 07 tháng 4 năm 2021 của Bộ trưởng Bộ Tài chính quy định mức thu, chế độ thu ...",
+    "position": 3
+   },
+   {
+    "title": "Quyết định 51/2024/QĐ-UBND by UBND Tỉnh Tây Ninh",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/quyet-dinh-so-51-2024-qd-ubnd-ban-hanh-quy-dinh-ho-tro-dao-tao-nghe-chuyen-doi-nghe-va-tim-kiem-viec-lam-cho-nguoi-co-dat-thu-hoi-tren-dia-ban-tinh-tay-ninh--171857",
+    "snippet": "c) Hỗ trợ tiền đi lại: mức 200.000 ... Lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất cảnh: mức chi thực hiện theo quy định tại Thông tư số 25/2021/TT-BTC ...",
+    "position": 4
+   }
+  ],
+  "credits": 1
+ }
+}

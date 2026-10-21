@@ -16,6 +16,7 @@ import { SHOW_MUSIC } from '@/lib/config/product'
 import { useTranslation } from '@/lib/i18n/useTranslation'
 import { track } from '@/lib/tracking/tracker'
 import { askTappyPlaceEvent } from '@/lib/explore/clipVenueEvidence'
+import { SafetyMenu } from '@/components/safety/SafetyMenu'
 
 type Author = { full_name: string | null; avatar_url: string | null } | null
 
@@ -50,6 +51,8 @@ interface Props {
   initialLiked: boolean
   initialSaved: boolean
   commentCount: number
+  /** WP-06 — who is looking; report/block is offered only on someone else's review. */
+  viewerId?: string | null
 }
 
 const RATING_LABEL_KEY: Record<number, string> = {
@@ -66,6 +69,7 @@ export default function ReviewDetailView({
   initialLiked,
   initialSaved,
   commentCount,
+  viewerId = null,
 }: Props) {
   const { t } = useTranslation()
 
@@ -235,6 +239,10 @@ export default function ReviewDetailView({
           card={postCardOf(review)}
           variant="bar"
         />
+        {/* WP-06 — report this post / block its author (signed-in, not the author). */}
+        {viewerId && viewerId !== review.user_id && (
+          <SafetyMenu tone="onMedia" report={{ target: 'review', id: reviewId }} user={{ id: review.user_id, name: review.profiles?.full_name }} />
+        )}
       </div>
 
       {/* ─── Content card — slides over hero ─── */}

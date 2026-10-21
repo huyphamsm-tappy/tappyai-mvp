@@ -96,8 +96,9 @@ export const AI = {
    * Structured output: the model returns an object matching `schema` (vendor strict JSON-schema mode where
    * available, tool mode otherwise). Throws when the output does not validate — callers fail open.
    */
-  extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string }) {
+  extract<T>(opts: AIGenerateOptions & { schema: z.ZodType<T>; schemaName?: string; abortSignal?: AbortSignal }) {
     return generateObject({
+      abortSignal: opts.abortSignal,
       model: modelForRole(opts.role ?? 'intent', { structured: true }),
       schema: opts.schema,
       schemaName: opts.schemaName,

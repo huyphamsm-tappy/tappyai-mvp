@@ -1,0 +1,122 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Xóm Chợ Cũ Restaurant MEAT & MEET - SAIGON CENTRE Viet Kitchen yên tĩnh ít ồn Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:01:29.582Z",
+ "body": {
+  "searchParameters": {
+   "q": "Xóm Chợ Cũ Restaurant MEAT & MEET - SAIGON CENTRE Viet Kitchen yên tĩnh ít ồn Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.775498,106.6873732,16.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Xóm Chợ Cũ Restaurant",
+    "address": "35 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7794733,
+    "longitude": 106.7025477,
+    "rating": 4.4,
+    "ratingCount": 347,
+    "priceLevel": "100-200 N ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/XomChoCu76",
+    "phoneNumber": "+84 972 501 185",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "bookingLinks": [
+     "https://m.me/XomChoCu76"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmNu9bTWbrwcGdPOHg1HbyYj7pGeFD8QO3OxwEFok5XzT_0ceMVvnYkRaFNGcXGeYYfAQ4V4QPc2N9ju2gZmbNnzWyckttTDisEFdWuCpQIZm0nyPbyA4QNQy_vImH8lixaSSGH9ew",
+    "cid": "17877838603436716993",
+    "fid": "0x31752f5272eddd43:0xf81ad77d2d9c73c1",
+    "placeId": "ChIJQ93tclIvdTERwXOcLX3XGvg"
+   },
+   {
+    "position": 2,
+    "title": "MEAT & MEET - SAIGON CENTRE",
+    "address": "67, Lê Lợi/B2 saigoncentre Phường, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7728968,
+    "longitude": 106.70060319999999,
+    "rating": 4.1,
+    "ratingCount": 1101,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng Hàn Quốc",
+    "types": [
+     "Nhà hàng Hàn Quốc"
+    ],
+    "phoneNumber": "+84 28 6650 5058",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMgP2NVp1oH_acXSht_I1Ivd-XX6H7IDrKznotg018EG1swseKLpD8zzSklm3p64AlY1q_N_FBmz24OySmd-jyJuX0M32xC0lRtjHvKXl39dMiNi6ON8KUYzgLkCqCAJSaAT--UjZvDXe0",
+    "cid": "7673274807650988252",
+    "fid": "0x31752fa27f0fb805:0x6a7cf2c865fdb0dc",
+    "placeId": "ChIJBbgPf6IvdTER3LD9ZcjyfGo"
+   },
+   {
+    "position": 3,
+    "title": "MEAT & MEET",
+    "address": "8 Lê Thị Riêng, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7715231,
+    "longitude": 106.69279829999999,
+    "rating": 4.1,
+    "ratingCount": 3846,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng món nướng Hàn Quốc",
+    "types": [
+     "Nhà hàng món nướng Hàn Quốc",
+     "Nhà hàng"
+    ],
+    "website": "https://meatandmeet.com.vn/",
+    "phoneNumber": "+84 28 6650 3355",
+    "description": "Nhà hàng kiểu công nghiệp sang trọng, phục vụ đồ nướng, mì và nhiều món ăn khác của Hàn Quốc.",
+    "openingHours": {
+     "Thứ Năm": "10:00–22:00",
+     "Thứ Sáu": "10:00–22:00",
+     "Thứ Bảy": "10:00–22:00",
+     "Chủ Nhật": "10:00–22:00",
+     "Thứ Hai": "10:00–22:00",
+     "Thứ Ba": "10:00–22:00",
+     "Thứ Tư": "10:00–22:00"
+    },
+    "bookingLinks": [
+     "https://zalo.me/3272608284622566198"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMzYfmM03XT8sgTfMhA_q3o-IWXggttrszNqxooxC2HiuVee8z-A1a8PxJFdIe1jpw9JapXDj9_j53QMwNZlTZZpeRQbK8eHvwsQiOrjXOaikskCfVgcd0Mfox0I6MPoz0L8ulr",
+    "cid": "4920105551629922631",
+    "fid": "0x31752f3c3bdef79d:0x4447b9ee6e543147",
+    "placeId": "ChIJnffeOzwvdTERRzFUbu65R0Q"
+   }
+  ],
+  "credits": 3
+ }
+}

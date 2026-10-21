@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "nhà hàng món ngon giá dưới 300.000 đồng mỗi người Quận 1, TP.HCM gia menu thuc don",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:04:34.542Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng món ngon giá dưới 300.000 đồng mỗi người Quận 1, TP.HCM gia menu thuc don",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Top 45 nhà hàng ngon nổi tiếng nhất tại TP.HCM",
+    "link": "https://zalopay.vn/nha-hang-5067",
+    "snippet": "Giá dao động: 100.000 – 300.000 VNĐ/người. Nếu bạn muốn trải nghiệm sự đa dạng của ẩm thực truyền thống Trung Quốc thì San Fu Lou chắc chắn ...",
+    "date": "30 thg 9, 2025",
+    "position": 1
+   },
+   {
+    "title": "Em tha thiết xin cả nhà mấy nhà hàng ăn trưa ở các quận 1 ...",
+    "link": "https://www.facebook.com/groups/SaigonReviews/posts/2075280800071726/",
+    "snippet": "Chỉ với 250k/1 khách mời bạn tham khảo nhà hàng Hoa Kabin + Vietkitchen ks Renaissance Riverside trung tâm quận 1. No photo description ...",
+    "position": 2
+   },
+   {
+    "title": "TOP 20+ Nhà Hàng Quận 1 Ngon, Chất Lượng, Giá Rẻ Và ...",
+    "link": "https://vincom.com.vn/trend/nha-hang-quan-1",
+    "snippet": "Giá tham khảo: 229.000đ - 349.000đ/người. King BBQ là một trong những chuỗi nhà hàng buffet không có quá xa lạ đối với mọi người. Món ăn ở King ...",
+    "date": "29 thg 4, 2022",
+    "position": 3
+   },
+   {
+    "title": "Thực đơn hàng ngày cho 1 tháng đầy đủ dinh dưỡng",
+    "link": "https://pasgo.vn/blog/thuc-don-hang-ngay-cho-1-thang-day-du-dinh-duong-1306",
+    "snippet": "Với gợi ý thực đơn đủ cho 30 ngày dưới đây, gia đình bạn sẽ có những bữa cơm thật ngon miệng và đủ chất, giúp bạn tiết kiệm tối đa thời gian ...",
+    "date": "23 thg 9, 2026",
+    "position": 4
+   },
+   {
+    "title": "VỀ ĐƯỢC THÊM QUÀ 🎡 Đến Golden Kitchen, bạn và ...",
+    "link": "https://www.facebook.com/JjimJilBangQ3/posts/%C4%91%E1%BA%BFn-th%C3%AC-%C4%83n-ngon-v%E1%BB%81-%C4%91%C6%B0%E1%BB%A3c-th%C3%AAm-qu%C3%A0-%C4%91%E1%BA%BFn-golden-kitchen-b%E1%BA%A1n-v%C3%A0-ng%C6%B0%E1%BB%9Di-th%C3%A2n-s%E1%BA%BD-kh%C3%B4ng-t/1437137735112528/",
+    "snippet": "✓ Áp dụng cho hóa đơn thanh toán tại nhà hàng từ 300k trở lên. ✓ Mỗi hóa đơn được sử dụng tối đa Voucher trị giá 200k. ✓ Không giới hạn số ...",
+    "position": 5
+   },
+   {
+    "title": "Thực đơn tiệc tại nhà hàng",
+    "link": "https://www.nhahangquangon.com/thuc-don-tiec-tai-nha-hang/",
+    "snippet": "1/ Gỏi Bào Ngư · 2/ Đệ Nhất Heo Tộc Quay Lu Chặt Mẹt · 3/ Cá Mú Sao Đỏ Hấp Hong Kong · 4/ Tôm Càng Nướng Phô Mai · 5/ Lẩu Vua · 6/ Nho Mỹ.",
+    "position": 6
+   },
+   {
+    "title": "Gợi ý những quán ăn ngon và rẻ : r/saigon",
+    "link": "https://www.reddit.com/r/saigon/comments/16xoqrb/cheap_food_recommendations/?tl=vi",
+    "snippet": "Bánh mì giá lúc nào cũng tầm 15.000đ - 40.000đ, phở thì 50.000đ - 100.000đ, hai món ngon nhất rồi. Nếu mà không vô quán, thấy đồ ăn giá trên ...",
+    "position": 7
+   },
+   {
+    "title": "Top 33+ các quán ăn ngon quận 1, Sài Gòn nổi tiếng nên đến",
+    "link": "https://www.bachhoaxanh.com/kinh-nghiem-hay/top-14-quan-an-ngon-quan-1-khong-an-se-tiec-ca-doi-1296471",
+    "snippet": "Menu: Gà cay Udon, bánh mì bơ tỏi, mì kim chi hải sản,... Món ngon nhất: Tôm rang trứng muối giá 104.000 đồng. Ưu điểm: Đồ ăn nóng hổi, thực đơn đa dạng và mới ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

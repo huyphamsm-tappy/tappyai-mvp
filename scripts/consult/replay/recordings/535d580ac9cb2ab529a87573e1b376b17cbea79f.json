@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tiệm Lưu Coffee\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:09:02.840Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tiệm Lưu Coffee\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Anh nhìn xem, hoàng hôn giăng lối nhỏ. Xóm bình yên ...",
+    "link": "https://www.tiktok.com/@cafe_khumnee/video/7570962644455263509",
+    "snippet": "... xuhuong. Anh nhìn xem, hoàng hôn giăng lối nhỏ. Xóm bình yên, nắng ngả. @Cafe Khum Nè · nhạc nền - windy_0531 · Tiệm Lưu Coffee · author · 56.",
+    "position": 1
+   },
+   {
+    "title": "\"Sẽ có lúc ước bé nhỏ lại để an yên như trẻ con Sẽ ...",
+    "link": "https://www.tiktok.com/@tiemluu.chantroikyuc/video/7370303375851687186?lang=de-DE",
+    "snippet": "... #cafesaigon #cafetandinh #quan1. \"Sẽ có lúc ước bé nhỏ lại để an yên như trẻ con Sẽ có. @Tiệm Lưu · nhạc nền - Tiệm Lưu · Tiệm Lưu Coffee.",
+    "position": 2
+   },
+   {
+    "title": "#tiemluugiukyuc #tiemluu Tiệm Lưu với không gian full cửa ...",
+    "link": "https://www.tiktok.com/@miaanchaytapyoga/video/7373973389788204295",
+    "snippet": "... tiemluu Tiệm Lưu với không gian full cửa kiếng hướng ra ngoài,. @Mia ☘️ · nhạc nền - Mia ăn chay tập yoga ☘️ · Tiệm Lưu Coffee · author · 10.",
+    "position": 3
+   },
+   {
+    "title": "Một tiệm cà phê nấp trên tầng 7 trang trí Giáng Sinh sớm ...",
+    "link": "https://www.tiktok.com/@toruditron/video/7295024229118987521",
+    "snippet": "Tiệm Lưu Coffee 39 Đinh Công Tráng, Tân Định, Quận 1 ⌛️ 08:00 - 22:00 #tiemluu #cafegiangsinh #giangsinh #cafesaigon #quancafedep ...",
+    "position": 4
+   },
+   {
+    "title": "Quán Cà Phê Goáng Sinht Tại Suyu",
+    "link": "https://www.tiktok.com/discover/qu%C3%A1n-c%C3%A0-ph%C3%AA-go%C3%A1ng-sinht-t%E1%BA%A1i-suyu",
+    "snippet": "Tiệm Lưu Coffee 39 Đinh Công Tráng, Tân Định, Quận 1 ⌛️ 08:00 - 22:00 #tiemluu #cafegiangsinh #giangsinh #cafesaigon #quancafedep ...",
+    "date": "17 thg 12, 2025",
+    "position": 5
+   },
+   {
+    "title": "Một chiếc tiệm siêu chữa lành sau những ngày học hành bận ...",
+    "link": "https://www.tiktok.com/@dr.baoquyen/video/7571360055480651026?lang=th-TH",
+    "snippet": "... tâm sự về những câu chuyện trên hành trình trưởng thành . #bsbaoquyen #CapCut #happiness · suara asli - ArieManize85 · Tiệm Lưu Coffee · author · 26.",
+    "position": 6
+   },
+   {
+    "title": "ghé hong? (@ghehong.di)",
+    "link": "https://www.tiktok.com/@ghehong.di",
+    "snippet": "Tiệm Lưu Coffee - toà nhà Halo, 39 Đinh Công Tráng, Tân Định #ghehong #cafe #quan3 · nhạc nền - Thoại rảnh mới đi. 16Thích. 2Bình luận. 0Lượt chia sẻ. ghehong ...",
+    "position": 7
+   },
+   {
+    "title": "Workshop Thần số học tháng 10 có hai lịch cho mn lựa chọn",
+    "link": "https://www.tiktok.com/@ngaymoizuize222/video/7693415967333895476",
+    "snippet": "... Tiệm Lưu coffee-Lầu 6A, tòa nhà Halo, 39 Đinh Công Tráng, Tân Định, HCM Mời cả nhà nhắn tin đặt chỗ #trieudozj #fyp #workshopthansohoc\".âm ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

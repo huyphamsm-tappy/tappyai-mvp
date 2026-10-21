@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple MacBook Air M1 kiểm tra máy cũ Activation Lock battery cycle count",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:09:32.911Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 kiểm tra máy cũ Activation Lock battery cycle count",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Determine battery cycle count for Mac laptops",
+    "link": "https://support.apple.com/en-vn/102888",
+    "snippet": "Find your battery's cycle count · Hold the Option key and click the Apple menu , then choose System Information. · Under the Hardware section of ...",
+    "date": "10 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cycle count là gì? Cách kiểm tra số lần sạc trên Macbook",
+    "link": "https://2tmobile.com/cycle-count-macbook-la-gi/?srsltid=AU7gw4Ul3kPjzkbezbqjJAblO0XgNcYASVgs5SDM0HR9f41utrIMaHrI",
+    "snippet": "Trong cửa sổ “System Information” (Thông tin hệ thống) hiển thị, tìm và chọn “Power” (Nguồn) → Trong phần “Battery Information” (Thông tin pin) ...",
+    "date": "11 thg 8, 2023",
+    "rating": 4.8,
+    "ratingCount": 89,
+    "position": 2
+   },
+   {
+    "title": "Kiểm tra xuất xứ MacBook: 5 Bước Chính Xác Trong 10 Phút",
+    "link": "https://macone.vn/tin-tuc/kiem-tra-xuat-xu-macbook/?srsltid=AU7gw4UTu0KGwig7JQTzGKpvZ1mK7NhOARtciU8_-5uH4xScfLzFvE_-",
+    "snippet": "Hướng dẫn kiểm tra xuất xứ MacBook chi tiết từng bước: check serial, verify chính hãng, phát hiện MDM Lock và iCloud Lock. Tránh mua phải máy dựng/fake.",
+    "position": 3
+   },
+   {
+    "title": "Tìm hiểu về khái niệm Cycle Count trên máy tính Macbook",
+    "link": "https://fptshop.com.vn/tin-tuc/danh-gia/tim-hieu-ve-khai-niem-cycle-count-tren-may-tinh-macbook-57737",
+    "snippet": "Hệ thống sẽ chỉ tính 1 Cycle Count khi bạn sạc Macbook từ 0% lên thành 100%. Tuy nhiên, nếu dung lượng pin hiện tại đang ở mốc 50% và sạc lên ...",
+    "date": "9 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "Hướng dẫn kiểm tra MacBook cũ, test máy chi tiết trước khi mua.",
+    "link": "https://thumacbook.com/huong-dan-kiem-tra-macbook-cu-test-may-chi-tiet-truoc-khi-mua/",
+    "snippet": "Kiểm tra số lần sạc (cycle count). Vào menu Apple → About This Mac → System ... Sau khi máy khởi động lại sẽ xuất hiện màn hình kiểm tra Activation Lock.",
+    "position": 5
+   },
+   {
+    "title": "Hướng dẫn cách kiểm tra hạn bảo hành Macbook Air M1",
+    "link": "https://www.youtube.com/watch?v=Trwz1RZkdIk",
+    "snippet": "Hướng dẫn cách kiểm tra hạn bảo hành Macbook Air M1 | Ngày active | Hạn bảo hành | Check Series Mac.",
+    "position": 6
+   },
+   {
+    "title": "Cách kiểm tra MacBook cũ chính hãng, nhanh chóng 2026",
+    "link": "https://dienthoaivui.com.vn/cach-test-kiem-tra-macbook-pro-air-cu-truoc-khi-mua",
+    "snippet": "Bạn nhấn vào biểu tượng Apple, sau đó chọn About This Mac. · Tại cửa sổ mới hiện ra, bạn có thể kiểm tra các thông cơ bản về máy. · Bạn nhấn vào ...",
+    "date": "28 thg 2, 2026",
+    "position": 7
+   },
+   {
+    "title": "How to check MacBook battery health and the exact ...",
+    "link": "https://www.vietnam.vn/en/cach-kiem-tra-do-chai-pin-macbook-va-so-lan-sac-chinh-xac-don-gian",
+    "snippet": "To check the number of charge cycles and battery degradation on your MacBook, go to the Apple logo > About this Mac > System Report > Power. The ...",
+    "date": "24 thg 8, 2023",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

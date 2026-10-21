@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:03:37.339Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Macbook Air M1 2020 (8GB/256GB) cũ đẹp, đổi mới 30 ngày, giá rẻ nhất",
+    "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/macbook-air-gold-select-201810_4_1_1_1_1.png",
+    "imageWidth": 358,
+    "imageHeight": 358,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrMbPiqQ3saSBzVO28whE-KI6iBbU980ieetw4LOGzzQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Finsecure%2Frs%3Afill%3A358%3A358%2Fq%3A90%2Fplain%2Fhttps%3A%2F%2Fcellphones.com.vn%2Fmedia%2Fcatalog%2Fproduct%2Fm%2Fa%2Fmacbook-air-gold-select-201810_4_1_1_1_1.png&tbnid=XuuG8iPbkQxrzM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-cu-dep.html&docid=MLe2G9fCl4zH4M&w=358&h=358",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0003_dsc03720_2_2_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtcIqC28CjYGM-U0TqCkTeWmarKNLXLNEoZ69YUal0cQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0003_dsc03720_2_2_1.jpg&tbnid=fztORhWZh4GiZM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-cu-dep.html&docid=MLe2G9fCl4zH4M&w=500&h=500",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M1 256GB 2020 - Cũ đẹp | Giá rẻ",
+    "imageUrl": "https://cdni.dienthoaivui.com.vn/x,webp,q100/https://media-asset.dienthoaivui.com.vn/uploads/wp-content/uploads/images/products/216001/macbook-air-m1-256gb-2020-cu-dep-17492090266487.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGzPYchdwj-CPjjikOOWwe8nqQ7RMK7w1L_LC-4Y5EGw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Điện Thoại Vui",
+    "domain": "dienthoaivui.com.vn",
+    "link": "https://dienthoaivui.com.vn/macbook-air-m1-256gb-2020-cu-dep",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdni.dienthoaivui.com.vn%2Fx%2Cwebp%2Cq100%2Fhttps%3A%2F%2Fmedia-asset.dienthoaivui.com.vn%2Fuploads%2Fwp-content%2Fuploads%2Fimages%2Fproducts%2F216001%2Fmacbook-air-m1-256gb-2020-cu-dep-17492090266487.png&tbnid=YqcRNzfXgM3FiM&imgrefurl=https%3A%2F%2Fdienthoaivui.com.vn%2Fmacbook-air-m1-256gb-2020-cu-dep&docid=FsOJR8v4eaMs3M&w=1000&h=1000",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M1 256GB 2020 - Cũ đẹp | Giá rẻ",
+    "imageUrl": "https://cdni.dienthoaivui.com.vn/x,webp,q100/https://media-asset.dienthoaivui.com.vn/uploads/wp-content/uploads/images/products/215993/macbook-air-m1-256gb-2020-cu-dep-17492088696458.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQauH8RMEJ8WOCKMD1mKzS1FXGc5ZK1DDRAydHvChRrkg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện Thoại Vui",
+    "domain": "dienthoaivui.com.vn",
+    "link": "https://dienthoaivui.com.vn/macbook-air-m1-256gb-2020-cu-dep",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdni.dienthoaivui.com.vn%2Fx%2Cwebp%2Cq100%2Fhttps%3A%2F%2Fmedia-asset.dienthoaivui.com.vn%2Fuploads%2Fwp-content%2Fuploads%2Fimages%2Fproducts%2F215993%2Fmacbook-air-m1-256gb-2020-cu-dep-17492088696458.png&tbnid=YbjejAZqJeudtM&imgrefurl=https%3A%2F%2Fdienthoaivui.com.vn%2Fmacbook-air-m1-256gb-2020-cu-dep&docid=FsOJR8v4eaMs3M&w=1000&h=1000",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 - Cũ đẹp",
+    "imageUrl": "https://cdn2.cellphones.com.vn/x/media/catalog/product/_/0/_0000_macbook-air-gallery1-20201110_geo_us_5_1.jpg",
+    "imageWidth": 500,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUpTkJB0aURlVo-MA6ZAlRcwjsFyvLSXGV_ynKtO9MIg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "CellphoneS",
+    "domain": "cellphones.com.vn",
+    "link": "https://cellphones.com.vn/macbook-air-2020-m1-cu-dep.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn2.cellphones.com.vn%2Fx%2Fmedia%2Fcatalog%2Fproduct%2F_%2F0%2F_0000_macbook-air-gallery1-20201110_geo_us_5_1.jpg&tbnid=wzQghohYb9YFPM&imgrefurl=https%3A%2F%2Fcellphones.com.vn%2Fmacbook-air-2020-m1-cu-dep.html&docid=MLe2G9fCl4zH4M&w=500&h=500",
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 | Cũ đẹp – PC Gaming, đồ họa, văn phòng,  linh kiện vi tính, máy tính bàn chính hãng uy tín tại bmt daklak",
+    "imageUrl": "https://cdn.hstatic.net/products/1000237157/apple-macbook-air-m1-256gb-2020-cu-dep-may-tinh-ban-daklak-5_34d65476f69f4905af1bc9299fbe8704_master.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7KbLG6OgAAxaousyvlUk3npRgVkB5E3DF9R2rauNsoQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Máy Tính Bàn Daklak",
+    "domain": "maytinhbandaklak.com",
+    "link": "https://maytinhbandaklak.com/products/apple-macbook-air-m1-256gb-2020-cu-dep-cu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000237157%2Fapple-macbook-air-m1-256gb-2020-cu-dep-may-tinh-ban-daklak-5_34d65476f69f4905af1bc9299fbe8704_master.jpg&tbnid=vL-w9QSPlnufvM&imgrefurl=https%3A%2F%2Fmaytinhbandaklak.com%2Fproducts%2Fapple-macbook-air-m1-256gb-2020-cu-dep-cu&docid=KuL61dVuMz43ZM&w=1200&h=1200",
+    "position": 6
+   },
+   {
+    "title": "Apple MacBook Air M1 256GB 2020 | Cũ đẹp – PC Gaming, đồ họa, văn phòng,  linh kiện vi tính, máy tính bàn chính hãng uy tín tại bmt daklak",
+    "imageUrl": "https://cdn.hstatic.net/products/1000237157/apple-macbook-air-m1-256gb-2020-cu-dep-may-tinh-ban-daklak-1_bfda8599e8b94f539ca5f4248ac15e36_master.jpg",
+    "imageWidth": 1200,
+    "imageHeight": 1200,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTsdFwqDX1_58aAtIUbNq0EwXExZ4utCmrFHJngwxOZpQ&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Máy Tính Bàn Daklak",
+    "domain": "maytinhbandaklak.com",
+    "link": "https://maytinhbandaklak.com/products/apple-macbook-air-m1-256gb-2020-cu-dep-cu",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.hstatic.net%2Fproducts%2F1000237157%2Fapple-macbook-air-m1-256gb-2020-cu-dep-may-tinh-ban-daklak-1_bfda8599e8b94f539ca5f4248ac15e36_master.jpg&tbnid=nIaKbgtm5D74sM&imgrefurl=https%3A%2F%2Fmaytinhbandaklak.com%2Fproducts%2Fapple-macbook-air-m1-256gb-2020-cu-dep-cu&docid=KuL61dVuMz43ZM&w=1200&h=1200",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air M1 256GB 2020 - Cũ đẹp | Giá rẻ",
+    "imageUrl": "https://cdni.dienthoaivui.com.vn/x,webp,q100/https://media-asset.dienthoaivui.com.vn/uploads/wp-content/uploads/images/products/215997/macbook-air-m1-256gb-2020-cu-dep-17492089546421.png",
+    "imageWidth": 1000,
+    "imageHeight": 1000,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT2pWd0CkfKGfY9ZLrPqX6hDp1328B-Q2niODqP0Gsjhg&s",
+    "thumbnailWidth": 225,
+    "thumbnailHeight": 225,
+    "source": "Điện Thoại Vui",
+    "domain": "dienthoaivui.com.vn",
+    "link": "https://dienthoaivui.com.vn/macbook-air-m1-256gb-2020-cu-dep",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdni.dienthoaivui.com.vn%2Fx%2Cwebp%2Cq100%2Fhttps%3A%2F%2Fmedia-asset.dienthoaivui.com.vn%2Fuploads%2Fwp-content%2Fuploads%2Fimages%2Fproducts%2F215997%2Fmacbook-air-m1-256gb-2020-cu-dep-17492089546421.png&tbnid=eDrYvU_3qxNFYM&imgrefurl=https%3A%2F%2Fdienthoaivui.com.vn%2Fmacbook-air-m1-256gb-2020-cu-dep&docid=FsOJR8v4eaMs3M&w=1000&h=1000",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

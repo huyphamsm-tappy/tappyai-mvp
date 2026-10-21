@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "British Council learn English speaking practice beginner daily 30 minutes",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:05:25.855Z",
+ "body": {
+  "searchParameters": {
+   "q": "British Council learn English speaking practice beginner daily 30 minutes",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Practise English speaking skills | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking",
+    "snippet": "Speaking practice to help you learn useful language for everyday communication. Situations include responding to news, meeting face-to-face and asking a favour.",
+    "position": 1
+   },
+   {
+    "title": "British Council: Learn English Online",
+    "link": "https://learnenglish.britishcouncil.org/",
+    "snippet": "Practise your English by watching videos, reading texts and listening to audio. Each activity includes short, interactive exercises to help you improve. Choose ...",
+    "position": 2
+   },
+   {
+    "title": "Keeping a conversation going | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/speaking/b1/keeping-conversation-going",
+    "snippet": "Do the preparation exercise first. Then watch the video and do the exercises to check your understanding and practise the language. Preparation ...",
+    "position": 3
+   },
+   {
+    "title": "30 Minutes of Easy Conversations to Practice English Speaking ...",
+    "link": "https://www.youtube.com/watch?v=CUZgrI0ISc8",
+    "snippet": "Are you ready to practice English speaking and listening skills with daily conversations? In this video, you'll follow simple dialogues ...",
+    "position": 4
+   },
+   {
+    "title": "Audio series | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/audio-series",
+    "snippet": "So, if you have 15–30 minutes to practise your English today, choose a series at your level and get started. Then come back tomorrow to listen to the next ...",
+    "position": 5
+   },
+   {
+    "title": "Daily routine vocabulary – A1 beginner English ...",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/vocabulary/a1-a2/daily-routine-vocabulary-a1-beginner-english-vocabulary-lesson",
+    "snippet": "You'll complete different activities to practise matching words and pictures, choosing the correct vocabulary, and understanding routine activities in context.",
+    "position": 6
+   },
+   {
+    "title": "Video series | LearnEnglish",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/video-series",
+    "snippet": "So, if you have 15–30 minutes to practise your English today, choose a series and get started. ... Learn English in your own time, at your own pace.",
+    "position": 7
+   },
+   {
+    "title": "Episode 01 - They meet",
+    "link": "https://learnenglish.britishcouncil.org/free-resources/general/video-series/starting-out/episode-01-they-meet",
+    "snippet": "Learn English in your own time, at your own pace. Personal ... Speaking · Grammar · Vocabulary · Business English · General English · Online ...",
+    "date": "19 thg 12, 2016",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

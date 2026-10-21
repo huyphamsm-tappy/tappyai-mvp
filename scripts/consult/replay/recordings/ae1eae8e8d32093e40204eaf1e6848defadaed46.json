@@ -1,0 +1,30 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:support.apple.com/en-us/111851 \"Up to 6 hours\" \"AirPods Pro 2\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:07:58.187Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:support.apple.com/en-us/111851 \"Up to 6 hours\" \"AirPods Pro 2\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 2 - Tech Specs",
+    "link": "https://support.apple.com/en-us/111851",
+    "snippet": "AirPods Pro 2 - Tech Specs. ... Up to 6 hours of listening time with a single charge (up to 5.5 hours with ...",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

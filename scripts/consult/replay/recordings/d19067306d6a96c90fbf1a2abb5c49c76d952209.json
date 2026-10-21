@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:42:18.831Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"MacBook Air M4 13 inch 2025 10CPU 8GPU 16GB 256GB\" OR \"Apple MacBook Neo 13 inch\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple Macbook Neo 13 Inch",
+    "link": "https://www.tiktok.com/shop/product/apple-macbook-neo-13-inch",
+    "snippet": "Check out Apple Macbook Neo 13 Inch selection on TikTok Shop and get free shipping on eligible items. Discover trending items and exclusive collections!",
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Powerful & Lightweight",
+    "link": "https://www.tiktok.com/@abed_tahan/video/7631836350374825232",
+    "snippet": "Apple MacBook Neo 13-inch: Powerful & Lightweight. The highly anticipated Apple MacBook Neo has arrived, boasting a blend of power and portability. This new ...",
+    "position": 2
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch 2026 Blush",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-2026-blush",
+    "snippet": "36.8M posts. Discover videos related to Apple Macbook Neo 13 Inch 2026 Blush on TikTok. See more videos about Apple Macbook Neo Blush, ...",
+    "date": "28 thg 9, 2026",
+    "position": 3
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch with A18 Pro Chip 512gb8gb ...",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-with-a18-pro-chip-512gb8gb-silver",
+    "snippet": "Apple Macbook Neo 13 Inch with A18 Pro Chip 512gb8gb Silver. Unbox the Silver MacBook Neo 13-inch with A18 Pro chip. Discover its ...",
+    "date": "24 thg 8, 2026",
+    "position": 4
+   },
+   {
+    "title": "Apple MacBook Neo 13-inch: Everyday Use Laptop",
+    "link": "https://www.tiktok.com/@phoneplacekenya/video/7628692759058107655",
+    "snippet": "The Apple MacBook Neo 13-inch is simple, clean, and built for everyday use. For KES 105,000, you get a premium MacBook with a sharp display, ...",
+    "position": 5
+   },
+   {
+    "title": "Apple MacBook Neo (13-inch, A18 Pro)",
+    "link": "https://shop.tiktok.com/my/pdp/1734982376212890946",
+    "snippet": "Beli Apple MacBook Neo (13-inch, A18 Pro) pada TikTok Shop. Temukan harga hebat bagi dan dapatkan penghantaran percuma bagi item yang layak.",
+    "position": 6
+   },
+   {
+    "title": "Apple Macbook Neo 13 Inch Apple A18 Pro Chip",
+    "link": "https://www.tiktok.com/discover/apple-macbook-neo-13-inch-apple-a18-pro-chip",
+    "snippet": "Discover the apple-macbook-neo-13-inch-apple-a18-pro-chip with a first look at Apple's MacBook Neo and its impressive specs from Unboxing ...",
+    "date": "27 thg 7, 2026",
+    "position": 7
+   },
+   {
+    "title": "Apple Macbook Neo 13-Inch Transparent Ultra-Thin Protective ...",
+    "link": "https://shop.tiktok.com/us/pdp/apple-macbook-neo-13-inch-ultra-thin-case-scratch-resistant/1732322344497090917",
+    "snippet": "Apple Macbook Neo 13-Inch Transparent Ultra-Thin Protective Case, Polycarbonate Cover, Scratch-Resistant Durable Portable Cover for Work Commute Holiday Gift.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

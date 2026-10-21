@@ -1,0 +1,86 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "iPhone 16 Pro 256GB chính hãng FPT Shop giá (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:56:20.954Z",
+ "body": {
+  "searchParameters": {
+   "q": "iPhone 16 Pro 256GB chính hãng FPT Shop giá (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 16 series giá tốt, trả góp 0% 12 tháng T10/2026",
+    "link": "https://cellphones.com.vn/mobile/apple/iphone-16.html",
+    "snippet": "Bảng giá iPhone 16 Pro: Phiên bản 128GB: khoảng 24.400.000 - 28.990.000 VNĐ. Phiên bản 256GB: khoảng 27.300.000 - 31.990.000 VNĐ. Phiên bản 512GB: khoảng 33.800 ...",
+    "position": 1
+   },
+   {
+    "title": "iPhone 16 Pro 256GB chính hãng | Mua ngay ưu đãi 4 triệu",
+    "link": "https://cellphones.com.vn/iphone-16-pro-256gb.html",
+    "snippet": "iPhone 16 Pro 256GB | Chính hãng VN/A ; Công nghệ NFC. Có ; Thời điểm ra mắt. 09/2024 ; Giá hàng mới: 31.990.000 ; Trả góp 0% ; Hiệu năng. 5/5. (16 đánh giá).",
+    "rating": 4.8,
+    "ratingCount": 40,
+    "position": 2
+   },
+   {
+    "title": "iPhone 16 Pro 128GB chính hãng, giá giảm 5% T10/2026",
+    "link": "https://cellphones.com.vn/iphone-16-pro.html",
+    "snippet": "iPhone 16 Pro có thiết kế titan nhẹ và cứng cáp, kích thước màn hình, 6.3 inches - Mua điện thoại iP 16 Pro giá dao động từ 18 triệu.",
+    "rating": 4.9,
+    "ratingCount": 50,
+    "position": 3
+   },
+   {
+    "title": "iPhone 16 Pro Max 512GB giá giảm đến 7,5 triệu, chính hãng",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max-512gb.html",
+    "snippet": "iPhone 18 Pro 256GB · 38.790.000đ. 38.990.000đ. Ưu đãi thanh toán giảm đến 2 triệu ; iPhone 18 Pro Max 256GB · 41.990.000đ. Ưu đãi thanh toán giảm đến 2 triệu.",
+    "rating": 4.9,
+    "ratingCount": 41,
+    "position": 4
+   },
+   {
+    "title": "iPhone 16 Pro Max giá giảm đến 4,5 triệu, đủ hàng mới",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max.html",
+    "snippet": "Trả góp 0% ; Hiệu năng. 5/5. (216 đánh giá) ; Thời lượng pin. 5/5. (216 đánh giá) ; Chất lượng camera. 5/5. (216 đánh giá) ; Giá sản phẩm. 34.990.000đ 30.990.000đ.",
+    "rating": 4.9,
+    "ratingCount": 368,
+    "position": 5
+   },
+   {
+    "title": "iPhone 17 Pro Max 256GB | Chính hãng",
+    "link": "https://cellphones.com.vn/iphone-17-pro-max.html",
+    "snippet": "Lên đời chỉ từ 31.640.000đ ; Trợ giá đến 3.000.000đ ; Hệ điều hành khi ra mắt. iOS 26 ; Chipset. Chip A19 Pro ; Bộ nhớ trong. 256 GB.",
+    "rating": 5,
+    "ratingCount": 41,
+    "position": 6
+   },
+   {
+    "title": "iPhone 16 256GB giá rẻ, chính hãng VN/A, trả trước 0 đồng",
+    "link": "https://cellphones.com.vn/iphone-16-256gb.html",
+    "snippet": "iPhone 16 256GB | Chính hãng VN/A ; Hiệu năng. 5/5. (3 đánh giá) ; Thời lượng pin. 5/5. (3 đánh giá) ; Chất lượng camera. 5/5. (3 đánh giá) ; Giá sản phẩm. 27.990.",
+    "rating": 4.9,
+    "ratingCount": 17,
+    "position": 7
+   },
+   {
+    "title": "iPhone 16 Pro Max 256GB - Cũ Đẹp | Giá rẻ",
+    "link": "https://cellphones.com.vn/iphone-16-pro-max256gb-cu-dep.html",
+    "snippet": "Giá iPhone 16 Pro Max 256GB cũ hiện nay dao động khoảng 25.690.000đ - 29.790.000đ tùy tình trạng máy (Cũ đẹp, trầy xước, Like new) và tình trạng pin. Mức giá ...",
+    "rating": 5,
+    "ratingCount": 6,
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

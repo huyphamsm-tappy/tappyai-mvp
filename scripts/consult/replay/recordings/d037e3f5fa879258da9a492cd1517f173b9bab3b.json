@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Hội An phố cổ thời gian tham quan tốt nhất sáng chiều lưu ý vé 2026 chính thức",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:13:56.212Z",
+ "body": {
+  "searchParameters": {
+   "q": "Hội An phố cổ thời gian tham quan tốt nhất sáng chiều lưu ý vé 2026 chính thức",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cẩm nang du lịch Phố cổ Hội An tự túc từ A – Z mới nhất ...",
+    "link": "https://travel.com.vn/tin-tuc-du-lich/pho-co-hoi-an-v18310.aspx",
+    "snippet": "Từ tháng 9 đến tháng 1 năm sau, Hội An bước vào mùa mưa, mang đến cho phố cổ một vẻ đẹp trầm mặc và hoài niệm hơn. Những mái nhà vàng, con hẻm ...",
+    "date": "25 thg 5, 2026",
+    "position": 1
+   },
+   {
+    "title": "Phố cổ Hội An 2026-2027: Cẩm nang cho du khách ghé ...",
+    "link": "https://lasiestaresorts.com/vi/pho-co-hoi-an.html",
+    "snippet": "... sáng – thời điểm phố cổ yên tĩnh và dễ chịu nhất. Thời điểm lý tưởng để tham quan Phố cổ Hội An. Thời tiết đẹp nhất ở Hội An thường rơi vào khoảng tháng 2 ...",
+    "position": 2
+   },
+   {
+    "title": "Kinh nghiệm Du lịch HỘI AN 2026 từ A-Z: lưu trú, ăn chơi, ...",
+    "link": "https://vnexpress.net/cam-nang-du-lich-hoi-an-4446174.html",
+    "snippet": "Mỗi mùa phố cổ lại có những nét đẹp riêng. Ba tháng đầu năm là thời gian lý tưởng nhất để rong chơi tại Hội An khi nắng không quá gắt, trời mát mẻ, thi ...",
+    "position": 3
+   },
+   {
+    "title": "25+ điểm tham quan Hội An đẹp và nổi tiếng nhất 2026",
+    "link": "https://hoianmemoriesresort.com/diem-tham-quan-hoi-an-dep-va-noi-tieng-nhat.html",
+    "snippet": "Hội An là di sản văn hóa thế giới được UNESCO công nhận, nổi bật với quần thể kiến trúc đô thị cổ được bảo tồn gần như nguyên vẹn. Tính đến năm 2026, cơ sở hạ ...",
+    "position": 4
+   },
+   {
+    "title": "Lịch Trình Đi Phố Cổ Hội An Chi Tiết Cho Người Đi Lần Đầu",
+    "link": "https://vuivivudanang.vn/blogs/tin-tuc-hoi-an/lich-trinh-di-pho-co-hoi-an-chi-tiet-cho-nguoi-di-lan-dau",
+    "snippet": "Thời điểm lý tưởng nhất để tham quan Hội An là từ tháng 2 đến tháng 8. Đây là giai đoạn thời tiết miền Trung khá khô ráo, ít mưa và thuận tiện ...",
+    "date": "7 thg 6, 2026",
+    "position": 5
+   },
+   {
+    "title": "Phố cổ Hội An miễn vé tham quan",
+    "link": "https://vietnamtourism.gov.vn/post/18151",
+    "snippet": "Phố cổ Hội An miễn vé tham quan ... Sáng 6-7, thông tin từ Phòng Thương mại và Du lịch TP Hội An (Quảng Nam) cho hay nhân dịp kỷ niệm Ngày Du lịch Việt Nam (9-7), ...",
+    "position": 6
+   },
+   {
+    "title": "DU LỊCH HỘI AN và Khám phá Phố Cổ tuyệt đẹp bình yên vào ...",
+    "link": "https://www.youtube.com/watch?v=UCDpvFt-w1k",
+    "snippet": "Nếu để nói Du lịch Phố cổ Hội An đẹp nhất vào lúc nào, thì câu trả lời của chúng tôi đó là vào lúc sáng sớm. Thời điểm khách du lịch chưa đổ ...",
+    "position": 7
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Không gian phố bộ về đêm đem lại nhiều hoạt động giải trí bổ sung hoàn toàn miễn phí từ 19h00 - 20h30. Du khách dạo phố có thể tự do hòa mình vào các trò chơi ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

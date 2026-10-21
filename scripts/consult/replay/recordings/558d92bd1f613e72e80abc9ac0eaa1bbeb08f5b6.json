@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Đế sạc để bàn 4 IN 1 GaN USB C 140W cho MacBook Air/Pro iPhone 17/16 Pro site:shop.tiktok.com/vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:01:51.667Z",
+ "body": {
+  "searchParameters": {
+   "q": "Đế sạc để bàn 4 IN 1 GaN USB C 140W cho MacBook Air/Pro iPhone 17/16 Pro site:shop.tiktok.com/vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:09:34.720Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Air M3 13 inch 2024 16GB - 256GB",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W",
+    "imageUrl": "https://product.hstatic.net/200000680839/product/2_e16bab088e2347f4bebd830cc6102b80_1024x1024.jpg",
+    "imageWidth": 596,
+    "imageHeight": 436,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrS4vQr6B8naO1ne34JMYwetBB4EvP4pjcpyUe_LKT4A&s=10",
+    "thumbnailWidth": 522,
+    "thumbnailHeight": 383,
+    "source": "THẾ GIỚI MÁY TÍNH",
+    "domain": "thegioimaytinh.net.vn",
+    "link": "https://thegioimaytinh.net.vn/products/macbook-air-m3-13-inch-2024-8cpu-8gpu-16gb-256gb-sac-30w",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000680839%2Fproduct%2F2_e16bab088e2347f4bebd830cc6102b80_1024x1024.jpg&tbnid=SKs3hbviRtyDEM&imgrefurl=https%3A%2F%2Fthegioimaytinh.net.vn%2Fproducts%2Fmacbook-air-m3-13-inch-2024-8cpu-8gpu-16gb-256gb-sac-30w&docid=g7oehcVlLnJ3KM&w=596&h=436",
+    "position": 1
+   },
+   {
+    "title": "Macbook Air M3 13'6 inch 2024 - 8CPU-8GPU / Ram 16Gb / 256Gb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/100/444/581/products/44-05c44997-e9cd-427e-b496-352ea8b38bb9.png?v=1744601306847",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJq5M4QupiHPlT4rHRfXrU4rFarloP9L8C8dtX1XYcJA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-256gb-likenew?srsltid=AU7gw4Urn32_mgFjQlvK9os9VuAHMbjL5_YggjKMDclVC-XVm3wgOYdl",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2F100%2F444%2F581%2Fproducts%2F44-05c44997-e9cd-427e-b496-352ea8b38bb9.png%3Fv%3D1744601306847&tbnid=_EuiM_QHf2PUHM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-256gb-likenew%3Fsrsltid%3DAU7gw4Urn32_mgFjQlvK9os9VuAHMbjL5_YggjKMDclVC-XVm3wgOYdl&docid=xc0nHcqYFMU9jM&w=640&h=640",
+    "position": 2
+   },
+   {
+    "title": "MacBook Air M3 16GB 256GB giá rẻ, góp 0%, chính hãng",
+    "imageUrl": "https://cdn.tgdd.vn/Products/Images/44/322633/Slider/vi-vn-macbook-air-13-inch-m3-2024-16gb-256gb-slider-2.jpg",
+    "imageWidth": 1020,
+    "imageHeight": 570,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSB907prVbfyrNZlFAvv73Tn9XeEfSKkWSklUMptDnJxw&s=10",
+    "thumbnailWidth": 738,
+    "thumbnailHeight": 411,
+    "source": "Thegioididong.com",
+    "domain": "www.thegioididong.com",
+    "link": "https://www.thegioididong.com/laptop/macbook-air-13-inch-m3-2024-16gb-256gb",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.tgdd.vn%2FProducts%2FImages%2F44%2F322633%2FSlider%2Fvi-vn-macbook-air-13-inch-m3-2024-16gb-256gb-slider-2.jpg&tbnid=4E4ZwebNVFNKEM&imgrefurl=https%3A%2F%2Fwww.thegioididong.com%2Flaptop%2Fmacbook-air-13-inch-m3-2024-16gb-256gb&docid=Ao3vgd-DQcdySM&w=1020&h=570",
+    "position": 3
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 8 CPU 8 GPU 16GB 256GB - Chính hãng",
+    "imageUrl": "https://24hstore.vn/images/products/2024/11/11/large/macbook-air-13-inch-m3-8-core-cpu-8-core-gpu-16gb-256gb-midnight.jpg",
+    "imageWidth": 400,
+    "imageHeight": 400,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuwdy9lJl84rIzWDuYlbsFhnBvKdDOnrdb3LI6tgDOIw&s=10",
+    "thumbnailWidth": 400,
+    "thumbnailHeight": 400,
+    "source": "24hStore.vn",
+    "domain": "24hstore.vn",
+    "link": "https://24hstore.vn/macbook-air-2024/macbook-air-m3-13-inch-2024-8-cpu-8-gpu-16gb-256gb-p11247?srsltid=AU7gw4Wnka7sq4ZKmULq_nKRPvLzghblCK9S6nn1-iCmE_JHP7Ms-q0d",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2F24hstore.vn%2Fimages%2Fproducts%2F2024%2F11%2F11%2Flarge%2Fmacbook-air-13-inch-m3-8-core-cpu-8-core-gpu-16gb-256gb-midnight.jpg&tbnid=HhkkWlkxwbSjxM&imgrefurl=https%3A%2F%2F24hstore.vn%2Fmacbook-air-2024%2Fmacbook-air-m3-13-inch-2024-8-cpu-8-gpu-16gb-256gb-p11247%3Fsrsltid%3DAU7gw4Wnka7sq4ZKmULq_nKRPvLzghblCK9S6nn1-iCmE_JHP7Ms-q0d&docid=lRsqL6gPu_etzM&w=400&h=400",
+    "position": 4
+   },
+   {
+    "title": "Macbook Air M3 13'6 inch 2024 - 8CPU-8GPU / Ram 16Gb / 256Gb - Likenew",
+    "imageUrl": "https://bizweb.dktcdn.net/thumb/1024x1024/100/444/581/products/1-c481216f-0ee7-4c0e-9e17-b44571f16a04-b2339843-ca68-47e2-a633-4277f59314ef-9ac16fd0-eb3e-4cbb-b3ba-95612849381a.png?v=1739592939437",
+    "imageWidth": 768,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF2n2nl7mVIeZR0PcBJqncPc1FJ6ynHLWXPWFk5I-yZw&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Macshop24h",
+    "domain": "macshop24h.vn",
+    "link": "https://macshop24h.vn/macbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-256gb-likenew?srsltid=AU7gw4UQBtWmC3El--okuzcKt_aS-Y1ewbOhFTFVGZ62AhSge3QtMs9R",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbizweb.dktcdn.net%2Fthumb%2F1024x1024%2F100%2F444%2F581%2Fproducts%2F1-c481216f-0ee7-4c0e-9e17-b44571f16a04-b2339843-ca68-47e2-a633-4277f59314ef-9ac16fd0-eb3e-4cbb-b3ba-95612849381a.png%3Fv%3D1739592939437&tbnid=WwjC-1hT5WslyM&imgrefurl=https%3A%2F%2Fmacshop24h.vn%2Fmacbook-air-m3-13-6-inch-2024-8cpu-8gpu-ram-16gb-256gb-likenew%3Fsrsltid%3DAU7gw4UQBtWmC3El--okuzcKt_aS-Y1ewbOhFTFVGZ62AhSge3QtMs9R&docid=xc0nHcqYFMU9jM&w=768&h=768",
+    "position": 5
+   },
+   {
+    "title": "MacBook Air M3 13 inch 2024 8CPU 8GPU 16GB - 256GB sạc 30W",
+    "imageUrl": "https://product.hstatic.net/200000680839/product/10_af5e8a78f7d043bc946d71c10ebabf54.jpg",
+    "imageWidth": 529,
+    "imageHeight": 320,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi8tIJCsExfFXx1RF1VGG4H_ebgPf_Mx3UmLqBTtseeg&s",
+    "thumbnailWidth": 289,
+    "thumbnailHeight": 174,
+    "source": "THẾ GIỚI MÁY TÍNH",
+    "domain": "thegioimaytinh.net.vn",
+    "link": "https://thegioimaytinh.net.vn/products/macbook-air-m3-13-inch-2024-8cpu-8gpu-16gb-256gb-sac-30w",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fproduct.hstatic.net%2F200000680839%2Fproduct%2F10_af5e8a78f7d043bc946d71c10ebabf54.jpg&tbnid=uU7zeh7cilbfvM&imgrefurl=https%3A%2F%2Fthegioimaytinh.net.vn%2Fproducts%2Fmacbook-air-m3-13-inch-2024-8cpu-8gpu-16gb-256gb-sac-30w&docid=g7oehcVlLnJ3KM&w=529&h=320",
+    "position": 6
+   },
+   {
+    "title": "MacBook Air 13 inch 2024 M3 (8C CPU / 8C GPU) 16GB 256GB",
+    "imageUrl": "https://cdn.qmacstore.com/mba132024silver-1-640x640.webp",
+    "imageWidth": 640,
+    "imageHeight": 640,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYe4BnnyjKx7VqaP8-7MmsLnQ-wnuD0coUzUCX8y5ysA&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "QMac Store",
+    "domain": "qmacstore.com",
+    "link": "https://qmacstore.com/macbook-air-13-inch-2024-m3-8c-cpu-8c-gpu-16gb-256gb.html?srsltid=AU7gw4VhbVLgcRmpDtQl6rUs0l7N8wmW-TXvXYDtiKX40vN12cGzddFr",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcdn.qmacstore.com%2Fmba132024silver-1-640x640.webp&tbnid=k3kWXVDxmglO3M&imgrefurl=https%3A%2F%2Fqmacstore.com%2Fmacbook-air-13-inch-2024-m3-8c-cpu-8c-gpu-16gb-256gb.html%3Fsrsltid%3DAU7gw4VhbVLgcRmpDtQl6rUs0l7N8wmW-TXvXYDtiKX40vN12cGzddFr&docid=3GWQwqxDP6zeSM&w=640&h=640",
+    "position": 7
+   },
+   {
+    "title": "MacBook Air 13 inch M3 2024 8-core CPU/8GB/256GB/8-core GPU cũ",
+    "imageUrl": "https://bachlongstore.vn/vnt_upload/product/03_2024/thumbs/1000_macbook_air2.png",
+    "imageWidth": 650,
+    "imageHeight": 650,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhr8vaRONyRzSbhb7IhAMplikbYAFeou9pTCAB9eH6gg&s=10",
+    "thumbnailWidth": 447,
+    "thumbnailHeight": 447,
+    "source": "Bạch Long Store",
+    "domain": "bachlongstore.vn",
+    "link": "https://bachlongstore.vn/macbook-air-13-inch-m3-2024-8-core-cpu-8gb-256gb-8-core-gpu-cu.html?srsltid=AU7gw4X2l2VP9bihFkAWsLefuVeGTXNGfH_kOxiZaan0Y6u-SIhh57kl",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fbachlongstore.vn%2Fvnt_upload%2Fproduct%2F03_2024%2Fthumbs%2F1000_macbook_air2.png&tbnid=FLkuVetxZwS3mM&imgrefurl=https%3A%2F%2Fbachlongstore.vn%2Fmacbook-air-13-inch-m3-2024-8-core-cpu-8gb-256gb-8-core-gpu-cu.html%3Fsrsltid%3DAU7gw4X2l2VP9bihFkAWsLefuVeGTXNGfH_kOxiZaan0Y6u-SIhh57kl&docid=JC0oZ6JMM1-cWM&w=650&h=650",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

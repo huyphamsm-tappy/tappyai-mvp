@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông Thông tư 25/2021/TT-BTC mức thu",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:22:38.033Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí cấp hộ chiếu phổ thông Thông tư 25/2021/TT-BTC mức thu",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 25/2021/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-25-2021-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-quan-ly-va-su-dung-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam--150993",
+    "snippet": "Thông tư số 25/2021/TT-BTC Quy định mức thu, chế độ thu, nộp, quản lý và sử dụng phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam.",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 64/2025/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-64-2025-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-nham-ho-tro-cho-doanh-nghiep-nguoi-dan--179085",
+    "snippet": "Bằng 50% mức thu phí quy định tại khoản 2 Điều 4 Thông tư số 33/2018/TT-BTC. 18. a) Lệ phí cấp giấy phép quản lý pháo. Bằng 50% mức thu lệ phí quy định ...",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 120/2021/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/x--152521",
+    "snippet": "b) Lệ phí cấp chứng chỉ hành nghề hoạt động xây dựng cho cá nhân. Bằng 50% mức thu lệ phí quy định tại khoản 1 Điều 4 Thông tư số 172/2016/TT-BTC ngày 27 ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 43/2024/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-43-2024-tt-btc-quy-dinh-muc-thu-mot-so-khoan-phi-le-phi-nham-tiep-tuc-thao-go-kho-khan-ho-tro-cho-hoat-dong-san-xuat-kinh-doanh--168490",
+    "snippet": "Bằng 80% mức thu lệ phí quy định tại Mục I Biểu mức thu phí, lệ phí ban hành kèm theo Thông tư số 25/2021/TT-BTC ngày 07 tháng 4 năm 2021 của Bộ trưởng Bộ Tài ...",
+    "position": 5
+   },
+   {
+    "title": "Thông tư 63/2023/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-63-2023-tt-btc-sua-doi-bo-sung-mot-so-dieu-cua-mot-so-thong-tu-quy-dinh-thu-phi-le-phi-cua-bo-truong-bo-tai-chinh-nham-khuyen-khich-su-dung-dich-vu-cong-truc-tuyen--163740",
+    "snippet": "... thức trực tuyến: a) Kể từ ngày 01 tháng 12 năm 2023 đến hết ngày 31 tháng 12 năm 2025, áp dụng mức thu lệ phí là 115.000 đồng/lần cấp. b) Kể từ ngày 01 ...",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 120/2021/TT-BTC by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-so-120-2021-tt-btc-quy-dinh-muc-thu-mot-so-khoan-phi-le-phi-nham-ho-tro-thao-go-kho-khan-cho-doi-tuong-chiu-anh-huong-boi-dich-covid-19--152521",
+    "snippet": "Lệ phí cấp chứng chỉ hành nghề hoạt động xây dựng cho cá nhân. Bằng 50% mức thu lệ phí quy định tại khoản 1 Điều 4 Thông tư số 172/2016/TT-BTC ngày 27 tháng ...",
+    "position": 7
+   },
+   {
+    "title": "Thông tư 30/2022/TT-BTC by Bộ Tài chính",
+    "link": "https://vbpl.vn/en/van-ban/chi-tiet/thong-tu-so-30-2022-tt-btc-huong-dan-co-che-tai-chinh-thuc-hien-de-an-nang-cao-nang-luc-doi-ngu-giang-vien-can-bo-quan-ly-cac-co-so-giao-duc-dai-hoc-dap-ung-yeu-cau-doi-moi-can-ban-toan-dien-giao-duc-va-dao-tao-giai-doan-2019-2030--154785",
+    "snippet": "Bộ trưởng Bộ Tài chính ban hành Thông tư hướng dẫn cơ chế tài chính thực hiện Đề án Nâng cao năng lực đội ngũ giảng viên, cán bộ quản lý các cơ ...",
+    "date": "3 thg 6, 2022",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "tai nghe chống ồn ANC chạy bộ dưới 3 triệu chống nước (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:34:00.316Z",
+ "body": {
+  "searchParameters": {
+   "q": "tai nghe chống ồn ANC chạy bộ dưới 3 triệu chống nước (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe chính hãng từ 50K - Mẫu mới, giá giảm sâu 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe.html",
+    "snippet": "Tai nghe chính hãng Apple, Sony, JBL giảm sốc đến 66%. Trải nghiệm âm thanh đỉnh cao cùng đặc quyền: Trả góp 0%, freeship 2H, bảo hành đến 2 năm.",
+    "position": 1
+   },
+   {
+    "title": "Tai nghe có bộ nhớ trong - Giá Tốt, Sale Tháng 10 ...",
+    "link": "https://shopee.vn/list/tai%20nghe/c%C3%B3%20b%E1%BB%99%20nh%E1%BB%9B%20trong",
+    "snippet": "flag-label Tai nghe không dây Baseus BP1 Pro ANC -50dB Giảm tiếng ồn Hi-Res Bluetooth 6.0 IPX55 Chống nước 55Hr. 719.000₫. 998.000₫. -28%. voucher-icon.",
+    "position": 2
+   },
+   {
+    "title": "Tai nghe thể thao, chạy bộ bluetooth | Giá tốt 10/2026",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/the-thao.html",
+    "snippet": "Được trang bị công nghệ bluetooth mới nhất, công nghệ chống ồn chủ động ANC tiên tiến và công nghệ chống thấm nước ... dưới nước vẫn nghe được nhạc, giá 4.9 triệu.",
+    "position": 3
+   },
+   {
+    "title": "Tai nghe chống nước chơi thể thao, bơi lội [BỀN RẺ]",
+    "link": "https://cellphones.com.vn/bo-loc/tai-nghe-chong-nuoc",
+    "snippet": "Thiết bị thường đạt chuẩn IP từ IPX4 đến IPX8, giúp hạn chế hư hỏng khi gặp mưa, mồ hôi hoặc thậm chí ngâm nước ngắn hạn. Nhờ đó, tai nghe không chỉ hỗ trợ giải ...",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe chống ồn chủ động anc - Giá Tốt, Sale Tháng 10, ...",
+    "link": "https://shopee.vn/list/tai%20nghe/ch%E1%BB%91ng%20%E1%BB%93n%20ch%E1%BB%A7%20%C4%91%E1%BB%99ng%20anc",
+    "snippet": "Tai nghe Bluetooth không dây GOOJODOQ có chức năng giảm tiếng ồn dịch thuật và phiên âm AI tiên tiến. 133.600₫. 168.000₫. -20%. voucher-icon. #ShopThinhHanh.",
+    "position": 5
+   },
+   {
+    "title": "Top 8 tai nghe bluetooth dưới 1 triệu đáng sở hữu",
+    "link": "https://shopee.vn/blog/tai-nghe-bluetooth-duoi-1-trieu/",
+    "snippet": "Havit Space NC01H là mẫu tai nghe Bluetooth over-ear nổi bật nhờ sự cân bằng giữa thời lượng pin, khả năng chống ồn và thiết kế bền bỉ. Với pin ...",
+    "date": "20 thg 6, 2026",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe bluetooth không dây bền rẻ, chính hãng, giao 2h",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/tai-nghe-bluetooth.html",
+    "snippet": "Tai nghe Bluetooth ; Tính năng. Chống ồn; Điều khiển giọng nói; Xuyên âm; Có mic đàm thoại; Sạc không dây; Chống nước; Có app phiên dịch; Chống ồn chủ động ANC.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe chụp tai | Headphone - Giá rẻ, có trả góp 0%",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/headphones.html",
+    "snippet": "Bose. Thường hơn 6 triệu đồng. Cao cấp ; Marshall. Từ khoảng 3 triệu đồng trở lên. Trung đến cao cấp ; Edifier. Trải dài từ 500 ngàn đến trên 2 triệu đồng. Thấp ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

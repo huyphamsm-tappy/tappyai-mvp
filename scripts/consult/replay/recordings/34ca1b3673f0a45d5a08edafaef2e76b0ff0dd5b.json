@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 thông số màn hình camera pin cổng USB-C Apple Việt Nam",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T14:45:39.735Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 thông số màn hình camera pin cổng USB-C Apple Việt Nam",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "Màn Hình. Màn hình Super Retina XDR. Màn hình toàn phần OLED 6,1 inch (theo đường chéo). Độ phân giải 2556x1179 pixel với mật độ điểm ảnh 460 ppi.",
+    "position": 1
+   },
+   {
+    "title": "iPhone - Apple (VN)",
+    "link": "https://www.apple.com/vn/iphone/",
+    "snippet": "Các tính năng Thông Suốt cũng giúp bạn trả lời cuộc gọi hoặc tin nhắn từ iPhone ngay trên máy Mac. Bạn thậm chí còn có thể sao chép hình ảnh, video hoặc văn bản ...",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 series ra mắt: Sử dụng cổng USB-C, camera ...",
+    "link": "https://baophutho.vn/iphone-15-series-ra-mat-su-dung-cong-usb-c-camera-48mp-dang-cap-khung-titan-cho-ban-pro-198579.htm",
+    "snippet": "Apple đã sử dụng cổng USB-C, tích hợp màn hình Dynamic Island, nâng cấp lên camera 48MP và đặc biệt bản Pro là khung titan nhẹ, bền bỉ cùng hiệu ...",
+    "date": "13 thg 9, 2023",
+    "position": 3
+   },
+   {
+    "title": "Apple chính thức ra mắt iPhone 15 với cổng sạc USB-C",
+    "link": "https://nhandan.vn/apple-chinh-thuc-ra-mat-iphone-15-voi-cong-sac-usb-c-post772154.html",
+    "snippet": "iPhone 15 Pro sử dụng cổng sạc USB-C kết hợp cáp USB 3.0 với tốc độ lên tới 10 Gbps, nhanh hơn 20 lần so với USB 2.0. Trước đây, Apple đã chuyển ...",
+    "date": "12 thg 9, 2023",
+    "position": 4
+   },
+   {
+    "title": "Sạc và kết nối bằng cổng kết nối USB-C trên iPhone của bạn",
+    "link": "https://support.apple.com/vi-vn/105099",
+    "snippet": "Sạc và kết nối bằng cổng kết nối USB-C trên iPhone của bạn. USB-C là tiêu chuẩn được chấp nhận rộng rãi, hỗ trợ sạc, đồng bộ hóa dữ liệu cũng như phát âm ...",
+    "position": 5
+   },
+   {
+    "title": "Cận cảnh iPhone 15 với cổng USB-C mới, có Dynamic Island",
+    "link": "https://cellphones.com.vn/sforum/can-canh-iphone-15",
+    "snippet": "Ở mặt trước của thiết bị sẽ là màn hình Super Retina XDR 6.1 inches với độ phân giải 1,179 x 2,556 pixels, HDR 10, tấm nền OLED, mật độ điểm ảnh 460 ppi, độ ...",
+    "position": 6
+   },
+   {
+    "title": "TẤT TẦN TẬT VỀ IPHONE 15 SERIES - 4 PHIÊN BẢN, KHUNG ...",
+    "link": "https://www.youtube.com/watch?v=WP9_8FVipSQ&xstg=CAMSBhUDzO3xHw%3D%3D",
+    "snippet": "Mua iPhone & iPad Giá Tốt Nhất Tại CellphoneS : https://cellphones.com.vn/mobile/apple ... CỔNG TYPE-C, SẠC NHANH 35W, GIÁ CAO. @fa.channel138 ...",
+    "position": 7
+   },
+   {
+    "title": "iPhone 15: Thiết kế đẹp, màn hình nét, nhiều màu, sạc USB",
+    "link": "https://pisenvietnam.vn/tin-tuc/iphone-15-usbc-thiet-ke-dep-man-hinh-net-nhieu-mau-gia-mem-665.html",
+    "snippet": "iPhone 15: Thiết kế đẹp, màn hình nét, giá khởi điểm từ 799$ USD, iPhone 15 USB-C : Thiết kế đẹp, màn hình nét, nhiều màu, giá mềm, sạc cho iphone 15.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

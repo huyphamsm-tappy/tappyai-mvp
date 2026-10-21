@@ -1,0 +1,187 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "bãi đậu ô tô gần Hoff Coffee Brewers by BeanHop, Ghé Coffee Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:11:45.959Z",
+ "body": {
+  "searchParameters": {
+   "q": "bãi đậu ô tô gần Hoff Coffee Brewers by BeanHop, Ghé Coffee Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7768941,106.7008997,14z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Hoff Coffee Brewers by BeanHop",
+    "address": "42bis Lý Tự Trọng, Sài Gòn, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.777160499999999,
+    "longitude": 106.70015479999999,
+    "rating": 4.8,
+    "ratingCount": 361,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 989 984 506",
+    "openingHours": {
+     "Thứ Năm": "07:30–21:00",
+     "Thứ Sáu": "07:30–21:00",
+     "Thứ Bảy": "07:30–21:00",
+     "Chủ Nhật": "07:30–21:00",
+     "Thứ Hai": "07:30–21:00",
+     "Thứ Ba": "07:30–21:00",
+     "Thứ Tư": "07:30–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWlC64saqMi3_6_ahQoYxHgyRlF1nD1la0gK-Ulb5w6DF03CWvw6eqF7v7vqwRyFNsGTEzwqTB244g2G-o2qmr2NfrP7cbZ3zvbSHygHJdZt34Veokd2czAW7fTMwlwShBx0iv7z",
+    "cid": "2382170101620030993",
+    "fid": "0x31752fae900322dd:0x210f2b160d9e3e11",
+    "placeId": "ChIJ3SIDkK4vdTERET6eDRYrDyE"
+   },
+   {
+    "position": 2,
+    "title": "Hoff Specialty Coffee by BeanHop - Võ Thị Sáu",
+    "address": "170A Võ Thị Sáu, Quận 3, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7862828,
+    "longitude": 106.69019639999999,
+    "rating": 4.6,
+    "ratingCount": 419,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 384 819 893",
+    "openingHours": {
+     "Thứ Năm": "07:30–22:30",
+     "Thứ Sáu": "07:30–22:30",
+     "Thứ Bảy": "07:30–22:30",
+     "Chủ Nhật": "07:30–22:30",
+     "Thứ Hai": "07:30–22:30",
+     "Thứ Ba": "07:30–22:30",
+     "Thứ Tư": "07:30–22:30"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn35WO3y-trkpKf2m6UeGWMkD7pbkcJZhCc1dm5t2bwBCgMsA2k_mhHJ-QrHp6RJJ1AFwVolM60-Zx9Z60ammZUSKazq-x2c5RiFm_2jrVinDibO9xmNJMQrODeO8cpFCDwxqqCIYwZQprK",
+    "cid": "5240743604988030442",
+    "fid": "0x31752f007d948fb3:0x48badc8ac6362dea",
+    "placeId": "ChIJs4-UfQAvdTER6i02xorcukg"
+   },
+   {
+    "position": 3,
+    "title": "The Coffee Bean & Tea Leaf Han Thuyen",
+    "address": "27 Đ. Hàn Thuyên, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7786315,
+    "longitude": 106.69808669999999,
+    "rating": 4.1,
+    "ratingCount": 2125,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê"
+    ],
+    "phoneNumber": "+84 889 050 010",
+    "description": "Chuỗi quán cà phê phục vụ nhiều loại đồ uống, trong đó có các món đá xay đặc trưng.",
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWn1eThK4xP14keKIf1U95QMJ5VT_gSc4jSz3gFPyVr5wAi1EET5Ry9E7hTD41QSzkvVdUhDlPkJmADhG0Z3VKyhLDpHD5v3XBoku0roahzyLyvI0X3SPkFu6tbjR26R-W5zjGlf",
+    "cid": "16615999824505578171",
+    "fid": "0x31752f48ea53caf5:0xe697e3ce179ba2bb",
+    "placeId": "ChIJ9cpT6kgvdTERu6KbF87jl-Y"
+   },
+   {
+    "position": 4,
+    "title": "Bãi Gửi Xe Phố Đi Bộ",
+    "address": "8(Hoc vien Ngan hang Viet Nam) Đ. Tôn Thất Thiệp, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.77389,
+    "longitude": 106.70288099999999,
+    "rating": 2.3,
+    "ratingCount": 195,
+    "type": "Bãi đỗ xe",
+    "types": [
+     "Bãi đỗ xe"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWmscqg5IBVKl3T75GMAUaK-dU-Qigz89TKtzZqvqhSmBfKWxC0bvgdt2RaxKlka0qVN66Tb8R67ICxhkxLioEnTTU6V5n1Y0aFV-JAjSfp3c0DXe-z-lzUonoG_Z9Xc8vZ0hOfx",
+    "cid": "12260218728269165478",
+    "fid": "0x31752f46df9af38d:0xaa250bf9d71333a6",
+    "placeId": "ChIJjfOa30YvdTERpjMT1_kLJao"
+   },
+   {
+    "position": 5,
+    "title": "OKKIO",
+    "address": "120 - 122 Lê Lợi, Bến Thành, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7725195,
+    "longitude": 106.69895849999999,
+    "rating": 4.6,
+    "ratingCount": 1285,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Quán cà phê",
+    "types": [
+     "Quán cà phê",
+     "Cửa hàng cà phê",
+     "Nhà bán buôn cà phê",
+     "Quán cà phê espresso"
+    ],
+    "website": "https://www.facebook.com/okkiocaffe/",
+    "phoneNumber": "+84 848 011 118",
+    "openingHours": {
+     "Thứ Năm": "07:30–20:00",
+     "Thứ Sáu": "07:30–20:00",
+     "Thứ Bảy": "07:30–20:00",
+     "Chủ Nhật": "07:30–20:00",
+     "Thứ Hai": "07:30–20:00",
+     "Thứ Ba": "07:30–20:00",
+     "Thứ Tư": "07:30–20:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkHZOysuFLXSb6YUOQz4N4lvvO13YzmN7LHYetxg2ElTqExVs7U7YsdHUrCPGSZ_mya9-PmqlmN1TrVyYRsI7GAF2tOQD40v_Do7wjgIeFyXNHLto73Qe1q4o7dETnAY8eUFU4mLQ",
+    "cid": "3414222865992025664",
+    "fid": "0x31752f7ccb494b71:0x2f61c19b77788640",
+    "placeId": "ChIJcUtJy3wvdTERQIZ4d5vBYS8"
+   },
+   {
+    "position": 6,
+    "title": "Bãi giữ xe ô tô",
+    "address": "235 Nguyễn Văn Cừ, Cầu Ông Lãnh, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7627975,
+    "longitude": 106.6830858,
+    "rating": 4,
+    "ratingCount": 58,
+    "type": "Bãi đỗ xe",
+    "types": [
+     "Bãi đỗ xe"
+    ],
+    "openingHours": {
+     "Thứ Năm": "Mở cửa cả ngày",
+     "Thứ Sáu": "Mở cửa cả ngày",
+     "Thứ Bảy": "Mở cửa cả ngày",
+     "Chủ Nhật": "Mở cửa cả ngày",
+     "Thứ Hai": "Mở cửa cả ngày",
+     "Thứ Ba": "Mở cửa cả ngày",
+     "Thứ Tư": "Mở cửa cả ngày"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkMUhY95jmDI6Ol3u5jPuwABfd7cC7z1RUhiWLxA99WiauvoEzVvHiKoZHGl3qGZXcQv1ib7IB7M2RaAfw7h9Dw5WIKQfia07N2YaRCReKkey5MkR7tWU6czftKf1DYCFETbYP1BQ",
+    "cid": "12044415407810058342",
+    "fid": "0x31752f7bdc9f3ac1:0xa7265bffd5c29866",
+    "placeId": "ChIJwTqf3HsvdTERZpjC1f9bJqc"
+   }
+  ],
+  "credits": 3
+ }
+}

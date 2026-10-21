@@ -1,0 +1,31 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu \"200.000\" \"400.000\"",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:34:33.556Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu \"200.000\" \"400.000\"",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Mức thu lệ phí cấp hộ chiếu, giấy thông hành, giấy phép xuất ...",
+    "link": "https://xaydungchinhsach.chinhphu.vn/muc-thu-le-phi-cap-ho-chieu-giay-thong-hanh-giay-phep-xuat-canh-tem-ab-119260401102312629.htm",
+    "snippet": "a. Cấp mới. 200.000 ; b. Cấp lại do bị hỏng hoặc bị mất. 400.000 ; c. Gia hạn hộ chiếu (ngoại giao, công vụ). 100.000 ; d. Cấp giấy xác nhận nhân ...",
+    "date": "1 thg 4, 2026",
+    "position": 1
+   }
+  ],
+  "credits": 1
+ }
+}

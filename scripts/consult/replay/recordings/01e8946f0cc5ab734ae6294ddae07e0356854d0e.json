@@ -1,0 +1,57 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Cơm Bắc Làng Cua Đồng Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:08:18.574Z",
+ "body": {
+  "searchParameters": {
+   "q": "Cơm Bắc Làng Cua Đồng Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7858305,106.6981489,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Cơm Bắc Làng Cua Đồng",
+    "address": "Hẻm 18A Nguyễn Thi Minh Khai, Quận 1, Hồ Chí Minh 700000, Việt Nam",
+    "latitude": 10.7858305,
+    "longitude": 106.70072379999999,
+    "rating": 4,
+    "ratingCount": 513,
+    "priceLevel": "1-100.000 ₫",
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "http://www.cuadong.com/",
+    "phoneNumber": "+84 28 3824 6825",
+    "openingHours": {
+     "Thứ Năm": "07:00–14:30, 17:00–21:00",
+     "Thứ Sáu": "07:00–14:30, 17:00–21:00",
+     "Thứ Bảy": "07:00–14:30, 17:00–21:00",
+     "Chủ Nhật": "07:00–14:30, 17:00–21:00",
+     "Thứ Hai": "07:00–14:30, 17:00–21:00",
+     "Thứ Ba": "07:00–14:30, 17:00–21:00",
+     "Thứ Tư": "07:00–14:30, 17:00–21:00"
+    },
+    "thumbnailUrl": "https://lh3.googleusercontent.com/grass-cs/ACvplmMRJ48cfjLITshLfDO-n-LyqgBIjGdGnatHJbTnV2XPwjMIURdA8Iptf1pa1yqsF3845UZ4VQDCW926w8IG_-8YkAp_SJ4yAl26rZV1Iyz1OoK38kvTYqFK0e5z3YkCrDyVz_au3ZxjKKGM",
+    "cid": "16895576148479512129",
+    "fid": "0x31752f4a812c6055:0xea7924fd8daf0e41",
+    "placeId": "ChIJVWAsgUovdTERQQ6vjf0keeo"
+   }
+  ],
+  "credits": 3
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vbpl.vn lệ phí cấp hộ chiếu trực tuyến 2026 thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T09:59:59.350Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vbpl.vn lệ phí cấp hộ chiếu trực tuyến 2026 thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Thông tư 28/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/b6e43930-5972-11f1-9c79-07f23d89b27d",
+    "snippet": "Thông tư 28/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực xuất cảnh, nhập cảnh, quá cảnh, cư trú tại Việt Nam · 1. Người nộp phí, lệ ...",
+    "position": 1
+   },
+   {
+    "title": "Thông tư 74/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-74-2026-tt-btc-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-nang-luong-nguyen-tu--165ac560-713c-11f1-a2d9-abf44845dfbd",
+    "snippet": "Thông tư số 74/2026/TT-BTC Quy định mức thu, chế độ thu, nộp phí, lệ phí trong lĩnh vực năng lượng nguyên tử. Còn hiệu lực. Ngày có hiệu lực:10/08/2026.",
+    "position": 2
+   },
+   {
+    "title": "Thông tư 66/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-66-2026-tt-btc-huong-dan-xac-dinh-nhu-cau-nguon-va-phuong-thuc-chi-thuc-hien-muc-luong-co-so-va-che-do-tien-thuong-theo-nghi-dinh-so-161-2026-nd-cp-ngay-15-thang-5-nam-2026-cua-chinh-phu-va-dieu-chinh-tro-cap-hang-thang-doi-voi-can-bo-xa-da-nghi-viec-theo-nghi-dinh-so-162-2026-nd-cp-ngay-15-thang-5-nam-2026-cua-chinh-phu--0793b480-6faa-11f1-a61a-ebc9f6b1d56e",
+    "snippet": "a) Đối với số thu phí (thuộc danh mục phí theo quy định của pháp luật về phí, lệ phí): Sử dụng tối thiểu 40% số thu phí được để lại theo chế độ ...",
+    "date": "16 thg 6, 2026",
+    "position": 3
+   },
+   {
+    "title": "Thông tư 29/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-29-2026-tt-btc-quy-dinh-muc-thu-mien-mot-so-khoan-phi-le-phi-de-ho-tro-viec-ket-noi-khai-thac-su-dung-du-lieu-va-khuyen-khich-thuc-hien-dich-vu-cong-tren-ung-dung-vneid--49379ca0-58f1-11f1-8ef7-112d67e18519",
+    "snippet": "Lệ phí cấp chứng chỉ hành nghề kiến trúc sư. Bằng 50% mức thu lệ phí quy định ... a) Lệ phí nộp đơn đăng ký bảo hộ quyền sở hữu công nghiệp (gồm cả đơn ...",
+    "position": 4
+   },
+   {
+    "title": "Thông tư 104/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-104-2026-tt-btc-quy-dinh-phan-cap-tham-quyen-va-quy-trinh-kiem-tra-chuyen-nganh-trong-mot-so-linh-vuc-quan-ly-nha-nuoc-cua-bo-tai-chinh--a79d6f30-867e-11f1-876c-212b748a03d2",
+    "snippet": "THÔNG TƯ. Quy định phân cấp thẩm quyền và quy trình kiểm tra chuyên ngành. trong một số lĩnh vực quản lý nhà nước của Bộ Tài chính.",
+    "position": 5
+   },
+   {
+    "title": "Thông tư 109/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-109-2026-tt-btc-quy-dinh-quan-ly-hoat-dong-kinh-doanh-dich-vu-lam-thu-tuc-ve-thue--87ba2920-96fe-11f1-9212-07b1c197f2ae",
+    "snippet": "Tra cứu Thông tư 109/2026/TT-BTC, Thông tư số 109/2026/TT-BTC Quy định quản lý hoạt động kinh doanh dịch vụ làm thủ tục về thuế. Xem toàn văn và hiệu lực.",
+    "position": 6
+   },
+   {
+    "title": "Thông tư 72/2026/TT-BTC của Bộ Tài chính",
+    "link": "https://vbpl.vn/van-ban/chi-tiet/thong-tu-so-72-2026-tt-btc-quy-dinh-muc-thu-mien-giam-che-do-thu-nop-phi-thi-hanh-an-dan-su--0dfbd3a0-713c-11f1-89b4-7bc0e6257cee",
+    "snippet": "Tra cứu Thông tư 72/2026/TT-BTC, Thông tư số 72/2026/TT-BTC Quy định mức thu, miễn, giảm, chế độ thu, nộp phí thi hành án dân sự.",
+    "date": "23 thg 6, 2026",
+    "position": 7
+   },
+   {
+    "title": "Trang chủ | CSDL quốc gia về pháp luật",
+    "link": "https://vbpl.vn/",
+    "snippet": "65/2026/TT-BCT. Ngày ban hành:01/10/2026. Thông tư số 65/2026/TT-BCT Quy định chi tiết một số điều và biện pháp thi hành Nghị định số 365/2026/NĐ-CP ngày 23 ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

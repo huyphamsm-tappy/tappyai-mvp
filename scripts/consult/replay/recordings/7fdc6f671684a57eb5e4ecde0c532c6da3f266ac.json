@@ -1,0 +1,59 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "nhà hàng dưới 300k/người có máy lạnh, không gồm Xóm Chợ Cũ Restaurant Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T10:25:23.060Z",
+ "body": {
+  "searchParameters": {
+   "q": "nhà hàng dưới 300k/người có máy lạnh, không gồm Xóm Chợ Cũ Restaurant Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7794733,106.6999728,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Xóm Chợ Cũ Restaurant",
+    "address": "35 Lý Tự Trọng, Sài Gòn, Hồ Chí Minh, Việt Nam",
+    "latitude": 10.7794733,
+    "longitude": 106.7025477,
+    "rating": 4.4,
+    "ratingCount": 347,
+    "type": "Nhà hàng Việt Nam",
+    "types": [
+     "Nhà hàng Việt Nam",
+     "Nhà hàng"
+    ],
+    "website": "https://www.facebook.com/XomChoCu76",
+    "phoneNumber": "+84 972 501 185",
+    "openingHours": {
+     "Thứ Năm": "10:00–21:30",
+     "Thứ Sáu": "10:00–21:30",
+     "Thứ Bảy": "10:00–21:30",
+     "Chủ Nhật": "10:00–21:30",
+     "Thứ Hai": "10:00–21:30",
+     "Thứ Ba": "10:00–21:30",
+     "Thứ Tư": "10:00–21:30"
+    },
+    "bookingLinks": [
+     "https://m.me/XomChoCu76"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/ANWiy9Tff-IeHA8GuRnAkVDVEmAS3RCUma3_bfEM072VEAz1Gw5pPQHHui0L3OFHZ5hg3tR1FkISS8WrV_-BnerK59JRkuHGu1kFx1kcajnmkSw5xOGUXQO9ze_UF4Y2KRjBHgtLLl9h4dl8aFpE",
+    "cid": "17877838603436716993",
+    "fid": "0x31752f5272eddd43:0xf81ad77d2d9c73c1",
+    "placeId": "ChIJQ93tclIvdTERwXOcLX3XGvg"
+   }
+  ],
+  "credits": 3
+ }
+}

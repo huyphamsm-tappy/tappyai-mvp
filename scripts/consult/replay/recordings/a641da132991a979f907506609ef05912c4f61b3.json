@@ -1,0 +1,75 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "vé tham quan phố cổ Hội An 2026 giá vé khách Việt Nam khách quốc tế giờ tham quan",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T06:16:30.679Z",
+ "body": {
+  "searchParameters": {
+   "q": "vé tham quan phố cổ Hội An 2026 giá vé khách Việt Nam khách quốc tế giờ tham quan",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cập nhật vé tham quan Khu phố cổ Hội An – Hành trình chạm ...",
+    "link": "http://www.hoianworldheritage.org.vn/vi/news/Du-lich-Hoi-An/cap-nhat-ve-tham-quan-khu-pho-co-hoi-an-hanh-trinh-cham-ve-nguyen-ban-giua-long-di-san-3033.hwh",
+    "snippet": "Với vé tham quan mệnh giá 80.000 đồng, du khách được dạo bước trong không gian chung của Khu phố cổ Hội An, nơi những con đường nhỏ rợp bóng đèn ...",
+    "date": "16 thg 3, 2026",
+    "position": 1
+   },
+   {
+    "title": "Cập Nhật Giá Vé Tham Quan Phố Cổ Hội An 2026 & Mẹo ...",
+    "link": "https://phanvantravel.com/ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Khách Việt Nam. 80.000 VNĐ/người/lượt. Người lớn và trẻ em cao từ 1m4 trở lên ; Khách quốc tế. 120.000 VNĐ/người/lượt. Người lớn và trẻ em nước ngoài cao từ 1m4 ...",
+    "position": 2
+   },
+   {
+    "title": "Giá vé các điểm tham quan tại Hội An",
+    "link": "https://danatravel.vn/thong-tin-du-lich/gia-ve-cac-diem-tham-quan-tai-hoi-an.html?srsltid=AU7gw4Xkk4OhpYLAvO7Ez7p9vfIRlUf9WlYmmXhdaV3CYJxbiNU7NbR_",
+    "snippet": "Phố cổ Hội An. - Khách Nội địa: 80.000 VND/khách/lượt. - Khách Quốc Tế: 120.000 VND/khách/lượt. Mỗi vé bạn có thể tham quan cảnh quan chung Khu ...",
+    "date": "13 thg 1, 2026",
+    "position": 3
+   },
+   {
+    "title": "Cập nhật giá vé tham quan Phố cổ Hội An cho khách trong ...",
+    "link": "https://sovaba.travel/blog/bai-viet-cap-nhat-gia-ve-tham-quan-pho-co-hoi-an",
+    "snippet": "Khách Việt Nam (từ 16 tuổi trở lên): 80.000 VNĐ/người/lượt. Trẻ em Việt Nam cao từ 1m đến 1m4: 50.000 VNĐ/người/lượt; trẻ em dưới 1m được miễn phí. Khách quốc ...",
+    "position": 4
+   },
+   {
+    "title": "Phố cổ Hội An miễn vé tham quan",
+    "link": "https://vietnamtourism.gov.vn/post/18151",
+    "snippet": "Phố cổ Hội An miễn vé tham quan - Cục Du lịch Quốc Gia Việt Nam. Sáng 6-7, thông tin từ Phòng Thương mại và Du lịch TP Hội An (Quảng Nam) cho hay nhân dịp kỷ ...",
+    "position": 5
+   },
+   {
+    "title": "Du lịch Hội An: Vé tham quan và tour Hội An 2026",
+    "link": "https://www.traveloka.com/vi-vn/activities/vietnam/city/hoi-an-10010308",
+    "snippet": "Thời gian: 16:00 - 22:00 hằng ngày (Đóng cửa vào thứ 3). Giá vé: từ 540.000 VND/khách. Địa chỉ: Số 200 Nguyễn Tri Phương, Phường Cẩm Châu, Thành phố Hội An, ...",
+    "position": 6
+   },
+   {
+    "title": "Giá Vé Tham Quan Phố Cổ Hội An 2026",
+    "link": "https://mytour.danang.vn/pho-co-hoi-an",
+    "snippet": "Giá vé tham quan 2026: 80.000 VNĐ và 120.000 VNĐ tùy loại vé. Điểm nổi bật: Chùa Cầu, Miếu Quan Công, các nhà cổ, hội quán, bảo tàng, sông Hoài ...",
+    "date": "8 thg 1, 2026",
+    "position": 7
+   },
+   {
+    "title": "Chính thức: Áp dụng mức phí tham quan mới tại Hội An, Mỹ ...",
+    "link": "https://www.facebook.com/baodanangonline/posts/ch%C3%ADnh-th%E1%BB%A9c-%C3%A1p-d%E1%BB%A5ng-m%E1%BB%A9c-ph%C3%AD-tham-quan-m%E1%BB%9Bi-t%E1%BA%A1i-h%E1%BB%99i-an-m%E1%BB%B9-s%C6%A1n-v%C3%A0-c%C3%A1c-th%C3%A1p-c%E1%BB%95-t%E1%BB%AB-ng%C3%A0/1265366275450592/",
+    "snippet": "Sau hai lần đến Hội An, tôi giờ tởn tới già với nạn chặt chém khách du lịch. ... quốc không biết gì về ẩm thực Việt. Sau 2 tuần ở Việt Nam ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

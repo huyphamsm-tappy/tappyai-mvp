@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 Samsung Galaxy S24 giá Việt Nam chính hãng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:08:58.377Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 Samsung Galaxy S24 giá Việt Nam chính hãng (site:cellphones.com.vn OR site:shopee.vn OR site:lazada.vn OR site:tiki.vn)",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So sánh Samsung Galaxy S24 và iPhone 15: Chọn iOS ổn ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-s24-va-iphone-15",
+    "snippet": "Galaxy S24 tiếp tục dẫn trước với viên pin dung lượng lớn hơn (4000 mAh so với 3349 mAh của iPhone 15) tuy nhiên trong thực tế Apple luôn tối ưu ...",
+    "date": "7 thg 8, 2025",
+    "position": 1
+   },
+   {
+    "title": "Trên dưới 22 triệu, mua Galaxy S24 hay iPhone 15 hợp lý ...",
+    "link": "https://cellphones.com.vn/sforum/mua-galaxy-s24-hay-iphone-15-hop-ly-hon",
+    "snippet": "iPhone 15 128GB | Chính hãng VN/A. 19.990.000đ22.990.000đ. Smember giảm thêm 200.000đ. Khuyến mãi hấp dẫn. 1.",
+    "date": "18 thg 1, 2024",
+    "position": 2
+   },
+   {
+    "title": "Samsung s24 plus - Giá Tốt, Sale Tháng 09, Freeship 0Đ",
+    "link": "https://shopee.vn/list/samsung/s24%20plus",
+    "snippet": "【Deal siêu hot 12.12】Điện thoại Galax S24 Ultra Mạng 5G Bộ Lớn 8000mAh Camera HD 16GB RAM +1TB ROM 2 SIM Trải nghiệm cực. 1.243.000₫. 2.259.999₫.",
+    "position": 3
+   },
+   {
+    "title": "So sánh Samsung Galaxy S24 Ultra và iPhone 15 Pro Max",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-samsung-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "snippet": "iPhone 15 Pro Max 256GB | Chính hãng VN/A-Titan Trắng. Titan Trắng24.990.000đ. iPhone 15 Pro Max 256GB | Chính hãng VN/A-Titan Tự Nhiên. Titan ...",
+    "date": "18 thg 1, 2024",
+    "position": 4
+   },
+   {
+    "title": "So sánh Galaxy S24 Plus và iPhone 15 Plus",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-plus-va-iphone-15-plus",
+    "snippet": "iPhone 15 Plus 128GB | Chính hãng VN/A-Vàng. Vàng17.690.000đ. iPhone 15 Plus 128GB | Chính hãng VN/A-Xanh lá. Xanh lá17.690.000đ. iPhone 15 Plus ...",
+    "date": "18 thg 1, 2024",
+    "position": 5
+   },
+   {
+    "title": "Samsung Galaxy S24 Ultra 12GB 256GB",
+    "link": "https://cellphones.com.vn/samsung-galaxy-s24-ultra.html",
+    "snippet": "iPhone 15 256GB | Chính hãng VN/A. Trả góp 0%. : 24.990.000đ. 25.990.000đ. Đặc quyền trợ giá lên đến 3 triệu khi thu cũ lên ...",
+    "rating": 4.9,
+    "ratingCount": 59,
+    "position": 6
+   },
+   {
+    "title": "So sánh Galaxy S24 Ultra và iPhone 15 Pro Max dựa trên ...",
+    "link": "https://cellphones.com.vn/sforum/so-sanh-galaxy-s24-ultra-va-iphone-15-pro-max",
+    "snippet": "iPhone 15 Pro Max 256GB | Chính hãng VN/A-Titan Trắng. Titan Trắng24.990.000đ. iPhone 15 Pro Max 256GB | Chính hãng VN/A-Titan Tự Nhiên. Titan Tự Nhiên24.990 ...",
+    "position": 7
+   },
+   {
+    "title": "Samsung galaxy s24 ultra - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24%20ultra",
+    "snippet": "Mua online samsung galaxy s24 ultra chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

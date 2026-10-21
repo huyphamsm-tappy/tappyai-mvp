@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:lazada.vn/products",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:55:54.162Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Hộp Sạc MagSafe dành cho AirPods Pro site:lazada.vn/products",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro (thế hệ thứ 2) với Hộp Sạc MagSafe (USB-C)",
+    "link": "https://www.lazada.vn/products/airpods-pro-the-he-thu-2-voi-hop-sac-magsafe-usb-c-i2475318553.html?srsltid=AU7gw4UjtD_e8b3YHW-OajejGANPr4PqSEq0_Yz14A0qWSK7_bXrA5i4",
+    "snippet": "Hộp sạc MagSafe kèm AirPods Pro thế hệ 2 - giải pháp sạc tiện lợi cho tín đồ công nghệ. Thiết kế từ nhựa bền bỉ, tai nghe chống ồn cao cấp này là lựa chọn ...",
+    "position": 1
+   },
+   {
+    "title": "Sạc Không Dây Từ Tính Nhanh Cho Magsafe iPhone 17/16/15 ...",
+    "link": "https://www.lazada.vn/products/sac-khong-day-tu-tinh-nhanh-cho-magsafe-iphone-171615141312-iwatch-airpods-pro-tien-loi-khi-di-du-lich-voi-den-bao-sac-cong-ket-noi-type-c-i13446947976.html?srsltid=AU7gw4U0ZN1EHXcLsf_6XrHAMPLgudVEolylOpa5ZU--kYLmLLYxLvDr",
+    "snippet": "Sạc Không Dây Từ Tính Nhanh Cho Magsafe iPhone 17/16/15/14/13/12, iWatch, Airpods Pro - Tiện Lợi Khi Đi Du Lịch Với Đèn Báo Sạc, Cổng Kết Nối Type C.",
+    "position": 2
+   },
+   {
+    "title": "[Trả góp 0%] Phụ kiện AirPods Pro (2nd Gen) USB-C ...",
+    "link": "https://www.lazada.vn/products/tra-gop-0-phu-kien-airpods-pro-2nd-gen-usb-c-mtjv3zpa-chinh-hang-i2486642523.html?srsltid=AU7gw4VYufqPnxN5l8BLXMhDc3SwkgQtu6GtTqMDdGXTWnBP5gCLad95",
+    "snippet": "AirPods Pro và Hộp Sạc MagSafe chống bụi, chống mồ hôi và chống nước đạt chuẩn IP54. Một trải nghiệm tuyệt vời. • Dễ dàng thiết lập bằng cách ghép nối ...",
+    "position": 3
+   },
+   {
+    "title": "Apple Tai nghe Apple AirPods 4 with Active Noise ...",
+    "link": "https://www.lazada.vn/products/apple-tai-nghe-apple-airpods-4-with-active-noise-cancellation-ban-chong-on-i2852718915.html?srsltid=AU7gw4VA6kE4ZmjRTyUjy-_HerN1ODtCf5eftVCyGlI2J37LpzG-ydAk",
+    "snippet": "Hộp sạc AirPods 4 với Chủ Động Khử Tiếng Ồn và hộp sạc AirPods Pro 2 cũng tương thích với bộ sạc Apple Watch. Pin: Thời lượng pin phụ thuộc vào cài đặt ...",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 4
+   },
+   {
+    "title": "Vỏ bảo vệ tai nghe bluetooth không dây bằng Silicone dính liền ...",
+    "link": "https://www.lazada.vn/products/pdp-i1575440322.html?srsltid=AU7gw4Wiy8V7uCS6wO9GXw2vvP4O1stO3JeqCWtHqpv_d0VC2GUc32tW",
+    "snippet": "Vỏ bảo vệ tai nghe bluetooth không dây bằng Silicone dính liền màu trơn tối giản cho Apple Airpod 4 Vỏ chống sốc cho AirPods Pro 3 2 1 phụ kiện hộp sạc.",
+    "position": 5
+   },
+   {
+    "title": "Hộp Đựng Tai Nghe Bằng Silicon Màu Hồng Cho AirPods 1/2/3 ...",
+    "link": "https://www.lazada.vn/products/hop-dung-tai-nghe-bang-silicon-mau-hong-cho-airpods-123-propro2-hop-sac-tai-nghe-bluetooth-vo-bao-ve-tuong-thich-voi-tai-nghe-apple-i13373572650.html?srsltid=AU7gw4Vv9aREvAgLeJWn4I7i2wwqZrwcRKmLIGQJqT4YTcGHnKeE8pTu",
+    "snippet": "Khả năng tương thích phổ quát Được thiết kế để phù hợp với nhiều mẫu AirPods, bao gồm 1, 2, 3, Pro và Pro2, đảm bảo vừa vặn hoàn hảo.",
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Apple AirPods 4 chính hãnġ",
+    "link": "https://www.lazada.vn/products/tai-nghe-apple-airpods-4-chinh-han-i2885298763.html?srsltid=AU7gw4U7AX9Zgfnkv84xX8eD1OyoGoHsYFLa_5JYmqsg4C1LFW_TLmcE",
+    "snippet": "Hộp sạc AirPods 4 với Chủ Động Khử Tiếng Ồn và hộp sạc AirPods Pro 2 cũng tương thích với bộ sạc Apple Watch. Pin: Thời lượng pin phụ thuộc vào cài đặt ...",
+    "position": 7
+   },
+   {
+    "title": "Vỏ Bảo Vệ Sạc TPU Màu Hồng Dành Cho Bộ Sạc Dự Phòng ...",
+    "link": "https://www.lazada.vn/products/v-bo-v-sc-tpu-mu-hng-dnh-cho-b-sc-d-phng-khng-dy-magsafe-chnh-hng-ca-apple-b-v-bo-v-mm-tng-thch-i13429330146.html?srsltid=AU7gw4XZ-RfR6cy__wlB3hHpb2EWDD0nKTElTIYfRGQxHMO4FFIOLT9g",
+    "snippet": "Cấu trúc TPU chất lượng cao mang lại khả năng bảo vệ chắc chắn chống trầy xước và va đập. Khả năng tương thích MagSafe. Tích hợp liền mạch với sạc dự phòng ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

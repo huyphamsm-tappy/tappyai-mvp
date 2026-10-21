@@ -72,6 +72,12 @@ export interface ChatSessionState {
   plan?: { destination: string; at: string } | null
   /** TAPPY_AGENT: places the user turned down in this consultation (newest last). */
   rejected?: string[]
+  /**
+   * Phase 8 M2 (TAPPY_AGENT=2 only): the agent's persistent TASK (src/lib/ai/agent/runtime/task.ts) and short summaries of earlier tasks.
+   * Stored opaque here and VALIDATED on load by the runtime (schema, conversation id, staleness) — never trusted as read.
+   */
+  task?: Record<string, unknown> | null
+  taskHistory?: Array<Record<string, unknown>>
   updatedAt?: string
 }
 
@@ -179,6 +185,9 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
   candidates?: ChatSessionState['candidates']
   stay?: ChatSessionState['stay']
   products?: ChatSessionState['products']
+  /** Phase 8 M2: undefined = keep the stored task untouched (legacy / TAPPY_AGENT=1 turns never write it). */
+  task?: ChatSessionState['task']
+  taskHistory?: ChatSessionState['taskHistory']
 }): ChatSessionState {
   const pick = turn.replyText ? /\*\*Mình chọn:\s*([^*\n]+?)\*\*/.exec(turn.replyText)?.[1]?.trim() ?? null : null
   const shown = [...(prev?.shown ?? [])]
@@ -200,6 +209,8 @@ export function nextChatSessionState(prev: ChatSessionState | null, turn: {
     candidates: turn.candidates === undefined ? prev?.candidates ?? null : turn.candidates,
     stay: turn.stay === undefined ? prev?.stay ?? null : turn.stay,
     products: turn.products === undefined ? prev?.products ?? null : turn.products,
+    ...(turn.task !== undefined ? { task: turn.task } : prev?.task !== undefined ? { task: prev.task } : {}),
+    ...(turn.taskHistory !== undefined ? { taskHistory: turn.taskHistory } : prev?.taskHistory !== undefined ? { taskHistory: prev.taskHistory } : {}),
   }
 }
 

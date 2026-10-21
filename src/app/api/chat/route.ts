@@ -6,6 +6,7 @@ import { goldenCaptureSink } from '@/lib/ai/goldenCapture'
 import { serperSnapshot, serperDelta } from '@/lib/ai/tools/serperMeter'
 import type { SupabaseClient } from '@supabase/supabase-js'
 import { getRequestUser } from '@/lib/auth/getRequestUser'
+import { memoryMessageText } from '@/lib/p8/costWins'
 import { timeClientEmit } from './emitTiming'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { getAccountRestriction, accountRestrictionMessage, accountRestrictionCode, accountRestrictionStatus } from '@/lib/account/accountStatus'
@@ -38,10 +39,22 @@ import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSum
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
-import { sharedSerperBudget } from '@/lib/ai/tools/serperToolBudget'
+import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining } from '@/lib/ai/tools/serperToolBudget'
+import { productEnrichmentFor, optionalEnrichmentBudget, worstCaseSearchProductsCredits } from '@/lib/ai/tools/enrichmentPolicy'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
-import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM, AGENT_LIMITS } from '@/lib/ai/agent'
+import { agentRuntimeV2Enabled, startAgentRuntimeTurn } from '@/lib/ai/agent/runtime'
+import type { AgentTurnInput } from '@/lib/ai/agent'
+import { auditTrace, auditTraceOn } from '@/lib/ai/auditTrace'
+import { cardPathTrace, briefRows } from '@/lib/ai/cardPathTrace'
+import { discoveryGate } from '@/lib/ai/agent/runtime/discoveryGate'
+import { AgentRunTrace, traceTailStream } from '@/lib/ai/agent/runtime/trace'
+import { RUNTIME_LIMITS, serperCeiling } from '@/lib/ai/agent/runtime/limits'
+import { consultativeInAgentEnabled } from '@/lib/ai/consultative/consultativeAgentFlag'
+import { agentSystemV2For, consultMemoryLines } from '@/lib/ai/agent/runtime/consultativeVoice'
+import { conversationIdOf, loadTask, mergeForSave, taskContextLines, validStoredTask } from '@/lib/ai/agent/runtime/task'
+import type { TaskBox } from '@/lib/ai/agent/runtime'
+import { tappyAgentEnabled, startAgentTurn, agentContext, codeResolvedDate, priorDateFromHistory, cityFromGps, followUpContextLines, confirmationOf, isRejectionTurn, actionOutcomeText, revalidatePendingAction, claimActionExecution, AGENT_SYSTEM } from '@/lib/ai/agent'
 import { detectWrongModel, wrongModelBlock, deviceLabel } from '@/lib/ai/wrongModel'
 import { gatePlacesByActivity, agencyRowsToDrop } from '@/lib/ai/consultative/placeTypeGate'
 import { deriveShoppingConstraints, budgetFromHistory, validateShoppingCandidates, unmetConstraintPayload } from '@/lib/ai/consultative/shoppingConstraints'
@@ -57,6 +70,7 @@ import { producerSubject } from '@/lib/recommendation/slotAdmission'
 import { enrichWithTikTok } from '@/lib/links/tiktokEnrichment'
 import { serperSearch } from '@/lib/ai/tools/common'
 import { dropInactiveMerchantRows, attachCommerceLinks } from '@/lib/ai/tools/commerce'
+import { dropLoginWallRows } from '@/lib/ai/tools/loginWallHosts'
 import { commerceActorHash } from '@/lib/ccp'
 import { sealIdentity } from '@/lib/ccp/tracking/clickLink'
 import { rendersDecisionCard as rendersDecisionCardFor, rendersAskBlock } from '@/lib/ai/decisionSurface'
@@ -83,7 +97,8 @@ import { FREE_DAILY_LIMIT, ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 import { accountQuotaFor, aiQuotaIdentity, consumeAiQuestion, refundAiQuestion, type AiQuotaRefund } from '@/lib/ai/quota/aiQuestionQuota'
 import { entitlementFromRow, type SubscriptionRow } from '@/lib/plans/entitlement'
 import { PLAN_CONFIG, type PlanId } from '@/lib/plans/planConfig'
-import { createPlacesBudget, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
+import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runtime/decisionRecord'
+import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
@@ -119,6 +134,7 @@ import { coercePlaceType } from '@/lib/ai/tools/placeType'
 import { coerceTransportMode } from '@/lib/ai/tools/transportMode'
 import { clampPassengers } from '@/lib/ai/tools/passengers'
 import { trimPlacesForModel } from '@/lib/ai/consultative/modelPayload'
+import { agentCandidateSet } from '@/lib/ai/agent/runtime/candidateSet'
 import { compactHistory } from '@/lib/ai/historyCompaction'
 import { compactRequestMessages } from '@/lib/chat/requestHistory'
 import { readCappedBody, exceedsTextCeiling } from '@/lib/http/readCappedBody'
@@ -372,6 +388,11 @@ export async function POST(req: Request) {
   // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
   // TAPPY_AGENT (default OFF): the bounded agent decides the turn (src/lib/ai/agent). OFF = the Consultative path below, unchanged.
   const agentOn = tappyAgentEnabled() && !hasImage && !clipRef
+  // Phase 8 (TAPPY_AGENT=2): the new agent runtime. Shares every agent-path step below; differs only where marked `agentV2`.
+  const agentV2 = agentOn && agentRuntimeV2Enabled()
+  // CONSULTATIVE_IN_AGENT (default OFF, TAPPY_AGENT=2 only): consultative voice + advice principles in the agent prompt, memory / preferences
+  // as fenced DATA (runtime/consultativeVoice.ts). Off = every line it guards below is skipped and the request is unchanged.
+  const consultativeAgent = agentV2 && consultativeInAgentEnabled()
   const consultOn = consultV2Enabled() && !hasImage && !clipRef
   // R14 (UAT 9644d8e): the stored state must be known BEFORE routing — a client whose history does not show
   // the consultation ("xem thêm" alone) was routed as a fresh chat. The request user is looked up ONCE; this
@@ -429,9 +450,13 @@ export async function POST(req: Request) {
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
+  // CONSULTATIVE_IN_AGENT: the trip may be spread over turns ("… muốn đi du lịch có gợi ý gì ko" then "chưa biết đi đâu, … tầm 3 ngày"): neither text alone
+  // reads as a trip, so the last 3 user texts together decide. Without this the plan was cut to its first sentence and venue cards stood in for it (live 2026-10-11).
+  const consultThreadTrip = consultativeAgent && !consult && ownPlanningIntent === null && inheritedPlanningIntent === null
+    && detectPlanningIntent(subjectUserTexts.slice(-3).join(' \n ')) === 'trip' ? 'trip' as const : null
   const planningIntent = consult
     ? (consult.turn === 'plan' && consult.domains[0] === 'travel' ? 'trip' as const : null)
-    : ownPlanningIntent ?? inheritedPlanningIntent
+    : ownPlanningIntent ?? inheritedPlanningIntent ?? consultThreadTrip
   // A plan's budget is the WHOLE envelope, and its searches are the activities
   // the user named — both decided here, deterministically, so the planning block
   // can state the total and list exactly the searches to run (see promptBuilder).
@@ -684,14 +709,21 @@ export async function POST(req: Request) {
       : Array.isArray(m.content) ? (m.content as Array<{ text?: string }>).map(c => c.text || '').join(' ') : '').filter((x: string) => x.trim())
     return texts.length && texts[texts.length - 1] === lastText ? texts : [...texts, lastText].filter(x => x.trim())
   })()
-  const plannerNeedsDest = agentOn && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
+  // Phase 8: the runtime asks through Luna's ask_user action instead of this regex gate.
+  const plannerNeedsDest = agentOn && !agentV2 && planningIntent === 'trip' && plannerNeedsDestination(plannerUserTexts)
   const plannerAsk = plannerNeedsDest ? plannerDestinationQuestion(lastText, lang) : null
   // A trip plan whose destination is known and whose own words ask for NO concrete data (a named hotel/restaurant, a price, opening
   // hours, "near me", a ticket) is answered from the model's general knowledge: no retrieval tool is offered this turn, so no search runs
   // and no venue card can exist. A specific follow-up ("chỗ ăn nào ngon?") is a new turn and gets its tools.
-  const planOnlyTurn = agentOn && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
+  // Phase 8 WS2: on the runtime (TAPPY_AGENT=2) LUNA decides whether a plan needs current data (weather, opening hours, prices) — research
+  // is optional, never forced and never forbidden by a keyword gate. This regex gate stays for the Phase 7 agent (TAPPY_AGENT=1) only.
+  const planOnlyTurn = agentOn && !agentV2 && planningIntent === 'trip' && !plannerAsk && planNeedsNoRetrieval(lastText)
   // Counts only — never the user's words.
   if (agentOn && planningIntent === 'trip') console.log(JSON.stringify({ type: 'tappyai_planner_gate', asked: plannerAsk ? 'destination' : null, plan_only: planOnlyTurn, user_turns: plannerUserTexts.length, external_calls_before_destination: plannerAsk ? 0 : null }))
+  // CONSULTATIVE_IN_AGENT (discoveryGate.ts): a vague discovery question ("nay có gì dzui ko pa") is asked about BEFORE any lookup — no retrieval tool is offered this turn and the
+  // runtime blocks any the model proposes anyway; after two questions with no activity it searches with the assumption said out loud. Counts only in the log, never the user's words.
+  const discovery = consultativeAgent && agentV2 ? discoveryGate({ userTexts: plannerUserTexts, hasGps: !!userLocation, planningIntent, lang }) : null
+  if (discovery) console.log(JSON.stringify({ type: 'tappyai_discovery_gate', action: discovery.action, kind: discovery.kind, thread_turns: discovery.threadTurns, has_gps: !!userLocation }))
   // Re-evaluated with memory in the account branch (memory is a signal); a `let` for that reason.
   // An ASK turn is not charged (like the old clarify): it costs one small brain call and no search.
   let quotaExempt = cannedEarly !== null || clarifyGate !== null || consultAskReply !== null || cannedMovie !== null || plannerAsk !== null
@@ -1512,6 +1544,12 @@ export async function POST(req: Request) {
       candidates = kept
     }
 
+    // Phase 8 M5 (TAPPY_AGENT=2): code applies the HARD constraints only; Luna ranks the valid set (no score, no Pick, provider order).
+    if (agentV2) {
+      const set = agentCandidateSet(toolName, r, candidates, needProfile, lang)
+      if (set.removed.length) console.log(JSON.stringify({ type: 'tappyai_agent_candidates', tool: toolName, hard_removed: set.removed.length, reasons: set.removed.map(x => x.why), kept: candidates.length - set.removed.length }))
+      return { result: set.result, pick: null, shortlistedCandidates: set.shortlisted }
+    }
     if (candidates.length < 2) return { result: r, pick: null }
 
     const ranked = rankCandidates(candidates, needProfile)
@@ -2130,7 +2168,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
    * other turn is answering one question and gets one. Request-scoped, exactly like the enrichment
    * collector, so one conversation can never spend another's allowance.
    */
-  const placesBudget = createPlacesBudget(agentOn ? AGENT_LIMITS.maxToolCalls : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
+  // Google Places safety quota (provider layer, placesBudget.ts) — never an orchestration constant of either agent loop.
+  const placesBudget = createPlacesBudget(agentOn ? PLACES_BUDGET_AGENT : planningIntent ? PLACES_BUDGET_PLANNING : PLACES_BUDGET_DEFAULT)
   // chat2 A2 + security review 02/10: the one extra "widen" retrieval after an empty search is paid from ITS OWN one-call allowance per request
   // (not a fresh budget per tool step), and never runs when the turn's Places budget was already refused.
   const widenBudget = createPlacesBudget(1)
@@ -2344,11 +2383,13 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // "now") shape the ROWS here, before ranking, so the set the model reads and the card
           // the client renders are the same set. `applyBudgetFilter` above only ever touched web
           // snippets; the place rows were never constrained (`placeConstraintFilter.ts`).
-          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1)), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
+          const constraints = { ...detectPlaceConstraints(lastText, budget ?? needProfile.budget, recentSubjectUserTexts.slice(0, -1), new Date(), { explicitOnly: agentV2 }), ...(wantsWiderArea(lastText) ? { district: null } : {}) }
           const constrained0 = applyPlaceConstraints(budgeted, constraints, lang === 'en' ? 'en' : 'vi')
           // chat2 A2: price and distance are SOFT — when the hard filters leave nothing, drop the price ceiling, then widen the
           // area (one more provider call), and say what was relaxed (placeRelax.ts). Still nothing → the honest no-result block.
-          const relax = await relaxEmptyPlaces({
+          // Phase 8 M5 (TAPPY_AGENT=2): a stated budget / district is a HARD constraint — never relaxed by code. Nothing left → the honest
+          // no-result path below, and Luna offers to widen it (the user's call).
+          const relax = agentV2 ? { result: constrained0.result, relaxed: [] as string[], empty: ((constrained0.result as { results?: unknown[] })?.results ?? []).length === 0 } : await relaxEmptyPlaces({
             budgeted, constrained: constrained0, constraints, lang,
             applyConstraints: (res, cc) => applyPlaceConstraints(res, cc, lang === 'en' ? 'en' : 'vi'),
             widen: placesOverride || clipContext ? undefined : async () => {
@@ -2391,8 +2432,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // emission flag stays off; the collector holds them until the stream
           // filter has photos to fold in.
           turnPlaceLocation = location
+          const builtRecs = placeRecommendations(result, location, pickContext(pick))
           enrichment.setPlacesRecommendations(
-            placeRecommendations(result, location, pickContext(pick)),
+            builtRecs,
             producerSubject('search_places', (result as Record<string, unknown>)._tappy_place_domain),
           )
           // The map destination the provider itself returned for this search.
@@ -2404,9 +2446,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // enrichment (photos, links) off the FULL row set — trimming first starved the collector
           // of photos and the late resolver bought five /images calls per turn (measured). See
           // `modelPayload.ts`.
-          return trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
+          const modelView = trimPlacesForModel(forModel('search_places', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'results', { rendersCard: rendersDecisionCard, modelChooses: v1Active || agentV2, ...(consultTopTurn ? { consultTop: 3 } : {}) })
+          // CONSULTATIVE_IN_AGENT + audit trace only (cardPathTrace.ts): which rows the provider returned, which the MODEL reads, which became card candidates.
+          if (enrichment.diagTurnId) {
+            const foldName = (s: unknown) => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()
+            const fullRows = briefRows((result as { results?: unknown }).results, 60)
+            const seenByModel = briefRows((modelView as { results?: unknown } | null)?.results, 60)
+            const recNames = new Set(builtRecs.map(r => foldName(r.entity.identity.name)))
+            cardPathTrace(enrichment.diagTurnId, 'rows_and_recs', {
+              provider_rows: fullRows.length, provider_row_list: fullRows,
+              model_rows: seenByModel.length, model_row_list: seenByModel,
+              recs: builtRecs.length, rec_list: builtRecs.slice(0, 60).map(r => ({ id: r.entity.id, name: r.entity.identity.name ?? null })),
+              rows_without_rec: fullRows.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+              model_rows_without_rec: seenByModel.filter(r => !recNames.has(foldName(r.name))).map(r => r.name),
+            })
+          }
+          return modelView
         }
       }) }),
       get_news: tool({
@@ -2416,13 +2473,18 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       }),
       ...(locationIntent !== 'offline' ? { search_products: tool({
         description: 'Tim san pham/shop mua sam: gia tren Shopee/Tiki/Lazada, website rieng cua shop, dia chi cua hang vat ly (neu co), Facebook cua shop - tat ca tu Google Search (Serper)',
-        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua') }),
-        execute: async ({ query }) => {
+        parameters: z.object({ query: z.string().describe('Ten san pham can tim mua'), ...(agentV2 ? { purchase_links: z.boolean().optional().describe('true CHI KHI nguoi dung hoi mua o dau / xin link mua / the hien ro y dinh mua. Tu van, tieu chi, so sanh, danh gia: bo trong (khong tra link mua)') } : {}) }),
+        execute: async ({ query, purchase_links }: { query: string; purchase_links?: unknown }) => {
+          // Enrichment policy (enrichmentPolicy.ts): the Agent Runtime fetches purchase links only when Luna declared purchase intent.
+          const enrichmentMode = productEnrichmentFor({ agentRuntime: agentV2, purchaseLinks: purchase_links })
+          const enrichmentBefore = serperSnapshot()
           const stored = productsOverride
           productsOverride = null
           if (stored) console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_products', step: 'from_chat_state', rows: stored.length }))
-          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang)
-          const filtered = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          const r = stored ? { query, source: 'chat_state', search_results: stored } : await searchProducts(query, lang, { merchantLinks: enrichmentMode === 'links' })
+          const filteredAll = await dropInactiveMerchantRows(budget ? applyBudgetFilter(r, budget, query) : r, 'search_results')
+          // CONSULTATIVE_IN_AGENT: no product row whose link ends on a login wall (Shopee product pages, checked logged-out) — loginWallHosts.ts.
+          const filtered = consultativeAgent ? dropLoginWallRows(filteredAll, 'search_results') : filteredAll
           const { result, pick, shortlistedCandidates } = rankForModel('search_products', filtered)
           // Kept for "xem thêm" / "bác": the RANKED rows, shortlist first — not the raw search (replay SHOP-3: the raw
           // rows held chargers and laptop stands the ranker had set aside, and "xem thêm" reached exactly those).
@@ -2431,7 +2493,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const keepRows = shortRaw.length >= 2 ? [...shortRaw, ...(Array.isArray(rankedRows) ? rankedRows.filter(r => !shortRaw.includes(r)) : [])] : rankedRows
           if (!stored && Array.isArray(keepRows) && keepRows.length) lastProductsForState = { query, rows: compactProducts(keepRows) }
           if (pick) turnPick = pick
-          await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          // Vendor-link searches (up to two products × several marketplaces) are OPTIONAL: none without purchase intent; with it they may only
+          // spend what is left after a reserve kept for the verification the answer still needs (never the whole turn budget).
+          const optionalBudget = enrichmentMode === 'links' ? (agentV2 ? optionalEnrichmentBudget(turnCreditsRemaining()) : Number.POSITIVE_INFINITY) : 0
+          if (optionalBudget > 0) {
+            if (Number.isFinite(optionalBudget)) await withSerperToolBudget(optionalBudget, async () => { await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts }) })
+            else await attachCommerceLinks('search_products', result, { location: needProfile.location.text ?? undefined, query, platform: commercePlatform, locale: commerceLocale, actorHash: commerceActorHashValue, actorSeal: commerceActorSealValue, userText: lastText, userTexts: recentUserTexts })
+          }
+          if (agentV2) console.log(JSON.stringify({ type: 'tappyai_product_enrichment', mode: enrichmentMode, purchase_links: purchase_links === true, optional_budget: Number.isFinite(optionalBudget) ? optionalBudget : null, worst_case: worstCaseSearchProductsCredits(enrichmentMode), requests: serperDelta(enrichmentBefore).calls, credits: serperDelta(enrichmentBefore).credits }))
           enrichment.setPlacesRecommendations(productRecommendations(result), producerSubject('search_products'))
           /**
            * THE DECISION SURFACE DOES NOT DEPEND ON A WINNER EXISTING.
@@ -2561,7 +2630,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // from the full list above. Same trim as places (cost item 4).
           return trimPlacesForModel(forModel('get_hotel_prices', withTravelEditorial(pick
             ? { ...(result as Record<string, unknown>), _tappy_ranking: buildPickPayload(pick) }
-            : result, editorial)), 'hotel_list', { modelChooses: v1Active, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
+            : result, editorial)), 'hotel_list', { modelChooses: v1Active || agentV2, ...(consultTopTurn && consult?.domains[0] === 'travel' ? { consultTop: 3 } : {}) })
         }
       }),
       get_transport_options: tool({
@@ -2822,7 +2891,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentPendingAction: { id: string; tool: string; args: Record<string, unknown>; argsHash: string; summary: string; at: string; expiresAt: string } | null | undefined
   let agentExecuted: string[] = []
   // Hardening D: hard Serper budget per agent turn (tools + card photos together).
-  const agentSerperLimit = planningIntent === 'trip' ? 10 : 8
+  // Phase 8 runtime: 8 credits, 10 for a travel plan (hard ceilings, runtime/limits.ts — the one place they are set).
+  const agentSerperLimit = agentV2 ? serperCeiling(travelIntent || planningIntent === 'trip') : planningIntent === 'trip' ? 10 : 8
   let agentSerperSpent = 0
   // The after-loop lookups (card photos + TikTok review search) share ONE scope holding what the tools left (created on first use, after the loop).
   let agentAfterBudget: ReturnType<typeof sharedSerperBudget> | null = null
@@ -2834,6 +2904,59 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let agentStatePatch: { flight?: NonNullable<ChatSessionState['flight']>; movie?: NonNullable<ChatSessionState['movie']>; plan?: NonNullable<ChatSessionState['plan']> } = {}
   let agentRejected: string[] = []
   if (agentOn) enrichment.agentMode = true
+  // Phase 8: one structured trace per run (runtime/trace.ts) — every settle-path guard that changes the reply reports to it.
+  const agentRunTrace = agentV2 ? new AgentRunTrace({ chatSessionId, messageCount: messages.length, provider: AI.serving('agent').provider, serperLimit: agentSerperLimit, deadlineMs: RUNTIME_LIMITS.deadlineMs, flag: 'TAPPY_AGENT=2' }) : null
+  if (agentRunTrace) enrichment.guardTrace = (stage, before, after) => {
+    agentRunTrace.guard(stage, before, after)
+    auditTrace('guard', 'guard', { stage, before, after })
+    // Local UAT only, opt-in (never in production): the VERBATIM text before and after each stage that changed the reply.
+    if (process.env.TAPPY_UAT_STREAM_TRACE === '1' && process.env.NODE_ENV !== 'production') {
+      try { console.log(JSON.stringify({ type: 'tappyai_uat_stream_trace', ev: 'guard', stage, before, after })) } catch { /* diagnostics only */ }
+    }
+    // POST-UAT diagnostics (local UAT only, opt-in): which sentences a guard removed — reply text, so never in production.
+    if (process.env.TAPPY_UAT_GUARD_DIFF === '1' && process.env.NODE_ENV !== 'production') {
+      try {
+        const removed = before.split(/(?<=[.!?…:])\s+|\n+/).map(s => s.trim()).filter(s => s && !after.includes(s)).slice(0, 12)
+        if (removed.length) console.log(JSON.stringify({ type: 'tappyai_uat_guard_diff', stage, removed }))
+      } catch { /* diagnostics only */ }
+    }
+  }
+  // Phase 8 M4: the reply's provenance verdicts (counts and closed reasons only).
+  if (agentRunTrace) enrichment.evidenceTrace = summary => agentRunTrace.add('evidence_guard', summary)
+  // Phase 8 M5: Luna owns the semantic ranking; its ranking line orders the cards.
+  if (agentV2) enrichment.semanticRanking = true
+  // CONSULTATIVE_IN_AGENT: on a trip-plan turn the plan is the whole answer (no ranking call, no standalone venue cards after it).
+  const consultTripThread = consultativeAgent && planningIntent === 'trip'
+  if (consultTripThread) enrichment.planTurn = true
+  // CONSULTATIVE_IN_AGENT: the settle-path precision fixes (worked examples, amount phrases, plan-card area, "card below" line) are keyed on this.
+  if (consultativeAgent) enrichment.consultative = true
+  // CONSULTATIVE_IN_AGENT + audit trace only: one id that ties this turn's card-path diagnostics together (cardPathTrace.ts). Never set otherwise.
+  if (consultativeAgent && auditTraceOn()) { enrichment.diagTurnId = randomUUID().slice(0, 8); cardPathTrace(enrichment.diagTurnId, 'turn', { agent_trace_id: agentRunTrace?.traceId ?? null }) }
+  if (agentRunTrace) enrichment.rankingTrace = summary => agentRunTrace.add('ranking', summary)
+  if (agentRunTrace) enrichment.claimsTrace = summary => agentRunTrace.add('claims', summary)
+  // WS2: the structured decision record (decisionRecord.ts) — only when Luna wrote no valid inline block on a turn with candidates.
+  // Its cost is the turn's cost (same trace counter as every other Luna call); bounded by its own short timeout.
+  if (agentV2) enrichment.recordDecision = async (answer, candidates) => {
+    const diagTurn = enrichment.diagTurnId
+    const r = await recordDecision({ answer, candidates, signal: AbortSignal.timeout(DECISION_RECORD_TIMEOUT_MS), ...(diagTurn ? { diag: e => cardPathTrace(diagTurn, String(e.stage ?? 'recorder'), e) } : {}) })
+    if (agentRunTrace) agentRunTrace.counters.usd += r.usd
+    return r
+  }
+  // Phase 8 M2: the persistent TASK of this conversation (runtime/task.ts), stored with the chat-session state under (owner, chatSessionId).
+  // No chatSessionId (or no owner) → the task lives for this turn only; nothing is guessed from the request.
+  const taskConversationId = agentV2 ? conversationIdOf(chatSessionId) : null
+  const loadedTask = agentV2 ? loadTask(chatState?.task, chatState?.taskHistory, { conversationId: taskConversationId, now: new Date() }) : null
+  const previousReply = (() => {
+    const a = [...messages].reverse().find((m: { role?: string }) => m.role === 'assistant') as { content?: unknown } | undefined
+    return typeof a?.content === 'string' ? a.content : Array.isArray(a?.content) ? (a.content as Array<{ text?: string }>).map(p => p.text ?? '').join(' ') : null
+  })()
+  const agentTaskBox: TaskBox | null = loadedTask ? { task: loadedTask.task, history: loadedTask.history, conversationId: taskConversationId, persisted: !!(chatSessionId && commerceIdentityId), turn: { userText: lastText, previousReply, cards: chatState?.cards ?? [] } } : null
+  const agentTaskBase = loadedTask?.task ?? null
+  if (agentRunTrace && loadedTask) {
+    agentRunTrace.taskId = loadedTask.task.task_id
+    agentRunTrace.add('task', { decision: loadedTask.outcome, ...(loadedTask.problem ? { problem: loadedTask.problem } : {}), persisted: agentTaskBox!.persisted, turns: loadedTask.task.turns, status: loadedTask.task.status })
+    if (loadedTask.outcome === 'invalid_discarded' || loadedTask.outcome === 'foreign_discarded') console.warn(JSON.stringify({ type: 'tappyai_agent_task', step: loadedTask.outcome, problem: loadedTask.problem ?? null }))
+  }
   const agentTurn = async (onFinish: unknown) => {
     // A pending side-effecting action is executed ONLY on the user's explicit confirmation, by code, through the tool's own action boundary.
     let actionOutcome: string | null = null
@@ -2874,22 +2997,31 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     const cardEv = cardEvidence(cards, rows, { now: new Date(), verifiedAt: chatState?.candidates?.at ?? null })
     const facts = cardEv.facts
     if (enrichment.consultativeV1 && cardEv.carried.length) enrichment.consultativeV1.carried = mergeCarried(enrichment.consultativeV1.carried, cardEv.carried)
+    // CONSULTATIVE_IN_AGENT + audit trace only: did remembered-preference lines reach the data block, and does one mention walking (counts / booleans, never the text).
+    if (enrichment.diagTurnId) { const ml = consultMemoryLines(existingMemory, storedPrefs); cardPathTrace(enrichment.diagTurnId, 'memory_context', { memory_lines: ml.length, mentions_walking: ml.some(l => /đi bộ/i.test(l)) }) }
     const context = agentContext({
-      now: new Date(), userText: lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
-      state: { extra: followUpContextLines(chatState), cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
+      ...(discovery ? { turnNote: discovery.note } : {}),
+      stableClock: consultativeAgent, // CONSULTATIVE_IN_AGENT: the minute-level clock goes to the DATA block so the cached system prefix stays stable (prompt.ts)
+      now: new Date(), userText: consultativeAgent ? lunaUserTexts.slice(-3).join(' \n ') : lastText, departDate: chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date()), lang, gps: !!userLocation, address: userLocation?.address ?? null, gpsCity: userLocation ? cityFromGps(userLocation.lat, userLocation.lng) : null, statedArea: statedArea?.label ?? null,
+      state: { extra: [...followUpContextLines(chatState), ...(agentTaskBox ? taskContextLines(agentTaskBox.task, agentTaskBox.history, new Date()) : []), ...(consultativeAgent ? consultMemoryLines(existingMemory, storedPrefs) : [])], cards, facts, pick: currentPick, rejected: [...new Set([...(chatState?.rejected ?? []), ...agentRejected])], known: chatState?.known, pendingAction: pending && !actionOutcome ? { summary: pending.summary } : null, actionOutcome },
     })
+    // WS2 final: what the No-Fabrication Gate may accept as given this turn — the DATA context Luna read (card facts, task evidence,
+    // follow-up state), the user's saved memory, and the conversation's earlier replies (each passed the gate when it was shown).
+    if (agentV2) enrichment.gateContext = [context.data ?? '', memoryBlock ?? '', ...(modelMessages as Array<{ role: string; content: unknown }>).filter(m => m.role === 'assistant').map(m => typeof m.content === 'string' ? m.content : JSON.stringify(m.content))]
     const privateTexts = [memoryBlock, userLocation?.address ?? '']
     const ownWords = lunaUserTexts.join(' ')
-    return startAgentTurn({
+    const turnInput: AgentTurnInput = {
       routeTools: tools as never,
-      noRetrieval: planOnlyTurn,
+      noRetrieval: planOnlyTurn || discovery?.action === 'ask',
+      ...(discovery?.action === 'ask' ? { discoveryAsk: true } : {}),
       context,
       messages: modelMessages as never,
       lang,
       deadlineAt: startTime + Math.min(TURN_DEADLINE_MS - 25_000, 85_000),
       signal: req.signal,
       finalRole: planningIntent === 'trip' ? 'plan' : 'consult',
-      maxTokens: planningIntent ? 4096 : 1500,
+      // CONSULTATIVE_IN_AGENT: a full day-by-day plan with flights / stay / budget does not fit 4096 tokens (days 2–3 ended after two items).
+      maxTokens: consultTripThread ? 7000 : planningIntent ? 4096 : 1500,
       // Serper per TURN, all agent tools together: 8 normal / 10 travel plan. The card-photo lookup after the loop spends only what is left.
       serperTurnCredits: agentSerperLimit,
       onSerperSpent: n => { agentSerperSpent = n },
@@ -2899,7 +3031,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       sanitizeQuery: q => sanitizeSearchQuery(q, { privateTexts, ownWords }),
       codeDate: codeResolvedDate(lastText, new Date(), chatState?.flight?.departDate ?? priorDateFromHistory(lunaUserTexts, new Date())),
       onFinish: onFinish as never,
-    })
+    }
+    return agentRunTrace
+      ? startAgentRuntimeTurn({ ...turnInput, trace: agentRunTrace, consultative: consultativeAgent, ...(agentTaskBox ? { taskBox: agentTaskBox } : {}), onCitationSources: s => { enrichment.citationSources = s }, onUnverifiedSources: s => { enrichment.unverifiedSources = s }, onGuardEvidence: ev => { enrichment.guardEvidence = ev }, deadlineAt: startTime + RUNTIME_LIMITS.deadlineMs, finalRole: planningIntent === 'trip' || consultTripThread ? 'plan' : 'agent' })
+      : startAgentTurn(turnInput)
   }
   let result
   try {
@@ -2908,7 +3043,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // PHIÊN LUNA safety: every reply under the flag is checked for a prompt echo / secret shape before it leaves.
   // STATIC prompt text only — the per-turn prompt carries product/place names a normal reply repeats (final none 30/09:
   // 3 shopping replies naming a 12-word product title were replaced).
-  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))]))
+  console.log(JSON.stringify({ type: 'tappyai_turn_path', path: agentV2 ? 'agent_v2' : agentOn ? 'agent_v1' : consult ? 'consult' : 'legacy', consultative_in_agent: consultativeAgent }))
+  if (lunaOn || agentOn) enrichment.setLeakCheck(buildLeakDetector([...(agentOn ? [AGENT_SYSTEM] : []), ...(consultativeAgent ? [agentSystemV2For(true)] : []), systemShared ?? '', INTENT_SYSTEM, FRAME_CORE, ...(['food', 'shopping', 'travel', 'entertainment', 'spa'] as const).map(d => frameLibrary(d))], consultativeAgent ? { runs: true } : undefined))
   // The one targeted extra search a Luna answer may make: its query is cut of private data before Serper (owner rule 3).
   if (lunaPlan) console.log(JSON.stringify({ type: 'tappyai_luna_plan_data', presearch: presearchAll.map(o => o.toolName), planningIntent: planningIntent ?? null }))
   // A Luna PLAN turn with tools (non-trip) gets ONE search (owner: at most one targeted extra search). Replay 30/09
@@ -3077,7 +3213,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           const convMessages = [
             ...trimmedMessages.map((m: { role: string; content: unknown }) => ({
               role: m.role,
-              content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
+              // Task 02: with p8_cost_memory_text an image part's base64 no longer goes into the prompt as text.
+              content: memoryMessageText(m.content),
             })),
             { role: 'assistant', content: text },
           ]
@@ -3238,7 +3375,18 @@ ${completionInstruction(lang)}` },
     const row = lastPlaceSearch ? { ...(turnEvidenceRow ?? loadedEvidenceRow ?? { v: 1 }), placeSearch: { ...lastPlaceSearch, shown: [...(evidence.presentedNames ?? [])].slice(0, 8) } } : null
     // R14: the same row + the consult slots and the stated pick, under (owner, chatSessionId).
     if (chatSessionId && commerceIdentityId) {
+      // Phase 8 M2: the task is merged against what is stored NOW (a concurrent turn of the same conversation may have written a newer
+      // revision) — never a silent overwrite.
+      // Latency pass: the task tracker's delta lands off the reply's path; wait for it here (after the last byte) before persisting.
+      if (agentTaskBox?.settled) await agentTaskBox.settled
+      const taskSave = agentTaskBox?.persisted && agentTaskBase ? await (async () => {
+        const latest = await loadChatSessionState(commerceIdentityId, chatSessionId)
+        const m = mergeForSave(agentTaskBase, agentTaskBox.task, validStoredTask(latest?.task, agentTaskBox.conversationId))
+        agentRunTrace?.add('task', { decision: 'persist', merge: m.outcome, rev: m.task.rev })
+        return { task: m.task as unknown as Record<string, unknown>, taskHistory: agentTaskBox.history as unknown as Array<Record<string, unknown>> }
+      })() : null
       const saved = await saveChatSessionState(commerceIdentityId, chatSessionId, nextChatSessionState(chatState, {
+        ...(taskSave ?? {}),
         domains: consult?.domains, known: consult?.known, replyText: evidence.replyText, presentedNames: evidence.presentedNames, cardOrder: evidence.cardOrder,
         ...(agentOn ? { pendingAction: agentPendingAction, rejected: agentRejected, executedActions: agentExecuted, agentState: agentStatePatch } : {}),
         ...(lastPlaceRowsForState ? { candidates: { args: lastPlaceRowsForState.args, rows: compactCandidates(lastPlaceRowsForState.rows), at: new Date().toISOString() } } : {}),
@@ -3299,6 +3447,9 @@ ${completionInstruction(lang)}` },
   // Not a capability: decision_evidence_load() still refuses it unless the
   // caller's auth.uid() owns the row, so holding the id grants nothing.
   finalResponse.headers.set('X-Decision-Evidence-Id', evidenceId)
+  // CONSULTATIVE_IN_AGENT: ask the web client to reveal the (already settled) reply progressively — display only. Emergency off: CONSULT_REVEAL=off
+  // on the server (read per request); a user can also opt out on the client (localStorage tappy_reveal=off, or reduced motion).
+  if (consultativeAgent && !/^(?:off|0|false|no)$/i.test((process.env.CONSULT_REVEAL ?? '').trim())) finalResponse.headers.set('x-tappy-reveal', '1')
 
   // Phase-0: emit the single tappyai_usage record once the LAST byte has left, so
   // a buffered turn's client-emit side (TTUA, enrichment tail, true total) rides
@@ -3435,7 +3586,7 @@ ${completionInstruction(lang)}` },
         const answerUsd = (lunaAnswerCost?.usd ?? 0) + planCompletionUsd
         const serperUsd = turnUsd({ promptTokens: 0, completionTokens: 0, serperCredits: d.credits })
         return { ...base, model: [...new Set(lunaAnswerCost?.served ?? [])].join('+') || base.model, intent: lunaRun?.served ?? (consultRun ? 'haiku' : null), intentUsd, answerUsd, serperUsd, reasoningTokens: lunaAnswerCost?.reasoningTokens ?? 0, lunaCachedIn: lunaAnswerCost?.cachedInputTokens ?? 0, lunaCacheWrite: lunaAnswerCost?.cacheWriteTokens ?? 0, fellBack: lunaAnswerCost?.fellBack ?? false, usd: Math.round((intentUsd + answerUsd + serperUsd) * 1e6) / 1e6 }
-      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs)))
+      }).pipeThrough(timeClientEmit(startTime, Date.now, (t) => logUsage(t.ttuaMs))).pipeThrough(traceTailStream(agentRunTrace))
     : finalResponse.body
   return new Response(timedBody, { status: finalResponse.status, headers: finalResponse.headers })
   }

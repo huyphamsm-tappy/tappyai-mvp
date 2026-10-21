@@ -1,0 +1,76 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple Support Activation Lock Mac erase before buying used Mac",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T17:18:07.021Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple Support Activation Lock Mac erase before buying used Mac",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Activation Lock for Mac",
+    "link": "https://support.apple.com/en-vn/102541",
+    "snippet": "If you need help disabling Activation Lock and have proof of purchase documentation, you can start an Activation Lock support request.",
+    "date": "5 thg 6, 2026",
+    "position": 1
+   },
+   {
+    "title": "Activation Lock for iPhone and iPad",
+    "link": "https://support.apple.com/en-us/108794",
+    "snippet": "Activation Lock helps you keep your device secure, even if it's in the wrong hands, and can improve your chances of recovering it. Even if you erase your device ...",
+    "position": 2
+   },
+   {
+    "title": "I need to remove activation lock on my macbook air ...",
+    "link": "https://discussions.apple.com/thread/255014660",
+    "snippet": "I purchased the machine, added myself as a user, used it for months and then went to update the OS and I was locked out. I had no way of knowing the ...",
+    "position": 3
+   },
+   {
+    "title": "How to remove Activation Lock",
+    "link": "https://support.apple.com/en-vn/108934",
+    "snippet": "Start a support request. If you need help removing Activation Lock, and have proof of purchase documentation, you can start an Activation Lock ...",
+    "date": "27 thg 5, 2026",
+    "position": 4
+   },
+   {
+    "title": "Activation Lock MacBook Air: How to Remove It and What ...",
+    "link": "https://www.facebook.com/fb-answers/activation-lock-macbook-air/",
+    "snippet": "Apple will remove Activation Lock if you have the original purchase receipt and ownership proof. Without it, the MacBook Air is essentially locked and...",
+    "position": 5
+   },
+   {
+    "title": "MacBook Pro M1 activation lock after reformat, lost docs",
+    "link": "https://discussions.apple.com/thread/256307927",
+    "snippet": "My question is, is there a way I can continue using it and have support unlock it for me after I lost the purchase documents? I'm sure support ...",
+    "date": "5 thg 6, 2026",
+    "position": 6
+   },
+   {
+    "title": "How to Check Activation Lock on a MacBook Before Buying",
+    "link": "https://clarimac.com/en/blog/check-activation-lock-before-buying-mac",
+    "snippet": "How to check if a MacBook or Mac has Activation Lock in under 2 minutes — before you pay. Includes what to do if the lock is still active.",
+    "date": "12 thg 3, 2026",
+    "position": 7
+   },
+   {
+    "title": "Macbook Purchased 2 Years Ago Now Has Activation Lock",
+    "link": "https://www.reddit.com/r/mac/comments/1eobjgg/macbook_purchased_2_years_ago_now_has_activation/",
+    "snippet": "If your Mac has \"Find My\" (and thusly Activation Lock) enabled and you wipe it, you will always be prompted to enter your Apple ID and password ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

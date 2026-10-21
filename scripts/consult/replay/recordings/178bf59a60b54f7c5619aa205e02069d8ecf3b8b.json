@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:mof.gov.vn lệ phí hộ chiếu trực tuyến 2026 thông tư",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:40:56.557Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:mof.gov.vn lệ phí hộ chiếu trực tuyến 2026 thông tư",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Cổng thông tin điện tử Bộ Tài Chính",
+    "link": "https://www.mof.gov.vn/bo-tai-chinh/dong-gop-y-kien-du-thao-van-ban/du-thao-thong-tu-quy-dinh-muc-thu-che-do-thu-nop-phi-le-phi-trong-linh-vuc-xuat-canh-nhap-canh-qua-canh-cu-tru-tai-viet-nam-lan-2",
+    "snippet": "Địa chỉ: số 28 phố Trần Hưng Đạo, phường Cửa Nam, thành phố Hà Nội. Điện thoại Cổng thông tin điện tử: (84-24)2220.2828-2888. Fax: (84-24)2220.8091. Email: ...",
+    "position": 1
+   },
+   {
+    "title": "Hàng loạt phí, lệ phí được miễn, giảm cho công dân số đến ...",
+    "link": "https://www.mof.gov.vn/cong-nghe-thong-tin-va-chuyen-doi-so/tin-tuc-su-kien-3/hang-loat-phi-le-phi-duoc-mien-giam-cho-cong-dan-so-den-het-thang-22027",
+    "snippet": "Chính sách này được đưa ra tại Thông tư số 117/2026/TT-BTC ngày 14/8/2026 của Bộ Tài chính quy định miễn, giảm một số khoản phí, lệ phí để triển ...",
+    "date": "24 thg 8, 2026",
+    "position": 2
+   },
+   {
+    "title": "Hạnh phúc Số: 63/2023/TT-BTC Hà N",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/179486",
+    "snippet": "a) Kẻ từ ngày 01 tháng 01 năm 2024 đến hết ngày 31 tháng 12 năm 2025, áp dụng mức thu lệ phí bằng 50% (năm mươi phân trăm) mức thu lệ phí quy.",
+    "date": "16 thg 10, 2023",
+    "position": 3
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/116954",
+    "snippet": "Trên cơ sở đề xuất của Bộ Công an, Bộ Tài chính đã dự thảo Thông tư sửa đổi, bổ sung Thông tư số 85/2019/TT-BTC hướng dẫn về phí và lệ phí thuộc thẩm quyền ...",
+    "position": 4
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của thủ tục hành chính được",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/551031",
+    "snippet": "THỦ TỤC HÀNH CHÍNH CẤP TRUNG ƯƠNG. Lĩnh quản lý giá. 1. Đăng ký hành nghề thẩm định giá (Mã hồ sơ TTHC: 2.002634). 1.1. Trình tự thực hiện:.",
+    "position": 5
+   },
+   {
+    "title": "Hỏi đáp CSTC",
+    "link": "https://portal.mof.gov.vn/hoidapcstc/home/cthoidap/155962",
+    "snippet": "Căn cứ quy định nêu trên, kể từ ngày 01/7/2025 đến hết ngày 31/12/2026, mức thu phí thẩm định thiết kế kỹ thuật bằng 50% mức thu phí quy định tại Biểu mức thu ...",
+    "position": 6
+   },
+   {
+    "title": "phần ii. nội dung cụ thể của từng thủ tục hành chính",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/611799",
+    "snippet": "Người nộp hồ sơ thanh toán phí, lệ phí ... - Đăng ký trực tiếp tại Cơ quan đăng ký kinh doanh;. - Đăng ký qua dịch vụ bưu chính;. - Trực tuyến qua Cổng thông tin ...",
+    "position": 7
+   },
+   {
+    "title": "thủ tục hành chính mới ban hành, được sửa đổi, bổ sung ...",
+    "link": "https://vbpq.mof.gov.vn/DKC.FileManagement/FileStorage/File/574515",
+    "snippet": "TNĐT Phụ lục IV ban hành kèm theo Thông tư số 91/2026/TT-BTC về việc tiếp nhận đăng ký sử dụng chứng từ điện tử qua địa chỉ thư điện tử đã đăng ký với cơ.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

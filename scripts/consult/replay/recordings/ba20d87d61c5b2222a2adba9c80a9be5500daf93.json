@@ -1,0 +1,73 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe mỗi lần sạc 6 giờ",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:06:32.915Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 thời gian nghe mỗi lần sạc 6 giờ",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "AirPods Pro 3 - Thông Số Kỹ Thuật",
+    "link": "https://www.apple.com/vn/airpods-pro/specs/",
+    "snippet": "Thời gian nghe lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động Khử Tiếng Ồn (lên đến 7,5 giờ khi bật Âm Thanh Không Gian và Theo Dõi Chuyển Động Đầu) ...",
+    "position": 1
+   },
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "5 giờ. Thời gian nghe lên đến 5 giờ với một lần sạc. 6 giờ. Thời gian nghe lên đến 6 giờ với một lần sạc. 6 giờ. Thời gian nghe lên đến 6 giờ với một lần sạc.",
+    "position": 2
+   },
+   {
+    "title": "Mua AirPods Pro 3",
+    "link": "https://www.apple.com/vn/shop/buy-airpods/airpods-pro-3",
+    "snippet": "AirPods Pro 3 không đi kèm bộ tiếp hợp nguồn hoặc Cáp Sạc USB-C. Chúng tôi khuyến khích bạn sử dụng bất kỳ bộ tiếp hợp nguồn hoặc cáp sạc USB-C nào tương thích.",
+    "position": 3
+   },
+   {
+    "title": "Mua iPhone 18 Pro 256GB Đen - Giáo Dục - Apple (VN)",
+    "link": "https://www.apple.com/vn-edu/shop/buy-iphone/iphone-18-pro/m%C3%A0n-h%C3%ACnh-6,3-inch-256gb-%C4%91en",
+    "snippet": "Sửa chữa không giới hạn cho các sự cố như rơi vỡ và đổ chất lỏng; Ưu tiên hỗ trợ từ các chuyên gia của Apple; Dịch Vụ Thay Thế Nhanh — chúng tôi sẽ gửi ...",
+    "position": 4
+   },
+   {
+    "title": "Mua iPhone 18 Pro 256GB Bạc - Giáo Dục - Apple (VN)",
+    "link": "https://www.apple.com/vn-edu/shop/buy-iphone/iphone-18-pro/m%C3%A0n-h%C3%ACnh-6,3-inch-256gb-b%E1%BA%A1c",
+    "snippet": "Mới. Mua sắm iPhone 18 Pro. Đặt trước từ 19:00 ngày 12 tháng 9, giờ Việt Nam. Có hàng từ ngày 18 tháng 9. Giới hạn hai iPhone 18 Pro và hai iPhone 18 Pro ...",
+    "position": 5
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "Khi sử dụng vỏ với thêm bốn lần sạc bổ sung, người dùng có thể tận hưởng tổng thời gian nghe lên đến 30 giờ với công nghệ khử tiếng ồn chủ động ...",
+    "date": "7 thg 9, 2022",
+    "position": 6
+   },
+   {
+    "title": "Mua AirPods Max 2 - Đêm Xanh Thẳm",
+    "link": "https://www.apple.com/vn-edu/shop/buy-airpods/airpods-max-2/%C4%91%C3%AAm-xanh-th%E1%BA%B3m",
+    "snippet": "... thời gian nghe lên đến 20 giờ chỉ với một lần sạc khi bật Chủ Động Khử Tiếng Ồn. Chú thích ¹³. Trong hộp có gì. AirPods Max 2; Smart Case; Cáp Sạc USB-C; Tài ...",
+    "position": 7
+   },
+   {
+    "title": "AirPods Max 2",
+    "link": "https://www.apple.com/vn/airpods-max/",
+    "snippet": "Thời gian nghe nhạc hoặc xem phim lên đến 20 giờ khi bật tính năng Chủ Động ... Thời lượng pin lên đến 8 giờ với một lần sạc khi bật tính năng Chủ Động ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

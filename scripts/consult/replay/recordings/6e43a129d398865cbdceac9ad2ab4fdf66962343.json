@@ -1,0 +1,60 @@
+{
+ "url": "https://google.serper.dev/maps",
+ "request": {
+  "q": "Asanoha Modern Japanese Hotpot yên tĩnh độ ồn không gian Quận 1 Ho Chi Minh City",
+  "gl": "vn",
+  "hl": "vi",
+  "ll": "@10.7769,106.7009,14z"
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:30:34.468Z",
+ "body": {
+  "searchParameters": {
+   "q": "Asanoha Modern Japanese Hotpot yên tĩnh độ ồn không gian Quận 1 Ho Chi Minh City",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "maps",
+   "num": 10,
+   "page": 1,
+   "ll": "@10.7769,106.7009,14z",
+   "engine": "google"
+  },
+  "ll": "@10.7731909,106.6983463,18.0536z",
+  "places": [
+   {
+    "position": 1,
+    "title": "Asanoha - Modern Japanese Hotpot",
+    "address": "Saigon Centre, 65 Lê Lợi, Sài Gòn, Hồ Chí Minh 70000, Việt Nam",
+    "latitude": 10.7731909,
+    "longitude": 106.7009212,
+    "rating": 4.7,
+    "ratingCount": 659,
+    "priceLevel": "200-300 N ₫",
+    "type": "Nhà hàng",
+    "types": [
+     "Nhà hàng"
+    ],
+    "website": "https://asanoha.com.vn/reservation/",
+    "phoneNumber": "+84 28 3535 6866",
+    "openingHours": {
+     "Thứ Năm": "10:30–22:00",
+     "Thứ Sáu": "10:30–22:00",
+     "Thứ Bảy": "10:30–22:00",
+     "Chủ Nhật": "10:30–22:00",
+     "Thứ Hai": "10:30–22:00",
+     "Thứ Ba": "10:30–22:00",
+     "Thứ Tư": "10:30–22:00"
+    },
+    "bookingLinks": [
+     "https://asanoha.com.vn/reservation/",
+     "https://www.google.com/maps/reserve/v/dine/c/ala4TQN8A9s?source=pa&opi=79508299"
+    ],
+    "thumbnailUrl": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkIWYUh_7BFKMQCHA2hhCVcHOpYx20HffalJOVx8jz9rkkMJyS3CR4jU3k3HXIDxYc-tgA69Oab4YRCmeTP-JrbtWgZ93QRV69Ld9_DGpUachaPagPPlLSW3Zk91Sz8wX1SKmIB2Xm7WwPP",
+    "cid": "5907777177836505796",
+    "fid": "0x31752fb527d932f1:0x51fca40ae11acac4",
+    "placeId": "ChIJ8TLZJ7UvdTERxMoa4Qqk_FE"
+   }
+  ],
+  "credits": 3
+ }
+}

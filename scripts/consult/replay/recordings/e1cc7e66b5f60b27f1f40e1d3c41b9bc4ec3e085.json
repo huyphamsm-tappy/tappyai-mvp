@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"QUÁN ĂN NGON\" OR \"Ẩm Thực Ăn Ngon\" OR \"Ngon Hà Nội\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T01:54:35.879Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"QUÁN ĂN NGON\" OR \"Ẩm Thực Ăn Ngon\" OR \"Ngon Hà Nội\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Quán ăn ngon đông khách ở Sài Gòn",
+    "link": "https://www.tiktok.com/@minn.cookie/video/7635989356817206549",
+    "snippet": "Gợi ý các quán ăn tương tự ở Sài Gòn - Tìm quán ăn ngon gần khu bạn ở hoặc điểm du lịch để tiết kiệm thời gian. - Các quán sáng ngon ở Sài Gòn ...",
+    "position": 1
+   },
+   {
+    "title": "Top 30 Quán Ăn Ngon Ở Côn Đảo - Phần 1",
+    "link": "https://www.tiktok.com/@nhandian/video/7599992782194871572",
+    "snippet": "Top 30 Quán Ăn Ngon Ở Côn Đảo - Phần 1. Khám phá hơn 30 quán ăn ngon tại Côn Đảo với những gợi ý hấp dẫn! Đừng bỏ lỡ! #nhandian #condao ...",
+    "position": 2
+   },
+   {
+    "title": "Ăn Gì Ở Hà Nội? 4 Ngày 25 Quán Ngon Từ Michelin Đến ...",
+    "link": "https://www.tiktok.com/@tebefood/video/7603006774953725204",
+    "snippet": "... K Lượt thích,117 Bình luận.Video TikTok từ Tebefood (@tebefood): \"Bạn đang tìm quán ăn ngon ... Ngon Hà NộiMón Ngon Phố Cổ Hà NộiHà Nội ...",
+    "position": 3
+   },
+   {
+    "title": "Vĩnh Điện nhiều quán ăn ngon quá lắm á mấy bồ. ...",
+    "link": "https://www.tiktok.com/@hieukhonghentruoc/video/7685992769868844309",
+    "snippet": "Vĩnh Điện nhiều quán ăn ngon quá lắm á mấy bồ. #hieukhonghentruoc #review #viral #ancungtiktok #xuhuongtiktok. Vĩnh ...",
+    "position": 4
+   },
+   {
+    "title": "Món Ngon Hà Nội: 7 Ngày Ăn Gì?",
+    "link": "https://www.tiktok.com/@yennhi100420/video/7547671654059592968",
+    "snippet": "Món Ngon Hà Nội: 7 Ngày Ăn Gì? Khám phá 7 ngày ăn uống tuyệt vời ở Hà Nội với những món ăn đặc sắc và hấp dẫn. #hanoi #food #xuhuong #yennhi.",
+    "position": 5
+   },
+   {
+    "title": "Review Quán Ăn Ngon Ở Hà Nội",
+    "link": "https://www.tiktok.com/@ansaphanoi/video/7437512431351418120",
+    "snippet": "Review Quán Ăn Ngon Ở Hà Nội. Xem review đồ ăn ngon ở Hà Nội và ... Keywords: Review Quán ăn ngon Hà Nội, Ăn Sập Hà Nội, Ăn review, cùng ...",
+    "position": 6
+   },
+   {
+    "title": "No.96 Món Ngon Hà Nội Quận 3",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7681255380256689415",
+    "snippet": "Tổng quan No.96 Món Ngon Hà Nội, nằm tại Quận 3, tập trung vào các món ăn đường phố và đặc sản Hà Nội. Video gắn thẻ #ancungtiktok, ...",
+    "position": 7
+   },
+   {
+    "title": "Quán ăn Ngon Bổ Rẻ: review món ngon đáng thử",
+    "link": "https://www.tiktok.com/@thu.cosy/video/7682325088762334484",
+    "snippet": "Lead Ưng cái bụng nha — cảm nhận trực tiếp về một quán ăn “Ngon Bổ Rẻ”. Bài viết tổng hợp cảm nhận, món đáng thử và gợi ý khi đến quán, ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

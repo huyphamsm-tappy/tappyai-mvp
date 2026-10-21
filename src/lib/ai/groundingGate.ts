@@ -217,6 +217,10 @@ export interface GroundingGateOptions {
    * is that no option in the results was a close enough match. Undefined = unknown = as before.
    */
   cardRenders?: boolean
+  /** CONSULTATIVE_IN_AGENT: no card of any kind accompanies this reply (a text plan) — write no "the options are on the card" / "no match" line when rows were retrieved. */
+  noCardLine?: boolean
+  /** CONSULTATIVE_IN_AGENT: a bold "Ngày N …" line is a plan day heading, not a venue (live log samples: day headings cut as "ungrounded venues"). */
+  dayHeadings?: boolean
 }
 
 export function suppressUngroundedVenues(
@@ -266,7 +270,8 @@ export function suppressUngroundedVenues(
     // UNMATCHED bold is judged by the presentation shape — and a bold that is not presented as a
     // venue is prose: it still ends the block before it and is never cut.
     const grounded = isGrounded(normalizeHeading(m[1]), knownNorm)
-    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && !isVenueHeading(m[1], restOfLine, nextLine) })
+    const dayHeading = opts.dayHeadings === true && /^(?:ngay|day|buoi)\s*\d/.test(normalizeHeading(m[1]))
+    heads.push({ shown: m[1], at, start: lineStart, end: prose.length, grounded, label: !grounded && (dayHeading || !isVenueHeading(m[1], restOfLine, nextLine)) })
   }
   for (let i = 0; i < heads.length - 1; i++) heads[i].end = heads[i + 1].start
   if (heads.length === 0) return { text, suppressed: [] }
@@ -347,8 +352,13 @@ export function suppressUngroundedVenues(
   // but the tool DID return venues, "found nothing" contradicts the card rendered right under
   // it. The truthful line is then that the verified places are on the card — the not-found
   // line is kept for the case it was written for: retrieval came back empty.
-  const fallback = knownNorm.length > 0 ? (opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
-  const body = groundedRemain === 0 ? `${withoutLeadIn}\n\n${fallback}`.trim() : withoutLeadIn
+  //
+  // 🚨 CONSULTATIVE_IN_AGENT (`noCardLine`, 2026-10-10 UAT): a trip plan answered in TEXT renders no card at all (the standalone cards are cleared
+  // for a plan turn), but `cardRenders` was read off the retrieved recommendations — so the reply ended "Những lựa chọn mình xác minh được cho yêu
+  // cầu này nằm ở thẻ bên dưới." under nothing. With `noCardLine` and rows retrieved, the line is simply not written (an empty retrieval keeps
+  // its own not-found line, which points at nothing).
+  const fallback = knownNorm.length > 0 ? (opts.noCardLine ? '' : opts.cardRenders === false ? noMatchLine(lang) : seeCardLine(lang)) : notFoundLine(lang)
+  const body = groundedRemain === 0 ? (fallback ? `${withoutLeadIn}\n\n${fallback}` : withoutLeadIn).trim() : withoutLeadIn
   return { text: `${body}${cleanedTail}`, suppressed }
 }
 

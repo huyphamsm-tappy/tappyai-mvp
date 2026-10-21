@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Macbook Pro M1 Pro 16 inch 10 site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T05:18:53.289Z",
+ "body": {
+  "searchParameters": {
+   "q": "Macbook Pro M1 Pro 16 inch 10 site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Apple MacBook Pro (2021) M1 chip 14-inch with 10‑core ...",
+    "link": "https://shopee.vn/Apple-MacBook-Pro-(2021)-M1-chip-14-inch-with-10%E2%80%91core-CPU-and-16%E2%80%91core-GPU-16GB-1TB-SSD-i.88201679.11968268638",
+    "snippet": "Mua Apple MacBook Pro (2021) M1 chip 14-inch with 10‑core CPU and 16‑core GPU, 16GB, 1TB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 2,
+    "position": 1
+   },
+   {
+    "title": "Apple MacBook Pro (2021) M1 chip 16-inch with 10‑core ...",
+    "link": "https://shopee.vn/Apple-MacBook-Pro-(2021)-M1-chip-16-inch-with-10%E2%80%91core-CPU-and-16%E2%80%91core-GPU-16GB-512GB-SSD-i.88201679.13543886161",
+    "snippet": "Mua Apple MacBook Pro (2021) M1 chip 16-inch with 10‑core CPU and 16‑core GPU, 16GB, 512GB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "rating": 5,
+    "ratingCount": 5,
+    "position": 2
+   },
+   {
+    "title": "Apple M1 Pro chip 16-inch with 10‑core CPU and ...",
+    "link": "https://shopee.vn/Apple-M1-Pro-chip-16-inch-with-10%E2%80%91core-CPU-and-16%E2%80%91core-GPU-16GB-1TB-SSD-i.88201679.10168274600",
+    "snippet": "Mua Apple M1 Pro chip 16-inch with 10‑core CPU and 16‑core GPU, 16GB, 1TB SSD giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, ...",
+    "position": 3
+   },
+   {
+    "title": "MacBook Pro 14 inch M1 Pro (32GB RAM| 10 CPU - 16 GPU)",
+    "link": "https://shopee.vn/MacBook-Pro-14-inch-M1-Pro-(32GB-RAM-10-CPU-16-GPU)-i.288286284.15865148270",
+    "snippet": "Mua MacBook Pro 14 inch M1 Pro (32GB RAM| 10 CPU - 16 GPU) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại tiền ...",
+    "rating": 4.9,
+    "ratingCount": 47177,
+    "position": 4
+   },
+   {
+    "title": "MacBook Pro 14 M1 Pro (16GB RAM| 10 CPU - 16 GPU",
+    "link": "https://shopee.vn/MacBook-Pro-14-M1-Pro-(16GB-RAM-10-CPU-16-GPU-1TB-SSD)-i.288286284.14665161683",
+    "snippet": "Mua MacBook Pro 14 M1 Pro (16GB RAM| 10 CPU - 16 GPU| 1TB SSD) giá tốt. Mua hàng qua mạng uy tín, tiện lợi. Shopee đảm bảo nhận hàng, hoặc được hoàn lại ...",
+    "position": 5
+   },
+   {
+    "title": "Macbook pro 16 inch - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/laptop/macbook/pro%2016%20inch",
+    "snippet": "Mua online macbook pro 16 inch chất lượng, Voucher Shopee Live giảm tới 50% tại Shopee. Khuyến mãi tháng 10, 2026 . Miễn phí vận chuyển. Mua ngay!",
+    "position": 6
+   },
+   {
+    "title": "macbook pro m1 giá tốt Tháng 10, 2026 | Mua ngay",
+    "link": "https://shopee.vn/search?keyword=macbook%20pro%20m1",
+    "snippet": "Máy tính xách tay Apple MacBook Pro 14 inch, M5, 10 core CPU/10 core GPU, 16GB memory, 1TB SSD, sạc 70W USB-C. 54.890.000₫. 54.999.000₫. -1%. rating-star ...",
+    "position": 7
+   },
+   {
+    "title": "M1 - Giá Tốt, Sale Tháng 10, Freeship 0Đ",
+    "link": "https://shopee.vn/list/laptop/macbook/m1",
+    "snippet": "Bạn muốn mua online các sản phẩm laptop macbook m1 chính hãng với nhiều ưu đãi hấp dẫn ngay hôm nay? Vậy còn chần chờ gì mà không truy cập ngay Shopee Việt Nam!",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

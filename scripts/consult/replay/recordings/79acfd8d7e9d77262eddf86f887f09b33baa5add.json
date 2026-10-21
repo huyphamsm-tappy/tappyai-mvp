@@ -1,0 +1,136 @@
+{
+ "url": "https://google.serper.dev/images",
+ "request": {
+  "q": "Harbor Hotel",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:09:57.752Z",
+ "body": {
+  "searchParameters": {
+   "q": "Harbor Hotel",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "images",
+   "num": 8,
+   "engine": "google"
+  },
+  "images": [
+   {
+    "title": "Halong Harbour Hotel – Thông tin đầy đủ",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/355/3552060/3552060_17112619570059871485.jpg?ca=6&ce=1&s=414x232",
+    "imageWidth": 414,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQZB08vcd2gTG2fSlsQgfk7heYWvNW9UJaPy1jsfo-LQ&s=10",
+    "thumbnailWidth": 414,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/halong-harbour-hotel/hotel/halong-vn.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F355%2F3552060%2F3552060_17112619570059871485.jpg%3Fca%3D6%26ce%3D1%26s%3D414x232&tbnid=-Sn8wmy8Lf9FqM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fhalong-harbour-hotel%2Fhotel%2Fhalong-vn.html&docid=RbTfouAt3aWmnM&w=414&h=232",
+    "position": 1
+   },
+   {
+    "title": "Harbor Hotel, Jeju (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/58996469.jpg?k=f9964f9cbd06dddaa1df88c94cfa4290a08eb7d75e5e86279ff175964f649920&o=",
+    "imageWidth": 1024,
+    "imageHeight": 683,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-71nUUHgCNUMdiTIozHuvmd2deLnkvnuCwBxg9MU17w&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/kr/harbor.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F58996469.jpg%3Fk%3Df9964f9cbd06dddaa1df88c94cfa4290a08eb7d75e5e86279ff175964f649920%26o%3D&tbnid=GfAUIAAElCKY9M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fkr%2Fharbor.vi.html&docid=tPJ-X8cYQWxN2M&w=1024&h=683",
+    "position": 2
+   },
+   {
+    "title": "Taichung Harbor Hotel, Wuqi (cập nhật giá năm 2026)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/65638627.jpg?k=c5bffa396ba2e79f8951d1c466f92d9b43b7f5bd4d7f37c83178f899a71b6a71&o=",
+    "imageWidth": 1024,
+    "imageHeight": 768,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5KI_csGbnVzoegGOk1FeyPwAgX-_PT8iq5_pfRsu01w&s=10",
+    "thumbnailWidth": 638,
+    "thumbnailHeight": 480,
+    "source": "Booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/tw/taichung-harbor-hotel.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F65638627.jpg%3Fk%3Dc5bffa396ba2e79f8951d1c466f92d9b43b7f5bd4d7f37c83178f899a71b6a71%26o%3D&tbnid=bfb-7IaTPjEquM&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Ftw%2Ftaichung-harbor-hotel.vi.html&docid=vnfvW5pQGiTQWM&w=1024&h=768",
+    "position": 3
+   },
+   {
+    "title": "The Harbor Hotel Collection - Waterfront Hotels in Western NY | The Harbor  Hotel Collection in western NY",
+    "imageUrl": "https://www.harborhotelcollection.com/files/harthotels/assets/hhc/opengraph/og-hhc-main.jpg",
+    "imageWidth": 2500,
+    "imageHeight": 1355,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6LATG2j_afKVu79fce5TGzx5VLRhbYOckvHJ65-fz5w&s=10",
+    "thumbnailWidth": 608,
+    "thumbnailHeight": 328,
+    "source": "www.harborhotelcollection.com",
+    "domain": "www.harborhotelcollection.com",
+    "link": "https://www.harborhotelcollection.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.harborhotelcollection.com%2Ffiles%2Fharthotels%2Fassets%2Fhhc%2Fopengraph%2Fog-hhc-main.jpg&tbnid=-7Ge6CWtKutrHM&imgrefurl=https%3A%2F%2Fwww.harborhotelcollection.com%2F&docid=isb1Jufi8AVpBM&w=2500&h=1355",
+    "position": 4
+   },
+   {
+    "title": "Crown Harbor Hotel Busan, Dong-gu, Busan",
+    "imageUrl": "https://pix10.agoda.net/hotelImages/773974/-1/1499958868a38bfdf02c7c51b19f17b2.jpg?va=1&ca=7&ce=1&s=414x232",
+    "imageWidth": 235,
+    "imageHeight": 232,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTawymyGZx9VQo0tlDzCza7LHcEJS7b4HAptEPSUhXCOg&s=10",
+    "thumbnailWidth": 235,
+    "thumbnailHeight": 232,
+    "source": "Agoda.com",
+    "domain": "www.agoda.com",
+    "link": "https://www.agoda.com/vi-vn/crown-harbor-hotel-busan/hotel/busan-kr.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F773974%2F-1%2F1499958868a38bfdf02c7c51b19f17b2.jpg%3Fva%3D1%26ca%3D7%26ce%3D1%26s%3D414x232&tbnid=WyP1bLfW0JnIAM&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fcrown-harbor-hotel-busan%2Fhotel%2Fbusan-kr.html&docid=N49LXQr462mcQM&w=235&h=232",
+    "position": 5
+   },
+   {
+    "title": "PORTLAND HARBOR HOTEL - Đánh giá Khách sạn & So sánh giá - Tripadvisor",
+    "imageUrl": "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/7e/12/a9/portland-harbor-hotel.jpg?w=900&h=500&s=1",
+    "imageWidth": 900,
+    "imageHeight": 500,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbS-We_y-JOvKqVf7QHuJb9WDEX_JOl_JDHLBGGzg7Lw&s=10",
+    "thumbnailWidth": 599,
+    "thumbnailHeight": 333,
+    "source": "Tripadvisor",
+    "domain": "www.tripadvisor.com.vn",
+    "link": "https://www.tripadvisor.com.vn/Hotel_Review-g40827-d259275-Reviews-Portland_Harbor_Hotel-Portland_Maine.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fdynamic-media-cdn.tripadvisor.com%2Fmedia%2Fphoto-o%2F29%2F7e%2F12%2Fa9%2Fportland-harbor-hotel.jpg%3Fw%3D900%26h%3D500%26s%3D1&tbnid=X1AkwrJLFIfcXM&imgrefurl=https%3A%2F%2Fwww.tripadvisor.com.vn%2FHotel_Review-g40827-d259275-Reviews-Portland_Harbor_Hotel-Portland_Maine.html&docid=weO5PjlHL_tvYM&w=900&h=500",
+    "position": 6
+   },
+   {
+    "title": "Luxury Waterfront Hotel in Western New York | Celeron NY Hotel | Chautauqua Harbor  Hotel, Celoron NY",
+    "imageUrl": "https://www.thechautauquaharborhotel.com/assets/images/6/Chautauqua-6-e0kdbhzxhxdpkg7.jpg",
+    "imageWidth": 2185,
+    "imageHeight": 1342,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7GTudHTwqDkoB56mjkIQiUDczkjRkUIGrZPZzp7cLuw&s=10",
+    "thumbnailWidth": 570,
+    "thumbnailHeight": 350,
+    "source": "www.thechautauquaharborhotel.com",
+    "domain": "www.thechautauquaharborhotel.com",
+    "link": "https://www.thechautauquaharborhotel.com/",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.thechautauquaharborhotel.com%2Fassets%2Fimages%2F6%2FChautauqua-6-e0kdbhzxhxdpkg7.jpg&tbnid=EeTvMmYtiKcRXM&imgrefurl=https%3A%2F%2Fwww.thechautauquaharborhotel.com%2F&docid=jpYDQo-M7W7uNM&w=2185&h=1342",
+    "position": 7
+   },
+   {
+    "title": "Harbour Hotel & Spa St Ives, St Ives (cập nhật giá năm 2027)",
+    "imageUrl": "https://cf.bstatic.com/xdata/images/hotel/max1024x768/533801124.jpg?k=c706adf7d14e66d4587d0894e421f0b0366bb2a04b65c09a5aa65bf103d2d6ef&o=",
+    "imageWidth": 1024,
+    "imageHeight": 682,
+    "thumbnailUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQhbmPqry7djME2OH_2gcswZX2ngGKh7HrdgPk1XobIQ&s=10",
+    "thumbnailWidth": 678,
+    "thumbnailHeight": 452,
+    "source": "www.booking.com",
+    "domain": "www.booking.com",
+    "link": "https://www.booking.com/hotel/gb/the-porthminster.vi.html",
+    "googleUrl": "https://www.google.com/imgres?imgurl=https%3A%2F%2Fcf.bstatic.com%2Fxdata%2Fimages%2Fhotel%2Fmax1024x768%2F533801124.jpg%3Fk%3Dc706adf7d14e66d4587d0894e421f0b0366bb2a04b65c09a5aa65bf103d2d6ef%26o%3D&tbnid=dFgaU_6Gun4r8M&imgrefurl=https%3A%2F%2Fwww.booking.com%2Fhotel%2Fgb%2Fthe-porthminster.vi.html&docid=rUBNH2C_IcKgIM&w=1024&h=682",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

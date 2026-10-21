@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Tám Riêu\" OR \"Lil' Sago\" OR \"No.96 Món Ngon Hà Nội\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:46:00.606Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Tám Riêu\" OR \"Lil' Sago\" OR \"No.96 Món Ngon Hà Nội\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Lil' Sago Hotpot & more (@lilsagoquanlaungon)",
+    "link": "https://www.tiktok.com/@lilsagoquanlaungon",
+    "snippet": "299 Võ Văn Tần, P5, Q3 0️⃣9️⃣ 0️⃣8️⃣ 1️⃣0️⃣ 1️⃣0️⃣ 1️⃣5️⃣ ... Đãi sinh nhật bên hội bạn thân của Tiểu Mi do Lil' Sago Hotpot &.",
+    "position": 1
+   },
+   {
+    "title": "Lẩu cua đồng Tám Riêu – Địa điểm 2/9 tụ tập bạn bè",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7679033916849769736",
+    "snippet": "Khi 2/9 sắp đến mà chưa biết đi đâu, Tám Riêu là gợi ý đơn giản và dễ chiều: gọi một gánh lẩu cua đồng nóng hổi, thêm vài món quê, ...",
+    "position": 2
+   },
+   {
+    "title": "No.96 Món Ngon Hà Nội Quận 3",
+    "link": "https://www.tiktok.com/@tinhtungtangvn/video/7681255380256689415",
+    "snippet": "Tổng quan No.96 Món Ngon Hà Nội, nằm tại Quận 3, tập trung vào các món ăn đường phố và đặc sản Hà Nội. Video gắn thẻ #ancungtiktok, ...",
+    "position": 3
+   },
+   {
+    "title": "Tám Riêu (@amthuctamrieu)",
+    "link": "https://www.tiktok.com/@amthuctamrieu",
+    "snippet": "Tám Riêu (@amthuctamrieu) trên TikTok |201K Lượt thích.14.9K Follower.235 Phan Xích Long, Phú Nhuận 140A Lý Chính Thắng, Q3 Sdt: 033 4626060.",
+    "position": 4
+   },
+   {
+    "title": "5 điều có thể bạn chưa biết ở Tám Riêu 🦀 Mấy bà ...",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7673825053250800914",
+    "snippet": "5 điều có thể bạn chưa biết ở Tám Riêu Mấy bà biết mấy điều rồi nè, cmt ở dưới cho Tám Riêu biết nghen!",
+    "position": 5
+   },
+   {
+    "title": "Ghé Tám Riêu ăn ngon có quà — Trung thu thêm vui",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7686071623484640530",
+    "snippet": "Nội dung cho biết quán Tám Riêu đang khuyến mãi dịp Trung thu với thông điệp “Ghé Tám Riêu ăn ngon có quà, Trung thu thêm vui”. Cover video có ...",
+    "position": 6
+   },
+   {
+    "title": "Giờ cao điểm tại Tám Riêu: Náo nhiệt lau cuội và lau riêu",
+    "link": "https://www.tiktok.com/@amthuctamrieu/video/7651591022199246098",
+    "snippet": "Tại Tám Riêu, giờ cao điểm mang đến không khí sôi động và náo nhiệt. Những tiếng gọi bán hàng, tiếng cười nói của người dân và mùi vị đặc trưng của các món ...",
+    "position": 7
+   },
+   {
+    "title": "Review No.96 Món Ngon Hà Nội Tại Sài Gòn",
+    "link": "https://www.tiktok.com/@hungbabyngo/video/7582149266211081479",
+    "snippet": "Review No.96 Món Ngon Hà Nội Tại Sài Gòn: Lẩu Riêu Cua Bắp Bò & Lòng Gà Trứng Non. Nếu bạn đang tìm kiếm một quán ăn ngon mang đậm hương vị Hà ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

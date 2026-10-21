@@ -1,0 +1,79 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Bluetooth chụp Tai Baseus Bass BH1\" site:cellphones.com.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T03:00:08.928Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Bluetooth chụp Tai Baseus Bass BH1\" site:cellphones.com.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Tai nghe Baseus Bass BH1 NC | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-khong-day-baseus-bass-bh1-nc.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC ; Thông số kỹ thuật · Chống ồn môi trường ENC Chống ồn chủ động ANC Hi-Res Audio Hi-Res Audio Wireless SuperBass ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 1
+   },
+   {
+    "title": "Tai nghe Baseus Bass BH1 | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-bluetooth-baseus-bass-bh1.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 ; Micro. Có ; Cổng kết nối. Type C ; Thời lượng sử dụng Pin. 80 giờ ; Phương thức điều khiển. Nút bấm vật lý ; Tính năng ...",
+    "rating": 5,
+    "ratingCount": 1,
+    "position": 2
+   },
+   {
+    "title": "Tai nghe Baseus Bass BH1 NC Lite | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-baseus-bass-bh1-nc-lite.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC Lite ; Micro. Có ; Thời lượng sử dụng Pin. Tắt ANC: 80 giờ. Bật ANC: 55 giờ ; Phương thức điều khiển. Nút bấm vật lý",
+    "position": 3
+   },
+   {
+    "title": "Trên tay Baseus Bass BH1 NC: Chuẩn Hi-Res LDAC, pin ...",
+    "link": "https://cellphones.com.vn/sforum/tren-tay-baseus-bh1-nc",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC. 785.000đ1.090.000đ. Đặc điểm nổi bật. Tích hợp 5 ...",
+    "date": "24 thg 2, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tai nghe Baseus bluetooth | Đa dạng mẫu mã, giảm đến ...",
+    "link": "https://cellphones.com.vn/thiet-bi-am-thanh/tai-nghe/baseus.html",
+    "snippet": "Tai nghe Bluetooth chụp tai Baseus Bass BH1 NC. 785.000đ ; Tai nghe Bluetooth Wireless Baseus Bowie WM02. 350.000đ ; Tai nghe không dây chống ồn Baseus Bowie M2S ...",
+    "position": 5
+   },
+   {
+    "title": "Tai nghe Baseus Bass 35 Max | Giá rẻ 10/2026, giao 2H",
+    "link": "https://cellphones.com.vn/tai-nghe-chup-tai-baseus-bass-35-max.html",
+    "snippet": "... Bluetooth chụp tai Baseus Bass BH1. Trả góp 0%. : 550.000đ. 890.000đ. Yêu thích ... Tai nghe Bluetooth chụp tai Baseus ...",
+    "rating": 4.9,
+    "ratingCount": 9,
+    "position": 6
+   },
+   {
+    "title": "Tai nghe Baseus Bass BC1 Lite Open-Ear | Giá rẻ, ưu đãi tốt",
+    "link": "https://cellphones.com.vn/tai-nghe-open-ear-baseus-bass-bc1-lite.html",
+    "snippet": "... Tai nghe Bluetooth chụp tai Baseus Bass BH1. Trả góp 0%. : 550.000đ. 890.000đ. Giảm 38%. 2 Giờ. 5.",
+    "position": 7
+   },
+   {
+    "title": "Tai nghe Bluetooth Baseus Bowie P1 | Giá rẻ",
+    "link": "https://cellphones.com.vn/tai-nghe-bluetooth-baseus-bowie-p1-55388.html",
+    "snippet": "... Tai nghe Bluetooth chụp tai Baseus Bass BH1. Trả góp 0%. : 550.000đ. 890.000đ. Yêu thích ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

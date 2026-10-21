@@ -1,0 +1,23 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:vanban.chinhphu.vn \"lệ phí cấp hộ chiếu\" \"160.000\" 2026",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T15:08:25.167Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:vanban.chinhphu.vn \"lệ phí cấp hộ chiếu\" \"160.000\" 2026",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [],
+  "credits": 1
+ }
+}

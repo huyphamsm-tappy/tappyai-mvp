@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Phở Nhất Vị\" OR \"Phở Dịu\" OR \"Phở Phú Vương\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:10:06.139Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Phở Nhất Vị\" OR \"Phở Dịu\" OR \"Phở Phú Vương\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Phở Nhất Vị: Món Độc Lạ Quận 7",
+    "link": "https://www.tiktok.com/@vochongthaokhanh/video/7627863541357301000",
+    "snippet": "Phở Nhất Vị: Món Độc Lạ Quận 7. Khám phá Phở Nhất Vị - quán phở độc lạ nhất Quận 7 với menu đa dạng, topping chất lượng. Thử phở bò Úc best ...",
+    "position": 1
+   },
+   {
+    "title": "Phở Phú Vương - Quán Phở Đuôi và Sụn Giá 88k tại Quận 5",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7399789078650146056",
+    "snippet": "Khám phá Phở Phú Vương với đặc sản phở đuôi và sụn giá chỉ 88k. Địa chỉ: Số 122-124 Nguyễn Trãi quận 5. 7h-22h hàng ngày. #PhởPhúVương #PhởQuận5 ...",
+    "position": 2
+   },
+   {
+    "title": "Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon ...",
+    "link": "https://www.tiktok.com/@nguanonhauda.bm/video/7532087159700884744",
+    "snippet": "Phở Nhất Vị bị ngonnnn áaa #phonhatvi #phosaigon #nguyenminhthubm #fyp ; Trang Nguyễn. 21.7K ; QUYÊN_BAOBEI ✨. 421 ; Nhi Ăn Ít. 2413 ; Phượng Linh.",
+    "position": 3
+   },
+   {
+    "title": "Bạn hẹn hò với trai bán phở — Phở Nhất Vị Quận 1",
+    "link": "https://www.tiktok.com/@phonhatvi.vn/video/7676279262017555733",
+    "snippet": "Không gian và bối cảnh Phở Nhất Vị nằm ở Quận 1, phục vụ phở trong không gian đô thị Sài Gòn. Video cho thấy khung cảnh thân mật, phù hợp cho ...",
+    "position": 4
+   },
+   {
+    "title": "Khám Phá Phở Nhất Vị Tại Quận 7",
+    "link": "https://www.tiktok.com/@huynhhongocduc/video/7441116764349402376",
+    "snippet": "Nay qua quận 7 ăn phở nha mọi người, đây là phở Nhất Vị nằm trên đường Nguyễn Thị Thập nhé. #phở #phở_bò #ancungtiktok #quan7angi #ductanbinh # ...",
+    "position": 5
+   },
+   {
+    "title": "Quán Phở Nhất Vị - Vị Miền Bắc Ngựa Ngọn Quần 7",
+    "link": "https://www.tiktok.com/@phonhatvi.vn/video/7387266921445543175",
+    "snippet": "Phở Nhất Vị là quán phở với nước dùng thơm ngọt, bánh phở mềm mịn và thịt bò tươi ngon. Được thành lập từ năm 1986, quán luôn cam kết mang ...",
+    "position": 6
+   },
+   {
+    "title": "Quán phở ngon buổi tối ở Nguyễn Công Trứ",
+    "link": "https://www.tiktok.com/@pika_laca/video/7647397967455882517",
+    "snippet": "Series 100 quán Phở Ngon tại Sài Gòn — Phở Nhất Vị Tóm tắt Phở Nhất Vị là một trong những quán phở nổi bật trong chuỗi phở ngon ở Sài Gòn, ...",
+    "position": 7
+   },
+   {
+    "title": "Phở Phú Vương. Ở số 120 Nguyễn Thái Bình quận 1, ...",
+    "link": "https://www.tiktok.com/@truongcamcuong21051964/video/7560699423156620562",
+    "snippet": "Phở Phú Vương. Ở số 120 Nguyễn Thái Bình quận 1, phở nạm, viên và gân giá là 75k. Bò viên và gân ở đây ăn ngon còn nạm chắc tại cắt quá sớm nên ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

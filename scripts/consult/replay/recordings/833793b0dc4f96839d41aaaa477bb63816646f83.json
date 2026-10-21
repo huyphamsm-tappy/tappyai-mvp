@@ -1,0 +1,72 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Gogi House Trần Hưng Đạo Quận 1\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T12:32:23.418Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Gogi House Trần Hưng Đạo Quận 1\" OR \"MEAT & MEET\" OR \"Viet Kitchen\" site:tiktok.com",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "@Mr. Gao GAO VIET KITCHEN (Vietnamese Food) 📍 1900 ...",
+    "link": "https://www.tiktok.com/@foodiesushiqueen/video/7589887460994321694",
+    "snippet": "@Mr. Gao GAO VIET KITCHEN (Vietnamese Food) 1900 Irving St, San Francisco, CA 94122 #foodiesushiqueen #vietnamesefood #bunrieu #noodle # ...",
+    "position": 1
+   },
+   {
+    "title": "Review Buffet BBQ tại Meat & Meet — ăn lại vẫn thấy vui",
+    "link": "https://www.tiktok.com/@dadaykhongday95/video/7686364406598503698",
+    "snippet": "Video tập trung vào trải nghiệm Buffet BBQ tại Meat & Meet. Người nói cho biết có “quá trời kỷ niệm” ở Meat & Meet, nên mỗi lần quay lại ăn ...",
+    "position": 2
+   },
+   {
+    "title": "Best Pho & Wings at Viet Kitchen in Tampa | Taste Test",
+    "link": "https://www.tiktok.com/@foodiejustice/video/7629415810351631646",
+    "snippet": "Everybody's been asking where the best pho is, and today I'm at Viet Kitchen to find out. This spot is known for having some of the best wings, ...",
+    "position": 3
+   },
+   {
+    "title": "Bep Viet Kitchen Riverton pho review",
+    "link": "https://www.tiktok.com/@kayla.grover1/video/7688415754881928462",
+    "snippet": "This video shows trying pho at Bep Viet Kitchen in Riverton. The location Bep Viet Kitchen and Riverton are named, and the clip focuses on ...",
+    "position": 4
+   },
+   {
+    "title": "Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet 😋 ...",
+    "link": "https://www.tiktok.com/@didauanngon/video/7685607116152786197",
+    "snippet": "205 Lượt thích,Video TikTok từ Đi Đâu Ăn Ngon (@didauanngon): \"Pov: Cầm 219 cành đi ăn thả ga ở buffet Meat & Meet #meatandmeet #bbq ...",
+    "position": 5
+   },
+   {
+    "title": "The Timeless Joy of Pho Pours at Gao Viet Kitchen",
+    "link": "https://www.tiktok.com/@mr.gaoviet/video/7609564445445999902",
+    "snippet": "The chefs at Gao Viet Kitchen take pride in their craft, ensuring that each bowl of pho is not only delicious but also a reflection of their ...",
+    "position": 6
+   },
+   {
+    "title": "#bbq #nhahangthitnuong #meatandmeet #buffet #fyp",
+    "link": "https://www.tiktok.com/@meatandmeetbbq/video/7691538030405946676",
+    "snippet": "Video TikTok từ MEAT & MEET BBQ (@meatandmeetbbq): \"#bbq #nhahangthitnuong #meatandmeet #buffet #fyp\".âm thanh gốc - MEAT & MEET BBQ.",
+    "position": 7
+   },
+   {
+    "title": "MEAT & MEET BBQ (@meatandmeetbbq)",
+    "link": "https://www.tiktok.com/@meatandmeetbbq",
+    "snippet": "Khám phá buffet nướng Hàn Quốc 219k tại Meat and Meet (quận 2): · Thông tin khai trương chi nhánh Meat & Meet Parc Mall, buffet BBQ thịt nướng.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Samsung Galaxy S24 Plus 12GB 256GB site:shopee.vn",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T04:02:20.686Z",
+ "body": {
+  "searchParameters": {
+   "q": "Samsung Galaxy S24 Plus 12GB 256GB site:shopee.vn",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Samsung Galaxy S24 Plus 12GB/256GB Chính Hãng",
+    "link": "https://shopee.vn/Samsung-Galaxy-S24-Plus-12GB-256GB-Ch%C3%ADnh-H%C3%A3ng-i.645499489.24119920556",
+    "snippet": "Samsung Galaxy S24 Plus 12GB/256GB Chính Hãng. icon video play. button back to video. 1/14. Đã bán hết. 4 phân loại có sẵn. 26.989.000₫.",
+    "position": 1
+   },
+   {
+    "title": "[Đã sử dụng] Samsung Galaxy S24 Plus 12GB 256GB",
+    "link": "https://shopee.vn/-%C4%90%C3%A3-s%E1%BB%AD-d%E1%BB%A5ng-Samsung-Galaxy-S24-Plus-12GB-256GB-i.1647663003.56465057544?extraParams=%7B%22display_model_id%22%3A321291977076%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "[Đã sử dụng] Samsung Galaxy S24 Plus 12GB 256GB. 1/7. 19.762.000₫. [Đã sử dụng] Samsung Galaxy S24 Plus 12GB 256GB.",
+    "position": 2
+   },
+   {
+    "title": "Samsung Galaxy S24 Plus 5G 12GB/256GB Like New Zin ...",
+    "link": "https://shopee.vn/Samsung-Galaxy-S24-Plus-5G-12GB-256GB-Like-New-Zin-%C4%90%E1%BA%B9p-Galaxy-AI-AMOLED-120Hz-Camera-50MP-i.1885078795.52665812876",
+    "snippet": "Mua Samsung Galaxy S24 Plus 5G 12GB/256GB Like New Zin Đẹp - Galaxy AI, AMOLED 120Hz, Camera 50MP giá tốt. Mua hàng qua mạng uy tín, tiện lợi.",
+    "position": 3
+   },
+   {
+    "title": "Galaxy s24 plus - Giá Tốt, Sale Tháng 10, Ship 0 Đồng",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24%20plus",
+    "snippet": "Điện thoại Samsung Galaxy S24 Plus nổi bật với những cải tiến đáng kể về hiệu năng, camera, và đặc biệt là các tính năng AI thông minh như Live Translate, ...",
+    "position": 4
+   },
+   {
+    "title": "Điện Thoại Samsung Galaxy S24 Plus 5G 12G+256GB ...",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-Tho%E1%BA%A1i-Samsung-Galaxy-S24-Plus-5G-12GB-256GB-(B%E1%BA%A3n-M%E1%BB%B9-Snapdragon-8gen-3)-M%E1%BB%9Bi-Fullbox-K%C3%A8m-S%E1%BA%A1c-45W-i.118122501.26609340770",
+    "snippet": "Điện Thoại Samsung Galaxy S24 Plus 5G 12G+256GB (Bản Mỹ Snapdragon 8gen 3) , Kèm Sạc 25W ; Chọn loại hàng. Tím. 12G/256GB. Đen. 12G/256GB ; Tím. 12G/256GB ; Đen.",
+    "rating": 4,
+    "ratingCount": 1,
+    "position": 5
+   },
+   {
+    "title": "[Đã qua sử dụng]Samsung Galaxy S24 Plus 12GB 256GB",
+    "link": "https://shopee.vn/-%C4%90%C3%A3-qua-s%E1%BB%AD-d%E1%BB%A5ng-Samsung-Galaxy-S24-Plus-12GB-256GB-i.1635588103.48166353385",
+    "snippet": "[Đã qua sử dụng]Samsung Galaxy S24 Plus 12GB 256GB. 1/7. 19.350.000₫. [Đã qua sử dụng]Samsung Galaxy S24 Plus 12GB 256GB.",
+    "position": 6
+   },
+   {
+    "title": "Samsung galaxy s24 ultra - Giá Tốt, Sale Tháng 10, Ship 0 ...",
+    "link": "https://shopee.vn/list/%C4%91i%E1%BB%87n%20tho%E1%BA%A1i/samsung/galaxy%20s24%20ultra",
+    "snippet": "Điện thoại Samsung Galaxy S24 Ultra sở hữu nhiều tính năng cao cấp như camera 200MP đột phá, chip Snapdragon 8 Gen 3 for Galaxy mạnh mẽ, màn hình Dynamic AMOLED ...",
+    "position": 7
+   },
+   {
+    "title": "Điện thoại Samsung Galaxy S24 Plus 12GB 256GB thiết kế ...",
+    "link": "https://shopee.vn/%C4%90i%E1%BB%87n-tho%E1%BA%A1i-Samsung-Galaxy-S24-Plus-12GB-256GB-thi%E1%BA%BFt-k%E1%BA%BF-%C4%91%E1%BB%89nh-cao-i.1656640084.51704795908?extraParams=%7B%22display_model_id%22%3A405443120671%2C%22model_selection_logic%22%3A3%7D",
+    "snippet": "Điện thoại Samsung Galaxy S24 Plus 12GB 256GB thiết kế đỉnh cao. 1/1. 22.249.000₫. Điện thoại Samsung Galaxy S24 Plus 12GB 256GB thiết kế đỉnh cao.",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

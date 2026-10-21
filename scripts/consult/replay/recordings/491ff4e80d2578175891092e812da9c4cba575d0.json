@@ -1,0 +1,36 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "\"Sala Danang Beach Hotel\" Đà Nẵng gần biển Mỹ Khê site:vn.trip.com/hotels",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T08:30:24.973Z",
+ "body": {
+  "searchParameters": {
+   "q": "\"Sala Danang Beach Hotel\" Đà Nẵng gần biển Mỹ Khê site:vn.trip.com/hotels",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Khách sạn Sala Danang Beach - Giá cả và Ưu đãi 2026, ...",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-34994003/sala-danang-beach-hotel/",
+    "snippet": "Khách sạn Sala Danang Beach. Sala Danang Beach Hotel. 36 Lâm Hoành, Q., An Hải ... Khách sạn Cocorico Biển Mỹ Khê Đà NẵngSapphire Hotel Đà NẵngFirst ...",
+    "position": 1
+   },
+   {
+    "title": "Các đánh giá Khách sạn Sala Danang Beach",
+    "link": "https://vn.trip.com/hotels/da-nang-hotel-detail-34994003/sala-danang-beach-hotel/review.html",
+    "snippet": "Khách sạn lại gần biển Mỹ Khê, tối đến đi dạo rất mát! Xem Thêm. Hang Snoopy Doan.",
+    "position": 2
+   }
+  ],
+  "credits": 1
+ }
+}

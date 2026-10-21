@@ -1,0 +1,78 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "Apple iPhone 15 thông số chính thức màn hình camera chip USB-C",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T11:17:24.050Z",
+ "body": {
+  "searchParameters": {
+   "q": "Apple iPhone 15 thông số chính thức màn hình camera chip USB-C",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "iPhone 15 - Thông số kỹ thuật - Bộ phận hỗ trợ của ...",
+    "link": "https://support.apple.com/vi-vn/111831",
+    "snippet": "iPhone 15 - Thông số kỹ thuật · Màu. Đen · Dung Lượng Lưu Trữ 128GB · Kích Thước Và Trọng Lượng Rộng: 71,6 mm · Màn Hình. Màn hình Super Retina XDR · Chống Tia ...",
+    "position": 1
+   },
+   {
+    "title": "Apple chính thức ra mắt iPhone 15 với cổng sạc USB-C",
+    "link": "https://nhandan.vn/apple-chinh-thuc-ra-mat-iphone-15-voi-cong-sac-usb-c-post772154.html",
+    "snippet": "Apple chính thức ra mắt iPhone 15 với cổng sạc USB-C · Cuộc cách mạng cổng sạc USB-C · Kính tiềm vọng, vỏ titan và chip A17.",
+    "date": "12 thg 9, 2023",
+    "position": 2
+   },
+   {
+    "title": "iPhone 15 Pro - Thông số kỹ thuật",
+    "link": "https://support.apple.com/vi-vn/111829",
+    "snippet": "Màn Hình. Màn hình Super Retina XDR. Màn hình toàn phần OLED 6,1 inch (theo đường chéo). Độ phân giải 2556x1179 pixel với mật độ điểm ảnh 460 ppi.",
+    "position": 3
+   },
+   {
+    "title": "Cấu hình iPhone 15: Sử dụng chip gì, hiệu năng ra sao?",
+    "link": "https://cellphones.com.vn/sforum/cau-hinh-iphone-15",
+    "snippet": "Cấu hình iPhone 15 chi tiết ; Cấu hình, Apple A16 Bionic (4nm) ; RAM, 6GB ; Bộ nhớ trong, 128GB - 256GB - 512GB ; Camera sau, Camera chính 48MP",
+    "date": "28 thg 4, 2026",
+    "position": 4
+   },
+   {
+    "title": "Tất cả thông tin về iPhone 15: Chip Apple A17, dùng cổng ...",
+    "link": "https://fonesmart.com.vn/tin-cong-nghe/tat-ca-thong-tin-ve-iphone-15-chip-apple-a17-dung-cong-usb-c-gia-chi-tu-19-trieu-n829.html",
+    "snippet": "Tất cả thông tin về iPhone 15: Chip Apple A17, dùng cổng USB-C, giá chỉ từ 19 triệu?",
+    "date": "23 thg 6, 2023",
+    "position": 5
+   },
+   {
+    "title": "iPhone 15 có gì mới: Dynamic Island, chip A16 Bionic ...",
+    "link": "https://www.topzone.vn/tekzone/iphone-15-co-gi-1518606",
+    "snippet": "Màn hình Super Retina XDR có kích thước 6,1 inch. Camera chính được nâng cấp lên 48MP và cổng kết nối USB‑C mới. iPhone 15. 3. Màn hình Dynamic ...",
+    "date": "13 thg 9, 2023",
+    "position": 6
+   },
+   {
+    "title": "iPhone 15 series ra mắt: Quá ấn tượng với cổng USB-C, ...",
+    "link": "https://cafef.vn/iphone-15-series-ra-mat-qua-an-tuong-voi-cong-usb-c-chip-apple-a17-pro-khung-titan-gia-cham-dinh-1199-usd-dat-nhat-tu-truoc-den-nay-188230913032814287.chn",
+    "snippet": "Kích thước màn hình vẫn giữ nguyên không đổi gồm 6,1 inch và 6,7 inch. Vẫn là tấm nền OLED Super Retina, iPhone 15 đạt độ sáng 1.600 nit khi ...",
+    "date": "13 thg 9, 2023",
+    "position": 7
+   },
+   {
+    "title": "Đánh giá iPhone 15: Ưu, nhược điểm? Có đáng mua 2026?",
+    "link": "https://dienthoaivui.com.vn/tin-tuc/danh-gia-iphone-15",
+    "snippet": "iPhone 15 có hàng loạt thay đổi đáng chú ý như Dynamic Island, camera chính 48MP, chip A16 Bionic, cổng USB-C và thiết kế bo cong mới. Những ...",
+    "date": "3 thg 4, 2025",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

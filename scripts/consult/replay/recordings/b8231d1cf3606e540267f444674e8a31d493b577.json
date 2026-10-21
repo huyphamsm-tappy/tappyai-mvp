@@ -1,0 +1,74 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "site:apple.com/vn AirPods Pro 2 khả năng chống nước IPX4 tai nghe hộp sạc",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T07:05:41.234Z",
+ "body": {
+  "searchParameters": {
+   "q": "site:apple.com/vn AirPods Pro 2 khả năng chống nước IPX4 tai nghe hộp sạc",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "So Sánh Các Phiên Bản AirPods",
+    "link": "https://www.apple.com/vn/airpods/compare/",
+    "snippet": "AirPods 5 và AirPods Pro 3 đạt mức IP57 và AirPods Pro 2 đạt mức IP54 theo tiêu chuẩn IEC 60529. Khả năng chống bụi, chống mồ hôi và chống nước không phải ...",
+    "position": 1
+   },
+   {
+    "title": "Apple công bố thế hệ AirPods Pro tiếp theo",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-announces-the-next-generation-of-airpods-pro/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống nước và mồ hôi dành cho việc tập luyện và thể thao không ở dưới nước, và đều đạt tiêu chuẩn IPX4. Khả ...",
+    "date": "7 thg 9, 2022",
+    "position": 2
+   },
+   {
+    "title": "Apple Watch Ultra và AirPods Pro thế hệ mới sẽ lên kệ tại ...",
+    "link": "https://www.apple.com/vn/newsroom/2022/09/apple-watch-ultra-and-next-generation-airpods-pro-available-in-stores-friday/",
+    "snippet": "AirPods Pro và hộp sạc có khả năng chống mồ hôi và chống nước khi tập thể dục và chơi các thể thao không ở dưới nước, đạt chuẩn IPX4. Khả ...",
+    "date": "22 thg 9, 2022",
+    "position": 3
+   },
+   {
+    "title": "Beats 360 Over-Ear Headphones",
+    "link": "https://www.apple.com/vn/shop/product/mje14za/a/tai-nghe-ch%E1%BB%A5p-tai-beats-360-%C4%91en-v%E1%BB%9Bi-%C4%91%E1%BB%87m-tai-v%E1%BA%A3i-d%E1%BB%87t-hi%E1%BB%87u-n%C4%83ng-cao-m%C3%A0u-%C4%91en",
+    "snippet": "Tính năng Chủ Động Khử Tiếng Ồn (ANC) sẽ điều chỉnh linh hoạt theo môi trường và mức độ nghe phù hợp của mỗi người để chặn các tiếng ồn không mong muốn và giúp ...",
+    "position": 4
+   },
+   {
+    "title": "Powerbeats Pro 2 – Tai Nghe Hiệu Năng Cao – Cam Nóng ...",
+    "link": "https://www.apple.com/vn/shop/product/mx743za/a/powerbeats-pro-2-tai-nghe-hi%E1%BB%87u-n%C4%83ng-cao-cam-n%C3%B3ng-b%E1%BB%8Fng",
+    "snippet": "Powerbeats Pro 2 màu Cam Nóng Bỏng là tai nghe thể thao và chạy bộ đỉnh nhất. Vừa vặn tuyệt đối, hỗ trợ Theo Dõi Nhịp Tim và nhiều chức năng khác.",
+    "position": 5
+   },
+   {
+    "title": "Powerbeats Pro 2 – Tai Nghe Hiệu Năng Cao – Cam Nóng ...",
+    "link": "https://www.apple.com/vn-edu/shop/product/mx743za/a/powerbeats-pro-2-tai-nghe-hi%E1%BB%87u-n%C4%83ng-cao-cam-n%C3%B3ng-b%E1%BB%8Fng?fnode=f73cfbde121169a9f4b0f0cc64df4b6c19a7f5b7810a4ecc19d198b6973ad75504d109cb711a5af5aada72607ab6a6205d7d32863b08165dca508f00c5440e4b151f32417ca977be0ab9254d6dd7768b088361f4173997d2c98047a8aee8f2a5e57e810ea362a28b58a487ff6d872000",
+    "snippet": "Bền Bỉ Cho Vận Động · Ôm Khít Vừa Vặn Tối Ưu · Cảm Biến Theo Dõi Nhịp Tim · Khử Tiếng Ồn Chủ Động · Chế Độ Xuyên Âm · EQ Thích Ứng · Thời Lượng Pin Lên Đến 45 Giờ¹ ...",
+    "position": 6
+   },
+   {
+    "title": "Powerbeats Pro 2 – Tai Nghe Hiệu Năng Cao – Cam Nóng ...",
+    "link": "https://www.apple.com/vn-edu/shop/product/mx743za/a/powerbeats-pro-2-tai-nghe-hi%E1%BB%87u-n%C4%83ng-cao-cam-n%C3%B3ng-b%E1%BB%8Fng",
+    "snippet": "Bền Bỉ Cho Vận Động · Ôm Khít Vừa Vặn Tối Ưu · Cảm Biến Theo Dõi Nhịp Tim · Khử Tiếng Ồn Chủ Động · Chế Độ Xuyên Âm · EQ Thích Ứng · Thời Lượng Pin Lên Đến 45 Giờ¹ ...",
+    "position": 7
+   },
+   {
+    "title": "Powerbeats Pro 2 – Tai Nghe Hiệu Năng Cao – Đen Mạnh ...",
+    "link": "https://www.apple.com/vn/shop/product/mx723za/a/powerbeats-pro-2-tai-nghe-hi%E1%BB%87u-n%C4%83ng-cao-%C4%91en-m%E1%BA%A1nh-m%E1%BA%BD",
+    "snippet": "Powerbeats Pro 2 được thiết kế lại nhẹ hơn 20% so với tai nghe thế hệ trước. Âm thanh tuyệt đỉnh. Khả năng khử tiếng ồn ấn tượng. Powerbeats Pro 2 cho âm thanh ...",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}

@@ -1,0 +1,77 @@
+{
+ "url": "https://google.serper.dev/search",
+ "request": {
+  "q": "NHS abdominal pain adults causes emergency symptoms persistent abdominal pain",
+  "gl": "vn",
+  "hl": "vi",
+  "num": 8
+ },
+ "status": 200,
+ "recordedAt": "2026-10-08T16:54:19.854Z",
+ "body": {
+  "searchParameters": {
+   "q": "NHS abdominal pain adults causes emergency symptoms persistent abdominal pain",
+   "gl": "vn",
+   "hl": "vi",
+   "type": "search",
+   "num": 8,
+   "engine": "google"
+  },
+  "organic": [
+   {
+    "title": "Stomach ache",
+    "link": "https://www.nhs.uk/symptoms/stomach-ache/",
+    "snippet": "Immediate action required: Call 999 or go to A&E if: · a stomach ache came on very suddenly or is severe · it hurts when you touch your stomach · you're vomiting ...",
+    "position": 1
+   },
+   {
+    "title": "Stomach ache and abdominal pain",
+    "link": "https://www.nhsinform.scot/illnesses-and-conditions/stomach-liver-and-gastrointestinal-tract/stomach-ache-and-abdominal-pain/",
+    "snippet": "Stomach aches are cramps or dull aches in the tummy (abdomen). Most stomach aches do not usually last long and are often not serious.",
+    "date": "1 thg 9, 2026",
+    "position": 2
+   },
+   {
+    "title": "Abdominal (tummy) Pain A&E leaflet",
+    "link": "https://www.uhsussex.nhs.uk/resources/abdominal-pain-ed-leaflet/",
+    "snippet": "When to seek urgent help. Have very severe or worsening abdominal pain. Feel pain that spreads to your back or shoulder.",
+    "date": "11 thg 7, 2025",
+    "position": 3
+   },
+   {
+    "title": "Underlying causes of abdominal pain",
+    "link": "https://www.healthdirect.gov.au/what-causes-abdominal-pain",
+    "snippet": "Abdominal pain has many causes, and may be short-term, long-term or come and goes. Sudden and severe abdominal pain is a medical emergency.",
+    "position": 4
+   },
+   {
+    "title": "Abdominal Pain | Hull University Teaching Hospitals NHS ...",
+    "link": "https://www.hey.nhs.uk/patient-leaflet/abdominal-pain/",
+    "snippet": "Abdominal pain is a very common symptom, and in many cases, the exact cause remains unclear. Fortunately, it usually improves on its own within ...",
+    "date": "29 thg 9, 2016",
+    "position": 5
+   },
+   {
+    "title": "Stomach ache and abdominal pain",
+    "link": "https://www.holburnmedicalgroup.co.uk/acmhainn-slinte/32694-stomach-ache-and-abdominal-pain",
+    "snippet": "Sudden agonising pain in a particular area of your abdomen may be a sign of a serious problem. It could rapidly get worse without treatment. Urgent advice:Speak ...",
+    "position": 6
+   },
+   {
+    "title": "Abdominal Pain: Causes, Types & Treatment",
+    "link": "https://my.clevelandclinic.org/health/symptoms/4167-abdominal-pain",
+    "snippet": "Abdominal pain has many causes, some more serious than others. What feels like a stomachache may be coming from another organ in your abdomen.",
+    "date": "20 thg 11, 2025",
+    "position": 7
+   },
+   {
+    "title": "Non-Specific Abdominal Pain | Display Patient Information ...",
+    "link": "https://www.plymouthhospitals.nhs.uk/display-pil/pil-nonspecific-abdominal-pain-9124/",
+    "snippet": "When to seek help · Your pain is worsening · You cannot eat or drink · You develop fever or vomiting · You are concerned about your symptoms ...",
+    "date": "22 thg 6, 2026",
+    "position": 8
+   }
+  ],
+  "credits": 1
+ }
+}
