@@ -1,5 +1,13 @@
 // Responses API prototype (scratch only): request shape, reasoning replay with store:false, usage → cost mapping, error handling, the in-process
 // budget, and the fallback instrumentation. No network: fetch is stubbed. The API key used here is a dummy and must never appear in any log or error.
+// The provider's POST goes through the security transport. In these tests that transport forwards to the stubbed global fetch, so the
+// stubs and every assertion on them stay as they are (test seam only; the transport itself is covered by safePost.test.ts).
+vi.mock('@/lib/security/safePost', () => ({
+  safePostResponse: (url: string, opts: { headers: Record<string, string>; body: string; signal?: AbortSignal }) => {
+    const stub = (globalThis as { fetch: typeof fetch }).fetch
+    return stub(url, { method: 'POST', headers: opts.headers, body: opts.body, signal: opts.signal })
+  },
+}))
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { APICallError } from 'ai'
 import {

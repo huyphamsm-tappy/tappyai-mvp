@@ -5,6 +5,7 @@ import type { ModelRole, ReasoningEffort } from '../types'
 import type { AIProvider, CallCost } from '../provider'
 import { currentMarks } from '@/lib/ai/latency/marks'
 import { currentBudget, REQUEST_LIMITS, reasoningHeadroomTokens } from '@/lib/ai/budget/requestBudget'
+import { safePostResponse } from '@/lib/security/safePost'
 
 // ── OpenAI adapter (GPT-6 Luna) — owner 2026-09-30, "PHIÊN LUNA" ─────────────────────────────────
 // THE ONLY file allowed to import @ai-sdk/openai, name an OpenAI model id or read OPENAI_API_KEY.
@@ -322,7 +323,7 @@ async function postResponses(apiKey: string, body: Record<string, unknown>, exte
   const onExternal = () => ctrl.abort()
   external?.addEventListener('abort', onExternal, { once: true })
   try {
-    const res = await fetch(RESPONSES_URL, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctrl.signal })
+    const res = await safePostResponse(RESPONSES_URL, { headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal: ctrl.signal })
     const raw = await res.text()
     let json: Record<string, unknown> | null = null
     try { json = JSON.parse(raw) as Record<string, unknown> } catch { /* not json */ }
@@ -514,7 +515,7 @@ async function responsesStream(modelId: string, effort: ReasoningEffort, apiKey:
   }
   let res: Response
   try {
-    res = await fetch(RESPONSES_URL, { method: 'POST', headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json', Accept: 'text/event-stream' }, body: JSON.stringify(body), signal: ctrl.signal })
+    res = await safePostResponse(RESPONSES_URL, { headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json', Accept: 'text/event-stream' }, body: JSON.stringify(body), signal: ctrl.signal })
   } catch (e) {
     const msg = timedOut ? `responses_timeout_${timeoutMs}ms` : external?.aborted ? 'aborted' : `responses_network_error: ${scrub(String((e as Error)?.message ?? e))}`
     mk?.mark('upstream_call_error', { role, http: null })

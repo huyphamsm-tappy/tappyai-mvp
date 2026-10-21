@@ -1,6 +1,14 @@
 // C2 P2 layer 2 — the Responses adapter streams for real (C2_STREAM_ADAPTER=1): SSE parsing, text deltas in order, tool calls / finish / usage from
 // the terminal body, errors mid-stream, a stream that never completes, HTTP errors, cancellation, and flag OFF = the old chunked emulation.
 // fetch is stubbed with a server-sent-event body; the key is a dummy. No network, no cost.
+// The provider's POST goes through the security transport. In these tests that transport forwards to the stubbed global fetch, so the
+// stubs and every assertion on them stay as they are (test seam only; the transport itself is covered by safePost.test.ts).
+vi.mock('@/lib/security/safePost', () => ({
+  safePostResponse: (url: string, opts: { headers: Record<string, string>; body: string; signal?: AbortSignal }) => {
+    const stub = (globalThis as { fetch: typeof fetch }).fetch
+    return stub(url, { method: 'POST', headers: opts.headers, body: opts.body, signal: opts.signal })
+  },
+}))
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { LanguageModelV1StreamPart } from 'ai'
 import { createOpenAIProvider, sseRecords, buildResponsesRequest, __resetResponsesStateForTests } from './openai'
