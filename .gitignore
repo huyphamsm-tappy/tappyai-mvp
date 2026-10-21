@@ -86,3 +86,6 @@ extensions/browser/dist/
 
 # Phase 8 M3 eval page recordings (local only; pages can be large)
 /scripts/agent-eval/pages/
+
+# Supabase CLI local state (project-ref, pooler URL, tool versions) - machine-local, not source.
+supabase/.temp/
