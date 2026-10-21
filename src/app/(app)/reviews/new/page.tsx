@@ -396,11 +396,29 @@ export default function NewReviewPage() {
     return false
   }
 
+  /* ─── Auth gate ───
+     The composer is login-only: every upload path mints a server token that 401s for anonymous users.
+     Mount gate: no session, no form — an anonymous visitor is sent to login before the form paints. */
+  const [authed, setAuthed] = useState(false)
+  useEffect(() => {
+    let cancelled = false
+    supabase.auth.getUser()
+      .then(({ data: { user } }) => {
+        if (cancelled) return
+        if (user) setAuthed(true)
+        else router.replace(loginHref())
+      })
+      .catch(() => { if (!cancelled) router.replace(loginHref()) })
+    return () => { cancelled = true }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   /* ─── Photo upload ─── */
   const handlePhotoSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (!files.length) return
     if (photos.length + files.length > MAX_PHOTOS) { setError(t('reviewNew.maxPhotos', { n: String(MAX_PHOTOS) })); return }
+    if (!(await ensureSession())) return
     setPhotoUploading(true); setError('')
     try {
       const uploaded: string[] = []
@@ -812,6 +830,16 @@ export default function NewReviewPage() {
             </Link>
           </div>
         </div>
+      </div>
+    )
+  }
+
+  /* ─── Auth gate screen ───
+     Held until the session is confirmed, so an anonymous visitor never sees the form (already on the way to /login). */
+  if (!authed) {
+    return (
+      <div className="min-h-dvh bg-white dark:bg-gray-950 flex items-center justify-center">
+        <Loader2 size={24} className="animate-spin text-gray-400" />
       </div>
     )
   }
