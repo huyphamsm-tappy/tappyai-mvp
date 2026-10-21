@@ -85,8 +85,13 @@ async function turn(userText: string, toolLocation: string, userLocation: unknow
 }
 const near = (ll: any, p: { lat: number; lng: number }, km = 25) => !!ll && Math.hypot((ll.lat - p.lat) * 111, (ll.lng - p.lng) * 111) < km
 
-beforeEach(() => { process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'; process.env.TAPPY_AGENT = '2' })
-afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT']) delete process.env[k] })
+// No network, ever (LOC-DEFAULT-HCM-01, Round 42): a provider the mocks do not cover (the OSM fallback food.ts calls internally,
+// Nominatim, photo lookups) fails at once instead of going online.
+beforeEach(() => {
+  process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'; process.env.TAPPY_AGENT = '2'
+  vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
+})
+afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT']) delete process.env[k]; vi.unstubAllGlobals() })
 
 describe('(b) a place the user names, while the client sends a stored fix', () => {
   for (const flag of ['0', '1'] as const) {
@@ -123,12 +128,11 @@ describe('(b) a place the user names, while the client sends a stored fix', () =
       expect(r.maps.length).toBe(0)
       expect(r.body).toContain('no_current_location')
     }, 60000)
-    it(`CONTROL env ${flag} (6c): no location, no near-me phrase, no named place ("quán cafe view đẹp") keeps today's default-centre search`, async () => {
+    it(`env ${flag} (6c, LOC-DEFAULT-HCM-01 phương án a): no location, no near-me phrase, no named place ("quán cafe view đẹp") asks for the area — no default TP.HCM centre`, async () => {
       const r = await turn('quán cafe view đẹp', '', null, flag)
       console.log('CASE ' + JSON.stringify({ name: 'c6c_no_phrase_no_location', flag, maps: r.maps }))
-      expect(r.maps.length).toBe(1)
-      expect(near(r.maps[0].ll, { lat: 10.7769, lng: 106.7009 }, 0.5)).toBe(true)
-      expect(r.body).not.toContain('no_current_location')
+      expect(r.maps.length).toBe(0)
+      expect(r.body).toContain('no_current_location')
     }, 60000)
     it(`CONTROL env ${flag} (6/4): "quán phở gần tôi ở Quận 3" with no location — a named district is a named place: searched, not refused`, async () => {
       const r = await turn('quán phở gần tôi ở Quận 3', 'Quận 3, TP.HCM', null, flag)

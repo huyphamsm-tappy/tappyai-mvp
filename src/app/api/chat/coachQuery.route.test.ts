@@ -47,6 +47,9 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const MSG = 'Đi xe khách từ TP.HCM đến Quy Nhơn ngày 24/10/2026 thì giá bao nhiêu?'
 const post = async () => {

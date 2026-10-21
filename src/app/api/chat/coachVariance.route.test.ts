@@ -47,6 +47,9 @@ vi.mock('@/lib/ai/tools/common', async (importOriginal) => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const U = 'https://vexere.com/vi-VN/ve-xe-khach-phuong-trang-tu-sai-gon-di-quy-nhon-binh-dinh-129t2681-11071.html'
 const LIVE_ROWS = [

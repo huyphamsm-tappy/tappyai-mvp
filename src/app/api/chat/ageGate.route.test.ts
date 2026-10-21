@@ -11,7 +11,7 @@
  * refusal is proven to cost nothing (no eligibility read for a guest, no quota
  * spend, no model, no tool), and identity failure fails CLOSED.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const h = vi.hoisted(() => {
   const state = {
@@ -93,6 +93,9 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { ANON_LIFETIME_LIMIT } from '@/lib/config/product'
 

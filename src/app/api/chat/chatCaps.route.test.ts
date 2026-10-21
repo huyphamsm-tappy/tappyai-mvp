@@ -9,7 +9,7 @@
  * overrides (chatCaps.ts). These drive the REAL limiters against the in-process store (no KV in
  * tests), the way `publicRateLimit` runs on a deployment without credentials.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const h = vi.hoisted(() => {
   const state = {
@@ -64,6 +64,9 @@ vi.mock('@/lib/ai/tools/food', async (importOriginal) => {
 })
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 import { CHAT_IP_BURST_PER_MINUTE, CHAT_USER_BURST_PER_MINUTE, PRO_DAILY_CHAT_CAP } from '@/lib/security/chatCaps'
 
 // Fixtures as escapes: the i18n ratchet (webHardcodedUiStrings) scans src/app for Vietnamese code points.

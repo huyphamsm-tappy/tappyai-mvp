@@ -53,6 +53,9 @@ vi.mock('@/lib/ai/llm', () => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const T2_KEPT = 'À, Nikola Tesla chứ gì.'
 const T2_CUT = 'Ông nổi tiếng nhất với những đóng góp cho hệ thống điện xoay chiều hiện đại; ông cũng phát triển động cơ cảm ứng xoay chiều [S1].'

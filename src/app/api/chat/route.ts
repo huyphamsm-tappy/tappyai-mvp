@@ -112,7 +112,8 @@ import { assessActionability, isClarifyReply, memorySignal, mergeClarifyAnswer, 
 import { currentSubjectMessages, currentSubjectUserTexts, inheritedPlanningIntent as inheritPlanningIntent } from '@/lib/ai/consultative/subjectScope'
 import { statedDistrict } from '@/lib/ai/districts'
 import { cityForName, cityInText } from '@/lib/ai/tools/vietnamCities'
-import { isNearMeRequest, hasValidCurrentLocation } from '@/lib/location/currentLocation'
+import { hasValidCurrentLocation } from '@/lib/location/currentLocation'
+import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consultative/areaAsk'
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
@@ -386,6 +387,14 @@ export async function POST(req: Request) {
    * pipeline for this turn (never a refusal).
    */
   const priorAssistantText = (() => { const m = [...messages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })()
+  // LOC-DEFAULT-HCM-01 (phương án b): a reply that is ONLY an area ("ở Đà Nẵng"), right after the code's area question, is ROUTED as the
+  // missing part of the request it answers — the router never sees the bare city (it read it as a new trip). Routing inputs only; the
+  // model's thread and everything else read `messages` as before (areaAsk.ts mergeAreaAnswer).
+  const routingMessages = mergeAreaAnswer(messages)
+  const areaAnswerMerged = routingMessages !== messages
+  const routingLastUserMsg = areaAnswerMerged ? [...routingMessages].reverse().find((m: { role: string }) => m.role === 'user') : lastUserMsg
+  const routingPriorAssistantText = areaAnswerMerged ? (() => { const m = [...routingMessages].reverse().find((x: { role: string }) => x.role === 'assistant'); return typeof m?.content === 'string' ? m.content : '' })() : priorAssistantText
+  if (areaAnswerMerged) console.log(JSON.stringify({ type: 'tappyai_area_ask', step: 'answer_merged_for_routing' }))
   // Owner §6: the ASK turn and the button turns are decided by CODE (consultRouter.ts: rules per area +
   // question/button templates) — 0 LLM, 0 Serper. The LLM brain runs ONLY when the rules are unsure.
   // TAPPY_AGENT (default OFF): the bounded agent decides the turn (src/lib/ai/agent). OFF = the Consultative path below, unchanged.
@@ -405,7 +414,7 @@ export async function POST(req: Request) {
   const earlyChatState = consultOn && chatSessionId
     ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null)
     : null
-  const routedRaw = consultOn ? routeConsult(messages, { hasGps: !!userLocation, lang }) : null
+  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang }) : null
   // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
   // stored consultation's area and slots, decided by code (no brain call).
   const routed = routedRaw && earlyChatState?.domains?.length && routedRaw.decision.domains.length === 0
@@ -418,7 +427,7 @@ export async function POST(req: Request) {
   const lunaOn = consultOn && consultLunaEnabled()
   // Checked on the user's OWN words: names copied back from our cards are references, not requirements (replay 30/09
   // FOOD-2 t4: "… hay Ẩm thực sân vườn Mái Lá?" became a garden-seating constraint).
-  const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(messages), earlyChatState?.shown ?? [])
+  const lunaOwnWords = withoutReferenceTurns(withoutQuotedNames(routingMessages), earlyChatState?.shown ?? [])
   const lunaUserTexts = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7)
   // CONSULT_LUNA_FAST (default OFF): a SURE continuing turn keeps the rules' decision (no intent call, ~1.9 s saved —
   // luna.ts skipLunaIntent). Slots = the stored consultation (last turn's checked facts) + only what THIS message adds:
@@ -428,7 +437,7 @@ export async function POST(req: Request) {
   const lunaLastOwn = lunaOwnWords.filter((m: { role: string }) => m.role === 'user').slice(-1)
   const lunaSkipDecision = lunaSkipped && routed ? { ...routed.decision, known: { ...(earlyChatState?.known ?? {}), ...routeConsult(lunaLastOwn, { hasGps: !!userLocation, lang }).decision.known } } : null
   const lunaIntentRun = !agentOn && lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
-    ? await runLunaIntent(o => AI.extract(o) as never, messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
+    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8) })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
   // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
@@ -439,7 +448,7 @@ export async function POST(req: Request) {
   const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured()
-    ? await runConsultBrain(o => AI.generate(o), messages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(priorAssistantText), deterministicDomain: lastUserMsg ? turnDomain(lastUserMsg, { hasGps: !!userLocation, lang }) : null })
+    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null })
     : null)
   // A4 (02/10): "lập kế hoạch …" is answered with the PLAN, not a hotel pick (planIntent.ts) — the ask card stays the first step.
   const consultDecided = consultRun?.decision ?? lunaSkipDecision ?? (routed ? routed.decision : null)
@@ -2240,6 +2249,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   let lastPlaceSearch: PlaceSearchEvidence | null = null
   // chat2 A2: set when a place search came back empty after every relaxation (placeRelax.ts) — the reply is then the honest block.
   let emptyPlaceSearch: { query: string; area: string | null } | null = null
+  // LOC-DEFAULT-HCM-01: set when search_places refused for want of a location (no valid GPS, no area named) — the code then asks for the area (areaAsk.ts).
+  let noCurrentLocationAsked = false
   // Owner 29/09 (design): "xem thêm" / "bác" continue from the candidates kept in the chat-session state —
   // 0 Serper. When set, search_places runs its whole pipeline (constraints, ranking, cards) on these stored
   // rows instead of calling the provider. The ranked rows of a real search are captured for the state.
@@ -2308,17 +2319,21 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // the area — the author wrote it, and `searchPlaces` already knows how to
           // read a city out of free text and how to refuse when it cannot. A
           // location the model DID name still wins; this only fills a blank.
-          const location = modelLocation ?? exploreClipLocationHint(clipContext)
+          // LOC-DEFAULT-HCM-01: with no valid current location, the area the user gave IN ANSWER to the area question fills the blank
+          // too — "ở Đà Nẵng" must not be searched around the default TP.HCM centre (food.ts defaultCentre) when the model names no location.
+          const modelOrClip = modelLocation ?? exploreClipLocationHint(clipContext)
+          const location = (modelOrClip?.trim() || hasValidCurrentLocation(userLocation)) ? modelOrClip : (areaFromAnswer(lastAssistantText, lastText) ?? modelOrClip)
           console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', query, location, placeType: type, hasLocationBias: !!userLocation, locationFromClip: modelLocation === undefined && location !== undefined }))
           // Item 5: the `/maps` price-band retry is paid only when price is part of this decision —
           // a stated budget (this turn or the thread) or a price word in the request.
           const priceRetry = !!budget || !!needProfile.budget || /\b(gia|re|dat|bao nhieu|budget|price|cheap|expensive)\b/.test(normalizeVN(lastText.toLowerCase()))
-          // Round 42 (D1): "gần tôi" with no current location and no place named anywhere — do not search around a default
-          // centre (TP.HCM); tell the model the location is missing so it asks, with the clarification it already has.
-          if (!placesOverride && !userLocation && !statedArea && isNearMeRequest(lastText)
+          // Round 42 (D1, then LOC-DEFAULT-HCM-01): no valid current location and no place named anywhere — do not search around a default
+          // centre (TP.HCM), "gần tôi" or not; tell the model the location is missing, and the code asks for the area (areaAsk.ts).
+          if (!placesOverride && !hasValidCurrentLocation(userLocation) && !statedArea
             && !cityInText(lastText) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !cityInText(query) && !statedDistrict(query)) {
+            noCurrentLocationAsked = true
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
-            return { error: 'no_current_location', note: 'Chưa lấy được vị trí hiện tại của người dùng (thiết bị không gửi vị trí). Không đoán khu vực, không tìm quanh một thành phố mặc định. Hãy nói rõ là chưa lấy được vị trí hiện tại và hỏi người dùng đang ở khu vực nào (hoặc nhờ họ nhập địa điểm / bật vị trí).' }
+            return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
           }
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = placesOverride
@@ -3596,7 +3611,7 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang).pipeThrough(stepRepeatGuard()), () => {
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
         const d = serperDelta(serperAtStart)
         const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)

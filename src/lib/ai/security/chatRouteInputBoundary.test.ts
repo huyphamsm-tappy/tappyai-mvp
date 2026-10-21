@@ -25,7 +25,7 @@
  * unenforceable; this test belongs to the boundary, so it sits with the boundary.
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const h = vi.hoisted(() => {
   const calls = { stream: 0, generate: 0, vision: 0 }
@@ -66,6 +66,9 @@ vi.mock('@/lib/ai/llm', () => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+// R42 R5 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const post = async (body: unknown) => {
   const req = {

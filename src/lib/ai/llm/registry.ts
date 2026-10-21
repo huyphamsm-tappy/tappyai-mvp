@@ -125,10 +125,15 @@ function waitsFor(role: ModelRole): { firstPartMs: number; generateMs: number } 
   if (Number.isFinite(ms) && ms > 0) return { firstPartMs: ms, generateMs: Math.max(ms, 8000) }
   // A reasoning plan thinks before its first part. 25 s, not 30: replay 30/09 a medium trip plan hit 30 s twice and the
   // fallback then ended at 50–53 s. Low effort (the default now) measured max 20 s for the whole plan.
-  if (role === 'plan') return { firstPartMs: 25000, generateMs: 30000 }
-  // Phase 8 runtime step (TAPPY_AGENT=2): a tool-choosing step or the final answer. 25 s, then the primary is ABORTED before the one
-  // retry (fallback.ts abortPrimaryOnTimeout) — the timed-out request never keeps running or billing beside the retry.
-  if (role === 'agent') return { firstPartMs: 25000, generateMs: 25000 }
+  // generateMs 45 s (was 30 s): a full trip plan is ONE non-streamed call — 2,879 output tokens took 24.1 s (local UAT 14/10/2026,
+  // Quy Nhơn 3 ngày), so a 30 s cut-and-retry throws away a plan that was about to arrive.
+  if (role === 'plan') return { firstPartMs: 25000, generateMs: 45000 }
+  // Phase 8 runtime step (TAPPY_AGENT=2): a tool-choosing step or the final answer. doGenerate is not streamed, so this wait is the WHOLE
+  // answer, not its first token: 45 s = the runtime's own step timeout (limits.ts stepTimeoutMs), i.e. no cut-and-retry inside a step.
+  // Was 25 s: a step that writes the trip plan needs ~25–30 s; it was aborted at 25 s, the retry started from zero and the step died at
+  // 45 s — 45 s lost, and the turn ended in the fallback line (local UAT 14/10/2026, 2 of 2 Quy Nhơn plans). A failed call (error, not
+  // slowness) is still retried at once (fallback.ts abortPrimaryOnTimeout).
+  if (role === 'agent') return { firstPartMs: 45000, generateMs: 45000 }
   if (role === 'consult' || role === 'intent') return { firstPartMs: 8000, generateMs: 8000 }
   // fast / smart / planning / vision: a long single-shot answer (Viết content, translate, scam analysis) is not cut short.
   return { firstPartMs: 15000, generateMs: 40000 }

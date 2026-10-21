@@ -55,6 +55,9 @@ vi.mock('@/lib/ai/llm', () => ({
 }))
 
 import { POST } from '@/app/api/chat/route'
+// R42 R3 (LOC-DEFAULT-HCM-01 regression run): no network, ever — a fetch the mocks above do not cover fails at once instead of going online.
+beforeEach(() => { vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) }) })
+afterEach(() => { vi.unstubAllGlobals() })
 
 const HCM_Q7 = { lat: 10.7296, lng: 106.7219, address: 'Quận 7, TP.HCM' }
 const place = (loc: string) => [
