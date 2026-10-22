@@ -122,6 +122,7 @@ async function handleNotification(
     case 'DID_RENEW': {
       // New subscription or successful renewal — set active with updated expiry.
       const expiresAt = tx.expiresDate ? new Date(tx.expiresDate) : null
+      const note = `apple_iap:${tx.environment?.toLowerCase() || 'notif'}`
       if (targetPlan) {
         try {
           await applyEntitlement(
@@ -132,6 +133,7 @@ async function handleNotification(
               externalRef: `${subId}:${tx.transactionId || 'renew'}`,
               mode: 'extend_to',
               expiresAt,
+              note,
             },
             db,
           )
@@ -139,7 +141,7 @@ async function handleNotification(
           console.warn('[apple/notifications] applyEntitlement renewal fallback:', ledgerErr)
         }
       }
-      await upsertSubscription(db, userId, subId, targetPlan, 'active', expiresAt, false)
+      await upsertSubscription(db, userId, subId, targetPlan, 'active', expiresAt, false, note)
       console.info(`[apple/notifications] ${type}: userId=${userId} plan=${targetPlan} expires=${expiresAt?.toISOString()}`)
       break
     }
@@ -164,6 +166,7 @@ async function handleNotification(
     case 'REVOKE':
     case 'REFUND': {
       // Family sharing revoked or purchase refunded — remove store entitlement immediately.
+      const refundNote = `apple_iap:refund:${tx.environment?.toLowerCase() || 'notif'}`
       try {
         await applyEntitlement(
           {
@@ -173,13 +176,14 @@ async function handleNotification(
             externalRef: `${subId}:refund:${tx.transactionId || Date.now()}`,
             mode: 'revoke_store',
             expiresAt: new Date(),
+            note: refundNote,
           },
           db,
         )
       } catch (ledgerErr) {
         console.warn('[apple/notifications] applyEntitlement refund fallback:', ledgerErr)
       }
-      await upsertSubscription(db, userId, subId, null, 'canceled', new Date(), false)
+      await upsertSubscription(db, userId, subId, null, 'canceled', new Date(), false, refundNote)
       console.info(`[apple/notifications] ${type}: userId=${userId}`)
       break
     }
@@ -214,7 +218,8 @@ async function upsertSubscription(
   plan: PaidPlanId | null,
   status: string,
   expiresAt: Date | null,
-  cancelAtPeriodEnd: boolean
+  cancelAtPeriodEnd: boolean,
+  grantNote?: string
 ): Promise<void> {
   const patch: Record<string, unknown> = {
     status,
@@ -222,6 +227,7 @@ async function upsertSubscription(
     cancel_at_period_end: cancelAtPeriodEnd,
   }
   if (plan) patch.plan = plan
+  if (grantNote) patch.grant_note = grantNote
   const { error } = await db
     .from('subscriptions')
     .update(patch)
