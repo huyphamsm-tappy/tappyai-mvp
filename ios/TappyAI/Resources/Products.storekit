@@ -61,6 +61,156 @@
           "referenceName" : "TappyAI Pro Monthly",
           "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
           "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "29000",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "1000000002",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "30 câu hỏi AI mỗi ngày (dùng thử 1 lần)",
+              "displayName" : "Tappy Pip (7 Ngày)",
+              "locale" : "vi"
+            },
+            {
+              "description" : "30 AI questions daily (one-time trial)",
+              "displayName" : "Tappy Pip (7 Days)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tappy_pip_1w",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Tappy Pip 1 Week",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "179000",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "1000000003",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "30 câu hỏi AI mỗi ngày",
+              "displayName" : "Tappy Momo (1 Tháng)",
+              "locale" : "vi"
+            },
+            {
+              "description" : "30 AI questions daily",
+              "displayName" : "Tappy Momo (1 Month)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tappy_momo_1m",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Tappy Momo 1 Month",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "489000",
+          "familyShareable" : false,
+          "groupNumber" : 4,
+          "internalID" : "1000000004",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "30 câu hỏi AI mỗi ngày",
+              "displayName" : "Tappy Coco (3 Tháng)",
+              "locale" : "vi"
+            },
+            {
+              "description" : "30 AI questions daily",
+              "displayName" : "Tappy Coco (3 Months)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tappy_coco_3m",
+          "recurringSubscriptionPeriod" : "P3M",
+          "referenceName" : "Tappy Coco 3 Months",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "939000",
+          "familyShareable" : false,
+          "groupNumber" : 5,
+          "internalID" : "1000000005",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "30 câu hỏi AI mỗi ngày",
+              "displayName" : "Tappy Milo (6 Tháng)",
+              "locale" : "vi"
+            },
+            {
+              "description" : "30 AI questions daily",
+              "displayName" : "Tappy Milo (6 Months)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tappy_milo_6m",
+          "recurringSubscriptionPeriod" : "P6M",
+          "referenceName" : "Tappy Milo 6 Months",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "1719000",
+          "familyShareable" : false,
+          "groupNumber" : 6,
+          "internalID" : "1000000006",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "30 câu hỏi AI mỗi ngày, tiết kiệm nhất",
+              "displayName" : "Tappy Sunny (12 Tháng)",
+              "locale" : "vi"
+            },
+            {
+              "description" : "30 AI questions daily, best value",
+              "displayName" : "Tappy Sunny (12 Months)",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "tappy_sunny_12m",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Tappy Sunny 12 Months",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
         }
       ]
     }

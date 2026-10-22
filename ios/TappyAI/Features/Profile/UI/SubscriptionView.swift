@@ -218,7 +218,7 @@ struct SubscriptionView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing, spacing: 0) {
-                        Text(storeProduct?.displayPrice ?? "99K")
+                        Text(storeProduct?.displayPrice ?? "--")
                             .font(.system(size: 22, weight: .black))
                             .foregroundStyle(.white)
                         Text("sub.perMonth")

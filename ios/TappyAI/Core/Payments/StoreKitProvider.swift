@@ -6,11 +6,13 @@ import UIKit
 @MainActor
 final class StoreKitProvider: PaymentProvider {
     private let api: APIClient
+    private let session: SessionStore?
     private var cachedProduct: Product?
     private let log = AppLogger.app
 
-    init(api: APIClient) {
+    init(api: APIClient, session: SessionStore? = nil) {
         self.api = api
+        self.session = session
     }
 
     // MARK: - PaymentProvider
@@ -42,7 +44,12 @@ final class StoreKitProvider: PaymentProvider {
             product = p
         }
 
-        let result = try await product.purchase()
+        var options: Set<Product.PurchaseOption> = []
+        if let uid = session?.userId, let uuid = UUID(uuidString: uid) {
+            options.insert(.appAccountToken(uuid))
+        }
+
+        let result = try await product.purchase(options: options)
 
         switch result {
         case .success(let verification):

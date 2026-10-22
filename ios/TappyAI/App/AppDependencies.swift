@@ -53,7 +53,7 @@ final class AppDependencies: AppObservableObject {
         self.localization = LocalizationManager()
         self.deepLinks = deepLinks
         self.entitlements = ServerEntitlementService(api: api)
-        self.paymentProvider = StoreKitProvider(api: api)
+        self.paymentProvider = StoreKitProvider(api: api, session: session)
         self.notificationManager = NotificationManager(api: api, deepLinks: deepLinks, router: router, session: session)
         self.safety = SafetyStore(service: SafetyService(api: api), config: configService, session: session)
 
