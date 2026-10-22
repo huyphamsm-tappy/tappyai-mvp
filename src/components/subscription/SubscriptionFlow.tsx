@@ -75,17 +75,10 @@ export function endIfBoughtNow(plan: SubscriptionPlanCard, now = Date.now()): st
 const card = 'bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 shadow-sm'
 const btnBlue = 'w-full py-3.5 rounded-2xl bg-[#007AFF] hover:bg-blue-600 text-white font-semibold disabled:opacity-60'
 
-/** The list price shown on every plan: "$1 · 7 ngày", and for the Pip trial "$1 · 7 ngày · Dùng thử 1 lần".
- *  The bank transfer itself is in VND (`priceVnd`), shown on the payment screens only. */
+/** The list price shown on every plan: "29.000đ / 7 ngày", and for the Pip trial "29.000đ / 7 ngày · Dùng thử 1 lần". */
 function priceLine(p: SubscriptionPlanCard, t: T) {
-  const base = t('sub.price.usd', { usd: String(p.priceUsd), period: periodText(p.durationDays, t) })
+  const base = t('sub.price.per', { price: formatVnd(p.priceVnd ?? 0), period: periodText(p.durationDays, t) })
   return p.trialOnce ? `${base} · ${t('sub.trial.once')}` : base
-}
-
-/** "about $5.5 a month" for the long plan (list price / months, one decimal). */
-function usdMonthly(p: SubscriptionPlanCard): string {
-  const months = p.durationDays === 365 ? 12 : p.durationDays / 30
-  return `$${Math.round((p.priceUsd / months) * 10) / 10}`
 }
 
 /** Plans the account may still choose: a Pip already used is not offered again (the server refuses it too). */
@@ -293,7 +286,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
           <PlanAvatar plan={plan} size={200} className="mx-auto" />
           <h1 className="mt-2 text-3xl font-black">{t('sub.plan.fullName', { plan: plan.name })}</h1>
           <p className="text-white/85">{t(`sub.plan.${plan.id}.tagline`)}</p>
-          <p className="mt-4"><span className="text-4xl font-black">${plan.priceUsd}</span> <span className="text-lg font-semibold">/ {periodText(plan.durationDays, t)}</span></p>
+          <p className="mt-4"><span className="text-4xl font-black">{formatVnd(plan.priceVnd ?? 0)}</span> <span className="text-lg font-semibold">/ {periodText(plan.durationDays, t)}</span></p>
           {plan.trialOnce && (
             <div className="mt-1 text-sm text-white/90" data-testid="sub-trial">
               <p className="font-semibold">{t('sub.trial.once')}</p>
@@ -301,7 +294,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
             </div>
           )}
           {plan.monthlyApproxVnd != null && (
-            <p className="text-sm text-white/85" data-testid="sub-monthly">{t('sub.detail.monthly', { price: usdMonthly(plan) })}</p>
+            <p className="text-sm text-white/85" data-testid="sub-monthly">{t('sub.detail.monthly', { price: formatVnd(plan.monthlyApproxVnd) })}</p>
           )}
           <ul className="mt-5 space-y-2.5 text-left">
             {detailLines(plan, t).map((line) => (
@@ -330,7 +323,7 @@ export default function SubscriptionFlow({ catalog, initialMe, initial, initialH
           <div>
             <p className="text-lg font-bold text-gray-900 dark:text-white">{t('sub.plan.fullName', { plan: plan.name })}</p>
             <p className="text-gray-700 dark:text-gray-300">{priceLine(plan, t)}</p>
-            <p className="text-sm text-content-secondary" data-testid="sub-charged">{t('sub.pay.chargedVnd', { vnd: price, usd: String(plan.priceUsd) })}</p>
+            <p className="text-sm text-content-secondary" data-testid="sub-charged">{t('sub.pay.chargedVnd', { vnd: price })}</p>
           </div>
         </div>
         <h2 className="font-semibold text-gray-900 dark:text-white">{t('sub.pay.method')}</h2>
@@ -456,7 +449,7 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
                   <PlanAvatar plan={p} size={84} />
                   <span className="min-w-0 flex-1">
                     <span className={`block text-xl font-black ${st.accentOnLight}`}>{p.name}</span>
-                    <span className={`block ${st.accentOnLight}`}><span className="text-lg font-black">${p.priceUsd}</span> <span className="text-sm font-semibold">/ {periodText(p.durationDays, t)}</span></span>
+                    <span className={`block ${st.accentOnLight}`}><span className="text-lg font-black">{formatVnd(p.priceVnd ?? 0)}</span> <span className="text-sm font-semibold">/ {periodText(p.durationDays, t)}</span></span>
                     {p.trialOnce && <span className={`block text-xs font-semibold ${st.accentOnLight}`}>{t('sub.trial.once')}</span>}
                     {current && <span className="mt-0.5 inline-block rounded-full bg-white/80 px-2 py-0.5 text-[11px] font-semibold text-gray-700">{t('sub.card.current')}</span>}
                   </span>
@@ -494,7 +487,7 @@ function PlansHome({ catalog, me, onChoose, onManage }: {
               <PlanAvatar plan={p} size={96} className="mx-auto" />
               <p className={`mt-2 text-center text-2xl font-black ${st.accent}`}>{p.name}</p>
               <p className="min-h-[2.5rem] text-center text-xs text-content-secondary">{t(`sub.plan.${p.id}.tagline`)}</p>
-              <p className={`mt-3 text-center text-xl font-black ${st.accent}`}>${p.priceUsd}</p>
+              <p className={`mt-3 text-center text-xl font-black ${st.accent}`}>{formatVnd(p.priceVnd ?? 0)}</p>
               <p className={`text-center text-sm font-semibold ${st.accent}`}>/ {periodText(p.durationDays, t)}</p>
               {p.trialOnce && <p className={`text-center text-xs font-semibold ${st.accent}`}>{t('sub.trial.once')}</p>}
               <ul className="mt-4 flex-1 space-y-2 text-xs text-gray-700 dark:text-gray-300">

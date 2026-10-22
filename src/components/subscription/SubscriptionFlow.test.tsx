@@ -62,11 +62,14 @@ describe('plan list', () => {
     expect(screen.queryByText(/Best|Winner|Tiết kiệm so với|Giá trị lâu dài/)).toBeNull()
     expect(screen.getAllByText('10 câu hỏi AI mỗi ngày').length).toBeGreaterThan(0) // Free = live backend value
     expect(screen.getAllByText('5 câu hỏi AI trọn đời').length).toBe(1)
-    // USD list prices on the plans (owner P7 decision); the VND amount appears only at payment; no price per day, no %
-    expect(document.body.textContent).toMatch(/\$1 \/ 7 ngày/)
-    expect(document.body.textContent).toMatch(/\$66 \/ 12 tháng/)
-    expect(document.body.textContent).toMatch(/\$7 \/ 1 tháng/)
-    expect(document.body.textContent).not.toMatch(/\d\.\d{3}đ|đ\s*\/\s*ngày|\/ngày/)
+    // Standardized VND prices on the plans; no price per day, no %, no USD
+    expect(document.body.textContent).toMatch(/29\.000đ \/ 7 ngày/)
+    expect(document.body.textContent).toMatch(/179\.000đ \/ 1 tháng/)
+    expect(document.body.textContent).toMatch(/489\.000đ \/ 3 tháng/)
+    expect(document.body.textContent).toMatch(/939\.000đ \/ 6 tháng/)
+    expect(document.body.textContent).toMatch(/1\.719\.000đ \/ 12 tháng/)
+    expect(document.body.textContent).not.toMatch(/\$[0-9]+/)
+    expect(document.body.textContent).not.toMatch(/đ\s*\/\s*ngày|\/ngày/)
     expect(document.body.textContent).not.toMatch(/%/)
   })
 
@@ -98,10 +101,10 @@ describe('purchase (web)', () => {
     expect(document.body.textContent).not.toMatch(/Ví điện tử|(^|\s)ví(\s|$)/i) // no \b: it never matches after a Vietnamese vowel
   })
 
-  it('Sunny detail: "Chỉ khoảng $5.5 / tháng" from the configured list price; other plans show no monthly figure', () => {
+  it('Sunny detail: "Chỉ khoảng 143.000đ / tháng" from the configured VND price; other plans show no monthly figure', () => {
     const { unmount } = render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     fireEvent.click(document.querySelector('[data-plan="sunny"]')!)
-    expect(screen.getByTestId('sub-monthly').textContent).toBe('Chỉ khoảng $5.5 / tháng')
+    expect(screen.getByTestId('sub-monthly').textContent).toBe('Chỉ khoảng 143.000đ / tháng')
     expect(screen.getByText('Tappy Sunny')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Chọn Sunny' })).toBeTruthy()
     const detail = screen.getByTestId('sub-detail').textContent!
@@ -182,13 +185,13 @@ describe('my plan', () => {
 })
 
 describe('Pip — one-time trial', () => {
-  it('first time: "$1 · 7 ngày · Dùng thử 1 lần" with the detail note, and the VND transfer shown at payment', () => {
+  it('first time: "29.000đ / 7 ngày · Dùng thử 1 lần" with the detail note, and the VND transfer shown at payment', () => {
     render(<SubscriptionFlow catalog={catalog} initialMe={free} />)
     expect(screen.queryByTestId('sub-pip-used')).toBeNull()
-    expect(document.querySelector('[data-plan="pip"]')!.textContent).toMatch(/\$1/)
+    expect(document.querySelector('[data-plan="pip"]')!.textContent).toMatch(/29\.000đ \/ 7 ngày/)
     expect(document.querySelector('[data-plan="pip"]')!.textContent).toMatch(/Dùng thử 1 lần/)
     goTo('pip')
-    expect(screen.getByTestId('sub-method').textContent).toMatch(/\$1 · 7 ngày · Dùng thử 1 lần/)
+    expect(screen.getByTestId('sub-method').textContent).toMatch(/29\.000đ \/ 7 ngày · Dùng thử 1 lần/)
     expect(screen.getByTestId('sub-charged').textContent).toMatch(/29\.000đ/)
   })
 
