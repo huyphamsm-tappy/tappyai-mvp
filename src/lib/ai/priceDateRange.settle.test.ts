@@ -342,3 +342,43 @@ describe('S5h3 — the stream filter, not the guard called directly', () => {
     expect(isOrderingClaim('Quán Phở Hòa có giao hàng tận nhà.')).toBe(true)
   })
 })
+
+// ── S5h3 and PLACE-ORDERING-EMPTY-01 with the consultative flag ON as well as OFF ── the Round 42 register passes a fix only when the verified fare survives the
+// settle path under BOTH flags (settle's third argument sets collector.consultative). Same frames, same stream filter (applyPlaceEnrichmentStreamFilter) as above.
+describe('S5h3 / PLACE-ORDERING-EMPTY-01 — consultative flag ON and OFF through the stream filter', () => {
+  const Q = 'Vé máy bay TP.HCM Đà Nẵng ngày 24/10/2026 giá bao nhiêu'
+  const fareFrames = (text: string) => [
+    f9('t1', 'get_flight_prices', { origin: 'TP.HCM', destination: 'Đà Nẵng', date: '2026-10-24' }),
+    fa('t1', { type: 'flight', origin: 'TP.HCM', destination: 'Đà Nẵng', bus_search_results: [{ title: 'Vietjet Air - vé máy bay TP.HCM Đà Nẵng', link: 'https://example.test/vietjet-flights', snippet: 'Vé Vietjet một chiều 387.000 VND.' }], train_search_results: [] }),
+    ft(text), FIN,
+  ]
+  it('S5h3 settle (consultative ON) preserves a verified 387000 VND fare through the stream filter', async () => {
+    const out = await settle(Q, fareFrames('Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.'), true, { travel: true })
+    record('s5h3_stream_on', { out })
+    expect(out).toContain('Đặt qua app hoặc website, Vietjet 387.000 VND.')
+    expect(out).not.toContain('99.000')
+  })
+  it('S5h3 settle (consultative ON): the unverified fare and an unbacked venue ordering claim still go, unrelated prose stays', async () => {
+    const out = await settle(Q, fareFrames('Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND. Các quán quanh sân bay đều có giao hàng tận nhà. Chúc bạn có chuyến đi vui vẻ.'), true, { travel: true })
+    record('s5h3_stream_mixed_on', { out })
+    expect(out).toContain('Đặt qua app hoặc website, Vietjet 387.000 VND.')
+    expect(out).not.toContain('99.000')
+    expect(out).not.toContain('giao hàng tận nhà')
+    expect(out).toContain('Chúc bạn có chuyến đi vui vẻ.')
+  })
+  for (const flag of [false, true]) {
+    const env = flag ? 'ON' : 'OFF'
+    it(`PLACE-ORDERING-EMPTY-01 (consultative ${env}): a reply that is only a verified fare behind a booking channel is not emptied, keeps the fare, no venue ordering claim, no fragment`, async () => {
+      const out = await settle(Q, fareFrames('Đặt qua app hoặc website, Vietjet 387.000 VND.'), flag, { travel: true })
+      record('place_ordering_empty_' + env.toLowerCase(), { out })
+      expect(out.trim().length).toBeGreaterThan(0)
+      expect(out).toContain('Đặt qua app hoặc website, Vietjet 387.000 VND.')
+      expect(out).not.toContain('99.000')
+      expect(out).not.toMatch(/giao hàng|giao tận|đặt bàn|nhận đơn/i)
+      // Prose lines end like sentences. The source line the stream adds with the flag ON ("Giá theo kết quả tìm kiếm của: [host](url)") is a citation, not prose.
+      const lines = out.split('\n').map(l => l.trim()).filter(Boolean)
+      for (const line of lines.filter(l => !/^(?:Nguồn|Giá theo kết quả tìm kiếm của):/u.test(l))) expect(line).toMatch(/[.!?…]$/u)
+      for (const line of lines.filter(l => /^(?:Nguồn|Giá theo kết quả tìm kiếm của):/u.test(l))) expect(line).toContain('example.test')
+    })
+  }
+})
