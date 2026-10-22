@@ -39,19 +39,19 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "99000",
+          "displayPrice" : "179000",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "1000000001",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Không giới hạn câu hỏi AI và mọi tính năng cao cấp",
+              "description" : "30 câu hỏi AI mỗi ngày",
               "displayName" : "TappyAI Pro",
               "locale" : "vi"
             },
             {
-              "description" : "Unlimited AI questions and premium features",
+              "description" : "30 AI questions daily",
               "displayName" : "TappyAI Pro",
               "locale" : "en_US"
             }
