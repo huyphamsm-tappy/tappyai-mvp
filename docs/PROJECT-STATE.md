@@ -81,9 +81,9 @@ Stream results after the fix (from the test's recorded output): the reply `Đặ
 
 | Gate | Status | Notes |
 |---|---|---|
-| `TG-VERIFIED-LOSS-PRE-01` | FIXED for the S5h3 stream scenario, awaiting owner review | Fix: `placeClaimGuard.isOrderingClaim` (see below). Other phrasings that might reach the place guard on a travel turn are not tested. |
+| `TG-VERIFIED-LOSS-PRE-01` | FIXED for the S5h3 stream scenario (owner accepted `844f5b7` at that level on 22/10); NOT CLOSED, owner is reviewing the diff of `844f5b7` | Fix: `placeClaimGuard.isOrderingClaim` (see below). Other phrasings that might reach the place guard on a travel turn are not tested. Close only on the owner's word. |
 | `S5h3 settle` | FIXED, regression-tested | Stream test passes after the fix and failed before it. The test is committed with the fix. |
-| Latent: option-off clause cut in `moneyGuard.redactUnsupportedClaims` | OPEN, not changed | The unit test at `priceDateRange.settle.test.ts` (the "other callers (option off)" case) still pins that a clause cut can take a verified amount. It is reached only by `guardMoneyClaimsInText` with structured product prices (`streamEnrichment.ts:2714-2715`). Whether any real turn reaches it with a travel sentence: UNVERIFIED. Not touched on purpose (outside the files allowed for this fix). |
+| `MG-OPTION-OFF-VERIFIED-LOSS-01` (new, created 22/10 by owner request) | OPEN, no code changed | See the section right after this table. |
 | `RS-3-LEGACY-RESIDUE` | OPEN, undefined | The full ID is not in source. Only the label "RS-3" appears in comments at `priceDateRange.settle.test.ts` (lines 212, 224). No test found. Do not invent a definition. |
 | `PLACE-ORDERING-EMPTY-01` | OPEN, undefined | Not in source or tests. |
 | Phase 3 specification | MISSING | `docs/audit/PHASE-3-IMPLEMENTATION-SPECIFICATION.md` is referenced by code comments but exists in no ref checked (HEAD, `origin/main`, `git log --all`). |
@@ -94,15 +94,27 @@ S5h3 root cause (fixed): the travel guard keeps the verified fare (`travelFares`
 
 The fix (`placeClaimGuard.ts`): `isOrderingClaim` returns false for a sentence that OPENS with the instruction "Đặt qua app / website / web / ứng dụng / hotline" (generic channels only, `BOOKING_CHANNEL_ADVICE_RE`) when nothing else in the sentence is ordering vocabulary. Possession wording still wins and is checked first. A named platform ("Đặt qua GrabFood"), "đặt qua app thì quán giao tận nhà", "có giao hàng tận nhà" and "có thể order qua GrabFood" are still claims. Rule 1c itself, the place guard and the price verification are unchanged. `isOrderingClaim` is the single predicate shared by the guard and the early-stream hold-back (`mayRedactPlaceClaim`), so both now agree.
 
+### Gate `MG-OPTION-OFF-VERIFIED-LOSS-01` — option-off branch of `moneyGuard.redactUnsupportedClaims`
+
+- What: when `redactUnsupportedClaims` is called WITHOUT `noAmountOnlyFallback`, `cutAroundVerified` is skipped (`moneyGuard.ts:767`) and the clause path (`removeClauseAround`) runs for each unverified claim. If no clause delimiter separates a verified amount from an unverified one in the same sentence, the cut runs from the delimiter before the verified amount to the end of the sentence and takes the verified amount with it. Example pinned by a test: `Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.` becomes `Đặt qua app hoặc website.` with 387.000 marked VERIFIED. VERIFIED by reading the code and by the passing unit test `priceDateRange.settle.test.ts:298` ("other callers (option off) keep the former path…"), which asserts the loss as expected output.
+- Who reaches it: `guardMoneyClaimsInText` (`moneyGuard.ts`), called from `streamEnrichment.ts:2714-2715`, enforced only when the turn's `productRecords` carry a structured price. Only `travelGuard.ts` passes `noAmountOnlyFallback: true`. `snippetPriceGuard.ts` passes `wholeSentence: true`, a different branch. The doc comment on `RedactOptions.noAmountOnlyFallback` in `moneyGuard.ts` (Round 42 round 3) says option-off is the former behaviour kept on purpose for every other caller (VERIFIED by reading it).
+- Reachability from a real turn with a verified amount next to an unverified one: UNVERIFIED. No stream-level test exercises it. Nothing found says a travel turn reaches it (there `productRecords` is normally empty), but a turn that mixes product records and a verified amount has not been tested.
+- Status: OPEN. No code changed for this gate. `moneyGuard.ts` was outside the files allowed for the S5h3 fix.
+- Before any fix: (1) show reachability, by a stream-level test or by tracing which turns give `guardMoneyClaimsInText` structured prices plus a verified amount; (2) the fix option is to run `cutAroundVerified` for every caller whenever the sentence holds a verified claim, falling back to the clause path when it returns null; (3) the test at `:298` pins the loss today, so changing its expected output needs the assertion-by-assertion review and mutation proof the owner asked for on test-expectation changes, not just a green test; (4) callers affected: `guardMoneyClaimsInText` and its tests (`moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`).
+- Closing needs the owner's decision: fix, or accept the behaviour with the reason written here.
+
 ## 7. Owner decisions pending
 
 REPORTED (Phase N `OWNER-DECISIONS.md`): D1 keep or remove `wtios-fix`; D2 approve the `anonymousSessionIdentity` expectation change and anonymous clarify-credit policy under `CONSULT_V3`; D3 worktrees with large uncommitted data; D4 Android version live on Play; D5 Android release with the gallery-scan fix; D6 push iOS for macOS CI; D7 deploy canonical web and migration 20261018 status; D8 clarify-credit debt; D9 persist `decisionEvidenceId` across chat reopen.
 
 From the 22/10 audit: source of the Phase 3 spec; production flag values; Serper daily cap; "chill" persona versus the V3 persona; Retrieval V5 continue or stop; OpenAI hosted search keep or drop; mobile release of ADR-024 and quota changes; music on Android; plan A or B for selective page reading.
 
+Decided 22/10: `844f5b7` is accepted at "FIXED for the S5h3 stream scenario, awaiting owner review"; `TG-VERIFIED-LOSS-PRE-01` stays open until the owner has reviewed the full diff. Pending from the owner: close `TG-VERIFIED-LOSS-PRE-01`; decide fix or accept for `MG-OPTION-OFF-VERIFIED-LOSS-01`.
+
 A decision is closed only when the owner states it or evidence shows it.
 
 ## 8. Change log
 
 - 2026-10-22: file created; canonical `6816cb2`; S5h3 stream test failing and uncommitted.
+- 2026-10-22: gate `MG-OPTION-OFF-VERIFIED-LOSS-01` created (docs only, no code change); owner accepted `844f5b7` as FIXED-pending-review, `TG-VERIFIED-LOSS-PRE-01` not closed. At this time the worktree also held uncommitted changes made by someone else (`src/app/api/subscription/route.ts`, `src/lib/plans/entitlement.ts`, new payments and entitlement test files); they are not part of this work and were left untouched.
 - 2026-10-22: S5h3 fixed in `placeClaimGuard.ts`; stream test and two companion tests committed with the fix; `TG-VERIFIED-LOSS-PRE-01` and `S5h3 settle` moved to FIXED. Nothing pushed, deployed or changed in production.
