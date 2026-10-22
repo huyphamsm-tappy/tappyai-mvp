@@ -14,7 +14,9 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
-import { checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
+import { checkAppleTransaction, APPLE_PRO_PRODUCT_IDS, applePlanForProduct } from '@/lib/apple-iap/transactionPolicy'
+import { type PaidPlanId } from '@/lib/plans/planConfig'
+import { applyEntitlement } from '@/lib/payments/grantPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -34,6 +36,11 @@ export async function POST(req: Request) {
 
     if (!originalTransactionId || !productId) {
       return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
+    }
+    const targetPlan = applePlanForProduct(productId)
+    if (!targetPlan || !APPLE_PRO_PRODUCT_IDS.includes(productId)) {
+      console.error('[iap/apple/verify] Unmapped or unauthorized product ID:', productId)
+      return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
     }
     // Apple transaction ids are decimal strings. Anything else is not one, and would otherwise be
     // written into subscriptions.stripe_sub_id as `apple_<whatever was sent>`.
@@ -108,7 +115,10 @@ export async function POST(req: Request) {
         // Security audit 2026-09-30: Apple signs every app's transactions, Sandbox ones included,
         // and a made-up originalTransactionId is enough to land here (the API lookup 404s). The
         // JWS must be OUR Pro product, in OUR environment, for the subscription the caller named.
-        const refusal = checkAppleTransaction(decoded, { originalTransactionId: String(originalTransactionId) })
+        const refusal = checkAppleTransaction(decoded, {
+          originalTransactionId: String(originalTransactionId),
+          appAccountToken: user.id,
+        })
         if (refusal) {
           console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
           return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
@@ -160,13 +170,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'transaction_in_use', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 409 })
     }
 
+    if (isPro) {
+      try {
+        await applyEntitlement(
+          {
+            userId: user.id,
+            plan: targetPlan,
+            channel: 'ios',
+            externalRef: subId,
+            mode: 'extend_to',
+            expiresAt,
+          },
+          admin,
+        )
+      } catch (ledgerErr) {
+        console.warn('[iap/apple/verify] applyEntitlement fallback:', ledgerErr)
+      }
+    }
+
     const { error } = await admin
       .from('subscriptions')
       .upsert(
         {
           user_id: user.id,
           stripe_sub_id: subId,
-          plan: 'pro',
+          plan: targetPlan,
+          source: 'apple_iap',
           status: isPro ? 'active' : 'expired',
           current_period_end: expiresAt?.toISOString() ?? null,
           cancel_at_period_end: false,
@@ -181,6 +210,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       isPro,
+      plan: targetPlan,
       currentPeriodEnd: expiresAt?.toISOString() ?? null,
     })
   } catch (e) {
