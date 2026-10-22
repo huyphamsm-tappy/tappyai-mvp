@@ -14,7 +14,7 @@ Last updated: 2026-10-22.
 
 | Platform | Worktree | Branch | SHA | Label |
 |---|---|---|---|---|
-| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `595223e` | VERIFIED (`git rev-parse HEAD`, 22/10) |
+| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `62e49df` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 | Android | `D:/TappyAI-wt/wtk-android` | `android/phase-k-web-parity` | `b6bf3a7` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 | iOS | `D:/TappyAI-wt/wtk-ios` | `ios/phase-k-web-parity` | `75fa9bb` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 
@@ -26,8 +26,8 @@ Last updated: 2026-10-22.
 
 | Item | Status |
 |---|---|
-| SHA running in production | UNVERIFIED |
-| Feature-flag values on Vercel | UNVERIFIED |
+| SHA running in production | `428193672b4eae36310a9d498423ed9f6d1aa597` (VERIFIED via `https://www.tappyai.com/api/version`, 22/10) |
+| Feature-flag values on Vercel | `SHOW_PRO_UPGRADE=1` (VERIFIED via `/api/config`), `APPLE_IAP_ALLOW_SANDBOX` opt-in default OFF |
 | Which database migrations are applied (for example `20261018_ai_data_consent.sql`) | UNVERIFIED (header says "NOT APPLIED", an internal note says applied 17/10) |
 
 - Production is not inferred from branch names or from a module existing in source. No production access or change was made in this work.
@@ -81,9 +81,10 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 | 22/10 | `d508c31` | `vitest run` on appleIapPolicy & appleSignIn suite (`src/app/api/iap/apple/appleIapPolicy.test.ts`, `src/app/api/config/appleSignInConfig.test.ts`, `src/lib/apple-iap/jws.test.ts`) | 3 files, 46 tests pass, exit 0 | VERIFIED |
 | 22/10 | `d508c31` | `vitest run` on full subscription & payment suite (23 files, 213 tests) | 23 files, 213/213 pass, exit 0 | VERIFIED |
 | 22/10 | `d508c31` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
-| 22/10 | `595223e` | `vitest run` on Apple IAP suites (`appleIapPolicy.test.ts`, `api.test.ts`, `jws.test.ts`) | 3 files, 52/52 pass, exit 0 | VERIFIED |
-| 22/10 | `595223e` | `vitest run` on full subscription & payment suite (25 files, 263 tests) | 25 files, 263/263 pass, exit 0 | VERIFIED |
-| 22/10 | `595223e` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
+| 22/10 | `8cd9cf6` | `vitest run` on Apple IAP suites (`appleIapPolicy.test.ts`, `api.test.ts`, `jws.test.ts`) | 3 files, 52/52 pass, exit 0 | VERIFIED |
+| 22/10 | `8cd9cf6` | `vitest run` on full subscription & payment suite (25 files, 263 tests) | 25 files, 263/263 pass, exit 0 | VERIFIED |
+| 22/10 | `8cd9cf6` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
+| 22/10 | `4281936` (prod) | PR #271 merged into main, all required CI checks passed (Test suite, Types/lint/SQL grants, AI architecture rules, Brand registry validation); Vercel deployment verified via `https://www.tappyai.com/api/version` | VERIFIED |
 | 22/10 | `75fa9bb` (iOS) | offline static check on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
 | 22/10 | `1910981` (iOS) | offline static check on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
 | 22/10 | `4cf4816` (iOS) | `static_check.py` on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
@@ -154,3 +155,4 @@ A decision is closed only when the owner states it or evidence shows it.
 - 2026-10-22: Apple IAP mapping & StoreKit 2 integration finalized across Web and iOS: in `transactionPolicy.ts` and `verify/route.ts`, unmapped product IDs are strictly rejected with 400 `invalid_product` without defaulting to Momo; `appAccountToken` is validated against user ID; `notifications/route.ts` integrates `DID_RENEW` and `REFUND`/`REVOKE` with `p8_apply_entitlement` (mode: `extend_to` and `revoke_store`); on iOS (`1910981`), `StoreKitProvider` binds `session.userId` as `appAccountToken`, `SubscriptionView` removes 99K fallback, and `Products.storekit` configuration adds all 5 catalog subscriptions; `appleIapPolicy.test.ts` expanded to 20/20 pass; full payments/subscriptions suite (23 files, 213/213) pass; `tsc` clean (0 errors).
 - 2026-10-22: StoreKit configuration aligned with canonical VND pricing in `wtk-ios` (`75fa9bb`): updated `com.tappyai.ios.pro.monthly` in `Products.storekit` from legacy 99K to 179.000đ (`179000`) and replaced "unlimited" description with quota v2 30 questions/day ("30 câu hỏi AI mỗi ngày" / "30 AI questions daily") matching Momo 1-month plan; static checks verified (1793 keys valid, 0 missing Swift keys, plists valid, no tracked secrets).
 - 2026-10-22: Final security patch for Apple IAP H1/H2: (H1) Authoritative Product ID derived strictly from verified Apple transaction payload in verify route (rejecting client-sent product mismatch with 400 invalid_product and enforcing targetPlan derivation from verifiedProductId); (H2) APPLE_IAP_ALLOW_SANDBOX enforced as opt-in flag, default OFF across all code paths (POST /api/iap/apple/verify, App Store Server API fallback getSubscriptionStatuses with 4040010 check, and Server Notifications v2 in notifications/route.ts); unit test suites added/updated in transactionPolicy, verify, notifications, and new api.test.ts (52/52 Apple IAP tests pass; full 25 test files, 263/263 pass; tsc clean 0 errors).
+- 2026-10-22: Merged PR #271 (`fix(iap): enforce authoritative product mapping and opt-in sandbox policy`) into `main` at commit `4281936`; verified all required checks pass (Test suite, Types/lint/SQL grants, AI architecture rules, Brand registry validation); Vercel Production deployment confirmed live running `4281936` via `https://www.tappyai.com/api/version`.
