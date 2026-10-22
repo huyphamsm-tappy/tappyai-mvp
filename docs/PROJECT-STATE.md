@@ -14,7 +14,7 @@ Last updated: 2026-10-22.
 
 | Platform | Worktree | Branch | SHA | Label |
 |---|---|---|---|---|
-| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `d508c31` | VERIFIED (`git rev-parse HEAD`, 22/10) |
+| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `595223e` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 | Android | `D:/TappyAI-wt/wtk-android` | `android/phase-k-web-parity` | `b6bf3a7` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 | iOS | `D:/TappyAI-wt/wtk-ios` | `ios/phase-k-web-parity` | `75fa9bb` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 
@@ -81,9 +81,9 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 | 22/10 | `d508c31` | `vitest run` on appleIapPolicy & appleSignIn suite (`src/app/api/iap/apple/appleIapPolicy.test.ts`, `src/app/api/config/appleSignInConfig.test.ts`, `src/lib/apple-iap/jws.test.ts`) | 3 files, 46 tests pass, exit 0 | VERIFIED |
 | 22/10 | `d508c31` | `vitest run` on full subscription & payment suite (23 files, 213 tests) | 23 files, 213/213 pass, exit 0 | VERIFIED |
 | 22/10 | `d508c31` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
-| 22/10 | H1/H2 patch | `vitest run` on Apple IAP suites (`appleIapPolicy.test.ts`, `api.test.ts`, `jws.test.ts`) | 3 files, 52/52 pass, exit 0 | VERIFIED |
-| 22/10 | H1/H2 patch | `vitest run` on full subscription & payment suite (25 files, 263 tests) | 25 files, 263/263 pass, exit 0 | VERIFIED |
-| 22/10 | H1/H2 patch | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
+| 22/10 | `595223e` | `vitest run` on Apple IAP suites (`appleIapPolicy.test.ts`, `api.test.ts`, `jws.test.ts`) | 3 files, 52/52 pass, exit 0 | VERIFIED |
+| 22/10 | `595223e` | `vitest run` on full subscription & payment suite (25 files, 263 tests) | 25 files, 263/263 pass, exit 0 | VERIFIED |
+| 22/10 | `595223e` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
 | 22/10 | `75fa9bb` (iOS) | offline static check on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
 | 22/10 | `1910981` (iOS) | offline static check on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
 | 22/10 | `4cf4816` (iOS) | `static_check.py` on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
