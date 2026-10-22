@@ -82,14 +82,18 @@ describe('checkAppleTransaction', () => {
   })
   it.each([
     [{ bundleId: 'com.attacker.app' }, 'wrong_bundle'],
-    [{ environment: 'Sandbox' }, 'wrong_environment'],
+    [{ environment: 'ForeignEnv' }, 'wrong_environment'],
     [{ productId: 'com.tappyai.ios.coins' }, 'unknown_product'],
     [{ revocationDate: Date.now() }, 'revoked'],
   ])('refuses %o → %s', (patch, reason) => {
     expect(checkAppleTransaction({ ...OURS, ...patch } as never)).toBe(reason)
   })
-  it('Sandbox is accepted only by a deployment configured for it', () => {
-    expect(checkAppleTransaction({ ...OURS, environment: 'Sandbox' }, {}, { APPLE_IAP_ENV: 'Sandbox' } as never)).toBeNull()
+  it('accepts both Production and Sandbox by default on production', () => {
+    expect(checkAppleTransaction({ ...OURS, environment: 'Production' })).toBeNull()
+    expect(checkAppleTransaction({ ...OURS, environment: 'Sandbox' })).toBeNull()
+  })
+  it('Sandbox is rejected when APPLE_IAP_ALLOW_SANDBOX is false', () => {
+    expect(checkAppleTransaction({ ...OURS, environment: 'Sandbox' }, {}, { APPLE_IAP_ALLOW_SANDBOX: 'false' } as never)).toBe('wrong_environment')
   })
 })
 
@@ -101,10 +105,42 @@ describe('POST /api/iap/apple/verify — the client-JWS fallback', () => {
     expect(h.state.upserts).toEqual([])
   })
 
-  it('🚨 a free Sandbox purchase does not grant Pro on a Production deployment', async () => {
+  it('a valid Sandbox purchase grants Pro with bounded expiry and ledger note', async () => {
     h.state.tx = { ...OURS, environment: 'Sandbox' }
-    expect((await post(claim())).status).toBe(400)
+    const res = await post(claim())
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body).toMatchObject({ isPro: true, plan: 'momo' })
+    expect(h.state.upserts[0]).toMatchObject({
+      user_id: 'u1',
+      plan: 'momo',
+      source: 'apple_iap',
+      grant_note: 'apple_iap:sandbox',
+      status: 'active',
+    })
+    expect(h.state.rpcCalls[0]).toMatchObject({
+      fn: 'p8_apply_entitlement',
+      args: expect.objectContaining({
+        p_user: 'u1',
+        p_note: 'apple_iap:sandbox',
+      }),
+    })
+  })
+
+  it('a transaction with unknown environment is rejected', async () => {
+    h.state.tx = { ...OURS, environment: 'UnknownEnv' }
+    const res = await post(claim())
+    expect(res.status).toBe(400)
     expect(h.state.upserts).toEqual([])
+  })
+
+  it('an expired Sandbox transaction does not grant Pro', async () => {
+    h.state.tx = { ...OURS, environment: 'Sandbox', expiresDate: Date.now() - 60_000 }
+    const res = await post(claim())
+    expect(res.status).toBe(200)
+    const body = await res.json()
+    expect(body).toMatchObject({ isPro: false })
+    expect(h.state.rpcCalls).toEqual([])
   })
 
   it('🚨 a JWS for a different subscription cannot stand in for the one claimed', async () => {
@@ -188,8 +224,26 @@ describe('POST /api/iap/apple/notifications', () => {
     expect(h.state.upserts).toEqual([])
   })
 
-  it('🚨 a Sandbox notification does not touch a Production deployment', async () => {
+  it('a Sandbox notification is accepted and extends entitlement in the ledger', async () => {
     h.state.notifData = { bundleId: 'com.tappyai.ios', environment: 'Sandbox' }
+    h.state.subRow = { user_id: 'u1' }
+    h.state.tx = { ...OURS, environment: 'Sandbox', productId: 'tappy_momo_1m', expiresDate: FUTURE + 30 * 86_400_000 }
+    const res = await call()
+    expect(res.status).toBe(200)
+    expect(await res.json()).toMatchObject({ ok: true })
+    expect(h.state.rpcCalls).toContainEqual(
+      expect.objectContaining({
+        fn: 'p8_apply_entitlement',
+        args: expect.objectContaining({
+          p_user: 'u1',
+          p_note: 'apple_iap:sandbox',
+        }),
+      })
+    )
+  })
+
+  it('a notification with foreign or invalid environment is rejected', async () => {
+    h.state.notifData = { bundleId: 'com.tappyai.ios', environment: 'ForeignEnv' }
     h.state.subRow = { user_id: 'u1' }
     expect(await (await call()).json()).toMatchObject({ ok: false, reason: 'wrong_environment' })
     expect(h.state.upserts).toEqual([])

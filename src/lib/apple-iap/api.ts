@@ -47,9 +47,9 @@ async function makeAuthJWT(): Promise<string> {
     .sign(privateKey)
 }
 
-async function appleGet<T>(path: string): Promise<T> {
+async function appleGet<T>(path: string, base: string = apiBase()): Promise<T> {
   const jwt = await makeAuthJWT()
-  const res = await fetch(`${apiBase()}${path}`, {
+  const res = await fetch(`${base}${path}`, {
     headers: { Authorization: `Bearer ${jwt}` },
     // Never cache — always fetch fresh entitlement data
     cache: 'no-store',
@@ -91,11 +91,20 @@ export interface SubscriptionStatusResponse {
 /**
  * GET /inApps/v1/subscriptions/{originalTransactionId}
  * Returns the latest subscription status for all groups under this transaction.
+ * Retries against Sandbox if the primary Production call returns 404 (Apple App Review / TestFlight).
  */
 export async function getSubscriptionStatuses(
   originalTransactionId: string
 ): Promise<SubscriptionStatusResponse> {
-  return appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`)
+  const primary = apiBase()
+  try {
+    return await appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`, primary)
+  } catch (err: unknown) {
+    if (primary === PRODUCTION_BASE && err instanceof Error && err.message.includes('404')) {
+      return await appleGet(`/inApps/v1/subscriptions/${originalTransactionId}`, SANDBOX_BASE)
+    }
+    throw err
+  }
 }
 
 /**
