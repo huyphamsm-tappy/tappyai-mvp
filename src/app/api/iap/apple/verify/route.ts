@@ -84,10 +84,10 @@ export async function POST(req: Request) {
             })
             if (refusal) {
               console.error('[iap/apple/verify] API signedTransactionInfo refused:', refusal)
-              return NextResponse.json(
-                { error: refusal === 'product_mismatch' || refusal === 'unknown_product' ? 'invalid_product' : 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) },
-                { status: 400 }
-              )
+              if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
+                return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+              }
+              return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
             }
             verifiedTx = decoded
             expiresAt = decoded.expiresDate ? new Date(decoded.expiresDate) : null
@@ -142,10 +142,10 @@ export async function POST(req: Request) {
         })
         if (refusal) {
           console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
-          return NextResponse.json(
-            { error: refusal === 'product_mismatch' || refusal === 'unknown_product' ? 'invalid_product' : 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) },
-            { status: 400 }
-          )
+          if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
+            return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+          }
+          return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
         }
         verifiedTx = decoded
         verifiedEnv = decoded.environment || 'Production'
