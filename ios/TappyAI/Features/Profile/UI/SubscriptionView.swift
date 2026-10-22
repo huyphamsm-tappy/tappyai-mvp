@@ -44,6 +44,7 @@ struct SubscriptionView: View {
                     statusCard(s)
                     pricingCards(s)
                     if !s.isPro { restoreRow }
+                    subscriptionTermsSection
                     faqCard
                 }
             }
@@ -104,7 +105,7 @@ struct SubscriptionView: View {
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Color(red: 146/255, green: 64/255, blue: 14/255))
                     if let end = s.currentPeriodEnd {
-                        Text("Gia hạn: \(formatDate(end))")
+                        Text(String(format: NSLocalizedString("sub.renewalDate", comment: ""), formatDate(end)))
                             .font(.system(size: 11))
                             .foregroundStyle(Color(red: 180/255, green: 83/255, blue: 9/255))
                     }
@@ -272,13 +273,16 @@ struct SubscriptionView: View {
                                 if purchaseLoading {
                                     ProgressView().tint(.white)
                                 } else if let p = storeProduct {
-                                    Text("Nâng cấp Pro — \(p.displayPrice)/tháng")
+                                    Text(String(format: NSLocalizedString("sub.upgradeProPrice", comment: ""), p.displayPrice))
                                         .font(.system(size: 14, weight: .bold))
                                         .foregroundStyle(.white)
                                 } else {
-                                    Text("common.comingSoon")
-                                        .font(.system(size: 13, weight: .medium))
-                                        .foregroundStyle(.white.opacity(0.8))
+                                    HStack(spacing: Spacing.xs) {
+                                        Image(systemName: "arrow.clockwise")
+                                        Text("sub.retryStore")
+                                    }
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundStyle(.white.opacity(0.9))
                                 }
                             }
                             .frame(maxWidth: .infinity)
@@ -286,12 +290,12 @@ struct SubscriptionView: View {
                             .background(
                                 storeProduct != nil
                                     ? Color.white.opacity(0.25)
-                                    : Color.white.opacity(0.12)
+                                    : Color.white.opacity(0.18)
                             )
                             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                         }
                         .buttonStyle(.plain)
-                        .disabled(purchaseLoading || storeProduct == nil)
+                        .disabled(purchaseLoading)
 
                         if let err = purchaseError {
                             Text(err)
@@ -350,6 +354,41 @@ struct SubscriptionView: View {
             }
         }
         .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Legal and Subscription Disclosure (App Store Guideline 3.1.2)
+
+    private var subscriptionTermsSection: some View {
+        VStack(spacing: Spacing.xs) {
+            Text("sub.terms.autoRenewNotice")
+                .font(.system(size: 11))
+                .foregroundStyle(TappyColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, Spacing.sm)
+
+            HStack(spacing: Spacing.md) {
+                if let termsUrl = URL(string: "https://tappyai.com/terms") {
+                    Link(destination: termsUrl) {
+                        Text("settings.terms")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(TappyColor.primary)
+                    }
+                }
+                Text("•")
+                    .font(.system(size: 10))
+                    .foregroundStyle(TappyColor.textSecondary.opacity(0.5))
+                if let privacyUrl = URL(string: "https://tappyai.com/privacy") {
+                    Link(destination: privacyUrl) {
+                        Text("settings.privacyPolicy")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundStyle(TappyColor.primary)
+                    }
+                }
+            }
+            .padding(.top, 2)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, Spacing.xs)
     }
 
     // MARK: - FAQ
@@ -412,6 +451,14 @@ struct SubscriptionView: View {
         purchaseLoading = true
         purchaseError = nil
         purchasePending = false
+        if storeProduct == nil {
+            await loadProduct()
+        }
+        guard storeProduct != nil else {
+            purchaseError = NSLocalizedString("sub.error.loadFailed", comment: "")
+            purchaseLoading = false
+            return
+        }
         do {
             let result = try await deps.paymentProvider.purchase()
             switch result {

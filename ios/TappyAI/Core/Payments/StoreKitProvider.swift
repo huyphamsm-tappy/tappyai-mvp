@@ -6,7 +6,6 @@ import UIKit
 @MainActor
 final class StoreKitProvider: PaymentProvider {
     private let api: APIClient
-    private let productId = ProductCatalog.proMonthlyId
     private var cachedProduct: Product?
     private let log = AppLogger.app
 
@@ -17,9 +16,11 @@ final class StoreKitProvider: PaymentProvider {
     // MARK: - PaymentProvider
 
     func availableProduct() async throws -> AppProduct? {
-        let products = try await Product.products(for: [productId])
-        guard let p = products.first else {
-            log.info("StoreKit: product '\(productId)' not found in App Store Connect")
+        let products = try await Product.products(for: ProductCatalog.allProductIds)
+        guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId })
+                   ?? products.first(where: { $0.id == ProductCatalog.momoMonthlyId })
+                   ?? products.first else {
+            log.info("StoreKit: none of \(ProductCatalog.allProductIds) found in App Store Connect")
             return nil
         }
         cachedProduct = p
@@ -31,9 +32,11 @@ final class StoreKitProvider: PaymentProvider {
         if let cached = cachedProduct {
             product = cached
         } else {
-            let loaded = try await Product.products(for: [productId])
-            guard let p = loaded.first else {
-                throw AppError.unexpected(message: "Product '\(productId)' not found in App Store Connect")
+            let loaded = try await Product.products(for: ProductCatalog.allProductIds)
+            guard let p = loaded.first(where: { $0.id == ProductCatalog.proMonthlyId })
+                       ?? loaded.first(where: { $0.id == ProductCatalog.momoMonthlyId })
+                       ?? loaded.first else {
+                throw AppError.unexpected(message: "No product found in App Store Connect")
             }
             cachedProduct = p
             product = p
@@ -67,7 +70,7 @@ final class StoreKitProvider: PaymentProvider {
         var restored = false
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result,
-                  transaction.productID == productId,
+                  ProductCatalog.allProductIds.contains(transaction.productID),
                   transaction.revocationDate == nil else { continue }
             await syncWithBackend(transaction)
             await transaction.finish()
@@ -103,6 +106,7 @@ final class StoreKitProvider: PaymentProvider {
                 "transactionId": String(transaction.id),
                 "expiresDate": transaction.expirationDate?.timeIntervalSince1970 ?? 0.0,
                 "productId": transaction.productID,
+                "signedTransactionInfo": transaction.jwsRepresentation,
             ])
             let endpoint = Endpoint(
                 path: "/api/iap/apple/verify",

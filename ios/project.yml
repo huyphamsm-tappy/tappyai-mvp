@@ -64,6 +64,7 @@ targets:
         - TappyAITests
         - TappyAIUITests
       gatherCoverageData: true
+      storeKitConfiguration: TappyAI/Resources/Products.storekit
 
   TappyAITests:
     type: bundle.unit-test

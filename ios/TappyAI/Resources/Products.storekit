@@ -1,0 +1,72 @@
+{
+  "identifier" : "TappyAI_Products",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_billingIssuesEnabled" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "vi_VN",
+    "_storefront" : "VNM",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "com.tappyai.ios.subscriptions",
+      "localizations" : [
+        {
+          "description" : "Gói đăng ký TappyAI Pro",
+          "displayName" : "TappyAI Subscriptions",
+          "locale" : "vi"
+        },
+        {
+          "description" : "TappyAI Pro Subscriptions",
+          "displayName" : "TappyAI Subscriptions",
+          "locale" : "en_US"
+        }
+      ],
+      "name" : "TappyAI Subscriptions",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "99000",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "1000000001",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Không giới hạn câu hỏi AI và mọi tính năng cao cấp",
+              "displayName" : "TappyAI Pro",
+              "locale" : "vi"
+            },
+            {
+              "description" : "Unlimited AI questions and premium features",
+              "displayName" : "TappyAI Pro",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "com.tappyai.ios.pro.monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "TappyAI Pro Monthly",
+          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

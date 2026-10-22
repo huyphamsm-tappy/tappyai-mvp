@@ -785,504 +785,4084 @@
     },
     "auth.sessionExpired.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Sign in again" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập lại nhé" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign in again"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập lại nhé"
+          }
+        }
       }
     },
     "auth.sessionExpired.message": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Your sign-in has ended, please sign in again. You can keep using Tappy as a guest." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Phiên đăng nhập đã hết, vui lòng đăng nhập lại. Bạn vẫn dùng Tappy như khách được." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your sign-in has ended, please sign in again. You can keep using Tappy as a guest."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phiên đăng nhập đã hết, vui lòng đăng nhập lại. Bạn vẫn dùng Tappy như khách được."
+          }
+        }
       }
     },
     "auth.googleNote": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "A secure Google page opens to sign you in. iOS may show a notice about supabase.co: that is our sign-in service." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Trang đăng nhập Google an toàn sẽ mở ra. iOS có thể hiện thông báo về supabase.co: đó là dịch vụ đăng nhập của Tappy." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A secure Google page opens to sign you in. iOS may show a notice about supabase.co: that is our sign-in service."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang đăng nhập Google an toàn sẽ mở ra. iOS có thể hiện thông báo về supabase.co: đó là dịch vụ đăng nhập của Tappy."
+          }
+        }
       }
     },
     "auth.zalo.unavailable": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Zalo sign-in is not available in the app yet. Please use Google or email for now." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đăng nhập bằng Zalo trong ứng dụng chưa dùng được. Bạn tạm dùng Google hoặc email nhé." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zalo sign-in is not available in the app yet. Please use Google or email for now."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng nhập bằng Zalo trong ứng dụng chưa dùng được. Bạn tạm dùng Google hoặc email nhé."
+          }
+        }
       }
     },
     "profile.account.info.desc": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Name, email, avatar" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tên, email, ảnh đại diện" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name, email, avatar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tên, email, ảnh đại diện"
+          }
+        }
       }
     },
     "profile.row.account.menuDesc": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Details, bookings, preferences, AI plans" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Thông tin, đặt chỗ, sở thích, kế hoạch AI" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details, bookings, preferences, AI plans"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông tin, đặt chỗ, sở thích, kế hoạch AI"
+          }
+        }
       }
     },
     "time.minutesAgo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "%d min ago" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "%d phút trước" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d min ago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d phút trước"
+          }
+        }
       }
     },
     "time.hoursAgo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "%d h ago" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "%d giờ trước" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d h ago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d giờ trước"
+          }
+        }
       }
     },
     "time.daysAgo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "%d d ago" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "%d ngày trước" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d d ago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d ngày trước"
+          }
+        }
       }
     },
     "time.monthsAgo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "%d mo ago" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "%d tháng trước" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d mo ago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d tháng trước"
+          }
+        }
       }
     },
     "time.yearsAgo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "%d y ago" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "%d năm trước" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d y ago"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%d năm trước"
+          }
+        }
       }
     },
     "feed.create.a11y": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Create a post" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đăng bài mới" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a post"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đăng bài mới"
+          }
+        }
       }
     },
-    "feed.sound.tapToUnmute": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tap for sound"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chạm để bật tiếng"}}}},
-    "review.comments.reply": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reply"}}, "vi": {"stringUnit": {"state": "translated", "value": "Trả lời"}}}},
-    "review.comments.react": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "React"}}, "vi": {"stringUnit": {"state": "translated", "value": "Cảm xúc"}}}},
-    "review.comments.replyingTo": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Replying to %@"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang trả lời %@"}}}},
-    "share.card.appsTitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Get the TappyAI app"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tải ứng dụng TappyAI"}}}},
-    "share.card.androidSoon": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Android · Coming soon to Google Play"}}, "vi": {"stringUnit": {"state": "translated", "value": "Android · Sắp có trên Google Play"}}}},
-    "share.card.iosSoon": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "iOS · Coming soon to the App Store"}}, "vi": {"stringUnit": {"state": "translated", "value": "iOS · Sắp có trên App Store"}}}},
-    "share.card.orWebsite": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Or visit the website"}}, "vi": {"stringUnit": {"state": "translated", "value": "Hoặc truy cập website"}}}},
-    "translate.heroEyebrow": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Instant translation"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dịch ngôn ngữ tức thì"}}}},
-    "translate.heroTitle1": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Connect the world"}}, "vi": {"stringUnit": {"state": "translated", "value": "Kết nối thế giới"}}}},
-    "translate.heroTitle2": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "through language"}}, "vi": {"stringUnit": {"state": "translated", "value": "bằng ngôn ngữ"}}}},
-    "translate.heroBody": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Fast, smooth translation into %lld languages."}}, "vi": {"stringUnit": {"state": "translated", "value": "Dịch nhanh và mượt mà sang %lld ngôn ngữ."}}}},
-    "currency.heroSubtitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates refreshed hourly from a public source"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật hàng giờ từ nguồn công khai"}}}},
-    "currency.chipFast": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Instant calculation"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tính tức thì"}}}},
-    "currency.chipCurrencies": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "%lld currencies"}}, "vi": {"stringUnit": {"state": "translated", "value": "%lld loại tiền tệ"}}}},
-    "currency.chipSource": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Source: open.er-api.com"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nguồn: open.er-api.com"}}}},
-    "splitBill.heroEyebrow": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tip calculator"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tính tiền tip"}}}},
-    "splitBill.heroSubtitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Share easily, pay fairly"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia sẻ dễ dàng, thanh toán công bằng"}}}},
-    "splitBill.chipPeople": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "%1$lld–%2$lld people"}}, "vi": {"stringUnit": {"state": "translated", "value": "%1$lld–%2$lld người"}}}},
-    "splitBill.chipTip": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Custom tip"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tip tùy chỉnh"}}}},
-    "splitBill.chipModes": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Split evenly or by item"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia đều hoặc theo món"}}}},
-    "scan.heroEyebrow": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "TappyAI OCR"}}, "vi": {"stringUnit": {"state": "translated", "value": "TappyAI OCR"}}}},
-    "scan.heroTitle1": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Turn images into"}}, "vi": {"stringUnit": {"state": "translated", "value": "Biến hình ảnh thành"}}}},
-    "scan.heroTitle2": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "text"}}, "vi": {"stringUnit": {"state": "translated", "value": "văn bản"}}}},
-    "scan.heroBody": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Snap or upload a photo of a document, then tap scan — TappyAI reads and extracts all the text in the image for you."}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp hoặc tải ảnh tài liệu rồi bấm quét — TappyAI đọc và trích xuất toàn bộ chữ trong ảnh cho bạn."}}}},
-    "fortune.heroEyebrow": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Online fortune telling 🔮"}}, "vi": {"stringUnit": {"state": "translated", "value": "Xem bói online 🔮"}}}},
-    "fortune.heroTitleLine1": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Wondering what today"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tò mò vận may"}}}},
-    "fortune.heroTitleLine2": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "has in store for you?"}}, "vi": {"stringUnit": {"state": "translated", "value": "hôm nay của bạn?"}}}},
-    "fortune.heroDesc": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tarot, Chinese zodiac horoscope and star signs — just for fun, entertainment only."}}, "vi": {"stringUnit": {"state": "translated", "value": "Tarot, tử vi 12 con giáp và cung hoàng đạo — chỉ mang tính giải trí, tham khảo cho vui."}}}},
-    "fortune.zodiac.desc": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter your birth date to find your sign, personality traits and current luck."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập ngày sinh để biết cung của bạn, tính cách và vận may hiện tại."}}}},
-    "scan.cameraTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Photograph a document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ảnh tài liệu"}}}},
-    "scan.cameraDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Use your device camera"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dùng camera của thiết bị"}}}},
-    "scan.cameraCta" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Open camera"}}, "vi": {"stringUnit": {"state": "translated", "value": "Mở camera"}}}},
-    "scan.galleryTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Pick from gallery"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh từ thư viện"}}}},
-    "scan.galleryDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Choose a photo already on your device"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh có sẵn trong thiết bị"}}}},
-    "scan.galleryCta" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Choose image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chọn ảnh"}}}},
-    "scan.previewLabel" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Selected image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Ảnh đã chọn"}}}},
-    "scan.clearImage" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Remove this image"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bỏ ảnh này"}}}},
-    "scan.exportLabel" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Export content"}}, "vi": {"stringUnit": {"state": "translated", "value": "Xuất nội dung"}}}},
-    "scan.copy" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copy"}}, "vi": {"stringUnit": {"state": "translated", "value": "Sao chép"}}}},
-    "scan.copied" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copied!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chép!"}}}},
-    "scan.share" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Share"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia sẻ"}}}},
-    "scan.sharedDone" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Shared!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chia sẻ!"}}}},
-    "scan.formatsTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Supported formats"}}, "vi": {"stringUnit": {"state": "translated", "value": "Định dạng hỗ trợ"}}}},
-    "scan.formatsDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Sharp images give the best results"}}, "vi": {"stringUnit": {"state": "translated", "value": "Ảnh rõ nét cho kết quả tốt nhất"}}}},
-    "scan.tipsTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tips for better results"}}, "vi": {"stringUnit": {"state": "translated", "value": "Mẹo để có kết quả tốt hơn"}}}},
-    "scan.tipLightTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Good lighting"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đủ ánh sáng"}}}},
-    "scan.tipLightDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Shoot somewhere bright and avoid shadows"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ở nơi đủ sáng, tránh bóng đổ"}}}},
-    "scan.tipAngleTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Keep it straight"}}, "vi": {"stringUnit": {"state": "translated", "value": "Giữ thẳng góc"}}}},
-    "scan.tipAngleDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Lay the document flat and shoot head-on"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đặt tài liệu trên mặt phẳng, chụp thẳng góc"}}}},
-    "scan.tipSharpTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Sharp and clear"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nét và rõ ràng"}}}},
-    "scan.tipSharpDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Make sure the text is crisp, not blurred"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đảm bảo chữ rõ nét, không bị mờ"}}}},
-    "scan.tipLangTitle" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Vietnamese & English"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tiếng Việt & tiếng Anh"}}}},
-    "scan.tipLangDesc" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Clear printed text in either language reads best"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chữ in rõ ràng ở cả hai ngôn ngữ đọc tốt nhất"}}}},
-    "scan.tipLimit" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Limit of %lld scans per day"}}, "vi": {"stringUnit": {"state": "translated", "value": "Giới hạn %lld lần quét mỗi ngày"}}}},
-    "scan.capCapture" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Snap or upload a photo"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp hoặc tải ảnh"}}}},
-    "scan.capLangs" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Vietnamese & English"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tiếng Việt & tiếng Anh"}}}},
-    "translate.footerTip" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Free · Up to 30 translations/day · No account needed"}}, "vi": {"stringUnit": {"state": "translated", "value": "Miễn phí · Tối đa 30 lần/ngày · Không cần tài khoản"}}}},
-    "translate.sourceAuto" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Source language detected automatically"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tự nhận diện ngôn ngữ gốc"}}}},
-    "translate.readAloud" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Read aloud"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đọc to"}}}},
-    "translate.stopSpeaking" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Stop"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dừng"}}}},
-    "translate.heroSubtitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "30 languages · No sign-in needed · Read results aloud"}}, "vi": {"stringUnit": {"state": "translated", "value": "30 ngôn ngữ · Không cần đăng nhập · Đọc to kết quả"}}}},
-    "smartTools.cta": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Do more with TappyAI"}}, "vi": {"stringUnit": {"state": "translated", "value": "Làm nhiều hơn cùng TappyAI"}}}},
-    "translate.error.network": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Unable to connect. Please check your network."}}, "vi": {"stringUnit": {"state": "translated", "value": "Không thể kết nối. Vui lòng kiểm tra mạng."}}}},
-    "vietcontent.copy": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copy"}}, "vi": {"stringUnit": {"state": "translated", "value": "Copy"}}}},
-    "vietcontent.copied": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copied"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã copy"}}}},
-    "translate.copied" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Copied!"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đã chép!"}}}},
-    "currency.ratesUpdated" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates updated %@ · Source: open.er-api.com"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật %@ · Nguồn: open.er-api.com"}}}},
-    "currency.rateStatusLive" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates refreshed hourly"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá cập nhật hàng giờ"}}}},
-    "currency.rateStatusFallback" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Estimated rates"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá ước tính"}}}},
-    "currency.to": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "To"}}, "vi": {"stringUnit": {"state": "translated", "value": "Sang"}}}},
-    "currency.VND": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Vietnamese Dong"}}, "vi": {"stringUnit": {"state": "translated", "value": "Việt Nam Đồng"}}}},
-    "currency.USD": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "US Dollar"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đô la Mỹ"}}}},
-    "currency.EUR": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Euro"}}, "vi": {"stringUnit": {"state": "translated", "value": "Euro"}}}},
-    "currency.JPY": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Japanese Yen"}}, "vi": {"stringUnit": {"state": "translated", "value": "Yên Nhật"}}}},
-    "currency.KRW": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "South Korean Won"}}, "vi": {"stringUnit": {"state": "translated", "value": "Won Hàn Quốc"}}}},
-    "currency.GBP": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "British Pound"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bảng Anh"}}}},
-    "currency.AUD": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Australian Dollar"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đô Úc"}}}},
-    "currency.SGD": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Singapore Dollar"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đô Singapore"}}}},
-    "currency.THB": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Thai Baht"}}, "vi": {"stringUnit": {"state": "translated", "value": "Baht Thái"}}}},
-    "currency.CNY": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Chinese Yuan"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhân dân tệ"}}}},
-    "currency.HKD": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Hong Kong Dollar"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đô Hồng Kông"}}}},
-    "currency.TWD": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Taiwan Dollar"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đô Đài Loan"}}}},
-    "splitBill.tipLabel": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tip / service charge (%)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tip / phụ thu (%)"}}}},
-    "splitBill.tipShortLabel": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tip"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tip"}}}},
-    "splitBill.includesTip": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "(Includes %1$@%% tip · Total: %2$@ đ)"}}, "vi": {"stringUnit": {"state": "translated", "value": "(Bao gồm %1$@%% tip · Tổng: %2$@ đ)"}}}},
-    "splitBill.title": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Split the bill"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia tiền"}}}},
-    "voice.listening" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Listening…"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang nghe…"}}}},
-    "voice.micHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Tap to speak"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bấm để nói"}}}},
-    "voice.stopListening" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Stop listening"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dừng nghe"}}}},
+    "feed.sound.tapToUnmute": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap for sound"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chạm để bật tiếng"
+          }
+        }
+      }
+    },
+    "review.comments.reply": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reply"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trả lời"
+          }
+        }
+      }
+    },
+    "review.comments.react": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "React"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cảm xúc"
+          }
+        }
+      }
+    },
+    "review.comments.replyingTo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Replying to %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang trả lời %@"
+          }
+        }
+      }
+    },
+    "share.card.appsTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get the TappyAI app"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tải ứng dụng TappyAI"
+          }
+        }
+      }
+    },
+    "share.card.androidSoon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android · Coming soon to Google Play"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Android · Sắp có trên Google Play"
+          }
+        }
+      }
+    },
+    "share.card.iosSoon": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS · Coming soon to the App Store"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS · Sắp có trên App Store"
+          }
+        }
+      }
+    },
+    "share.card.orWebsite": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Or visit the website"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hoặc truy cập website"
+          }
+        }
+      }
+    },
+    "translate.heroEyebrow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant translation"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch ngôn ngữ tức thì"
+          }
+        }
+      }
+    },
+    "translate.heroTitle1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect the world"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối thế giới"
+          }
+        }
+      }
+    },
+    "translate.heroTitle2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "through language"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bằng ngôn ngữ"
+          }
+        }
+      }
+    },
+    "translate.heroBody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fast, smooth translation into %lld languages."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch nhanh và mượt mà sang %lld ngôn ngữ."
+          }
+        }
+      }
+    },
+    "currency.heroSubtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates refreshed hourly from a public source"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tỷ giá cập nhật hàng giờ từ nguồn công khai"
+          }
+        }
+      }
+    },
+    "currency.chipFast": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instant calculation"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tính tức thì"
+          }
+        }
+      }
+    },
+    "currency.chipCurrencies": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld currencies"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld loại tiền tệ"
+          }
+        }
+      }
+    },
+    "currency.chipSource": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source: open.er-api.com"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nguồn: open.er-api.com"
+          }
+        }
+      }
+    },
+    "splitBill.heroEyebrow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip calculator"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tính tiền tip"
+          }
+        }
+      }
+    },
+    "splitBill.heroSubtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share easily, pay fairly"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ dễ dàng, thanh toán công bằng"
+          }
+        }
+      }
+    },
+    "splitBill.chipPeople": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld–%2$lld people"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld–%2$lld người"
+          }
+        }
+      }
+    },
+    "splitBill.chipTip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom tip"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip tùy chỉnh"
+          }
+        }
+      }
+    },
+    "splitBill.chipModes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split evenly or by item"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia đều hoặc theo món"
+          }
+        }
+      }
+    },
+    "scan.heroEyebrow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI OCR"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI OCR"
+          }
+        }
+      }
+    },
+    "scan.heroTitle1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn images into"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biến hình ảnh thành"
+          }
+        }
+      }
+    },
+    "scan.heroTitle2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "text"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "văn bản"
+          }
+        }
+      }
+    },
+    "scan.heroBody": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snap or upload a photo of a document, then tap scan — TappyAI reads and extracts all the text in the image for you."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chụp hoặc tải ảnh tài liệu rồi bấm quét — TappyAI đọc và trích xuất toàn bộ chữ trong ảnh cho bạn."
+          }
+        }
+      }
+    },
+    "fortune.heroEyebrow": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Online fortune telling 🔮"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem bói online 🔮"
+          }
+        }
+      }
+    },
+    "fortune.heroTitleLine1": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wondering what today"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tò mò vận may"
+          }
+        }
+      }
+    },
+    "fortune.heroTitleLine2": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "has in store for you?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hôm nay của bạn?"
+          }
+        }
+      }
+    },
+    "fortune.heroDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarot, Chinese zodiac horoscope and star signs — just for fun, entertainment only."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarot, tử vi 12 con giáp và cung hoàng đạo — chỉ mang tính giải trí, tham khảo cho vui."
+          }
+        }
+      }
+    },
+    "fortune.zodiac.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter your birth date to find your sign, personality traits and current luck."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập ngày sinh để biết cung của bạn, tính cách và vận may hiện tại."
+          }
+        }
+      }
+    },
+    "scan.cameraTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Photograph a document"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chụp ảnh tài liệu"
+          }
+        }
+      }
+    },
+    "scan.cameraDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use your device camera"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dùng camera của thiết bị"
+          }
+        }
+      }
+    },
+    "scan.cameraCta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open camera"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở camera"
+          }
+        }
+      }
+    },
+    "scan.galleryTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick from gallery"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ảnh từ thư viện"
+          }
+        }
+      }
+    },
+    "scan.galleryDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a photo already on your device"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ảnh có sẵn trong thiết bị"
+          }
+        }
+      }
+    },
+    "scan.galleryCta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose image"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ảnh"
+          }
+        }
+      }
+    },
+    "scan.previewLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected image"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh đã chọn"
+          }
+        }
+      }
+    },
+    "scan.clearImage": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove this image"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bỏ ảnh này"
+          }
+        }
+      }
+    },
+    "scan.exportLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xuất nội dung"
+          }
+        }
+      }
+    },
+    "scan.copy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sao chép"
+          }
+        }
+      }
+    },
+    "scan.copied": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã chép!"
+          }
+        }
+      }
+    },
+    "scan.share": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ"
+          }
+        }
+      }
+    },
+    "scan.sharedDone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shared!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã chia sẻ!"
+          }
+        }
+      }
+    },
+    "scan.formatsTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Supported formats"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Định dạng hỗ trợ"
+          }
+        }
+      }
+    },
+    "scan.formatsDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sharp images give the best results"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ảnh rõ nét cho kết quả tốt nhất"
+          }
+        }
+      }
+    },
+    "scan.tipsTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tips for better results"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mẹo để có kết quả tốt hơn"
+          }
+        }
+      }
+    },
+    "scan.tipLightTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Good lighting"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đủ ánh sáng"
+          }
+        }
+      }
+    },
+    "scan.tipLightDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoot somewhere bright and avoid shadows"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chụp ở nơi đủ sáng, tránh bóng đổ"
+          }
+        }
+      }
+    },
+    "scan.tipAngleTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep it straight"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giữ thẳng góc"
+          }
+        }
+      }
+    },
+    "scan.tipAngleDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lay the document flat and shoot head-on"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đặt tài liệu trên mặt phẳng, chụp thẳng góc"
+          }
+        }
+      }
+    },
+    "scan.tipSharpTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sharp and clear"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nét và rõ ràng"
+          }
+        }
+      }
+    },
+    "scan.tipSharpDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make sure the text is crisp, not blurred"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đảm bảo chữ rõ nét, không bị mờ"
+          }
+        }
+      }
+    },
+    "scan.tipLangTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vietnamese & English"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếng Việt & tiếng Anh"
+          }
+        }
+      }
+    },
+    "scan.tipLangDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear printed text in either language reads best"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chữ in rõ ràng ở cả hai ngôn ngữ đọc tốt nhất"
+          }
+        }
+      }
+    },
+    "scan.tipLimit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limit of %lld scans per day"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Giới hạn %lld lần quét mỗi ngày"
+          }
+        }
+      }
+    },
+    "scan.capCapture": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Snap or upload a photo"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chụp hoặc tải ảnh"
+          }
+        }
+      }
+    },
+    "scan.capLangs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vietnamese & English"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiếng Việt & tiếng Anh"
+          }
+        }
+      }
+    },
+    "translate.footerTip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Free · Up to 30 translations/day · No account needed"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Miễn phí · Tối đa 30 lần/ngày · Không cần tài khoản"
+          }
+        }
+      }
+    },
+    "translate.sourceAuto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source language detected automatically"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tự nhận diện ngôn ngữ gốc"
+          }
+        }
+      }
+    },
+    "translate.readAloud": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read aloud"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đọc to"
+          }
+        }
+      }
+    },
+    "translate.stopSpeaking": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dừng"
+          }
+        }
+      }
+    },
+    "translate.heroSubtitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 languages · No sign-in needed · Read results aloud"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 ngôn ngữ · Không cần đăng nhập · Đọc to kết quả"
+          }
+        }
+      }
+    },
+    "smartTools.cta": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do more with TappyAI"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Làm nhiều hơn cùng TappyAI"
+          }
+        }
+      }
+    },
+    "translate.error.network": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unable to connect. Please check your network."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thể kết nối. Vui lòng kiểm tra mạng."
+          }
+        }
+      }
+    },
+    "vietcontent.copy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy"
+          }
+        }
+      }
+    },
+    "vietcontent.copied": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã copy"
+          }
+        }
+      }
+    },
+    "translate.copied": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copied!"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đã chép!"
+          }
+        }
+      }
+    },
+    "currency.ratesUpdated": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates updated %@ · Source: open.er-api.com"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tỷ giá cập nhật %@ · Nguồn: open.er-api.com"
+          }
+        }
+      }
+    },
+    "currency.rateStatusLive": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates refreshed hourly"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tỷ giá cập nhật hàng giờ"
+          }
+        }
+      }
+    },
+    "currency.rateStatusFallback": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Estimated rates"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tỷ giá ước tính"
+          }
+        }
+      }
+    },
+    "currency.to": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sang"
+          }
+        }
+      }
+    },
+    "currency.VND": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vietnamese Dong"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Việt Nam Đồng"
+          }
+        }
+      }
+    },
+    "currency.USD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "US Dollar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đô la Mỹ"
+          }
+        }
+      }
+    },
+    "currency.EUR": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Euro"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Euro"
+          }
+        }
+      }
+    },
+    "currency.JPY": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Japanese Yen"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yên Nhật"
+          }
+        }
+      }
+    },
+    "currency.KRW": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "South Korean Won"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Won Hàn Quốc"
+          }
+        }
+      }
+    },
+    "currency.GBP": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "British Pound"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bảng Anh"
+          }
+        }
+      }
+    },
+    "currency.AUD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Australian Dollar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đô Úc"
+          }
+        }
+      }
+    },
+    "currency.SGD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Singapore Dollar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đô Singapore"
+          }
+        }
+      }
+    },
+    "currency.THB": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thai Baht"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baht Thái"
+          }
+        }
+      }
+    },
+    "currency.CNY": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chinese Yuan"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhân dân tệ"
+          }
+        }
+      }
+    },
+    "currency.HKD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hong Kong Dollar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đô Hồng Kông"
+          }
+        }
+      }
+    },
+    "currency.TWD": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taiwan Dollar"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đô Đài Loan"
+          }
+        }
+      }
+    },
+    "splitBill.tipLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip / service charge (%)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip / phụ thu (%)"
+          }
+        }
+      }
+    },
+    "splitBill.tipShortLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tip"
+          }
+        }
+      }
+    },
+    "splitBill.includesTip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(Includes %1$@%% tip · Total: %2$@ đ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(Bao gồm %1$@%% tip · Tổng: %2$@ đ)"
+          }
+        }
+      }
+    },
+    "splitBill.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split the bill"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia tiền"
+          }
+        }
+      }
+    },
+    "voice.listening": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Listening…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang nghe…"
+          }
+        }
+      }
+    },
+    "voice.micHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tap to speak"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bấm để nói"
+          }
+        }
+      }
+    },
+    "voice.stopListening": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stop listening"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dừng nghe"
+          }
+        }
+      }
+    },
     "feed.video.failed": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "This clip could not load." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Không tải được clip này." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This clip could not load."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không tải được clip này."
+          }
+        }
       }
     },
     "scam.tab.check": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Check a link" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra link" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check a link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiểm tra link"
+          }
+        }
       }
     },
     "scam.tab.library": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Scam scenarios" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tình huống lừa đảo" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scam scenarios"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tình huống lừa đảo"
+          }
+        }
       }
     },
     "scam.emergency.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Think you were scammed?" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nghi bị lừa?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Think you were scammed?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nghi bị lừa?"
+          }
+        }
       }
     },
     "scam.emergency.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "If you already sent money or shared an OTP code, call the police now." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "If you already sent money or shared an OTP code, call the police now."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nếu đã chuyển tiền hoặc lộ mã OTP, gọi Công an ngay."
+          }
+        }
       }
     },
     "scam.emergency.call": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Call 0692.345.860" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Gọi 0692.345.860" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Call 0692.345.860"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gọi 0692.345.860"
+          }
+        }
       }
     },
-    "scam.emergency.hotlineTitle": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Hotline"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đường Dây Nóng"}}}},
-    "scam.emergency.agency": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Criminal Police Department - Ministry of Public Security"}}, "vi": {"stringUnit": {"state": "translated", "value": "Cục Cảnh sát hình sự - Bộ Công an"}}}},
-    "scam.emergency.hotlineDesc": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "The hotline that receives reports and denunciations of fraud."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo."}}}},
-    "scam.emergency.sourceLabel": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Source:"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nguồn:"}}}},
-    "scam.emergency.sourceName": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Ministry of Public Security"}}, "vi": {"stringUnit": {"state": "translated", "value": "Bộ Công an"}}}},
+    "scam.emergency.hotlineTitle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hotline"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường Dây Nóng"
+          }
+        }
+      }
+    },
+    "scam.emergency.agency": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Criminal Police Department - Ministry of Public Security"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cục Cảnh sát hình sự - Bộ Công an"
+          }
+        }
+      }
+    },
+    "scam.emergency.hotlineDesc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The hotline that receives reports and denunciations of fraud."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường dây nóng tiếp nhận tin báo, tố giác về lừa đảo."
+          }
+        }
+      }
+    },
+    "scam.emergency.sourceLabel": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source:"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nguồn:"
+          }
+        }
+      }
+    },
+    "scam.emergency.sourceName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ministry of Public Security"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bộ Công an"
+          }
+        }
+      }
+    },
     "scam.lib.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Scenario" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tình huống" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scenario"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tình huống"
+          }
+        }
       }
     },
     "scam.lib.source": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Source: Ministry of Public Security web portal" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nguồn: Cổng Thông tin điện tử Bộ Công an" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Source: Ministry of Public Security web portal"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nguồn: Cổng Thông tin điện tử Bộ Công an"
+          }
+        }
       }
     },
     "scam.lib.published": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Published: %@" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Ngày đăng: %@" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Published: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ngày đăng: %@"
+          }
+        }
       }
     },
     "scam.lib.readOriginal": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Read the original warning" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đọc cảnh báo gốc" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read the original warning"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đọc cảnh báo gốc"
+          }
+        }
       }
     },
     "scam.lib.notGov": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "TappyAI is not a government agency. The warning comes from the Ministry of Public Security; the section marked TappyAI guidance is our own extra advice." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không phải cơ quan nhà nước. Cảnh báo lấy từ Bộ Công an; phần «Hướng dẫn của TappyAI» là lời khuyên thêm của chúng tôi." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI is not a government agency. The warning comes from the Ministry of Public Security; the section marked TappyAI guidance is our own extra advice."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI không phải cơ quan nhà nước. Cảnh báo lấy từ Bộ Công an; phần «Hướng dẫn của TappyAI» là lời khuyên thêm của chúng tôi."
+          }
+        }
       }
     },
     "scam.lib.tappyGuidance": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "TappyAI guidance" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Hướng dẫn của TappyAI" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI guidance"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hướng dẫn của TappyAI"
+          }
+        }
       }
     },
     "scam.lib.tappyGuidance.note": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Added by TappyAI, not a quotation from the source." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Do TappyAI bổ sung, không phải trích dẫn từ nguồn." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Added by TappyAI, not a quotation from the source."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do TappyAI bổ sung, không phải trích dẫn từ nguồn."
+          }
+        }
       }
     },
     "scam.lib.warningSigns": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Warning signs" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Dấu hiệu nhận biết" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning signs"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dấu hiệu nhận biết"
+          }
+        }
       }
     },
     "scam.lib.commonRequests": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "What they usually ask for" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Họ thường yêu cầu" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What they usually ask for"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Họ thường yêu cầu"
+          }
+        }
       }
     },
     "scam.lib.whatToDo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "What to do" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nên làm" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What to do"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nên làm"
+          }
+        }
       }
     },
     "scam.lib.whatNotToDo": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "What not to do" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Không nên làm" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What not to do"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không nên làm"
+          }
+        }
       }
     },
     "safety.reason.sensitive": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Sensitive content" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Nội dung nhạy cảm" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensitive content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung nhạy cảm"
+          }
+        }
       }
     },
     "safety.reason.copyright": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Copyright violation" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Vi phạm bản quyền" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copyright violation"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vi phạm bản quyền"
+          }
+        }
       }
     },
     "ai.consent.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Let Tappy send your messages to AI?" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Cho Tappy gửi tin nhắn tới AI?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Let Tappy send your messages to AI?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho Tappy gửi tin nhắn tới AI?"
+          }
+        }
       }
     },
     "ai.consent.intro": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "To answer you, Tappy needs to send what you write to an AI provider. It is your choice, and you can take it back at any time." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Để trả lời bạn, Tappy cần gửi nội dung bạn nhập tới nhà cung cấp AI. Bạn quyết định, và có thể rút lại bất cứ lúc nào." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To answer you, Tappy needs to send what you write to an AI provider. It is your choice, and you can take it back at any time."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để trả lời bạn, Tappy cần gửi nội dung bạn nhập tới nhà cung cấp AI. Bạn quyết định, và có thể rút lại bất cứ lúc nào."
+          }
+        }
       }
     },
     "ai.consent.what.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "What is sent" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Gửi gì?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What is sent"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi gì?"
+          }
+        }
       }
     },
     "ai.consent.what.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "The messages you type or say, and what the assistant looks up for you (search results, places). Your profile name, city, age or age group, and gender, if you set them. Your saved preferences and the assistant's memory of you, which the AI model also updates from your chats. Your location (coordinates), only when you allow location sharing. Photos and text you send to Scan, Translate and Viết content. The photo and caption of a review you publish, checked for safety before publication when that check runs. For a group suggestion: the name, budget, food preferences, dietary restrictions and area of each group member who has agreed to this themselves; other members are only counted. With your agreement, background messages and price alerts." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bạn gõ hoặc nói, và những gì trợ lý tra cứu cho bạn (kết quả tìm kiếm, địa điểm). Tên, thành phố, tuổi hoặc nhóm tuổi và giới tính trong hồ sơ, nếu bạn đã điền. Sở thích đã lưu và bộ nhớ trợ lý nhớ về bạn (mô hình AI cũng cập nhật bộ nhớ này từ các cuộc trò chuyện). Vị trí (tọa độ), chỉ khi bạn cho phép chia sẻ vị trí. Ảnh và văn bản bạn gửi cho Scan, Dịch và Viết content. Ảnh và chú thích của bài review bạn đăng, được kiểm tra an toàn trước khi đăng khi bước kiểm tra đó chạy. Với gợi ý nhóm: tên, ngân sách, sở thích ăn uống, kiêng khem và khu vực của từng thành viên đã tự đồng ý; thành viên khác chỉ được tính là số người. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The messages you type or say, and what the assistant looks up for you (search results, places). Your profile name, city, age or age group, and gender, if you set them. Your saved preferences and the assistant's memory of you, which the AI model also updates from your chats. Your location (coordinates), only when you allow location sharing. Photos and text you send to Scan, Translate and Viết content. The photo and caption of a review you publish, checked for safety before publication when that check runs. For a group suggestion: the name, budget, food preferences, dietary restrictions and area of each group member who has agreed to this themselves; other members are only counted. With your agreement, background messages and price alerts."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn bạn gõ hoặc nói, và những gì trợ lý tra cứu cho bạn (kết quả tìm kiếm, địa điểm). Tên, thành phố, tuổi hoặc nhóm tuổi và giới tính trong hồ sơ, nếu bạn đã điền. Sở thích đã lưu và bộ nhớ trợ lý nhớ về bạn (mô hình AI cũng cập nhật bộ nhớ này từ các cuộc trò chuyện). Vị trí (tọa độ), chỉ khi bạn cho phép chia sẻ vị trí. Ảnh và văn bản bạn gửi cho Scan, Dịch và Viết content. Ảnh và chú thích của bài review bạn đăng, được kiểm tra an toàn trước khi đăng khi bước kiểm tra đó chạy. Với gợi ý nhóm: tên, ngân sách, sở thích ăn uống, kiêng khem và khu vực của từng thành viên đã tự đồng ý; thành viên khác chỉ được tính là số người. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá."
+          }
+        }
       }
     },
     "ai.consent.who.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Who receives it" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Gửi cho ai?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who receives it"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi cho ai?"
+          }
+        }
       }
     },
     "ai.consent.who.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "OpenAI (OpenAI OpCo, LLC), an AI provider, through TappyAI's servers. Search and maps (Google, Serper) receive search terms only." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "OpenAI (OpenAI OpCo, LLC), nhà cung cấp AI, thông qua máy chủ của TappyAI. Tìm kiếm và bản đồ (Google, Serper) chỉ nhận từ khóa tìm kiếm." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI (OpenAI OpCo, LLC), an AI provider, through TappyAI's servers. Search and maps (Google, Serper) receive search terms only."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OpenAI (OpenAI OpCo, LLC), nhà cung cấp AI, thông qua máy chủ của TappyAI. Tìm kiếm và bản đồ (Google, Serper) chỉ nhận từ khóa tìm kiếm."
+          }
+        }
       }
     },
     "ai.consent.why.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "What for" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Để làm gì?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What for"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để làm gì?"
+          }
+        }
       }
     },
     "ai.consent.why.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "To answer you, translate, scan, write the content you asked for, check the safety of a review's photo before it is published, and suggest places for a group. With your agreement: morning, weekly and deal messages and price alerts." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Để trả lời bạn, dịch, quét, viết nội dung bạn yêu cầu, kiểm tra an toàn ảnh của bài review trước khi đăng, và gợi ý địa điểm cho nhóm. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To answer you, translate, scan, write the content you asked for, check the safety of a review's photo before it is published, and suggest places for a group. With your agreement: morning, weekly and deal messages and price alerts."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để trả lời bạn, dịch, quét, viết nội dung bạn yêu cầu, kiểm tra an toàn ảnh của bài review trước khi đăng, và gợi ý địa điểm cho nhóm. Khi bạn đồng ý: tin nhắn buổi sáng, tổng kết tuần, deal và thông báo giá."
+          }
+        }
       }
     },
     "ai.consent.how.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "How it is handled" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Xử lý thế nào?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How it is handled"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xử lý thế nào?"
+          }
+        }
       }
     },
     "ai.consent.how.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Under OpenAI's terms, content sent through the API is used only to provide the service, comply with law, enforce its policies and prevent abuse, and is not used to train its models unless we opt in. OpenAI keeps abuse-monitoring logs for up to 30 days by default, unless the law requires longer. OpenAI must keep the data confidential, protect it with security measures, notify us of a personal data breach without undue delay, and delete it at our instruction when the contract ends. We cannot promise that OpenAI keeps no copy. The Privacy Policy has the details." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Theo điều khoản của OpenAI, nội dung gửi qua API chỉ được dùng để cung cấp dịch vụ, tuân thủ pháp luật, thực thi chính sách và ngăn lạm dụng, và không dùng để huấn luyện mô hình trừ khi chúng tôi chọn chia sẻ. OpenAI giữ nhật ký giám sát lạm dụng tối đa 30 ngày theo mặc định, trừ khi pháp luật yêu cầu lâu hơn. OpenAI phải giữ bí mật dữ liệu, bảo vệ bằng biện pháp bảo mật, thông báo vi phạm dữ liệu cá nhân không chậm trễ quá mức, và xóa theo chỉ dẫn của chúng tôi khi hợp đồng chấm dứt. Chúng tôi không thể cam kết OpenAI không giữ bản sao nào. Chi tiết nằm trong Chính sách quyền riêng tư." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Under OpenAI's terms, content sent through the API is used only to provide the service, comply with law, enforce its policies and prevent abuse, and is not used to train its models unless we opt in. OpenAI keeps abuse-monitoring logs for up to 30 days by default, unless the law requires longer. OpenAI must keep the data confidential, protect it with security measures, notify us of a personal data breach without undue delay, and delete it at our instruction when the contract ends. We cannot promise that OpenAI keeps no copy. The Privacy Policy has the details."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Theo điều khoản của OpenAI, nội dung gửi qua API chỉ được dùng để cung cấp dịch vụ, tuân thủ pháp luật, thực thi chính sách và ngăn lạm dụng, và không dùng để huấn luyện mô hình trừ khi chúng tôi chọn chia sẻ. OpenAI giữ nhật ký giám sát lạm dụng tối đa 30 ngày theo mặc định, trừ khi pháp luật yêu cầu lâu hơn. OpenAI phải giữ bí mật dữ liệu, bảo vệ bằng biện pháp bảo mật, thông báo vi phạm dữ liệu cá nhân không chậm trễ quá mức, và xóa theo chỉ dẫn của chúng tôi khi hợp đồng chấm dứt. Chúng tôi không thể cam kết OpenAI không giữ bản sao nào. Chi tiết nằm trong Chính sách quyền riêng tư."
+          }
+        }
       }
     },
     "ai.consent.later.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Not now?" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chưa muốn?" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa muốn?"
+          }
+        }
       }
     },
     "ai.consent.later.body": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Choose Not now and nothing is sent. Parts that need no AI still work, like Deals, Explore and exchange rates. You can change your mind in Settings → Share data with AI. Once our servers receive the change, background messages and price alerts stop using your data." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chọn «Để sau»: không có gì được gửi đi. Các phần không cần AI vẫn dùng được, như Ưu đãi, Khám phá, tỷ giá. Bạn đổi ý trong Cài đặt → «Chia sẻ dữ liệu với AI». Sau khi máy chủ nhận được thay đổi này, tin nhắn tự động và thông báo giá sẽ ngừng dùng dữ liệu của bạn." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose Not now and nothing is sent. Parts that need no AI still work, like Deals, Explore and exchange rates. You can change your mind in Settings → Share data with AI. Once our servers receive the change, background messages and price alerts stop using your data."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn «Để sau»: không có gì được gửi đi. Các phần không cần AI vẫn dùng được, như Ưu đãi, Khám phá, tỷ giá. Bạn đổi ý trong Cài đặt → «Chia sẻ dữ liệu với AI». Sau khi máy chủ nhận được thay đổi này, tin nhắn tự động và thông báo giá sẽ ngừng dùng dữ liệu của bạn."
+          }
+        }
       }
     },
     "ai.consent.privacy": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Read the Privacy Policy" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đọc Chính sách quyền riêng tư" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Read the Privacy Policy"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đọc Chính sách quyền riêng tư"
+          }
+        }
       }
     },
     "ai.consent.agree": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Agree" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Đồng ý" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agree"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đồng ý"
+          }
+        }
       }
     },
     "ai.consent.later": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Not now" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Để sau" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để sau"
+          }
+        }
       }
     },
     "ai.consent.needed": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Agree to share data with AI to use this feature." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Cần đồng ý chia sẻ dữ liệu với AI để dùng tính năng này." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Agree to share data with AI to use this feature."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cần đồng ý chia sẻ dữ liệu với AI để dùng tính năng này."
+          }
+        }
       }
     },
     "ai.settings.title": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Share data with AI" } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ dữ liệu với AI" } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share data with AI"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ dữ liệu với AI"
+          }
+        }
       }
     },
     "ai.settings.desc": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Lets Tappy send what you write to its AI provider so it can answer. Turn off to stop." } },
-        "vi": { "stringUnit": { "state": "translated", "value": "Cho phép gửi nội dung bạn nhập tới nhà cung cấp AI để Tappy trả lời. Tắt để dừng." } }
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lets Tappy send what you write to its AI provider so it can answer. Turn off to stop."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cho phép gửi nội dung bạn nhập tới nhà cung cấp AI để Tappy trả lời. Tắt để dừng."
+          }
+        }
       }
     },
-    "scam.pane.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link" } } } },
-    "scam.pane.message": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn" } } } },
-    "scam.pane.qr": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "QR code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã QR" } } } },
-    "scam.pane.library": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scenarios" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tình huống" } } } },
-    "scam.msg.intro": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about." } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo." } } } },
-    "scam.msg.placeholder": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Example: Someone claiming to be a bank employee called me and asked me to transfer money to verify my account…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Ví dụ: Một người tự xưng là nhân viên ngân hàng gọi cho tôi và yêu cầu chuyển tiền để xác minh tài khoản…" } } } },
-    "scam.msg.paste": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Paste from clipboard" } }, "vi": { "stringUnit": { "state": "translated", "value": "Dán từ bộ nhớ tạm" } } } },
-    "scam.msg.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Analyze now" } }, "vi": { "stringUnit": { "state": "translated", "value": "Phân tích ngay" } } } },
-    "scam.msg.privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn." } } } },
-    "scam.msg.matched.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Familiar scam signs found" } }, "vi": { "stringUnit": { "state": "translated", "value": "Có dấu hiệu lừa đảo quen thuộc" } } } },
-    "scam.msg.matched.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This looks like a scam tactic the authorities have warned about. Do not do what it asks." } }, "vi": { "stringUnit": { "state": "translated", "value": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó." } } } },
-    "scam.msg.matched.more": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "See the scenario in detail" } }, "vi": { "stringUnit": { "state": "translated", "value": "Xem chi tiết tình huống" } } } },
-    "scam.msg.unsure.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Some suspicious signs found" } }, "vi": { "stringUnit": { "state": "translated", "value": "Có một số dấu hiệu đáng ngờ" } } } },
-    "scam.msg.unsure.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Not enough to be certain, but stop and verify through an official channel before doing anything." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì." } } } },
-    "scam.msg.notGov": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI is not a government agency. The general advice comes from the Ministry of Public Security." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không phải cơ quan nhà nước. Lời khuyên chung lấy từ khuyến cáo của Bộ Công an." } } } },
-    "scam.msg.nosigns.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar signs recognised" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa nhận ra dấu hiệu quen thuộc" } } } },
-    "scam.msg.nosigns.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức." } } } },
-    "scamVerdict.link.familiar.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This link has traits that are common in fake links" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link có đặc điểm thường gặp ở link giả mạo" } } } },
-    "scamVerdict.link.familiar.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This describes the traits of the link, not a conclusion about any particular organisation or domain. Do not sign in or enter an OTP or card details on this page." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này." } } } },
-    "scamVerdict.link.suspicious.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This link has some suspicious traits" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link có một số điểm đáng ngờ" } } } },
-    "scamVerdict.link.suspicious.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Not enough to be certain. Do not enter personal details or an OTP; open the official website or app yourself." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức." } } } },
-    "scamVerdict.link.unrecognized.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar signs recognised in this link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa nhận ra dấu hiệu quen thuộc ở đường link này" } } } },
-    "scamVerdict.link.unrecognized.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức." } } } },
-    "scamVerdict.disclaimer": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI does not replace the authorities." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không thay thế cơ quan chức năng." } } } },
-    "scamVerdict.scenario.heading": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Matching scenario"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tình huống tương ứng"}}}},
-    "scamVerdict.scenario.number": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scenario #%@ in the Ministry of Public Security list"}}, "vi": {"stringUnit": {"state": "translated", "value": "Kịch bản số %@ trong danh sách của Bộ Công an"}}}},
-    "scamVerdict.scenario.signs": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Warning signs (from the article)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dấu hiệu nhận biết (theo bài viết)"}}}},
-    "scamVerdict.scenario.guidanceNote": { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "The signs and advice were written by TappyAI from the official material, not quoted verbatim."}}, "vi": {"stringUnit": {"state": "translated", "value": "Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn."}}}},
-    "scamVerdict.scenario.report": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Report to the nearest police station or call 0692.345.860 if you suspect a scam." } }, "vi": { "stringUnit": { "state": "translated", "value": "Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860 nếu nghi ngờ bị lừa." } } } },
-    "scamVerdict.link.reasons": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Specific reasons" } }, "vi": { "stringUnit": { "state": "translated", "value": "Lý do cụ thể" } } } },
-    "scamVerdict.qr.noVerdict": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức." } } } },
-    "scam.msg.why": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Why Tappy thinks so" } }, "vi": { "stringUnit": { "state": "translated", "value": "Vì sao Tappy nghĩ vậy" } } } },
-    "scam.msg.advice.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đừng làm" } } } },
-    "scam.msg.advice.otp": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not read out or enter an OTP or password for anyone." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không đọc hay nhập mã OTP, mật khẩu cho bất kỳ ai." } } } },
-    "scam.msg.advice.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not open the link in the message." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không bấm vào link trong tin nhắn." } } } },
-    "scam.msg.advice.transfer": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not transfer money or pay any “fee” because of a message." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không chuyển tiền hay nộp bất kỳ khoản “phí” nào theo tin nhắn." } } } },
-    "scam.msg.advice.install": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not install an app or file you were sent." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không cài ứng dụng hay tệp được gửi kèm." } } } },
-    "scam.msg.advice.remote": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not share your screen or grant remote control." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không chia sẻ màn hình hay cấp quyền điều khiển từ xa." } } } },
-    "scam.msg.advice.qr": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not scan a QR code or pay as the message says." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không quét mã QR hay thanh toán theo hướng dẫn trong tin nhắn." } } } },
-    "scam.msg.advice.rush": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Do not rush because of a deadline: it is a pressure trick." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đừng vội vì hạn chót: đó là chiêu gây áp lực." } } } },
-    "scam.msg.advice.verify": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Contact the agency or bank yourself, through a phone number or app you looked up." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tự liên hệ cơ quan hoặc ngân hàng qua số điện thoại hay ứng dụng chính thức bạn tự tìm." } } } },
-    "scam.msg.links.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Links in the message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Link trong tin nhắn" } } } },
-    "scam.msg.links.note": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy has not opened any link. Tap Check link to send just that link for checking." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy chưa mở link nào. Chạm «Kiểm tra link» để gửi riêng đường link đó đi kiểm tra." } } } },
-    "scam.msg.links.check": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Check link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra link" } } } },
-    "scam.msg.deeper.failed": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Could not analyse deeper right now. The result above is still valid." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa phân tích sâu được lúc này. Kết quả ở trên vẫn dùng được." } } } },
-    "scam.msg.deeper.quota": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "You have used today's AI questions." } }, "vi": { "stringUnit": { "state": "translated", "value": "Bạn đã dùng hết lượt hỏi AI hôm nay." } } } },
-    "scam.msg.deeper.unavailable": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Deeper analysis is not on the current server yet. The result above is still valid." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tính năng phân tích sâu chưa có trên máy chủ hiện tại. Kết quả ở trên vẫn dùng được." } } } },
-    "scam.msg.clear": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Clear" } }, "vi": { "stringUnit": { "state": "translated", "value": "Xoá" } } } },
-    "scam.msg.signal.otp": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It asks for an OTP, a verification code or a password." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn đòi mã OTP, mã xác thực hoặc mật khẩu." } } } },
-    "scam.msg.signal.urgency": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It pushes you to act fast, threatening a lock or a fine." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn tạo áp lực phải làm gấp, doạ khoá hoặc phạt." } } } },
-    "scam.msg.signal.authority": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It speaks as an authority (police, court…)." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nhân danh cơ quan công quyền (Công an, Tòa án…)." } } } },
-    "scam.msg.signal.bank": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It mentions a bank or e-wallet." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nhắc tới ngân hàng hoặc ví điện tử." } } } },
-    "scam.msg.signal.transfer": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It asks you to transfer money or pay a fee." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn đề nghị chuyển tiền hoặc nộp một khoản phí." } } } },
-    "scam.msg.signal.prize": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It says you won a prize or a gift." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn báo trúng thưởng hoặc có quà." } } } },
-    "scam.msg.signal.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It comes with a link." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn kèm đường link." } } } },
-    "scam.msg.signal.installApp": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It tells you to install an app or a file." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bảo cài ứng dụng hoặc tệp." } } } },
-    "scam.msg.signal.remoteAccess": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It tells you to share your screen or install remote-control software." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bảo chia sẻ màn hình hoặc cài phần mềm điều khiển từ xa." } } } },
-    "scam.msg.signal.qr": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It tells you to scan a QR code." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn bảo quét mã QR." } } } },
-    "scam.msg.signal.investment": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It invites you to invest, do tasks or earn commission." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn mời đầu tư, làm nhiệm vụ hay nhận hoa hồng." } } } },
-    "scam.msg.signal.relative": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It reads like a relative with a new number asking for money." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn như người thân đổi số, nhờ chuyển tiền." } } } },
-    "scam.msg.signal.delivery": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It talks about a parcel or an order." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nói về bưu phẩm hoặc đơn hàng." } } } },
-    "scam.msg.signal.fine": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "It talks about a traffic fine." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn nói về phạt nguội hoặc vi phạm giao thông." } } } },
-    "scam.share": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Share result" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chia sẻ kết quả" } } } },
-    "scam.share.header": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Checked with TappyAI Scam Alerts" } }, "vi": { "stringUnit": { "state": "translated", "value": "Kiểm tra bởi TappyAI Cảnh báo lừa đảo" } } } },
-    "scam.share.matched": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The message looks like the scenario: %@" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn giống tình huống: %@" } } } },
-    "scam.share.unsure": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Something looks off, but no familiar trick was recognised." } }, "vi": { "stringUnit": { "state": "translated", "value": "Có điểm đáng ngờ nhưng chưa nhận ra thủ đoạn quen thuộc." } } } },
-    "scam.share.nosigns": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No familiar scam signs seen (not a guarantee of safety)." } }, "vi": { "stringUnit": { "state": "translated", "value": "Chưa thấy dấu hiệu lừa đảo quen thuộc (không phải bảo đảm an toàn)." } } } },
-    "scam.share.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Link: %@ — level: %@" } }, "vi": { "stringUnit": { "state": "translated", "value": "Link: %@ — mức: %@" } } } },
-    "scam.share.footer": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "TappyAI is not a government agency. Think you were scammed? Call 0692.345.860." } }, "vi": { "stringUnit": { "state": "translated", "value": "TappyAI không phải cơ quan nhà nước. Nghi bị lừa: gọi 0692.345.860." } } } },
-    "scam.link.dontOpen": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Don't open" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đừng mở" } } } },
-    "scam.link.openCareful": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Open with care" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mở thận trọng" } } } },
-    "scam.link.confirm.title": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Open this link?" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mở link này?" } } } },
-    "scam.link.confirm.body": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This link may be dangerous. Make sure you trust the sender and never enter a password or OTP there." } }, "vi": { "stringUnit": { "state": "translated", "value": "Link này có thể nguy hiểm. Hãy chắc chắn bạn tin người gửi và không nhập mật khẩu hay mã OTP vào đó." } } } },
-    "scam.link.confirm.open": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Open anyway" } }, "vi": { "stringUnit": { "state": "translated", "value": "Vẫn mở" } } } },
-    "scam.qr.intro": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scan a QR code and Tappy tells you what is inside before you open or pay anything." } }, "vi": { "stringUnit": { "state": "translated", "value": "Quét mã QR để Tappy cho biết bên trong có gì trước khi bạn mở hay thanh toán." } } } },
-    "scam.qr.camera": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scan with camera" } }, "vi": { "stringUnit": { "state": "translated", "value": "Quét bằng camera" } } } },
-    "scam.qr.photo": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Choose a photo with a QR code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Chọn ảnh có mã QR" } } } },
-    "scam.qr.privacy": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The code is read on your phone. The picture is not sent or kept; if the code holds a link, only that link is sent for checking." } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã được đọc ngay trên máy. Ảnh không được gửi đi hay lưu lại; nếu mã chứa link, chỉ đường link đó được đưa đi kiểm tra." } } } },
-    "scam.qr.denied": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy is not allowed to use the camera. You can still choose a photo with a QR code, or turn the camera on in Settings." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy chưa được dùng camera. Bạn vẫn chọn được ảnh có mã QR, hoặc bật camera trong Cài đặt." } } } },
-    "scam.qr.openSettings": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Open Settings" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mở Cài đặt" } } } },
-    "scam.qr.noCamera": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This device has no camera. You can still choose a photo with a QR code." } }, "vi": { "stringUnit": { "state": "translated", "value": "Máy này không có camera. Bạn vẫn chọn được ảnh có mã QR." } } } },
-    "scam.qr.none": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "No QR code found in that photo." } }, "vi": { "stringUnit": { "state": "translated", "value": "Không thấy mã QR nào trong ảnh." } } } },
-    "scam.qr.found": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The QR code holds" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã QR chứa" } } } },
-    "scam.qr.linkChecking": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Checking the link in the code…" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đang kiểm tra link trong mã…" } } } },
-    "scam.qr.linkNote": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Link taken from a QR code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Link lấy từ mã QR" } } } },
-    "scam.qr.again": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Scan another code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Quét mã khác" } } } },
-    "scam.qr.aim": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Point the camera at a QR code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đưa mã QR vào khung camera" } } } },
-    "scam.qr.kind.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A link" } }, "vi": { "stringUnit": { "state": "translated", "value": "Đường link" } } } },
-    "scam.qr.kind.wifi": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A Wi-Fi network" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mạng Wi-Fi" } } } },
-    "scam.qr.kind.contact": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A contact or event" } }, "vi": { "stringUnit": { "state": "translated", "value": "Danh bạ hoặc lịch" } } } },
-    "scam.qr.kind.phone": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A phone number" } }, "vi": { "stringUnit": { "state": "translated", "value": "Số điện thoại" } } } },
-    "scam.qr.kind.sms": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A text message" } }, "vi": { "stringUnit": { "state": "translated", "value": "Tin nhắn SMS" } } } },
-    "scam.qr.kind.email": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "An email" } }, "vi": { "stringUnit": { "state": "translated", "value": "Email" } } } },
-    "scam.qr.kind.payment": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A payment code" } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã thanh toán" } } } },
-    "scam.qr.kind.crypto": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A crypto wallet" } }, "vi": { "stringUnit": { "state": "translated", "value": "Ví tiền mã hoá" } } } },
-    "scam.qr.kind.text": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Plain text" } }, "vi": { "stringUnit": { "state": "translated", "value": "Văn bản" } } } },
-    "scam.qr.warn.link": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "A QR code can lead to a fake page. Tappy is checking the link; do not open it if you are not sure." } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã QR có thể dẫn tới trang giả. Tappy đang kiểm tra link; đừng mở nếu chưa chắc." } } } },
-    "scam.qr.warn.wifi": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This code can join a Wi-Fi network. Tappy does not connect for you; only join a network you trust." } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã này có thể kết nối Wi-Fi. Tappy không kết nối giúp bạn; chỉ vào mạng của nơi bạn tin tưởng." } } } },
-    "scam.qr.warn.contact": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy does not save the contact for you. Save it only if you know this person." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy không lưu danh bạ giúp bạn. Chỉ lưu nếu bạn biết rõ người này." } } } },
-    "scam.qr.warn.phone": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy does not call for you. Be careful with unknown numbers." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy không gọi giúp bạn. Cẩn thận với số lạ." } } } },
-    "scam.qr.warn.sms": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy does not send the text for you. Do not text as a stranger tells you." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy không gửi tin giúp bạn. Đừng nhắn theo hướng dẫn của người lạ." } } } },
-    "scam.qr.warn.email": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Tappy does not write the email for you. Do not send personal details to a stranger." } }, "vi": { "stringUnit": { "state": "translated", "value": "Tappy không soạn thư giúp bạn. Đừng gửi thông tin cá nhân cho người lạ." } } } },
-    "scam.qr.warn.payment": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This is a payment or transfer code. Tappy does not pay for you: check the recipient name and amount in your bank app first. Never pay just because a QR code says so." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đây là mã thanh toán hoặc chuyển tiền. Tappy không thanh toán giúp bạn: kiểm tra tên người nhận và số tiền trong ứng dụng ngân hàng trước khi trả. Không thanh toán chỉ vì một mã QR bảo thế." } } } },
-    "scam.qr.warn.crypto": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "This is a crypto wallet address. Transfers cannot be reversed; never send money to a code from a stranger." } }, "vi": { "stringUnit": { "state": "translated", "value": "Đây là địa chỉ ví tiền mã hoá. Giao dịch không thể hoàn lại; đừng gửi tiền theo mã của người lạ." } } } },
-    "scam.qr.warn.text": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "The code holds only text. Tappy does not act on it; do not follow instructions in it if you are not sure." } }, "vi": { "stringUnit": { "state": "translated", "value": "Mã chỉ chứa chữ. Tappy không làm theo nội dung này; đừng làm theo hướng dẫn trong đó nếu chưa chắc." } } } },
-    "settings.guidelines": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Community guidelines" } }, "vi": { "stringUnit": { "state": "translated", "value": "Quy tắc cộng đồng" } } } },
-    "settings.guidelines.desc": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "What is and is not allowed on TappyAI" } }, "vi": { "stringUnit": { "state": "translated", "value": "Điều được và không được phép trên TappyAI" } } } },
-    "settings.notices": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Moderation notices" } }, "vi": { "stringUnit": { "state": "translated", "value": "Thông báo kiểm duyệt" } } } },
-    "settings.notices.desc": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Notices about your content, and how to appeal" } }, "vi": { "stringUnit": { "state": "translated", "value": "Thông báo về nội dung của bạn và cách kháng nghị" } } } },
-    "settings.contact": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Contact support" } }, "vi": { "stringUnit": { "state": "translated", "value": "Liên hệ hỗ trợ" } } } },
-    "settings.contact.desc": { "localizations": { "en": { "stringUnit": { "state": "translated", "value": "Email the TappyAI team" } }, "vi": { "stringUnit": { "state": "translated", "value": "Gửi email cho đội ngũ TappyAI" } } } },
+    "scam.pane.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường link"
+          }
+        }
+      }
+    },
+    "scam.pane.message": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Message"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn"
+          }
+        }
+      }
+    },
+    "scam.pane.qr": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "QR code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã QR"
+          }
+        }
+      }
+    },
+    "scam.pane.library": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scenarios"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tình huống"
+          }
+        }
+      }
+    },
+    "scam.msg.intro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste a message or briefly describe a suspicious situation. TappyAI compares it with the scam scenarios the Ministry of Public Security has warned about."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dán tin nhắn hoặc mô tả ngắn tình huống đáng ngờ. TappyAI đối chiếu với các tình huống lừa đảo đã được Bộ Công an cảnh báo."
+          }
+        }
+      }
+    },
+    "scam.msg.placeholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Example: Someone claiming to be a bank employee called me and asked me to transfer money to verify my account…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví dụ: Một người tự xưng là nhân viên ngân hàng gọi cho tôi và yêu cầu chuyển tiền để xác minh tài khoản…"
+          }
+        }
+      }
+    },
+    "scam.msg.paste": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste from clipboard"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dán từ bộ nhớ tạm"
+          }
+        }
+      }
+    },
+    "scam.msg.check": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Analyze now"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phân tích ngay"
+          }
+        }
+      }
+    },
+    "scam.msg.privacy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matched against a built-in list of scenarios and rules: no AI is used and the message text is not stored."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đối chiếu bằng danh sách tình huống và quy tắc có sẵn: không dùng AI, không lưu nội dung tin nhắn."
+          }
+        }
+      }
+    },
+    "scam.msg.matched.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Familiar scam signs found"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có dấu hiệu lừa đảo quen thuộc"
+          }
+        }
+      }
+    },
+    "scam.msg.matched.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This looks like a scam tactic the authorities have warned about. Do not do what it asks."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung này giống một thủ đoạn lừa đảo đã được cơ quan chức năng cảnh báo. Đừng làm theo yêu cầu trong đó."
+          }
+        }
+      }
+    },
+    "scam.msg.matched.more": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "See the scenario in detail"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xem chi tiết tình huống"
+          }
+        }
+      }
+    },
+    "scam.msg.unsure.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some suspicious signs found"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có một số dấu hiệu đáng ngờ"
+          }
+        }
+      }
+    },
+    "scam.msg.unsure.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough to be certain, but stop and verify through an official channel before doing anything."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa đủ để kết luận, nhưng bạn nên dừng lại và xác minh qua kênh chính thức trước khi làm bất cứ điều gì."
+          }
+        }
+      }
+    },
+    "scam.msg.notGov": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI is not a government agency. The general advice comes from the Ministry of Public Security."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI không phải cơ quan nhà nước. Lời khuyên chung lấy từ khuyến cáo của Bộ Công an."
+          }
+        }
+      }
+    },
+    "scam.msg.nosigns.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No familiar signs recognised"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa nhận ra dấu hiệu quen thuộc"
+          }
+        }
+      }
+    },
+    "scam.msg.nosigns.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức."
+          }
+        }
+      }
+    },
+    "scamVerdict.link.familiar.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This link has traits that are common in fake links"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường link có đặc điểm thường gặp ở link giả mạo"
+          }
+        }
+      }
+    },
+    "scamVerdict.link.familiar.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This describes the traits of the link, not a conclusion about any particular organisation or domain. Do not sign in or enter an OTP or card details on this page."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây là nhận định về đặc điểm của đường link, không phải kết luận về một tổ chức hay tên miền cụ thể. Đừng đăng nhập, đừng nhập OTP hay thông tin thẻ trên trang này."
+          }
+        }
+      }
+    },
+    "scamVerdict.link.suspicious.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This link has some suspicious traits"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường link có một số điểm đáng ngờ"
+          }
+        }
+      }
+    },
+    "scamVerdict.link.suspicious.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not enough to be certain. Do not enter personal details or an OTP; open the official website or app yourself."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa đủ để kết luận. Đừng nhập thông tin cá nhân hay mã OTP; hãy tự mở website hoặc ứng dụng chính thức."
+          }
+        }
+      }
+    },
+    "scamVerdict.link.unrecognized.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No familiar signs recognised in this link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa nhận ra dấu hiệu quen thuộc ở đường link này"
+          }
+        }
+      }
+    },
+    "scamVerdict.link.unrecognized.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This does NOT mean it is safe: do not send money, do not read out any OTP code, do not tap unknown links; verify through an official channel."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều này KHÔNG có nghĩa là an toàn: đừng chuyển tiền, đừng đọc mã OTP, đừng bấm link lạ; hãy xác minh qua kênh chính thức."
+          }
+        }
+      }
+    },
+    "scamVerdict.disclaimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI does not replace the authorities."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI không thay thế cơ quan chức năng."
+          }
+        }
+      }
+    },
+    "scamVerdict.scenario.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matching scenario"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tình huống tương ứng"
+          }
+        }
+      }
+    },
+    "scamVerdict.scenario.number": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scenario #%@ in the Ministry of Public Security list"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kịch bản số %@ trong danh sách của Bộ Công an"
+          }
+        }
+      }
+    },
+    "scamVerdict.scenario.signs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Warning signs (from the article)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dấu hiệu nhận biết (theo bài viết)"
+          }
+        }
+      }
+    },
+    "scamVerdict.scenario.guidanceNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The signs and advice were written by TappyAI from the official material, not quoted verbatim."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Phần dấu hiệu và lời khuyên do TappyAI biên soạn từ nguồn chính thức, không phải trích dẫn nguyên văn."
+          }
+        }
+      }
+    },
+    "scamVerdict.scenario.report": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report to the nearest police station or call 0692.345.860 if you suspect a scam."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Báo ngay cho Công an nơi gần nhất hoặc gọi 0692.345.860 nếu nghi ngờ bị lừa."
+          }
+        }
+      }
+    },
+    "scamVerdict.link.reasons": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Specific reasons"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lý do cụ thể"
+          }
+        }
+      }
+    },
+    "scamVerdict.qr.noVerdict": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI has not checked this content. Do not follow instructions in it if you are unsure; verify through an official channel."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI chưa kiểm tra nội dung này. Đừng làm theo hướng dẫn trong đó nếu bạn không chắc; hãy xác minh qua kênh chính thức."
+          }
+        }
+      }
+    },
+    "scam.msg.why": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Why Tappy thinks so"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vì sao Tappy nghĩ vậy"
+          }
+        }
+      }
+    },
+    "scam.msg.advice.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đừng làm"
+          }
+        }
+      }
+    },
+    "scam.msg.advice.otp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not read out or enter an OTP or password for anyone."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không đọc hay nhập mã OTP, mật khẩu cho bất kỳ ai."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not open the link in the message."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không bấm vào link trong tin nhắn."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.transfer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not transfer money or pay any “fee” because of a message."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không chuyển tiền hay nộp bất kỳ khoản “phí” nào theo tin nhắn."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.install": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not install an app or file you were sent."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không cài ứng dụng hay tệp được gửi kèm."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.remote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not share your screen or grant remote control."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không chia sẻ màn hình hay cấp quyền điều khiển từ xa."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.qr": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not scan a QR code or pay as the message says."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không quét mã QR hay thanh toán theo hướng dẫn trong tin nhắn."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.rush": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Do not rush because of a deadline: it is a pressure trick."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đừng vội vì hạn chót: đó là chiêu gây áp lực."
+          }
+        }
+      }
+    },
+    "scam.msg.advice.verify": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact the agency or bank yourself, through a phone number or app you looked up."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tự liên hệ cơ quan hoặc ngân hàng qua số điện thoại hay ứng dụng chính thức bạn tự tìm."
+          }
+        }
+      }
+    },
+    "scam.msg.links.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links in the message"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link trong tin nhắn"
+          }
+        }
+      }
+    },
+    "scam.msg.links.note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy has not opened any link. Tap Check link to send just that link for checking."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy chưa mở link nào. Chạm «Kiểm tra link» để gửi riêng đường link đó đi kiểm tra."
+          }
+        }
+      }
+    },
+    "scam.msg.links.check": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiểm tra link"
+          }
+        }
+      }
+    },
+    "scam.msg.deeper.failed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not analyse deeper right now. The result above is still valid."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa phân tích sâu được lúc này. Kết quả ở trên vẫn dùng được."
+          }
+        }
+      }
+    },
+    "scam.msg.deeper.quota": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You have used today's AI questions."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bạn đã dùng hết lượt hỏi AI hôm nay."
+          }
+        }
+      }
+    },
+    "scam.msg.deeper.unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deeper analysis is not on the current server yet. The result above is still valid."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tính năng phân tích sâu chưa có trên máy chủ hiện tại. Kết quả ở trên vẫn dùng được."
+          }
+        }
+      }
+    },
+    "scam.msg.clear": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Xoá"
+          }
+        }
+      }
+    },
+    "scam.msg.signal.otp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It asks for an OTP, a verification code or a password."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn đòi mã OTP, mã xác thực hoặc mật khẩu."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.urgency": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It pushes you to act fast, threatening a lock or a fine."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn tạo áp lực phải làm gấp, doạ khoá hoặc phạt."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.authority": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It speaks as an authority (police, court…)."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn nhân danh cơ quan công quyền (Công an, Tòa án…)."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.bank": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It mentions a bank or e-wallet."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn nhắc tới ngân hàng hoặc ví điện tử."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.transfer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It asks you to transfer money or pay a fee."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn đề nghị chuyển tiền hoặc nộp một khoản phí."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.prize": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It says you won a prize or a gift."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn báo trúng thưởng hoặc có quà."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It comes with a link."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn kèm đường link."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.installApp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It tells you to install an app or a file."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn bảo cài ứng dụng hoặc tệp."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.remoteAccess": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It tells you to share your screen or install remote-control software."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn bảo chia sẻ màn hình hoặc cài phần mềm điều khiển từ xa."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.qr": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It tells you to scan a QR code."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn bảo quét mã QR."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.investment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It invites you to invest, do tasks or earn commission."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn mời đầu tư, làm nhiệm vụ hay nhận hoa hồng."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.relative": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It reads like a relative with a new number asking for money."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn như người thân đổi số, nhờ chuyển tiền."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.delivery": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It talks about a parcel or an order."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn nói về bưu phẩm hoặc đơn hàng."
+          }
+        }
+      }
+    },
+    "scam.msg.signal.fine": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "It talks about a traffic fine."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn nói về phạt nguội hoặc vi phạm giao thông."
+          }
+        }
+      }
+    },
+    "scam.share": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Share result"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia sẻ kết quả"
+          }
+        }
+      }
+    },
+    "scam.share.header": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checked with TappyAI Scam Alerts"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kiểm tra bởi TappyAI Cảnh báo lừa đảo"
+          }
+        }
+      }
+    },
+    "scam.share.matched": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The message looks like the scenario: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn giống tình huống: %@"
+          }
+        }
+      }
+    },
+    "scam.share.unsure": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something looks off, but no familiar trick was recognised."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Có điểm đáng ngờ nhưng chưa nhận ra thủ đoạn quen thuộc."
+          }
+        }
+      }
+    },
+    "scam.share.nosigns": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No familiar scam signs seen (not a guarantee of safety)."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chưa thấy dấu hiệu lừa đảo quen thuộc (không phải bảo đảm an toàn)."
+          }
+        }
+      }
+    },
+    "scam.share.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link: %@ — level: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link: %@ — mức: %@"
+          }
+        }
+      }
+    },
+    "scam.share.footer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI is not a government agency. Think you were scammed? Call 0692.345.860."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "TappyAI không phải cơ quan nhà nước. Nghi bị lừa: gọi 0692.345.860."
+          }
+        }
+      }
+    },
+    "scam.link.dontOpen": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't open"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đừng mở"
+          }
+        }
+      }
+    },
+    "scam.link.openCareful": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open with care"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở thận trọng"
+          }
+        }
+      }
+    },
+    "scam.link.confirm.title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open this link?"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở link này?"
+          }
+        }
+      }
+    },
+    "scam.link.confirm.body": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This link may be dangerous. Make sure you trust the sender and never enter a password or OTP there."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link này có thể nguy hiểm. Hãy chắc chắn bạn tin người gửi và không nhập mật khẩu hay mã OTP vào đó."
+          }
+        }
+      }
+    },
+    "scam.link.confirm.open": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open anyway"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vẫn mở"
+          }
+        }
+      }
+    },
+    "scam.qr.intro": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan a QR code and Tappy tells you what is inside before you open or pay anything."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét mã QR để Tappy cho biết bên trong có gì trước khi bạn mở hay thanh toán."
+          }
+        }
+      }
+    },
+    "scam.qr.camera": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan with camera"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét bằng camera"
+          }
+        }
+      }
+    },
+    "scam.qr.photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a photo with a QR code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn ảnh có mã QR"
+          }
+        }
+      }
+    },
+    "scam.qr.privacy": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The code is read on your phone. The picture is not sent or kept; if the code holds a link, only that link is sent for checking."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã được đọc ngay trên máy. Ảnh không được gửi đi hay lưu lại; nếu mã chứa link, chỉ đường link đó được đưa đi kiểm tra."
+          }
+        }
+      }
+    },
+    "scam.qr.denied": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy is not allowed to use the camera. You can still choose a photo with a QR code, or turn the camera on in Settings."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy chưa được dùng camera. Bạn vẫn chọn được ảnh có mã QR, hoặc bật camera trong Cài đặt."
+          }
+        }
+      }
+    },
+    "scam.qr.openSettings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Settings"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mở Cài đặt"
+          }
+        }
+      }
+    },
+    "scam.qr.noCamera": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This device has no camera. You can still choose a photo with a QR code."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Máy này không có camera. Bạn vẫn chọn được ảnh có mã QR."
+          }
+        }
+      }
+    },
+    "scam.qr.none": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No QR code found in that photo."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không thấy mã QR nào trong ảnh."
+          }
+        }
+      }
+    },
+    "scam.qr.found": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The QR code holds"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã QR chứa"
+          }
+        }
+      }
+    },
+    "scam.qr.linkChecking": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking the link in the code…"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang kiểm tra link trong mã…"
+          }
+        }
+      }
+    },
+    "scam.qr.linkNote": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link taken from a QR code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link lấy từ mã QR"
+          }
+        }
+      }
+    },
+    "scam.qr.again": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan another code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét mã khác"
+          }
+        }
+      }
+    },
+    "scam.qr.aim": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Point the camera at a QR code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đưa mã QR vào khung camera"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A link"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đường link"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.wifi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A Wi-Fi network"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mạng Wi-Fi"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.contact": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A contact or event"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Danh bạ hoặc lịch"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.phone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A phone number"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số điện thoại"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.sms": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A text message"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tin nhắn SMS"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.email": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "An email"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.payment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A payment code"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã thanh toán"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.crypto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A crypto wallet"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ví tiền mã hoá"
+          }
+        }
+      }
+    },
+    "scam.qr.kind.text": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plain text"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Văn bản"
+          }
+        }
+      }
+    },
+    "scam.qr.warn.link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A QR code can lead to a fake page. Tappy is checking the link; do not open it if you are not sure."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã QR có thể dẫn tới trang giả. Tappy đang kiểm tra link; đừng mở nếu chưa chắc."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.wifi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This code can join a Wi-Fi network. Tappy does not connect for you; only join a network you trust."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã này có thể kết nối Wi-Fi. Tappy không kết nối giúp bạn; chỉ vào mạng của nơi bạn tin tưởng."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.contact": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy does not save the contact for you. Save it only if you know this person."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy không lưu danh bạ giúp bạn. Chỉ lưu nếu bạn biết rõ người này."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.phone": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy does not call for you. Be careful with unknown numbers."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy không gọi giúp bạn. Cẩn thận với số lạ."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.sms": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy does not send the text for you. Do not text as a stranger tells you."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy không gửi tin giúp bạn. Đừng nhắn theo hướng dẫn của người lạ."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.email": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy does not write the email for you. Do not send personal details to a stranger."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tappy không soạn thư giúp bạn. Đừng gửi thông tin cá nhân cho người lạ."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.payment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is a payment or transfer code. Tappy does not pay for you: check the recipient name and amount in your bank app first. Never pay just because a QR code says so."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây là mã thanh toán hoặc chuyển tiền. Tappy không thanh toán giúp bạn: kiểm tra tên người nhận và số tiền trong ứng dụng ngân hàng trước khi trả. Không thanh toán chỉ vì một mã QR bảo thế."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.crypto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This is a crypto wallet address. Transfers cannot be reversed; never send money to a code from a stranger."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đây là địa chỉ ví tiền mã hoá. Giao dịch không thể hoàn lại; đừng gửi tiền theo mã của người lạ."
+          }
+        }
+      }
+    },
+    "scam.qr.warn.text": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The code holds only text. Tappy does not act on it; do not follow instructions in it if you are not sure."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mã chỉ chứa chữ. Tappy không làm theo nội dung này; đừng làm theo hướng dẫn trong đó nếu chưa chắc."
+          }
+        }
+      }
+    },
+    "settings.guidelines": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Community guidelines"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quy tắc cộng đồng"
+          }
+        }
+      }
+    },
+    "settings.guidelines.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What is and is not allowed on TappyAI"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Điều được và không được phép trên TappyAI"
+          }
+        }
+      }
+    },
+    "settings.notices": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moderation notices"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo kiểm duyệt"
+          }
+        }
+      }
+    },
+    "settings.notices.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notices about your content, and how to appeal"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Thông báo về nội dung của bạn và cách kháng nghị"
+          }
+        }
+      }
+    },
+    "settings.contact": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Contact support"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Liên hệ hỗ trợ"
+          }
+        }
+      }
+    },
+    "settings.contact.desc": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Email the TappyAI team"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gửi email cho đội ngũ TappyAI"
+          }
+        }
+      }
+    },
     "auth.changeEmail": {
       "localizations": {
         "en": {
@@ -4697,10 +8277,70 @@
         }
       }
     },
-    "currency.amountPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter an amount..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập số tiền..."}}}},
-    "currency.disclaimer" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Rates are for reference only, not for financial transactions."}}, "vi": {"stringUnit": {"state": "translated", "value": "Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính."}}}},
-    "currency.enterAmountHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter an amount to see the result"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập số tiền để xem kết quả"}}}},
-    "currency.fallbackRates" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Using estimated rates (could not reach the data source)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)"}}}},
+    "currency.amountPlaceholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an amount..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập số tiền..."
+          }
+        }
+      }
+    },
+    "currency.disclaimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rates are for reference only, not for financial transactions."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tỷ giá chỉ mang tính tham khảo, không dùng cho giao dịch tài chính."
+          }
+        }
+      }
+    },
+    "currency.enterAmountHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter an amount to see the result"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập số tiền để xem kết quả"
+          }
+        }
+      }
+    },
+    "currency.fallbackRates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Using estimated rates (could not reach the data source)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang dùng tỷ giá ước tính (không kết nối được nguồn dữ liệu)"
+          }
+        }
+      }
+    },
     "currency.from": {
       "extractionState": "manual",
       "localizations": {
@@ -4718,9 +8358,54 @@
         }
       }
     },
-    "currency.loadingRates" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Loading exchange rates..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang tải tỷ giá..."}}}},
-    "currency.missingRate" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "No exchange rate available for %@. Please pick another currency."}}, "vi": {"stringUnit": {"state": "translated", "value": "Không có tỷ giá cho %@. Vui lòng chọn đồng tiền khác."}}}},
-    "splitbill.personDefaultName" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Person %d"}}, "vi": {"stringUnit": {"state": "translated", "value": "Người %d"}}}},
+    "currency.loadingRates": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading exchange rates..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang tải tỷ giá..."
+          }
+        }
+      }
+    },
+    "currency.missingRate": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No exchange rate available for %@. Please pick another currency."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Không có tỷ giá cho %@. Vui lòng chọn đồng tiền khác."
+          }
+        }
+      }
+    },
+    "splitbill.personDefaultName": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Person %d"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Người %d"
+          }
+        }
+      }
+    },
     "currency.title": {
       "extractionState": "manual",
       "localizations": {
@@ -15107,9 +18792,54 @@
         }
       }
     },
-    "scan.heading" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scan document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Quét tài liệu"}}}},
-    "scan.scanButton" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Scan document"}}, "vi": {"stringUnit": {"state": "translated", "value": "Quét tài liệu"}}}},
-    "scan.scanning" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reading document..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang đọc tài liệu..."}}}},
+    "scan.heading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan document"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét tài liệu"
+          }
+        }
+      }
+    },
+    "scan.scanButton": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scan document"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quét tài liệu"
+          }
+        }
+      }
+    },
+    "scan.scanning": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading document..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang đọc tài liệu..."
+          }
+        }
+      }
+    },
     "scan.library": {
       "extractionState": "manual",
       "localizations": {
@@ -15144,9 +18874,54 @@
         }
       }
     },
-    "scan.recognizedText" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Extracted content"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nội dung trích xuất"}}}},
-    "scan.recognizing" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Reading document..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang đọc tài liệu..."}}}},
-    "scan.takePhoto" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Take photo"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chụp ảnh"}}}},
+    "scan.recognizedText": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extracted content"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nội dung trích xuất"
+          }
+        }
+      }
+    },
+    "scan.recognizing": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reading document..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang đọc tài liệu..."
+          }
+        }
+      }
+    },
+    "scan.takePhoto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Take photo"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chụp ảnh"
+          }
+        }
+      }
+    },
     "scan.title": {
       "extractionState": "manual",
       "localizations": {
@@ -17132,8 +20907,38 @@
         }
       }
     },
-    "splitbill.amountPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter the total..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập tổng tiền..."}}}},
-    "splitbill.disclaimer" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Amounts are estimates — round them to make paying easier."}}, "vi": {"stringUnit": {"state": "translated", "value": "Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả."}}}},
+    "splitbill.amountPlaceholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter the total..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập tổng tiền..."
+          }
+        }
+      }
+    },
+    "splitbill.disclaimer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Amounts are estimates — round them to make paying easier."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số tiền chỉ mang tính tham khảo, làm tròn để dễ trả."
+          }
+        }
+      }
+    },
     "splitbill.enterPerPersonHint": {
       "extractionState": "manual",
       "localizations": {
@@ -17151,7 +20956,22 @@
         }
       }
     },
-    "splitbill.enterTotalHint" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Enter the bill total to calculate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập tổng tiền để tính"}}}},
+    "splitbill.enterTotalHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter the bill total to calculate"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập tổng tiền để tính"
+          }
+        }
+      }
+    },
     "splitbill.field.amount": {
       "extractionState": "manual",
       "localizations": {
@@ -17186,8 +21006,38 @@
         }
       }
     },
-    "splitbill.grandAfterTip" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Total (after tip)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tổng (sau tip)"}}}},
-    "splitbill.mode.custom" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Split by item"}}, "vi": {"stringUnit": {"state": "translated", "value": "Chia theo món"}}}},
+    "splitbill.grandAfterTip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Total (after tip)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tổng (sau tip)"
+          }
+        }
+      }
+    },
+    "splitbill.mode.custom": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Split by item"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chia theo món"
+          }
+        }
+      }
+    },
     "splitbill.mode.equal": {
       "extractionState": "manual",
       "localizations": {
@@ -17205,7 +21055,22 @@
         }
       }
     },
-    "splitbill.peopleCount" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Number of people"}}, "vi": {"stringUnit": {"state": "translated", "value": "Số người"}}}},
+    "splitbill.peopleCount": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Number of people"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số người"
+          }
+        }
+      }
+    },
     "splitbill.peopleUnit": {
       "extractionState": "manual",
       "localizations": {
@@ -17223,7 +21088,22 @@
         }
       }
     },
-    "splitbill.perPerson" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Each person pays"}}, "vi": {"stringUnit": {"state": "translated", "value": "Số tiền mỗi người phải trả"}}}},
+    "splitbill.perPerson": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Each person pays"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Số tiền mỗi người phải trả"
+          }
+        }
+      }
+    },
     "splitbill.person1": {
       "extractionState": "manual",
       "localizations": {
@@ -17343,7 +21223,22 @@
         }
       }
     },
-    "splitbill.total" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Bill total (đ)"}}, "vi": {"stringUnit": {"state": "translated", "value": "Tổng tiền hóa đơn (đ)"}}}},
+    "splitbill.total": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bill total (đ)"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tổng tiền hóa đơn (đ)"
+          }
+        }
+      }
+    },
     "sub.alreadyPro": {
       "localizations": {
         "en": {
@@ -18192,7 +22087,22 @@
         }
       }
     },
-    "translate.action" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Translate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Dịch ngay"}}}},
+    "translate.action": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translate"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dịch ngay"
+          }
+        }
+      }
+    },
     "translate.error.dailyLimit": {
       "extractionState": "manual",
       "localizations": {
@@ -18227,9 +22137,54 @@
         }
       }
     },
-    "translate.inputHeading" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Text to translate"}}, "vi": {"stringUnit": {"state": "translated", "value": "Văn bản cần dịch"}}}},
-    "translate.inputPlaceholder" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Type or paste text here..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Nhập hoặc dán văn bản vào đây..."}}}},
-    "translate.result" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Result · %@"}}, "vi": {"stringUnit": {"state": "translated", "value": "Kết quả · %@"}}}},
+    "translate.inputHeading": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text to translate"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Văn bản cần dịch"
+          }
+        }
+      }
+    },
+    "translate.inputPlaceholder": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type or paste text here..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập hoặc dán văn bản vào đây..."
+          }
+        }
+      }
+    },
+    "translate.result": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Result · %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết quả · %@"
+          }
+        }
+      }
+    },
     "translate.targetHeading": {
       "extractionState": "manual",
       "localizations": {
@@ -18264,7 +22219,22 @@
         }
       }
     },
-    "translate.translating" : { "localizations": {"en": {"stringUnit": {"state": "translated", "value": "Translating..."}}, "vi": {"stringUnit": {"state": "translated", "value": "Đang dịch..."}}}},
+    "translate.translating": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Translating..."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Đang dịch..."
+          }
+        }
+      }
+    },
     "ugc.terms.agree": {
       "extractionState": "manual",
       "localizations": {
@@ -25775,6 +29745,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gõ XÓA để xác nhận."
+          }
+        }
+      }
+    },
+    "sub.upgradeProPrice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Pro — %@/month"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nâng cấp Pro — %@/tháng"
+          }
+        }
+      }
+    },
+    "sub.retryStore": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect to App Store"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kết nối App Store"
+          }
+        }
+      }
+    },
+    "sub.terms.autoRenewNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Subscription automatically renews each month unless cancelled at least 24 hours before the end of the current period in Apple ID Account Settings."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gói đăng ký tự động gia hạn mỗi tháng trừ khi hủy ít nhất 24 giờ trước khi kết thúc chu kỳ hiện tại trong Cài đặt tài khoản Apple ID."
+          }
+        }
+      }
+    },
+    "sub.renewalDate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Renews: %@"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gia hạn: %@"
           }
         }
       }
