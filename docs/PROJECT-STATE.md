@@ -70,22 +70,29 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 |---|---|---|---|---|
 | 22/10 | `6816cb2` | `vitest run --project app` on `moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`, `moneyGuardMetres.test.ts`, `travelGuard.test.ts`, `priceDateRange.settle.test.ts` | 6 files, 246/246 pass, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` + uncommitted S5h3 test | the new test `S5h3 settle preserves a verified 387000 VND fare through the stream filter`, filtered by name | FAIL, exit 1: output was only the travel notice; telemetry `place_claim`, `ordering: 1`, `sentences_removed: 1` | VERIFIED |
+| 22/10 | `b966bef` + the S5h3 fix (the fix commit that follows it) | `vitest run --project app src/lib/ai/priceDateRange.settle.test.ts` | 1 file, 60/60 pass, exit 0 (58 earlier cases incl. the stream test, plus 2 new) | VERIFIED |
+| 22/10 | same | `vitest run --project app` on `placeClaimGuard.test.ts`, `placeClaimGuard.v2.test.ts`, `placeClaimGuardMachineSpans.test.ts`, `placeClaimFallback.test.ts`, `placeClaimNoToolFollowUp.test.ts`, `placeClaimPopularityScope.test.ts`, `placeClaimRatingEvidence.test.ts` | 7 files, 90 pass + 2 expected-fail (already marked in those files), exit 0 | VERIFIED |
 
-The 246 pass result does not show S5h3 is safe: it only exercises the direct guard and the option-off `redactUnsupportedClaims` unit, not the stream path.
+The 246 pass result did not show S5h3 was safe: it only exercised the direct guard and the option-off `redactUnsupportedClaims` unit, not the stream path. The stream test is what exposed the loss, and it failed before the fix.
+
+Stream results after the fix (from the test's recorded output): the reply `Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.` becomes `Đặt qua app hoặc website, Vietjet 387.000 VND.` plus the travel notice (387.000 kept, 99.000 gone). With an extra venue claim `Các quán quanh sân bay đều có giao hàng tận nhà.` and a safe sentence, the venue claim is removed (`ordering: 1`), the safe sentence stays. Not run: the full suite, database suites, build, lint, typecheck, benchmarks.
 
 ## 6. Open gates
 
 | Gate | Status | Notes |
 |---|---|---|
-| `TG-VERIFIED-LOSS-PRE-01` | OPEN | A verified fare is lost on the stream path. Mechanism and fix tracked below. |
-| `S5h3 settle` | OPEN | Reproduced by the stream test above. The test is not yet committed at the time of writing. |
+| `TG-VERIFIED-LOSS-PRE-01` | FIXED for the S5h3 stream scenario, awaiting owner review | Fix: `placeClaimGuard.isOrderingClaim` (see below). Other phrasings that might reach the place guard on a travel turn are not tested. |
+| `S5h3 settle` | FIXED, regression-tested | Stream test passes after the fix and failed before it. The test is committed with the fix. |
+| Latent: option-off clause cut in `moneyGuard.redactUnsupportedClaims` | OPEN, not changed | The unit test at `priceDateRange.settle.test.ts` (the "other callers (option off)" case) still pins that a clause cut can take a verified amount. It is reached only by `guardMoneyClaimsInText` with structured product prices (`streamEnrichment.ts:2714-2715`). Whether any real turn reaches it with a travel sentence: UNVERIFIED. Not touched on purpose (outside the files allowed for this fix). |
 | `RS-3-LEGACY-RESIDUE` | OPEN, undefined | The full ID is not in source. Only the label "RS-3" appears in comments at `priceDateRange.settle.test.ts` (lines 212, 224). No test found. Do not invent a definition. |
 | `PLACE-ORDERING-EMPTY-01` | OPEN, undefined | Not in source or tests. |
 | Phase 3 specification | MISSING | `docs/audit/PHASE-3-IMPLEMENTATION-SPECIFICATION.md` is referenced by code comments but exists in no ref checked (HEAD, `origin/main`, `git log --all`). |
-| Phase 3A overall | NOT COMPLETE | Historical 246/246 pass does not prove S5h3 is fixed. |
+| Phase 3A overall | NOT COMPLETE | S5h3 is fixed and tested, but the spec is missing and `RS-3-LEGACY-RESIDUE` and `PLACE-ORDERING-EMPTY-01` are undefined. Nothing here claims Phase 3A is done. |
 | `anonymousSessionIdentity` test red at canonical; `cronAuth` (2) and `costRouteCoverage` (1) red | OPEN | REPORTED (Phase M / J). |
 
-S5h3 root cause so far: the travel guard keeps the verified fare (`travelFares` from the `get_flight_prices` snippet, via `streamEnrichment.ts` lines 4336-4340), then the place-claim guard (`placeGuardOn` includes `travelIntent`, `streamEnrichment.ts:2896-2922`) treats "Đặt qua app hoặc website, …" as an ordering claim (`isOrderingClaim`, `placeClaimGuard.ts:185-197`; rule 1c at `:872-878`, `orderablePlaces` empty) and removes the whole sentence, fare included. VERIFIED: the test failure and the telemetry. INFERRED: that this is the only cause on the stream path.
+S5h3 root cause (fixed): the travel guard keeps the verified fare (`travelFares` from the `get_flight_prices` snippet, via `streamEnrichment.ts` lines 4336-4340), then the place-claim guard (`placeGuardOn` includes `travelIntent`, `streamEnrichment.ts:2896-2922`) treats "Đặt qua app hoặc website, …" as an ordering claim (`isOrderingClaim`, `placeClaimGuard.ts:185-197`; rule 1c at `:872-878`, `orderablePlaces` empty) and removes the whole sentence, fare included. VERIFIED: the test failure and the telemetry before the fix, and the pass after it. INFERRED: that this is the only cause on the stream path (other guards did not remove the sentence in the tested scenario).
+
+The fix (`placeClaimGuard.ts`): `isOrderingClaim` returns false for a sentence that OPENS with the instruction "Đặt qua app / website / web / ứng dụng / hotline" (generic channels only, `BOOKING_CHANNEL_ADVICE_RE`) when nothing else in the sentence is ordering vocabulary. Possession wording still wins and is checked first. A named platform ("Đặt qua GrabFood"), "đặt qua app thì quán giao tận nhà", "có giao hàng tận nhà" and "có thể order qua GrabFood" are still claims. Rule 1c itself, the place guard and the price verification are unchanged. `isOrderingClaim` is the single predicate shared by the guard and the early-stream hold-back (`mayRedactPlaceClaim`), so both now agree.
 
 ## 7. Owner decisions pending
 
@@ -98,3 +105,4 @@ A decision is closed only when the owner states it or evidence shows it.
 ## 8. Change log
 
 - 2026-10-22: file created; canonical `6816cb2`; S5h3 stream test failing and uncommitted.
+- 2026-10-22: S5h3 fixed in `placeClaimGuard.ts`; stream test and two companion tests committed with the fix; `TG-VERIFIED-LOSS-PRE-01` and `S5h3 settle` moved to FIXED. Nothing pushed, deployed or changed in production.

@@ -267,7 +267,7 @@ describe('RANGE-27-33 — the deciding guard, called directly', () => {
 })
 
 // ── S5 (commit 3a) ── a travel sentence with a VERIFIED fare and an unverified one: the verified fare always stays, the unverified part goes, no residue.
-// Strings = price-allowlist-3a.md (gọi thẳng), approved by Huy 13/10. S5h3: the direct path only — settle still loses 387.000 (TG-VERIFIED-LOSS-PRE-01, OPEN).
+// Strings = price-allowlist-3a.md (gọi thẳng), approved by Huy 13/10. S5h3: the direct path here; the stream path is the last describe of this file (TG-VERIFIED-LOSS-PRE-01 — the place-claim guard took the sentence as a venue ordering claim; fixed in placeClaimGuard.isOrderingClaim).
 describe('S5 — travelGuard cuts around a verified fare (commit 3a)', () => {
   const NL = 'Giá vé cụ thể mình chưa xác nhận được từ nguồn đã tìm — bạn xem trên trang đặt vé.'
   const Qf = 'vé máy bay TP.HCM Đà Nẵng ngày 24/10/2026 giá bao nhiêu'
@@ -300,5 +300,45 @@ describe('S5 — travelGuard cuts around a verified fare (commit 3a)', () => {
     const t = 'Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.'
     const judged = extractMoneyClaims(t).map(c => ({ ...c, entity: null, verdict: t.slice(c.start, c.end).startsWith('387') ? 'VERIFIED' : 'UNVERIFIED' })) as never
     expect(redactUnsupportedClaims(t, judged)).toBe('Đặt qua app hoặc website.')
+  })
+})
+
+// ── S5h3 through the stream filter ── the verified fare is fetched evidence: a get_flight_prices row whose snippet states 387.000 VND adds
+// 387000 to travelFares (streamEnrichment.ts, the get_transport_options / get_flight_prices branch), so travelGuard judges it VERIFIED; 99.000 VND is in no row → UNVERIFIED.
+describe('S5h3 — the stream filter, not the guard called directly', () => {
+  it('S5h3 settle preserves a verified 387000 VND fare through the stream filter', async () => {
+    const rows = [{ title: 'Vietjet Air - vé máy bay TP.HCM Đà Nẵng', link: 'https://example.test/vietjet-flights', snippet: 'Vé Vietjet một chiều 387.000 VND.' }]
+    const frames = [
+      f9('t1', 'get_flight_prices', { origin: 'TP.HCM', destination: 'Đà Nẵng', date: '2026-10-24' }),
+      fa('t1', { type: 'flight', origin: 'TP.HCM', destination: 'Đà Nẵng', bus_search_results: rows, train_search_results: [] }),
+      ft('Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.'), FIN,
+    ]
+    const out = await settle('Vé máy bay TP.HCM Đà Nẵng ngày 24/10/2026 giá bao nhiêu', frames, false, { travel: true })
+    record('s5h3_stream', { out })
+    expect(out).toContain('Đặt qua app hoặc website, Vietjet 387.000 VND.')
+    expect(out).not.toContain('99.000')
+  })
+  it('S5h3 settle: the unverified fare and an unbacked venue ordering claim still go, unrelated prose stays', async () => {
+    const rows = [{ title: 'Vietjet Air - vé máy bay TP.HCM Đà Nẵng', link: 'https://example.test/vietjet-flights', snippet: 'Vé Vietjet một chiều 387.000 VND.' }]
+    const frames = [
+      f9('t1', 'get_flight_prices', { origin: 'TP.HCM', destination: 'Đà Nẵng', date: '2026-10-24' }),
+      fa('t1', { type: 'flight', origin: 'TP.HCM', destination: 'Đà Nẵng', bus_search_results: rows, train_search_results: [] }),
+      ft('Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND. Các quán quanh sân bay đều có giao hàng tận nhà. Chúc bạn có chuyến đi vui vẻ.'), FIN,
+    ]
+    const out = await settle('Vé máy bay TP.HCM Đà Nẵng ngày 24/10/2026 giá bao nhiêu', frames, false, { travel: true })
+    record('s5h3_stream_mixed', { out })
+    expect(out).toContain('Đặt qua app hoặc website, Vietjet 387.000 VND.')
+    expect(out).not.toContain('99.000')
+    expect(out).not.toContain('giao hàng tận nhà')
+    expect(out).toContain('Chúc bạn có chuyến đi vui vẻ.')
+  })
+  it('isOrderingClaim: a booking-channel instruction is not a venue claim; every venue ordering claim still is', async () => {
+    const { isOrderingClaim } = await import('./placeClaimGuard')
+    expect(isOrderingClaim('Đặt qua app hoặc website, Vietjet 387.000 VND.')).toBe(false)
+    expect(isOrderingClaim('Đặt qua app hoặc website thì quán giao tận nhà.')).toBe(true)
+    expect(isOrderingClaim('Đặt qua GrabFood, quán nhận đơn online.')).toBe(true)
+    expect(isOrderingClaim('Đặt qua GrabFood.')).toBe(true)
+    expect(isOrderingClaim('Quán này có thể order qua GrabFood.')).toBe(true)
+    expect(isOrderingClaim('Quán Phở Hòa có giao hàng tận nhà.')).toBe(true)
   })
 })

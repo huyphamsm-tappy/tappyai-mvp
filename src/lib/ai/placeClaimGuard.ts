@@ -187,6 +187,10 @@ export function isOrderingClaim(raw: string): boolean {
   if (!ORDERING_RE.test(sentence)) return false
   if (/\?\s*$/.test(sentence.trim())) return false
   if (ORDERING_POSSESSION_RE.test(sentence)) return true
+  // TG-VERIFIED-LOSS-PRE-01 (S5h3): a sentence that OPENS with an instruction to the USER about where to book ("Đặt qua app hoặc website, …")
+  // names a booking channel, not a service some venue is said to have. It stops being a claim only when nothing else in the sentence is
+  // ordering vocabulary ("Đặt qua app thì quán giao tận nhà" still is one); possession wording was checked above and still wins.
+  if (BOOKING_CHANNEL_ADVICE_RE.test(sentence) && !ORDERING_RE.test(sentence.replace(BOOKING_CHANNEL_ADVICE_RE, ' '))) return false
   if (CAPABILITY_NEGATION_RE.test(sentence)) return false
   if (USER_WISH_RE.test(sentence)) return false
   // POST-UAT (UAT-09 final run): a sentence LISTING COSTS ("Chi phí vận hành tháng gồm thuê mặt bằng, lương, …, giao hàng, phí thanh
@@ -196,7 +200,9 @@ export function isOrderingClaim(raw: string): boolean {
   if (ADVICE_BEFORE_ORDER_RE.test(sentence)) return false
   return !ORDERING_SEARCH_FRAMING_RE.test(sentence)
 }
-const ADVICE_BEFORE_ORDER_RE = /(?<!\p{L})(?:trước khi|truoc khi|before)\s+(?:gọi món|goi mon|đặt món|dat mon|đặt bàn|dat ban|đặt|dat|order(?:ing)?|book(?:ing)?)(?!\p{L})/iu
+/** The sentence-opening "Đặt qua <generic channel>[ hoặc <generic channel>]" — app / website / hotline only; a named platform (GrabFood, ShopeeFood) is not generic and stays a claim. */
+const BOOKING_CHANNEL_ADVICE_RE = /^[\s*•>-]*(?:đặt|dat)\s+qua\s+(?:app|ứng dụng|ung dung|website|web|trang web|hotline)(?!\p{L})(?:\s*(?:hoặc|hoac|hay|và|va|or|,)\s*(?:app|ứng dụng|ung dung|website|web|trang web|hotline)(?!\p{L}))*/iu
+const ADVICE_BEFORE_ORDER_RE =/(?<!\p{L})(?:trước khi|truoc khi|before)\s+(?:gọi món|goi mon|đặt món|dat mon|đặt bàn|dat ban|đặt|dat|order(?:ing)?|book(?:ing)?)(?!\p{L})/iu
 
 /**
  * A turn that retrieved NOTHING cannot back a claim that a venue takes orders (UAT 2026-09-28: after
