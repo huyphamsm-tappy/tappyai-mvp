@@ -590,7 +590,9 @@ export function formatMessage(content: string) {
   return withImages
     .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_m, label: string, url: string) => linkChip(url, looksLikeUrl(label) ? linkLabelFor(url) : label))
     // A bare URL is never printed: it becomes a chip named for where it goes ("Facebook", "Google Maps").
-    .replace(/(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, pre: string, url: string) => `${pre}${linkChip(url, linkLabelFor(url))}`)
+    // Only in TEXT, never inside a tag: a URL inside an attribute value (a photo's alt) became a nested <a> whose quote closed the attribute,
+    // and the rest of the URL parsed as attributes — an `on…=` handler. Tags pass through untouched.
+    .replace(/(<[^>]*>)|(^|[^"'>=])(https?:\/\/[^\s<]+)/g, (_m, tag: string | undefined, pre: string, url: string) => tag ?? `${pre}${linkChip(url, linkLabelFor(url))}`)
     .replace(/^### (.+)$\n?/gm, '<div class="font-semibold mt-3 mb-1">$1</div>')
     .replace(/^## (.+)$\n?/gm, '<div class="font-semibold text-base mt-3 mb-1">$1</div>')
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
