@@ -1,5 +1,5 @@
 import type { JWSTransaction } from './types'
-import { PLAN_CONFIG, PAID_PLAN_IDS } from '@/lib/plans/planConfig'
+import { PLAN_CONFIG, PAID_PLAN_IDS, planForStoreProduct, type PaidPlanId } from '@/lib/plans/planConfig'
 
 // ── A genuine Apple signature is not a TappyAI purchase (security audit 2026-09-30) ─────────────
 //
@@ -38,14 +38,15 @@ export type AppleTransactionRefusal =
  * claimed — a JWS for some other subscription cannot stand in for it.
  */
 export function checkAppleTransaction(
-  tx: Pick<JWSTransaction, 'bundleId' | 'environment' | 'productId' | 'originalTransactionId' | 'revocationDate'>,
-  opts: { originalTransactionId?: string } = {},
+  tx: Pick<JWSTransaction, 'bundleId' | 'environment' | 'productId' | 'originalTransactionId' | 'revocationDate'> & { appAccountToken?: string },
+  opts: { originalTransactionId?: string; appAccountToken?: string } = {},
   env: NodeJS.ProcessEnv = process.env,
 ): AppleTransactionRefusal | null {
   if (tx.bundleId !== expectedAppleBundleId(env)) return 'wrong_bundle'
   if (tx.environment !== expectedAppleEnvironment(env)) return 'wrong_environment'
   if (!APPLE_PRO_PRODUCT_IDS.includes(tx.productId)) return 'unknown_product'
   if (opts.originalTransactionId !== undefined && String(tx.originalTransactionId) !== String(opts.originalTransactionId)) return 'transaction_mismatch'
+  if (opts.appAccountToken && tx.appAccountToken && tx.appAccountToken.toLowerCase() !== opts.appAccountToken.toLowerCase()) return 'transaction_mismatch'
   if (tx.revocationDate) return 'revoked'
   return null
 }
@@ -58,4 +59,15 @@ export function checkAppleNotificationEnvelope(
   if (data?.bundleId !== expectedAppleBundleId(env)) return 'wrong_bundle'
   if (data?.environment !== expectedAppleEnvironment(env)) return 'wrong_environment'
   return null
+}
+
+/**
+ * Maps an approved Apple Store product ID to its canonical paid plan.
+ * Returns null for any unapproved or unknown product.
+ */
+export function applePlanForProduct(productId: string | null | undefined): PaidPlanId | null {
+  if (!productId) return null
+  const base = productId.split(':')[0]
+  if (base === 'com.tappyai.ios.pro.monthly') return 'momo'
+  return planForStoreProduct(base)
 }

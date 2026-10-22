@@ -18,6 +18,7 @@ const h = vi.hoisted(() => {
     updates: [] as Record<string, unknown>[],
     rpcCalls: [] as { fn: string; args: unknown }[],
     notifData: null as Record<string, unknown> | null,
+    notifType: 'DID_RENEW' as string,
     subRow: { user_id: 'u1' } as { user_id: string } | null,
   }
   const q: Record<string, unknown> = {}
@@ -46,7 +47,7 @@ vi.mock('@/lib/apple-iap/jws', () => {
   return {
     JWSVerificationError,
     verifyTransactionInfo: async () => h.state.tx,
-    verifyNotificationPayload: async () => ({ notificationType: 'DID_RENEW', data: { ...h.state.notifData, signedTransactionInfo: 'x' } }),
+    verifyNotificationPayload: async () => ({ notificationType: h.state.notifType || 'DID_RENEW', data: { ...h.state.notifData, signedTransactionInfo: 'x' } }),
   }
 })
 
@@ -69,6 +70,7 @@ beforeEach(() => {
   h.state.upserts = []
   h.state.updates = []
   h.state.rpcCalls = []
+  h.state.notifType = 'DID_RENEW'
   h.state.notifData = { bundleId: 'com.tappyai.ios', environment: 'Production' }
   delete process.env.APPLE_IAP_ENV
   delete process.env.APPLE_IAP_BUNDLE_ID
@@ -114,6 +116,21 @@ describe('POST /api/iap/apple/verify — the client-JWS fallback', () => {
   it('🚨 another product of the app does not grant Pro', async () => {
     h.state.tx = { ...OURS, productId: 'com.tappyai.ios.something_else' }
     expect((await post(claim())).status).toBe(400)
+  })
+
+  it('an unmapped or unauthorized product ID is rejected without defaulting to any plan', async () => {
+    const res = await post({ originalTransactionId: OURS.originalTransactionId, productId: 'unmapped_product_xyz' })
+    expect(res.status).toBe(400)
+    const body = await res.json()
+    expect(body).toMatchObject({ error: 'invalid_product' })
+    expect(h.state.upserts).toEqual([])
+  })
+
+  it('a JWS with appAccountToken belonging to another user is rejected', async () => {
+    h.state.tx = { ...OURS, appAccountToken: 'other-user-uuid' }
+    const res = await post(claim())
+    expect(res.status).toBe(400)
+    expect(h.state.upserts).toEqual([])
   })
 
   it('🚨 an App Store subscription already registered to ANOTHER account is refused (no sharing)', async () => {
@@ -176,5 +193,41 @@ describe('POST /api/iap/apple/notifications', () => {
     h.state.subRow = { user_id: 'u1' }
     expect(await (await call()).json()).toMatchObject({ ok: false, reason: 'wrong_environment' })
     expect(h.state.upserts).toEqual([])
+  })
+
+  it('DID_RENEW extends the entitlement in the ledger and updates subscription', async () => {
+    h.state.notifData = { bundleId: 'com.tappyai.ios', environment: 'Production' }
+    h.state.subRow = { user_id: 'u1' }
+    h.state.tx = { ...OURS, productId: 'tappy_momo_1m', expiresDate: FUTURE + 30 * 86_400_000 }
+    const res = await call()
+    expect(res.status).toBe(200)
+    expect(h.state.rpcCalls).toContainEqual(
+      expect.objectContaining({
+        fn: 'p8_apply_entitlement',
+        args: expect.objectContaining({
+          p_user: 'u1',
+          p_mode: 'extend_to',
+          p_plan: 'momo',
+        }),
+      })
+    )
+  })
+
+  it('REFUND calls applyEntitlement with revoke_store and updates subscription to canceled', async () => {
+    h.state.notifType = 'REFUND'
+    h.state.notifData = { bundleId: 'com.tappyai.ios', environment: 'Production' }
+    h.state.subRow = { user_id: 'u1' }
+    h.state.tx = { ...OURS, productId: 'tappy_momo_1m' }
+    const res = await call()
+    expect(res.status).toBe(200)
+    expect(h.state.rpcCalls).toContainEqual(
+      expect.objectContaining({
+        fn: 'p8_apply_entitlement',
+        args: expect.objectContaining({
+          p_user: 'u1',
+          p_mode: 'revoke_store',
+        }),
+      })
+    )
   })
 })
