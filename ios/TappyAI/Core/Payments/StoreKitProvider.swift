@@ -55,7 +55,7 @@ final class StoreKitProvider: PaymentProvider {
         case .success(let verification):
             switch verification {
             case .verified(let transaction):
-                await syncWithBackend(transaction)
+                await syncWithBackend(transaction, jwsRepresentation: verification.jwsRepresentation)
                 await transaction.finish()
                 return .success
             case .unverified(_, let error):
@@ -79,7 +79,7 @@ final class StoreKitProvider: PaymentProvider {
             guard case .verified(let transaction) = result,
                   ProductCatalog.allProductIds.contains(transaction.productID),
                   transaction.revocationDate == nil else { continue }
-            await syncWithBackend(transaction)
+            await syncWithBackend(transaction, jwsRepresentation: result.jwsRepresentation)
             await transaction.finish()
             restored = true
         }
@@ -106,14 +106,14 @@ final class StoreKitProvider: PaymentProvider {
 
     /// Notifies the backend of a verified transaction so the server can update the subscriptions
     /// table. Non-fatal on failure — the entitlement is re-synced on next launch or restore.
-    private func syncWithBackend(_ transaction: Transaction) async {
+    private func syncWithBackend(_ transaction: Transaction, jwsRepresentation: String) async {
         do {
             let body = try JSONSerialization.data(withJSONObject: [
                 "originalTransactionId": String(transaction.originalID),
                 "transactionId": String(transaction.id),
                 "expiresDate": transaction.expirationDate?.timeIntervalSince1970 ?? 0.0,
                 "productId": transaction.productID,
-                "signedTransactionInfo": transaction.jwsRepresentation,
+                "signedTransactionInfo": jwsRepresentation,
             ])
             let endpoint = Endpoint(
                 path: "/api/iap/apple/verify",
