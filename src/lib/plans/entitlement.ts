@@ -46,7 +46,7 @@ export function entitlementFromRow(row: SubscriptionRow | null | undefined, now:
   return { plan, paid: true, periodEnd: row.current_period_end, source }
 }
 
-export const SUBSCRIPTION_COLUMNS = 'plan, status, current_period_end'
+export const SUBSCRIPTION_COLUMNS = 'plan, status, current_period_end, source'
 
 /** Reads the caller's own subscription (RLS: own row only) and decides. Never throws. */
 export async function getEntitlement(

@@ -18,7 +18,9 @@ import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { verifyNotificationPayload, verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
 import type { NotificationType, JWSTransaction } from '@/lib/apple-iap/types'
-import { checkAppleNotificationEnvelope, checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
+import { checkAppleNotificationEnvelope, checkAppleTransaction, applePlanForProduct } from '@/lib/apple-iap/transactionPolicy'
+import { type PaidPlanId } from '@/lib/plans/planConfig'
+import { applyEntitlement } from '@/lib/payments/grantPlan'
 
 export async function POST(req: Request) {
   let body: { signedPayload?: string }
@@ -113,14 +115,32 @@ async function handleNotification(
   }
 
   const userId = row.user_id
+  const targetPlan = applePlanForProduct(tx.productId)
 
   switch (type) {
     case 'SUBSCRIBED':
     case 'DID_RENEW': {
       // New subscription or successful renewal — set active with updated expiry.
       const expiresAt = tx.expiresDate ? new Date(tx.expiresDate) : null
-      await upsertSubscription(db, userId, subId, 'active', expiresAt, false)
-      console.info(`[apple/notifications] ${type}: userId=${userId} expires=${expiresAt?.toISOString()}`)
+      if (targetPlan) {
+        try {
+          await applyEntitlement(
+            {
+              userId,
+              plan: targetPlan,
+              channel: 'ios',
+              externalRef: `${subId}:${tx.transactionId || 'renew'}`,
+              mode: 'extend_to',
+              expiresAt,
+            },
+            db,
+          )
+        } catch (ledgerErr) {
+          console.warn('[apple/notifications] applyEntitlement renewal fallback:', ledgerErr)
+        }
+      }
+      await upsertSubscription(db, userId, subId, targetPlan, 'active', expiresAt, false)
+      console.info(`[apple/notifications] ${type}: userId=${userId} plan=${targetPlan} expires=${expiresAt?.toISOString()}`)
       break
     }
 
@@ -128,7 +148,7 @@ async function handleNotification(
     case 'GRACE_PERIOD_EXPIRED': {
       // Subscription has fully lapsed — downgrade to free.
       const expiresAt = tx.expiresDate ? new Date(tx.expiresDate) : new Date()
-      await upsertSubscription(db, userId, subId, 'canceled', expiresAt, false)
+      await upsertSubscription(db, userId, subId, null, 'canceled', expiresAt, false)
       console.info(`[apple/notifications] ${type}: userId=${userId} downgraded to free`)
       break
     }
@@ -136,22 +156,31 @@ async function handleNotification(
     case 'DID_FAIL_TO_RENEW': {
       // Entered billing retry period — keep status as past_due (not yet expired).
       const expiresAt = tx.expiresDate ? new Date(tx.expiresDate) : null
-      await upsertSubscription(db, userId, subId, 'past_due', expiresAt, false)
+      await upsertSubscription(db, userId, subId, targetPlan, 'past_due', expiresAt, false)
       console.info(`[apple/notifications] DID_FAIL_TO_RENEW: userId=${userId} billing retry`)
       break
     }
 
-    case 'REVOKE': {
-      // Family sharing revoked or subscription revoked by Apple.
-      await upsertSubscription(db, userId, subId, 'canceled', new Date(), false)
-      console.info(`[apple/notifications] REVOKE: userId=${userId}`)
-      break
-    }
-
+    case 'REVOKE':
     case 'REFUND': {
-      // Purchase refunded — remove entitlement immediately.
-      await upsertSubscription(db, userId, subId, 'canceled', new Date(), false)
-      console.info(`[apple/notifications] REFUND: userId=${userId}`)
+      // Family sharing revoked or purchase refunded — remove store entitlement immediately.
+      try {
+        await applyEntitlement(
+          {
+            userId,
+            plan: null,
+            channel: 'ios',
+            externalRef: `${subId}:refund:${tx.transactionId || Date.now()}`,
+            mode: 'revoke_store',
+            expiresAt: new Date(),
+          },
+          db,
+        )
+      } catch (ledgerErr) {
+        console.warn('[apple/notifications] applyEntitlement refund fallback:', ledgerErr)
+      }
+      await upsertSubscription(db, userId, subId, null, 'canceled', new Date(), false)
+      console.info(`[apple/notifications] ${type}: userId=${userId}`)
       break
     }
 
@@ -182,17 +211,20 @@ async function upsertSubscription(
   db: ReturnType<typeof createAdminClient>,
   userId: string,
   subId: string,
+  plan: PaidPlanId | null,
   status: string,
   expiresAt: Date | null,
   cancelAtPeriodEnd: boolean
 ): Promise<void> {
+  const patch: Record<string, unknown> = {
+    status,
+    current_period_end: expiresAt?.toISOString() ?? null,
+    cancel_at_period_end: cancelAtPeriodEnd,
+  }
+  if (plan) patch.plan = plan
   const { error } = await db
     .from('subscriptions')
-    .update({
-      status,
-      current_period_end: expiresAt?.toISOString() ?? null,
-      cancel_at_period_end: cancelAtPeriodEnd,
-    })
+    .update(patch)
     .eq('stripe_sub_id', subId)
 
   if (error) throw new Error(`Supabase update failed: ${error.message}`)
