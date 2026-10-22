@@ -91,6 +91,17 @@ describe('GET /api/config keeps its Phase 7 shape and adds the two capability fl
     const { body } = await config()
     expect(body.auth.providers).toEqual([{ id: 'google', enabled: true }, { id: 'zalo', enabled: true }, { id: 'email', enabled: true }])
   })
+  it('showProUpgrade flag is false by default and true when SHOW_PRO_UPGRADE env is 1 or true', async () => {
+    backends({ apple: false })
+    expect((await config()).body.flags.showProUpgrade).toBe(false)
+
+    vi.stubEnv('SHOW_PRO_UPGRADE', '1')
+    expect((await config()).body.flags.showProUpgrade).toBe(true)
+
+    vi.stubEnv('SHOW_PRO_UPGRADE', 'true')
+    expect((await config()).body.flags.showProUpgrade).toBe(true)
+  })
+
   it('keeps its CDN cache header', async () => {
     backends({ apple: false })
     expect((await config()).r.headers.get('Cache-Control')).toBe('public, max-age=300, stale-while-revalidate=3600')

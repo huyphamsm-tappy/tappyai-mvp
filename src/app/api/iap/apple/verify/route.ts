@@ -15,6 +15,8 @@ import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
 import { checkAppleTransaction } from '@/lib/apple-iap/transactionPolicy'
+import { planForStoreProduct, type PaidPlanId } from '@/lib/plans/planConfig'
+import { applyEntitlement } from '@/lib/payments/grantPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
@@ -160,13 +162,33 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'transaction_in_use', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 409 })
     }
 
+    const targetPlan: PaidPlanId = planForStoreProduct(productId) ?? 'momo'
+    if (isPro) {
+      try {
+        await applyEntitlement(
+          {
+            userId: user.id,
+            plan: targetPlan,
+            channel: 'ios',
+            externalRef: subId,
+            mode: 'extend_to',
+            expiresAt,
+          },
+          admin,
+        )
+      } catch (ledgerErr) {
+        console.warn('[iap/apple/verify] applyEntitlement fallback:', ledgerErr)
+      }
+    }
+
     const { error } = await admin
       .from('subscriptions')
       .upsert(
         {
           user_id: user.id,
           stripe_sub_id: subId,
-          plan: 'pro',
+          plan: targetPlan,
+          source: 'apple_iap',
           status: isPro ? 'active' : 'expired',
           current_period_end: expiresAt?.toISOString() ?? null,
           cancel_at_period_end: false,
@@ -181,6 +203,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       isPro,
+      plan: targetPlan,
       currentPeriodEnd: expiresAt?.toISOString() ?? null,
     })
   } catch (e) {

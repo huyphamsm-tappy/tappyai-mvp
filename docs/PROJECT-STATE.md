@@ -14,7 +14,7 @@ Last updated: 2026-10-22.
 
 | Platform | Worktree | Branch | SHA | Label |
 |---|---|---|---|---|
-| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `6816cb2a02d8fe52fb0b7b1cd147ea51b6172347` | VERIFIED (`git rev-parse HEAD`, 22/10) |
+| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `70753e8553f8d9ca17bddf907c345c77c433400d` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 | Android | `D:/TappyAI-wt/wtk-android` | `android/phase-k-web-parity` | `b6bf3a7` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 | iOS | `D:/TappyAI-wt/wtk-ios` | `ios/phase-k-web-parity` | `48d6079` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 
@@ -65,6 +65,7 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 | `CONSULTATIVE_V1` | comment says OFF, `product.ts:470-473` returns ON — REPORTED conflict | UNVERIFIED |
 | `SNIPPET_PRICE_GUARD_V2` | read from env in `snippetPriceGuardV2Enabled()` | UNVERIFIED |
 | `SUBSCRIPTIONS_ENABLED` | OFF (`flags.ts:8-11`, VERIFIED) | UNVERIFIED |
+| `SHOW_PRO_UPGRADE` | OFF in code default, enabled via `SHOW_PRO_UPGRADE=1\|true` (`product.ts`, VERIFIED) | UNVERIFIED |
 
 ## 5. Test evidence
 
@@ -72,6 +73,8 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 |---|---|---|---|---|
 | 22/10 | `b4d3f03` | `vitest run` on subscription & payment suite: `src/lib/payments/`, `src/app/api/payments/`, `src/components/subscription/`, `src/lib/plans/`, `src/app/api/subscription/`, `src/app/api/cron/subscriptions-expire/` | 22 files, 211/211 pass, exit 0 | VERIFIED |
 | 22/10 | `b4d3f03` | `npx tsc --noEmit` (full TypeScript typecheck) | 0 errors, exit 0 | VERIFIED |
+| 22/10 | working | `vitest run` on Apple IAP verify & policy suite (`src/app/api/iap/apple/appleIapPolicy.test.ts`, `src/app/api/config/appleSignInConfig.test.ts`, `src/lib/apple-iap/jws.test.ts`) | 3 files, 42 tests pass, exit 0 | VERIFIED |
+| 22/10 | working | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` | `vitest run --project app` on `moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`, `moneyGuardMetres.test.ts`, `travelGuard.test.ts`, `priceDateRange.settle.test.ts` | 6 files, 246/246 pass, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` + uncommitted S5h3 test | the new test `S5h3 settle preserves a verified 387000 VND fare through the stream filter`, filtered by name | FAIL, exit 1: output was only the travel notice; telemetry `place_claim`, `ordering: 1`, `sentences_removed: 1` | VERIFIED |
 | 22/10 | `b966bef` + the S5h3 fix (the fix commit that follows it) | `vitest run --project app src/lib/ai/priceDateRange.settle.test.ts` | 1 file, 60/60 pass, exit 0 (58 earlier cases incl. the stream test, plus 2 new) | VERIFIED |
@@ -134,3 +137,4 @@ A decision is closed only when the owner states it or evidence shows it.
 - 2026-10-22: gate `MG-OPTION-OFF-VERIFIED-LOSS-01` created (docs only, no code change); owner accepted `844f5b7` as FIXED-pending-review, `TG-VERIFIED-LOSS-PRE-01` not closed. At this time the worktree also held uncommitted changes made by someone else (`src/app/api/subscription/route.ts`, `src/lib/plans/entitlement.ts`, new payments and entitlement test files); they are not part of this work and were left untouched.
 - 2026-10-22: S5h3 fixed in `placeClaimGuard.ts`; stream test and two companion tests committed with the fix; `TG-VERIFIED-LOSS-PRE-01` and `S5h3 settle` moved to FIXED. Nothing pushed, deployed or changed in production.
 - 2026-10-22: Web subscription completed under `SUBSCRIPTIONS_ENABLED` flag (default OFF); common entitlement foundation strengthened in `src/lib/plans/entitlement.ts` (`SUBSCRIPTION_COLUMNS` includes `source`) and `src/app/api/subscription/route.ts` (`source` surfaced); 6 new regression test suites added (22 test files, 211 tests pass, exit 0); TypeScript check clean (0 errors); Apple IAP preserved as separate future iOS phase.
+- 2026-10-22: Apple IAP backend verification compliance for Guideline 3.1.1: `src/lib/apple-iap/transactionPolicy.ts` expanded to recognize all catalog products (`com.tappyai.ios.pro.monthly`, `tappy_momo_1m`, etc.); `src/app/api/iap/apple/verify/route.ts` updated to map store products via `planForStoreProduct`, record `source: 'apple_iap'`, and integrate with `p8_apply_entitlement` / `entitlement_ledger`; `SHOW_PRO_UPGRADE` feature flag supported via env `SHOW_PRO_UPGRADE=1|true` (default OFF in code) in `src/lib/config/product.ts` and `src/app/api/config/route.ts`; tests in `appleIapPolicy.test.ts` (16/16 pass) and `appleSignInConfig.test.ts` (14/14 pass); TypeScript check clean (0 errors).

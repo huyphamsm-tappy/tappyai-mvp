@@ -4,6 +4,7 @@ import {
   FREE_DAILY_LIMIT,
   ANON_LIFETIME_LIMIT,
   SHOW_PRO_UPGRADE,
+  showProUpgradeEnabled,
   SHOW_APP_CONNECTIONS,
   SHOW_SCAM_SHIELD,
   SHOW_MUSIC,
@@ -56,7 +57,7 @@ export async function GET() {
         anonLifetimeLimit: ANON_LIFETIME_LIMIT,
       },
       flags: {
-        showProUpgrade: SHOW_PRO_UPGRADE,
+        showProUpgrade: showProUpgradeEnabled(),
         // SUBSCRIPTIONS_ENABLED: the five plans, the payment routes and the 30/day allowance. Web reads it through
         // useSubscriptionsFlag; this route is static, so the value is the build's env (redeploy after flipping).
         subscriptions: subscriptionsEnabled(),

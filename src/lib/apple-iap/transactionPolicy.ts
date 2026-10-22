@@ -1,4 +1,5 @@
 import type { JWSTransaction } from './types'
+import { PLAN_CONFIG, PAID_PLAN_IDS } from '@/lib/plans/planConfig'
 
 // ── A genuine Apple signature is not a TappyAI purchase (security audit 2026-09-30) ─────────────
 //
@@ -10,7 +11,10 @@ import type { JWSTransaction } from './types'
 // from any app granted Pro.
 
 /** Auto-renewable products that grant Pro. Mirrors ios/TappyAI/Core/Payments/ProductCatalog.swift. */
-export const APPLE_PRO_PRODUCT_IDS: readonly string[] = ['com.tappyai.ios.pro.monthly']
+export const APPLE_PRO_PRODUCT_IDS: readonly string[] = [
+  'com.tappyai.ios.pro.monthly',
+  ...PAID_PLAN_IDS.map((id) => PLAN_CONFIG[id].storeProductId!).filter(Boolean),
+]
 
 export function expectedAppleBundleId(env: NodeJS.ProcessEnv = process.env): string {
   return env.APPLE_IAP_BUNDLE_ID?.trim() || 'com.tappyai.ios'
