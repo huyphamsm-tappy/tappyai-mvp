@@ -14,7 +14,7 @@ Last updated: 2026-10-22.
 
 | Platform | Worktree | Branch | SHA | Label |
 |---|---|---|---|---|
-| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `cfae4a8` | VERIFIED (`git rev-parse HEAD`, 22/10) |
+| Web (canonical) | `D:/TappyAI-wt/wt-integration` | `integration/canonical-20261020` | `dcb5232` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 | Android | `D:/TappyAI-wt/wtk-android` | `android/phase-k-web-parity` | `b6bf3a7` | VERIFIED by `rev-parse` at the start of the 22/10 session; not re-checked since |
 | iOS | `D:/TappyAI-wt/wtk-ios` | `ios/phase-k-web-parity` | `4cf4816` | VERIFIED (`git rev-parse HEAD`, 22/10) |
 
@@ -75,8 +75,8 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 | 22/10 | `b4d3f03` | `npx tsc --noEmit` (full TypeScript typecheck) | 0 errors, exit 0 | VERIFIED |
 | 22/10 | `cfae4a8` | `vitest run` on Apple IAP verify & policy suite (`src/app/api/iap/apple/appleIapPolicy.test.ts`, `src/app/api/config/appleSignInConfig.test.ts`, `src/lib/apple-iap/jws.test.ts`) | 3 files, 42 tests pass, exit 0 | VERIFIED |
 | 22/10 | `cfae4a8` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
-| 22/10 | at commit | `vitest run` on subscription & payment suite + tests (`src/lib/payments/`, `src/app/api/payments/`, `src/components/subscription/`, `src/lib/plans/`, `src/app/api/subscription/`, `src/app/api/cron/subscriptions-expire/`, `src/lib/i18n/paymentsKeys.test.ts`) | 23 files, 213/213 pass, exit 0 | VERIFIED |
-| 22/10 | at commit | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
+| 22/10 | `dcb5232` | `vitest run` on subscription & payment suite + tests (`src/lib/payments/`, `src/app/api/payments/`, `src/components/subscription/`, `src/lib/plans/`, `src/app/api/subscription/`, `src/app/api/cron/subscriptions-expire/`, `src/lib/i18n/paymentsKeys.test.ts`) | 23 files, 213/213 pass, exit 0 | VERIFIED |
+| 22/10 | `dcb5232` | `npx tsc --noEmit` on canonical Web | 0 errors, exit 0 | VERIFIED |
 | 22/10 | `4cf4816` (iOS) | `static_check.py` on `wtk-ios` (`strings_catalog`, `plists`, `secrets`) | 1793 xcstrings keys valid, 0 missing Swift keys, plists valid, no tracked secrets | VERIFIED |
 | 22/10 | `6816cb2` | `vitest run --project app` on `moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`, `moneyGuardMetres.test.ts`, `travelGuard.test.ts`, `priceDateRange.settle.test.ts` | 6 files, 246/246 pass, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` + uncommitted S5h3 test | the new test `S5h3 settle preserves a verified 387000 VND fare through the stream filter`, filtered by name | FAIL, exit 1: output was only the travel notice; telemetry `place_claim`, `ordering: 1`, `sentences_removed: 1` | VERIFIED |
