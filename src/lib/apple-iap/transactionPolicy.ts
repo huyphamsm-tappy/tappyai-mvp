@@ -21,20 +21,30 @@ export function expectedAppleBundleId(env: NodeJS.ProcessEnv = process.env): str
 }
 
 /**
+ * Helper to determine if Apple Sandbox environment is allowed.
+ *
+ * Opt-in flag, default OFF:
+ * - Sandbox is only accepted when APPLE_IAP_ALLOW_SANDBOX is explicitly configured to '1' or 'true',
+ *   or when the deployment is explicitly configured for Sandbox-only (APPLE_IAP_ENV === 'Sandbox').
+ * - Otherwise (flag missing, '0', 'false', undefined), returns false (Production only).
+ */
+export function isAppleSandboxAllowed(env: NodeJS.ProcessEnv = process.env): boolean {
+  if (env.APPLE_IAP_ENV === 'Sandbox') return true
+  const val = env.APPLE_IAP_ALLOW_SANDBOX?.trim().toLowerCase()
+  return val === '1' || val === 'true'
+}
+
+/**
  * Accepted environments for Apple transactions and server notifications.
  *
- * In production deployments, both 'Production' and 'Sandbox' are accepted:
- * - Apple App Reviewers test against the production backend using Sandbox StoreKit accounts (Guideline 3.1.1).
- * - TestFlight beta builds test against production with Sandbox StoreKit accounts.
- * - Public App Store users send Production StoreKit transactions.
- *
- * If explicitly configured for Sandbox-only (APPLE_IAP_ENV === 'Sandbox'), only Sandbox is accepted.
- * If explicitly configured to forbid Sandbox (APPLE_IAP_ALLOW_SANDBOX === 'false'), only Production is accepted.
+ * Production is ALWAYS accepted (unless deployment is explicitly Sandbox-only via APPLE_IAP_ENV).
+ * Sandbox is ONLY accepted when APPLE_IAP_ALLOW_SANDBOX is explicitly enabled ('1' | 'true') or APPLE_IAP_ENV === 'Sandbox'.
+ * Default: Production only (opt-in Sandbox).
  */
 export function allowedAppleEnvironments(env: NodeJS.ProcessEnv = process.env): readonly ('Production' | 'Sandbox')[] {
   if (env.APPLE_IAP_ENV === 'Sandbox') return ['Sandbox']
-  if (env.APPLE_IAP_ALLOW_SANDBOX === 'false') return ['Production']
-  return ['Production', 'Sandbox']
+  if (isAppleSandboxAllowed(env)) return ['Production', 'Sandbox']
+  return ['Production']
 }
 
 /** Production unless the deployment is explicitly configured for Sandbox (APPLE_IAP_ENV). */
@@ -46,6 +56,7 @@ export type AppleTransactionRefusal =
   | 'wrong_bundle'
   | 'wrong_environment'
   | 'unknown_product'
+  | 'product_mismatch'
   | 'transaction_mismatch'
   | 'revoked'
 
@@ -53,15 +64,17 @@ export type AppleTransactionRefusal =
  * Null when this verified transaction is a TappyAI Pro subscription for this deployment's
  * environment; otherwise why not. `originalTransactionId`, when given, must be the one the caller
  * claimed — a JWS for some other subscription cannot stand in for it.
+ * `expectedProductId`, when given, must match `tx.productId` — client cannot claim a different product.
  */
 export function checkAppleTransaction(
   tx: Pick<JWSTransaction, 'bundleId' | 'environment' | 'productId' | 'originalTransactionId' | 'revocationDate'> & { appAccountToken?: string },
-  opts: { originalTransactionId?: string; appAccountToken?: string } = {},
+  opts: { originalTransactionId?: string; appAccountToken?: string; expectedProductId?: string } = {},
   env: NodeJS.ProcessEnv = process.env,
 ): AppleTransactionRefusal | null {
   if (tx.bundleId !== expectedAppleBundleId(env)) return 'wrong_bundle'
   if (!allowedAppleEnvironments(env).includes(tx.environment as 'Production' | 'Sandbox')) return 'wrong_environment'
   if (!APPLE_PRO_PRODUCT_IDS.includes(tx.productId)) return 'unknown_product'
+  if (opts.expectedProductId !== undefined && tx.productId !== opts.expectedProductId) return 'product_mismatch'
   if (opts.originalTransactionId !== undefined && String(tx.originalTransactionId) !== String(opts.originalTransactionId)) return 'transaction_mismatch'
   if (opts.appAccountToken && tx.appAccountToken && tx.appAccountToken.toLowerCase() !== opts.appAccountToken.toLowerCase()) return 'transaction_mismatch'
   if (tx.revocationDate) return 'revoked'
