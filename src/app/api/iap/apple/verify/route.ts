@@ -20,6 +20,8 @@ import { applyEntitlement } from '@/lib/payments/grantPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 
+import type { JWSTransaction } from '@/lib/apple-iap/types'
+
 export async function POST(req: Request) {
   try {
     const { user } = await getRequestUser(req)
@@ -37,8 +39,8 @@ export async function POST(req: Request) {
     if (!originalTransactionId || !productId) {
       return NextResponse.json({ error: 'missing_fields', message: serverMessage('validation.missingFields', requestLocale(req)) }, { status: 400 })
     }
-    const targetPlan = applePlanForProduct(productId)
-    if (!targetPlan || !APPLE_PRO_PRODUCT_IDS.includes(productId)) {
+    const initialPlan = applePlanForProduct(productId)
+    if (!initialPlan || !APPLE_PRO_PRODUCT_IDS.includes(productId)) {
       console.error('[iap/apple/verify] Unmapped or unauthorized product ID:', productId)
       return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
     }
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
     }
 
-    // ── Determine authoritative expiry ────────────────────────────────────
+    // ── Determine authoritative expiry and verified product ───────────────
     // Entitlement may ONLY be derived from a trusted source: the App Store
     // Server API, or a cryptographically-verified transaction JWS. An unsigned
     // client-provided `expiresDate` is trusted ONLY in development (no Apple
@@ -60,6 +62,7 @@ export async function POST(req: Request) {
     let expiresAt: Date | null = null
     let authoritative = false // true only when the result came from a trusted source
     let verifiedEnv: string = 'Production'
+    let verifiedTx: JWSTransaction | null = null
 
     if (isAppleIAPConfigured()) {
       // Path A: App Store Server API — Apple is the source of truth
@@ -71,14 +74,28 @@ export async function POST(req: Request) {
         authoritative = true
 
         if (activeTx && activeTx.signedTransactionInfo) {
-          // Verify and decode the transaction JWS for the exact expiry date
+          // Verify and decode the transaction JWS for the exact expiry date and product
           try {
             const decoded = await verifyTransactionInfo(activeTx.signedTransactionInfo)
+            const refusal = checkAppleTransaction(decoded, {
+              originalTransactionId: String(originalTransactionId),
+              appAccountToken: user.id,
+              expectedProductId: productId,
+            })
+            if (refusal) {
+              console.error('[iap/apple/verify] API signedTransactionInfo refused:', refusal)
+              if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
+                return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+              }
+              return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+            }
+            verifiedTx = decoded
             expiresAt = decoded.expiresDate ? new Date(decoded.expiresDate) : null
             verifiedEnv = decoded.environment || 'Production'
           } catch (err) {
             if (err instanceof JWSVerificationError) {
               console.error('[iap/apple/verify] signedTransactionInfo JWS invalid:', err.message)
+              return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
             }
             // Fall through — use active status without pinned expiry
           }
@@ -114,17 +131,23 @@ export async function POST(req: Request) {
     if (!authoritative && signedTransactionInfo) {
       try {
         const decoded = await verifyTransactionInfo(signedTransactionInfo)
-        // Security audit 2026-09-30: Apple signs every app's transactions, Sandbox ones included,
+        // Security audit 2026-09-30 / H1 / H2: Apple signs every app's transactions, Sandbox ones included,
         // and a made-up originalTransactionId is enough to land here (the API lookup 404s). The
-        // JWS must be OUR Pro product, in OUR environment, for the subscription the caller named.
+        // JWS must be OUR Pro product, in OUR environment, for the subscription the caller named,
+        // and matching the product the caller claimed.
         const refusal = checkAppleTransaction(decoded, {
           originalTransactionId: String(originalTransactionId),
           appAccountToken: user.id,
+          expectedProductId: productId,
         })
         if (refusal) {
           console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
+          if (refusal === 'product_mismatch' || refusal === 'unknown_product') {
+            return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+          }
           return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
         }
+        verifiedTx = decoded
         verifiedEnv = decoded.environment || 'Production'
         if (decoded.expiresDate) {
           expiresAt = new Date(decoded.expiresDate)
@@ -143,6 +166,18 @@ export async function POST(req: Request) {
     // return a retryable error without modifying the stored subscription.
     if (!authoritative) {
       return NextResponse.json({ error: 'verify_unavailable', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
+    }
+
+    // ── H1: Product ID and plan MUST be derived from verified transaction ──
+    const authoritativeProductId = verifiedTx ? verifiedTx.productId : productId
+    if (verifiedTx && productId !== verifiedTx.productId) {
+      console.error('[iap/apple/verify] Product mismatch:', { client: productId, verified: verifiedTx.productId })
+      return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
+    }
+    const targetPlan = applePlanForProduct(authoritativeProductId)
+    if (!targetPlan || !APPLE_PRO_PRODUCT_IDS.includes(authoritativeProductId)) {
+      console.error('[iap/apple/verify] Unmapped or unauthorized authoritative product:', authoritativeProductId)
+      return NextResponse.json({ error: 'invalid_product', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
     }
 
     // ── Upsert subscriptions table ────────────────────────────────────────
