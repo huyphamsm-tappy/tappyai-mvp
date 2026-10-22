@@ -59,6 +59,7 @@ export async function POST(req: Request) {
     let isPro = false
     let expiresAt: Date | null = null
     let authoritative = false // true only when the result came from a trusted source
+    let verifiedEnv: string = 'Production'
 
     if (isAppleIAPConfigured()) {
       // Path A: App Store Server API — Apple is the source of truth
@@ -74,6 +75,7 @@ export async function POST(req: Request) {
           try {
             const decoded = await verifyTransactionInfo(activeTx.signedTransactionInfo)
             expiresAt = decoded.expiresDate ? new Date(decoded.expiresDate) : null
+            verifiedEnv = decoded.environment || 'Production'
           } catch (err) {
             if (err instanceof JWSVerificationError) {
               console.error('[iap/apple/verify] signedTransactionInfo JWS invalid:', err.message)
@@ -102,9 +104,9 @@ export async function POST(req: Request) {
         isPro = expiresAt > new Date()
         authoritative = true
       }
-    } else {
-      // Production with no Apple credentials — cannot verify anything. Fail closed.
-      console.error('[iap/apple/verify] APPLE_IAP_* not configured in production — cannot verify')
+    } else if (!signedTransactionInfo) {
+      // Production with no Apple credentials and no client-sent JWS — cannot verify anything. Fail closed.
+      console.error('[iap/apple/verify] APPLE_IAP_* not configured in production and no JWS — cannot verify')
       return NextResponse.json({ error: 'not_configured', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
     }
 
@@ -123,6 +125,7 @@ export async function POST(req: Request) {
           console.error('[iap/apple/verify] Client-sent JWS refused:', refusal)
           return NextResponse.json({ error: 'invalid_transaction', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 400 })
         }
+        verifiedEnv = decoded.environment || 'Production'
         if (decoded.expiresDate) {
           expiresAt = new Date(decoded.expiresDate)
           isPro = expiresAt > new Date()
@@ -180,6 +183,7 @@ export async function POST(req: Request) {
             externalRef: subId,
             mode: 'extend_to',
             expiresAt,
+            note: `apple_iap:${verifiedEnv.toLowerCase()}`,
           },
           admin,
         )
@@ -199,6 +203,7 @@ export async function POST(req: Request) {
           status: isPro ? 'active' : 'expired',
           current_period_end: expiresAt?.toISOString() ?? null,
           cancel_at_period_end: false,
+          grant_note: `apple_iap:${verifiedEnv.toLowerCase()}`,
         },
         { onConflict: 'user_id' }
       )

@@ -20,6 +20,23 @@ export function expectedAppleBundleId(env: NodeJS.ProcessEnv = process.env): str
   return env.APPLE_IAP_BUNDLE_ID?.trim() || 'com.tappyai.ios'
 }
 
+/**
+ * Accepted environments for Apple transactions and server notifications.
+ *
+ * In production deployments, both 'Production' and 'Sandbox' are accepted:
+ * - Apple App Reviewers test against the production backend using Sandbox StoreKit accounts (Guideline 3.1.1).
+ * - TestFlight beta builds test against production with Sandbox StoreKit accounts.
+ * - Public App Store users send Production StoreKit transactions.
+ *
+ * If explicitly configured for Sandbox-only (APPLE_IAP_ENV === 'Sandbox'), only Sandbox is accepted.
+ * If explicitly configured to forbid Sandbox (APPLE_IAP_ALLOW_SANDBOX === 'false'), only Production is accepted.
+ */
+export function allowedAppleEnvironments(env: NodeJS.ProcessEnv = process.env): readonly ('Production' | 'Sandbox')[] {
+  if (env.APPLE_IAP_ENV === 'Sandbox') return ['Sandbox']
+  if (env.APPLE_IAP_ALLOW_SANDBOX === 'false') return ['Production']
+  return ['Production', 'Sandbox']
+}
+
 /** Production unless the deployment is explicitly configured for Sandbox (APPLE_IAP_ENV). */
 export function expectedAppleEnvironment(env: NodeJS.ProcessEnv = process.env): 'Production' | 'Sandbox' {
   return env.APPLE_IAP_ENV === 'Sandbox' ? 'Sandbox' : 'Production'
@@ -43,7 +60,7 @@ export function checkAppleTransaction(
   env: NodeJS.ProcessEnv = process.env,
 ): AppleTransactionRefusal | null {
   if (tx.bundleId !== expectedAppleBundleId(env)) return 'wrong_bundle'
-  if (tx.environment !== expectedAppleEnvironment(env)) return 'wrong_environment'
+  if (!allowedAppleEnvironments(env).includes(tx.environment as 'Production' | 'Sandbox')) return 'wrong_environment'
   if (!APPLE_PRO_PRODUCT_IDS.includes(tx.productId)) return 'unknown_product'
   if (opts.originalTransactionId !== undefined && String(tx.originalTransactionId) !== String(opts.originalTransactionId)) return 'transaction_mismatch'
   if (opts.appAccountToken && tx.appAccountToken && tx.appAccountToken.toLowerCase() !== opts.appAccountToken.toLowerCase()) return 'transaction_mismatch'
@@ -57,7 +74,7 @@ export function checkAppleNotificationEnvelope(
   env: NodeJS.ProcessEnv = process.env,
 ): 'wrong_bundle' | 'wrong_environment' | null {
   if (data?.bundleId !== expectedAppleBundleId(env)) return 'wrong_bundle'
-  if (data?.environment !== expectedAppleEnvironment(env)) return 'wrong_environment'
+  if (!allowedAppleEnvironments(env).includes(data?.environment as 'Production' | 'Sandbox')) return 'wrong_environment'
   return null
 }
 
