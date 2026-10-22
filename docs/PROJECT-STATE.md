@@ -39,6 +39,7 @@ Code present, flag default, test environment and production are separate columns
 
 | Feature | In canonical source | In `origin/main` source | Default in code | Test env | Production |
 |---|---|---|---|---|---|
+| Web Subscription (5 plans, VietQR/SePay, quota v2 30/day, shared entitlement) | VERIFIED | VERIFIED | `SUBSCRIPTIONS_ENABLED` OFF (`flags.ts:8-11`, VERIFIED) | 22 files, 211/211 pass (VERIFIED) | UNVERIFIED |
 | Consultative Phase 3A (decision state, D9, D2, need profile) | VERIFIED | VERIFIED | no env flag found in `decisionState.ts`, `consultRouter.ts`, `decisionFrame.ts` (VERIFIED by grep) | UNVERIFIED | UNVERIFIED |
 | Phase 3B (ranking: `rank.ts`, `candidate.ts`) | VERIFIED | VERIFIED | no env flag found | UNVERIFIED | UNVERIFIED |
 | Phase 3C Consultative Brief | VERIFIED | VERIFIED | `CONSULT_BRIEF` OFF (`consultativeBrief.ts:186-188`, VERIFIED) | UNVERIFIED | UNVERIFIED |
@@ -63,11 +64,14 @@ Serper, Parallel, hosted search (REPORTED, audit): Serper daily cap 15 000 credi
 | `TAPPY_V4_HOSTED_SEARCH` | REPORTED ON when V4 is on | UNVERIFIED |
 | `CONSULTATIVE_V1` | comment says OFF, `product.ts:470-473` returns ON — REPORTED conflict | UNVERIFIED |
 | `SNIPPET_PRICE_GUARD_V2` | read from env in `snippetPriceGuardV2Enabled()` | UNVERIFIED |
+| `SUBSCRIPTIONS_ENABLED` | OFF (`flags.ts:8-11`, VERIFIED) | UNVERIFIED |
 
 ## 5. Test evidence
 
 | Date | SHA | Command / scope | Result | Label |
 |---|---|---|---|---|
+| 22/10 | `b4d3f03` | `vitest run` on subscription & payment suite: `src/lib/payments/`, `src/app/api/payments/`, `src/components/subscription/`, `src/lib/plans/`, `src/app/api/subscription/`, `src/app/api/cron/subscriptions-expire/` | 22 files, 211/211 pass, exit 0 | VERIFIED |
+| 22/10 | `b4d3f03` | `npx tsc --noEmit` (full TypeScript typecheck) | 0 errors, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` | `vitest run --project app` on `moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`, `moneyGuardMetres.test.ts`, `travelGuard.test.ts`, `priceDateRange.settle.test.ts` | 6 files, 246/246 pass, exit 0 | VERIFIED |
 | 22/10 | `6816cb2` + uncommitted S5h3 test | the new test `S5h3 settle preserves a verified 387000 VND fare through the stream filter`, filtered by name | FAIL, exit 1: output was only the travel notice; telemetry `place_claim`, `ordering: 1`, `sentences_removed: 1` | VERIFIED |
 | 22/10 | `b966bef` + the S5h3 fix (the fix commit that follows it) | `vitest run --project app src/lib/ai/priceDateRange.settle.test.ts` | 1 file, 60/60 pass, exit 0 (58 earlier cases incl. the stream test, plus 2 new) | VERIFIED |
@@ -103,6 +107,17 @@ The fix (`placeClaimGuard.ts`): `isOrderingClaim` returns false for a sentence t
 - Before any fix: (1) show reachability, by a stream-level test or by tracing which turns give `guardMoneyClaimsInText` structured prices plus a verified amount; (2) the fix option is to run `cutAroundVerified` for every caller whenever the sentence holds a verified claim, falling back to the clause path when it returns null; (3) the test at `:298` pins the loss today, so changing its expected output needs the assertion-by-assertion review and mutation proof the owner asked for on test-expectation changes, not just a green test; (4) callers affected: `guardMoneyClaimsInText` and its tests (`moneyGuard.test.ts`, `moneyGuardClauseFragment.test.ts`, `moneyGuardDecimalComma.test.ts`).
 - Closing needs the owner's decision: fix, or accept the behaviour with the reason written here.
 
+### Web Subscription & Entitlement Architecture (P7/P8)
+
+- Web subscription is implemented behind `SUBSCRIPTIONS_ENABLED` (default OFF in code).
+- Model: 5 paid plans (Pip, Momo, Coco, Milo, Sunny) with durations (7d, 30d, 90d, 180d, 365d), fixed VND prices in `subscriptionPrices.json`.
+- Pip is a lifetime one-time trial enforced in the database (`p7_pip_used`, `entitlement_ledger_pip_once`).
+- Order flow: `POST /api/payments/orders` creates a pending order with code `TAPPYxxxxxx` (15-min TTL, at most 3 pending).
+- Payment webhook: `POST /api/payments/sepay` verifies HMAC-SHA256 signature over raw body, 5-minute skew window, and receiving bank account. Calls `p8_payments_apply_sepay` RPC which atomically grants the plan via `p8_apply_entitlement` (`subscriptions` table + append-only `entitlement_ledger` with unique `external_ref` idempotency).
+- Shared account entitlement: Single authority `subscriptions` table. Read by `getEntitlement` and `/api/subscription`. `SUBSCRIPTION_COLUMNS` includes `source`.
+- Cross-platform entitlement: Accounts that buy on Web receive `isPro: true` when logging into iOS or Android via `GET /api/subscription`.
+- Separation from Apple IAP: Web subscription does NOT implement iOS in-app purchases. StoreKit 2 provider, `/api/iap/apple/verify`, App Store server notifications, and Apple Review Guideline 3.1.1 compliance are deferred to a dedicated iOS implementation phase per ADR-006.
+
 ## 7. Owner decisions pending
 
 REPORTED (Phase N `OWNER-DECISIONS.md`): D1 keep or remove `wtios-fix`; D2 approve the `anonymousSessionIdentity` expectation change and anonymous clarify-credit policy under `CONSULT_V3`; D3 worktrees with large uncommitted data; D4 Android version live on Play; D5 Android release with the gallery-scan fix; D6 push iOS for macOS CI; D7 deploy canonical web and migration 20261018 status; D8 clarify-credit debt; D9 persist `decisionEvidenceId` across chat reopen.
@@ -118,3 +133,4 @@ A decision is closed only when the owner states it or evidence shows it.
 - 2026-10-22: file created; canonical `6816cb2`; S5h3 stream test failing and uncommitted.
 - 2026-10-22: gate `MG-OPTION-OFF-VERIFIED-LOSS-01` created (docs only, no code change); owner accepted `844f5b7` as FIXED-pending-review, `TG-VERIFIED-LOSS-PRE-01` not closed. At this time the worktree also held uncommitted changes made by someone else (`src/app/api/subscription/route.ts`, `src/lib/plans/entitlement.ts`, new payments and entitlement test files); they are not part of this work and were left untouched.
 - 2026-10-22: S5h3 fixed in `placeClaimGuard.ts`; stream test and two companion tests committed with the fix; `TG-VERIFIED-LOSS-PRE-01` and `S5h3 settle` moved to FIXED. Nothing pushed, deployed or changed in production.
+- 2026-10-22: Web subscription completed under `SUBSCRIPTIONS_ENABLED` flag (default OFF); common entitlement foundation strengthened in `src/lib/plans/entitlement.ts` (`SUBSCRIPTION_COLUMNS` includes `source`) and `src/app/api/subscription/route.ts` (`source` surfaced); 6 new regression test suites added (22 test files, 211 tests pass, exit 0); TypeScript check clean (0 errors); Apple IAP preserved as separate future iOS phase.

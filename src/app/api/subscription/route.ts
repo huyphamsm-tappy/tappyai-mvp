@@ -52,6 +52,7 @@ export async function GET(req: Request) {
       /** The entitled plan id ('pip' … 'sunny', legacy 'pro') or 'free' / 'guest'. Additive. */
       plan: ent.plan,
       status: sub?.status ?? null,
+      source: ent.source,
       currentPeriodEnd: sub?.current_period_end ?? null,
       /** The limit that is actually enforced for THIS caller — the ONE shared AI pool. */
       freeDailyLimit: dailyLimit,
