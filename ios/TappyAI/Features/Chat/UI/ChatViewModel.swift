@@ -240,7 +240,7 @@ final class ChatViewModel: AppObservableObject {
         }
     }
 
-    static func dateOfBirthErrorText(_ error: Error) -> String {
+    nonisolated static func dateOfBirthErrorText(_ error: Error) -> String {
         switch error as? AppError {
         case .validation(let message)?:
             return message   // the server's localized `age.invalidDate`
@@ -687,7 +687,7 @@ final class ChatViewModel: AppObservableObject {
 
     /// True when a finished stream left nothing the person can read: no text and no place card.
     /// «Nothing» means nothing the reader can SEE: also a reply whose text is only marker blocks that decode to no card.
-    static func streamProducedNothing(content: String, hasPlaces: Bool) -> Bool {
+    nonisolated static func streamProducedNothing(content: String, hasPlaces: Bool) -> Bool {
         if hasPlaces { return false }
         if content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return true }
         let p = ContentParser.parse(content)
@@ -741,7 +741,7 @@ final class ChatViewModel: AppObservableObject {
     private struct ToolCallParsed { let id: String; let toolName: String }
     private struct ToolResultParsed { let id: String; let data: Data }
 
-    private static func parseToolCall(_ data: Data) -> ToolCallParsed? {
+    private nonisolated static func parseToolCall(_ data: Data) -> ToolCallParsed? {
         guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
               let first = arr.first,
               let id = first["toolCallId"] as? String,
@@ -749,7 +749,7 @@ final class ChatViewModel: AppObservableObject {
         return ToolCallParsed(id: id, toolName: name)
     }
 
-    private static func parseToolResult(_ data: Data) -> ToolResultParsed? {
+    private nonisolated static func parseToolResult(_ data: Data) -> ToolResultParsed? {
         guard let arr = try? JSONSerialization.jsonObject(with: data) as? [[String: Any]],
               let first = arr.first,
               let id = first["toolCallId"] as? String else { return nil }

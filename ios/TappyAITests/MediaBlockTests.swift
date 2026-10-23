@@ -3,6 +3,7 @@ import XCTest
 
 /// `[TAPPY_MEDIA]` on the client. Twin of web `mediaHosts.ts` and Android `MediaBlockTest`: the raw JSON never
 /// shows, and no URL outside the allow-lists survives parsing.
+@MainActor
 final class MediaBlockTests: XCTestCase {
 
     private let prose = "Tin mới hôm nay."
