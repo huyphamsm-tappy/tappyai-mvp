@@ -651,26 +651,55 @@ function moneyTokensIn(text: string): number[] {
   return [...text.matchAll(MONEY_TOKEN_RE)].map(m => tokenValue(m[0]))
 }
 
-const foldForCut = (s: string): string => s.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd')
+/** Diacritics removed, case kept (the variant check reads capitalisation). */
+const foldKeepCase = (s: string): string => s.normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')
 
-/** The row name occurs as whole words in the folded sentence (not as a fragment of a longer word). */
-function rowNameIn(folded: string, name: string): boolean {
-  const n = foldForCut(name).trim()
+/** Words that, right after a row name, continue the product name ("Sony WH-1000XM5 Pro" is not "Sony WH-1000XM5"). */
+const VARIANT_WORDS = new Set([
+  'pro', 'max', 'ultra', 'plus', 'mini', 'lite', 'se', 'air', 'ii', 'iii', 'iv', 'v2', 'gen',
+  // Vietnamese and condition words that introduce a different edition or condition of the product.
+  'ban', 'phien', 'doi', 'the', 'he', 'cu', 'xach', 'refurbished', 'used', 'new', 'like',
+])
+
+/**
+ * Does the token that follows a row name continue the product name? After wrappers and punctuation are trimmed from both ends,
+ * a capitalised token, a token with a digit, or a token with a part in VARIANT_WORDS does ("[Pro]", "pro/max", "bản", "cũ").
+ * This is a fail-closed HEURISTIC, not proof of identity: it cannot tell a lowercase variant outside the list
+ * ("Sony WH-1000XM5 edition") from prose, and it only looks to the right of the name (the left side is a word boundary only:
+ * "Ốp lưng cho Sony WH-1000XM5" is not detected). A digit anywhere in the next token also rejects, which is over-cautious.
+ */
+function continuesAsVariant(token: string): boolean {
+  const t = token.replace(/^[^\p{L}\d]+/u, '').replace(/[^\p{L}\d]+$/u, '')
+  if (t === '') return false
+  return /^\p{Lu}/u.test(t) || /\d/.test(t) || t.split(/[^\p{L}\d]+/u).some(part => VARIANT_WORDS.has(part.toLowerCase()))
+}
+
+/**
+ * The row name occurs as whole words in the sentence, and at EVERY occurrence the next token does not continue the name as a
+ * variant (see continuesAsVariant). Diacritic-insensitive and case-insensitive for the name itself.
+ */
+function rowNameIn(text: string, name: string): boolean {
+  const folded = foldKeepCase(text)
+  const n = foldKeepCase(name).trim()
   if (n.length < 4) return false
   const esc = n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  return new RegExp('(?<![\\p{L}\\d])' + esc + '(?![\\p{L}\\d])', 'u').test(folded)
+  const hits = [...folded.matchAll(new RegExp('(?<![\\p{L}\\d])' + esc + '(?![\\p{L}\\d+\\-/_*`\\[\\]])', 'giu'))]
+  if (hits.length === 0) return false
+  return hits.every(h => {
+    const next = /^\s+(\S+)/u.exec(folded.slice((h.index ?? 0) + h[0].length))
+    return !next || !continuesAsVariant(next[1])
+  })
 }
 
 /**
  * Every money token in the sentence must be a verified price of a row whose name the SAME sentence names. A price of another
  * row, an unverifiable token, or a price no row states, is not kept: the verified number must belong to the place or product
- * the sentence is about.
+ * the sentence is about. Name matching is a heuristic (rowNameIn), so this narrows misattribution; it does not prove identity.
  */
 function everyAmountAttributed(text: string, verified: readonly VerifiedPrice[]): boolean {
   const values = moneyTokensIn(text)
   if (values.length === 0) return false
-  const folded = foldForCut(text)
-  return values.every(v => !Number.isNaN(v) && verified.some(p => p.value === v && rowNameIn(folded, p.name)))
+  return values.every(v => !Number.isNaN(v) && verified.some(p => p.value === v && rowNameIn(text, p.name)))
 }
 
 function keepVerifiedPriceCut(sentence: string, violated: readonly RegExp[], verified: readonly VerifiedPrice[] | undefined): { text: string; headRemoved: boolean } | null {
