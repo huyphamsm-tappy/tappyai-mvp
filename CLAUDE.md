@@ -19,7 +19,7 @@
 ## Commits
 - Every complete logical change is its own commit with a descriptive message. Do not end a task with changes the task created left uncommitted. Never discard the user's existing changes or unrelated work.
 - Do not push without explicit authorization. A read-only task needs no commit.
-- Commit trailers (owner instruction): `Co-Authored-By: Claude Haiku 5.5 <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_01592sxjoQizby1bPvYCCpzY`.
+- Commit trailers (owner instruction): `Co-Authored-By: <display name of the model actually running in the session that creates the commit> <noreply@anthropic.com>` and `Claude-Session: https://claude.ai/code/session_01592sxjoQizby1bPvYCCpzY`. The model name comes from the session's own metadata, never from a configuration file, an example, or an earlier commit. If the running model cannot be verified, do not guess: stop and report the uncertainty. This rule applies to future commits only; historical commits and their metadata are not rewritten.
 - A deliberately red test may be committed only as `it.fails` or `skip`, with the gate ID in a comment and the gate listed under "Open gates" in `docs/PROJECT-STATE.md`. Remove the mark in the same commit as the fix.
 - Stage named files only. Never `git add .` or `git add -A`.
 
