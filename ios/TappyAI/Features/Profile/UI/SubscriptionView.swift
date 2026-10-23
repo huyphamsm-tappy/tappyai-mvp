@@ -563,12 +563,14 @@ struct SubscriptionView: View {
             switch appErr {
             case .offline:
                 productError = NSLocalizedString("sub.error.offline", comment: "")
+            case .unexpected(let msg):
+                productError = msg
             default:
-                productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+                productError = appErr.localizedDescription
             }
         } catch {
             storeProduct = nil
-            productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+            productError = error.localizedDescription
         }
         productLoading = false
     }

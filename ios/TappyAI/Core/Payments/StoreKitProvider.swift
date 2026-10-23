@@ -21,11 +21,9 @@ final class StoreKitProvider: PaymentProvider {
         if let cached = cachedProduct, cached.id == ProductCatalog.proMonthlyId {
             return AppProduct(id: cached.id, displayName: cached.displayName, displayPrice: cached.displayPrice)
         }
-        let products = try await Product.products(for: ProductCatalog.allProductIds)
-        guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId })
-                   ?? products.first(where: { $0.id == ProductCatalog.momoMonthlyId })
-                   ?? products.first else {
-            log.info("StoreKit: none of \(ProductCatalog.allProductIds) found in App Store Connect")
+        let products = try await Product.products(for: [ProductCatalog.proMonthlyId])
+        guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId }) else {
+            log.warning("StoreKit: product \(ProductCatalog.proMonthlyId) not found (returned \(products.count) products)")
             return nil
         }
         cachedProduct = p
@@ -37,11 +35,9 @@ final class StoreKitProvider: PaymentProvider {
         if let cached = cachedProduct {
             product = cached
         } else {
-            let loaded = try await Product.products(for: ProductCatalog.allProductIds)
-            guard let p = loaded.first(where: { $0.id == ProductCatalog.proMonthlyId })
-                       ?? loaded.first(where: { $0.id == ProductCatalog.momoMonthlyId })
-                       ?? loaded.first else {
-                throw AppError.unexpected(message: "No product found in App Store Connect")
+            let loaded = try await Product.products(for: [ProductCatalog.proMonthlyId])
+            guard let p = loaded.first(where: { $0.id == ProductCatalog.proMonthlyId }) else {
+                throw AppError.unexpected(message: "Không tìm thấy sản phẩm \(ProductCatalog.proMonthlyId) trong App Store Connect")
             }
             cachedProduct = p
             product = p
