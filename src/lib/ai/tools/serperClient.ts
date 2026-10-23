@@ -16,7 +16,7 @@
 // alert as `scope`). Counting is by credits AS BILLED (`SERPER_CREDITS`), added BEFORE the call
 // so a burst cannot slip past the ceiling between the read and the write.
 
-import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
+import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_COST, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { reserveSpend, SERPER_MIN_USD_PER_CREDIT, SpendRefusal, type SpendHandle } from '@/lib/ai/budget/spendGate'
@@ -120,6 +120,27 @@ export interface SerperPostOpts {
   report?: (state: SerperPostState, entry?: TicketEntry) => void
 }
 
+/** The request parameters the observed credit figures (serperMeter SERPER_COST) were taken with. Anything else may change what a request costs. */
+const BOUNDED_PARAMS: ReadonlySet<string> = new Set(['q', 'gl', 'hl', 'll', 'num'])
+/** The largest `num` the credit figures cover: /search 1 credit up to 10 results; /shopping 2 credits (owner's Activity Log, Num=40); /maps takes none. */
+const MAX_NUM: Partial<Record<SerperEndpoint, number>> = { search: 10, shopping: 40 }
+
+/**
+ * BENCH_SPEND_GATE: the most USD one request can cost, or null when that cannot be bounded from what was observed — then the gate refuses it
+ * (reason `no_bound`) and the caller gives back what it held. Null for an endpoint whose credits are only 'unverified' (images), for a request
+ * parameter outside BOUNDED_PARAMS (page, autocorrect, tbs, type, location…), and for a `num` above what the credit figures cover.
+ */
+export function serperSpendBoundUsd(endpoint: SerperEndpoint, body: Record<string, unknown>, perCredit: number): number | null {
+  if (SERPER_COST[endpoint].basis !== 'activity_log') return null
+  for (const k of Object.keys(body)) if (!BOUNDED_PARAMS.has(k)) return null
+  if ('num' in body) {
+    const max = MAX_NUM[endpoint]
+    const n = body.num
+    if (max === undefined || typeof n !== 'number' || !Number.isInteger(n) || n < 1 || n > max) return null
+  }
+  return SERPER_CREDITS[endpoint] * perCredit
+}
+
 /**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
@@ -156,12 +177,13 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     }
     if (t) entry = t
   }
-  // BENCH_SPEND_GATE (default OFF, read now): the request's worst-case cost (credits × price per credit; `images` is "unverified" and still
-  // counts as paid) is reserved HERE, the last check before the request can leave. A refusal gives back exactly what the steps above held:
-  // the ticket (refunded — it was never sent), the scope credits and the daily-counter credits.
+  // BENCH_SPEND_GATE (default OFF, read now): the request's worst-case cost (credits × price per credit) is reserved HERE, the last check before
+  // the request can leave. A request that cannot be bounded (`images` is "unverified"; a parameter or `num` the credit figures do not cover) has
+  // no cost to reserve and is refused (`no_bound`). A refusal gives back exactly what the steps above held: the ticket (refunded — it was never
+  // sent), the scope credits and the daily-counter credits.
   const perCredit = Math.max(serperUsdPerCredit(), SERPER_MIN_USD_PER_CREDIT)
   let spend: SpendHandle | null = null
-  try { spend = reserveSpend(`serper:${endpoint}`, SERPER_CREDITS[endpoint] * perCredit) } catch (e) {
+  try { spend = reserveSpend(`serper:${endpoint}`, serperSpendBoundUsd(endpoint, body, perCredit)) } catch (e) {
     if (!(e instanceof SpendRefusal)) throw e
     if (entry) refundTurnWebTicket(entry)
     releaseToolBudget(SERPER_CREDITS[endpoint])

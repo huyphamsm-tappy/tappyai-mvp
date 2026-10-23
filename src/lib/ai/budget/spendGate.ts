@@ -22,21 +22,69 @@ export const SERPER_MIN_USD_PER_CREDIT = 0.001
 
 export interface BenchCaps { turnUsd: number; runUsd: number }
 
-/** A cap is a plain positive decimal ("0.05"); anything else (empty, NaN, negative, 1e-2, "5%") is invalid. */
-function parseCap(v: string | undefined): number | null {
-  const s = (v ?? '').trim()
-  if (!/^\d+(\.\d+)?$/.test(s)) return null
-  const n = Number(s)
-  return Number.isFinite(n) && n > 0 ? n : null
+/**
+ * THE HARD MAXIMUM of the benchmark: $0.05 per turn, $0.65 per run. They are constants, not parameters — no option and no environment variable
+ * can raise them; a LOWER cap is valid. Every place that receives a cap checks it against these (see `checkBenchCaps`).
+ */
+export const MAX_TURN_CAP_USD = 0.05
+export const MAX_RUN_CAP_USD = 0.65
+
+const CAP_DECIMALS = 12
+// no BigInt literals (10n): the project targets ES2017
+const CAP_SCALE = BigInt(10) ** BigInt(CAP_DECIMALS)
+
+/**
+ * A cap as an EXACT scaled integer (USD × 10^12), read from its decimal TEXT before any rounding or micro-USD conversion. Only a plain positive
+ * decimal with at most 12 decimals is a cap: exponent form ("5e-2", "1e-2", and the "5e-8" / "1e+21" a number prints as), a sign, NaN, hex, a
+ * percent, an empty string, too many decimals and zero are all null. A number is read through its own decimal text (`String(n)`).
+ */
+export function capToScaled(v: unknown): bigint | null {
+  let s: string
+  if (typeof v === 'number') { if (!Number.isFinite(v)) return null; s = String(v) }
+  else if (typeof v === 'string') s = v.trim()
+  else return null
+  const m = /^(\d+)(?:\.(\d{1,12}))?$/.exec(s)
+  if (!m) return null
+  const scaled = BigInt(m[1]) * CAP_SCALE + BigInt((m[2] ?? '').padEnd(CAP_DECIMALS, '0'))
+  return scaled > BigInt(0) ? scaled : null
+}
+const MAX_TURN_SCALED = capToScaled(String(MAX_TURN_CAP_USD))!
+const MAX_RUN_SCALED = capToScaled(String(MAX_RUN_CAP_USD))!
+const capNumber = (v: unknown): number => Number(typeof v === 'string' ? v.trim() : v)
+
+export type CapCheck = { ok: true; turnUsd: number; runUsd: number } | { ok: false; reasons: string[] }
+
+/** One cap against its maximum. `what` names it in the reason. */
+function capProblem(what: string, v: unknown, max: bigint, maxUsd: number): { scaled: bigint | null; problem: string | null } {
+  const scaled = capToScaled(v)
+  if (scaled === null) return { scaled: null, problem: `the ${what} cap (${String(v)}) is missing or not a plain positive decimal with at most ${CAP_DECIMALS} decimals` }
+  if (scaled > max) return { scaled, problem: `the ${what} cap (${String(v)}) is above the maximum of $${maxUsd} ${what === 'per-turn' ? 'per turn' : 'per run'}` }
+  return { scaled, problem: null }
 }
 
-/** The caps, read only when the flag is ON. Null = flag OFF, or a cap is missing / invalid / the turn cap is above the run cap. */
+/** The per-turn cap alone (the per-turn guard of the adapter has no run cap). */
+export function checkTurnCap(turn: unknown): { ok: true; turnUsd: number } | { ok: false; reason: string } {
+  const t = capProblem('per-turn', turn, MAX_TURN_SCALED, MAX_TURN_CAP_USD)
+  return t.problem ? { ok: false, reason: t.problem } : { ok: true, turnUsd: capNumber(turn) }
+}
+
+/**
+ * The caps as received (environment text or option numbers): both valid decimals, the turn cap not above the run cap, the turn cap at most
+ * $0.05 and the run cap at most $0.65 — judged on the exact decimal value.
+ */
+export function checkBenchCaps(turn: unknown, run: unknown): CapCheck {
+  const t = capProblem('per-turn', turn, MAX_TURN_SCALED, MAX_TURN_CAP_USD)
+  const r = capProblem('run', run, MAX_RUN_SCALED, MAX_RUN_CAP_USD)
+  const reasons = [t.problem, r.problem].filter((x): x is string => x !== null)
+  if (t.scaled !== null && r.scaled !== null && t.scaled > r.scaled) reasons.push(`the per-turn cap (${String(turn)}) is above the run cap (${String(run)})`)
+  return reasons.length ? { ok: false, reasons } : { ok: true, turnUsd: capNumber(turn), runUsd: capNumber(run) }
+}
+
+/** The caps, read only when the flag is ON. Null = flag OFF, or a cap is missing / invalid / above the maximum / the turn cap is above the run cap. */
 export function readBenchCaps(env: Record<string, string | undefined> = process.env): BenchCaps | null {
   if (!benchSpendGateOn(env)) return null
-  const turnUsd = parseCap(env.BENCH_SPEND_TURN_CAP_USD)
-  const runUsd = parseCap(env.BENCH_SPEND_RUN_CAP_USD)
-  if (turnUsd === null || runUsd === null || turnUsd > runUsd) return null
-  return { turnUsd, runUsd }
+  const c = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
+  return c.ok ? { turnUsd: c.turnUsd, runUsd: c.runUsd } : null
 }
 
 export type SpendRefusalReason = 'no_caps' | 'no_gate' | 'no_bound' | 'budget' | 'blocked'
@@ -61,6 +109,11 @@ export interface SpendGate {
   release(res: SpendReservation): void
   /** The call may have been sent and its cost is not known. */
   markUnknown(res: SpendReservation): void
+  /**
+   * Optional: a call was refused BEFORE the gate was asked to hold anything (it has no upper bound: an image part, an `images` request, an uncovered
+   * request parameter). Nothing is held; the gate may record it so the benchmark can flag the turn as degraded.
+   */
+  noteRefusal?(label: string, reason: SpendRefusalReason): void
 }
 
 const store = new AsyncLocalStorage<SpendGate>()
@@ -91,7 +144,10 @@ export function reserveSpend(label: string, maxUsd: number | null): SpendHandle 
   if (!readBenchCaps()) throw new SpendRefusal(`spend gate is ON but its caps are missing or invalid: ${label} not made`, 'no_caps')
   const gate = currentSpendGate()
   if (!gate) throw new SpendRefusal(`spend gate is ON but no gate was injected: ${label} not made`, 'no_gate')
-  if (maxUsd === null || !Number.isFinite(maxUsd) || maxUsd <= 0) throw new SpendRefusal(`${label} has no upper bound on its cost: not made`, 'no_bound')
+  if (maxUsd === null || !Number.isFinite(maxUsd) || maxUsd <= 0) {
+    try { gate.noteRefusal?.(label, 'no_bound') } catch { /* recording only: the refusal below is what matters */ }
+    throw new SpendRefusal(`${label} has no upper bound on its cost: not made`, 'no_bound')
+  }
   const reservation = gate.reserve(label, maxUsd) // throws SpendRefusal; nothing is held then
   let resolved = false
   const once = <T,>(fn: () => T): T => { if (resolved) throw new Error(`spend reservation ${reservation.id} was already resolved`); resolved = true; return fn() }

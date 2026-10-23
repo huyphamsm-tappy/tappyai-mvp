@@ -4,6 +4,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { reserveSpend, currentSpendGate } from '@/lib/ai/budget/spendGate'
 import { UAT_TURNS } from './questions'
+import { memFs } from './liveRunner.testkit'
 import {
   BENCH_FLAG_NAMES, BENCH_MUST_BE_OFF, BenchRefusal, assertBenchAllowed, createBenchRunner, resolveBenchOutDir, routeTransport, runBench,
   type BenchOptions, type ChatTransport,
@@ -40,14 +41,19 @@ function turnTransport(over: { llmMax?: number; llmActual?: unknown; serper?: bo
   return { chat, requests }
 }
 
+// Round 2b: the output folder is required and on drive D, and the runner writes through an injectable file system (here in memory); `writes` collects
+// the FINAL result file only (the per-turn JSONL and the writability probe are checked in liveRunner.guard.test.ts).
 function options(over: Partial<BenchOptions> = {}, env: Record<string, string | undefined> = GOOD_ENV): { opts: BenchOptions; writes: Array<{ path: string; text: string }> } {
   const writes: Array<{ path: string; text: string }> = []
+  const fs = memFs()
+  const write = fs.write
+  fs.write = (path, text) => { write(path, text); if (/\/bench-\d+\.json$/.test(path.replace(/\\/g, '/'))) writes.push({ path, text }) }
   return {
     writes,
     opts: {
       chat: turnTransport().chat, turnCapUsd: 0.05, runCapUsd: 0.65, confirmSpend: { capUsd: 0.65 }, declaredFlags: declare(env), env,
-      outDir: 'C:/Users/Admin/AppData/Local/Temp/tappy-bench-test', repoRoot: 'D:/TappyAI-wt/wt-integration',
-      write: (path, text) => { writes.push({ path, text }) }, now: () => 1_000, ...over,
+      outDir: 'D:/TappyAI-review-artifacts/tappy-bench-test', repoRoot: 'D:/TappyAI-wt/wt-integration',
+      fs, now: () => 1_000, ...over,
     },
   }
 }
@@ -132,10 +138,11 @@ describe('11 · the runner refuses to run unless everything is explicit', () => 
       expect((e as BenchRefusal).reasons.length).toBeGreaterThanOrEqual(2)
     }
   })
-  it('a default output folder is a temporary folder outside the repository', () => {
-    const d = resolveBenchOutDir({ repoRoot: 'D:/TappyAI-wt/wt-integration', tmp: 'C:/Users/Admin/AppData/Local/Temp' })
-    expect(d.replace(/\\/g, '/').startsWith('C:/Users/Admin/AppData/Local/Temp')).toBe(true)
-    expect(d).not.toMatch(/wt-integration|TappyAI-backups/)
+  // Round 2b: the temporary-folder default is gone (it put results on drive C). The folder must be given, and be on drive D.
+  it('there is no default output folder: without outDir (or with one on drive C) the folder is refused; a folder on D is returned as given', () => {
+    expect(() => resolveBenchOutDir({ repoRoot: 'D:/TappyAI-wt/wt-integration' })).toThrow(BenchRefusal)
+    expect(() => resolveBenchOutDir({ outDir: 'C:/Users/Admin/AppData/Local/Temp/x', repoRoot: 'D:/TappyAI-wt/wt-integration' })).toThrow(BenchRefusal)
+    expect(resolveBenchOutDir({ outDir: 'D:/TappyAI-review-artifacts/x/', repoRoot: 'D:/TappyAI-wt/wt-integration' })).toBe('D:/TappyAI-review-artifacts/x')
   })
 })
 
@@ -182,7 +189,7 @@ describe('10 · what is recorded for every turn', () => {
     expect(first.ticketLog).toEqual([expect.objectContaining({ type: 'tappyai_web_ticket', state: 'sent_success' })]) // only ticket lines, none of the other logs
     expect(JSON.stringify(first)).not.toContain('unrelated_log')
     expect(writes).toHaveLength(1)
-    expect(writes[0].path.replace(/\\/g, '/')).toMatch(/^C:\/Users\/Admin\/AppData\/Local\/Temp\/tappy-bench-test\//)
+    expect(writes[0].path.replace(/\\/g, '/')).toMatch(/^D:\/TappyAI-review-artifacts\/tappy-bench-test\//)
     const saved = JSON.parse(writes[0].text)
     expect(saved.turns).toHaveLength(13)
     expect(saved.flags).toEqual(declare(GOOD_ENV)) // the whole flag set is part of the result

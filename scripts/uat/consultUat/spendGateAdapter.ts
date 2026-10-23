@@ -7,7 +7,7 @@
  *
  * Mock-only code: nothing here reads a key or opens a socket.
  */
-import { SpendRefusal, type SpendGate, type SpendReservation, type SpendSettleStatus } from '@/lib/ai/budget/spendGate'
+import { checkTurnCap, SpendRefusal, type SpendGate, type SpendRefusalReason, type SpendReservation, type SpendSettleStatus } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, type Reservation } from './harness'
 
 export type SpendRecordState = 'held' | 'settled' | 'released' | 'unknown' | 'unreconciled' | 'refused'
@@ -20,6 +20,8 @@ export interface SpendRecord {
   status?: SpendSettleStatus
   /** Refused because the turn had already ended (not because the cap was reached). */
   late?: boolean
+  /** A photo lookup skipped for lack of a cost bound (see noteRefusal). */
+  photoSkip?: boolean
 }
 
 export class GuardSpendGate implements SpendGate {
@@ -27,7 +29,12 @@ export class GuardSpendGate implements SpendGate {
   private readonly held = new Map<number, { res: Reservation; rec: SpendRecord }>()
   private closed = false
 
-  constructor(readonly guard: BudgetGuard) {}
+  /** A guard with no cap, or a cap above the benchmark maximum ($0.05 per turn), is refused here — before it can hold a reservation. */
+  constructor(readonly guard: BudgetGuard) {
+    if (guard.capUsd === null) throw new BudgetRefusal('the per-turn guard has no cap: the gate cannot state what it enforces')
+    const c = checkTurnCap(guard.capUsd)
+    if (!c.ok) throw new BudgetRefusal(c.reason)
+  }
 
   /**
    * The turn is over: a paid call that starts later (work the app left running after its answer) is refused, because its cost could no longer
@@ -51,6 +58,12 @@ export class GuardSpendGate implements SpendGate {
       this.records.push({ label, maxUsd, state: 'refused' })
       throw new SpendRefusal(e.message, this.guard.blockedBy ? 'blocked' : 'budget')
     }
+  }
+
+  /** A call refused before it could be priced (no upper bound): nothing is held, the refusal is counted so the turn is flagged degraded. */
+  noteRefusal(label: string, _reason: SpendRefusalReason): void {
+    // A skipped photo lookup (`serper:images`) changes the pictures, not the text: counted apart (photoSkips), it does not degrade the turn.
+    this.records.push({ label, maxUsd: 0, state: 'refused', ...(label === 'serper:images' ? { photoSkip: true } : {}), ...(this.closed ? { late: true } : {}) })
   }
 
   private take(r: SpendReservation) {
@@ -82,7 +95,9 @@ export class GuardSpendGate implements SpendGate {
 
   get requests(): number { return this.records.filter(r => r.state !== 'refused').length }
   /** Refused by the cap or by a blocked gate DURING the turn. */
-  get refusals(): number { return this.records.filter(r => r.state === 'refused' && !r.late).length }
+  get refusals(): number { return this.records.filter(r => r.state === 'refused' && !r.late && !r.photoSkip).length }
+  /** Photo lookups skipped during the turn because `images` has no proven cost bound. */
+  get photoSkips(): number { return this.records.filter(r => r.photoSkip && !r.late).length }
   /** Refused after the turn had ended. */
   get lateRefusals(): number { return this.records.filter(r => r.late).length }
   count(prefix: string): number { return this.records.filter(r => r.state !== 'refused' && r.label.startsWith(prefix)).length }

@@ -49,8 +49,10 @@ const post = (endpoint: 'search' | 'maps' | 'shopping' | 'images', opts?: Parame
 const dailyCount = async () => (await incrDailyCounter(SERPER_CEILING_KEY, 0)).count
 
 describe('2 · the reservation is credits × price per credit, made before fetch', () => {
-  for (const [endpoint, credits] of [['search', 1], ['maps', 3], ['shopping', 2], ['images', 1]] as const) {
-    it(`${endpoint}: ${credits} credit(s) = $${credits * 0.001} (images is "unverified" and still counts as paid)`, async () => {
+  // Round 2b (P0-2): `images` is no longer reserved at 1 credit — its credits are "unverified", so with the gate ON it has no bound and is refused
+  // (spendGate.serper.bound.test.ts). It is therefore not part of this table any more.
+  for (const [endpoint, credits] of [['search', 1], ['maps', 3], ['shopping', 2]] as const) {
+    it(`${endpoint}: ${credits} credit(s) = $${credits * 0.001}`, async () => {
       on()
       const g = new NumGate(1)
       let sentAtReserve = -1
@@ -144,8 +146,8 @@ describe('5 · cost reported above the reservation, a failed request, an unreada
     expect(g.calls).toEqual(['reserve:serper:search', 'unknown'])
     mode = 'ok'; reportedCredits = undefined
     const g2 = new NumGate(1)
-    await runWithSpendGate(g2, () => post('images'))
-    expect(g2.calls).toEqual(['reserve:serper:images', 'unknown'])
+    await runWithSpendGate(g2, () => post('shopping')) // (was 'images' before round 2b: images is refused up front now)
+    expect(g2.calls).toEqual(['reserve:serper:shopping', 'unknown'])
   })
   it('a price per credit set BELOW the list price (0.001) is not believed: the gate prices at the list price', async () => {
     on(); process.env.SERPER_USD_PER_CREDIT = '0.0001'

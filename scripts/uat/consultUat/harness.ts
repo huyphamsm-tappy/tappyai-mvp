@@ -117,6 +117,7 @@ export type SettleStatus = 'ok' | 'exceeded' | 'invalid' | 'overflow'
 
 export class BudgetGuard {
   private readonly capMicro: number | null
+  private readonly capInput: number | null
   private knownMicro = 0
   private overflowed = false
   private nextId = 1
@@ -125,6 +126,7 @@ export class BudgetGuard {
 
   /** `capUsd` null = no cap supplied: every reservation is refused. A cap that is not a finite number >= 0, or too large for exact micro-USD arithmetic, is rejected here. */
   constructor(capUsd: number | null) {
+    this.capInput = capUsd
     if (capUsd === null) {
       this.capMicro = null
     } else if (typeof capUsd !== 'number' || !Number.isFinite(capUsd) || capUsd < 0) {
@@ -135,6 +137,9 @@ export class BudgetGuard {
       this.capMicro = cap
     }
   }
+
+  /** The cap exactly as it was given to the constructor (null = none). Read-only: lets a caller check what a guard enforces. */
+  get capUsd(): number | null { return this.capInput }
 
   /** Cost of finished turns, whose cost is known. Null once an accounting overflow happened: the total can no longer be stated. */
   get knownUsd(): number | null { return this.overflowed ? null : this.knownMicro / MICRO }
