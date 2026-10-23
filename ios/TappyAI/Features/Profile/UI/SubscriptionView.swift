@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Mirrors the web /subscription page. Full purchase flow via StoreKit 2 (ADR-006).
 struct SubscriptionView: View {
@@ -12,6 +13,7 @@ struct SubscriptionView: View {
     // StoreKit product loading state
     @State private var productLoading = false
     @State private var productError: String?
+    @State private var diagnosticsCopied = false
 
     @State private var purchaseLoading = false
     @State private var purchaseError: String?
@@ -337,6 +339,9 @@ struct SubscriptionView: View {
                                 .foregroundStyle(.white.opacity(0.85))
                                 .multilineTextAlignment(.center)
                         }
+                        if storeProduct == nil && !productLoading {
+                            diagnosticsButton(tint: .white.opacity(0.85))
+                        }
                     }
                 }
             }
@@ -480,9 +485,25 @@ struct SubscriptionView: View {
             }
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(TappyColor.primary)
+            diagnosticsButton(tint: TappyColor.textSecondary)
         }
         .frame(maxWidth: .infinity)
         .padding(Spacing.xl)
+    }
+
+    /// Copies the in-memory diagnostic snapshot. Runs only when the user taps the button.
+    private func diagnosticsButton(tint: Color) -> some View {
+        Button {
+            UIPasteboard.general.string = DiagnosticSnapshot.shared.snapshot()
+            diagnosticsCopied = true
+        } label: {
+            Text(diagnosticsCopied
+                 ? NSLocalizedString("sub.diag.copied", comment: "")
+                 : NSLocalizedString("sub.diag.copy", comment: ""))
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(tint)
+        }
+        .buttonStyle(.plain)
     }
 
     // MARK: - Actions
@@ -531,25 +552,36 @@ struct SubscriptionView: View {
     // MARK: - Data
 
     private func loadStatus() async {
+        let started = Date()
+        DiagnosticSnapshot.shared.record("Subscription status start")
         loading = true
         errorMessage = nil
         do {
             let endpoint = Endpoint(path: "/api/subscription", method: .get, requiresAuth: true)
             let data = try await deps.api.send(endpoint)
             status = try ResponseDecoder.json.decode(SubscriptionStatusResponse.self, from: data)
+            DiagnosticSnapshot.shared.record("Subscription status=success")
         } catch AppError.authentication {
+            DiagnosticSnapshot.shared.record("Subscription status=error AppError.authentication", isError: true)
             errorMessage = NSLocalizedString("sub.error.signInRequired", comment: "")
         } catch AppError.offline {
+            DiagnosticSnapshot.shared.record("Subscription status=error AppError.offline", isError: true)
             errorMessage = NSLocalizedString("sub.error.offline", comment: "")
         } catch {
+            DiagnosticSnapshot.shared.record("Subscription status=error \(error.diagnosticTag)", isError: true)
             errorMessage = NSLocalizedString("sub.error.loadFailed", comment: "")
         }
         loading = false
+        let render = errorMessage != nil ? "error" : (status != nil ? "pricing" : "none")
+        DiagnosticSnapshot.shared.record("Subscription render=\(render) ms=\(Int(Date().timeIntervalSince(started) * 1000))")
     }
 
     private func loadProduct() async {
+        let started = Date()
+        DiagnosticSnapshot.shared.record("Product load start")
         productLoading = true
         productError = nil
+        var result = "success"
         do {
             if let p = try await deps.paymentProvider.availableProduct() {
                 storeProduct = p
@@ -557,9 +589,11 @@ struct SubscriptionView: View {
             } else {
                 storeProduct = nil
                 productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+                result = "empty"
             }
         } catch let appErr as AppError {
             storeProduct = nil
+            result = Self.productResult(appErr)
             switch appErr {
             case .offline:
                 productError = NSLocalizedString("sub.error.offline", comment: "")
@@ -570,9 +604,19 @@ struct SubscriptionView: View {
             }
         } catch {
             storeProduct = nil
+            result = Self.productResult(error)
             productError = error.localizedDescription
         }
         productLoading = false
+        let ms = Int(Date().timeIntervalSince(started) * 1000)
+        DiagnosticSnapshot.shared.record("Product load result=\(result) ms=\(ms)", isError: result.hasPrefix("error"))
+    }
+
+    /// Snapshot category for a thrown error: cancellation is its own outcome, anything else is a safe tag.
+    private static func productResult(_ error: Error) -> String {
+        if error is CancellationError { return "cancelled" }
+        if let appErr = error as? AppError, appErr == .cancellation { return "cancelled" }
+        return "error \(error.diagnosticTag)"
     }
 
     private func formatDate(_ iso: String) -> String {

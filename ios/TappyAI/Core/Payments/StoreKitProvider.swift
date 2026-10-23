@@ -21,9 +21,13 @@ final class StoreKitProvider: PaymentProvider {
         if let cached = cachedProduct, cached.id == ProductCatalog.proMonthlyId {
             return AppProduct(id: cached.id, displayName: cached.displayName, displayPrice: cached.displayPrice)
         }
+        // A thrown error is recorded once, by SubscriptionView.loadProduct.
+        let started = Date()
+        DiagnosticSnapshot.shared.record("StoreKit request start id=\(ProductCatalog.proMonthlyId)")
         let products = try await Product.products(for: [ProductCatalog.proMonthlyId])
+        let ms = Int(Date().timeIntervalSince(started) * 1000)
+        DiagnosticSnapshot.shared.record("StoreKit request returned count=\(products.count) ids=\(products.map(\.id)) ms=\(ms)")
         guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId }) else {
-            log.error("StoreKit: product \(ProductCatalog.proMonthlyId) not found (returned \(products.count) products)")
             return nil
         }
         cachedProduct = p
