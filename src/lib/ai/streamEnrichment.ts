@@ -5,6 +5,7 @@ import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
 import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
 import { consultLunaOneEnabled } from './evidence/flag'
+import { createLegacyStreamTrace, legacyStreamTraceEnabled } from './legacyStreamTrace'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { outboundTextSanitizer, stripModelArtifacts } from './security/outputSanitizer'
 import { sanitizeMediaBlock } from '@/lib/media/mediaHosts'
@@ -1858,7 +1859,12 @@ export function applyPlaceEnrichmentStreamFilter(
   // COMPLETE text — nothing reaches the user before it is checked (the guards cannot retract text already sent).
   if (collector?.agentMode) bufferMode = true
   // Phase 8 (TAPPY_AGENT=2): every text change a settle-path stage makes goes to the run trace — observation only, never alters the text.
-  const gt = (stage: string, before: string, after: string): void => { if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } } }
+  // LEGACY_STREAM_TRACE (default OFF): counts-only per-stage records on the default path. Created only with the flag on and no agent run trace.
+  const legacyTrace = !collector?.guardTrace && legacyStreamTraceEnabled() ? createLegacyStreamTrace() : null
+  const gt = (stage: string, before: string, after: string): void => {
+    if (collector?.guardTrace && before !== after) { try { collector.guardTrace(stage, before, after) } catch { /* trace only */ } }
+    else if (legacyTrace && before !== after) legacyTrace.stage(stage, before, after)
+  }
   // TAPPY_ANSWER_V4 (owner 19/10): a QUALITY stage — one that deletes or rewrites a sentence because its claim is not in this turn's evidence — runs
   // in shadow: what it would have changed is logged (and traced as `shadow:<stage>`), the text it was given goes on unchanged. Off the flag: its
   // output is used, as before. Security / egress / leak / card / marker stages never go through this.
@@ -3944,6 +3950,7 @@ export function applyPlaceEnrichmentStreamFilter(
     const fareLead = fareLead0 && collector?.consultative === true && (admitsUnverified(ctaOwnedProse) || dedupeCaveats(`${fareLead0}${ctaOwnedProse}`).length < `${fareLead0}${ctaOwnedProse}`.length) ? '' : fareLead0
     const finalText = `${fareLead}${ctaOwnedProse}${systemLinksSuffix}${markerSuffix}${placesSuffix}${ctaSuffix}`
     if (fareLead) gt('verification_lead', ctaOwnedProse, `${fareLead}${ctaOwnedProse}`)
+    legacyTrace?.turn()
     finalReplyText = finalText
     // Record which candidates this reply actually named — the only reliable
     // answer to "which ones did the user see?".
