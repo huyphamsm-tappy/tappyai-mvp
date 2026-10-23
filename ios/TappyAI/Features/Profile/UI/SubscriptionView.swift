@@ -9,6 +9,10 @@ struct SubscriptionView: View {
     @State private var loading = true
     @State private var errorMessage: String?
 
+    // StoreKit product loading state
+    @State private var productLoading = false
+    @State private var productError: String?
+
     @State private var purchaseLoading = false
     @State private var purchaseError: String?
     @State private var purchasePending = false
@@ -218,12 +222,29 @@ struct SubscriptionView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing, spacing: 0) {
-                        Text(storeProduct?.displayPrice ?? "--")
-                            .font(.system(size: 22, weight: .black))
-                            .foregroundStyle(.white)
-                        Text("sub.perMonth")
-                            .font(.system(size: 11))
-                            .foregroundStyle(.white.opacity(0.7))
+                        if productLoading && storeProduct == nil {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .frame(height: 26)
+                            Text("sub.perMonth")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.white.opacity(0.7))
+                        } else if let p = storeProduct {
+                            Text(p.displayPrice)
+                                .font(.system(size: 22, weight: .black))
+                                .foregroundStyle(.white)
+                            Text("sub.perMonth")
+                                .font(.system(size: 11))
+                                .foregroundStyle(.white.opacity(0.7))
+                        } else {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .font(.system(size: 16))
+                                .foregroundStyle(Color(red: 252/255, green: 211/255, blue: 77/255))
+                                .frame(height: 26)
+                            Text("common.retry.action")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundStyle(.white.opacity(0.8))
+                        }
                     }
                 }
 
@@ -268,36 +289,49 @@ struct SubscriptionView: View {
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                 } else {
                     VStack(spacing: Spacing.xs) {
-                        Button { Task { await doPurchase() } } label: {
-                            Group {
-                                if purchaseLoading {
-                                    ProgressView().tint(.white)
-                                } else if let p = storeProduct {
-                                    Text(String(format: NSLocalizedString("sub.upgradeProPrice", comment: ""), p.displayPrice))
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundStyle(.white)
-                                } else {
-                                    HStack(spacing: Spacing.xs) {
-                                        Image(systemName: "arrow.clockwise")
-                                        Text("sub.retryStore")
+                        if let p = storeProduct {
+                            Button { Task { await doPurchase() } } label: {
+                                Group {
+                                    if purchaseLoading {
+                                        ProgressView().tint(.white)
+                                    } else {
+                                        Text(String(format: NSLocalizedString("sub.upgradeProPrice", comment: ""), p.displayPrice))
+                                            .font(.system(size: 14, weight: .bold))
+                                            .foregroundStyle(.white)
                                     }
-                                    .font(.system(size: 13, weight: .medium))
-                                    .foregroundStyle(.white.opacity(0.9))
                                 }
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 44)
+                                .background(Color.white.opacity(0.25))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(purchaseLoading)
+                        } else if productLoading {
+                            HStack(spacing: Spacing.xs) {
+                                ProgressView().tint(.white)
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
-                            .background(
-                                storeProduct != nil
-                                    ? Color.white.opacity(0.25)
-                                    : Color.white.opacity(0.18)
-                            )
+                            .background(Color.white.opacity(0.18))
                             .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                        } else {
+                            Button { Task { await loadProduct() } } label: {
+                                HStack(spacing: Spacing.xs) {
+                                    Image(systemName: "arrow.clockwise")
+                                    Text("sub.retryStore")
+                                }
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 44)
+                                .background(Color.white.opacity(0.22))
+                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                            }
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
-                        .disabled(purchaseLoading)
 
-                        if let err = purchaseError {
+                        if let err = purchaseError ?? productError {
                             Text(err)
                                 .font(.system(size: 11))
                                 .foregroundStyle(.white.opacity(0.85))
@@ -437,7 +471,13 @@ struct SubscriptionView: View {
                 .font(.system(size: 14))
                 .foregroundStyle(TappyColor.textSecondary)
                 .multilineTextAlignment(.center)
-            Button("common.retry.action") { Task { await loadStatus() } }
+            Button("common.retry.action") {
+                Task {
+                    async let a: () = loadStatus()
+                    async let b: () = loadProduct()
+                    await a; await b
+                }
+            }
                 .font(.system(size: 14, weight: .medium))
                 .foregroundStyle(TappyColor.primary)
         }
@@ -448,17 +488,13 @@ struct SubscriptionView: View {
     // MARK: - Actions
 
     private func doPurchase() async {
+        guard storeProduct != nil else {
+            productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+            return
+        }
         purchaseLoading = true
         purchaseError = nil
         purchasePending = false
-        if storeProduct == nil {
-            await loadProduct()
-        }
-        guard storeProduct != nil else {
-            purchaseError = NSLocalizedString("sub.error.loadFailed", comment: "")
-            purchaseLoading = false
-            return
-        }
         do {
             let result = try await deps.paymentProvider.purchase()
             switch result {
@@ -512,7 +548,29 @@ struct SubscriptionView: View {
     }
 
     private func loadProduct() async {
-        storeProduct = try? await deps.paymentProvider.availableProduct()
+        productLoading = true
+        productError = nil
+        do {
+            if let p = try await deps.paymentProvider.availableProduct() {
+                storeProduct = p
+                productError = nil
+            } else {
+                storeProduct = nil
+                productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+            }
+        } catch let appErr as AppError {
+            storeProduct = nil
+            switch appErr {
+            case .offline:
+                productError = NSLocalizedString("sub.error.offline", comment: "")
+            default:
+                productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+            }
+        } catch {
+            storeProduct = nil
+            productError = NSLocalizedString("sub.error.loadFailed", comment: "")
+        }
+        productLoading = false
     }
 
     private func formatDate(_ iso: String) -> String {

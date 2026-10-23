@@ -18,6 +18,9 @@ final class StoreKitProvider: PaymentProvider {
     // MARK: - PaymentProvider
 
     func availableProduct() async throws -> AppProduct? {
+        if let cached = cachedProduct, cached.id == ProductCatalog.proMonthlyId {
+            return AppProduct(id: cached.id, displayName: cached.displayName, displayPrice: cached.displayPrice)
+        }
         let products = try await Product.products(for: ProductCatalog.allProductIds)
         guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId })
                    ?? products.first(where: { $0.id == ProductCatalog.momoMonthlyId })
