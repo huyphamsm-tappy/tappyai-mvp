@@ -39,7 +39,7 @@ import { deriveDecisionFrame, qualifiesFor, missingFor, evidenceGap, evidenceSum
 import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
-import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining } from '@/lib/ai/tools/serperToolBudget'
+import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining, createTurnWebTicket, turnWebTicketOn, wrapToolsWithTurnWebTicket } from '@/lib/ai/tools/serperToolBudget'
 import { productEnrichmentFor, optionalEnrichmentBudget, worstCaseSearchProductsCredits } from '@/lib/ai/tools/enrichmentPolicy'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
@@ -2418,6 +2418,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     }
     console.log(JSON.stringify({ type: 'tappyai_consult_candidates', turn: consult.turn, stored: storedCandidates.rows.length, remaining: remaining.length, reused: remaining.length >= 2 }))
   }
+  // TURN_WEB_TICKET (default OFF, read per request): ONE web-research request may be sent for this user turn, shared by every W path
+  // (serperToolBudget.ts). Legacy path only: an agent turn (TAPPY_AGENT) keeps its own credit scope.
+  const turnWebTicket = turnWebTicketOn() && !agentOn ? createTurnWebTicket() : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -2849,6 +2852,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }),
       } : {}),
   }))
+  // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
+  if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
 
   /**
    * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte

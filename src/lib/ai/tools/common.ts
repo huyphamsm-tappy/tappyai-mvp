@@ -1,10 +1,13 @@
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
 import { withRetrievedAt } from './retrievalClock'
-import { serperPost } from './serperClient'
+import { serperPost, type SerperPostState } from './serperClient'
 import { serperCacheGetMeta, serperCacheSet } from './serperCache'
 import { noteRetrieval, withRetrievalClock, type Retrieval } from './retrievalClock'
 import { recordSerperCacheHit, recordSerperL1Hit } from './serperMeter'
-import { currentSerperSignal, withSerperToolScope } from './serperToolBudget'
+import {
+  currentSerperSignal, withSerperToolScope, markTurnWebTicketSent, searchFallbackGateOn, settleTurnWebTicket, takeTurnWebTicket, turnWebTicketOn,
+  type TicketEntry,
+} from './serperToolBudget'
 import { messages } from '@/lib/ai/messages'
 import { webSearchCacheKey, serperSearchCacheKey, placePhotosCacheKey, cacheKeyPart } from './cacheKeys'
 
@@ -484,7 +487,25 @@ export async function fetchPlacePhotoByName(placeId: string, placeName: string):
 }
 
 // ===== SERPER: Google Search API (can SERPER_API_KEY, 2500 query free) =====
-export async function serperSearch(query: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+type SerperSearchRow = { title: string; link: string; snippet: string }
+/**
+ * How a Serper /search call ended (TURN_WEB_TICKET / SEARCH_FALLBACK_GATE read it; see serperToolBudget.ts for the meanings).
+ * 'cache' = answered from a cache, nothing sent. A FOLLOWER of a single-flight receives the leader's state (the request was sent by someone).
+ */
+export type SerperSearchState = 'cache' | 'not_sent' | 'ticket_denied' | 'sent_success' | 'sent_empty' | 'sent_error'
+export interface SerperSearchOutcome { rows: SerperSearchRow[] | null; state: SerperSearchState }
+export interface SerperSearchOpts {
+  /** 'W' = web research: shares the turn's one-request web ticket (TURN_WEB_TICKET). Absent = a vertical's own search (not limited by it). */
+  purpose?: 'W'
+}
+const NOT_SENT: SerperSearchOutcome = Object.freeze({ rows: null, state: 'not_sent' as const })
+
+export async function serperSearch(query: string, opts?: SerperSearchOpts): Promise<SerperSearchRow[] | null> {
+  return (await serperSearchEx(query, opts)).rows
+}
+
+/** `serperSearch` plus how the call ended. Same requests, same caches, same single-flight. */
+export async function serperSearchEx(query: string, opts?: SerperSearchOpts): Promise<SerperSearchOutcome> {
   /**
    * 🚨 `webSearch` CACHED; ITS SIBLINGS DID NOT.
    *
@@ -499,14 +520,21 @@ export async function serperSearch(query: string): Promise<Array<{ title: string
   if (Array.isArray(cachedSearch) && cachedSearch.length > 0) {
     recordSerperL1Hit('search')
     noteRetrieval(getCacheAt(searchCacheKey))
-    return cachedSearch as Array<{ title: string; link: string; snippet: string }>
+    return { rows: cachedSearch as SerperSearchRow[], state: 'cache' }
   }
   const apiKey = process.env.SERPER_API_KEY
-  if (!apiKey) return null
-  return serperFlight(`search:${searchCacheKey}`, () => serperSearchPaid(query, searchCacheKey, apiKey), null)
+  if (!apiKey) return NOT_SENT
+  const lead = { led: false }
+  const out = await serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}`, () => { lead.led = true; return serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose) }, NOT_SENT)
+  if (out.state !== 'ticket_denied' || lead.led) return out
+  // A FOLLOWER (a W or a V caller, this turn or another) of a flight whose LEADER was refused by the leader's own spent ticket sent nothing and
+  // spent nothing: it is not refused for that. It asks once more under a flight key of its own, so it is certain to lead (never joins another
+  // refused flight): its own purpose and its own ticket decide. Followers never take a ticket; only a leader does.
+  return serperFlight<SerperSearchOutcome>(`search:${searchCacheKey}:re${++retrySeq}`, () => serperSearchPaid(query, searchCacheKey, apiKey, opts?.purpose), NOT_SENT)
 }
+let retrySeq = 0
 
-async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string): Promise<Array<{ title: string; link: string; snippet: string }> | null> {
+async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: string, purpose?: 'W'): Promise<SerperSearchOutcome> {
   // L2: the shared 24 h cache (serperCache.ts). Fails open — a miss or a store outage falls
   // through to the paid call below.
   const shared = await serperCacheGetMeta<{ title: string; link: string; snippet: string }>('search', query, null)
@@ -515,27 +543,43 @@ async function serperSearchPaid(query: string, searchCacheKey: string, apiKey: s
     const sharedAt = shared.at ? Date.parse(shared.at) : null
     setCache(searchCacheKey, shared.rows, 5 * 60 * 1000, sharedAt)
     noteRetrieval(sharedAt)
-    return shared.rows
+    return { rows: shared.rows, state: 'cache' }
   }
+  // What serperPost says about this request (the state is never guessed from the shape of the result).
+  const post: { state: SerperPostState; entry?: TicketEntry } = { state: 'not_sent' }
   try {
-    const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000)
-    if (!resp) return null // A2: over today's Serper ceiling
-    if (!(resp as Response).ok) return null
+    const resp = await serperPost('search', apiKey, { q: query, gl: 'vn', hl: 'vi', num: 8 }, 6000, { ...(purpose ? { purpose } : {}), report: (s, e) => { post.state = s; post.entry = e } })
+    if (!resp) return post.state === 'ticket_denied' ? { rows: null, state: 'ticket_denied' } : NOT_SENT // A2: over today's Serper ceiling
+    if (!(resp as Response).ok) return { rows: null, state: 'sent_error' }
     const data = await (resp as Response).json()
     const organic = (data?.organic || []) as Array<{ title?: string; link?: string; snippet?: string }>
     const results = organic
       .filter(r => r.title && r.link)
       .slice(0, 6)
       .map(r => ({ title: r.title as string, link: sanitizeUrlForMarkdown(r.link as string), snippet: r.snippet || '' }))
+    if (post.entry) settleTurnWebTicket(post.entry, results.length > 0 ? 'sent_success' : 'sent_empty')
     // 5 minutes, matching webSearch's own TTL for the same upstream endpoint.
     if (results.length > 0) {
       setCache(searchCacheKey, results, 5 * 60 * 1000)
       await serperCacheSet('search', query, null, results)
     }
     noteRetrieval(Date.now())
-    return results
+    return { rows: results, state: results.length > 0 ? 'sent_success' : 'sent_empty' }
   } catch {
-    return null
+    // After fetch was called (a timeout, a network error, an unreadable body) the request counts as SENT; only a body that could not even be
+    // built is not_sent (serperPost reports which).
+    return post.state === 'not_sent' ? NOT_SENT : { rows: null, state: 'sent_error' }
+  }
+}
+
+/** The result a W caller gets when the turn's one web request is already spent: nothing was sent, nothing is invented. */
+function searchBudgetUsed(lang: string): { error: 'search_budget_used'; note: string } {
+  console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'blocked', tool: 'web_search' }))
+  return {
+    error: 'search_budget_used',
+    note: lang === 'en'
+      ? 'No more web searches this turn. Answer from what you already have; if current information is needed, say it could not be checked right now instead of guessing.'
+      : 'Hết lượt tìm web của lượt này. Trả lời từ dữ liệu đã có; nếu cần thông tin mới thì nói rõ là chưa kiểm tra được, đừng đoán.',
   }
 }
 
@@ -723,14 +767,42 @@ async function webSearchImpl(query: string, lang = 'vi') {
   const fallbackUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(query)
   let result: unknown
 
-  const serperResults = await serperSearch(query)
+  const serperEx = await serperSearchEx(query, { purpose: 'W' })
+  const serperResults = serperEx.rows
   if (serperResults && serperResults.length > 0) {
     result = { query, source: 'Google (Serper)', results: serperResults, search_url: fallbackUrl }
     setCache(cacheKey, result, 5 * 60 * 1000)
     return result
   }
 
-  try {
+  // TURN_WEB_TICKET / SEARCH_FALLBACK_GATE (both default OFF, read now; the flag matrix is in serperToolBudget.ts). With both OFF nothing below changes.
+  //   · the turn's web ticket was spent before this call: nothing was sent and nothing is invented;
+  //   · gate: a Serper request that was SENT (by this call or by the flight it followed) is not followed by a second provider;
+  //   · ticket: DuckDuckGo is a W request too — it takes the ticket right before fetch; a spent ticket refuses it.
+  const ticketOn = turnWebTicketOn()
+  const serperSent = serperEx.state === 'sent_success' || serperEx.state === 'sent_empty' || serperEx.state === 'sent_error'
+  if (ticketOn && serperEx.state === 'ticket_denied') return searchBudgetUsed(lang)
+  let ddgBlocked = false
+  /** DuckDuckGo refused because THIS turn's ticket is spent (not because of the gate): the answer says nothing about the query, so it is not cached for other turns. */
+  let blockedByTicket = false
+  let ddgEntry: TicketEntry | undefined
+  if (searchFallbackGateOn() && serperSent) ddgBlocked = true
+  else if (ticketOn) {
+    const t = takeTurnWebTicket('duckduckgo')
+    if (t === 'exhausted') {
+      // Serper was sent (the ticket was spent by it or earlier): the answer is the honest "searched, nothing usable" below. Serper was not
+      // sent: this call never searched, the ticket was spent elsewhere → say so.
+      if (!serperSent) return searchBudgetUsed(lang)
+      ddgBlocked = true
+      blockedByTicket = true
+    } else if (t) ddgEntry = t
+  }
+  if (ddgBlocked) {
+    result = serperResults === null
+      ? { note: messages.webSearch.unavailable(lang, fallbackUrl), results: [], search_url: fallbackUrl, provider_status: 'error' }
+      : { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl }
+  } else try {
+    if (ddgEntry) markTurnWebTicketSent(ddgEntry) // SENT = the next statement calls fetch
     const resp = await Promise.race([
       fetch('https://html.duckduckgo.com/html/?q=' + encodeURIComponent(query), {
         headers: {
@@ -767,6 +839,7 @@ async function webSearchImpl(query: string, lang = 'vi') {
       if (title && link) results.push({ title, link, snippet })
     }
 
+    if (ddgEntry) settleTurnWebTicket(ddgEntry, !(resp as Response).ok ? 'sent_error' : results.length === 0 ? 'sent_empty' : 'sent_success')
     result = results.length === 0
       ? { note: messages.webSearch.noAutoResults(lang, query, fallbackUrl), results: [], search_url: fallbackUrl, ...(serperResults === null ? { provider_status: 'error' } : {}) }
       : { query, source: 'DuckDuckGo', results, search_url: fallbackUrl }
@@ -775,7 +848,7 @@ async function webSearchImpl(query: string, lang = 'vi') {
   }
   // WS2 final: a provider FAILURE (Serper non-OK / over its ceiling / no key, and no fallback rows) is said as such — never an empty
   // answer that reads like "nothing exists" (measured: an exhausted Serper account surfaced as EMPTY). A failure is not cached.
-  if ((result as { provider_status?: string }).provider_status !== 'error') setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
+  if ((result as { provider_status?: string }).provider_status !== 'error' && !blockedByTicket) setCache(cacheKey, result, 5 * 60 * 1000) // cache 5 phut
   return result
 }
 

@@ -83,7 +83,8 @@ export async function cachedDiscoverySearch(query: string): Promise<Array<{ titl
     setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)
     return []
   }
-  const rows = await serperSearch(query)
+  // CCP discovery is web research ("W"): it shares the turn's one web request (TURN_WEB_TICKET). A refusal is `null` — never stored as "nothing found".
+  const rows = await serperSearch(query, { purpose: 'W' })
   if (Array.isArray(rows) && rows.length === 0) {
     setCache(negativeKey(query), true, serperCacheTtlSeconds() * 1000)
     await serperCacheSet('search', query, null, NEGATIVE_MARKER, NEGATIVE_VARIANT)

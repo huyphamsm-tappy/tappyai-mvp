@@ -20,7 +20,10 @@ import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_CRED
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { vnToday } from '@/lib/config/product'
-import { admitWithinToolBudget, currentSerperSignal, haltSerperScope, releaseToolBudget, serperHaltedReason } from './serperToolBudget'
+import {
+  admitWithinToolBudget, currentSerperSignal, haltSerperScope, releaseToolBudget, serperHaltedReason,
+  markTurnWebTicketSent, noteTurnWebTicketDenied, peekTurnWebTicket, refundTurnWebTicket, takeTurnWebTicket, turnWebTicketOn, type TicketEntry,
+} from './serperToolBudget'
 
 export const SERPER_CEILING_KEY = 'serper:credits'
 const DEFAULT_CEILING = 15_000
@@ -106,40 +109,86 @@ export function classifyThrown(e: unknown): 'timeout' | 'aborted' | 'network_err
   return 'network_error'
 }
 
+/** How a serperPost request ended (SENT = fetch was called). `ticket_denied` = a W request refused because the turn's web ticket is spent: nothing was sent. */
+export type SerperPostState = 'not_sent' | 'ticket_denied' | 'sent_error' | 'sent_ok'
+export interface SerperPostOpts {
+  /** 'W' = web research that shares the turn's one-request ticket (TURN_WEB_TICKET). Absent = a vertical's own request: not limited by it. */
+  purpose?: 'W'
+  /** Called once per request with how it ended; `entry` is the ticket entry when a ticket was taken. Reporting only: it never changes the request. */
+  report?: (state: SerperPostState, entry?: TicketEntry) => void
+}
+
 /**
  * One Serper request. `null` when refused by the ceiling; otherwise the Response (a timeout
  * rejects, exactly as the inlined `Promise.race` did at every call site before).
  */
-export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number): Promise<Response | null> {
+export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body: Record<string, unknown>, timeoutMs: number, opts?: SerperPostOpts): Promise<Response | null> {
+  const report = (s: SerperPostState, e?: TicketEntry) => { try { opts?.report?.(s, e) } catch { /* reporting only */ } }
+  // TURN_WEB_TICKET (default OFF, read now): only a W request is limited, and only inside a ticket scope.
+  const gated = opts?.purpose === 'W' && turnWebTicketOn()
   // Phase 8 runtime: a cancelled tool invocation sends nothing more (no credit spent) and its in-flight request is aborted.
   const signal = currentSerperSignal()
-  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_admit' })); recordSerperRefused(endpoint); return null }
-  if (!(await serperAdmit(endpoint))) return null
+  if (signal?.aborted) { console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_admit' })); recordSerperRefused(endpoint); report('not_sent'); return null }
+  // A spent ticket stops the request BEFORE any credit is reserved (peek only; the ticket itself is taken just before fetch, below).
+  if (gated && peekTurnWebTicket() === 'exhausted') {
+    console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'denied', endpoint, at: 'before_admit' }))
+    noteTurnWebTicketDenied(`serper:${endpoint}`)
+    report('ticket_denied')
+    return null
+  }
+  if (!(await serperAdmit(endpoint))) { report('not_sent'); return null }
+  // The ticket is taken here, in one synchronous step, right before the request is sent (never before a cache hit or a single-flight join:
+  // only the leader of a flight ever reaches this line).
+  let entry: TicketEntry | undefined
+  if (gated) {
+    const t = takeTurnWebTicket(`serper:${endpoint}`)
+    if (t === 'exhausted') {
+      // Another W request took the last ticket while this one waited on the daily counter: nothing is sent, so the credits reserved above go
+      // back — on the turn / tool scope AND on the shared daily counter (it was added before the call; this request provably never left).
+      releaseToolBudget(SERPER_CREDITS[endpoint])
+      try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
+      recordSerperRefused(endpoint)
+      console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'denied', endpoint, at: 'after_admit' }))
+      report('ticket_denied')
+      return null
+    }
+    if (t) entry = t
+  }
   if (signal?.aborted) {
-    // Reserved, never sent — the one case where a reservation may be given back.
+    // Reserved, never sent — the one case where a reservation may be given back (and a ticket with it).
+    if (entry) refundTurnWebTicket(entry)
     releaseToolBudget(SERPER_CREDITS[endpoint])
     recordSerperRefused(endpoint)
     console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' }))
+    report('not_sent')
     return null
   }
   // From here on the request is SENT: a timeout / abort below does NOT release the reservation (the provider may have processed it).
   recordSerperCall(endpoint)
   let res: Response
+  let fetched = false
   try {
+    const init = {
+      method: 'POST',
+      headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      ...(signal ? { signal } : {}),
+    }
+    // SENT = the next line calls fetch. Until the outcome is known the ticket entry is `sent_error` (never refundable).
+    fetched = true
+    if (entry) markTurnWebTicketSent(entry)
     res = await Promise.race([
-      fetch(`https://google.serper.dev/${endpoint}`, {
-        method: 'POST',
-        headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-        ...(signal ? { signal } : {}),
-      }),
+      fetch(`https://google.serper.dev/${endpoint}`, init),
       new Promise<never>((_, reject) => setTimeout(() => reject(new Error('timeout')), timeoutMs)),
     ])
   } catch (e) {
     recordSerperOutcome(endpoint, classifyThrown(e))
+    if (fetched) report('sent_error', entry)
+    else { if (entry) refundTurnWebTicket(entry); report('not_sent') } // the body could not even be built: fetch was never called
     throw e
   }
   if (!res.ok) {
+    report('sent_error', entry)
     // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
     // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
     let account: string | null = null
@@ -151,6 +200,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     if (account) haltSerperScope(account)
     return res
   }
+  report('sent_ok', entry)
   // Search data is untrusted (owner 30/09): URLs and planted instructions leave its free-text fields before any tool
   // reads them — always, not only under CONSULT_LUNA (serperUntrusted.ts). An unchanged answer is returned as is.
   let recorded = false

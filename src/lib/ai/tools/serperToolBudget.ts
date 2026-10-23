@@ -101,3 +101,129 @@ export function turnCreditsRemaining(): number {
   while (s.parent) s = s.parent
   return Math.max(0, s.limit - s.spent)
 }
+
+// ── TURN_WEB_TICKET + SEARCH_FALLBACK_GATE (both default OFF, read at call time) ──────────────────────────────────────────────────
+//
+// ONE web-research ("W") request may be SENT per user turn, shared by every W path (the model's web_search, the pre-search web_search, CCP
+// discovery, the DuckDuckGo fallback). Vertical-own requests (maps, images, shopping, a vertical's own /search) are "V" and do not use it.
+//
+// Meanings (the tests are named with these words):
+//   · SENT      = the moment the code CALLS fetch to the provider, after every gate has passed. From then on every outcome — success, empty,
+//                 error, timeout, cancel — is "sent".
+//   · states    = not_sent (no key / budget or daily-ceiling refusal / cancelled before fetch), sent_success, sent_empty, sent_error (a timeout
+//                 included). A state is never inferred from an empty or thrown result alone.
+//   · refund    = only for not_sent. If it cannot be proved that nothing was sent, the ticket is NOT given back.
+//   · order     = cache → single-flight → only the LEADER takes the ticket, right before fetch. A follower (even from another turn) never takes
+//                 one and is never refused for it.
+//
+// Flag matrix (TURN_WEB_TICKET / SEARCH_FALLBACK_GATE):
+//   OFF / OFF  legacy behaviour, unchanged.
+//   ON  / OFF  the ticket limits every W request, DuckDuckGo included: a Serper request that was SENT spent the ticket, so DuckDuckGo is
+//              refused by the ticket; a Serper request that was NOT sent leaves it, so DuckDuckGo may take it.
+//   OFF / ON   no ticket; DuckDuckGo runs only when Serper was not_sent.
+//   ON  / ON   both: DuckDuckGo only when Serper was not_sent AND the ticket is free.
+// The limit covers only the W requests above — NOT all network access of a conversation turn. Outside a ticket scope nothing is limited.
+
+const flagIsOn = (v: string | undefined): boolean => { const s = (v ?? '').trim().toLowerCase(); return s === '1' || s === 'true' }
+export const turnWebTicketOn = (env: Record<string, string | undefined> = process.env): boolean => flagIsOn(env.TURN_WEB_TICKET)
+export const searchFallbackGateOn = (env: Record<string, string | undefined> = process.env): boolean => flagIsOn(env.SEARCH_FALLBACK_GATE)
+
+export type WebRequestState = 'not_sent' | 'sent_success' | 'sent_empty' | 'sent_error'
+export interface TicketEntry {
+  readonly seq: number
+  readonly purpose: 'W'
+  readonly label: string
+  /** 'taken' until the request is sent; then 'sent_error' (the conservative default) until the outcome is known; 'not_sent' once refunded. */
+  state: 'taken' | WebRequestState
+}
+export interface TurnWebTicket {
+  readonly limit: number
+  used: number
+  readonly log: TicketEntry[]
+  /** W requests refused because the ticket was spent (nothing was sent for them). */
+  readonly denied: Array<{ label: string }>
+}
+
+const ticketStore = new AsyncLocalStorage<TurnWebTicket>()
+const ticketOf = new WeakMap<TicketEntry, TurnWebTicket>()
+
+/** One ticket per user request. */
+export function createTurnWebTicket(limit = 1): TurnWebTicket {
+  return { limit, used: 0, log: [], denied: [] }
+}
+
+/** Runs `fn` (and every async continuation it starts) with `ticket` as the current turn's ticket. */
+export function runWithTurnWebTicket<T>(ticket: TurnWebTicket, fn: () => T): T {
+  return ticketStore.run(ticket, fn)
+}
+
+export function currentTurnWebTicket(): TurnWebTicket | undefined {
+  return ticketStore.getStore()
+}
+
+/** Does NOT take anything: 'none' = no ticket scope (unlimited), 'free' = a ticket is left, 'exhausted' = spent. */
+export function peekTurnWebTicket(): 'none' | 'free' | 'exhausted' {
+  const t = ticketStore.getStore()
+  if (!t) return 'none'
+  return t.used < t.limit ? 'free' : 'exhausted'
+}
+
+/**
+ * Checks AND marks in one synchronous step (no await between the two). Returns the entry, 'exhausted' (nothing taken), or null when
+ * there is no ticket scope (unlimited). The caller must call this immediately before it calls fetch.
+ */
+export function takeTurnWebTicket(label: string): TicketEntry | 'exhausted' | null {
+  const t = ticketStore.getStore()
+  if (!t) return null
+  if (t.used >= t.limit) { t.denied.push({ label }); return 'exhausted' }
+  t.used++
+  const entry: TicketEntry = { seq: t.log.length + 1, purpose: 'W', label, state: 'taken' }
+  t.log.push(entry)
+  ticketOf.set(entry, t)
+  return entry
+}
+
+/** The request is being sent NOW (fetch is about to be called). From here the ticket can no longer be refunded. */
+export function markTurnWebTicketSent(entry: TicketEntry): void {
+  if (entry.state === 'taken') entry.state = 'sent_error'
+}
+
+/** A W request refused because the ticket was spent, noted without taking anything (the refusals that happen before a credit is reserved). */
+export function noteTurnWebTicketDenied(label: string): void {
+  ticketStore.getStore()?.denied.push({ label })
+}
+
+const logEntry = (step: string, entry: TicketEntry) => {
+  const t = ticketOf.get(entry)
+  console.log(JSON.stringify({ type: 'tappyai_web_ticket', step, label: entry.label, state: entry.state, used: t?.used ?? null, limit: t?.limit ?? null }))
+}
+
+/** The outcome of a SENT request. Ignored for an entry that was never sent. */
+export function settleTurnWebTicket(entry: TicketEntry, state: 'sent_success' | 'sent_empty' | 'sent_error'): void {
+  if (entry.state === 'taken' || entry.state === 'not_sent') return
+  entry.state = state
+  logEntry('settled', entry)
+}
+
+/** Gives the ticket back — ONLY for an entry that was taken and never sent (provably not_sent). Anything else is left as it is. */
+export function refundTurnWebTicket(entry: TicketEntry): boolean {
+  const t = ticketOf.get(entry)
+  if (!t || entry.state !== 'taken') return false
+  entry.state = 'not_sent'
+  t.used = Math.max(0, t.used - 1)
+  logEntry('refunded', entry)
+  return true
+}
+
+/**
+ * Wraps each tool's execute() so the ticket is the current one for everything the tool does (nested awaits, Promise.all, timers),
+ * wherever the stream calls it from. Same object returned, like the other wrap points in the chat route.
+ */
+export function wrapToolsWithTurnWebTicket<T extends Record<string, unknown>>(tools: T, ticket: TurnWebTicket): T {
+  for (const t of Object.values(tools)) {
+    const def = t as { execute?: (...a: unknown[]) => unknown }
+    const orig = def?.execute
+    if (typeof orig === 'function') def.execute = (...a: unknown[]) => ticketStore.run(ticket, () => orig.apply(def, a))
+  }
+  return tools
+}
