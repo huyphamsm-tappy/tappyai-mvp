@@ -8,6 +8,7 @@ import XCTest
 ///  · `403 ai_consent_required` — no current AI-sharing agreement on the server (`AI_DATA_CONSENT_VERSION` 2).
 ///    It fell into `.forbidden` → «sign in», sending a signed-in person to the login screen.
 /// Neither is decided on the client: only the server's code and its localized sentence are used.
+@MainActor
 final class ChatQuotaConsentErrorTests: XCTestCase {
 
     private func http(_ status: Int, _ json: String) -> AppError {

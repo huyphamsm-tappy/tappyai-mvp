@@ -374,7 +374,7 @@ final class ChatViewModel: AppObservableObject {
 
     /// Whether the held message should be resent once the person has signed in: the turn stopped on a
     /// «sign in» error and the last message is still the user's.
-    static func shouldResumeAfterLogin(error: ChatError?, lastIsUser: Bool, isStreaming: Bool, signedIn: Bool) -> Bool {
+    nonisolated static func shouldResumeAfterLogin(error: ChatError?, lastIsUser: Bool, isStreaming: Bool, signedIn: Bool) -> Bool {
         guard signedIn, lastIsUser, !isStreaming else { return false }
         return error == .authRequired || error == .anonLimitReached
     }
@@ -764,7 +764,7 @@ final class ChatViewModel: AppObservableObject {
     /// check (`route.ts`, "UNMETERED MUST NEVER MEAN UNGATED"). Showing the guest birth-year form
     /// there loops — the account's request never carries the guest header — so it is a temporary
     /// failure: retriable, nothing to fill in.
-    static func mapError(_ error: Error, isGuest: Bool = true) -> ChatError {
+    nonisolated static func mapError(_ error: Error, isGuest: Bool = true) -> ChatError {
         guard let appError = error as? AppError else {
             return .generic
         }
