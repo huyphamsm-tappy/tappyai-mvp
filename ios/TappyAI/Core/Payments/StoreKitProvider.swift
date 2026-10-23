@@ -23,7 +23,7 @@ final class StoreKitProvider: PaymentProvider {
         }
         let products = try await Product.products(for: [ProductCatalog.proMonthlyId])
         guard let p = products.first(where: { $0.id == ProductCatalog.proMonthlyId }) else {
-            log.warning("StoreKit: product \(ProductCatalog.proMonthlyId) not found (returned \(products.count) products)")
+            log.error("StoreKit: product \(ProductCatalog.proMonthlyId) not found (returned \(products.count) products)")
             return nil
         }
         cachedProduct = p
