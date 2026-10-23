@@ -45,7 +45,20 @@ vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.reso
 vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
 
 // ── the fake network ─────────────────────────────────────────────────────────────────────────────────────────────────────────
-interface OpenAiReq { stream: boolean; tools: string[]; hasToolResult: boolean; responseFormat: string | null; lastUser: string }
+interface OpenAiReq {
+  stream: boolean; tools: string[]; hasToolResult: boolean; responseFormat: string | null; lastUser: string
+  /** The body's `stream_options` exactly as sent (null when absent). */
+  streamOptions: Record<string, unknown> | null
+  /** True only when the request asked for usage in the stream (`stream_options.include_usage === true`), as the real API requires. */
+  includeUsage: boolean
+}
+/** The request being answered. A stream carries a usage block ONLY if this request asked for it - the real API sends none otherwise. */
+let currentReq: OpenAiReq | null = null
+const streamUsage = (u: Usage | null): Usage | null => {
+  // fail CLOSED: a stream built when no request is being answered (stale or missing state) is a bug in the test, not a stream with usage
+  if (!currentReq) throw new Error('fake OpenAI: a stream was built outside a request')
+  return currentReq.stream && !currentReq.includeUsage ? null : u
+}
 const net = { openai: [] as OpenAiReq[], serper: [] as Array<{ path: string; body: Record<string, unknown> }>, other: [] as string[] }
 type OpenAiPlan = (req: OpenAiReq, n: number) => Response | Promise<Response>
 let openaiPlan: OpenAiPlan = () => { throw new Error('no OpenAI plan set') }
@@ -60,13 +73,13 @@ const INTENT_USAGE = usage(1000, 200), TOOL_USAGE = usage(500, 50), FINAL_USAGE 
 const textStream = (text: string, u: Usage | null) => sse([
   { choices: [{ index: 0, delta: { role: 'assistant', content: text }, finish_reason: null }] },
   { choices: [{ index: 0, delta: {}, finish_reason: 'stop' }] },
-  ...(u ? [{ choices: [], usage: u }] : []),
+  ...(streamUsage(u) ? [{ choices: [], usage: streamUsage(u) }] : []),
 ])
 const toolStream = (name: string, args: object, u: Usage | null) => sse([
   { choices: [{ index: 0, delta: { role: 'assistant', tool_calls: [{ index: 0, id: 'call_1', type: 'function', function: { name, arguments: '' } }] }, finish_reason: null }] },
   { choices: [{ index: 0, delta: { tool_calls: [{ index: 0, function: { arguments: JSON.stringify(args) } }] }, finish_reason: null }] },
   { choices: [{ index: 0, delta: {}, finish_reason: 'tool_calls' }] },
-  ...(u ? [{ choices: [], usage: u }] : []),
+  ...(streamUsage(u) ? [{ choices: [], usage: streamUsage(u) }] : []),
 ])
 const jsonCompletion = (content: string, u: Usage | null) => new Response(JSON.stringify({ id: 'c1', object: 'chat.completion', created: 1, model: 'gpt-6-luna', choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }], ...(u ? { usage: u } : {}) }), { status: 200, headers: { 'content-type': 'application/json' } })
 const apiError = (status: number) => new Response(JSON.stringify({ error: { message: `fake ${status}`, type: 'fake_error', code: String(status) } }), { status, headers: { 'content-type': 'application/json' } })
@@ -89,11 +102,15 @@ const stubFetch = () => vi.stubGlobal('fetch', vi.fn(async (input: unknown, init
     const body = JSON.parse(String(init?.body ?? '{}'))
     const msgs: Array<{ role: string; content: unknown }> = body.messages ?? []
     const lastUser = [...msgs].reverse().find(m => m.role === 'user')
-    net.openai.push({
+    const rec: OpenAiReq = {
       stream: !!body.stream, tools: (body.tools ?? []).map((t: any) => t.function?.name), hasToolResult: msgs.some(m => m.role === 'tool'),
       responseFormat: body.response_format?.type ?? null, lastUser: typeof lastUser?.content === 'string' ? lastUser.content : JSON.stringify(lastUser?.content ?? ''),
-    })
-    return openaiPlan(net.openai[net.openai.length - 1], net.openai.length)
+      streamOptions: body.stream_options && typeof body.stream_options === 'object' ? body.stream_options : null,
+      includeUsage: body.stream_options?.include_usage === true,
+    }
+    net.openai.push(rec)
+    currentReq = rec // the plan builds its streams while this request is the one being answered
+    return openaiPlan(rec, net.openai.length)
   }
   if (u.hostname === 'google.serper.dev') {
     const body = JSON.parse(String(init?.body ?? '{}'))
@@ -144,7 +161,7 @@ const searchBodies = () => net.serper.filter(s => s.path === '/search').map(s =>
 beforeAll(async () => { ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) }, 120_000)
 beforeEach(() => {
   __resetBenchProcessGuardForTests(); __clearToolCache(); __resetAiQuestionQuotaLocal()
-  net.openai.length = 0; net.serper.length = 0; net.other.length = 0
+  net.openai.length = 0; net.serper.length = 0; net.other.length = 0; currentReq = null
   injectEnv(); stubFetch()
   openaiPlan = webSearchPlan()
   serperPlan = () => serperOk(1)
@@ -180,6 +197,33 @@ describe('(a) the gate sees every call the real route makes', () => {
     // (h) the files went to the in-memory file system, not to the real one
     expect(fs.files.size).toBeGreaterThan(0)
     expect(existsSync(OUT_DIR)).toBe(false)
+  })
+})
+
+describe('(c-usage) the fake OpenAI behaves like the real one about stream usage, and the real adapter asks for it', () => {
+  const callStub = async (body: Record<string, unknown>) => {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', body: JSON.stringify({ model: 'gpt-6-luna', messages: [{ role: 'user', content: 'hi' }], ...body }) })
+    return res.text()
+  }
+  it('[negative control] a stream request WITHOUT stream_options.include_usage gets NO usage block; with include_usage:true it does; a request with include_usage:false does not', async () => {
+    openaiPlan = () => textStream('xin chào', FINAL_USAGE)
+    expect(await callStub({ stream: true })).not.toContain('"usage"')
+    expect(await callStub({ stream: true, stream_options: { include_usage: false } })).not.toContain('"usage"')
+    expect(await callStub({ stream: true, stream_options: { include_usage: true } })).toContain('"usage"')
+    // a non-stream completion always carries usage
+    openaiPlan = () => jsonCompletion('xin chào', INTENT_USAGE)
+    expect(await callStub({ stream: false })).toContain('"usage"')
+  })
+
+  it('[characterization] every STREAM request the real adapter sends carries stream_options.include_usage === true (compatibility "strict")', async () => {
+    const { o } = opts()
+    const { result } = await run(o)
+    expect(result!.records).toHaveLength(2)
+    const streams = net.openai.filter(r => r.stream)
+    expect(streams).toHaveLength(4)
+    for (const r of streams) expect(r.streamOptions).toEqual({ include_usage: true })
+    // non-stream requests do not carry stream_options at all
+    for (const r of net.openai.filter(x => !x.stream)) expect(r.streamOptions).toBeNull()
   })
 })
 

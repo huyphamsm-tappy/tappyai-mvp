@@ -129,12 +129,27 @@ export interface TurnRecord {
   error?: string
 }
 
-export interface BenchResult {
-  valid: boolean
-  report: UatReport
+/**
+ * The report a run hands back. A VALID run carries the full `UatReport` with a real `cost.totalUsd`. An INVALID run carries the same report with
+ * `cost.complete = false` and NO `totalUsd` property at all (not null, not undefined): a total that could not be established must not exist as a
+ * value that later code could use by accident. Every other field of the cost book (knownUsd, knownSubtotalUsd, unknownTurns, unresolvedReservedUsd,
+ * costAccounted) is kept: it is the evidence needed to diagnose the cost. `UatReport` itself is unchanged.
+ */
+export type ValidBenchReport = Omit<UatReport, 'cost'> & { cost: UatReport['cost'] & { totalUsd: number } }
+export type InvalidBenchReport = Omit<UatReport, 'cost'> & { cost: Omit<UatReport['cost'], 'totalUsd'> }
+
+interface BenchResultBase {
   records: TurnRecord[]
   outPath: string | null
   flags: Record<string, string | null>
+}
+export type BenchResult = (BenchResultBase & { valid: true; report: ValidBenchReport }) | (BenchResultBase & { valid: false; report: InvalidBenchReport })
+
+/** The cost book without its total: a COPY with `totalUsd` removed (the property does not exist) and `complete` forced to false. */
+function withoutTotal(report: UatReport): InvalidBenchReport {
+  const cost: Partial<UatReport['cost']> = { ...report.cost, complete: false }
+  delete cost.totalUsd
+  return { ...report, cost: cost as Omit<UatReport['cost'], 'totalUsd'> }
 }
 
 const norm = (v: string | undefined | null): string | null => { const s = (v ?? '').trim(); return s === '' ? null : s }
@@ -199,6 +214,14 @@ export function assertBenchAllowed(o: BenchOptions): void {
     const apart = BENCH_FLAG_NAMES.filter(k => norm(env[k]) !== norm(process.env[k]))
     if (apart.length) reasons.push(`the environment the app reads (process.env) differs from the one that was checked: ${apart.join(', ')}`)
   }
+  // A variable that is SET but empty or blank is not "unset": `norm` reads it as unset, but the app reads the raw value (LLM_LUNA_MODEL="" makes the model id ""
+  // and the gate then refuses every model call). Unset is fine; set-but-blank is refused, by name. Both the environment checked and process.env (what the app reads).
+  // "Blank" = nothing but whitespace AND invisible characters (zero-width space / joiners, word joiner, soft hyphen, Mongolian vowel separator, BOM), which `trim()` keeps.
+  const INVISIBLE = [0x200b, 0x200c, 0x200d, 0x2060, 0x00ad, 0x180e, 0xfeff].map(c => String.fromCharCode(c)).join('')
+  const BLANK = new RegExp('^[\\s' + INVISIBLE + ']*$')
+  const blankOf = (e: Record<string, string | undefined>) => BENCH_FLAG_NAMES.filter(k => e[k] !== undefined && BLANK.test(e[k]!))
+  const blank = [...new Set([...blankOf(env), ...(env !== process.env ? blankOf(process.env) : [])])]
+  if (blank.length) reasons.push(`set but empty or blank (unset is allowed, an empty value is not): ${blank.join(', ')}`)
   for (const k of BENCH_MUST_BE_OFF) if (!isOffValue(norm(env[k]))) reasons.push(`${k} must be OFF for this benchmark (a paid path outside the spend gate)`)
   const provider = norm(env.LLM_PROVIDER)
   if (provider !== null && provider.toLowerCase() !== 'openai') reasons.push('LLM_PROVIDER must be unset or openai (other providers have no list price: the gate refuses them)')
@@ -260,9 +283,11 @@ export interface BenchRunner {
   halted: () => string | null
 }
 
-/** C-1 state: a runner was created in this process (see createBenchRunner). Module-level on purpose; never read from the environment. */
-// Kept on `globalThis` under a Symbol key, not in a module variable: if this module were loaded twice in one process (another spelling of its URL, a
-// reset module registry) both copies would still see the same flag.
+/**
+ * C-1 state: a runner was created in this process (see createBenchRunner). It is PROCESS-WIDE, not module-level: it lives on `globalThis` under a
+ * Symbol key, so that if this module were loaded twice in one process (another spelling of its URL, a reset module registry) both copies still see
+ * the same flag. Never read from the environment.
+ */
 const PROCESS_LOCK = Symbol.for('tappyai.consultUat.benchRunnerCreated')
 const processLock = globalThis as unknown as Record<symbol, unknown>
 
@@ -369,6 +394,9 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     if (!record.error && parsed.text.trim() === '') record.error = 'empty answer'
     // The run cannot be valid any more: nothing more is sent (the bad answer would also become the history of the later turns).
     if (record.error && thrown === null) halted = 'a turn was not an answer'
+    // M1: a degraded turn (a paid call was refused by the gate) or an error frame in the stream also makes the run invalid for good: stop sending.
+    // A skipped photo lookup (photoSkips) is NOT degraded and does not stop the run.
+    if (!halted && (record.degraded || record.streamErrors.length > 0)) halted = 'the run can no longer be valid'
     records.push(record)
     // The run guard learns what the turn cost; a cost that is not known keeps its reservation open and stops the runner for good.
     if (costKnown) runGuard.settle(runRes, known!)
@@ -402,7 +430,10 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
   finalize()
   const wf = writeFailure()
   // The run is valid only if it ended normally, the books are complete AND no turn was degraded by a refused call, an error frame or a failed save.
-  const valid = runError === null && wf === null && report !== null && report.cost.complete && records.length === (o.turns ?? UAT_TURNS).length && records.every(r => r.cost.state === 'known' && !r.degraded && !r.error && r.streamErrors.length === 0)
+  // M3: the cost book must be fully accounted (no unknown turn, nothing still open), and a valid run has a REAL total (a number).
+  const valid = runError === null && wf === null && report !== null && report.cost.complete && report.cost.costAccounted && typeof report.cost.totalUsd === 'number' && records.length === (o.turns ?? UAT_TURNS).length && records.every(r => r.cost.state === 'known' && !r.degraded && !r.error && r.streamErrors.length === 0)
+  // M2: an invalid run hands back (and writes) a cost book WITHOUT the `totalUsd` property; a valid one hands back the report as it is.
+  const returned: ValidBenchReport | InvalidBenchReport | null = report === null ? null : valid ? (report as ValidBenchReport) : withoutTotal(report)
   const costState = report !== null && report.cost.costAccounted && records.every(r => r.cost.state === 'known') ? 'known' : 'unknown'
   const flags = Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, norm(o.declaredFlags![k])])) as Record<string, string | null>
   const body = {
@@ -410,7 +441,7 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
     ...(runError !== null ? { error: runError instanceof Error ? `${runError.name}: ${runError.message}` : String(runError) } : {}),
     ...(wf ? { writeError: wf.message } : {}),
     openReservations: openReservations(),
-    summary: report ? summarize(report) : null, turns: records, report,
+    summary: returned ? summarize({ ...returned, cost: { ...returned.cost, totalUsd: (returned.cost as { totalUsd?: number }).totalUsd ?? null } } as UatReport) : null, turns: records, report: returned,
   }
   // An invalid run states no total: the key `totalUsd` is dropped at every level (not 0, not a partial sum). Done here, in the serialization layer.
   let text: string
@@ -428,7 +459,8 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
   }
   if (wf) throw wf
   if (runError !== null) throw runError
-  return { valid, report: report!, records, outPath: paths.result, flags }
+  const base = { records, outPath: paths.result, flags }
+  return valid ? { ...base, valid: true, report: returned as ValidBenchReport } : { ...base, valid: false, report: returned as InvalidBenchReport }
 }
 
 /**

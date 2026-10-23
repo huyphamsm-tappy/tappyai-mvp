@@ -153,7 +153,7 @@ describe('9 · the 13 fixed turns through runUat on a $0.65 run and $0.05 per tu
     expect(t.requests).toHaveLength(13)
     expect(r.report.turns.map(x => x.id)).toEqual(UAT_TURNS.map(x => x.id))
     expect(r.report.cost).toMatchObject({ complete: true, costAccounted: true })
-    expect(r.report.cost.totalUsd).toBeCloseTo(13 * 0.004, 10)
+    expect((r.report.cost as { totalUsd?: number }).totalUsd).toBeCloseTo(13 * 0.004, 10) // type only: BenchResult is a union on `valid` (round 2d)
     const q111 = t.requests[UAT_TURNS.findIndex(x => x.id === 'Q11.1')]
     const q112 = t.requests[UAT_TURNS.findIndex(x => x.id === 'Q11.2')]
     expect(q111.messages).toEqual([{ role: 'user', content: UAT_TURNS.find(x => x.id === 'Q11.1')!.text }])
@@ -169,7 +169,7 @@ describe('9 · the 13 fixed turns through runUat on a $0.65 run and $0.05 per tu
     const r = await runBench(opts)
     expect(r.valid).toBe(true)
     expect(r.records.every(x => (x.cost as { usd: number }).usd <= 0.05 + 1e-9)).toBe(true)
-    expect(r.report.cost.totalUsd).toBeLessThanOrEqual(0.65 + 1e-9)
+    expect((r.report.cost as { totalUsd?: number }).totalUsd).toBeLessThanOrEqual(0.65 + 1e-9) // type only (round 2d)
   })
 })
 
@@ -214,7 +214,9 @@ describe('5 · a turn that costs more than reserved, whose cost is unknown or un
     const { opts } = options({ chat })
     const r = await runBench(opts)
     expect(r.report.stopped).not.toBeNull()
-    expect(r.report.cost.totalUsd).toBeNull()
+    // Round 2d (M2): an invalid run has NO `totalUsd` property at all (it used to be `null`); the cost evidence stays
+    expect(Object.hasOwn(r.report.cost, 'totalUsd')).toBe(false)
+    expect(r.report.cost.complete).toBe(false)
     expect(r.valid).toBe(false)
     expect(r.report.turns).toHaveLength(n)
     expect(r.report.notRun.length).toBe(13 - n)
@@ -249,7 +251,13 @@ describe('6 · a call refused by the cap: recorded, the answer is flagged degrad
     const r = await runBench(opts)
     expect(r.records[1]).toMatchObject({ refusals: 1, degraded: true })
     expect(r.valid).toBe(false)
-    expect(r.report.cost.complete).toBe(true) // the books are fine; the benchmark answer is what is invalid
+    // Round 2d (M1): a degraded turn stops the run - the later turns are refused by the halted runner, so the run is no longer "complete" (it was `true` when
+    // the run kept going). The BOOKS are still fine: fully accounted, nothing unknown, runUat itself did not stop.
+    expect(r.report.cost.complete).toBe(false)
+    expect(r.report.cost.costAccounted).toBe(true)
+    expect(r.report.cost.unknownTurns).toEqual([])
+    expect(r.report.stopped).toBeNull()
+    expect(Object.hasOwn(r.report.cost, 'totalUsd')).toBe(false)
     expect((r.records[1].cost as { usd: number }).usd).toBe(0)
   })
 })

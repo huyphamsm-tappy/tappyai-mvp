@@ -68,6 +68,14 @@ describe('C-1 · a second runner in the same process is refused before anything 
   })
 })
 
+describe('C1 (round 2d) · the comments say what the code does', () => {
+  it('the C-1 state is not described as "module-level" any more (it lives on globalThis)', () => {
+    const src = readFileSync(join(__dirname, 'liveRunner.ts'), 'utf8')
+    expect(src).toContain("Symbol.for('tappyai.consultUat.benchRunnerCreated')")
+    expect(src).not.toMatch(/module-level on purpose/i)
+  })
+})
+
 describe('C-1 · the lock is process-wide, not module-wide', () => {
   it('a second copy of the module (as a reset module registry would load) sees the lock of the first', async () => {
     createBenchRunner(options().opts)
