@@ -619,6 +619,89 @@ function stripOffendingClauses(sentence: string, offenders: readonly RegExp[]): 
 }
 
 /**
+ * PLACE_CLAIM_KEEP_VERIFIED_PRICE (default OFF, read at call time). A sentence whose ONLY unsupported claim is one quality or
+ * popularity phrase keeps its VERIFIED price: the claim clause is cut, the price stays. A verified price is a structured price of a
+ * row whose name the same sentence names (see everyAmountAttributed). Any other shape returns null and the caller takes the
+ * established path (clause trim, else the whole sentence goes). A sentence with any unattributed amount therefore never keeps one.
+ */
+const KEEP_PRICE_DELIM_RE = /\s*(?:[,;:]|\s(?:nên|và|nhưng|vì|nen|va|nhung|vi)\s)\s*/iu
+/** Money-looking tokens: a digit run not glued to a letter, a digit or a hyphen (so "WH-1000XM5" is not a price). */
+const MONEY_TOKEN_RE = /(?<![\p{L}\d-])\d[\d.,]*/gu
+
+/** A structured price of a retrieved row, and the row's name (the part before " - " in its title). */
+export interface VerifiedPrice { value: number; name: string }
+
+function placeClaimKeepVerifiedPriceEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.PLACE_CLAIM_KEEP_VERIFIED_PRICE?.trim()
+  return v === '1' || v === 'true'
+}
+
+/**
+ * The value of a money-looking token. Only a grouped amount ("8.000.000", "8,000,000") or a plain run of 4+ digits ("3000000")
+ * has a value this guard can verify; anything else ("3 triệu", "3tr", "4.9", "2") is NaN, which never matches a verified price.
+ */
+function tokenValue(raw: string): number {
+  const t = raw.replace(/[.,]+$/, '')
+  if (/^\d{1,3}(?:[.,]\d{3})+$/.test(t)) return parseInt(t.replace(/[.,]/g, ''), 10)
+  if (/^\d{4,}$/.test(t)) return parseInt(t, 10)
+  return NaN
+}
+
+function moneyTokensIn(text: string): number[] {
+  return [...text.matchAll(MONEY_TOKEN_RE)].map(m => tokenValue(m[0]))
+}
+
+const foldForCut = (s: string): string => s.toLowerCase().normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd')
+
+/** The row name occurs as whole words in the folded sentence (not as a fragment of a longer word). */
+function rowNameIn(folded: string, name: string): boolean {
+  const n = foldForCut(name).trim()
+  if (n.length < 4) return false
+  const esc = n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return new RegExp('(?<![\\p{L}\\d])' + esc + '(?![\\p{L}\\d])', 'u').test(folded)
+}
+
+/**
+ * Every money token in the sentence must be a verified price of a row whose name the SAME sentence names. A price of another
+ * row, an unverifiable token, or a price no row states, is not kept: the verified number must belong to the place or product
+ * the sentence is about.
+ */
+function everyAmountAttributed(text: string, verified: readonly VerifiedPrice[]): boolean {
+  const values = moneyTokensIn(text)
+  if (values.length === 0) return false
+  const folded = foldForCut(text)
+  return values.every(v => !Number.isNaN(v) && verified.some(p => p.value === v && rowNameIn(folded, p.name)))
+}
+
+function keepVerifiedPriceCut(sentence: string, violated: readonly RegExp[], verified: readonly VerifiedPrice[] | undefined): { text: string; headRemoved: boolean } | null {
+  if (!placeClaimKeepVerifiedPriceEnabled() || !verified || verified.length === 0 || violated.length !== 1) return null
+  const re = violated[0]
+  if (re !== QUALITY_RE && re !== POPULARITY_RE) return null
+  // A bold span is a venue or product name, not prose: a sentence with bold markup takes the established path.
+  if (sentence.includes('**')) return null
+  if (!everyAmountAttributed(sentence, verified)) return null
+  const found = [...sentence.matchAll(new RegExp(re.source, 'giu'))]
+  if (found.length !== 1) return null
+  const match = found[0].index ?? 0
+  // "được" / "duoc" in front of the matched phrase belongs to the claim too ("duoc danh gia cao" matches from "danh").
+  const lead = /(?:được|duoc)\s+$/iu.exec(sentence.slice(0, match))
+  const start = lead ? match - lead[0].length : match
+  const end = match + found[0][0].length
+  const delim = KEEP_PRICE_DELIM_RE.exec(sentence.slice(end))
+  if (!delim) return null
+  const cutEnd = end + delim.index + delim[0].length
+  const firstAmountAt = sentence.search(/(?<![\p{L}\d-])\d/u)
+  // The clause must end before the first amount: a claim that runs into the price has no clean edge to cut.
+  if (firstAmountAt < cutEnd) return null
+  const removed = sentence.slice(start, cutEnd)
+  if (/[\d.!?]/.test(removed)) return null
+  const out = (sentence.slice(0, start) + sentence.slice(cutEnd)).replace(/[ \t]{2,}/g, ' ').trim()
+  if (!/\p{L}/u.test(out) || re.test(out)) return null
+  if (!everyAmountAttributed(out, verified) || moneyTokensIn(out).length !== moneyTokensIn(sentence).length) return null
+  return { text: out, headRemoved: false }
+}
+
+/**
  * Is what survived a trim a sentence in its own right, or the tail of the claim?
  *
  * 🚨 MEASURED ON THE REVIEW UAT 2026-09-09. The model wrote
@@ -689,6 +772,8 @@ export interface PlaceClaimOptions {
   attributionV2?: boolean
   /** The engine's Pick, for the `pick_attributable` telemetry signal only. */
   pickName?: string | null
+  /** PLACE_CLAIM_KEEP_VERIFIED_PRICE only: the structured prices of this turn's product rows (VND) with the row name. Ignored unless the flag is on. */
+  verifiedPrices?: readonly VerifiedPrice[]
 }
 
 /** Per-turn counters for the `tappyai_guard` telemetry event. Never carries user text. */
@@ -917,7 +1002,10 @@ export function guardPlaceClaimsInText(
      */
     if (violated.length > 0) {
       const namedBefore = placeNamedIn(s)
-      const trim = stripOffendingClauses(s, violated)
+      // PLACE_CLAIM_KEEP_VERIFIED_PRICE: the verified-price cut is used only when it keeps the place name; otherwise the established path runs.
+      const kept = keepVerifiedPriceCut(s, violated, opts.verifiedPrices)
+      const keptOk = kept !== null && (namedBefore === null || placeNamedIn(kept.text) === namedBefore)
+      const trim = keptOk ? kept : stripOffendingClauses(s, violated)
       const survivorNames = trim ? placeNamedIn(trim.text) : null
       if (trim !== null
         && (namedBefore === null || survivorNames === namedBefore)

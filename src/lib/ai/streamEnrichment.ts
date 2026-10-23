@@ -3,7 +3,7 @@ import { evidenceGapLine, styleLuna6On } from './consultative/styleLuna6'
 import { normalizeVN } from './intent'
 import { findPlaceOffset, proseHeaders, type Header } from './placeMatch'
 import type { EnrichmentCollector } from './toolResultSplit'
-import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, type EvidenceRecord } from './moneyGuard'
+import { extractMoneyClaims, guardMoneyClaimsInText, sentenceSpans, protectedSpans, structuredPrice, type EvidenceRecord } from './moneyGuard'
 import { consultLunaOneEnabled } from './evidence/flag'
 import { createLegacyStreamTrace, legacyStreamTraceEnabled } from './legacyStreamTrace'
 import { isSafeHttpsUrl } from '@/lib/security/urlGuard'
@@ -2923,7 +2923,7 @@ export function applyPlaceEnrichmentStreamFilter(
         ticketablePlaces,
         // CCP: sentences carrying a system-placed commerce link are never judged as claims.
         systemLinkUrls,
-      }, { scope: carriedPlaceFollowUp ? 'all' : placeClaimScope, attributionV2: guardV2, pickName })
+      }, { scope: carriedPlaceFollowUp ? 'all' : placeClaimScope, attributionV2: guardV2, pickName, verifiedPrices: productRecords.flatMap(r => { const value = structuredPrice(r); return value === null ? [] : [{ value, name: (r.title || '').split(' - ')[0] }] }) })
       : null
     const placeGuardedRaw = qual(placeGuardResult ? 'place_claim' : 'ordering_no_evidence', foodGuarded, placeGuardResult
       ? placeGuardResult.text
