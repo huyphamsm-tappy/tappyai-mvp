@@ -706,6 +706,34 @@ function capitaliseFirst(s: string): string {
   return s.replace(/^([\s*_>#-]*)(\p{Ll})/u, (_m, lead: string, ch: string) => lead + ch.toLocaleUpperCase('vi'))
 }
 
+/**
+ * MONEY-GUARD-KEEP-VERIFIED-01 — MONEY_GUARD_KEEP_VERIFIED (default OFF). ON: `redactUnsupportedClaims` (callers without `wholeSentence` /
+ * `noAmountOnlyFallback`, i.e. `guardMoneyClaimsInText`) no longer removes a VERIFIED amount only because another amount in the same sentence is
+ * not verified. Read at call time, same shape as `snippetPriceGuardV2Enabled` (config/product.ts:443-446) plus a trim: ON only for `1` / `true`.
+ */
+export function moneyGuardKeepVerifiedEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  const v = env.MONEY_GUARD_KEEP_VERIFIED?.trim()
+  return v === '1' || v === 'true'
+}
+
+/**
+ * keepVerified only: the claim spans of one sentence can be edited by offset only when every claim of the sentence ends inside it and no two
+ * claims share a character (a prefix and a suffix currency symbol can: "8.000.000 ₫ 3.000.000" is the claim "8.000.000 ₫" and the claim
+ * "₫ 3.000.000"). Otherwise the sentence takes the former path, whose clause cut always removes the clause around the unverified amount.
+ */
+function claimSpansAreSafe(claims: ReadonlyArray<{ start: number; end: number }>, from: number, to: number): boolean {
+  const here = claims.filter(c => c.start >= from && c.start < to)
+  if (here.some(c => c.end > to)) return false
+  return here.every((c, i) => here.every((d, j) => i === j || c.end <= d.start || d.end <= c.start))
+}
+
+/** keepVerified fallback: only the unverified amounts (and the hedge word right before each) are taken out of the sentence; every other character stays. */
+function removeAmountsOnly(sentenceWithBreak: string, spans: Array<[number, number]>): string {
+  let out = sentenceWithBreak
+  for (const [s, e] of [...spans].sort((x, y) => y[0] - x[0])) out = out.slice(0, s).replace(HEDGE_BEFORE, '') + out.slice(e)
+  return out
+}
+
 export interface RedactOptions {
   /**
    * F-094 (owner 2026-09-25): remove every affected sentence WHOLE — no clause cut. The v1 snippet
@@ -725,6 +753,8 @@ export interface RedactOptions {
 export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts: RedactOptions = {}): string {
   const bad = claims.filter(c => c.verdict !== 'VERIFIED')
   if (bad.length === 0) return text
+  // Read here, at call time. Never for `wholeSentence` (snippet guard) or `noAmountOnlyFallback` (travelGuard): those callers keep their own behaviour.
+  const keepVerifiedOn = !opts.wholeSentence && !opts.noAmountOnlyFallback && moneyGuardKeepVerifiedEnabled()
 
   // Seams only, never across a line break: a list bullet after a newline is structure, not a
   // doubled delimiter.
@@ -770,6 +800,20 @@ export function redactUnsupportedClaims(text: string, claims: MoneyClaim[], opts
         ? cutAroundVerified(raw, verified.map((c): [number, number] => [c.start - a, c.end - a]), [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a]), opts.decimalSafe === true)
         : null
       if (kept !== null) {
+        dropped = false
+        const trailing = kept.match(/[\n]+$/)?.[0] ?? ''
+        return stripConnective(kept.replace(/[\n]+$/, '')) + trailing
+      }
+    }
+    // MONEY-GUARD-KEEP-VERIFIED-01 (flag MONEY_GUARD_KEEP_VERIFIED, default OFF): a sentence that states a VERIFIED amount never loses it to the
+    // clause cut below. Cut around the verified amounts; if no such cut exists, take out only the unverified amounts. Claims whose spans are not
+    // safe to edit (see claimSpansAreSafe) keep the former path, which removes the unverified amount with its clause (or the sentence).
+    if (keepVerifiedOn) {
+      const verified = claims.filter(c => c.verdict === 'VERIFIED' && c.start >= a && c.start < b).sort((x, y) => x.start - y.start)
+      if (verified.length > 0 && claimSpansAreSafe(claims, a, b)) {
+        const unverifiedSpans = [...inSentence].reverse().map((c): [number, number] => [c.start - a, c.end - a])
+        const kept = cutAroundVerified(raw, verified.map((c): [number, number] => [c.start - a, c.end - a]), unverifiedSpans, opts.decimalSafe === true)
+          ?? removeAmountsOnly(raw, unverifiedSpans)
         dropped = false
         const trailing = kept.match(/[\n]+$/)?.[0] ?? ''
         return stripConnective(kept.replace(/[\n]+$/, '')) + trailing

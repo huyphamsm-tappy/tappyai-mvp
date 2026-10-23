@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest'
 import { readFileSync } from 'node:fs'
 import {
-  extractMoneyClaims, judgeMoneyClaims, redactUnsupportedClaims, guardMoneyClaimsInText,
+  extractMoneyClaims, extractMoneyClaimsDetailed, judgeMoneyClaims, redactUnsupportedClaims, guardMoneyClaimsInText, moneyGuardKeepVerifiedEnabled,
   classifyIdentity, requestedEntity, structuredPrice, proseOnly, ROUNDING_TOLERANCE,
   type EvidenceRecord,
 } from './moneyGuard'
@@ -637,5 +637,158 @@ describe('R3 proportional — a parenthetical that qualifies the amount goes wit
   it('a grounded sentence with a parenthetical keeps it', () => {
     const out = guardMoneyClaimsInText('**M Hotel** giá 1.200.000 ₫ (đã gồm ăn sáng).', rs, ['M Hotel Da Nang']).text
     expect(out).toContain('(đã gồm ăn sáng)')
+  })
+})
+
+// ── MONEY-GUARD-KEEP-VERIFIED-01 (flag MONEY_GUARD_KEEP_VERIFIED, default OFF) ───────────────────────────
+//
+// MG-OPTION-OFF-VERIFIED-LOSS-01: without the opt-ins of `redactUnsupportedClaims`, the clause cut (or the whole-sentence drop) that removes an
+// UNVERIFIED amount also removed a VERIFIED amount of the same sentence whenever another sentence kept the reply non-empty. Local fixture only:
+// these tests prove the behaviour of `moneyGuard` and of the stream filter on the fixture, not that a model produced the sentence in production.
+describe('MONEY_GUARD_KEEP_VERIFIED — a verified amount survives an unverified one in the same sentence', () => {
+  const rs = [rec('Sony WH-1000XM5', '8.000.000 ₫')]
+  const Q = ['Sony WH-1000XM5']
+  const TARGET = 'Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ còn bản khác chỉ 3.000.000đ.'
+  const INDEPENDENT = 'Tôi đã tìm được một lựa chọn phù hợp.'
+  const KEY = 'MONEY_GUARD_KEEP_VERIFIED'
+  const setFlag = (value: string | undefined) => { if (value === undefined) delete process.env[KEY]; else process.env[KEY] = value }
+  /** Runs `fn` with the flag set (undefined = unset) and ALWAYS restores the previous value, also when an assertion throws. */
+  const withFlag = <T>(value: string | undefined, fn: () => T): T => {
+    const prev = process.env[KEY]
+    setFlag(value)
+    try { return fn() } finally { setFlag(prev) }
+  }
+  const withFlagAsync = async <T>(value: string | undefined, fn: () => Promise<T>): Promise<T> => {
+    const prev = process.env[KEY]
+    setFlag(value)
+    try { return await fn() } finally { setFlag(prev) }
+  }
+  const guard = (text: string, flag: string | undefined) => withFlag(flag, () => guardMoneyClaimsInText(text, rs, Q).text)
+
+  it('contract: ON only for "1" or "true" after trimming; unset, empty, 0, false, off, TRUE, yes, 2 are OFF', () => {
+    for (const v of ['1', 'true', ' 1 ', ' true ']) expect(moneyGuardKeepVerifiedEnabled({ ...process.env, MONEY_GUARD_KEEP_VERIFIED: v }), `"${v}"`).toBe(true)
+    for (const v of [undefined, '', ' ', '0', 'false', 'off', 'TRUE', 'yes', '2']) expect(moneyGuardKeepVerifiedEnabled({ ...process.env, MONEY_GUARD_KEEP_VERIFIED: v }), `"${v}"`).toBe(false)
+    withFlag(undefined, () => expect(moneyGuardKeepVerifiedEnabled()).toBe(false)) // default OFF
+  })
+
+  it('the fixture judges as intended: 8.000.000đ VERIFIED, 3.000.000đ UNVERIFIED', () => {
+    expect(judgeMoneyClaims(TARGET, rs, Q).map(c => `${c.raw}=${c.verdict}`)).toEqual(['8.000.000đ=VERIFIED', '3.000.000đ=UNVERIFIED'])
+  })
+
+  it('flag OFF (unset, "0", "off") keeps the former output byte for byte', () => {
+    for (const flag of [undefined, '0', 'off']) {
+      expect(guard(TARGET, flag), String(flag)).toBe('Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ còn bản khác chỉ.')
+      expect(guard(`${INDEPENDENT} ${TARGET}`, flag), String(flag)).toBe(INDEPENDENT) // the verified amount goes with the whole sentence: the known loss
+    }
+  })
+
+  it('flag ON: the target sentence alone keeps 8.000.000đ, loses 3.000.000đ and the fragment', () => {
+    expect(guard(TARGET, '1')).toBe('Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ.')
+  })
+
+  it('flag ON: an independent sentence BEFORE the target stays and the verified amount stays', () => {
+    expect(guard(`${INDEPENDENT} ${TARGET}`, 'true')).toBe(`${INDEPENDENT} Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ.`)
+  })
+
+  it('flag ON: an independent sentence AFTER the target stays and the verified amount stays', () => {
+    expect(guard(`${TARGET} Bạn xem thêm nhé.`, '1')).toBe('Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ. Bạn xem thêm nhé.')
+  })
+
+  it('flag ON: independent sentences on both sides', () => {
+    expect(guard(`${INDEPENDENT} ${TARGET} Bạn xem thêm nhé.`, '1')).toBe(`${INDEPENDENT} Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ. Bạn xem thêm nhé.`)
+  })
+
+  it('flag ON, a delimiter between the amounts: the clause of the unverified amount goes', () => {
+    const t = `${INDEPENDENT} Sony WH-1000XM5 giá 8.000.000đ, bản khác chỉ 3.000.000đ.`
+    expect(guard(t, '1')).toBe(`${INDEPENDENT} Sony WH-1000XM5 giá 8.000.000đ.`)
+    expect(guard(t, undefined)).toBe(INDEPENDENT) // OFF: the clause cut leaves four words before the comma, removeClauseAround answers null and the whole sentence goes (the known loss)
+  })
+
+  it('flag ON, unverified amount BEFORE the verified one', () => {
+    const t = `${INDEPENDENT} Bản khác chỉ 3.000.000đ, còn Sony WH-1000XM5 giá 8.000.000đ.`
+    expect(guard(t, '1')).toBe(`${INDEPENDENT} Sony WH-1000XM5 giá 8.000.000đ.`)
+    expect(guard(t, undefined)).not.toContain('3.000.000')
+  })
+
+  it('flag ON, a list line: the product and its verified amount stay, the unverified variant goes', () => {
+    const t = '- **Sony WH-1000XM5** — 8.000.000₫, bản Ultra 9.000.000₫'
+    expect(guard(t, '1')).toBe('- **Sony WH-1000XM5** — 8.000.000₫')
+  })
+
+  it('flag ON, the cut around the verified amount does not exist (cutAroundVerified returns null): the verified amount STILL survives, the unverified one does not', () => {
+    // "₫8.000.000, ₫3.000.000." — a cut around the verified amount leaves no letter, so cutAroundVerified answers null (moneyGuard.ts, HAS_LETTER).
+    const t = `${INDEPENDENT} ₫8.000.000, ₫3.000.000.`
+    const judged = judgeMoneyClaims(t, rs, Q)
+    expect(judged.map(c => `${c.raw}=${c.verdict}`)).toEqual(['₫8.000.000=VERIFIED', '₫3.000.000=UNVERIFIED'])
+    // Public-API proof that cutAroundVerified is null here: the travelGuard opt-in uses it first and, on null, takes the clause path — which loses the verified amount.
+    expect(redactUnsupportedClaims(t, judged, { noAmountOnlyFallback: true })).toBe(INDEPENDENT)
+    expect(guard(t, undefined)).toBe(INDEPENDENT) // OFF: the verified amount goes with the sentence
+    const on = guard(t, '1')
+    expect(on).toContain('8.000.000')
+    expect(on).not.toContain('3.000.000')
+    expect(on).toBe(`${INDEPENDENT} ₫8.000.000.`)
+  })
+
+  it('OVERLAPPING claims: the unverified amount never survives; losing the verified amount there is the accepted, deliberate exception', () => {
+    // "8.000.000 ₫ 3.000.000" is the claim "8.000.000 ₫" and the claim "₫ 3.000.000", which share the "₫".
+    const t = `${INDEPENDENT} Sony WH-1000XM5 giá 8.000.000 ₫ 3.000.000 cho bản khác.`
+    const claims = extractMoneyClaimsDetailed(t).claims
+    expect(claims).toHaveLength(2) // the fixture must produce two claims…
+    expect(claims[0].start < claims[1].end && claims[1].start < claims[0].end).toBe(true) // …that really overlap
+    for (const flag of [undefined, '1']) {
+      const out = guard(t, flag)
+      expect(out, String(flag)).not.toContain('3.000.000') // SAFETY: required in both settings
+      expect(out, String(flag)).toContain(INDEPENDENT)
+    }
+    // The preservation is NOT promised for overlapping claims: ON takes the former path, so the output is the same as OFF.
+    expect(guard(t, '1')).toBe(guard(t, undefined))
+    // The exception, pinned: the whole target sentence goes, the verified "8.000.000 ₫" with it. Fail-closed on purpose; NOT evidence of preservation.
+    expect(guard(t, '1')).toBe(INDEPENDENT)
+  })
+
+  it('scope: with the flag ON the travelGuard opt-in and the whole-sentence mode behave exactly as with the flag OFF', () => {
+    for (const t of [TARGET, `${INDEPENDENT} ${TARGET}`, 'Đặt qua app hoặc website, Vietjet 387.000 VND còn chuyến khác chỉ 99.000 VND.']) {
+      const judged: Parameters<typeof redactUnsupportedClaims>[1] = extractMoneyClaims(t).map(c => ({ ...c, entity: null, verdict: /^(8\.000|387)/.test(t.slice(c.start, c.end)) ? 'VERIFIED' : 'UNVERIFIED' }))
+      for (const opts of [{ noAmountOnlyFallback: true }, { wholeSentence: true }]) {
+        const off = withFlag(undefined, () => redactUnsupportedClaims(t, judged, opts))
+        const on = withFlag('1', () => redactUnsupportedClaims(t, judged, opts))
+        expect(on, `${JSON.stringify(opts)} :: ${t}`).toBe(off)
+      }
+    }
+  })
+
+  // ── through the actual stream filter (the legacy-path collector is INFERRED, see below) ─────────────
+  const streamText = (text: string, flag: string | undefined) => withFlagAsync(flag, async () => {
+    const { createEnrichmentCollector } = await import('./toolResultSplit')
+    const { applyPlaceEnrichmentStreamFilter } = await import('./streamEnrichment')
+    const userText = 'Tai nghe Sony WH-1000XM5 giá bao nhiêu'
+    // Collector fields (route.ts): createEnrichmentCollector :1318; consultativeV1 :2083-2090 (literals); consultTurn 'pick' / domain 'shopping' :2016-2017
+    // and rendersCard false (no surface header, decisionSurface.ts:27) are INFERRED — the brain decides them at request time. semanticRanking /
+    // consultV3 / consultative stay unset: they are agent-only (route.ts:3078, 3083), and this is the legacy path.
+    const collector = createEnrichmentCollector(userText, [])
+    collector.setRendersDecisionCard(false)
+    collector.setConsultTurn('pick', [], {})
+    collector.setConsultDomain('shopping')
+    collector.setConsultativeV1({ on: true, rendersCard: false, namedRefetch: [], referenced: [], carried: [], hardGaps: [], budgetGap: false, budget: null, priorTimes: [] })
+    const lines = [
+      `9:${JSON.stringify({ toolCallId: 'c1', toolName: 'search_products', args: { query: 'Sony WH-1000XM5' } })}`,
+      `a:${JSON.stringify({ toolCallId: 'c1', result: { search_results: rs } })}`,
+      `0:${JSON.stringify(text)}`,
+      'd:{}',
+    ]
+    const filtered = applyPlaceEnrichmentStreamFilter(new Response(lines.join('\n') + '\n'), 'vi', collector, undefined, undefined, undefined, false, userText, false)
+    const raw = await new Response(filtered.body).text()
+    return raw.split('\n').filter(l => l.startsWith('0:')).map(l => { try { return JSON.parse(l.slice(2)) as string } catch { return '' } }).join('')
+  })
+
+  it('stream filter, flag OFF: the verified amount goes with the sentence (the known loss), nothing else changes', async () => {
+    expect(await streamText(`${INDEPENDENT} ${TARGET}`, undefined)).toBe(INDEPENDENT)
+  })
+
+  it('stream filter, flag ON: the verified amount survives, the unverified one does not, the independent sentence stays', async () => {
+    const out = await streamText(`${INDEPENDENT} ${TARGET}`, '1')
+    expect(out).toContain('8.000.000')
+    expect(out).not.toContain('3.000.000')
+    expect(out).toBe(`${INDEPENDENT} Mua ở Tiki, Sony WH-1000XM5 giá 8.000.000đ.`)
   })
 })
