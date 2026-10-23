@@ -260,13 +260,34 @@ export interface BenchRunner {
   halted: () => string | null
 }
 
+/** C-1 state: a runner was created in this process (see createBenchRunner). Module-level on purpose; never read from the environment. */
+// Kept on `globalThis` under a Symbol key, not in a module variable: if this module were loaded twice in one process (another spelling of its URL, a
+// reset module registry) both copies would still see the same flag.
+const PROCESS_LOCK = Symbol.for('tappyai.consultUat.benchRunnerCreated')
+const processLock = globalThis as unknown as Record<symbol, unknown>
+
+/**
+ * TEST SEAM ONLY. Forgets that a runner was created, so one test file can build several runners. Nothing outside test files calls it (a test scans
+ * src/ and scripts/ to prove it), it reads no environment variable, and no entry point exports or wires it. Do not call it from a real run.
+ */
+export function __resetBenchProcessGuardForTests(): void { processLock[PROCESS_LOCK] = false }
+
 /**
  * Every way into the runner goes through here, so the preflight cannot be skipped: the full `assertBenchAllowed` (caps, confirmation, flags,
  * folder rules) and the writable-folder probe run BEFORE a runner exists. The runner then holds the run cap itself (a run guard) and stops for good
  * after a turn whose cost is unknown, a failed turn or a failed write.
+ *
+ * C-1 (round 2c): only ONE runner is created per process. WHAT THIS IS: a guard against creating a second runner by MISTAKE inside the same process
+ * (a second `createBenchRunner` / `runBench` call would otherwise get a fresh run guard and could spend another full run cap). WHAT IT IS NOT: it does
+ * not stop several processes from being started, it is not a ledger shared between processes, and it is NOT a way to cap total spend.
+ * Order: preflight → "is there already a runner in this process?" (refused before the file system is touched) → writability probe → build →
+ * mark the process as used LAST, so a failed preflight, a failed probe or an error while building leaves the process free for a valid call.
  */
 export function createBenchRunner(o: BenchOptions): BenchRunner {
   assertBenchAllowed(o)
+  if (processLock[PROCESS_LOCK] === true) {
+    throw new BenchRefusal(['a benchmark runner was already created in this process: one runner per process (this guard does not cover other processes). Start a new process for another run'])
+  }
   const fs = o.fs ?? realFs
   const dir = slash(o.outDir.trim())
   probeOutDir(fs, dir, o.repoRoot)
@@ -362,6 +383,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     // A cost that is not known is reported as NaN: runUat settles it as invalid and stops the run, and no total is reported.
     return { text: parsed.text, toolCalls: record.toolNames.map(name => ({ name })), ms, usd: costKnown ? known! : Number.NaN }
   }
+  processLock[PROCESS_LOCK] = true // LAST: everything above has succeeded
   return { runner, records, finalize, paths, openReservations, writeFailure: () => writeFailure, halted: () => halted }
 }
 

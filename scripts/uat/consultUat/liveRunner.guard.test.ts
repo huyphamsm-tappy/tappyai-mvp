@@ -4,11 +4,11 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { reserveSpend } from '@/lib/ai/budget/spendGate'
 import { UAT_TURNS } from './questions'
-import { BenchRefusal, createBenchRunner, runBench, type BenchOptions, type ChatTransport } from './liveRunner'
+import { __resetBenchProcessGuardForTests, BenchRefusal, createBenchRunner, runBench, type BenchOptions, type ChatTransport } from './liveRunner'
 import { runUat } from './harness'
 import { GOOD_ENV, OUT_DIR, applyEnv, declare, finalFile, hasKey, jsonlLines, jsonlStarts, memFs, options, resultFiles, turnTransport } from './liveRunner.testkit'
 
-beforeEach(() => { applyEnv(GOOD_ENV); vi.stubGlobal('fetch', vi.fn(() => { throw new Error('REAL FETCH CALLED — tests must not reach the network') })) })
+beforeEach(() => { __resetBenchProcessGuardForTests() /* C-1: one runner per process - isolate the tests from each other */; applyEnv(GOOD_ENV); vi.stubGlobal('fetch', vi.fn(() => { throw new Error('REAL FETCH CALLED — tests must not reach the network') })) })
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); applyEnv({}) })
 
 /** An environment whose caps are exactly `turn` / `run`, listed and declared consistently, so ONLY the size of the caps can be the reason to refuse. */
@@ -118,6 +118,7 @@ describe('P1-1 · the result folder: required, on drive D, outside the repositor
   })
   it('a good folder on D is accepted (either slash, either case)', async () => {
     for (const d of ['D:/TappyAI-review-artifacts/x', 'd:\\TappyAI-review-artifacts\\x']) {
+      __resetBenchProcessGuardForTests() // C-1: one runner per process; each iteration is a separate run
       const { opts, t } = withCaps(0.05, 0.65, { outDir: d })
       const r = await runBench(opts)
       expect(r.valid).toBe(true)
@@ -269,6 +270,7 @@ describe('review 3 · a turn is announced on disk before its first request', () 
     expect(seen.every(x => x === 0)).toBe(true) // when request n is sent, n start lines exist
     expect(jsonlStarts(fs)[0]).toMatchObject({ started: 'Q1', reservedUsd: 0.05 })
 
+    __resetBenchProcessGuardForTests() // C-1: the second run below is a separate run
     const t2 = turnTransport()
     const o2 = options({ chat: t2.chat })
     o2.fs.failOn = (op, p) => op === 'append' && /\.jsonl$/.test(p)
@@ -320,6 +322,7 @@ describe('review 2 · a call refused because it cannot be bounded (no_bound) is 
   })
   it('review F2 · HTTP errors and empty answers are not benchmark answers: 13 × 401 with a non-stream body, or an empty 200, is not a valid run', async () => {
     for (const reply of [{ raw: '{"error":"unauthorized"}', status: 401 }, { raw: '{"error":"x"}', status: 500 }, { raw: '', status: 200 }, { raw: 'd:{"finishReason":"stop"}\n', status: 200 }]) {
+      __resetBenchProcessGuardForTests() // C-1: each reply is a separate run
       let sent = 0
       const { opts, fs } = options({ chat: async () => { sent++; return reply } })
       const r = await runBench(opts)

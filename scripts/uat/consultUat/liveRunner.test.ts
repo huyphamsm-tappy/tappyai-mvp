@@ -6,7 +6,7 @@ import { reserveSpend, currentSpendGate } from '@/lib/ai/budget/spendGate'
 import { UAT_TURNS } from './questions'
 import { memFs } from './liveRunner.testkit'
 import {
-  BENCH_FLAG_NAMES, BENCH_MUST_BE_OFF, BenchRefusal, assertBenchAllowed, createBenchRunner, resolveBenchOutDir, routeTransport, runBench,
+  __resetBenchProcessGuardForTests, BENCH_FLAG_NAMES, BENCH_MUST_BE_OFF, BenchRefusal, assertBenchAllowed, createBenchRunner, resolveBenchOutDir, routeTransport, runBench,
   type BenchOptions, type ChatTransport,
 } from './liveRunner'
 
@@ -58,7 +58,7 @@ function options(over: Partial<BenchOptions> = {}, env: Record<string, string | 
   }
 }
 
-beforeEach(() => { applyEnv(GOOD_ENV); vi.stubGlobal('fetch', vi.fn(() => { throw new Error('REAL FETCH CALLED — tests must not reach the network') })) })
+beforeEach(() => { __resetBenchProcessGuardForTests() /* C-1: one runner per process - isolate the tests from each other */; applyEnv(GOOD_ENV); vi.stubGlobal('fetch', vi.fn(() => { throw new Error('REAL FETCH CALLED — tests must not reach the network') })) })
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); applyEnv({}) })
 
 describe('11 · the runner refuses to run unless everything is explicit', () => {
