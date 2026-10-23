@@ -19,6 +19,8 @@
 import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_CREDITS, type SerperEndpoint } from './serperMeter'
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
+import { reserveSpend, SERPER_MIN_USD_PER_CREDIT, SpendRefusal, type SpendHandle } from '@/lib/ai/budget/spendGate'
+import { serperUsdPerCredit } from '@/lib/ai/turnCost'
 import { vnToday } from '@/lib/config/product'
 import {
   admitWithinToolBudget, currentSerperSignal, haltSerperScope, releaseToolBudget, serperHaltedReason,
@@ -154,9 +156,28 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     }
     if (t) entry = t
   }
+  // BENCH_SPEND_GATE (default OFF, read now): the request's worst-case cost (credits × price per credit; `images` is "unverified" and still
+  // counts as paid) is reserved HERE, the last check before the request can leave. A refusal gives back exactly what the steps above held:
+  // the ticket (refunded — it was never sent), the scope credits and the daily-counter credits.
+  const perCredit = Math.max(serperUsdPerCredit(), SERPER_MIN_USD_PER_CREDIT)
+  let spend: SpendHandle | null = null
+  try { spend = reserveSpend(`serper:${endpoint}`, SERPER_CREDITS[endpoint] * perCredit) } catch (e) {
+    if (!(e instanceof SpendRefusal)) throw e
+    if (entry) refundTurnWebTicket(entry)
+    releaseToolBudget(SERPER_CREDITS[endpoint])
+    try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
+    recordSerperRefused(endpoint)
+    console.log(JSON.stringify({ type: 'tappyai_spend_gate', step: 'refused', endpoint, reason: e.reason }))
+    report('not_sent')
+    return null
+  }
+  let spendDone = false
+  const settleSpend = (reportedCredits: number) => { if (!spend || spendDone) return; spendDone = true; spend.settle(reportedCredits * perCredit) }
+  const unknownSpend = () => { if (!spend || spendDone) return; spendDone = true; spend.markUnknown() }
   if (signal?.aborted) {
     // Reserved, never sent — the one case where a reservation may be given back (and a ticket with it).
     if (entry) refundTurnWebTicket(entry)
+    if (spend) { spendDone = true; spend.release() }
     releaseToolBudget(SERPER_CREDITS[endpoint])
     recordSerperRefused(endpoint)
     console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' }))
@@ -183,11 +204,12 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     ])
   } catch (e) {
     recordSerperOutcome(endpoint, classifyThrown(e))
-    if (fetched) report('sent_error', entry)
-    else { if (entry) refundTurnWebTicket(entry); report('not_sent') } // the body could not even be built: fetch was never called
+    if (fetched) { if (spend && !spendDone) { spendDone = true; spend.markUnknown() }; report('sent_error', entry) } // sent: what was billed is not known
+    else { if (entry) refundTurnWebTicket(entry); if (spend && !spendDone) { spendDone = true; spend.release() }; report('not_sent') } // the body could not even be built: fetch was never called
     throw e
   }
   if (!res.ok) {
+    if (spend && !spendDone) { spendDone = true; spend.markUnknown() } // sent, refused or failed by the provider: not provably unbilled
     report('sent_error', entry)
     // 🚨 An ACCOUNT-level failure (out of credits, bad key, forbidden) is the same answer for every further request of the turn:
     // halt the scope so the parallel requests that have not started yet are never sent (only inside a turn / tool scope).
@@ -208,10 +230,14 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     const raw = await res.clone().json()
     // The provider states what it charged for this response (`credits`) — recorded beside the estimate, never used as a refund.
     recorded = true
-    recordSerperOutcome(endpoint, 'ok', typeof (raw as { credits?: unknown })?.credits === 'number' ? (raw as { credits: number }).credits : undefined)
+    const reportedCredits = typeof (raw as { credits?: unknown })?.credits === 'number' ? (raw as { credits: number }).credits : undefined
+    recordSerperOutcome(endpoint, 'ok', reportedCredits)
+    // What the provider says it charged; above the reservation → the gate stops the run. An answer that does not say what it charged is not a
+    // PROVEN cost: it is UNKNOWN (the fixed price list is an estimate, and `images` is not even verified).
+    if (reportedCredits === undefined) unknownSpend(); else settleSpend(reportedCredits)
     const cleaned = sanitizeSerperJson(raw)
     if (cleaned.changed === 0) return res
     console.log(JSON.stringify({ type: 'tappyai_serper_untrusted_cleaned', endpoint, fields: cleaned.changed }))
     return new Response(JSON.stringify(cleaned.body), { status: res.status, headers: { 'content-type': 'application/json' } })
-  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); return res }
+  } catch { if (!recorded) recordSerperOutcome(endpoint, 'ok'); unknownSpend(); return res } // an unreadable 200 was processed, but what it cost is not proven
 }

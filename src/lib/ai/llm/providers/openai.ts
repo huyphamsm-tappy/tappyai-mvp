@@ -65,6 +65,17 @@ export function openaiCallCost(modelId: string, u: RawUsage | null | undefined):
 }
 
 /**
+ * BENCH_SPEND_GATE: the largest USD one call can cost, from token UPPER BOUNDS (input tokens, output cap — reasoning included). Input is priced at
+ * the dearest input rate (cache write, above the plain and cached rates), i.e. NO cache is assumed. Null for an id with no list price: a call that
+ * cannot be priced cannot be bounded, so the gate does not let it through.
+ */
+export function openaiWorstCaseCallUsd(modelId: string, inputTokens: number, outputTokens: number): number | null {
+  const p = PRICES.find(([re]) => re.test(modelId))?.[1]
+  if (!p || !Number.isFinite(inputTokens) || !Number.isFinite(outputTokens) || inputTokens < 0 || outputTokens < 0) return null
+  return (inputTokens * Math.max(p.in, p.cacheWrite) + outputTokens * p.out) / 1e6
+}
+
+/**
  * Call options for a reasoning model the SDK does not recognise (see header, points 1 + 2): the output cap goes
  * out as `max_completion_tokens`, sampling settings are dropped, and the effort is always explicit. Done on the
  * SDK's own call options (its `providerMetadata.openai` channel) — the adapter opens no socket of its own.
