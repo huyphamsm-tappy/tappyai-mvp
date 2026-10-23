@@ -9,6 +9,8 @@
 // synthetic turns, nothing from questions.ts. What it cannot say: anything about the real Windows file system, the real providers or real cost.
 import { describe, it, expect, vi, beforeAll, beforeEach, afterEach } from 'vitest'
 import { existsSync } from 'node:fs'
+import http from 'node:http'
+import https from 'node:https'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { __clearToolCache } from '@/lib/ai/tools/common'
 import { SERPER_CEILING_KEY, serperPost } from '@/lib/ai/tools/serperClient'
@@ -159,17 +161,29 @@ async function run(o: BenchOptions): Promise<{ result: BenchResult | null; error
 const searchBodies = () => net.serper.filter(s => s.path === '/search').map(s => s.body)
 
 beforeAll(async () => { ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) }, 120_000)
+// node:http / node:https are tripwires: the app's page reader (safeGetText → https.request) would otherwise open a REAL connection to a place's own website.
+// A call is recorded and FAILS the test; nothing is ever sent. (Found in round 2e: an earlier version of the place test gave the fake place a website.)
+const savedHttp = { httpsRequest: https.request, httpsGet: https.get, httpRequest: http.request, httpGet: http.get }
+const httpCalls: string[] = []
+const restoreHttp = () => { https.request = savedHttp.httpsRequest; https.get = savedHttp.httpsGet; http.request = savedHttp.httpRequest; http.get = savedHttp.httpGet }
 beforeEach(() => {
   __resetBenchProcessGuardForTests(); __clearToolCache(); __resetAiQuestionQuotaLocal()
   net.openai.length = 0; net.serper.length = 0; net.other.length = 0; currentReq = null
+  httpCalls.length = 0
+  for (const [name, mod] of [['https', https], ['http', http]] as const) {
+    for (const fn of ['request', 'get'] as const) (mod as unknown as Record<string, unknown>)[fn] = (...a: unknown[]) => { httpCalls.push(`${name}.${fn} ${typeof a[0] === 'string' ? a[0] : '(options)'}`); throw new Error(`TRIPWIRE: node:${name}.${fn} used by the route in a mock-only test`) }
+  }
   injectEnv(); stubFetch()
   openaiPlan = webSearchPlan()
   serperPlan = () => serperOk(1)
 })
 afterEach(() => {
   const other = [...net.other]
+  const http_ = [...httpCalls]
+  restoreHttp()
   vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessGuardForTests()
   expect(other, 'no host other than OpenAI and Serper may be contacted').toEqual([])
+  expect(http_, 'the route must not open a node:http(s) connection in a mock-only test').toEqual([])
 })
 
 describe('(a) the gate sees every call the real route makes', () => {
@@ -384,7 +398,7 @@ describe('(g) a request that cannot be bounded is refused before it leaves the p
       return textStream('Mình chọn **Cà phê Kiểm Thử** ở Quận 1 (nguồn: Google Maps).', FINAL_USAGE)
     }
     serperPlan = (path) => path === '/maps'
-      ? new Response(JSON.stringify({ places: [{ title: 'Cà phê Kiểm Thử', address: '1 Lê Lợi, Quận 1, Hồ Chí Minh', latitude: 10.77, longitude: 106.70, rating: 4.5, ratingCount: 120, category: 'Quán cà phê', cid: '111', placeId: 'ChIJtest', website: 'https://example.com/cafe' }], credits: 3 }), { status: 200 })
+      ? new Response(JSON.stringify({ places: [{ title: 'Cà phê Kiểm Thử', address: '1 Lê Lợi, Quận 1, Hồ Chí Minh', latitude: 10.77, longitude: 106.70, rating: 4.5, ratingCount: 120, category: 'Quán cà phê', cid: '111', placeId: 'ChIJtest' }], credits: 3 }), { status: 200 }) // NO website: with one, the route's page reader opens a node:https connection (see the tripwire above)
       : serperOk(1)
     const { o } = opts({ turns: TURNS.slice(0, 1) })
     const { result } = await run(o)

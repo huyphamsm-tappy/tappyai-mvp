@@ -42,6 +42,19 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
 ]
 
+/** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */
+export const BENCH_MUST_BE_UNSET: readonly string[] = ['AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE']
+
+/**
+ * Removes secrets from text that is about to be written or shown: the exact values of the two API keys (when long enough to be a key) and anything shaped like an
+ * OpenAI key ("sk-…", also its masked form in a provider's error message). A provider that rejects a key echoes part of it back.
+ */
+export function redactSecrets(text: string, env: Record<string, string | undefined> = process.env): string {
+  let out = text
+  for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) { const v = env[name]; if (v && v.length >= 8) out = out.split(v).join('***') }
+  return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
+}
+
 /** The model ids whose price the gate really knows. The price table (providers/openai.ts) matches by PREFIX, so any other id would be priced and capped at the wrong rate. */
 const PRICED_MODEL_ID_VARS: readonly string[] = ['LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']
 const PRICED_MODEL_IDS: readonly string[] = ['gpt-6-luna']
@@ -235,7 +248,8 @@ export function assertBenchAllowed(o: BenchOptions): void {
   const unpricedOf = (e: Record<string, string | undefined>) => PRICED_MODEL_ID_VARS.filter(k => e[k] !== undefined && !BLANK.test(e[k]!) && !PRICED_MODEL_IDS.includes(e[k]!))
   const unpriced = [...new Set([...unpricedOf(env), ...(env !== process.env ? unpricedOf(process.env) : [])])]
   if (unpriced.length) reasons.push(`${unpriced.join(', ')}: not exactly a priced model id (${PRICED_MODEL_IDS.join(', ')}); the price table matches by prefix, so any other id would be priced and capped at the wrong rate`)
-  for (const k of BENCH_MUST_BE_OFF) if (!isOffValue(norm(env[k]))) reasons.push(`${k} must be OFF for this benchmark (a paid path outside the spend gate)`)
+  for (const k of BENCH_MUST_BE_UNSET) if (env[k] !== undefined) reasons.push(`${k} must be UNSET (the app treats ANY value, "off" and "0" included, as a file path to write to)`)
+  for (const k of BENCH_MUST_BE_OFF) if (!BENCH_MUST_BE_UNSET.includes(k) && !isOffValue(norm(env[k]))) reasons.push(`${k} must be OFF for this benchmark (a paid path outside the spend gate)`)
   const provider = norm(env.LLM_PROVIDER)
   if (provider !== null && provider.toLowerCase() !== 'openai') reasons.push('LLM_PROVIDER must be unset or openai (other providers have no list price: the gate refuses them)')
   reasons.push(...outDirProblems(o.outDir, o.repoRoot))
@@ -375,13 +389,15 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     try {
       const res = await runWithSpendGate(gate, () => o.chat({ messages, chatSessionId: sessionId! }))
       raw = res.raw; status = res.status
-    } catch (e) { thrown = e } finally { restore() }
+    } catch (e) { // a provider error may echo (part of) a key: a redacted COPY is kept, the caught object is never assigned to (a DOMException's message is a getter-only accessor; an error can be shared)
+      thrown = e instanceof Error ? Object.assign(new Error(redactSecrets(e.message)), { name: e.name }) : new Error(redactSecrets(String(e)))
+    } finally { restore() }
     const ms = now() - t0
     gate.close() // work the app left running after its answer can no longer add cost the books would miss
     // A stream the parser cannot read must not lose the turn: the raw text is kept as the answer and the failure is recorded like any other.
     let parsed: ReturnType<typeof parseDataStream>
     try { parsed = parseDataStream(raw) } catch (e) {
-      if (thrown === null) thrown = new Error(`the answer stream could not be parsed: ${e instanceof Error ? e.message : String(e)}`)
+      if (thrown === null) thrown = new Error(redactSecrets(`the answer stream could not be parsed: ${e instanceof Error ? e.message : String(e)}`))
       parsed = { text: raw, tools: [], errors: [`unparseable stream: ${e instanceof Error ? e.message : String(e)}`] } as unknown as ReturnType<typeof parseDataStream>
     }
     const blocked = gate.guard.blockedBy
@@ -391,7 +407,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     const costKnown = thrown === null && blocked === null && open === 0 && known !== null
     const record: TurnRecord = {
       id: turn.id, conversation: turn.conversation, turn: turn.turn,
-      answer: parsed.text, ms,
+      answer: redactSecrets(parsed.text), ms,
       toolNames: parsed.tools.map(t => t.toolName).filter((n): n is string => !!n),
       ticketLog,
       cost: { state: costKnown ? 'known' : 'unknown', usd: costKnown ? known : null },
@@ -399,7 +415,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
       refusals: gate.refusals, photoSkips: gate.photoSkips, lateRefusals: gate.lateRefusals, degraded: gate.refusals > 0,
       blocked, openReservedUsd: open,
       ...(status !== undefined ? { httpStatus: status } : {}),
-      streamErrors: parsed.errors,
+      streamErrors: parsed.errors.map(x => redactSecrets(x)),
       ...(thrown !== null ? { error: thrown instanceof Error ? thrown.message : String(thrown) } : {}),
     }
     // A non-2xx answer or an empty one is not a benchmark answer, whatever it cost: the turn carries an error, so the run is not valid.
@@ -422,7 +438,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     }
     if (thrown !== null) throw thrown // an ordinary failure: runUat books the cost as unknown and stops
     // A cost that is not known is reported as NaN: runUat settles it as invalid and stops the run, and no total is reported.
-    return { text: parsed.text, toolCalls: record.toolNames.map(name => ({ name })), ms, usd: costKnown ? known! : Number.NaN }
+    return { text: record.answer, toolCalls: record.toolNames.map(name => ({ name })), ms, usd: costKnown ? known! : Number.NaN }
   }
   processLock[PROCESS_LOCK] = true // LAST: everything above has succeeded
   return { runner, records, finalize, paths, openReservations, writeFailure: () => writeFailure, halted: () => halted }
@@ -451,7 +467,7 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
   const flags = Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, norm(o.declaredFlags![k])])) as Record<string, string | null>
   const body = {
     at: new Date(now()).toISOString(), valid, costState, flags, caps: { turnUsd: o.turnCapUsd, runUsd: o.runCapUsd },
-    ...(runError !== null ? { error: runError instanceof Error ? `${runError.name}: ${runError.message}` : String(runError) } : {}),
+    ...(runError !== null ? { error: redactSecrets(runError instanceof Error ? `${runError.name}: ${runError.message}` : String(runError)) } : {}),
     ...(wf ? { writeError: wf.message } : {}),
     openReservations: openReservations(),
     summary: returned ? summarize({ ...returned, cost: { ...returned.cost, totalUsd: (returned.cost as { totalUsd?: number }).totalUsd ?? null } } as UatReport) : null, turns: records, report: returned,

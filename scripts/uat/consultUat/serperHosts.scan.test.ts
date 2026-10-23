@@ -4,7 +4,8 @@
 // What it proves: in the NON-TEST source of src/ and scripts/ (ts, tsx, mjs, js, cjs), the Serper hostname, Serper's auth header and the Serper API key
 // appear only where this file's list says they may, each with a reason. A new file that names the host, sets the header, or reads the key FAILS the test.
 //
-// What it does NOT prove (stated, not hidden): a URL assembled from pieces ('google.' + 'serper' + '.dev'), a call through an external library or
+// What it does NOT prove (stated, not hidden): a comment marker inside a string or regex literal can hide the rest of a line (or file) from the key / header / direct
+// rules (the host rule reads raw lines and is not fooled); a URL assembled from pieces ('google.' + 'serper' + '.dev'), a call through an external library or
 // service that holds the key elsewhere, a key obtained by another name, anything outside src/ and scripts/ (nothing else in the repository was found to name
 // Serper in code: see the round 2d report), or what happens at run time. It is a tripwire for the normal ways of going around the door, not a proof that
 // no way exists.
@@ -21,6 +22,8 @@ const DOOR = 'src/lib/ai/tools/serperClient.ts'
 export const EXCEPTIONS: Exception[] = [
   { path: DOOR, rules: ['host', 'header', 'direct'], reason: 'THE one door: serperPost builds the only Serper URL (`https://google.serper.dev/${endpoint}`), sets the only X-API-KEY header and makes the only fetch; the spend gate, the daily ceiling and the web ticket are all inside it. It receives the key as a parameter (it does not read SERPER_API_KEY itself).' },
   { path: 'scripts/consult/replay/lib/serperReplay.ts', rules: ['host'], reason: 'Offline replay tool (opt-in: REPLAY=1, also imported by scripts/agent-eval under AGENT_EVAL=1; scripts/ only, never loaded by the app or by the benchmark runner). It stubs globalThis.fetch and matches the host google.serper.dev to record/replay answers; on a recording MISS it makes ONE real Serper call (through `realFetch`) outside the spend gate. It is not on the path of the 13 benchmark questions.' },
+  { path: 'scripts/uat/consultUat/liveTrial.ts', rules: ['host'], reason: 'The live-trial core (scripts/ only, never loaded by the app): it NAMES google.serper.dev in the allow-list of hosts its fetch wrapper lets through and in its request counters. It builds no Serper URL, sets no header, reads no key and sends nothing itself: every request still goes through serperPost and the spend gate.' },
+  { path: 'scripts/uat/consultUat/liveRunner.ts', rules: ['key'], reason: 'The benchmark runner (scripts/ only): redactSecrets NAMES SERPER_API_KEY (and OPENAI_API_KEY) to read their values from the env object it is given and REMOVE them from text before it is written or shown. It sends nothing with the key and never writes the value.' },
   { path: 'src/lib/ai/tools/common.ts', rules: ['key'], reason: 'Reads SERPER_API_KEY and hands it ONLY to serperPost (images, search, shopping); it sets no header and opens no connection of its own.' },
   { path: 'src/lib/ai/tools/serperPlaces.ts', rules: ['key'], reason: 'Reads SERPER_API_KEY and hands it ONLY to serperPost (maps); no header, no connection of its own.' },
   { path: 'src/app/api/cron/price-check/route.ts', rules: ['key'], reason: 'Cron route (not on the chat path): reads SERPER_API_KEY and hands it ONLY to serperPost (search, num 5).' },

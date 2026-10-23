@@ -1,0 +1,491 @@
+// @vitest-environment node
+// Round 2e · DRY REHEARSAL of the live trial. It runs the SAME core (`runLiveTrial`) that liveTrial.test.ts runs, with the REAL chat route in this process
+// and a FAKE network: `fetchImpl` answers only api.openai.com/v1/chat/completions and google.serper.dev; any other host that reaches it FAILS the test.
+// Supabase / the signed-in user / the age check / the rate limiter are simulated exactly as in liveRunner.route.test.ts (the route is not run without a user).
+// Keys are recognisable FAKE values set with vi.stubEnv. The order is the real one: the route is imported FIRST, the fetch wrapper is installed AFTER.
+// BENCH_LIVE_TRIAL is never set here. The cost figures are the ledger's ESTIMATES, not invoices.
+import { describe, it, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from 'vitest'
+import http from 'node:http'
+import https from 'node:https'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
+import { join } from 'node:path'
+import { __clearToolCache } from '@/lib/ai/tools/common'
+import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests, runBench } from './liveRunner'
+import { formatSummary, isAllowedRequest, isBenchmarkEligible, normalizeQuestion, runLiveTrial, type LiveTrialInput, type TrialOutcome } from './liveTrial'
+import { UAT_TURNS } from './questions'
+import { finalFile, hasKey, jsonlLines, memFs, options as benchOptions, turnTransport } from './liveRunner.testkit'
+
+const h = vi.hoisted(() => {
+  const builder = (): any => {
+    const b: any = {
+      select: () => b, in: () => b, or: () => b, order: () => b, limit: () => b, gte: () => b, lt: () => b, not: () => b, is: () => b, eq: () => b,
+      single: () => Promise.resolve({ data: null, error: null }), maybeSingle: () => Promise.resolve({ data: null, error: null }),
+      insert: () => Promise.resolve({ data: null, error: null }), upsert: () => Promise.resolve({ data: null, error: null }),
+      update: () => b, delete: () => b, then: (r: any) => r({ data: [], error: null }),
+    }
+    return b
+  }
+  return { client: { from: () => builder(), rpc: () => Promise.resolve({ data: null, error: null }) } }
+})
+vi.mock('@/lib/supabase/server', () => ({ createClient: () => h.client }))
+vi.mock('@/lib/supabase/admin', () => ({ createAdminClient: () => h.client }))
+vi.mock('@/lib/account/ageEligibility', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/account/ageEligibility')>()),
+  getAgeEligibility: async () => ({ status: 'eligible', ageBand: '25_34', age: 30, canSelfCorrect: true }),
+}))
+vi.mock('@/lib/auth/getRequestUser', () => ({ getRequestUser: () => Promise.resolve({ user: { id: '00000000-0000-4000-8000-0000000d0001' }, supabase: h.client }) }))
+vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retryAfter: 0 }), dailyRateLimit: () => ({ ok: true }), clientIp: () => '127.0.0.1' }))
+
+// ── the fake network (what `fetchImpl` is) ───────────────────────────────────────────────────────────────────────────────────
+interface OpenAiReq { stream: boolean; tools: string[]; hasToolResult: boolean; responseFormat: string | null; lastUser: string; includeUsage: boolean }
+const net = { openai: [] as OpenAiReq[], serper: [] as Array<{ path: string; body: Record<string, unknown> }>, other: [] as string[], redirectModes: [] as unknown[], tripwire: 0 }
+let openaiPlan: (req: OpenAiReq, n: number) => Response = () => { throw new Error('no OpenAI plan') }
+let serperPlan: (path: string, body: Record<string, unknown>) => Response = () => { throw new Error('no Serper plan') }
+let currentReq: OpenAiReq | null = null
+
+type Usage = { prompt_tokens: number; completion_tokens: number; total_tokens: number }
+const usage = (p: number, c: number): Usage => ({ prompt_tokens: p, completion_tokens: c, total_tokens: p + c })
+const INTENT_USAGE = usage(1000, 200), TOOL_USAGE = usage(500, 50), FINAL_USAGE = usage(2000, 400)
+const sse = (chunks: Array<Record<string, unknown>>) => new Response(chunks.map(c => `data: ${JSON.stringify({ id: 'c1', object: 'chat.completion.chunk', created: 1, model: 'gpt-6-luna', ...c })}\n\n`).join('') + 'data: [DONE]\n\n', { status: 200, headers: { 'content-type': 'text/event-stream' } })
+/** A stream carries usage ONLY when the request asked for it (stream_options.include_usage === true), as the real API does. */
+const streamUsage = (u: Usage | null): Usage | null => { if (!currentReq) throw new Error('fake OpenAI: stream built outside a request'); return currentReq.stream && !currentReq.includeUsage ? null : u }
+const textStream = (text: string, u: Usage | null) => sse([
+  { choices: [{ index: 0, delta: { role: 'assistant', content: text }, finish_reason: null }] }, { choices: [{ index: 0, delta: {}, finish_reason: 'stop' }] },
+  ...(streamUsage(u) ? [{ choices: [], usage: streamUsage(u) }] : []),
+])
+const toolStream = (name: string, args: object, u: Usage | null) => sse([
+  { choices: [{ index: 0, delta: { role: 'assistant', tool_calls: [{ index: 0, id: 'call_1', type: 'function', function: { name, arguments: '' } }] }, finish_reason: null }] },
+  { choices: [{ index: 0, delta: { tool_calls: [{ index: 0, function: { arguments: JSON.stringify(args) } }] }, finish_reason: null }] },
+  { choices: [{ index: 0, delta: {}, finish_reason: 'tool_calls' }] },
+  ...(streamUsage(u) ? [{ choices: [], usage: streamUsage(u) }] : []),
+])
+const jsonCompletion = (content: string, u: Usage | null) => new Response(JSON.stringify({ id: 'c1', object: 'chat.completion', created: 1, model: 'gpt-6-luna', choices: [{ index: 0, message: { role: 'assistant', content }, finish_reason: 'stop' }], ...(u ? { usage: u } : {}) }), { status: 200, headers: { 'content-type': 'application/json' } })
+const apiError = (status: number) => new Response(JSON.stringify({ error: { message: `fake ${status}`, type: 'fake_error', code: String(status) } }), { status, headers: { 'content-type': 'application/json' } })
+const serperOk = (credits: number | null = 1, organic = true) => new Response(JSON.stringify({ organic: organic ? [{ title: 'Nguồn kiểm thử', link: 'https://example.com/a', snippet: 'đoạn trích kiểm thử' }] : [], ...(credits === null ? {} : { credits }) }), { status: 200 })
+const INTENT = JSON.stringify({ domains: [], turn: 'chat', goal: 'tra cứu thông tin', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
+
+function webPlan(over: { tool?: () => Response; final?: () => Response } = {}) {
+  return (req: OpenAiReq): Response => {
+    if (req.responseFormat) return jsonCompletion(INTENT, INTENT_USAGE)
+    if (req.tools.includes('web_search') && !req.hasToolResult) return over.tool ? over.tool() : toolStream('web_search', { query: `tra cứu ${req.lastUser.slice(0, 24)}` }, TOOL_USAGE)
+    return over.final ? over.final() : textStream('Theo nguồn kiểm thử, câu trả lời là 25.000đ.', FINAL_USAGE)
+  }
+}
+
+/** The network the core forwards to. Anything that is not OpenAI chat completions or Serper FAILS the test (it must have been blocked before). */
+const fetchImpl: typeof fetch = (async (input: unknown, init?: { body?: unknown; redirect?: unknown }) => {
+  const u = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : (input as Request).url)
+  net.redirectModes.push(init?.redirect)
+  if (u.hostname === 'api.openai.com' && u.pathname === '/v1/chat/completions') {
+    const body = JSON.parse(String(init?.body ?? '{}'))
+    const msgs: Array<{ role: string; content: unknown }> = body.messages ?? []
+    const lastUser = [...msgs].reverse().find(m => m.role === 'user')
+    const rec: OpenAiReq = {
+      stream: !!body.stream, tools: (body.tools ?? []).map((t: any) => t.function?.name), hasToolResult: msgs.some(m => m.role === 'tool'),
+      responseFormat: body.response_format?.type ?? null, lastUser: typeof lastUser?.content === 'string' ? lastUser.content : JSON.stringify(lastUser?.content ?? ''),
+      includeUsage: body.stream_options?.include_usage === true,
+    }
+    net.openai.push(rec); currentReq = rec
+    try { return openaiPlan(rec, net.openai.length) } finally { currentReq = null }
+  }
+  if (u.hostname === 'google.serper.dev') {
+    const body = JSON.parse(String(init?.body ?? '{}'))
+    net.serper.push({ path: u.pathname, body })
+    return serperPlan(u.pathname, body)
+  }
+  net.other.push(u.href)
+  throw new Error(`UNEXPECTED host reached the network (it must be blocked by the wrapper): ${u.hostname}`)
+}) as typeof fetch
+
+// ── environment ──────────────────────────────────────────────────────────────────────────────────────────────────────────────
+const KEY_OPENAI = 'sk-test-SECRET-123', KEY_SERPER = 'serper-SECRET-456'
+const QUESTION = 'Giá xăng RON95 hôm nay là bao nhiêu?'
+const OUT_DIR = 'D:/TappyAI-review-artifacts/consultative-round2e-rehearsal'
+const BASE_ENV: Record<string, string> = {
+  BENCH_SPEND_GATE: '1', BENCH_SPEND_TURN_CAP_USD: '0.05', BENCH_SPEND_RUN_CAP_USD: '0.05', BENCH_CONFIRM_SPEND: '0.05',
+  BENCH_TRIAL_QUESTION_FILE: 'D:/fake/question.txt', BENCH_TRIAL_OUT_DIR: OUT_DIR,
+  OPENAI_API_KEY: KEY_OPENAI, SERPER_API_KEY: KEY_SERPER,
+  // The REAL trial file runs under the app project's vitest setup (src/test/consultativeFlag.setup.ts), which pins these two to '0' when they are not set.
+  // The rehearsal must run in the same environment, or it rehearses a different route branch (the production default of both is ON).
+  CONSULTATIVE_V1: '0', CONSULT_V2: '0',
+}
+/** The environment of the "consultative ON" variant: what an Owner who copies production (both ON, ticket and fallback gate ON) would set. */
+const CONSULTATIVE_ON = { CONSULTATIVE_V1: '1', CONSULT_V2: '1', TURN_WEB_TICKET: '1', SEARCH_FALLBACK_GATE: '1' }
+const ALL_NAMES = [...BENCH_FLAG_NAMES, 'OPENAI_API_KEY', 'SERPER_API_KEY', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'BENCH_LIVE_TRIAL', 'CI', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'KV_URL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']
+const stubEnv = (over: Record<string, string | undefined> = {}) => {
+  for (const k of ALL_NAMES) vi.stubEnv(k, undefined) // undefined = UNSET
+  for (const [k, v] of Object.entries({ ...BASE_ENV, ...over })) vi.stubEnv(k, v)
+}
+
+let POST: (req: never) => Promise<Response>
+let tripwireFetch: typeof fetch
+let reads: string[]
+let fs: ReturnType<typeof memFs>
+let logged: string[]
+
+// node:http / node:https are tripwires too: the app's page reader (safeGetText) uses https.request, not fetch. If the core does not wrap them, a place's own website
+// would be requested for real. Here a call is recorded and FAILS the test; nothing is ever sent.
+const savedHttp = { httpsRequest: https.request, httpsGet: https.get, httpRequest: http.request, httpGet: http.get }
+const httpCalls: string[] = []
+const installHttpTripwires = () => {
+  for (const [name, mod] of [['https', https], ['http', http]] as const) {
+    for (const fn of ['request', 'get'] as const) (mod as unknown as Record<string, unknown>)[fn] = (...a: unknown[]) => { httpCalls.push(`${name}.${fn} ${typeof a[0] === 'string' ? a[0] : JSON.stringify(a[0] instanceof URL ? a[0].href : (a[0] as { hostname?: string; host?: string })?.hostname ?? (a[0] as { host?: string })?.host ?? '?')}`); throw new Error(`TRIPWIRE: node:${name}.${fn} used outside the wrapper`) }
+  }
+}
+const restoreHttp = () => { https.request = savedHttp.httpsRequest; https.get = savedHttp.httpsGet; http.request = savedHttp.httpRequest; http.get = savedHttp.httpGet }
+const originalFetch = globalThis.fetch
+beforeAll(async () => {
+  // The tripwire for the GLOBAL fetch is in place BEFORE the route is imported, so a fetch captured at import time would hit it.
+  tripwireFetch = (async () => { net.tripwire++; throw new Error('TRIPWIRE: the global fetch was used outside the wrapper') }) as typeof fetch
+  globalThis.fetch = tripwireFetch
+  ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) // the route FIRST ...
+}, 120_000)
+afterAll(() => { globalThis.fetch = originalFetch; restoreHttp() })
+beforeEach(() => {
+  httpCalls.length = 0; installHttpTripwires()
+  __resetBenchProcessGuardForTests(); __clearToolCache(); __resetAiQuestionQuotaLocal()
+  net.openai.length = 0; net.serper.length = 0; net.other.length = 0; net.redirectModes.length = 0; net.tripwire = 0; currentReq = null
+  reads = []; fs = memFs(); logged = []
+  stubEnv()
+  openaiPlan = webPlan()
+  serperPlan = () => serperOk(1)
+  // The GLOBAL fetch is a tripwire: during the run the core replaces it with its wrapper; if anything captured the original and uses it, this fires.
+  vi.stubGlobal('fetch', tripwireFetch)
+  for (const m of ['log', 'info', 'warn', 'error', 'debug'] as const) {
+    vi.spyOn(console, m).mockImplementation((...a: unknown[]) => { logged.push(a.map(x => (typeof x === 'string' ? x : x instanceof Error ? `${x.name}: ${x.message}\n${x.stack}` : (() => { try { return JSON.stringify(x) } catch { return String(x) } })())).join(' ')) })
+  }
+})
+afterEach(() => {
+  const other = [...net.other]
+  vi.unstubAllGlobals(); vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessGuardForTests()
+  const http = [...httpCalls]
+  restoreHttp()
+  expect(other, 'no host other than OpenAI and Serper may reach the network').toEqual([])
+  expect(net.tripwire, 'nothing may use the global fetch outside the wrapper').toBe(0)
+  expect(http, 'nothing may use node:http / node:https outside the wrapper').toEqual([])
+})
+
+const input = (over: Partial<LiveTrialInput> = {}): LiveTrialInput => ({
+  env: process.env, post: POST, fetchImpl, fs, readTextFile: p => { reads.push(p); return QUESTION }, repoRoot: 'D:/TappyAI-wt/wt-integration', now: () => 1_000, ...over,
+})
+const ran = (o: TrialOutcome) => { if (o.kind !== 'ran') throw new Error(`expected a run, got: ${JSON.stringify(o)}`); return o }
+const nothingHappened = () => { expect(net.openai).toHaveLength(0); expect(net.serper).toHaveLength(0); expect(fs.ops).toEqual([]); expect(globalThis.fetch).toBe(tripwireFetch) }
+
+describe('(a) a good trial turn: the three counts agree (wrapper, fake network, spend ledger)', () => {
+  it('turnOk and trialClean are true; runValid and benchmarkEligible are false for one turn; every request is counted three ways and the files go to the fake file system', async () => {
+    const out = ran(await runLiveTrial(input()))
+    const s = out.summary
+    expect(s).toMatchObject({ turnOk: true, runValid: false, benchmarkEligible: false, trialClean: true, costState: 'known', hostsBlocked: [], redirects: [], warnings: [], problems: [] })
+    expect(s.tools).toContain('web_search')
+    // THREE-WAY tally: wrapper (by host) == fake network == spend ledger
+    expect(s.hostRequests).toEqual({ 'api.openai.com': net.openai.length, 'google.serper.dev': net.serper.length })
+    // (the run is in the environment the real file sees: CONSULTATIVE_V1 and CONSULT_V2 pinned to "0" by the vitest setup → no separate intent read: 2 model calls)
+    expect(net.openai).toHaveLength(2); expect(net.serper).toHaveLength(1)
+    expect(s.llmRequests).toBe(net.openai.length); expect(s.serperRequests).toBe(net.serper.length)
+    // every request went through the wrapper: it forbids automatic redirects
+    expect(net.redirectModes).toEqual(Array(3).fill('manual'))
+    expect(net.tripwire).toBe(0)
+    expect(globalThis.fetch).toBe(tripwireFetch) // restored
+    // files: in memory, one JSONL (started + record) and one result
+    expect(jsonlLines(fs)).toHaveLength(1)
+    expect(finalFile(fs)!.json.turns).toHaveLength(1)
+    expect(existsSync(OUT_DIR)).toBe(false)
+    expect(reads).toEqual(['D:/fake/question.txt'])
+    expect(s.usd).toBeGreaterThan(0)
+    expect(formatSummary(s)).toMatch(/ESTIMATE/i)
+    expect(formatSummary(s)).not.toMatch(/NOT CLEAN/)
+  })
+})
+
+describe('(b) PREFLIGHT refusals: no request, no file-system call, no question file read (and the global fetch is untouched)', () => {
+  const cases: Array<[string, Record<string, string | undefined>]> = [
+    ['CI has a value', { CI: 'true' }],
+    ['turn cap above 0.05', { BENCH_SPEND_TURN_CAP_USD: '0.06', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
+    ['turn cap "0.05000001"', { BENCH_SPEND_TURN_CAP_USD: '0.05000001', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
+    ['run cap above 0.65', { BENCH_SPEND_RUN_CAP_USD: '0.7', BENCH_CONFIRM_SPEND: '0.7' }],
+    ['run cap "0.650001"', { BENCH_SPEND_RUN_CAP_USD: '0.650001', BENCH_CONFIRM_SPEND: '0.650001' }],
+    ['cap in exponent form', { BENCH_SPEND_TURN_CAP_USD: '5e-2' }],
+    ['a flag set but empty', { TURN_WEB_TICKET: '' }],
+    ['a flag set but blank', { LLM_LUNA_MODEL: '   ' }],
+    ['a flag that must be OFF is ON', { RETRIEVAL_V5: '1' }],
+    ['the audit dry-run switch is ON', { AUDIT_DRY_RUN: '1' }],
+    ['a model id that is not an exact priced id', { LLM_CONSULT_MODEL: 'gpt-6-luna-pro' }],
+    ['BENCH_CONFIRM_SPEND missing', { BENCH_CONFIRM_SPEND: undefined }],
+    ['BENCH_CONFIRM_SPEND is not the run cap', { BENCH_CONFIRM_SPEND: '0.04' }],
+    ['BENCH_CONFIRM_SPEND blank', { BENCH_CONFIRM_SPEND: ' ' }],
+    ['the gate is OFF', { BENCH_SPEND_GATE: undefined }],
+    ['the output folder is on drive C', { BENCH_TRIAL_OUT_DIR: 'C:/Users/Admin/out' }],
+    ['the output folder is relative', { BENCH_TRIAL_OUT_DIR: 'out/trial' }],
+    ['the output folder is missing', { BENCH_TRIAL_OUT_DIR: undefined }],
+    ['the question file variable is missing', { BENCH_TRIAL_QUESTION_FILE: undefined }],
+  ]
+  for (const [label, over] of cases) {
+    it(`${label}`, async () => {
+      stubEnv(over)
+      const out = await runLiveTrial(input())
+      expect(out.kind).toBe('refused')
+      expect((out as { reasons: string[] }).reasons.length).toBeGreaterThan(0)
+      nothingHappened()
+      expect(reads).toEqual([]) // the question file is not even opened
+    })
+  }
+  it('the refusal names variables, never their values', async () => {
+    stubEnv({ CI: 'true', TURN_WEB_TICKET: '', BENCH_SPEND_TURN_CAP_USD: '0.06' })
+    const out = await runLiveTrial(input())
+    const text = JSON.stringify(out)
+    expect(text).toMatch(/TURN_WEB_TICKET/)
+    expect(text).not.toContain(KEY_OPENAI); expect(text).not.toContain(KEY_SERPER)
+  })
+})
+
+/** The combining marks block U+0300-U+036F, built from code points (no escape sequence is typed in this file). */
+const MARKS = new RegExp('[' + String.fromCharCode(0x300) + '-' + String.fromCharCode(0x36f) + ']', 'g')
+
+describe('(b2) QUESTION refusals: the file is read once, but nothing is requested and no BenchFs operation happens', () => {
+  const cases: Array<[string, string]> = [
+    ['empty', ''],
+    ['only whitespace', ' \n\t '],
+    ['one of the 12, verbatim', UAT_TURNS[2].text],
+    ['one of the 12, other case and extra spaces', `  ${UAT_TURNS[0].text.toUpperCase().replace(/ /g, '   ')}  `],
+    ['one of the 12, without Vietnamese marks', UAT_TURNS[7].text.normalize('NFD').replace(MARKS, '').replace(/đ/g, 'd').replace(/Đ/g, 'D')],
+    ['the follow-up turn Q11.2', UAT_TURNS[11].text],
+    ['one of the 12 behind a byte-order mark', String.fromCharCode(0xfeff) + UAT_TURNS[4].text],
+  ]
+  for (const [label, text] of cases) {
+    it(label, async () => {
+      const out = await runLiveTrial(input({ readTextFile: p => { reads.push(p); return text } }))
+      expect(out.kind).toBe('refused')
+      nothingHappened()
+      expect(reads).toEqual(['D:/fake/question.txt'])
+    })
+  }
+  it('a question that is not one of the 12 passes, with or without a byte-order mark', async () => {
+    const out = ran(await runLiveTrial(input({ readTextFile: p => { reads.push(p); return String.fromCharCode(0xfeff) + QUESTION + '\r\n' } })))
+    expect(out.summary.turnOk).toBe(true)
+  })
+  it('normalizeQuestion: trim, collapse spaces, lower case, drop Vietnamese marks', () => {
+    expect(normalizeQuestion('  Giá   XĂNG  RON95\n hôm nay ')).toBe('gia xang ron95 hom nay')
+    expect(normalizeQuestion('Đường Đi')).toBe('duong di')
+  })
+})
+
+describe('(c) a host outside the list is BLOCKED before it is sent, counted, and the trial is NOT CLEAN', () => {
+  it('Serper answers with no result → the app falls back to DuckDuckGo → the wrapper blocks it: the fake network never sees it', async () => {
+    serperPlan = () => serperOk(1, false)
+    const out = ran(await runLiveTrial(input()))
+    const s = out.summary
+    expect(s.hostsBlocked).toContain('html.duckduckgo.com')
+    expect(net.other).toEqual([]) // never reached the network
+    expect(s.trialClean).toBe(false)
+    expect(s.hostRequests['html.duckduckgo.com']).toBeUndefined() // blocked requests are not "sent"
+    expect(formatSummary(s)).toMatch(/NOT CLEAN/)
+    expect(formatSummary(s)).toMatch(/html\.duckduckgo\.com/)
+    // the blocked request is also not a request the ledger paid for: the ledger counts still match the wrapper's sent counts
+    expect(s.llmRequests).toBe(s.hostRequests['api.openai.com']); expect(s.serperRequests).toBe(s.hostRequests['google.serper.dev'])
+  })
+})
+
+describe('(d) an HTTP redirect is never followed, and makes the trial NOT CLEAN', () => {
+  it('Serper answers 302 to another host: the wrapper asked for redirect:"manual", nothing went to the other host, trialClean is false', async () => {
+    serperPlan = () => new Response('', { status: 302, headers: { location: 'https://elsewhere.example/steal' } })
+    const out = ran(await runLiveTrial(input()))
+    expect(net.redirectModes.length).toBeGreaterThan(0)
+    expect(net.redirectModes.every(m => m === 'manual')).toBe(true)
+    expect(out.summary.redirects).toEqual([{ host: 'google.serper.dev', status: 302 }])
+    expect(out.summary.trialClean).toBe(false)
+    expect(net.other).toEqual([])
+    expect(formatSummary(out.summary)).toMatch(/NOT CLEAN/)
+  })
+})
+
+describe('(e) the keys never leak', () => {
+  it('neither fake key appears in the summary, the formatted summary, the result files, the JSONL, a refusal, or anything the run printed', async () => {
+    const out = ran(await runLiveTrial(input()))
+    const everything = [JSON.stringify(out), formatSummary(out.summary), ...[...fs.files.values()], ...fs.ops, ...logged].join('\n')
+    expect(everything).not.toContain('SECRET')
+    expect(everything).not.toContain(KEY_OPENAI); expect(everything).not.toContain(KEY_SERPER)
+    stubEnv({ CI: 'true' })
+    const refused = await runLiveTrial(input())
+    expect(JSON.stringify(refused) + logged.join('\n')).not.toContain('SECRET')
+  })
+  it('the keys are taken from the environment passed in, never from a file: the question reader is the only file read', async () => {
+    await runLiveTrial(input())
+    expect(reads).toEqual(['D:/fake/question.txt'])
+  })
+})
+
+describe('(f) incidents: the turn is not OK, the run stops, there is no total, and the summary says why', () => {
+  const noTotal = (out: ReturnType<typeof ran>) => { expect(hasKey(finalFile(fs)!.json, 'totalUsd')).toBe(false); expect(out.summary.runValid).toBe(false) }
+  it('usage missing on the answering stream (the provider sends none)', async () => {
+    openaiPlan = webPlan({ final: () => textStream('Theo nguồn kiểm thử, câu trả lời là 25.000đ.', null) })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary).toMatchObject({ turnOk: false, trialClean: false, costState: 'unknown' })
+    expect(out.summary.problems.join(' ')).toMatch(/cost/i)
+    noTotal(out)
+  })
+  it('Serper answers 200 without credits', async () => {
+    serperPlan = () => serperOk(null)
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary).toMatchObject({ turnOk: false, trialClean: false, costState: 'unknown' })
+    expect(out.summary.problems.join(' ')).toMatch(/cost|unknown|blocked/i)
+    noTotal(out)
+  })
+  it('the provider answers 429 on the tool-choosing stream', async () => {
+    let failed = false
+    openaiPlan = req => { if (!failed && req.stream && !req.hasToolResult) { failed = true; return apiError(429) } return webPlan()(req) }
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary).toMatchObject({ turnOk: false, trialClean: false })
+    expect(out.summary.problems.length).toBeGreaterThan(0)
+    expect(net.openai.filter(r => r.stream && !r.hasToolResult)).toHaveLength(1) // no retry got through the blocked gate
+    noTotal(out)
+  })
+  it('a 5xx on the tool-choosing stream', async () => {
+    let failed = false
+    openaiPlan = req => { if (!failed && req.stream && !req.hasToolResult) { failed = true; return apiError(500) } return webPlan()(req) }
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(false)
+    noTotal(out)
+  })
+})
+
+describe('(g) isBenchmarkEligible: only the exact 13 turns, in order, with a valid run', () => {
+  it('false for one turn, for 12, for the right turns in the wrong order, for an altered text; false when the run is not valid; true only for the exact set with a valid run', () => {
+    const trial = [{ id: 'TRIAL', conversation: 'TRIAL', turn: 1, text: QUESTION }]
+    expect(isBenchmarkEligible(trial, true)).toBe(false)
+    expect(isBenchmarkEligible(trial, false)).toBe(false)
+    expect(isBenchmarkEligible(UAT_TURNS.slice(0, 12), true)).toBe(false)
+    expect(isBenchmarkEligible([...UAT_TURNS].reverse(), true)).toBe(false)
+    expect(isBenchmarkEligible(UAT_TURNS.map((t, i) => (i === 3 ? { ...t, text: `${t.text} ` } : t)), true)).toBe(false)
+    expect(isBenchmarkEligible(UAT_TURNS, false)).toBe(false)
+    expect(isBenchmarkEligible(UAT_TURNS, true)).toBe(true)
+  })
+  it('with the 13 fixed turns through the runner (fake transport): a valid run is eligible; an invalid one is not', async () => {
+    stubEnv({ BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' })
+    const good = benchOptions({ turns: UAT_TURNS, chat: turnTransport().chat }, process.env)
+    const r1 = await runBench(good.opts)
+    expect(r1.valid).toBe(true)
+    expect(isBenchmarkEligible(UAT_TURNS, r1.valid)).toBe(true)
+    __resetBenchProcessGuardForTests()
+    let n = 0
+    const base = turnTransport()
+    const bad = benchOptions({ turns: UAT_TURNS, chat: async req => { n++; return n === 13 ? { raw: '', status: 500 } : base.chat(req) } }, process.env)
+    const r2 = await runBench(bad.opts)
+    expect(r2.valid).toBe(false)
+    expect(isBenchmarkEligible(UAT_TURNS, r2.valid)).toBe(false)
+  })
+})
+
+// ── round 2e review findings ─────────────────────────────────────────────────────────────────────────────────────────────────
+
+describe('(i) review B1: node:http and node:https are wrapped too (the page reader uses them, not fetch)', () => {
+  it('a place whose own website is "https://evil.example/site" is BLOCKED before any connection: hostsBlocked names it, the trial is NOT CLEAN, the http tripwires never fire', async () => {
+    openaiPlan = req => {
+      if (req.responseFormat) return jsonCompletion(INTENT, INTENT_USAGE)
+      if (req.tools.includes('search_places') && !req.hasToolResult) return toolStream('search_places', { query: 'quán cà phê', location: 'Quận 1 Hồ Chí Minh', type: 'cafe' }, TOOL_USAGE)
+      return textStream('Mình chọn **Cà phê Kiểm Thử** ở Quận 1 (nguồn: Google Maps).', FINAL_USAGE)
+    }
+    serperPlan = path => path === '/maps'
+      ? new Response(JSON.stringify({ places: [{ title: 'Cà phê Kiểm Thử', address: '1 Lê Lợi, Quận 1, Hồ Chí Minh', latitude: 10.77, longitude: 106.70, rating: 4.5, ratingCount: 120, category: 'Quán cà phê', cid: '111', placeId: 'ChIJtest', website: 'https://evil.example/site' }], credits: 3 }), { status: 200 })
+      : serperOk(1)
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.hostsBlocked).toContain('evil.example')
+    expect(out.summary.trialClean).toBe(false)
+    expect(formatSummary(out.summary)).toMatch(/NOT CLEAN.*evil\.example/)
+    expect(httpCalls).toEqual([]) // the original (tripwire) node:https was never reached
+  })
+  it('re-review: https.request("https://api.openai.com/v1/chat/completions", { hostname: "evil.example" }) - options that override the URL - is BLOCKED (Node would connect to evil.example)', async () => {
+    const post = (async () => { https.request('https://api.openai.com/v1/chat/completions', { hostname: 'evil.example' }); return new Response('x') }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
+    if (out.kind === 'ran') { expect(out.summary.hostsBlocked.length).toBeGreaterThan(0); expect(out.summary.trialClean).toBe(false) }
+    expect(httpCalls).toEqual([]) // the original (tripwire) was never reached
+  })
+  it('node:http(s) are put back after the run (also after a refusal)', async () => {
+    const before = [https.request, https.get, http.request, http.get]
+    await runLiveTrial(input())
+    expect([https.request, https.get, http.request, http.get]).toEqual(before)
+    stubEnv({ CI: 'true' })
+    await runLiveTrial(input())
+    expect([https.request, https.get, http.request, http.get]).toEqual(before)
+  })
+})
+
+describe('(j) review M2: only https, no port, and only the paths the gate accounts for', () => {
+  const cases: Array<[string, boolean]> = [
+    ['https://api.openai.com/v1/chat/completions', true], ['https://google.serper.dev/search', true], ['https://google.serper.dev/maps', true], ['https://google.serper.dev/shopping', true],
+    ['http://api.openai.com/v1/chat/completions', false], ['https://api.openai.com:8443/v1/chat/completions', false], ['https://api.openai.com/v1/images/generations', false],
+    ['https://api.openai.com/v1/responses', false], ['https://google.serper.dev/images', false], ['https://google.serper.dev/', false],
+    ['https://api.openai.com.evil.com/v1/chat/completions', false], ['https://api.openai.com@evil.com/v1/chat/completions', false],
+    ['https://API.OPENAI.COM./v1/chat/completions', false], ['https://[::1]/v1/chat/completions', false], ['not a url', false], ['/v1/chat/completions', false], ['', false],
+  ]
+  for (const [url, ok] of cases) it(`${ok ? 'allowed' : 'blocked'}: ${JSON.stringify(url)}`, () => { expect(isAllowedRequest(url).ok).toBe(ok) })
+  it('a blocked reason names the host (or "unparseable") and never a credential', () => {
+    expect(isAllowedRequest('https://api.openai.com@evil.com/x')).toMatchObject({ ok: false, label: 'evil.com' })
+    expect(isAllowedRequest('not a url')).toMatchObject({ ok: false, label: '(unparseable)' })
+    expect(isAllowedRequest('https://api.openai.com/v1/images/generations')).toMatchObject({ ok: false, label: 'api.openai.com/v1/images/generations' })
+  })
+})
+
+describe('(k) review M1: late work after the answer is still inside the wrapper', () => {
+  it('a free request started 20 ms after the answer (background work) is blocked and counted', async () => {
+    const out = ran(await runLiveTrial(input({ post: async req => { const res = await POST(req); setTimeout(() => { void fetch('https://late.example/x').catch(() => undefined) }, 20); return res } })))
+    expect(out.summary.hostsBlocked).toContain('late.example')
+    expect(out.summary.trialClean).toBe(false)
+  })
+})
+
+describe('(l) review M4: an echoed key never reaches the summary or the files', () => {
+  it('a provider error that quotes the key is redacted in the summary, the formatted summary, the JSONL and the result', async () => {
+    openaiPlan = req => {
+      if (!req.responseFormat && req.stream && !req.hasToolResult) return new Response(JSON.stringify({ error: { message: `Incorrect API key provided: ${KEY_OPENAI}.`, type: 'invalid_request_error', code: 'invalid_api_key' } }), { status: 401, headers: { 'content-type': 'application/json' } })
+      return webPlan()(req)
+    }
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(false)
+    const everything = [JSON.stringify(out), formatSummary(out.summary), ...[...fs.files.values()]].join('\n')
+    expect(everything).not.toContain('SECRET')
+  })
+})
+
+describe('(m) review M5/I1: the 12-question check ignores punctuation; the environment the real run sees is rehearsed', () => {
+  it('a benchmark question without its punctuation is still one of the 12', async () => {
+    const stripped = UAT_TURNS[4].text.replace(/[.,?!:;"()]/g, '').replace(new RegExp('[' + String.fromCharCode(0x2013) + String.fromCharCode(0x2014) + ']', 'g'), ' ')
+    const out = await runLiveTrial(input({ readTextFile: p => { reads.push(p); return stripped } }))
+    expect(out.kind).toBe('refused')
+    nothingHappened()
+  })
+  it('the summary says which consultative flags were in effect (the vitest setup pins them to "0" when they are unset)', async () => {
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.flagsInEffect).toMatchObject({ CONSULTATIVE_V1: '0', CONSULT_V2: '0', TURN_WEB_TICKET: null, SEARCH_FALLBACK_GATE: null })
+    expect(formatSummary(out.summary)).toMatch(/CONSULTATIVE_V1=0/)
+  })
+  it('the "consultative ON" variant (what copying production would set) also runs clean, and its counts agree three ways', async () => {
+    stubEnv(CONSULTATIVE_ON)
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary).toMatchObject({ turnOk: true, trialClean: true })
+    expect(out.summary.flagsInEffect).toMatchObject({ CONSULTATIVE_V1: '1', CONSULT_V2: '1', TURN_WEB_TICKET: '1', SEARCH_FALLBACK_GATE: '1' })
+    expect(out.summary.hostRequests).toEqual({ 'api.openai.com': net.openai.length, 'google.serper.dev': net.serper.length })
+    expect(out.summary.llmRequests).toBe(net.openai.length); expect(out.summary.serperRequests).toBe(net.serper.length)
+  })
+})
+
+describe('(h) the real trial file is skipped by default and no CI or script sets its confirmation', () => {
+  const root = join(__dirname, '..', '..', '..')
+  it('liveTrial.test.ts is wrapped in describe.skipIf on the exact confirmation text', () => {
+    const src = readFileSync(join(__dirname, 'liveTrial.test.ts'), 'utf8')
+    expect(src).toMatch(/describe\.skipIf\(\s*process\.env\.BENCH_LIVE_TRIAL\s*!==\s*'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'\s*\)/)
+    expect(src).not.toMatch(/process\.env\.BENCH_LIVE_TRIAL\s*=/)
+  })
+  it('package.json, the vitest config and every CI file never set BENCH_LIVE_TRIAL', () => {
+    const files = ['package.json', 'vitest.config.ts', 'vercel.json', '_deploy.sh', 'push-fix.bat', '_fix_and_push.bat']
+    const ci = join(root, '.github')
+    const walk = (dir: string): string[] => readdirSync(dir, { withFileTypes: true }).flatMap(d => (d.isDirectory() ? walk(join(dir, d.name)) : [join(dir, d.name)]))
+    const all = [...files.map(f => join(root, f)).filter(existsSync), ...(existsSync(ci) ? walk(ci) : [])]
+    expect(all.length).toBeGreaterThan(0)
+    for (const p of all) expect(readFileSync(p, 'utf8'), p).not.toContain('BENCH_LIVE_TRIAL')
+  })
+  it('the rehearsal itself never sets it', () => {
+    expect(process.env.BENCH_LIVE_TRIAL).toBeUndefined()
+  })
+})

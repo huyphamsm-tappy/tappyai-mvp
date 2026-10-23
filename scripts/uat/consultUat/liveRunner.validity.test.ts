@@ -153,7 +153,7 @@ describe('round 2e · review A1: variables that change what a run MEASURES or RE
       stubBenchEnv({ [name]: value })
       const a = options({}, process.env)
       expect(() => createBenchRunner(a.opts)).toThrow(BenchRefusal)
-      expect(() => createBenchRunner(a.opts)).toThrow(new RegExp(`${name}.*must be OFF`))
+      expect(() => createBenchRunner(a.opts)).toThrow(new RegExp(`${name}.*(must be OFF|must be UNSET)`))
       expect(a.fs.ops).toEqual([])
       const t = turnTransport()
       const b = options({ chat: t.chat }, process.env)
@@ -161,6 +161,81 @@ describe('round 2e · review A1: variables that change what a run MEASURES or RE
       expect(t.requests).toHaveLength(0)
     })
   }
+})
+
+describe('round 2e · review M4: a key echoed in an error message is redacted before it reaches the JSONL, the result file or a thrown error', () => {
+  it('a transport error that quotes the OpenAI key (full, and as a masked "sk-…" prefix) and the Serper key', async () => {
+    stubBenchEnv({ OPENAI_API_KEY: 'sk-test-SECRET-123', SERPER_API_KEY: 'serper-SECRET-456' })
+    const chat: ChatTransport = async () => { throw new Error('Incorrect API key provided: sk-test-SECRET-123. Also sk-proj-ABCDEF****wxyz and serper-SECRET-456.') }
+    const { opts, fs } = options({ chat, turns: THREE }, process.env)
+    const r = await runBench(opts)
+    const everything = [...fs.files.values()].join('\n') + JSON.stringify(r)
+    expect(everything).not.toContain('SECRET')
+    expect(everything).not.toMatch(/sk-proj-ABCDEF/)
+    expect(r.records[0].error).toMatch(/Incorrect API key provided/) // the useful part of the message stays
+  })
+})
+
+describe('round 2e · re-review N1/N2: redaction never assigns to the caught error and also covers the answer returned to runUat', () => {
+  it('N1: a DOMException (message is a getter-only accessor, e.g. AbortError) still produces a record, closes the gate and is not mutated', async () => {
+    const abort = new DOMException('The operation was aborted', 'AbortError')
+    const chat: ChatTransport = async () => { throw abort }
+    const { opts, fs } = options({ chat, turns: THREE })
+    const r = await runBench(opts)
+    expect(r.records).toHaveLength(1) // the turn is recorded, not lost to a TypeError raised inside the catch
+    expect(r.records[0].error).toMatch(/aborted/)
+    expect(jsonlLines(fs)).toHaveLength(1)
+    expect(abort.message).toBe('The operation was aborted') // the caller's error object is left alone
+    expect(r.valid).toBe(false)
+  })
+  it('N1: a shared Error object is not mutated either (its message keeps the original text)', async () => {
+    stubBenchEnv({ OPENAI_API_KEY: 'sk-test-SECRET-123' })
+    const shared = new Error('bad key sk-test-SECRET-123')
+    const chat: ChatTransport = async () => { throw shared }
+    const { opts } = options({ chat, turns: THREE }, process.env)
+    const r = await runBench(opts)
+    expect(shared.message).toBe('bad key sk-test-SECRET-123')
+    expect(JSON.stringify(r)).not.toContain('SECRET')
+  })
+  it('N2: a key echoed inside the ANSWER text is redacted in the result file and the report (not only in the JSONL record)', async () => {
+    stubBenchEnv({ OPENAI_API_KEY: 'sk-test-SECRET-123', SERPER_API_KEY: 'serper-SECRET-456' })
+    const base = turnTransport()
+    const chat: ChatTransport = async req => {
+      const ok = await base.chat(req)
+      return { raw: `${ok.raw.split('\n')[0].slice(0, 2)}${JSON.stringify('the key is sk-test-SECRET-123 and serper-SECRET-456')}\nd:{"finishReason":"stop"}\n` }
+    }
+    const { opts, fs } = options({ chat, turns: THREE }, process.env)
+    const r = await runBench(opts)
+    const everything = [...fs.files.values()].join('\n') + JSON.stringify(r)
+    expect(everything).not.toContain('SECRET')
+  })
+  it('N2: a non-Error thrown value that quotes a key is redacted too', async () => {
+    stubBenchEnv({ OPENAI_API_KEY: 'sk-test-SECRET-123' })
+    const chat: ChatTransport = async () => { throw 'plain string with sk-test-SECRET-123' } // eslint-disable-line no-throw-literal
+    const { opts, fs } = options({ chat, turns: THREE }, process.env)
+    const r = await runBench(opts)
+    expect([...fs.files.values()].join('\n') + JSON.stringify(r)).not.toContain('SECRET')
+  })
+})
+
+describe('round 2e · review I2: the two audit FILE variables must be UNSET (the route treats ANY value, "off" and "0" included, as a file path to append to)', () => {
+  for (const name of ['AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE']) {
+    for (const value of ['off', '0', 'false', 'no', 'NO']) {
+      it(`${name}=${value}: refused ("must be UNSET"), before any file-system call`, () => {
+        stubBenchEnv({ [name]: value })
+        const a = options({}, process.env)
+        expect(() => createBenchRunner(a.opts)).toThrow(new RegExp(`${name}.*UNSET`))
+        expect(a.fs.ops).toEqual([])
+      })
+    }
+  }
+  it('AUDIT_DRY_RUN keeps the usual "off" spellings (the route compares it to "1" only)', () => {
+    for (const v of ['0', 'false', 'off', 'no']) {
+      __resetBenchProcessGuardForTests()
+      stubBenchEnv({ AUDIT_DRY_RUN: v })
+      expect(() => createBenchRunner(options({}, process.env).opts), v).not.toThrow()
+    }
+  })
 })
 
 describe('round 2e · review A2: a model id is accepted only if it is EXACTLY a priced id (the price table matches by prefix)', () => {
