@@ -109,8 +109,8 @@ const stubFetch = () => vi.stubGlobal('fetch', vi.fn(async (input: unknown, init
       includeUsage: body.stream_options?.include_usage === true,
     }
     net.openai.push(rec)
-    currentReq = rec // the plan builds its streams while this request is the one being answered
-    return openaiPlan(rec, net.openai.length)
+    currentReq = rec // the plan builds its streams while this request is the one being answered ...
+    try { return await openaiPlan(rec, net.openai.length) } finally { currentReq = null } // ... and no longer afterwards (a stale request must not decide about usage)
   }
   if (u.hostname === 'google.serper.dev') {
     const body = JSON.parse(String(init?.body ?? '{}'))
@@ -213,6 +213,12 @@ describe('(c-usage) the fake OpenAI behaves like the real one about stream usage
     // a non-stream completion always carries usage
     openaiPlan = () => jsonCompletion('xin chào', INTENT_USAGE)
     expect(await callStub({ stream: false })).toContain('"usage"')
+  })
+
+  it('[review A9] once a request is answered the fake no longer "knows" it: a stream built afterwards is refused, not given the previous request\'s usage', async () => {
+    openaiPlan = () => textStream('xin chào', FINAL_USAGE)
+    await callStub({ stream: true, stream_options: { include_usage: true } })
+    expect(() => textStream('stale', FINAL_USAGE)).toThrow(/outside a request/)
   })
 
   it('[characterization] every STREAM request the real adapter sends carries stream_options.include_usage === true (compatibility "strict")', async () => {

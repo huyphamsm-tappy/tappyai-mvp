@@ -7,7 +7,7 @@ import { reserveSpend } from '@/lib/ai/budget/spendGate'
 import { runUat } from './harness'
 import { UAT_TURNS, type UatTurn } from './questions'
 import {
-  __resetBenchProcessGuardForTests, BENCH_FLAG_NAMES, BenchRefusal, createBenchRunner, runBench, type BenchOptions, type ChatTransport,
+  __resetBenchProcessGuardForTests, BENCH_FLAG_NAMES, BENCH_MUST_BE_OFF, BenchRefusal, createBenchRunner, runBench, type BenchOptions, type ChatTransport,
 } from './liveRunner'
 import { GOOD_ENV, finalFile, hasKey, jsonlLines, jsonlStarts, options, turnTransport } from './liveRunner.testkit'
 
@@ -137,6 +137,78 @@ describe('M3 · valid needs a fully accounted cost book', () => {
     ;(opts as BenchOptions).runUatImpl = async o => { const rep = await runUat(o); return { ...rep, cost: { ...rep.cost, costAccounted: false } } }
     const r = await runBench(opts)
     expect(t.requests).toHaveLength(13)
+    expect(r.valid).toBe(false)
+    expect(Object.hasOwn(r.report.cost, 'totalUsd')).toBe(false)
+    expect(hasKey(finalFile(fs)!.json, 'totalUsd')).toBe(false)
+  })
+})
+
+describe('round 2e · review A1: variables that change what a run MEASURES or RECORDS are part of the flag set and must be OFF', () => {
+  for (const [name, value] of [['AUDIT_DRY_RUN', '1'], ['AUDIT_MODEL_REQUEST_FILE', 'D:/audit/requests.jsonl'], ['AUDIT_USAGE_LOG_FILE', 'D:/audit/usage.log']] as const) {
+    it(`${name} is in BENCH_FLAG_NAMES and in BENCH_MUST_BE_OFF`, () => {
+      expect(BENCH_FLAG_NAMES).toContain(name)
+      expect(BENCH_MUST_BE_OFF).toContain(name)
+    })
+    it(`${name}=${value}: refused by name by createBenchRunner and runBench, before any file-system call and any request (a canned "dry-run" answer must never be benchmarked)`, async () => {
+      stubBenchEnv({ [name]: value })
+      const a = options({}, process.env)
+      expect(() => createBenchRunner(a.opts)).toThrow(BenchRefusal)
+      expect(() => createBenchRunner(a.opts)).toThrow(new RegExp(`${name}.*must be OFF`))
+      expect(a.fs.ops).toEqual([])
+      const t = turnTransport()
+      const b = options({ chat: t.chat }, process.env)
+      await expect(runBench(b.opts)).rejects.toBeInstanceOf(BenchRefusal)
+      expect(t.requests).toHaveLength(0)
+    })
+  }
+})
+
+describe('round 2e · review A2: a model id is accepted only if it is EXACTLY a priced id (the price table matches by prefix)', () => {
+  for (const name of ['LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']) {
+    it(`${name}: "gpt-6-luna" and unset are accepted; a longer, shorter, other-case or padded id is refused by name before any file-system call`, async () => {
+      stubBenchEnv({ [name]: 'gpt-6-luna' })
+      expect(() => createBenchRunner(options({}, process.env).opts), 'exact id').not.toThrow()
+      __resetBenchProcessGuardForTests()
+      for (const bad of ['gpt-6-luna-pro', 'gpt-6-lunar', 'GPT-6-LUNA', ' gpt-6-luna', 'gpt-6-luna ', 'gpt-4o', 'gpt-6']) {
+        stubBenchEnv({ [name]: bad })
+        const a = options({}, process.env)
+        expect(() => createBenchRunner(a.opts), bad).toThrow(new RegExp(`${name}.*(priced|exact)`, 'i'))
+        expect(a.fs.ops, bad).toEqual([])
+        const t = turnTransport()
+        await expect(runBench(options({ chat: t.chat }, process.env).opts), bad).rejects.toBeInstanceOf(BenchRefusal)
+        expect(t.requests, bad).toHaveLength(0)
+      }
+    })
+  }
+})
+
+describe('round 2e · review A8: more characters count as blank (whitespace, control, format and default-ignorable characters)', () => {
+  const cp = (...codes: number[]) => codes.map(c => String.fromCodePoint(c)).join('')
+  const BLANKS: Array<[string, string]> = [
+    ['no-break space', cp(0xa0)], ['line separator', cp(0x2028)], ['ideographic space', cp(0x3000)], ['left-to-right mark', cp(0x200e)],
+    ['bidi controls', cp(0x202a, 0x202b, 0x202c, 0x202d, 0x202e)], ['control character', cp(0x01)], ['variation selector', cp(0xfe0f)],
+    ['tag character', cp(0xe0001)], ['combining grapheme joiner', cp(0x34f)], ['hangul filler', cp(0x3164)], ['invisible operators', cp(0x2061, 0x2062, 0x2063, 0x2064)],
+  ]
+  for (const [label, value] of BLANKS) {
+    it(`LLM_LUNA_MODEL = ${label}: refused as blank, before any file-system call`, () => {
+      stubBenchEnv({ LLM_LUNA_MODEL: value })
+      const a = options({}, process.env)
+      expect(() => createBenchRunner(a.opts)).toThrow(/LLM_LUNA_MODEL.*(empty|blank)|(empty|blank).*LLM_LUNA_MODEL/i)
+      expect(a.fs.ops).toEqual([])
+    })
+  }
+  it('a normal visible value is NOT blank (so a real model id is judged by the exact-id rule, not as blank)', () => {
+    stubBenchEnv({ LLM_LUNA_MODEL: 'gpt-6-luna' })
+    expect(() => createBenchRunner(options({}, process.env).opts)).not.toThrow()
+  })
+})
+
+describe('round 2e · review A10: `valid` needs a FINITE total', () => {
+  it('a driver whose report carries totalUsd = NaN: valid=false and no totalUsd key', async () => {
+    const t = turnTransport()
+    const { opts, fs } = options({ chat: t.chat, turns: UAT_TURNS })
+    ;(opts as BenchOptions).runUatImpl = async o => { const rep = await runUat(o); return { ...rep, cost: { ...rep.cost, totalUsd: Number.NaN } } }
+    const r = await runBench(opts)
     expect(r.valid).toBe(false)
     expect(Object.hasOwn(r.report.cost, 'totalUsd')).toBe(false)
     expect(hasKey(finalFile(fs)!.json, 'totalUsd')).toBe(false)

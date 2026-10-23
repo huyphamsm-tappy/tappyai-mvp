@@ -38,11 +38,19 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'MONEY_GUARD_KEEP_VERIFIED', 'PLACE_CLAIM_KEEP_VERIFIED_PRICE', 'LEGACY_STREAM_TRACE', 'SERPER_CACHE_V2',
   // what the prices are read from: a different model id or per-credit price changes what a call is booked at
   'SERPER_USD_PER_CREDIT', 'LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL',
+  // audit switches the chat route reads: AUDIT_DRY_RUN answers with a canned line and NO model call; the other two write full model requests / usage to a file
+  'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
 ]
+
+/** The model ids whose price the gate really knows. The price table (providers/openai.ts) matches by PREFIX, so any other id would be priced and capped at the wrong rate. */
+const PRICED_MODEL_ID_VARS: readonly string[] = ['LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']
+const PRICED_MODEL_IDS: readonly string[] = ['gpt-6-luna']
 
 /** Flags that put a paid path outside the spend gate's reach (agent runtime, V4 hosted search, V5, Responses API, Anthropic models): must be OFF. */
 export const BENCH_MUST_BE_OFF: readonly string[] = [
   'TAPPY_AGENT', 'CONSULTATIVE_IN_AGENT', 'TAPPY_ANSWER_V4', 'RETRIEVAL_V5', 'LLM_OPENAI_API', 'AGENT_MODEL', 'HAIKU_FALLBACK', 'CONSULT_V3',
+  // a run measured with a canned answer, or one that writes model requests to a file, is not the app being benchmarked
+  'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
 ]
 
 export class BenchRefusal extends Error {
@@ -217,11 +225,16 @@ export function assertBenchAllowed(o: BenchOptions): void {
   // A variable that is SET but empty or blank is not "unset": `norm` reads it as unset, but the app reads the raw value (LLM_LUNA_MODEL="" makes the model id ""
   // and the gate then refuses every model call). Unset is fine; set-but-blank is refused, by name. Both the environment checked and process.env (what the app reads).
   // "Blank" = nothing but whitespace AND invisible characters (zero-width space / joiners, word joiner, soft hyphen, Mongolian vowel separator, BOM), which `trim()` keeps.
-  const INVISIBLE = [0x200b, 0x200c, 0x200d, 0x2060, 0x00ad, 0x180e, 0xfeff].map(c => String.fromCharCode(c)).join('')
-  const BLANK = new RegExp('^[\\s' + INVISIBLE + ']*$')
+  // Built from a string with the `u` flag (property escapes): whitespace, control, format and separator characters and the default-ignorable ones (zero-width and
+  // bidi marks, variation selectors, tag characters, fillers…), none of which `trim()` removes. No invisible character is typed in this file.
+  const BLANK = new RegExp('^[\\p{White_Space}\\p{Cc}\\p{Cf}\\p{Zs}\\p{Default_Ignorable_Code_Point}]*$', 'u')
   const blankOf = (e: Record<string, string | undefined>) => BENCH_FLAG_NAMES.filter(k => e[k] !== undefined && BLANK.test(e[k]!))
   const blank = [...new Set([...blankOf(env), ...(env !== process.env ? blankOf(process.env) : [])])]
   if (blank.length) reasons.push(`set but empty or blank (unset is allowed, an empty value is not): ${blank.join(', ')}`)
+  // A model id must be EXACTLY an id the gate can price: the price table matches by prefix, so "gpt-6-luna-<anything>" would be capped at the Luna rate whatever it costs.
+  const unpricedOf = (e: Record<string, string | undefined>) => PRICED_MODEL_ID_VARS.filter(k => e[k] !== undefined && !BLANK.test(e[k]!) && !PRICED_MODEL_IDS.includes(e[k]!))
+  const unpriced = [...new Set([...unpricedOf(env), ...(env !== process.env ? unpricedOf(process.env) : [])])]
+  if (unpriced.length) reasons.push(`${unpriced.join(', ')}: not exactly a priced model id (${PRICED_MODEL_IDS.join(', ')}); the price table matches by prefix, so any other id would be priced and capped at the wrong rate`)
   for (const k of BENCH_MUST_BE_OFF) if (!isOffValue(norm(env[k]))) reasons.push(`${k} must be OFF for this benchmark (a paid path outside the spend gate)`)
   const provider = norm(env.LLM_PROVIDER)
   if (provider !== null && provider.toLowerCase() !== 'openai') reasons.push('LLM_PROVIDER must be unset or openai (other providers have no list price: the gate refuses them)')
@@ -431,7 +444,7 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
   const wf = writeFailure()
   // The run is valid only if it ended normally, the books are complete AND no turn was degraded by a refused call, an error frame or a failed save.
   // M3: the cost book must be fully accounted (no unknown turn, nothing still open), and a valid run has a REAL total (a number).
-  const valid = runError === null && wf === null && report !== null && report.cost.complete && report.cost.costAccounted && typeof report.cost.totalUsd === 'number' && records.length === (o.turns ?? UAT_TURNS).length && records.every(r => r.cost.state === 'known' && !r.degraded && !r.error && r.streamErrors.length === 0)
+  const valid = runError === null && wf === null && report !== null && report.cost.complete && report.cost.costAccounted && Number.isFinite(report.cost.totalUsd) && records.length === (o.turns ?? UAT_TURNS).length && records.every(r => r.cost.state === 'known' && !r.degraded && !r.error && r.streamErrors.length === 0)
   // M2: an invalid run hands back (and writes) a cost book WITHOUT the `totalUsd` property; a valid one hands back the report as it is.
   const returned: ValidBenchReport | InvalidBenchReport | null = report === null ? null : valid ? (report as ValidBenchReport) : withoutTotal(report)
   const costState = report !== null && report.cost.costAccounted && records.every(r => r.cost.state === 'known') ? 'known' : 'unknown'

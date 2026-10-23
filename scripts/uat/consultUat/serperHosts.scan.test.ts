@@ -11,7 +11,6 @@
 import { describe, it, expect } from 'vitest'
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { join, relative, sep } from 'node:path'
-
 export interface SourceFile { path: string; text: string }
 export interface Exception { path: string; rules: Array<'host' | 'header' | 'key' | 'direct'>; reason: string }
 
@@ -30,56 +29,80 @@ export const EXCEPTIONS: Exception[] = [
 ]
 
 const NAMES = { host: /serper\.dev/i, header: /x-api-key/i, key: /SERPER_API_KEY/ }
-/** A direct network call on a line that also mentions Serper by name. */
-const DIRECT = /(\bfetch\s*\(|\baxios\b|\bundici\b|\bhttps?\.request\b|\bgot\s*\()/
+/** A direct network call on a line that also mentions Serper by name (fetch and its wrappers, axios, undici, got, ky, ofetch, $fetch, node:http(s) get/request). */
+const DIRECT = /(\b(?:o|\$)?fetch\s*\(|\baxios\b|\bundici\b|\bhttps?\.(?:request|get)\s*\(|\bgot(?:\.\w+)?\s*\(|\bky(?:\.\w+)?\s*\()/
 
-// A line that is ONLY a comment. Leading block comments are skipped first, so a block comment followed by code on the same line counts as code.
-const isComment = (line: string): boolean => {
-  let s = line.trim()
-  for (;;) { const m = /^\/\*.*?\*\//.exec(s); if (!m) break; s = s.slice(m[0].length).trim() }
-  return s === '' || /^(\/\/|\*|\/\*)/.test(s)
+/**
+ * The CODE of each line of a file: block comments (also over several lines, also closed in the middle of a line) and `//` comments are removed.
+ * A `//` right after a colon (a URL) is not a comment. This is a small scanner, not a parser: a comment marker inside a string literal can fool it.
+ */
+export function codeLines(text: string): string[] {
+  let inBlock = false
+  return text.split('\n').map(line => {
+    let out = ''
+    let i = 0
+    while (i < line.length) {
+      if (inBlock) {
+        const j = line.indexOf('*/', i)
+        if (j < 0) return out
+        inBlock = false; i = j + 2; out += ' '; continue
+      }
+      if (line.startsWith('/*', i)) { inBlock = true; i += 2; continue }
+      if (line.startsWith('//', i) && line[i - 1] !== ':') return out
+      out += line[i++]
+    }
+    return out
+  })
 }
 
+export interface Violation { rule: Exception['rules'][number]; at: string; message: string }
+
 /** Violations of the rules in a set of files. Pure: tests it on synthetic files as well as on the real tree. */
-export function findViolations(files: SourceFile[], exceptions: Exception[] = EXCEPTIONS): string[] {
+export function findViolations(files: SourceFile[], exceptions: Exception[] = EXCEPTIONS): Violation[] {
   const allowed = (path: string, rule: Exception['rules'][number]) => exceptions.some(e => e.path === path && e.rules.includes(rule))
-  const out: string[] = []
+  const out: Violation[] = []
   for (const f of files) {
-    const lines = f.text.split('\n')
-    lines.forEach((line, i) => {
+    const raw = f.text.split('\n')
+    const code = codeLines(f.text)
+    raw.forEach((line, i) => {
       const at = `${f.path}:${i + 1}`
+      const push = (rule: Violation['rule'], what: string) => out.push({ rule, at, message: `${at} ${what}: ${line.trim().slice(0, 120)}` })
       // the hostname is forbidden EVERYWHERE outside the list, comments included (a comment naming it is how a copy-pasted fetch starts)
-      if (NAMES.host.test(line) && !allowed(f.path, 'host')) out.push(`${at} names the Serper host outside the allowed list: ${line.trim().slice(0, 120)}`)
-      if (isComment(line)) return
-      if (NAMES.header.test(line) && !allowed(f.path, 'header')) out.push(`${at} sets or names the X-API-KEY header outside the allowed list: ${line.trim().slice(0, 120)}`)
-      if (NAMES.key.test(line) && !allowed(f.path, 'key')) out.push(`${at} reads SERPER_API_KEY outside the allowed list: ${line.trim().slice(0, 120)}`)
-      if (/serper/i.test(line) && DIRECT.test(line) && !allowed(f.path, 'direct')) out.push(`${at} makes a direct network call on a line that names Serper: ${line.trim().slice(0, 120)}`)
+      if (NAMES.host.test(line) && !allowed(f.path, 'host')) push('host', 'names the Serper host outside the allowed list')
+      const c = code[i]
+      if (NAMES.header.test(c) && !allowed(f.path, 'header')) push('header', 'sets or names the X-API-KEY header outside the allowed list')
+      if (NAMES.key.test(c) && !allowed(f.path, 'key')) push('key', 'reads SERPER_API_KEY outside the allowed list')
+      if (/serper/i.test(c) && DIRECT.test(c) && !allowed(f.path, 'direct')) push('direct', 'makes a direct network call on a line that names Serper')
     })
   }
   return out
 }
 
 const ROOT = join(__dirname, '..', '..', '..')
-const SKIP_DIRS = new Set(['node_modules', '.next', '.git', 'recordings', 'out', 'coverage'])
-const CODE = /\.(ts|tsx|mjs|js|cjs)$/
-const TESTISH = /\.test\.(ts|tsx|mjs|js)$|\.testkit\.ts$/
+/** Skipped by NAME at any depth: dependency and build folders only. */
+const SKIP_NAMES = new Set(['node_modules', '.next', '.git'])
+/** Skipped by ROOT-RELATIVE path: the one recordings folder (JSON answers recorded from Serper; no code). */
+const SKIP_PATHS = new Set(['scripts/consult/replay/recordings'])
+export const shouldSkipDir = (relPath: string): boolean => SKIP_NAMES.has(relPath.split('/').pop() ?? '') || SKIP_PATHS.has(relPath)
+export const SCAN_EXT = /\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$/
+const TESTISH = /\.test\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$|\.testkit\.ts$/
 export function readTree(roots: string[], keepTests = false): SourceFile[] {
   const files: SourceFile[] = []
   const walk = (dir: string) => {
     for (const name of readdirSync(dir)) {
-      if (SKIP_DIRS.has(name)) continue
       const p = join(dir, name)
+      const rel = relative(ROOT, p).split(sep).join('/')
       const st = statSync(p)
-      if (st.isDirectory()) { walk(p); continue }
-      if (!CODE.test(name) || (!keepTests && TESTISH.test(name) && name !== 'liveRunner.testkit.ts')) continue
-      files.push({ path: relative(ROOT, p).split(sep).join('/'), text: readFileSync(p, 'utf8') })
+      if (st.isDirectory()) { if (!shouldSkipDir(rel)) walk(p); continue }
+      if (!SCAN_EXT.test(name) || (!keepTests && TESTISH.test(name) && name !== 'liveRunner.testkit.ts')) continue
+      files.push({ path: rel, text: readFileSync(p, 'utf8') })
     }
   }
   for (const r of roots) walk(join(ROOT, r))
   return files
 }
 
-describe('Serper cannot be reached around serperPost (static scan of src/ and scripts/)', () => {
+describe('static scan of src/ and scripts/: a tripwire for the NORMAL ways around serperPost (not a proof that none exists)', () => {
   const files = readTree(['src', 'scripts'])
 
   it('scans a real tree (not an empty one)', () => {
@@ -104,7 +127,7 @@ describe('Serper cannot be reached around serperPost (static scan of src/ and sc
       const f = files.find(x => x.path === e.path)!
       const probe = findViolations([f], []) // with NO exceptions: which rules does this file trip?
       const used = new Set<string>()
-      for (const v of probe) used.add(v.includes('Serper host') ? 'host' : v.includes('X-API-KEY') ? 'header' : v.includes('SERPER_API_KEY') ? 'key' : 'direct')
+      for (const v of probe) used.add(v.rule)
       for (const r of e.rules) expect(used.has(r), `${e.path} is granted "${r}" but does not use it`).toBe(true)
     }
   })
@@ -113,20 +136,19 @@ describe('Serper cannot be reached around serperPost (static scan of src/ and sc
     const door = files.find(f => f.path === DOOR)!.text
     expect(door).toMatch(/https:\/\/google\.serper\.dev\//)
     expect(door).toMatch(/'X-API-KEY'/)
-    expect(door.split('\n').filter(l => !isComment(l)).join('\n').match(/\bfetch\(/g)?.length).toBe(1) // exactly one network call in the door (comments do not count)
+    expect(codeLines(door).join('\n').match(/\bfetch\(/g)?.length).toBe(1) // exactly one network call in the door (comments do not count)
   })
 
-  it('every non-replay reader of SERPER_API_KEY also uses serperPost, and none of them sets a header or calls fetch with a Serper URL', () => {
+  it('every src/ reader of SERPER_API_KEY that is not the door passes it to serperPost, and its CODE never names the X-API-KEY header (comments may)', () => {
     for (const e of EXCEPTIONS.filter(x => x.rules.includes('key') && !x.rules.includes('header') && x.path.startsWith('src/'))) {
       const text = files.find(f => f.path === e.path)!.text
-      const code = text.split('\n').filter(l => !isComment(l)).join('\n') // doc comments may name the header; code may not
       expect(text, e.path).toMatch(/serperPost\(/)
-      expect(code, e.path).not.toMatch(/x-api-key/i)
+      expect(codeLines(text).join('\n'), e.path).not.toMatch(/x-api-key/i)
     }
   })
 
   describe('the rules fire on synthetic offenders (so the scan is not vacuous)', () => {
-    const bad = (path: string, text: string): string[] => findViolations([{ path, text }])
+    const bad = (path: string, text: string): Violation[] => findViolations([{ path, text }])
     it('the Serper host in a new file, even in a comment', () => {
       expect(bad('src/lib/evil.ts', "const r = await fetch('https://google.serper.dev/search', { method: 'POST' })")).not.toEqual([])
       expect(bad('src/lib/evil.ts', '// copy of https://google.serper.dev/search')).not.toEqual([])
@@ -134,7 +156,7 @@ describe('Serper cannot be reached around serperPost (static scan of src/ and sc
     })
     it('the X-API-KEY header in a new file (a comment naming it is allowed)', () => {
       expect(bad('src/lib/evil.ts', "headers: { 'X-API-KEY': k }")).not.toEqual([])
-      expect(bad('src/lib/ok.ts', ' * the provider wants an X-API-KEY header')).toEqual([])
+      expect(bad('src/lib/ok.ts', '/**\n * the provider wants an X-API-KEY header\n */')).toEqual([])
       expect(bad('src/lib/ok.ts', '// X-API-KEY header goes through serperPost')).toEqual([])
     })
     it('a block comment in front of the code does not hide it; a line that is only a comment is still allowed', () => {
@@ -142,7 +164,33 @@ describe('Serper cannot be reached around serperPost (static scan of src/ and sc
       expect(bad('src/lib/evil.ts', '/**/ const k = process.env.SERPER_API_KEY')).not.toEqual([])
       expect(bad('src/lib/evil.ts', '/* a */ /* b */ const k = process.env.SERPER_API_KEY')).not.toEqual([])
       expect(bad('src/lib/ok.ts', '/* the X-API-KEY header goes through serperPost */')).toEqual([])
-      expect(bad('src/lib/ok.ts', ' * SERPER_API_KEY is read in one place')).toEqual([])
+      expect(bad('src/lib/ok.ts', '/**\n * SERPER_API_KEY is read in one place\n */')).toEqual([])
+    })
+    it('[review A4] a block comment CLOSED at the start of a line does not hide the code after it', () => {
+      expect(bad('src/lib/evil.ts', '/* note\n*/ const k = process.env.SERPER_API_KEY')).not.toEqual([])
+      expect(bad('src/lib/evil.ts', "/**\n * note\n */ headers: { 'X-API-KEY': k }")).not.toEqual([])
+      expect(bad('src/lib/ok.ts', '/* note\n   still the comment\n*/')).toEqual([])
+    })
+    it('[review A6] a violation names its rule (not guessed from its message text)', () => {
+      expect(findViolations([{ path: 'src/lib/evil.ts', text: 'const k = process.env.SERPER_API_KEY' }])).toMatchObject([{ rule: 'key' }])
+      expect(findViolations([{ path: 'src/lib/evil.ts', text: "headers: { 'X-API-KEY': k }" }])).toMatchObject([{ rule: 'header' }])
+      expect(findViolations([{ path: 'src/lib/evil.ts', text: "const u = 'https://google.serper.dev/x'" }])).toMatchObject([{ rule: 'host' }])
+      // a direct call whose text happens to contain the key's NAME is still reported under BOTH rules, each under its own label
+      const both = findViolations([{ path: 'src/lib/evil.ts', text: 'await fetch(serperUrl, { k: SERPER_API_KEY })' }]).map(v => v.rule).sort()
+      expect(both).toEqual(['direct', 'key'])
+    })
+    it('[review A5] more direct-call forms are recognised on a line that names Serper', () => {
+      for (const call of ['ofetch(serperUrl)', '$fetch(serperUrl)', 'http.get(serperUrl)', 'ky(serperUrl)', 'ky.post(serperUrl)', 'https.get(serperUrl)', 'got.post(serperUrl)']) {
+        expect(bad('src/lib/evil.ts', `await ${call}`), call).not.toEqual([])
+      }
+    })
+    it('[review A5] the scan reads .mts / .cts / .jsx as well', () => {
+      for (const name of ['a.ts', 'a.tsx', 'a.mjs', 'a.js', 'a.cjs', 'a.mts', 'a.cts', 'a.jsx']) expect(SCAN_EXT.test(name), name).toBe(true)
+      expect(SCAN_EXT.test('a.json')).toBe(false)
+    })
+    it('[review A3] directories are skipped by their ROOT-RELATIVE path: only node_modules / .next / .git by name, and the one recordings folder by path', () => {
+      for (const p of ['node_modules', 'src/x/node_modules', '.next', '.git', 'scripts/consult/replay/recordings']) expect(shouldSkipDir(p), p).toBe(true)
+      for (const p of ['src/app/api/recordings', 'src/lib/out', 'scripts/out', 'src/lib/coverage', 'recordings']) expect(shouldSkipDir(p), p).toBe(false)
     })
     it('a new reader of SERPER_API_KEY', () => {
       expect(bad('src/lib/evil.ts', 'const k = process.env.SERPER_API_KEY')).not.toEqual([])
