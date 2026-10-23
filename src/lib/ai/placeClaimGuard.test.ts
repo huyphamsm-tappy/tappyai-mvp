@@ -309,7 +309,7 @@ describe('PLACE_CLAIM_KEEP_VERIFIED_PRICE', () => {
 
   // With a clean first sentence the established path removes a sentence that carries unsupported quality claims, whatever their
   // number, and an un-dotted amount in it goes with the sentence. Observed in the 23/10 run: the two-phrase sentence below was
-  // removed once it followed a clean sentence. These are the established-path truths the two it.fails cases do NOT hold for.
+  // removed once it followed a clean sentence. These are the established-path truths the three PC-V1-LAST-RESORT-01 it.fails cases below do NOT hold for.
   it('established path: with a clean first sentence, a sentence with two quality phrases or an un-dotted amount is removed (flag does not change it)', () => {
     const lead = 'Tôi đã tìm được một lựa chọn phù hợp. '
     for (const claim of [
