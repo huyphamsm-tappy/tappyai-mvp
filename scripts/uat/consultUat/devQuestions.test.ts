@@ -32,10 +32,20 @@ describe('parseDevQuestions refuses', () => {
   it('a copy with punctuation added is refused (near-copy by words)', () => {
     expect(parseDevQuestions('A1|A1|1|alpha, beta! gamma. delta; epsilon: zeta? eta, theta.', SYN).ok).toBe(false)
   })
-  it('a duplicate id is refused even on another turn', () => {
+  it('an id reused by another conversation is refused', () => {
     const r = parseDevQuestions('A1|A1|1|một câu khác hẳn\nA1|A2|1|câu khác nữa hẳn', SYN)
     expect(r.ok).toBe(false)
-    if (!r.ok) expect(r.reasons.join(' ')).toMatch(/id A1 is used twice/)
+    if (!r.ok) expect(r.reasons.join(' ')).toMatch(/id A1 belongs to two conversations/)
+  })
+  it('several turns of ONE conversation may share its id (D6 has two turns, both with id D6)', () => {
+    const r = parseDevQuestions('D6|D6|1|một câu khác hẳn\nD6|D6|2|câu khác nữa hẳn', SYN)
+    expect(r.ok).toBe(true)
+    if (r.ok) expect(r.turns.map(t => t.turn)).toEqual([1, 2])
+  })
+  it('an id that appears under two different conversations is refused', () => {
+    const r = parseDevQuestions('D6|D6|1|một câu khác hẳn\nD6|D7|1|câu khác nữa hẳn', SYN)
+    expect(r.ok).toBe(false)
+    if (!r.ok) expect(r.reasons.join(' ')).toMatch(/id D6 belongs to two conversations/)
   })
   it('a conversation written with a trailing space is still the same conversation for the turn check', () => {
     const r = parseDevQuestions('A1|A1 |1|một câu khác hẳn\nA2|A1|1|câu khác nữa hẳn', SYN)

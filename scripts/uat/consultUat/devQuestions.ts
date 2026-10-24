@@ -37,7 +37,8 @@ export function parseDevQuestions(raw: string, benchTexts: readonly string[] = U
   const reasons: string[] = []
   const turns: UatTurn[] = []
   const seen = new Set<string>()
-  const ids = new Set<string>()
+  // an id names ONE conversation: several turns of that conversation share its id (D6 has two turns); a second conversation under the same id is refused
+  const idOwner = new Map<string, string>()
   lines.forEach((line, i) => {
     const parts = line.split('|')
     if (parts.length !== 4) { reasons.push(`line ${i + 1}: expected id|conversation|turn|text`); return }
@@ -47,9 +48,10 @@ export function parseDevQuestions(raw: string, benchTexts: readonly string[] = U
     if (!Number.isInteger(turn) || turn < 1) { reasons.push(`line ${i + 1}: turn must be a whole number from 1`); return }
     if (body.trim() === '') { reasons.push(`line ${i + 1}: the question text is empty`); return }
     if (seen.has(`${conversation.trim()}#${turn}`)) { reasons.push(`line ${i + 1}: ${conversation.trim()} turn ${turn} appears twice`); return }
-    if (ids.has(id.trim())) { reasons.push(`line ${i + 1}: the id ${id.trim()} is used twice`); return }
+    const owner = idOwner.get(id.trim())
+    if (owner !== undefined && owner !== conversation.trim()) { reasons.push(`line ${i + 1}: the id ${id.trim()} belongs to two conversations`); return }
     seen.add(`${conversation.trim()}#${turn}`)
-    ids.add(id.trim())
+    idOwner.set(id.trim(), conversation.trim())
     const key = copyKey(body)
     if (benchTexts.some(b => copyKey(b) === key)) { reasons.push(`line ${i + 1}: the question is a copy of a benchmark question`); return }
     if (benchTexts.some(b => isNearCopy(body, b))) { reasons.push(`line ${i + 1}: the question shares ${NEAR_COPY_SHARE * 100}% of its words with a benchmark question (near-copy)`); return }
