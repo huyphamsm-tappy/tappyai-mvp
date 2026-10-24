@@ -22,7 +22,7 @@ import { appendFileSync, mkdirSync, realpathSync, unlinkSync, writeFileSync } fr
 import { win32 } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { randomUUID } from 'node:crypto'
-import { benchSpendGateOn, checkBenchCaps, readBenchCaps, runWithSpendGate } from '@/lib/ai/budget/spendGate'
+import { benchModeOf, benchSpendGateOn, checkBenchCaps, maxRunCapUsd, readBenchCaps, runWithSpendGate } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, RequestNotSent, runUat, summarize, type ChatMessage, type Reservation, type RunOptions, type TurnRunner, type UatReport } from './harness'
 import { UAT_TURNS, type UatTurn } from './questions'
 import { runInTurn, type TurnToken } from './turnScope'
@@ -120,7 +120,7 @@ export interface BenchOptions {
   chat: ChatTransport
   /** USD per turn (the hard per-turn cap). Never above $0.05. */
   turnCapUsd: number
-  /** USD for the whole run (the hard run cap). Never above $0.65. */
+  /** USD for the whole run (the hard run cap). Never above $0.65 — or $1.75 in the explicitly chosen extension mode (BENCH_TRIAL_MODE=dev-multi); see benchModeOf. */
   runCapUsd: number
   /** `--confirm-spend <cap>`: the explicit confirmation that this run may spend up to that cap. */
   confirmSpend: { capUsd: number } | null
@@ -303,15 +303,17 @@ function locationProblems(path: string, repoRoot: string | undefined, extraRoots
 export function assertBenchAllowed(o: BenchOptions): void {
   const env = o.env ?? process.env
   const reasons: string[] = []
-  // The caps asked for: exact decimal value, at most $0.05 per turn and $0.65 per run, turn cap not above the run cap.
-  const asked = checkBenchCaps(o.turnCapUsd, o.runCapUsd)
+  // The caps asked for: exact decimal value, at most $0.05 per turn and, per run, the maximum of the budget MODE ($0.65 acceptance; $1.75 only for the
+  // explicitly chosen extension mode, BENCH_TRIAL_MODE=dev-multi), turn cap not above the run cap. Unknown / missing mode = acceptance = $0.65.
+  const mode = benchModeOf(env)
+  const asked = checkBenchCaps(o.turnCapUsd, o.runCapUsd, mode)
   if (!asked.ok) reasons.push(...asked.reasons)
   if (!o.confirmSpend) reasons.push('no explicit spend confirmation (--confirm-spend with the cap)')
   else if (o.confirmSpend.capUsd !== o.runCapUsd) reasons.push(`the spend confirmation (${o.confirmSpend.capUsd}) is not for the run cap (${o.runCapUsd})`)
   if (!benchSpendGateOn(env)) reasons.push('BENCH_SPEND_GATE is not ON')
   else {
     const caps = readBenchCaps(env)
-    if (!caps) reasons.push('BENCH_SPEND_TURN_CAP_USD / BENCH_SPEND_RUN_CAP_USD are missing, invalid or above the maximum ($0.05 per turn, $0.65 per run)')
+    if (!caps) reasons.push(`BENCH_SPEND_TURN_CAP_USD / BENCH_SPEND_RUN_CAP_USD are missing, invalid or above the maximum ($0.05 per turn, $${maxRunCapUsd(mode)} per run in ${mode} mode)`)
     else if (caps.turnUsd !== o.turnCapUsd || caps.runUsd !== o.runCapUsd) reasons.push('the caps in the environment (cap variables) differ from the caps asked for')
   }
   if (!o.declaredFlags) reasons.push('the flag set is not listed explicitly (declaredFlags)')

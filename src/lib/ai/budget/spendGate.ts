@@ -29,6 +29,17 @@ export interface BenchCaps { turnUsd: number; runUsd: number }
 export const MAX_TURN_CAP_USD = 0.05
 export const MAX_RUN_CAP_USD = 0.65
 
+/**
+ * BUDGET MODES (closure round 2). The $0.65 run maximum belongs to the ACCEPTANCE run and does not change. The development EXTENSION run (BENCH_TRIAL_MODE
+ * exactly `dev-multi`, the 30-turn extension set) may be capped higher, at most $1.75 per run; the per-turn maximum stays $0.05 in every mode. The mode is
+ * read from ONE place (`benchModeOf`) and is FAIL-CLOSED: anything that is not exactly `dev-multi` — unset, blank, another word, another case, a trailing
+ * space — is `acceptance`, i.e. $0.65. Like the other maxima these are constants: no option and no environment variable raises them.
+ */
+export const MAX_RUN_CAP_EXTENSION_USD = 1.75
+export type BenchMode = 'acceptance' | 'extension'
+export const benchModeOf = (env: Record<string, string | undefined> = process.env): BenchMode => (env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension' : 'acceptance')
+export const maxRunCapUsd = (mode: BenchMode): number => (mode === 'extension' ? MAX_RUN_CAP_EXTENSION_USD : MAX_RUN_CAP_USD)
+
 const CAP_DECIMALS = 12
 // no BigInt literals (10n): the project targets ES2017
 const CAP_SCALE = BigInt(10) ** BigInt(CAP_DECIMALS)
@@ -50,6 +61,7 @@ export function capToScaled(v: unknown): bigint | null {
 }
 const MAX_TURN_SCALED = capToScaled(String(MAX_TURN_CAP_USD))!
 const MAX_RUN_SCALED = capToScaled(String(MAX_RUN_CAP_USD))!
+const MAX_RUN_EXTENSION_SCALED = capToScaled(String(MAX_RUN_CAP_EXTENSION_USD))!
 const capNumber = (v: unknown): number => Number(typeof v === 'string' ? v.trim() : v)
 
 export type CapCheck = { ok: true; turnUsd: number; runUsd: number } | { ok: false; reasons: string[] }
@@ -70,11 +82,12 @@ export function checkTurnCap(turn: unknown): { ok: true; turnUsd: number } | { o
 
 /**
  * The caps as received (environment text or option numbers): both valid decimals, the turn cap not above the run cap, the turn cap at most
- * $0.05 and the run cap at most $0.65 — judged on the exact decimal value.
+ * $0.05 and the run cap at most the maximum of the MODE ($0.65 acceptance, $1.75 extension) — judged on the exact decimal value.
+ * `mode` defaults to `acceptance`: a caller that does not say which run this is gets the strict maximum.
  */
-export function checkBenchCaps(turn: unknown, run: unknown): CapCheck {
+export function checkBenchCaps(turn: unknown, run: unknown, mode: BenchMode = 'acceptance'): CapCheck {
   const t = capProblem('per-turn', turn, MAX_TURN_SCALED, MAX_TURN_CAP_USD)
-  const r = capProblem('run', run, MAX_RUN_SCALED, MAX_RUN_CAP_USD)
+  const r = capProblem('run', run, mode === 'extension' ? MAX_RUN_EXTENSION_SCALED : MAX_RUN_SCALED, maxRunCapUsd(mode))
   const reasons = [t.problem, r.problem].filter((x): x is string => x !== null)
   if (t.scaled !== null && r.scaled !== null && t.scaled > r.scaled) reasons.push(`the per-turn cap (${String(turn)}) is above the run cap (${String(run)})`)
   return reasons.length ? { ok: false, reasons } : { ok: true, turnUsd: capNumber(turn), runUsd: capNumber(run) }
@@ -83,7 +96,7 @@ export function checkBenchCaps(turn: unknown, run: unknown): CapCheck {
 /** The caps, read only when the flag is ON. Null = flag OFF, or a cap is missing / invalid / above the maximum / the turn cap is above the run cap. */
 export function readBenchCaps(env: Record<string, string | undefined> = process.env): BenchCaps | null {
   if (!benchSpendGateOn(env)) return null
-  const c = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
+  const c = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, benchModeOf(env))
   return c.ok ? { turnUsd: c.turnUsd, runUsd: c.runUsd } : null
 }
 

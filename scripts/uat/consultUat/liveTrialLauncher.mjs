@@ -317,6 +317,7 @@ export function gate1Summary(env, questionText) {
     '--- Gate 1: tóm tắt trước lần gửi request đầu tiên (không có giá trị khóa) ---',
     `BENCH_TRIAL_MODE=${env.BENCH_TRIAL_MODE ?? '(unset)'}`,
     `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
+    `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.05 USD/lượt ở mọi chế độ`,
     `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]

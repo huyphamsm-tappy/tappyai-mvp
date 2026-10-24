@@ -7,7 +7,8 @@
  *
  * ORDER (nothing is read, written or sent until every check that needs no I/O has passed):
  *   1. preflight (pure): CI unset · BENCH_EXPECT_CONSULTATIVE_V1 / BENCH_EXPECT_CONSULT_V2 are exactly 0 or 1 and equal the flags the route will see (see
- *      CONSULTATIVE_CONFIRMATIONS: they exist because the vitest setup overwrites those two flags) · caps exact and ≤ 0.05 / ≤ 0.65 · BENCH_CONFIRM_SPEND = the run cap ·
+ *      CONSULTATIVE_CONFIRMATIONS: they exist because the vitest setup overwrites those two flags) · caps exact and ≤ 0.05 per turn / ≤ 0.65 per run (≤ 1.75 per run only in
+ *      the extension mode, BENCH_TRIAL_MODE exactly dev-multi; anything else is the 0.65 acceptance mode) · BENCH_CONFIRM_SPEND = the run cap ·
  *      the question file is named · the runner's own preflight
  *      (flags explicit and equal to the environment, no flag that must be OFF, no set-but-blank variable, exact model ids, output folder on drive D)
  *   2. the question file is read (UTF-8, one optional byte-order mark dropped) and checked: not empty, not one of the 12 benchmark questions
@@ -38,7 +39,7 @@ import https from 'node:https'
 import { syncBuiltinESMExports } from 'node:module'
 import { join } from 'node:path'
 import { inspect } from 'node:util'
-import { checkBenchCaps, capToScaled } from '@/lib/ai/budget/spendGate'
+import { benchModeOf, checkBenchCaps, capToScaled, MAX_TURN_CAP_USD, maxRunCapUsd, type BenchMode } from '@/lib/ai/budget/spendGate'
 import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
@@ -135,6 +136,8 @@ export interface TrialSummary {
   resultPath: string | null
   /** The Serper REQUEST cap of this run (serperRequestCap.ts): the two limits, the requests it let through (this process) and the ones it refused. A count, not a price. */
   requestCap: { perTurnLimit: number | null; runLimit: number | null; sent: number; refused: number }
+  /** The budget MODE in force (acceptance = $0.65 run maximum, extension = $1.75, chosen only by BENCH_TRIAL_MODE=dev-multi) and the USD caps the run was held to (ESTIMATES, not an invoice). */
+  budget: { mode: BenchMode; turnCapUsd: number; runCapUsd: number }
 }
 
 export interface TrialControls {
@@ -241,7 +244,7 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
 export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
   const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
-  const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
+  const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, benchModeOf(env))
   if (!caps.ok) reasons.push(...caps.reasons)
   const confirm = capToScaled(env.BENCH_CONFIRM_SPEND)
   const run = capToScaled(env.BENCH_SPEND_RUN_CAP_USD)
@@ -472,6 +475,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     hostsBlocked, redirects, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
     requestCap: { perTurnLimit: parseCapValue(env[REQUEST_CAP_PER_TURN_ENV], REQUEST_CAP_MAX_PER_TURN), runLimit: capFinal?.limit ?? null, sent: capFinal?.sent ?? 0, refused: capFinal?.refused ?? 0 },
+    budget: { mode: benchModeOf(env), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd },
   }
   return { kind: 'ran', summary, controls }
 }
@@ -488,6 +492,7 @@ export function formatSummary(s: TrialSummary): string {
   lines.push(
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
     `ledger: llm=${s.llmRequests} serper=${s.serperRequests} refusals=${s.refusals} photoSkips=${s.photoSkips} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
+    `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,
     `answerChars=${s.answerChars} result=${s.resultPath ?? '-'}`,

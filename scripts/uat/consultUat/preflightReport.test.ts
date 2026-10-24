@@ -55,7 +55,12 @@ describe('each wrong setting is reported as its own failing condition (red → g
     ['BENCH_CONFIRM_SPEND equals the RUN cap', { BENCH_CONFIRM_SPEND: '0.05' }, 'BENCH_CONFIRM_SPEND equals the RUN cap exactly'],
     ['the mode', { BENCH_TRIAL_MODE: undefined }, 'mode is dev-multi (BENCH_TRIAL_MODE=dev-multi)'],
     ['the cost gate', { BENCH_SPEND_GATE: '0' }, 'cost gate ON (BENCH_SPEND_GATE=1)'],
-    ['the run cap above the maximum', { BENCH_SPEND_RUN_CAP_USD: '0.70', BENCH_CONFIRM_SPEND: '0.70' }, 'caps: turn <= 0.05, run <= 0.65, turn <= run'],
+    // The run maximum depends on the budget mode (this GOOD env is the extension mode, BENCH_TRIAL_MODE=dev-multi: $1.75). The case that used to say "0.70 is above the
+    // maximum" keeps its intent in the ACCEPTANCE mode (mode unset → $0.65, third row); in the extension mode the value that is above the maximum is 1.80 (first row).
+    ['the run cap above the EXTENSION maximum (1.80 > 1.75)', { BENCH_SPEND_RUN_CAP_USD: '1.80', BENCH_CONFIRM_SPEND: '1.80' }, 'caps: turn <= 0.05, run <= 1.75 (extension mode), turn <= run'],
+    ['the per-turn cap above 0.05 in the extension mode', { BENCH_SPEND_TURN_CAP_USD: '0.06', BENCH_SPEND_RUN_CAP_USD: '1.75', BENCH_CONFIRM_SPEND: '1.75' }, 'caps: turn <= 0.05, run <= 1.75 (extension mode), turn <= run'],
+    ['the run cap above the ACCEPTANCE maximum (mode unset, 0.70 > 0.65)', { BENCH_TRIAL_MODE: undefined, BENCH_SPEND_RUN_CAP_USD: '0.70', BENCH_CONFIRM_SPEND: '0.70' }, 'caps: turn <= 0.05, run <= 0.65 (acceptance mode), turn <= run'],
+    ['a mode that is not exactly dev-multi ("Dev-Multi") is the acceptance mode: 0.70 is refused', { BENCH_TRIAL_MODE: 'Dev-Multi', BENCH_SPEND_RUN_CAP_USD: '0.70', BENCH_CONFIRM_SPEND: '0.70' }, 'caps: turn <= 0.05, run <= 0.65 (acceptance mode), turn <= run'],
     ['a consultative flag that differs from its confirmation', { CONSULT_V2: '0' }, 'consultative confirmations match the flags as the route will see them'],
     ['ROUTE_FLIGHT_HANG_KHONG_GUARD ON', { ROUTE_FLIGHT_HANG_KHONG_GUARD: '1' }, 'ROUTE_FLIGHT_HANG_KHONG_GUARD is UNSET or OFF for this run'],
     ['ROUTE_TOOL_OFFER_GUARD ON', { ROUTE_TOOL_OFFER_GUARD: '1' }, 'ROUTE_TOOL_OFFER_GUARD is UNSET or OFF for this run'],

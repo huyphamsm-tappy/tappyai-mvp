@@ -3,7 +3,7 @@
  * NOTHING: no network, no request, no spend. It never prints a value of a key; a key is reported SET or UNSET (and whether it contains whitespace).
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
-import { benchSpendGateOn, capToScaled, checkBenchCaps } from '@/lib/ai/budget/spendGate'
+import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
 import { connectionRedirectReasons, consultativeConfirmationReasons, preflight, requestCapReasons } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
 
@@ -31,8 +31,9 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
 
   add('cost gate ON (BENCH_SPEND_GATE=1)', benchSpendGateOn(env) ? [] : ['BENCH_SPEND_GATE is not 1'], 'ON')
 
-  const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
-  add('caps: turn <= 0.05, run <= 0.65, turn <= run', caps.ok ? [] : caps.reasons,
+  const mode = benchModeOf(env)
+  const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, mode)
+  add(`caps: turn <= ${MAX_TURN_CAP_USD}, run <= ${maxRunCapUsd(mode)} (${mode} mode), turn <= run`, caps.ok ? [] : caps.reasons,
     caps.ok ? `turn ${caps.turnUsd} USD, run ${caps.runUsd} USD` : '')
 
   add('Serper request cap armed in code (CONSULT_REQUEST_CAP=1 + a valid per-turn and per-run value, chosen by the owner)',
@@ -85,6 +86,11 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   const full = preflight(env, input.repoRoot, input.execArgv)
   add('every other check of the real trial (preflight, as the run does it)', full.reasons, 'all passed')
 
+  const unmet = out.filter(c => !c.ok).length
+  out.push({
+    name: 'budget mode and limits in force (information)', ok: true,
+    detail: `mode ${mode} (maximum run cap ${maxRunCapUsd(mode)} USD, per-turn ${MAX_TURN_CAP_USD} USD) | run cap ${env.BENCH_SPEND_RUN_CAP_USD ?? 'unset'} | per-turn cap ${env.BENCH_SPEND_TURN_CAP_USD ?? 'unset'} | L1 ${env.CONSULT_REQUEST_CAP_PER_TURN ?? 'unset'} | L2 ${env.CONSULT_REQUEST_CAP_PER_RUN ?? 'unset'} | conditions not met: ${unmet}`,
+  })
   out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT })
   return out
 }
