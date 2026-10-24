@@ -104,8 +104,9 @@ export function turnCreditsRemaining(): number {
 
 // ── TURN_WEB_TICKET + SEARCH_FALLBACK_GATE (both default OFF, read at call time) ──────────────────────────────────────────────────
 //
-// ONE web-research ("W") request may be SENT per user turn, shared by every W path (the model's web_search, the pre-search web_search, CCP
-// discovery, the DuckDuckGo fallback). Vertical-own requests (maps, images, shopping, a vertical's own /search) are "V" and do not use it.
+// ONE web-research ("W") request may be SENT per user turn, shared by every W path (the model's web_search, the pre-search web_search and the
+// DuckDuckGo fallback of those). Vertical-own requests (maps, images, shopping, a vertical's own /search, and - since PLAN B, owner 23/10/2026 -
+// CCP discovery and the hotel tool's fallback web search) are "V" and do not use it. The ticket does NOT limit V requests.
 //
 // Meanings (the tests are named with these words):
 //   · SENT      = the moment the code CALLS fetch to the provider, after every gate has passed. From then on every outcome — success, empty,

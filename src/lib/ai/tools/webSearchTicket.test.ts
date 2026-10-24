@@ -5,7 +5,8 @@
 // Meanings: SENT = the code CALLS fetch to the provider (after every gate); not_sent / sent_success / sent_empty / sent_error are never
 // inferred from an empty or thrown result alone; a ticket is refunded only for not_sent. Order: cache → single-flight → only the LEADER takes
 // the ticket, right before fetch; a follower never takes one and is never refused for it. W = the model's web_search, the pre-search
-// web_search, CCP discovery, the DuckDuckGo fallback. V = maps, images, shopping and a vertical's own /search (not limited here).
+// web_search and their DuckDuckGo fallback. V = maps, images, shopping, a vertical's own /search, and (PLAN B, 23/10/2026) CCP discovery and the
+// hotel tool's fallback web search (not limited here; see webSearchTicket.planB.test.ts).
 //
 // FLAG MATRIX (TURN_WEB_TICKET / SEARCH_FALLBACK_GATE) — the assertions below follow this table:
 //   | TICKET | GATE | behaviour                                                                                                              |
@@ -356,30 +357,34 @@ describe('10 · pre-search web_search, then the model\'s web_search → one requ
   }
 })
 
-describe('11 · CCP discovery and web_search share the ticket', () => {
-  it('[ticket=ON] discovery first, then web_search: the web_search is stopped; total 1', async () => {
+// PLAN B (owner decision 23/10/2026, round 3a): CCP discovery is a vertical ("V") request and no longer takes the turn's web ticket; the ticket is kept for the
+// model's web_search. The two ticket=ON tests below were CHANGED by that decision, and by nothing else (the matching new tests are in webSearchTicket.planB.test.ts):
+//   · "discovery first, then web_search"   was: the web_search is stopped, total 1   -> now: BOTH are sent, total 2, the ticket is spent by the web_search alone
+//   · "web_search first, then discovery"   was: discovery gets null and sends nothing -> now: discovery IS sent (V) and returns its rows, total 2
+// The ticket=OFF test is unchanged (legacy: both are sent), and so is every other test in this file.
+describe('11 · CCP discovery is V (Plan B) and does not take the ticket that web_search keeps', () => {
+  it('[ticket=ON] discovery first, then web_search: BOTH are sent (discovery is V); total 2, the ticket is spent by the web_search alone', async () => {
     setFlags(true, false)
     const ticket = createTurnWebTicket()
     await runWithTurnWebTicket(ticket, async () => {
       const rows = await cachedDiscoverySearch(uq('klook site:klook.com'))
       expect(rows).toEqual([expect.objectContaining({ title: 'Serper hit' })])
-      expect(budgetUsed(await ws(uq('after ccp')))).toBe(true)
+      expect(ticket.used).toBe(0)
+      expect(budgetUsed(await ws(uq('after ccp')))).toBe(false)
     })
-    expect(sent.serper).toBe(1)
+    expect(sent.serper).toBe(2)
+    expect(ticket.used).toBe(1)
   })
-  it('[ticket=ON] web_search first, then discovery: discovery gets null (not "[]"), sends nothing and stores nothing', async () => {
+  it('[ticket=ON] web_search first, then discovery: discovery is sent (V) and returns its rows; total 2', async () => {
     setFlags(true, false)
     const ticket = createTurnWebTicket()
     const q = uq('klook venue site:klook.com')
     await runWithTurnWebTicket(ticket, async () => {
       expect(budgetUsed(await ws(uq('first')))).toBe(false)
-      expect(await cachedDiscoverySearch(q)).toBeNull()
+      expect(await cachedDiscoverySearch(q)).toEqual([expect.objectContaining({ title: 'Serper hit' })])
     })
-    expect(sent.serper).toBe(1)
-    // a refusal is not an answer: it must not become a cached "nothing found"
-    const later = createTurnWebTicket()
-    const rows = await runWithTurnWebTicket(later, () => cachedDiscoverySearch(q))
-    expect(rows).toEqual([expect.objectContaining({ title: 'Serper hit' })])
+    expect(sent.serper).toBe(2)
+    expect(ticket.denied).toEqual([])
   })
   it('[ticket=OFF] discovery and web_search are both sent (legacy)', async () => {
     setFlags(false, false)
@@ -390,7 +395,8 @@ describe('11 · CCP discovery and web_search share the ticket', () => {
 })
 
 // 12 · the product-search fallback (toolState.ts) is only wired in the agent runtime (agent/runtime/index.ts, loop.ts), not in the legacy route — verified
-// by the import graph; the legacy hotel fallback webSearch (travel.ts) goes through the same webSearch and is covered by tests 3 and 10.
+// by the import graph. The legacy hotel fallback webSearch (travel.ts) is a V search since PLAN B (it passes { vertical: true }): it is covered by
+// webSearchTicket.planB.test.ts (sections B, D and the wiring test E); tests 3 and 10 here cover the model's own (W) web_search.
 
 // ── 13 · the DuckDuckGo door takes the ticket ──────────────────────────────────────────────────────────────────────────────────
 describe('13 · the DuckDuckGo gate takes the ticket (no way round it when the ticket is ON)', () => {

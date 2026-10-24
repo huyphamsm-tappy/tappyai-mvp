@@ -759,7 +759,8 @@ export function parseSerperPriceVnd(value: unknown): number | null {
 }
 
 // ===== WEB SEARCH: DuckDuckGo HTML (free, no API key) =====
-async function webSearchImpl(query: string, lang = 'vi') {
+/** `vertical: true` = a vertical's own fallback search (the legacy hotel fallback in travel.ts): a "V" request that does not take the turn's web ticket (Plan B). */
+async function webSearchImpl(query: string, lang = 'vi', opts: { vertical?: boolean } = {}) {
   const cacheKey = webSearchCacheKey(query, lang)
   const cached = getCache(cacheKey)
   if (cached) return cached
@@ -767,7 +768,7 @@ async function webSearchImpl(query: string, lang = 'vi') {
   const fallbackUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(query)
   let result: unknown
 
-  const serperEx = await serperSearchEx(query, { purpose: 'W' })
+  const serperEx = await serperSearchEx(query, opts.vertical ? {} : { purpose: 'W' })
   const serperResults = serperEx.rows
   if (serperResults && serperResults.length > 0) {
     result = { query, source: 'Google (Serper)', results: serperResults, search_url: fallbackUrl }
@@ -779,7 +780,7 @@ async function webSearchImpl(query: string, lang = 'vi') {
   //   · the turn's web ticket was spent before this call: nothing was sent and nothing is invented;
   //   · gate: a Serper request that was SENT (by this call or by the flight it followed) is not followed by a second provider;
   //   · ticket: DuckDuckGo is a W request too — it takes the ticket right before fetch; a spent ticket refuses it.
-  const ticketOn = turnWebTicketOn()
+  const ticketOn = turnWebTicketOn() && !opts.vertical // a V search (the hotel fallback) and its DuckDuckGo step never touch the ticket
   const serperSent = serperEx.state === 'sent_success' || serperEx.state === 'sent_empty' || serperEx.state === 'sent_error'
   if (ticketOn && serperEx.state === 'ticket_denied') return searchBudgetUsed(lang)
   let ddgBlocked = false

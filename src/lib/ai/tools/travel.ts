@@ -241,7 +241,8 @@ async function getHotelPricesImpl(location: string, checkIn?: string, checkOut?:
      */
     let source: string = mapsRows.length > 0 ? SERPER_PLACES_SOURCE : messages.hotels.sourceSerperOsm()
     if (mapsRows.length === 0 && (!searchResults || searchResults.length === 0)) {
-      const ddg = await webSearch(searchQuery, lang) as { results?: Array<{ title: string; link: string; snippet: string }> }
+      // TURN_WEB_TICKET Plan B: the hotel tool's own fallback is a vertical ("V") search, not the model's web research: it does not take the web ticket.
+      const ddg = await webSearch(searchQuery, lang, { vertical: true }) as { results?: Array<{ title: string; link: string; snippet: string }> }
       searchResults = ddg?.results
       source = messages.hotels.sourceDdgOsm(lang)
     }
