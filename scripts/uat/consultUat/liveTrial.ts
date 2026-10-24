@@ -42,6 +42,7 @@ import { checkBenchCaps, capToScaled } from '@/lib/ai/budget/spendGate'
 import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
+import { currentTurn } from './turnScope'
 import { UAT_TURNS, type UatTurn } from './questions'
 
 /** The only requests a trial may send: host → exact paths. Everything else is BLOCKED before it is sent (and counted). */
@@ -76,6 +77,11 @@ export interface LiveTrialInput {
   now?: () => number
   /** How long the wrappers stay installed after the answer, for background work that outlives it (default 100 ms). */
   drainMs?: number
+  /**
+   * Round 3c: the development turns, already validated by the caller (devQuestions.ts). When given, they replace the one question of the file;
+   * the question file is then not read for its text. One process, one run cap; each turn is closed on its own (turnScope.ts).
+   */
+  turns?: readonly UatTurn[]
   /** The node command-line options of this process (default process.execArgv). Injectable so a rehearsal can prove what is refused. */
   execArgv?: readonly string[]
   /**
@@ -97,6 +103,13 @@ export interface TrialSummary {
   trialClean: boolean
   /** Hosts a request was attempted to while the network was closed - after the turn was over (through any wrapper reference), or in 'deny' mode before the wrappers were installed - blocked before it was sent: late background work. Any entry makes the trial NOT CLEAN. */
   lateBlocked: string[]
+  /** Round 3c: why the run stopped before its last turn (null = it ran every turn it was given). */
+  stopped: string | null
+  /** Round 3c: turns that were run / turns given. One turn: 1 / 1. */
+  turnsRun: number
+  turnsTotal: number
+  /** Round 3c: one row per turn that ran. `cards` counts the card entries in the answer (a rough count of `"key":"` items). The full answer is in the result file, not here. */
+  turnRows: Array<{ id: string; tools: string[]; serper: number; serperW: number; serperV: number; llm: number; usd: number | null; chars: number; cards: number }>
   costState: 'known' | 'unknown' | 'none'
   /** ESTIMATE from the ledger (tokens × price table, Serper credits); NOT an invoice. */
   usd: number | null
@@ -314,15 +327,18 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const refuse = (reasons: string[]): TrialOutcome => ({ kind: 'refused', reasons: reasons.map(r => redactSecrets(r, env)), controls })
   const pre = preflight(env, input.repoRoot, input.execArgv)
   if (pre.reasons.length || !pre.caps) return refuse(pre.reasons.length ? pre.reasons : ['the caps are not valid'])
-  // 2. the question
-  const file = env.BENCH_TRIAL_QUESTION_FILE!.trim()
-  let raw: string
-  try { raw = (input.readTextFile ?? (p => readFileSync(p, 'utf8')))(file) } catch (e) {
-    return refuse([`the question file cannot be read: ${e instanceof Error ? e.message : String(e)}`])
-  }
-  const question = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).trim()
-  if (question === '') return refuse(['the question is empty'])
-  if (TWELVE.has(questionKey(question))) return refuse(['the question is one of the 12 benchmark questions: the trial uses a development question outside them'])
+  // 2. the question (one question from the file) — or, round 3c, the development turns the caller validated
+  let question = ''
+  if (input.turns === undefined) {
+    const file = env.BENCH_TRIAL_QUESTION_FILE!.trim()
+    let raw: string
+    try { raw = (input.readTextFile ?? (p => readFileSync(p, 'utf8')))(file) } catch (e) {
+      return refuse([`the question file cannot be read: ${e instanceof Error ? e.message : String(e)}`])
+    }
+    question = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).trim()
+    if (question === '') return refuse(['the question is empty'])
+    if (TWELVE.has(questionKey(question))) return refuse(['the question is one of the 12 benchmark questions: the trial uses a development question outside them'])
+  } else if (input.turns.length === 0) return refuse(['no development turns were given'])
 
   // 3. the wrapped network and the one turn
   const forward = input.fetchImpl ?? originalFetch
@@ -345,7 +361,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   }
   filterConsole()
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
-    if (trialClosed) closedAttempt(urlOf(req))
+    if (trialClosed || currentTurn()?.open === false) closedAttempt(urlOf(req)) // round 3c: a closed turn refuses its late requests too
     // a `dispatcher` in the init is undici's way of changing where the connection goes (a proxy agent, a custom connector): such a call cannot be judged by its URL
     if (init && typeof init === 'object' && 'dispatcher' in init) admit('(unparseable)')
     const url = urlOf(req)
@@ -356,13 +372,14 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     return res
   }) as typeof fetch
   const guardNode = (proto: 'http' | 'https', original: (...a: never[]) => unknown) => function (this: unknown, ...args: unknown[]) {
-    if (trialClosed) closedAttempt(nodeRequestUrl(proto, args))
+    if (trialClosed || currentTurn()?.open === false) closedAttempt(nodeRequestUrl(proto, args)) // round 3c: as for fetch
     admit(nodeRequestUrl(proto, args))
     return (original as (...a: unknown[]) => unknown).apply(proto === 'https' ? https : http, args)
   }
   setNode(guardNode('https', originalNode.httpsRequest as never) as never, guardNode('https', originalNode.httpsGet as never) as never, guardNode('http', originalNode.httpRequest as never) as never, guardNode('http', originalNode.httpGet as never) as never)
 
   const trialTurn: UatTurn = { id: 'TRIAL', conversation: 'TRIAL', turn: 1, text: question }
+  const trialTurns: readonly UatTurn[] = input.turns ? [...input.turns] : [trialTurn]
   let result
   try {
     result = await runBench({
@@ -373,7 +390,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
         return input.post(req)
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
-      env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: [trialTurn], now: input.now,
+      env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
@@ -386,28 +403,47 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     closeTrial()
   }
 
-  const r = result.records[0]
+  // Round 3c: every record of the run. For one turn this is exactly what it was.
+  const records = result.records
   const warnings: string[] = []
   const problems: string[] = []
-  if (!r) problems.push('no turn record: the turn never ran')
-  else {
-    if (r.cost.state !== 'known') problems.push(`cost not known (${r.blocked ?? 'unknown'}; open reservations ≈ ${r.openReservedUsd})`)
-    if (r.degraded) problems.push(`degraded: ${r.refusals} paid call(s) refused by the gate`)
-    if (r.error) problems.push(`error: ${r.error}`)
-    if (r.streamErrors.length) problems.push(`stream errors: ${r.streamErrors.join('; ')}`)
-    if (!result.report.cost.costAccounted) problems.push('the cost book is not fully accounted')
-    if ((sent['api.openai.com'] ?? 0) !== r.llmRequests) warnings.push(`LLM request count differs: the wrapper sent ${sent['api.openai.com'] ?? 0}, the ledger booked ${r.llmRequests}`)
-    if ((sent['google.serper.dev'] ?? 0) !== r.serperRequests) warnings.push(`Serper request count differs: the wrapper sent ${sent['google.serper.dev'] ?? 0}, the ledger booked ${r.serperRequests}`)
+  if (records.length === 0) problems.push('no turn record: the turn never ran')
+  for (const r of records) {
+    if (r.cost.state !== 'known') problems.push(`${r.id}: cost not known (${r.blocked ?? 'unknown'}; open reservations ≈ ${r.openReservedUsd})`)
+    if (r.degraded) problems.push(`${r.id}: degraded: ${r.refusals} paid call(s) refused by the gate`)
+    if (r.error) problems.push(`${r.id}: error: ${r.error}`)
+    if (r.streamErrors.length) problems.push(`${r.id}: stream errors: ${r.streamErrors.join('; ')}`)
   }
-  const turnOk = !!r && problems.length === 0
+  if (records.length > 0 && !result.report.cost.costAccounted) problems.push('the cost book is not fully accounted')
+  const sumLlm = records.reduce((a, r) => a + r.llmRequests, 0)
+  const sumSerper = records.reduce((a, r) => a + r.serperRequests, 0)
+  if (records.length > 0 && (sent['api.openai.com'] ?? 0) !== sumLlm) warnings.push(`LLM request count differs: the wrapper sent ${sent['api.openai.com'] ?? 0}, the ledger booked ${sumLlm}`)
+  if (records.length > 0 && (sent['google.serper.dev'] ?? 0) !== sumSerper) warnings.push(`Serper request count differs: the wrapper sent ${sent['google.serper.dev'] ?? 0}, the ledger booked ${sumSerper}`)
+  const turnOk = records.length > 0 && problems.length === 0
+  const allKnown = records.length > 0 && records.every(r => r.cost.state === 'known')
+  const usdSum = allKnown ? Math.round(records.reduce((a, r) => a + (r.cost.usd ?? 0), 0) * 1e9) / 1e9 : null
   const hostsBlocked = [...blocked].sort()
   const summary: TrialSummary = {
-    turnOk, runValid: result.valid, benchmarkEligible: isBenchmarkEligible([trialTurn], result.valid),
-    trialClean: turnOk && hostsBlocked.length === 0 && redirects.length === 0 && warnings.length === 0 && late.length === 0,
+    turnOk, runValid: result.valid, benchmarkEligible: isBenchmarkEligible(trialTurns, result.valid),
+    // a run that stopped before its last turn is never clean, whatever the books say: the turns it did not run are not part of the result
+    trialClean: turnOk && hostsBlocked.length === 0 && redirects.length === 0 && warnings.length === 0 && late.length === 0 && records.length === trialTurns.length && result.report.stopped === null,
     lateBlocked: [...late],
-    costState: r ? r.cost.state : 'none', usd: r ? r.cost.usd : null, ms: r ? r.ms : null, tools: r ? r.toolNames : [],
-    llmRequests: r ? r.llmRequests : 0, serperRequests: r ? r.serperRequests : 0, hostRequests: sent,
-    refusals: r ? r.refusals : 0, photoSkips: r ? r.photoSkips : 0, answerChars: r ? r.answer.length : 0,
+    // a run stops either inside runUat (report.stopped) or because a turn left the runner halted (an error, a degraded turn, an unknown cost):
+    // then the later turns were never sent and runUat names no stop. Both are reported; the text is redacted like every other summary line.
+    stopped: result.report.stopped
+      ? redactSecrets(`${result.report.stopped.reason} at ${result.report.stopped.atTurn}: ${result.report.stopped.detail}`, env)
+      : records.length < trialTurns.length
+        ? redactSecrets(`the runner halted after ${records.length} of ${trialTurns.length} turns (a turn was not an answer, or its cost was not known); the rest were not sent`, env)
+        : null,
+    turnsRun: records.length, turnsTotal: trialTurns.length,
+    turnRows: records.map(r => ({
+      id: r.id, tools: r.toolNames, serper: r.serperRequests, serperW: r.requestTotals.serper.W.requests, serperV: r.requestTotals.serper.V.requests,
+      llm: r.llmRequests, usd: r.cost.state === 'known' ? r.cost.usd : null, chars: r.answer.length, cards: (r.answer.match(/"key":"/g) ?? []).length,
+    })),
+    costState: records.length === 0 ? 'none' : allKnown ? 'known' : 'unknown', usd: usdSum, ms: records.length === 0 ? null : records.reduce((a, r) => a + r.ms, 0),
+    tools: [...new Set(records.flatMap(r => r.toolNames))],
+    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent,
+    refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
   }
@@ -429,5 +465,16 @@ export function formatSummary(s: TrialSummary): string {
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,
     `answerChars=${s.answerChars} result=${s.resultPath ?? '-'}`,
   )
+  if (s.turnsTotal !== 1) {
+    // Round 3c: a development run. Not an acceptance result, and never a benchmark (runValid / benchmarkEligible are false by construction).
+    lines.push(
+      `DEV RUN: ${s.turnsRun}/${s.turnsTotal} turns ran | STOPPED: ${s.stopped ?? 'no (every turn ran)'} | dev run, not an acceptance result`,
+      `turn | tools | serper (W/V) | llm calls | USD est. | answer chars | cards`,
+      ...s.turnRows.map(t => `${t.id} | ${t.tools.join(',') || '-'} | ${t.serper} (${t.serperW}/${t.serperV}) | ${t.llm} | ${t.usd ?? 'unknown'} | ${t.chars} | ${t.cards}`),
+      s.usd === null
+        ? `total USD est.: unknown (at least one turn's cost is not known; the sum of the known turns is not reported as a total)`
+        : `total USD est. (all ${s.turnsRun} turns known): ${s.usd} | run cap ${s.flagsInEffect.BENCH_SPEND_RUN_CAP_USD ?? '?'}`,
+    )
+  }
   return lines.join('\n')
 }

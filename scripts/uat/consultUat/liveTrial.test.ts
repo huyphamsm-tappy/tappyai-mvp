@@ -26,7 +26,9 @@
 // VARIABLES (names only; values come from the Owner's own session): OPENAI_API_KEY, SERPER_API_KEY, BENCH_SPEND_GATE, BENCH_SPEND_TURN_CAP_USD,
 // BENCH_SPEND_RUN_CAP_USD, BENCH_CONFIRM_SPEND, BENCH_EXPECT_CONSULTATIVE_V1, BENCH_EXPECT_CONSULT_V2, BENCH_TRIAL_QUESTION_FILE, BENCH_TRIAL_OUT_DIR, the benchmark flags.
 import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { readFileSync } from 'node:fs'
 import { formatSummary, runLiveTrial } from './liveTrial'
+import { parseDevQuestions } from './devQuestions'
 import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, marker } from './liveTrialLauncher.mjs'
 
 const h = vi.hoisted(() => {
@@ -61,7 +63,9 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
     ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) // the route is imported BEFORE the fetch wrapper is installed
   }, 120_000)
 
-  it('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
+  // Round 3c: BENCH_TRIAL_MODE=dev-multi runs the development turns of BENCH_TRIAL_QUESTION_FILE in this one process (devQuestions.ts validates them).
+  const devMulti = process.env.BENCH_TRIAL_MODE === 'dev-multi'
+  it.skipIf(devMulti)('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
     const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny' })
     if (outcome.kind === 'refused') {
       // eslint-disable-next-line no-console
@@ -73,4 +77,22 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
     expect(outcome.summary.turnOk, 'the turn is not OK: stop and have the result reviewed').toBe(true)
     expect(outcome.summary.trialClean, 'NOT CLEAN: a host was blocked, a redirect was seen or the counts disagree - this is not a complete result').toBe(true)
   }, 240_000)
+
+  it.skipIf(!devMulti)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
+    const parsed = parseDevQuestions(readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8'))
+    if (!parsed.ok) {
+      // eslint-disable-next-line no-console
+      console.info(`${marker(REFUSED_BEGIN, nonce)}\n${parsed.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)
+      throw new Error('the development questions were refused before anything was sent')
+    }
+    const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny', turns: parsed.turns })
+    if (outcome.kind === 'refused') {
+      // eslint-disable-next-line no-console
+      console.info(`${marker(REFUSED_BEGIN, nonce)}\n${outcome.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)
+      throw new Error('the development run was refused before anything was sent')
+    }
+    // eslint-disable-next-line no-console
+    console.info(`${marker(SUMMARY_BEGIN, nonce)}\n${formatSummary(outcome.summary)}\n${marker(SUMMARY_END, nonce)}`)
+    expect(outcome.summary.trialClean, 'NOT CLEAN: a host was blocked, a redirect was seen, late requests were refused, or the counts disagree').toBe(true)
+  }, 3_600_000)
 })

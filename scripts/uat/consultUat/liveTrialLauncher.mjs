@@ -41,6 +41,8 @@ export const TRIAL_ENV_NAMES = [
   'OPENAI_API_KEY', 'SERPER_API_KEY',
   'BENCH_SPEND_GATE', 'BENCH_SPEND_TURN_CAP_USD', 'BENCH_SPEND_RUN_CAP_USD', 'BENCH_CONFIRM_SPEND',
   'BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR',
+  // round 3c: 'dev-multi' runs the development turns of the question file in one process (liveTrial.test.ts); unset = one question as before
+  'BENCH_TRIAL_MODE',
 ]
 /**
  * The benchmark flag names (kept equal to BENCH_FLAG_NAMES in liveRunner.ts by liveTrialLauncher.test.ts). A flag the Owner set is passed on, an unset one stays unset.

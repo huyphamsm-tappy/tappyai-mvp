@@ -25,6 +25,7 @@ import { randomUUID } from 'node:crypto'
 import { benchSpendGateOn, checkBenchCaps, readBenchCaps, runWithSpendGate } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, RequestNotSent, runUat, summarize, type ChatMessage, type Reservation, type RunOptions, type TurnRunner, type UatReport } from './harness'
 import { UAT_TURNS, type UatTurn } from './questions'
+import { runInTurn, type TurnToken } from './turnScope'
 import { GuardSpendGate, type SpendRecord, type SpendRecordState } from './spendGateAdapter'
 import { parseDataStream } from '../../consult/replay/lib/stream'
 
@@ -476,12 +477,14 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     let raw = ''
     let status: number | undefined
     let thrown: unknown = null
+    // The turn's token (round 3c): every task the chat starts carries it; once the turn is over the network wrappers refuse its requests.
+    const token: TurnToken = { id: turn.id, open: true }
     try {
-      const res = await runWithSpendGate(gate, () => o.chat({ messages, chatSessionId: sessionId! }))
+      const res = await runInTurn(token, () => runWithSpendGate(gate, () => o.chat({ messages, chatSessionId: sessionId! })))
       raw = res.raw; status = res.status
     } catch (e) { // a provider error may echo (part of) a key: a redacted COPY is kept, the caught object is never assigned to (a DOMException's message is a getter-only accessor; an error can be shared)
       thrown = e instanceof Error ? Object.assign(new Error(redactSecrets(e.message)), { name: e.name }) : new Error(redactSecrets(String(e)))
-    } finally { restore() }
+    } finally { restore(); token.open = false }
     const ms = now() - t0
     gate.close() // work the app left running after its answer can no longer add cost the books would miss
     // A stream the parser cannot read must not lose the turn: the raw text is kept as the answer and the failure is recorded like any other.
