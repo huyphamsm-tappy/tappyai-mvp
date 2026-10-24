@@ -29,7 +29,8 @@ import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { formatSummary, runLiveTrial } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
-import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, marker } from './liveTrialLauncher.mjs'
+import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, PREFLIGHT_BEGIN, PREFLIGHT_END, marker } from './liveTrialLauncher.mjs'
+import { conditionReport, formatConditionReport } from './preflightReport'
 
 const h = vi.hoisted(() => {
   const builder = (): any => {
@@ -60,12 +61,25 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
   const isolated = /^[0-9a-f]{32}$/.test(nonce)
   beforeAll(async () => {
     if (!isolated) throw new Error('the live trial runs only through the launcher: node scripts/uat/consultUat/liveTrialLauncher.mjs (nothing was imported, read or sent)')
+    // Round 3f: the preflight-only child stops here, before the route is imported; it sends nothing.
+    if (process.env.BENCH_TRIAL_PREFLIGHT_ONLY === '1') return
     ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) // the route is imported BEFORE the fetch wrapper is installed
+  }, 120_000)
+
+  // Round 3f · the preflight-only child: prints the condition report (ĐẠT / KHÔNG ĐẠT) and sends nothing. No network, no route, no wrapper.
+  it.skipIf(process.env.BENCH_TRIAL_PREFLIGHT_ONLY !== '1')('preflight only: prints every condition and sends nothing', () => {
+    let text: string | null = null
+    try { text = readFileSync((process.env.BENCH_TRIAL_QUESTION_FILE ?? '').trim(), 'utf8') } catch { text = null }
+    const conditions = conditionReport({ env: process.env, repoRoot: process.cwd(), execArgv: process.execArgv, questionText: text })
+    // eslint-disable-next-line no-console
+    console.info(`${marker(PREFLIGHT_BEGIN, nonce)}\n${formatConditionReport(conditions)}\n${marker(PREFLIGHT_END, nonce)}`)
+    expect(conditions.filter(c => !c.ok).map(c => c.name)).toEqual([])
   }, 120_000)
 
   // Round 3c: BENCH_TRIAL_MODE=dev-multi runs the development turns of BENCH_TRIAL_QUESTION_FILE in this one process (devQuestions.ts validates them).
   const devMulti = process.env.BENCH_TRIAL_MODE === 'dev-multi'
-  it.skipIf(devMulti)('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
+  const preflightOnly = process.env.BENCH_TRIAL_PREFLIGHT_ONLY === '1'
+  it.skipIf(devMulti || preflightOnly)('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
     const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny' })
     if (outcome.kind === 'refused') {
       // eslint-disable-next-line no-console
@@ -78,7 +92,7 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
     expect(outcome.summary.trialClean, 'NOT CLEAN: a host was blocked, a redirect was seen or the counts disagree - this is not a complete result').toBe(true)
   }, 240_000)
 
-  it.skipIf(!devMulti)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
+  it.skipIf(!devMulti || preflightOnly)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
     const parsed = parseDevQuestions(readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8'))
     if (!parsed.ok) {
       // eslint-disable-next-line no-console

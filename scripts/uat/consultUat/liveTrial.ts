@@ -220,8 +220,8 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
   return reasons
 }
 
-/** Pure: no file, no network. Every reason at once. */
-function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
+/** Pure: no file, no network. Every reason at once. Exported for the preflight report (preflightReport.ts), which runs the same checks without the trial. */
+export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
   const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)

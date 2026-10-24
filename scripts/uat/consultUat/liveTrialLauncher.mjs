@@ -22,13 +22,18 @@
 // This file uses only node: modules (it must run with plain `node`) and has no side effect when imported.
 import { spawn, spawnSync } from 'node:child_process'
 import { randomBytes } from 'node:crypto'
-import { existsSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
+import { createInterface } from 'node:readline'
 import { join, dirname } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 /** The markers around the blocks the child prints. They carry the run's nonce: `<<TRIAL-SUMMARY-BEGIN:<nonce>>>`. */
 export const marker = (kind, nonce) => `<<TRIAL-${kind}:${nonce}>>`
 export const SUMMARY_BEGIN = 'SUMMARY-BEGIN', SUMMARY_END = 'SUMMARY-END', REFUSED_BEGIN = 'REFUSED-BEGIN', REFUSED_END = 'REFUSED-END'
+/** Round 3f: the preflight report block (conditions ĐẠT / KHÔNG ĐẠT). Printed by a child run with BENCH_TRIAL_PREFLIGHT_ONLY=1, which sends nothing. */
+export const PREFLIGHT_BEGIN = 'PREFLIGHT-BEGIN', PREFLIGHT_END = 'PREFLIGHT-END'
+/** Round 3f · Gate 1: the one line the Owner types, by hand, before the first request of a real run. Compared exactly. */
+export const GATE1_LINE = 'CHẠY LƯỢT ĐO D8 D2 TRẦN 0.10'
 
 /** The system variables node and vitest need on Windows / POSIX. Nothing that could change where a connection goes. */
 export const SYSTEM_ENV_NAMES = [
@@ -74,13 +79,13 @@ export function redactText(text, env) {
   let out = String(text)
   for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) {
     const v = env[name]
-    if (v && v.length >= 8) out = out.replace(new RegExp(escapeRegExp(v), 'gi'), '***')
+    if (v && v.length >= 4) out = out.replace(new RegExp(escapeRegExp(v), 'gi'), '***') // any value of 4+ characters: a short key echoed by a child must not reach the output
   }
   return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
 }
 
 /** The child's environment: ONLY the allow-listed names that the parent has set, plus the two markers the launcher sets itself. Pure. */
-export function buildChildEnv(parentEnv, { confirm, nonce }) {
+export function buildChildEnv(parentEnv, { confirm, nonce, preflightOnly = false }) {
   const out = {}
   for (const [k, v] of Object.entries(parentEnv)) {
     if (v === undefined) continue
@@ -88,6 +93,8 @@ export function buildChildEnv(parentEnv, { confirm, nonce }) {
   }
   out.BENCH_TRIAL_ISOLATED = nonce
   if (confirm) out.BENCH_LIVE_TRIAL = 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'
+  // the preflight-only child prints its condition report and stops before the trial: it sends nothing (liveTrial.test.ts)
+  if (preflightOnly) out.BENCH_TRIAL_PREFLIGHT_ONLY = '1'
   return out
 }
 
@@ -97,8 +104,9 @@ export function launcherRefusals(parentEnv) {
   if ((parentEnv.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   if (parentEnv.BENCH_LIVE_TRIAL !== undefined) reasons.push('BENCH_LIVE_TRIAL is set in this shell: the launcher sets it itself, for the child only - remove it from the shell')
   if (parentEnv.BENCH_TRIAL_ISOLATED !== undefined) reasons.push('BENCH_TRIAL_ISOLATED is set in this shell: the launcher sets it itself, for the child only - remove it from the shell')
+  if (parentEnv.BENCH_TRIAL_PREFLIGHT_ONLY !== undefined) reasons.push('BENCH_TRIAL_PREFLIGHT_ONLY is set in this shell: the launcher sets it itself, for the preflight child only - remove it from the shell')
   for (const k of Object.keys(parentEnv)) {
-    if (parentEnv[k] !== undefined && LOOKS_LIKE_A_SETTING.test(k) && !isAllowedName(k) && k !== 'BENCH_LIVE_TRIAL' && k !== 'BENCH_TRIAL_ISOLATED') {
+    if (parentEnv[k] !== undefined && LOOKS_LIKE_A_SETTING.test(k) && !isAllowedName(k) && k !== 'BENCH_LIVE_TRIAL' && k !== 'BENCH_TRIAL_ISOLATED' && k !== 'BENCH_TRIAL_PREFLIGHT_ONLY') {
       reasons.push(`${k} is set but is not one of the variables the trial passes on: the trial would run WITHOUT it and not measure what you set up; unset it`)
     }
   }
@@ -217,13 +225,13 @@ export async function runTrialChild({ child, cwd, env, endMarkers = [], graceMs 
 /**
  * The whole launcher. `print` receives ONLY filtered text. Returns the exit code the CLI should use (0 only when a clean, accepted summary was printed).
  */
-export async function runLauncher({ env, repoRoot, plumbingCheck = false, print, child, graceMs, timeLimitMs, nonce = randomBytes(16).toString('hex'), writeFile = writeFileSync, makeDir = mkdirSync, run = runTrialChild }) {
+export async function runLauncher({ env, repoRoot, plumbingCheck = false, preflightOnly = false, print, child, graceMs, timeLimitMs, nonce = randomBytes(16).toString('hex'), writeFile = writeFileSync, makeDir = mkdirSync, run = runTrialChild }) {
   const refusals = launcherRefusals(env)
   if (refusals.length) { for (const r of refusals) print(`REFUSED: ${redactText(r, env)}`); return 2 }
-  const childEnv = buildChildEnv(env, { confirm: !plumbingCheck, nonce })
+  const childEnv = buildChildEnv(env, { confirm: !plumbingCheck, nonce, preflightOnly })
   const spec = child ?? { file: process.execPath, args: [join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs'), 'run', '--project', 'app', 'scripts/uat/consultUat/liveTrial.test.ts', '--reporter=verbose', '--silent=false'] }
   const m = k => marker(k, nonce)
-  const res = await run({ child: spec, cwd: repoRoot, env: childEnv, endMarkers: [m(SUMMARY_END), m(REFUSED_END)], graceMs, timeLimitMs })
+  const res = await run({ child: spec, cwd: repoRoot, env: childEnv, endMarkers: [m(SUMMARY_END), m(REFUSED_END), m(PREFLIGHT_END)], graceMs, timeLimitMs })
   const redacted = redactText(res.text, env)
   // a redacted copy of the whole output, for the Owner (never for a transcript); written only for a results folder on drive D, and never in a plumbing check
   let logPath = null
@@ -233,16 +241,106 @@ export async function runLauncher({ env, repoRoot, plumbingCheck = false, print,
   }
   const summary = extractBlock(redacted, m(SUMMARY_BEGIN), m(SUMMARY_END))
   const refused = extractBlock(redacted, m(REFUSED_BEGIN), m(REFUSED_END))
+  const preflight = extractBlock(redacted, m(PREFLIGHT_BEGIN), m(PREFLIGHT_END))
+  if (preflightOnly) {
+    // the preflight child sends nothing; its block lists every condition. Only a block with no KHÔNG ĐẠT line and the all-clear total is a pass.
+    if (preflight !== null) print(preflight)
+    else print(`PREFLIGHT: the child produced no condition report (child exit code ${res.exitCode}${res.killedBy ? `, ended by the launcher: ${res.killedBy}` : ''}). Nothing was sent.`)
+  }
   if (summary !== null) print(summary)
   if (refused !== null) print(`REFUSED (nothing was sent):\n${refused}`)
-  if (summary === null && refused === null) print(plumbingCheck ? `plumbing check: the child ran and produced no trial block (exit code ${res.exitCode}), as expected without the confirmation` : `NO TRIAL SUMMARY was produced (child exit code ${res.exitCode}${res.killedBy ? `, ended by the launcher: ${res.killedBy}` : ''}). Do not run again; look at the redacted output file.`)
+  if (summary === null && refused === null && !preflightOnly) print(plumbingCheck ? `plumbing check: the child ran and produced no trial block (exit code ${res.exitCode}). This exit code does NOT prove the configuration: the trial test is skipped without the confirmation. Use --preflight-only to check the configuration (it sends nothing).` : `NO TRIAL SUMMARY was produced (child exit code ${res.exitCode}${res.killedBy ? `, ended by the launcher: ${res.killedBy}` : ''}). Do not run again; look at the redacted output file.`)
   print(`child process: ${res.stillAlive ? `STILL ALIVE (pid ${res.pid}) - end it by hand` : 'ended'}${res.killedBy ? ` (ended by the launcher: ${res.killedBy})` : ''}; ${res.ms} ms`)
   if (res.survivors && res.survivors.length) print(`WARNING: process(es) that belonged to the trial's tree are STILL RUNNING (pid ${res.survivors.map(p => `${p}${res.survivorNames && res.survivorNames[p] ? ` ${res.survivorNames[p]}` : ''}`).join(', ')}): check what they are, end them by hand if they belong to the trial (Task Manager) - they were not killed by pid because a pid can be reused`)
   if (res.pipesOpen) print('WARNING: the child process is gone but its output pipes did not close: a descendant process may be left running - check the Task Manager for node.exe and end it by hand')
   if (logPath) print(`redacted copy of the child output (for you, not for a transcript): ${redactText(logPath, env)}`)
   if (res.stillAlive || res.pipesOpen || (res.survivors && res.survivors.length)) return 3
+  // The preflight child prints its block and then stays alive (vitest does not exit at once): the launcher ends it after the block (killedBy
+  // 'after-summary'), so a clean block is accepted with or without a zero exit code. A time-limit kill is not accepted.
+  const childDone = res.exitCode === 0 || res.killedBy === 'after-summary'
+  if (preflightOnly) return preflight !== null && childDone && /TỔNG: mọi điều kiện ĐẠT/.test(preflight) && !/KHÔNG ĐẠT/.test(preflight) ? 0 : 1
   if (plumbingCheck) return res.exitCode === 0 ? 0 : 1
-  return summary !== null && /turnOk=true/.test(summary) && /trialClean=true/.test(summary) && !/NOT CLEAN/.test(summary) ? 0 : 1
+  // a real run is clean only if its summary is complete AND the child was not cut short by the time limit (a kill is never a clean result)
+  return summary !== null && /turnOk=true/.test(summary) && /trialClean=true/.test(summary) && !/NOT CLEAN/.test(summary) && res.killedBy !== 'time-limit' ? 0 : 1
+}
+
+/**
+ * Round 3f · hidden input for a key. Needs a terminal; the typed characters are never echoed and never written anywhere. The value goes back to the
+ * caller only. Ctrl+C cancels (nothing is read further). Control characters are built with String.fromCharCode (no escape sequences in source).
+ */
+export function readHidden(prompt, { input = process.stdin, output = process.stdout } = {}) {
+  if (!input.isTTY || typeof input.setRawMode !== 'function') return Promise.reject(new Error('hidden input needs an interactive terminal (nothing was read)'))
+  const CR = String.fromCharCode(13), LF = String.fromCharCode(10), ETX = String.fromCharCode(3), DEL = String.fromCharCode(127), BS = String.fromCharCode(8)
+  return new Promise((resolve, reject) => {
+    let buf = ''
+    const finish = (err, value) => {
+      input.removeListener('data', onData)
+      input.setRawMode(false)
+      input.pause()
+      output.write('\n')
+      if (err) reject(err); else resolve(value)
+    }
+    const onData = chunk => {
+      for (const ch of String(chunk)) {
+        if (ch === CR || ch === LF) return finish(null, buf)
+        if (ch === ETX) return finish(new Error('cancelled by Ctrl+C (nothing was sent)'), '')
+        if (ch === DEL || ch === BS) { buf = buf.slice(0, -1); continue }
+        buf += ch
+      }
+    }
+    output.write(prompt)
+    input.setRawMode(true)
+    input.resume()
+    input.on('data', onData)
+  })
+}
+
+/** Round 3f · a typed line (Gate 1). Times out to '' (which is refused). The line is shown as typed; it is not a secret. */
+export function askLine(prompt, { input = process.stdin, output = process.stdout, timeoutMs = 300_000 } = {}) {
+  return new Promise(resolve => {
+    const rl = createInterface({ input, output, terminal: true })
+    const timer = setTimeout(() => { rl.close(); resolve('') }, timeoutMs)
+    // end of input (stdin closed) ends the wait at once: '' is refused by the caller
+    rl.on('close', () => { clearTimeout(timer); resolve('') })
+    // the answer is resolved BEFORE the interface closes: rl.close() emits 'close' synchronously, which would otherwise resolve '' first
+    rl.question(prompt, answer => { clearTimeout(timer); resolve(answer); rl.close() })
+  })
+}
+
+/** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
+export function gate1Summary(env, questionText) {
+  const lines = [
+    '--- Gate 1: tóm tắt trước lần gửi request đầu tiên (không có giá trị khóa) ---',
+    `BENCH_TRIAL_MODE=${env.BENCH_TRIAL_MODE ?? '(unset)'}`,
+    `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
+    `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
+  ]
+  if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')
+  else {
+    const turns = questionText.split(/\r?\n/).filter(l => l.trim() !== '').map(l => l.split('|').slice(0, 3).join('|'))
+    lines.push(`lượt (id|hội thoại|lượt): ${turns.join('  ')}`)
+  }
+  lines.push(`Gõ đúng dòng sau để gửi request đầu tiên: ${GATE1_LINE}`)
+  return lines
+}
+
+/**
+ * Round 3f · the whole real flow, in order: (0) preflight-only child: every condition must be ĐẠT, nothing is sent; (1) Gate 1: an interactive
+ * terminal and the typed line, exact; (2) only then the real run. `keys` are merged into the CHILD environment only (a fresh object): process.env of
+ * this launcher is never changed. Returns the exit code of the step that ended the flow.
+ */
+export async function runFlow({ env, repoRoot, keys = {}, print, child, run, nonce, questionText = null, stdinIsTTY = process.stdin.isTTY === true, askGate1 = p => askLine(p), graceMs, timeLimitMs, writeFile, makeDir }) {
+  const full = { ...env, ...keys }
+  const common = { env: full, repoRoot, print, child, run, graceMs, timeLimitMs, writeFile, makeDir }
+  // each child gets its own random nonce (32 hex, as the test file requires); the test may pin the real run's nonce
+  const pre = await runLauncher({ ...common, preflightOnly: true })
+  if (pre !== 0) { print('Gate 0 not passed: nothing was sent.'); return pre }
+  if (!stdinIsTTY) { print('REFUSED: Gate 1 needs an interactive terminal; nothing was sent.'); return 2 }
+  for (const line of gate1Summary(full, questionText)) print(line)
+  // both sides in NFC (some input methods type NFD); a trailing carriage return from the terminal is dropped; nothing else is forgiven
+  const answer = (await askGate1(`> `)).replace(/\r$/, '').normalize('NFC')
+  if (answer !== GATE1_LINE.normalize('NFC')) { print('Gate 1 not confirmed (the line did not match exactly): nothing was sent.'); return 1 }
+  return runLauncher({ ...common, nonce })
 }
 
 const samePath = (a, b) => {
@@ -252,6 +350,23 @@ const here = dirname(fileURLToPath(import.meta.url))
 if (process.argv[1] && (import.meta.url === pathToFileURL(process.argv[1]).href || samePath(fileURLToPath(import.meta.url), process.argv[1]))) {
   const repoRoot = join(here, '..', '..', '..')
   if (!existsSync(join(repoRoot, 'node_modules', 'vitest', 'vitest.mjs'))) { console.log('REFUSED: node_modules/vitest/vitest.mjs not found'); process.exit(2) }
-  const code = await runLauncher({ env: process.env, repoRoot, plumbingCheck: process.argv.includes('--plumbing-check'), print: s => console.log(s) })
+  const argv = process.argv.slice(2)
+  const print = s => console.log(s)
+  // keys are read by hand, here, only when asked for (--prompt-keys) and only when the shell does not already hold them. They go to the child, never to process.env.
+  const keys = {}
+  if (argv.includes('--prompt-keys')) {
+    for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) {
+      if ((process.env[name] ?? '') !== '') { print(`${name}: SET in this shell (value not shown). Prefer a fresh PowerShell and --prompt-keys.`); continue }
+      try { keys[name] = await readHidden(`${name} (nhập ẩn, không hiện): `) } catch (e) { print(`REFUSED: ${e.message}`); process.exit(2) }
+    }
+  }
+  let questionText = null
+  try { questionText = readFileSync((process.env.BENCH_TRIAL_QUESTION_FILE ?? '').trim(), 'utf8') } catch { questionText = null }
+  let code
+  if (argv.includes('--plumbing-check')) code = await runLauncher({ env: process.env, repoRoot, plumbingCheck: true, print })
+  else if (argv.includes('--preflight-only')) code = await runLauncher({ env: { ...process.env, ...keys }, repoRoot, preflightOnly: true, print })
+  else code = await runFlow({ env: process.env, repoRoot, keys, print, questionText })
+  // the launcher's own references to the keys are dropped before exit. JavaScript cannot zero a string in memory: that limit is stated, not hidden.
+  for (const k of Object.keys(keys)) delete keys[k]
   process.exit(code)
 }
