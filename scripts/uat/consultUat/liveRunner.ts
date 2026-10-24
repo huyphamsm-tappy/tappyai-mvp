@@ -45,6 +45,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'ROUTE_FLIGHT_HANG_KHONG_GUARD',
   // round 3h: a bare buy verb offers shopping instead of forcing search_products (intent.ts routeToolOfferOn); default OFF
   'ROUTE_TOOL_OFFER_GUARD',
+  // round closure: the Serper REQUEST cap (serperRequestCap.ts): L1 per turn, L2 per run; default OFF. A paid run refuses to start unless all three are armed (liveTrial.ts)
+  'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

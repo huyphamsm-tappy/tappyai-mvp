@@ -4,7 +4,7 @@
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
 import { benchSpendGateOn, capToScaled, checkBenchCaps } from '@/lib/ai/budget/spendGate'
-import { connectionRedirectReasons, consultativeConfirmationReasons, preflight } from './liveTrial'
+import { connectionRedirectReasons, consultativeConfirmationReasons, preflight, requestCapReasons } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -34,6 +34,9 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
   add('caps: turn <= 0.05, run <= 0.65, turn <= run', caps.ok ? [] : caps.reasons,
     caps.ok ? `turn ${caps.turnUsd} USD, run ${caps.runUsd} USD` : '')
+
+  add('Serper request cap armed in code (CONSULT_REQUEST_CAP=1 + a valid per-turn and per-run value, chosen by the owner)',
+    requestCapReasons(env), `ON, per turn ${env.CONSULT_REQUEST_CAP_PER_TURN}, per run ${env.CONSULT_REQUEST_CAP_PER_RUN} (a count of requests, not a price)`)
 
   const confirm = capToScaled(env.BENCH_CONFIRM_SPEND)
   const run = capToScaled(env.BENCH_SPEND_RUN_CAP_USD)

@@ -40,6 +40,7 @@ import { voiceLayerBlock, styleLuna6On } from '@/lib/ai/consultative/styleLuna6'
 import { wantsFilmTitles, movieTitlesReply } from '@/lib/links/movieTitles'
 import { filmQueries, extractFilmEvidence, filmEvidencePayload, FILM_ENOUGH } from '@/lib/ai/searchIntel/filmSearch'
 import { sharedSerperBudget, withSerperToolBudget, turnCreditsRemaining, createTurnWebTicket, turnWebTicketOn, wrapToolsWithTurnWebTicket } from '@/lib/ai/tools/serperToolBudget'
+import { closeRequestCapTurn, createRequestCapTurn, runWithRequestCapTurn, wrapToolsWithRequestCap } from '@/lib/ai/tools/serperRequestCap'
 import { productEnrichmentFor, optionalEnrichmentBudget, worstCaseSearchProductsCredits } from '@/lib/ai/tools/enrichmentPolicy'
 import { cardEvidence, mergeCarried } from '@/lib/ai/agent/carriedEvidence'
 import { plannerNeedsDestination, plannerDestinationQuestion, planNeedsNoRetrieval } from '@/lib/ai/agent/plannerGate'
@@ -2421,6 +2422,9 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // TURN_WEB_TICKET (default OFF, read per request): ONE web-research request may be sent for this user turn, shared by every W path
   // (serperToolBudget.ts). Legacy path only: an agent turn (TAPPY_AGENT) keeps its own credit scope.
   const turnWebTicket = turnWebTicketOn() && !agentOn ? createTurnWebTicket() : null
+  // CONSULT_REQUEST_CAP (default OFF → null, read per request): the turn's Serper REQUEST budget (serperRequestCap.ts). Legacy path only: an agent
+  // turn is bounded by its own credit scope. The object travels with the tools' execute() and the after-loop lookups; serperPost refuses without it.
+  const requestCapTurn = !agentOn ? createRequestCapTurn() : null
   const tools = noToolTurn && !agentOn ? undefined : gateTools(timeTools({
       // A movie/show RECOMMENDATION turn drops the place search entirely, so the
       // model can't answer "recommend a movie" with a list of cinemas — it
@@ -2854,6 +2858,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   }))
   // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
+  if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
 
   /**
    * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
@@ -3053,7 +3058,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The after-loop lookups (card photos + TikTok review search) share ONE scope holding what the tools left (created on first use, after the loop).
   let agentAfterBudget: ReturnType<typeof sharedSerperBudget> | null = null
   const afterLoopSerper = <T,>(fn: () => Promise<T>): Promise<T> => {
-    if (!agentOn) return fn()
+    if (!agentOn) return requestCapTurn ? runWithRequestCapTurn(requestCapTurn, fn) : fn()
     agentAfterBudget ??= sharedSerperBudget(Math.max(0, agentSerperLimit - agentSerperSpent))
     return agentAfterBudget.run(fn)
   }
@@ -3755,6 +3760,7 @@ ${completionInstruction(lang)}` },
   const timedBody = finalResponse.body
     ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang).pipeThrough(stepRepeatGuard()), () => {
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
+        if (requestCapTurn) closeRequestCapTurn(requestCapTurn) // the turn is over: a request that starts after this is refused
         const d = serperDelta(serperAtStart)
         const tokensIn = (usageAcct?.promptTokens ?? 0) + (usageAcct?.cacheReadTokens ?? 0) + (usageAcct?.cacheCreationTokens ?? 0) + (consultRun?.usage.promptTokens ?? 0)
         const tokensOut = (usageAcct?.completionTokens ?? 0) + (consultRun?.usage.completionTokens ?? 0)

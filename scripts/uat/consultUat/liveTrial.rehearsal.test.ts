@@ -105,6 +105,8 @@ const QUESTION = 'Giá xăng RON95 hôm nay là bao nhiêu?'
 const OUT_DIR = 'D:/TappyAI-review-artifacts/consultative-round2e-rehearsal'
 const BASE_ENV: Record<string, string> = {
   BENCH_SPEND_GATE: '1', BENCH_SPEND_TURN_CAP_USD: '0.05', BENCH_SPEND_RUN_CAP_USD: '0.05', BENCH_CONFIRM_SPEND: '0.05',
+  // the Serper request cap must be armed for a paid run (liveTrial.ts requestCapReasons); values far above what these rehearsals send, so they never bind here
+  CONSULT_REQUEST_CAP: '1', CONSULT_REQUEST_CAP_PER_TURN: '40', CONSULT_REQUEST_CAP_PER_RUN: '500',
   BENCH_TRIAL_QUESTION_FILE: 'D:/fake/question.txt', BENCH_TRIAL_OUT_DIR: OUT_DIR,
   OPENAI_API_KEY: KEY_OPENAI, SERPER_API_KEY: KEY_SERPER,
   // The REAL trial file runs under the app project's vitest setup (src/test/consultativeFlag.setup.ts), which pins these two to '0' when they are not set.

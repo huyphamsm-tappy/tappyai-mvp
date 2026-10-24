@@ -87,6 +87,9 @@ export function admitWithinToolBudget(credits: number): boolean {
   return true
 }
 
+/** Is any credit scope (agent turn / tool invocation) open here? Read by the request cap to tell a bounded-agent request from an unscoped one. */
+export function hasSerperCreditScope(): boolean { return store.getStore() !== undefined }
+
 /** Credits spent so far in the current turn scope (0 outside one). */
 export function turnCreditsSpent(): number {
   let s = store.getStore() ?? null

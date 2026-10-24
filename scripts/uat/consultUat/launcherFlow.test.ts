@@ -117,6 +117,13 @@ describe('Gate 1: the typed line is exact, and only a terminal can give it', () 
     expect(text).not.toContain(KEY_SERPER)
     expect(text).toMatch(/D8\|D8\|1/)
   })
+  it('the Gate 1 summary shows the Serper request cap (a count, not a price) with the values the Owner set, so they are read before the line is typed', () => {
+    const armed = gate1Summary({ ...BASE, CONSULT_REQUEST_CAP: '1', CONSULT_REQUEST_CAP_PER_TURN: '12', CONSULT_REQUEST_CAP_PER_RUN: '250' }, QUESTIONS).join('\n')
+    expect(armed).toContain('CONSULT_REQUEST_CAP=1, mỗi lượt 12, cả lần chạy 250')
+    expect(armed).toContain('KHÔNG phải tiền')
+    const unset = gate1Summary({ ...BASE }, QUESTIONS).join('\n')
+    expect(unset).toContain('CONSULT_REQUEST_CAP=(unset), mỗi lượt ?, cả lần chạy ?')
+  })
 })
 
 describe('a failing preflight stops before Gate 1 and before any real child', () => {

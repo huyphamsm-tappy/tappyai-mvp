@@ -66,6 +66,8 @@ export const FLAG_ENV_NAMES = [
   'ROUTE_FLIGHT_HANG_KHONG_GUARD',
   // round 3h: a bare buy verb offers shopping instead of forcing search_products (intent.ts routeToolOfferOn); default OFF
   'ROUTE_TOOL_OFFER_GUARD',
+  // round closure: the Serper REQUEST cap (serperRequestCap.ts); default OFF. A paid run refuses to start unless all three are armed
+  'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
@@ -315,6 +317,7 @@ export function gate1Summary(env, questionText) {
     '--- Gate 1: tóm tắt trước lần gửi request đầu tiên (không có giá trị khóa) ---',
     `BENCH_TRIAL_MODE=${env.BENCH_TRIAL_MODE ?? '(unset)'}`,
     `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
+    `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')

@@ -44,6 +44,7 @@ import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
 import { currentTurn } from './turnScope'
 import { UAT_TURNS, type UatTurn } from './questions'
+import { REQUEST_CAP_MAX_PER_RUN, REQUEST_CAP_MAX_PER_TURN, REQUEST_CAP_PER_RUN_ENV, REQUEST_CAP_PER_TURN_ENV, beginRequestCapRun, endRequestCapRun, parseCapValue, requestCapOn } from '@/lib/ai/tools/serperRequestCap'
 
 /** The only requests a trial may send: host → exact paths. Everything else is BLOCKED before it is sent (and counted). */
 const ALLOWED_PATHS: Readonly<Record<string, readonly string[]>> = {
@@ -132,6 +133,8 @@ export interface TrialSummary {
   /** The consultative flags as the run SAW them (null = unset). Under vitest the setup pins CONSULTATIVE_V1 and CONSULT_V2 to "0" when they are unset. */
   flagsInEffect: Record<string, string | null>
   resultPath: string | null
+  /** The Serper REQUEST cap of this run (serperRequestCap.ts): the two limits, the requests it let through (this process) and the ones it refused. A count, not a price. */
+  requestCap: { perTurnLimit: number | null; runLimit: number | null; sent: number; refused: number }
 }
 
 export interface TrialControls {
@@ -181,6 +184,20 @@ export function consultativeConfirmationReasons(env: Record<string, string | und
 }
 
 /**
+ * Pure. The Serper REQUEST cap must be armed for a paid run (owner decision: no paid measurement on a counter that only observes): the flag ON, and BOTH values valid
+ * (strict integers; there is no default in code, so a missing value is a refusal, not a guess). The messages name variables, never values. This is a check of the
+ * configuration; the cap itself is enforced in serperPost (serperRequestCap.ts) and covered by MOCK tests (mock model, stub network: serperRequestCap*.test.ts).
+ * It is checked again right before every request (the flag could change after the preflight): a changed value sends nothing.
+ */
+export function requestCapReasons(env: Record<string, string | undefined>): string[] {
+  const reasons: string[] = []
+  if (!requestCapOn(env)) reasons.push('CONSULT_REQUEST_CAP is not ON (set it to 1: a paid run needs the Serper request cap armed in code)')
+  if (parseCapValue(env[REQUEST_CAP_PER_TURN_ENV], REQUEST_CAP_MAX_PER_TURN) === null) reasons.push(`${REQUEST_CAP_PER_TURN_ENV} is missing or not an integer in 1..${REQUEST_CAP_MAX_PER_TURN} (the owner chooses the value; there is no default)`)
+  if (parseCapValue(env[REQUEST_CAP_PER_RUN_ENV], REQUEST_CAP_MAX_PER_RUN) === null) reasons.push(`${REQUEST_CAP_PER_RUN_ENV} is missing or not an integer in 1..${REQUEST_CAP_MAX_PER_RUN} (the owner chooses the value; there is no default)`)
+  return reasons
+}
+
+/**
  * The allow-list judges the LOGICAL URL (api.openai.com), not the machine the connection really goes to. With Node's proxy support switched on from the
  * environment (NODE_USE_ENV_PROXY=1 or --use-env-proxy in NODE_OPTIONS, with HTTP(S)_PROXY / ALL_PROXY), fetch and node:https connect to the PROXY while the wrapper
  * still sees an allowed host, and the request carries the Authorization header. NODE_TLS_REJECT_UNAUTHORIZED=0 switches certificate checking off. Both are refused,
@@ -222,7 +239,7 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
 
 /** Pure: no file, no network. Every reason at once. Exported for the preflight report (preflightReport.ts), which runs the same checks without the trial. */
 export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot)]
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -380,12 +397,16 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
 
   const trialTurn: UatTurn = { id: 'TRIAL', conversation: 'TRIAL', turn: 1, text: question }
   const trialTurns: readonly UatTurn[] = input.turns ? [...input.turns] : [trialTurn]
+  // L2: this run (this process) gets its own request total. The preflight already refused an invalid value; this is the same check at the point of use.
+  const capRun = beginRequestCapRun(env)
+  if (!capRun.ok) { closeTrial(); return refuse([capRun.problem]) }
+  let capFinal: { limit: number; sent: number; refused: number } | null = null
   let result
   try {
     result = await runBench({
       // the confirmations are checked once more right before the request is made: a flag that changed since the preflight (the env object is the live process.env in the real run) sends nothing
       chat: routeTransport(((req: never) => {
-        const again = consultativeConfirmationReasons(env)
+        const again = [...consultativeConfirmationReasons(env), ...requestCapReasons(env)]
         if (again.length) throw new Error(`trial: ${again.join('; ')} (checked again just before the request; nothing was sent)`)
         return input.post(req)
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
@@ -400,6 +421,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     throw e
   } finally {
     trialClosed = true
+    capFinal = endRequestCapRun()
     closeTrial()
   }
 
@@ -419,6 +441,9 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const sumSerper = records.reduce((a, r) => a + r.serperRequests, 0)
   if (records.length > 0 && (sent['api.openai.com'] ?? 0) !== sumLlm) warnings.push(`LLM request count differs: the wrapper sent ${sent['api.openai.com'] ?? 0}, the ledger booked ${sumLlm}`)
   if (records.length > 0 && (sent['google.serper.dev'] ?? 0) !== sumSerper) warnings.push(`Serper request count differs: the wrapper sent ${sent['google.serper.dev'] ?? 0}, the ledger booked ${sumSerper}`)
+  // The request cap is a safety stop, not a result: a request it refused is a search that was NOT made, so the answer it fed is not the app's normal answer. Never clean.
+  if (capFinal && capFinal.refused > 0) warnings.push(`the Serper request cap refused ${capFinal.refused} request(s): those searches were not made`)
+  if (capFinal && records.length > 0 && capFinal.sent !== (sent['google.serper.dev'] ?? 0)) warnings.push(`request cap count differs: the cap let ${capFinal.sent} through, the wrapper sent ${sent['google.serper.dev'] ?? 0}`)
   const turnOk = records.length > 0 && problems.length === 0
   const allKnown = records.length > 0 && records.every(r => r.cost.state === 'known')
   const usdSum = allKnown ? Math.round(records.reduce((a, r) => a + (r.cost.usd ?? 0), 0) * 1e9) / 1e9 : null
@@ -446,6 +471,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
+    requestCap: { perTurnLimit: parseCapValue(env[REQUEST_CAP_PER_TURN_ENV], REQUEST_CAP_MAX_PER_TURN), runLimit: capFinal?.limit ?? null, sent: capFinal?.sent ?? 0, refused: capFinal?.refused ?? 0 },
   }
   return { kind: 'ran', summary, controls }
 }
@@ -462,6 +488,7 @@ export function formatSummary(s: TrialSummary): string {
   lines.push(
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
     `ledger: llm=${s.llmRequests} serper=${s.serperRequests} refusals=${s.refusals} photoSkips=${s.photoSkips} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
+    `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,
     `answerChars=${s.answerChars} result=${s.resultPath ?? '-'}`,
   )

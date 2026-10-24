@@ -20,6 +20,7 @@ import { recordSerperCall, recordSerperOutcome, recordSerperRefused, SERPER_COST
 import { sanitizeSerperJson } from './serperUntrusted'
 import { incrDailyCounter } from '@/lib/security/kvCounter'
 import { reserveSpend, SERPER_MIN_USD_PER_CREDIT, SpendRefusal, type SpendHandle } from '@/lib/ai/budget/spendGate'
+import { reserveRequest } from './serperRequestCap'
 import { serperUsdPerCredit } from '@/lib/ai/turnCost'
 import { vnToday } from '@/lib/config/product'
 import {
@@ -159,7 +160,14 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     report('ticket_denied')
     return null
   }
-  if (!(await serperAdmit(endpoint))) { report('not_sent'); return null }
+  // REQUEST CAP (CONSULT_REQUEST_CAP, default OFF → a no-op, read now): ONE request is reserved on the turn (L1) and the bench run (L2), synchronously,
+  // before the first await — so parallel requests cannot all pass a check before any of them counts. Fail-closed (serperRequestCap.ts). Each later
+  // refusal below that proves the request was NOT sent gives the reservation back (serperAdmit, ticket after admit, spend gate, cancelled before send,
+  // body not built); a sent request (even a timed-out one) never does. A throw from serperAdmit itself (documented as never) is not covered: it would
+  // over-count, which is the safe direction.
+  const cap = reserveRequest(endpoint)
+  if (!cap.ok) { recordSerperRefused(endpoint); report('not_sent'); return null }
+  if (!(await serperAdmit(endpoint))) { cap.release(); report('not_sent'); return null }
   // The ticket is taken here, in one synchronous step, right before the request is sent (never before a cache hit or a single-flight join:
   // only the leader of a flight ever reaches this line).
   let entry: TicketEntry | undefined
@@ -169,6 +177,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
       // Another W request took the last ticket while this one waited on the daily counter: nothing is sent, so the credits reserved above go
       // back — on the turn / tool scope AND on the shared daily counter (it was added before the call; this request provably never left).
       releaseToolBudget(SERPER_CREDITS[endpoint])
+      cap.release()
       try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
       recordSerperRefused(endpoint)
       console.log(JSON.stringify({ type: 'tappyai_web_ticket', step: 'denied', endpoint, at: 'after_admit' }))
@@ -186,9 +195,10 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
   // The detail (the body's real `num`, the query, W/V) goes ONLY to the gate the benchmark injected: with the flag OFF reserveSpend returns before it looks at it.
   const detail = { endpoint, ...(typeof body.num === 'number' ? { num: body.num } : {}), ...(typeof body.q === 'string' ? { q: body.q } : {}), purpose: opts?.purpose === 'W' ? 'W' as const : 'V' as const }
   try { spend = reserveSpend(`serper:${endpoint}`, serperSpendBoundUsd(endpoint, body, perCredit), detail) } catch (e) {
-    if (!(e instanceof SpendRefusal)) throw e
+    if (!(e instanceof SpendRefusal)) { cap.release(); throw e } // an unexpected throw before the send: nothing was sent, so the reservation goes back
     if (entry) refundTurnWebTicket(entry)
     releaseToolBudget(SERPER_CREDITS[endpoint])
+    cap.release()
     try { await incrDailyCounter(SERPER_CEILING_KEY, -SERPER_CREDITS[endpoint]) } catch { /* the counter only ever over-counts then */ }
     recordSerperRefused(endpoint)
     console.log(JSON.stringify({ type: 'tappyai_spend_gate', step: 'refused', endpoint, reason: e.reason }))
@@ -203,6 +213,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     if (entry) refundTurnWebTicket(entry)
     if (spend) { spendDone = true; spend.release() }
     releaseToolBudget(SERPER_CREDITS[endpoint])
+    cap.release()
     recordSerperRefused(endpoint)
     console.log(JSON.stringify({ type: 'tappyai_serper_cancelled', endpoint, at: 'before_send' }))
     report('not_sent')
@@ -229,7 +240,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
   } catch (e) {
     recordSerperOutcome(endpoint, classifyThrown(e))
     if (fetched) { if (spend && !spendDone) { spendDone = true; spend.markUnknown() }; report('sent_error', entry) } // sent: what was billed is not known
-    else { if (entry) refundTurnWebTicket(entry); if (spend && !spendDone) { spendDone = true; spend.release() }; report('not_sent') } // the body could not even be built: fetch was never called
+    else { if (entry) refundTurnWebTicket(entry); if (spend && !spendDone) { spendDone = true; spend.release() }; cap.release(); report('not_sent') } // the body could not even be built: fetch was never called
     throw e
   }
   if (!res.ok) {

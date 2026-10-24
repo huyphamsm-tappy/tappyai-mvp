@@ -10,6 +10,7 @@ import type { UatTurn } from './questions'
 
 const BASE_ENV: Record<string, string> = {
   BENCH_SPEND_GATE: '1', BENCH_SPEND_TURN_CAP_USD: '0.05', BENCH_SPEND_RUN_CAP_USD: '0.10', BENCH_CONFIRM_SPEND: '0.10',
+  CONSULT_REQUEST_CAP: '1', CONSULT_REQUEST_CAP_PER_TURN: '40', CONSULT_REQUEST_CAP_PER_RUN: '500', // armed (liveTrial.ts requestCapReasons); far above what these turns send
   BENCH_TRIAL_QUESTION_FILE: 'D:/fake/question.txt', BENCH_TRIAL_OUT_DIR: 'D:/TappyAI-review-artifacts/consultative-round3c-rehearsal',
   OPENAI_API_KEY: 'sk-test-SECRET-123', SERPER_API_KEY: 'serper-SECRET-456',
   CONSULTATIVE_V1: '0', CONSULT_V2: '0', BENCH_EXPECT_CONSULTATIVE_V1: '0', BENCH_EXPECT_CONSULT_V2: '0',

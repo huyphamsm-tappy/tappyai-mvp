@@ -26,6 +26,7 @@ beforeEach(() => {
   vi.stubEnv('BENCH_SPEND_TURN_CAP_USD', '0.05')
   vi.stubEnv('BENCH_SPEND_RUN_CAP_USD', '0.65')
   vi.stubEnv('BENCH_CONFIRM_SPEND', '0.65')
+  vi.stubEnv('CONSULT_REQUEST_CAP', '1'); vi.stubEnv('CONSULT_REQUEST_CAP_PER_TURN', '12'); vi.stubEnv('CONSULT_REQUEST_CAP_PER_RUN', '400') // armed (liveTrial.ts requestCapReasons)
   vi.stubEnv('BENCH_TRIAL_QUESTION_FILE', EXT)
   vi.stubEnv('BENCH_TRIAL_OUT_DIR', 'D:/TappyAI-review-artifacts/consultative-round3o/mock-out')
   vi.stubEnv('OPENAI_API_KEY', SECRET_KEY)
