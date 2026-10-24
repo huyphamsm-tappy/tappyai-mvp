@@ -40,6 +40,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'SERPER_USD_PER_CREDIT', 'LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL',
   // audit switches the chat route reads: AUDIT_DRY_RUN answers with a canned line and NO model call; the other two write full model requests / usage to a file
   'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
+  // round 3b-1: routing guard for the aviation word "hàng không" (intent.ts routeFlightGuardOn); default OFF
+  'ROUTE_FLIGHT_HANG_KHONG_GUARD',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */
