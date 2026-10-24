@@ -6,7 +6,9 @@
  *   · liveTrial.rehearsal.test.ts the dry rehearsal: always runs, SAME function, a fake network, nothing is ever sent.
  *
  * ORDER (nothing is read, written or sent until every check that needs no I/O has passed):
- *   1. preflight (pure): CI unset · caps exact and ≤ 0.05 / ≤ 0.65 · BENCH_CONFIRM_SPEND = the run cap · the question file is named · the runner's own preflight
+ *   1. preflight (pure): CI unset · BENCH_EXPECT_CONSULTATIVE_V1 / BENCH_EXPECT_CONSULT_V2 are exactly 0 or 1 and equal the flags the route will see (see
+ *      CONSULTATIVE_CONFIRMATIONS: they exist because the vitest setup overwrites those two flags) · caps exact and ≤ 0.05 / ≤ 0.65 · BENCH_CONFIRM_SPEND = the run cap ·
+ *      the question file is named · the runner's own preflight
  *      (flags explicit and equal to the environment, no flag that must be OFF, no set-but-blank variable, exact model ids, output folder on drive D)
  *   2. the question file is read (UTF-8, one optional byte-order mark dropped) and checked: not empty, not one of the 12 benchmark questions
  *   3. the network wrappers are installed (globalThis.fetch AND node:https / node:http request+get: the app's page reader uses node:https, not fetch), ONE turn runs
@@ -14,7 +16,10 @@
  *
  * WHAT THE WRAPPERS ALLOW: only https, default port, and only these paths of these two hosts: api.openai.com /v1/chat/completions; google.serper.dev /search /maps
  * /shopping. Everything else (another host, another path, plain http, another port, an unparseable URL) is BLOCKED before it is sent, counted and reported;
- * a redirect is never followed. NOT covered: transports that use neither of these (a raw socket, a library with its own client): none was found on the chat path,
+ * a redirect is never followed. The check judges the LOGICAL URL, not the machine the connection really reaches: the preflight therefore refuses a proxy in the
+ * environment, NODE_TLS_REJECT_UNAUTHORIZED=0, and node:https options that redirect the connection (socketPath, createConnection, an agent other than false). The real
+ * fetch and node:http(s) are restored after a short drain, so background work that runs later is no longer filtered (paid calls are still refused: the gate is closed).
+ * NOT covered: transports that use neither of these (a raw socket, a library with its own client): none was found on the chat path,
  * but that is a reading of the code, not a guarantee.
  *
  * Costs in the ledger are ESTIMATES (tokens × the price table in the code; Serper by credits), NOT the provider's invoice. The caps are enforced on that
@@ -112,9 +117,48 @@ export function isBenchmarkEligible(turns: readonly UatTurn[], runValid: boolean
 const TWELVE = new Set(UAT_TURNS.map(t => questionKey(t.text)))
 const FLAGS_IN_EFFECT = ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE']
 
+/**
+ * WHY THESE VARIABLES EXIST (round 2f): the real trial runs under the project's vitest setup (src/test/consultativeFlag.setup.ts), which OVERWRITES
+ * CONSULTATIVE_V1 and CONSULT_V2 with "0" when they are not set, before this code runs. "The Owner forgot to set the flag" and "the Owner set it to 0" therefore look
+ * the same here, so checking the flag for undefined proves nothing. The Owner states the two values independently (copied from Vercel production) and the trial is
+ * refused unless each statement is exactly "0" or "1" AND equals the value the route will actually see. The messages name variables, never values.
+ * They are not behaviour flags and are not part of BENCH_FLAG_NAMES.
+ */
+export const CONSULTATIVE_CONFIRMATIONS: ReadonlyArray<readonly [confirmVar: string, flagVar: string]> = [
+  ['BENCH_EXPECT_CONSULTATIVE_V1', 'CONSULTATIVE_V1'],
+  ['BENCH_EXPECT_CONSULT_V2', 'CONSULT_V2'],
+]
+/** Pure. One reason per confirmation that is missing, not exactly "0"/"1", or different from the flag value in `env` (compared exactly, no trimming). */
+export function consultativeConfirmationReasons(env: Record<string, string | undefined>): string[] {
+  const reasons: string[] = []
+  for (const [confirmVar, flagVar] of CONSULTATIVE_CONFIRMATIONS) {
+    const said = env[confirmVar]
+    if (said === undefined) reasons.push(`${confirmVar} is not set (state the production value of ${flagVar}, exactly 0 or 1)`)
+    else if (said !== '0' && said !== '1') reasons.push(`${confirmVar} must be exactly 0 or 1`)
+    else if (env[flagVar] !== said) reasons.push(`${confirmVar} differs from ${flagVar} as the route will see it (set ${flagVar} explicitly; the test setup writes 0 into an unset flag)`)
+  }
+  return reasons
+}
+
+/**
+ * The allow-list judges the LOGICAL URL (api.openai.com), not the machine the connection really goes to. With Node's proxy support switched on from the
+ * environment (NODE_USE_ENV_PROXY=1 or --use-env-proxy in NODE_OPTIONS, with HTTP(S)_PROXY / ALL_PROXY), fetch and node:https connect to the PROXY while the wrapper
+ * still sees an allowed host, and the request carries the Authorization header. NODE_TLS_REJECT_UNAUTHORIZED=0 switches certificate checking off. Both are refused,
+ * by name (never the value). Pure.
+ */
+export function connectionRedirectReasons(env: Record<string, string | undefined>): string[] {
+  const reasons: string[] = []
+  for (const k of Object.keys(env)) if (/^(https?_proxy|all_proxy)$/i.test(k) && (env[k] ?? '') !== '') reasons.push(`${k} is set: a proxy would receive the requests (and their Authorization header) while the host check still sees the allowed host; unset it for the trial`)
+  const useProxy = env.NODE_USE_ENV_PROXY
+  if (useProxy !== undefined && useProxy !== '' && useProxy !== '0') reasons.push('NODE_USE_ENV_PROXY is set: Node would send the requests through a proxy; unset it for the trial')
+  if ((env.NODE_OPTIONS ?? '').includes('--use-env-proxy')) reasons.push('NODE_OPTIONS contains --use-env-proxy: Node would send the requests through a proxy; remove it for the trial')
+  if (env.NODE_TLS_REJECT_UNAUTHORIZED === '0') reasons.push('NODE_TLS_REJECT_UNAUTHORIZED is 0: certificate checking is off; unset it for the trial')
+  return reasons
+}
+
 /** Pure: no file, no network. Every reason at once. */
 function preflight(env: Record<string, string | undefined>, repoRoot?: string): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = []
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -139,13 +183,17 @@ function preflight(env: Record<string, string | undefined>, repoRoot?: string): 
 /** The URL a node:http(s) request/get call is about, from its arguments ((url[, options][, cb]) or (options[, cb])). */
 function nodeRequestUrl(proto: 'http' | 'https', args: unknown[]): string {
   const [a, b] = args
+  // Options that send the CONNECTION somewhere other than the name that was checked: a local pipe, a hand-made connection, a custom agent (`agent: false` is what the
+  // app's own fetchers pass, and `lookup` only pins the same name: both stay allowed). Such a call cannot be judged by its URL, so it is refused.
+  const redirectsConnection = (o: Record<string, unknown>): boolean => 'socketPath' in o || 'createConnection' in o || (o.agent !== undefined && o.agent !== false)
   if (typeof a === 'string' || a instanceof URL) {
-    // Node lets the options of (url, options) override the URL's host, port, protocol and path: such a call cannot be judged by the URL alone, so it is refused.
+    // Node lets the options of (url, options) override the URL's host, port, protocol and path - an explicit `undefined` included (Node then falls back to localhost).
     const over = b && typeof b === 'object' ? b as Record<string, unknown> : {}
-    if (['host', 'hostname', 'port', 'protocol', 'path', 'socketPath'].some(k => over[k] !== undefined)) return '(unparseable)'
+    if (['host', 'hostname', 'port', 'protocol', 'path'].some(k => k in over) || redirectsConnection(over)) return '(unparseable)'
     return typeof a === 'string' ? a : a.href
   }
   const o = { ...(a && typeof a === 'object' ? a as Record<string, unknown> : {}), ...(b && typeof b === 'object' ? b as Record<string, unknown> : {}) }
+  if (redirectsConnection(o)) return '(unparseable)'
   const hostRaw = typeof o.hostname === 'string' ? o.hostname : typeof o.host === 'string' ? o.host : ''
   const host = hostRaw.includes(':') && !hostRaw.startsWith('[') ? hostRaw.split(':')[0] : hostRaw
   const port = o.port !== undefined && o.port !== null && String(o.port) !== '' ? `:${String(o.port)}` : ''
@@ -154,18 +202,21 @@ function nodeRequestUrl(proto: 'http' | 'https', args: unknown[]): string {
   return host ? `${protocol}//${host}${port}${path.startsWith('/') ? '' : '/'}${path}` : '(unparseable)'
 }
 
-const urlOf = (input: unknown): string => (typeof input === 'string' ? input : input instanceof URL ? input.href : (input as { url?: string } | null)?.url ?? '(unparseable)')
+/** Only a string, a URL or a Request: any other object (one that merely carries a `url` property) could be sent somewhere other than what was checked. */
+const urlOf = (input: unknown): string => (typeof input === 'string' ? input : input instanceof URL ? input.href : input instanceof Request ? input.url : '(unparseable)')
 
 export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome> {
   const { env } = input
   // 1. preflight: nothing is read, written or sent
+  // every text that leaves this function (a reason, a label) is redacted: a value that holds a key must not be echoed
+  const refuse = (reasons: string[]): TrialOutcome => ({ kind: 'refused', reasons: reasons.map(r => redactSecrets(r, env)) })
   const pre = preflight(env, input.repoRoot)
-  if (pre.reasons.length || !pre.caps) return { kind: 'refused', reasons: pre.reasons.length ? pre.reasons : ['the caps are not valid'] }
+  if (pre.reasons.length || !pre.caps) return refuse(pre.reasons.length ? pre.reasons : ['the caps are not valid'])
   // 2. the question
   const file = env.BENCH_TRIAL_QUESTION_FILE!.trim()
   let raw: string
   try { raw = (input.readTextFile ?? (p => readFileSync(p, 'utf8')))(file) } catch (e) {
-    return { kind: 'refused', reasons: [`the question file cannot be read: ${e instanceof Error ? e.message : String(e)}`] }
+    return refuse([`the question file cannot be read: ${e instanceof Error ? e.message : String(e)}`])
   }
   const question = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).trim()
   if (question === '') return { kind: 'refused', reasons: ['the question is empty'] }
@@ -180,7 +231,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const redirects: Array<{ host: string; status: number }> = []
   const admit = (url: string): void => {
     const d = isAllowedRequest(url)
-    if (!d.ok) { blocked.add(d.label); throw new Error(`trial: ${d.label} is not allowed (blocked before it was sent)`) }
+    if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
     sent[d.host] = (sent[d.host] ?? 0) + 1
   }
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
@@ -204,14 +255,19 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   let result
   try {
     result = await runBench({
-      chat: routeTransport(input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
+      // the confirmations are checked once more right before the request is made: a flag that changed since the preflight (the env object is the live process.env in the real run) sends nothing
+      chat: routeTransport(((req: never) => {
+        const again = consultativeConfirmationReasons(env)
+        if (again.length) throw new Error(`trial: ${again.join('; ')} (checked again just before the request; nothing was sent)`)
+        return input.post(req)
+      }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: [trialTurn], now: input.now,
     })
     // background work that outlives the answer (memory, logging…) still goes through the wrappers
     await new Promise(r => setTimeout(r, input.drainMs ?? 100))
   } catch (e) {
-    if (e instanceof BenchRefusal) return { kind: 'refused', reasons: e.reasons }
+    if (e instanceof BenchRefusal) return refuse(e.reasons) // (a file-system error quoted in a reason may hold a key)
     throw e
   } finally {
     globalThis.fetch = originalFetch

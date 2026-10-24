@@ -51,7 +51,11 @@ export const BENCH_MUST_BE_UNSET: readonly string[] = ['AUDIT_MODEL_REQUEST_FILE
  */
 export function redactSecrets(text: string, env: Record<string, string | undefined> = process.env): string {
   let out = text
-  for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) { const v = env[name]; if (v && v.length >= 8) out = out.split(v).join('***') }
+  // case-insensitive: a host name is lower-cased by the URL parser, so a key that ended up in a host label would otherwise survive
+  // the keys of the environment passed in AND of process.env (what the app reads): they are the same object in a real run, and may differ in a rehearsal
+  for (const e of env === process.env ? [env] : [env, process.env]) {
+    for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) { const v = e[name]; if (v && v.length >= 8) out = out.replace(new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '***') }
+  }
   return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
 }
 
@@ -75,9 +79,12 @@ export class BenchRefusal extends Error {
 
 /** Evidence could not be saved: the run stops and says so. `cause` is the underlying file-system error. */
 export class BenchWriteError extends Error {
-  constructor(message: string, readonly cause?: unknown) {
-    super(message)
+  readonly cause?: unknown
+  constructor(message: string, cause?: unknown) {
+    // a file-system error may quote a path or a value that holds a key: the message and the cause are redacted before anything can print or save them
+    super(redactSecrets(message))
     this.name = 'BenchWriteError'
+    if (cause !== undefined) this.cause = cause instanceof Error ? Object.assign(new Error(redactSecrets(cause.message)), { name: cause.name }) : redactSecrets(String(cause))
   }
 }
 
@@ -285,11 +292,12 @@ function probeOutDir(fs: BenchFs, dir: string, repoRoot: string | undefined): vo
 }
 
 /** The `tappyai_web_ticket` lines the app logs during a turn. Everything else is passed through untouched. */
-function captureTicketLines(into: unknown[]): () => void {
+function captureTicketLines(into: unknown[], redact: (s: string) => string): () => void {
   const original = console.log
   console.log = (...args: unknown[]) => {
     const first = args[0]
-    if (typeof first === 'string' && first.startsWith('{"type":"tappyai_web_ticket"')) { try { into.push(JSON.parse(first)) } catch { /* not JSON: not a ticket line */ } }
+    // the stored copy is redacted BEFORE it is parsed (a key inside a ticket field must not reach the JSONL); the line the app printed is passed on untouched
+    if (typeof first === 'string' && first.startsWith('{"type":"tappyai_web_ticket"')) { try { into.push(JSON.parse(redact(first))) } catch { /* not JSON: not a ticket line */ } }
     original.apply(console, args as never)
   }
   return () => { console.log = original }
@@ -381,7 +389,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
       writeFailure = new BenchWriteError(`turn ${turn.id} could not be announced in ${paths.jsonl}: ${e instanceof Error ? e.message : String(e)} — nothing was sent, the run is stopped`, e)
       throw writeFailure
     }
-    const restore = captureTicketLines(ticketLog)
+    const restore = captureTicketLines(ticketLog, s => redactSecrets(s, o.env ?? process.env))
     const t0 = now()
     let raw = ''
     let status: number | undefined
@@ -468,7 +476,7 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
   const body = {
     at: new Date(now()).toISOString(), valid, costState, flags, caps: { turnUsd: o.turnCapUsd, runUsd: o.runCapUsd },
     ...(runError !== null ? { error: redactSecrets(runError instanceof Error ? `${runError.name}: ${runError.message}` : String(runError)) } : {}),
-    ...(wf ? { writeError: wf.message } : {}),
+    ...(wf ? { writeError: redactSecrets(wf.message, o.env ?? process.env) } : {}),
     openReservations: openReservations(),
     summary: returned ? summarize({ ...returned, cost: { ...returned.cost, totalUsd: (returned.cost as { totalUsd?: number }).totalUsd ?? null } } as UatReport) : null, turns: records, report: returned,
   }

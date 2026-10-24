@@ -109,10 +109,14 @@ const BASE_ENV: Record<string, string> = {
   // The REAL trial file runs under the app project's vitest setup (src/test/consultativeFlag.setup.ts), which pins these two to '0' when they are not set.
   // The rehearsal must run in the same environment, or it rehearses a different route branch (the production default of both is ON).
   CONSULTATIVE_V1: '0', CONSULT_V2: '0',
+  // Round 2f: the Owner's own statement of the two values (copied from Vercel production). Not behaviour flags; the trial is refused unless they match what the route will see.
+  BENCH_EXPECT_CONSULTATIVE_V1: '0', BENCH_EXPECT_CONSULT_V2: '0',
 }
 /** The environment of the "consultative ON" variant: what an Owner who copies production (both ON, ticket and fallback gate ON) would set. */
-const CONSULTATIVE_ON = { CONSULTATIVE_V1: '1', CONSULT_V2: '1', TURN_WEB_TICKET: '1', SEARCH_FALLBACK_GATE: '1' }
-const ALL_NAMES = [...BENCH_FLAG_NAMES, 'OPENAI_API_KEY', 'SERPER_API_KEY', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'BENCH_LIVE_TRIAL', 'CI', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'KV_URL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']
+const CONSULTATIVE_ON = { CONSULTATIVE_V1: '1', CONSULT_V2: '1', BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '1', TURN_WEB_TICKET: '1', SEARCH_FALLBACK_GATE: '1' }
+// (the proxy and TLS names are unset too: the host's own session may have them, and the preflight refuses them)
+const PROXY_NAMES = ['HTTPS_PROXY', 'https_proxy', 'HTTP_PROXY', 'http_proxy', 'ALL_PROXY', 'all_proxy', 'NODE_USE_ENV_PROXY', 'NODE_OPTIONS', 'NODE_TLS_REJECT_UNAUTHORIZED']
+const ALL_NAMES = [...BENCH_FLAG_NAMES, ...PROXY_NAMES,'BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2', 'OPENAI_API_KEY', 'SERPER_API_KEY', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'BENCH_LIVE_TRIAL', 'CI', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'KV_URL', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']
 const stubEnv = (over: Record<string, string | undefined> = {}) => {
   for (const k of ALL_NAMES) vi.stubEnv(k, undefined) // undefined = UNSET
   for (const [k, v] of Object.entries({ ...BASE_ENV, ...over })) vi.stubEnv(k, v)
@@ -487,5 +491,219 @@ describe('(h) the real trial file is skipped by default and no CI or script sets
   })
   it('the rehearsal itself never sets it', () => {
     expect(process.env.BENCH_LIVE_TRIAL).toBeUndefined()
+  })
+})
+
+// ── round 2f ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+/** A refusal that happened before ANYTHING: no request, no BenchFs operation, no question file read, the global fetch untouched. Returns the reasons as one text. */
+const refusedBeforeAnything = async (over: Record<string, string | undefined>, inputOver: Partial<LiveTrialInput> = {}): Promise<string> => {
+  stubEnv(over)
+  const out = await runLiveTrial(input(inputOver))
+  expect(out.kind).toBe('refused')
+  nothingHappened()
+  expect(reads).toEqual([])
+  return (out as { reasons: string[] }).reasons.join(' | ')
+}
+
+describe('(n) round 2f · the two consultative flags are CONFIRMED by their own variables (the vitest setup overwrites the flags, so the flags alone prove nothing)', () => {
+  it('the premise: the project setup file pins both flags to "0" when they are unset (so "unset" and "set to 0" look the same to the trial)', () => {
+    const setup = readFileSync(join(__dirname, '..', '..', '..', 'src', 'test', 'consultativeFlag.setup.ts'), 'utf8')
+    expect(setup).toMatch(/if \(process\.env\.CONSULTATIVE_V1 === undefined\) process\.env\.CONSULTATIVE_V1 = '0'/)
+    expect(setup).toMatch(/if \(process\.env\.CONSULT_V2 === undefined\) process\.env\.CONSULT_V2 = '0'/)
+  })
+  it('(a) the confirmation of CONSULTATIVE_V1 is missing', async () => {
+    const t = await refusedBeforeAnything({ BENCH_EXPECT_CONSULTATIVE_V1: undefined })
+    expect(t).toMatch(/BENCH_EXPECT_CONSULTATIVE_V1/)
+  })
+  it('(b) the confirmation of CONSULT_V2 is missing', async () => {
+    const t = await refusedBeforeAnything({ BENCH_EXPECT_CONSULT_V2: undefined })
+    expect(t).toMatch(/BENCH_EXPECT_CONSULT_V2/)
+  })
+  for (const name of ['BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2']) {
+    for (const bad of ['2', '', ' ', '01', ' 1', '1 ', 'true', 'on', 'yes']) {
+      it(`(c) ${name} = ${JSON.stringify(bad)} is not exactly "0" or "1": refused by name, the value is not echoed`, async () => {
+        const t = await refusedBeforeAnything({ [name]: bad })
+        expect(t).toContain(name)
+        if (bad.trim().length > 1) expect(t).not.toContain(bad.trim()) // (a one-character value such as "2" is also a digit in the variable names: only longer values can be told apart)
+      })
+    }
+  }
+  it('(d) MAIN CASE: the Owner forgot to set both flags, the setup pinned them to "0", and the Owner states "1" (production): refused, both flags named', async () => {
+    const t = await refusedBeforeAnything({ CONSULTATIVE_V1: '0', CONSULT_V2: '0', BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '1' })
+    expect(t).toMatch(/BENCH_EXPECT_CONSULTATIVE_V1/); expect(t).toMatch(/BENCH_EXPECT_CONSULT_V2/)
+  })
+  it('(d2) the flags are really UNSET (the app default would be ON) and the Owner states "1": still refused (an unset flag is not a confirmed "1")', async () => {
+    const t = await refusedBeforeAnything({ CONSULTATIVE_V1: undefined, CONSULT_V2: undefined, BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '1' })
+    expect(t).toMatch(/BENCH_EXPECT_CONSULTATIVE_V1/); expect(t).toMatch(/BENCH_EXPECT_CONSULT_V2/)
+  })
+  for (const [flag, expectVar] of [['CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULTATIVE_V1'], ['CONSULT_V2', 'BENCH_EXPECT_CONSULT_V2']] as const) {
+    it(`(e) ${expectVar}="1" but ${flag}="0": refused`, async () => {
+      const t = await refusedBeforeAnything({ [flag]: '0', [expectVar]: '1' })
+      expect(t).toContain(expectVar)
+    })
+    it(`(e) ${expectVar}="0" but ${flag}="1": refused`, async () => {
+      const t = await refusedBeforeAnything({ [flag]: '1', [expectVar]: '0' })
+      expect(t).toContain(expectVar)
+    })
+  }
+  it('(f) both match as "0"/"0": the preflight passes and the turn runs', async () => {
+    stubEnv({ CONSULTATIVE_V1: '0', CONSULT_V2: '0', BENCH_EXPECT_CONSULTATIVE_V1: '0', BENCH_EXPECT_CONSULT_V2: '0' })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+  })
+  it('(f) both match as "1"/"1": the preflight passes and the turn runs', async () => {
+    stubEnv({ CONSULTATIVE_V1: '1', CONSULT_V2: '1', BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '1' })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+    expect(out.summary.flagsInEffect).toMatchObject({ CONSULTATIVE_V1: '1', CONSULT_V2: '1' })
+  })
+  it('(f) one flag "0" and the other "1", each confirmed: passes (the two are independent)', async () => {
+    stubEnv({ CONSULTATIVE_V1: '1', CONSULT_V2: '0', BENCH_EXPECT_CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULT_V2: '0' })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+  })
+  it('(g) the environment passed to the core is not process.env (what the route reads): refused even though the passed object matches its own confirmation', async () => {
+    stubEnv({ CONSULTATIVE_V1: '0', CONSULT_V2: '0', BENCH_EXPECT_CONSULTATIVE_V1: '0', BENCH_EXPECT_CONSULT_V2: '0' })
+    const passed = { ...process.env, CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULTATIVE_V1: '1' }
+    const out = await runLiveTrial(input({ env: passed }))
+    expect(out.kind).toBe('refused')
+    expect((out as { reasons: string[] }).reasons.join(' | ')).toMatch(/process\.env.*CONSULTATIVE_V1/)
+    nothingHappened(); expect(reads).toEqual([])
+  })
+  it('(h) a flag that changes AFTER the preflight (while the question file is read) is caught before the first request', async () => {
+    stubEnv({})
+    const out = await runLiveTrial(input({ readTextFile: p => { reads.push(p); vi.stubEnv('CONSULT_V2', '1'); return QUESTION } }))
+    expect(net.openai).toHaveLength(0); expect(net.serper).toHaveLength(0)
+    expect(out.kind).toBe('ran')
+    if (out.kind === 'ran') { expect(out.summary.turnOk).toBe(false); expect(out.summary.problems.join(' ')).toMatch(/BENCH_EXPECT_CONSULT_V2/) }
+    expect(globalThis.fetch).toBe(tripwireFetch)
+  })
+})
+
+describe('(p) round 2f review · the allow-list judges the logical URL, so anything that can redirect the CONNECTION is refused before the run', () => {
+  const proxyCases: Array<[string, Record<string, string | undefined>]> = [
+    ['HTTPS_PROXY', { HTTPS_PROXY: 'http://proxy.example:8080' }], ['https_proxy', { https_proxy: 'http://proxy.example:8080' }],
+    ['HTTP_PROXY', { HTTP_PROXY: 'http://proxy.example:8080' }], ['ALL_PROXY', { ALL_PROXY: 'socks5://proxy.example:1080' }],
+    ['NODE_USE_ENV_PROXY', { NODE_USE_ENV_PROXY: '1' }], ['NODE_OPTIONS with --use-env-proxy', { NODE_OPTIONS: '--max-old-space-size=4096 --use-env-proxy' }],
+    ['NODE_TLS_REJECT_UNAUTHORIZED=0', { NODE_TLS_REJECT_UNAUTHORIZED: '0' }],
+  ]
+  for (const [label, over] of proxyCases) {
+    it(`${label}: refused by name before anything (no request, no file-system call, no question file read), the value is not echoed`, async () => {
+      const t = await refusedBeforeAnything(over)
+      expect(t).toContain(Object.keys(over)[0].toUpperCase().startsWith('NODE_OPTIONS') ? 'NODE_OPTIONS' : Object.keys(over)[0])
+      expect(t).not.toContain('proxy.example')
+    })
+  }
+  it('an empty proxy variable and NODE_USE_ENV_PROXY=0 do not refuse (they do not route anything)', async () => {
+    stubEnv({ HTTPS_PROXY: '', NODE_USE_ENV_PROXY: '0', NODE_TLS_REJECT_UNAUTHORIZED: '1' })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+  })
+  const callFromPost = async (call: () => void) => {
+    const post = (async () => { try { call() } catch { /* blocked */ } return new Response('0:"x"\nd:{"finishReason":"stop"}\n') }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
+    expect(httpCalls).toEqual([]) // the original (tripwire) was never reached
+    return (out as { summary: { hostsBlocked: string[]; trialClean: boolean } }).summary
+  }
+  it('https.request(url, { hostname: undefined }): an explicit undefined override is still an override (Node falls back to localhost)', async () => {
+    const s = await callFromPost(() => { https.request('https://api.openai.com/v1/chat/completions', { hostname: undefined }) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0); expect(s.trialClean).toBe(false)
+  })
+  it('options with socketPath (a local pipe) are refused even under an allowed host name', async () => {
+    const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', socketPath: 'x' }) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+  })
+  it('options with createConnection are refused (they can send the connection elsewhere under an allowed name)', async () => {
+    const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', createConnection: () => { throw new Error('no') } } as never) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+  })
+  it('options with an agent other than false are refused', async () => {
+    const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: new https.Agent() }) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+  })
+  it('agent: false and lookup (what safeFetch/safePost pass) are NOT refused: the request is admitted and counted', async () => {
+    const lookup = (() => undefined) as never
+    const post = (async () => { try { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, lookup }).destroy() } catch { /* the tripwire stands in for the network */ } return new Response('0:"x"\nd:{"finishReason":"stop"}\n') }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
+    expect((out as { summary: { hostsBlocked: string[] } }).summary.hostsBlocked).toEqual([])
+    expect(httpCalls).toHaveLength(1) // it was admitted and handed to the original (here the tripwire, which stands in for the network)
+    httpCalls.length = 0
+  })
+  it('fetch with an object that merely carries a "url" property is blocked (what is sent could differ from what was checked)', async () => {
+    const sneaky = { url: 'https://api.openai.com/v1/chat/completions', toString: () => 'https://evil.example/x' }
+    const s = await callFromPost(() => { void (fetch as unknown as (x: unknown) => Promise<unknown>)(sneaky).catch(() => undefined) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+    expect(net.other).toEqual([])
+  })
+})
+
+describe('(o) round 2f · every text that reaches a file or the summary passes through redactSecrets (writeError, ticketLog, blocked-host labels, refusal reasons)', () => {
+  const SECRETS = /secret/i
+  const allText = (out: unknown) => [JSON.stringify(out ?? null), ...(out && (out as TrialOutcome).kind === 'ran' ? [formatSummary((out as { summary: never }).summary)] : []), ...[...fs.files.values()], ...fs.ops].join('\n')
+  it('a blocked host label that carries a key (in the path, and in the host name in another case) is redacted in the summary, the formatted summary and the files', async () => {
+    const post = (async () => {
+      for (const u of ['https://google.serper.dev/sk-test-SECRET-123', 'https://serper-SECRET-456.evil.example/x', 'https://api.openai.com/v1/chat/completions/serper-SECRET-456']) { try { await fetch(u) } catch { /* blocked */ } }
+      return new Response('0:"x"\nd:{"finishReason":"stop"}\n')
+    }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
+    expect((out as { summary: { hostsBlocked: string[] } }).summary.hostsBlocked.length).toBe(3) // still reported, just without the key
+    expect(allText(out)).not.toMatch(SECRETS)
+  })
+  it('a ticket line that carries a key is redacted in the JSONL record (and in the result file)', async () => {
+    const post = (async () => {
+      console.log('{"type":"tappyai_web_ticket","note":"sk-test-SECRET-123 and serper-SECRET-456"}')
+      return new Response('0:"x"\nd:{"finishReason":"stop"}\n')
+    }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
+    expect(jsonlLines(fs)[0].ticketLog).toHaveLength(1) // the line is kept, only the key is gone
+    expect(allText(out)).not.toMatch(SECRETS)
+  })
+  it('a file-system error that quotes a key, when the turn record cannot be saved: the thrown error, the result file and the files carry no key', async () => {
+    const real = fs.append
+    fs.append = (p, t) => { if (!t.includes('"started"')) throw new Error('disk said sk-test-SECRET-123 and serper-SECRET-456'); real(p, t) }
+    const err = await runLiveTrial(input()).then(() => null, (e: unknown) => e)
+    expect(err).toBeInstanceOf(Error)
+    expect(`${(err as Error).name} ${(err as Error).message}`).not.toMatch(SECRETS)
+    expect(allText(null)).not.toMatch(SECRETS)
+    expect(finalFile(fs)!.json.writeError).toMatch(/disk said/) // the useful part stays
+  })
+  it('a file-system error that quotes a key, when the turn cannot be announced (nothing was sent)', async () => {
+    const real = fs.append
+    fs.append = (p, t) => { if (t.includes('"started"')) throw new Error('disk said sk-test-SECRET-123 and serper-SECRET-456'); real(p, t) }
+    const err = await runLiveTrial(input()).then(() => null, (e: unknown) => e)
+    expect(err).toBeInstanceOf(Error)
+    expect(`${(err as Error).name} ${(err as Error).message}`).not.toMatch(SECRETS)
+    expect(allText(null)).not.toMatch(SECRETS)
+    expect(net.openai).toHaveLength(0)
+  })
+  it('a refusal that would echo a value (a cap variable holding a key) does not carry it', async () => {
+    stubEnv({ BENCH_SPEND_TURN_CAP_USD: 'sk-test-SECRET-123', BENCH_CONFIRM_SPEND: 'serper-SECRET-456' })
+    const out = await runLiveTrial(input())
+    expect(out.kind).toBe('refused')
+    expect(JSON.stringify(out)).not.toMatch(SECRETS)
+    nothingHappened()
+  })
+  it('re-review: a refusal that comes from the runner (the output folder cannot be created and the file-system error quotes a key) carries no key', async () => {
+    fs.mkdirp = () => { throw new Error('EACCES sk-test-SECRET-123 serper-SECRET-456') }
+    const out = await runLiveTrial(input())
+    expect(out.kind).toBe('refused')
+    expect(JSON.stringify(out)).not.toMatch(SECRETS)
+    expect(net.openai).toHaveLength(0); expect(net.serper).toHaveLength(0)
+  })
+  it('re-review: redaction uses the keys of the environment passed in AND of process.env (they may differ in a rehearsal)', async () => {
+    stubEnv({ BENCH_SPEND_TURN_CAP_USD: 'serper-SECRET-456' }) // process.env holds the Serper key serper-SECRET-456 and a cap variable that echoes it
+    const out = await runLiveTrial(input({ env: { ...process.env, SERPER_API_KEY: 'a-different-key-0000' } }))
+    expect(out.kind).toBe('refused')
+    expect(JSON.stringify(out)).not.toMatch(SECRETS)
+  })
+  it('a question file that cannot be read: the reason carries no key', async () => {
+    const out = await runLiveTrial(input({ readTextFile: () => { throw new Error('ENOENT sk-test-SECRET-123') } }))
+    expect(out.kind).toBe('refused')
+    expect(JSON.stringify(out)).not.toMatch(SECRETS)
   })
 })

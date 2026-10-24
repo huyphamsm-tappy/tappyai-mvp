@@ -6,19 +6,23 @@
 // the dry rehearsal runs (liveTrial.ts).
 //
 // ENVIRONMENT NOTE: this file runs under the app project's vitest setup, which pins CONSULTATIVE_V1 and CONSULT_V2 to "0" when they are unset
-// (src/test/consultativeFlag.setup.ts). The production default of both is ON, so SET THEM EXPLICITLY to the production values; the summary prints the
-// values that were in effect.
+// (src/test/consultativeFlag.setup.ts), BEFORE any code here runs. The production default of both is ON, so SET THEM EXPLICITLY to the production values.
+// Because the setup overwrites the flags, the flags alone cannot show whether the Owner set them: the confirmation variables BENCH_EXPECT_CONSULTATIVE_V1 and
+// BENCH_EXPECT_CONSULT_V2 exist for that reason. The Owner copies the Vercel production value of each flag into BOTH the flag and its confirmation; the trial is
+// refused before anything is read or sent if a confirmation is missing, is not exactly 0 or 1, or differs from the flag the route will see. The summary prints
+// the values that were in effect.
 //
 // WHAT THIS IS: a check of the ISOLATED LEGACY PATH. The benchmark-must-be-OFF flags (V4, V5, agent runtime, Responses API, Anthropic models…) are held OFF
 // by the preflight; the route is exercised with a SIMULATED signed-in user (Supabase, age check and rate limit are simulated exactly as in the other route
 // tests), so guest limits, memory and subscription are NOT measured. It does not prove equivalence with production. Costs are the ledger's ESTIMATES.
 //
-// HOW TO RUN (the Owner, never an agent): see D:/TappyAI-review-artifacts/consultative-round2e/trial-env-sheet.md. In short, in a PowerShell session:
+// HOW TO RUN (the Owner, never an agent): see D:/TappyAI-review-artifacts/consultative-round2f/trial-env-sheet.md. In short, in a PowerShell session:
 //   set the variables listed there, then
 //   $env:BENCH_LIVE_TRIAL = 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'
 //   npx vitest run --project app scripts/uat/consultUat/liveTrial.test.ts --reporter=verbose --silent=false
 // VARIABLES (names only; values come from the Owner's own session): OPENAI_API_KEY, SERPER_API_KEY, BENCH_SPEND_GATE, BENCH_SPEND_TURN_CAP_USD,
-// BENCH_SPEND_RUN_CAP_USD, BENCH_CONFIRM_SPEND, BENCH_TRIAL_QUESTION_FILE, BENCH_TRIAL_OUT_DIR, the benchmark flags, and BENCH_LIVE_TRIAL.
+// BENCH_SPEND_RUN_CAP_USD, BENCH_CONFIRM_SPEND, BENCH_EXPECT_CONSULTATIVE_V1, BENCH_EXPECT_CONSULT_V2, BENCH_TRIAL_QUESTION_FILE, BENCH_TRIAL_OUT_DIR, the benchmark flags,
+// and BENCH_LIVE_TRIAL.
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { formatSummary, runLiveTrial } from './liveTrial'
 
