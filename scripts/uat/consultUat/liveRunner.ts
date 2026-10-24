@@ -151,9 +151,20 @@ export interface SerperCallRecord {
 export interface LlmCallRecord { n: number; role: string; tokensIn: number | null; tokensOut: number | null; cachedIn: number | null; reasoning: number | null; usd: number | null; state: SpendRecordState }
 interface KindTotals { requests: number; credits: number; usd: number }
 export interface RequestTotals {
-  /** `requests` is how many requests were sent, `credits` how many the provider said it charged: two different numbers. */
-  serper: KindTotals & { W: KindTotals; V: KindTotals; unclassified: KindTotals; /** requests whose USD is unknown: the `usd` above does not include them */ unknownCalls: number }
-  llm: { requests: number; usd: number; unknownCalls: number }
+  /**
+   * `requests` = every request the gate let through, INCLUDING the released ones (reserved, then released before any send). It is NOT the number sent:
+   * use `sentRequests` for that (an upper bound: see its doc). `credits` = what the provider said it charged (not a request count).
+   */
+  serper: KindTotals & {
+    W: KindTotals; V: KindTotals; unclassified: KindTotals
+    /** requests whose USD is unknown: the `usd` above does not include them */
+    unknownCalls: number
+    /** `requests` minus the released ones. An UPPER BOUND of what was sent: a held or unknown request may or may not have left the process. */
+    sentRequests: number
+    /** the released ones: reserved and then released before any send (provably not sent). */
+    notSent: number
+  }
+  llm: { requests: number; usd: number; unknownCalls: number; sentRequests: number; notSent: number }
 }
 
 const round9 = (x: number): number => Math.round(x * 1e9) / 1e9
@@ -185,8 +196,15 @@ export function describeRequests(records: readonly SpendRecord[], env: Record<st
   }))
   const sum = (calls: SerperCallRecord[]): KindTotals => ({ requests: calls.length, credits: round9(calls.reduce((a, c) => a + (c.credits ?? 0), 0)), usd: round9(calls.reduce((a, c) => a + (c.usd ?? 0), 0)) })
   const requestTotals: RequestTotals = {
-    serper: { ...sum(serperCalls), W: sum(serperCalls.filter(c => c.purpose === 'W')), V: sum(serperCalls.filter(c => c.purpose === 'V')), unclassified: sum(serperCalls.filter(c => c.purpose === null)), unknownCalls: serperCalls.filter(c => c.usd === null && c.state !== 'released').length },
-    llm: { requests: llmCalls.length, usd: round9(llmCalls.reduce((a, c) => a + (c.usd ?? 0), 0)), unknownCalls: llmCalls.filter(c => c.usd === null && c.state !== 'released').length },
+    serper: {
+      ...sum(serperCalls), W: sum(serperCalls.filter(c => c.purpose === 'W')), V: sum(serperCalls.filter(c => c.purpose === 'V')), unclassified: sum(serperCalls.filter(c => c.purpose === null)),
+      unknownCalls: serperCalls.filter(c => c.usd === null && c.state !== 'released').length,
+      sentRequests: serperCalls.filter(c => c.state !== 'released').length, notSent: serperCalls.filter(c => c.state === 'released').length,
+    },
+    llm: {
+      requests: llmCalls.length, usd: round9(llmCalls.reduce((a, c) => a + (c.usd ?? 0), 0)), unknownCalls: llmCalls.filter(c => c.usd === null && c.state !== 'released').length,
+      sentRequests: llmCalls.filter(c => c.state !== 'released').length, notSent: llmCalls.filter(c => c.state === 'released').length,
+    },
   }
   return { serperCalls, llmCalls, requestTotals }
 }
