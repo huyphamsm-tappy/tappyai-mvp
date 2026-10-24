@@ -120,4 +120,15 @@ describe('the dev summary says what it is and where it stopped', () => {
     expect(text).not.toMatch(/SECRET/)
     out.controls.release()
   })
+
+  it('the dev summary prints the run cap that was in force (0.10), not "?"', async () => {
+    const { post } = spendingPost(0.03)
+    const out = await run(post as never, turnsOf(11))
+    if (out.kind !== 'ran') throw new Error('expected a ran outcome')
+    const { formatSummary } = await import('./liveTrial')
+    const text = formatSummary(out.summary)
+    expect(text).toMatch(/run cap 0\.10\b/)
+    expect(text).not.toMatch(/run cap \?/)
+    out.controls.release()
+  })
 })

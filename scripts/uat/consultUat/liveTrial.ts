@@ -155,7 +155,7 @@ export function isBenchmarkEligible(turns: readonly UatTurn[], runValid: boolean
 }
 
 const TWELVE = new Set(UAT_TURNS.map(t => questionKey(t.text)))
-const FLAGS_IN_EFFECT = ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE']
+const FLAGS_IN_EFFECT = ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE', 'BENCH_SPEND_RUN_CAP_USD']
 
 /**
  * WHY THESE VARIABLES EXIST (round 2f): the real trial runs under the project's vitest setup (src/test/consultativeFlag.setup.ts), which OVERWRITES
