@@ -48,8 +48,11 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[]): string[] {
-  return [...new Set(domains.flatMap(d => DOMAIN_TOOLS[d] ?? []))]
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean } = {}): string[] {
+  const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
+  // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
+  if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
+  return [...new Set(tools)]
 }
 
 export function buildLeanConsultSystem(o: {

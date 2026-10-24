@@ -396,12 +396,20 @@ export function routeFlightGuardOn(env: Record<string, string | undefined> = pro
 
 /**
  * ROUTE_TOOL_OFFER_GUARD (round 3h, default OFF). Read at call time, like routeFlightGuardOn. ON: the bare buy verb "mua" only OFFERS shopping
- * (the domain lexicons still see it); it no longer FORCES search_products, so the specific rules below it run ("giá vàng SJC mua vào" reaches the
- * gold rule). The strong product signals (sản phẩm, shopee, tiki, lazada, đặt hàng, order hàng) still force, as before.
+ * (the domain lexicons still see it); it no longer FORCES search_products, so the specific rules below it run (a price question with a buy verb
+ * reaches the price rule). The strong product signals (sản phẩm, shopee, tiki, lazada, đặt hàng, order hàng) still force, as before.
+ * Round 3h-3 production lock: the flag alone is not enough. It is effective only inside a bench run that holds the spend gate and its
+ * confirmation (BENCH_SPEND_GATE=1 and BENCH_CONFIRM_SPEND set, as liveRunner requires), and never on a production host. A lock on
+ * configuration, not a proof of production safety: a host that sets all three variables would still get it (see the round 3h-3 report).
  */
 export function routeToolOfferOn(env: Record<string, string | undefined> = process.env): boolean {
   const v = (env.ROUTE_TOOL_OFFER_GUARD ?? '').trim().toLowerCase()
-  return v === '1' || v === 'on' || v === 'true'
+  if (!(v === '1' || v === 'on' || v === 'true')) return false
+  if (env.VERCEL_ENV === 'production' || env.NODE_ENV === 'production') return false
+  // The confirmation must be exactly the run cap, as preflightReport and liveTrial require (a stray value does not count).
+  const run = (env.BENCH_SPEND_RUN_CAP_USD ?? '').trim()
+  const confirm = (env.BENCH_CONFIRM_SPEND ?? '').trim()
+  return (env.BENCH_SPEND_GATE ?? '').trim() === '1' && run !== '' && confirm === run
 }
 
 /**
@@ -438,7 +446,11 @@ export function detectForcedTool(text: string):'search_places' | 'get_news' | 's
   if (routeToolOfferOn() ? /san pham|shopee|tiki|lazada|dat hang|order hang/.test(t) : /(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
   if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
-  if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
+  // round 3h (ROUTE_TOOL_OFFER_GUARD, ON): a buy-verb question ("nên mua laptop nào cho sinh viên?") is not forced to web_search by the bare "?".
+  // The specific lookup words still force it; the model is offered both shopping and web tools for that turn.
+  const WEB_WORDS = /ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/
+  const offerBuyTurn = routeToolOfferOn() && /(?<!nhay )\bmua\b/.test(t)
+  if (offerBuyTurn ? WEB_WORDS.test(t) : /ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'
   return null
 }
 

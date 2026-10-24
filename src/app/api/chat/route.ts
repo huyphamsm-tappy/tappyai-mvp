@@ -28,7 +28,7 @@ import { requestLocale } from '@/lib/i18n/requestLocale'
 import { serverMessage } from '@/lib/i18n/serverMessages'
 import { fenceUntrusted } from '@/lib/ai/security/fence'
 import { wrapToolResultAsData } from '@/lib/ai/security/toolResultFence'
-import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped } from '@/lib/ai/intent'
+import { classifyIntent, detectLang, detectLangConfident, detectExplicitLangRequest, detectForcedTool, detectTravelIntent, detectLocationIntent, detectPlanningIntent, detectPlanningIntentFromConversation, detectPlanActivities, detectTripLength, isPlanningRefinement, defaultTransportFor, detectMovieRecommendationIntent, isSimpleQuery, normalizeVN, isPurchaseShaped, routeToolOfferOn } from '@/lib/ai/intent'
 import { deriveNeedProfile, type StoredPreferences } from '@/lib/ai/consultative/needProfile'
 import { resolveDecisionStage, taskSwitched, consultationUserTexts } from '@/lib/ai/consultative/refinement'
 import { normalizePlaces, normalizeHotels, normalizeShopping, type Candidate } from '@/lib/ai/consultative/candidate'
@@ -3314,7 +3314,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains).includes(k))) as typeof tools : tools),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
