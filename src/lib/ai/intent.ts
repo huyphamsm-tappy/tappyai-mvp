@@ -395,6 +395,16 @@ export function routeFlightGuardOn(env: Record<string, string | undefined> = pro
 }
 
 /**
+ * ROUTE_TOOL_OFFER_GUARD (round 3h, default OFF). Read at call time, like routeFlightGuardOn. ON: the bare buy verb "mua" only OFFERS shopping
+ * (the domain lexicons still see it); it no longer FORCES search_products, so the specific rules below it run ("giá vàng SJC mua vào" reaches the
+ * gold rule). The strong product signals (sản phẩm, shopee, tiki, lazada, đặt hàng, order hàng) still force, as before.
+ */
+export function routeToolOfferOn(env: Record<string, string | undefined> = process.env): boolean {
+  const v = (env.ROUTE_TOOL_OFFER_GUARD ?? '').trim().toLowerCase()
+  return v === '1' || v === 'on' || v === 'true'
+}
+
+/**
  * With the guard ON, "hàng không" counts as aviation only in phrases that name flying: "hãng hàng không" (the airline), "bằng hàng không"
  * (by air), "đường hàng không" (air route), or a bare "hàng không" next to a flight word typed with its diacritics (vé, máy bay, sân bay, chuyến bay).
  * The bare phrase alone decides nothing: "còn hàng không" (in stock) and "chính hãng không" (a genuine brand) carry no flight word.
@@ -425,7 +435,7 @@ export function detectForcedTool(text: string):'search_places' | 'get_news' | 's
   // "mua" = buy — but after normalizeVN "nhảy múa" (dance) is also "nhay mua",
   // and it used to route an evening-out request to shopping. A negative
   // lookbehind on "nhay " keeps the verb and drops the dance.
-  if (/(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
+  if (routeToolOfferOn() ? /san pham|shopee|tiki|lazada|dat hang|order hang/.test(t) : /(?<!nhay )\bmua\b|san pham|shopee|tiki|lazada|dat hang|order hang/.test(t)) return 'search_products'
   if (/gia vang|vang sjc|vang 9999|vang mieng|vang nhan|gia vang the gioi|xau\s*\/?\s*usd/.test(t)) return 'get_gold_price'
   if (/thoi tiet|du bao|nhiet do|troi mua|troi nang|troi co lanh|may co|nang khong|mua khong/.test(t)) return 'get_weather'
   if (/ty gia|hoi suat|gia xang|gia dau|ket qua|\bti so\b|diem so|ai la|tong thong|thu tuong|chu tich|vn-index|chung khoan|xo so|lich am|ngay bao nhieu|\?|nghia la|nhu the nao|khi nao|vi sao|tai sao|moi nhat|cap nhat|hien nay|hien tai/.test(t)) return 'web_search'

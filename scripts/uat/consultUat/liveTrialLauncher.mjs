@@ -64,6 +64,8 @@ export const FLAG_ENV_NAMES = [
   'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
   // round 3b-1: routing guard for the aviation word "hàng không" (intent.ts routeFlightGuardOn); default OFF
   'ROUTE_FLIGHT_HANG_KHONG_GUARD',
+  // round 3h: a bare buy verb offers shopping instead of forcing search_products (intent.ts routeToolOfferOn); default OFF
+  'ROUTE_TOOL_OFFER_GUARD',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i

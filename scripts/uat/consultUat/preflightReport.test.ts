@@ -6,7 +6,7 @@ import https from 'node:https'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { conditionReport, formatConditionReport, type Condition } from './preflightReport'
 
-const ALL_KEYS_START = ['BENCH_SPEND_GATE', 'BENCH_SPEND_TURN_CAP_USD', 'BENCH_SPEND_RUN_CAP_USD', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_MODE', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULTATIVE_V1', 'CONSULT_V2', 'BENCH_EXPECT_CONSULT_V2', 'OPENAI_API_KEY', 'SERPER_API_KEY', 'ROUTE_FLIGHT_HANG_KHONG_GUARD', 'CI', 'HTTPS_PROXY', 'BENCH_LIVE_TRIAL']
+const ALL_KEYS_START = ['BENCH_SPEND_GATE', 'BENCH_SPEND_TURN_CAP_USD', 'BENCH_SPEND_RUN_CAP_USD', 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_MODE', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULTATIVE_V1', 'CONSULT_V2', 'BENCH_EXPECT_CONSULT_V2', 'OPENAI_API_KEY', 'SERPER_API_KEY', 'ROUTE_FLIGHT_HANG_KHONG_GUARD', 'ROUTE_TOOL_OFFER_GUARD', 'CI', 'HTTPS_PROXY', 'BENCH_LIVE_TRIAL']
 const KEY_OPENAI = 'sk-test-SECRET-123'
 const KEY_SERPER = 'serper-SECRET-456'
 const GOOD: Record<string, string> = {
@@ -34,7 +34,7 @@ afterEach(() => {
 })
 
 // In the real child process the env the report reads IS process.env (the flag check compares against process.env), so the test sets process.env.
-const ALL_KEYS = [...Object.keys(GOOD), 'ROUTE_FLIGHT_HANG_KHONG_GUARD', 'CI', 'HTTPS_PROXY']
+const ALL_KEYS = [...Object.keys(GOOD), 'ROUTE_FLIGHT_HANG_KHONG_GUARD', 'ROUTE_TOOL_OFFER_GUARD', 'CI', 'HTTPS_PROXY']
 const report = (env: Record<string, string | undefined>, questionText: string | null = QUESTION): Condition[] => {
   for (const k of ALL_KEYS) vi.stubEnv(k, env[k])
   return conditionReport({ env: process.env, repoRoot: REPO, execArgv: [], questionText })
@@ -57,6 +57,7 @@ describe('each wrong setting is reported as its own failing condition (red → g
     ['the run cap above the maximum', { BENCH_SPEND_RUN_CAP_USD: '0.70', BENCH_CONFIRM_SPEND: '0.70' }, 'caps: turn <= 0.05, run <= 0.65, turn <= run'],
     ['a consultative flag that differs from its confirmation', { CONSULT_V2: '0' }, 'consultative confirmations match the flags as the route will see them'],
     ['ROUTE_FLIGHT_HANG_KHONG_GUARD ON', { ROUTE_FLIGHT_HANG_KHONG_GUARD: '1' }, 'ROUTE_FLIGHT_HANG_KHONG_GUARD is UNSET or OFF for this run'],
+    ['ROUTE_TOOL_OFFER_GUARD ON', { ROUTE_TOOL_OFFER_GUARD: '1' }, 'ROUTE_TOOL_OFFER_GUARD is UNSET or OFF for this run'],
     ['OPENAI_API_KEY UNSET', { OPENAI_API_KEY: undefined }, 'OPENAI_API_KEY present (value never shown)'],
     ['SERPER_API_KEY with whitespace inside', { SERPER_API_KEY: 'serper 456' }, 'SERPER_API_KEY present (value never shown)'],
     ['CI set', { CI: 'true' }, 'CI is not set'],

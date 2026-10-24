@@ -60,6 +60,11 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
     route === '' || route === '0' || route === 'off' || route === 'false' ? [] : ['ROUTE_FLIGHT_HANG_KHONG_GUARD is ON: this run must not have it on'],
     route === '' ? 'UNSET' : 'OFF')
 
+  const offer = (env.ROUTE_TOOL_OFFER_GUARD ?? '').trim().toLowerCase()
+  add('ROUTE_TOOL_OFFER_GUARD is UNSET or OFF for this run',
+    offer === '' || offer === '0' || offer === 'off' || offer === 'false' ? [] : ['ROUTE_TOOL_OFFER_GUARD is ON: this run must not have it on'],
+    offer === '' ? 'UNSET' : 'OFF')
+
   add('no proxy, preload, trust-store or TLS switch (the network is the one the allow-list judges)',
     connectionRedirectReasons(env, input.execArgv, input.repoRoot), 'none set')
 

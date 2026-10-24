@@ -43,6 +43,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'AUDIT_DRY_RUN', 'AUDIT_MODEL_REQUEST_FILE', 'AUDIT_USAGE_LOG_FILE',
   // round 3b-1: routing guard for the aviation word "hàng không" (intent.ts routeFlightGuardOn); default OFF
   'ROUTE_FLIGHT_HANG_KHONG_GUARD',
+  // round 3h: a bare buy verb offers shopping instead of forcing search_products (intent.ts routeToolOfferOn); default OFF
+  'ROUTE_TOOL_OFFER_GUARD',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */
