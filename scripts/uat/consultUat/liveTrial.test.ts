@@ -1,9 +1,14 @@
 // @vitest-environment node
 // LIVE TRIAL - REAL NETWORK, REAL MONEY. This file is SKIPPED unless BENCH_LIVE_TRIAL has exactly the confirmation text below; a plain `vitest run` and CI
-// never run its body. It runs ONE development question through the REAL chat route of this process and the REAL network (through fetch AND node:https /
-// node:http only https requests to api.openai.com /v1/chat/completions and google.serper.dev /search /maps /shopping are let through - anything else is
-// blocked before it is sent, counted and reported as NOT CLEAN; transports that use neither fetch nor node:http(s) are not covered), through the same core
-// the dry rehearsal runs (liveTrial.ts).
+// never run its body. It is meant to be run ONLY by the launcher (liveTrialLauncher.mjs), in a node process of its own: the launcher sets BENCH_LIVE_TRIAL and
+// BENCH_TRIAL_ISOLATED (a random per-run nonce) for the child only, passes on an allow-list of environment variables, reads the child's output in memory and prints only
+// the summary, and ENDS the child's whole process tree once the summary is out. Started any other way (BENCH_LIVE_TRIAL set but no nonce in BENCH_TRIAL_ISOLATED) this
+// file REFUSES in beforeAll, before the route is imported and before anything is read or sent.
+//
+// It runs ONE development question through the REAL chat route of this process and the REAL network (through fetch AND node:https / node:http only https
+// requests to api.openai.com /v1/chat/completions and google.serper.dev /search /maps /shopping are let through - anything else is blocked before it is sent, counted and
+// reported as NOT CLEAN; transports that use neither fetch nor node:http(s) are not covered), through the same core the dry rehearsal runs (liveTrial.ts). When the trial
+// is over the network is NOT given back (afterTrial: 'deny'): every later request fails before it is sent, until the process ends. The console is filtered before it prints.
 //
 // ENVIRONMENT NOTE: this file runs under the app project's vitest setup, which pins CONSULTATIVE_V1 and CONSULT_V2 to "0" when they are unset
 // (src/test/consultativeFlag.setup.ts), BEFORE any code here runs. The production default of both is ON, so SET THEM EXPLICITLY to the production values.
@@ -16,15 +21,13 @@
 // by the preflight; the route is exercised with a SIMULATED signed-in user (Supabase, age check and rate limit are simulated exactly as in the other route
 // tests), so guest limits, memory and subscription are NOT measured. It does not prove equivalence with production. Costs are the ledger's ESTIMATES.
 //
-// HOW TO RUN (the Owner, never an agent): see D:/TappyAI-review-artifacts/consultative-round2f/trial-env-sheet.md. In short, in a PowerShell session:
-//   set the variables listed there, then
-//   $env:BENCH_LIVE_TRIAL = 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'
-//   npx vitest run --project app scripts/uat/consultUat/liveTrial.test.ts --reporter=verbose --silent=false
+// HOW TO RUN (the Owner, never an agent): see D:/TappyAI-review-artifacts/consultative-round2g/trial-env-sheet.md. In short, in a PowerShell session set the variables listed
+// there (never BENCH_LIVE_TRIAL), then:   node scripts/uat/consultUat/liveTrialLauncher.mjs
 // VARIABLES (names only; values come from the Owner's own session): OPENAI_API_KEY, SERPER_API_KEY, BENCH_SPEND_GATE, BENCH_SPEND_TURN_CAP_USD,
-// BENCH_SPEND_RUN_CAP_USD, BENCH_CONFIRM_SPEND, BENCH_EXPECT_CONSULTATIVE_V1, BENCH_EXPECT_CONSULT_V2, BENCH_TRIAL_QUESTION_FILE, BENCH_TRIAL_OUT_DIR, the benchmark flags,
-// and BENCH_LIVE_TRIAL.
+// BENCH_SPEND_RUN_CAP_USD, BENCH_CONFIRM_SPEND, BENCH_EXPECT_CONSULTATIVE_V1, BENCH_EXPECT_CONSULT_V2, BENCH_TRIAL_QUESTION_FILE, BENCH_TRIAL_OUT_DIR, the benchmark flags.
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { formatSummary, runLiveTrial } from './liveTrial'
+import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, marker } from './liveTrialLauncher.mjs'
 
 const h = vi.hoisted(() => {
   const builder = (): any => {
@@ -49,13 +52,24 @@ vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retry
 
 describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY')('LIVE trial: ONE development question through the real route (real network, real money)', () => {
   let POST: (req: never) => Promise<Response>
-  beforeAll(async () => { ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) }, 120_000) // the route is imported BEFORE the fetch wrapper is installed
+  // The launcher gives every run a random nonce (BENCH_TRIAL_ISOLATED). Not started by the launcher: refuse BEFORE anything is imported, read or sent (the launcher is what
+  // ends this process and filters its output). A hand-typed value such as "1" is not a nonce.
+  const nonce = process.env.BENCH_TRIAL_ISOLATED ?? ''
+  const isolated = /^[0-9a-f]{32}$/.test(nonce)
+  beforeAll(async () => {
+    if (!isolated) throw new Error('the live trial runs only through the launcher: node scripts/uat/consultUat/liveTrialLauncher.mjs (nothing was imported, read or sent)')
+    ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) // the route is imported BEFORE the fetch wrapper is installed
+  }, 120_000)
 
-  it('runs the single trial turn, writes the evidence to drive D and prints a summary that contains no secret', async () => {
-    const outcome = await runLiveTrial({ env: process.env, post: POST })
-    if (outcome.kind === 'refused') throw new Error(`the trial was refused before anything was sent: ${outcome.reasons.join('; ')}`)
+  it('runs the single trial turn in its own process, writes the evidence to drive D and prints a summary that contains no secret', async () => {
+    const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny' })
+    if (outcome.kind === 'refused') {
+      // eslint-disable-next-line no-console
+      console.info(`${marker(REFUSED_BEGIN, nonce)}\n${outcome.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)
+      throw new Error('the trial was refused before anything was sent')
+    }
     // eslint-disable-next-line no-console
-    console.info(formatSummary(outcome.summary))
+    console.info(`${marker(SUMMARY_BEGIN, nonce)}\n${formatSummary(outcome.summary)}\n${marker(SUMMARY_END, nonce)}`)
     expect(outcome.summary.turnOk, 'the turn is not OK: stop and have the result reviewed').toBe(true)
     expect(outcome.summary.trialClean, 'NOT CLEAN: a host was blocked, a redirect was seen or the counts disagree - this is not a complete result').toBe(true)
   }, 240_000)

@@ -12,23 +12,32 @@
  *      (flags explicit and equal to the environment, no flag that must be OFF, no set-but-blank variable, exact model ids, output folder on drive D)
  *   2. the question file is read (UTF-8, one optional byte-order mark dropped) and checked: not empty, not one of the 12 benchmark questions
  *   3. the network wrappers are installed (globalThis.fetch AND node:https / node:http request+get: the app's page reader uses node:https, not fetch), ONE turn runs
- *      through runBench, the wrappers stay in place for a short drain (background work after the answer) and are removed in a finally.
+ *      through runBench, the wrappers stay in place for a short drain (background work after the answer). Then, depending on `afterTrial`:
+ *        'restore' (default; the dry rehearsal): the originals are put back.
+ *        'deny' (the real run, in a process of its own): the originals are NOT put back. Every later request - to ANY host, the two allowed ones included - fails before it is
+ *        sent and is recorded, and the console filter stays on, until the process ends. In this mode the deny wrappers and the console filter are installed FIRST (before the
+ *        preflight), so that a refusal leaves the network closed too.
  *
  * WHAT THE WRAPPERS ALLOW: only https, default port, and only these paths of these two hosts: api.openai.com /v1/chat/completions; google.serper.dev /search /maps
  * /shopping. Everything else (another host, another path, plain http, another port, an unparseable URL) is BLOCKED before it is sent, counted and reported;
  * a redirect is never followed. The check judges the LOGICAL URL, not the machine the connection really reaches: the preflight therefore refuses a proxy in the
- * environment, NODE_TLS_REJECT_UNAUTHORIZED=0, and node:https options that redirect the connection (socketPath, createConnection, an agent other than false). The real
- * fetch and node:http(s) are restored after a short drain, so background work that runs later is no longer filtered (paid calls are still refused: the gate is closed).
- * NOT covered: transports that use neither of these (a raw socket, a library with its own client): none was found on the chat path,
- * but that is a reading of the code, not a guarantee.
+ * environment, NODE_TLS_REJECT_UNAUTHORIZED=0, preloads and trust-store options on the node command line and in NODE_OPTIONS, and node:https options that redirect the
+ * connection or change what is trusted (socketPath, createConnection, an agent other than false, a lookup other than the app's safeLookup, rejectUnauthorized: false, ca,
+ * checkServerIdentity); a fetch with a `dispatcher` is blocked. After the answer and a short drain the behaviour is the one chosen by `afterTrial` (above).
+ * NOT covered: transports that use neither of these (a raw socket, a library with its own client, undici's own global dispatcher, http2, worker threads, a child process):
+ * none was found on the chat path, but that is a reading of the code, not a guarantee; a fetch reference captured BEFORE the wrapper was installed keeps the original.
  *
  * Costs in the ledger are ESTIMATES (tokens × the price table in the code; Serper by credits), NOT the provider's invoice. The caps are enforced on that
  * estimate for the paths the gate covers; they are not a promise about the invoice.
  */
-import { readFileSync } from 'node:fs'
+import { readFileSync, realpathSync } from 'node:fs'
 import http from 'node:http'
 import https from 'node:https'
+import { syncBuiltinESMExports } from 'node:module'
+import { join } from 'node:path'
+import { inspect } from 'node:util'
 import { checkBenchCaps, capToScaled } from '@/lib/ai/budget/spendGate'
+import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
 import { UAT_TURNS, type UatTurn } from './questions'
@@ -65,6 +74,14 @@ export interface LiveTrialInput {
   now?: () => number
   /** How long the wrappers stay installed after the answer, for background work that outlives it (default 100 ms). */
   drainMs?: number
+  /** The node command-line options of this process (default process.execArgv). Injectable so a rehearsal can prove what is refused. */
+  execArgv?: readonly string[]
+  /**
+   * What happens to the network when the trial is over. 'restore' (default; the dry rehearsal needs it): the original fetch / node:http(s) / console are put back.
+   * 'deny' (the real run, in its own process): they are NOT put back - every later request, to ANY host, fails before it is sent and is recorded, and the console
+   * filter stays on, until the process ends (outcome.controls.release() undoes it; only tests call it).
+   */
+  afterTrial?: 'restore' | 'deny'
 }
 
 export interface TrialSummary {
@@ -100,7 +117,13 @@ export interface TrialSummary {
   resultPath: string | null
 }
 
-export type TrialOutcome = { kind: 'refused'; reasons: string[] } | { kind: 'ran'; summary: TrialSummary }
+export interface TrialControls {
+  /** Requests attempted AFTER the trial was closed in 'deny' mode (they were all blocked before being sent). Always empty in 'restore' mode. */
+  lateAttempts: () => string[]
+  /** Gives the originals back (fetch, node:http(s), console). A no-op in 'restore' mode, where it was done already. The real run never calls it. */
+  release: () => void
+}
+export type TrialOutcome = { kind: 'refused'; reasons: string[]; controls: TrialControls } | { kind: 'ran'; summary: TrialSummary; controls: TrialControls }
 
 /** Trim, collapse whitespace, lower case, drop Vietnamese marks (đ → d): two questions that differ only in those are the same question. */
 export function normalizeQuestion(s: string): string {
@@ -146,19 +169,43 @@ export function consultativeConfirmationReasons(env: Record<string, string | und
  * still sees an allowed host, and the request carries the Authorization header. NODE_TLS_REJECT_UNAUTHORIZED=0 switches certificate checking off. Both are refused,
  * by name (never the value). Pure.
  */
-export function connectionRedirectReasons(env: Record<string, string | undefined>): string[] {
+export function connectionRedirectReasons(env: Record<string, string | undefined>, execArgv: readonly string[] = process.execArgv, repoRoot: string = process.cwd()): string[] {
   const reasons: string[] = []
+  // The node COMMAND LINE (process.execArgv) is read, not only NODE_OPTIONS: `node --use-env-proxy …` routes fetch and node:https through a proxy as well, a preloaded module
+  // (--require / -r / --import / --loader) can replace fetch or the socket layer, and the trust-store, inspector, env-file and eval options change what runs or what is trusted.
+  // The ONE thing accepted is `--require <file>` (or `-r`) where <file> is, by REAL PATH, this repository's own node_modules/vitest/suppress-warnings.cjs (every vitest worker
+  // has it): a file merely NAMED like that, in another directory, is refused. (A stat of that one path is the only file-system access the preflight makes.)
+  let vitestPreload: string | null = null
+  try { vitestPreload = realpathSync(join(repoRoot, 'node_modules', 'vitest', 'suppress-warnings.cjs')) } catch { vitestPreload = null }
+  const samePreload = (value: string): boolean => {
+    if (vitestPreload === null) return false
+    try { const real = realpathSync(value); return process.platform === 'win32' ? real.toLowerCase() === vitestPreload.toLowerCase() : real === vitestPreload } catch { return false }
+  }
+  const BAD_LONG = /^--(use-env-proxy|inspect(-brk|-wait|-port)?|use-system-ca|use-openssl-ca|openssl-config|openssl-shared-config|env-file(-if-exists)?|eval|print|import|loader|experimental-loader)(=|$)/
+  for (let i = 0; i < execArgv.length; i++) {
+    const a = execArgv[i]
+    const name = a.split('=')[0]
+    if (/^(--require|-r)(=|$)/.test(a)) {
+      const value = a.includes('=') ? a.slice(a.indexOf('=') + 1) : execArgv[i + 1] ?? ''
+      if (!samePreload(value)) reasons.push(`the node command line (process.execArgv) preloads a module (${name}) that is not this repository's vitest preload: it could replace the network layer; start node without it`)
+    } else if (BAD_LONG.test(a) || /^-(e|p|pe)$/.test(a)) {
+      reasons.push(`the node command line (process.execArgv) contains ${name}: ${name === '--use-env-proxy' ? 'Node would send the requests through a proxy' : 'it can change what runs or what is trusted'}; start node without it`)
+    }
+  }
   for (const k of Object.keys(env)) if (/^(https?_proxy|all_proxy)$/i.test(k) && (env[k] ?? '') !== '') reasons.push(`${k} is set: a proxy would receive the requests (and their Authorization header) while the host check still sees the allowed host; unset it for the trial`)
   const useProxy = env.NODE_USE_ENV_PROXY
   if (useProxy !== undefined && useProxy !== '' && useProxy !== '0') reasons.push('NODE_USE_ENV_PROXY is set: Node would send the requests through a proxy; unset it for the trial')
-  if ((env.NODE_OPTIONS ?? '').includes('--use-env-proxy')) reasons.push('NODE_OPTIONS contains --use-env-proxy: Node would send the requests through a proxy; remove it for the trial')
+  // NODE_OPTIONS is read by the core on its own too (the launcher drops it, but the core must not rely on that): no preload, proxy, trust-store, inspector, env-file or eval option.
+  if (/(^|\s)(--(require|import|loader|experimental-loader|use-env-proxy|inspect(-brk|-wait|-port)?|use-system-ca|use-openssl-ca|openssl-config|openssl-shared-config|env-file(-if-exists)?|eval|print)|-r|-e|-p)(=|\s|$)/.test(env.NODE_OPTIONS ?? '')) {
+    reasons.push('NODE_OPTIONS contains a preload, proxy, trust-store, inspector, env-file or eval option: it could change where the requests go or what is trusted; remove it for the trial')
+  }
   if (env.NODE_TLS_REJECT_UNAUTHORIZED === '0') reasons.push('NODE_TLS_REJECT_UNAUTHORIZED is 0: certificate checking is off; unset it for the trial')
   return reasons
 }
 
 /** Pure: no file, no network. Every reason at once. */
-function preflight(env: Record<string, string | undefined>, repoRoot?: string): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env)]
+function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD)
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -185,7 +232,11 @@ function nodeRequestUrl(proto: 'http' | 'https', args: unknown[]): string {
   const [a, b] = args
   // Options that send the CONNECTION somewhere other than the name that was checked: a local pipe, a hand-made connection, a custom agent (`agent: false` is what the
   // app's own fetchers pass, and `lookup` only pins the same name: both stay allowed). Such a call cannot be judged by its URL, so it is refused.
-  const redirectsConnection = (o: Record<string, unknown>): boolean => 'socketPath' in o || 'createConnection' in o || (o.agent !== undefined && o.agent !== false)
+  // `lookup` decides which ADDRESS a name connects to: only the app's own safeLookup is accepted - it resolves the given host name itself and refuses any non-public
+  // address (src/lib/security/safeFetch.ts createSafeLookup) - never a function of unknown behaviour (a lookup could map an allowed name to any address).
+  // The same goes for what is TRUSTED: rejectUnauthorized: false, a custom ca / secureContext / checkServerIdentity, a replaced default agent.
+  const redirectsConnection = (o: Record<string, unknown>): boolean => 'socketPath' in o || 'createConnection' in o || (o.agent !== undefined && o.agent !== false) || (o.lookup !== undefined && o.lookup !== safeLookup)
+    || o.rejectUnauthorized === false || o.ca !== undefined || o.secureContext !== undefined || o.checkServerIdentity !== undefined || '_defaultAgent' in o
   if (typeof a === 'string' || a instanceof URL) {
     // Node lets the options of (url, options) override the URL's host, port, protocol and path - an explicit `undefined` included (Node then falls back to localhost).
     const over = b && typeof b === 'object' ? b as Record<string, unknown> : {}
@@ -207,10 +258,57 @@ const urlOf = (input: unknown): string => (typeof input === 'string' ? input : i
 
 export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome> {
   const { env } = input
+  const mode = input.afterTrial ?? 'restore'
+  // The originals, taken BEFORE anything is replaced.
+  const originalFetch = globalThis.fetch
+  const originalNode = { httpsRequest: https.request, httpsGet: https.get, httpRequest: http.request, httpGet: http.get }
+  const originalConsole = { log: console.log, info: console.info, warn: console.warn, error: console.error, debug: console.debug, dir: console.dir, table: console.table, group: console.group, groupCollapsed: console.groupCollapsed, trace: console.trace }
+  const consoleNames = Object.keys(originalConsole) as Array<keyof typeof originalConsole>
+  const setNode = (r: typeof https.request, g: typeof https.get, hr: typeof http.request, hg: typeof http.get): void => {
+    https.request = r; https.get = g; http.request = hr; http.get = hg
+    syncBuiltinESMExports() // the ESM namespace bindings of node:https / node:http follow the patch (a named import `import { request } from 'node:https'` sees it too)
+  }
+  const restoreNetwork = (): void => { globalThis.fetch = originalFetch; setNode(originalNode.httpsRequest, originalNode.httpsGet, originalNode.httpRequest, originalNode.httpGet) }
+
+  // The console is filtered BEFORE it prints: the route logs provider errors (`[chat] stream error: …`) that may quote a key, and the printed text ends up in a
+  // terminal transcript. Strings, Errors (cause, AggregateError members and own properties included, through util.inspect) and objects are redacted; anything unchanged is
+  // passed on as it was. (Direct writes to process.stdout/stderr are not console calls: the launcher, which owns the child's output, filters those.)
+  const redactArg = (a: unknown): unknown => {
+    if (typeof a === 'string') return redactSecrets(a, env)
+    if (a !== null && typeof a === 'object') {
+      let text: string
+      try { text = inspect(a, { depth: 6, breakLength: Infinity }) } catch { return a }
+      const redacted = redactSecrets(text, env)
+      return redacted === text ? a : redacted
+    }
+    return a
+  }
+  let consoleFiltered = false
+  const filterConsole = (): void => {
+    if (consoleFiltered) return
+    consoleFiltered = true
+    for (const n of consoleNames) (console as unknown as Record<string, unknown>)[n] = (...args: unknown[]) => (originalConsole[n] as (...a: unknown[]) => void).apply(console, args.map(redactArg))
+  }
+  const restoreConsole = (): void => { consoleFiltered = false; for (const n of consoleNames) (console as unknown as Record<string, unknown>)[n] = originalConsole[n] }
+
+  // 'deny': the network is not given back. Every later request - to ANY host, the two allowed ones included - fails before it is sent and is recorded.
+  const late: string[] = []
+  const hostLabel = (url: string): string => { try { return new URL(url).hostname } catch { return '(unparseable)' } }
+  const denied = (label: string): Error => { late.push(redactSecrets(label, env)); return new Error(`trial: the trial is closed - a request to ${redactSecrets(label, env)} was blocked before it was sent`) }
+  const denyNetwork = (): void => {
+    globalThis.fetch = (async (req: unknown) => { throw denied(hostLabel(urlOf(req))) }) as typeof fetch
+    const deny = (proto: 'http' | 'https') => function (...args: unknown[]): never { throw denied(hostLabel(nodeRequestUrl(proto, args))) }
+    setNode(deny('https') as never, deny('https') as never, deny('http') as never, deny('http') as never)
+  }
+  const closeTrial = (): void => { if (mode === 'deny') denyNetwork(); else { restoreNetwork(); restoreConsole() } }
+  const controls: TrialControls = { lateAttempts: () => [...late], release: () => { if (mode === 'deny') { restoreNetwork(); restoreConsole() } } }
+  // In 'deny' mode the network is closed and the console filtered from the very start: a refusal (preflight, question, runner) leaves them so, not open.
+  if (mode === 'deny') { filterConsole(); denyNetwork() }
+
   // 1. preflight: nothing is read, written or sent
   // every text that leaves this function (a reason, a label) is redacted: a value that holds a key must not be echoed
-  const refuse = (reasons: string[]): TrialOutcome => ({ kind: 'refused', reasons: reasons.map(r => redactSecrets(r, env)) })
-  const pre = preflight(env, input.repoRoot)
+  const refuse = (reasons: string[]): TrialOutcome => ({ kind: 'refused', reasons: reasons.map(r => redactSecrets(r, env)), controls })
+  const pre = preflight(env, input.repoRoot, input.execArgv)
   if (pre.reasons.length || !pre.caps) return refuse(pre.reasons.length ? pre.reasons : ['the caps are not valid'])
   // 2. the question
   const file = env.BENCH_TRIAL_QUESTION_FILE!.trim()
@@ -219,13 +317,11 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     return refuse([`the question file cannot be read: ${e instanceof Error ? e.message : String(e)}`])
   }
   const question = (raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw).trim()
-  if (question === '') return { kind: 'refused', reasons: ['the question is empty'] }
-  if (TWELVE.has(questionKey(question))) return { kind: 'refused', reasons: ['the question is one of the 12 benchmark questions: the trial uses a development question outside them'] }
+  if (question === '') return refuse(['the question is empty'])
+  if (TWELVE.has(questionKey(question))) return refuse(['the question is one of the 12 benchmark questions: the trial uses a development question outside them'])
 
   // 3. the wrapped network and the one turn
-  const originalFetch = globalThis.fetch
   const forward = input.fetchImpl ?? originalFetch
-  const originalNode = { httpsRequest: https.request, httpsGet: https.get, httpRequest: http.request, httpGet: http.get }
   const sent: Record<string, number> = {}
   const blocked = new Set<string>()
   const redirects: Array<{ host: string; status: number }> = []
@@ -234,7 +330,10 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
     sent[d.host] = (sent[d.host] ?? 0) + 1
   }
+  filterConsole()
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
+    // a `dispatcher` in the init is undici's way of changing where the connection goes (a proxy agent, a custom connector): such a call cannot be judged by its URL
+    if (init && typeof init === 'object' && 'dispatcher' in init) admit('(unparseable)')
     const url = urlOf(req)
     admit(url)
     // never follow a redirect: a request to an allowed host cannot be turned into a request to another host
@@ -246,10 +345,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     admit(nodeRequestUrl(proto, args))
     return (original as (...a: unknown[]) => unknown).apply(proto === 'https' ? https : http, args)
   }
-  ;(https as unknown as Record<string, unknown>).request = guardNode('https', originalNode.httpsRequest as never)
-  ;(https as unknown as Record<string, unknown>).get = guardNode('https', originalNode.httpsGet as never)
-  ;(http as unknown as Record<string, unknown>).request = guardNode('http', originalNode.httpRequest as never)
-  ;(http as unknown as Record<string, unknown>).get = guardNode('http', originalNode.httpGet as never)
+  setNode(guardNode('https', originalNode.httpsRequest as never) as never, guardNode('https', originalNode.httpsGet as never) as never, guardNode('http', originalNode.httpRequest as never) as never, guardNode('http', originalNode.httpGet as never) as never)
 
   const trialTurn: UatTurn = { id: 'TRIAL', conversation: 'TRIAL', turn: 1, text: question }
   let result
@@ -270,8 +366,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     if (e instanceof BenchRefusal) return refuse(e.reasons) // (a file-system error quoted in a reason may hold a key)
     throw e
   } finally {
-    globalThis.fetch = originalFetch
-    https.request = originalNode.httpsRequest; https.get = originalNode.httpsGet; http.request = originalNode.httpRequest; http.get = originalNode.httpGet
+    closeTrial()
   }
 
   const r = result.records[0]
@@ -298,7 +393,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     hostsBlocked, redirects, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
   }
-  return { kind: 'ran', summary }
+  return { kind: 'ran', summary, controls }
 }
 
 /** The summary as text. Contains no key and no environment value other than the few flag values it names on purpose. */

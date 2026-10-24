@@ -13,6 +13,7 @@ import { __clearToolCache } from '@/lib/ai/tools/common'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests, runBench } from './liveRunner'
 import { formatSummary, isAllowedRequest, isBenchmarkEligible, normalizeQuestion, runLiveTrial, type LiveTrialInput, type TrialOutcome } from './liveTrial'
+import { safeLookup } from '@/lib/security/safeFetch'
 import { UAT_TURNS } from './questions'
 import { finalFile, hasKey, jsonlLines, memFs, options as benchOptions, turnTransport } from './liveRunner.testkit'
 
@@ -156,7 +157,7 @@ beforeEach(() => {
   serperPlan = () => serperOk(1)
   // The GLOBAL fetch is a tripwire: during the run the core replaces it with its wrapper; if anything captured the original and uses it, this fires.
   vi.stubGlobal('fetch', tripwireFetch)
-  for (const m of ['log', 'info', 'warn', 'error', 'debug'] as const) {
+  for (const m of ['log', 'info', 'warn', 'error', 'debug', 'dir', 'table', 'group', 'groupCollapsed', 'trace'] as const) {
     vi.spyOn(console, m).mockImplementation((...a: unknown[]) => { logged.push(a.map(x => (typeof x === 'string' ? x : x instanceof Error ? `${x.name}: ${x.message}\n${x.stack}` : (() => { try { return JSON.stringify(x) } catch { return String(x) } })())).join(' ')) })
   }
 })
@@ -489,6 +490,23 @@ describe('(h) the real trial file is skipped by default and no CI or script sets
     expect(all.length).toBeGreaterThan(0)
     for (const p of all) expect(readFileSync(p, 'utf8'), p).not.toContain('BENCH_LIVE_TRIAL')
   })
+  it('round 2g · the real file refuses unless the launcher started it (BENCH_TRIAL_ISOLATED), runs the core with afterTrial "deny", and prints the summary between the launcher\'s markers', () => {
+    const src = readFileSync(join(__dirname, 'liveTrial.test.ts'), 'utf8')
+    const guard = src.indexOf('if (!isolated) throw')
+    const routeImport = src.indexOf("import('@/app/api/chat/route')")
+    const call = src.indexOf('runLiveTrial({')
+    expect(guard).toBeGreaterThan(0)
+    expect(routeImport).toBeGreaterThan(guard) // the refusal comes BEFORE the route is imported ...
+    expect(call).toBeGreaterThan(routeImport) // ... and so before the core is called
+    expect(src).toMatch(/\[0-9a-f\]\{32\}/) // a hand-typed "1" is not a nonce
+    expect(src).toMatch(/runLiveTrial\(\{[^}]*afterTrial: 'deny'/)
+    expect(src).toMatch(/marker\(SUMMARY_BEGIN, nonce\)[\s\S]*marker\(SUMMARY_END, nonce\)/)
+  })
+  it('round 2g · the launcher sets the confirmation text itself, only for the child; the text is the one the real file waits for', () => {
+    const launcher = readFileSync(join(__dirname, 'liveTrialLauncher.mjs'), 'utf8')
+    expect(launcher).toContain("out.BENCH_LIVE_TRIAL = 'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'")
+    expect(readFileSync(join(__dirname, 'liveTrial.test.ts'), 'utf8')).toContain("'I-UNDERSTAND-THIS-SPENDS-REAL-MONEY'")
+  })
   it('the rehearsal itself never sets it', () => {
     expect(process.env.BENCH_LIVE_TRIAL).toBeUndefined()
   })
@@ -623,20 +641,253 @@ describe('(p) round 2f review · the allow-list judges the logical URL, so anyth
     const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: new https.Agent() }) })
     expect(s.hostsBlocked.length).toBeGreaterThan(0)
   })
-  it('agent: false and lookup (what safeFetch/safePost pass) are NOT refused: the request is admitted and counted', async () => {
-    const lookup = (() => undefined) as never
-    const post = (async () => { try { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, lookup }).destroy() } catch { /* the tripwire stands in for the network */ } return new Response('0:"x"\nd:{"finishReason":"stop"}\n') }) as unknown as typeof POST
+  it('agent: false and the APP\'S OWN safeLookup (what safeFetch/safePost pass) are NOT refused: the request is admitted and counted', async () => {
+    const post = (async () => { try { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, lookup: safeLookup }).destroy() } catch { /* the tripwire stands in for the network */ } return new Response('0:"x"\nd:{"finishReason":"stop"}\n') }) as unknown as typeof POST
     const out = await runLiveTrial(input({ post }))
     expect(out.kind).toBe('ran')
     expect((out as { summary: { hostsBlocked: string[] } }).summary.hostsBlocked).toEqual([])
     expect(httpCalls).toHaveLength(1) // it was admitted and handed to the original (here the tripwire, which stands in for the network)
     httpCalls.length = 0
   })
+  it('round 2g · D2: ANY OTHER lookup function is refused (it could map an allowed name to any address); only the app\'s safeLookup is let through', async () => {
+    const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, lookup: (() => undefined) as never }) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0); expect(s.trialClean).toBe(false)
+  })
+  it('round 2g · D2: a lookup given in the (url, options) form is refused too', async () => {
+    const s = await callFromPost(() => { https.request('https://api.openai.com/v1/chat/completions', { agent: false, lookup: (() => undefined) as never }) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+  })
+  for (const [label, opts] of [
+    ['rejectUnauthorized: false', { rejectUnauthorized: false }], ['a custom ca', { ca: 'x' }], ['a checkServerIdentity function', { checkServerIdentity: () => undefined }],
+    ['_defaultAgent', { _defaultAgent: {} }],
+  ] as Array<[string, Record<string, unknown>]>) {
+    it(`review: https.request options with ${label} change what is trusted: refused`, async () => {
+      const s = await callFromPost(() => { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, ...opts } as never) })
+      expect(s.hostsBlocked.length).toBeGreaterThan(0)
+    })
+  }
+  it('review: https.request with rejectUnauthorized: true / undefined is NOT refused', async () => {
+    const post = (async () => { try { https.request({ hostname: 'api.openai.com', path: '/v1/chat/completions', agent: false, rejectUnauthorized: true }).destroy() } catch { /* tripwire */ } return new Response('0:"x"\nd:{"finishReason":"stop"}\n') }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect((out as { summary: { hostsBlocked: string[] } }).summary.hostsBlocked).toEqual([])
+    httpCalls.length = 0
+  })
+  it('review: fetch with a `dispatcher` in its init (undici\'s way of changing where the connection goes) is blocked', async () => {
+    const s = await callFromPost(() => { void (fetch as unknown as (u: string, i: unknown) => Promise<unknown>)('https://api.openai.com/v1/chat/completions', { dispatcher: {} }).catch(() => undefined) })
+    expect(s.hostsBlocked.length).toBeGreaterThan(0)
+    expect(net.openai).toHaveLength(0)
+  })
   it('fetch with an object that merely carries a "url" property is blocked (what is sent could differ from what was checked)', async () => {
     const sneaky = { url: 'https://api.openai.com/v1/chat/completions', toString: () => 'https://evil.example/x' }
     const s = await callFromPost(() => { void (fetch as unknown as (x: unknown) => Promise<unknown>)(sneaky).catch(() => undefined) })
     expect(s.hostsBlocked.length).toBeGreaterThan(0)
     expect(net.other).toEqual([])
+  })
+})
+
+describe('(q) round 2g · D1: after the trial the network stays CLOSED for the whole life of the process (afterTrial: "deny"), it is not given back to the real one', () => {
+  const okPost = (async () => new Response('0:"x"\nd:{"finishReason":"stop"}\n')) as unknown as typeof POST
+  it('default ("restore"): fetch and node:http(s) are the originals again after the run (the rehearsal needs this)', async () => {
+    const before = [globalThis.fetch, https.request, https.get, http.request, http.get]
+    await runLiveTrial(input({ post: okPost }))
+    expect([globalThis.fetch, https.request, https.get, http.request, http.get]).toEqual(before)
+  })
+  it('"deny": after the answer and the drain EVERY later request - to any host, the allowed ones included - fails before it is sent and is counted; release() gives the originals back', async () => {
+    const before = [globalThis.fetch, https.request, https.get, http.request, http.get]
+    const out = ran(await runLiveTrial(input({ post: okPost, afterTrial: 'deny' })))
+    try {
+      const sentBefore = net.openai.length + net.serper.length
+      await expect(fetch('https://evil.example/late')).rejects.toThrow(/closed/i)
+      await expect(fetch('https://api.openai.com/v1/chat/completions', { method: 'POST' })).rejects.toThrow(/closed/i) // even the allowed hosts: the trial is over
+      await expect(fetch('https://google.serper.dev/search')).rejects.toThrow(/closed/i)
+      expect(() => https.request('https://evil.example/late')).toThrow(/closed/i)
+      expect(() => https.get({ hostname: 'api.openai.com', path: '/v1/chat/completions' })).toThrow(/closed/i)
+      expect(() => http.request('http://evil.example/late')).toThrow(/closed/i)
+      expect(net.openai.length + net.serper.length).toBe(sentBefore) // nothing reached the (fake) network
+      expect(net.other).toEqual([])
+      expect(out.controls.lateAttempts().length).toBe(6) // every one was recorded
+      expect(out.controls.lateAttempts().join(' ')).toMatch(/evil\.example/)
+      expect(httpCalls).toEqual([]) // the originals (tripwires) were never reached
+    } finally { out.controls.release() }
+    expect([globalThis.fetch, https.request, https.get, http.request, http.get]).toEqual(before) // released
+  })
+  const closed = async (controls: { lateAttempts: () => string[] }) => {
+    await expect(fetch('https://evil.example/late')).rejects.toThrow(/closed/i)
+    expect(() => https.request('https://evil.example/late')).toThrow(/closed/i)
+    expect(controls.lateAttempts().length).toBeGreaterThanOrEqual(2)
+  }
+  it('review: in "deny" mode a PREFLIGHT refusal also leaves the network closed (the route is already imported; its background work must not run free until the process is ended)', async () => {
+    stubEnv({ CI: 'true' })
+    const before = [globalThis.fetch, https.request, https.get, http.request, http.get, console.log]
+    const out = await runLiveTrial(input({ post: okPost, afterTrial: 'deny' }))
+    expect(out.kind).toBe('refused')
+    if (out.kind !== 'refused') return
+    try { await closed(out.controls) } finally { out.controls.release() }
+    expect([globalThis.fetch, https.request, https.get, http.request, http.get, console.log]).toEqual(before)
+    expect(reads).toEqual([]); expect(net.openai).toHaveLength(0)
+  })
+  it('review: in "deny" mode a QUESTION refusal (the question is empty) also leaves the network closed', async () => {
+    const out = await runLiveTrial(input({ post: okPost, afterTrial: 'deny', readTextFile: () => '   ' }))
+    expect(out.kind).toBe('refused')
+    if (out.kind !== 'refused') return
+    try { await closed(out.controls) } finally { out.controls.release() }
+  })
+  it('review: in "deny" mode a refusal that comes from the runner (the output folder cannot be created) also leaves the network closed', async () => {
+    fs.mkdirp = () => { throw new Error('EACCES') }
+    const out = await runLiveTrial(input({ post: okPost, afterTrial: 'deny' }))
+    expect(out.kind).toBe('refused')
+    if (out.kind !== 'refused') return
+    try { await closed(out.controls) } finally { out.controls.release() }
+  })
+  it('review: in "deny" mode a run that THROWS (the file system fails while the record is saved) leaves the network closed too', async () => {
+    const real = fs.append
+    fs.append = (p, t) => { if (!t.includes('"started"')) throw new Error('disk'); real(p, t) }
+    const err = await runLiveTrial(input({ post: okPost, afterTrial: 'deny' })).then(() => null, (e: unknown) => e)
+    expect(err).toBeInstanceOf(Error)
+    try {
+      await expect(fetch('https://evil.example/late')).rejects.toThrow(/closed/i)
+      expect(() => https.get('https://api.openai.com/v1/chat/completions')).toThrow(/closed/i)
+    } finally {
+      // nothing returns controls on a throw: put the originals back by hand (the real process is ended by the launcher)
+      globalThis.fetch = tripwireFetch; restoreHttp()
+    }
+  })
+  it('review: in "deny" mode the ESM namespace bindings of node:https are denied too (module.syncBuiltinESMExports), and restored by release()', async () => {
+    const ns = await import('node:https')
+    const out = ran(await runLiveTrial(input({ post: okPost, afterTrial: 'deny' })))
+    try { expect(() => ns.request('https://evil.example/late')).toThrow(/closed/i) } finally { out.controls.release() }
+    expect(ns.request).toBe(https.request) // the namespace follows the release (what was installed before the run: the rehearsal's own tripwire)
+  })
+})
+
+describe('(r) round 2g · D2: process.execArgv (the node command line), not only NODE_OPTIONS', () => {
+  const bad: Array<[string, string[]]> = [
+    ['--use-env-proxy', ['--use-env-proxy']],
+    ['--use-env-proxy among other options', ['--conditions', 'node', '--use-env-proxy']],
+    ['--require of another file', ['--require', 'D:/evil/patch.cjs']],
+    ['-r of another file', ['-r', 'D:/evil/patch.cjs']],
+    ['--require=… form', ['--require=D:/evil/patch.cjs']],
+    ['--import', ['--import', 'file:///D:/evil/patch.mjs']],
+    ['--loader', ['--loader=evil-loader']],
+    ['--experimental-loader', ['--experimental-loader', 'evil-loader']],
+    ['--require of a file that is only NAMED like vitest\'s preload, in another directory', ['--require=D:/evil/vitest/suppress-warnings.cjs']],
+    ['--require (separate value) of a file named like vitest\'s preload in another directory', ['--require', 'D:/evil/vitest/suppress-warnings.cjs']],
+    ['--import with a data: URL whose tail looks like the preload', ['--import=data:text/javascript,globalThis.x=1;//x/vitest/suppress-warnings.cjs']],
+    ['--import of vitest\'s preload path (only --require is accepted)', ['--import', join(process.cwd(), 'node_modules', 'vitest', 'suppress-warnings.cjs')]],
+    ['--inspect', ['--inspect=127.0.0.1:9229']],
+    ['--inspect-brk', ['--inspect-brk']],
+    ['--use-system-ca', ['--use-system-ca']],
+    ['--use-openssl-ca', ['--use-openssl-ca']],
+    ['--openssl-config', ['--openssl-config=D:/evil/openssl.cnf']],
+    ['--env-file', ['--env-file=D:/evil/.env']],
+    ['--eval', ['--eval', 'globalThis.x=1']],
+    ['-e', ['-e', 'globalThis.x=1']],
+    ['-p', ['-p', '1']],
+  ]
+  for (const [label, execArgv] of bad) {
+    it(`${label}: refused by name before anything`, async () => {
+      const t = await refusedBeforeAnything({}, { execArgv })
+      expect(t).toMatch(/execArgv|node command line/i)
+      expect(t).not.toContain('evil')
+    })
+  }
+  it('vitest\'s own preload (the REAL file of this repository, compared by real path) and the usual options are accepted (this is what a vitest worker has)', async () => {
+    const preload = join(process.cwd(), 'node_modules', 'vitest', 'suppress-warnings.cjs')
+    for (const execArgv of [
+      ['--experimental-import-meta-resolve', '--require', preload, '--conditions', 'node', '--conditions', 'development'],
+      ['--require=' + preload],
+      ['-r', preload],
+    ]) {
+      __resetBenchProcessGuardForTests()
+      stubEnv({})
+      const out = ran(await runLiveTrial(input({ execArgv })))
+      expect(out.summary.turnOk).toBe(true)
+    }
+  })
+  const nodeOptionsBad: Array<[string, string]> = [
+    ['--require', '--require D:/evil/patch.cjs'], ['-r', '--max-old-space-size=4096 -r D:/evil/patch.cjs'], ['--import', '--import=file:///D:/evil/patch.mjs'],
+    ['--loader', '--loader evil'], ['--experimental-loader', '--experimental-loader=evil'], ['--inspect', '--inspect-brk'], ['--use-system-ca', '--use-system-ca'],
+    ['--use-openssl-ca', '--use-openssl-ca'], ['--openssl-config', '--openssl-config=x'], ['--env-file', '--env-file=x'],
+  ]
+  for (const [label, value] of nodeOptionsBad) {
+    it(`NODE_OPTIONS with ${label}: refused by name (the core on its own, not only the launcher that drops NODE_OPTIONS)`, async () => {
+      const t = await refusedBeforeAnything({ NODE_OPTIONS: value })
+      expect(t).toContain('NODE_OPTIONS')
+      expect(t).not.toContain('evil')
+    })
+  }
+  it('NODE_OPTIONS with only a harmless option does not refuse', async () => {
+    stubEnv({ NODE_OPTIONS: '--max-old-space-size=4096' })
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+  })
+  it('the default is the real process.execArgv of this vitest worker, and it passes', async () => {
+    stubEnv({})
+    const out = ran(await runLiveTrial(input()))
+    expect(out.summary.turnOk).toBe(true)
+  })
+})
+
+describe('(s) round 2g · D3: the console is filtered BEFORE it prints (not only the result files)', () => {
+  const SECRETS = /secret/i
+  it('console.log/info/warn/error/debug called during the run: strings, Errors and objects that carry a key reach the printer without it; harmless output is unchanged', async () => {
+    const post = (async () => {
+      console.error('boom sk-test-SECRET-123')
+      console.warn(new Error('provider said serper-SECRET-456'))
+      console.log({ nested: { k: 'serper-SECRET-456' } })
+      console.debug('a', 'sk-test-SECRET-123', 7)
+      console.info('plain output stays')
+      return new Response('0:"x"\nd:{"finishReason":"stop"}\n')
+    }) as unknown as typeof POST
+    await runLiveTrial(input({ post }))
+    const text = logged.join('\n')
+    expect(text).not.toMatch(SECRETS)
+    expect(text).toContain('plain output stays')
+    expect(text).toContain('boom')
+  })
+  it('a provider error that quotes the key (HTTP 401): the route logs it, nothing with the key is printed, and the summary has none either', async () => {
+    openaiPlan = () => new Response(JSON.stringify({ error: { message: 'Incorrect API key provided: sk-test-SECRET-123. serper-SECRET-456', type: 'invalid_request_error', code: 'invalid_api_key' } }), { status: 401, headers: { 'content-type': 'application/json' } })
+    const out = ran(await runLiveTrial(input()))
+    expect(logged.join('\n')).not.toMatch(SECRETS)
+    expect(JSON.stringify(out) + formatSummary(out.summary)).not.toMatch(SECRETS)
+    expect(out.summary.turnOk).toBe(false)
+  })
+  it('in the default mode the console is put back the way it was (the spies the rehearsal installed)', async () => {
+    const before = [console.log, console.info, console.warn, console.error, console.debug]
+    await runLiveTrial(input())
+    expect([console.log, console.info, console.warn, console.error, console.debug]).toEqual(before)
+  })
+  it('"deny" mode keeps the console filter on for the rest of the process, release() puts it back', async () => {
+    const before = [console.log, console.info, console.warn, console.error, console.debug]
+    const out = ran(await runLiveTrial(input({ afterTrial: 'deny' })))
+    try {
+      console.error('late sk-test-SECRET-123')
+      expect(logged.join('\n')).not.toMatch(SECRETS)
+    } finally { out.controls.release() }
+    expect([console.log, console.info, console.warn, console.error, console.debug]).toEqual(before)
+  })
+  it('review: an Error whose KEY sits in its cause, in an AggregateError member or in an own property is filtered, and console.dir / trace / table / group are filtered too', async () => {
+    const post = (async () => {
+      console.error(new Error('outer is clean', { cause: new Error('inner sk-test-SECRET-123') }))
+      console.error(new AggregateError([new Error('member serper-SECRET-456')], 'many'))
+      console.warn(Object.assign(new Error('clean message'), { responseBody: 'body with sk-test-SECRET-123' }))
+      console.dir({ a: 'serper-SECRET-456' })
+      console.table([{ k: 'sk-test-SECRET-123' }])
+      console.group('group sk-test-SECRET-123'); console.groupEnd()
+      console.trace('trace serper-SECRET-456')
+      return new Response('0:"x"\nd:{"finishReason":"stop"}\n')
+    }) as unknown as typeof POST
+    await runLiveTrial(input({ post }))
+    expect(logged.join('\n')).not.toMatch(SECRETS)
+  })
+  it('a cyclic object, a Symbol and undefined are passed through without throwing', async () => {
+    const post = (async () => {
+      const a: Record<string, unknown> = { n: 1 }; a.self = a
+      console.log(a, Symbol("s"), undefined, null, BigInt(5))
+      return new Response('0:"x"\nd:{"finishReason":"stop"}\n')
+    }) as unknown as typeof POST
+    const out = await runLiveTrial(input({ post }))
+    expect(out.kind).toBe('ran')
   })
 })
 
