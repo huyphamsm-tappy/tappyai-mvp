@@ -143,7 +143,8 @@ export const PRODUCT_TYPES: ReadonlyArray<[string, RegExp]> = [
   ['clothing', /\b(ao (?:thun|so mi|khoac|len|polo|dai)|quan (?:jean|tay|short|dai)|vay (?:ngu|cuoi|di tiec|xoe|body|lien|cong so|maxi|midi|jean|ngan|dai|du tiec|hoa|bau|tennis)|dam (?:du tiec|di tiec|body|maxi|suong|xoe|cong so|bau|hoa|lien|da hoi)|(?:mua|chiec|may|mac|bo) (?:vay|dam)\b(?! (?:thi|roi|la|di|nha|nhe|a|ha|sao)\b)|quan ao)\b/],
   ['bag', /\b(tui xach|balo|ba lo|vali|vi da|tui deo cheo)\b/],
   ['console', /\b(ps5|playstation|nintendo switch|xbox|may choi game)\b/],
-  ['bike', /\b(xe dap|xe dap dien|xe may dien)\b/],
+  // "xe máy điện" (electric motorbike) is NOT a bicycle: it was filed under bike and searched as "xe đạp" (round 3H, measured in dev probe D2).
+  ['bike', /\b(xe dap|xe dap dien)\b/],
   ['baby', /\b(xe day|ghe an dam|noi cho be|sua bot|ta (?:bim|giay)|(?<!bim )bim(?! bim))\b/],
   ['book', /\b(cuon sach|sach giay|mua sach|truyen tranh|tieu thuyet)\b/], // never bare "sach": "ngân sách" is the budget
   ['furniture', /\b(ghe (?:gaming|van phong|cong thai hoc)|ban lam viec|nem (?:cao su|lo xo|foam|bong|ep|ngu|hoi|topper)|(?:mua|tam|chiec|cai) nem\b(?! (?:nuong|ran|chua|lui|cuon|chay|tai|thinh)\b)|giuong|sofa|tu quan ao)\b/],
