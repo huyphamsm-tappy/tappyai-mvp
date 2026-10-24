@@ -19,11 +19,14 @@
 // three kinds of entry point that exist on the legacy path — every tool's execute() (wrapToolsWithRequestCap: the model's own calls, the
 // pre-search, the evening frame and the trip pre-fetch all run those same wrapped objects), and the after-loop lookups (runWithRequestCapTurn).
 // serperPost reads it from AsyncLocalStorage. An entry point that was missed has no turn and is refused, not let through — EXCEPT inside an open credit
-// scope (serperToolBudget.ts: the bounded agent, or a withSerperToolBudget around a call): there the request is admitted under that scope and counted on L2 only.
-// On the legacy chat path every such scope sits inside a wrapped tool.execute(), so it carries the turn (route.ts:2658 is the one place; checked by reading).
-// What is covered by a ROUTE test (mock model, stub network): the pre-search and what it fans out into (search_products, search_places, vendor links) and the
-// after-loop photo lookup. By reading only, not exercised by any test: the evening frame, the trip pre-fetch and the TikTok lookup (same wrapped execute / same
-// afterLoopSerper). The real AI SDK tool loop is exercised in src/lib/ai/llm/serperRequestCap.sdkToolLoop.test.ts (fake model).
+// scope WITH A FINITE LIMIT (serperToolBudget.ts: the bounded agent, or a withSerperToolBudget around a call): there the request is admitted under that scope and
+// counted on L2 only. The unbounded scope (limit Number.MAX_SAFE_INTEGER) that serperFlight opens around the leader of every single-flight request does NOT count:
+// before the pre-baseline hardening it did, and any unwrapped caller going through serperSearch/serperPlaces passed as "scoped" (found by serperRequestCap.callers.test.ts).
+// On the legacy chat path every finite scope sits inside a wrapped tool.execute(), so it carries the turn (route.ts:2658 is the one place; checked by reading).
+// Route tests (mock model, stub network, serperRequestCap.paths.route.test.ts + serperRequestCap.route.test.ts) cover: the pre-search and its fan-out (search_products,
+// search_places, vendor-link and CCP discovery), the after-loop photo and TikTok lookups, the trip pre-fetch and the evening frame (legacy path). Function-level tests
+// (serperRequestCap.callers.test.ts) cover the hotel / coach / food-price callers and the discovery functions. The real AI SDK tool loop is exercised in
+// src/lib/ai/llm/serperRequestCap.sdkToolLoop.test.ts (fake model).
 //
 // SIDE EFFECT OF THE FLAG ON, stated: every other caller of serperPost outside a chat turn is refused (no_turn_scope) — today that is the price-watch cron
 // (src/app/api/cron/price-check/route.ts), which then finds nothing and updates nothing, with one ERROR alert per instance. The flag is for the bench; whether
@@ -34,7 +37,7 @@
 
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { randomUUID } from 'node:crypto'
-import { hasSerperCreditScope } from './serperToolBudget'
+import { hasBoundedSerperCreditScope } from './serperToolBudget'
 
 export const REQUEST_CAP_FLAG = 'CONSULT_REQUEST_CAP'
 export const REQUEST_CAP_PER_TURN_ENV = 'CONSULT_REQUEST_CAP_PER_TURN'
@@ -169,7 +172,7 @@ export function reserveRequest(endpoint: string, env: Env = process.env): Reques
   if (run && run.sent >= run.limit) return refuse('run_cap', endpoint, turn)
   if (!turn) {
     // The bounded agent (TAPPY_AGENT) has its own credit scope (serperToolBudget.ts) and is NOT counted per turn here; it still counts on L2.
-    if (hasSerperCreditScope()) {
+    if (hasBoundedSerperCreditScope()) {
       if (run) run.sent++
       totals.reserved++
       let given = false

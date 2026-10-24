@@ -87,8 +87,18 @@ export function admitWithinToolBudget(credits: number): boolean {
   return true
 }
 
-/** Is any credit scope (agent turn / tool invocation) open here? Read by the request cap to tell a bounded-agent request from an unscoped one. */
+/** Is any credit scope (agent turn / tool invocation) open here? Not used by the request cap any more (see hasBoundedSerperCreditScope). */
 export function hasSerperCreditScope(): boolean { return store.getStore() !== undefined }
+
+/**
+ * Is a credit scope with a FINITE limit open here? This is what the request cap reads to tell a bounded-agent request (an agent turn / tool scope with a real
+ * cap) from a request nobody scoped. A scope whose limit is Number.MAX_SAFE_INTEGER bounds nothing: serperFlight (tools/common.ts) wraps the leader of EVERY
+ * single-flight request in one, so counting it would let any request that goes through serperSearch / serperPlaces pass as "scoped" (found by a test, pre-baseline).
+ */
+export function hasBoundedSerperCreditScope(): boolean {
+  for (let s = store.getStore() ?? null; s; s = s.parent) if (s.limit < Number.MAX_SAFE_INTEGER) return true
+  return false
+}
 
 /** Credits spent so far in the current turn scope (0 outside one). */
 export function turnCreditsSpent(): number {

@@ -3,8 +3,9 @@
 // a request that is refused must not appear there. Mock network only: any other URL throws.
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { serperPost } from './serperClient'
+import { runWithSpendGate } from '@/lib/ai/budget/spendGate'
 import { serperSearch, webSearch, __clearToolCache } from './common'
-import { createTurnWebTicket, runWithTurnWebTicket, withSerperToolScope, withSerperTurnBudget } from './serperToolBudget'
+import { createTurnWebTicket, runWithTurnWebTicket, withSerperToolBudget, withSerperToolScope, withSerperTurnBudget } from './serperToolBudget'
 import {
   __resetRequestCap, beginRequestCapRun, closeRequestCapTurn, createRequestCapTurn, endRequestCapRun, parseCapValue, requestCapConfig,
   requestCapRunState, requestCapTotals, reserveRequest, runWithRequestCapTurn, wrapToolsWithRequestCap,
@@ -196,6 +197,28 @@ describe('what counts, what does not', () => {
     expect(sent.filter(q => q === 'gated' || q === 'cancelled')).toHaveLength(0)
   })
 
+  it('an UNEXPECTED throw from the spend gate (not a refusal) happens before the send: the reservation goes back and the error still reaches the caller', async () => {
+    capOn('1'); const turn = createRequestCapTurn()!
+    vi.stubEnv('BENCH_SPEND_GATE', '1'); vi.stubEnv('BENCH_SPEND_TURN_CAP_USD', '0.05'); vi.stubEnv('BENCH_SPEND_RUN_CAP_USD', '0.65')
+    const gate = { reserve: () => { throw new Error('gate exploded') }, settle: () => 'ok' as const, release: () => undefined, markUnknown: () => undefined }
+    await expect(runWithSpendGate(gate, () => runWithRequestCapTurn(turn, () => post('exploding gate')))).rejects.toThrow('gate exploded')
+    expect(turn.sent).toBe(0)
+    expect(sent).toHaveLength(0)
+  })
+
+  it('the agent-scope branch (no turn, a finite credit scope) also gives its reservation back: a refusal by the credit scope frees the L2 slot', async () => {
+    capOn('1'); vi.stubEnv('CONSULT_REQUEST_CAP_PER_RUN', '2'); beginRequestCapRun()
+    await withSerperTurnBudget(1, async () => {
+      expect(await post('agent one')).not.toBeNull()
+      expect(requestCapRunState()!.sent).toBe(1)
+      expect(await post('agent two')).toBeNull() // refused by the credit scope AFTER the cap reserved it
+      expect(requestCapRunState()!.sent).toBe(1) // given back
+    })
+    expect(sent).toEqual(['agent one'])
+    const direct = await withSerperTurnBudget(8, async () => { const r = reserveRequest('search'); const during = requestCapRunState()!.sent; if (r.ok) { r.release(); r.release() } return { during, after: requestCapRunState()!.sent } })
+    expect(direct.value).toEqual({ during: 2, after: 1 })
+  })
+
   it('an HTTP error answer (non-2xx) keeps the reservation: the request was sent', async () => {
     capOn('1'); const turn = createRequestCapTurn()!
     vi.stubGlobal('fetch', vi.fn(async (input: unknown) => { if (String(input).includes('google.serper.dev')) { sent.push('http500'); return new Response('{}', { status: 500 }) } throw new Error('x') }))
@@ -378,6 +401,39 @@ describe('the bounded agent keeps its own credit scope', () => {
     expect(r.value.map(x => x !== null)).toEqual([true, true, false]) // third: L2 total 2
     expect(sent).toEqual(['ag1', 'ag2'])
     expect(requestCapRunState()!.sent).toBe(2)
+  })
+})
+
+describe('the unbounded scope of a single-flight leader is NOT a credit scope that admits (found pre-baseline: it let every unwrapped serperSearch caller through)', () => {
+  it('serperSearch (it goes through serperFlight, which wraps the leader in a MAX_SAFE_INTEGER scope) outside any turn and any bounded scope: refused, nothing sent', async () => {
+    capOn('5')
+    const rows = await serperSearch('an unwrapped caller of the search helper')
+    expect(rows).toBeNull()
+    expect(sent).toHaveLength(0)
+    expect(requestCapTotals().refused.no_turn_scope).toBe(1)
+  })
+  it('the same call inside a FINITE agent scope is admitted (no turn; counted on L2 only)', async () => {
+    capOn('1'); vi.stubEnv('CONSULT_REQUEST_CAP_PER_RUN', '9'); beginRequestCapRun()
+    const r = await withSerperTurnBudget(8, () => serperSearch('an agent turn search'))
+    expect(r.value).not.toBeNull()
+    expect(sent).toEqual(['an agent turn search'])
+    expect(requestCapRunState()!.sent).toBe(1)
+  })
+  it('a finite tool scope (withSerperToolBudget) around the same call also admits it; the L2 total still binds', async () => {
+    capOn('1'); vi.stubEnv('CONSULT_REQUEST_CAP_PER_RUN', '1'); beginRequestCapRun()
+    const a = await withSerperToolBudget(4, () => serperSearch('tool scope one'))
+    const b = await withSerperToolBudget(4, () => serperSearch('tool scope two'))
+    expect(a.value).not.toBeNull()
+    expect(b.value).toBeNull()
+    expect(sent).toEqual(['tool scope one'])
+    expect(requestCapTotals().refused.run_cap).toBe(1)
+  })
+  it('inside a turn the turn decides (a flight scope does not change the count): 3 distinct searches, cap 2 → 2 sent', async () => {
+    capOn('2'); const turn = createRequestCapTurn()!
+    await runWithRequestCapTurn(turn, async () => { await serperSearch('flight one'); await serperSearch('flight two'); await serperSearch('flight three') })
+    expect(sent).toEqual(['flight one', 'flight two'])
+    expect(turn.sent).toBe(2)
+    expect(requestCapTotals().refused).toEqual({ turn_cap: 1 })
   })
 })
 
