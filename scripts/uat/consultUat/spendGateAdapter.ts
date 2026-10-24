@@ -7,7 +7,7 @@
  *
  * Mock-only code: nothing here reads a key or opens a socket.
  */
-import { checkTurnCap, SpendRefusal, type SpendGate, type SpendRefusalReason, type SpendReservation, type SpendSettleStatus } from '@/lib/ai/budget/spendGate'
+import { checkTurnCap, SpendRefusal, type SpendCallDetail, type SpendGate, type SpendRefusalReason, type SpendReservation, type SpendSettleDetail, type SpendSettleStatus } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, type Reservation } from './harness'
 
 export type SpendRecordState = 'held' | 'settled' | 'released' | 'unknown' | 'unreconciled' | 'refused'
@@ -22,6 +22,10 @@ export interface SpendRecord {
   late?: boolean
   /** A photo lookup skipped for lack of a cost bound (see noteRefusal). */
   photoSkip?: boolean
+  /** What the caller said about the call when it reserved (Serper: endpoint, the real `num`, the RAW query, W/V). Raw: the runner redacts before it writes anything. */
+  detail?: SpendCallDetail
+  /** What the caller said when the call settled (Serper: the credits the provider reported; a model call: its tokens). */
+  settleDetail?: SpendSettleDetail
 }
 
 export class GuardSpendGate implements SpendGate {
@@ -42,14 +46,14 @@ export class GuardSpendGate implements SpendGate {
    */
   close(): void { this.closed = true }
 
-  reserve(label: string, maxUsd: number): SpendReservation {
+  reserve(label: string, maxUsd: number, detail?: SpendCallDetail): SpendReservation {
     if (this.closed) {
       this.records.push({ label, maxUsd, state: 'refused', late: true })
       throw new SpendRefusal(`the turn is over: ${label} not made`, 'blocked')
     }
     try {
       const res = this.guard.reserve(maxUsd) // atomic: the check and the hold are one synchronous step
-      const rec: SpendRecord = { label, maxUsd, state: 'held' }
+      const rec: SpendRecord = { label, maxUsd, state: 'held', ...(detail ? { detail } : {}) }
       this.records.push(rec)
       this.held.set(res.id, { res, rec })
       return { id: res.id, maxUsd: res.maxUsd, label }
@@ -72,9 +76,10 @@ export class GuardSpendGate implements SpendGate {
     return h
   }
 
-  settle(r: SpendReservation, actualUsd: unknown): SpendSettleStatus {
+  settle(r: SpendReservation, actualUsd: unknown, detail?: SpendSettleDetail): SpendSettleStatus {
     const h = this.take(r)
     const status = this.guard.settle(h.res, actualUsd)
+    if (detail) h.rec.settleDetail = detail
     h.rec.status = status
     h.rec.state = status === 'invalid' || status === 'overflow' ? 'unreconciled' : 'settled'
     if (typeof actualUsd === 'number' && Number.isFinite(actualUsd)) h.rec.actualUsd = actualUsd

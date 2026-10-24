@@ -183,7 +183,9 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
   // sent), the scope credits and the daily-counter credits.
   const perCredit = Math.max(serperUsdPerCredit(), SERPER_MIN_USD_PER_CREDIT)
   let spend: SpendHandle | null = null
-  try { spend = reserveSpend(`serper:${endpoint}`, serperSpendBoundUsd(endpoint, body, perCredit)) } catch (e) {
+  // The detail (the body's real `num`, the query, W/V) goes ONLY to the gate the benchmark injected: with the flag OFF reserveSpend returns before it looks at it.
+  const detail = { endpoint, ...(typeof body.num === 'number' ? { num: body.num } : {}), ...(typeof body.q === 'string' ? { q: body.q } : {}), purpose: opts?.purpose === 'W' ? 'W' as const : 'V' as const }
+  try { spend = reserveSpend(`serper:${endpoint}`, serperSpendBoundUsd(endpoint, body, perCredit), detail) } catch (e) {
     if (!(e instanceof SpendRefusal)) throw e
     if (entry) refundTurnWebTicket(entry)
     releaseToolBudget(SERPER_CREDITS[endpoint])
@@ -194,7 +196,7 @@ export async function serperPost(endpoint: SerperEndpoint, apiKey: string, body:
     return null
   }
   let spendDone = false
-  const settleSpend = (reportedCredits: number) => { if (!spend || spendDone) return; spendDone = true; spend.settle(reportedCredits * perCredit) }
+  const settleSpend = (reportedCredits: number) => { if (!spend || spendDone) return; spendDone = true; spend.settle(reportedCredits * perCredit, { credits: reportedCredits }) }
   const unknownSpend = () => { if (!spend || spendDone) return; spendDone = true; spend.markUnknown() }
   if (signal?.aborted) {
     // Reserved, never sent — the one case where a reservation may be given back (and a ticket with it).

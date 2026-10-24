@@ -190,6 +190,13 @@ describe('(a) a good trial turn: the three counts agree (wrapper, fake network, 
     expect(s.llmRequests).toBe(net.openai.length); expect(s.serperRequests).toBe(net.serper.length)
     // every request went through the wrapper: it forbids automatic redirects
     expect(net.redirectModes).toEqual(Array(3).fill('manual'))
+    // round 3a, item 4: the per-request detail in the record is what the fake network really received (the REAL route and the REAL serperPost produced it)
+    const rec = jsonlLines(fs)[0] as { serperCalls: Array<{ endpoint: string; num: number | null; q: string | null; credits: number | null; purpose: string | null }>; llmCalls: Array<{ role: string; tokensIn: number | null; tokensOut: number | null }> }
+    expect(rec.serperCalls.map(c => [c.endpoint, c.num])).toEqual(net.serper.map(s => [s.path.replace(/^\//, ''), (s.body as { num?: number }).num ?? null]))
+    expect(rec.serperCalls.map(c => c.q)).toEqual(net.serper.map(s => String((s.body as { q?: string }).q ?? '').slice(0, 200)))
+    expect(rec.serperCalls.every(c => c.credits === 1 && c.purpose !== null)).toBe(true)
+    expect(rec.llmCalls).toHaveLength(net.openai.length)
+    expect(rec.llmCalls.some(c => (c.tokensIn ?? 0) > 0 && (c.tokensOut ?? 0) > 0)).toBe(true)
     expect(net.tripwire).toBe(0)
     expect(globalThis.fetch).toBe(tripwireFetch) // restored
     // files: in memory, one JSONL (started + record) and one result

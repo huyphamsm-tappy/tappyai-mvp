@@ -25,7 +25,7 @@ import { randomUUID } from 'node:crypto'
 import { benchSpendGateOn, checkBenchCaps, readBenchCaps, runWithSpendGate } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, RequestNotSent, runUat, summarize, type ChatMessage, type Reservation, type RunOptions, type TurnRunner, type UatReport } from './harness'
 import { UAT_TURNS, type UatTurn } from './questions'
-import { GuardSpendGate } from './spendGateAdapter'
+import { GuardSpendGate, type SpendRecord, type SpendRecordState } from './spendGateAdapter'
 import { parseDataStream } from '../../consult/replay/lib/stream'
 
 /** Every flag the result records. The caller must list ALL of them (value, or null = unset) and the list must equal the environment. */
@@ -131,6 +131,64 @@ export interface BenchOptions {
   runUatImpl?: (o: RunOptions) => Promise<UatReport>
 }
 
+/** One Serper request as it was SENT (round 3a). A RECORD, not a verdict: `num` is the one in the body that went out, `credits` what the provider said it charged. */
+export interface SerperCallRecord {
+  /** 1-based order in which the requests were reserved (= sent). */
+  n: number
+  endpoint: string | null
+  num: number | null
+  /** The query, redacted and then cut to at most 200 characters. */
+  q: string | null
+  credits: number | null
+  /** The ledger USD (credits × price per credit); null when the provider did not say what it charged. */
+  usd: number | null
+  /** W = web research (the turn's web ticket); V = a vertical's own request. null = the caller did not say. */
+  purpose: 'W' | 'V' | null
+  state: SpendRecordState
+}
+export interface LlmCallRecord { n: number; role: string; tokensIn: number | null; tokensOut: number | null; cachedIn: number | null; reasoning: number | null; usd: number | null; state: SpendRecordState }
+interface KindTotals { requests: number; credits: number; usd: number }
+export interface RequestTotals {
+  /** `requests` is how many requests were sent, `credits` how many the provider said it charged: two different numbers. */
+  serper: KindTotals & { W: KindTotals; V: KindTotals; unclassified: KindTotals; /** requests whose USD is unknown: the `usd` above does not include them */ unknownCalls: number }
+  llm: { requests: number; usd: number; unknownCalls: number }
+}
+
+const round9 = (x: number): number => Math.round(x * 1e9) / 1e9
+const numOrNull = (v: unknown): number | null => (typeof v === 'number' && Number.isFinite(v) ? v : null)
+
+/**
+ * The per-request detail of a turn from the gate's records. Listed: every request the gate let through (the same set `serperRequests` / `llmRequests` count), i.e.
+ * sent ones AND the ones that may have been sent - each entry carries its `state` (settled / unknown / released / held / unreconciled) so a reader can tell them apart.
+ * A refused request is not listed (it is counted apart, as `refusals`). It is a SNAPSHOT taken when the turn record is written: a reservation that settles later stays
+ * `held` here. `unknownCalls` counts the requests whose USD is not known, so a total that left them out is not mistaken for a complete one. The query is redacted
+ * BEFORE it is cut to 200 characters (a key that straddles the 200th character must not survive as a prefix). Pure.
+ */
+export function describeRequests(records: readonly SpendRecord[], env: Record<string, string | undefined>): { serperCalls: SerperCallRecord[]; llmCalls: LlmCallRecord[]; requestTotals: RequestTotals } {
+  const sent = records.filter(r => r.state !== 'refused')
+  const serperCalls: SerperCallRecord[] = sent.filter(r => r.label.startsWith('serper:')).map((r, i) => ({
+    n: i + 1,
+    endpoint: r.detail?.endpoint ?? r.label.slice('serper:'.length),
+    num: numOrNull(r.detail?.num),
+    q: typeof r.detail?.q === 'string' ? redactSecrets(r.detail.q, env).slice(0, 200) : null,
+    credits: numOrNull(r.settleDetail?.credits),
+    usd: numOrNull(r.actualUsd),
+    purpose: r.detail?.purpose ?? null,
+    state: r.state,
+  }))
+  const llmCalls: LlmCallRecord[] = sent.filter(r => r.label.startsWith('llm:')).map((r, i) => ({
+    n: i + 1, role: r.label.slice('llm:'.length),
+    tokensIn: numOrNull(r.settleDetail?.tokensIn), tokensOut: numOrNull(r.settleDetail?.tokensOut), cachedIn: numOrNull(r.settleDetail?.cachedIn), reasoning: numOrNull(r.settleDetail?.reasoning),
+    usd: numOrNull(r.actualUsd), state: r.state,
+  }))
+  const sum = (calls: SerperCallRecord[]): KindTotals => ({ requests: calls.length, credits: round9(calls.reduce((a, c) => a + (c.credits ?? 0), 0)), usd: round9(calls.reduce((a, c) => a + (c.usd ?? 0), 0)) })
+  const requestTotals: RequestTotals = {
+    serper: { ...sum(serperCalls), W: sum(serperCalls.filter(c => c.purpose === 'W')), V: sum(serperCalls.filter(c => c.purpose === 'V')), unclassified: sum(serperCalls.filter(c => c.purpose === null)), unknownCalls: serperCalls.filter(c => c.usd === null && c.state !== 'released').length },
+    llm: { requests: llmCalls.length, usd: round9(llmCalls.reduce((a, c) => a + (c.usd ?? 0), 0)), unknownCalls: llmCalls.filter(c => c.usd === null && c.state !== 'released').length },
+  }
+  return { serperCalls, llmCalls, requestTotals }
+}
+
 export interface TurnRecord {
   id: string
   conversation: string
@@ -143,6 +201,10 @@ export interface TurnRecord {
   cost: { state: 'known' | 'unknown'; usd: number | null }
   llmRequests: number
   serperRequests: number
+  /** Round 3a: every request that was sent, with its detail (see SerperCallRecord / LlmCallRecord), and the totals by kind and by W/V. */
+  serperCalls: SerperCallRecord[]
+  llmCalls: LlmCallRecord[]
+  requestTotals: RequestTotals
   refusals: number
   /** `images` (place / product photo) lookups skipped on purpose because their cost has no proven bound: the text answer is unchanged, so they do not degrade the turn. */
   photoSkips: number
@@ -420,6 +482,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
       ticketLog,
       cost: { state: costKnown ? 'known' : 'unknown', usd: costKnown ? known : null },
       llmRequests: gate.count('llm:'), serperRequests: gate.count('serper:'),
+      ...describeRequests(gate.records, o.env ?? process.env),
       refusals: gate.refusals, photoSkips: gate.photoSkips, lateRefusals: gate.lateRefusals, degraded: gate.refusals > 0,
       blocked, openReservedUsd: open,
       ...(status !== undefined ? { httpStatus: status } : {}),

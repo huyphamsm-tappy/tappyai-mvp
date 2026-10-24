@@ -100,11 +100,20 @@ export class SpendRefusal extends Error {
 export interface SpendReservation { readonly id: number; readonly maxUsd: number; readonly label: string }
 export type SpendSettleStatus = 'ok' | 'exceeded' | 'invalid' | 'overflow'
 
+/**
+ * What the caller tells the INJECTED gate about a call it is about to make (round 3a): for a Serper request the endpoint, the `num` of the body that is sent, the
+ * query and whether it is a web ("W") or a vertical ("V") request. It goes to the injected gate and nowhere else - `reserveSpend` returns before it looks at it
+ * when the flag is OFF - and this code never logs it. The gate (the benchmark runner) decides what to keep and redacts the query before it writes anything.
+ */
+export interface SpendCallDetail { endpoint?: string; num?: number; q?: string; purpose?: 'W' | 'V' }
+/** What the caller tells the injected gate when a call settles: the credits the provider reported (Serper) or the tokens of the answer (a model call). */
+export interface SpendSettleDetail { credits?: number; tokensIn?: number; tokensOut?: number; cachedIn?: number; reasoning?: number }
+
 /** What the benchmark injects. `reserve` throws SpendRefusal when the call must not be made. */
 export interface SpendGate {
-  reserve(label: string, maxUsd: number): SpendReservation
+  reserve(label: string, maxUsd: number, detail?: SpendCallDetail): SpendReservation
   /** The real cost of a finished call. 'exceeded' = above what was reserved; 'invalid' = not a usable cost. Both stop the run. */
-  settle(res: SpendReservation, actualUsd: unknown): SpendSettleStatus
+  settle(res: SpendReservation, actualUsd: unknown, detail?: SpendSettleDetail): SpendSettleStatus
   /** ONLY for a call that provably never left the process. */
   release(res: SpendReservation): void
   /** The call may have been sent and its cost is not known. */
@@ -129,7 +138,7 @@ export function currentSpendGate(): SpendGate | undefined {
 
 export interface SpendHandle {
   readonly reservation: SpendReservation
-  settle(actualUsd: unknown): SpendSettleStatus
+  settle(actualUsd: unknown, detail?: SpendSettleDetail): SpendSettleStatus
   release(): void
   markUnknown(): void
 }
@@ -139,7 +148,7 @@ export interface SpendHandle {
  * Flag OFF → null (the caller goes on exactly as before). Flag ON → a handle, or SpendRefusal. Synchronous on purpose: no await between the
  * check and the hold, so two calls started together can never both see the same remainder.
  */
-export function reserveSpend(label: string, maxUsd: number | null): SpendHandle | null {
+export function reserveSpend(label: string, maxUsd: number | null, detail?: SpendCallDetail): SpendHandle | null {
   if (!benchSpendGateOn()) return null
   if (!readBenchCaps()) throw new SpendRefusal(`spend gate is ON but its caps are missing or invalid: ${label} not made`, 'no_caps')
   const gate = currentSpendGate()
@@ -148,12 +157,12 @@ export function reserveSpend(label: string, maxUsd: number | null): SpendHandle 
     try { gate.noteRefusal?.(label, 'no_bound') } catch { /* recording only: the refusal below is what matters */ }
     throw new SpendRefusal(`${label} has no upper bound on its cost: not made`, 'no_bound')
   }
-  const reservation = gate.reserve(label, maxUsd) // throws SpendRefusal; nothing is held then
+  const reservation = detail ? gate.reserve(label, maxUsd, detail) : gate.reserve(label, maxUsd) // throws SpendRefusal; nothing is held then
   let resolved = false
   const once = <T,>(fn: () => T): T => { if (resolved) throw new Error(`spend reservation ${reservation.id} was already resolved`); resolved = true; return fn() }
   return {
     reservation,
-    settle: actualUsd => once(() => gate.settle(reservation, actualUsd)),
+    settle: (actualUsd, settleDetail) => once(() => (settleDetail ? gate.settle(reservation, actualUsd, settleDetail) : gate.settle(reservation, actualUsd))),
     release: () => once(() => gate.release(reservation)),
     markUnknown: () => once(() => gate.markUnknown(reservation)),
   }

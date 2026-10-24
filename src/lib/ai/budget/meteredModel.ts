@@ -9,7 +9,7 @@
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
 import { APICallError } from 'ai'
 import { currentBudget, estimateTokens, promptChars, reasoningHeadroomTokens, requestBudgetOn, RequestBudgetError, REQUEST_LIMITS, type ActualUsage, type BudgetKind, type Ticket } from './requestBudget'
-import { benchSpendGateOn, reserveSpend, utf8Bytes, type SpendHandle } from './spendGate'
+import { benchSpendGateOn, reserveSpend, utf8Bytes, type SpendHandle, type SpendSettleDetail } from './spendGate'
 import { INPUT_TOKEN_OVERHEAD, worstCaseLlmCallUsd } from '../llm/pricing'
 
 type CallOpts = Parameters<LanguageModelV1['doGenerate']>[0]
@@ -22,6 +22,11 @@ export function usageFrom(usage: { promptTokens?: number; completionTokens?: num
   const output = num(c?.outputTokens) ?? num(usage?.completionTokens) ?? 0
   return { inputTokens: input, cachedInputTokens: num(c?.cachedInputTokens) ?? 0, outputTokens: output, reasoningTokens: num(c?.reasoningTokens), usd: num(c?.usd) }
 }
+
+/** The tokens of a finished call, for the injected spend gate only (the benchmark records them; nothing is logged here). */
+const settleDetailOf = (u: ActualUsage): SpendSettleDetail => ({
+  tokensIn: u.inputTokens, tokensOut: u.outputTokens, cachedIn: u.cachedInputTokens, ...(typeof u.reasoningTokens === 'number' ? { reasoning: u.reasoningTokens } : {}),
+})
 
 const billedUnknown = (e: unknown): boolean => !(e instanceof APICallError && (e.statusCode ?? 0) >= 400 && (e.statusCode ?? 0) < 500)
 
@@ -156,7 +161,8 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       if (!handle) return model.doGenerate(opts) // the flag went OFF since the model was resolved
       let out: Awaited<ReturnType<LanguageModelV1['doGenerate']>>
       try { out = await model.doGenerate(r.opts) } catch (e) { if (failedBeforeSend(e)) handle.release(); else handle.markUnknown(); throw e }
-      handle.settle(usageFrom(out.usage, out.providerMetadata).usd) // null = no usable cost: the gate stops the run
+      const u = usageFrom(out.usage, out.providerMetadata)
+      handle.settle(u.usd, settleDetailOf(u)) // null = no usable cost: the gate stops the run
       return out
     },
     async doStream(opts) {
@@ -170,7 +176,7 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       const unknown = () => { if (!settled) { settled = true; handle.markUnknown() } }
       const stream = res.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
         transform(part, c) {
-          if (part.type === 'finish' && !settled) { settled = true; handle.settle(usageFrom(part.usage, part.providerMetadata).usd) }
+          if (part.type === 'finish' && !settled) { settled = true; const u = usageFrom(part.usage, part.providerMetadata); handle.settle(u.usd, settleDetailOf(u)) }
           else if (part.type === 'error') unknown()
           c.enqueue(part)
         },
