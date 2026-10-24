@@ -12,7 +12,9 @@
  *      (flags explicit and equal to the environment, no flag that must be OFF, no set-but-blank variable, exact model ids, output folder on drive D)
  *   2. the question file is read (UTF-8, one optional byte-order mark dropped) and checked: not empty, not one of the 12 benchmark questions
  *   3. the network wrappers are installed (globalThis.fetch AND node:https / node:http request+get: the app's page reader uses node:https, not fetch), ONE turn runs
- *      through runBench, the wrappers stay in place for a short drain (background work after the answer). Then, depending on `afterTrial`:
+ *      through runBench. The moment the turn is over the wrappers are CLOSED (a state they all share and look at at EVERY call, so a reference taken while the turn was
+ *      open is closed too): from then on every request, the two allowed hosts included, is blocked before it is sent and recorded (summary.lateBlocked; any entry makes the
+ *      trial NOT CLEAN). A short drain follows, only to SEE background work. Then, depending on `afterTrial`:
  *        'restore' (default; the dry rehearsal): the originals are put back.
  *        'deny' (the real run, in a process of its own): the originals are NOT put back. Every later request - to ANY host, the two allowed ones included - fails before it is
  *        sent and is recorded, and the console filter stays on, until the process ends. In this mode the deny wrappers and the console filter are installed FIRST (before the
@@ -93,6 +95,8 @@ export interface TrialSummary {
   benchmarkEligible: boolean
   /** turnOk AND no host was blocked AND no redirect AND no warning. A trial that is not clean is NOT a complete result. */
   trialClean: boolean
+  /** Hosts a request was attempted to while the network was closed - after the turn was over (through any wrapper reference), or in 'deny' mode before the wrappers were installed - blocked before it was sent: late background work. Any entry makes the trial NOT CLEAN. */
+  lateBlocked: string[]
   costState: 'known' | 'unknown' | 'none'
   /** ESTIMATE from the ledger (tokens × price table, Serper credits); NOT an invoice. */
   usd: number | null
@@ -118,7 +122,7 @@ export interface TrialSummary {
 }
 
 export interface TrialControls {
-  /** Requests attempted AFTER the trial was closed in 'deny' mode (they were all blocked before being sent). Always empty in 'restore' mode. */
+  /** Requests attempted while the network was closed (they were all blocked before being sent): after the turn was over, through any wrapper reference, in either mode; in 'deny' mode also before the wrappers were installed. */
   lateAttempts: () => string[]
   /** Gives the originals back (fetch, node:http(s), console). A no-op in 'restore' mode, where it was done already. The real run never calls it. */
   release: () => void
@@ -325,6 +329,15 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const sent: Record<string, number> = {}
   const blocked = new Set<string>()
   const redirects: Array<{ host: string; status: number }> = []
+  // THE SHARED "CLOSED" STATE (round 3a). Set the moment the turn is over - BEFORE the drain and before the process tree is ended. Every wrapper below looks at it AT
+  // EVERY CALL, so a reference taken while the turn was open (a library that kept `fetch`, a callback scheduled for later) is closed too: after this, every request -
+  // the two allowed hosts included - is blocked before it is sent and recorded (`late`). A request to a host outside the list is still reported in `blocked`.
+  let trialClosed = false
+  const closedAttempt = (url: string): never => {
+    const d = isAllowedRequest(url)
+    if (!d.ok) blocked.add(redactSecrets(d.label, env))
+    throw denied(hostLabel(url))
+  }
   const admit = (url: string): void => {
     const d = isAllowedRequest(url)
     if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
@@ -332,6 +345,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   }
   filterConsole()
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
+    if (trialClosed) closedAttempt(urlOf(req))
     // a `dispatcher` in the init is undici's way of changing where the connection goes (a proxy agent, a custom connector): such a call cannot be judged by its URL
     if (init && typeof init === 'object' && 'dispatcher' in init) admit('(unparseable)')
     const url = urlOf(req)
@@ -342,6 +356,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     return res
   }) as typeof fetch
   const guardNode = (proto: 'http' | 'https', original: (...a: never[]) => unknown) => function (this: unknown, ...args: unknown[]) {
+    if (trialClosed) closedAttempt(nodeRequestUrl(proto, args))
     admit(nodeRequestUrl(proto, args))
     return (original as (...a: unknown[]) => unknown).apply(proto === 'https' ? https : http, args)
   }
@@ -360,12 +375,14 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: [trialTurn], now: input.now,
     })
-    // background work that outlives the answer (memory, logging…) still goes through the wrappers
+    // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
+    trialClosed = true
     await new Promise(r => setTimeout(r, input.drainMs ?? 100))
   } catch (e) {
     if (e instanceof BenchRefusal) return refuse(e.reasons) // (a file-system error quoted in a reason may hold a key)
     throw e
   } finally {
+    trialClosed = true
     closeTrial()
   }
 
@@ -386,7 +403,8 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const hostsBlocked = [...blocked].sort()
   const summary: TrialSummary = {
     turnOk, runValid: result.valid, benchmarkEligible: isBenchmarkEligible([trialTurn], result.valid),
-    trialClean: turnOk && hostsBlocked.length === 0 && redirects.length === 0 && warnings.length === 0,
+    trialClean: turnOk && hostsBlocked.length === 0 && redirects.length === 0 && warnings.length === 0 && late.length === 0,
+    lateBlocked: [...late],
     costState: r ? r.cost.state : 'none', usd: r ? r.cost.usd : null, ms: r ? r.ms : null, tools: r ? r.toolNames : [],
     llmRequests: r ? r.llmRequests : 0, serperRequests: r ? r.serperRequests : 0, hostRequests: sent,
     refusals: r ? r.refusals : 0, photoSkips: r ? r.photoSkips : 0, answerChars: r ? r.answer.length : 0,
@@ -403,7 +421,7 @@ export function formatSummary(s: TrialSummary): string {
     `turnOk=${s.turnOk} runValid=${s.runValid} benchmarkEligible=${s.benchmarkEligible} trialClean=${s.trialClean}`,
   ]
   if (!s.trialClean) {
-    lines.push(`NOT CLEAN: this is NOT a complete trial result${s.hostsBlocked.length ? ` - blocked: ${s.hostsBlocked.join(', ')}` : ''}${s.redirects.length ? ` - redirects: ${s.redirects.map(x => `${x.host} ${x.status}`).join(', ')}` : ''}${s.warnings.length ? ` - warnings: ${s.warnings.join(' | ')}` : ''}${s.problems.length ? ` - problems: ${s.problems.join(' | ')}` : ''}`)
+    lines.push(`NOT CLEAN: this is NOT a complete trial result${s.hostsBlocked.length ? ` - blocked: ${s.hostsBlocked.join(', ')}` : ''}${s.redirects.length ? ` - redirects: ${s.redirects.map(x => `${x.host} ${x.status}`).join(', ')}` : ''}${s.lateBlocked.length ? ` - late requests (after the turn was closed, or before the wrappers were installed; blocked before they were sent):${[...new Set(s.lateBlocked)].join(', ')}` : ''}${s.warnings.length ? ` - warnings: ${s.warnings.join(' | ')}` : ''}${s.problems.length ? ` - problems: ${s.problems.join(' | ')}` : ''}`)
   }
   lines.push(
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
