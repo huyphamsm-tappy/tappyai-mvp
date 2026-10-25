@@ -36,6 +36,9 @@ describe('Wave 2F · cityStatedAsPlace: a city word counts as a stated place onl
     expect(cityStatedAsPlace('dạo phố đi bộ Nguyễn Huệ tối nay', false)).toBe(false)
     expect(cityStatedAsPlace('ở Nguyễn Huệ có quán nào', false)).toBe(false)
     expect(cityStatedAsPlace('bún bò Huế ở Huế', false)).toBe(true) // the second "Huế" is a place
+    // even when the rules read a venue request, a dish / street name is not the city
+    expect(cityStatedAsPlace('quán bún bò Huế ngon', true)).toBe(false)
+    expect(cityStatedAsPlace('quán cà phê trên đường Nguyễn Huệ', true)).toBe(false)
   })
   it('KNOWN LIMIT (characterisation): a knowledge question that uses a city after a locative word keeps counting it as a place - the earlier F-C3 behaviour for an ambiguous shape', () => {
     expect(cityStatedAsPlace('Ông Hồ Chí Minh đã đến Hà Nội năm nào?', false)).toBe(true)

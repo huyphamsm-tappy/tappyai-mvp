@@ -392,9 +392,9 @@ describe('Wave 2F - the gate reads a stated place as a PLACE, not as a word (rou
   }, 60000)
   // F3 (a): a city in a place structure IS a stated place - the gate does not block, and the old behaviour (pre-search) stays
   for (const q of ['quán phở Hà Nội', 'khách sạn ở Đà Lạt cuối tuần này', 'ăn gì ở Huế hôm nay', 'tìm quán cà phê quanh Đà Nẵng']) {
-    it(`F3 (a) "${q}": a stated city - not blocked`, async () => {
+    it(`F3 (a) "${q}": a stated city - not blocked, and it is the CITY that says so`, async () => {
       const g = await gate(q, { gps: GPS_HN })
-      expect(g.ev).toMatchObject({ blocked: false })
+      expect(g.ev).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_city' })
     }, 60000)
   }
   // C-X6: the intent layer misreads a place request as chat, but the user DID state a place - not blocked, BẬT = TẮT (pre-search still runs); the control that states nothing is blocked
