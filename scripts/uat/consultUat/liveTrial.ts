@@ -128,6 +128,8 @@ export interface TrialSummary {
   /** Hosts (or host+path, scheme/port forms, "(unparseable)") that were blocked before being sent. */
   hostsBlocked: string[]
   redirects: Array<{ host: string; status: number }>
+  /** Allowed hosts that answered 401 or 403 (host and status only). Each one is also a warning, so the trial is NOT CLEAN. */
+  providerRejections: Array<{ host: string; status: number }>
   warnings: string[]
   /** Why the turn is not OK (empty when it is). */
   problems: string[]
@@ -365,6 +367,8 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const sent: Record<string, number> = {}
   const blocked = new Set<string>()
   const redirects: Array<{ host: string; status: number }> = []
+  // E1 investigation: an allowed host that answers 401/403 has rejected the credentials. Only host and status are kept (never a body: the provider echoes part of the key in it).
+  const providerRejections: Array<{ host: string; status: number }> = []
   // THE SHARED "CLOSED" STATE (round 3a). Set the moment the turn is over - BEFORE the drain and before the process tree is ended. Every wrapper below looks at it AT
   // EVERY CALL, so a reference taken while the turn was open (a library that kept `fetch`, a callback scheduled for later) is closed too: after this, every request -
   // the two allowed hosts included - is blocked before it is sent and recorded (`late`). A request to a host outside the list is still reported in `blocked`.
@@ -389,6 +393,10 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     // never follow a redirect: a request to an allowed host cannot be turned into a request to another host
     const res = await forward(req as never, { ...(init ?? {}), redirect: 'manual' })
     if (res.status >= 300 && res.status < 400) redirects.push({ host: new URL(url).hostname, status: res.status })
+    if (res.status === 401 || res.status === 403) {
+      const host = new URL(url).hostname
+      if (!providerRejections.some(x => x.host === host && x.status === res.status)) providerRejections.push({ host, status: res.status })
+    }
     return res
   }) as typeof fetch
   const guardNode = (proto: 'http' | 'https', original: (...a: never[]) => unknown) => function (this: unknown, ...args: unknown[]) {
@@ -447,6 +455,8 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   // The request cap is a safety stop, not a result: a request it refused is a search that was NOT made, so the answer it fed is not the app's normal answer. Never clean.
   if (capFinal && capFinal.refused > 0) warnings.push(`the Serper request cap refused ${capFinal.refused} request(s): those searches were not made`)
   if (capFinal && records.length > 0 && capFinal.sent !== (sent['google.serper.dev'] ?? 0)) warnings.push(`request cap count differs: the cap let ${capFinal.sent} through, the wrapper sent ${sent['google.serper.dev'] ?? 0}`)
+  // Named first: a rejected credential on the first paid call is the whole story (cost unknown → run blocked → every later paid call refused), and "reported cost NaN" does not say so.
+  for (const x of providerRejections) warnings.unshift(`${x.host} answered HTTP ${x.status}: the provider rejected the credentials (check the key and recreate it); the cost, refusal and blocked-host lines below follow from that`)
   const turnOk = records.length > 0 && problems.length === 0
   const allKnown = records.length > 0 && records.every(r => r.cost.state === 'known')
   const usdSum = allKnown ? Math.round(records.reduce((a, r) => a + (r.cost.usd ?? 0), 0) * 1e9) / 1e9 : null
@@ -472,7 +482,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     tools: [...new Set(records.flatMap(r => r.toolNames))],
     llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent,
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
-    hostsBlocked, redirects, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
+    hostsBlocked, redirects, providerRejections, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
     requestCap: { perTurnLimit: parseCapValue(env[REQUEST_CAP_PER_TURN_ENV], REQUEST_CAP_MAX_PER_TURN), runLimit: capFinal?.limit ?? null, sent: capFinal?.sent ?? 0, refused: capFinal?.refused ?? 0 },
     budget: { mode: benchModeOf(env), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd },

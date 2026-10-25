@@ -85,6 +85,8 @@ export function redactText(text, env) {
     const v = env[name]
     if (v && v.length >= 4) out = out.replace(new RegExp(escapeRegExp(v), 'gi'), '***') // any value of 4+ characters: a short key echoed by a child must not reach the output
   }
+  // the provider echoes a masked piece of what was sent as the key ("Incorrect API key provided: <first 4>****<last 4>."), whatever its shape: mask the word after that phrase
+  out = out.replace(/(Incorrect API key provided:\s*)[^\s"'\\,]*[^\s"'\\,.]/gi, '$1***')
   return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
 }
 

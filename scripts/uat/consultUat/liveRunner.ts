@@ -63,6 +63,8 @@ export function redactSecrets(text: string, env: Record<string, string | undefin
   for (const e of env === process.env ? [env] : [env, process.env]) {
     for (const name of ['OPENAI_API_KEY', 'SERPER_API_KEY']) { const v = e[name]; if (v && v.length >= 8) out = out.replace(new RegExp(v.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '***') }
   }
+  // the provider echoes a masked piece of what was sent as the key ("Incorrect API key provided: <first 4>****<last 4>."), whatever its shape: mask the word after that phrase
+  out = out.replace(/(Incorrect API key provided:\s*)[^\s"'\\,]*[^\s"'\\,.]/gi, '$1***')
   return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
 }
 
