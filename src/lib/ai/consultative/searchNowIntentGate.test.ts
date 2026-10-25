@@ -1,11 +1,61 @@
 import { describe, it, expect } from 'vitest'
-import { applySearchNowGate, isNearMeOnly, searchNowIntentGate } from './searchNowIntentGate'
+import { applySearchNowGate, cityStatedAsPlace, isNearMeOnly, rulesReadVenueRequest, searchNowIntentGate } from './searchNowIntentGate'
 import { PLACE_TYPES } from './presearch'
 import { consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
 import type { ConsultTurn } from './consultBrain'
 import type { SearchNow, SearchNowType } from './searchNow'
 
 const TURNS: ConsultTurn[] = ['ask', 'pick', 'followup', 'compare', 'more', 'reject', 'plan', 'chat']
+
+describe('Wave 2F · isNearMeOnly: a landmark is a place, "near me" grammar is not (diacritics kept: chợ ≠ chỗ, nhà thờ ≠ nhà)', () => {
+  it('near-me only: the locative anchor + deictic / pronoun / particle words and nothing else', () => {
+    for (const a of ['gần đây', 'Gần bạn', 'gần chỗ mình', 'gần nhà tui', 'gần nhà', 'gần chỗ', 'quanh đây', 'xung quanh', 'xung quanh đây', 'gần công ty tôi', 'gần đây nhé', 'near me', 'nearby', 'around here', 'gan day', 'gan cho minh']) expect(isNearMeOnly(a), a).toBe(true)
+  })
+  it('a landmark, venue, district or city in the area makes it a place (the review\'s list, both spellings of the near-me word)', () => {
+    for (const a of ['gần chợ Bến Thành', 'gần chợ Tân Định', 'gần nhà thờ Đức Bà', 'xung quanh Nhà hát lớn', 'gần chùa Một Cột', 'gần Hồ Gươm', 'gần nhà ga Hà Nội', 'gần Quận 1', 'gần đây ở Huế', 'quanh Đà Nẵng', 'Quận 3', 'Hà Nội', 'gan cho ben thanh', 'gan nha tho duc ba']) expect(isNearMeOnly(a), a).toBe(false)
+  })
+  it('no anchor, or nothing at all, is not "near me"', () => {
+    for (const a of ['', '   ', 'đây', 'mình', 'ở nhà']) expect(isNearMeOnly(a), JSON.stringify(a)).toBe(false)
+  })
+  it('the gate follows: a chat turn whose intent-layer area is a landmark is NOT blocked; "near me" is', () => {
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'gần Nhà Thờ Đức Bà' }, statedArea: null })).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'gần chợ Bến Thành' }, statedArea: null }).blocked).toBe(false)
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'gần chỗ mình' }, statedArea: null }).blocked).toBe(true)
+  })
+})
+
+describe('Wave 2F · cityStatedAsPlace: a city word counts as a stated place only when it is used AS a place', () => {
+  it('(b) person / street / dish names that carry a city alias are not places (no rules venue reading)', () => {
+    for (const t of ['Cho mình biết vua Quang Trung Nguyễn Huệ lên ngôi năm nào?', 'Chủ tịch Hồ Chí Minh sinh năm nào?', 'Hồ Chí Minh sinh năm nào và quê ở đâu?', 'Cho mình hỏi Bún bò Huế có nguồn gốc từ đâu?', 'Sa Pa có tuyết rơi vào tháng mấy?', 'Hải Phòng có phải thành phố cảng không', 'Nha Trang nổi tiếng vì gì trong lịch sử', 'Đà Lạt có lạnh không', 'Cơm hến Huế là món gì', 'Marie Curie là ai']) expect(cityStatedAsPlace(t, false), t).toBe(false)
+  })
+  it('(a) a locative word right before the city, or a venue request around it, is a stated place', () => {
+    for (const t of ['khách sạn ở Đà Lạt cuối tuần này', 'ăn gì ở Huế hôm nay', 'đi chơi ở Hà Nội', 'bay đến Hà Nội', 'quán cà phê quanh Đà Nẵng', 'ra Hà Nội thăm bạn', 'tại Sài Gòn có gì vui', 'thành phố Hồ Chí Minh có quán nào ngon', 'tp hcm có rạp nào', 'near Da Nang', 'in Hanoi']) expect(cityStatedAsPlace(t, false), t).toBe(true)
+    for (const t of ['quán phở Hà Nội', 'Hà Nội có quán phở nào ngon', 'karaoke Sài Gòn']) expect(cityStatedAsPlace(t, true), t).toBe(true)
+  })
+  it('a street / dish name is masked even when the message also carries a locative word', () => {
+    expect(cityStatedAsPlace('dạo phố đi bộ Nguyễn Huệ tối nay', false)).toBe(false)
+    expect(cityStatedAsPlace('ở Nguyễn Huệ có quán nào', false)).toBe(false)
+    expect(cityStatedAsPlace('bún bò Huế ở Huế', false)).toBe(true) // the second "Huế" is a place
+  })
+  it('KNOWN LIMIT (characterisation): a knowledge question that uses a city after a locative word keeps counting it as a place - the earlier F-C3 behaviour for an ambiguous shape', () => {
+    expect(cityStatedAsPlace('Ông Hồ Chí Minh đã đến Hà Nội năm nào?', false)).toBe(true)
+  })
+  it('no city at all is never a stated place, whatever the rules read', () => {
+    expect(cityStatedAsPlace('quán phở bò ngon cho 2 người', true)).toBe(false)
+    expect(cityStatedAsPlace('', true)).toBe(false)
+  })
+  it('rulesReadVenueRequest: a sure, non-chat reading of a venue domain; "travel" is not independent evidence for a city word', () => {
+    const r = (turn: ConsultTurn, domains: string[], confidence: 'rule' | 'unsure' = 'rule') => ({ decision: { turn, domains }, confidence })
+    expect(rulesReadVenueRequest(r('pick', ['food']))).toBe(true)
+    expect(rulesReadVenueRequest(r('ask', ['entertainment']))).toBe(true)
+    expect(rulesReadVenueRequest(r('ask', ['spa']))).toBe(true)
+    expect(rulesReadVenueRequest(r('ask', ['travel']))).toBe(false)
+    expect(rulesReadVenueRequest(r('ask', ['shopping']))).toBe(false)
+    expect(rulesReadVenueRequest(r('chat', ['food']))).toBe(false)
+    expect(rulesReadVenueRequest(r('pick', ['food'], 'unsure'))).toBe(false)
+    expect(rulesReadVenueRequest(null)).toBe(false)
+  })
+})
 
 describe('searchNowIntentGate (pure)', () => {
   it('no consult decision: not blocked (nothing to read the turn from; the old behaviour)', () => {

@@ -25,8 +25,8 @@
 import type { ConsultTurn } from './consultBrain'
 import type { SearchNow } from './searchNow'
 import { PLACE_TYPES } from './presearch'
-import { cityInText } from '@/lib/ai/tools/vietnamCities'
-import { statedDistrict } from '@/lib/ai/districts'
+import { cityInText, VIETNAM_CITY_ENTRIES } from '@/lib/ai/tools/vietnamCities'
+import { maskStreetNames } from '@/lib/ai/streetNames'
 import { normalizeVN } from '@/lib/ai/intent'
 
 export type SearchNowGateReason = 'no_consult_decision' | 'consult_turn' | 'stated_place' | 'chat_turn_no_stated_place'
@@ -44,16 +44,56 @@ export interface SearchNowGateInput {
   consult: { turn: ConsultTurn; area?: string | null } | null
   /** A district / city the USER named in this subject (the route's `statedArea` label). */
   statedArea: string | null
-  /** The user's last message names a city the code knows (cityInText). */
+  /** The user's last message names a city AS A PLACE (cityStatedAsPlace: street / dish / person names masked, a locative cue or a place request around it). */
   statedCity?: boolean
 }
 
-/** "Near me" in the user's words or the intent layer's: where the user IS. Folded, whole words. */
-const NEAR_ME = /\b(?:gan day|gan ban|gan toi|gan minh|gan nha|gan cho|gan em|quanh day|xung quanh|near me|nearby|around here)\b/
+// "Near me" is where the user IS. Wave 2F (C-F5): the old test folded the diacritics first, so "gần chợ Bến Thành" and "gần nhà thờ Đức Bà" matched the "gan cho" / "gan nha" of "gần chỗ" / "gần nhà" and a landmark
+// stopped counting as a stated place. An area is "near me" ONLY when every word of it belongs to the closed class of near-me grammar - the locative word, the deictic ("đây"), a pronoun, a particle - and at
+// least one of them is the locative anchor. Anything else in it (a proper noun, a venue, a district number, a city) makes it a place. Diacritics are kept (chợ ≠ chỗ, nhà thờ ≠ nhà); the unaccented spellings
+// of the same words are listed beside them, since people type both. No list of places or names.
+const NEAR_ME_ANCHORS: ReadonlySet<string> = new Set(['gần', 'gan', 'quanh', 'xung', 'near', 'nearby', 'around'])
+const NEAR_ME_WORDS: ReadonlySet<string> = new Set([
+  ...NEAR_ME_ANCHORS, 'đây', 'day', 'chỗ', 'cho', 'nhà', 'nha', 'công', 'cong', 'ty', 'bạn', 'ban', 'tôi', 'toi', 'tui', 'mình', 'minh', 'em', 'anh', 'chị', 'của', 'cua', 'ở', 'o', 'khu', 'vực', 'vuc',
+  'nhé', 'nhe', 'với', 'voi', 'thôi', 'thoi', 'ạ', 'nhỉ', 'đi', 'di', 'me', 'my', 'here', 'location',
+])
 
-/** True when an area string says only "near me" and names no place (a city or district in it makes it a place). */
+/** True when an area string says only "near me" and names no place (a landmark, a venue, a district or a city in it makes it a place). */
 export function isNearMeOnly(area: string): boolean {
-  return NEAR_ME.test(normalizeVN(area.toLowerCase())) && !cityInText(area) && statedDistrict(area) === null
+  const words = area.normalize('NFC').toLowerCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean)
+  return words.length > 0 && words.every(w => NEAR_ME_WORDS.has(w)) && words.some(w => NEAR_ME_ANCHORS.has(w))
+}
+
+// Wave 2F (C-F3): a city word is not always a place. "Nguyễn Huệ" (a king, a street), "Hồ Chí Minh" (a person), "Bún bò Huế" (a dish) carry a city alias and were read as "the user stated a city", which switched the gate
+// off for exactly the knowledge questions it exists for. The reader is the one areaAsk.ts and the need profile already use - the city table with street / dish names masked (streetNames.ts) - plus ONE structural
+// condition: the city has to be used AS a place. That is (a) a locative word right before it ("ở Huế", "đến Hà Nội", "quanh Đà Nẵng", "thành phố Hồ Chí Minh" - the closed class of Vietnamese / English locative
+// words, not a list of places), or (b) the rules router (a reader independent of the intent layer) read the message as a request for a place ("quán phở Hà Nội": a noun phrase with the city at its end). A city
+// that is neither - the subject of a question about it or part of a name - is not a stated place. Ambiguous shapes keep the earlier behaviour (the city counts), see the tests.
+const LOCATIVE_BEFORE_CITY: ReadonlySet<string> = new Set(['o', 'tai', 'quanh', 'gan', 'den', 've', 'ra', 'vao', 'tren', 'toi', 'di', 'in', 'at', 'to', 'near', 'around', 'tp', 'tinh', 'city'])
+const CITY_ALIAS_TOKENS: ReadonlyArray<readonly string[]> = VIETNAM_CITY_ENTRIES.map(([alias]) => alias.split(' ')).sort((a, b) => b.length - a.length)
+
+/**
+ * Did the rules router read the message as a request for a PLACE? Sure, not a chat turn, and a venue domain (food / entertainment / spa). `travel` is deliberately NOT counted: the rules read a bare city word as
+ * travel ("Hồ Chí Minh sinh năm nào?" → ask [travel]), so for the question "is this city a place?" that reading is the city word again, not independent evidence.
+ */
+export function rulesReadVenueRequest(routed: { decision: { turn: ConsultTurn; domains: readonly string[] }; confidence: 'rule' | 'unsure' } | null | undefined): boolean {
+  return !!routed && routed.confidence === 'rule' && routed.decision.turn !== 'chat' && routed.decision.domains.some(d => d === 'food' || d === 'entertainment' || d === 'spa')
+}
+
+export function cityStatedAsPlace(text: string, rulesPlaceRequest: boolean): boolean {
+  const masked = maskStreetNames(normalizeVN((text || '').toLowerCase()))
+  if (!cityInText(masked)) return false
+  if (rulesPlaceRequest) return true
+  const tokens = masked.split(/[^a-z0-9]+/).filter(Boolean)
+  for (let i = 0; i < tokens.length; i++) {
+    const alias = CITY_ALIAS_TOKENS.find(a => a.every((t, k) => tokens[i + k] === t))
+    if (!alias) continue
+    if (alias[0] === 'tp') return true // "tp hcm": the alias itself carries the "city" designator
+    const before = tokens[i - 1], twoBefore = tokens[i - 2]
+    if (before !== undefined && (LOCATIVE_BEFORE_CITY.has(before) || (before === 'pho' && twoBefore === 'thanh'))) return true
+    i += alias.length - 1
+  }
+  return false
 }
 
 export function searchNowIntentGate(input: SearchNowGateInput): SearchNowGate {

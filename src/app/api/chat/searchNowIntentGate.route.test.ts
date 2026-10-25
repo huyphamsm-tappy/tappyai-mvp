@@ -360,3 +360,73 @@ describe('C — flag ON: place requests keep their flow and their semantics', ()
     expect(on.maps.map(m => m.q)).toEqual(off.maps.map(m => m.q))
   }, 60000)
 })
+
+// ── Wave 2F (C-F3, C-F4, C-F5, C-X6): what counts as a STATED place, read at route level through the gate event. Sentences and fixtures are written for this file. ────────────────────────────────
+describe('Wave 2F - the gate reads a stated place as a PLACE, not as a word (route level, trace event)', () => {
+  const gate = async (q: string, o: { luna?: Record<string, unknown> | null; gps?: unknown } = {}) => {
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try {
+      const r = await turn(one(q), { flag: '1', luna: o.luna === undefined ? CHAT_FOOD : o.luna, gps: o.gps })
+      return { ev: r.gateEvents[0] as { blocked: boolean; statedPlaceFrom: string | null } | undefined, presearched: r.presearched }
+    } finally { vi.unstubAllEnvs() }
+  }
+  // F3 (b): a city word that is a person / a street / a dish is not a place the user stated
+  for (const q of ['Cho mình biết vua Quang Trung Nguyễn Huệ lên ngôi năm nào?', 'Chủ tịch Hồ Chí Minh sinh năm nào và quê ở đâu?', 'Cho mình hỏi Bún bò Huế có nguồn gốc từ đâu?', 'Sa Pa có tuyết rơi vào tháng mấy trong năm?']) {
+    it(`F3 (b) "${q.slice(0, 44)}…": no stated place - the gate blocks like any other knowledge turn`, async () => {
+      const g = await gate(q, { gps: GPS_HN })
+      expect(g.ev).toMatchObject({ blocked: true, statedPlaceFrom: null })
+    }, 60000)
+  }
+  it('F3 (b) route effect: the Huế-named street question starts no pre-search (OFF does)', async () => {
+    const q = 'Cho mình biết vua Quang Trung Nguyễn Huệ lên ngôi năm nào?'
+    const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+    expect(off.presearched).toBe(true) // not vacuous
+    const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(on.presearched).toBe(false); expect(on.maps).toEqual([])
+  }, 60000)
+  // F3 (a): a city in a place structure IS a stated place - the gate does not block, and the old behaviour (pre-search) stays
+  for (const q of ['quán phở Hà Nội', 'khách sạn ở Đà Lạt cuối tuần này', 'ăn gì ở Huế hôm nay', 'tìm quán cà phê quanh Đà Nẵng']) {
+    it(`F3 (a) "${q}": a stated city - not blocked`, async () => {
+      const g = await gate(q, { gps: GPS_HN })
+      expect(g.ev).toMatchObject({ blocked: false })
+    }, 60000)
+  }
+  // C-X6: the intent layer misreads a place request as chat, but the user DID state a place - not blocked, BẬT = TẮT (pre-search still runs); the control that states nothing is blocked
+  it('X6: district named, intent layer wrote chat ⇒ not blocked, same pre-search as OFF; control without a place ⇒ blocked', async () => {
+    const q = 'quán phở bò ngon ở Quận 3 cho 2 người'
+    const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+    const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(off.presearched).toBe(true)
+    expect(on.presearched).toBe(true)
+    expect(on.maps.map(m => m.q)).toEqual(off.maps.map(m => m.q))
+    const control = await gate('tìm quán phở bò ngon cho 2 người dưới 100k', { gps: GPS_HN })
+    expect(control.ev).toMatchObject({ blocked: true })
+  }, 60000)
+  it('X6: city named in a place structure, intent layer wrote chat ⇒ not blocked (same as OFF)', async () => {
+    const q = 'tìm quán cà phê làm việc ở Đà Nẵng'
+    const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+    const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(on.presearched).toBe(off.presearched)
+    expect(on.maps.map(m => m.q)).toEqual(off.maps.map(m => m.q))
+    expect((await gate(q, { gps: GPS_HN })).ev).toMatchObject({ blocked: false })
+  }, 60000)
+  // F5 / F4: a landmark in the intent layer's area is a stated place; "near me" words are not
+  const LM = 'quán cà phê yên tĩnh gần Nhà Thờ Đức Bà'
+  for (const area of ['gần Nhà Thờ Đức Bà', 'gần chợ Bến Thành', 'xung quanh Nhà hát lớn']) {
+    it(`F5/F4: intent layer wrote chat with area "${area}" ⇒ a stated place, not blocked`, async () => {
+      const g = await gate(`quán cà phê yên tĩnh ${area}`, { luna: lunaIntent('chat', ['food'], { area }), gps: GPS_HN })
+      expect(g.ev).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+    }, 60000)
+  }
+  // (only the phrases the intent layer's own grounding check lets through reach the gate; the other "near me" shapes are held by the unit tests of isNearMeOnly)
+  for (const area of ['gần đây', 'quanh đây']) {
+    it(`F5: area "${area}" (grounded in the user's words) is still "near me", not a stated place ⇒ blocked on a chat turn`, async () => {
+      const g = await gate(`Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại ${area} cho món phở không?`, { luna: lunaIntent('chat', ['food'], { area }), gps: GPS_HN })
+      expect(g.ev).toMatchObject({ blocked: true, statedPlaceFrom: null })
+    }, 60000)
+  }
+  it('F4 residual (intended, measured only): a landmark request the intent layer read as chat, NO area written, no GPS ⇒ still blocked', async () => {
+    const g = await gate(LM, { luna: CHAT_FOOD })
+    expect(g.ev).toMatchObject({ blocked: true })
+  }, 60000)
+})

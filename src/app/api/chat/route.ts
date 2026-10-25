@@ -121,7 +121,7 @@ import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consult
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
-import { searchNowIntentGate, applySearchNowGate } from '@/lib/ai/consultative/searchNowIntentGate'
+import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest } from '@/lib/ai/consultative/searchNowIntentGate'
 import { reconcileAsk, settleNarrowedCard } from '@/lib/ai/consultative/askReconcile'
 import { currentConsultationTexts, subjectAssistantTexts } from '@/lib/ai/consultative/consultationWindow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
@@ -1482,7 +1482,7 @@ export async function POST(req: Request) {
   const localShopAsked = !!deriveLocalShopSearch(consultationUserTexts(framingMessages).join(' '))
   // CONSULT_SEARCH_NOW_INTENT_GATE (Wave 2D · C, default OFF): a turn the intent layer read as plain conversation / knowledge and that states no place never starts a place lookup
   // by code (the named-venue pre-search, the directive a "gần đây" word forces). OFF = `searchGate` is null and nothing below differs from before (searchNowIntentGate.ts).
-  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: !!cityInText(lastText) }) : null
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: cityStatedAsPlace(lastText, rulesReadVenueRequest(routed)) }) : null
   const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   const searchNow = applySearchNowGate(searchGate, searchNowDerived)
   if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [] })
