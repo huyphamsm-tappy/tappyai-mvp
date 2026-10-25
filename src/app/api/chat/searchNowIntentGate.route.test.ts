@@ -73,6 +73,8 @@ vi.mock('@/lib/ai/llm', () => ({
               c.enqueue(enc.encode(`a:${JSON.stringify({ toolCallId: s.call.toolCallId, result })}\n`))
             }
             if (s?.text) c.enqueue(enc.encode(`0:${JSON.stringify(s.text)}\n`))
+            // the SDK calls onFinish when the stream ends: the trace summary (Wave 2F, M7) reads the finish reason from it
+            try { await opts.onFinish?.({ usage: { promptTokens: 0, completionTokens: 0 }, finishReason: 'stop', text: s?.text ?? '', steps: [] }) } catch { /* the mock must not fail a turn */ }
             c.enqueue(enc.encode('d:{"finishReason":"stop","usage":{"promptTokens":0,"completionTokens":0}}\n'))
             c.close()
           },
@@ -131,6 +133,10 @@ async function turn(messages: Msg[], o: { flag?: string; luna?: Record<string, u
     asks: text.split(AREA_ASK_VI).length - 1,
     consultTurn: (js.find(j => j.type === 'tappyai_consult') ?? {}).turn as string | undefined,
     gateEvents: js.filter(j => j.type === 'tappyai_trace' && j.ev === 'search_now_gate'),
+    /** every `tappyai_trace` line of the turn, in order */
+    traceEvents: js.filter(j => j.type === 'tappyai_trace') as Array<Record<string, any>>,
+    /** every log line as one string (for "no user text anywhere in it" checks) */
+    rawLog: lines.join('\n'),
     logTypes: js.map(j => `${j.type}${j.tool ? ':' + j.tool : ''}${j.step ? ':' + j.step : ''}`),
   }
 }
@@ -428,5 +434,79 @@ describe('Wave 2F - the gate reads a stated place as a PLACE, not as a word (rou
   it('F4 residual (intended, measured only): a landmark request the intent layer read as chat, NO area written, no GPS ⇒ still blocked', async () => {
     const g = await gate(LM, { luna: CHAT_FOOD })
     expect(g.ev).toMatchObject({ blocked: true })
+  }, 60000)
+})
+
+// ── Wave 2F · measurement (M1-M7): after ONE approved trace-ON run the log answers "how many turns the gate blocked, what the model did on them, and what it cost" with one query. Trace ON + gate ON only. ──────────
+describe('Wave 2F - the gate\'s measurement lines (CONSULT_TRACE_DIAGNOSTICS=1 and CONSULT_SEARCH_NOW_INTENT_GATE=1 only; names, booleans and counts, never the user\'s words)', () => {
+  const KNOW = 'Cho mình hỏi Marie Curie đã nhận giải Nobel nào và vì công trình gì?'
+  const traced = async (q: string, o: Parameters<typeof turn>[1] = {}) => {
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try { return await turn(one(q), o) } finally { vi.unstubAllEnvs() }
+  }
+  const outcomes = (r: { traceEvents: Array<Record<string, any>> }) => r.traceEvents.filter(e => e.ev === 'search_now_gate_outcome')
+  it('M1 + M5 + M6 + M7: a blocked knowledge turn - the gate line says why (labels, booleans), the summary line says what the turn did (tools offered, who called, area question)', async () => {
+    const r = await traced(KNOW, { flag: '1', luna: CHAT_FOOD, reply: 'Trả lời kiến thức.' })
+    expect(r.gateEvents).toHaveLength(1)
+    expect(r.gateEvents[0]).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place', hasValidGps: false, lunaTurn: 'chat', lunaDomains: ['food'], statedDistrict: false, statedCity: false, lunaArea: 'none', rulesTurn: 'chat' })
+    const o = outcomes(r)
+    expect(o).toHaveLength(1)
+    expect(o[0]).toMatchObject({ blocked: true, droppedType: 'attraction', toolsOffered: ['search_places'], modelCalledPlaceTool: false, modelPlaceCalls: 0, codePlaceCalls: 0, areaAskAppended: false, areaAskSource: null, serperRequestsByModel: 0, serperRequestsByCode: 0, finishReason: 'stop' })
+    expect(typeof o[0].forcedToolIgnored).toBe('boolean')
+  }, 60000)
+  it('M2 + M3 + M7: the ANSWER MODEL calls the place tool with no location - the lookup line says by:"model", the area question is appended and its source is "model"', async () => {
+    const r = await traced(KNOW, { flag: '1', luna: CHAT_FOOD, tool: { query: 'Marie Curie' }, reply: 'Câu trả lời.' })
+    const lookup = r.traceEvents.filter(e => e.ev === 'search_now_gate_model_lookup')
+    expect(lookup).toHaveLength(1)
+    expect(lookup[0]).toMatchObject({ by: 'model', outcome: 'no_current_location', asked: true, hasValidGps: false })
+    expect(r.traceEvents.filter(e => e.ev === 'path_cut' && e.kind === 'area_ask')[0]).toMatchObject({ appended: true, source: 'model' })
+    expect(outcomes(r)[0]).toMatchObject({ modelCalledPlaceTool: true, modelPlaceCalls: 1, codePlaceCalls: 0, areaAskAppended: true, areaAskSource: 'model' })
+    // every line of the turn carries the same traceId
+    expect(new Set(r.traceEvents.map(e => e.traceId)).size).toBe(1)
+  }, 60000)
+  it('M2 with a GPS fix: the model\'s search goes on to the provider - the lookup line says outcome:"proceeded" and no area question is appended', async () => {
+    const r = await traced(KNOW, { flag: '1', luna: CHAT_FOOD, tool: { query: 'Marie Curie' }, gps: GPS_HN, reply: 'Câu trả lời.' })
+    const lookup = r.traceEvents.filter(e => e.ev === 'search_now_gate_model_lookup')
+    expect(lookup).toHaveLength(1)
+    expect(lookup[0]).toMatchObject({ by: 'model', outcome: 'proceeded', asked: false, hasValidGps: true })
+    expect(outcomes(r)[0]).toMatchObject({ modelCalledPlaceTool: true, modelPlaceCalls: 1, areaAskAppended: false, areaAskSource: null })
+    expect(r.gateEvents[0]).toMatchObject({ hasValidGps: true })
+  }, 60000)
+  it('M6: the stated places are told apart (district / city read as a place / the intent layer\'s area: none, near-me, place)', async () => {
+    const d = await traced('quán phở ở Quận 3', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(d.gateEvents[0]).toMatchObject({ blocked: false, statedDistrict: true, statedPlaceFrom: 'user_area' })
+    const c = await traced('khách sạn ở Đà Lạt cuối tuần này', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(c.gateEvents[0]).toMatchObject({ blocked: false, statedCity: true, statedDistrict: false })
+    const near = await traced('Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại gần đây cho món phở không?', { flag: '1', luna: lunaIntent('chat', ['food'], { area: 'gần đây' }), gps: GPS_HN })
+    expect(near.gateEvents[0]).toMatchObject({ blocked: true, lunaArea: 'near_me' })
+    const place = await traced('quán cà phê yên tĩnh gần Nhà Thờ Đức Bà', { flag: '1', luna: lunaIntent('chat', ['food'], { area: 'gần Nhà Thờ Đức Bà' }), gps: GPS_HN })
+    expect(place.gateEvents[0]).toMatchObject({ blocked: false, lunaArea: 'place', statedPlaceFrom: 'consult_area' })
+  }, 60000)
+  it('a turn the gate did NOT block writes no summary line and no lookup line', async () => {
+    const r = await traced('quán phở ở Quận 3', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN, tool: { query: 'quán phở', location: 'Quận 3, TP.HCM' } })
+    expect(r.gateEvents[0]).toMatchObject({ blocked: false })
+    expect(outcomes(r)).toHaveLength(0)
+    expect(r.traceEvents.filter(e => e.ev === 'search_now_gate_model_lookup')).toHaveLength(0)
+  }, 60000)
+  it('no trace flag ⇒ not one trace line (and the turn is the same); gate flag OFF with the trace ON ⇒ none of the Wave 2F lines or fields', async () => {
+    const quiet = await turn(one(KNOW), { flag: '1', luna: CHAT_FOOD, reply: 'Trả lời kiến thức.' })
+    expect(quiet.traceEvents).toEqual([])
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try {
+      const off = await turn(one(KNOW), { flag: undefined, luna: CHAT_FOOD, tool: { query: 'Marie Curie' }, reply: 'Câu trả lời.' })
+      expect(off.traceEvents.length).toBeGreaterThan(0) // not vacuous: the old trace lines are there
+      expect(off.traceEvents.filter(e => /^search_now_gate/.test(e.ev))).toEqual([])
+      expect(off.traceEvents.filter(e => e.ev === 'loop').every(e => !('toolsOffered' in e))).toBe(true)
+      expect(off.traceEvents.filter(e => e.ev === 'path_cut' && e.kind === 'area_ask').every(e => !('source' in e))).toBe(true)
+    } finally { vi.unstubAllEnvs() }
+  }, 60000)
+  it('no user text in any new line, even when the message carries a key, a token and an e-mail (fake values)', async () => {
+    const SECRET = 'sk-abcdef1234567890', MAIL = 'nguoi.dung@example.com', TOK = 'token=abcd1234efgh5678'
+    const q = `Cho mình hỏi Marie Curie ${SECRET} ${MAIL} ${TOK} đã nhận giải Nobel nào?`
+    const r = await traced(q, { flag: '1', luna: CHAT_FOOD, tool: { query: `Marie Curie ${SECRET}` }, reply: 'Câu trả lời.' })
+    const mine = r.traceEvents.filter(e => /^search_now_gate/.test(e.ev) || (e.ev === 'path_cut' && e.kind === 'area_ask') || e.ev === 'loop')
+    expect(mine.length).toBeGreaterThanOrEqual(4)
+    const text = JSON.stringify(mine)
+    for (const s of [SECRET, MAIL, TOK, 'abcd1234', 'Marie Curie', 'Nobel', 'nguoi.dung']) expect(text, s).not.toContain(s)
   }, 60000)
 })

@@ -103,7 +103,7 @@ import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn } from '@/lib/config/consultFlags'
-import { createTurnTrace, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
+import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { scheduleTimesIn } from '@/lib/ai/travelGuard'
@@ -121,7 +121,7 @@ import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consult
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
-import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest } from '@/lib/ai/consultative/searchNowIntentGate'
+import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest, isNearMeOnly } from '@/lib/ai/consultative/searchNowIntentGate'
 import { reconcileAsk, settleNarrowedCard } from '@/lib/ai/consultative/askReconcile'
 import { currentConsultationTexts, subjectAssistantTexts } from '@/lib/ai/consultative/consultationWindow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
@@ -1482,10 +1482,17 @@ export async function POST(req: Request) {
   const localShopAsked = !!deriveLocalShopSearch(consultationUserTexts(framingMessages).join(' '))
   // CONSULT_SEARCH_NOW_INTENT_GATE (Wave 2D · C, default OFF): a turn the intent layer read as plain conversation / knowledge and that states no place never starts a place lookup
   // by code (the named-venue pre-search, the directive a "gần đây" word forces). OFF = `searchGate` is null and nothing below differs from before (searchNowIntentGate.ts).
-  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: cityStatedAsPlace(lastText, rulesReadVenueRequest(routed)) }) : null
+  const gateStatedCity = consultSearchNowIntentGateOn() && !agentOn ? cityStatedAsPlace(lastText, rulesReadVenueRequest(routed)) : false
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity }) : null
   const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   const searchNow = applySearchNowGate(searchGate, searchNowDerived)
-  if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [] })
+  if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [],
+    // Wave 2F (M6): the intent layer's own label and which stated places existed - booleans and labels only, never a word of the user
+    lunaTurn: lunaStated?.decision.turn ?? null, lunaDomains: lunaStated?.decision.domains ?? [], statedDistrict: !!statedArea, statedCity: gateStatedCity, lunaArea: !consult?.area?.trim() ? 'none' : isNearMeOnly(consult.area) ? 'near_me' : 'place' })
+  // Wave 2F (M7): what the turn ended up doing, written once at the end (writeGateOutcome) for a turn the gate BLOCKED
+  const gateTraceFacts = searchGate?.blocked ? { droppedType: searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: forcedTool === 'search_places' } : null
+  let traceFinishReason: string | null = null
+  let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
   if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
@@ -2529,9 +2536,11 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
             // exactly as before - the gate never says "no place needed" for the model.
             noCurrentLocationAsked = true
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
-            if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { outcome: 'no_current_location', asked: true })
+            if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'no_current_location', asked: true, hasValidGps: false })
             return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
           }
+          // Wave 2F (M2): on a turn the gate blocked, a place search that goes on to the provider is counted too (by = who started it: the answer model, or the code). Trace only.
+          if (searchGate?.blocked) trace?.emit('search_now_gate_model_lookup', { by: traceCallBy(), outcome: 'proceeded', asked: false, hasValidGps: hasValidCurrentLocation(userLocation) })
           // The editorial supplement runs beside the live search, not after it.
           const [placesResult, editorial] = placesOverride
             ? [{ source: 'chat_state', count: placesOverride.results.length, location: placesOverride.location ?? location ?? '', results: placesOverride.results }, [] as Awaited<ReturnType<typeof travelEditorialFor>>] as const
@@ -3411,7 +3420,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools)), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
-      trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters } })
+      trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
+      if (trace) traceFinishReason = typeof finishReason === 'string' ? finishReason : null
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
       // providerMetadata only carries the LAST step), so they are summed here.
@@ -3849,7 +3859,15 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null }) } : undefined).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null, ...(searchGate ? { source: trace.facts.noLocationBy } : {}) }); traceAreaAsk = { appended: typeof e.appended === 'boolean' ? e.appended : null, reason: typeof e.reason === 'string' ? e.reason : null } } : undefined).pipeThrough(stepRepeatGuard()), () => {
+        // Wave 2F (M7, CONSULT_TRACE_DIAGNOSTICS=1 + CONSULT_SEARCH_NOW_INTENT_GATE=1 only): ONE line for a turn the gate blocked - what the turn ended up doing. Names, booleans and counts only.
+        if (trace && gateTraceFacts) {
+          const f = trace.facts
+          trace.emit('search_now_gate_outcome', {
+            blocked: true, droppedType: gateTraceFacts.droppedType, forcedToolIgnored: gateTraceFacts.forcedToolIgnored, toolsOffered: f.toolsOffered ?? [], modelCalledPlaceTool: f.modelPlaceCalls > 0, modelPlaceCalls: f.modelPlaceCalls, codePlaceCalls: f.codePlaceCalls,
+            areaAskAppended: traceAreaAsk?.appended === true, areaAskSource: traceAreaAsk?.appended === true ? f.noLocationBy : null, serperRequestsByModel: f.serperRequestsByModel, serperRequestsByCode: f.serperRequestsByCode, finishReason: traceFinishReason,
+          })
+        }
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
         if (requestCapTurn) closeRequestCapTurn(requestCapTurn) // the turn is over: a request that starts after this is refused
         const d = serperDelta(serperAtStart)

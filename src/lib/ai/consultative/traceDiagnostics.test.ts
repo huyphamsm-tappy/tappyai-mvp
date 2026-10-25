@@ -167,3 +167,44 @@ describe('the six tool states (real wrappers, fake tools)', () => {
     expect(r).toEqual({ results: [1] }); expect(typeof (r as { then?: unknown }).then).toBe('undefined')
   })
 })
+
+describe('Wave 2F · turn facts (M2-M5, M7): tool NAMES and counts of who called what', () => {
+  const NO_LOC = { error: 'no_current_location', note: 'x' }
+  const fresh = (sent: { n: number }) => {
+    const t = mk()!
+    const tools = { search_places: { execute: async (a?: unknown) => { sent.n += 3; return (a as { noLoc?: boolean })?.noLoc ? NO_LOC : { source: 'Google (Serper)', results: [{ name: 'A' }] } } }, web_search: { execute: async (_a?: unknown) => { sent.n += 1; return { results: [{ name: 'W' }] } } } }
+    const inner = traceToolsInner(tools, t, () => sent.n)
+    return { t, inner, outer: traceToolsOuter(inner, t) as typeof tools }
+  }
+  it('the names of the tools OFFERED to the answer model are recorded (names only), null until a tool set is offered', () => {
+    const t0 = mk()!
+    traceToolsInner({ search_places: { execute: async () => ({ results: [] }) } }, t0) // the inner layer alone offers nothing to anyone
+    expect(t0.facts.toolsOffered).toBeNull()
+    const sentB = { n: 0 }, b = fresh(sentB)
+    expect(b.t.facts.toolsOffered).toEqual(['search_places', 'web_search'])
+    expect(JSON.stringify(b.t.facts)).not.toMatch(/Serper|results/)
+  })
+  it('a call made by the answer model counts as the MODEL\'s (place calls, Serper requests it caused); a call the code makes counts as the CODE\'s', async () => {
+    const sent = { n: 0 }, { t, inner, outer } = fresh(sent)
+    await outer.search_places.execute({})
+    await outer.web_search.execute({})
+    await inner.search_places.execute({}) // the code's own pre-search: not inside a model request
+    expect(t.facts).toMatchObject({ modelToolCalls: 2, modelPlaceCalls: 1, codePlaceCalls: 1, serperRequestsByModel: 4, serperRequestsByCode: 3, noLocationBy: null })
+  })
+  it('the first call that came back no_current_location names who made it (the one that makes the code ask for the area)', async () => {
+    const m = fresh({ n: 0 })
+    await m.outer.search_places.execute({ noLoc: true })
+    await m.inner.search_places.execute({ noLoc: true })
+    expect(m.t.facts.noLocationBy).toBe('model')
+    const c = fresh({ n: 0 })
+    await c.inner.search_places.execute({ noLoc: true })
+    await c.outer.search_places.execute({ noLoc: true })
+    expect(c.t.facts.noLocationBy).toBe('code')
+  })
+  it('with the trace OFF nothing is wrapped and no fact exists to write', () => {
+    const tools = { search_places: { execute: async () => ({ results: [] }) } }
+    expect(traceToolsOuter(tools, null)).toBe(tools)
+    expect(traceToolsInner(tools, null)).toBe(tools)
+    expect(mk({}, {})).toBeNull()
+  })
+})

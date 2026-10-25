@@ -116,11 +116,30 @@ export function summarizeToolArgs(args: unknown): Record<string, unknown> {
 
 export interface ToolCounters { requested: number; executed: number; blocked: number; error: number; empty: number; results: number }
 
+/**
+ * Wave 2F (M2-M5, M7): what the tool layer saw this turn, in numbers and tool NAMES only - never an argument, a query or a result. Read by the one-line `search_now_gate_outcome` summary of a turn the
+ * intent gate (CONSULT_SEARCH_NOW_INTENT_GATE) blocked. Written only by the trace wrappers below, which exist only when the trace flag is ON.
+ */
+export interface TurnFacts {
+  /** The names of the tools the answer model was OFFERED (null = the stream got no tool set). */
+  toolsOffered: string[] | null
+  /** Tool calls started by the answer model / by the code's own pre-search. */
+  modelToolCalls: number
+  modelPlaceCalls: number
+  codePlaceCalls: number
+  /** Serper requests sent while a model-started / a code-started call ran (the same counter the `tool` event reports). */
+  serperRequestsByModel: number
+  serperRequestsByCode: number
+  /** Who made the FIRST tool call that came back `no_current_location` (the call that makes the code append the area question); null = none. */
+  noLocationBy: 'model' | 'code' | null
+}
+
 export interface TurnTrace {
   readonly traceId: string
   /** `generated` = no benchmark id was given for this request. */
   readonly idSource: 'header' | 'generated'
   readonly counters: ToolCounters
+  readonly facts: TurnFacts
   emit(ev: string, fields?: Record<string, unknown>): void
   nextCall(): number
 }
@@ -140,9 +159,10 @@ export function createTurnTrace(headers: HeaderLike, env: Env = process.env, now
   let seq = 0
   let calls = 0
   const counters: ToolCounters = { requested: 0, executed: 0, blocked: 0, error: 0, empty: 0, results: 0 }
+  const facts: TurnFacts = { toolsOffered: null, modelToolCalls: 0, modelPlaceCalls: 0, codePlaceCalls: 0, serperRequestsByModel: 0, serperRequestsByCode: 0, noLocationBy: null }
   const clean = (_k: string, v: unknown): unknown => (typeof v === 'string' ? scrubText(v, 200) : v)
   return {
-    traceId, idSource: fromHeader ? 'header' : 'generated', counters,
+    traceId, idSource: fromHeader ? 'header' : 'generated', counters, facts,
     emit(ev, fields = {}) {
       try { log(JSON.stringify({ type: TRACE_EVENT_TYPE, ev, traceId, seq: ++seq, ms: now() - t0, ...fields }, clean)) } catch { /* a trace must never change what the user gets */ }
     },
@@ -152,6 +172,8 @@ export function createTurnTrace(headers: HeaderLike, env: Env = process.env, now
 
 interface CallScope { call: number; tool: string; executed: boolean; trace: TurnTrace }
 const callStore = new AsyncLocalStorage<CallScope>()
+/** Who is running the tool body that asks: 'model' inside a request of the answer model, 'code' for the code's own call (pre-search). Only ever answers while a trace wrapper is active; otherwise null. */
+export function traceCallBy(): 'model' | 'code' | null { return callStore.getStore() ? 'model' : null }
 type ExecFn = (...a: unknown[]) => unknown
 const readCounter = (f?: () => number): number | null => { try { const n = f ? f() : null; return typeof n === 'number' && Number.isFinite(n) ? n : null } catch { return null } }
 const isThenable = (v: unknown): v is PromiseLike<unknown> => v !== null && typeof v === 'object' && typeof (v as { then?: unknown }).then === 'function'
@@ -173,6 +195,7 @@ function emitOutcome(trace: TurnTrace, call: number, tool: string, by: string, s
  */
 export function traceToolsOuter<T>(set: T, trace: TurnTrace | null): T {
   if (!trace || !set) return set
+  trace.facts.toolsOffered = Object.keys(set as Record<string, unknown>)
   return Object.fromEntries(Object.entries(set as Record<string, { execute?: ExecFn }>).map(([name, t]) => [name, !t?.execute ? t : {
     ...t,
     execute: (args: unknown, ctx: unknown) => {
@@ -219,7 +242,17 @@ export function traceToolsInner<T>(tools: T, trace: TurnTrace | null, serperSent
       trace.emit('tool', { state: 'executed', call, tool: name, by })
       const t0 = Date.now()
       const sent0 = readCounter(serperSent)
-      const ok = (v: unknown): unknown => { const s1 = readCounter(serperSent); emitOutcome(trace, call, name, by, summarizeToolResult(v), Date.now() - t0, sent0 !== null && s1 !== null ? s1 - sent0 : null); return v }
+      const ok = (v: unknown): unknown => {
+        const s1 = readCounter(serperSent)
+        const sum = summarizeToolResult(v)
+        const sent = sent0 !== null && s1 !== null ? s1 - sent0 : null
+        emitOutcome(trace, call, name, by, sum, Date.now() - t0, sent)
+        // Wave 2F tallies (names and numbers only)
+        const f = trace.facts
+        if (by === 'model') { f.modelToolCalls++; if (name === 'search_places') f.modelPlaceCalls++; if (sent) f.serperRequestsByModel += sent } else { if (name === 'search_places') f.codePlaceCalls++; if (sent) f.serperRequestsByCode += sent }
+        if (sum.errorKind === 'no_current_location' && f.noLocationBy === null) f.noLocationBy = by
+        return v
+      }
       const bad = (e: unknown): never => {
         trace.counters.error++
         trace.emit('tool', { state: 'error', call, tool: name, by, errorKind: 'threw', lookup: 'failed', toolMs: Date.now() - t0 })
