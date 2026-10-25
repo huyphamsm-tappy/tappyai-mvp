@@ -28,7 +28,7 @@
 import { describe, it, expect, vi, beforeAll } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { formatSummary, runLiveTrial } from './liveTrial'
-import { parseDevQuestions } from './devQuestions'
+import { parseDevQuestions, sha256OfText } from './devQuestions'
 import { REFUSED_BEGIN, REFUSED_END, SUMMARY_BEGIN, SUMMARY_END, PREFLIGHT_BEGIN, PREFLIGHT_END, marker } from './liveTrialLauncher.mjs'
 import { conditionReport, formatConditionReport } from './preflightReport'
 
@@ -93,13 +93,14 @@ describe.skipIf(process.env.BENCH_LIVE_TRIAL !== 'I-UNDERSTAND-THIS-SPENDS-REAL-
   }, 240_000)
 
   it.skipIf(!devMulti || preflightOnly)('runs the development turns in one process (BENCH_TRIAL_MODE=dev-multi): a run cap across turns, each turn closed on its own, one summary', async () => {
-    const parsed = parseDevQuestions(readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8'))
+    const questionText = readFileSync(process.env.BENCH_TRIAL_QUESTION_FILE!.trim(), 'utf8')
+    const parsed = parseDevQuestions(questionText)
     if (!parsed.ok) {
       // eslint-disable-next-line no-console
       console.info(`${marker(REFUSED_BEGIN, nonce)}\n${parsed.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)
       throw new Error('the development questions were refused before anything was sent')
     }
-    const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny', turns: parsed.turns })
+    const outcome = await runLiveTrial({ env: process.env, post: POST, afterTrial: 'deny', turns: parsed.turns, questionInfo: { sha256: sha256OfText(questionText), formatVersion: parsed.formatVersion, notesWithheld: parsed.notes.map(n => n.id) } })
     if (outcome.kind === 'refused') {
       // eslint-disable-next-line no-console
       console.info(`${marker(REFUSED_BEGIN, nonce)}\n${outcome.reasons.join('\n')}\n${marker(REFUSED_END, nonce)}`)

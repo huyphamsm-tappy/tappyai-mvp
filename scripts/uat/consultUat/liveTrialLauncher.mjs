@@ -21,7 +21,7 @@
 //
 // This file uses only node: modules (it must run with plain `node`) and has no side effect when imported.
 import { spawn, spawnSync } from 'node:child_process'
-import { randomBytes } from 'node:crypto'
+import { createHash, randomBytes } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, realpathSync, writeFileSync } from 'node:fs'
 import { createInterface } from 'node:readline'
 import { join, dirname } from 'node:path'
@@ -364,8 +364,14 @@ export function gate1Summary(env, questionText) {
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')
   else {
-    const turns = questionText.split(/\r?\n/).filter(l => l.trim() !== '').map(l => l.split('|').slice(0, 3).join('|'))
+    // Wave 2B: directive lines of format v2 (@format / @doc / @note: recognised by their first field, nothing else) are not turns; a note is named by id only, its text is not shown.
+    const all = questionText.replace(/^﻿/, '').split(/\r?\n/).filter(l => l.trim() !== '')
+    const head = l => l.split('|', 1)[0]
+    const isDirective = l => ['@format', '@doc', '@note'].includes(head(l))
+    const turns = all.filter(l => !isDirective(l)).map(l => l.split('|').slice(0, 3).join('|'))
+    const notes = all.filter(l => head(l) === '@note').map(l => { const p = l.split('|'); return `${p[1] ?? '?'}#${p[2] ?? '?'}` })
     lines.push(`lượt (id|hội thoại|lượt): ${turns.join('  ')}`)
+    lines.push(`tệp câu hỏi: SHA-256 ${createHash('sha256').update(Buffer.from(questionText, 'utf8')).digest('hex')} | định dạng ${all.length > 0 && all[0].trim() === '@format|2' ? 'v2' : 'v1'} | ghi chú người chấm KHÔNG gửi cho mô hình: ${notes.length}${notes.length ? ` (${notes.join(', ')})` : ''}`)
   }
   const confirmLine = gate1Line(env)
   lines.push(confirmLine === null

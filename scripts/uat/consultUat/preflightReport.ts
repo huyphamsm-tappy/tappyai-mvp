@@ -5,7 +5,7 @@
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
 import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, wave2FlagReasons, wave2FlagState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
-import { parseDevQuestions } from './devQuestions'
+import { parseDevQuestions, sha256OfText } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
 
@@ -55,8 +55,11 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
     add('question file read and checked', ['the question file could not be read'], '')
   } else {
     const parsed = parseDevQuestions(input.questionText)
-    add('question file: parses, and no copy or near-copy of the benchmark (70% rule)',
+    add('question file: parses, and no copy or near-copy of the benchmark (70% rule, judged on the user words only: judge notes are not counted)',
       parsed.ok ? [] : parsed.reasons, `${parsed.ok ? parsed.turns.length : 0} turns`)
+    // Wave 2B: which file this is, so the owner can compare it with the SHA-256 on the approval form; the notes are named by id only, never shown.
+    add('question file identity (informational): SHA-256, format version, judge notes withheld from the model',
+      [], `sha256=${sha256OfText(input.questionText)} | ${parsed.ok ? `format v${parsed.formatVersion} | notes withheld: ${parsed.notes.length}${parsed.notes.length ? ` (${parsed.notes.map(n => n.id).join(', ')})` : ''}` : 'not parsed'}`)
   }
 
   add('consultative confirmations match the flags as the route will see them',

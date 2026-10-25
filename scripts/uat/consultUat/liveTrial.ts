@@ -124,6 +124,9 @@ export function isAllowedRequest(url: string, allowExtension = false): { ok: tru
   return { ok: true, host: u.hostname }
 }
 
+/** Wave 2B · the question file as the run saw it. `notesWithheld` = ids of the turns that have a judge note; the note text is NOT kept here (it never leaves the file). */
+export interface QuestionFileInfo { sha256: string; formatVersion: 1 | 2; notesWithheld: string[] }
+
 export interface LiveTrialInput {
   /** The environment, passed explicitly (the app itself reads process.env: the runner refuses if the two differ). */
   env: Record<string, string | undefined>
@@ -143,6 +146,8 @@ export interface LiveTrialInput {
    * the question file is then not read for its text. One process, one run cap; each turn is closed on its own (turnScope.ts).
    */
   turns?: readonly UatTurn[]
+  /** Wave 2B: what the caller knows about the question file the turns came from (SHA-256, format version, ids of the turns whose judge note was withheld). Reported, never sent. */
+  questionInfo?: QuestionFileInfo
   /** The node command-line options of this process (default process.execArgv). Injectable so a rehearsal can prove what is refused. */
   execArgv?: readonly string[]
   /**
@@ -189,6 +194,8 @@ export interface TrialSummary {
   trace: { toolCalls: number; emptyToolCalls: number; requestsWithTurn: number; requestsLogged: number; blocked: Array<{ turn: string | null; label: string }> }
   /** Quota option (d): whether the free-question counter was reset before each turn (ON only for mode dev-multi + flag 1), why, and how many resets were really made. */
   quotaReset: { on: boolean; reason: string; resets: number }
+  /** Wave 2B: the question file (SHA-256, format version, turns whose judge note was withheld from the model); null when the caller did not report it. */
+  question: QuestionFileInfo | null
   refusals: number
   photoSkips: number
   answerChars: number
@@ -568,7 +575,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
-      extraResult: () => ({ osmRequests: osmCounts(), ddgRequests: ddgCounts(), freeQuotaReset: quotaSummary(), requestLog, blockedLog, toolCalls }),
+      extraResult: () => ({ osmRequests: osmCounts(), ddgRequests: ddgCounts(), freeQuotaReset: quotaSummary(), requestLog, blockedLog, toolCalls, questionFile: input.questionInfo ?? null }),
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
@@ -626,7 +633,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     })),
     costState: records.length === 0 ? 'none' : allKnown ? 'known' : 'unknown', usd: usdSum, ms: records.length === 0 ? null : records.reduce((a, r) => a + r.ms, 0),
     tools: [...new Set(records.flatMap(r => r.toolNames))],
-    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(), ddgRequests: ddgCounts(), quotaReset: quotaSummary(),
+    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(), ddgRequests: ddgCounts(), quotaReset: quotaSummary(), question: input.questionInfo ?? null,
     trace: { toolCalls: toolCalls.length, emptyToolCalls: toolCalls.filter(c => c.empty).length, requestsWithTurn: requestLog.filter(x => x.turn !== null).length, requestsLogged: requestLog.length, blocked: blockedLog.map(b => ({ turn: b.turn, label: b.label })) },
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, providerRejections, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
@@ -655,6 +662,9 @@ export function formatSummary(s: TrialSummary): string {
     `free-question quota reset per turn: ${s.quotaReset.on ? 'ON' : 'OFF'} (reason: ${s.quotaReset.reason}) | resets: ${s.quotaReset.resets}${s.quotaReset.on ? ' (the Free limit of 10 questions a day was NOT applied; the benchmark measures the advice, not that limit)' : ' (the real Free limit of 10 questions a day applies: more than 10 questions stop the run with HTTP 429)'}`,
     `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
+    s.question === null
+      ? 'question file: not reported by the caller'
+      : `question file: sha256=${s.question.sha256} | format v${s.question.formatVersion} | notes withheld from the model: ${s.question.notesWithheld.length}${s.question.notesWithheld.length ? ` (${s.question.notesWithheld.join(', ')})` : ''}`,
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,
     `answerChars=${s.answerChars} result=${s.resultPath ?? '-'}`,
   )
