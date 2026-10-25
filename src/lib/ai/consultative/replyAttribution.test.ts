@@ -188,6 +188,16 @@ describe('the labelling function (pure, with injected readers)', () => {
   })
 })
 
+describe('KNOWN LIMIT (pinned, not wanted): a real answer phrased as a question of 4+ words', () => {
+  // The own-question rule reads STRUCTURE only. An answer to a question about a dish / style / activity (no slot the reader maps, no option typed) that the user words as a question
+  // ("any place for grilled food?") is read as a request of its own. A gate on "the reply carries information" was tried and DROPPED: the slot readers find spurious slots in off-topic
+  // questions too (the off-topic reads rose from 6/21 to 9/21 and in-thread questions were read as answers again). Reported as a residual risk.
+  it('is labelled new_request when the card asked a dish question', () => {
+    const card = `x\n\n[TAPPY_ASK]${JSON.stringify({ v: 1, questions: [{ id: 'dish', q: 'Muốn ăn món gì?', options: ['Lẩu', 'Nướng', 'Món Việt'] }] })}[/TAPPY_ASK]`
+    expect(labelAskReply(card, 'mình thích đồ ăn kiểu hải sản, có chỗ nào không?', ctx, 'food', []).label).toBe('new_request')
+  })
+})
+
 describe('real ask cards built by the router', () => {
   it('a reply that fills the asked slot is an answer; the same slot words inside a question of its own are still an answer (the slot is what was asked)', () => {
     const first = routeConsult([{ role: 'user', content: 'tìm khách sạn ở Đà Nẵng' }], ctx).decision
