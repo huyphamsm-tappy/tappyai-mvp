@@ -244,6 +244,18 @@ describe('F-R6 · outside shopping, the answers of a trip to another city are no
   })
 })
 
+describe('Found by the 120-cell matrix · joined texts never invent a date ("Quận 3" + "2 người" read "3 . 2")', () => {
+  const trip: ConsultDecision = { domains: ['travel'], turn: 'ask', known: {}, assumptions: [], ask: { lead: 'l', questions: [{ id: 'date', q: 'Đi ngày nào?', options: ['a'] }, { id: 'origin', q: 'Xuất phát từ đâu?', options: ['a'] }, { id: 'budget', q: 'Ngân sách?', options: ['a'] }] } }
+  it('the "Đi ngày nào?" question stays when the texts only END and START with numbers', () => {
+    const r = reconcileAsk(trip, { userTexts: ['lập kế hoạch đi Đà Lạt 3 ngày 2 đêm cho 2 người', 'Quận 3'], shownTitles: [], lunaKnown: { so_nguoi: '2 người' }, gps: false })
+    expect(r.report.resolved.date).toBeUndefined()
+    expect(r.report.kept).toContain('date')
+    // a real date still answers it
+    const real = reconcileAsk(trip, { userTexts: ['lập kế hoạch đi Đà Lạt ngày 3/2 cho nhóm bạn', 'Quận 3'], shownTitles: [], lunaKnown: {}, gps: false })
+    expect(real.report.resolved.date).toBeDefined()
+  })
+})
+
 describe('F-R2 · a card of another family shown earlier in the chat is not evidence for this request', () => {
   const CHARGERS = ['Củ sạc nhanh Samsung 25W Chính Hãng', 'Củ sạc Anker 20W Nano', 'Củ sạc Baseus 65W GaN']
   const phoneAsk: ConsultDecision = { domains: ['shopping'], turn: 'ask', known: { san_pham: 'điện thoại' }, assumptions: [], ask: { lead: 'l', questions: [{ id: 'line', q: 'Hãng nào?', options: ['a'] }, { id: 'budget', q: 'Tầm giá bao nhiêu?', options: ['a'] }, { id: 'must', q: 'Ưu tiên gì?', options: ['a'] }] } }

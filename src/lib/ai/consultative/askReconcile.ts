@@ -84,6 +84,7 @@ export function compatibleTexts(texts: readonly string[], domain: ConsultDomain 
   return texts.filter((t, i) => i === texts.length - 1 || ((r) => r === null || rl === null || r === rl)(familyRootOf(t)))
 }
 
+const SEP = ' ; '
 const missingIds = (domain: ConsultDomain, text: string, gps: boolean): Set<string> => new Set(slotView(domain, text, gps).missing.map(m => m.id))
 
 export function reconcileAsk(d: ConsultDecision, ev: AskEvidenceInput): { decision: ConsultDecision; report: ReconcileReport } {
@@ -96,7 +97,9 @@ export function reconcileAsk(d: ConsultDecision, ev: AskEvidenceInput): { decisi
 
   const last = ev.userTexts[ev.userTexts.length - 1]
   const thread = compatibleTexts(ev.userTexts, domain)
-  const threadText = thread.join(' . ')
+  // Wave 2E: the texts are joined with a separator no slot reader treats as a sign. With " . " a text that ends in a number followed by one that starts with one ("Quận 3" + "2 người") read "3 . 2" -
+  // a date - and the "Đi ngày nào?" question was dropped as answered (found by the 120-cell matrix: travel plan after the area answer).
+  const threadText = thread.join(SEP)
   // Wave 2E: only the shown products of THIS message's family can be evidence (a charger card never answers a phone request), the words the user already used are not names, and a title the
   // message contradicts (another line, a negated requirement) is not the product it points at.
   const shown = filterShownByFamily(ev.shownTitles, last)
@@ -117,7 +120,7 @@ export function reconcileAsk(d: ConsultDecision, ev: AskEvidenceInput): { decisi
   // The ids the router manages for this thread: any id it would still ask for a single text of the consultation (a text that answers the question itself, or a bare "lấy luôn nhé", names no family).
   const managed = new Set<string>()
   for (const t of thread) for (const id of missingIds(domain, t, ev.gps)) managed.add(id)
-  const stages: Array<[SlotSource, string]> = [['user_thread', threadText], ['luna_checked', [threadText, ...grounded].join(' . ')], ['shown_card', [threadText, ...grounded, title].filter(Boolean).join(' . ')]]
+  const stages: Array<[SlotSource, string]> = [['user_thread', threadText], ['luna_checked', [threadText, ...grounded].join(SEP)], ['shown_card', [threadText, ...grounded, title].filter(Boolean).join(SEP)]]
   const stageMissing = stages.map(([, text]) => missingIds(domain, text, ev.gps))
   const resolved: Record<string, SlotSource> = {}
   for (const id of asked) {
