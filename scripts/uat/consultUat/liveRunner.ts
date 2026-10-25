@@ -49,6 +49,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
   // Wave 2: product-behaviour flags, default OFF (src/lib/config/consultFlags.ts); a paid run states each one explicitly (unset, 0 or 1)
   'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS',
+  // Wave 2D · C: a knowledge / conversation turn that states no place never starts a place lookup by code; default OFF
+  'CONSULT_SEARCH_NOW_INTENT_GATE',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

@@ -27,8 +27,8 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessGuardForTests() })
 
 describe('registration: the flags travel to the child and are part of the declared benchmark flags; look-alikes are still refused', () => {
-  it('the four names (three behaviour flags + the Wave 2C trace flag) are the same everywhere', () => {
-    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS'])
+  it('the five names (three behaviour flags + the Wave 2C trace flag + the Wave 2D search-now gate) are the same everywhere', () => {
+    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE'])
     expect(WAVE2_FLAG_NAMES).toEqual([...WAVE2_FLAGS])
     for (const k of WAVE2_FLAGS) { expect(BENCH_FLAG_NAMES).toContain(k); expect(FLAG_ENV_NAMES).toContain(k) }
   })
@@ -38,6 +38,15 @@ describe('registration: the flags travel to the child and are part of the declar
     for (const k of ['KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) expect(k in child, k).toBe(false)
     expect('CONSULT_TRACE_DIAGNOSTICS' in buildChildEnv({ ...EXT }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })).toBe(false) // unset stays unset
     expect(launcherRefusals({ ...EXT, CONSULT_TRACE_DIAGNOSTICS: '1', CONSULT_SOMETHING_ELSE_NEW: '1' }).join(' | ')).toContain('CONSULT_SOMETHING_ELSE_NEW is set but is not one of the variables the trial passes on')
+  })
+  it('Wave 2D · C: the search-now gate reaches the child with its value; nothing else is loosened; look-alikes (a letter more or less, an _ON suffix) are refused; unset stays unset', () => {
+    const child = buildChildEnv({ ...EXT, CONSULT_SEARCH_NOW_INTENT_GATE: '1', KV_REST_API_URL: 'https://kv.example', KV_REST_API_TOKEN: 'kvtoken', UPSTASH_REDIS_REST_URL: 'https://u.example', UPSTASH_REDIS_REST_TOKEN: 'utoken' }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })
+    expect(child.CONSULT_SEARCH_NOW_INTENT_GATE).toBe('1')
+    for (const k of ['KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) expect(k in child, k).toBe(false)
+    expect('CONSULT_SEARCH_NOW_INTENT_GATE' in buildChildEnv({ ...EXT }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })).toBe(false)
+    expect(launcherRefusals({ ...EXT, CONSULT_SEARCH_NOW_INTENT_GATE: '1' })).toEqual([])
+    for (const bad of ['CONSULT_SEARCH_NOW_INTENT_GAT', 'CONSULT_SEARCH_NOW_INTENT_GATES', 'CONSULT_SEARCH_NOW_INTENT_GATE_ON', 'CONSULT_SEARCH_NOW_GATE', 'CONSULT_SEARCHNOW_INTENT_GATE']) expect(launcherRefusals({ ...EXT, [bad]: '1' }).join(' | '), bad).toContain(`${bad} is set but is not one of the variables the trial passes on`)
+    expect(launcherRefusals({ ...EXT, CONSULT_SEARCH_NOW_INTENT_GATE: '1', CONSULT_SOMETHING_ELSE_NEW: '1' }).join(' | ')).toContain('CONSULT_SOMETHING_ELSE_NEW is set but is not one of the variables the trial passes on')
   })
   it('buildChildEnv passes a flag that is set (value kept) and does not invent one that is not', () => {
     const child = buildChildEnv({ ...EXT, CONSULT_FINAL_SYNTHESIS: '1', CONSULT_GENERAL_ASSISTANT: '0' }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })

@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
 import { createTurnTrace, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
@@ -121,6 +121,7 @@ import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consult
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
+import { searchNowIntentGate, applySearchNowGate } from '@/lib/ai/consultative/searchNowIntentGate'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
@@ -1456,7 +1457,12 @@ export async function POST(req: Request) {
   // chat2 A2 (loop guard): the assistant asked back, showed no venue, and the user answered or repeated — search now.
   const askedBack = assistantAskedBack(lastAssistantText, priorVenuesIn(lastAssistantText).length > 0 || consultShownEver.length > 0)
   const localShopAsked = !!deriveLocalShopSearch(consultationUserTexts(framingMessages).join(' '))
-  const searchNow = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  // CONSULT_SEARCH_NOW_INTENT_GATE (Wave 2D · C, default OFF): a turn the intent layer read as plain conversation / knowledge and that states no place never starts a place lookup
+  // by code (the named-venue pre-search, the directive a "gần đây" word forces). OFF = `searchGate` is null and nothing below differs from before (searchNowIntentGate.ts).
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null }) : null
+  const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
+  const searchNow = applySearchNowGate(searchGate, searchNowDerived)
+  if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places' })
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
   if (!consult && searchNow?.type === 'flight' && !SPECIFIC_DATE.test(normalizeVN(lastText.toLowerCase())) && !(lastAssistantText && endsWithQuestion(lastAssistantText))) {
     gateAskAfter = { q: lang === 'en' ? 'Which date?' : 'Ngày bay?', options: [] }
@@ -2087,7 +2093,7 @@ export async function POST(req: Request) {
   const v1Active = !!situation && !noToolTurn && (
     isDecisionDomain
     || decisionFrame.goal === 'recommend' || decisionFrame.goal === 'compare' || decisionFrame.goal === 'decide' || decisionFrame.goal === 'plan'
-    || forcedTool === 'search_places'
+    || (forcedTool === 'search_places' && !searchGate?.blocked)
     || frameSaysDecision
     || v1PriorVenues.length > 0
     || searchNow?.type === 'flight'
@@ -2496,8 +2502,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           // centre (TP.HCM), "gần tôi" or not; tell the model the location is missing, and the code asks for the area (areaAsk.ts).
           if (!placesOverride && !hasValidCurrentLocation(userLocation) && !statedArea
             && !cityInText(lastText) && !(location && (cityForName(location) ?? cityInText(location) ?? statedDistrict(location))) && !cityInText(query) && !statedDistrict(query)) {
-            noCurrentLocationAsked = true
+            // Wave 2D · C: on a turn the gate read as knowledge (no stated place) this lookup was not needed — the failure is not turned into the area question.
+            if (!searchGate?.blocked) noCurrentLocationAsked = true
             console.log(JSON.stringify({ type: 'tappyai_tool_called', tool: 'search_places', step: 'no_current_location' }))
+            if (searchGate?.blocked) return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng và câu hỏi này không cần địa điểm. Không tìm quán, không đoán khu vực, KHÔNG hỏi khu vực: trả lời câu hỏi bằng kiến thức hoặc công cụ khác.' }
             return { error: 'no_current_location', note: 'Chưa có vị trí hiện tại của người dùng (thiết bị không gửi vị trí) và người dùng chưa nêu khu vực. Không đoán khu vực, không tìm quanh một thành phố mặc định, không gợi ý quán nào. Hệ thống sẽ tự thêm câu hỏi khu vực vào cuối câu trả lời — KHÔNG tự đặt câu hỏi khu vực, chỉ trả lời ngắn (hoặc không viết gì).' }
           }
           // The editorial supplement runs beside the live search, not after it.

@@ -341,7 +341,7 @@ export function quotaResetFlagReasons(env: Record<string, string | undefined>): 
  * (unset = the old behaviour, byte for byte). A paid run states them explicitly: the preflight accepts unset, 0 or 1 and refuses anything else by name; the summary, the
  * result file, the preflight report and Gate 1 print the state the configuration really has (never an assumed ON).
  */
-export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS']
+export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE']
 /** Pure. One reason per wave-2 flag whose value is not unset, 0 or 1. */
 export function wave2FlagReasons(env: Record<string, string | undefined>): string[] {
   return WAVE2_FLAGS.filter(k => { const v = env[k]; return !(v === undefined || v === '0' || v === '1') }).map(k => `${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`)
