@@ -36,7 +36,7 @@ export interface SearchNowGate {
   reason: SearchNowGateReason
   consultTurn: ConsultTurn | null
   /** Where the stated place came from, when there is one (never its text). */
-  statedPlaceFrom: 'user_area' | 'user_city' | 'consult_area' | null
+  statedPlaceFrom: 'user_area' | 'user_ward' | 'user_city' | 'consult_area' | null
 }
 
 export interface SearchNowGateInput {
@@ -48,6 +48,8 @@ export interface SearchNowGateInput {
   statedCity?: boolean
   /** Wave 2G: the message uses a street / dish name that carries a city word AS a place (streetNameUsedAsPlace). Only decides whether an `area` that is just such a name counts. */
   statedStreet?: boolean
+  /** Wave 2H: the user's last message names a ward / commune / town ("phường Bến Nghé", "xã Long Hòa", "thị trấn Cần Giờ") AS a place (wardStatedAsPlace). */
+  statedWard?: boolean
 }
 
 // "Near me" is where the user IS. Wave 2F (C-F5): the old test folded the diacritics first, so "gần chợ Bến Thành" and "gần nhà thờ Đức Bà" matched the "gan cho" / "gan nha" of "gần chỗ" / "gần nhà" and a landmark
@@ -160,6 +162,64 @@ export function streetNameUsedAsPlace(text: string): boolean {
   }
   return false
 }
+// ── Wave 2H (F4-3): a ward / commune / town the user names is a stated place, read the way a quận is ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// `statedDistrict` (districts.ts, the route's `statedArea`) reads a quận by NUMBER ("quận 3") and by a table of named districts of the two big cities; a phường / xã / thị trấn is neither, so "quán chay yên tĩnh
+// phường Bến Nghé" stated a place and the gate saw none (blocked, with the intent layer misreading it as chat). `statedDistrict` also feeds the search centre, so it is NOT widened (that would change the turn with the
+// gate OFF); the gate gets its own reading, built the way the city one is: an administrative-unit WORD followed by a name, and that name counts as a place when the message uses it as one -
+//   (a) a locative word right before the unit ("ở phường ...", "gần xã ...", "quanh thị trấn ..."), or
+//   (b) the rules router (a reader independent of the intent layer) reads the whole message as a venue request, or still reads a venue / trip request once the ward phrase is taken out
+//       ("quán chay yên tĩnh ___"), or
+//   (c) the message is nothing but the ward phrase (the answer to "which area?").
+// A message that only talks ABOUT a ward ("phường là gì", "Phường Bến Nghé có từ năm nào", "phường Bến Nghé thuộc quận nào", "xã hội học là gì") has none of the three and stays a knowledge question: not a place.
+// No ward names anywhere: the name is whatever follows the unit word (digits, or capitalised words, or the next word). The unit words are a CLOSED class of three (phường, xã, thị trấn) - an implicit list, stated
+// here: the accented spelling always; the unaccented one ("phuong", "xa", "thi tran") only in a message that has no accented letter at all (otherwise "phương" / "xa" would be read as units).
+// Linear: one tokenisation, one pass.
+const WARD_UNIT_ASCII: ReadonlySet<string> = new Set(['phuong', 'xa'])
+/** The tokens of the message (case kept) and the [start, end) token spans of every ward phrase ("unit word(s) + name") in it. */
+export function wardPhraseSpans(text: string): { tokens: Array<{ w: string; raw: string }>; spans: Array<[number, number]> } {
+  const nfc = (text || '').normalize('NFC')
+  const tokens = Array.from(nfc.matchAll(/[\p{L}\p{N}]+/gu), m => ({ w: m[0].toLowerCase(), raw: m[0] }))
+  const ascii = !/[^\u0000-\u007f]/.test(nfc)
+  const unitLen = (i: number): number => {
+    const w = tokens[i].w, next = tokens[i + 1]?.w
+    if (w === 'phường' || w === 'xã') return 1
+    if (w === 'thị' && next === 'trấn') return 2
+    if (ascii) { if (WARD_UNIT_ASCII.has(w)) return 1; if (w === 'thi' && next === 'tran') return 2 }
+    return 0
+  }
+  const isName = (t: { raw: string }): boolean => /^\p{N}+$/u.test(t.raw) || t.raw[0] !== t.raw[0].toLowerCase()
+  const spans: Array<[number, number]> = []
+  for (let i = 0; i < tokens.length; i++) {
+    let len = unitLen(i)
+    if (!len) continue
+    let j = i + len
+    while (j < tokens.length && (len = unitLen(j)) > 0) j += len // "phường xã": a run of unit words is one unit
+    if (j >= tokens.length) break // a unit with no name after it
+    let e = j + 1
+    if (isName(tokens[j])) while (e < tokens.length && e - j < 3 && isName(tokens[e])) e++ // digits, or up to three capitalised words; otherwise just the next word
+    spans.push([i, e])
+    i = e - 1
+  }
+  return { tokens, spans }
+}
+
+/** `readWithoutWard`: reads the message with the ward phrase taken out and says whether it is still a sure place / trip request (the route passes the rules router). Called only when nothing else decided and a ward phrase is present. */
+export function wardStatedAsPlace(text: string, rulesPlaceRequest: boolean, readWithoutWard?: (wardFreeText: string) => boolean): boolean {
+  const { tokens, spans } = wardPhraseSpans(text)
+  if (spans.length === 0) return false
+  if (rulesPlaceRequest) return true
+  const drop = new Array<boolean>(tokens.length).fill(false)
+  for (const [s, e] of spans) {
+    const before = s > 0 ? tokens[s - 1].w : undefined
+    if (before !== undefined && LOCATIVE_BEFORE_CITY.has(normalizeVN(before))) return true
+    for (let i = s; i < e; i++) drop[i] = true
+  }
+  const rest = tokens.filter((_, i) => !drop[i])
+  if (rest.every(t => AREA_CITY_FILLER.has(normalizeVN(t.w)))) return true
+  if (readWithoutWard) { try { if (readWithoutWard(rest.map(t => t.raw).join(' '))) return true } catch { /* an unreadable message is not evidence */ } }
+  return false
+}
+
 const STREET_DESIGNATOR_BEFORE: ReadonlySet<string> = new Set(['duong', 'pho', 'ngo', 'hem', 'street', 'bo', 'lo']) // "đường", "phố", "ngõ", "hẻm", "đi bộ", "đại lộ": the designator words that sit right before a street's name
 
 export type GateAreaKind = 'none' | 'near_me' | 'place'
@@ -193,7 +253,7 @@ export function searchNowIntentGate(input: SearchNowGateInput): SearchNowGate {
   if (!c) return { blocked: false, reason: 'no_consult_decision', consultTurn: null, statedPlaceFrom: null }
   if (c.turn !== 'chat') return { blocked: false, reason: 'consult_turn', consultTurn: c.turn, statedPlaceFrom: null }
   const area = c.area?.trim() ?? ''
-  const from: SearchNowGate['statedPlaceFrom'] = input.statedArea?.trim() ? 'user_area' : input.statedCity ? 'user_city' : area && !isNearMeOnly(area) && (!areaIsCityWordOnly(area) || input.statedStreet) ? 'consult_area' : null
+  const from: SearchNowGate['statedPlaceFrom'] = input.statedArea?.trim() ? 'user_area' : input.statedWard ? 'user_ward' : input.statedCity ? 'user_city' : area && !isNearMeOnly(area) && (!areaIsCityWordOnly(area) || input.statedStreet) ? 'consult_area' : null
   if (from) return { blocked: false, reason: 'stated_place', consultTurn: c.turn, statedPlaceFrom: from }
   return { blocked: true, reason: 'chat_turn_no_stated_place', consultTurn: c.turn, statedPlaceFrom: null }
 }

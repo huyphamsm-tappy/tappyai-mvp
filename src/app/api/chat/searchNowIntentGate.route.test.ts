@@ -587,3 +587,40 @@ describe('Wave 2G - the gate at route level: city-word areas, trip requests, are
     for (const e of r.traceEvents) if ('toolsOffered' in e) expect(e.toolsOffered).not.toEqual([])
   }, 60000)
 })
+
+// ── Wave 2H (F4-3): a ward / commune / town the user names is a stated place. The sentences are written for this file (no ward list in the code: known and invented names behave the same). ──
+describe('Wave 2H - a stated ward / commune / town at route level', () => {
+  const traced = async (q: string, o: Parameters<typeof turn>[1] = {}) => {
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try { return await turn(one(q), o) } finally { vi.unstubAllEnvs() }
+  }
+  const PLACE = ['quán chay yên tĩnh phường Bến Nghé', 'tìm quán ăn ở phường Hòa Cường', 'cà phê view đẹp phường 5', 'quán nhậu xã Long Hòa', 'nhà hàng hải sản thị trấn Cần Giờ', 'quán chay yên tĩnh phường Zxqv Wkjh', 'quan an ngon o phuong Ben Thanh']
+  const ABOUT = ['phường là gì', 'xã khác phường thế nào', 'Phường Bến Nghé có từ năm nào', 'phường Bến Nghé thuộc quận nào', 'lịch sử xã Cổ Loa như thế nào', 'ý nghĩa tên phường Đa Kao là gì', 'xã hội học là gì', 'phương pháp nấu phở ngon nhất là gì']
+  it('a request that names a ward, with the intent layer misreading it as chat: not blocked, labelled user_ward, and the turn is the same as with the flag OFF (it was blocked before Wave 2H and lost its pre-search)', async () => {
+    for (const q of PLACE) {
+      const on = await traced(q, { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(on.gateEvents[0], q).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_ward', statedWard: true, statedDistrict: false })
+      const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+      const plain = await turn(one(q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(plain.logTypes, q).toEqual(off.logTypes); expect(plain.maps, q).toEqual(off.maps); expect(plain.directive, q).toBe(off.directive); expect(plain.presearched, q).toBe(off.presearched)
+    }
+  }, 240000)
+  it('a question ABOUT a ward stays a knowledge question: blocked, statedWard false', async () => {
+    for (const q of ABOUT) {
+      const r = await traced(q, { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(r.gateEvents[0], q).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place', statedWard: false, statedPlaceFrom: null })
+    }
+  }, 240000)
+  it('the other readings are untouched: a quận wins the label (user_area), near me is still not a place, a city keeps its own label, and the flag OFF writes no ward line at all', async () => {
+    const district = await traced('quán phở ở Quận 3', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(district.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_area', statedWard: false })
+    const both = await traced('quán phở phường Bến Nghé Quận 1', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(both.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_area', statedWard: true })
+    const city = await traced('quán phở Hà Nội', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+    expect(city.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_city', statedWard: false })
+    const near = await traced('Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại gần đây cho món phở không?', { flag: '1', luna: lunaIntent('chat', ['food'], { area: 'gần đây' }), gps: GPS_HN })
+    expect(near.gateEvents[0]).toMatchObject({ blocked: true, statedWard: false })
+    const off = await traced('quán chay yên tĩnh phường Bến Nghé', { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+    expect(off.gateEvents).toEqual([])
+  }, 120000)
+})

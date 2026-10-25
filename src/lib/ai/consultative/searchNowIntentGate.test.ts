@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { applySearchNowGate, areaIsCityWordOnly, cityStatedAsPlace, gateAreaFacts, isNearMeOnly, maskCityWords, rulesReadPlaceOrTripRequest, rulesReadVenueRequest, searchNowIntentGate, streetNameUsedAsPlace } from './searchNowIntentGate'
+import { applySearchNowGate, areaIsCityWordOnly, cityStatedAsPlace, gateAreaFacts, isNearMeOnly, maskCityWords, rulesReadPlaceOrTripRequest, rulesReadVenueRequest, searchNowIntentGate, streetNameUsedAsPlace, wardPhraseSpans, wardStatedAsPlace } from './searchNowIntentGate'
 import { PLACE_TYPES } from './presearch'
 import { streetOrDishRuns } from '@/lib/ai/streetNames'
 import { normalizeVN } from '@/lib/ai/intent'
@@ -253,5 +253,70 @@ describe('Wave 2H · F4-2: streetNameUsedAsPlace is linear and classifies exactl
       const ms = best(() => streetNameUsedAsPlace(t))
       expect(ms, `${t.length} chars took ${ms.toFixed(2)} ms (a quadratic pass takes ~200 ms here; the bound is wide on purpose so a slow machine does not flake)`).toBeLessThan(50)
     }
+  })
+})
+
+// ── Wave 2H (F4-3): a ward / commune / town the user names is a stated place ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+describe('Wave 2H · F4-3: phường / xã / thị trấn + a name is a stated place when the message uses it as one - and a question ABOUT a ward is not', () => {
+  const spanText = (t: string): string[] => { const { tokens, spans } = wardPhraseSpans(t); return spans.map(([s, e]) => tokens.slice(s, e).map(x => x.raw).join(' ')) }
+  it('wardPhraseSpans: the unit word + its name (digits, up to three capitalised words, or the next word); "phường xã" is one unit; thị trấn is two tokens; no name = no span', () => {
+    expect(spanText('quán chay yên tĩnh phường Bến Nghé')).toEqual(['phường Bến Nghé'])
+    expect(spanText('cà phê view đẹp phường 5')).toEqual(['phường 5'])
+    expect(spanText('nhà hàng hải sản thị trấn Cần Giờ rất ngon')).toEqual(['thị trấn Cần Giờ'])
+    expect(spanText('quán nhậu xã Long Hòa')).toEqual(['xã Long Hòa'])
+    expect(spanText('chia phường xã Long Hòa năm nào')).toEqual(['phường xã Long Hòa']) // a run of unit words is one unit
+    expect(spanText('quán chay phường bến nghé')).toEqual(['phường bến'])               // lower case: just the next word
+    expect(spanText('phường là gì')).toEqual(['phường là'])                              // the name is "whatever follows"; the EVIDENCE below decides, not the span
+    expect(spanText('quan an ngon o phuong Ben Thanh')).toEqual(['phuong Ben Thanh'])    // an unaccented message: the unaccented unit word counts
+    expect(spanText('phường')).toEqual([])                                               // a unit with no name
+    expect(spanText('phương pháp nấu phở')).toEqual([])                                  // "phương" is not "phường"
+    expect(spanText('quán ăn xa nhà ở Quận 3 đẹp')).toEqual([])                          // an accented message: the unaccented "xa" (far) is not a unit
+    expect(spanText('')).toEqual([])
+  })
+  it('PLACE side: a locative before the unit, a venue request around it, the ward phrase alone, or a router that still reads a request without it - known names, invented names and numbers behave the same', () => {
+    for (const t of ['tìm quán ăn ở phường Hòa Cường', 'ăn gì ở phường Mỹ An', 'phở ngon quanh phường Đa Kao', 'gần xã Bình Hưng có quán nào', 'đi chơi tại thị trấn Cần Giờ', 'ở phường 12', 'quan an o phuong Zxqv Wkjh']) expect(wardStatedAsPlace(t, false), t).toBe(true) // (a) locative
+    for (const t of ['phường Bến Nghé', 'phường 5', 'xã Long Hòa', 'thị trấn Cần Giờ', 'phường Zxqv Wkjh']) expect(wardStatedAsPlace(t, false), t).toBe(true)                                                         // (c) only the phrase
+    for (const t of ['quán chay yên tĩnh phường Bến Nghé', 'cà phê view đẹp phường 5', 'quán nhậu xã Long Hòa', 'nhà hàng hải sản thị trấn Cần Giờ', 'quán chay yên tĩnh phường Zxqv Wkjh']) expect(wardStatedAsPlace(t, true), t).toBe(true) // (b) rules read a venue request
+    const seen: string[] = []
+    expect(wardStatedAsPlace('homestay xã Tân Hiệp cuối tuần', false, w => { seen.push(w); return true })).toBe(true)                                                                                                   // (b') still a request without the ward
+    expect(seen).toEqual(['homestay cuối tuần'])                                                                                                                                                                         // the ward phrase is gone, nothing else
+  })
+  it('KNOWLEDGE side: talking ABOUT a ward is not a place - the concept, its history, its parent district, the homographs (no ward name list, no reader that says yes)', () => {
+    for (const t of ['phường là gì', 'xã khác phường thế nào', 'chia phường xã năm nào', 'Phường Bến Nghé có từ năm nào', 'phường Bến Nghé thuộc quận nào', 'ý nghĩa tên phường Đa Kao là gì', 'lịch sử xã Cổ Loa như thế nào', 'thị trấn là gì', 'xã hội học là gì', 'Phường Zxqv Wkjh có từ năm nào', 'phương pháp nấu phở ngon', 'mạng xã hội nào tốt nhất'])
+      expect(wardStatedAsPlace(t, false, () => false), t).toBe(false)
+    expect(wardStatedAsPlace('phường Bến Nghé thuộc quận nào', false)).toBe(false) // no reader supplied: still not a place
+  })
+  it('a reader that throws is no evidence; the reader is not asked when a locative or the rules already decided, nor when there is no ward phrase', () => {
+    let asked = 0
+    const reader = (answer: boolean) => () => { asked++; return answer }
+    expect(wardStatedAsPlace('tour xã Tân Hiệp 2 ngày', false, () => { throw new Error('boom') })).toBe(false)
+    expect(wardStatedAsPlace('ăn gì ở phường Mỹ An', false, reader(false))).toBe(true)
+    expect(wardStatedAsPlace('quán chay phường Bến Nghé', true, reader(false))).toBe(true)
+    expect(wardStatedAsPlace('quán chay yên tĩnh', false, reader(true))).toBe(false)
+    expect(asked).toBe(0)
+  })
+  it('nothing else moves: a quận, a street, a landmark, near me and a city are not ward phrases (so the district / street / near-me / city readings are untouched)', () => {
+    for (const t of ['quán phở ở Quận 3', 'quán cà phê trên đường Nguyễn Huệ', 'gần chợ Bến Thành', 'gần đây', 'Hà Nội có quán phở nào ngon', 'quận Bình Thạnh']) expect(wardPhraseSpans(t).spans, t).toEqual([])
+  })
+  it('the gate: a stated ward is a stated place (from "user_ward"), a stated district still wins the label, and no ward / no flag changes nothing', () => {
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null, statedWard: true })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_ward' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: 'Quận 3', statedWard: true })).toMatchObject({ blocked: false, statedPlaceFrom: 'user_area' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null, statedWard: false })).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null })).toMatchObject({ blocked: true })
+  })
+  it('never throws and stays linear: 3000 random strings (Unicode, control characters, lone surrogates, unit words), and a 24.000-character message full of ward phrases', () => {
+    const pieces = ['phường', 'xã', 'thị trấn', 'Phường', 'phuong', 'xa', '5', 'Bến', 'Nghé', 'ở', 'quán', '😀', '́', '\uD800', '\u0000', '\n', 'là gì', 'ế']
+    let seed = 7
+    const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296 }
+    for (let i = 0; i < 3000; i++) {
+      let t = ''
+      for (let k = Math.floor(rnd() * 14); k > 0; k--) t += pieces[Math.floor(rnd() * pieces.length)] + (rnd() < 0.8 ? ' ' : '')
+      expect(() => wardStatedAsPlace(t, i % 2 === 0, i % 3 === 0 ? () => true : undefined)).not.toThrow()
+    }
+    const big = 'phường Bến Nghé là gì '.repeat(1090) // ~24.000 characters, a ward phrase every 22 characters, nothing that is a place
+    expect(big.length).toBeLessThanOrEqual(24000)
+    expect(wardStatedAsPlace(big, false, () => false)).toBe(false)
+    const ms = best(() => wardStatedAsPlace(big, false, () => false))
+    expect(ms, `${big.length} chars took ${ms.toFixed(2)} ms`).toBeLessThan(50)
   })
 })

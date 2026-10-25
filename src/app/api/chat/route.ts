@@ -121,7 +121,7 @@ import { areaAskStream, areaFromAnswer, mergeAreaAnswer } from '@/lib/ai/consult
 import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilter'
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
-import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest, rulesReadPlaceOrTripRequest, streetNameUsedAsPlace, gateAreaFacts } from '@/lib/ai/consultative/searchNowIntentGate'
+import { searchNowIntentGate, applySearchNowGate, cityStatedAsPlace, rulesReadVenueRequest, rulesReadPlaceOrTripRequest, streetNameUsedAsPlace, wardStatedAsPlace, gateAreaFacts } from '@/lib/ai/consultative/searchNowIntentGate'
 import { reconcileAsk, settleNarrowedCard } from '@/lib/ai/consultative/askReconcile'
 import { currentConsultationTexts, subjectAssistantTexts } from '@/lib/ai/consultative/consultationWindow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
@@ -1486,13 +1486,17 @@ export async function POST(req: Request) {
   const gateStatedCity = consultSearchNowIntentGateOn() && !agentOn
     ? cityStatedAsPlace(lastText, rulesReadVenueRequest(routed), cityFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: cityFree }], { hasGps: !!userLocation, lang })))
     : false
-  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText) }) : null
+  // Wave 2H (F4-3): a ward / commune / town the user names ("phường Bến Nghé") is a stated place, read like the city one (searchNowIntentGate.ts, wardStatedAsPlace). `statedArea` is NOT widened: it also steers the search centre.
+  const gateStatedWard = consultSearchNowIntentGateOn() && !agentOn
+    ? wardStatedAsPlace(lastText, rulesReadVenueRequest(routed), wardFree => rulesReadPlaceOrTripRequest(routeConsult([{ role: 'user', content: wardFree }], { hasGps: !!userLocation, lang })))
+    : false
+  const searchGate = consultSearchNowIntentGateOn() && !agentOn ? searchNowIntentGate({ consult, statedArea: statedArea?.label ?? null, statedCity: gateStatedCity, statedStreet: streetNameUsedAsPlace(lastText), statedWard: gateStatedWard }) : null
   const searchNowDerived = consultNoSearchNow ? null : (localShopAsked ? null : consultSearch) ?? (situation ? deriveSearchNow({ text: framingText, situation, frame: decisionFrame, need: needProfile, forcedTool, isFirstReply: isFirstReply || afterClarify || moreTurn, movieRecommend, afterClarify, askedBack, consultationText: consultationUserTexts(framingMessages).join(' ') }) : null)
   const searchNow = applySearchNowGate(searchGate, searchNowDerived)
   if (searchGate) trace?.emit('search_now_gate', { blocked: searchGate.blocked, reason: searchGate.reason, consultTurn: searchGate.consultTurn, statedPlaceFrom: searchGate.statedPlaceFrom, droppedType: searchGate.blocked && searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: searchGate.blocked && forcedTool === 'search_places', hasValidGps: hasValidCurrentLocation(userLocation), rulesTurn: routed?.decision.turn ?? null, rulesConfidence: routed?.confidence ?? null, rulesDomains: routed?.decision.domains ?? [],
     // Wave 2F (M6): the intent layer's own label and which stated places existed - booleans and labels only, never a word of the user.
     // Wave 2G (F-5): `lunaArea` was the MERGED area (rules + intent layer + the code's correction), not what the intent layer wrote: renamed `mergedAreaKind`, with `lunaAreaRawKind` (what it wrote) and `areaSource` (who the merged one is from).
-    lunaTurn: lunaStated?.decision.turn ?? null, lunaDomains: lunaStated?.decision.domains ?? [], statedDistrict: !!statedArea, statedCity: gateStatedCity,
+    lunaTurn: lunaStated?.decision.turn ?? null, lunaDomains: lunaStated?.decision.domains ?? [], statedDistrict: !!statedArea, statedWard: gateStatedWard, statedCity: gateStatedCity,
     ...gateAreaFacts({ mergedArea: consult?.area, lunaDecisionArea: lunaIntentRun?.decision.area, lunaCheck: lunaIntentRun?.check, rulesArea: routed?.decision.area }) })
   // Wave 2F (M7): what the turn ended up doing, written once at the end (writeGateOutcome) for a turn the gate BLOCKED
   const gateTraceFacts = searchGate?.blocked ? { droppedType: searchNowDerived && !searchNow ? searchNowDerived.type : null, forcedToolIgnored: forcedTool === 'search_places' } : null
