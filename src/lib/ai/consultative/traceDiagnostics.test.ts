@@ -1,9 +1,15 @@
 // @vitest-environment node
 // Wave 2C · CONSULT_TRACE_DIAGNOSTICS (default OFF): the flag, the trace id, the six tool states, the preview limits and the scrubbing. MOCK ONLY: no network, no key; every secret-looking value is fake.
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, afterEach } from 'vitest'
 import { consultTraceDiagnosticsOn, isProductionRuntime } from '@/lib/config/consultFlags'
 import { createTurnTrace, safeUrl, scrubText, summarizeToolArgs, summarizeToolResult, traceCallBy, traceToolsInner, traceToolsOuter, TRACE_ID_HEADER, type TurnTrace } from './traceDiagnostics'
-import { recordSerperCall } from '@/lib/ai/tools/serperMeter'
+import { recordSerperCall, setSerperCallObserver } from '@/lib/ai/tools/serperMeter'
+
+// Wave 2H (F4-1): the real setSerperCallObserver, wrapped in a spy, so a test can say "the trace did NOT touch the request path's listener"
+vi.mock('@/lib/ai/tools/serperMeter', async (importOriginal) => {
+  const real = await importOriginal<typeof import('@/lib/ai/tools/serperMeter')>()
+  return { ...real, setSerperCallObserver: vi.fn(real.setSerperCallObserver) }
+})
 
 const ON = { CONSULT_TRACE_DIAGNOSTICS: '1', NODE_ENV: 'test' }
 const lines: Array<Record<string, unknown>> = []
@@ -278,5 +284,41 @@ describe('Wave 2G · F-3 / F-4 / F-7: a Serper request is charged to the call th
     expect(t.facts.toolsOffered).toBeNull()
     traceToolsOuter({ search_places: { execute: async () => ({ results: [] }) }, web_search: { execute: async () => ({ results: [] }) } }, t)
     expect(t.facts.toolsOffered).toEqual(['search_places', 'web_search'])
+  })
+})
+
+describe('Wave 2H · F4-1: the trace and the request path\'s listener', () => {
+  afterEach(() => { setSerperCallObserver(null); vi.mocked(setSerperCallObserver).mockClear() })
+  const OFF_ENVS: Array<[string, Record<string, string | undefined>]> = [
+    ['flag unset', {}], ['"0"', { CONSULT_TRACE_DIAGNOSTICS: '0' }], ['"true"', { CONSULT_TRACE_DIAGNOSTICS: 'true' }], ['" 1"', { CONSULT_TRACE_DIAGNOSTICS: ' 1' }], ['"1 "', { CONSULT_TRACE_DIAGNOSTICS: '1 ' }],
+    ['production NODE_ENV', { CONSULT_TRACE_DIAGNOSTICS: '1', NODE_ENV: 'production' }], ['production VERCEL_ENV', { CONSULT_TRACE_DIAGNOSTICS: '1', NODE_ENV: 'test', VERCEL_ENV: 'production' }],
+  ]
+  it('trace OFF (every OFF value, and a production runtime with the flag "1"): createTurnTrace returns null, never calls setSerperCallObserver, and leaves a listener that is already there intact', () => {
+    for (const [name, env] of OFF_ENVS) {
+      let hits = 0
+      const sentinel = () => { hits++ }
+      setSerperCallObserver(sentinel); vi.mocked(setSerperCallObserver).mockClear()
+      expect(createTurnTrace(undefined, env as never, () => 1, () => undefined), name).toBeNull()
+      expect(setSerperCallObserver, name).not.toHaveBeenCalled()
+      recordSerperCall('search')
+      expect(hits, name).toBe(1) // the sentinel is still the listener
+    }
+  })
+  it('trace ON registers the trace listener (the test above is not vacuous): the earlier listener is replaced', () => {
+    let hits = 0
+    setSerperCallObserver(() => { hits++ }); vi.mocked(setSerperCallObserver).mockClear()
+    expect(createTurnTrace(undefined, ON, () => 1, () => undefined)).not.toBeNull()
+    expect(setSerperCallObserver).toHaveBeenCalledTimes(1)
+    recordSerperCall('search')
+    expect(hits).toBe(0)
+  })
+  it('a listener that is still registered after a turn ended charges a request nobody sent from a wrapped body to no turn (no scope = no charge)', async () => {
+    const out: Array<Record<string, unknown>> = [], mkTrace = () => createTurnTrace(undefined, ON, () => 1000, l => out.push(JSON.parse(l)))!
+    const a = mkTrace(), b = mkTrace()
+    const inner = traceToolsInner({ search_places: { execute: async (_a?: unknown) => { recordSerperCall('maps'); return { results: [{ name: 'x' }] } } } }, a)
+    await inner.search_places.execute({}) // turn A sends one request; turn A is over
+    recordSerperCall('maps'); recordSerperCall('search') // two requests outside every wrapped body, with the listener still registered
+    expect(a.facts.serperRequestsByCode).toBe(1)
+    expect(a.facts.serperRequestsByModel + b.facts.serperRequestsByModel + b.facts.serperRequestsByCode).toBe(0)
   })
 })
