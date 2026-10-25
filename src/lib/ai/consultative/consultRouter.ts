@@ -18,6 +18,8 @@ import { SPECIFIC_DATE } from './searchNow'
 import { deriveNeedProfile } from './needProfile'
 import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
+import { attributeReply, type AskReplyAttribution } from './replyAttribution'
+import { consultAnswerAttributionOn } from '@/lib/config/consultFlags'
 
 export type RouteConfidence = 'rule' | 'unsure'
 export interface RouteCtx { hasGps: boolean; lang: string }
@@ -959,6 +961,44 @@ interface Msg { role: string; content: unknown }
 interface Thread { domains: ConsultDomain[]; start: number }
 interface TurnOut { result: RouteResult; thread: Thread }
 
+/**
+ * CONSULT_ANSWER_ATTRIBUTION · the ONE labelling function (see replyAttribution.ts). It lends the attribution the router's own readers: the slot reader of the thread's domain,
+ * the "alone this is a greeting / out-of-scope message" rule and the "points at what was shown" rule. The names are those of the previous Tappy message only, so the router,
+ * the brain's "never two asks in a row" rule and the route label a reply identically.
+ */
+export function labelAskReply(prevAssistantText: string, userTextRaw: string, ctx: RouteCtx, domain: ConsultDomain | null, shownNames: readonly string[] = boldNames(prevAssistantText)): AskReplyAttribution {
+  const userText = stripMarkers(userTextRaw).trim()
+  const names = [...shownNames]
+  return attributeReply(prevAssistantText, userText, {
+    fold: s => prep(s).f,
+    slotKnown: domain ? s => { const v = slotView(domain, s, ctx.hasGps); return { known: v.known, ...(v.area ? { area: v.area } : {}) } } : null,
+    aloneIsRuleChat: s => { const r = routeConsult([{ role: 'user', content: s }], ctx); return r.decision.turn === 'chat' && r.confidence === 'rule' },
+    pointsAtThread: s => { const t = prep(s); return DEICTIC_RE.test(t.f) || namesIn(t, names).length > 0 },
+  })
+}
+
+/**
+ * Was this user message the ANSWER to the clarifying question just asked? OFF (default): yes whenever the previous Tappy turn asked - the old rule, unchanged.
+ * ON: not when the shared labelling function reads the message as a request of its own.
+ */
+export function isAnswerToAsk(prevAssistantText: string | null | undefined, userText: string, ctx: RouteCtx, domain: ConsultDomain | null, shownNames?: readonly string[], env: Record<string, string | undefined> = process.env): boolean {
+  if (!wasAskReply(prevAssistantText)) return false
+  if (!consultAnswerAttributionOn(env)) return true
+  return labelAskReply(prevAssistantText ?? '', userText, ctx, domain, shownNames).label !== 'new_request'
+}
+
+/** The names the thread showed lately: the bold names of the last 3 Tappy replies among `messages` (the same window for the router and the route). */
+export function recentShownNames(messages: ReadonlyArray<{ role: string; content: unknown }>): string[] {
+  const out: string[] = []
+  let seen = 0
+  for (let i = messages.length - 1; i >= 0 && seen < 3; i--) {
+    if (messages[i].role !== 'assistant') continue
+    seen++
+    for (const n of boldNames(textOf(messages[i].content))) if (!out.includes(n)) out.push(n)
+  }
+  return out.slice(0, 16)
+}
+
 /** Routes the user turn at `ui` given the consultation `thread` it continues. */
 function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): TurnOut {
   const lang = ctx.lang === 'en' ? 'en' : 'vi'
@@ -1021,6 +1061,7 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   if (BUTTON_PLAN.has(fq)) return keep({ domains: thread.domains, turn: 'plan', known: inThread ? slotView(thread.domains[0], threadText(thread.start), ctx.hasGps).known : {} }, inThread ? 'rule' : 'unsure')
 
   // 2. The previous Tappy turn asked → this is the answer: pick (never ask twice).
+  let notAnswer = false
   if (wasAskReply(prevAssistant)) {
     // A sentence that POINTS at something in this thread ("Cái thứ hai có bao gồm ăn sáng không?") is about it, never a new
     // request — UAT §10 T3 (30/09, level B): "ăn sáng" read as the food area and a hotel question got a restaurant.
@@ -1035,12 +1076,16 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
       const carry = !inThread && priorUser !== '' && detectAreas(priorUser).domains.length === 0 && stateOnlyNoDomain(prep(priorUser), priorUser)
       return { result: pickFrom(cur.domains, carry ? `${priorUser} . ${userText}` : userText, 'pick'), thread: { domains: cur.domains, start: ui } }
     }
-    if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
-    return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
+    // CONSULT_ANSWER_ATTRIBUTION (default OFF): a reply the shared labelling function reads as a request of its own is not the answer - it is routed as a new request below.
+    if (!consultAnswerAttributionOn() || labelAskReply(prevAssistant, userText, ctx, thread.domains[0] ?? cur.domains[0] ?? null, recentShownNames(turns.slice(0, ui))).label !== 'new_request') {
+      if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
+      return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
+    }
+    notAnswer = true
   }
 
-  // 3. Turns about picks already shown.
-  if (names.length && inThread) {
+  // 3. Turns about picks already shown (not for a reply that was read as a request of its own).
+  if (names.length && inThread && !notAnswer) {
     const domains = thread.domains
     const refs = namesIn(t, names)
     const newArea = cur.domains.length > 0 && !cur.domains.some(d => domains.includes(d)) && cur.hits.some(h => h.w >= 3)

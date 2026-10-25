@@ -64,6 +64,7 @@ import { isValidTikTokContentUrl } from '@/lib/links/tiktokReview'
 import { guardSpecClaimsInText, type SpecEvidence } from './consultative/specGuard'
 import { sanitizeUrlForMarkdown, escapeMarkdownLabel } from './tools/common'
 import { riskBackstopEnabled, riskBackstopMode } from '@/lib/config/product'
+import { consultFinalSynthesisOn } from '@/lib/config/consultFlags'
 import { applyRiskBackstop, isSecondHandPurchaseAdvice } from './riskBackstop'
 import { EMIT_TAPPY_PLACES, EMIT_PLACES_ANNOTATION, SERVER_AUTHORED_CTA, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { bandFromRow, type PriceBand } from '@/lib/recommendation/priceBand'
@@ -3677,13 +3678,21 @@ export function applyPlaceEnrichmentStreamFilter(
       // sentence lacked evidence) — the user then sees only buttons. One honest sentence is put back.
       const proseOnly = withLine.replace(/\[(FOLLOWUPS|CTA_BUTTONS|TAPPY_[A-Z_]+)\][\s\S]*?\[\/\1\]/g, '')
       const emptyReply = !!collector?.consultTurn && !/[\p{L}\p{N}]/u.test(proseOnly)
+      // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = `neutralGap` is always false and nothing changes): an answer with NO words that is not a places/shopping consult turn - a turn
+      // without a consult frame (it used to ship EMPTY), or a consult turn without a domain (it used to get the card-and-opening-hours sentence above) - gets one honest sentence that
+      // says plainly the evidence was not enough, in no place/shopping vocabulary.
+      const neutralGap = consultFinalSynthesisOn() && !/[\p{L}\p{N}]/u.test(proseOnly) && (!collector?.consultTurn || !collector?.consultDomain)
       const refs = collector?.consultRefers ?? []
       const honest = lang === 'en'
         ? 'I don\'t have checked details to answer this yet — open each card for rating, hours and price, or tap "See more".'
         : evidenceGapLine('vi', refs.length >= 2 ? refs.slice(0, 2).join(' và ') : null) ?? (refs.length >= 2
           ? `Mình chưa có đủ dữ liệu đã kiểm để so sánh ${refs.slice(0, 2).join(' và ')} — bạn mở từng thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".`
           : 'Mình chưa có đủ dữ liệu đã kiểm để trả lời câu này — bạn mở thẻ để xem điểm, giờ mở và giá, hoặc bấm "Xem thêm".')
-      const final = emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
+      const neutralLine = lang === 'en'
+        ? 'I searched but did not find enough reliable evidence to answer this fully. Tell me more precisely what you need (the year, the source or the aspect) and I will search again.'
+        : 'Mình đã tìm nhưng chưa có đủ bằng chứng đáng tin để trả lời đầy đủ câu này. Bạn thử nói rõ hơn phạm vi (năm, nguồn hoặc khía cạnh cần biết) để mình tìm lại nhé.'
+      const final = neutralGap ? `${neutralLine}\n\n${withLine.replace(/^\s+/, '')}`.trimEnd() : emptyReply ? `${honest}\n\n${withLine.replace(/^\s+/, '')}` : withLine
+      if (neutralGap) console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'empty_reply_neutral', consult_turn: collector?.consultTurn ?? null }))
       if (collector?.consultTurn) {
         const patches = [...consultPatches]
         if (narrated.removed) patches.push('step_narration')
@@ -3696,7 +3705,8 @@ export function applyPlaceEnrichmentStreamFilter(
         if (headed !== restored) patches.push('plan_cost')
         if (emptyFilled.filled.length) patches.push('plan_empty_sections')
         if (/Mình còn \d+ lựa chọn/.test(final) && !/Mình còn \d+ lựa chọn/.test(mainText)) patches.push('remaining_line')
-        if (emptyReply) patches.push('empty_reply_fallback')
+        if (neutralGap) patches.push('empty_reply_neutral')
+        else if (emptyReply) patches.push('empty_reply_fallback')
         console.log(JSON.stringify({ type: 'tappyai_consult_patch', turn: collector.consultTurn, patches }))
       }
       // Phase 8 M3 citations (TAPPY_AGENT=2 only): [S#] markers → links to the pages the agent read this turn; nothing cited → one
@@ -4465,6 +4475,21 @@ export function applyPlaceEnrichmentStreamFilter(
           // P3-F2: release the live tail (a held-back token, sanitised) before anything else.
           flushLive(controller)
           await emitReconstructed(controller)
+          // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = this block never runs). A LIVE turn (nothing buffered, so no guard above ran) whose model stopped in the middle of its tool loop
+          // (finishReason "tool-calls": it used every step calling tools) and streamed NOT ONE word used to end with an empty reply. One honest sentence is sent as the reply, as a text
+          // frame like the F-043 tail below; no place or shopping vocabulary. A turn that streamed any text, or that ended for another reason, is not touched.
+          if (!bufferMode && consultFinalSynthesisOn() && !/[\p{L}\p{N}]/u.test(liveText) && !/[\p{L}\p{N}]/u.test(liveReleased)) {
+            let reason: unknown = null
+            try { reason = (JSON.parse(line.slice(2)) as { finishReason?: unknown }).finishReason } catch { reason = null }
+            if (reason === 'tool-calls') {
+              const tail = lang === 'en'
+                ? 'I searched but did not find enough reliable evidence to answer this fully. Tell me more precisely what you need (the year, the source or the aspect) and I will search again.'
+                : 'Mình đã tìm nhưng chưa có đủ bằng chứng đáng tin để trả lời đầy đủ câu này. Bạn thử nói rõ hơn phạm vi (năm, nguồn hoặc khía cạnh cần biết) để mình tìm lại nhé.'
+              controller.enqueue(encoder.encode('0:' + JSON.stringify(tail) + '\n'))
+              liveReleased += tail; liveText += tail
+              console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'empty_reply_neutral', live: true }))
+            }
+          }
           // Live path of the F-043 backstop: everything already streamed; only the appended
           // text is sent, as one frame, so the persisted message carries it too. Markers the
           // model already streamed sit above it — the client's parsers find them anywhere.

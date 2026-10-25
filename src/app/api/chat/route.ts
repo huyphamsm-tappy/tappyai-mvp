@@ -102,6 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
+import { consultFinalSynthesisOn } from '@/lib/config/consultFlags'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { scheduleTimesIn } from '@/lib/ai/travelGuard'
@@ -121,8 +122,8 @@ import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/mem
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
-import { type ConsultDecision, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
-import { routeConsult, catalogueAsk } from '@/lib/ai/consultative/consultRouter'
+import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
+import { routeConsult, catalogueAsk, isAnswerToAsk, recentShownNames } from '@/lib/ai/consultative/consultRouter'
 import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
 import { agentPromptVersion, consultV3Enabled, CONSULT_V3_SYSTEM } from '@/lib/ai/agent/runtime/consultV3'
 import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCredit } from '@/lib/ai/quota/clarifyCredit'
@@ -425,6 +426,13 @@ export async function POST(req: Request) {
   const earlyChatState = consultOn && chatSessionId
     ? await requestUserP.then(r => loadChatSessionState(r.user?.id ?? null, chatSessionId)).catch(() => null)
     : null
+  // CONSULT_ANSWER_ATTRIBUTION (default OFF = `wasAskReply`, exactly as before): is this message the ANSWER to the question just asked, or a request of its own?
+  // One shared function (consultRouter.isAnswerToAsk) so the router, the brain's "never ask twice" rule and the route below read a reply identically.
+  const attributionCtx = { hasGps: !!userLocation, lang }
+  const attributionDomain = (earlyChatState?.domains?.[0] ?? null) as ConsultDomain | null
+  const routingUserText = typeof routingLastUserMsg?.content === 'string' ? routingLastUserMsg.content : lastText
+  const routingAnswersAsk = isAnswerToAsk(routingPriorAssistantText, routingUserText, attributionCtx, attributionDomain, recentShownNames(routingMessages.slice(0, -1)))
+  const answersAsk = isAnswerToAsk(priorAssistantText, lastText, attributionCtx, attributionDomain, recentShownNames(messages.slice(0, -1)))
   // App Review 5.1.2(i): an account that uses the iOS app sends its content to the AI provider only with a current
   // agreement. Checked before ANY model call in this request (the intent read below included), on the server, so a
   // direct API call is held too. Web-only accounts are unaffected. An identity failure is handled where it is awaited
@@ -460,7 +468,7 @@ export async function POST(req: Request) {
   // a domain outside the catalogue) is recorded here. A FAILED call (error, timeout, empty) is not: that turn continues as before.
   const consultInvalid: { reason: string | null } = { reason: null }
   const lunaIntentRun = !agentOn && lunaOn && !lunaSkipped && AI.isConfigured() && !(routed?.confidence === 'rule' && isFixedPhrase(lastText))
-    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` } })
+    ? await runLunaIntent(o => AI.extract(o) as never, routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, userTexts: lunaUserTexts, storedNames: earlyChatState?.shown?.slice(-8), onInvalid: r => { consultInvalid.reason = `intent:${r}` } })
     : null
   if (lunaIntentRun) console.log(JSON.stringify({ type: 'tappyai_luna_intent', rules: routed?.confidence ?? null, rulesTurn: routed?.decision.turn ?? null, turn: lunaIntentRun.decision.turn, domains: lunaIntentRun.decision.domains, difficulty: lunaIntentRun.difficulty, served: lunaIntentRun.served, ms: lunaIntentRun.ms, usd: lunaIntentRun.costUsd, dropped: lunaIntentRun.check.dropped, corrected: lunaIntentRun.check.corrected }))
   // A continuing turn the intent could not place keeps the stored consultation's area (same rule as the router's).
@@ -472,7 +480,7 @@ export async function POST(req: Request) {
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
   const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason
-    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: wasAskReply(routingPriorAssistantText), deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, onInvalid: r => { consultInvalid.reason = `brain:${r}` } })
+    ? await runConsultBrain(o => AI.generate(o), routingMessages, { hasGps: !!userLocation, previousWasAsk: routingAnswersAsk, deterministicDomain: routingLastUserMsg ? turnDomain(routingLastUserMsg, { hasGps: !!userLocation, lang }) : null, onInvalid: r => { consultInvalid.reason = `brain:${r}` } })
     : null)
   // P0-1 closeout: the SERVER fallback for an invalid model decision, when the rules themselves were not sure (a 'rule' decision is
   // code's own and stands). An ask card from the catalogue of the domain code reads, in the user's words; none -> the domain question.
@@ -524,7 +532,7 @@ export async function POST(req: Request) {
   // the thread to that one line, so the trip block said "user chưa nêu" the city, dates and origin the
   // user HAD given (UAT: an evening plan in Omaha/Seattle). Under Consult V2 the router decides whether a
   // turn continues the consultation; a continuing turn keeps the whole thread (up to 6 user turns).
-  const consultContinues = !!consult && (['followup', 'compare', 'more', 'reject', 'plan'].includes(consult.turn) || (consult.turn === 'pick' && wasAskReply(priorAssistantText)))
+  const consultContinues = !!consult && (['followup', 'compare', 'more', 'reject', 'plan'].includes(consult.turn) || (consult.turn === 'pick' && answersAsk))
   const consultThreadTexts = consultContinues
     ? messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7, -1)
     : null
@@ -1507,7 +1515,7 @@ export async function POST(req: Request) {
     ? (() => { const c = travelPreCall(consult.known, [...(consultThreadTexts ?? []), lastText].join(' . ')); return c?.name === 'get_flight_prices' ? c : null })()
     : null
   const consultTravelCall = consult && (consult.turn === 'pick' || consult.turn === 'reject' || consult.turn === 'more') && consult.domains[0] === 'travel'
-    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, consult.turn === 'pick' && wasAskReply(priorAssistantText) ? [...(consultThreadTexts ?? []), lastText].join(' . ') : lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
+    ? (stayOverride ? storedStayCall : travelPreCall(consult.known, consult.turn === 'pick' && answersAsk ? [...(consultThreadTexts ?? []), lastText].join(' . ') : lastText, new Date(), travelThreadUsers) ?? (destinationChange?.turnedDown.length ? null : storedStayCall))
     : consultFlightPlanCall
   // R11 (Android 29/09): "vé concert tháng 10" → ask card → answer → a VENUE ("Nhà hát…", "CHÀO SHOW") with no
   // Ticketbox button: the entertainment pick pre-searched places. An event consultation (concert / show /
@@ -3239,6 +3247,26 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       },
     }])) as T
   }
+  // The step budget of this turn, named once (the very expression the stream used inline: same value). CONSULT_FINAL_SYNTHESIS needs it to reserve the last step.
+  const streamMaxSteps = lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5
+  // CONSULT_FINAL_SYNTHESIS (Wave 2, default OFF = nothing below runs). Baseline: a tool loop used EVERY step calling web_search, the model never wrote a word (finishReason "tool-calls"), and the
+  // user got a canned gap sentence or nothing. With the flag ON the LAST step is kept for writing: a tool call made when only the last step is left is answered by code, without running the
+  // tool (no search, no Serper request, no cost), telling the model to write now from what it already has. The step budget is unchanged; a turn of one or two steps is not touched.
+  let stepsFinishedN = 0
+  const finalSynthesisGuard = <T,>(set: T): T => {
+    if (!consultFinalSynthesisOn() || !set || streamMaxSteps < 3) return set
+    return Object.fromEntries(Object.entries(set as Record<string, { execute?: (args: Record<string, unknown>, ctx: unknown) => unknown }>).map(([name, t]) => [name, !t?.execute ? t : {
+      ...t,
+      execute: (args: Record<string, unknown>, ctx: unknown) => {
+        if (stepsFinishedN >= 1 && stepsFinishedN >= streamMaxSteps - 2) {
+          console.log(JSON.stringify({ type: 'tappyai_final_synthesis_guard', tool: name, stepsFinished: stepsFinishedN, maxSteps: streamMaxSteps }))
+          // A Promise like every tool result (the wrapped tool chains .then on execute()).
+          return Promise.resolve({ error: 'search_budget_used', note: lang === 'en' ? 'No more tool calls this turn. Write the answer now from the data you already have; say plainly what you could not confirm, and do not invent it.' : 'Hết lượt tìm của lượt này. Viết ngay câu trả lời từ dữ liệu đã có; phần nào chưa xác nhận được thì nói rõ là chưa có, không bịa.' })
+        }
+        return t.execute!(args, ctx)
+      },
+    }])) as T
+  }
   const streamOpts: Parameters<typeof AI.stream>[0] = {
     role,
     // First text delta only. Tool-call and reasoning chunks are deliberately
@@ -3259,6 +3287,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // only step on a chitchat turn). Diagnostic — nothing branches on it.
     onStepFinish: () => {
       if (firstStepFinishMs === null) firstStepFinishMs = Date.now() - startTime
+      stepsFinishedN++ // read only by finalSynthesisGuard
     },
     // Cancel the upstream generation (and skip the onFinish memory-extraction
     // call) if the client disconnects — otherwise it runs to maxDuration billing
@@ -3284,7 +3313,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // step budget ended on the tool call and the reply stopped at "mình sẽ tìm…". It keeps a second step: a turn
     // that writes straight away is unchanged (no second pass is made), a stray tool call now ends in text.
     // Luna non-trip plan: one search step + a step that must write (the second search is answered by code, above).
-    maxSteps: lunaPlan && planningIntent !== 'trip' ? 3 : consultFollowReuse || consultTripPrefetch || (lean && presearchAll.length > 0 && !planningIntent && !noToolTurn && !eveningBlock) ? 2 : noToolTurn || eveningBlock ? 1 : planningIntent ? (lean ? 3 : 8) : hasImage ? 3 : lean ? 3 : 5,
+    maxSteps: streamMaxSteps,
     // A one-step consult turn never reads the history breakpoint back — skip its +25% write (claude.ts).
     // A/B 29/09: a consult plan that is not a multi-step trip wrote ~4.2k tokens of history to the cache (1.25×)
     // and read back ~20% — a net loss. The history breakpoint stays only where a second model step is likely.
@@ -3319,7 +3348,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools)),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
