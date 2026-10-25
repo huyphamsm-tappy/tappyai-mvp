@@ -146,9 +146,16 @@ export function areaIsCityWordOnly(area: string): boolean {
  */
 export function streetNameUsedAsPlace(text: string): boolean {
   const folded = normalizeVN((text || '').toLowerCase())
-  for (const run of streetOrDishRuns(folded)) {
+  const runs = streetOrDishRuns(folded)
+  if (runs.length === 0) return false
+  // Wave 2H (F4-2): ONE pass. The word right before a run used to be found by cutting the text before every run (slice + split per hit: quadratic, ~200 ms at the 24.000-character client limit). Now the
+  // tokens (maximal [a-z0-9] runs) are listed once with where each ends, and since the runs come in ascending order a single moving index finds, for each run, the last token that ends at or before it.
+  const tokens = Array.from(folded.matchAll(/[a-z0-9]+/g), m => ({ end: (m.index ?? 0) + m[0].length, word: m[0] }))
+  let k = 0 // how many tokens end at or before the current run's start
+  for (const run of runs) {
     if (/^(?:duong|pho di bo|street|dai lo|ngo|hem)\s/.test(run.text)) return true
-    const before = folded.slice(0, run.index).split(/[^a-z0-9]+/).filter(Boolean).pop()
+    while (k < tokens.length && tokens[k].end <= run.index) k++
+    const before = k > 0 ? tokens[k - 1].word : undefined
     if (before !== undefined && (LOCATIVE_BEFORE_CITY.has(before) || STREET_DESIGNATOR_BEFORE.has(before))) return true
   }
   return false

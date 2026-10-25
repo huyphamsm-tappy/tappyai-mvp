@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest'
 import { applySearchNowGate, areaIsCityWordOnly, cityStatedAsPlace, gateAreaFacts, isNearMeOnly, maskCityWords, rulesReadPlaceOrTripRequest, rulesReadVenueRequest, searchNowIntentGate, streetNameUsedAsPlace } from './searchNowIntentGate'
 import { PLACE_TYPES } from './presearch'
+import { streetOrDishRuns } from '@/lib/ai/streetNames'
+import { normalizeVN } from '@/lib/ai/intent'
 import { consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
 import type { ConsultTurn } from './consultBrain'
 import type { SearchNow, SearchNowType } from './searchNow'
@@ -199,5 +201,57 @@ describe('Wave 2G · F-5: where the area the gate saw came from (labels only)', 
   it('the output carries labels only - never the area text', () => {
     const out = facts({ mergedArea: 'bí mật Quận 9', lunaDecisionArea: 'bí mật Quận 9', lunaCheck: { dropped: [], corrected: [] } })
     expect(JSON.stringify(out)).not.toMatch(/bí mật|Quận/)
+  })
+})
+
+// ── Wave 2H (F4-2): streetNameUsedAsPlace read the text BEFORE every street-name hit again (slice + split per hit) - quadratic; one pass over the tokens now ──────────────────────────────────────────────────────
+// `legacyStreetNameUsedAsPlace` is the implementation of Wave 2G, kept here ONLY as the reference of the equivalence test (same sets, same per-hit slice + split).
+const LEGACY_LOCATIVE = new Set(['o', 'tai', 'quanh', 'gan', 'den', 've', 'ra', 'vao', 'tren', 'toi', 'di', 'in', 'at', 'to', 'near', 'around', 'tp', 'tinh', 'city'])
+const LEGACY_DESIGNATOR = new Set(['duong', 'pho', 'ngo', 'hem', 'street', 'bo', 'lo'])
+function legacyStreetNameUsedAsPlace(text: string): boolean {
+  const folded = normalizeVN((text || '').toLowerCase())
+  for (const run of streetOrDishRuns(folded)) {
+    if (/^(?:duong|pho di bo|street|dai lo|ngo|hem)\s/.test(run.text)) return true
+    const before = folded.slice(0, run.index).split(/[^a-z0-9]+/).filter(Boolean).pop()
+    if (before !== undefined && (LEGACY_LOCATIVE.has(before) || LEGACY_DESIGNATOR.has(before))) return true
+  }
+  return false
+}
+const best = (f: () => void, rounds = 5): number => { f(); let m = Infinity; for (let i = 0; i < rounds; i++) { const t0 = performance.now(); f(); m = Math.min(m, performance.now() - t0) } return m }
+
+describe('Wave 2H · F4-2: streetNameUsedAsPlace is linear and classifies exactly as before', () => {
+  it('same answer as the Wave 2G implementation on seeded random inputs (street names after / not after a locative, a designator, noise, Unicode) and on the sentences of the earlier tests', () => {
+    const pieces = ['nguyễn huệ', 'Nguyễn Huệ', 'bún bò Huế', 'cơm hến huế', 'đường Hà Nội', 'phố đi bộ Nguyễn Huệ', 'ngõ Sài Gòn', 'ở', 'tại', 'quanh', 'gần', 'đến', 'đường', 'phố', 'đi bộ', 'đại lộ', 'hẻm', 'là', 'vua', 'quán', 'phở', 'Quận 1', '1', 'Nguyễn Thái Bình', 'street Da Nang', '😀', '‍', '\n', '-', ',', '?', 'huế', 'ế', 'đ']
+    let seed = 20261026
+    const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296 }
+    const fixed = ['quán cà phê ở Nguyễn Huệ', 'ăn gì trên đường Nguyễn Huệ', 'dạo phố đi bộ Nguyễn Huệ tối nay', 'tại Nguyễn Huệ có gì vui', 'quanh Nguyễn Huệ có quán nào', 'Cho mình hỏi Nguyễn Huệ là vị vua như thế nào?', 'Bún bò Huế có nguồn gốc từ đâu?', 'Hồ Chí Minh sinh năm nào?', '', 'nguyễn huệ', 'ở nguyễn huệ', 'bún bò huế bún bò huế ở bún bò huế']
+    let mismatch = 0, trues = 0
+    for (let i = 0; i < 5000; i++) {
+      let t = ''
+      const n = Math.floor(rnd() * 14)
+      for (let k = 0; k < n; k++) t += pieces[Math.floor(rnd() * pieces.length)] + (rnd() < 0.8 ? ' ' : '')
+      const a = streetNameUsedAsPlace(t), b = legacyStreetNameUsedAsPlace(t)
+      if (a !== b) mismatch++
+      if (a) trues++
+    }
+    for (const t of fixed) expect(streetNameUsedAsPlace(t), t).toBe(legacyStreetNameUsedAsPlace(t))
+    expect(mismatch).toBe(0)
+    expect(trues).toBeGreaterThan(500) // the comparison sees both answers often enough to mean something
+  })
+  it('time grows about linearly with the length of the message: four times the text costs well under the sixteen times a quadratic pass would (best-of-five, wide tolerance)', () => {
+    const small = 'nguyễn huệ '.repeat(2400), large = 'nguyễn huệ '.repeat(9600) // ~26.000 and ~105.000 characters, a street name every 11 characters, nothing true
+    expect(streetNameUsedAsPlace(small)).toBe(false); expect(streetNameUsedAsPlace(large)).toBe(false)
+    const ts = best(() => streetNameUsedAsPlace(small)), tl = best(() => streetNameUsedAsPlace(large))
+    expect(tl / Math.max(ts, 0.05), `small ${ts.toFixed(2)} ms, large ${tl.toFixed(2)} ms`).toBeLessThan(9)
+  })
+  it('a message at the client limit (24.000 characters) full of street names is answered in a few ms, correctly, whether the place use is first, last or absent', () => {
+    const body = 'nguyễn huệ '.repeat(2181) // 23.991 characters (clientInput.ts maxMessageTextChars = 24.000)
+    expect(body.length).toBeLessThanOrEqual(24000)
+    const cases: Array<[string, boolean]> = [[body, false], [body + 'ở nguyễn huệ', true], ['quán ở nguyễn huệ ' + body, true], [body + 'là vua', false]]
+    for (const [t, want] of cases) {
+      expect(streetNameUsedAsPlace(t)).toBe(want)
+      const ms = best(() => streetNameUsedAsPlace(t))
+      expect(ms, `${t.length} chars took ${ms.toFixed(2)} ms (a quadratic pass takes ~200 ms here; the bound is wide on purpose so a slow machine does not flake)`).toBeLessThan(50)
+    }
   })
 })
