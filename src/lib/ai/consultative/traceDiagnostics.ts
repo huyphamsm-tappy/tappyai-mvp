@@ -16,6 +16,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { randomBytes } from 'node:crypto'
 import { consultTraceDiagnosticsOn } from '@/lib/config/consultFlags'
+import { setSerperCallObserver, type SerperEndpoint } from '@/lib/ai/tools/serperMeter'
 
 export const TRACE_EVENT_TYPE = 'tappyai_trace'
 export const TRACE_ID_HEADER = 'x-tappy-trace-id'
@@ -121,13 +122,13 @@ export interface ToolCounters { requested: number; executed: number; blocked: nu
  * intent gate (CONSULT_SEARCH_NOW_INTENT_GATE) blocked. Written only by the trace wrappers below, which exist only when the trace flag is ON.
  */
 export interface TurnFacts {
-  /** The names of the tools the answer model was OFFERED (null = the stream got no tool set). */
+  /** The names of the tools the answer model was OFFERED. Wave 2G convention, the same in `loop.toolsOffered` and `search_now_gate_outcome.toolsOffered`: null = the model got NO tool set this turn; [] never appears. */
   toolsOffered: string[] | null
   /** Tool calls started by the answer model / by the code's own pre-search. */
   modelToolCalls: number
   modelPlaceCalls: number
   codePlaceCalls: number
-  /** Serper requests sent while a model-started / a code-started call ran (the same counter the `tool` event reports). */
+  /** Serper requests SENT BY a model-started / a code-started call (Wave 2G: charged to the call that sent them, so the total is the number of real requests however the calls overlap). */
   serperRequestsByModel: number
   serperRequestsByCode: number
   /** Who made the FIRST tool call that came back `no_current_location` (the call that makes the code append the area question); null = none. */
@@ -150,6 +151,7 @@ type Env = Record<string, string | undefined>
 /** null when the flag is OFF (or a production runtime): the caller then does nothing at all. */
 export function createTurnTrace(headers: HeaderLike, env: Env = process.env, now: () => number = Date.now, log: (line: string) => void = line => console.log(line)): TurnTrace | null {
   if (!consultTraceDiagnosticsOn(env)) return null
+  setSerperCallObserver(observeSerperRequest) // Wave 2G: charge each Serper request to the tool call that sent it (listener only; registered only when a trace turn exists)
   let given: string | null = null
   try { given = headers?.get(TRACE_ID_HEADER) ?? null } catch { given = null }
   // a plain identifier that does not LOOK like a key / token (scrubText would change it): the id ends up in every log line
@@ -172,19 +174,29 @@ export function createTurnTrace(headers: HeaderLike, env: Env = process.env, now
 
 interface CallScope { call: number; tool: string; executed: boolean; trace: TurnTrace }
 const callStore = new AsyncLocalStorage<CallScope>()
-/** Who is running the tool body that asks: 'model' inside a request of the answer model, 'code' for the code's own call (pre-search). Only ever answers while a trace wrapper is active; otherwise null. */
-export function traceCallBy(): 'model' | 'code' | null { return callStore.getStore() ? 'model' : null }
+/**
+ * Wave 2G: the scope of ONE tool body running under the innermost wrapper - who started it and how many Serper requests it has sent so far. A request is charged to the body that sends it (at the moment
+ * it is sent, see `setSerperCallObserver`), not read off the process-wide counter afterwards: two calls that overlap in time each see the other's requests in a before/after difference (measured 2 real
+ * requests reported as 4), while a request charged where it is sent is counted once, to its sender, however the calls overlap. A request that joins another caller's in-flight request is not a second one.
+ */
+interface InnerScope { by: 'model' | 'code'; requests: number }
+const innerStore = new AsyncLocalStorage<InnerScope>()
+function observeSerperRequest(_endpoint: SerperEndpoint): void { const s = innerStore.getStore(); if (s) s.requests++ }
+/** Who is running the tool body that asks: 'model' inside a request of the answer model, 'code' for the code's own call (the pre-search), null when no trace wrapper is running this body. */
+export function traceCallBy(): 'model' | 'code' | null { return innerStore.getStore()?.by ?? null }
 type ExecFn = (...a: unknown[]) => unknown
 const readCounter = (f?: () => number): number | null => { try { const n = f ? f() : null; return typeof n === 'number' && Number.isFinite(n) ? n : null } catch { return null } }
 const isThenable = (v: unknown): v is PromiseLike<unknown> => v !== null && typeof v === 'object' && typeof (v as { then?: unknown }).then === 'function'
 
-function emitOutcome(trace: TurnTrace, call: number, tool: string, by: string, sum: ToolResultSummary, ms: number, serperRequests: number | null = null): void {
+function emitOutcome(trace: TurnTrace, call: number, tool: string, by: string, sum: ToolResultSummary, ms: number, serperRequests: number | null = null, processDelta: number | null = null): void {
   const state: ToolState = sum.outcome
   trace.counters[state]++
   trace.emit('tool', {
     state, call, tool, by, rows: sum.rows, provider: sum.provider, lookup: sum.lookup, errorKind: sum.errorKind, hasNote: sum.hasNote, preview: sum.preview, toolMs: ms,
-    // Serper requests SENT while the call ran (a process-wide counter: concurrent turns could add to it). 0 next to state "results" means the answer came without a Serper request (a cache).
+    // Serper requests SENT BY THIS CALL (Wave 2G: charged to the call that sends them, so overlapping calls and concurrent turns do not add to it). 0 next to state "results" means the answer came without a Serper request (a cache).
     ...(serperRequests !== null ? { serperRequests } : {}),
+    // The process-wide counter's movement while the call ran: it also includes requests of overlapping calls and of other turns, so it can exceed `serperRequests` (a cross-check, not a cost).
+    ...(processDelta !== null ? { serperRequestsProcessDelta: processDelta } : {}),
     ...(state === 'blocked' ? { reason: 'search_budget_used', reachedProvider: false } : {}),
   })
 }
@@ -195,7 +207,8 @@ function emitOutcome(trace: TurnTrace, call: number, tool: string, by: string, s
  */
 export function traceToolsOuter<T>(set: T, trace: TurnTrace | null): T {
   if (!trace || !set) return set
-  trace.facts.toolsOffered = Object.keys(set as Record<string, unknown>)
+  const offered = Object.keys(set as Record<string, unknown>)
+  trace.facts.toolsOffered = offered.length ? offered : null // an empty set is "no tool set" (the convention of TurnFacts.toolsOffered)
   return Object.fromEntries(Object.entries(set as Record<string, { execute?: ExecFn }>).map(([name, t]) => [name, !t?.execute ? t : {
     ...t,
     execute: (args: unknown, ctx: unknown) => {
@@ -242,24 +255,32 @@ export function traceToolsInner<T>(tools: T, trace: TurnTrace | null, serperSent
       trace.emit('tool', { state: 'executed', call, tool: name, by })
       const t0 = Date.now()
       const sent0 = readCounter(serperSent)
+      // Wave 2G: this body's own Serper requests (charged where they are sent) - the process-wide difference below is kept only as a cross-check, it overlaps when calls overlap
+      const own: InnerScope = { by, requests: 0 }
+      const tally = (): void => {
+        const f = trace.facts
+        if (by === 'model') f.serperRequestsByModel += own.requests; else f.serperRequestsByCode += own.requests
+      }
       const ok = (v: unknown): unknown => {
         const s1 = readCounter(serperSent)
         const sum = summarizeToolResult(v)
-        const sent = sent0 !== null && s1 !== null ? s1 - sent0 : null
-        emitOutcome(trace, call, name, by, sum, Date.now() - t0, sent)
+        const processDelta = sent0 !== null && s1 !== null ? s1 - sent0 : null
+        emitOutcome(trace, call, name, by, sum, Date.now() - t0, own.requests, processDelta)
         // Wave 2F tallies (names and numbers only)
         const f = trace.facts
-        if (by === 'model') { f.modelToolCalls++; if (name === 'search_places') f.modelPlaceCalls++; if (sent) f.serperRequestsByModel += sent } else { if (name === 'search_places') f.codePlaceCalls++; if (sent) f.serperRequestsByCode += sent }
+        if (by === 'model') { f.modelToolCalls++; if (name === 'search_places') f.modelPlaceCalls++ } else if (name === 'search_places') f.codePlaceCalls++
+        tally()
         if (sum.errorKind === 'no_current_location' && f.noLocationBy === null) f.noLocationBy = by
         return v
       }
       const bad = (e: unknown): never => {
         trace.counters.error++
         trace.emit('tool', { state: 'error', call, tool: name, by, errorKind: 'threw', lookup: 'failed', toolMs: Date.now() - t0 })
+        tally() // a body that threw after sending a request still sent it
         throw e
       }
       let r: unknown
-      try { r = orig.apply(this, a) } catch (e) { return bad(e) }
+      try { r = innerStore.run(own, () => orig.apply(this, a)) } catch (e) { return bad(e) }
       return isThenable(r) ? Promise.resolve(r).then(ok, bad) : ok(r)
     }
   }

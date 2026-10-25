@@ -106,9 +106,17 @@ export function serperLedgerDelta(before: SerperLedgerSnapshot): {
   return { endpoints: out, l1Hits: sum(now.l1Hits) - sum(before.l1Hits), l2Bypass: now.l2Bypass.l2_not_configured - before.l2Bypass.l2_not_configured, estimatedBillable, estimatedUnknownBasis, reported, reconciled: 0 }
 }
 
+/**
+ * Wave 2G (CONSULT_TRACE_DIAGNOSTICS only): a listener told about each request AT THE MOMENT it is sent, so the trace can charge the request to the tool call that sent it (the process-wide
+ * counters above cannot tell two overlapping calls apart). Null unless a trace turn registered one; it never changes a count, a decision or a request, and a listener that throws is ignored.
+ */
+let callObserver: ((endpoint: SerperEndpoint) => void) | null = null
+export function setSerperCallObserver(fn: ((endpoint: SerperEndpoint) => void) | null): void { callObserver = fn }
+
 export function recordSerperCall(endpoint: SerperEndpoint): void {
   counts[endpoint]++
   ledger[endpoint].attempted++
+  if (callObserver) { try { callObserver(endpoint) } catch { /* a trace can never break a request */ } }
 }
 
 /** One request served from the shared cache — no Serper call, no credits. */
