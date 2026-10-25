@@ -27,10 +27,17 @@ beforeEach(() => {
 afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessGuardForTests() })
 
 describe('registration: the flags travel to the child and are part of the declared benchmark flags; look-alikes are still refused', () => {
-  it('the three names are the same everywhere', () => {
-    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT'])
+  it('the four names (three behaviour flags + the Wave 2C trace flag) are the same everywhere', () => {
+    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS'])
     expect(WAVE2_FLAG_NAMES).toEqual([...WAVE2_FLAGS])
     for (const k of WAVE2_FLAGS) { expect(BENCH_FLAG_NAMES).toContain(k); expect(FLAG_ENV_NAMES).toContain(k) }
+  })
+  it('Wave 2C: the trace flag reaches the child with its value; nothing else is loosened (KV_* / UPSTASH_* are still not passed on; an unknown setting is still refused)', () => {
+    const child = buildChildEnv({ ...EXT, CONSULT_TRACE_DIAGNOSTICS: '1', KV_REST_API_URL: 'https://kv.example', KV_REST_API_TOKEN: 'kvtoken', UPSTASH_REDIS_REST_URL: 'https://u.example', UPSTASH_REDIS_REST_TOKEN: 'utoken' }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })
+    expect(child.CONSULT_TRACE_DIAGNOSTICS).toBe('1')
+    for (const k of ['KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) expect(k in child, k).toBe(false)
+    expect('CONSULT_TRACE_DIAGNOSTICS' in buildChildEnv({ ...EXT }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })).toBe(false) // unset stays unset
+    expect(launcherRefusals({ ...EXT, CONSULT_TRACE_DIAGNOSTICS: '1', CONSULT_SOMETHING_ELSE_NEW: '1' }).join(' | ')).toContain('CONSULT_SOMETHING_ELSE_NEW is set but is not one of the variables the trial passes on')
   })
   it('buildChildEnv passes a flag that is set (value kept) and does not invent one that is not', () => {
     const child = buildChildEnv({ ...EXT, CONSULT_FINAL_SYNTHESIS: '1', CONSULT_GENERAL_ASSISTANT: '0' }, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })
@@ -38,6 +45,9 @@ describe('registration: the flags travel to the child and are part of the declar
   })
   it('the launcher accepts them by name and refuses look-alikes and other unknown settings', () => {
     expect(launcherRefusals({ ...EXT, CONSULT_FINAL_SYNTHESIS: '1', CONSULT_ANSWER_ATTRIBUTION: '1', CONSULT_GENERAL_ASSISTANT: '1' })).toEqual([])
+    // Wave 2C: the trace flag is accepted by name; its look-alikes are refused like any other unknown setting
+    expect(launcherRefusals({ ...EXT, CONSULT_TRACE_DIAGNOSTICS: '1' })).toEqual([])
+    for (const bad of ['CONSULT_TRACE_DIAGNOSTIC', 'CONSULT_TRACE_DIAGNOSTICS_ON', 'CONSULT_TRACE_DIAGNOSTICSS']) expect(launcherRefusals({ ...EXT, [bad]: '1' }).join(' | '), bad).toContain(`${bad} is set but is not one of the variables the trial passes on`)
     for (const bad of ['CONSULT_FINAL_SYNTHESIS_ON', 'CONSULT_ANSWER_ATTRIBUTE', 'CONSULT_GENERAL_ASSISTANTS', 'CONSULT_SOMETHING_NEW']) {
       expect(launcherRefusals({ ...EXT, [bad]: '1' }).join(' | '), bad).toContain(`${bad} is set but is not one of the variables the trial passes on`)
     }

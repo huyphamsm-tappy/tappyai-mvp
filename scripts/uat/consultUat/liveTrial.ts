@@ -341,7 +341,7 @@ export function quotaResetFlagReasons(env: Record<string, string | undefined>): 
  * (unset = the old behaviour, byte for byte). A paid run states them explicitly: the preflight accepts unset, 0 or 1 and refuses anything else by name; the summary, the
  * result file, the preflight report and Gate 1 print the state the configuration really has (never an assumed ON).
  */
-export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT']
+export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS']
 /** Pure. One reason per wave-2 flag whose value is not unset, 0 or 1. */
 export function wave2FlagReasons(env: Record<string, string | undefined>): string[] {
   return WAVE2_FLAGS.filter(k => { const v = env[k]; return !(v === undefined || v === '0' || v === '1') }).map(k => `${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`)
@@ -433,8 +433,16 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   // The console is filtered BEFORE it prints: the route logs provider errors (`[chat] stream error: …`) that may quote a key, and the printed text ends up in a
   // terminal transcript. Strings, Errors (cause, AggregateError members and own properties included, through util.inspect) and objects are redacted; anything unchanged is
   // passed on as it was. (Direct writes to process.stdout/stderr are not console calls: the launcher, which owns the child's output, filters those.)
+  // Wave 2C (CONSULT_TRACE_DIAGNOSTICS=1 only): a `tappyai_*` JSON log line printed while a turn runs gets that turn's id inserted right after its "type" field, so the OLD log lines (which carry
+  // no turn id) can be joined to the turn too. Text insertion only (no parse); a line that already has a traceId, or a turn id that is not a plain identifier, is left as it is.
+  const traceTagOn = env.CONSULT_TRACE_DIAGNOSTICS === '1'
+  const tagWithTurn = (s: string): string => {
+    if (!traceTagOn || !s.startsWith('{"type":"tappyai_') || s.includes('"traceId":')) return s
+    const id = currentTurn()?.id
+    return id && /^[A-Za-z0-9][A-Za-z0-9._-]{0,39}$/.test(id) ? s.replace(/^(\{"type":"tappyai_[a-z0-9_]+")/, `$1,"traceId":"${id}"`) : s
+  }
   const redactArg = (a: unknown): unknown => {
-    if (typeof a === 'string') return redactSecrets(a, env)
+    if (typeof a === 'string') return tagWithTurn(redactSecrets(a, env))
     if (a !== null && typeof a === 'object') {
       let text: string
       try { text = inspect(a, { depth: 6, breakLength: Infinity }) } catch { return a }

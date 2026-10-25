@@ -25,7 +25,7 @@ import { randomUUID } from 'node:crypto'
 import { benchModeOf, benchSpendGateOn, checkBenchCaps, maxRunCapUsd, readBenchCaps, runWithSpendGate } from '@/lib/ai/budget/spendGate'
 import { BudgetGuard, BudgetRefusal, RequestNotSent, runUat, summarize, type ChatMessage, type Reservation, type RunOptions, type TurnRunner, type UatReport } from './harness'
 import { UAT_TURNS, type UatTurn } from './questions'
-import { runInTurn, type TurnToken } from './turnScope'
+import { currentTurn, runInTurn, type TurnToken } from './turnScope'
 import { GuardSpendGate, type SpendRecord, type SpendRecordState } from './spendGateAdapter'
 import { parseDataStream } from '../../consult/replay/lib/stream'
 
@@ -48,7 +48,7 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   // round closure: the Serper REQUEST cap (serperRequestCap.ts): L1 per turn, L2 per run; default OFF. A paid run refuses to start unless all three are armed (liveTrial.ts)
   'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
   // Wave 2: product-behaviour flags, default OFF (src/lib/config/consultFlags.ts); a paid run states each one explicitly (unset, 0 or 1)
-  'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT',
+  'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */
@@ -622,10 +622,14 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
  */
 export function routeTransport(post: (req: never) => Promise<Response>): ChatTransport {
   return async ({ messages, chatSessionId }) => {
+    // Wave 2C: with CONSULT_TRACE_DIAGNOSTICS=1 the benchmark turn id travels as a header; the route reads it only when its own flag is ON (traceDiagnostics.ts). Otherwise the request is exactly as before.
+    const headers = new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi' })
+    const turnId = process.env.CONSULT_TRACE_DIAGNOSTICS === '1' ? currentTurn()?.id : undefined
+    if (turnId) headers.set('x-tappy-trace-id', turnId)
     const req = {
       url: 'http://localhost/api/chat',
       nextUrl: new URL('http://localhost/api/chat'),
-      headers: new Headers({ 'content-type': 'application/json', 'x-tappy-surface': 'web', 'accept-language': 'vi' }),
+      headers,
       json: () => Promise.resolve({ messages, chatSessionId }),
       signal: undefined,
     }

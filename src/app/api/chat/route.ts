@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn } from '@/lib/config/consultFlags'
+import { createTurnTrace, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
 import { scheduleTimesIn } from '@/lib/ai/travelGuard'
@@ -123,7 +124,7 @@ import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consult
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
-import { routeConsult, catalogueAsk, isAnswerToAsk, recentShownNames } from '@/lib/ai/consultative/consultRouter'
+import { routeConsult, catalogueAsk, isAnswerToAsk, labelAskReply, recentShownNames } from '@/lib/ai/consultative/consultRouter'
 import { startRequestBudget, currentBudget, requestBudgetOn } from '@/lib/ai/budget/requestBudget'
 import { agentPromptVersion, consultV3Enabled, CONSULT_V3_SYSTEM } from '@/lib/ai/agent/runtime/consultV3'
 import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCredit } from '@/lib/ai/quota/clarifyCredit'
@@ -173,6 +174,10 @@ export async function POST(req: Request) {
   /** Audit cost sink (env `AUDIT_USAGE_LOG_FILE`): Serper calls attributed to this turn. */
   const serperAtStart = serperSnapshot()
   const auditTurn = req.headers.get('x-audit-turn')
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C, default OFF): null unless the flag is exactly "1" outside a production runtime. Observability only - see traceDiagnostics.ts. Every use below is `trace?.…`
+  // or a wrapper that returns its input untouched when `trace` is null.
+  const trace = createTurnTrace(req.headers)
+  trace?.emit('turn_start', { idSource: trace.idSource, flags: { CONSULT_FINAL_SYNTHESIS: consultFinalSynthesisOn(), CONSULT_ANSWER_ATTRIBUTION: consultAnswerAttributionOn(), CONSULT_GENERAL_ASSISTANT: consultGeneralAssistantOn() } })
 
   // ── P1-3: deliver whatever the previous request buffered ───────────────────
   //
@@ -442,7 +447,7 @@ export async function POST(req: Request) {
     const aiConsentRefusal = await refuseWithoutAiConsent(aiConsentUser.id, clientLocale)
     if (aiConsentRefusal) return aiConsentRefusal
   }
-  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang }) : null
+  const routedRaw = consultOn ? routeConsult(routingMessages, { hasGps: !!userLocation, lang, ...(trace ? { trace: (e: Record<string, unknown>) => { const { ev, ...rest } = e; trace.emit(String(ev), rest) } } : {}) }) : null
   // A continuing turn (a button, "xem thêm", "chỗ đó…") that the visible history cannot place takes the
   // stored consultation's area and slots, decided by code (no brain call).
   const routed = routedRaw && earlyChatState?.domains?.length && routedRaw.decision.domains.length === 0
@@ -516,6 +521,25 @@ export async function POST(req: Request) {
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
   console.log(JSON.stringify({ type: 'tappyai_consult', by: consultRun ? 'brain' : routed ? 'rules' : 'off', turn: consult?.turn ?? 'fallback', domains: consult?.domains ?? [], ms: consultRun?.ms ?? null, known: consult ? Object.keys(consult.known) : [], brain_in: consultRun?.usage.promptTokens ?? 0, brain_out: consultRun?.usage.completionTokens ?? 0 }))
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): the intent decision at every stage, side by side - the rules' reading, Luna's reading (after her own "no second ask" rule), the merge and its mode, the brain,
+  // and what the later card / plan steps turned it into. Reading only: nothing above or below depends on it.
+  if (trace) {
+    const sum = (d: ConsultDecision | null | undefined) => d ? { turn: d.turn, domains: d.domains, askIds: d.ask?.questions.map(q => q.id) ?? [], knownKeys: Object.keys(d.known) } : null
+    const rulesTurn = routed?.decision.turn ?? null, lunaTurn = lunaStated?.decision.turn ?? null, mergedTurn = lunaMerged?.decision.turn ?? null
+    const turnWinner = !lunaMerged ? null : routed?.confidence !== 'rule' ? 'luna_rules_unsure' : mergedTurn === rulesTurn && mergedTurn !== lunaTurn ? 'rules' : mergedTurn === lunaTurn && mergedTurn !== rulesTurn ? 'luna' : mergedTurn === rulesTurn ? 'agree' : 'neither'
+    const asked = wasAskReply(priorAssistantText)
+    const attributionRead = asked ? labelAskReply(priorAssistantText, lastText, attributionCtx, attributionDomain, recentShownNames(messages.slice(0, -1))) : null
+    trace.emit('intent', {
+      by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : routed ? 'rules' : 'off',
+      previousWasAsk: { routing: routingAnswersAsk, route: answersAsk, wasAskReply: asked, routeLabel: attributionRead?.label ?? null, routeSignal: attributionRead?.signal ?? null },
+      rules: routed ? { ...sum(routed.decision), confidence: routed.confidence, storedDomainAdopted: routed !== routedRaw } : null,
+      luna: lunaIntentRun ? { ...sum(lunaIntentRun.decision), difficulty: lunaIntentRun.difficulty } : null, lunaOn, lunaSkipped,
+      merge: lunaMerged ? { mode: lunaMerged.mode, ...sum(lunaMerged.decision), rulesTurn, lunaTurn, turnWinner } : null,
+      brain: consultRun && !lunaRun ? sum(consultRun.decision) : null,
+      invalid: consultInvalid.reason, serverFallback: !!consultFallback,
+      decidedRaw: sum(consultDecidedRaw), decided: sum(consultDecided), final: sum(consult),
+    })
+  }
   // Under Consult V2 a plan is built ONLY when the user accepts (turn "plan"); a trip plan keeps the
   // [TAPPY_PLAN] payload, every other area's plan is the prose plan frame (domainFrames.ts).
   // CONSULTATIVE_IN_AGENT: the trip may be spread over turns ("… muốn đi du lịch có gợi ý gì ko" then "chưa biết đi đâu, … tầm 3 ngày"): neither text alone
@@ -536,6 +560,7 @@ export async function POST(req: Request) {
   const consultThreadTexts = consultContinues
     ? messages.filter((m: { role: string }) => m.role === 'user').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '').slice(-7, -1)
     : null
+  trace?.emit('continuation', { consultContinues, consultTurn: consult?.turn ?? null, pickContinuesBecauseAnswer: !!consult && consult.turn === 'pick' && answersAsk, threadTextsKept: consultThreadTexts ? consultThreadTexts.length : 0 })
   const planning = planningIntent
     ? (() => {
         const thread = [...(consultThreadTexts ?? priorUserTexts), lastText]
@@ -2324,6 +2349,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   if (canned) {
     const kind = plannerAsk && canned === plannerAsk ? 'planner_destination' : cannedMovie ? 'movie_titles' : consultAskReply ? 'consult_ask' : intent === 'chitchat' ? 'chitchat' : clarifyGate ? 'clarify' : 'carried_fact'
     console.log(JSON.stringify({ type: 'tappyai_canned_reply', kind, elapsedMs: Date.now() - startTime }))
+    trace?.emit('path_cut', { kind: 'canned_reply', cannedKind: kind, modelCalled: false, toolsRun: trace.counters.executed, consultTurn: consult?.turn ?? null })
     const auditFile = process.env.AUDIT_USAGE_LOG_FILE
     if (auditFile) {
       try {
@@ -2867,6 +2893,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // The ticket is the current one inside every tool.execute() — the model's calls, the pre-search and the trip pre-fetch all run these same wrapped objects.
   if (tools && turnWebTicket) wrapToolsWithTurnWebTicket(tools as unknown as Record<string, unknown>, turnWebTicket)
   if (tools && requestCapTurn) wrapToolsWithRequestCap(tools as unknown as Record<string, unknown>, requestCapTurn)
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): in place, like the wrappers above (returns `tools` untouched when the trace is off): proves a tool body RAN and reads its result.
+  traceToolsInner(tools, trace, () => { const s = serperSnapshot(); return s.maps + s.search + s.shopping + s.images })
 
   /**
    * A1(b) THE SEARCH IS NOT SILENT. The pre-search below is the slowest thing before the first byte
@@ -3348,8 +3376,10 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools)),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn() }).includes(k))) as typeof tools : tools)), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
+      // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
+      trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters } })
       // Prompt-cache accounting. `usage` is already the SUM across steps, but
       // cache counters live in per-step providerMetadata (the top-level
       // providerMetadata only carries the LAST step), so they are summed here.
@@ -3787,7 +3817,7 @@ ${completionInstruction(lang)}` },
   // end asking. It runs after every guard — measured on Android: the model asked about ticket prices
   // and the entertainment price guard (downstream) removed that sentence, leaving no question at all.
   const timedBody = finalResponse.body
-    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang).pipeThrough(stepRepeatGuard()), () => {
+    ? turnCostStream(areaAskStream(emptyResultStream(askAfterStream(finalResponse.body, agentOn ? null : gateAskAfter, lang), { getEmpty: () => (agentOn ? null : emptyPlaceSearch), bufferText: askedBack && presearchPlan === null, userTexts: subjectUserTexts, lang }), () => noCurrentLocationAsked, lang, trace ? (e: Record<string, unknown>) => { console.log(JSON.stringify(e)); trace.emit('path_cut', { kind: 'area_ask', appended: e.appended ?? null, reason: e.reason ?? null, emptyBody: e.empty_body ?? null }) } : undefined).pipeThrough(stepRepeatGuard()), () => {
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).
         if (requestCapTurn) closeRequestCapTurn(requestCapTurn) // the turn is over: a request that starts after this is refused
         const d = serperDelta(serperAtStart)

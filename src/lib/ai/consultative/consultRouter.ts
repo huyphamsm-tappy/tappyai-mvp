@@ -18,11 +18,16 @@ import { SPECIFIC_DATE } from './searchNow'
 import { deriveNeedProfile } from './needProfile'
 import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
-import { attributeReply, type AskReplyAttribution } from './replyAttribution'
+import { attributeReply, shownAsk, type AskReplyAttribution } from './replyAttribution'
 import { consultAnswerAttributionOn } from '@/lib/config/consultFlags'
 
 export type RouteConfidence = 'rule' | 'unsure'
-export interface RouteCtx { hasGps: boolean; lang: string }
+export interface RouteCtx {
+  hasGps: boolean
+  lang: string
+  /** CONSULT_TRACE_DIAGNOSTICS (Wave 2C): receives diagnostic events about the LAST user turn. Absent = nothing is reported. It never influences a decision. */
+  trace?: (event: Record<string, unknown>) => void
+}
 export interface RouteResult { decision: ConsultDecision; confidence: RouteConfidence }
 
 // ── Text views ─────────────────────────────────────────────────────────────────────────────────
@@ -972,7 +977,7 @@ export function labelAskReply(prevAssistantText: string, userTextRaw: string, ct
   return attributeReply(prevAssistantText, userText, {
     fold: s => prep(s).f,
     slotKnown: domain ? s => { const v = slotView(domain, s, ctx.hasGps); return { known: v.known, ...(v.area ? { area: v.area } : {}) } } : null,
-    aloneIsRuleChat: s => { const r = routeConsult([{ role: 'user', content: s }], ctx); return r.decision.turn === 'chat' && r.confidence === 'rule' },
+    aloneIsRuleChat: s => { const r = routeConsult([{ role: 'user', content: s }], { hasGps: ctx.hasGps, lang: ctx.lang }); return r.decision.turn === 'chat' && r.confidence === 'rule' },
     pointsAtThread: s => { const t = prep(s); return DEICTIC_RE.test(t.f) || namesIn(t, names).length > 0 },
   })
 }
@@ -1000,7 +1005,7 @@ export function recentShownNames(messages: ReadonlyArray<{ role: string; content
 }
 
 /** Routes the user turn at `ui` given the consultation `thread` it continues. */
-function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): TurnOut {
+function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLast = false): TurnOut {
   const lang = ctx.lang === 'en' ? 'en' : 'vi'
   const userText = stripMarkers(textOf(turns[ui].content)).trim()
   let prevAssistant = ''
@@ -1060,6 +1065,17 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
   if (BUTTON_MORE.has(fq)) return keep({ domains: thread.domains, turn: 'more' }, inThread ? 'rule' : 'unsure')
   if (BUTTON_PLAN.has(fq)) return keep({ domains: thread.domains, turn: 'plan', known: inThread ? slotView(thread.domains[0], threadText(thread.start), ctx.hasGps).known : {} }, inThread ? 'rule' : 'unsure')
 
+  // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): when the route gave `ctx.trace`, say what step 2 decided for the LAST user turn: the real label (what the shared function reads, whether or not the
+  // attribution flag applies it), its signal, and the branch taken. Pure reading: nothing below depends on it, and without `ctx.trace` it does nothing.
+  const traceAttr = (branch: string): void => {
+    if (!ctx.trace || !isLast) return
+    try {
+      const asked = wasAskReply(prevAssistant)
+      const shown = shownAsk(prevAssistant)
+      const read = asked ? labelAskReply(prevAssistant, userText, { hasGps: ctx.hasGps, lang: ctx.lang }, thread.domains[0] ?? cur.domains[0] ?? null, recentShownNames(turns.slice(0, ui))) : null
+      ctx.trace({ ev: 'attribution', where: 'router_step2', previousWasAsk: asked, flagOn: consultAnswerAttributionOn(), label: read?.label ?? null, signal: read?.signal ?? null, branch, inThread, threadDomains: thread.domains, replyDomains: cur.domains, askIds: shown.ids, askOptionCount: shown.options.length })
+    } catch { /* a trace must never change the route */ }
+  }
   // 2. The previous Tappy turn asked → this is the answer: pick (never ask twice).
   let notAnswer = false
   if (wasAskReply(prevAssistant)) {
@@ -1067,6 +1083,7 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     // request — UAT §10 T3 (30/09, level B): "ăn sáng" read as the food area and a hotel question got a restaurant.
     const fresh = cur.domains.length > 0 && !thread.domains.some(d => cur.domains.includes(d)) && cur.hits.some(h => h.w >= 3) && !(inThread && DEICTIC_RE.test(t.f))
     if (fresh) {
+      traceAttr('fresh_other_domain')
       // D9: the answer to the domain question ("an uong") is read together with the state-only message it answered, so the
       // budget / priority the user stated is not lost to the slot reader.
       let askAt = -1
@@ -1078,11 +1095,13 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx): Tur
     }
     // CONSULT_ANSWER_ATTRIBUTION (default OFF): a reply the shared labelling function reads as a request of its own is not the answer - it is routed as a new request below.
     if (!consultAnswerAttributionOn() || labelAskReply(prevAssistant, userText, ctx, thread.domains[0] ?? cur.domains[0] ?? null, recentShownNames(turns.slice(0, ui))).label !== 'new_request') {
+      traceAttr(consultAnswerAttributionOn() ? 'read_as_answer' : 'flag_off_read_as_answer')
       if (!inThread) return keep({ turn: 'pick', domains: cur.domains }, 'unsure')
       return { result: pickFrom(thread.domains, threadText(thread.start), 'pick'), thread }
     }
+    traceAttr('new_request')
     notAnswer = true
-  }
+  } else traceAttr('previous_not_ask')
 
   // 3. Turns about picks already shown (not for a reply that was read as a request of its own).
   if (names.length && inThread && !notAnswer) {
@@ -1148,9 +1167,10 @@ export function routeConsult(messages: Array<{ role: string; content: unknown }>
   const turns = messages.filter(m => m.role === 'user' || m.role === 'assistant').slice(-16)
   let thread: Thread = { domains: [], start: -1 }
   let last: RouteResult | null = null
+  const lastUser = turns.map(m => m.role).lastIndexOf('user')
   for (let i = 0; i < turns.length; i++) {
     if (turns[i].role !== 'user') continue
-    const out = routeTurn(turns, i, thread, ctx)
+    const out = routeTurn(turns, i, thread, ctx, i === lastUser)
     thread = out.thread
     last = out.result
   }
