@@ -54,11 +54,25 @@ const ALLOWED_PATHS: Readonly<Record<string, readonly string[]>> = {
 }
 export const TRIAL_ALLOWED_HOSTS: readonly string[] = Object.keys(ALLOWED_PATHS)
 
-/** Pure. `ok` only for https, no explicit port, no credentials, an allowed host and an allowed exact path. `label` names what was blocked (a host, host+path, or "(unparseable)"). */
-export function isAllowedRequest(url: string): { ok: true; host: string } | { ok: false; label: string } {
+/**
+ * Option B (owner decision): the EXTENSION mode (BENCH_TRIAL_MODE exactly dev-multi) also lets through the three OpenStreetMap endpoints that search_places itself falls back to
+ * when the Serper maps search returns nothing (food.ts searchPlacesOSM, travel.ts): exactly these hosts and exact paths, https, default port. No wildcard, no subdomain, no other
+ * path. They are free (no Serper credit, no OpenAI cost), so they are counted, not priced, and stay outside the request cap and the USD gate. Every other mode blocks them.
+ */
+const OSM_PATHS: Readonly<Record<string, readonly string[]>> = {
+  'nominatim.openstreetmap.org': ['/search'],
+  'overpass-api.de': ['/api/interpreter'],
+  'maps.mail.ru': ['/osm/tools/overpass/api/interpreter'],
+}
+export const OSM_FALLBACK_HOSTS: readonly string[] = Object.keys(OSM_PATHS)
+/** True only for the extension mode, spelled exactly. */
+export const osmFallbackAllowed = (env: Record<string, string | undefined>): boolean => env.BENCH_TRIAL_MODE === 'dev-multi'
+
+/** Pure. `ok` only for https, no explicit port, no credentials, an allowed host and an allowed exact path. `label` names what was blocked (a host, host+path, or "(unparseable)"). `allowOsm` (default false) adds the three OSM endpoints above. */
+export function isAllowedRequest(url: string, allowOsm = false): { ok: true; host: string } | { ok: false; label: string } {
   let u: URL
   try { u = new URL(url) } catch { return { ok: false, label: '(unparseable)' } }
-  const paths = ALLOWED_PATHS[u.hostname]
+  const paths = ALLOWED_PATHS[u.hostname] ?? (allowOsm && Object.hasOwn(OSM_PATHS, u.hostname) ? OSM_PATHS[u.hostname] : undefined)
   if (!paths) return { ok: false, label: u.hostname }
   if (u.protocol !== 'https:' || u.port !== '' || u.username !== '' || u.password !== '') return { ok: false, label: `${u.protocol}//${u.username || u.password ? '(credentials)@' : ''}${u.hostname}${u.port ? `:${u.port}` : ''}` }
   if (!paths.includes(u.pathname)) return { ok: false, label: `${u.hostname}${u.pathname}` }
@@ -122,6 +136,8 @@ export interface TrialSummary {
   serperRequests: number
   /** Requests the wrappers actually SENT, by host. */
   hostRequests: Record<string, number>
+  /** Requests sent to each of the three OSM fallback hosts (always the three keys; all 0 outside the extension mode, where they are blocked). A count only: free hosts, outside the request cap and the USD gate. */
+  osmRequests: Record<string, number>
   refusals: number
   photoSkips: number
   answerChars: number
@@ -242,9 +258,21 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
   return reasons
 }
 
+/** The message for an OpenAI key that is there but is not shaped like one. Names the variable and the rule; holds no character of the value. */
+export const OPENAI_KEY_SHAPE_REASON = 'OPENAI_API_KEY không đúng dạng key OpenAI (phải bắt đầu bằng sk-): kiểm tra có dán nhầm key khác hoặc đảo thứ tự hai ô không'
+/**
+ * Pure. A value that is present must start with `sk-` (a swapped or wrong pasted key is refused BEFORE the first paid call, not after a 401). An unset or blank value is not
+ * judged here: the presence check reports it. Only OpenAI is checked: the Serper key format is not verified. Never echoes any character of the value.
+ */
+export function openaiKeyShapeReasons(env: Record<string, string | undefined>): string[] {
+  const v = env.OPENAI_API_KEY
+  if (v === undefined || v.trim() === '') return []
+  return v.startsWith('sk-') ? [] : [OPENAI_KEY_SHAPE_REASON]
+}
+
 /** Pure: no file, no network. Every reason at once. Exported for the preflight report (preflightReport.ts), which runs the same checks without the trial. */
 export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env)]
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env), ...openaiKeyShapeReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, benchModeOf(env))
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -367,19 +395,22 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const sent: Record<string, number> = {}
   const blocked = new Set<string>()
   const redirects: Array<{ host: string; status: number }> = []
+  /** Requests SENT to each of the three OSM fallback hosts: a count per host, nothing else (no query, URL or coordinate is kept). Always the three keys. */
+  const osmCounts = (): Record<string, number> => Object.fromEntries(OSM_FALLBACK_HOSTS.map(h => [h, sent[h] ?? 0]))
   // E1 investigation: an allowed host that answers 401/403 has rejected the credentials. Only host and status are kept (never a body: the provider echoes part of the key in it).
   const providerRejections: Array<{ host: string; status: number }> = []
   // THE SHARED "CLOSED" STATE (round 3a). Set the moment the turn is over - BEFORE the drain and before the process tree is ended. Every wrapper below looks at it AT
   // EVERY CALL, so a reference taken while the turn was open (a library that kept `fetch`, a callback scheduled for later) is closed too: after this, every request -
   // the two allowed hosts included - is blocked before it is sent and recorded (`late`). A request to a host outside the list is still reported in `blocked`.
   let trialClosed = false
+  const osmAllowed = osmFallbackAllowed(env)
   const closedAttempt = (url: string): never => {
-    const d = isAllowedRequest(url)
+    const d = isAllowedRequest(url, osmAllowed)
     if (!d.ok) blocked.add(redactSecrets(d.label, env))
     throw denied(hostLabel(url))
   }
   const admit = (url: string): void => {
-    const d = isAllowedRequest(url)
+    const d = isAllowedRequest(url, osmAllowed)
     if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
     sent[d.host] = (sent[d.host] ?? 0) + 1
   }
@@ -423,6 +454,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
+      extraResult: () => ({ osmRequests: osmCounts() }),
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
@@ -480,7 +512,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     })),
     costState: records.length === 0 ? 'none' : allKnown ? 'known' : 'unknown', usd: usdSum, ms: records.length === 0 ? null : records.reduce((a, r) => a + r.ms, 0),
     tools: [...new Set(records.flatMap(r => r.toolNames))],
-    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent,
+    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(),
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, providerRejections, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
@@ -502,6 +534,7 @@ export function formatSummary(s: TrialSummary): string {
   lines.push(
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
     `ledger: llm=${s.llmRequests} serper=${s.serperRequests} refusals=${s.refusals} photoSkips=${s.photoSkips} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
+    `OSM fallback hosts (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.osmRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
     `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,

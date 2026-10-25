@@ -49,7 +49,7 @@ vi.mock('@/lib/security/rateLimit', () => ({ rateLimit: () => ({ ok: true, retry
 
 // A masked fragment in the shape OpenAI echoes it: first four and last four characters of what was typed. Synthetic — not any real key, and not the shape of one.
 const ECHOED = 'key_abcd********wxyz'
-const net = { openai: [] as string[], serper: [] as string[], other: [] as string[] }
+const net = { openai: [] as string[], serper: [] as string[], osm: [] as string[], other: [] as string[] }
 const reached: string[] = []
 const apiError = (status: number, message: string) => new Response(JSON.stringify({ error: { message, type: 'invalid_request_error', code: 'invalid_api_key' } }), { status, headers: { 'content-type': 'application/json' } })
 const fakeNetwork = (async (input: unknown) => {
@@ -57,8 +57,14 @@ const fakeNetwork = (async (input: unknown) => {
   reached.push(u.hostname + u.pathname)
   if (u.hostname === 'api.openai.com') { net.openai.push(u.pathname); return apiError(401, `Incorrect API key provided: ${ECHOED}. You can find your API key at https://platform.openai.com/account/api-keys.`) }
   if (u.hostname === 'google.serper.dev') { net.serper.push(u.pathname); return new Response(JSON.stringify({ organic: [], places: [], credits: 1 }), { status: 200 }) }
+  // Option B: in the extension mode (this environment) the wrapper lets the three OSM fallback hosts through, so the fake network answers them like an empty-but-valid OSM
+  if (u.hostname === 'nominatim.openstreetmap.org') { net.osm.push(u.hostname); return new Response(JSON.stringify([{ lat: '10.73', lon: '106.72' }]), { status: 200 }) }
+  if (u.hostname === 'overpass-api.de' || u.hostname === 'maps.mail.ru') { net.osm.push(u.hostname); return new Response(JSON.stringify({ elements: [] }), { status: 200 }) }
   net.other.push(u.href); throw new Error('UNEXPECTED host: ' + u.hostname)
 }) as typeof fetch
+
+/** What the run sends to the three OSM fallback hosts once the extension mode lets them through (the tool's own fallback, run twice: district, then city). */
+const OSM_COUNTS_E1 = { 'nominatim.openstreetmap.org': 1, 'overpass-api.de': 2, 'maps.mail.ru': 0 } // one geocode (the second run reuses it), two Overpass queries, the mirror is not needed
 
 let POST: (req: never) => Promise<Response>
 beforeAll(async () => { ;({ POST } = await import('@/app/api/chat/route') as unknown as { POST: typeof POST }) }, 120_000)
@@ -71,7 +77,7 @@ const OWNER_ENV: Record<string, string> = {
 }
 beforeEach(() => {
   __resetBenchProcessGuardForTests(); __clearToolCache(); __resetAiQuestionQuotaLocal(); __resetRequestCap()
-  net.openai.length = 0; net.serper.length = 0; net.other.length = 0; reached.length = 0
+  net.openai.length = 0; net.serper.length = 0; net.osm.length = 0; net.other.length = 0; reached.length = 0
   for (const k of [...BENCH_FLAG_NAMES, 'BENCH_CONFIRM_SPEND', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR', 'OPENAI_API_KEY', 'SERPER_API_KEY', 'BENCH_LIVE_TRIAL', 'CI', 'BENCH_TRIAL_MODE', 'KV_REST_API_URL', 'KV_REST_API_TOKEN', 'UPSTASH_REDIS_REST_URL', 'UPSTASH_REDIS_REST_TOKEN']) vi.stubEnv(k, undefined)
   for (const [k, v] of Object.entries(OWNER_ENV)) vi.stubEnv(k, v)
 })
@@ -99,7 +105,11 @@ async function reproduce(): Promise<{ summary: TrialSummary; decisions: string[]
 }
 
 describe('E1 reproduction: the baseline stop is produced by a rejected OpenAI key (HTTP 401) on the FIRST call, and by nothing else', () => {
-  it('the observed signature is reproduced exactly: stop at the first turn, cost NaN, 5 paid calls refused, 3 hosts blocked, stream error, 176-character fallback answer, only OpenAI reached', async () => {
+  // OPTION B CHANGED TWO ASSERTIONS HERE, and only these (explained, nothing weakened): before it, the extension-mode wrapper blocked the three OSM hosts, so this test pinned
+  // `hostRequests = {openai: 1}`, `hostsBlocked = [3 hosts]` and `reached = [openai]`. Now the extension mode lets those three exact endpoints through (they are free, counted per
+  // host), so the same run SENDS them: hostsBlocked is empty, the OSM counts are pinned exactly, and `reached` is the exact sequence. Every other assertion (the 401, NaN, the 5
+  // refusals and their order, 176 characters, cap 0/0, no Serper request) is unchanged. The old blocked-in-this-mode behaviour is pinned for every non-extension mode in liveTrial.hostb.test.ts.
+  it('the observed signature is reproduced exactly: stop at the first turn, cost NaN, 5 paid calls refused, stream error, 176-character fallback answer; OpenAI once, no Serper, the OSM fallback counted per host', async () => {
     const { summary: s, decisions } = await reproduce()
     expect(s.turnsRun).toBe(1)
     expect(s.stopped).toBe('invalid-cost at R1: reported cost NaN could not be reconciled')
@@ -107,14 +117,17 @@ describe('E1 reproduction: the baseline stop is produced by a rejected OpenAI ke
     expect(s.costState).toBe('unknown'); expect(s.usd).toBeNull()
     expect(s.refusals).toBe(5)
     expect(s.tools).toEqual(['search_places'])
-    expect(s.hostRequests).toEqual({ 'api.openai.com': 1 })
-    expect(s.hostsBlocked).toEqual(['maps.mail.ru', 'nominatim.openstreetmap.org', 'overpass-api.de'])
+    expect(s.hostRequests).toEqual({ 'api.openai.com': 1, 'nominatim.openstreetmap.org': 1, 'overpass-api.de': 2 }) // a host that was not asked has no entry here (its 0 is in osmRequests)
+    expect(s.hostsBlocked).toEqual([])
+    expect(s.osmRequests).toEqual(OSM_COUNTS_E1)
     expect(s.problems.join(' | ')).toContain('R1: degraded: 5 paid call(s) refused by the gate')
     expect(s.problems.join(' | ')).toContain('R1: stream errors: An error occurred.')
     expect(s.problems.join(' | ')).toContain('the cost book is not fully accounted')
     expect(s.answerChars).toBe(176)
-    expect(reached).toEqual(['api.openai.com/v1/chat/completions']) // nothing else ever reached the network: Serper was not even asked
-    expect(net.serper).toEqual([])
+    expect(net.openai).toEqual(['/v1/chat/completions']) // exactly one OpenAI request
+    expect(net.serper).toEqual([]) // Serper was not even asked
+    expect(net.other).toEqual([]) // and nothing outside the allow-list reached the network
+    expect(reached.every(r => r.startsWith('api.openai.com/') || /^(nominatim\.openstreetmap\.org|overpass-api\.de|maps\.mail\.ru)\//.test(r))).toBe(true)
     // the gate's decisions, in order: the first paid call is granted and fails with the 401 (cost unknown → the run is blocked); every later one is refused as `blocked`
     expect(decisions).toEqual([
       'llm:intent: granted',
@@ -144,11 +157,14 @@ describe('E1 reproduction: the baseline stop is produced by a rejected OpenAI ke
     expect(result.turns[0].llmCalls[0]).toEqual(expect.objectContaining({ role: 'intent', usd: null, state: 'unknown' }))
   })
 
-  it('the OSM hosts were asked by search_places itself (its own fallback when the Serper search returns nothing), not by the benchmark; the launcher wrapper stopped them before they were sent', async () => {
+  it('the OSM hosts were asked by search_places itself (its own fallback when the Serper search returns nothing), not by the benchmark; in the extension mode the wrapper now lets them through and COUNTS them', async () => {
     const { summary: s, lines } = await reproduce()
     expect(lines.filter(l => l.includes('osm_fallback_used'))).toHaveLength(2) // the tool ran its OSM fallback twice (the route searches the district, then the city)
-    expect(s.hostsBlocked).toEqual(['maps.mail.ru', 'nominatim.openstreetmap.org', 'overpass-api.de'])
-    expect(net.other).toEqual([]) // the fake network never saw them
+    expect(s.hostsBlocked).toEqual([])
+    expect(s.osmRequests).toEqual(OSM_COUNTS_E1)
+    expect(net.osm.length).toBe(Object.values(OSM_COUNTS_E1).reduce((a, b) => a + b, 0)) // what the fake network saw is exactly what the summary counted
+    expect(s.requestCap).toEqual({ perTurnLimit: 15, runLimit: 450, sent: 0, refused: 0 }) // free hosts: nothing for the cap to count
+    expect(s.serperRequests).toBe(0)
   })
 })
 

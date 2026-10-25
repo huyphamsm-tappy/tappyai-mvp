@@ -138,6 +138,8 @@ export interface BenchOptions {
   now?: () => number
   /** Test seam: the function that drives the turns (default `runUat`). */
   runUatImpl?: (o: RunOptions) => Promise<UatReport>
+  /** Extra top-level fields for the result file, read when it is written (the trial adds the per-host OSM request counts). Plain data only: counts, never a query or a URL. */
+  extraResult?: () => Record<string, unknown>
 }
 
 /** One Serper request as it was SENT (round 3a). A RECORD, not a verdict: `num` is the one in the body that went out, `credits` what the provider said it charged. */
@@ -572,6 +574,7 @@ export async function runBench(o: BenchOptions): Promise<BenchResult> {
     ...(runError !== null ? { error: redactSecrets(runError instanceof Error ? `${runError.name}: ${runError.message}` : String(runError)) } : {}),
     ...(wf ? { writeError: redactSecrets(wf.message, o.env ?? process.env) } : {}),
     openReservations: openReservations(),
+    ...(o.extraResult ? o.extraResult() : {}),
     summary: returned ? summarize({ ...returned, cost: { ...returned.cost, totalUsd: (returned.cost as { totalUsd?: number }).totalUsd ?? null } } as UatReport) : null, turns: records, report: returned,
   }
   // An invalid run states no total: the key `totalUsd` is dropped at every level (not 0, not a partial sum). Done here, in the serialization layer.

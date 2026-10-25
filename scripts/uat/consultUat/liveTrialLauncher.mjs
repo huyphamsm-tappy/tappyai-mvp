@@ -321,6 +321,9 @@ export function gate1Summary(env, questionText) {
     `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
     `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.05 USD/lượt ở mọi chế độ`,
     `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
+    `mạng được phép: hai dịch vụ trả phí của lần chạy (OpenAI chat completions và Serper; có sổ chi phí)${env.BENCH_TRIAL_MODE === 'dev-multi'
+      ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
+      : '; ba host OSM của search_places bị CHẶN (chế độ nghiệm thu)'}`,
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')

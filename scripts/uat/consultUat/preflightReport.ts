@@ -4,7 +4,7 @@
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
-import { connectionRedirectReasons, consultativeConfirmationReasons, preflight, requestCapReasons } from './liveTrial'
+import { OSM_FALLBACK_HOSTS, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, requestCapReasons } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -19,6 +19,8 @@ export interface PreflightReportInput {
 
 /** The only hosts and paths the trial may reach. Printed so that the Owner sees the list being enforced. */
 export const ALLOW_LIST_TEXT = 'https api.openai.com/v1/chat/completions; google.serper.dev /search /maps /shopping (default port only)'
+/** Added to the printed list in the extension mode only (BENCH_TRIAL_MODE=dev-multi): the three free OSM fallback endpoints of search_places, counted per host. */
+export const OSM_ALLOW_TEXT = `; EXTENSION MODE ONLY, free OSM fallback of search_places (counted per host, no cost, outside the request cap and the USD gate): ${OSM_FALLBACK_HOSTS.join(', ')} on their exact paths`
 
 const KEY_VARS = ['OPENAI_API_KEY', 'SERPER_API_KEY'] as const
 
@@ -79,19 +81,22 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
     const reasons: string[] = []
     if (v === undefined || v.trim() === '') reasons.push(`${k} is UNSET`)
     else if (/\s/.test(v.trim())) reasons.push(`${k} contains whitespace inside the value`)
+    else if (k === 'OPENAI_API_KEY') reasons.push(...openaiKeyShapeReasons(env)) // the shape is judged here, on the key's own line; the Serper format is not verified
     add(`${k} present (value never shown)`, reasons, 'SET')
   }
 
   // The complete set of checks the real trial runs (caps, confirmation, folder on drive D, flags, allow-list, network switches).
+  // The key-shape reason is reported once, on the key's own line above: it is not repeated in this one.
   const full = preflight(env, input.repoRoot, input.execArgv)
-  add('every other check of the real trial (preflight, as the run does it)', full.reasons, 'all passed')
+  const shape = new Set(openaiKeyShapeReasons(env))
+  add('every other check of the real trial (preflight, as the run does it)', full.reasons.filter(r => !shape.has(r)), 'all passed')
 
   const unmet = out.filter(c => !c.ok).length
   out.push({
     name: 'budget mode and limits in force (information)', ok: true,
     detail: `mode ${mode} (maximum run cap ${maxRunCapUsd(mode)} USD, per-turn ${MAX_TURN_CAP_USD} USD) | run cap ${env.BENCH_SPEND_RUN_CAP_USD ?? 'unset'} | per-turn cap ${env.BENCH_SPEND_TURN_CAP_USD ?? 'unset'} | L1 ${env.CONSULT_REQUEST_CAP_PER_TURN ?? 'unset'} | L2 ${env.CONSULT_REQUEST_CAP_PER_RUN ?? 'unset'} | conditions not met: ${unmet}`,
   })
-  out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT })
+  out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT + (osmFallbackAllowed(env) ? OSM_ALLOW_TEXT : '') })
   return out
 }
 
