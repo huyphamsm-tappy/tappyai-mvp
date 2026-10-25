@@ -97,8 +97,12 @@ describe('F-R2 · a card of another product family shown earlier is not evidence
   const CHARGERS = ['Củ sạc nhanh Samsung 25W Chính Hãng', 'Củ sạc Anker 20W Nano', 'Củ sạc Baseus 65W GaN']
   for (const lu of [null, luna('pick', ['shopping'], { query: 'điện thoại Samsung' })]) {
     it(`phone request after a charger card, intent layer ${lu ? 'pick' : 'failed'}: the same turn and the same card as OFF`, async () => {
-      const msgs: Msg[] = [{ role: 'user', content: 'tìm củ sạc nhanh cho iphone' }, { role: 'assistant', content: card(CHARGERS) }, { role: 'user', content: 'điện thoại Samsung đó dưới 10 triệu' }]
-      same(await run(msgs, { on: true, luna: lu }), await run(msgs, { on: false, luna: lu }))
+      for (const last of ['điện thoại Samsung đó dưới 10 triệu', 'tìm điện thoại Anker này dưới 10 triệu']) {
+        const msgs: Msg[] = [{ role: 'user', content: 'tìm củ sạc nhanh cho iphone' }, { role: 'assistant', content: card(CHARGERS) }, { role: 'user', content: last }]
+        const on = await run(msgs, { on: true, luna: lu })
+        expect(on.turn).not.toBe('followup')
+        same(on, await run(msgs, { on: false, luna: lu }))
+      }
     }, 60000)
   }
 })
@@ -147,6 +151,10 @@ describe('F-R3 · the flag never asks where OFF would search ("not worth asking"
     [{ role: 'user', content: 'mua ốp lưng dưới 300k' }, { role: 'user', content: 'cho iphone 15' }],
     [{ role: 'user', content: 'mua sạc dự phòng dưới 500k' }, { role: 'user', content: 'loại 20000mah' }],
     [{ role: 'user', content: 'mình cần ốp UAG' }, { role: 'user', content: 'dưới 500k' }],
+    // a two-question card ("budget, must"): the budget said once cuts it to ONE question, which OFF's gate calls "not worth asking"
+    [{ role: 'user', content: 'mình cần giày chạy bộ dưới 1 triệu' }, { role: 'user', content: 'mua giúp mình giày chạy bộ với' }],
+    [{ role: 'user', content: 'mua giày chạy bộ dưới 800k' }, { role: 'user', content: 'cho mình đôi giày chạy bộ nhé' }],
+    [{ role: 'user', content: 'mua giày chạy bộ' }, { role: 'user', content: 'dưới 1 triệu' }],
   ]
   chains.forEach((msgs, i) => {
     for (const lu of [null, luna('pick', ['shopping'], { query: 'ốp UAG iphone 17 pro max' })]) {

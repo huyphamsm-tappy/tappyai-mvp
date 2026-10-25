@@ -244,6 +244,11 @@ describe('Wave 2D matrix: both flags OFF = the old behaviour; each flag changes 
       const t = await turn(thread(SIX, POINT), { place, thread: aware, luna: LUNA_PICK })
       expect(t.consult?.turn, `${name} shopping turn`).toBe(aware === '1' ? 'followup' : 'ask')
       expect(t.cannedAsk, `${name} brand card`).toBe(aware !== '1')
+      // Wave 2E: a NEW request after a reply that closed the consultation reads the same in every cell (it carries nothing of the old request)
+      const fresh: Msg[] = [{ role: 'user', content: 'tìm ốp UAG Plasma cho iphone 15 dưới 200k có magsafe' }, { role: 'assistant', content: 'Mình chọn: **Ốp UAG Plasma** cho iPhone 15, có MagSafe, dưới 200k.' }, { role: 'user', content: 'giờ mua ốp UAG cho iphone 17 pro max' }]
+      const f = await turn(fresh, { place, thread: aware, luna: null }), base = await turn(fresh, { luna: null })
+      expect(f.asked.map(q => q.q), `${name} new request after a closed consultation`).toEqual(base.asked.map(q => q.q))
+      expect(f.consult?.turn).toBe(base.consult?.turn)
     }, 60000)
   }
 })

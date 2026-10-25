@@ -231,7 +231,7 @@ describe('Wave 2E (C2) - the chosen behaviour for a place request misread as cha
 })
 
 describe('Wave 2E (C3) - "near me" is not a stated place; a city the code read from the user\'s words is', () => {
-  const K = 'Cho mình hỏi Albert Einstein có từng nhắc gì về món phở không?'
+  const K = 'Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại gần đây cho món phở không?' // "gần đây" = recently; with a GPS fix the intent layer's area "gần đây" survives its own check
   it('the intent layer writes area "gần đây" (checked and kept when there is a GPS fix) on a knowledge turn: still blocked', async () => {
     const luna = lunaIntent('chat', ['food'], { area: 'gần đây' })
     const off = await turn(one(K), { flag: undefined, luna, gps: GPS_HN })
