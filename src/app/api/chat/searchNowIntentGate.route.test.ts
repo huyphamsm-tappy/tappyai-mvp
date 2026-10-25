@@ -451,7 +451,8 @@ describe('Wave 2F - the gate\'s measurement lines (CONSULT_TRACE_DIAGNOSTICS=1 a
   it('M1 + M5 + M6 + M7: a blocked knowledge turn - the gate line says why (labels, booleans), the summary line says what the turn did (tools offered, who called, area question)', async () => {
     const r = await traced(KNOW, { flag: '1', luna: CHAT_FOOD, reply: 'Trả lời kiến thức.' })
     expect(r.gateEvents).toHaveLength(1)
-    expect(r.gateEvents[0]).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place', hasValidGps: false, lunaTurn: 'chat', lunaDomains: ['food'], statedDistrict: false, statedCity: false, lunaArea: 'none', rulesTurn: 'chat' })
+    expect(r.gateEvents[0]).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place', hasValidGps: false, lunaTurn: 'chat', lunaDomains: ['food'], statedDistrict: false, statedCity: false, mergedAreaKind: 'none', lunaAreaRawKind: 'none', areaSource: 'none', rulesTurn: 'chat' })
+    expect(r.gateEvents[0]).not.toHaveProperty('lunaArea') // Wave 2G (F-5): the old name said "the intent layer's area" for a merged one, so it is gone
     const o = outcomes(r)
     expect(o).toHaveLength(1)
     expect(o[0]).toMatchObject({ blocked: true, droppedType: 'attraction', toolsOffered: ['search_places'], modelCalledPlaceTool: false, modelPlaceCalls: 0, codePlaceCalls: 0, areaAskAppended: false, areaAskSource: null, serperRequestsByModel: 0, serperRequestsByCode: 0, finishReason: 'stop' })
@@ -481,9 +482,9 @@ describe('Wave 2F - the gate\'s measurement lines (CONSULT_TRACE_DIAGNOSTICS=1 a
     const c = await traced('khách sạn ở Đà Lạt cuối tuần này', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
     expect(c.gateEvents[0]).toMatchObject({ blocked: false, statedCity: true, statedDistrict: false })
     const near = await traced('Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại gần đây cho món phở không?', { flag: '1', luna: lunaIntent('chat', ['food'], { area: 'gần đây' }), gps: GPS_HN })
-    expect(near.gateEvents[0]).toMatchObject({ blocked: true, lunaArea: 'near_me' })
+    expect(near.gateEvents[0]).toMatchObject({ blocked: true, mergedAreaKind: 'near_me', lunaAreaRawKind: 'near_me', areaSource: 'luna_raw' })
     const place = await traced('quán cà phê yên tĩnh gần Nhà Thờ Đức Bà', { flag: '1', luna: lunaIntent('chat', ['food'], { area: 'gần Nhà Thờ Đức Bà' }), gps: GPS_HN })
-    expect(place.gateEvents[0]).toMatchObject({ blocked: false, lunaArea: 'place', statedPlaceFrom: 'consult_area' })
+    expect(place.gateEvents[0]).toMatchObject({ blocked: false, mergedAreaKind: 'place', lunaAreaRawKind: 'place', areaSource: 'luna_raw', statedPlaceFrom: 'consult_area' })
   }, 60000)
   it('a turn the gate did NOT block writes no summary line and no lookup line', async () => {
     const r = await traced('quán phở ở Quận 3', { flag: '1', luna: CHAT_FOOD, gps: GPS_HN, tool: { query: 'quán phở', location: 'Quận 3, TP.HCM' } })
@@ -511,5 +512,78 @@ describe('Wave 2F - the gate\'s measurement lines (CONSULT_TRACE_DIAGNOSTICS=1 a
     expect(mine.length).toBeGreaterThanOrEqual(4)
     const text = JSON.stringify(mine)
     for (const s of [SECRET, MAIL, TOK, 'abcd1234', 'Marie Curie', 'Nobel', 'nguoi.dung']) expect(text, s).not.toContain(s)
+  }, 60000)
+})
+
+// ── Wave 2G: F-1 (a city-only `area` from the intent layer / the code is not a second opinion), F-2 (trip / lodging requests), F-5 (area labels), F-7 (toolsOffered convention). Gate + trace ON. Sentences written for this file. ──
+describe('Wave 2G - the gate at route level: city-word areas, trip requests, area labels, one toolsOffered convention', () => {
+  const traced = async (q: string, o: Parameters<typeof turn>[1] = {}) => {
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try { return await turn(one(q), o) } finally { vi.unstubAllEnvs() }
+  }
+  const withArea = (area: string | null) => lunaIntent('chat', ['food'], { area })
+  // knowledge questions whose subject carries a city word - a street that is also a king, a person, a place only named
+  const KNOW_CITY = ['Cho mình hỏi Nguyễn Huệ là vị vua như thế nào?', 'Chủ tịch Hồ Chí Minh đọc tuyên ngôn ở đâu?', 'Sa Pa có tuyết vào tháng mấy?', 'Cho mình hỏi bún bò Huế có nguồn gốc từ đâu?']
+
+  it('F-1: whatever area the intent layer writes (none, "near me", a city, a district it was not told), a knowledge question about a city-word subject stays blocked - it was opened by the city the code put in the area', async () => {
+    for (const q of KNOW_CITY) {
+      for (const area of [null, 'gần đây', 'Huế', 'Hồ Chí Minh', 'Sa Pa', 'Quận 1']) {
+        const r = await traced(q, { flag: '1', luna: withArea(area), gps: GPS_HN })
+        expect(r.gateEvents[0], `${q} | area=${area}`).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place', statedPlaceFrom: null })
+      }
+    }
+  }, 120000)
+  it('F-1 controls: a real place stays a stated place - a district the user wrote, a landmark the intent layer wrote, a city used as a place, a street used as a place, a message that is only a city', async () => {
+    const district = await traced('quán phở ở Quận 3', { flag: '1', luna: withArea('Quận 3'), gps: GPS_HN })
+    expect(district.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_area' })
+    const landmark = await traced('quán cà phê yên tĩnh gần Nhà Thờ Đức Bà', { flag: '1', luna: withArea('gần Nhà Thờ Đức Bà'), gps: GPS_HN })
+    expect(landmark.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+    const city = await traced('quán phở Hà Nội', { flag: '1', luna: withArea('Hà Nội'), gps: GPS_HN })
+    expect(city.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_city' })
+    const street = await traced('quán cà phê ở Nguyễn Huệ', { flag: '1', luna: withArea('Nguyễn Huệ'), gps: GPS_HN })
+    expect(street.gateEvents[0]).toMatchObject({ blocked: false, reason: 'stated_place' })
+    const only = await traced('Đà Nẵng', { flag: '1', luna: withArea('Đà Nẵng'), gps: GPS_HN })
+    expect(only.gateEvents[0]).toMatchObject({ blocked: false, statedPlaceFrom: 'user_city' })
+  }, 120000)
+  it('F-1 effect: with the flag ON the knowledge question about a city-word subject starts no place lookup even when the area carries a city; OFF runs it as before (the flag does the work)', async () => {
+    const q = 'Cho mình hỏi Nguyễn Huệ là vị vua như thế nào?'
+    const off = await turn(one(q), { flag: undefined, luna: withArea('Huế'), gps: GPS_HN })
+    const on = await turn(one(q), { flag: '1', luna: withArea('Huế'), gps: GPS_HN })
+    expect(off.presearched || off.directive || off.maps.length > 0).toBe(true) // not vacuous: OFF starts a lookup
+    expect(on.presearched).toBe(false); expect(on.maps).toEqual([]); expect(on.placeToolRan).toBe(false)
+  }, 60000)
+
+  it('F-2: a trip / lodging request that the intent layer misreads as chat is not blocked, and the turn is the same as with the flag OFF (it was blocked in Wave 2F: the rules read "travel" only because of the city word)', async () => {
+    for (const q of ['đi du lịch Đà Lạt 3 ngày nên làm gì', 'khách sạn Đà Nẵng giá tốt', 'tour du lịch Hà Nội 3 ngày', 'homestay Sa Pa giá rẻ', 'resort Nha Trang cho gia đình']) {
+      const on = await traced(q, { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(on.gateEvents[0], q).toMatchObject({ blocked: false, reason: 'stated_place', statedCity: true })
+      const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN })
+      const plain = await turn(one(q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(plain.logTypes, q).toEqual(off.logTypes); expect(plain.maps, q).toEqual(off.maps); expect(plain.directive, q).toBe(off.directive)
+    }
+  }, 180000)
+  it('F-2 control: the city word alone does not make a knowledge question a trip request - still blocked', async () => {
+    for (const q of ['Hồ Chí Minh sinh năm nào?', 'Sa Pa có tuyết vào tháng mấy?', 'Huế từng là kinh đô của triều đại nào?']) {
+      const r = await traced(q, { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(r.gateEvents[0], q).toMatchObject({ blocked: true, statedCity: false })
+    }
+  }, 120000)
+
+  it('F-5: the area labels say what the intent layer WROTE (raw kind), what the turn ended with (merged kind) and who the merged one is from (source) - no area text', async () => {
+    const wrote = await traced('Chủ tịch Hồ Chí Minh đọc tuyên ngôn ở đâu?', { flag: '1', luna: withArea('gần đây'), gps: GPS_HN })
+    // the intent layer wrote "near me"; the check replaced it with the city the code read: raw near_me, merged place, source code
+    expect(wrote.gateEvents[0]).toMatchObject({ blocked: true, lunaAreaRawKind: 'near_me', mergedAreaKind: 'place', areaSource: 'code' })
+    const kept = await traced('quán cà phê yên tĩnh gần Nhà Thờ Đức Bà', { flag: '1', luna: withArea('gần Nhà Thờ Đức Bà'), gps: GPS_HN })
+    expect(kept.gateEvents[0]).toMatchObject({ lunaAreaRawKind: 'place', mergedAreaKind: 'place', areaSource: 'luna_raw' })
+    expect(JSON.stringify(wrote.traceEvents.filter(e => e.ev === 'search_now_gate'))).not.toMatch(/Hồ Chí Minh|Nhà Thờ|tuyên ngôn/)
+  }, 60000)
+
+  it('F-7: loop.toolsOffered and search_now_gate_outcome.toolsOffered are the same value on a blocked turn (names of the offered tools); the value is never []', async () => {
+    const r = await traced('Cho mình hỏi Marie Curie đã nhận giải Nobel nào?', { flag: '1', luna: CHAT_FOOD, reply: 'Trả lời.' })
+    const loop = r.traceEvents.find(e => e.ev === 'loop'), out = r.traceEvents.find(e => e.ev === 'search_now_gate_outcome')
+    expect(loop && out).toBeTruthy()
+    expect(out!.toolsOffered).toEqual(loop!.toolsOffered)
+    expect(out!.toolsOffered).toEqual(['search_places'])
+    for (const e of r.traceEvents) if ('toolsOffered' in e) expect(e.toolsOffered).not.toEqual([])
   }, 60000)
 })

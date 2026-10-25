@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { applySearchNowGate, cityStatedAsPlace, isNearMeOnly, rulesReadVenueRequest, searchNowIntentGate } from './searchNowIntentGate'
+import { applySearchNowGate, areaIsCityWordOnly, cityStatedAsPlace, gateAreaFacts, isNearMeOnly, maskCityWords, rulesReadPlaceOrTripRequest, rulesReadVenueRequest, searchNowIntentGate, streetNameUsedAsPlace } from './searchNowIntentGate'
 import { PLACE_TYPES } from './presearch'
 import { consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
 import type { ConsultTurn } from './consultBrain'
@@ -79,7 +79,9 @@ describe('searchNowIntentGate (pure)', () => {
   })
   it('"chat" with a place the user stated (a district the code read, or an area the intent layer checked) is not blocked', () => {
     expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: 'Quận 3' })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_area' })
-    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Đà Nẵng' }, statedArea: null })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'consult_area' })
+    // Wave 2G (F-1): an area that is only a city ("Đà Nẵng") is no longer a stated place by itself - it is what the code read in the message, which `statedCity` has already judged (see the F-1 block below)
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Quận 3' }, statedArea: null })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'consult_area' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Đà Nẵng' }, statedArea: null })).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place' })
     for (const empty of ['', '   ', null, undefined]) expect(searchNowIntentGate({ consult: { turn: 'chat', area: empty as never }, statedArea: empty as never }).blocked, JSON.stringify(empty)).toBe(true)
   })
   it('Wave 2E (C3): an area that says only "near me" is not a stated place; a city the code read from the user\'s words is', () => {
@@ -87,7 +89,7 @@ describe('searchNowIntentGate (pure)', () => {
       expect(searchNowIntentGate({ consult: { turn: 'chat', area: nearMe }, statedArea: null }), nearMe).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place' })
     }
     // a place inside the near-me phrase is a place
-    for (const placed of ['gần Hồ Gươm, Hà Nội', 'gần đây ở Quận 3', 'Đà Nẵng', 'Quận 7']) {
+    for (const placed of ['gần Hồ Gươm, Hà Nội', 'gần đây ở Quận 3', 'Quận 7']) {
       expect(searchNowIntentGate({ consult: { turn: 'chat', area: placed }, statedArea: null }), placed).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
     }
     expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null, statedCity: true })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_city' })
@@ -123,5 +125,79 @@ describe('CONSULT_SEARCH_NOW_INTENT_GATE flag: ON only for the exact "1" outside
   })
   it('look-alike names do not turn it on', () => {
     for (const k of ['CONSULT_SEARCH_NOW_INTENT_GAT', 'CONSULT_SEARCH_NOW_INTENT_GATES', 'CONSULT_SEARCH_NOW_INTENT_GATE_ON', 'CONSULT_SEARCH_NOW_GATE']) expect(consultSearchNowIntentGateOn({ [k]: '1' }), k).toBe(false)
+  })
+})
+
+describe('Wave 2G · F-1: an `area` that is only a city word is not a second opinion (luna.ts replaces an area the user did not say with the city the code reads, unmasked)', () => {
+  it('areaIsCityWordOnly: a city (with its designators), or a street / dish name that carries a city word, is nothing more - a district, a landmark or a venue in it is more', () => {
+    for (const a of ['Huế', 'Hồ Chí Minh', 'TP.HCM', 'Sa Pa', 'thành phố Đà Nẵng', 'tại Hà Nội', 'tp Hà Nội', 'Nguyễn Huệ', 'bún bò Huế']) expect(areaIsCityWordOnly(a), a).toBe(true)
+    for (const a of ['Quận 1', 'Quận 3, Hồ Chí Minh', 'gần Hồ Gươm, Hà Nội', 'đường Nguyễn Huệ', 'gần chợ Bến Thành', 'Landmark 81', 'Hà Nội, quận Cầu Giấy', '', '   ']) expect(areaIsCityWordOnly(a), a).toBe(false)
+  })
+  it('the gate: a city-only area does not count as a stated place - the same area with a district, a landmark, a stated city or a stated street does', () => {
+    for (const a of ['Huế', 'Hồ Chí Minh', 'Sa Pa', 'TP.HCM', 'Nguyễn Huệ', 'thành phố Đà Nẵng']) expect(searchNowIntentGate({ consult: { turn: 'chat', area: a }, statedArea: null }), a).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place' })
+    for (const a of ['Quận 1', 'gần Nhà Thờ Đức Bà', 'Quận 3, Hồ Chí Minh', 'đường Nguyễn Huệ']) expect(searchNowIntentGate({ consult: { turn: 'chat', area: a }, statedArea: null }), a).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Huế' }, statedArea: null, statedCity: true })).toMatchObject({ blocked: false, statedPlaceFrom: 'user_city' }) // the user used the city as a place: that is what counts, not the area
+    expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Nguyễn Huệ' }, statedArea: null, statedStreet: true })).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+  })
+  it('streetNameUsedAsPlace: a street / dish name that carries a city word is a place after a locative or a street designator, not as the subject of a question', () => {
+    for (const t of ['quán cà phê ở Nguyễn Huệ', 'ăn gì trên đường Nguyễn Huệ', 'dạo phố đi bộ Nguyễn Huệ tối nay', 'tại Nguyễn Huệ có gì vui', 'quanh Nguyễn Huệ có quán nào']) expect(streetNameUsedAsPlace(t), t).toBe(true)
+    for (const t of ['Cho mình hỏi Nguyễn Huệ là vị vua như thế nào?', 'Bún bò Huế có nguồn gốc từ đâu?', 'Hồ Chí Minh sinh năm nào?', '']) expect(streetNameUsedAsPlace(t), t).toBe(false)
+  })
+  it('a message that is only a city is a place (the answer to "which area?"); a question about the city is not', () => {
+    for (const t of ['Đà Nẵng', 'thành phố Hồ Chí Minh', 'ở Hà Nội', 'Huế']) expect(cityStatedAsPlace(t, false), t).toBe(true)
+    for (const t of ['Hồ Chí Minh sinh năm nào?', 'Sa Pa có tuyết không?', 'Nguyễn Huệ là vua nào', 'Huế từng là kinh đô của triều đại nào']) expect(cityStatedAsPlace(t, false), t).toBe(false)
+  })
+})
+
+describe('Wave 2G · F-2: a trip / lodging request keeps its meaning when the city word is taken out of it (the counterfactual that breaks the "travel" circle)', () => {
+  const r = (turn: ConsultTurn, domains: string[], confidence: 'rule' | 'unsure' = 'rule') => ({ decision: { turn, domains }, confidence })
+  it('maskCityWords takes the city out and nothing else (whole tokens, longest alias first)', () => {
+    expect(maskCityWords('di du lich da lat 3 ngay')).toBe('di du lich 3 ngay')
+    expect(maskCityWords('thanh pho ho chi minh co gi vui')).not.toMatch(/ho chi minh/)
+    expect(maskCityWords('')).toBe('')
+  })
+  it('rulesReadPlaceOrTripRequest: a sure, non-chat reading of a venue OR travel domain; chat, unsure and other domains are not', () => {
+    expect(rulesReadPlaceOrTripRequest(r('ask', ['travel']))).toBe(true)
+    expect(rulesReadPlaceOrTripRequest(r('pick', ['food']))).toBe(true)
+    expect(rulesReadPlaceOrTripRequest(r('chat', ['travel']))).toBe(false)
+    expect(rulesReadPlaceOrTripRequest(r('ask', ['travel'], 'unsure'))).toBe(false)
+    expect(rulesReadPlaceOrTripRequest(r('ask', ['shopping']))).toBe(false)
+    expect(rulesReadPlaceOrTripRequest(null)).toBe(false)
+  })
+  it('cityStatedAsPlace asks the injected reader with the city taken out, only when nothing else decided and a city is there; a reader that throws is no evidence', () => {
+    const seen: string[] = []
+    const reader = (answer: boolean) => (t: string) => { seen.push(t); return answer }
+    expect(cityStatedAsPlace('đi du lịch Đà Lạt 3 ngày nên làm gì', false, reader(true))).toBe(true)
+    expect(seen).toHaveLength(1)
+    expect(seen[0]).toContain('du lich'); expect(seen[0]).not.toContain('da lat')
+    expect(cityStatedAsPlace('đi du lịch Đà Lạt 3 ngày nên làm gì', false, reader(false))).toBe(false)
+    expect(cityStatedAsPlace('Hồ Chí Minh sinh năm nào?', false, reader(false))).toBe(false)
+    seen.length = 0
+    expect(cityStatedAsPlace('khách sạn ở Đà Lạt', false, reader(false))).toBe(true) // a locative decided: the reader is not asked
+    expect(cityStatedAsPlace('quán phở Hà Nội', true, reader(false))).toBe(true) // the rules decided
+    expect(cityStatedAsPlace('quán phở bò ngon', false, reader(true))).toBe(false) // no city at all
+    expect(seen).toEqual([])
+    expect(cityStatedAsPlace('tour Hà Nội 3 ngày', false, () => { throw new Error('boom') })).toBe(false)
+  })
+})
+
+describe('Wave 2G · F-5: where the area the gate saw came from (labels only)', () => {
+  const facts = (o: Partial<Parameters<typeof gateAreaFacts>[0]>) => gateAreaFacts({ mergedArea: null, lunaDecisionArea: null, lunaCheck: null, rulesArea: null, ...o })
+  it('no area anywhere', () => { expect(facts({})).toEqual({ mergedAreaKind: 'none', lunaAreaRawKind: 'none', areaSource: 'none' }) })
+  it('the intent layer\'s own string passed the check: luna_raw, with its kind', () => {
+    expect(facts({ mergedArea: 'gần Nhà Thờ Đức Bà', lunaDecisionArea: 'gần Nhà Thờ Đức Bà', lunaCheck: { dropped: [], corrected: [] } })).toEqual({ mergedAreaKind: 'place', lunaAreaRawKind: 'place', areaSource: 'luna_raw' })
+    expect(facts({ mergedArea: 'gần đây', lunaDecisionArea: 'gần đây', lunaCheck: { dropped: [], corrected: [] } })).toEqual({ mergedAreaKind: 'near_me', lunaAreaRawKind: 'near_me', areaSource: 'luna_raw' })
+  })
+  it('the check replaced what the intent layer wrote with a city the code read: the RAW kind is what it wrote, the merged one is a place, the source is code', () => {
+    expect(facts({ mergedArea: 'TP.HCM', lunaDecisionArea: 'TP.HCM', lunaCheck: { dropped: [], corrected: ['area gần đây→TP.HCM'] } })).toEqual({ mergedAreaKind: 'place', lunaAreaRawKind: 'near_me', areaSource: 'code' })
+  })
+  it('the check dropped it: no merged area from the intent layer, the raw kind is still what it wrote; a rules area is "rules"; anything else "other"', () => {
+    expect(facts({ mergedArea: null, lunaDecisionArea: null, lunaCheck: { dropped: ['area vị trí hiện tại'], corrected: [] } })).toEqual({ mergedAreaKind: 'none', lunaAreaRawKind: 'place', areaSource: 'none' })
+    expect(facts({ mergedArea: 'Quận 3', lunaDecisionArea: null, lunaCheck: { dropped: [], corrected: [] }, rulesArea: 'quận 3' })).toMatchObject({ areaSource: 'rules', lunaAreaRawKind: 'none' })
+    expect(facts({ mergedArea: 'Quận 3', rulesArea: 'Quận 7' })).toMatchObject({ areaSource: 'other' })
+  })
+  it('the output carries labels only - never the area text', () => {
+    const out = facts({ mergedArea: 'bí mật Quận 9', lunaDecisionArea: 'bí mật Quận 9', lunaCheck: { dropped: [], corrected: [] } })
+    expect(JSON.stringify(out)).not.toMatch(/bí mật|Quận/)
   })
 })

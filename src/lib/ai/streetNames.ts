@@ -15,3 +15,8 @@ const STREET_OR_DISH = /\b(?:nguyen hue|nguyen thai binh|bun bo hue|com hen hue|
 export function maskStreetNames(folded: string): string {
   return folded.replace(STREET_OR_DISH, m => ' '.repeat(m.length))
 }
+
+/** The street / dish names `maskStreetNames` blanks, with where each starts (Wave 2G: lets a caller see HOW a name is used - after "ở", after "đường" - without a second list). Read-only; same literal. */
+export function streetOrDishRuns(folded: string): Array<{ index: number; text: string }> {
+  return Array.from(folded.matchAll(STREET_OR_DISH), m => ({ index: m.index ?? 0, text: m[0] }))
+}

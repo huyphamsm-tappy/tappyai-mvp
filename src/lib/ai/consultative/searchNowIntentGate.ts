@@ -26,7 +26,7 @@ import type { ConsultTurn } from './consultBrain'
 import type { SearchNow } from './searchNow'
 import { PLACE_TYPES } from './presearch'
 import { cityInText, VIETNAM_CITY_ENTRIES } from '@/lib/ai/tools/vietnamCities'
-import { maskStreetNames } from '@/lib/ai/streetNames'
+import { maskStreetNames, streetOrDishRuns } from '@/lib/ai/streetNames'
 import { normalizeVN } from '@/lib/ai/intent'
 
 export type SearchNowGateReason = 'no_consult_decision' | 'consult_turn' | 'stated_place' | 'chat_turn_no_stated_place'
@@ -46,6 +46,8 @@ export interface SearchNowGateInput {
   statedArea: string | null
   /** The user's last message names a city AS A PLACE (cityStatedAsPlace: street / dish / person names masked, a locative cue or a place request around it). */
   statedCity?: boolean
+  /** Wave 2G: the message uses a street / dish name that carries a city word AS a place (streetNameUsedAsPlace). Only decides whether an `area` that is just such a name counts. */
+  statedStreet?: boolean
 }
 
 // "Near me" is where the user IS. Wave 2F (C-F5): the old test folded the diacritics first, so "gần chợ Bến Thành" and "gần nhà thờ Đức Bà" matched the "gan cho" / "gan nha" of "gần chỗ" / "gần nhà" and a landmark
@@ -73,17 +75,45 @@ const LOCATIVE_BEFORE_CITY: ReadonlySet<string> = new Set(['o', 'tai', 'quanh', 
 const CITY_ALIAS_TOKENS: ReadonlyArray<readonly string[]> = VIETNAM_CITY_ENTRIES.map(([alias]) => alias.split(' ')).sort((a, b) => b.length - a.length)
 
 /**
- * Did the rules router read the message as a request for a PLACE? Sure, not a chat turn, and a venue domain (food / entertainment / spa). `travel` is deliberately NOT counted: the rules read a bare city word as
- * travel ("Hồ Chí Minh sinh năm nào?" → ask [travel]), so for the question "is this city a place?" that reading is the city word again, not independent evidence.
+ * Did the rules router read the message as a request for a PLACE? Sure, not a chat turn, and a venue domain (food / entertainment / spa). `travel` is deliberately NOT counted HERE: the rules read a bare city
+ * word as travel ("Hồ Chí Minh sinh năm nào?" → ask [travel]), so for the question "is this city a place?" that reading is the city word again, not independent evidence. A trip / lodging request is recognised
+ * separately, with the city word taken OUT of the message first (`readWithoutCity` of `cityStatedAsPlace`, Wave 2G).
  */
 export function rulesReadVenueRequest(routed: { decision: { turn: ConsultTurn; domains: readonly string[] }; confidence: 'rule' | 'unsure' } | null | undefined): boolean {
   return !!routed && routed.confidence === 'rule' && routed.decision.turn !== 'chat' && routed.decision.domains.some(d => d === 'food' || d === 'entertainment' || d === 'spa')
 }
 
-export function cityStatedAsPlace(text: string, rulesPlaceRequest: boolean): boolean {
+/**
+ * Wave 2G (C-F2): the same router reading, for a message with its city words removed. A trip / lodging / tour request ("đi du lịch ___ 3 ngày nên làm gì", "khách sạn ___ giá tốt") is still a sure, non-chat
+ * `travel` (or venue) reading without the city, because the words that make it one ("du lịch", "khách sạn", "tour") are not the city; "___ sinh năm nào?" is not. This is the counterfactual that breaks the
+ * circle: only evidence that survives taking the city out counts. Sure and not a chat turn, as for a venue request.
+ */
+export function rulesReadPlaceOrTripRequest(routed: { decision: { turn: ConsultTurn; domains: readonly string[] }; confidence: 'rule' | 'unsure' } | null | undefined): boolean {
+  return !!routed && routed.confidence === 'rule' && routed.decision.turn !== 'chat' && routed.decision.domains.some(d => d === 'food' || d === 'entertainment' || d === 'spa' || d === 'travel')
+}
+
+/** Diacritic-folded text as plain tokens with every city alias taken out (whole tokens, longest alias first). Token scan on purpose: no RegExp built from a constant (feedback: constant-template RegExp failed in the production bundle). */
+export function maskCityWords(folded: string): string {
+  const tokens = folded.split(/[^a-z0-9]+/).filter(Boolean)
+  const kept: string[] = []
+  for (let i = 0; i < tokens.length; i++) {
+    const alias = CITY_ALIAS_TOKENS.find(a => a.every((t, k) => tokens[i + k] === t))
+    if (alias) { i += alias.length - 1; continue }
+    kept.push(tokens[i])
+  }
+  return kept.join(' ')
+}
+
+/**
+ * `readWithoutCity`: reads a message that has its city words taken out and says whether it is still a sure place / trip request (the route passes the rules router; this module stays free of it). Called only when
+ * no other evidence decided and a city is present.
+ */
+export function cityStatedAsPlace(text: string, rulesPlaceRequest: boolean, readWithoutCity?: (cityFreeText: string) => boolean): boolean {
   const masked = maskStreetNames(normalizeVN((text || '').toLowerCase()))
   if (!cityInText(masked)) return false
   if (rulesPlaceRequest) return true
+  // Wave 2G: a message that is nothing but a city ("Đà Nẵng", "thành phố Hồ Chí Minh") is a place - the answer to "which area?" - not a question about the city; with no sentence around it there is no knowledge question to protect.
+  if (maskCityWords(masked).split(/[^a-z0-9]+/).every(t => !t || AREA_CITY_FILLER.has(t))) return true
   const tokens = masked.split(/[^a-z0-9]+/).filter(Boolean)
   for (let i = 0; i < tokens.length; i++) {
     const alias = CITY_ALIAS_TOKENS.find(a => a.every((t, k) => tokens[i + k] === t))
@@ -93,7 +123,62 @@ export function cityStatedAsPlace(text: string, rulesPlaceRequest: boolean): boo
     if (before !== undefined && (LOCATIVE_BEFORE_CITY.has(before) || (before === 'pho' && twoBefore === 'thanh'))) return true
     i += alias.length - 1
   }
+  if (readWithoutCity) { try { if (readWithoutCity(maskCityWords(masked).replace(/\s+/g, ' ').trim())) return true } catch { /* an unreadable message is not evidence */ } }
   return false
+}
+
+// Wave 2G (C-F1): the intent layer's `area` is not always something the user said. When Luna writes an `area` the user's words do not contain, luna.ts replaces it with the city the CODE reads in the message
+// (cityInText on the raw text: no street / dish mask), so "Nguyễn Huệ là vua nào?", "Hồ Chí Minh đọc tuyên ngôn ở đâu?" or "Sa Pa có tuyết không?" arrive as `area = Huế / Hồ Chí Minh / Sa Pa` and switched
+// the gate off again, past the F3 test above. An `area` that is only a city name carries no evidence beyond the message itself, which `statedCity` (cityStatedAsPlace) has already judged with the structural test;
+// so a city-only `area` is not a second opinion and does not count. The same holds for an `area` that is only a street / dish name carrying a city word ("Nguyễn Huệ": the code reads it as the walking street)
+// unless the message uses that name as a place (`statedStreet`: after "ở" / "tại", or as "đường ..."). An `area` that names more than that (a district number, a landmark, a venue) is unchanged.
+const AREA_CITY_FILLER: ReadonlySet<string> = new Set([...LOCATIVE_BEFORE_CITY, 'thanh', 'pho', 'khu', 'vuc', 'vung'])
+/** True when an area string is nothing but a city word (with its designators: "thành phố", "tỉnh", "ở", "tại"...) or a street / dish name that carries one. A district, a landmark or a venue in it makes it more than that. */
+export function areaIsCityWordOnly(area: string): boolean {
+  const folded = normalizeVN((area || '').toLowerCase())
+  if (!cityInText(folded)) return false
+  return maskCityWords(maskStreetNames(folded)).split(/[^a-z0-9]+/).filter(t => t && !AREA_CITY_FILLER.has(t)).length === 0
+}
+
+/**
+ * Is a street / dish name that carries a city word USED as a place in this message? Yes when the name is itself "đường X" / "phố đi bộ X" / "ngõ X" (a designator inside the run) or sits right after a
+ * locative word ("ở Nguyễn Huệ", "tại ...", "quanh ..."): the same closed class `cityStatedAsPlace` reads before a city. "Nguyễn Huệ là vua nào" is neither.
+ */
+export function streetNameUsedAsPlace(text: string): boolean {
+  const folded = normalizeVN((text || '').toLowerCase())
+  for (const run of streetOrDishRuns(folded)) {
+    if (/^(?:duong|pho di bo|street|dai lo|ngo|hem)\s/.test(run.text)) return true
+    const before = folded.slice(0, run.index).split(/[^a-z0-9]+/).filter(Boolean).pop()
+    if (before !== undefined && (LOCATIVE_BEFORE_CITY.has(before) || STREET_DESIGNATOR_BEFORE.has(before))) return true
+  }
+  return false
+}
+const STREET_DESIGNATOR_BEFORE: ReadonlySet<string> = new Set(['duong', 'pho', 'ngo', 'hem', 'street', 'bo', 'lo']) // "đường", "phố", "ngõ", "hẻm", "đi bộ", "đại lộ": the designator words that sit right before a street's name
+
+export type GateAreaKind = 'none' | 'near_me' | 'place'
+export type GateAreaSource = 'none' | 'luna_raw' | 'code' | 'rules' | 'other'
+const areaKind = (a: string | null | undefined): GateAreaKind => (!a || !a.trim() ? 'none' : isNearMeOnly(a) ? 'near_me' : 'place')
+const sameArea = (a: string | null | undefined, b: string | null | undefined): boolean => !!a && !!b && a.trim().toLowerCase() === b.trim().toLowerCase()
+
+/**
+ * Wave 2G (M6, F-5): where the area the gate saw came from, as LABELS only (never the text). `mergedAreaKind` is the area the route ended with (rules, the intent layer and code merged);
+ * `lunaAreaRawKind` is what the intent layer itself wrote before the code checked it against the user's words (a corrected or dropped area shows up in `check` as "area <raw>→<coded>" / "area <raw>");
+ * `areaSource` says who the merged area is from: `luna_raw` (the intent layer's own string passed the check), `code` (the check replaced it with a city the code read), `rules` (the rules router's area),
+ * `other` (none of those match), `none`.
+ */
+export function gateAreaFacts(i: { mergedArea: string | null | undefined; lunaDecisionArea: string | null | undefined; lunaCheck: { dropped: readonly string[]; corrected: readonly string[] } | null | undefined; rulesArea: string | null | undefined }): { mergedAreaKind: GateAreaKind; lunaAreaRawKind: GateAreaKind; areaSource: GateAreaSource } {
+  const entry = (list: readonly string[] | undefined): string | null => { const e = (list ?? []).find(x => x.startsWith('area ')); return e ? e.slice(5).split('→')[0] : null }
+  const corrected = entry(i.lunaCheck?.corrected), dropped = entry(i.lunaCheck?.dropped)
+  const raw = corrected ?? dropped ?? i.lunaDecisionArea ?? null
+  const mergedAreaKind = areaKind(i.mergedArea)
+  let areaSource: GateAreaSource = 'none'
+  if (mergedAreaKind !== 'none') {
+    if (corrected !== null && sameArea(i.lunaDecisionArea, i.mergedArea)) areaSource = 'code'
+    else if (corrected === null && dropped === null && sameArea(i.lunaDecisionArea, i.mergedArea)) areaSource = 'luna_raw'
+    else if (sameArea(i.rulesArea, i.mergedArea)) areaSource = 'rules'
+    else areaSource = 'other'
+  }
+  return { mergedAreaKind, lunaAreaRawKind: areaKind(raw), areaSource }
 }
 
 export function searchNowIntentGate(input: SearchNowGateInput): SearchNowGate {
@@ -101,7 +186,7 @@ export function searchNowIntentGate(input: SearchNowGateInput): SearchNowGate {
   if (!c) return { blocked: false, reason: 'no_consult_decision', consultTurn: null, statedPlaceFrom: null }
   if (c.turn !== 'chat') return { blocked: false, reason: 'consult_turn', consultTurn: c.turn, statedPlaceFrom: null }
   const area = c.area?.trim() ?? ''
-  const from: SearchNowGate['statedPlaceFrom'] = input.statedArea?.trim() ? 'user_area' : input.statedCity ? 'user_city' : area && !isNearMeOnly(area) ? 'consult_area' : null
+  const from: SearchNowGate['statedPlaceFrom'] = input.statedArea?.trim() ? 'user_area' : input.statedCity ? 'user_city' : area && !isNearMeOnly(area) && (!areaIsCityWordOnly(area) || input.statedStreet) ? 'consult_area' : null
   if (from) return { blocked: false, reason: 'stated_place', consultTurn: c.turn, statedPlaceFrom: from }
   return { blocked: true, reason: 'chat_turn_no_stated_place', consultTurn: c.turn, statedPlaceFrom: null }
 }
