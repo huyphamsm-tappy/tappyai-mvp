@@ -47,6 +47,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'ROUTE_TOOL_OFFER_GUARD',
   // round closure: the Serper REQUEST cap (serperRequestCap.ts): L1 per turn, L2 per run; default OFF. A paid run refuses to start unless all three are armed (liveTrial.ts)
   'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
+  // Wave 2: product-behaviour flags, default OFF (src/lib/config/consultFlags.ts); a paid run states each one explicitly (unset, 0 or 1)
+  'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

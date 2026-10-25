@@ -38,6 +38,7 @@
 import { AsyncLocalStorage } from 'node:async_hooks'
 import { randomUUID } from 'node:crypto'
 import { hasBoundedSerperCreditScope } from './serperToolBudget'
+import { traceToolCall } from './toolTrace'
 
 export const REQUEST_CAP_FLAG = 'CONSULT_REQUEST_CAP'
 export const REQUEST_CAP_PER_TURN_ENV = 'CONSULT_REQUEST_CAP_PER_TURN'
@@ -100,10 +101,11 @@ export function currentRequestCapTurn(): RequestCapTurn | undefined { return tur
 
 /** Same wrap point as wrapToolsWithTurnWebTicket: the turn is the current one inside every tool.execute(), wherever the stream calls it from. */
 export function wrapToolsWithRequestCap<T extends Record<string, unknown>>(tools: T, turn: RequestCapTurn): T {
-  for (const t of Object.values(tools)) {
+  for (const [name, t] of Object.entries(tools)) {
     const def = t as { execute?: (...a: unknown[]) => unknown }
     const orig = def?.execute
-    if (typeof orig === 'function') def.execute = (...a: unknown[]) => turnStore.run(turn, () => orig.apply(def, a))
+    // traceToolCall returns exactly `orig.apply(def, a)` unless the bench has set an observer (toolTrace.ts): production behaviour is unchanged.
+    if (typeof orig === 'function') def.execute = (...a: unknown[]) => turnStore.run(turn, () => traceToolCall(name, a[0], () => orig.apply(def, a)))
   }
   return tools
 }

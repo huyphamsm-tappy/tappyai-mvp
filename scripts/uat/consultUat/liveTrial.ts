@@ -44,6 +44,7 @@ import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
 import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
+import { currentToolCall, setToolTraceObserver } from '@/lib/ai/tools/toolTrace'
 import { currentTurn } from './turnScope'
 import { UAT_TURNS, type UatTurn } from './questions'
 import { REQUEST_CAP_MAX_PER_RUN, REQUEST_CAP_MAX_PER_TURN, REQUEST_CAP_PER_RUN_ENV, REQUEST_CAP_PER_TURN_ENV, beginRequestCapRun, endRequestCapRun, parseCapValue, requestCapOn } from '@/lib/ai/tools/serperRequestCap'
@@ -66,14 +67,57 @@ const OSM_PATHS: Readonly<Record<string, readonly string[]>> = {
   'maps.mail.ru': ['/osm/tools/overpass/api/interpreter'],
 }
 export const OSM_FALLBACK_HOSTS: readonly string[] = Object.keys(OSM_PATHS)
-/** True only for the extension mode, spelled exactly. */
-export const osmFallbackAllowed = (env: Record<string, string | undefined>): boolean => env.BENCH_TRIAL_MODE === 'dev-multi'
+/**
+ * Wave 2 (owner decision a): in the same extension mode, the ONE endpoint the web_search fallback asks when Serper returns no rows (common.ts webSearchImpl): exactly host
+ * html.duckduckgo.com and exact path /html/, https, default port. Same rules as the OSM hosts: no wildcard, no subdomain, a redirect is never followed, a COUNT per host (never the
+ * query), free (outside the request cap and the USD gate). Every other mode blocks it.
+ */
+const DDG_PATHS: Readonly<Record<string, readonly string[]>> = { 'html.duckduckgo.com': ['/html/'] }
+export const DDG_FALLBACK_HOSTS: readonly string[] = Object.keys(DDG_PATHS)
+/** The extension-only endpoints: the three OSM ones and the DuckDuckGo one. */
+const EXTENSION_PATHS: Readonly<Record<string, readonly string[]>> = { ...OSM_PATHS, ...DDG_PATHS }
+/** Wave 2 · P1.2: what the result file keeps about one tool call. Counts and flags only; the query text only in the extension mode; never a result's content. */
+export interface ToolCallRecord {
+  turn: string | null
+  call: number
+  tool: string
+  ms: number
+  ok: boolean
+  /** Rows the result held (null when the shape has no list). */
+  rows: number | null
+  /** Who really answered: serper | duckduckgo | none (no rows, a note or a provider error) | other (a tool without that notion). */
+  provider: 'serper' | 'duckduckgo' | 'none' | 'other'
+  empty: boolean
+  serperPaths: string[]
+  ddg: number
+  osm: number
+  query?: string
+}
+const ROW_LISTS = ['results', 'rows', 'items', 'products', 'entities', 'places', 'offers', 'hits', 'data']
+/** Pure. How many rows a tool result holds: an array is its length; an object, the length of its first list among the usual names; otherwise null. */
+export function rowsOfToolResult(result: unknown): number | null {
+  if (Array.isArray(result)) return result.length
+  if (result !== null && typeof result === 'object') for (const k of ROW_LISTS) { const v = (result as Record<string, unknown>)[k]; if (Array.isArray(v)) return v.length }
+  return null
+}
+/** Pure. The provider that answered, from the result's own `source` when it has one. */
+export function providerOfToolResult(result: unknown, rows: number | null): ToolCallRecord['provider'] {
+  const src = result !== null && typeof result === 'object' ? (result as { source?: unknown }).source : undefined
+  if (typeof src === 'string') return /serper/i.test(src) ? 'serper' : /duckduckgo/i.test(src) ? 'duckduckgo' : 'other'
+  if (rows === 0) return 'none'
+  if (result !== null && typeof result === 'object' && ('note' in result || 'provider_status' in result) && !(rows !== null && rows > 0)) return 'none'
+  return 'other'
+}
 
-/** Pure. `ok` only for https, no explicit port, no credentials, an allowed host and an allowed exact path. `label` names what was blocked (a host, host+path, or "(unparseable)"). `allowOsm` (default false) adds the three OSM endpoints above. */
-export function isAllowedRequest(url: string, allowOsm = false): { ok: true; host: string } | { ok: false; label: string } {
+/** True only for the extension mode, spelled exactly. (One rule for every extension-only host.) */
+export const osmFallbackAllowed = (env: Record<string, string | undefined>): boolean => env.BENCH_TRIAL_MODE === 'dev-multi'
+export const extensionHostsAllowed = osmFallbackAllowed
+
+/** Pure. `ok` only for https, no explicit port, no credentials, an allowed host and an allowed exact path. `label` names what was blocked (a host, host+path, or "(unparseable)"). `allowExtension` (default false) adds the extension-only endpoints above (OSM and DuckDuckGo). */
+export function isAllowedRequest(url: string, allowExtension = false): { ok: true; host: string } | { ok: false; label: string } {
   let u: URL
   try { u = new URL(url) } catch { return { ok: false, label: '(unparseable)' } }
-  const paths = ALLOWED_PATHS[u.hostname] ?? (allowOsm && Object.hasOwn(OSM_PATHS, u.hostname) ? OSM_PATHS[u.hostname] : undefined)
+  const paths = ALLOWED_PATHS[u.hostname] ?? (allowExtension && Object.hasOwn(EXTENSION_PATHS, u.hostname) ? EXTENSION_PATHS[u.hostname] : undefined)
   if (!paths) return { ok: false, label: u.hostname }
   if (u.protocol !== 'https:' || u.port !== '' || u.username !== '' || u.password !== '') return { ok: false, label: `${u.protocol}//${u.username || u.password ? '(credentials)@' : ''}${u.hostname}${u.port ? `:${u.port}` : ''}` }
   if (!paths.includes(u.pathname)) return { ok: false, label: `${u.hostname}${u.pathname}` }
@@ -139,6 +183,10 @@ export interface TrialSummary {
   hostRequests: Record<string, number>
   /** Requests sent to each of the three OSM fallback hosts (always the three keys; all 0 outside the extension mode, where they are blocked). A count only: free hosts, outside the request cap and the USD gate. */
   osmRequests: Record<string, number>
+  /** Requests sent to the DuckDuckGo fallback host of web_search (always the one key; 0 outside the extension mode, where it is blocked). A count only: free host, outside the request cap and the USD gate. */
+  ddgRequests: Record<string, number>
+  /** Wave 2 · P1.2: the trace in numbers. The turn-tagged logs themselves (requestLog, blockedLog, toolCalls) are in the result file. */
+  trace: { toolCalls: number; emptyToolCalls: number; requestsWithTurn: number; requestsLogged: number; blocked: Array<{ turn: string | null; label: string }> }
   /** Quota option (d): whether the free-question counter was reset before each turn (ON only for mode dev-multi + flag 1), why, and how many resets were really made. */
   quotaReset: { on: boolean; reason: string; resets: number }
   refusals: number
@@ -182,7 +230,8 @@ export function isBenchmarkEligible(turns: readonly UatTurn[], runValid: boolean
 }
 
 const TWELVE = new Set(UAT_TURNS.map(t => questionKey(t.text)))
-const FLAGS_IN_EFFECT = ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE', 'BENCH_SPEND_RUN_CAP_USD']
+// (read at summary time: the wave-2 flag list is declared further down) the value of each is printed as the run saw it, "unset" when it was not set
+const flagsInEffectNames = (): string[] => ['CONSULTATIVE_V1', 'CONSULT_V2', 'CONSULT_LUNA', 'TURN_WEB_TICKET', 'SEARCH_FALLBACK_GATE', 'BENCH_SPEND_RUN_CAP_USD', QUOTA_RESET_FLAG, ...WAVE2_FLAGS]
 
 /**
  * WHY THESE VARIABLES EXIST (round 2f): the real trial runs under the project's vitest setup (src/test/consultativeFlag.setup.ts), which OVERWRITES
@@ -280,6 +329,21 @@ export function quotaResetFlagReasons(env: Record<string, string | undefined>): 
   return v === undefined || v === '0' || v === '1' ? [] : [`${QUOTA_RESET_FLAG} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`]
 }
 
+/**
+ * Wave 2: the product-behaviour flags of this round. Each is read by the product as ON only when it is exactly "1" (src/lib/config/consultFlags.ts) and every one defaults to OFF
+ * (unset = the old behaviour, byte for byte). A paid run states them explicitly: the preflight accepts unset, 0 or 1 and refuses anything else by name; the summary, the
+ * result file, the preflight report and Gate 1 print the state the configuration really has (never an assumed ON).
+ */
+export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT']
+/** Pure. One reason per wave-2 flag whose value is not unset, 0 or 1. */
+export function wave2FlagReasons(env: Record<string, string | undefined>): string[] {
+  return WAVE2_FLAGS.filter(k => { const v = env[k]; return !(v === undefined || v === '0' || v === '1') }).map(k => `${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`)
+}
+/** Pure. The state each wave-2 flag really has: ON only for the value "1". */
+export function wave2FlagState(env: Record<string, string | undefined>): Record<string, 'ON' | 'OFF'> {
+  return Object.fromEntries(WAVE2_FLAGS.map(k => [k, env[k] === '1' ? 'ON' : 'OFF' as const]))
+}
+
 /** The message for an OpenAI key that is there but is not shaped like one. Names the variable and the rule; holds no character of the value. */
 export const OPENAI_KEY_SHAPE_REASON = 'OPENAI_API_KEY không đúng dạng key OpenAI (phải bắt đầu bằng sk-): kiểm tra có dán nhầm key khác hoặc đảo thứ tự hai ô không'
 /**
@@ -294,7 +358,7 @@ export function openaiKeyShapeReasons(env: Record<string, string | undefined>): 
 
 /** Pure: no file, no network. Every reason at once. Exported for the preflight report (preflightReport.ts), which runs the same checks without the trial. */
 export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env), ...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env)]
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env), ...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env), ...wave2FlagReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, benchModeOf(env))
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -389,7 +453,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     const deny = (proto: 'http' | 'https') => function (...args: unknown[]): never { throw denied(hostLabel(nodeRequestUrl(proto, args))) }
     setNode(deny('https') as never, deny('https') as never, deny('http') as never, deny('http') as never)
   }
-  const closeTrial = (): void => { if (mode === 'deny') denyNetwork(); else { restoreNetwork(); restoreConsole() } }
+  const closeTrial = (): void => { setToolTraceObserver(null); if (mode === 'deny') denyNetwork(); else { restoreNetwork(); restoreConsole() } }
   const controls: TrialControls = { lateAttempts: () => [...late], release: () => { if (mode === 'deny') { restoreNetwork(); restoreConsole() } } }
   // In 'deny' mode the network is closed and the console filtered from the very start: a refusal (preflight, question, runner) leaves them so, not open.
   if (mode === 'deny') { filterConsole(); denyNetwork() }
@@ -419,6 +483,8 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const redirects: Array<{ host: string; status: number }> = []
   /** Requests SENT to each of the three OSM fallback hosts: a count per host, nothing else (no query, URL or coordinate is kept). Always the three keys. */
   const osmCounts = (): Record<string, number> => Object.fromEntries(OSM_FALLBACK_HOSTS.map(h => [h, sent[h] ?? 0]))
+  /** The same for the DuckDuckGo fallback host (Wave 2): a count only. */
+  const ddgCounts = (): Record<string, number> => Object.fromEntries(DDG_FALLBACK_HOSTS.map(h => [h, sent[h] ?? 0]))
   // E1 investigation: an allowed host that answers 401/403 has rejected the credentials. Only host and status are kept (never a body: the provider echoes part of the key in it).
   const providerRejections: Array<{ host: string; status: number }> = []
   // THE SHARED "CLOSED" STATE (round 3a). Set the moment the turn is over - BEFORE the drain and before the process tree is ended. Every wrapper below looks at it AT
@@ -430,15 +496,22 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   const quotaState = quotaResetState(env)
   let quotaResets = 0
   const quotaSummary = (): { on: boolean; reason: string; resets: number } => ({ on: quotaState.on, reason: quotaState.reason, resets: quotaResets })
+  // Wave 2 · P1.2: WHICH TURN made each request. Host + path only (the path is one of the allow-listed ones: never a query, a URL or a body); `call` = the tool call that made it (null for the model's own calls).
+  const requestLog: Array<{ n: number; turn: string | null; host: string; path: string; call: number | null }> = []
+  const blockedLog: Array<{ turn: string | null; label: string; late?: boolean }> = []
+  const toolCalls: ToolCallRecord[] = []
   const closedAttempt = (url: string): never => {
     const d = isAllowedRequest(url, osmAllowed)
     if (!d.ok) blocked.add(redactSecrets(d.label, env))
+    blockedLog.push({ turn: currentTurn()?.id ?? null, label: redactSecrets(d.ok ? hostLabel(url) : d.label, env), late: true })
     throw denied(hostLabel(url))
   }
   const admit = (url: string): void => {
     const d = isAllowedRequest(url, osmAllowed)
-    if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
+    if (!d.ok) { const label = redactSecrets(d.label, env); blocked.add(label); blockedLog.push({ turn: currentTurn()?.id ?? null, label }); throw new Error(`trial: ${label} is not allowed (blocked before it was sent)`) }
     sent[d.host] = (sent[d.host] ?? 0) + 1
+    let path = ''; try { path = new URL(url).pathname } catch { path = '' }
+    requestLog.push({ n: requestLog.length + 1, turn: currentTurn()?.id ?? null, host: d.host, path, call: currentToolCall()?.call ?? null })
   }
   filterConsole()
   globalThis.fetch = (async (req: unknown, init?: RequestInit) => {
@@ -463,6 +536,19 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   }
   setNode(guardNode('https', originalNode.httpsRequest as never) as never, guardNode('https', originalNode.httpsGet as never) as never, guardNode('http', originalNode.httpRequest as never) as never, guardNode('http', originalNode.httpGet as never) as never)
 
+  // Wave 2 · P1.2: one record per tool call. The observer is bench-only (toolTrace.ts does nothing without it) and is removed when the trial closes.
+  setToolTraceObserver(e => {
+    const mine = requestLog.filter(x => x.call === e.call)
+    const rows = e.threw ? null : rowsOfToolResult(e.result)
+    const args = e.args !== null && typeof e.args === 'object' ? e.args as { query?: unknown; q?: unknown } : {}
+    const q = typeof args.query === 'string' ? args.query : typeof args.q === 'string' ? args.q : null
+    toolCalls.push({
+      turn: currentTurn()?.id ?? null, call: e.call, tool: e.tool, ms: e.ms, ok: !e.threw, rows, provider: e.threw ? 'none' : providerOfToolResult(e.result, rows), empty: !e.threw && rows === 0,
+      serperPaths: mine.filter(x => x.host === 'google.serper.dev').map(x => x.path), ddg: mine.filter(x => DDG_FALLBACK_HOSTS.includes(x.host)).length, osm: mine.filter(x => OSM_FALLBACK_HOSTS.includes(x.host)).length,
+      // the query text only in the extension mode (cut at 200 characters, redacted); the acceptance mode keeps counts only
+      ...(osmAllowed && q !== null ? { query: redactSecrets(q.slice(0, 200), env) } : {}),
+    })
+  })
   const trialTurn: UatTurn = { id: 'TRIAL', conversation: 'TRIAL', turn: 1, text: question }
   const trialTurns: readonly UatTurn[] = input.turns ? [...input.turns] : [trialTurn]
   // L2: this run (this process) gets its own request total. The preflight already refused an invalid value; this is the same check at the point of use.
@@ -482,7 +568,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
-      extraResult: () => ({ osmRequests: osmCounts(), freeQuotaReset: quotaSummary() }),
+      extraResult: () => ({ osmRequests: osmCounts(), ddgRequests: ddgCounts(), freeQuotaReset: quotaSummary(), requestLog, blockedLog, toolCalls }),
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
@@ -540,10 +626,11 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     })),
     costState: records.length === 0 ? 'none' : allKnown ? 'known' : 'unknown', usd: usdSum, ms: records.length === 0 ? null : records.reduce((a, r) => a + r.ms, 0),
     tools: [...new Set(records.flatMap(r => r.toolNames))],
-    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(), quotaReset: quotaSummary(),
+    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(), ddgRequests: ddgCounts(), quotaReset: quotaSummary(),
+    trace: { toolCalls: toolCalls.length, emptyToolCalls: toolCalls.filter(c => c.empty).length, requestsWithTurn: requestLog.filter(x => x.turn !== null).length, requestsLogged: requestLog.length, blocked: blockedLog.map(b => ({ turn: b.turn, label: b.label })) },
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, providerRejections, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
-    flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
+    flagsInEffect: Object.fromEntries(flagsInEffectNames().map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
     requestCap: { perTurnLimit: parseCapValue(env[REQUEST_CAP_PER_TURN_ENV], REQUEST_CAP_MAX_PER_TURN), runLimit: capFinal?.limit ?? null, sent: capFinal?.sent ?? 0, refused: capFinal?.refused ?? 0 },
     budget: { mode: benchModeOf(env), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd },
   }
@@ -563,6 +650,8 @@ export function formatSummary(s: TrialSummary): string {
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
     `ledger: llm=${s.llmRequests} serper=${s.serperRequests} refusals=${s.refusals} photoSkips=${s.photoSkips} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
     `OSM fallback hosts (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.osmRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
+    `tool calls recorded: ${s.trace.toolCalls} (empty: ${s.trace.emptyToolCalls}) | requests logged with a turn id: ${s.trace.requestsWithTurn}/${s.trace.requestsLogged}${s.trace.blocked.length ? ` | blocked by turn: ${[...s.trace.blocked.reduce((m, b) => m.set(`${b.turn ?? '(no turn)'}: ${b.label}`, (m.get(`${b.turn ?? '(no turn)'}: ${b.label}`) ?? 0) + 1), new Map<string, number>())].map(([k, n]) => `${k}×${n}`).join('; ')}` : ''}`,
+    `DuckDuckGo fallback host (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.ddgRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
     `free-question quota reset per turn: ${s.quotaReset.on ? 'ON' : 'OFF'} (reason: ${s.quotaReset.reason}) | resets: ${s.quotaReset.resets}${s.quotaReset.on ? ' (the Free limit of 10 questions a day was NOT applied; the benchmark measures the advice, not that limit)' : ' (the real Free limit of 10 questions a day applies: more than 10 questions stop the run with HTTP 429)'}`,
     `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,

@@ -32,8 +32,17 @@ export const marker = (kind, nonce) => `<<TRIAL-${kind}:${nonce}>>`
 export const SUMMARY_BEGIN = 'SUMMARY-BEGIN', SUMMARY_END = 'SUMMARY-END', REFUSED_BEGIN = 'REFUSED-BEGIN', REFUSED_END = 'REFUSED-END'
 /** Round 3f: the preflight report block (conditions ĐẠT / KHÔNG ĐẠT). Printed by a child run with BENCH_TRIAL_PREFLIGHT_ONLY=1, which sends nothing. */
 export const PREFLIGHT_BEGIN = 'PREFLIGHT-BEGIN', PREFLIGHT_END = 'PREFLIGHT-END'
-/** Round 3f · Gate 1: the one line the Owner types, by hand, before the first request of a real run. Compared exactly. */
-export const GATE1_LINE = 'CHẠY LƯỢT ĐO D8 D2 TRẦN 0.10'
+/**
+ * Round 3f · Gate 1: the one line the Owner types (or pastes) before the first request of a real run. Compared exactly.
+ * Wave 2: built from the configuration the run really has - ASCII only (no diacritics to mistype), the budget MODE and the RUN cap in force - so a line that was given for
+ * another mode or another cap does not confirm this run. `CHAY LUOT DO <EXTENSION|ACCEPTANCE> TRAN <run cap>`, e.g. `CHAY LUOT DO EXTENSION TRAN 1.75`.
+ * null when the cap is not a plain decimal number (the preflight refuses such a run before Gate 1; this is the same check at the point of use).
+ */
+export function gate1Line(env) {
+  const cap = String(env.BENCH_SPEND_RUN_CAP_USD ?? '').trim()
+  if (!/^[0-9]+(\.[0-9]+)?$/.test(cap)) return null
+  return `CHAY LUOT DO ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'EXTENSION' : 'ACCEPTANCE'} TRAN ${cap}`
+}
 
 /** The system variables node and vitest need on Windows / POSIX. Nothing that could change where a connection goes. */
 export const SYSTEM_ENV_NAMES = [
@@ -70,6 +79,8 @@ export const FLAG_ENV_NAMES = [
   'ROUTE_TOOL_OFFER_GUARD',
   // round closure: the Serper REQUEST cap (serperRequestCap.ts); default OFF. A paid run refuses to start unless all three are armed
   'CONSULT_REQUEST_CAP', 'CONSULT_REQUEST_CAP_PER_TURN', 'CONSULT_REQUEST_CAP_PER_RUN',
+  // Wave 2: product-behaviour flags, default OFF (src/lib/config/consultFlags.ts); unset or 0 = the old behaviour, 1 = ON
+  'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
@@ -329,6 +340,13 @@ export function quotaLines(env) {
   return [`hạn mức Free (10 câu/ngày): ÁP DỤNG như thật (${why})${ignored} — nếu có hơn 10 lượt, run sẽ dừng ở lượt 11 (HTTP 429 free_limit_reached)`]
 }
 
+/** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT']
+export function wave2Line(env) {
+  const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
+  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${env[k] === '1' ? 'BẬT' : 'TẮT'})`).join(', ')}`
+}
+
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
 export function gate1Summary(env, questionText) {
   const lines = [
@@ -338,9 +356,10 @@ export function gate1Summary(env, questionText) {
     `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.05 USD/lượt ở mọi chế độ`,
     `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
     `mạng được phép: hai dịch vụ trả phí của lần chạy (OpenAI chat completions và Serper; có sổ chi phí)${env.BENCH_TRIAL_MODE === 'dev-multi'
-      ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
-      : '; ba host OSM của search_places bị CHẶN (chế độ nghiệm thu)'}`,
+      ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru) và đúng 1 host DuckDuckGo mà web_search tự gọi khi Serper không có kết quả (html.duckduckgo.com, đường /html/): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
+      : '; ba host OSM và DuckDuckGo của dự phòng tìm kiếm bị CHẶN (chế độ nghiệm thu)'}`,
     ...quotaLines(env),
+    wave2Line(env),
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')
@@ -348,7 +367,10 @@ export function gate1Summary(env, questionText) {
     const turns = questionText.split(/\r?\n/).filter(l => l.trim() !== '').map(l => l.split('|').slice(0, 3).join('|'))
     lines.push(`lượt (id|hội thoại|lượt): ${turns.join('  ')}`)
   }
-  lines.push(`Gõ đúng dòng sau để gửi request đầu tiên: ${GATE1_LINE}`)
+  const confirmLine = gate1Line(env)
+  lines.push(confirmLine === null
+    ? 'KHÔNG THỂ xác nhận: trần chạy BENCH_SPEND_RUN_CAP_USD không phải một số thập phân; không có dòng xác nhận nào hợp lệ, không gửi gì'
+    : `Gõ (hoặc dán) đúng dòng sau, chỉ gồm chữ không dấu, để gửi request đầu tiên: ${confirmLine}`)
   return lines
 }
 
@@ -365,9 +387,11 @@ export async function runFlow({ env, repoRoot, keys = {}, print, child, run, non
   if (pre !== 0) { print('Gate 0 not passed: nothing was sent.'); return pre }
   if (!stdinIsTTY) { print('REFUSED: Gate 1 needs an interactive terminal; nothing was sent.'); return 2 }
   for (const line of gate1Summary(full, questionText)) print(line)
-  // both sides in NFC (some input methods type NFD); a trailing carriage return from the terminal is dropped; nothing else is forgiven
-  const answer = (await askGate1(`> `)).replace(/\r$/, '').normalize('NFC')
-  if (answer !== GATE1_LINE.normalize('NFC')) { print('Gate 1 not confirmed (the line did not match exactly): nothing was sent.'); return 1 }
+  // the line is built from THIS run's configuration (mode and run cap); a trailing carriage return from the terminal is dropped; nothing else is forgiven
+  const expected = gate1Line(full)
+  if (expected === null) { print('Gate 1 cannot be confirmed: the run cap is not a plain decimal number; nothing was sent.'); return 2 }
+  const answer = (await askGate1(`> `)).replace(/\r$/, '')
+  if (answer !== expected) { print('Gate 1 not confirmed (the line did not match exactly): nothing was sent.'); return 1 }
   return runLauncher({ ...common, nonce })
 }
 

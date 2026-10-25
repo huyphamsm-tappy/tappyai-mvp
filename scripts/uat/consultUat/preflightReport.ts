@@ -4,7 +4,7 @@
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
-import { OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
+import { DDG_FALLBACK_HOSTS, OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, WAVE2_FLAGS, wave2FlagReasons, wave2FlagState, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -20,6 +20,7 @@ export interface PreflightReportInput {
 /** The only hosts and paths the trial may reach. Printed so that the Owner sees the list being enforced. */
 export const ALLOW_LIST_TEXT = 'https api.openai.com/v1/chat/completions; google.serper.dev /search /maps /shopping (default port only)'
 /** Added to the printed list in the extension mode only (BENCH_TRIAL_MODE=dev-multi): the three free OSM fallback endpoints of search_places, counted per host. */
+export const DDG_ALLOW_TEXT = `; EXTENSION MODE ONLY, free DuckDuckGo fallback of web_search (counted per host, no cost, outside the request cap and the USD gate): ${DDG_FALLBACK_HOSTS.join(', ')} /html/ only`
 export const OSM_ALLOW_TEXT = `; EXTENSION MODE ONLY, free OSM fallback of search_places (counted per host, no cost, outside the request cap and the USD gate): ${OSM_FALLBACK_HOSTS.join(', ')} on their exact paths`
 
 const KEY_VARS = ['OPENAI_API_KEY', 'SERPER_API_KEY'] as const
@@ -88,7 +89,7 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   // The complete set of checks the real trial runs (caps, confirmation, folder on drive D, flags, allow-list, network switches).
   // The key-shape reason is reported once, on the key's own line above: it is not repeated in this one.
   const full = preflight(env, input.repoRoot, input.execArgv)
-  const shape = new Set([...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env)])
+  const shape = new Set([...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env), ...wave2FlagReasons(env)])
   add('every other check of the real trial (preflight, as the run does it)', full.reasons.filter(r => !shape.has(r)), 'all passed')
 
   // Quota option (d): the value of the flag is checked here (unset, 0 or 1) and the state it gives is printed: ON only for mode dev-multi + flag 1. A 1 outside the extension mode has no effect.
@@ -98,12 +99,16 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   add('free-question quota reset per turn (information; the Free plan allows 10 questions a day)', quotaReasons,
     `${quota.on ? 'ON' : 'OFF'} (${quota.reason})${ignored ? ' | CẢNH BÁO: cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi); hạn mức Free vẫn áp dụng, run dừng ở lượt 11 nếu hơn 10 lượt' : quota.on ? ' | hạn mức Free được đặt lại mỗi lượt (chỉ đo tư vấn)' : ' | hạn mức Free 10 câu/ngày áp dụng như thật: run dừng ở lượt 11 nếu hơn 10 lượt'}`)
 
+  // Wave 2: the product-behaviour flags (unset, 0 or 1; a value outside that is refused by name) and the state each really has.
+  const w2 = wave2FlagState(env)
+  add('wave-2 behaviour flags (information; each defaults to OFF = the old behaviour)', wave2FlagReasons(env), WAVE2_FLAGS.map(k => `${k}=${env[k] ?? 'unset'} (${w2[k]})`).join(' | '))
+
   const unmet = out.filter(c => !c.ok).length
   out.push({
     name: 'budget mode and limits in force (information)', ok: true,
     detail: `mode ${mode} (maximum run cap ${maxRunCapUsd(mode)} USD, per-turn ${MAX_TURN_CAP_USD} USD) | run cap ${env.BENCH_SPEND_RUN_CAP_USD ?? 'unset'} | per-turn cap ${env.BENCH_SPEND_TURN_CAP_USD ?? 'unset'} | L1 ${env.CONSULT_REQUEST_CAP_PER_TURN ?? 'unset'} | L2 ${env.CONSULT_REQUEST_CAP_PER_RUN ?? 'unset'} | conditions not met: ${unmet}`,
   })
-  out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT + (osmFallbackAllowed(env) ? OSM_ALLOW_TEXT : '') })
+  out.push({ name: 'allow-list the run may reach', ok: true, detail: ALLOW_LIST_TEXT + (osmFallbackAllowed(env) ? OSM_ALLOW_TEXT + DDG_ALLOW_TEXT : '') })
   return out
 }
 

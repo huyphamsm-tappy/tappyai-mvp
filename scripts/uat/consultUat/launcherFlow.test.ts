@@ -4,7 +4,7 @@
 // accepts only the exact line and only from a terminal; a failing preflight never reaches Gate 1 or a real child.
 import { EventEmitter } from 'node:events'
 import { describe, expect, it } from 'vitest'
-import { askLine, buildChildEnv, GATE1_LINE, gate1Summary, launcherRefusals, marker, PREFLIGHT_BEGIN, PREFLIGHT_END, readHidden, redactText, runFlow, runLauncher, SUMMARY_BEGIN, SUMMARY_END } from './liveTrialLauncher.mjs'
+import { askLine, buildChildEnv, gate1Line, gate1Summary, launcherRefusals, marker, PREFLIGHT_BEGIN, PREFLIGHT_END, readHidden, redactText, runFlow, runLauncher, SUMMARY_BEGIN, SUMMARY_END } from './liveTrialLauncher.mjs'
 
 const KEY_OPENAI = 'sk-test-SECRET-123'
 const KEY_SERPER = 'serper-SECRET-456'
@@ -13,6 +13,8 @@ const BASE = {
   BENCH_TRIAL_QUESTION_FILE: 'D:/TappyAI-review-artifacts/consultative-round3d/dev-probe.txt', BENCH_TRIAL_OUT_DIR: 'D:/TappyAI-review-artifacts/consultative-round3e/trial-results',
   CONSULTATIVE_V1: '1', BENCH_EXPECT_CONSULTATIVE_V1: '1', CONSULT_V2: '1', BENCH_EXPECT_CONSULT_V2: '1', PATH: process.env.PATH ?? '', SystemRoot: process.env.SystemRoot ?? '',
 }
+// Wave 2: the confirmation line is built from the run's own configuration (ASCII; mode + run cap), not a fixed constant.
+const GATE1_LINE = gate1Line(BASE) as string
 const QUESTIONS = 'D8|D8|1|giá vàng SJC\nD2|D2|1|pin xe máy điện\n'
 const N1 = '0123456789abcdef0123456789abcdef'
 const N2 = 'fedcba9876543210fedcba9876543210'
@@ -44,7 +46,7 @@ describe('Gate 1: the typed line is exact, and only a terminal can give it', () 
     expect(calls[0].env.BENCH_TRIAL_PREFLIGHT_ONLY).toBe('1')
     expect(allOutput(t.lines)).toMatch(/Gate 1 needs an interactive terminal/)
   })
-  for (const wrong of ['', 'chạy lượt đo d8 d2 trần 0.10', 'CHẠY LƯỢT ĐO D8 D2 TRẦN 0.1', 'CHẠY LƯỢT ĐO D8 D2 TRẦN 0.10 ', 'yes']) {
+  for (const wrong of ['', 'chay luot do extension tran 0.10', 'CHAY LUOT DO EXTENSION TRAN 0.1', 'CHAY LUOT DO EXTENSION TRAN 0.100', 'CHAY LUOT DO EXTENSION TRAN 0.10 ', ' CHAY LUOT DO EXTENSION TRAN 0.10', 'CHAY LUOT DO ACCEPTANCE TRAN 0.10', 'CHAY LUOT DO EXTENSION TRAN 1.75', 'CHẠY LƯỢT ĐO D8 D2 TRẦN 0.10', 'yes']) {
     it(`the line "${wrong}" is refused: no real child is started`, async () => {
       const calls: Array<{ env: Record<string, string>; args: string[] }> = []
       const t = trace()
@@ -63,10 +65,35 @@ describe('Gate 1: the typed line is exact, and only a terminal can give it', () 
     expect(calls[1].env.BENCH_LIVE_TRIAL).toBe('I-UNDERSTAND-THIS-SPENDS-REAL-MONEY')
     expect(code).toBe(0)
   })
-  it('an NFD-typed line (some input methods) is accepted: both sides are compared in NFC', async () => {
+  it('the line is ASCII only and is built from the mode and the RUN cap of this run (Wave 2: nothing to mistype with a Vietnamese keyboard)', () => {
+    expect(GATE1_LINE).toBe('CHAY LUOT DO EXTENSION TRAN 0.10')
+    expect(/^[\x20-\x7e]+$/.test(GATE1_LINE)).toBe(true)
+    expect(gate1Line({ ...BASE, BENCH_SPEND_RUN_CAP_USD: '1.75' })).toBe('CHAY LUOT DO EXTENSION TRAN 1.75')
+    expect(gate1Line({ ...BASE, BENCH_TRIAL_MODE: undefined, BENCH_SPEND_RUN_CAP_USD: '0.65' })).toBe('CHAY LUOT DO ACCEPTANCE TRAN 0.65')
+    for (const mode of ['acceptance', 'weird', 'DEV-MULTI', 'dev-multi ', '']) expect(gate1Line({ ...BASE, BENCH_TRIAL_MODE: mode })).toBe('CHAY LUOT DO ACCEPTANCE TRAN 0.10')
+  })
+  it('a line given for ANOTHER cap or ANOTHER mode never confirms this run (the real child is not started)', async () => {
+    const ext175 = { ...BASE, BENCH_SPEND_RUN_CAP_USD: '1.75', BENCH_CONFIRM_SPEND: '1.75' }
+    const acc065 = { ...BASE, BENCH_TRIAL_MODE: undefined, BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' } as Record<string, string | undefined>
+    // the SAME cap in the two modes (0.65 is valid for both): only the mode tells the lines apart
+    const ext065 = { ...BASE, BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }
+    for (const [env, given] of [[ext175, gate1Line(BASE)], [BASE, gate1Line(ext175)], [ext175, gate1Line(acc065)], [acc065, gate1Line(ext175)], [ext065, gate1Line(acc065)], [acc065, gate1Line(ext065)]] as const) {
+      const calls: Array<{ env: Record<string, string>; args: string[] }> = []
+      const code = await runFlow({ env: { ...env } as never, repoRoot: 'D:/x', print: () => {}, run: fakeRun({}, calls), stdinIsTTY: true, askGate1: async () => given as string })
+      expect(code, `${given}`).toBe(1); expect(calls.length).toBe(1)
+    }
+    // and the right line for each configuration does confirm
+    for (const env of [BASE, ext175, acc065]) {
+      const calls: Array<{ env: Record<string, string>; args: string[] }> = []
+      await runFlow({ env: { ...env } as never, repoRoot: 'D:/x', print: () => {}, run: fakeRun({}, calls), stdinIsTTY: true, askGate1: async () => gate1Line(env) as string })
+      expect(calls.length).toBe(2)
+    }
+  })
+  it('a run cap that is not a plain decimal number has no valid line: Gate 1 refuses and nothing is sent', async () => {
+    expect(gate1Line({ ...BASE, BENCH_SPEND_RUN_CAP_USD: '1,75' })).toBeNull(); expect(gate1Line({ ...BASE, BENCH_SPEND_RUN_CAP_USD: undefined })).toBeNull(); expect(gate1Line({ ...BASE, BENCH_SPEND_RUN_CAP_USD: '1.7e0' })).toBeNull()
     const calls: Array<{ env: Record<string, string>; args: string[] }> = []
-    await runFlow({ env: { ...BASE }, repoRoot: 'D:/x', print: () => {}, run: fakeRun({}, calls), stdinIsTTY: true, askGate1: async () => GATE1_LINE.normalize('NFD') })
-    expect(calls.length).toBe(2)
+    const code = await runFlow({ env: { ...BASE, BENCH_SPEND_RUN_CAP_USD: '1,75' }, repoRoot: 'D:/x', print: () => {}, run: fakeRun({}, calls), stdinIsTTY: true, askGate1: async () => 'CHAY LUOT DO EXTENSION TRAN 1,75' })
+    expect(code).toBe(2); expect(calls.length).toBe(1)
   })
   it('a line typed through askLine comes back as typed (the answer is not lost to the close event)', async () => {
     const { PassThrough } = await import('node:stream')

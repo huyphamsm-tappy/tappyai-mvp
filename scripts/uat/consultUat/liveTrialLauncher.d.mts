@@ -21,10 +21,12 @@ export function listDescendants(pid: number, sinceMs?: number): Array<{ pid: num
 export function redactText(text: string, env: Env): string
 export const PREFLIGHT_BEGIN: string
 export const PREFLIGHT_END: string
-export const GATE1_LINE: string
+export function gate1Line(env: Env): string | null
 export function buildChildEnv(parentEnv: Env, opts: { confirm: boolean; nonce: string; preflightOnly?: boolean }): Record<string, string>
 export function gate1Summary(env: Env, questionText: string | null): string[]
 export function quotaLines(env: Env): string[]
+export const WAVE2_FLAG_NAMES: string[]
+export function wave2Line(env: Env): string
 export function readHidden(prompt: string, opts?: { input?: unknown; output?: unknown }): Promise<string>
 export function askLine(prompt: string, opts?: { input?: unknown; output?: unknown; timeoutMs?: number }): Promise<string>
 export function runFlow(opts: {
