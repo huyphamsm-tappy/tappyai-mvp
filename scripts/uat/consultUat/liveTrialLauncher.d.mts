@@ -24,6 +24,7 @@ export const PREFLIGHT_END: string
 export const GATE1_LINE: string
 export function buildChildEnv(parentEnv: Env, opts: { confirm: boolean; nonce: string; preflightOnly?: boolean }): Record<string, string>
 export function gate1Summary(env: Env, questionText: string | null): string[]
+export function quotaLines(env: Env): string[]
 export function readHidden(prompt: string, opts?: { input?: unknown; output?: unknown }): Promise<string>
 export function askLine(prompt: string, opts?: { input?: unknown; output?: unknown; timeoutMs?: number }): Promise<string>
 export function runFlow(opts: {

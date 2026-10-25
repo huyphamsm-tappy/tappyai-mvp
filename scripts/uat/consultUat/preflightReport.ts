@@ -4,7 +4,7 @@
  * Pure apart from the file that the caller reads and passes in (questionText).
  */
 import { benchModeOf, benchSpendGateOn, capToScaled, checkBenchCaps, MAX_TURN_CAP_USD, maxRunCapUsd } from '@/lib/ai/budget/spendGate'
-import { OSM_FALLBACK_HOSTS, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, requestCapReasons } from './liveTrial'
+import { OSM_FALLBACK_HOSTS, QUOTA_RESET_FLAG, connectionRedirectReasons, consultativeConfirmationReasons, openaiKeyShapeReasons, osmFallbackAllowed, preflight, quotaResetFlagReasons, quotaResetState, requestCapReasons } from './liveTrial'
 import { parseDevQuestions } from './devQuestions'
 
 export interface Condition { name: string; ok: boolean; detail: string }
@@ -88,8 +88,15 @@ export function conditionReport(input: PreflightReportInput): Condition[] {
   // The complete set of checks the real trial runs (caps, confirmation, folder on drive D, flags, allow-list, network switches).
   // The key-shape reason is reported once, on the key's own line above: it is not repeated in this one.
   const full = preflight(env, input.repoRoot, input.execArgv)
-  const shape = new Set(openaiKeyShapeReasons(env))
+  const shape = new Set([...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env)])
   add('every other check of the real trial (preflight, as the run does it)', full.reasons.filter(r => !shape.has(r)), 'all passed')
+
+  // Quota option (d): the value of the flag is checked here (unset, 0 or 1) and the state it gives is printed: ON only for mode dev-multi + flag 1. A 1 outside the extension mode has no effect.
+  const quota = quotaResetState(env)
+  const quotaReasons = quotaResetFlagReasons(env)
+  const ignored = env[QUOTA_RESET_FLAG] === '1' && env.BENCH_TRIAL_MODE !== 'dev-multi'
+  add('free-question quota reset per turn (information; the Free plan allows 10 questions a day)', quotaReasons,
+    `${quota.on ? 'ON' : 'OFF'} (${quota.reason})${ignored ? ' | CẢNH BÁO: cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi); hạn mức Free vẫn áp dụng, run dừng ở lượt 11 nếu hơn 10 lượt' : quota.on ? ' | hạn mức Free được đặt lại mỗi lượt (chỉ đo tư vấn)' : ' | hạn mức Free 10 câu/ngày áp dụng như thật: run dừng ở lượt 11 nếu hơn 10 lượt'}`)
 
   const unmet = out.filter(c => !c.ok).length
   out.push({

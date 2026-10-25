@@ -48,6 +48,8 @@ export const TRIAL_ENV_NAMES = [
   'BENCH_EXPECT_CONSULTATIVE_V1', 'BENCH_EXPECT_CONSULT_V2', 'BENCH_TRIAL_QUESTION_FILE', 'BENCH_TRIAL_OUT_DIR',
   // round 3c: 'dev-multi' runs the development turns of the question file in one process (liveTrial.test.ts); unset = one question as before
   'BENCH_TRIAL_MODE',
+  // quota option (d): 1 = reset the free-question counter before each turn, effective ONLY with BENCH_TRIAL_MODE=dev-multi; unset or 0 = the real limit applies
+  'BENCH_RESET_FREE_QUOTA_PER_TURN',
 ]
 /**
  * The benchmark flag names (kept equal to BENCH_FLAG_NAMES in liveRunner.ts by liveTrialLauncher.test.ts). A flag the Owner set is passed on, an unset one stays unset.
@@ -313,6 +315,20 @@ export function askLine(prompt, { input = process.stdin, output = process.stdout
   })
 }
 
+/**
+ * Quota option (d) · the Gate 1 line about the free-plan question limit, from the EFFECTIVE configuration (never "ON" just because the mode is dev-multi).
+ * The decision is the same as quotaResetState in liveTrial.ts (a test compares them): ON only for BENCH_TRIAL_MODE exactly dev-multi AND BENCH_RESET_FREE_QUOTA_PER_TURN exactly 1.
+ */
+export function quotaLines(env) {
+  const flag = env.BENCH_RESET_FREE_QUOTA_PER_TURN
+  const on = env.BENCH_TRIAL_MODE === 'dev-multi' && flag === '1'
+  const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,24}$/.test(v) ? v : JSON.stringify(v.slice(0, 24)))
+  const why = `mode=${show(env.BENCH_TRIAL_MODE)}, flag=${show(flag)}`
+  if (on) return [`hạn mức Free (10 câu/ngày): được ĐẶT LẠI mỗi lượt (${why}) — chỉ để đo chất lượng tư vấn, không phải hành vi thật; user, hội thoại, lịch sử, cache, trần chi phí và trần request giữ nguyên`]
+  const ignored = flag === '1' ? ' — cờ không có hiệu lực ở chế độ này (chỉ BENCH_TRIAL_MODE=dev-multi)' : ''
+  return [`hạn mức Free (10 câu/ngày): ÁP DỤNG như thật (${why})${ignored} — nếu có hơn 10 lượt, run sẽ dừng ở lượt 11 (HTTP 429 free_limit_reached)`]
+}
+
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */
 export function gate1Summary(env, questionText) {
   const lines = [
@@ -324,6 +340,7 @@ export function gate1Summary(env, questionText) {
     `mạng được phép: hai dịch vụ trả phí của lần chạy (OpenAI chat completions và Serper; có sổ chi phí)${env.BENCH_TRIAL_MODE === 'dev-multi'
       ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
       : '; ba host OSM của search_places bị CHẶN (chế độ nghiệm thu)'}`,
+    ...quotaLines(env),
     `khóa: OPENAI_API_KEY ${(env.OPENAI_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}, SERPER_API_KEY ${(env.SERPER_API_KEY ?? '') !== '' ? 'SET' : 'UNSET'}`,
   ]
   if (questionText === null) lines.push('lượt: tệp câu hỏi không đọc được')

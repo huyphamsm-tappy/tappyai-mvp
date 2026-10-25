@@ -43,6 +43,7 @@ import { benchModeOf, checkBenchCaps, capToScaled, MAX_TURN_CAP_USD, maxRunCapUs
 import { safeLookup } from '@/lib/security/safeFetch'
 import { matchesFixedUatSet } from './harness'
 import { BENCH_FLAG_NAMES, BenchRefusal, assertBenchAllowed, redactSecrets, routeTransport, runBench, type BenchFs } from './liveRunner'
+import { __resetAiQuestionQuotaLocal } from '@/lib/ai/quota/aiQuestionQuota'
 import { currentTurn } from './turnScope'
 import { UAT_TURNS, type UatTurn } from './questions'
 import { REQUEST_CAP_MAX_PER_RUN, REQUEST_CAP_MAX_PER_TURN, REQUEST_CAP_PER_RUN_ENV, REQUEST_CAP_PER_TURN_ENV, beginRequestCapRun, endRequestCapRun, parseCapValue, requestCapOn } from '@/lib/ai/tools/serperRequestCap'
@@ -138,6 +139,8 @@ export interface TrialSummary {
   hostRequests: Record<string, number>
   /** Requests sent to each of the three OSM fallback hosts (always the three keys; all 0 outside the extension mode, where they are blocked). A count only: free hosts, outside the request cap and the USD gate. */
   osmRequests: Record<string, number>
+  /** Quota option (d): whether the free-question counter was reset before each turn (ON only for mode dev-multi + flag 1), why, and how many resets were really made. */
+  quotaReset: { on: boolean; reason: string; resets: number }
   refusals: number
   photoSkips: number
   answerChars: number
@@ -258,6 +261,25 @@ export function connectionRedirectReasons(env: Record<string, string | undefined
   return reasons
 }
 
+/**
+ * Quota option (d) (owner decision). The route meters the simulated registered FREE account at FREE_DAILY_LIMIT (10) questions a day, in a counter held in this process: the 11th
+ * turn of any run is refused with HTTP 429 free_limit_reached (this is what stopped the baseline at E11). The benchmark measures the advice, not that commercial limit, so
+ * the extension mode can reset the counter before each turn - and only when BOTH the mode is exactly dev-multi AND this flag is exactly 1. Default OFF = the real limit applies.
+ * The reset is the test hook the rehearsals already use; the user, the conversation, the history, the L1 cache, the cap and the cost gate are not touched.
+ */
+export const QUOTA_RESET_FLAG = 'BENCH_RESET_FREE_QUOTA_PER_TURN'
+const shown = (v: string | undefined): string => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,24}$/.test(v) ? v : JSON.stringify(v.slice(0, 24)))
+/** Pure. ON only for mode === 'dev-multi' and flag === '1'. `reason` names the two values that decided it (what the summary and Gate 1 print). */
+export function quotaResetState(env: Record<string, string | undefined>): { on: boolean; reason: string } {
+  const mode = env.BENCH_TRIAL_MODE, flag = env[QUOTA_RESET_FLAG]
+  return { on: mode === 'dev-multi' && flag === '1', reason: `mode=${shown(mode)}, flag=${shown(flag)}` }
+}
+/** Pure. The flag must be unset, 0 or 1; any other value (including blank) is refused by name, never guessed at. */
+export function quotaResetFlagReasons(env: Record<string, string | undefined>): string[] {
+  const v = env[QUOTA_RESET_FLAG]
+  return v === undefined || v === '0' || v === '1' ? [] : [`${QUOTA_RESET_FLAG} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`]
+}
+
 /** The message for an OpenAI key that is there but is not shaped like one. Names the variable and the rule; holds no character of the value. */
 export const OPENAI_KEY_SHAPE_REASON = 'OPENAI_API_KEY không đúng dạng key OpenAI (phải bắt đầu bằng sk-): kiểm tra có dán nhầm key khác hoặc đảo thứ tự hai ô không'
 /**
@@ -272,7 +294,7 @@ export function openaiKeyShapeReasons(env: Record<string, string | undefined>): 
 
 /** Pure: no file, no network. Every reason at once. Exported for the preflight report (preflightReport.ts), which runs the same checks without the trial. */
 export function preflight(env: Record<string, string | undefined>, repoRoot?: string, execArgv?: readonly string[]): { reasons: string[]; caps: { turnUsd: number; runUsd: number } | null } {
-  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env), ...openaiKeyShapeReasons(env)]
+  const reasons: string[] = [...consultativeConfirmationReasons(env), ...connectionRedirectReasons(env, execArgv, repoRoot), ...requestCapReasons(env), ...openaiKeyShapeReasons(env), ...quotaResetFlagReasons(env)]
   if ((env.CI ?? '') !== '') reasons.push('CI is set: the live trial never runs in CI')
   const caps = checkBenchCaps(env.BENCH_SPEND_TURN_CAP_USD, env.BENCH_SPEND_RUN_CAP_USD, benchModeOf(env))
   if (!caps.ok) reasons.push(...caps.reasons)
@@ -404,6 +426,10 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
   // the two allowed hosts included - is blocked before it is sent and recorded (`late`). A request to a host outside the list is still reported in `blocked`.
   let trialClosed = false
   const osmAllowed = osmFallbackAllowed(env)
+  // Quota option (d): decided ONCE from the effective configuration (mode + flag); the count is what was really done.
+  const quotaState = quotaResetState(env)
+  let quotaResets = 0
+  const quotaSummary = (): { on: boolean; reason: string; resets: number } => ({ on: quotaState.on, reason: quotaState.reason, resets: quotaResets })
   const closedAttempt = (url: string): never => {
     const d = isAllowedRequest(url, osmAllowed)
     if (!d.ok) blocked.add(redactSecrets(d.label, env))
@@ -450,11 +476,13 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
       chat: routeTransport(((req: never) => {
         const again = [...consultativeConfirmationReasons(env), ...requestCapReasons(env)]
         if (again.length) throw new Error(`trial: ${again.join('; ')} (checked again just before the request; nothing was sent)`)
+        // one request = one turn: the free-question counter is reset right before the route meters this turn (only when the configuration says so)
+        if (quotaState.on) { __resetAiQuestionQuotaLocal(); quotaResets++ }
         return input.post(req)
       }) as typeof input.post), turnCapUsd: pre.caps.turnUsd, runCapUsd: pre.caps.runUsd, confirmSpend: { capUsd: pre.caps.runUsd },
       declaredFlags: Object.fromEntries(BENCH_FLAG_NAMES.map(k => [k, (env[k] ?? '').trim() === '' ? null : env[k]!.trim()])),
       env, outDir: env.BENCH_TRIAL_OUT_DIR!, repoRoot: input.repoRoot, fs: input.fs, turns: trialTurns, now: input.now,
-      extraResult: () => ({ osmRequests: osmCounts() }),
+      extraResult: () => ({ osmRequests: osmCounts(), freeQuotaReset: quotaSummary() }),
     })
     // The turn is over: CLOSE first, then watch. Background work that outlives the answer (memory, logging…) is no longer let through, it is only seen (and recorded).
     trialClosed = true
@@ -512,7 +540,7 @@ export async function runLiveTrial(input: LiveTrialInput): Promise<TrialOutcome>
     })),
     costState: records.length === 0 ? 'none' : allKnown ? 'known' : 'unknown', usd: usdSum, ms: records.length === 0 ? null : records.reduce((a, r) => a + r.ms, 0),
     tools: [...new Set(records.flatMap(r => r.toolNames))],
-    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(),
+    llmRequests: sumLlm, serperRequests: sumSerper, hostRequests: sent, osmRequests: osmCounts(), quotaReset: quotaSummary(),
     refusals: records.reduce((a, r) => a + r.refusals, 0), photoSkips: records.reduce((a, r) => a + r.photoSkips, 0), answerChars: records.reduce((a, r) => a + r.answer.length, 0),
     hostsBlocked, redirects, providerRejections, warnings: warnings.map(w => redactSecrets(w, env)), problems: problems.map(p => redactSecrets(p, env)),
     flagsInEffect: Object.fromEntries(FLAGS_IN_EFFECT.map(k => [k, env[k] === undefined ? null : env[k]!])), resultPath: result.outPath,
@@ -535,6 +563,7 @@ export function formatSummary(s: TrialSummary): string {
     `costState=${s.costState} usd(estimate)=${s.usd} ms=${s.ms} tools=${s.tools.join(',') || '-'}`,
     `ledger: llm=${s.llmRequests} serper=${s.serperRequests} refusals=${s.refusals} photoSkips=${s.photoSkips} | wrappers sent: ${JSON.stringify(s.hostRequests)}`,
     `OSM fallback hosts (free: no Serper credit, no OpenAI cost; outside the request cap and the USD gate; counted, not priced): ${Object.entries(s.osmRequests).map(([h, n]) => `${h}=${n}`).join(' ')}`,
+    `free-question quota reset per turn: ${s.quotaReset.on ? 'ON' : 'OFF'} (reason: ${s.quotaReset.reason}) | resets: ${s.quotaReset.resets}${s.quotaReset.on ? ' (the Free limit of 10 questions a day was NOT applied; the benchmark measures the advice, not that limit)' : ' (the real Free limit of 10 questions a day applies: more than 10 questions stop the run with HTTP 429)'}`,
     `budget mode: ${s.budget.mode} | run cap ${s.budget.runCapUsd} USD (maximum of the mode ${maxRunCapUsd(s.budget.mode)}) | per-turn cap ${s.budget.turnCapUsd} USD (maximum ${MAX_TURN_CAP_USD}) — ESTIMATES, not an invoice`,
     `request cap (a COUNT of Serper requests, not a price): per turn ${s.requestCap.perTurnLimit ?? '-'} | per run ${s.requestCap.runLimit ?? '-'} | let through ${s.requestCap.sent} | refused ${s.requestCap.refused}`,
     `flags in effect: ${Object.entries(s.flagsInEffect).map(([k, v]) => `${k}=${v === null ? 'unset' : v}`).join(' ')}`,

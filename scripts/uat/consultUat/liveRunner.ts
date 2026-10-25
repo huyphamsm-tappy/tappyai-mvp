@@ -68,6 +68,19 @@ export function redactSecrets(text: string, env: Record<string, string | undefin
   return out.replace(/\bsk-[A-Za-z0-9_*.-]{4,}/g, 'sk-***')
 }
 
+/**
+ * Quota option (d): the SHORT error code of a non-2xx answer of the route (its JSON body `{ error: "free_limit_reached", message: ... }`): the `error` string only, ASCII only,
+ * cut at 80 characters and redacted. Never the message, an object, an array or the answer text. null when there is no such string. Pure.
+ */
+export function httpErrorCodeOf(raw: string, env: Record<string, string | undefined> = process.env): string | null {
+  let body: unknown
+  try { body = JSON.parse(raw) } catch { return null }
+  const e = body !== null && typeof body === 'object' && !Array.isArray(body) ? (body as { error?: unknown }).error : undefined
+  if (typeof e !== 'string') return null
+  const code = redactSecrets(e.slice(0, 80).replace(/[^ -~]+/g, ' ').trim(), env)
+  return code === '' ? null : code
+}
+
 /** The model ids whose price the gate really knows. The price table (providers/openai.ts) matches by PREFIX, so any other id would be priced and capped at the wrong rate. */
 const PRICED_MODEL_ID_VARS: readonly string[] = ['LLM_LUNA_MODEL', 'LLM_CONSULT_MODEL', 'LLM_INTENT_MODEL', 'LLM_PLAN_MODEL']
 const PRICED_MODEL_IDS: readonly string[] = ['gpt-6-luna']
@@ -244,6 +257,8 @@ export interface TurnRecord {
   blocked: string | null
   openReservedUsd: number
   httpStatus?: number
+  /** The short `error` code of a non-2xx answer of the route (e.g. free_limit_reached), redacted and cut at 80 characters; never the body or the answer. */
+  httpErrorCode?: string
   streamErrors: string[]
   error?: string
 }
@@ -508,6 +523,7 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
     const known = gate.guard.knownUsd
     // The cost of the turn is known only when nothing failed, nothing is blocked (exceeded / unknown / unusable) and nothing is still open.
     const costKnown = thrown === null && blocked === null && open === 0 && known !== null
+    const httpErrorCode = status !== undefined && (status < 200 || status >= 300) ? httpErrorCodeOf(raw, o.env ?? process.env) : null
     const record: TurnRecord = {
       id: turn.id, conversation: turn.conversation, turn: turn.turn,
       answer: redactSecrets(parsed.text), ms,
@@ -519,11 +535,12 @@ export function createBenchRunner(o: BenchOptions): BenchRunner {
       refusals: gate.refusals, photoSkips: gate.photoSkips, lateRefusals: gate.lateRefusals, degraded: gate.refusals > 0,
       blocked, openReservedUsd: open,
       ...(status !== undefined ? { httpStatus: status } : {}),
+      ...(httpErrorCode !== null ? { httpErrorCode } : {}),
       streamErrors: parsed.errors.map(x => redactSecrets(x)),
       ...(thrown !== null ? { error: thrown instanceof Error ? thrown.message : String(thrown) } : {}),
     }
     // A non-2xx answer or an empty one is not a benchmark answer, whatever it cost: the turn carries an error, so the run is not valid.
-    if (!record.error && status !== undefined && (status < 200 || status >= 300)) record.error = `HTTP ${status}: not an answer`
+    if (!record.error && status !== undefined && (status < 200 || status >= 300)) record.error = `HTTP ${status}: not an answer${httpErrorCode !== null ? ` (error: ${httpErrorCode})` : ''}`
     if (!record.error && parsed.text.trim() === '') record.error = 'empty answer'
     // The run cannot be valid any more: nothing more is sent (the bad answer would also become the history of the later turns).
     if (record.error && thrown === null) halted = 'a turn was not an answer'
