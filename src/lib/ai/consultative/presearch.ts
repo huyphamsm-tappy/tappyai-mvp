@@ -34,7 +34,8 @@ export interface PresearchPlan {
   reuse?: { shown: string[] }
 }
 
-const PLACE_TYPES = new Set(['shop', 'restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
+/** The `searchNow` types that run the place tool (exported: searchNowIntentGate.ts gates exactly these). */
+export const PLACE_TYPES: ReadonlySet<string> = new Set(['shop', 'restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'])
 
 // UAT4 consultative-40 A/B (27 Sep 2026, flags ON, head vs 19 Sep): the pre-search ran the SUGGESTED
 // query too — `exact: false` means "the model may sharpen it" — so a specified request lost its

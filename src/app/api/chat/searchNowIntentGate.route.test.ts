@@ -148,7 +148,6 @@ const NAMED_ONLY = ['Cho mình biết Marie Curie đã nhận giải Nobel nào 
 // A word like "gần đây" (recently) + a food word, no capitalised name: with a location in hand the old code derived a place directive from it (forcedTool = search_places, near-me flag).
 const NEARBY_WORD_ONLY = ['Món phở có nguồn gốc từ đâu và các nghiên cứu gần đây về lịch sử của nó nói gì?', 'Cà phê có thật sự tốt cho tim không, các nghiên cứu gần đây cho kết quả ra sao?', 'Trà sữa chứa bao nhiêu đường và tác hại theo các báo cáo gần đây là gì?']
 const BOTH = ['Cho mình hỏi Albert Einstein có những đóng góp nào được nhắc lại gần đây cho món ăn hay đồ uống không?']
-const NEITHER = ['Giải thích vì sao Mặt Trăng có các pha khác nhau.', 'Thuật toán sắp xếp nhanh hoạt động như thế nào?']
 
 describe('C — flag ON: a chat turn that states no place never starts a place lookup by code', () => {
   for (const q of [...NAMED_ONLY, ...BOTH]) {
@@ -173,14 +172,8 @@ describe('C — flag ON: a chat turn that states no place never starts a place l
       expect(r.asks).toBe(0)
     }, 60000)
   }
-  for (const q of NEITHER) {
-    it(`neither path: "${q.slice(0, 48)}…" → nothing changes (no lookup before, none after)`, async () => {
-      const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD })
-      const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD })
-      for (const r of [on, off]) { expect(r.presearched).toBe(false); expect(r.placeToolRan).toBe(false); expect(r.asks).toBe(0) }
-      expect(on.text).toBe(off.text)
-    }, 60000)
-  }
+  // (Wave 2E: the "neither path" loop was removed - its sentences started no lookup with the flag OFF either, so it could not tell a working gate from a broken one. The claim "a request that
+  // starts no code lookup is not changed by the flag" is held by the web-search test below and by the four-cell matrix in threadAwareAsk.route.test.ts.)
   it('forcedTool = search_places as the ONLY place signal (a place WORD such as "bảo tàng" in a history question): the consultative place frame is not switched on by it', async () => {
     const q = 'Bảo tàng Louvre được xây dựng từ thế kỷ nào?'
     const on = await turn(one(q), { flag: '1', luna: lunaIntent('chat', []) })
@@ -189,19 +182,71 @@ describe('C — flag ON: a chat turn that states no place never starts a place l
     expect(on.logTypes).not.toContain('tappyai_consultative_v1:frame')
     for (const r of [on, off]) { expect(r.presearched).toBe(false); expect(r.placeToolRan).toBe(false); expect(r.asks).toBe(0) }
   }, 60000)
-  it('rules-only knowledge turn (the intent call failed, rules read it as chat): same gate, nothing starts', async () => {
-    const r = await turn(one('Marie Curie là ai và vì sao bà nổi tiếng?'), { flag: '1', luna: null })
-    expect(r.presearched).toBe(false); expect(r.placeToolRan).toBe(false); expect(r.asks).toBe(0)
+  it('rules-only knowledge turn (the intent call failed, rules read it as chat): OFF runs the named-venue pre-search, ON starts nothing', async () => {
+    // (a sentence whose name is NOT its first word: the named-venue reader skips the first word, so a sentence that begins with the name starts no lookup in either mode)
+    const q = 'Cho mình hỏi Marie Curie là ai và vì sao bà nổi tiếng?'
+    const off = await turn(one(q), { flag: undefined, luna: null })
+    expect(off.presearched).toBe(true); expect(off.asks).toBe(1)
+    const on = await turn(one(q), { flag: '1', luna: null })
+    expect(on.presearched).toBe(false); expect(on.placeToolRan).toBe(false); expect(on.asks).toBe(0)
   }, 60000)
-  it('a place tool call the MODEL itself makes on such a turn, with no location, is not turned into the area question', async () => {
+  it('Wave 2E (C1) - a place tool call the MODEL itself makes on such a turn, with no location: the user is asked for the area exactly as before (the gate never says "no place needed" to the model)', async () => {
     const q = 'Tiểu sử ngắn gọn của Nikola Tesla và các sáng chế chính.'
     const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Tesla là nhà phát minh.' })
-    expect(on.refused).toBe(true) // the tool still refuses to search around a made-up centre
-    expect(on.maps).toEqual([])
-    expect(on.asks).toBe(0)
-    expect(on.text).toBe('Tesla là nhà phát minh.')
     const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, tool: { query: 'Nikola Tesla' }, reply: 'Tesla là nhà phát minh.' })
-    expect(off.asks).toBe(1) // old behaviour on the same input
+    for (const r of [on, off]) { expect(r.refused).toBe(true); expect(r.maps).toEqual([]); expect(r.asks).toBe(1); expect(r.text.trim().endsWith(AREA_ASK_VI)).toBe(true) }
+    expect(on.text).toBe(off.text)
+  }, 60000)
+  it('Wave 2E (C1) - a real place request the intent layer misreads as chat, no GPS and no district, and the model looks the place up itself: still asked for the location', async () => {
+    const q = 'tìm quán phở bò ngon cho 2 người dưới 100k'
+    const on = await turn(one(q), { flag: '1', luna: CHAT_FOOD, tool: { query: 'quán phở bò' }, reply: '' })
+    const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD, tool: { query: 'quán phở bò' }, reply: '' })
+    for (const r of [on, off]) { expect(r.refused).toBe(true); expect(r.asks).toBe(1); expect(r.text.trim().endsWith(AREA_ASK_VI)).toBe(true) }
+    expect(on.text).toBe(off.text)
+  }, 60000)
+})
+
+describe('Wave 2E (C2) - the chosen behaviour for a place request misread as chat with a GPS fix and no district (residual risk, measured)', () => {
+  const Q = 'tìm quán phở bò ngon cho 2 người dưới 100k'
+  it('OFF pre-searches around the fix; ON does not pre-search (nothing independent of the intent layer tells this from a knowledge question), but the model\'s own lookup still searches around the fix', async () => {
+    const off = await turn(one(Q), { flag: undefined, luna: CHAT_FOOD, gps: GPS_HN, reply: '' })
+    expect(off.presearched).toBe(true) // not vacuous: this is what the gate gives up
+    const on = await turn(one(Q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN, tool: { query: 'quán phở bò' }, reply: 'Gợi ý quán.' })
+    expect(on.presearched).toBe(false)
+    expect(on.maps.length).toBeGreaterThan(0) // the model keeps its tool: the search runs, around the GPS fix
+    expect(on.maps.every(m => near(m.ll, GPS_HN, 3))).toBe(true)
+    expect(on.asks).toBe(0)
+  }, 60000)
+  it('the gate event reports what is needed to measure how often this happens: hasValidGps and the rules\' own reading (no text)', async () => {
+    vi.stubEnv('CONSULT_TRACE_DIAGNOSTICS', '1')
+    try {
+      const on = await turn(one(Q), { flag: '1', luna: CHAT_FOOD, gps: GPS_HN })
+      expect(on.gateEvents).toHaveLength(1)
+      expect(on.gateEvents[0]).toMatchObject({ blocked: true, hasValidGps: true, rulesTurn: 'pick', rulesConfidence: 'rule', rulesDomains: ['food'] })
+      expect(JSON.stringify(on.gateEvents[0])).not.toMatch(/phở|quán/)
+      const noGps = await turn(one(Q), { flag: '1', luna: CHAT_FOOD })
+      expect(noGps.gateEvents[0]).toMatchObject({ hasValidGps: false })
+    } finally { vi.unstubAllEnvs() }
+  }, 60000)
+})
+
+describe('Wave 2E (C3) - "near me" is not a stated place; a city the code read from the user\'s words is', () => {
+  const K = 'Cho mình hỏi Albert Einstein có từng nhắc gì về món phở không?'
+  it('the intent layer writes area "gần đây" (checked and kept when there is a GPS fix) on a knowledge turn: still blocked', async () => {
+    const luna = lunaIntent('chat', ['food'], { area: 'gần đây' })
+    const off = await turn(one(K), { flag: undefined, luna, gps: GPS_HN })
+    expect(off.presearched).toBe(true) // not vacuous
+    const on = await turn(one(K), { flag: '1', luna, gps: GPS_HN, reply: 'Trả lời kiến thức.' })
+    expect(on.presearched).toBe(false); expect(on.placeToolRan).toBe(false); expect(on.asks).toBe(0)
+  }, 60000)
+  it('a city the user names (read by code, no district) counts as a stated place: the old behaviour, same as OFF', async () => {
+    const q = 'Cho mình hỏi Albert Einstein có từng đến Đà Nẵng ăn món gì không?'
+    const luna = lunaIntent('chat', ['food'])
+    const off = await turn(one(q), { flag: undefined, luna, gps: GPS_HN })
+    const on = await turn(one(q), { flag: '1', luna, gps: GPS_HN })
+    expect(off.presearched).toBe(true)
+    expect(on.presearched).toBe(off.presearched)
+    expect(on.maps.map(m => m.q)).toEqual(off.maps.map(m => m.q))
   }, 60000)
 })
 
@@ -299,8 +344,11 @@ describe('C — flag ON: place requests keep their flow and their semantics', ()
     expect(on.presearched).toBe(false); expect(on.placeToolRan).toBe(false)
     expect(on.text).toBe(off.text)
   }, 60000)
-  it('an ambiguous message the intent layer read as chat with nothing stated ("Nguyễn Huệ"): no lookup starts by itself (unsure → no place lookup)', async () => {
-    const r = await turn(one('Nhà Thờ Đức Bà'), { flag: '1', luna: CHAT_FOOD })
+  it('an ambiguous message the intent layer read as chat with nothing stated (a landmark name inside a sentence): OFF pre-searches it, ON starts no lookup by itself (unsure → no place lookup)', async () => {
+    const q = 'Mình vừa đọc về Nhà Thờ Đức Bà, nhưng chưa biết gì thêm.'
+    const off = await turn(one(q), { flag: undefined, luna: CHAT_FOOD })
+    expect(off.presearched).toBe(true) // not vacuous: without the gate this runs
+    const r = await turn(one(q), { flag: '1', luna: CHAT_FOOD })
     expect(r.presearched).toBe(false); expect(r.placeToolRan).toBe(false); expect(r.asks).toBe(0)
   }, 60000)
   it('a chat turn that DID state a place (the intent layer wrote an area) keeps the old behaviour', async () => {

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { applySearchNowGate, searchNowIntentGate } from './searchNowIntentGate'
+import { applySearchNowGate, isNearMeOnly, searchNowIntentGate } from './searchNowIntentGate'
+import { PLACE_TYPES } from './presearch'
 import { consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
 import type { ConsultTurn } from './consultBrain'
 import type { SearchNow, SearchNowType } from './searchNow'
@@ -28,10 +29,23 @@ describe('searchNowIntentGate (pure)', () => {
     expect(searchNowIntentGate({ consult: { turn: 'chat', area: 'Đà Nẵng' }, statedArea: null })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'consult_area' })
     for (const empty of ['', '   ', null, undefined]) expect(searchNowIntentGate({ consult: { turn: 'chat', area: empty as never }, statedArea: empty as never }).blocked, JSON.stringify(empty)).toBe(true)
   })
-  it('applySearchNowGate drops only a plan that runs the PLACE tool, and only when the gate blocks', () => {
+  it('Wave 2E (C3): an area that says only "near me" is not a stated place; a city the code read from the user\'s words is', () => {
+    for (const nearMe of ['gần đây', 'Gần bạn', 'gần chỗ mình', 'quanh đây', 'xung quanh', 'near me', 'nearby', 'around here']) {
+      expect(searchNowIntentGate({ consult: { turn: 'chat', area: nearMe }, statedArea: null }), nearMe).toMatchObject({ blocked: true, reason: 'chat_turn_no_stated_place' })
+    }
+    // a place inside the near-me phrase is a place
+    for (const placed of ['gần Hồ Gươm, Hà Nội', 'gần đây ở Quận 3', 'Đà Nẵng', 'Quận 7']) {
+      expect(searchNowIntentGate({ consult: { turn: 'chat', area: placed }, statedArea: null }), placed).toMatchObject({ blocked: false, statedPlaceFrom: 'consult_area' })
+    }
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null, statedCity: true })).toMatchObject({ blocked: false, reason: 'stated_place', statedPlaceFrom: 'user_city' })
+    expect(searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null, statedCity: false }).blocked).toBe(true)
+    expect(isNearMeOnly('gần đây')).toBe(true); expect(isNearMeOnly('gần đây ở Huế')).toBe(false); expect(isNearMeOnly('Quận 1')).toBe(false)
+  })
+  it('applySearchNowGate drops only a plan that runs the PLACE tool, and only when the gate blocks - exactly the types presearch.ts runs through the place tool (one shared list)', () => {
     const mk = (type: SearchNowType): SearchNow => ({ query: 'q', type, exact: true })
     const blocked = searchNowIntentGate({ consult: { turn: 'chat' }, statedArea: null })
     const open = searchNowIntentGate({ consult: { turn: 'pick' }, statedArea: null })
+    expect([...PLACE_TYPES].sort()).toEqual(['attraction', 'bar', 'cafe', 'cinema', 'restaurant', 'shop', 'spa'])
     for (const t of ['shop', 'restaurant', 'cafe', 'spa', 'bar', 'attraction', 'cinema'] as const) {
       expect(applySearchNowGate(blocked, mk(t)), t).toBeNull()
       expect(applySearchNowGate(open, mk(t)), t).toEqual(mk(t))
