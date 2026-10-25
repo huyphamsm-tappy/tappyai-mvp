@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn } from '@/lib/config/consultFlags'
 import { createTurnTrace, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
@@ -122,6 +122,8 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { searchNowIntentGate, applySearchNowGate } from '@/lib/ai/consultative/searchNowIntentGate'
+import { newestShopCardTitles } from '@/lib/ai/consultative/shownProductRef'
+import { reconcileAsk } from '@/lib/ai/consultative/askReconcile'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
@@ -482,7 +484,13 @@ export async function POST(req: Request) {
     ? { ...lunaIntentRun, decision: { ...lunaIntentRun.decision, domains: earlyChatState.domains as typeof lunaIntentRun.decision.domains, known: { ...(earlyChatState.known ?? {}), ...lunaIntentRun.decision.known } } }
     : lunaIntentRun
   // The turn type stays with the code router when it is sure (owner: Luna reads areas / goal / constraints / difficulty).
-  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known) : null
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A, default OFF): the evidence the thread holds - the user's words of this consultation and the product names of the card it showed. OFF = undefined: the
+  // merge below and the card step further down read nothing of it and behave as before (askReconcile.ts, shownProductRef.ts).
+  const threadAwareAsk = consultThreadAwareAskOn() && !agentOn
+  const threadAskEvidence = threadAwareAsk
+    ? { userTexts: subjectUserTexts, shownTitles: newestShopCardTitles(messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '')), gps: !!userLocation }
+    : undefined
+  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known, threadAskEvidence) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
   const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason
@@ -517,7 +525,12 @@ export async function POST(req: Request) {
   // P0-1 closeout: the server fallback stays a server answer. If the card steps turned it into a search turn, the domain question is
   // asked instead (never a free model answer on an invalid decision).
   const keepServerFallback = (c: ConsultDecision | null): ConsultDecision | null => consultFallback && c && (c.turn !== 'ask' || !c.ask) ? consultDomainQuestion() : c
-  const consult = agentOn ? null : keepServerFallback(refineAsk((consultPlanPromoted.decision ? searchableAsPick(consultPlanPromoted.decision, subjectUserTexts, !!userLocation) : null) ?? consultPlanPromoted.decision, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }))
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A): before the card is cut down to its one question, every question on it is checked against what the thread holds (askReconcile.ts); an answered one is dropped,
+  // and a card with nothing left open becomes a pick. OFF = `askReconciled` is null and the decision goes on untouched.
+  const askReconciled = threadAskEvidence && consultPlanPromoted.decision ? reconcileAsk(consultPlanPromoted.decision, { ...threadAskEvidence, lunaKnown: lunaStated?.decision.known ?? {} }) : null
+  const consultToCard = askReconciled?.decision ?? consultPlanPromoted.decision
+  const consult = agentOn ? null : keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }))
+  if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))
@@ -535,7 +548,7 @@ export async function POST(req: Request) {
       previousWasAsk: { routing: routingAnswersAsk, route: answersAsk, wasAskReply: asked, routeLabel: attributionRead?.label ?? null, routeSignal: attributionRead?.signal ?? null },
       rules: routed ? { ...sum(routed.decision), confidence: routed.confidence, storedDomainAdopted: routed !== routedRaw } : null,
       luna: lunaIntentRun ? { ...sum(lunaIntentRun.decision), difficulty: lunaIntentRun.difficulty } : null, lunaOn, lunaSkipped,
-      merge: lunaMerged ? { mode: lunaMerged.mode, ...sum(lunaMerged.decision), rulesTurn, lunaTurn, turnWinner } : null,
+      merge: lunaMerged ? { mode: lunaMerged.mode, ...sum(lunaMerged.decision), rulesTurn, lunaTurn, turnWinner, rule: lunaMerged.rule ?? null } : null,
       brain: consultRun && !lunaRun ? sum(consultRun.decision) : null,
       invalid: consultInvalid.reason, serverFallback: !!consultFallback,
       decidedRaw: sum(consultDecidedRaw), decided: sum(consultDecided), final: sum(consult),

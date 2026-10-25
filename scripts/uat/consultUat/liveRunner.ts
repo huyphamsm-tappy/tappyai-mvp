@@ -51,6 +51,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS',
   // Wave 2D · C: a knowledge / conversation turn that states no place never starts a place lookup by code; default OFF
   'CONSULT_SEARCH_NOW_INTENT_GATE',
+  // Wave 2D · A: a follow-up reads the whole thread and the products already shown (ask card, shown-product reference, rules / intent merge); default OFF
+  'CONSULT_THREAD_AWARE_ASK',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

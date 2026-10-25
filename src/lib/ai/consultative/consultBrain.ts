@@ -48,6 +48,8 @@ export interface ConsultDecision {
   reprioritize?: boolean
   /** For `followup` / `compare`: `refers` was resolved from an ordinal ("quán thứ hai") against the cards the user was shown. */
   ordinalRef?: boolean
+  /** CONSULT_THREAD_AWARE_ASK (Wave 2D · A): the decision was read from the names of the product card the thread showed ("shown_card"), not from the wording alone. Absent otherwise. */
+  evidence?: 'shown_card'
 }
 
 /** The fixed part of the brain prompt — byte-identical on every call (prompt-cache friendly). */

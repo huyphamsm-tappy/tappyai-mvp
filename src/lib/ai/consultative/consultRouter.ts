@@ -19,7 +19,8 @@ import { deriveNeedProfile } from './needProfile'
 import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { attributeReply, shownAsk, type AskReplyAttribution } from './replyAttribution'
-import { consultAnswerAttributionOn } from '@/lib/config/consultFlags'
+import { consultAnswerAttributionOn, consultThreadAwareAskOn } from '@/lib/config/consultFlags'
+import { newestShopCardTitles, resolveShownReference, distinguishingLabels } from './shownProductRef'
 
 export type RouteConfidence = 'rule' | 'unsure'
 export interface RouteCtx {
@@ -375,6 +376,14 @@ function familyOf(t: Txt): Family {
   for (const fam of FAMILIES) if (fam.re.test(fam.on === 'lo' ? t.lo : t.f)) return fam
   if (N('quà').test(t.lo)) return FAMILIES.find(f => f.id === 'gift')!
   return GENERIC_FAMILY
+}
+/**
+ * CONSULT_THREAD_AWARE_ASK: the ROOT of the product family a text names ("case_uag" → "case"); null for the generic family (a bare answer such as a price names no product).
+ * Two texts of one consultation belong together when their roots are equal or one of them is null - an earlier budget may be carried to "ốp UAG", never to a laptop.
+ */
+export function familyRootOf(text: string): string | null {
+  const fam = familyOf(prep(text))
+  return fam.id === 'generic' ? null : fam.id.replace(/_.*$/, '')
 }
 function conditionOf(t: Txt): string | null {
   if (N('cũ').test(t.lo) || W('dt cu|may cu|hang cu|do cu|2hand|second hand|like new|used|refurbished').test(t.f) || W('cu').test(t.f.replace(/\d+\s*cu\b/g, ' '))) return 'cũ' // "1 củ" is money, not "cũ"
@@ -942,7 +951,7 @@ export function catalogueAsk(
   const ask = toAsk({ ...view, missing: ordered }, lang, domains)
   return { ask, source: ask ? (chosen.length ? 'catalogue_ids' : 'catalogue_order') : 'none', unknownIds }
 }
-const joinQuery =(parts: string[]) => parts.map(p => p.trim()).filter(Boolean).filter((p, i, a) => a.indexOf(p) === i).join(' ').replace(/\s+/g, ' ').slice(0, 120)
+export const joinQuery = (parts: string[]) => parts.map(p => p.trim()).filter(Boolean).filter((p, i, a) => a.indexOf(p) === i).join(' ').replace(/\s+/g, ' ').slice(0, 120)
 
 const REJECT_MOD: Array<[RegExp, string]> = [
   [/\bxa qua\b|\bqua xa\b|\btoo far\b/, 'gần hơn'], [/\b(?:mac|dat|dat do) qua\b|\bqua (?:mac|dat)\b|\btoo expensive\b/, 'giá rẻ'],
@@ -1103,6 +1112,31 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLa
     notAnswer = true
   } else traceAttr('previous_not_ask')
 
+  // 3b. CONSULT_THREAD_AWARE_ASK (Wave 2D · A, default OFF): a message that points at a product the thread's card SHOWED is about that product, not a new request (the old reading asked the thread's answers
+  // again: a brand named after a card of six products came back as the brand's "Dòng nào?" card). The names come from the card's own payload (shownProductRef.ts) - no list of brands or lines.
+  //   one product matches → a follow-up on it (unless the user's own words name another line); two to four match → ask ONLY what tells them apart; none → the old reading.
+  // Read lazily at two places (below, inside step 3 before the refinement reading, and after step 3) and at most once per turn.
+  let pointedAt: TurnOut | null | undefined
+  const pointAtShown = (): TurnOut | null => {
+    if (pointedAt !== undefined) return pointedAt
+    pointedAt = null
+    if (!inThread || thread.domains[0] !== 'shopping' || !(cur.domains.length === 0 || cur.domains.includes('shopping')) || !consultThreadAwareAskOn()) return null
+    const shown = newestShopCardTitles(turns.slice(Math.max(0, thread.start), ui).filter(m => m.role === 'assistant').map(m => textOf(m.content)))
+    if (shown.length < 2) return null
+    const ref = resolveShownReference(userText, shown)
+    const stated = ref.kind === 'one' ? slotView('shopping', userText, ctx.hasGps).known.dong : undefined
+    const shownLine = ref.kind === 'one' ? slotView('shopping', ref.titles[0], ctx.hasGps).known.dong : undefined
+    const conflict = !!stated && !!shownLine && prep(stated).f !== prep(shownLine).f
+    if (isLast && ctx.trace) { try { ctx.trace({ ev: 'shown_reference', shownProducts: shown.length, result: conflict ? 'conflict' : ref.kind, candidates: ref.titles.length, matchedTokens: ref.matchedTokens }) } catch { /* a trace must never change the route */ } }
+    if (ref.kind === 'one' && !conflict) pointedAt = keep({ domains: thread.domains, turn: 'followup', refers: ref.titles, evidence: 'shown_card' })
+    else if (ref.kind === 'many') {
+      const en = lang === 'en'
+      const labels = distinguishingLabels(ref.titles).slice(0, 3)
+      pointedAt = keep({ domains: thread.domains, turn: 'ask', evidence: 'shown_card', ask: { lead: en ? 'Which one do you mean?' : 'Bạn đang nói mẫu nào?', questions: [{ id: 'line', q: en ? 'Which one?' : 'Mẫu nào?', options: [...labels, en ? 'Not sure' : 'Chưa biết'] }] } })
+    }
+    return pointedAt
+  }
+
   // 3. Turns about picks already shown (not for a reply that was read as a request of its own).
   if (names.length && inThread && !notAnswer) {
     const domains = thread.domains
@@ -1127,6 +1161,9 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLa
     if ((refs.length || deictic) && isQ && !negative) return keep({ domains, turn: 'followup', refers: refs.length ? refs : names.slice(0, 1) })
     if (negative) return { result: pickFrom(domains, threadText(thread.start), 'reject', { rejectReason: userText.slice(0, 160) }), thread }
     if (refs.length) return keep({ domains, turn: 'followup', refers: refs })
+    // 3b (first call site): after the named / negative readings, before "lấy / muốn …" is read as a refinement of the picks.
+    const pointed = pointAtShown()
+    if (pointed) return pointed
     if (!newArea && REFINE_RE.test(t.f)) return { result: pickFrom(domains, threadText(thread.start), 'reject', { rejectReason: userText.slice(0, 160) }), thread }
     if (!newArea && !cur.domains.length) {
       // About the picks, but no rule places it: a question → followup; anything else → the brain.
@@ -1134,6 +1171,9 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLa
       return keep({ domains, turn: 'reject', rejectReason: userText.slice(0, 160) }, 'unsure')
     }
   }
+
+  // 3b. (second call site) the same reading for a thread whose last reply named nothing in bold, or whose message no step above placed.
+  if (!notAnswer) { const pointed = pointAtShown(); if (pointed) return pointed }
 
   // 4. A new request.
   if (!cur.domains.length) {

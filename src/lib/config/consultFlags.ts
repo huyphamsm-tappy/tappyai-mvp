@@ -11,6 +11,10 @@
 //   CONSULT_SEARCH_NOW_INTENT_GATE  (Wave 2D · C) a turn the intent layer read as plain conversation / knowledge ("chat") and that carries no stated place never starts a place lookup by
 //                               itself (the code-side pre-search from a capitalised name, the search-now directive a "gần đây" word forces), and a place lookup that failed for want of
 //                               a location on such a turn is not turned into the area question. Place requests are untouched. Like the trace flag it is ONLY honoured outside production.
+//   CONSULT_THREAD_AWARE_ASK    (Wave 2D · A) a follow-up reads the WHOLE thread and the products already shown: a message that points at a shown product (from the card's own names) continues
+//                               that product instead of starting a new request, a question is dropped from the ask card when the user's earlier words, a value the intent layer checked against
+//                               those words, or the shown product already answer it, and a rules / intent disagreement on ask vs pick is settled on that evidence (not "rules always win").
+//                               Like the trace flag it is ONLY honoured outside production.
 
 type Env = Record<string, string | undefined>
 
@@ -20,6 +24,7 @@ export const CONSULT_GENERAL_ASSISTANT_FLAG = 'CONSULT_GENERAL_ASSISTANT'
 
 export const CONSULT_TRACE_DIAGNOSTICS_FLAG = 'CONSULT_TRACE_DIAGNOSTICS'
 export const CONSULT_SEARCH_NOW_INTENT_GATE_FLAG = 'CONSULT_SEARCH_NOW_INTENT_GATE'
+export const CONSULT_THREAD_AWARE_ASK_FLAG = 'CONSULT_THREAD_AWARE_ASK'
 
 const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
@@ -32,3 +37,5 @@ export function consultGeneralAssistantOn(env: Env = process.env): boolean { ret
 export function consultTraceDiagnosticsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TRACE_DIAGNOSTICS_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2D · C. ON only for the exact value "1" AND only outside a production runtime (the Owner has not approved it for production). */
 export function consultSearchNowIntentGateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_SEARCH_NOW_INTENT_GATE_FLAG]) && !isProductionRuntime(env) }
+/** Wave 2D · A. ON only for the exact value "1" AND only outside a production runtime (the Owner has not approved it for production). */
+export function consultThreadAwareAskOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_THREAD_AWARE_ASK_FLAG]) && !isProductionRuntime(env) }

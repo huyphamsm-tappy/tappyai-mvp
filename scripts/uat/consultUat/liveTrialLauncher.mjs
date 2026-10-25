@@ -85,6 +85,8 @@ export const FLAG_ENV_NAMES = [
   'CONSULT_TRACE_DIAGNOSTICS',
   // Wave 2D · C: a knowledge / conversation turn that states no place never starts a place lookup by code; default OFF, honoured only outside a production runtime
   'CONSULT_SEARCH_NOW_INTENT_GATE',
+  // Wave 2D · A: a follow-up reads the whole thread and the products already shown; default OFF, honoured only outside a production runtime
+  'CONSULT_THREAD_AWARE_ASK',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
@@ -345,7 +347,7 @@ export function quotaLines(env) {
 }
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
-export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE']
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK']
 export function wave2Line(env) {
   const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
   return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${env[k] === '1' ? 'BẬT' : 'TẮT'})`).join(', ')}`

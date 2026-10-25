@@ -16,6 +16,7 @@ import { z } from 'zod'
 import { NoObjectGeneratedError, type CoreMessage } from 'ai'
 import { CONSULT_DOMAINS, enforceConsultRules, type BrainRun, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { budgetOf, localAreaOf, partyOf, prep, timeOf, tripDatesOf } from './consultRouter'
+import { reconcileAsk, type AskEvidenceInput } from './askReconcile'
 import { adviceEnabled } from './adviceBlock'
 import { consultativeInAgentEnabled } from './consultativeAgentFlag'
 
@@ -375,7 +376,7 @@ export async function runLunaIntent(
  *    (replay 30/09 SHOP-2 t3: "<product> mua ở đâu uy tín" read by the rules as a new request; Luna: a follow-up).
  * Luna's checked facts are merged over the router's slots either way (Luna wins where both read a slot).
  */
-export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null, ownWordsKnown: Record<string, string> = {}): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn' } {
+export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: ConsultDecision; confidence: 'rule' | 'unsure' } | null, ownWordsKnown: Record<string, string> = {}, evidence?: Omit<AskEvidenceInput, 'lunaKnown'>): { decision: ConsultDecision; mode: 'luna' | 'merged' | 'luna-turn'; rule?: 'shown_card' | 'evidence_resolved' | 'evidence_partial' | 'evidence_open' } {
   // Slots: the router's reading of the user's OWN words (no copied names), then Luna's checked facts on top (replay 30/09
   // low TRAVEL-3 t5: Luna left out the route, the travel code lost the flight and searched hotels).
   luna = { ...luna, known: { ...ownWordsKnown, ...luna.known } }
@@ -400,6 +401,22 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
   // 02/10 (A4): the intent model flipped "lập kế hoạch đi Đà Nẵng 3N2Đ" between ask / pick / plan run to run; a request the rules
   // say still needs its ask stays an ask (the plan follows the answer — planIntent.ts), so the turn type is code's, not luck's.
   const planBeforeAsk = adviceEnabled() && luna.turn === 'plan' && r.turn === 'ask'
+  // CONSULT_THREAD_AWARE_ASK (Wave 2D · A; the route passes `evidence` only with the flag ON, so OFF never reaches this block). Two disagreements are settled on EVIDENCE, not on "the rules win":
+  //   1. the rules read the message against the product card the thread showed (r.evidence = 'shown_card': an exact product match) - that reading stands against a different turn type of the intent layer,
+  //      unless Luna read an explicit action (plan / more / compare / reject);
+  //   2. rules say ASK, Luna says PICK: each question on the rules' card is checked against what the thread holds (askReconcile.ts - the user's words, Luna's values that the words carry, the shown
+  //      product). All answered → Luna's pick; some answered → the rules' card keeps only what is still open; none → the rules' card as it was. Luna's word alone never answers a question.
+  if (evidence) {
+    const keep = (turn: ConsultDecision, rule: 'shown_card' | 'evidence_partial' | 'evidence_open') => ({ decision: { ...turn, known: luna.known, ...(area ? { area } : {}), assumptions: turn.assumptions.length ? turn.assumptions : luna.assumptions }, mode: 'merged' as const, rule })
+    if (r.evidence === 'shown_card' && luna.turn !== r.turn && !explicit(luna.turn)) return keep(r, 'shown_card')
+    if (r.turn === 'ask' && r.ask && luna.turn === 'pick' && r.evidence !== 'shown_card') {
+      const rec = reconcileAsk(r, { ...evidence, lunaKnown: luna.known })
+      if (rec.report.applicable) {
+        if (rec.decision.turn === 'pick') return { decision: { ...luna, domains: r.domains, known: luna.known, ...(area ? { area } : {}) }, mode: 'luna-turn', rule: 'evidence_resolved' }
+        return keep(rec.decision, rec.report.outcome === 'trimmed' ? 'evidence_partial' : 'evidence_open')
+      }
+    }
+  }
   if (luna.turn === r.turn || explicit(r.turn) || planBeforeAsk || (askOrPick(luna.turn) && askOrPick(r.turn))) {
     return { decision: { ...r, known: luna.known, ...(area ? { area } : {}), assumptions: r.assumptions.length ? r.assumptions : luna.assumptions }, mode: 'merged' }
   }
