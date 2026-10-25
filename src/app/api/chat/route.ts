@@ -122,8 +122,8 @@ import { filterTransientMemory } from '@/lib/ai/consultative/memoryTransientFilt
 import { plainRequestTopic, appendHistoryTopic } from '@/lib/ai/consultative/memoryTopic'
 import { deriveSearchNow, SPECIFIC_DATE, type SearchNow } from '@/lib/ai/consultative/searchNow'
 import { searchNowIntentGate, applySearchNowGate } from '@/lib/ai/consultative/searchNowIntentGate'
-import { newestShopCardTitles } from '@/lib/ai/consultative/shownProductRef'
-import { reconcileAsk } from '@/lib/ai/consultative/askReconcile'
+import { reconcileAsk, settleNarrowedCard } from '@/lib/ai/consultative/askReconcile'
+import { currentConsultationTexts, subjectAssistantTexts } from '@/lib/ai/consultative/consultationWindow'
 import { tripAskAfter, missingTripFacts } from '@/lib/ai/consultative/tripFacts'
 import { buildDomainFrame, frameDomainOf, frameLibrary, frameRef, PLAN_HEADINGS, FRAME_CORE } from '@/lib/ai/consultative/domainFrames'
 import { type ConsultDecision, type ConsultDomain, runConsultBrain, consultV2Enabled, wasAskReply, buildAskReply, placeTypeFor, latestShoppingPickPrice, shoppingMarkerRecords } from '@/lib/ai/consultative/consultBrain'
@@ -134,7 +134,7 @@ import { closingQuestion, issueClarifyCredit, peekClarifyCredit, takeClarifyCred
 import { carriedFromStoredCandidates, storedStates, shoppingPickPriceStoredFirst, shoppingRecordsStoredFirst } from '@/lib/ai/consultative/serverCarried'
 import { promoteTripPlan } from '@/lib/ai/consultative/planIntent'
 import { adviceBlock, adviceEnabled, adviceApplies } from '@/lib/ai/consultative/adviceBlock'
-import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick } from '@/lib/ai/consultative/consultRouter'
+import { rejectModifierOf, withoutQuotedNames, isFixedPhrase, searchableAsPick, validShownTitles } from '@/lib/ai/consultative/consultRouter'
 import { consultLunaEnabled, consultLunaFastEnabled, skipLunaIntent, consultLunaPlanEnabled, LUNA_PLAN_RULE, isLunaAnswerTurn, runLunaIntent, mergeIntentWithRules, lunaTurnFacts, withoutReferenceTurns, LUNA_CORE, INTENT_SYSTEM } from '@/lib/ai/consultative/luna'
 import { lunaDataMessage, buildLeakDetector, sanitizeSearchQuery } from '@/lib/ai/consultative/lunaSafety'
 import { asksOtherDestination, eventPreCall, nearbyDestination, nearbyTurnedDown, onlyRowsNamed, slimResultForModel, travelPreCall, unshownRows, withoutShownRows } from '@/lib/ai/consultative/consultTravel'
@@ -488,9 +488,12 @@ export async function POST(req: Request) {
   // merge below and the card step further down read nothing of it and behave as before (askReconcile.ts, shownProductRef.ts).
   const threadAwareAsk = consultThreadAwareAskOn() && !agentOn
   const threadAskEvidence = threadAwareAsk
-    ? { userTexts: subjectUserTexts, shownTitles: newestShopCardTitles(messages.filter((m: { role: string }) => m.role === 'assistant').map((m: { content: unknown }) => typeof m.content === 'string' ? m.content : Array.isArray(m.content) ? m.content.map((p: { type?: string; text?: string }) => p?.type === 'text' ? p.text ?? '' : '').join(' ') : '')), gps: !!userLocation }
+    // Wave 2E: the user's words count only inside the CURRENT consultation (after the last reply that was not a clarifying question), and the card that counts is the newest one of this subject, restricted to
+    // the product family of this message - the same scope the router uses (consultationWindow.ts, consultRouter.ts validShownTitles).
+    ? { userTexts: currentConsultationTexts(messages, subjectUserTexts.length), shownTitles: validShownTitles(subjectAssistantTexts(messages, subjectUserTexts.length), lastText), establishedTexts: subjectUserTexts.slice(0, -1), gps: !!userLocation }
     : undefined
-  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known, threadAskEvidence) : null
+  const lunaOwnKnown = lunaStated ? routeConsult(lunaOwnWords, { hasGps: !!userLocation, lang }).decision.known : {}
+  const lunaMerged = lunaStated ? mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, threadAskEvidence) : null
   const lunaRun = lunaStated && lunaMerged ? { ...lunaStated, decision: lunaMerged.decision, mode: lunaMerged.mode } : null
   // An invalid intent answer is not retried through the brain (one model decision per turn; the fallback below answers instead).
   const consultRun = lunaRun ?? (!agentOn && consultOn && routed?.confidence === 'unsure' && AI.isConfigured() && !consultInvalid.reason
@@ -514,7 +517,9 @@ export async function POST(req: Request) {
   // code-written catalogue — the model keeps only its domain and question ids. The router's own card is code text and is left as is.
   const consultDecided = (() => {
     const d = consultDecidedRaw
-    if (!d || d.turn !== 'ask' || !d.ask || d.ask === routed?.decision.ask || d === consultFallback) return d
+    // Wave 2E: a card the evidence merge trimmed to its still-open questions is the router's own (code-written) card minus answered questions; rebuilding it from the catalogue would bring the answered
+    // questions back or, with one question left, turn it into a pick with no query (the open question silently lost).
+    if (!d || d.turn !== 'ask' || !d.ask || d.ask === routed?.decision.ask || d === consultFallback || (threadAwareAsk && lunaMerged?.rule === 'evidence_partial')) return d
     const built = catalogueAsk({ domains: d.domains, questionIds: d.ask.questions.map(q => q.id) }, subjectUserTexts.slice(-5).join(' . '), !!userLocation, lang)
     console.log(JSON.stringify({ type: 'tappyai_guard', guard: 'consult_ask_catalogue', source: built.source, unknown_ids: built.unknownIds, model_questions: d.ask.questions.length }))
     // Nothing the catalogue can ask -> no card (the same rule enforceConsultRules applies to a card with too few questions).
@@ -528,9 +533,14 @@ export async function POST(req: Request) {
   // CONSULT_THREAD_AWARE_ASK (Wave 2D · A): before the card is cut down to its one question, every question on it is checked against what the thread holds (askReconcile.ts); an answered one is dropped,
   // and a card with nothing left open becomes a pick. OFF = `askReconciled` is null and the decision goes on untouched.
   const askReconciled = threadAskEvidence && consultPlanPromoted.decision ? reconcileAsk(consultPlanPromoted.decision, { ...threadAskEvidence, lunaKnown: lunaStated?.decision.known ?? {} }) : null
-  const consultToCard = askReconciled?.decision ?? consultPlanPromoted.decision
-  const consult = agentOn ? null : keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }))
-  if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
+  const refineOpts = { localShop: !!deriveLocalShopSearch(subjectUserTexts.join(' ')) }
+  // Wave 2E (F-R3): narrowing a card of two or more questions down to ONE (by the merge or by the reconcile) must not turn the old gate round: refineAsk calls a multi-question card that filtering cut below
+  // two "not worth asking" (the state was already sufficient) and searches. When the card as it stood BEFORE the narrowing is judged a pick by that gate, the pick stands (= flag OFF).
+  const cardBeforeNarrowing = !threadAwareAsk ? null : lunaStated && lunaMerged?.rule === 'evidence_partial' ? mergeIntentWithRules(lunaStated.decision, routed, lunaOwnKnown, undefined).decision : consultPlanPromoted.decision
+  const narrowedCard = askReconciled?.decision ?? consultPlanPromoted.decision
+  const { card: consultToCard, notWorthAsking } = settleNarrowedCard(cardBeforeNarrowing, narrowedCard, subjectUserTexts, refineOpts)
+  const consult = agentOn ? null : keepServerFallback(refineAsk((consultToCard ? searchableAsPick(consultToCard, subjectUserTexts, !!userLocation) : null) ?? consultToCard, subjectUserTexts, refineOpts))
+  if (threadAwareAsk && (askReconciled?.report.applicable || lunaMerged?.rule)) trace?.emit('ask_reconcile', { mergeRule: lunaMerged?.rule ?? null, shownProducts: threadAskEvidence?.shownTitles.length ?? 0, ...(askReconciled ? { reference: askReconciled.report.reference, asked: askReconciled.report.asked, resolved: askReconciled.report.resolved, kept: askReconciled.report.kept, outcome: askReconciled.report.outcome, lunaValuesCounted: askReconciled.report.lunaCounted, lunaValuesNotGrounded: askReconciled.report.lunaNotGrounded } : {}), notWorthAsking, finalTurn: consult?.turn ?? null, finalAskIds: consult?.ask?.questions.map(q => q.id) ?? [] })
   if (consultPlanPromoted.promoted) console.log(JSON.stringify({ type: 'tappyai_plan_promoted', domain: 'travel', from: 'pick' }))
   // Measurement only (CONSULT_DECISION_LOG=1, off by default — replay sets it): the full decision, to check intent reading.
   if (process.env.CONSULT_DECISION_LOG === '1' && consult) console.log(JSON.stringify({ type: 'tappyai_consult_decision', by: lunaRun ? `luna-${lunaRun.mode}` : consultRun ? 'brain' : lunaSkipped ? 'rules-fast' : 'rules', turn: consult.turn, domains: consult.domains, known: consult.known, area: consult.area ?? null }))

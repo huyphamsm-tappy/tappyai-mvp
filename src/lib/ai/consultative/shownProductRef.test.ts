@@ -27,48 +27,58 @@ describe('shopCardTitles / newestShopCardTitles: the names come from the card pa
   })
 })
 
-describe('resolveShownReference: a message points at a shown product only through a name-like token that tells products apart', () => {
+describe('resolveShownReference: a message points at a shown product only through a word that tells products apart AND a demonstrative (Wave 2E)', () => {
   it('ONE: exactly one product carries the strongest match', () => {
-    for (const msg of ['lấy cái uag đi, đặt online', 'UAG nhé', 'mình thích bản Spigen', 'tôi chọn casetify']) {
+    for (const msg of ['lấy cái uag đó, đặt online', 'UAG đó nhé', 'mình thích bản Spigen này', 'tôi chọn casetify đó']) {
       const r = resolveShownReference(msg, SHOWN)
       expect(r.kind, msg).toBe('one')
       expect(r.titles, msg).toHaveLength(1)
     }
-    expect(resolveShownReference('lấy cái uag đi', SHOWN).titles[0]).toContain('UAG')
+    expect(resolveShownReference('lấy cái uag đó', SHOWN).titles[0]).toContain('UAG')
   })
-  it('the whole shown title typed back is that product', () => {
-    expect(resolveShownReference(SHOWN[1], SHOWN)).toMatchObject({ kind: 'one', titles: [SHOWN[1]] })
+  it('without a demonstrative nothing points - not even the whole shown title typed back (Wave 2D read it as that product)', () => {
+    expect(resolveShownReference(SHOWN[1], SHOWN).kind).toBe('none')
+    for (const msg of ['lấy cái uag đi, đặt online', 'UAG nhé', 'mình thích bản Spigen', 'tôi chọn casetify']) expect(resolveShownReference(msg, SHOWN).kind, msg).toBe('none')
   })
   it('MANY (2-4): the data cannot tell them apart - the candidates are returned', () => {
-    const r = resolveShownReference('lấy bản apple', SHOWN)
+    const r = resolveShownReference('lấy bản apple đó', SHOWN)
     expect(r.kind).toBe('many')
     expect(r.titles).toEqual([SHOWN[0], SHOWN[5]])
   })
   it('the strongest match narrows: two matching tokens beat one', () => {
-    expect(resolveShownReference('apple clear', SHOWN)).toMatchObject({ kind: 'one', titles: [SHOWN[5]] })
+    expect(resolveShownReference('apple clear đó', SHOWN)).toMatchObject({ kind: 'one', titles: [SHOWN[5]] })
   })
-  it('NONE: words every title shares, ordinary lower-case words, numbers, and a match broader than four products point at nothing', () => {
-    expect(resolveShownReference('ốp lưng iphone', SHOWN).kind).toBe('none') // the category words are in every title
-    expect(resolveShownReference('cho mình xem cái khác nha, mua online', SHOWN).kind).toBe('none') // lower-case function words never count
-    expect(resolveShownReference('bản 17 nhé', SHOWN).kind).toBe('none') // a bare number is never a name
-    expect(resolveShownReference('lấy bản max', SHOWN).kind).toBe('none') // "Max" is in 5 of 6 titles: the category, not a pointer
-    expect(resolveShownReference('lấy bản magsafe', SHOWN).kind).toBe('none') // "Magsafe" is in 4 of 6: more than half
-    expect(resolveShownReference('lấy bản clear', SHOWN)).toMatchObject({ kind: 'many', titles: [SHOWN[2], SHOWN[5]] }) // "Clear" is in 2 of 6: it tells them apart, but not one from the other
-    expect(resolveShownReference('lấy bản pro', SHOWN).kind).toBe('none') // every title
+  it('NONE: words every title shares, ordinary lower-case words, numbers, and a match broader than half of the card point at nothing', () => {
+    expect(resolveShownReference('ốp lưng iphone đó', SHOWN).kind).toBe('none') // the category words are in every title
+    expect(resolveShownReference('cho mình xem cái khác nha, mua online', SHOWN).kind).toBe('none') // function words never count
+    expect(resolveShownReference('bản 17 đó', SHOWN).kind).toBe('none') // a bare number is never a name
+    expect(resolveShownReference('lấy bản max đó', SHOWN).kind).toBe('none') // "Max" is in 5 of 6 titles: the category, not a pointer
+    expect(resolveShownReference('lấy bản magsafe đó', SHOWN).kind).toBe('none') // "Magsafe" is in 4 of 6: more than half
+    expect(resolveShownReference('lấy bản clear đó', SHOWN)).toMatchObject({ kind: 'many', titles: [SHOWN[2], SHOWN[5]] }) // "Clear" is in 2 of 6: it tells them apart, but not one from the other
+    expect(resolveShownReference('lấy bản pro đó', SHOWN).kind).toBe('none') // every title
     expect(resolveShownReference('', SHOWN).kind).toBe('none')
   })
   it('NONE with fewer than two products on the card (nothing to tell apart), and for duplicates of one product', () => {
-    expect(resolveShownReference('uag', ['Ốp lưng UAG Plasma']).kind).toBe('none')
-    expect(resolveShownReference('uag', ['Ốp lưng UAG Plasma', 'ốp lưng uag plasma']).kind).toBe('none')
+    expect(resolveShownReference('uag đó', ['Ốp lưng UAG Plasma']).kind).toBe('none')
+    expect(resolveShownReference('uag đó', ['Ốp lưng UAG Plasma', 'ốp lưng uag plasma']).kind).toBe('none')
   })
-  it('diacritics and case do not matter on either side', () => {
+  it('diacritics and case do not matter in the NAME; the demonstrative needs its own diacritics', () => {
     const shown = ['Tai nghe Sony WH-1000XM5 Đen', 'Tai nghe Bose QuietComfort Đen', 'Tai nghe JBL Tune Trắng', 'Tai nghe Marshall Major Kem']
     expect(resolveShownReference('lấy cái SONY đó', shown)).toMatchObject({ kind: 'one', titles: [shown[0]] })
-    expect(resolveShownReference('màu đen', shown)).toMatchObject({ kind: 'many', titles: [shown[0], shown[1]] })
+    expect(resolveShownReference('lay cai sony đó', shown)).toMatchObject({ kind: 'one', titles: [shown[0]] })
+    expect(resolveShownReference('lay cai sony do', shown).kind).toBe('none') // "do" is "by", not "that"
+    expect(resolveShownReference('màu đen đó', shown)).toMatchObject({ kind: 'many', titles: [shown[0], shown[1]] })
   })
-  it('a lower-case word in a title is never a pointer even when the message has it', () => {
+  it('a descriptive phrase of a request is not a pointer even when a title carries its words', () => {
     const shown = ['Loa Marshall cho phòng khách', 'Loa JBL Charge', 'Loa Sony Extra Bass']
-    expect(resolveShownReference('cho phòng ngủ', shown).kind).toBe('none') // "cho" / "phòng" are lower-case words in a title
+    expect(resolveShownReference('cho phòng ngủ', shown).kind).toBe('none')
+    expect(resolveShownReference('cho phòng ngủ đó', shown).kind).toBe('none')
+  })
+  it('a negation just before the name turns the message away from it; a word the consultation already used is its own description', () => {
+    expect(resolveShownReference('không lấy cái uag đó đâu', SHOWN).kind).toBe('none')
+    expect(resolveShownReference('bỏ cái Spigen đó đi', SHOWN).kind).toBe('none')
+    expect(resolveShownReference('cái uag đó', SHOWN, { established: ['tìm ốp UAG cho iphone'] }).kind).toBe('none')
+    expect(resolveShownReference('cái uag đó', SHOWN, { established: ['tìm ốp lưng cho iphone'] }).kind).toBe('one')
   })
 })
 
@@ -76,11 +86,11 @@ describe('distinguishingLabels: the words that tell the candidates apart', () =>
   it('drops what every candidate carries and keeps at most three words', () => {
     expect(distinguishingLabels([SHOWN[0], SHOWN[5]])).toEqual(['Silicon', 'Clear'])
   })
-  it('a candidate whose label would be empty or equal to another falls back to its own (cut) title, so two options are never the same text', () => {
+  it('a candidate whose label would be empty or equal to another is built from the first words of its own title plus its position, so two options are never the same text', () => {
     expect(distinguishingLabels(['Loa Alpha Bass Đen', 'Loa Alpha Bass Trắng'])).toEqual(['Đen', 'Trắng'])
     // "Loa Alpha" is wholly contained in the other title: its label would be empty
     const labels = distinguishingLabels(['Loa Alpha', 'Loa Alpha Mini Bass'])
-    expect(labels[0]).toBe('Loa Alpha')
+    expect(labels[0]).toBe('Loa Alpha 1')
     expect(labels[1]).toBe('Mini Bass')
     expect(new Set(labels).size).toBe(labels.length)
   })

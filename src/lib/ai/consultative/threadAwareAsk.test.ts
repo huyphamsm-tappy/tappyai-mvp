@@ -106,13 +106,13 @@ describe('reconcileAsk: a question is dropped only when the evidence answers it,
     expect(reconcileAsk(askDecision(['line'], { evidence: 'shown_card' }), ev(['mua ốp UAG Monarch'])).report.outcome).toBe('not_applicable')
   })
   it('the ONE product the message points at answers the questions its own name answers (line, magsafe) - the budget stays with the thread', () => {
-    const r = reconcileAsk(askDecision(), ev(['tìm ốp lưng iphone 17 pro max', 'dưới 1 triệu', 'lấy cái UAG đi'], { shownTitles: PRODUCTS }))
+    const r = reconcileAsk(askDecision(), ev(['tìm ốp lưng iphone 17 pro max', 'dưới 1 triệu', 'lấy cái UAG đó đi'], { shownTitles: PRODUCTS }))
     expect(r.report.reference).toBe('one')
     expect(r.report.resolved).toEqual({ line: 'shown_card', budget: 'user_thread', must: 'shown_card' })
     expect(r.report.outcome).toBe('to_pick')
   })
   it('several shown products matching (MANY) are not evidence for a slot', () => {
-    const r = reconcileAsk(askDecision(), ev(['tìm ốp lưng iphone 17 pro max', 'lấy cái UAG đi'], { shownTitles: PRODUCTS_3_UAG }))
+    const r = reconcileAsk(askDecision(), ev(['tìm ốp lưng iphone 17 pro max', 'lấy cái UAG đó đi'], { shownTitles: PRODUCTS_3_UAG }))
     expect(r.report.reference).toBe('many')
     expect(r.report.resolved.line).toBeUndefined()
     expect(r.report.kept).toContain('line')
@@ -178,14 +178,14 @@ describe('router step 3b: a message that points at a product the thread showed (
     return routeConsult(thread(shown, last), { hasGps: false, lang: 'vi' })
   }
   it('(i) exactly ONE shown product matches → a follow-up on it, no ask card, no question about what the thread already answered', () => {
-    const r = route(PRODUCTS, 'lấy cái UAG đi, đặt online cho nhanh')
+    const r = route(PRODUCTS, 'lấy cái UAG đó đi, đặt online cho nhanh')
     expect(r.confidence).toBe('rule')
     expect(r.decision).toMatchObject({ turn: 'followup', evidence: 'shown_card', domains: ['shopping'] })
     expect(r.decision.refers).toEqual([PRODUCTS[2]])
     expect(r.decision.ask).toBeUndefined()
   })
   it('a statement that names the product without a refinement verb gets the same reading (the message that used to come back as the brand\'s card)', () => {
-    const r = route(PRODUCTS, 'tui chọn cái UAG nha, mua online cho tiện')
+    const r = route(PRODUCTS, 'tui chọn cái UAG đó nha, mua online cho tiện')
     expect(r.decision).toMatchObject({ turn: 'followup', evidence: 'shown_card' })
     expect(r.decision.refers).toEqual([PRODUCTS[2]])
   })
@@ -193,13 +193,15 @@ describe('router step 3b: a message that points at a product the thread showed (
     const imperative = route(PRODUCTS, 'lấy cái UAG đi, đặt online cho nhanh', false)
     expect(imperative.decision.evidence).toBeUndefined()
     expect(imperative.decision.turn).toBe('reject')
+    // ON reads the same imperative WITHOUT a demonstrative as before too (Wave 2E: a pointer needs "đó"/"này")
+    expect(route(PRODUCTS, 'lấy cái UAG đi, đặt online cho nhanh', true).decision).toEqual(imperative.decision)
     const statement = route(PRODUCTS, 'tui chọn cái UAG nha, mua online cho tiện', false)
     expect(statement.decision.evidence).toBeUndefined()
     expect(statement.decision.turn).toBe('ask')
     expect(statement.decision.ask?.questions.map(q => q.id)).toContain('line')
   })
   it('(ii) several shown products of the brand match → ask ONLY what tells them apart, with options taken from the card; nothing already answered is asked again', () => {
-    const r = route(PRODUCTS_3_UAG, 'lấy cái UAG đi, đặt online cho nhanh')
+    const r = route(PRODUCTS_3_UAG, 'lấy cái UAG đó đi, đặt online cho nhanh')
     expect(r.decision).toMatchObject({ turn: 'ask', evidence: 'shown_card' })
     const qs = r.decision.ask?.questions ?? []
     expect(qs.map(q => q.id)).toEqual(['line'])
@@ -226,7 +228,7 @@ describe('router step 3b: a message that points at a product the thread showed (
     expect(first.decision.evidence).toBeUndefined()
     const food = route(PRODUCTS, 'tìm quán phở ngon ở quận 3')
     expect(food.decision.evidence).toBeUndefined(); expect(food.decision.domains).not.toContain('shopping')
-    const single = route([PRODUCTS[2]], 'lấy cái UAG đi')
+    const single = route([PRODUCTS[2]], 'lấy cái UAG đó đi')
     expect(single.decision.evidence).toBeUndefined()
   })
   it('earlier steps still win: "xem thêm", a plan phrase, a comparison keep their turn (flag ON)', () => {
@@ -236,7 +238,7 @@ describe('router step 3b: a message that points at a product the thread showed (
   it('the router reports what it decided under CONSULT_TRACE_DIAGNOSTICS-style tracing (counts only, no text)', () => {
     vi.stubEnv('CONSULT_THREAD_AWARE_ASK', '1')
     const events: Array<Record<string, unknown>> = []
-    routeConsult(thread(PRODUCTS, 'lấy cái UAG đi'), { hasGps: false, lang: 'vi', trace: e => events.push(e) })
+    routeConsult(thread(PRODUCTS, 'lấy cái UAG đó đi'), { hasGps: false, lang: 'vi', trace: e => events.push(e) })
     const e = events.find(x => x.ev === 'shown_reference')
     expect(e).toMatchObject({ shownProducts: 4, result: 'one', candidates: 1 })
     expect(JSON.stringify(e)).not.toMatch(/UAG|Plasma|Ốp/)

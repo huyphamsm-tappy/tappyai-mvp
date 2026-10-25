@@ -115,7 +115,7 @@ const thread = (shown: string[], last: string): Msg[] => [
   { role: 'user', content: 'dưới 1 triệu' }, { role: 'assistant', content: cardReply(shown) },
   { role: 'user', content: last },
 ]
-const POINT = 'tui chọn cái UAG nha, mua online cho tiện'
+const POINT = 'tui chọn cái UAG đó nha, mua online cho tiện' // Wave 2E: a pointer needs a demonstrative ("đó")
 // what the intent layer wrote in the paid run for such a message: a pick whose slots it read from the thread (a brand under "dòng", the budget, the way to buy)
 const LUNA_PICK = lunaIntent('pick', ['shopping'], { query: 'ốp UAG iphone 17 pro max', known: [{ key: 'san_pham', value: 'ốp lưng' }, { key: 'dong', value: 'UAG' }, { key: 'ngan_sach', value: 'dưới 1 triệu' }, { key: 'hinh_thuc', value: 'mua online' }] })
 
@@ -161,16 +161,27 @@ describe('A — the card holds SEVERAL products of the brand', () => {
 })
 
 describe('A — the final card never asks what the thread already answered (no card to point at)', () => {
+  // Wave 2E: the user's words count only inside ONE consultation - a request, the clarifying card(s) that followed, the answers. A reply that closes the chain (here a plain piece of advice) ends it.
+  // (the user wrote twice with no reply in between - e.g. the first message got no answer - so nothing closed the consultation)
   const earlier: Msg[] = [
+    { role: 'user', content: 'mình cần ốp UAG Monarch cho iphone 17 pro max' },
+    { role: 'user', content: 'ok mua ốp UAG đi' },
+  ]
+  const closed: Msg[] = [
     { role: 'user', content: 'mình cần ốp UAG Monarch cho iphone 17 pro max' },
     { role: 'assistant', content: 'Bạn tham khảo thêm nhé, mình sẽ gợi ý khi bạn sẵn sàng.' },
     { role: 'user', content: 'ok mua ốp UAG đi' },
   ]
-  it('OFF: the line the user named earlier is asked again ("Dòng nào?"); ON: the card moves on to what is still open (the price)', async () => {
+  it('OFF: the line the user named earlier is asked again ("Dòng nào?"); ON, inside the same consultation: the card moves on to what is still open (the price)', async () => {
     const off = await turn(earlier, { luna: null })
     expect(off.asked.map(q => q.q)).toEqual(['Dòng nào?'])
     const on = await turn(earlier, { thread: '1', luna: null })
     expect(on.asked.map(q => q.q)).toEqual(['Tầm giá bao nhiêu?'])
+  }, 60000)
+  it('ON, after a reply that closed the consultation: a new request is asked like OFF (the line named before the reply is not carried)', async () => {
+    const off = await turn(closed, { luna: null }), on = await turn(closed, { thread: '1', luna: null })
+    expect(off.asked.map(q => q.q)).toEqual(['Dòng nào?'])
+    expect(on.asked.map(q => q.q)).toEqual(off.asked.map(q => q.q))
   }, 60000)
   it('ON: an earlier text about ANOTHER product never answers the card (a laptop line does not answer the case card)', async () => {
     const mixed: Msg[] = [
@@ -213,7 +224,7 @@ describe('A — trace (CONSULT_TRACE_DIAGNOSTICS=1 only): what was resolved, nev
     expect(intent?.merge?.rule).toBe('shown_card')
     const rec = r.events.find(e => e.ev === 'ask_reconcile')
     expect(rec).toMatchObject({ mergeRule: 'shown_card', shownProducts: 6, finalTurn: 'followup', finalAskIds: [] })
-    expect(JSON.stringify(r.events)).not.toMatch(/Plasma|Spigen|Casetify|UAG nha|mua online/)
+    expect(JSON.stringify(r.events)).not.toMatch(/Plasma|Spigen|Casetify|UAG đó nha|mua online/)
   }, 60000)
   it('without the trace flag no such line is written', async () => {
     const r = await turn(thread(SIX, POINT), { thread: '1', luna: LUNA_PICK })

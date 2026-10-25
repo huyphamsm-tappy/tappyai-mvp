@@ -412,7 +412,8 @@ export function mergeIntentWithRules(luna: ConsultDecision, routed: { decision: 
     if (r.turn === 'ask' && r.ask && luna.turn === 'pick' && r.evidence !== 'shown_card') {
       const rec = reconcileAsk(r, { ...evidence, lunaKnown: luna.known })
       if (rec.report.applicable) {
-        if (rec.decision.turn === 'pick') return { decision: { ...luna, domains: r.domains, known: luna.known, ...(area ? { area } : {}) }, mode: 'luna-turn', rule: 'evidence_resolved' }
+        // Wave 2E: the intent layer's pick keeps ITS query; when it gave none, the query the evidence itself builds stands in (a pick with no query leaves the code nothing to search).
+        if (rec.decision.turn === 'pick') return { decision: { ...luna, domains: r.domains, known: luna.known, ...(area ? { area } : {}), ...(luna.query?.trim() || !rec.decision.query ? {} : { query: rec.decision.query }) }, mode: 'luna-turn', rule: 'evidence_resolved' }
         return keep(rec.decision, rec.report.outcome === 'trimmed' ? 'evidence_partial' : 'evidence_open')
       }
     }

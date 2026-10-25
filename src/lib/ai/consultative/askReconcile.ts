@@ -13,8 +13,20 @@
 // (a card the intent layer or the brain wrote) is never judged: it stays. Pure; no model call.
 
 import type { ConsultDecision, ConsultDomain } from './consultBrain'
-import { familyRootOf, joinQuery, slotView } from './consultRouter'
+import { familyRootOf, filterShownByFamily, joinQuery, slotView, titleConflictsWithMessage } from './consultRouter'
 import { resolveShownReference } from './shownProductRef'
+import { refineAsk } from './echoQuestion'
+import { cityInText } from '@/lib/ai/tools/vietnamCities'
+
+/**
+ * The old "not worth asking" gate (refineAsk: a multi-question card that filtering cut below two is a pick) must not be turned round by the narrowing this module and the intent merge do: a card of two or
+ * more questions narrowed to ONE would otherwise be asked, where the flag-OFF turn searches (review F-R3). When the card as it stood BEFORE the narrowing is a pick by that gate, the pick stands.
+ */
+export function settleNarrowedCard(before: ConsultDecision | null | undefined, narrowed: ConsultDecision | null | undefined, userTexts: readonly string[], opts: { localShop: boolean }): { card: ConsultDecision | null; notWorthAsking: boolean } {
+  const narrowedBelowTwo = !!before?.ask && before.ask.questions.length >= 2 && narrowed?.turn === 'ask' && (narrowed.ask?.questions.length ?? 0) < 2
+  const notWorthAsking = narrowedBelowTwo && refineAsk(before ?? null, userTexts, opts)?.turn === 'pick'
+  return { card: (notWorthAsking ? before : narrowed) ?? null, notWorthAsking }
+}
 
 const foldKey = (s: string): string => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase()
 const wordKeys = (s: string): string[] => s.split(/[^\p{L}\p{N}]+/u).filter(Boolean).map(foldKey)
@@ -26,6 +38,8 @@ export interface AskEvidenceInput {
   userTexts: readonly string[]
   /** The product names of the newest shopping card the thread showed (empty when none). */
   shownTitles: readonly string[]
+  /** Wave 2E: the user's earlier texts of this consultation, including those before the card (the words of the request itself); defaults to `userTexts` without the last one. */
+  establishedTexts?: readonly string[]
   /** `known` of the intent layer's decision (already checked once against the user's words; checked again here against the whole evidence). */
   lunaKnown: Record<string, string>
   gps: boolean
@@ -47,11 +61,25 @@ export interface ReconcileReport {
   lunaNotGrounded: number
 }
 
-/** The earlier user texts that belong with the last one: the same product family, or no family at all (a bare "500k-1tr"). Other domains: every text. */
+/**
+ * The earlier user texts that belong with the last one: the same product family, or no family at all (a bare "500k-1tr"). Other domains: every text from the last one that names ANOTHER city than the
+ * last text does (Wave 2E, F-R6): "khách sạn Đà Lạt … 2 người, dưới 1 triệu" followed by "giờ tìm khách sạn Nha Trang" is a new request, and the party, date and budget of the old one are not asked-for
+ * answers of the new one. (A city the table does not know says nothing, so nothing is cut.)
+ */
 export function compatibleTexts(texts: readonly string[], domain: ConsultDomain | undefined): string[] {
   if (texts.length === 0) return []
   const last = texts[texts.length - 1]
-  if (domain !== 'shopping') return [...texts]
+  if (domain !== 'shopping') {
+    const lastCity = cityInText(last)?.query
+    if (!lastCity) return [...texts]
+    const cities = texts.map(t => cityInText(t)?.query)
+    let other = -1
+    cities.forEach((c, i) => { if (i < texts.length - 1 && c && c !== lastCity) other = i })
+    if (other < 0) return [...texts]
+    // What follows the old city's text without naming a city of its own may still be about the old trip ("ngân sách 1 triệu"): it is not carried either - the first text that names THIS city starts the request.
+    const from = cities.findIndex((c, i) => i > other && c === lastCity)
+    return texts.slice(from < 0 ? texts.length - 1 : from)
+  }
   const rl = familyRootOf(last)
   return texts.filter((t, i) => i === texts.length - 1 || ((r) => r === null || rl === null || r === rl)(familyRootOf(t)))
 }
@@ -69,7 +97,11 @@ export function reconcileAsk(d: ConsultDecision, ev: AskEvidenceInput): { decisi
   const last = ev.userTexts[ev.userTexts.length - 1]
   const thread = compatibleTexts(ev.userTexts, domain)
   const threadText = thread.join(' . ')
-  const ref = domain === 'shopping' ? resolveShownReference(last, ev.shownTitles) : { kind: 'none' as const, titles: [] as string[], matchedTokens: 0 }
+  // Wave 2E: only the shown products of THIS message's family can be evidence (a charger card never answers a phone request), the words the user already used are not names, and a title the
+  // message contradicts (another line, a negated requirement) is not the product it points at.
+  const shown = filterShownByFamily(ev.shownTitles, last)
+  const rawRef = domain === 'shopping' && shown.length >= 2 ? resolveShownReference(last, shown, { established: ev.establishedTexts ?? ev.userTexts.slice(0, -1) }) : { kind: 'none' as const, titles: [] as string[], matchedTokens: 0 }
+  const ref = rawRef.kind === 'one' && titleConflictsWithMessage(last, rawRef.titles[0], ev.gps) ? { kind: 'none' as const, titles: [] as string[], matchedTokens: 0 } : rawRef
   const title = ref.kind === 'one' ? ref.titles[0] : ''
   // A value of the intent layer counts only when EVERY word of it is in the user's words of this consultation, or in the name of the ONE product the message points at. A shown name the message does
   // not point at is not the user's choice, and a value that adds a word of its own ("UAG Monarch" for a user who said "UAG") is a guess.

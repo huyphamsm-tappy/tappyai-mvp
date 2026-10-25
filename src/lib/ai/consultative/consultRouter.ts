@@ -20,7 +20,7 @@ import { hasExplicitPriorityState } from './decisionState'
 import { wasAskReply, type AskQuestion, type ConsultDecision, type ConsultDomain, type ConsultTurn } from './consultBrain'
 import { attributeReply, shownAsk, type AskReplyAttribution } from './replyAttribution'
 import { consultAnswerAttributionOn, consultThreadAwareAskOn } from '@/lib/config/consultFlags'
-import { newestShopCardTitles, resolveShownReference, distinguishingLabels } from './shownProductRef'
+import { newestShopCardTitles, resolveShownReference, distinguishingLabels, negatedBefore } from './shownProductRef'
 
 export type RouteConfidence = 'rule' | 'unsure'
 export interface RouteCtx {
@@ -384,6 +384,34 @@ function familyOf(t: Txt): Family {
 export function familyRootOf(text: string): string | null {
   const fam = familyOf(prep(text))
   return fam.id === 'generic' ? null : fam.id.replace(/_.*$/, '')
+}
+/** Wave 2E: the shown titles that belong with a message: a title of another product family ("Củ sạc …" for "điện thoại …") is dropped; a message or title of no family judges nothing. */
+export function filterShownByFamily(titles: readonly string[], lastText: string): string[] {
+  const rl = familyRootOf(lastText)
+  if (rl === null) return [...titles]
+  return titles.filter(t => { const r = familyRootOf(t); return r === null || r === rl })
+}
+/** Wave 2E: the products the newest card of `assistantTexts` showed that are valid evidence for `lastText` (none when fewer than two remain: with one product there is nothing to tell apart). */
+export function validShownTitles(assistantTexts: readonly string[], lastText: string): string[] {
+  const titles = filterShownByFamily(newestShopCardTitles(assistantTexts), lastText)
+  return titles.length >= 2 ? titles : []
+}
+/**
+ * Wave 2E: does the user's own message contradict the shown product? Read with the router's own slot detectors, for every identity / requirement slot (line, requirement, condition, purpose):
+ * the message states a value the product does not carry, or states the product's value but NEGATES it ("không cần magsafe" about a MagSafe product).
+ */
+export function titleConflictsWithMessage(userText: string, title: string, gps: boolean): boolean {
+  const said = slotView('shopping', userText, gps).known, has = slotView('shopping', title, gps).known
+  const words = prep(userText).lo.split(/[^\p{L}\p{N}]+/u).filter(Boolean)
+  for (const key of ['dong', 'yeu_cau', 'tinh_trang', 'muc_dich']) {
+    const a = said[key], b = has[key]
+    if (!a || !b) continue
+    if (prep(a).f !== prep(b).f) return true
+    const first = prep(a).f.split(/[^a-z0-9]+/).filter(Boolean)[0]
+    const at = first ? words.findIndex(w => prep(w).f === first) : -1
+    if (at >= 0 && negatedBefore(words, at)) return true
+  }
+  return false
 }
 function conditionOf(t: Txt): string | null {
   if (N('cũ').test(t.lo) || W('dt cu|may cu|hang cu|do cu|2hand|second hand|like new|used|refurbished').test(t.f) || W('cu').test(t.f.replace(/\d+\s*cu\b/g, ' '))) return 'cũ' // "1 củ" is money, not "cũ"
@@ -1121,12 +1149,14 @@ function routeTurn(turns: Msg[], ui: number, thread: Thread, ctx: RouteCtx, isLa
     if (pointedAt !== undefined) return pointedAt
     pointedAt = null
     if (!inThread || thread.domains[0] !== 'shopping' || !(cur.domains.length === 0 || cur.domains.includes('shopping')) || !consultThreadAwareAskOn()) return null
-    const shown = newestShopCardTitles(turns.slice(Math.max(0, thread.start), ui).filter(m => m.role === 'assistant').map(m => textOf(m.content)))
+    // Wave 2E: the reading of step 3 that this message already has a name for - a plan, "xem thêm", a comparison, a refusal or a complaint - is never a pointer (the second call site has no step 3 in front of it).
+    if (PLAN_RE.test(t.f) || MORE_RE.test(t.f) || COMPARE_RE.test(t.f) || NEGATIVE_RE.test(t.f)) return null
+    // Wave 2E: the card that counts is the newest one of THIS thread, and only its products of the family this message is about (a charger card is no evidence for a phone request).
+    const inThreadTurns = turns.slice(Math.max(0, thread.start), ui)
+    const shown = validShownTitles(inThreadTurns.filter(m => m.role === 'assistant').map(m => textOf(m.content)), userText)
     if (shown.length < 2) return null
-    const ref = resolveShownReference(userText, shown)
-    const stated = ref.kind === 'one' ? slotView('shopping', userText, ctx.hasGps).known.dong : undefined
-    const shownLine = ref.kind === 'one' ? slotView('shopping', ref.titles[0], ctx.hasGps).known.dong : undefined
-    const conflict = !!stated && !!shownLine && prep(stated).f !== prep(shownLine).f
+    const ref = resolveShownReference(userText, shown, { established: inThreadTurns.filter(m => m.role === 'user').map(m => stripMarkers(textOf(m.content))) })
+    const conflict = ref.kind === 'one' && titleConflictsWithMessage(userText, ref.titles[0], ctx.hasGps)
     if (isLast && ctx.trace) { try { ctx.trace({ ev: 'shown_reference', shownProducts: shown.length, result: conflict ? 'conflict' : ref.kind, candidates: ref.titles.length, matchedTokens: ref.matchedTokens }) } catch { /* a trace must never change the route */ } }
     if (ref.kind === 'one' && !conflict) pointedAt = keep({ domains: thread.domains, turn: 'followup', refers: ref.titles, evidence: 'shown_card' })
     else if (ref.kind === 'many') {
