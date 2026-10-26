@@ -9,8 +9,9 @@
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
 import { APICallError } from 'ai'
 import { currentBudget, estimateTokens, promptChars, reasoningHeadroomTokens, requestBudgetOn, RequestBudgetError, REQUEST_LIMITS, type ActualUsage, type BudgetKind, type Ticket } from './requestBudget'
-import { benchSpendGateOn, reserveSpend, utf8Bytes, type SpendHandle, type SpendSettleDetail } from './spendGate'
+import { ABANDONED_FIRST_PART_REASON, benchSpendGateOn, reserveSpend, utf8Bytes, type SpendHandle, type SpendSettleDetail } from './spendGate'
 import { INPUT_TOKEN_OVERHEAD, worstCaseLlmCallUsd } from '../llm/pricing'
+import { consultAbortAbandonedFirstPartOn } from '@/lib/config/consultFlags'
 
 type CallOpts = Parameters<LanguageModelV1['doGenerate']>[0]
 
@@ -143,6 +144,45 @@ function spendReserveFor(model: LanguageModelV1, opts: CallOpts, label: string):
 /** A failure that happened INSIDE the request ledger before anything was sent is provably not sent; any other failure may have been billed. */
 function failedBeforeSend(e: unknown): boolean { return e instanceof RequestBudgetError }
 
+/** The reason code to record when a call is closed because the fallback gave up on it (Wave 2I · A); anything else records no reason, as before. */
+const abandonReasonOf = (x: unknown): string | undefined => (x instanceof Error && x.message === ABANDONED_FIRST_PART_REASON ? ABANDONED_FIRST_PART_REASON : undefined)
+
+/**
+ * Closes ONE spend reservation exactly once. With CONSULT_ABORT_ABANDONED_FIRST_PART on and a caller signal, an abort of that signal closes the reservation as UNKNOWN at once (with the
+ * reason code when the fallback aborted it), even if the provider call never returns: the call may have been sent and what it cost is not known. With the flag off no listener is added
+ * and every method does what the inline code did before (the same single call on the handle).
+ */
+function abandonGuard(handle: SpendHandle, signal: AbortSignal | undefined) {
+  let closed = false
+  const unknown = (reason?: unknown) => {
+    if (closed) return
+    closed = true
+    const code = abandonReasonOf(reason)
+    if (code === undefined) handle.markUnknown(); else handle.markUnknown(code)
+  }
+  let detachFn = () => {}
+  if (signal && consultAbortAbandonedFirstPartOn()) {
+    const on = () => unknown(signal.reason)
+    signal.addEventListener('abort', on, { once: true })
+    detachFn = () => signal.removeEventListener('abort', on)
+  }
+  return {
+    unknown,
+    closed: () => closed,
+    detach: () => detachFn(),
+    fail(beforeSend: boolean) {
+      detachFn()
+      if (closed) return
+      if (beforeSend) { closed = true; handle.release() } else unknown()
+    },
+    settle(usd: number | null, detail: SpendSettleDetail) {
+      detachFn()
+      closed = true
+      return handle.settle(usd, detail)
+    },
+  }
+}
+
 function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
   return {
     ...model,
@@ -160,9 +200,12 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       const handle = r.handle
       if (!handle) return model.doGenerate(opts) // the flag went OFF since the model was resolved
       let out: Awaited<ReturnType<LanguageModelV1['doGenerate']>>
-      try { out = await model.doGenerate(r.opts) } catch (e) { if (failedBeforeSend(e)) handle.release(); else handle.markUnknown(); throw e }
+      const guard = abandonGuard(handle, opts.abortSignal)
+      try { out = await model.doGenerate(r.opts) } catch (e) { guard.fail(failedBeforeSend(e)); throw e }
+      guard.detach()
+      if (guard.closed()) return out // abandoned while it ran (Wave 2I · A): already closed as unknown, whatever it answers now is not booked
       const u = usageFrom(out.usage, out.providerMetadata)
-      handle.settle(u.usd, settleDetailOf(u)) // null = no usable cost: the gate stops the run
+      guard.settle(u.usd, settleDetailOf(u)) // null = no usable cost: the gate stops the run
       return out
     },
     async doStream(opts) {
@@ -171,12 +214,12 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       const handle = r.handle
       if (!handle) return model.doStream(opts)
       let res: Awaited<ReturnType<LanguageModelV1['doStream']>>
-      try { res = await model.doStream(r.opts) } catch (e) { if (failedBeforeSend(e)) handle.release(); else handle.markUnknown(); throw e }
-      let settled = false
-      const unknown = () => { if (!settled) { settled = true; handle.markUnknown() } }
+      const guard = abandonGuard(handle, opts.abortSignal)
+      try { res = await model.doStream(r.opts) } catch (e) { guard.fail(failedBeforeSend(e)); throw e }
+      const unknown = (reason?: unknown) => guard.unknown(reason)
       const stream = res.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
         transform(part, c) {
-          if (part.type === 'finish' && !settled) { settled = true; const u = usageFrom(part.usage, part.providerMetadata); handle.settle(u.usd, settleDetailOf(u)) }
+          if (part.type === 'finish' && !guard.closed()) { const u = usageFrom(part.usage, part.providerMetadata); guard.settle(u.usd, settleDetailOf(u)) }
           else if (part.type === 'error') unknown()
           c.enqueue(part)
         },
@@ -186,7 +229,7 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       const guarded = new ReadableStream<LanguageModelV1StreamPart>({
         // A source that BREAKS (network reset, abort mid-stream) errors the pipe without calling flush: it is read here, and what was billed is not known.
         async pull(c) { try { const n = await reader.read(); if (n.done) c.close(); else c.enqueue(n.value) } catch (e) { unknown(); throw e } },
-        cancel(reason) { unknown(); return reader.cancel(reason) }, // a cancelled stream may have been billed in part
+        cancel(reason) { unknown(reason); return reader.cancel(reason) }, // a cancelled stream may have been billed in part
       })
       return { ...res, stream: guarded }
     },

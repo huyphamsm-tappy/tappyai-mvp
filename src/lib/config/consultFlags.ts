@@ -15,6 +15,11 @@
 //                               that product instead of starting a new request, a question is dropped from the ask card when the user's earlier words, a value the intent layer checked against
 //                               those words, or the shown product already answer it, and a rules / intent disagreement on ask vs pick is settled on that evidence (not "rules always win").
 //                               Like the trace flag it is ONLY honoured outside production.
+//   CONSULT_ABORT_ABANDONED_FIRST_PART  (Wave 2I · A) when a model gives no first part in time and the fallback takes over, the abandoned call is CANCELLED (its signal is aborted, a stream that
+//                               arrives late is cancelled) and its spend reservation is closed as UNKNOWN with the reason `abandoned_first_part_timeout`, never left "held". The cost of that
+//                               call stays unknown (the paid-run gate still stops). Like the trace flag it is ONLY honoured outside production.
+//   CONSULT_KNOWLEDGE_TURN_TOOLS  (Wave 2I · B) on a turn the search-now gate (C) blocked, the model is also given web_search, and the area question is not appended when the model's own place
+//                               lookup failed for want of a location and the rules did not read the message as a place request. Needs CONSULT_SEARCH_NOW_INTENT_GATE too. Only honoured outside production.
 
 type Env = Record<string, string | undefined>
 
@@ -25,6 +30,8 @@ export const CONSULT_GENERAL_ASSISTANT_FLAG = 'CONSULT_GENERAL_ASSISTANT'
 export const CONSULT_TRACE_DIAGNOSTICS_FLAG = 'CONSULT_TRACE_DIAGNOSTICS'
 export const CONSULT_SEARCH_NOW_INTENT_GATE_FLAG = 'CONSULT_SEARCH_NOW_INTENT_GATE'
 export const CONSULT_THREAD_AWARE_ASK_FLAG = 'CONSULT_THREAD_AWARE_ASK'
+export const CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG = 'CONSULT_ABORT_ABANDONED_FIRST_PART'
+export const CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG = 'CONSULT_KNOWLEDGE_TURN_TOOLS'
 
 const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
@@ -39,3 +46,7 @@ export function consultTraceDiagnosticsOn(env: Env = process.env): boolean { ret
 export function consultSearchNowIntentGateOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_SEARCH_NOW_INTENT_GATE_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2D · A. ON only for the exact value "1" AND only outside a production runtime (the Owner has not approved it for production). */
 export function consultThreadAwareAskOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_THREAD_AWARE_ASK_FLAG]) && !isProductionRuntime(env) }
+/** Wave 2I · A. ON only for the exact value "1" AND only outside a production runtime. */
+export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
+/** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
+export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }

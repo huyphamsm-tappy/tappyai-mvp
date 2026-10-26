@@ -1,4 +1,6 @@
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
+import { consultAbortAbandonedFirstPartOn } from '@/lib/config/consultFlags'
+import { ABANDONED_FIRST_PART_REASON } from '../budget/spendGate'
 
 // ── Routed model with a fallback (owner 2026-09-30, "PHIÊN LUNA") ──────────────────────────────────────────────
 // Fallback = ONE retry on Luna by default (the Anthropic account has no credit; HAIKU_FALLBACK=1 makes it Claude).
@@ -51,17 +53,89 @@ export async function generateAbortingPrimary(primary: LanguageModelV1, fallback
   try {
     return await Promise.race([primary.doGenerate({ ...opts, abortSignal: ctrl.signal }), t.p])
   } catch (e) {
+    const abortFirst = !consultAbortAbandonedFirstPartOn()
     // Cancel the original FIRST: a timed-out request must not keep running (and billing) beside the retry.
-    ctrl.abort(new Error('primary_cancelled_before_retry'))
-    if (outer?.aborted) throw e
+    if (abortFirst) ctrl.abort(new Error('primary_cancelled_before_retry'))
+    if (outer?.aborted) { ctrl.abort(outer.reason); throw e }
     const reason = e instanceof Error ? e.message : String(e)
     log(o.label, reason, primary, Date.now() - t0, o.fallbackKind)
-    const r = await fallback.doGenerate(opts)
+    // Wave 2I · A: the retry is STARTED (its spend reservation is taken, synchronously) before the abandoned call is closed as unknown. The paid-run gate refuses every call after an unknown cost,
+    // so closing the primary first would refuse the very retry that answers the user. Both happen in the same tick: the original is still cancelled before anything can run beside the retry.
+    const pending = fallback.doGenerate(opts)
+    if (!abortFirst) ctrl.abort(new Error(ABANDONED_FIRST_PART_REASON))
+    const r = await pending
     const meta = markFellBack(r.providerMetadata) as { tappy: Record<string, unknown> }
     return { ...r, providerMetadata: { ...meta, tappy: { ...meta.tappy, fallbackReason: reason.slice(0, 120), primaryAborted: true, primaryMs: Date.now() - t0 } } as never }
   } finally {
     t.clear()
     outer?.removeEventListener('abort', onOuter)
+  }
+}
+
+/**
+ * doStream with cancel-before-retry (Wave 2I · A, flag CONSULT_ABORT_ABANDONED_FIRST_PART). Run 4 / E18: the plain path below gives up on a primary that sent no first part in time but never
+ * cancels it, so the primary kept running (and billing) and its spend reservation stayed "held" for ever. Here the primary runs under its own AbortController (linked to the caller's signal);
+ * once we give up it is aborted, its reader is cancelled, and a stream that only arrives AFTER the timeout is cancelled the moment it does. The cost of the abandoned call stays unknown.
+ * Exported for tests.
+ */
+export async function streamAbortingPrimary(primary: LanguageModelV1, fallback: LanguageModelV1, o: FallbackOptions, opts: Parameters<LanguageModelV1['doStream']>[0]): Promise<Awaited<ReturnType<LanguageModelV1['doStream']>>> {
+  const t0 = Date.now()
+  const outer = opts.abortSignal
+  if (outer?.aborted) throw outer.reason ?? new Error('aborted')
+  const ctrl = new AbortController()
+  const onOuter = () => ctrl.abort(outer?.reason)
+  outer?.addEventListener('abort', onOuter, { once: true })
+  const detach = () => outer?.removeEventListener('abort', onOuter)
+  const t = timeout<never>(o.firstPartMs)
+  let abandoned = false
+  let reader: ReadableStreamDefaultReader<LanguageModelV1StreamPart> | null = null
+  const gaveUp = () => new Error(ABANDONED_FIRST_PART_REASON)
+  const abandon = () => {
+    abandoned = true
+    ctrl.abort(gaveUp())
+    if (reader) reader.cancel(gaveUp()).catch(() => { /* already closed */ })
+    detach()
+  }
+  const viaFallback = async (reason: string) => {
+    log(o.label, reason, primary, Date.now() - t0, o.fallbackKind)
+    const r = await fallback.doStream(opts)
+    const stream = r.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
+      transform(part, c) { c.enqueue(part.type === 'finish' ? { ...part, providerMetadata: markFellBack(part.providerMetadata) as never } : part) },
+    }))
+    return { ...r, stream }
+  }
+  try {
+    const started = primary.doStream({ ...opts, abortSignal: ctrl.signal })
+    // A stream handed over after we gave up must not run on unread: cancel it as soon as it arrives.
+    started.then(r => { if (abandoned) r.stream.cancel(gaveUp()).catch(() => { /* already closed */ }) }, () => { /* the race below reports it */ })
+    const r = await Promise.race([started, t.p])
+    reader = r.stream.getReader()
+    const first = await Promise.race([reader.read(), t.p])
+    t.clear()
+    if (first.done || first.value.type === 'error') {
+      reader.releaseLock()
+      detach()
+      const why = first.done ? 'empty_stream' : String((first.value as { error?: unknown }).error ?? 'error_part')
+      return viaFallback(why)
+    }
+    const rd = reader
+    const stream = new ReadableStream<LanguageModelV1StreamPart>({
+      start(c) { c.enqueue(first.value) },
+      async pull(c) {
+        const n = await rd.read()
+        if (n.done) { detach(); c.close() } else c.enqueue(n.value)
+      },
+      cancel(reason) { detach(); return rd.cancel(reason) },
+    })
+    return { ...r, stream }
+  } catch (e) {
+    t.clear()
+    if (outer?.aborted) { detach(); throw e }
+    // The retry is STARTED (its spend reservation is taken, synchronously) before the abandoned call is closed as unknown: the paid-run gate refuses every call after an unknown cost, so
+    // closing the primary first would refuse the very retry that answers the user. Same tick: nothing runs beside the retry that was not cancelled.
+    const pending = viaFallback(e instanceof Error ? e.message : String(e))
+    abandon()
+    return pending
   }
 }
 
@@ -76,7 +150,7 @@ export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1
     // 🔑 SSRF: carried explicitly — a getter on the SDK model is lost by the spread (imageUrlSsrfGuardrail.test.ts).
     supportsImageUrls: primary.supportsImageUrls,
     async doGenerate(opts) {
-      if (o.abortPrimaryOnTimeout) return generateAbortingPrimary(primary, fallback, o, opts)
+      if (o.abortPrimaryOnTimeout || consultAbortAbandonedFirstPartOn()) return generateAbortingPrimary(primary, fallback, o, opts)
       const t0 = Date.now()
       const t = timeout<never>(o.generateMs ?? o.firstPartMs)
       try {
@@ -89,6 +163,7 @@ export function withFallback(primary: LanguageModelV1, fallback: LanguageModelV1
       } finally { t.clear() }
     },
     async doStream(opts) {
+      if (consultAbortAbandonedFirstPartOn()) return streamAbortingPrimary(primary, fallback, o, opts)
       const t0 = Date.now()
       const t = timeout<never>(o.firstPartMs)
       const viaFallback = async (reason: string) => {

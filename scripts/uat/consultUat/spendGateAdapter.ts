@@ -26,6 +26,8 @@ export interface SpendRecord {
   detail?: SpendCallDetail
   /** What the caller said when the call settled (Serper: the credits the provider reported; a model call: its tokens). */
   settleDetail?: SpendSettleDetail
+  /** Why the call was closed as unknown, when the caller said (Wave 2I: `abandoned_first_part_timeout`). Absent otherwise. */
+  unknownReason?: string
 }
 
 export class GuardSpendGate implements SpendGate {
@@ -92,10 +94,11 @@ export class GuardSpendGate implements SpendGate {
     h.rec.state = 'released'
   }
 
-  markUnknown(r: SpendReservation): void {
+  markUnknown(r: SpendReservation, reason?: string): void {
     const h = this.take(r)
     this.guard.markUnknown(h.res)
     h.rec.state = 'unknown'
+    if (reason !== undefined) h.rec.unknownReason = reason
   }
 
   get requests(): number { return this.records.filter(r => r.state !== 'refused').length }

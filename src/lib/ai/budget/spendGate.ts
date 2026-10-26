@@ -130,7 +130,7 @@ export interface SpendGate {
   /** ONLY for a call that provably never left the process. */
   release(res: SpendReservation): void
   /** The call may have been sent and its cost is not known. */
-  markUnknown(res: SpendReservation): void
+  markUnknown(res: SpendReservation, reason?: string): void
   /**
    * Optional: a call was refused BEFORE the gate was asked to hold anything (it has no upper bound: an image part, an `images` request, an uncovered
    * request parameter). Nothing is held; the gate may record it so the benchmark can flag the turn as degraded.
@@ -153,8 +153,12 @@ export interface SpendHandle {
   readonly reservation: SpendReservation
   settle(actualUsd: unknown, detail?: SpendSettleDetail): SpendSettleStatus
   release(): void
-  markUnknown(): void
+  /** `reason` (optional, an enum-like code, never user text) is only passed on when given, so a call without one reaches the gate exactly as before. */
+  markUnknown(reason?: string): void
 }
+
+/** Wave 2I · A: a model call the fallback gave up waiting for (no first part in time) and cancelled; what it cost is not known. */
+export const ABANDONED_FIRST_PART_REASON = 'abandoned_first_part_timeout'
 
 /**
  * The ONE place a paid call asks for permission. `maxUsd` is the call's worst-case cost (null = it cannot be bounded).
@@ -177,7 +181,7 @@ export function reserveSpend(label: string, maxUsd: number | null, detail?: Spen
     reservation,
     settle: (actualUsd, settleDetail) => once(() => (settleDetail ? gate.settle(reservation, actualUsd, settleDetail) : gate.settle(reservation, actualUsd))),
     release: () => once(() => gate.release(reservation)),
-    markUnknown: () => once(() => gate.markUnknown(reservation)),
+    markUnknown: (reason) => once(() => (reason === undefined ? gate.markUnknown(reservation) : gate.markUnknown(reservation, reason))),
   }
 }
 
