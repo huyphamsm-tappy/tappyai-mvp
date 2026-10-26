@@ -103,6 +103,7 @@ import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
 import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn, capabilityLimits } from '@/lib/config/consultFlags'
+import { referTitlesForPrompt } from '@/lib/ai/consultative/referTitles'
 import { createLeanResearch, RESEARCH_RULE } from '@/lib/ai/consultative/researchLoop'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
@@ -849,7 +850,7 @@ export async function POST(req: Request) {
 - User da noi: ${Object.entries(consult.known).map(([k, v]) => `${k}: ${v}`).join(' · ') || '(chua ro)'}
 - Gia dinh cho phan con thieu (${styleLuna6On() ? 'dung ngam, KHONG nhac voi user tru khi no doi lua chon' : 'noi ro trong cau xac nhan'}): ${consult.assumptions.join(' · ') || '(khong)'}${consult.rejectReason ? `
 - User da BAC: ${consult.rejectReason} — KHONG nhac lai cho da bac.` : ''}${consult.refers?.length ? `
-- User dang noi toi: ${consult.refers.join(' | ')}${consult.ordinalRef ? ' (day la quan user goi theo thu tu tren the da hien: tra loi thang ve quan nay, KHONG noi khong co quan thu N)' : ''}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
+- User dang noi toi: ${referTitlesForPrompt(consult.refers, consultThreadAwareAskOn())}${consult.ordinalRef ? ' (day la quan user goi theo thu tu tren the da hien: tra loi thang ve quan nay, KHONG noi khong co quan thu N)' : ''}` : ''}${(() => { const m = latestConsultPick(messages); return m ? `
 - LUA CHON DA CHOT gan nhat: ${m}` : '' })()}${consultShownEver.length ? `
 - Da gioi thieu (dung cho "xem them"/"bac": KHONG chon lai): ${consultShownEver.slice(0, 12).join(' | ')}` : ''}${(() => {
     // Replay r6: 6/11 plans ASKED instead of planning — the no-ask rule sat mid-prompt, under blocks that
