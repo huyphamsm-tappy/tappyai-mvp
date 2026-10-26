@@ -17,7 +17,7 @@
   },
   "subscriptionGroups" : [
     {
-      "id" : "com.tappyai.ios.subscriptions",
+      "id" : "22502849",
       "localizations" : [
         {
           "description" : "Gói đăng ký TappyAI Pro",
@@ -59,7 +59,7 @@
           "productID" : "com.tappyai.ios.pro.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "TappyAI Pro Monthly",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         },
         {
@@ -89,7 +89,7 @@
           "productID" : "tappy_pip_1w",
           "recurringSubscriptionPeriod" : "P1W",
           "referenceName" : "Tappy Pip 1 Week",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         },
         {
@@ -119,7 +119,7 @@
           "productID" : "tappy_momo_1m",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Tappy Momo 1 Month",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         },
         {
@@ -149,7 +149,7 @@
           "productID" : "tappy_coco_3m",
           "recurringSubscriptionPeriod" : "P3M",
           "referenceName" : "Tappy Coco 3 Months",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         },
         {
@@ -179,7 +179,7 @@
           "productID" : "tappy_milo_6m",
           "recurringSubscriptionPeriod" : "P6M",
           "referenceName" : "Tappy Milo 6 Months",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         },
         {
@@ -209,7 +209,7 @@
           "productID" : "tappy_sunny_12m",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Tappy Sunny 12 Months",
-          "subscriptionGroupID" : "com.tappyai.ios.subscriptions",
+          "subscriptionGroupID" : "22502849",
           "type" : "RecurringSubscription"
         }
       ]

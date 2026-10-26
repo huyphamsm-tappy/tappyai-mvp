@@ -23,7 +23,8 @@ final class StoreKitProductLoadTests: XCTestCase {
 
     func testStoreKitConfigurationReturnsProMonthlyProduct() async throws {
         let products = try await Product.products(for: [ProductCatalog.proMonthlyId])
-        XCTAssertEqual(products.map(\.id), [ProductCatalog.proMonthlyId])
+        let everyId = try await Product.products(for: ProductCatalog.allProductIds).map(\.id)
+        XCTAssertEqual(products.map(\.id), [ProductCatalog.proMonthlyId], "all configured ids that StoreKit returned: \(everyId)")
     }
 
     func testProviderMapsProMonthlyProductWithDisplayPrice() async throws {
