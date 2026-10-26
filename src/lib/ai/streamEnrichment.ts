@@ -23,6 +23,7 @@ import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
 import { extractBudget, extractPlanTotalBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { groundedCalcNumbers, numbersInText } from './tools/calculate'
+import { pageFigures, pageTexts } from './consultative/pageFigures'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
@@ -1780,6 +1781,14 @@ export function applyPlaceEnrichmentStreamFilter(
   /** Wave 3 (W4): the results the exact calculator returned this turn (empty unless CONSULT_DETERMINISTIC_MATH put `calculate` in the tool set), and the numbers every OTHER tool result of the turn stated (the grounding of a calculator input). */
   const calcResults: unknown[] = []
   const groundNums: number[] = []
+  /** Wave 3 (W1): the amounts the pages `read_page` opened this turn state (empty unless CONSULT_RESEARCH_LOOP put `read_page` in the tool set). */
+  const pageNums: number[] = []
+  /** Wave 3 (W1): the text of those pages - the evidence an opening-hours claim may trace to, like a place row's own hours. */
+  const pageEvidenceTexts: string[] = []
+  /** Wave 3 (W1): amounts per page host, and the place each host is the website of: an amount on the venue's OWN site is evidence for that venue's entity-scoped price. */
+  const pageFiguresByHost = new Map<string, number[]>()
+  const placeSiteHosts = new Map<string, string>()
+  const hostOfUrl = (u: unknown): string => { try { return typeof u === 'string' ? new URL(u).hostname.toLowerCase().replace(/^www\./, '') : '' } catch { return '' } }
   /**
    * The same prices, but keyed by the place each snippet actually NAMED.
    *
@@ -2721,6 +2730,8 @@ export function applyPlaceEnrichmentStreamFilter(
         ...(collector?.userTexts ?? [userText]).flatMap(t => [...numbersInText(t), ...extractMoneyClaims(t).flatMap(c => [c.lo, c.hi])]),
       ])
       : []
+    // Wave 3: what the turn established itself - grounded calculator results and the amounts of the pages it read. The three money-shaped guards below treat these as evidence. Empty (so no change) without the flags.
+    const ownValues = pageNums.length > 0 ? [...calcOk, ...pageNums] : calcOk
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -2729,8 +2740,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
     // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
     const guardedRaw = collector?.semanticRanking
-      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(calcOk.length > 0 ? { calcValues: calcOk } : {}), ...(collector?.consultative === true ? { decimalSafe: true } : {}), ...(collector?.consultV3 === true ? { namedListing: true, choiceOptions: true, userTexts: collector.userTexts ?? [userText] } : {}) })
-      : guardMoneyClaimsInText(enriched, productRecords, productQueries, calcOk.length > 0 ? { calcValues: calcOk } : {})
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}), ...(collector?.consultative === true ? { decimalSafe: true } : {}), ...(collector?.consultV3 === true ? { namedListing: true, choiceOptions: true, userTexts: collector.userTexts ?? [userText] } : {}) })
+      : guardMoneyClaimsInText(enriched, productRecords, productQueries, ownValues.length > 0 ? { calcValues: ownValues } : {})
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
      * money guard enforces only where a structured price exists (it is inert on organic rows, by
@@ -2774,7 +2785,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULT_V3: no travel-claims cut — it deleted the model's budget question and inserted "Giá vé cụ thể mình chưa xác nhận được…" (UAT
     // 17/10). Fares stay under the No-Fabrication Gate (a stated figure needs a source, or an explicit estimate label).
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang, ...(calcOk.length > 0 ? { calcValues: calcOk } : {}) }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang, ...(ownValues.length > 0 ? { calcValues: ownValues } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -2792,6 +2803,8 @@ export function applyPlaceEnrichmentStreamFilter(
      * attribute against. With no rows there is nothing a sentence could name,
      * and the guard keeps its existing area-level behaviour.
      */
+    // Wave 3 (W1): the amounts on a page of a venue's OWN website belong to that venue (inert when no page was read)
+    for (const [host, name] of placeSiteHosts) { const figs = pageFiguresByHost.get(host); if (figs && figs.length > 0) snippetPricesByEntity.set(name, [...(snippetPricesByEntity.get(name) ?? []), ...figs]) }
     const placeScope = (): SnippetPriceScope | undefined =>
       snippetPlaceNames.length > 0
         ? { byEntity: snippetPricesByEntity, placeNames: snippetPlaceNames }
@@ -2832,7 +2845,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // 700.000" (turn 2) is still the envelope at "bỏ điểm đến thứ hai" (turn 3). The No-Fabrication Gate already reads every user message.
     const snippetUserText = collector?.agentMode && collector.userTexts?.length ? collector.userTexts.join('\n') : userText
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardSnippetPricesInText(ticketGuarded, calcOk.length > 0 ? [...snippetPrices, ...calcOk] : snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      ? guardSnippetPricesInText(ticketGuarded, ownValues.length > 0 ? [...snippetPrices, ...ownValues] : snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
     const foodGuarded0 = qual('snippet_price', ticketGuarded, snippetGuardResult ? snippetGuardResult.text : ticketGuarded)
     // Release gate (UAT-15): a comparative proximity claim about the pick must be backed by the rows' own distances (see proximityClaim.ts).
@@ -2954,7 +2967,7 @@ export function applyPlaceEnrichmentStreamFilter(
      * times are the travel guard's, a ticket turn's showtimes the ticket unit's.
      */
     gt(placeGuardResult ? 'place_claim' : 'ordering_no_evidence', foodGuarded, placeGuardedRaw)
-    const hoursEvidence = [...placeTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
+    const hoursEvidence = [...placeTexts, ...pageEvidenceTexts, ...(collector?.consultativeV1 && !hadPlaceSearch ? [...collector.consultativeV1.carried.map(c => c.hours ?? ''), ...(collector.consultativeV1.priorTimes ?? [])] : [])]
     const hoursGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
       ? guardHoursClaimsInText(placeGuardedRaw, hoursEvidence, {
         lang,
@@ -4237,6 +4250,8 @@ export function applyPlaceEnrichmentStreamFilter(
               const rating = typeof row.rating_value === 'number' ? row.rating_value : (row.rating ?? row.google_rating)
               const rowName = typeof row.name === 'string' ? row.name : ''
               if (rowName) snippetPlaceNames.push(rowName)
+              // Wave 3 (W1): a place's own website is where the amounts on a page of that host belong (see placeSiteHosts)
+              if (rowName) { const site = hostOfUrl(row.website_uri ?? row.website); if (site && placeSiteHosts.size < 60) placeSiteHosts.set(site, rowName) }
               if (typeof rating === 'number') placeRatings.push(rating)
               // The same facts, keyed by the venue they actually describe.
               if (rowName && typeof rating === 'number') {
@@ -4286,6 +4301,8 @@ export function applyPlaceEnrichmentStreamFilter(
             // the snippet-price boundary must not cut the answer's arithmetic. Only a successful `calculate` result counts; the tool exists only with the flag on, so this is inert otherwise.
             if (toolName === 'calculate') { if (calcResults.length < 40) calcResults.push((res as { result?: unknown }).result) }
             else if (toolName !== undefined && groundNums.length < 20_000) groundNums.push(...numbersInText(line.slice(2, 2 + 120_000), 800))
+            if (toolName === 'read_page' && pageNums.length < 5000) { pageNums.push(...pageFigures((res as { result?: unknown }).result)); if (pageEvidenceTexts.length < 60) pageEvidenceTexts.push(...pageTexts((res as { result?: unknown }).result))
+              for (const p of ((res as { result?: { pages?: unknown } }).result?.pages as Array<{ url?: unknown }> | undefined) ?? []) { const host = hostOfUrl(p?.url); if (host && pageFiguresByHost.size < 30) pageFiguresByHost.set(host, [...(pageFiguresByHost.get(host) ?? []), ...pageFigures({ pages: [p] })]) } }
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results

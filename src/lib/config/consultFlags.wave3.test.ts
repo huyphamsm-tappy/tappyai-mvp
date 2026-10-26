@@ -1,6 +1,22 @@
 import { describe, it, expect } from 'vitest'
-import { consultSearchNowIntentGateOn, consultToolByNeedOn, consultDeterministicMathOn } from './consultFlags'
+import { consultSearchNowIntentGateOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn } from './consultFlags'
 import { consultTools, DOMAIN_TOOLS } from '@/lib/ai/consultative/leanConsultPrompt'
+
+describe('Wave 3 · W1 CONSULT_RESEARCH_LOOP', () => {
+  it('ON only for the exact value "1", outside production, and needs no other flag', () => {
+    expect(consultResearchLoopOn({ CONSULT_RESEARCH_LOOP: '1' })).toBe(true)
+    for (const v of [undefined, '', '0', 'true', 'on', ' 1', '1 ', 'yes', '11']) expect(consultResearchLoopOn({ CONSULT_RESEARCH_LOOP: v }), String(v)).toBe(false)
+    expect(consultResearchLoopOn({ CONSULT_RESEARCH_LOOP: '1', VERCEL_ENV: 'production' })).toBe(false)
+    expect(consultResearchLoopOn({ CONSULT_RESEARCH_LOOP: '1', NODE_ENV: 'production' })).toBe(false)
+  })
+  it('consultTools: with research every area gets web_search and read_page; with no area nothing is offered', () => {
+    for (const d of ['food', 'spa', 'entertainment', 'shopping', 'travel'] as const) {
+      const off = consultTools([d])
+      expect(consultTools([d], { research: true }).sort()).toEqual([...new Set([...off, 'web_search', 'read_page'])].sort())
+    }
+    expect(consultTools([], { research: true })).toEqual([])
+  })
+})
 
 describe('Wave 3 · W4 CONSULT_DETERMINISTIC_MATH', () => {
   it('ON only for the exact value "1", outside production, and needs no other flag', () => {

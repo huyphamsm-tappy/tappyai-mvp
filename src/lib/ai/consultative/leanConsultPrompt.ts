@@ -48,7 +48,7 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean; math?: boolean } = {}): string[] {
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean; math?: boolean; research?: boolean } = {}): string[] {
   const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
   // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
   if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
@@ -58,6 +58,8 @@ export function consultTools(domains: readonly ConsultDomain[], opts: { shopping
   if (opts.toolByNeed && domains.length > 0) tools.push('web_search')
   // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn with an area is offered the exact calculator. Offered, never forced.
   if (opts.math && domains.length > 0) tools.push('calculate')
+  // Wave 3 (W1, CONSULT_RESEARCH_LOOP): every lean consult turn with an area is offered the page reader AND web_search (a read needs a link to read: the search is where most links come from). Offered, never forced.
+  if (opts.research && domains.length > 0) tools.push('web_search', 'read_page')
   return [...new Set(tools)]
 }
 

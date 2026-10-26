@@ -112,6 +112,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_DETERMINISTIC_MATH', o.math); set('VERCEL_ENV', o.vercelEnv)
+  delete process.env.CONSULT_RESEARCH_LOOP // this file pins W4 alone (W1 is covered by researchLoop.route.test.ts)
   const calls: Call[] = [...(o.tool ? [o.tool] : []), ...(o.tools ?? [])].map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
   h.state.legacy = { calls, text: o.reply ?? 'Đây là câu trả lời.' }
   h.state.results = {}

@@ -108,6 +108,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_SEARCH_NOW_INTENT_GATE', o.gate); set('CONSULT_TOOL_BY_NEED', o.need); set('CONSULT_TRACE_DIAGNOSTICS', o.trace ? '1' : undefined); set('VERCEL_ENV', o.vercelEnv)
   delete process.env.CONSULT_DETERMINISTIC_MATH // this file pins W2 alone (W4 is covered by deterministicMath.route.test.ts)
+  delete process.env.CONSULT_RESEARCH_LOOP // ... and W1 by researchLoop.route.test.ts
   const toolName = o.tool?.name ?? 'search_places'
   const call: Call | null = o.tool ? { toolCallId: 'c1', toolName, args: toolName === 'search_places' ? { query: o.tool.query, type: 'attraction' } : { query: o.tool.query } } : null
   h.state.legacy = { call: call ?? { toolCallId: 'none', toolName: 'none', args: {} }, text: o.reply ?? 'Đây là câu trả lời.' }
