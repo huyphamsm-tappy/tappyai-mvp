@@ -37,4 +37,24 @@ final class SubscriptionSourceTests: XCTestCase {
         let s = try decode(#"{"isPro":false,"source":"apple","# + quota + "}")
         XCTAssertFalse(s.isAppleSubscription)
     }
+
+    // MARK: The Free card says «Current plan» only on Free (device test of build 175: the Free card still said it while the
+    // screen read «You're on Pro»)
+
+    func testFreeCardIsTheCurrentPlanOnAFreeAccount() throws {
+        XCTAssertTrue(try decode(#"{"isPro":false,"# + quota + "}").freePlanIsCurrent)
+        XCTAssertTrue(try decode(#"{"isPro":false,"source":null,"# + quota + "}").freePlanIsCurrent)
+    }
+
+    func testFreeCardIsNotTheCurrentPlanOnAnAppStoreSubscription() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"source":"apple","# + quota + "}").freePlanIsCurrent)
+    }
+
+    func testFreeCardIsNotTheCurrentPlanOnAPlanBoughtElsewhere() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"source":"external","# + quota + "}").freePlanIsCurrent)
+    }
+
+    func testFreeCardIsNotTheCurrentPlanFromAServerThatPredatesSource() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"# + quota + "}").freePlanIsCurrent)
+    }
 }

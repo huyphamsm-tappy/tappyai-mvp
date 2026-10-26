@@ -155,12 +155,12 @@ struct SubscriptionView: View {
     @ViewBuilder
     private func pricingCards(_ s: SubscriptionStatusResponse) -> some View {
         VStack(spacing: Spacing.md) {
-            freeCard
+            freeCard(s)
             proCard(s)
         }
     }
 
-    private var freeCard: some View {
+    private func freeCard(_ s: SubscriptionStatusResponse) -> some View {
         VStack(alignment: .leading, spacing: Spacing.md) {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 2) {
@@ -186,13 +186,18 @@ struct SubscriptionView: View {
                     featureRow(f, tint: TappyColor.textSecondary)
                 }
             }
-            Text("sub.current")
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(TappyColor.textSecondary)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, Spacing.sm + 2)
-                .overlay(RoundedRectangle(cornerRadius: Radius.lg)
-                    .stroke(TappyColor.border, lineWidth: 1))
+            // «Current plan» only while the account really is on Free. With ANY paid plan (App Store or bought
+            // elsewhere) the Free card carries no such mark: it would contradict «You're on Pro».
+            if s.freePlanIsCurrent {
+                Text("sub.current")
+                    .font(.system(size: 13, weight: .medium))
+                    .foregroundStyle(TappyColor.textSecondary)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, Spacing.sm + 2)
+                    .overlay(RoundedRectangle(cornerRadius: Radius.lg)
+                        .stroke(TappyColor.border, lineWidth: 1))
+                    .accessibilityIdentifier("sub-free-current")
+            }
         }
         .padding(Spacing.lg)
         .background(TappyColor.cardBackground)

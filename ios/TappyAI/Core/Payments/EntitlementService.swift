@@ -31,6 +31,10 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     /// payment is switched on in production), so it keeps the App Store display and the app works against either server.
     var isAppleSubscription: Bool { isPro && (source == "apple" || source == nil) }
 
+    /// The Free card is marked «Current plan» only while the account is on Free. Any paid plan, from the App Store or
+    /// bought elsewhere, is the current plan instead: the Free card must not claim it too.
+    var freePlanIsCurrent: Bool { !isPro }
+
     // Lenient on FORM (numbers as strings), strict on meaning: the quota numbers are what the
     // screen shows, so a response without them fails and the caller falls back to `.free` —
     // inventing "0 / 0" would state a quota the server never sent. `isPro` absent = not Pro,
