@@ -14,7 +14,7 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { NextResponse } from 'next/server'
 import { isAppleIAPConfigured, isSubscriptionActive, getSubscriptionStatuses } from '@/lib/apple-iap/api'
 import { verifyTransactionInfo, JWSVerificationError } from '@/lib/apple-iap/jws'
-import { checkAppleTransaction, APPLE_PRO_PRODUCT_IDS, applePlanForProduct } from '@/lib/apple-iap/transactionPolicy'
+import { checkAppleTransaction, APPLE_PRO_PRODUCT_IDS, applePlanForProduct, keepsLongerExternalPlan } from '@/lib/apple-iap/transactionPolicy'
 import { type PaidPlanId } from '@/lib/plans/planConfig'
 import { applyEntitlement } from '@/lib/payments/grantPlan'
 import { requestLocale } from '@/lib/i18n/requestLocale'
@@ -206,6 +206,29 @@ export async function POST(req: Request) {
     if (holder) {
       console.error('[iap/apple/verify] transaction already bound to another account')
       return NextResponse.json({ error: 'transaction_in_use', message: serverMessage('subscription.invalidTransaction', requestLocale(req)) }, { status: 409 })
+    }
+
+    // One row per account: this upsert REPLACES the account's plan. A plan the account already holds from another
+    // source (web, manual grant) and that lasts longer than this App Store period must not be replaced or marked
+    // expired by a purchase/restore here — the longer period wins and nothing is written (App Review 3.1.3(b)).
+    // A later Restore writes the App Store plan once it outlasts the other one.
+    const { data: existing, error: existingError } = await admin
+      .from('subscriptions')
+      .select('plan, status, current_period_end, source, stripe_sub_id')
+      .eq('user_id', user.id)
+      .maybeSingle()
+    if (existingError) {
+      console.error('[iap/apple/verify] existing plan lookup failed:', existingError)
+      return NextResponse.json({ error: 'verify_unavailable', message: serverMessage('subscription.verifyUnavailable', requestLocale(req)) }, { status: 503 })
+    }
+    if (keepsLongerExternalPlan(existing, isPro ? expiresAt : null)) {
+      console.info(`[iap/apple/verify] kept the account's longer ${existing?.source ?? 'external'} plan; nothing written`)
+      return NextResponse.json({
+        isPro: true,
+        plan: existing?.plan ?? targetPlan,
+        currentPeriodEnd: existing?.current_period_end ?? null,
+        kept: 'existing_plan',
+      })
     }
 
     if (isPro) {
