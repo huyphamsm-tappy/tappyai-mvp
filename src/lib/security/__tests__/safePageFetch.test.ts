@@ -31,6 +31,15 @@ describe('hop validation (string level, before any socket)', () => {
     ['http://printer.local/', 'blocked_host'],
     ['http://metadata.google.internal/computeMetadata/v1/', 'blocked_host'],
     ['http://intranet/', 'blocked_host'],
+    // Wave 3-FIX R3-08: the root dot written out is the same name
+    ['http://localhost./', 'blocked_host'],
+    ['http://api.localhost./', 'blocked_host'],
+    ['http://printer.local./', 'blocked_host'],
+    ['http://x.internal./', 'blocked_host'],
+    ['http://metadata.google.internal./computeMetadata/v1/', 'blocked_host'],
+    ['http://localhost.localdomain/', 'blocked_host'],
+    ['http://intranet./', 'blocked_host'],
+    ['https://www.apple.com./airpods-pro/', null],
     ['http://127.0.0.1/', 'blocked_address'],
     ['http://10.0.0.5/', 'blocked_address'],
     ['http://192.168.1.1/', 'blocked_address'],
@@ -80,6 +89,38 @@ describe('redirects: bounded and re-validated hop by hop', () => {
   it('a redirect without a location', async () => {
     const r = await fetchPublicPage('https://a.example/', {}, scripted({ 'https://a.example/': { kind: 'redirect', status: 302, location: null } }).t)
     expect(r).toMatchObject({ ok: false, reason: 'redirect_without_location' })
+  })
+})
+
+describe('Wave 3-FIX R3-05: hopGate is asked for EVERY hop, before any socket', () => {
+  it('a redirect to a host the gate refuses is never requested, and the reason is the gate\'s', async () => {
+    const s = scripted({ 'https://shop.example/': { kind: 'redirect', status: 302, location: 'https://other.example/private/page' }, 'https://other.example/private/page': body('<title>x</title>') })
+    const seen: string[] = []
+    const r = await fetchPublicPage('https://shop.example/', { hopGate: async u => { seen.push(u.toString()); return u.hostname === 'other.example' ? 'robots_disallowed' : null } }, s.t)
+    expect(r).toMatchObject({ ok: false, reason: 'robots_disallowed', redirects: 1 })
+    expect(seen).toEqual(['https://shop.example/', 'https://other.example/private/page'])
+    expect(s.asked).toEqual(['https://shop.example/'])
+  })
+  it('the first URL is gated too; a gate that throws closes the hop; a gate that allows changes nothing', async () => {
+    const s = scripted({ 'https://a.example/': body('<title>ok</title>') })
+    expect(await fetchPublicPage('https://a.example/', { hopGate: async () => 'robots_disallowed' }, s.t)).toMatchObject({ ok: false, reason: 'robots_disallowed' })
+    expect(await fetchPublicPage('https://a.example/', { hopGate: async () => { throw new Error('boom') } }, s.t)).toMatchObject({ ok: false, reason: 'robots_unreachable' })
+    expect(s.asked).toEqual([])
+    expect(await fetchPublicPage('https://a.example/', { hopGate: async () => null }, s.t)).toMatchObject({ ok: true })
+    expect(await fetchPublicPage('https://a.example/', {}, s.t)).toMatchObject({ ok: true })
+  })
+  it('the string check still comes first: a hop that fails it never reaches the gate', async () => {
+    let asked = 0
+    const r = await fetchPublicPage('http://localhost./', { hopGate: async () => { asked++; return null } }, scripted({}).t)
+    expect(r).toMatchObject({ ok: false, reason: 'blocked_host' })
+    expect(asked).toBe(0)
+  })
+  it('anyContentType reaches the transport only when asked for', async () => {
+    const seenOpts: Array<boolean | undefined> = []
+    const t: HopTransport = async (_u, o) => { seenOpts.push(o.anyContentType); return body('User-agent: *\nDisallow: /', 'application/octet-stream') }
+    await fetchPublicPage('https://a.example/robots.txt', { anyContentType: true }, t)
+    await fetchPublicPage('https://a.example/robots.txt', {}, t)
+    expect(seenOpts).toEqual([true, undefined])
   })
 })
 

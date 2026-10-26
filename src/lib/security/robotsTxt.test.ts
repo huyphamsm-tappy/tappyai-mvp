@@ -71,7 +71,18 @@ describe('W1 robots.txt · the cached gate', () => {
     expect((await gate.check('http://a.example/p')).allowed).toBe(true)
     expect(calls.length).toBe(2)
   })
-  it('4xx = no robots file = allowed; 5xx / timeout / network / refused address = unreachable = disallowed; a non-text answer = nothing to honour', async () => {
+  it('Wave 3-FIX R3-05: a Disallow served with a non-text Content-Type is still honoured; a page of another kind has no rule to honour', async () => {
+    const { gate } = mk({
+      'https://oct.example/robots.txt': ok('User-agent: *\nDisallow: /', 'application/octet-stream'),
+      'https://bin.example/robots.txt': ok('User-agent: tappyai\nDisallow: /private', ''),
+      'https://page.example/robots.txt': ok('<html><body>Not found. Disallow: / (text on a page)</body></html>', 'text/html'),
+    })
+    expect(await gate.check('https://oct.example/p')).toEqual({ allowed: false, reason: 'disallowed_by_rules' })
+    expect(await gate.check('https://bin.example/private/x')).toEqual({ allowed: false, reason: 'disallowed_by_rules' })
+    expect((await gate.check('https://bin.example/public')).allowed).toBe(true)
+    expect((await gate.check('https://page.example/p')).allowed).toBe(true)
+  })
+  it('4xx = no robots file = allowed; 5xx / timeout / network / refused address = unreachable = disallowed; a page that has no rule line = nothing to honour', async () => {
     const { gate } = mk({
       'https://nf.example/robots.txt': fail(404), 'https://gone.example/robots.txt': fail(410), 'https://forbidden.example/robots.txt': fail(403),
       'https://err.example/robots.txt': fail(503), 'https://slow.example/robots.txt': fail(undefined, 'total_timeout'), 'https://net.example/robots.txt': fail(undefined, 'network_error'),

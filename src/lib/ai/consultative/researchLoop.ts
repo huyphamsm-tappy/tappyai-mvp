@@ -10,7 +10,7 @@
 import { createPageReader, readPageTool, urlsIn, urlsInText } from '@/lib/ai/agent/runtime/readPage'
 import { EvidenceLedger, normUrl } from '@/lib/ai/agent/runtime/evidence'
 import type { AgentRunTrace } from '@/lib/ai/agent/runtime/trace'
-import { fetchPublicPage, type PageFetchResult } from '@/lib/security/safePageFetch'
+import { fetchPublicPage, type PageFailure, type PageFetchOptions, type PageFetchResult } from '@/lib/security/safePageFetch'
 import { createRobotsGate, ROBOTS_MAX_BYTES, type RobotsGate } from '@/lib/security/robotsTxt'
 
 /** Model steps of a lean research turn (the plain lean turn has 3): with the last two kept for writing, four tool rounds are possible. */
@@ -29,18 +29,29 @@ export const RESEARCH_RULE = `NGHIEN CUU: khi mau trich chua du de tra loi (gia,
 /** The process-wide robots.txt gate (a cache per host). Tests inject their own. */
 let sharedRobots: RobotsGate | null = null
 export function sharedRobotsGate(): RobotsGate {
-  return (sharedRobots ??= createRobotsGate({ fetchPage: (u, s) => fetchPublicPage(u, { signal: s, maxBytes: ROBOTS_MAX_BYTES }) }))
+  // Wave 3-FIX (R3-05): any Content-Type (the rules count whatever the file is labelled), a compressed answer decoded under the same byte cap
+  return (sharedRobots ??= createRobotsGate({ fetchPage: (u, s) => fetchPublicPage(u, { signal: s, maxBytes: ROBOTS_MAX_BYTES, anyContentType: true, decodeCompressed: true }) }))
 }
 export function __resetSharedRobots(): void { sharedRobots = null }
 
-type Fetcher = (url: string, signal?: AbortSignal) => Promise<PageFetchResult>
+/** `hopGate` (Wave 3-FIX R3-05): the fetcher must ask it before it opens EVERY hop - the URL and each redirect target - and stop with the reason it returns. */
+type Fetcher = (url: string, signal?: AbortSignal, hopGate?: NonNullable<PageFetchOptions['hopGate']>) => Promise<PageFetchResult>
 
-/** Wraps a page fetcher so a page the site's robots.txt forbids (or whose robots.txt cannot be reached) is not opened. The failure is typed like any other page failure. */
+const robotsFailure = (reason: string): PageFailure => (reason === 'disallowed_by_rules' ? 'robots_disallowed' : reason === 'robots_unreachable' ? 'robots_unreachable' : 'invalid_url')
+
+/**
+ * Wraps a page fetcher so a page the site's robots.txt forbids (or whose robots.txt cannot be reached) is not opened - the first URL AND, through `hopGate`, every redirect target: the host a redirect
+ * leads to is judged by its own robots.txt. The failure is typed like any other page failure.
+ */
 export function robotsAwareFetch(inner: Fetcher, gate: RobotsGate): Fetcher {
+  const hopGate: NonNullable<PageFetchOptions['hopGate']> = async (u, s) => {
+    const g = await gate.check(u.toString(), s)
+    return g.allowed ? null : robotsFailure(g.reason)
+  }
   return async (url, signal) => {
     const g = await gate.check(url, signal)
-    if (!g.allowed) return { ok: false, url, reason: (g.reason === 'disallowed_by_rules' ? 'robots_disallowed' : g.reason === 'robots_unreachable' ? 'robots_unreachable' : 'bad_url') as never, redirects: 0, ms: 0 }
-    return inner(url, signal)
+    if (!g.allowed) return { ok: false, url, reason: robotsFailure(g.reason), redirects: 0, ms: 0 }
+    return inner(url, signal, hopGate)
   }
 }
 
@@ -70,7 +81,7 @@ export function createLeanResearch(o: {
     add: (ev: string, data: Record<string, unknown>) => { try { o.emit?.(ev, data) } catch { /* observation only */ } },
     counters: { budgetRefusals: 0 },
   } as unknown as AgentRunTrace
-  const inner: Fetcher = o.fetchPage ?? ((u, s) => fetchPublicPage(u, { signal: s }))
+  const inner: Fetcher = o.fetchPage ?? ((u, s, hopGate) => fetchPublicPage(u, { signal: s, ...(hopGate ? { hopGate } : {}) }))
   const reader = createPageReader({
     ledger: new EvidenceLedger(),
     allowed: (u: string) => allowed.has(normUrl(u)),

@@ -44,6 +44,39 @@ describe('W1 researchLoop · robotsAwareFetch', () => {
   })
 })
 
+describe('Wave 3-FIX R3-05 · robots on every redirect hop', () => {
+  const robotsByOrigin: Record<string, string> = { 'https://shop.example': 'User-agent: *\nAllow: /', 'https://other.example': 'User-agent: *\nDisallow: /private' }
+  const asked: string[] = []
+  const gate = () => createRobotsGate({ fetchPage: async u => { asked.push(u); return okPage(robotsByOrigin[new URL(u).origin] ?? '', 'text/plain') } })
+  // an inner fetcher that behaves like fetchPublicPage with a redirect: it asks the hop gate for the first URL and for the target
+  const redirecting = (target: string) => vi.fn(async (u: string, _s?: AbortSignal, hopGate?: (url: URL, s: AbortSignal) => Promise<string | null>) => {
+    for (const hop of [u, target]) { const refused = await hopGate?.(new URL(hop), new AbortController().signal); if (refused) return { ok: false as const, url: u, reason: refused as never, redirects: 1, ms: 1 } }
+    return okPage('<html><body>page</body></html>')
+  })
+  it('a page whose redirect target the TARGET host\'s robots.txt forbids is not opened, and that robots.txt was read', async () => {
+    asked.length = 0
+    const inner = redirecting('https://other.example/private/page')
+    const r = await robotsAwareFetch(inner, gate())('https://shop.example/go')
+    expect(r).toMatchObject({ ok: false, reason: 'robots_disallowed' })
+    expect(asked).toContain('https://other.example/robots.txt')
+  })
+  it('the same redirect to an allowed path of that host is opened', async () => {
+    asked.length = 0
+    const r = await robotsAwareFetch(redirecting('https://other.example/public'), gate())('https://shop.example/go')
+    expect(r.ok).toBe(true)
+  })
+  it('the research reader\'s default fetcher hands the gate to fetchPublicPage as hopGate', async () => {
+    const { __setPageFetchOverride } = await import('@/lib/security/safePageFetch')
+    let got: unknown = null
+    __setPageFetchOverride(async (u, o) => { got = o.hopGate; return okPage('<html><body>p</body></html>') })
+    try {
+      const r = createLeanResearch({ lang: 'vi', userTexts: ['xem https://shop.example/go'], robots: createRobotsGate({ fetchPage: async () => notFound }) })
+      await (r.tool as unknown as { execute: (a: unknown, c: unknown) => Promise<unknown> }).execute({ url: 'https://shop.example/go' }, { toolCallId: 't1', messages: [] })
+    } finally { __setPageFetchOverride(null) }
+    expect(typeof got).toBe('function')
+  })
+})
+
 describe('W1 researchLoop · the reader with the REAL fetcher refuses what the address policy refuses (no network is touched)', () => {
   it('private / loopback / link-local / metadata / internal names: every page is an error, fetch is never called', async () => {
     const fetchSpy = vi.fn(() => { throw new Error('network must not be used') })

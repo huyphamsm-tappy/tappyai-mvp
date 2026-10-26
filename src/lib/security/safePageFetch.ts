@@ -26,6 +26,7 @@ export type PageFailure =
   | 'invalid_url' | 'blocked_scheme' | 'blocked_credentials' | 'blocked_port' | 'blocked_host' | 'blocked_address'
   | 'too_many_redirects' | 'redirect_without_location' | 'http_error' | 'unsupported_content_type' | 'unsupported_encoding'
   | 'connect_timeout' | 'read_timeout' | 'total_timeout' | 'aborted' | 'network_error' | 'pdf_too_large'
+  | 'robots_disallowed' | 'robots_unreachable' // Wave 3-FIX (R3-05): the site's robots.txt forbids this hop (or could not be reached); only a `hopGate` produces them
 
 export type PageFetchResult =
   | { ok: true; url: string; finalUrl: string; status: number; contentType: string; body: string; bytes: number; truncated: boolean; redirects: number; ms: number; raw?: Uint8Array }
@@ -46,6 +47,16 @@ export interface PageFetchOptions {
    * Absent = refused as before.
    */
   decodeCompressed?: boolean
+  /**
+   * Wave 3-FIX (R3-05): any Content-Type is accepted (the body is read as text, same byte cap). Used for robots.txt, whose rules count whatever type the site labelled the file with.
+   * Absent = only the text types, as before.
+   */
+  anyContentType?: boolean
+  /**
+   * Wave 3-FIX (R3-05): asked for EVERY hop (the first URL and each redirect target) after the string check and before any socket. A failure it returns ends the fetch with that reason.
+   * The research reader passes the robots.txt gate here, so the host a redirect leads to is judged by its own robots.txt. Absent = no extra check.
+   */
+  hopGate?: (url: URL, signal: AbortSignal) => Promise<PageFailure | null>
   maxRedirects?: number
   connectTimeoutMs?: number
   readTimeoutMs?: number
@@ -67,7 +78,9 @@ export function validateHop(raw: string, o: { allowHttp: boolean } = { allowHttp
   if (u.port && !((u.protocol === 'https:' && u.port === '443') || (u.protocol === 'http:' && u.port === '80'))) return { reason: 'blocked_port' }
   let h = u.hostname.toLowerCase()
   if (h.startsWith('[') && h.endsWith(']')) h = h.slice(1, -1)
-  if (!h || h === 'localhost' || h.endsWith('.localhost') || h.endsWith('.local') || h.endsWith('.internal') || h.endsWith('.home.arpa') || !h.includes('.') && !h.includes(':')) return { reason: 'blocked_host' }
+  // Wave 3-FIX (R3-08): "localhost." and "x.internal." are the same names with the root dot written out; the string layer judges them as the bare names (the DNS layer stays a second fence)
+  h = h.replace(/\.+$/, '')
+  if (!h || h === 'localhost' || h === 'localhost.localdomain' || h.endsWith('.localhost') || h.endsWith('.local') || h.endsWith('.internal') || h.endsWith('.home.arpa') || !h.includes('.') && !h.includes(':')) return { reason: 'blocked_host' }
   // An IP literal never reaches the pinned resolver (Node connects to it directly): judge it here.
   const literal = /^\d{1,3}(\.\d{1,3}){3}$/.test(h) || h.includes(':') || /^\d+$/.test(h) || /^0x/i.test(h)
   if (literal && !isAllowedDestinationAddress(h)) return { reason: 'blocked_address' }
@@ -80,7 +93,7 @@ export type HopResult =
   | { kind: 'body'; status: number; contentType: string; body: string; bytes: number; truncated: boolean; raw?: Buffer }
   | { kind: 'error'; reason: PageFailure; status?: number }
 
-export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number; pdfMaxBytes?: number; decodeCompressed?: boolean }) => Promise<HopResult>
+export type HopTransport = (url: URL, o: { signal: AbortSignal; maxBytes: number; connectTimeoutMs: number; readTimeoutMs: number; pdfMaxBytes?: number; decodeCompressed?: boolean; anyContentType?: boolean }) => Promise<HopResult>
 
 const PDF_TYPE = /^application\/pdf\b/i
 
@@ -117,7 +130,7 @@ export const realHop: HopTransport = (url, o) => new Promise<HopResult>(resolve 
       if (status < 200 || status >= 300) { res.resume(); return done({ kind: 'error', reason: 'http_error', status }) }
       const contentType = String(res.headers['content-type'] ?? '')
       const pdf = !!o.pdfMaxBytes && PDF_TYPE.test(contentType.trim())
-      if (!pdf && !TEXT_TYPES.test(contentType.trim())) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_content_type', status }) }
+      if (!pdf && !o.anyContentType && !TEXT_TYPES.test(contentType.trim())) { res.destroy(); return done({ kind: 'error', reason: 'unsupported_content_type', status }) }
       // We ask for identity; a server that compresses anyway is refused (decompressing would bypass the byte cap — measured: binary
       // bodies labelled text/html reached the extractor).
       // RETRIEVAL_V5 (decodeCompressed): gzip / deflate / br are decompressed as they stream and the caps count decompressed bytes.
@@ -175,7 +188,12 @@ export async function fetchPublicPageReal(rawUrl: string, opts: PageFetchOptions
       if (ctrl.signal.aborted) return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : 'aborted', redirects, ms: Date.now() - t0 }
       const v = validateHop(current, { allowHttp: o.allowHttp })
       if ('reason' in v) return { ok: false, url: rawUrl, reason: v.reason, redirects, ms: Date.now() - t0 }
-      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs, ...(o.pdfMaxBytes ? { pdfMaxBytes: o.pdfMaxBytes } : {}), ...(o.decodeCompressed ? { decodeCompressed: true } : {}) })
+      if (o.hopGate) {
+        let refused: PageFailure | null = null
+        try { refused = await o.hopGate(v.url, ctrl.signal) } catch { refused = 'robots_unreachable' } // a gate that fails closes the hop
+        if (refused) return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : ctrl.signal.aborted && refused === 'robots_unreachable' ? 'aborted' : refused, redirects, ms: Date.now() - t0 }
+      }
+      const hop = await transport(v.url, { signal: ctrl.signal, maxBytes: o.maxBytes, connectTimeoutMs: o.connectTimeoutMs, readTimeoutMs: o.readTimeoutMs, ...(o.pdfMaxBytes ? { pdfMaxBytes: o.pdfMaxBytes } : {}), ...(o.decodeCompressed ? { decodeCompressed: true } : {}), ...(o.anyContentType ? { anyContentType: true } : {}) })
       if (hop.kind === 'error') return { ok: false, url: rawUrl, reason: totalTimedOut ? 'total_timeout' : hop.reason, ...(hop.status ? { status: hop.status } : {}), redirects, ms: Date.now() - t0 }
       if (hop.kind === 'redirect') {
         if (!hop.location) return { ok: false, url: rawUrl, reason: 'redirect_without_location', status: hop.status, redirects, ms: Date.now() - t0 }

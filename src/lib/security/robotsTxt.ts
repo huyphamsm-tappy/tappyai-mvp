@@ -5,8 +5,9 @@
 //   · the group that names our token (`tappyai`) wins, else the `*` group, else everything is allowed;
 //   · inside a group the LONGEST matching path pattern wins and Allow beats Disallow on a tie; `*` matches any run of characters and a trailing `$` anchors the end;
 //   · robots.txt answered 4xx (none there)  -> everything allowed;  answered but cannot be reached (5xx, timeout, network, refused address)  -> everything disallowed for the cache window (RFC 9309 2.3.1.4);
-//   · the file is read with the same SSRF-safe fetcher as the pages, only the first 500 KB count, and only plain text is parsed.
+//   · the file is read with the same SSRF-safe fetcher as the pages, only the first 500 KB count.
 //
+// (Wave 3-FIX R3-05: the file is read whatever its Content-Type; the reader asks this gate for EVERY hop of a fetch, so the host a redirect leads to is judged by its own robots.txt.)
 // Pure parser + a small cached gate with an injectable fetcher (tests use a fake; nothing here touches the network on its own).
 
 import type { PageFetchResult } from './safePageFetch'
@@ -82,7 +83,8 @@ export function createRobotsGate(o: { fetchPage: Fetcher; now?: () => number }) 
   async function load(origin: string, signal?: AbortSignal): Promise<{ verdict: RobotsVerdict; ttl: number }> {
     const r = await o.fetchPage(`${origin}/robots.txt`, signal)
     if (r.ok) {
-      if (!/^text\//i.test(r.contentType)) return { verdict: { kind: 'allow_all' }, ttl: OK_TTL_MS } // not a robots file (an HTML page answered): nothing to honour
+      // Wave 3-FIX (R3-05): the rules count whatever Content-Type the site labelled the file with (RFC 9309 asks for plain text, but a CDN's "application/octet-stream" Disallow is still the site's wish);
+      // a page of some other kind (HTML) has no user-agent / allow / disallow lines, so parsing it yields no rule.
       return { verdict: { kind: 'rules', rules: parseRobots(r.body) }, ttl: OK_TTL_MS }
     }
     if (r.reason === 'http_error' && r.status !== undefined && r.status >= 400 && r.status < 500) return { verdict: { kind: 'allow_all' }, ttl: OK_TTL_MS }
