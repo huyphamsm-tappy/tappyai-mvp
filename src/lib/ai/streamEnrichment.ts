@@ -3332,7 +3332,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // The line tidy exists to clean what the shape guard left behind; Agent prose was not shaped, so it is not "tidied" (it would drop
       // a recipe line that merely starts in lower case).
       // Wave 3 (W3): a markdown table row ("| a | b |", its "|---|---|" rule included) is structure, not a stranded fragment: a structured answer keeps its tables whole.
-      const tableRow =(l: string) => structuredAnswer && /^\s*\|.*\|\s*$/.test(l)
+      const tableRow = (l: string) => structuredAnswer && /^\s*\|.*\|\s*$/.test(l)
       const tidy = agentOwnsProse ? shape.text : shape.text.split('\n')
         .filter(l => l.trim() === '' || machineLine(l) || tableRow(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')
