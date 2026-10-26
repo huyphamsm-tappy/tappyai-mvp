@@ -23,15 +23,19 @@ export const SERPER_MIN_USD_PER_CREDIT = 0.001
 export interface BenchCaps { turnUsd: number; runUsd: number }
 
 /**
- * THE HARD MAXIMUM of the benchmark: $0.05 per turn, $0.65 per run. They are constants, not parameters — no option and no environment variable
+ * THE HARD MAXIMUM of the benchmark: $0.10 per turn, $0.65 per run. They are constants, not parameters — no option and no environment variable
  * can raise them; a LOWER cap is valid. Every place that receives a cap checks it against these (see `checkBenchCaps`).
+ *
+ * Owner decision 26/10/2026 (Wave 3-FIX, R3-06): the per-turn maximum was $0.05; it is $0.10 for the MEASUREMENT mode only - the maximum is read when BENCH_SPEND_GATE is ON
+ * (the caps are read only then) and nothing in production reads it, so production behaviour is unchanged. The cap itself is still typed by the Owner at the launcher (a run can
+ * keep $0.05; $0.10 is only the ceiling a deeper level (L2-L4) needs so its writing step is not refused). The run maximums ($0.65 / $1.75) did not change.
  */
-export const MAX_TURN_CAP_USD = 0.05
+export const MAX_TURN_CAP_USD = 0.10
 export const MAX_RUN_CAP_USD = 0.65
 
 /**
  * BUDGET MODES (closure round 2). The $0.65 run maximum belongs to the ACCEPTANCE run and does not change. The development EXTENSION run (BENCH_TRIAL_MODE
- * exactly `dev-multi`, the 30-turn extension set) may be capped higher, at most $1.75 per run; the per-turn maximum stays $0.05 in every mode. The mode is
+ * exactly `dev-multi`, the 30-turn extension set) may be capped higher, at most $1.75 per run; the per-turn maximum ($0.10) is the same in every mode. The mode is
  * read from ONE place (`benchModeOf`) and is FAIL-CLOSED: anything that is not exactly `dev-multi` — unset, blank, another word, another case, a trailing
  * space — is `acceptance`, i.e. $0.65. Like the other maxima these are constants: no option and no environment variable raises them.
  */
@@ -82,7 +86,7 @@ export function checkTurnCap(turn: unknown): { ok: true; turnUsd: number } | { o
 
 /**
  * The caps as received (environment text or option numbers): both valid decimals, the turn cap not above the run cap, the turn cap at most
- * $0.05 and the run cap at most the maximum of the MODE ($0.65 acceptance, $1.75 extension) — judged on the exact decimal value.
+ * $0.10 and the run cap at most the maximum of the MODE ($0.65 acceptance, $1.75 extension) — judged on the exact decimal value.
  * `mode` defaults to `acceptance`: a caller that does not say which run this is gets the strict maximum.
  */
 export function checkBenchCaps(turn: unknown, run: unknown, mode: BenchMode = 'acceptance'): CapCheck {

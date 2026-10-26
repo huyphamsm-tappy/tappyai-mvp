@@ -20,13 +20,13 @@ function withCaps(turn: number, run: number, over: Partial<BenchOptions> = {}) {
   return { ...o, t }
 }
 
-describe('P0-1 · a cap above $0.05 per turn / $0.65 per run is refused before any paid request, whichever way the runner is entered', () => {
-  const tooBig: Array<[number, number]> = [[0.06, 0.65], [0.05, 0.70], [1, 10], [1e9, 1e9], [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER], [0.05000001, 0.65], [0.05, 0.650001], [0.05, 0.6500000000001]]
+describe('P0-1 · a cap above $0.10 per turn (Wave 3-FIX R3-06; it was $0.05) / $0.65 per run is refused before any paid request, whichever way the runner is entered', () => {
+  const tooBig: Array<[number, number]> = [[0.11, 0.65], [0.10, 0.70], [1, 10], [1e9, 1e9], [Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER], [0.10000001, 0.65], [0.10, 0.650001], [0.10, 0.6500000000001]]
   for (const [turn, run] of tooBig) {
     it(`runBench: turn ${turn} run ${run}`, async () => {
       const { opts, t, fs } = withCaps(turn, run)
       await expect(runBench(opts)).rejects.toBeInstanceOf(BenchRefusal)
-      await expect(runBench(opts)).rejects.toThrow(/0\.05|0\.65|maximum/i)
+      await expect(runBench(opts)).rejects.toThrow(/0\.1|0\.65|maximum/i)
       expect(t.requests).toHaveLength(0)
       expect(fetch).not.toHaveBeenCalled()
       expect(resultFiles(fs)).toHaveLength(0)
@@ -59,6 +59,12 @@ describe('P0-1 · a cap above $0.05 per turn / $0.65 per run is refused before a
   })
   it('(0.05, 0.65) is accepted and the 13 turns run', async () => {
     const { opts, t } = withCaps(0.05, 0.65)
+    const r = await runBench(opts)
+    expect(t.requests).toHaveLength(13)
+    expect(r.valid).toBe(true)
+  })
+  it('(0.10, 0.65) is accepted (Wave 3-FIX R3-06: the per-turn maximum) and the 13 turns run', async () => {
+    const { opts, t } = withCaps(0.10, 0.65)
     const r = await runBench(opts)
     expect(t.requests).toHaveLength(13)
     expect(r.valid).toBe(true)

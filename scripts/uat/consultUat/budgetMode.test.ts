@@ -1,6 +1,6 @@
 // @vitest-environment node
 // Closure round 2 · Part A — the run-cap MAXIMUM depends on the budget MODE. Acceptance (the default) keeps $0.65; the explicitly chosen extension mode
-// (BENCH_TRIAL_MODE exactly `dev-multi`) may go up to $1.75; the per-turn maximum is $0.05 in every mode; an unknown or missing mode is the acceptance
+// (BENCH_TRIAL_MODE exactly `dev-multi`) may go up to $1.75; the per-turn maximum is $0.10 in every mode (Owner decision 26/10/2026, Wave 3-FIX R3-06; it was $0.05); an unknown or missing mode is the acceptance
 // mode (fail-closed). MOCK-ONLY: no network, no key, no paid call. fetch is a tripwire.
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
@@ -19,8 +19,8 @@ beforeEach(() => { __resetBenchProcessGuardForTests(); vi.stubGlobal('fetch', vi
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); applyEnv({}); delete process.env.BENCH_TRIAL_MODE; __resetBenchProcessGuardForTests() })
 
 describe('the constants', () => {
-  it('turn maximum 0.05 in every mode; run maximum 0.65 (acceptance) and 1.75 (extension)', () => {
-    expect(MAX_TURN_CAP_USD).toBe(0.05)
+  it('turn maximum 0.10 in every mode; run maximum 0.65 (acceptance) and 1.75 (extension)', () => {
+    expect(MAX_TURN_CAP_USD).toBe(0.10)
     expect(MAX_RUN_CAP_USD).toBe(0.65)
     expect(MAX_RUN_CAP_EXTENSION_USD).toBe(1.75)
     expect(maxRunCapUsd('acceptance')).toBe(0.65)
@@ -40,10 +40,10 @@ describe('benchModeOf: only the exact text dev-multi chooses the extension mode'
 })
 
 describe('checkBenchCaps by mode (judged on the exact decimal text)', () => {
-  const okAcc: Array<[string, string]> = [['0.05', '0.65'], ['0.02', '0.02'], ['0.05', '0.649999999999']]
-  const badAcc: Array<[string, string]> = [['0.05', '0.70'], ['0.05', '0.650000000001'], ['0.05', '1.75'], ['0.05', '1.74'], ['0.06', '0.65']]
-  const okExt: Array<[string, string]> = [['0.05', '1.75'], ['0.05', '1.750'], ['0.05', '0.65'], ['0.02', '1.2'], ['0.05', '1.749999999999']]
-  const badExt: Array<[string, string]> = [['0.05', '1.76'], ['0.05', '1.750000000001'], ['0.05', '1.8'], ['0.05', '2'], ['0.06', '1.75'], ['0.05000000001', '1.75'], ['0.05', '1.7500000000001'], ['0.05', '5e-2'], ['0.05', 'NaN'], ['0.05', ''], ['0.05', '-1.75'], ['0.2', '0.1']]
+  const okAcc: Array<[string, string]> = [['0.05', '0.65'], ['0.10', '0.65'], ['0.02', '0.02'], ['0.05', '0.649999999999']]
+  const badAcc: Array<[string, string]> = [['0.05', '0.70'], ['0.05', '0.650000000001'], ['0.05', '1.75'], ['0.05', '1.74'], ['0.11', '0.65']]
+  const okExt: Array<[string, string]> = [['0.05', '1.75'], ['0.10', '1.75'], ['0.05', '1.750'], ['0.05', '0.65'], ['0.02', '1.2'], ['0.05', '1.749999999999']]
+  const badExt: Array<[string, string]> = [['0.05', '1.76'], ['0.05', '1.750000000001'], ['0.05', '1.8'], ['0.05', '2'], ['0.11', '1.75'], ['0.10000000001', '1.75'], ['0.05', '1.7500000000001'], ['0.05', '5e-2'], ['0.05', 'NaN'], ['0.05', ''], ['0.05', '-1.75'], ['0.2', '0.1']]
   it.each(okAcc)('acceptance accepts %s / %s', (t, r) => { expect(checkBenchCaps(t, r, 'acceptance').ok).toBe(true) })
   it.each(badAcc)('acceptance refuses %s / %s', (t, r) => { expect(checkBenchCaps(t, r, 'acceptance').ok).toBe(false) })
   it.each(okExt)('extension accepts %s / %s', (t, r) => { expect(checkBenchCaps(t, r, 'extension').ok).toBe(true) })
@@ -118,13 +118,15 @@ describe('the runner (assertBenchAllowed) enforces the mode on both entries', ()
       expect(t.requests).toHaveLength(0)
     }
   })
-  it('extension refuses a per-turn cap above 0.05 (the per-turn maximum is the same in every mode)', () => {
-    for (const turn of [0.06, 0.051, 1]) {
+  it('extension refuses a per-turn cap above 0.10 (the per-turn maximum is the same in every mode), and accepts 0.10', () => {
+    for (const turn of [0.11, 0.101, 1]) {
       __resetBenchProcessGuardForTests()
       const { opts, t } = setup('dev-multi', turn, 1.75)
       expect(() => createBenchRunner(opts)).toThrow(BenchRefusal)
       expect(t.requests).toHaveLength(0)
     }
+    __resetBenchProcessGuardForTests()
+    expect(() => createBenchRunner(setup('dev-multi', 0.10, 1.75).opts)).not.toThrow()
   })
   it('a mode that is not exactly dev-multi is the acceptance mode: 1.75 is refused', () => {
     for (const mode of ['Dev-Multi', 'dev-multi ', 'extension', '']) {
@@ -162,9 +164,10 @@ describe('the preflight reports the mode and holds every path to it', () => {
     expect(p.caps).toEqual({ turnUsd: 0.05, runUsd: 1.75 })
     expect(p.reasons.some(r => /cap \(/.test(r))).toBe(false)
   })
-  it('extension: 1.76 and a per-turn 0.06 are refused', () => {
+  it('extension: 1.76 and a per-turn 0.11 are refused; a per-turn 0.10 is not', () => {
     expect(reasons({ BENCH_SPEND_RUN_CAP_USD: '1.76', BENCH_CONFIRM_SPEND: '1.76' })).toMatch(/run cap \(1\.76\) is above the maximum of \$1\.75/)
-    expect(reasons({ BENCH_SPEND_TURN_CAP_USD: '0.06' })).toMatch(/per-turn cap \(0\.06\) is above the maximum of \$0\.05/)
+    expect(reasons({ BENCH_SPEND_TURN_CAP_USD: '0.11' })).toMatch(/per-turn cap \(0\.11\) is above the maximum of \$0\.1 /)
+    expect(reasons({ BENCH_SPEND_TURN_CAP_USD: '0.10' })).not.toMatch(/per-turn cap/)
   })
   it('mode missing or wrong: 1.75 is refused with the acceptance maximum named', () => {
     for (const mode of [undefined, 'Dev-Multi']) expect(reasons({ BENCH_TRIAL_MODE: mode })).toMatch(/run cap \(1\.75\) is above the maximum of \$0\.65/)
@@ -177,17 +180,17 @@ describe('the preflight reports the mode and holds every path to it', () => {
     vi.stubEnv('OPENAI_API_KEY', 'sk-test-SECRET-mode-1')
     const cs = conditionReport({ env: process.env, repoRoot: REPO, execArgv: [], questionText: null })
     const capsLine = cs.find(c => c.name.startsWith('caps:'))!
-    expect(capsLine.name).toBe('caps: turn <= 0.05, run <= 1.75 (extension mode), turn <= run')
+    expect(capsLine.name).toBe('caps: turn <= 0.1, run <= 1.75 (extension mode), turn <= run')
     expect(capsLine.ok).toBe(true)
     const info = cs.find(c => c.name.startsWith('budget mode and limits'))!
     expect(info.ok).toBe(true)
-    expect(info.detail).toMatch(/mode extension \(maximum run cap 1\.75 USD, per-turn 0\.05 USD\) \| run cap 1\.75 \| per-turn cap 0\.05 \| L1 15 \| L2 450 \| conditions not met: \d+/)
+    expect(info.detail).toMatch(/mode extension \(maximum run cap 1\.75 USD, per-turn 0\.1 USD\) \| run cap 1\.75 \| per-turn cap 0\.05 \| L1 15 \| L2 450 \| conditions not met: \d+/)
     expect(formatConditionReport(cs)).not.toContain('sk-test-SECRET-mode-1')
   })
   it('the report in the acceptance mode says 0.65', () => {
     for (const k of Object.keys(base({}))) vi.stubEnv(k, base({ BENCH_TRIAL_MODE: undefined, BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' })[k])
     const cs = conditionReport({ env: process.env, repoRoot: REPO, execArgv: [], questionText: null })
-    expect(cs.find(c => c.name.startsWith('caps:'))!.name).toBe('caps: turn <= 0.05, run <= 0.65 (acceptance mode), turn <= run')
+    expect(cs.find(c => c.name.startsWith('caps:'))!.name).toBe('caps: turn <= 0.1, run <= 0.65 (acceptance mode), turn <= run')
     expect(cs.find(c => c.name.startsWith('budget mode and limits'))!.detail).toContain('mode acceptance (maximum run cap 0.65 USD')
   })
 })
@@ -227,7 +230,7 @@ describe('TRIAL SUMMARY records the mode and the caps (mock provider, fake netwo
     expect(m.calls()).toBe(3)
     expect(out.summary.budget).toEqual({ mode: 'extension', turnCapUsd: 0.05, runCapUsd: 1.75 })
     const text = formatSummary(out.summary)
-    expect(text).toContain('budget mode: extension | run cap 1.75 USD (maximum of the mode 1.75) | per-turn cap 0.05 USD (maximum 0.05)')
+    expect(text).toContain('budget mode: extension | run cap 1.75 USD (maximum of the mode 1.75) | per-turn cap 0.05 USD (maximum 0.1)')
     expect(text).toContain('request cap (a COUNT of Serper requests, not a price): per turn 15 | per run 450')
     expect(text).not.toContain('sk-test-SECRET-mode-2'); expect(text).not.toContain('serper-SECRET-mode-3')
   })

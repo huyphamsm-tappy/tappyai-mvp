@@ -7,7 +7,7 @@
  *
  * ORDER (nothing is read, written or sent until every check that needs no I/O has passed):
  *   1. preflight (pure): CI unset · BENCH_EXPECT_CONSULTATIVE_V1 / BENCH_EXPECT_CONSULT_V2 are exactly 0 or 1 and equal the flags the route will see (see
- *      CONSULTATIVE_CONFIRMATIONS: they exist because the vitest setup overwrites those two flags) · caps exact and ≤ 0.05 per turn / ≤ 0.65 per run (≤ 1.75 per run only in
+ *      CONSULTATIVE_CONFIRMATIONS: they exist because the vitest setup overwrites those two flags) · caps exact and ≤ 0.10 per turn / ≤ 0.65 per run (≤ 1.75 per run only in
  *      the extension mode, BENCH_TRIAL_MODE exactly dev-multi; anything else is the 0.65 acceptance mode) · BENCH_CONFIRM_SPEND = the run cap ·
  *      the question file is named · the runner's own preflight
  *      (flags explicit and equal to the environment, no flag that must be OFF, no set-but-blank variable, exact model ids, output folder on drive D)

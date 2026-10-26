@@ -215,8 +215,8 @@ describe('(a) a good trial turn: the three counts agree (wrapper, fake network, 
 describe('(b) PREFLIGHT refusals: no request, no file-system call, no question file read (and the global fetch is untouched)', () => {
   const cases: Array<[string, Record<string, string | undefined>]> = [
     ['CI has a value', { CI: 'true' }],
-    ['turn cap above 0.05', { BENCH_SPEND_TURN_CAP_USD: '0.06', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
-    ['turn cap "0.05000001"', { BENCH_SPEND_TURN_CAP_USD: '0.05000001', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
+    ['turn cap above 0.10', { BENCH_SPEND_TURN_CAP_USD: '0.11', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
+    ['turn cap "0.10000001"', { BENCH_SPEND_TURN_CAP_USD: '0.10000001', BENCH_SPEND_RUN_CAP_USD: '0.65', BENCH_CONFIRM_SPEND: '0.65' }],
     ['run cap above 0.65', { BENCH_SPEND_RUN_CAP_USD: '0.7', BENCH_CONFIRM_SPEND: '0.7' }],
     ['run cap "0.650001"', { BENCH_SPEND_RUN_CAP_USD: '0.650001', BENCH_CONFIRM_SPEND: '0.650001' }],
     ['cap in exponent form', { BENCH_SPEND_TURN_CAP_USD: '5e-2' }],

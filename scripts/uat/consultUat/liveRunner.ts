@@ -10,7 +10,7 @@
  * provider. The chat transport is injected: `routeTransport` calls any `POST` handler in-process (the way scripts/consult/replay does). Which
  * handler, and how the app is authenticated there, is for the Owner to decide before a real run (see the report).
  *
- * Round 2b: the caps can never exceed $0.05 per turn / $0.65 per run (checked on the exact decimal value at every entry); the result folder is
+ * Round 2b: the caps can never exceed $0.10 per turn (Wave 3-FIX R3-06; it was $0.05) / $0.65 per run (checked on the exact decimal value at every entry); the result folder is
  * required, on drive D, outside the repository and the backups folder, and proven writable before the first request; every turn is appended to a
  * JSONL file the moment it ends; a failed or invalid run still leaves a final file (valid=false, no `totalUsd` anywhere); a failed write STOPS the
  * run. After any stop the runner sends nothing more — there is no automatic re-run.
@@ -151,7 +151,7 @@ const realFs: BenchFs = {
 
 export interface BenchOptions {
   chat: ChatTransport
-  /** USD per turn (the hard per-turn cap). Never above $0.05. */
+  /** USD per turn (the hard per-turn cap). Never above $0.10 (the Owner types the actual cap). */
   turnCapUsd: number
   /** USD for the whole run (the hard run cap). Never above $0.65 — or $1.75 in the explicitly chosen extension mode (BENCH_TRIAL_MODE=dev-multi); see benchModeOf. */
   runCapUsd: number
@@ -340,7 +340,7 @@ function locationProblems(path: string, repoRoot: string | undefined, extraRoots
 export function assertBenchAllowed(o: BenchOptions): void {
   const env = o.env ?? process.env
   const reasons: string[] = []
-  // The caps asked for: exact decimal value, at most $0.05 per turn and, per run, the maximum of the budget MODE ($0.65 acceptance; $1.75 only for the
+  // The caps asked for: exact decimal value, at most $0.10 per turn and, per run, the maximum of the budget MODE ($0.65 acceptance; $1.75 only for the
   // explicitly chosen extension mode, BENCH_TRIAL_MODE=dev-multi), turn cap not above the run cap. Unknown / missing mode = acceptance = $0.65.
   const mode = benchModeOf(env)
   const asked = checkBenchCaps(o.turnCapUsd, o.runCapUsd, mode)
@@ -350,7 +350,7 @@ export function assertBenchAllowed(o: BenchOptions): void {
   if (!benchSpendGateOn(env)) reasons.push('BENCH_SPEND_GATE is not ON')
   else {
     const caps = readBenchCaps(env)
-    if (!caps) reasons.push(`BENCH_SPEND_TURN_CAP_USD / BENCH_SPEND_RUN_CAP_USD are missing, invalid or above the maximum ($0.05 per turn, $${maxRunCapUsd(mode)} per run in ${mode} mode)`)
+    if (!caps) reasons.push(`BENCH_SPEND_TURN_CAP_USD / BENCH_SPEND_RUN_CAP_USD are missing, invalid or above the maximum ($0.10 per turn, $${maxRunCapUsd(mode)} per run in ${mode} mode)`)
     else if (caps.turnUsd !== o.turnCapUsd || caps.runUsd !== o.runCapUsd) reasons.push('the caps in the environment (cap variables) differ from the caps asked for')
   }
   if (!o.declaredFlags) reasons.push('the flag set is not listed explicitly (declaredFlags)')

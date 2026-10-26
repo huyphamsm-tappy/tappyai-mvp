@@ -25,9 +25,9 @@ const fullEnv = (over: Record<string, string | undefined>): Record<string, strin
 describe('mode × caps: the preflight, the runner and the per-call gate give the SAME verdict on the SAME environment', () => {
   const modes: Array<string | undefined> = [undefined, '', 'dev-multi', 'Dev-Multi', 'dev-multi ', 'extension']
   const runs = ['0.65', '0.7', '1.75', '1.76']
-  const turns = ['0.05', '0.06']
+  const turns = ['0.05', '0.10', '0.11']
   for (const mode of modes) for (const run of runs) for (const turn of turns) {
-    const expected = Number(turn) <= 0.05 && Number(run) <= (mode === 'dev-multi' ? 1.75 : 0.65)
+    const expected = Number(turn) <= 0.10 && Number(run) <= (mode === 'dev-multi' ? 1.75 : 0.65)
     it(`mode ${JSON.stringify(mode)} · run ${run} · turn ${turn} → ${expected ? 'accepted' : 'refused'} by all three`, () => {
       const env = fullEnv({ BENCH_TRIAL_MODE: mode, BENCH_SPEND_RUN_CAP_USD: run, BENCH_CONFIRM_SPEND: run, BENCH_SPEND_TURN_CAP_USD: turn })
       expect(benchModeOf(env)).toBe(mode === 'dev-multi' ? 'extension' : 'acceptance')

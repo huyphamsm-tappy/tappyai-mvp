@@ -383,7 +383,7 @@ export function gate1Summary(env, questionText) {
     '--- Gate 1: tóm tắt trước lần gửi request đầu tiên (không có giá trị khóa) ---',
     `BENCH_TRIAL_MODE=${env.BENCH_TRIAL_MODE ?? '(unset)'}`,
     `caps: lượt ${env.BENCH_SPEND_TURN_CAP_USD ?? '?'} USD, tổng ${env.BENCH_SPEND_RUN_CAP_USD ?? '?'} USD, BENCH_CONFIRM_SPEND=${env.BENCH_CONFIRM_SPEND ?? '?'}`,
-    `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.05 USD/lượt ở mọi chế độ`,
+    `chế độ ngân sách: ${env.BENCH_TRIAL_MODE === 'dev-multi' ? 'extension (bộ mở rộng; tối đa 1.75 USD/lần chạy)' : 'acceptance (nghiệm thu; tối đa 0.65 USD/lần chạy)'}, tối đa 0.10 USD/lượt ở mọi chế độ (Chủ dự án tự gõ trần thật, có thể thấp hơn)`,
     `trần request Serper (đếm request, KHÔNG phải tiền): CONSULT_REQUEST_CAP=${env.CONSULT_REQUEST_CAP ?? '(unset)'}, mỗi lượt ${env.CONSULT_REQUEST_CAP_PER_TURN ?? '?'}, cả lần chạy ${env.CONSULT_REQUEST_CAP_PER_RUN ?? '?'}`,
     `mạng được phép: hai dịch vụ trả phí của lần chạy (OpenAI chat completions và Serper; có sổ chi phí)${env.BENCH_TRIAL_MODE === 'dev-multi'
       ? '; THÊM đúng 3 host OSM miễn phí mà search_places tự gọi khi dự phòng (nominatim.openstreetmap.org, overpass-api.de, maps.mail.ru) và đúng 1 host DuckDuckGo mà web_search tự gọi khi Serper không có kết quả (html.duckduckgo.com, đường /html/): chỉ đếm số request từng host, không tính tiền, nằm ngoài trần request và cổng USD'
