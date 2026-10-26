@@ -2830,7 +2830,8 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }
       }),
       // Wave 3 (W4): only defined on a lean consult turn with the flag ON; the filter below offers it only to a lean turn. Deterministic: a typed refusal comes back as a result, never as a thrown error.
-      ...(research ? { read_page: research.tool } : {}),
+      // Wave 3 (W1): the reader's own tool definition (description, schema, execute), declared here like every other tool so the AI tool registry and its boundary test see it.
+      ...(research ? { read_page: tool({ ...research.tool }) } : {}),
       ...(deterministicMath && lean ? {
         calculate: tool({
           description: CALCULATE_DESCRIPTION,

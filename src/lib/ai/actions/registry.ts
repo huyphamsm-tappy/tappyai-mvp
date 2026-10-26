@@ -85,6 +85,11 @@ export const AI_TOOLS: readonly AiToolDescriptor[] = [
   { tool: 'get_flight_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_hotel_prices', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   { tool: 'get_transport_options', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  // Wave 3 consult tools, each declared only behind its own default-OFF flag (a flag-off turn never sees them; the registry lists what the route CAN expose):
+  //   calculate - W4 CONSULT_DETERMINISTIC_MATH: an exact calculator over the expression the model sends (pure computation, no I/O, no state).
+  //   read_page - W1 CONSULT_RESEARCH_LOOP: reads one public page the turn already saw (SSRF-safe fetch, robots.txt honoured, no crawling); changes no state.
+  { tool: 'calculate', effect: 'deterministic', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
+  { tool: 'read_page', effect: 'external_read', consequence: 'none', allowsAnonymous: true, confirmation: 'not_required' },
   {
     tool: 'save_price_watch',
     effect: 'write',
