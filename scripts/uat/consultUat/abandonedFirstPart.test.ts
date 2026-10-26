@@ -119,7 +119,7 @@ describe('A · flag ON: the abandoned call is cancelled and closed as unknown, n
     expect(g.guard.openReservedUsd).toBe(0)
   })
 
-  it('(v) both calls fail: exactly what the flag-OFF code does (same error, same ledger states), nothing held', async () => {
+  it('(v) both calls fail (Wave 2J contract, review F2): the retry is ASKED before the failed primary is closed, so the user gets the RETRY\'s own error, not the gate\'s refusal; flag OFF keeps the old refusal', async () => {
     const run = async (v: string | undefined) => {
       flag(v)
       const g = turn()
@@ -128,9 +128,12 @@ describe('A · flag ON: the abandoned call is cancelled and closed as unknown, n
       return { err, states: states(g), blocked: g.guard.blockedBy }
     }
     const on = await run('1'); const off = await run(undefined)
-    expect(on.err).not.toBe('')
-    expect(on).toEqual(off)
-    expect(on.states.some(s => s.endsWith('=held'))).toBe(false)
+    expect(on.err).toMatch(/server error/) // the retry's own error
+    expect(on.states).toEqual(['llm:smart=unknown', 'llm:smart:retry=unknown'])
+    expect(on.blocked).toBe('cost-unknown') // fail-closed unchanged
+    expect(on.states.some(s => s.endsWith('=held') || s.endsWith('=refused'))).toBe(false)
+    expect(off.err).toMatch(/run blocked/) // the old behaviour: the retry is refused by the gate
+    expect(off.states[0]).toBe('llm:smart=unknown')
   })
 
   it('(vii) fail-closed: a turn with an abandoned call still reports its cost as not known; a turn without one is known', async () => {
@@ -203,13 +206,17 @@ describe('A · the non-streamed call (doGenerate) has the same gap and the same 
     expect(g.records[0]?.unknownReason).toBe(ABANDONED_FIRST_PART_REASON)
   })
 
-  it('role agent (abortPrimaryOnTimeout) keeps its Phase 8 order with the flag ON: the primary is aborted BEFORE the retry is called', async () => {
-    flag('1')
-    const order: string[] = []
-    const primary: LanguageModelV1 = { ...gen(0), async doGenerate(o) { o.abortSignal?.addEventListener('abort', () => order.push('primary_aborted')); return new Promise(() => {}) } }
-    const retry: LanguageModelV1 = { ...gen(0), async doGenerate() { order.push('retry_called'); return { text: 'ok', finishReason: 'stop', usage: USAGE, rawCall: { rawPrompt: null, rawSettings: {} } } } }
-    await withFallback(primary, retry, { firstPartMs: 30, generateMs: 30, label: 'agent', fallbackKind: 'luna_retry', abortPrimaryOnTimeout: true }).doGenerate(CALL)
-    expect(order).toEqual(['primary_aborted', 'retry_called'])
+  it('role agent (abortPrimaryOnTimeout), Wave 2J contract (review F1): with the flag ON the retry is STARTED first and the primary aborted right after (same tick); with the flag OFF the Phase 8 order stays (abort first)', async () => {
+    const run = async (v: string | undefined) => {
+      flag(v)
+      const order: string[] = []
+      const primary: LanguageModelV1 = { ...gen(0), async doGenerate(o) { o.abortSignal?.addEventListener('abort', () => order.push('primary_aborted')); return new Promise(() => {}) } }
+      const retry: LanguageModelV1 = { ...gen(0), async doGenerate() { order.push('retry_called'); return { text: 'ok', finishReason: 'stop', usage: USAGE, rawCall: { rawPrompt: null, rawSettings: {} } } } }
+      await withFallback(primary, retry, { firstPartMs: 30, generateMs: 30, label: 'agent', fallbackKind: 'luna_retry', abortPrimaryOnTimeout: true }).doGenerate(CALL)
+      return order
+    }
+    expect(await run('1')).toEqual(['retry_called', 'primary_aborted'])
+    expect(await run(undefined)).toEqual(['primary_aborted', 'retry_called'])
   })
 
   it('flag OFF: the abandoned primary is not closed while it is abandoned (it books itself only when it finally returns)', async () => {

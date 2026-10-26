@@ -12,6 +12,7 @@ import { currentBudget, estimateTokens, promptChars, reasoningHeadroomTokens, re
 import { ABANDONED_FIRST_PART_REASON, benchSpendGateOn, reserveSpend, utf8Bytes, type SpendHandle, type SpendSettleDetail } from './spendGate'
 import { INPUT_TOKEN_OVERHEAD, worstCaseLlmCallUsd } from '../llm/pricing'
 import { consultAbortAbandonedFirstPartOn } from '@/lib/config/consultFlags'
+import { deferUntilFallbackDecides } from '../llm/fallbackSignals'
 
 type CallOpts = Parameters<LanguageModelV1['doGenerate']>[0]
 
@@ -154,26 +155,36 @@ const abandonReasonOf = (x: unknown): string | undefined => (x instanceof Error 
  */
 function abandonGuard(handle: SpendHandle, signal: AbortSignal | undefined) {
   let closed = false
+  let detachFn = () => {}
   const unknown = (reason?: unknown) => {
     if (closed) return
     closed = true
+    detachFn() // Wave 2J (F10): the abort listener is of no use once the reservation is closed
     const code = abandonReasonOf(reason)
     if (code === undefined) handle.markUnknown(); else handle.markUnknown(code)
   }
-  let detachFn = () => {}
   if (signal && consultAbortAbandonedFirstPartOn()) {
     const on = () => unknown(signal.reason)
     signal.addEventListener('abort', on, { once: true })
     detachFn = () => signal.removeEventListener('abort', on)
   }
+  /**
+   * A provider OUTCOME (thrown error, an error as the first part, an empty stream, a broken stream): the call is unknown. When a fallback wrapper owns the signal (ABORT flag on) the closure waits
+   * until the fallback has started its retry, so the retry takes its reservation first (Wave 2J, F2); otherwise it is closed at once, exactly as before.
+   */
+  const unknownAfterRetry = () => {
+    if (closed) return
+    if (!deferUntilFallbackDecides(signal, () => unknown())) unknown()
+  }
   return {
     unknown,
+    unknownAfterRetry,
     closed: () => closed,
     detach: () => detachFn(),
     fail(beforeSend: boolean) {
       detachFn()
       if (closed) return
-      if (beforeSend) { closed = true; handle.release() } else unknown()
+      if (beforeSend) { closed = true; handle.release() } else unknownAfterRetry()
     },
     settle(usd: number | null, detail: SpendSettleDetail) {
       detachFn()
@@ -216,20 +227,21 @@ function spendGated(model: LanguageModelV1, label: string): LanguageModelV1 {
       let res: Awaited<ReturnType<LanguageModelV1['doStream']>>
       const guard = abandonGuard(handle, opts.abortSignal)
       try { res = await model.doStream(r.opts) } catch (e) { guard.fail(failedBeforeSend(e)); throw e }
-      const unknown = (reason?: unknown) => guard.unknown(reason)
+      // provider outcomes (error part, empty / broken stream) close after the fallback's retry has its reservation (Wave 2J); a cancel closes at once
+      const outcome = () => guard.unknownAfterRetry()
       const stream = res.stream.pipeThrough(new TransformStream<LanguageModelV1StreamPart, LanguageModelV1StreamPart>({
         transform(part, c) {
           if (part.type === 'finish' && !guard.closed()) { const u = usageFrom(part.usage, part.providerMetadata); guard.settle(u.usd, settleDetailOf(u)) }
-          else if (part.type === 'error') unknown()
+          else if (part.type === 'error') outcome()
           c.enqueue(part)
         },
-        flush() { unknown() }, // the stream ended without a finish part: what was billed is not known
+        flush() { outcome() }, // the stream ended without a finish part: what was billed is not known
       }))
       const reader = stream.getReader()
       const guarded = new ReadableStream<LanguageModelV1StreamPart>({
         // A source that BREAKS (network reset, abort mid-stream) errors the pipe without calling flush: it is read here, and what was billed is not known.
-        async pull(c) { try { const n = await reader.read(); if (n.done) c.close(); else c.enqueue(n.value) } catch (e) { unknown(); throw e } },
-        cancel(reason) { unknown(reason); return reader.cancel(reason) }, // a cancelled stream may have been billed in part
+        async pull(c) { try { const n = await reader.read(); if (n.done) c.close(); else c.enqueue(n.value) } catch (e) { outcome(); throw e } },
+        cancel(reason) { guard.unknown(reason); return reader.cancel(reason) }, // a cancelled stream may have been billed in part
       })
       return { ...res, stream: guarded }
     },

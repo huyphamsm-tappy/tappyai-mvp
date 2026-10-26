@@ -1,6 +1,7 @@
 import type { LanguageModelV1, LanguageModelV1StreamPart } from 'ai'
 import { consultAbortAbandonedFirstPartOn } from '@/lib/config/consultFlags'
 import { ABANDONED_FIRST_PART_REASON } from '../budget/spendGate'
+import { fallbackDecided, ownedByFallback } from './fallbackSignals'
 
 // ── Routed model with a fallback (owner 2026-09-30, "PHIÊN LUNA") ──────────────────────────────────────────────
 // Fallback = ONE retry on Luna by default (the Anthropic account has no credit; HAIKU_FALLBACK=1 makes it Claude).
@@ -50,11 +51,13 @@ export async function generateAbortingPrimary(primary: LanguageModelV1, fallback
   const onOuter = () => ctrl.abort(outer?.reason)
   outer?.addEventListener('abort', onOuter, { once: true })
   const t = timeout<never>(o.generateMs ?? o.firstPartMs)
+  // Wave 2J (F1): with CONSULT_ABORT_ABANDONED_FIRST_PART on EVERY role (the agent role too) starts the retry BEFORE the primary is closed; with the flag OFF only the agent role runs this path and it
+  // keeps its Phase 8 order (cancel the original first).
+  const abortFirst = !consultAbortAbandonedFirstPartOn()
+  if (!abortFirst) ownedByFallback(ctrl.signal)
   try {
     return await Promise.race([primary.doGenerate({ ...opts, abortSignal: ctrl.signal }), t.p])
   } catch (e) {
-    // The agent role (abortPrimaryOnTimeout) keeps its Phase 8 order whatever the flag says.
-    const abortFirst = o.abortPrimaryOnTimeout === true || !consultAbortAbandonedFirstPartOn()
     // Cancel the original FIRST: a timed-out request must not keep running (and billing) beside the retry.
     if (abortFirst) ctrl.abort(new Error('primary_cancelled_before_retry'))
     if (outer?.aborted) { ctrl.abort(outer.reason); throw e }
@@ -62,14 +65,17 @@ export async function generateAbortingPrimary(primary: LanguageModelV1, fallback
     log(o.label, reason, primary, Date.now() - t0, o.fallbackKind)
     // Wave 2I · A: the retry is STARTED (its spend reservation is taken, synchronously) before the abandoned call is closed as unknown. The paid-run gate refuses every call after an unknown cost,
     // so closing the primary first would refuse the very retry that answers the user. Both happen in the same tick: the original is still cancelled before anything can run beside the retry.
+    // Wave 2J (F2): a primary that FAILED (thrown error) is closed the same way - the metering layer holds its "unknown" until fallbackDecided below.
     const pending = fallback.doGenerate(opts)
     if (!abortFirst) ctrl.abort(new Error(ABANDONED_FIRST_PART_REASON))
+    fallbackDecided(ctrl.signal)
     const r = await pending
     const meta = markFellBack(r.providerMetadata) as { tappy: Record<string, unknown> }
     return { ...r, providerMetadata: { ...meta, tappy: { ...meta.tappy, fallbackReason: reason.slice(0, 120), primaryAborted: true, primaryMs: Date.now() - t0 } } as never }
   } finally {
     t.clear()
     outer?.removeEventListener('abort', onOuter)
+    fallbackDecided(ctrl.signal) // nothing may stay deferred once this call is over (a no-op when nothing was)
   }
 }
 
@@ -88,6 +94,7 @@ export async function streamAbortingPrimary(primary: LanguageModelV1, fallback: 
   outer?.addEventListener('abort', onOuter, { once: true })
   const detach = () => outer?.removeEventListener('abort', onOuter)
   const t = timeout<never>(o.firstPartMs)
+  ownedByFallback(ctrl.signal) // Wave 2J (F2): the "unknown" of a failed / empty / error-first primary waits until the retry below has its reservation
   let abandoned = false
   let reader: ReadableStreamDefaultReader<LanguageModelV1StreamPart> | null = null
   const gaveUp = () => new Error(ABANDONED_FIRST_PART_REASON)
@@ -117,8 +124,11 @@ export async function streamAbortingPrimary(primary: LanguageModelV1, fallback: 
       reader.releaseLock()
       detach()
       const why = first.done ? 'empty_stream' : String((first.value as { error?: unknown }).error ?? 'error_part')
-      return viaFallback(why)
+      const pendingRetry = viaFallback(why) // the retry is started (reservation taken) before the primary is closed as unknown
+      fallbackDecided(ctrl.signal)
+      return pendingRetry
     }
+    fallbackDecided(ctrl.signal) // the primary answered: a later failure of this stream is not a fallback matter (closed at once, as before)
     const rd = reader
     const stream = new ReadableStream<LanguageModelV1StreamPart>({
       start(c) { c.enqueue(first.value) },
@@ -131,11 +141,12 @@ export async function streamAbortingPrimary(primary: LanguageModelV1, fallback: 
     return { ...r, stream }
   } catch (e) {
     t.clear()
-    if (outer?.aborted) { detach(); throw e }
+    if (outer?.aborted) { detach(); fallbackDecided(ctrl.signal); throw e }
     // The retry is STARTED (its spend reservation is taken, synchronously) before the abandoned call is closed as unknown: the paid-run gate refuses every call after an unknown cost, so
     // closing the primary first would refuse the very retry that answers the user. Same tick: nothing runs beside the retry that was not cancelled.
     const pending = viaFallback(e instanceof Error ? e.message : String(e))
     abandon()
+    fallbackDecided(ctrl.signal)
     return pending
   }
 }
