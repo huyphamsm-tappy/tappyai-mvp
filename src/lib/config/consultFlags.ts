@@ -20,6 +20,9 @@
 //                               call stays unknown (the paid-run gate still stops). Like the trace flag it is ONLY honoured outside production.
 //   CONSULT_KNOWLEDGE_TURN_TOOLS  (Wave 2I · B) on a turn the search-now gate (C) blocked, the model is also given web_search, and the area question is not appended when the model's own place
 //                               lookup failed for want of a location and the rules did not read the message as a place request. Needs CONSULT_SEARCH_NOW_INTENT_GATE too. Only honoured outside production.
+//   CONSULT_TOOL_BY_NEED          (Wave 3 · W2) every LEAN consult turn (not only a turn the gate blocked) is also offered web_search next to its area tools, one GENERAL line says which tool a need
+//                               uses (fresh facts / figures / prices / hours / rules need a source -> web_search; a request to go somewhere -> the place tool; stable knowledge -> answer directly)
+//                               and web_search carries a general description of when to use it. The model chooses. Needs CONSULT_SEARCH_NOW_INTENT_GATE too. Only honoured outside production.
 
 type Env = Record<string, string | undefined>
 
@@ -32,6 +35,7 @@ export const CONSULT_SEARCH_NOW_INTENT_GATE_FLAG = 'CONSULT_SEARCH_NOW_INTENT_GA
 export const CONSULT_THREAD_AWARE_ASK_FLAG = 'CONSULT_THREAD_AWARE_ASK'
 export const CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG = 'CONSULT_ABORT_ABANDONED_FIRST_PART'
 export const CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG = 'CONSULT_KNOWLEDGE_TURN_TOOLS'
+export const CONSULT_TOOL_BY_NEED_FLAG = 'CONSULT_TOOL_BY_NEED'
 
 const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
@@ -50,3 +54,5 @@ export function consultThreadAwareAskOn(env: Env = process.env): boolean { retur
 export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
 export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+/** Wave 3 · W2. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
+export function consultToolByNeedOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TOOL_BY_NEED_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }

@@ -82,7 +82,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn } from '@/lib/config/consultFlags'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
@@ -1503,6 +1503,8 @@ export async function POST(req: Request) {
   // Wave 2I (B) / Wave 2J (CONSULT_KNOWLEDGE_TURN_TOOLS - needs the gate): on a turn the gate blocked the model also gets web_search and chooses. Nothing else changes: the area question
   // works exactly as with the gate alone (the Wave 2I rule that dropped it was removed after review). OFF = false and nothing below differs from before.
   const knowledgeTurnTools = !!searchGate?.blocked && consultKnowledgeTurnToolsOn()
+  // Wave 3 (W2, CONSULT_TOOL_BY_NEED - needs the gate): EVERY lean consult turn is offered web_search and one general line about needs; the model chooses. OFF = false and nothing below differs from before.
+  const toolByNeed = consultToolByNeedOn()
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2264,7 +2266,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : [])],
+          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...(toolByNeed ? [TOOL_BY_NEED_RULE] : [])],
           tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
         })
       })()
@@ -2803,7 +2805,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
         }
       }) } : {}),
       web_search: tool({
-        description: 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
+        description: toolByNeed && lean ? WEB_SEARCH_DESCRIPTION_BY_NEED : 'Tim kiem tong quat tren internet de lay thong tin moi nhat (ty gia, gia xang, su kien, kien thuc can xac thuc...) khi cac tool khac khong phu hop',
         parameters: z.object({ query: z.string().describe('Tu khoa can tim kiem (vd: ty gia USD hom nay)') }),
         execute: async ({ query }) => {
           // A travel turn that reaches for the general search still gets the editorial supplement.
@@ -3429,7 +3431,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}) }).includes(k))) as typeof tools : tools)), trace),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}) }).includes(k))) as typeof tools : tools)), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
       trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
@@ -3880,6 +3882,8 @@ ${completionInstruction(lang)}` },
             areaAskAppended: traceAreaAsk?.appended === true, areaAskSource: traceAreaAsk?.appended === true ? f.noLocationBy : null, serperRequestsByModel: f.serperRequestsByModel, serperRequestsByCode: f.serperRequestsByCode, finishReason: traceFinishReason,
             // Wave 2I (B): only with CONSULT_KNOWLEDGE_TURN_TOOLS on (so the line is byte-for-byte the run-4 line when it is off). Two booleans; never a word of the user.
             ...(consultKnowledgeTurnToolsOn() ? { knowledgeToolsApplied: knowledgeTurnTools, webSearchOffered: !!f.toolsOffered?.includes('web_search') } : {}),
+            // Wave 3 (W2): only with CONSULT_TOOL_BY_NEED on (so the line is byte-for-byte the Wave 2J line when it is off). Booleans and a count; never a word of the user.
+            ...(toolByNeed ? { toolByNeedApplied: true, webSearchOffered: !!f.toolsOffered?.includes('web_search') } : {}),
           })
         }
         // Owner Phần 6: one cost line per turn (brain call + answer model + Serper).

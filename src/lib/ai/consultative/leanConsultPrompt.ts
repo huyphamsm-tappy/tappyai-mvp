@@ -48,14 +48,25 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean } = {}): string[] {
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean } = {}): string[] {
   const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
   // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
   if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
   // Wave 2I (B, CONSULT_KNOWLEDGE_TURN_TOOLS): a turn the search-now gate blocked is a knowledge / conversation turn that still names an area (the intent layer names one for it): it also gets web_search.
   if (opts.knowledgeTurnWebSearch) tools.push('web_search')
+  // Wave 3 (W2, CONSULT_TOOL_BY_NEED): every lean consult turn with an area is offered web_search; the model chooses by need. Offered, never forced.
+  if (opts.toolByNeed && domains.length > 0) tools.push('web_search')
   return [...new Set(tools)]
 }
+
+/**
+ * Wave 3 (W2): one GENERAL line, added only with CONSULT_TOOL_BY_NEED on. It describes needs, not words: which kind of need uses which tool. No keyword, no example sentence, no area question rule
+ * (the area question behaves as with the search-now gate alone).
+ */
+export const TOOL_BY_NEED_RULE = `CHON CONG CU THEO NHU CAU: thong tin co the da doi (thoi su, so lieu, gia, gio mo cua, lich, quy dinh) hoac can nguon → web_search roi tra loi dua tren ket qua; yeu cau di den mot noi/tim mot noi → cong cu tim dia diem; kien thuc on dinh → tra loi truc tiep, khong can tim. Co the dung nhieu cong cu trong cung mot luot khi nhu cau co nhieu phan.`
+
+/** Wave 3 (W2): the description web_search carries with CONSULT_TOOL_BY_NEED on - when to use it and when not. General: no keyword, no example. */
+export const WEB_SEARCH_DESCRIPTION_BY_NEED = 'Tim tren internet khi cau tra loi phu thuoc vao thong tin co the da thay doi hoac can nguon dan (tin moi, so lieu, gia, gio mo cua, lich, quy dinh, thong tin ve mot to chuc hay san pham cu the). Khong dung cho kien thuc on dinh ma ban da biet chac, va khong thay cho cong cu tim dia diem khi nguoi dung muon tim noi de den. Ket qua chi la mau trich: chi noi dieu ket qua noi, nguon nao thi ghi nguon do.'
 
 /**
  * Wave 2I (B) / Wave 2J: one GENERAL line for a turn the search-now gate blocked and that is given web_search. Added to the prompt only with CONSULT_KNOWLEDGE_TURN_TOOLS on.

@@ -91,6 +91,8 @@ export const FLAG_ENV_NAMES = [
   'CONSULT_ABORT_ABANDONED_FIRST_PART',
   // Wave 2I · B: a knowledge turn the search-now gate blocked also gets web_search and no stray area question (needs the gate); default OFF, honoured only outside a production runtime
   'CONSULT_KNOWLEDGE_TURN_TOOLS',
+  // Wave 3 · W2: every lean consult turn is offered web_search and one general line about needs; the model chooses (needs the gate); default OFF, honoured only outside a production runtime
+  'CONSULT_TOOL_BY_NEED',
 ]
 /** Names that look like a setting of the trial or of the route: when one is set but is not in the allow-list the launcher refuses instead of silently dropping it. */
 const LOOKS_LIKE_A_SETTING = /^(CONSULT|CONSULTATIVE|TAPPY|LLM|SERPER|OPENAI|AUDIT|FILM|BENCH|C2|MONEY|PLACE|LEGACY|RETRIEVAL|HAIKU|AGENT|TURN|SEARCH|STYLE|CCP)_/i
@@ -351,9 +353,9 @@ export function quotaLines(env) {
 }
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
-export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS']
+export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED']
 /** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
-export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
+export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE', CONSULT_TOOL_BY_NEED: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
 export function wave2Line(env) {
   const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
   const state = k => (env[k] !== '1' ? 'TẮT' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]] !== '1') ? `KHÔNG CÓ HIỆU LỰC — cần ${WAVE2_FLAG_NEEDS[k]}=1` : 'BẬT')

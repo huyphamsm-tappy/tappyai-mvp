@@ -111,6 +111,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.TAPPY_AGENT
   const set = (k: string, v: string | undefined) => { if (v === undefined) delete process.env[k]; else process.env[k] = v }
   set('CONSULT_SEARCH_NOW_INTENT_GATE', o.gate); set('CONSULT_KNOWLEDGE_TURN_TOOLS', o.know); set('CONSULT_TRACE_DIAGNOSTICS', o.trace ? '1' : undefined)
+  delete process.env.CONSULT_TOOL_BY_NEED // Wave 3: this file pins K alone; the by-need flag is covered by toolByNeed.route.test.ts (env isolation only, no assertion changed)
   const reply = o.reply ?? 'Đây là câu trả lời bằng kiến thức chung.'
   const toolName = o.tool?.name ?? 'search_places'
   const call: Call | null = o.tool ? { toolCallId: 'c1', toolName, args: toolName === 'search_places' ? { query: o.tool.query, type: 'attraction', ...(o.tool.location !== undefined ? { location: o.tool.location } : {}) } : { query: o.tool.query } } : null

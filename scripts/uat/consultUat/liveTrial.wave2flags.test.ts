@@ -28,7 +28,7 @@ afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); __resetBenchProcessG
 
 describe('registration: the flags travel to the child and are part of the declared benchmark flags; look-alikes are still refused', () => {
   it('the eight names (three behaviour flags + the Wave 2C trace flag + the two Wave 2D flags + the two Wave 2I flags) are the same everywhere', () => {
-    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS'])
+    expect([...WAVE2_FLAGS]).toEqual(['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS', 'CONSULT_TOOL_BY_NEED'])
     expect(WAVE2_FLAG_NAMES).toEqual([...WAVE2_FLAGS])
     for (const k of WAVE2_FLAGS) { expect(BENCH_FLAG_NAMES).toContain(k); expect(FLAG_ENV_NAMES).toContain(k) }
   })
