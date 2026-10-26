@@ -22,19 +22,15 @@ struct SubscriptionView: View {
     @State private var restoreLoading = false
     @State private var restoreMessage: String?
 
-    // Feature lists mirror subscription/page.tsx FREE_FEATURES / PRO_FEATURES
+    // ONLY what the server really differs on: the daily AI allowance (Free 10, Pro 30) and AI features open to both.
+    // No priority, voice, memory, history or search promises: the backend has no such plan difference
+    // (Guideline 3.1.2: the subscription must describe what the person gets).
     private let freeFeatures = [
         NSLocalizedString("sub.free.messages", comment: ""),
-        NSLocalizedString("sub.free.search", comment: ""),
-        NSLocalizedString("sub.free.history", comment: ""),
     ]
     private let proFeatures = [
         NSLocalizedString("sub.pro.messages", comment: ""),
-        NSLocalizedString("sub.pro.search", comment: ""),
-        NSLocalizedString("sub.pro.history", comment: ""),
-        NSLocalizedString("sub.pro.voice", comment: ""),
-        NSLocalizedString("sub.pro.memory", comment: ""),
-        NSLocalizedString("sub.pro.priority", comment: ""),
+        NSLocalizedString("sub.pro.allAI", comment: ""),
     ]
 
     var body: some View {
@@ -49,7 +45,8 @@ struct SubscriptionView: View {
                     heroSection
                     statusCard(s)
                     pricingCards(s)
-                    if !s.isPro { restoreRow }
+                    // Always reachable (Apple: «a way for current subscribers to sign in or restore purchases»).
+                    restoreRow
                     subscriptionTermsSection
                     faqCard
                 }
@@ -66,6 +63,9 @@ struct SubscriptionView: View {
             await a; await b
         }
     }
+
+    /// The buy button and the StoreKit price are shown only in a build that turns the purchase UI on.
+    private var purchaseUI: Bool { ProductFlags.iapPurchaseUI }
 
     // MARK: - Hero
 
@@ -107,10 +107,12 @@ struct SubscriptionView: View {
                     .font(.system(size: 14))
                     .foregroundStyle(Color(red: 217/255, green: 119/255, blue: 6/255))
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("sub.onPro")
+                    // A renewal date is stated only for an App Store subscription; any other paid plan is
+                    // shown as active, without «Gia hạn» (it does not renew through Apple).
+                    Text(LocalizedStringKey(s.isAppleSubscription ? "sub.onPro" : "sub.external.title"))
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Color(red: 146/255, green: 64/255, blue: 14/255))
-                    if let end = s.currentPeriodEnd {
+                    if s.isAppleSubscription, let end = s.currentPeriodEnd {
                         Text(String(format: NSLocalizedString("sub.renewalDate", comment: ""), formatDate(end)))
                             .font(.system(size: 11))
                             .foregroundStyle(Color(red: 180/255, green: 83/255, blue: 9/255))
@@ -224,7 +226,9 @@ struct SubscriptionView: View {
                     }
                     Spacer()
                     VStack(alignment: .trailing, spacing: 0) {
-                        if productLoading && storeProduct == nil {
+                        if !purchaseUI {
+                            EmptyView()
+                        } else if productLoading && storeProduct == nil {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                 .frame(height: 26)
@@ -269,17 +273,28 @@ struct SubscriptionView: View {
                         .background(.white.opacity(0.2))
                         .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
 
-                        Button { Task { await deps.paymentProvider.openSubscriptionManagement() } } label: {
-                            Text("sub.manage")
-                                .font(.system(size: 12, weight: .medium))
+                        if s.isAppleSubscription {
+                            // Apple's own subscription screen: offered only for a plan that IS an App Store subscription.
+                            Button { Task { await deps.paymentProvider.openSubscriptionManagement() } } label: {
+                                Text("sub.manage")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(.white.opacity(0.8))
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, Spacing.sm)
+                                    .background(.white.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Text("sub.external.note")
+                                .font(.system(size: 11))
                                 .foregroundStyle(.white.opacity(0.8))
+                                .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, Spacing.sm)
-                                .background(.white.opacity(0.1))
-                                .clipShape(RoundedRectangle(cornerRadius: Radius.lg))
                         }
-                        .buttonStyle(.plain)
                     }
+                } else if !purchaseUI {
+                    EmptyView()
                 } else if purchasePending {
                     Text("sub.pending")
                         .font(.system(size: 12))
@@ -406,7 +421,7 @@ struct SubscriptionView: View {
                 .padding(.horizontal, Spacing.sm)
 
             HStack(spacing: Spacing.md) {
-                if let termsUrl = URL(string: "https://tappyai.com/terms") {
+                if let termsUrl = URL(string: "https://www.tappyai.com/terms") {
                     Link(destination: termsUrl) {
                         Text("settings.terms")
                             .font(.system(size: 12, weight: .medium))
@@ -416,7 +431,7 @@ struct SubscriptionView: View {
                 Text("•")
                     .font(.system(size: 10))
                     .foregroundStyle(TappyColor.textSecondary.opacity(0.5))
-                if let privacyUrl = URL(string: "https://tappyai.com/privacy") {
+                if let privacyUrl = URL(string: "https://www.tappyai.com/privacy") {
                     Link(destination: privacyUrl) {
                         Text("settings.privacyPolicy")
                             .font(.system(size: 12, weight: .medium))

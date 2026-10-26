@@ -24,4 +24,15 @@ enum ProductFlags {
     /// Mirrors web `SHOW_MUSIC` (served as `flags.showMusic`) and Android
     /// `com.tappyai.app.ProductFlags.SHOW_MUSIC`. Flip all three together.
     static let showMusic = false
+
+    /// The in-app purchase of TappyAI Pro (StoreKit price, buy button). OFF unless the build turns it on:
+    /// The Debug and Release xcconfig files add `IAP_PURCHASE_UI` to `SWIFT_ACTIVE_COMPILATION_CONDITIONS`, so a build
+    /// that does not name the condition has no purchase button. Restore Purchases, the subscription terms and the
+    /// plan status of the account are NOT behind this flag: they must stay reachable (App Review 3.1.1, 3.1.2).
+    /// iOS only: the web keeps `subscriptions` OFF, so no web payment exists for a plan iOS cannot buy.
+    #if IAP_PURCHASE_UI
+    static let iapPurchaseUI = true
+    #else
+    static let iapPurchaseUI = false
+    #endif
 }

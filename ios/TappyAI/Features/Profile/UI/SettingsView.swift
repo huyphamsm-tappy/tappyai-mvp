@@ -34,6 +34,9 @@ struct ProfileSettingsView: View {
     @State private var showSelfDelete = false
     @State private var showLanguagePicker = false
     @State private var showAppearancePicker = false
+    /// Restore Purchases (App Review 3.1.1): the result sentence, shown in an alert; nil = no alert.
+    @State private var restoreMessage: String?
+    @State private var restoring = false
 
     init(deps: AppDependencies) {
         self.deps = deps
@@ -97,6 +100,14 @@ struct ProfileSettingsView: View {
         } message: {
             Text(noMailAppMessage ?? "")
         }
+        .alert(
+            Text("settings.restorePurchases"),
+            isPresented: Binding(get: { restoreMessage != nil }, set: { if !$0 { restoreMessage = nil } })
+        ) {
+            Button { restoreMessage = nil } label: { Text("common.ok") }
+        } message: {
+            Text(restoreMessage ?? "")
+        }
         .sheet(isPresented: $showSelfDelete) {
             NavigationStack {
                 AccountDeletionView(deps: deps, onUnavailable: {
@@ -110,6 +121,19 @@ struct ProfileSettingsView: View {
         .task {
             let flag = (try? await deps.configService.config())?.flags.accountSelfDelete
             selfDeleteEnabled = AccountDeletion.usesInAppDeletion(flag: flag)
+        }
+    }
+
+    /// Asks the App Store for this Apple ID's subscription and syncs it to the account (same call as the Pro screen).
+    private func restorePurchases() async {
+        guard !restoring else { return }
+        restoring = true
+        defer { restoring = false }
+        do {
+            let found = try await deps.paymentProvider.restorePurchases()
+            restoreMessage = NSLocalizedString(found ? "sub.restore.ok" : "sub.restore.none", comment: "")
+        } catch {
+            restoreMessage = NSLocalizedString("sub.restore.failed", comment: "")
         }
     }
 
@@ -196,6 +220,11 @@ struct ProfileSettingsView: View {
                 // answer "how does this work?" afterwards.
                 row(id: "guide", icon: "book.fill", accent: 0x3391FF, labelKey: "guide.settingsRow", desc: "settings.guide.desc") {
                     router.push(ProfileDestination.howToUse, on: .profile)
+                }
+                divider
+                // Restore Purchases is always reachable from Settings too (App Review 3.1.1), not only from the Pro screen.
+                row(id: "restore", icon: "arrow.clockwise.circle.fill", accent: 0x3391FF, labelKey: "settings.restorePurchases", desc: "settings.restorePurchases.desc") {
+                    if isSignedIn { Task { await restorePurchases() } } else { router.requestLogin() }
                 }
                 divider
                 row(id: "terms", icon: "doc.text.fill", accent: 0x7C5CFF, labelKey: "settings.terms", desc: "settings.terms.desc") {

@@ -21,12 +21,19 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     let freeDailyLimit: Int
     let todayMessageCount: Int
     let remaining: Int
+    /// Where the paid plan came from: `"apple"` (an App Store subscription) or `"external"` (anything else, e.g. a
+    /// plan bought outside the app). Absent for Free/guest and from a server that predates the field.
+    let source: String?
+
+    /// Only an App Store subscription has a renewal date the app may state and a «Manage» screen at Apple.
+    /// Anything else, including an absent `source`, is shown plainly (Guideline 3.1.3(b): honest about what it is).
+    var isAppleSubscription: Bool { isPro && source == "apple" }
 
     // Lenient on FORM (numbers as strings), strict on meaning: the quota numbers are what the
     // screen shows, so a response without them fails and the caller falls back to `.free` —
     // inventing "0 / 0" would state a quota the server never sent. `isPro` absent = not Pro,
     // the most restrictive reading.
-    enum CodingKeys: String, CodingKey { case isPro, status, currentPeriodEnd, freeDailyLimit, todayMessageCount, remaining }
+    enum CodingKeys: String, CodingKey { case isPro, status, currentPeriodEnd, freeDailyLimit, todayMessageCount, remaining, source }
     init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         func number(_ key: CodingKeys) throws -> Int {
@@ -41,6 +48,7 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
         freeDailyLimit = try number(.freeDailyLimit)
         todayMessageCount = try number(.todayMessageCount)
         remaining = try number(.remaining)
+        source = c.lenient(String.self, forKey: .source)
     }
 }
 

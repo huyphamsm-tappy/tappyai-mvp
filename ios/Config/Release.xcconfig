@@ -14,7 +14,7 @@ SUPABASE_ANON_KEY = REPLACE_ME_VIA_CI
 // TestFlight and App Store builds). Changing this to "development" breaks push on live builds.
 APS_ENVIRONMENT = production
 
-SWIFT_ACTIVE_COMPILATION_CONDITIONS =
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = IAP_PURCHASE_UI
 
 // Last on purpose: in an xcconfig the LAST assignment wins, so this include must come after
 // the placeholders above for Secrets.xcconfig to override them. At the top of the file, every

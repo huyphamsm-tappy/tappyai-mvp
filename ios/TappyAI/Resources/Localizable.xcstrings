@@ -16760,13 +16760,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlimited messages and every feature"
+            "value": "30 AI questions a day, every AI feature"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tin nhắn không giới hạn & tính năng đầy đủ"
+            "value": "30 câu hỏi AI mỗi ngày, dùng mọi tính năng AI"
           }
         }
       }
@@ -21361,13 +21361,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yes — cancel any time, and your data is kept."
+            "value": "Yes — cancel any time in your Apple ID subscription settings, and your data is kept."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Có, hủy bất kỳ lúc nào, dữ liệu vẫn được giữ nguyên."
+            "value": "Có, hủy bất kỳ lúc nào trong cài đặt đăng ký của Apple ID, dữ liệu vẫn được giữ nguyên."
           }
         }
       }
@@ -21395,13 +21395,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Visa/Mastercard and e-wallets — coming soon."
+            "value": "Payment is made through your Apple ID with the App Store."
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hỗ trợ thẻ Visa/Mastercard và ví điện tử — sắp ra mắt."
+            "value": "Thanh toán qua Apple ID, bằng App Store."
           }
         }
       }
@@ -21512,13 +21512,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "15 messages / day"
+            "value": "10 AI questions a day"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "15 tin nhắn / ngày"
+            "value": "10 câu hỏi AI mỗi ngày"
           }
         }
       }
@@ -21579,13 +21579,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The full experience, with no limits"
+            "value": "30 AI questions a day, every AI feature"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Trải nghiệm đầy đủ, không giới hạn"
+            "value": "30 câu hỏi AI mỗi ngày, dùng mọi tính năng AI"
           }
         }
       }
@@ -21675,13 +21675,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlimited, every feature"
+            "value": "30 AI questions a day, every AI feature"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Không giới hạn, đầy đủ tính năng"
+            "value": "30 câu hỏi AI mỗi ngày, dùng mọi tính năng AI"
           }
         }
       }
@@ -21726,13 +21726,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unlimited messages"
+            "value": "30 AI questions a day"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tin nhắn không giới hạn"
+            "value": "30 câu hỏi AI mỗi ngày"
           }
         }
       }
@@ -21784,6 +21784,91 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nhận giọng nói (Voice Input)"
+          }
+        }
+      }
+    },
+    "sub.pro.allAI": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use every AI feature"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dùng mọi tính năng AI"
+          }
+        }
+      }
+    },
+    "sub.external.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your paid plan is active"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gói trả phí của bạn đang có hiệu lực"
+          }
+        }
+      }
+    },
+    "sub.external.note": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This plan is not an App Store subscription, so it does not appear in your Apple ID subscriptions."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gói này không phải đăng ký App Store nên không hiện trong mục đăng ký của Apple ID."
+          }
+        }
+      }
+    },
+    "settings.restorePurchases": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore purchases"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Khôi phục giao dịch"
+          }
+        }
+      }
+    },
+    "settings.restorePurchases.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get back a subscription bought with this Apple ID"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lấy lại gói đã mua bằng Apple ID này"
           }
         }
       }
