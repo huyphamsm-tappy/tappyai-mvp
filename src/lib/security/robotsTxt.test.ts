@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { parseRobots, robotsAllows, createRobotsGate, ROBOTS_TOKEN } from './robotsTxt'
+import { parseRobots, robotsAllows, createRobotsGate, ROBOTS_TOKEN, ROBOTS_MAX_BYTES } from './robotsTxt'
 import type { PageFetchResult } from './safePageFetch'
 
 const ok = (body: string, contentType = 'text/plain'): PageFetchResult => ({ ok: true, url: 'x', finalUrl: 'x', status: 200, contentType, body, bytes: body.length, truncated: false, redirects: 0, ms: 1 })
@@ -44,6 +44,11 @@ describe('W1 robots.txt · parser and matcher (RFC 9309)', () => {
     expect(allows(evil, `/${'a'.repeat(5000)}`)).toBe(true) // both rules are ignored as too complex
     expect(Date.now() - t0).toBeLessThan(500)
     expect(parseRobots('x'.repeat(2_000_000)).groups).toEqual([]) // only the first 500 KB are read, and it has no line
+  })
+  it('Wave 3-FIX (R3-10): a rule that starts after the first 500 KB is not read; one that starts before it is', () => {
+    const pad = '#'.repeat(ROBOTS_MAX_BYTES)
+    expect(parseRobots(`${pad}\nUser-agent: *\nDisallow: /`).groups).toEqual([])
+    expect(parseRobots(`User-agent: *\nDisallow: /\n${pad}`).groups.length).toBe(1)
   })
 })
 

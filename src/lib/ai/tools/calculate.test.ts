@@ -321,6 +321,8 @@ describe('W4 calculate · what it refuses (typed, never thrown)', () => {
     expect(bad('9 ^ 9 ^ 9').error).toBe('too_large')
     expect(bad('2 ^ 100000').error).toBe('too_large')
     expect(bad('10 ^ 1000').error).toBeDefined()
+    // Wave 3-FIX (R3-10): the integer-power limit itself (not the digit limit behind it) refuses the 1001st power - the message names it
+    expect(bad('2 ^ 1001').message).toContain(`toi da ${CALC_LIMITS.maxIntPow}`)
     expect(bad('('.repeat(CALC_LIMITS.maxDepth + 5) + '1' + ')'.repeat(CALC_LIMITS.maxDepth + 5)).error).toBe('too_complex')
     expect(bad('-'.repeat(CALC_LIMITS.maxDepth + 5) + '1').error).toBe('too_complex')
     expect(bad(Array.from({ length: CALC_LIMITS.maxOps + 20 }, () => '1').join('+')).error).toMatch(/too_complex|too_long/)
