@@ -339,6 +339,11 @@ describe('B (Wave 2J) — trace (CONSULT_TRACE_DIAGNOSTICS=1 only): labels, neve
     expect(gateLines).not.toContain(CANARY)
     expect(gateLines).not.toContain('Nikola')
     expect(gateLines).not.toContain('Tiểu sử')
+    // every trace event of the turn except the old Wave 2C `tool` events (they log the model's own query: F-9, out of scope here) must be free of the canary too
+    const seen = [...new Set(r.traceEvents.map(e => String(e.ev)))]
+    const leaks = r.traceEvents.filter(e => e.ev !== 'tool' && JSON.stringify(e).includes(CANARY)).map(e => String(e.ev))
+    expect(seen.length).toBeGreaterThan(5)
+    expect(leaks).toEqual([])
   }, 60000)
 
   it('flag OFF: the outcome line has none of the new fields (the trace is byte-compatible with run 4)', async () => {
