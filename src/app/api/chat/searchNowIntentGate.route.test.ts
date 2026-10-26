@@ -148,6 +148,7 @@ beforeEach(() => {
   delete process.env.CONSULT_TOOL_BY_NEED // Wave 3: same - the by-need flag is covered by toolByNeed.route.test.ts (env isolation only, no assertion changed)
   delete process.env.CONSULT_DETERMINISTIC_MATH // Wave 3 (W4): same - covered by deterministicMath.route.test.ts
   delete process.env.CONSULT_RESEARCH_LOOP // Wave 3 (W1): same - covered by researchLoop.route.test.ts
+  delete process.env.CONSULT_STRUCTURED_SYNTHESIS // Wave 3 (W3): same - covered by structuredSynthesis.route.test.ts
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE']) delete process.env[k]; vi.unstubAllGlobals() })

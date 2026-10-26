@@ -188,6 +188,11 @@ export function guardAtmosphereClaims(
      * (measured M7 eval SR-F1 / SR-G1). Off for the legacy and Phase 7 paths (unchanged).
      */
     agentHedges?: boolean
+    /**
+     * Wave 3 (W3, a structured answer): a markdown heading or a table header/rule row that names NO venue is a LABEL for a part of the user's request ("## Chỗ ngồi yên tĩnh", "| Quán | Giá | Yên tĩnh |"), not a claim
+     * about a venue, so the unsupported-attribute test is not applied to it. A row or sentence that names a venue is judged exactly as before. Off (undefined) = unchanged.
+     */
+    structuralLabels?: boolean
   },
 ): AtmosphereGuardResult {
   if (!text || (ctx.names.length === 0 && !(ctx.gapAttributes && ctx.gapAttributes.length > 0))) return { text, removed: 0, unsupportedInPick: 0 }
@@ -217,6 +222,7 @@ export function guardAtmosphereClaims(
       named = [...lastNamed]
     }
     if (named.length > 0) lastNamed = named
+    if (ctx.structuralLabels && named.length === 0 && /^\s*(?:#{1,6}\s|\|)/.test(s)) return // a label of a part of the request (see structuralLabels)
     // A wish attributed to the user, or the honest gap sentence, is not a venue claim. The wish
     // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
     // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).

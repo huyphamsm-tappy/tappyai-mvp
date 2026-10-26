@@ -114,6 +114,7 @@ async function turn(messages: Msg[], o: TurnOpts = {}) {
   delete process.env.CONSULT_TOOL_BY_NEED // Wave 3: this file pins K alone; the by-need flag is covered by toolByNeed.route.test.ts (env isolation only, no assertion changed)
   delete process.env.CONSULT_DETERMINISTIC_MATH // Wave 3 (W4): same - covered by deterministicMath.route.test.ts
   delete process.env.CONSULT_RESEARCH_LOOP // Wave 3 (W1): same - covered by researchLoop.route.test.ts
+  delete process.env.CONSULT_STRUCTURED_SYNTHESIS // Wave 3 (W3): same - covered by structuredSynthesis.route.test.ts
   const reply = o.reply ?? 'Đây là câu trả lời bằng kiến thức chung.'
   const toolName = o.tool?.name ?? 'search_places'
   const call: Call | null = o.tool ? { toolCallId: 'c1', toolName, args: toolName === 'search_places' ? { query: o.tool.query, type: 'attraction', ...(o.tool.location !== undefined ? { location: o.tool.location } : {}) } : { query: o.tool.query } } : null

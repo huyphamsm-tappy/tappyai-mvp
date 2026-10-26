@@ -82,7 +82,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, MATH_TOOL_RULE, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, MATH_TOOL_RULE, STRUCTURED_SYNTHESIS_RULE, STRUCTURED_MAX_TOKENS, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -102,7 +102,7 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn } from '@/lib/config/consultFlags'
 import { createLeanResearch, RESEARCH_RULE, RESEARCH_STEPS } from '@/lib/ai/consultative/researchLoop'
 import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
@@ -1509,6 +1509,8 @@ export async function POST(req: Request) {
   const toolByNeed = consultToolByNeedOn()
   // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn is also offered the exact calculator and one general line; the model chooses. OFF = false and nothing below differs from before.
   const deterministicMath = consultDeterministicMathOn()
+  // Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the writing step of a lean consult turn gets a shape block for a multi-part request and a larger output ceiling. OFF = false and nothing below differs from before.
+  const structuredSynth = consultStructuredSynthesisOn() && !!consult && consult.domains.length > 0
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2102,6 +2104,7 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
+  if (structuredSynth) enrichment.setStructuredSynthesis(true) // Wave 3 (W3): the prose-shape sentence cap is not applied to a structured answer
   if (consult && consult.turn !== 'ask') enrichment.setConsultDomain(consult.domains[0] === 'travel' && (consultTravelCall?.name === 'get_flight_prices') ? 'flight' : consult.domains[0])
   if (lunaOn && earlyChatState?.shown?.length) enrichment.setConsultShown(earlyChatState.shown)
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
@@ -2271,7 +2274,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
           extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...(toolByNeed ? [TOOL_BY_NEED_RULE] : []), ...(deterministicMath ? [MATH_TOOL_RULE] : []), ...(consultResearchLoopOn() ? [RESEARCH_RULE] : [])],
-          tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
+          tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : '', ...(structuredSynth ? [STRUCTURED_SYNTHESIS_RULE] : [])],
         })
       })()
     : null
@@ -3406,7 +3409,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+    maxTokens: noToolTurn ? (consult ? (structuredSynth ? STRUCTURED_MAX_TOKENS : 600) : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? STRUCTURED_MAX_TOKENS : 2048),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -3880,7 +3883,7 @@ ${completionInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : 2048,
+            maxTokens: noToolTurn ? (consult ? (structuredSynth ? STRUCTURED_MAX_TOKENS : 600) : 300) : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? STRUCTURED_MAX_TOKENS : 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }

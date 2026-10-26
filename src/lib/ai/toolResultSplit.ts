@@ -180,6 +180,9 @@ export interface EnrichmentCollector {
   /** Consult V2 turn type — the prose-shape guard follows the approved frame for it (2 alternatives; a plan is not reshaped). */
   consultTurn?: string
   setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>): void
+  /** Wave 3 (W3, CONSULT_STRUCTURED_SYNTHESIS): the answer is a structured, multi-part one - the prose-shape sentence cap (a short pick + a reason) is not applied to it. */
+  structuredSynthesis?: boolean
+  setStructuredSynthesis(on: boolean): void
   /** The area of the turn ('flight' for a fare turn) — the advice floor (adviceFloor.ts) picks its tips by it. */
   consultDomain?: string
   setConsultDomain(domain: string | undefined): void
@@ -528,6 +531,8 @@ export function createEnrichmentCollector(turnText = '', earlierUserTexts: reado
     setConsultDomain(domain: string | undefined) { this.consultDomain = domain },
     consultPlanPrice: null as { amount: number; seller: string | null } | null,
     setConsultTurn(turn: string, refers?: string[], known?: Record<string, string>) { this.consultTurn = turn; this.consultRefers = refers; this.consultKnown = known },
+    structuredSynthesis: false as boolean,
+    setStructuredSynthesis(on: boolean) { this.structuredSynthesis = on },
     consultPick: null as string | null,
     setConsultPick(name: string | null) { this.consultPick = name },
     consultBrief: undefined as boolean | undefined,

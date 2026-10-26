@@ -68,6 +68,15 @@ export function consultTools(domains: readonly ConsultDomain[], opts: { shopping
  */
 export const MATH_TOOL_RULE = `TINH TOAN: moi phep tinh so hoc (tong tien, chia, ty le phan tram, lai suat, tra gop, so sanh chi phi) PHAI dung cong cu calculate, khong tinh nham; dung so cua nguoi dung va so tu ket qua cong cu, viet so thap phan bang dau cham. Khi tra loi, neu ngan gon cong thuc/dau vao va dung dung ket qua calculate tra ve (lam tron theo nhu cau).`
 
+/** Wave 3 (W3): the output ceiling of a structured-synthesis turn. The hard per-call ceiling is 4.000 (requestBudget.ts) and stays. */
+export const STRUCTURED_MAX_TOKENS = 3500
+
+/**
+ * Wave 3 (W3): the shape of the writing step, added only with CONSULT_STRUCTURED_SYNTHESIS on and placed last (after the frame). It REPLACES the short voice only for a request with several parts: the model counts
+ * the parts and constraints of the user's request itself (no keyword, no list of words); one simple decision keeps the short "chot mot lua chon" form and its "Mình chọn:" line.
+ */
+export const STRUCTURED_SYNTHESIS_RULE = `HINH DANG CAU TRA LOI (ghi de "ngan" cua khung tren CHI khi yeu cau co tu 2 ve/rang buoc tro len; dem so ve trong yeu cau cua nguoi dung): moi yeu cau don gian, chi can mot quyet dinh thi giu cach chot MOT lua chon, ngan, va giu dong "Mình chọn: ..." nhu cu. Tu 2 ve tro len: (1) mo dau 1-2 cau ket luan; (2) moi ve mot muc co tieu de ngan, tra loi du tung ve, khong bo ve nao, khong them ve nguoi dung khong hoi; (3) co tu 2 phuong an tro len thi dung BANG markdown, moi hang la mot phuong an, moi cot la mot rang buoc nguoi dung da neu; o nao chua co du lieu thi ghi "chua xac minh" (khong dien con so uoc luong); (4) con so/dieu kien lay tu trang hoac ket qua tim kiem thi ghi ten nguon va ngay lay ngay ben canh; (5) cuoi cung: nhung gi chua xac minh va buoc nen lam tiep. Do dai theo so ve va luong bang chung: du de tra loi het cac ve, khong lan man, khong lap lai. Van giu moi luat that: chi dung du lieu tu cong cu/trang thai, link do he thong gan.`
+
 /** Wave 3 (W4): the description of the calculator tool shown to the model. General: what it takes and returns. */
 export const CALCULATE_DESCRIPTION = 'Tinh chinh xac mot bieu thuc so hoc. Toan tu: + - * / ^ ( ) va % (x% = x/100); so thap phan dung dau cham; cac doi so cua ham cach nhau bang dau phay roi dau cach. Ham: pmt(lai_moi_ky, so_ky, so_tien_vay [, gia_tri_con_lai]) tien tra moi ky; fv(lai, ky, tien_gop_moi_ky [, von_dau]); pv(lai, ky, tien_moi_ky [, gia_tri_cuoi]); npv(lai, dong_tien_1, dong_tien_2, ...); rate_conv(lai_moi_ky, so_ky) lai gop; round(x, so_le), min, max, sum, avg, pow, sqrt, ln, exp, abs; hang so pi, e. Lai suat la phan so moi ky (1%/thang = 0.01). Tra ve value (chinh xac), rounded (so nguyen), rounded_2, steps va inputs.'
 

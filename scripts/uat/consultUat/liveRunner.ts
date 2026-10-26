@@ -61,6 +61,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_DETERMINISTIC_MATH',
   // Wave 3 · W1 (see liveTrialLauncher.mjs); default OFF
   'CONSULT_RESEARCH_LOOP',
+  // Wave 3 · W3 (see liveTrialLauncher.mjs); default OFF
+  'CONSULT_STRUCTURED_SYNTHESIS',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

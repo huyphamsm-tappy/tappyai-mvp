@@ -3274,7 +3274,7 @@ export function applyPlaceEnrichmentStreamFilter(
       const claims = guardSearchClaims(v1PlanMask.text, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true })
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(collector?.structuredSynthesis === true ? { structuralLabels: true } : {}) })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -3287,7 +3287,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
       // still run on Agent prose.
       const agentOwnsProse = collector?.agentMode === true
-      const shape = !hasVenues || consultPlan || agentOwnsProse ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
+      const shape = !hasVenues || consultPlan || agentOwnsProse || collector?.structuredSynthesis === true ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
@@ -3322,8 +3322,11 @@ export function applyPlaceEnrichmentStreamFilter(
       }
       // The line tidy exists to clean what the shape guard left behind; Agent prose was not shaped, so it is not "tidied" (it would drop
       // a recipe line that merely starts in lower case).
+      // Wave 3 (W3): a markdown table row ("| a | b |", its "|---|---|" rule included) is structure, not a stranded fragment: a structured answer keeps its tables whole.
+      const structuredAnswer = collector?.structuredSynthesis === true
+      const tableRow = (l: string) => structuredAnswer && /^\s*\|.*\|\s*$/.test(l)
       const tidy = agentOwnsProse ? shape.text : shape.text.split('\n')
-        .filter(l => l.trim() === '' || machineLine(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
+        .filter(l => l.trim() === '' || machineLine(l) || tableRow(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')
       /**
        * The evidence gap, said out loud. The prompt asks the model to name a
@@ -3404,7 +3407,8 @@ export function applyPlaceEnrichmentStreamFilter(
       // At most two hedges; beyond that they are merged into one sentence (hedgeCap.ts).
       // WS2 (TAPPY_AGENT=2): Luna's own hedges are its answer — not merged into one code-written sentence. Measured WS-L1: the merge
       // removed 156 characters of Luna's reply (a hotel name, its honest budget caveat) and wrote "chưa xác nhận được dữ liệu xác nhận và …".
-      const hedged = runtimeOwnsCautions ? { text: withHeadsUpRaw, hedges: 0, merged: 0, unmergeable: 0 } : capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
+      // Wave 3 (W3): a structured answer says "chưa xác minh" in each table cell and in its own section on purpose: merging those into one sentence would undo the table.
+      const hedged = runtimeOwnsCautions || structuredAnswer ? { text: withHeadsUpRaw, hedges: 0, merged: 0, unmergeable: 0 } : capHedges(withHeadsUpRaw, { lang, pickNames: snippetPlaceNames })
       const withHeadsUp = hedged.text
       console.log(JSON.stringify({
         type: 'tappyai_guard', guard: 'consultative_v1',

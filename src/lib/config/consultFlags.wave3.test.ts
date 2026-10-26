@@ -1,6 +1,15 @@
 import { describe, it, expect } from 'vitest'
-import { consultSearchNowIntentGateOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn } from './consultFlags'
+import { consultSearchNowIntentGateOn, consultToolByNeedOn, consultDeterministicMathOn, consultResearchLoopOn, consultStructuredSynthesisOn } from './consultFlags'
 import { consultTools, DOMAIN_TOOLS } from '@/lib/ai/consultative/leanConsultPrompt'
+
+describe('Wave 3 · W3 CONSULT_STRUCTURED_SYNTHESIS', () => {
+  it('ON only for the exact value "1", outside production, and needs no other flag', () => {
+    expect(consultStructuredSynthesisOn({ CONSULT_STRUCTURED_SYNTHESIS: '1' })).toBe(true)
+    for (const v of [undefined, '', '0', 'true', 'on', ' 1', '1 ', 'yes', '11']) expect(consultStructuredSynthesisOn({ CONSULT_STRUCTURED_SYNTHESIS: v }), String(v)).toBe(false)
+    expect(consultStructuredSynthesisOn({ CONSULT_STRUCTURED_SYNTHESIS: '1', VERCEL_ENV: 'production' })).toBe(false)
+    expect(consultStructuredSynthesisOn({ CONSULT_STRUCTURED_SYNTHESIS: '1', NODE_ENV: 'production' })).toBe(false)
+  })
+})
 
 describe('Wave 3 · W1 CONSULT_RESEARCH_LOOP', () => {
   it('ON only for the exact value "1", outside production, and needs no other flag', () => {
