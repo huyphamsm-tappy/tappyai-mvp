@@ -154,6 +154,39 @@ describe('A · flag ON: the abandoned call is cancelled and closed as unknown, n
   })
 })
 
+describe('A · the E18 chain of run 4 (7 model calls, 3 Serper requests, one first-part timeout on call 6)', () => {
+  const chain = async (v: string | undefined) => {
+    flag(v)
+    const g = turn()
+    await runWithSpendGate(g, async () => {
+      const okModel = () => fake({ firstPartMs: 2 }).m
+      await drain(meteredModel(okModel(), 'intent'))
+      for (let i = 0; i < 4; i++) {
+        const s = g.reserve('serper:search', 0.001, { endpoint: 'search', purpose: 'W' }); g.settle(s, 0.001, { credits: 1 }) // a web_search of the loop (the 4th was refused by a guard, as in the log)
+        await drain(meteredModel(okModel(), 'smart'))
+      }
+      await drain(pair(fake({ never: true }).m, okModel())) // call 6 is abandoned after 40 ms, call 7 (smart:retry) answers
+    })
+    await sleep(120)
+    return g
+  }
+  it('flag ON: no reservation is left held, call 6 is unknown with the reason, call 7 settled, the turn cost is NOT known (the paid-run gate still stops)', async () => {
+    const g = await chain('1')
+    expect(g.records.filter(r => r.state === 'held')).toEqual([])
+    const llm = g.records.filter(r => r.label.startsWith('llm:'))
+    expect(llm.map(r => `${r.label}=${r.state}`)).toEqual(['llm:intent=settled', 'llm:smart=settled', 'llm:smart=settled', 'llm:smart=settled', 'llm:smart=settled', 'llm:smart=unknown', 'llm:smart:retry=settled'])
+    expect(llm[5]?.unknownReason).toBe(ABANDONED_FIRST_PART_REASON)
+    // the liveRunner rule: a turn's cost is known only when nothing is blocked, nothing is open and a total exists
+    const costKnown = g.guard.blockedBy === null && g.guard.openReservedUsd === 0 && g.guard.knownUsd !== null
+    expect(costKnown).toBe(false)
+    expect(g.guard.blockedBy).toBe('cost-unknown')
+  })
+  it('flag OFF: call 6 stays held (the run-4 state)', async () => {
+    const g = await chain(undefined)
+    expect(g.records.filter(r => r.label === 'llm:smart' && r.state === 'held').length).toBe(1)
+  })
+})
+
 describe('A · the non-streamed call (doGenerate) has the same gap and the same cure', () => {
   const gen = (ms: number): LanguageModelV1 => ({
     specificationVersion: 'v1', provider: 'openai.chat', modelId: 'gpt-6-luna', defaultObjectGenerationMode: undefined,
