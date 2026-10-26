@@ -24,6 +24,7 @@ import { extractBudget, extractPlanTotalBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
 import { groundedCalcNumbers, numbersInText } from './tools/calculate'
 import { pageFigures, pageTexts } from './consultative/pageFigures'
+import { hasMarkdownStructure } from './consultative/answerStructure'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
@@ -87,7 +88,7 @@ import { shoppingPickFromMarker } from './consultative/pickBackstop'
 import { appendFileSync } from 'fs'
 import { guardClarifications, answerFirst } from './clarificationGuard'
 import { guardSearchClaims } from './consultative/searchClaimGuard'
-import { extractAttributes, guardAtmosphereClaims, attributeForHard } from './consultative/reviewAttributes'
+import { extractAttributes, guardAtmosphereClaims, attributeForHard, foldWords } from './consultative/reviewAttributes'
 import { HARD_GAP_WORDS } from './consultative/hardConstraints'
 import { capHedges } from './consultative/hedgeCap'
 import type { Hard } from './consultative/situationFrame'
@@ -3279,7 +3280,10 @@ export function applyPlaceEnrichmentStreamFilter(
       const claims = guardSearchClaims(v1PlanMask.text, { madeToolCall: anyToolCalled || v1.namedRefetch.length > 0 })
       const v1Attrs = extractAttributes(placeEntityTexts)
       const gapAttributes = v1.hardGaps.map(g => attributeForHard(g as Hard)).filter((a): a is NonNullable<typeof a> => a !== null)
-      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(collector?.structuredSynthesis === true ? { structuralLabels: true } : {}) })
+      // Wave 3 (W3, R3-03): the post-processing that turns a consult answer into "a short pick" steps aside only for an answer that REALLY has a structure (a markdown table, or two headings) AND only on a turn that
+      // asked for one (the flag). A long simple pick keeps every guard it has always had.
+      const structuredAnswer = collector?.structuredSynthesis === true && hasMarkdownStructure(claims.text)
+      const atmosphere = guardAtmosphereClaims(claims.text, { attrs: v1Attrs, names: snippetPlaceNames, gapAttributes, agentHedges: collector?.semanticRanking === true, ...(structuredAnswer ? { labelWords: new Set(foldWords((collector?.userTexts ?? [userText]).join(' '))) } : {}) })
       // The shape rules are about a card-backed decision. A turn with no venues (a film
       // recommendation, a subject question) keeps its prose — measured E7: the cap dropped
       // films two and three as "least informative".
@@ -3292,7 +3296,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // the previous turn's venues counted as `carried`. The claim guards below (search claims, atmosphere, budget-fit, evidence gaps)
       // still run on Agent prose.
       const agentOwnsProse = collector?.agentMode === true
-      const shape = !hasVenues || consultPlan || agentOwnsProse || collector?.structuredSynthesis === true ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
+      const shape = !hasVenues || consultPlan || agentOwnsProse || structuredAnswer ? { text: atmosphere.text, stats: { sentences_in: 0, sentences_out: 0, listing_removed: 0, alternatives_removed: 0, capped: 0 } } : guardProseShape(atmosphere.text, {
         rendersCard: v1.rendersCard,
         ...(collector?.consultTurn ? { maxAlternatives: 2, maxSentences: adviceEnabled() ? 13 : 9 } : {}),
         venues: snippetPlaceNames.map(name => ({
@@ -3328,8 +3332,7 @@ export function applyPlaceEnrichmentStreamFilter(
       // The line tidy exists to clean what the shape guard left behind; Agent prose was not shaped, so it is not "tidied" (it would drop
       // a recipe line that merely starts in lower case).
       // Wave 3 (W3): a markdown table row ("| a | b |", its "|---|---|" rule included) is structure, not a stranded fragment: a structured answer keeps its tables whole.
-      const structuredAnswer = collector?.structuredSynthesis === true
-      const tableRow = (l: string) => structuredAnswer && /^\s*\|.*\|\s*$/.test(l)
+      const tableRow =(l: string) => structuredAnswer && /^\s*\|.*\|\s*$/.test(l)
       const tidy = agentOwnsProse ? shape.text : shape.text.split('\n')
         .filter(l => l.trim() === '' || machineLine(l) || tableRow(l) || (/[\p{L}\p{N}]/u.test(l) && !linkOnlyLine(l) && !fragmentLine(l)))
         .join('\n').replace(/\n{3,}/g, '\n\n')

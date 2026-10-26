@@ -94,11 +94,12 @@ import { POST } from '@/app/api/chat/route'
 
 const GPS_HN = { lat: 21.0285, lng: 105.8542, address: 'Hoàn Kiếm, Hà Nội' }
 type Msg = { role: 'user' | 'assistant'; content: string }
-const lunaIntent = (turn: string, domains: string[]) => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
+const lunaIntent = (turn: string, domains: string[], difficulty = 'easy') => ({ domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty, missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null })
 const MORE: Msg[] = [{ role: 'user', content: 'quán cà phê' }, { role: 'assistant', content: 'Mình chọn: Cà phê Mây.' }, { role: 'user', content: 'còn quán nào nữa' }]
 const J = (s: string) => JSON.stringify(s).slice(1, -1)
 const ENV_NAMES = ['CONSULT_CAPABILITY_LEVEL', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_TOOL_BY_NEED', 'CONSULT_DETERMINISTIC_MATH', 'CONSULT_RESEARCH_LOOP', 'CONSULT_STRUCTURED_SYNTHESIS', 'VERCEL_ENV', 'TAPPY_AGENT']
-interface Cfg { level?: string; gate?: boolean; flags?: Record<string, string>; vercelEnv?: string; user?: string; area?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }> }
+// Wave 3-FIX (R3-03): the shape block / ceiling go to a request with several parts (Luna: not easy), so the scenario under test says so; an easy turn is covered by its own test below.
+interface Cfg { lunaTurn?: string; difficulty?: string; level?: string; gate?: boolean; flags?: Record<string, string>; vercelEnv?: string; user?: string; area?: string[]; msgs?: Msg[]; calls?: Array<{ name: string; args: Record<string, unknown> }> }
 
 async function turn(c: Cfg = {}) {
   for (const k of ENV_NAMES) delete process.env[k]
@@ -107,7 +108,7 @@ async function turn(c: Cfg = {}) {
   for (const [k, v] of Object.entries(c.flags ?? {})) process.env[k] = v
   if (c.vercelEnv) process.env.VERCEL_ENV = c.vercelEnv
   h.state.calls = (c.calls ?? []).map((t, i) => ({ toolCallId: `c${i + 1}`, toolName: t.name, args: t.args }))
-  h.state.luna = lunaIntent('more', c.area ?? ['food'])
+  h.state.luna = lunaIntent(c.lunaTurn ?? 'more', c.area ?? ['food'], c.difficulty ?? 'hard')
   h.state.toolNames = []; h.state.maxSteps = 0; h.state.maxTokens = 0; h.state.system = ''; h.state.results = []; h.state.fetched = []
   __resetAiQuestionQuotaLocal(); __resetPageCache(); __resetSharedRobots()
   const req = {
@@ -209,6 +210,45 @@ describe('W6 — a flag that is set decides for itself', () => {
     expect(b.tools).toEqual([...PREVIOUS_TOOLS, 'read_page', 'web_search'].sort())
     expect(b.maxSteps).toBe(6)
     expect(b.system).not.toContain(J(MATH_TOOL_RULE))
+  }, 60000)
+})
+
+// Wave 3-FIX (R3-04): a rule line that names a tool, or asks for a sectioned answer, is in the prompt only when the turn REALLY carries a tool to use it with; a turn without tools is the OFF turn.
+describe('Wave 3-FIX R3-04 — scope grid: every rule line goes with the tool it names', () => {
+  const CHITCHAT: Msg[] = [{ role: 'user', content: 'cảm ơn bạn nhé' }]
+  const OTHER_AREA: Msg[] = [{ role: 'user', content: 'quán cà phê yên tĩnh gần đây để làm việc, tầm 50k một ly' }]
+  for (const level of ['0', '1', '2', '3', '4']) {
+    for (const difficulty of ['easy', 'hard']) {
+      for (const [name, msgs] of [['more', MORE], ['chitchat', CHITCHAT], ['first ask', OTHER_AREA]] as Array<[string, Msg[]]>) {
+        it(`L${level} · ${difficulty} · ${name}: rules present iff their tool is offered; shape block only with tools; ceiling follows the block`, async () => {
+          const r = await turn({ level, gate: true, difficulty, msgs })
+          const has = (s: string) => r.system.includes(J(s))
+          expect(has(TOOL_BY_NEED_RULE)).toBe(has(TOOL_BY_NEED_RULE) && r.tools.includes('web_search'))
+          expect(has(MATH_TOOL_RULE)).toBe(has(MATH_TOOL_RULE) && r.tools.includes('calculate'))
+          expect(has(RESEARCH_RULE)).toBe(has(RESEARCH_RULE) && r.tools.includes('read_page'))
+          if (has(STRUCTURED_SYNTHESIS_RULE)) expect(r.tools.length).toBeGreaterThan(0)
+          expect(r.maxTokens > 2048).toBe(has(STRUCTURED_SYNTHESIS_RULE))
+          if (r.tools.length === 0) for (const rule of [TOOL_BY_NEED_RULE, MATH_TOOL_RULE, RESEARCH_RULE, STRUCTURED_SYNTHESIS_RULE]) expect(has(rule)).toBe(false)
+        }, 60000)
+      }
+    }
+  }
+  it('a lean follow-up turn carries no tool: at every level, however hard, it gets none of the four rule lines and the ordinary 600-token ceiling', async () => {
+    const FOLLOW: Msg[] = [{ role: 'user', content: 'quán cà phê yên tĩnh' }, { role: 'assistant', content: 'Mình chọn: Cà phê Mây — yên tĩnh theo đánh giá.' }, { role: 'user', content: 'quán đó mở cửa đến mấy giờ' }]
+    for (const level of ['1', '2', '3', '4']) {
+      const r = await turn({ level, gate: true, difficulty: 'hard', lunaTurn: 'followup', msgs: FOLLOW })
+      expect(r.tools, `L${level}`).toEqual([])
+      for (const rule of [TOOL_BY_NEED_RULE, MATH_TOOL_RULE, RESEARCH_RULE, STRUCTURED_SYNTHESIS_RULE]) expect(r.system.includes(J(rule)), `L${level}`).toBe(false)
+      expect(r.maxTokens, `L${level}`).toBe(600)
+    }
+  }, 60000)
+  it('an easy single-constraint turn at L3 keeps the ordinary ceiling and has no shape block; the same turn marked hard gets both', async () => {
+    const easy = await turn({ level: '3', gate: true, difficulty: 'easy' })
+    expect(easy.system).not.toContain(J(STRUCTURED_SYNTHESIS_RULE))
+    expect(easy.maxTokens).toBeLessThanOrEqual(2048)
+    const hard = await turn({ level: '3', gate: true, difficulty: 'hard' })
+    expect(hard.system).toContain(J(STRUCTURED_SYNTHESIS_RULE))
+    expect(hard.maxTokens).toBeGreaterThan(2048)
   }, 60000)
 })
 const PREVIOUS_TOOLS = ['search_places']

@@ -1514,6 +1514,9 @@ export async function POST(req: Request) {
   const structuredSynth = consultStructuredSynthesisOn() && !!consult && consult.domains.length > 0
   // Wave 3 (W6): the limits that depend on the capability level (L4: eight steps, six pages, the full 4.000-token output ceiling of a structured answer). Level 0 / production: the Wave 3 defaults.
   const levelLimits = capabilityLimits()
+  // Wave 3-FIX (R3-03/R3-04): set once the turn's real tool set is known (just before the stream is built). null / false = the turn runs exactly as with every Wave 3 flag off.
+  let w3Prompt: string | null = null
+  let w3Structured = false
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2107,7 +2110,6 @@ export async function POST(req: Request) {
   // still belongs in the text: with a card, it is the same content twice.
   enrichment.setRendersDecisionCard(rendersDecisionCard)
   if (consult && consult.turn !== 'ask') enrichment.setConsultTurn(consult.turn, consult.refers, consult.known)
-  if (structuredSynth) enrichment.setStructuredSynthesis(true) // Wave 3 (W3): the prose-shape sentence cap is not applied to a structured answer
   if (consult && consult.turn !== 'ask') enrichment.setConsultDomain(consult.domains[0] === 'travel' && (consultTravelCall?.name === 'get_flight_prices') ? 'flight' : consult.domains[0])
   if (lunaOn && earlyChatState?.shown?.length) enrichment.setConsultShown(earlyChatState.shown)
   // The plan's cost line prices the pick the conversation settled on (replay ENT-1/ENT-2/SPA-2 30/09: another venue's).
@@ -2265,22 +2267,24 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
   // Measured on uat 70667d3: the full rulebook made one pick turn 34k input tokens ($0.049).
   // An in-area knowledge question ("chốt, cần kiểm tra gì khi mua") is lean too — measured 30,970 input
   // tokens on the legacy rulebook (replay SHOP-3 t7). A chat turn with no area keeps the full prompt.
-  const lean = consult && consult.domains.length > 0
-    ? (() => {
-        const now = new Date()
-        return buildLeanConsultSystem({
-          lang, langName: lang === 'en' ? 'English' : 'Vietnamese',
-          vnDateTime: now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' }),
-          vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
-          domains: consult.domains,
-          consultBlock: consultativeBlock,
-          ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
-          ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...(toolByNeed ? [TOOL_BY_NEED_RULE] : []), ...(deterministicMath ? [MATH_TOOL_RULE] : []), ...(consultResearchLoopOn() ? [RESEARCH_RULE] : [])],
-          tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : '', ...(structuredSynth ? [STRUCTURED_SYNTHESIS_RULE] : [])],
-        })
-      })()
-    : null
+  // Wave 3-FIX (R3-04): the Wave 3 rule lines (tool by need, calculator, research, shape) are NOT part of this first build: they name a tool or ask for a shape, so they are added only at the moment the stream is
+  // assembled, when the tools the turn REALLY carries are known (a turn the code pre-searched, or a follow-up, carries none and must not be told to use one). With every Wave 3 flag off `w3` is empty and this is the
+  // very same build as before.
+  const buildLean = (w3: { extra: readonly string[]; tail: readonly string[] }) => {
+    const now = new Date()
+    return buildLeanConsultSystem({
+      lang, langName: lang === 'en' ? 'English' : 'Vietnamese',
+      vnDateTime: now.toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', dateStyle: 'full', timeStyle: 'short' }),
+      vnDateISO: now.toLocaleDateString('en-CA', { timeZone: 'Asia/Ho_Chi_Minh' }),
+      domains: consult!.domains,
+      consultBlock: consultativeBlock,
+      ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
+      ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
+      extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...w3.extra],
+      tail: [adviceEnabled() && adviceApplies(consult!.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult!.turn, domain: consult!.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult!.known.so_ngay?.match(/\d+/)?.[0]) || null }) : '', ...w3.tail],
+    })
+  }
+  const lean = consult && consult.domains.length > 0 ? buildLean({ extra: [], tail: [] }) : null
   const systemShared = lean ? lean.shared : legacyShared
   const systemPrompt = lean ? lean.dynamic : legacyPrompt
 
@@ -3375,6 +3379,23 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
       },
     }])) as T
   }
+  // Wave 3-FIX (R3-04): the tools this turn REALLY carries, decided once and used both for the `tools:` option and for which Wave 3 rule lines the prompt gets. A turn the code pre-searched (Luna answer),
+  // a Luna trip plan and a no-tool turn carry none - and are not told to call one or to write a sectioned answer.
+  const leanToolSet = lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}), ...(research ? { research: true } : {}) }).includes(k))) as typeof tools : tools
+  const turnHasNoTools = (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip')
+  const offeredToolNames = turnHasNoTools || !leanToolSet ? [] : Object.keys(leanToolSet)
+  if (lean && (toolByNeed || deterministicMath || research || structuredSynth)) {
+    // A request with several parts (Luna: not an easy turn; or two or more stated constraints) or a research turn gets the sectioned shape and the full ceiling; a simple pick keeps the ordinary short answer.
+    // Luna's own reading of the request decides when it ran; without it, three or more stated constraints.
+    const multiPart = lunaIntentRun ? lunaIntentRun.difficulty !== 'easy' : Object.keys(consult!.known).length >= 3
+    const structured = structuredSynth && offeredToolNames.length > 0 && multiPart
+    w3Structured = structured
+    if (structured) enrichment.setStructuredSynthesis(true) // the prose-shape sentence cap is stepped aside only for an answer that is really sectioned (streamEnrichment checks the text)
+    w3Prompt = buildLean({
+      extra: [...(toolByNeed && offeredToolNames.includes('web_search') ? [TOOL_BY_NEED_RULE] : []), ...(deterministicMath && offeredToolNames.includes('calculate') ? [MATH_TOOL_RULE] : []), ...(research && offeredToolNames.includes('read_page') ? [RESEARCH_RULE] : [])],
+      tail: structured ? [STRUCTURED_SYNTHESIS_RULE] : [],
+    }).dynamic
+  }
   const streamOpts: Parameters<typeof AI.stream>[0] = {
     role,
     // First text delta only. Tool-call and reasoning chunks are deliberately
@@ -3402,7 +3423,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // tokens for a response nobody is receiving.
     abortSignal: req.signal,
     systemShared,
-    system: eveningAddendum ? systemPrompt + eveningAddendum : systemPrompt,
+    system: eveningAddendum ? (w3Prompt ?? systemPrompt) + eveningAddendum : (w3Prompt ?? systemPrompt),
     messages: (lunaData ? (() => { const at = modelMessagesWithPresearch.map((m: { role: string }) => m.role).lastIndexOf('user'); return at < 0 ? modelMessagesWithPresearch : [...modelMessagesWithPresearch.slice(0, at), { role: 'user' as const, content: lunaData }, ...modelMessagesWithPresearch.slice(at)] })() : modelMessagesWithPresearch) as typeof modelMessages,
     // Completion cap. Place/product replies previously hit finishReason:"length"
     // at 2048 (deterministic image/review/order URLs are token-heavy). Those are
@@ -3413,7 +3434,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // with [CTA_BUTTONS] + [FOLLOWUPS]); 2048 is 2.5× that. Planning stays at 4096 (a
     // [TAPPY_PLAN] block is long by design) and image turns at 1024. Output is billed as
     // generated, so this changes no cost on a normal reply — it bounds a runaway one.
-    maxTokens: noToolTurn ? (consult ? (structuredSynth ? levelLimits.structuredMaxTokens : 600) : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? levelLimits.structuredMaxTokens : 2048),
+    maxTokens: noToolTurn ? (consult ? 600 : 300) : eveningBlock ? 350 : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : 2048),
     // Consult V2: a pick whose search already ran (presearch) answers in ONE step — no second full pass.
     // A follow-up/compare that re-reads its evidence keeps a second step: a stray tool call must still end in text.
     // R15: a pre-fetched trip plan writes in ONE step (a second only if it still reaches for a tool).
@@ -3456,7 +3477,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}), ...(research ? { research: true } : {}) }).includes(k))) as typeof tools : tools))), trace),
+    tools: turnHasNoTools ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(withResearchUrls(leanToolSet))), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
       trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })
@@ -3887,7 +3908,7 @@ ${completionInstruction(lang)}` },
             lastUserChars: lastText.length,
             toolResultChars: auditToolResultChars,
             noToolTurn,
-            maxTokens: noToolTurn ? (consult ? (structuredSynth ? levelLimits.structuredMaxTokens : 600) : 300) : planningIntent ? 4096 : hasImage ? 1024 : (structuredSynth ? levelLimits.structuredMaxTokens : 2048),
+            maxTokens: noToolTurn ? (consult ? 600 : 300) : planningIntent ? 4096 : hasImage ? 1024 : (w3Structured ? levelLimits.structuredMaxTokens : 2048),
           },
         }) + '\n')
       } catch { /* audit only */ }

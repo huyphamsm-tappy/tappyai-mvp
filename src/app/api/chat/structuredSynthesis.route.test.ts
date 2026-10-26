@@ -97,7 +97,7 @@ import { POST } from '@/app/api/chat/route'
 const GPS_HN = { lat: 21.0285, lng: 105.8542, address: 'Hoàn Kiếm, Hà Nội' }
 type Msg = { role: 'user' | 'assistant'; content: string }
 const lunaIntent = (turn: string, domains: string[], extra: Record<string, unknown> = {}) => ({
-  domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'easy', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
+  domains, turn, goal: 'x', known: [], party: null, budget_vnd_max: null, difficulty: 'hard', missing: [], assumptions: [], ask: null, query: null, area: null, refers: [], reject_reason: null, ...extra,
 })
 const one = (u: string): Msg[] => [{ role: 'user', content: u }]
 interface TurnOpts { synth?: string; vercelEnv?: string; luna?: Record<string, unknown> | null; tools?: Array<{ name: string; args: Record<string, unknown> }>; gps?: unknown; reply?: string }
@@ -165,7 +165,7 @@ const SENTENCES = (t: string) => t.split(/[.!?\n]/).map(s => s.trim()).filter(s 
 describe('W3 — flag ON: the shape block, the output ceiling', () => {
   for (const [name, msgs, o] of [
     ['chat + food (no tool turn or tool turn)', MULTI, { luna: lunaIntent('chat', ['food']), gps: GPS_HN }],
-    ['more + food', MORE, { luna: lunaIntent('more', ['food']), gps: GPS_HN }],
+    ['more + food (several parts: Luna says hard)', MORE, { luna: lunaIntent('more', ['food'], { difficulty: 'hard' }), gps: GPS_HN }],
   ] as Array<[string, Msg[], TurnOpts]>) {
     it(`${name}: the block is in the prompt only now, the ceiling is ${STRUCTURED_MAX_TOKENS} (under the hard 4.000), tools and steps are unchanged`, async () => {
       const on = await turn(msgs, { ...o, synth: '1', reply: 'ok' })
@@ -262,10 +262,34 @@ describe('W3 — a long sectioned answer reaches the user', () => {
     expect(off.text).not.toContain('sân vườn yên tĩnh')
   }, 60000)
 
+  // Wave 3-FIX R3-03: the post-processing steps aside for an answer that IS sectioned (checked on the text), not for every turn that ran with the flag on.
+  // the sectioned reply flattened to prose: no heading, no table row - the sentence cap of the ordinary path does cut it
+  const LONG_PLAIN = STRUCTURED.split('\n').filter(l => !/^\s*(#|\|)/.test(l)).join('\n')
+  it('a simple pick (Luna: easy) with a long plain answer is post-processed exactly as with the flag off', async () => {
+    const o: TurnOpts = { luna: lunaIntent('chat', ['food'], { difficulty: 'easy' }), gps: GPS_HN, tools: [PLACES], reply: LONG_PLAIN }
+    const off = await turn(one('Gợi ý cho mình một quán cà phê'), { ...o, synth: undefined })
+    const on = await turn(one('Gợi ý cho mình một quán cà phê'), { ...o, synth: '1' })
+    expect(on.text).toBe(off.text)
+    expect(on.maxTokens).toBe(off.maxTokens)
+    expect(SENTENCES(off.text)).toBeLessThan(SENTENCES(LONG_PLAIN)) // non-vacuous: the cap does cut this answer
+  }, 60000)
+  it('a multi-part turn whose answer came back as plain prose (no table, no headings) is also post-processed as with the flag off', async () => {
+    const o: TurnOpts = { luna: lunaIntent('chat', ['food']), gps: GPS_HN, tools: [PLACES], reply: LONG_PLAIN }
+    const off = await turn(MULTI, { ...o, synth: undefined })
+    const on = await turn(MULTI, { ...o, synth: '1' })
+    expect(on.text).toBe(off.text)
+  }, 60000)
+  it('a heading that is a CLAIM about a venue (not a label of the request) is removed in a sectioned answer', async () => {
+    const reply = STRUCTURED.replace('## Chỗ ngồi yên tĩnh', '## Mọi quán đều yên tĩnh, wifi miễn phí')
+    const on = await turn(MULTI, { luna: lunaIntent('chat', ['food']), gps: GPS_HN, tools: [PLACES], reply, synth: '1' })
+    expect(on.text).toContain('## Giá') // sectioned answer is kept
+    expect(on.text).not.toContain('Mọi quán đều yên tĩnh')
+  }, 60000)
+
   it('a one-decision pick keeps its "Mình chọn" line and is not turned into sections', async () => {
     const reply = 'Mình chọn: **Cà phê Mây** — gần bạn và nhiều đánh giá.'
-    const on = await turn(one('Gợi ý cho mình một quán cà phê'), { luna: lunaIntent('pick', ['food'], { query: 'cà phê' }), gps: GPS_HN, tools: [], reply, synth: '1' })
-    const off = await turn(one('Gợi ý cho mình một quán cà phê'), { luna: lunaIntent('pick', ['food'], { query: 'cà phê' }), gps: GPS_HN, tools: [], reply, synth: undefined })
+    const on = await turn(one('Gợi ý cho mình một quán cà phê'), { luna: lunaIntent('pick', ['food'], { query: 'cà phê', difficulty: 'easy' }), gps: GPS_HN, tools: [], reply, synth: '1' })
+    const off = await turn(one('Gợi ý cho mình một quán cà phê'), { luna: lunaIntent('pick', ['food'], { query: 'cà phê', difficulty: 'easy' }), gps: GPS_HN, tools: [], reply, synth: undefined })
     expect(on.text).toContain('Mình chọn')
     expect(on.text).toBe(off.text)
   }, 60000)

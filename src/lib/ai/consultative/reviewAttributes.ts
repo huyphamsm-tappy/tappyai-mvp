@@ -28,6 +28,8 @@ export interface AttributeEvidence {
 }
 
 const fold = (s: string) => normalizeVN(s.toLowerCase()).replace(/\s+/g, ' ').trim()
+/** The words of a text, folded (no accents, lower case), letters and digits only: what `labelWords` is made of. */
+export const foldWords = (s: string): string[] => fold(s).replace(/[^\p{L}\p{N}]+/gu, ' ').split(' ').filter(Boolean)
 
 // Negation within a few words flips the sense: "không yên tĩnh" is not quiet.
 // "không gian" (space) and "không khí" (atmosphere) are nouns, not negations:
@@ -189,10 +191,11 @@ export function guardAtmosphereClaims(
      */
     agentHedges?: boolean
     /**
-     * Wave 3 (W3, a structured answer): a markdown heading or a table header/rule row that names NO venue is a LABEL for a part of the user's request ("## Chỗ ngồi yên tĩnh", "| Quán | Giá | Yên tĩnh |"), not a claim
-     * about a venue, so the unsupported-attribute test is not applied to it. A row or sentence that names a venue is judged exactly as before. Off (undefined) = unchanged.
+     * Wave 3 (W3, a structured answer; Wave 3-FIX R3-03): a markdown heading or table row that names NO venue and whose every word is a word of the USER'S OWN request ("## Chỗ ngồi yên tĩnh" after "...chỗ ngồi
+     * yên tĩnh...") is a LABEL for a part of that request, not a claim about a venue, so the unsupported-attribute test is not applied to it. A heading that brings words of its own ("## Mọi quán đều yên tĩnh,
+     * wifi miễn phí") says something: it is judged like any sentence. A row or sentence that names a venue is judged exactly as before. The words of the request are given folded (see `foldWords`); undefined = unchanged.
      */
-    structuralLabels?: boolean
+    labelWords?: ReadonlySet<string>
   },
 ): AtmosphereGuardResult {
   if (!text || (ctx.names.length === 0 && !(ctx.gapAttributes && ctx.gapAttributes.length > 0))) return { text, removed: 0, unsupportedInPick: 0 }
@@ -222,7 +225,7 @@ export function guardAtmosphereClaims(
       named = [...lastNamed]
     }
     if (named.length > 0) lastNamed = named
-    if (ctx.structuralLabels && named.length === 0 && /^\s*(?:#{1,6}\s|\|)/.test(s)) return // a label of a part of the request (see structuralLabels)
+    if (ctx.labelWords && named.length === 0 && /^\s*(?:#{1,6}\s|\|)/.test(s) && foldWords(s).every(w => ctx.labelWords!.has(w))) return // a label made only of the request's own words (see labelWords)
     // A wish attributed to the user, or the honest gap sentence, is not a venue claim. The wish
     // reads as such only when it OPENS the clause ("vì bạn muốn yên tĩnh"); a trailing "…có chỗ
     // đậu xe mà bạn cần" is a claim that happens to mention the user (measured F4).
