@@ -7,7 +7,7 @@ import { __resetRequestCap } from '@/lib/ai/tools/serperRequestCap'
 import { consultAnswerAttributionOn, consultFinalSynthesisOn, consultGeneralAssistantOn } from '@/lib/config/consultFlags'
 import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests } from './liveRunner'
 import { memFs } from './liveRunner.testkit'
-import { WAVE2_FLAGS, formatSummary, runLiveTrial, wave2FlagReasons, wave2FlagState } from './liveTrial'
+import { WAVE2_FLAGS, WAVE2_FLAG_NEEDS, formatSummary, runLiveTrial, wave2FlagReasons, wave2FlagState } from './liveTrial'
 import { conditionReport } from './preflightReport'
 import { FLAG_ENV_NAMES, WAVE2_FLAG_NAMES, buildChildEnv, gate1Summary, launcherRefusals, wave2Line } from './liveTrialLauncher.mjs'
 import type { UatTurn } from './questions'
@@ -91,7 +91,8 @@ describe('the state shown is the state the configuration really has', () => {
     for (const v of [undefined, '', '0', 'true', 'on', ' 1', '1 ', '2']) { expect(consultFinalSynthesisOn({ CONSULT_FINAL_SYNTHESIS: v })).toBe(false); expect(consultAnswerAttributionOn({ CONSULT_ANSWER_ATTRIBUTION: v })).toBe(false); expect(consultGeneralAssistantOn({ CONSULT_GENERAL_ASSISTANT: v })).toBe(false) }
     expect(consultFinalSynthesisOn({ CONSULT_FINAL_SYNTHESIS: '1' })).toBe(true); expect(consultAnswerAttributionOn({ CONSULT_ANSWER_ATTRIBUTION: '1' })).toBe(true); expect(consultGeneralAssistantOn({ CONSULT_GENERAL_ASSISTANT: '1' })).toBe(true)
     // and the bench, the launcher and the product agree
-    for (const v of [undefined, '0', '1', 'yes']) for (const k of WAVE2_FLAGS) expect(wave2FlagState({ [k]: v })[k]).toBe(v === '1' ? 'ON' : 'OFF')
+    // (Wave 2J: a flag that needs another flag - WAVE2_FLAG_NEEDS - is ON only with that one set too; without it the state is INERT, see liveTrial.wave2i.test.ts)
+    for (const v of [undefined, '0', '1', 'yes']) for (const k of WAVE2_FLAGS) expect(wave2FlagState({ [k]: v, ...(WAVE2_FLAG_NEEDS[k] ? { [WAVE2_FLAG_NEEDS[k]!]: '1' } : {}) })[k]).toBe(v === '1' ? 'ON' : 'OFF')
   })
   it('the preflight line and Gate 1 print ON/OFF per flag from the environment (unset is OFF, 1 is ON), in every combination', () => {
     const combos: Array<Record<string, string | undefined>> = [{}, { CONSULT_FINAL_SYNTHESIS: '1' }, { CONSULT_ANSWER_ATTRIBUTION: '1', CONSULT_GENERAL_ASSISTANT: '0' }, { CONSULT_FINAL_SYNTHESIS: '1', CONSULT_ANSWER_ATTRIBUTION: '1', CONSULT_GENERAL_ASSISTANT: '1' }]

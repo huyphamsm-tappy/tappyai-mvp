@@ -352,9 +352,12 @@ export function quotaLines(env) {
 
 /** Wave 2 · the state each product-behaviour flag REALLY has (ON only for the value 1), for Gate 1. Same rule as wave2FlagState in liveTrial.ts (a test compares them). */
 export const WAVE2_FLAG_NAMES = ['CONSULT_FINAL_SYNTHESIS', 'CONSULT_ANSWER_ATTRIBUTION', 'CONSULT_GENERAL_ASSISTANT', 'CONSULT_TRACE_DIAGNOSTICS', 'CONSULT_SEARCH_NOW_INTENT_GATE', 'CONSULT_THREAD_AWARE_ASK', 'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS']
+/** Wave 2J (F6): a flag that does nothing unless another flag is exactly 1 too (same table as WAVE2_FLAG_NEEDS in liveTrial.ts; a test compares them). */
+export const WAVE2_FLAG_NEEDS = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
 export function wave2Line(env) {
   const show = v => (v === undefined ? 'unset' : /^[A-Za-z0-9_-]{1,12}$/.test(v) ? v : JSON.stringify(v.slice(0, 12)))
-  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${env[k] === '1' ? 'BẬT' : 'TẮT'})`).join(', ')}`
+  const state = k => (env[k] !== '1' ? 'TẮT' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]] !== '1') ? `KHÔNG CÓ HIỆU LỰC — cần ${WAVE2_FLAG_NEEDS[k]}=1` : 'BẬT')
+  return `cờ hành vi Wave 2 (mặc định TẮT; chỉ giá trị 1 là BẬT): ${WAVE2_FLAG_NAMES.map(k => `${k}=${show(env[k])} (${state(k)})`).join(', ')}`
 }
 
 /** Round 3f · Gate 1 summary: what the run will do, with no key value. Pure. */

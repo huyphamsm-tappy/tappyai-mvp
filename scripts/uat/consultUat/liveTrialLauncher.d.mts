@@ -26,6 +26,7 @@ export function buildChildEnv(parentEnv: Env, opts: { confirm: boolean; nonce: s
 export function gate1Summary(env: Env, questionText: string | null): string[]
 export function quotaLines(env: Env): string[]
 export const WAVE2_FLAG_NAMES: string[]
+export const WAVE2_FLAG_NEEDS: Record<string, string>
 export function wave2Line(env: Env): string
 export function readHidden(prompt: string, opts?: { input?: unknown; output?: unknown }): Promise<string>
 export function askLine(prompt: string, opts?: { input?: unknown; output?: unknown; timeoutMs?: number }): Promise<string>

@@ -346,9 +346,11 @@ export const WAVE2_FLAGS: readonly string[] = ['CONSULT_FINAL_SYNTHESIS', 'CONSU
 export function wave2FlagReasons(env: Record<string, string | undefined>): string[] {
   return WAVE2_FLAGS.filter(k => { const v = env[k]; return !(v === undefined || v === '0' || v === '1') }).map(k => `${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`)
 }
-/** Pure. The state each wave-2 flag really has: ON only for the value "1". */
-export function wave2FlagState(env: Record<string, string | undefined>): Record<string, 'ON' | 'OFF'> {
-  return Object.fromEntries(WAVE2_FLAGS.map(k => [k, env[k] === '1' ? 'ON' : 'OFF' as const]))
+/** Wave 2J (F6): a flag that the product reads as OFF unless another flag is exactly "1" too (src/lib/config/consultFlags.ts: consultKnowledgeTurnToolsOn needs the search-now gate). */
+export const WAVE2_FLAG_NEEDS: Readonly<Record<string, string>> = { CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE' }
+/** Pure. The state each wave-2 flag really has: ON only for the value "1"; INERT = set to "1" but without the flag it needs (the product reads it as OFF). */
+export function wave2FlagState(env: Record<string, string | undefined>): Record<string, 'ON' | 'OFF' | 'INERT'> {
+  return Object.fromEntries(WAVE2_FLAGS.map(k => [k, env[k] !== '1' ? 'OFF' : (WAVE2_FLAG_NEEDS[k] !== undefined && env[WAVE2_FLAG_NEEDS[k]!] !== '1') ? 'INERT' : 'ON' as const]))
 }
 
 /** The message for an OpenAI key that is there but is not shaped like one. Names the variable and the rule; holds no character of the value. */

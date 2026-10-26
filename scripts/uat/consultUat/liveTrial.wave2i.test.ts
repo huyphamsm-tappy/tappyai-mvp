@@ -4,9 +4,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { __resetRequestCap } from '@/lib/ai/tools/serperRequestCap'
 import { BENCH_FLAG_NAMES, __resetBenchProcessGuardForTests } from './liveRunner'
-import { WAVE2_FLAGS, wave2FlagReasons, wave2FlagState } from './liveTrial'
+import { consultKnowledgeTurnToolsOn } from '@/lib/config/consultFlags'
+import { WAVE2_FLAGS, WAVE2_FLAG_NEEDS, wave2FlagReasons, wave2FlagState } from './liveTrial'
 import { conditionReport } from './preflightReport'
-import { FLAG_ENV_NAMES, WAVE2_FLAG_NAMES, buildChildEnv, gate1Summary, launcherRefusals } from './liveTrialLauncher.mjs'
+import { FLAG_ENV_NAMES, WAVE2_FLAG_NAMES, WAVE2_FLAG_NEEDS as WAVE2_FLAG_NEEDS_LAUNCHER, buildChildEnv, gate1Summary, launcherRefusals, wave2Line } from './liveTrialLauncher.mjs'
 
 const NEW_FLAGS = ['CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS'] as const
 const EXT: Record<string, string> = {
@@ -59,8 +60,44 @@ describe('Wave 2I flags: values and shown state', () => {
       expect(wave2FlagReasons({ [k]: bad })).toEqual([`${k} must be exactly 1, 0 or unset (any other value is refused, not guessed at)`])
     })
   }
-  it('the state is ON only for "1"', () => {
-    for (const k of NEW_FLAGS) for (const v of [undefined, '0', '1', 'yes']) expect(wave2FlagState({ [k]: v })[k]).toBe(v === '1' ? 'ON' : 'OFF')
+  it('the state is ON only for "1" (the knowledge-turn flag also needs the search-now gate: without it "1" is INERT)', () => {
+    for (const v of [undefined, '0', '1', 'yes']) {
+      expect(wave2FlagState({ CONSULT_ABORT_ABANDONED_FIRST_PART: v }).CONSULT_ABORT_ABANDONED_FIRST_PART).toBe(v === '1' ? 'ON' : 'OFF')
+      expect(wave2FlagState({ CONSULT_KNOWLEDGE_TURN_TOOLS: v, CONSULT_SEARCH_NOW_INTENT_GATE: '1' }).CONSULT_KNOWLEDGE_TURN_TOOLS).toBe(v === '1' ? 'ON' : 'OFF')
+      expect(wave2FlagState({ CONSULT_KNOWLEDGE_TURN_TOOLS: v }).CONSULT_KNOWLEDGE_TURN_TOOLS).toBe(v === '1' ? 'INERT' : 'OFF')
+    }
+    for (const g of [undefined, '0', 'true', ' 1']) expect(wave2FlagState({ CONSULT_KNOWLEDGE_TURN_TOOLS: '1', CONSULT_SEARCH_NOW_INTENT_GATE: g }).CONSULT_KNOWLEDGE_TURN_TOOLS).toBe('INERT')
+  })
+  it('the "needs" table of the trial and of the launcher are the same, and mirror the product (consultKnowledgeTurnToolsOn)', () => {
+    expect(WAVE2_FLAG_NEEDS_LAUNCHER).toEqual(WAVE2_FLAG_NEEDS)
+    expect(WAVE2_FLAG_NEEDS).toEqual({ CONSULT_KNOWLEDGE_TURN_TOOLS: 'CONSULT_SEARCH_NOW_INTENT_GATE' })
+    for (const g of [undefined, '1']) for (const k of [undefined, '1']) {
+      const env = { CONSULT_SEARCH_NOW_INTENT_GATE: g, CONSULT_KNOWLEDGE_TURN_TOOLS: k }
+      expect(consultKnowledgeTurnToolsOn(env)).toBe(wave2FlagState(env).CONSULT_KNOWLEDGE_TURN_TOOLS === 'ON')
+    }
+  })
+  it('F6: K=1 WITHOUT the gate: Gate 1 and the preflight say "KHÔNG CÓ HIỆU LỰC (cần CONSULT_SEARCH_NOW_INTENT_GATE=1)", never ON / BẬT; the launcher does not switch the gate on for the Owner', () => {
+    const env = { ...EXT, CONSULT_KNOWLEDGE_TURN_TOOLS: '1' }
+    for (const k of WAVE2_FLAGS) vi.stubEnv(k, undefined)
+    for (const [k, v] of Object.entries(env)) vi.stubEnv(k, v)
+    const gate = gate1Summary(env, null).join('\n')
+    const line = conditionReport({ env: process.env, repoRoot: 'D:/TappyAI-wt/wt-integration', questionText: null }).find(x => x.name.startsWith('wave-2 behaviour flags'))!
+    expect(gate).toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (KHÔNG CÓ HIỆU LỰC — cần CONSULT_SEARCH_NOW_INTENT_GATE=1)')
+    expect(gate).not.toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (BẬT)')
+    expect(line.detail).toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (INERT: KHÔNG CÓ HIỆU LỰC, cần CONSULT_SEARCH_NOW_INTENT_GATE=1)')
+    expect(line.detail).not.toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (ON)')
+    expect(line.detail).toContain('CONSULT_SEARCH_NOW_INTENT_GATE=unset (OFF)') // the gate was not turned on behind the Owner's back
+    const child = buildChildEnv(env, { confirm: false, nonce: 'a'.repeat(32), preflightOnly: true })
+    expect(child.CONSULT_KNOWLEDGE_TURN_TOOLS).toBe('1')
+    expect('CONSULT_SEARCH_NOW_INTENT_GATE' in child).toBe(false)
+    expect(wave2Line(env)).toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (KHÔNG CÓ HIỆU LỰC — cần CONSULT_SEARCH_NOW_INTENT_GATE=1)')
+  })
+  it('K=1 WITH the gate is ON / BẬT; the abort flag alone is ON / BẬT (it needs nothing)', () => {
+    const env = { ...EXT, CONSULT_KNOWLEDGE_TURN_TOOLS: '1', CONSULT_SEARCH_NOW_INTENT_GATE: '1', CONSULT_ABORT_ABANDONED_FIRST_PART: '1' }
+    expect(wave2Line(env)).toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=1 (BẬT)')
+    expect(wave2Line(env)).toContain('CONSULT_ABORT_ABANDONED_FIRST_PART=1 (BẬT)')
+    expect(wave2Line({ ...EXT, CONSULT_ABORT_ABANDONED_FIRST_PART: '1' })).toContain('CONSULT_ABORT_ABANDONED_FIRST_PART=1 (BẬT)')
+    expect(wave2Line({ ...EXT, CONSULT_ABORT_ABANDONED_FIRST_PART: '1' })).toContain('CONSULT_KNOWLEDGE_TURN_TOOLS=unset (TẮT)')
   })
   it('the preflight line and Gate 1 print the real state of both flags (unset = OFF, 1 = ON)', () => {
     for (const f of [{}, { CONSULT_ABORT_ABANDONED_FIRST_PART: '1' }, { CONSULT_KNOWLEDGE_TURN_TOOLS: '1', CONSULT_SEARCH_NOW_INTENT_GATE: '1' }]) {
