@@ -51,6 +51,12 @@ export async function GET(req: Request) {
       isPro,
       /** The entitled plan id ('pip' … 'sunny', legacy 'pro') or 'free' / 'guest'. Additive. */
       plan: ent.plan,
+      /**
+       * Where the paid plan comes from, for clients that sell through a store (App Review 3.1.3(b)):
+       * 'apple' = an App Store subscription (the iOS app may show its renewal and Apple's Manage screen);
+       * 'external' = any other paid plan (shown plainly, no renewal date, no store Manage); null = no paid plan. Additive.
+       */
+      source: ent.paid ? (ent.source === 'apple_iap' ? 'apple' : 'external') : null,
       status: sub?.status ?? null,
       currentPeriodEnd: sub?.current_period_end ?? null,
       /** The limit that is actually enforced for THIS caller — the ONE shared AI pool. */
