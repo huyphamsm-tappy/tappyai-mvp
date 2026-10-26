@@ -48,7 +48,7 @@ export const DOMAIN_TOOLS: Record<ConsultDomain, readonly string[]> = {
 }
 
 /** The union of the tools of the turn's areas (multi-area requests get each area's tools). */
-export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean } = {}): string[] {
+export function consultTools(domains: readonly ConsultDomain[], opts: { shoppingWebSearch?: boolean; knowledgeTurnWebSearch?: boolean; toolByNeed?: boolean; math?: boolean } = {}): string[] {
   const tools = domains.flatMap(d => DOMAIN_TOOLS[d] ?? [])
   // round 3h (ROUTE_TOOL_OFFER_GUARD): a shopping turn may also OFFER web_search for a price or market lookup. Offered, never forced.
   if (opts.shoppingWebSearch && domains.includes('shopping')) tools.push('web_search')
@@ -56,8 +56,18 @@ export function consultTools(domains: readonly ConsultDomain[], opts: { shopping
   if (opts.knowledgeTurnWebSearch) tools.push('web_search')
   // Wave 3 (W2, CONSULT_TOOL_BY_NEED): every lean consult turn with an area is offered web_search; the model chooses by need. Offered, never forced.
   if (opts.toolByNeed && domains.length > 0) tools.push('web_search')
+  // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn with an area is offered the exact calculator. Offered, never forced.
+  if (opts.math && domains.length > 0) tools.push('calculate')
   return [...new Set(tools)]
 }
+
+/**
+ * Wave 3 (W4): one GENERAL line, added only with CONSULT_DETERMINISTIC_MATH on. It says arithmetic goes through the calculator and the answer states the inputs; it carries no keyword and no example sentence.
+ */
+export const MATH_TOOL_RULE = `TINH TOAN: moi phep tinh so hoc (tong tien, chia, ty le phan tram, lai suat, tra gop, so sanh chi phi) PHAI dung cong cu calculate, khong tinh nham; dung so cua nguoi dung va so tu ket qua cong cu, viet so thap phan bang dau cham. Khi tra loi, neu ngan gon cong thuc/dau vao va dung dung ket qua calculate tra ve (lam tron theo nhu cau).`
+
+/** Wave 3 (W4): the description of the calculator tool shown to the model. General: what it takes and returns. */
+export const CALCULATE_DESCRIPTION = 'Tinh chinh xac mot bieu thuc so hoc. Toan tu: + - * / ^ ( ) va % (x% = x/100); so thap phan dung dau cham; cac doi so cua ham cach nhau bang dau phay roi dau cach. Ham: pmt(lai_moi_ky, so_ky, so_tien_vay [, gia_tri_con_lai]) tien tra moi ky; fv(lai, ky, tien_gop_moi_ky [, von_dau]); pv(lai, ky, tien_moi_ky [, gia_tri_cuoi]); npv(lai, dong_tien_1, dong_tien_2, ...); rate_conv(lai_moi_ky, so_ky) lai gop; round(x, so_le), min, max, sum, avg, pow, sqrt, ln, exp, abs; hang so pi, e. Lai suat la phan so moi ky (1%/thang = 0.01). Tra ve value (chinh xac), rounded (so nguyen), rounded_2, steps va inputs.'
 
 /**
  * Wave 3 (W2): one GENERAL line, added only with CONSULT_TOOL_BY_NEED on. It describes needs, not words: which kind of need uses which tool. No keyword, no example sentence, no area question rule

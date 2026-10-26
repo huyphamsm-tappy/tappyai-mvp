@@ -57,6 +57,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS',
   // Wave 3 · W2 (see liveTrialLauncher.mjs); default OFF
   'CONSULT_TOOL_BY_NEED',
+  // Wave 3 · W4 (see liveTrialLauncher.mjs); default OFF
+  'CONSULT_DETERMINISTIC_MATH',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */

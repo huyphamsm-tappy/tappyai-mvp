@@ -37,6 +37,11 @@ export interface MoneyGuardOptions {
   namedListing?: boolean
   userTexts?: readonly string[]
   choiceOptions?: boolean
+  /**
+   * Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): whole-number results of the exact calculator this turn (calcEvidenceNumbers). An amount that equals one of them (within 0.5 %, so "4,3 triệu" for 4.304.128
+   * reads as that result) is the turn's own arithmetic, not a claim about a listing: VERIFIED. Absent or empty = no change at all.
+   */
+  calcValues?: readonly number[]
 }
 
 /** The line around a position. */
@@ -383,7 +388,9 @@ export function judgeMoneyClaims(text: string, records: EvidenceRecord[], entiti
   // CONSULT_V3 readings (see MoneyGuardOptions): checked first, each one only ever VERIFIES.
   const userValues = (opts.userTexts ?? []).flatMap(t => extractMoneyClaims(t)).flatMap(u => [u.lo, u.hi])
   const choiceSpans = opts.choiceOptions ? closingChoiceSpans(text) : []
+  const calcValues = opts.calcValues ?? []
   const v3Reading = (c: Omit<MoneyClaim, 'verdict' | 'entity' | 'reason'>): MoneyClaim | null => {
+    if (calcValues.length > 0 && [c.lo, c.hi].every(v => calcValues.some(u => Math.abs(v - u) <= Math.max(1, u * 0.005)))) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'calculated by the exact calculator this turn' }
     if (choiceSpans.some(([a, b]) => c.start >= a && c.start < b)) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'closing question option' }
     if (userValues.length > 0 && [c.lo, c.hi].every(v => userValues.some(u => withinTolerance(v, u)))) return { ...c, verdict: 'VERIFIED', entity: null, reason: 'stated by the user' }
     if (!opts.namedListing) return null

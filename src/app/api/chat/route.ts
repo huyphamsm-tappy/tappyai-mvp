@@ -82,7 +82,7 @@ import { type Budget, extractBudget, extractPlanTotalBudget, applyBudgetFilter, 
 import { detectPlaceConstraints, applyPlaceConstraints } from '@/lib/ai/placeConstraintFilter'
 import { usesEveningFrame, eveningLocation, eveningStagesFor, pickStageStop, buildEveningPlanBlock, eveningIntroInstruction, eveningIntro, fixedPlanStream, type EveningStop } from '@/lib/ai/eveningPlan'
 import { buildSystem, buildSystemSimple, buildPrefBlock, buildRenderedDecisionBlock, buildPlanningBlock } from '@/lib/ai/promptBuilder'
-import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
+import { buildLeanConsultSystem, consultCacheLibraryEnabled, consultTools, KNOWLEDGE_TURN_TOOL_RULE, TOOL_BY_NEED_RULE, MATH_TOOL_RULE, CALCULATE_DESCRIPTION, WEB_SEARCH_DESCRIPTION_BY_NEED, recentTurns } from '@/lib/ai/consultative/leanConsultPrompt'
 import { applyPlaceEnrichmentStreamFilter, type TurnEvidence } from '@/lib/ai/streamEnrichment'
 import { splitToolResult, createEnrichmentCollector } from '@/lib/ai/toolResultSplit'
 import { shouldExtractMemory } from '@/lib/ai/memoryGate'
@@ -102,7 +102,8 @@ import { recordDecision, DECISION_RECORD_TIMEOUT_MS } from '@/lib/ai/agent/runti
 import { createPlacesBudget, PLACES_BUDGET_AGENT, PLACES_BUDGET_DEFAULT, PLACES_BUDGET_PLANNING } from '@/lib/ai/tools/placesBudget'
 // Consultative V1 (flag CONSULTATIVE_V1, default OFF — see docs/audit/consultative-v1-design.md).
 import { consultativeV1Enabled, placeGuardAttributionV2Enabled, snippetPriceGuardV2Enabled, mediaPlacementV2Enabled } from '@/lib/config/product'
-import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn } from '@/lib/config/consultFlags'
+import { consultFinalSynthesisOn, consultAnswerAttributionOn, consultGeneralAssistantOn, consultSearchNowIntentGateOn, consultThreadAwareAskOn, consultKnowledgeTurnToolsOn, consultToolByNeedOn, consultDeterministicMathOn } from '@/lib/config/consultFlags'
+import { calculate } from '@/lib/ai/tools/calculate'
 import { createTurnTrace, traceCallBy, traceToolsInner, traceToolsOuter } from '@/lib/ai/consultative/traceDiagnostics'
 import { deriveSituation, type SituationFrame } from '@/lib/ai/consultative/situationFrame'
 import { buildConsultativeV1Block } from '@/lib/ai/consultative/consultativeV1Prompt'
@@ -1505,6 +1506,8 @@ export async function POST(req: Request) {
   const knowledgeTurnTools = !!searchGate?.blocked && consultKnowledgeTurnToolsOn()
   // Wave 3 (W2, CONSULT_TOOL_BY_NEED - needs the gate): EVERY lean consult turn is offered web_search and one general line about needs; the model chooses. OFF = false and nothing below differs from before.
   const toolByNeed = consultToolByNeedOn()
+  // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): every lean consult turn is also offered the exact calculator and one general line; the model chooses. OFF = false and nothing below differs from before.
+  const deterministicMath = consultDeterministicMathOn()
   let traceFinishReason: string | null = null
   let traceAreaAsk: { appended: boolean | null; reason: string | null } | null = null
   // Owner 2026-09-28 (c40 T7): a flight search runs without a date; the date is asked at the END.
@@ -2266,7 +2269,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           consultBlock: consultativeBlock,
           ...(consultLibraryOn ? { library: frameLibrary(consultLibraryDomain) } : {}),
           ...(lunaAnswer && process.env.CONSULT_LUNA_PROMPT !== '0' ? { core: LUNA_CORE } : {}),
-          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...(toolByNeed ? [TOOL_BY_NEED_RULE] : [])],
+          extra: [lunaData ? '' : memoryBlock ?? '', prefBlock, planningIntent ? buildPlanningBlock(planningIntent, lang, planning ?? {}) : '', lunaPlan ? LUNA_PLAN_RULE : '', styleBlock, voiceLayerBlock(), lunaData ? '' : shareContextBlock, ...(knowledgeTurnTools ? [KNOWLEDGE_TURN_TOOL_RULE] : []), ...(toolByNeed ? [TOOL_BY_NEED_RULE] : []), ...(deterministicMath ? [MATH_TOOL_RULE] : [])],
           tail: [adviceEnabled() && adviceApplies(consult.domains[0], consultTravelCall?.name === 'get_flight_prices') ? adviceBlock({ turn: consult.turn, domain: consult.domains[0], flight: consultTravelCall?.name === 'get_flight_prices', days: Number(consult.known.so_ngay?.match(/\d+/)?.[0]) || null }) : ''],
         })
       })()
@@ -2817,6 +2820,14 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
           return withTravelEditorial(r, editorial)
         }
       }),
+      // Wave 3 (W4): only defined on a lean consult turn with the flag ON; the filter below offers it only to a lean turn. Deterministic: a typed refusal comes back as a result, never as a thrown error.
+      ...(deterministicMath && lean ? {
+        calculate: tool({
+          description: CALCULATE_DESCRIPTION,
+          parameters: z.object({ expression: z.string().describe('Bieu thuc so hoc can tinh, vd: pmt(0.01, 12, 1000)') }),
+          execute: async ({ expression }) => ({ ...calculate(expression), _tappy_calc: true }),
+        }),
+      } : {}),
       get_weather: tool({
         description: 'Lay thong tin thoi tiet hien tai va du bao hom nay (nhiet do, tinh trang troi, do am, gio) cho mot dia diem tai Viet Nam, du lieu realtime tu wttr.in',
         parameters: z.object({ location: z.string().describe('Ten thanh pho/tinh can xem thoi tiet (vd: Ha Noi, Da Nang, TP HCM)') }),
@@ -3431,7 +3442,7 @@ Nguoi dung muon duoc GOI Y PHIM/SHOW de xem, KHONG phai tim rap hay lich chieu.
     // call with tools). A TRIP plan has the code's full presearch (hotels, places, weather) → no tools, the plan effort
     // applies. Every other plan keeps its tools (replay 30/09: without them E1-G5 planned only the dinner, R16 named no
     // venue) and so runs at 'none'.
-    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}) }).includes(k))) as typeof tools : tools)), trace),
+    tools: (lunaAnswer && presearchAll.length > 0) || (lunaPlan && planningIntent === 'trip') ? undefined : traceToolsOuter(finalSynthesisGuard(lunaGuardTools(lean && tools ? Object.fromEntries(Object.entries(tools).filter(([k]) => consultTools(consult!.domains, { shoppingWebSearch: routeToolOfferOn(), ...(knowledgeTurnTools ? { knowledgeTurnWebSearch: true } : {}), ...(toolByNeed ? { toolByNeed: true } : {}), ...(deterministicMath ? { math: true } : {}) }).includes(k))) as typeof tools : tools)), trace),
     onFinish: async ({ usage, finishReason, text, steps }) => {
       // CONSULT_TRACE_DIAGNOSTICS (Wave 2C): how the tool loop ended. `requested` includes the code's own pre-search; `blocked` = answered search_budget_used (never counted as a provider request).
       trace?.emit('loop', { stepsRun: steps?.length ?? null, maxSteps: streamMaxSteps, finishReason, modelTextChars: text.length, tools: { ...trace.counters }, ...(searchGate ? { toolsOffered: trace.facts.toolsOffered } : {}) })

@@ -232,9 +232,12 @@ export function guardTravelClaimsInText(
   text: string,
   fares: number[],
   userText: string,
-  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket' } = {},
+  opts: { evidenceTimes?: readonly string[]; lang?: string; unit?: 'travel' | 'ticket'; calcValues?: readonly number[] } = {},
 ): { text: string; redacted: number; enforced: boolean } {
   const ticketUnit = opts.unit === 'ticket'
+  // Wave 3 (W4): whole-number results of the exact calculator this turn whose money-sized inputs the turn already had (groundedCalcNumbers). An amount equal to one (within 0.5 %) is the turn's own arithmetic.
+  const calcValues = opts.calcValues ?? []
+  const fromCalculator = (c: { lo: number; hi: number }): boolean => calcValues.length > 0 && [c.lo, c.hi].every(v => calcValues.some(u => Math.abs(v - u) <= Math.max(1, u * 0.005)))
   let out = text
   let redacted = 0
 
@@ -247,7 +250,7 @@ export function guardTravelClaimsInText(
     const judged: MoneyClaim[] = claims.map(c => ({
       ...c,
       entity: null,
-      verdict: (tracesToLiveFare(c, fares) || userEchoStandsHere(c, userClaims, out, fares)) ? 'VERIFIED' : 'UNVERIFIED',
+      verdict: (tracesToLiveFare(c, fares) || userEchoStandsHere(c, userClaims, out, fares) || fromCalculator(c)) ? 'VERIFIED' : 'UNVERIFIED',
     }))
     const bad = judged.filter(j => j.verdict !== 'VERIFIED').length
     if (bad > 0) {

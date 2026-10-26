@@ -1,6 +1,23 @@
 import { describe, it, expect } from 'vitest'
-import { consultSearchNowIntentGateOn, consultToolByNeedOn } from './consultFlags'
+import { consultSearchNowIntentGateOn, consultToolByNeedOn, consultDeterministicMathOn } from './consultFlags'
 import { consultTools, DOMAIN_TOOLS } from '@/lib/ai/consultative/leanConsultPrompt'
+
+describe('Wave 3 · W4 CONSULT_DETERMINISTIC_MATH', () => {
+  it('ON only for the exact value "1", outside production, and needs no other flag', () => {
+    expect(consultDeterministicMathOn({ CONSULT_DETERMINISTIC_MATH: '1' })).toBe(true)
+    for (const v of [undefined, '', '0', 'true', 'on', ' 1', '1 ', 'yes', '11']) expect(consultDeterministicMathOn({ CONSULT_DETERMINISTIC_MATH: v }), String(v)).toBe(false)
+    expect(consultDeterministicMathOn({ CONSULT_DETERMINISTIC_MATH: '1', VERCEL_ENV: 'production' })).toBe(false)
+    expect(consultDeterministicMathOn({ CONSULT_DETERMINISTIC_MATH: '1', NODE_ENV: 'production' })).toBe(false)
+  })
+  it('consultTools: with math every area gets calculate and nothing else changes; with no area nothing is offered', () => {
+    for (const d of ['food', 'spa', 'entertainment', 'shopping', 'travel'] as const) {
+      const off = consultTools([d])
+      expect(consultTools([d], { math: true }).sort()).toEqual([...new Set([...off, 'calculate'])].sort())
+    }
+    expect(consultTools([], { math: true })).toEqual([])
+    expect(consultTools(['food'], { math: true, toolByNeed: true }).sort()).toEqual(['calculate', 'search_places', 'web_search'])
+  })
+})
 
 describe('Wave 3 · W2 CONSULT_TOOL_BY_NEED', () => {
   const G = { CONSULT_SEARCH_NOW_INTENT_GATE: '1' }

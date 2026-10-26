@@ -23,6 +23,8 @@
 //   CONSULT_TOOL_BY_NEED          (Wave 3 · W2) every LEAN consult turn (not only a turn the gate blocked) is also offered web_search next to its area tools, one GENERAL line says which tool a need
 //                               uses (fresh facts / figures / prices / hours / rules need a source -> web_search; a request to go somewhere -> the place tool; stable knowledge -> answer directly)
 //                               and web_search carries a general description of when to use it. The model chooses. Needs CONSULT_SEARCH_NOW_INTENT_GATE too. Only honoured outside production.
+//   CONSULT_DETERMINISTIC_MATH    (Wave 3 · W4) every lean consult turn is also offered `calculate`, an exact decimal calculator (hand-written parser, no eval) for sums of money, instalments, interest,
+//                               shares and percentages, and one general line says arithmetic goes through it. The model chooses; nothing is computed by the code on its own. Only honoured outside production.
 
 type Env = Record<string, string | undefined>
 
@@ -36,6 +38,7 @@ export const CONSULT_THREAD_AWARE_ASK_FLAG = 'CONSULT_THREAD_AWARE_ASK'
 export const CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG = 'CONSULT_ABORT_ABANDONED_FIRST_PART'
 export const CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG = 'CONSULT_KNOWLEDGE_TURN_TOOLS'
 export const CONSULT_TOOL_BY_NEED_FLAG = 'CONSULT_TOOL_BY_NEED'
+export const CONSULT_DETERMINISTIC_MATH_FLAG = 'CONSULT_DETERMINISTIC_MATH'
 
 const exactlyOne = (v: string | undefined): boolean => v === '1'
 /** A production runtime: Vercel production, or a production build (which a Vercel preview also is). Local dev (`next dev`), the bench and tests are not. */
@@ -54,5 +57,7 @@ export function consultThreadAwareAskOn(env: Env = process.env): boolean { retur
 export function consultAbortAbandonedFirstPartOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_ABORT_ABANDONED_FIRST_PART_FLAG]) && !isProductionRuntime(env) }
 /** Wave 2I · B. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
 export function consultKnowledgeTurnToolsOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_KNOWLEDGE_TURN_TOOLS_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }
+/** Wave 3 · W4. ON only for the exact value "1" and only outside a production runtime. */
+export function consultDeterministicMathOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_DETERMINISTIC_MATH_FLAG]) && !isProductionRuntime(env) }
 /** Wave 3 · W2. ON only for the exact value "1", only outside a production runtime, and only together with the search-now gate (C). */
 export function consultToolByNeedOn(env: Env = process.env): boolean { return exactlyOne(env[CONSULT_TOOL_BY_NEED_FLAG]) && !isProductionRuntime(env) && consultSearchNowIntentGateOn(env) }

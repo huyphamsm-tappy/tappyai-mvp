@@ -146,6 +146,7 @@ beforeEach(() => {
   process.env.CONSULT_V2 = '1'; process.env.CONSULTATIVE_V1 = '1'
   delete process.env.CONSULT_KNOWLEDGE_TURN_TOOLS // Wave 2I: this file pins the gate (C) alone; the knowledge-turn flag is covered by knowledgeTurnTools.route.test.ts
   delete process.env.CONSULT_TOOL_BY_NEED // Wave 3: same - the by-need flag is covered by toolByNeed.route.test.ts (env isolation only, no assertion changed)
+  delete process.env.CONSULT_DETERMINISTIC_MATH // Wave 3 (W4): same - covered by deterministicMath.route.test.ts
   vi.stubGlobal('fetch', async (input: unknown) => { throw new Error('network disabled in this test: ' + String(input).slice(0, 60)) })
 })
 afterEach(() => { for (const k of ['TAPPY_AGENT', 'CONSULT_SEARCH_NOW_INTENT_GATE']) delete process.env[k]; vi.unstubAllGlobals() })

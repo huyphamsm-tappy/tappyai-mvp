@@ -22,6 +22,7 @@ import { guardUnsupportedClaims } from './unsupportedClaimGuard'
 import { modelPickName, pickStillStated, ALT_SENTENCE } from './modelPick'
 import { extractBudget, extractPlanTotalBudget } from './budget'
 import { guardSnippetPricesInText, pricesFromSnippets, type SnippetPriceScope } from './snippetPriceGuard'
+import { groundedCalcNumbers, numbersInText } from './tools/calculate'
 import { guardPlaceClaimsInText, isDirectTicketUrl, mentionsTickets, dropUnbackedOrderingPossession } from './placeClaimGuard'
 import { guardPlanPrices, planPriceEvidenceFromRows } from './planPriceGuard'
 import { guardPlanLocalTips } from './planLocalTipsGuard'
@@ -1776,6 +1777,9 @@ export function applyPlaceEnrichmentStreamFilter(
   /** VND amounts that appeared in food/spa price snippets (search_places). A stated
    *  price must trace to one of these (A5); a number in no snippet is fabricated. */
   const snippetPrices: number[] = []
+  /** Wave 3 (W4): the results the exact calculator returned this turn (empty unless CONSULT_DETERMINISTIC_MATH put `calculate` in the tool set), and the numbers every OTHER tool result of the turn stated (the grounding of a calculator input). */
+  const calcResults: unknown[] = []
+  const groundNums: number[] = []
   /**
    * The same prices, but keyed by the place each snippet actually NAMED.
    *
@@ -2710,6 +2714,13 @@ export function applyPlaceEnrichmentStreamFilter(
     const evShield = shieldSupported(citeBound, collector?.guardEvidence, { lang, cutUnsourcedMoney: collector?.consultative === true, canonMoney: collector?.consultative === true, retrievedTexts: gateCorpus, knownNames: [...places.map(p => p.name ?? ''), ...productRecords.map(r => (r.title || '').split(' - ')[0])].filter(Boolean), ...(todayVn ? { today: todayVn } : {}) })
     gt('evidence_citation', citeBound, evShield.text)
     const enriched = evShield.text
+    // Wave 3 (W4): a calculator result is evidence of its arithmetic only when every money-sized input is a number the turn already had (the user's, or one a tool result stated). Empty without the flag.
+    const calcOk = calcResults.length > 0
+      ? groundedCalcNumbers(calcResults, [
+        ...groundNums,
+        ...(collector?.userTexts ?? [userText]).flatMap(t => [...numbersInText(t), ...extractMoneyClaims(t).flatMap(c => [c.lo, c.hi])]),
+      ])
+      : []
     // C3-B.10: the last server-side point at which the COMPLETE prose exists and
     // has not yet reached the client. A monetary claim the structured evidence
     // does not support is removed here — deterministically, with no model call,
@@ -2718,8 +2729,8 @@ export function applyPlaceEnrichmentStreamFilter(
     // WS2 (TAPPY_AGENT=2): the product a price is about is read from Luna's query WITHOUT the store names it added ("… Shopee Tiki") —
     // a seller name is where to buy, not what the product is (sourceType.stripSellerNames). Legacy / Phase 7 unchanged.
     const guardedRaw = collector?.semanticRanking
-      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(collector?.consultative === true ? { decimalSafe: true } : {}), ...(collector?.consultV3 === true ? { namedListing: true, choiceOptions: true, userTexts: collector.userTexts ?? [userText] } : {}) })
-      : guardMoneyClaimsInText(enriched, productRecords, productQueries)
+      ? guardMoneyClaimsInText(enriched, productRecords, productQueries.map(stripSellerNames), { sellerAttribution: true, ...(calcOk.length > 0 ? { calcValues: calcOk } : {}), ...(collector?.consultative === true ? { decimalSafe: true } : {}), ...(collector?.consultV3 === true ? { namedListing: true, choiceOptions: true, userTexts: collector.userTexts ?? [userText] } : {}) })
+      : guardMoneyClaimsInText(enriched, productRecords, productQueries, calcOk.length > 0 ? { calcValues: calcOk } : {})
     /**
      * B3 (2026-09-20) — THE PRODUCT UNIT: a price that traces to no fetched row is HEDGED. The
      * money guard enforces only where a structured price exists (it is inert on organic rows, by
@@ -2763,7 +2774,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // CONSULT_V3: no travel-claims cut — it deleted the model's budget question and inserted "Giá vé cụ thể mình chưa xác nhận được…" (UAT
     // 17/10). Fares stay under the No-Fabrication Gate (a stated figure needs a source, or an explicit estimate label).
     const travelGuarded = travelIntent && collector?.consultV3 !== true
-      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang }).text
+      ? guardTravelClaimsInText(specGuarded, travelFares, userText, { evidenceTimes: [...travelTimes], lang, ...(calcOk.length > 0 ? { calcValues: calcOk } : {}) }).text
       : specGuarded
     // A5 EVIDENCE BOUNDARY for food/spa. Their menu/service prices exist only in
     // Serper snippets, so a stated price must TRACE to a retrieved snippet; a
@@ -2821,7 +2832,7 @@ export function applyPlaceEnrichmentStreamFilter(
     // 700.000" (turn 2) is still the envelope at "bỏ điểm đến thứ hai" (turn 3). The No-Fabrication Gate already reads every user message.
     const snippetUserText = collector?.agentMode && collector.userTexts?.length ? collector.userTexts.join('\n') : userText
     const snippetGuardResult = ((hadPlaceSearch || placeIntent) && !travelIntent && !shoppingTurn)
-      ? guardSnippetPricesInText(ticketGuarded, snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
+      ? guardSnippetPricesInText(ticketGuarded, calcOk.length > 0 ? [...snippetPrices, ...calcOk] : snippetPrices, snippetUserText, placeScope(), { v2: snippetV2, priceBandsByEntity })
       : null
     const foodGuarded0 = qual('snippet_price', ticketGuarded, snippetGuardResult ? snippetGuardResult.text : ticketGuarded)
     // Release gate (UAT-15): a comparative proximity claim about the pick must be backed by the rows' own distances (see proximityClaim.ts).
@@ -4271,6 +4282,10 @@ export function applyPlaceEnrichmentStreamFilter(
               }
             }
             let newPlaces: PlaceLike[] = []
+            // Wave 3 (W4, CONSULT_DETERMINISTIC_MATH): a figure the exact calculator returned this turn (its result, its rounded forms, each step's result) is the turn's OWN evidence, like a figure a snippet carried:
+            // the snippet-price boundary must not cut the answer's arithmetic. Only a successful `calculate` result counts; the tool exists only with the flag on, so this is inert otherwise.
+            if (toolName === 'calculate') { if (calcResults.length < 40) calcResults.push((res as { result?: unknown }).result) }
+            else if (toolName !== undefined && groundNums.length < 20_000) groundNums.push(...numbersInText(line.slice(2, 2 + 120_000), 800))
             if (toolName === 'search_places') {
               const results = res.result?.results
               if (Array.isArray(results)) newPlaces = results
