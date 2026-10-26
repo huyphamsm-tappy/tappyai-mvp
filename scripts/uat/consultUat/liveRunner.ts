@@ -53,6 +53,8 @@ export const BENCH_FLAG_NAMES: readonly string[] = [
   'CONSULT_SEARCH_NOW_INTENT_GATE',
   // Wave 2D · A: a follow-up reads the whole thread and the products already shown (ask card, shown-product reference, rules / intent merge); default OFF
   'CONSULT_THREAD_AWARE_ASK',
+  // Wave 2I · A and B (see liveTrialLauncher.mjs); default OFF
+  'CONSULT_ABORT_ABANDONED_FIRST_PART', 'CONSULT_KNOWLEDGE_TURN_TOOLS',
 ]
 
 /** Variables the route reads as FILE PATHS: ANY value ("off", "0" and "false" included) makes it append the full model requests / usage there. They must be UNSET. */
