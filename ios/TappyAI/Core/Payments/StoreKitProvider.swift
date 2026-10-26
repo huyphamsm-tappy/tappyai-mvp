@@ -9,10 +9,15 @@ final class StoreKitProvider: PaymentProvider {
     private let session: SessionStore?
     private var cachedProduct: Product?
     private let log = AppLogger.app
+    /// Long-lived listener for transactions that StoreKit delivers outside the purchase sheet:
+    /// renewals, Ask to Buy approvals, purchases made on another device, and unfinished transactions
+    /// redelivered after a launch. Created once per provider (the provider lives with the app).
+    private var updatesTask: Task<Void, Never>?
 
     init(api: APIClient, session: SessionStore? = nil) {
         self.api = api
         self.session = session
+        self.updatesTask = listenForTransactionUpdates()
     }
 
     // MARK: - PaymentProvider
@@ -58,8 +63,15 @@ final class StoreKitProvider: PaymentProvider {
         case .success(let verification):
             switch verification {
             case .verified(let transaction):
-                await syncWithBackend(transaction, jwsRepresentation: verification.jwsRepresentation)
-                await transaction.finish()
+                // Finish only after the backend accepted the transaction. If the sync failed, the
+                // transaction stays unfinished and StoreKit redelivers it on a later launch.
+                let settled = await Self.settle(
+                    sync: { await syncWithBackend(transaction, jwsRepresentation: verification.jwsRepresentation) },
+                    finish: { await transaction.finish() })
+                guard settled else {
+                    log.error("StoreKit: purchase verified but backend sync failed; transaction left unfinished")
+                    return .pending
+                }
                 return .success
             case .unverified(_, let error):
                 log.error("StoreKit: unverified transaction: \(error.localizedDescription)")
@@ -82,8 +94,9 @@ final class StoreKitProvider: PaymentProvider {
             guard case .verified(let transaction) = result,
                   ProductCatalog.allProductIds.contains(transaction.productID),
                   transaction.revocationDate == nil else { continue }
-            await syncWithBackend(transaction, jwsRepresentation: result.jwsRepresentation)
-            await transaction.finish()
+            guard await Self.settle(
+                sync: { await syncWithBackend(transaction, jwsRepresentation: result.jwsRepresentation) },
+                finish: { await transaction.finish() }) else { continue }
             restored = true
         }
         log.info("StoreKit: restore — \(restored ? "active entitlement found" : "no active entitlement")")
@@ -107,9 +120,43 @@ final class StoreKitProvider: PaymentProvider {
 
     // MARK: - Backend sync
 
+    /// Listens for transactions StoreKit delivers outside the purchase sheet. Each one is verified by
+    /// StoreKit, checked against our product IDs, and synced to the backend before it is finished.
+    /// The backend verify route is idempotent per originalTransactionId, so a transaction seen both here
+    /// and in the purchase flow does not grant anything twice.
+    private func listenForTransactionUpdates() -> Task<Void, Never> {
+        Task { [weak self] in
+            for await result in Transaction.updates {
+                await self?.handleTransactionUpdate(result)
+            }
+        }
+    }
+
+    private func handleTransactionUpdate(_ result: VerificationResult<Transaction>) async {
+        guard case .verified(let transaction) = result,
+              ProductCatalog.allProductIds.contains(transaction.productID) else {
+            log.info("StoreKit: transaction update ignored (unverified or unknown product)")
+            return
+        }
+        // Unfinished on failure: StoreKit redelivers it, so a signed-out or offline launch retries later.
+        _ = await Self.settle(
+            sync: { await syncWithBackend(transaction, jwsRepresentation: result.jwsRepresentation) },
+            finish: { await transaction.finish() })
+    }
+
+    /// THE rule for every path that receives a verified transaction (purchase sheet, restore, `Transaction.updates`):
+    /// tell the backend first and `finish()` only when it accepted. A transaction that is finished before the server
+    /// has it is gone from StoreKit's redelivery queue, and the person would have paid for a plan that never unlocks.
+    /// Returns whether the transaction was synced and finished.
+    static func settle(sync: () async -> Bool, finish: () async -> Void) async -> Bool {
+        guard await sync() else { return false }
+        await finish()
+        return true
+    }
+
     /// Notifies the backend of a verified transaction so the server can update the subscriptions
-    /// table. Non-fatal on failure — the entitlement is re-synced on next launch or restore.
-    private func syncWithBackend(_ transaction: Transaction, jwsRepresentation: String) async {
+    /// table. Returns true only when the backend accepted it. Callers finish the transaction only on true.
+    private func syncWithBackend(_ transaction: Transaction, jwsRepresentation: String) async -> Bool {
         do {
             let body = try JSONSerialization.data(withJSONObject: [
                 "originalTransactionId": String(transaction.originalID),
@@ -126,8 +173,10 @@ final class StoreKitProvider: PaymentProvider {
             )
             _ = try await api.send(endpoint)
             log.info("StoreKit: backend sync succeeded for txn \(transaction.id)")
+            return true
         } catch {
             log.error("StoreKit: backend sync failed: \(error.localizedDescription)")
+            return false
         }
     }
 }
