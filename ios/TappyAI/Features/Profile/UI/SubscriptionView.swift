@@ -155,7 +155,9 @@ struct SubscriptionView: View {
     @ViewBuilder
     private func pricingCards(_ s: SubscriptionStatusResponse) -> some View {
         VStack(spacing: Spacing.md) {
-            freeCard(s)
+            // The Free card is for a Free account only. With ANY paid plan (App Store or bought elsewhere) it is not shown
+            // at all: no card, no label of the Free plan next to «You're on Pro».
+            if s.showsFreeCard { freeCard(s) }
             proCard(s)
         }
     }
@@ -204,6 +206,8 @@ struct SubscriptionView: View {
         .clipShape(RoundedRectangle(cornerRadius: Radius.xl))
         .overlay(RoundedRectangle(cornerRadius: Radius.xl)
             .stroke(TappyColor.border, lineWidth: 1))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("sub-free-card")
     }
 
     @ViewBuilder

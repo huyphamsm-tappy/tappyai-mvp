@@ -57,4 +57,23 @@ final class SubscriptionSourceTests: XCTestCase {
     func testFreeCardIsNotTheCurrentPlanFromAServerThatPredatesSource() throws {
         XCTAssertFalse(try decode(#"{"isPro":true,"# + quota + "}").freePlanIsCurrent)
     }
+
+    // MARK: The Free card is not drawn at all on a paid plan (owner, 26/10: hide it entirely while Pro)
+
+    func testFreeCardIsShownOnAFreeAccountOnly() throws {
+        XCTAssertTrue(try decode(#"{"isPro":false,"# + quota + "}").showsFreeCard)
+        XCTAssertTrue(try decode(#"{"isPro":false,"source":null,"# + quota + "}").showsFreeCard)
+    }
+
+    func testFreeCardIsHiddenOnAnAppStoreSubscription() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"source":"apple","# + quota + "}").showsFreeCard)
+    }
+
+    func testFreeCardIsHiddenOnAPlanBoughtElsewhere() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"source":"external","# + quota + "}").showsFreeCard)
+    }
+
+    func testFreeCardIsHiddenFromAServerThatPredatesSource() throws {
+        XCTAssertFalse(try decode(#"{"isPro":true,"# + quota + "}").showsFreeCard)
+    }
 }

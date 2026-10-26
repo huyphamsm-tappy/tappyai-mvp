@@ -1060,6 +1060,7 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["30 câu hỏi AI mỗi ngày"].firstMatch.exists, "Pro states the real allowance")
         XCTAssertFalse(labelled(app, containing: "ưu tiên").exists, "no promise the backend does not keep")
         XCTAssertFalse(labelled(app, containing: "không giới hạn").exists, "no «unlimited» promise")
+        XCTAssertTrue(any(app, "sub-free-card").exists, "on Free, the Free card is shown")
         XCTAssertTrue(any(app, "sub-free-current").exists, "on Free, the Free card is the current plan")
         shot("99-subscription-pro-free")
         for _ in 0..<4 where !app.buttons["Khôi phục giao dịch"].isHittable { app.swipeUp() }
@@ -1077,8 +1078,11 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(labelled(app, containing: "Gia hạn").exists, "renewal date")
         XCTAssertTrue(app.buttons["Quản lý gói"].exists, "Apple's Manage screen")
         // Device test of build 175: the Free card still said «Gói hiện tại» next to «Bạn đang dùng Pro».
+        XCTAssertFalse(any(app, "sub-free-card").exists, "on an App Store plan the Free card is not shown")
         XCTAssertFalse(any(app, "sub-free-current").exists, "on an App Store plan the Free card is NOT the current plan")
+        XCTAssertFalse(app.staticTexts["Gói Free"].exists, "no label of the Free plan while on Pro")
         XCTAssertFalse(app.staticTexts["Gói hiện tại"].exists, "no «Gói hiện tại» anywhere while on Pro")
+        XCTAssertTrue(app.staticTexts["Bạn đang dùng TappyAI Pro"].exists, "the Pro banner stays")
         shot("99-subscription-apple")
         setStub(["pro": "off"])
     }
@@ -1090,7 +1094,9 @@ final class ScreenshotTests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Gói trả phí của bạn đang có hiệu lực"].waitForExistence(timeout: 60), "plan shown as active")
         XCTAssertFalse(labelled(app, containing: "Gia hạn").exists, "no renewal date")
         XCTAssertFalse(app.buttons["Quản lý gói"].exists, "no Apple Manage button for a plan that is not an App Store subscription")
+        XCTAssertFalse(any(app, "sub-free-card").exists, "on a plan bought elsewhere the Free card is not shown")
         XCTAssertFalse(any(app, "sub-free-current").exists, "on a plan bought elsewhere the Free card is NOT the current plan")
+        XCTAssertFalse(app.staticTexts["Gói Free"].exists, "no label of the Free plan while on a paid plan")
         XCTAssertFalse(app.staticTexts["Gói hiện tại"].exists, "no «Gói hiện tại» anywhere while on a paid plan")
         shot("99-subscription-external")
         for _ in 0..<4 where !app.buttons["Khôi phục giao dịch"].isHittable { app.swipeUp() }
