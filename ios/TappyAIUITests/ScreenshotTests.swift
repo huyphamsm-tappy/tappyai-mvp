@@ -1042,6 +1042,64 @@ final class ScreenshotTests: XCTestCase {
         shot(name)
     }
 
+    // MARK: - TappyAI Pro for App Review 3.1.1 (rejection f64ea6cc, 20/10/2026)
+
+    /// An element of any type whose label contains the text (a SwiftUI Link or Button is not always a `.button`).
+    private func labelled(_ app: XCUIApplication, containing text: String) -> XCUIElement {
+        app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS %@", text)).firstMatch
+    }
+
+    /// The Pro screen of a Free account: the price comes from StoreKit (the scheme's local `Products.storekit`, 179.000 ₫),
+    /// the buy button carries it, Restore Purchases is on the screen, the renewal notice and the Terms/Privacy links are
+    /// there, and nothing sends the person to a website. This is also the picture for the App Store Connect review screenshot.
+    func testProScreenOfAFreeAccountShowsStoreKitPriceRestoreAndTerms() {
+        setStub(["pro": "off"])
+        let app = launch(route: "subscription", signedIn: true, extra: ["-uitest-theme", "dark"])
+        let buy = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Nâng cấp Pro'")).firstMatch
+        XCTAssertTrue(buy.waitForExistence(timeout: 60), "the buy button, with the StoreKit price")
+        XCTAssertTrue(buy.label.contains("179"), "the price shown is the one StoreKit returns: \(buy.label)")
+        XCTAssertTrue(app.staticTexts["30 câu hỏi AI mỗi ngày"].exists, "Pro states the real allowance")
+        XCTAssertFalse(labelled(app, containing: "ưu tiên").exists, "no promise the backend does not keep")
+        XCTAssertFalse(labelled(app, containing: "không giới hạn").exists, "no «unlimited» promise")
+        shot("99-subscription-pro-free")
+        for _ in 0..<4 where !app.buttons["Khôi phục giao dịch"].isHittable { app.swipeUp() }
+        XCTAssertTrue(app.buttons["Khôi phục giao dịch"].waitForExistence(timeout: 10), "Restore Purchases")
+        XCTAssertTrue(labelled(app, containing: "tự động gia hạn").exists, "auto-renew notice")
+        XCTAssertTrue(labelled(app, containing: "Điều khoản").exists, "Terms link")
+        shot("99-subscription-pro-terms")
+    }
+
+    /// A paid plan from the App Store: renewal date and Apple's Manage screen are there.
+    func testProScreenOfAnAppStoreSubscriptionShowsRenewalAndManage() {
+        setStub(["pro": "on"])
+        let app = launch(route: "subscription", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(app.staticTexts["Bạn đang dùng TappyAI Pro"].waitForExistence(timeout: 60), "App Store plan")
+        XCTAssertTrue(labelled(app, containing: "Gia hạn").exists, "renewal date")
+        XCTAssertTrue(app.buttons["Quản lý gói"].exists, "Apple's Manage screen")
+        shot("99-subscription-apple")
+        setStub(["pro": "off"])
+    }
+
+    /// A paid plan bought elsewhere (3.1.3(b)): shown as active, with NO renewal date and NO Manage button.
+    func testProScreenOfAPlanBoughtElsewhereShowsNoRenewalAndNoManage() {
+        setStub(["pro": "external"])
+        let app = launch(route: "subscription", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(app.staticTexts["Gói trả phí của bạn đang có hiệu lực"].waitForExistence(timeout: 60), "plan shown as active")
+        XCTAssertFalse(labelled(app, containing: "Gia hạn").exists, "no renewal date")
+        XCTAssertFalse(app.buttons["Quản lý gói"].exists, "no Apple Manage button for a plan that is not an App Store subscription")
+        shot("99-subscription-external")
+        for _ in 0..<4 where !app.buttons["Khôi phục giao dịch"].isHittable { app.swipeUp() }
+        XCTAssertTrue(app.buttons["Khôi phục giao dịch"].exists, "Restore stays reachable")
+        setStub(["pro": "off"])
+    }
+
+    /// Restore Purchases is a row in Settings too.
+    func testSettingsOffersRestorePurchases() {
+        let app = launch(route: "settings", signedIn: true, extra: ["-uitest-theme", "dark"])
+        XCTAssertTrue(scrollTo(app, "settings-restore"), "Restore Purchases row in Settings")
+        shot("99-settings-restore")
+    }
+
     // MARK: - Helpers
 
     /// Any element type with this accessibility identifier (SwiftUI does not always surface a

@@ -22,10 +22,15 @@ final class SubscriptionSourceTests: XCTestCase {
         XCTAssertFalse(s.isAppleSubscription)
     }
 
-    func testMissingSourceIsNotTreatedAsApple() throws {
+    func testMissingSourceKeepsTheAppStoreDisplayForAServerThatPredatesTheField() throws {
         let s = try decode(#"{"isPro":true,"# + quota + "}")
         XCTAssertNil(s.source)
-        XCTAssertFalse(s.isAppleSubscription, "a server that predates the field must not make a plan look like an App Store one")
+        XCTAssertTrue(s.isAppleSubscription, "an older server only knew App Store plans: the app works against either server")
+    }
+
+    func testAFreeAccountWithNoSourceIsNotASubscription() throws {
+        let s = try decode(#"{"isPro":false,"# + quota + "}")
+        XCTAssertFalse(s.isAppleSubscription)
     }
 
     func testFreeAccountWithAppleSourceIsNotASubscription() throws {

@@ -145,6 +145,9 @@ enum UITestLaunch {
         case "saved":
             router.switchTo(.profile)
             router.push(ProfileDestination.favorites, on: .profile)
+        case "subscription":
+            router.switchTo(.profile)
+            router.push(ProfileDestination.subscription, on: .profile)
         case "translate":
             router.switchTo(.home)
             router.push(HomeDestination.translate, on: .home)

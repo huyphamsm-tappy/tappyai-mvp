@@ -359,9 +359,13 @@ class Handler(BaseHTTPRequestHandler):
         if path == "/api/social/connections":
             return self._send(200, {"users": [{"id": "u2", "full_name": "Lan Phương"}, {"id": "u3", "full_name": "Quốc Bảo"}]})
         if path == "/api/subscription":
-            pro = MODE.get("pro") == "on"
-            return self._send(200, {"isPro": pro, "status": "active" if pro else None, "currentPeriodEnd": None,
-                                    "freeDailyLimit": 20, "todayMessageCount": 3, "remaining": 17})
+            # "pro": "on" = an App Store subscription, "external" = a paid plan bought elsewhere, anything else = Free.
+            mode = MODE.get("pro")
+            pro = mode in ("on", "external")
+            source = "apple" if mode == "on" else "external" if mode == "external" else None
+            return self._send(200, {"isPro": pro, "status": "active" if pro else None,
+                                    "currentPeriodEnd": "2026-11-26T00:00:00.000Z" if pro else None, "source": source,
+                                    "freeDailyLimit": 10, "todayMessageCount": 3, "remaining": 7})
         if path == "/api/conversations":
             return self._send(200, OLD_CONVERSATIONS if MODE.get("history") == "on" else [])
         if path == "/api/deals":

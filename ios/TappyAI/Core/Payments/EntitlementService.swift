@@ -26,8 +26,10 @@ struct SubscriptionStatusResponse: Decodable, Sendable {
     let source: String?
 
     /// Only an App Store subscription has a renewal date the app may state and a «Manage» screen at Apple.
-    /// Anything else, including an absent `source`, is shown plainly (Guideline 3.1.3(b): honest about what it is).
-    var isAppleSubscription: Bool { isPro && source == "apple" }
+    /// A plan the server says is `"external"` is shown plainly (Guideline 3.1.3(b): honest about what it is).
+    /// An ABSENT `source` is a server that predates the field: every paid plan it knew was an App Store one (no other
+    /// payment is switched on in production), so it keeps the App Store display and the app works against either server.
+    var isAppleSubscription: Bool { isPro && (source == "apple" || source == nil) }
 
     // Lenient on FORM (numbers as strings), strict on meaning: the quota numbers are what the
     // screen shows, so a response without them fails and the caller falls back to `.free` —
